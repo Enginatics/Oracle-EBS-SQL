@@ -11,7 +11,7 @@ The history of deleted reports can be purged completely by running concurrent 'B
 [rep_Blitz_Report_Deletion_History.xml](https://www.enginatics.com/xml/blitz-report-deletion-history/)
 # Oracle E-Business Suite reports
 
-This is a part of extensive [library](https://www.enginatics.com/library/) of SQL scripts for [Blitz Report™](https://www.enginatics.com/blitz-report/) that is the fastest reporting solution for Oracle EBS. Blitz Report is based on Oracle Forms so is fully integrated with E-Business Suite. 
+This is a part of extensive [library](https://www.enginatics.com/library/) of SQL scripts for [Blitz Report™](https://www.enginatics.com/blitz-report/), which is the fastest reporting solution for Oracle EBS. Blitz Report is based on Oracle Forms so is fully integrated with E-Business Suite. 
 
 ![Running Blitz Report](https://www.enginatics.com/wp-content/uploads/2018/01/Running-blitz-report.png) 
 

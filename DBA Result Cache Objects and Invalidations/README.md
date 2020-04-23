@@ -14,7 +14,7 @@ You may end up with all server sessions waiting on 'latch free' for 'Result Cach
 [rep_DBA_Result_Cache_Objects_and_Invalidations.xml](https://www.enginatics.com/xml/dba-result-cache-objects-and-invalidations/)
 # Oracle E-Business Suite reports
 
-This is a part of extensive [library](https://www.enginatics.com/library/) of SQL scripts for [Blitz Report™](https://www.enginatics.com/blitz-report/) that is the fastest reporting solution for Oracle EBS. Blitz Report is based on Oracle Forms so is fully integrated with E-Business Suite. 
+This is a part of extensive [library](https://www.enginatics.com/library/) of SQL scripts for [Blitz Report™](https://www.enginatics.com/blitz-report/), which is the fastest reporting solution for Oracle EBS. Blitz Report is based on Oracle Forms so is fully integrated with E-Business Suite. 
 
 ![Running Blitz Report](https://www.enginatics.com/wp-content/uploads/2018/01/Running-blitz-report.png) 
 

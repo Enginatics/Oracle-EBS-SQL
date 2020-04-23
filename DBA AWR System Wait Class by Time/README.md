@@ -12,7 +12,7 @@ Use the Session Type parameter to restrict either to foreground, background or a
 [rep_DBA_AWR_System_Wait_Class_by_Time.xml](https://www.enginatics.com/xml/dba-awr-system-wait-class-by-time/)
 # Oracle E-Business Suite reports
 
-This is a part of extensive [library](https://www.enginatics.com/library/) of SQL scripts for [Blitz Report™](https://www.enginatics.com/blitz-report/) that is the fastest reporting solution for Oracle EBS. Blitz Report is based on Oracle Forms so is fully integrated with E-Business Suite. 
+This is a part of extensive [library](https://www.enginatics.com/library/) of SQL scripts for [Blitz Report™](https://www.enginatics.com/blitz-report/), which is the fastest reporting solution for Oracle EBS. Blitz Report is based on Oracle Forms so is fully integrated with E-Business Suite. 
 
 ![Running Blitz Report](https://www.enginatics.com/wp-content/uploads/2018/01/Running-blitz-report.png) 
 
