@@ -4,10 +4,10 @@ Concurrent programs sorted by the sum of their historic execution times
 ## Categories: 
 [Application](https://www.enginatics.com/library/?pg=1&category[]=Application), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 # Report Example
-### [FND_Concurrent_Requests_Summary 28-Jan-2019 120718.xlsx](https://www.enginatics.com/example/fnd-concurrent-requests-summary)
+[FND_Concurrent_Requests_Summary 28-Jan-2019 120718.xlsx](https://www.enginatics.com/example/fnd-concurrent-requests-summary)
 # [Blitz Report™](https://www.enginatics.com/blitz-report) import options
-### [rep_FND_Concurrent_Requests_Summary.sql](https://www.enginatics.com/export/fnd-concurrent-requests-summary)
-### [rep_FND_Concurrent_Requests_Summary.xml](https://www.enginatics.com/xml/fnd-concurrent-requests-summary)
+[rep_FND_Concurrent_Requests_Summary.sql](https://www.enginatics.com/export/fnd-concurrent-requests-summary)\
+[rep_FND_Concurrent_Requests_Summary.xml](https://www.enginatics.com/xml/fnd-concurrent-requests-summary)
 # Oracle E-Business Suite reports
 
 This is a part of extensive [library](https://www.enginatics.com/library/) of SQL scripts for [Blitz Report™](https://www.enginatics.com/blitz-report/) that is the fastest reporting solution for Oracle EBS. Blitz Report is based on Oracle Forms so is fully integrated with E-Business Suite. 

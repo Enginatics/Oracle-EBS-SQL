@@ -4,10 +4,10 @@ History of database PGA size and other statistics from v$pgastat in megabytes
 ## Categories: 
 [DBA](https://www.enginatics.com/library/?pg=1&category[]=DBA), [Diagnostic Pack](https://www.enginatics.com/library/?pg=1&category[]=Diagnostic+Pack), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 # Report Example
-### [DBA_AWR_PGA_History 29-Jul-2018 094718.xlsx](https://www.enginatics.com/example/dba-awr-pga-history)
+[DBA_AWR_PGA_History 29-Jul-2018 094718.xlsx](https://www.enginatics.com/example/dba-awr-pga-history)
 # [Blitz Report™](https://www.enginatics.com/blitz-report) import options
-### [rep_DBA_AWR_PGA_History.sql](https://www.enginatics.com/export/dba-awr-pga-history)
-### [rep_DBA_AWR_PGA_History.xml](https://www.enginatics.com/xml/dba-awr-pga-history)
+[rep_DBA_AWR_PGA_History.sql](https://www.enginatics.com/export/dba-awr-pga-history)\
+[rep_DBA_AWR_PGA_History.xml](https://www.enginatics.com/xml/dba-awr-pga-history)
 # Oracle E-Business Suite reports
 
 This is a part of extensive [library](https://www.enginatics.com/library/) of SQL scripts for [Blitz Report™](https://www.enginatics.com/blitz-report/) that is the fastest reporting solution for Oracle EBS. Blitz Report is based on Oracle Forms so is fully integrated with E-Business Suite. 

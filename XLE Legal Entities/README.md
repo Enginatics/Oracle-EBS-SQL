@@ -4,10 +4,10 @@ Legal entities, establishments, jurisdictions and registrations
 ## Categories: 
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Financials](https://www.enginatics.com/library/?pg=1&category[]=Financials), [Setup](https://www.enginatics.com/library/?pg=1&category[]=Setup)
 # Report Example
-### [XLE_Legal_Entities 24-Jul-2017 145303.xlsx](https://www.enginatics.com/example/xle-legal-entities)
+[XLE_Legal_Entities 24-Jul-2017 145303.xlsx](https://www.enginatics.com/example/xle-legal-entities)
 # [Blitz Report™](https://www.enginatics.com/blitz-report) import options
-### [rep_XLE_Legal_Entities.sql](https://www.enginatics.com/export/xle-legal-entities)
-### [rep_XLE_Legal_Entities.xml](https://www.enginatics.com/xml/xle-legal-entities)
+[rep_XLE_Legal_Entities.sql](https://www.enginatics.com/export/xle-legal-entities)\
+[rep_XLE_Legal_Entities.xml](https://www.enginatics.com/xml/xle-legal-entities)
 # Oracle E-Business Suite reports
 
 This is a part of extensive [library](https://www.enginatics.com/library/) of SQL scripts for [Blitz Report™](https://www.enginatics.com/blitz-report/) that is the fastest reporting solution for Oracle EBS. Blitz Report is based on Oracle Forms so is fully integrated with E-Business Suite. 

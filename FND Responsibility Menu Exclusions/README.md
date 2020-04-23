@@ -4,10 +4,10 @@ Responsibility menu exclusions
 ## Categories: 
 [Application](https://www.enginatics.com/library/?pg=1&category[]=Application), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 # Report Example
-### [FND_Responsibility_Menu_Exclusions 23-Jan-2018 063112.xlsx](https://www.enginatics.com/example/fnd-responsibility-menu-exclusions)
+[FND_Responsibility_Menu_Exclusions 23-Jan-2018 063112.xlsx](https://www.enginatics.com/example/fnd-responsibility-menu-exclusions)
 # [Blitz Report™](https://www.enginatics.com/blitz-report) import options
-### [rep_FND_Responsibility_Menu_Exclusions.sql](https://www.enginatics.com/export/fnd-responsibility-menu-exclusions)
-### [rep_FND_Responsibility_Menu_Exclusions.xml](https://www.enginatics.com/xml/fnd-responsibility-menu-exclusions)
+[rep_FND_Responsibility_Menu_Exclusions.sql](https://www.enginatics.com/export/fnd-responsibility-menu-exclusions)\
+[rep_FND_Responsibility_Menu_Exclusions.xml](https://www.enginatics.com/xml/fnd-responsibility-menu-exclusions)
 # Oracle E-Business Suite reports
 
 This is a part of extensive [library](https://www.enginatics.com/library/) of SQL scripts for [Blitz Report™](https://www.enginatics.com/blitz-report/) that is the fastest reporting solution for Oracle EBS. Blitz Report is based on Oracle Forms so is fully integrated with E-Business Suite. 

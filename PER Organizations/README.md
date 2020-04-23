@@ -4,10 +4,10 @@ Organizations, classifications, address details and additional information attri
 ## Categories: 
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Human Resources](https://www.enginatics.com/library/?pg=1&category[]=Human+Resources), [Setup](https://www.enginatics.com/library/?pg=1&category[]=Setup)
 # Report Example
-### [PER_Organizations 30-Sep-2018 222834.xlsx](https://www.enginatics.com/example/per-organizations)
+[PER_Organizations 30-Sep-2018 222834.xlsx](https://www.enginatics.com/example/per-organizations)
 # [Blitz Report™](https://www.enginatics.com/blitz-report) import options
-### [rep_PER_Organizations.sql](https://www.enginatics.com/export/per-organizations)
-### [rep_PER_Organizations.xml](https://www.enginatics.com/xml/per-organizations)
+[rep_PER_Organizations.sql](https://www.enginatics.com/export/per-organizations)\
+[rep_PER_Organizations.xml](https://www.enginatics.com/xml/per-organizations)
 # Oracle E-Business Suite reports
 
 This is a part of extensive [library](https://www.enginatics.com/library/) of SQL scripts for [Blitz Report™](https://www.enginatics.com/blitz-report/) that is the fastest reporting solution for Oracle EBS. Blitz Report is based on Oracle Forms so is fully integrated with E-Business Suite. 

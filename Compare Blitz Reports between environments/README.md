@@ -11,8 +11,8 @@ xxen_reports_v xrv;
 ## Categories: 
 [Application](https://www.enginatics.com/library/?pg=1&category[]=Application), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 # [Blitz Report™](https://www.enginatics.com/blitz-report) import options
-### [rep_Compare_Blitz_Reports_between_environments.sql](https://www.enginatics.com/export/compare-blitz-reports-between-environments)
-### [rep_Compare_Blitz_Reports_between_environments.xml](https://www.enginatics.com/xml/compare-blitz-reports-between-environments)
+[rep_Compare_Blitz_Reports_between_environments.sql](https://www.enginatics.com/export/compare-blitz-reports-between-environments)\
+[rep_Compare_Blitz_Reports_between_environments.xml](https://www.enginatics.com/xml/compare-blitz-reports-between-environments)
 # Oracle E-Business Suite reports
 
 This is a part of extensive [library](https://www.enginatics.com/library/) of SQL scripts for [Blitz Report™](https://www.enginatics.com/blitz-report/) that is the fastest reporting solution for Oracle EBS. Blitz Report is based on Oracle Forms so is fully integrated with E-Business Suite. 

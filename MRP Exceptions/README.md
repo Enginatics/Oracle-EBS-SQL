@@ -4,10 +4,10 @@ MRP planning exception messages
 ## Categories: 
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Manufacturing](https://www.enginatics.com/library/?pg=1&category[]=Manufacturing)
 # Report Example
-### [MRP_Exceptions 03-Aug-2018 212438.xlsx](https://www.enginatics.com/example/mrp-exceptions)
+[MRP_Exceptions 03-Aug-2018 212438.xlsx](https://www.enginatics.com/example/mrp-exceptions)
 # [Blitz Report™](https://www.enginatics.com/blitz-report) import options
-### [rep_MRP_Exceptions.sql](https://www.enginatics.com/export/mrp-exceptions)
-### [rep_MRP_Exceptions.xml](https://www.enginatics.com/xml/mrp-exceptions)
+[rep_MRP_Exceptions.sql](https://www.enginatics.com/export/mrp-exceptions)\
+[rep_MRP_Exceptions.xml](https://www.enginatics.com/xml/mrp-exceptions)
 # Oracle E-Business Suite reports
 
 This is a part of extensive [library](https://www.enginatics.com/library/) of SQL scripts for [Blitz Report™](https://www.enginatics.com/blitz-report/) that is the fastest reporting solution for Oracle EBS. Blitz Report is based on Oracle Forms so is fully integrated with E-Business Suite. 

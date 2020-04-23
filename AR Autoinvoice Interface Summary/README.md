@@ -4,10 +4,10 @@ Summary of records in the autoinvoice interface
 ## Categories: 
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Financials](https://www.enginatics.com/library/?pg=1&category[]=Financials)
 # Report Example
-### [AR_Autoinvoice_Interface_Summary 23-Jul-2017 155926.xlsx](https://www.enginatics.com/example/ar-autoinvoice-interface-summary)
+[AR_Autoinvoice_Interface_Summary 23-Jul-2017 155926.xlsx](https://www.enginatics.com/example/ar-autoinvoice-interface-summary)
 # [Blitz Report™](https://www.enginatics.com/blitz-report) import options
-### [rep_AR_Autoinvoice_Interface_Summary.sql](https://www.enginatics.com/export/ar-autoinvoice-interface-summary)
-### [rep_AR_Autoinvoice_Interface_Summary.xml](https://www.enginatics.com/xml/ar-autoinvoice-interface-summary)
+[rep_AR_Autoinvoice_Interface_Summary.sql](https://www.enginatics.com/export/ar-autoinvoice-interface-summary)\
+[rep_AR_Autoinvoice_Interface_Summary.xml](https://www.enginatics.com/xml/ar-autoinvoice-interface-summary)
 # Oracle E-Business Suite reports
 
 This is a part of extensive [library](https://www.enginatics.com/library/) of SQL scripts for [Blitz Report™](https://www.enginatics.com/blitz-report/) that is the fastest reporting solution for Oracle EBS. Blitz Report is based on Oracle Forms so is fully integrated with E-Business Suite. 

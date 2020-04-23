@@ -4,10 +4,10 @@ Approved supplier list and attribute details such as source documents, supplier 
 ## Categories: 
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Procurement](https://www.enginatics.com/library/?pg=1&category[]=Procurement)
 # Report Example
-### [PO_Approved_Supplier_List 18-Jan-2018 223638.xlsx](https://www.enginatics.com/example/po-approved-supplier-list)
+[PO_Approved_Supplier_List 18-Jan-2018 223638.xlsx](https://www.enginatics.com/example/po-approved-supplier-list)
 # [Blitz Report™](https://www.enginatics.com/blitz-report) import options
-### [rep_PO_Approved_Supplier_List.sql](https://www.enginatics.com/export/po-approved-supplier-list)
-### [rep_PO_Approved_Supplier_List.xml](https://www.enginatics.com/xml/po-approved-supplier-list)
+[rep_PO_Approved_Supplier_List.sql](https://www.enginatics.com/export/po-approved-supplier-list)\
+[rep_PO_Approved_Supplier_List.xml](https://www.enginatics.com/xml/po-approved-supplier-list)
 # Oracle E-Business Suite reports
 
 This is a part of extensive [library](https://www.enginatics.com/library/) of SQL scripts for [Blitz Report™](https://www.enginatics.com/blitz-report/) that is the fastest reporting solution for Oracle EBS. Blitz Report is based on Oracle Forms so is fully integrated with E-Business Suite. 

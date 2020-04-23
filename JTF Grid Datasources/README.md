@@ -4,10 +4,10 @@ JTF grid (CRM spreadtable) datasource and column definition
 ## Categories: 
 [Application](https://www.enginatics.com/library/?pg=1&category[]=Application), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Setup](https://www.enginatics.com/library/?pg=1&category[]=Setup)
 # Report Example
-### [JTF_Grid_Datasources 23-May-2018 140447.xlsx](https://www.enginatics.com/example/jtf-grid-datasources)
+[JTF_Grid_Datasources 23-May-2018 140447.xlsx](https://www.enginatics.com/example/jtf-grid-datasources)
 # [Blitz Report™](https://www.enginatics.com/blitz-report) import options
-### [rep_JTF_Grid_Datasources.sql](https://www.enginatics.com/export/jtf-grid-datasources)
-### [rep_JTF_Grid_Datasources.xml](https://www.enginatics.com/xml/jtf-grid-datasources)
+[rep_JTF_Grid_Datasources.sql](https://www.enginatics.com/export/jtf-grid-datasources)\
+[rep_JTF_Grid_Datasources.xml](https://www.enginatics.com/xml/jtf-grid-datasources)
 # Oracle E-Business Suite reports
 
 This is a part of extensive [library](https://www.enginatics.com/library/) of SQL scripts for [Blitz Report™](https://www.enginatics.com/blitz-report/) that is the fastest reporting solution for Oracle EBS. Blitz Report is based on Oracle Forms so is fully integrated with E-Business Suite. 

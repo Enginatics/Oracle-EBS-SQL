@@ -4,10 +4,10 @@ Information on lease termination quotes
 ## Categories: 
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Financials](https://www.enginatics.com/library/?pg=1&category[]=Financials)
 # Report Example
-### [OKL_Termination_Quotes 18-Jan-2018 214747.xlsx](https://www.enginatics.com/example/okl-termination-quotes)
+[OKL_Termination_Quotes 18-Jan-2018 214747.xlsx](https://www.enginatics.com/example/okl-termination-quotes)
 # [Blitz Report™](https://www.enginatics.com/blitz-report) import options
-### [rep_OKL_Termination_Quotes.sql](https://www.enginatics.com/export/okl-termination-quotes)
-### [rep_OKL_Termination_Quotes.xml](https://www.enginatics.com/xml/okl-termination-quotes)
+[rep_OKL_Termination_Quotes.sql](https://www.enginatics.com/export/okl-termination-quotes)\
+[rep_OKL_Termination_Quotes.xml](https://www.enginatics.com/xml/okl-termination-quotes)
 # Oracle E-Business Suite reports
 
 This is a part of extensive [library](https://www.enginatics.com/library/) of SQL scripts for [Blitz Report™](https://www.enginatics.com/blitz-report/) that is the fastest reporting solution for Oracle EBS. Blitz Report is based on Oracle Forms so is fully integrated with E-Business Suite. 

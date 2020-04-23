@@ -9,10 +9,10 @@ This is useful for example to:
 ## Categories: 
 [DBA](https://www.enginatics.com/library/?pg=1&category[]=DBA), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 # Report Example
-### [DBA_SGA_SQL_Performance_Summary 11-May-2017 124450.xlsx](https://www.enginatics.com/example/dba-sga-sql-performance-summary)
+[DBA_SGA_SQL_Performance_Summary 11-May-2017 124450.xlsx](https://www.enginatics.com/example/dba-sga-sql-performance-summary)
 # [Blitz Report™](https://www.enginatics.com/blitz-report) import options
-### [rep_DBA_SGA_SQL_Performance_Summary.sql](https://www.enginatics.com/export/dba-sga-sql-performance-summary)
-### [rep_DBA_SGA_SQL_Performance_Summary.xml](https://www.enginatics.com/xml/dba-sga-sql-performance-summary)
+[rep_DBA_SGA_SQL_Performance_Summary.sql](https://www.enginatics.com/export/dba-sga-sql-performance-summary)\
+[rep_DBA_SGA_SQL_Performance_Summary.xml](https://www.enginatics.com/xml/dba-sga-sql-performance-summary)
 # Oracle E-Business Suite reports
 
 This is a part of extensive [library](https://www.enginatics.com/library/) of SQL scripts for [Blitz Report™](https://www.enginatics.com/blitz-report/) that is the fastest reporting solution for Oracle EBS. Blitz Report is based on Oracle Forms so is fully integrated with E-Business Suite. 

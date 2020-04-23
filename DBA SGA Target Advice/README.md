@@ -5,10 +5,10 @@ It shows an estimation of how an SGA resize would affect overall database time a
 ## Categories: 
 [DBA](https://www.enginatics.com/library/?pg=1&category[]=DBA), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 # Report Example
-### [DBA_SGA_Target_Advice 20-Nov-2018 144219.xlsx](https://www.enginatics.com/example/dba-sga-target-advice)
+[DBA_SGA_Target_Advice 20-Nov-2018 144219.xlsx](https://www.enginatics.com/example/dba-sga-target-advice)
 # [Blitz Report™](https://www.enginatics.com/blitz-report) import options
-### [rep_DBA_SGA_Target_Advice.sql](https://www.enginatics.com/export/dba-sga-target-advice)
-### [rep_DBA_SGA_Target_Advice.xml](https://www.enginatics.com/xml/dba-sga-target-advice)
+[rep_DBA_SGA_Target_Advice.sql](https://www.enginatics.com/export/dba-sga-target-advice)\
+[rep_DBA_SGA_Target_Advice.xml](https://www.enginatics.com/xml/dba-sga-target-advice)
 # Oracle E-Business Suite reports
 
 This is a part of extensive [library](https://www.enginatics.com/library/) of SQL scripts for [Blitz Report™](https://www.enginatics.com/blitz-report/) that is the fastest reporting solution for Oracle EBS. Blitz Report is based on Oracle Forms so is fully integrated with E-Business Suite. 

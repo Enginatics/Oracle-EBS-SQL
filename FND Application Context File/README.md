@@ -4,10 +4,10 @@ Context XML files retrieved from the database
 ## Categories: 
 [Application](https://www.enginatics.com/library/?pg=1&category[]=Application), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 # Report Example
-### [FND_Application_Context_File 06-Jul-2019 174000.xlsx](https://www.enginatics.com/example/fnd-application-context-file)
+[FND_Application_Context_File 06-Jul-2019 174000.xlsx](https://www.enginatics.com/example/fnd-application-context-file)
 # [Blitz Report™](https://www.enginatics.com/blitz-report) import options
-### [rep_FND_Application_Context_File.sql](https://www.enginatics.com/export/fnd-application-context-file)
-### [rep_FND_Application_Context_File.xml](https://www.enginatics.com/xml/fnd-application-context-file)
+[rep_FND_Application_Context_File.sql](https://www.enginatics.com/export/fnd-application-context-file)\
+[rep_FND_Application_Context_File.xml](https://www.enginatics.com/xml/fnd-application-context-file)
 # Oracle E-Business Suite reports
 
 This is a part of extensive [library](https://www.enginatics.com/library/) of SQL scripts for [Blitz Report™](https://www.enginatics.com/blitz-report/) that is the fastest reporting solution for Oracle EBS. Blitz Report is based on Oracle Forms so is fully integrated with E-Business Suite. 

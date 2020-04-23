@@ -4,10 +4,10 @@ Price lists and item prices
 ## Categories: 
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Sales](https://www.enginatics.com/library/?pg=1&category[]=Sales)
 # Report Example
-### [QP_Price_Lists 26-Jul-2018 134124.xlsx](https://www.enginatics.com/example/qp-price-lists)
+[QP_Price_Lists 26-Jul-2018 134124.xlsx](https://www.enginatics.com/example/qp-price-lists)
 # [Blitz Report™](https://www.enginatics.com/blitz-report) import options
-### [rep_QP_Price_Lists.sql](https://www.enginatics.com/export/qp-price-lists)
-### [rep_QP_Price_Lists.xml](https://www.enginatics.com/xml/qp-price-lists)
+[rep_QP_Price_Lists.sql](https://www.enginatics.com/export/qp-price-lists)\
+[rep_QP_Price_Lists.xml](https://www.enginatics.com/xml/qp-price-lists)
 # Oracle E-Business Suite reports
 
 This is a part of extensive [library](https://www.enginatics.com/library/) of SQL scripts for [Blitz Report™](https://www.enginatics.com/blitz-report/) that is the fastest reporting solution for Oracle EBS. Blitz Report is based on Oracle Forms so is fully integrated with E-Business Suite. 

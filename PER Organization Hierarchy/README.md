@@ -4,10 +4,10 @@ Hierarchical list of human resource organization structures including subordinat
 ## Categories: 
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Human Resources](https://www.enginatics.com/library/?pg=1&category[]=Human+Resources), [Setup](https://www.enginatics.com/library/?pg=1&category[]=Setup)
 # Report Example
-### [PER_Organization_Hierarchy 29-Jan-2020 051446.xlsx](https://www.enginatics.com/example/per-organization-hierarchy)
+[PER_Organization_Hierarchy 29-Jan-2020 051446.xlsx](https://www.enginatics.com/example/per-organization-hierarchy)
 # [Blitz Report™](https://www.enginatics.com/blitz-report) import options
-### [rep_PER_Organization_Hierarchy.sql](https://www.enginatics.com/export/per-organization-hierarchy)
-### [rep_PER_Organization_Hierarchy.xml](https://www.enginatics.com/xml/per-organization-hierarchy)
+[rep_PER_Organization_Hierarchy.sql](https://www.enginatics.com/export/per-organization-hierarchy)\
+[rep_PER_Organization_Hierarchy.xml](https://www.enginatics.com/xml/per-organization-hierarchy)
 # Oracle E-Business Suite reports
 
 This is a part of extensive [library](https://www.enginatics.com/library/) of SQL scripts for [Blitz Report™](https://www.enginatics.com/blitz-report/) that is the fastest reporting solution for Oracle EBS. Blitz Report is based on Oracle Forms so is fully integrated with E-Business Suite. 

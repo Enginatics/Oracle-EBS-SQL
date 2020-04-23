@@ -4,10 +4,10 @@ FND profile option definition
 ## Categories: 
 [Application](https://www.enginatics.com/library/?pg=1&category[]=Application), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Setup](https://www.enginatics.com/library/?pg=1&category[]=Setup)
 # Report Example
-### [FND_Profile_Options 03-Apr-2018 105618.xlsx](https://www.enginatics.com/example/fnd-profile-options)
+[FND_Profile_Options 03-Apr-2018 105618.xlsx](https://www.enginatics.com/example/fnd-profile-options)
 # [Blitz Report™](https://www.enginatics.com/blitz-report) import options
-### [rep_FND_Profile_Options.sql](https://www.enginatics.com/export/fnd-profile-options)
-### [rep_FND_Profile_Options.xml](https://www.enginatics.com/xml/fnd-profile-options)
+[rep_FND_Profile_Options.sql](https://www.enginatics.com/export/fnd-profile-options)\
+[rep_FND_Profile_Options.xml](https://www.enginatics.com/xml/fnd-profile-options)
 # Oracle E-Business Suite reports
 
 This is a part of extensive [library](https://www.enginatics.com/library/) of SQL scripts for [Blitz Report™](https://www.enginatics.com/blitz-report/) that is the fastest reporting solution for Oracle EBS. Blitz Report is based on Oracle Forms so is fully integrated with E-Business Suite. 

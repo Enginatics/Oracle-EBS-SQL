@@ -4,10 +4,10 @@ MRP planning pegging hiearchy down from demand such as forecast, sales order MDS
 ## Categories: 
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Logistics](https://www.enginatics.com/library/?pg=1&category[]=Logistics), [Manufacturing](https://www.enginatics.com/library/?pg=1&category[]=Manufacturing), [Procurement](https://www.enginatics.com/library/?pg=1&category[]=Procurement)
 # Report Example
-### [MRP_Pegging 02-Aug-2018 222325.xlsx](https://www.enginatics.com/example/mrp-pegging)
+[MRP_Pegging 02-Aug-2018 222325.xlsx](https://www.enginatics.com/example/mrp-pegging)
 # [Blitz Report™](https://www.enginatics.com/blitz-report) import options
-### [rep_MRP_Pegging.sql](https://www.enginatics.com/export/mrp-pegging)
-### [rep_MRP_Pegging.xml](https://www.enginatics.com/xml/mrp-pegging)
+[rep_MRP_Pegging.sql](https://www.enginatics.com/export/mrp-pegging)\
+[rep_MRP_Pegging.xml](https://www.enginatics.com/xml/mrp-pegging)
 # Oracle E-Business Suite reports
 
 This is a part of extensive [library](https://www.enginatics.com/library/) of SQL scripts for [Blitz Report™](https://www.enginatics.com/blitz-report/) that is the fastest reporting solution for Oracle EBS. Blitz Report is based on Oracle Forms so is fully integrated with E-Business Suite. 

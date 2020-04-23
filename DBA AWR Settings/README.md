@@ -86,10 +86,10 @@ end;
 ## Categories: 
 [DBA](https://www.enginatics.com/library/?pg=1&category[]=DBA), [Diagnostic Pack](https://www.enginatics.com/library/?pg=1&category[]=Diagnostic+Pack), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 # Report Example
-### [DBA_AWR_Settings 11-May-2017 125144.xlsx](https://www.enginatics.com/example/dba-awr-settings)
+[DBA_AWR_Settings 11-May-2017 125144.xlsx](https://www.enginatics.com/example/dba-awr-settings)
 # [Blitz Report™](https://www.enginatics.com/blitz-report) import options
-### [rep_DBA_AWR_Settings.sql](https://www.enginatics.com/export/dba-awr-settings)
-### [rep_DBA_AWR_Settings.xml](https://www.enginatics.com/xml/dba-awr-settings)
+[rep_DBA_AWR_Settings.sql](https://www.enginatics.com/export/dba-awr-settings)\
+[rep_DBA_AWR_Settings.xml](https://www.enginatics.com/xml/dba-awr-settings)
 # Oracle E-Business Suite reports
 
 This is a part of extensive [library](https://www.enginatics.com/library/) of SQL scripts for [Blitz Report™](https://www.enginatics.com/blitz-report/) that is the fastest reporting solution for Oracle EBS. Blitz Report is based on Oracle Forms so is fully integrated with E-Business Suite. 

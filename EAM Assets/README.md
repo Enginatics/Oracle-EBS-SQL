@@ -4,10 +4,10 @@ Enterprise asset management asset details such as location, department etc.
 ## Categories: 
 [Administration](https://www.enginatics.com/library/?pg=1&category[]=Administration), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Service](https://www.enginatics.com/library/?pg=1&category[]=Service)
 # Report Example
-### [EAM_Assets 18-Jan-2018 152645.xlsx](https://www.enginatics.com/example/eam-assets)
+[EAM_Assets 18-Jan-2018 152645.xlsx](https://www.enginatics.com/example/eam-assets)
 # [Blitz Report™](https://www.enginatics.com/blitz-report) import options
-### [rep_EAM_Assets.sql](https://www.enginatics.com/export/eam-assets)
-### [rep_EAM_Assets.xml](https://www.enginatics.com/xml/eam-assets)
+[rep_EAM_Assets.sql](https://www.enginatics.com/export/eam-assets)\
+[rep_EAM_Assets.xml](https://www.enginatics.com/xml/eam-assets)
 # Oracle E-Business Suite reports
 
 This is a part of extensive [library](https://www.enginatics.com/library/) of SQL scripts for [Blitz Report™](https://www.enginatics.com/blitz-report/) that is the fastest reporting solution for Oracle EBS. Blitz Report is based on Oracle Forms so is fully integrated with E-Business Suite. 

@@ -4,10 +4,10 @@ Shows the column link between table xla_transaction_entities and subledger sourc
 ## Categories: 
 [Application](https://www.enginatics.com/library/?pg=1&category[]=Application), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Financials](https://www.enginatics.com/library/?pg=1&category[]=Financials)
 # Report Example
-### [XLA_Entity_ID_Mappings 17-Jun-2019 114024.xlsx](https://www.enginatics.com/example/xla-entity-id-mappings)
+[XLA_Entity_ID_Mappings 17-Jun-2019 114024.xlsx](https://www.enginatics.com/example/xla-entity-id-mappings)
 # [Blitz Report™](https://www.enginatics.com/blitz-report) import options
-### [rep_XLA_Entity_ID_Mappings.sql](https://www.enginatics.com/export/xla-entity-id-mappings)
-### [rep_XLA_Entity_ID_Mappings.xml](https://www.enginatics.com/xml/xla-entity-id-mappings)
+[rep_XLA_Entity_ID_Mappings.sql](https://www.enginatics.com/export/xla-entity-id-mappings)\
+[rep_XLA_Entity_ID_Mappings.xml](https://www.enginatics.com/xml/xla-entity-id-mappings)
 # Oracle E-Business Suite reports
 
 This is a part of extensive [library](https://www.enginatics.com/library/) of SQL scripts for [Blitz Report™](https://www.enginatics.com/blitz-report/) that is the fastest reporting solution for Oracle EBS. Blitz Report is based on Oracle Forms so is fully integrated with E-Business Suite. 

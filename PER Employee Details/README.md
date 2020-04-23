@@ -2,8 +2,8 @@
 ## Categories: 
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Human Resources](https://www.enginatics.com/library/?pg=1&category[]=Human+Resources)
 # [Blitz Report™](https://www.enginatics.com/blitz-report) import options
-### [rep_PER_Employee_Details.sql](https://www.enginatics.com/export/per-employee-details)
-### [rep_PER_Employee_Details.xml](https://www.enginatics.com/xml/per-employee-details)
+[rep_PER_Employee_Details.sql](https://www.enginatics.com/export/per-employee-details)\
+[rep_PER_Employee_Details.xml](https://www.enginatics.com/xml/per-employee-details)
 # Oracle E-Business Suite reports
 
 This is a part of extensive [library](https://www.enginatics.com/library/) of SQL scripts for [Blitz Report™](https://www.enginatics.com/blitz-report/) that is the fastest reporting solution for Oracle EBS. Blitz Report is based on Oracle Forms so is fully integrated with E-Business Suite. 

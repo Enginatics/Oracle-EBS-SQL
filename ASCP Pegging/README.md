@@ -4,8 +4,8 @@ Export the PWB Pegging Trees
 ## Categories: 
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 # [Blitz Report™](https://www.enginatics.com/blitz-report) import options
-### [rep_ASCP_Pegging.sql](https://www.enginatics.com/export/ascp-pegging)
-### [rep_ASCP_Pegging.xml](https://www.enginatics.com/xml/ascp-pegging)
+[rep_ASCP_Pegging.sql](https://www.enginatics.com/export/ascp-pegging)\
+[rep_ASCP_Pegging.xml](https://www.enginatics.com/xml/ascp-pegging)
 # Oracle E-Business Suite reports
 
 This is a part of extensive [library](https://www.enginatics.com/library/) of SQL scripts for [Blitz Report™](https://www.enginatics.com/blitz-report/) that is the fastest reporting solution for Oracle EBS. Blitz Report is based on Oracle Forms so is fully integrated with E-Business Suite. 

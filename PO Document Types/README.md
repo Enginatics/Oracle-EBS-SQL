@@ -4,10 +4,10 @@ PO document types setup
 ## Categories: 
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Financials](https://www.enginatics.com/library/?pg=1&category[]=Financials), [Procurement](https://www.enginatics.com/library/?pg=1&category[]=Procurement), [Setup](https://www.enginatics.com/library/?pg=1&category[]=Setup)
 # Report Example
-### [PO_Document_Types 24-Jul-2017 150359.xlsx](https://www.enginatics.com/example/po-document-types)
+[PO_Document_Types 24-Jul-2017 150359.xlsx](https://www.enginatics.com/example/po-document-types)
 # [Blitz Report™](https://www.enginatics.com/blitz-report) import options
-### [rep_PO_Document_Types.sql](https://www.enginatics.com/export/po-document-types)
-### [rep_PO_Document_Types.xml](https://www.enginatics.com/xml/po-document-types)
+[rep_PO_Document_Types.sql](https://www.enginatics.com/export/po-document-types)\
+[rep_PO_Document_Types.xml](https://www.enginatics.com/xml/po-document-types)
 # Oracle E-Business Suite reports
 
 This is a part of extensive [library](https://www.enginatics.com/library/) of SQL scripts for [Blitz Report™](https://www.enginatics.com/blitz-report/) that is the fastest reporting solution for Oracle EBS. Blitz Report is based on Oracle Forms so is fully integrated with E-Business Suite. 

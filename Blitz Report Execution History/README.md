@@ -4,10 +4,10 @@ History of Blitz Report executions
 ## Categories: 
 [Application](https://www.enginatics.com/library/?pg=1&category[]=Application), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 # Report Example
-### [Blitz_Report_Execution_History 24-Jul-2017 150655.xlsx](https://www.enginatics.com/example/blitz-report-execution-history)
+[Blitz_Report_Execution_History 24-Jul-2017 150655.xlsx](https://www.enginatics.com/example/blitz-report-execution-history)
 # [Blitz Report™](https://www.enginatics.com/blitz-report) import options
-### [rep_Blitz_Report_Execution_History.sql](https://www.enginatics.com/export/blitz-report-execution-history)
-### [rep_Blitz_Report_Execution_History.xml](https://www.enginatics.com/xml/blitz-report-execution-history)
+[rep_Blitz_Report_Execution_History.sql](https://www.enginatics.com/export/blitz-report-execution-history)\
+[rep_Blitz_Report_Execution_History.xml](https://www.enginatics.com/xml/blitz-report-execution-history)
 # Oracle E-Business Suite reports
 
 This is a part of extensive [library](https://www.enginatics.com/library/) of SQL scripts for [Blitz Report™](https://www.enginatics.com/blitz-report/) that is the fastest reporting solution for Oracle EBS. Blitz Report is based on Oracle Forms so is fully integrated with E-Business Suite. 

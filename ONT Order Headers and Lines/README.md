@@ -5,10 +5,10 @@ Amount values on the Oracle standard form header are derived from package oe_oe_
 ## Categories: 
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Logistics](https://www.enginatics.com/library/?pg=1&category[]=Logistics), [Sales](https://www.enginatics.com/library/?pg=1&category[]=Sales)
 # Report Example
-### [ONT_Order_Headers_and_Lines 14-Aug-2018 082003.xlsx](https://www.enginatics.com/example/ont-order-headers-and-lines)
+[ONT_Order_Headers_and_Lines 14-Aug-2018 082003.xlsx](https://www.enginatics.com/example/ont-order-headers-and-lines)
 # [Blitz Report™](https://www.enginatics.com/blitz-report) import options
-### [rep_ONT_Order_Headers_and_Lines.sql](https://www.enginatics.com/export/ont-order-headers-and-lines)
-### [rep_ONT_Order_Headers_and_Lines.xml](https://www.enginatics.com/xml/ont-order-headers-and-lines)
+[rep_ONT_Order_Headers_and_Lines.sql](https://www.enginatics.com/export/ont-order-headers-and-lines)\
+[rep_ONT_Order_Headers_and_Lines.xml](https://www.enginatics.com/xml/ont-order-headers-and-lines)
 # Oracle E-Business Suite reports
 
 This is a part of extensive [library](https://www.enginatics.com/library/) of SQL scripts for [Blitz Report™](https://www.enginatics.com/blitz-report/) that is the fastest reporting solution for Oracle EBS. Blitz Report is based on Oracle Forms so is fully integrated with E-Business Suite. 

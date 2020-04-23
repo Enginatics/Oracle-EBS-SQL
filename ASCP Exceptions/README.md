@@ -4,8 +4,8 @@ Report to list exceptions by type and planner
 ## Categories: 
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 # [Blitz Report™](https://www.enginatics.com/blitz-report) import options
-### [rep_ASCP_Exceptions.sql](https://www.enginatics.com/export/ascp-exceptions)
-### [rep_ASCP_Exceptions.xml](https://www.enginatics.com/xml/ascp-exceptions)
+[rep_ASCP_Exceptions.sql](https://www.enginatics.com/export/ascp-exceptions)\
+[rep_ASCP_Exceptions.xml](https://www.enginatics.com/xml/ascp-exceptions)
 # Oracle E-Business Suite reports
 
 This is a part of extensive [library](https://www.enginatics.com/library/) of SQL scripts for [Blitz Report™](https://www.enginatics.com/blitz-report/) that is the fastest reporting solution for Oracle EBS. Blitz Report is based on Oracle Forms so is fully integrated with E-Business Suite. 

@@ -5,10 +5,10 @@ Column access count shows how many times a business area's folder was used withi
 ## Categories: 
 [Application](https://www.enginatics.com/library/?pg=1&category[]=Application), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 # Report Example
-### [DIS_Busines_Areas 04-Jan-2019 134936.xlsx](https://www.enginatics.com/example/dis-busines-areas)
+[DIS_Busines_Areas 04-Jan-2019 134936.xlsx](https://www.enginatics.com/example/dis-busines-areas)
 # [Blitz Report™](https://www.enginatics.com/blitz-report) import options
-### [rep_DIS_Busines_Areas.sql](https://www.enginatics.com/export/dis-busines-areas)
-### [rep_DIS_Busines_Areas.xml](https://www.enginatics.com/xml/dis-busines-areas)
+[rep_DIS_Busines_Areas.sql](https://www.enginatics.com/export/dis-busines-areas)\
+[rep_DIS_Busines_Areas.xml](https://www.enginatics.com/xml/dis-busines-areas)
 # Oracle E-Business Suite reports
 
 This is a part of extensive [library](https://www.enginatics.com/library/) of SQL scripts for [Blitz Report™](https://www.enginatics.com/blitz-report/) that is the fastest reporting solution for Oracle EBS. Blitz Report is based on Oracle Forms so is fully integrated with E-Business Suite. 

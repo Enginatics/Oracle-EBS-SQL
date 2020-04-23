@@ -4,10 +4,10 @@ Inventory items default locators for shipping, receiving or move order receipt t
 ## Categories: 
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Logistics](https://www.enginatics.com/library/?pg=1&category[]=Logistics), [Manufacturing](https://www.enginatics.com/library/?pg=1&category[]=Manufacturing)
 # Report Example
-### [INV_Item_Default_Locators 18-Jan-2018 230059.xlsx](https://www.enginatics.com/example/inv-item-default-locators)
+[INV_Item_Default_Locators 18-Jan-2018 230059.xlsx](https://www.enginatics.com/example/inv-item-default-locators)
 # [Blitz Report™](https://www.enginatics.com/blitz-report) import options
-### [rep_INV_Item_Default_Locators.sql](https://www.enginatics.com/export/inv-item-default-locators)
-### [rep_INV_Item_Default_Locators.xml](https://www.enginatics.com/xml/inv-item-default-locators)
+[rep_INV_Item_Default_Locators.sql](https://www.enginatics.com/export/inv-item-default-locators)\
+[rep_INV_Item_Default_Locators.xml](https://www.enginatics.com/xml/inv-item-default-locators)
 # Oracle E-Business Suite reports
 
 This is a part of extensive [library](https://www.enginatics.com/library/) of SQL scripts for [Blitz Report™](https://www.enginatics.com/blitz-report/) that is the fastest reporting solution for Oracle EBS. Blitz Report is based on Oracle Forms so is fully integrated with E-Business Suite. 

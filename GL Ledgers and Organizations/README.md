@@ -4,10 +4,10 @@ GL Ledgers with Ledger Sets, Chart of Accounts, Operating Units, Inventory Organ
 ## Categories: 
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Financials](https://www.enginatics.com/library/?pg=1&category[]=Financials), [Manufacturing](https://www.enginatics.com/library/?pg=1&category[]=Manufacturing), [Setup](https://www.enginatics.com/library/?pg=1&category[]=Setup)
 # Report Example
-### [GL_Ledgers_and_Organizations 11-Mar-2020 070723.xlsx](https://www.enginatics.com/example/gl-ledgers-and-organizations)
+[GL_Ledgers_and_Organizations 11-Mar-2020 070723.xlsx](https://www.enginatics.com/example/gl-ledgers-and-organizations)
 # [Blitz Report™](https://www.enginatics.com/blitz-report) import options
-### [rep_GL_Ledgers_and_Organizations.sql](https://www.enginatics.com/export/gl-ledgers-and-organizations)
-### [rep_GL_Ledgers_and_Organizations.xml](https://www.enginatics.com/xml/gl-ledgers-and-organizations)
+[rep_GL_Ledgers_and_Organizations.sql](https://www.enginatics.com/export/gl-ledgers-and-organizations)\
+[rep_GL_Ledgers_and_Organizations.xml](https://www.enginatics.com/xml/gl-ledgers-and-organizations)
 # Oracle E-Business Suite reports
 
 This is a part of extensive [library](https://www.enginatics.com/library/) of SQL scripts for [Blitz Report™](https://www.enginatics.com/blitz-report/) that is the fastest reporting solution for Oracle EBS. Blitz Report is based on Oracle Forms so is fully integrated with E-Business Suite. 

@@ -4,10 +4,10 @@ Based on Oracle's detailed item cost report CSTRDICRG_XML
 ## Categories: 
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Financials](https://www.enginatics.com/library/?pg=1&category[]=Financials), [Manufacturing](https://www.enginatics.com/library/?pg=1&category[]=Manufacturing)
 # Report Example
-### [CST_Detailed_Item_Cost 25-Jun-2019 140038.xlsx](https://www.enginatics.com/example/cst-detailed-item-cost)
+[CST_Detailed_Item_Cost 25-Jun-2019 140038.xlsx](https://www.enginatics.com/example/cst-detailed-item-cost)
 # [Blitz Report™](https://www.enginatics.com/blitz-report) import options
-### [rep_CST_Detailed_Item_Cost.sql](https://www.enginatics.com/export/cst-detailed-item-cost)
-### [rep_CST_Detailed_Item_Cost.xml](https://www.enginatics.com/xml/cst-detailed-item-cost)
+[rep_CST_Detailed_Item_Cost.sql](https://www.enginatics.com/export/cst-detailed-item-cost)\
+[rep_CST_Detailed_Item_Cost.xml](https://www.enginatics.com/xml/cst-detailed-item-cost)
 # Oracle E-Business Suite reports
 
 This is a part of extensive [library](https://www.enginatics.com/library/) of SQL scripts for [Blitz Report™](https://www.enginatics.com/blitz-report/) that is the fastest reporting solution for Oracle EBS. Blitz Report is based on Oracle Forms so is fully integrated with E-Business Suite. 

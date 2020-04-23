@@ -4,10 +4,10 @@ Summary counts of stuck and errored workflow activities to monitor required hous
 ## Categories: 
 [Application](https://www.enginatics.com/library/?pg=1&category[]=Application), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 # Report Example
-### [WF_Activity_Status_Summary 18-Jan-2018 221505.xlsx](https://www.enginatics.com/example/wf-activity-status-summary)
+[WF_Activity_Status_Summary 18-Jan-2018 221505.xlsx](https://www.enginatics.com/example/wf-activity-status-summary)
 # [Blitz Report™](https://www.enginatics.com/blitz-report) import options
-### [rep_WF_Activity_Status_Summary.sql](https://www.enginatics.com/export/wf-activity-status-summary)
-### [rep_WF_Activity_Status_Summary.xml](https://www.enginatics.com/xml/wf-activity-status-summary)
+[rep_WF_Activity_Status_Summary.sql](https://www.enginatics.com/export/wf-activity-status-summary)\
+[rep_WF_Activity_Status_Summary.xml](https://www.enginatics.com/xml/wf-activity-status-summary)
 # Oracle E-Business Suite reports
 
 This is a part of extensive [library](https://www.enginatics.com/library/) of SQL scripts for [Blitz Report™](https://www.enginatics.com/blitz-report/) that is the fastest reporting solution for Oracle EBS. Blitz Report is based on Oracle Forms so is fully integrated with E-Business Suite. 

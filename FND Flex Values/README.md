@@ -2,10 +2,10 @@
 ## Categories: 
 [Application](https://www.enginatics.com/library/?pg=1&category[]=Application), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 # Report Example
-### [FND_Flex_Values 20-Jan-2019 121723.xlsx](https://www.enginatics.com/example/fnd-flex-values)
+[FND_Flex_Values 20-Jan-2019 121723.xlsx](https://www.enginatics.com/example/fnd-flex-values)
 # [Blitz Report™](https://www.enginatics.com/blitz-report) import options
-### [rep_FND_Flex_Values.sql](https://www.enginatics.com/export/fnd-flex-values)
-### [rep_FND_Flex_Values.xml](https://www.enginatics.com/xml/fnd-flex-values)
+[rep_FND_Flex_Values.sql](https://www.enginatics.com/export/fnd-flex-values)\
+[rep_FND_Flex_Values.xml](https://www.enginatics.com/xml/fnd-flex-values)
 # Oracle E-Business Suite reports
 
 This is a part of extensive [library](https://www.enginatics.com/library/) of SQL scripts for [Blitz Report™](https://www.enginatics.com/blitz-report/) that is the fastest reporting solution for Oracle EBS. Blitz Report is based on Oracle Forms so is fully integrated with E-Business Suite. 

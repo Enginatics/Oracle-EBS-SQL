@@ -2,10 +2,10 @@
 ## Categories: 
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Manufacturing](https://www.enginatics.com/library/?pg=1&category[]=Manufacturing)
 # Report Example
-### [BOM_Calendar_Exceptions 20-Jan-2019 120149.xlsx](https://www.enginatics.com/example/bom-calendar-exceptions)
+[BOM_Calendar_Exceptions 20-Jan-2019 120149.xlsx](https://www.enginatics.com/example/bom-calendar-exceptions)
 # [Blitz Report™](https://www.enginatics.com/blitz-report) import options
-### [rep_BOM_Calendar_Exceptions.sql](https://www.enginatics.com/export/bom-calendar-exceptions)
-### [rep_BOM_Calendar_Exceptions.xml](https://www.enginatics.com/xml/bom-calendar-exceptions)
+[rep_BOM_Calendar_Exceptions.sql](https://www.enginatics.com/export/bom-calendar-exceptions)\
+[rep_BOM_Calendar_Exceptions.xml](https://www.enginatics.com/xml/bom-calendar-exceptions)
 # Oracle E-Business Suite reports
 
 This is a part of extensive [library](https://www.enginatics.com/library/) of SQL scripts for [Blitz Report™](https://www.enginatics.com/blitz-report/) that is the fastest reporting solution for Oracle EBS. Blitz Report is based on Oracle Forms so is fully integrated with E-Business Suite. 

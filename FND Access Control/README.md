@@ -24,10 +24,10 @@ Please note that the SQL currently doesn't consider menu exclusions yet, which m
 ## Categories: 
 [Application](https://www.enginatics.com/library/?pg=1&category[]=Application), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12+only), [Setup](https://www.enginatics.com/library/?pg=1&category[]=Setup)
 # Report Example
-### [FND_Access_Control 11-May-2017 081848.xlsx](https://www.enginatics.com/example/fnd-access-control)
+[FND_Access_Control 11-May-2017 081848.xlsx](https://www.enginatics.com/example/fnd-access-control)
 # [Blitz Report™](https://www.enginatics.com/blitz-report) import options
-### [rep_FND_Access_Control.sql](https://www.enginatics.com/export/fnd-access-control)
-### [rep_FND_Access_Control.xml](https://www.enginatics.com/xml/fnd-access-control)
+[rep_FND_Access_Control.sql](https://www.enginatics.com/export/fnd-access-control)\
+[rep_FND_Access_Control.xml](https://www.enginatics.com/xml/fnd-access-control)
 # Oracle E-Business Suite reports
 
 This is a part of extensive [library](https://www.enginatics.com/library/) of SQL scripts for [Blitz Report™](https://www.enginatics.com/blitz-report/) that is the fastest reporting solution for Oracle EBS. Blitz Report is based on Oracle Forms so is fully integrated with E-Business Suite. 

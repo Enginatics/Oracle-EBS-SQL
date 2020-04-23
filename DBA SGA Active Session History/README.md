@@ -17,10 +17,10 @@ https://docs.oracle.com/database/121/REFRN/GUID-86184690-5531-405F-AA05-BB935F57
 ## Categories: 
 [DBA](https://www.enginatics.com/library/?pg=1&category[]=DBA), [Diagnostic Pack](https://www.enginatics.com/library/?pg=1&category[]=Diagnostic+Pack), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 # Report Example
-### [DBA_SGA_Active_Session_History 24-Sep-2018 011658.xlsx](https://www.enginatics.com/example/dba-sga-active-session-history)
+[DBA_SGA_Active_Session_History 24-Sep-2018 011658.xlsx](https://www.enginatics.com/example/dba-sga-active-session-history)
 # [Blitz Report™](https://www.enginatics.com/blitz-report) import options
-### [rep_DBA_SGA_Active_Session_History.sql](https://www.enginatics.com/export/dba-sga-active-session-history)
-### [rep_DBA_SGA_Active_Session_History.xml](https://www.enginatics.com/xml/dba-sga-active-session-history)
+[rep_DBA_SGA_Active_Session_History.sql](https://www.enginatics.com/export/dba-sga-active-session-history)\
+[rep_DBA_SGA_Active_Session_History.xml](https://www.enginatics.com/xml/dba-sga-active-session-history)
 # Oracle E-Business Suite reports
 
 This is a part of extensive [library](https://www.enginatics.com/library/) of SQL scripts for [Blitz Report™](https://www.enginatics.com/blitz-report/) that is the fastest reporting solution for Oracle EBS. Blitz Report is based on Oracle Forms so is fully integrated with E-Business Suite. 

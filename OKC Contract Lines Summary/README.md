@@ -5,10 +5,10 @@ This is useful for developers to see how the oracle contracts line data is struc
 ## Categories: 
 [Application](https://www.enginatics.com/library/?pg=1&category[]=Application), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Service](https://www.enginatics.com/library/?pg=1&category[]=Service)
 # Report Example
-### [OKC_Contract_Lines_Summary 30-Sep-2018 234150.xlsx](https://www.enginatics.com/example/okc-contract-lines-summary)
+[OKC_Contract_Lines_Summary 30-Sep-2018 234150.xlsx](https://www.enginatics.com/example/okc-contract-lines-summary)
 # [Blitz Report™](https://www.enginatics.com/blitz-report) import options
-### [rep_OKC_Contract_Lines_Summary.sql](https://www.enginatics.com/export/okc-contract-lines-summary)
-### [rep_OKC_Contract_Lines_Summary.xml](https://www.enginatics.com/xml/okc-contract-lines-summary)
+[rep_OKC_Contract_Lines_Summary.sql](https://www.enginatics.com/export/okc-contract-lines-summary)\
+[rep_OKC_Contract_Lines_Summary.xml](https://www.enginatics.com/xml/okc-contract-lines-summary)
 # Oracle E-Business Suite reports
 
 This is a part of extensive [library](https://www.enginatics.com/library/) of SQL scripts for [Blitz Report™](https://www.enginatics.com/blitz-report/) that is the fastest reporting solution for Oracle EBS. Blitz Report is based on Oracle Forms so is fully integrated with E-Business Suite. 

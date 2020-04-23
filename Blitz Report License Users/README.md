@@ -4,10 +4,10 @@ Active Blitz Report users (within the past 60 days) and their most frequently ex
 ## Categories: 
 [Application](https://www.enginatics.com/library/?pg=1&category[]=Application), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 # Report Example
-### [Blitz_Report_License_Users 31-Jan-2019 105724.xlsx](https://www.enginatics.com/example/blitz-report-license-users)
+[Blitz_Report_License_Users 31-Jan-2019 105724.xlsx](https://www.enginatics.com/example/blitz-report-license-users)
 # [Blitz Report™](https://www.enginatics.com/blitz-report) import options
-### [rep_Blitz_Report_License_Users.sql](https://www.enginatics.com/export/blitz-report-license-users)
-### [rep_Blitz_Report_License_Users.xml](https://www.enginatics.com/xml/blitz-report-license-users)
+[rep_Blitz_Report_License_Users.sql](https://www.enginatics.com/export/blitz-report-license-users)\
+[rep_Blitz_Report_License_Users.xml](https://www.enginatics.com/xml/blitz-report-license-users)
 # Oracle E-Business Suite reports
 
 This is a part of extensive [library](https://www.enginatics.com/library/) of SQL scripts for [Blitz Report™](https://www.enginatics.com/blitz-report/) that is the fastest reporting solution for Oracle EBS. Blitz Report is based on Oracle Forms so is fully integrated with E-Business Suite. 

@@ -6,8 +6,8 @@ Use this to pinpoint trends in the late shipping of a sales order versus reality
 ## Categories: 
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 # [Blitz Report™](https://www.enginatics.com/blitz-report) import options
-### [rep_ONT_Planning_Reliability_Metric_pinpoint_trends_in_the_late_shipping_of_a_sales_order_versus_reality.sql](https://www.enginatics.com/export/ont-planning-reliability-metric-pinpoint-trends-in-the-late-shipping-of-a-sales-order-versus-reality)
-### [rep_ONT_Planning_Reliability_Metric_pinpoint_trends_in_the_late_shipping_of_a_sales_order_versus_reality.xml](https://www.enginatics.com/xml/ont-planning-reliability-metric-pinpoint-trends-in-the-late-shipping-of-a-sales-order-versus-reality)
+[rep_ONT_Planning_Reliability_Metric_pinpoint_trends_in_the_late_shipping_of_a_sales_order_versus_reality.sql](https://www.enginatics.com/export/ont-planning-reliability-metric-pinpoint-trends-in-the-late-shipping-of-a-sales-order-versus-reality)\
+[rep_ONT_Planning_Reliability_Metric_pinpoint_trends_in_the_late_shipping_of_a_sales_order_versus_reality.xml](https://www.enginatics.com/xml/ont-planning-reliability-metric-pinpoint-trends-in-the-late-shipping-of-a-sales-order-versus-reality)
 # Oracle E-Business Suite reports
 
 This is a part of extensive [library](https://www.enginatics.com/library/) of SQL scripts for [Blitz Report™](https://www.enginatics.com/blitz-report/) that is the fastest reporting solution for Oracle EBS. Blitz Report is based on Oracle Forms so is fully integrated with E-Business Suite. 

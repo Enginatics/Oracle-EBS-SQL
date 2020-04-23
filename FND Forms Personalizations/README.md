@@ -4,10 +4,10 @@ Forms personalizations and actions
 ## Categories: 
 [Application](https://www.enginatics.com/library/?pg=1&category[]=Application), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 # Report Example
-### [FND_Forms_Personalizations 21-Jul-2017 173253.xlsx](https://www.enginatics.com/example/fnd-forms-personalizations)
+[FND_Forms_Personalizations 21-Jul-2017 173253.xlsx](https://www.enginatics.com/example/fnd-forms-personalizations)
 # [Blitz Report™](https://www.enginatics.com/blitz-report) import options
-### [rep_FND_Forms_Personalizations.sql](https://www.enginatics.com/export/fnd-forms-personalizations)
-### [rep_FND_Forms_Personalizations.xml](https://www.enginatics.com/xml/fnd-forms-personalizations)
+[rep_FND_Forms_Personalizations.sql](https://www.enginatics.com/export/fnd-forms-personalizations)\
+[rep_FND_Forms_Personalizations.xml](https://www.enginatics.com/xml/fnd-forms-personalizations)
 # Oracle E-Business Suite reports
 
 This is a part of extensive [library](https://www.enginatics.com/library/) of SQL scripts for [Blitz Report™](https://www.enginatics.com/blitz-report/) that is the fastest reporting solution for Oracle EBS. Blitz Report is based on Oracle Forms so is fully integrated with E-Business Suite. 

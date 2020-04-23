@@ -4,10 +4,10 @@ Discoverer access privileges
 ## Categories: 
 [Application](https://www.enginatics.com/library/?pg=1&category[]=Application), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 # Report Example
-### [DIS_Access_Privileges 04-Jan-2019 134602.xlsx](https://www.enginatics.com/example/dis-access-privileges)
+[DIS_Access_Privileges 04-Jan-2019 134602.xlsx](https://www.enginatics.com/example/dis-access-privileges)
 # [Blitz Report™](https://www.enginatics.com/blitz-report) import options
-### [rep_DIS_Access_Privileges.sql](https://www.enginatics.com/export/dis-access-privileges)
-### [rep_DIS_Access_Privileges.xml](https://www.enginatics.com/xml/dis-access-privileges)
+[rep_DIS_Access_Privileges.sql](https://www.enginatics.com/export/dis-access-privileges)\
+[rep_DIS_Access_Privileges.xml](https://www.enginatics.com/xml/dis-access-privileges)
 # Oracle E-Business Suite reports
 
 This is a part of extensive [library](https://www.enginatics.com/library/) of SQL scripts for [Blitz Report™](https://www.enginatics.com/blitz-report/) that is the fastest reporting solution for Oracle EBS. Blitz Report is based on Oracle Forms so is fully integrated with E-Business Suite. 

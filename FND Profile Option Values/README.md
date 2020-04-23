@@ -5,10 +5,10 @@ Unlike Oracle's SQL script from note 201945.1, this report also shows the user v
 ## Categories: 
 [Application](https://www.enginatics.com/library/?pg=1&category[]=Application), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Setup](https://www.enginatics.com/library/?pg=1&category[]=Setup)
 # Report Example
-### [FND_Profile_Option_Values 11-May-2017 124115.xlsx](https://www.enginatics.com/example/fnd-profile-option-values)
+[FND_Profile_Option_Values 11-May-2017 124115.xlsx](https://www.enginatics.com/example/fnd-profile-option-values)
 # [Blitz Report™](https://www.enginatics.com/blitz-report) import options
-### [rep_FND_Profile_Option_Values.sql](https://www.enginatics.com/export/fnd-profile-option-values)
-### [rep_FND_Profile_Option_Values.xml](https://www.enginatics.com/xml/fnd-profile-option-values)
+[rep_FND_Profile_Option_Values.sql](https://www.enginatics.com/export/fnd-profile-option-values)\
+[rep_FND_Profile_Option_Values.xml](https://www.enginatics.com/xml/fnd-profile-option-values)
 # Oracle E-Business Suite reports
 
 This is a part of extensive [library](https://www.enginatics.com/library/) of SQL scripts for [Blitz Report™](https://www.enginatics.com/blitz-report/) that is the fastest reporting solution for Oracle EBS. Blitz Report is based on Oracle Forms so is fully integrated with E-Business Suite. 

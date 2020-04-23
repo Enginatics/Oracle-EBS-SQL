@@ -4,10 +4,10 @@ Enterprise asset management work orders including asset and cost information
 ## Categories: 
 [Administration](https://www.enginatics.com/library/?pg=1&category[]=Administration), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Service](https://www.enginatics.com/library/?pg=1&category[]=Service)
 # Report Example
-### [EAM_Work_Orders 18-Jan-2018 152946.xlsx](https://www.enginatics.com/example/eam-work-orders)
+[EAM_Work_Orders 18-Jan-2018 152946.xlsx](https://www.enginatics.com/example/eam-work-orders)
 # [Blitz Report™](https://www.enginatics.com/blitz-report) import options
-### [rep_EAM_Work_Orders.sql](https://www.enginatics.com/export/eam-work-orders)
-### [rep_EAM_Work_Orders.xml](https://www.enginatics.com/xml/eam-work-orders)
+[rep_EAM_Work_Orders.sql](https://www.enginatics.com/export/eam-work-orders)\
+[rep_EAM_Work_Orders.xml](https://www.enginatics.com/xml/eam-work-orders)
 # Oracle E-Business Suite reports
 
 This is a part of extensive [library](https://www.enginatics.com/library/) of SQL scripts for [Blitz Report™](https://www.enginatics.com/blitz-report/) that is the fastest reporting solution for Oracle EBS. Blitz Report is based on Oracle Forms so is fully integrated with E-Business Suite. 

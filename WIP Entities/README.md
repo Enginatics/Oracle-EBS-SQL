@@ -4,10 +4,10 @@ WIP Jobs
 ## Categories: 
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Manufacturing](https://www.enginatics.com/library/?pg=1&category[]=Manufacturing)
 # Report Example
-### [WIP_Entities 02-Aug-2018 214556.xlsx](https://www.enginatics.com/example/wip-entities)
+[WIP_Entities 02-Aug-2018 214556.xlsx](https://www.enginatics.com/example/wip-entities)
 # [Blitz Report™](https://www.enginatics.com/blitz-report) import options
-### [rep_WIP_Entities.sql](https://www.enginatics.com/export/wip-entities)
-### [rep_WIP_Entities.xml](https://www.enginatics.com/xml/wip-entities)
+[rep_WIP_Entities.sql](https://www.enginatics.com/export/wip-entities)\
+[rep_WIP_Entities.xml](https://www.enginatics.com/xml/wip-entities)
 # Oracle E-Business Suite reports
 
 This is a part of extensive [library](https://www.enginatics.com/library/) of SQL scripts for [Blitz Report™](https://www.enginatics.com/blitz-report/) that is the fastest reporting solution for Oracle EBS. Blitz Report is based on Oracle Forms so is fully integrated with E-Business Suite. 

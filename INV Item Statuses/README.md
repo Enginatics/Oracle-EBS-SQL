@@ -15,10 +15,10 @@ Transactable
 ## Categories: 
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Logistics](https://www.enginatics.com/library/?pg=1&category[]=Logistics), [Setup](https://www.enginatics.com/library/?pg=1&category[]=Setup)
 # Report Example
-### [INV_Item_Statuses 07-Apr-2018 130703.xlsx](https://www.enginatics.com/example/inv-item-statuses(4))
+[INV_Item_Statuses 07-Apr-2018 130703.xlsx](https://www.enginatics.com/example/inv-item-statuses(4))
 # [Blitz Report™](https://www.enginatics.com/blitz-report) import options
-### [rep_INV_Item_Statuses.sql](https://www.enginatics.com/export/inv-item-statuses(4))
-### [rep_INV_Item_Statuses.xml](https://www.enginatics.com/xml/inv-item-statuses(4))
+[rep_INV_Item_Statuses.sql](https://www.enginatics.com/export/inv-item-statuses(4))\
+[rep_INV_Item_Statuses.xml](https://www.enginatics.com/xml/inv-item-statuses(4))
 # Oracle E-Business Suite reports
 
 This is a part of extensive [library](https://www.enginatics.com/library/) of SQL scripts for [Blitz Report™](https://www.enginatics.com/blitz-report/) that is the fastest reporting solution for Oracle EBS. Blitz Report is based on Oracle Forms so is fully integrated with E-Business Suite. 

@@ -2,10 +2,10 @@
 ## Categories: 
 [Application](https://www.enginatics.com/library/?pg=1&category[]=Application), [DBA](https://www.enginatics.com/library/?pg=1&category[]=DBA), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 # Report Example
-### [FND_Log_Messages 25-Jul-2017 121157.xlsx](https://www.enginatics.com/example/fnd-log-messages)
+[FND_Log_Messages 25-Jul-2017 121157.xlsx](https://www.enginatics.com/example/fnd-log-messages)
 # [Blitz Report™](https://www.enginatics.com/blitz-report) import options
-### [rep_FND_Log_Messages.sql](https://www.enginatics.com/export/fnd-log-messages)
-### [rep_FND_Log_Messages.xml](https://www.enginatics.com/xml/fnd-log-messages)
+[rep_FND_Log_Messages.sql](https://www.enginatics.com/export/fnd-log-messages)\
+[rep_FND_Log_Messages.xml](https://www.enginatics.com/xml/fnd-log-messages)
 # Oracle E-Business Suite reports
 
 This is a part of extensive [library](https://www.enginatics.com/library/) of SQL scripts for [Blitz Report™](https://www.enginatics.com/blitz-report/) that is the fastest reporting solution for Oracle EBS. Blitz Report is based on Oracle Forms so is fully integrated with E-Business Suite. 

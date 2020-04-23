@@ -12,10 +12,10 @@ and Financials Troubleshooting Guide 1213193.1 https://support.oracle.com/CSP/ma
 ## Categories: 
 [Application](https://www.enginatics.com/library/?pg=1&category[]=Application), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Financials](https://www.enginatics.com/library/?pg=1&category[]=Financials)
 # Report Example
-### [XLA_Distribution_Links_Summary 09-Jun-2019 000034.xlsx](https://www.enginatics.com/example/xla-distribution-links-summary)
+[XLA_Distribution_Links_Summary 09-Jun-2019 000034.xlsx](https://www.enginatics.com/example/xla-distribution-links-summary)
 # [Blitz Report™](https://www.enginatics.com/blitz-report) import options
-### [rep_XLA_Distribution_Links_Summary.sql](https://www.enginatics.com/export/xla-distribution-links-summary)
-### [rep_XLA_Distribution_Links_Summary.xml](https://www.enginatics.com/xml/xla-distribution-links-summary)
+[rep_XLA_Distribution_Links_Summary.sql](https://www.enginatics.com/export/xla-distribution-links-summary)\
+[rep_XLA_Distribution_Links_Summary.xml](https://www.enginatics.com/xml/xla-distribution-links-summary)
 # Oracle E-Business Suite reports
 
 This is a part of extensive [library](https://www.enginatics.com/library/) of SQL scripts for [Blitz Report™](https://www.enginatics.com/blitz-report/) that is the fastest reporting solution for Oracle EBS. Blitz Report is based on Oracle Forms so is fully integrated with E-Business Suite. 

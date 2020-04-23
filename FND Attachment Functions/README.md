@@ -4,10 +4,10 @@ FND attachment functions, their category assignments, forms blocks and block ent
 ## Categories: 
 [Application](https://www.enginatics.com/library/?pg=1&category[]=Application), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 # Report Example
-### [FND_Attachment_Functions 10-Jul-2018 190034.xlsx](https://www.enginatics.com/example/fnd-attachment-functions)
+[FND_Attachment_Functions 10-Jul-2018 190034.xlsx](https://www.enginatics.com/example/fnd-attachment-functions)
 # [Blitz Report™](https://www.enginatics.com/blitz-report) import options
-### [rep_FND_Attachment_Functions.sql](https://www.enginatics.com/export/fnd-attachment-functions)
-### [rep_FND_Attachment_Functions.xml](https://www.enginatics.com/xml/fnd-attachment-functions)
+[rep_FND_Attachment_Functions.sql](https://www.enginatics.com/export/fnd-attachment-functions)\
+[rep_FND_Attachment_Functions.xml](https://www.enginatics.com/xml/fnd-attachment-functions)
 # Oracle E-Business Suite reports
 
 This is a part of extensive [library](https://www.enginatics.com/library/) of SQL scripts for [Blitz Report™](https://www.enginatics.com/blitz-report/) that is the fastest reporting solution for Oracle EBS. Blitz Report is based on Oracle Forms so is fully integrated with E-Business Suite. 

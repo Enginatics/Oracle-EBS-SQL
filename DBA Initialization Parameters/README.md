@@ -7,10 +7,10 @@ Get Proactive with Oracle E-Business Suite - Product Support Analyzer Index (Doc
 ## Categories: 
 [DBA](https://www.enginatics.com/library/?pg=1&category[]=DBA), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 # Report Example
-### [DBA_Initialization_Parameters 20-Jan-2019 122235.xlsx](https://www.enginatics.com/example/dba-initialization-parameters)
+[DBA_Initialization_Parameters 20-Jan-2019 122235.xlsx](https://www.enginatics.com/example/dba-initialization-parameters)
 # [Blitz Report™](https://www.enginatics.com/blitz-report) import options
-### [rep_DBA_Initialization_Parameters.sql](https://www.enginatics.com/export/dba-initialization-parameters)
-### [rep_DBA_Initialization_Parameters.xml](https://www.enginatics.com/xml/dba-initialization-parameters)
+[rep_DBA_Initialization_Parameters.sql](https://www.enginatics.com/export/dba-initialization-parameters)\
+[rep_DBA_Initialization_Parameters.xml](https://www.enginatics.com/xml/dba-initialization-parameters)
 # Oracle E-Business Suite reports
 
 This is a part of extensive [library](https://www.enginatics.com/library/) of SQL scripts for [Blitz Report™](https://www.enginatics.com/blitz-report/) that is the fastest reporting solution for Oracle EBS. Blitz Report is based on Oracle Forms so is fully integrated with E-Business Suite. 

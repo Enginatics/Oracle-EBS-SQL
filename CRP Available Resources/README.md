@@ -4,10 +4,10 @@ Capacity plans available resources with one record per date range and daily hour
 ## Categories: 
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Manufacturing](https://www.enginatics.com/library/?pg=1&category[]=Manufacturing)
 # Report Example
-### [CRP_Available_Resources 14-May-2018 005901.xlsx](https://www.enginatics.com/example/crp-available-resources)
+[CRP_Available_Resources 14-May-2018 005901.xlsx](https://www.enginatics.com/example/crp-available-resources)
 # [Blitz Report™](https://www.enginatics.com/blitz-report) import options
-### [rep_CRP_Available_Resources.sql](https://www.enginatics.com/export/crp-available-resources)
-### [rep_CRP_Available_Resources.xml](https://www.enginatics.com/xml/crp-available-resources)
+[rep_CRP_Available_Resources.sql](https://www.enginatics.com/export/crp-available-resources)\
+[rep_CRP_Available_Resources.xml](https://www.enginatics.com/xml/crp-available-resources)
 # Oracle E-Business Suite reports
 
 This is a part of extensive [library](https://www.enginatics.com/library/) of SQL scripts for [Blitz Report™](https://www.enginatics.com/blitz-report/) that is the fastest reporting solution for Oracle EBS. Blitz Report is based on Oracle Forms so is fully integrated with E-Business Suite. 

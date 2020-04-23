@@ -4,10 +4,10 @@ Summary of inventory material transactions
 ## Categories: 
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Logistics](https://www.enginatics.com/library/?pg=1&category[]=Logistics), [Manufacturing](https://www.enginatics.com/library/?pg=1&category[]=Manufacturing)
 # Report Example
-### [INV_Material_Transactions_Summary 27-Jul-2018 213119.xlsx](https://www.enginatics.com/example/inv-material-transactions-summary)
+[INV_Material_Transactions_Summary 27-Jul-2018 213119.xlsx](https://www.enginatics.com/example/inv-material-transactions-summary)
 # [Blitz Report™](https://www.enginatics.com/blitz-report) import options
-### [rep_INV_Material_Transactions_Summary.sql](https://www.enginatics.com/export/inv-material-transactions-summary)
-### [rep_INV_Material_Transactions_Summary.xml](https://www.enginatics.com/xml/inv-material-transactions-summary)
+[rep_INV_Material_Transactions_Summary.sql](https://www.enginatics.com/export/inv-material-transactions-summary)\
+[rep_INV_Material_Transactions_Summary.xml](https://www.enginatics.com/xml/inv-material-transactions-summary)
 # Oracle E-Business Suite reports
 
 This is a part of extensive [library](https://www.enginatics.com/library/) of SQL scripts for [Blitz Report™](https://www.enginatics.com/blitz-report/) that is the fastest reporting solution for Oracle EBS. Blitz Report is based on Oracle Forms so is fully integrated with E-Business Suite. 

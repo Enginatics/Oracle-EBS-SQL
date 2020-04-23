@@ -8,10 +8,10 @@ select * from sys.v_$logfile
 ## Categories: 
 [DBA](https://www.enginatics.com/library/?pg=1&category[]=DBA), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 # Report Example
-### [DBA_Archive_Redo_Log_Rate 13-Jul-2018 173740.xlsx](https://www.enginatics.com/example/dba-archive-redo-log-rate)
+[DBA_Archive_Redo_Log_Rate 13-Jul-2018 173740.xlsx](https://www.enginatics.com/example/dba-archive-redo-log-rate)
 # [Blitz Report™](https://www.enginatics.com/blitz-report) import options
-### [rep_DBA_Archive_Redo_Log_Rate.sql](https://www.enginatics.com/export/dba-archive-redo-log-rate)
-### [rep_DBA_Archive_Redo_Log_Rate.xml](https://www.enginatics.com/xml/dba-archive-redo-log-rate)
+[rep_DBA_Archive_Redo_Log_Rate.sql](https://www.enginatics.com/export/dba-archive-redo-log-rate)\
+[rep_DBA_Archive_Redo_Log_Rate.xml](https://www.enginatics.com/xml/dba-archive-redo-log-rate)
 # Oracle E-Business Suite reports
 
 This is a part of extensive [library](https://www.enginatics.com/library/) of SQL scripts for [Blitz Report™](https://www.enginatics.com/blitz-report/) that is the fastest reporting solution for Oracle EBS. Blitz Report is based on Oracle Forms so is fully integrated with E-Business Suite. 

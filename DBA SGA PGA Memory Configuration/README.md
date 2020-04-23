@@ -28,10 +28,10 @@ exec dbms_stats.gather_system_stats(`EXADATA');
 ## Categories: 
 [DBA](https://www.enginatics.com/library/?pg=1&category[]=DBA), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 # Report Example
-### [DBA_SGA_PGA_Memory_Configuration 29-Jul-2018 103004.xlsx](https://www.enginatics.com/example/dba-sga-pga-memory-configuration)
+[DBA_SGA_PGA_Memory_Configuration 29-Jul-2018 103004.xlsx](https://www.enginatics.com/example/dba-sga-pga-memory-configuration)
 # [Blitz Report™](https://www.enginatics.com/blitz-report) import options
-### [rep_DBA_SGA_PGA_Memory_Configuration.sql](https://www.enginatics.com/export/dba-sga-pga-memory-configuration)
-### [rep_DBA_SGA_PGA_Memory_Configuration.xml](https://www.enginatics.com/xml/dba-sga-pga-memory-configuration)
+[rep_DBA_SGA_PGA_Memory_Configuration.sql](https://www.enginatics.com/export/dba-sga-pga-memory-configuration)\
+[rep_DBA_SGA_PGA_Memory_Configuration.xml](https://www.enginatics.com/xml/dba-sga-pga-memory-configuration)
 # Oracle E-Business Suite reports
 
 This is a part of extensive [library](https://www.enginatics.com/library/) of SQL scripts for [Blitz Report™](https://www.enginatics.com/blitz-report/) that is the fastest reporting solution for Oracle EBS. Blitz Report is based on Oracle Forms so is fully integrated with E-Business Suite. 

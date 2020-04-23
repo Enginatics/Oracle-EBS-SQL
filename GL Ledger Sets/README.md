@@ -4,8 +4,8 @@ GL ledger sets and included ledgers
 ## Categories: 
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Financials](https://www.enginatics.com/library/?pg=1&category[]=Financials)
 # [Blitz Report™](https://www.enginatics.com/blitz-report) import options
-### [rep_GL_Ledger_Sets.sql](https://www.enginatics.com/export/gl-ledger-sets)
-### [rep_GL_Ledger_Sets.xml](https://www.enginatics.com/xml/gl-ledger-sets)
+[rep_GL_Ledger_Sets.sql](https://www.enginatics.com/export/gl-ledger-sets)\
+[rep_GL_Ledger_Sets.xml](https://www.enginatics.com/xml/gl-ledger-sets)
 # Oracle E-Business Suite reports
 
 This is a part of extensive [library](https://www.enginatics.com/library/) of SQL scripts for [Blitz Report™](https://www.enginatics.com/blitz-report/) that is the fastest reporting solution for Oracle EBS. Blitz Report is based on Oracle Forms so is fully integrated with E-Business Suite. 

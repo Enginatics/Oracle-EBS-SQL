@@ -4,10 +4,10 @@ Overview of WIP entities of different types and their various statuses.
 ## Categories: 
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Manufacturing](https://www.enginatics.com/library/?pg=1&category[]=Manufacturing)
 # Report Example
-### [WIP_Entities_Summary 03-Apr-2018 111159.xlsx](https://www.enginatics.com/example/wip-entities-summary)
+[WIP_Entities_Summary 03-Apr-2018 111159.xlsx](https://www.enginatics.com/example/wip-entities-summary)
 # [Blitz Report™](https://www.enginatics.com/blitz-report) import options
-### [rep_WIP_Entities_Summary.sql](https://www.enginatics.com/export/wip-entities-summary)
-### [rep_WIP_Entities_Summary.xml](https://www.enginatics.com/xml/wip-entities-summary)
+[rep_WIP_Entities_Summary.sql](https://www.enginatics.com/export/wip-entities-summary)\
+[rep_WIP_Entities_Summary.xml](https://www.enginatics.com/xml/wip-entities-summary)
 # Oracle E-Business Suite reports
 
 This is a part of extensive [library](https://www.enginatics.com/library/) of SQL scripts for [Blitz Report™](https://www.enginatics.com/blitz-report/) that is the fastest reporting solution for Oracle EBS. Blitz Report is based on Oracle Forms so is fully integrated with E-Business Suite. 

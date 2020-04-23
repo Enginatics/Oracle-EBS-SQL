@@ -4,10 +4,10 @@ Workflow business event and subscription details
 ## Categories: 
 [Application](https://www.enginatics.com/library/?pg=1&category[]=Application), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 # Report Example
-### [WF_Business_Events_and_Subscriptions 18-Jan-2018 224755.xlsx](https://www.enginatics.com/example/wf-business-events-and-subscriptions)
+[WF_Business_Events_and_Subscriptions 18-Jan-2018 224755.xlsx](https://www.enginatics.com/example/wf-business-events-and-subscriptions)
 # [Blitz Report™](https://www.enginatics.com/blitz-report) import options
-### [rep_WF_Business_Events_and_Subscriptions.sql](https://www.enginatics.com/export/wf-business-events-and-subscriptions)
-### [rep_WF_Business_Events_and_Subscriptions.xml](https://www.enginatics.com/xml/wf-business-events-and-subscriptions)
+[rep_WF_Business_Events_and_Subscriptions.sql](https://www.enginatics.com/export/wf-business-events-and-subscriptions)\
+[rep_WF_Business_Events_and_Subscriptions.xml](https://www.enginatics.com/xml/wf-business-events-and-subscriptions)
 # Oracle E-Business Suite reports
 
 This is a part of extensive [library](https://www.enginatics.com/library/) of SQL scripts for [Blitz Report™](https://www.enginatics.com/blitz-report/) that is the fastest reporting solution for Oracle EBS. Blitz Report is based on Oracle Forms so is fully integrated with E-Business Suite. 

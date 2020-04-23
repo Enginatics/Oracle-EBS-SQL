@@ -9,10 +9,10 @@ A high number of 'Invalidation Count' or 'Delete Count Invalid' relative to 'Fin
 ## Categories: 
 [DBA](https://www.enginatics.com/library/?pg=1&category[]=DBA), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 # Report Example
-### [DBA_Result_Cache_Statistics 18-Jan-2018 225229.xlsx](https://www.enginatics.com/example/dba-result-cache-statistics)
+[DBA_Result_Cache_Statistics 18-Jan-2018 225229.xlsx](https://www.enginatics.com/example/dba-result-cache-statistics)
 # [Blitz Report™](https://www.enginatics.com/blitz-report) import options
-### [rep_DBA_Result_Cache_Statistics.sql](https://www.enginatics.com/export/dba-result-cache-statistics)
-### [rep_DBA_Result_Cache_Statistics.xml](https://www.enginatics.com/xml/dba-result-cache-statistics)
+[rep_DBA_Result_Cache_Statistics.sql](https://www.enginatics.com/export/dba-result-cache-statistics)\
+[rep_DBA_Result_Cache_Statistics.xml](https://www.enginatics.com/xml/dba-result-cache-statistics)
 # Oracle E-Business Suite reports
 
 This is a part of extensive [library](https://www.enginatics.com/library/) of SQL scripts for [Blitz Report™](https://www.enginatics.com/blitz-report/) that is the fastest reporting solution for Oracle EBS. Blitz Report is based on Oracle Forms so is fully integrated with E-Business Suite. 

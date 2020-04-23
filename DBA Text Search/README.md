@@ -4,10 +4,10 @@ Full text search through database source code objects such as packages, procedur
 ## Categories: 
 [DBA](https://www.enginatics.com/library/?pg=1&category[]=DBA), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 # Report Example
-### [DBA_Text_Search 11-May-2017 125907.xlsx](https://www.enginatics.com/example/dba-text-search)
+[DBA_Text_Search 11-May-2017 125907.xlsx](https://www.enginatics.com/example/dba-text-search)
 # [Blitz Report™](https://www.enginatics.com/blitz-report) import options
-### [rep_DBA_Text_Search.sql](https://www.enginatics.com/export/dba-text-search)
-### [rep_DBA_Text_Search.xml](https://www.enginatics.com/xml/dba-text-search)
+[rep_DBA_Text_Search.sql](https://www.enginatics.com/export/dba-text-search)\
+[rep_DBA_Text_Search.xml](https://www.enginatics.com/xml/dba-text-search)
 # Oracle E-Business Suite reports
 
 This is a part of extensive [library](https://www.enginatics.com/library/) of SQL scripts for [Blitz Report™](https://www.enginatics.com/blitz-report/) that is the fastest reporting solution for Oracle EBS. Blitz Report is based on Oracle Forms so is fully integrated with E-Business Suite. 
