@@ -5,10 +5,9 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: FND Form Functions
--- Excel Examle Output: https://www.enginatics.com/example/fnd-form-functions
--- Library Link: https://www.enginatics.com/reports/fnd-form-functions
+-- Excel Examle Output: https://www.enginatics.com/example/fnd-form-functions/
+-- Library Link: https://www.enginatics.com/reports/fnd-form-functions/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 fffv.function_name function,

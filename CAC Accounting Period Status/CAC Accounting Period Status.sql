@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: CAC Accounting Period Status
 -- Description: Accounting period status of all application modules for all or a selected list of ledgers, operating units and organizations
--- Excel Examle Output: https://www.enginatics.com/example/cac-accounting-period-status
--- Library Link: https://www.enginatics.com/reports/cac-accounting-period-status
+-- Excel Examle Output: https://www.enginatics.com/example/cac-accounting-period-status/
+-- Library Link: https://www.enginatics.com/reports/cac-accounting-period-status/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 y.application_name,

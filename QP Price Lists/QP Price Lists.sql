@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: QP Price Lists
 -- Description: Price lists and item prices
--- Excel Examle Output: https://www.enginatics.com/example/qp-price-lists
--- Library Link: https://www.enginatics.com/reports/qp-price-lists
+-- Excel Examle Output: https://www.enginatics.com/example/qp-price-lists/
+-- Library Link: https://www.enginatics.com/reports/qp-price-lists/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 qlhv.name price_list,

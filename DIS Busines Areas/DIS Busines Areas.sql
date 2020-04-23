@@ -7,10 +7,9 @@
 -- Report Name: DIS Busines Areas
 -- Description: Discoverer business areas.
 Column access count shows how many times a business area's folder was used within the past x days.
--- Excel Examle Output: https://www.enginatics.com/example/dis-busines-areas
--- Library Link: https://www.enginatics.com/reports/dis-busines-areas
+-- Excel Examle Output: https://www.enginatics.com/example/dis-busines-areas/
+-- Library Link: https://www.enginatics.com/reports/dis-busines-areas/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 eb.ba_name business_area,

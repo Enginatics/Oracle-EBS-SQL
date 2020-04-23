@@ -5,10 +5,9 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PAY Employee Payroll History
--- Excel Examle Output: https://www.enginatics.com/example/pay-employee-payroll-history
--- Library Link: https://www.enginatics.com/reports/pay-employee-payroll-history
+-- Excel Examle Output: https://www.enginatics.com/example/pay-employee-payroll-history/
+-- Library Link: https://www.enginatics.com/reports/pay-employee-payroll-history/
 -- Run Report: https://demo.enginatics.com/
-
 
 select distinct
 haouv.name business_group,

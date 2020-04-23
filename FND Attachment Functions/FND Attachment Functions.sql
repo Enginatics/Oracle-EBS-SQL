@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: FND Attachment Functions
 -- Description: FND attachment functions, their category assignments, forms blocks and block entities
--- Excel Examle Output: https://www.enginatics.com/example/fnd-attachment-functions
--- Library Link: https://www.enginatics.com/reports/fnd-attachment-functions
+-- Excel Examle Output: https://www.enginatics.com/example/fnd-attachment-functions/
+-- Library Link: https://www.enginatics.com/reports/fnd-attachment-functions/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 decode(faf.function_type,'F','Function','O','Form','R','Report') type,

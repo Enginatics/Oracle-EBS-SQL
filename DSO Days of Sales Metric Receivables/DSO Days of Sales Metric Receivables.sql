@@ -28,10 +28,9 @@ Number of days in period = 90.
 Here is the calculation:
 (4,600,000 / 9,000,000) ? 90 = 45 days
 In this example, it takes 45 days (on the average) to collect the receivables. **/
--- Excel Examle Output: https://www.enginatics.com/example/dso-days-of-sales-metric-receivables
--- Library Link: https://www.enginatics.com/reports/dso-days-of-sales-metric-receivables
+-- Excel Examle Output: https://www.enginatics.com/example/dso-days-of-sales-metric-receivables/
+-- Library Link: https://www.enginatics.com/reports/dso-days-of-sales-metric-receivables/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
     round((sum(apsa.amount_due_remaining) / sum(apsa.amount_due_original)) * :days) "Days of Sales Outstanding",

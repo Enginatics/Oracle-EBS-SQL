@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: AR European Sales Listing
 -- Description: European Sales Listing (Elster ZM Meldung)
--- Excel Examle Output: https://www.enginatics.com/example/ar-european-sales-listing
--- Library Link: https://www.enginatics.com/reports/ar-european-sales-listing
+-- Excel Examle Output: https://www.enginatics.com/example/ar-european-sales-listing/
+-- Library Link: https://www.enginatics.com/reports/ar-european-sales-listing/
 -- Run Report: https://demo.enginatics.com/
-
 
 select distinct
 nvl2(ftv.alternate_territory_code,'Y',null) eu_flag,

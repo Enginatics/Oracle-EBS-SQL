@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: FND Concurrent Program Incompatibilities
 -- Description: Concurrent Program Incompatibilities
--- Excel Examle Output: https://www.enginatics.com/example/fnd-concurrent-program-incompatibilities
--- Library Link: https://www.enginatics.com/reports/fnd-concurrent-program-incompatibilities
+-- Excel Examle Output: https://www.enginatics.com/example/fnd-concurrent-program-incompatibilities/
+-- Library Link: https://www.enginatics.com/reports/fnd-concurrent-program-incompatibilities/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 fav.application_name,

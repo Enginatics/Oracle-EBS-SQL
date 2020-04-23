@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: AR Incomplete Transactions
 -- Description: Receivables incomplete transactions
--- Excel Examle Output: https://www.enginatics.com/example/ar-incomplete-transactions
--- Library Link: https://www.enginatics.com/reports/ar-incomplete-transactions
+-- Excel Examle Output: https://www.enginatics.com/example/ar-incomplete-transactions/
+-- Library Link: https://www.enginatics.com/reports/ar-incomplete-transactions/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 haou.name ou,

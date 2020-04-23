@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: DBA AWR Active Session History
 -- Description: Active session history from the automatic workload repository
--- Excel Examle Output: https://www.enginatics.com/example/dba-awr-active-session-history
--- Library Link: https://www.enginatics.com/reports/dba-awr-active-session-history
+-- Excel Examle Output: https://www.enginatics.com/example/dba-awr-active-session-history/
+-- Library Link: https://www.enginatics.com/reports/dba-awr-active-session-history/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 xxen_util.client_time(x.sample_time) sample_time,

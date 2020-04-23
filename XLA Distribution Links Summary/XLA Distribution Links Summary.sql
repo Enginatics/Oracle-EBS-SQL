@@ -14,10 +14,9 @@ PA 1274575.1 https://support.oracle.com/CSP/main/article?cmd=show&type=NOT&id=12
 For GMF, there is
 AP and PO Accrual Reconciliation Report Debugging from OPM Financials 2114612.1 https://support.oracle.com/CSP/main/article?cmd=show&type=NOT&id=2114612.1
 and Financials Troubleshooting Guide 1213193.1 https://support.oracle.com/CSP/main/article?cmd=show&type=NOT&id=1213193.1
--- Excel Examle Output: https://www.enginatics.com/example/xla-distribution-links-summary
--- Library Link: https://www.enginatics.com/reports/xla-distribution-links-summary
+-- Excel Examle Output: https://www.enginatics.com/example/xla-distribution-links-summary/
+-- Library Link: https://www.enginatics.com/reports/xla-distribution-links-summary/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 fav.application_short_name,

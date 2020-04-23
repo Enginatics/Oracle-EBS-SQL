@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: XLA Entity ID Mappings
 -- Description: Shows the column link between table xla_transaction_entities and subledger source tables such as and AP invoice_id or AR customer_trx_id, used when writing queries linking GL to subledger such as the GL Account Analysis report www.enginatics.com/reports/gl-account-analysis/
--- Excel Examle Output: https://www.enginatics.com/example/xla-entity-id-mappings
--- Library Link: https://www.enginatics.com/reports/xla-entity-id-mappings
+-- Excel Examle Output: https://www.enginatics.com/example/xla-entity-id-mappings/
+-- Library Link: https://www.enginatics.com/reports/xla-entity-id-mappings/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 fav.application_name,

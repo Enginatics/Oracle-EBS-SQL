@@ -8,10 +8,9 @@
 -- Description: Non idle session wait times by wait class over time.
 Each row shows the system-wide wait time per wait class of one AWR snapshot interval to identify unusual wait events that occured at specific times.
 Use the Session Type parameter to restrict either to foreground, background or all server processes.
--- Excel Examle Output: https://www.enginatics.com/example/dba-awr-system-wait-class-by-time
--- Library Link: https://www.enginatics.com/reports/dba-awr-system-wait-class-by-time
+-- Excel Examle Output: https://www.enginatics.com/example/dba-awr-system-wait-class-by-time/
+-- Library Link: https://www.enginatics.com/reports/dba-awr-system-wait-class-by-time/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 x.day_of_week,

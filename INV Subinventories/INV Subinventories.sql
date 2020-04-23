@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: INV Subinventories
 -- Description: Subinventory setup details
--- Excel Examle Output: https://www.enginatics.com/example/inv-subinventories
--- Library Link: https://www.enginatics.com/reports/inv-subinventories
+-- Excel Examle Output: https://www.enginatics.com/example/inv-subinventories/
+-- Library Link: https://www.enginatics.com/reports/inv-subinventories/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 mp.organization_code,

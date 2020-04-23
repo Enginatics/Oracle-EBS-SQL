@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: DBA AWR PGA History
 -- Description: History of database PGA size and other statistics from v$pgastat in megabytes
--- Excel Examle Output: https://www.enginatics.com/example/dba-awr-pga-history
--- Library Link: https://www.enginatics.com/reports/dba-awr-pga-history
+-- Excel Examle Output: https://www.enginatics.com/example/dba-awr-pga-history/
+-- Library Link: https://www.enginatics.com/reports/dba-awr-pga-history/
 -- Run Report: https://demo.enginatics.com/
-
 
 select * from (
 select

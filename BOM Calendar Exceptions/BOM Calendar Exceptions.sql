@@ -5,10 +5,9 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: BOM Calendar Exceptions
--- Excel Examle Output: https://www.enginatics.com/example/bom-calendar-exceptions
--- Library Link: https://www.enginatics.com/reports/bom-calendar-exceptions
+-- Excel Examle Output: https://www.enginatics.com/example/bom-calendar-exceptions/
+-- Library Link: https://www.enginatics.com/reports/bom-calendar-exceptions/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 bce.calendar_code,

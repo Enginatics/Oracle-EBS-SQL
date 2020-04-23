@@ -16,10 +16,9 @@ select a.organization_id, b.organization_code, a.name
 from HR_ALL_ORGANIZATION_UNITS_TL a, mtl_parameters_view b
 where a.organization_id = b.organization_id
 order by organization_id, organization_code **/
--- Excel Examle Output: https://www.enginatics.com/example/month-end-speed-inventory-period-close
--- Library Link: https://www.enginatics.com/reports/month-end-speed-inventory-period-close
+-- Excel Examle Output: https://www.enginatics.com/example/month-end-speed-inventory-period-close/
+-- Library Link: https://www.enginatics.com/reports/month-end-speed-inventory-period-close/
 -- Run Report: https://demo.enginatics.com/
-
 
 
 SELECT 'UNPROCESSED MATERIAL TXNS TEMP' "TYPE OF ISSUE", 

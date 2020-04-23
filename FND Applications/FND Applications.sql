@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: FND Applications
 -- Description: Shows all applications, their installation status, correponding database schema and application top name
--- Excel Examle Output: https://www.enginatics.com/example/fnd-applications
--- Library Link: https://www.enginatics.com/reports/fnd-applications
+-- Excel Examle Output: https://www.enginatics.com/example/fnd-applications/
+-- Library Link: https://www.enginatics.com/reports/fnd-applications/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 fav.application_name,

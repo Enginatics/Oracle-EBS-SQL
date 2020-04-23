@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: OKL Termination Quotes
 -- Description: Information on lease termination quotes
--- Excel Examle Output: https://www.enginatics.com/example/okl-termination-quotes
--- Library Link: https://www.enginatics.com/reports/okl-termination-quotes
+-- Excel Examle Output: https://www.enginatics.com/example/okl-termination-quotes/
+-- Library Link: https://www.enginatics.com/reports/okl-termination-quotes/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 otqab.quote_number,

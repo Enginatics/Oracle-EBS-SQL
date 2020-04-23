@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: DBA Segment Size
 -- Description: Database segments such as tables, indexes, lob segments by size and total database size summary
--- Excel Examle Output: https://www.enginatics.com/example/dba-segment-size
--- Library Link: https://www.enginatics.com/reports/dba-segment-size
+-- Excel Examle Output: https://www.enginatics.com/example/dba-segment-size/
+-- Library Link: https://www.enginatics.com/reports/dba-segment-size/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 &column2

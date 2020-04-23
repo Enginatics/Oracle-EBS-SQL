@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: GL Data Access Sets
 -- Description: GL ledger access security data access sets
--- Excel Examle Output: https://www.enginatics.com/example/gl-data-access-sets
--- Library Link: https://www.enginatics.com/reports/gl-data-access-sets
+-- Excel Examle Output: https://www.enginatics.com/example/gl-data-access-sets/
+-- Library Link: https://www.enginatics.com/reports/gl-data-access-sets/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 gasv.name access_set,

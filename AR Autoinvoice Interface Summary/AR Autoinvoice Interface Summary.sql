@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: AR Autoinvoice Interface Summary
 -- Description: Summary of records in the autoinvoice interface
--- Excel Examle Output: https://www.enginatics.com/example/ar-autoinvoice-interface-summary
--- Library Link: https://www.enginatics.com/reports/ar-autoinvoice-interface-summary
+-- Excel Examle Output: https://www.enginatics.com/example/ar-autoinvoice-interface-summary/
+-- Library Link: https://www.enginatics.com/reports/ar-autoinvoice-interface-summary/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 haou.name ou,

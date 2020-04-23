@@ -7,10 +7,9 @@
 -- Report Name: AR Transactions and Payments
 -- Description: Customer Balance. Receivables billing history including customer payments.
 Note: As this report is based on table ar_payment_schedules_all, it doesn't show entered, incomplete transactions.
--- Excel Examle Output: https://www.enginatics.com/example/ar-transactions-and-payments
--- Library Link: https://www.enginatics.com/reports/ar-transactions-and-payments
+-- Excel Examle Output: https://www.enginatics.com/example/ar-transactions-and-payments/
+-- Library Link: https://www.enginatics.com/reports/ar-transactions-and-payments/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 x.ou,

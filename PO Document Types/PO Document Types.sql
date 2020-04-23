@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: PO Document Types
 -- Description: PO document types setup
--- Excel Examle Output: https://www.enginatics.com/example/po-document-types
--- Library Link: https://www.enginatics.com/reports/po-document-types
+-- Excel Examle Output: https://www.enginatics.com/example/po-document-types/
+-- Library Link: https://www.enginatics.com/reports/po-document-types/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 haou.name ou,

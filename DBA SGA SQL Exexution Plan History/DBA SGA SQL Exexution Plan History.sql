@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: DBA SGA SQL Exexution Plan History
 -- Description: Execution plan history for a particular SQL id from the SGA
--- Excel Examle Output: https://www.enginatics.com/example/dba-sga-sql-exexution-plan-history
--- Library Link: https://www.enginatics.com/reports/dba-sga-sql-exexution-plan-history
+-- Excel Examle Output: https://www.enginatics.com/example/dba-sga-sql-exexution-plan-history/
+-- Library Link: https://www.enginatics.com/reports/dba-sga-sql-exexution-plan-history/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 gsp.sql_id,

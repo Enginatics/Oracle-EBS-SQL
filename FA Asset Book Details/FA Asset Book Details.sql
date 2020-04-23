@@ -7,10 +7,9 @@
 -- Report Name: FA Asset Book Details
 -- Description: FA asset books with asset depreciation summary and financial transaction values.
 Using parameters 'Show Calendar', 'Show Alternative Ledgers', 'Show Accounting Rules', 'Show Natural Accounts' shows the setup details of book controls.
--- Excel Examle Output: https://www.enginatics.com/example/fa-asset-book-details
--- Library Link: https://www.enginatics.com/reports/fa-asset-book-details
+-- Excel Examle Output: https://www.enginatics.com/example/fa-asset-book-details/
+-- Library Link: https://www.enginatics.com/reports/fa-asset-book-details/
 -- Run Report: https://demo.enginatics.com/
-
 
 with c_alt_ledgers as (
 select

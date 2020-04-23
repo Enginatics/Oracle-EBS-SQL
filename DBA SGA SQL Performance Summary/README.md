@@ -1,4 +1,4 @@
-# [DBA SGA SQL Performance Summary](https://www.enginatics.com/reports/dba-sga-sql-performance-summary)
+# [DBA SGA SQL Performance Summary](https://www.enginatics.com/reports/dba-sga-sql-performance-summary/)
 ## Description: 
 Database SQL performance summary from the SGA to give an overview of top SQL load and performance issues.
 The purpose of this report, compared to 'DBA AWR SQL Performance Summary' is to retrieve SQLs which are not in the AWR, either becasue they ran after the most recent snapshot or because their performance impact is too small to be written to the AWR (see topnsql https://docs.oracle.com/database/121/ARPLS/d_workload_repos.htm#ARPLS69140).
@@ -9,10 +9,10 @@ This is useful for example to:
 ## Categories: 
 [DBA](https://www.enginatics.com/library/?pg=1&category[]=DBA), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 # Report Example
-[DBA_SGA_SQL_Performance_Summary 11-May-2017 124450.xlsx](https://www.enginatics.com/example/dba-sga-sql-performance-summary)
-# [Blitz Report™](https://www.enginatics.com/blitz-report) import options
-[rep_DBA_SGA_SQL_Performance_Summary.sql](https://www.enginatics.com/export/dba-sga-sql-performance-summary)\
-[rep_DBA_SGA_SQL_Performance_Summary.xml](https://www.enginatics.com/xml/dba-sga-sql-performance-summary)
+[DBA_SGA_SQL_Performance_Summary 11-May-2017 124450.xlsx](https://www.enginatics.com/example/dba-sga-sql-performance-summary/)
+# [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
+[rep_DBA_SGA_SQL_Performance_Summary.sql](https://www.enginatics.com/export/dba-sga-sql-performance-summary/)\
+[rep_DBA_SGA_SQL_Performance_Summary.xml](https://www.enginatics.com/xml/dba-sga-sql-performance-summary/)
 # Oracle E-Business Suite reports
 
 This is a part of extensive [library](https://www.enginatics.com/library/) of SQL scripts for [Blitz Report™](https://www.enginatics.com/blitz-report/) that is the fastest reporting solution for Oracle EBS. Blitz Report is based on Oracle Forms so is fully integrated with E-Business Suite. 
@@ -23,6 +23,6 @@ You can [download](https://www.enginatics.com/download/) Blitz Report and use it
 
 Blitz Report runs as a background concurrent process and generates output files in XLSX or CSV format, which are automatically downloaded and opened in Excel. Check [installation](https://www.enginatics.com/installation-guide/) and [user](https://www.enginatics.com/user-guide/) guides for more details.
 
-If you are interested in Oracle EBS reporting you can visit [www.enginatics.com](https://www.enginatics.com/), check our [blog](https://www.enginatics.com/blog) and try to run this and other reports on our [demo environment](http://demo.enginatics.com/)
+If you are interested in Oracle EBS reporting you can visit [www.enginatics.com](https://www.enginatics.com/), check our [blog](https://www.enginatics.com/blog/) and try to run this and other reports on our [demo environment](http://demo.enginatics.com/)
 
 © 2020 Enginatics

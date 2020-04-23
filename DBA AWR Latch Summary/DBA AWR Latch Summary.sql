@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: DBA AWR Latch Summary
 -- Description: Summary of latch statistics such as misses and wait times for a specified snapshot time interval
--- Excel Examle Output: https://www.enginatics.com/example/dba-awr-latch-summary
--- Library Link: https://www.enginatics.com/reports/dba-awr-latch-summary
+-- Excel Examle Output: https://www.enginatics.com/example/dba-awr-latch-summary/
+-- Library Link: https://www.enginatics.com/reports/dba-awr-latch-summary/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 x.seconds/xxen_util.zero_to_null(sum(x.seconds) over ())*100 percentage,

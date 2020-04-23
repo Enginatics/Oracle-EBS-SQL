@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: DIS Access Privileges
 -- Description: Discoverer access privileges
--- Excel Examle Output: https://www.enginatics.com/example/dis-access-privileges
--- Library Link: https://www.enginatics.com/reports/dis-access-privileges
+-- Excel Examle Output: https://www.enginatics.com/example/dis-access-privileges/
+-- Library Link: https://www.enginatics.com/reports/dis-access-privileges/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 eap.user_type,

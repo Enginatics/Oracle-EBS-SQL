@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: PO Headers and Lines
 -- Description: PO headers, lines, receiving transactions and corresponding AP invoices
--- Excel Examle Output: https://www.enginatics.com/example/po-headers-and-lines
--- Library Link: https://www.enginatics.com/reports/po-headers-and-lines
+-- Excel Examle Output: https://www.enginatics.com/example/po-headers-and-lines/
+-- Library Link: https://www.enginatics.com/reports/po-headers-and-lines/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 x.po_number,

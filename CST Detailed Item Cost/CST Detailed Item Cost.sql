@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: CST Detailed Item Cost
 -- Description: Based on Oracle's detailed item cost report CSTRDICRG_XML
--- Excel Examle Output: https://www.enginatics.com/example/cst-detailed-item-cost
--- Library Link: https://www.enginatics.com/reports/cst-detailed-item-cost
+-- Excel Examle Output: https://www.enginatics.com/example/cst-detailed-item-cost/
+-- Library Link: https://www.enginatics.com/reports/cst-detailed-item-cost/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 gl.name ledger,

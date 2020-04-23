@@ -5,10 +5,9 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: INV Item Category Sets
--- Excel Examle Output: https://www.enginatics.com/example/inv-item-category-sets
--- Library Link: https://www.enginatics.com/reports/inv-item-category-sets
+-- Excel Examle Output: https://www.enginatics.com/example/inv-item-category-sets/
+-- Library Link: https://www.enginatics.com/reports/inv-item-category-sets/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 mcsv.category_set_name,

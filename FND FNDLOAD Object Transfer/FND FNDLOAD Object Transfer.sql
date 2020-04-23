@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: FND FNDLOAD Object Transfer
 -- Description: Generates FNDLOAD download and upload linux commands for automated setup transfer between environments
--- Excel Examle Output: https://www.enginatics.com/example/fnd-fndload-object-transfer
--- Library Link: https://www.enginatics.com/reports/fnd-fndload-object-transfer
+-- Excel Examle Output: https://www.enginatics.com/example/fnd-fndload-object-transfer/
+-- Library Link: https://www.enginatics.com/reports/fnd-fndload-object-transfer/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 'Concurrent Program' object_type,

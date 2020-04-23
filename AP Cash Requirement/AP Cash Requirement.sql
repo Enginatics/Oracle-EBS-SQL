@@ -10,10 +10,9 @@
 Application: Payables
 Source: Cash Requirement Report
 Short Name: APXCRRCR
--- Excel Examle Output: https://www.enginatics.com/example/ap-cash-requirement
--- Library Link: https://www.enginatics.com/reports/ap-cash-requirement
+-- Excel Examle Output: https://www.enginatics.com/example/ap-cash-requirement/
+-- Library Link: https://www.enginatics.com/reports/ap-cash-requirement/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 apsa.due_date,

@@ -7,10 +7,9 @@
 -- Report Name: WIP Required Components
 -- Description: Discrete jobs and required components.
 Parameter 'Show Shortage List' can be used to show a shortage list of existing discrete jobs (similar to Oracle's 'Discrete Job Shortage Report')
--- Excel Examle Output: https://www.enginatics.com/example/wip-required-components
--- Library Link: https://www.enginatics.com/reports/wip-required-components
+-- Excel Examle Output: https://www.enginatics.com/example/wip-required-components/
+-- Library Link: https://www.enginatics.com/reports/wip-required-components/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 mso.segment1 sales_order,

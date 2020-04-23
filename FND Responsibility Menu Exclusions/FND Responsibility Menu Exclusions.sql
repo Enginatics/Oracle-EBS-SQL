@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: FND Responsibility Menu Exclusions
 -- Description: Responsibility menu exclusions
--- Excel Examle Output: https://www.enginatics.com/example/fnd-responsibility-menu-exclusions
--- Library Link: https://www.enginatics.com/reports/fnd-responsibility-menu-exclusions
+-- Excel Examle Output: https://www.enginatics.com/example/fnd-responsibility-menu-exclusions/
+-- Library Link: https://www.enginatics.com/reports/fnd-responsibility-menu-exclusions/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 frv.responsibility_name,

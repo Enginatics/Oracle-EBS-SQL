@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: WF Business Events and Subscriptions
 -- Description: Workflow business event and subscription details
--- Excel Examle Output: https://www.enginatics.com/example/wf-business-events-and-subscriptions
--- Library Link: https://www.enginatics.com/reports/wf-business-events-and-subscriptions
+-- Excel Examle Output: https://www.enginatics.com/example/wf-business-events-and-subscriptions/
+-- Library Link: https://www.enginatics.com/reports/wf-business-events-and-subscriptions/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 wev.owner_tag owner,

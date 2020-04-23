@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: DBA AWR System Time Summary Percentages
 -- Description: Historic system time model values from the automated workload repository showing a breakdown of how much percent of the database time was spent e.g. on excuting SQL, PL/SQL or Java code, parsing statements etc..
--- Excel Examle Output: https://www.enginatics.com/example/dba-awr-system-time-summary-percentages
--- Library Link: https://www.enginatics.com/reports/dba-awr-system-time-summary-percentages
+-- Excel Examle Output: https://www.enginatics.com/example/dba-awr-system-time-summary-percentages/
+-- Library Link: https://www.enginatics.com/reports/dba-awr-system-time-summary-percentages/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 *

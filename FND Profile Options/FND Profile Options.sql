@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: FND Profile Options
 -- Description: FND profile option definition
--- Excel Examle Output: https://www.enginatics.com/example/fnd-profile-options
--- Library Link: https://www.enginatics.com/reports/fnd-profile-options
+-- Excel Examle Output: https://www.enginatics.com/example/fnd-profile-options/
+-- Library Link: https://www.enginatics.com/reports/fnd-profile-options/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 fpov.profile_option_name profile_name,

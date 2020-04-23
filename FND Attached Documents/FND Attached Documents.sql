@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: FND Attached Documents
 -- Description: FND attachment documents stored in the fnd_lobs table and their corresponding application entity e.g. sales orders that they are attached to.
--- Excel Examle Output: https://www.enginatics.com/example/fnd-attached-documents
--- Library Link: https://www.enginatics.com/reports/fnd-attached-documents
+-- Excel Examle Output: https://www.enginatics.com/example/fnd-attached-documents/
+-- Library Link: https://www.enginatics.com/reports/fnd-attached-documents/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 x.*

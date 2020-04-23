@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: INV Onhand Quantities
 -- Description: Inventory item onhand quantity details
--- Excel Examle Output: https://www.enginatics.com/example/inv-onhand-quantities
--- Library Link: https://www.enginatics.com/reports/inv-onhand-quantities
+-- Excel Examle Output: https://www.enginatics.com/example/inv-onhand-quantities/
+-- Library Link: https://www.enginatics.com/reports/inv-onhand-quantities/
 -- Run Report: https://demo.enginatics.com/
-
 
 select distinct
 mp.organization_code,

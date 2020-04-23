@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: CST Period Close Subinventory Value
 -- Description: Historic subinventory summary values at period close including last purchase price and po receipt dates
--- Excel Examle Output: https://www.enginatics.com/example/cst-period-close-subinventory-value
--- Library Link: https://www.enginatics.com/reports/cst-period-close-subinventory-value
+-- Excel Examle Output: https://www.enginatics.com/example/cst-period-close-subinventory-value/
+-- Library Link: https://www.enginatics.com/reports/cst-period-close-subinventory-value/
 -- Run Report: https://demo.enginatics.com/
-
 
 with oap as (
 select

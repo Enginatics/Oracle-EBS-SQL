@@ -7,10 +7,9 @@
 -- Report Name: ASCP - Export Supply and Demand Orders - PWB
 -- Description: Use this to export all order types from the Planner Workbench without waiting
 
--- Excel Examle Output: https://www.enginatics.com/example/ascp-export-supply-and-demand-orders-pwb
--- Library Link: https://www.enginatics.com/reports/ascp-export-supply-and-demand-orders-pwb
+-- Excel Examle Output: https://www.enginatics.com/example/ascp-export-supply-and-demand-orders-pwb/
+-- Library Link: https://www.enginatics.com/reports/ascp-export-supply-and-demand-orders-pwb/
 -- Run Report: https://demo.enginatics.com/
-
 
 SELECT mp.compile_designator "Plan Name",
        mov.planner_code "Planner",

@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: INV Item Relationships
 -- Description: Inventory item relationships
--- Excel Examle Output: https://www.enginatics.com/example/inv-item-relationships
--- Library Link: https://www.enginatics.com/reports/inv-item-relationships
+-- Excel Examle Output: https://www.enginatics.com/example/inv-item-relationships/
+-- Library Link: https://www.enginatics.com/reports/inv-item-relationships/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 mp.organization_code,

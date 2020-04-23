@@ -14,10 +14,9 @@
 -PHYS_WRITE:  Physical IO written to the storage in MB/s
 
 Note: The UOM calculation from LIOs to MB uses the database default block size and doesn't support different block sizes for different tablespaces.
--- Excel Examle Output: https://www.enginatics.com/example/dba-awr-system-metrics-summary
--- Library Link: https://www.enginatics.com/reports/dba-awr-system-metrics-summary
+-- Excel Examle Output: https://www.enginatics.com/example/dba-awr-system-metrics-summary/
+-- Library Link: https://www.enginatics.com/reports/dba-awr-system-metrics-summary/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 *

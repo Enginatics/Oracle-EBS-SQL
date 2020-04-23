@@ -7,10 +7,9 @@
 -- Report Name: FND User Responsibilities
 -- Description: Similar to report FND Access Control, but also shows inactive / end dated user responsibilities while FND Access Control shows currently active assigned responsibilities only.
 Same as Oracle's 'Active Users' report.
--- Excel Examle Output: https://www.enginatics.com/example/fnd-user-responsibilities
--- Library Link: https://www.enginatics.com/reports/fnd-user-responsibilities
+-- Excel Examle Output: https://www.enginatics.com/example/fnd-user-responsibilities/
+-- Library Link: https://www.enginatics.com/reports/fnd-user-responsibilities/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 xxen_util.user_name(furgd.user_id) user_name,

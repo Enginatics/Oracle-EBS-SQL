@@ -7,10 +7,9 @@
 -- Report Name: DBA SGA Target Advice
 -- Description: Orace's SGA target advice view.
 It shows an estimation of how an SGA resize would affect overall database time and IO.
--- Excel Examle Output: https://www.enginatics.com/example/dba-sga-target-advice
--- Library Link: https://www.enginatics.com/reports/dba-sga-target-advice
+-- Excel Examle Output: https://www.enginatics.com/example/dba-sga-target-advice/
+-- Library Link: https://www.enginatics.com/reports/dba-sga-target-advice/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 gsta.inst_id,

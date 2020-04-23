@@ -10,10 +10,9 @@ To also show template information, enter a template name or wildcard %
 
 This report also shows the source data SQL statement extracted from the publisher data template XML file which is quite useful to quickly access and review the SQL from Oracle standard XML reports and use them as templates for new blitz report creations.
 Parameter 'Data Definition Search Text' performs a full text search through the data template file so that you could for example enter a particular table name to list all XML publisher reports and their SQLs selecting from that table.
--- Excel Examle Output: https://www.enginatics.com/example/xdo-publisher-datasources
--- Library Link: https://www.enginatics.com/reports/xdo-publisher-datasources
+-- Excel Examle Output: https://www.enginatics.com/example/xdo-publisher-datasources/
+-- Library Link: https://www.enginatics.com/reports/xdo-publisher-datasources/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 xddv.data_source_name,

@@ -7,10 +7,9 @@
 -- Report Name: DIS Import Performance
 -- Description: Simple query to review Discoverer worksheet to Blitz Report import performance, when running the mass migration script.
 https://www.enginatics.com/user-guide/#Discoverer_Worksheet
--- Excel Examle Output: https://www.enginatics.com/example/dis-import-performance
--- Library Link: https://www.enginatics.com/reports/dis-import-performance
+-- Excel Examle Output: https://www.enginatics.com/example/dis-import-performance/
+-- Library Link: https://www.enginatics.com/reports/dis-import-performance/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 xrv.report_name,

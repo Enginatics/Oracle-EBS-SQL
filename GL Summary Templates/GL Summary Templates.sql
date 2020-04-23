@@ -5,10 +5,9 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: GL Summary Templates
--- Excel Examle Output: https://www.enginatics.com/example/gl-summary-templates
--- Library Link: https://www.enginatics.com/reports/gl-summary-templates
+-- Excel Examle Output: https://www.enginatics.com/example/gl-summary-templates/
+-- Library Link: https://www.enginatics.com/reports/gl-summary-templates/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 gl.name ledger,

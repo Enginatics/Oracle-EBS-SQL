@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: PO Approval Assignments
 -- Description: HR jobs, positions and PO document approval group assignments
--- Excel Examle Output: https://www.enginatics.com/example/po-approval-assignments
--- Library Link: https://www.enginatics.com/reports/po-approval-assignments
+-- Excel Examle Output: https://www.enginatics.com/example/po-approval-assignments/
+-- Library Link: https://www.enginatics.com/reports/po-approval-assignments/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 haou.name ou,

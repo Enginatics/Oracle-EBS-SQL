@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: FND User Login Page Favorites
 -- Description: User's HTML favourites from table icx_custom_menu_entries
--- Excel Examle Output: https://www.enginatics.com/example/fnd-user-login-page-favorites
--- Library Link: https://www.enginatics.com/reports/fnd-user-login-page-favorites
+-- Excel Examle Output: https://www.enginatics.com/example/fnd-user-login-page-favorites/
+-- Library Link: https://www.enginatics.com/reports/fnd-user-login-page-favorites/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 xxen_util.user_name(icme.user_id) user_name,

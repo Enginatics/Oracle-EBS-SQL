@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: FND Concurrent Requests Summary
 -- Description: Concurrent programs sorted by the sum of their historic execution times
--- Excel Examle Output: https://www.enginatics.com/example/fnd-concurrent-requests-summary
--- Library Link: https://www.enginatics.com/reports/fnd-concurrent-requests-summary
+-- Excel Examle Output: https://www.enginatics.com/example/fnd-concurrent-requests-summary/
+-- Library Link: https://www.enginatics.com/reports/fnd-concurrent-requests-summary/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 x.user_concurrent_program_name program,

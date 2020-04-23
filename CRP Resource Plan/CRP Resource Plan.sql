@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: CRP Resource Plan
 -- Description: Capacity plans resource load hours including load source e.g. planned order or WIP job number, date and required hours.
--- Excel Examle Output: https://www.enginatics.com/example/crp-resource-plan
--- Library Link: https://www.enginatics.com/reports/crp-resource-plan
+-- Excel Examle Output: https://www.enginatics.com/example/crp-resource-plan/
+-- Library Link: https://www.enginatics.com/reports/crp-resource-plan/
 -- Run Report: https://demo.enginatics.com/
-
 
 select distinct
 y.order_number,

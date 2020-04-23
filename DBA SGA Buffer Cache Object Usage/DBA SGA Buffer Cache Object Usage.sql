@@ -16,10 +16,9 @@ select * from v$sga_dynamic_components
 
 Arup Nanda gives a good explanation on how the buffer cache works:
 http://arup.blogspot.ch/2014/11/cache-buffer-chains-demystified.html
--- Excel Examle Output: https://www.enginatics.com/example/dba-sga-buffer-cache-object-usage
--- Library Link: https://www.enginatics.com/reports/dba-sga-buffer-cache-object-usage
+-- Excel Examle Output: https://www.enginatics.com/example/dba-sga-buffer-cache-object-usage/
+-- Library Link: https://www.enginatics.com/reports/dba-sga-buffer-cache-object-usage/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 x.inst_id,

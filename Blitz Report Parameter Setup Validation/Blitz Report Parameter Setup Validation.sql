@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: Blitz Report Parameter Setup Validation
 -- Description: Blitz report parameters referencing table aliases, which do not exist as a table in the main report SQL
--- Excel Examle Output: https://www.enginatics.com/example/blitz-report-parameter-setup-validation
--- Library Link: https://www.enginatics.com/reports/blitz-report-parameter-setup-validation
+-- Excel Examle Output: https://www.enginatics.com/example/blitz-report-parameter-setup-validation/
+-- Library Link: https://www.enginatics.com/reports/blitz-report-parameter-setup-validation/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 x.*

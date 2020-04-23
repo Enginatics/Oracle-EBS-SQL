@@ -8,10 +8,9 @@
 -- Description: Legging metric for trend / plan relaibility analysis on schedule ship date and promise date
 
 Use this to pinpoint trends in the late shipping of a sales order versus reality
--- Excel Examle Output: https://www.enginatics.com/example/ont-planning-reliability-metric-pinpoint-trends-in-the-late-shipping-of-a-sales-order-versus-reality
--- Library Link: https://www.enginatics.com/reports/ont-planning-reliability-metric-pinpoint-trends-in-the-late-shipping-of-a-sales-order-versus-reality
+-- Excel Examle Output: https://www.enginatics.com/example/ont-planning-reliability-metric-pinpoint-trends-in-the-late-shipping-of-a-sales-order-versus-reality/
+-- Library Link: https://www.enginatics.com/reports/ont-planning-reliability-metric-pinpoint-trends-in-the-late-shipping-of-a-sales-order-versus-reality/
 -- Run Report: https://demo.enginatics.com/
-
 
  SELECT OEH.ORDER_NUMBER ,
        OEL.LINE_NUMBER LINE,

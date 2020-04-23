@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: ONT Order Holds
 -- Description: Sales order holds
--- Excel Examle Output: https://www.enginatics.com/example/ont-order-holds
--- Library Link: https://www.enginatics.com/reports/ont-order-holds
+-- Excel Examle Output: https://www.enginatics.com/example/ont-order-holds/
+-- Library Link: https://www.enginatics.com/reports/ont-order-holds/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 haou.name ou,

@@ -10,10 +10,9 @@ For databases on NOARCHIVELOG, the approximate amount of generated redo is calcu
 
 Redo log files are located here:
 select * from sys.v_$logfile
--- Excel Examle Output: https://www.enginatics.com/example/dba-archive-redo-log-rate
--- Library Link: https://www.enginatics.com/reports/dba-archive-redo-log-rate
+-- Excel Examle Output: https://www.enginatics.com/example/dba-archive-redo-log-rate/
+-- Library Link: https://www.enginatics.com/reports/dba-archive-redo-log-rate/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 y.log_mode,

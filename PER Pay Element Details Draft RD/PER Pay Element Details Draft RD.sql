@@ -7,10 +7,9 @@
 -- Report Name: PER Pay Element Details - Draft RD
 -- Description: Pay Elements
 Need more details and clarification
--- Excel Examle Output: https://www.enginatics.com/example/per-pay-element-details-draft-rd
--- Library Link: https://www.enginatics.com/reports/per-pay-element-details-draft-rd
+-- Excel Examle Output: https://www.enginatics.com/example/per-pay-element-details-draft-rd/
+-- Library Link: https://www.enginatics.com/reports/per-pay-element-details-draft-rd/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 petf.element_type_id,

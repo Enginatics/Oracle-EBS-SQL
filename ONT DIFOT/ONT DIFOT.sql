@@ -7,10 +7,9 @@
 -- Report Name: ONT DIFOT
 -- Description: Sales order or quote header and line details with DIFOT
 
--- Excel Examle Output: https://www.enginatics.com/example/ont-difot
--- Library Link: https://www.enginatics.com/reports/ont-difot
+-- Excel Examle Output: https://www.enginatics.com/example/ont-difot/
+-- Library Link: https://www.enginatics.com/reports/ont-difot/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 x.customer,

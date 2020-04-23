@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: INV Material Transactions
 -- Description: Inventory material transactions
--- Excel Examle Output: https://www.enginatics.com/example/inv-material-transactions
--- Library Link: https://www.enginatics.com/reports/inv-material-transactions
+-- Excel Examle Output: https://www.enginatics.com/example/inv-material-transactions/
+-- Library Link: https://www.enginatics.com/reports/inv-material-transactions/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 mp.organization_code org,

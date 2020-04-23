@@ -5,10 +5,9 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: FND Languages
--- Excel Examle Output: https://www.enginatics.com/example/fnd-languages
--- Library Link: https://www.enginatics.com/reports/fnd-languages
+-- Excel Examle Output: https://www.enginatics.com/example/fnd-languages/
+-- Library Link: https://www.enginatics.com/reports/fnd-languages/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 flv.description language,

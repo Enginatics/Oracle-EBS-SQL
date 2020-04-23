@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: Blitz Report Execution History
 -- Description: History of Blitz Report executions
--- Excel Examle Output: https://www.enginatics.com/example/blitz-report-execution-history
--- Library Link: https://www.enginatics.com/reports/blitz-report-execution-history
+-- Excel Examle Output: https://www.enginatics.com/example/blitz-report-execution-history/
+-- Library Link: https://www.enginatics.com/reports/blitz-report-execution-history/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 x.request_id,

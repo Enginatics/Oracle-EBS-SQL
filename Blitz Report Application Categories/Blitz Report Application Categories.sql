@@ -8,10 +8,9 @@
 -- Description: Oracle application -> Blitz Report assignment via lookup XXEN_REPORT_APPS_CATEGORIES.
 
 This setup controls how automatically imported BI publisher reports and concurrent programs are assigned to Blitz Report categories.
--- Excel Examle Output: https://www.enginatics.com/example/blitz-report-application-categories
--- Library Link: https://www.enginatics.com/reports/blitz-report-application-categories
+-- Excel Examle Output: https://www.enginatics.com/example/blitz-report-application-categories/
+-- Library Link: https://www.enginatics.com/reports/blitz-report-application-categories/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 trim(regexp_substr(flv.description,'[^,]+',1,rowgen.column_value)) category,

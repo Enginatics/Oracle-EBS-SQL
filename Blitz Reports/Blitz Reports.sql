@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: Blitz Reports
 -- Description: Blitz Reports with parameters and assignments
--- Excel Examle Output: https://www.enginatics.com/example/blitz-reports
--- Library Link: https://www.enginatics.com/reports/blitz-reports
+-- Excel Examle Output: https://www.enginatics.com/example/blitz-reports/
+-- Library Link: https://www.enginatics.com/reports/blitz-reports/
 -- Run Report: https://demo.enginatics.com/
-
 
 with
 anchors as (

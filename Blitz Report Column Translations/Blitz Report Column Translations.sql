@@ -5,10 +5,9 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: Blitz Report Column Translations
--- Excel Examle Output: https://www.enginatics.com/example/blitz-report-column-translations
--- Library Link: https://www.enginatics.com/reports/blitz-report-column-translations
+-- Excel Examle Output: https://www.enginatics.com/example/blitz-report-column-translations/
+-- Library Link: https://www.enginatics.com/reports/blitz-report-column-translations/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 xrc.column_name,

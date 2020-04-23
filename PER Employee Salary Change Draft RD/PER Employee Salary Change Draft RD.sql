@@ -10,10 +10,9 @@
 Can add:
 whether to look at just the recent salary change?
 or salary change history.... If yes, then the last condition in where clause to be dynamically added/removed
--- Excel Examle Output: https://www.enginatics.com/example/per-employee-salary-change-draft-rd
--- Library Link: https://www.enginatics.com/reports/per-employee-salary-change-draft-rd
+-- Excel Examle Output: https://www.enginatics.com/example/per-employee-salary-change-draft-rd/
+-- Library Link: https://www.enginatics.com/reports/per-employee-salary-change-draft-rd/
 -- Run Report: https://demo.enginatics.com/
-
 
 select 
 papf.person_id,

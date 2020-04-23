@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: Blitz Report LOVs
 -- Description: Blitz Report list of values
--- Excel Examle Output: https://www.enginatics.com/example/blitz-report-lovs
--- Library Link: https://www.enginatics.com/reports/blitz-report-lovs
+-- Excel Examle Output: https://www.enginatics.com/example/blitz-report-lovs/
+-- Library Link: https://www.enginatics.com/reports/blitz-report-lovs/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 xrplv.lov_name,

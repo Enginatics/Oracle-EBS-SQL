@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: FND Flex Security Rules
 -- Description: Flexfield value security rules, rule elements (included or excluded flexfield value ranges), flexfields where the secured value set is used and responsibilities that the rule is assigned to.
--- Excel Examle Output: https://www.enginatics.com/example/fnd-flex-security-rules
--- Library Link: https://www.enginatics.com/reports/fnd-flex-security-rules
+-- Excel Examle Output: https://www.enginatics.com/example/fnd-flex-security-rules/
+-- Library Link: https://www.enginatics.com/reports/fnd-flex-security-rules/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 ffvrv.flex_value_rule_name rule_name,

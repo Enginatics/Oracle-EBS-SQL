@@ -14,10 +14,9 @@
 - Bill To Locations
 - Ship To Locations
 - Balancing Segment Values
--- Excel Examle Output: https://www.enginatics.com/example/xle-establishment-and-legal-entity-associations
--- Library Link: https://www.enginatics.com/reports/xle-establishment-and-legal-entity-associations
+-- Excel Examle Output: https://www.enginatics.com/example/xle-establishment-and-legal-entity-associations/
+-- Library Link: https://www.enginatics.com/reports/xle-establishment-and-legal-entity-associations/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 initcap(translate(xav.context,'_',' ')) context,

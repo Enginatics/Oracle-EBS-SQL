@@ -7,10 +7,9 @@
 -- Report Name: DBA AWR System Wait Event Summary
 -- Description: Summary of wait times by wait event and event class for a specified snapshot time interval.
 Use the Session Type parameter to restrict either to foreground, background or all server processes.
--- Excel Examle Output: https://www.enginatics.com/example/dba-awr-system-wait-event-summary
--- Library Link: https://www.enginatics.com/reports/dba-awr-system-wait-event-summary
+-- Excel Examle Output: https://www.enginatics.com/example/dba-awr-system-wait-event-summary/
+-- Library Link: https://www.enginatics.com/reports/dba-awr-system-wait-event-summary/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 x.seconds/xxen_util.zero_to_null(sum(x.seconds) over ())*100 percentage,

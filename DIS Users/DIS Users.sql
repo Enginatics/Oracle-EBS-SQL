@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: DIS Users
 -- Description: Discoverer end user layer users of different types (application user, responsibility, database user)
--- Excel Examle Output: https://www.enginatics.com/example/dis-users
--- Library Link: https://www.enginatics.com/reports/dis-users
+-- Excel Examle Output: https://www.enginatics.com/example/dis-users/
+-- Library Link: https://www.enginatics.com/reports/dis-users/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 eeu.eu_id,

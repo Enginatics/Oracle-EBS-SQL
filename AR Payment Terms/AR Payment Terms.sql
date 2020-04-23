@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: AR Payment Terms
 -- Description: Receivable payment terms setup details including cash discounts
--- Excel Examle Output: https://www.enginatics.com/example/ar-payment-terms
--- Library Link: https://www.enginatics.com/reports/ar-payment-terms
+-- Excel Examle Output: https://www.enginatics.com/example/ar-payment-terms/
+-- Library Link: https://www.enginatics.com/reports/ar-payment-terms/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 rtt.name term_name,

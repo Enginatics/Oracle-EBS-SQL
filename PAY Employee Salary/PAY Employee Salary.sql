@@ -5,10 +5,9 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PAY Employee Salary
--- Excel Examle Output: https://www.enginatics.com/example/pay-employee-salary
--- Library Link: https://www.enginatics.com/reports/pay-employee-salary
+-- Excel Examle Output: https://www.enginatics.com/example/pay-employee-salary/
+-- Library Link: https://www.enginatics.com/reports/pay-employee-salary/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 haouv0.name business_group,

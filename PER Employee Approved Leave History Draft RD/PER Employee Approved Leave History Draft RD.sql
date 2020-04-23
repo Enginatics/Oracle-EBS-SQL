@@ -5,10 +5,9 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PER Employee Approved Leave History - Draft RD
--- Excel Examle Output: https://www.enginatics.com/example/per-employee-approved-leave-history-draft-rd
--- Library Link: https://www.enginatics.com/reports/per-employee-approved-leave-history-draft-rd
+-- Excel Examle Output: https://www.enginatics.com/example/per-employee-approved-leave-history-draft-rd/
+-- Library Link: https://www.enginatics.com/reports/per-employee-approved-leave-history-draft-rd/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 papf.employee_number, 

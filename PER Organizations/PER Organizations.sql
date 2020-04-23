@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: PER Organizations
 -- Description: Organizations, classifications, address details and additional information attributes.
--- Excel Examle Output: https://www.enginatics.com/example/per-organizations
--- Library Link: https://www.enginatics.com/reports/per-organizations
+-- Excel Examle Output: https://www.enginatics.com/example/per-organizations/
+-- Library Link: https://www.enginatics.com/reports/per-organizations/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 haout0.name business_group,

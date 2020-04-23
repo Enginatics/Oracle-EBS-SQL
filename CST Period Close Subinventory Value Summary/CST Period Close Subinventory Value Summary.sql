@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: CST Period Close Subinventory Value Summary
 -- Description: Same as Oracle standard's INV Period close value summary (XML), INVTRCLS_XML, but allowing export by leger or for multiple ledgers.
--- Excel Examle Output: https://www.enginatics.com/example/cst-period-close-subinventory-value-summary
--- Library Link: https://www.enginatics.com/reports/cst-period-close-subinventory-value-summary
+-- Excel Examle Output: https://www.enginatics.com/example/cst-period-close-subinventory-value-summary/
+-- Library Link: https://www.enginatics.com/reports/cst-period-close-subinventory-value-summary/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 x.period,

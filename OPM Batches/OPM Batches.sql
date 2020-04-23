@@ -24,10 +24,9 @@ customer easily store information not designed into the GME schema. Think
 of it like a descriptive flex field (not on steroids).
 
 The name of the process parameter can be found in GMP_PROCESS_PARAMETERS.
--- Excel Examle Output: https://www.enginatics.com/example/opm-batches
--- Library Link: https://www.enginatics.com/reports/opm-batches
+-- Excel Examle Output: https://www.enginatics.com/example/opm-batches/
+-- Library Link: https://www.enginatics.com/reports/opm-batches/
 -- Run Report: https://demo.enginatics.com/
-
 
 select --hou.name,
  gbh.plant_code        plant,

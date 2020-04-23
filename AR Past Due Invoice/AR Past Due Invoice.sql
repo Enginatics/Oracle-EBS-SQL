@@ -8,10 +8,9 @@
 -- Description: Application: Receivables
 Source: Past Due Invoice Report
 Short Name: ARXPDI_XML
--- Excel Examle Output: https://www.enginatics.com/example/ar-past-due-invoice
--- Library Link: https://www.enginatics.com/reports/ar-past-due-invoice
+-- Excel Examle Output: https://www.enginatics.com/example/ar-past-due-invoice/
+-- Library Link: https://www.enginatics.com/reports/ar-past-due-invoice/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 apsa.invoice_currency_code currency,

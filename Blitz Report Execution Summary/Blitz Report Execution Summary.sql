@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: Blitz Report Execution Summary
 -- Description: Count and performance summary of historic Blitz Report executions
--- Excel Examle Output: https://www.enginatics.com/example/blitz-report-execution-summary
--- Library Link: https://www.enginatics.com/reports/blitz-report-execution-summary
+-- Excel Examle Output: https://www.enginatics.com/example/blitz-report-execution-summary/
+-- Library Link: https://www.enginatics.com/reports/blitz-report-execution-summary/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 y.count,

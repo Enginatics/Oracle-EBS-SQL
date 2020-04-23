@@ -17,10 +17,9 @@ flv.lookup_type(+)='VENDOR TYPE' and
 flv.view_application_id(+)=201 and
 flv.language(+)=userenv('lang') and
 flv.security_group_id(+)=0 and
--- Excel Examle Output: https://www.enginatics.com/example/fnd-lookup-search
--- Library Link: https://www.enginatics.com/reports/fnd-lookup-search
+-- Excel Examle Output: https://www.enginatics.com/example/fnd-lookup-search/
+-- Library Link: https://www.enginatics.com/reports/fnd-lookup-search/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 u.value_count,

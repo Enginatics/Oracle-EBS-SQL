@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: Blitz Report License Users
 -- Description: Active Blitz Report users (within the past 60 days) and their most frequently executed reports.
--- Excel Examle Output: https://www.enginatics.com/example/blitz-report-license-users
--- Library Link: https://www.enginatics.com/reports/blitz-report-license-users
+-- Excel Examle Output: https://www.enginatics.com/example/blitz-report-license-users/
+-- Library Link: https://www.enginatics.com/reports/blitz-report-license-users/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 xxen_util.user_name(xrlu.user_id) user_name,

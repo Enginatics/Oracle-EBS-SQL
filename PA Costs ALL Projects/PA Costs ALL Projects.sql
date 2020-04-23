@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: PA Costs ALL Projects
 -- Description: Collect all project costs
--- Excel Examle Output: https://www.enginatics.com/example/pa-costs-all-projects
--- Library Link: https://www.enginatics.com/reports/pa-costs-all-projects
+-- Excel Examle Output: https://www.enginatics.com/example/pa-costs-all-projects/
+-- Library Link: https://www.enginatics.com/reports/pa-costs-all-projects/
 -- Run Report: https://demo.enginatics.com/
-
 
 SELECT pcera.amount total_revenue ,pdra.project_id , pdri.task_id ,pdra.gl_date,pdra.org_id
 

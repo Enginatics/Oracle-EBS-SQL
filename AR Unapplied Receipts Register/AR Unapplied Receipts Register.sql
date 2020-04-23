@@ -8,10 +8,9 @@
 -- Description: Application: Receivables
 Source: Unapplied Receipts Register (Obsolete)
 Short Name: ARXCOA2
--- Excel Examle Output: https://www.enginatics.com/example/ar-unapplied-receipts-register
--- Library Link: https://www.enginatics.com/reports/ar-unapplied-receipts-register
+-- Excel Examle Output: https://www.enginatics.com/example/ar-unapplied-receipts-register/
+-- Library Link: https://www.enginatics.com/reports/ar-unapplied-receipts-register/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 gcc.segment1 balancing_segment,

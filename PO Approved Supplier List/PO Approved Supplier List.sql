@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: PO Approved Supplier List
 -- Description: Approved supplier list and attribute details such as source documents, supplier scheduling, planning constraints and inventory attributes.
--- Excel Examle Output: https://www.enginatics.com/example/po-approved-supplier-list
--- Library Link: https://www.enginatics.com/reports/po-approved-supplier-list
+-- Excel Examle Output: https://www.enginatics.com/example/po-approved-supplier-list/
+-- Library Link: https://www.enginatics.com/reports/po-approved-supplier-list/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 nvl2(pasl.item_id,'Item','Commodity') type,

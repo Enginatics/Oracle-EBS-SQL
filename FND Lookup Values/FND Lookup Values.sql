@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: FND Lookup Values
 -- Description: Lookup types and values, for example to find a lookup type for a particular lookup code value or meaning.
--- Excel Examle Output: https://www.enginatics.com/example/fnd-lookup-values
--- Library Link: https://www.enginatics.com/reports/fnd-lookup-values
+-- Excel Examle Output: https://www.enginatics.com/example/fnd-lookup-values/
+-- Library Link: https://www.enginatics.com/reports/fnd-lookup-values/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 fav.application_name view_application,

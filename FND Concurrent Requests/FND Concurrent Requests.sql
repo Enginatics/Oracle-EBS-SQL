@@ -9,10 +9,9 @@
 For performance analysis of running requests, the report contains sid, currently executed sql_id and sql_text and distribution of wait time on different wait classes.
 
 Use parameter 'Scheduled or Running' to get a list of all currently scheduled or running requests.
--- Excel Examle Output: https://www.enginatics.com/example/fnd-concurrent-requests
--- Library Link: https://www.enginatics.com/reports/fnd-concurrent-requests
+-- Excel Examle Output: https://www.enginatics.com/example/fnd-concurrent-requests/
+-- Library Link: https://www.enginatics.com/reports/fnd-concurrent-requests/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 fcr.request_id id,

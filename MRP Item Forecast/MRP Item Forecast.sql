@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: MRP Item Forecast
 -- Description: MRP item forecast details
--- Excel Examle Output: https://www.enginatics.com/example/mrp-item-forecast
--- Library Link: https://www.enginatics.com/reports/mrp-item-forecast
+-- Excel Examle Output: https://www.enginatics.com/example/mrp-item-forecast/
+-- Library Link: https://www.enginatics.com/reports/mrp-item-forecast/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 ood.organization_name organization,

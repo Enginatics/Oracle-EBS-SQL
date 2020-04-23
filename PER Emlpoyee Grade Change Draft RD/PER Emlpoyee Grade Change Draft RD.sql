@@ -10,10 +10,9 @@
 Like to add the ability to show:
 1. All or only active employees
 2. All or only active assignments
--- Excel Examle Output: https://www.enginatics.com/example/per-emlpoyee-grade-change-draft-rd
--- Library Link: https://www.enginatics.com/reports/per-emlpoyee-grade-change-draft-rd
+-- Excel Examle Output: https://www.enginatics.com/example/per-emlpoyee-grade-change-draft-rd/
+-- Library Link: https://www.enginatics.com/reports/per-emlpoyee-grade-change-draft-rd/
 -- Run Report: https://demo.enginatics.com/
-
 
 select 
 papf.person_id,

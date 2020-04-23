@@ -13,10 +13,9 @@ xrv.*,
 dbms_lob.substr(xrv.sql_text_full,4000,1) sql_text_short
 from
 xxen_reports_v xrv;
--- Excel Examle Output: https://www.enginatics.com/example/compare-blitz-reports-between-environments
--- Library Link: https://www.enginatics.com/reports/compare-blitz-reports-between-environments
+-- Excel Examle Output: https://www.enginatics.com/example/compare-blitz-reports-between-environments/
+-- Library Link: https://www.enginatics.com/reports/compare-blitz-reports-between-environments/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 x.*

@@ -11,10 +11,9 @@ This is useful for example to:
 -Identify SQLs executed by a particular program or UI function without running a trace. Navigate to the UI functionality first, then directly after, execute this report and restrict to the module name in question. Sort by column 'Last Active Time'
 -Identify SQLs and example bind variables to reproduce a SQL execution in a DB access tool. Switch parameter 'Show Bind Values' to 'Yes'
 -Identify SQLs incorrectly using literals instead of binds. Set parameter 'Literals Duplication Count' to a value bigger than zero to show all SQLs which are at least duplicated this numer of times.
--- Excel Examle Output: https://www.enginatics.com/example/dba-sga-sql-performance-summary
--- Library Link: https://www.enginatics.com/reports/dba-sga-sql-performance-summary
+-- Excel Examle Output: https://www.enginatics.com/example/dba-sga-sql-performance-summary/
+-- Library Link: https://www.enginatics.com/reports/dba-sga-sql-performance-summary/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 gsa.inst_id,

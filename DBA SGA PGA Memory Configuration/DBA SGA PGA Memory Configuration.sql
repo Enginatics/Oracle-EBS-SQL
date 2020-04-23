@@ -30,10 +30,9 @@ exec dbms_stats.set_system_stats('IOTFRSPEED',85782);
 
 There is also an Exadata mode, considering the faster storage correctly and updating the MBRC too
 exec dbms_stats.gather_system_stats(`EXADATA');
--- Excel Examle Output: https://www.enginatics.com/example/dba-sga-pga-memory-configuration
--- Library Link: https://www.enginatics.com/reports/dba-sga-pga-memory-configuration
+-- Excel Examle Output: https://www.enginatics.com/example/dba-sga-pga-memory-configuration/
+-- Library Link: https://www.enginatics.com/reports/dba-sga-pga-memory-configuration/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 *

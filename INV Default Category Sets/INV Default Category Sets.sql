@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: INV Default Category Sets
 -- Description: Inventories functional areas and their default category sets
--- Excel Examle Output: https://www.enginatics.com/example/inv-default-category-sets
--- Library Link: https://www.enginatics.com/reports/inv-default-category-sets
+-- Excel Examle Output: https://www.enginatics.com/example/inv-default-category-sets/
+-- Library Link: https://www.enginatics.com/reports/inv-default-category-sets/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 xxen_util.meaning(mdcs.functional_area_id,'MTL_FUNCTIONAL_AREAS',700) functional_area,

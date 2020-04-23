@@ -7,10 +7,9 @@
 -- Report Name: FA Asset Inventory Report
 -- Description: Application: Assets
 Source: Asset Inventory Report (Enginatics)
--- Excel Examle Output: https://www.enginatics.com/example/fa-asset-inventory-report
--- Library Link: https://www.enginatics.com/reports/fa-asset-inventory-report
+-- Excel Examle Output: https://www.enginatics.com/example/fa-asset-inventory-report/
+-- Library Link: https://www.enginatics.com/reports/fa-asset-inventory-report/
 -- Run Report: https://demo.enginatics.com/
-
 
 select 
 papf.full_name "Owner",

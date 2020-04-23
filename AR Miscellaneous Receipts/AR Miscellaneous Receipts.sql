@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: AR Miscellaneous Receipts
 -- Description: Receivables miscellaneous receipts
--- Excel Examle Output: https://www.enginatics.com/example/ar-miscellaneous-receipts
--- Library Link: https://www.enginatics.com/reports/ar-miscellaneous-receipts
+-- Excel Examle Output: https://www.enginatics.com/example/ar-miscellaneous-receipts/
+-- Library Link: https://www.enginatics.com/reports/ar-miscellaneous-receipts/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 haou.name ou,

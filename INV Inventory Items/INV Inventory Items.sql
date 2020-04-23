@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: INV Inventory Items
 -- Description: Inventory item master setup including main item attributes such as item type, uom, status, serial control, physical and various other attributes
--- Excel Examle Output: https://www.enginatics.com/example/inv-inventory-items
--- Library Link: https://www.enginatics.com/reports/inv-inventory-items
+-- Excel Examle Output: https://www.enginatics.com/example/inv-inventory-items/
+-- Library Link: https://www.enginatics.com/reports/inv-inventory-items/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 mp.organization_code,

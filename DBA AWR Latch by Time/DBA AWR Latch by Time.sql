@@ -7,10 +7,9 @@
 -- Report Name: DBA AWR Latch by Time
 -- Description: Latch contention wait time history.
 Each row shows the system-wide latch contention wait time per latch name of one AWR snapshot interval to identify high latch contention at specific times.
--- Excel Examle Output: https://www.enginatics.com/example/dba-awr-latch-by-time
--- Library Link: https://www.enginatics.com/reports/dba-awr-latch-by-time
+-- Excel Examle Output: https://www.enginatics.com/example/dba-awr-latch-by-time/
+-- Library Link: https://www.enginatics.com/reports/dba-awr-latch-by-time/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 x.day_of_week,

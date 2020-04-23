@@ -9,10 +9,9 @@
 Example: To show all POs or Releases which have an invoice but no receiving TRX yet, set following parameters:
 Invoice exists=Yes
 Receiving TRX exists=No
--- Excel Examle Output: https://www.enginatics.com/example/po-headers-releases-and-ap-invoices
--- Library Link: https://www.enginatics.com/reports/po-headers-releases-and-ap-invoices
+-- Excel Examle Output: https://www.enginatics.com/example/po-headers-releases-and-ap-invoices/
+-- Library Link: https://www.enginatics.com/reports/po-headers-releases-and-ap-invoices/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 haou.name ou,

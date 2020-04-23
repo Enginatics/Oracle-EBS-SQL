@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: FND Descriptive Flexfields
 -- Description: Descriptive flexfields table, context, column and validation information
--- Excel Examle Output: https://www.enginatics.com/example/fnd-descriptive-flexfields
--- Library Link: https://www.enginatics.com/reports/fnd-descriptive-flexfields
+-- Excel Examle Output: https://www.enginatics.com/example/fnd-descriptive-flexfields/
+-- Library Link: https://www.enginatics.com/reports/fnd-descriptive-flexfields/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 fav.application_name application,

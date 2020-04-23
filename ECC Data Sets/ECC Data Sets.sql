@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: ECC Data Sets
 -- Description: Enterprise Command Centers data sets and load rules
--- Excel Examle Output: https://www.enginatics.com/example/ecc-data-sets
--- Library Link: https://www.enginatics.com/reports/ecc-data-sets
+-- Excel Examle Output: https://www.enginatics.com/example/ecc-data-sets/
+-- Library Link: https://www.enginatics.com/reports/ecc-data-sets/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 ess.system_name,

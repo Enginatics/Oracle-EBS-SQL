@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: INV Safety Stocks
 -- Description: Inventory safety stocks
--- Excel Examle Output: https://www.enginatics.com/example/inv-safety-stocks
--- Library Link: https://www.enginatics.com/reports/inv-safety-stocks
+-- Excel Examle Output: https://www.enginatics.com/example/inv-safety-stocks/
+-- Library Link: https://www.enginatics.com/reports/inv-safety-stocks/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 haou.name organization,

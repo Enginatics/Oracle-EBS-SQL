@@ -5,10 +5,9 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: DBA AWR Tablespace Usage
--- Excel Examle Output: https://www.enginatics.com/example/dba-awr-tablespace-usage
--- Library Link: https://www.enginatics.com/reports/dba-awr-tablespace-usage
+-- Excel Examle Output: https://www.enginatics.com/example/dba-awr-tablespace-usage/
+-- Library Link: https://www.enginatics.com/reports/dba-awr-tablespace-usage/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 x.*

@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: DBA AWR SQL Execution Plan History
 -- Description: Execution plan history for a particular SQL id from the automatic workload repository
--- Excel Examle Output: https://www.enginatics.com/example/dba-awr-sql-execution-plan-history
--- Library Link: https://www.enginatics.com/reports/dba-awr-sql-execution-plan-history
+-- Excel Examle Output: https://www.enginatics.com/example/dba-awr-sql-execution-plan-history/
+-- Library Link: https://www.enginatics.com/reports/dba-awr-sql-execution-plan-history/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 dhsp.sql_id,

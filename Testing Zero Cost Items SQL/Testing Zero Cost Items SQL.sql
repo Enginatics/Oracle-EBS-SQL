@@ -5,10 +5,9 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: Testing Zero Cost Items SQL
--- Excel Examle Output: https://www.enginatics.com/example/testing-zero-cost-items-sql
--- Library Link: https://www.enginatics.com/reports/testing-zero-cost-items-sql
+-- Excel Examle Output: https://www.enginatics.com/example/testing-zero-cost-items-sql/
+-- Library Link: https://www.enginatics.com/reports/testing-zero-cost-items-sql/
 -- Run Report: https://demo.enginatics.com/
-
 
 select mp.organization_code, msi.segment1, msi.description, msi.inventory_item_status_Code, msi.creation_date, msi.planner_code,
        decode(msi.planning_make_buy_code, 1, 'MAKE', 'BUY') Mk_Buy, decode(cic.based_on_rollup_flag, 1, 'Yes', 'No') Based_on_rollup

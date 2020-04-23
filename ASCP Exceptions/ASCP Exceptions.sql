@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: ASCP - Exceptions
 -- Description: Report to list exceptions by type and planner
--- Excel Examle Output: https://www.enginatics.com/example/ascp-exceptions
--- Library Link: https://www.enginatics.com/reports/ascp-exceptions
+-- Excel Examle Output: https://www.enginatics.com/example/ascp-exceptions/
+-- Library Link: https://www.enginatics.com/reports/ascp-exceptions/
 -- Run Report: https://demo.enginatics.com/
-
 
 select medv.exception_type_text,
        medv.item_segments,

@@ -5,10 +5,9 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: GL Balance by Account Hierarchy
--- Excel Examle Output: https://www.enginatics.com/example/gl-balance-by-account-hierarchy
--- Library Link: https://www.enginatics.com/reports/gl-balance-by-account-hierarchy
+-- Excel Examle Output: https://www.enginatics.com/example/gl-balance-by-account-hierarchy/
+-- Library Link: https://www.enginatics.com/reports/gl-balance-by-account-hierarchy/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 z.ledger,

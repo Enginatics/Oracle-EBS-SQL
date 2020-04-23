@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: INV Material Transactions Summary
 -- Description: Summary of inventory material transactions
--- Excel Examle Output: https://www.enginatics.com/example/inv-material-transactions-summary
--- Library Link: https://www.enginatics.com/reports/inv-material-transactions-summary
+-- Excel Examle Output: https://www.enginatics.com/example/inv-material-transactions-summary/
+-- Library Link: https://www.enginatics.com/reports/inv-material-transactions-summary/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 count(*) count,

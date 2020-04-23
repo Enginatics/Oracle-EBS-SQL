@@ -7,10 +7,9 @@
 -- Report Name: FND Concurrent Request Conflicts
 -- Description: Lists concurrent requests that were held by the conflict resolution manager and shows their conflicting / blocking requests which were running at the time between the requested start date and conflict release date.
 This might not work 100% (it doesn't consider request set conflicts yet), but should give a good indication of most conflicting scenarios.
--- Excel Examle Output: https://www.enginatics.com/example/fnd-concurrent-request-conflicts
--- Library Link: https://www.enginatics.com/reports/fnd-concurrent-request-conflicts
+-- Excel Examle Output: https://www.enginatics.com/example/fnd-concurrent-request-conflicts/
+-- Library Link: https://www.enginatics.com/reports/fnd-concurrent-request-conflicts/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 fcr.request_id,

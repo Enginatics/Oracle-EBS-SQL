@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: AP Expenses
 -- Description: AP expenses with corresponding AP invoices, their status and line details, such as per diem or project and tasks
--- Excel Examle Output: https://www.enginatics.com/example/ap-expenses
--- Library Link: https://www.enginatics.com/reports/ap-expenses
+-- Excel Examle Output: https://www.enginatics.com/example/ap-expenses/
+-- Library Link: https://www.enginatics.com/reports/ap-expenses/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 gl.name Ledger,

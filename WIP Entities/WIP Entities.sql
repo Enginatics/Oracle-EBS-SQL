@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: WIP Entities
 -- Description: WIP Jobs
--- Excel Examle Output: https://www.enginatics.com/example/wip-entities
--- Library Link: https://www.enginatics.com/reports/wip-entities
+-- Excel Examle Output: https://www.enginatics.com/example/wip-entities/
+-- Library Link: https://www.enginatics.com/reports/wip-entities/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 we.wip_entity_name job,

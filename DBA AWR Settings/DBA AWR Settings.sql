@@ -88,10 +88,9 @@ delete wri$_dbu_cpu_usage wdcu where wdcu.dbid not in (select vd.dbid from v$dat
 delete wri$_dbu_cpu_usage_sample wdcus where wdcus.dbid not in (select vd.dbid from v$database vd);
 commit;
 end;
--- Excel Examle Output: https://www.enginatics.com/example/dba-awr-settings
--- Library Link: https://www.enginatics.com/reports/dba-awr-settings
+-- Excel Examle Output: https://www.enginatics.com/example/dba-awr-settings/
+-- Library Link: https://www.enginatics.com/reports/dba-awr-settings/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 vd.name database,

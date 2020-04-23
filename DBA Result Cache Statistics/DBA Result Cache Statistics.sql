@@ -11,10 +11,9 @@ If the 'Maximum Size' is big enough, 'Create Count Failure' should be zero or lo
 'Find Count' shows the number of cached results used (instead of executing the underlying sql/plsql) and should hence be as high as possible for maximum performance improvement.
 
 A high number of 'Invalidation Count' or 'Delete Count Invalid' relative to 'Find Count' should get investigated further as it indicates a result_cache specified for code where the underlying data changes too frequently.
--- Excel Examle Output: https://www.enginatics.com/example/dba-result-cache-statistics
--- Library Link: https://www.enginatics.com/reports/dba-result-cache-statistics
+-- Excel Examle Output: https://www.enginatics.com/example/dba-result-cache-statistics/
+-- Library Link: https://www.enginatics.com/reports/dba-result-cache-statistics/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 x.inst_id,

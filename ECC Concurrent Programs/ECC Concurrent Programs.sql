@@ -10,10 +10,9 @@ https://support.oracle.com/CSP/main/article?cmd=show&type=NOT&id=2495053.1
 
 This report can be used to check which of those required ECC load requests are currently scheduled.
 The short code can then be used as multiple parameter value entry in other reports, e.g. https://www.enginatics.com/reports/fnd-access-control/ to see which responsibilities or users have access to schedule them, or https://www.enginatics.com/reports/fnd-concurrent-requests/ to look at past execution and schedule times.
--- Excel Examle Output: https://www.enginatics.com/example/ecc-concurrent-programs
--- Library Link: https://www.enginatics.com/reports/ecc-concurrent-programs
+-- Excel Examle Output: https://www.enginatics.com/example/ecc-concurrent-programs/
+-- Library Link: https://www.enginatics.com/reports/ecc-concurrent-programs/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 y.concurrent_program,

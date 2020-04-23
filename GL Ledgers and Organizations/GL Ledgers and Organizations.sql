@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: GL Ledgers and Organizations
 -- Description: GL Ledgers with Ledger Sets, Chart of Accounts, Operating Units, Inventory Organizations and related Legal Entities
--- Excel Examle Output: https://www.enginatics.com/example/gl-ledgers-and-organizations
--- Library Link: https://www.enginatics.com/reports/gl-ledgers-and-organizations
+-- Excel Examle Output: https://www.enginatics.com/example/gl-ledgers-and-organizations/
+-- Library Link: https://www.enginatics.com/reports/gl-ledgers-and-organizations/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 haouv.name business_group,

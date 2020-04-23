@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: AD Applied Patches
 -- Description: AD applied patches, patch runs, included bugs, filenames and actions
--- Excel Examle Output: https://www.enginatics.com/example/ad-applied-patches
--- Library Link: https://www.enginatics.com/reports/ad-applied-patches
+-- Excel Examle Output: https://www.enginatics.com/example/ad-applied-patches/
+-- Library Link: https://www.enginatics.com/reports/ad-applied-patches/
 -- Run Report: https://demo.enginatics.com/
-
 
 select distinct
 xxen_util.client_time(nvl(aprba.creation_date,apr.start_date)) start_date,

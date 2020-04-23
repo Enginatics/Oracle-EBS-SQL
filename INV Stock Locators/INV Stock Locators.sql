@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: INV Stock Locators
 -- Description: Inventory stock locators
--- Excel Examle Output: https://www.enginatics.com/example/inv-stock-locators
--- Library Link: https://www.enginatics.com/reports/inv-stock-locators
+-- Excel Examle Output: https://www.enginatics.com/example/inv-stock-locators/
+-- Library Link: https://www.enginatics.com/reports/inv-stock-locators/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 mp.organization_code,

@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: Blitz Report Parameter Default Values
 -- Description: Blitz Report's user specific parameter default values
--- Excel Examle Output: https://www.enginatics.com/example/blitz-report-parameter-default-values
--- Library Link: https://www.enginatics.com/reports/blitz-report-parameter-default-values
+-- Excel Examle Output: https://www.enginatics.com/example/blitz-report-parameter-default-values/
+-- Library Link: https://www.enginatics.com/reports/blitz-report-parameter-default-values/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 xxen_util.user_name(xrpdv.user_id) user_name,

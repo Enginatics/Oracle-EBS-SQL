@@ -8,10 +8,9 @@
 -- Description: Application: Payables
 Source: Invoice Aging Report  and Invoice Detail Report
 
--- Excel Examle Output: https://www.enginatics.com/example/ap-invoices-and-lines
--- Library Link: https://www.enginatics.com/reports/ap-invoices-and-lines
+-- Excel Examle Output: https://www.enginatics.com/example/ap-invoices-and-lines/
+-- Library Link: https://www.enginatics.com/reports/ap-invoices-and-lines/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 gl.name ledger,

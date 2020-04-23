@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: ASCP - Pegging
 -- Description: Export the PWB Pegging Trees
--- Excel Examle Output: https://www.enginatics.com/example/ascp-pegging
--- Library Link: https://www.enginatics.com/reports/ascp-pegging
+-- Excel Examle Output: https://www.enginatics.com/example/ascp-pegging/
+-- Library Link: https://www.enginatics.com/reports/ascp-pegging/
 -- Run Report: https://demo.enginatics.com/
-
 
 select mp.compile_designator,
        msi.planner_code,

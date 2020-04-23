@@ -19,10 +19,9 @@ A typical use case is to analyze which EBS application user waited for how many 
 Column 'Module Name' shows either the translated EBS module display name or, e.g. for background sessions, the process name (from the program column) to enable pivoting by this column only.
 Oracle's background process names are listed here:
 https://docs.oracle.com/database/121/REFRN/GUID-86184690-5531-405F-AA05-BB935F57B76D.htm#REFRN104
--- Excel Examle Output: https://www.enginatics.com/example/dba-sga-active-session-history
--- Library Link: https://www.enginatics.com/reports/dba-sga-active-session-history
+-- Excel Examle Output: https://www.enginatics.com/example/dba-sga-active-session-history/
+-- Library Link: https://www.enginatics.com/reports/dba-sga-active-session-history/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 xxen_util.client_time(gash.sample_time_) sample_time,

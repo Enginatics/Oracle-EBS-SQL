@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: FND Concurrent Programs and Executables
 -- Description: Concurrent programs, executables and program parameters
--- Excel Examle Output: https://www.enginatics.com/example/fnd-concurrent-programs-and-executables
--- Library Link: https://www.enginatics.com/reports/fnd-concurrent-programs-and-executables
+-- Excel Examle Output: https://www.enginatics.com/example/fnd-concurrent-programs-and-executables/
+-- Library Link: https://www.enginatics.com/reports/fnd-concurrent-programs-and-executables/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 fcpv.user_concurrent_program_name program,

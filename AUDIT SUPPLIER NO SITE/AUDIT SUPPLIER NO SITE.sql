@@ -5,10 +5,9 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: AUDIT-SUPPLIER-NO-SITE
--- Excel Examle Output: https://www.enginatics.com/example/audit-supplier-no-site
--- Library Link: https://www.enginatics.com/reports/audit-supplier-no-site
+-- Excel Examle Output: https://www.enginatics.com/example/audit-supplier-no-site/
+-- Library Link: https://www.enginatics.com/reports/audit-supplier-no-site/
 -- Run Report: https://demo.enginatics.com/
-
 
 SELECT 
        a.sup_name Supplier_Name,

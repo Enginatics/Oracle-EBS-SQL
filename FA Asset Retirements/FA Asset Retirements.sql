@@ -7,10 +7,9 @@
 -- Report Name: FA Asset Retirements
 -- Description: Asset retirement transactions, based on Oracle standard report FAS440_XML.
 
--- Excel Examle Output: https://www.enginatics.com/example/fa-asset-retirements
--- Library Link: https://www.enginatics.com/reports/fa-asset-retirements
+-- Excel Examle Output: https://www.enginatics.com/example/fa-asset-retirements/
+-- Library Link: https://www.enginatics.com/reports/fa-asset-retirements/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 gl.name ledger,

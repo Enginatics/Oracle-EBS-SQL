@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: DBA Blocking Sessions
 -- Description: Chain of currently blocking and blocked database sessions from v$wait_chains
--- Excel Examle Output: https://www.enginatics.com/example/dba-blocking-sessions
--- Library Link: https://www.enginatics.com/reports/dba-blocking-sessions
+-- Excel Examle Output: https://www.enginatics.com/example/dba-blocking-sessions/
+-- Library Link: https://www.enginatics.com/reports/dba-blocking-sessions/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 vwc.instance inst_id,

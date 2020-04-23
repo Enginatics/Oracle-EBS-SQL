@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: PER Employee Assignments - Draft RD
 -- Description: Employees and their assignment details.
--- Excel Examle Output: https://www.enginatics.com/example/per-employee-assignments-draft-rd
--- Library Link: https://www.enginatics.com/reports/per-employee-assignments-draft-rd
+-- Excel Examle Output: https://www.enginatics.com/example/per-employee-assignments-draft-rd/
+-- Library Link: https://www.enginatics.com/reports/per-employee-assignments-draft-rd/
 -- Run Report: https://demo.enginatics.com/
-
 
 select  
 papf.person_id,

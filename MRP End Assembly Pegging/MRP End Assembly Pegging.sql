@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: MRP End Assembly Pegging
 -- Description: MRP pegging from end assembly to component
--- Excel Examle Output: https://www.enginatics.com/example/mrp-end-assembly-pegging
--- Library Link: https://www.enginatics.com/reports/mrp-end-assembly-pegging
+-- Excel Examle Output: https://www.enginatics.com/example/mrp-end-assembly-pegging/
+-- Library Link: https://www.enginatics.com/reports/mrp-end-assembly-pegging/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 xxen_util.meaning(

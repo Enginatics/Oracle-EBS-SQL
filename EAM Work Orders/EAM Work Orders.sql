@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: EAM Work Orders
 -- Description: Enterprise asset management work orders including asset and cost information
--- Excel Examle Output: https://www.enginatics.com/example/eam-work-orders
--- Library Link: https://www.enginatics.com/reports/eam-work-orders
+-- Excel Examle Output: https://www.enginatics.com/example/eam-work-orders/
+-- Library Link: https://www.enginatics.com/reports/eam-work-orders/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 wdj.organization_code,

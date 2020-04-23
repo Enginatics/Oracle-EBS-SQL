@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: FND Forms Personalizations
 -- Description: Forms personalizations and actions
--- Excel Examle Output: https://www.enginatics.com/example/fnd-forms-personalizations
--- Library Link: https://www.enginatics.com/reports/fnd-forms-personalizations
+-- Excel Examle Output: https://www.enginatics.com/example/fnd-forms-personalizations/
+-- Library Link: https://www.enginatics.com/reports/fnd-forms-personalizations/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 fav.application_name,

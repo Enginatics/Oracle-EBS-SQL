@@ -10,10 +10,9 @@ The link to blocking sessions is deliberately nonunique without jointing to samp
 In some cases, such as row lock scenarios, the blocking session is idle and does not show up in the ASH.
 
 We recommend doing further analysis with a pivot in Excel rather than by SQL, as Excel's drag- and drop is a lot faster than typing commands manually.
--- Excel Examle Output: https://www.enginatics.com/example/dba-sga-blocking-session-summary
--- Library Link: https://www.enginatics.com/reports/dba-sga-blocking-session-summary
+-- Excel Examle Output: https://www.enginatics.com/example/dba-sga-blocking-session-summary/
+-- Library Link: https://www.enginatics.com/reports/dba-sga-blocking-session-summary/
 -- Run Report: https://demo.enginatics.com/
-
 
 with y as (
 select /*+ materialize*/ distinct

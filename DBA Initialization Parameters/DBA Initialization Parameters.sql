@@ -9,10 +9,9 @@
 Database Initialization Parameters for Oracle E-Business Suite Release 12 (Doc ID 396009.1)
 EBS Database Performance and Statistics Analyzer (Doc ID 2126712.1)
 Get Proactive with Oracle E-Business Suite - Product Support Analyzer Index (Doc ID 1545562.1)
--- Excel Examle Output: https://www.enginatics.com/example/dba-initialization-parameters
--- Library Link: https://www.enginatics.com/reports/dba-initialization-parameters
+-- Excel Examle Output: https://www.enginatics.com/example/dba-initialization-parameters/
+-- Library Link: https://www.enginatics.com/reports/dba-initialization-parameters/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 x.*

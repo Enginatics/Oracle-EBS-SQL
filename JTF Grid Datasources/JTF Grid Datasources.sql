@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: JTF Grid Datasources
 -- Description: JTF grid (CRM spreadtable) datasource and column definition
--- Excel Examle Output: https://www.enginatics.com/example/jtf-grid-datasources
--- Library Link: https://www.enginatics.com/reports/jtf-grid-datasources
+-- Excel Examle Output: https://www.enginatics.com/example/jtf-grid-datasources/
+-- Library Link: https://www.enginatics.com/reports/jtf-grid-datasources/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 jgdv.grid_datasource_name datasource_name,

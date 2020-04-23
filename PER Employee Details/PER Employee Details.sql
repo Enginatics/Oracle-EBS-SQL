@@ -5,10 +5,9 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PER Employee Details
--- Excel Examle Output: https://www.enginatics.com/example/per-employee-details
--- Library Link: https://www.enginatics.com/reports/per-employee-details
+-- Excel Examle Output: https://www.enginatics.com/example/per-employee-details/
+-- Library Link: https://www.enginatics.com/reports/per-employee-details/
 -- Run Report: https://demo.enginatics.com/
-
 
 select distinct
 pad.primary_flag,

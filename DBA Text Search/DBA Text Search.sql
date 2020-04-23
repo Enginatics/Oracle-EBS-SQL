@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: DBA Text Search
 -- Description: Full text search through database source code objects such as packages, procedures, functions, triggers etc.
--- Excel Examle Output: https://www.enginatics.com/example/dba-text-search
--- Library Link: https://www.enginatics.com/reports/dba-text-search
+-- Excel Examle Output: https://www.enginatics.com/example/dba-text-search/
+-- Library Link: https://www.enginatics.com/reports/dba-text-search/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 ds.owner,

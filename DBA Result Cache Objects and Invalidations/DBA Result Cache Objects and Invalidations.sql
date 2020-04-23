@@ -10,10 +10,9 @@
 Warning !!!
 Don't run this on a prod system during business hours as prior to DB version 12.2, selecting from v$result_cache_objects apparently blocks all result cache objects (see note 2143739.1, section 4.).
 You may end up with all server sessions waiting on 'latch free' for 'Result Cache: RC Latch' while the report is running.
--- Excel Examle Output: https://www.enginatics.com/example/dba-result-cache-objects-and-invalidations
--- Library Link: https://www.enginatics.com/reports/dba-result-cache-objects-and-invalidations
+-- Excel Examle Output: https://www.enginatics.com/example/dba-result-cache-objects-and-invalidations/
+-- Library Link: https://www.enginatics.com/reports/dba-result-cache-objects-and-invalidations/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 y.result_name,

@@ -5,10 +5,9 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: andy test3
--- Excel Examle Output: https://www.enginatics.com/example/andy-test3
--- Library Link: https://www.enginatics.com/reports/andy-test3
+-- Excel Examle Output: https://www.enginatics.com/example/andy-test3/
+-- Library Link: https://www.enginatics.com/reports/andy-test3/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 *

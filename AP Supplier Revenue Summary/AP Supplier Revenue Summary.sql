@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: AP Supplier Revenue Summary
 -- Description: AP suppliers (po vendors) revenue summary across different operating units
--- Excel Examle Output: https://www.enginatics.com/example/ap-supplier-revenue-summary
--- Library Link: https://www.enginatics.com/reports/ap-supplier-revenue-summary
+-- Excel Examle Output: https://www.enginatics.com/example/ap-supplier-revenue-summary/
+-- Library Link: https://www.enginatics.com/reports/ap-supplier-revenue-summary/
 -- Run Report: https://demo.enginatics.com/
-
 
 select distinct
 &columns

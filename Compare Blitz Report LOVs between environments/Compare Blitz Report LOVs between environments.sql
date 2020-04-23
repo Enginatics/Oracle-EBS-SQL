@@ -13,10 +13,9 @@ xrplv.*,
 dbms_lob.substr(xrplv.lov_query,4000,1) lov_query_short
 from
 xxen_report_parameter_lovs_v xrplv;
--- Excel Examle Output: https://www.enginatics.com/example/compare-blitz-report-lovs-between-environments
--- Library Link: https://www.enginatics.com/reports/compare-blitz-report-lovs-between-environments
+-- Excel Examle Output: https://www.enginatics.com/example/compare-blitz-report-lovs-between-environments/
+-- Library Link: https://www.enginatics.com/reports/compare-blitz-report-lovs-between-environments/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 x.*

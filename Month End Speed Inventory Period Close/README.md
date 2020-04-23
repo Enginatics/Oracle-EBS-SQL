@@ -1,4 +1,4 @@
-# [Month End - Speed Inventory Period Close](https://www.enginatics.com/reports/month-end-speed-inventory-period-close)
+# [Month End - Speed Inventory Period Close](https://www.enginatics.com/reports/month-end-speed-inventory-period-close/)
 ## Description: 
 ** Queries Used to Display the Counts in the Inventory Account Periods form  (Doc ID 357997.1)**
 The following Blitz Report mimicks the counts found in the Inventory Accounting Period close form. 
@@ -13,9 +13,9 @@ where a.organization_id = b.organization_id
 order by organization_id, organization_code **/
 ## Categories: 
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
-# [Blitz Report™](https://www.enginatics.com/blitz-report) import options
-[rep_Month_End_Speed_Inventory_Period_Close.sql](https://www.enginatics.com/export/month-end-speed-inventory-period-close)\
-[rep_Month_End_Speed_Inventory_Period_Close.xml](https://www.enginatics.com/xml/month-end-speed-inventory-period-close)
+# [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
+[rep_Month_End_Speed_Inventory_Period_Close.sql](https://www.enginatics.com/export/month-end-speed-inventory-period-close/)\
+[rep_Month_End_Speed_Inventory_Period_Close.xml](https://www.enginatics.com/xml/month-end-speed-inventory-period-close/)
 # Oracle E-Business Suite reports
 
 This is a part of extensive [library](https://www.enginatics.com/library/) of SQL scripts for [Blitz Report™](https://www.enginatics.com/blitz-report/) that is the fastest reporting solution for Oracle EBS. Blitz Report is based on Oracle Forms so is fully integrated with E-Business Suite. 
@@ -26,6 +26,6 @@ You can [download](https://www.enginatics.com/download/) Blitz Report and use it
 
 Blitz Report runs as a background concurrent process and generates output files in XLSX or CSV format, which are automatically downloaded and opened in Excel. Check [installation](https://www.enginatics.com/installation-guide/) and [user](https://www.enginatics.com/user-guide/) guides for more details.
 
-If you are interested in Oracle EBS reporting you can visit [www.enginatics.com](https://www.enginatics.com/), check our [blog](https://www.enginatics.com/blog) and try to run this and other reports on our [demo environment](http://demo.enginatics.com/)
+If you are interested in Oracle EBS reporting you can visit [www.enginatics.com](https://www.enginatics.com/), check our [blog](https://www.enginatics.com/blog/) and try to run this and other reports on our [demo environment](http://demo.enginatics.com/)
 
 © 2020 Enginatics

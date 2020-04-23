@@ -5,10 +5,9 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: GL Account Analysis
--- Excel Examle Output: https://www.enginatics.com/example/gl-account-analysis
--- Library Link: https://www.enginatics.com/reports/gl-account-analysis
+-- Excel Examle Output: https://www.enginatics.com/example/gl-account-analysis/
+-- Library Link: https://www.enginatics.com/reports/gl-account-analysis/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 gjh.period_name,

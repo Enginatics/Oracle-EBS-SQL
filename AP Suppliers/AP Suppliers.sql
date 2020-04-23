@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: AP Suppliers
 -- Description: AP suppliers (po vendors) including supplier sites and contact information
--- Excel Examle Output: https://www.enginatics.com/example/ap-suppliers
--- Library Link: https://www.enginatics.com/reports/ap-suppliers
+-- Excel Examle Output: https://www.enginatics.com/example/ap-suppliers/
+-- Library Link: https://www.enginatics.com/reports/ap-suppliers/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 haou.name ou,

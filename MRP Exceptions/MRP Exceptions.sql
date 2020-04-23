@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: MRP Exceptions
 -- Description: MRP planning exception messages
--- Excel Examle Output: https://www.enginatics.com/example/mrp-exceptions
--- Library Link: https://www.enginatics.com/reports/mrp-exceptions
+-- Excel Examle Output: https://www.enginatics.com/example/mrp-exceptions/
+-- Library Link: https://www.enginatics.com/reports/mrp-exceptions/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 medv.organization_code,

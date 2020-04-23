@@ -7,10 +7,9 @@
 -- Report Name: ONT Order Headers and Lines
 -- Description: Sales order or quote header and line details.
 Amount values on the Oracle standard form header are derived from package oe_oe_form_header.populate_control_fields -> oe_oe_totals_summary.order_totals
--- Excel Examle Output: https://www.enginatics.com/example/ont-order-headers-and-lines
--- Library Link: https://www.enginatics.com/reports/ont-order-headers-and-lines
+-- Excel Examle Output: https://www.enginatics.com/example/ont-order-headers-and-lines/
+-- Library Link: https://www.enginatics.com/reports/ont-order-headers-and-lines/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 x.customer,

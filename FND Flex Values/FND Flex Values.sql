@@ -5,10 +5,9 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: FND Flex Values
--- Excel Examle Output: https://www.enginatics.com/example/fnd-flex-values
--- Library Link: https://www.enginatics.com/reports/fnd-flex-values
+-- Excel Examle Output: https://www.enginatics.com/example/fnd-flex-values/
+-- Library Link: https://www.enginatics.com/reports/fnd-flex-values/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 ffvs.flex_value_set_name,

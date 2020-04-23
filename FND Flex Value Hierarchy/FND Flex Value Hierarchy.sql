@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: FND Flex Value Hierarchy
 -- Description: Flexfield value hierarchy showing a hierarchical tree of parent and child relations and child ranges.
--- Excel Examle Output: https://www.enginatics.com/example/fnd-flex-value-hierarchy
--- Library Link: https://www.enginatics.com/reports/fnd-flex-value-hierarchy
+-- Excel Examle Output: https://www.enginatics.com/example/fnd-flex-value-hierarchy/
+-- Library Link: https://www.enginatics.com/reports/fnd-flex-value-hierarchy/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 lpad(' ',2*(level-1))||level level_,

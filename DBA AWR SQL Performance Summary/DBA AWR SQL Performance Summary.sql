@@ -44,10 +44,9 @@ Columns:
 -Time Percentage: Average percentage of the overall server time that the SQL is running. 50% indicates a SQL is running half of the server time, 400% means the same SQL is running constantly 4 times in parallel
 -Is Bind Sensitive: Indicates the DB's 'adaptive cursor sharing' feature. A value of 'Y' means, the DB might consider a different explainplan for different bind values. Note that for transactional SQLs such as the ones used by Oracle EBS, the execution path should usually not change. Thus, a value of 'Y' often indicates 'instable' SQLs or SQLs where the optimizer struggles to find the best execution path.
 -Is Bind Aware: 'adaptive cursor sharing' feature. A value of 'Y' means, the DB considers a differ
--- Excel Examle Output: https://www.enginatics.com/example/dba-awr-sql-performance-summary
--- Library Link: https://www.enginatics.com/reports/dba-awr-sql-performance-summary
+-- Excel Examle Output: https://www.enginatics.com/example/dba-awr-sql-performance-summary/
+-- Library Link: https://www.enginatics.com/reports/dba-awr-sql-performance-summary/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 &column0

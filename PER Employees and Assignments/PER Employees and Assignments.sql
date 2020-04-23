@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: PER Employees and Assignments
 -- Description: Human resources employees, assignments and supervisors
--- Excel Examle Output: https://www.enginatics.com/example/per-employees-and-assignments
--- Library Link: https://www.enginatics.com/reports/per-employees-and-assignments
+-- Excel Examle Output: https://www.enginatics.com/example/per-employees-and-assignments/
+-- Library Link: https://www.enginatics.com/reports/per-employees-and-assignments/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 papf.first_name,

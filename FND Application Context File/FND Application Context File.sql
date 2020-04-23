@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: FND Application Context File
 -- Description: Context XML files retrieved from the database
--- Excel Examle Output: https://www.enginatics.com/example/fnd-application-context-file
--- Library Link: https://www.enginatics.com/reports/fnd-application-context-file
+-- Excel Examle Output: https://www.enginatics.com/example/fnd-application-context-file/
+-- Library Link: https://www.enginatics.com/reports/fnd-application-context-file/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 focf.name,

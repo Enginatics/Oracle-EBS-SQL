@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: GL Header Categories Summary
 -- Description: Overview of gl headers categories
--- Excel Examle Output: https://www.enginatics.com/example/gl-header-categories-summary
--- Library Link: https://www.enginatics.com/reports/gl-header-categories-summary
+-- Excel Examle Output: https://www.enginatics.com/example/gl-header-categories-summary/
+-- Library Link: https://www.enginatics.com/reports/gl-header-categories-summary/
 -- Run Report: https://demo.enginatics.com/
-
 
 select /*+ parallel*/ distinct
 gl.name ledger,

@@ -5,10 +5,9 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: Blitz Report Column Templates
--- Excel Examle Output: https://www.enginatics.com/example/blitz-report-column-templates
--- Library Link: https://www.enginatics.com/reports/blitz-report-column-templates
+-- Excel Examle Output: https://www.enginatics.com/example/blitz-report-column-templates/
+-- Library Link: https://www.enginatics.com/reports/blitz-report-column-templates/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 xrv.report_name,

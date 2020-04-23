@@ -5,10 +5,9 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CSI Install Base Summary Counts by Organization
--- Excel Examle Output: https://www.enginatics.com/example/csi-install-base-summary-counts-by-organization
--- Library Link: https://www.enginatics.com/reports/csi-install-base-summary-counts-by-organization
+-- Excel Examle Output: https://www.enginatics.com/example/csi-install-base-summary-counts-by-organization/
+-- Library Link: https://www.enginatics.com/reports/csi-install-base-summary-counts-by-organization/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 count (*) count,

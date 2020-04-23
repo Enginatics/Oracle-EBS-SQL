@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: EAM Assets
 -- Description: Enterprise asset management asset details such as location, department etc.
--- Excel Examle Output: https://www.enginatics.com/example/eam-assets
--- Library Link: https://www.enginatics.com/reports/eam-assets
+-- Excel Examle Output: https://www.enginatics.com/example/eam-assets/
+-- Library Link: https://www.enginatics.com/reports/eam-assets/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 cii.instance_number asset_number,

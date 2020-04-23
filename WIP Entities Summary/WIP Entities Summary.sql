@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: WIP Entities Summary
 -- Description: Overview of WIP entities of different types and their various statuses.
--- Excel Examle Output: https://www.enginatics.com/example/wip-entities-summary
--- Library Link: https://www.enginatics.com/reports/wip-entities-summary
+-- Excel Examle Output: https://www.enginatics.com/example/wip-entities-summary/
+-- Library Link: https://www.enginatics.com/reports/wip-entities-summary/
 -- Run Report: https://demo.enginatics.com/
-
 
 select /*+ parallel*/
 count(*) count,

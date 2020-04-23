@@ -6,10 +6,9 @@
 /*************************************************************************/
 -- Report Name: INV Item Default Subinventories
 -- Description: Invetory items default subinventories for shipping, receiving or move order receipt transactions
--- Excel Examle Output: https://www.enginatics.com/example/inv-item-default-subinventories
--- Library Link: https://www.enginatics.com/reports/inv-item-default-subinventories
+-- Excel Examle Output: https://www.enginatics.com/example/inv-item-default-subinventories/
+-- Library Link: https://www.enginatics.com/reports/inv-item-default-subinventories/
 -- Run Report: https://demo.enginatics.com/
-
 
 select
 msiv.concatenated_segments item,
