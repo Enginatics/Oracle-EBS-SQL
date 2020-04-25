@@ -5,11 +5,15 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: ECC Concurrent Programs
--- Description: Oracle note 2495053.1 lists all concurrent program names for Enterprise Command Centers:
-https://support.oracle.com/CSP/main/article?cmd=show&type=NOT&id=2495053.1
+-- Description: List of all concurrent programs required to synchronize Oracle EBS data to the Enterprise Command Centers (ECC) Weblogic server, based on Oracle note 2495053.1 https://support.oracle.com/CSP/main/article?cmd=show&type=NOT&id=2495053.1
 
-This report can be used to check which of those required ECC load requests are currently scheduled.
-The short code can then be used as multiple parameter value entry in other reports, e.g. https://www.enginatics.com/reports/fnd-access-control/ to see which responsibilities or users have access to schedule them, or https://www.enginatics.com/reports/fnd-concurrent-requests/ to look at past execution and schedule times.
+The report includes all currently scheduled request_ids and responsibilities for incremental and full loads, to check which ones are already scheduled.
+The short code can be used as multiple parameter value entry in other reports, e.g. https://www.enginatics.com/reports/fnd-access-control/ to see which responsibilities or users have access to schedule them, or https://www.enginatics.com/reports/fnd-concurrent-requests/ to look at past execution and schedule times.
+
+ECC data is defined by dataset codes, which have a related DB package procedure containing the SQL for each dataset, see:
+https://www.enginatics.com/reports/ecc-data-sets/
+
+The individual load progams are all calling child program 'ECC Run Data Load' either for specific datasets or by application, and the program's java executable ECCRUNDL then executes the dataset SQL and transfers the data to the Weblogic server where it is stored in a file structure using Apache Lucene technology https://en.wikipedia.org/wiki/Apache_Lucene
 -- Excel Examle Output: https://www.enginatics.com/example/ecc-concurrent-programs/
 -- Library Link: https://www.enginatics.com/reports/ecc-concurrent-programs/
 -- Run Report: https://demo.enginatics.com/

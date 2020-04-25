@@ -3,6 +3,8 @@
 Accounting period status of all application modules for all or a selected list of ledgers, operating units and organizations
 ## Categories: 
 [Cost Accounting - Other](https://www.enginatics.com/library/?pg=1&category[]=Cost+Accounting+-+Other), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Financials](https://www.enginatics.com/library/?pg=1&category[]=Financials), [OATUG Public](https://www.enginatics.com/library/?pg=1&category[]=OATUG+Public)
+## Dependencies
+If you would like to try one of these SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Report Example
 [CAC_Accounting_Period_Status 06-Jul-2019 165844.xlsx](https://www.enginatics.com/example/cac-accounting-period-status/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
@@ -18,6 +20,6 @@ You can [download](https://www.enginatics.com/download/) Blitz Report and use it
 
 Blitz Report runs as a background concurrent process and generates output files in XLSX or CSV format, which are automatically downloaded and opened in Excel. Check [installation](https://www.enginatics.com/installation-guide/) and [user](https://www.enginatics.com/user-guide/) guides for more details.
 
-If you are interested in Oracle EBS reporting you can visit [www.enginatics.com](https://www.enginatics.com/), check our [blog](https://www.enginatics.com/blog/) and try to run this and other reports on our [demo environment](http://demo.enginatics.com/)
+If you are interested in Oracle EBS reporting you can visit [www.enginatics.com](https://www.enginatics.com/), check our [blog](https://www.enginatics.com/blog/) and try to run this and other reports on our [demo environment](http://demo.enginatics.com/).
 
 © 2020 Enginatics

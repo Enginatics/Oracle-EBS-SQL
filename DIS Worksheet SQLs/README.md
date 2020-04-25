@@ -6,6 +6,8 @@ select ef.* from eul_us.eul5_functions ef where ef.fun_name='eul_trigger$post_sa
 writing each worksheets' SQL query to table ams_discoverer_sql
 ## Categories: 
 [Application](https://www.enginatics.com/library/?pg=1&category[]=Application), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+## Dependencies
+If you would like to try one of these SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Report Example
 [DIS_Worksheet_SQLs 04-Jan-2019 135604.xlsx](https://www.enginatics.com/example/dis-worksheet-sqls/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
@@ -21,6 +23,6 @@ You can [download](https://www.enginatics.com/download/) Blitz Report and use it
 
 Blitz Report runs as a background concurrent process and generates output files in XLSX or CSV format, which are automatically downloaded and opened in Excel. Check [installation](https://www.enginatics.com/installation-guide/) and [user](https://www.enginatics.com/user-guide/) guides for more details.
 
-If you are interested in Oracle EBS reporting you can visit [www.enginatics.com](https://www.enginatics.com/), check our [blog](https://www.enginatics.com/blog/) and try to run this and other reports on our [demo environment](http://demo.enginatics.com/)
+If you are interested in Oracle EBS reporting you can visit [www.enginatics.com](https://www.enginatics.com/), check our [blog](https://www.enginatics.com/blog/) and try to run this and other reports on our [demo environment](http://demo.enginatics.com/).
 
 © 2020 Enginatics

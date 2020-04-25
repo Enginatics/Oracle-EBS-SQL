@@ -21,6 +21,8 @@ of it like a descriptive flex field (not on steroids).
 The name of the process parameter can be found in GMP_PROCESS_PARAMETERS.
 ## Categories: 
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+## Dependencies
+If you would like to try one of these SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [rep_OPM_Batches.sql](https://www.enginatics.com/export/opm-batches/)\
 [rep_OPM_Batches.xml](https://www.enginatics.com/xml/opm-batches/)
@@ -34,6 +36,6 @@ You can [download](https://www.enginatics.com/download/) Blitz Report and use it
 
 Blitz Report runs as a background concurrent process and generates output files in XLSX or CSV format, which are automatically downloaded and opened in Excel. Check [installation](https://www.enginatics.com/installation-guide/) and [user](https://www.enginatics.com/user-guide/) guides for more details.
 
-If you are interested in Oracle EBS reporting you can visit [www.enginatics.com](https://www.enginatics.com/), check our [blog](https://www.enginatics.com/blog/) and try to run this and other reports on our [demo environment](http://demo.enginatics.com/)
+If you are interested in Oracle EBS reporting you can visit [www.enginatics.com](https://www.enginatics.com/), check our [blog](https://www.enginatics.com/blog/) and try to run this and other reports on our [demo environment](http://demo.enginatics.com/).
 
 © 2020 Enginatics
