@@ -128,6 +128,8 @@ fb.book_type_code=fdp.book_type_code and
 )
 select --main SQL starts here
 fbc.book_type_code book,
+haouv.name OU_Name,
+fbc.*,
 fbc.book_type_name description,
 fbc.book_class class,
 fbc.distribution_source_book associated_corporate_book,
