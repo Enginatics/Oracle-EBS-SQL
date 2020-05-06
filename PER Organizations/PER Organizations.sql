@@ -16,7 +16,7 @@ ftv.territory_short_name country,
 flv1.meaning type,
 haout.name organization,
 mp.organization_code,
-decode(haou.internal_external_flag,'EXT','External','INT','Internal') internal_or_external,
+decode(haouv.internal_external_flag,'EXT','External','INT','Internal') internal_or_external,
 &col_classification
 hla.location_code,
 nvl2(hla.address_line_1,hla.address_line_1||' ','')||
@@ -26,10 +26,10 @@ nvl2(hla.town_or_city,hla.town_or_city||' ','')||
 nvl2(hla.region_2,hla.region_2||' ','')||
 hla.postal_code address,
 &col_attributes
-haou.organization_id
+haouv.organization_id
 from
-hr_all_organization_units haou,
-hr_all_organization_units haou0,
+hr_all_organization_units_vl haouv,
+hr_all_organization_units_vl haouv0,
 hr_all_organization_units_tl haout,
 hr_all_organization_units_tl haout0,
 fnd_lookup_values flv1,
@@ -103,13 +103,13 @@ hoi.org_information_context=hoit.org_information_type(+)
 mtl_parameters mp
 where
 1=1 and
-haou.business_group_id=haou0.organization_id(+) and
-haou.organization_id=haout.organization_id and
-haou0.organization_id=haout0.organization_id and
+haouv.business_group_id=haouv0.organization_id(+) and
+haouv.organization_id=haout.organization_id and
+haouv0.organization_id=haout0.organization_id and
 haout.language=userenv('lang') and
 haout0.language=userenv('lang') and
-haou.organization_id=mp.organization_id(+) and
-haou.type=flv1.lookup_code(+) and
+haouv.organization_id=mp.organization_id(+) and
+haouv.type=flv1.lookup_code(+) and
 flv1.lookup_type(+)='ORG_TYPE' and
 flv2.lookup_type(+)='ORG_CLASS' and
 flv1.language(+)=userenv('lang') and
@@ -118,16 +118,16 @@ flv1.view_application_id(+)=3 and
 flv2.view_application_id(+)=3 and
 flv1.security_group_id(+)=0 and
 flv2.security_group_id(+)=0 and
-haou.location_id=hla.location_id(+) and
+haouv.location_id=hla.location_id(+) and
 hla.country=ftv.territory_code(+) and
-haou.organization_id=hoi.organization_id(+) and
+haouv.organization_id=hoi.organization_id(+) and
 hoi.org_information1=flv2.lookup_code(+) and
-haou.organization_id=x.organization_id(+)
+haouv.organization_id=x.organization_id(+)
 order by
-haou0.name,
+haouv0.name,
 ftv.territory_short_name,
 flv1.meaning,
-haou.name,
+haouv.name,
 flv2.meaning,
 x.info_class,
 x.information_type,

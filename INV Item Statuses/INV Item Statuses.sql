@@ -17,8 +17,8 @@ Purchasable
 Recipe Enabled
 Stockable
 Transactable
--- Excel Examle Output: https://www.enginatics.com/example/inv-item-statuses(4)/
--- Library Link: https://www.enginatics.com/reports/inv-item-statuses(4)/
+-- Excel Examle Output: https://www.enginatics.com/example/inv-item-statuses(6)/
+-- Library Link: https://www.enginatics.com/reports/inv-item-statuses(6)/
 -- Run Report: https://demo.enginatics.com/
 
 select

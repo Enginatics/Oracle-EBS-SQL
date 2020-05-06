@@ -11,7 +11,7 @@
 -- Run Report: https://demo.enginatics.com/
 
 select
-haou.name ou,
+haouv.name operating_unit,
 arm.name receipt_method,
 acra.receipt_number,
 acra.receipt_date,
@@ -48,7 +48,7 @@ hp4.party_name remit_bank_branch,
 case when cba.bank_account_id is not null then ce_bank_and_account_util.get_masked_bank_acct_num(cba.bank_account_id) end remit_bank_account
 from
 ar_cash_receipts_all acra,
-hr_all_organization_units haou,
+hr_all_organization_units_vl haouv,
 ar_cash_receipt_history_all acrha1,
 ar_cash_receipt_history_all acrha2,
 fnd_lookup_values flv1,
@@ -77,7 +77,7 @@ ar_distribution_sets_all adsa
 where
 1=1 and
 acra.type='MISC' and
-acra.org_id=haou.organization_id and
+acra.org_id=haouv.organization_id and
 acra.receipt_method_id=arm.receipt_method_id(+) and
 arm.payment_channel_code=ifpct.payment_channel_code(+) and
 ifpct.language(+)=userenv('lang') and
@@ -123,6 +123,6 @@ hr.object_type(+)='ORGANIZATION' and
 hr.object_id=hop.party_id(+) and
 acra.distribution_set_id=adsa.distribution_set_id(+)
 order by
-haou.name,
+haouv.name,
 acra.receipt_date desc,
 acra.receipt_number desc

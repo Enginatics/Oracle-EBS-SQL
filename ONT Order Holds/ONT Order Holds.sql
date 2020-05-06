@@ -11,7 +11,7 @@
 -- Run Report: https://demo.enginatics.com/
 
 select
-haou.name ou,
+haouv.name operating_unit,
 hca.account_number,
 hp.party_name,
 ooha.order_number,
@@ -36,7 +36,7 @@ ohr.release_comment,
 ppa.project_number project,
 pt.task_number task
 from
-hr_all_organization_units haou,
+hr_all_organization_units_vl haouv,
 oe_order_holds_all oohoa,
 oe_hold_sources_all ohsa,
 oe_hold_releases ohr,
@@ -57,7 +57,7 @@ where
 oohoa.hold_source_id=ohsa.hold_source_id and
 oohoa.hold_release_id=ohr.hold_release_id(+) and
 ohsa.hold_id=ohd.hold_id(+) and
-haou.organization_id=ooha.org_id and
+haouv.organization_id=ooha.org_id and
 oohoa.header_id=ooha.header_id and
 oohoa.line_id=oola.line_id(+) and
 ooha.sold_to_org_id=hca.cust_account_id(+) and
@@ -69,7 +69,7 @@ ottt2.language(+)=userenv('lang') and
 oola.project_id=ppa.project_id(+) and
 oola.task_id=pt.task_id(+)
 order by
-haou.name,
+haouv.name,
 hp.party_name,
 ooha.order_number,
 rtrim(oola.line_number||'.'||oola.shipment_number||'.'||oola.option_number||'.'||oola.component_number||'.'||oola.service_number,'.')

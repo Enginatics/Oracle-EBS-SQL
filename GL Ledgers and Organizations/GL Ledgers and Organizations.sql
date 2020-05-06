@@ -43,7 +43,7 @@ fnd_id_flex_structures_vl fifsv,
 hr_operating_units hou,
 hr_all_organization_units_vl haouv,
 org_organization_definitions ood,
-hr_all_organization_units haou,
+hr_all_organization_units_vl haouv,
 hr_locations_all hla,
 fnd_territories_vl ftv,
 xle_entity_profiles xep
@@ -56,8 +56,8 @@ fifsv.id_flex_code='GL#' and
 gl.ledger_id=hou.set_of_books_id(+) and
 hou.business_group_id=haouv.organization_id(+) and
 hou.organization_id=ood.operating_unit(+) and
-ood.organization_id=haou.organization_id(+) and
-haou.location_id=hla.location_id(+) and
+ood.organization_id=haouv.organization_id(+) and
+haouv.location_id=hla.location_id(+) and
 hla.country=ftv.territory_code(+) and
 ood.legal_entity=xep.legal_entity_id(+)
 order by

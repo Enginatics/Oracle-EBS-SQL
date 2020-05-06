@@ -143,7 +143,7 @@ fbc.distribution_source_book associated_corporate_book,
 &addition_columns
 &dprn_columns
 &trx_columns
-haou.name operating_unit,
+haouv.name operating_unit,
 org_id
 from
 fa_book_controls fbc,
@@ -152,7 +152,7 @@ c_alt_ledgers,
 c_additions,
 c_dprn,
 c_fin_trx,
-hr_all_organization_units haou
+hr_all_organization_units_vl haouv
 where
 fbc.set_of_books_id=gl.ledger_id and
 fbc.book_type_code=c_alt_ledgers.book_type_code(+) and
@@ -161,7 +161,7 @@ c_additions.book_type_code=c_dprn.book_type_code(+) and
 c_additions.asset_id=c_dprn.asset_id(+) and
 c_additions.book_type_code=c_fin_trx.book_type_code(+) and
 c_additions.asset_id=c_fin_trx.asset_id(+) and
-fbc.org_id=haou.organization_id(+) and
+fbc.org_id=haouv.organization_id(+) and
 2=2
 order by
 fbc.book_type_code

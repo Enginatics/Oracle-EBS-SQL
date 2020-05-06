@@ -14,7 +14,7 @@ Source: Invoice Aging Report  and Invoice Detail Report
 
 select
 gl.name ledger,
-haou.name operating_unit,
+haouv.name operating_unit,
 asu.vendor_name supplier,
 aia.invoice_num,
 xxen_util.ap_invoice_status(aia.invoice_id,aia.invoice_amount,aia.payment_status_flag,aia.invoice_type_lookup_code,aia.validation_request_id) invoice_status,
@@ -135,10 +135,10 @@ arpa.description recurring_pmt_description,
 aia.invoice_id
 from
 gl_ledgers gl,
-hr_all_organization_units haou,
-hr_all_organization_units haou1,
-hr_all_organization_units haou2,
-hr_all_organization_units haou3,
+hr_all_organization_units_vl haouv,
+hr_all_organization_units_vl haouv1,
+hr_all_organization_units_vl haouv2,
+hr_all_organization_units_vl haouv3,
 ap_invoices_all aia,
 ap_payment_schedules_all apsa,
 ap_suppliers asu,
@@ -152,10 +152,10 @@ pa_tasks pt
 where
 1=1 and
 aia.set_of_books_id=gl.ledger_id and
-aia.org_id=haou.organization_id(+) and
-aia.expenditure_organization_id=haou1.organization_id(+) and
-aila.expenditure_organization_id=haou2.organization_id(+) and
-aida.expenditure_organization_id=haou3.organization_id(+) and
+aia.org_id=haouv.organization_id(+) and
+aia.expenditure_organization_id=haouv1.organization_id(+) and
+aila.expenditure_organization_id=haouv2.organization_id(+) and
+aida.expenditure_organization_id=haouv3.organization_id(+) and
 aia.invoice_id=apsa.invoice_id and
 nvl(apsa.amount_remaining,0)*nvl(aia.exchange_rate,1)!=0 and
 aia.vendor_id=asu.vendor_id and

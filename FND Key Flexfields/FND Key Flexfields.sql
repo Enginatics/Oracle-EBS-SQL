@@ -30,6 +30,19 @@ fifsgv.form_left_prompt window_prompt,
 fifsgv.application_column_name column_name,
 (
 select distinct
+listagg(xxen_util.meaning(fsav.segment_attribute_type,'XLA_FLEXFIELD_SEGMENTS_QUAL',602),', ') within group (order by xxen_util.meaning(fsav.segment_attribute_type,'XLA_FLEXFIELD_SEGMENTS_QUAL',602)) over (partition by fsav.application_id,fsav.id_flex_code,fsav.id_flex_num,fsav.application_column_name) segment_attributes
+from
+fnd_segment_attribute_values fsav
+where
+fifsgv.application_id=fsav.application_id and
+fifsgv.id_flex_code=fsav.id_flex_code and
+fifsgv.id_flex_num=fsav.id_flex_num and
+fifsgv.application_column_name=fsav.application_column_name and
+fsav.attribute_value='Y' and
+fsav.segment_attribute_type<>'GL_GLOBAL'
+) flexfield_qualifier,
+(
+select distinct
 listagg(fsav.segment_attribute_type,', ') within group (order by fsav.segment_attribute_type) over (partition by fsav.application_id,fsav.id_flex_code,fsav.id_flex_num,fsav.application_column_name) segment_attributes
 from
 fnd_segment_attribute_values fsav
@@ -40,7 +53,7 @@ fifsgv.id_flex_num=fsav.id_flex_num and
 fifsgv.application_column_name=fsav.application_column_name and
 fsav.attribute_value='Y' and
 fsav.segment_attribute_type<>'GL_GLOBAL'
-) segment_attributes,
+) flexfield_qualifier_code,
 ffvs.flex_value_set_name value_set_name,
 xxen_util.meaning(decode(fifsgv.enabled_flag,'Y','Y'),'YES_NO',0) enabled,
 xxen_util.meaning(decode(fifsgv.display_flag,'Y','Y'),'YES_NO',0) displayed,
@@ -48,7 +61,8 @@ xxen_util.meaning(decode(fifsgv.required_flag,'Y','Y'),'YES_NO',0) required,
 xxen_util.meaning(decode(fifsgv.security_enabled_flag,'Y','Y'),'YES_NO',0) security_enabled,
 xxen_util.meaning(ffvs.validation_type,'SEG_VAL_TYPES',0) validation_type,
 ffvt.application_table_name validation_table,
-ffvt.additional_where_clause where_clause
+ffvt.additional_where_clause where_clause,
+fifsgv.flex_value_set_id
 from
 fnd_application_vl fav,
 fnd_id_flexs fif,

@@ -41,24 +41,24 @@ per_org_structure_versions posv,
 (
 select
 pose.org_structure_version_id,
-connect_by_root haou1.name top_level_org,
+connect_by_root haouv1.name top_level_org,
 lpad(' ',2*level)||level level_,
-lpad(' ',4*(level-1))||haou2.name org_path,
-haou2.name child_org,
+lpad(' ',4*(level-1))||haouv2.name org_path,
+haouv2.name child_org,
 pose.organization_id_child child_org_id
 from
-hr_all_organization_units haou1,
+hr_all_organization_units_vl haouv1,
 per_org_structure_elements pose,
-hr_all_organization_units haou2
+hr_all_organization_units_vl haouv2
 where
-pose.organization_id_parent=haou1.organization_id and
-pose.organization_id_child=haou2.organization_id
+pose.organization_id_parent=haouv1.organization_id and
+pose.organization_id_child=haouv2.organization_id
 start with (pose.organization_id_parent, pose.org_structure_version_id) in
 (select pose0.organization_id_parent, pose0.org_structure_version_id from per_org_structure_elements pose0 where not exists (select null from per_org_structure_elements pose2 where pose0.organization_id_parent=pose2.organization_id_child and pose0.org_structure_version_id=pose2.org_structure_version_id))
 connect by nocycle
 prior pose.organization_id_child=pose.organization_id_parent and
 prior pose.org_structure_version_id=pose.org_structure_version_id
-order siblings by pose.org_structure_version_id, haou2.name
+order siblings by pose.org_structure_version_id, haouv2.name
 ) x,
 per_business_groups pbg
 where

@@ -129,11 +129,11 @@ wf.wf_status,
 trim(chr(10) from trim(wf.error_message)) error_message,
 trim(chr(10) from trim(replace(wf.error_stack,chr(0)))) error_stack,
 trim(chr(10) from trim(replace(wf.api_error,chr(0)))) api_error,
-haou.name ou,
+haouv.name operating_unit,
 oki3.object1_id1 instance_id,
 substr(okhab.contract_number,1,instr(okhab.contract_number,'_')-1) deal_number
 from
-hr_all_organization_units haou,
+hr_all_organization_units_vl haouv,
 okl_trx_quotes_all_b otqab,
 okl_trx_quotes_tl otqt,
 okl_txl_qte_lines_all_b otqlab,
@@ -256,7 +256,7 @@ wias2.notification_id=wna.notification_id(+)
 ) wf
 where
 1=1 and
-haou.organization_id=otqab.org_id and
+haouv.organization_id=otqab.org_id and
 otqab.id=otqt.id and
 otqt.language=userenv('lang') and
 otqab.id=otqlab.qte_id and

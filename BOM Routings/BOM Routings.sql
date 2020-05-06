@@ -11,7 +11,7 @@
 -- Run Report: https://demo.enginatics.com/
 
 select
-haou.name org_name,
+haouv.name org_name,
 mp.organization_code,
 decode(bor.routing_type,1,'Manufacturing',2,'Engineering',bor.routing_type) type,
 decode(bor.cfm_routing_flag,1,'Flow',2,'Discrete Job',bor.cfm_routing_flag) cfm_routing,
@@ -28,7 +28,7 @@ bd.description department_desc,
 bos.operation_type,
 bos.effectivity_date
 from
-hr_all_organization_units haou,
+hr_all_organization_units_vl haouv,
 mtl_parameters mp,
 bom_operational_routings bor,
 mtl_system_items_vl msiv,
@@ -38,7 +38,7 @@ bom_standard_operations bso,
 bom_departments bd
 where
 1=1 and
-haou.organization_id=bor.organization_id and
+haouv.organization_id=bor.organization_id and
 mp.organization_id=bor.organization_id and
 bor.assembly_item_id=msiv.inventory_item_id and
 bor.organization_id=msiv.organization_id and
@@ -48,7 +48,7 @@ bor.routing_sequence_id=bos.routing_sequence_id(+) and
 bos.department_id=bd.department_id and
 bos.standard_operation_id=bso.standard_operation_id(+)
 order by
-haou.name,
+haouv.name,
 mp.organization_code,
 msiv.concatenated_segments,
 bor.alternate_routing_designator nulls first,

@@ -11,7 +11,7 @@
 -- Run Report: https://demo.enginatics.com/
 
 select
-haou.name ou,
+haouv.name operating_unit,
 rcta.trx_number trx_number,
 rcta.trx_date,
 flv1.meaning class,
@@ -55,7 +55,7 @@ xxen_util.client_time(rcta.last_update_date) last_update_date,
 arm.name receipt_method,
 ifpct.payment_channel_name payment_method
 from
-hr_all_organization_units haou,
+hr_all_organization_units_vl haouv,
 ra_customer_trx_all rcta,
 oe_sys_parameters_all ospa,
 ra_batch_sources_all rbsa,
@@ -74,7 +74,7 @@ iby_fndcpt_pmt_chnnls_tl ifpct
 where
 1=1 and
 rcta.complete_flag='N' and
-rcta.org_id=haou.organization_id(+) and
+rcta.org_id=haouv.organization_id(+) and
 rcta.org_id=ospa.org_id(+) and
 ospa.parameter_code(+)='MASTER_ORGANIZATION_ID' and
 rcta.term_id=rtt.term_id(+) and
@@ -101,6 +101,6 @@ rcta.receipt_method_id=arm.receipt_method_id(+) and
 arm.payment_channel_code=ifpct.payment_channel_code(+) and
 ifpct.language(+)=userenv('lang')
 order by
-haou.name,
+haouv.name,
 rcta.trx_date desc,
 rcta.trx_number desc

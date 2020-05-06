@@ -12,7 +12,7 @@
 
 select
 mp.organization_code,
-haou.name organization_name,
+haouv.name organization_name,
 msifv.secondary_inventory_name name,
 msifv.description,
 msifv.status_code status,
@@ -41,7 +41,7 @@ msifv.processing_lead_time,
 msifv.postprocessing_lead_time,
 xxen_util.meaning(msifv.source_type,'MTL_SOURCE_TYPES',700) source_type,
 msifv.source_organization_code,
-haou2.name source_organization_name,
+haouv2.name source_organization_name,
 msifv.source_subinventory,
 hla.location_code,
 hla.address_line_1,
@@ -65,19 +65,19 @@ xxen_util.concatenated_segments(msifv.encumbrance_account) encumbrance_account,
 xxen_util.segments_description(msifv.encumbrance_account) encumbrance_account_desc
 from
 inv.mtl_parameters mp,
-hr_all_organization_units haou,
+hr_all_organization_units_vl haouv,
 mtl_secondary_inventories_fk_v msifv,
-hr_all_organization_units haou2,
+hr_all_organization_units_vl haouv2,
 hr_locations_all hla,
 fnd_territories_vl ftv,
 mtl_units_of_measure_tl muot
 where
 1=1 and
-haou.organization_id=mp.organization_id and
+haouv.organization_id=mp.organization_id and
 mp.organization_id=msifv.organization_id and
 msifv.location_id=hla.location_id(+) and
 hla.country=ftv.territory_code(+) and
-msifv.source_organization_id=haou2.organization_id(+) and
+msifv.source_organization_id=haouv2.organization_id(+) and
 msifv.pick_uom_code=muot.uom_code(+) and
 muot.language(+)=userenv('lang')
 order by

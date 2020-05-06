@@ -14,7 +14,7 @@ Receiving TRX exists=No
 -- Run Report: https://demo.enginatics.com/
 
 select
-haou.name ou,
+haouv.name operating_unit,
 nvl2(pha.release_num,'RELEASE','PO') type,
 pha.segment1 po_number,
 pha.release_num,
@@ -63,7 +63,7 @@ pha.start_date,
 pha.start_date_active,
 pha.po_header_id
 from
-hr_all_organization_units haou,
+hr_all_organization_units_vl haouv,
 (
 select
 pha.*,
@@ -89,7 +89,7 @@ hr_locations_all_tl hlat2,
 ap_invoices_all aia
 where
 1=1 and
-haou.organization_id=pha.org_id and
+haouv.organization_id=pha.org_id and
 pha.type_lookup_code in ('PLANNED','CONTRACT','BLANKET','STANDARD') and
 pha.vendor_id=asu.vendor_id(+) and
 pha.vendor_site_id=pvsa.vendor_site_id(+) and

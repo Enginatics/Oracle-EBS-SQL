@@ -11,7 +11,7 @@
 -- Run Report: https://demo.enginatics.com/
 
 select
-haou.name ou,
+haouv.name operating_unit,
 ottt.name transaction_type,
 ottt.description,
 decode(otta.sales_document_type_code,'B','Sales Agreement','O','Sales Order') sales_document_type,
@@ -42,7 +42,7 @@ rctta.name receivables_transaction_type,
 gcck.concatenated_segments cost_of_goods_sold_account,
 otta.currency_code currency
 from
-hr_all_organization_units haou,
+hr_all_organization_units_vl haouv,
 oe_transaction_types_all otta,
 org_organization_definitions ood,
 qp_list_headers_tl qlht,
@@ -68,7 +68,7 @@ xdo_templates_vl xtv,
 okc_terms_templates_all oktta
 where
 1=1 and
-haou.organization_id=otta.org_id and
+haouv.organization_id=otta.org_id and
 otta.warehouse_id=ood.organization_id(+) and
 otta.price_list_id=qlht.list_header_id(+) and
 qlht.language(+)=userenv('lang') and
@@ -103,7 +103,7 @@ ottt3.language(+)=userenv('lang') and
 otta.layout_template_id=xtv.template_id(+) and
 otta.contract_template_id=oktta.template_id(+)
 order by
-haou.name,
+haouv.name,
 otta.transaction_type_code desc,
 otta.order_category_code,
 otta.sales_document_type_code,

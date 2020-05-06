@@ -11,7 +11,7 @@
 -- Run Report: https://demo.enginatics.com/
 
 select
-x.ou,
+x.operating_unit,
 x.party_type,
 x.party_name,
 x.url,
@@ -56,7 +56,7 @@ xxen_util.meaning(x.freight_term,'FREIGHT_TERMS',660) freight_term,
 xxen_util.meaning(x.ship_via,'SHIP_METHOD',3) carrier,
 x.ship_sets,
 x.demand_class,
-haou2.name warehouse,
+haouv2.name warehouse,
 x.party_status,
 x.account_status,
 x.site_status,
@@ -68,7 +68,7 @@ xxen_util.client_time(x.last_update_date) last_update_date
 from
 (
 select
-hou.name ou,
+hou.name operating_unit,
 initcap(hp.party_type) party_type,
 hp.party_name,
 hp.url,
@@ -156,7 +156,7 @@ jtf_rs_salesreps jrs,
 (select jrret.* from jtf_rs_resource_extns_tl jrret where jrret.language=userenv('lang') and jrret.category in ('EMPLOYEE','OTHER','PARTY','PARTNER','SUPPLIER_CONTACT')) jrret,
 hz_cust_profile_classes hcpc,
 oe_transaction_types_tl ottt,
-hr_all_organization_units haou2,
+hr_all_organization_units_vl haouv2,
 (select x.* from (select max(avtab.vat_tax_id) over (partition by avtab.set_of_books_id, avtab.tax_code) max_vat_tax_id, avtab.* from ar_vat_tax_all_b avtab where sysdate between avtab.start_date and nvl(avtab.end_date,sysdate)) x where x.vat_tax_id=x.max_vat_tax_id) avtab,
 ra_terms_tl rtt,
 ar_dunning_letter_sets adls,
@@ -171,7 +171,7 @@ jrs.resource_id=jrret.resource_id(+) and
 x.profile_class_id=hcpc.profile_class_id(+) and
 x.order_type_id=ottt.transaction_type_id(+) and
 ottt.language(+)=userenv('lang') and
-x.warehouse_id=haou2.organization_id(+) and
+x.warehouse_id=haouv2.organization_id(+) and
 x.tax_code=avtab.tax_code(+) and
 x.set_of_books_id=avtab.set_of_books_id(+) and
 x.payment_term_id=rtt.term_id(+) and
@@ -181,7 +181,7 @@ x.statement_cycle_id=ascl.statement_cycle_id(+) and
 x.collector_id=ac.collector_id(+)
 order by
 x.party_name,
-x.ou,
+x.operating_unit,
 x.country,
 x.address,
 x.site_use

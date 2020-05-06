@@ -75,8 +75,8 @@ prof as
 select /*+ materialize*/ distinct
 x.security_profile_id,
 x.security_profile,
-decode('&expand_operating_units','Y',haou.name,listagg(haou.name,chr(10)) within group (order by haou.name) over (partition by x.security_profile_id)) operating_unit,
-decode('&expand_operating_units','Y',to_char(haou.organization_id),listagg(haou.organization_id,chr(10)) within group (order by haou.name) over (partition by x.security_profile_id)) operating_unit_id
+decode('&expand_operating_units','Y',haouv.name,listagg(haouv.name,chr(10)) within group (order by haouv.name) over (partition by x.security_profile_id)) operating_unit,
+decode('&expand_operating_units','Y',to_char(haouv.organization_id),listagg(haouv.organization_id,chr(10)) within group (order by haouv.name) over (partition by x.security_profile_id)) operating_unit_id
 from
 (
 select
@@ -95,9 +95,9 @@ decode(psp.view_all_flag,'N',psp.security_profile_id)=pol.security_profile_id(+)
 decode(psp.view_all_flag,'Y',psp.business_group_id)=hou.business_group_id(+) and
 decode(psp.view_all_flag,'Y',nvl2(psp.business_group_id,null,-1))=hou0.view_all(+)
 ) x,
-hr_all_organization_units haou
+hr_all_organization_units_vl haouv
 where
-x.organization_id=haou.organization_id(+)
+x.organization_id=haouv.organization_id(+)
 ),
 org as (
 select distinct
@@ -117,7 +117,7 @@ furg.user_id,
 xxen_util.user_name(furg.user_id) user_name,
 nvl(fu.email_address,papf.email_address) email,
 papf.global_name person,
-haou.name person_bg
+haouv.name person_bg
 from
 fnd_user_resp_groups furg,
 fnd_user fu,
@@ -130,13 +130,13 @@ max(papf.business_group_id) keep (dense_rank last order by papf.effective_end_da
 from
 per_all_people_f papf
 ) papf,
-hr_all_organization_units haou
+hr_all_organization_units_vl haouv
 where
 3=3 and
 '&enable_user'='Y' and
 furg.user_id=fu.user_id and
 fu.employee_id=papf.person_id(+) and
-papf.business_group_id=haou.organization_id(+)
+papf.business_group_id=haouv.organization_id(+)
 )
 --------------SQL starts here-------------
 select /*+ dynamic_sampling(3) */
@@ -170,7 +170,7 @@ case when y.fffv_type<>'SUBFUNCTION' and y.navigation_path_orig not like '%-> ' 
 gl.ledger,
 gl.ledger_id,
 prof.security_profile,
-case when prof.security_profile_id is not null then prof.operating_unit else (select haou.name from hr_all_organization_units haou where y.org_id=haou.organization_id) end operating_unit,
+case when prof.security_profile_id is not null then prof.operating_unit else (select haouv.name from hr_all_organization_units_vl haouv where y.org_id=haouv.organization_id) end operating_unit,
 case when prof.security_profile_id is not null then prof.operating_unit_id else y.org_id end operating_unit_id,
 org.organization,
 org.organization_id

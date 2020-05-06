@@ -5,7 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: DBA AWR SQL Performance Summary
--- Description: Database SQL performance summary from the automatic workload repository (AWR) tables to give an overview of top SQL load and performance issues.
+-- Description: Database SQL performance summary from the Automatic Workload Repository (AWR) tables to give an overview of top SQL load and performance issues.
 The report shows the summarized execution stats such as elapsed time and IO figures for a certain timeframe for individual SQL_ID and plan hash value combinations.
 All IO figures are shown in MB.
 

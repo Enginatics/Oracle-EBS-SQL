@@ -47,14 +47,14 @@ fn.server_address,
 fn.webhost,
 (
 select distinct
-listagg(haou.name,', ') within group (order by haou.name) over (partition by paaf.person_id) organization
+listagg(haouv.name,', ') within group (order by haouv.name) over (partition by paaf.person_id) organization
 from
 per_all_assignments_f paaf,
-hr_all_organization_units haou
+hr_all_organization_units_vl haouv
 where
 fu.employee_id=paaf.person_id and
 sysdate between nvl(paaf.effective_start_date,sysdate) and nvl(paaf.effective_end_date,sysdate) and
-paaf.organization_id=haou.organization_id
+paaf.organization_id=haouv.organization_id
 ) organization
 from
 fnd_logins fl,

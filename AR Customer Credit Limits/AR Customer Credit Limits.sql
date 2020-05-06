@@ -12,7 +12,7 @@ The report can be restricted to amount limits on party, account or site use leve
 -- Run Report: https://demo.enginatics.com/
 
 select
-x.ou,
+x.operating_unit,
 x.party_name,
 x.currency_code,
 &column_party
@@ -22,7 +22,7 @@ x.party_number
 from
 (
 select
-haou.name ou,
+haouv.name operating_unit,
 hp.party_name,
 hp.party_number,
 hca.account_number,
@@ -34,7 +34,7 @@ hcasa.party_site_id,
 (select hcp.cust_account_profile_id from hz_customer_profiles hcp where hca.cust_account_id=hcp.cust_account_id and hcp.site_use_id is null) account_level_id,
 (select hcp.cust_account_profile_id from hz_customer_profiles hcp where hcsua.site_use_id=hcp.site_use_id) site_use_level_id
 from
-hr_all_organization_units haou,
+hr_all_organization_units_vl haouv,
 hz_parties hp,
 (select hca.* from hz_cust_accounts hca where :display_level in ('Account','Site Use','All')) hca,
 (select hcasa.* from hz_cust_acct_sites_all hcasa where :display_level in ('Site Use','All')) hcasa,
@@ -44,7 +44,7 @@ where
 1=1 and
 hp.party_id=hca.party_id(+) and
 hca.cust_account_id=hcasa.cust_account_id(+) and
-hcasa.org_id=haou.organization_id(+) and
+hcasa.org_id=haouv.organization_id(+) and
 hcasa.cust_acct_site_id=hcsua.cust_acct_site_id(+)
 ) x,
 hz_cust_profile_amts hcpa0,
@@ -88,6 +88,6 @@ order by
 x.party_name,
 hl.country,
 hps.party_site_number,
-x.ou,
+x.operating_unit,
 site_use,
 x.currency_code

@@ -11,7 +11,7 @@
 -- Run Report: https://demo.enginatics.com/
 
 select
-x.ou,
+x.operating_unit,
 x.approval_group,
 x.description,
 x.object,
@@ -51,7 +51,7 @@ x.segment13_high) high_value
 from
 (
 select
-haou.name ou,
+haouv.name operating_unit,
 pcga.control_group_name approval_group,
 pcga.description,
 xxen_util.meaning(pcr.object_code,'CONTROLLED_OBJECT',201) object,
@@ -72,12 +72,12 @@ decode(pcr.object_code,
 ) id_flex_num,
 pcr.*
 from
-hr_all_organization_units haou,
+hr_all_organization_units_vl haouv,
 po_control_groups_all pcga,
 po_control_rules pcr
 where
 1=1 and
-haou.organization_id=pcga.org_id and
+haouv.organization_id=pcga.org_id and
 pcga.control_group_id=pcr.control_group_id
 ) x,
 fnd_id_flex_structures fifs
@@ -86,7 +86,7 @@ x.application_id=fifs.application_id(+) and
 x.id_flex_code=fifs.id_flex_code(+) and
 x.id_flex_num=fifs.id_flex_num(+)
 order by
-x.ou,
+x.operating_unit,
 x.approval_group,
 x.object,
 x.rule_type_code

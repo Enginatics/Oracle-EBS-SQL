@@ -22,7 +22,7 @@ case when fcr.request_type='M' and fcr.frr_display_sequence is not null then fcp
 flv2.meaning phase,
 flv1.meaning status,
 xxen_util.user_name(fcr.requested_by) user_name,
-haou.name ou,
+haouv.name operating_unit,
 frt.responsibility_name responsibility,
 xxen_util.client_time(fcr.actual_start_date) start_date,
 xxen_util.client_time(fcr.actual_completion_date) completion_date,
@@ -295,7 +295,7 @@ fnd_concurrent_programs_tl fcpt,
 fnd_executables_vl fev,
 fnd_responsibility_tl frt,
 fnd_conc_release_classes fcrc,
-hr_all_organization_units haou,
+hr_all_organization_units_vl haouv,
 fnd_conflicts_domain fcd,
 (select x.* from (select min(fcpa.sequence) over (partition by fcpa.concurrent_request_id,fcpa.action_type) min_sequence, fcpa.* from fnd_conc_pp_actions fcpa where '&enable_delivery'='Y' and fcpa.action_type=1 and fcpa.number_of_copies>0) x where x.sequence=x.min_sequence) fcpa1,
 (select x.* from (select min(fcpa.sequence) over (partition by fcpa.concurrent_request_id,fcpa.action_type) min_sequence, fcpa.* from fnd_conc_pp_actions fcpa where '&enable_delivery'='Y' and fcpa.action_type=2) x where x.sequence=x.min_sequence) fcpa2,
@@ -340,7 +340,7 @@ fcr.responsibility_id=frt.responsibility_id(+) and
 frt.language(+)=userenv('lang') and
 fcr.release_class_app_id=fcrc.application_id(+) and
 fcr.release_class_id=fcrc.release_class_id(+) and
-fcr.org_id_=haou.organization_id(+) and
+fcr.org_id_=haouv.organization_id(+) and
 fcr.cd_id=fcd.cd_id(+) and
 fcr.request_id=fcpa1.concurrent_request_id(+) and
 fcr.request_id=fcpa2.concurrent_request_id(+) and

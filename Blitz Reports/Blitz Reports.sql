@@ -5,7 +5,8 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: Blitz Reports
--- Description: Blitz Reports with parameters and assignments
+-- Description: Blitz Reports with parameters and assignments.
+If you are using the free version of Blitz Report, column 'Free 30 Reports' shows which reports are currently included.
 -- Excel Examle Output: https://www.enginatics.com/example/blitz-reports/
 -- Library Link: https://www.enginatics.com/reports/blitz-reports/
 -- Run Report: https://demo.enginatics.com/
@@ -53,7 +54,7 @@ table(xxen_util.rowgen(regexp_count(xr.sql_text,':\w+'))) x
 select
 xrv.report_name,
 xxen_api.category(xrv.report_id) category,
-case when xrv.row_num<=30 or xrv.seeded_blitz_report_flag='Y' then 'Y' end free_30_reports,
+xxen_util.meaning(case when xrv.row_num<=30 or xrv.seeded_blitz_report_flag='Y' then 'Y' end,'YES_NO',0) free_30_reports,
 &columns
 xrv.description,
 (select xrv0.report_name from xxen_reports_v xrv0 where xrv.copied_from_guid=xrv0.guid) copied_from,

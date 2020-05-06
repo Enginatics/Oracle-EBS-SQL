@@ -202,7 +202,7 @@ nvl(oklb2.dnz_chr_id,ocasb.khr_id) dnz_chr_id,
 case when oklb.lse_id in (49,53) then oklb.cle_id else ocasb.kle_id end oklb1_id,
 nvl(oklb2.lse_id,oklb.lse_id) lse_id
 from
-hr_all_organization_units haouv,
+hr_all_organization_units_vl haouv,
 ar_payment_schedules_all apsa,
 ra_customer_trx_all rcta,
 ra_customer_trx_lines_all rctla,

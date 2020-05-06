@@ -11,7 +11,7 @@
 -- Run Report: https://demo.enginatics.com/
 
 select
-haou.name ou,
+haouv.name operating_unit,
 asu.vendor_name supplier,
 asu.segment1 supplier_number,
 xxen_util.meaning(asu.vendor_type_lookup_code,'VENDOR TYPE',201) type,
@@ -50,7 +50,7 @@ nvl(att1.name,att0.name) payment_terms,
 xxen_util.meaning(nvl(assa.pay_date_basis_lookup_code,asu.pay_date_basis_lookup_code),'PAY DATE BASIS',201) pay_date_basis
 &contacts_columns
 from
-hr_all_organization_units haou,
+hr_all_organization_units_vl haouv,
 ap_suppliers asu,
 ap_supplier_sites_all assa,
 fnd_territories_vl ftv,
@@ -61,7 +61,7 @@ ap_terms_tl att1
 where
 1=1 and
 asu.vendor_id=assa.vendor_id(+) and
-assa.org_id=haou.organization_id(+) and
+assa.org_id=haouv.organization_id(+) and
 assa.country=ftv.territory_code(+) and
 assa.vendor_site_id=pvc.vendor_site_id(+) and
 asu.parent_vendor_id=asu0.vendor_id(+) and

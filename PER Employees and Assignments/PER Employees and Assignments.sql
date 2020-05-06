@@ -29,7 +29,7 @@ paaf.assignment_number,
 pjv.name job,
 pp.name position,
 papf2.full_name supervisor,
-haou2.name assignment_organization,
+haouv2.name assignment_organization,
 gl.name ledger,
 xxen_util.concatenated_segments(paaf.default_code_comb_id) expense_account,
 xxen_util.segments_description(paaf.default_code_comb_id) expense_account_description,
@@ -40,7 +40,7 @@ xxen_util.meaning(pastv.active_flag,'YES_NO',0) active,
 xxen_util.meaning(paaf.primary_flag,'YES_NO',0) primary,
 xxen_util.meaning(paaf.employment_category,'EMP_CAT',3) employment_category,
 xxen_util.meaning(paaf.employee_category,'EMPLOYEE_CATG',3) employee_category,
-haou.name business_group,
+haouv.name business_group,
 xxen_util.user_name(papf.created_by) person_created_by,
 xxen_util.client_time(papf.creation_date) person_creation_date,
 xxen_util.user_name(papf.last_updated_by) person_last_updated_by,
@@ -50,13 +50,13 @@ xxen_util.client_time(paaf.creation_date) asssignment_creation_date,
 xxen_util.user_name(paaf.last_updated_by) asssignment_last_updated_by,
 xxen_util.client_time(paaf.last_update_date) assignment_last_update_date
 from
-hr_all_organization_units haou,
+hr_all_organization_units_vl haouv,
 (select papf.* from per_all_people_f papf where :effective_date>=papf.effective_start_date and :effective_date<papf.effective_end_date+1) papf,
 (select papf.* from per_all_people_f papf where :effective_date>=papf.effective_start_date and :effective_date<papf.effective_end_date+1) papf2,
 per_person_types_v pptv,
 (select paaf.* from per_all_assignments_f paaf where :effective_date>=paaf.effective_start_date and :effective_date<paaf.effective_end_date+1) paaf,
 per_assignment_status_types_v pastv,
-hr_all_organization_units haou2,
+hr_all_organization_units_vl haouv2,
 per_jobs_vl pjv,
 per_positions pp,
 hr_locations_all hla,
@@ -64,17 +64,17 @@ gl_ledgers gl
 where
 1=1 and
 papf.person_type_id=pptv.person_type_id and
-papf.business_group_id=haou.organization_id and
+papf.business_group_id=haouv.organization_id and
 papf.person_id=paaf.person_id(+) and
 paaf.assignment_status_type_id=pastv.assignment_status_type_id(+) and
-paaf.organization_id=haou2.organization_id(+) and
+paaf.organization_id=haouv2.organization_id(+) and
 paaf.job_id=pjv.job_id(+) and
 paaf.position_id=pp.position_id(+) and
 paaf.supervisor_id=papf2.person_id(+) and
 paaf.location_id=hla.location_id(+) and
 paaf.set_of_books_id=gl.ledger_id(+)
 order by
-haou.name,
+haouv.name,
 papf.last_name,
 papf.first_name,
 paaf.assignment_number desc

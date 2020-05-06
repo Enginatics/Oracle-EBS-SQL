@@ -65,7 +65,7 @@ x.inst_id=gal.inst_id(+) and
 x.time=glh.time(+) and
 x.inst_id=glh.inst_id(+) and
 x.inst_id=gl.inst_id and
-gl.group#=1
+gl.status='CURRENT'
 ) y
 order by
 y.inst_id,

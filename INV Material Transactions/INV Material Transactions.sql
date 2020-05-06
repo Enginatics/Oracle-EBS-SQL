@@ -28,8 +28,8 @@ mmt.revision,
 mmt.transfer_subinventory,
 inv_project.get_locator(mmt.transfer_locator_id,mmt.transfer_organization_id) transfer_locator,
 mp2.organization_code transfer_org,
-mp3.organization_code||'-'||haou3.name owning_party,
-mp4.organization_code||'-'||haou4.name planning_party,
+mp3.organization_code||'-'||haouv3.name owning_party,
+mp4.organization_code||'-'||haouv4.name planning_party,
 mtst.transaction_source_type_name source_type,
 case
 when mmt.transaction_source_type_id=6 then mgd.segment1 --Account Alias
@@ -65,8 +65,8 @@ mtl_parameters mp2,
 hz_locations hl,
 mtl_parameters mp3,
 mtl_parameters mp4,
-hr_all_organization_units haou3,
-hr_all_organization_units haou4,
+hr_all_organization_units_vl haouv3,
+hr_all_organization_units_vl haouv4,
 mtl_transaction_reasons mtr,
 mtl_generic_dispositions mgd,
 mtl_sales_orders mso,
@@ -91,9 +91,9 @@ mmt.inventory_item_id=msiv.inventory_item_id(+) and
 mmt.transfer_organization_id=mp2.organization_id(+) and
 mmt.ship_to_location_id=hl.location_id(+) and
 mmt.owning_organization_id=mp3.organization_id(+) and
-mmt.owning_organization_id=haou3.organization_id(+) and
+mmt.owning_organization_id=haouv3.organization_id(+) and
 mmt.planning_organization_id=mp4.organization_id(+) and
-mmt.planning_organization_id=haou4.organization_id(+) and
+mmt.planning_organization_id=haouv4.organization_id(+) and
 mmt.reason_id=mtr.reason_id(+) and
 decode(mmt.transaction_source_type_id,6,mmt.transaction_source_id)=mgd.disposition_id(+) and
 decode(mmt.transaction_source_type_id,6,mmt.organization_id)=mgd.organization_id(+) and

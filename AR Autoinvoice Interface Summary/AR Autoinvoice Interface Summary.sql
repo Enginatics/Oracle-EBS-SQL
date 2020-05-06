@@ -11,7 +11,7 @@
 -- Run Report: https://demo.enginatics.com/
 
 select
-haou.name ou,
+haouv.name operating_unit,
 count(*) count,
 count(distinct decode(rila.interface_line_context,'ORDER ENTRY',rila.interface_line_attribute1)) order_count,
 &columns
@@ -22,14 +22,14 @@ rila.batch_source_name,
 rila.interface_line_context,
 rila.request_id
 from
-hr_all_organization_units haou,
+hr_all_organization_units_vl haouv,
 ra_interface_lines_all rila,
 ra_interface_errors_all riea
 where
-haou.organization_id=rila.org_id and
+haouv.organization_id=rila.org_id and
 rila.interface_line_id=riea.interface_line_id(+)
 group by
-haou.name,
+haouv.name,
 &group_by
 rila.currency_code,
 riea.message_text,
@@ -38,5 +38,5 @@ rila.batch_source_name,
 rila.interface_line_context,
 rila.request_id
 order by
-haou.name,
+haouv.name,
 count(*) desc

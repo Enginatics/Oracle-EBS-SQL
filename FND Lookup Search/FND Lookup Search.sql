@@ -99,6 +99,7 @@ fnd_lookup_values flv,
 fnd_application_vl fav
 where
 flv.language='US' and
+flv.security_group_id=0 and
 to_char(y.column_value)=flv.lookup_code and
 flv.view_application_id=fav.application_id
 ) z

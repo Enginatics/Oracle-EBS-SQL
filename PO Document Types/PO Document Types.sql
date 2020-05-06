@@ -11,7 +11,7 @@
 -- Run Report: https://demo.enginatics.com/
 
 select
-haou.name ou,
+haouv.name operating_unit,
 xxen_util.meaning(pdtav.document_type_code,'DOCUMENT TYPE',201)||' '||flv2.meaning type,
 pdtav.type_name name,
 xtv1.template_name document_types_layout,
@@ -26,14 +26,14 @@ decode(pdtav.document_type_code,
 'DeleteDisabled'
 ) delete_switcher
 from
-hr_all_organization_units haou,
+hr_all_organization_units_vl haouv,
 po_document_types_all_vl pdtav,
 fnd_lookup_values flv2,
 xdo_templates_vl xtv1,
 xdo_templates_vl xtv2
 where
 1=1 and
-haou.organization_id=pdtav.org_id and
+haouv.organization_id=pdtav.org_id and
 pdtav.document_subtype=flv2.lookup_code(+) and
 flv2.lookup_type(+)=decode(pdtav.document_type_code,'REQUISITION','REQUISITION TYPE','RFQ','RFQ SUBTYPE','QUOTATION','QUOTATION SUBTYPE','DOCUMENT SUBTYPE') and
 flv2.language(+)=userenv('lang') and
@@ -42,6 +42,6 @@ flv2.security_group_id(+)=0 and
 pdtav.document_template_code=xtv1.template_code(+) and
 pdtav.contract_template_code=xtv2.template_code(+)
 order by
-haou.name,
+haouv.name,
 pdtav.document_type_code,
 pdtav.type_name

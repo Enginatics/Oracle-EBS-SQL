@@ -12,7 +12,7 @@
 
 select
 mp.organization_code,
-haou.name organization_name,
+haouv.name organization_name,
 xxen_util.meaning(msiv.item_type,'ITEM_TYPE',3) user_item_type,
 msiv.concatenated_segments item,
 msiv.description,
@@ -86,7 +86,7 @@ gcc.concatenated_segments cost_of_goods_sold_account,
 &flexfield_columns
 msiv.inventory_item_id
 from
-hr_all_organization_units haou,
+hr_all_organization_units_vl haouv,
 mtl_parameters mp,
 mtl_system_items_vl msiv,
 mtl_parameters mp2,
@@ -120,7 +120,7 @@ mtl_atp_rules mar,
 mtl_planners mpl
 where
 1=1 and
-msiv.organization_id=haou.organization_id and
+msiv.organization_id=haouv.organization_id and
 msiv.organization_id=mp.organization_id and
 msiv.default_shipping_org=mp2.organization_id(+) and
 msiv.primary_uom_code=muot.uom_code(+) and

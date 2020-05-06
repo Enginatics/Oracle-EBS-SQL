@@ -12,7 +12,7 @@ Note: As this report is based on table ar_payment_schedules_all, it doesn't show
 -- Run Report: https://demo.enginatics.com/
 
 select
-x.ou,
+x.operating_unit,
 x.invoice_number,
 x.trx_number,
 x.trx_date,
@@ -61,7 +61,7 @@ xxen_util.client_time(x.last_update_date) last_update_date
 from
 (
 select
-haou.name ou,
+haouv.name operating_unit,
 acia.cons_billing_number invoice_number,
 nvl(rcta.trx_number,acra.receipt_number) trx_number,
 apsa.trx_date,
@@ -133,7 +133,7 @@ nvl(rcta.last_update_date,acra.last_update_date) last_update_date,
 nvl(rcta.receipt_method_id,acra.receipt_method_id) receipt_method_id,
 nvl(rcta.payment_trxn_extension_id,acra.payment_trxn_extension_id) payment_trxn_extension_id
 from
-hr_all_organization_units haou,
+hr_all_organization_units_vl haouv,
 ar_payment_schedules_all apsa,
 ra_customer_trx_all rcta,
 oe_sys_parameters_all ospa,
@@ -161,7 +161,7 @@ hz_relationships hr,
 where
 1=1 and
 apsa.payment_schedule_id>0 and
-apsa.org_id=haou.organization_id and
+apsa.org_id=haouv.organization_id and
 apsa.customer_trx_id=rcta.customer_trx_id(+) and
 apsa.org_id=ospa.org_id(+) and
 ospa.parameter_code(+)='MASTER_ORGANIZATION_ID' and
@@ -233,7 +233,7 @@ ieba.bank_id=hp2.party_id(+) and
 ieba.branch_id=hp3.party_id(+) and
 decode(ipiua.instrument_type,'CREDITCARD',ipiua.instrument_id)=ic.instrid(+)
 order by
-x.ou,
+x.operating_unit,
 x.trx_date desc,
 x.invoice_number desc,
 x.trx_number desc

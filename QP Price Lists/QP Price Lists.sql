@@ -43,7 +43,7 @@ hp.party_name customer_name,
 xxen_util.meaning(qlhv.ship_method_code,'SHIP_METHOD',3) ship_method,
 xxen_util.meaning(qlhv.freight_terms_code,'FREIGHT_TERMS',660) freight_terms,
 rtt.name payment_term,
-haou.name operating_unit,
+haouv.name operating_unit,
 xxen_util.user_name(qllv.created_by) created_by,
 xxen_util.client_time(qllv.creation_date) creation_date,
 xxen_util.user_name(qllv.last_updated_by) last_updated_by,
@@ -59,7 +59,7 @@ fnd_currencies_vl fcv,
 ra_terms_tl rtt,
 hz_cust_accounts hca,
 hz_parties hp,
-hr_all_organization_units haou,
+hr_all_organization_units_vl haouv,
 qp_price_formulas_vl qpfv
 where
 1=1 and
@@ -73,7 +73,7 @@ qlhv.terms_id=rtt.term_id(+) and
 rtt.language(+)=userenv('lang') and
 qlhv.sold_to_org_id=hca.cust_account_id(+) and
 hca.party_id=hp.party_id(+) and
-qlhv.orig_org_id=haou.organization_id(+) and
+qlhv.orig_org_id=haouv.organization_id(+) and
 qllv.price_by_formula_id=qpfv.price_formula_id(+)
 order by
 qlhv.name,
