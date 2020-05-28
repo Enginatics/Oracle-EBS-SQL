@@ -5,7 +5,9 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: DBA SGA+PGA Memory Configuration
--- Description: A frequent configuration problem is not making full use of the available hardware resources, especially the physical RAM of the database server.
+-- Description: Current SGA and PGA memory configuration in gigabytes.
+
+A frequent configuration problem is not making full use of the available hardware resources, especially the physical RAM of the database server.
 This report shows the servers SGA, PGA and CPU configuration in comparison to the available hardware.
 For maximum performance, configure the SGA+PGA to use the full available memory of your server minus a few gig for OS level caching, e.g. for writing and reading of PLSQL output files on the DB node and for process memory (an estimated 4MB per process, see below).
 

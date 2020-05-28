@@ -30,7 +30,7 @@ from
 fnd_concurrent_requests fcr
 where
 fcr.argument_text like '%INCREMENTAL_LOAD%' and
-(fcr.phase_code='P' and fcr.hold_flag='N' or fcr.phase_code='R') and
+(fcr.phase_code='P' /*and fcr.hold_flag='N'*/ or fcr.phase_code='R') and
 fcpv.application_id=fcr.program_application_id and
 fcpv.concurrent_program_id=fcr.concurrent_program_id
 ) incremental_load_request_id,
@@ -42,7 +42,7 @@ fnd_concurrent_requests fcr,
 fnd_responsibility_vl frv
 where
 fcr.argument_text like '%INCREMENTAL_LOAD%' and
-(fcr.phase_code='P' and fcr.hold_flag='N' or fcr.phase_code='R') and
+(fcr.phase_code='P' /*and fcr.hold_flag='N'*/ or fcr.phase_code='R') and
 fcpv.application_id=fcr.program_application_id and
 fcpv.concurrent_program_id=fcr.concurrent_program_id and
 fcr.responsibility_application_id=frv.application_id and
@@ -55,7 +55,7 @@ from
 fnd_concurrent_requests fcr
 where
 fcr.argument_text like '%FULL_LOAD%' and
-(fcr.phase_code='P' and fcr.hold_flag='N' or fcr.phase_code='R') and
+(fcr.phase_code='P' /*and fcr.hold_flag='N'*/ or fcr.phase_code='R') and
 fcpv.application_id=fcr.program_application_id and
 fcpv.concurrent_program_id=fcr.concurrent_program_id
 ) full_load_request_id,
@@ -67,7 +67,7 @@ fnd_concurrent_requests fcr,
 fnd_responsibility_vl frv
 where
 fcr.argument_text like '%FULL_LOAD%' and
-(fcr.phase_code='P' and fcr.hold_flag='N' or fcr.phase_code='R') and
+(fcr.phase_code='P' /*and fcr.hold_flag='N'*/ or fcr.phase_code='R') and
 fcpv.application_id=fcr.program_application_id and
 fcpv.concurrent_program_id=fcr.concurrent_program_id and
 fcr.responsibility_application_id=frv.application_id and

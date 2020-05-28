@@ -113,6 +113,7 @@ mfp.transaction_id,
 ooha.order_number,
 count(distinct ooha.order_number) over (partition by mfp.transaction_id) order_count
 from
+mtl_parameters mp,
 mrp_full_pegging mfp,
 mrp_full_pegging mfp0,
 mrp_gross_requirements mgr,
@@ -120,6 +121,8 @@ oe_order_lines_all oola,
 oe_order_headers_all ooha
 where
 2=2 and
+mp.organization_id=mfp.organization_id and
+mp.organization_id=mfp0.organization_id and
 mfp.end_pegging_id=mfp0.pegging_id and
 mfp0.demand_id=mgr.demand_id and
 mgr.origination_type=6 and

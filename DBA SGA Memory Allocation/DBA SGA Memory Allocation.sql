@@ -5,7 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: DBA SGA Memory Allocation
--- Description: Current SGA memory usage, showing the split between buffer cache and shared pool.
+-- Description: Current SGA memory usage in gigabytes, showing the split between buffer cache and shared pool
 -- Excel Examle Output: https://www.enginatics.com/example/dba-sga-memory-allocation/
 -- Library Link: https://www.enginatics.com/reports/dba-sga-memory-allocation/
 -- Run Report: https://demo.enginatics.com/

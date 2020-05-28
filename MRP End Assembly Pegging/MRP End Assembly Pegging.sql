@@ -31,7 +31,7 @@ xxen_util.meaning(msiv1.item_type,'ITEM_TYPE',3) item_type,
 xxen_util.meaning(msiv1.end_assembly_pegging_flag,'ASSEMBLY_PEGGING_CODE',0) pegging,
 msiv1.planner_code,
 mpl.description planner,
-(select ppx.full_name from per_people_x ppx where msiv1.buyer_id=ppx.person_id and rownum=1) buyer,
+ppx.full_name buyer,
 round(nvl(mfp1.allocated_quantity/xxen_util.zero_to_null(mfp1.end_item_usage),0),4) end_demand_pegged_qty,
 round(mfp1.demand_quantity,4) demand_quantity,
 round(mfp1.allocated_quantity,4) pegged_quantity,
@@ -52,6 +52,7 @@ mrp_full_pegging mfp1,
 mtl_system_items_vl msiv0,
 mtl_system_items_vl msiv1,
 mtl_units_of_measure_tl muot,
+per_people_x ppx,
 mtl_planners mpl,
 fnd_lookup_values flv,
 mrp_recommendations mr,
@@ -78,6 +79,7 @@ mfp0.organization_id=msiv0.organization_id and
 mfp1.organization_id=msiv1.organization_id and
 msiv1.primary_uom_code=muot.uom_code(+) and
 muot.language(+)=userenv('lang') and
+msiv1.buyer_id=ppx.person_id(+) and
 msiv1.planner_code=mpl.planner_code(+) and
 msiv1.organization_id=mpl.organization_id(+) and
 case when mfp0.demand_id=-1 and mfp0.prev_pegging_id is null then to_char(case when mfp0.supply_type in (10,13) then 5 else mfp0.supply_type end) end=flv.lookup_code(+) and

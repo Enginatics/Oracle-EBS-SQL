@@ -25,6 +25,8 @@ flv.start_date_active,
 flv.end_date_active,
 xxen_util.user_name(flv.created_by) created_by,
 xxen_util.client_time(flv.creation_date) creation_date,
+xxen_util.user_name(flv.last_updated_by) last_updated_by,
+xxen_util.client_time(flv.last_update_date) last_update_date,
 'xxen_util.meaning(x.'||lower(flv.lookup_type)||','''||flv.lookup_type||''','||flv.view_application_id||') '||lower(flv.lookup_type)||',' sql_text,
 'select
 flv.lookup_code,

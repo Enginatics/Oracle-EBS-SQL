@@ -94,21 +94,26 @@ p_id_flex_code in varchar2 default 'GL#'
 function reverse(p_text in varchar2, p_delimiter in varchar2) return varchar;
 
 /***********************************************************************************************/
-/*  convert a clob to blob.                                                                    */
+/*  convert clob to blob                                                                       */
 /***********************************************************************************************/
 function clob_to_blob(p_clob in clob) return blob;
 
 /***********************************************************************************************/
-/*  convert a blob to clob.                                                                    */
+/*  convert blob to clob                                                                       */
 /*  useful for example to extract text content from xml files stored in the db such as the     */
-/*  dataquery sql statement from xml publisher data templates,                                 */
+/*  dataquery sql statement from xml publisher data templates                                  */
 /***********************************************************************************************/
 function blob_to_clob(p_blob in blob) return clob;
 
 /***********************************************************************************************/
-/*  convert a long datatype to clob.                                                           */
+/*  convert long datatype to clob                                                              */
 /***********************************************************************************************/
 function long_to_clob(p_table_name in varchar2, p_column_name in varchar2, p_row_id in rowid) return clob;
+
+/***********************************************************************************************/
+/*  convert blob to base64                                                                     */
+/***********************************************************************************************/
+function blob_to_base64(p_blob in blob) return clob;
 
 /***********************************************************************************************/
 /*  substrb for clobs up to 32767 characters, see oracle note 1571041.1                        */
@@ -973,6 +978,19 @@ begin
   dbms_sql.close_cursor(l_cursor);
   return l_clob;
 end long_to_clob;
+
+
+function blob_to_base64(p_blob in blob) return clob is
+l_file_size pls_integer:=dbms_lob.getlength(p_blob);
+l_len pls_integer:=19200;
+l_blob64 blob;
+begin
+  dbms_lob.createtemporary(l_blob64, true);
+  for i in 0..trunc((l_file_size-1)/l_len) loop
+    dbms_lob.append(l_blob64,utl_encode.base64_encode(dbms_lob.substr(p_blob,l_len,i*l_len+1)));
+  end loop;
+  return blob_to_clob(l_blob64);
+end blob_to_base64;
 
 
 function clob_substrb(p_clob in clob, p_length in pls_integer, p_position in pls_integer) return clob is
