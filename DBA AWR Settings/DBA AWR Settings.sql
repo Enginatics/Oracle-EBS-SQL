@@ -6,6 +6,9 @@
 /*************************************************************************/
 -- Report Name: DBA AWR Settings
 -- Description: Automatic workload repository settings such as retention period, snapshot interval and number of top SQLs to capture.
+Note that for executing Blitz Report queries on AWR data, you require a Diagnostic pack license as explained in Oracle's note 1490798.1:
+https://support.oracle.com/CSP/main/article?cmd=show&type=NOT&id=1490798.1
+
 topnsql=DEFAULT means the database captures the top 30 SQLs from 5 different categories (Elapsed Time, CPU Time, Parse Calls, Shareable Memory, Version Count) for each snapshot interval.
 So the default setting would capture a maximum of 150 different SQLs per snapshot, depending on system load.
 
@@ -118,6 +121,7 @@ v$database vd,
 sys.wrm$_wr_control wwc,
 (select x.* from (select max(dhdi.startup_time) over (partition by dhdi.dbid, dhdi.instance_number) max_startup_time, dhdi.* from dba_hist_database_instance dhdi) x where x.startup_time=x.max_startup_time) dhdi
 where
+1=1 and
 vd.dbid=wwc.dbid and
 wwc.dbid=dhdi.dbid(+)
 order by

@@ -8,7 +8,6 @@ If you would like to try one of these SQLs without having Blitz Report installed
 # Report Example
 [FND_Responsibility_Menu_Exclusions 23-Jan-2018 063112.xlsx](https://www.enginatics.com/example/fnd-responsibility-menu-exclusions/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_FND_Responsibility_Menu_Exclusions.sql](https://www.enginatics.com/export/fnd-responsibility-menu-exclusions/)\
 [rep_FND_Responsibility_Menu_Exclusions.xml](https://www.enginatics.com/xml/fnd-responsibility-menu-exclusions/)
 # Oracle E-Business Suite - Reporting Library 
     

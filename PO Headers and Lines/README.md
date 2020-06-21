@@ -2,13 +2,12 @@
 ## Description: 
 PO headers, lines, receiving transactions and corresponding AP invoices
 ## Categories: 
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Financials](https://www.enginatics.com/library/?pg=1&category[]=Financials), [Procurement](https://www.enginatics.com/library/?pg=1&category[]=Procurement)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Financials](https://www.enginatics.com/library/?pg=1&category[]=Financials), [Procurement](https://www.enginatics.com/library/?pg=1&category[]=Procurement), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+Operations), [Toolkit - Setup & Support](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+Setup+%26+Support), [Toolkit - Time Critical](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+Time+Critical)
 ## Dependencies
 If you would like to try one of these SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Report Example
 [PO_Headers_and_Lines 03-Apr-2018 102655.xlsx](https://www.enginatics.com/example/po-headers-and-lines/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_PO_Headers_and_Lines.sql](https://www.enginatics.com/export/po-headers-and-lines/)\
 [rep_PO_Headers_and_Lines.xml](https://www.enginatics.com/xml/po-headers-and-lines/)
 # Oracle E-Business Suite - Reporting Library 
     

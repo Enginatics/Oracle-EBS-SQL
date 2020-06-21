@@ -11,7 +11,6 @@ If you would like to try one of these SQLs without having Blitz Report installed
 # Report Example
 [DIS_Worksheet_SQLs 04-Jan-2019 135604.xlsx](https://www.enginatics.com/example/dis-worksheet-sqls/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_DIS_Worksheet_SQLs.sql](https://www.enginatics.com/export/dis-worksheet-sqls/)\
 [rep_DIS_Worksheet_SQLs.xml](https://www.enginatics.com/xml/dis-worksheet-sqls/)
 # Oracle E-Business Suite - Reporting Library 
     

@@ -4,7 +4,6 @@
 ## Dependencies
 If you would like to try one of these SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_PA_Project_Tasks_and_Budgets.sql](https://www.enginatics.com/export/pa-project-tasks-and-budgets/)\
 [rep_PA_Project_Tasks_and_Budgets.xml](https://www.enginatics.com/xml/pa-project-tasks-and-budgets/)
 # Oracle E-Business Suite - Reporting Library 
     

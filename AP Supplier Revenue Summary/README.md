@@ -2,13 +2,12 @@
 ## Description: 
 AP suppliers (po vendors) revenue summary across different operating units
 ## Categories: 
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Financials](https://www.enginatics.com/library/?pg=1&category[]=Financials), [Procurement](https://www.enginatics.com/library/?pg=1&category[]=Procurement)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Financials](https://www.enginatics.com/library/?pg=1&category[]=Financials), [Procurement](https://www.enginatics.com/library/?pg=1&category[]=Procurement), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+Operations)
 ## Dependencies
 If you would like to try one of these SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Report Example
 [AP_Supplier_Revenue_Summary 21-Jul-2019 080726.xlsx](https://www.enginatics.com/example/ap-supplier-revenue-summary/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_AP_Supplier_Revenue_Summary.sql](https://www.enginatics.com/export/ap-supplier-revenue-summary/)\
 [rep_AP_Supplier_Revenue_Summary.xml](https://www.enginatics.com/xml/ap-supplier-revenue-summary/)
 # Oracle E-Business Suite - Reporting Library 
     

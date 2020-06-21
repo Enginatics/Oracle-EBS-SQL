@@ -8,7 +8,6 @@ If you would like to try one of these SQLs without having Blitz Report installed
 # Report Example
 [INV_Item_Relationships 18-Jan-2018 221121.xlsx](https://www.enginatics.com/example/inv-item-relationships/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_INV_Item_Relationships.sql](https://www.enginatics.com/export/inv-item-relationships/)\
 [rep_INV_Item_Relationships.xml](https://www.enginatics.com/xml/inv-item-relationships/)
 # Oracle E-Business Suite - Reporting Library 
     

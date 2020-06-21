@@ -9,7 +9,6 @@ If you would like to try one of these SQLs without having Blitz Report installed
 # Report Example
 [DIS_Import_Performance 17-Jun-2019 131540.xlsx](https://www.enginatics.com/example/dis-import-performance/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_DIS_Import_Performance.sql](https://www.enginatics.com/export/dis-import-performance/)\
 [rep_DIS_Import_Performance.xml](https://www.enginatics.com/xml/dis-import-performance/)
 # Oracle E-Business Suite - Reporting Library 
     

@@ -14,7 +14,6 @@ If you would like to try one of these SQLs without having Blitz Report installed
 # Report Example
 [FND_User_Login_History 20-Jan-2019 122653.xlsx](https://www.enginatics.com/example/fnd-user-login-history/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_FND_User_Login_History.sql](https://www.enginatics.com/export/fnd-user-login-history/)\
 [rep_FND_User_Login_History.xml](https://www.enginatics.com/xml/fnd-user-login-history/)
 # Oracle E-Business Suite - Reporting Library 
     

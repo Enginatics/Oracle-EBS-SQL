@@ -19,7 +19,6 @@ If you would like to try one of these SQLs without having Blitz Report installed
 # Report Example
 [FND_Lookup_Search 27-Jul-2018 212528.xlsx](https://www.enginatics.com/example/fnd-lookup-search/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_FND_Lookup_Search.sql](https://www.enginatics.com/export/fnd-lookup-search/)\
 [rep_FND_Lookup_Search.xml](https://www.enginatics.com/xml/fnd-lookup-search/)
 # Oracle E-Business Suite - Reporting Library 
     

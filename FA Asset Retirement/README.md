@@ -4,7 +4,6 @@
 ## Dependencies
 If you would like to try one of these SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_FA_Asset_Retirement.sql](https://www.enginatics.com/export/fa-asset-retirement/)\
 [rep_FA_Asset_Retirement.xml](https://www.enginatics.com/xml/fa-asset-retirement/)
 # Oracle E-Business Suite - Reporting Library 
     

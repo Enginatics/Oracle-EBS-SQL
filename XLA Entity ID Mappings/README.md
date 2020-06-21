@@ -8,7 +8,6 @@ If you would like to try one of these SQLs without having Blitz Report installed
 # Report Example
 [XLA_Entity_ID_Mappings 17-Jun-2019 114024.xlsx](https://www.enginatics.com/example/xla-entity-id-mappings/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_XLA_Entity_ID_Mappings.sql](https://www.enginatics.com/export/xla-entity-id-mappings/)\
 [rep_XLA_Entity_ID_Mappings.xml](https://www.enginatics.com/xml/xla-entity-id-mappings/)
 # Oracle E-Business Suite - Reporting Library 
     

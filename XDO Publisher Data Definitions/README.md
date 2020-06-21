@@ -13,7 +13,6 @@ If you would like to try one of these SQLs without having Blitz Report installed
 # Report Example
 [XDO_Publisher_Data_Definitions 29-Apr-2020 114115.xlsx](https://www.enginatics.com/example/xdo-publisher-data-definitions/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_XDO_Publisher_Data_Definitions.sql](https://www.enginatics.com/export/xdo-publisher-data-definitions/)\
 [rep_XDO_Publisher_Data_Definitions.xml](https://www.enginatics.com/xml/xdo-publisher-data-definitions/)
 # Oracle E-Business Suite - Reporting Library 
     

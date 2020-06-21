@@ -12,7 +12,6 @@ If you would like to try one of these SQLs without having Blitz Report installed
 # Report Example
 [AP_Cash_Requirement 03-Apr-2018 093841.xlsx](https://www.enginatics.com/example/ap-cash-requirement/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_AP_Cash_Requirement.sql](https://www.enginatics.com/export/ap-cash-requirement/)\
 [rep_AP_Cash_Requirement.xml](https://www.enginatics.com/xml/ap-cash-requirement/)
 # Oracle E-Business Suite - Reporting Library 
     

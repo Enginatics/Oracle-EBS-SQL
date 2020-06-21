@@ -16,7 +16,6 @@ If you would like to try one of these SQLs without having Blitz Report installed
 # Report Example
 [DBA_AWR_System_Metrics_Summary 13-Jul-2018 173115.xlsx](https://www.enginatics.com/example/dba-awr-system-metrics-summary/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_DBA_AWR_System_Metrics_Summary.sql](https://www.enginatics.com/export/dba-awr-system-metrics-summary/)\
 [rep_DBA_AWR_System_Metrics_Summary.xml](https://www.enginatics.com/xml/dba-awr-system-metrics-summary/)
 # Oracle E-Business Suite - Reporting Library 
     

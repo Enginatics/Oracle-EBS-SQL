@@ -2,13 +2,12 @@
 ## Description: 
 Organization access setup
 ## Categories: 
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Logistics](https://www.enginatics.com/library/?pg=1&category[]=Logistics), [Setup](https://www.enginatics.com/library/?pg=1&category[]=Setup)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Logistics](https://www.enginatics.com/library/?pg=1&category[]=Logistics), [Setup](https://www.enginatics.com/library/?pg=1&category[]=Setup), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+Operations)
 ## Dependencies
 If you would like to try one of these SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Report Example
 [INV_Organization_Access 18-Jan-2018 222609.xlsx](https://www.enginatics.com/example/inv-organization-access/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_INV_Organization_Access.sql](https://www.enginatics.com/export/inv-organization-access/)\
 [rep_INV_Organization_Access.xml](https://www.enginatics.com/xml/inv-organization-access/)
 # Oracle E-Business Suite - Reporting Library 
     

@@ -2,13 +2,12 @@
 ## Description: 
 Inventory material transactions
 ## Categories: 
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Logistics](https://www.enginatics.com/library/?pg=1&category[]=Logistics), [Manufacturing](https://www.enginatics.com/library/?pg=1&category[]=Manufacturing)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Logistics](https://www.enginatics.com/library/?pg=1&category[]=Logistics), [Manufacturing](https://www.enginatics.com/library/?pg=1&category[]=Manufacturing), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+Operations)
 ## Dependencies
 If you would like to try one of these SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Report Example
 [INV_Material_Transactions 24-Jul-2017 143718.xlsx](https://www.enginatics.com/example/inv-material-transactions/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_INV_Material_Transactions.sql](https://www.enginatics.com/export/inv-material-transactions/)\
 [rep_INV_Material_Transactions.xml](https://www.enginatics.com/xml/inv-material-transactions/)
 # Oracle E-Business Suite - Reporting Library 
     

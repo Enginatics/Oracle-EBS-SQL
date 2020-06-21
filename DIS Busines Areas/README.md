@@ -9,7 +9,6 @@ If you would like to try one of these SQLs without having Blitz Report installed
 # Report Example
 [DIS_Busines_Areas 04-Jan-2019 134936.xlsx](https://www.enginatics.com/example/dis-busines-areas/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_DIS_Busines_Areas.sql](https://www.enginatics.com/export/dis-busines-areas/)\
 [rep_DIS_Busines_Areas.xml](https://www.enginatics.com/xml/dis-busines-areas/)
 # Oracle E-Business Suite - Reporting Library 
     

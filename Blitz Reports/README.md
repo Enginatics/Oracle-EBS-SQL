@@ -9,7 +9,6 @@ If you would like to try one of these SQLs without having Blitz Report installed
 # Report Example
 [Blitz_Reports 03-May-2020 003831.xlsx](https://www.enginatics.com/example/blitz-reports/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_Blitz_Reports.sql](https://www.enginatics.com/export/blitz-reports/)\
 [rep_Blitz_Reports.xml](https://www.enginatics.com/xml/blitz-reports/)
 # Oracle E-Business Suite - Reporting Library 
     

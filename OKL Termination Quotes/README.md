@@ -8,7 +8,6 @@ If you would like to try one of these SQLs without having Blitz Report installed
 # Report Example
 [OKL_Termination_Quotes 18-Jan-2018 214747.xlsx](https://www.enginatics.com/example/okl-termination-quotes/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_OKL_Termination_Quotes.sql](https://www.enginatics.com/export/okl-termination-quotes/)\
 [rep_OKL_Termination_Quotes.xml](https://www.enginatics.com/xml/okl-termination-quotes/)
 # Oracle E-Business Suite - Reporting Library 
     

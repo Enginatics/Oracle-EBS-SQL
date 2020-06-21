@@ -2,13 +2,12 @@
 ## Description: 
 Forms personalizations and actions
 ## Categories: 
-[Application](https://www.enginatics.com/library/?pg=1&category[]=Application), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Application](https://www.enginatics.com/library/?pg=1&category[]=Application), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - DBA](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+DBA)
 ## Dependencies
 If you would like to try one of these SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Report Example
 [FND_Forms_Personalizations 21-Jul-2017 173253.xlsx](https://www.enginatics.com/example/fnd-forms-personalizations/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_FND_Forms_Personalizations.sql](https://www.enginatics.com/export/fnd-forms-personalizations/)\
 [rep_FND_Forms_Personalizations.xml](https://www.enginatics.com/xml/fnd-forms-personalizations/)
 # Oracle E-Business Suite - Reporting Library 
     

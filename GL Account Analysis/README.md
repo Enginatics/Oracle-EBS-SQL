@@ -1,12 +1,11 @@
 # [GL Account Analysis](https://www.enginatics.com/reports/gl-account-analysis/)
 ## Categories: 
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Finance](https://www.enginatics.com/library/?pg=1&category[]=Finance), [Financials](https://www.enginatics.com/library/?pg=1&category[]=Financials)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Finance](https://www.enginatics.com/library/?pg=1&category[]=Finance), [Financials](https://www.enginatics.com/library/?pg=1&category[]=Financials), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+Operations)
 ## Dependencies
 If you would like to try one of these SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Report Example
 [GL_Account_Analysis 06-Mar-2020 081910.xlsx](https://www.enginatics.com/example/gl-account-analysis/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_GL_Account_Analysis.sql](https://www.enginatics.com/export/gl-account-analysis/)\
 [rep_GL_Account_Analysis.xml](https://www.enginatics.com/xml/gl-account-analysis/)
 # Oracle E-Business Suite - Reporting Library 
     

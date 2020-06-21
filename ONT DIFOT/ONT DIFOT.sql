@@ -32,6 +32,7 @@ hcsua2.location bill_to_location,
 (select hz_format_pub.format_address(hps2.location_id,null,null,' , ') from dual) bill_to_address,
 ftv2.territory_short_name bill_to_country,
 x.ordered_date,
+trunc(x.promise_date) - trunc(x.actual_shipment_date+delivery_lead_time) On_time_or_late,
 x.price_list,
 x.salesperson,
 x.order_source,
@@ -75,7 +76,6 @@ x.promise_date,
 x.schedule_ship_date,
 x.actual_shipment_date,
 x.shipped_quantity,
-trunc(x.promise_date) - trunc(x.actual_shipment_date+delivery_lead_time) On_time_or_late,
 x.shipped_quantity-x.quantity shipped_in_full_when_zero,
 x.delivery_lead_time,
 x.shipment_priority,
@@ -261,6 +261,7 @@ hz_locations hl2,
 fnd_territories_vl ftv1,
 fnd_territories_vl ftv2
 where
+2=2 and
 x.ship_to_org_id=hcsua1.site_use_id(+) and
 x.invoice_to_org_id=hcsua2.site_use_id(+) and
 hcsua1.cust_acct_site_id=hcasa1.cust_acct_site_id(+) and

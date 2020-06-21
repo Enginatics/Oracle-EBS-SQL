@@ -8,7 +8,6 @@ If you would like to try one of these SQLs without having Blitz Report installed
 # Report Example
 [DIS_Access_Privileges 04-Jan-2019 134602.xlsx](https://www.enginatics.com/example/dis-access-privileges/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_DIS_Access_Privileges.sql](https://www.enginatics.com/export/dis-access-privileges/)\
 [rep_DIS_Access_Privileges.xml](https://www.enginatics.com/xml/dis-access-privileges/)
 # Oracle E-Business Suite - Reporting Library 
     

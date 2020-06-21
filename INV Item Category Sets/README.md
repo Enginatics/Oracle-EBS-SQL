@@ -1,12 +1,11 @@
 # [INV Item Category Sets](https://www.enginatics.com/reports/inv-item-category-sets/)
 ## Categories: 
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Manufacturing](https://www.enginatics.com/library/?pg=1&category[]=Manufacturing), [Setup](https://www.enginatics.com/library/?pg=1&category[]=Setup)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Manufacturing](https://www.enginatics.com/library/?pg=1&category[]=Manufacturing), [Setup](https://www.enginatics.com/library/?pg=1&category[]=Setup), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+Operations)
 ## Dependencies
 If you would like to try one of these SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Report Example
 [INV_Item_Category_Sets 18-Jan-2018 222818.xlsx](https://www.enginatics.com/example/inv-item-category-sets/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_INV_Item_Category_Sets.sql](https://www.enginatics.com/export/inv-item-category-sets/)\
 [rep_INV_Item_Category_Sets.xml](https://www.enginatics.com/xml/inv-item-category-sets/)
 # Oracle E-Business Suite - Reporting Library 
     

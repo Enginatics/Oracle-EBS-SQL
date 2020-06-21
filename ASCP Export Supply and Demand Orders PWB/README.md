@@ -3,11 +3,10 @@
 Use this to export all order types from the Planner Workbench without waiting
 
 ## Categories: 
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+Operations), [Toolkit - Time Critical](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+Time+Critical)
 ## Dependencies
 If you would like to try one of these SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_ASCP_Export_Supply_and_Demand_Orders_PWB.sql](https://www.enginatics.com/export/ascp-export-supply-and-demand-orders-pwb/)\
 [rep_ASCP_Export_Supply_and_Demand_Orders_PWB.xml](https://www.enginatics.com/xml/ascp-export-supply-and-demand-orders-pwb/)
 # Oracle E-Business Suite - Reporting Library 
     

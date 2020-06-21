@@ -34,7 +34,7 @@ nvl(nvl2(xal.gl_sl_link_id,xal.accounted_dr,gjl.accounted_dr),0)-nvl(nvl2(xal.gl
 xte.transaction_number,
 aia.description description,
 nvl(gjh.doc_sequence_value,xah.doc_sequence_value) doc_sequence_value,
-(select pha.segment1 from po_headers_all pha where nvl(aia.quick_po_header_id,rt.po_header_id)=pha.po_header_id) po,
+(select pha.segment1 from po_headers_all pha where nvl(aia.quick_po_header_id,rt.po_header_id)=pha.po_header_id) purchase_order,
 case when xte.entity_code='TRANSACTIONS' and rcta.interface_header_context in ('ORDER ENTRY','INTERCOMPANY') then rcta.interface_header_attribute1 end sales_order,
 coalesce(
 (select ppa.segment1 from pa_projects_all ppa where aida.project_id=ppa.project_id),
@@ -42,6 +42,15 @@ case when xte.entity_code='TRANSACTIONS' and rcta.interface_header_context='PROJ
 ppa.segment1
 ) project,
 pt.task_number task,
+pea.expenditure_group,
+xxen_util.meaning(pea.expenditure_class_code,'EXPENDITURE CLASS CODE',275) expenditure_class_code,
+xxen_util.meaning(pea.expenditure_status_code,'EXPENDITURE STATUS',275) expenditure_status_code,
+pet.expenditure_category,
+peia.expenditure_type,
+pet.description expenditure_type_description,
+peia.expenditure_item_date,
+peia.quantity expenditure_item_quantity,
+xxen_util.meaning(pet.unit_of_measure,'UNIT',275) expenditure_unit_of_measure,
 (select xett.name from xla_event_types_tl xett where xte.application_id=xett.application_id and xte.entity_code=xett.entity_code and xe.event_type_code=xett.event_type_code and xett.language=userenv('lang')) event_type,
 (select name from ra_rules rr where rcta.invoicing_rule_id=rule_id) invoice_rule,
 (select rr.name from ra_customer_trx_lines_all rctla, ra_rules rr where rcta.customer_trx_id=rctla.customer_trx_id and rctla.line_type='LINE' and rctla.accounting_rule_id=rr.rule_id and rownum=1) accounting_rule,
@@ -91,6 +100,8 @@ pa_tasks pt,
 pa_draft_revenues_all pdra,
 pa_agreements_all paa,
 pa_expenditure_items_all peia,
+pa_expenditures_all pea,
+pa_expenditure_types pet,
 rcv_transactions rt
 where
 1=1 and
@@ -125,4 +136,6 @@ case when xte.application_id=275 and xte.entity_code='REVENUE' then xte.source_i
 pdra.agreement_id=paa.agreement_id(+) and
 case when xte.application_id=275 and xte.entity_code='EXPENDITURES' then xte.source_id_int_1 end=peia.expenditure_item_id(+) and
 nvl(aida.task_id,peia.task_id)=pt.task_id(+) and
+peia.expenditure_id=pea.expenditure_id(+) and
+peia.expenditure_type=pet.expenditure_type(+) and
 case when xte.application_id=707 and xte.entity_code='RCV_ACCOUNTING_EVENTS' then xte.source_id_int_1 end=rt.transaction_id(+)

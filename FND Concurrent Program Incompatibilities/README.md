@@ -2,13 +2,12 @@
 ## Description: 
 Concurrent Program Incompatibilities
 ## Categories: 
-[Application](https://www.enginatics.com/library/?pg=1&category[]=Application), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Application](https://www.enginatics.com/library/?pg=1&category[]=Application), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - DBA](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+DBA), [Toolkit - Setup & Support](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+Setup+%26+Support)
 ## Dependencies
 If you would like to try one of these SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Report Example
 [FND_Concurrent_Program_Incompatibilities 27-Jan-2019 115110.xlsx](https://www.enginatics.com/example/fnd-concurrent-program-incompatibilities/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_FND_Concurrent_Program_Incompatibilities.sql](https://www.enginatics.com/export/fnd-concurrent-program-incompatibilities/)\
 [rep_FND_Concurrent_Program_Incompatibilities.xml](https://www.enginatics.com/xml/fnd-concurrent-program-incompatibilities/)
 # Oracle E-Business Suite - Reporting Library 
     

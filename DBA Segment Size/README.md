@@ -2,13 +2,12 @@
 ## Description: 
 Database segments such as tables, indexes, lob segments by size and total database size summary
 ## Categories: 
-[DBA](https://www.enginatics.com/library/?pg=1&category[]=DBA), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[DBA](https://www.enginatics.com/library/?pg=1&category[]=DBA), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - DBA](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+DBA)
 ## Dependencies
 If you would like to try one of these SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Report Example
 [DBA_Segment_Size 11-May-2017 125711.xlsx](https://www.enginatics.com/example/dba-segment-size/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_DBA_Segment_Size.sql](https://www.enginatics.com/export/dba-segment-size/)\
 [rep_DBA_Segment_Size.xml](https://www.enginatics.com/xml/dba-segment-size/)
 # Oracle E-Business Suite - Reporting Library 
     

@@ -9,7 +9,6 @@ If you would like to try one of these SQLs without having Blitz Report installed
 # Report Example
 [AR_Transactions_and_Lines 20-Jan-2019 115611.xlsx](https://www.enginatics.com/example/ar-transactions-and-lines/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_AR_Transactions_and_Lines.sql](https://www.enginatics.com/export/ar-transactions-and-lines/)\
 [rep_AR_Transactions_and_Lines.xml](https://www.enginatics.com/xml/ar-transactions-and-lines/)
 # Oracle E-Business Suite - Reporting Library 
     

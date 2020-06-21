@@ -32,7 +32,11 @@ xxen_util.meaning(fpov.org_enabled_flag,'YES_NO',0) organization_visible,
 xxen_util.meaning(fpov.org_update_allowed_flag,'YES_NO',0) organization_updatable,
 xxen_util.meaning(fpov.user_enabled_flag,'YES_NO',0) user_visible,
 xxen_util.meaning(fpov.user_update_allowed_flag,'YES_NO',0) user_updatable,
-fpov.sql_validation
+fpov.sql_validation,
+xxen_util.user_name(fpov.created_by) created_by,
+xxen_util.client_time(fpov.creation_date) creation_date,
+xxen_util.user_name(fpov.last_updated_by) last_updated_by,
+xxen_util.client_time(fpov.last_update_date) last_update_date
 from
 fnd_profile_options_vl fpov,
 fnd_application_vl fav

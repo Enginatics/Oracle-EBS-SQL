@@ -2,13 +2,12 @@
 ## Description: 
 Active session history from the automatic workload repository
 ## Categories: 
-[DBA](https://www.enginatics.com/library/?pg=1&category[]=DBA), [Diagnostic Pack](https://www.enginatics.com/library/?pg=1&category[]=Diagnostic+Pack), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[DBA](https://www.enginatics.com/library/?pg=1&category[]=DBA), [Diagnostic Pack](https://www.enginatics.com/library/?pg=1&category[]=Diagnostic+Pack), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - DBA](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+DBA)
 ## Dependencies
 If you would like to try one of these SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Report Example
 [DBA_AWR_Active_Session_History 11-May-2017 125507.xlsx](https://www.enginatics.com/example/dba-awr-active-session-history/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_DBA_AWR_Active_Session_History.sql](https://www.enginatics.com/export/dba-awr-active-session-history/)\
 [rep_DBA_AWR_Active_Session_History.xml](https://www.enginatics.com/xml/dba-awr-active-session-history/)
 # Oracle E-Business Suite - Reporting Library 
     

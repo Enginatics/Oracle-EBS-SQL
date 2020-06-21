@@ -13,13 +13,12 @@ Recipe Enabled
 Stockable
 Transactable
 ## Categories: 
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Logistics](https://www.enginatics.com/library/?pg=1&category[]=Logistics), [Setup](https://www.enginatics.com/library/?pg=1&category[]=Setup)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Logistics](https://www.enginatics.com/library/?pg=1&category[]=Logistics), [Setup](https://www.enginatics.com/library/?pg=1&category[]=Setup), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+Operations), [Toolkit - Setup & Support](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+Setup+%26+Support)
 ## Dependencies
 If you would like to try one of these SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Report Example
 [INV_Item_Statuses 07-Apr-2018 130703.xlsx](https://www.enginatics.com/example/inv-item-statuses(6)/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_INV_Item_Statuses.sql](https://www.enginatics.com/export/inv-item-statuses(6)/)\
 [rep_INV_Item_Statuses.xml](https://www.enginatics.com/xml/inv-item-statuses(6)/)
 # Oracle E-Business Suite - Reporting Library 
     

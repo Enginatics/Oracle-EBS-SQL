@@ -8,7 +8,6 @@ If you would like to try one of these SQLs without having Blitz Report installed
 # Report Example
 [CST_Detailed_Item_Cost 25-Jun-2019 140038.xlsx](https://www.enginatics.com/example/cst-detailed-item-cost/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_CST_Detailed_Item_Cost.sql](https://www.enginatics.com/export/cst-detailed-item-cost/)\
 [rep_CST_Detailed_Item_Cost.xml](https://www.enginatics.com/xml/cst-detailed-item-cost/)
 # Oracle E-Business Suite - Reporting Library 
     

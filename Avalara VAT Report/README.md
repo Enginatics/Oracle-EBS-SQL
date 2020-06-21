@@ -7,7 +7,6 @@ https://www.avalara.com/
 ## Dependencies
 If you would like to try one of these SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_Avalara_VAT_Report.sql](https://www.enginatics.com/export/avalara-vat-report(1)/)\
 [rep_Avalara_VAT_Report.xml](https://www.enginatics.com/xml/avalara-vat-report(1)/)
 # Oracle E-Business Suite - Reporting Library 
     

@@ -8,7 +8,6 @@ If you would like to try one of these SQLs without having Blitz Report installed
 # Report Example
 [EAM_Work_Orders 18-Jan-2018 152946.xlsx](https://www.enginatics.com/example/eam-work-orders/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_EAM_Work_Orders.sql](https://www.enginatics.com/export/eam-work-orders/)\
 [rep_EAM_Work_Orders.xml](https://www.enginatics.com/xml/eam-work-orders/)
 # Oracle E-Business Suite - Reporting Library 
     

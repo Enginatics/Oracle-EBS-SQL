@@ -89,5 +89,4 @@ x.party_name,
 hl.country,
 hps.party_site_number,
 x.operating_unit,
-site_use,
 x.currency_code

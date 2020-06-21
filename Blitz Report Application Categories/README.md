@@ -10,7 +10,6 @@ If you would like to try one of these SQLs without having Blitz Report installed
 # Report Example
 [Blitz_Report_Application_Categories 18-Jan-2018 225804.xlsx](https://www.enginatics.com/example/blitz-report-application-categories/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_Blitz_Report_Application_Categories.sql](https://www.enginatics.com/export/blitz-report-application-categories/)\
 [rep_Blitz_Report_Application_Categories.xml](https://www.enginatics.com/xml/blitz-report-application-categories/)
 # Oracle E-Business Suite - Reporting Library 
     

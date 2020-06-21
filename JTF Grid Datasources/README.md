@@ -8,7 +8,6 @@ If you would like to try one of these SQLs without having Blitz Report installed
 # Report Example
 [JTF_Grid_Datasources 23-May-2018 140447.xlsx](https://www.enginatics.com/example/jtf-grid-datasources/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_JTF_Grid_Datasources.sql](https://www.enginatics.com/export/jtf-grid-datasources/)\
 [rep_JTF_Grid_Datasources.xml](https://www.enginatics.com/xml/jtf-grid-datasources/)
 # Oracle E-Business Suite - Reporting Library 
     

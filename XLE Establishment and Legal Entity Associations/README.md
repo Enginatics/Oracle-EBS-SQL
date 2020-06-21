@@ -16,7 +16,6 @@ If you would like to try one of these SQLs without having Blitz Report installed
 # Report Example
 [XLE_Establishment_and_Legal_Entity_Associations 24-Jul-2017 143957.xlsx](https://www.enginatics.com/example/xle-establishment-and-legal-entity-associations/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_XLE_Establishment_and_Legal_Entity_Associations.sql](https://www.enginatics.com/export/xle-establishment-and-legal-entity-associations/)\
 [rep_XLE_Establishment_and_Legal_Entity_Associations.xml](https://www.enginatics.com/xml/xle-establishment-and-legal-entity-associations/)
 # Oracle E-Business Suite - Reporting Library 
     

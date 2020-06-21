@@ -28,7 +28,6 @@ In this example, it takes 45 days (on the average) to collect the receivables. *
 ## Dependencies
 If you would like to try one of these SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_DSO_Days_of_Sales_Metric_Receivables.sql](https://www.enginatics.com/export/dso-days-of-sales-metric-receivables/)\
 [rep_DSO_Days_of_Sales_Metric_Receivables.xml](https://www.enginatics.com/xml/dso-days-of-sales-metric-receivables/)
 # Oracle E-Business Suite - Reporting Library 
     

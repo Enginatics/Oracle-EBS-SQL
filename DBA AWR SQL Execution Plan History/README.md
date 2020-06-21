@@ -2,11 +2,10 @@
 ## Description: 
 Execution plan history for a particular SQL id from the automatic workload repository
 ## Categories: 
-[DBA](https://www.enginatics.com/library/?pg=1&category[]=DBA), [Diagnostic Pack](https://www.enginatics.com/library/?pg=1&category[]=Diagnostic+Pack), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[DBA](https://www.enginatics.com/library/?pg=1&category[]=DBA), [Diagnostic Pack](https://www.enginatics.com/library/?pg=1&category[]=Diagnostic+Pack), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - DBA](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+DBA)
 ## Dependencies
 If you would like to try one of these SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_DBA_AWR_SQL_Execution_Plan_History.sql](https://www.enginatics.com/export/dba-awr-sql-execution-plan-history/)\
 [rep_DBA_AWR_SQL_Execution_Plan_History.xml](https://www.enginatics.com/xml/dba-awr-sql-execution-plan-history/)
 # Oracle E-Business Suite - Reporting Library 
     

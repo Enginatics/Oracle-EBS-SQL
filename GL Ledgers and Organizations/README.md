@@ -2,13 +2,12 @@
 ## Description: 
 GL Ledgers with Ledger Sets, Chart of Accounts, Operating Units, Inventory Organizations and related Legal Entities
 ## Categories: 
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Financials](https://www.enginatics.com/library/?pg=1&category[]=Financials), [Manufacturing](https://www.enginatics.com/library/?pg=1&category[]=Manufacturing), [Setup](https://www.enginatics.com/library/?pg=1&category[]=Setup)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Financials](https://www.enginatics.com/library/?pg=1&category[]=Financials), [Toolkit - Setup & Support](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+Setup+%26+Support)
 ## Dependencies
 If you would like to try one of these SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Report Example
 [GL_Ledgers_and_Organizations 11-Mar-2020 070723.xlsx](https://www.enginatics.com/example/gl-ledgers-and-organizations/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_GL_Ledgers_and_Organizations.sql](https://www.enginatics.com/export/gl-ledgers-and-organizations/)\
 [rep_GL_Ledgers_and_Organizations.xml](https://www.enginatics.com/xml/gl-ledgers-and-organizations/)
 # Oracle E-Business Suite - Reporting Library 
     

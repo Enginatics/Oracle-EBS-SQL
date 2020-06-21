@@ -8,7 +8,6 @@ If you would like to try one of these SQLs without having Blitz Report installed
 # Report Example
 [AR_Miscellaneous_Receipts 24-Jul-2017 151304.xlsx](https://www.enginatics.com/example/ar-miscellaneous-receipts/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_AR_Miscellaneous_Receipts.sql](https://www.enginatics.com/export/ar-miscellaneous-receipts/)\
 [rep_AR_Miscellaneous_Receipts.xml](https://www.enginatics.com/xml/ar-miscellaneous-receipts/)
 # Oracle E-Business Suite - Reporting Library 
     

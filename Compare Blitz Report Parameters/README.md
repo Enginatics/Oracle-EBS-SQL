@@ -6,7 +6,6 @@ Compares the paramaters of two reports for differences
 ## Dependencies
 If you would like to try one of these SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_Compare_Blitz_Report_Parameters.sql](https://www.enginatics.com/export/compare-blitz-report-parameters/)\
 [rep_Compare_Blitz_Report_Parameters.xml](https://www.enginatics.com/xml/compare-blitz-report-parameters/)
 # Oracle E-Business Suite - Reporting Library 
     

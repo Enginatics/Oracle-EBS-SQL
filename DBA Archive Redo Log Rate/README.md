@@ -6,13 +6,12 @@ For databases on NOARCHIVELOG, the approximate amount of generated redo is calcu
 Redo log files are located here:
 select * from sys.v_$logfile
 ## Categories: 
-[DBA](https://www.enginatics.com/library/?pg=1&category[]=DBA), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[DBA](https://www.enginatics.com/library/?pg=1&category[]=DBA), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - DBA](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+DBA)
 ## Dependencies
 If you would like to try one of these SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Report Example
 [DBA_Archive_Redo_Log_Rate 13-Jul-2018 173740.xlsx](https://www.enginatics.com/example/dba-archive-redo-log-rate/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_DBA_Archive_Redo_Log_Rate.sql](https://www.enginatics.com/export/dba-archive-redo-log-rate/)\
 [rep_DBA_Archive_Redo_Log_Rate.xml](https://www.enginatics.com/xml/dba-archive-redo-log-rate/)
 # Oracle E-Business Suite - Reporting Library 
     

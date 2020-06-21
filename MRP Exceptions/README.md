@@ -8,7 +8,6 @@ If you would like to try one of these SQLs without having Blitz Report installed
 # Report Example
 [MRP_Exceptions 03-Aug-2018 212438.xlsx](https://www.enginatics.com/example/mrp-exceptions/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_MRP_Exceptions.sql](https://www.enginatics.com/export/mrp-exceptions/)\
 [rep_MRP_Exceptions.xml](https://www.enginatics.com/xml/mrp-exceptions/)
 # Oracle E-Business Suite - Reporting Library 
     

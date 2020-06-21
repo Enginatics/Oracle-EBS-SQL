@@ -8,7 +8,6 @@ If you would like to try one of these SQLs without having Blitz Report installed
 # Report Example
 [FND_Flex_Security_Rules 06-Mar-2019 122734.xlsx](https://www.enginatics.com/example/fnd-flex-security-rules/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_FND_Flex_Security_Rules.sql](https://www.enginatics.com/export/fnd-flex-security-rules/)\
 [rep_FND_Flex_Security_Rules.xml](https://www.enginatics.com/xml/fnd-flex-security-rules/)
 # Oracle E-Business Suite - Reporting Library 
     

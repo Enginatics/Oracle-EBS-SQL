@@ -8,7 +8,6 @@ If you would like to try one of these SQLs without having Blitz Report installed
 # Report Example
 [PO_Document_Types 24-Jul-2017 150359.xlsx](https://www.enginatics.com/example/po-document-types/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_PO_Document_Types.sql](https://www.enginatics.com/export/po-document-types/)\
 [rep_PO_Document_Types.xml](https://www.enginatics.com/xml/po-document-types/)
 # Oracle E-Business Suite - Reporting Library 
     

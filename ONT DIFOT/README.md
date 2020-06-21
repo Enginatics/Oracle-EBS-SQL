@@ -3,11 +3,10 @@
 Sales order or quote header and line details with DIFOT
 
 ## Categories: 
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Metrics](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+Metrics), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+Operations), [Toolkit - Time Critical](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+Time+Critical)
 ## Dependencies
 If you would like to try one of these SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_ONT_DIFOT.sql](https://www.enginatics.com/export/ont-difot/)\
 [rep_ONT_DIFOT.xml](https://www.enginatics.com/xml/ont-difot/)
 # Oracle E-Business Suite - Reporting Library 
     

@@ -3,13 +3,12 @@
 Profile option values on all setup levels.
 Unlike Oracle's SQL script from note 201945.1, this report also shows the user visible profile option value in addition to the internal system profile option value.
 ## Categories: 
-[Application](https://www.enginatics.com/library/?pg=1&category[]=Application), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Setup](https://www.enginatics.com/library/?pg=1&category[]=Setup)
+[Application](https://www.enginatics.com/library/?pg=1&category[]=Application), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Setup](https://www.enginatics.com/library/?pg=1&category[]=Setup), [Toolkit - Setup & Support](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+Setup+%26+Support)
 ## Dependencies
 If you would like to try one of these SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Report Example
 [FND_Profile_Option_Values 11-May-2017 124115.xlsx](https://www.enginatics.com/example/fnd-profile-option-values/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_FND_Profile_Option_Values.sql](https://www.enginatics.com/export/fnd-profile-option-values/)\
 [rep_FND_Profile_Option_Values.xml](https://www.enginatics.com/xml/fnd-profile-option-values/)
 # Oracle E-Business Suite - Reporting Library 
     

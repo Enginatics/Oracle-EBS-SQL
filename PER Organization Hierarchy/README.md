@@ -8,7 +8,6 @@ If you would like to try one of these SQLs without having Blitz Report installed
 # Report Example
 [PER_Organization_Hierarchy 29-Jan-2020 051446.xlsx](https://www.enginatics.com/example/per-organization-hierarchy/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_PER_Organization_Hierarchy.sql](https://www.enginatics.com/export/per-organization-hierarchy/)\
 [rep_PER_Organization_Hierarchy.xml](https://www.enginatics.com/xml/per-organization-hierarchy/)
 # Oracle E-Business Suite - Reporting Library 
     

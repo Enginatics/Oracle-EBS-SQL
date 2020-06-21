@@ -12,13 +12,12 @@ select * from v$sga_dynamic_components
 Arup Nanda gives a good explanation on how the buffer cache works:
 http://arup.blogspot.ch/2014/11/cache-buffer-chains-demystified.html
 ## Categories: 
-[DBA](https://www.enginatics.com/library/?pg=1&category[]=DBA), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[DBA](https://www.enginatics.com/library/?pg=1&category[]=DBA), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - DBA](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+DBA)
 ## Dependencies
 If you would like to try one of these SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Report Example
 [DBA_SGA_Buffer_Cache_Object_Usage 05-Apr-2020 014325.xlsx](https://www.enginatics.com/example/dba-sga-buffer-cache-object-usage/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_DBA_SGA_Buffer_Cache_Object_Usage.sql](https://www.enginatics.com/export/dba-sga-buffer-cache-object-usage/)\
 [rep_DBA_SGA_Buffer_Cache_Object_Usage.xml](https://www.enginatics.com/xml/dba-sga-buffer-cache-object-usage/)
 # Oracle E-Business Suite - Reporting Library 
     

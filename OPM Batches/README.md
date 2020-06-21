@@ -24,7 +24,6 @@ The name of the process parameter can be found in GMP_PROCESS_PARAMETERS.
 ## Dependencies
 If you would like to try one of these SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_OPM_Batches.sql](https://www.enginatics.com/export/opm-batches/)\
 [rep_OPM_Batches.xml](https://www.enginatics.com/xml/opm-batches/)
 # Oracle E-Business Suite - Reporting Library 
     

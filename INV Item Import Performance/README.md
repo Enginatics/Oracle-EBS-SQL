@@ -7,7 +7,6 @@ If the number of items processed per second is decreasing with increasing total 
 ## Dependencies
 If you would like to try one of these SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_INV_Item_Import_Performance.sql](https://www.enginatics.com/export/inv-item-import-performance/)\
 [rep_INV_Item_Import_Performance.xml](https://www.enginatics.com/xml/inv-item-import-performance/)
 # Oracle E-Business Suite - Reporting Library 
     

@@ -9,7 +9,6 @@ If you would like to try one of these SQLs without having Blitz Report installed
 # Report Example
 [DIS_Worksheet_Execution_History 04-Jan-2019 135450.xlsx](https://www.enginatics.com/example/dis-worksheet-execution-history/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_DIS_Worksheet_Execution_History.sql](https://www.enginatics.com/export/dis-worksheet-execution-history/)\
 [rep_DIS_Worksheet_Execution_History.xml](https://www.enginatics.com/xml/dis-worksheet-execution-history/)
 # Oracle E-Business Suite - Reporting Library 
     

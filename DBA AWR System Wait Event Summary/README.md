@@ -9,7 +9,6 @@ If you would like to try one of these SQLs without having Blitz Report installed
 # Report Example
 [DBA_AWR_System_Wait_Event_Summary 09-Jun-2019 154800.xlsx](https://www.enginatics.com/example/dba-awr-system-wait-event-summary/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_DBA_AWR_System_Wait_Event_Summary.sql](https://www.enginatics.com/export/dba-awr-system-wait-event-summary/)\
 [rep_DBA_AWR_System_Wait_Event_Summary.xml](https://www.enginatics.com/xml/dba-awr-system-wait-event-summary/)
 # Oracle E-Business Suite - Reporting Library 
     

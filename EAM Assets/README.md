@@ -8,7 +8,6 @@ If you would like to try one of these SQLs without having Blitz Report installed
 # Report Example
 [EAM_Assets 18-Jan-2018 152645.xlsx](https://www.enginatics.com/example/eam-assets/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_EAM_Assets.sql](https://www.enginatics.com/export/eam-assets/)\
 [rep_EAM_Assets.xml](https://www.enginatics.com/xml/eam-assets/)
 # Oracle E-Business Suite - Reporting Library 
     

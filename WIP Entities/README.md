@@ -8,7 +8,6 @@ If you would like to try one of these SQLs without having Blitz Report installed
 # Report Example
 [WIP_Entities 02-Aug-2018 214556.xlsx](https://www.enginatics.com/example/wip-entities/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_WIP_Entities.sql](https://www.enginatics.com/export/wip-entities/)\
 [rep_WIP_Entities.xml](https://www.enginatics.com/xml/wip-entities/)
 # Oracle E-Business Suite - Reporting Library 
     

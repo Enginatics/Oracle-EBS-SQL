@@ -16,7 +16,6 @@ If you would like to try one of these SQLs without having Blitz Report installed
 # Report Example
 [XLA_Distribution_Links_Summary 09-Jun-2019 000034.xlsx](https://www.enginatics.com/example/xla-distribution-links-summary/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_XLA_Distribution_Links_Summary.sql](https://www.enginatics.com/export/xla-distribution-links-summary/)\
 [rep_XLA_Distribution_Links_Summary.xml](https://www.enginatics.com/xml/xla-distribution-links-summary/)
 # Oracle E-Business Suite - Reporting Library 
     

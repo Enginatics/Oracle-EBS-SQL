@@ -2,13 +2,12 @@
 ## Description: 
 Customer master data including address, profile information, sites and site uses
 ## Categories: 
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Financials](https://www.enginatics.com/library/?pg=1&category[]=Financials)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Financials](https://www.enginatics.com/library/?pg=1&category[]=Financials), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+Operations), [Toolkit - Setup & Support](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+Setup+%26+Support)
 ## Dependencies
 If you would like to try one of these SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Report Example
 [AR_Customers_and_Sites 20-Jan-2019 120023.xlsx](https://www.enginatics.com/example/ar-customers-and-sites/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_AR_Customers_and_Sites.sql](https://www.enginatics.com/export/ar-customers-and-sites/)\
 [rep_AR_Customers_and_Sites.xml](https://www.enginatics.com/xml/ar-customers-and-sites/)
 # Oracle E-Business Suite - Reporting Library 
     

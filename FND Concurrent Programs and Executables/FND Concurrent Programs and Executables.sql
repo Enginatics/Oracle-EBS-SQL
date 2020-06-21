@@ -27,7 +27,8 @@ case when fev.description is null and fev.user_executable_name<>fev.executable_n
 xxen_util.user_name(fcpv.created_by) created_by,
 xxen_util.client_time(fcpv.creation_date) creation_date,
 xxen_util.user_name(fcpv.last_updated_by) last_updated_by,
-xxen_util.client_time(fcpv.last_update_date) last_update_date
+xxen_util.client_time(fcpv.last_update_date) last_update_date,
+fcpv.concurrent_program_id
 from
 fnd_application_vl fav,
 fnd_concurrent_programs_vl fcpv,

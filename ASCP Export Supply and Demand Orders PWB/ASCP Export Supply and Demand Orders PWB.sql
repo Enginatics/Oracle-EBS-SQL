@@ -29,7 +29,7 @@ SELECT mp.compile_designator "Plan Name",
        mov.source_organization_code "Source_org",
        mov.supplier_name "Supplier",
        mov.action "Action Required",
-       decode(mov.planning_make_buy_code, 1, 'Make', 2, 'Buy') "Make/Buy",
+       to_char(decode(mov.planning_make_buy_code, 1, 'Make', 2, 'Buy')) "Make/Buy",
        mov.intransit_lead_time "Intransit LT",
        mov.promise_date "Prom Arrive Date",
        mov.need_by_date,
@@ -77,7 +77,7 @@ SELECT mp.compile_designator "Plan Name",
        (SELECT category_set_id
           FROM msc_category_sets
          WHERE category_set_name = 'Inv.Items')
-      -- and mov.item_segments = 'CM34211'
+      --and mov.item_segments = 'CM34211'
       -- and trunc(mov.new_start_date) = trunc(mov.new_due_date)
       --and mov.new_start_date between sysdate
    and mi.inventory_item_id = mov.inventory_item_id

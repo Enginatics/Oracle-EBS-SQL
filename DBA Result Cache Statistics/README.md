@@ -7,13 +7,12 @@ If the 'Maximum Size' is big enough, 'Create Count Failure' should be zero or lo
 
 A high number of 'Invalidation Count' or 'Delete Count Invalid' relative to 'Find Count' should get investigated further as it indicates a result_cache specified for code where the underlying data changes too frequently.
 ## Categories: 
-[DBA](https://www.enginatics.com/library/?pg=1&category[]=DBA), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[DBA](https://www.enginatics.com/library/?pg=1&category[]=DBA), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - DBA](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+DBA)
 ## Dependencies
 If you would like to try one of these SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Report Example
 [DBA_Result_Cache_Statistics 18-Jan-2018 225229.xlsx](https://www.enginatics.com/example/dba-result-cache-statistics/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_DBA_Result_Cache_Statistics.sql](https://www.enginatics.com/export/dba-result-cache-statistics/)\
 [rep_DBA_Result_Cache_Statistics.xml](https://www.enginatics.com/xml/dba-result-cache-statistics/)
 # Oracle E-Business Suite - Reporting Library 
     

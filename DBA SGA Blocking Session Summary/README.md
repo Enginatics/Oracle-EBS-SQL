@@ -6,13 +6,12 @@ In some cases, such as row lock scenarios, the blocking session is idle and does
 
 We recommend doing further analysis with a pivot in Excel rather than by SQL, as Excel's drag- and drop is a lot faster than typing commands manually.
 ## Categories: 
-[DBA](https://www.enginatics.com/library/?pg=1&category[]=DBA), [Diagnostic Pack](https://www.enginatics.com/library/?pg=1&category[]=Diagnostic+Pack), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[DBA](https://www.enginatics.com/library/?pg=1&category[]=DBA), [Diagnostic Pack](https://www.enginatics.com/library/?pg=1&category[]=Diagnostic+Pack), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - DBA](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+DBA)
 ## Dependencies
 If you would like to try one of these SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Report Example
 [DBA_SGA_Blocking_Session_Summary 21-Jan-2019 083708.xlsx](https://www.enginatics.com/example/dba-sga-blocking-session-summary/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_DBA_SGA_Blocking_Session_Summary.sql](https://www.enginatics.com/export/dba-sga-blocking-session-summary/)\
 [rep_DBA_SGA_Blocking_Session_Summary.xml](https://www.enginatics.com/xml/dba-sga-blocking-session-summary/)
 # Oracle E-Business Suite - Reporting Library 
     

@@ -8,7 +8,6 @@ If you would like to try one of these SQLs without having Blitz Report installed
 # Report Example
 [FND_Attached_Documents 09-Sep-2018 083127.xlsx](https://www.enginatics.com/example/fnd-attached-documents/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_FND_Attached_Documents.sql](https://www.enginatics.com/export/fnd-attached-documents/)\
 [rep_FND_Attached_Documents.xml](https://www.enginatics.com/xml/fnd-attached-documents/)
 # Oracle E-Business Suite - Reporting Library 
     

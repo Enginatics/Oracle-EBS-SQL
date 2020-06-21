@@ -3,13 +3,12 @@
 Orace's SGA target advice view.
 It shows an estimation of how an SGA resize would affect overall database time and IO.
 ## Categories: 
-[DBA](https://www.enginatics.com/library/?pg=1&category[]=DBA), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[DBA](https://www.enginatics.com/library/?pg=1&category[]=DBA), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - DBA](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+DBA)
 ## Dependencies
 If you would like to try one of these SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Report Example
 [DBA_SGA_Target_Advice 20-Nov-2018 144219.xlsx](https://www.enginatics.com/example/dba-sga-target-advice/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_DBA_SGA_Target_Advice.sql](https://www.enginatics.com/export/dba-sga-target-advice/)\
 [rep_DBA_SGA_Target_Advice.xml](https://www.enginatics.com/xml/dba-sga-target-advice/)
 # Oracle E-Business Suite - Reporting Library 
     

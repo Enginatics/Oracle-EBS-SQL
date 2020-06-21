@@ -2,13 +2,12 @@
 ## Description: 
 Overview of gl headers categories
 ## Categories: 
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Financials](https://www.enginatics.com/library/?pg=1&category[]=Financials)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Financials](https://www.enginatics.com/library/?pg=1&category[]=Financials), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+Operations)
 ## Dependencies
 If you would like to try one of these SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Report Example
 [GL_Header_Categories_Summary 23-Jul-2017 160240.xlsx](https://www.enginatics.com/example/gl-header-categories-summary/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_GL_Header_Categories_Summary.sql](https://www.enginatics.com/export/gl-header-categories-summary/)\
 [rep_GL_Header_Categories_Summary.xml](https://www.enginatics.com/xml/gl-header-categories-summary/)
 # Oracle E-Business Suite - Reporting Library 
     

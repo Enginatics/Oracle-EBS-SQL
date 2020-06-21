@@ -2,11 +2,10 @@
 ## Description: 
 GL ledger sets and included ledgers
 ## Categories: 
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Financials](https://www.enginatics.com/library/?pg=1&category[]=Financials)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Financials](https://www.enginatics.com/library/?pg=1&category[]=Financials), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+Operations)
 ## Dependencies
 If you would like to try one of these SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_GL_Ledger_Sets.sql](https://www.enginatics.com/export/gl-ledger-sets/)\
 [rep_GL_Ledger_Sets.xml](https://www.enginatics.com/xml/gl-ledger-sets/)
 # Oracle E-Business Suite - Reporting Library 
     

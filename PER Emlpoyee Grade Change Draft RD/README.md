@@ -10,7 +10,6 @@ Like to add the ability to show:
 ## Dependencies
 If you would like to try one of these SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_PER_Emlpoyee_Grade_Change_Draft_RD.sql](https://www.enginatics.com/export/per-emlpoyee-grade-change-draft-rd/)\
 [rep_PER_Emlpoyee_Grade_Change_Draft_RD.xml](https://www.enginatics.com/xml/per-emlpoyee-grade-change-draft-rd/)
 # Oracle E-Business Suite - Reporting Library 
     

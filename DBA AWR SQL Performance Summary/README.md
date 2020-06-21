@@ -40,13 +40,12 @@ Columns:
 -Is Bind Sensitive: Indicates the DB's 'adaptive cursor sharing' feature. A value of 'Y' means, the DB might consider a different explainplan for different bind values. Note that for transactional SQLs such as the ones used by Oracle EBS, the execution path should usually not change. Thus, a value of 'Y' often indicates 'instable' SQLs or SQLs where the optimizer struggles to find the best execution path.
 -Is Bind Aware: 'adaptive cursor sharing' feature. A value of 'Y' means, the DB considers a differ
 ## Categories: 
-[DBA](https://www.enginatics.com/library/?pg=1&category[]=DBA), [Diagnostic Pack](https://www.enginatics.com/library/?pg=1&category[]=Diagnostic+Pack), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[DBA](https://www.enginatics.com/library/?pg=1&category[]=DBA), [Diagnostic Pack](https://www.enginatics.com/library/?pg=1&category[]=Diagnostic+Pack), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - DBA](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+DBA)
 ## Dependencies
 If you would like to try one of these SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Report Example
 [DBA_AWR_SQL_Performance_Summary 25-Jan-2019 160632.xlsx](https://www.enginatics.com/example/dba-awr-sql-performance-summary/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_DBA_AWR_SQL_Performance_Summary.sql](https://www.enginatics.com/export/dba-awr-sql-performance-summary/)\
 [rep_DBA_AWR_SQL_Performance_Summary.xml](https://www.enginatics.com/xml/dba-awr-sql-performance-summary/)
 # Oracle E-Business Suite - Reporting Library 
     

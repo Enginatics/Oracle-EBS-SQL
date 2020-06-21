@@ -8,7 +8,6 @@ If you would like to try one of these SQLs without having Blitz Report installed
 # Report Example
 [INV_Item_Default_Subinventories 18-Jan-2018 223909.xlsx](https://www.enginatics.com/example/inv-item-default-subinventories/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_INV_Item_Default_Subinventories.sql](https://www.enginatics.com/export/inv-item-default-subinventories/)\
 [rep_INV_Item_Default_Subinventories.xml](https://www.enginatics.com/xml/inv-item-default-subinventories/)
 # Oracle E-Business Suite - Reporting Library 
     

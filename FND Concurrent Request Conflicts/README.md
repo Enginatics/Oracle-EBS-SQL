@@ -3,13 +3,12 @@
 Lists concurrent requests that were held by the conflict resolution manager and shows their conflicting / blocking requests which were running at the time between the requested start date and conflict release date.
 This might not work 100% (it doesn't consider request set conflicts yet), but should give a good indication of most conflicting scenarios.
 ## Categories: 
-[Application](https://www.enginatics.com/library/?pg=1&category[]=Application), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Application](https://www.enginatics.com/library/?pg=1&category[]=Application), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - DBA](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+DBA)
 ## Dependencies
 If you would like to try one of these SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Report Example
 [FND_Concurrent_Request_Conflicts 06-Jul-2019 174044.xlsx](https://www.enginatics.com/example/fnd-concurrent-request-conflicts/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_FND_Concurrent_Request_Conflicts.sql](https://www.enginatics.com/export/fnd-concurrent-request-conflicts/)\
 [rep_FND_Concurrent_Request_Conflicts.xml](https://www.enginatics.com/xml/fnd-concurrent-request-conflicts/)
 # Oracle E-Business Suite - Reporting Library 
     

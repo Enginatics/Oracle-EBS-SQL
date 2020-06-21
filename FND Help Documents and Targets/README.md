@@ -6,7 +6,6 @@ If you would like to try one of these SQLs without having Blitz Report installed
 # Report Example
 [FND_Help_Documents_and_Targets 12-May-2020 185936.xlsx](https://www.enginatics.com/example/fnd-help-documents-and-targets/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_FND_Help_Documents_and_Targets.sql](https://www.enginatics.com/export/fnd-help-documents-and-targets/)\
 [rep_FND_Help_Documents_and_Targets.xml](https://www.enginatics.com/xml/fnd-help-documents-and-targets/)
 # Oracle E-Business Suite - Reporting Library 
     

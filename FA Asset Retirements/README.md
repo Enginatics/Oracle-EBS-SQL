@@ -9,7 +9,6 @@ If you would like to try one of these SQLs without having Blitz Report installed
 # Report Example
 [FA_Asset_Retirements 01-Jul-2019 030453.xlsx](https://www.enginatics.com/example/fa-asset-retirements/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_FA_Asset_Retirements.sql](https://www.enginatics.com/export/fa-asset-retirements/)\
 [rep_FA_Asset_Retirements.xml](https://www.enginatics.com/xml/fa-asset-retirements/)
 # Oracle E-Business Suite - Reporting Library 
     

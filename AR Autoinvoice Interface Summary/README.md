@@ -2,13 +2,12 @@
 ## Description: 
 Summary of records in the autoinvoice interface
 ## Categories: 
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Financials](https://www.enginatics.com/library/?pg=1&category[]=Financials)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Financials](https://www.enginatics.com/library/?pg=1&category[]=Financials), [Toolkit - Setup & Support](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+Setup+%26+Support)
 ## Dependencies
 If you would like to try one of these SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Report Example
 [AR_Autoinvoice_Interface_Summary 23-Jul-2017 155926.xlsx](https://www.enginatics.com/example/ar-autoinvoice-interface-summary/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_AR_Autoinvoice_Interface_Summary.sql](https://www.enginatics.com/export/ar-autoinvoice-interface-summary/)\
 [rep_AR_Autoinvoice_Interface_Summary.xml](https://www.enginatics.com/xml/ar-autoinvoice-interface-summary/)
 # Oracle E-Business Suite - Reporting Library 
     

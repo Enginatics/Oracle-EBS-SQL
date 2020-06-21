@@ -8,7 +8,6 @@ If you would like to try one of these SQLs without having Blitz Report installed
 # Report Example
 [FND_Descriptive_Flexfields 24-Jul-2017 144351.xlsx](https://www.enginatics.com/example/fnd-descriptive-flexfields/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_FND_Descriptive_Flexfields.sql](https://www.enginatics.com/export/fnd-descriptive-flexfields/)\
 [rep_FND_Descriptive_Flexfields.xml](https://www.enginatics.com/xml/fnd-descriptive-flexfields/)
 # Oracle E-Business Suite - Reporting Library 
     

@@ -2,13 +2,12 @@
 ## Description: 
 Sales order holds
 ## Categories: 
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Logistics](https://www.enginatics.com/library/?pg=1&category[]=Logistics), [Sales](https://www.enginatics.com/library/?pg=1&category[]=Sales)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Logistics](https://www.enginatics.com/library/?pg=1&category[]=Logistics), [Sales](https://www.enginatics.com/library/?pg=1&category[]=Sales), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+Operations)
 ## Dependencies
 If you would like to try one of these SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Report Example
 [ONT_Order_Holds 18-Jan-2018 225833.xlsx](https://www.enginatics.com/example/ont-order-holds/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_ONT_Order_Holds.sql](https://www.enginatics.com/export/ont-order-holds/)\
 [rep_ONT_Order_Holds.xml](https://www.enginatics.com/xml/ont-order-holds/)
 # Oracle E-Business Suite - Reporting Library 
     

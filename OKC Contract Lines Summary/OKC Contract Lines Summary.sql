@@ -13,8 +13,8 @@ This is useful for developers to see how the oracle contracts line data is struc
 
 select
 ocv.meaning class,
-osv.meaning category,
-osv.code category_code,
+osclv.meaning category,
+osclv.code category_code,
 lpad(' ',2*(olsv.level_-1))||olsv.level_ level_,
 lpad(' ',2*(olsv.level_-1))||olsv.lty_code lty_code,
 oklb.usage_type,
@@ -24,7 +24,7 @@ oklb.jtot_object1_code,
 jov.name object_name,
 jov.from_table,
 jov.where_clause,
-olsv.path,
+olsv.path lse_id_path,
 oklb.active,
 oklb.total,
 &status_columns
@@ -45,7 +45,7 @@ start with
 olsv.lse_parent_id is null
 ) olsv,
 okc_subclass_top_line ostl,
-okc_subclasses_v osv,
+okc_subclasses_v osclv,
 okc_classes_v ocv,
 (select olss.* from okc_line_style_sources olss where sysdate between olss.start_date and nvl(olss.end_date,sysdate)) olss,
 jtf_objects_vl jov,
@@ -102,8 +102,8 @@ for meaning in (
 ) z
 where
 olsv.root_id=ostl.lse_id(+) and
-ostl.scs_code=osv.code(+) and
-osv.cls_code=ocv.code(+) and
+ostl.scs_code=osclv.code(+) and
+osclv.cls_code=ocv.code(+) and
 olsv.id=olss.lse_id(+) and
 ostl.scs_code=oklb.scs_code and
 olsv.id=oklb.lse_id and
@@ -111,5 +111,5 @@ oklb.jtot_object1_code=jov.object_code(+) and
 oklb.lse_id=z.lse_id(+) and
 oklb.usage_type=z.usage_type(+)
 order by
-osv.code,
+osclv.code,
 olsv.path

@@ -2,13 +2,12 @@
 ## Description: 
 Approved supplier list and attribute details such as source documents, supplier scheduling, planning constraints and inventory attributes.
 ## Categories: 
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Procurement](https://www.enginatics.com/library/?pg=1&category[]=Procurement)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Procurement](https://www.enginatics.com/library/?pg=1&category[]=Procurement), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+Operations), [Toolkit - Setup & Support](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+Setup+%26+Support)
 ## Dependencies
 If you would like to try one of these SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Report Example
 [PO_Approved_Supplier_List 18-Jan-2018 223638.xlsx](https://www.enginatics.com/example/po-approved-supplier-list/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_PO_Approved_Supplier_List.sql](https://www.enginatics.com/export/po-approved-supplier-list/)\
 [rep_PO_Approved_Supplier_List.xml](https://www.enginatics.com/xml/po-approved-supplier-list/)
 # Oracle E-Business Suite - Reporting Library 
     

@@ -9,7 +9,6 @@ If you would like to try one of these SQLs without having Blitz Report installed
 # Report Example
 [Blitz_Report_Deletion_History 03-Apr-2018 095214.xlsx](https://www.enginatics.com/example/blitz-report-deletion-history/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_Blitz_Report_Deletion_History.sql](https://www.enginatics.com/export/blitz-report-deletion-history/)\
 [rep_Blitz_Report_Deletion_History.xml](https://www.enginatics.com/xml/blitz-report-deletion-history/)
 # Oracle E-Business Suite - Reporting Library 
     

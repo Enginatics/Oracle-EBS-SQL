@@ -8,7 +8,6 @@ If you would like to try one of these SQLs without having Blitz Report installed
 # Report Example
 [Blitz_Report_Parameter_Default_Values 20-Jan-2019 120243.xlsx](https://www.enginatics.com/example/blitz-report-parameter-default-values/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_Blitz_Report_Parameter_Default_Values.sql](https://www.enginatics.com/export/blitz-report-parameter-default-values/)\
 [rep_Blitz_Report_Parameter_Default_Values.xml](https://www.enginatics.com/xml/blitz-report-parameter-default-values/)
 # Oracle E-Business Suite - Reporting Library 
     

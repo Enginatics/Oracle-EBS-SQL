@@ -8,7 +8,6 @@ If you would like to try one of these SQLs without having Blitz Report installed
 # Report Example
 [CRP_Available_Resources 14-May-2018 005901.xlsx](https://www.enginatics.com/example/crp-available-resources/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_CRP_Available_Resources.sql](https://www.enginatics.com/export/crp-available-resources/)\
 [rep_CRP_Available_Resources.xml](https://www.enginatics.com/xml/crp-available-resources/)
 # Oracle E-Business Suite - Reporting Library 
     

@@ -2,13 +2,12 @@
 ## Description: 
 Concurrent programs, executables and program parameters
 ## Categories: 
-[Application](https://www.enginatics.com/library/?pg=1&category[]=Application), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12+only), [Setup](https://www.enginatics.com/library/?pg=1&category[]=Setup)
+[Application](https://www.enginatics.com/library/?pg=1&category[]=Application), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12+only), [Setup](https://www.enginatics.com/library/?pg=1&category[]=Setup), [Toolkit - Setup & Support](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+Setup+%26+Support)
 ## Dependencies
 If you would like to try one of these SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Report Example
 [FND_Concurrent_Programs_and_Executables 24-Jul-2017 144449.xlsx](https://www.enginatics.com/example/fnd-concurrent-programs-and-executables/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_FND_Concurrent_Programs_and_Executables.sql](https://www.enginatics.com/export/fnd-concurrent-programs-and-executables/)\
 [rep_FND_Concurrent_Programs_and_Executables.xml](https://www.enginatics.com/xml/fnd-concurrent-programs-and-executables/)
 # Oracle E-Business Suite - Reporting Library 
     

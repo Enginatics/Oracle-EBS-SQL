@@ -2,13 +2,12 @@
 ## Description: 
 Inventory item onhand quantity details
 ## Categories: 
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Manufacturing](https://www.enginatics.com/library/?pg=1&category[]=Manufacturing)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Manufacturing](https://www.enginatics.com/library/?pg=1&category[]=Manufacturing), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+Operations)
 ## Dependencies
 If you would like to try one of these SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Report Example
 [INV_Onhand_Quantities 26-Jul-2018 134821.xlsx](https://www.enginatics.com/example/inv-onhand-quantities/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_INV_Onhand_Quantities.sql](https://www.enginatics.com/export/inv-onhand-quantities/)\
 [rep_INV_Onhand_Quantities.xml](https://www.enginatics.com/xml/inv-onhand-quantities/)
 # Oracle E-Business Suite - Reporting Library 
     

@@ -2,13 +2,12 @@
 ## Description: 
 AP suppliers (po vendors) including supplier sites and contact information
 ## Categories: 
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Financials](https://www.enginatics.com/library/?pg=1&category[]=Financials), [Procurement](https://www.enginatics.com/library/?pg=1&category[]=Procurement), [R12](https://www.enginatics.com/library/?pg=1&category[]=R12), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12+only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Financials](https://www.enginatics.com/library/?pg=1&category[]=Financials), [Procurement](https://www.enginatics.com/library/?pg=1&category[]=Procurement), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12+only), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+Operations), [Toolkit - Setup & Support](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+Setup+%26+Support)
 ## Dependencies
 If you would like to try one of these SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Report Example
 [AP_Suppliers 21-Jul-2017 173155.xlsx](https://www.enginatics.com/example/ap-suppliers/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_AP_Suppliers.sql](https://www.enginatics.com/export/ap-suppliers/)\
 [rep_AP_Suppliers.xml](https://www.enginatics.com/xml/ap-suppliers/)
 # Oracle E-Business Suite - Reporting Library 
     

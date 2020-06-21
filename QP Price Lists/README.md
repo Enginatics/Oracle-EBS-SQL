@@ -2,13 +2,12 @@
 ## Description: 
 Price lists and item prices
 ## Categories: 
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Sales](https://www.enginatics.com/library/?pg=1&category[]=Sales)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Sales](https://www.enginatics.com/library/?pg=1&category[]=Sales), [Toolkit - Setup & Support](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+Setup+%26+Support)
 ## Dependencies
 If you would like to try one of these SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Report Example
 [QP_Price_Lists 26-Jul-2018 134124.xlsx](https://www.enginatics.com/example/qp-price-lists/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_QP_Price_Lists.sql](https://www.enginatics.com/export/qp-price-lists/)\
 [rep_QP_Price_Lists.xml](https://www.enginatics.com/xml/qp-price-lists/)
 # Oracle E-Business Suite - Reporting Library 
     

@@ -1,12 +1,11 @@
 # [GL Summary Templates](https://www.enginatics.com/reports/gl-summary-templates/)
 ## Categories: 
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Financials](https://www.enginatics.com/library/?pg=1&category[]=Financials)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Financials](https://www.enginatics.com/library/?pg=1&category[]=Financials), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+Operations)
 ## Dependencies
 If you would like to try one of these SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Report Example
 [GL_Summary_Templates 09-Jul-2019 140636.xlsx](https://www.enginatics.com/example/gl-summary-templates/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_GL_Summary_Templates.sql](https://www.enginatics.com/export/gl-summary-templates/)\
 [rep_GL_Summary_Templates.xml](https://www.enginatics.com/xml/gl-summary-templates/)
 # Oracle E-Business Suite - Reporting Library 
     

@@ -1,6 +1,9 @@
 # [DBA AWR Settings](https://www.enginatics.com/reports/dba-awr-settings/)
 ## Description: 
 Automatic workload repository settings such as retention period, snapshot interval and number of top SQLs to capture.
+Note that for executing Blitz Report queries on AWR data, you require a Diagnostic pack license as explained in Oracle's note 1490798.1:
+https://support.oracle.com/CSP/main/article?cmd=show&type=NOT&id=1490798.1
+
 topnsql=DEFAULT means the database captures the top 30 SQLs from 5 different categories (Elapsed Time, CPU Time, Parse Calls, Shareable Memory, Version Count) for each snapshot interval.
 So the default setting would capture a maximum of 150 different SQLs per snapshot, depending on system load.
 
@@ -84,13 +87,12 @@ delete wri$_dbu_cpu_usage_sample wdcus where wdcus.dbid not in (select vd.dbid f
 commit;
 end;
 ## Categories: 
-[DBA](https://www.enginatics.com/library/?pg=1&category[]=DBA), [Diagnostic Pack](https://www.enginatics.com/library/?pg=1&category[]=Diagnostic+Pack), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[DBA](https://www.enginatics.com/library/?pg=1&category[]=DBA), [Diagnostic Pack](https://www.enginatics.com/library/?pg=1&category[]=Diagnostic+Pack), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - DBA](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+DBA)
 ## Dependencies
 If you would like to try one of these SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Report Example
 [DBA_AWR_Settings 11-May-2017 125144.xlsx](https://www.enginatics.com/example/dba-awr-settings/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_DBA_AWR_Settings.sql](https://www.enginatics.com/export/dba-awr-settings/)\
 [rep_DBA_AWR_Settings.xml](https://www.enginatics.com/xml/dba-awr-settings/)
 # Oracle E-Business Suite - Reporting Library 
     

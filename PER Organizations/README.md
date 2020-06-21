@@ -8,7 +8,6 @@ If you would like to try one of these SQLs without having Blitz Report installed
 # Report Example
 [PER_Organizations 30-Sep-2018 222834.xlsx](https://www.enginatics.com/example/per-organizations/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_PER_Organizations.sql](https://www.enginatics.com/export/per-organizations/)\
 [rep_PER_Organizations.xml](https://www.enginatics.com/xml/per-organizations/)
 # Oracle E-Business Suite - Reporting Library 
     

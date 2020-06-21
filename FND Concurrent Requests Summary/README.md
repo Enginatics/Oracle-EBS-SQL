@@ -2,13 +2,12 @@
 ## Description: 
 Concurrent programs sorted by the sum of their historic execution times
 ## Categories: 
-[Application](https://www.enginatics.com/library/?pg=1&category[]=Application), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Application](https://www.enginatics.com/library/?pg=1&category[]=Application), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - DBA](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+DBA)
 ## Dependencies
 If you would like to try one of these SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Report Example
 [FND_Concurrent_Requests_Summary 28-Jan-2019 120718.xlsx](https://www.enginatics.com/example/fnd-concurrent-requests-summary/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_FND_Concurrent_Requests_Summary.sql](https://www.enginatics.com/export/fnd-concurrent-requests-summary/)\
 [rep_FND_Concurrent_Requests_Summary.xml](https://www.enginatics.com/xml/fnd-concurrent-requests-summary/)
 # Oracle E-Business Suite - Reporting Library 
     

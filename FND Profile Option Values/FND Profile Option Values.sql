@@ -21,9 +21,9 @@ decode(fpov.level_id,10001,null,10002,fav.application_name,10003,frv.responsibil
 10007,decode(to_char(fpov.level_value2),'-1',frv.responsibility_name,decode(to_char(fpov.level_value),'-1',fn.node_name,fn.node_name||' - '||frv.responsibility_name))
 ) level_name,
 xxen_util.display_profile_option_value(fpo.application_id,fpo.profile_option_id,fpov.profile_option_value) profile_option_value,
+fpov.profile_option_value system_profile_option_value,
 xxen_util.user_name(fpov.last_updated_by) last_updated_by,
 xxen_util.client_time(fpov.last_update_date) last_update_date,
-fpov.profile_option_value system_profile_option_value,
 fpo.profile_option_name system_profile_option_name,
 fpo.profile_option_id,
 fpov.level_value,

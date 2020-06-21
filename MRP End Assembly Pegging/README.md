@@ -8,7 +8,6 @@ If you would like to try one of these SQLs without having Blitz Report installed
 # Report Example
 [MRP_End_Assembly_Pegging 20-Jan-2019 031236.xlsx](https://www.enginatics.com/example/mrp-end-assembly-pegging/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_MRP_End_Assembly_Pegging.sql](https://www.enginatics.com/export/mrp-end-assembly-pegging/)\
 [rep_MRP_End_Assembly_Pegging.xml](https://www.enginatics.com/xml/mrp-end-assembly-pegging/)
 # Oracle E-Business Suite - Reporting Library 
     

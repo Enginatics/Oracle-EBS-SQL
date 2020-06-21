@@ -9,7 +9,6 @@ If you would like to try one of these SQLs without having Blitz Report installed
 # Report Example
 [WIP_Required_Components 18-Jan-2018 225134.xlsx](https://www.enginatics.com/example/wip-required-components/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_WIP_Required_Components.sql](https://www.enginatics.com/export/wip-required-components/)\
 [rep_WIP_Required_Components.xml](https://www.enginatics.com/xml/wip-required-components/)
 # Oracle E-Business Suite - Reporting Library 
     

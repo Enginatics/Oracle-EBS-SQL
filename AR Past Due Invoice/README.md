@@ -4,13 +4,12 @@ Application: Receivables
 Source: Past Due Invoice Report
 Short Name: ARXPDI_XML
 ## Categories: 
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Financials](https://www.enginatics.com/library/?pg=1&category[]=Financials)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Financials](https://www.enginatics.com/library/?pg=1&category[]=Financials), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+Operations)
 ## Dependencies
 If you would like to try one of these SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Report Example
 [AR_Past_Due_Invoice 03-Apr-2018 112800.xlsx](https://www.enginatics.com/example/ar-past-due-invoice/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_AR_Past_Due_Invoice.sql](https://www.enginatics.com/export/ar-past-due-invoice/)\
 [rep_AR_Past_Due_Invoice.xml](https://www.enginatics.com/xml/ar-past-due-invoice/)
 # Oracle E-Business Suite - Reporting Library 
     

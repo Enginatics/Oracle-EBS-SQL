@@ -4,7 +4,6 @@
 ## Dependencies
 If you would like to try one of these SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_PER_Employee_Approved_Leave_History_Draft_RD.sql](https://www.enginatics.com/export/per-employee-approved-leave-history-draft-rd/)\
 [rep_PER_Employee_Approved_Leave_History_Draft_RD.xml](https://www.enginatics.com/xml/per-employee-approved-leave-history-draft-rd/)
 # Oracle E-Business Suite - Reporting Library 
     

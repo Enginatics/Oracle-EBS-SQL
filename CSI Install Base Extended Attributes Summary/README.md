@@ -6,7 +6,6 @@ If you would like to try one of these SQLs without having Blitz Report installed
 # Report Example
 [CSI_Install_Base_Extended_Attributes_Summary 18-Jan-2018 222340.xlsx](https://www.enginatics.com/example/csi-install-base-extended-attributes-summary/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_CSI_Install_Base_Extended_Attributes_Summary.sql](https://www.enginatics.com/export/csi-install-base-extended-attributes-summary/)\
 [rep_CSI_Install_Base_Extended_Attributes_Summary.xml](https://www.enginatics.com/xml/csi-install-base-extended-attributes-summary/)
 # Oracle E-Business Suite - Reporting Library 
     

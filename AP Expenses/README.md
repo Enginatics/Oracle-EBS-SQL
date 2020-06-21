@@ -2,13 +2,12 @@
 ## Description: 
 AP expenses with corresponding AP invoices, their status and line details, such as per diem or project and tasks
 ## Categories: 
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Financials](https://www.enginatics.com/library/?pg=1&category[]=Financials), [Procurement](https://www.enginatics.com/library/?pg=1&category[]=Procurement)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Financials](https://www.enginatics.com/library/?pg=1&category[]=Financials), [Procurement](https://www.enginatics.com/library/?pg=1&category[]=Procurement), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+Operations)
 ## Dependencies
 If you would like to try one of these SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Report Example
 [AP_Expenses 05-Oct-2019 002046.xlsx](https://www.enginatics.com/example/ap-expenses/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_AP_Expenses.sql](https://www.enginatics.com/export/ap-expenses/)\
 [rep_AP_Expenses.xml](https://www.enginatics.com/xml/ap-expenses/)
 # Oracle E-Business Suite - Reporting Library 
     

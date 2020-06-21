@@ -7,7 +7,6 @@ Need more details and clarification
 ## Dependencies
 If you would like to try one of these SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_PER_Pay_Element_Details_Draft_RD.sql](https://www.enginatics.com/export/per-pay-element-details-draft-rd/)\
 [rep_PER_Pay_Element_Details_Draft_RD.xml](https://www.enginatics.com/xml/per-pay-element-details-draft-rd/)
 # Oracle E-Business Suite - Reporting Library 
     

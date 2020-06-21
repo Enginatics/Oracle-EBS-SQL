@@ -4,7 +4,6 @@
 ## Dependencies
 If you would like to try one of these SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_Testing_Zero_Cost_Items_SQL.sql](https://www.enginatics.com/export/testing-zero-cost-items-sql/)\
 [rep_Testing_Zero_Cost_Items_SQL.xml](https://www.enginatics.com/xml/testing-zero-cost-items-sql/)
 # Oracle E-Business Suite - Reporting Library 
     

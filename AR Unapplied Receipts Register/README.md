@@ -10,7 +10,6 @@ If you would like to try one of these SQLs without having Blitz Report installed
 # Report Example
 [AR_Unapplied_Receipts_Register 05-Apr-2018 191029.xlsx](https://www.enginatics.com/example/ar-unapplied-receipts-register/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_AR_Unapplied_Receipts_Register.sql](https://www.enginatics.com/export/ar-unapplied-receipts-register/)\
 [rep_AR_Unapplied_Receipts_Register.xml](https://www.enginatics.com/xml/ar-unapplied-receipts-register/)
 # Oracle E-Business Suite - Reporting Library 
     

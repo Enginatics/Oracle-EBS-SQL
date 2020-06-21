@@ -8,7 +8,6 @@ If you would like to try one of these SQLs without having Blitz Report installed
 # Report Example
 [MRP_Item_Forecast 20-Jun-2018 081609.xlsx](https://www.enginatics.com/example/mrp-item-forecast/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_MRP_Item_Forecast.sql](https://www.enginatics.com/export/mrp-item-forecast/)\
 [rep_MRP_Item_Forecast.xml](https://www.enginatics.com/xml/mrp-item-forecast/)
 # Oracle E-Business Suite - Reporting Library 
     

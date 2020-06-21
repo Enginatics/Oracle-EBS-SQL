@@ -2,13 +2,12 @@
 ## Description: 
 Chain of currently blocking and blocked database sessions from v$wait_chains
 ## Categories: 
-[DBA](https://www.enginatics.com/library/?pg=1&category[]=DBA), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[DBA](https://www.enginatics.com/library/?pg=1&category[]=DBA), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - DBA](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+DBA)
 ## Dependencies
 If you would like to try one of these SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Report Example
 [DBA_Blocking_Sessions 06-May-2020 103312.xlsx](https://www.enginatics.com/example/dba-blocking-sessions/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_DBA_Blocking_Sessions.sql](https://www.enginatics.com/export/dba-blocking-sessions/)\
 [rep_DBA_Blocking_Sessions.xml](https://www.enginatics.com/xml/dba-blocking-sessions/)
 # Oracle E-Business Suite - Reporting Library 
     

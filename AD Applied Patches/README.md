@@ -2,13 +2,12 @@
 ## Description: 
 AD applied patches, patch runs, included bugs, filenames and actions
 ## Categories: 
-[Application](https://www.enginatics.com/library/?pg=1&category[]=Application), [DBA](https://www.enginatics.com/library/?pg=1&category[]=DBA), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12+only)
+[Application](https://www.enginatics.com/library/?pg=1&category[]=Application), [DBA](https://www.enginatics.com/library/?pg=1&category[]=DBA), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12+only), [Toolkit - DBA](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+DBA)
 ## Dependencies
 If you would like to try one of these SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Report Example
 [AD_Applied_Patches 11-Apr-2020 004347.xlsx](https://www.enginatics.com/example/ad-applied-patches/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_AD_Applied_Patches.sql](https://www.enginatics.com/export/ad-applied-patches/)\
 [rep_AD_Applied_Patches.xml](https://www.enginatics.com/xml/ad-applied-patches/)
 # Oracle E-Business Suite - Reporting Library 
     

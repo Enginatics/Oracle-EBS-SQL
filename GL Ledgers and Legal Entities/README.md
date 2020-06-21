@@ -2,13 +2,12 @@
 ## Description: 
 GL Ledgers with Legal Entities and Balancing Segments
 ## Categories: 
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Financials](https://www.enginatics.com/library/?pg=1&category[]=Financials), [Setup](https://www.enginatics.com/library/?pg=1&category[]=Setup)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Financials](https://www.enginatics.com/library/?pg=1&category[]=Financials), [Setup](https://www.enginatics.com/library/?pg=1&category[]=Setup), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+Operations), [Toolkit - Setup & Support](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+Setup+%26+Support)
 ## Dependencies
 If you would like to try one of these SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Report Example
 [GL_Ledgers_and_Legal_Entities 11-Mar-2020 085737.xlsx](https://www.enginatics.com/example/gl-ledgers-and-legal-entities/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_GL_Ledgers_and_Legal_Entities.sql](https://www.enginatics.com/export/gl-ledgers-and-legal-entities/)\
 [rep_GL_Ledgers_and_Legal_Entities.xml](https://www.enginatics.com/xml/gl-ledgers-and-legal-entities/)
 # Oracle E-Business Suite - Reporting Library 
     

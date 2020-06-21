@@ -2,13 +2,12 @@
 ## Description: 
 Bill of material routings
 ## Categories: 
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Manufacturing](https://www.enginatics.com/library/?pg=1&category[]=Manufacturing)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Manufacturing](https://www.enginatics.com/library/?pg=1&category[]=Manufacturing), [Toolkit - Setup & Support](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+Setup+%26+Support)
 ## Dependencies
 If you would like to try one of these SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Report Example
 [BOM_Routings 23-Jul-2017 155553.xlsx](https://www.enginatics.com/example/bom-routings/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_BOM_Routings.sql](https://www.enginatics.com/export/bom-routings/)\
 [rep_BOM_Routings.xml](https://www.enginatics.com/xml/bom-routings/)
 # Oracle E-Business Suite - Reporting Library 
     

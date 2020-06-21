@@ -8,7 +8,6 @@ If you would like to try one of these SQLs without having Blitz Report installed
 # Report Example
 [FND_Lookup_Values 27-Jul-2018 212911.xlsx](https://www.enginatics.com/example/fnd-lookup-values/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_FND_Lookup_Values.sql](https://www.enginatics.com/export/fnd-lookup-values/)\
 [rep_FND_Lookup_Values.xml](https://www.enginatics.com/xml/fnd-lookup-values/)
 # Oracle E-Business Suite - Reporting Library 
     

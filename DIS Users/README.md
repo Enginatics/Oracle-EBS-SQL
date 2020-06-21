@@ -8,7 +8,6 @@ If you would like to try one of these SQLs without having Blitz Report installed
 # Report Example
 [DIS_Users 04-Jan-2019 135320.xlsx](https://www.enginatics.com/example/dis-users/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_DIS_Users.sql](https://www.enginatics.com/export/dis-users/)\
 [rep_DIS_Users.xml](https://www.enginatics.com/xml/dis-users/)
 # Oracle E-Business Suite - Reporting Library 
     

@@ -2,13 +2,12 @@
 ## Description: 
 Summary counts of stuck and errored workflow activities to monitor required housekeeping activities
 ## Categories: 
-[Application](https://www.enginatics.com/library/?pg=1&category[]=Application), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Application](https://www.enginatics.com/library/?pg=1&category[]=Application), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Setup & Support](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+Setup+%26+Support)
 ## Dependencies
 If you would like to try one of these SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Report Example
 [WF_Activity_Status_Summary 18-Jan-2018 221505.xlsx](https://www.enginatics.com/example/wf-activity-status-summary/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_WF_Activity_Status_Summary.sql](https://www.enginatics.com/export/wf-activity-status-summary/)\
 [rep_WF_Activity_Status_Summary.xml](https://www.enginatics.com/xml/wf-activity-status-summary/)
 # Oracle E-Business Suite - Reporting Library 
     

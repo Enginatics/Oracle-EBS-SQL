@@ -2,13 +2,12 @@
 ## Description: 
 Full text search through database source code objects such as packages, procedures, functions, triggers etc.
 ## Categories: 
-[DBA](https://www.enginatics.com/library/?pg=1&category[]=DBA), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[DBA](https://www.enginatics.com/library/?pg=1&category[]=DBA), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - DBA](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+DBA)
 ## Dependencies
 If you would like to try one of these SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Report Example
 [DBA_Text_Search 11-May-2017 125907.xlsx](https://www.enginatics.com/example/dba-text-search/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_DBA_Text_Search.sql](https://www.enginatics.com/export/dba-text-search/)\
 [rep_DBA_Text_Search.xml](https://www.enginatics.com/xml/dba-text-search/)
 # Oracle E-Business Suite - Reporting Library 
     

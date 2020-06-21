@@ -34,6 +34,4 @@ flv.language=flv2.language and
 flv.view_application_id=flv2.view_application_id and
 flv.security_group_id=flv2.security_group_id
 where
-nvl(flv.source_lang,'x')<>nvl(flv2.source_lang,'x') or
-nvl(flv.meaning,'x')<>nvl(flv2.meaning,'x') or
-nvl(flv.description,'x')<>nvl(flv2.description,'x')
+1=1

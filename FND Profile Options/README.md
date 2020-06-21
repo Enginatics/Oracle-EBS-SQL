@@ -2,13 +2,12 @@
 ## Description: 
 FND profile option definition
 ## Categories: 
-[Application](https://www.enginatics.com/library/?pg=1&category[]=Application), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Setup](https://www.enginatics.com/library/?pg=1&category[]=Setup)
+[Application](https://www.enginatics.com/library/?pg=1&category[]=Application), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Setup](https://www.enginatics.com/library/?pg=1&category[]=Setup), [Toolkit - Setup & Support](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+Setup+%26+Support)
 ## Dependencies
 If you would like to try one of these SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Report Example
 [FND_Profile_Options 03-Apr-2018 105618.xlsx](https://www.enginatics.com/example/fnd-profile-options/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_FND_Profile_Options.sql](https://www.enginatics.com/export/fnd-profile-options/)\
 [rep_FND_Profile_Options.xml](https://www.enginatics.com/xml/fnd-profile-options/)
 # Oracle E-Business Suite - Reporting Library 
     

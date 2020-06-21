@@ -1,12 +1,11 @@
 # [AD Applied Patches R12.2](https://www.enginatics.com/reports/ad-applied-patches-r12-2/)
 ## Description: 
-Check if a specific patch is applied in 12.2
+Check if a specific patch is applied in 12.2 using ad_patch.is_patch_applied function according to MOS Doc ID 1963046.1
 ## Categories: 
-[Application](https://www.enginatics.com/library/?pg=1&category[]=Application), [DBA](https://www.enginatics.com/library/?pg=1&category[]=DBA), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Application](https://www.enginatics.com/library/?pg=1&category[]=Application), [DBA](https://www.enginatics.com/library/?pg=1&category[]=DBA), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - DBA](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+DBA)
 ## Dependencies
 If you would like to try one of these SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_AD_Applied_Patches_R12_2.sql](https://www.enginatics.com/export/ad-applied-patches-r12-2/)\
 [rep_AD_Applied_Patches_R12_2.xml](https://www.enginatics.com/xml/ad-applied-patches-r12-2/)
 # Oracle E-Business Suite - Reporting Library 
     

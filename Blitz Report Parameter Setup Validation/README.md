@@ -6,7 +6,6 @@ Blitz report parameters referencing table aliases, which do not exist as a table
 ## Dependencies
 If you would like to try one of these SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_Blitz_Report_Parameter_Setup_Validation.sql](https://www.enginatics.com/export/blitz-report-parameter-setup-validation/)\
 [rep_Blitz_Report_Parameter_Setup_Validation.xml](https://www.enginatics.com/xml/blitz-report-parameter-setup-validation/)
 # Oracle E-Business Suite - Reporting Library 
     

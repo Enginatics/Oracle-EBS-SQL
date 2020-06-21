@@ -6,7 +6,6 @@ Generates FNDLOAD download and upload linux commands for automated setup transfe
 ## Dependencies
 If you would like to try one of these SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_FND_FNDLOAD_Object_Transfer.sql](https://www.enginatics.com/export/fnd-fndload-object-transfer/)\
 [rep_FND_FNDLOAD_Object_Transfer.xml](https://www.enginatics.com/xml/fnd-fndload-object-transfer/)
 # Oracle E-Business Suite - Reporting Library 
     

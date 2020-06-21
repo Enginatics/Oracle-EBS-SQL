@@ -12,7 +12,6 @@ If you would like to try one of these SQLs without having Blitz Report installed
 # Report Example
 [EAM_Weekly_Schedule 17-May-2020 135229.xlsx](https://www.enginatics.com/example/eam-weekly-schedule/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_EAM_Weekly_Schedule.sql](https://www.enginatics.com/export/eam-weekly-schedule/)\
 [rep_EAM_Weekly_Schedule.xml](https://www.enginatics.com/xml/eam-weekly-schedule/)
 # Oracle E-Business Suite - Reporting Library 
     

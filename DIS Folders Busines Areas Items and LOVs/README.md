@@ -8,7 +8,6 @@ Parameter 'Show Active Only' restricts to folders which have been accessed by wo
 ## Dependencies
 If you would like to try one of these SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_DIS_Folders_Busines_Areas_Items_and_LOVs.sql](https://www.enginatics.com/export/dis-folders-busines-areas-items-and-lovs/)\
 [rep_DIS_Folders_Busines_Areas_Items_and_LOVs.xml](https://www.enginatics.com/xml/dis-folders-busines-areas-items-and-lovs/)
 # Oracle E-Business Suite - Reporting Library 
     

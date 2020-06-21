@@ -4,11 +4,10 @@ Application: Payables
 Source: Invoice Aging Report  and Invoice Detail Report
 
 ## Categories: 
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Financials](https://www.enginatics.com/library/?pg=1&category[]=Financials), [Procurement](https://www.enginatics.com/library/?pg=1&category[]=Procurement)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Financials](https://www.enginatics.com/library/?pg=1&category[]=Financials), [Procurement](https://www.enginatics.com/library/?pg=1&category[]=Procurement), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+Operations), [Toolkit - Time Critical](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+Time+Critical)
 ## Dependencies
 If you would like to try one of these SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_AP_Invoices_and_Lines.sql](https://www.enginatics.com/export/ap-invoices-and-lines/)\
 [rep_AP_Invoices_and_Lines.xml](https://www.enginatics.com/xml/ap-invoices-and-lines/)
 # Oracle E-Business Suite - Reporting Library 
     

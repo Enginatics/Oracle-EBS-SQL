@@ -6,7 +6,6 @@ If you would like to try one of these SQLs without having Blitz Report installed
 # Report Example
 [FND_Form_Functions 21-Jul-2017 172941.xlsx](https://www.enginatics.com/example/fnd-form-functions/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_FND_Form_Functions.sql](https://www.enginatics.com/export/fnd-form-functions/)\
 [rep_FND_Form_Functions.xml](https://www.enginatics.com/xml/fnd-form-functions/)
 # Oracle E-Business Suite - Reporting Library 
     

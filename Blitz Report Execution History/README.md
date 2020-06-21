@@ -8,7 +8,6 @@ If you would like to try one of these SQLs without having Blitz Report installed
 # Report Example
 [Blitz_Report_Execution_History 24-Jul-2017 150655.xlsx](https://www.enginatics.com/example/blitz-report-execution-history/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_Blitz_Report_Execution_History.sql](https://www.enginatics.com/export/blitz-report-execution-history/)\
 [rep_Blitz_Report_Execution_History.xml](https://www.enginatics.com/xml/blitz-report-execution-history/)
 # Oracle E-Business Suite - Reporting Library 
     

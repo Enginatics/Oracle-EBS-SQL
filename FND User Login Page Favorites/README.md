@@ -8,7 +8,6 @@ If you would like to try one of these SQLs without having Blitz Report installed
 # Report Example
 [FND_User_Login_Page_Favorites 20-Jan-2019 123147.xlsx](https://www.enginatics.com/example/fnd-user-login-page-favorites/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_FND_User_Login_Page_Favorites.sql](https://www.enginatics.com/export/fnd-user-login-page-favorites/)\
 [rep_FND_User_Login_Page_Favorites.xml](https://www.enginatics.com/xml/fnd-user-login-page-favorites/)
 # Oracle E-Business Suite - Reporting Library 
     

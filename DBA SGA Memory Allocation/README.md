@@ -2,13 +2,12 @@
 ## Description: 
 Current SGA memory usage in gigabytes, showing the split between buffer cache and shared pool
 ## Categories: 
-[DBA](https://www.enginatics.com/library/?pg=1&category[]=DBA), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[DBA](https://www.enginatics.com/library/?pg=1&category[]=DBA), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - DBA](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+DBA)
 ## Dependencies
 If you would like to try one of these SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Report Example
 [DBA_SGA_Memory_Allocation 16-Jun-2018 072434.xlsx](https://www.enginatics.com/example/dba-sga-memory-allocation/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_DBA_SGA_Memory_Allocation.sql](https://www.enginatics.com/export/dba-sga-memory-allocation/)\
 [rep_DBA_SGA_Memory_Allocation.xml](https://www.enginatics.com/xml/dba-sga-memory-allocation/)
 # Oracle E-Business Suite - Reporting Library 
     

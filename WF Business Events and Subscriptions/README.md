@@ -2,13 +2,12 @@
 ## Description: 
 Workflow business event and subscription details
 ## Categories: 
-[Application](https://www.enginatics.com/library/?pg=1&category[]=Application), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Application](https://www.enginatics.com/library/?pg=1&category[]=Application), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Setup & Support](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+Setup+%26+Support)
 ## Dependencies
 If you would like to try one of these SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Report Example
 [WF_Business_Events_and_Subscriptions 18-Jan-2018 224755.xlsx](https://www.enginatics.com/example/wf-business-events-and-subscriptions/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_WF_Business_Events_and_Subscriptions.sql](https://www.enginatics.com/export/wf-business-events-and-subscriptions/)\
 [rep_WF_Business_Events_and_Subscriptions.xml](https://www.enginatics.com/xml/wf-business-events-and-subscriptions/)
 # Oracle E-Business Suite - Reporting Library 
     

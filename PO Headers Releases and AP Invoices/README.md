@@ -5,13 +5,12 @@ Example: To show all POs or Releases which have an invoice but no receiving TRX 
 Invoice exists=Yes
 Receiving TRX exists=No
 ## Categories: 
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Financials](https://www.enginatics.com/library/?pg=1&category[]=Financials), [Procurement](https://www.enginatics.com/library/?pg=1&category[]=Procurement)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Financials](https://www.enginatics.com/library/?pg=1&category[]=Financials), [Procurement](https://www.enginatics.com/library/?pg=1&category[]=Procurement), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+Operations)
 ## Dependencies
 If you would like to try one of these SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Report Example
 [PO_Headers_Releases_and_AP_Invoices 18-Jan-2018 220829.xlsx](https://www.enginatics.com/example/po-headers-releases-and-ap-invoices/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_PO_Headers_Releases_and_AP_Invoices.sql](https://www.enginatics.com/export/po-headers-releases-and-ap-invoices/)\
 [rep_PO_Headers_Releases_and_AP_Invoices.xml](https://www.enginatics.com/xml/po-headers-releases-and-ap-invoices/)
 # Oracle E-Business Suite - Reporting Library 
     

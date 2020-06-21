@@ -9,7 +9,6 @@ DB package: FA_FAS750_XMLP_PKG
 ## Dependencies
 If you would like to try one of these SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_FA_Asset_Category_Listing.sql](https://www.enginatics.com/export/fa-asset-category-listing/)\
 [rep_FA_Asset_Category_Listing.xml](https://www.enginatics.com/xml/fa-asset-category-listing/)
 # Oracle E-Business Suite - Reporting Library 
     

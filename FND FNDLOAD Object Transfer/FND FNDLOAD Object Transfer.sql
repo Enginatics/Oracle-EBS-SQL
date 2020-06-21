@@ -22,6 +22,17 @@ where
 :object_type='Concurrent Program'
 union all
 select
+'Function' object_type,
+fff.function_name,
+'FNDLOAD apps/apps 0 Y DOWNLOAD $FND_TOP/patch/115/import/afsload.lct '||:output_file_location||'func_'||fff.function_name||'.ldt FUNCTION FUNCTION_NAME='||fff.function_name download,
+'FNDLOAD apps/&apps_password_upload 0 Y UPLOAD $FND_TOP/patch/115/import/afsload.lct func_'||fff.function_name||'.ldt' upload
+from
+fnd_form_functions fff
+where
+2=2 and
+:object_type='Function'
+union all
+select
 'Lookup' object_type,
 flt.lookup_type,
 'FNDLOAD apps/apps 0 Y DOWNLOAD $FND_TOP/patch/115/import/aflvmlu.lct '||:output_file_location||'look_'||flt.lookup_type||'.ldt FND_LOOKUP_TYPE APPLICATION_SHORT_NAME='||fa.application_short_name||' LOOKUP_TYPE='||flt.lookup_type download,

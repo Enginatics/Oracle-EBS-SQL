@@ -8,7 +8,6 @@ If you would like to try one of these SQLs without having Blitz Report installed
 # Report Example
 [XLE_Legal_Entities 24-Jul-2017 145303.xlsx](https://www.enginatics.com/example/xle-legal-entities/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_XLE_Legal_Entities.sql](https://www.enginatics.com/export/xle-legal-entities/)\
 [rep_XLE_Legal_Entities.xml](https://www.enginatics.com/xml/xle-legal-entities/)
 # Oracle E-Business Suite - Reporting Library 
     

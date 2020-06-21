@@ -8,7 +8,6 @@ If you would like to try one of these SQLs without having Blitz Report installed
 # Report Example
 [CST_Period_Close_Subinventory_Value_Summary 06-Jul-2019 173524.xlsx](https://www.enginatics.com/example/cst-period-close-subinventory-value-summary/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_CST_Period_Close_Subinventory_Value_Summary.sql](https://www.enginatics.com/export/cst-period-close-subinventory-value-summary/)\
 [rep_CST_Period_Close_Subinventory_Value_Summary.xml](https://www.enginatics.com/xml/cst-period-close-subinventory-value-summary/)
 # Oracle E-Business Suite - Reporting Library 
     
