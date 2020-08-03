@@ -5,9 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: AR Past Due Invoice
--- Description: Application: Receivables
-Source: Past Due Invoice Report
-Short Name: ARXPDI_XML
+-- Description: Detail past due AR invoice report with invoice number, days past due, amount past due and currency code
 -- Excel Examle Output: https://www.enginatics.com/example/ar-past-due-invoice/
 -- Library Link: https://www.enginatics.com/reports/ar-past-due-invoice/
 -- Run Report: https://demo.enginatics.com/

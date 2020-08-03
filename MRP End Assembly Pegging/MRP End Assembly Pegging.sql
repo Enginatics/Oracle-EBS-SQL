@@ -5,7 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: MRP End Assembly Pegging
--- Description: MRP pegging from end assembly to component
+-- Description: Detail report for MRP pegging from final assembly to each component, including: planner, end demand pegged qty, demand and plan dates, supply quantity, and supply date.
 -- Excel Examle Output: https://www.enginatics.com/example/mrp-end-assembly-pegging/
 -- Library Link: https://www.enginatics.com/reports/mrp-end-assembly-pegging/
 -- Run Report: https://demo.enginatics.com/

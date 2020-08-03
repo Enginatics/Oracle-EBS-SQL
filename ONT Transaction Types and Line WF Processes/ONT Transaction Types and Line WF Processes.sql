@@ -5,7 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: ONT Transaction Types and Line WF Processes
--- Description: Setup of order management transaction types and associated line types and workflow processes
+-- Description: Master data report showing the setup of order management transaction types and associated line types and workflow processes.
 -- Excel Examle Output: https://www.enginatics.com/example/ont-transaction-types-and-line-wf-processes/
 -- Library Link: https://www.enginatics.com/reports/ont-transaction-types-and-line-wf-processes/
 -- Run Report: https://demo.enginatics.com/

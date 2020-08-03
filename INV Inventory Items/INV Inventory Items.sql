@@ -5,7 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: INV Inventory Items
--- Description: Inventory item master setup including main item attributes such as item type, uom, status, serial control, physical and various other attributes
+-- Description: Master data report that lists item master attributes such as item type, UOM, status, serial control, account numbers and various other attributes
 -- Excel Examle Output: https://www.enginatics.com/example/inv-inventory-items/
 -- Library Link: https://www.enginatics.com/reports/inv-inventory-items/
 -- Run Report: https://demo.enginatics.com/
@@ -32,6 +32,10 @@ xxen_util.meaning(msiv.lot_control_code,'MTL_LOT_CONTROL',700) lot_control,
 msiv.shelf_life_days,
 nvl(xxen_util.meaning(msiv.serial_number_control_code,'CSP_INV_ITEM_SERIAL_CONTROL',0),xxen_util.meaning(msiv.serial_number_control_code,'MTL_SERIAL_NUMBER',700)) serial_control,
 xxen_util.meaning(msiv.bom_item_type,'BOM_ITEM_TYPE',700) bom_item_type,
+xxen_util.meaning(msiv.costing_enabled_flag,'YES_NO',0) costing_enabled,
+xxen_util.meaning(msiv.inventory_asset_flag,'YES_NO',0) inventory_asset_value,
+xxen_util.meaning(msiv.default_include_in_rollup_flag,'YES_NO',0) include_in_rollup,
+gcc.concatenated_segments cost_of_goods_sold_account,
 xxen_util.meaning(msiv.serv_req_enabled_code,'CS_SR_SERV_REQ_ENABLED_TYPE',170) serv_req_enabled_code,
 xxen_util.meaning(msiv.serviceable_product_flag,'YES_NO',0) enable_contract_coverage,
 xxen_util.meaning(msiv.comms_nl_trackable_flag,'YES_NO',0) track_in_installed_base,
@@ -89,7 +93,6 @@ xxen_util.meaning(msiv.customer_order_flag,'YES_NO',0) customer_ordered,
 xxen_util.meaning(msiv.internal_order_enabled_flag,'YES_NO',0) internal_orders_enabled,
 xxen_util.meaning(msiv.invoiceable_item_flag,'YES_NO',0) invoiceable_item,
 xxen_util.meaning(msiv.invoice_enabled_flag,'YES_NO',0) invoice_enabled,
-gcc.concatenated_segments cost_of_goods_sold_account,
 &flexfield_columns
 msiv.inventory_item_id
 from

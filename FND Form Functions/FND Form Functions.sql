@@ -17,7 +17,11 @@ fav.application_name form_application,
 ffv.form_name,
 ffv.user_form_name,
 fffv.parameters,
-fffv.web_html_call html_call
+fffv.web_html_call html_call,
+xxen_util.user_name(fffv.created_by) created_by,
+xxen_util.client_time(fffv.creation_date) creation_date,
+xxen_util.user_name(fffv.last_updated_by) last_updated_by,
+xxen_util.client_time(fffv.last_update_date) last_update_date
 from
 fnd_application_vl fav,
 fnd_form_functions_vl fffv,

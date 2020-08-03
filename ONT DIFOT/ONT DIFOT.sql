@@ -5,7 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: ONT DIFOT
--- Description: Sales order or quote header and line details with DIFOT
+-- Description: Sales order header and line details with additional logic to measure the order shipping performance metric: delivered in full and on time (DIFOT).
 
 -- Excel Examle Output: https://www.enginatics.com/example/ont-difot/
 -- Library Link: https://www.enginatics.com/reports/ont-difot/

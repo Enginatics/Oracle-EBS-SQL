@@ -5,8 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: AR Transactions and Lines
--- Description: Receivables transactions and line details including additional columns specifically for service (OKS) and lease (OKL) contracts.
-Note: This report shows completed transactions only as it is based on table ar_payment_schedules_all.
+-- Description: Detail AR transaction report with line level details and special columns for service tickets (OKS) and service contracts (OKL) data
 -- Excel Examle Output: https://www.enginatics.com/example/ar-transactions-and-lines/
 -- Library Link: https://www.enginatics.com/reports/ar-transactions-and-lines/
 -- Run Report: https://demo.enginatics.com/

@@ -5,7 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PER Organization Hierarchy
--- Description: Hierarchical list of human resource organization structures including subordinate orgs
+-- Description: Master data report showing hierarchical list of human resource organization structures including subordinate orgs.
 -- Excel Examle Output: https://www.enginatics.com/example/per-organization-hierarchy/
 -- Library Link: https://www.enginatics.com/reports/per-organization-hierarchy/
 -- Run Report: https://demo.enginatics.com/

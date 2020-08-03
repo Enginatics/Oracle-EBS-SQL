@@ -5,7 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: MRP Item Forecast
--- Description: MRP item forecast details
+-- Description: Detail report for item planning forecast, including forecast description, planner, item, bucket type, forecast start and end dates, current quantity, original qty, project related data, and confidence projection.
 -- Excel Examle Output: https://www.enginatics.com/example/mrp-item-forecast/
 -- Library Link: https://www.enginatics.com/reports/mrp-item-forecast/
 -- Run Report: https://demo.enginatics.com/

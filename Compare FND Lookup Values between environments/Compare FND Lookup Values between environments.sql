@@ -34,4 +34,4 @@ flv.language=flv2.language and
 flv.view_application_id=flv2.view_application_id and
 flv.security_group_id=flv2.security_group_id
 where
-1=1
+2=2

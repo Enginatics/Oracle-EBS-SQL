@@ -5,11 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: AP Cash Requirement
--- Description: Same as Oracle's Cash Requirement report showing all unpaid or partially paid amounts from table ap_payment_schedules_all, where the invoice is neither on hold nor cancelled.
-
-Application: Payables
-Source: Cash Requirement Report
-Short Name: APXCRRCR
+-- Description: Detail cash requirement report showing all unpaid or partially paid amounts, where the invoice is neither on hold nor cancelled, including invoice currency amount, exchange rate, and currency code
 -- Excel Examle Output: https://www.enginatics.com/example/ap-cash-requirement/
 -- Library Link: https://www.enginatics.com/reports/ap-cash-requirement/
 -- Run Report: https://demo.enginatics.com/

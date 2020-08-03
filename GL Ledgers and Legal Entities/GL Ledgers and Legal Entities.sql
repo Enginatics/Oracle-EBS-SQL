@@ -5,7 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: GL Ledgers and Legal Entities
--- Description: GL Ledgers with Legal Entities and Balancing Segments
+-- Description: Master data report showing ledger set, ledger name, ledger category, currency, legal entity, and  balancing segment across all ledgers and legal entities.
 -- Excel Examle Output: https://www.enginatics.com/example/gl-ledgers-and-legal-entities/
 -- Library Link: https://www.enginatics.com/reports/gl-ledgers-and-legal-entities/
 -- Run Report: https://demo.enginatics.com/

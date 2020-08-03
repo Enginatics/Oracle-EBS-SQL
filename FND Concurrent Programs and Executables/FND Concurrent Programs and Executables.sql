@@ -21,6 +21,8 @@ xxen_util.meaning(fev.execution_method_code,'CP_EXECUTION_METHOD_CODE',0) method
 fev.execution_file_name,
 fcpv.execution_options options,
 xxen_util.meaning(fcpv.output_file_type,'CP_OUTPUT_FILE_TYPE',0) output_format,
+fcrc.request_class_name type,
+fcpv.increment_proc incrementor,
 xxen_util.meaning(fcpv.multi_org_category,'CONC_PROGRAM_CATEGORY',0) operating_unit_mode,
 &column_parameters
 case when fev.description is null and fev.user_executable_name<>fev.executable_name then fev.user_executable_name else fev.description end executable_description,
@@ -34,7 +36,8 @@ fnd_application_vl fav,
 fnd_concurrent_programs_vl fcpv,
 fnd_executables_vl fev,
 (select fdfcuv.* from fnd_descr_flex_col_usage_vl fdfcuv where '&enable_parameters'='Y') fdfcuv,
-fnd_flex_value_sets ffvs
+fnd_flex_value_sets ffvs,
+fnd_concurrent_request_class fcrc
 where
 1=1 and
 fav.application_id=fcpv.application_id and
@@ -43,7 +46,9 @@ fcpv.executable_id=fev.executable_id and
 fcpv.application_id=fdfcuv.application_id(+) and
 '$SRS$.'||fcpv.concurrent_program_name=fdfcuv.descriptive_flexfield_name(+) and
 fdfcuv.descriptive_flex_context_code(+)='Global Data Elements' and
-fdfcuv.flex_value_set_id=ffvs.flex_value_set_id(+)
+fdfcuv.flex_value_set_id=ffvs.flex_value_set_id(+) and
+fcpv.class_application_id=fcrc.application_id(+) and
+fcpv.concurrent_class_id=fcrc.request_class_id(+)
 order by
 fav.application_name,
 fcpv.user_concurrent_program_name,

@@ -5,6 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PA Project Tasks and Budgets
+-- Description: Summary project report showing operating unit, project number, project name, description, type, status, start date, completion date, closed date, task information, budget information.
 -- Excel Examle Output: https://www.enginatics.com/example/pa-project-tasks-and-budgets/
 -- Library Link: https://www.enginatics.com/reports/pa-project-tasks-and-budgets/
 -- Run Report: https://demo.enginatics.com/

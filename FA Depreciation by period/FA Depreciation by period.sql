@@ -5,6 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: FA Depreciation by period
+-- Description: Detail report with asset ID, depreciation run date, depreciation amount per period and depreciation YTD.
 -- Excel Examle Output: https://www.enginatics.com/example/fa-depreciation-by-period/
 -- Library Link: https://www.enginatics.com/reports/fa-depreciation-by-period/
 -- Run Report: https://demo.enginatics.com/

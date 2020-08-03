@@ -5,7 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: INV Onhand Quantities
--- Description: Inventory item onhand quantity details
+-- Description: Detail report inventory item quantities by org, sub inventory, location, unit of measure, quantity on hand, quantity reserved, quantity unpacked, lot number, lot expiration, planning information, serial control, availability type, date received, list price, min / max and safety stock.
 -- Excel Examle Output: https://www.enginatics.com/example/inv-onhand-quantities/
 -- Library Link: https://www.enginatics.com/reports/inv-onhand-quantities/
 -- Run Report: https://demo.enginatics.com/

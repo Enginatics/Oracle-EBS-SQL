@@ -5,7 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: MRP Pegging
--- Description: MRP planning pegging hiearchy down from demand such as forecast, sales order MDS or work order to supply e.g. wip jobs, purchase orders or onhand stock.
+-- Description: Detail report for MRP planning pegging showing the hierarchy from demand, including forecast, sales orders, work order to supply (WIP jobs, purchase orders and on hand stock)
 -- Excel Examle Output: https://www.enginatics.com/example/mrp-pegging/
 -- Library Link: https://www.enginatics.com/reports/mrp-pegging/
 -- Run Report: https://demo.enginatics.com/

@@ -5,7 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: INV Material Transactions
--- Description: Inventory material transactions
+-- Description: Detail report of Inventory transactions with item, primary qty, secondary qty, transaction type, transaction ID and total transaction qty
 -- Excel Examle Output: https://www.enginatics.com/example/inv-material-transactions/
 -- Library Link: https://www.enginatics.com/reports/inv-material-transactions/
 -- Run Report: https://demo.enginatics.com/

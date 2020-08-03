@@ -5,7 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: AR Autoinvoice Interface Summary
--- Description: Summary of records in the autoinvoice interface
+-- Description: Summary of records in the autoinvoice interface, sorted by operating unit, and including order count, total orders value and currency code.
 -- Excel Examle Output: https://www.enginatics.com/example/ar-autoinvoice-interface-summary/
 -- Library Link: https://www.enginatics.com/reports/ar-autoinvoice-interface-summary/
 -- Run Report: https://demo.enginatics.com/

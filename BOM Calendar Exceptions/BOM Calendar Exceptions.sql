@@ -5,6 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: BOM Calendar Exceptions
+-- Description: Master data report showing bill of material exceptions dates, exception types and organization code.
 -- Excel Examle Output: https://www.enginatics.com/example/bom-calendar-exceptions/
 -- Library Link: https://www.enginatics.com/reports/bom-calendar-exceptions/
 -- Run Report: https://demo.enginatics.com/

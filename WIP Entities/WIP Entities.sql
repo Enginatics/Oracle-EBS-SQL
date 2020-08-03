@@ -5,7 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: WIP Entities
--- Description: WIP Jobs
+-- Description: Detail WIP report that lists job, type, status, planner, item, item description, planning method, pegging type, entity, job Description, WIP resource transaction account distributions, project number, task, source code, source line item, WIP type, class code, scheduling dates, quantities, department, resource and organization.
 -- Excel Examle Output: https://www.enginatics.com/example/wip-entities/
 -- Library Link: https://www.enginatics.com/reports/wip-entities/
 -- Run Report: https://demo.enginatics.com/

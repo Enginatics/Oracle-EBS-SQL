@@ -5,7 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: AP Expenses
--- Description: AP expenses with corresponding AP invoices, their status and line details, such as per diem or project and tasks
+-- Description: Detail AP expense report listing corresponding AP invoices with status, line details, expense type and expense justification. Including projects task related expenses.
 -- Excel Examle Output: https://www.enginatics.com/example/ap-expenses/
 -- Library Link: https://www.enginatics.com/reports/ap-expenses/
 -- Run Report: https://demo.enginatics.com/

@@ -5,7 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: INV Default Category Sets
--- Description: Inventories functional areas and their default category sets
+-- Description: Master data report that lists Inventory functional areas and their default category sets
 -- Excel Examle Output: https://www.enginatics.com/example/inv-default-category-sets/
 -- Library Link: https://www.enginatics.com/reports/inv-default-category-sets/
 -- Run Report: https://demo.enginatics.com/

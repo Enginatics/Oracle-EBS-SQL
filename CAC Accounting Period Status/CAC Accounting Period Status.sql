@@ -5,52 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Accounting Period Status
--- Description: Report to show the accounting period status for General Ledger, Inventory, Lease Management, Payables, Projects, Purchasing and Receivables.  You can choose All Statuses (open or closed or never opened), Closed, Open or Never Opened periods.  And this report will also display the process manufacturing cost calendar status.
-
-
-/* +=============================================================================+
--- | SQL Code Copyright 2011-2020 Douglas Volz Consulting, Inc.                  |
--- | All rights reserved.                                                        |
--- | Permission to use this code is granted provided the original author is      |
--- | acknowledged. No warranties, express or otherwise is included in this       |
--- | permission.                                                                 |
--- +=============================================================================+
--- |
--- |  Original Author: Douglas Volz (doug@volzconsulting.com)
--- |
--- |  Program Name:  xxx_period_status_rept.sql
--- |
--- |  Parameters:
--- |  p_functional_area       -- functional area you wish to report, works with null,
--- |                             or valid functional areas.  The names of the
--- |                             functional areas are:  General Ledger, Inventory, Lease
--- |                             Management, Payables, Projects, Purchasing and Receivables.
--- |  p_operating_unit        -- Operating Unit you wish to report, leave blank for all
--- |                             operating units (optional) 
--- |  p_ledger                -- general ledger you wish to report, leave blank for all
--- |                             ledgers (optional)
--- |  p_period_name           -- The desired accounting period you wish to report
--- |  p_report_period_option  -- Parameter used to combine the Period Open and Period Close
--- |                             reports.  For English, the list of value choices are:
--- |					Closed, Open, Never Opened or All Statuses
--- |  Version Modified on Modified  by    Description
--- |  ======= =========== =============== =========================================
--- |  1.0     19 Jan 2015 Douglas Volz    Combined the xxx_period_open_status_rept.sql
--- |                      Apps Associates and xxx_period_close_status_rept.sql into
--- |                                      one report.  Originally written in 2006 and 2011.
--- |  1.7     10 Apr 2020 Douglas Volz    Made the following multi-language changes:
--- |                                      Changed fnd_application to fnd_application_vl
--- |                                      Changed hr_all_organization_units to hr_all_organization_units_vl
--- |  1.8      7 May 2020 Douglas Volz    Added fnd_product_installations to only report
--- |                                      installed applications.
--- |  1.9     26 May 2020 Douglas Volz    Added lookup values and parameters for the
--- |                                      organization_hierarchy_name subquery.
--- |  1.10    28 May 2020 Douglas Volz    For language translation, replaced custom Report 
--- |                                      Options LOV with compound Oracle lookup values.
--- |  1.11    21 Jun 2020 Douglas Volz    Added Organization Hierarchy as a separate parameter
--- +=============================================================================+*/
-
-
+-- Description: Profile Report to show the accounting period status for General Ledger, Inventory, Lease Management, Payables, Projects, Purchasing and Receivables. You can choose 'All Statuses' (open or closed or never opened). This report will also display the process manufacturing cost calendar status.
 -- Excel Examle Output: https://www.enginatics.com/example/cac-accounting-period-status/
 -- Library Link: https://www.enginatics.com/reports/cac-accounting-period-status/
 -- Run Report: https://demo.enginatics.com/
@@ -69,19 +24,18 @@ select	fav.application_name Functional_Area,
 	fl2.meaning Summarized_Flag,
 	-- Revision for version 1.1
 	opm_status.period_status_tl OPM_Period_Status,
-	(select	max(hoh.organization_hierarchy_name)
-	 from	apps.hrfv_organization_hierarchies hoh
-	 -- Revision for version 1.10 and 1.11
-	 where	(6=6 -- p_org_hierarchy_name
-		 or
-		 regexp_like(hoh.organization_hierarchy_name, '&p_name_open|&p_name_close|&p_name_period','i')
-		)		
-	 and	(mp.organization_id = hoh.child_organization_id
-		 -- Revision for version 1.3
-		 or
-		 mp.organization_id = hoh.parent_organization_id
-		)
-	) "Hierarchy Name"
+coalesce(
+	(select	max(hoh.organization_hierarchy_name) organization_hierarchy_name
+	 from	hrfv_organization_hierarchies hoh
+	 where	hoh.organization_hierarchy_name= '&p_hierarchy_name'
+	 and	(mp.organization_id = hoh.child_organization_id or mp.organization_id = hoh.parent_organization_id)
+	),
+	(select	max(hoh.organization_hierarchy_name) organization_hierarchy_name
+	 from	hrfv_organization_hierarchies hoh
+	 where	regexp_like(hoh.organization_hierarchy_name,'&p_name_open|&p_name_close|&p_name_period','i')
+	 and	(mp.organization_id = hoh.child_organization_id or mp.organization_id = hoh.parent_organization_id)
+	)
+) hierarchy_name
 from	org_acct_periods oap,
 	mtl_parameters mp,
 	hr_organization_information hoi,
@@ -218,19 +172,18 @@ select	fav.application_name Functional_Area,
 	'' Summarized_Flag, 
 	-- Revision for version 1.1
 	'' OPM_Period_Status,
-	(select	max(hoh.organization_hierarchy_name)
-	 from	apps.hrfv_organization_hierarchies hoh
-	 -- Revision for version 1.10 and 1.11
-	 where	(6=6 -- p_org_hierarchy_name
-		 or
-		 regexp_like(hoh.organization_hierarchy_name, '&p_name_open|&p_name_close|&p_name_period','i')
-		)		
-	 and	(mp.organization_id = hoh.child_organization_id
-		 -- Revision for version 1.3
-		 or
-		 mp.organization_id = hoh.parent_organization_id
-		)
-	) "Hierarchy Name"
+coalesce(
+	(select	max(hoh.organization_hierarchy_name) organization_hierarchy_name
+	 from	hrfv_organization_hierarchies hoh
+	 where	hoh.organization_hierarchy_name= '&p_hierarchy_name'
+	 and	(mp.organization_id = hoh.child_organization_id or mp.organization_id = hoh.parent_organization_id)
+	),
+	(select	max(hoh.organization_hierarchy_name) organization_hierarchy_name
+	 from	hrfv_organization_hierarchies hoh
+	 where	regexp_like(hoh.organization_hierarchy_name,'&p_name_open|&p_name_close|&p_name_period','i')
+	 and	(mp.organization_id = hoh.child_organization_id or mp.organization_id = hoh.parent_organization_id)
+	)
+) hierarchy_name
 from	gl_periods gp,
 	mtl_parameters mp,
 	hr_organization_information hoi,

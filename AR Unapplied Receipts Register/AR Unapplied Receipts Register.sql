@@ -5,9 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: AR Unapplied Receipts Register
--- Description: Application: Receivables
-Source: Unapplied Receipts Register (Obsolete)
-Short Name: ARXCOA2
+-- Description: Detail unapplied receipts report with receipt number, date and amount
 -- Excel Examle Output: https://www.enginatics.com/example/ar-unapplied-receipts-register/
 -- Library Link: https://www.enginatics.com/reports/ar-unapplied-receipts-register/
 -- Run Report: https://demo.enginatics.com/

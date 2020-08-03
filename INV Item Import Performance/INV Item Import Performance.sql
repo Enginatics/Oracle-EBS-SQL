@@ -5,8 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: INV Item Import Performance
--- Description: Performance of inventory item background processes (usually INCOIN) by looking at the number of items created and the run time of the corresponding concurrent request.
-If the number of items processed per second is decreasing with increasing total items processed, then the interface SQLs are most likely using a wrong non selective index on mtl_system_items_interface.
+-- Description: Analytical report by item to predict performance of inventory item load background processes. If the number of items processed per second is decreasing with increasing total items processed, then the interface SQLs are most likely using a wrong nonselective index and should be corrected.
 -- Excel Examle Output: https://www.enginatics.com/example/inv-item-import-performance/
 -- Library Link: https://www.enginatics.com/reports/inv-item-import-performance/
 -- Run Report: https://demo.enginatics.com/

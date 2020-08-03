@@ -5,7 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: AR Customers and Sites
--- Description: Customer master data including address, profile information, sites and site uses
+-- Description: Master data report of customer master data including address, sites, site uses, payment terms, Salesperson, price list and other profile information.
 -- Excel Examle Output: https://www.enginatics.com/example/ar-customers-and-sites/
 -- Library Link: https://www.enginatics.com/reports/ar-customers-and-sites/
 -- Run Report: https://demo.enginatics.com/

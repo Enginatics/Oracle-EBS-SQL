@@ -31,6 +31,7 @@ end result,
 case when xrv.report_name<>xrv2.report_name then 'Y' end name_diff,
 case when xrv.sql_text_short<>xrv2.sql_text_short or xrv.sql_length<>xrv2.sql_length then 'Y' end sql_diff,
 case when xrv.description<>xrv2.description then 'Y' end descr_diff,
+case when xrv.report_name is not null and xrv2.report_name is not null and nvl(xrv.category,'x')<>nvl(xrv2.category,'x') then 'Y' end category_diff,
 xrv.category,
 xrv2.category category_remote,
 xrv.report_name,
@@ -58,7 +59,8 @@ where
 nvl(x.report_name,'x')<>nvl(x.report_name_remote,'x') or
 x.name_diff is not null or
 x.sql_diff is not null or
-x.descr_diff is not null
+x.descr_diff is not null or
+x.category_diff is not null
 order by
 coalesce(x.name_diff,x.descr_diff,x.sql_diff),
 x.last_update_date_remote desc nulls last,

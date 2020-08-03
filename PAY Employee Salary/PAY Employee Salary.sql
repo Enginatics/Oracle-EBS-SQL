@@ -5,6 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PAY Employee Salary
+-- Description: Profile report showing the employee demographic information including name, gender SSN, birthdate, age, nationality, effective start date, and additional profile information.
 -- Excel Examle Output: https://www.enginatics.com/example/pay-employee-salary/
 -- Library Link: https://www.enginatics.com/reports/pay-employee-salary/
 -- Run Report: https://demo.enginatics.com/

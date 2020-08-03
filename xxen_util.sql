@@ -33,9 +33,29 @@ create or replace package apps.xxen_util is
 /***********************************************************************************************/
 
 /***********************************************************************************************/
+/*  EBS base language                                                                          */
+/***********************************************************************************************/
+function base_language return varchar2 deterministic;
+
+/***********************************************************************************************/
 /*  returns the fnd message for a language, defaulting to US if it doesn't exist               */
 /***********************************************************************************************/
 function fnd_message(p_message_name in varchar2, p_application_short_name in varchar2 default null) return varchar2;
+
+/***********************************************************************************************/
+/*  lookup code to meaning translation                                                         */
+/***********************************************************************************************/
+function meaning(p_lookup_code in varchar2, p_lookup_type in varchar2, p_application_id in varchar2) return varchar2;
+
+/***********************************************************************************************/
+/*  lookup code to description translation                                                     */
+/***********************************************************************************************/
+function description(p_lookup_code in varchar2, p_lookup_type in varchar2, p_application_id in varchar2) return varchar2;
+
+/***********************************************************************************************/
+/*  lookup meaning to code translation                                                         */
+/***********************************************************************************************/
+function lookup_code(p_meaning in varchar2, p_lookup_type in varchar2, p_application_id in varchar2) return varchar2;
 
 /***********************************************************************************************/
 /*  escape regexp metacharacters with a backslash e.g. ( to \(                                 */
@@ -116,9 +136,14 @@ function long_to_clob(p_table_name in varchar2, p_column_name in varchar2, p_row
 function blob_to_base64(p_blob in blob) return clob;
 
 /***********************************************************************************************/
+/*  lengthb for clobs see oracle note 790886.1                                                 */
+/***********************************************************************************************/
+function clob_lengthb(p_clob in clob) return number;
+
+/***********************************************************************************************/
 /*  substrb for clobs up to 32767 characters, see oracle note 1571041.1                        */
 /***********************************************************************************************/
-function clob_substrb(p_clob in clob, p_length in pls_integer, p_position in pls_integer) return clob;
+function clob_substrb(p_clob in clob, p_byte_length in pls_integer, p_char_position in pls_integer) return clob;
 
 /***********************************************************************************************/
 /*  generate x number of rows for use in sql e.g. for regexp: table(xxen_util.rowgen(n)) rowgen*/
@@ -198,16 +223,6 @@ function user_id(p_user_name in varchar2) return pls_integer result_cache;
 /*  returns user_name for a client_id, even for indirect business events through conc requests */
 /***********************************************************************************************/
 function user_name(p_module in varchar2, p_action in varchar2, p_client_id in varchar2) return varchar2 result_cache;
-
-/***********************************************************************************************/
-/*  lookup code to meaning translation                                                         */
-/***********************************************************************************************/
-function meaning(p_lookup_code in varchar2, p_lookup_type in varchar2, p_application_id in varchar2) return varchar2;
-
-/***********************************************************************************************/
-/*  lookup meaning to code translation                                                         */
-/***********************************************************************************************/
-function lookup_code(p_meaning in varchar2, p_lookup_type in varchar2, p_application_id in varchar2) return varchar2;
 
 /***********************************************************************************************/
 /*  validates if a clob is a correctly formatted xml                                           */
@@ -366,13 +381,21 @@ create or replace package body apps.xxen_util is
 g_current_org_id number(15);
 
 
+function base_language return varchar2 deterministic is
+begin
+  for c in (select fl.language_code from fnd_languages fl where fl.installed_flag='B') loop
+    return c.language_code;
+  end loop;
+end base_language;
+
+
 function fnd_message(p_message_name in varchar2, p_application_short_name in varchar2 default null) return varchar2 is
 function fnd_message_(p_message_name in varchar2, p_userenv_lang in varchar2, p_application_short_name in varchar2) return varchar2 result_cache is
 l_message varchar2(4000);
 begin
   for c in (
   select distinct
-  min(fnm.message_text) keep (dense_rank first order by decode(fnm.language_code,'US',2,1)) over () message_text
+  min(fnm.message_text) keep (dense_rank first order by decode(fnm.language_code,xxen_util.base_language,2,1)) over () message_text
   from
   fnd_application fa,
   fnd_new_messages fnm
@@ -380,7 +403,7 @@ begin
   fa.application_short_name=p_application_short_name and
   fa.application_id=fnm.application_id and
   fnm.message_name=p_message_name and
-  fnm.language_code in ('US',p_userenv_lang)
+  fnm.language_code in (xxen_util.base_language,p_userenv_lang)
   ) loop
     l_message:=c.message_text;
   end loop;
@@ -389,6 +412,83 @@ end fnd_message_;
 begin
   return fnd_message_(p_message_name, userenv('lang'), coalesce(p_application_short_name,xxen_api.application_short_name));
 end fnd_message;
+
+
+function meaning(p_lookup_code in varchar2, p_lookup_type in varchar2, p_application_id in varchar2) return varchar2 is
+function meaning(p_lookup_code in varchar2, p_lookup_type in varchar2, p_application_id in varchar2, p_userenv_lang in varchar2) return varchar2 result_cache is
+l_meaning varchar2(80);
+begin
+  for c in (
+  select
+  flv.meaning
+  from
+  fnd_lookup_values flv
+  where
+  flv.lookup_code=p_lookup_code and
+  flv.lookup_type=p_lookup_type and
+  flv.view_application_id=p_application_id and
+  flv.language=p_userenv_lang and
+  flv.security_group_id=0
+  ) loop
+    l_meaning:=c.meaning;
+  end loop;
+  return l_meaning;
+end meaning;
+begin
+  return meaning(p_lookup_code, p_lookup_type, p_application_id, userenv('lang'));
+end meaning;
+
+
+function description(p_lookup_code in varchar2, p_lookup_type in varchar2, p_application_id in varchar2) return varchar2 is
+function description(p_lookup_code in varchar2, p_lookup_type in varchar2, p_application_id in varchar2, p_userenv_lang in varchar2) return varchar2 result_cache is
+l_description varchar2(240);
+begin
+  for c in (
+  select distinct
+  min(flv.description) keep (dense_rank first order by decode(flv.source_lang,xxen_util.base_language,2,1)) over () description
+  from
+  fnd_lookup_values flv
+  where
+  flv.lookup_code=p_lookup_code and
+  flv.lookup_type=p_lookup_type and
+  flv.view_application_id=p_application_id and
+  flv.language in (xxen_util.base_language,p_userenv_lang) and
+  flv.source_lang in (xxen_util.base_language,p_userenv_lang) and
+  flv.security_group_id=0
+  ) loop
+    l_description:=c.description;
+  end loop;
+  return l_description;
+end description;
+begin
+  return description(p_lookup_code, p_lookup_type, p_application_id, userenv('lang'));
+end description;
+
+
+function lookup_code(p_meaning in varchar2, p_lookup_type in varchar2, p_application_id in varchar2) return varchar2 is
+function lookup_code(p_meaning in varchar2, p_lookup_type in varchar2, p_application_id in varchar2, p_userenv_lang in varchar2) return varchar2 result_cache is
+l_lookup_code varchar2(80);
+begin
+  for c in (
+  select
+  flv.lookup_code
+  from
+  fnd_lookup_values flv
+  where
+  flv.meaning=p_meaning and
+  flv.lookup_type=p_lookup_type and
+  flv.view_application_id=p_application_id and
+  flv.language=p_userenv_lang and
+  flv.security_group_id=0
+  ) loop
+    l_lookup_code:=c.lookup_code;
+  end loop;
+  return l_lookup_code;
+end lookup_code;
+
+begin
+  return lookup_code(p_meaning, p_lookup_type, p_application_id, userenv('lang'));
+end lookup_code;
 
 
 function regexp_escape(p_text in varchar2) return varchar is
@@ -993,9 +1093,15 @@ begin
 end blob_to_base64;
 
 
-function clob_substrb(p_clob in clob, p_length in pls_integer, p_position in pls_integer) return clob is
+function clob_lengthb(p_clob in clob) return number is
 begin
-  return substrb(dbms_lob.substr(p_clob, p_length, p_position), p_position, p_length);
+  return dbms_lob.getlength(clob_to_blob(p_clob));
+end clob_lengthb;
+
+
+function clob_substrb(p_clob in clob, p_byte_length in pls_integer, p_char_position in pls_integer) return clob is
+begin
+  return substrb(dbms_lob.substr(p_clob,p_byte_length,p_char_position),1,p_byte_length);
 end clob_substrb;
 
 
@@ -1414,60 +1520,6 @@ begin
 end user_name;
 
 
-function meaning(p_lookup_code in varchar2, p_lookup_type in varchar2, p_application_id in varchar2) return varchar2 is
-
-function meaning(p_lookup_code in varchar2, p_lookup_type in varchar2, p_application_id in varchar2, p_userenv_lang in varchar2) return varchar2 result_cache is
-l_meaning varchar2(80);
-begin
-  for c in (
-  select
-  flv.meaning
-  from
-  fnd_lookup_values flv
-  where
-  flv.lookup_code=p_lookup_code and
-  flv.lookup_type=p_lookup_type and
-  flv.view_application_id=p_application_id and
-  flv.language=p_userenv_lang and
-  flv.security_group_id=0
-  ) loop
-    l_meaning:=c.meaning;
-  end loop;
-  return l_meaning;
-end meaning;
-
-begin
-  return meaning(p_lookup_code, p_lookup_type, p_application_id, userenv('lang'));
-end meaning;
-
-
-function lookup_code(p_meaning in varchar2, p_lookup_type in varchar2, p_application_id in varchar2) return varchar2 is
-
-function lookup_code(p_meaning in varchar2, p_lookup_type in varchar2, p_application_id in varchar2, p_userenv_lang in varchar2) return varchar2 result_cache is
-l_lookup_code varchar2(80);
-begin
-  for c in (
-  select
-  flv.lookup_code
-  from
-  fnd_lookup_values flv
-  where
-  flv.meaning=p_meaning and
-  flv.lookup_type=p_lookup_type and
-  flv.view_application_id=p_application_id and
-  flv.language=p_userenv_lang and
-  flv.security_group_id=0
-  ) loop
-    l_lookup_code:=c.lookup_code;
-  end loop;
-  return l_lookup_code;
-end lookup_code;
-
-begin
-  return lookup_code(p_meaning, p_lookup_type, p_application_id, userenv('lang'));
-end lookup_code;
-
-
 function is_xml(p_clob in clob) return varchar2 is
 l_dummy xmltype;
 begin
@@ -1640,12 +1692,12 @@ l_default_eul varchar2(30);
 begin
   for c in (
   select distinct
-  max(lower(do.owner)) keep (dense_rank last order by xxen_util.dis_eul_usage_count(do.owner),do.created) over () default_eul
+  max(lower(ao.owner)) keep (dense_rank last order by xxen_util.dis_eul_usage_count(ao.owner),ao.created) over () default_eul
   from
-  dba_objects do
+  all_objects ao
   where
-  do.object_type='TABLE' and
-  do.object_name='EUL5_VERSIONS'
+  ao.object_type='TABLE' and
+  ao.object_name='EUL5_VERSIONS'
   ) loop
     l_default_eul:=c.default_eul;
   end loop;

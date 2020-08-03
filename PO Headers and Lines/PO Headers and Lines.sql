@@ -277,7 +277,6 @@ cst_item_costs cic1,
 cst_item_costs cic3,
 mtl_categories_kfv mck,
 ap_invoice_lines_all aila,
-&xrrpv_table
 ap_invoices_all aia
 where
 1=1 and

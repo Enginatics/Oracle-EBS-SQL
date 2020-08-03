@@ -5,7 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: INV Safety Stocks
--- Description: Inventory safety stocks
+-- Description: Master data report for inventory safety stock with inventory org code, item, effective date, UOM,safety stock quantity, safety stock method, forecast , safety stock percent, service level and creation information.
 -- Excel Examle Output: https://www.enginatics.com/example/inv-safety-stocks/
 -- Library Link: https://www.enginatics.com/reports/inv-safety-stocks/
 -- Run Report: https://demo.enginatics.com/

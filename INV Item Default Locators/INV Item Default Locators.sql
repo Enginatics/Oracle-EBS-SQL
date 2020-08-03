@@ -5,7 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: INV Item Default Locators
--- Description: Inventory items default locators for shipping, receiving or move order receipt transactions
+-- Description: Master data report of Inventory Items and the default locators for shipping, receiving or move order receipt transactions
 -- Excel Examle Output: https://www.enginatics.com/example/inv-item-default-locators/
 -- Library Link: https://www.enginatics.com/reports/inv-item-default-locators/
 -- Run Report: https://demo.enginatics.com/

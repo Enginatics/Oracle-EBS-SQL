@@ -5,7 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: INV Organization Access
--- Description: Organization access setup
+-- Description: Master data report for Inventory orgs, with org code, application, responsibility and creation information. Allows BR100 creation.
 -- Excel Examle Output: https://www.enginatics.com/example/inv-organization-access/
 -- Library Link: https://www.enginatics.com/reports/inv-organization-access/
 -- Run Report: https://demo.enginatics.com/

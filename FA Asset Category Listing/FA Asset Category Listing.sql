@@ -5,10 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: FA Asset Category Listing
--- Description: Application: Assets
-Source: Asset Category Listing (XML) 
-Short Name: FAS750_XML
-DB package: FA_FAS750_XMLP_PKG
+-- Description: Fixed Asset categories overview report with asset category, general ledger accounts, depreciation method, expected life and depreciated life.
 -- Excel Examle Output: https://www.enginatics.com/example/fa-asset-category-listing/
 -- Library Link: https://www.enginatics.com/reports/fa-asset-category-listing/
 -- Run Report: https://demo.enginatics.com/

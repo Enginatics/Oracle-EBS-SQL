@@ -5,8 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: AR Customer Credit Limits
--- Description: Customers profile amounts such as credit and order credit limits, minimum statement and dunning amounts.
-The report can be restricted to amount limits on party, account or site use level via parameter 'Display Level'
+-- Description: Master data report for customer setup audit of credit amount limits and GL accounts for customer credit management and dunning notices.
 -- Excel Examle Output: https://www.enginatics.com/example/ar-customer-credit-limits/
 -- Library Link: https://www.enginatics.com/reports/ar-customer-credit-limits/
 -- Run Report: https://demo.enginatics.com/

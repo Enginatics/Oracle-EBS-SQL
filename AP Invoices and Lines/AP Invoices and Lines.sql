@@ -5,8 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: AP Invoices and Lines
--- Description: Application: Payables
-Source: Invoice Aging Report  and Invoice Detail Report
+-- Description: Detail Invoice Aging report with line item details and amounts
 
 -- Excel Examle Output: https://www.enginatics.com/example/ap-invoices-and-lines/
 -- Library Link: https://www.enginatics.com/reports/ap-invoices-and-lines/

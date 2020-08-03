@@ -5,7 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: AD Applied Patches 11i
--- Description: AD applied patches, patch runs, included bugs, filenames and actions
+-- Description: AD applied patches, patch runs, included bugs, filenames and actions.
 -- Excel Examle Output: https://www.enginatics.com/example/ad-applied-patches-11i/
 -- Library Link: https://www.enginatics.com/reports/ad-applied-patches-11i/
 -- Run Report: https://demo.enginatics.com/

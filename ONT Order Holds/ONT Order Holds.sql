@@ -5,7 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: ONT Order Holds
--- Description: Sales order holds
+-- Description: Detail Sales Order report with line item details for all order lines that are on hold and the reason for the hold.
 -- Excel Examle Output: https://www.enginatics.com/example/ont-order-holds/
 -- Library Link: https://www.enginatics.com/reports/ont-order-holds/
 -- Run Report: https://demo.enginatics.com/

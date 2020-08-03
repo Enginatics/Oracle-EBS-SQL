@@ -5,7 +5,28 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CST Item Cost Reports
--- Description: Based on Oracle's item cost reports CSTRFICRG_XML
+-- Description: Flexible costing set of reports -  analyze item costs for any cost type. 
+Choose from the following options:
+Choose one of the following options:
+Activity Summary - Report item costs by activity.
+Activity by Department - Report item costs by activity and department.
+Activity by Flexfield Segment Value - Report item costs by the descriptive flexfield segment you enter.
+Activity by Operation - Report item costs by activity and operation sequence number.
+Element	- Report item costs by cost element and cost level.
+Element by Activity - Report item costs by cost element and activity.
+Element by Department - Report item costs by cost element and department.
+Element by Operation - Report item costs by cost element and operation sequence number.
+Element by Sub-Element - Report item costs by cost element and sub-element.
+Operation Summary by Level - Report item costs by operation sequence number and cost level.
+Operation by Activity - Report item costs by operation sequence number and activity.
+Operation by Sub-Element - Report item costs by operation sequence number and sub-element.
+Sub-Element - Report item costs by sub-element.
+Sub-Element by Activity - Report item costs by sub-element and activity.
+Sub-Element by Department - Report item costs by sub-element and department.
+Sub-Element by Flexfield Segment Value - Report item costs by the descriptive flexfield segment you enter.
+Sub-Element by Operation - Report item costs by sub-element and operation sequence number.
+
+
 -- Excel Examle Output: https://www.enginatics.com/example/cst-item-cost-reports/
 -- Library Link: https://www.enginatics.com/reports/cst-item-cost-reports/
 -- Run Report: https://demo.enginatics.com/

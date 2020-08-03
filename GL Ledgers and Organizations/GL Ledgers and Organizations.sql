@@ -5,7 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: GL Ledgers and Organizations
--- Description: GL Ledgers with Ledger Sets, Chart of Accounts, Operating Units, Inventory Organizations and related Legal Entities
+-- Description: Master data report showing business group, ledger set, ledger, ledger category, currency, chart of accounts name, operating unit, organization code, country, legal entity, ledger id, chart of accounts code. It also includes support elements such as chart of accounts ID, operating unit ID, and  organization ID.
 -- Excel Examle Output: https://www.enginatics.com/example/gl-ledgers-and-organizations/
 -- Library Link: https://www.enginatics.com/reports/gl-ledgers-and-organizations/
 -- Run Report: https://demo.enginatics.com/

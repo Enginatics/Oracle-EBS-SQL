@@ -1,19 +1,19 @@
 # [OKS Service Contracts Billing Schedule](https://www.enginatics.com/reports/oks-service-contracts-billing-schedule/)
 ## Categories: 
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Service](https://www.enginatics.com/library/?pg=1&category[]=Service)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+Operations)
 ## Dependencies
 If you would like to try one of these SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Report Example
 [OKS_Service_Contracts_Billing_Schedule 07-Jun-2020 014328.xlsx](https://www.enginatics.com/example/oks-service-contracts-billing-schedule/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[rep_OKS_Service_Contracts_Billing_Schedule.xml](https://www.enginatics.com/xml/oks-service-contracts-billing-schedule/)
+[OKS_Service_Contracts_Billing_Schedule.xml](https://www.enginatics.com/xml/oks-service-contracts-billing-schedule/)
 # Oracle E-Business Suite - Reporting Library 
     
 We provide an open source EBS operational and project implementation support [library](https://www.enginatics.com/library/) for rapid Excel report generation. 
 
-[Blitz Report™](https://www.enginatics.com/blitz-report/) is based on Oracle EBS forms technology, and hence requires minimal training. There are no data or performance limitations since the output files are not generated through the XML mechanism. 
+[Blitz Report™](https://www.enginatics.com/blitz-report/) is based on Oracle EBS forms technology, and hence requires minimal training. There are no data or performance limitations since the output files are created directly from the database without going through intermediate file formats such as XML. 
 
-Standard Oracle [BI Publisher](https://www.enginatics.com/user-guide/#BI_Publisher) and [Discoverer](https://www.enginatics.com/blog/importing-discoverer-worksheets-into-blitz-report/) reports can also be imported into Blitz Report for immediate translation to Excel. Typically, reports can be created and version tracked within hours instead of days. The concurrent request output automatically opens upon completion without the need for re-formatting.
+Standard Oracle [BI Publisher](https://www.enginatics.com/user-guide/#BI_Publisher) and [Discoverer](https://www.enginatics.com/blog/importing-discoverer-worksheets-into-blitz-report/) reports can also be imported into Blitz Report for immediate output to Excel. Typically, reports can be created and version tracked within hours instead of days. The concurrent request output automatically opens upon completion without the need for re-formatting.
 
 ![Running Blitz Report](https://www.enginatics.com/wp-content/uploads/2018/01/Running-blitz-report.png) 
 

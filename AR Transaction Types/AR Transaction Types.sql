@@ -5,7 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: AR Transaction Types
--- Description: Extract setup for BR100 of AR Transaction Types
+-- Description: Overview report of transaction types setup definition for BR100 setup documentation
 -- Excel Examle Output: https://www.enginatics.com/example/ar-transaction-types/
 -- Library Link: https://www.enginatics.com/reports/ar-transaction-types/
 -- Run Report: https://demo.enginatics.com/

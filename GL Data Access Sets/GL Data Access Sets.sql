@@ -5,7 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: GL Data Access Sets
--- Description: GL ledger access security data access sets
+-- Description: Master data report showing GL account security access across multiple ledgers.
 -- Excel Examle Output: https://www.enginatics.com/example/gl-data-access-sets/
 -- Library Link: https://www.enginatics.com/reports/gl-data-access-sets/
 -- Run Report: https://demo.enginatics.com/

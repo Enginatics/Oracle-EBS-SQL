@@ -5,7 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: GL Ledger Sets
--- Description: GL ledger sets and included ledgers
+-- Description: Master data report showing GL ledger sets and corresponding ledgers.
 -- Excel Examle Output: https://www.enginatics.com/example/gl-ledger-sets/
 -- Library Link: https://www.enginatics.com/reports/gl-ledger-sets/
 -- Run Report: https://demo.enginatics.com/

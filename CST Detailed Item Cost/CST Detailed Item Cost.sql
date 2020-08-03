@@ -5,7 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CST Detailed Item Cost
--- Description: Based on Oracle's detailed item cost report CSTRDICRG_XML
+-- Description: Detail report that lists each item and the associated costs to be recognized as part of total unit cost of producing the item.
 -- Excel Examle Output: https://www.enginatics.com/example/cst-detailed-item-cost/
 -- Library Link: https://www.enginatics.com/reports/cst-detailed-item-cost/
 -- Run Report: https://demo.enginatics.com/

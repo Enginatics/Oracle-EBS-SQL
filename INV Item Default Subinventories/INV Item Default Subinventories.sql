@@ -5,7 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: INV Item Default Subinventories
--- Description: Invetory items default subinventories for shipping, receiving or move order receipt transactions
+-- Description: Master data report of inventory item relationships including the type of relationship between the item and the subinventory.
 -- Excel Examle Output: https://www.enginatics.com/example/inv-item-default-subinventories/
 -- Library Link: https://www.enginatics.com/reports/inv-item-default-subinventories/
 -- Run Report: https://demo.enginatics.com/

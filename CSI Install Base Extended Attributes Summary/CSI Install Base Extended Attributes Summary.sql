@@ -5,6 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CSI Install Base Extended Attributes Summary
+-- Description: Master data report of extended Install Base attribute levels and names
 -- Excel Examle Output: https://www.enginatics.com/example/csi-install-base-extended-attributes-summary/
 -- Library Link: https://www.enginatics.com/reports/csi-install-base-extended-attributes-summary/
 -- Run Report: https://demo.enginatics.com/

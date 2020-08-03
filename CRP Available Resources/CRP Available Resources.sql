@@ -5,7 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CRP Available Resources
--- Description: Capacity plans available resources with one record per date range and daily hours capacity of that resource.
+-- Description: Detail report showing the date range availability of each resource, as well as daily hours and unit capacity of the resource.
 -- Excel Examle Output: https://www.enginatics.com/example/crp-available-resources/
 -- Library Link: https://www.enginatics.com/reports/crp-available-resources/
 -- Run Report: https://demo.enginatics.com/

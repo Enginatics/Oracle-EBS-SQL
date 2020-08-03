@@ -5,7 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: BOM Routings
--- Description: Bill of material routings
+-- Description: Master data report showing bill of material routings with item codes and sequences.
 -- Excel Examle Output: https://www.enginatics.com/example/bom-routings/
 -- Library Link: https://www.enginatics.com/reports/bom-routings/
 -- Run Report: https://demo.enginatics.com/

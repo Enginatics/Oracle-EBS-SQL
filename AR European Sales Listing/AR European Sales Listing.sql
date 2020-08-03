@@ -5,7 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: AR European Sales Listing
--- Description: European Sales Listing (Elster ZM Meldung)
+-- Description: Summary report listing sales by country and currency code, with transaction amount / currency and accounted amount/ currency
 -- Excel Examle Output: https://www.enginatics.com/example/ar-european-sales-listing/
 -- Library Link: https://www.enginatics.com/reports/ar-european-sales-listing/
 -- Run Report: https://demo.enginatics.com/

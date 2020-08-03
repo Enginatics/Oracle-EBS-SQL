@@ -5,6 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PA Task Schedule
+-- Description: Summary project report showing operating unit, project, task, scheduled start date, scheduled finish date, created by, and last updated by.
 -- Excel Examle Output: https://www.enginatics.com/example/pa-task-schedule/
 -- Library Link: https://www.enginatics.com/reports/pa-task-schedule/
 -- Run Report: https://demo.enginatics.com/

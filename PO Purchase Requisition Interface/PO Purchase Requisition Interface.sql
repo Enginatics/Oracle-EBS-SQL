@@ -5,9 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PO Purchase Requisition Interface
--- Description: Application: Purchasing
-Source: Purchase Requisition Status Report
-Short Name: POXRQRSR
+-- Description: Purchase requisitions interface listing with status for support and operational purposes.
 -- Excel Examle Output: https://www.enginatics.com/example/po-purchase-requisition-interface/
 -- Library Link: https://www.enginatics.com/reports/po-purchase-requisition-interface/
 -- Run Report: https://demo.enginatics.com/

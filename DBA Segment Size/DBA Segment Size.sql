@@ -21,16 +21,32 @@ from
 select distinct
 &column1
 sum(ds.bytes) over (partition by &partition_by) bytes,
-sum(ds.bytes) over () total_bytes,
-dt.num_rows,
-dt.last_analyzed
+sum(ds.bytes) over () total_bytes
 from
 dba_segments ds,
-(select dt.* from dba_tables dt where '&enable_table'='Y') dt
+(select di.owner, di.index_name, di.table_owner, di.table_name from dba_indexes di where '&enable_table'='Y') di,
+(
+select
+dl.segment_name,
+nvl(di.table_owner,dl.owner) table_owner,
+nvl(di.table_name,dl.table_name) table_name
+from
+dba_lobs dl,
+dba_secondary_objects dso,
+dba_indexes di
+where
+'&enable_table'='Y' and
+dl.owner=dso.secondary_object_owner(+) and
+dl.table_name=dso.secondary_object_name(+) and
+dso.index_owner=di.owner(+) and
+dso.index_name=di.index_name(+)
+) dl
 where
 1=1 and
-case when ds.segment_type in ('TABLE','TABLE PARTITION') then ds.owner end=dt.owner(+) and
-case when ds.segment_type in ('TABLE','TABLE PARTITION') then ds.segment_name end=dt.table_name(+)
+case when ds.segment_type in ('INDEX','INDEX PARTITION','INDEX SUBPARTITION') then ds.owner end=di.owner(+) and
+case when ds.segment_type in ('INDEX','INDEX PARTITION','INDEX SUBPARTITION') then ds.segment_name end=di.index_name(+) and
+case when ds.segment_type in ('LOBSEGMENT','LOB PARTITION','LOB SUBPARTITION') then ds.segment_name end=dl.segment_name(+)
 ) x
+&where2
 order by
 x.bytes desc

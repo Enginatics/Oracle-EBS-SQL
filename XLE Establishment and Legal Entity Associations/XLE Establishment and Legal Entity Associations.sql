@@ -5,8 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: XLE Establishment and Legal Entity Associations
--- Description: Establishments and legal entity associations to other business entities such as:
-
+-- Description: Master data report showing the legal entity associations to other business entities such as:
 - Legal Entities
 - Operating Units
 - Inventory Organizations

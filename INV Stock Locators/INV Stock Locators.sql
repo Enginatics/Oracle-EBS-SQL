@@ -5,7 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: INV Stock Locators
--- Description: Inventory stock locators
+-- Description: Summary report for Inventory locations, showing locator number, description, type, status, subinventory, picking order, dropping order and unit, volume, weight, dimension and co-ordinate information.
 -- Excel Examle Output: https://www.enginatics.com/example/inv-stock-locators/
 -- Library Link: https://www.enginatics.com/reports/inv-stock-locators/
 -- Run Report: https://demo.enginatics.com/

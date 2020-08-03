@@ -5,6 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: GL Summary Templates
+-- Description: Master data report showing GL summary and concatenation templates based on ledger, company, department, account, sub-account, and product segments, and including information for the group, ledger set, ledger, ledger category, currency and chart of accounts.
 -- Excel Examle Output: https://www.enginatics.com/example/gl-summary-templates/
 -- Library Link: https://www.enginatics.com/reports/gl-summary-templates/
 -- Run Report: https://demo.enginatics.com/
