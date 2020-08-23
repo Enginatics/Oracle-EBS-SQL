@@ -31,6 +31,16 @@ papf.original_date_of_hire hire_date,
 trunc(months_between(sysdate,papf.start_date)/12) service_yrs,
 round(mod(months_between(sysdate,papf.start_date),12)) service_months,
 papf.email_address,
+(
+select distinct
+listagg(xxen_util.meaning(pp.phone_type,'PHONE_TYPE',3)||': '||pp.phone_number,chr(10)) within group (order by pp.phone_type) over (partition by pp.parent_id) phone_number
+from
+per_phones pp
+where
+papf.person_id=pp.parent_id and
+pp.parent_table='PER_ALL_PEOPLE_F' and
+:effective_date between pp.date_from and nvl(pp.date_to,sysdate)
+) phone_number,
 papf2.full_name supervisor_name,
 paaf.assignment_number,
 paaf.effective_start_date assignment_start_date,

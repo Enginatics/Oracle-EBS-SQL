@@ -12,7 +12,7 @@ The report has one row per audit transaction showing the old and new values for 
 -- Library Link: https://www.enginatics.com/reports/fnd-audit-table-changes-by-record/
 -- Run Report: https://demo.enginatics.com/
 
-select 
+select
   :audit_table_name    audit_table
 , xxen_util.client_time(aud_a.audit_timestamp) audit_timestamp
 ,xxen_util.meaning(aud_ac1.audit_transaction_type,'FND_AUDIT_TRANS_TYPE',0)  audit_trx_type
@@ -40,29 +40,17 @@ select
 &sel_audit_cols18
 &sel_audit_cols19
 &sel_audit_cols20
-, to_char(aud_a.row_key)        audit_row_key
+, to_char(aud_a.row_key) audit_row_key
 , aud_a.audit_session_id
 , aud_a.audit_sequence_id
 , aud_a.audit_commit_id
 from
-&from_audit_tables
-&from_xinfo_table
-(select 'X' -- dummy just to allow multiple select on user identifying columns
- from dual
- where not exists
-   (select 'X'  -- dummy just to allow multiple select on user identifying columns
-    from  fnd_tables ft, fnd_columns fc
-    where ft.application_id = fc.application_id
-    and   ft.table_id       = fc.table_id
-    and   ft.table_name     = :additional_info_table
-    and   2=2
-    and 'X'='Y' -- make sure it does not return anything
-   )
- ) dummy
+&from_tables
 where
-aud_a.row_key = aud_ac1.row_key
+aud_a.row_key=aud_ac1.row_key and
 &join_audit_tab_key_cols
 &join_xinfo_table_key_cols
-and 1=1
+1=1
 order by
-  aud_a.row_key DESC
+aud_a.row_key desc
+/*&dummy*/

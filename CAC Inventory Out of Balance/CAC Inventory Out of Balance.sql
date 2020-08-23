@@ -5,7 +5,50 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Inventory Out-of-Balance
--- Description: Summary report to show any differences in the period end snapshot that is created when you close the inventory periods. This represents any differences between the cumulative inventory accounting entries and the onhand valuation of the subinventories and intransit stock locations.
+-- Description: Shows any differences in the period end snapshot that is created when you close the inventory periods.  This represents any differences between the cumulative inventory accounting entries and the onhand valuation of the subinventories and intransit stock locations.
+
+/* +=============================================================================+
+-- |  Copyright 2006-2020 Douglas Volz Consulting, Inc.                          |
+-- |  Permission to use this code is granted provided the original author is     |
+-- |  acknowledged.  No warranties, express or otherwise is included in this     |
+-- |  permission.                                                                |
+-- +=============================================================================+
+-- |
+-- |  Original Author: Douglas Volz (doug@volzconsulting.com)
+-- |
+-- |  Program Name:  xxx_inv_snapshot_diff_rept.sql
+-- |
+-- |  Parameters:
+-- |  p_org_code         -- Specific inventory organization you wish to report (optional)
+-- |  p_operating_unit   -- Operating Unit you wish to report, leave blank for all
+-- |                        operating units (optional) 
+-- |  p_ledger           -- general ledger you wish to report, leave blank for all
+-- |                        ledgers (optional)
+-- |  p_period_name      -- the accounting period to report, mandatory
+-- |  p_min_value_diff   -- minimum difference to add up by org  by period,
+-- |                        this is set to default to a value of 1 if nothing is entered
+-- |  p_category_set1    -- The first item category set to report, typically the
+-- |                        Cost or Product Line Category Set
+-- |  p_category_set2    -- The second item category set to report, typically the
+-- |                        Inventory Category Set
+-- |
+-- |  Description:
+-- |  Report to show any differences in the period end snapshot that is created
+-- |  when you close the inventory periods.  This represents any differences
+-- |  between the cumulative inventory accounting entries and the onhand
+-- |  valuation of the subinventories and intransit stock locations.
+-- |
+-- |  Version Modified on Modified  by   Description
+-- |  ======= =========== ============== =========================================
+-- |  1.0     02 APR 2006 Douglas Volz   Initial Coding
+-- |  1.14    19 Nov 2015 Douglas Volz   Commented out the Cost Group information.  Not Consistent.
+-- |  1.15    17 Jul 2018 Douglas Volz   Now report G/L short name.
+-- |  1.16    06 Jan 2020 Douglas Volz   Added Org Code and Operating Unit parameters.
+-- |  1.17    30 Apr 2020 Douglas Volz   Changed to multi-language views for the item
+-- |                                     master, inventory orgs and operating units.
+-- |  1.18    18 May 2020 Douglas Volz   Added language for item status.
+-- +=============================================================================+*/
+
 -- Excel Examle Output: https://www.enginatics.com/example/cac-inventory-out-of-balance/
 -- Library Link: https://www.enginatics.com/reports/cac-inventory-out-of-balance/
 -- Run Report: https://demo.enginatics.com/

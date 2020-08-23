@@ -24,6 +24,7 @@ dbms_lob.substr(regexp_substr(regexp_substr(xr.sql_text,'(\D|^)(\d+)=\2(\D|$)',1
 from
 (select xr.report_id, regexp_replace(replace(xr.sql_text,''''''),'''[^'']*''','''x''') sql_text from xxen_reports xr where 3=3) xr,
 table(xxen_util.rowgen(regexp_count(xr.sql_text,'(\D|^)(\d+)=\2(\D|$)'))) x
+where '&enable_anchors_lexicals_binds'='Y'
 ) y),
 lexicals as (
 select distinct
@@ -37,6 +38,7 @@ lower(dbms_lob.substr(regexp_substr(xr.sql_text,'&\w+',1,x.column_value))) lexic
 from
 (select xr.report_id, xr.sql_text from xxen_reports xr where 3=3 and xr.sql_text like '%&%') xr,
 table(xxen_util.rowgen(regexp_count(xr.sql_text,'&\w+'))) x
+where '&enable_anchors_lexicals_binds'='Y'
 ) y),
 binds as (
 select distinct
@@ -50,9 +52,11 @@ lower(dbms_lob.substr(regexp_substr(xr.sql_text,':\w+',1,x.column_value))) bind
 from
 (select xr.report_id, regexp_replace(replace(xr.sql_text,''''''),'''[^'']*''','''x''') sql_text from xxen_reports xr where 3=3 and xr.sql_text like '%:%') xr,
 table(xxen_util.rowgen(regexp_count(xr.sql_text,':\w+'))) x
+where '&enable_anchors_lexicals_binds'='Y'
 ) y)
 select
 xrv.report_name,
+xxen_util.application_name(substr(xrv.report_name,1,instr(xrv.report_name,' ')-1)) application,
 xxen_api.category(xrv.report_id) category,
 xxen_util.meaning(case when xrv.row_num<=30 or xrv.seeded_blitz_report_flag='Y' then 'Y' end,'YES_NO',0) free_30_reports,
 &columns
@@ -64,9 +68,7 @@ xxen_util.user_name(xrv.last_updated_by) last_updated_by,
 xxen_util.client_time(xrv.last_update_date) last_update_date,
 xxen_util.meaning(nvl(xrv.enabled,'N'),'YES_NO',0) enabled,
 decode(xrv.column_selection_count,0,null,xrv.column_selection_count) column_selection_count,
-anchors.anchors,
-lexicals.lexicals,
-binds.binds,
+&anchors_lexicals_binds
 xrv.sql_length,
 xrv.report_id,
 xrv.guid

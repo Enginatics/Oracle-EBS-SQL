@@ -19,8 +19,8 @@ acrha1.gl_date,
 acra.currency_code currency,
 acra.amount,
 acrha2.acctd_amount functional_amount,
-flv2.meaning state,
-flv1.meaning reference_type,
+xxen_util.meaning(acrha2.status,'RECEIPT_CREATION_STATUS',222) state,
+xxen_util.meaning(acra.reference_type,'CB_REFERENCE_TYPE',222) reference_type,
 case
 when acra.reference_type='REMITTANCE' then (select ab.name from ar_batches ab where acra.reference_id=ab.batch_id)
 when acra.reference_type='RECEIPT' then (select acra.receipt_number from ar_cash_receipts_all acra0 where acra.reference_id=acra0.cash_receipt_id)
@@ -51,8 +51,6 @@ ar_cash_receipts_all acra,
 hr_all_organization_units_vl haouv,
 ar_cash_receipt_history_all acrha1,
 ar_cash_receipt_history_all acrha2,
-fnd_lookup_values flv1,
-fnd_lookup_values flv2,
 ar_receipt_methods arm,
 iby_fndcpt_pmt_chnnls_tl ifpct,
 iby_fndcpt_tx_extensions ifte,
@@ -92,16 +90,6 @@ acra.cash_receipt_id=acrha1.cash_receipt_id(+) and
 acra.cash_receipt_id=acrha2.cash_receipt_id(+) and
 acrha1.first_posted_record_flag(+)='Y' and
 acrha2.current_record_flag(+)='Y' and
-acra.reference_type=flv1.lookup_code(+) and
-acrha2.status=flv2.lookup_code(+) and
-flv1.lookup_type(+)='CB_REFERENCE_TYPE' and
-flv2.lookup_type(+)='RECEIPT_CREATION_STATUS' and
-flv1.view_application_id(+)=222 and
-flv2.view_application_id(+)=222 and
-flv1.language(+)=userenv('lang') and
-flv2.language(+)=userenv('lang') and
-flv1.security_group_id(+)=0 and
-flv2.security_group_id(+)=0 and
 acra.receivables_trx_id=arta.receivables_trx_id(+) and
 acra.org_id=arta.org_id(+) and
 acra.pay_from_customer=hca.cust_account_id(+) and

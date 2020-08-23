@@ -5,7 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Inventory to G/L Reconciliation (Unrestricted by Org Access)
--- Description: Report to compare the General Ledger inventory balances with the perpetual inventory values (based on the stored month-end inventory balances, generated when the inventory accounting period is closed).
+-- Description: Compares the General Ledger inventory balances with the perpetual inventory values (based on the stored month-end inventory balances, generated when the inventory accounting period is closed).
 
 /* +=============================================================================+
 -- |  Copyright 2010-20 Douglas Volz Consulting, Inc.                            |

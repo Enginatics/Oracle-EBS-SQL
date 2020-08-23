@@ -5,7 +5,59 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Inventory to G/L Reconciliation (Restricted by Org Access)
--- Description: Summary report restricted by Org Access which compares the General Ledger inventory balances with the perpetual inventory values (based on the stored month-end inventory balances, generated when the inventory accounting period is closed).
+-- Description: Compares the General Ledger inventory balances with the perpetual inventory values (based on the stored month-end inventory balances, generated when the inventory accounting period is closed).
+
+/* +=============================================================================+
+-- |  Copyright 2010-20 Douglas Volz Consulting, Inc.                            |
+-- |  All rights reserved.                                                       |
+-- |  Permission to use this code is granted provided the original author is     |
+-- |  acknowledged.  No warranties, express or otherwise is included in this     |
+-- |  permission.                                                                |
+-- +=============================================================================+
+-- |
+-- |  Original Author: Douglas Volz (doug@volzconsulting.com)
+-- |
+-- |  Program Name:  XXX_INV_RECON_REPT.sql
+-- |
+-- |  Parameters:
+-- |  P_PERIOD_NAME      -- Enter the Period Name you wish to reconcile balances for
+-- |                        (mandatory)
+-- |  P_LEDGER           -- general ledger you wish to report, for all ledgers enter
+-- |                        a NULL or % symbol (optional parameter)
+-- |
+-- |  Description:
+-- |  Report to reconcile G/L and the Inventory and WIP Perpetual
+-- |  by Ledger and full account, for a desired accounting period.
+-- |
+-- |  ============================================================================
+-- |  Does not consider cost groups and assumes the elemental cost accounts by
+-- |  subinventory are the same as the material account.
+-- |  This script also uses a custom lookup code called XXX_CST_GLINV_RECON_ACCOUNTS
+-- |  as a means to determine the valid inventory account numbers
+-- |  ============================================================================
+-- |
+-- |  Version Modified on Modified  by   Description
+-- |  ======= =========== ============== =========================================
+-- |  1.0     24 Sep 2004 Douglas Volz   Initial Coding based on earlier work with
+-- |                                     the following scripts and designs:
+-- |                                        XXX_GL_RECON.sql,
+-- |                                        XXX_PERPETUAL_INV_RECON_SUM.sql,
+-- |                                        XXX_PERPETUAL_RCV_RECON_SUM.sql,
+-- |                                        XXX_PERPETUAL_WIP_RECON_SUM.sql,
+-- |                                        MD050 Inventory Reconciliation
+-- |  1.1     28 Jun 2010 Douglas Volz   Updated design and code for Release 12,
+-- |                                     changed GL_SETS_OF_BOOKS to GL_LEDGERS
+-- |  1.2     14 Nov 2010 Douglas Volz   Modified for Cost SIG Presentation
+-- |  1.3     11 Mar 2014 Douglas Volz   Changed the COA segments to be generic and removed
+-- |                                     the second product line join to gl_code_combinations
+-- |  1.4     07 Apr 2014 Douglas Volz   Added join condition to avoid secondary ledgers and
+-- |                                     added an explicit to_char on the accounts
+-- |                                     ml.lookup_code to avoid an "invalid number" SQL error.
+-- |  1.5     20 Jul 2016 Douglas Volz   Added condition to avoid summary journals
+-- |  1.6     18 May 2020 Douglas Volz   Avoid disabled inventory organizations.
+-- +=============================================================================+*/
+
+XXX_INV_RECON_REPT_V5-20-Jul-2016.sql
 -- Excel Examle Output: https://www.enginatics.com/example/cac-inventory-to-g-l-reconciliation-restricted-by-org-access/
 -- Library Link: https://www.enginatics.com/reports/cac-inventory-to-g-l-reconciliation-restricted-by-org-access/
 -- Run Report: https://demo.enginatics.com/

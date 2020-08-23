@@ -13,7 +13,7 @@
 select
 haouv.name org_name,
 mp.organization_code,
-decode(bor.routing_type,1,'Manufacturing',2,'Engineering',bor.routing_type) type,
+xxen_util.meaning(bor.routing_type,'BOM_ASSEMBLY_TYPE',700) type,
 decode(bor.cfm_routing_flag,1,'Flow',2,'Discrete Job',bor.cfm_routing_flag) cfm_routing,
 wl.line_code,
 msiv.concatenated_segments item,

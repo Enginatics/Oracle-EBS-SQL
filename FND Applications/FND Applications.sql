@@ -5,7 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: FND Applications
--- Description: Shows all applications, their installation status, correponding database schema and application top name
+-- Description: Shows all applications, their installation status, correponding database schema, application top name and audit status
 -- Excel Examle Output: https://www.enginatics.com/example/fnd-applications/
 -- Library Link: https://www.enginatics.com/reports/fnd-applications/
 -- Run Report: https://demo.enginatics.com/
@@ -19,6 +19,7 @@ xxen_util.meaning(decode(du.editions_enabled,'Y','Y'),'YES_NO',0) editions_enabl
 xxen_util.meaning(fpi.status,'FND_PRODUCT_STATUS',0) status,
 fav.basepath,
 fav.description,
+xxen_util.meaning(decode(fas.state,'R','Y'),'YES_NO',0) audit_enabled,
 fav.application_id,
 du.account_status db_account_status,
 du.created db_account_created,
@@ -29,11 +30,13 @@ from
 fnd_application_vl fav,
 fnd_product_installations fpi,
 fnd_oracle_userid fou,
-dba_users du
+dba_users du,
+fnd_audit_schemas fas
 where
 1=1 and
 fav.application_id=fpi.application_id(+) and
 fpi.oracle_id=fou.oracle_id(+) and
-fou.oracle_username=du.username(+)
+fou.oracle_username=du.username(+) and
+fou.oracle_id=fas.oracle_id(+)
 order by
 fav.application_short_name

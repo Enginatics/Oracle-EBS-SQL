@@ -5,7 +5,51 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Accounting Period Status
--- Description: Profile Report to show the accounting period status for General Ledger, Inventory, Lease Management, Payables, Projects, Purchasing and Receivables. You can choose 'All Statuses' (open or closed or never opened). This report will also display the process manufacturing cost calendar status.
+-- Description: Lists the accounting period status for General Ledger, Inventory, Lease Management, Payables, Projects, Purchasing and Receivables.  You can choose All Statuses (open or closed or never opened), Closed, Open or Never Opened periods.  And this report will also display the process manufacturing cost calendar status.
+Note:  this report automatically looks for hierarchies which might be used with the Open Period Control and the Close Period Control Oracle programs.  Looking for the translated values of "Close", "Open" and "Period" in the Hierarchy Name.
+
+/* +=============================================================================+
+-- | SQL Code Copyright 2011-2020 Douglas Volz Consulting, Inc.                  |
+-- | All rights reserved.                                                        |
+-- | Permission to use this code is granted provided the original author is      |
+-- | acknowledged. No warranties, express or otherwise is included in this       |
+-- | permission.                                                                 |
+-- +=============================================================================+
+-- |
+-- |  Original Author: Douglas Volz (doug@volzconsulting.com)
+-- |
+-- |  Program Name:  xxx_period_status_rept.sql
+-- |
+-- |  Parameters:
+-- |  p_functional_area       -- functional area you wish to report, works with null,
+-- |                             or valid functional areas.  The names of the
+-- |                             functional areas are:  General Ledger, Inventory, Lease
+-- |                             Management, Payables, Projects, Purchasing and Receivables.
+-- |  p_operating_unit        -- Operating Unit you wish to report, leave blank for all
+-- |                             operating units (optional) 
+-- |  p_ledger                -- general ledger you wish to report, leave blank for all
+-- |                             ledgers (optional)
+-- |  p_period_name           -- The desired accounting period you wish to report
+-- |  p_report_period_option  -- Parameter used to combine the Period Open and Period Close
+-- |                             reports.  For English, the list of value choices are:
+-- |					Closed, Open, Never Opened or All Statuses
+-- |  Version Modified on Modified  by    Description
+-- |  ======= =========== =============== =========================================
+-- |  1.0     19 Jan 2015 Douglas Volz    Combined the xxx_period_open_status_rept.sql
+-- |                      Apps Associates and xxx_period_close_status_rept.sql into
+-- |                                      one report.  Originally written in 2006 and 2011.
+-- |  1.7     10 Apr 2020 Douglas Volz    Made the following multi-language changes:
+-- |                                      Changed fnd_application to fnd_application_vl
+-- |                                      Changed hr_all_organization_units to hr_all_organization_units_vl
+-- |  1.8      7 May 2020 Douglas Volz    Added fnd_product_installations to only report
+-- |                                      installed applications.
+-- |  1.9     26 May 2020 Douglas Volz    Added lookup values and parameters for the
+-- |                                      organization_hierarchy_name subquery.
+-- |  1.10    28 May 2020 Douglas Volz    For language translation, replaced custom Report 
+-- |                                      Options LOV with compound Oracle lookup values.
+-- +=============================================================================+*/
+
+
 -- Excel Examle Output: https://www.enginatics.com/example/cac-accounting-period-status/
 -- Library Link: https://www.enginatics.com/reports/cac-accounting-period-status/
 -- Run Report: https://demo.enginatics.com/

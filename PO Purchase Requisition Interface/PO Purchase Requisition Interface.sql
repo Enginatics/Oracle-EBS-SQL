@@ -23,8 +23,8 @@ pria.req_distribution_id,
 pria.req_number_segment1,
 pria.*
 from 
-apps.po_requisitions_interface_all pria,
-apps.mtl_system_items_b msib
+po_requisitions_interface_all pria,
+mtl_system_items_b msib
 where 1=1
 and pria.item_id=msib.inventory_item_id
 and msib.organization_id=pria.destination_organization_id

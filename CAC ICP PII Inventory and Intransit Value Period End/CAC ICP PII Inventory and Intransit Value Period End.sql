@@ -5,7 +5,56 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC ICP PII Inventory and Intransit Value (Period-End)
--- Description: Summary report showing amount of profit in inventory at the end of the month. If you enter a cost type this report uses the item costs from the cost type; if you leave the cost type blank it uses the item costs from the month-end snapshot. In either case this report uses the month-end quantities, based on the entered period name. (Note: Profit in inventory is abbreviated as PII or sometimes as ICP - InterCompany Profit).
+-- Description: Shows the profit in inventory at the end of the month.  If you enter a cost type this report uses the item costs from the cost type; if you leave the cost type blank it uses the item costs from the month-end snapshot.  In either case this report uses the month-end quantities, based on the entered period name.   (Note:  Profit in inventory is abbreviated as PII or sometimes as ICP - InterCompany Profit.)
+
+Note:  if you enter a cost type this report uses the item costs from the cost type; if you leave the cost type blank it uses the item costs from the month-end snapshot.
+
+/* +=============================================================================+
+-- | Copyright 2009 - 2020 Douglas Volz Consulting, Inc.                         |
+-- |  All rights reserved.                                                       |
+-- |  Permission to use this code is granted provided the original author is     |
+-- |  acknowledged.  No warranties, express or otherwise is included in this     |
+-- |  permission.                                                                |
+-- +=============================================================================+
+-- |
+-- | Original Author: Douglas Volz (doug@volzconsulting.com)
+-- |
+-- | Program Name: xxx_pii_inventory_val_rept.sql
+-- |
+-- |  Parameters:
+-- |  p_period_name         -- Accounting period you wish to report for
+-- |  p_pii_cost_type       -- The name of the cost type that has that 
+-- |                           month's PII costs
+-- |  p_pii_resource_code   -- The sub-element or resource for profit in inventory,
+-- |                           such as PII or ICP 
+-- |  p_org_code            -- Specific inventory organization you wish to report (optional)
+-- |  p_operating_unit      -- Operating Unit you wish to report, leave blank for all
+-- |                           operating units (optional) 
+-- |  p_ledger              -- general ledger you wish to report, leave blank for all
+-- |                           ledgers (optional)
+-- |  p_cost_type           -- Enter a Cost Type to value the quantities
+-- |                           using the Cost Type Item Costs; or, if 
+-- |                           Cost Type is blank or null the report will 
+-- |                           use the stored month-end snapshot values
+-- |  p_category_set1       -- The first item category set to report, typically the
+-- |                           Cost or Product Line Category Set
+-- |  p_category_set2       -- The second item category set to report, typically the
+-- |                           Inventory Category Set 
+-- |
+-- | ===================================================================
+-- | Note:  if you enter a cost type this script uses the item costs 
+-- |        from the cost type; if you leave the cost type 
+-- |        blank it uses the item costs from the month-end snapshot.
+-- | ===================================================================
+-- | Version Modified on Modified by Description
+-- | ======= =========== ============== =========================================
+-- | 1.0     27 Sep 2009 Douglas Volz Initial Coding
+-- | 1.1     28 Sep 2009 Douglas Volz Added a sum for the ICP costs from cicd
+-- | 1.16    23 Apr 2020 Douglas Volz Changed to multi-language views for the item
+-- |                                  master, item categories and operating units.
+-- |                                  Changed the PII Resource Code into a parameter.
+-- |                                  Used mfg_lookups for "Intransit".
+-- +=============================================================================+*/
 -- Excel Examle Output: https://www.enginatics.com/example/cac-icp-pii-inventory-and-intransit-value-period-end/
 -- Library Link: https://www.enginatics.com/reports/cac-icp-pii-inventory-and-intransit-value-period-end/
 -- Run Report: https://demo.enginatics.com/

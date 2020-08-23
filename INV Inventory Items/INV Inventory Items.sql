@@ -11,7 +11,7 @@
 -- Run Report: https://demo.enginatics.com/
 
 select
-mp.organization_code,
+mp.organization_code organization,
 haouv.name organization_name,
 xxen_util.meaning(msiv.item_type,'ITEM_TYPE',3) user_item_type,
 msiv.concatenated_segments item,

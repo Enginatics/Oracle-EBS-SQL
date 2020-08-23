@@ -5,7 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Item Cost Summary
--- Description: Report to show item costs in any cost type.  For one or more inventory organizations.
+-- Description: Displays item costs in any cost type.  For one or more inventory organizations.
 
 /* +=============================================================================+
 -- | Copyright 2009-2020 Douglas Volz Consulting, Inc.                           |
