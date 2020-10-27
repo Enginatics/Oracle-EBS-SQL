@@ -2,7 +2,7 @@
 ## Description: 
 Summary report showing Discoverer business areas, with an access account showing how many times a business area's folder was used within the past x number of days.
 ## Categories: 
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Setup & Support](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+Setup+%26+Support)
+[Draft](https://www.enginatics.com/library/?pg=1&category[]=Draft), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Report Example

@@ -5,6 +5,8 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: FND Flex Values
+-- Description: Report for all flex values and the hierarchies they are included in.
+Column 'Hierarchy Position' can be used to validate your account hierarchy setup and check which account segment values are not included in any (or a specific) hierarchy yet.
 -- Excel Examle Output: https://www.enginatics.com/example/fnd-flex-values/
 -- Library Link: https://www.enginatics.com/reports/fnd-flex-values/
 -- Run Report: https://demo.enginatics.com/
@@ -21,6 +23,7 @@ ffvv.end_date_active,
 xxen_util.meaning(decode(ffvv.summary_flag,'Y','Y'),'YES_NO',0) parent,
 ffhv.hierarchy_name rollup_group,
 ffvv.hierarchy_level,
+(select distinct listagg(ffvnh.parent_flex_value,chr(10)) within group (order by ffvnh.parent_flex_value) over () from fnd_flex_value_norm_hierarchy ffvnh where 2=2 and ffvv.summary_flag=decode(ffvnh.range_attribute,'P','Y','N') and ffvv.flex_value between ffvnh.child_flex_value_low and ffvnh.child_flex_value_high and ffvnh.flex_value_set_id=(select ffvs.flex_value_set_id from fnd_flex_value_sets ffvs where ffvs.flex_value_set_name=:flex_value_set_name)) hierarchy_position,
 &value_attributes
 ffvv.compiled_value_attributes,
 xxen_util.user_name(ffvv.created_by) created_by,
@@ -35,3 +38,7 @@ where
 1=1 and
 ffvs.flex_value_set_id=ffvv.flex_value_set_id and
 ffvv.structured_hierarchy_level=ffhv.hierarchy_id(+)
+order by
+ffvs.flex_value_set_name,
+ffvv.parent_flex_value_low,
+ffvv.flex_value

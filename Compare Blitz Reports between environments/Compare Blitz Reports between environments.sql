@@ -18,16 +18,17 @@ xxen_reports_v xrv;
 -- Run Report: https://demo.enginatics.com/
 
 select
+case
+when x.report_name is not null and x.updated_remote='Y' and (x.name_diff='Y' or x.descr_diff='Y' or x.sql_diff='Y') then 'conflict'
+when x.report_name is null and x.report_name_remote is not null then 'add to local database'
+when x.report_name is not null and x.report_name_remote is null then 'transfer'
+when x.name_diff='Y' or x.descr_diff='Y' or x.sql_diff='Y' then 'update'
+end result,
 x.*
 from
 (
 select
-case
-when xrv.guid is not null and xrv2.last_updated_by<>-1  then 'conflict'
-when xrv.guid is null and xrv2.guid is not null then 'add to local database'
-when xrv.guid is not null and xrv2.guid is null then 'transfer'
-else 'update'
-end result,
+(select 'Y' from fnd_user@&database_link fu where xrv2.last_updated_by=fu.user_id and fu.user_name not in ('ANONYMOUS','ENGINATICS')) updated_remote,
 case when xrv.report_name<>xrv2.report_name then 'Y' end name_diff,
 case when xrv.sql_text_short<>xrv2.sql_text_short or xrv.sql_length<>xrv2.sql_length then 'Y' end sql_diff,
 case when xrv.description<>xrv2.description then 'Y' end descr_diff,

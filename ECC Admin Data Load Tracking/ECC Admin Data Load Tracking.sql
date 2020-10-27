@@ -61,7 +61,7 @@ where
 ear.audit_request_id=ead.audit_request_id(+) and
 ead.dataset_id=edb.dataset_id(+) and
 edb.dataset_id=edt.dataset_id(+) and
-edt.language(+)='en' and
+edt.language(+)=xxen_util.bcp47_language(userenv('lang')) and
 ead.audit_dataset_id=ealr.audit_dataset_id(+) and
 ealr.audit_load_rule_id=eald.audit_load_rule_id(+)
 order by

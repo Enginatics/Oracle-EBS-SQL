@@ -1,6 +1,6 @@
 # [CAC Margin Analysis Summary](https://www.enginatics.com/reports/cac-margin-analysis-summary/)
 ## Description: 
-Shows the margin from the customer invoices and shipments, based on the standard Oracle Margin table, cst_margin_summary.  (If you want to show the COGS and Sales Accounts use report CAC Margin Analysis Account Summary.)  You first need to run the Margin Analysis Load Run request, to populate this table.
+Report for the margin from the customer invoices and shipments, based on the standard Oracle Margin table, cst_margin_summary.  (If you want to show the COGS and Sales Accounts use report CAC Margin Analysis Account Summary.)  You first need to run the Margin Analysis Load Run request, to populate this table.
 /* +=============================================================================+
 -- |  Copyright 2006 - 2020 Douglas Volz Consulting, Inc.                        |
 -- |  All rights reserved.                                                       |

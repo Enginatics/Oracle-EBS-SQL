@@ -1,6 +1,6 @@
 # [ONT Transaction Types and Line WF Processes](https://www.enginatics.com/reports/ont-transaction-types-and-line-wf-processes/)
 ## Description: 
-Master data report showing the setup of order management transaction types and associated line types and workflow processes.Suitable for BR100 creation.
+Master data report showing the setup of order management transaction types and associated line types and workflow processes.
 ## Categories: 
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Setup & Support](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+Setup+%26+Support)
 ## Dependencies

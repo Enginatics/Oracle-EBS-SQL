@@ -89,6 +89,8 @@ rownum=1
 )
 when fad.entity_name='EAM_DISCRETE_OPERATIONS' then (select mp.organization_code||': '||we.wip_entity_name||': '||wdj.description||': '||fad.pk2_value from wip_entities we, wip_discrete_jobs wdj, mtl_parameters mp where fad.pk1_value=we.wip_entity_id and fad.pk1_value=wdj.wip_entity_id and fad.pk3_value=wdj.organization_id and fad.pk3_value=mp.organization_id)
 when fad.entity_name='BOM_STANDARD_OPERATIONS' then (select mp.organization_code||': '||bso.operation_code||': '||bso.operation_description from bom_standard_operations bso, mtl_parameters mp where fad.pk1_value=bso.standard_operation_id and bso.organization_id=mp.organization_id)
+when fad.entity_name='GL_JE_BATCHES' then (select gjb.name from gl_je_batches gjb where fad.pk1_value=gjb.je_batch_id)
+when fad.entity_name='GL_JE_HEADERS' then (select gjh.name from gl_je_headers gjh where fad.pk2_value=gjh.je_header_id)
 end,
 trim('.' from fad.pk1_value||'.'||fad.pk2_value||'.'||fad.pk3_value||'.'||fad.pk4_value||'.'||fad.pk5_value)) reference,
 fad.seq_num,
@@ -101,6 +103,7 @@ decode(fd.datatype_id,
 5,'=HYPERLINK("'||fd.url||'","'||fd.url||'")',
 nvl2(fd.media_id,'=HYPERLINK("'||fnd_gfm.construct_download_url(fnd_web_config.gfm_agent,fd.media_id)||'","'||nvl(fl.file_name,fd.file_name)||'")',null)
 ) url,
+fdn.short_name location,
 decode(fd.datatype_id,1,to_clob(fdst.short_text),2,xxen_util.long_to_clob('FND_DOCUMENTS_LONG_TEXT','LONG_TEXT',fdlt.rowid)) text,
 length(fl.file_data) file_size,
 fl.file_content_type content_type,
@@ -131,7 +134,8 @@ fnd_concurrent_programs_vl fcpv,
 fnd_documents_short_text fdst,
 fnd_documents_long_text fdlt,
 (select fad.* from fnd_attached_documents fad where '&show_attachment_objects'='Y') fad,
-fnd_document_entities_vl fdev
+fnd_document_entities_vl fdev,
+fnd_dm_nodes fdn
 where
 1=1 and
 fd.document_id=fdt.document_id and
@@ -147,7 +151,8 @@ fd.program_id=fcpv.concurrent_program_id(+) and
 decode(fd.datatype_id,1,fd.media_id)=fdst.media_id(+) and
 decode(fd.datatype_id,2,fd.media_id)=fdlt.media_id(+) and
 fd.document_id=fad.document_id(+) and
-fad.entity_name=fdev.data_object_code(+)
+fad.entity_name=fdev.data_object_code(+) and
+nvl(fd.dm_node,0)=fdn.node_id(+)
 ) x
 where
 2=2

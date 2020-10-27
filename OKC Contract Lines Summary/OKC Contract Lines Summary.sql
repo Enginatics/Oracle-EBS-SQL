@@ -16,16 +16,17 @@ ocv.meaning class,
 osclv.meaning category,
 osclv.code category_code,
 lpad(' ',2*(olsv.level_-1))||olsv.level_ level_,
+lpad(' ',2*(olsv.level_-1))||xxen_util.meaning(olsv.lty_code,'OKC_LINE_TYPE',0) name,
+xxen_util.meaning(oklb.usage_type,'OKS_USAGE_TYPES',0) usage_type_desc,
 lpad(' ',2*(olsv.level_-1))||olsv.lty_code lty_code,
 oklb.usage_type,
-xxen_util.meaning(oklb.usage_type,'OKS_USAGE_TYPES',0) description,
 lpad(' ',2*(olsv.level_-1))||olsv.id lse_id,
 oklb.jtot_object1_code,
 jov.name object_name,
 jov.from_table,
 jov.where_clause,
 olsv.path lse_id_path,
-oklb.active,
+decode(oklb.active,0,null,oklb.active) active_by_date,
 oklb.total,
 &status_columns
 from
@@ -74,19 +75,23 @@ from
 (
 select
 count(*) count,
+okhab.scs_code,
 oklb.lse_id,
 okslb.usage_type,
 osv.meaning
 from
+okc_k_headers_all_b okhab,
 okc_k_lines_b oklb,
 okc_statuses_b osb,
 okc_statuses_v osv,
 oks_k_lines_b okslb
 where
+okhab.id=oklb.dnz_chr_id and
 oklb.sts_code=osb.code and
 osb.ste_code=osv.code and
 oklb.id=okslb.cle_id(+)
 group by
+okhab.scs_code,
 oklb.lse_id,
 osv.meaning,
 okslb.usage_type
@@ -108,8 +113,9 @@ olsv.id=olss.lse_id(+) and
 ostl.scs_code=oklb.scs_code and
 olsv.id=oklb.lse_id and
 oklb.jtot_object1_code=jov.object_code(+) and
+osclv.code=z.scs_code(+) and
 oklb.lse_id=z.lse_id(+) and
-oklb.usage_type=z.usage_type(+)
+nvl(oklb.usage_type,'x')=nvl(z.usage_type(+),'x')
 order by
 osclv.code,
 olsv.path

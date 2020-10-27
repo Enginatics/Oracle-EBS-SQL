@@ -1,10 +1,15 @@
 # [FA Asset Inventory](https://www.enginatics.com/reports/fa-asset-inventory/)
 ## Description: 
-Lists inventory based items tracked as assets
+Imported Oracle standard asset inventory report
+Source: Asset Inventory Report (XML)
+Short Name: FAS410_XML
+DB package: FA_FAS410_XMLP_PKG
 ## Categories: 
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+Operations)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
+# Report Example
+[FA_Asset_Inventory 30-Sep-2020 221751.xlsx](https://www.enginatics.com/example/fa-asset-inventory/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [FA_Asset_Inventory.xml](https://www.enginatics.com/xml/fa-asset-inventory/)
 # Oracle E-Business Suite [Reporting Library](https://www.enginatics.com/library/)

@@ -6,7 +6,7 @@ Master data report showing bill of material routings with item codes and sequenc
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Report Example
-[BOM_Routings 23-Jul-2017 155553.xlsx](https://www.enginatics.com/example/bom-routings/)
+[BOM_Routings 02-Oct-2020 090608.xlsx](https://www.enginatics.com/example/bom-routings/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [BOM_Routings.xml](https://www.enginatics.com/xml/bom-routings/)
 # Oracle E-Business Suite [Reporting Library](https://www.enginatics.com/library/)

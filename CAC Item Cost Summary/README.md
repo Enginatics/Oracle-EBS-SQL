@@ -1,6 +1,6 @@
 # [CAC Item Cost Summary](https://www.enginatics.com/reports/cac-item-cost-summary/)
 ## Description: 
-Displays item costs in any cost type.  For one or more inventory organizations.
+Report to show item costs in any cost type.  For one or more inventory organizations.
 
 /* +=============================================================================+
 -- | Copyright 2009-2020 Douglas Volz Consulting, Inc.                           |
@@ -37,7 +37,8 @@ Displays item costs in any cost type.  For one or more inventory organizations.
 -- |  1.6     27 Apr 2020 Douglas Volz  Changed to multi-language views for the item
 -- |                                    master, inventory orgs and operating units.
 -- |  1.7     21 Jun 2020 Douglas Volz  Changed to multi-language views for item 
--- |                                    status and UOM.+=============================================================================+*/
+-- |                                    status and UOM.
+-- |  1.8     24 Sep 2020 Douglas Volz  Added List Price to report.+=============================================================================+*/
 ## Categories: 
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Cost Accounting](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+Cost+Accounting)
 ## Dependencies

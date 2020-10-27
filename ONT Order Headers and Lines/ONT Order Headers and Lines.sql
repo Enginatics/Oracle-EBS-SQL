@@ -33,6 +33,7 @@ ftv2.territory_short_name bill_to_country,
 x.ordered_date,
 x.price_list,
 x.salesperson,
+x.invoice_salesperson,
 x.order_source,
 x.order_source_reference,
 x.header_status,
@@ -42,6 +43,10 @@ x.tax,
 nvl(x.line_charges_total,0)+nvl(x.header_charges,0) charges,
 nvl(x.subtotal,0)+nvl(x.tax,0)+nvl(x.line_charges_total,0)+nvl(x.header_charges,0) total,
 x.payment_terms,
+x.invoice_number,
+x.invoice_date,
+x.invoice_status,
+x.invoice_line,
 x.warehouse,
 x.ship_method,
 x.line_set,
@@ -110,6 +115,7 @@ nvl(oola.cust_po_number,ooha.cust_po_number) customer_po,
 xxen_util.client_time(ooha.ordered_date) ordered_date,
 (select qlhv.name from qp_list_headers_vl qlhv where ooha.price_list_id=qlhv.list_header_id) price_list,
 jrrev.resource_name salesperson,
+jrrev2.resource_name invoice_salesperson,
 oos.name order_source,
 ooha.orig_sys_document_ref order_source_reference,
 xxen_util.meaning(ooha.flow_status_code,'FLOW_STATUS',660) header_status,
@@ -119,6 +125,10 @@ sum(decode(oola.cancelled_flag,'N',oola.tax_amount)) over (partition by oola.hea
 sum(decode(oola.cancelled_flag,'N',oola.line_charges)) over (partition by oola.header_id) line_charges_total,
 (select decode(opa.credit_or_charge_flag,'C',-1,1)*opa.operand from oe_price_adjustments opa where ooha.header_id=opa.header_id and opa.line_id is null and opa.list_line_type_code='FREIGHT_CHARGE' and opa.applied_flag='Y') header_charges,
 (select rtv.name from ra_terms_vl rtv where nvl(oola.payment_term_id,ooha.payment_term_id)=rtv.term_id) payment_terms,
+rcta.trx_number invoice_number,
+rcta.trx_date invoice_date,
+xxen_util.meaning(rcta.status_trx,'PAYMENT_SCHEDULE_STATUS',222) invoice_status,
+decode(rctla.line_type,'FREIGHT',null,rctla.line_number) invoice_line,
 (select mp.organization_code from mtl_parameters mp where nvl(oola.ship_from_org_id,ooha.ship_from_org_id)=mp.organization_id) warehouse,
 xxen_util.meaning(nvl(oola.shipping_method_code,ooha.shipping_method_code),'SHIP_METHOD',3) ship_method,
 xxen_util.meaning(ooha.customer_preference_set_code,'REQUEST_DATE_TYPE',660) line_set,
@@ -201,7 +211,9 @@ hz_cust_accounts hca,
 hz_parties hp,
 oe_order_sources oos,
 jtf_rs_salesreps jrs,
+jtf_rs_salesreps jrs2,
 jtf_rs_resource_extns_vl jrrev,
+jtf_rs_resource_extns_vl jrrev2,
 (
 select distinct
 wdd.source_line_id,
@@ -219,7 +231,9 @@ select ppa.project_id, ppa.segment1 project_number from pa_projects_all ppa unio
 select psm.project_id, psm.project_number from pjm_seiban_numbers psm
 ) ppa,
 &xrrpv_table
-pa_tasks pt
+pa_tasks pt,
+ra_customer_trx_lines_all rctla,
+ra_customer_trx_all rcta
 where
 1=1 and
 haouv.organization_id=ooha.org_id and
@@ -239,7 +253,13 @@ jrs.resource_id=jrrev.resource_id(+) and
 oola.line_id=wda.source_line_id(+) and
 wda.delivery_id=wnd.delivery_id(+) and
 oola.project_id=ppa.project_id(+) and
-oola.task_id=pt.task_id(+)
+oola.task_id=pt.task_id(+) and
+to_char(oola.line_id)=rctla.interface_line_attribute6(+) and
+rctla.interface_line_context(+) in ('INTERCOMPANY','ORDER ENTRY') and
+rctla.customer_trx_id=rcta.customer_trx_id(+) and
+rcta.primary_salesrep_id=jrs2.salesrep_id(+) and
+rcta.org_id=jrs2.org_id(+) and
+jrs2.resource_id=jrrev2.resource_id(+)
 ) x,
 hz_cust_site_uses_all hcsua1,
 hz_cust_site_uses_all hcsua2,

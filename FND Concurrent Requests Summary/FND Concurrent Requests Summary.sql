@@ -39,30 +39,33 @@ x.sum_wait_seconds,
 x.avg_non_conflict_wait_seconds,
 x.sum_non_conflict_wait_seconds,
 x.avg_conflict_wait_seconds,
-x.sum_conflict_wait_seconds
+x.sum_conflict_wait_seconds,
+x.execution_method_code,
+x.total_users
 &time_percentage
 from
 (
 select distinct
-fcpt.user_concurrent_program_name,
+fcpv.user_concurrent_program_name,
 fcr.description_ description,
-fcp.concurrent_program_name,
+fcpv.concurrent_program_name,
 fe.executable_name,
 fe.execution_method_code,
 fe.execution_file_name,
 &col_argument
-count(*) over (partition by fcpt.user_concurrent_program_name,fcr.description_,fcp.concurrent_program_name,fe.executable_name,fe.execution_file_name) executions,
-count(distinct fcr.requested_by) over (partition by fcpt.user_concurrent_program_name,fcr.description_,fcp.concurrent_program_name,fe.executable_name,fe.execution_file_name &partition_argument) users,
-min(fcr.seconds) over (partition by fcpt.user_concurrent_program_name,fcr.description_,fcp.concurrent_program_name,fe.executable_name,fe.execution_file_name &partition_argument) min_seconds,
-max(fcr.seconds) over (partition by fcpt.user_concurrent_program_name,fcr.description_,fcp.concurrent_program_name,fe.executable_name,fe.execution_file_name &partition_argument) max_seconds,
-avg(fcr.seconds) over (partition by fcpt.user_concurrent_program_name,fcr.description_,fcp.concurrent_program_name,fe.executable_name,fe.execution_file_name &partition_argument) avg_seconds,
-sum(fcr.seconds) over (partition by fcpt.user_concurrent_program_name,fcr.description_,fcp.concurrent_program_name,fe.executable_name,fe.execution_file_name &partition_argument) sum_seconds,
-avg(fcr.wait_seconds) over (partition by fcpt.user_concurrent_program_name,fcr.description_,fcp.concurrent_program_name,fe.executable_name,fe.execution_file_name &partition_argument) avg_wait_seconds,
-sum(fcr.wait_seconds) over (partition by fcpt.user_concurrent_program_name,fcr.description_,fcp.concurrent_program_name,fe.executable_name,fe.execution_file_name &partition_argument) sum_wait_seconds,
-avg(fcr.non_conflict_wait_seconds) over (partition by fcpt.user_concurrent_program_name,fcr.description_,fcp.concurrent_program_name,fe.executable_name,fe.execution_file_name &partition_argument) avg_non_conflict_wait_seconds,
-sum(fcr.non_conflict_wait_seconds) over (partition by fcpt.user_concurrent_program_name,fcr.description_,fcp.concurrent_program_name,fe.executable_name,fe.execution_file_name &partition_argument) sum_non_conflict_wait_seconds,
-avg(fcr.conflict_wait_seconds) over (partition by fcpt.user_concurrent_program_name,fcr.description_,fcp.concurrent_program_name,fe.executable_name,fe.execution_file_name &partition_argument) avg_conflict_wait_seconds,
-sum(fcr.conflict_wait_seconds) over (partition by fcpt.user_concurrent_program_name,fcr.description_,fcp.concurrent_program_name,fe.executable_name,fe.execution_file_name &partition_argument) sum_conflict_wait_seconds
+count(*) over (partition by fcpv.user_concurrent_program_name,fcr.description_,fcpv.concurrent_program_name,fe.executable_name,fe.execution_file_name) executions,
+count(distinct fcr.requested_by) over (partition by fcpv.user_concurrent_program_name,fcr.description_,fcpv.concurrent_program_name,fe.executable_name,fe.execution_file_name &partition_argument) users,
+min(fcr.seconds) over (partition by fcpv.user_concurrent_program_name,fcr.description_,fcpv.concurrent_program_name,fe.executable_name,fe.execution_file_name &partition_argument) min_seconds,
+max(fcr.seconds) over (partition by fcpv.user_concurrent_program_name,fcr.description_,fcpv.concurrent_program_name,fe.executable_name,fe.execution_file_name &partition_argument) max_seconds,
+avg(fcr.seconds) over (partition by fcpv.user_concurrent_program_name,fcr.description_,fcpv.concurrent_program_name,fe.executable_name,fe.execution_file_name &partition_argument) avg_seconds,
+sum(fcr.seconds) over (partition by fcpv.user_concurrent_program_name,fcr.description_,fcpv.concurrent_program_name,fe.executable_name,fe.execution_file_name &partition_argument) sum_seconds,
+avg(fcr.wait_seconds) over (partition by fcpv.user_concurrent_program_name,fcr.description_,fcpv.concurrent_program_name,fe.executable_name,fe.execution_file_name &partition_argument) avg_wait_seconds,
+sum(fcr.wait_seconds) over (partition by fcpv.user_concurrent_program_name,fcr.description_,fcpv.concurrent_program_name,fe.executable_name,fe.execution_file_name &partition_argument) sum_wait_seconds,
+avg(fcr.non_conflict_wait_seconds) over (partition by fcpv.user_concurrent_program_name,fcr.description_,fcpv.concurrent_program_name,fe.executable_name,fe.execution_file_name &partition_argument) avg_non_conflict_wait_seconds,
+sum(fcr.non_conflict_wait_seconds) over (partition by fcpv.user_concurrent_program_name,fcr.description_,fcpv.concurrent_program_name,fe.executable_name,fe.execution_file_name &partition_argument) sum_non_conflict_wait_seconds,
+avg(fcr.conflict_wait_seconds) over (partition by fcpv.user_concurrent_program_name,fcr.description_,fcpv.concurrent_program_name,fe.executable_name,fe.execution_file_name &partition_argument) avg_conflict_wait_seconds,
+sum(fcr.conflict_wait_seconds) over (partition by fcpv.user_concurrent_program_name,fcr.description_,fcpv.concurrent_program_name,fe.executable_name,fe.execution_file_name &partition_argument) sum_conflict_wait_seconds,
+count(distinct fcr.requested_by) over () total_users
 from
 (
 select
@@ -75,20 +78,16 @@ fcr.*
 from
 fnd_concurrent_requests fcr
 ) fcr,
-fnd_concurrent_programs fcp,
-fnd_concurrent_programs_tl fcpt,
+fnd_concurrent_programs_vl fcpv,
 fnd_user fu,
 fnd_executables fe
 where
 1=1 and
 fcr.actual_completion_date is not null and
 fcr.requested_by=fu.user_id and
-fcr.concurrent_program_id=fcpt.concurrent_program_id and
-fcr.concurrent_program_id=fcp.concurrent_program_id and
-fcr.program_application_id=fcpt.application_id and
-fcpt.language=userenv('lang') and
-fcp.executable_application_id=fe.application_id and
-fcp.executable_id=fe.executable_id
+fcr.concurrent_program_id=fcpv.concurrent_program_id and
+fcpv.executable_application_id=fe.application_id and
+fcpv.executable_id=fe.executable_id
 ) x
 order by
 x.sum_seconds desc

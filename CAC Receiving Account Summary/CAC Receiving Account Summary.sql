@@ -5,7 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Receiving Account Summary
--- Description: Shows the receiving accounting distributions, in summary, by item, purchase order, purchase order line, release and project number.  For outside processing, including the WIP job, OSP item number and the OSP resource code.  And for expense destinations, even when there is no item number on the purchase order line, this report will get the expense category information, into the first category column.  (Note: this report has not been tested with encumbrance entries.)
+-- Description: Report to get the receiving accounting distributions, in summary, by item, purchase order, purchase order line, release and project number.  For outside processing, including the WIP job, OSP item number and the OSP resource code.  And for expense destinations, even when there is no item number on the purchase order line, this report will get the expense category information, into the first category column.  (Note: this report has not been tested with encumbrance entries.)
 
 /* +=============================================================================+
 -- |  Copyright 2009- 2020 Douglas Volz Consulting, Inc.                         |
@@ -80,7 +80,7 @@ select	nvl(gl.short_name, gl.name) Ledger,
 	-- Fix for version 1.9
 	rcv_acct.po_num PO_Number,
 	rcv_acct.po_line PO_Line,
-	rcv_acct.release_num PO_Rel,
+	rcv_acct.release_num PO_Release,
 	-- End fix for version 1.9
 	-- Revision for version 1.11
 	pp.name Project_Number,
@@ -90,7 +90,7 @@ select	nvl(gl.short_name, gl.name) Ledger,
 	-- End fix for version 1.9
 	rcv_acct.primary_uom_code UOM_Code,
 	sum(rcv_acct.primary_quantity) Quantity,
-	gl.currency_code Curr_Code,
+	gl.currency_code Currency_Code,
 	sum(rcv_acct.amount) Amount
 from	org_acct_periods oap,
 	pa_projects_all pp,
@@ -120,9 +120,9 @@ from	org_acct_periods oap,
 		fcl.meaning item_type,
 		-- Revision for version 1.12
 		-- Revision for version 1.14
-		-- Take off the max(mc.segment1), it causes sql error with the
+		-- Take off the max(mc.category_concat_segs), it causes sql error with the
 		-- union all:  single-row subquery returns more than one row
-		nvl((select	mc.segment1
+		nvl((select	mc.category_concat_segs
 		     from	mtl_categories_v mc,
 				mtl_item_categories mic,
 				mtl_category_sets_b mcs,
@@ -140,12 +140,12 @@ from	org_acct_periods oap,
 		     -- Revision for version 1.14
 		     -- This union gets the category for expense destinations
 		     -- when the PO line does not have an item
-		     select	mc.segment1
+		     select	mc.category_concat_segs
 		     from	mtl_categories_v mc
 		     where	mc.category_id              = pol.category_id
 		     and	rsl.item_id is null
 		   ),'') category1,
-		nvl((select	max(mc.segment1)
+		nvl((select	max(mc.category_concat_segs)
 		     from	mtl_categories_v mc,
 				mtl_item_categories mic,
 				mtl_category_sets_b mcs,

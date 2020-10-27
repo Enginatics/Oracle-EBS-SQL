@@ -19,38 +19,39 @@ gl.name ledger,
 gjb.name batch_name,
 xxen_util.meaning(gjb.status,'MJE_BATCH_STATUS',101) batch_status,
 gjh.posted_date,
-gjh.status journal_status,
 gjh.name journal_name,
 gjh.description journal_description,
 gjl.description line_description,
 xxen_util.meaning(xal.accounting_class_code,'XLA_ACCOUNTING_CLASS',602) accounting_class_code,
 xxen_util.meaning(gcc.account_type,'ACCOUNT_TYPE',0) account_type,
 &segment_columns
-nvl2(xal.gl_sl_link_id,xal.currency_code,gjh.currency_code) transaction_currency,
 nvl2(xal.gl_sl_link_id,xal.entered_dr,gjl.entered_dr) entered_dr,
 nvl2(xal.gl_sl_link_id,xal.entered_cr,gjl.entered_cr) entered_cr,
 nvl(nvl2(xal.gl_sl_link_id,xal.entered_dr,gjl.entered_dr),0)-nvl(nvl2(xal.gl_sl_link_id,xal.entered_cr,gjl.entered_cr),0) entered_amount,
-gl.currency_code ledger_currency,
+nvl2(xal.gl_sl_link_id,xal.currency_code,gjh.currency_code) transaction_currency,
 nvl2(xal.gl_sl_link_id,xal.accounted_dr,gjl.accounted_dr) accounted_dr,
 nvl2(xal.gl_sl_link_id,xal.accounted_cr,gjl.accounted_cr) accounted_cr,
 nvl(nvl2(xal.gl_sl_link_id,xal.accounted_dr,gjl.accounted_dr),0)-nvl(nvl2(xal.gl_sl_link_id,xal.accounted_cr,gjl.accounted_cr),0) accounted_amount,
+gl.currency_code ledger_currency,
+&revaluation_columns
 nvl(gjh.doc_sequence_value,xah.doc_sequence_value) doc_sequence_value,
 (select xett.name from xla_event_types_tl xett where xte.application_id=xett.application_id and xte.entity_code=xett.entity_code and xe.event_type_code=xett.event_type_code and xett.language=userenv('lang')) event_type,
 xal.currency_conversion_date,
-(select gdct.user_conversion_type from gl_daily_conversion_types gdct where xal.currency_conversion_type=gdct.conversion_type) conversion_type,
+(select gdct.user_conversion_type from gl_daily_conversion_types gdct where xal.currency_conversion_type=gdct.conversion_type) currency_conversion_type,
 xal.currency_conversion_rate,
 xxen_util.meaning(gjh.actual_flag,'XLA_BALANCE_TYPE',602) balance_type,
 (select gbv.budget_name from gl_budget_versions gbv where gjh.budget_version_id=gbv.budget_version_id) budget_name,
-gjh.currency_conversion_date,
-gjh.currency_conversion_rate,
-gjh.currency_conversion_type,
+gjh.currency_conversion_date conversion_date,
+gjh.currency_conversion_type conversion_type,
+gjh.currency_conversion_rate conversion_rate,
 xe.transaction_date,
 xte.transaction_number,
 --subledger columns 
 aia.description description,
 (select pha.segment1 from po_headers_all pha where nvl(aia.quick_po_header_id,rt.po_header_id)=pha.po_header_id) purchase_order,
-case when xte.entity_code='TRANSACTIONS' and rcta.interface_header_context in ('ORDER ENTRY','INTERCOMPANY') then rcta.interface_header_attribute1 end sales_order,
 --AR
+case when xte.entity_code='TRANSACTIONS' and rcta.interface_header_context in ('ORDER ENTRY','INTERCOMPANY') then rcta.interface_header_attribute1 end sales_order,
+jrrev.resource_name salesperson,
 (select name from ra_rules rr where rcta.invoicing_rule_id=rule_id) invoice_rule,
 (select rr.name from ra_customer_trx_lines_all rctla, ra_rules rr where rcta.customer_trx_id=rctla.customer_trx_id and rctla.line_type='LINE' and rctla.accounting_rule_id=rr.rule_id and rownum=1) accounting_rule,
 rt.quantity po_quantity,
@@ -76,6 +77,8 @@ peia.quantity expenditure_item_quantity,
 xxen_util.meaning(pet.unit_of_measure,'UNIT',275) expenditure_unit_of_measure,
 papf.full_name incurred_by_person,
 nvl(papf.employee_number,papf.npw_number) incurred_by_employee_number,
+xxen_util.user_name(gjh.created_by) journal_created_by,
+gjh.creation_date journal_creation_date,
 gjb.je_batch_id,
 gjl.je_header_id,
 gjl.je_line_num,
@@ -99,10 +102,13 @@ xla_ae_headers xah,
 xla_events xe,
 xla.xla_transaction_entities xte,
 gl_code_combinations gcc,
+(select gdr.* from gl_daily_rates gdr where gdr.to_currency=:revaluation_currency and gdr.conversion_type=(select gdct.conversion_type from gl_daily_conversion_types gdct where gdct.user_conversion_type=:revaluation_conversion_type)) gdr,
 ap_invoices_all aia,
 (select distinct aida.invoice_id, min(aida.project_id) keep (dense_rank first order by aida.invoice_distribution_id) over (partition by aida.invoice_id) project_id, min(aida.task_id) keep (dense_rank first order by aida.invoice_distribution_id) over (partition by aida.invoice_id) task_id from ap_invoice_distributions_all aida where aida.task_id is not null) aida,
 ap_checks_all aca,
 ra_customer_trx_all rcta,
+jtf_rs_salesreps jrs,
+jtf_rs_resource_extns_vl jrrev,
 ar_adjustments_all aaa,
 ar_cash_receipts_all acra,
 pa_projects_all ppa,
@@ -135,10 +141,19 @@ xah.application_id=xe.application_id(+) and
 xah.entity_id=xte.entity_id(+) and
 xah.application_id=xte.application_id(+) and
 gjl.code_combination_id=gcc.code_combination_id and
+coalesce(
+xal.currency_conversion_date,
+gjh.currency_conversion_date,
+trunc(xe.transaction_date)
+)=gdr.conversion_date(+) and
+decode(nvl2(xal.gl_sl_link_id,xal.currency_code,gjh.currency_code),:revaluation_currency,null,nvl2(xal.gl_sl_link_id,xal.currency_code,gjh.currency_code))=gdr.from_currency(+) and
 case when xte.application_id=200 and xte.entity_code='AP_INVOICES' then xte.source_id_int_1 end=aia.invoice_id(+) and
 aia.invoice_id=aida.invoice_id(+) and
 case when xte.application_id=200 and xte.entity_code='AP_PAYMENTS' then xte.source_id_int_1 end=aca.check_id(+) and
 case when xte.application_id=222 then case when xte.entity_code in ('TRANSACTIONS','BILLS_RECEIVABLE') then xte.source_id_int_1 when xte.entity_code='ADJUSTMENTS' then aaa.customer_trx_id end end=rcta.customer_trx_id(+) and
+rcta.primary_salesrep_id=jrs.salesrep_id(+) and
+rcta.org_id=jrs.org_id(+) and
+jrs.resource_id=jrrev.resource_id(+) and
 case when xte.application_id=222 and xte.entity_code='ADJUSTMENTS' then xte.source_id_int_1 end=aaa.adjustment_id(+) and
 case when xte.application_id=222 and xte.entity_code='RECEIPTS' then xte.source_id_int_1 end=acra.cash_receipt_id(+) and
 case when xte.application_id=275 then decode(xte.entity_code,'REVENUE',xte.source_id_int_1,'EXPENDITURES',peia.project_id) end=ppa.project_id(+) and

@@ -2,7 +2,7 @@
 ## Description: 
 Summary GL report including one line per GL account.  This report has multiple collapsible/expandable summary levels based on the GL account hierarchy, with starting balance, total amount per month, ending total and YTD balance. (trial balance).
 ## Categories: 
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+Operations)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [OPM month end close](https://www.enginatics.com/library/?pg=1&category[]=OPM+month+end+close), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+Operations)
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Report Example

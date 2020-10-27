@@ -30,7 +30,6 @@ select
 dhse.time_micro-lag(dhse.time_micro) over (partition by dhse.dbid, dhse.instance_number, dhse.event_name order by dhse.snap_id) time_delta,
 dhse.waits-lag(dhse.waits) over (partition by dhse.dbid, dhse.instance_number, dhse.event_name order by dhse.snap_id) waits_delta,
 dhse.timeouts-lag(dhse.timeouts) over (partition by dhse.dbid, dhse.instance_number, dhse.event_name order by dhse.snap_id) timeouts_delta,
-
 dhse.*
 from
 (

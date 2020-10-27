@@ -1,6 +1,6 @@
 # [CAC Inventory Out-of-Balance](https://www.enginatics.com/reports/cac-inventory-out-of-balance/)
 ## Description: 
-Shows any differences in the period end snapshot that is created when you close the inventory periods.  This represents any differences between the cumulative inventory accounting entries and the onhand valuation of the subinventories and intransit stock locations.
+Report to show any differences in the period end snapshot that is created when you close the inventory periods.  This represents any differences between the cumulative inventory accounting entries and the onhand valuation of the subinventories and intransit stock locations.
 
 /* +=============================================================================+
 -- |  Copyright 2006-2020 Douglas Volz Consulting, Inc.                          |

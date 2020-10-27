@@ -24,7 +24,9 @@ eqs.qs_num_rows row_count,
 &object_columns
 length(eqs.qs_object_use_key)-length(translate(eqs.qs_object_use_key,'x.','x'))+1 folder_count,
 xxen_util.meaning(case when eqs.qs_object_use_key like '%.%' then 'Y' end,'YES_NO',0) multiple_flag,
-eqs.qs_object_use_key use_key
+eqs.qs_object_use_key use_key,
+eqs.qs_doc_name||': '||eqs.qs_doc_details workbook_sheet,
+eqs.qs_created_by created_by
 from
 (
 select

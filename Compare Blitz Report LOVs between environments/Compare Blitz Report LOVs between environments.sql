@@ -23,7 +23,7 @@ from
 (
 select
 case
-when xrplv.guid is not null and xrplv2.last_updated_by<>-1  then 'conflict'
+when xrplv.guid is not null and (select fu.user_name from fnd_user@&database_link fu where xrplv2.last_updated_by=fu.user_id) not in ('ANONYMOUS','ENGINATICS') then 'conflict'
 when xrplv.guid is null and xrplv2.guid is not null then 'add to local database'
 when xrplv.guid is not null and xrplv2.guid is null then 'transfer'
 else 'update'
@@ -35,6 +35,28 @@ xrplv.lov_name,
 xrplv2.lov_name lov_name_remote,
 xrplv.description,
 xrplv2.description description_remote,
+(
+select distinct
+listagg(xrv.report_name,chr(10)) within group (order by xrv.report_name) over (partition by xrplv.lov_id) report_names
+from
+xxen_report_parameters xrp,
+xxen_reports_v xrv
+where
+xrplv.lov_id=xrp.lov_id and
+xrp.parameter_type='LOV' and
+xrp.report_id=xrv.report_id
+) report_names,
+(
+select distinct
+listagg(xrv.report_name,chr(10)) within group (order by xrv.report_name) over (partition by xrplv.lov_id) report_names
+from
+xxen_report_parameters@&database_link xrp,
+xxen_reports_v@&database_link xrv
+where
+xrplv2.lov_id=xrp.lov_id and
+xrp.parameter_type='LOV' and
+xrp.report_id=xrv.report_id
+) report_names_remote,
 xxen_util.user_name(xrplv.last_updated_by) last_updated_by,
 xrplv.last_update_date,
 xxen_util.user_name@&database_link(xrplv2.last_updated_by) last_updated_by_remote,

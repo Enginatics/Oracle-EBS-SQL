@@ -4,9 +4,11 @@ Reports all changes to an audited application table.
 
 The report has one row per audit transaction and audited column showing the old and new audit column value.
 ## Categories: 
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Data Management](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+Data+Management), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+Operations), [Toolkit - Setup & Support](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+Setup+%26+Support)
+[Audit](https://www.enginatics.com/library/?pg=1&category[]=Audit), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Data Management](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+Data+Management), [Toolkit - Metrics](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+Metrics), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+Operations), [Toolkit - Setup & Support](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+Setup+%26+Support)
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
+# Report Example
+[FND_Audit_Table_Changes_by_Column 06-Sep-2020 112717.xlsx](https://www.enginatics.com/example/fnd-audit-table-changes-by-column/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [FND_Audit_Table_Changes_by_Column.xml](https://www.enginatics.com/xml/fnd-audit-table-changes-by-column/)
 # Oracle E-Business Suite [Reporting Library](https://www.enginatics.com/library/)

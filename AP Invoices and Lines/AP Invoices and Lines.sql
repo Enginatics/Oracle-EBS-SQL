@@ -156,7 +156,6 @@ aia.expenditure_organization_id=haouv1.organization_id(+) and
 aila.expenditure_organization_id=haouv2.organization_id(+) and
 aida.expenditure_organization_id=haouv3.organization_id(+) and
 aia.invoice_id=apsa.invoice_id and
-nvl(apsa.amount_remaining,0)*nvl(aia.exchange_rate,1)!=0 and
 aia.vendor_id=asu.vendor_id and
 aia.vendor_site_id=assa.vendor_site_id and
 aia.invoice_id=aila.invoice_id(+) and

@@ -5,7 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC ICP PII Inventory and Intransit Value (Period-End)
--- Description: Shows the profit in inventory at the end of the month.  If you enter a cost type this report uses the item costs from the cost type; if you leave the cost type blank it uses the item costs from the month-end snapshot.  In either case this report uses the month-end quantities, based on the entered period name.   (Note:  Profit in inventory is abbreviated as PII or sometimes as ICP - InterCompany Profit.)
+-- Description: Report showing amount of profit in inventory at the end of the month.  If you enter a cost type this report uses the item costs from the cost type; if you leave the cost type blank it uses the item costs from the month-end snapshot.  In either case this report uses the month-end quantities, based on the entered period name.   (Note:  Profit in inventory is abbreviated as PII or sometimes as ICP - InterCompany Profit.)
 
 Note:  if you enter a cost type this report uses the item costs from the cost type; if you leave the cost type blank it uses the item costs from the month-end snapshot.
 
@@ -74,7 +74,7 @@ select	nvl(gl.short_name, gl.name) Ledger,
 	-- Revision for version 1.14 and 1.16
 	misv.inventory_item_status_code_tl Item_Status,
 	-- Revision for version 1.11
-	nvl((select	max(mc.segment1)
+	nvl((select	max(mc.category_concat_segs)
 	     from	mtl_categories_v mc,
 			mtl_item_categories mic,
 			mtl_category_sets_b mcs,
@@ -87,7 +87,7 @@ select	nvl(gl.short_name, gl.name) Ledger,
 	     and	mcs.category_set_id         = mcs_tl.category_set_id
 	     and	mcs_tl.language             = userenv('lang')
 	),'') "&p_category_set1",						-- p_category_set1
-	nvl((select	max(mc.segment1)
+	nvl((select	max(mc.category_concat_segs)
 	     from	mtl_categories_v mc,
 			mtl_item_categories mic,
 			mtl_category_sets_b mcs,
@@ -267,7 +267,7 @@ select	nvl(gl.short_name, gl.name) Ledger,
 	-- Revision for version 1.14 and 1.16
 	misv.inventory_item_status_code_tl Item_Status,
 	-- Revision for version 1.11
-	nvl((select	max(mc.segment1)
+	nvl((select	max(mc.category_concat_segs)
 	     from	mtl_categories_v mc,
 			mtl_item_categories mic,
 			mtl_category_sets_b mcs,
@@ -280,7 +280,7 @@ select	nvl(gl.short_name, gl.name) Ledger,
 	     and	mcs.category_set_id         = mcs_tl.category_set_id
 	     and	mcs_tl.language             = userenv('lang')
 	),'') "&p_category_set1",
-	nvl((select	max(mc.segment1)
+	nvl((select	max(mc.category_concat_segs)
 	     from	mtl_categories_v mc,
 			mtl_item_categories mic,
 			mtl_category_sets_b mcs,
@@ -507,7 +507,7 @@ select	nvl(gl.short_name, gl.name) Ledger,
 	-- Revision for version 1.14 and 1.16
 	misv.inventory_item_status_code_tl Item_Status,
 	-- Revision for version 1.11
-	nvl((select	max(mc.segment1)
+	nvl((select	max(mc.category_concat_segs)
 	     from	mtl_categories_v mc,
 			mtl_item_categories mic,
 			mtl_category_sets_b mcs,
@@ -520,7 +520,7 @@ select	nvl(gl.short_name, gl.name) Ledger,
 	     and	mcs.category_set_id         = mcs_tl.category_set_id
 	     and	mcs_tl.language             = userenv('lang')
 	),'') "&p_category_set1",
-	nvl((select	max(mc.segment1)
+	nvl((select	max(mc.category_concat_segs)
 	     from	mtl_categories_v mc,
 			mtl_item_categories mic,
 			mtl_category_sets_b mcs,
@@ -718,7 +718,7 @@ select	nvl(gl.short_name, gl.name) Ledger,
 	-- Revision for version 1.14 and 1.16
 	misv.inventory_item_status_code_tl Item_Status,
 	-- Revision for version 1.11
-	nvl((select	max(mc.segment1)
+	nvl((select	max(mc.category_concat_segs)
 	     from	mtl_categories_v mc,
 			mtl_item_categories mic,
 			mtl_category_sets_b mcs,
@@ -731,7 +731,7 @@ select	nvl(gl.short_name, gl.name) Ledger,
 	     and	mcs.category_set_id         = mcs_tl.category_set_id
 	     and	mcs_tl.language             = userenv('lang')
 	),'') "&p_category_set1",
-	nvl((select	max(mc.segment1)
+	nvl((select	max(mc.category_concat_segs)
 	     from	mtl_categories_v mc,
 			mtl_item_categories mic,
 			mtl_category_sets_b mcs,
@@ -797,5 +797,4 @@ select	nvl(gl.short_name, gl.name) Ledger,
 		     and    cicd.organization_id   = msiv.organization_id
 		     and    br.resource_id         = cicd.resource_id
 		     and    5=5                                                           -- p_pii_resource_code
-		     and    cct.cost_type_id       = cicd.cost_type_id
-		     and    4=4),0),2)     PII_Onhand_Value,
+		     

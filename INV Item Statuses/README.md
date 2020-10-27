@@ -1,4 +1,4 @@
-# [INV Item Statuses](https://www.enginatics.com/reports/inv-item-statuses(6)/)
+# [INV Item Statuses](https://www.enginatics.com/reports/inv-item-statuses(12)/)
 ## Description: 
 Master data report of inventory items with the various status attributes, such as: is BOM allowed, Build in WIP, customer orders enabled, internal orders enabled and Invoice enabled, etc.
 ## Categories: 
@@ -6,9 +6,9 @@ Master data report of inventory items with the various status attributes, such a
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Report Example
-[INV_Item_Statuses 07-Apr-2018 130703.xlsx](https://www.enginatics.com/example/inv-item-statuses(6)/)
+[INV_Item_Statuses 07-Apr-2018 130703.xlsx](https://www.enginatics.com/example/inv-item-statuses(12)/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[INV_Item_Statuses.xml](https://www.enginatics.com/xml/inv-item-statuses(6)/)
+[INV_Item_Statuses.xml](https://www.enginatics.com/xml/inv-item-statuses(12)/)
 # Oracle E-Business Suite [Reporting Library](https://www.enginatics.com/library/)
     
 We provide an open source Oracle EBS SQLs as a part of operational and project implementation support [toolkits](https://www.enginatics.com/blitz-report-toolkits/) for rapid Excel reports generation. 

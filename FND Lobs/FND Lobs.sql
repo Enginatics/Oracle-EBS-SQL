@@ -21,7 +21,8 @@ fl.program_name,
 fl.program_tag,
 fl.language,
 fl.oracle_charset,
-fl.file_format
+fl.file_format,
+'select fl.* from fnd_lobs fl where fl.file_id='||fl.file_id sql_text
 from
 fnd_lobs fl
 where

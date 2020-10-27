@@ -1,6 +1,6 @@
 # [CAC WIP Account Summary](https://www.enginatics.com/reports/cac-wip-account-summary/)
 ## Description: 
-Shows the WIP accounting distributions, in summary, by WIP job, resource, overhead and WIP cost update.  And for outside processing, including the purchase order number, line and release number.
+Report to get the WIP accounting distributions, in summary, by WIP job, resource, overhead and WIP cost update.  And for outside processing, including the purchase order number, line and release number.
 
 /* +=============================================================================+
 -- |  Copyright 2009- 2020 Douglas Volz Consulting, Inc.                         |

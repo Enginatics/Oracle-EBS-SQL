@@ -21,14 +21,16 @@ ecc.ecc_app_ds_relationships eadr,
 ecc.ecc_application_tl eat
 where
 edb.dataset_id=eadr.dataset_id and
+eadr.app_ds_rel_type='OWNED' and
 eadr.application_id=eat.application_id and
-eat.language='en'
+eat.language=xxen_util.bcp47_language(userenv('lang'))
 ) application,
-edb.dataset_key data_set_key,
 edt.display_name data_set,
+edb.dataset_key data_set_key,
 decode(edt.dataset_description,'null',null,edt.dataset_description) description,
 xxen_util.meaning(decode(edb.enabled_flag,'Y','Y'),'YES_NO',0) enabled,
-x.*
+x.*,
+esr.security_handler_name
 from
 ecc.ecc_source_system ess,
 ecc.ecc_dataset_b edb,
@@ -49,13 +51,16 @@ load_type in (
 'Full data load' full_load,
 'Metadata load' metadata_load
 )
-) x
+) x,
+ecc.ecc_security_rules esr
 where
 1=1 and
 ess.system_id=edb.system_id and
 edb.dataset_id=edt.dataset_id and
-edt.language='en' and
-edt.dataset_id=x.dataset_id(+)
+edt.language=xxen_util.bcp47_language(userenv('lang')) and
+edt.dataset_id=x.dataset_id(+) and
+edb.dataset_id=esr.applies_to_entity(+) and
+esr.applies_to_type(+)='DATASET'
 order by
 ess.system_name,
 edb.dataset_key

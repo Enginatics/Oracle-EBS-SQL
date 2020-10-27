@@ -1,6 +1,6 @@
 # [CAC ICP PII Inventory and Intransit Value (Period-End)](https://www.enginatics.com/reports/cac-icp-pii-inventory-and-intransit-value-period-end/)
 ## Description: 
-Shows the profit in inventory at the end of the month.  If you enter a cost type this report uses the item costs from the cost type; if you leave the cost type blank it uses the item costs from the month-end snapshot.  In either case this report uses the month-end quantities, based on the entered period name.   (Note:  Profit in inventory is abbreviated as PII or sometimes as ICP - InterCompany Profit.)
+Report showing amount of profit in inventory at the end of the month.  If you enter a cost type this report uses the item costs from the cost type; if you leave the cost type blank it uses the item costs from the month-end snapshot.  In either case this report uses the month-end quantities, based on the entered period name.   (Note:  Profit in inventory is abbreviated as PII or sometimes as ICP - InterCompany Profit.)
 
 Note:  if you enter a cost type this report uses the item costs from the cost type; if you leave the cost type blank it uses the item costs from the month-end snapshot.
 

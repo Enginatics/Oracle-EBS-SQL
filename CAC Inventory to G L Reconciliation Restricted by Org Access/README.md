@@ -1,6 +1,6 @@
 # [CAC Inventory to G/L Reconciliation (Restricted by Org Access)](https://www.enginatics.com/reports/cac-inventory-to-g-l-reconciliation-restricted-by-org-access/)
 ## Description: 
-Compares the General Ledger inventory balances with the perpetual inventory values (based on the stored month-end inventory balances, generated when the inventory accounting period is closed).
+Report to compare the General Ledger inventory balances with the perpetual inventory values (based on the stored month-end inventory balances, generated when the inventory accounting period is closed).
 
 /* +=============================================================================+
 -- |  Copyright 2010-20 Douglas Volz Consulting, Inc.                            |

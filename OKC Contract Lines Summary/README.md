@@ -7,7 +7,7 @@ This is useful for developers to see how the oracle contracts line data is struc
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Report Example
-[OKC_Contract_Lines_Summary 03-Jun-2020 010006.xlsx](https://www.enginatics.com/example/okc-contract-lines-summary/)
+[OKC_Contract_Lines_Summary 11-Oct-2020 145318.xlsx](https://www.enginatics.com/example/okc-contract-lines-summary/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [OKC_Contract_Lines_Summary.xml](https://www.enginatics.com/xml/okc-contract-lines-summary/)
 # Oracle E-Business Suite [Reporting Library](https://www.enginatics.com/library/)

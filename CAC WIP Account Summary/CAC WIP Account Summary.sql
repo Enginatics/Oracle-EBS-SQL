@@ -5,7 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC WIP Account Summary
--- Description: Shows the WIP accounting distributions, in summary, by WIP job, resource, overhead and WIP cost update.  And for outside processing, including the purchase order number, line and release number.
+-- Description: Report to get the WIP accounting distributions, in summary, by WIP job, resource, overhead and WIP cost update.  And for outside processing, including the purchase order number, line and release number.
 
 /* +=============================================================================+
 -- |  Copyright 2009- 2020 Douglas Volz Consulting, Inc.                         |
@@ -71,7 +71,7 @@ select	nvl(gl.short_name, gl.name) Ledger,
 	-- Revision for version 1.13
 	fcl.meaning item_type,
 	-- Revision for version 1.9
-	nvl((select	max(mc.segment1)
+	nvl((select	max(mc.category_concat_segs)
 	     from	mtl_categories_v mc,
 			mtl_item_categories mic,
 			mtl_category_sets_b mcs,
@@ -84,7 +84,7 @@ select	nvl(gl.short_name, gl.name) Ledger,
 	     and	mcs.category_set_id         = mcs_tl.category_set_id
 	     and	mcs_tl.language             = userenv('lang')
 	   ),'') "&p_category_set1",
-	nvl((select	max(mc.segment1)
+	nvl((select	max(mc.category_concat_segs)
 	     from	mtl_categories_v mc,
 			mtl_item_categories mic,
 			mtl_category_sets_b mcs,
@@ -106,45 +106,45 @@ select	nvl(gl.short_name, gl.name) Ledger,
 	-- Fix for version 1.6
 	(select	br.resource_code
 	 from	bom_resources br
-	 where	wta.resource_id = br.resource_id) WIP_Resource,
+	 where	wta.resource_id    = br.resource_id) WIP_Resource,
 	(select poh.segment1
 	 from	po_headers_all poh,
 		po_lines_all pol,
 		po_releases_all pr,
 		rcv_transactions rt
-	 where	rt.transaction_id = wt.rcv_transaction_id
-	 and	rt.po_header_id   = poh.po_header_id
-	 and	rt.po_line_id     = pol.po_line_id
-	 and	rt.po_release_id  = pr.po_release_id (+)) PO_Number,
+	 where	rt.transaction_id  = wt.rcv_transaction_id
+	 and	rt.po_header_id    = poh.po_header_id
+	 and	rt.po_line_id      = pol.po_line_id
+	 and	rt.po_release_id   = pr.po_release_id (+)) PO_Number,
 	(select pol.line_num
 	 from	po_headers_all poh,
 		po_lines_all pol,
 		po_releases_all pr,
 		rcv_transactions rt
-	 where	rt.transaction_id = wt.rcv_transaction_id
-	 and	rt.po_header_id   = poh.po_header_id
-	 and	rt.po_line_id     = pol.po_line_id
-	 and	rt.po_release_id  = pr.po_release_id (+)) PO_Line,
+	 where	rt.transaction_id  = wt.rcv_transaction_id
+	 and	rt.po_header_id    = poh.po_header_id
+	 and	rt.po_line_id      = pol.po_line_id
+	 and	rt.po_release_id   = pr.po_release_id (+)) PO_Line,
 	(select pr.release_num
 	 from	po_headers_all poh,
 		po_lines_all pol,
 		po_releases_all pr,
 		rcv_transactions rt
-	 where	rt.transaction_id = wt.rcv_transaction_id
-	 and	rt.po_header_id   = poh.po_header_id
-	 and	rt.po_line_id     = pol.po_line_id
-	 and	rt.po_release_id  = pr.po_release_id (+)) PO_Rel,
+	 where	rt.transaction_id  = wt.rcv_transaction_id
+	 and	rt.po_header_id    = poh.po_header_id
+	 and	rt.po_line_id      = pol.po_line_id
+	 and	rt.po_release_id   = pr.po_release_id (+)) PO_Release,
 	-- End fix for version 1.6
 	-- Revision for version 1.12
 	(select	max(pp.segment1)
 	 from	apps.pa_projects_all pp
-	 where	pp.project_id     = wdj.project_id) Project_Number,
+	 where	pp.project_id      = wdj.project_id) Project_Number,
 	-- Revision for version 1.11 and 1.12
-	(select	max(muomv.uom_code)
+	(select	max(nvl(muomv.uom_code, br.unit_of_measure))
 	 from	bom_resources br,
 		mtl_units_of_measure_vl muomv
-	 where	wta.resource_id = br.resource_id
-	 and	muomv.uom_code = br.unit_of_measure) UOM_Code,
+	 where	wta.resource_id    = br.resource_id
+	 and	muomv.uom_code (+) = br.unit_of_measure) UOM_Code,
 	round(sum(decode(wt.transaction_type, 
 			 'Cost Update', 0,
 			 nvl(wta.primary_quantity,0)
@@ -152,7 +152,7 @@ select	nvl(gl.short_name, gl.name) Ledger,
 		  )
 	   ,3) Primary_Quantity,
 	-- End revision for version 1.11
-	gl.currency_code Curr_Code,
+	gl.currency_code Currency_Code,
 	-- Revision for version 1.11
 	sum(decode(wta.cost_element_id,
 			1, wta.base_transaction_value,
@@ -231,7 +231,7 @@ and	fcl.lookup_type (+)          = 'ITEM_TYPE'
 -- ========================================================
 -- Material Transaction date and accounting code joins
 -- ========================================================
-and	1=1                          -- p_trx_date_from, p_trx_date_to, p_item_number, p_org_code, p_operating_unit, p_ledger
+and	1=1                          -- p_trx_date_from, p_trx_date_to, p_org_code, p_operating_unit, p_ledger
 -- ========================================================
 -- using the base tables to avoid using
 -- org_organization_definitions and hr_operating_units
@@ -332,4 +332,4 @@ order by
 	 where	rt.transaction_id = wt.rcv_transaction_id
 	 and	rt.po_header_id   = poh.po_header_id
 	 and	rt.po_line_id     = pol.po_line_id
-	 and	rt.po_release_id  = pr.po_release_id (+))  -- PO_Rel
+	 and	rt.po_release_id  = pr.po_release_id (+))  -- PO_Release

@@ -5,7 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: DBA AWR Settings
--- Description: Automatic workload repository settings such as retention period, snapshot interval and number of top SQLs to capture.
+-- Description: Automatic workload repository settings such as retention period, snapshot interval and number of top SQLs to capture (from table underlying the view dba_hist_wr_control).
 Note that for executing Blitz Report queries on AWR data, you require a Diagnostic pack license as explained in Oracle's note 1490798.1:
 https://support.oracle.com/CSP/main/article?cmd=show&type=NOT&id=1490798.1
 

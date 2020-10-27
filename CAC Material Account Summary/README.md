@@ -1,6 +1,6 @@
 # [CAC Material Account Summary](https://www.enginatics.com/reports/cac-material-account-summary/)
 ## Description: 
-Displays the material accounting entries for each item, organization, subinventory with amounts.  Including Ship From and Ship To information for inter-org transfers.  This report includes all material transactions but to keep the report smaller it does not displays WIP job information, such as WIP Accounting Class, Class Description, Assembly Number, Assembly Description or Job Order Number.
+Report to get the material accounting entries for each item, organization, subinventory with amounts.  Including Ship From and Ship To information for inter-org transfers.  This report includes all material transactions but to keep the report smaller it does not displays WIP job information, such as WIP Accounting Class, Class Description, Assembly Number, Assembly Description or Job Order Number.
 Use the Show Subinventory parameter to reduce the size of this report, as needed.  If you choose Yes you get the Subinventory Code, if you choose No you only get the Accounting Line Type for inventory, (Inventory valuation) thus greatly reducing the size of this report.
 
 /* +=============================================================================+

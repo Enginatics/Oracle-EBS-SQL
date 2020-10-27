@@ -1,6 +1,6 @@
 # [CAC Accounting Period Status](https://www.enginatics.com/reports/cac-accounting-period-status/)
 ## Description: 
-Lists the accounting period status for General Ledger, Inventory, Lease Management, Payables, Projects, Purchasing and Receivables.  You can choose All Statuses (open or closed or never opened), Closed, Open or Never Opened periods.  And this report will also display the process manufacturing cost calendar status.
+Report to show the accounting period status for General Ledger, Inventory, Lease Management, Payables, Projects, Purchasing and Receivables.  You can choose All Statuses (open or closed or never opened), Closed, Open or Never Opened periods.  And this report will also display the process manufacturing cost calendar status.
 Note:  this report automatically looks for hierarchies which might be used with the Open Period Control and the Close Period Control Oracle programs.  Looking for the translated values of "Close", "Open" and "Period" in the Hierarchy Name.
 
 /* +=============================================================================+

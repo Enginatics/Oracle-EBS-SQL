@@ -17,8 +17,8 @@ select
 fcr.request_id id,
 decode(fcr.priority_request_id,fcr.request_id,null,fcr.priority_request_id) priority_id,
 decode(fcr.parent_request_id,-1,null,fcr.parent_request_id) parent_id,
-case when fcr.program_application_id=160 and fcr.concurrent_program_id=20392 /*alecdc*/ or fcr.request_type='M' then fcr.description else fcpt.user_concurrent_program_name end program,
-case when fcr.request_type='M' and fcr.frr_display_sequence is not null then fcpt.user_concurrent_program_name||' ('||fcr.frr_display_sequence||')' else fcr.description end description,
+case when fcr.program_application_id=160 and fcr.concurrent_program_id=20392 /*alecdc*/ or fcr.request_type='M' then fcr.description else fcpv.user_concurrent_program_name end program,
+case when fcr.request_type='M' and fcr.frr_display_sequence is not null then fcpv.user_concurrent_program_name||' ('||fcr.frr_display_sequence||')' else fcr.description end description,
 flv2.meaning phase,
 trim(flv1.meaning) status,
 xxen_util.user_name(fcr.requested_by) user_name,
@@ -86,7 +86,7 @@ fcr.non_conflict_wait_seconds,
 xxen_util.time(fcr.conflict_wait_seconds) conflict_wait_time,
 fcr.conflict_wait_seconds,
 case when fcr.program_application_id=160 and fcr.concurrent_program_id=20392 then 'Alert' else decode(fcr.request_type,'P','Req Set Child Program','S','Req Set Stage','M','Req Set','B','Multi Language Set','C','Multi Language Child Program',decode(fcr.priority_request_id,fcr.request_id,'Standalone','Other Subprogram')) end type,
-fcp.concurrent_program_name short_name,
+fcpv.concurrent_program_name short_name,
 fev.executable_name executable_short_name,
 xxen_util.meaning(fev.execution_method_code,'CP_EXECUTION_METHOD_CODE',0) method,
 fev.execution_file_name,
@@ -290,8 +290,7 @@ fcpr.queue_application_id=fcqv.application_id(+) and
 fcpr.concurrent_queue_id=fcqv.concurrent_queue_id(+) and
 case when fcr.request_type in ('B','M') then fcr.request_id end=frr.parent_request_id(+)
 ) fcr,
-fnd_concurrent_programs fcp,
-fnd_concurrent_programs_tl fcpt,
+fnd_concurrent_programs_vl fcpv,
 fnd_executables_vl fev,
 fnd_responsibility_tl frt,
 fnd_conc_release_classes fcrc,
@@ -328,13 +327,10 @@ pivot (sum(x.time) time for wait_class in ('User I/O' user_io, 'Network' network
 (select gsa.* from gv$sql gsa where '&enable_sql_text'='Y') gsa
 where
 2=2 and
-fcr.program_application_id_=fcp.application_id(+) and
-fcr.concurrent_program_id_=fcp.concurrent_program_id(+) and
-fcr.program_application_id_=fcpt.application_id(+) and
-fcr.concurrent_program_id_=fcpt.concurrent_program_id(+) and
-fcpt.language(+)=userenv('lang') and
-fcp.executable_application_id=fev.application_id(+) and
-fcp.executable_id=fev.executable_id(+) and
+fcr.program_application_id_=fcpv.application_id(+) and
+fcr.concurrent_program_id_=fcpv.concurrent_program_id(+) and
+fcpv.executable_application_id=fev.application_id(+) and
+fcpv.executable_id=fev.executable_id(+) and
 fcr.responsibility_application_id=frt.application_id(+) and
 fcr.responsibility_id=frt.responsibility_id(+) and
 frt.language(+)=userenv('lang') and
@@ -353,7 +349,7 @@ fcr.request_id=fcpa7w.concurrent_request_id(+) and
 fcr.request_id=fcpa7c.concurrent_request_id(+) and
 fcr.request_id=fcro.concurrent_request_id(+) and
 decode(fcr.phase_code,
-'P',decode(fcr.hold_flag,'Y','H',decode(fcp.enabled_flag,'N','U',case when fcr.requested_start_date>sysdate then 'P' else fcr.status_code end)),
+'P',decode(fcr.hold_flag,'Y','H',decode(fcpv.enabled_flag,'N','U',case when fcr.requested_start_date>sysdate then 'P' else fcr.status_code end)),
 'R',decode(fcr.hold_flag,'Y','S',decode(fcr.status_code,'Q','B','I','B',fcr.status_code)),
 fcr.status_code)=flv1.lookup_code and
 case when flv1.lookup_code in ('H','S','U','M') then 'I' else fcr.phase_code end=flv2.lookup_code and
@@ -378,5 +374,5 @@ nvl(fcr.actual_start_date,fcr.requested_start_date) desc,
 fcr.request_id desc,
 fcr.frr_display_sequence desc,
 xxen_util.user_name(fcr.requested_by),
-fcpt.user_concurrent_program_name,
+fcpv.user_concurrent_program_name,
 frt.responsibility_name

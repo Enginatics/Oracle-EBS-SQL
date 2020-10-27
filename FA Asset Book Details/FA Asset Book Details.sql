@@ -127,7 +127,8 @@ fb.book_type_code=fdp.book_type_code and
 '&show_trx'='Y'
 )
 select --main SQL starts here
-fbc.book_type_code book,
+gl.name ledger,
+fbc.book_type_code asset_book,
 fbc.book_type_name description,
 fbc.book_class class,
 fbc.distribution_source_book associated_corporate_book,
@@ -135,7 +136,6 @@ fbc.distribution_source_book associated_corporate_book,
 (select fds.period_name from fa_deprn_periods fds where fds.period_counter=fbc.last_mass_copy_period_counter and fds.book_type_code=fbc.book_type_code) last_mass_copy_period_counter ,
 (select fds.period_name from fa_deprn_periods fds where fds.period_counter=fbc.last_period_counter and fds.book_type_code=fbc.book_type_code) last_period_counter,
 &calendar_columns
-(select fift.id_flex_structure_name from fnd_id_flex_structures_tl fift where gl.chart_of_accounts_id=fift.id_flex_num and fift.application_id=101 and fift.id_flex_code='GL#' and fift.language=userenv('lang')) chart_of_accounts,
 &alt_ledger_columns
 &accounting_rules_columns
 &natural_account_columns
@@ -144,7 +144,8 @@ fbc.distribution_source_book associated_corporate_book,
 &dprn_columns
 &trx_columns
 haouv.name operating_unit,
-org_id
+(select fift.id_flex_structure_name from fnd_id_flex_structures_tl fift where gl.chart_of_accounts_id=fift.id_flex_num and fift.application_id=101 and fift.id_flex_code='GL#' and fift.language=userenv('lang')) chart_of_accounts,
+fbc.org_id
 from
 fa_book_controls fbc,
 gl_ledgers gl,
@@ -154,6 +155,7 @@ c_dprn,
 c_fin_trx,
 hr_all_organization_units_vl haouv
 where
+1=1 and
 fbc.set_of_books_id=gl.ledger_id and
 fbc.book_type_code=c_alt_ledgers.book_type_code(+) and
 fbc.book_type_code=c_additions.book_type_code(+) and
@@ -161,8 +163,7 @@ c_additions.book_type_code=c_dprn.book_type_code(+) and
 c_additions.asset_id=c_dprn.asset_id(+) and
 c_additions.book_type_code=c_fin_trx.book_type_code(+) and
 c_additions.asset_id=c_fin_trx.asset_id(+) and
-fbc.org_id=haouv.organization_id(+) and
-2=2
+fbc.org_id=haouv.organization_id(+)
 order by
 fbc.book_type_code
 &order_columns

@@ -5,6 +5,12 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: OKS Service Contracts Billing Schedule
+-- Description: Service Contracts billing schedule with invoicing and accounting rules, and detailed to be billed period dates and amounts from the stream level elements table oks_level_elements.
+
+Column date_competed is used to identify open or already billed records and date_to_interface is used by the service contracts billing program to identify the records to be billed at any given date.
+For advance billing, date_to_interface is set to the beginning of the billing period and for arrears, it is set to the end. When creating new billing schedule record for past periods (that should have been billed already), date_to_interface is set to the current date.
+
+An overview of oracle service contracts and other line types can be found here: https://www.enginatics.com/reports/okc-contract-lines-summary/
 -- Excel Examle Output: https://www.enginatics.com/example/oks-service-contracts-billing-schedule/
 -- Library Link: https://www.enginatics.com/reports/oks-service-contracts-billing-schedule/
 -- Run Report: https://demo.enginatics.com/
@@ -14,11 +20,12 @@ haouv.name operating_unit,
 ocv.meaning class,
 osclv.meaning category,
 okhab.contract_number,
+okhab.contract_number_modifier modifier,
 osv0.meaning contract_status,
 osv1.meaning line_status,
 osv2.meaning subline_status,
 oklb1.line_number||nvl2(oklb2.line_number,'.'||oklb2.line_number,null) line_number,
-xxen_util.meaning((select olsb.lty_code from okc_line_styles_b olsb where nvl(oklb2.lse_id,oklb1.lse_id)=olsb.id),'OKC_LINE_TYPE',0)||decode(okslb1.usage_type,'VRT',' Actual','FRT',' Fixed','NPR',' Negotiated') contract_line_type,
+xxen_util.meaning(nvl(olsb2.lty_code,olsb1.lty_code),'OKC_LINE_TYPE',0)||' '||xxen_util.meaning(okslb1.usage_type,'OKS_USAGE_TYPES',0) contract_line_type,
 okslb2.base_reading,
 okslb1.usage_period,
 rr.name invoice_rule,
@@ -78,6 +85,7 @@ order by
 haouv.name,
 okhab.scs_code,
 okhab.contract_number,
+okhab.contract_number_modifier,
 line_number,
 oslb.start_date desc,
 ole.sequence_number desc

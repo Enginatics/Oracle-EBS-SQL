@@ -1,4 +1,11 @@
 # [OKS Service Contracts Billing Schedule](https://www.enginatics.com/reports/oks-service-contracts-billing-schedule/)
+## Description: 
+Service Contracts billing schedule with invoicing and accounting rules, and detailed to be billed period dates and amounts from the stream level elements table oks_level_elements.
+
+Column date_competed is used to identify open or already billed records and date_to_interface is used by the service contracts billing program to identify the records to be billed at any given date.
+For advance billing, date_to_interface is set to the beginning of the billing period and for arrears, it is set to the end. When creating new billing schedule record for past periods (that should have been billed already), date_to_interface is set to the current date.
+
+An overview of oracle service contracts and other line types can be found here: https://www.enginatics.com/reports/okc-contract-lines-summary/
 ## Categories: 
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+Operations)
 ## Dependencies

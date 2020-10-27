@@ -5,7 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Item Cost Summary
--- Description: Displays item costs in any cost type.  For one or more inventory organizations.
+-- Description: Report to show item costs in any cost type.  For one or more inventory organizations.
 
 /* +=============================================================================+
 -- | Copyright 2009-2020 Douglas Volz Consulting, Inc.                           |
@@ -42,7 +42,8 @@
 -- |  1.6     27 Apr 2020 Douglas Volz  Changed to multi-language views for the item
 -- |                                    master, inventory orgs and operating units.
 -- |  1.7     21 Jun 2020 Douglas Volz  Changed to multi-language views for item 
--- |                                    status and UOM.+=============================================================================+*/
+-- |                                    status and UOM.
+-- |  1.8     24 Sep 2020 Douglas Volz  Added List Price to report.+=============================================================================+*/
 -- Excel Examle Output: https://www.enginatics.com/example/cac-item-cost-summary/
 -- Library Link: https://www.enginatics.com/reports/cac-item-cost-summary/
 -- Run Report: https://demo.enginatics.com/
@@ -55,7 +56,7 @@ select	nvl(gl.short_name, gl.name) Ledger,
 	mp.organization_code Org_Code,
 	cct.cost_type Cost_Type,
 	msiv.concatenated_segments Item_Number,
-	msiv.description Description,
+	msiv.description Item_Description,
 	-- Revision for version 1.7
 	muomv.uom_code UOM_Code,
 	fcl.meaning Item_Type,
@@ -63,7 +64,7 @@ select	nvl(gl.short_name, gl.name) Ledger,
 	misv.inventory_item_status_code Item_Status,
 	ml1.meaning Make_Buy_Code,
 	-- Revision for version 1.4
-	nvl((select	max(mc.segment1)
+	nvl((select	max(mc.category_concat_segs)
 	     from	mtl_categories_v mc,
 			mtl_item_categories mic,
 			mtl_category_sets_b mcs,
@@ -76,7 +77,7 @@ select	nvl(gl.short_name, gl.name) Ledger,
 	     and	mcs.category_set_id         = mcs_tl.category_set_id
 	     and	mcs_tl.language             = userenv('lang')
 	   ),'') "&p_category_set1",
-	nvl((select	max(mc.segment1)
+	nvl((select	max(mc.category_concat_segs)
 	     from	mtl_categories_v mc,
 			mtl_item_categories mic,
 			mtl_category_sets_b mcs,
@@ -91,10 +92,14 @@ select	nvl(gl.short_name, gl.name) Ledger,
 	   ),'') "&p_category_set2",
 	-- End revision for version 1.4
 	fl1.meaning Allow_Costs,
-	ml2.meaning Inv_Asset,
+	ml2.meaning Inventory_Asset,
 	ml3.meaning Based_on_Rollup,
 	cic.shrinkage_rate Shrinkage_Rate,
-	gl.currency_code Curr_Code,
+	gl.currency_code Currency_Code,
+	-- Revision for version 1.8
+	msiv.market_price Market_Price,
+	msiv.list_price_per_unit Target_or_PO_List_Price,
+	-- End revision for version 1.8
 	nvl(cic.material_cost,0) Material_Cost,
 	nvl(cic.material_overhead_cost,0) Material_Overhead_Cost,
 	nvl(cic.resource_cost,0) Resource_Cost,
@@ -155,8 +160,8 @@ and	ml3.lookup_type                 = 'CST_BONROLLUP_VAL'
 and	ml3.lookup_code                 = cic.based_on_rollup_flag
 and	fl1.lookup_type                 = 'YES_NO'
 and	fl1.lookup_code                 = msiv.costing_enabled_flag
-and	fcl.lookup_code (+)             = msiv.item_type
 and	fcl.lookup_type (+)             = 'ITEM_TYPE'
+and	fcl.lookup_code (+)             = msiv.item_type
 -- ===================================================================
 -- Using the base tables to avoid using org_organization_definitions
 -- and hr_operating_units
@@ -166,6 +171,8 @@ and	hoi.organization_id             = mp.organization_id
 and	hoi.organization_id             = haou.organization_id   -- this gets the organization name
 and	haou2.organization_id           = to_number(hoi.org_information3) -- this gets the operating unit id
 and	gl.ledger_id                    = to_number(hoi.org_information1) -- get the ledger_id
+-- avoid selecting disabled inventory organizations
+and	sysdate < nvl(haou.date_to, sysdate + 1)
 -- ===================================================================
 -- Fix for version 1.3
 -- joins to get the COGS and revenue accounts
@@ -182,7 +189,7 @@ select	nvl(gl.short_name, gl.name) Ledger,
 	mp.organization_code Org_Code,
 	null Cost_Type,
 	msiv.concatenated_segments Item_Number,
-	msiv.description Description,
+	msiv.description Item_Description,
 	-- Revision for version 1.7
 	muomv.uom_code UOM_Code,
 	fcl.meaning Item_Type,
@@ -190,7 +197,7 @@ select	nvl(gl.short_name, gl.name) Ledger,
 	misv.inventory_item_status_code Item_Status,
 	ml1.meaning Make_Buy_Code,
 	-- Revision for version 1.4
-	nvl((select	max(mc.segment1)
+	nvl((select	max(mc.category_concat_segs)
 	     from	mtl_categories_v mc,
 			mtl_item_categories mic,
 			mtl_category_sets_b mcs,
@@ -203,7 +210,7 @@ select	nvl(gl.short_name, gl.name) Ledger,
 	     and	mcs.category_set_id         = mcs_tl.category_set_id
 	     and	mcs_tl.language             = userenv('lang')
 	   ),'') "&p_category_set1",
-	nvl((select	max(mc.segment1)
+	nvl((select	max(mc.category_concat_segs)
 	     from	mtl_categories_v mc,
 			mtl_item_categories mic,
 			mtl_category_sets_b mcs,
@@ -218,12 +225,16 @@ select	nvl(gl.short_name, gl.name) Ledger,
 	   ),'') "&p_category_set2",
 	-- End revision for version 1.4
 	fl1.meaning Allow_Costs,
-	fl2.meaning Inv_Asset,
-	'N/A' Based_on_Rollup,
+	fl2.meaning Inventory_Asset,
+	null Based_on_Rollup,
 	null Shrinkage_Rate,
-	gl.currency_code Curr_Code,
+	gl.currency_code Currency_Code,
+	-- Revision for version 1.8
+	msiv.market_price Market_Price,
+	msiv.list_price_per_unit Target_or_PO_List_Price,
+	-- End revision for version 1.8
 	null Material_Cost,
-	null Material_Overhead_CostCost,
+	null Material_Overhead_Cost,
 	null Resource_Cost,
 	null Outside_Processing_Cost,
 	null Overhead_Cost,
@@ -267,7 +278,8 @@ and	5=5
 and	msiv.costing_enabled_flag       = 'N'
 -- ===================================================================
 -- Don't report the unused inventory organizations
-and	mp.organization_id              <> mp.master_organization_id    -- remove the global master org
+-- ===================================================================
+and	mp.organization_id             <> mp.master_organization_id    -- remove the global master org
 -- ===================================================================
 -- Lookup codes
 -- ===================================================================
@@ -277,8 +289,8 @@ and	fl1.lookup_type                 = 'YES_NO'
 and	fl1.lookup_code                 = msiv.costing_enabled_flag
 and	fl2.lookup_type                 = 'YES_NO'
 and	fl2.lookup_code                 = msiv.inventory_asset_flag
-and	fcl.lookup_code (+)             = msiv.item_type
 and	fcl.lookup_type (+)             = 'ITEM_TYPE'
+and	fcl.lookup_code (+)             = msiv.item_type
 -- ===================================================================
 -- Using the base tables to avoid using org_organization_definitions
 -- and hr_operating_units
@@ -288,6 +300,8 @@ and	hoi.organization_id             = mp.organization_id
 and	hoi.organization_id             = haou.organization_id   -- this gets the organization name
 and	haou2.organization_id           = to_number(hoi.org_information3) -- this gets the operating unit id
 and	gl.ledger_id                    = to_number(hoi.org_information1) -- get the ledger_id
+-- avoid selecting disabled inventory organizations
+and	sysdate < nvl(haou.date_to, sysdate + 1)
 -- ===================================================================
 -- Fix for version 1.3
 -- joins to get the COGS and revenue accounts

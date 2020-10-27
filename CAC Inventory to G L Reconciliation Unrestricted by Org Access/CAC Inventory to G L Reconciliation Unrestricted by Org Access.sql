@@ -5,7 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Inventory to G/L Reconciliation (Unrestricted by Org Access)
--- Description: Compares the General Ledger inventory balances with the perpetual inventory values (based on the stored month-end inventory balances, generated when the inventory accounting period is closed).
+-- Description: Report to compare the General Ledger inventory balances with the perpetual inventory values (based on the stored month-end inventory balances, generated when the inventory accounting period is closed).
 
 /* +=============================================================================+
 -- |  Copyright 2010-20 Douglas Volz Consulting, Inc.                            |
@@ -224,7 +224,7 @@ nvl(sum(gjl.amount),0) monthly_activity
      gl_je_headers gjh,
 (select nvl(gjl.accounted_dr,0)-nvl(gjl.accounted_cr,0) amount, gjl.* from gl_je_lines gjl) gjl,
      gl_code_combinations gcc
-     where 1=1
+     where 1=1  -- gjh.period_name=:period_name
      and    gjh.je_header_id        = gjl.je_header_id
      and    gjh.status              = 'P'
      and    gjh.actual_flag         = 'A'
@@ -245,7 +245,7 @@ nvl(sum(gjl.amount),0) monthly_activity
         gcc.segment7,
         gcc.segment8,
         gcc.segment9) gl_per_sum
- where 2=2
+ where 2=2 -- gb.period_name=:period_name
  and    gb.code_combination_id = gcc.code_combination_id
  and    gb.code_combination_id = gl_per_sum.code_combination_id (+)
  and    gb.ledger_id           = gl_per_sum.ledger_id (+)
@@ -328,7 +328,7 @@ nvl(sum(gjl.amount),0) monthly_activity
     -- ===========================================
     -- inventory accounting period joins
     -- ===========================================
-    where 3=3
+    where 3=3 -- oap.period_name=:period_name
     and     oap.acct_period_id            = cpcs.acct_period_id
     and     oap.organization_id           = mp.organization_id 
     -- ========================================================================
@@ -401,7 +401,7 @@ nvl(sum(gjl.amount),0) monthly_activity
     -- ===========================================
     -- inventory accounting period joins
     -- ===========================================
-    where 3=3
+    where 3=3 -- oap.period_name=:period_name
     and    oap.acct_period_id            = cpcs.acct_period_id
     and    oap.organization_id           = mp.organization_id 
     -- ========================================================================
@@ -419,13 +419,13 @@ nvl(sum(gjl.amount),0) monthly_activity
     -- ===========================================
     -- organization joins to the hr org model
     -- ===========================================
-    -- avoid selecting disabled inventory organizations
-    and	sysdate < nvl(haou.date_to, sysdate + 1)
     and    hoi.org_information_context   = 'Accounting Information'
     and    hoi.organization_id           = mp.organization_id
     and    hoi.organization_id           = haou.organization_id   -- this gets the organization name
     and    haou2.organization_id         = to_number(hoi.org_information3) -- this gets the operating unit id
     and    gl.ledger_id                  = to_number(hoi.org_information1) -- get the ledger_id
+    -- avoid selecting disabled inventory organizations
+    and  sysdate < nvl(haou.date_to, sysdate + 1)
     -- ===========================================
     -- limit the rows returned-don't get zero rows
     -- ===========================================
@@ -535,7 +535,7 @@ nvl(sum(gjl.amount),0) monthly_activity
          -- ===========================================
          -- wip job entity and accounting period joins
          -- ===========================================
-         where 3=3
+         where 3=3 -- oap.period_name=:period_name
          and    wpb.wip_entity_id         = wdj.wip_entity_id
          and    wpb.acct_period_id       <= oap.acct_period_id
          and    wpb.organization_id       = oap.organization_id 
@@ -567,7 +567,7 @@ nvl(sum(gjl.amount),0) monthly_activity
          -- ===========================================
          -- wip job entity and accounting period joins
          -- ===========================================
-         where 3=3
+         where 3=3 -- oap.period_name=:period_name
          and    wpb.wip_entity_id         = wdj.wip_entity_id
          and    wpb.acct_period_id       <= oap.acct_period_id
          and    wpb.organization_id       = oap.organization_id 
@@ -600,7 +600,7 @@ nvl(sum(gjl.amount),0) monthly_activity
          -- ===========================================
          -- wip job entity and accounting period joins
          -- ===========================================
-         where 3=3
+         where 3=3 -- oap.period_name=:period_name
          and    wpb.wip_entity_id         = wdj.wip_entity_id
          and    wpb.acct_period_id       <= oap.acct_period_id
          and    wpb.organization_id       = oap.organization_id 
@@ -633,7 +633,7 @@ nvl(sum(gjl.amount),0) monthly_activity
          -- ===========================================
          -- wip job entity and accounting period joins
          -- ===========================================
-         where 3=3
+         where 3=3 -- oap.period_name=:period_name
          and    wpb.wip_entity_id         = wdj.wip_entity_id
          and    wpb.acct_period_id       <= oap.acct_period_id
          and    wpb.organization_id       = oap.organization_id 
@@ -666,7 +666,7 @@ nvl(sum(gjl.amount),0) monthly_activity
          -- ===========================================
          -- wip job entity and accounting period joins
          -- ===========================================
-         where 3=3
+         where 3=3 -- oap.period_name=:period_name
          and    wpb.wip_entity_id         = wdj.wip_entity_id
          and    wpb.acct_period_id       <= oap.acct_period_id
          and    wpb.organization_id       = oap.organization_id 
@@ -681,7 +681,7 @@ nvl(sum(gjl.amount),0) monthly_activity
      -- ========================================================
      -- g/l ledger, organization and code combination joins
      -- ========================================================
-     where    gcc.code_combination_id     = wip_value.code_combination_id
+     where    gcc.code_combination_id   = wip_value.code_combination_id
      and    msi.inventory_item_id       = wip_value.inventory_item_id
      and    msi.organization_id         = wip_value.organization_id
      -- avoid selecting disabled inventory organizations
@@ -706,7 +706,7 @@ nvl(sum(gjl.amount),0) monthly_activity
     ) gross_wip_value
  group by 
     gross_wip_value.period_name,
-     gross_wip_value.name,
+    gross_wip_value.name,
     gross_wip_value.segment1,
     gross_wip_value.segment2,
     gross_wip_value.segment3,
@@ -717,7 +717,7 @@ nvl(sum(gjl.amount),0) monthly_activity
     gross_wip_value.segment8,
     gross_wip_value.segment9
 ) net_recon_bal
-where 4=4
+where 4=4 -- net_recon_bal.ledger=:ledger
 group by
 net_recon_bal.period_name,
 net_recon_bal.ledger,

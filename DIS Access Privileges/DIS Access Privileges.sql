@@ -44,7 +44,27 @@ eap.ap_created_date creation_date,
 xxen_util.dis_user_name(eap.ap_updated_by) last_updated_by,
 eap.ap_updated_date last_update_date
 from
-(select xxen_util.dis_user_type(eap.ap_eu_id,'&eul') user_type, xxen_util.dis_user(eap.ap_eu_id,'&eul') username, eap.* from &eul.eul5_access_privs eap) eap,
+(
+select xxen_util.dis_user_type(eap.ap_eu_id,'&eul') user_type, xxen_util.dis_user(eap.ap_eu_id,'&eul') username, eap.* from &eul.eul5_access_privs eap union all
+select
+xxen_util.dis_user_type(ed.doc_eu_id,'&eul') user_type,
+xxen_util.dis_user(ed.doc_eu_id,'&eul') username,
+null ap_id,
+'Workbook Owner' ap_type,
+null ap_eu_id,
+null ap_priv_level,
+null gp_app_id,
+null gba_ba_id,
+ed.doc_id gd_doc_id,
+null element_state,
+ed.doc_created_by ap_created_by,
+ed.doc_created_date ap_created_date,
+xxen_util.dis_user_name(ed.doc_updated_by) last_updated_by,
+ed.doc_updated_date last_update_date,
+null notm
+from
+&eul.eul5_documents ed
+) eap,
 &eul.eul5_bas eb,
 &eul.eul5_documents ed,
 (

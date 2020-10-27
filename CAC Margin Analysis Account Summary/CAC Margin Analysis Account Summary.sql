@@ -5,7 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Margin Analysis Account Summary
--- Description: Shows the margin from the customer invoices and shipments, including the Sales and COGS accounts, based on the standard Oracle Margin table, cst_margin_summary.  You first need to run the Margin Analysis Load Run request, to populate this table.
+-- Description: Report for the margin from the customer invoices and shipments, including the Sales and COGS accounts, based on the standard Oracle Margin table, cst_margin_summary.  You first need to run the Margin Analysis Load Run request, to populate this table.
 /* +=============================================================================+
 -- |  Copyright 2006 - 2020 Douglas Volz Consulting, Inc.                        |
 -- |  All rights reserved.                                                       |
@@ -87,7 +87,7 @@ select  nvl(gl.short_name, gl.name) Ledger,
 	-- Revision for version 1.10
 	fcl.meaning Item_Type,
 	-- Revision for version 1.9
-	nvl((select	max(mc.segment1)
+	nvl((select	max(mc.category_concat_segs)
 	     from	mtl_categories_v mc,
 			mtl_item_categories mic,
 			mtl_category_sets_b mcs,
@@ -100,7 +100,7 @@ select  nvl(gl.short_name, gl.name) Ledger,
 	     and	mcs.category_set_id         = mcs_tl.category_set_id
 	     and	mcs_tl.language             = userenv('lang')
 	   ),'') "&p_category_set1",
-	nvl((select	max(mc.segment1)
+	nvl((select	max(mc.category_concat_segs)
 	     from	mtl_categories_v mc,
 			mtl_item_categories mic,
 			mtl_category_sets_b mcs,

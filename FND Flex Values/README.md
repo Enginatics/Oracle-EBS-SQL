@@ -1,10 +1,13 @@
 # [FND Flex Values](https://www.enginatics.com/reports/fnd-flex-values/)
+## Description: 
+Report for all flex values and the hierarchies they are included in.
+Column 'Hierarchy Position' can be used to validate your account hierarchy setup and check which account segment values are not included in any (or a specific) hierarchy yet.
 ## Categories: 
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Setup & Support](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+Setup+%26+Support)
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Report Example
-[FND_Flex_Values 20-Jan-2019 121723.xlsx](https://www.enginatics.com/example/fnd-flex-values/)
+[FND_Flex_Values 13-Oct-2020 132414.xlsx](https://www.enginatics.com/example/fnd-flex-values/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [FND_Flex_Values.xml](https://www.enginatics.com/xml/fnd-flex-values/)
 # Oracle E-Business Suite [Reporting Library](https://www.enginatics.com/library/)

@@ -5,7 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: AR Transactions and Lines
--- Description: Detail AR transaction report with line level details and special columns for service tickets (OKS) and service contracts (OKL) data
+-- Description: Detail AR transaction report with line level details and special columns for service contracts (OKS) and lease contracts (OKL) data
 -- Excel Examle Output: https://www.enginatics.com/example/ar-transactions-and-lines/
 -- Library Link: https://www.enginatics.com/reports/ar-transactions-and-lines/
 -- Run Report: https://demo.enginatics.com/
@@ -48,7 +48,8 @@ x.bill_to_address,
 null ship_to_city,
 null ship_to_state,
 x.taxpayer_id,
-x.sales_rep,
+x.salesperson,
+x.om_salesperson,
 ----------line---------
 x.line,
 x.item,
@@ -68,6 +69,7 @@ gcck.concatenated_segments revenue_account,
 &account_columns
 ----------oks contracts----------
 nvl(okhab.contract_number,x.okl_contract_number) contract_number,
+nvl2(okhab.id,okhab.contract_number_modifier,null) modifier,
 nvl(x.contract_line,oklt1.name) contract_line,
 cii.serial_number,
 xxen_util.meaning(olsb.lty_code,'OKC_LINE_TYPE',0)||decode(x.usage_type,'VRT',' Actual','FRT',' Fixed','NPR',' Negotiated') contract_line_type,
@@ -140,7 +142,8 @@ xxen_util.meaning(rcta.printing_option,'INVOICE_PRINT_OPTIONS',222) print_option
 rcta.printing_original_date first_printed_date,
 rcta.customer_reference,
 rcta.comments,
-jrret.resource_name sales_rep,
+jrrev.resource_name salesperson,
+jrrev2.resource_name om_salesperson,
 ----------line----------
 decode(rctla.line_type,'FREIGHT',null,rctla.line_number) line,
 nvl((select msibk.concatenated_segments from mtl_system_items_b_kfv msibk where rctla.inventory_item_id=msibk.inventory_item_id and nvl(rctla.warehouse_id,ospa.parameter_value)=msibk.organization_id),xxen_util.meaning(rctla.line_type,'STD_LINE_TYPE',222)) item,
@@ -223,7 +226,12 @@ iby_creditcard ic,
 iby_ext_bank_accounts ieba,
 mtl_units_of_measure_tl muomt,
 jtf_rs_salesreps jrs,
-jtf_rs_resource_extns_tl jrret,
+jtf_rs_resource_extns_vl jrrev,
+----------Order Management-------
+oe_order_lines_all oola,
+oe_order_headers_all ooha,
+jtf_rs_salesreps jrs2,
+jtf_rs_resource_extns_vl jrrev2,
 ----------OKS contracts----------
 oks_bill_txn_lines obtl,
 oks_bill_cont_lines obcl,
@@ -284,10 +292,15 @@ decode(ipiua.instrument_type,'CREDITCARD',ipiua.instrument_id)=ic.instrid(+) and
 decode(ipiua.instrument_type,'BANKACCOUNT',ipiua.instrument_id)=ieba.ext_bank_account_id(+) and
 rctla.uom_code=muomt.uom_code(+) and
 muomt.language(+)=userenv('lang') and
-case when rcta.primary_salesrep_id>0 then rcta.primary_salesrep_id end=jrs.salesrep_id(+) and
-case when rcta.primary_salesrep_id>0 then rcta.org_id end=jrs.org_id(+) and
-jrs.resource_id=jrret.resource_id(+) and
-jrret.language(+)=userenv('lang') and
+rcta.primary_salesrep_id=jrs.salesrep_id(+) and
+rcta.org_id=jrs.org_id(+) and
+jrs.resource_id=jrrev.resource_id(+) and
+----------Order Management-------
+case when rctla.interface_line_context in ('INTERCOMPANY','ORDER ENTRY') then rctla.interface_line_attribute6 end=oola.line_id(+) and
+oola.header_id=ooha.header_id(+) and
+ooha.salesrep_id=jrs2.salesrep_id(+) and
+ooha.org_id=jrs2.org_id(+) and
+jrs2.resource_id=jrrev2.resource_id(+) and
 ----------OKS contracts----------
 decode(rctla.interface_line_context,'OKS CONTRACTS',rctla.interface_line_attribute3)=obtl.bill_instance_number(+) and
 obtl.bsl_id=obsl.id(+) and

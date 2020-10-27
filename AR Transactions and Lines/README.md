@@ -1,6 +1,6 @@
 # [AR Transactions and Lines](https://www.enginatics.com/reports/ar-transactions-and-lines/)
 ## Description: 
-Detail AR transaction report with line level details and special columns for service tickets (OKS) and service contracts (OKL) data
+Detail AR transaction report with line level details and special columns for service contracts (OKS) and lease contracts (OKL) data
 ## Categories: 
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+Operations)
 ## Dependencies

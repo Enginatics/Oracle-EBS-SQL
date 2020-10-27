@@ -1,6 +1,6 @@
 # [CAC Receiving Account Summary](https://www.enginatics.com/reports/cac-receiving-account-summary/)
 ## Description: 
-Shows the receiving accounting distributions, in summary, by item, purchase order, purchase order line, release and project number.  For outside processing, including the WIP job, OSP item number and the OSP resource code.  And for expense destinations, even when there is no item number on the purchase order line, this report will get the expense category information, into the first category column.  (Note: this report has not been tested with encumbrance entries.)
+Report to get the receiving accounting distributions, in summary, by item, purchase order, purchase order line, release and project number.  For outside processing, including the WIP job, OSP item number and the OSP resource code.  And for expense destinations, even when there is no item number on the purchase order line, this report will get the expense category information, into the first category column.  (Note: this report has not been tested with encumbrance entries.)
 
 /* +=============================================================================+
 -- |  Copyright 2009- 2020 Douglas Volz Consulting, Inc.                         |

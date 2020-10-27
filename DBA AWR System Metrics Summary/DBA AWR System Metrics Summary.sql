@@ -49,6 +49,7 @@ where
 gs.metric_name in (
 'Host CPU Utilization (%)',
 'Database Wait Time Ratio',
+'Average Active Sessions',
 'Logical Reads Per Sec',
 'Physical Read Total Bytes Per Sec',
 'Physical Write Total Bytes Per Sec',
@@ -90,6 +91,7 @@ vp.name='db_block_size' and
 dhss.metric_name in (
 'Host CPU Utilization (%)',
 'Database Wait Time Ratio',
+'Average Active Sessions',
 'Logical Reads Per Sec',
 'Physical Read Total Bytes Per Sec',
 'Physical Write Total Bytes Per Sec',
@@ -117,6 +119,7 @@ for
 metric_name in (
 'Host CPU Utilization (%)' "CPU%",
 'Database Wait Time Ratio' "WAIT%",
+'Average Active Sessions' act_sess,
 'Logical Reads Per Sec' buff_read,
 'Physical Read Total Bytes Per Sec' phys_read,
 'Physical Write Total Bytes Per Sec' phys_write,

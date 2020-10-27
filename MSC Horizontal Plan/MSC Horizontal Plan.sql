@@ -25,8 +25,8 @@ with
     ,hp2.using_assemblies
     ,hp2.supply_demand_code
     ,hp2.supply_demand_type
-    ,to_char(decode(substr(:summary_level,1,1),'P',hp2.pe_date,'W',hp2.we_date,hp2.bucket_date),'YYYY/MM/DD') bucket_date
-    ,case substr(:summary_level,1,1)
+    ,to_char(decode(substr(:p_summary_level,1,1),'P',hp2.pe_date,'W',hp2.we_date,hp2.bucket_date),'YYYY/MM/DD') bucket_date
+    ,case substr(:p_summary_level,1,1)
      when 'P' then case hp2.supply_demand_code
                    when 110 then hp2.pe_qty_last
                    when 130 then hp2.pe_qty_last
@@ -100,12 +100,12 @@ with
        ,sum(hp.quantity) over (partition by hp.planning_instance, hp.plan_name, hp.organization, hp.item, hp.supply_demand_code, hp.pn) pe_qty_sum
        ,sum(hp.quantity) over (partition by hp.planning_instance, hp.plan_name, hp.organization, hp.item, hp.supply_demand_code, hp.wn) we_qty_sum  
        from
-         (select /*+ */
-           :instance_code                planning_instance
+         (select
+           mai.instance_code             planning_instance
           ,mp.compile_designator         plan_name
           ,case mmp.organization_id
            when -1 then (select mfq.char1
-                         from   msc_form_query mfq
+                         from   msc_form_query  mfq
                          where  mfq.query_id = mmp.query_id
                          and    mfq.number4  = mmp.plan_id
                          and    mfq.number3  = mmp.sr_instance_id
@@ -117,7 +117,7 @@ with
            end                           organization
           ,case sign(mmp.inventory_item_id)
            when -1 then (select mfq.char2
-                         from   msc_form_query mfq
+                         from   msc_form_query  mfq
                          where  mfq.query_id = mmp.query_id
                          and    mfq.number4  = mmp.plan_id
                          and    mfq.number3  = mmp.sr_instance_id
@@ -129,14 +129,14 @@ with
            end                           item
           ,mcs.category_set_name         category_set
           ,mic.category_name
-          ,xxen_util.meaning(msi.planning_make_buy_code,'MTL_PLANNING_MAKE_BUY',700) make_buy
+          ,msc_get_name.lookup_meaning ('MTL_PLANNING_MAKE_BUY',msi.planning_make_buy_code) make_buy
           ,msi.planner_code              planner
           ,msi.buyer_name                buyer
-          ,xxen_msc_horizplan.get_assemblies(mmp.organization_id,mmp.inventory_item_id) using_assemblies
-          ,ml.lookup_code  supply_demand_code
-          ,ml.meaning      supply_demand_type
-          ,xxen_msc_horizplan.get_period_num(mmp.plan_id,mmp.bucket_date) pn
-          ,xxen_msc_horizplan.get_week_num(mmp.plan_id,mmp.bucket_date)   wn
+          ,mmp.item_segments             using_assemblies
+          ,ml.lookup_code                supply_demand_code
+          ,ml.meaning                    supply_demand_type
+          ,substr(mmp.organization_code,1,instr(mmp.organization_code,'|',1,1)-1)                             pn
+          ,substr(mmp.organization_code,instr(mmp.organization_code,'|',1,1)+1,length(mmp.organization_code)) wn
           ,mmp.bucket_date bucket_date
           ,round(
            CASE ml.lookup_code
@@ -196,18 +196,21 @@ with
            WHEN 340 THEN mmp.quantity54
            WHEN 345 THEN mmp.quantity55
            WHEN 350 THEN mmp.quantity56
-           END,xxen_msc_horizplan.get_pref_option(mp.plan_type,:pref_name,'SUMMARY_DECIMAL_PLACES'))  quantity
+           END,nvl(to_number('&p_decimal_places'),1))  quantity
           --
           from 
-           mfg_lookups                      ml,
-           msc_plans                         mp,
-           msc_plan_organizations      mpo,
-           msc_system_items            msi,
-           msc_item_categories         mic,
-           msc_category_sets           mcs,
-           msc_material_plans          mmp
+           mfg_lookups                  ml,
+           msc_apps_instances           mai,
+           msc_plans                    mp,
+           msc_plan_organizations       mpo,
+           msc_system_items             msi,
+           msc_item_categories          mic,
+           msc_category_sets            mcs,
+           msc_material_plans           mmp,
+		   dual d
           where
-              mmp.sr_instance_id     = mp.sr_instance_id
+		      mmp.sr_instance_id     = mai.instance_id
+          and mmp.sr_instance_id     = mp.sr_instance_id
           and mmp.plan_id            = mp.plan_id
           --
           and mmp.sr_instance_id     = mpo.sr_instance_id
@@ -227,17 +230,17 @@ with
           and msi.inventory_item_id  = mic.inventory_item_id
           and mic.sr_instance_id     = mcs.sr_instance_id
           and mic.category_set_id    = mcs.category_set_id 
-          and mcs.category_set_name  = :cat_set_name
+          and mcs.category_set_name  = :p_cat_set_name
           --
           and ml.lookup_type  = '&msc_lookup_type'
           and ml.lookup_code in (&msc_lookup_codes)
-          and (   (    xxen_msc_horizplan.get_pref_option(mp.plan_type,:pref_name,'SUMMARY_DISP_PF_DETAILS') = 'Y'
+          and (   (    nvl('&p_disp_pf','N') = 'Y'
                    and mmp.inventory_item_id > 0
                    and msi.bom_item_type in (2,5)
                    and ml.lookup_code in (20,70,90,100,110)
                   )
                or
-                  (    NVL(xxen_msc_horizplan.get_pref_option(mp.plan_type,:pref_name,'SUMMARY_DISP_PF_DETAILS'),'N') != 'Y'
+                  (    nvl('&p_disp_pf','N') != 'Y'
                    or  mmp.inventory_item_id < 0
                    or  msi.bom_item_type not in (2,5)
                   ) 

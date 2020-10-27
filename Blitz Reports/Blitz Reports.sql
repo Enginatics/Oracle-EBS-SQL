@@ -61,7 +61,9 @@ xxen_api.category(xrv.report_id) category,
 xxen_util.meaning(case when xrv.row_num<=30 or xrv.seeded_blitz_report_flag='Y' then 'Y' end,'YES_NO',0) free_30_reports,
 &columns
 xrv.description,
+&modifications
 (select xrv0.report_name from xxen_reports_v xrv0 where xrv.copied_from_guid=xrv0.guid) copied_from,
+xrv.db_package,
 xxen_util.user_name(xrv.created_by) created_by,
 xxen_util.client_time(xrv.creation_date) creation_date,
 xxen_util.user_name(xrv.last_updated_by) last_updated_by,
@@ -70,6 +72,7 @@ xxen_util.meaning(nvl(xrv.enabled,'N'),'YES_NO',0) enabled,
 decode(xrv.column_selection_count,0,null,xrv.column_selection_count) column_selection_count,
 &anchors_lexicals_binds
 xrv.sql_length,
+xrv.sql_text,
 xrv.report_id,
 xrv.guid
 from

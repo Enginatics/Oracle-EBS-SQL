@@ -11,10 +11,10 @@
 -- Run Report: https://demo.enginatics.com/
 
 select
-haout0.name business_group,
+haouv0.name business_group,
 ftv.territory_short_name country,
-flv1.meaning type,
-haout.name organization,
+xxen_util.meaning(haouv.type,'ORG_TYPE',3) type,
+haouv.name organization,
 mp.organization_code,
 decode(haouv.internal_external_flag,'EXT','External','INT','Internal') internal_or_external,
 &col_classification
@@ -26,17 +26,14 @@ nvl2(hla.town_or_city,hla.town_or_city||' ','')||
 nvl2(hla.region_2,hla.region_2||' ','')||
 hla.postal_code address,
 &col_attributes
+haouv.date_to,
 haouv.organization_id
 from
 hr_all_organization_units_vl haouv,
 hr_all_organization_units_vl haouv0,
-hr_all_organization_units_tl haout,
-hr_all_organization_units_tl haout0,
-fnd_lookup_values flv1,
 hr_locations_all hla,
 fnd_territories_vl ftv,
-(select hoi.* from hr_organization_information hoi where '&enable_classification'='Y' and hoi.org_information_context='CLASS' and hoi.org_information2='Y') hoi,
-fnd_lookup_values flv2,
+(select xxen_util.meaning(hoi.org_information1,'ORG_CLASS',3) classification, hoi.* from hr_organization_information hoi where '&enable_classification'='Y' and hoi.org_information_context='CLASS' and hoi.org_information2='Y') hoi,
 (
 select
 fdfcuv.application_id,
@@ -67,22 +64,16 @@ decode(fdfcuv.application_column_name,
 'ORG_INFORMATION20',hoi.org_information20
 ) system_value,
 (select distinct
-listagg(flv.meaning,', ') within group (order by flv.meaning) over (partition by hoi.organization_id) info_class
+listagg(hoi0.classification,', ') within group (order by hoi0.classification) over (partition by hoi.organization_id) info_class
 from
 hr_org_info_types_by_class hoitbc,
-hr_organization_information hoi0,
-fnd_lookup_values flv
+(select xxen_util.meaning(hoi.org_information1,'ORG_CLASS',3) classification, hoi.* from hr_organization_information hoi) hoi0
 where
 hoi.org_information_context=hoitbc.org_information_type and
 hoi.organization_id=hoi0.organization_id and
 hoi0.org_information_context='CLASS' and
 hoi0.org_information2='Y' and
-hoi0.org_information1=hoitbc.org_classification and
-hoi0.org_information1=flv.lookup_code(+) and
-flv.lookup_type(+)='ORG_CLASS' and
-flv.language(+)=userenv('lang') and
-flv.view_application_id(+)=3 and
-flv.security_group_id(+)=0
+hoi0.org_information1=hoitbc.org_classification
 ) info_class,
 hoit.displayed_org_information_type information_type,
 hoi.*,
@@ -104,31 +95,17 @@ mtl_parameters mp
 where
 1=1 and
 haouv.business_group_id=haouv0.organization_id(+) and
-haouv.organization_id=haout.organization_id and
-haouv0.organization_id=haout0.organization_id and
-haout.language=userenv('lang') and
-haout0.language=userenv('lang') and
-haouv.organization_id=mp.organization_id(+) and
-haouv.type=flv1.lookup_code(+) and
-flv1.lookup_type(+)='ORG_TYPE' and
-flv2.lookup_type(+)='ORG_CLASS' and
-flv1.language(+)=userenv('lang') and
-flv2.language(+)=userenv('lang') and
-flv1.view_application_id(+)=3 and
-flv2.view_application_id(+)=3 and
-flv1.security_group_id(+)=0 and
-flv2.security_group_id(+)=0 and
 haouv.location_id=hla.location_id(+) and
 hla.country=ftv.territory_code(+) and
 haouv.organization_id=hoi.organization_id(+) and
-hoi.org_information1=flv2.lookup_code(+) and
-haouv.organization_id=x.organization_id(+)
+haouv.organization_id=x.organization_id(+) and
+haouv.organization_id=mp.organization_id(+)
 order by
 haouv0.name,
 ftv.territory_short_name,
-flv1.meaning,
+type,
 haouv.name,
-flv2.meaning,
+hoi.classification,
 x.info_class,
 x.information_type,
 x.org_information_id,

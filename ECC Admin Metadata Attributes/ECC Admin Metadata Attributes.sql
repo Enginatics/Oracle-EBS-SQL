@@ -20,7 +20,7 @@ ecc.ecc_application_tl eat
 where
 edb.dataset_id=eadr.dataset_id and
 eadr.application_id=eat.application_id and
-eat.language='en'
+eat.language=xxen_util.bcp47_language(userenv('lang'))
 ) application,
 edb.dataset_key data_set_key,
 edt.display_name data_set,
@@ -45,9 +45,9 @@ ecc.ecc_dataset_attrs_tl edat
 where
 1=1 and
 edb.dataset_id=edt.dataset_id and
-edt.language='en' and
+edt.language=xxen_util.bcp47_language(userenv('lang')) and
 edb.dataset_id=edab.dataset_id and
 edab.attribute_id=edat.attribute_id and
-edat.language='en'
+edat.language=xxen_util.bcp47_language(userenv('lang'))
 order by
 edab.attribute_id

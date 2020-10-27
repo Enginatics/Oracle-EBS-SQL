@@ -1,6 +1,6 @@
 # [INV Item Relationships](https://www.enginatics.com/reports/inv-item-relationships/)
 ## Description: 
-Inventory item relationships
+Master listing for Inventory item relationships
 ## Categories: 
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 ## Dependencies

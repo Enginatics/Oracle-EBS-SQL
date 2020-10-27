@@ -83,6 +83,7 @@ fl.user_id=fu.user_id
 fnd_responsibility_vl frv,
 gv$session gs
 where
+2=2 and
 x.resp_appl_id=frv.application_id(+) and
 x.responsibility_id=frv.responsibility_id(+) and
 x.audsid=gs.audsid(+)

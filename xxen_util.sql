@@ -63,6 +63,11 @@ function lookup_code(p_meaning in varchar2, p_lookup_type in varchar2, p_applica
 function regexp_escape(p_text in varchar2) return varchar;
 
 /***********************************************************************************************/
+/*  used in LOVs to compare column values with parameter values they depend on                 */
+/***********************************************************************************************/
+function contains(p_parameter_value in varchar2, p_column_value in varchar2) return varchar2;
+
+/***********************************************************************************************/
 /*  translate a fnd profile option value into the user visible profile option value            */
 /***********************************************************************************************/
 function display_profile_option_value(
@@ -342,6 +347,11 @@ function calendar_date_offset(p_date in date, p_calendar_code in varchar2, p_off
 /***********************************************************************************************/
 function sequence_nextval(p_sequence_name in varchar2) return number;
 
+/***********************************************************************************************/
+/*  translates oracle language codes to BCP47 codes e.g. for use in ECC queries                */
+/***********************************************************************************************/
+function bcp47_language(p_language_code in varchar2) return varchar result_cache;
+
 end xxen_util;
 /
 
@@ -523,6 +533,12 @@ replace(p_text,
 '{','\{'),
 '}','\}');
 end regexp_escape;
+
+
+function contains(p_parameter_value in varchar2, p_column_value in varchar2) return varchar2 is
+begin
+  return case when regexp_like(case when p_parameter_value like '<multiple_values>%' then substr(p_parameter_value,18) else p_parameter_value end,'(^|;)\s*'||regexp_escape(p_column_value)||'\s*(;|$)') then 'Y' end;
+end contains;
 
 
 function display_profile_option_value(
@@ -1268,7 +1284,7 @@ function module_name(p_module in varchar2, p_program in varchar2 default null) r
 
 function module_name(p_module in varchar2, p_userenv_lang in varchar2, p_program in varchar2 default null) return varchar2 result_cache is
 l_apps_module varchar2(260);
-l_module varchar2(64);
+l_module sys.v_$session.module%type;
 begin
   for c in (
   select
@@ -1382,10 +1398,10 @@ end module_name;
 function responsibility(p_module in varchar2, p_action in varchar2) return varchar2 is
 
 function responsibility(p_action in varchar2, p_userenv_lang in varchar2) return varchar2 result_cache is
-l_responsibility varchar2(100);
-l_action varchar2(32):=substr(p_action,instr(p_action,'|')+1);
-l_application_short_name varchar2(32):=substr(l_action,1,instr(l_action,'/')-1);
-l_responsibility_key varchar2(33):=substr(l_action,instr(l_action,'/')+1)||case when length(p_action)=32 then '%' end;
+l_responsibility fnd_responsibility_tl.responsibility_name%type;
+l_action sys.v_$session.action%type:=substr(p_action,instr(p_action,'|')+1);
+l_application_short_name sys.v_$session.action%type:=substr(l_action,1,instr(l_action,'/')-1);
+l_responsibility_key sys.v_$session.action%type:=substr(l_action,instr(l_action,'/')+1);
 begin
   if p_action like '%_/_%' then
     for c in (
@@ -1396,7 +1412,7 @@ begin
     fnd_responsibility fr,
     fnd_responsibility_tl frt
     where
-    fr.responsibility_key like l_responsibility_key and
+    fr.responsibility_key=l_responsibility_key and
     fa.application_short_name=l_application_short_name and
     fa.application_id=fr.application_id and
     fr.application_id=frt.application_id and
@@ -1405,6 +1421,25 @@ begin
     ) loop
       l_responsibility:=c.responsibility_name;
     end loop;
+    if l_responsibility is null then --older EBS versions were cutting the session action tagging in fnd_global.tag_db_session at 32char
+      for c in (
+      select
+      frt.responsibility_name
+      from
+      fnd_application fa,
+      fnd_responsibility fr,
+      fnd_responsibility_tl frt
+      where
+      fr.responsibility_key like l_responsibility_key||'%' and
+      fa.application_short_name=l_application_short_name and
+      fa.application_id=fr.application_id and
+      fr.application_id=frt.application_id and
+      fr.responsibility_id=frt.responsibility_id and
+      frt.language=p_userenv_lang
+      ) loop
+        l_responsibility:=c.responsibility_name;
+      end loop;
+    end if;
   end if;
   return l_responsibility;
 end responsibility;
@@ -1667,7 +1702,7 @@ begin
   for c in (select fav.application_short_name from fnd_application_vl fav where fav.application_name=p_application_name) loop
     l_application_short_name:=c.application_short_name;
   end loop;
-  return nvl(application_short_name_trans(l_application_short_name),xxen_util.lookup_code(p_application_name,'XXEN_REPORT_APPLICATIONS',0));
+  return case when p_application_name='Blitz Report' then 'Blitz' else nvl(application_short_name_trans(l_application_short_name),xxen_util.lookup_code(p_application_name,'XXEN_REPORT_APPLICATIONS',0)) end;
 end application_short_name;
 
 
@@ -1908,6 +1943,10 @@ begin
   end loop;
   close c_cur;
   return l_result;
+exception
+  when others then
+    close c_cur;
+    return null;
 end dis_worksheet_exists;
 
 
@@ -1984,6 +2023,21 @@ begin
   execute immediate 'begin :l_value:='||p_sequence_name||'.nextval; end;' using out l_value;
   return l_value;
 end sequence_nextval;
+
+
+function bcp47_language(p_language_code in varchar2) return varchar result_cache is
+begin
+  if    p_language_code='ESM' then return 'es-MX';
+  elsif p_language_code='FRC' then return 'fr-CA';
+  elsif p_language_code='GB' then return 'en-GB';
+  elsif p_language_code='PTB' then return 'pt-BR';
+  elsif p_language_code='ZHS' then return 'zh-Hans';
+  elsif p_language_code='ZHT' then return 'zh-Hant';
+  end if;
+  for c in (select lower(fl.iso_language) bcp47_language from fnd_languages fl where fl.language_code=p_language_code) loop
+    return c.bcp47_language;
+  end loop;
+end bcp47_language;
 
 
 end xxen_util;

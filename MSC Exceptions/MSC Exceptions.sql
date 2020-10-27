@@ -11,14 +11,14 @@
 -- Run Report: https://demo.enginatics.com/
 
 select
- :instance_code planning_instance,
+ mai.instance_code planning_instance,
  mp.compile_designator plan_name,
  medv.organization_code,
  medv.planner_code,
  medv.buyer_name, 
- msc_phub_util.get_exception_group(medv.exception_type) exception_group,
+ msc_phub_util.get_exception_group (medv.exception_type) exception_group,
  medv.exception_type_text exception_type,
- xxen_util.meaning(medv.action_taken,'MSC_ADI_YES_NO',700) action_taken,
+ msc_get_name.lookup_meaning ('MSC_ADI_YES_NO',medv.action_taken)  action_taken,
  -- item
  medv.item_segments item,
  medv.item_description,
@@ -29,7 +29,7 @@ select
  medv.quantity                         quantity, 
  medv.order_number                     order_number,
  coalesce(medv.order_type,
-          msc_get_name.lookup_meaning('MSC_DEMAND_ORIGINATION',md.origination_type)
+          msc_get_name.lookup_meaning ('MSC_DEMAND_ORIGINATION',md.origination_type)
          )                             order_type,
  medv.end_order_number,
  medv.firm_type,
@@ -114,24 +114,26 @@ select
  medv.resource_code,
  medv.utilization_rate load_ratio
 from 
- msc_plans               mp 
-,msc_exception_details_v medv
-,msc_category_sets       mcs
-,msc_demands                       md
-where 
-    mp.plan_id            = medv.plan_id
+ msc_apps_instances       mai
+,msc_plans                mp 
+,msc_exception_details_v  medv
+,msc_category_sets        mcs
+,msc_demands              md
+where
+    mai.instance_id       = mp.sr_instance_id 
+and mp.plan_id            = medv.plan_id
 and mp.sr_instance_id     = medv.sr_instance_id
 and medv.sr_instance_id   = mcs.sr_instance_id  (+)
 and medv.category_set_id  = mcs.category_set_id (+)
-and NVL(mcs.category_set_name,:cat_set) = :cat_set
 and medv.sr_instance_id   = md.sr_instance_id (+)
 and medv.plan_id          = md.plan_id (+)
 and medv.demand_id        = md.demand_id (+)
-&sr_instance_id
-and mp.compile_designator = :plan_name
+and mai.instance_code = :p_instance_code
+and mp.compile_designator = :p_plan_name
+and nvl(mcs.category_set_name,:p_cat_set_name) = :p_cat_set_name
 and 1=1
 order by
- :instance_code,
+ mai.instance_code,
  mp.compile_designator,
  medv.organization_code,
  medv.planner_code,

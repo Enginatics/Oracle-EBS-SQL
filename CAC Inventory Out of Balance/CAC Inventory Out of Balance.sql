@@ -5,7 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Inventory Out-of-Balance
--- Description: Shows any differences in the period end snapshot that is created when you close the inventory periods.  This represents any differences between the cumulative inventory accounting entries and the onhand valuation of the subinventories and intransit stock locations.
+-- Description: Report to show any differences in the period end snapshot that is created when you close the inventory periods.  This represents any differences between the cumulative inventory accounting entries and the onhand valuation of the subinventories and intransit stock locations.
 
 /* +=============================================================================+
 -- |  Copyright 2006-2020 Douglas Volz Consulting, Inc.                          |
@@ -72,8 +72,8 @@ select	nvl(gl.short_name, gl.name) Ledger,
 	fcl.meaning Item_Type,
 	-- Revision for version 1.18
 	misv.inventory_item_status_code_tl Item_Status,
-	nvl((select	max(mc.segment1)
-	     from	mtl_categories_b mc,
+	nvl((select	max(mc.category_concat_segs)
+	     from	mtl_categories_v mc,
 			mtl_item_categories mic,
 			mtl_category_sets_b mcs,
 			mtl_category_sets_tl mcs_tl
@@ -85,8 +85,8 @@ select	nvl(gl.short_name, gl.name) Ledger,
 	     and	mcs.category_set_id         = mcs_tl.category_set_id
 	     and	mcs_tl.language             = userenv('lang')
 	   ),'') "&p_category_set1",
-	nvl((select	max(mc.segment1)
-	     from	mtl_categories_b mc,
+	nvl((select	max(mc.category_concat_segs)
+	     from	mtl_categories_v mc,
 			mtl_item_categories mic,
 			mtl_category_sets_b mcs,
 			mtl_category_sets_tl mcs_tl
@@ -117,7 +117,7 @@ from	cst_period_close_summary cpcs,
 	mfg_lookups ml,
 	-- End revision for version 1.18
 	-- Revision for version 1.13
-	-- Get valuation accounts based on Costing Method and Cost Group Accounting
+	-- Get valuation accounts based on Costing_Method and Cost Group Accounting
 	(-- Standard Costing, no Cost Group Accounting
 	 select msub.organization_id,
 		msub.secondary_inventory_name,
@@ -241,8 +241,8 @@ select	nvl(gl.short_name, gl.name) Ledger,
 	fcl.meaning Item_Type,
 	-- Revision for version 1.18
 	misv.inventory_item_status_code_tl Item_Status,
-	nvl((select	max(mc.segment1)
-	     from	mtl_categories_b mc,
+	nvl((select	max(mc.category_concat_segs)
+	     from	mtl_categories_v mc,
 			mtl_item_categories mic,
 			mtl_category_sets_b mcs,
 			mtl_category_sets_tl mcs_tl
@@ -254,8 +254,8 @@ select	nvl(gl.short_name, gl.name) Ledger,
 	     and	mcs.category_set_id         = mcs_tl.category_set_id
 	     and	mcs_tl.language             = userenv('lang')
 	   ),'') "&p_category_set1",
-	nvl((select	max(mc.segment1)
-	     from	mtl_categories_b mc,
+	nvl((select	max(mc.category_concat_segs)
+	     from	mtl_categories_v mc,
 			mtl_item_categories mic,
 			mtl_category_sets_b mcs,
 			mtl_category_sets_tl mcs_tl

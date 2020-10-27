@@ -5,7 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Material Account Summary
--- Description: Displays the material accounting entries for each item, organization, subinventory with amounts.  Including Ship From and Ship To information for inter-org transfers.  This report includes all material transactions but to keep the report smaller it does not displays WIP job information, such as WIP Accounting Class, Class Description, Assembly Number, Assembly Description or Job Order Number.
+-- Description: Report to get the material accounting entries for each item, organization, subinventory with amounts.  Including Ship From and Ship To information for inter-org transfers.  This report includes all material transactions but to keep the report smaller it does not displays WIP job information, such as WIP Accounting Class, Class Description, Assembly Number, Assembly Description or Job Order Number.
 Use the Show Subinventory parameter to reduce the size of this report, as needed.  If you choose Yes you get the Subinventory Code, if you choose No you only get the Accounting Line Type for inventory, (Inventory valuation) thus greatly reducing the size of this report.
 
 /* +=============================================================================+
@@ -179,7 +179,7 @@ from	gl_code_combinations gcc,
 		-- Revision for version 1.6 and 1.19, add in item type
 		fcl.meaning item_type,
 		-- Revision for version 1.12
-		nvl((select	max(mc.segment1)
+		nvl((select	max(mc.category_concat_segs)
 		     from	mtl_categories_v mc,
 				mtl_item_categories mic,
 				mtl_category_sets_b mcs,
@@ -192,7 +192,7 @@ from	gl_code_combinations gcc,
 		     and	mcs.category_set_id         = mcs_tl.category_set_id
 		     and	mcs_tl.language             = userenv('lang')
 		   ),'') category1,
-		nvl((select	max(mc.segment1)
+		nvl((select	max(mc.category_concat_segs)
 		     from	mtl_categories_v mc,
 				mtl_item_categories mic,
 				mtl_category_sets_b mcs,

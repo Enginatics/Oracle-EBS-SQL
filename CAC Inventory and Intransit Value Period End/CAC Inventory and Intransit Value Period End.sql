@@ -5,7 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Inventory and Intransit Value (Period-End)
--- Description: Tracks the amount of inventory at the end of the month.  If you enter a cost type this report uses the item costs from the cost type; if you leave the cost type blank it uses the item costs from the month-end snapshot.  In either case this report uses the month-end quantities, based on the entered period name.
+-- Description: Report showing amount of inventory at the end of the month.  If you enter a cost type this report uses the item costs from the month-end snapshot; if you leave the cost type blank it uses the item costs from the month-end snapshot.  In either case this report uses the month-end quantities, based on the entered period name.
 
 Note:  if you enter a cost type this report uses the item costs from the cost type; if you leave the cost type blank it uses the item costs from the month-end snapshot.
 
@@ -69,7 +69,7 @@ select	nvl(gl.short_name, gl.name) Ledger,
 	-- Revision for version 1.14 and 1.16
 	misv.inventory_item_status_code_tl Item_Status,
 	-- Revision for version 1.11
-	nvl((select	max(mc.segment1)
+	nvl((select	max(mc.category_concat_segs)
 	     from	mtl_categories_v mc,
 			mtl_item_categories mic,
 			mtl_category_sets_b mcs,
@@ -82,7 +82,7 @@ select	nvl(gl.short_name, gl.name) Ledger,
 	     and	mcs.category_set_id         = mcs_tl.category_set_id
 	     and	mcs_tl.language             = userenv('lang')
 	),'') "&p_category_set1",						-- p_category_set1
-	nvl((select	max(mc.segment1)
+	nvl((select	max(mc.category_concat_segs)
 	     from	mtl_categories_v mc,
 			mtl_item_categories mic,
 			mtl_category_sets_b mcs,
@@ -209,7 +209,7 @@ select	nvl(gl.short_name, gl.name) Ledger,
 	-- Revision for version 1.14 and 1.16
 	misv.inventory_item_status_code_tl Item_Status,
 	-- Revision for version 1.11
-	nvl((select	max(mc.segment1)
+	nvl((select	max(mc.category_concat_segs)
 	     from	mtl_categories_v mc,
 			mtl_item_categories mic,
 			mtl_category_sets_b mcs,
@@ -222,7 +222,7 @@ select	nvl(gl.short_name, gl.name) Ledger,
 	     and	mcs.category_set_id         = mcs_tl.category_set_id
 	     and	mcs_tl.language             = userenv('lang')
 	),'') "&p_category_set1",
-	nvl((select	max(mc.segment1)
+	nvl((select	max(mc.category_concat_segs)
 	     from	mtl_categories_v mc,
 			mtl_item_categories mic,
 			mtl_category_sets_b mcs,
@@ -396,7 +396,7 @@ select	nvl(gl.short_name, gl.name) Ledger,
 	-- Revision for version 1.14 and 1.16
 	misv.inventory_item_status_code_tl Item_Status,
 	-- Revision for version 1.11
-	nvl((select	max(mc.segment1)
+	nvl((select	max(mc.category_concat_segs)
 	     from	mtl_categories_v mc,
 			mtl_item_categories mic,
 			mtl_category_sets_b mcs,
@@ -409,7 +409,7 @@ select	nvl(gl.short_name, gl.name) Ledger,
 	     and	mcs.category_set_id         = mcs_tl.category_set_id
 	     and	mcs_tl.language             = userenv('lang')
 	),'') "&p_category_set1",
-	nvl((select	max(mc.segment1)
+	nvl((select	max(mc.category_concat_segs)
 	     from	mtl_categories_v mc,
 			mtl_item_categories mic,
 			mtl_category_sets_b mcs,
@@ -552,7 +552,7 @@ select	nvl(gl.short_name, gl.name) Ledger,
 	-- Revision for version 1.14 and 1.16
 	misv.inventory_item_status_code_tl Item_Status,
 	-- Revision for version 1.11
-	nvl((select	max(mc.segment1)
+	nvl((select	max(mc.category_concat_segs)
 	     from	mtl_categories_v mc,
 			mtl_item_categories mic,
 			mtl_category_sets_b mcs,
@@ -565,7 +565,7 @@ select	nvl(gl.short_name, gl.name) Ledger,
 	     and	mcs.category_set_id         = mcs_tl.category_set_id
 	     and	mcs_tl.language             = userenv('lang')
 	),'') "&p_category_set1",
-	nvl((select	max(mc.segment1)
+	nvl((select	max(mc.category_concat_segs)
 	     from	mtl_categories_v mc,
 			mtl_item_categories mic,
 			mtl_category_sets_b mcs,
