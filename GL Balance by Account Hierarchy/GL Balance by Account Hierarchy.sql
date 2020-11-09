@@ -56,7 +56,8 @@ v.path_||nvl2(v.flex_value,null,'|'||gcc.&account_segment) path_,
 nvl(v.flex_value,gcc.&account_segment) flex_value,
 gps.period_name,
 decode(gps.start_period,'Y',nvl(gb.begin_balance_dr,0)-nvl(gb.begin_balance_cr,0)) start_balance,
-nvl(gb.period_net_dr,0)-nvl(gb.period_net_cr,0) amount
+nvl(gb.period_net_dr,0)-nvl(gb.period_net_cr,0) amount,
+(select gdr.conversion_rate from gl_daily_conversion_types gdct, gl_daily_rates gdr where gl.currency_code=gdr.from_currency and gdr.to_currency=:revaluation_currency and gps.end_date=gdr.conversion_date and gdct.user_conversion_type=:reval_conversion_type and gdct.conversion_type=gdr.conversion_type) conversion_rate
 from
 gl_ledgers gl,
 gl_period_statuses gps0,
@@ -72,7 +73,7 @@ nvl(substr(u.path,1,instr(u.path,'|',1,rowgen.column_value)-1),u.path) path_,
 u.*
 from
 (
-select
+select --generate all paths from top to the lowermost parents, which only contain childs
 level level_,
 substr(sys_connect_by_path(ffvnh.parent_flex_value,'|'),2) path,
 ffvnh.child_flex_value_low,
@@ -112,7 +113,6 @@ start with
 ) v
 where
 2=2 and
-gl.name=:ledger and
 gps0.period_name=:period_name and
 gb.actual_flag=xxen_util.lookup_code(:balance_type,'XLA_BALANCE_TYPE',602) and
 gl.ledger_id=gps0.ledger_id and

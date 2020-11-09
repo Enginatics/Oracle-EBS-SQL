@@ -13,6 +13,10 @@ PL/SQL units that have been compiled in NATIVE mode cannot be profiled using the
 To gather information using DBMS_PROFILER, you must ensure that the PL/SQL code is INTERPRETED."
 Before compilation of the profiled code, execute:
 alter session set plsql_code_type=interpreted;
+
+To start and stop profiling code, use the following commands (see use https://docs.oracle.com/cd/B19306_01/appdev.102/b14258/d_profil.htm#i1000047):
+dbms_profiler.start_profiler(optional run_comment);
+dbms_profiler.stop_profiler;
 -- Excel Examle Output: https://www.enginatics.com/example/dba-dbms-profiler-data/
 -- Library Link: https://www.enginatics.com/reports/dba-dbms-profiler-data/
 -- Run Report: https://demo.enginatics.com/

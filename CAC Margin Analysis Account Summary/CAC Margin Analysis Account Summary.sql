@@ -5,7 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Margin Analysis Account Summary
--- Description: Report for the margin from the customer invoices and shipments, including the Sales and COGS accounts, based on the standard Oracle Margin table, cst_margin_summary.  You first need to run the Margin Analysis Load Run request, to populate this table.
+-- Description: Report for the margin from the customer invoices and shipments, including the Sales and COGS accounts, based on the standard Oracle Margin table, cst_margin_summary.  You first need to run the Margin Analysis Load Run request, to populate this table.  Note that if you have customized Subledger Accounting or used custom programs to record COGS by cost element, this report shows only the first COGS account, as there is only one reported row per sales order line.
 /* +=============================================================================+
 -- |  Copyright 2006 - 2020 Douglas Volz Consulting, Inc.                        |
 -- |  All rights reserved.                                                       |
@@ -44,10 +44,7 @@
 -- |  1.3     14 Dec 2012 Douglas Volz   Modified for Garlock, changed category set
 -- |  1.4     19 Dec 2012 Douglas Volz   Bug fix for category set name
 -- |  1.5     29 Jan 2013 Douglas Volz   Fixed date parameters to have same format
--- |          as other reports; had to remove sales and COGS accounts as these are 
--- |          on different rows and would need to rewrite the code to include this.
--- |          Also added a join for mic and mcs for category_set_id to avoid duplicate rows.
--- |          And added a having clause to screen out zero rows.
+-- |          as other reports; 
 -- |  1.6     25 Feb 2013 Douglas Volz   Added apps.mtl_default_category_sets mdcs table
 -- |                                     to make the script more generic
 -- |  1.7     27 Feb 2017 Douglas Volz   Modified for Item Category and customer
@@ -55,9 +52,10 @@
 -- |  1.8     28 Feb 2017 Douglas Volz   Removed sales rep information,
 -- |                                     was causing cross-joining.
 -- |  1.9     22 May 2017 Douglas Volz   Adding Inventory item category
--- |  1.10    23 May 2020 Douglas Volz   Use multi-language table for UOM Code, item 
--- |                                     master, OE transaction types and hr organization names. 
--- +=============================================================================+*/
+-- |  1.10    23 May 2020 Douglas Volz   Use multi-language table for UOM Code, item master
+-- |                                     OE transaction types and hr organization names. 
+-- |  1.11    06 Nov 2020 Douglas Volz   Fix for having custom, multiple COGS accounts by
+-- |                                     cost element.  Now only get one COGS account.+=============================================================================+*/
 
 -- Excel Examle Output: https://www.enginatics.com/example/cac-margin-analysis-account-summary/
 -- Library Link: https://www.enginatics.com/reports/cac-margin-analysis-account-summary/
@@ -170,7 +168,8 @@ from	-- Revision for version 1.10
 			cms.parent_organization_id,
 			cms.parent_inventory_item_id,
 			0 sales_account,
-			cms.cogs_account,
+			-- Revision for verison 1.11
+			min(cms.cogs_account) cogs_account,
 			cms.customer_id,
 			cms.sold_to_customer_name,
 			cms.order_number,
@@ -190,7 +189,8 @@ from	-- Revision for version 1.10
 			cms.customer_class_code,
 			cms.parent_organization_id,
 			cms.parent_inventory_item_id,
-			cms.cogs_account,
+			-- Revision for verison 1.11
+			-- cms.cogs_account,
 			0, -- sales_account
 			cms.customer_id,
 			cms.sold_to_customer_name,

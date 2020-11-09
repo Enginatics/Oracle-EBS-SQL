@@ -45,7 +45,7 @@ function fnd_message(p_message_name in varchar2, p_application_short_name in var
 /***********************************************************************************************/
 /*  lookup code to meaning translation                                                         */
 /***********************************************************************************************/
-function meaning(p_lookup_code in varchar2, p_lookup_type in varchar2, p_application_id in varchar2) return varchar2;
+function meaning(p_lookup_code in varchar2, p_lookup_type in varchar2, p_application_id in varchar2, p_code_if_null in varchar2 default null) return varchar2;
 
 /***********************************************************************************************/
 /*  lookup code to description translation                                                     */
@@ -424,8 +424,8 @@ begin
 end fnd_message;
 
 
-function meaning(p_lookup_code in varchar2, p_lookup_type in varchar2, p_application_id in varchar2) return varchar2 is
-function meaning(p_lookup_code in varchar2, p_lookup_type in varchar2, p_application_id in varchar2, p_userenv_lang in varchar2) return varchar2 result_cache is
+function meaning(p_lookup_code in varchar2, p_lookup_type in varchar2, p_application_id in varchar2, p_code_if_null in varchar2 default null) return varchar2 is
+function meaning(p_lookup_code in varchar2, p_lookup_type in varchar2, p_application_id in varchar2, p_userenv_lang in varchar2, p_code_if_null in varchar2) return varchar2 result_cache is
 l_meaning varchar2(80);
 begin
   for c in (
@@ -442,10 +442,10 @@ begin
   ) loop
     l_meaning:=c.meaning;
   end loop;
-  return l_meaning;
+  return nvl(l_meaning,case when p_code_if_null='Y' then p_lookup_code end);
 end meaning;
 begin
-  return meaning(p_lookup_code, p_lookup_type, p_application_id, userenv('lang'));
+  return meaning(p_lookup_code, p_lookup_type, p_application_id, userenv('lang'), p_code_if_null);
 end meaning;
 
 

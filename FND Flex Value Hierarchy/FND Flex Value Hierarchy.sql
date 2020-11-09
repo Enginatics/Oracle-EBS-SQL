@@ -10,7 +10,7 @@ Parameter 'Parents without Child only' can be used to validate the hierarchy for
 
 The query is based on a treewalk through table fnd_flex_value_norm_hierarchy, which contains one record for every parent node, and a range_attribute column to indicate if the child value low/high range should match either parent nodes or child values.
 
-Where table fnd_flex_value_norm_hierarchy contains one record for each hierarchy node, table fnd_flex_value_hierarchies shows a flat representation of all hierarchy nodes and their lowest child ranges (range_attribute=C). For any lowest child range value, it contains one record for every higher hierarchy, that this child range is included in, up to the topmost hierarchy node. It can be used for example, to validate directly, if a child value is included in a top level hierarchy node.
+Where table fnd_flex_value_norm_hierarchy contains one record for each hierarchy node, table fnd_flex_value_hierarchies shows a flat representation of all hierarchy nodes and their lowest child ranges (range_attribute=C). For any lowest child range value, it contains one record for every higher hierarchy, that this child range is included in, up to the topmost hierarchy node. It can be used for example to validate directly, if a child value is included in a top level hierarchy node.
 -- Excel Examle Output: https://www.enginatics.com/example/fnd-flex-value-hierarchy/
 -- Library Link: https://www.enginatics.com/reports/fnd-flex-value-hierarchy/
 -- Run Report: https://demo.enginatics.com/
