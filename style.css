@@ -11,3 +11,6 @@ td {
 td b {
     font-size:20px;
 }
+table {
+    display: table;
+}
