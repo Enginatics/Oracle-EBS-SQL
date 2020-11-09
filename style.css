@@ -7,10 +7,14 @@ ul {
 }
 td {
     vertical-align:top;
+    width:50%;
+    border:none;
 }
 td b {
     font-size:20px;
 }
-table {
-    display: table;
+li a:hover, li a:focus {
+    color: #069;;
+    text-decoration: underline;
+    font-weight: normal;
 }
