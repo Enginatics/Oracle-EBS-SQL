@@ -18,7 +18,7 @@ dbms_profiler.stop_profiler;
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [DBA_DBMS_Profiler_Data 08-Nov-2020 124018.xlsx](https://www.enginatics.com/example/dba-dbms-profiler-data/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/dba-dbms-profiler-data/](https://www.enginatics.com/reports/dba-dbms-profiler-data/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [DBA_DBMS_Profiler_Data.xml](https://www.enginatics.com/xml/dba-dbms-profiler-data/)

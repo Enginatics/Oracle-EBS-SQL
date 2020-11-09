@@ -8,7 +8,7 @@ DB package: XLA_TB_AP_REPORT_PVT
 [BI Publisher](https://www.enginatics.com/library/?pg=1&category[]=BI+Publisher), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/ap-accounts-payable-negative-supplier-balance/](https://www.enginatics.com/reports/ap-accounts-payable-negative-supplier-balance/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [AP_Accounts_Payable_Negative_Supplier_Balance.xml](https://www.enginatics.com/xml/ap-accounts-payable-negative-supplier-balance/)

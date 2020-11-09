@@ -7,7 +7,7 @@ Master data report for Inventory orgs, with org code, application, responsibilit
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [INV_Organization_Access 18-Jan-2018 222609.xlsx](https://www.enginatics.com/example/inv-organization-access/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/inv-organization-access/](https://www.enginatics.com/reports/inv-organization-access/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [INV_Organization_Access.xml](https://www.enginatics.com/xml/inv-organization-access/)

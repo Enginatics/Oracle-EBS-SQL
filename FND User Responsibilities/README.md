@@ -8,7 +8,7 @@ Same as Oracle's 'Active Users' report.
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [FND_User_Responsibilities 30-Sep-2018 174651.xlsx](https://www.enginatics.com/example/fnd-user-responsibilities/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/fnd-user-responsibilities/](https://www.enginatics.com/reports/fnd-user-responsibilities/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [FND_User_Responsibilities.xml](https://www.enginatics.com/xml/fnd-user-responsibilities/)

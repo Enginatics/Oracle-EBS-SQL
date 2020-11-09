@@ -7,7 +7,7 @@ Master data report showing ledger, category and source definitions across multip
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [GL_Header_Categories_Summary 23-Jul-2017 160240.xlsx](https://www.enginatics.com/example/gl-header-categories-summary/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/gl-header-categories-summary/](https://www.enginatics.com/reports/gl-header-categories-summary/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [GL_Header_Categories_Summary.xml](https://www.enginatics.com/xml/gl-header-categories-summary/)

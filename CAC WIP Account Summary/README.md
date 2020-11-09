@@ -58,7 +58,7 @@ Report to get the WIP accounting distributions, in summary, by WIP job, resource
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [CAC_WIP_Account_Summary 01-Jun-2020 221236.xlsx](https://www.enginatics.com/example/cac-wip-account-summary/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/cac-wip-account-summary/](https://www.enginatics.com/reports/cac-wip-account-summary/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [CAC_WIP_Account_Summary.xml](https://www.enginatics.com/xml/cac-wip-account-summary/)

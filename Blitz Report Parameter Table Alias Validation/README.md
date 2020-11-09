@@ -5,7 +5,7 @@ Blitz report parameters referencing table aliases, which do not exist as a table
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/blitz-report-parameter-table-alias-validation/](https://www.enginatics.com/reports/blitz-report-parameter-table-alias-validation/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [Blitz_Report_Parameter_Table_Alias_Validation.xml](https://www.enginatics.com/xml/blitz-report-parameter-table-alias-validation/)

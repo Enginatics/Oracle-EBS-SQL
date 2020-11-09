@@ -10,7 +10,7 @@ Package: XXEN_AR_ARXAGRW_PKG
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [AR_Aging_7_Buckets_By_Salesperson_Agent 14-Oct-2020 002013.xlsx](https://www.enginatics.com/example/ar-aging-7-buckets-by-salesperson-agent/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/ar-aging-7-buckets-by-salesperson-agent/](https://www.enginatics.com/reports/ar-aging-7-buckets-by-salesperson-agent/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [AR_Aging_7_Buckets_By_Salesperson_Agent.xml](https://www.enginatics.com/xml/ar-aging-7-buckets-by-salesperson-agent/)

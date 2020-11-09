@@ -7,7 +7,7 @@ Value sets and values including usages, validation type, format type, validation
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [FND_Flex_Value_Sets_Usages_and_Values 20-Jan-2019 123359.xlsx](https://www.enginatics.com/example/fnd-flex-value-sets-usages-and-values/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/fnd-flex-value-sets-usages-and-values/](https://www.enginatics.com/reports/fnd-flex-value-sets-usages-and-values/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [FND_Flex_Value_Sets_Usages_and_Values.xml](https://www.enginatics.com/xml/fnd-flex-value-sets-usages-and-values/)

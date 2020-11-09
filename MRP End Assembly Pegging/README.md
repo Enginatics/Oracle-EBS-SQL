@@ -7,7 +7,7 @@ Detail report for MRP pegging from final assembly to each component, including: 
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [MRP_End_Assembly_Pegging 20-Jan-2019 031236.xlsx](https://www.enginatics.com/example/mrp-end-assembly-pegging/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/mrp-end-assembly-pegging/](https://www.enginatics.com/reports/mrp-end-assembly-pegging/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [MRP_End_Assembly_Pegging.xml](https://www.enginatics.com/xml/mrp-end-assembly-pegging/)

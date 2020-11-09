@@ -7,7 +7,7 @@ Summary of records in the autoinvoice interface, sorted by operating unit, and i
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [AR_Autoinvoice_Interface_Summary 23-Jul-2017 155926.xlsx](https://www.enginatics.com/example/ar-autoinvoice-interface-summary/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/ar-autoinvoice-interface-summary/](https://www.enginatics.com/reports/ar-autoinvoice-interface-summary/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [AR_Autoinvoice_Interface_Summary.xml](https://www.enginatics.com/xml/ar-autoinvoice-interface-summary/)

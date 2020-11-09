@@ -11,7 +11,7 @@ DB package: ar_obalrev_pkg
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [AR_Open_Balances_Revaluation 30-Oct-2020 185852.xlsx](https://www.enginatics.com/example/ar-open-balances-revaluation/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/ar-open-balances-revaluation/](https://www.enginatics.com/reports/ar-open-balances-revaluation/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [AR_Open_Balances_Revaluation.xml](https://www.enginatics.com/xml/ar-open-balances-revaluation/)

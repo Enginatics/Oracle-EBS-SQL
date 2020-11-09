@@ -7,7 +7,7 @@ HR jobs, positions and PO document approval group assignments
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [PO_Approval_Assignments 26-Jul-2018 134723.xlsx](https://www.enginatics.com/example/po-approval-assignments/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/po-approval-assignments/](https://www.enginatics.com/reports/po-approval-assignments/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [PO_Approval_Assignments.xml](https://www.enginatics.com/xml/po-approval-assignments/)

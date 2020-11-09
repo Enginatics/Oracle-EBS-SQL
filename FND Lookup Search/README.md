@@ -18,7 +18,7 @@ flv.security_group_id(+)=0 and
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [FND_Lookup_Search 27-Jul-2018 212528.xlsx](https://www.enginatics.com/example/fnd-lookup-search/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/fnd-lookup-search/](https://www.enginatics.com/reports/fnd-lookup-search/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [FND_Lookup_Search.xml](https://www.enginatics.com/xml/fnd-lookup-search/)

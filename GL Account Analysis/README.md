@@ -8,7 +8,7 @@ Detail GL transaction report with one line per transaction including all segment
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [GL_Account_Analysis 21-Jun-2020 235230.xlsx](https://www.enginatics.com/example/gl-account-analysis/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/gl-account-analysis/](https://www.enginatics.com/reports/gl-account-analysis/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [GL_Account_Analysis.xml](https://www.enginatics.com/xml/gl-account-analysis/)

@@ -8,7 +8,7 @@ This might not work 100% (it doesn't consider request set conflicts yet), but sh
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [FND_Concurrent_Request_Conflicts 06-Jul-2019 174044.xlsx](https://www.enginatics.com/example/fnd-concurrent-request-conflicts/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/fnd-concurrent-request-conflicts/](https://www.enginatics.com/reports/fnd-concurrent-request-conflicts/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [FND_Concurrent_Request_Conflicts.xml](https://www.enginatics.com/xml/fnd-concurrent-request-conflicts/)

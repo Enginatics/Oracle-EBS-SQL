@@ -45,7 +45,7 @@ Report to show item costs in any cost type.  For one or more inventory organizat
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [CAC_Item_Cost_Summary 21-Jun-2020 155735.xlsx](https://www.enginatics.com/example/cac-item-cost-summary/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/cac-item-cost-summary/](https://www.enginatics.com/reports/cac-item-cost-summary/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [CAC_Item_Cost_Summary.xml](https://www.enginatics.com/xml/cac-item-cost-summary/)

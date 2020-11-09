@@ -7,7 +7,7 @@ AP suppliers (po vendors) including supplier sites and contact information
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [AP_Suppliers 21-Jul-2017 173155.xlsx](https://www.enginatics.com/example/ap-suppliers/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/ap-suppliers/](https://www.enginatics.com/reports/ap-suppliers/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [AP_Suppliers.xml](https://www.enginatics.com/xml/ap-suppliers/)

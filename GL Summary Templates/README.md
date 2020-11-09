@@ -7,7 +7,7 @@ Master data report showing GL summary and concatenation templates based on ledge
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [GL_Summary_Templates 09-Jul-2019 140636.xlsx](https://www.enginatics.com/example/gl-summary-templates/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/gl-summary-templates/](https://www.enginatics.com/reports/gl-summary-templates/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [GL_Summary_Templates.xml](https://www.enginatics.com/xml/gl-summary-templates/)

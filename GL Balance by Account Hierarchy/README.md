@@ -7,7 +7,7 @@ Summary GL report including one line per GL account.  This report has multiple c
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [GL_Balance_by_Account_Hierarchy 16-Jun-2019 001501.xlsx](https://www.enginatics.com/example/gl-balance-by-account-hierarchy/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/gl-balance-by-account-hierarchy/](https://www.enginatics.com/reports/gl-balance-by-account-hierarchy/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [GL_Balance_by_Account_Hierarchy.xml](https://www.enginatics.com/xml/gl-balance-by-account-hierarchy/)

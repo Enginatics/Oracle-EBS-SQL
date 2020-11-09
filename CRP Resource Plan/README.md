@@ -7,7 +7,7 @@ Detail report for each resource code, showing the resource date, hours, work sta
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [CRP_Resource_Plan 03-Aug-2018 210345.xlsx](https://www.enginatics.com/example/crp-resource-plan/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/crp-resource-plan/](https://www.enginatics.com/reports/crp-resource-plan/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [CRP_Resource_Plan.xml](https://www.enginatics.com/xml/crp-resource-plan/)

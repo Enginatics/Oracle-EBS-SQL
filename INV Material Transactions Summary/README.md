@@ -7,7 +7,7 @@ Summary report of Inventory item movement including transaction type, source typ
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [INV_Material_Transactions_Summary 27-Jul-2018 213119.xlsx](https://www.enginatics.com/example/inv-material-transactions-summary/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/inv-material-transactions-summary/](https://www.enginatics.com/reports/inv-material-transactions-summary/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [INV_Material_Transactions_Summary.xml](https://www.enginatics.com/xml/inv-material-transactions-summary/)

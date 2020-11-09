@@ -7,7 +7,7 @@ Enterprise asset management work orders including asset and cost information
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [EAM_Work_Orders 18-Jan-2018 152946.xlsx](https://www.enginatics.com/example/eam-work-orders/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/eam-work-orders/](https://www.enginatics.com/reports/eam-work-orders/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [EAM_Work_Orders.xml](https://www.enginatics.com/xml/eam-work-orders/)

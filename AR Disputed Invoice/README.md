@@ -10,7 +10,7 @@ DB package: AR_ARXDIR_XMLP_PKG
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [AR_Disputed_Invoice 30-Sep-2020 221652.xlsx](https://www.enginatics.com/example/ar-disputed-invoice/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/ar-disputed-invoice/](https://www.enginatics.com/reports/ar-disputed-invoice/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [AR_Disputed_Invoice.xml](https://www.enginatics.com/xml/ar-disputed-invoice/)

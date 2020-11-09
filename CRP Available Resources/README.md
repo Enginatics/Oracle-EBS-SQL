@@ -7,7 +7,7 @@ Detail report showing the date range availability of each resource, as well as d
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [CRP_Available_Resources 14-May-2018 005901.xlsx](https://www.enginatics.com/example/crp-available-resources/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/crp-available-resources/](https://www.enginatics.com/reports/crp-available-resources/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [CRP_Available_Resources.xml](https://www.enginatics.com/xml/crp-available-resources/)

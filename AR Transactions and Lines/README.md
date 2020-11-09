@@ -7,7 +7,7 @@ Detail AR transaction report with line level details and special columns for ser
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [AR_Transactions_and_Lines 20-Jan-2019 115611.xlsx](https://www.enginatics.com/example/ar-transactions-and-lines/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/ar-transactions-and-lines/](https://www.enginatics.com/reports/ar-transactions-and-lines/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [AR_Transactions_and_Lines.xml](https://www.enginatics.com/xml/ar-transactions-and-lines/)

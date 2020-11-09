@@ -13,7 +13,7 @@ The function retrieved from icx_session however, just shows the latest OAF funct
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [FND_User_Login_History 20-Jan-2019 122653.xlsx](https://www.enginatics.com/example/fnd-user-login-history/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/fnd-user-login-history/](https://www.enginatics.com/reports/fnd-user-login-history/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [FND_User_Login_History.xml](https://www.enginatics.com/xml/fnd-user-login-history/)

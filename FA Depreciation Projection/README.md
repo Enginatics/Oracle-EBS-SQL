@@ -11,7 +11,7 @@ https://support.oracle.com/CSP/main/article?cmd=show&type=NOT&id=1607626.1
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [FA_Depreciation_Projection 15-Jun-2020 103606.xlsx](https://www.enginatics.com/example/fa-depreciation-projection/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/fa-depreciation-projection/](https://www.enginatics.com/reports/fa-depreciation-projection/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [FA_Depreciation_Projection.xml](https://www.enginatics.com/xml/fa-depreciation-projection/)

@@ -7,7 +7,7 @@ Full text search through database source code objects such as packages, procedur
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [DBA_Text_Search 11-May-2017 125907.xlsx](https://www.enginatics.com/example/dba-text-search/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/dba-text-search/](https://www.enginatics.com/reports/dba-text-search/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [DBA_Text_Search.xml](https://www.enginatics.com/xml/dba-text-search/)

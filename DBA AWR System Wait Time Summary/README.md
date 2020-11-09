@@ -5,7 +5,7 @@ Summary of database CPU vs. wait times and average active sessions for a specifi
 [Diagnostic Pack](https://www.enginatics.com/library/?pg=1&category[]=Diagnostic+Pack), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/dba-awr-system-wait-time-summary/](https://www.enginatics.com/reports/dba-awr-system-wait-time-summary/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [DBA_AWR_System_Wait_Time_Summary.xml](https://www.enginatics.com/xml/dba-awr-system-wait-time-summary/)

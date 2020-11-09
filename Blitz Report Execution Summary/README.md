@@ -7,7 +7,7 @@ Count and performance summary of historic Blitz Report executions
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [Blitz_Report_Execution_Summary 24-Jul-2017 145940.xlsx](https://www.enginatics.com/example/blitz-report-execution-summary/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/blitz-report-execution-summary/](https://www.enginatics.com/reports/blitz-report-execution-summary/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [Blitz_Report_Execution_Summary.xml](https://www.enginatics.com/xml/blitz-report-execution-summary/)

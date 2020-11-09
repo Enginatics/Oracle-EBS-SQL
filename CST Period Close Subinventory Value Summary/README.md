@@ -7,7 +7,7 @@ Summary report that lists selected ledgers and operating units with correspondin
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [CST_Period_Close_Subinventory_Value_Summary 06-Jul-2019 173524.xlsx](https://www.enginatics.com/example/cst-period-close-subinventory-value-summary/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/cst-period-close-subinventory-value-summary/](https://www.enginatics.com/reports/cst-period-close-subinventory-value-summary/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [CST_Period_Close_Subinventory_Value_Summary.xml](https://www.enginatics.com/xml/cst-period-close-subinventory-value-summary/)

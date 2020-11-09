@@ -10,7 +10,7 @@ DB package: PO_POXRCPPV_XMLP_PKG
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [PO_Purchase_Price_Variance 15-Oct-2020 010309.xlsx](https://www.enginatics.com/example/po-purchase-price-variance/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/po-purchase-price-variance/](https://www.enginatics.com/reports/po-purchase-price-variance/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [PO_Purchase_Price_Variance.xml](https://www.enginatics.com/xml/po-purchase-price-variance/)

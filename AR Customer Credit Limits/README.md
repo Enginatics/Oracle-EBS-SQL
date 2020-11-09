@@ -7,7 +7,7 @@ Master data report for customer setup audit of credit amount limits and GL accou
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [AR_Customer_Credit_Limits 11-May-2017 123414.xlsx](https://www.enginatics.com/example/ar-customer-credit-limits/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/ar-customer-credit-limits/](https://www.enginatics.com/reports/ar-customer-credit-limits/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [AR_Customer_Credit_Limits.xml](https://www.enginatics.com/xml/ar-customer-credit-limits/)

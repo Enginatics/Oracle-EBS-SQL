@@ -7,7 +7,7 @@ FND profile option definition
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [FND_Profile_Options 03-Apr-2018 105618.xlsx](https://www.enginatics.com/example/fnd-profile-options/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/fnd-profile-options/](https://www.enginatics.com/reports/fnd-profile-options/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [FND_Profile_Options.xml](https://www.enginatics.com/xml/fnd-profile-options/)

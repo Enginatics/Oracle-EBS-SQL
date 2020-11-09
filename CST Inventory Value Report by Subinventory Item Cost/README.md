@@ -10,7 +10,7 @@ DB package: BOM_CSTRINVR_XMLP_PKG
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [CST_Inventory_Value_Report_by_Subinventory_Item_Cost_ 21-Sep-2020 122236.xlsx](https://www.enginatics.com/example/cst-inventory-value-report-by-subinventory-item-cost/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/cst-inventory-value-report-by-subinventory-item-cost/](https://www.enginatics.com/reports/cst-inventory-value-report-by-subinventory-item-cost/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [CST_Inventory_Value_Report_by_Subinventory_Item_Cost.xml](https://www.enginatics.com/xml/cst-inventory-value-report-by-subinventory-item-cost/)

@@ -7,7 +7,7 @@ Master data report showing the setup of price lists including item prices, calcu
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [QP_Price_Lists 26-Jul-2018 134124.xlsx](https://www.enginatics.com/example/qp-price-lists/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/qp-price-lists/](https://www.enginatics.com/reports/qp-price-lists/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [QP_Price_Lists.xml](https://www.enginatics.com/xml/qp-price-lists/)

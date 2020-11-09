@@ -10,7 +10,7 @@ DB package: FA_FAS410_XMLP_PKG
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [FA_Asset_Inventory 30-Sep-2020 221751.xlsx](https://www.enginatics.com/example/fa-asset-inventory/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/fa-asset-inventory/](https://www.enginatics.com/reports/fa-asset-inventory/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [FA_Asset_Inventory.xml](https://www.enginatics.com/xml/fa-asset-inventory/)

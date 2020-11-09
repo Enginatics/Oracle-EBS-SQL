@@ -5,7 +5,7 @@ Report with all table column names based on dba_tab_columns, as finding tables b
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/dba-table-columns/](https://www.enginatics.com/reports/dba-table-columns/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [DBA_Table_Columns.xml](https://www.enginatics.com/xml/dba-table-columns/)

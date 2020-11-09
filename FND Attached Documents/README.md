@@ -7,7 +7,7 @@ FND attachments stored in the fnd_lobs table and their corresponding application
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [FND_Attached_Documents 09-Sep-2018 083127.xlsx](https://www.enginatics.com/example/fnd-attached-documents/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/fnd-attached-documents/](https://www.enginatics.com/reports/fnd-attached-documents/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [FND_Attached_Documents.xml](https://www.enginatics.com/xml/fnd-attached-documents/)

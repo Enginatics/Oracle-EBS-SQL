@@ -14,7 +14,7 @@ Master data report showing the legal entity associations to other business entit
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [XLE_Establishment_and_Legal_Entity_Associations 24-Jul-2017 143957.xlsx](https://www.enginatics.com/example/xle-establishment-and-legal-entity-associations/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/xle-establishment-and-legal-entity-associations/](https://www.enginatics.com/reports/xle-establishment-and-legal-entity-associations/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [XLE_Establishment_and_Legal_Entity_Associations.xml](https://www.enginatics.com/xml/xle-establishment-and-legal-entity-associations/)

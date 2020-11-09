@@ -7,7 +7,7 @@ PO headers, lines, receiving transactions and corresponding AP invoices
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [PO_Headers_and_Lines 03-Apr-2018 102655.xlsx](https://www.enginatics.com/example/po-headers-and-lines/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/po-headers-and-lines/](https://www.enginatics.com/reports/po-headers-and-lines/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [PO_Headers_and_Lines.xml](https://www.enginatics.com/xml/po-headers-and-lines/)

@@ -5,7 +5,7 @@
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [FND_Form_Functions 21-Jul-2017 172941.xlsx](https://www.enginatics.com/example/fnd-form-functions/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/fnd-form-functions/](https://www.enginatics.com/reports/fnd-form-functions/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [FND_Form_Functions.xml](https://www.enginatics.com/xml/fnd-form-functions/)

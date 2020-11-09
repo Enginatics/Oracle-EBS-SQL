@@ -27,7 +27,7 @@ Please note that the SQL currently doesn't consider menu exclusions yet, which m
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [FND_Access_Control 11-May-2017 081848.xlsx](https://www.enginatics.com/example/fnd-access-control/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/fnd-access-control/](https://www.enginatics.com/reports/fnd-access-control/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [FND_Access_Control.xml](https://www.enginatics.com/xml/fnd-access-control/)

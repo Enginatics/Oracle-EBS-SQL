@@ -5,7 +5,7 @@ Summary project report showing operating unit, project, task, scheduled start da
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+Operations)
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/pa-task-schedule/](https://www.enginatics.com/reports/pa-task-schedule/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [PA_Task_Schedule.xml](https://www.enginatics.com/xml/pa-task-schedule/)

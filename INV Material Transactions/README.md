@@ -7,7 +7,7 @@ Detail report of Inventory transactions with item, primary qty, secondary qty, t
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [INV_Material_Transactions 24-Jul-2017 143718.xlsx](https://www.enginatics.com/example/inv-material-transactions/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/inv-material-transactions/](https://www.enginatics.com/reports/inv-material-transactions/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [INV_Material_Transactions.xml](https://www.enginatics.com/xml/inv-material-transactions/)

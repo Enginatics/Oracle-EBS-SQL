@@ -10,7 +10,7 @@ Receiving TRX exists=No
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [PO_Headers_Releases_and_AP_Invoices 18-Jan-2018 220829.xlsx](https://www.enginatics.com/example/po-headers-releases-and-ap-invoices/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/po-headers-releases-and-ap-invoices/](https://www.enginatics.com/reports/po-headers-releases-and-ap-invoices/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [PO_Headers_Releases_and_AP_Invoices.xml](https://www.enginatics.com/xml/po-headers-releases-and-ap-invoices/)

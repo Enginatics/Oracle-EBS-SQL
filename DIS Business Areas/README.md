@@ -7,7 +7,7 @@ Summary report showing Discoverer business areas, with an access account showing
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [DIS_Business_Areas 29-Jul-2020 131756.xlsx](https://www.enginatics.com/example/dis-business-areas/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/dis-business-areas/](https://www.enginatics.com/reports/dis-business-areas/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [DIS_Business_Areas.xml](https://www.enginatics.com/xml/dis-business-areas/)

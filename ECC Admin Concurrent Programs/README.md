@@ -15,7 +15,7 @@ The individual load progams are all calling child program 'ECC Run Data Load' ei
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [ECC_Admin_Concurrent_Programs 15-Jun-2020 192701.xlsx](https://www.enginatics.com/example/ecc-admin-concurrent-programs/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/ecc-admin-concurrent-programs/](https://www.enginatics.com/reports/ecc-admin-concurrent-programs/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [ECC_Admin_Concurrent_Programs.xml](https://www.enginatics.com/xml/ecc-admin-concurrent-programs/)

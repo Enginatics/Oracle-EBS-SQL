@@ -7,7 +7,7 @@ Summary GL report including one line per account segment level, including produc
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [GL_Balance_Detail_pivot_ 15-Jun-2019 225932.xlsx](https://www.enginatics.com/example/gl-balance-detail-pivot/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/gl-balance-detail-pivot/](https://www.enginatics.com/reports/gl-balance-detail-pivot/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [GL_Balance_Detail_pivot.xml](https://www.enginatics.com/xml/gl-balance-detail-pivot/)

@@ -15,7 +15,7 @@ and Financials Troubleshooting Guide 1213193.1 https://support.oracle.com/CSP/ma
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [XLA_Distribution_Links_Summary 09-Jun-2019 000034.xlsx](https://www.enginatics.com/example/xla-distribution-links-summary/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/xla-distribution-links-summary/](https://www.enginatics.com/reports/xla-distribution-links-summary/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [XLA_Distribution_Links_Summary.xml](https://www.enginatics.com/xml/xla-distribution-links-summary/)

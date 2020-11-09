@@ -7,7 +7,7 @@ Detail past due AR invoice report with invoice number, days past due, amount pas
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [AR_Past_Due_Invoice 03-Apr-2018 112800.xlsx](https://www.enginatics.com/example/ar-past-due-invoice/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/ar-past-due-invoice/](https://www.enginatics.com/reports/ar-past-due-invoice/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [AR_Past_Due_Invoice.xml](https://www.enginatics.com/xml/ar-past-due-invoice/)

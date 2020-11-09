@@ -7,7 +7,7 @@ Detail WIP report that lists job, type, status, planner, item, item description,
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [WIP_Entities 02-Aug-2018 214556.xlsx](https://www.enginatics.com/example/wip-entities/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/wip-entities/](https://www.enginatics.com/reports/wip-entities/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [WIP_Entities.xml](https://www.enginatics.com/xml/wip-entities/)

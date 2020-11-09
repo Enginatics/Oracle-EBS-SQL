@@ -7,7 +7,7 @@ Detail Sales Order report with line item details for all order lines that are on
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [ONT_Order_Holds 18-Jan-2018 225833.xlsx](https://www.enginatics.com/example/ont-order-holds/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/ont-order-holds/](https://www.enginatics.com/reports/ont-order-holds/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [ONT_Order_Holds.xml](https://www.enginatics.com/xml/ont-order-holds/)

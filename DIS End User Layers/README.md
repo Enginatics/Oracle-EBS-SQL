@@ -5,7 +5,7 @@ Discoverer end user layers
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/dis-end-user-layers/](https://www.enginatics.com/reports/dis-end-user-layers/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [DIS_End_User_Layers.xml](https://www.enginatics.com/xml/dis-end-user-layers/)

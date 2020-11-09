@@ -7,7 +7,7 @@ Master data report showing GL account security access across multiple ledgers.
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [GL_Data_Access_Sets 12-Apr-2019 022216.xlsx](https://www.enginatics.com/example/gl-data-access-sets/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/gl-data-access-sets/](https://www.enginatics.com/reports/gl-data-access-sets/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [GL_Data_Access_Sets.xml](https://www.enginatics.com/xml/gl-data-access-sets/)

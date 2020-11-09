@@ -7,7 +7,7 @@ Master data report showing hierarchical list of human resource organization stru
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [PER_Organization_Hierarchy 29-Jan-2020 051446.xlsx](https://www.enginatics.com/example/per-organization-hierarchy/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/per-organization-hierarchy/](https://www.enginatics.com/reports/per-organization-hierarchy/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [PER_Organization_Hierarchy.xml](https://www.enginatics.com/xml/per-organization-hierarchy/)

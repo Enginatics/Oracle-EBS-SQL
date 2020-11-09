@@ -6,7 +6,7 @@ Master data report with one line per employee including employee number, name, p
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+Operations)
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/pay-employee-payroll-history/](https://www.enginatics.com/reports/pay-employee-payroll-history/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [PAY_Employee_Payroll_History.xml](https://www.enginatics.com/xml/pay-employee-payroll-history/)

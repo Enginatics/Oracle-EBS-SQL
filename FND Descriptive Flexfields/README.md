@@ -7,7 +7,7 @@ Descriptive flexfields table, context, column and validation information
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [FND_Descriptive_Flexfields 24-Jul-2017 144351.xlsx](https://www.enginatics.com/example/fnd-descriptive-flexfields/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/fnd-descriptive-flexfields/](https://www.enginatics.com/reports/fnd-descriptive-flexfields/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [FND_Descriptive_Flexfields.xml](https://www.enginatics.com/xml/fnd-descriptive-flexfields/)

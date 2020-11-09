@@ -5,7 +5,7 @@ Generates FNDLOAD download and upload linux commands for automated setup transfe
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Setup & Support](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+Setup+%26+Support)
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/fnd-fndload-object-transfer/](https://www.enginatics.com/reports/fnd-fndload-object-transfer/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [FND_FNDLOAD_Object_Transfer.xml](https://www.enginatics.com/xml/fnd-fndload-object-transfer/)

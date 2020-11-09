@@ -7,7 +7,7 @@ History of database PGA size and other statistics from v$pgastat in megabytes
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [DBA_AWR_PGA_History 29-Jul-2018 094718.xlsx](https://www.enginatics.com/example/dba-awr-pga-history/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/dba-awr-pga-history/](https://www.enginatics.com/reports/dba-awr-pga-history/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [DBA_AWR_PGA_History.xml](https://www.enginatics.com/xml/dba-awr-pga-history/)

@@ -7,7 +7,7 @@ Detail report for MRP Exception messages, including item, make or buy, default b
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [MRP_Exceptions 03-Aug-2018 212438.xlsx](https://www.enginatics.com/example/mrp-exceptions/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/mrp-exceptions/](https://www.enginatics.com/reports/mrp-exceptions/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [MRP_Exceptions.xml](https://www.enginatics.com/xml/mrp-exceptions/)

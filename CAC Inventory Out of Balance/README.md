@@ -50,7 +50,7 @@ Report to show any differences in the period end snapshot that is created when y
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [CAC_Inventory_Out_of_Balance 01-Jun-2020 213157.xlsx](https://www.enginatics.com/example/cac-inventory-out-of-balance/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/cac-inventory-out-of-balance/](https://www.enginatics.com/reports/cac-inventory-out-of-balance/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [CAC_Inventory_Out_of_Balance.xml](https://www.enginatics.com/xml/cac-inventory-out-of-balance/)

@@ -7,7 +7,7 @@ Responsibility menu exclusions
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [FND_Responsibility_Menu_Exclusions 23-Jan-2018 063112.xlsx](https://www.enginatics.com/example/fnd-responsibility-menu-exclusions/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/fnd-responsibility-menu-exclusions/](https://www.enginatics.com/reports/fnd-responsibility-menu-exclusions/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [FND_Responsibility_Menu_Exclusions.xml](https://www.enginatics.com/xml/fnd-responsibility-menu-exclusions/)

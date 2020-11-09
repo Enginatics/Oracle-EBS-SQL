@@ -9,7 +9,7 @@ This setup controls how automatically imported BI publisher reports and concurre
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [Blitz_Report_Application_Categories 18-Jan-2018 225804.xlsx](https://www.enginatics.com/example/blitz-report-application-categories/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/blitz-report-application-categories/](https://www.enginatics.com/reports/blitz-report-application-categories/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [Blitz_Report_Application_Categories.xml](https://www.enginatics.com/xml/blitz-report-application-categories/)

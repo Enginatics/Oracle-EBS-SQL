@@ -7,7 +7,7 @@ Detail AP expense report listing corresponding AP invoices with status, line det
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [AP_Expenses 05-Oct-2019 002046.xlsx](https://www.enginatics.com/example/ap-expenses/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/ap-expenses/](https://www.enginatics.com/reports/ap-expenses/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [AP_Expenses.xml](https://www.enginatics.com/xml/ap-expenses/)

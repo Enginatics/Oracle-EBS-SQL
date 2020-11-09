@@ -92,7 +92,7 @@ end;
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [DBA_AWR_Settings 11-May-2017 125144.xlsx](https://www.enginatics.com/example/dba-awr-settings/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/dba-awr-settings/](https://www.enginatics.com/reports/dba-awr-settings/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [DBA_AWR_Settings.xml](https://www.enginatics.com/xml/dba-awr-settings/)

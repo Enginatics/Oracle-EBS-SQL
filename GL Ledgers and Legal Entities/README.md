@@ -7,7 +7,7 @@ Master data report showing ledger set, ledger name, ledger category, currency, l
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [GL_Ledgers_and_Legal_Entities 11-Mar-2020 085737.xlsx](https://www.enginatics.com/example/gl-ledgers-and-legal-entities/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/gl-ledgers-and-legal-entities/](https://www.enginatics.com/reports/gl-ledgers-and-legal-entities/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [GL_Ledgers_and_Legal_Entities.xml](https://www.enginatics.com/xml/gl-ledgers-and-legal-entities/)

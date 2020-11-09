@@ -7,7 +7,7 @@ Master data report that lists all item cost groups along with their correspondin
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [CST_Cost_Groups 27-Jul-2018 134345.xlsx](https://www.enginatics.com/example/cst-cost-groups/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/cst-cost-groups/](https://www.enginatics.com/reports/cst-cost-groups/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [CST_Cost_Groups.xml](https://www.enginatics.com/xml/cst-cost-groups/)

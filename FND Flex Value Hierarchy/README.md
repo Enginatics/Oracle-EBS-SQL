@@ -12,7 +12,7 @@ Where table fnd_flex_value_norm_hierarchy contains one record for each hierarchy
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [FND_Flex_Value_Hierarchy 25-Aug-2018 110433.xlsx](https://www.enginatics.com/example/fnd-flex-value-hierarchy/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/fnd-flex-value-hierarchy/](https://www.enginatics.com/reports/fnd-flex-value-hierarchy/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [FND_Flex_Value_Hierarchy.xml](https://www.enginatics.com/xml/fnd-flex-value-hierarchy/)

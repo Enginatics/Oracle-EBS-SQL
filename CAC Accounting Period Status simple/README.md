@@ -7,7 +7,7 @@ Accounting period status of all application modules for all or a selected list o
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [CAC_Accounting_Period_Status_simple_ 01-Jun-2020 210344.xlsx](https://www.enginatics.com/example/cac-accounting-period-status-simple/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/cac-accounting-period-status-simple/](https://www.enginatics.com/reports/cac-accounting-period-status-simple/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [CAC_Accounting_Period_Status_simple.xml](https://www.enginatics.com/xml/cac-accounting-period-status-simple/)

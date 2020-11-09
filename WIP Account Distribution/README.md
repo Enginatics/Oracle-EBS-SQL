@@ -7,7 +7,7 @@ Detail WIP report that lists resource transaction account distributions.
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [WIP_Account_Distribution 03-Apr-2018 111054.xlsx](https://www.enginatics.com/example/wip-account-distribution/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/wip-account-distribution/](https://www.enginatics.com/reports/wip-account-distribution/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [WIP_Account_Distribution.xml](https://www.enginatics.com/xml/wip-account-distribution/)

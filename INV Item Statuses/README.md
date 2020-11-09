@@ -7,7 +7,7 @@ Master data report of inventory items with the various status attributes, such a
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [INV_Item_Statuses 07-Apr-2018 130703.xlsx](https://www.enginatics.com/example/inv-item-statuses(12)/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/inv-item-statuses(12)/](https://www.enginatics.com/reports/inv-item-statuses(12)/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [INV_Item_Statuses.xml](https://www.enginatics.com/xml/inv-item-statuses(12)/)

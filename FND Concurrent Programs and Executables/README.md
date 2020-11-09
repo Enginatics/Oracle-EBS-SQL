@@ -7,7 +7,7 @@ Concurrent programs, executables and program parameters
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [FND_Concurrent_Programs_and_Executables 24-Jul-2017 144449.xlsx](https://www.enginatics.com/example/fnd-concurrent-programs-and-executables/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/fnd-concurrent-programs-and-executables/](https://www.enginatics.com/reports/fnd-concurrent-programs-and-executables/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [FND_Concurrent_Programs_and_Executables.xml](https://www.enginatics.com/xml/fnd-concurrent-programs-and-executables/)

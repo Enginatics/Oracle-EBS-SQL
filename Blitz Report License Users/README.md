@@ -7,7 +7,7 @@ Active Blitz Report users (within the past 60 days) and their most frequently ex
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [Blitz_Report_License_Users 31-Jan-2019 105724.xlsx](https://www.enginatics.com/example/blitz-report-license-users/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/blitz-report-license-users/](https://www.enginatics.com/reports/blitz-report-license-users/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [Blitz_Report_License_Users.xml](https://www.enginatics.com/xml/blitz-report-license-users/)

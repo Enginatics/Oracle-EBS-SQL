@@ -10,7 +10,7 @@ DB package: FA_FAS400_XMLP_PKG
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [FA_Journal_Entry_Reserve_Ledger 30-Sep-2020 222010.xlsx](https://www.enginatics.com/example/fa-journal-entry-reserve-ledger/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/fa-journal-entry-reserve-ledger/](https://www.enginatics.com/reports/fa-journal-entry-reserve-ledger/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [FA_Journal_Entry_Reserve_Ledger.xml](https://www.enginatics.com/xml/fa-journal-entry-reserve-ledger/)

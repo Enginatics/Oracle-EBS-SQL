@@ -7,7 +7,7 @@ Discoverer worksheet access statistic summary from table eul5_qpp_stats to show 
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [DIS_Worksheet_Execution_Summary 23-Oct-2020 200558.xlsx](https://www.enginatics.com/example/dis-worksheet-execution-summary/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/dis-worksheet-execution-summary/](https://www.enginatics.com/reports/dis-worksheet-execution-summary/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [DIS_Worksheet_Execution_Summary.xml](https://www.enginatics.com/xml/dis-worksheet-execution-summary/)

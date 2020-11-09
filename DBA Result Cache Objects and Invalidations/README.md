@@ -11,7 +11,7 @@ You may end up with all server sessions waiting on 'latch free' for 'Result Cach
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [DBA_Result_Cache_Objects_and_Invalidations 18-Jan-2018 224327.xlsx](https://www.enginatics.com/example/dba-result-cache-objects-and-invalidations/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/dba-result-cache-objects-and-invalidations/](https://www.enginatics.com/reports/dba-result-cache-objects-and-invalidations/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [DBA_Result_Cache_Objects_and_Invalidations.xml](https://www.enginatics.com/xml/dba-result-cache-objects-and-invalidations/)

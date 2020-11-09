@@ -7,7 +7,7 @@ Discoverer end user layer users of different types (application user, responsibi
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [DIS_Users 04-Jan-2019 135320.xlsx](https://www.enginatics.com/example/dis-users/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/dis-users/](https://www.enginatics.com/reports/dis-users/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [DIS_Users.xml](https://www.enginatics.com/xml/dis-users/)

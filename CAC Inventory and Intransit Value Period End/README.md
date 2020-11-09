@@ -51,7 +51,7 @@ Note:  if you enter a cost type this report uses the item costs from the cost ty
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [CAC_Inventory_and_Intransit_Value_Period_End_ 01-Jun-2020 213537.xlsx](https://www.enginatics.com/example/cac-inventory-and-intransit-value-period-end/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/cac-inventory-and-intransit-value-period-end/](https://www.enginatics.com/reports/cac-inventory-and-intransit-value-period-end/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [CAC_Inventory_and_Intransit_Value_Period_End.xml](https://www.enginatics.com/xml/cac-inventory-and-intransit-value-period-end/)

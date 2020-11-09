@@ -5,7 +5,7 @@ Shows differences in Blitz Report column translations between the local and a re
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Setup & Support](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+Setup+%26+Support)
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/compare-blitz-report-column-translations-between-environments/](https://www.enginatics.com/reports/compare-blitz-report-column-translations-between-environments/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [Compare_Blitz_Report_Column_Translations_between_environments.xml](https://www.enginatics.com/xml/compare-blitz-report-column-translations-between-environments/)

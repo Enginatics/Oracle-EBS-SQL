@@ -7,7 +7,7 @@ Detail report inventory item quantities by org, sub inventory, location, unit of
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [INV_Onhand_Quantities 26-Jul-2018 134821.xlsx](https://www.enginatics.com/example/inv-onhand-quantities/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/inv-onhand-quantities/](https://www.enginatics.com/reports/inv-onhand-quantities/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [INV_Onhand_Quantities.xml](https://www.enginatics.com/xml/inv-onhand-quantities/)

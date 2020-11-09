@@ -7,7 +7,7 @@ Master data report for inventory safety stock with inventory org code, item, eff
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [INV_Safety_Stocks 18-Jan-2018 222727.xlsx](https://www.enginatics.com/example/inv-safety-stocks/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/inv-safety-stocks/](https://www.enginatics.com/reports/inv-safety-stocks/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [INV_Safety_Stocks.xml](https://www.enginatics.com/xml/inv-safety-stocks/)

@@ -8,7 +8,7 @@ There can be multiple payments per invoice and one document/check can be used to
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [AP_Invoice_Payments 22-Aug-2020 224831.xlsx](https://www.enginatics.com/example/ap-invoice-payments/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/ap-invoice-payments/](https://www.enginatics.com/reports/ap-invoice-payments/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [AP_Invoice_Payments.xml](https://www.enginatics.com/xml/ap-invoice-payments/)

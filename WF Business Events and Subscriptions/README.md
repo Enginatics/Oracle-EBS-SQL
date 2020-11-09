@@ -7,7 +7,7 @@ Workflow business event and subscription details
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [WF_Business_Events_and_Subscriptions 18-Jan-2018 224755.xlsx](https://www.enginatics.com/example/wf-business-events-and-subscriptions/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/wf-business-events-and-subscriptions/](https://www.enginatics.com/reports/wf-business-events-and-subscriptions/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [WF_Business_Events_and_Subscriptions.xml](https://www.enginatics.com/xml/wf-business-events-and-subscriptions/)

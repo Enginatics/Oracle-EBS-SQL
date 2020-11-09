@@ -7,7 +7,7 @@ Master data report showing the payment terms codes with their respective profile
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [AR_Payment_Terms 24-Jul-2017 144054.xlsx](https://www.enginatics.com/example/ar-payment-terms/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/ar-payment-terms/](https://www.enginatics.com/reports/ar-payment-terms/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [AR_Payment_Terms.xml](https://www.enginatics.com/xml/ar-payment-terms/)

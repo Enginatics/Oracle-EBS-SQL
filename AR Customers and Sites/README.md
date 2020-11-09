@@ -7,7 +7,7 @@ Master data report of customer master data including address, sites, site uses, 
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [AR_Customers_and_Sites 20-Jan-2019 120023.xlsx](https://www.enginatics.com/example/ar-customers-and-sites/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/ar-customers-and-sites/](https://www.enginatics.com/reports/ar-customers-and-sites/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [AR_Customers_and_Sites.xml](https://www.enginatics.com/xml/ar-customers-and-sites/)

@@ -7,7 +7,7 @@ Detail AR customer billing history including payments, excluding any entered or 
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [AR_Transactions_and_Payments 24-Jul-2017 144855.xlsx](https://www.enginatics.com/example/ar-transactions-and-payments/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/ar-transactions-and-payments/](https://www.enginatics.com/reports/ar-transactions-and-payments/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [AR_Transactions_and_Payments.xml](https://www.enginatics.com/xml/ar-transactions-and-payments/)

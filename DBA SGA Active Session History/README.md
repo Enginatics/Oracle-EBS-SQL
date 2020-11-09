@@ -20,7 +20,7 @@ https://docs.oracle.com/database/121/REFRN/GUID-86184690-5531-405F-AA05-BB935F57
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [DBA_SGA_Active_Session_History 24-Sep-2018 011658.xlsx](https://www.enginatics.com/example/dba-sga-active-session-history/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/dba-sga-active-session-history/](https://www.enginatics.com/reports/dba-sga-active-session-history/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [DBA_SGA_Active_Session_History.xml](https://www.enginatics.com/xml/dba-sga-active-session-history/)

@@ -7,7 +7,7 @@ Enterprise asset management asset details such as location, department etc.
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [EAM_Assets 28-Jul-2020 182205.xlsx](https://www.enginatics.com/example/eam-assets/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/eam-assets/](https://www.enginatics.com/reports/eam-assets/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [EAM_Assets.xml](https://www.enginatics.com/xml/eam-assets/)

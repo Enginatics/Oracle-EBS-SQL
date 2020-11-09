@@ -12,7 +12,7 @@ Parameter 'Data Definition Search Text' performs a full text search through the 
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [XDO_Publisher_Data_Definitions 29-Apr-2020 114115.xlsx](https://www.enginatics.com/example/xdo-publisher-data-definitions/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/xdo-publisher-data-definitions/](https://www.enginatics.com/reports/xdo-publisher-data-definitions/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [XDO_Publisher_Data_Definitions.xml](https://www.enginatics.com/xml/xdo-publisher-data-definitions/)

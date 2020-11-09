@@ -11,7 +11,7 @@ select * from sys.v_$logfile
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [DBA_Archive_Redo_Log_Rate 13-Jul-2018 173740.xlsx](https://www.enginatics.com/example/dba-archive-redo-log-rate/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/dba-archive-redo-log-rate/](https://www.enginatics.com/reports/dba-archive-redo-log-rate/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [DBA_Archive_Redo_Log_Rate.xml](https://www.enginatics.com/xml/dba-archive-redo-log-rate/)

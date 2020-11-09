@@ -7,7 +7,7 @@ Legal entities, establishments, jurisdictions and registrations
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [XLE_Legal_Entities 24-Jul-2017 145303.xlsx](https://www.enginatics.com/example/xle-legal-entities/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/xle-legal-entities/](https://www.enginatics.com/reports/xle-legal-entities/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [XLE_Legal_Entities.xml](https://www.enginatics.com/xml/xle-legal-entities/)

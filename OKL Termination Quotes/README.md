@@ -7,7 +7,7 @@ Information on lease termination quotes
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [OKL_Termination_Quotes 18-Jan-2018 214747.xlsx](https://www.enginatics.com/example/okl-termination-quotes/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/okl-termination-quotes/](https://www.enginatics.com/reports/okl-termination-quotes/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [OKL_Termination_Quotes.xml](https://www.enginatics.com/xml/okl-termination-quotes/)

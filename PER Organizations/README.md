@@ -7,7 +7,7 @@ Master data report showing organizations, classifications, address details and a
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [PER_Organizations 03-Jul-2020 135719.xlsx](https://www.enginatics.com/example/per-organizations/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/per-organizations/](https://www.enginatics.com/reports/per-organizations/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [PER_Organizations.xml](https://www.enginatics.com/xml/per-organizations/)

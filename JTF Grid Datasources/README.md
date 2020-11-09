@@ -7,7 +7,7 @@ JTF grid (CRM spreadtable) datasource and column definition
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [JTF_Grid_Datasources 23-May-2018 140447.xlsx](https://www.enginatics.com/example/jtf-grid-datasources/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/jtf-grid-datasources/](https://www.enginatics.com/reports/jtf-grid-datasources/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [JTF_Grid_Datasources.xml](https://www.enginatics.com/xml/jtf-grid-datasources/)

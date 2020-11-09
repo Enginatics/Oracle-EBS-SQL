@@ -11,7 +11,7 @@ We recommend doing further analysis with a pivot in Excel rather than by SQL, as
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [DBA_AWR_Blocking_Session_Summary 21-Jan-2019 095329.xlsx](https://www.enginatics.com/example/dba-awr-blocking-session-summary/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/dba-awr-blocking-session-summary/](https://www.enginatics.com/reports/dba-awr-blocking-session-summary/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [DBA_AWR_Blocking_Session_Summary.xml](https://www.enginatics.com/xml/dba-awr-blocking-session-summary/)

@@ -8,7 +8,7 @@ https://www.enginatics.com/user-guide/#Discoverer_Worksheet
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [DIS_Import_Performance 17-Jun-2019 131540.xlsx](https://www.enginatics.com/example/dis-import-performance/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/dis-import-performance/](https://www.enginatics.com/reports/dis-import-performance/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [DIS_Import_Performance.xml](https://www.enginatics.com/xml/dis-import-performance/)

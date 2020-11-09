@@ -7,7 +7,7 @@ PO document types setup
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [PO_Document_Types 24-Jul-2017 150359.xlsx](https://www.enginatics.com/example/po-document-types/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/po-document-types/](https://www.enginatics.com/reports/po-document-types/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [PO_Document_Types.xml](https://www.enginatics.com/xml/po-document-types/)

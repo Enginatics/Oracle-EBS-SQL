@@ -7,7 +7,7 @@ Detail Sales Order or Quote header report with line item details including statu
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [ONT_Order_Headers_and_Lines 14-Aug-2018 082003.xlsx](https://www.enginatics.com/example/ont-order-headers-and-lines/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/ont-order-headers-and-lines/](https://www.enginatics.com/reports/ont-order-headers-and-lines/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [ONT_Order_Headers_and_Lines.xml](https://www.enginatics.com/xml/ont-order-headers-and-lines/)

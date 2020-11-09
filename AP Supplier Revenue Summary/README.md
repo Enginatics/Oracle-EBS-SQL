@@ -7,7 +7,7 @@ AP suppliers (po vendors) revenue summary across different operating units
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [AP_Supplier_Revenue_Summary 21-Jul-2019 080726.xlsx](https://www.enginatics.com/example/ap-supplier-revenue-summary/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/ap-supplier-revenue-summary/](https://www.enginatics.com/reports/ap-supplier-revenue-summary/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [AP_Supplier_Revenue_Summary.xml](https://www.enginatics.com/xml/ap-supplier-revenue-summary/)

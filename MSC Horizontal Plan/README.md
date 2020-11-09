@@ -7,7 +7,7 @@ ASCP: Horizontal Plan from the Planners Workbench.
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [MSC_Horizontal_Plan 24-Jul-2020 170811.xlsx](https://www.enginatics.com/example/msc-horizontal-plan/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/msc-horizontal-plan/](https://www.enginatics.com/reports/msc-horizontal-plan/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [MSC_Horizontal_Plan.xml](https://www.enginatics.com/xml/msc-horizontal-plan/)

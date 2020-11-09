@@ -5,7 +5,7 @@ Discoverer workbooks, their owners, folders, items and item class LOVs, derived 
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Setup & Support](https://www.enginatics.com/library/?pg=1&category[]=Toolkit+-+Setup+%26+Support)
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/dis-workbooks-folders-items-and-lovs/](https://www.enginatics.com/reports/dis-workbooks-folders-items-and-lovs/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [DIS_Workbooks_Folders_Items_and_LOVs.xml](https://www.enginatics.com/xml/dis-workbooks-folders-items-and-lovs/)

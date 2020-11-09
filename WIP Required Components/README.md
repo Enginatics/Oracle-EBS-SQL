@@ -9,7 +9,7 @@ Detailed project WIP report that lists discrete jobs and required components. Th
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [WIP_Required_Components 18-Jan-2018 225134.xlsx](https://www.enginatics.com/example/wip-required-components/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/wip-required-components/](https://www.enginatics.com/reports/wip-required-components/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [WIP_Required_Components.xml](https://www.enginatics.com/xml/wip-required-components/)

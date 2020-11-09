@@ -59,7 +59,7 @@ XXX_INV_RECON_REPT_V5-20-Jul-2016.sql
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [CAC_Inventory_to_G_L_Reconciliation_Restricted_by_Org_Access_ 07-Jun-2020 015523.xlsx](https://www.enginatics.com/example/cac-inventory-to-g-l-reconciliation-restricted-by-org-access/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/cac-inventory-to-g-l-reconciliation-restricted-by-org-access/](https://www.enginatics.com/reports/cac-inventory-to-g-l-reconciliation-restricted-by-org-access/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [CAC_Inventory_to_G_L_Reconciliation_Restricted_by_Org_Access.xml](https://www.enginatics.com/xml/cac-inventory-to-g-l-reconciliation-restricted-by-org-access/)

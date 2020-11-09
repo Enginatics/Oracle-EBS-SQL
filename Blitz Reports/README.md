@@ -8,7 +8,7 @@ If you are using the free version of Blitz Report, column 'Free 30 Reports' show
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [Blitz_Reports 10-Aug-2020 140427.xlsx](https://www.enginatics.com/example/blitz-reports/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/blitz-reports/](https://www.enginatics.com/reports/blitz-reports/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [Blitz_Reports.xml](https://www.enginatics.com/xml/blitz-reports/)

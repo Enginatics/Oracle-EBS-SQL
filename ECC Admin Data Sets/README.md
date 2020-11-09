@@ -8,7 +8,7 @@ For description of the load process, see ECC Concurrent Programs https://www.eng
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [ECC_Admin_Data_Sets 10-Sep-2020 115708.xlsx](https://www.enginatics.com/example/ecc-admin-data-sets/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/ecc-admin-data-sets/](https://www.enginatics.com/reports/ecc-admin-data-sets/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [ECC_Admin_Data_Sets.xml](https://www.enginatics.com/xml/ecc-admin-data-sets/)

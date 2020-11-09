@@ -7,7 +7,7 @@ Detail report that lists each item and the associated costs to be recognized as 
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [CST_Detailed_Item_Cost 25-Jun-2019 140038.xlsx](https://www.enginatics.com/example/cst-detailed-item-cost/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/cst-detailed-item-cost/](https://www.enginatics.com/reports/cst-detailed-item-cost/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [CST_Detailed_Item_Cost.xml](https://www.enginatics.com/xml/cst-detailed-item-cost/)

@@ -10,7 +10,7 @@ Use parameter 'Scheduled or Running' to get a list of all currently scheduled or
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [FND_Concurrent_Requests 27-Jan-2019 140201.xlsx](https://www.enginatics.com/example/fnd-concurrent-requests/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/fnd-concurrent-requests/](https://www.enginatics.com/reports/fnd-concurrent-requests/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [FND_Concurrent_Requests.xml](https://www.enginatics.com/xml/fnd-concurrent-requests/)

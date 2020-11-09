@@ -5,7 +5,7 @@
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [INV_Item_Category_Sets 18-Jan-2018 222818.xlsx](https://www.enginatics.com/example/inv-item-category-sets/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/inv-item-category-sets/](https://www.enginatics.com/reports/inv-item-category-sets/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [INV_Item_Category_Sets.xml](https://www.enginatics.com/xml/inv-item-category-sets/)

@@ -9,7 +9,7 @@ or salary change history.... If yes, then the last condition in where clause to 
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/per-employee-salary-change/](https://www.enginatics.com/reports/per-employee-salary-change/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [PER_Employee_Salary_Change.xml](https://www.enginatics.com/xml/per-employee-salary-change/)

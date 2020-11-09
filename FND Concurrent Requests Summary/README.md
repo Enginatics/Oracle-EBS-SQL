@@ -7,7 +7,7 @@ Concurrent programs sorted by the sum of their historic execution times
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [FND_Concurrent_Requests_Summary 28-Jan-2019 120718.xlsx](https://www.enginatics.com/example/fnd-concurrent-requests-summary/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/fnd-concurrent-requests-summary/](https://www.enginatics.com/reports/fnd-concurrent-requests-summary/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [FND_Concurrent_Requests_Summary.xml](https://www.enginatics.com/xml/fnd-concurrent-requests-summary/)

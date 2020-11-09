@@ -7,7 +7,7 @@ Approved supplier list and attribute details such as source documents, supplier 
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [PO_Approved_Supplier_List 18-Jan-2018 223638.xlsx](https://www.enginatics.com/example/po-approved-supplier-list/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/po-approved-supplier-list/](https://www.enginatics.com/reports/po-approved-supplier-list/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [PO_Approved_Supplier_List.xml](https://www.enginatics.com/xml/po-approved-supplier-list/)

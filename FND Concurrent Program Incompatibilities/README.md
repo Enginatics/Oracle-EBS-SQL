@@ -7,7 +7,7 @@ Concurrent Program Incompatibilities
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [FND_Concurrent_Program_Incompatibilities 27-Jan-2019 115110.xlsx](https://www.enginatics.com/example/fnd-concurrent-program-incompatibilities/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/fnd-concurrent-program-incompatibilities/](https://www.enginatics.com/reports/fnd-concurrent-program-incompatibilities/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [FND_Concurrent_Program_Incompatibilities.xml](https://www.enginatics.com/xml/fnd-concurrent-program-incompatibilities/)

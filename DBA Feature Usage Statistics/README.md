@@ -5,7 +5,7 @@ Database license feature usage statistics, such as the number of times that an A
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/dba-feature-usage-statistics/](https://www.enginatics.com/reports/dba-feature-usage-statistics/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [DBA_Feature_Usage_Statistics.xml](https://www.enginatics.com/xml/dba-feature-usage-statistics/)

@@ -3,7 +3,7 @@
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/blitz-report-column-templates/](https://www.enginatics.com/reports/blitz-report-column-templates/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [Blitz_Report_Column_Templates.xml](https://www.enginatics.com/xml/blitz-report-column-templates/)

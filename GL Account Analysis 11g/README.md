@@ -5,7 +5,7 @@ Backwards compatible version (for 11g databases) of the detail GL transaction re
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/gl-account-analysis-11g/](https://www.enginatics.com/reports/gl-account-analysis-11g/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [GL_Account_Analysis_11g.xml](https://www.enginatics.com/xml/gl-account-analysis-11g/)

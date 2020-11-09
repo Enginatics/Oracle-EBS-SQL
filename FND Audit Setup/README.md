@@ -11,7 +11,7 @@ The whole audit trail setup process is describe in this blog: https://www.engina
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [FND_Audit_Setup 16-Aug-2020 161825.xlsx](https://www.enginatics.com/example/fnd-audit-setup/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/fnd-audit-setup/](https://www.enginatics.com/reports/fnd-audit-setup/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [FND_Audit_Setup.xml](https://www.enginatics.com/xml/fnd-audit-setup/)

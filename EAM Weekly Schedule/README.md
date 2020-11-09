@@ -11,7 +11,7 @@ DB package: EAM_EAMWSREP_XMLP_PKG
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [EAM_Weekly_Schedule 17-May-2020 135229.xlsx](https://www.enginatics.com/example/eam-weekly-schedule/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/eam-weekly-schedule/](https://www.enginatics.com/reports/eam-weekly-schedule/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [EAM_Weekly_Schedule.xml](https://www.enginatics.com/xml/eam-weekly-schedule/)

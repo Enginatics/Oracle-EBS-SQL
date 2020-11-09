@@ -10,7 +10,7 @@ writing each worksheets' SQL query to table ams_discoverer_sql
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [DIS_Worksheet_SQLs 04-Jan-2019 135604.xlsx](https://www.enginatics.com/example/dis-worksheet-sqls/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/dis-worksheet-sqls/](https://www.enginatics.com/reports/dis-worksheet-sqls/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [DIS_Worksheet_SQLs.xml](https://www.enginatics.com/xml/dis-worksheet-sqls/)

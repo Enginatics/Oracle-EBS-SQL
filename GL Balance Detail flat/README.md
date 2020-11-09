@@ -7,7 +7,7 @@ Summary GL report including one line per accounting period for each account segm
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [GL_Balance_Detail_flat_ 15-Jun-2019 225830.xlsx](https://www.enginatics.com/example/gl-balance-detail-flat/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/gl-balance-detail-flat/](https://www.enginatics.com/reports/gl-balance-detail-flat/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [GL_Balance_Detail_flat.xml](https://www.enginatics.com/xml/gl-balance-detail-flat/)

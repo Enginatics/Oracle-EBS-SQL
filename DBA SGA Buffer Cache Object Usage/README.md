@@ -17,7 +17,7 @@ http://arup.blogspot.ch/2014/11/cache-buffer-chains-demystified.html
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [DBA_SGA_Buffer_Cache_Object_Usage 05-Apr-2020 014325.xlsx](https://www.enginatics.com/example/dba-sga-buffer-cache-object-usage/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/dba-sga-buffer-cache-object-usage/](https://www.enginatics.com/reports/dba-sga-buffer-cache-object-usage/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [DBA_SGA_Buffer_Cache_Object_Usage.xml](https://www.enginatics.com/xml/dba-sga-buffer-cache-object-usage/)

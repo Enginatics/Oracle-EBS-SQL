@@ -33,7 +33,7 @@ exec dbms_stats.gather_system_stats(`EXADATA');
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [DBA_SGA_PGA_Memory_Configuration 29-Jul-2018 103004.xlsx](https://www.enginatics.com/example/dba-sga-pga-memory-configuration/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/dba-sga-pga-memory-configuration/](https://www.enginatics.com/reports/dba-sga-pga-memory-configuration/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [DBA_SGA_PGA_Memory_Configuration.xml](https://www.enginatics.com/xml/dba-sga-pga-memory-configuration/)

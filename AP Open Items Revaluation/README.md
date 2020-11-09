@@ -12,7 +12,7 @@ DB package: AP_OPEN_ITEMS_REVAL_PKG
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [AP_Open_Items_Revaluation 30-Oct-2020 191455.xlsx](https://www.enginatics.com/example/ap-open-items-revaluation/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/ap-open-items-revaluation/](https://www.enginatics.com/reports/ap-open-items-revaluation/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [AP_Open_Items_Revaluation.xml](https://www.enginatics.com/xml/ap-open-items-revaluation/)

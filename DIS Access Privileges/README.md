@@ -7,7 +7,7 @@ Discoverer access privileges
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [DIS_Access_Privileges 04-Jan-2019 134602.xlsx](https://www.enginatics.com/example/dis-access-privileges/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/dis-access-privileges/](https://www.enginatics.com/reports/dis-access-privileges/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [DIS_Access_Privileges.xml](https://www.enginatics.com/xml/dis-access-privileges/)

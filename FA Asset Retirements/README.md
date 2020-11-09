@@ -8,7 +8,7 @@ Asset retirement transactions, based on Oracle standard report FAS440_XML.
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [FA_Asset_Retirements 01-Jul-2019 030453.xlsx](https://www.enginatics.com/example/fa-asset-retirements/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/fa-asset-retirements/](https://www.enginatics.com/reports/fa-asset-retirements/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [FA_Asset_Retirements.xml](https://www.enginatics.com/xml/fa-asset-retirements/)

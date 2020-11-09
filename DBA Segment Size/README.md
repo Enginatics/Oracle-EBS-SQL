@@ -7,7 +7,7 @@ Database segments such as tables, indexes, lob segments by size and total databa
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [DBA_Segment_Size 07-Jul-2020 165004.xlsx](https://www.enginatics.com/example/dba-segment-size/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/dba-segment-size/](https://www.enginatics.com/reports/dba-segment-size/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [DBA_Segment_Size.xml](https://www.enginatics.com/xml/dba-segment-size/)

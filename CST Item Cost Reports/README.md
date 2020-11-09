@@ -28,7 +28,7 @@ Sub-Element by Operation - Report item costs by sub-element and operation sequen
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [CST_Item_Cost_Reports 15-Jun-2019 123903.xlsx](https://www.enginatics.com/example/cst-item-cost-reports/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/cst-item-cost-reports/](https://www.enginatics.com/reports/cst-item-cost-reports/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [CST_Item_Cost_Reports.xml](https://www.enginatics.com/xml/cst-item-cost-reports/)

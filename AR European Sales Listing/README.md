@@ -7,7 +7,7 @@ Summary report listing sales by country and currency code, with transaction amou
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [AR_European_Sales_Listing 25-Jul-2017 120805.xlsx](https://www.enginatics.com/example/ar-european-sales-listing/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/ar-european-sales-listing/](https://www.enginatics.com/reports/ar-european-sales-listing/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [AR_European_Sales_Listing.xml](https://www.enginatics.com/xml/ar-european-sales-listing/)

@@ -12,7 +12,7 @@ A high number of 'Invalidation Count' or 'Delete Count Invalid' relative to 'Fin
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [DBA_Result_Cache_Statistics 18-Jan-2018 225229.xlsx](https://www.enginatics.com/example/dba-result-cache-statistics/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/dba-result-cache-statistics/](https://www.enginatics.com/reports/dba-result-cache-statistics/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [DBA_Result_Cache_Statistics.xml](https://www.enginatics.com/xml/dba-result-cache-statistics/)

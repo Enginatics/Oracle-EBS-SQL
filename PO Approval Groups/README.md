@@ -7,7 +7,7 @@ PO approval groups and approval rules e.g. amount limits or account ranges
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [PO_Approval_Groups 25-Jul-2017 120349.xlsx](https://www.enginatics.com/example/po-approval-groups/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/po-approval-groups/](https://www.enginatics.com/reports/po-approval-groups/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [PO_Approval_Groups.xml](https://www.enginatics.com/xml/po-approval-groups/)

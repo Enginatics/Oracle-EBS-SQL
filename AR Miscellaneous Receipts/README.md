@@ -7,7 +7,7 @@ Receivables miscellaneous receipts
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [AR_Miscellaneous_Receipts 24-Jul-2017 151304.xlsx](https://www.enginatics.com/example/ar-miscellaneous-receipts/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/ar-miscellaneous-receipts/](https://www.enginatics.com/reports/ar-miscellaneous-receipts/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [AR_Miscellaneous_Receipts.xml](https://www.enginatics.com/xml/ar-miscellaneous-receipts/)

@@ -7,7 +7,7 @@ Detail unapplied receipts report with receipt number, date and amount
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [AR_Unapplied_Receipts_Register 05-Apr-2018 191029.xlsx](https://www.enginatics.com/example/ar-unapplied-receipts-register/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/ar-unapplied-receipts-register/](https://www.enginatics.com/reports/ar-unapplied-receipts-register/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [AR_Unapplied_Receipts_Register.xml](https://www.enginatics.com/xml/ar-unapplied-receipts-register/)

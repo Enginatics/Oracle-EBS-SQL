@@ -10,7 +10,7 @@ DB package: AP_APXINROH_XMLP_PKG
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [AP_Invoice_on_Hold 30-Sep-2020 221341.xlsx](https://www.enginatics.com/example/ap-invoice-on-hold/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/ap-invoice-on-hold/](https://www.enginatics.com/reports/ap-invoice-on-hold/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [AP_Invoice_on_Hold.xml](https://www.enginatics.com/xml/ap-invoice-on-hold/)

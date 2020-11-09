@@ -9,7 +9,7 @@ Short Name: ARRXINVR
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [AR_Transaction_Register 13-Oct-2020 235506.xlsx](https://www.enginatics.com/example/ar-transaction-register/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/ar-transaction-register/](https://www.enginatics.com/reports/ar-transaction-register/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [AR_Transaction_Register.xml](https://www.enginatics.com/xml/ar-transaction-register/)

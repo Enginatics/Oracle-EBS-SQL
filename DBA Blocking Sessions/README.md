@@ -7,7 +7,7 @@ Chain of currently blocking and blocked database sessions from v$wait_chains
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [DBA_Blocking_Sessions 06-May-2020 103312.xlsx](https://www.enginatics.com/example/dba-blocking-sessions/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/dba-blocking-sessions/](https://www.enginatics.com/reports/dba-blocking-sessions/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [DBA_Blocking_Sessions.xml](https://www.enginatics.com/xml/dba-blocking-sessions/)

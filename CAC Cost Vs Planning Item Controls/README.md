@@ -62,7 +62,7 @@ Compare item make/buy controls vs. costing based on rollup controls.  There are 
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [CAC_Cost_Vs_Planning_Item_Controls 01-Jun-2020 205333.xlsx](https://www.enginatics.com/example/cac-cost-vs-planning-item-controls/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/cac-cost-vs-planning-item-controls/](https://www.enginatics.com/reports/cac-cost-vs-planning-item-controls/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [CAC_Cost_Vs_Planning_Item_Controls.xml](https://www.enginatics.com/xml/cac-cost-vs-planning-item-controls/)

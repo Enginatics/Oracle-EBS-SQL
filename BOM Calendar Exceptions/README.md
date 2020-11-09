@@ -7,7 +7,7 @@ Master data report showing bill of material exceptions dates, exception types an
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [BOM_Calendar_Exceptions 20-Jan-2019 120149.xlsx](https://www.enginatics.com/example/bom-calendar-exceptions/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/bom-calendar-exceptions/](https://www.enginatics.com/reports/bom-calendar-exceptions/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [BOM_Calendar_Exceptions.xml](https://www.enginatics.com/xml/bom-calendar-exceptions/)

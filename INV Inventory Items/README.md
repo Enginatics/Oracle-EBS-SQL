@@ -7,7 +7,7 @@ Master data report that lists item master attributes such as item type, UOM, sta
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [INV_Inventory_Items 24-Jul-2017 151122.xlsx](https://www.enginatics.com/example/inv-inventory-items/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/inv-inventory-items/](https://www.enginatics.com/reports/inv-inventory-items/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [INV_Inventory_Items.xml](https://www.enginatics.com/xml/inv-inventory-items/)

@@ -7,7 +7,7 @@ Current SGA memory usage in gigabytes, showing the split between buffer cache an
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [DBA_SGA_Memory_Allocation 16-Jun-2018 072434.xlsx](https://www.enginatics.com/example/dba-sga-memory-allocation/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/dba-sga-memory-allocation/](https://www.enginatics.com/reports/dba-sga-memory-allocation/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [DBA_SGA_Memory_Allocation.xml](https://www.enginatics.com/xml/dba-sga-memory-allocation/)

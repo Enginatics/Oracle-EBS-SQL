@@ -7,7 +7,7 @@ Analytical report by item to predict performance of inventory item load backgrou
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [INV_Item_Import_Performance 28-Jul-2020 181611.xlsx](https://www.enginatics.com/example/inv-item-import-performance/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/inv-item-import-performance/](https://www.enginatics.com/reports/inv-item-import-performance/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [INV_Item_Import_Performance.xml](https://www.enginatics.com/xml/inv-item-import-performance/)

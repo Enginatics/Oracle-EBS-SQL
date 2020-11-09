@@ -9,7 +9,7 @@ The report has one row per audit transaction showing the old and new values for 
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [FND_Audit_Table_Changes_by_Record 05-Sep-2020 132119.xlsx](https://www.enginatics.com/example/fnd-audit-table-changes-by-record/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/fnd-audit-table-changes-by-record/](https://www.enginatics.com/reports/fnd-audit-table-changes-by-record/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [FND_Audit_Table_Changes_by_Record.xml](https://www.enginatics.com/xml/fnd-audit-table-changes-by-record/)

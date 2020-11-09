@@ -8,7 +8,7 @@ It shows an estimation of how an SGA resize would affect overall database time a
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [DBA_SGA_Target_Advice 20-Nov-2018 144219.xlsx](https://www.enginatics.com/example/dba-sga-target-advice/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/dba-sga-target-advice/](https://www.enginatics.com/reports/dba-sga-target-advice/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [DBA_SGA_Target_Advice.xml](https://www.enginatics.com/xml/dba-sga-target-advice/)

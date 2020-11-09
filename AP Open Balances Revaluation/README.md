@@ -11,7 +11,7 @@ DB package: AP_OPEN_BAL_REV_RPT_PKG
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [AP_Open_Balances_Revaluation 30-Oct-2020 190225.xlsx](https://www.enginatics.com/example/ap-open-balances-revaluation/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/ap-open-balances-revaluation/](https://www.enginatics.com/reports/ap-open-balances-revaluation/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [AP_Open_Balances_Revaluation.xml](https://www.enginatics.com/xml/ap-open-balances-revaluation/)

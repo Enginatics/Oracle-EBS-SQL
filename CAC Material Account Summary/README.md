@@ -57,7 +57,7 @@ Use the Show Subinventory parameter to reduce the size of this report, as needed
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [CAC_Material_Account_Summary 01-Jun-2020 220747.xlsx](https://www.enginatics.com/example/cac-material-account-summary/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/cac-material-account-summary/](https://www.enginatics.com/reports/cac-material-account-summary/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [CAC_Material_Account_Summary.xml](https://www.enginatics.com/xml/cac-material-account-summary/)

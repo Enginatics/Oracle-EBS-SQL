@@ -7,7 +7,7 @@ Profile report showing the Sales order recurring billing plan for header and lin
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [ONT_Recurring_Billing_Plan 28-Jul-2020 181125.xlsx](https://www.enginatics.com/example/ont-recurring-billing-plan/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/ont-recurring-billing-plan/](https://www.enginatics.com/reports/ont-recurring-billing-plan/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [ONT_Recurring_Billing_Plan.xml](https://www.enginatics.com/xml/ont-recurring-billing-plan/)

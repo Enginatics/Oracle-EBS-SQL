@@ -5,7 +5,7 @@ Count of installed base products by hierarchy type (parent / child), instance us
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/csi-installed-base-summary-by-organization/](https://www.enginatics.com/reports/csi-installed-base-summary-by-organization/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [CSI_Installed_Base_Summary_by_Organization.xml](https://www.enginatics.com/xml/csi-installed-base-summary-by-organization/)

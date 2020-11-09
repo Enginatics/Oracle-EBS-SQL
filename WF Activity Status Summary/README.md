@@ -7,7 +7,7 @@ Summary counts of stuck and errored workflow activities to monitor required hous
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [WF_Activity_Status_Summary 18-Jan-2018 221505.xlsx](https://www.enginatics.com/example/wf-activity-status-summary/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/wf-activity-status-summary/](https://www.enginatics.com/reports/wf-activity-status-summary/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [WF_Activity_Status_Summary.xml](https://www.enginatics.com/xml/wf-activity-status-summary/)

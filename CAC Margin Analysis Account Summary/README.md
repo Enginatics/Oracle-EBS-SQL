@@ -58,7 +58,7 @@ Report for the margin from the customer invoices and shipments, including the Sa
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [CAC_Margin_Analysis_Account_Summary 01-Jun-2020 220355.xlsx](https://www.enginatics.com/example/cac-margin-analysis-account-summary/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/cac-margin-analysis-account-summary/](https://www.enginatics.com/reports/cac-margin-analysis-account-summary/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [CAC_Margin_Analysis_Account_Summary.xml](https://www.enginatics.com/xml/cac-margin-analysis-account-summary/)

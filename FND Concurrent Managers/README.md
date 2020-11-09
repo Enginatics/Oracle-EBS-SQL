@@ -8,7 +8,7 @@ Shows the same information as Concurrent->Manager->Administer and Concurrent->Ma
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [FND_Concurrent_Managers 27-Jan-2019 005502.xlsx](https://www.enginatics.com/example/fnd-concurrent-managers/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/fnd-concurrent-managers/](https://www.enginatics.com/reports/fnd-concurrent-managers/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [FND_Concurrent_Managers.xml](https://www.enginatics.com/xml/fnd-concurrent-managers/)

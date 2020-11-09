@@ -7,7 +7,7 @@ Detail incomplete transaction report
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [AR_Incomplete_Transactions 24-Jul-2017 144216.xlsx](https://www.enginatics.com/example/ar-incomplete-transactions/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/ar-incomplete-transactions/](https://www.enginatics.com/reports/ar-incomplete-transactions/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [AR_Incomplete_Transactions.xml](https://www.enginatics.com/xml/ar-incomplete-transactions/)

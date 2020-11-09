@@ -15,7 +15,7 @@ Note: The UOM calculation from LIOs to MB uses the database default block size a
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [DBA_AWR_System_Metrics_Summary 13-Jul-2018 173115.xlsx](https://www.enginatics.com/example/dba-awr-system-metrics-summary/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/dba-awr-system-metrics-summary/](https://www.enginatics.com/reports/dba-awr-system-metrics-summary/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [DBA_AWR_System_Metrics_Summary.xml](https://www.enginatics.com/xml/dba-awr-system-metrics-summary/)

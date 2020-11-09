@@ -7,7 +7,7 @@ Summary of latch statistics such as misses and wait times for a specified snapsh
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [DBA_AWR_Latch_Summary 26-Nov-2018 223201.xlsx](https://www.enginatics.com/example/dba-awr-latch-summary/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/dba-awr-latch-summary/](https://www.enginatics.com/reports/dba-awr-latch-summary/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [DBA_AWR_Latch_Summary.xml](https://www.enginatics.com/xml/dba-awr-latch-summary/)

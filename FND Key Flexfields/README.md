@@ -7,7 +7,7 @@ Key flexfields table, structure, column and validation information
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [FND_Key_Flexfields 10-Mar-2019 082628.xlsx](https://www.enginatics.com/example/fnd-key-flexfields/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/fnd-key-flexfields/](https://www.enginatics.com/reports/fnd-key-flexfields/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [FND_Key_Flexfields.xml](https://www.enginatics.com/xml/fnd-key-flexfields/)

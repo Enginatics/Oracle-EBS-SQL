@@ -7,7 +7,7 @@ Summary report for Inventory locations, showing locator number, description, typ
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [INV_Stock_Locators 26-Jul-2018 134603.xlsx](https://www.enginatics.com/example/inv-stock-locators/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/inv-stock-locators/](https://www.enginatics.com/reports/inv-stock-locators/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [INV_Stock_Locators.xml](https://www.enginatics.com/xml/inv-stock-locators/)

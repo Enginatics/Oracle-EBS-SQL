@@ -7,7 +7,7 @@ Blitz Report list of values
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [Blitz_Report_LOVs 27-Jul-2018 212033.xlsx](https://www.enginatics.com/example/blitz-report-lovs/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/blitz-report-lovs/](https://www.enginatics.com/reports/blitz-report-lovs/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [Blitz_Report_LOVs.xml](https://www.enginatics.com/xml/blitz-report-lovs/)

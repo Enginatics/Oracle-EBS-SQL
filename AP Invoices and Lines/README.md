@@ -8,7 +8,7 @@ Detail Invoice Aging report with line item details and amounts
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 # Example Report 
 [AP_Invoices_and_Lines 29-Jul-2020 201730.xlsx](https://www.enginatics.com/example/ap-invoices-and-lines/)
-# Reports' SQL
+# Report SQL
 [www.enginatics.com/reports/ap-invoices-and-lines/](https://www.enginatics.com/reports/ap-invoices-and-lines/)
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [AP_Invoices_and_Lines.xml](https://www.enginatics.com/xml/ap-invoices-and-lines/)
