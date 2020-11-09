@@ -1,0 +1,13 @@
+li {
+    list-style-type: none;
+}
+ul {
+    margin-left: 0;
+    padding-left: 0;
+}
+td {
+    vertical-align:top;
+}
+td b {
+    font-size:20px;
+}
