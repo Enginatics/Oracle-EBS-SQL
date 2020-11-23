@@ -27,6 +27,7 @@ xxen_util.client_time(wdj.scheduled_start_date) scheduled_start_date,
 xxen_util.client_time(wdj.scheduled_completion_date) scheduled_completion_date,
 round((wdj.scheduled_completion_date-wdj.scheduled_start_date)*24,3) duration,
 decode(ewod.pending_flag,'Y',ewsv.work_order_status||' - '||fnd_message.get_string('EAM','EAM_PENDING_TEXT'),ewsv.work_order_status) work_order_status,
+&planner_maintenance
 --xxen_util.meaning(wdj.status_type,'WIP_JOB_STATUS',700) status,
 xxen_util.user_name(wdj.created_by) created_by,
 xxen_util.client_time(wdj.creation_date) creation_date,

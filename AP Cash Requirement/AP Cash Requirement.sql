@@ -75,7 +75,7 @@ ap_invoices_all aia
 ) aia,
 fnd_currencies fc,
 hz_parties hp,
-ap_suppliers asu,
+ap_suppliers aps,
 ap_supplier_sites_all assa
 &apt_table
 where
@@ -92,7 +92,7 @@ hou.organization_id=apsa.org_id and
 apsa.invoice_id=aia.invoice_id and
 aia.invoice_currency_code=fc.currency_code and
 aia.party_id=hp.party_id and
-aia.vendor_id=asu.vendor_id(+) and
+aia.vendor_id=aps.vendor_id(+) and
 aia.vendor_id=assa.vendor_id(+) and
 aia.vendor_site_id=assa.vendor_site_id(+)
 order by

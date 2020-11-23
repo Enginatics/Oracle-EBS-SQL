@@ -56,7 +56,7 @@ aia.invoice_currency_code,
 aia.payment_currency_code,
 aia.payment_method_code,
 aia.invoice_amount,
-(select pha.segment1 from po_headers_all pha where nvl(aia.quick_po_header_id,rt.po_header_id)=pha.po_header_id) purchase_order,
+(select pha.segment1 from po_headers_all pha where coalesce(aia.quick_po_header_id,rt.po_header_id,wt.po_header_id)=pha.po_header_id) purchase_order,
 --AR
 case when xte.entity_code='TRANSACTIONS' and rcta.interface_header_context in ('ORDER ENTRY','INTERCOMPANY') then rcta.interface_header_attribute1 end sales_order,
 jrrev.resource_name salesperson,
@@ -64,7 +64,7 @@ jrrev.resource_name salesperson,
 (select rr.name from ra_customer_trx_lines_all rctla, ra_rules rr where rcta.customer_trx_id=rctla.customer_trx_id and rctla.line_type='LINE' and rctla.accounting_rule_id=rr.rule_id and rownum=1) accounting_rule,
 rt.quantity po_quantity,
 coalesce(
-(select asu.vendor_name from ap_suppliers asu where coalesce(aia.vendor_id,aca.vendor_id,rt.vendor_id)=asu.vendor_id),
+(select aps.vendor_name from ap_suppliers aps where coalesce(aia.vendor_id,aca.vendor_id,rt.vendor_id)=aps.vendor_id),
 (select hp.party_name from hz_cust_accounts hca, hz_parties hp where coalesce(rcta.bill_to_customer_id,acra.pay_from_customer,paa.customer_id)=hca.cust_account_id and hca.party_id=hp.party_id)
 ) vendor_or_customer,
 --Projects
@@ -85,6 +85,14 @@ peia.quantity expenditure_item_quantity,
 xxen_util.meaning(pet.unit_of_measure,'UNIT',275) expenditure_unit_of_measure,
 papf.full_name incurred_by_person,
 nvl(papf.employee_number,papf.npw_number) incurred_by_employee_number,
+--WIP
+bd.department_code,
+br.resource_code,
+we.wip_entity_name wip_job,
+wt.operation_seq_num,
+wt.transaction_quantity,
+wt.transaction_uom,
+wt.primary_quantity,
 xxen_util.user_name(gjh.created_by) journal_created_by,
 gjh.creation_date journal_creation_date,
 gjb.je_batch_id,
@@ -129,7 +137,11 @@ pa_expenditure_items_all peia,
 pa_expenditures_all pea,
 pa_expenditure_types pet,
 (select papf.* from per_all_people_f papf where sysdate>=papf.effective_start_date and sysdate<papf.effective_end_date+1) papf,
-rcv_transactions rt
+rcv_transactions rt,
+wip_transactions wt,
+wip_entities we,
+bom_departments bd,
+bom_resources br
 where
 1=1 and
 gl.period_set_name=gp.period_set_name and
@@ -175,4 +187,8 @@ nvl(aida.task_id,peia.task_id)=pt.task_id(+) and
 peia.expenditure_id=pea.expenditure_id(+) and
 peia.expenditure_type=pet.expenditure_type(+) and
 pea.incurred_by_person_id=papf.person_id(+) and
-case when xte.application_id=707 and xte.entity_code='RCV_ACCOUNTING_EVENTS' then xte.source_id_int_1 end=rt.transaction_id(+)
+case when xte.application_id=707 and xte.entity_code='RCV_ACCOUNTING_EVENTS' then xte.source_id_int_1 end=rt.transaction_id(+) and
+case when xte.application_id=707 and xte.entity_code='WIP_ACCOUNTING_EVENTS' then xte.source_id_int_1 end=wt.transaction_id(+) and
+wt.wip_entity_id=we.wip_entity_id(+) and
+wt.department_id=bd.department_id(+) and
+wt.resource_id=br.resource_id(+)

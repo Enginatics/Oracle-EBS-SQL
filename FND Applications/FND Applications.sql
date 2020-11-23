@@ -24,6 +24,7 @@ xxen_util.meaning(decode(fas.state,'R','Y'),'YES_NO',0) audit_enabled,
 fav.application_id,
 du.account_status db_account_status,
 du.created db_account_created,
+xxen_util.meaning(fmpi.status,'YES_NO',0) multi_org_status,
 xxen_util.user_name(fav.created_by) created_by,
 xxen_util.client_time(fav.creation_date) creation_date,
 xxen_util.user_name(fav.last_updated_by) last_updated_by,
@@ -34,12 +35,14 @@ fnd_application_vl fav,
 fnd_product_installations fpi,
 fnd_oracle_userid fou,
 dba_users du,
-fnd_audit_schemas fas
+fnd_audit_schemas fas,
+fnd_mo_product_init fmpi
 where
 1=1 and
 fav.application_id=fpi.application_id(+) and
 fpi.oracle_id=fou.oracle_id(+) and
 fou.oracle_username=du.username(+) and
-fou.oracle_id=fas.oracle_id(+)
+fou.oracle_id=fas.oracle_id(+) and
+fav.application_short_name=fmpi.application_short_name(+)
 order by
 fav.application_short_name

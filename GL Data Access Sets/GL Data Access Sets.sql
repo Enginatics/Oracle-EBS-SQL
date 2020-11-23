@@ -25,7 +25,8 @@ decode(gasnav.access_privilege_code,'B','Read and Write','R','Read Only') privil
 xxen_util.user_name(gasnav.created_by) created_by,
 xxen_util.client_time(gasnav.creation_date) creation_date,
 xxen_util.user_name(gasnav.last_updated_by) last_updated_by,
-xxen_util.client_time(gasnav.last_update_date) last_update_date
+xxen_util.client_time(gasnav.last_update_date) last_update_date,
+gasv.access_set_id
 from
 gl_access_sets_v gasv,
 gl_access_set_norm_assign_v gasnav

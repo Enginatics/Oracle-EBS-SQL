@@ -34,8 +34,8 @@ pha.currency_code,
 nvl(pha.closed_code_,'OPEN') closed_code,
 xxen_util.client_time(pha.closed_date) closed_date,
 (select sum(rt.quantity) from rcv_transactions rt where pha.po_header_id=rt.po_header_id and nvl(pha.po_release_id,-99)=nvl(rt.po_release_id,-99)) quantity_received,
-asu.vendor_name,
-asu.type_1099,
+aps.vendor_name,
+aps.type_1099,
 pvsa.vendor_site_code,
 pvsa.address_line1,
 pvsa.address_line2,
@@ -79,7 +79,7 @@ po_releases_all pra
 where
 pha.po_header_id=pra.po_header_id(+)
 ) pha,
-ap_suppliers asu,
+ap_suppliers aps,
 po_vendor_sites_all pvsa,
 po_vendor_contacts pvc,
 ap_terms at,
@@ -91,7 +91,7 @@ where
 1=1 and
 haouv.organization_id=pha.org_id and
 pha.type_lookup_code in ('PLANNED','CONTRACT','BLANKET','STANDARD') and
-pha.vendor_id=asu.vendor_id(+) and
+pha.vendor_id=aps.vendor_id(+) and
 pha.vendor_site_id=pvsa.vendor_site_id(+) and
 pha.vendor_contact_id=pvc.vendor_contact_id(+) and
 pha.terms_id=at.term_id(+) and

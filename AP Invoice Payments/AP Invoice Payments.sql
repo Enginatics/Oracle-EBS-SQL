@@ -15,9 +15,9 @@ select
 gl.name ledger,
 gl.currency_code ledger_currency,
 hou.name operating_unit,
-asu.vendor_name supplier,
-asu.segment1 supplier_number,
-xxen_util.meaning(asu.vendor_type_lookup_code,'VENDOR TYPE',201) supplier_type,
+aps.vendor_name supplier,
+aps.segment1 supplier_number,
+xxen_util.meaning(aps.vendor_type_lookup_code,'VENDOR TYPE',201) supplier_type,
 xxen_util.meaning(aia.invoice_type_lookup_code,'INVOICE TYPE',200) invoice_type,
 aia.invoice_date,
 aia.invoice_num invoice_number,
@@ -76,7 +76,7 @@ ap_invoice_payments_all aipa,
 ap_checks_all aca,
 gl_daily_rates gdr,
 ap_invoices_all aia,
-ap_suppliers asu,
+ap_suppliers aps,
 ap_terms_vl atv,
 ce_bank_acct_uses_all cbaua,
 ce_bank_accounts cba,
@@ -94,8 +94,8 @@ gdr.to_currency(+)='USD' and
 aca.check_date=gdr.conversion_date(+) and
 gdr.conversion_type(+)='Corporate' and
 aipa.invoice_id=aia.invoice_id and
-aia.vendor_id=asu.vendor_id and
-asu.terms_id=atv.term_id(+) and
+aia.vendor_id=aps.vendor_id and
+aps.terms_id=atv.term_id(+) and
 aca.ce_bank_acct_use_id=cbaua.bank_acct_use_id(+) and
 cbaua.bank_account_id=cba.bank_account_id(+) and
 cba.bank_branch_id=cbbv.branch_party_id(+) and

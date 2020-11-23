@@ -15,7 +15,7 @@ x.*,
 case when x.entity_code='TRANSACTIONS' and rcta.interface_header_context in ('ORDER ENTRY','INTERCOMPANY') then rcta.interface_header_attribute1 end sales_order,
 (select name from ra_rules rr where rcta.invoicing_rule_id=rule_id) invoice_rule,
 (select rr.name from ra_customer_trx_lines_all rctla, ra_rules rr where rcta.customer_trx_id=rctla.customer_trx_id and rctla.line_type='LINE' and rctla.accounting_rule_id=rr.rule_id and rownum=1) accounting_rule,
-coalesce(x.project,nvl(x.project,case when x.entity_code='TRANSACTIONS' and rcta.interface_header_context='PROJECTS INVOICES' then rcta.interface_header_attribute1 end)) project_,
+coalesce(x.project_,nvl(x.project_,case when x.entity_code='TRANSACTIONS' and rcta.interface_header_context='PROJECTS INVOICES' then rcta.interface_header_attribute1 end)) project_,
 coalesce(x.vendor_or_customer,(select hp.party_name from hz_cust_accounts hca, hz_parties hp where coalesce(rcta.bill_to_customer_id,x.acra_pay_from_customer,x.paa_customer_id)=hca.cust_account_id and hca.party_id=hp.party_id)) vendor_or_customer_
 from
 (
@@ -58,12 +58,12 @@ aia.description description,
 (select pha.segment1 from po_headers_all pha where nvl(aia.quick_po_header_id,rt.po_header_id)=pha.po_header_id) purchase_order,
 --AR
 rt.quantity po_quantity,
-(select asu.vendor_name from ap_suppliers asu where coalesce(aia.vendor_id,aca.vendor_id,rt.vendor_id)=asu.vendor_id) vendor_or_customer,
+(select aps.vendor_name from ap_suppliers aps where coalesce(aia.vendor_id,aca.vendor_id,rt.vendor_id)=aps.vendor_id) vendor_or_customer,
 --Projects
 coalesce(
 (select ppa.segment1 from pa_projects_all ppa where aida.project_id=ppa.project_id),
 (select ppa.segment1 from pa_projects_all ppa where case when xte.application_id=275 then decode(xte.entity_code,'REVENUE',xte.source_id_int_1,'EXPENDITURES',peia.project_id) end=ppa.project_id)
-) project,
+) project_,
 (select pt.task_number from pa_tasks pt where nvl(aida.task_id,peia.task_id)=pt.task_id) task,
 pea.expenditure_group,
 xxen_util.meaning(pea.expenditure_class_code,'EXPENDITURE CLASS CODE',275) expenditure_class_code,

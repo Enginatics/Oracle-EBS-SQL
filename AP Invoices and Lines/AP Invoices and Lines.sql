@@ -14,7 +14,7 @@
 select
 gl.name ledger,
 haouv.name operating_unit,
-asu.vendor_name supplier,
+aps.vendor_name supplier,
 aia.invoice_num,
 xxen_util.ap_invoice_status(aia.invoice_id,aia.invoice_amount,aia.payment_status_flag,aia.invoice_type_lookup_code,aia.validation_request_id) invoice_status,
 xxen_util.client_time(aia.creation_date) invoice_creation_date,
@@ -33,17 +33,17 @@ case when ceil(sysdate-apsa.due_date) between 91 and 120 then nvl(apsa.amount_re
 case when ceil(sysdate-apsa.due_date) between 121 and 150 then nvl(apsa.amount_remaining,0)/nvl(aia.payment_cross_rate,1)*nvl(aia.exchange_rate,1) end between_121_150,
 case when ceil(sysdate-apsa.due_date) between 151 and 180 then nvl(apsa.amount_remaining,0)/nvl(aia.payment_cross_rate,1)*nvl(aia.exchange_rate,1) end between_151_180,
 case when ceil(sysdate-apsa.due_date) >=181 then nvl(apsa.amount_remaining,0)/nvl(aia.payment_cross_rate,1)*nvl(aia.exchange_rate,1) end greater_than_180,
-asu.segment1 supplier_number,
-asu.num_1099 taxpayer_id,
-asu.vat_registration_num tax_registration_number,
-asu.end_date_active inactive_on,
-asu.customer_num,
-xxen_util.meaning(asu.one_time_flag,'YES_NO',0) one_time,
-asu.credit_status_lookup_code,
-asu.credit_limit,
-asu.withholding_status_lookup_code,
-asu.withholding_start_date,
-asu.vat_code,
+aps.segment1 supplier_number,
+aps.num_1099 taxpayer_id,
+aps.vat_registration_num tax_registration_number,
+aps.end_date_active inactive_on,
+aps.customer_num,
+xxen_util.meaning(aps.one_time_flag,'YES_NO',0) one_time,
+aps.credit_status_lookup_code,
+aps.credit_limit,
+aps.withholding_status_lookup_code,
+aps.withholding_start_date,
+aps.vat_code,
 assa.vendor_site_id,
 assa.vendor_site_code,
 assa.vendor_site_code supplier_site,
@@ -95,6 +95,8 @@ apsa.second_disc_amt_available,
 apsa.third_disc_amt_available,
 apsa.discount_amount_remaining,
 apsa.inv_curr_gross_amount,
+cbv.bank_name,
+ieba.iban,
 nvl(aia.amount_paid,0)/decode(nvl(aia.payment_cross_rate,1),0,1,aia.payment_cross_rate)*aia.exchange_rate amount_paid_base,
 nvl(aia.amount_applicable_to_discount,0)*aia.exchange_rate amt_applicable_to_disc_base,
 nvl(aia.discount_amount_taken,0)/decode(nvl(aia.payment_cross_rate,1),0,1,aia.payment_cross_rate)*aia.exchange_rate discount_amount_taken_base,
@@ -140,7 +142,9 @@ hr_all_organization_units_vl haouv2,
 hr_all_organization_units_vl haouv3,
 ap_invoices_all aia,
 ap_payment_schedules_all apsa,
-ap_suppliers asu,
+iby_ext_bank_accounts ieba,
+ce_banks_v cbv,
+ap_suppliers aps,
 ap_supplier_sites_all assa,
 (select aila.* from ap_invoice_lines_all aila where '&enable_aila'='Y') aila,
 (select aida.* from ap_invoice_distributions_all aida where '&enable_aida'='Y') aida,
@@ -156,7 +160,9 @@ aia.expenditure_organization_id=haouv1.organization_id(+) and
 aila.expenditure_organization_id=haouv2.organization_id(+) and
 aida.expenditure_organization_id=haouv3.organization_id(+) and
 aia.invoice_id=apsa.invoice_id and
-aia.vendor_id=asu.vendor_id and
+apsa.external_bank_account_id=ieba.ext_bank_account_id(+) and
+ieba.bank_id=cbv.bank_party_id(+) and
+aia.vendor_id=aps.vendor_id and
 aia.vendor_site_id=assa.vendor_site_id and
 aia.invoice_id=aila.invoice_id(+) and
 aila.invoice_id=aida.invoice_id(+)and

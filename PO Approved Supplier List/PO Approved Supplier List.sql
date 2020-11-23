@@ -16,8 +16,8 @@ mck.concatenated_segments commodity,
 msiv.concatenated_segments item,
 msiv.description item_description,
 xxen_util.meaning(pasl.vendor_business_type,'ASL_VENDOR_BUSINESS_TYPE',201) business,
-decode(pasl.vendor_business_type,'MANUFACTURER',null,asu.segment1) supplier_number,
-decode(pasl.vendor_business_type,'MANUFACTURER',mm.manufacturer_name,asu.vendor_name) supplier,
+decode(pasl.vendor_business_type,'MANUFACTURER',null,aps.segment1) supplier_number,
+decode(pasl.vendor_business_type,'MANUFACTURER',mm.manufacturer_name,aps.vendor_name) supplier,
 assa.vendor_site_code supplier_site,
 haout3.name operating_unit,
 pas.status,
@@ -84,7 +84,7 @@ hr_all_organization_units_tl haout2,
 hr_all_organization_units_tl haout3,
 mtl_system_items_vl msiv,
 mtl_categories_kfv mck,
-ap_suppliers asu,
+ap_suppliers aps,
 ap_supplier_sites_all assa,
 mtl_manufacturers mm,
 po_asl_statuses pas,
@@ -111,7 +111,7 @@ haout3.language(+)=userenv('lang') and
 pasl.owning_organization_id=msiv.organization_id(+) and
 pasl.item_id=msiv.inventory_item_id(+) and
 pasl.category_id=mck.category_id(+) and
-pasl.vendor_id=asu.vendor_id(+) and
+pasl.vendor_id=aps.vendor_id(+) and
 pasl.vendor_site_id=assa.vendor_site_id(+) and
 assa.org_id=haout3.organization_id(+) and
 pasl.manufacturer_id=mm.manufacturer_id(+) and
@@ -137,6 +137,6 @@ order by
 mp1.organization_code,
 mck.concatenated_segments,
 msiv.concatenated_segments,
-decode(pasl.vendor_business_type,'MANUFACTURER',mm.manufacturer_name,asu.vendor_name),
+decode(pasl.vendor_business_type,'MANUFACTURER',mm.manufacturer_name,aps.vendor_name),
 assa.vendor_site_code,
 mp2.organization_code

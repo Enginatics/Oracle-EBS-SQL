@@ -441,8 +441,8 @@ from
         &lp_customer_num_high
         &lp_invoice_type_low
         &lp_invoice_type_high
-        &lp_bal_low
-        &lp_bal_high
+        &lp_bal_seg_low
+        &lp_bal_seg_high
         &lp_where_show_bill
         and ps.customer_id = cust_acct.cust_account_id 
                 and ps.customer_trx_id = gld.customer_trx_id
@@ -555,8 +555,8 @@ from
                    and    decode(upper(:p_in_currency), NULL, ps.invoice_currency_code, 
                           upper(:p_in_currency)) = ps.invoice_currency_code 
                    and    nvl( ps.receipt_confirmed_flag, 'Y' ) = 'Y'
-        &lp_bal_low
-        &lp_bal_high
+        &lp_bal_seg_low
+        &lp_bal_seg_high
         &lp_mo_ps_w
         &lp_mo_app_w
                        ) app
@@ -657,4 +657,4 @@ from
               arpt_sql_func_util.bucket_function(XXEN_AR_ARXAGRW_PKG.bucket_line_type(6), 
                         0,0,XXEN_AR_ARXAGRW_PKG.bucket_days_from(6),XXEN_AR_ARXAGRW_PKG.bucket_days_to(6), 
                          ps.due_date,XXEN_AR_ARXAGRW_PKG.bucket_category,:p_in_as_of_date_low) b6,
-             fnd_flex_xml_publisher_apis.process_kff_combination_1('lp_acct_flex_bal_seg', 'SQLGL
+             fnd_flex_xml_publisher_apis.process_kff_combination_1('lp_acct_flex_

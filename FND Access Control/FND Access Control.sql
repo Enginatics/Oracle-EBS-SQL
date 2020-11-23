@@ -216,9 +216,9 @@ coalesce(
 (select fpov.profile_option_value from fnd_profile_option_values fpov where fpov.level_value=0 and fpov.level_id=10001 and fpov.application_id=0 and fpov.profile_option_id=1991)
 ) org_id,
 coalesce(
-(select fpov.profile_option_value from fnd_profile_option_values fpov where usr.user_id=fpov.level_value and fpov.level_id=10004 and fpov.application_id=101 and fpov.profile_option_id=1009294),
-(select fpov.profile_option_value from fnd_profile_option_values fpov where frv.responsibility_id=fpov.level_value and frv.application_id=fpov.level_value_application_id and fpov.level_id=10003 and fpov.application_id=101 and fpov.profile_option_id=1009294),
-(select fpov.profile_option_value from fnd_profile_option_values fpov where fpov.level_value=0 and fpov.level_id=10001 and fpov.application_id=101 and fpov.profile_option_id=1009294)
+(select fpov.profile_option_value from fnd_profile_option_values fpov where usr.user_id=fpov.level_value and fpov.level_id=10004 and fpov.application_id=101 and fpov.profile_option_id=(select fpo.profile_option_id from fnd_profile_options fpo where fpo.profile_option_name='GL_ACCESS_SET_ID')),
+(select fpov.profile_option_value from fnd_profile_option_values fpov where frv.responsibility_id=fpov.level_value and frv.application_id=fpov.level_value_application_id and fpov.level_id=10003 and fpov.application_id=101 and fpov.profile_option_id=(select fpo.profile_option_id from fnd_profile_options fpo where fpo.profile_option_name='GL_ACCESS_SET_ID')),
+(select fpov.profile_option_value from fnd_profile_option_values fpov where fpov.level_value=0 and fpov.level_id=10001 and fpov.application_id=101 and fpov.profile_option_id=(select fpo.profile_option_id from fnd_profile_options fpo where fpo.profile_option_name='GL_ACCESS_SET_ID'))
 ) gl_access_set_id,
 fffv.type fffv_type,
 xxen_util.reverse(nav.entry_sequence_,'>') entry_sequence,

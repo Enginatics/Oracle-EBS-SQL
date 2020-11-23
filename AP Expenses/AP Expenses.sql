@@ -18,7 +18,7 @@ xxen_util.meaning(aerha.source,'SOURCE',200) source,
 decode(ppx.current_npw_flag, 'Y', ppx.npw_number, ppx.employee_number) employee_number,
 aerha.invoice_num expense_report_number,
 aerha.description purpose,
-case when aerha.source in ('Both Pay','CREDIT CARD') then asu.vendor_name end card_provider,
+case when aerha.source in ('Both Pay','CREDIT CARD') then aps.vendor_name end card_provider,
 trunc(aerha.week_end_date) expense_report_date,
 aerha.total expense_amount,
 aerha.payment_currency_code currency,
@@ -56,7 +56,7 @@ hr_operating_units hou,
 ap_expense_report_headers_all aerha,
 per_people_x ppx,
 ap_aud_queues aaq,
-ap_suppliers asu,
+ap_suppliers aps,
 ap_invoices_all aia,
 (select aerla.* from ap_expense_report_lines_all aerla where '&show_lines'='Y') aerla,
 (select opdb.* from oie_pdm_daily_breakups opdb where '&show_per_diem'='Y') opdb,
@@ -68,7 +68,7 @@ where
 aerha.set_of_books_id=gl.ledger_id and
 hou.organization_id=aerha.org_id and
 aerha.employee_id=ppx.person_id(+) and
-aerha.vendor_id=asu.vendor_id(+) and
+aerha.vendor_id=aps.vendor_id(+) and
 aerha.vouchno=aia.invoice_id(+) and
 aerha.report_header_id=aaq.expense_report_id(+) and
 aerha.report_header_id=aerla.report_header_id(+) and

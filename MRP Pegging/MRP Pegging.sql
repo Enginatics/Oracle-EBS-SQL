@@ -157,7 +157,7 @@ y.completed,
 xxen_util.meaning(y.action_id,'MRP_ACTIONS',700) action,
 y.reschedule_date,
 y.exception,
-asu.vendor_name supplier_name,
+aps.vendor_name supplier_name,
 y.frozen_cost,
 y.pending_cost,
 y.on_hand,
@@ -519,12 +519,12 @@ wor.resource_id=br.resource_id(+)
 po_line_locations_all plla,
 po_lines_all pla,
 po_requisition_lines_all prla,
-ap_suppliers asu
+ap_suppliers aps
 where
 case when y.supply_type_id in (1,8) then y.supply_line_id end=plla.line_location_id(+) and
 plla.po_line_id=pla.po_line_id(+) and
 decode(y.supply_type_id,2,y.supply_line_id)=prla.requisition_line_id(+) and
-y.vendor_id=asu.vendor_id(+)
+y.vendor_id=aps.vendor_id(+)
 ) z
 where
 3=3

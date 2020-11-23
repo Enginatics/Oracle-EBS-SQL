@@ -1723,19 +1723,21 @@ end dis_eul_usage_count;
 
 
 function dis_default_eul return varchar2 is
-l_default_eul varchar2(30);
+l_default_eul varchar2(30):=fnd_profile.value('XXEN_REPORT_DISCOVERER_DEFAULT_EUL');
 begin
-  for c in (
-  select distinct
-  max(lower(ao.owner)) keep (dense_rank last order by xxen_util.dis_eul_usage_count(ao.owner),ao.created) over () default_eul
-  from
-  all_objects ao
-  where
-  ao.object_type='TABLE' and
-  ao.object_name='EUL5_VERSIONS'
-  ) loop
-    l_default_eul:=c.default_eul;
-  end loop;
+  if l_default_eul is null then
+    for c in (
+    select distinct
+    max(lower(ao.owner)) keep (dense_rank last order by xxen_util.dis_eul_usage_count(ao.owner),ao.created) over () default_eul
+    from
+    all_objects ao
+    where
+    ao.object_type='TABLE' and
+    ao.object_name='EUL5_QPP_STATS'
+    ) loop
+      l_default_eul:=c.default_eul;
+    end loop;
+  end if;
   return l_default_eul;
 end dis_default_eul;
 

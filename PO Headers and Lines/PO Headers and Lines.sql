@@ -98,7 +98,7 @@ pha.segment1 po_number,
 pha.revision_num revision,
 pra.release_num release,
 pdtav.type_name type,
-asu.vendor_name supplier_name,
+aps.vendor_name supplier_name,
 assa.vendor_site_code supplier_site,
 ppx.full_name buyer,
 po_headers_sv3.get_po_status(pha.po_header_id) status,
@@ -202,7 +202,7 @@ rsl.quantity_shipped,
 mck.concatenated_segments item_category,
 rsl.vendor_item_num,
 xxen_util.meaning(rsl.shipment_line_status_code,'SHIPMENT LINE STATUS',201) shipment_line_status,
-asu.segment1 supplier_number,
+aps.segment1 supplier_number,
 assa.address_line1 supplier_address1,
 assa.address_line2 supplier_address2,
 assa.address_line3 supplier_address3,
@@ -216,7 +216,7 @@ pla.po_header_id,
 pla.po_line_id
 from
 po_headers_all pha,
-ap_suppliers asu,
+ap_suppliers aps,
 ap_supplier_sites_all assa,
 fnd_territories_vl ftv,
 po_vendor_contacts pvc,
@@ -280,7 +280,7 @@ ap_invoice_lines_all aila,
 ap_invoices_all aia
 where
 1=1 and
-pha.vendor_id=asu.vendor_id and
+pha.vendor_id=aps.vendor_id and
 pha.vendor_site_id=assa.vendor_site_id and
 assa.country=ftv.territory_code(+) and
 pha.vendor_contact_id=pvc.vendor_contact_id(+) and

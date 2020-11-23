@@ -32,7 +32,7 @@ ccg.cost_group,
 ppa.project_number project,
 pt.task_number task,
 xxen_util.meaning(moqd.owning_tp_type,'MTL_TP_TYPES',3) owning_tp_type,
-asu.vendor_name||nvl2(assa.vendor_site_code,'-',null)||assa.vendor_site_code owning_party,
+aps.vendor_name||nvl2(assa.vendor_site_code,'-',null)||assa.vendor_site_code owning_party,
 xxen_util.meaning(moqd.planning_tp_type,'MTL_TP_TYPES',3) planning_tp_type,
 decode(moqd.planning_tp_type,2,mp2.organization_code,1,assa2.vendor_site_code,moqd.planning_organization_id) planning_org,
 nvl(xxen_util.meaning(msiv.serial_number_control_code,'CSP_INV_ITEM_SERIAL_CONTROL',0),xxen_util.meaning(msiv.serial_number_control_code,'MTL_SERIAL_NUMBER',700)) serial_control,
@@ -58,7 +58,7 @@ wms_license_plate_numbers wlpn,
 mtl_system_items_vl msiv,
 mtl_units_of_measure_tl muot,
 ap_supplier_sites_all assa,
-ap_suppliers asu,
+ap_suppliers aps,
 mtl_parameters mp2,
 ap_supplier_sites_all assa2,
 mtl_lot_numbers mln,
@@ -91,7 +91,7 @@ moqd.inventory_item_id=msiv.inventory_item_id and
 msiv.primary_uom_code=muot.uom_code(+) and
 muot.language(+)=userenv('lang') and
 decode(moqd.owning_tp_type,1,moqd.owning_organization_id)=assa.vendor_site_id(+) and
-assa.vendor_id=asu.vendor_id(+) and
+assa.vendor_id=aps.vendor_id(+) and
 decode(moqd.planning_tp_type,2,moqd.planning_organization_id)=mp2.organization_id(+) and
 decode(moqd.planning_tp_type,1,moqd.planning_organization_id)=assa2.vendor_site_id(+) and
 moqd.inventory_item_id=mln.inventory_item_id(+) and

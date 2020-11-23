@@ -5,29 +5,33 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: AP Suppliers
--- Description: AP suppliers (po vendors) including supplier sites and contact information
+-- Description: AP suppliers (po vendors) including supplier sites, contact and bank account information on vendor and site level
 -- Excel Examle Output: https://www.enginatics.com/example/ap-suppliers/
 -- Library Link: https://www.enginatics.com/reports/ap-suppliers/
 -- Run Report: https://demo.enginatics.com/
 
 select
 haouv.name operating_unit,
-asu.vendor_name supplier,
-asu.segment1 supplier_number,
-xxen_util.meaning(asu.vendor_type_lookup_code,'VENDOR TYPE',201) type,
-asu.type_1099 income_tax_type,
-decode(asu.organization_type_lookup_code,'INDIVIDUAL',asu.individual_1099,asu.num_1099) taxpayer_id,
-asu.vat_registration_num tax_registration_number,
-asu0.vendor_name parent_supplier_name,
-asu0.segment1 parent_supplier_number,
-asu.customer_num,
-asu.vat_code,
-decode(asu.small_business_flag,'Y','Y') small_business_flag,
-decode(asu.hold_flag,'Y','Y') hold_flag,
-asu.purchasing_hold_reason,
-asu.min_order_amount,
-asu.price_tolerance,
+aps.vendor_name supplier,
+aps.segment1 supplier_number,
+aps.vendor_name_alt alternate_supplier,
+xxen_util.meaning(aps.vendor_type_lookup_code,'VENDOR TYPE',201) type,
+aps.type_1099 income_tax_type,
+decode(aps.organization_type_lookup_code,'INDIVIDUAL',aps.individual_1099,aps.num_1099) taxpayer_id,
+aps.vat_registration_num tax_registration_number,
+aps.tax_reporting_name,
+aps0.vendor_name parent_supplier_name,
+aps0.segment1 parent_supplier_number,
+aps.customer_num,
+aps.vat_code,
+decode(aps.small_business_flag,'Y','Y') small_business_flag,
+decode(aps.hold_flag,'Y','Y') hold_flag,
+aps.purchasing_hold_reason,
+aps.end_date_active,
+aps.min_order_amount,
+aps.price_tolerance,
 assa.vendor_site_code site_code,
+xxen_util.meaning(decode(assa.primary_pay_site_flag,'Y','Y'),'YES_NO',0) primary_pay_site,
 assa.address_line1,
 assa.address_line2,
 assa.address_line3,
@@ -44,28 +48,69 @@ assa.fax_area_code,
 assa.fax,
 assa.supplier_notif_method,
 assa.email_address,
-nvl(assa.terms_date_basis,asu.terms_date_basis) terms_date_basis,
-nvl(assa.pay_group_lookup_code,asu.pay_group_lookup_code) pay_group,
-nvl(att1.name,att0.name) payment_terms,
-xxen_util.meaning(nvl(assa.pay_date_basis_lookup_code,asu.pay_date_basis_lookup_code),'PAY DATE BASIS',201) pay_date_basis
+nvl(assa.terms_date_basis,aps.terms_date_basis) terms_date_basis,
+nvl(assa.pay_group_lookup_code,aps.pay_group_lookup_code) pay_group,
+xxen_util.meaning(nvl(assa.pay_date_basis_lookup_code,aps.pay_date_basis_lookup_code),'PAY DATE BASIS',201) pay_date_basis,
+atv0.name payment_terms,
+(select distinct listagg(xxen_util.meaning(ieppm.payment_method_code,'PAYMENT METHOD',200,'Y'),', ') within group (order by ieppm.primary_flag desc, ieppm.payment_method_code) over () payment_method from iby_ext_party_pmt_mthds ieppm where iepa0.ext_payee_id=ieppm.ext_pmt_party_id) payment_method,
+iepa0.remit_advice_email,
+ipiua0.order_of_preference priority,
+cbbv0.bank_name,
+cbbv0.country bank_country,
+cbbv0.eft_swift_code swift_code,
+cbbv0.bank_branch_name bank_branch,
+cbbv0.branch_number,
+cbbv0.bank_branch_type branch_type,
+ieba0.iban,
+ieba0.bank_account_num bank_account,
+ieba0.currency_code,
+atv0.name site_payment_terms,
+(select distinct listagg(xxen_util.meaning(ieppm.payment_method_code,'PAYMENT METHOD',200,'Y'),', ') within group (order by ieppm.primary_flag desc, ieppm.payment_method_code) over () payment_method from iby_ext_party_pmt_mthds ieppm where iepa1.ext_payee_id=ieppm.ext_pmt_party_id) site_payment_method,
+iepa0.remit_advice_email site_remit_advice_email,
+ipiua1.order_of_preference site_priority,
+cbbv1.bank_name site_bank_name,
+cbbv1.country site_bank_country,
+cbbv1.eft_swift_code site_swift_code,
+cbbv1.bank_branch_name site_bank_branch,
+cbbv0.branch_number site_branch_number,
+cbbv0.bank_branch_type site_branch_type,
+ieba1.iban site_iban,
+ieba1.bank_account_num site_bank_account,
+ieba1.currency_code site_currency_code
 &contacts_columns
 from
 hr_all_organization_units_vl haouv,
-ap_suppliers asu,
+ap_suppliers aps,
 ap_supplier_sites_all assa,
 fnd_territories_vl ftv,
 (select pvc.* from po_vendor_contacts pvc where '&show_contacts'='Y' and nvl(pvc.inactive_date,sysdate)>=sysdate) pvc,
-ap_suppliers asu0,
-ap_terms_tl att0,
-ap_terms_tl att1
+ap_suppliers aps0,
+ap_terms_vl atv0,
+ap_terms_vl atv1,
+(select iepa.* from iby_external_payees_all iepa where iepa.party_site_id is null and iepa.supplier_site_id is null) iepa0,
+(select iepa.* from iby_external_payees_all iepa where iepa.supplier_site_id is not null) iepa1,
+(select ipiua.* from iby_pmt_instr_uses_all ipiua where ipiua.payment_flow='DISBURSEMENTS' and sysdate between ipiua.start_date and nvl(ipiua.end_date,sysdate)) ipiua0,
+(select ipiua.* from iby_pmt_instr_uses_all ipiua where ipiua.payment_flow='DISBURSEMENTS' and sysdate between ipiua.start_date and nvl(ipiua.end_date,sysdate)) ipiua1,
+iby_ext_bank_accounts ieba0,
+iby_ext_bank_accounts ieba1,
+ce_bank_branches_v cbbv0,
+ce_bank_branches_v cbbv1
 where
 1=1 and
-asu.vendor_id=assa.vendor_id(+) and
+aps.vendor_id=assa.vendor_id(+) and
 assa.org_id=haouv.organization_id(+) and
 assa.country=ftv.territory_code(+) and
 assa.vendor_site_id=pvc.vendor_site_id(+) and
-asu.parent_vendor_id=asu0.vendor_id(+) and
-asu.terms_id=att0.term_id(+) and
-assa.terms_id=att1.term_id(+) and
-att0.language(+)=userenv('lang') and
-att1.language(+)=userenv('lang')
+aps.parent_vendor_id=aps0.vendor_id(+) and
+aps.terms_id=atv0.term_id(+) and
+assa.terms_id=atv1.term_id(+) and
+aps.party_id=iepa0.payee_party_id(+) and
+assa.vendor_site_id=iepa1.supplier_site_id(+) and
+iepa0.payment_function(+)='PAYABLES_DISB' and
+iepa1.payment_function(+)='PAYABLES_DISB' and
+iepa0.ext_payee_id=ipiua0.ext_pmt_party_id(+) and
+iepa1.ext_payee_id=ipiua1.ext_pmt_party_id(+) and
+ipiua0.instrument_id=ieba0.ext_bank_account_id(+) and
+ipiua1.instrument_id=ieba1.ext_bank_account_id(+) and
+ieba0.branch_id=cbbv0.branch_party_id(+) and
+ieba1.branch_id=cbbv1.branch_party_id(+)
