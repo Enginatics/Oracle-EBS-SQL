@@ -27,7 +27,7 @@ decode (upper (:p_in_curr_code),null, araa.acctd_amount_applied_from,araa.amount
 sum(decode(araa.status,'OTHER ACC', decode(araa.applied_payment_schedule_id,-4, decode(upper(:p_in_curr_code),null, araa.acctd_amount_applied_from,araa.amount_applied),0),0)) claim_amt,
 hou.name operating_unit
 from
-gl_ledgers gl,
+gl_sets_of_books gl,
 hr_operating_units hou,
 ar_payment_schedules_all apsa,
 hz_cust_accounts hca,
@@ -41,8 +41,8 @@ ar_batches_all aba,
 ar_batch_sources_all absa
 where
 1=1 and
-gl.ledger_id=:p_ca_set_of_books_id and
-gl.ledger_id=hou.set_of_books_id and
+gl.name = :p_ca_set_of_books and
+gl.set_of_books_id=hou.set_of_books_id and
 hou.organization_id=araa.org_id and
 apsa.class='PMT' and
 apsa.gl_date_closed=to_date ('31-12-4712', 'DD-MM-YYYY') and

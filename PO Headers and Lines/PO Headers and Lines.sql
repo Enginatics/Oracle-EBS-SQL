@@ -216,8 +216,8 @@ pla.po_header_id,
 pla.po_line_id
 from
 po_headers_all pha,
-ap_suppliers aps,
-ap_supplier_sites_all assa,
+po_vendors aps,
+po_vendor_sites_all assa,
 fnd_territories_vl ftv,
 po_vendor_contacts pvc,
 po_document_types_all_vl pdtav,

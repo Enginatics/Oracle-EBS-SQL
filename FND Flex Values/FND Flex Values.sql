@@ -23,7 +23,7 @@ ffvv.end_date_active,
 xxen_util.meaning(decode(ffvv.summary_flag,'Y','Y'),'YES_NO',0) parent,
 ffhv.hierarchy_name rollup_group,
 ffvv.hierarchy_level,
-(select distinct listagg(ffvnh.parent_flex_value,chr(10)) within group (order by ffvnh.parent_flex_value) over () from fnd_flex_value_norm_hierarchy ffvnh where 2=2 and ffvv.summary_flag=decode(ffvnh.range_attribute,'P','Y','N') and ffvv.flex_value between ffvnh.child_flex_value_low and ffvnh.child_flex_value_high and ffvnh.flex_value_set_id=(select ffvs.flex_value_set_id from fnd_flex_value_sets ffvs where ffvs.flex_value_set_name=:flex_value_set_name)) hierarchy_position,
+(select distinct listagg(ffvnh.parent_flex_value,', ') within group (order by ffvnh.parent_flex_value) over () from fnd_flex_value_norm_hierarchy ffvnh where 2=2 and ffvv.summary_flag=decode(ffvnh.range_attribute,'P','Y','N') and ffvv.flex_value between ffvnh.child_flex_value_low and ffvnh.child_flex_value_high and ffvs.flex_value_set_id=ffvnh.flex_value_set_id) parent_values,
 &value_attributes
 ffvv.compiled_value_attributes,
 xxen_util.user_name(ffvv.created_by) created_by,

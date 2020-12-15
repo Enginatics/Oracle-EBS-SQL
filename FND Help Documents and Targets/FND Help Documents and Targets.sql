@@ -21,6 +21,7 @@ fl.file_name full_file_name,
 fl.program_tag,
 &file_data
 fl.file_content_type,
+fl.upload_date,
 fhd.file_id
 from
 fnd_application_vl fav,

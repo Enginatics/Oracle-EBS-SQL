@@ -69,7 +69,7 @@ xxen_util.client_time(xrv.creation_date) creation_date,
 xxen_util.user_name(xrv.last_updated_by) last_updated_by,
 xxen_util.client_time(xrv.last_update_date) last_update_date,
 xxen_util.meaning(nvl(xrv.enabled,'N'),'YES_NO',0) enabled,
-decode(xrv.column_selection_count,0,null,xrv.column_selection_count) column_selection_count,
+decode(xrv.template_count,0,null,xrv.template_count) template_count,
 &anchors_lexicals_binds
 xrv.sql_length,
 xrv.sql_text,
@@ -84,7 +84,7 @@ from
 (
 select
 xrv.*,
-(select count(*) from xxen_report_column_selections xrcs where xrv.report_id=xrcs.report_id) column_selection_count,
+(select count(*) from xxen_report_templates xrt where xrv.report_id=xrt.report_id) template_count,
 (select 'Y' from fnd_user fu where fu.user_name in ('ANONYMOUS','ENGINATICS') and xrv.created_by=fu.user_id) seeded_flag,
 xxen_report.is_seeded_blitz_report(xrv.guid) seeded_blitz_report_flag
 from

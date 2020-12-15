@@ -94,6 +94,14 @@ decode(xdl.source_distribution_type,
 'PO_DISTRIBUTIONS_ALL','po_distribution_id'
 )
 ) source_columns,
+xal.accounting_class_code,
+xdl.event_class_code,
+xdl.event_type_code,
+xdl.accounting_line_code,
+xdl.accounting_line_type_code,
+nvl2(xdl.tax_line_ref_id,'not null',null) tax_line_ref_id,
+nvl2(xdl.tax_rec_nrec_dist_ref_id,'not null',null) tax_rec_nrec_dist_ref_id,
+nvl2(xdl.tax_summary_line_ref_id,'not null',null) tax_summary_line_ref_id,
 nvl2(xdl.source_distribution_id_char_1,'not null',null) source_distribution_id_char_1,
 nvl2(xdl.source_distribution_id_char_2,'not null',null) source_distribution_id_char_2,
 nvl2(xdl.source_distribution_id_char_3,'not null',null) source_distribution_id_char_3,
@@ -104,26 +112,34 @@ nvl2(xdl.source_distribution_id_num_2,'not null',null) source_distribution_id_nu
 nvl2(xdl.source_distribution_id_num_3,'not null',null) source_distribution_id_num_3,
 nvl2(xdl.source_distribution_id_num_4,'not null',null) source_distribution_id_num_4,
 nvl2(xdl.source_distribution_id_num_5,'not null',null) source_distribution_id_num_5,
-xdl.accounting_line_code,
-xdl.accounting_line_type_code,
 xdl.merge_duplicate_code,
 xdl.line_definition_owner_code,
 xdl.line_definition_code,
-xdl.event_class_code,
-xdl.event_type_code,
 sum(xdl.unrounded_entered_cr) unrounded_entered_cr,
 sum(xdl.unrounded_accounted_cr) unrounded_accounted_cr,
 nvl2(xdl.upg_batch_id,'not null',null) upg_batch_id,
 xdl.application_id
 from
 fnd_application_vl fav,
+xla_ae_lines xal,
 xla_distribution_links xdl
 where
+xal.ae_header_id=xdl.ae_header_id and
+xal.ae_line_num=xdl.ae_line_num and
+xal.application_id=xdl.application_id and
 fav.application_id=xdl.application_id
 group by
 fav.application_short_name,
 fav.application_name,
 xdl.source_distribution_type,
+xal.accounting_class_code,
+xdl.event_class_code,
+xdl.event_type_code,
+xdl.accounting_line_code,
+xdl.accounting_line_type_code,
+nvl2(xdl.tax_line_ref_id,'not null',null),
+nvl2(xdl.tax_rec_nrec_dist_ref_id,'not null',null),
+nvl2(xdl.tax_summary_line_ref_id,'not null',null),
 nvl2(xdl.source_distribution_id_char_1,'not null',null),
 nvl2(xdl.source_distribution_id_char_2,'not null',null),
 nvl2(xdl.source_distribution_id_char_3,'not null',null),
@@ -134,13 +150,9 @@ nvl2(xdl.source_distribution_id_num_2,'not null',null),
 nvl2(xdl.source_distribution_id_num_3,'not null',null),
 nvl2(xdl.source_distribution_id_num_4,'not null',null),
 nvl2(xdl.source_distribution_id_num_5,'not null',null),
-xdl.accounting_line_code,
-xdl.accounting_line_type_code,
 xdl.merge_duplicate_code,
 xdl.line_definition_owner_code,
 xdl.line_definition_code,
-xdl.event_class_code,
-xdl.event_type_code,
 nvl2(xdl.upg_batch_id,'not null',null),
 xdl.application_id
 order by

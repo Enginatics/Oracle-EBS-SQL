@@ -47,6 +47,7 @@ nvl(we.wip_entity_name,mipo.po_number) supply_number,
 wdj0.scheduled_start_date demand_date,
 wdj.scheduled_completion_date
 from
+mtl_parameters mp,
 mrp_full_pegging mfp0,
 mrp_full_pegging mfp1,
 mtl_system_items_vl msiv0,
@@ -67,8 +68,9 @@ wip_entities we0,
 wip_discrete_jobs wdj0,
 mrp_item_purchase_orders mipo0
 where
+mp.organization_code=:organization_code and
 mfp0.compile_designator=:compile_designator and
-mfp0.organization_id=:organization_id and
+mfp0.organization_id=mp.organization_id and
 1=1 and
 mfp0.pegging_id=mfp1.end_pegging_id and
 mfp1.end_pegging_id<>mfp1.pegging_id and

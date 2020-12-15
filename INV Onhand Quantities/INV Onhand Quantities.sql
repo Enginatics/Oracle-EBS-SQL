@@ -57,10 +57,10 @@ wms_license_plate_numbers wlpn,
 &xrrpv_table
 mtl_system_items_vl msiv,
 mtl_units_of_measure_tl muot,
-ap_supplier_sites_all assa,
-ap_suppliers aps,
+po_vendor_sites_all assa,
+po_vendors aps,
 mtl_parameters mp2,
-ap_supplier_sites_all assa2,
+po_vendor_sites_all assa2,
 mtl_lot_numbers mln,
 cst_cost_groups ccg,
 (

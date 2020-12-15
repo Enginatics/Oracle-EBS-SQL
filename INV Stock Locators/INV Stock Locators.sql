@@ -20,7 +20,7 @@ mmsv.status_code status,
 mil.subinventory_code subinventory,
 mil.picking_order,
 mil.dropping_order,
-mil.alias,
+&alias_column
 mil.disable_date inactive_on,
 mil.location_maximum_units maximum_units,
 mil.location_current_units current_units,

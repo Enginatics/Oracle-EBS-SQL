@@ -318,6 +318,11 @@ function dis_folder_sql(p_object_id in number, p_eul in varchar2 default 'eul_us
 function dis_folder_sql2(p_object_id in number, p_eul in varchar2 default 'eul_us') return clob;
 
 /***********************************************************************************************/
+/*  discoverer SQL text for a custom object and column to create Blitz Report LOVs             */
+/***********************************************************************************************/
+function dis_lov_query(p_object_id in number, p_it_ext_column in varchar2, p_eul in varchar2 default 'eul_us') return clob;
+
+/***********************************************************************************************/
 /*  discoverer worksheet SQL text from logging table ams_discoverer_sql                        */
 /***********************************************************************************************/
 function dis_worksheet_sql(p_workbook_owner_name in varchar2, p_workbook_name in varchar2, p_worksheet_name in varchar2) return clob;
@@ -1850,6 +1855,15 @@ begin
   end if;
   return l_sql_text;
 end dis_folder_sql2;
+
+
+function dis_lov_query(p_object_id in number, p_it_ext_column in varchar2, p_eul in varchar2 default 'eul_us') return clob is
+l_sql_text clob:=dis_folder_sql(p_object_id, p_eul);
+begin
+  l_sql_text:=rtrim(regexp_replace(l_sql_text,'^\( SELECT .+? FROM ','select distinct'||chr(10)||lower(p_it_ext_column)||' value,'||chr(10)||'null description'||chr(10)||'from'||chr(10),1,1));
+  l_sql_text:=trim(substr(l_sql_text,1,length(l_sql_text)-1))||case when l_sql_text is not null then chr(10)||'order by value' end;
+  return l_sql_text;
+end dis_lov_query;
 
 
 function dis_worksheet_sql(p_workbook_owner_name in varchar2, p_workbook_name in varchar2, p_worksheet_name in varchar2) return clob is

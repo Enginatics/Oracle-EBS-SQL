@@ -37,7 +37,7 @@ mp.organization_code,
 msiv.concatenated_segments item,
 msiv.description item_description,
 mck.concatenated_segments category,
-misv.inventory_item_status_code_tl item_status,
+mis.inventory_item_status_code item_status,
 muot.unit_of_measure_tl primary_uom,
 &columns
 round(sum(decode(cdcv.level_type,1,cdcv.item_cost,0)) over (partition by cdcv.organization_id, cdcv.inventory_item_id, &partition_by), fc.extended_precision) this_level,
@@ -46,13 +46,13 @@ round(sum(cdcv.item_cost) over (partition by cdcv.organization_id, cdcv.inventor
 100*sum(cdcv.item_cost) over (partition by cdcv.organization_id, cdcv.inventory_item_id, &partition_by)/xxen_util.zero_to_null(sum(cdcv.item_cost) over (partition by cdcv.organization_id, cdcv.inventory_item_id)) percentage,
 round(sum(cdcv.item_cost) over (partition by cdcv.organization_id, cdcv.inventory_item_id), fc.extended_precision) item_cost_total
 from
-gl_ledgers gl,
+gl_sets_of_books gl,
 fnd_currencies fc,
 org_organization_definitions ood,
 mtl_parameters mp,
 mtl_system_items_vl msiv,
 mtl_units_of_measure_tl muot,
-mtl_item_status_vl misv,
+mtl_item_status mis,
 cst_detail_cost_view cdcv,
 cst_cost_types cct,
 mtl_category_sets_v mcsv,
@@ -63,12 +63,12 @@ where
 mcsv.category_set_name=:category_set_name and
 gl.currency_code=fc.currency_code and
 fc.enabled_flag='Y' and
-gl.ledger_id=ood.set_of_books_id and
+gl.set_of_books_id=ood.set_of_books_id and
 ood.organization_id=mp.organization_id and
 ood.organization_id=msiv.organization_id and
 msiv.primary_uom_code=muot.uom_code(+) and
 muot.language(+)=userenv('lang') and
-msiv.inventory_item_status_code=misv.inventory_item_status_code(+) and
+msiv.inventory_item_status_code=mis.inventory_item_status_code(+) and
 msiv.inventory_item_id=cdcv.inventory_item_id and
 mp.cost_organization_id=cdcv.organization_id and
 cdcv.cost_type_id=cct.cost_type_id and

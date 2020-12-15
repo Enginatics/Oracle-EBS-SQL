@@ -16,7 +16,7 @@ mp.organization_code,
 msiv.concatenated_segments item,
 mck.concatenated_segments category,
 msiv.description item_description,
-misv.inventory_item_status_code_tl item_status,
+mis.inventory_item_status_code item_status,
 muot.unit_of_measure_tl primary_uom,
 cic.shrinkage_rate shrinkage,
 cic.lot_size lot_size,
@@ -42,7 +42,7 @@ round(decode(cdcv.cost_element_id,4,cdcv.item_cost,0),fc.extended_precision) out
 round(decode(cdcv.cost_element_id,5,cdcv.item_cost,0),fc.extended_precision) overhead, 
 round(sum(cdcv.item_cost) over (partition by cdcv.organization_id, cdcv.inventory_item_id, cdcv.cost_type_id), fc.extended_precision) total_unit_cost
 from
-gl_ledgers gl,
+gl_sets_of_books gl,
 fnd_currencies fc,
 org_organization_definitions ood,
 mtl_parameters mp,
@@ -51,7 +51,7 @@ cst_cost_types cct,
 cst_detail_cost_view cdcv,
 mtl_system_items_vl msiv,
 mtl_units_of_measure_tl muot,
-mtl_item_status_vl misv,
+mtl_item_status mis,
 mtl_category_sets_v mcsv,
 mtl_item_categories mic,
 mtl_categories_kfv mck
@@ -60,7 +60,7 @@ where
 mcsv.category_set_name=:category_set_name and
 gl.currency_code=fc.currency_code and
 fc.enabled_flag='Y' and
-gl.ledger_id=ood.set_of_books_id and
+gl.set_of_books_id=ood.set_of_books_id and
 ood.organization_id=mp.organization_id and
 mp.cost_organization_id=cic.organization_id and
 cic.cost_type_id=cct.cost_type_id and
@@ -71,7 +71,7 @@ cic.inventory_item_id=msiv.inventory_item_id and
 ood.organization_id=msiv.organization_id and
 msiv.primary_uom_code=muot.uom_code(+) and
 muot.language(+)=userenv('lang') and
-msiv.inventory_item_status_code=misv.inventory_item_status_code(+) and
+msiv.inventory_item_status_code=mis.inventory_item_status_code(+) and
 mcsv.category_set_id=mic.category_set_id and
 msiv.inventory_item_id=mic.inventory_item_id and
 msiv.organization_id=mic.organization_id and 

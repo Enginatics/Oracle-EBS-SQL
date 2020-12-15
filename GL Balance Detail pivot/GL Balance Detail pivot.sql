@@ -11,26 +11,45 @@
 -- Run Report: https://demo.enginatics.com/
 
 select
-z.*,
-nvl(z.start_balance,0)+nvl(z.total,0) ytd
+y.ledger,
+&account_type2
+&segment_columns2
+y.start_balance,
+&period_columns
+y.total,
+nvl(y.start_balance,0)+nvl(y.total,0) ytd,
+y.currency_code currency,
+&start_balance_reval
+&period_columns_reval
+&total_reval
+y.chart_of_accounts_id
 from
 (
-select
-x.ledger,
-&segment_columns2
-nvl(x.period_name,'total') period_name,
-max(x.start_balance) over (partition by &segment_columns 1) start_balance,
-x.amount
+select distinct
+w.ledger,
+&account_type
+&segment_columns
+w.period_name,
+sum(w.start_bal       ) over (partition by w.ledger, &account_type &segment_columns w.chart_of_accounts_id) start_balance,
+sum(w.start_bal*w.rate) over (partition by w.ledger, &account_type &segment_columns w.chart_of_accounts_id) start_balance_reval,
+sum(w.amount          ) over (partition by w.ledger, &account_type &segment_columns w.chart_of_accounts_id) total,
+sum(w.amount*w.rate   ) over (partition by w.ledger, &account_type &segment_columns w.chart_of_accounts_id) total_reval,
+sum(w.amount          ) over (partition by w.ledger, &account_type &segment_columns w.chart_of_accounts_id, w.period_name) amount,
+sum(w.amount*w.rate   ) over (partition by w.ledger, &account_type &segment_columns w.chart_of_accounts_id, w.period_name) amount_reval,
+w.currency_code,
+w.chart_of_accounts_id
 from
 (
 select
 gl.name ledger,
 &account_type
 &segment_columns
-gl.chart_of_accounts_id,
 gps.period_name,
-sum(decode(gps.start_period,'Y',nvl(gb.begin_balance_dr,0)-nvl(gb.begin_balance_cr,0))) start_balance,
-sum(nvl(gb.period_net_dr,0)-nvl(gb.period_net_cr,0)) amount
+decode(gps.start_period,'Y',nvl(gb.begin_balance_dr,0)-nvl(gb.begin_balance_cr,0)) start_bal,
+nvl(gb.period_net_dr,0)-nvl(gb.period_net_cr,0) amount,
+decode(gl.currency_code,:reval_currency,1,(select gdr.conversion_rate from gl_daily_conversion_types gdct, gl_daily_rates gdr where gl.currency_code=gdr.from_currency and gdr.to_currency=:reval_currency and gps.end_date=gdr.conversion_date and gdct.user_conversion_type=:reval_conversion_type and gdct.conversion_type=gdr.conversion_type)) rate,
+gl.currency_code,
+gl.chart_of_accounts_id
 from
 gl_ledgers gl,
 gl_period_statuses gps0,
@@ -51,18 +70,16 @@ gps.ledger_id=gb.ledger_id and
 gps.period_name=gb.period_name and
 gl.currency_code=gb.currency_code and
 gb.code_combination_id=gcc.code_combination_id
-group by
-grouping sets(
-(gl.name, &account_type &segment_columns gl.chart_of_accounts_id),
-(gl.name, &account_type &segment_columns gl.chart_of_accounts_id, gps.period_name)
-)
+) w
 ) x
-) y
 pivot (
-sum(y.amount)
+max(x.amount), max(x.amount_reval) reval
 for period_name in (
 &pivot_columns
 )
-) z
+) y
 order by
-&order_by 1
+y.ledger,
+&order_by_account_type
+&order_by
+1

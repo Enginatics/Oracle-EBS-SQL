@@ -12,78 +12,77 @@ Short Name: ARRXINVR
 -- Library Link: https://www.enginatics.com/reports/ar-transaction-register/
 -- Run Report: https://demo.enginatics.com/
 
-SELECT
-  RX.ORGANIZATION_NAME                   Ledger,
-  RX.REC_POSTABLE_FLAG                   Postable,
-  RX.REC_BALANCE                         "&bal_segment_p",
-  RX.REC_BALANCE_DESC                    "&bal_segment_d",
-  RX.TRX_CURRENCY                        Currency,
-  ARPT_SQL_FUNC_UTIL.get_lookup_meaning('INV/CM',TRX_TYPES.TYPE) Class,
-  RX.TRX_NUMBER                          Invoice_Number,
-  RX.DOC_SEQUENCE_VALUE                  Document_Number,
-  TRX_TYPES.NAME                         "Type",
-  SUBSTRB(BILL_TO_PARTY.PARTY_NAME,1,50) Customer_Name,
-  BILL_TO.ACCOUNT_NUMBER                 Customer_Number,
-  BILL_TO_SITE.LOCATION                  Customer_Site,
-  RX.TRX_DATE                            Invoice_date,
-  RX.RECEIVABLES_GL_DATE                 GL_Date,
-  RX.TRX_AMOUNT                          Entered_Amount,
-  RX.TRX_ACCTD_AMOUNT                    Functional_Amount,
---
-  RX.REC_NATACCT                         Receivables_Account,
-  RX.REC_NATACCT_DESC                    Receivables_Account_Desc,
-  RX.REC_ACCOUNT                         Receivables_Account_Full,
-  RX.REC_ACCOUNT_DESC                    Receivables_Account_Full_Desc,
-  RX.FUNCTIONAL_CURRENCY_CODE            Functional_Currency,
-  RX.EXCHANGE_TYPE                       Exchange_Rate_Type,
-  RX.EXCHANGE_DATE                       Exchange_Rate_Date,
-  RX.EXCHANGE_RATE                       Exchange_Rate,
-  TERMS.NAME                             Payment_Terms,
-  RX.TRX_DUE_DATE                        Invoice_Due_Date,
-  METHODS.NAME                           Payment_Method,
-  ARPT_SQL_FUNC_UTIL.get_lookup_meaning('YES/NO', NVL(BILL_TO_SITE.TAX_HEADER_LEVEL_FLAG, NVL(BILL_TO.TAX_HEADER_LEVEL_FLAG, RX.TAX_HEADER_LEVEL_FLAG))) Tax_Calculation_Level,
-  BAS.NAME                               Batch_Source,
-  BA.NAME                                Batch_Name,
-  RX.CONS_BILL_NUMBER                    Consolidated_Bill_Number,
-  DOC_SEQ.NAME                           Document_Sequence_Name,
-  SUBSTRB(SHIP_TO_PARTY.PARTY_NAME,1,50) Ship_To_Customer_Name,
-  SHIP_TO.ACCOUNT_NUMBER                 Ship_To_Customer_Number,
-  SHIP_TO_SITE.LOCATION                  Ship_To_Customer_site
-FROM
-  AR_TRANSACTIONS_REP_ITF RX,
-  RA_TERMS TERMS,
-  FND_DOCUMENT_SEQUENCES DOC_SEQ,
-  HZ_CUST_ACCOUNTS SHIP_TO,
-  HZ_PARTIES SHIP_TO_PARTY,
-  HZ_CUST_ACCOUNTS BILL_TO,
-  HZ_PARTIES BILL_TO_PARTY,
-  HZ_CUST_SITE_USES_all SHIP_TO_SITE,
-  HZ_CUST_SITE_USES_all BILL_TO_SITE,
-  RA_CUST_TRX_TYPES_all TRX_TYPES,
-  AR_RECEIPT_METHODS METHODS,
-  RA_BATCHES_ALL BA,
-  RA_BATCH_SOURCES_ALL BAS
-WHERE
-  RX.SHIP_TO_CUSTOMER_ID = SHIP_TO.CUST_ACCOUNT_ID(+)
-  AND SHIP_TO.PARTY_ID = SHIP_TO_PARTY.PARTY_ID(+)
-  AND RX.SHIP_TO_SITE_USE_ID = SHIP_TO_SITE.SITE_USE_ID(+)
-  AND RX.BILL_TO_CUSTOMER_ID = BILL_TO.CUST_ACCOUNT_ID
-  AND BILL_TO.PARTY_ID = BILL_TO_PARTY.PARTY_ID
-  AND RX.BILL_TO_SITE_USE_ID = BILL_TO_SITE.SITE_USE_ID
-  AND RX.CUST_TRX_TYPE_ID = TRX_TYPES.CUST_TRX_TYPE_ID
-  AND RX.TERM_ID = TERMS.TERM_ID(+)
-  AND RX.DOC_SEQUENCE_ID = DOC_SEQ.DOC_SEQUENCE_ID(+)
-  AND RX.RECEIPT_METHOD_ID = METHODS.RECEIPT_METHOD_ID(+)
-  AND NVL(RX.ORG_ID, -99) = NVL(TRX_TYPES.ORG_ID, -99)
-  AND RX.BATCH_ID = BA.BATCH_ID(+)
-  AND RX.BATCH_SOURCE_ID = BAS.BATCH_SOURCE_ID(+)
-  AND NVL(RX.ORG_ID, -99) = NVL(BAS.ORG_ID, -99)
- AND RX.REQUEST_ID = FND_GLOBAL.CONC_REQUEST_ID
-ORDER BY
-  RX.ORGANIZATION_NAME,
-  RX.REC_POSTABLE_FLAG,
-  RX.REC_BALANCE,
-  RX.TRX_CURRENCY,
-  ARPT_SQL_FUNC_UTIL.get_lookup_meaning('INV/CM',TRX_TYPES.TYPE),
-  RX.TRX_NUMBER,
-  RX.DOC_SEQUENCE_VALUE
+select
+  rx.organization_name                   ledger,
+  rx.rec_postable_flag                   postable,
+  rx.rec_balance                         "&bal_segment_p",
+  rx.rec_balance_desc                    "&bal_segment_d",
+  rx.trx_currency                        currency,
+  arpt_sql_func_util.get_lookup_meaning('INV/CM',trx_types.type) class,
+  rx.trx_number                          invoice_number,
+  rx.doc_sequence_value                  document_number,
+  trx_types.name                         "Type",
+  substrb(bill_to_party.party_name,1,50) customer_name,
+  bill_to.account_number                 customer_number,
+  bill_to_site.location                  customer_site,
+  rx.trx_date                            invoice_date,
+  rx.receivables_gl_date                 gl_date,
+  rx.trx_amount                          entered_amount,
+  rx.trx_acctd_amount                    functional_amount,
+  rx.rec_natacct                         receivables_account,
+  rx.rec_natacct_desc                    receivables_account_desc,
+  rx.rec_account                         receivables_account_full,
+  rx.rec_account_desc                    receivables_account_full_desc,
+  rx.functional_currency_code            functional_currency,
+  rx.exchange_type                       exchange_rate_type,
+  rx.exchange_date                       exchange_rate_date,
+  rx.exchange_rate                       exchange_rate,
+  terms.name                             payment_terms,
+  rx.trx_due_date                        invoice_due_date,
+  methods.name                           payment_method,
+  arpt_sql_func_util.get_lookup_meaning('YES/NO', nvl(bill_to_site.tax_header_level_flag, nvl(bill_to.tax_header_level_flag, rx.tax_header_level_flag))) tax_calculation_level,
+  bas.name                               batch_source,
+  ba.name                                batch_name,
+  rx.cons_bill_number                    consolidated_bill_number,
+  doc_seq.name                           document_sequence_name,
+  substrb(ship_to_party.party_name,1,50) ship_to_customer_name,
+  ship_to.account_number                 ship_to_customer_number,
+  ship_to_site.location                  ship_to_customer_site
+from
+  ar_transactions_rep_itf rx,
+  ra_terms terms,
+  fnd_document_sequences doc_seq,
+  hz_cust_accounts ship_to,
+  hz_parties ship_to_party,
+  hz_cust_accounts bill_to,
+  hz_parties bill_to_party,
+  hz_cust_site_uses_all ship_to_site,
+  hz_cust_site_uses_all bill_to_site,
+  ra_cust_trx_types_all trx_types,
+  ar_receipt_methods methods,
+  ra_batches_all ba,
+  ra_batch_sources_all bas
+where
+  rx.ship_to_customer_id = ship_to.cust_account_id(+)
+  and ship_to.party_id = ship_to_party.party_id(+)
+  and rx.ship_to_site_use_id = ship_to_site.site_use_id(+)
+  and rx.bill_to_customer_id = bill_to.cust_account_id
+  and bill_to.party_id = bill_to_party.party_id
+  and rx.bill_to_site_use_id = bill_to_site.site_use_id
+  and rx.cust_trx_type_id = trx_types.cust_trx_type_id
+  and rx.term_id = terms.term_id(+)
+  and rx.doc_sequence_id = doc_seq.doc_sequence_id(+)
+  and rx.receipt_method_id = methods.receipt_method_id(+)
+  and nvl(rx.org_id, -99) = nvl(trx_types.org_id, -99)
+  and rx.batch_id = ba.batch_id(+)
+  and rx.batch_source_id = bas.batch_source_id(+)
+  and nvl(rx.org_id, -99) = nvl(bas.org_id, -99)
+ and rx.request_id = fnd_global.conc_request_id
+order by
+  rx.organization_name,
+  rx.rec_postable_flag,
+  rx.rec_balance,
+  rx.trx_currency,
+  arpt_sql_func_util.get_lookup_meaning('INV/CM',trx_types.type),
+  rx.trx_number,
+  rx.doc_sequence_value

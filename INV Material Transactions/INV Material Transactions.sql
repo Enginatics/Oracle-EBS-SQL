@@ -45,6 +45,8 @@ when mmt.transaction_source_type_id=7 then prha.segment1 --Requisition
 when mmt.transaction_source_type_id=5 then we.wip_entity_name --WIP Job or Schedule
 when mmt.transaction_source_type_id=4 then mtrh.request_number --Move Order
 end source,
+aps.vendor_name,
+aps.segment1 vendor_number,
 mtt.transaction_type_name transaction_type,
 xxen_util.meaning(mmt.transaction_action_id,'MTL_TRANSACTION_ACTION',700) transaction_action,
 mtr.reason_name reason,
@@ -75,6 +77,7 @@ mtl_cycle_count_headers mcch,
 gl_code_combinations_kfv gcck,
 mtl_physical_inventories mpi,
 po_headers_all pha,
+ap_suppliers aps,
 okc_k_headers_all_b okhab,
 po_requisition_headers_all prha,
 wip_entities we,
@@ -104,6 +107,7 @@ decode(mmt.transaction_source_type_id,3,mmt.transaction_source_id)=gcck.code_com
 decode(mmt.transaction_source_type_id,10,mmt.transaction_source_id)=mpi.physical_inventory_id(+) and
 decode(mmt.transaction_source_type_id,10,mmt.organization_id)=mpi.organization_id(+) and
 decode(mmt.transaction_source_type_id,1,mmt.transaction_source_id)=pha.po_header_id(+) and
+pha.vendor_id=aps.vendor_id(+) and
 decode(mmt.transaction_source_type_id,16,mmt.transaction_source_id)=okhab.id(+) and
 decode(mmt.transaction_source_type_id,7,mmt.transaction_source_id)=prha.requisition_header_id(+) and
 decode(mmt.transaction_source_type_id,5,mmt.transaction_source_id)=we.wip_entity_id(+) and

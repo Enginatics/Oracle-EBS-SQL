@@ -15,7 +15,7 @@ Parameter 'Show Active Only' restricts to folders which have been accessed by wo
 select
 (
 select distinct
-listagg(eb.ba_name,chr(10)) within group (order by eb.ba_name) over (partition by ebol.bol_obj_id) business_area
+listagg(eb.ba_name,', ') within group (order by eb.ba_name) over (partition by ebol.bol_obj_id) business_area
 from
 &eul.eul5_ba_obj_links ebol,
 &eul.eul5_bas eb
@@ -63,6 +63,8 @@ select ee.it_obj_id obj_id, ee.* from &eul.eul5_expressions ee where '&show_item
 select ee.fil_obj_id obj_id, ee.* from &eul.eul5_expressions ee where '&show_items'='Y' and ee.exp_type='FIL' and ee.it_obj_id is null
 ) ee,
 &eul.eul5_domains edo,
+&eul.eul5_expressions ee2,
+&eul.eul5_objs eo2,
 (
 select
 eqs.obj_id,
@@ -88,6 +90,8 @@ where
 1=1 and
 eo.obj_id=ee.obj_id(+) and
 ee.it_dom_id=edo.dom_id(+) and
+edo.dom_it_id_lov=ee2.exp_id(+) and
+ee2.it_obj_id=eo2.obj_id(+) and
 eo.obj_id=eqs.obj_id(+)
 order by
 eo.obj_name,

@@ -5,7 +5,8 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: GL Balance by Account Hierarchy
--- Description: Summary GL report including one line per GL account.  This report has multiple collapsible/expandable summary levels based on the GL account hierarchy, with starting balance, total amount per month, ending total and YTD balance. (trial balance).
+-- Description: Summary GL report including one line per GL account. This report has multiple collapsible/expandable summary levels based on the GL account hierarchy, with starting balance, total amount per month, ending total and YTD balance.
+Parameter 'Additional Segment' can be used to include additional segments e.g. cost center or balancing segment.
 -- Excel Examle Output: https://www.enginatics.com/example/gl-balance-by-account-hierarchy/
 -- Library Link: https://www.enginatics.com/reports/gl-balance-by-account-hierarchy/
 -- Run Report: https://demo.enginatics.com/
@@ -13,9 +14,11 @@
 select
 y.ledger,
 lpad(' ',2*(y.level__-1))||y.level__ level_,
+&segment2_columns_first
 &account_type2
-lpad(' ',2*(y.level__-1))||y.flex_value account,
-xxen_util.segment_description(y.flex_value,'&account_segment',y.chart_of_accounts_id) description,
+lpad(' ',2*(y.level__-1))||y.flex_value "&segment1_name",
+xxen_util.segment_description(y.flex_value,'&segment1',y.chart_of_accounts_id) "&segment1_name desc",
+&segment2_columns
 y.start_balance,
 &period_columns
 y.total,
@@ -26,7 +29,7 @@ y.currency_code currency,
 &total_reval
 y.type,
 y.path_,
-y.flex_value acct
+y.flex_value
 from
 (
 select distinct
@@ -35,14 +38,14 @@ w.type,
 w.level__,
 w.path_,
 &account_type
-w.flex_value,
+w.flex_value &segment2,
 w.period_name,
-sum(w.start_bal       ) over (partition by w.ledger, w.type, w.path_, &account_type w.flex_value) start_balance,
-sum(w.start_bal*w.rate) over (partition by w.ledger, w.type, w.path_, &account_type w.flex_value) start_balance_reval,
-sum(w.amount          ) over (partition by w.ledger, w.type, w.path_, &account_type w.flex_value) total,
-sum(w.amount*w.rate   ) over (partition by w.ledger, w.type, w.path_, &account_type w.flex_value) total_reval,
-sum(w.amount          ) over (partition by w.ledger, w.type, w.path_, &account_type w.flex_value, w.period_name) amount,
-sum(w.amount*w.rate   ) over (partition by w.ledger, w.type, w.path_, &account_type w.flex_value, w.period_name) amount_reval,
+sum(w.start_bal       ) over (partition by w.ledger, w.type, w.path_, &account_type w.flex_value &segment2) start_balance,
+sum(w.start_bal*w.rate) over (partition by w.ledger, w.type, w.path_, &account_type w.flex_value &segment2) start_balance_reval,
+sum(w.amount          ) over (partition by w.ledger, w.type, w.path_, &account_type w.flex_value &segment2) total,
+sum(w.amount*w.rate   ) over (partition by w.ledger, w.type, w.path_, &account_type w.flex_value &segment2) total_reval,
+sum(w.amount          ) over (partition by w.ledger, w.type, w.path_, &account_type w.flex_value &segment2, w.period_name) amount,
+sum(w.amount*w.rate   ) over (partition by w.ledger, w.type, w.path_, &account_type w.flex_value &segment2, w.period_name) amount_reval,
 w.currency_code,
 w.flex_value_set_id,
 w.chart_of_accounts_id
@@ -52,9 +55,9 @@ select
 gl.name ledger,
 v.type,
 v.level__,
-v.path_||nvl2(v.flex_value,null,'|'||gcc.&account_segment) path_,
+v.path_||nvl2(v.flex_value,null,'|'||gcc.&segment1) path_,
 &account_type
-nvl(v.flex_value,gcc.&account_segment) flex_value,
+nvl(v.flex_value,gcc.&segment1) flex_value &segment2,
 gps.period_name,
 decode(gps.start_period,'Y',nvl(gb.begin_balance_dr,0)-nvl(gb.begin_balance_cr,0)) start_bal,
 nvl(gb.period_net_dr,0)-nvl(gb.period_net_cr,0) amount,
@@ -69,16 +72,20 @@ gl_period_statuses gps0,
 gl_balances gb,
 (
 select
-(select ffv.summary_flag from fnd_flex_values ffv where gcc.flex_value_set_id=ffv.flex_value_set_id and gcc.&account_segment=ffv.flex_value and ffv.parent_flex_value_low is null) parent_flag,
+ffv.summary_flag parent_flag,
 gcc.*
 from
 (
 select
-(select fifs.flex_value_set_id from fnd_id_flex_segments fifs where gcc.chart_of_accounts_id=fifs.id_flex_num and fifs.application_id=101 and fifs.id_flex_code='GL#' and fifs.application_column_name='&account_segment') flex_value_set_id,
+(select fifs.flex_value_set_id from fnd_id_flex_segments fifs where gcc.chart_of_accounts_id=fifs.id_flex_num and fifs.application_id=101 and fifs.id_flex_code='GL#' and fifs.application_column_name='&segment1') flex_value_set_id,
 gcc.*
 from
 gl_code_combinations gcc
-) gcc
+) gcc,
+(select ffv.* from fnd_flex_values ffv where ffv.parent_flex_value_low is null) ffv
+where
+gcc.flex_value_set_id=ffv.flex_value_set_id(+) and
+gcc.&segment1=ffv.flex_value(+)
 ) gcc,
 (
 select
@@ -213,7 +220,7 @@ gl.currency_code=gb.currency_code and
 gb.code_combination_id=gcc.code_combination_id and
 gcc.parent_flag='N' and
 gcc.flex_value_set_id=v.flex_value_set_id and
-gcc.&account_segment between v.child_flex_value_low and v.child_flex_value_high and
+gcc.&segment1 between v.child_flex_value_low and v.child_flex_value_high and
 gl.ledger_id=gstv.ledger_id(+)
 ) w
 ) x
@@ -225,5 +232,7 @@ for period_name in (
 ) y
 order by
 y.ledger,
+&order_by_segment2
 y.path_
 &order_by_account_type
+&segment2
