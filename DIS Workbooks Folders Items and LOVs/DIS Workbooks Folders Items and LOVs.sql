@@ -33,19 +33,10 @@ eqs.access_count,
 eqs.last_accessed,
 xxen_util.dis_user_name(ed.doc_updated_by) last_updated_by,
 ed.doc_updated_date last_update_date,
-(
-select distinct
-listagg(eb.ba_name,chr(10)) within group (order by eb.ba_name) over (partition by ebol.bol_obj_id) business_area
-from
-&eul.eul5_ba_obj_links ebol,
-&eul.eul5_bas eb
-where
-eo.obj_id=ebol.bol_obj_id and
-ebol.bol_ba_id=eb.ba_id
-) business_area,
+xxen_util.dis_business_area(eo.obj_id,'&eul') business_area,
 eo.obj_name folder,
 eo.obj_developer_key folder_identifier,
-decode(eo.obj_type,'SOBJ','Standard','COBJ','Complex','CUO','Custom') folder_type,
+xxen_util.dis_folder_type(eo.obj_type) folder_type,
 nvl2(eo.sobj_ext_table,nvl2((select dv.view_name from dba_views dv where eo.sobj_ext_table=dv.view_name and dv.owner='APPS'),'View','Table'),null) object_type,
 eo.sobj_ext_table object_name,
 xxen_util.dis_folder_sql2(eo.obj_id,'eul_pmi') folder_sql,

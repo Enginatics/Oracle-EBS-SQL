@@ -16,7 +16,7 @@ rtt.description,
 decode(rtb.partial_discount_flag,'Y','Yes') partial_payment_discount,
 decode(rtb.prepayment_flag,'Y','Yes') prepayment,
 decode(rtb.credit_check_flag,'Y','Yes') credit_check,
-acbct.cycle_name billing_cycle,
+&billing_cycle_column
 rtb.base_amount,
 xxen_util.meaning(decode(rtb.calc_discount_on_lines_flag,'Y','L','N','I',rtb.calc_discount_on_lines_flag),'DISCOUNT_BASIS',222) discount_basis,
 rtb.printing_lead_days,
@@ -33,14 +33,13 @@ xxen_util.client_time(rtb.last_update_date) last_update_date
 from
 ra_terms_b rtb,
 ra_terms_tl rtt,
-ar_cons_bill_cycles_tl acbct,
+&billing_cycle_table
 ra_terms_lines rtl
 where
 1=1 and
 rtb.term_id=rtt.term_id and
 rtt.language=userenv('lang') and
-rtb.billing_cycle_id=acbct.billing_cycle_id(+) and
-acbct.language(+)=userenv('lang') and
+&billing_cycle_joins
 rtb.term_id=rtl.term_id
 order by
 rtt.name,

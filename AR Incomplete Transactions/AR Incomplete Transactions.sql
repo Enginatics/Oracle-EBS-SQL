@@ -52,8 +52,8 @@ xxen_util.user_name(rcta.created_by) created_by,
 xxen_util.client_time(rcta.creation_date) creation_date,
 xxen_util.user_name(rcta.last_updated_by) last_updated_by,
 xxen_util.client_time(rcta.last_update_date) last_update_date,
-arm.name receipt_method,
-ifpct.payment_channel_name payment_method
+arm.name receipt_method
+&payment_method_column
 from
 hr_all_organization_units_vl haouv,
 ra_customer_trx_all rcta,
@@ -69,8 +69,8 @@ hz_party_sites hps,
 fnd_lookup_values flv1,
 jtf_rs_salesreps jrs,
 jtf_rs_resource_extns_tl jrret,
-ar_receipt_methods arm,
-iby_fndcpt_pmt_chnnls_tl ifpct
+ar_receipt_methods arm
+&payment_method_table
 where
 1=1 and
 rcta.complete_flag='N' and
@@ -97,9 +97,8 @@ case when rcta.primary_salesrep_id>0 then rcta.primary_salesrep_id end=jrs.sales
 case when rcta.primary_salesrep_id>0 then rcta.org_id end=jrs.org_id(+) and
 jrs.resource_id=jrret.resource_id(+) and
 jrret.language(+)=userenv('lang') and
-rcta.receipt_method_id=arm.receipt_method_id(+) and
-arm.payment_channel_code=ifpct.payment_channel_code(+) and
-ifpct.language(+)=userenv('lang')
+rcta.receipt_method_id=arm.receipt_method_id(+)
+&payment_method_join
 order by
 haouv.name,
 rcta.trx_date desc,

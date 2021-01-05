@@ -69,7 +69,7 @@ bom_resources br,
 mtl_units_of_measure_tl muot,
 cst_activities ca,
 org_organization_definitions ood,
-gl_ledgers gl,
+gl_sets_of_books gl,
 org_gl_batches ogb
 where
 1=1 and
@@ -96,7 +96,7 @@ br.unit_of_measure=muot.uom_code(+) and
 muot.language(+)=userenv('lang') and
 wta.activity_id=ca.activity_id(+) and
 wta.organization_id=ood.organization_id and
-ood.set_of_books_id=gl.ledger_id and
+ood.set_of_books_id=gl.set_of_books_id and
 wta.organization_id=ogb.organization_id(+) and
 wta.gl_batch_id=ogb.gl_batch_id(+)
 order by

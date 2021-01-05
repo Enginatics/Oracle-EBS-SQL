@@ -15,13 +15,20 @@ select
 gjh.period_name,
 gl.name ledger,
 (select gjsv.user_je_source_name from gl_je_sources_vl gjsv where gjh.je_source=gjsv.je_source_name) source_name,
+gjh.external_reference reference,
 (select gjcv.user_je_category_name from gl_je_categories_vl gjcv where gjh.je_category=gjcv.je_category_name) category_name,
 gjb.name batch_name,
 xxen_util.meaning(gjb.status,'MJE_BATCH_STATUS',101) batch_status,
 gjh.posted_date,
 gjh.name journal_name,
 gjh.description journal_description,
+gjh.doc_sequence_value document_number,
+xxen_util.meaning(gjh.tax_status_code,'TAX_STATUS',101) tax_status_code,
 gjl.description line_description,
+zrb.tax_rate_code,
+xxen_util.meaning(gjl.tax_line_flag,'YES_NO',0) tax_line,
+xxen_util.meaning(gjl.taxable_line_flag,'YES_NO',0) taxable_line,
+xxen_util.meaning(gjl.amount_includes_tax_flag,'YES_NO',0) amount_includes_tax,
 xxen_util.meaning(xal.accounting_class_code,'XLA_ACCOUNTING_CLASS',602,'Y') accounting_class,
 xxen_util.meaning(gcc.account_type,'ACCOUNT_TYPE',0) account_type,
 &segment_columns
@@ -39,7 +46,7 @@ nvl(gjh.doc_sequence_value,xah.doc_sequence_value) doc_sequence_value,
 xal.currency_conversion_date,
 (select gdct.user_conversion_type from gl_daily_conversion_types gdct where xal.currency_conversion_type=gdct.conversion_type) currency_conversion_type,
 xal.currency_conversion_rate,
-xxen_util.meaning(gjh.actual_flag,'XLA_BALANCE_TYPE',602) balance_type,
+xxen_util.description(gjh.actual_flag,'BATCH_TYPE',101) balance_type,
 (select gbv.budget_name from gl_budget_versions gbv where gjh.budget_version_id=gbv.budget_version_id) budget_name,
 gjh.currency_conversion_date conversion_date,
 gjh.currency_conversion_type conversion_type,
@@ -121,6 +128,7 @@ xla_events xe,
 xla.xla_transaction_entities xte,
 gl_code_combinations gcc,
 (select gdr.* from gl_daily_rates gdr where gdr.to_currency=:revaluation_currency and gdr.conversion_type=(select gdct.conversion_type from gl_daily_conversion_types gdct where gdct.user_conversion_type=:revaluation_conversion_type)) gdr,
+zx_rates_b zrb,
 ap_invoices_all aia,
 (select distinct aida.invoice_id, min(aida.project_id) keep (dense_rank first order by aida.invoice_distribution_id) over (partition by aida.invoice_id) project_id, min(aida.task_id) keep (dense_rank first order by aida.invoice_distribution_id) over (partition by aida.invoice_id) task_id from ap_invoice_distributions_all aida where aida.task_id is not null) aida,
 ap_checks_all aca,
@@ -169,6 +177,7 @@ gjh.currency_conversion_date,
 trunc(xe.transaction_date)
 )=gdr.conversion_date(+) and
 decode(nvl2(xal.gl_sl_link_id,xal.currency_code,gjh.currency_code),:revaluation_currency,null,nvl2(xal.gl_sl_link_id,xal.currency_code,gjh.currency_code))=gdr.from_currency(+) and
+gjl.tax_code_id=zrb.tax_rate_id(+) and
 case when xte.application_id=200 and xte.entity_code='AP_INVOICES' then xte.source_id_int_1 end=aia.invoice_id(+) and
 aia.invoice_id=aida.invoice_id(+) and
 case when xte.application_id=200 and xte.entity_code='AP_PAYMENTS' then xte.source_id_int_1 end=aca.check_id(+) and

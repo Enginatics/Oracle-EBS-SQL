@@ -206,19 +206,19 @@ ffv.form_name,
 fffv.parameters,
 fmv.menu_name,
 coalesce(
-(select fpov.profile_option_value from fnd_profile_option_values fpov where usr.user_id=fpov.level_value and fpov.level_id=10004 and fpov.application_id=602 and fpov.profile_option_id=3796),
-(select fpov.profile_option_value from fnd_profile_option_values fpov where frv.responsibility_id=fpov.level_value and frv.application_id=fpov.level_value_application_id and fpov.level_id=10003 and fpov.application_id=602 and fpov.profile_option_id=3796),
-(select fpov.profile_option_value from fnd_profile_option_values fpov where fpov.level_value=0 and fpov.level_id=10001 and fpov.application_id=602 and fpov.profile_option_id=3796)
+(select fpov.profile_option_value from fnd_profile_option_values fpov where fpov.application_id=602 and fpov.profile_option_id=3796 and fpov.level_id=10004 and usr.user_id=fpov.level_value),
+(select fpov.profile_option_value from fnd_profile_option_values fpov where fpov.application_id=602 and fpov.profile_option_id=3796 and fpov.level_id=10003 and frv.responsibility_id=fpov.level_value and frv.application_id=fpov.level_value_application_id),
+(select fpov.profile_option_value from fnd_profile_option_values fpov where fpov.application_id=602 and fpov.profile_option_id=3796 and fpov.level_id=10001 and fpov.level_value=0)
 ) security_profile_id,
 coalesce(
-(select fpov.profile_option_value from fnd_profile_option_values fpov where usr.user_id=fpov.level_value and fpov.level_id=10004 and fpov.application_id=0 and fpov.profile_option_id=1991),
-(select fpov.profile_option_value from fnd_profile_option_values fpov where frv.responsibility_id=fpov.level_value and frv.application_id=fpov.level_value_application_id and fpov.level_id=10003 and fpov.application_id=0 and fpov.profile_option_id=1991),
-(select fpov.profile_option_value from fnd_profile_option_values fpov where fpov.level_value=0 and fpov.level_id=10001 and fpov.application_id=0 and fpov.profile_option_id=1991)
+(select fpov.profile_option_value from fnd_profile_option_values fpov where fpov.application_id=0 and fpov.profile_option_id=1991 and fpov.level_id=10004 and usr.user_id=fpov.level_value),
+(select fpov.profile_option_value from fnd_profile_option_values fpov where fpov.application_id=0 and fpov.profile_option_id=1991 and fpov.level_id=10003 and frv.responsibility_id=fpov.level_value and frv.application_id=fpov.level_value_application_id),
+(select fpov.profile_option_value from fnd_profile_option_values fpov where fpov.application_id=0 and fpov.profile_option_id=1991 and fpov.level_id=10001 and fpov.level_value=0)
 ) org_id,
 coalesce(
-(select fpov.profile_option_value from fnd_profile_option_values fpov where usr.user_id=fpov.level_value and fpov.level_id=10004 and fpov.application_id=101 and fpov.profile_option_id=(select fpo.profile_option_id from fnd_profile_options fpo where fpo.profile_option_name='GL_ACCESS_SET_ID')),
-(select fpov.profile_option_value from fnd_profile_option_values fpov where frv.responsibility_id=fpov.level_value and frv.application_id=fpov.level_value_application_id and fpov.level_id=10003 and fpov.application_id=101 and fpov.profile_option_id=(select fpo.profile_option_id from fnd_profile_options fpo where fpo.profile_option_name='GL_ACCESS_SET_ID')),
-(select fpov.profile_option_value from fnd_profile_option_values fpov where fpov.level_value=0 and fpov.level_id=10001 and fpov.application_id=101 and fpov.profile_option_id=(select fpo.profile_option_id from fnd_profile_options fpo where fpo.profile_option_name='GL_ACCESS_SET_ID'))
+(select to_number(fpov.profile_option_value) from fnd_profile_option_values fpov where fpov.application_id=101 and fpov.profile_option_id=(select fpo.profile_option_id from fnd_profile_options fpo where fpo.profile_option_name='GL_ACCESS_SET_ID') and fpov.level_id=10004 and usr.user_id=fpov.level_value),
+(select to_number(fpov.profile_option_value) from fnd_profile_option_values fpov where fpov.application_id=101 and fpov.profile_option_id=(select fpo.profile_option_id from fnd_profile_options fpo where fpo.profile_option_name='GL_ACCESS_SET_ID') and fpov.level_id=10003 and frv.responsibility_id=fpov.level_value and frv.application_id=fpov.level_value_application_id),
+(select to_number(fpov.profile_option_value) from fnd_profile_option_values fpov where fpov.application_id=101 and fpov.profile_option_id=(select fpo.profile_option_id from fnd_profile_options fpo where fpo.profile_option_name='GL_ACCESS_SET_ID') and fpov.level_id=10001 and fpov.level_value=0)
 ) gl_access_set_id,
 fffv.type fffv_type,
 xxen_util.reverse(nav.entry_sequence_,'>') entry_sequence,

@@ -82,7 +82,7 @@ pla.org_id=hou.organization_id
 ) pla,
 po_releases_all pra,
 po_headers_all pha,
-po_vendors pov,
+ap_suppliers pov,
 ap_invoice_price_var_v aipvv,
 mtl_system_items_vl msiv,
 mtl_categories_kfv mck,

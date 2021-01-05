@@ -78,7 +78,7 @@ gl.currency_code=fc.currency_code
 ,        mtl_parameters             mp
 ,        rcv_shipment_headers       rsh
 ,        rcv_transactions           rct 
-,        po_vendors                 pov
+,        ap_suppliers                 pov
 ,        mtl_system_items           msi
 ,        mtl_categories             mca
 ,        hr_locations_no_join       hrl
@@ -192,7 +192,7 @@ gl.currency_code=fc.currency_code
 ,        po_releases_all                por
 ,        rcv_transactions           rct 
 ,        rcv_shipment_headers       rsh
-,        po_vendors                 pov
+,        ap_suppliers                 pov
 ,        mtl_system_items           msi
 ,        mtl_categories             mca
 ,        hr_locations_no_join       hrl
@@ -301,7 +301,7 @@ gl.currency_code=fc.currency_code
 ,        po_releases_all                por
 ,        rcv_shipment_headers       rsh
 ,        rcv_transactions           rct 
-,        po_vendors                 pov
+,        ap_suppliers                 pov
 ,        mtl_system_items           msi
 ,        mtl_categories             mca
 ,        hr_locations_no_join       hrl
@@ -416,7 +416,7 @@ gl.currency_code=fc.currency_code
  ,        mtl_parameters             mp     
  ,        rcv_shipment_headers       rsh     
  ,        rcv_transactions           rct      
- ,        po_vendors                 pov     
+ ,        ap_suppliers                 pov     
  ,        mtl_system_items           msi     
  ,        mtl_categories             mca     
  ,        per_all_people_f             papf     

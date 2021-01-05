@@ -79,8 +79,8 @@ po_releases_all pra
 where
 pha.po_header_id=pra.po_header_id(+)
 ) pha,
-po_vendors aps,
-po_vendor_sites_all pvsa,
+ap_suppliers aps,
+ap_supplier_sites_all pvsa,
 po_vendor_contacts pvc,
 ap_terms at,
 hr_locations_all_tl hlat1,

@@ -25,8 +25,7 @@ aerha.payment_currency_code currency,
 nvl(aerha.report_submitted_date,aerha.creation_date) report_submitted_date,
 initcap(aerha.receipts_status) original_receipt_status,
 aerha.receipts_received_date,
-aerha.image_receipts_status,
-aerha.image_receipts_received_date,
+&image_receipt_columns
 xxen_util.meaning(case when aerha.audit_code in ('PAPERLESS_AUDIT','RECEIPT_BASED') and nvl(aerha.workflow_approved_flag,'M') in ('N','M') then 'Y' else 'N' end,'YES_NO',0) requires_audit,
 xxen_util.meaning(nvl2(aaq.auditor_id,'Y','N'),'YES_NO',0) auditor_assigned,
 ap_web_audit_utils.get_audit_reason(aerha.report_header_id) audit_reason,
@@ -48,7 +47,7 @@ xxen_util.meaning(decode(decode(aia.payment_status_flag,'P','Y','N'),'Y','Y'),'Y
 xxen_util.meaning(nvl2(aerha.holding_report_header_id,'Y',null),'YES_NO',0) hold_flag,
 &lines_columns
 &per_diem_columns
-&pro_taks_columns
+&proj_tasks_columns
 aerha.expense_report_id
 from
 gl_ledgers gl,
@@ -59,10 +58,9 @@ ap_aud_queues aaq,
 ap_suppliers aps,
 ap_invoices_all aia,
 (select aerla.* from ap_expense_report_lines_all aerla where '&show_lines'='Y') aerla,
-(select opdb.* from oie_pdm_daily_breakups opdb where '&show_per_diem'='Y') opdb,
-(select aerda.* from ap_exp_report_dists_all aerda where '&show_protasks'='Y') aerda,
-pa_projects_all ppa,
-pa_tasks pt
+&per_diem_table
+(select aerda.* from ap_exp_report_dists_all aerda where '&show_protasks'='Y') aerda
+&proj_tasks_tables
 where
 1=1 and
 aerha.set_of_books_id=gl.ledger_id and
@@ -72,7 +70,6 @@ aerha.vendor_id=aps.vendor_id(+) and
 aerha.vouchno=aia.invoice_id(+) and
 aerha.report_header_id=aaq.expense_report_id(+) and
 aerha.report_header_id=aerla.report_header_id(+) and
-aerla.report_line_id=opdb.report_line_id(+) and
-aerla.report_line_id=aerda.report_line_id(+) and
-aerda.project_id=ppa.project_id(+) and
-aerda.task_id=pt.task_id(+)
+&per_diem_join
+aerla.report_line_id=aerda.report_line_id(+)
+&proj_tasks_joins

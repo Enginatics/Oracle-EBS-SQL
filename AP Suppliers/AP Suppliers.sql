@@ -87,10 +87,10 @@ fnd_territories_vl ftv,
 ap_suppliers aps0,
 ap_terms_vl atv0,
 ap_terms_vl atv1,
-(select iepa.* from iby_external_payees_all iepa where iepa.party_site_id is null and iepa.supplier_site_id is null) iepa0,
-(select iepa.* from iby_external_payees_all iepa where iepa.supplier_site_id is not null) iepa1,
-(select ipiua.* from iby_pmt_instr_uses_all ipiua where ipiua.payment_flow='DISBURSEMENTS' and sysdate between ipiua.start_date and nvl(ipiua.end_date,sysdate)) ipiua0,
-(select ipiua.* from iby_pmt_instr_uses_all ipiua where ipiua.payment_flow='DISBURSEMENTS' and sysdate between ipiua.start_date and nvl(ipiua.end_date,sysdate)) ipiua1,
+(select iepa.* from iby_external_payees_all iepa where iepa.payment_function='PAYABLES_DISB' and iepa.party_site_id is null and iepa.supplier_site_id is null) iepa0,
+(select iepa.* from iby_external_payees_all iepa where iepa.payment_function='PAYABLES_DISB' and iepa.supplier_site_id is not null) iepa1,
+(select ipiua.* from iby_pmt_instr_uses_all ipiua where ipiua.payment_function='PAYABLES_DISB' and sysdate between ipiua.start_date and nvl(ipiua.end_date,sysdate)) ipiua0,
+(select ipiua.* from iby_pmt_instr_uses_all ipiua where ipiua.payment_function='PAYABLES_DISB' and sysdate between ipiua.start_date and nvl(ipiua.end_date,sysdate)) ipiua1,
 iby_ext_bank_accounts ieba0,
 iby_ext_bank_accounts ieba1,
 ce_bank_branches_v cbbv0,
@@ -106,11 +106,9 @@ aps.terms_id=atv0.term_id(+) and
 assa.terms_id=atv1.term_id(+) and
 aps.party_id=iepa0.payee_party_id(+) and
 assa.vendor_site_id=iepa1.supplier_site_id(+) and
-iepa0.payment_function(+)='PAYABLES_DISB' and
-iepa1.payment_function(+)='PAYABLES_DISB' and
 iepa0.ext_payee_id=ipiua0.ext_pmt_party_id(+) and
 iepa1.ext_payee_id=ipiua1.ext_pmt_party_id(+) and
-ipiua0.instrument_id=ieba0.ext_bank_account_id(+) and
-ipiua1.instrument_id=ieba1.ext_bank_account_id(+) and
+decode(ipiua0.instrument_type,'BANKACCOUNT',ipiua0.instrument_id)=ieba0.ext_bank_account_id(+) and
+decode(ipiua1.instrument_type,'BANKACCOUNT',ipiua1.instrument_id)=ieba1.ext_bank_account_id(+) and
 ieba0.branch_id=cbbv0.branch_party_id(+) and
 ieba1.branch_id=cbbv1.branch_party_id(+)

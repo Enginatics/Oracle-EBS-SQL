@@ -66,7 +66,7 @@ decode(pcr.object_code,
 'ITEM_RANGE','MSTK'
 ) id_flex_code,
 decode(pcr.object_code,
-'ACCOUNT_RANGE',(select gl.chart_of_accounts_id from financials_system_params_all fspa, gl_ledgers gl where pcga.org_id=fspa.org_id and fspa.set_of_books_id=gl.ledger_id),
+'ACCOUNT_RANGE',(select gl.chart_of_accounts_id from financials_system_params_all fspa, gl_sets_of_books gl where pcga.org_id=fspa.org_id and fspa.set_of_books_id=gl.set_of_books_id),
 'ITEM_CATEGORY_RANGE',(select mcsb.structure_id from mtl_default_category_sets mdcs, mtl_category_sets_b mcsb where mdcs.functional_area_id=2 and mdcs.category_set_id=mcsb.category_set_id),
 'ITEM_RANGE',101
 ) id_flex_num,

@@ -59,7 +59,7 @@ gl_code_combinations gcc
 where
 1=1 and
 gps0.period_name=:period_name and
-gb.actual_flag=xxen_util.lookup_code(:balance_type,'XLA_BALANCE_TYPE',602) and
+gb.actual_flag=(select flvv.lookup_code from fnd_lookup_values_vl flvv where flvv.description=:balance_type and flvv.lookup_type='BATCH_TYPE' and flvv.view_application_id=101 and flvv.security_group_id=0) and
 gl.ledger_id=gps0.ledger_id and
 gps0.application_id=101 and
 gps0.application_id=gps.application_id and

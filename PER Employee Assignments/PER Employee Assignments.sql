@@ -116,7 +116,7 @@ per_all_positions pap,
 hr_all_positions_f_tl hapft,
 per_grades_vl pgv,
 hr_locations_all hla,
-gl_ledgers gl,
+gl_sets_of_books gl,
 (select pa.* from per_addresses pa where pa.primary_flag='Y' and :effective_date between pa.date_from and nvl(pa.date_to,:effective_date)) pa,
 fnd_territories_vl ftv,
 (select paypf.* from pay_all_payrolls_f paypf where :effective_date between paypf.effective_start_date and paypf.effective_end_date) paypf
@@ -134,7 +134,7 @@ hapft.language(+)=userenv('lang') and
 paaf.grade_id=pgv.grade_id(+) and
 paaf.supervisor_id=papf2.person_id(+) and
 paaf.location_id=hla.location_id(+) and
-paaf.set_of_books_id=gl.ledger_id(+) and
+paaf.set_of_books_id=gl.set_of_books_id(+) and
 papf.business_group_id=pa.business_group_id(+) and
 papf.person_id=pa.person_id(+) and
 pa.country=ftv.territory_code(+) and

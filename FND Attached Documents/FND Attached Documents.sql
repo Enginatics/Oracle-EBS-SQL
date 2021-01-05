@@ -61,7 +61,7 @@ bor.organization_id=msibk.organization_id and
 bor.routing_sequence_id=bos.routing_sequence_id
 )
 when fad.entity_name='BOM_BILL_OF_MATERIALS' then (select mp.organization_code||': '||msibk.concatenated_segments from bom_structures_b bsb, mtl_parameters mp, mtl_system_items_b_kfv msibk where fad.pk1_value=bsb.bill_sequence_id and bsb.assembly_item_id=msibk.inventory_item_id and bsb.organization_id=msibk.organization_id and bsb.organization_id=mp.organization_id)
-when fad.entity_name='IBY_PAY_INSTRUCTIONS_ALL' then (select ipia.pay_admin_assigned_ref_code from iby_pay_instructions_all ipia where fad.pk1_value=ipia.payment_instruction_id)
+&iby_pay_instr_entity_ref
 when fad.entity_name='WIP_DISCRETE_JOBS' then (select mp.organization_code||': '||we.wip_entity_name from wip_entities we, wip_discrete_jobs wdj, mtl_parameters mp where fad.pk1_value=wdj.wip_entity_id and fad.pk2_value=wdj.organization_id and we.wip_entity_id=wdj.wip_entity_id and wdj.organization_id=mp.organization_id)
 when fad.entity_name='WIP_DISCRETE_OPERATIONS' then (select mp.organization_code from mtl_parameters mp where fad.pk3_value=mp.organization_id)||': '||(select we.wip_entity_name from wip_entities we where fad.pk1_value=we.wip_entity_id)||': '||fad.pk2_value
 when fad.entity_name='WSH_DELIVERY_DETAILS' then (select haouv.name||': '||wdd.source_header_number||': '||wdd.source_line_number from wsh_delivery_details wdd, hr_all_organization_units_vl haouv where fad.pk1_value=wdd.delivery_detail_id and wdd.org_id=haouv.organization_id(+))
@@ -95,14 +95,11 @@ end,
 trim('.' from fad.pk1_value||'.'||fad.pk2_value||'.'||fad.pk3_value||'.'||fad.pk4_value||'.'||fad.pk5_value)) reference,
 fad.seq_num,
 fdcv.user_name category,
-fdt.title,
+&title_column
 fdt.description,
 fdd.user_name data_type,
-decode(fd.datatype_id,5,fd.url,nvl(fl.file_name,fd.file_name)) name,
-decode(fd.datatype_id,
-5,'=HYPERLINK("'||fd.url||'","'||fd.url||'")',
-nvl2(fd.media_id,'=HYPERLINK("'||fnd_gfm.construct_download_url(fnd_web_config.gfm_agent,fd.media_id)||'","'||nvl(fl.file_name,fd.file_name)||'")',null)
-) url,
+decode(fd.datatype_id,5,&url_column,nvl(fl.file_name,fd.file_name)) name,
+&url_text
 fdn.short_name location,
 decode(fd.datatype_id,1,to_clob(fdst.short_text),2,xxen_util.long_to_clob('FND_DOCUMENTS_LONG_TEXT','LONG_TEXT',fdlt.rowid)) text,
 length(fl.file_data) file_size,

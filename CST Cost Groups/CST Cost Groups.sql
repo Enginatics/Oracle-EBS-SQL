@@ -17,7 +17,7 @@ ccg.description,
 ccg.disable_date,
 xxen_util.meaning(nvl2(ccg.organization_id,null,'Y'),'YES_NO',0) multi_org,
 haouv.name organization,
-xep.name legal_entity,
+&xle_column
 xxen_util.concatenated_segments(ccga.material_account) material,
 xxen_util.concatenated_segments(ccga.material_overhead_account) material_overhead,
 xxen_util.concatenated_segments(ccga.resource_account) resource_,
@@ -38,11 +38,11 @@ xxen_util.segments_description(ccga.encumbrance_account) encumbrance_descr,
 xxen_util.segments_description(ccga.purchase_price_var_account) purchase_price_variance_descr
 from
 cst_cost_groups ccg,
-xle_entity_profiles xep,
+&xle_table
 hr_all_organization_units_vl haouv,
 cst_cost_group_accounts ccga
 where
-ccg.legal_entity=xep.legal_entity_id(+) and
+&xle_join
 ccg.organization_id=haouv.organization_id(+) and
 ccg.cost_group_id=ccga.cost_group_id(+) and
 ccg.organization_id=ccga.organization_id(+)

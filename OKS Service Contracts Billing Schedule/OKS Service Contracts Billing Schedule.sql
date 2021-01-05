@@ -65,7 +65,7 @@ ra_rules rr,
 ra_rules rr2
 where
 1=1 and
-haouv.organization_id=okhab.org_id and
+haouv.organization_id=okhab.authoring_org_id and
 okhab.scs_code=osclv.code(+) and
 osclv.cls_code=ocv.code(+) and
 okhab.sts_code=osv0.code(+) and

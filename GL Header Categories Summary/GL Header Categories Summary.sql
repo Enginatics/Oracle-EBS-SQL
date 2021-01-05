@@ -35,7 +35,7 @@ gps.ledger_id=gjh.ledger_id and
 gjh.status='P' and
 gjh.actual_flag='A' and
 gjh.je_batch_id=gjb.je_batch_id and
-gjh.je_category=gjcv.je_category_key(+)
+gjh.je_category=gjcv.je_category_name(+)
 order by
 gl.name,
 total_count desc,

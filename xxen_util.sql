@@ -278,6 +278,21 @@ function application_short_name(p_application_name in varchar2) return varchar2 
 function dis_eul_usage_count(p_eul varchar2) return number;
 
 /***********************************************************************************************/
+/*  discoverer business areas for a given folder object_id                                     */
+/***********************************************************************************************/
+function dis_business_area(p_obj_id in number, p_eul in varchar2) return varchar2;
+
+/***********************************************************************************************/
+/*  discoverer display folder type                                                             */
+/***********************************************************************************************/
+function dis_folder_type(p_obj_type in varchar2) return varchar2 deterministic;
+
+/***********************************************************************************************/
+/*  discoverer display item type                                                               */
+/***********************************************************************************************/
+function dis_item_type(p_exp_type in varchar2) return varchar2 deterministic;
+
+/***********************************************************************************************/
 /*  discoverer default end user layer (with most frequent executions in eul5_qpp_stats)        */
 /***********************************************************************************************/
 function dis_default_eul return varchar2;
@@ -285,7 +300,7 @@ function dis_default_eul return varchar2;
 /***********************************************************************************************/
 /*  discoverer user_id to discoverer username                                                  */
 /***********************************************************************************************/
-function dis_user(p_user_id in number, p_eul in varchar2 default 'eul_us') return varchar2 result_cache;
+function dis_user(p_user_id in number, p_eul in varchar2) return varchar2 result_cache;
 
 /***********************************************************************************************/
 /*  discoverer username to application user name or responsibility                             */
@@ -295,7 +310,7 @@ function dis_user_name(p_username in varchar2) return varchar2;
 /***********************************************************************************************/
 /*  discoverer user_id to application user name or responsibility                              */
 /***********************************************************************************************/
-function dis_user_name(p_user_id in number, p_eul in varchar2 default 'eul_us') return varchar2 result_cache;
+function dis_user_name(p_user_id in number, p_eul in varchar2) return varchar2 result_cache;
 
 /***********************************************************************************************/
 /*  discoverer username to user type                                                           */
@@ -305,22 +320,22 @@ function dis_user_type(p_username in varchar2) return varchar2 result_cache;
 /***********************************************************************************************/
 /*  discoverer user_id to user type                                                            */
 /***********************************************************************************************/
-function dis_user_type(p_user_id in number, p_eul in varchar2 default 'eul_us') return varchar2 result_cache;
+function dis_user_type(p_user_id in number, p_eul in varchar2) return varchar2 result_cache;
 
 /***********************************************************************************************/
 /*  discoverer SQL text for a custom object                                                    */
 /***********************************************************************************************/
-function dis_folder_sql(p_object_id in number, p_eul in varchar2 default 'eul_us') return clob;
+function dis_folder_sql(p_object_id in number, p_eul in varchar2) return clob;
 
 /***********************************************************************************************/
 /*  discoverer SQL text for a custom object, simplified, e.g. columns replaced by asterisk *   */
 /***********************************************************************************************/
-function dis_folder_sql2(p_object_id in number, p_eul in varchar2 default 'eul_us') return clob;
+function dis_folder_sql2(p_object_id in number, p_eul in varchar2) return clob;
 
 /***********************************************************************************************/
 /*  discoverer SQL text for a custom object and column to create Blitz Report LOVs             */
 /***********************************************************************************************/
-function dis_lov_query(p_object_id in number, p_it_ext_column in varchar2, p_eul in varchar2 default 'eul_us') return clob;
+function dis_lov_query(p_object_id in number, p_it_ext_column in varchar2, p_eul in varchar2) return clob;
 
 /***********************************************************************************************/
 /*  discoverer worksheet SQL text from logging table ams_discoverer_sql                        */
@@ -328,14 +343,34 @@ function dis_lov_query(p_object_id in number, p_it_ext_column in varchar2, p_eul
 function dis_worksheet_sql(p_workbook_owner_name in varchar2, p_workbook_name in varchar2, p_worksheet_name in varchar2) return clob;
 
 /***********************************************************************************************/
-/*  translates discoverer eul5_expressions.exp_formula1 to display formula text                */
+/*  translates reverse polish notation discoverer formulas to a valid SQL condition            */
 /***********************************************************************************************/
-function dis_formula(p_formula in varchar2, p_eul in varchar2 default 'eul_us') return varchar2;
+function dis_rpn_to_sql(p_formula in varchar2) return varchar2;
+
+/***********************************************************************************************/
+/*  translates discoverer item formula expressions to reverse polish notation                  */
+/***********************************************************************************************/
+function dis_formula(p_exp_id in pls_integer, p_eul in varchar2) return varchar2;
+
+/***********************************************************************************************/
+/*  translates discoverer item formula expressions to a valid SQL condition                    */
+/***********************************************************************************************/
+function dis_formula_sql(p_exp_id in pls_integer, p_eul in varchar2) return varchar2;
 
 /***********************************************************************************************/
 /*  checks if discoverer EUL contains any data in ams_discoverer_sql to be imported            */
 /***********************************************************************************************/
-function dis_worksheet_exists(p_eul_name varchar2) return varchar2;
+function dis_worksheet_exists(p_eul_name in varchar2) return varchar2;
+
+/***********************************************************************************************/
+/*  checks if discoverer EUL contains any data in eul5_qpp_stats to be imported as folders     */
+/***********************************************************************************************/
+function dis_folder_exists(p_eul_name in varchar2) return varchar2;
+
+/***********************************************************************************************/
+/*  returns a string of discoverer items ids used by a stat history (eul5_qpp_stats) record    */
+/***********************************************************************************************/
+function dis_qs_exp_ids(p_qs_id in number, p_eul in varchar2, p_type in varchar2 default null) return clob;
 
 /***********************************************************************************************/
 /*  default mrp planning compile designator for a org_id                                       */
@@ -356,6 +391,11 @@ function sequence_nextval(p_sequence_name in varchar2) return number;
 /*  translates oracle language codes to BCP47 codes e.g. for use in ECC queries                */
 /***********************************************************************************************/
 function bcp47_language(p_language_code in varchar2) return varchar result_cache;
+
+/***********************************************************************************************/
+/*  lowers sql text taking into consideration literals                                         */
+/***********************************************************************************************/
+function lower_sql(p_sql_text in clob) return clob;
 
 end xxen_util;
 /
@@ -1727,6 +1767,35 @@ begin
 end dis_eul_usage_count;
 
 
+function dis_business_area(p_obj_id in number, p_eul in varchar2) return varchar2 is
+l_business_area varchar2(4000);
+begin
+  execute immediate '
+  select distinct
+  listagg(eb.ba_name,'', '') within group (order by eb.ba_name) over (partition by ebol.bol_obj_id) business_area
+  from
+  '||p_eul||'.eul5_ba_obj_links ebol,
+  '||p_eul||'.eul5_bas eb
+  where
+  ebol.bol_obj_id=:p_obj_id and
+  ebol.bol_ba_id=eb.ba_id
+  ' into l_business_area using p_obj_id;
+  return l_business_area;
+end dis_business_area;
+
+
+function dis_folder_type(p_obj_type in varchar2) return varchar2 deterministic is
+begin
+  return case p_obj_type when 'SOBJ' then 'Standard' when 'COBJ' then 'Complex view' when 'CUO' then 'Custom SQL' else p_obj_type end;
+end dis_folder_type;
+
+
+function dis_item_type(p_exp_type in varchar2) return varchar2 deterministic is
+begin
+  return case p_exp_type when 'FIL' then 'Condition' when 'CI' then 'Calculated Item' when 'CO' then 'Item' when 'JP' then 'Join Predicate' else p_exp_type end;
+end dis_item_type;
+
+
 function dis_default_eul return varchar2 is
 l_default_eul varchar2(30):=fnd_profile.value('XXEN_REPORT_DISCOVERER_DEFAULT_EUL');
 begin
@@ -1747,7 +1816,7 @@ begin
 end dis_default_eul;
 
 
-function dis_user(p_user_id in number, p_eul in varchar2 default 'eul_us') return varchar2 result_cache is
+function dis_user(p_user_id in number, p_eul in varchar2) return varchar2 result_cache is
 l_username varchar2(64);
 begin
   execute immediate 'select eeu.eu_username from '||p_eul||'.eul5_eul_users eeu where eeu.eu_id=:p_user_id' into l_username using p_user_id;
@@ -1787,7 +1856,7 @@ begin
 end dis_user_name;
 
 
-function dis_user_name(p_user_id in number, p_eul in varchar2 default 'eul_us') return varchar2 result_cache is
+function dis_user_name(p_user_id in number, p_eul in varchar2) return varchar2 result_cache is
 begin
   return dis_user_name(dis_user(p_user_id, p_eul));
 end dis_user_name;
@@ -1803,13 +1872,13 @@ begin
 end dis_user_type;
 
 
-function dis_user_type(p_user_id in number, p_eul in varchar2 default 'eul_us') return varchar2 result_cache is
+function dis_user_type(p_user_id in number, p_eul in varchar2) return varchar2 result_cache is
 begin
   return dis_user_type(dis_user(p_user_id, p_eul));
 end dis_user_type;
 
 
-function dis_folder_sql(p_object_id in number, p_eul in varchar2 default 'eul_us') return clob is
+function dis_folder_sql(p_object_id in number, p_eul in varchar2) return clob is
 l_sql_chunk varchar2(32767);
 l_sql_text clob;
 type cur_type is ref cursor;
@@ -1845,7 +1914,7 @@ begin
 end dis_folder_sql;
 
 
-function dis_folder_sql2(p_object_id in number, p_eul in varchar2 default 'eul_us') return clob is
+function dis_folder_sql2(p_object_id in number, p_eul in varchar2) return clob is
 l_sql_text clob:=dis_folder_sql(p_object_id, p_eul);
 begin
   l_sql_text:=regexp_replace(l_sql_text,'^\( SELECT .+? FROM ','SELECT * FROM ',1,1);
@@ -1857,7 +1926,7 @@ begin
 end dis_folder_sql2;
 
 
-function dis_lov_query(p_object_id in number, p_it_ext_column in varchar2, p_eul in varchar2 default 'eul_us') return clob is
+function dis_lov_query(p_object_id in number, p_it_ext_column in varchar2, p_eul in varchar2) return clob is
 l_sql_text clob:=dis_folder_sql(p_object_id, p_eul);
 begin
   l_sql_text:=rtrim(regexp_replace(l_sql_text,'^\( SELECT .+? FROM ','select distinct'||chr(10)||lower(p_it_ext_column)||' value,'||chr(10)||'null description'||chr(10)||'from'||chr(10),1,1));
@@ -1887,59 +1956,147 @@ begin
 end dis_worksheet_sql;
 
 
-function dis_formula(p_formula in varchar2, p_eul in varchar2 default 'eul_us') return varchar2 is
-l_formula varchar2(4000):=p_formula;
+function dis_rpn_to_sql(p_formula in varchar2) return varchar2 is
+l_result varchar2(4000);
+type f_item is record (hash_val number, formula varchar2(200));
+type f_items is table of f_item;
+f_items1 f_items;
+
+function rpn_align(p_formula in varchar2) return varchar2 is
+l_result varchar2(4000);
+begin
+  select
+  case
+  when a.opr in ('+','-') then regexp_replace(form,',',a.opr,1,0,'i')
+  when a.opr in ('*','/','%','!=','=','>','<','>=','<=','<>') then regexp_replace(regexp_replace(form,',',a.opr,1,0,'i'),'^\(\s*(.+?)\s*\)$','\1',1,0,'imn')
+  when a.opr in ('and') then regexp_replace(regexp_replace(form,',',' '||a.opr||chr(10),1,0,'i'),'^\(\s*(.+?)\s*\)$','\1',1,0,'imn')
+  when a.opr in ('or') then regexp_replace(form,',',' '||a.opr||' ',1,0,'i')
+  when a.opr in ('between') then regexp_replace(form,'\(([^(),]+(\(\))?),([^(),]+(\(\))?),([^(),]+(\(\))?)\)','\1 between \3 and \5',1,0,'i')
+  when a.opr in ('is null','is not null') then regexp_replace(form,'\(([^(),]+(\(\))?)\)','\1 '||a.opr,1,0,'i')
+  when a.opr in ('()') then regexp_replace(form,'\(([^(),]+(\(\))?)\)','(\1)',1,0,'i')
+  else p_formula
+  end
+  into
+  l_result
+  from
+  (
+  select
+  regexp_replace(p_formula,'([^(),]+|(\(\)))\(([^(),]+)(\(\))?(,[^(),]+(\(\))?)*\)','\1',1,0,'i') opr,
+  regexp_substr(p_formula,'\(([^(),]+)(\(\))?(,[^(),]+(\(\))?)*\)',1,1,'i') form
+  from
+  dual
+  ) a;
+  return l_result;
+end rpn_align;
+
+begin
+  l_result:=p_formula;
+  select
+  a.hash_val,
+  a.formula
+  bulk collect into
+  f_items1
+  from
+  (
+  select
+  regexp_substr(l_result,'([^(),]+|(\(\)))\(([^(),]+)(\(\))?(,[^(),]+(\(\))?)*\)',1,level,'i') formula,
+  ora_hash(regexp_substr(l_result,'([^(),]+|(\(\)))\(([^(),]+)(\(\))?(,[^(),]+(\(\))?)*\)',1,level,'i')) hash_val
+  from dual
+  connect by level<=regexp_count(l_result,'([^(),]+|(\(\)))\(([^(),]+)(\(\))?(,[^(),]+(\(\))?)*\)')
+  ) a;
+
+  for i in f_items1.first..f_items1.last loop
+    l_result:=replace(l_result,f_items1(i).formula,f_items1(i).hash_val);
+  end loop;
+
+  if regexp_count(l_result,'\([^)]+?')>1 then
+    l_result:=dis_rpn_to_sql(l_result);
+  else
+    l_result:=rpn_align(l_result);
+  end if;
+
+  for i in f_items1.first..f_items1.last loop
+    l_result:=replace(l_result,f_items1(i).hash_val,rpn_align(f_items1(i).formula));
+  end loop;
+  return l_result;
+end dis_rpn_to_sql;
+
+
+function dis_formula(p_exp_id in pls_integer, p_eul in varchar2) return varchar2 is
 type cur_type is ref cursor;
 l_cur cur_type;
-l_param varchar2(100);
-l_text varchar2(250);
+c_rownum pls_integer;
+c_formula varchar2(1000);
+c_param varchar2(1000);
+c_text varchar2(1000);
+l_formula varchar2(4000);
 begin
-  if p_formula like '%[%]%' then
-    open l_cur for '
-    select
-    z.param,
-    z.text
-    from
-    (
-    select
-    y.*,
-    case
-    when y.param1=1 then (select ef.fun_ext_name from '||p_eul||'.eul5_functions ef where y.param2=ef.fun_id)
-    when y.param1 in (6,7) then (select ee.exp_name from '||p_eul||'.eul5_expressions ee where y.param2=ee.exp_id)
-    when y.param1=5 and y.param2=1 then ''''''''||replace(substr(y.param3,2,length(y.param3)-2),''""'',''"'')||''''''''
-    when y.param1=5 and y.param2=2 then trim(''"'' from y.param3)
-    when y.param1=5 and y.param2=4 then ''to_date(''''''||to_char(to_date(substr(y.param3,2,instr(y.param3,''"'',2)-2),''YYYYMMDDHH24MISS''),''DD-MON-RRRR'')||'''''',''''DD-MON-RRRR'''')''
-    end text
-    from
-    (
-    select
-    substr(x.param,1,instr(x.param,'','')-1) param1,
-    regexp_substr(x.param,''[^,]+'',1,2) param2,
-    substr(x.param,instr(x.param,'','',1,2)+1) param3,
-    x.*
-    from
-    (
-    select
-    regexp_substr(:p_formula,''\[(.+?)\]'',1,level,null,1) param
-    from dual connect by level<=regexp_count(:p_formula,''\[.+?\]'')
-    ) x
-    ) y
-    ) z
-    where
-    z.text is not null
-    ' using p_formula, p_formula;
-    loop
-      fetch l_cur into l_param,l_text;
-      exit when l_cur%notfound;
-      l_formula:=replace(l_formula,'['||l_param||']',l_text);
-    end loop;
-    close l_cur;
-  end if;
+  open l_cur for '
+  select
+  rownum,
+  z.exp_formula1,
+  z.param,
+  z.text
+  from
+  (
+  select
+  y.*,
+  case
+  when y.exp_type=''CO'' then ''o''||y.it_obj_id||''.''||lower(y.it_ext_column) --for standard items, use the column name directly
+  when y.param1=1 then (select lower(ef.fun_ext_name) from '||p_eul||'.eul5_functions ef where y.param2=ef.fun_id) --function
+  when y.param1=6 then (select decode(ee2.exp_type,''CI'',xxen_util.dis_formula(y.param2,'''||p_eul||'''),''o''||ee2.it_obj_id||''.''||nvl(lower(ee2.it_ext_column),''i''||y.param2)||decode(ee2.it_obj_id,y.outer_joined_obj_id,''(+)'')) from '||p_eul||'.eul5_expressions ee2 where y.param2=ee2.exp_id) --recursive for calculated items
+  when y.param1=5 and y.param2=1 then ''''''''||replace(substr(y.param3,2,length(y.param3)-2),''""'',''"'')||''''''''
+  when y.param1=5 and y.param2=2 then trim(''"'' from y.param3)
+  when y.param1=5 and y.param2=4 then ''to_date(''''''||to_char(to_date(substr(y.param3,2,instr(y.param3,''"'',2)-2),''YYYYMMDDHH24MISS''),''DD-MON-RRRR'')||'''''',''''DD-MON-RRRR'''')''
+  end text
+  from
+  (
+  select
+  substr(x.param,1,instr(x.param,'','')-1) param1,
+  trim(regexp_substr(x.param,''[^,]+'',1,2)) param2,
+  case when instr(x.param,'','',1,2)>0 then trim(substr(x.param,instr(x.param,'','',1,2)+1)) end param3,
+  x.*
+  from
+  (
+  select
+  nvl(ee.it_obj_id,ee.fil_obj_id) it_obj_id,
+  ee.it_ext_column,
+  ee.exp_type,
+  ee.exp_formula1,
+  regexp_substr(ee.exp_formula1,''\[(.+?)\]'',1,rowgen.column_value,null,1) param,
+  decode(ekc.fk_mstr_no_detail,1,ekc.key_obj_id,decode(ekc.fk_dtl_no_master,1,ekc.fk_obj_id_remote)) outer_joined_obj_id
+  from
+  '||p_eul||'.eul5_expressions ee,
+  table(xxen_util.rowgen(regexp_count(ee.exp_formula1,''\[.+?\]''))) rowgen,
+  '||p_eul||'.eul5_key_cons ekc
+  where
+  ee.exp_id=:p_exp_id and
+  ee.exp_formula1 like ''%[%]%'' and
+  decode(ee.exp_type,''JP'',ee.jp_key_id)=ekc.key_id(+)
+  ) x
+  ) y
+  ) z
+  where
+  z.text is not null
+  ' using p_exp_id;
+  loop
+    fetch l_cur into c_rownum, c_formula, c_param, c_text;
+    exit when l_cur%notfound;
+    l_formula:=replace(case when c_rownum=1 then c_formula else l_formula end,'['||c_param||']',c_text);
+  end loop;
+  l_formula:=replace(l_formula,'sysdate()','sysdate');
+  close l_cur;
   return l_formula;
 end dis_formula;
 
 
-function dis_worksheet_exists(p_eul_name varchar2) return varchar2 is
+function dis_formula_sql(p_exp_id in pls_integer, p_eul in varchar2) return varchar2 is
+begin
+  return dis_rpn_to_sql(dis_formula(p_exp_id, p_eul));
+end dis_formula_sql;
+
+
+function dis_worksheet_exists(p_eul_name in varchar2) return varchar2 is
 l_result varchar2(1);
 type cur_type is ref cursor;
 c_cur cur_type;
@@ -1964,6 +2121,272 @@ exception
     close c_cur;
     return null;
 end dis_worksheet_exists;
+
+
+function dis_folder_exists(p_eul_name varchar2) return varchar2 is
+l_result varchar2(1);
+type cur_type is ref cursor;
+c_cur cur_type;
+begin
+  open c_cur for '
+  select
+  ''Y''
+  from
+  '||p_eul_name||'.eul5_qpp_stats eqs
+  where
+  rownum=1';
+  loop
+    fetch c_cur into l_result;
+    exit when c_cur%notfound;
+  end loop;
+  close c_cur;
+  return l_result;
+exception
+  when others then
+    close c_cur;
+    return null;
+end dis_folder_exists;
+
+
+function dis_qs_exp_ids(p_qs_id in number, p_eul in varchar2, p_type in varchar2 default null) return clob is
+itmid clob;
+startpt binary_integer:=1;
+bmp long raw;
+pos binary_integer:=0;
+hexstring varchar2(10);
+hexid binary_integer:=0;
+decnibble1 number;
+decnibble2 binary_integer;
+decnibble3 binary_integer;
+decnibble4 binary_integer;
+decnibble5 binary_integer;
+decnibble6 binary_integer;
+decnibble7 binary_integer;
+decnibble8 binary_integer;
+decnibble9 binary_integer;
+decnibble10 binary_integer;
+hexchar varchar2(1);
+expid number;
+nibblezero boolean;
+type it_type is table of varchar2(1);
+itype it_type:=it_type('D','M','J','F');  --dimensions, measures, joins, filters
+-- occasionally, due to a bug, the first 5 bytes of the string are not always populated with id of
+-- the item so rather than go all the way down the string looking a every 5 bytes until it reaches
+-- the end (a slow process) i count the number of empy stings i have found so far and when it
+-- reaches the the value held in 'noemptyblocks'  it moves on to the next string
+noemptyblks binary_integer:=10;
+begin
+  for i in 1..4 loop --loop through dimensions, measures, joins, filters
+    if p_type is null or p_type='items' and i in (1,2) or p_type='joins' and i=3 or p_type='filters' and i=4 then
+      hexid:=0;
+
+      if i=1 then
+        execute immediate 'select eqs.qs_dbmp0||eqs.qs_dbmp1||eqs.qs_dbmp2||eqs.qs_dbmp3||eqs.qs_dbmp4||eqs.qs_dbmp5||eqs.qs_dbmp6||eqs.qs_dbmp7 from '||p_eul||'.eul5_qpp_stats eqs where eqs.qs_id=:p_qs_id' into bmp using p_qs_id;
+      elsif i=2 then
+        execute immediate 'select eqs.qs_mbmp0||eqs.qs_mbmp1||eqs.qs_mbmp2||eqs.qs_mbmp3||eqs.qs_mbmp4||eqs.qs_mbmp5||eqs.qs_mbmp6||eqs.qs_mbmp7 from '||p_eul||'.eul5_qpp_stats eqs where eqs.qs_id=:p_qs_id' into bmp using p_qs_id;
+      elsif i=3 then
+        execute immediate 'select eqs.qs_jbmp0||eqs.qs_jbmp1||eqs.qs_jbmp2||eqs.qs_jbmp3||eqs.qs_jbmp4||eqs.qs_jbmp5||eqs.qs_jbmp6||eqs.qs_jbmp7 from '||p_eul||'.eul5_qpp_stats eqs where eqs.qs_id=:p_qs_id' into bmp using p_qs_id;
+      else
+        execute immediate 'select eqs.qs_fbmp0||eqs.qs_fbmp1||eqs.qs_fbmp2||eqs.qs_fbmp3||eqs.qs_fbmp4||eqs.qs_fbmp5||eqs.qs_fbmp6||eqs.qs_fbmp7 from '||p_eul||'.eul5_qpp_stats eqs where eqs.qs_id=:p_qs_id' into bmp using p_qs_id;
+      end if;
+
+      -- this bit takes a five byte chunk in the string.
+      -- it then loops until it reaches the end of the string or it find no more values
+      while hexid<>noemptyblks loop
+        pos:=pos+10;
+        if pos=4090 then
+          hexid:=noemptyblks;
+          startpt:=1;
+          pos:=0;
+        else
+          hexstring:=nvl(substr(rawtohex(bmp),startpt,10),'0000000000');
+          if hexstring='0000000000' then
+            hexid:=hexid+1;
+            decnibble1:=0;
+            decnibble2:=0;
+            decnibble3:=0;
+            decnibble4:=0;
+            decnibble5:=0;
+            decnibble6:=0;
+            decnibble7:=0;
+            decnibble8:=0;
+            decnibble9:=0;
+            decnibble10:=0;
+            nibblezero:=true;
+            if hexid=noemptyblks then
+              startpt:=1;
+              pos:=0;
+            end if;
+          else -- converts hex nibble into decimal value.
+            nibblezero:=false;
+            hexchar:=substr(rawtohex(bmp),startpt,1);
+            if hexchar='0' then decnibble1:=0;
+            elsif hexchar='A' then decnibble1:=10;
+            elsif hexchar='B' then decnibble1:=11;
+            elsif hexchar='C' then decnibble1:=12;
+            elsif hexchar='D' then decnibble1:=13;
+            elsif hexchar='E' then decnibble1:=14;
+            elsif hexchar='F' then decnibble1:=15;
+            else decnibble1:=to_number(hexchar);
+            end if;
+            hexchar:=substr(rawtohex(bmp),startpt+1,1);
+            if hexchar='0' then decnibble2:=0;
+            elsif hexchar='A' then decnibble2:=10;
+            elsif hexchar='B' then decnibble2:=11;
+            elsif hexchar='C' then decnibble2:=12;
+            elsif hexchar='D' then decnibble2:=13;
+            elsif hexchar='E' then decnibble2:=14;
+            elsif hexchar='F' then decnibble2:=15;
+            else decnibble2:=to_number(hexchar);
+            end if;
+            hexchar:=substr(rawtohex(bmp),startpt+2,1);
+            if hexchar='0' then decnibble3:=0;
+            elsif hexchar='A' then decnibble3:=10;
+            elsif hexchar='B' then decnibble3:=11;
+            elsif hexchar='C' then decnibble3:=12;
+            elsif hexchar='D' then decnibble3:=13;
+            elsif hexchar='E' then decnibble3:=14;
+            elsif hexchar='F' then decnibble3:=15;
+            else decnibble3:=to_number(hexchar);
+            end if;
+            hexchar:=substr(rawtohex(bmp),startpt+3,1);
+            if hexchar='0' then decnibble4:=0;
+            elsif  hexchar='A' then decnibble4:=10;
+            elsif hexchar='B' then decnibble4:=11;
+            elsif hexchar='C' then decnibble4:=12;
+            elsif hexchar='D' then decnibble4:=13;
+            elsif hexchar='E' then decnibble4:=14;
+            elsif hexchar='F' then decnibble4:=15;
+            else decnibble4:=to_number(hexchar);
+            end if;
+            hexchar:=substr(rawtohex(bmp),startpt+4,1);
+            if hexchar='0' then decnibble5:=0;
+            elsif hexchar='A' then decnibble5:=10;
+            elsif hexchar='B' then decnibble5:=11;
+            elsif hexchar='C' then decnibble5:=12;
+            elsif hexchar='D' then decnibble5:=13;
+            elsif hexchar='E' then decnibble5:=14;
+            elsif hexchar='F' then decnibble5:=15;
+            else decnibble5:=to_number(hexchar );
+            end if;
+            hexchar:=substr(rawtohex(bmp),startpt+5,1);
+            if hexchar='0' then decnibble6:=0;
+            elsif hexchar='A' then decnibble6:=10;
+            elsif hexchar='B' then decnibble6:=11;
+            elsif hexchar='C' then decnibble6:=12;
+            elsif hexchar='D' then decnibble6:=13;
+            elsif hexchar='E' then decnibble6:=14;
+            elsif hexchar='F' then decnibble6:=15;
+            else decnibble6:=to_number(hexchar);
+            end if;
+            hexchar:=substr(rawtohex(bmp),startpt+6,1);
+            if hexchar='0' then decnibble7:=0;
+            elsif hexchar='A' then decnibble7:=10;
+            elsif hexchar='B' then decnibble7:=11;
+            elsif hexchar='C' then decnibble7:=12;
+            elsif hexchar='D' then decnibble7:=13;
+            elsif hexchar='E' then decnibble7:=14;
+            elsif hexchar='F' then decnibble7:=15;
+            else decnibble7:=to_number(hexchar);
+            end if;
+            hexchar:=substr(rawtohex(bmp),startpt+7,1);
+            if hexchar='0' then decnibble8:=0;
+            elsif hexchar='A' then decnibble8:=10;
+            elsif hexchar='B' then decnibble8:=11;
+            elsif hexchar='C' then decnibble8:=12;
+            elsif hexchar='D' then decnibble8:=13;
+            elsif hexchar='E' then decnibble8:=14;
+            elsif hexchar='F' then decnibble8:=15;
+            else decnibble8:=to_number(hexchar);
+            end if;
+            hexchar:=substr(rawtohex(bmp),startpt+8,1);
+            if hexchar='0' then decnibble9:=0;
+            elsif hexchar='A' then decnibble9:=10;
+            elsif hexchar='B' then decnibble9:=11;
+            elsif hexchar='C' then decnibble9:=12;
+            elsif hexchar='D' then decnibble9:=13;
+            elsif hexchar='E' then decnibble9:=14;
+            elsif hexchar='F' then decnibble9:=15;
+            else decnibble9:=to_number(hexchar);
+            end if;
+            hexchar:=substr(rawtohex(bmp),startpt+9,1);
+            if hexchar='0' then decnibble10:=0;
+            elsif hexchar='A' then decnibble10:=10;
+            elsif hexchar='B' then decnibble10:=11;
+            elsif hexchar='C' then decnibble10:=12;
+            elsif hexchar='D' then decnibble10:=13;
+            elsif hexchar='E' then decnibble10:=14;
+            elsif hexchar='F' then decnibble10:=15;
+            else decnibble10:=to_number(hexchar);
+            end if;
+
+            -- off set the nibble by one byte, then calculate the item id
+            if nibblezero=false then
+              decnibble1:=decnibble1*2;
+              if decnibble2>7 then
+                decnibble1:=decnibble1+1;
+                decnibble2:=decnibble2-8;
+              end if;
+              decnibble1:=decnibble1*268435456;
+              decnibble2:=decnibble2*2;
+              if decnibble3>7 then
+                decnibble2:=decnibble2+1;
+                decnibble3:=decnibble3-8;
+              end if;
+              decnibble2:=decnibble2*16777216;
+              decnibble3:=decnibble3*2;
+              if decnibble4>7 then
+                decnibble3:=decnibble3+1;
+                decnibble4:=decnibble4-8;
+              end if;
+              decnibble3:=decnibble3*1048576;
+              decnibble4:=decnibble4*2;
+              if decnibble5>7 then
+                decnibble4:=decnibble4+1;
+                decnibble5:=decnibble5-8;
+              end if;
+              decnibble4:=decnibble4*65536;
+              decnibble5:=decnibble5*2;
+              if decnibble6>7 then
+                decnibble5:=decnibble5+1;
+                decnibble6:=decnibble6-8;
+              end if;
+              decnibble5:=decnibble5*4096;
+              decnibble6:=decnibble6*2;
+              if decnibble7>7 then
+                decnibble6:=decnibble6+1;
+                decnibble7:=decnibble7-8;
+              end if;
+              decnibble6:=decnibble6*256;
+              decnibble7:=decnibble7*2;
+              if decnibble8>7 then
+                decnibble7:=decnibble7+1;
+                decnibble8:=decnibble8-8;
+              end if;
+              decnibble7:=decnibble7*16;
+              decnibble8:=decnibble8*2;
+              if decnibble9>7 then
+                decnibble8:=decnibble8+1;
+                decnibble9:=decnibble9-8;
+              end if;
+              if decnibble9>0 then
+                decnibble9:=(decnibble9-2)*8;
+              end if;
+              decnibble10:=decnibble9+(decnibble10/2);
+              expid:=decnibble1+decnibble2+decnibble3+decnibble4+decnibble5+decnibble6+decnibble7+decnibble8;
+            end if;
+          end if;
+        end if;
+        startpt:=pos+1;
+        if nibblezero=false then
+          itmid:=itmid||case when p_type is null then itype(i) end||expid||',';
+        end if;
+      end loop;
+    end if;
+  end loop;
+
+  return itmid;
+end dis_qs_exp_ids;
 
 
 function compile_designator(p_org_id in pls_integer) return varchar2 is
@@ -2054,6 +2477,37 @@ begin
     return c.bcp47_language;
   end loop;
 end bcp47_language;
+
+
+function lower_sql(p_sql_text in clob) return clob is
+l_result clob;
+type f_item is record (hash_val number, item varchar2(200));
+type f_items is table of f_item;
+f_items1 f_items;
+begin
+  l_result:=p_sql_text;
+  select
+  a.hash_val,
+  a.item
+  bulk collect into
+  f_items1
+  from
+  (
+  select
+  regexp_substr(l_result,'((''[^'']+?'')|(--.*?$)|(\/\*.*?\*\/))',1,level,'imn') item,
+  ora_hash(regexp_substr(l_result,'((''[^'']+?'')|(--.*?$)|(\/\*.*?\*\/))',1,level,'imn')) hash_val
+  from dual
+  connect by level<=regexp_count(l_result,'((''[^'']+?'')|(--.*?$)|(\/\*.*?\*\/))',1,'imn')
+  ) a;
+  for i in f_items1.first..f_items1.last loop
+    l_result:=replace(l_result,f_items1(i).item,f_items1(i).hash_val);
+  end loop;
+  l_result:=lower(l_result);
+  for i in f_items1.first..f_items1.last loop
+    l_result:=replace(l_result,f_items1(i).hash_val,f_items1(i).item);
+  end loop;
+  return l_result;
+end lower_sql;
 
 
 end xxen_util;

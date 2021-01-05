@@ -129,7 +129,7 @@ SELECT -- Invoices on Hold
   'Invoice Hold' C_HOLD_TYPE
 FROM
   hz_parties hp,
-  po_vendor_sites VS,
+  ap_supplier_sites VS,
   ap_invoices inv1,
   ap_batches B,
   ap_payment_schedules S,
@@ -274,7 +274,7 @@ SELECT -- Payments on Hold
   'Scheduled Payment Hold' C_HOLD_TYPE
 FROM
   hz_parties hp,
-  po_vendor_sites VS,
+  ap_supplier_sites VS,
   ap_invoices inv1,
   ap_batches B,
   ap_payment_schedules S,
@@ -405,8 +405,8 @@ SELECT -- Vendor Sites on Hold
   'Supplier Site Hold' C_HOLD_TYPE
 FROM
   hz_parties hp,
-  po_vendors V,
-  po_vendor_sites VS,
+  ap_suppliers V,
+  ap_supplier_sites VS,
   ap_invoices inv1,
   ap_batches B,
   ap_payment_schedules S,

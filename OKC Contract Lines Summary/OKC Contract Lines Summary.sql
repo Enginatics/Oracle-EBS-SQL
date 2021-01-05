@@ -113,7 +113,7 @@ olsv.id=olss.lse_id(+) and
 ostl.scs_code=oklb.scs_code and
 olsv.id=oklb.lse_id and
 oklb.jtot_object1_code=jov.object_code(+) and
-osclv.code=z.scs_code(+) and
+oklb.scs_code=z.scs_code(+) and
 oklb.lse_id=z.lse_id(+) and
 nvl(oklb.usage_type,'x')=nvl(z.usage_type(+),'x')
 order by

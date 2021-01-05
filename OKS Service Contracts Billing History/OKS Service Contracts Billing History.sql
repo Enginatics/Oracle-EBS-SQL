@@ -53,10 +53,9 @@ obcl.currency_code,
 obsl.average,
 obsld.unit_of_measure,
 xxen_util.meaning(decode(obsld.amcv_yn,'Y','Y'),'YES_NO',0) amcv_yn,
-cccg.name counter_group,
+&counter_cols
 obsld.start_reading,
 obsld.end_reading,
-ccr.value_timestamp,
 obsld.fixed,
 obsld.actual,
 obsld.default_default,
@@ -95,8 +94,7 @@ ra_rules rr2,
 oks_bill_cont_lines obcl,
 oks_bill_sub_lines obsl,
 oks_bill_sub_line_dtls obsld,
-csi_counter_readings ccr,
-cs_csi_counter_groups cccg,
+&counter_tbls
 oks_bill_transactions obt,
 oks_bill_txn_lines obtl,
 ra_customer_trx_lines_all rctla,
@@ -105,7 +103,7 @@ ra_cust_trx_types_all rctta
 where
 1=1 and
 okhab.scs_code in (select osb.code from okc_subclasses_b osb where osb.cls_code='SERVICE') and
-haouv.organization_id=okhab.org_id and
+haouv.organization_id= okhab.authoring_org_id and
 okhab.scs_code=osclv.code(+) and
 osclv.cls_code=ocv.code(+) and
 okhab.sts_code=osv0.code(+) and
@@ -122,12 +120,10 @@ okslb1.acct_rule_id=rr2.rule_id(+) and
 nvl(oklb2.id,oklb1.id)=obsl.cle_id and
 obsl.bcl_id=obcl.id(+) and
 obsl.id=obsld.bsl_id(+) and
-obsld.ccr_id=ccr.counter_value_id(+) and
-obsld.cgr_id=cccg.counter_group_id(+) and
+&counter_joins
 obsl.id=obtl.bsl_id(+) and
 obtl.btn_id=obt.id(+) and
 to_char(obtl.bill_instance_number)=rctla.interface_line_attribute3(+) and
-obtl.bill_instance_number=rctla.interface_line_attribute3(+) and
 rctla.interface_line_context(+)='OKS CONTRACTS' and
 rctla.customer_trx_id=rcta.customer_trx_id(+) and
 rcta.cust_trx_type_id=rctta.cust_trx_type_id(+) and

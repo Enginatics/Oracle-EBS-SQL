@@ -12,17 +12,7 @@
 
 select
 haouv.name business_group,
-(
-select distinct
-listagg(gl0.name,', ') within group (order by gl0.name) over (partition by glsna.ledger_id) ledger_set
-from
-gl_ledger_set_norm_assign glsna,
-gl_ledgers gl0
-where
-gl.ledger_id=glsna.ledger_id and
-nvl(glsna.status_code,'X')<>'D' and
-glsna.ledger_set_id=gl0.ledger_id
-) ledger_set,
+&ledger_set_column
 gl.name ledger,
 xxen_util.meaning(gl.ledger_category_code,'GL_ASF_LEDGER_CATEGORY',101) ledger_category,
 gl.currency_code currency,
@@ -31,7 +21,7 @@ hou.name operating_unit,
 ood.organization_code,
 ood.organization_name organization,
 ftv.territory_short_name country,
-xep.name legal_entity,
+&legal_entity_column
 gl.ledger_id,
 fifsv.id_flex_structure_code chart_of_accounts_code,
 gl.chart_of_accounts_id,
@@ -45,8 +35,8 @@ hr_all_organization_units_vl haouv,
 org_organization_definitions ood,
 hr_all_organization_units haou,
 hr_locations_all hla,
-fnd_territories_vl ftv,
-xle_entity_profiles xep
+fnd_territories_vl ftv
+&legal_entity_table
 where
 nvl(ood.disable_date,sysdate)>=sysdate and
 nvl(hou.date_to,sysdate)>=sysdate and
@@ -60,11 +50,11 @@ hou.business_group_id=haouv.organization_id(+) and
 hou.organization_id=ood.operating_unit(+) and
 ood.organization_id=haou.organization_id(+) and
 haou.location_id=hla.location_id(+) and
-hla.country=ftv.territory_code(+) and
-ood.legal_entity=xep.legal_entity_id(+)
+hla.country=ftv.territory_code(+) 
+&legal_entity_join
 order by
 chart_of_accounts_name,
-ledger_set,
+&ledger_set_order_by
 business_group,
 ledger,
 currency,

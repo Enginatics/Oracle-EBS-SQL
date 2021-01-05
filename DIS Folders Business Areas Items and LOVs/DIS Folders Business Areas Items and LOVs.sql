@@ -13,19 +13,10 @@ Parameter 'Show Active Only' restricts to folders which have been accessed by wo
 -- Run Report: https://demo.enginatics.com/
 
 select
-(
-select distinct
-listagg(eb.ba_name,', ') within group (order by eb.ba_name) over (partition by ebol.bol_obj_id) business_area
-from
-&eul.eul5_ba_obj_links ebol,
-&eul.eul5_bas eb
-where
-eo.obj_id=ebol.bol_obj_id and
-ebol.bol_ba_id=eb.ba_id
-) business_area,
+xxen_util.dis_business_area(eo.obj_id,'&eul') business_area,
 eo.obj_name folder,
 eo.obj_developer_key folder_identifier,
-decode(eo.obj_type,'SOBJ','Standard','COBJ','Complex','CUO','Custom') folder_type,
+xxen_util.dis_folder_type(eo.obj_type) folder_type,
 nvl2(eo.sobj_ext_table,nvl2((select dv.view_name from dba_views dv where eo.sobj_ext_table=dv.view_name and dv.owner='APPS'),'View','Table'),null) object_type,
 eo.sobj_ext_table object_name,
 eqs.access_count,
@@ -33,7 +24,7 @@ eqs.last_accessed,
 &sql_text_columns
 eo.obj_description folder_description,
 &item_columns
-eo.obj_id folder_id,
+eo.obj_id,
 xxen_util.dis_user_name(eo.obj_created_by) created_by,
 xxen_util.client_time(eo.obj_created_date) creation_date,
 xxen_util.dis_user_name(eo.obj_updated_by) last_updated_by,

@@ -16,13 +16,14 @@ from
 (
 select
 msavav.inventory_item_status_code status_code,
+misv.inventory_item_status_code_tl status,
 misv.description,
 &column1
 xxen_util.meaning(decode(msavav.attribute_value,'Y','Y'),'YES_NO',0) value,
 &column2
 substr(msavav.attribute_name,18) column_name
 from
-mtl_item_status misv,
+mtl_item_status_vl misv,
 mtl_stat_attrib_values_all_v msavav
 where
 1=1 and
