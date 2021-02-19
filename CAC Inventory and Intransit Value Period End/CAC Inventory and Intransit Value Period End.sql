@@ -68,34 +68,7 @@ select	nvl(gl.short_name, gl.name) Ledger,
 	fcl.meaning Item_Type,
 	-- Revision for version 1.14 and 1.16
 	misv.inventory_item_status_code_tl Item_Status,
-	-- Revision for version 1.11
-	nvl((select	max(mc.category_concat_segs)
-	     from	mtl_categories_v mc,
-			mtl_item_categories mic,
-			mtl_category_sets_b mcs,
-			mtl_category_sets_tl mcs_tl
-	     where	mic.category_set_id         = mcs.category_set_id
-	     and	2=2  
-	     and	mic.inventory_item_id       = msiv.inventory_item_id
-	     and	mic.organization_id         = msiv.organization_id
-	     and	mc.category_id              = mic.category_id
-	     and	mcs.category_set_id         = mcs_tl.category_set_id
-	     and	mcs_tl.language             = userenv('lang')
-	),'') "&p_category_set1",						-- p_category_set1
-	nvl((select	max(mc.category_concat_segs)
-	     from	mtl_categories_v mc,
-			mtl_item_categories mic,
-			mtl_category_sets_b mcs,
-			mtl_category_sets_tl mcs_tl
-	     where	mic.category_set_id         = mcs.category_set_id
-	     and	3=3 
-	     and	mic.inventory_item_id       = msiv.inventory_item_id
-	     and	mic.organization_id         = msiv.organization_id
-	     and	mc.category_id              = mic.category_id
-	     and	mcs.category_set_id         = mcs_tl.category_set_id
-	     and	mcs_tl.language             = userenv('lang')
-	),'') "&p_category_set2",						-- p_category_set2
-	-- End revision for version 1.11
+&category_columns
 	gl.currency_code Curr_Code,
 	round((nvl(cpcs.rollback_value,0)) /
 	decode(nvl(cpcs.rollback_quantity,0), 0, 1,
@@ -208,34 +181,7 @@ select	nvl(gl.short_name, gl.name) Ledger,
 	fcl.meaning Item_Type,
 	-- Revision for version 1.14 and 1.16
 	misv.inventory_item_status_code_tl Item_Status,
-	-- Revision for version 1.11
-	nvl((select	max(mc.category_concat_segs)
-	     from	mtl_categories_v mc,
-			mtl_item_categories mic,
-			mtl_category_sets_b mcs,
-			mtl_category_sets_tl mcs_tl
-	     where	mic.category_set_id         = mcs.category_set_id
-	     and	2=2 
-	     and	mic.inventory_item_id       = msiv.inventory_item_id
-	     and	mic.organization_id         = msiv.organization_id
-	     and	mc.category_id              = mic.category_id
-	     and	mcs.category_set_id         = mcs_tl.category_set_id
-	     and	mcs_tl.language             = userenv('lang')
-	),'') "&p_category_set1",
-	nvl((select	max(mc.category_concat_segs)
-	     from	mtl_categories_v mc,
-			mtl_item_categories mic,
-			mtl_category_sets_b mcs,
-			mtl_category_sets_tl mcs_tl
-	     where	mic.category_set_id         = mcs.category_set_id
-	     and	3=3  
-	     and	mic.inventory_item_id       = msiv.inventory_item_id
-	     and	mic.organization_id         = msiv.organization_id
-	     and	mc.category_id              = mic.category_id
-	     and	mcs.category_set_id         = mcs_tl.category_set_id
-	     and	mcs_tl.language             = userenv('lang')
-	),'') "&p_category_set2",
-	-- End revision for version 1.11
+&category_columns
 	gl.currency_code Curr_Code,
 	round((nvl(cpcs.rollback_intransit_value,0)) /
 		decode(nvl(cpcs.rollback_quantity,0), 0, 1,
@@ -395,34 +341,7 @@ select	nvl(gl.short_name, gl.name) Ledger,
 	fcl.meaning Item_Type,
 	-- Revision for version 1.14 and 1.16
 	misv.inventory_item_status_code_tl Item_Status,
-	-- Revision for version 1.11
-	nvl((select	max(mc.category_concat_segs)
-	     from	mtl_categories_v mc,
-			mtl_item_categories mic,
-			mtl_category_sets_b mcs,
-			mtl_category_sets_tl mcs_tl
-	     where	mic.category_set_id         = mcs.category_set_id
-	     and	2=2  
-	     and	mic.inventory_item_id       = msiv.inventory_item_id
-	     and	mic.organization_id         = msiv.organization_id
-	     and	mc.category_id              = mic.category_id
-	     and	mcs.category_set_id         = mcs_tl.category_set_id
-	     and	mcs_tl.language             = userenv('lang')
-	),'') "&p_category_set1",
-	nvl((select	max(mc.category_concat_segs)
-	     from	mtl_categories_v mc,
-			mtl_item_categories mic,
-			mtl_category_sets_b mcs,
-			mtl_category_sets_tl mcs_tl
-	     where	mic.category_set_id         = mcs.category_set_id
-	     and	3=3  
-	     and	mic.inventory_item_id       = msiv.inventory_item_id
-	     and	mic.organization_id         = msiv.organization_id
-	     and	mc.category_id              = mic.category_id
-	     and	mcs.category_set_id         = mcs_tl.category_set_id
-	     and	mcs_tl.language             = userenv('lang')
-	),'') "&p_category_set2",
-	-- End revision for version 1.11
+&category_columns
 	gl.currency_code Curr_Code,
 	round(nvl(cic.item_cost,0),5) Item_Cost,
 	cpcs.subinventory_code Subinventory_or_Intransit,
@@ -551,34 +470,7 @@ select	nvl(gl.short_name, gl.name) Ledger,
 	fcl.meaning Item_Type,
 	-- Revision for version 1.14 and 1.16
 	misv.inventory_item_status_code_tl Item_Status,
-	-- Revision for version 1.11
-	nvl((select	max(mc.category_concat_segs)
-	     from	mtl_categories_v mc,
-			mtl_item_categories mic,
-			mtl_category_sets_b mcs,
-			mtl_category_sets_tl mcs_tl
-	     where	mic.category_set_id         = mcs.category_set_id
-	     and	2=2  
-	     and	mic.inventory_item_id       = msiv.inventory_item_id
-	     and	mic.organization_id         = msiv.organization_id
-	     and	mc.category_id              = mic.category_id
-	     and	mcs.category_set_id         = mcs_tl.category_set_id
-	     and	mcs_tl.language             = userenv('lang')
-	),'') "&p_category_set1",
-	nvl((select	max(mc.category_concat_segs)
-	     from	mtl_categories_v mc,
-			mtl_item_categories mic,
-			mtl_category_sets_b mcs,
-			mtl_category_sets_tl mcs_tl
-	     where	mic.category_set_id         = mcs.category_set_id
-	     and	3=3 
-	     and	mic.inventory_item_id       = msiv.inventory_item_id
-	     and	mic.organization_id         = msiv.organization_id
-	     and	mc.category_id              = mic.category_id
-	     and	mcs.category_set_id         = mcs_tl.category_set_id
-	     and	mcs_tl.language             = userenv('lang')
-	),'') "&p_category_set2",
-	-- End revision for version 1.11
+&category_columns
 	gl.currency_code Curr_Code,
 	round(nvl(cic.item_cost,0),5) Item_Cost,
 	-- Revision for version 1.16

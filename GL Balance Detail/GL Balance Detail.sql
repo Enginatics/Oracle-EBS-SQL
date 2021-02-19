@@ -48,6 +48,8 @@ gl.ledger_id=gb.ledger_id and
 gl.currency_code=gb.currency_code and
 gb.code_combination_id=gcc.code_combination_id
 ) x
+where
+2=2
 order by
 x.ledger,
 &segment_columns

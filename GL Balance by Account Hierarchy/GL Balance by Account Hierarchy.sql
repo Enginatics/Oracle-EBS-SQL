@@ -43,6 +43,7 @@ w.period_name,
 sum(w.start_bal       ) over (partition by w.ledger, w.type, w.path_, &account_type w.flex_value &segment2) start_balance,
 sum(w.start_bal*w.rate) over (partition by w.ledger, w.type, w.path_, &account_type w.flex_value &segment2) start_balance_reval,
 sum(w.amount          ) over (partition by w.ledger, w.type, w.path_, &account_type w.flex_value &segment2) total,
+sum(w.abs_amount      ) over (partition by w.ledger, w.type, w.path_, &account_type w.flex_value &segment2) abs_total,
 sum(w.amount*w.rate   ) over (partition by w.ledger, w.type, w.path_, &account_type w.flex_value &segment2) total_reval,
 sum(w.amount          ) over (partition by w.ledger, w.type, w.path_, &account_type w.flex_value &segment2, w.period_name) amount,
 sum(w.amount*w.rate   ) over (partition by w.ledger, w.type, w.path_, &account_type w.flex_value &segment2, w.period_name) amount_reval,
@@ -61,6 +62,7 @@ nvl(v.flex_value,gcc.&segment1) flex_value &segment2,
 gps.period_name,
 decode(gps.start_period,'Y',nvl(gb.begin_balance_dr,0)-nvl(gb.begin_balance_cr,0)) start_bal,
 nvl(gb.period_net_dr,0)-nvl(gb.period_net_cr,0) amount,
+abs(nvl(gb.period_net_dr,0))+abs(nvl(gb.period_net_cr,0)) abs_amount,
 decode(gl.currency_code,:reval_currency,1,(select gdr.conversion_rate from gl_daily_conversion_types gdct, gl_daily_rates gdr where gl.currency_code=gdr.from_currency and gdr.to_currency=:reval_currency and gps.end_date=gdr.conversion_date and gdct.user_conversion_type=:reval_conversion_type and gdct.conversion_type=gdr.conversion_type)) rate,
 gl.currency_code,
 v.flex_value_set_id,
@@ -230,6 +232,8 @@ for period_name in (
 &pivot_columns
 )
 ) y
+where
+3=3
 order by
 y.ledger,
 &order_by_segment2

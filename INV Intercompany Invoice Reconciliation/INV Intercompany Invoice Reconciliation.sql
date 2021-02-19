@@ -51,8 +51,9 @@ with mmt as -- driving inventory transactions for intercompany
     , oe_order_headers_all         ooha
     , mtl_intercompany_parameters  mip
     where
-        mmt.transaction_source_type_id      in (2,12)  -- sales order/rma
-    and mmt.transaction_action_id           in (1,27)  -- issue from stores/receipt into stores
+        mmt.transaction_source_type_id        in (2,12)  -- sales order/rma
+    and mmt.transaction_action_id               in (1,27)  -- issue from stores/receipt into stores
+    and mmt.logical_transactions_created    is null 
     and oola.line_id                         = mmt.trx_source_line_id
     and ooha.header_id                       = oola.header_id
     and hoi.organization_id                  = mmt.organization_id
@@ -235,6 +236,7 @@ with mmt as -- driving inventory transactions for intercompany
   ( select
       rctla.interface_line_context
     , rctla.interface_line_attribute6
+    , rctla.interface_line_attribute7
     , rctla.customer_trx_id
     , rctla.customer_trx_line_id
     , hp.party_name            customer_name
@@ -278,12 +280,13 @@ with mmt as -- driving inventory transactions for intercompany
   ( select
       rila.interface_line_context
     , rila.interface_line_attribute6
+    , rila.interface_line_attribute7
     , rila.interface_line_id
     , rila.interface_status
     , rila.request_id
     , listagg(riea.message_text,chr(10))
       within group (order by riea.message_text)
-      over (partition by rila.interface_line_context,rila.interface_line_attribute6,rila.interface_line_id,rila.interface_status,rila.request_id) error
+      over (partition by rila.interface_line_context,rila.interface_line_attribute6,rila.interface_line_attribute7,rila.interface_line_id,rila.interface_status,rila.request_id) error
     from
       ra_interface_lines_all  rila
     , (select distinct
@@ -409,9 +412,11 @@ and mmt.selling_ou_id                      = haou2.organization_id
 -- ar interface
 and ar_intf.interface_line_context     (+) = mmt.source_line_context
 and ar_intf.interface_line_attribute6  (+) = to_char(mmt.source_line_id)
+and ar_intf.interface_line_attribute7  (+) = to_char(mmt.transaction_id)
 -- ar invoice
 and ar_ico.interface_line_context      (+) = mmt.source_line_context
 and ar_ico.interface_line_attribute6   (+) = to_char(mmt.source_line_id)
+and ar_ico.interface_line_attribute7   (+) = to_char(mmt.transaction_id)
 -- ap interface
 and ap_intf.customer_trx_id            (+) = to_char(ar_ico.customer_trx_id)
 and ap_intf.customer_trx_line_id       (+) = to_char(ar_ico.customer_trx_line_id)

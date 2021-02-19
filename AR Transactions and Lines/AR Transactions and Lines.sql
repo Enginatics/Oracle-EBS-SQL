@@ -50,6 +50,8 @@ null ship_to_state,
 x.taxpayer_id,
 x.salesperson,
 x.om_salesperson,
+x.sales_region,
+x.sales_region_name,
 ----------line---------
 x.line,
 x.item,
@@ -144,6 +146,8 @@ rcta.customer_reference,
 rcta.comments,
 jrrev.resource_name salesperson,
 jrrev2.resource_name om_salesperson,
+rtk.concatenated_segments sales_region,
+rtk.name sales_region_name,
 ----------line----------
 decode(rctla.line_type,'FREIGHT',null,rctla.line_number) line,
 nvl((select msibk.concatenated_segments from mtl_system_items_b_kfv msibk where rctla.inventory_item_id=msibk.inventory_item_id and nvl(rctla.warehouse_id,ospa.parameter_value)=msibk.organization_id),xxen_util.meaning(rctla.line_type,'STD_LINE_TYPE',222)) item,
@@ -216,6 +220,7 @@ ar_cons_inv_all acia,
 hz_cust_accounts hca,
 hz_parties hp,
 hz_cust_site_uses_all hcsua,
+ra_territories_kfv rtk,
 hz_cust_acct_sites_all hcasa,
 hz_party_sites hps,
 ar_receipt_methods arm,
@@ -281,6 +286,7 @@ apsa.cons_inv_id=acia.cons_inv_id(+) and
 apsa.customer_id=hca.cust_account_id(+) and
 hca.party_id=hp.party_id(+) and
 apsa.customer_site_use_id=hcsua.site_use_id(+) and
+hcsua.territory_id=rtk.territory_id(+) and
 hcsua.cust_acct_site_id=hcasa.cust_acct_site_id(+) and
 hcasa.party_site_id=hps.party_site_id(+) and
 rcta.receipt_method_id=arm.receipt_method_id(+) and

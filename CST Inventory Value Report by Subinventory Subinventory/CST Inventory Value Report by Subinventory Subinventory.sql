@@ -53,8 +53,7 @@ and     cict.inventory_item_id = ciqt.inventory_item_id
 and     (cict.cost_group_id = ciqt.cost_group_id or mp.primary_cost_method = 1)
 and     cic.organization_id = ciqt.organization_id
 and     cic.inventory_item_id = ciqt.inventory_item_id
-and     cic.cost_type_id   = cict.cost_type_id 
-and     :p_sort_option  = 3
+and     cic.cost_type_id   = cict.cost_type_id
 group by ciqt.subinventory_code
 ,      fnd_flex_xml_publisher_apis.process_kff_combination_1('p_item_seg', 'INV', 'MSTK', 101, msi.organization_id, msi.inventory_item_id, 'ALL', 'Y', 'VALUE')
 ,      fnd_flex_xml_publisher_apis.process_kff_combination_1('p_cat_seg', 'INV', 'MCAT', mc.structure_id, null, mc.category_id, 'ALL', 'Y', 'VALUE')
@@ -70,4 +69,5 @@ group by ciqt.subinventory_code
 ,      sec.asset_inventory 
 having decode(&p_neg_qty,1,1,2) =  decode(&p_neg_qty,1,decode(sign(sum(ciqt.rollback_qty)),'-1',1,2),2)
        and  sum(ciqt.rollback_qty) <> 0
-order by subinventory, item
+order by
+&order_by

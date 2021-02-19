@@ -46,7 +46,7 @@ round(sum(cdcv.item_cost) over (partition by cdcv.organization_id, cdcv.inventor
 100*sum(cdcv.item_cost) over (partition by cdcv.organization_id, cdcv.inventory_item_id, &partition_by)/xxen_util.zero_to_null(sum(cdcv.item_cost) over (partition by cdcv.organization_id, cdcv.inventory_item_id)) percentage,
 round(sum(cdcv.item_cost) over (partition by cdcv.organization_id, cdcv.inventory_item_id), fc.extended_precision) item_cost_total
 from
-gl_sets_of_books gl,
+gl_ledgers gl,
 fnd_currencies fc,
 org_organization_definitions ood,
 mtl_parameters mp,
@@ -63,7 +63,7 @@ where
 mcsv.category_set_name=:category_set_name and
 gl.currency_code=fc.currency_code and
 fc.enabled_flag='Y' and
-gl.set_of_books_id=ood.set_of_books_id and
+gl.ledger_id=ood.set_of_books_id and
 ood.organization_id=mp.organization_id and
 ood.organization_id=msiv.organization_id and
 msiv.primary_uom_code=muot.uom_code(+) and

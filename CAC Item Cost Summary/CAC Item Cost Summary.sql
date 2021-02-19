@@ -43,7 +43,9 @@
 -- |                                    master, inventory orgs and operating units.
 -- |  1.7     21 Jun 2020 Douglas Volz  Changed to multi-language views for item 
 -- |                                    status and UOM.
--- |  1.8     24 Sep 2020 Douglas Volz  Added List Price to report.+=============================================================================+*/
+-- |  1.8     24 Sep 2020 Douglas Volz  Added List Price to report
+-- |  1.9     29 Jan 2021 Douglas Volz  Added item master dates and Inactive Items parameter
++=============================================================================+*/
 -- Excel Examle Output: https://www.enginatics.com/example/cac-item-cost-summary/
 -- Library Link: https://www.enginatics.com/reports/cac-item-cost-summary/
 -- Run Report: https://demo.enginatics.com/
@@ -63,34 +65,7 @@ select	nvl(gl.short_name, gl.name) Ledger,
 	-- Revision for version 1.7
 	misv.inventory_item_status_code Item_Status,
 	ml1.meaning Make_Buy_Code,
-	-- Revision for version 1.4
-	nvl((select	max(mc.category_concat_segs)
-	     from	mtl_categories_v mc,
-			mtl_item_categories mic,
-			mtl_category_sets_b mcs,
-			mtl_category_sets_tl mcs_tl
-	     where	mic.category_set_id         = mcs.category_set_id
-	     and	2=2 
-	     and	mic.inventory_item_id       = msiv.inventory_item_id
-	     and	mic.organization_id         = msiv.organization_id
-	     and	mc.category_id              = mic.category_id
-	     and	mcs.category_set_id         = mcs_tl.category_set_id
-	     and	mcs_tl.language             = userenv('lang')
-	   ),'') "&p_category_set1",
-	nvl((select	max(mc.category_concat_segs)
-	     from	mtl_categories_v mc,
-			mtl_item_categories mic,
-			mtl_category_sets_b mcs,
-			mtl_category_sets_tl mcs_tl
-	     where	mic.category_set_id         = mcs.category_set_id
-	     and	3=3  
-	     and	mic.inventory_item_id       = msiv.inventory_item_id
-	     and	mic.organization_id         = msiv.organization_id
-	     and	mc.category_id              = mic.category_id
-	     and	mcs.category_set_id         = mcs_tl.category_set_id
-	     and	mcs_tl.language             = userenv('lang')
-	   ),'') "&p_category_set2",
-	-- End revision for version 1.4
+&category_columns
 	fl1.meaning Allow_Costs,
 	ml2.meaning Inventory_Asset,
 	ml3.meaning Based_on_Rollup,
@@ -110,7 +85,10 @@ select	nvl(gl.short_name, gl.name) Ledger,
 	&segment_columns
 	-- End fix for version 1.3
 	cic.creation_date Cost_Creation_Date,
-	cic.last_update_date Last_Cost_Update_Date
+	cic.last_update_date Last_Cost_Update_Date,
+	-- Revision for version 1.9
+	msiv.creation_date Item_Creation_Date,
+	msiv.last_update_date Item_Last_Update_Date
 from	cst_item_costs cic,
 	cst_cost_types cct,
 	mtl_system_items_vl msiv,
@@ -196,34 +174,7 @@ select	nvl(gl.short_name, gl.name) Ledger,
 	-- Revision for version 1.7
 	misv.inventory_item_status_code Item_Status,
 	ml1.meaning Make_Buy_Code,
-	-- Revision for version 1.4
-	nvl((select	max(mc.category_concat_segs)
-	     from	mtl_categories_v mc,
-			mtl_item_categories mic,
-			mtl_category_sets_b mcs,
-			mtl_category_sets_tl mcs_tl
-	     where	mic.category_set_id         = mcs.category_set_id
-	     and	2=2  
-	     and	mic.inventory_item_id       = msiv.inventory_item_id
-	     and	mic.organization_id         = msiv.organization_id
-	     and	mc.category_id              = mic.category_id
-	     and	mcs.category_set_id         = mcs_tl.category_set_id
-	     and	mcs_tl.language             = userenv('lang')
-	   ),'') "&p_category_set1",
-	nvl((select	max(mc.category_concat_segs)
-	     from	mtl_categories_v mc,
-			mtl_item_categories mic,
-			mtl_category_sets_b mcs,
-			mtl_category_sets_tl mcs_tl
-	     where	mic.category_set_id         = mcs.category_set_id
-	     and	3=3 
-	     and	mic.inventory_item_id       = msiv.inventory_item_id
-	     and	mic.organization_id         = msiv.organization_id
-	     and	mc.category_id              = mic.category_id
-	     and	mcs.category_set_id         = mcs_tl.category_set_id
-	     and	mcs_tl.language             = userenv('lang')
-	   ),'') "&p_category_set2",
-	-- End revision for version 1.4
+&category_columns
 	fl1.meaning Allow_Costs,
 	fl2.meaning Inventory_Asset,
 	null Based_on_Rollup,
@@ -242,7 +193,10 @@ select	nvl(gl.short_name, gl.name) Ledger,
 	-- Fix for version 1.3
 	&segment_columns
 	null Cost_Creation_Date,
-	null Last_Cost_Update_Date
+	null Last_Cost_Update_Date,
+	-- Revision for version 1.9
+	msiv.creation_date Item_Creation_Date,
+	msiv.last_update_date Item_Last_Update_Date
 from	mtl_system_items_vl msiv,
 	-- Revision for version 1.7
 	mtl_item_status_vl misv,

@@ -70,7 +70,7 @@ gs.sql_id=gsa0.sql_id(+) and
 gsa0.sql_id=gsa.sql_id(+) and
 gsa0.inst_id=gsa.inst_id(+) and
 gsa0.plan_hash_value=gsa.plan_hash_value(+)
-connect by
+connect by nocycle
 prior vwc.sid=vwc.blocker_sid and
 prior vwc.sess_serial#=vwc.blocker_sess_serial# and
 prior vwc.instance=vwc.blocker_instance

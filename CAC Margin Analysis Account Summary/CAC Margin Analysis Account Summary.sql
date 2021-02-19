@@ -84,34 +84,7 @@ select  nvl(gl.short_name, gl.name) Ledger,
 	msiv.description  Item_Description,
 	-- Revision for version 1.10
 	fcl.meaning Item_Type,
-	-- Revision for version 1.9
-	nvl((select	max(mc.category_concat_segs)
-	     from	mtl_categories_v mc,
-			mtl_item_categories mic,
-			mtl_category_sets_b mcs,
-			mtl_category_sets_tl mcs_tl
-	     where	mic.category_set_id         = mcs.category_set_id
-	     and	2=2 
-	     and	mic.inventory_item_id       = msiv.inventory_item_id
-	     and	mic.organization_id         = msiv.organization_id
-	     and	mc.category_id              = mic.category_id
-	     and	mcs.category_set_id         = mcs_tl.category_set_id
-	     and	mcs_tl.language             = userenv('lang')
-	   ),'') "&p_category_set1",
-	nvl((select	max(mc.category_concat_segs)
-	     from	mtl_categories_v mc,
-			mtl_item_categories mic,
-			mtl_category_sets_b mcs,
-			mtl_category_sets_tl mcs_tl
-	     where	mic.category_set_id         = mcs.category_set_id
-	     and	3=3  
-	     and	mic.inventory_item_id       = msiv.inventory_item_id
-	     and	mic.organization_id         = msiv.organization_id
-	     and	mc.category_id              = mic.category_id
-	     and	mcs.category_set_id         = mcs_tl.category_set_id
-	     and	mcs_tl.language             = userenv('lang')
-	   ),'') "&p_category_set2",
-	-- End revision for version 1.9 & 1.10
+&category_columns
 	muomv.uom_code UOM_Code,
         round(cms_sum.invoiced_amount / decode(cms_sum.invoice_line_quantity, 0, 1, cms_sum.invoice_line_quantity),5) Unit_Price,
         round(cms_sum.cogs_amount / decode(cms_sum.ship_quantity,0,1, cms_sum.ship_quantity),5) Unit_Cost,

@@ -14,7 +14,7 @@ select
 haouv.name operating_unit,
 rcta.trx_number trx_number,
 rcta.trx_date,
-flv1.meaning class,
+xxen_util.meaning(rctta.type,'INV/CM/ADJ',222) class,
 rctta.name type,
 rcta.ct_reference reference,
 (
@@ -38,7 +38,7 @@ rcta.invoice_currency_code currency,
 (select sum(rctla.extended_amount) from ra_customer_trx_lines_all rctla where rcta.customer_trx_id=rctla.customer_trx_id and rctla.line_type in ('LINE','CB','CHARGES')) amount,
 decode(rcta.status_trx,'CL','Closed','Open') state,
 rcta.status_trx status,
-rtt.name payment_term,
+rtv.name payment_term,
 decode(rcta.invoicing_rule_id,-3,'Arrears',-2,'Advance') invoicing_rule,
 rcta.term_due_date,
 rcta.ship_date_actual ship_date,
@@ -60,13 +60,12 @@ ra_customer_trx_all rcta,
 oe_sys_parameters_all ospa,
 ra_batch_sources_all rbsa,
 ra_cust_trx_types_all rctta,
-ra_terms_tl rtt,
+ra_terms_vl rtv,
 hz_cust_accounts hca,
 hz_parties hp,
 hz_cust_site_uses_all hcsua,
 hz_cust_acct_sites_all hcasa,
 hz_party_sites hps,
-fnd_lookup_values flv1,
 jtf_rs_salesreps jrs,
 jtf_rs_resource_extns_tl jrret,
 ar_receipt_methods arm
@@ -77,8 +76,7 @@ rcta.complete_flag='N' and
 rcta.org_id=haouv.organization_id(+) and
 rcta.org_id=ospa.org_id(+) and
 ospa.parameter_code(+)='MASTER_ORGANIZATION_ID' and
-rcta.term_id=rtt.term_id(+) and
-rtt.language(+)=userenv('LANG') and
+rcta.term_id=rtv.term_id(+) and
 rcta.cust_trx_type_id=rctta.cust_trx_type_id(+) and
 rcta.org_id=rctta.org_id(+) and
 nvl2(rcta.interface_header_context,null,rcta.batch_source_id)=rbsa.batch_source_id(+) and
@@ -88,11 +86,6 @@ hca.party_id=hp.party_id(+) and
 rcta.bill_to_site_use_id=hcsua.site_use_id(+) and
 hcsua.cust_acct_site_id=hcasa.cust_acct_site_id(+) and
 hcasa.party_site_id=hps.party_site_id(+) and
-rctta.type=flv1.lookup_code(+) and
-flv1.lookup_type(+)='INV/CM/ADJ' and
-flv1.view_application_id(+)=222 and
-flv1.language(+)=userenv('lang') and
-flv1.security_group_id(+)=0 and
 case when rcta.primary_salesrep_id>0 then rcta.primary_salesrep_id end=jrs.salesrep_id(+) and
 case when rcta.primary_salesrep_id>0 then rcta.org_id end=jrs.org_id(+) and
 jrs.resource_id=jrret.resource_id(+) and

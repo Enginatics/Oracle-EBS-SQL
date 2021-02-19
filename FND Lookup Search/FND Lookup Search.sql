@@ -31,24 +31,22 @@ u.application_name,
 u.lookup_type,
 'xxen_util.meaning('||lower(replace(regexp_replace(:table_name, '([^_]{1})[^_]*','\1'),'_')||'.'||:column_name)||','''||u.lookup_type||''','||u.view_application_id||') '||lower(:column_name)||',' column_sql_text,
 lower(replace(regexp_replace(:table_name, '([^_]{1})[^_]*','\1'),'_')||'.'||:column_name)||'=xxen_util.lookup_code(:'||lower(:column_name)||','''||u.lookup_type||''','||u.view_application_id||')' where_sql_text,
-'=flv.lookup_code(+) and
-flv.lookup_type(+)='''||u.lookup_type||''' and
-flv.view_application_id(+)='||u.view_application_id||' and
-flv.language(+)=userenv(''lang'') and
-flv.security_group_id(+)=0 and' sql_text2,
+'=flvv.lookup_code(+) and
+flvv.lookup_type(+)='''||u.lookup_type||''' and
+flvv.view_application_id(+)='||u.view_application_id||' and
+flvv.security_group_id(+)=0 and' sql_text2,
 'select
-flv.lookup_code,
-flv.meaning,
-flv.description
+flvv.lookup_code,
+flvv.meaning,
+flvv.description
 from
-fnd_lookup_values flv
+fnd_lookup_values_vl flvv
 where
-flv.lookup_type='''||u.lookup_type||''' and
-flv.view_application_id='||u.view_application_id||' and
-flv.language=userenv(''lang'') and
-flv.security_group_id=0
+flvv.lookup_type='''||u.lookup_type||''' and
+flvv.view_application_id='||u.view_application_id||' and
+flvv.security_group_id=0
 order by
-flv.lookup_code' lookup_values,
+flvv.lookup_code' lookup_values,
 u.view_application_id,
 u.table_application_id
 from

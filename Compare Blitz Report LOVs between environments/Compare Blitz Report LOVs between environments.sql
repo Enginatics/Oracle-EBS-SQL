@@ -44,7 +44,8 @@ xxen_reports_v xrv
 where
 xrplv.lov_id=xrp.lov_id and
 xrp.parameter_type='LOV' and
-xrp.report_id=xrv.report_id
+xrp.report_id=xrv.report_id and
+rownum<=60
 ) report_names,
 (
 select distinct
@@ -55,7 +56,8 @@ xxen_reports_v@&database_link xrv
 where
 xrplv2.lov_id=xrp.lov_id and
 xrp.parameter_type='LOV' and
-xrp.report_id=xrv.report_id
+xrp.report_id=xrv.report_id and
+rownum<=60
 ) report_names_remote,
 xxen_util.user_name(xrplv.last_updated_by) last_updated_by,
 xrplv.last_update_date,

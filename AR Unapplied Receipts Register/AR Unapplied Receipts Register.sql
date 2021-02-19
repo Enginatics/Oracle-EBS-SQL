@@ -12,9 +12,9 @@
 
 select
 gcc.segment1 balancing_segment,
-substrb(hp.party_name,1,50) customer_name,
+hp.party_name customer_name,
 hca.account_number customer_number,
-max(decode(upper(:p_in_format_option),'DETAIL', araa.gl_date,null)) gl_date,
+max(decode(:p_in_format_option,'DETAIL',araa.gl_date)) gl_date,
 absa.name batch_source_name,
 aba.name batch_name,
 arm.name receipt_method,
@@ -27,7 +27,7 @@ decode (upper (:p_in_curr_code),null, araa.acctd_amount_applied_from,araa.amount
 sum(decode(araa.status,'OTHER ACC', decode(araa.applied_payment_schedule_id,-4, decode(upper(:p_in_curr_code),null, araa.acctd_amount_applied_from,araa.amount_applied),0),0)) claim_amt,
 hou.name operating_unit
 from
-gl_sets_of_books gl,
+gl_ledgers gl,
 hr_operating_units hou,
 ar_payment_schedules_all apsa,
 hz_cust_accounts hca,
@@ -41,16 +41,16 @@ ar_batches_all aba,
 ar_batch_sources_all absa
 where
 1=1 and
-gl.name = :p_ca_set_of_books and
-gl.set_of_books_id=hou.set_of_books_id and
+gl.name=:p_ca_set_of_books and
+gl.ledger_id=hou.set_of_books_id and
 hou.organization_id=araa.org_id and
 apsa.class='PMT' and
-apsa.gl_date_closed=to_date ('31-12-4712', 'DD-MM-YYYY') and
+apsa.gl_date_closed=to_date ('31-12-4712','DD-MM-YYYY') and
 apsa.cash_receipt_id=araa.cash_receipt_id and
-araa.status in ('ACC', 'UNAPP', 'UNID', 'OTHER ACC') and
+araa.status in ('ACC','UNAPP','UNID','OTHER ACC') and
 nvl(araa.confirmed_flag,'Y')='Y' and
 araa.cash_receipt_id=acra.cash_receipt_id and
-nvl(acra.confirmed_flag, 'Y')='Y' and
+nvl(acra.confirmed_flag,'Y')='Y' and
 acra.pay_from_customer=hca.cust_account_id(+) and
 hca.party_id=hp.party_id(+) and
 acra.receipt_method_id=arm.receipt_method_id and
@@ -68,21 +68,13 @@ aba.name,
 arm.name,
 acra.receipt_number,
 acra.receipt_date,
-nvl (hca.cust_account_id, 0),
-decode (hca.cust_account_id, null, '*', null),
+nvl(hca.cust_account_id,0),
+decode (hca.cust_account_id,null,'*',null),
 hou.name
-having sum (decode (araa.status, 'ACC', araa.acctd_amount_applied_from, 0))!=0
-or sum (decode (araa.status,
-'UNAPP', araa.acctd_amount_applied_from,
-'UNID', araa.acctd_amount_applied_from,
-0
-)
-) != 0
-or sum (decode (araa.status,
-'OTHER ACC', araa.acctd_amount_applied_from,
-0
-)
-) != 0
+having
+sum(decode(araa.status,'ACC',araa.acctd_amount_applied_from,0))!=0 or
+sum(decode(araa.status,'UNAPP',araa.acctd_amount_applied_from,'UNID',araa.acctd_amount_applied_from,0))!=0 or
+sum(decode(araa.status,'OTHER ACC',araa.acctd_amount_applied_from,0))!=0
 order by
 hou.name,
 1 asc,
@@ -92,14 +84,10 @@ gcc.segment1,
 hp.party_name,
 hca.account_number,
 acra.receipt_number,
-max (decode (upper (:p_in_format_option),
-'SUMMARY', null,
-araa.gl_date
-)
-),
+max(decode(:p_in_format_option,'DETAIL',araa.gl_date)),
 absa.name,
 aba.name,
 arm.name,
 acra.receipt_date,
-nvl (hca.cust_account_id, 0),
-decode (hca.cust_account_id, null, '*', null)
+nvl(hca.cust_account_id,0),
+decode (hca.cust_account_id, null,'*',null)

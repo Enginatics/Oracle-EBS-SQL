@@ -5,7 +5,8 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Cost Vs. Planning Item Controls
--- Description: Compare item make/buy controls vs. costing based on rollup controls.  There are five included reports, see below description for more information.
+-- Description: Compare item make/buy controls vs. costing based on rollup controls.  There are six included reports, see below description for more information.
+
 /* +=============================================================================+
 -- |  Copyright 2008-2020 Douglas Volz Consulting, Inc.                          |
 -- |  All rights reserved.                                                       |
@@ -50,16 +51,19 @@
 -- |     5.  Based on Rollup Yes - No Routing
 -- |         Find items where the planning_make_buy_code is "Buy" or "Make",
 -- |         costs are based on the cost rollup, BOMs exist but routings do not.
-
--- |  1.23    09 Jan 2017 Douglas Volz   New report 5, BOM exists but routing does not
--- |  1.24    05 Nov 2018 Douglas Volz   Don't report obsolete items
--- |  1.25    01 May 2019 Douglas Volz   Changed gl.short_name to gl.short_name 
+-- |     6.  Based on Rollup vs Make Buy Controls
+-- |         Find make items where the item is set to not roll up or
+-- |         find buy items where the item is set to roll up items and
+-- |         there are no sourcing rules
+-- |
 -- |  1.25    01 May 2019 Douglas Volz   Changed gl.short_name to gl.short_name
 -- |  1.26    27 Jan 2020 Douglas Volz   Added Org Code and Operating Unit parameters.
 -- |  1.27    26 Apr 2020 Douglas Volz   Changed to multi-language views for the item
 -- |                                     master and operating units.
 -- |  1.28    31 May 2020 Douglas Volz   Use multi-language table for UOM Code and Item Statuses.
 -- |  1.29    22 Oct 2020 Douglas Volz   Add two category parameters to this report
+-- |  1.30    22 Jan 2021 Douglas Volz   Screen out items where the costing_enabled_flag is No
+-- |                                     but the Cost Rollup is putting into the Pending Cost Type.
 +=============================================================================+*/
 -- Excel Examle Output: https://www.enginatics.com/example/cac-cost-vs-planning-item-controls/
 -- Library Link: https://www.enginatics.com/reports/cac-cost-vs-planning-item-controls/
@@ -83,34 +87,7 @@ select	'Based on Rollup Yes - No BOMS' Report_Type,
 	-- Revision for version 1.20
 	fcl.meaning Item_Type,
 	misv.inventory_item_status_code_tl Item_Status,
-	-- Revision for version 1.29
-	nvl((select	max(mc.category_concat_segs)
-	     from	mtl_categories_v mc,
-			mtl_item_categories mic,
-			mtl_category_sets_b mcs,
-			mtl_category_sets_tl mcs_tl
-	     where	mic.category_set_id         = mcs.category_set_id
-	     and	2=2				-- p_category_set1 
-	     and	mic.inventory_item_id       = msiv.inventory_item_id
-	     and	mic.organization_id         = msiv.organization_id
-	     and	mc.category_id              = mic.category_id
-	     and	mcs.category_set_id         = mcs_tl.category_set_id
-	     and	mcs_tl.language             = userenv('lang')
-	),'') "&p_category_set1",
-	nvl((select	max(mc.category_concat_segs)
-	     from	mtl_categories_v mc,
-			mtl_item_categories mic,
-			mtl_category_sets_b mcs,
-			mtl_category_sets_tl mcs_tl
-	     where	mic.category_set_id         = mcs.category_set_id
-	     and	3=3				-- p_category_set2
-	     and	mic.inventory_item_id       = msiv.inventory_item_id
-	     and	mic.organization_id         = msiv.organization_id
-	     and	mc.category_id              = mic.category_id
-	     and	mcs.category_set_id         = mcs_tl.category_set_id
-	     and	mcs_tl.language             = userenv('lang')
-	),'') "&p_category_set2",
-	-- End revision for version 1.29
+&category_columns
 	ml1.meaning Make_Buy_Code,
 	'' Rollup_Source_Type,
 	'' Resource_Code,
@@ -140,8 +117,8 @@ select	'Based on Rollup Yes - No BOMS' Report_Type,
 	      and	4=4),'N')							-- p_assignment_set
 	) Sourcing_Rule,
 	ml2.meaning Based_on_Rollup,
-	ml3.meaning Inv_Asset,
-	gl.currency_code Curr_Code,
+	ml3.meaning Inventory_Asset,
+	gl.currency_code Currency_Code,
 	cic.item_cost Item_Cost,
 	msiv.creation_date Item_Creation_Date
 from	mtl_parameters mp,
@@ -175,6 +152,8 @@ and	cic.based_on_rollup_flag        = 1   -- rolled up
 and	msiv.planning_make_buy_code IN (1, 2) -- buy and make
 -- Revision for version 1.24
 and	msiv.inventory_item_status_code <> 'Inactive'
+-- Revision for version 1.30
+and	msiv.costing_enabled_flag       = 'Y'
 -- Fix for version 1.15
 and	mp.organization_id <> mp.master_organization_id -- the item master org usually does not have costs
 -- ===================================================================
@@ -256,34 +235,7 @@ select	'Based on Rollup Yes - No Rollup' Report_Type,
 	muomv.uom_code UOM_Code,
 	fcl.meaning Item_Type,
 	misv.inventory_item_status_code_tl Item_Status,
-	-- Revision for version 1.29
-	nvl((select	max(mc.category_concat_segs)
-	     from	mtl_categories_v mc,
-			mtl_item_categories mic,
-			mtl_category_sets_b mcs,
-			mtl_category_sets_tl mcs_tl
-	     where	mic.category_set_id         = mcs.category_set_id
-	     and	2=2				-- p_category_set1 
-	     and	mic.inventory_item_id       = msiv.inventory_item_id
-	     and	mic.organization_id         = msiv.organization_id
-	     and	mc.category_id              = mic.category_id
-	     and	mcs.category_set_id         = mcs_tl.category_set_id
-	     and	mcs_tl.language             = userenv('lang')
-	),'') "&p_category_set1",
-	nvl((select	max(mc.category_concat_segs)
-	     from	mtl_categories_v mc,
-			mtl_item_categories mic,
-			mtl_category_sets_b mcs,
-			mtl_category_sets_tl mcs_tl
-	     where	mic.category_set_id         = mcs.category_set_id
-	     and	3=3				-- p_category_set2
-	     and	mic.inventory_item_id       = msiv.inventory_item_id
-	     and	mic.organization_id         = msiv.organization_id
-	     and	mc.category_id              = mic.category_id
-	     and	mcs.category_set_id         = mcs_tl.category_set_id
-	     and	mcs_tl.language             = userenv('lang')
-	),'') "&p_category_set2",
-	-- End revision for version 1.29
+&category_columns
 	ml1.meaning Make_Buy_Code,
 	'' Rollup_Source_Type,
 	'' Resource_Code,
@@ -336,8 +288,8 @@ select	'Based on Rollup Yes - No Rollup' Report_Type,
 		   ), 'N')
 	) Sourcing_Rule,
 	ml2.meaning Based_on_Rollup,
-	ml3.meaning Inv_Asset,
-	gl.currency_code Curr_Code,
+	ml3.meaning Inventory_Asset,
+	gl.currency_code Currency_Code,
 	cic.item_cost Item_Cost,
 	msiv.creation_date Item_Creation_Date
 from	mtl_parameters mp,
@@ -369,6 +321,8 @@ and	misv.inventory_item_status_code = msiv.inventory_item_status_code
 and	cic.based_on_rollup_flag        = 1 -- costs based on cost rollup
 -- Revision for version 1.24
 and	msiv.inventory_item_status_code <> 'Inactive'
+-- Revision for version 1.30
+and	msiv.costing_enabled_flag       = 'Y'
 -- Fix for version 1.15
 and	mp.organization_id <> mp.master_organization_id -- the item master org usually does not have costs
 -- ===================================================================
@@ -421,34 +375,7 @@ select 'Based on Rollup No - with BOMS' Report_Type,
 	muomv.uom_code UOM_Code,
 	fcl.meaning Item_Type,
 	misv.inventory_item_status_code_tl Item_Status,
-	-- Revision for version 1.29
-	nvl((select	max(mc.category_concat_segs)
-	     from	mtl_categories_v mc,
-			mtl_item_categories mic,
-			mtl_category_sets_b mcs,
-			mtl_category_sets_tl mcs_tl
-	     where	mic.category_set_id         = mcs.category_set_id
-	     and	2=2				-- p_category_set1 
-	     and	mic.inventory_item_id       = msiv.inventory_item_id
-	     and	mic.organization_id         = msiv.organization_id
-	     and	mc.category_id              = mic.category_id
-	     and	mcs.category_set_id         = mcs_tl.category_set_id
-	     and	mcs_tl.language             = userenv('lang')
-	),'') "&p_category_set1",
-	nvl((select	max(mc.category_concat_segs)
-	     from	mtl_categories_v mc,
-			mtl_item_categories mic,
-			mtl_category_sets_b mcs,
-			mtl_category_sets_tl mcs_tl
-	     where	mic.category_set_id         = mcs.category_set_id
-	     and	3=3				-- p_category_set2
-	     and	mic.inventory_item_id       = msiv.inventory_item_id
-	     and	mic.organization_id         = msiv.organization_id
-	     and	mc.category_id              = mic.category_id
-	     and	mcs.category_set_id         = mcs_tl.category_set_id
-	     and	mcs_tl.language             = userenv('lang')
-	),'') "&p_category_set2",
-	-- End revision for version 1.29
+&category_columns
 	ml1.meaning Make_Buy_Code,
 	'' Rollup_Source_Type,
 	'' Resource_Code,
@@ -501,8 +428,8 @@ select 'Based on Rollup No - with BOMS' Report_Type,
 		   ), 'N')
 	) Sourcing_Rule,
 	ml2.meaning Based_on_Rollup,
-	ml3.meaning Inv_Asset,
-	gl.currency_code Curr_Code,
+	ml3.meaning Inventory_Asset,
+	gl.currency_code Currency_Code,
 	cic.item_cost Item_Cost,
 	msiv.creation_date Item_Creation_Date
 from	mtl_parameters mp,
@@ -535,6 +462,8 @@ and	cic.based_on_rollup_flag        = 2   -- not rolled up
 and	msiv.planning_make_buy_code IN (1, 2) -- buy or make
 -- Revision for version 1.24
 and	msiv.inventory_item_status_code <> 'Inactive'
+-- Revision for version 1.30
+and	msiv.costing_enabled_flag       = 'Y'
 -- Fix for version 1.15
 and	mp.organization_id <> mp.master_organization_id -- the item master org usually does not have costs
 -- ===================================================================
@@ -612,34 +541,7 @@ select	'Based on Rollup Yes - No Routing' Report_Type,
 	-- Revision for version 1.20
 	fcl.meaning Item_Type,
 	misv.inventory_item_status_code_tl Item_Status,
-	-- Revision for version 1.29
-	nvl((select	max(mc.category_concat_segs)
-	     from	mtl_categories_v mc,
-			mtl_item_categories mic,
-			mtl_category_sets_b mcs,
-			mtl_category_sets_tl mcs_tl
-	     where	mic.category_set_id         = mcs.category_set_id
-	     and	2=2				-- p_category_set1 
-	     and	mic.inventory_item_id       = msiv.inventory_item_id
-	     and	mic.organization_id         = msiv.organization_id
-	     and	mc.category_id              = mic.category_id
-	     and	mcs.category_set_id         = mcs_tl.category_set_id
-	     and	mcs_tl.language             = userenv('lang')
-	),'') "&p_category_set1",
-	nvl((select	max(mc.category_concat_segs)
-	     from	mtl_categories_v mc,
-			mtl_item_categories mic,
-			mtl_category_sets_b mcs,
-			mtl_category_sets_tl mcs_tl
-	     where	mic.category_set_id         = mcs.category_set_id
-	     and	3=3				-- p_category_set2
-	     and	mic.inventory_item_id       = msiv.inventory_item_id
-	     and	mic.organization_id         = msiv.organization_id
-	     and	mc.category_id              = mic.category_id
-	     and	mcs.category_set_id         = mcs_tl.category_set_id
-	     and	mcs_tl.language             = userenv('lang')
-	),'') "&p_category_set2",
-	-- End revision for version 1.29
+&category_columns
 	ml1.meaning Make_Buy_Code,
 	'' Rollup_Source_Type,
 	'' Resource_Code,
@@ -681,8 +583,8 @@ select	'Based on Rollup Yes - No Routing' Report_Type,
 		   ), 'N')
 	) Sourcing_Rule,
 	ml2.meaning Based_on_Rollup,
-	ml3.meaning Inv_Asset,
-	gl.currency_code Curr_Code,
+	ml3.meaning Inventory_Asset,
+	gl.currency_code Currency_Code,
 	cic.item_cost Item_Cost,
 	msiv.creation_date Item_Creation_Date
 from	mtl_parameters mp,
@@ -716,6 +618,8 @@ and	cic.based_on_rollup_flag        = 1   -- rolled up
 and	msiv.planning_make_buy_code IN (1, 2) -- buy and make
 -- Revision for version 1.24
 and	msiv.inventory_item_status_code <> 'Inactive'
+-- Revision for version 1.30
+and	msiv.costing_enabled_flag       = 'Y'
 -- Fix for version 1.15
 and	mp.organization_id <> mp.master_organization_id -- the item master org usually does not have costs
 -- ===================================================================
@@ -775,28 +679,132 @@ select	'User Defined Costs - Make Items' Report_Type,
 	muomv.uom_code UOM_Code,
 	fcl.meaning Item_Type,
 	msiv.inventory_item_status_code Item_Status,
-	-- Revision for version 1.29
-	nvl((select	max(mc.category_concat_segs)
-	     from	mtl_categories_v mc,
-			mtl_item_categories mic,
-			mtl_category_sets_b mcs,
-			mtl_category_sets_tl mcs_tl
-	     where	mic.category_set_id         = mcs.category_set_id
-	     and	2=2				-- p_category_set1 
-	     and	mic.inventory_item_id       = msiv.inventory_item_id
-	     and	mic.organization_id         = msiv.organization_id
-	     and	mc.category_id              = mic.category_id
-	     and	mcs.category_set_id         = mcs_tl.category_set_id
-	     and	mcs_tl.language             = userenv('lang')
-	),'') "&p_category_set1",
-	nvl((select	max(mc.category_concat_segs)
-	     from	mtl_categories_v mc,
-			mtl_item_categories mic,
-			mtl_category_sets_b mcs,
-			mtl_category_sets_tl mcs_tl
-	     where	mic.category_set_id         = mcs.category_set_id
-	     and	3=3				-- p_category_set2
-	     and	mic.inventory_item_id       = msiv.inventory_item_id
-	     and	mic.organization_id         = msiv.organization_id
-	     and	mc.category_id              = mic.category_id
-	     and	mcs.category_set_id  
+&category_columns
+	ml1.meaning Make_Buy_Code,
+	ml4.meaning Rollup_Source_Type,
+	nvl(br.resource_code, '') Resource_Code,
+	-- check to see if a bom exists
+	(select	fl.meaning
+	 from	fnd_lookups fl
+	 where	fl.lookup_type = 'YES_NO'
+	 and	fl.lookup_code =  
+		nvl((select	distinct 'Y'
+		     from	bom_structures_b bom
+		     where	bom.organization_id      = mp.organization_id
+		     and	bom.assembly_item_id     = cic.inventory_item_id
+		     and	bom.alternate_bom_designator is null),
+		'N')
+	) BOM,
+	-- check to see if a routing exists
+	(select	fl.meaning
+	 from	fnd_lookups fl
+	 where	fl.lookup_type = 'YES_NO'
+	 and	fl.lookup_code =  
+		nvl((select	distinct 'Y'
+		     from	bom_operational_routings bor
+		     where	bor.organization_id      = mp.organization_id
+		     and	bor.assembly_item_id     = cic.inventory_item_id
+		     and	bor.alternate_routing_designator is null),
+		'N')
+	) Routing,
+	-- check to see if a sourcing rule exists for the receipt org
+	(select	fl.meaning
+	 from	fnd_lookups fl
+	 where	fl.lookup_type = 'YES_NO'
+	 and	fl.lookup_code =  
+		nvl((select	distinct 'Y'
+		     from	mrp_sr_receipt_org msro,
+				mrp_sr_source_org msso,
+				mrp_sourcing_rules msr,
+				mrp_sr_assignments msa,
+				mrp_assignment_sets mas
+		     where	msr.sourcing_rule_id    = msro.sourcing_rule_id
+		     -- fix for version 1.4, check to see if the sourcing rule is
+		     -- for an inventory org, not a vendor
+		     and	msso.sr_receipt_id      = msro.sr_receipt_id
+		     and	msso.source_organization_id is not null
+		     and	msa.sourcing_rule_id    = msr.sourcing_rule_id
+		     and	msa.assignment_set_id   = mas.assignment_set_id
+		     and	msiv.organization_id    = msa.organization_id
+		     and	msiv.inventory_item_id  = msa.inventory_item_id
+		     and	mp.organization_id      = msa.organization_id
+		     and	4=4							-- p_assignment_set
+		   ), 'N')
+	) Sourcing_Rule,
+	ml2.meaning Based_on_Rollup,
+	ml3.meaning Inventory_Asset,
+	gl.currency_code Currency_Code,
+	sum(cicd.item_cost) Item_Cost,
+	msiv.creation_date Item_Creation_Date
+from	mtl_parameters mp,
+	mtl_system_items_vl msiv,
+	-- Revision for version 1.28
+	mtl_item_status_vl misv, 
+	mtl_units_of_measure_vl muomv,
+	cst_item_costs cic,
+	cst_item_cost_details cicd,
+	bom_resources br,
+	cst_cost_types cct,
+	mfg_lookups ml1, -- planning make/buy code, MTL_PLANNING_MAKE_BUY
+	mfg_lookups ml2, -- based on rollup, CST_BONROLLUP_VAL
+	mfg_lookups ml3, -- inventory_asset_flag, SYS_YES_NO
+	mfg_lookups ml4, -- rollup source type, CST_SOURCE_TYPE
+	fnd_common_lookups fcl,
+	hr_organization_information hoi,
+	hr_all_organization_units_vl haou,  -- inv_organization_id
+	hr_all_organization_units_vl haou2, -- operating unit
+	gl_ledgers gl
+-- ===================================================================
+-- Cost type, organization, item master and report specific controls
+-- ===================================================================
+where	cicd.cost_type_id               = cct.cost_type_id
+and	1=1                             -- p_cost_type, p_operating_unit, p_ledger
+and	mp.organization_id              = cicd.organization_id
+and	msiv.organization_id            = cicd.organization_id
+and	msiv.inventory_item_id          = cicd.inventory_item_id
+-- Revision for version 1.28
+and	msiv.primary_uom_code           = muomv.uom_code
+and	misv.inventory_item_status_code = msiv.inventory_item_status_code
+and	cic.organization_id             = cicd.organization_id
+and	cic.inventory_item_id           = cicd.inventory_item_id
+and	cic.cost_type_id                = cicd.cost_type_id
+and	cicd.resource_id                = br.resource_id(+)
+and	msiv.planning_make_buy_code     = 1 -- make item
+and	cicd.rollup_source_type         = 1 -- user defined
+-- Revision for version 1.24
+and	msiv.inventory_item_status_code <> 'Inactive'
+-- Revision for version 1.30
+and	msiv.costing_enabled_flag       = 'Y'
+-- Fix for version 1.15
+and mp.organization_id <> mp.master_organization_id -- the item master org usually does not have costs
+-- ===================================================================
+-- Joins for the lookup codes
+-- ===================================================================
+and	ml1.lookup_type                 = 'MTL_PLANNING_MAKE_BUY'
+and	ml1.lookup_code                 = msiv.planning_make_buy_code
+and	ml2.lookup_type                 = 'CST_BONROLLUP_VAL'
+and	ml2.lookup_code                 = cic.based_on_rollup_flag
+and	ml3.lookup_type                 = 'SYS_YES_NO'
+and	ml3.lookup_code                 = to_char(cic.inventory_asset_flag)
+and	ml4.lookup_type                 = 'CST_SOURCE_TYPE'
+and	ml4.lookup_code                 = cicd.rollup_source_type
+and	fcl.lookup_code (+)             = msiv.item_type
+and	fcl.lookup_type (+)             = 'ITEM_TYPE'
+-- ===================================================================
+-- HR Organization table joins
+-- ===================================================================
+and	hoi.org_information_context     = 'Accounting Information'
+and	hoi.organization_id             = mp.organization_id
+and	hoi.organization_id             = haou.organization_id -- this gets the organization name
+-- avoid selecting disabled inventory organizations
+and	sysdate < nvl(haou.date_to, sysdate + 1)
+and	haou2.organization_id           = to_number(hoi.org_information3) -- this gets the operating unit id
+and	hoi.org_information1            = gl.ledger_id -- this gets the ledger id
+group by
+	'User Defined Costs - Make Items',
+	-- Fix for version 1.12, changed from gl.short_name to gl.short_name
+	nvl(gl.short_name, gl.name),
+	haou2.name,
+	mp.organization_code,
+	mp.organization_id,
+	cc

@@ -35,7 +35,7 @@ xxen_util.meaning(xjv.legislative_cat_code,'LEGISLATIVE_CATEGORY',222) legislati
 xjv.name jurisdiction_name,
 xr.registered_name,
 xr.registration_number,
-nvl2(flv2.meaning,flv2.meaning||' ('||flv2.description||')',null) registration_code,
+nvl2(flvv.meaning,flvv.meaning||' ('||flvv.description||')',null) registration_code,
 hp0.party_name legalauth_name,
 nvl2(hl.address1,hl.address1||' ','')||
 nvl2(hl.address2,hl.address2||' ','')||
@@ -79,7 +79,7 @@ xle_entity_profiles xep0,
 xle_registrations xr,
 xle_jurisdictions_vl xjv,
 hz_geographies hg,
-fnd_lookup_values flv2,
+fnd_lookup_values_vl flvv,
 hr_locations_all hla,
 fnd_territories_vl ftv,
 hz_parties hp0,
@@ -92,11 +92,10 @@ xep.source_table=xr.source_table(+) and
 xep.source_id=xr.source_id(+) and
 xr.jurisdiction_id=xjv.jurisdiction_id(+) and
 xjv.geography_id=hg.geography_id(+) and
-xjv.registration_code_le=flv2.lookup_code(+) and
-flv2.lookup_type(+)='XLE_REG_CODE' and
-flv2.language(+)=userenv('lang') and
-flv2.view_application_id(+)=204 and
-flv2.security_group_id(+)=0 and
+xjv.registration_code_le=flvv.lookup_code(+) and
+flvv.lookup_type(+)='XLE_REG_CODE' and
+flvv.view_application_id(+)=204 and
+flvv.security_group_id(+)=0 and
 xr.location_id=hla.location_id(+) and
 hla.country=ftv.territory_code(+) and
 xr.issuing_authority_id=hp0.party_id(+) and

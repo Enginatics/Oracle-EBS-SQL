@@ -30,13 +30,13 @@ msi.description subinventory_description,
 oap.acct_period_id,
 ood.organization_id
 from
-gl_sets_of_books gl,
+gl_ledgers gl,
 org_organization_definitions ood,
 mtl_secondary_inventories msi,
 org_acct_periods oap
 where
 1=1 and
-gl.set_of_books_id=ood.set_of_books_id and
+gl.ledger_id=ood.set_of_books_id and
 ood.organization_id=msi.organization_id and
 ood.organization_id=oap.organization_id
 ) x,

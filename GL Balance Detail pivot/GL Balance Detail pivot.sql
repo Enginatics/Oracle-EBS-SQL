@@ -22,6 +22,7 @@ y.currency_code currency,
 &start_balance_reval
 &period_columns_reval
 &total_reval
+&concatenated_segments
 y.chart_of_accounts_id
 from
 (
@@ -29,10 +30,12 @@ select distinct
 w.ledger,
 &account_type
 &segment_columns
+&concatenated_segments
 w.period_name,
 sum(w.start_bal       ) over (partition by w.ledger, &account_type &segment_columns w.chart_of_accounts_id) start_balance,
 sum(w.start_bal*w.rate) over (partition by w.ledger, &account_type &segment_columns w.chart_of_accounts_id) start_balance_reval,
 sum(w.amount          ) over (partition by w.ledger, &account_type &segment_columns w.chart_of_accounts_id) total,
+sum(w.abs_amount      ) over (partition by w.ledger, &account_type &segment_columns w.chart_of_accounts_id) abs_total,
 sum(w.amount*w.rate   ) over (partition by w.ledger, &account_type &segment_columns w.chart_of_accounts_id) total_reval,
 sum(w.amount          ) over (partition by w.ledger, &account_type &segment_columns w.chart_of_accounts_id, w.period_name) amount,
 sum(w.amount*w.rate   ) over (partition by w.ledger, &account_type &segment_columns w.chart_of_accounts_id, w.period_name) amount_reval,
@@ -44,9 +47,11 @@ select
 gl.name ledger,
 &account_type
 &segment_columns
+&concatenated_segments1
 gps.period_name,
 decode(gps.start_period,'Y',nvl(gb.begin_balance_dr,0)-nvl(gb.begin_balance_cr,0)) start_bal,
 nvl(gb.period_net_dr,0)-nvl(gb.period_net_cr,0) amount,
+abs(nvl(gb.period_net_dr,0))+abs(nvl(gb.period_net_cr,0)) abs_amount,
 decode(gl.currency_code,:reval_currency,1,(select gdr.conversion_rate from gl_daily_conversion_types gdct, gl_daily_rates gdr where gl.currency_code=gdr.from_currency and gdr.to_currency=:reval_currency and gps.end_date=gdr.conversion_date and gdct.user_conversion_type=:reval_conversion_type and gdct.conversion_type=gdr.conversion_type)) rate,
 gl.currency_code,
 gl.chart_of_accounts_id
@@ -78,6 +83,8 @@ for period_name in (
 &pivot_columns
 )
 ) y
+where
+2=2
 order by
 y.ledger,
 &order_by_account_type

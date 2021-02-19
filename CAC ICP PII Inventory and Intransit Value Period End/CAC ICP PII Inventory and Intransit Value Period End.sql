@@ -73,34 +73,7 @@ select	nvl(gl.short_name, gl.name) Ledger,
 	fcl.meaning Item_Type,
 	-- Revision for version 1.14 and 1.16
 	misv.inventory_item_status_code_tl Item_Status,
-	-- Revision for version 1.11
-	nvl((select	max(mc.category_concat_segs)
-	     from	mtl_categories_v mc,
-			mtl_item_categories mic,
-			mtl_category_sets_b mcs,
-			mtl_category_sets_tl mcs_tl
-	     where	mic.category_set_id         = mcs.category_set_id
-	     and	2=2  
-	     and	mic.inventory_item_id       = msiv.inventory_item_id
-	     and	mic.organization_id         = msiv.organization_id
-	     and	mc.category_id              = mic.category_id
-	     and	mcs.category_set_id         = mcs_tl.category_set_id
-	     and	mcs_tl.language             = userenv('lang')
-	),'') "&p_category_set1",						-- p_category_set1
-	nvl((select	max(mc.category_concat_segs)
-	     from	mtl_categories_v mc,
-			mtl_item_categories mic,
-			mtl_category_sets_b mcs,
-			mtl_category_sets_tl mcs_tl
-	     where	mic.category_set_id         = mcs.category_set_id
-	     and	3=3 
-	     and	mic.inventory_item_id       = msiv.inventory_item_id
-	     and	mic.organization_id         = msiv.organization_id
-	     and	mc.category_id              = mic.category_id
-	     and	mcs.category_set_id         = mcs_tl.category_set_id
-	     and	mcs_tl.language             = userenv('lang')
-	),'') "&p_category_set2",						-- p_category_set2
-	-- End revision for version 1.11
+&category_columns
 	gl.currency_code Curr_Code,
 	round((nvl(cpcs.rollback_value,0)) /
 	decode(nvl(cpcs.rollback_quantity,0), 0, 1,
@@ -266,34 +239,7 @@ select	nvl(gl.short_name, gl.name) Ledger,
 	fcl.meaning Item_Type,
 	-- Revision for version 1.14 and 1.16
 	misv.inventory_item_status_code_tl Item_Status,
-	-- Revision for version 1.11
-	nvl((select	max(mc.category_concat_segs)
-	     from	mtl_categories_v mc,
-			mtl_item_categories mic,
-			mtl_category_sets_b mcs,
-			mtl_category_sets_tl mcs_tl
-	     where	mic.category_set_id         = mcs.category_set_id
-	     and	2=2 
-	     and	mic.inventory_item_id       = msiv.inventory_item_id
-	     and	mic.organization_id         = msiv.organization_id
-	     and	mc.category_id              = mic.category_id
-	     and	mcs.category_set_id         = mcs_tl.category_set_id
-	     and	mcs_tl.language             = userenv('lang')
-	),'') "&p_category_set1",
-	nvl((select	max(mc.category_concat_segs)
-	     from	mtl_categories_v mc,
-			mtl_item_categories mic,
-			mtl_category_sets_b mcs,
-			mtl_category_sets_tl mcs_tl
-	     where	mic.category_set_id         = mcs.category_set_id
-	     and	3=3  
-	     and	mic.inventory_item_id       = msiv.inventory_item_id
-	     and	mic.organization_id         = msiv.organization_id
-	     and	mc.category_id              = mic.category_id
-	     and	mcs.category_set_id         = mcs_tl.category_set_id
-	     and	mcs_tl.language             = userenv('lang')
-	),'') "&p_category_set2",
-	-- End revision for version 1.11
+&category_columns
 	gl.currency_code Curr_Code,
 	round((nvl(cpcs.rollback_intransit_value,0)) /
 		decode(nvl(cpcs.rollback_quantity,0), 0, 1,
@@ -506,34 +452,7 @@ select	nvl(gl.short_name, gl.name) Ledger,
 	fcl.meaning Item_Type,
 	-- Revision for version 1.14 and 1.16
 	misv.inventory_item_status_code_tl Item_Status,
-	-- Revision for version 1.11
-	nvl((select	max(mc.category_concat_segs)
-	     from	mtl_categories_v mc,
-			mtl_item_categories mic,
-			mtl_category_sets_b mcs,
-			mtl_category_sets_tl mcs_tl
-	     where	mic.category_set_id         = mcs.category_set_id
-	     and	2=2  
-	     and	mic.inventory_item_id       = msiv.inventory_item_id
-	     and	mic.organization_id         = msiv.organization_id
-	     and	mc.category_id              = mic.category_id
-	     and	mcs.category_set_id         = mcs_tl.category_set_id
-	     and	mcs_tl.language             = userenv('lang')
-	),'') "&p_category_set1",
-	nvl((select	max(mc.category_concat_segs)
-	     from	mtl_categories_v mc,
-			mtl_item_categories mic,
-			mtl_category_sets_b mcs,
-			mtl_category_sets_tl mcs_tl
-	     where	mic.category_set_id         = mcs.category_set_id
-	     and	3=3  
-	     and	mic.inventory_item_id       = msiv.inventory_item_id
-	     and	mic.organization_id         = msiv.organization_id
-	     and	mc.category_id              = mic.category_id
-	     and	mcs.category_set_id         = mcs_tl.category_set_id
-	     and	mcs_tl.language             = userenv('lang')
-	),'') "&p_category_set2",
-	-- End revision for version 1.11
+&category_columns
 	gl.currency_code Curr_Code,
 	round(nvl(cic.item_cost,0),5) Gross_Item_Cost,
 	-- Revision for version 1.1
@@ -717,34 +636,7 @@ select	nvl(gl.short_name, gl.name) Ledger,
 	fcl.meaning Item_Type,
 	-- Revision for version 1.14 and 1.16
 	misv.inventory_item_status_code_tl Item_Status,
-	-- Revision for version 1.11
-	nvl((select	max(mc.category_concat_segs)
-	     from	mtl_categories_v mc,
-			mtl_item_categories mic,
-			mtl_category_sets_b mcs,
-			mtl_category_sets_tl mcs_tl
-	     where	mic.category_set_id         = mcs.category_set_id
-	     and	2=2  
-	     and	mic.inventory_item_id       = msiv.inventory_item_id
-	     and	mic.organization_id         = msiv.organization_id
-	     and	mc.category_id              = mic.category_id
-	     and	mcs.category_set_id         = mcs_tl.category_set_id
-	     and	mcs_tl.language             = userenv('lang')
-	),'') "&p_category_set1",
-	nvl((select	max(mc.category_concat_segs)
-	     from	mtl_categories_v mc,
-			mtl_item_categories mic,
-			mtl_category_sets_b mcs,
-			mtl_category_sets_tl mcs_tl
-	     where	mic.category_set_id         = mcs.category_set_id
-	     and	3=3 
-	     and	mic.inventory_item_id       = msiv.inventory_item_id
-	     and	mic.organization_id         = msiv.organization_id
-	     and	mc.category_id              = mic.category_id
-	     and	mcs.category_set_id         = mcs_tl.category_set_id
-	     and	mcs_tl.language             = userenv('lang')
-	),'') "&p_category_set2",
-	-- End revision for version 1.11
+&category_columns
 	gl.currency_code Curr_Code,
 	-- Get the item costs from the item costs table
 	-- round((nvl(cpcs.rollback_intransit_value,0)) /
@@ -797,4 +689,112 @@ select	nvl(gl.short_name, gl.name) Ledger,
 		     and    cicd.organization_id   = msiv.organization_id
 		     and    br.resource_id         = cicd.resource_id
 		     and    5=5                                                           -- p_pii_resource_code
-		     
+		     and    cct.cost_type_id       = cicd.cost_type_id
+		     and    4=4),0),2)     PII_Onhand_Value,				  -- p_pii_cost_type
+	-- Use the item costs from the Cost Type
+	-- to value the Intransit inventory
+	-- sum(nvl(cpcs.rollback_intransit_value,0)) +
+		round(sum(nvl(cic.item_cost,0) * nvl(cpcs.rollback_quantity,0)),2) +
+		-- Revision for version 1.1
+		-- Revision for version 1.13
+		-- PII item costs are negative
+		round(sum(nvl(cpcs.rollback_quantity,0)) * 
+			nvl((select sum(nvl(cicd.item_cost,0))
+			     from   bom.cst_item_cost_details cicd,
+				    bom.cst_cost_types cct,
+				    bom.bom_resources br
+			     where  cicd.inventory_item_id = msiv.inventory_item_id
+			     and    cicd.organization_id   = msiv.organization_id
+			     and    br.resource_id         = cicd.resource_id
+			     and    5=5                                                      -- p_pii_resource_code
+			     and    cct.cost_type_id       = cicd.cost_type_id
+			     and    4=4),0),2) Net_Onhand_Value			             -- p_pii_cost_type
+from	cst_period_close_summary cpcs,
+	org_acct_periods oap,
+	mtl_parameters mp,
+	-- Revision for version 1.16
+	mtl_system_items_vl msiv,
+	mtl_units_of_measure_vl muomv,
+	mtl_item_status_vl misv,
+	mfg_lookups ml,
+	-- End Revision for version 1.16
+	-- Revision for version 1.12
+	cst_cost_types cct,
+	cst_item_costs cic,
+	-- End revision for version 1.12
+	gl_code_combinations gcc,  -- subinventory accounts
+	hr_organization_information hoi,
+	hr_all_organization_units_vl haou,
+	hr_all_organization_units_vl haou2,
+	gl_ledgers gl,
+	fnd_common_lookups fcl,
+	-- Revision for version 1.10
+	-- Need to get the Intransit Account from the Shipping Network
+	-- as the inventory parameters Intransit Account is not always populated
+	(select	ic.code_combination_id,
+		ic.organization_id
+	 from	(select	gcc.code_combination_id,
+			mip.to_organization_id organization_id
+		 from	mtl_interorg_parameters mip,
+			mtl_parameters mp,
+			gl_code_combinations gcc
+		 where	mip.fob_point               = 1 -- shipment
+		 and	mp.organization_id          = mip.to_organization_id
+		 and	gcc.code_combination_id (+) = mip.intransit_inv_account
+		 union all
+		 select	gcc.code_combination_id,
+			mip.from_organization_id organization_id
+		 from	mtl_interorg_parameters mip,
+			mtl_parameters mp,
+			gl_code_combinations gcc
+		 where	mip.fob_point               = 2 -- receipt
+		 and	mp.organization_id          = mip.from_organization_id
+		 and	gcc.code_combination_id (+) = mip.intransit_inv_account
+		) ic
+	 group by
+		ic.code_combination_id,
+		ic.organization_id
+	) interco
+  -- End revision for version 1.0
+-- ===========================================
+-- Inventory accounting period joins
+-- ===========================================
+where	oap.acct_period_id              = cpcs.acct_period_id
+and	oap.organization_id             = mp.organization_id 
+-- ========================================================================
+-- Subinventory, mtl parameter, item master and period close snapshot joins
+-- ========================================================================
+and	cpcs.subinventory_code is null
+and	mp.organization_id              = cpcs.organization_id
+-- Revision for version 1.16
+and	mp.organization_id              = msiv.organization_id
+and	msiv.organization_id            = cpcs.organization_id
+and	msiv.inventory_item_id          = cpcs.inventory_item_id
+and	msiv.primary_uom_code           = muomv.uom_code
+and	msiv.inventory_item_status_code = misv.inventory_item_status_code
+-- End for revision for version 1.16
+-- ===========================================
+-- Accounting code combination joins
+-- ===========================================
+-- Revision for version 1.9
+-- and  mp.intransit_inv_account        = gcc.code_combination_id
+--- Revision for version 1.14
+-- -- Use the material account as a default for segments 1,3,4,5,6
+-- and	mp.material_account             = gcc.code_combination_id
+-- Revision for version 1.14
+and	interco.code_combination_id     = gcc.code_combination_id (+)
+and	interco.organization_id         = mp.organization_id
+-- ===========================================
+-- Cost Type Joins
+-- Revision for version 1.12
+-- ===========================================
+and	6=6										-- p_cost_type
+and	cct.cost_type_id                = cic.cost_type_id
+and	cic.organization_id             = msiv.organization_id
+and	cic.inventory_item_id           = msiv.inventory_item_id
+-- ===========================================
+-- Organization joins to the HR org model
+-- ===========================================
+and	hoi.org_information_context     = 'Accounting Information'
+and	hoi.organization_id             = mp.organization_id
+and	hoi.organization_id             = haou.organization_id   

@@ -17,7 +17,7 @@ select
  :p_company_name                     ledger
 ,:p_reporting_level_name             reporting_level
 ,:p_reporting_entity_name            reporting_entity
-,x1.bal_segment_value                &lp_bal_seg_p
+,x1.bal_segment_value                "&lp_bal_seg_p"
 ,x1.sort_field1                      salesperson
 ,x1.cust_name                        customer
 ,x1.cust_no                          customer_Number
@@ -657,4 +657,4 @@ from
               arpt_sql_func_util.bucket_function(XXEN_AR_ARXAGRW_PKG.bucket_line_type(6), 
                         0,0,XXEN_AR_ARXAGRW_PKG.bucket_days_from(6),XXEN_AR_ARXAGRW_PKG.bucket_days_to(6), 
                          ps.due_date,XXEN_AR_ARXAGRW_PKG.bucket_category,:p_in_as_of_date_low) b6,
-             fnd_flex_xml_publisher_apis.process_kff_combination_1('lp_acct_flex_
+             fnd_flex_xml_publisher_apis.process_kff_combination_1('lp_acct_fle

@@ -20,12 +20,12 @@ oap.period_start_date,
 ood.organization_id,
 oap.acct_period_id
 from
-gl_sets_of_books gl,
+gl_ledgers gl,
 org_organization_definitions ood,
 org_acct_periods oap
 where
 1=1 and
-gl.set_of_books_id=ood.set_of_books_id and
+gl.ledger_id=ood.set_of_books_id and
 ood.organization_id=oap.organization_id and
 oap.open_flag='N' and
 oap.summarized_flag='Y'

@@ -42,7 +42,7 @@ round(decode(cdcv.cost_element_id,4,cdcv.item_cost,0),fc.extended_precision) out
 round(decode(cdcv.cost_element_id,5,cdcv.item_cost,0),fc.extended_precision) overhead, 
 round(sum(cdcv.item_cost) over (partition by cdcv.organization_id, cdcv.inventory_item_id, cdcv.cost_type_id), fc.extended_precision) total_unit_cost
 from
-gl_sets_of_books gl,
+gl_ledgers gl,
 fnd_currencies fc,
 org_organization_definitions ood,
 mtl_parameters mp,
@@ -60,7 +60,7 @@ where
 mcsv.category_set_name=:category_set_name and
 gl.currency_code=fc.currency_code and
 fc.enabled_flag='Y' and
-gl.set_of_books_id=ood.set_of_books_id and
+gl.ledger_id=ood.set_of_books_id and
 ood.organization_id=mp.organization_id and
 mp.cost_organization_id=cic.organization_id and
 cic.cost_type_id=cct.cost_type_id and

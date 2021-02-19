@@ -5,16 +5,17 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: AR Transactions and Payments
--- Description: Detail AR customer billing history including payments, excluding any entered or incomplete transactions.
+-- Description: Detail AR customer billing history including payments / cash receipts, excluding any entered or incomplete transactions.
 -- Excel Examle Output: https://www.enginatics.com/example/ar-transactions-and-payments/
 -- Library Link: https://www.enginatics.com/reports/ar-transactions-and-payments/
 -- Run Report: https://demo.enginatics.com/
 
 select
+x.ledger,
 x.operating_unit,
 x.invoice_number,
-x.trx_number,
-x.trx_date,
+x.transaction_number,
+x.transaction_date,
 x.class,
 x.type,
 x.reference,
@@ -60,11 +61,12 @@ xxen_util.client_time(x.last_update_date) last_update_date
 from
 (
 select
-haouv.name operating_unit,
+gl.name ledger,
+hou.name operating_unit,
 acia.cons_billing_number invoice_number,
-nvl(rcta.trx_number,acra.receipt_number) trx_number,
-apsa.trx_date,
-flv1.meaning class,
+nvl(rcta.trx_number,acra.receipt_number) transaction_number,
+apsa.trx_date transaction_date,
+xxen_util.meaning(apsa.class,'INV/CM/ADJ',222) class,
 nvl(rctta.name,'Standard') type,
 nvl(rcta.ct_reference,acra.customer_receipt_reference) reference,
 decode(apsa.class,'PMT',
@@ -109,7 +111,7 @@ apsa.amount_adjusted adjustment,
 apsa.amount_credited credit,
 apsa.amount_due_remaining due_remaining,
 case when rctta.accounting_affect_flag='Y' and apsa.amount_in_dispute<>0 then apsa.amount_in_dispute end dispute_amount,
-nvl(flv3.meaning,decode(apsa.status,'CL','Closed',decode(apsa.amount_due_remaining,apsa.amount_due_original,'Open','Partially Paid'))) state,
+nvl(xxen_util.meaning(acrha.status,'RECEIPT_CREATION_STATUS',222),decode(apsa.status,'CL','Closed',decode(apsa.amount_due_remaining,apsa.amount_due_original,'Open','Partially Paid'))) state,
 apsa.status,
 rtt.name payment_term,
 decode(rcta.invoicing_rule_id,-3,'Arrears',-2,'Advance') invoicing_rule,
@@ -119,7 +121,7 @@ rcta.ship_date_actual ship_date,
 hop.organization_name remit_bank_name,
 hp4.party_name remit_bank_branch,
 case when cba.bank_account_id is not null then ce_bank_and_account_util.get_masked_bank_acct_num(cba.bank_account_id) end remit_bank_account,
-flv2.meaning print_option,
+xxen_util.meaning(rcta.printing_option,'INVOICE_PRINT_OPTIONS',222) print_option,
 rcta.printing_original_date first_printed_date,
 rcta.customer_reference,
 nvl(rcta.comments,acra.comments) comments,
@@ -132,7 +134,8 @@ nvl(rcta.last_update_date,acra.last_update_date) last_update_date,
 nvl(rcta.receipt_method_id,acra.receipt_method_id) receipt_method_id,
 nvl(rcta.payment_trxn_extension_id,acra.payment_trxn_extension_id) payment_trxn_extension_id
 from
-hr_all_organization_units_vl haouv,
+gl_ledgers gl,
+hr_operating_units hou,
 ar_payment_schedules_all apsa,
 ra_customer_trx_all rcta,
 oe_sys_parameters_all ospa,
@@ -145,13 +148,10 @@ hz_parties hp,
 hz_cust_site_uses_all hcsua,
 hz_cust_acct_sites_all hcasa,
 hz_party_sites hps,
-fnd_lookup_values flv1,
-fnd_lookup_values flv2,
 jtf_rs_salesreps jrs,
 jtf_rs_resource_extns_tl jrret,
 ar_cash_receipts_all acra,
 ar_cash_receipt_history_all acrha,
-fnd_lookup_values flv3,
 ce_bank_acct_uses_all cbaua,
 ce_bank_accounts cba,
 hz_parties hp4,
@@ -160,7 +160,8 @@ hz_relationships hr,
 where
 1=1 and
 apsa.payment_schedule_id>0 and
-apsa.org_id=haouv.organization_id and
+gl.ledger_id=hou.set_of_books_id and
+hou.organization_id=apsa.org_id and
 apsa.customer_trx_id=rcta.customer_trx_id(+) and
 apsa.org_id=ospa.org_id(+) and
 ospa.parameter_code(+)='MASTER_ORGANIZATION_ID' and
@@ -176,16 +177,6 @@ hca.party_id=hp.party_id(+) and
 apsa.customer_site_use_id=hcsua.site_use_id(+) and
 hcsua.cust_acct_site_id=hcasa.cust_acct_site_id(+) and
 hcasa.party_site_id=hps.party_site_id(+) and
-apsa.class=flv1.lookup_code(+) and
-rcta.printing_option=flv2.lookup_code(+) and
-flv1.lookup_type(+)='INV/CM/ADJ' and
-flv2.lookup_type(+)='INVOICE_PRINT_OPTIONS' and
-flv1.view_application_id(+)=222 and
-flv2.view_application_id(+)=222 and
-flv1.language(+)=userenv('lang') and
-flv2.language(+)=userenv('lang') and
-flv1.security_group_id(+)=0 and
-flv2.security_group_id(+)=0 and
 case when rcta.primary_salesrep_id>0 then rcta.primary_salesrep_id end=jrs.salesrep_id(+) and
 case when rcta.primary_salesrep_id>0 then rcta.org_id end=jrs.org_id(+) and
 jrs.resource_id=jrret.resource_id(+) and
@@ -193,11 +184,6 @@ jrret.language(+)=userenv('lang') and
 apsa.cash_receipt_id=acra.cash_receipt_id(+) and
 apsa.cash_receipt_id=acrha.cash_receipt_id(+) and
 acrha.current_record_flag(+)='Y' and
-acrha.status=flv3.lookup_code(+) and
-flv3.lookup_type(+)='RECEIPT_CREATION_STATUS' and
-flv3.view_application_id(+)=222 and
-flv3.language(+)=userenv('lang') and
-flv3.security_group_id(+)=0 and
 acra.remit_bank_acct_use_id=cbaua.bank_acct_use_id(+) and
 cbaua.bank_account_id=cba.bank_account_id(+) and
 cba.bank_branch_id=hp4.party_id(+) and
@@ -233,6 +219,6 @@ ieba.branch_id=hp3.party_id(+) and
 decode(ipiua.instrument_type,'CREDITCARD',ipiua.instrument_id)=ic.instrid(+)
 order by
 x.operating_unit,
-x.trx_date desc,
+x.transaction_date desc,
 x.invoice_number desc,
-x.trx_number desc
+x.transaction_number desc

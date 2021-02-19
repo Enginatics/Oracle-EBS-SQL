@@ -59,7 +59,7 @@ aipvv.base_price_var
 aipvv.exch_rate_var ex_rate_vari,
 pla.item_id
 from
-gl_sets_of_books gl,
+gl_ledgers gl,
 fnd_currencies fc,
 gl_periods gp,
 mtl_parameters mp,
@@ -92,7 +92,7 @@ where
 1=1 and
 gl.period_set_name=gp.period_set_name and
 gl.currency_code=fc.currency_code and
-gl.set_of_books_id=pla.set_of_books_id and
+gl.ledger_id=pla.set_of_books_id and
 pla.inventory_organization_id=mp.organization_id and
 pla.inventory_organization_id=msiv.organization_id and
 aipvv.po_distribution_id=pda.po_distribution_id and

@@ -19,7 +19,7 @@ rcta.invoice_currency_code currency_code,
 sum(nvl(rctlgda.amount,0)) over (partition by ftv.territory_short_name, ftv.territory_code, hcsua.tax_reference, rcta.invoice_currency_code) amount,
 sum(nvl(rctlgda.acctd_amount,0)) over (partition by ftv.territory_short_name, ftv.territory_code, hcsua.tax_reference, rcta.invoice_currency_code) acctd_amount
 from
-gl_sets_of_books gl,
+gl_ledgers gl,
 hr_operating_units hou,
 ra_customer_trx_all rcta,
 ra_cust_trx_types_all rctta,
@@ -33,9 +33,9 @@ fnd_territories_vl ftv
 where
 decode(rctta.type,'CM',:remit_to_address,rcta.remit_to_address_id)=:remit_to_address and
 1=1 and
-gl.set_of_books_id=hou.set_of_books_id and
+gl.ledger_id=hou.set_of_books_id and
 hou.organization_id=rctlgda.org_id and
-gl.set_of_books_id=rcta.set_of_books_id and
+gl.ledger_id=rcta.set_of_books_id and
 rcta.complete_flag='Y' and
 rcta.org_id=rctta.org_id and
 rcta.cust_trx_type_id=rctta.cust_trx_type_id and

@@ -14,6 +14,11 @@ PA 1274575.1 https://support.oracle.com/CSP/main/article?cmd=show&type=NOT&id=12
 For GMF, there is
 AP and PO Accrual Reconciliation Report Debugging from OPM Financials 2114612.1 https://support.oracle.com/CSP/main/article?cmd=show&type=NOT&id=2114612.1
 and Financials Troubleshooting Guide 1213193.1 https://support.oracle.com/CSP/main/article?cmd=show&type=NOT&id=1213193.1
+
+How the gl_import_references tableis used in 11i vs R12 is described in notes 165327.1 and 130542.1
+https://support.oracle.com/CSP/main/article?cmd=show&type=NOT&id=165327.1
+https://support.oracle.com/CSP/main/article?cmd=show&type=NOT&id=130542.1
+
 -- Excel Examle Output: https://www.enginatics.com/example/xla-distribution-links-summary/
 -- Library Link: https://www.enginatics.com/reports/xla-distribution-links-summary/
 -- Run Report: https://demo.enginatics.com/
