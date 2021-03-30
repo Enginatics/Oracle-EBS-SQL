@@ -1,6 +1,6 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2020 Enginatics GmbH                   */
+/*                       (c) 2010-2021 Enginatics GmbH                   */
 /*                              www.enginatics.com                       */
 /*                                                                       */
 /*************************************************************************/
@@ -11,7 +11,8 @@
 -- Run Report: https://demo.enginatics.com/
 
 select distinct
-mp.organization_code,
+ood.organization_name,
+ood.organization_code,
 msi.secondary_inventory_name subinventory,
 xxen_util.meaning(nvl(msi.subinventory_type, 1),'MTL_SUB_TYPES',700) subinventory_type,
 inv_project.get_locator(moqd.locator_id,moqd.organization_id) locator,
@@ -48,8 +49,8 @@ moqd.organization_id,
 moqd.subinventory_code,
 sum(moqd.primary_transaction_quantity) over (partition by moqd.inventory_item_id) on_hand_sum
 from
+org_organization_definitions ood,
 mtl_onhand_quantities_detail moqd,
-mtl_parameters mp,
 mtl_secondary_inventories msi,
 mtl_item_locations mil,
 mtl_material_statuses_vl mmsv,
@@ -79,7 +80,7 @@ mtl_reservations mr
 ) mr
 where
 1=1 and
-moqd.organization_id=mp.organization_id and
+ood.organization_id=moqd.organization_id and
 moqd.organization_id=msi.organization_id(+) and
 moqd.subinventory_code=msi.secondary_inventory_name(+) and
 moqd.organization_id=mil.organization_id(+) and
@@ -104,6 +105,7 @@ moqd.inventory_item_id=mr.inventory_item_id(+) and
 moqd.organization_id=mr.organization_id(+) and
 moqd.subinventory_code=mr.subinventory_code(+)
 order by
+ood.organization_code,
 on_hand_sum desc,
 item,
 on_hand desc

@@ -1,6 +1,6 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2020 Enginatics GmbH                   */
+/*                       (c) 2010-2021 Enginatics GmbH                   */
 /*                              www.enginatics.com                       */
 /*                                                                       */
 /*************************************************************************/
@@ -110,6 +110,7 @@ wt.transaction_uom,
 wt.primary_quantity,
 xxen_util.user_name(gjh.created_by) journal_created_by,
 gjh.creation_date journal_creation_date,
+(select fav.application_name from fnd_application_vl fav where xal.application_id=fav.application_id) application,
 gjb.je_batch_id,
 gjl.je_header_id,
 gjl.context dff_context,

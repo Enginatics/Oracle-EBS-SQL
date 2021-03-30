@@ -1,6 +1,6 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2020 Enginatics GmbH                   */
+/*                       (c) 2010-2021 Enginatics GmbH                   */
 /*                              www.enginatics.com                       */
 /*                                                                       */
 /*************************************************************************/
@@ -27,6 +27,10 @@ nvl2(hla.region_2,hla.region_2||' ','')||
 hla.postal_code address,
 &col_attributes
 haouv.date_to,
+xxen_util.user_name(haouv.created_by) created_by,
+xxen_util.client_time(haouv.creation_date) creation_date,
+xxen_util.user_name(haouv.last_updated_by) last_updated_by,
+xxen_util.client_time(haouv.last_update_date) last_update_date,
 haouv.organization_id
 from
 hr_all_organization_units_vl haouv,

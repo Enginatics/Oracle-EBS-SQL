@@ -1,6 +1,6 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2020 Enginatics GmbH                   */
+/*                       (c) 2010-2021 Enginatics GmbH                   */
 /*                              www.enginatics.com                       */
 /*                                                                       */
 /*************************************************************************/
@@ -86,12 +86,21 @@ x.shipment_priority,
 x.shippable_flag,
 x.ship_set,
 x.delivery,
+x.cancel_date,
+x.cancelled_quantity,
+x.cancelled_amount,
+x.cancelled_by,
+x.cancel_reason,
 x.project,
 x.task,
-x.created_by,
-x.creation_date,
-x.last_updated_by,
-x.last_update_date,
+x.header_created_by,
+x.header_creation_date,
+x.header_last_updated_by,
+x.header_last_update_date,
+x.line_created_by,
+x.line_creation_date,
+x.line_last_updated_by,
+x.line_last_update_date,
 x.order_category,
 x.line_category,
 x.header_id,
@@ -169,12 +178,21 @@ oola.shipped_quantity,
 xxen_util.meaning(decode(oola.shippable_flag,'Y','Y'),'YES_NO',0) shippable_flag,
 (select distinct listagg(os.set_name,', ') within group (order by os.set_name) over (partition by oola.line_id) set_name from oe_sets os where oola.ship_set_id=os.set_id) ship_set,
 wnd.name delivery,
+xxen_util.client_time(oolh.hist_creation_date) cancel_date,
+decode(oola.cancelled_flag,'Y',oola.cancelled_quantity) cancelled_quantity,
+decode(oola.cancelled_flag,'Y',oola.cancelled_quantity)*oola.unit_selling_price cancelled_amount,
+xxen_util.user_name(oolh.hist_created_by) cancelled_by,
+xxen_util.meaning(oer.reason_code,'CANCEL_CODE',660) cancel_reason,
 ppa.project_number project,
 pt.task_number task,
-xxen_util.user_name(oola.created_by) created_by,
-xxen_util.client_time(oola.creation_date) creation_date,
-xxen_util.user_name(oola.last_updated_by) last_updated_by,
-xxen_util.client_time(oola.last_update_date) last_update_date,
+xxen_util.user_name(ooha.created_by) header_created_by,
+xxen_util.client_time(ooha.creation_date) header_creation_date,
+xxen_util.user_name(ooha.last_updated_by) header_last_updated_by,
+xxen_util.client_time(ooha.last_update_date) header_last_update_date,
+xxen_util.user_name(oola.created_by) line_created_by,
+xxen_util.client_time(oola.creation_date) line_creation_date,
+xxen_util.user_name(oola.last_updated_by) line_last_updated_by,
+xxen_util.client_time(oola.last_update_date) line_last_update_date,
 xxen_util.meaning(ooha.order_category_code,'ORDER_CATEGORY',660) order_category,
 xxen_util.meaning(oola.line_category_code,'ORDER_CATEGORY',660) line_category,
 ooha.header_id,
@@ -243,7 +261,19 @@ select psm.project_id, psm.project_number from pjm_seiban_numbers psm
 &xrrpv_table
 pa_tasks pt,
 ra_customer_trx_lines_all rctla,
-ra_customer_trx_all rcta
+ra_customer_trx_all rcta,
+(
+select distinct
+oolh.line_id,
+min(oolh.hist_creation_date) over (partition by oolh.line_id) hist_creation_date,
+min(oolh.hist_created_by) keep (dense_rank first order by oolh.hist_creation_date) over (partition by oolh.line_id) hist_created_by,
+min(oolh.reason_id) keep (dense_rank first order by oolh.hist_creation_date) over (partition by oolh.line_id) reason_id
+from
+oe_order_lines_history oolh
+where
+oolh.hist_type_code='CANCELLATION'
+) oolh,
+oe_reasons oer
 where
 1=1 and
 haouv.organization_id=ooha.org_id and
@@ -269,7 +299,9 @@ rctla.interface_line_context(+) in ('INTERCOMPANY','ORDER ENTRY') and
 rctla.customer_trx_id=rcta.customer_trx_id(+) and
 rcta.primary_salesrep_id=jrs2.salesrep_id(+) and
 rcta.org_id=jrs2.org_id(+) and
-jrs2.resource_id=jrrev2.resource_id(+)
+jrs2.resource_id=jrrev2.resource_id(+) and
+oola.line_id=oolh.line_id(+) and
+oolh.reason_id=oer.reason_id(+)
 ) x,
 hz_cust_site_uses_all hcsua1,
 hz_cust_site_uses_all hcsua2,

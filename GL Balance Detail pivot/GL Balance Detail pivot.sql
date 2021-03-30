@@ -1,6 +1,6 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2020 Enginatics GmbH                   */
+/*                       (c) 2010-2021 Enginatics GmbH                   */
 /*                              www.enginatics.com                       */
 /*                                                                       */
 /*************************************************************************/
@@ -60,7 +60,7 @@ gl_ledgers gl,
 gl_period_statuses gps0,
 (select decode(gps.period_num,min(gps.period_num) over (partition by gps.ledger_id, gps.application_id, gps.period_year),'Y') start_period, gps.* from gl_period_statuses gps) gps,
 gl_balances gb,
-gl_code_combinations gcc
+gl_code_combinations_kfv gcck
 where
 1=1 and
 gps0.period_name=:period_name and
@@ -74,7 +74,7 @@ gps0.period_num>=gps.period_num and
 gps.ledger_id=gb.ledger_id and
 gps.period_name=gb.period_name and
 gl.currency_code=gb.currency_code and
-gb.code_combination_id=gcc.code_combination_id
+gb.code_combination_id=gcck.code_combination_id
 ) w
 ) x
 pivot (

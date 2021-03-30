@@ -1,6 +1,6 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2020 Enginatics GmbH                   */
+/*                       (c) 2010-2021 Enginatics GmbH                   */
 /*                              www.enginatics.com                       */
 /*                                                                       */
 /*************************************************************************/
@@ -107,6 +107,13 @@ xdl.accounting_line_type_code,
 nvl2(xdl.tax_line_ref_id,'not null',null) tax_line_ref_id,
 nvl2(xdl.tax_rec_nrec_dist_ref_id,'not null',null) tax_rec_nrec_dist_ref_id,
 nvl2(xdl.tax_summary_line_ref_id,'not null',null) tax_summary_line_ref_id,
+xdl.applied_to_entity_code,
+nvl2(xdl.applied_to_entity_id,'not null',null) applied_to_entity_id,
+xdl.applied_to_distribution_type,
+nvl2(xdl.applied_to_dist_id_char_1,'not null',null) applied_to_dist_id_char_1,
+nvl2(xdl.applied_to_dist_id_num_1,'not null',null) applied_to_dist_id_num_1,
+nvl2(xdl.applied_to_source_id_char_1,'not null',null) applied_to_source_id_char_1,
+nvl2(xdl.applied_to_source_id_num_1,'not null',null) applied_to_source_id_num_1,
 nvl2(xdl.source_distribution_id_char_1,'not null',null) source_distribution_id_char_1,
 nvl2(xdl.source_distribution_id_char_2,'not null',null) source_distribution_id_char_2,
 nvl2(xdl.source_distribution_id_char_3,'not null',null) source_distribution_id_char_3,
@@ -145,6 +152,13 @@ xdl.accounting_line_type_code,
 nvl2(xdl.tax_line_ref_id,'not null',null),
 nvl2(xdl.tax_rec_nrec_dist_ref_id,'not null',null),
 nvl2(xdl.tax_summary_line_ref_id,'not null',null),
+xdl.applied_to_entity_code,
+nvl2(xdl.applied_to_entity_id,'not null',null),
+xdl.applied_to_distribution_type,
+nvl2(xdl.applied_to_dist_id_char_1,'not null',null),
+nvl2(xdl.applied_to_dist_id_num_1,'not null',null),
+nvl2(xdl.applied_to_source_id_char_1,'not null',null),
+nvl2(xdl.applied_to_source_id_num_1,'not null',null),
 nvl2(xdl.source_distribution_id_char_1,'not null',null),
 nvl2(xdl.source_distribution_id_char_2,'not null',null),
 nvl2(xdl.source_distribution_id_char_3,'not null',null),

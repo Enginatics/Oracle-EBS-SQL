@@ -1,6 +1,6 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2020 Enginatics GmbH                   */
+/*                       (c) 2010-2021 Enginatics GmbH                   */
 /*                              www.enginatics.com                       */
 /*                                                                       */
 /*************************************************************************/
@@ -27,6 +27,7 @@ from
 xxen_reports_v xrv,
 xxen_report_assignments_v xrav
 where
+1=1 and
 xrv.report_id=xrav.report_id
 order by
 xrav.report_name,

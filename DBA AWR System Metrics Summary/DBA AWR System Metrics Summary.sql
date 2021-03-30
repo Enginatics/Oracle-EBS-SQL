@@ -1,6 +1,6 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2020 Enginatics GmbH                   */
+/*                       (c) 2010-2021 Enginatics GmbH                   */
 /*                              www.enginatics.com                       */
 /*                                                                       */
 /*************************************************************************/
@@ -28,8 +28,8 @@ x.*
 from
 (
 select
-to_char(gs.end_time,'Day') day_of_week,
-gs.end_time end_interval_time,
+to_char(xxen_util.client_time(gs.end_time),'Day') day_of_week,
+xxen_util.client_time(gs.end_time) end_interval_time,
 gs.inst_id instance_number,
 gs.metric_name,
 gs.unit_factor*gs.value average_,

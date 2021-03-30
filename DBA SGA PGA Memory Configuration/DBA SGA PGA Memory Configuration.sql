@@ -1,6 +1,6 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2020 Enginatics GmbH                   */
+/*                       (c) 2010-2021 Enginatics GmbH                   */
 /*                              www.enginatics.com                       */
 /*                                                                       */
 /*************************************************************************/
@@ -46,20 +46,21 @@ x.name,
 case when x.name not like '%cpu%' then x.value/1024/1024/1024 else x.value end value
 from
 (
-select go.inst_id, 'cpu physical' name, go.value, 10 order_by from gv$osstat go where go.stat_name='NUM_CPUS' union all
+select go.inst_id, 'cpu physical' name, go.value, 11 order_by from gv$osstat go where go.stat_name='NUM_CPUS' union all
 select go.inst_id, 'memory physical' name, go.value, 1 order_by from gv$osstat go where go.stat_name='PHYSICAL_MEMORY_BYTES' union all
 select go.inst_id, 'memory unused' name, go.value-(select sum(gp.value) from gv$parameter gp where go.inst_id=gp.inst_id and gp.name in ('sga_target','memory_target','pga_aggregate_target')) value, 2 order_by from gv$osstat go where go.stat_name='PHYSICAL_MEMORY_BYTES' union all
 select gp.inst_id, gp.name, to_number(gp.value) value,
 decode(gp.name,
-'cpu_count',11,
+'cpu_count',12,
 'sga_max_size',3,
 'sga_target',4,
 'pga_aggregate_target',5,
 'pga_aggregate_limit',6,
 'memory_max_target',7,
-'memory_target',8
+'memory_target',8,
+'result_cache_max_size',9
 ) order_by
-from gv$parameter gp where gp.name in ('cpu_count','pga_aggregate_limit','pga_aggregate_target','sga_max_size','sga_target','memory_max_target','memory_target')
+from gv$parameter gp where gp.name in ('cpu_count','pga_aggregate_limit','pga_aggregate_target','sga_max_size','sga_target','memory_max_target','memory_target','result_cache_max_size')
 ) x
 order by
 x.inst_id,
@@ -106,3 +107,6 @@ from
 v$parameter vp
 where
 vp.name='control_management_pack_access'
+union all
+select distinct to_number(null) inst_id, 'AWR Report last usage date: '||max(dfus.last_usage_date) over () name, null value from dba_feature_usage_statistics dfus where dfus.name='AWR Report' and dfus.dbid in (select vd.dbid from v$database vd) union all
+select distinct to_number(null) inst_id, 'AWR Report usages: '||sum(dfus.detected_usages) over () name, null value from dba_feature_usage_statistics dfus where dfus.name='AWR Report' and dfus.dbid in (select vd.dbid from v$database vd)

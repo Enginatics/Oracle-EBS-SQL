@@ -1,14 +1,14 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2020 Enginatics GmbH                   */
+/*                       (c) 2010-2021 Enginatics GmbH                   */
 /*                              www.enginatics.com                       */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Cost Vs. Planning Item Controls
--- Description: Compare item make/buy controls vs. costing based on rollup controls.  There are six included reports, see below description for more information.
+-- Description: Compare item make/buy controls vs. costing based on rollup controls.  There are eight included reports, see below description for more information.
 
 /* +=============================================================================+
--- |  Copyright 2008-2020 Douglas Volz Consulting, Inc.                          |
+-- |  Copyright 2008-2021 Douglas Volz Consulting, Inc.                          |
 -- |  All rights reserved.                                                       |
 -- |  Permission to use this code is granted provided the original author is     |
 -- |  acknowledged. No warranties, express or otherwise is included in this      |
@@ -16,8 +16,6 @@
 -- +=============================================================================+
 -- |
 -- |  Original Author: Douglas Volz (doug@volzconsulting.com)
--- |
--- |  Program Name:  xxx_cost_vs_plan_ctrls_repts.sql
 -- |
 -- |  Parameters:
 -- |
@@ -55,15 +53,17 @@
 -- |         Find make items where the item is set to not roll up or
 -- |         find buy items where the item is set to roll up items and
 -- |         there are no sourcing rules
+-- |     7.  Lot Basis With Lot Size One
+-- |         Find make items where there are charges based on Lot but the lot
+-- |         size is one.  Duplicates the setup charges for each item you make.
+-- |     8.  BOMs With No Components
+-- |         Find make items with BOMS that have no components. 
 -- |
--- |  1.25    01 May 2019 Douglas Volz   Changed gl.short_name to gl.short_name
--- |  1.26    27 Jan 2020 Douglas Volz   Added Org Code and Operating Unit parameters.
--- |  1.27    26 Apr 2020 Douglas Volz   Changed to multi-language views for the item
--- |                                     master and operating units.
--- |  1.28    31 May 2020 Douglas Volz   Use multi-language table for UOM Code and Item Statuses.
--- |  1.29    22 Oct 2020 Douglas Volz   Add two category parameters to this report
 -- |  1.30    22 Jan 2021 Douglas Volz   Screen out items where the costing_enabled_flag is No
 -- |                                     but the Cost Rollup is putting into the Pending Cost Type.
+-- |  1.31    01 Mar 2021 Douglas Volz   Find make items where there are charges based on Lot but the lot
+-- |                                     size is one.  This duplicates the lot charges for each item you
+-- |                                     make.
 +=============================================================================+*/
 -- Excel Examle Output: https://www.enginatics.com/example/cac-cost-vs-planning-item-controls/
 -- Library Link: https://www.enginatics.com/reports/cac-cost-vs-planning-item-controls/
@@ -87,7 +87,9 @@ select	'Based on Rollup Yes - No BOMS' Report_Type,
 	-- Revision for version 1.20
 	fcl.meaning Item_Type,
 	misv.inventory_item_status_code_tl Item_Status,
+	-- Revision for version 1.29
 &category_columns
+	-- End revision for version 1.29
 	ml1.meaning Make_Buy_Code,
 	'' Rollup_Source_Type,
 	'' Resource_Code,
@@ -141,7 +143,7 @@ from	mtl_parameters mp,
 -- Cost type, organization, item master and report specific controls
 -- ===================================================================
 where	cic.cost_type_id                = cct.cost_type_id
-and	1=1                             -- p_cost_type, p_operating_unit, p_ledger
+and	1=1                             -- p_org_code, p_cost_type, p_operating_unit, p_ledger
 and	mp.organization_id              = cic.organization_id
 and	msiv.organization_id            = cic.organization_id
 and	msiv.inventory_item_id          = cic.inventory_item_id
@@ -235,7 +237,9 @@ select	'Based on Rollup Yes - No Rollup' Report_Type,
 	muomv.uom_code UOM_Code,
 	fcl.meaning Item_Type,
 	misv.inventory_item_status_code_tl Item_Status,
+	-- Revision for version 1.29
 &category_columns
+	-- End revision for version 1.29
 	ml1.meaning Make_Buy_Code,
 	'' Rollup_Source_Type,
 	'' Resource_Code,
@@ -311,7 +315,7 @@ from	mtl_parameters mp,
  -- Cost type, organization, item master and report specific controls
  -- ===================================================================
 where	cic.cost_type_id                = cct.cost_type_id
-and	1=1                             -- p_cost_type, p_operating_unit, p_ledger
+and	1=1                             -- p_org_code, p_cost_type, p_operating_unit, p_ledger
 and	mp.organization_id              = cic.organization_id
 and	msiv.organization_id            = cic.organization_id
 and	msiv.inventory_item_id          = cic.inventory_item_id
@@ -375,7 +379,9 @@ select 'Based on Rollup No - with BOMS' Report_Type,
 	muomv.uom_code UOM_Code,
 	fcl.meaning Item_Type,
 	misv.inventory_item_status_code_tl Item_Status,
+	-- Revision for version 1.29
 &category_columns
+	-- End revision for version 1.29
 	ml1.meaning Make_Buy_Code,
 	'' Rollup_Source_Type,
 	'' Resource_Code,
@@ -451,7 +457,7 @@ from	mtl_parameters mp,
 -- Cost type, organization, item master and report specific controls
 -- ===================================================================
 where	cic.cost_type_id                = cct.cost_type_id
-and	1=1                             -- p_cost_type, p_operating_unit, p_ledger
+and	1=1                             -- p_org_code, p_cost_type, p_operating_unit, p_ledger
 and	mp.organization_id              = cic.organization_id
 and	msiv.organization_id            = cic.organization_id
 and	msiv.inventory_item_id          = cic.inventory_item_id
@@ -541,7 +547,9 @@ select	'Based on Rollup Yes - No Routing' Report_Type,
 	-- Revision for version 1.20
 	fcl.meaning Item_Type,
 	misv.inventory_item_status_code_tl Item_Status,
+	-- Revision for version 1.29
 &category_columns
+	-- End revision for version 1.29
 	ml1.meaning Make_Buy_Code,
 	'' Rollup_Source_Type,
 	'' Resource_Code,
@@ -607,7 +615,7 @@ from	mtl_parameters mp,
 -- Cost type, organization, item master and report specific controls
 -- ===================================================================
 where	cic.cost_type_id                = cct.cost_type_id
-and	1=1                             -- p_cost_type, p_operating_unit, p_ledger
+and	1=1                             -- p_org_code, p_cost_type, p_operating_unit, p_ledger
 and	mp.organization_id              = cic.organization_id
 and	msiv.organization_id            = cic.organization_id
 and	msiv.inventory_item_id          = cic.inventory_item_id
@@ -679,7 +687,9 @@ select	'User Defined Costs - Make Items' Report_Type,
 	muomv.uom_code UOM_Code,
 	fcl.meaning Item_Type,
 	msiv.inventory_item_status_code Item_Status,
+	-- Revision for version 1.29
 &category_columns
+	-- End revision for version 1.29
 	ml1.meaning Make_Buy_Code,
 	ml4.meaning Rollup_Source_Type,
 	nvl(br.resource_code, '') Resource_Code,
@@ -758,7 +768,7 @@ from	mtl_parameters mp,
 -- Cost type, organization, item master and report specific controls
 -- ===================================================================
 where	cicd.cost_type_id               = cct.cost_type_id
-and	1=1                             -- p_cost_type, p_operating_unit, p_ledger
+and	1=1                             -- p_org_code, p_cost_type, p_operating_unit, p_ledger
 and	mp.organization_id              = cicd.organization_id
 and	msiv.organization_id            = cicd.organization_id
 and	msiv.inventory_item_id          = cicd.inventory_item_id
@@ -798,13 +808,4 @@ and	hoi.organization_id             = mp.organization_id
 and	hoi.organization_id             = haou.organization_id -- this gets the organization name
 -- avoid selecting disabled inventory organizations
 and	sysdate < nvl(haou.date_to, sysdate + 1)
-and	haou2.organization_id           = to_number(hoi.org_information3) -- this gets the operating unit id
-and	hoi.org_information1            = gl.ledger_id -- this gets the ledger id
-group by
-	'User Defined Costs - Make Items',
-	-- Fix for version 1.12, changed from gl.short_name to gl.short_name
-	nvl(gl.short_name, gl.name),
-	haou2.name,
-	mp.organization_code,
-	mp.organization_id,
-	cc
+and	haou

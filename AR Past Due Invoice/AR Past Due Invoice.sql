@@ -1,6 +1,6 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2020 Enginatics GmbH                   */
+/*                       (c) 2010-2021 Enginatics GmbH                   */
 /*                              www.enginatics.com                       */
 /*                                                                       */
 /*************************************************************************/
@@ -25,7 +25,11 @@ apsa.tax_original tax_amount,
 arpt_sql_func_util.get_balance_due_as_of_date(payment_schedule_id,:p_as_of_date,class) balance_due,
 :p_as_of_date-trunc(apsa.due_date) days_past_due,
 ac.name collector,
-rs.name salesperson
+rs.name salesperson,
+xxen_util.user_name(rcta.created_by) created_by,
+xxen_util.client_time(rcta.creation_date) creation_date,
+xxen_util.user_name(rcta.last_updated_by) last_updated_by,
+xxen_util.client_time(rcta.last_update_date) last_update_date
 from
 hz_customer_profiles hcp,
 hz_customer_profiles hcp1,

@@ -1,6 +1,6 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2020 Enginatics GmbH                   */
+/*                       (c) 2010-2021 Enginatics GmbH                   */
 /*                              www.enginatics.com                       */
 /*                                                                       */
 /*************************************************************************/
@@ -31,13 +31,13 @@ gl.name ledger,
 sum(nvl(gb.begin_balance_dr,0)-nvl(gb.begin_balance_cr,0)) over (partition by gb.ledger_id, gb.period_name, &segment_columns 1) start_balance,
 sum(nvl(gb.period_net_dr,0)) over (partition by gb.ledger_id, gb.period_name, &segment_columns 1) debit,
 sum(nvl(gb.period_net_cr,0)) over (partition by gb.ledger_id, gb.period_name, &segment_columns 1) credit,
-gcc.chart_of_accounts_id,
+gcck.chart_of_accounts_id,
 gp.period_year*10000+gp.period_num effective_period_num
 from
 gl_ledgers gl,
 gl_periods gp,
 gl_balances gb,
-gl_code_combinations gcc
+gl_code_combinations_kfv gcck
 where
 1=1 and
 gb.actual_flag=(select flvv.lookup_code from fnd_lookup_values_vl flvv where flvv.description=:balance_type and flvv.lookup_type='BATCH_TYPE' and flvv.view_application_id=101 and flvv.security_group_id=0) and
@@ -46,7 +46,7 @@ gl.accounted_period_type=gp.period_type and
 gp.period_name=gb.period_name and
 gl.ledger_id=gb.ledger_id and
 gl.currency_code=gb.currency_code and
-gb.code_combination_id=gcc.code_combination_id
+gb.code_combination_id=gcck.code_combination_id
 ) x
 where
 2=2

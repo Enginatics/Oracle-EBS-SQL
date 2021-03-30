@@ -1,6 +1,6 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2020 Enginatics GmbH                   */
+/*                       (c) 2010-2021 Enginatics GmbH                   */
 /*                              www.enginatics.com                       */
 /*                                                                       */
 /*************************************************************************/
@@ -22,6 +22,7 @@ with mmt as -- driving inventory transactions for intercompany
     , oola.ordered_quantity            source_document_qty
     , oola.order_quantity_uom          source_document_uom
     , 'INTERCOMPANY'                   source_line_context
+    , null                             receipt_number 
     , oola.line_id                     source_line_id
     , to_number(hoi.org_information3)  shipping_ou_id
     , oola.org_id                      selling_ou_id
@@ -44,6 +45,7 @@ with mmt as -- driving inventory transactions for intercompany
     , mmt.currency_conversion_date
     , mmt.costed_flag
     , mmt.invoiced_flag
+    , mmt.transaction_id          sla_inv_transaction_id
     from
       mtl_material_transactions    mmt
     , hr_organization_information  hoi
@@ -70,6 +72,7 @@ with mmt as -- driving inventory transactions for intercompany
     , oola.ordered_quantity            source_document_qty
     , oola.order_quantity_uom          source_document_uom
     , 'INTERCOMPANY'                   source_line_context
+    , rsh.receipt_num                  receipt_number 
     , oola.line_id                     source_line_id
     , to_number(hoi1.org_information3) shipping_ou_id
     , to_number(hoi2.org_information3) selling_ou_id
@@ -92,6 +95,7 @@ with mmt as -- driving inventory transactions for intercompany
     , mmt.currency_conversion_date
     , mmt.costed_flag
     , mmt.invoiced_flag
+    , mmt2.transaction_id          sla_inv_transaction_id
     from
       mtl_material_transactions    mmt
     , oe_order_lines_all           oola
@@ -99,6 +103,9 @@ with mmt as -- driving inventory transactions for intercompany
     , hr_organization_information  hoi1
     , hr_organization_information  hoi2
     , mtl_intercompany_parameters  mip
+    , rcv_shipment_lines           rsl
+    , rcv_shipment_headers         rsh
+    , mtl_material_transactions    mmt2
     where
         mmt.transaction_source_type_id      in (8)     -- internal order
     and mmt.transaction_action_id           in (21)    -- intransit shipment
@@ -111,7 +118,10 @@ with mmt as -- driving inventory transactions for intercompany
     and mip.ship_organization_id             = to_number(hoi1.org_information3)
     and mip.sell_organization_id             = to_number(hoi2.org_information3)
     and fnd_profile.value('INV_INTERCOMPANY_INVOICE_INTERNAL_ORDER')
-                                             =1
+                                             = 1
+    and rsl.mmt_transaction_id           (+) = mmt.transaction_id
+    and rsh.shipment_header_id           (+) = rsl.shipment_header_id 
+    and mmt2.transfer_transaction_id     (+) = mmt.transaction_id -- mmt2 = intransit receiving transaction
     union
     select
       'Sales Order'                    source_document
@@ -122,6 +132,7 @@ with mmt as -- driving inventory transactions for intercompany
     , oola.ordered_quantity            source_document_qty
     , oola.order_quantity_uom          source_document_uom
     , 'INTERCOMPANY'                   source_line_context
+    , null                             receipt_number 
     , oola.line_id                     source_line_id
     , to_number(hoi1.org_information3) shipping_ou_id
     , to_number(hoi2.org_information3) selling_ou_id
@@ -144,6 +155,7 @@ with mmt as -- driving inventory transactions for intercompany
     , mmt.currency_conversion_date
     , mmt.costed_flag
     , mmt.invoiced_flag
+    , mmt.transaction_id          sla_inv_transaction_id
     from
       mtl_material_transactions    mmt
     , oe_order_lines_all           oola
@@ -153,7 +165,7 @@ with mmt as -- driving inventory transactions for intercompany
     , mtl_transaction_flow_headers mtfh
     , mtl_intercompany_parameters  mip
     where
-        mmt.transaction_source_type_id      in (13)    -- invenory
+        mmt.transaction_source_type_id      in (13)    -- inventory
     and mmt.transaction_action_id           in (9,14)  -- logical sales order issue/logical sales order receipt
     and mmt.logical_trx_type_code           in (2,5)
     and oola.line_id                         = mmt.trx_source_line_id
@@ -183,6 +195,7 @@ with mmt as -- driving inventory transactions for intercompany
          ,  plla.unit_meas_lookup_code
          )                             source_document_uom
     , 'GLOBAL_PROCUREMENT'             source_line_context
+    , rsh.receipt_num                  receipt_number 
     , plla.line_location_id            source_line_id
     , to_number(hoi1.org_information3) shipping_ou_id
     , to_number(hoi2.org_information3) selling_ou_id
@@ -205,10 +218,12 @@ with mmt as -- driving inventory transactions for intercompany
     , mmt.currency_conversion_date
     , mmt.costed_flag
     , mmt.invoiced_flag
+    , mmt.transaction_id          sla_inv_transaction_id
     from
       mtl_material_transactions    mmt
     , po_headers_all               pha
     , rcv_transactions             rt
+    , rcv_shipment_headers         rsh
     , po_line_locations_all        plla
     , po_lines_all                 pla
     , hr_organization_information  hoi1
@@ -221,6 +236,7 @@ with mmt as -- driving inventory transactions for intercompany
     and mmt.logical_trx_type_code           in (1,3)
     and pha.po_header_id                     = mmt.transaction_source_id
     and rt.transaction_id                (+) = mmt.rcv_transaction_id
+    and rsh.shipment_header_id           (+) = rt.shipment_header_id 
     and plla.line_location_id            (+) = rt.po_line_location_id
     and pla.po_line_id                   (+) = rt.po_line_id
     and hoi1.organization_id                 = mmt.organization_id
@@ -328,14 +344,14 @@ with mmt as -- driving inventory transactions for intercompany
     , aila.unit_price
     , aila.amount              line_amount
     from
-      ap_invoices_all          aia
-    , ap_invoice_lines_all     aila
-    , ap_suppliers             asup
-    , ap_supplier_sites_all    assa
+      ap_invoices_all              aia
+    , ap_invoice_lines_all         aila
+    , ap_suppliers                 asup
+    , ap_supplier_sites_all        assa
     where
-        aila.invoice_id                  = aia.invoice_id
-    and aia.vendor_id                    = asup.vendor_id
-    and aia.vendor_site_id               = assa.vendor_site_id
+        aila.invoice_id                      = aia.invoice_id
+    and aia.vendor_id                        = asup.vendor_id
+    and aia.vendor_site_id                   = assa.vendor_site_id
     and aia.source                       = 'Intercompany'
     and aila.line_type_lookup_code       = 'ITEM'
     and nvl(aila.discarded_flag,'N')     = 'N'
@@ -382,31 +398,121 @@ with mmt as -- driving inventory transactions for intercompany
     and aii.source       = 'Intercompany'
     and aii.status      != 'PROCESSED'
   )
+, sla1 as -- sla accounting for inventory transaction discrete
+  (
+    select
+      mta.transaction_id
+    , xdl.event_id               sla_event_id
+    , xal.accounting_class_code  sla_accounting_class
+    , xal.accounted_dr           sla_accounted_dr
+    , xal.accounted_cr           sla_accounted_cr
+    , gcck.concatenated_segments sla_account
+    from
+      mtl_transaction_accounts     mta
+    , xla_distribution_links       xdl
+    , xla_ae_lines                 xal
+    , gl_ledgers                   gl
+    , gl_code_combinations_kfv     gcck
+    where
+       mta.accounting_line_type              != 1 -- inventory valuation
+    and xdl.source_distribution_type          = 'MTL_TRANSACTION_ACCOUNTS'
+    and xdl.source_distribution_id_num_1      = mta.inv_sub_ledger_id
+    and xal.ae_header_id                      = xdl.ae_header_id
+    and xal.ae_line_num                       = xdl.ae_line_num
+    and xal.accounting_class_code            != 'INVENTORY_VALUATION'
+    and gl.ledger_id                          = xal.ledger_id
+    and gl.ledger_category_code               = 'PRIMARY'
+    and gcck.code_combination_id              = xal.code_combination_id
+   &l_select_sla
+  )
+, sla2 as -- sla accounting for inventory transaction opm
+  (
+   select
+     gxeh.transaction_id
+   , xdl.event_id               sla_event_id
+   , xal.accounting_class_code  sla_accounting_class
+   , xal.accounted_dr           sla_accounted_dr
+   , xal.accounted_cr           sla_accounted_cr
+   , gcck.concatenated_segments sla_account
+   from
+     gmf_xla_extract_headers      gxeh
+   , gmf_xla_extract_lines        gxel
+   , xla_distribution_links       xdl
+   , xla_ae_lines                 xal
+   , gl_ledgers                   gl
+   , gl_code_combinations_kfv     gcck
+   where
+       gxel.header_id                    = gxeh.header_id
+   and gxel.journal_line_type           != 'INV'
+   and xdl.source_distribution_type      = gxeh.entity_code
+   and xdl.source_distribution_id_num_1  = gxel.line_id
+   and xdl.event_id                      = gxeh.event_id
+   and xal.ae_header_id                  = xdl.ae_header_id
+   and xal.ae_line_num                   = xdl.ae_line_num
+   and xal.accounting_class_code        != 'INVENTORY_VALUATION'
+   and gl.ledger_id                      = xal.ledger_id
+   and gl.ledger_category_code           = 'PRIMARY'
+   and gcck.code_combination_id          = xal.code_combination_id
+   &l_select_sla
+  )
+, sla3 as -- sla accounting for ap invoice
+  (
+   select
+     aida.invoice_id
+   , aida.invoice_line_number
+   , xdl.event_id               sla_event_id
+   , xal.accounting_class_code  sla_accounting_class
+   , xal.accounted_dr           sla_accounted_dr
+   , xal.accounted_cr           sla_accounted_cr
+   , gcck.concatenated_segments sla_account
+   from
+     ap_invoice_distributions_all aida
+   , xla_distribution_links       xdl
+   , xla_ae_lines                 xal
+   , gl_ledgers                   gl
+   , gl_code_combinations_kfv     gcck
+   where
+         aida.line_type_lookup_code       = 'ITEM'
+   and xdl.source_distribution_type      = 'AP_INV_DIST'
+   and xdl.source_distribution_id_num_1  = aida.invoice_distribution_id
+   and xdl.event_id                      = aida.accounting_event_id
+   and xal.ae_header_id                  = xdl.ae_header_id
+   and xal.ae_line_num                   = xdl.ae_line_num
+   and xal.accounting_class_code         = 'ITEM EXPENSE'
+   and gl.ledger_id                      = xal.ledger_id
+   and gl.ledger_category_code           = 'PRIMARY'
+   and gcck.code_combination_id          = xal.code_combination_id
+   &l_select_sla
+  )
 -- ******************************************************
 -- main query start here
 -- ******************************************************
 select
    &lp_select_columns1
    &lp_select_columns2
+   &lp_select_columns3
 from
   mmt                          mmt   -- inventory material transaction
 , mtl_trx_types_view           mttv
 , mtl_system_items_kfv         msik
-, mtl_parameters               mp1
-, mtl_parameters               mp2
+, org_organization_definitions ood1
+, org_organization_definitions ood2
 , hr_all_organization_units    haou1
 , hr_all_organization_units    haou2
 , ar_intf                      ar_intf  -- ar invoice interface lines
 , ar_ico                       ar_ico   -- ar ico invoices
 , ap_intf                      ap_intf  -- ap invoice interface
 , ap_ico                       ap_ico   -- ap ico invoices
+, sla1                         sla1
+, sla2                         sla2
+, sla3                         sla3
 where
 -- inventory
     mmt.transaction_type_id                = mttv.transaction_type_id
 and mmt.organization_id                    = msik.organization_id
 and mmt.inventory_item_id                  = msik.inventory_item_id
-and mmt.organization_id                    = mp1.organization_id
-and mmt.transfer_organization_id           = mp2.organization_id (+)
+and mmt.organization_id                    = ood1.organization_id
+and mmt.transfer_organization_id           = ood2.organization_id (+)
 and mmt.shipping_ou_id                     = haou1.organization_id
 and mmt.selling_ou_id                      = haou2.organization_id
 -- ar interface
@@ -423,6 +529,11 @@ and ap_intf.customer_trx_line_id       (+) = to_char(ar_ico.customer_trx_line_id
 -- ap invoice
 and ap_ico.customer_trx_id             (+) = to_char(ar_ico.customer_trx_id)
 and ap_ico.customer_trx_line_id        (+) = to_char(ar_ico.customer_trx_line_id)
+-- sla accounting
+and sla1.transaction_id                (+) = mmt.sla_inv_transaction_id
+and sla2.transaction_id                (+) = mmt.sla_inv_transaction_id
+and sla3.invoice_id                    (+) = ap_ico.invoice_id
+and sla3.invoice_line_number           (+) = ap_ico.line_number
 --
 and 1=1
 &lp_group_by_columns
