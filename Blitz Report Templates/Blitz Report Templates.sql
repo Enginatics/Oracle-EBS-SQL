@@ -12,6 +12,7 @@
 
 select distinct
 xrtv.report_name,
+xrtv.category,
 xrtv.template_name,
 xrtv.owner,
 xxen_util.meaning(xrtv.public_flag,'YES_NO',0) public_flag,
@@ -29,6 +30,7 @@ select
 xxen_util.meaning(xrtc.aggregation,'AMS_EXPN_BUILDER_OPERATORS',530) aggregation_meaning,
 abs(xrtc.sort_order) sort_order_,
 xxen_util.meaning(case when xrtc.sort_order<0 then 2 else sign(xrtc.sort_order) end,'WMS_SORT_ORDER',700) direction,
+(select distinct listagg(xrtp.field_type,', ') within group (order by xrtp.field_type) over () pivot_field_type from xxen_report_template_pivot xrtp where xrtc.template_id=xrtp.template_id and xrtc.column_name=xrtp.column_name) pivot_field_type,
 xrtc.*
 from
 xxen_report_template_columns xrtc

@@ -156,14 +156,20 @@ function clob_substrb(p_clob in clob, p_byte_length in pls_integer, p_char_posit
 function rowgen(p_rows in number) return fnd_table_of_number deterministic;
 
 /***********************************************************************************************/
+/*  classification of data_type ids in varchar2, number, date, clob                            */
+/***********************************************************************************************/
+function data_type_class(p_data_type in pls_integer) return varchar2;
+
+/***********************************************************************************************/
 /*  parse and return sql column names for use in sql e.g.                                      */
 /*  select x.* from table(xxen_util.sql_columns('select * from hz_parties')) x                 */
 /***********************************************************************************************/
 /*
 create type xxen_sql_desc_rec as object (
 column_id number,
-column_name varchar2(4000),
+column_name varchar2(251),
 data_type varchar2(106),
+data_type_class varchar2(8),
 data_length number,
 data_precision number,
 nullable varchar2 (1)
@@ -388,11 +394,6 @@ function sequence_nextval(p_sequence_name in varchar2) return number;
 /*  translates oracle language codes to BCP47 codes e.g. for use in ECC queries                */
 /***********************************************************************************************/
 function bcp47_language(p_language_code in varchar2) return varchar result_cache;
-
-/***********************************************************************************************/
-/*  lowers sql text taking into consideration literals                                         */
-/***********************************************************************************************/
-function lower_sql(p_sql_text in clob) return clob;
 
 end xxen_util;
 /
@@ -681,8 +682,9 @@ begin
     execute immediate c.sql_text____ into l_display_option_value using p_profile_option_value;
   end loop;
   return nvl(l_display_option_value,p_profile_option_value);
-exception when others then
-  return p_profile_option_value;
+exception
+  when others then
+    return p_profile_option_value;
 end display_profile_option_value;
 
 
@@ -868,11 +870,12 @@ begin
     end if;
   end if;
   return l_display_value;
-exception when others then
-  if dbms_sql.is_open(l_cursor) then
-    dbms_sql.close_cursor(l_cursor);
-  end if;
-  return l_display_value;
+exception
+  when others then
+    if dbms_sql.is_open(l_cursor) then
+      dbms_sql.close_cursor(l_cursor);
+    end if;
+    return l_display_value;
 end display_flexfield_value;
 
 
@@ -1174,6 +1177,47 @@ begin
 end rowgen;
 
 
+function data_type(p_data_type in pls_integer) return varchar2 is
+begin
+  return case p_data_type
+  when 1 then 'VARCHAR2'
+  when 2 then 'NUMBER'
+  when 8 then 'LONG'
+  when 11 then 'ROWID'
+  when 12 then 'DATE'
+  when 23 then 'RAW'
+  when 24 then 'LONG'
+  when 96 then 'CHAR'
+  when 100 then 'BINARY_FLOAT'
+  when 101 then 'BINARY_DOUBLE'
+  when 102 then 'CURSOR'
+  when 106 then 'MLSLABEL'
+  when 109 then 'USER_DEFINED'
+  when 111 then 'REF'
+  when 112 then 'CLOB'
+  when 113 then 'BLOB'
+  when 114 then 'BFILE'
+  when 180 then 'TIMESTAMP'
+  when 181 then 'TIMESTAMP'
+  when 182 then 'INTERVAL_YEAR_TO_MONTH'
+  when 183 then 'INTERVAL_DAY_TO_SECOND'
+  when 208 then 'UROWID'
+  when 231 then 'TIMESTAMP_WITH_LOCAL_TZ'
+  else to_char(p_data_type) end;
+end data_type;
+
+
+function data_type_class(p_data_type in pls_integer) return varchar2 is
+begin
+  return case
+  when p_data_type in (12, 178, 179, 180, 181, 231) then 'date'
+  when p_data_type in (2, 100, 101) then 'number'
+  when p_data_type=112 then 'clob'
+  else 'varchar2'
+  end;
+end data_type_class;
+
+
 function sql_columns(p_sql in clob) return xxen_sql_desc_tbl is
 l_cursor pls_integer:=dbms_sql.open_cursor;
 l_desc_tab dbms_sql.desc_tab3;
@@ -1181,52 +1225,42 @@ l_col_count pls_integer;
 l_sql_desc_tbl xxen_sql_desc_tbl:=xxen_sql_desc_tbl();
 begin
   dbms_sql.parse(l_cursor, p_sql, dbms_sql.native);
+  for c in (select xrrbv.bind from xxen_report_run_bind_values xrrbv where xrrbv.parameter_type like 'Date%') loop
+    begin
+      dbms_sql.bind_variable(l_cursor,c.bind,sysdate);
+    exception
+      when others then
+        if sqlcode=-1006 then --bind variable does not exist
+          null;
+        else
+          raise;
+        end if;
+    end;
+  end loop;
   dbms_sql.describe_columns3(l_cursor, l_col_count, l_desc_tab);
   dbms_sql.close_cursor(l_cursor);
   for c in 1..l_col_count loop
     l_sql_desc_tbl.extend();
-    l_sql_desc_tbl(c):=xxen_sql_desc_rec(null,null,null,null,null,null);
+    l_sql_desc_tbl(c):=xxen_sql_desc_rec(null,null,null,null,null,null,null);
     l_sql_desc_tbl(c).column_id:=c;
     l_sql_desc_tbl(c).column_name:=substrb(l_desc_tab(c).col_name,1,251);
-    l_sql_desc_tbl(c).data_type:=case l_desc_tab(c).col_type
-    when 1 then 'VARCHAR2'
-    when 2 then 'NUMBER'
-    when 8 then 'LONG'
-    when 11 then 'ROWID'
-    when 12 then 'DATE'
-    when 23 then 'RAW'
-    when 24 then 'LONG'
-    when 96 then 'CHAR'
-    when 100 then 'BINARY_FLOAT'
-    when 101 then 'BINARY_DOUBLE'
-    when 102 then 'CURSOR'
-    when 106 then 'MLSLABEL'
-    when 109 then 'USER_DEFINED'
-    when 111 then 'REF'
-    when 112 then 'CLOB'
-    when 113 then 'BLOB'
-    when 114 then 'BFILE'
-    when 180 then 'TIMESTAMP'
-    when 181 then 'TIMESTAMP'
-    when 182 then 'INTERVAL_YEAR_TO_MONTH'
-    when 183 then 'INTERVAL_DAY_TO_SECOND'
-    when 208 then 'UROWID'
-    when 231 then 'TIMESTAMP_WITH_LOCAL_TZ'
-    else to_char(l_desc_tab(c).col_type) end;
+    l_sql_desc_tbl(c).data_type:=data_type(l_desc_tab(c).col_type);
+    l_sql_desc_tbl(c).data_type_class:=data_type_class(l_desc_tab(c).col_type);
     l_sql_desc_tbl(c).data_length:=l_desc_tab(c).col_max_len;
     l_sql_desc_tbl(c).data_precision:=case when l_desc_tab(c).col_precision>0 then l_desc_tab(c).col_precision end;
     l_sql_desc_tbl(c).nullable:=case when l_desc_tab(c).col_null_ok then 'Y' else 'N' end;
   end loop;
   return l_sql_desc_tbl;
-exception when others then
-  if dbms_sql.is_open(l_cursor) then
-    dbms_sql.close_cursor(l_cursor);
-  end if;
-  l_sql_desc_tbl.extend();
-  l_sql_desc_tbl(1):=xxen_sql_desc_rec(null,null,null,null,null,null);
-  l_sql_desc_tbl(1).column_name:='---- error ----';
-  l_sql_desc_tbl(1).data_type:=substr(dbms_utility.format_error_stack,1,106);
-  return l_sql_desc_tbl;
+exception
+  when others then
+    if dbms_sql.is_open(l_cursor) then
+      dbms_sql.close_cursor(l_cursor);
+    end if;
+    l_sql_desc_tbl.extend();
+    l_sql_desc_tbl(1):=xxen_sql_desc_rec(null,null,null,null,null,null,null);
+    l_sql_desc_tbl(1).column_name:='---- error ----';
+    l_sql_desc_tbl(1).data_type:=substr(dbms_utility.format_error_stack,1,106);
+    return l_sql_desc_tbl;
 end sql_columns;
 
 
@@ -1582,6 +1616,7 @@ exception
   when others then
     return dbms_utility.format_error_stack||dbms_utility.format_error_backtrace;
 end is_xml;
+
 
 function ap_invoice_status(
 p_invoice_id in number,
@@ -2450,37 +2485,6 @@ begin
     return c.bcp47_language;
   end loop;
 end bcp47_language;
-
-
-function lower_sql(p_sql_text in clob) return clob is
-l_result clob;
-type f_item is record (hash_val number, item varchar2(200));
-type f_items is table of f_item;
-f_items1 f_items;
-begin
-  l_result:=p_sql_text;
-  select
-  a.hash_val,
-  a.item
-  bulk collect into
-  f_items1
-  from
-  (
-  select
-  regexp_substr(l_result,'((''[^'']+?'')|(--.*?$)|(\/\*.*?\*\/))',1,level,'imn') item,
-  ora_hash(regexp_substr(l_result,'((''[^'']+?'')|(--.*?$)|(\/\*.*?\*\/))',1,level,'imn')) hash_val
-  from dual
-  connect by level<=regexp_count(l_result,'((''[^'']+?'')|(--.*?$)|(\/\*.*?\*\/))',1,'imn')
-  ) a;
-  for i in f_items1.first..f_items1.last loop
-    l_result:=replace(l_result,f_items1(i).item,f_items1(i).hash_val);
-  end loop;
-  l_result:=lower(l_result);
-  for i in f_items1.first..f_items1.last loop
-    l_result:=replace(l_result,f_items1(i).hash_val,f_items1(i).item);
-  end loop;
-  return l_result;
-end lower_sql;
 
 
 end xxen_util;

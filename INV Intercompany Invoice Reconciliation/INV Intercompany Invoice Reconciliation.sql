@@ -6,7 +6,7 @@
 /*************************************************************************/
 -- Report Name: INV Intercompany Invoice Reconciliation
 -- Description: Intercompany invoice reconciliation for inventory transactions, including shipping and receiving organizations, ordered, transacted and invoiced quantities, amounts and possible discrepancies.
-It also includes all intercompany Receivables (AR) and Payables (AP) invoice details.
+It also includes all intercompany Receivables (AR) and Payables (AP) invoice details. Optionally includes the Inventory and Intercompany AP SLA Accounting
 -- Excel Examle Output: https://www.enginatics.com/example/inv-intercompany-invoice-reconciliation/
 -- Library Link: https://www.enginatics.com/reports/inv-intercompany-invoice-reconciliation/
 -- Run Report: https://demo.enginatics.com/
@@ -62,8 +62,9 @@ with mmt as -- driving inventory transactions for intercompany
     and hoi.org_information_context          = 'Accounting Information'
     and mip.ship_organization_id             = to_number(hoi.org_information3)
     and mip.sell_organization_id             = oola.org_id
+    &lp_include_sales_order
     union
-    select
+     select
       'Internal Sales Order'           source_document
     , ooha.ordered_date                source_document_date
     , to_char(ooha.order_number)       source_document_num
@@ -72,7 +73,7 @@ with mmt as -- driving inventory transactions for intercompany
     , oola.ordered_quantity            source_document_qty
     , oola.order_quantity_uom          source_document_uom
     , 'INTERCOMPANY'                   source_line_context
-    , rsh.receipt_num                  receipt_number 
+    , rsh.receipt_num                  receipt_number
     , oola.line_id                     source_line_id
     , to_number(hoi1.org_information3) shipping_ou_id
     , to_number(hoi2.org_information3) selling_ou_id
@@ -103,7 +104,7 @@ with mmt as -- driving inventory transactions for intercompany
     , hr_organization_information  hoi1
     , hr_organization_information  hoi2
     , mtl_intercompany_parameters  mip
-    , rcv_shipment_lines           rsl
+    , rcv_transactions             rt
     , rcv_shipment_headers         rsh
     , mtl_material_transactions    mmt2
     where
@@ -119,9 +120,10 @@ with mmt as -- driving inventory transactions for intercompany
     and mip.sell_organization_id             = to_number(hoi2.org_information3)
     and fnd_profile.value('INV_INTERCOMPANY_INVOICE_INTERNAL_ORDER')
                                              = 1
-    and rsl.mmt_transaction_id           (+) = mmt.transaction_id
-    and rsh.shipment_header_id           (+) = rsl.shipment_header_id 
     and mmt2.transfer_transaction_id     (+) = mmt.transaction_id -- mmt2 = intransit receiving transaction
+    and rt.transaction_id                (+) = mmt2.rcv_transaction_id
+    and rsh.shipment_header_id           (+) = rt.shipment_header_id
+    &lp_include_int_sales_order
     union
     select
       'Sales Order'                    source_document
@@ -178,6 +180,7 @@ with mmt as -- driving inventory transactions for intercompany
     and mtfh.flow_type                       = 1
     and mip.ship_organization_id             = to_number(hoi1.org_information3)
     and mip.sell_organization_id             = to_number(hoi2.org_information3)
+    &lp_include_sales_order
     union
     select
       'Purchase Order'                 source_document
@@ -247,6 +250,7 @@ with mmt as -- driving inventory transactions for intercompany
     and mtfh.flow_type                       = 2
     and mip.ship_organization_id             = to_number(hoi1.org_information3)
     and mip.sell_organization_id             = to_number(hoi2.org_information3)
+    &lp_include_purchase_order
   )
 , ar_ico as
   ( select
@@ -398,99 +402,15 @@ with mmt as -- driving inventory transactions for intercompany
     and aii.source       = 'Intercompany'
     and aii.status      != 'PROCESSED'
   )
-, sla1 as -- sla accounting for inventory transaction discrete
-  (
-    select
-      mta.transaction_id
-    , xdl.event_id               sla_event_id
-    , xal.accounting_class_code  sla_accounting_class
-    , xal.accounted_dr           sla_accounted_dr
-    , xal.accounted_cr           sla_accounted_cr
-    , gcck.concatenated_segments sla_account
-    from
-      mtl_transaction_accounts     mta
-    , xla_distribution_links       xdl
-    , xla_ae_lines                 xal
-    , gl_ledgers                   gl
-    , gl_code_combinations_kfv     gcck
-    where
-       mta.accounting_line_type              != 1 -- inventory valuation
-    and xdl.source_distribution_type          = 'MTL_TRANSACTION_ACCOUNTS'
-    and xdl.source_distribution_id_num_1      = mta.inv_sub_ledger_id
-    and xal.ae_header_id                      = xdl.ae_header_id
-    and xal.ae_line_num                       = xdl.ae_line_num
-    and xal.accounting_class_code            != 'INVENTORY_VALUATION'
-    and gl.ledger_id                          = xal.ledger_id
-    and gl.ledger_category_code               = 'PRIMARY'
-    and gcck.code_combination_id              = xal.code_combination_id
-   &l_select_sla
-  )
-, sla2 as -- sla accounting for inventory transaction opm
-  (
-   select
-     gxeh.transaction_id
-   , xdl.event_id               sla_event_id
-   , xal.accounting_class_code  sla_accounting_class
-   , xal.accounted_dr           sla_accounted_dr
-   , xal.accounted_cr           sla_accounted_cr
-   , gcck.concatenated_segments sla_account
-   from
-     gmf_xla_extract_headers      gxeh
-   , gmf_xla_extract_lines        gxel
-   , xla_distribution_links       xdl
-   , xla_ae_lines                 xal
-   , gl_ledgers                   gl
-   , gl_code_combinations_kfv     gcck
-   where
-       gxel.header_id                    = gxeh.header_id
-   and gxel.journal_line_type           != 'INV'
-   and xdl.source_distribution_type      = gxeh.entity_code
-   and xdl.source_distribution_id_num_1  = gxel.line_id
-   and xdl.event_id                      = gxeh.event_id
-   and xal.ae_header_id                  = xdl.ae_header_id
-   and xal.ae_line_num                   = xdl.ae_line_num
-   and xal.accounting_class_code        != 'INVENTORY_VALUATION'
-   and gl.ledger_id                      = xal.ledger_id
-   and gl.ledger_category_code           = 'PRIMARY'
-   and gcck.code_combination_id          = xal.code_combination_id
-   &l_select_sla
-  )
-, sla3 as -- sla accounting for ap invoice
-  (
-   select
-     aida.invoice_id
-   , aida.invoice_line_number
-   , xdl.event_id               sla_event_id
-   , xal.accounting_class_code  sla_accounting_class
-   , xal.accounted_dr           sla_accounted_dr
-   , xal.accounted_cr           sla_accounted_cr
-   , gcck.concatenated_segments sla_account
-   from
-     ap_invoice_distributions_all aida
-   , xla_distribution_links       xdl
-   , xla_ae_lines                 xal
-   , gl_ledgers                   gl
-   , gl_code_combinations_kfv     gcck
-   where
-         aida.line_type_lookup_code       = 'ITEM'
-   and xdl.source_distribution_type      = 'AP_INV_DIST'
-   and xdl.source_distribution_id_num_1  = aida.invoice_distribution_id
-   and xdl.event_id                      = aida.accounting_event_id
-   and xal.ae_header_id                  = xdl.ae_header_id
-   and xal.ae_line_num                   = xdl.ae_line_num
-   and xal.accounting_class_code         = 'ITEM EXPENSE'
-   and gl.ledger_id                      = xal.ledger_id
-   and gl.ledger_category_code           = 'PRIMARY'
-   and gcck.code_combination_id          = xal.code_combination_id
-   &l_select_sla
-  )
+&l_ap_sla_tables
+&l_inv_sla_tables
 -- ******************************************************
 -- main query start here
 -- ******************************************************
 select
    &lp_select_columns1
    &lp_select_columns2
-   &lp_select_columns3
+   &lp_sla_columns
 from
   mmt                          mmt   -- inventory material transaction
 , mtl_trx_types_view           mttv
@@ -503,9 +423,7 @@ from
 , ar_ico                       ar_ico   -- ar ico invoices
 , ap_intf                      ap_intf  -- ap invoice interface
 , ap_ico                       ap_ico   -- ap ico invoices
-, sla1                         sla1
-, sla2                         sla2
-, sla3                         sla3
+&lp_sla_from
 where
 -- inventory
     mmt.transaction_type_id                = mttv.transaction_type_id
@@ -530,10 +448,7 @@ and ap_intf.customer_trx_line_id       (+) = to_char(ar_ico.customer_trx_line_id
 and ap_ico.customer_trx_id             (+) = to_char(ar_ico.customer_trx_id)
 and ap_ico.customer_trx_line_id        (+) = to_char(ar_ico.customer_trx_line_id)
 -- sla accounting
-and sla1.transaction_id                (+) = mmt.sla_inv_transaction_id
-and sla2.transaction_id                (+) = mmt.sla_inv_transaction_id
-and sla3.invoice_id                    (+) = ap_ico.invoice_id
-and sla3.invoice_line_number           (+) = ap_ico.line_number
+&lp_sla_joins
 --
 and 1=1
 &lp_group_by_columns

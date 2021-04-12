@@ -64,6 +64,7 @@ xah.accounting_date,
 xe.transaction_date,
 xte.transaction_number,
 --AP
+coalesce(aia.invoice_num,rcta.trx_number) invoice_number,
 nvl(aia.description,rcta.comments) description,
 nvl(aia.invoice_date,rcta.trx_date) invoice_date,
 aia.gl_date,

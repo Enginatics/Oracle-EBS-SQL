@@ -25,6 +25,7 @@ from
 xxen_report_columns xrc,
 xxen_report_columns_tl xrct
 where
+1=1 and
 xrc.column_id=xrct.column_id
 ) xrct
 full join
@@ -37,11 +38,11 @@ from
 xxen_report_columns@&database_link xrc,
 xxen_report_columns_tl@&database_link xrct
 where
+1=1 and
 xrc.column_id=xrct.column_id
 ) xrct2
 on
 xrct.column_name=xrct2.column_name and
 xrct.language=xrct2.language
 where
-1=1 and
-nvl(xrct.translation,'x')<>nvl(xrct2.translation,'x')
+2=2

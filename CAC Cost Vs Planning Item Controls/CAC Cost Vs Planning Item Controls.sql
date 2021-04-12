@@ -5,7 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Cost Vs. Planning Item Controls
--- Description: Compare item make/buy controls vs. costing based on rollup controls.  There are eight included reports, see below description for more information.
+-- Description: Compare item make/buy controls vs. costing based on rollup controls.  There are nine included reports, see below description for more information.
 
 /* +=============================================================================+
 -- |  Copyright 2008-2021 Douglas Volz Consulting, Inc.                          |
@@ -14,17 +14,6 @@
 -- |  acknowledged. No warranties, express or otherwise is included in this      |
 -- |  permission.                                                                |
 -- +=============================================================================+
--- |
--- |  Original Author: Douglas Volz (doug@volzconsulting.com)
--- |
--- |  Parameters:
--- |
--- |  p_cost_type	-- Desired cost type, mandatory
--- |  p_assignment_set	-- The assignment set you wish to report
--- |  p_ledger		-- Desired ledger to report, to get all values enter a
--- |			   null value or blank value
--- |  p_item_number	-- Specific item number, to get all values enter a
--- |			   null value or blank value
 -- |
 -- |  Description:
 -- |  Use the below SQL scripts to compare the item costing rollup flags
@@ -57,13 +46,19 @@
 -- |         Find make items where there are charges based on Lot but the lot
 -- |         size is one.  Duplicates the setup charges for each item you make.
 -- |     8.  BOMs With No Components
--- |         Find make items with BOMS that have no components. 
+-- |         Find make items with BOMS that have no components.
+-- |     9.  Item vs BOM vs Cost Controls
+-- |         Find items where the item costed flag, inventory asset, item default
+-- |         include in rollup, and component include in rollup do not match.
 -- |
+-- ===============================================================================
 -- |  1.30    22 Jan 2021 Douglas Volz   Screen out items where the costing_enabled_flag is No
 -- |                                     but the Cost Rollup is putting into the Pending Cost Type.
 -- |  1.31    01 Mar 2021 Douglas Volz   Find make items where there are charges based on Lot but the lot
 -- |                                     size is one.  This duplicates the lot charges for each item you
 -- |                                     make.
+-- |  1.32    28 Mar 2021 Douglas Volz   Find items where the item costed flag, inventory asset, item default
+-- |                                     include in rollup, and component include in rollup do not match.
 +=============================================================================+*/
 -- Excel Examle Output: https://www.enginatics.com/example/cac-cost-vs-planning-item-controls/
 -- Library Link: https://www.enginatics.com/reports/cac-cost-vs-planning-item-controls/
@@ -82,6 +77,10 @@ select	'Based on Rollup Yes - No BOMS' Report_Type,
 	cct.cost_type Cost_Type,
 	msiv.concatenated_segments Item_Number,
 	msiv.description Item_Description,
+	-- Revision for version 1.31
+	'' Assembly_Number,
+	'' Assembly_Description,
+	-- End revision for version 1.31
 	-- Revision for version 1.28
 	muomv.uom_code UOM_Code,
 	-- Revision for version 1.20
@@ -93,8 +92,8 @@ select	'Based on Rollup Yes - No BOMS' Report_Type,
 	ml1.meaning Make_Buy_Code,
 	'' Rollup_Source_Type,
 	'' Resource_Code,
-	fl.meaning BOM,     -- No
-	fl.meaning Routing, -- No
+	fl1.meaning BOM,     -- No
+	fl1.meaning Routing, -- No
 	-- check to see if a sourcing rule exists for the receipt org
 	(select	fl.meaning
 	 from	fnd_lookups fl
@@ -119,7 +118,13 @@ select	'Based on Rollup Yes - No BOMS' Report_Type,
 	      and	4=4),'N')							-- p_assignment_set
 	) Sourcing_Rule,
 	ml2.meaning Based_on_Rollup,
-	ml3.meaning Inventory_Asset,
+	-- Revision for version 1.31
+	fl2.meaning Costing_Enabled,
+	fl3.meaning Item_Inventory_Asset,
+	ml3.meaning Cost_Inventory_Asset,
+	fl4.meaning Item_Include_in_Rollup,
+	'' BOM_Include_in_Rollup,
+	-- End revision for version 1.31
 	gl.currency_code Currency_Code,
 	cic.item_cost Item_Cost,
 	msiv.creation_date Item_Creation_Date
@@ -133,7 +138,12 @@ from	mtl_parameters mp,
 	mfg_lookups ml1, -- planning make/buy code, MTL_PLANNING_MAKE_BUY
 	mfg_lookups ml2, -- based on rollup, CST_BONROLLUP_VAL
 	mfg_lookups ml3, -- inventory_asset_flag, SYS_YES_NO
-	fnd_lookups fl,  -- BOM, Routing, YES_NO, No
+	-- Revision for version 1.31
+	fnd_lookups fl2, -- Item costing enabled, YES_NO
+	fnd_lookups fl3, -- Item inventory asset, YES_NO
+	fnd_lookups fl4, -- Item default include in rollup, YES_NO
+	-- End revision for version 1.31
+	fnd_lookups fl1,  -- BOM, Routing, YES_NO, No
 	fnd_common_lookups fcl,
 	hr_organization_information hoi,
 	hr_all_organization_units_vl haou,	-- inv_organization_id
@@ -143,7 +153,8 @@ from	mtl_parameters mp,
 -- Cost type, organization, item master and report specific controls
 -- ===================================================================
 where	cic.cost_type_id                = cct.cost_type_id
-and	1=1                             -- p_org_code, p_cost_type, p_operating_unit, p_ledger
+and	1=1                             -- p_item_number, p_org_code, p_operating_unit, p_ledger
+and	2=2                             -- p_cost_type
 and	mp.organization_id              = cic.organization_id
 and	msiv.organization_id            = cic.organization_id
 and	msiv.inventory_item_id          = cic.inventory_item_id
@@ -167,8 +178,16 @@ and	ml2.lookup_type                 = 'CST_BONROLLUP_VAL'
 and	ml2.lookup_code                 = cic.based_on_rollup_flag
 and	ml3.lookup_type                 = 'SYS_YES_NO'
 and	ml3.lookup_code                 = to_char(cic.inventory_asset_flag)
-and	fl.lookup_type                  = 'YES_NO'
-and	fl.lookup_code                  = 'N'
+and	fl1.lookup_type                 = 'YES_NO'
+and	fl1.lookup_code                 = 'N'
+-- Revision for version 1.31
+and	fl2.lookup_type                 = 'YES_NO'
+and	fl2.lookup_code                 = msiv.costing_enabled_flag
+and	fl3.lookup_type                 = 'YES_NO'
+and	fl3.lookup_code                 = msiv.inventory_asset_flag
+and	fl4.lookup_type                 = 'YES_NO'
+and	fl4.lookup_code                 = nvl(msiv.default_include_in_rollup_flag,'N')
+-- End revision for version 1.31
 and	fcl.lookup_code (+)             = msiv.item_type
 and	fcl.lookup_type (+)             = 'ITEM_TYPE'
 -- ===================================================================
@@ -233,6 +252,10 @@ select	'Based on Rollup Yes - No Rollup' Report_Type,
 	cct.cost_type Cost_Type,
 	msiv.concatenated_segments Item_Number,
 	msiv.description Item_Description,
+	-- Revision for version 1.31
+	'' Assembly_Number,
+	'' Assembly_Description,
+	-- End revision for version 1.31
 	-- Revision for version 1.28
 	muomv.uom_code UOM_Code,
 	fcl.meaning Item_Type,
@@ -292,7 +315,13 @@ select	'Based on Rollup Yes - No Rollup' Report_Type,
 		   ), 'N')
 	) Sourcing_Rule,
 	ml2.meaning Based_on_Rollup,
-	ml3.meaning Inventory_Asset,
+	-- Revision for version 1.31
+	fl1.meaning Costing_Enabled,
+	fl2.meaning Item_Inventory_Asset,
+	ml3.meaning Cost_Inventory_Asset,
+	fl3.meaning Item_Include_in_Rollup,
+	'' BOM_Include_in_Rollup,
+	-- End revision for version 1.31
 	gl.currency_code Currency_Code,
 	cic.item_cost Item_Cost,
 	msiv.creation_date Item_Creation_Date
@@ -305,7 +334,12 @@ from	mtl_parameters mp,
 	cst_cost_types cct,
 	mfg_lookups ml1, -- planning make/buy code, MTL_PLANNING_MAKE_BUY
 	mfg_lookups ml2, -- based on rollup, CST_BONROLLUP_VAL
-	mfg_lookups ml3, -- inventory_asset_flag, SYS_YES_NO
+	-- Revision for version 1.31
+	mfg_lookups ml3, -- Cost inventory_asset_flag, SYS_YES_NO
+	fnd_lookups fl1, -- Item costing enabled, YES_NO
+	fnd_lookups fl2, -- Item inventory asset, YES_NO
+	fnd_lookups fl3, -- Item default include in rollup, YES_NO
+	-- End revision for version 1.31
 	fnd_common_lookups fcl,
 	hr_organization_information hoi,
 	hr_all_organization_units_vl haou,  -- inv_organization_id
@@ -315,7 +349,8 @@ from	mtl_parameters mp,
  -- Cost type, organization, item master and report specific controls
  -- ===================================================================
 where	cic.cost_type_id                = cct.cost_type_id
-and	1=1                             -- p_org_code, p_cost_type, p_operating_unit, p_ledger
+and	1=1                             -- p_item_number, p_org_code, p_operating_unit, p_ledger
+and	2=2                             -- p_cost_type
 and	mp.organization_id              = cic.organization_id
 and	msiv.organization_id            = cic.organization_id
 and	msiv.inventory_item_id          = cic.inventory_item_id
@@ -336,8 +371,16 @@ and	ml1.lookup_type                 = 'MTL_PLANNING_MAKE_BUY'
 and	ml1.lookup_code                 = msiv.planning_make_buy_code
 and	ml2.lookup_type                 = 'CST_BONROLLUP_VAL'
 and	ml2.lookup_code                 = cic.based_on_rollup_flag
+-- Revision for version 1.31
 and	ml3.lookup_type                 = 'SYS_YES_NO'
 and	ml3.lookup_code                 = to_char(cic.inventory_asset_flag)
+and	fl1.lookup_type                 = 'YES_NO'
+and	fl1.lookup_code                 = msiv.costing_enabled_flag
+and	fl2.lookup_type                 = 'YES_NO'
+and	fl2.lookup_code                 = msiv.inventory_asset_flag
+and	fl3.lookup_type                 = 'YES_NO'
+and	fl3.lookup_code                 = nvl(msiv.default_include_in_rollup_flag,'N')
+-- End revision for version 1.31
 and	fcl.lookup_code (+)             = msiv.item_type
 and	fcl.lookup_type (+)             = 'ITEM_TYPE'
 -- ===================================================================
@@ -375,6 +418,10 @@ select 'Based on Rollup No - with BOMS' Report_Type,
 	cct.cost_type Cost_Type,
 	msiv.concatenated_segments Item_Number,
 	msiv.description Item_Description,
+	-- Revision for version 1.31
+	'' Assembly_Number,
+	'' Assembly_Description,
+	-- End revision for version 1.31
 	-- Revision for version 1.28
 	muomv.uom_code UOM_Code,
 	fcl.meaning Item_Type,
@@ -434,7 +481,13 @@ select 'Based on Rollup No - with BOMS' Report_Type,
 		   ), 'N')
 	) Sourcing_Rule,
 	ml2.meaning Based_on_Rollup,
-	ml3.meaning Inventory_Asset,
+	-- Revision for version 1.31
+	fl1.meaning Costing_Enabled,
+	fl2.meaning Item_Inventory_Asset,
+	ml3.meaning Cost_Inventory_Asset,
+	fl3.meaning Item_Include_in_Rollup,
+	'' BOM_Include_in_Rollup,
+	-- End revision for version 1.31
 	gl.currency_code Currency_Code,
 	cic.item_cost Item_Cost,
 	msiv.creation_date Item_Creation_Date
@@ -447,7 +500,12 @@ from	mtl_parameters mp,
 	cst_cost_types cct,
 	mfg_lookups ml1, -- planning make/buy code, MTL_PLANNING_MAKE_BUY
 	mfg_lookups ml2, -- based on rollup, CST_BONROLLUP_VAL
-	mfg_lookups ml3, -- inventory_asset_flag, SYS_YES_NO
+	-- Revision for version 1.31
+	mfg_lookups ml3, -- Cost inventory_asset_flag, SYS_YES_NO
+	fnd_lookups fl1, -- Item costing enabled, YES_NO
+	fnd_lookups fl2, -- Item inventory asset, YES_NO
+	fnd_lookups fl3, -- Item default include in rollup, YES_NO
+	-- End revision for version 1.31
 	fnd_common_lookups fcl,
 	hr_organization_information hoi,
 	hr_all_organization_units_vl haou,  -- inv_organization_id
@@ -457,7 +515,8 @@ from	mtl_parameters mp,
 -- Cost type, organization, item master and report specific controls
 -- ===================================================================
 where	cic.cost_type_id                = cct.cost_type_id
-and	1=1                             -- p_org_code, p_cost_type, p_operating_unit, p_ledger
+and	1=1                             -- p_item_number, p_org_code, p_operating_unit, p_ledger
+and	2=2                             -- p_cost_type
 and	mp.organization_id              = cic.organization_id
 and	msiv.organization_id            = cic.organization_id
 and	msiv.inventory_item_id          = cic.inventory_item_id
@@ -479,8 +538,16 @@ and	ml1.lookup_type                = 'MTL_PLANNING_MAKE_BUY'
 and	ml1.lookup_code                = msiv.planning_make_buy_code
 and	ml2.lookup_type                = 'CST_BONROLLUP_VAL'
 and	ml2.lookup_code                = cic.based_on_rollup_flag
-and	ml3.lookup_type                = 'SYS_YES_NO'
-and	ml3.lookup_code                = to_char(cic.inventory_asset_flag)
+-- Revision for version 1.31
+and	ml3.lookup_type                 = 'SYS_YES_NO'
+and	ml3.lookup_code                 = to_char(cic.inventory_asset_flag)
+and	fl1.lookup_type                 = 'YES_NO'
+and	fl1.lookup_code                 = msiv.costing_enabled_flag
+and	fl2.lookup_type                 = 'YES_NO'
+and	fl2.lookup_code                 = msiv.inventory_asset_flag
+and	fl3.lookup_type                 = 'YES_NO'
+and	fl3.lookup_code                 = nvl(msiv.default_include_in_rollup_flag,'N')
+-- End revision for version 1.31
 and	fcl.lookup_code (+)            = msiv.item_type
 and	fcl.lookup_type (+)            = 'ITEM_TYPE'
 -- ===================================================================
@@ -542,6 +609,10 @@ select	'Based on Rollup Yes - No Routing' Report_Type,
 	cct.cost_type Cost_Type,
 	msiv.concatenated_segments Item_Number,
 	msiv.description Item_Description,
+	-- Revision for version 1.31
+	'' Assembly_Number,
+	'' Assembly_Description,
+	-- End revision for version 1.31
 	-- Revision for version 1.28
 	muomv.uom_code UOM_Code,
 	-- Revision for version 1.20
@@ -565,7 +636,7 @@ select	'Based on Rollup Yes - No Routing' Report_Type,
 		     and	bom.alternate_bom_designator is null),
 		'N')
 	) BOM,
-	fl.meaning Routing, -- No
+	fl1.meaning Routing, -- No
 	-- check to see if a sourcing rule exists for the receipt org
 	(select	fl.meaning
 	 from	fnd_lookups fl
@@ -591,7 +662,13 @@ select	'Based on Rollup Yes - No Routing' Report_Type,
 		   ), 'N')
 	) Sourcing_Rule,
 	ml2.meaning Based_on_Rollup,
-	ml3.meaning Inventory_Asset,
+	-- Revision for version 1.31
+	fl2.meaning Costing_Enabled,
+	fl3.meaning Item_Inventory_Asset,
+	ml3.meaning Cost_Inventory_Asset,
+	fl4.meaning Item_Include_in_Rollup,
+	'' BOM_Include_in_Rollup,
+	-- End revision for version 1.31
 	gl.currency_code Currency_Code,
 	cic.item_cost Item_Cost,
 	msiv.creation_date Item_Creation_Date
@@ -604,8 +681,13 @@ from	mtl_parameters mp,
 	cst_cost_types cct,
 	mfg_lookups ml1, -- planning make/buy code, MTL_PLANNING_MAKE_BUY
 	mfg_lookups ml2, -- based on rollup, CST_BONROLLUP_VAL
-	mfg_lookups ml3, -- inventory_asset_flag, SYS_YES_NO
-	fnd_lookups fl,  -- Routing, YES_NO, No
+	-- Revision for version 1.31
+	mfg_lookups ml3, -- Cost inventory_asset_flag, SYS_YES_NO
+	fnd_lookups fl2, -- Item costing enabled, YES_NO
+	fnd_lookups fl3, -- Item inventory asset, YES_NO
+	fnd_lookups fl4, -- Item default include in rollup, YES_NO
+	-- End revision for version 1.31
+	fnd_lookups fl1,  -- Routing, YES_NO, No
 	fnd_common_lookups fcl,
 	hr_organization_information hoi,
 	hr_all_organization_units_vl haou,  -- inv_organization_id
@@ -615,7 +697,8 @@ from	mtl_parameters mp,
 -- Cost type, organization, item master and report specific controls
 -- ===================================================================
 where	cic.cost_type_id                = cct.cost_type_id
-and	1=1                             -- p_org_code, p_cost_type, p_operating_unit, p_ledger
+and	1=1                             -- p_item_number, p_org_code, p_operating_unit, p_ledger
+and	2=2                             -- p_cost_type
 and	mp.organization_id              = cic.organization_id
 and	msiv.organization_id            = cic.organization_id
 and	msiv.inventory_item_id          = cic.inventory_item_id
@@ -637,10 +720,18 @@ and	ml1.lookup_type                 = 'MTL_PLANNING_MAKE_BUY'
 and	ml1.lookup_code                 = msiv.planning_make_buy_code
 and	ml2.lookup_type                 = 'CST_BONROLLUP_VAL'
 and	ml2.lookup_code                 = cic.based_on_rollup_flag
+-- Revision for version 1.31
 and	ml3.lookup_type                 = 'SYS_YES_NO'
 and	ml3.lookup_code                 = to_char(cic.inventory_asset_flag)
-and	fl.lookup_type                  = 'YES_NO'
-and	fl.lookup_code                  = 'N'
+and	fl2.lookup_type                 = 'YES_NO'
+and	fl2.lookup_code                 = msiv.costing_enabled_flag
+and	fl3.lookup_type                 = 'YES_NO'
+and	fl3.lookup_code                 = msiv.inventory_asset_flag
+and	fl4.lookup_type                 = 'YES_NO'
+and	fl4.lookup_code                 = nvl(msiv.default_include_in_rollup_flag,'N')
+-- End revision for version 1.31
+and	fl1.lookup_type                  = 'YES_NO'
+and	fl1.lookup_code                  = 'N'
 and	fcl.lookup_code (+)             = msiv.item_type
 and	fcl.lookup_type (+)             = 'ITEM_TYPE'
 -- ===================================================================
@@ -683,10 +774,14 @@ select	'User Defined Costs - Make Items' Report_Type,
 	cct.cost_type Cost_Type,
 	msiv.concatenated_segments Item_Number,
 	msiv.description Item_Description,
+	-- Revision for version 1.31
+	'' Assembly_Number,
+	'' Assembly_Description,
+	-- End revision for version 1.31
 	-- Revision for version 1.28
 	muomv.uom_code UOM_Code,
 	fcl.meaning Item_Type,
-	msiv.inventory_item_status_code Item_Status,
+	misv.inventory_item_status_code_tl Item_Status,
 	-- Revision for version 1.29
 &category_columns
 	-- End revision for version 1.29
@@ -724,88 +819,3 @@ select	'User Defined Costs - Make Items' Report_Type,
 	 and	fl.lookup_code =  
 		nvl((select	distinct 'Y'
 		     from	mrp_sr_receipt_org msro,
-				mrp_sr_source_org msso,
-				mrp_sourcing_rules msr,
-				mrp_sr_assignments msa,
-				mrp_assignment_sets mas
-		     where	msr.sourcing_rule_id    = msro.sourcing_rule_id
-		     -- fix for version 1.4, check to see if the sourcing rule is
-		     -- for an inventory org, not a vendor
-		     and	msso.sr_receipt_id      = msro.sr_receipt_id
-		     and	msso.source_organization_id is not null
-		     and	msa.sourcing_rule_id    = msr.sourcing_rule_id
-		     and	msa.assignment_set_id   = mas.assignment_set_id
-		     and	msiv.organization_id    = msa.organization_id
-		     and	msiv.inventory_item_id  = msa.inventory_item_id
-		     and	mp.organization_id      = msa.organization_id
-		     and	4=4							-- p_assignment_set
-		   ), 'N')
-	) Sourcing_Rule,
-	ml2.meaning Based_on_Rollup,
-	ml3.meaning Inventory_Asset,
-	gl.currency_code Currency_Code,
-	sum(cicd.item_cost) Item_Cost,
-	msiv.creation_date Item_Creation_Date
-from	mtl_parameters mp,
-	mtl_system_items_vl msiv,
-	-- Revision for version 1.28
-	mtl_item_status_vl misv, 
-	mtl_units_of_measure_vl muomv,
-	cst_item_costs cic,
-	cst_item_cost_details cicd,
-	bom_resources br,
-	cst_cost_types cct,
-	mfg_lookups ml1, -- planning make/buy code, MTL_PLANNING_MAKE_BUY
-	mfg_lookups ml2, -- based on rollup, CST_BONROLLUP_VAL
-	mfg_lookups ml3, -- inventory_asset_flag, SYS_YES_NO
-	mfg_lookups ml4, -- rollup source type, CST_SOURCE_TYPE
-	fnd_common_lookups fcl,
-	hr_organization_information hoi,
-	hr_all_organization_units_vl haou,  -- inv_organization_id
-	hr_all_organization_units_vl haou2, -- operating unit
-	gl_ledgers gl
--- ===================================================================
--- Cost type, organization, item master and report specific controls
--- ===================================================================
-where	cicd.cost_type_id               = cct.cost_type_id
-and	1=1                             -- p_org_code, p_cost_type, p_operating_unit, p_ledger
-and	mp.organization_id              = cicd.organization_id
-and	msiv.organization_id            = cicd.organization_id
-and	msiv.inventory_item_id          = cicd.inventory_item_id
--- Revision for version 1.28
-and	msiv.primary_uom_code           = muomv.uom_code
-and	misv.inventory_item_status_code = msiv.inventory_item_status_code
-and	cic.organization_id             = cicd.organization_id
-and	cic.inventory_item_id           = cicd.inventory_item_id
-and	cic.cost_type_id                = cicd.cost_type_id
-and	cicd.resource_id                = br.resource_id(+)
-and	msiv.planning_make_buy_code     = 1 -- make item
-and	cicd.rollup_source_type         = 1 -- user defined
--- Revision for version 1.24
-and	msiv.inventory_item_status_code <> 'Inactive'
--- Revision for version 1.30
-and	msiv.costing_enabled_flag       = 'Y'
--- Fix for version 1.15
-and mp.organization_id <> mp.master_organization_id -- the item master org usually does not have costs
--- ===================================================================
--- Joins for the lookup codes
--- ===================================================================
-and	ml1.lookup_type                 = 'MTL_PLANNING_MAKE_BUY'
-and	ml1.lookup_code                 = msiv.planning_make_buy_code
-and	ml2.lookup_type                 = 'CST_BONROLLUP_VAL'
-and	ml2.lookup_code                 = cic.based_on_rollup_flag
-and	ml3.lookup_type                 = 'SYS_YES_NO'
-and	ml3.lookup_code                 = to_char(cic.inventory_asset_flag)
-and	ml4.lookup_type                 = 'CST_SOURCE_TYPE'
-and	ml4.lookup_code                 = cicd.rollup_source_type
-and	fcl.lookup_code (+)             = msiv.item_type
-and	fcl.lookup_type (+)             = 'ITEM_TYPE'
--- ===================================================================
--- HR Organization table joins
--- ===================================================================
-and	hoi.org_information_context     = 'Accounting Information'
-and	hoi.organization_id             = mp.organization_id
-and	hoi.organization_id             = haou.organization_id -- this gets the organization name
--- avoid selecting disabled inventory organizations
-and	sysdate < nvl(haou.date_to, sysdate + 1)
-and	haou

@@ -4,10 +4,10 @@
 /*                              www.enginatics.com                       */
 /*                                                                       */
 /*************************************************************************/
--- Report Name: CAC Accounting Period Status (simple)
--- Description: Accounting period status of all application modules for all or a selected list of ledgers, operating units and organizations
--- Excel Examle Output: https://www.enginatics.com/example/cac-accounting-period-status-simple/
--- Library Link: https://www.enginatics.com/reports/cac-accounting-period-status-simple/
+-- Report Name: CAC Accounting Period Status (Simple)
+-- Description: Accounting period status of all application modules for all or a selected list of ledgers, operating units and inventory organizations.  To see if an accounting period should be opened, use the CAC Accounting Period Status report, as it has more reporting options and features.
+-- Excel Examle Output: https://www.enginatics.com/example/cac-accounting-period-status-simple(7)/
+-- Library Link: https://www.enginatics.com/reports/cac-accounting-period-status-simple(7)/
 -- Run Report: https://demo.enginatics.com/
 
 select

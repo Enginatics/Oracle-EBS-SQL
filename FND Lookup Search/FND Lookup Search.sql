@@ -29,8 +29,8 @@ u.column_value,
 u.meaning,
 u.application_name,
 u.lookup_type,
-'xxen_util.meaning('||lower(replace(regexp_replace(:table_name, '([^_]{1})[^_]*','\1'),'_')||'.'||:column_name)||','''||u.lookup_type||''','||u.view_application_id||') '||lower(:column_name)||',' column_sql_text,
-lower(replace(regexp_replace(:table_name, '([^_]{1})[^_]*','\1'),'_')||'.'||:column_name)||'=xxen_util.lookup_code(:'||lower(:column_name)||','''||u.lookup_type||''','||u.view_application_id||')' where_sql_text,
+'xxen_util.meaning('||lower(replace(regexp_replace(:table_name,'([^_]{1})[^_]*','\1'),'_')||'.'||:column_name)||','''||u.lookup_type||''','||u.view_application_id||') '||lower(:column_name)||',' column_sql_text,
+lower(replace(regexp_replace(:table_name,'([^_]{1})[^_]*','\1'),'_')||'.'||:column_name)||'=xxen_util.lookup_code(:'||lower(:column_name)||','''||u.lookup_type||''','||u.view_application_id||')' where_sql_text,
 '=flvv.lookup_code(+) and
 flvv.lookup_type(+)='''||u.lookup_type||''' and
 flvv.view_application_id(+)='||u.view_application_id||' and

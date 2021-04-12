@@ -29,5 +29,4 @@ full join
 on
 xrc.column_name=xrc2.column_name
 where
-1=1 and
-nvl(xrc.number_format,'x')<>nvl(xrc2.number_format,'x')
+1=1
