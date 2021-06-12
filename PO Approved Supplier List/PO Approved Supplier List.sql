@@ -113,6 +113,7 @@ pasl.item_id=msiv.inventory_item_id(+) and
 pasl.category_id=mck.category_id(+) and
 pasl.vendor_id=aps.vendor_id(+) and
 pasl.vendor_site_id=assa.vendor_site_id(+) and
+(pasl.vendor_site_id is not null and assa.vendor_site_code is not null or pasl.vendor_site_id is null and assa.vendor_site_code is null) and
 assa.org_id=haout3.organization_id(+) and
 pasl.manufacturer_id=mm.manufacturer_id(+) and
 pasl.asl_status_id=pas.status_id and

@@ -46,6 +46,13 @@ with mmt as -- driving inventory transactions for intercompany
     , mmt.costed_flag
     , mmt.invoiced_flag
     , mmt.transaction_id          sla_inv_transaction_id
+    , ( select distinct
+          listagg(micv.category_concat_segs,', ') within group (order by micv.category_concat_segs) over (partition by micv.inventory_item_id,micv.organization_id)  
+        from mtl_item_categories_v micv
+        where micv.category_set_id   = :p_category_set_id
+        and   micv.organization_id   = mmt.organization_id
+        and   micv.inventory_item_id = mmt.inventory_item_id
+      ) &l_category_set_name
     from
       mtl_material_transactions    mmt
     , hr_organization_information  hoi
@@ -97,6 +104,13 @@ with mmt as -- driving inventory transactions for intercompany
     , mmt.costed_flag
     , mmt.invoiced_flag
     , mmt2.transaction_id          sla_inv_transaction_id
+    , ( select distinct
+          listagg(micv.category_concat_segs,', ') within group (order by micv.category_concat_segs) over (partition by micv.inventory_item_id,micv.organization_id)  
+        from mtl_item_categories_v micv
+        where micv.category_set_id   = :p_category_set_id
+        and   micv.organization_id   = mmt.organization_id
+        and   micv.inventory_item_id = mmt.inventory_item_id
+      ) &l_category_set_name
     from
       mtl_material_transactions    mmt
     , oe_order_lines_all           oola
@@ -158,6 +172,13 @@ with mmt as -- driving inventory transactions for intercompany
     , mmt.costed_flag
     , mmt.invoiced_flag
     , mmt.transaction_id          sla_inv_transaction_id
+    , ( select distinct
+          listagg(micv.category_concat_segs,', ') within group (order by micv.category_concat_segs) over (partition by micv.inventory_item_id,micv.organization_id)  
+        from mtl_item_categories_v micv
+        where micv.category_set_id   = :p_category_set_id
+        and   micv.organization_id   = mmt.organization_id
+        and   micv.inventory_item_id = mmt.inventory_item_id
+      ) &l_category_set_name
     from
       mtl_material_transactions    mmt
     , oe_order_lines_all           oola
@@ -222,6 +243,13 @@ with mmt as -- driving inventory transactions for intercompany
     , mmt.costed_flag
     , mmt.invoiced_flag
     , mmt.transaction_id          sla_inv_transaction_id
+    , ( select distinct
+          listagg(micv.category_concat_segs,', ') within group (order by micv.category_concat_segs) over (partition by micv.inventory_item_id,micv.organization_id)  
+        from mtl_item_categories_v micv
+        where micv.category_set_id   = :p_category_set_id
+        and   micv.organization_id   = mmt.organization_id
+        and   micv.inventory_item_id = mmt.inventory_item_id
+      ) &l_category_set_name
     from
       mtl_material_transactions    mmt
     , po_headers_all               pha
@@ -280,6 +308,9 @@ with mmt as -- driving inventory transactions for intercompany
     , rctla.uom_code
     , rctla.unit_selling_price
     , rctla.extended_amount
+    , zl.tax                   tax_type
+    , zl.tax_rate_code         tax_rate_code
+    , zl.tax_rate              tax_rate
     from
       ra_customer_trx_lines_all    rctla
     , ra_customer_trx_all          rcta
@@ -287,14 +318,35 @@ with mmt as -- driving inventory transactions for intercompany
     , hz_cust_accounts             hca
     , hz_parties                   hp
     , hz_cust_site_uses_all        hcsua
+    , ( select distinct
+          zl1.trx_id
+        , zl1.trx_line_id
+        , listagg (zl1.tax,'/ ') within group (order by zl1.tax) over (partition by zl1.trx_id,zl1.trx_line_id) tax
+        , listagg (zl1.tax_rate_code,'/ ') within group (order by zl1.tax, zl1.tax_rate_code) over (partition by zl1.trx_id,zl1.trx_line_id) tax_rate_code
+        , listagg (to_char(zl1.tax_rate),'/ ') within group (order by zl1.tax, zl1.tax_rate_code) over (partition by zl1.trx_id,zl1.trx_line_id) tax_rate
+        from (select distinct
+                zl2.trx_id
+              , zl2.trx_line_id
+              , zl2.tax
+              , zl2.tax_rate_code
+              , zl2.tax_rate
+              from
+                zx_lines zl2
+              where zl2.application_id    = 222
+              and   zl2.entity_code       = 'TRANSACTIONS'
+              and   zl2.trx_level_type    = 'LINE'
+             ) zl1
+      ) zl
     where
         rctla.interface_line_context  in ('INTERCOMPANY','GLOBAL_PROCUREMENT')
-    and rctla.line_type                = 'LINE'
-    and rcta.customer_trx_id           = rctla.customer_trx_id
-    and apsa.customer_trx_id           = rctla.customer_trx_id
-    and hca.cust_account_id            = rcta.bill_to_customer_id
-    and hp.party_id                    = hca.party_id
-    and hcsua.site_use_id              = rcta.bill_to_site_use_id
+    and rctla.line_type               = 'LINE'
+    and rcta.customer_trx_id          = rctla.customer_trx_id
+    and apsa.customer_trx_id          = rctla.customer_trx_id
+    and hca.cust_account_id           = rcta.bill_to_customer_id
+    and hp.party_id                   = hca.party_id
+    and hcsua.site_use_id             = rcta.bill_to_site_use_id
+    and zl.trx_id                 (+) = rctla.customer_trx_id
+    and zl.trx_line_id            (+) = rctla.customer_trx_line_id
   )
 , ar_intf as -- ar interface data
   ( select
@@ -337,6 +389,10 @@ with mmt as -- driving inventory transactions for intercompany
     , aia.exchange_rate_type
     , aia.exchange_date
     , aila.line_number
+    , xxen_util.meaning(aila.line_source,'LINE SOURCE',200)
+                               line_source
+    , decode(aila.discarded_flag,'Y','Y',null) 
+                               line_discarded_flag
     , aila.quantity_invoiced
     , nvl( ( select mufm.uom_code
              from  mtl_units_of_measure mufm
@@ -347,18 +403,41 @@ with mmt as -- driving inventory transactions for intercompany
          )                     unit_meas_lookup_code
     , aila.unit_price
     , aila.amount              line_amount
+    , zl.tax                   tax_type
+    , zl.tax_rate_code         tax_rate_code
+    , zl.tax_rate              tax_rate
     from
       ap_invoices_all              aia
     , ap_invoice_lines_all         aila
     , ap_suppliers                 asup
     , ap_supplier_sites_all        assa
+    , ( select distinct
+          zl1.trx_id
+        , zl1.trx_line_id
+        , listagg (zl1.tax,'/ ') within group (order by zl1.tax) over (partition by zl1.trx_id,zl1.trx_line_id) tax
+        , listagg (zl1.tax_rate_code,'/ ') within group (order by zl1.tax, zl1.tax_rate_code) over (partition by zl1.trx_id,zl1.trx_line_id) tax_rate_code
+        , listagg (to_char(zl1.tax_rate),'/ ') within group (order by zl1.tax, zl1.tax_rate_code) over (partition by zl1.trx_id,zl1.trx_line_id) tax_rate
+        from (select distinct
+                zl2.trx_id
+              , zl2.trx_line_id
+              , zl2.tax
+              , zl2.tax_rate_code
+              , zl2.tax_rate
+              from
+                zx_lines zl2
+              where zl2.application_id    = 200
+              and   zl2.entity_code       = 'AP_INVOICES'
+              and   zl2.trx_level_type    = 'LINE'
+             ) zl1
+      ) zl
     where
-        aila.invoice_id                      = aia.invoice_id
-    and aia.vendor_id                        = asup.vendor_id
-    and aia.vendor_site_id                   = assa.vendor_site_id
-    and aia.source                       = 'Intercompany'
-    and aila.line_type_lookup_code       = 'ITEM'
-    and nvl(aila.discarded_flag,'N')     = 'N'
+        aila.invoice_id               = aia.invoice_id
+    and aia.vendor_id                 = asup.vendor_id
+    and aia.vendor_site_id            = assa.vendor_site_id
+    and zl.trx_id                 (+) = aila.invoice_id
+    and zl.trx_line_id            (+) = aila.line_number
+    and aia.source                    = 'Intercompany'
+    and aila.line_type_lookup_code    = 'ITEM'
   )
 , ap_intf as -- ap interface data
   (

@@ -16,6 +16,7 @@ DB package: BOM_CSTRINVR_XMLP_PKG
 select 
        ciqt.subinventory_code subinventory
 ,      sec.description subinventory_description
+,      xxen_util.meaning(msi.item_type,'ITEM_TYPE',3) user_item_type
 ,      fnd_flex_xml_publisher_apis.process_kff_combination_1('p_item_seg', 'INV', 'MSTK', 101, msi.organization_id, msi.inventory_item_id, 'ALL', 'Y', 'VALUE') item
 ,      msi.description item_description
 ,      fnd_flex_xml_publisher_apis.process_kff_combination_1('p_cat_seg', 'INV', 'MCAT', mc.structure_id, null, mc.category_id, 'ALL', 'Y', 'VALUE') category
@@ -57,6 +58,7 @@ and     cic.cost_type_id   = cict.cost_type_id
 group by ciqt.subinventory_code
 ,      fnd_flex_xml_publisher_apis.process_kff_combination_1('p_item_seg', 'INV', 'MSTK', 101, msi.organization_id, msi.inventory_item_id, 'ALL', 'Y', 'VALUE')
 ,      fnd_flex_xml_publisher_apis.process_kff_combination_1('p_cat_seg', 'INV', 'MCAT', mc.structure_id, null, mc.category_id, 'ALL', 'Y', 'VALUE')
+,      xxen_util.meaning(msi.item_type,'ITEM_TYPE',3)
 ,      msi.description
 ,      msi.primary_uom_code
 ,      decode(:p_item_revision, 1, ciqt.revision, null)
@@ -67,7 +69,6 @@ group by ciqt.subinventory_code
 ,      decode(cict.cost_type_id, :p_cost_type_id, ' ', '*')
 ,      sec.description   
 ,      sec.asset_inventory 
-having decode(&p_neg_qty,1,1,2) =  decode(&p_neg_qty,1,decode(sign(sum(ciqt.rollback_qty)),'-1',1,2),2)
-       and  sum(ciqt.rollback_qty) <> 0
-order by
-&order_by
+having
+2=2 and
+sum(ciqt.rollback_qty) <> 0

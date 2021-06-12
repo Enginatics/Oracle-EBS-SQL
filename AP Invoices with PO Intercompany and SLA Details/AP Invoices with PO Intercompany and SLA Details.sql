@@ -38,6 +38,9 @@ with ap_inv as -- ap invoice data
     , gdct.user_conversion_type        exchange_rate_type
     , aia.exchange_date
     , aila.line_number
+    , xxen_util.meaning(aila.line_source,'LINE SOURCE',200)
+                                       line_source
+    , decode(aila.discarded_flag,'Y','Y',null)  line_discarded_flag
     , msi.item
     , msi.item_type
     , msi.description                  item_description
@@ -49,6 +52,9 @@ with ap_inv as -- ap invoice data
     , nvl(aila.base_amount
          ,aila.amount)                 line_acctd_amount
     , aila.description                 line_description
+    , zl.tax                           tax_type
+    , zl.tax_rate_code                 tax_rate_code
+    , zl.tax_rate                      tax_rate
     , aida.invoice_distribution_id
     , aida.distribution_line_number    dist_line_number
     , aida.quantity_invoiced           dist_qty_invoiced
@@ -105,6 +111,8 @@ with ap_inv as -- ap invoice data
               and  mmt.rcv_transaction_id   = rt2.transaction_id
            )
       end                              sla_inv_transaction_id
+    , msi.inventory_item_id
+    , msi.organization_id
     from
       ap_invoices_all              aia
     , ap_invoice_lines_all         aila
@@ -121,27 +129,48 @@ with ap_inv as -- ap invoice data
        , msiv.segment1             item
        , xxen_util.meaning(msiv.item_type,'ITEM_TYPE',3) item_type
        , msiv.description
+       , msiv.organization_id      organization_id
        from
          financials_system_params_all fspa
        , mtl_system_items_vl          msiv
        where
            msiv.organization_id = fspa.inventory_organization_id
        )                           msi
+    , ( select distinct
+          zl1.trx_id
+        , zl1.trx_line_id
+        , listagg (zl1.tax,'/ ') within group (order by zl1.tax) over (partition by zl1.trx_id,zl1.trx_line_id) tax
+        , listagg (zl1.tax_rate_code,'/ ') within group (order by zl1.tax, zl1.tax_rate_code) over (partition by zl1.trx_id,zl1.trx_line_id) tax_rate_code
+        , listagg (to_char(zl1.tax_rate),'/ ') within group (order by zl1.tax, zl1.tax_rate_code) over (partition by zl1.trx_id,zl1.trx_line_id) tax_rate
+        from (select distinct
+                zl2.trx_id
+              , zl2.trx_line_id
+              , zl2.tax
+              , zl2.tax_rate_code
+              , zl2.tax_rate
+              from
+                zx_lines zl2
+              where zl2.application_id    = 200
+              and   zl2.entity_code       = 'AP_INVOICES'
+              and   zl2.trx_level_type    = 'LINE'
+             ) zl1
+      ) zl
     where
-        aila.invoice_id                  = aia.invoice_id
-    and aila.line_type_lookup_code       = 'ITEM'
-    and nvl(aila.discarded_flag,'N')     = 'N'
-    and aida.invoice_id (+) = aila.invoice_id
-    and aida.invoice_line_number  (+)  = aila.line_number
-    and aida.line_type_lookup_code  (+)  = 'ITEM'
-    and aia.vendor_id                    = asup.vendor_id
-    and aia.vendor_site_id               = assa.vendor_site_id
-    and haouv.organization_id            = aia.org_id
-    and gl.ledger_id                     = aia.set_of_books_id
-    and gdct.conversion_type         (+) = aia.exchange_rate_type
-    and mufm.unit_of_measure         (+) = aila.unit_meas_lookup_code
-    and msi.inventory_item_id        (+) = aila.inventory_item_id
-    and msi.org_id                   (+) = aila.org_id
+        aila.invoice_id                = aia.invoice_id
+    and aila.line_type_lookup_code     = 'ITEM'
+    and aida.invoice_id             = aila.invoice_id
+    and aida.invoice_line_number    = aila.line_number
+    and aida.line_type_lookup_code  = 'ITEM'
+    and aia.vendor_id                  = asup.vendor_id
+    and aia.vendor_site_id             = assa.vendor_site_id
+    and haouv.organization_id          = aia.org_id
+    and gl.ledger_id                   = aia.set_of_books_id
+    and gdct.conversion_type       (+) = aia.exchange_rate_type
+    and mufm.unit_of_measure       (+) = aila.unit_meas_lookup_code
+    and msi.inventory_item_id      (+) = aila.inventory_item_id
+    and msi.org_id                 (+) = aila.org_id
+    and zl.trx_id                  (+) = aila.invoice_id
+    and zl.trx_line_id             (+) = aila.line_number
   )
 , po as
   ( select
@@ -160,7 +189,7 @@ with ap_inv as -- ap invoice data
       )                                                po_requisition_num
     , pha.segment1                                     po_num
     , pra.release_num                                  po_release_num
-    , pha.creation_date                                po_creation_date
+    , trunc(pha.creation_date)                         po_creation_date
     , pra.release_date                                 po_release_date
     , pla.line_num || '.' || plla.shipment_num         po_line_shipment_num
     , pltv.line_type                                   po_line_type
@@ -194,6 +223,8 @@ with ap_inv as -- ap invoice data
                                       = pda.po_distribution_id
           ) rsh
       )                                                po_dist_receipt_nums
+    , msi.inventory_item_id
+    , msi.organization_id
     from
       po_distributions_all         pda
     , po_line_locations_all        plla
@@ -211,6 +242,7 @@ with ap_inv as -- ap invoice data
        , msiv.segment1                item
        , xxen_util.meaning(msiv.item_type,'ITEM_TYPE',3) item_type
        , msiv.description
+       , msiv.organization_id
        from
          financials_system_params_all fspa
        , mtl_system_items_vl          msiv
@@ -260,13 +292,24 @@ select
 , ap_inv.exchange_rate_type             exchange_rate_type
 , ap_inv.exchange_date                  exchange_rate_date
 , ap_inv.line_number                    invoice_line_num
+, ap_inv.line_source                    invoice_line_source
+, ap_inv.line_discarded_flag            invoice_line_discarded
 &l_item_sel
+, ( select distinct
+      listagg(micv.category_concat_segs,', ') within group (order by micv.category_concat_segs)
+    from   mtl_item_categories_v micv
+    where  micv.category_set_id   = :p_category_set_id
+    &l_category_set_joins
+  )                                     &l_category_set_name
 , ap_inv.line_description               invoice_line_description
 , ap_inv.line_qty_invoiced              invoice_line_qty
 , ap_inv.uom                            uom
 , ap_inv.unit_price                     unit_price
 , ap_inv.line_amount                    invoice_line_amount
 , ap_inv.line_acctd_amount              invoice_line_accounted_amount
+, ap_inv.tax_type                       invoice_line_tax_type
+, ap_inv.tax_rate_code                  invoice_line_tax_rate_code
+, ap_inv.tax_rate                       invoice_line_tax_rate
 , ap_inv.dist_line_number               invoice_dist_line_num
 , ap_inv.dist_description               invoice_dist_description
 , ap_inv.dist_qty_invoiced              invoice_dist_qty

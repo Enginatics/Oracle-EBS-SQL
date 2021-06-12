@@ -5,8 +5,8 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: GL Account Analysis (Distributions)
--- Description: Detail GL transaction report with one line per distribution including all segments and subledger data, with amounts in both transaction currency and ledger currency.
-
+-- Description: Detailed GL transaction report with one line per distribution including all segments and subledger data, with amounts in both transaction currency and ledger currency.
+The report includes VAT tax codes and rates for AR and AP transactions.
 -- Excel Examle Output: https://www.enginatics.com/example/gl-account-analysis-distributions/
 -- Library Link: https://www.enginatics.com/reports/gl-account-analysis-distributions/
 -- Run Report: https://demo.enginatics.com/
@@ -146,6 +146,7 @@ xal.ae_line_num,
 xah.event_id,
 xe.event_type_code,
 xe.event_date,
+&segments_with_desc
 xal.accounting_class_code,
 xte.entity_code,
 xte.source_id_int_1,

@@ -14,60 +14,57 @@ DB package: FA_FAS410_XMLP_PKG
 -- Run Report: https://demo.enginatics.com/
 
 select
- x.Company_Name
+ x.company_name
 ,x.book
-,x.Cur_Period "Current Period"
+,x.cur_period current_period
 ,x.d_comp_code1 "&balancing_segment_p"
-,x.d_cost_ctr1      "&cost_center_p"
+,x.d_cost_ctr1 "&cost_center_p"
 ,x.owner
-,x.d_location1     "Location"
-,x.asset           "Asset - Description"
+,x.d_location1 location
+,x.asset "Asset - Description"
 ,x.units
-,x.serial          "Serial Number"
-,x.tag             "Tag Number"
-,FA_FAS410_XMLP_PKG.as_nbvformula(x.COST, x.RESERVE) "Net Book Value"
-,x.cost            "Current Cost"
-,case when x.new > 0
-   then 'New'
-   else null
-   end             "New"
+,x.serial serial_number
+,x.tag tag_number
+,fa_fas410_xmlp_pkg.as_nbvformula(x.cost, x.reserve) net_book_value
+,x.cost current_cost
+,case when x.new > 0 then 'New' else null end new
 ,x.asset_type
 from
 (
 select
  fsc.company_name,
  fsc.book,
- fsc.Cur_Period,
- EMP.FULL_NAME				OWNER,
- AD.ASSET_NUMBER || ' - ' || AD.DESCRIPTION		ASSET,
- sum(DH.UNITS_ASSIGNED)				UNITS,
- AD.SERIAL_NUMBER				SERIAL,
- AD.TAG_NUMBER				TAG,
- sum(decode(dd.deprn_source_code,'B', dd.addition_cost_to_clear, dd.cost))		COST,
- sum(dd.deprn_reserve)				RESERVE,
- decode(greatest(BOOKS.DATE_PLACED_IN_SERVICE,NVL(:P_FROM_DATE, BOOKS.DATE_PLACED_IN_SERVICE))
-       ,least(BOOKS.DATE_PLACED_IN_SERVICE, NVL(:P_TO_DATE, BOOKS.DATE_PLACED_IN_SERVICE))
-       ,1,0)                                               NEW,
- decode(AD.ASSET_TYPE,'CIP', 'C', 'EXPENSED','E','')		ASSET_TYPE,
- fnd_flex_xml_publisher_apis.process_kff_combination_1('d_comp_code', 'SQLGL', 'GL#', cc.CHART_OF_ACCOUNTS_ID, NULL, cc.CODE_COMBINATION_ID, 'GL_BALANCING', 'Y', 'VALUE') D_COMP_CODE1,
- fnd_flex_xml_publisher_apis.process_kff_combination_1('d_cost_ctr', 'SQLGL', 'GL#', cc.CHART_OF_ACCOUNTS_ID, NULL, cc.CODE_COMBINATION_ID, 'FA_COST_CTR', 'Y', 'VALUE') D_COST_CTR1,
- fnd_flex_xml_publisher_apis.process_kff_combination_1('d_location', 'OFA', 'LOC#', 101, NULL, loc.LOCATION_ID, 'ALL', 'Y', 'VALUE') D_LOCATION1
-FROM
+ fsc.cur_period,
+ emp.full_name                owner,
+ ad.asset_number || ' - ' || ad.description        asset,
+ sum(dh.units_assigned)                units,
+ ad.serial_number                serial,
+ ad.tag_number                tag,
+ sum(decode(dd.deprn_source_code,'B', dd.addition_cost_to_clear, dd.cost))        cost,
+ sum(dd.deprn_reserve)                reserve,
+ decode(greatest(books.date_placed_in_service,nvl(:p_from_date, books.date_placed_in_service))
+       ,least(books.date_placed_in_service, nvl(:p_to_date, books.date_placed_in_service))
+       ,1,0)                                               new,
+ decode(ad.asset_type,'CIP', 'C', 'EXPENSED','E','')        asset_type,
+ fnd_flex_xml_publisher_apis.process_kff_combination_1('d_comp_code', 'SQLGL', 'GL#', cc.chart_of_accounts_id, null, cc.code_combination_id, 'GL_BALANCING', 'Y', 'VALUE') d_comp_code1,
+ fnd_flex_xml_publisher_apis.process_kff_combination_1('d_cost_ctr', 'SQLGL', 'GL#', cc.chart_of_accounts_id, null, cc.code_combination_id, 'FA_COST_CTR', 'Y', 'VALUE') d_cost_ctr1,
+ fnd_flex_xml_publisher_apis.process_kff_combination_1('d_location', 'OFA', 'LOC#', 101, null, loc.location_id, 'ALL', 'Y', 'VALUE') d_location1
+from
     (
-     SELECT
-       Company_Name,
-       Category_Flex_Structure,
-       Location_Flex_Structure,
-       Asset_Key_Flex_Structure,
-	     FA_FAS410_XMLP_PKG.bookformula() Book,
-	     FA_FAS410_XMLP_PKG.cur_periodformula(FA_FAS410_XMLP_PKG.bookformula()) Cur_Period,
-	     FA_FAS410_XMLP_PKG.report_nameformula() Report_Name,
-	     FA_FAS410_XMLP_PKG.Accounting_Flex_Structure_p Accounting_Flex_Structure,
-	     FA_FAS410_XMLP_PKG.Currency_Code_p Currency_Code,
-	     FA_FAS410_XMLP_PKG.Book_Class_p Book_Class,
-	     FA_FAS410_XMLP_PKG.Distribution_Source_Book_p Distribution_Source_Book,
-	     FA_FAS410_XMLP_PKG.Cur_Period_PC_p Cur_Period_PC
-	   FROM FA_SYSTEM_CONTROLS
+     select
+       company_name,
+       category_flex_structure,
+       location_flex_structure,
+       asset_key_flex_structure,
+         fa_fas410_xmlp_pkg.bookformula() book,
+         fa_fas410_xmlp_pkg.cur_periodformula(fa_fas410_xmlp_pkg.bookformula()) cur_period,
+         fa_fas410_xmlp_pkg.report_nameformula() report_name,
+         fa_fas410_xmlp_pkg.accounting_flex_structure_p accounting_flex_structure,
+         fa_fas410_xmlp_pkg.currency_code_p currency_code,
+         fa_fas410_xmlp_pkg.book_class_p book_class,
+         fa_fas410_xmlp_pkg.distribution_source_book_p distribution_source_book,
+         fa_fas410_xmlp_pkg.cur_period_pc_p cur_period_pc
+       from fa_system_controls
     ) fsc,
     fa_deprn_detail         dd,
     per_people_f            emp,
@@ -76,164 +73,160 @@ FROM
     gl_code_combinations    cc,
     fa_books                books,
     fa_distribution_history dh
-WHERE
-    dh.book_type_code      = :P_BOOK    AND
-    dh.assigned_to         = emp.person_id(+)      AND
+where
+    dh.book_type_code      = :p_book    and
+    dh.assigned_to         = emp.person_id(+)      and
     dh.date_effective between nvl(emp.effective_start_date,dh.date_effective)
-                                        and nvl(emp.effective_end_date,dh.date_effective) AND
-    fnd_flex_xml_publisher_apis.process_kff_combination_1('d_cost_ctr', 'SQLGL', 'GL#', cc.CHART_OF_ACCOUNTS_ID, NULL, cc.CODE_COMBINATION_ID, 'FA_COST_CTR', 'Y', 'VALUE') between
-    NVL(:P_START_CC,  fnd_flex_xml_publisher_apis.process_kff_combination_1('d_cost_ctr', 'SQLGL', 'GL#', cc.CHART_OF_ACCOUNTS_ID, NULL, cc.CODE_COMBINATION_ID, 'FA_COST_CTR', 'Y', 'VALUE'))  AND
-    NVL(:P_END_CC ,  fnd_flex_xml_publisher_apis.process_kff_combination_1('d_cost_ctr', 'SQLGL', 'GL#', cc.CHART_OF_ACCOUNTS_ID, NULL, cc.CODE_COMBINATION_ID, 'FA_COST_CTR', 'Y', 'VALUE')) AND
-    dh.asset_id            = ad.asset_id            AND
-    dh.location_id         = loc.location_id        AND
-    dh.code_combination_id = cc.code_combination_id AND
-    dh.date_ineffective is null AND
-    dd.asset_id = dh.asset_id             AND
-    dd.book_type_code = dh.book_type_code      AND
-    dd.distribution_id = dh.distribution_id      AND
+                                        and nvl(emp.effective_end_date,dh.date_effective) and
+    fnd_flex_xml_publisher_apis.process_kff_combination_1('d_cost_ctr', 'SQLGL', 'GL#', cc.chart_of_accounts_id, null, cc.code_combination_id, 'FA_COST_CTR', 'Y', 'VALUE') between
+    nvl(:p_start_cc,  fnd_flex_xml_publisher_apis.process_kff_combination_1('d_cost_ctr', 'SQLGL', 'GL#', cc.chart_of_accounts_id, null, cc.code_combination_id, 'FA_COST_CTR', 'Y', 'VALUE'))  and
+    nvl(:p_end_cc ,  fnd_flex_xml_publisher_apis.process_kff_combination_1('d_cost_ctr', 'SQLGL', 'GL#', cc.chart_of_accounts_id, null, cc.code_combination_id, 'FA_COST_CTR', 'Y', 'VALUE')) and
+    dh.asset_id            = ad.asset_id            and
+    dh.location_id         = loc.location_id        and
+    dh.code_combination_id = cc.code_combination_id and
+    dh.date_ineffective is null and
+    dd.asset_id = dh.asset_id             and
+    dd.book_type_code = dh.book_type_code      and
+    dd.distribution_id = dh.distribution_id      and
     dd.period_counter =
-     (SELECT    max (dd2.period_counter)
-      FROM    fa_deprn_detail dd2
-      WHERE	dd2.book_type_code = books.book_type_code and
+     (select    max (dd2.period_counter)
+      from    fa_deprn_detail dd2
+      where    dd2.book_type_code = books.book_type_code and
             dd2.asset_id = books.asset_id and
             dd2.distribution_id = dd.distribution_id
-     ) AND
-   books.book_type_code  = :P_BOOK        AND
+     ) and
+   books.book_type_code  = :p_book        and
    books.asset_id = dh.asset_id and
-   books.date_placed_in_service between nvl(:P_FROM_DATE, books.date_placed_in_service) and nvl(:P_TO_DATE, books.date_placed_in_service) AND
-   books.period_counter_fully_retired is null   AND
+   books.date_placed_in_service between nvl(:p_from_date, books.date_placed_in_service) and nvl(:p_to_date, books.date_placed_in_service) and
+   books.period_counter_fully_retired is null   and
    books.date_ineffective is null
 group by
    fsc.company_name,
    fsc.book,
-   fsc.Cur_Period,
-   fnd_flex_xml_publisher_apis.process_kff_combination_1('d_comp_code', 'SQLGL', 'GL#', cc.CHART_OF_ACCOUNTS_ID, NULL, cc.CODE_COMBINATION_ID, 'GL_BALANCING', 'Y', 'VALUE'),
-   fnd_flex_xml_publisher_apis.process_kff_combination_1('d_cost_ctr', 'SQLGL', 'GL#', cc.CHART_OF_ACCOUNTS_ID, NULL, cc.CODE_COMBINATION_ID, 'FA_COST_CTR', 'Y', 'VALUE'),
+   fsc.cur_period,
+   fnd_flex_xml_publisher_apis.process_kff_combination_1('d_comp_code', 'SQLGL', 'GL#', cc.chart_of_accounts_id, null, cc.code_combination_id, 'GL_BALANCING', 'Y', 'VALUE'),
+   fnd_flex_xml_publisher_apis.process_kff_combination_1('d_cost_ctr', 'SQLGL', 'GL#', cc.chart_of_accounts_id, null, cc.code_combination_id, 'FA_COST_CTR', 'Y', 'VALUE'),
    emp.full_name,
-   fnd_flex_xml_publisher_apis.process_kff_combination_1('d_location', 'OFA', 'LOC#', 101, NULL, loc.LOCATION_ID, 'ALL', 'Y', 'VALUE'),
-   AD.ASSET_NUMBER || ' - ' || AD.DESCRIPTION,
+   fnd_flex_xml_publisher_apis.process_kff_combination_1('d_location', 'OFA', 'LOC#', 101, null, loc.location_id, 'ALL', 'Y', 'VALUE'),
+   ad.asset_number || ' - ' || ad.description,
    dh.units_assigned,
    ad.serial_number,
    ad.tag_number,
-   decode(AD.ASSET_TYPE,'CIP', 'C', 'EXPENSED','E',''),
-   decode(greatest(BOOKS.DATE_PLACED_IN_SERVICE,NVL(:P_FROM_DATE, BOOKS.DATE_PLACED_IN_SERVICE))
-         ,least(BOOKS.DATE_PLACED_IN_SERVICE,NVL(:P_TO_DATE, BOOKS.DATE_PLACED_IN_SERVICE))
+   decode(ad.asset_type,'CIP', 'C', 'EXPENSED','E',''),
+   decode(greatest(books.date_placed_in_service,nvl(:p_from_date, books.date_placed_in_service))
+         ,least(books.date_placed_in_service,nvl(:p_to_date, books.date_placed_in_service))
          ,1, 0),
    decode(dd.deprn_source_code,'B', dd.addition_cost_to_clear, dd.cost),
    dd.deprn_reserve
-UNION ALL
+union all
 select
  fsc.company_name,
  fsc.book,
- fsc.Cur_Period,
- EMP.FULL_NAME				OWNER,
- AD.ASSET_NUMBER || ' - ' || AD.DESCRIPTION		ASSET,
- sum(decode(LU.LOOKUP_CODE
+ fsc.cur_period,
+ emp.full_name                owner,
+ ad.asset_number || ' - ' || ad.description        asset,
+ sum(decode(lu.lookup_code
            ,'ADDITION COST',decode(adj.source_type_code
-                                  ,'TRANSFER',decode(adj.debit_credit_flag,'DR',1,-1)*DH.UNITS_ASSIGNED
-                                  ,'RETIREMENT',decode(adj.debit_credit_flag,'DR',1,-1)*DH.UNITS_ASSIGNED
-                                  ,'CIP RETIREMENT',decode(adj.debit_credit_flag,'DR',1,-1)*DH.UNITS_ASSIGNED
-                                  ,'RECLASS',decode(adj.debit_credit_flag,'DR',1,-1)*DH.UNITS_ASSIGNED,0
+                                  ,'TRANSFER',decode(adj.debit_credit_flag,'DR',1,-1)*dh.units_assigned
+                                  ,'RETIREMENT',decode(adj.debit_credit_flag,'DR',1,-1)*dh.units_assigned
+                                  ,'CIP RETIREMENT',decode(adj.debit_credit_flag,'DR',1,-1)*dh.units_assigned
+                                  ,'RECLASS',decode(adj.debit_credit_flag,'DR',1,-1)*dh.units_assigned,0
                                   )
                            ,0
            )
-     )					UNITS,
- AD.SERIAL_NUMBER				SERIAL,
- AD.TAG_NUMBER				TAG,
- sum(DECODE(LU.LOOKUP_CODE,
+     )                    units,
+ ad.serial_number                serial,
+ ad.tag_number                tag,
+ sum(decode(lu.lookup_code,
  'ADDITION COST',
- DECODE(ADJ.DEBIT_CREDIT_FLAG, 'DR', 1, -1) * ADJ.ADJUSTMENT_AMOUNT,0))		COST,
- sum(DECODE(LU.LOOKUP_CODE
-           ,'DEPRECIATION RESERVE', DECODE(ADJ.DEBIT_CREDIT_FLAG, 'DR', -1, 1) * ADJ.ADJUSTMENT_AMOUNT
+ decode(adj.debit_credit_flag, 'DR', 1, -1) * adj.adjustment_amount,0))        cost,
+ sum(decode(lu.lookup_code
+           ,'DEPRECIATION RESERVE', decode(adj.debit_credit_flag, 'DR', -1, 1) * adj.adjustment_amount
            , 0)
-    )	RESERVE,
- decode(greatest(BOOKS.DATE_PLACED_IN_SERVICE,NVL(:P_FROM_DATE, BOOKS.DATE_PLACED_IN_SERVICE))
-       ,least(BOOKS.DATE_PLACED_IN_SERVICE,NVL(:P_TO_DATE, BOOKS.DATE_PLACED_IN_SERVICE))
-       ,1, 0)                NEW,
- decode(AD.ASSET_TYPE,'CIP', 'C', 'EXPENSED','E','')		ASSET_TYPE,
- fnd_flex_xml_publisher_apis.process_kff_combination_1('d_comp_code', 'SQLGL', 'GL#', cc.CHART_OF_ACCOUNTS_ID, NULL, cc.CODE_COMBINATION_ID, 'GL_BALANCING', 'Y', 'VALUE') D_COMP_CODE1,
- fnd_flex_xml_publisher_apis.process_kff_combination_1('d_cost_ctr', 'SQLGL', 'GL#', cc.CHART_OF_ACCOUNTS_ID, NULL, cc.CODE_COMBINATION_ID, 'FA_COST_CTR', 'Y', 'VALUE') D_COST_CTR1,
- fnd_flex_xml_publisher_apis.process_kff_combination_1('d_location', 'OFA', 'LOC#', 101, NULL, loc.LOCATION_ID, 'ALL', 'Y', 'VALUE') D_LOCATION1
-FROM
+    )    reserve,
+ decode(greatest(books.date_placed_in_service,nvl(:p_from_date, books.date_placed_in_service))
+       ,least(books.date_placed_in_service,nvl(:p_to_date, books.date_placed_in_service))
+       ,1, 0)                new,
+ decode(ad.asset_type,'CIP', 'C', 'EXPENSED','E','')        asset_type,
+ fnd_flex_xml_publisher_apis.process_kff_combination_1('d_comp_code', 'SQLGL', 'GL#', cc.chart_of_accounts_id, null, cc.code_combination_id, 'GL_BALANCING', 'Y', 'VALUE') d_comp_code1,
+ fnd_flex_xml_publisher_apis.process_kff_combination_1('d_cost_ctr', 'SQLGL', 'GL#', cc.chart_of_accounts_id, null, cc.code_combination_id, 'FA_COST_CTR', 'Y', 'VALUE') d_cost_ctr1,
+ fnd_flex_xml_publisher_apis.process_kff_combination_1('d_location', 'OFA', 'LOC#', 101, null, loc.location_id, 'ALL', 'Y', 'VALUE') d_location1
+from
     (
-     SELECT
-       Company_Name,
-       Category_Flex_Structure,
-       Location_Flex_Structure,
-       Asset_Key_Flex_Structure,
-	     FA_FAS410_XMLP_PKG.bookformula() Book,
-	     FA_FAS410_XMLP_PKG.cur_periodformula(FA_FAS410_XMLP_PKG.bookformula()) Cur_Period,
-	     FA_FAS410_XMLP_PKG.report_nameformula() Report_Name,
-	     FA_FAS410_XMLP_PKG.Accounting_Flex_Structure_p Accounting_Flex_Structure,
-	     FA_FAS410_XMLP_PKG.Currency_Code_p Currency_Code,
-	     FA_FAS410_XMLP_PKG.Book_Class_p Book_Class,
-	     FA_FAS410_XMLP_PKG.Distribution_Source_Book_p Distribution_Source_Book,
-	     FA_FAS410_XMLP_PKG.Cur_Period_PC_p Cur_Period_PC
-	   FROM FA_SYSTEM_CONTROLS
+     select
+       company_name,
+       category_flex_structure,
+       location_flex_structure,
+       asset_key_flex_structure,
+         fa_fas410_xmlp_pkg.bookformula() book,
+         fa_fas410_xmlp_pkg.cur_periodformula(fa_fas410_xmlp_pkg.bookformula()) cur_period,
+         fa_fas410_xmlp_pkg.report_nameformula() report_name,
+         fa_fas410_xmlp_pkg.accounting_flex_structure_p accounting_flex_structure,
+         fa_fas410_xmlp_pkg.currency_code_p currency_code,
+         fa_fas410_xmlp_pkg.book_class_p book_class,
+         fa_fas410_xmlp_pkg.distribution_source_book_p distribution_source_book,
+         fa_fas410_xmlp_pkg.cur_period_pc_p cur_period_pc
+       from fa_system_controls
     ) fsc,
     per_people_f            emp,
     fa_additions            ad,
     fa_locations            loc,
     gl_code_combinations    cc,
     fa_books                books,
-    fa_adjustments	adj,
+    fa_adjustments    adj,
     fa_distribution_history dh,
-    fa_lookups 	lu
-WHERE
-  dh.book_type_code      = :P_BOOK    AND
-  dh.assigned_to         = emp.person_id(+)      AND
+    fa_lookups     lu
+where
+  dh.book_type_code      = :p_book    and
+  dh.assigned_to         = emp.person_id(+)      and
   dh.date_effective between nvl(emp.effective_start_date,dh.date_effective)
-                                       and   nvl(emp.effective_end_date,dh.date_effective)  AND
-	fnd_flex_xml_publisher_apis.process_kff_combination_1('d_cost_ctr', 'SQLGL', 'GL#', cc.CHART_OF_ACCOUNTS_ID, NULL, cc.CODE_COMBINATION_ID, 'FA_COST_CTR', 'Y', 'VALUE') between
-	NVL(:P_START_CC,  fnd_flex_xml_publisher_apis.process_kff_combination_1('d_cost_ctr', 'SQLGL', 'GL#', cc.CHART_OF_ACCOUNTS_ID, NULL, cc.CODE_COMBINATION_ID, 'FA_COST_CTR', 'Y', 'VALUE'))  AND
-	NVL(:P_END_CC ,  fnd_flex_xml_publisher_apis.process_kff_combination_1('d_cost_ctr', 'SQLGL', 'GL#', cc.CHART_OF_ACCOUNTS_ID, NULL, cc.CODE_COMBINATION_ID, 'FA_COST_CTR', 'Y', 'VALUE')) AND
-  dh.asset_id            = ad.asset_id            AND
-  dh.location_id         = loc.location_id        AND
-  dh.code_combination_id = cc.code_combination_id AND
-  dh.date_ineffective is null AND
-	lu.lookup_type = 'JOURNAL ENTRIES' and
-	(   (adj.adjustment_type in ('COST','CIP COST') and lu.lookup_code = 'ADDITION COST')
-	 or (adj.adjustment_type = 'RESERVE' and lu.lookup_code = 'DEPRECIATION RESERVE')
-	) AND
-	adj.source_type_code not in ('DEPRECIATION','ADDITION', 'CIP ADDITION') and
- 	adj.book_type_code = :P_BOOK and
-	adj.asset_id = dh.asset_id and
-	adj.distribution_id = dh.distribution_id and
-	adj.period_counter_created = fsc.CUR_PERIOD_PC AND
-  books.book_type_code  = :P_BOOK        AND
+                                       and   nvl(emp.effective_end_date,dh.date_effective)  and
+    fnd_flex_xml_publisher_apis.process_kff_combination_1('d_cost_ctr', 'SQLGL', 'GL#', cc.chart_of_accounts_id, null, cc.code_combination_id, 'FA_COST_CTR', 'Y', 'VALUE') between
+    nvl(:p_start_cc,  fnd_flex_xml_publisher_apis.process_kff_combination_1('d_cost_ctr', 'SQLGL', 'GL#', cc.chart_of_accounts_id, null, cc.code_combination_id, 'FA_COST_CTR', 'Y', 'VALUE'))  and
+    nvl(:p_end_cc ,  fnd_flex_xml_publisher_apis.process_kff_combination_1('d_cost_ctr', 'SQLGL', 'GL#', cc.chart_of_accounts_id, null, cc.code_combination_id, 'FA_COST_CTR', 'Y', 'VALUE')) and
+  dh.asset_id            = ad.asset_id            and
+  dh.location_id         = loc.location_id        and
+  dh.code_combination_id = cc.code_combination_id and
+  dh.date_ineffective is null and
+    lu.lookup_type = 'JOURNAL ENTRIES' and
+    (   (adj.adjustment_type in ('COST','CIP COST') and lu.lookup_code = 'ADDITION COST')
+     or (adj.adjustment_type = 'RESERVE' and lu.lookup_code = 'DEPRECIATION RESERVE')
+    ) and
+    adj.source_type_code not in ('DEPRECIATION','ADDITION', 'CIP ADDITION') and
+     adj.book_type_code = :p_book and
+    adj.asset_id = dh.asset_id and
+    adj.distribution_id = dh.distribution_id and
+    adj.period_counter_created = fsc.cur_period_pc and
+  books.book_type_code  = :p_book        and
   books.asset_id = dh.asset_id and
   books.date_placed_in_service between
-  nvl(:P_FROM_DATE, books.date_placed_in_service) and
-  nvl(:P_TO_DATE, books.date_placed_in_service) AND
-  books.period_counter_fully_retired is null   AND
+  nvl(:p_from_date, books.date_placed_in_service) and
+  nvl(:p_to_date, books.date_placed_in_service) and
+  books.period_counter_fully_retired is null   and
   books.date_ineffective is null
-	group by
+    group by
  fsc.company_name,
  fsc.book,
- fsc.Cur_Period,
-	 fnd_flex_xml_publisher_apis.process_kff_combination_1('d_comp_code', 'SQLGL', 'GL#', cc.CHART_OF_ACCOUNTS_ID, NULL, cc.CODE_COMBINATION_ID, 'GL_BALANCING', 'Y', 'VALUE'),
-	 fnd_flex_xml_publisher_apis.process_kff_combination_1('d_cost_ctr', 'SQLGL', 'GL#', cc.CHART_OF_ACCOUNTS_ID, NULL, cc.CODE_COMBINATION_ID, 'FA_COST_CTR', 'Y', 'VALUE'),
-	 emp.full_name,
-	 fnd_flex_xml_publisher_apis.process_kff_combination_1('d_location', 'OFA', 'LOC#', 101, NULL, loc.LOCATION_ID, 'ALL', 'Y', 'VALUE'),
-   AD.ASSET_NUMBER || ' - ' || AD.DESCRIPTION,
-	 decode(LU.LOOKUP_CODE,'ADDITION COST',decode(adj.source_type_code
-	                                             ,'TRANSFER',decode(adj.debit_credit_flag,'DR',1,-1)*DH.UNITS_ASSIGNED
-	                                             ,'RETIREMENT',decode(adj.debit_credit_flag,'DR',1,-1)*DH.UNITS_ASSIGNED
-	                                             ,'CIP RETIREMENT',decode(adj.debit_credit_flag,'DR',1,-1)*DH.UNITS_ASSIGNED
-	                                             ,'RECLASS',decode(adj.debit_credit_flag,'DR',1,-1)*DH.UNITS_ASSIGNED
-	                                                       ,0)
-	                                      ,0),
-	ad.serial_number,
-	ad.tag_number,
-	decode(AD.ASSET_TYPE,'CIP', 'C', 'EXPENSED','E',''),
-	decode(greatest(BOOKS.DATE_PLACED_IN_SERVICE,NVL(:P_FROM_DATE, BOOKS.DATE_PLACED_IN_SERVICE))
-	      ,	least(BOOKS.DATE_PLACED_IN_SERVICE,NVL(:P_TO_DATE, BOOKS.DATE_PLACED_IN_SERVICE))
-	      ,	1, 0),
-	DECODE(LU.LOOKUP_CODE
-	      ,'ADDITION COST', DECODE(ADJ.DEBIT_CREDIT_FLAG, 'DR', 1, -1) * ADJ.ADJUSTMENT_AMOUNT
-	                      ,0),
-  DECODE(LU.LOOKUP_CODE
-        ,'DEPRECIATION RESERVE',DECODE(ADJ.DEBIT_CREDIT_FLAG, 'DR', -1, 1) * ADJ.ADJUSTMENT_AMOUNT
-                               , 0)
-ORDER BY  13, 14, 4, 15, 5
+ fsc.cur_period,
+     fnd_flex_xml_publisher_apis.process_kff_combination_1('d_comp_code', 'SQLGL', 'GL#', cc.chart_of_accounts_id, null, cc.code_combination_id, 'GL_BALANCING', 'Y', 'VALUE'),
+     fnd_flex_xml_publisher_apis.process_kff_combination_1('d_cost_ctr', 'SQLGL', 'GL#', cc.chart_of_accounts_id, null, cc.code_combination_id, 'FA_COST_CTR', 'Y', 'VALUE'),
+     emp.full_name,
+     fnd_flex_xml_publisher_apis.process_kff_combination_1('d_location', 'OFA', 'LOC#', 101, null, loc.location_id, 'ALL', 'Y', 'VALUE'),
+   ad.asset_number || ' - ' || ad.description,
+     decode(lu.lookup_code,'ADDITION COST',decode(adj.source_type_code
+                                                 ,'TRANSFER',decode(adj.debit_credit_flag,'DR',1,-1)*dh.units_assigned
+                                                 ,'RETIREMENT',decode(adj.debit_credit_flag,'DR',1,-1)*dh.units_assigned
+                                                 ,'CIP RETIREMENT',decode(adj.debit_credit_flag,'DR',1,-1)*dh.units_assigned
+                                                 ,'RECLASS',decode(adj.debit_credit_flag,'DR',1,-1)*dh.units_assigned
+                                                           ,0)
+                                          ,0),
+    ad.serial_number,
+    ad.tag_number,
+    decode(ad.asset_type,'CIP', 'C', 'EXPENSED','E',''),
+    decode(greatest(books.date_placed_in_service,nvl(:p_from_date, books.date_placed_in_service))
+          ,    least(books.date_placed_in_service,nvl(:p_to_date, books.date_placed_in_service))
+          ,    1, 0),
+    decode(lu.lookup_code,'ADDITION COST', decode(adj.debit_credit_flag, 'DR', 1, -1) * adj.adjustment_amount,0),
+  decode(lu.lookup_code,'DEPRECIATION RESERVE',decode(adj.debit_credit_flag, 'DR', -1, 1) * adj.adjustment_amount,0)
+order by  13, 14, 4, 15, 5
 ) x

@@ -99,30 +99,42 @@ select
 vd.name database,
 dhdi.host_name,
 dhdi.instance_name,
-case when extract(day from wwc.retention)>0 then extract(day from wwc.retention)||'d ' end||
-case when extract(hour from wwc.retention)>0 then extract(hour from wwc.retention)||'h ' end||
-case when extract(minute from wwc.retention)>0 then extract(minute from wwc.retention)||'m ' end||
-case when extract(second from wwc.retention)>0 then extract(second from wwc.retention)||'s' end retention,
-case when extract(day from wwc.snap_interval)>0 then extract(day from wwc.snap_interval)||'d ' end||
-case when extract(hour from wwc.snap_interval)>0 then extract(hour from wwc.snap_interval)||'h ' end||
-case when extract(minute from wwc.snap_interval)>0 then extract(minute from wwc.snap_interval)||'m ' end||
-case when extract(second from wwc.snap_interval)>0 then extract(second from wwc.snap_interval)||'s' end snap_interval,
-decode (wwc.topnsql,2000000000,'DEFAULT',2000000001,'MAXIMUM',to_char(wwc.topnsql,'999999999')) topnsql,
-(select count(*) from dba_hist_snapshot dhs where dhdi.dbid=dhs.dbid and dhdi.instance_number=dhs.instance_number) snapshot_count,
+case when extract(day from dhwc.retention)>0 then extract(day from dhwc.retention)||'d ' end||
+case when extract(hour from dhwc.retention)>0 then extract(hour from dhwc.retention)||'h ' end||
+case when extract(minute from dhwc.retention)>0 then extract(minute from dhwc.retention)||'m ' end||
+case when extract(second from dhwc.retention)>0 then extract(second from dhwc.retention)||'s' end retention,
+case when extract(day from dhwc.snap_interval)>0 then extract(day from dhwc.snap_interval)||'d ' end||
+case when extract(hour from dhwc.snap_interval)>0 then extract(hour from dhwc.snap_interval)||'h ' end||
+case when extract(minute from dhwc.snap_interval)>0 then extract(minute from dhwc.snap_interval)||'m ' end||
+case when extract(second from dhwc.snap_interval)>0 then extract(second from dhwc.snap_interval)||'s' end snap_interval,
+dhwc.topnsql,
+dhs.count snapshot_count,
 (select count(*) from dba_hist_sqlstat dhss where dhdi.dbid=dhss.dbid and dhdi.instance_number=dhss.instance_number) sqlstat_count,
-(select count(*) from sys.wrh$_active_session_history wash where (wash.dbid, wash.instance_number, wash.snap_id) in (select ws.dbid, ws.instance_number, ws.snap_id from sys.wrm$_snapshot ws where dhdi.dbid=ws.dbid and dhdi.instance_number=ws.instance_number)) active_sess_history_count,
+(select count(*) from dba_hist_active_sess_history dhash where (dhash.dbid, dhash.instance_number, dhash.snap_id) in (select dhs.dbid, dhs.instance_number, dhs.snap_id from dba_hist_snapshot dhs where dhdi.dbid=dhs.dbid and dhdi.instance_number=dhs.instance_number)) active_sess_history_count,
 (select count(*) from sys.wrh$_active_session_history wash where (wash.dbid, wash.instance_number, wash.snap_id) not in (select ws.dbid, ws.instance_number, ws.snap_id from sys.wrm$_snapshot ws where dhdi.dbid=ws.dbid)) orphan_sess_history_count,
 (select count(*) from sys.wrh$_sysmetric_history wsh where (wsh.dbid, wsh.instance_number, wsh.snap_id) not in (select ws.dbid, ws.instance_number, ws.snap_id from sys.wrm$_snapshot ws where dhdi.dbid=ws.dbid)) orphan_sysmetric_history_count,
-xxen_util.client_time(dhdi.startup_time) startup_time,
-xxen_util.client_time(wwc.most_recent_snap_time) most_recent_snap_time,
-xxen_util.client_time(wwc.most_recent_purge_time) most_recent_purge_time
+xxen_util.client_time(dhs.startup_time) startup_time,
+xxen_util.client_time(dhs.most_recent_snap_time) most_recent_snap_time,
+dhdi.dbid
 from
+dba_hist_wr_control dhwc,
 v$database vd,
-sys.wrm$_wr_control wwc,
-(select x.* from (select max(dhdi.startup_time) over (partition by dhdi.dbid, dhdi.instance_number) max_startup_time, dhdi.* from dba_hist_database_instance dhdi) x where x.startup_time=x.max_startup_time) dhdi
+(select x.* from (select max(dhdi.startup_time) over (partition by dhdi.dbid, dhdi.instance_number) max_startup_time, dhdi.* from dba_hist_database_instance dhdi) x where x.startup_time=x.max_startup_time) dhdi,
+(
+select distinct
+dhs.dbid,
+dhs.instance_number,
+count(*) over (partition by dhs.dbid, dhs.instance_number) count,
+max(dhs.startup_time) over (partition by dhs.dbid, dhs.instance_number) startup_time,
+max(dhs.end_interval_time) over (partition by dhs.dbid, dhs.instance_number) most_recent_snap_time
+from
+dba_hist_snapshot dhs
+) dhs
 where
 1=1 and
-vd.dbid=wwc.dbid and
-wwc.dbid=dhdi.dbid(+)
+dhwc.dbid=vd.dbid and
+dhwc.dbid=dhdi.dbid(+) and
+dhdi.dbid=dhs.dbid(+) and
+dhdi.instance_number=dhs.instance_number(+)
 order by
 dhdi.startup_time desc

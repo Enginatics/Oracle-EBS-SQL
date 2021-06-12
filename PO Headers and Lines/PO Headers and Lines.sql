@@ -44,6 +44,8 @@ x.supplier_item,
 x.contact_name,
 x.contact_phone,
 x.contact_email,
+x.destination_type,
+x.ship_to_organization,
 x.ship_to,
 xxen_util.client_time(x.approved_date) approved_date,
 xxen_util.client_time(x.request_date) request_date,
@@ -155,6 +157,8 @@ pla.vendor_product_num supplier_item,
 nvl2(pvc.first_name,pvc.first_name||' ',null)||nvl2(pvc.middle_name,pvc.middle_name||' ',null)||pvc.first_name contact_name,
 pvc.area_code||pvc.phone contact_phone,
 pvc.email_address contact_email,
+(select xxen_util.meaning(pda.destination_type_code,'DESTINATION TYPE',201) destination_type from po_distributions_all pda where plla.line_location_id=pda.line_location_id and rownum=1) destination_type,
+mp.organization_code ship_to_organization,
 hlat.location_code ship_to,
 rsh.receipt_num receipt,
 (
@@ -189,7 +193,7 @@ aia.invoice_amount,
 aia.amount_paid,
 ppx2.full_name receiver,
 hla.location_code,
-mp.organization_code receiving_organization,
+mp2.organization_code receiving_organization,
 rsh.packing_slip,
 rsl.line_num receipt_line_number,
 rt.quantity receipt_quantity,
@@ -275,6 +279,7 @@ rcv_shipment_lines rsl,
 per_people_x ppx2,
 hr_locations_all hla,
 mtl_parameters mp,
+mtl_parameters mp2,
 mtl_system_items_vl msiv,
 mtl_units_of_measure_tl muot,
 cst_item_costs cic1,
@@ -298,6 +303,7 @@ pla.po_line_id=plla.po_line_id and
 plla.line_location_id=u.line_location_id(+) and
 plla.line_location_id=v.line_location_id(+) and
 plla.shipment_type in ('STANDARD','PLANNED','PRICE BREAK','RFQ','QUOTATION','BLANKET') and
+plla.ship_to_organization_id=mp.organization_id(+) and
 plla.ship_to_location_id=hlat.location_id(+) and
 hlat.language(+)=userenv('lang') and
 pla.inventory_organization_id=msiv.organization_id(+) and
@@ -318,7 +324,7 @@ rt.shipment_header_id=rsh.shipment_header_id(+) and
 rt.shipment_line_id=rsl.shipment_line_id(+) and
 rt.employee_id=ppx2.person_id(+) and
 rt.location_id=hla.location_id(+) and
-rt.organization_id=mp.organization_id(+) and
+rt.organization_id=mp2.organization_id(+) and
 rsl.category_id=mck.category_id(+) and
 plla.line_location_id=aila.po_line_location_id(+) and
 aila.invoice_id=aia.invoice_id(+)

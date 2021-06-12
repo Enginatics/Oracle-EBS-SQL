@@ -30,48 +30,48 @@ select
  mov.source_organization_code                    source_organization,
  mov.supplier_name                               supplier,
  mov.action                                      action_required,
- msc_get_name.lookup_meaning ('MTL_PLANNING_MAKE_BUY',mov.planning_make_buy_code)  "Make/Buy",
+ msc_get_name.lookup_meaning@A2M_DBLINK('MTL_PLANNING_MAKE_BUY',mov.planning_make_buy_code)  "Make/Buy",
  mov.intransit_lead_time                         intransit_lt,
  trunc(mov.promise_date)                         promised_arrival_date,
  trunc(mov.need_by_date)                         need_by_date,
  mov.order_number                                order_number,
  (select trunc(msi.planning_time_fence_date)
-  from   msc_system_items      msi
+  from   msc_system_items@A2M_DBLINK     msi
   where msi.sr_instance_id    = mov.sr_instance_id
     and msi.plan_id           = mov.plan_id
     and msi.organization_id   = mov.organization_id
     and msi.inventory_item_id = mov.inventory_item_id
  )                                               planning_time_fence_date,
  (select msi.fixed_lead_time
-  from   msc_system_items      msi
+  from   msc_system_items@A2M_DBLINK     msi
   where msi.sr_instance_id    = mov.sr_instance_id
     and msi.plan_id           = mov.plan_id
     and msi.organization_id   = mov.organization_id
     and msi.inventory_item_id = mov.inventory_item_id
  )                                               fixed_lt,
  (select msi.variable_lead_time
-  from   msc_system_items      msi
+  from   msc_system_items@A2M_DBLINK     msi
   where msi.sr_instance_id    = mov.sr_instance_id
     and msi.plan_id           = mov.plan_id
     and msi.organization_id   = mov.organization_id
     and msi.inventory_item_id = mov.inventory_item_id
  )                                               variable_lt,
  (select msi.preprocessing_lead_time
-  from   msc_system_items      msi
+  from   msc_system_items@A2M_DBLINK     msi
   where msi.sr_instance_id    = mov.sr_instance_id
     and msi.plan_id           = mov.plan_id
     and msi.organization_id   = mov.organization_id
     and msi.inventory_item_id = mov.inventory_item_id
  )                                               pre_processing_lt,
  (select msi.postprocessing_lead_time
-  from   msc_system_items      msi
+  from   msc_system_items@A2M_DBLINK     msi
   where msi.sr_instance_id    = mov.sr_instance_id
     and msi.plan_id           = mov.plan_id
     and msi.organization_id   = mov.organization_id
     and msi.inventory_item_id = mov.inventory_item_id
  )                                               post_processing_lt,
  (select msi.full_lead_time
-  from   msc_system_items      msi
+  from   msc_system_items@A2M_DBLINK     msi
   where msi.sr_instance_id    = mov.sr_instance_id
     and msi.plan_id           = mov.plan_id
     and msi.organization_id   = mov.organization_id
@@ -97,10 +97,10 @@ select
  mov.demand_priority                             order_priority,
  mov.last_update_date                            last_update_date
 from 
- msc_apps_instances    mai,
- msc_plans             mp,
- msc_orders_v          mov,
- msc_category_sets     mcs 
+ msc_apps_instances@A2M_DBLINK   mai,
+ msc_plans@A2M_DBLINK            mp,
+ msc_orders_v@A2M_DBLINK         mov,
+ msc_category_sets@A2M_DBLINK    mcs 
 where 
     mai.instance_id       = mp.sr_instance_id 
 and mp.sr_instance_id     = mov.sr_instance_id

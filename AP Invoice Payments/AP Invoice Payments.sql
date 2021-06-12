@@ -18,9 +18,17 @@ hou.name operating_unit,
 aps.vendor_name supplier,
 aps.segment1 supplier_number,
 xxen_util.meaning(aps.vendor_type_lookup_code,'VENDOR TYPE',201) supplier_type,
-xxen_util.meaning(aia.invoice_type_lookup_code,'INVOICE TYPE',200) invoice_type,
+assa.vendor_site_code site_code,
+assa.address_line1,
+assa.address_line2,
+assa.city,
+assa.state,
+assa.zip,
+assa.county,
+nvl(ftv.territory_short_name,assa.country) country,
 aia.invoice_date,
 aia.invoice_num invoice_number,
+xxen_util.meaning(aia.invoice_type_lookup_code,'INVOICE TYPE',200) invoice_type,
 aia.description invoice_description,
 decode(aipa.invoice_payment_id,max(aipa.invoice_payment_id) over (partition by aipa.invoice_id),aia.invoice_amount) invoice_amount,
 decode(aipa.invoice_payment_id,max(aipa.invoice_payment_id) over (partition by aipa.invoice_id),decode(aia.invoice_currency_code,gl.currency_code,aia.invoice_amount,aia.base_amount)) invoice_amount_functional,
@@ -33,7 +41,7 @@ trunc(max(aca.check_date) over (partition by aipa.invoice_id)-aia.invoice_date) 
 ipmv.payment_method_name payment_method,
 aca.check_number document_number,
 trunc(aca.check_date) payment_date,
-aipa.accounting_date gl_date,
+aipa.accounting_date accounting_date,
 xxen_util.meaning(aca.status_lookup_code,'CHECK STATE',200) check_state,
 decode(aipa.invoice_payment_id,max(aipa.invoice_payment_id) over (partition by aipa.check_id),aca.amount) check_amount,
 decode(aipa.invoice_payment_id,max(aipa.invoice_payment_id) over (partition by aipa.check_id),decode(aca.currency_code,gl.currency_code,aca.amount,aca.base_amount)) check_amount_functional,
@@ -77,6 +85,8 @@ ap_checks_all aca,
 gl_daily_rates gdr,
 ap_invoices_all aia,
 ap_suppliers aps,
+ap_supplier_sites_all assa,
+fnd_territories_vl ftv,
 ap_terms_vl atv,
 ce_bank_acct_uses_all cbaua,
 ce_bank_accounts cba,
@@ -95,6 +105,8 @@ aca.check_date=gdr.conversion_date(+) and
 gdr.conversion_type(+)='Corporate' and
 aipa.invoice_id=aia.invoice_id and
 aia.vendor_id=aps.vendor_id and
+aia.vendor_site_id=assa.vendor_site_id and
+assa.country=ftv.territory_code(+) and
 aps.terms_id=atv.term_id(+) and
 aca.ce_bank_acct_use_id=cbaua.bank_acct_use_id(+) and
 cbaua.bank_account_id=cba.bank_account_id(+) and

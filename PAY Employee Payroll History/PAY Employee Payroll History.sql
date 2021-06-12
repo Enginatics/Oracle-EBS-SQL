@@ -20,7 +20,8 @@ ptp.period_name,
 sum(decode(pec.classification_name,'Earnings',to_number(prrv.result_value))) earnings,
 sum(decode(pec.classification_name,'Involuntary Deductions',to_number(prrv.result_value))) involuntary_deductions,
 sum(decode(pec.classification_name,'Employer Charges',to_number(prrv.result_value))) employer_charges,
-sum(decode(pec.classification_name,'Information',to_number(prrv.result_value))) information
+sum(decode(pec.classification_name,'Information',to_number(prrv.result_value))) information,
+papf.employee_number||' - '||papf.full_name employee_number_and_name
 from
 hr_all_organization_units_vl haouv,
 (select papf.* from per_all_people_f papf where :effective_date between papf.effective_start_date and papf.effective_end_date) papf,

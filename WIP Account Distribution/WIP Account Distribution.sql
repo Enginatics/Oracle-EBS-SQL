@@ -48,6 +48,9 @@ xxen_util.meaning(wdj.wip_supply_type,'WIP_SUPPLY',700) wip_supply_type,
 mck.concatenated_segments item_category,
 ood.organization_code,
 ood.organization_name,
+nvl(ppx.npw_number,ppx.employee_number) employee_num,
+ppx.full_name employee,
+poh.segment1 po_number,
 gl.name ledger,
 wta.gl_batch_id gl_batch,
 ogb.gl_batch_date,
@@ -70,7 +73,9 @@ mtl_units_of_measure_tl muot,
 cst_activities ca,
 org_organization_definitions ood,
 gl_ledgers gl,
-org_gl_batches ogb
+org_gl_batches ogb,
+per_people_x ppx,
+po_headers_all poh
 where
 1=1 and
 wta.accounting_line_type<>15 and
@@ -98,7 +103,9 @@ wta.activity_id=ca.activity_id(+) and
 wta.organization_id=ood.organization_id and
 ood.set_of_books_id=gl.ledger_id and
 wta.organization_id=ogb.organization_id(+) and
-wta.gl_batch_id=ogb.gl_batch_id(+)
+wta.gl_batch_id=ogb.gl_batch_id(+) and
+ppx.person_id(+)=wt.employee_id and
+poh.po_header_id(+)=wt.po_header_id
 order by
 wta.transaction_date desc,
 wta.transaction_id desc,

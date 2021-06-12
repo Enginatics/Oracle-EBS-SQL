@@ -20,7 +20,7 @@ coalesce(x.vendor_or_customer,(select hp.party_name from hz_cust_accounts hca, h
 from
 (
 select
-gjh.period_name,
+case when count(distinct gp.period_num) over ()>1 then lpad(gp.period_num,2,'0')||' ' end||gjh.period_name period_name,
 gl.name ledger,
 (select gjsv.user_je_source_name from gl_je_sources_vl gjsv where gjh.je_source=gjsv.je_source_name) source_name,
 (select gjcv.user_je_category_name from gl_je_categories_vl gjcv where gjh.je_category=gjcv.je_category_name) category_name,
@@ -31,9 +31,12 @@ gjh.name journal_name,
 gjh.description journal_description,
 gjh.doc_sequence_value document_number,
 xxen_util.meaning(gjh.tax_status_code,'TAX_STATUS',101) tax_status_code,
+gjl.je_line_num line_number,
+gcck.concatenated_segments,
 gjl.description line_description,
 xxen_util.meaning(xal.accounting_class_code,'XLA_ACCOUNTING_CLASS',602) accounting_class_code,
-xxen_util.meaning(gcc.account_type,'ACCOUNT_TYPE',0) account_type,
+xxen_util.meaning(gcck.gl_account_type,'ACCOUNT_TYPE',0) account_type,
+&hierarchy_levels3
 &segment_columns
 nvl2(xal.gl_sl_link_id,xal.entered_dr,gjl.entered_dr) entered_dr,
 nvl2(xal.gl_sl_link_id,xal.entered_cr,gjl.entered_cr) entered_cr,
@@ -90,6 +93,7 @@ xal.ae_line_num,
 xah.event_id,
 xe.event_date,
 xte.entity_code,
+&segments_with_desc
 xte.source_id_int_1,
 case when xte.application_id=222 then case when xte.entity_code in ('TRANSACTIONS','BILLS_RECEIVABLE') then xte.source_id_int_1 when xte.entity_code='ADJUSTMENTS' then aaa.customer_trx_id end end customer_trx_id,
 paa.customer_id paa_customer_id,
@@ -105,7 +109,48 @@ xla_ae_lines xal,
 xla_ae_headers xah,
 xla_events xe,
 xla.xla_transaction_entities xte,
-gl_code_combinations gcc,
+(
+select
+&hierarchy_levels2
+gcck.*
+from
+(
+select
+(select fifs.flex_value_set_id from fnd_id_flex_segments fifs where gcck.chart_of_accounts_id=fifs.id_flex_num and fifs.application_id=101 and fifs.id_flex_code='GL#' and fifs.application_column_name='&hierarchy_segment_column') flex_value_set_id,
+gcck.*
+from
+gl_code_combinations_kfv gcck
+) gcck,
+(
+select
+&hierarchy_levels
+x.flex_value_set_id,
+x.child_flex_value_low,
+x.child_flex_value_high
+from
+(
+select
+substr(sys_connect_by_path(ffvnh.parent_flex_value,'|'),2) path,
+ffvnh.child_flex_value_low,
+ffvnh.child_flex_value_high,
+ffvnh.flex_value_set_id
+from
+(select ffvnh.* from fnd_flex_value_norm_hierarchy ffvnh where ffvnh.flex_value_set_id=:flex_value_set_id) ffvnh
+where
+connect_by_isleaf=1 and
+ffvnh.range_attribute='C'
+connect by nocycle
+ffvnh.parent_flex_value between prior ffvnh.child_flex_value_low and prior ffvnh.child_flex_value_high and
+ffvnh.flex_value_set_id=prior ffvnh.flex_value_set_id and
+prior ffvnh.range_attribute='P'
+start with
+ffvnh.parent_flex_value=:parent_flex_value
+) x
+) h
+where
+2=2 and
+gcck.flex_value_set_id=h.flex_value_set_id(+)
+) gcck,
 ap_invoices_all aia,
 (select distinct aida.invoice_id, min(aida.project_id) keep (dense_rank first order by aida.invoice_distribution_id) over (partition by aida.invoice_id) project_id, min(aida.task_id) keep (dense_rank first order by aida.invoice_distribution_id) over (partition by aida.invoice_id) task_id from ap_invoice_distributions_all aida where aida.task_id is not null) aida,
 ap_checks_all aca,
@@ -138,7 +183,7 @@ xah.event_id=xe.event_id(+) and
 xah.application_id=xe.application_id(+) and
 xah.entity_id=xte.entity_id(+) and
 xah.application_id=xte.application_id(+) and
-gjl.code_combination_id=gcc.code_combination_id and
+gjl.code_combination_id=gcck.code_combination_id and
 case when xte.application_id=200 and xte.entity_code='AP_INVOICES' then xte.source_id_int_1 end=aia.invoice_id(+) and
 aia.invoice_id=aida.invoice_id(+) and
 case when xte.application_id=200 and xte.entity_code='AP_PAYMENTS' then xte.source_id_int_1 end=aca.check_id(+) and

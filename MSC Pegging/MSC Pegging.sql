@@ -20,10 +20,10 @@ select
  msi.item_name item,
  mcs.category_set_name,
  mic.category_name,
- msc_get_name.lookup_meaning ('MTL_PLANNING_MAKE_BUY',msi.planning_make_buy_code)  "Make/Buy",
- msc_get_name.lookup_meaning ('MRP_ORDER_TYPE',ms.order_type) supply_type,
- msc_get_name.supply_order_number ( ms.order_type ,ms.order_number ,ms.plan_id ,ms.sr_instance_id ,ms.transaction_id ,ms.disposition_id ) order_number,
- msc_get_name.action 
+ msc_get_name.lookup_meaning@A2M_DBLINK('MTL_PLANNING_MAKE_BUY',msi.planning_make_buy_code)  "Make/Buy",
+ msc_get_name.lookup_meaning@A2M_DBLINK('MRP_ORDER_TYPE',ms.order_type) supply_type,
+ msc_get_name.supply_order_number@A2M_DBLINK( ms.order_type ,ms.order_number ,ms.plan_id ,ms.sr_instance_id ,ms.transaction_id ,ms.disposition_id ) order_number,
+ msc_get_name.action@A2M_DBLINK
      ('MSC_SUPPLIES', msi.bom_item_type, msi.base_item_id, msi.wip_supply_type, ms.order_type, ms.reschedule_flag
      , ms.disposition_status_type, ms.new_schedule_date, ms.old_schedule_date, ms.implemented_quantity
      , ms.quantity_in_process, ms.new_order_quantity, msi.release_time_fence_code, ms.reschedule_days, ms.firm_quantity
@@ -33,32 +33,32 @@ select
  mfp.allocated_quantity                          allocated_qty,
  round(mfp.allocated_quantity, 1)                pegged_qty,
  mfp.demand_quantity                             demand_qty,
- msc_get_name.lookup_meaning ('MSC_DEMAND_ORIGINATION',md.origination_type) peg_type,
+ msc_get_name.lookup_meaning@A2M_DBLINK('MSC_DEMAND_ORIGINATION',md.origination_type) peg_type,
  case when mfp.demand_id < 0
- then msc_get_name.lookup_meaning ('MRP_FLP_SUPPLY_DEMAND_TYPE',mfp.demand_id)
+ then msc_get_name.lookup_meaning@A2M_DBLINK('MRP_FLP_SUPPLY_DEMAND_TYPE',mfp.demand_id)
  else null
  end                                             peg_other,
  nvl(md.order_number,
       decode(md.origination_type
             , 1, to_char(md.disposition_id)
-            , 3, msc_get_name.job_name (md.disposition_id, md.plan_id, md.sr_instance_id)
+            , 3, msc_get_name.job_name@A2M_DBLINK(md.disposition_id, md.plan_id, md.sr_instance_id)
             , 22, to_char(md.disposition_id)
-            , 50, msc_get_name.maintenance_plan (md.schedule_designator_id)
-            , 70, msc_get_name.maintenance_plan (md.schedule_designator_id)
-            , 92, msc_get_name.maintenance_plan (md.schedule_designator_id )
+            , 50, msc_get_name.maintenance_plan@A2M_DBLINK(md.schedule_designator_id)
+            , 70, msc_get_name.maintenance_plan@A2M_DBLINK(md.schedule_designator_id)
+            , 92, msc_get_name.maintenance_plan@A2M_DBLINK(md.schedule_designator_id )
             , 29,decode(md.plan_id
-                       , -11, msc_get_name.designator (md.schedule_designator_id)
+                       , -11, msc_get_name.designator@A2M_DBLINK(md.schedule_designator_id)
                             , decode(msi.in_source_plan
-                                    ,1,msc_get_name.designator (md.schedule_designator_id, md.forecast_set_id )
-                                    , msc_get_name.scenario_designator (md.forecast_set_id, md.plan_id, md.organization_id, md.sr_instance_id)
-                                      || decode(msc_get_name.designator (md.schedule_designator_id,md.forecast_set_id )
+                                    ,1,msc_get_name.designator@A2M_DBLINK(md.schedule_designator_id, md.forecast_set_id )
+                                    , msc_get_name.scenario_designator@A2M_DBLINK(md.forecast_set_id, md.plan_id, md.organization_id, md.sr_instance_id)
+                                      || decode(msc_get_name.designator@A2M_DBLINK(md.schedule_designator_id,md.forecast_set_id )
                                                , null, null
-                                                     , '/'||msc_get_name.designator (md.schedule_designator_id,md.forecast_set_id )
+                                                     , '/'||msc_get_name.designator@A2M_DBLINK(md.schedule_designator_id,md.forecast_set_id )
                                                )
                                     )
                        )
             , 78, to_char(md.disposition_id)
-                , msc_get_name.designator (md.schedule_designator_id)
+                , msc_get_name.designator@A2M_DBLINK(md.schedule_designator_id)
             )
       )                                          demand_order_number,
  nvl(md.demand_priority,md2.demand_priority)     demand_priority,
@@ -69,28 +69,28 @@ select
  ms.firm_quantity                                firm_supply_qty,
  -- prev pegging
  msi2.item_name                                  using_assembly_item,
- msc_get_name.lookup_meaning ('MSC_DEMAND_ORIGINATION',md2.origination_type)  assembly_peg_type,
+ msc_get_name.lookup_meaning@A2M_DBLINK('MSC_DEMAND_ORIGINATION',md2.origination_type)  assembly_peg_type,
  nvl(md2.order_number,
       decode(md2.origination_type
             , 1, to_char(md2.disposition_id)
-            , 3, msc_get_name.job_name (md2.disposition_id, md2.plan_id, md2.sr_instance_id)
+            , 3, msc_get_name.job_name@A2M_DBLINK(md2.disposition_id, md2.plan_id, md2.sr_instance_id)
             , 22, to_char(md2.disposition_id)
-            , 50, msc_get_name.maintenance_plan (md2.schedule_designator_id)
-            , 70, msc_get_name.maintenance_plan (md2.schedule_designator_id)
-            , 92, msc_get_name.maintenance_plan (md2.schedule_designator_id )
+            , 50, msc_get_name.maintenance_plan@A2M_DBLINK(md2.schedule_designator_id)
+            , 70, msc_get_name.maintenance_plan@A2M_DBLINK(md2.schedule_designator_id)
+            , 92, msc_get_name.maintenance_plan@A2M_DBLINK(md2.schedule_designator_id )
             , 29,decode(md2.plan_id
-                       , -11, msc_get_name.designator (md2.schedule_designator_id)
+                       , -11, msc_get_name.designator@A2M_DBLINK(md2.schedule_designator_id)
                             , decode(msi2.in_source_plan
-                                    ,1,msc_get_name.designator (md2.schedule_designator_id, md2.forecast_set_id )
-                                    , msc_get_name.scenario_designator (md2.forecast_set_id, md2.plan_id, md2.organization_id, md2.sr_instance_id)
-                                      || decode(msc_get_name.designator (md2.schedule_designator_id,md2.forecast_set_id )
+                                    ,1,msc_get_name.designator@A2M_DBLINK(md2.schedule_designator_id, md2.forecast_set_id )
+                                    , msc_get_name.scenario_designator@A2M_DBLINK(md2.forecast_set_id, md2.plan_id, md2.organization_id, md2.sr_instance_id)
+                                      || decode(msc_get_name.designator@A2M_DBLINK(md2.schedule_designator_id,md2.forecast_set_id )
                                                , null, null
-                                                     , '/'||msc_get_name.designator (md2.schedule_designator_id,md2.forecast_set_id )
+                                                     , '/'||msc_get_name.designator@A2M_DBLINK(md2.schedule_designator_id,md2.forecast_set_id )
                                                )
                                     )
                        )
             , 78, to_char(md2.disposition_id)
-                , msc_get_name.designator (md2.schedule_designator_id)
+                , msc_get_name.designator@A2M_DBLINK(md2.schedule_designator_id)
             )
       )                                          assembly_demand_order,
  trunc(md2.using_assembly_demand_date)           assembly_demand_date,
@@ -100,19 +100,19 @@ select
  round(mfp2.demand_quantity, 1)                  assembly_demand_qty,
  round(mfp2.allocated_quantity, 1)               assembly_allocated_qty
 from
- msc_apps_instances           mai,
- msc_plans                    mp,
- msc_plan_organizations       mpo,
- msc_system_items             msi,
- msc_item_categories          mic,
- msc_category_sets            mcs,
- msc_supplies                 ms,
- msc_demands                  md,
- msc_full_pegging             mfp,
+ msc_apps_instances@A2M_DBLINK          mai,
+ msc_plans@A2M_DBLINK                   mp,
+ msc_plan_organizations@A2M_DBLINK      mpo,
+ msc_system_items@A2M_DBLINK            msi,
+ msc_item_categories@A2M_DBLINK         mic,
+ msc_category_sets@A2M_DBLINK           mcs,
+ msc_supplies@A2M_DBLINK                ms,
+ msc_demands@A2M_DBLINK                 md,
+ msc_full_pegging@A2M_DBLINK            mfp,
  --
- msc_full_pegging             mfp2,
- msc_demands                  md2,
- msc_system_items             msi2
+ msc_full_pegging@A2M_DBLINK            mfp2,
+ msc_demands@A2M_DBLINK                 md2,
+ msc_system_items@A2M_DBLINK            msi2
  --
 where
     mai.instance_id          = mp.sr_instance_id 

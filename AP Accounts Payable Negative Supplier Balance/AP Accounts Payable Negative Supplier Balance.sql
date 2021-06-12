@@ -14,23 +14,23 @@ DB package: XLA_TB_AP_REPORT_PVT
 -- Run Report: https://demo.enginatics.com/
 
 select 
- x.ACCOUNT "Liability Account"
-,x.THIRD_PARTY_NAME "Supplier Name"
+ x.account liability_account
+,x.third_party_name supplier_name
 &sum_or_detail_cols
 from
  (select
-    xtb.ACCOUNT
-  ,xtb.THIRD_PARTY_NAME
-  ,xtb.USER_TRX_IDENTIFIER_VALUE_3
-  ,xtb.USER_TRX_IDENTIFIER_VALUE_10
-  ,xtb.USER_TRX_IDENTIFIER_VALUE_8
-  ,xtb.LEDGER_CURRENCY_CODE
-  ,xtb.SRC_ACCTD_ROUNDED_ORIG_AMT
-  ,xtb.SRC_ACCTD_ROUNDED_REM_AMT
-  ,sum(xtb.SRC_ACCTD_ROUNDED_REM_AMT) over(partition by xtb.ACCOUNT,xtb.THIRD_PARTY_NAME)  sum_supp_liability
+    xtb.account
+  ,xtb.third_party_name
+  ,xtb.user_trx_identifier_value_3
+  ,xtb.user_trx_identifier_value_10
+  ,xtb.user_trx_identifier_value_8
+  ,xtb.ledger_currency_code
+  ,xtb.src_acctd_rounded_orig_amt
+  ,xtb.src_acctd_rounded_rem_amt
+  ,sum(xtb.src_acctd_rounded_rem_amt) over(partition by xtb.account,xtb.third_party_name)  sum_supp_liability
   from 
-    (       &P_SQL_STATEMENT
-     AND :L_RUN_DETAIL_REPORT = 'Y'
+    (       &p_sql_statement
+     and :l_run_detail_report = 'Y'
     ) xtb
  ) x
 where

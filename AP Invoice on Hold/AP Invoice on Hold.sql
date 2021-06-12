@@ -14,489 +14,489 @@ DB package: AP_APXINROH_XMLP_PKG
 -- Run Report: https://demo.enginatics.com/
 
 select
- :c_company_name_header "Company Name"
-,x.C_HOLD_TYPE "Hold Type"
-,x.C_NLS_HOLD_CODE "Hold Name"
-,x.C_HOLD_CODE "Hold Code"
-&C_DETAIL_NLS_HOLD_DESC
-,x.C_BATCH_NAME "Batch Name"
-,x.C_VENDOR_NAME "Trading Partner"
-,x.C_VENDOR_SITE "Site"
-,x.C_INVOICE_NUM "Invoice Number"
-,(SELECT distinct poh.segment1
-   FROM  po_headers poh,
-	       po_line_locations poll,
-	       ap_holds ah
-   WHERE  ah.release_lookup_code   IS NULL
-   AND   	ah.line_location_id = poll.line_location_id
-   AND   	poll.po_header_id = poh.po_header_id
-   AND    ah.invoice_id = x.C_INVOICE_ID
-   AND    rownum <= 1
+ :c_company_name_header company_name
+,x.c_hold_type
+,x.c_nls_hold_code hold_name
+,x.c_hold_code
+&c_detail_nls_hold_desc
+,x.c_batch_name batch_name
+,x.c_vendor_name trading_partner
+,x.c_vendor_site site
+,x.c_invoice_num invoice_number
+,(select distinct poh.segment1
+   from  po_headers poh,
+           po_line_locations poll,
+           ap_holds ah
+   where  ah.release_lookup_code   is null
+   and       ah.line_location_id = poll.line_location_id
+   and       poll.po_header_id = poh.po_header_id
+   and    ah.invoice_id = x.c_invoice_id
+   and    rownum <= 1
  )  "PO Number"
-,x.C_MONTH_NAME "Invoice Month"
-,x.C_INVOICE_DATE "Invoice Date"
-,x.C_ORIGINAL_AMOUNT "Original Amount (Func Curr)"
-,x.C_AMOUNT_REMAINING "Amount Remaining (Func Curr)"
-,NVL( (select distinct listagg(description,', ') within group (order by description) description
+,x.c_month_name invoice_month
+,x.c_invoice_date invoice_date
+,x.c_original_amount "Original Amount (Func Curr)"
+,x.c_amount_remaining "Amount Remaining (Func Curr)"
+,nvl( (select distinct listagg(description,', ') within group (order by description) description
        from
         (
            select distinct
              aid.invoice_id
            , ah.hold_lookup_code
-           , AP_UTILITIES_PKG.get_charge_account(aid.DIST_CODE_COMBINATION_ID,gls.chart_of_accounts_id,'APXINROH') description
+           , ap_utilities_pkg.get_charge_account(aid.dist_code_combination_id,gls.chart_of_accounts_id,'APXINROH') description
            from
              ap_invoice_distributions aid
-    	     , gl_sets_of_books         gls
-    	     , ap_holds                 ah
-    	     where
-    	         :P_INVALID_DIST_ACC     ='Y'
-    	     and ah.hold_lookup_code     = 'DIST ACCT INVALID'
-    	     and ah.release_lookup_code IS NULL
-    	     and aid.invoice_id          = ah.invoice_id
-    	     and gls.set_of_books_id     = aid.set_of_books_id
+             , gl_sets_of_books         gls
+             , ap_holds                 ah
+             where
+                 :p_invalid_dist_acc     ='Y'
+             and ah.hold_lookup_code     = 'DIST ACCT INVALID'
+             and ah.release_lookup_code is null
+             and aid.invoice_id          = ah.invoice_id
+             and gls.set_of_books_id     = aid.set_of_books_id
            and (
-                 EXISTS (select 'x'
-                  from gl_code_combinations C
-                  where aid.dist_code_combination_id = C.code_combination_id (+)
-                  and (C.code_combination_id is null
-                         or C.detail_posting_allowed_flag = 'N'
-                         or trunc(C.start_date_active) > aid.accounting_date
-                         or trunc(C.end_date_active) < aid.accounting_date
-                         or C.template_id is not null
-                         or C.enabled_flag <> 'Y'
-                         or C.summary_flag <>'N'
+                 exists (select 'x'
+                  from gl_code_combinations c
+                  where aid.dist_code_combination_id = c.code_combination_id (+)
+                  and (c.code_combination_id is null
+                         or c.detail_posting_allowed_flag = 'N'
+                         or trunc(c.start_date_active) > aid.accounting_date
+                         or trunc(c.end_date_active) < aid.accounting_date
+                         or c.template_id is not null
+                         or c.enabled_flag <> 'Y'
+                         or c.summary_flag <>'N'
                          ))
-                OR
+                or
                   (aid.dist_code_combination_id = -1)
                )
         ) d
        where
-           d.invoice_id        = x.C_INVOICE_ID
-       and d.hold_lookup_code  = x.C_HOLD_CODE
+           d.invoice_id        = x.c_invoice_id
+       and d.hold_lookup_code  = x.c_hold_code
       )
-    , x.C_DESCRIPTION
-    ) "Description"
+    , x.c_description
+    ) description
 from
 (
-SELECT -- Invoices on Hold
-  decode(:P_ORDER_BY, 'Hold Name','Do not sort by vendor name', decode(:SORT_BY_ALTERNATE, 'Y', upper(hp.organization_name_phonetic), upper(hp.party_name))) C_SORT_VENDOR_NAME,
-  decode(:P_ORDER_BY, 'Vendor Name','Do not sort by Hold Name', upper(decode(h.hold_lookup_code, null,:C_NLS_NA, alc.displayed_field))) C_SORT_NLS_HOLD_CODE1,
-  hp.party_name C_VENDOR_NAME,
-  inv1.vendor_id C_VENDOR_ID,
-  VS.vendor_site_code C_VENDOR_SITE,
-  decode(h.hold_lookup_code, null,:C_NLS_NA, h.hold_lookup_code)  C_HOLD_CODE,
-  decode(h.hold_lookup_code, null,:C_NLS_NA, alc.displayed_field) C_NLS_HOLD_CODE,
-  decode(h.hold_lookup_code, null,:C_NLS_NA, alc.description)     C_NLS_HOLD_DESC,
-  decode(ahc.postable_flag,'Y',:c_nls_yes,:c_nls_no)              C_POSTABLE,
-  to_char(inv1.invoice_date,'YYYYMM') C_SORT_MONTH,
-  to_char(inv1.invoice_date,'fmMonth YYYY') C_MONTH_NAME,
-  inv1.invoice_date C_INVOICE_DATE,
-  B.batch_name C_BATCH_NAME,
-  inv1.invoice_id C_INVOICE_ID,
-  inv1.invoice_num C_INVOICE_NUM,
-  DECODE(inv1.invoice_currency_code, :C_BASE_CURRENCY_CODE, inv1.invoice_amount, inv1.base_amount) C_ORIGINAL_AMOUNT,
-  DECODE(inv1.invoice_currency_code,
-                 :C_BASE_CURRENCY_CODE, inv1.invoice_amount,
+select -- invoices on hold
+  decode(:p_order_by, 'Hold Name','Do not sort by vendor name', decode(:sort_by_alternate, 'Y', upper(hp.organization_name_phonetic), upper(hp.party_name))) c_sort_vendor_name,
+  decode(:p_order_by, 'Vendor Name','Do not sort by Hold Name', upper(decode(h.hold_lookup_code, null,:c_nls_na, alc.displayed_field))) c_sort_nls_hold_code1,
+  hp.party_name c_vendor_name,
+  inv1.vendor_id c_vendor_id,
+  vs.vendor_site_code c_vendor_site,
+  decode(h.hold_lookup_code, null,:c_nls_na, h.hold_lookup_code)  c_hold_code,
+  decode(h.hold_lookup_code, null,:c_nls_na, alc.displayed_field) c_nls_hold_code,
+  decode(h.hold_lookup_code, null,:c_nls_na, alc.description)     c_nls_hold_desc,
+  decode(ahc.postable_flag,'Y',:c_nls_yes,:c_nls_no)              c_postable,
+  to_char(inv1.invoice_date,'YYYYMM') c_sort_month,
+  to_char(inv1.invoice_date,'fmMonth YYYY') c_month_name,
+  inv1.invoice_date c_invoice_date,
+  b.batch_name c_batch_name,
+  inv1.invoice_id c_invoice_id,
+  inv1.invoice_num c_invoice_num,
+  decode(inv1.invoice_currency_code, :c_base_currency_code, inv1.invoice_amount, inv1.base_amount) c_original_amount,
+  decode(inv1.invoice_currency_code,
+                 :c_base_currency_code, inv1.invoice_amount,
                 inv1.base_amount) -
-    DECODE(inv1.payment_currency_code,
-                 :C_BASE_CURRENCY_CODE,
-                      nvl(inv1.amount_paid,0) + NVL(discount_amount_taken,0),
-                 DECODE(F.minimum_accountable_unit,
-                       NULL, ROUND(((DECODE(inv1.payment_cross_rate_type,
+    decode(inv1.payment_currency_code,
+                 :c_base_currency_code,
+                      nvl(inv1.amount_paid,0) + nvl(discount_amount_taken,0),
+                 decode(f.minimum_accountable_unit,
+                       null, round(((decode(inv1.payment_cross_rate_type,
                                                  'EMU FIXED', 1/inv1.payment_cross_rate,
                                                  inv1.exchange_rate)) *
                                                   nvl(inv1.amount_paid,0)),
-                                                 F.precision),
-                       ROUND(((DECODE(inv1.payment_cross_rate_type,
+                                                 f.precision),
+                       round(((decode(inv1.payment_cross_rate_type,
                                        'EMU FIXED', 1/inv1.payment_cross_rate,
                                        inv1.exchange_rate)) * nvl(inv1.amount_paid,0)) /
-                                       F.minimum_accountable_unit) *
-                                       F.minimum_accountable_unit)   +
-                DECODE(F.minimum_accountable_unit,
-                     NULL, ROUND(((DECODE(inv1.payment_cross_rate_type,
+                                       f.minimum_accountable_unit) *
+                                       f.minimum_accountable_unit)   +
+                decode(f.minimum_accountable_unit,
+                     null, round(((decode(inv1.payment_cross_rate_type,
                                                'EMU FIXED', 1/inv1.payment_cross_rate,
                                               inv1.exchange_rate)) *
-                                              NVL(inv1.discount_amount_taken,0)),
-                                              F.precision),
-                    ROUND(((DECODE(inv1.payment_cross_rate_type,
+                                              nvl(inv1.discount_amount_taken,0)),
+                                              f.precision),
+                    round(((decode(inv1.payment_cross_rate_type,
                                     'EMU FIXED', 1/inv1.payment_cross_rate,
                                     inv1.exchange_rate)) *
                                     nvl(inv1.discount_amount_taken,0)) /
-                                    F.minimum_accountable_unit) *
-                                    F.minimum_accountable_unit))
-                 C_AMOUNT_REMAINING,
-  inv1.description C_DESCRIPTION,
-  'Invoice Hold' C_HOLD_TYPE
-FROM
+                                    f.minimum_accountable_unit) *
+                                    f.minimum_accountable_unit))
+                 c_amount_remaining,
+  inv1.description c_description,
+  'Invoice Hold' c_hold_type
+from
   hz_parties hp,
-  ap_supplier_sites VS,
+  ap_supplier_sites vs,
   ap_invoices inv1,
-  ap_batches B,
-  ap_payment_schedules S,
+  ap_batches b,
+  ap_payment_schedules s,
   ap_holds h,
   ap_hold_codes ahc,
   ap_lookup_codes alc,
-  fnd_currencies_vl F
-WHERE
+  fnd_currencies_vl f
+where
       hp.party_id = inv1.party_id
-  AND VS.vendor_id (+) = inv1.vendor_id
-  AND VS.vendor_site_id (+) = inv1.vendor_site_id
-  AND h.invoice_id = inv1.invoice_id
-  AND B.batch_id(+) = inv1.batch_id
-  AND S.invoice_id(+) = inv1.invoice_id
-  AND h.hold_lookup_code = nvl(:P_HOLD_CODE,h.hold_lookup_code)
-  AND h.release_lookup_code IS NULL
-  AND F.currency_code = :C_BASE_CURRENCY_CODE &c_vendor_clause
-  AND trunc(inv1.creation_date) >= DECODE(:P_START_CREATION_DATE, null,trunc(inv1.creation_date), :P_START_CREATION_DATE)
-  AND trunc(inv1.creation_date) <= DECODE(:P_END_CREATION_DATE, null,trunc(inv1.creation_date), :P_END_CREATION_DATE)
-  AND   (
-         (NVL(S.due_date, sysdate) >= DECODE(:P_START_DUE_DATE, null,
-             NVL(S.due_date, sysdate), :P_START_DUE_DATE)
-         AND NVL(S.due_date, sysdate) <= DECODE(:P_END_DUE_DATE, null,
-             NVL(S.due_date, sysdate), :P_END_DUE_DATE) )
-         AND
-         ( (NVL(S.discount_date, sysdate) >=
-                   DECODE(:P_START_DISCOUNT_DATE, null,
-         NVL(S.discount_date, sysdate), :P_START_DISCOUNT_DATE)
-            AND NVL(S.discount_date, sysdate) <=
-                    DECODE(:P_END_DISCOUNT_DATE, null,
-         NVL(S.discount_date, sysdate), :P_END_DISCOUNT_DATE) )
-            OR
-                (NVL(S.second_discount_date, sysdate) >=
-                     DECODE(:P_START_DISCOUNT_DATE, null,
-            NVL(S.second_discount_date, sysdate),:P_START_DISCOUNT_DATE)
-            AND NVL(S.second_discount_date, sysdate) <=
-                     DECODE(:P_END_DISCOUNT_DATE, null,
-             NVL(S.second_discount_date, sysdate), :P_END_DISCOUNT_DATE) )
-            OR
-               (NVL(S.third_discount_date, sysdate) >=
-                     DECODE(:P_START_DISCOUNT_DATE, null,
-            NVL(S.third_discount_date, sysdate), :P_START_DISCOUNT_DATE)
-            AND NVL(S.third_discount_date, sysdate) <=
-                    DECODE(:P_END_DISCOUNT_DATE, null,
-            NVL(S.third_discount_date, sysdate), :P_END_DISCOUNT_DATE) )
+  and vs.vendor_id (+) = inv1.vendor_id
+  and vs.vendor_site_id (+) = inv1.vendor_site_id
+  and h.invoice_id = inv1.invoice_id
+  and b.batch_id(+) = inv1.batch_id
+  and s.invoice_id(+) = inv1.invoice_id
+  and h.hold_lookup_code = nvl(:p_hold_code,h.hold_lookup_code)
+  and h.release_lookup_code is null
+  and f.currency_code = :c_base_currency_code &c_vendor_clause
+  and trunc(inv1.creation_date) >= decode(:p_start_creation_date, null,trunc(inv1.creation_date), :p_start_creation_date)
+  and trunc(inv1.creation_date) <= decode(:p_end_creation_date, null,trunc(inv1.creation_date), :p_end_creation_date)
+  and   (
+         (nvl(s.due_date, sysdate) >= decode(:p_start_due_date, null,
+             nvl(s.due_date, sysdate), :p_start_due_date)
+         and nvl(s.due_date, sysdate) <= decode(:p_end_due_date, null,
+             nvl(s.due_date, sysdate), :p_end_due_date) )
+         and
+         ( (nvl(s.discount_date, sysdate) >=
+                   decode(:p_start_discount_date, null,
+         nvl(s.discount_date, sysdate), :p_start_discount_date)
+            and nvl(s.discount_date, sysdate) <=
+                    decode(:p_end_discount_date, null,
+         nvl(s.discount_date, sysdate), :p_end_discount_date) )
+            or
+                (nvl(s.second_discount_date, sysdate) >=
+                     decode(:p_start_discount_date, null,
+            nvl(s.second_discount_date, sysdate),:p_start_discount_date)
+            and nvl(s.second_discount_date, sysdate) <=
+                     decode(:p_end_discount_date, null,
+             nvl(s.second_discount_date, sysdate), :p_end_discount_date) )
+            or
+               (nvl(s.third_discount_date, sysdate) >=
+                     decode(:p_start_discount_date, null,
+            nvl(s.third_discount_date, sysdate), :p_start_discount_date)
+            and nvl(s.third_discount_date, sysdate) <=
+                    decode(:p_end_discount_date, null,
+            nvl(s.third_discount_date, sysdate), :p_end_discount_date) )
          )
         )
-  AND alc.lookup_type = 'HOLD CODE'
-  AND alc.lookup_code = h.hold_lookup_code
-  AND ahc.hold_lookup_code = h.hold_lookup_code
-GROUP BY
-  decode(:P_ORDER_BY, 'Hold Name','Do not sort by vendor name', decode(:SORT_BY_ALTERNATE, 'Y', upper(hp.organization_name_phonetic), upper(hp.party_name))),
-  decode(:P_ORDER_BY, 'Vendor Name','Do not sort by Hold Name', upper(decode(h.hold_lookup_code, null,:C_NLS_NA, alc.displayed_field))),
+  and alc.lookup_type = 'HOLD CODE'
+  and alc.lookup_code = h.hold_lookup_code
+  and ahc.hold_lookup_code = h.hold_lookup_code
+group by
+  decode(:p_order_by, 'Hold Name','Do not sort by vendor name', decode(:sort_by_alternate, 'Y', upper(hp.organization_name_phonetic), upper(hp.party_name))),
+  decode(:p_order_by, 'Vendor Name','Do not sort by Hold Name', upper(decode(h.hold_lookup_code, null,:c_nls_na, alc.displayed_field))),
   h.hold_lookup_code,
   alc.displayed_field,
   alc.description,
   ahc.postable_flag,
   hp.party_name,
   inv1.vendor_id,
-  VS.vendor_site_code,
+  vs.vendor_site_code,
   inv1.invoice_date,
   inv1.invoice_id,
-  B.batch_name,
+  b.batch_name,
   inv1.invoice_num,
-  DECODE(inv1.invoice_currency_code, :C_BASE_CURRENCY_CODE, inv1.invoice_amount, inv1.base_amount),
-  DECODE(inv1.invoice_currency_code,
-                 :C_BASE_CURRENCY_CODE, inv1.invoice_amount,
+  decode(inv1.invoice_currency_code, :c_base_currency_code, inv1.invoice_amount, inv1.base_amount),
+  decode(inv1.invoice_currency_code,
+                 :c_base_currency_code, inv1.invoice_amount,
                 inv1.base_amount) -
-    DECODE(inv1.payment_currency_code,
-                 :C_BASE_CURRENCY_CODE,
-                      nvl(inv1.amount_paid,0) + NVL(discount_amount_taken,0),
-                 DECODE(F.minimum_accountable_unit,
-                       NULL, ROUND(((DECODE(inv1.payment_cross_rate_type,
+    decode(inv1.payment_currency_code,
+                 :c_base_currency_code,
+                      nvl(inv1.amount_paid,0) + nvl(discount_amount_taken,0),
+                 decode(f.minimum_accountable_unit,
+                       null, round(((decode(inv1.payment_cross_rate_type,
                                                  'EMU FIXED', 1/inv1.payment_cross_rate,
                                                  inv1.exchange_rate)) *
                                                   nvl(inv1.amount_paid,0)),
-                                                 F.precision),
-                       ROUND(((DECODE(inv1.payment_cross_rate_type,
+                                                 f.precision),
+                       round(((decode(inv1.payment_cross_rate_type,
                                        'EMU FIXED', 1/inv1.payment_cross_rate,
                                        inv1.exchange_rate)) * nvl(inv1.amount_paid,0)) /
-                                       F.minimum_accountable_unit) *
-                                       F.minimum_accountable_unit)   +
-                DECODE(F.minimum_accountable_unit,
-                     NULL, ROUND(((DECODE(inv1.payment_cross_rate_type,
+                                       f.minimum_accountable_unit) *
+                                       f.minimum_accountable_unit)   +
+                decode(f.minimum_accountable_unit,
+                     null, round(((decode(inv1.payment_cross_rate_type,
                                                'EMU FIXED', 1/inv1.payment_cross_rate,
                                               inv1.exchange_rate)) *
-                                              NVL(inv1.discount_amount_taken,0)),
-                                              F.precision),
-                    ROUND(((DECODE(inv1.payment_cross_rate_type,
+                                              nvl(inv1.discount_amount_taken,0)),
+                                              f.precision),
+                    round(((decode(inv1.payment_cross_rate_type,
                                     'EMU FIXED', 1/inv1.payment_cross_rate,
                                     inv1.exchange_rate)) *
                                     nvl(inv1.discount_amount_taken,0)) /
-                                    F.minimum_accountable_unit) *
-                                    F.minimum_accountable_unit)),
+                                    f.minimum_accountable_unit) *
+                                    f.minimum_accountable_unit)),
   inv1.description
-UNION
-SELECT -- Payments on Hold
-  decode(:P_ORDER_BY, 'Hold Name','Do not sort by vendor name', decode(:SORT_BY_ALTERNATE, 'Y', upper(hp.organization_name_phonetic), upper(hp.party_name))) C_SORT_VENDOR_NAME,
-  decode(:P_ORDER_BY, 'Vendor Name','Do not sort by Hold Name', :C_NLS_NA) C_SORT_NLS_HOLD_CODE1,
-  hp.party_name C_VENDOR_NAME,
-  inv1.vendor_id C_VENDOR_ID,
-  VS.vendor_site_code C_VENDOR_SITE,
-  :C_NLS_NA        C_HOLD_CODE,
-  :C_NLS_NA        C_NLS_HOLD_CODE,
-  :C_NLS_NA        C_NLS_HOLD_DESC,
-  :C_NLS_NA        C_POSTABLE,
-  to_char(inv1.invoice_date,'YYYYMM') C_SORT_MONTH,
-  to_char(inv1.invoice_date,'fmMonth YYYY') C_MONTH_NAME,
-  inv1.invoice_date C_INVOICE_DATE,
-  B.batch_name C_BATCH_NAME,
-  inv1.invoice_id C_NR_INVOICE_ID,
-  inv1.invoice_num C_INVOICE_NUM,
-  DECODE(inv1.invoice_currency_code, :C_BASE_CURRENCY_CODE, inv1.invoice_amount, inv1.base_amount) C_ORIGINAL_AMOUNT,
-  DECODE(inv1.invoice_currency_code, :C_BASE_CURRENCY_CODE, inv1.invoice_amount,inv1.base_amount) -
-    DECODE(inv1.payment_currency_code,
-                 :C_BASE_CURRENCY_CODE,
-                      nvl(inv1.amount_paid,0) + NVL(discount_amount_taken,0),
-                 DECODE(F.minimum_accountable_unit,
-                       NULL, ROUND(((DECODE(inv1.payment_cross_rate_type,
+union
+select -- payments on hold
+  decode(:p_order_by, 'Hold Name','Do not sort by vendor name', decode(:sort_by_alternate, 'Y', upper(hp.organization_name_phonetic), upper(hp.party_name))) c_sort_vendor_name,
+  decode(:p_order_by, 'Vendor Name','Do not sort by Hold Name', :c_nls_na) c_sort_nls_hold_code1,
+  hp.party_name c_vendor_name,
+  inv1.vendor_id c_vendor_id,
+  vs.vendor_site_code c_vendor_site,
+  :c_nls_na        c_hold_code,
+  :c_nls_na        c_nls_hold_code,
+  :c_nls_na        c_nls_hold_desc,
+  :c_nls_na        c_postable,
+  to_char(inv1.invoice_date,'YYYYMM') c_sort_month,
+  to_char(inv1.invoice_date,'fmMonth YYYY') c_month_name,
+  inv1.invoice_date c_invoice_date,
+  b.batch_name c_batch_name,
+  inv1.invoice_id c_nr_invoice_id,
+  inv1.invoice_num c_invoice_num,
+  decode(inv1.invoice_currency_code, :c_base_currency_code, inv1.invoice_amount, inv1.base_amount) c_original_amount,
+  decode(inv1.invoice_currency_code, :c_base_currency_code, inv1.invoice_amount,inv1.base_amount) -
+    decode(inv1.payment_currency_code,
+                 :c_base_currency_code,
+                      nvl(inv1.amount_paid,0) + nvl(discount_amount_taken,0),
+                 decode(f.minimum_accountable_unit,
+                       null, round(((decode(inv1.payment_cross_rate_type,
                                                  'EMU FIXED', 1/inv1.payment_cross_rate,
                                                  inv1.exchange_rate)) *
                                                   nvl(inv1.amount_paid,0)),
-                                                 F.precision),
-                       ROUND(((DECODE(inv1.payment_cross_rate_type,
+                                                 f.precision),
+                       round(((decode(inv1.payment_cross_rate_type,
                                        'EMU FIXED', 1/inv1.payment_cross_rate,
                                        inv1.exchange_rate)) * nvl(inv1.amount_paid,0)) /
-                                       F.minimum_accountable_unit) *
-                                       F.minimum_accountable_unit)   +
-                DECODE(F.minimum_accountable_unit,
-                     NULL, ROUND(((DECODE(inv1.payment_cross_rate_type,
+                                       f.minimum_accountable_unit) *
+                                       f.minimum_accountable_unit)   +
+                decode(f.minimum_accountable_unit,
+                     null, round(((decode(inv1.payment_cross_rate_type,
                                                'EMU FIXED', 1/inv1.payment_cross_rate,
                                               inv1.exchange_rate)) *
-                                              NVL(inv1.discount_amount_taken,0)),
-                                              F.precision),
-                    ROUND(((DECODE(inv1.payment_cross_rate_type,
+                                              nvl(inv1.discount_amount_taken,0)),
+                                              f.precision),
+                    round(((decode(inv1.payment_cross_rate_type,
                                     'EMU FIXED', 1/inv1.payment_cross_rate,
                                     inv1.exchange_rate)) *
                                     nvl(inv1.discount_amount_taken,0)) /
-                                    F.minimum_accountable_unit) *
-                                    F.minimum_accountable_unit)) C_AMOUNT_REMAINING,
-  MAX(s.iby_hold_reason) C_DESCRIPTION,
-  'Scheduled Payment Hold' C_HOLD_TYPE
-FROM
+                                    f.minimum_accountable_unit) *
+                                    f.minimum_accountable_unit)) c_amount_remaining,
+  max(s.iby_hold_reason) c_description,
+  'Scheduled Payment Hold' c_hold_type
+from
   hz_parties hp,
-  ap_supplier_sites VS,
+  ap_supplier_sites vs,
   ap_invoices inv1,
-  ap_batches B,
-  ap_payment_schedules S,
-  fnd_currencies_vl F
-WHERE
+  ap_batches b,
+  ap_payment_schedules s,
+  fnd_currencies_vl f
+where
       hp.party_id = inv1.party_id
-  AND VS.vendor_id (+) = inv1.vendor_id
-  AND VS.vendor_site_id (+) = inv1.vendor_site_id
-  AND B.batch_id(+) = inv1.batch_id
-  AND S.invoice_id = inv1.invoice_id
-  AND S.hold_flag = 'Y'
-  AND F.currency_code = :C_BASE_CURRENCY_CODE &c_vendor_clause
-  AND trunc(inv1.creation_date) >= DECODE(:P_START_CREATION_DATE, null,trunc(inv1.creation_date), :P_START_CREATION_DATE)
-  AND trunc(inv1.creation_date) <= DECODE(:P_END_CREATION_DATE, null,trunc(inv1.creation_date), :P_END_CREATION_DATE)
-  AND   (
-         (NVL(S.due_date, sysdate) >= DECODE(:P_START_DUE_DATE, null,
-             NVL(S.due_date, sysdate), :P_START_DUE_DATE)
-         AND NVL(S.due_date, sysdate) <= DECODE(:P_END_DUE_DATE, null,
-             NVL(S.due_date, sysdate), :P_END_DUE_DATE) )
-         AND
-         ( (NVL(S.discount_date, sysdate) >=
-                   DECODE(:P_START_DISCOUNT_DATE, null,
-         NVL(S.discount_date, sysdate), :P_START_DISCOUNT_DATE)
-            AND NVL(S.discount_date, sysdate) <=
-                    DECODE(:P_END_DISCOUNT_DATE, null,
-         NVL(S.discount_date, sysdate), :P_END_DISCOUNT_DATE) )
-            OR
-                (NVL(S.second_discount_date, sysdate) >=
-                     DECODE(:P_START_DISCOUNT_DATE, null,
-            NVL(S.second_discount_date, sysdate),:P_START_DISCOUNT_DATE)
-            AND NVL(S.second_discount_date, sysdate) <=
-                     DECODE(:P_END_DISCOUNT_DATE, null,
-             NVL(S.second_discount_date, sysdate), :P_END_DISCOUNT_DATE) )
-            OR
-               (NVL(S.third_discount_date, sysdate) >=
-                     DECODE(:P_START_DISCOUNT_DATE, null,
-            NVL(S.third_discount_date, sysdate), :P_START_DISCOUNT_DATE)
-            AND NVL(S.third_discount_date, sysdate) <=
-                    DECODE(:P_END_DISCOUNT_DATE, null,
-            NVL(S.third_discount_date, sysdate), :P_END_DISCOUNT_DATE) )
+  and vs.vendor_id (+) = inv1.vendor_id
+  and vs.vendor_site_id (+) = inv1.vendor_site_id
+  and b.batch_id(+) = inv1.batch_id
+  and s.invoice_id = inv1.invoice_id
+  and s.hold_flag = 'Y'
+  and f.currency_code = :c_base_currency_code &c_vendor_clause
+  and trunc(inv1.creation_date) >= decode(:p_start_creation_date, null,trunc(inv1.creation_date), :p_start_creation_date)
+  and trunc(inv1.creation_date) <= decode(:p_end_creation_date, null,trunc(inv1.creation_date), :p_end_creation_date)
+  and   (
+         (nvl(s.due_date, sysdate) >= decode(:p_start_due_date, null,
+             nvl(s.due_date, sysdate), :p_start_due_date)
+         and nvl(s.due_date, sysdate) <= decode(:p_end_due_date, null,
+             nvl(s.due_date, sysdate), :p_end_due_date) )
+         and
+         ( (nvl(s.discount_date, sysdate) >=
+                   decode(:p_start_discount_date, null,
+         nvl(s.discount_date, sysdate), :p_start_discount_date)
+            and nvl(s.discount_date, sysdate) <=
+                    decode(:p_end_discount_date, null,
+         nvl(s.discount_date, sysdate), :p_end_discount_date) )
+            or
+                (nvl(s.second_discount_date, sysdate) >=
+                     decode(:p_start_discount_date, null,
+            nvl(s.second_discount_date, sysdate),:p_start_discount_date)
+            and nvl(s.second_discount_date, sysdate) <=
+                     decode(:p_end_discount_date, null,
+             nvl(s.second_discount_date, sysdate), :p_end_discount_date) )
+            or
+               (nvl(s.third_discount_date, sysdate) >=
+                     decode(:p_start_discount_date, null,
+            nvl(s.third_discount_date, sysdate), :p_start_discount_date)
+            and nvl(s.third_discount_date, sysdate) <=
+                    decode(:p_end_discount_date, null,
+            nvl(s.third_discount_date, sysdate), :p_end_discount_date) )
          )
         )
-GROUP BY
-  decode(:P_ORDER_BY, 'Hold Name','Do not sort by vendor name', decode(:SORT_BY_ALTERNATE, 'Y', upper(hp.organization_name_phonetic), upper(hp.party_name))),
-  decode(:P_ORDER_BY, 'Vendor Name','Do not sort by Hold Name', :C_NLS_NA),
+group by
+  decode(:p_order_by, 'Hold Name','Do not sort by vendor name', decode(:sort_by_alternate, 'Y', upper(hp.organization_name_phonetic), upper(hp.party_name))),
+  decode(:p_order_by, 'Vendor Name','Do not sort by Hold Name', :c_nls_na),
   hp.party_name,
   inv1.vendor_id,
-  VS.vendor_site_code,
-  VS.vendor_site_code,
+  vs.vendor_site_code,
+  vs.vendor_site_code,
   inv1.invoice_date,
   inv1.invoice_id,
-  B.batch_name,
+  b.batch_name,
   inv1.invoice_num,
-  DECODE(inv1.invoice_currency_code, :C_BASE_CURRENCY_CODE, inv1.invoice_amount, inv1.base_amount),
-  DECODE(inv1.invoice_currency_code, :C_BASE_CURRENCY_CODE, inv1.invoice_amount,inv1.base_amount) -
-    DECODE(inv1.payment_currency_code,
-                 :C_BASE_CURRENCY_CODE,
-                      nvl(inv1.amount_paid,0) + NVL(discount_amount_taken,0),
-                 DECODE(F.minimum_accountable_unit,
-                       NULL, ROUND(((DECODE(inv1.payment_cross_rate_type,
+  decode(inv1.invoice_currency_code, :c_base_currency_code, inv1.invoice_amount, inv1.base_amount),
+  decode(inv1.invoice_currency_code, :c_base_currency_code, inv1.invoice_amount,inv1.base_amount) -
+    decode(inv1.payment_currency_code,
+                 :c_base_currency_code,
+                      nvl(inv1.amount_paid,0) + nvl(discount_amount_taken,0),
+                 decode(f.minimum_accountable_unit,
+                       null, round(((decode(inv1.payment_cross_rate_type,
                                                  'EMU FIXED', 1/inv1.payment_cross_rate,
                                                  inv1.exchange_rate)) *
                                                   nvl(inv1.amount_paid,0)),
-                                                 F.precision),
-                       ROUND(((DECODE(inv1.payment_cross_rate_type,
+                                                 f.precision),
+                       round(((decode(inv1.payment_cross_rate_type,
                                        'EMU FIXED', 1/inv1.payment_cross_rate,
                                        inv1.exchange_rate)) * nvl(inv1.amount_paid,0)) /
-                                       F.minimum_accountable_unit) *
-                                       F.minimum_accountable_unit)   +
-                DECODE(F.minimum_accountable_unit,
-                     NULL, ROUND(((DECODE(inv1.payment_cross_rate_type,
+                                       f.minimum_accountable_unit) *
+                                       f.minimum_accountable_unit)   +
+                decode(f.minimum_accountable_unit,
+                     null, round(((decode(inv1.payment_cross_rate_type,
                                                'EMU FIXED', 1/inv1.payment_cross_rate,
                                               inv1.exchange_rate)) *
-                                              NVL(inv1.discount_amount_taken,0)),
-                                              F.precision),
-                    ROUND(((DECODE(inv1.payment_cross_rate_type,
+                                              nvl(inv1.discount_amount_taken,0)),
+                                              f.precision),
+                    round(((decode(inv1.payment_cross_rate_type,
                                     'EMU FIXED', 1/inv1.payment_cross_rate,
                                     inv1.exchange_rate)) *
                                     nvl(inv1.discount_amount_taken,0)) /
-                                    F.minimum_accountable_unit) *
-                                    F.minimum_accountable_unit))
-UNION
-SELECT -- Vendor Sites on Hold
-  decode(:P_ORDER_BY, 'Hold Name','Do not sort by vendor name', decode(:SORT_BY_ALTERNATE, 'Y', upper(hp.organization_name_phonetic), upper(hp.party_name))) C_SORT_VENDOR_NAME,
-  decode(:P_ORDER_BY, 'Vendor Name','Do not sort by Hold Name', :C_NLS_NA) C_SORT_NLS_HOLD_CODE1,
-  hp.party_name C_VENDOR_NAME,
-  V.vendor_id C_VENDOR_ID,
-  VS.vendor_site_code C_VENDOR_SITE,
-  :C_NLS_NA        C_HOLD_CODE,
-  :C_NLS_NA        C_NLS_HOLD_CODE,
-  :C_NLS_NA        C_NLS_HOLD_DESC,
-  :C_NLS_NA        C_POSTABLE,
-  to_char(inv1.invoice_date,'YYYYMM') C_SORT_MONTH,
-  to_char(inv1.invoice_date,'fmMonth YYYY') C_MONTH_NAME,
-  inv1.invoice_date C_INVOICE_DATE,
-  B.batch_name C_BATCH_NAME,
-  inv1.invoice_id C_INVOICE_ID,
-  inv1.invoice_num C_INVOICE_NUM,
-  DECODE(inv1.invoice_currency_code, :C_BASE_CURRENCY_CODE, inv1.invoice_amount, inv1.base_amount) C_ORIGINAL_AMOUNT,
-  DECODE(inv1.invoice_currency_code,:C_BASE_CURRENCY_CODE, inv1.invoice_amount,inv1.base_amount) -
-    DECODE(inv1.payment_currency_code,
-                 :C_BASE_CURRENCY_CODE,
-                      nvl(inv1.amount_paid,0) + NVL(discount_amount_taken,0),
-                 DECODE(F.minimum_accountable_unit,
-                       NULL, ROUND(((DECODE(inv1.payment_cross_rate_type,
+                                    f.minimum_accountable_unit) *
+                                    f.minimum_accountable_unit))
+union
+select -- vendor sites on hold
+  decode(:p_order_by, 'Hold Name','Do not sort by vendor name', decode(:sort_by_alternate, 'Y', upper(hp.organization_name_phonetic), upper(hp.party_name))) c_sort_vendor_name,
+  decode(:p_order_by, 'Vendor Name','Do not sort by Hold Name', :c_nls_na) c_sort_nls_hold_code1,
+  hp.party_name c_vendor_name,
+  v.vendor_id c_vendor_id,
+  vs.vendor_site_code c_vendor_site,
+  :c_nls_na        c_hold_code,
+  :c_nls_na        c_nls_hold_code,
+  :c_nls_na        c_nls_hold_desc,
+  :c_nls_na        c_postable,
+  to_char(inv1.invoice_date,'YYYYMM') c_sort_month,
+  to_char(inv1.invoice_date,'fmMonth YYYY') c_month_name,
+  inv1.invoice_date c_invoice_date,
+  b.batch_name c_batch_name,
+  inv1.invoice_id c_invoice_id,
+  inv1.invoice_num c_invoice_num,
+  decode(inv1.invoice_currency_code, :c_base_currency_code, inv1.invoice_amount, inv1.base_amount) c_original_amount,
+  decode(inv1.invoice_currency_code,:c_base_currency_code, inv1.invoice_amount,inv1.base_amount) -
+    decode(inv1.payment_currency_code,
+                 :c_base_currency_code,
+                      nvl(inv1.amount_paid,0) + nvl(discount_amount_taken,0),
+                 decode(f.minimum_accountable_unit,
+                       null, round(((decode(inv1.payment_cross_rate_type,
                                                  'EMU FIXED', 1/inv1.payment_cross_rate,
                                                  inv1.exchange_rate)) *
                                                   nvl(inv1.amount_paid,0)),
-                                                 F.precision),
-                       ROUND(((DECODE(inv1.payment_cross_rate_type,
+                                                 f.precision),
+                       round(((decode(inv1.payment_cross_rate_type,
                                        'EMU FIXED', 1/inv1.payment_cross_rate,
                                        inv1.exchange_rate)) * nvl(inv1.amount_paid,0)) /
-                                       F.minimum_accountable_unit) *
-                                       F.minimum_accountable_unit)   +
-                DECODE(F.minimum_accountable_unit,
-                     NULL, ROUND(((DECODE(inv1.payment_cross_rate_type,
+                                       f.minimum_accountable_unit) *
+                                       f.minimum_accountable_unit)   +
+                decode(f.minimum_accountable_unit,
+                     null, round(((decode(inv1.payment_cross_rate_type,
                                                'EMU FIXED', 1/inv1.payment_cross_rate,
                                               inv1.exchange_rate)) *
-                                              NVL(inv1.discount_amount_taken,0)),
-                                              F.precision),
-                    ROUND(((DECODE(inv1.payment_cross_rate_type,
+                                              nvl(inv1.discount_amount_taken,0)),
+                                              f.precision),
+                    round(((decode(inv1.payment_cross_rate_type,
                                     'EMU FIXED', 1/inv1.payment_cross_rate,
                                     inv1.exchange_rate)) *
                                     nvl(inv1.discount_amount_taken,0)) /
-                                    F.minimum_accountable_unit) *
-                                    F.minimum_accountable_unit)) C_AMOUNT_REMAINING,
-  inv1.description C_DESCRIPTION,
-  'Supplier Site Hold' C_HOLD_TYPE
-FROM
+                                    f.minimum_accountable_unit) *
+                                    f.minimum_accountable_unit)) c_amount_remaining,
+  inv1.description c_description,
+  'Supplier Site Hold' c_hold_type
+from
   hz_parties hp,
-  ap_suppliers V,
-  ap_supplier_sites VS,
+  ap_suppliers v,
+  ap_supplier_sites vs,
   ap_invoices inv1,
-  ap_batches B,
-  ap_payment_schedules S,
-  fnd_currencies_vl F
-WHERE
+  ap_batches b,
+  ap_payment_schedules s,
+  fnd_currencies_vl f
+where
   hp.party_id = inv1.party_id
-  AND V.vendor_id (+) = inv1.vendor_id
-  AND VS.vendor_id (+) = inv1.vendor_id
-  AND VS.vendor_site_id (+) = inv1.vendor_site_id
-  AND B.batch_id(+) = inv1.batch_id
-  AND S.invoice_id(+) = inv1.invoice_id
-  AND VS.hold_all_payments_flag = 'Y'
-  AND F.currency_code = :C_BASE_CURRENCY_CODE
-  AND inv1.cancelled_date IS NULL
-  AND inv1.payment_status_flag != 'Y' &c_vendor_clause
-  AND trunc(inv1.creation_date) >= DECODE(:P_START_CREATION_DATE, null,trunc(inv1.creation_date), :P_START_CREATION_DATE)
-  AND trunc(inv1.creation_date) <= DECODE(:P_END_CREATION_DATE, null,trunc(inv1.creation_date), :P_END_CREATION_DATE)
-  AND   (
-         (NVL(S.due_date, sysdate) >= DECODE(:P_START_DUE_DATE, null,
-             NVL(S.due_date, sysdate), :P_START_DUE_DATE)
-         AND NVL(S.due_date, sysdate) <= DECODE(:P_END_DUE_DATE, null,
-             NVL(S.due_date, sysdate), :P_END_DUE_DATE) )
-         AND
-         ( (NVL(S.discount_date, sysdate) >=
-                   DECODE(:P_START_DISCOUNT_DATE, null,
-         NVL(S.discount_date, sysdate), :P_START_DISCOUNT_DATE)
-            AND NVL(S.discount_date, sysdate) <=
-                    DECODE(:P_END_DISCOUNT_DATE, null,
-         NVL(S.discount_date, sysdate), :P_END_DISCOUNT_DATE) )
-            OR
-                (NVL(S.second_discount_date, sysdate) >=
-                     DECODE(:P_START_DISCOUNT_DATE, null,
-            NVL(S.second_discount_date, sysdate),:P_START_DISCOUNT_DATE)
-            AND NVL(S.second_discount_date, sysdate) <=
-                     DECODE(:P_END_DISCOUNT_DATE, null,
-             NVL(S.second_discount_date, sysdate), :P_END_DISCOUNT_DATE) )
-            OR
-               (NVL(S.third_discount_date, sysdate) >=
-                     DECODE(:P_START_DISCOUNT_DATE, null,
-            NVL(S.third_discount_date, sysdate), :P_START_DISCOUNT_DATE)
-            AND NVL(S.third_discount_date, sysdate) <=
-                    DECODE(:P_END_DISCOUNT_DATE, null,
-            NVL(S.third_discount_date, sysdate), :P_END_DISCOUNT_DATE) )
+  and v.vendor_id (+) = inv1.vendor_id
+  and vs.vendor_id (+) = inv1.vendor_id
+  and vs.vendor_site_id (+) = inv1.vendor_site_id
+  and b.batch_id(+) = inv1.batch_id
+  and s.invoice_id(+) = inv1.invoice_id
+  and vs.hold_all_payments_flag = 'Y'
+  and f.currency_code = :c_base_currency_code
+  and inv1.cancelled_date is null
+  and inv1.payment_status_flag != 'Y' &c_vendor_clause
+  and trunc(inv1.creation_date) >= decode(:p_start_creation_date, null,trunc(inv1.creation_date), :p_start_creation_date)
+  and trunc(inv1.creation_date) <= decode(:p_end_creation_date, null,trunc(inv1.creation_date), :p_end_creation_date)
+  and   (
+         (nvl(s.due_date, sysdate) >= decode(:p_start_due_date, null,
+             nvl(s.due_date, sysdate), :p_start_due_date)
+         and nvl(s.due_date, sysdate) <= decode(:p_end_due_date, null,
+             nvl(s.due_date, sysdate), :p_end_due_date) )
+         and
+         ( (nvl(s.discount_date, sysdate) >=
+                   decode(:p_start_discount_date, null,
+         nvl(s.discount_date, sysdate), :p_start_discount_date)
+            and nvl(s.discount_date, sysdate) <=
+                    decode(:p_end_discount_date, null,
+         nvl(s.discount_date, sysdate), :p_end_discount_date) )
+            or
+                (nvl(s.second_discount_date, sysdate) >=
+                     decode(:p_start_discount_date, null,
+            nvl(s.second_discount_date, sysdate),:p_start_discount_date)
+            and nvl(s.second_discount_date, sysdate) <=
+                     decode(:p_end_discount_date, null,
+             nvl(s.second_discount_date, sysdate), :p_end_discount_date) )
+            or
+               (nvl(s.third_discount_date, sysdate) >=
+                     decode(:p_start_discount_date, null,
+            nvl(s.third_discount_date, sysdate), :p_start_discount_date)
+            and nvl(s.third_discount_date, sysdate) <=
+                    decode(:p_end_discount_date, null,
+            nvl(s.third_discount_date, sysdate), :p_end_discount_date) )
          )
         )
-GROUP BY
-  decode(:P_ORDER_BY, 'Hold Name','Do not sort by vendor name', decode(:SORT_BY_ALTERNATE, 'Y', upper(hp.organization_name_phonetic), upper(hp.party_name))),
-  decode(:P_ORDER_BY, 'Vendor Name','Do not sort by Hold Name', :C_NLS_NA),
+group by
+  decode(:p_order_by, 'Hold Name','Do not sort by vendor name', decode(:sort_by_alternate, 'Y', upper(hp.organization_name_phonetic), upper(hp.party_name))),
+  decode(:p_order_by, 'Vendor Name','Do not sort by Hold Name', :c_nls_na),
   hp.party_name,
-  V.vendor_id,
-  VS.vendor_site_code,
-  B.batch_name,
+  v.vendor_id,
+  vs.vendor_site_code,
+  b.batch_name,
   inv1.invoice_date,
   inv1.invoice_id,
   inv1.invoice_num,
-  DECODE(inv1.invoice_currency_code, :C_BASE_CURRENCY_CODE, inv1.invoice_amount, inv1.base_amount),
-  DECODE(inv1.invoice_currency_code,:C_BASE_CURRENCY_CODE, inv1.invoice_amount,inv1.base_amount) -
-    DECODE(inv1.payment_currency_code,
-                 :C_BASE_CURRENCY_CODE,
-                      nvl(inv1.amount_paid,0) + NVL(discount_amount_taken,0),
-                 DECODE(F.minimum_accountable_unit,
-                       NULL, ROUND(((DECODE(inv1.payment_cross_rate_type,
+  decode(inv1.invoice_currency_code, :c_base_currency_code, inv1.invoice_amount, inv1.base_amount),
+  decode(inv1.invoice_currency_code,:c_base_currency_code, inv1.invoice_amount,inv1.base_amount) -
+    decode(inv1.payment_currency_code,
+                 :c_base_currency_code,
+                      nvl(inv1.amount_paid,0) + nvl(discount_amount_taken,0),
+                 decode(f.minimum_accountable_unit,
+                       null, round(((decode(inv1.payment_cross_rate_type,
                                                  'EMU FIXED', 1/inv1.payment_cross_rate,
                                                  inv1.exchange_rate)) *
                                                   nvl(inv1.amount_paid,0)),
-                                                 F.precision),
-                       ROUND(((DECODE(inv1.payment_cross_rate_type,
+                                                 f.precision),
+                       round(((decode(inv1.payment_cross_rate_type,
                                        'EMU FIXED', 1/inv1.payment_cross_rate,
                                        inv1.exchange_rate)) * nvl(inv1.amount_paid,0)) /
-                                       F.minimum_accountable_unit) *
-                                       F.minimum_accountable_unit)   +
-                DECODE(F.minimum_accountable_unit,
-                     NULL, ROUND(((DECODE(inv1.payment_cross_rate_type,
+                                       f.minimum_accountable_unit) *
+                                       f.minimum_accountable_unit)   +
+                decode(f.minimum_accountable_unit,
+                     null, round(((decode(inv1.payment_cross_rate_type,
                                                'EMU FIXED', 1/inv1.payment_cross_rate,
                                               inv1.exchange_rate)) *
-                                              NVL(inv1.discount_amount_taken,0)),
-                                              F.precision),
-                    ROUND(((DECODE(inv1.payment_cross_rate_type,
+                                              nvl(inv1.discount_amount_taken,0)),
+                                              f.precision),
+                    round(((decode(inv1.payment_cross_rate_type,
                                     'EMU FIXED', 1/inv1.payment_cross_rate,
                                     inv1.exchange_rate)) *
                                     nvl(inv1.discount_amount_taken,0)) /
-                                    F.minimum_accountable_unit) *
-                                    F.minimum_accountable_unit)),
+                                    f.minimum_accountable_unit) *
+                                    f.minimum_accountable_unit)),
   inv1.description
 ) x
-ORDER BY
- x.C_SORT_NLS_HOLD_CODE1
-,x.C_SORT_VENDOR_NAME
-,x.C_VENDOR_NAME
-,x.C_VENDOR_SITE
-,x.C_INVOICE_DATE
-,x.C_INVOICE_NUM
-,x.C_NLS_HOLD_CODE
+order by
+ x.c_sort_nls_hold_code1
+,x.c_sort_vendor_name
+,x.c_vendor_name
+,x.c_vendor_site
+,x.c_invoice_date
+,x.c_invoice_num
+,x.c_nls_hold_code

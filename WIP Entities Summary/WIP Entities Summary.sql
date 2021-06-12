@@ -39,6 +39,7 @@ from
 wip_entities we,
 wip_discrete_jobs wdj
 where
+1=1 and
 we.wip_entity_id=wdj.wip_entity_id(+) and
 we.organization_id=wdj.organization_id(+)
 ) x

@@ -5,7 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: INV Subinventories
--- Description: Profile subinventory report with subinvnetory name, description, status, default cost group, type, restriction attributes, and general ledger account linkages. For BR100.
+-- Description: Profile subinventory report with subinventory name, description, status, default cost group, type, restriction attributes, and general ledger account linkages. For BR100.
 -- Excel Examle Output: https://www.enginatics.com/example/inv-subinventories/
 -- Library Link: https://www.enginatics.com/reports/inv-subinventories/
 -- Run Report: https://demo.enginatics.com/

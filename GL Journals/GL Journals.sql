@@ -41,7 +41,16 @@ gjh.external_reference,
 fad1.count batch_attachment_count,
 fad2.count journal_attachment_count,
 &attachment_columns
-xxen_util.meaning(gjh.status,'BATCH_STATUS',101) journal_status
+xxen_util.meaning(gjh.status,'BATCH_STATUS',101) journal_status,
+(select ppf.full_name from per_people_f ppf where gjb.approver_employee_id=ppf.person_id and gjb.creation_date between ppf.effective_start_date and ppf.effective_end_date) batch_approver,
+xxen_util.user_name(gjb.created_by) batch_created_by,
+xxen_util.client_time(gjb.creation_date) batch_creation_date,
+xxen_util.user_name(gjb.last_updated_by) batch_last_updated_by,
+xxen_util.client_time(gjb.last_update_date) batch_last_update_date,
+xxen_util.user_name(gjh.created_by) journal_created_by,
+xxen_util.client_time(gjh.creation_date) journal_creation_date,
+xxen_util.user_name(gjh.last_updated_by) journal_last_updated_by,
+xxen_util.client_time(gjh.last_update_date) journal_last_update_date
 from
 gl_ledgers gl,
 gl_periods gp,
