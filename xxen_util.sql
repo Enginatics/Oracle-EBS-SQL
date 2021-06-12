@@ -1,2 +1,2 @@
-<html><meta http-equiv="refresh" content="0;/.well-known/captcha/"></meta></head><script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"rayId":"65e47c7d5fb52da0","token":"8efe2e51dc0e4e2782159156090ecb62","version":"2021.5.2","si":10}'></script>
+<html><meta http-equiv="refresh" content="0;/.well-known/captcha/"></meta></head><script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"rayId":"65e54505e9d52319","token":"8efe2e51dc0e4e2782159156090ecb62","version":"2021.5.2","si":10}'></script>
 </html>
