@@ -7,7 +7,7 @@ create or replace package apps.xxen_util is
 /*       www.enginatics.com this utility package is free for use, regardless if                */
 /*       you are a Blitz Report customer or not.                                               */
 /*                                                                                             */
-/*                          (c) 2010-2020 Enginatics GmbH                                      */
+/*                          (c) 2010-2021 Enginatics GmbH                                      */
 /*                                 www.enginatics.com                                          */
 /*                                                                                             */
 /*                             Copyright and legal notes:                                      */
@@ -139,6 +139,16 @@ function long_to_clob(p_table_name in varchar2, p_column_name in varchar2, p_row
 /*  convert blob to base64                                                                     */
 /***********************************************************************************************/
 function blob_to_base64(p_blob in blob) return clob;
+
+/***********************************************************************************************/
+/*  convert encode base64                                                                  */
+/***********************************************************************************************/
+function encode_base64(p_blob in blob) return clob;
+
+/***********************************************************************************************/
+/*  convert decode base64                                                                  */
+/***********************************************************************************************/
+function decode_base64(p_clob in clob) return blob;
 
 /***********************************************************************************************/
 /*  lengthb for clobs see oracle note 790886.1                                                 */
@@ -395,7 +405,7 @@ create or replace package body apps.xxen_util is
 /*       www.enginatics.com this utility package is free for use, regardless if                */
 /*       you are a Blitz Report customer or not.                                               */
 /*                                                                                             */
-/*                          (c) 2010-2020 Enginatics GmbH                                      */
+/*                          (c) 2010-2021 Enginatics GmbH                                      */
 /*                                 www.enginatics.com                                          */
 /*                                                                                             */
 /*                             Copyright and legal notes:                                      */
@@ -419,7 +429,6 @@ create or replace package body apps.xxen_util is
 /*       the software.                                                                         */
 /*                                                                                             */
 /***********************************************************************************************/
-g_current_org_id number(15);
 
 
 function base_language return varchar2 deterministic is
@@ -1152,6 +1161,56 @@ begin
 end blob_to_base64;
 
 
+function encode_base64(p_blob in blob) return clob is
+l_clob clob;
+l_result clob;
+l_offset integer;
+l_chunk_size binary_integer:=(48/4)*3;
+l_buffer_varchar varchar2(48);
+l_buffer_raw raw(48);
+begin
+  if p_blob is null then
+    return null;
+  end if;
+  dbms_lob.createtemporary(l_clob,true);
+  l_offset:=1;
+  for i in 1..ceil(dbms_lob.getlength(p_blob)/l_chunk_size) loop
+    dbms_lob.read(p_blob,l_chunk_size,l_offset,l_buffer_raw);
+    l_buffer_varchar:=utl_raw.cast_to_varchar2(utl_encode.base64_encode(l_buffer_raw));
+    dbms_lob.writeappend(l_clob,length(l_buffer_varchar),l_buffer_varchar);
+    l_offset:=l_offset+l_chunk_size;
+    end loop;
+  l_result:=l_clob;
+  dbms_lob.freetemporary(l_clob);
+  return l_result;
+end encode_base64;
+
+
+function decode_base64(p_clob in clob) return blob is
+l_blob64 blob;
+l_result blob;
+l_offset integer;
+l_buffer_size binary_integer:=48;
+l_buffer_varchar varchar2(48);
+l_buffer_raw raw(48);
+begin
+  if p_clob is null then
+    return null;
+  end if;
+  dbms_lob.createtemporary(l_blob64,true);
+  l_offset:=1;
+  for i in 1..ceil(dbms_lob.getlength(p_clob)/l_buffer_size) loop
+    dbms_lob.read(p_clob,l_buffer_size,l_offset,l_buffer_varchar);
+    l_buffer_raw:=utl_encode.base64_decode(utl_raw.cast_to_raw(l_buffer_varchar));
+    dbms_lob.writeappend(l_blob64,utl_raw.length(l_buffer_raw),l_buffer_raw);
+    l_offset:=l_offset+l_buffer_size;
+  end loop;
+  l_result:=l_blob64;
+  dbms_lob.freetemporary(l_blob64);
+  return l_result;
+end decode_base64;
+
+
 function clob_lengthb(p_clob in clob) return number is
 begin
   return dbms_lob.getlength(clob_to_blob(p_clob));
@@ -1294,12 +1353,13 @@ end;
 
 
 function time(p_seconds in number) return varchar2 is
+l_seconds number:=abs(p_seconds);
 begin
-  return case when p_seconds is not null then
-  case when p_seconds>=86400 then trunc(p_seconds/86400)||'d ' end||
-  case when p_seconds>=3600 then trunc(mod(p_seconds,86400)/3600)||'h ' end||
-  case when p_seconds>=60 then trunc(mod(p_seconds,3600)/60)||'m ' end||
-  trunc(mod(p_seconds,60))||'s'
+  return case when p_seconds<0 then '-' end||case when l_seconds is not null then
+  case when l_seconds>=86400 then trunc(l_seconds/86400)||'d ' end||
+  case when l_seconds>=3600 then trunc(mod(l_seconds,86400)/3600)||'h ' end||
+  case when l_seconds>=60 then trunc(mod(l_seconds,3600)/60)||'m ' end||
+  trunc(mod(l_seconds,60))||'s'
   end;
 end time;
 

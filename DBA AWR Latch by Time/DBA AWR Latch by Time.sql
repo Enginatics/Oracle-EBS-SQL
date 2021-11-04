@@ -35,7 +35,6 @@ dba_hist_latch dhl
 ) dhl
 where
 1=1 and
-dhs.dbid=(select vd.dbid from v$database vd) and
 dhs.dbid=dhl.dbid and
 dhs.instance_number=dhl.instance_number and
 dhs.snap_id=dhl.snap_id

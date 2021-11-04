@@ -208,7 +208,6 @@ gv$sqlarea gsa,
 (select vp.value from v$parameter vp where vp.name like 'db_block_size') vp
 where
 1=1 and
-dhs.dbid=(select vd.dbid from v$database vd) and
 dhs.dbid=dhss.dbid and
 dhs.instance_number=dhss.instance_number and
 dhs.snap_id=dhss.snap_id and

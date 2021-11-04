@@ -181,12 +181,13 @@ min(gsa.inst_id) keep (dense_rank first order by gsa.inst_id, gsa.plan_hash_valu
 min(gsa.plan_hash_value) keep (dense_rank first order by gsa.inst_id, gsa.plan_hash_value) over (partition by gsa.sql_id) plan_hash_value
 from
 gv$sqlarea gsa
+where
+2=2
 ) gsa0,
 gv$sqlarea gsa,
 dba_users du
 where
 1=1 and
-dhs.dbid=(select vd.dbid from v$database vd) and
 dhs.dbid=dhash.dbid and
 dhs.snap_id=dhash.snap_id and
 dhs.instance_number=dhash.instance_number and

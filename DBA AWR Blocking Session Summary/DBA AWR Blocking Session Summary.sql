@@ -177,7 +177,6 @@ dba_users du
 where
 1=1 and
 dhash.blocking_session is not null and
-dhs.dbid=(select vd.dbid from v$database vd) and
 dhs.dbid=dhash.dbid and
 dhs.snap_id=dhash.snap_id and
 dhs.instance_number=dhash.instance_number and

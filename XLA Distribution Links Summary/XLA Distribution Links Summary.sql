@@ -23,10 +23,13 @@ https://support.oracle.com/CSP/main/article?cmd=show&type=NOT&id=130542.1
 -- Library Link: https://www.enginatics.com/reports/xla-distribution-links-summary/
 -- Run Report: https://demo.enginatics.com/
 
-select
+select /*+ parallel*/
+xah.period_name,
+gl.name ledger,
 fav.application_short_name,
 fav.application_name,
 count(*) count,
+xte.entity_code,
 xdl.source_distribution_type,
 coalesce(
 decode(xdl.source_distribution_type,
@@ -132,17 +135,31 @@ sum(xdl.unrounded_accounted_cr) unrounded_accounted_cr,
 nvl2(xdl.upg_batch_id,'not null',null) upg_batch_id,
 xdl.application_id
 from
-fnd_application_vl fav,
+gl_ledgers gl,
 xla_ae_lines xal,
-xla_distribution_links xdl
+xla_ae_headers xah,
+xla.xla_transaction_entities xte,
+xla_distribution_links xdl,
+fnd_application_vl fav
 where
+1=1 and
+gl.ledger_id=xal.ledger_id and
+xal.ae_header_id=xah.ae_header_id(+) and
+xal.application_id=xah.application_id(+) and
+xah.gl_transfer_status_code(+)='Y' and
+xah.accounting_entry_status_code(+)='F' and
+xah.entity_id=xte.entity_id(+) and
+xah.application_id=xte.application_id(+) and
 xal.ae_header_id=xdl.ae_header_id and
 xal.ae_line_num=xdl.ae_line_num and
 xal.application_id=xdl.application_id and
-fav.application_id=xdl.application_id
+xal.application_id=fav.application_id(+)
 group by
+xah.period_name,
+gl.name,
 fav.application_short_name,
 fav.application_name,
+xte.entity_code,
 xdl.source_distribution_type,
 xal.accounting_class_code,
 xdl.event_class_code,

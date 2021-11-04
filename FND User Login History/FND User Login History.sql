@@ -17,6 +17,7 @@ The function retrieved from icx_session however, just shows the latest OAF funct
 -- Run Report: https://demo.enginatics.com/
 
 select
+x.clientip,
 xxen_util.client_time(x.start_time) start_time,
 xxen_util.client_time(x.end_time) end_time,
 x.user_name,
@@ -34,6 +35,7 @@ x.organization
 from
 (
 select
+fl.clientip,
 nvl(flrf.start_time,nvl(flr.start_time,fl.start_time)) start_time,
 nvl(flrf.end_time,nvl(flr.end_time,fl.end_time)) end_time,
 xxen_util.user_name(fl.user_id) user_name,

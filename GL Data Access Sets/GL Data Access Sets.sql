@@ -19,6 +19,7 @@ gasv.user_period_type period_type,
 decode(gasv.security_segment_code,'F','Full Ledger','B','Balancing Segment Value','M','Management Segment Value') access_set_type,
 gasv.default_ledger_name default_ledger,
 gasnav.ledger_name,
+xxen_util.meaning(gl.ledger_category_code,'GL_ASF_LEDGER_CATEGORY',101) ledger_category,
 xxen_util.meaning(gasnav.all_segment_value_flag,'YES_NO',0) all_values,
 gasnav.segment_value specific_value,
 decode(gasnav.access_privilege_code,'B','Read and Write','R','Read Only') privilege,
@@ -29,10 +30,12 @@ xxen_util.client_time(gasnav.last_update_date) last_update_date,
 gasv.access_set_id
 from
 gl_access_sets_v gasv,
-gl_access_set_norm_assign_v gasnav
+gl_access_set_norm_assign_v gasnav,
+gl_ledgers gl
 where
 1=1 and
 gasv.access_set_id=gasnav.access_set_id(+) and
+gasnav.ledger_id=gl.ledger_id(+) and
 (gasnav.status_code is null or gasnav.status_code<>'D')
 order by
 gasv.name,

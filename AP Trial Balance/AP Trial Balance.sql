@@ -13,10 +13,14 @@ DB package: XLA_TB_AP_REPORT_PVT
 -- Library Link: https://www.enginatics.com/reports/ap-trial-balance/
 -- Run Report: https://demo.enginatics.com/
 
-with xtb as (select 
+with xtb as 
+(select 
    xtbg.*
   from 
-   ( &P_SQL_STATEMENT AND :L_RUN_DETAIL_REPORT = 'Y' ) xtbg),
+   ( &P_TEMPLATE_SQL_STATEMENT
+     &P_SQL_STATEMENT
+   ) xtbg
+),
 aptb_trx as (select 
    'Transaction' record_type,
    xtb.ledger_id,
@@ -41,44 +45,8 @@ aptb_trx as (select
    xtb.src_acctd_rounded_rem_amt transaction_remaining_amount
   from 
    xtb),
-aptb_tpt as (select 
-   'Third Party Total' record_type,
-   xtb.ledger_id,
-   xtb.ledger_name,
-   xtb.ledger_short_name,
-   xtb.ledger_currency_code currency,
-   xtb.account,
-   xtb.code_combination_id,
-   to_number(null) gl_balance,
-   to_number(null) other_sources_amount,
-   to_number(null) subledger_manuals_amount,
-   to_number(null) difference,
-   xtb.third_party_name,
-   xtb.third_party_number,
-   null transaction_id,
-   null transaction_type,
-   null transaction_number,
-   to_date(null) gl_date,
-   null payment_status,
-   null cancelled_date,
-   to_number(null) transaction_original_amount,
-   sum(xtb.src_acctd_rounded_rem_amt) transaction_remaining_amount
-  from 
-   xtb
-  group by 
-   xtb.ledger_id,
-   xtb.ledger_name,
-   xtb.ledger_short_name,
-   xtb.ledger_currency_code,
-   xtb.account,
-   xtb.gl_balance,
-   xtb.non_ap_amount,
-   xtb.manual_sla_amount,
-   xtb.code_combination_id,
-   xtb.third_party_name,
-   xtb.third_party_number),
 aptb_acc as (select 
-   'Account Total' record_type,
+   'GL Account' record_type,
    xtb.ledger_id,
    xtb.ledger_name,
    xtb.ledger_short_name,
@@ -98,7 +66,7 @@ aptb_acc as (select
    null payment_status,
    null cancelled_date,
    to_number(null) transaction_original_amount,
-   sum(xtb.src_acctd_rounded_rem_amt) transaction_remaining_amount
+   to_number(null) transaction_remaining_amount
   from 
    xtb
   group by 
@@ -110,36 +78,7 @@ aptb_acc as (select
    xtb.gl_balance,
    xtb.non_ap_amount,
    xtb.manual_sla_amount,
-   xtb.code_combination_id),
-aptb_ldg as (select 
-   'Ledger Total' record_type,
-   aptb_acc.ledger_id,
-   aptb_acc.ledger_name,
-   aptb_acc.ledger_short_name,
-   aptb_acc.currency,
-   null account,
-   to_number(null) code_combination_id,
-   sum(aptb_acc.gl_balance) gl_balance,
-   sum(aptb_acc.other_sources_amount) other_sources_amount,
-   sum(aptb_acc.subledger_manuals_amount) subledger_manuals_amount,
-   sum(aptb_acc.difference) difference,
-   null third_party_name,
-   null third_party_number,
-   null transaction_id,
-   null transaction_type,
-   null transaction_number,
-   to_date(null) gl_date,
-   null payment_status,
-   null cancelled_date,
-   to_number(null) transaction_original_amount,
-   sum(aptb_acc.transaction_remaining_amount) transaction_remaining_amount
-  from 
-   aptb_acc
-  group by 
-   aptb_acc.ledger_id,
-   aptb_acc.ledger_name,
-   aptb_acc.ledger_short_name,
-   aptb_acc.currency)
+   xtb.code_combination_id)
 --
 -- Main Query Starts Here
 --
@@ -151,31 +90,27 @@ select
 ,aptb.third_party_number
 ,aptb.currency
 ,aptb.gl_balance
-&l_manual_other_amount_columns
+,aptb.other_sources_amount
+,aptb.subledger_manuals_amount
 ,aptb.transaction_remaining_amount
 ,aptb.difference 
-&l_detail_columns 
+,aptb.transaction_type
+,aptb.transaction_number
+,aptb.transaction_original_amount
+,aptb.gl_date
+,aptb.payment_status
+,aptb.cancelled_date
 &gcc_segment_columns
 from 
  (select 
    aptb_trx.*
   from 
-   aptb_trx &l_detail_where
-  union all 
-  select 
-   aptb_tpt.*
-  from 
-   aptb_tpt
+   aptb_trx
   union all 
   select 
    aptb_acc.*
   from 
-   aptb_acc
-  union all 
-  select 
-   aptb_ldg.*
-  from 
-   aptb_ldg) aptb,
+   aptb_acc) aptb,
  gl_code_combinations_kfv gcck
 where
  gcck.code_combination_id (+) = aptb.code_combination_id 

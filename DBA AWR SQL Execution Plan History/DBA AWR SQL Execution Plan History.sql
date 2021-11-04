@@ -45,7 +45,6 @@ ds.segment_name
 ) ds
 where
 1=1 and
-dhsp.dbid=(select vd.dbid from v$database vd) and
 dhsp.object_owner=ds.owner(+) and
 case when dhsp.object_type like '% %' then substr(dhsp.object_type,1,instr(dhsp.object_type,' ')) else dhsp.object_type end=ds.segment_type(+) and
 dhsp.object_name=ds.segment_name(+)

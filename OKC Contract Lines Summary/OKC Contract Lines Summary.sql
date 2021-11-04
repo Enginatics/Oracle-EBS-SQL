@@ -106,6 +106,7 @@ for meaning in (
 ) y
 ) z
 where
+1=1 and
 olsv.root_id=ostl.lse_id(+) and
 ostl.scs_code=osclv.code(+) and
 osclv.cls_code=ocv.code(+) and

@@ -43,7 +43,6 @@ dba_hist_snapshot dhs,
 dba_hist_system_event dhse
 where
 1=1 and
-dhs.dbid=(select vd.dbid from v$database vd) and
 dhs.dbid=dhse.dbid and
 dhs.instance_number=dhse.instance_number and
 dhs.snap_id=dhse.snap_id

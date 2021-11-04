@@ -32,7 +32,7 @@ select
 ,      decode(cict.cost_type_id, :p_cost_type_id, ' ', '*') defaulted
 ,      round(nvl(cict.item_cost,0)*:p_exchange_rate, :p_ext_precision) unit_cost       -- changed to round by extended precision
 ,      round(sum(nvl(ciqt.rollback_qty,0)*decode(nvl(sec.asset_inventory,1), 1, nvl(cict.item_cost,0), 0)*:p_exchange_rate/:round_unit))*:round_unit total_cost
-,      round(sum(nvl(ciqt.rollback_qty,0) * decode(nvl(sec.asset_inventory,1), 1, nvl(cict.item_cost,0), 0) * :p_exchange_rate)/round(sum(nvl(ciqt.rollback_qty,0)),:p_qty_precision), :p_ext_precision)   unit_cost_1    -- changed to round by extended precision
+,      round(sum(nvl(ciqt.rollback_qty,0) * decode(nvl(sec.asset_inventory,1), 1, nvl(cict.item_cost,0), 0) * :p_exchange_rate)/xxen_util.zero_to_null(round(sum(nvl(ciqt.rollback_qty,0)),:p_qty_precision)), :p_ext_precision)   unit_cost_1    -- changed to round by extended precision
 from    mtl_categories_b_kfv mc
 ,       mtl_system_items_vl msi
 ,       mtl_secondary_inventories sec

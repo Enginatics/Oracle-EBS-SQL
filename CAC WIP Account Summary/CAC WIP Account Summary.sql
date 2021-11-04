@@ -84,6 +84,10 @@ select	nvl(gl.short_name, gl.name) Ledger,
 	ml4.meaning WIP_Type,
 	we.wip_entity_name WIP_Job,
 	-- Fix for version 1.6
+	(select	distinct listagg(bd.department_code,',') within group (order by bd.department_code) over (partition by bdr.department_id) department
+	 from	bom_department_resources bdr,
+     bom_departments bd
+	 where	wip.resource_id = bdr.resource_id and bdr.department_id=bd.department_id) WIP_Department,
 	(select	br.resource_code
 	 from	bom_resources br
 	 where	wip.resource_id = br.resource_id) WIP_Resource,

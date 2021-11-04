@@ -14,8 +14,8 @@ DB package: PO_POXRCPPV_XMLP_PKG
 -- Run Report: https://demo.enginatics.com/
 
 select
-        &c_flex_cat_disp category
-,       &c_flex_item_disp item
+        fnd_flex_xml_publisher_apis.process_kff_combination_1('c_flex_cat_disp', 'INV', 'MCAT', MCA.STRUCTURE_ID, NULL, MCA.CATEGORY_ID, 'ALL', 'Y', 'VALUE') category
+,       fnd_flex_xml_publisher_apis.process_kff_combination_1('c_flex_item_disp', 'INV', 'MSTK', 101, MSI.ORGANIZATION_ID, MSI.INVENTORY_ITEM_ID, 'ALL', 'Y', 'VALUE') item
 ,        msi.description                           description
 ,        pov.vendor_name                           vendor
 ,        decode(poh.type_lookup_code,
@@ -119,14 +119,13 @@ papf.employee_number,papf.applicant_number )) = 'TRUE'
 and decode(hr_general.get_xbg_profile,'Y', papf.business_group_id ,
 hr_general.get_business_group_id) = papf.business_group_id 
 and      pod.deliver_to_location_id = hrl.location_id(+) 
-&p_vendor_name_where
-and      &p_where_cat   
+&p_vendor_name_where  
 and  exists (select 1 from mtl_transaction_accounts mta1 where mta1.transaction_id = mmt.transaction_id
                            and mta1.accounting_line_type = 6)
 union
 select
-        &c_flex_cat_disp category
-,       &c_flex_item_disp item
+         fnd_flex_xml_publisher_apis.process_kff_combination_1('c_flex_cat_disp', 'INV', 'MCAT', MCA.STRUCTURE_ID, NULL, MCA.CATEGORY_ID, 'ALL', 'Y', 'VALUE') category
+,        fnd_flex_xml_publisher_apis.process_kff_combination_1('c_flex_item_disp', 'INV', 'MSTK', 101, MSI.ORGANIZATION_ID, MSI.INVENTORY_ITEM_ID, 'ALL', 'Y', 'VALUE') item
 ,        msi.description                           description
 ,        pov.vendor_name                           vendor
 ,        decode(poh.type_lookup_code,
@@ -224,14 +223,13 @@ and decode(hr_general.get_xbg_profile,'Y', papf.business_group_id ,
 hr_general.get_business_group_id) = papf.business_group_id
 and      pod.deliver_to_location_id = hrl.location_id(+) 
 &p_vendor_name_where
-and      &p_where_cat
 &p_where_wip
 and mp.organization_id = rct.organization_id
 and mp.process_enabled_flag='N'
 union all
 select
-        &c_flex_cat_disp category
-,       &c_flex_item_disp item
+         fnd_flex_xml_publisher_apis.process_kff_combination_1('c_flex_cat_disp', 'INV', 'MCAT', MCA.STRUCTURE_ID, NULL, MCA.CATEGORY_ID, 'ALL', 'Y', 'VALUE') category
+,        fnd_flex_xml_publisher_apis.process_kff_combination_1('c_flex_item_disp', 'INV', 'MSTK', 101, MSI.ORGANIZATION_ID, MSI.INVENTORY_ITEM_ID, 'ALL', 'Y', 'VALUE') item
 ,        msi.description                           description
 ,        pov.vendor_name                           vendor
 ,        decode(poh.type_lookup_code,
@@ -336,15 +334,14 @@ papf.employee_number,papf.applicant_number )) = 'TRUE'
 and decode(hr_general.get_xbg_profile,'Y', papf.business_group_id ,
 hr_general.get_business_group_id) = papf.business_group_id 
 and      pod.deliver_to_location_id = hrl.location_id(+) 
-&p_vendor_name_where
-and      &p_where_cat   
+&p_vendor_name_where  
 and       rct.organization_id = mp.organization_id
 and      mp.process_enabled_flag = 'Y'
 union all
 /* lcm-opm integration added below query  bug 8642337, pmarada */
 select  distinct
-        &c_flex_cat_disp category
-,       &c_flex_item_disp item     
+          fnd_flex_xml_publisher_apis.process_kff_combination_1('c_flex_cat_disp', 'INV', 'MCAT', MCA.STRUCTURE_ID, NULL, MCA.CATEGORY_ID, 'ALL', 'Y', 'VALUE') category
+ ,        fnd_flex_xml_publisher_apis.process_kff_combination_1('c_flex_item_disp', 'INV', 'MSTK', 101, MSI.ORGANIZATION_ID, MSI.INVENTORY_ITEM_ID, 'ALL', 'Y', 'VALUE') item    
  ,        msi.description                          description     
  ,        pov.vendor_name                          vendor     
  ,        decode(poh.type_lookup_code,     
@@ -447,5 +444,4 @@ gl.currency_code=fc.currency_code
  papf.employee_number,papf.applicant_number )) = 'TRUE'      
  and decode(hr_general.get_xbg_profile,'Y', papf.business_group_id ,     
  hr_general.get_business_group_id) = papf.business_group_id     
- &p_vendor_name_where      
- and      &p_where_cat
+ &p_vendor_name_where

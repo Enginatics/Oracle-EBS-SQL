@@ -16,9 +16,9 @@ select
  medv.organization_code,
  medv.planner_code,
  medv.buyer_name, 
- msc_phub_util.get_exception_group@A2M_DBLINK(medv.exception_type) exception_group,
+ msc_phub_util.get_exception_group (medv.exception_type) exception_group,
  medv.exception_type_text exception_type,
- msc_get_name.lookup_meaning@A2M_DBLINK('MSC_ADI_YES_NO',medv.action_taken)  action_taken,
+ msc_get_name.lookup_meaning ('MSC_ADI_YES_NO',medv.action_taken)  action_taken,
  -- item
  medv.item_segments item,
  medv.item_description,
@@ -29,7 +29,7 @@ select
  medv.quantity                         quantity, 
  medv.order_number                     order_number,
  coalesce(medv.order_type,
-          msc_get_name.lookup_meaning@A2M_DBLINK('MSC_DEMAND_ORIGINATION',md.origination_type)
+          msc_get_name.lookup_meaning ('MSC_DEMAND_ORIGINATION',md.origination_type)
          )                             order_type,
  medv.end_order_number,
  medv.firm_type,
@@ -114,11 +114,11 @@ select
  medv.resource_code,
  medv.utilization_rate load_ratio
 from 
- msc_apps_instances@A2M_DBLINK      mai
-,msc_plans@A2M_DBLINK               mp 
-,msc_exception_details_v@A2M_DBLINK medv
-,msc_category_sets@A2M_DBLINK       mcs
-,msc_demands@A2M_DBLINK             md
+ msc_apps_instances       mai
+,msc_plans                mp 
+,msc_exception_details_v  medv
+,msc_category_sets        mcs
+,msc_demands              md
 where
     mai.instance_id       = mp.sr_instance_id 
 and mp.plan_id            = medv.plan_id

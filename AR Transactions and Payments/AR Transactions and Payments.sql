@@ -31,6 +31,10 @@ x.due_remaining,
 x.dispute_amount,
 x.state,
 x.status,
+x.last_date_cash_applied,
+x.actual_date_closed,
+x.payment_sched_gl_date,
+x.payment_sched_gl_date_closed,
 x.payment_term,
 x.invoicing_rule,
 x.due_date,
@@ -113,6 +117,21 @@ apsa.amount_due_remaining due_remaining,
 case when rctta.accounting_affect_flag='Y' and apsa.amount_in_dispute<>0 then apsa.amount_in_dispute end dispute_amount,
 nvl(xxen_util.meaning(acrha.status,'RECEIPT_CREATION_STATUS',222),decode(apsa.status,'CL','Closed',decode(apsa.amount_due_remaining,apsa.amount_due_original,'Open','Partially Paid'))) state,
 apsa.status,
+(
+select
+max(ara.apply_date)
+from
+ar_receivable_applications_all ara
+where
+apsa.status = 'OP' and
+ara.applied_customer_trx_id = apsa.customer_trx_id and
+ara.applied_payment_schedule_id = apsa.payment_schedule_id and
+ara.cash_receipt_id is not null and
+ara.reversal_gl_date is null
+) last_date_cash_applied,
+decode(apsa.status,'OP',to_date(null),apsa.actual_date_closed) actual_date_closed,
+apsa.gl_date payment_sched_gl_date,
+decode(apsa.status,'OP',to_date(null),apsa.gl_date_closed) payment_sched_gl_date_closed,
 rtt.name payment_term,
 decode(rcta.invoicing_rule_id,-3,'Arrears',-2,'Advance') invoicing_rule,
 apsa.due_date,

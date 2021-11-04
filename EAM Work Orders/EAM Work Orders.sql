@@ -36,7 +36,7 @@ xxen_util.client_time(wdj.last_update_date) last_update_date,
 xxen_util.meaning(wdj.shutdown_type,'BOM_EAM_SHUTDOWN_TYPE',700) shutdown_type,
 xxen_util.meaning(wdj.priority,'WIP_EAM_ACTIVITY_PRIORITY',700) priority,
 decode(ewod.pending_flag,'Y','Disabled',decode(wdj.status_type,3,'Complete',4,'Uncomplete','Disabled')) action_code,
-ppv.project_number,
+ppa.segment1 project_number,
 pt.task_number,
 wdj.class_code,
 eps.name pm_schedule_name,
@@ -98,7 +98,7 @@ we.organization_id=wdj.organization_id
 ) wdj,
 mtl_system_items_b_kfv msibk,
 bom_departments bd,
-pjm_projects_v ppv,
+pa_projects_all ppa,
 pa_tasks pt,
 eam_work_order_details ewod,
 eam_wo_statuses_v ewsv,
@@ -189,7 +189,7 @@ where
 nvl(wdj.asset_group_id,wdj.rebuild_item_id)=msibk.inventory_item_id(+) and
 wdj.organization_id=msibk.organization_id(+) and
 wdj.owning_department=bd.department_id(+) and
-wdj.project_id=ppv.project_id(+) and
+wdj.project_id=ppa.project_id(+) and
 wdj.task_id=pt.task_id(+) and
 wdj.wip_entity_id=ewod.wip_entity_id and
 wdj.organization_id=ewod.organization_id and

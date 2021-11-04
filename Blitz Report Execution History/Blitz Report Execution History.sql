@@ -26,6 +26,8 @@ x.row_count,
 round(x.row_count/decode(x.seconds,0,0.25,x.seconds),2) rows_second,
 x.file_size,
 x.category,
+xxen_util.client_time(x.actual_completion_date) request_completion_date,
+round(x.actual_completion_date-x.completion_date,2) file_writing_seconds,
 decode(x.type,'S','System','P','Protected') type,
 x.run_id
 from
@@ -50,10 +52,11 @@ end,'CP_STATUS_CODE',0)
 nvl2(xrr.completion_date,null,nvl2(xrr.active_session,'Running - Online','Error'))),
 'Completed') status,
 nvl(xrr.start_date,xrr.creation_date) start_date,
-xrr.completion_date,
+xrr.completion_date completion_date,
 round((nvl(xrr.completion_date,nvl2(xrr.active_session,sysdate,fcr.actual_completion_date))-nvl(xrr.start_date,xrr.creation_date))*86400) seconds,
 xrr.row_count,
 xrr.file_size,
+fcr.actual_completion_date,
 xxen_api.category(xrv.report_id) category,
 xrr.type,
 xrr.run_id

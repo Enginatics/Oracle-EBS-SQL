@@ -21,15 +21,16 @@ decode(ts.contents$,0,(decode(bitand (ts.flags, 16),16,'UNDO','PERMANENT')),1,'T
 ts.name tablespace,
 dhtsu.tablespace_usedsize*vp.value/1000000 used_size,
 dhtsu.tablespace_size*vp.value/1000000 size_,
-dhtsu.tablespace_maxsize*vp.value/1000000 max_size
+dhtsu.tablespace_maxsize*vp.value/1000000 max_size,
+sys_context('userenv','db_name') db_name
 from
 (select vp.value from v$parameter vp where vp.name like 'db_block_size') vp,
 v$database vd,
 dba_hist_tbspc_space_usage dhtsu,
 sys.ts$ ts
 where
-vd.dbid=dhtsu.dbid and
-dhtsu.tablespace_id=ts.ts#
+dhtsu.tablespace_id=ts.ts# and
+2=2
 ) x
 where
 1=1

@@ -20,16 +20,21 @@ xxen_util.meaning(xrtv.global_default,'YES_NO',0) global_default,
 xxen_util.meaning(xrtv.distinct_flag,'YES_NO',0) distinct_flag,
 count(*) over (partition by xrtv.template_id) column_count,
 max(xxen_util.meaning(xrtc.aggregation,'AMS_EXPN_BUILDER_OPERATORS',530)) over (partition by xrtv.template_id) max_aggregation,
-max(xrtc.sort_order_||nvl2(xrtc.sort_order,' '||xrtc.direction,null)) over (partition by xrtv.template_id) max_sort_order,
-xrtv.creation_date
+max(nvl2(xrtc.sort_order,xrtc.direction||' ',null)||xrtc.sort_order_) over (partition by xrtv.template_id) max_sort_order,
+xrtv.file_name excel_file_name,
+xxen_util.client_time(xrtv.file_last_modified_date) file_last_modified,
+xxen_util.user_name(xrtv.created_by) created_by,
+xxen_util.client_time(xrtv.creation_date) creation_date,
 &columns
+xrtv.template_id
 from
 xxen_report_templates_v xrtv,
 (
 select
 xxen_util.meaning(xrtc.aggregation,'AMS_EXPN_BUILDER_OPERATORS',530) aggregation_meaning,
-abs(xrtc.sort_order) sort_order_,
 xxen_util.meaning(case when xrtc.sort_order<0 then 2 else sign(xrtc.sort_order) end,'WMS_SORT_ORDER',700) direction,
+abs(xrtc.sort_order) sort_order_,
+xxen_util.meaning(xrtc.sheet_break,'YES_NO',0) sheet_break_,
 (select distinct listagg(xrtp.field_type,', ') within group (order by xrtp.field_type) over () pivot_field_type from xxen_report_template_pivot xrtp where xrtc.template_id=xrtp.template_id and xrtc.column_name=xrtp.column_name) pivot_field_type,
 xrtc.*
 from

@@ -105,7 +105,7 @@ with
           ,mp.compile_designator         plan_name
           ,case mmp.organization_id
            when -1 then (select mfq.char1
-                         from   msc_form_query@A2M_DBLINK mfq
+                         from   msc_form_query  mfq
                          where  mfq.query_id = mmp.query_id
                          and    mfq.number4  = mmp.plan_id
                          and    mfq.number3  = mmp.sr_instance_id
@@ -117,7 +117,7 @@ with
            end                           organization
           ,case sign(mmp.inventory_item_id)
            when -1 then (select mfq.char2
-                         from   msc_form_query@A2M_DBLINK mfq
+                         from   msc_form_query  mfq
                          where  mfq.query_id = mmp.query_id
                          and    mfq.number4  = mmp.plan_id
                          and    mfq.number3  = mmp.sr_instance_id
@@ -129,7 +129,7 @@ with
            end                           item
           ,mcs.category_set_name         category_set
           ,mic.category_name
-          ,msc_get_name.lookup_meaning@A2M_DBLINK('MTL_PLANNING_MAKE_BUY',msi.planning_make_buy_code) make_buy
+          ,msc_get_name.lookup_meaning ('MTL_PLANNING_MAKE_BUY',msi.planning_make_buy_code) make_buy
           ,msi.planner_code              planner
           ,msi.buyer_name                buyer
           ,mmp.item_segments             using_assemblies
@@ -139,77 +139,77 @@ with
           ,substr(mmp.organization_code,instr(mmp.organization_code,'|',1,1)+1,length(mmp.organization_code)) wn
           ,mmp.bucket_date bucket_date
           ,round(
-           CASE ml.lookup_code
-           WHEN 10  THEN mmp.quantity1
-           WHEN 20  THEN mmp.quantity2 
-           WHEN 25  THEN mmp.quantity3 
-           WHEN 30  THEN mmp.quantity4
-           WHEN 40  THEN mmp.quantity5
-           WHEN 45  THEN mmp.quantity6
-           WHEN 50  THEN mmp.quantity7
-           WHEN 70  THEN mmp.quantity8
-           WHEN 81  THEN mmp.quantity9
-           WHEN 83  THEN mmp.quantity10
-           WHEN 85  THEN mmp.quantity11
-           WHEN 87  THEN mmp.quantity12
-           WHEN 89  THEN mmp.quantity13
-           WHEN 90  THEN mmp.quantity14
-           WHEN 95  THEN mmp.quantity15
-           WHEN 100 THEN mmp.quantity16
-           WHEN 105 THEN mmp.quantity17
-           WHEN 110 THEN mmp.quantity18
-           WHEN 120 THEN mmp.quantity19
-           WHEN 180 THEN mmp.quantity19
-           WHEN 130 THEN mmp.quantity20
-           WHEN 140 THEN mmp.quantity21
-           WHEN 150 THEN mmp.quantity22
-           WHEN 160 THEN mmp.quantity23
-           WHEN 210 THEN mmp.quantity24
-           WHEN 175 THEN mmp.quantity25
-           WHEN 177 THEN mmp.quantity26
-           WHEN 190 THEN mmp.quantity27
-           WHEN 200 THEN mmp.quantity28
-           WHEN 220 THEN mmp.quantity29
-           WHEN 230 THEN mmp.quantity30
-           WHEN 240 THEN mmp.quantity31
-           WHEN 250 THEN mmp.quantity32
-           WHEN 260 THEN mmp.quantity33
-           WHEN 270 THEN mmp.quantity34
-           WHEN 280 THEN mmp.quantity35
-           WHEN 178 THEN mmp.quantity36
-           WHEN 183 THEN mmp.quantity37
-           WHEN 184 THEN mmp.quantity38
-           WHEN 185 THEN mmp.quantity39
-           WHEN 186 THEN mmp.quantity40
-           WHEN 290 THEN mmp.quantity41
-           WHEN 300 THEN mmp.quantity42
-           -- Columns 43,44 are not populated by MSC_HORIZONTAL_PLAN_SC
-           WHEN 500 THEN mmp.quantity45
-           WHEN 295 THEN mmp.quantity46
-           WHEN 330 THEN mmp.quantity47
-           WHEN 305 THEN mmp.quantity48
-           WHEN 310 THEN mmp.quantity49
-           WHEN 315 THEN mmp.quantity50
-           WHEN 320 THEN mmp.quantity51
-           WHEN 325 THEN mmp.quantity52
-           WHEN 335 THEN mmp.quantity53
-           WHEN 340 THEN mmp.quantity54
-           WHEN 345 THEN mmp.quantity55
-           WHEN 350 THEN mmp.quantity56
-           END,nvl(to_number('&p_decimal_places'),1))  quantity
+           case ml.lookup_code
+           when 10  then mmp.quantity1
+           when 20  then mmp.quantity2 
+           when 25  then mmp.quantity3 
+           when 30  then mmp.quantity4
+           when 40  then mmp.quantity5
+           when 45  then mmp.quantity6
+           when 50  then mmp.quantity7
+           when 70  then mmp.quantity8
+           when 81  then mmp.quantity9
+           when 83  then mmp.quantity10
+           when 85  then mmp.quantity11
+           when 87  then mmp.quantity12
+           when 89  then mmp.quantity13
+           when 90  then mmp.quantity14
+           when 95  then mmp.quantity15
+           when 100 then mmp.quantity16
+           when 105 then mmp.quantity17
+           when 110 then mmp.quantity18
+           when 120 then mmp.quantity19
+           when 180 then mmp.quantity19
+           when 130 then mmp.quantity20
+           when 140 then mmp.quantity21
+           when 150 then mmp.quantity22
+           when 160 then mmp.quantity23
+           when 210 then mmp.quantity24
+           when 175 then mmp.quantity25
+           when 177 then mmp.quantity26
+           when 190 then mmp.quantity27
+           when 200 then mmp.quantity28
+           when 220 then mmp.quantity29
+           when 230 then mmp.quantity30
+           when 240 then mmp.quantity31
+           when 250 then mmp.quantity32
+           when 260 then mmp.quantity33
+           when 270 then mmp.quantity34
+           when 280 then mmp.quantity35
+           when 178 then mmp.quantity36
+           when 183 then mmp.quantity37
+           when 184 then mmp.quantity38
+           when 185 then mmp.quantity39
+           when 186 then mmp.quantity40
+           when 290 then mmp.quantity41
+           when 300 then mmp.quantity42
+           -- columns 43,44 are not populated by msc_horizontal_plan_sc
+           when 500 then mmp.quantity45
+           when 295 then mmp.quantity46
+           when 330 then mmp.quantity47
+           when 305 then mmp.quantity48
+           when 310 then mmp.quantity49
+           when 315 then mmp.quantity50
+           when 320 then mmp.quantity51
+           when 325 then mmp.quantity52
+           when 335 then mmp.quantity53
+           when 340 then mmp.quantity54
+           when 345 then mmp.quantity55
+           when 350 then mmp.quantity56
+           end,nvl(to_number('&p_decimal_places'),1))  quantity
           --
           from 
-           mfg_lookups@A2M_DBLINK                 ml,
-           msc_apps_instances@A2M_DBLINK          mai,
-           msc_plans@A2M_DBLINK                   mp,
-           msc_plan_organizations@A2M_DBLINK      mpo,
-           msc_system_items@A2M_DBLINK            msi,
-           msc_item_categories@A2M_DBLINK         mic,
-           msc_category_sets@A2M_DBLINK           mcs,
-           msc_material_plans@A2M_DBLINK          mmp,
-		   dual d
+           mfg_lookups                  ml,
+           msc_apps_instances           mai,
+           msc_plans                    mp,
+           msc_plan_organizations       mpo,
+           msc_system_items             msi,
+           msc_item_categories          mic,
+           msc_category_sets            mcs,
+           msc_material_plans           mmp,
+           dual d
           where
-		      mmp.sr_instance_id     = mai.instance_id
+              mmp.sr_instance_id     = mai.instance_id
           and mmp.sr_instance_id     = mp.sr_instance_id
           and mmp.plan_id            = mp.plan_id
           --

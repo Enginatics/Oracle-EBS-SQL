@@ -11,6 +11,7 @@
 -- Run Report: https://demo.enginatics.com/
 
 select
+haouv.name operating_unit,
 apsa.invoice_currency_code currency,
 hp.party_name customer_name,
 hca.account_number,
@@ -31,29 +32,31 @@ xxen_util.client_time(rcta.creation_date) creation_date,
 xxen_util.user_name(rcta.last_updated_by) last_updated_by,
 xxen_util.client_time(rcta.last_update_date) last_update_date
 from
-hz_customer_profiles hcp,
-hz_customer_profiles hcp1,
-ar_collectors ac,
+hr_all_organization_units_vl haouv,
+ar_payment_schedules_all apsa,
+ra_customer_trx_all rcta,
+ra_cust_trx_types_all rctta,
 hz_cust_accounts hca,
 hz_parties hp,
-ra_customer_trx_all rcta,
 ra_salesreps rs,
-ar_payment_schedules_all apsa,
-ra_cust_trx_types_all rctta
+hz_customer_profiles hcp,
+hz_customer_profiles hcp1,
+ar_collectors ac
 where
+1=1 and
 apsa.actual_date_closed>:p_as_of_date and
 arpt_sql_func_util.get_balance_due_as_of_date(payment_schedule_id,:p_as_of_date,class)!=0 and
-1=1 and
-hca.cust_account_id=rcta.bill_to_customer_id and
+haouv.organization_id=apsa.org_id and
+apsa.customer_trx_id=rcta.customer_trx_id and
+rcta.cust_trx_type_id=rctta.cust_trx_type_id and
+rcta.org_id=rctta.org_id and
+rcta.bill_to_customer_id=hca.cust_account_id and
 hca.party_id=hp.party_id and
-rcta.customer_trx_id=apsa.customer_trx_id and
-rcta.primary_salesrep_id=rs.salesrep_id (+) and
-hcp.cust_account_id=hca.cust_account_id and
+rcta.primary_salesrep_id=rs.salesrep_id(+) and
+hca.cust_account_id=hcp.cust_account_id and
 hcp.site_use_id is null and
-hcp1.site_use_id (+)=apsa.customer_site_use_id and
-ac.collector_id=nvl(hcp1.collector_id, hcp.collector_id) and
-rctta.cust_trx_type_id=rcta.cust_trx_type_id and
-rctta.org_id=rcta.org_id
+apsa.customer_site_use_id=hcp1.site_use_id(+) and
+nvl(hcp1.collector_id, hcp.collector_id)=ac.collector_id
 order by
 decode(upper(:p_order_by),'SALESPERSON',rs.name, 'CUSTOMER',hp.party_name,null),
 decode(upper(:p_order_by),'BALANCE DUE',arpt_sql_func_util.get_balance_due_as_of_date(payment_schedule_id,:p_as_of_date,class),0)

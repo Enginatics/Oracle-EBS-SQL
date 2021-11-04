@@ -90,6 +90,16 @@ x.shipped_quantity,
 x.shippable_flag,
 x.ship_set,
 x.delivery,
+nvl2(x.next_step,x.next_step,decode(x.next_step_code,
+'IT','Run Interfaces',
+'NA','Not Applicable',
+'PC','Transact Move Order',
+'PO','Progress Order to Awaiting Shipping',
+'PR','Pick Release',
+'RC','Replenishment Complete',
+'RX','Receive Crossdocked Supply',
+'SC','Ship Confirm/Close Trip Stop'
+)) next_step,
 x.project,
 x.task,
 x.header_created_by,
@@ -177,6 +187,8 @@ oola.shipped_quantity,
 xxen_util.meaning(decode(oola.shippable_flag,'Y','Y'),'YES_NO',0) shippable_flag,
 (select distinct listagg(os.set_name,', ') within group (order by os.set_name) over (partition by oola.line_id) set_name from oe_sets os where oola.ship_set_id=os.set_id) ship_set,
 wnd.name delivery,
+wda.next_step_code,
+xxen_util.meaning(wda.next_step_code,'NEXT_STEP',665) next_step,
 xxen_util.client_time(oolh.hist_creation_date) cancel_date,
 xxen_util.user_name(oolh.hist_created_by) cancelled_by,
 xxen_util.meaning(oer.reason_code,'CANCEL_CODE',660) cancel_reason,
@@ -244,7 +256,16 @@ jtf_rs_resource_extns_vl jrrev2,
 (
 select distinct
 wdd.source_line_id,
-min(wda.delivery_id) over (partition by wdd.source_line_id, wda.delivery_id) delivery_id
+wda.delivery_id,
+case
+when wdd.container_flag in ('Y','C') then 'NA'
+when wdd.released_status='C' then case when wdd.source_code='OE' and wdd.inv_interfaced_flag in ('X','Y') and (wdd.oe_interfaced_flag='Y' or wdd.oe_interfaced_flag='X' and (wms_deploy.wms_deployment_mode='D' or wms_deploy.wms_deployment_mode='L' and wdd.client_id is not null)) or wdd.source_code<>'OE' and wdd.oe_interfaced_flag in ('X','Y') then 'NA' else 'IT' end
+when wdd.released_status in ('B','R') then case when wdd.replenishment_status='R' then 'RC' else 'PR' end
+when wdd.released_status='S' then case when wdd.move_order_line_id is null then 'RX' else 'PC' end
+when wdd.released_status in ('X','Y') then 'SC'
+when wdd.released_status='D' then 'NA'
+when wdd.released_status='N' then 'PO'
+end next_step_code
 from
 wsh_delivery_details wdd,
 wsh_delivery_assignments wda

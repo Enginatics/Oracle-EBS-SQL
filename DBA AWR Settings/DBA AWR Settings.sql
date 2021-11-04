@@ -96,7 +96,7 @@ end;
 -- Run Report: https://demo.enginatics.com/
 
 select
-vd.name database,
+sys_context('userenv','db_name') database,
 dhdi.host_name,
 dhdi.instance_name,
 case when extract(day from dhwc.retention)>0 then extract(day from dhwc.retention)||'d ' end||
@@ -132,7 +132,6 @@ dba_hist_snapshot dhs
 ) dhs
 where
 1=1 and
-dhwc.dbid=vd.dbid and
 dhwc.dbid=dhdi.dbid(+) and
 dhdi.dbid=dhs.dbid(+) and
 dhdi.instance_number=dhs.instance_number(+)

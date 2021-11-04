@@ -8,111 +8,116 @@
 -- Description: Imported Oracle standard journal entry reserve ledger report
 Source: Journal Entry Reserve Ledger Report (XML)
 Short Name: FAS400_XML
-DB package: FA_FAS400_XMLP_PKG
+DB package: XXEN_FA_FAS_XMLP
 -- Excel Examle Output: https://www.enginatics.com/example/fa-journal-entry-reserve-ledger/
 -- Library Link: https://www.enginatics.com/reports/fa-journal-entry-reserve-ledger/
 -- Run Report: https://demo.enginatics.com/
 
-select 
-  x.company_name    company
-, x.book                     book
-, x.Currency_Code     currency
-, x.period1                 period
-, x.comp_code          "&balancing_segment_p"
-, x.gl_account           "Expense Accout"
-, x.rsv_account         "Reserve Account"
-, x.cost_center         "&cost_center_p"
-, x.asset_number      "Asset - Description"
-, x.start_date            "Date Placed In Service"
-, x.method                "Deprn Method"
-, x.d_life                    "Life Yr.Mo" 
-,x.cost
-,x.deprn_amount    "Depreciation Amount"
-,x.ytd_deprn            "YTD Depreciation"
-,x.deprn_reserve   "Depreciation Reserve"
-,x.percent
-,x.t_type      "Transaction Type"
+select
+  x.company_name      company_name,
+  x.ledger            ledger,
+  x.book              book,
+  x.currency          currency,
+  x.period            period,
+  x.bal_segment       balancing_segment,
+  x.exp_account       expense_account,
+  x.rsv_account       reserve_account,
+  x.cost_center       cost_center,
+  x.asset_number      asset_number,
+  x.asset_desc        asset_description,
+  x.start_date        date_placed_in_service,
+  x.method            depreciation_method,
+  x.d_life            "Life Yr.Mo",
+  x.cost              cost,
+  x.deprn_amount      depreciation_amount,
+  x.ytd_deprn         ytd_depreciation,
+  x.deprn_reserve     depreciation_reserve,
+  x.percent           percent,
+  x.transaction_type  transaction_type,
+  x.company_name || ': ' || x.book || ' - ' || x.period || ' (' || x.currency || ')' comp_book_prd_curr_label
 from
 (
-SELECT 
-  fsc.Company_Name,
-  fsc.book,
-  fsc.Currency_Code,
-  fsc.period1,
-  fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_bal_seg', 'SQLGL', 'GL#', cc.CHART_OF_ACCOUNTS_ID, NULL, cc.CODE_COMBINATION_ID, 'GL_BALANCING', 'Y', 'VALUE') COMP_CODE,
-  decode(TRANSACTION_TYPE,'B',RSV.RESERVE_ACCT, fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_acct_seg', 'SQLGL', 'GL#', cc.CHART_OF_ACCOUNTS_ID, NULL, cc.CODE_COMBINATION_ID, 'GL_ACCOUNT', 'Y', 'VALUE') ) GL_ACCOUNT,
-  RSV.DEPRN_RESERVE_ACCT RSV_ACCOUNT,
-  fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_cost_seg', 'SQLGL', 'GL#', cc.CHART_OF_ACCOUNTS_ID, NULL, cc.CODE_COMBINATION_ID, 'FA_COST_CTR', 'Y', 'VALUE') COST_CENTER,
-  AD.ASSET_NUMBER || '-' || AD.DESCRIPTION ASSET_NUMBER,
-  DATE_PLACED_IN_SERVICE START_DATE,
-  METHOD_CODE METHOD,
-  RSV.LIFE LIFE,
-  RSV.RATE ADJ_RATE,
-  DS.BONUS_RATE BONUS_RATE,
-  RSV.CAPACITY PROD,
-  SUM(decode(transaction_type,'B',NULL,COST)) COST,
-  SUM(RSV.DEPRN_AMOUNT) DEPRN_AMOUNT,
-  SUM(RSV.YTD_DEPRN) YTD_DEPRN,
-  SUM(RSV.DEPRN_RESERVE) DEPRN_RESERVE,
-  sum(decode(transaction_type,'B',NULL,nvl(PERCENT,0))) PERCENT,
-  TRANSACTION_TYPE T_TYPE,
-  FA_FAS400_XMLP_PKG.d_lifeformula(RSV.LIFE, RSV.RATE, DS.BONUS_RATE, RSV.CAPACITY) D_LIFE
-FROM 
-  (
-    SELECT Company_Name,
-                 Category_Flex_Structure,
-                 Location_Flex_Structure,
-                 Asset_Key_Flex_Structure,
-                 'P' a_partial_retirement,
-                 'F' a_full_retirement,
-                 'T' a_transfer_out,
-                 'N' a_non_depreciate,
-                 'R' a_reclass,
-                 'B' a_bonus, 
-    	FA_FAS400_XMLP_PKG.bookformula() Book, 
-    	FA_FAS400_XMLP_PKG.period1formula() Period1, 
-    	FA_FAS400_XMLP_PKG.report_nameformula() Report_Name,
-       '&c_do_insertformula'    c_do_insertformula,
-    	FA_FAS400_XMLP_PKG.Accounting_Flex_Structure_p Accounting_Flex_Structure,
-    	FA_FAS400_XMLP_PKG.Currency_Code_p Currency_Code,
-    	FA_FAS400_XMLP_PKG.Book_Class_p Book_Class,
-    	FA_FAS400_XMLP_PKG.Distribution_Source_Book_p Distribution_Source_Book,
-    	FA_FAS400_XMLP_PKG.Period1_PC_p Period1_PC,
-    	FA_FAS400_XMLP_PKG.Period1_PCD_p Period1_PCD,
-    	FA_FAS400_XMLP_PKG.Period1_POD_p Period1_POD,
-    	FA_FAS400_XMLP_PKG.Period1_FY_p Period1_FY,
-    	FA_FAS400_XMLP_PKG.Period_Closed_p Period_Closed
-FROM   FA_SYSTEM_CONTROLS
-  ) FSC,
-  FA_RESERVE_LEDGER_GT RSV,
-  FA_ADDITIONS AD,
-  GL_CODE_COMBINATIONS CC,
-  &lp_fa_deprn_summary DS
-WHERE
-  RSV.ASSET_ID = AD.ASSET_ID
-  AND RSV.DH_CCID = CC.CODE_COMBINATION_ID
-  AND DS.PERIOD_COUNTER (+) = RSV.PERIOD_COUNTER
-  AND DS.BOOK_TYPE_CODE (+) = :P_Book
-  AND DS.ASSET_ID (+) = RSV.ASSET_ID 
-  AND 1=1
-GROUP BY 
-  fsc.Company_Name,
-  fsc.book,
-  fsc.Currency_Code,
-  fsc.period1,
-  fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_bal_seg', 'SQLGL', 'GL#', cc.CHART_OF_ACCOUNTS_ID, NULL, cc.CODE_COMBINATION_ID, 'GL_BALANCING', 'Y', 'VALUE'),
-  decode(transaction_type,'B', RSV.RESERVE_ACCT,fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_acct_seg', 'SQLGL', 'GL#', cc.CHART_OF_ACCOUNTS_ID, NULL, cc.CODE_COMBINATION_ID, 'GL_ACCOUNT', 'Y', 'VALUE')),
-  RSV.DEPRN_RESERVE_ACCT,
-  fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_cost_seg', 'SQLGL', 'GL#', cc.CHART_OF_ACCOUNTS_ID, NULL, cc.CODE_COMBINATION_ID, 'FA_COST_CTR', 'Y', 'VALUE'),
-  AD.ASSET_NUMBER,
-  AD.DESCRIPTION,
-  DATE_PLACED_IN_SERVICE,
-  METHOD_CODE,
-  RSV.LIFE,
-  RSV.RATE,
-  RSV.CAPACITY,
-  DS.BONUS_RATE,
-  TRANSACTION_TYPE
-ORDER BY 
-  1,2,3,4,5,6,7,8,9,10,11,13,14,15,12,16,17,18,19,20,21
+select
+  fsc.company_name,
+  gl.name ledger,
+  :p_book book,
+  gl.currency_code currency,
+  :p_period1 period,
+  fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_bal_seg', 'SQLGL', 'GL#', gcc.chart_of_accounts_id, null, gcc.code_combination_id, 'GL_BALANCING', 'Y', 'VALUE') bal_segment,
+  decode(transaction_type,'B',frlg.reserve_acct, fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_acct_seg', 'SQLGL', 'GL#', gcc.chart_of_accounts_id, null, gcc.code_combination_id, 'GL_ACCOUNT', 'Y', 'VALUE') ) exp_account,
+  frlg.deprn_reserve_acct rsv_account,
+  fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_cost_seg', 'SQLGL', 'GL#', gcc.chart_of_accounts_id, null, gcc.code_combination_id, 'FA_COST_CTR', 'Y', 'VALUE') cost_center,
+  fa.asset_number,
+  fa.description asset_desc,
+  frlg.date_placed_in_service start_date,
+  frlg.method_code method,
+  frlg.life life,
+  frlg.rate adj_rate,
+  fds.bonus_rate bonus_rate,
+  frlg.capacity prod,
+  sum(decode(frlg.transaction_type,'B',null,frlg.cost)) cost,
+  sum(frlg.deprn_amount) deprn_amount,
+  sum(frlg.ytd_deprn) ytd_deprn,
+  sum(frlg.deprn_reserve) deprn_reserve,
+  sum(decode(frlg.transaction_type,'B',null,nvl(frlg.percent,0))) percent,
+  frlg.transaction_type t_type,
+  case frlg.transaction_type
+  when 'P' then 'Partial Unit Retirement'
+  when 'F' then 'Full Retirement'
+  when 'T' then 'Transfer Out'
+  when 'N' then 'Non-depreciating Asset'
+  when 'R' then 'Reclassification'
+  when 'B' then 'Bonus Depreciation Amount'
+  else frlg.transaction_type
+  end transaction_type,
+  fa_fas400_xmlp_pkg.d_lifeformula(frlg.life, frlg.rate, fds.bonus_rate, frlg.capacity) d_life
+from
+  fa_system_controls   fsc,
+  gl_ledgers           gl,
+  fa_reserve_ledger_gt frlg,
+  fa_additions         fa,
+  gl_code_combinations gcc,
+  &lp_fa_deprn_summary fds
+where
+  gl.ledger_id            = :p_ca_set_of_books_id and
+  fa.asset_id             = frlg.asset_id and
+  gcc.code_combination_id = frlg.dh_ccid and
+  fds.period_counter  (+) = frlg.period_counter and
+  fds.book_type_code  (+) = :p_book and
+  fds.asset_id        (+) = frlg.asset_id and
+  1=1
+group by
+  fsc.company_name,
+  gl.name,
+  :p_book,
+  gl.currency_code,
+  :p_period1,
+  fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_bal_seg', 'SQLGL', 'GL#', gcc.chart_of_accounts_id, null, gcc.code_combination_id, 'GL_BALANCING', 'Y', 'VALUE'),
+  decode(transaction_type,'B', frlg.reserve_acct,fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_acct_seg', 'SQLGL', 'GL#', gcc.chart_of_accounts_id, null, gcc.code_combination_id, 'GL_ACCOUNT', 'Y', 'VALUE')),
+  frlg.deprn_reserve_acct,
+  fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_cost_seg', 'SQLGL', 'GL#', gcc.chart_of_accounts_id, null, gcc.code_combination_id, 'FA_COST_CTR', 'Y', 'VALUE'),
+  fa.asset_number,
+  fa.description,
+  frlg.date_placed_in_service,
+  frlg.method_code,
+  frlg.life,
+  frlg.rate,
+  frlg.capacity,
+  fds.bonus_rate,
+  frlg.transaction_type
 ) x
+order by
+  x.company_name,
+  x.ledger,
+  x.book,
+  x.currency,
+  x.period,
+  x.bal_segment,
+  x.exp_account,
+  x.rsv_account,
+  x.cost_center,
+  x.asset_number,
+  x.asset_desc,
+  x.method,
+  x.d_life,
+  x.start_date

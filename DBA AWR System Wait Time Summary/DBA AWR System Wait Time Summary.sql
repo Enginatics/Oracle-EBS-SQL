@@ -45,7 +45,6 @@ dba_hist_sys_time_model dhstm
 where
 1=1 and
 dhstm.stat_name in ('DB CPU','DB time') and
-dhs.dbid=(select vd.dbid from v$database vd) and
 dhs.dbid=dhstm.dbid and
 dhs.instance_number=dhstm.instance_number and
 dhs.snap_id=dhstm.snap_id

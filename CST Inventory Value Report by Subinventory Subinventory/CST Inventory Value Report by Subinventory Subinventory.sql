@@ -28,7 +28,7 @@ select
 ,      decode(msi.inventory_planning_code,6, xxen_util.meaning(nvl(msi.mrp_planning_code,6),'MRP_PLANNING_CODE',700), xxen_util.meaning(nvl(msi.inventory_planning_code,6),'MTL_MATERIAL_PLANNING',700)) planning_method
 ,      round(sum(ciqt.rollback_qty),:p_qty_precision) qty
 ,      round((sum(nvl(cict.item_cost,0)) * :p_exchange_rate), :p_ext_precision)    unit_cost    -- changed to round by extended precision
-,      round(sum(nvl(ciqt.rollback_qty,0) * decode(nvl(sec.asset_inventory,1), 1, nvl(cict.item_cost,0), 0) * :p_exchange_rate) / round(sum(nvl(ciqt.rollback_qty,0)),:p_qty_precision), :p_ext_precision)    unit_cost_1   -- calculated as value/qty
+,      round(sum(nvl(ciqt.rollback_qty,0) * decode(nvl(sec.asset_inventory,1), 1, nvl(cict.item_cost,0), 0) * :p_exchange_rate) / xxen_util.zero_to_null(round(sum(nvl(ciqt.rollback_qty,0)),:p_qty_precision)), :p_ext_precision)    unit_cost_1   -- calculated as value/qty
 ,      decode(cict.cost_type_id, :p_cost_type_id, ' ', '*')   defaulted
 ,      round(sum(ciqt.rollback_qty * nvl(cict.material_cost,0) * decode(sec.asset_inventory, 2, 0, 1) * :p_exchange_rate) / :round_unit) * :round_unit   matl_cost
 ,      round(sum(ciqt.rollback_qty * nvl(cict.material_overhead_cost,0) * decode(sec.asset_inventory, 2, 0, 1) * :p_exchange_rate) / :round_unit) * :round_unit   movh_cost

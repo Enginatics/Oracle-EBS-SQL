@@ -26,7 +26,6 @@ dba_hist_snapshot dhs,
 dba_hist_pgastat dhp
 where
 1=1 and
-dhs.dbid=(select vd.dbid from v$database vd) and
 dhs.dbid=dhp.dbid and
 dhs.instance_number=dhp.instance_number and
 dhs.snap_id=dhp.snap_id

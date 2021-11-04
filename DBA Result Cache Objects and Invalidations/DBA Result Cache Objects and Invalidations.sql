@@ -16,7 +16,8 @@ You may end up with all server sessions waiting on 'latch free' for 'Result Cach
 
 select
 y.result_name,
-y.results_count
+y.results_count,
+y.cache_id
 &object_columns
 from
 (
@@ -27,7 +28,8 @@ x.object_type,
 x.owner,
 x.object_name,
 x.invalidations,
-max(x.invalidations) over (partition by grco.cache_id) max_invalidations
+max(x.invalidations) over (partition by grco.cache_id) max_invalidations,
+grco.cache_id
 from
 gv$result_cache_objects grco,
 (

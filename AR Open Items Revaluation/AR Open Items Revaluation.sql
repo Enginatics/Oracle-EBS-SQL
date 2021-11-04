@@ -117,6 +117,7 @@ from
     , ar_xla_ctlgd_lines_v   dist
     , ar_payment_schedules   pay
     where
+     1=1 and
      &lp_dates
      &lp_posted
           cust.cust_account_id       = pay.customer_id

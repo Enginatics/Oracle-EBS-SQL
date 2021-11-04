@@ -51,7 +51,6 @@ dba_hist_snapshot dhs,
 dba_hist_sys_time_model dhstm
 where
 1=1 and
-dhs.dbid=(select vd.dbid from v$database vd) and
 dhstm.stat_name not in (
 'DB time',
 'DB CPU',

@@ -13,7 +13,7 @@ The report includes VAT tax codes and rates for AR and AP transactions.
 
 select x.* from (
 select
-gjh.period_name,
+case when count(distinct gp.period_num) over ()>1 then lpad(gp.period_num,2,'0')||' ' end||gjh.period_name period_name,
 gl.name ledger,
 (select gjsv.user_je_source_name from gl_je_sources_vl gjsv where gjh.je_source=gjsv.je_source_name) source_name,
 gjh.external_reference reference,
@@ -64,6 +64,7 @@ xxen_util.meaning(gjl.taxable_line_flag,'YES_NO',0) taxable_line,
 xxen_util.meaning(gjl.amount_includes_tax_flag,'YES_NO',0) amount_includes_tax,
 xxen_util.meaning(xal.accounting_class_code,'XLA_ACCOUNTING_CLASS',602,'Y') accounting_class,
 xxen_util.meaning(gcck.gl_account_type,'ACCOUNT_TYPE',0) account_type,
+&hierarchy_levels3
 &segment_columns
 nvl2(xal.gl_sl_link_id,xdl.unrounded_entered_dr,gjl.entered_dr) entered_dr,
 nvl2(xal.gl_sl_link_id,xdl.unrounded_entered_cr,gjl.entered_cr) entered_cr,
@@ -165,7 +166,48 @@ xla_ae_headers xah,
 xla_events xe,
 xla.xla_transaction_entities xte,
 xla_distribution_links xdl,
-gl_code_combinations_kfv gcck,
+(
+select
+&hierarchy_levels2
+gcck.*
+from
+(
+select
+(select fifs.flex_value_set_id from fnd_id_flex_segments fifs where gcck.chart_of_accounts_id=fifs.id_flex_num and fifs.application_id=101 and fifs.id_flex_code='GL#' and fifs.application_column_name='&hierarchy_segment_column') flex_value_set_id,
+gcck.*
+from
+gl_code_combinations_kfv gcck
+) gcck,
+(
+select
+&hierarchy_levels
+x.flex_value_set_id,
+x.child_flex_value_low,
+x.child_flex_value_high
+from
+(
+select
+substr(sys_connect_by_path(ffvnh.parent_flex_value,'|'),2) path,
+ffvnh.child_flex_value_low,
+ffvnh.child_flex_value_high,
+ffvnh.flex_value_set_id
+from
+(select ffvnh.* from fnd_flex_value_norm_hierarchy ffvnh where ffvnh.flex_value_set_id=:flex_value_set_id) ffvnh
+where
+connect_by_isleaf=1 and
+ffvnh.range_attribute='C'
+connect by nocycle
+ffvnh.parent_flex_value between prior ffvnh.child_flex_value_low and prior ffvnh.child_flex_value_high and
+ffvnh.flex_value_set_id=prior ffvnh.flex_value_set_id and
+prior ffvnh.range_attribute='P'
+start with
+ffvnh.parent_flex_value=:parent_flex_value
+) x
+) h
+where
+2=2 and
+gcck.flex_value_set_id=h.flex_value_set_id(+)
+) gcck,
 (select gdr.* from gl_daily_rates gdr where gdr.to_currency=:revaluation_currency and gdr.conversion_type=(select gdct.conversion_type from gl_daily_conversion_types gdct where gdct.user_conversion_type=:revaluation_conversion_type)) gdr,
 zx_rates_b zrb,
 ap_invoices_all aia,
@@ -267,4 +309,4 @@ gjl.je_line_num,
 gir.gl_sl_link_id
 ) x
 where
-2=2
+3=3

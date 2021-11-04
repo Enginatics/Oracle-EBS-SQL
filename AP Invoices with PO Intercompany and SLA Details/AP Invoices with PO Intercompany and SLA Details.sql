@@ -38,6 +38,8 @@ with ap_inv as -- ap invoice data
     , gdct.user_conversion_type        exchange_rate_type
     , aia.exchange_date
     , aila.line_number
+    , xxen_util.meaning(aila.line_type_lookup_code,'INVOICE LINE TYPE',200)
+                                       line_type
     , xxen_util.meaning(aila.line_source,'LINE SOURCE',200)
                                        line_source
     , decode(aila.discarded_flag,'Y','Y',null)  line_discarded_flag
@@ -57,6 +59,8 @@ with ap_inv as -- ap invoice data
     , zl.tax_rate                      tax_rate
     , aida.invoice_distribution_id
     , aida.distribution_line_number    dist_line_number
+    , xxen_util.meaning(aida.line_type_lookup_code,'INVOICE DISTRIBUTION TYPE',200)
+                                       dist_type
     , aida.quantity_invoiced           dist_qty_invoiced
     , aida.amount                      dist_amount
     , nvl(aida.base_amount
@@ -157,10 +161,8 @@ with ap_inv as -- ap invoice data
       ) zl
     where
         aila.invoice_id                = aia.invoice_id
-    and aila.line_type_lookup_code     = 'ITEM'
     and aida.invoice_id             = aila.invoice_id
     and aida.invoice_line_number    = aila.line_number
-    and aida.line_type_lookup_code  = 'ITEM'
     and aia.vendor_id                  = asup.vendor_id
     and aia.vendor_site_id             = assa.vendor_site_id
     and haouv.organization_id          = aia.org_id
@@ -292,6 +294,7 @@ select
 , ap_inv.exchange_rate_type             exchange_rate_type
 , ap_inv.exchange_date                  exchange_rate_date
 , ap_inv.line_number                    invoice_line_num
+, ap_inv.line_type                      invoice_line_type
 , ap_inv.line_source                    invoice_line_source
 , ap_inv.line_discarded_flag            invoice_line_discarded
 &l_item_sel
@@ -311,6 +314,7 @@ select
 , ap_inv.tax_rate_code                  invoice_line_tax_rate_code
 , ap_inv.tax_rate                       invoice_line_tax_rate
 , ap_inv.dist_line_number               invoice_dist_line_num
+, ap_inv.dist_type                      invoice_dist_type
 , ap_inv.dist_description               invoice_dist_description
 , ap_inv.dist_qty_invoiced              invoice_dist_qty
 , ap_inv.dist_amount                    invoice_dist_amount

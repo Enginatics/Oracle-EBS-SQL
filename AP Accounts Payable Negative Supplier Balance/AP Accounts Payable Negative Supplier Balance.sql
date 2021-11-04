@@ -29,8 +29,8 @@ from
   ,xtb.src_acctd_rounded_rem_amt
   ,sum(xtb.src_acctd_rounded_rem_amt) over(partition by xtb.account,xtb.third_party_name)  sum_supp_liability
   from 
-    (       &p_sql_statement
-     and :l_run_detail_report = 'Y'
+    (&p_template_sql_statement
+     &p_sql_statement
     ) xtb
  ) x
 where

@@ -126,7 +126,7 @@ from
           ,mp.compile_designator         plan_name
           ,case mmp.organization_id
            when -1 then (select mfq.char1
-                         from   msc_form_query@A2M_DBLINK mfq
+                         from   msc_form_query  mfq
                          where  mfq.query_id = mmp.query_id
                          and    mfq.number4  = mmp.plan_id
                          and    mfq.number3  = mmp.sr_instance_id
@@ -138,7 +138,7 @@ from
            end                           organization
           ,case sign(mmp.inventory_item_id)
            when -1 then (select mfq.char2
-                         from   msc_form_query@A2M_DBLINK mfq
+                         from   msc_form_query  mfq
                          where  mfq.query_id = mmp.query_id
                          and    mfq.number4  = mmp.plan_id
                          and    mfq.number3  = mmp.sr_instance_id
@@ -150,7 +150,7 @@ from
            end                           item
           ,mcs.category_set_name         category_set
           ,mic.category_name
-          ,msc_get_name.lookup_meaning@A2M_DBLINK('MTL_PLANNING_MAKE_BUY',msi.planning_make_buy_code) make_buy
+          ,msc_get_name.lookup_meaning ('MTL_PLANNING_MAKE_BUY',msi.planning_make_buy_code) make_buy
           ,msi.planner_code              planner
           ,msi.buyer_name                buyer
           ,mmp.item_segments using_assemblies
@@ -221,14 +221,14 @@ from
            END,nvl(to_number('&p_decimal_places'),1))  quantity
           --
           from 
-           mfg_lookups@A2M_DBLINK                 ml,
-           msc_apps_instances@A2M_DBLINK          mai,
-           msc_plans@A2M_DBLINK                   mp,
-           msc_plan_organizations@A2M_DBLINK      mpo,
-           msc_system_items@A2M_DBLINK            msi,
-           msc_item_categories@A2M_DBLINK         mic,
-           msc_category_sets@A2M_DBLINK           mcs,
-           msc_material_plans@A2M_DBLINK          mmp
+           mfg_lookups                  ml,
+           msc_apps_instances           mai,
+           msc_plans                    mp,
+           msc_plan_organizations       mpo,
+           msc_system_items             msi,
+           msc_item_categories          mic,
+           msc_category_sets            mcs,
+           msc_material_plans           mmp
           where
 		      mmp.sr_instance_id     = mai.instance_id
           and mmp.sr_instance_id     = mp.sr_instance_id

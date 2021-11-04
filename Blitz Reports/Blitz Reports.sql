@@ -62,7 +62,8 @@ xxen_util.meaning(case when xrv.row_num<=30 or xrv.seeded_blitz_report_flag='Y' 
 &columns
 xrv.description,
 &modifications
-(select xrv0.report_name from xxen_reports_v xrv0 where xrv.copied_from_guid=xrv0.guid) copied_from,
+xrv0.report_name copied_from,
+(select max(xrh.creation_date) from xxen_reports_h xrh where xrv.copied_from_guid=xrh.guid) copied_from_last_update_date,
 xrv.db_package,
 xxen_util.user_name(xrv.created_by) created_by,
 xxen_util.client_time(xrv.creation_date) creation_date,
@@ -91,6 +92,7 @@ from
 xxen_reports_v xrv
 ) x
 ) xrv,
+xxen_reports_v xrv0,
 (select xrpv.* from xxen_report_parameters_v xrpv where '&enable_parameters'='Y' and xrpv.display_sequence is not null) xrpv,
 (select xrav.* from xxen_report_assignments_v xrav where '&enable_assignments'='Y') xrav,
 (select count(*) execution_count, xrr.report_id from xxen_report_runs xrr where 2=2 and '&enable_exec_count'='Y' group by xrr.report_id) y,
@@ -99,6 +101,7 @@ lexicals,
 binds
 where
 1=1 and
+xrv.copied_from_guid=xrv0.guid(+) and
 xrv.report_id=xrpv.report_id(+) and
 xrv.report_id=xrav.report_id(+) and
 xrv.report_id=y.report_id(+) and

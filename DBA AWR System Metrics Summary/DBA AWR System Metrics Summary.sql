@@ -44,7 +44,7 @@ when gs.metric_unit like '%Bytes%' then 1/1000000
 else 1 end unit_factor
 from
 (select vp.value from v$parameter vp where vp.name='db_block_size') vp,
-(select x.* from (select max(gs.intsize_csec) over (partition by gs.inst_id, gs.metric_id) max_intsize_csec, gs.* from sys.gv_$sysmetric gs) x where x.intsize_csec=x.max_intsize_csec) gs
+(select x.* from (select max(gs.intsize_csec) over (partition by gs.inst_id, gs.metric_id) max_intsize_csec, gs.* from &sysmetric_view) x where x.intsize_csec=x.max_intsize_csec) gs
 where
 gs.metric_name in (
 'Host CPU Utilization (%)',
@@ -85,7 +85,7 @@ else 1 end unit_factor,
 dhss.*
 from
 v$parameter vp,
-dba_hist_sysmetric_summary dhss
+&sysmetric_symmary_view
 where
 vp.name='db_block_size' and
 dhss.metric_name in (
@@ -105,7 +105,6 @@ dhss.metric_name in (
 ) dhss
 where
 1=1 and
-dhs.dbid=(select vd.dbid from v$database vd) and
 dhs.snap_id=dhss.snap_id and
 dhs.dbid=dhss.dbid and
 dhs.instance_number=dhss.instance_number

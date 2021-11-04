@@ -6,8 +6,8 @@
 /*************************************************************************/
 -- Report Name: INV Item Statuses
 -- Description: Master data report of inventory items with the various status attributes, such as: is BOM allowed, Build in WIP, customer orders enabled, internal orders enabled and Invoice enabled, etc.
--- Excel Examle Output: https://www.enginatics.com/example/inv-item-statuses(12)/
--- Library Link: https://www.enginatics.com/reports/inv-item-statuses(12)/
+-- Excel Examle Output: https://www.enginatics.com/example/inv-item-statuses(14)/
+-- Library Link: https://www.enginatics.com/reports/inv-item-statuses(14)/
 -- Run Report: https://demo.enginatics.com/
 
 select

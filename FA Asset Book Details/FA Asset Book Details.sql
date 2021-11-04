@@ -76,19 +76,23 @@ c_dprn as(
 select
 fds.book_type_code,
 fds.asset_id,
-fds.period_counter,
-fdp.period_name deprn_period_name,
-fdp.period_close_date deprn_period_close_date,
-fds.deprn_amount,
-fds.ytd_deprn,
+fds.period_counter last_deprn_period_counter,
+fdp.period_name last_deprn_period_name,
+fdp.period_close_date last_deprn_period_close_date,
+fds.deprn_amount last_deprn_amount,
+decode(floor(decode(fds.deprn_source_code,'BOOKS',(fds.period_counter),(fds.period_counter-1))/fct.number_per_fiscal_year),fbc.current_fiscal_year,fds.ytd_deprn,0) ytd_deprn,
 fds.deprn_reserve,
 fds.deprn_source_code
 from
 (select x.* from (select max(fds.period_counter) over (partition by fds.asset_id,fds.book_type_code) max_period_counter, fds.* from fa_deprn_summary fds) x where x.period_counter=x.max_period_counter) fds,
-fa_deprn_periods fdp
+fa_deprn_periods fdp,
+fa_book_controls fbc,
+fa_calendar_types fct
 where
-fds.book_type_code=fdp.book_type_code(+) and
-fds.period_counter+1=fdp.period_counter(+) and
+fds.book_type_code=fdp.book_type_code and
+fds.period_counter=fdp.period_counter and
+fds.book_type_code=fbc.book_type_code and
+fbc.deprn_calendar=fct.calendar_type and
 '&show_dprn'='Y'
 ),
 c_fin_trx as (
