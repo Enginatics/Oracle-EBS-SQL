@@ -50,6 +50,7 @@ case when dhsp.object_type like '% %' then substr(dhsp.object_type,1,instr(dhsp.
 dhsp.object_name=ds.segment_name(+)
 order by
 dhsp.sql_id,
+dhsp.sql_id,
 dhsp.timestamp desc,
 dhsp.plan_hash_value,
 dhsp.id,

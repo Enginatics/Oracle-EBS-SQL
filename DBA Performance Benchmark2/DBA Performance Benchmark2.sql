@@ -37,4 +37,4 @@ rownum num1,
 sqrt(rownum) num2,
 sysdate+mod(rownum,100) dat1,
 sysdate+mod(rownum,100) dat2
-from dual connect by level<=200000
+from dual connect by level<=:row_number

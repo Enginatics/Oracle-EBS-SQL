@@ -317,7 +317,7 @@ cic3.cost_type_id(+)=3 and
 pha.agent_id=ppx.person_id(+) and
 plla.line_location_id=rsl.po_line_location_id(+) and
 rsl.shipment_header_id=rsh.shipment_header_id(+) and
-plla.line_location_id=rt.po_line_location_id(+) and
+rsl.shipment_line_id=rt.shipment_line_id(+) and
 rt.transaction_type(+)='RECEIVE' and
 rt.employee_id=ppx2.person_id(+) and
 rt.location_id=hla.location_id(+) and
@@ -328,13 +328,15 @@ ap_invoice_lines_all aila,
 ap_invoices_all aia
 where
 x.line_location_id=aila.po_line_location_id(+) and
-x.rcv_transaction_id=aila.rcv_transaction_id(+) and
+--x.rcv_transaction_id=aila.rcv_transaction_id(+) and
+nvl(x.rcv_transaction_id,-1)=nvl(aila.rcv_transaction_id,nvl(x.rcv_transaction_id,-1)) and
 aila.invoice_id=aia.invoice_id(+)
 order by
 x.operating_unit,
-x.item,
-xxen_util.client_time(x.po_creation_date) desc,
 x.po_number,
+x.release desc,
 x.line_num,
 x.release desc nulls last,
-x.shipment_number desc
+x.shipment_number desc,
+x.item,
+xxen_util.client_time(x.po_creation_date) desc

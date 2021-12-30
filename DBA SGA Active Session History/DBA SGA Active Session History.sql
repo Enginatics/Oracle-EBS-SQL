@@ -7,7 +7,7 @@
 -- Report Name: DBA SGA Active Session History
 -- Description: Active session history from the SGA.
 
-Parameter 'Blocked Sessions only' allows a blocking screnario root cause analysis, e.g. by doing a pivot in Excel (see example in the online library).
+Parameter 'Blocked Sessions only' allows a blocking scenario root cause analysis, e.g. by doing a pivot in Excel (see example in the online library).
 The link to blocking sessions is deliberately nonunique without jointing to sample_id to increase the chance to fetch the blocking session's additional information such as module, action and client_id.
 In some cases, such as row lock scenarios, the blocking session is idle and does not show up in the ASH then.
 For scenarios where the blocking sessions are active and part of the ASH, Tanel Poder has a treewalk ash_wait_chains.sql, showing the whole chain of ASH records linked by a unique join, including the sample_id:

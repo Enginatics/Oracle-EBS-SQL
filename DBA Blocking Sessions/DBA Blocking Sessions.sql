@@ -13,12 +13,12 @@
 select
 vwc.instance inst_id,
 gs.sid||' - '||gs.serial# sid_serial#,
-lpad(' ',2*(level-1))||level level_,
+lpad(' ',2*(vwc.level_-1))||vwc.level_ level_,
 xxen_util.user_name(gs.module,gs.action,gs.client_identifier) user_name,
 xxen_util.responsibility(gs.module,gs.action) responsibility,
 xxen_util.module_type(gs.module,gs.action) module_type,
 xxen_util.module_name(gs.module) module_name,
-lpad(' ',2*(level-1))||gs.status||nvl2(vwc.blocker_sid,null,' - blocking') status,
+lpad(' ',2*(vwc.level_-1))||gs.status||nvl2(vwc.blocker_sid,null,' - blocking') status,
 xxen_util.time(vwc.in_wait_secs) time,
 vwc.in_wait_secs seconds,
 xxen_util.client_time(gs.prev_exec_start) prev_exec_start,
@@ -45,9 +45,24 @@ gs.action,
 gs.program,
 case when gs.type<>'BACKGROUND' then 'alter system disconnect session '''||gs.sid||','||gs.serial#||',@'||gs.inst_id||''' immediate;' end disconnect_db_session,
 case when gs.type<>'BACKGROUND' then 'kill -9 '||gp.spid end kill_server_process,
+vwc.root_blocking_sid
+from
+(
+select
+vwc.*,
+level level_,
 connect_by_root vwc.sid root_blocking_sid
 from
-v$wait_chains vwc,
+v$wait_chains vwc
+where
+vwc.blocker_sid is not null or vwc.num_waiters>0
+connect by nocycle
+prior vwc.sid=vwc.blocker_sid and
+prior vwc.sess_serial#=vwc.blocker_sess_serial# and
+prior vwc.instance=vwc.blocker_instance
+start with
+vwc.blocker_sid is null
+) vwc,
 gv$session gs,
 gv$process gp,
 (

@@ -88,6 +88,13 @@ xah.description accounting_event_description,
 xah.accounting_date,
 xe.transaction_date,
 xte.transaction_number,
+-- Assets
+case
+when xte.application_id = 140 and xte.entity_code = 'TRANSACTIONS'
+then (select fab.asset_number from fa_additions_b fab,fa_transaction_headers fth where fth.asset_id=fab.asset_id and fth.transaction_header_id=xte.source_id_int_1 and fth.event_id = xe.event_id)
+when xte.application_id = 140 and xte.entity_code = 'DEPRECIATION'
+then (select fab.asset_number from fa_additions_b fab, fa_deprn_detail fdd where fab.asset_id=fdd.asset_id and fdd.asset_id=xte.source_id_int_1 and fdd.period_counter=xte.source_id_int_2 and fdd.event_id=xe.event_id and rownum=1)
+end asset_number,
 --AP
 coalesce(aia.invoice_num,rcta.trx_number) invoice_number,
 nvl(aia.description,rcta.comments) description,

@@ -27,7 +27,7 @@ round(x.row_count/decode(x.seconds,0,0.25,x.seconds),2) rows_second,
 x.file_size,
 x.category,
 xxen_util.client_time(x.actual_completion_date) request_completion_date,
-round(x.actual_completion_date-x.completion_date,2) file_writing_seconds,
+(x.actual_completion_date-x.completion_date)*86400 file_writing_seconds,
 decode(x.type,'S','System','P','Protected') type,
 x.run_id
 from

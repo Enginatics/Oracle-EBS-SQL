@@ -11,6 +11,7 @@
 -- Run Report: https://demo.enginatics.com/
 
 select
+gsp.inst_id,
 gsp.sql_id,
 gsp.plan_hash_value,
 gsp.timestamp,
@@ -52,5 +53,6 @@ order by
 gsp.sql_id,
 gsp.timestamp desc,
 gsp.plan_hash_value,
+gsp.inst_id,
 gsp.id,
 gsp.position

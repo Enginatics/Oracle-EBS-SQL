@@ -42,7 +42,7 @@ fnd_languages fl,
 fnd_currencies fc,
 fnd_application fa
 where
-rownum<=500000 and
+rownum<=:row_number and
 1=1 and
 fl.language_code in
 (

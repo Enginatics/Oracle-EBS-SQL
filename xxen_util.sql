@@ -141,14 +141,9 @@ function long_to_clob(p_table_name in varchar2, p_column_name in varchar2, p_row
 function blob_to_base64(p_blob in blob) return clob;
 
 /***********************************************************************************************/
-/*  convert encode base64                                                                  */
+/*  convert base64 to blob                                                             */
 /***********************************************************************************************/
-function encode_base64(p_blob in blob) return clob;
-
-/***********************************************************************************************/
-/*  convert decode base64                                                                  */
-/***********************************************************************************************/
-function decode_base64(p_clob in clob) return blob;
+function base64_to_blob(p_clob in clob) return blob;
 
 /***********************************************************************************************/
 /*  lengthb for clobs see oracle note 790886.1                                                 */
@@ -1148,67 +1143,57 @@ begin
 end long_to_clob;
 
 
+function add_newlines(p_clob in clob, p_line_length in pls_integer) return clob is
+l_clob clob;
+l_offset pls_integer:=1;
+l_total_length pls_integer:=length(p_clob);
+begin
+  dbms_lob.createtemporary(l_clob, true);
+  while l_offset<=l_total_length loop
+    dbms_lob.append(l_clob,substr(p_clob,l_offset,p_line_length)||chr(10));
+    l_offset:=l_offset+p_line_length;
+  end loop;
+  return l_clob;
+end add_newlines;
+
+
 function blob_to_base64(p_blob in blob) return clob is
+l_platform_name v$database.platform_name%type;
 l_file_size pls_integer:=dbms_lob.getlength(p_blob);
 l_len pls_integer:=19200;
 l_blob64 blob;
 begin
+  for c in (select platform_name from v$database) loop
+    l_platform_name:=c.platform_name;
+  end loop;
   dbms_lob.createtemporary(l_blob64, true);
   for i in 0..trunc((l_file_size-1)/l_len) loop
     dbms_lob.append(l_blob64,utl_encode.base64_encode(dbms_lob.substr(p_blob,l_len,i*l_len+1)));
   end loop;
-  return blob_to_clob(l_blob64);
+  if l_platform_name like '%Windows%' then --64decode utility from Windows MKS toolkit doesn't support long lines
+    return blob_to_clob(l_blob64);
+  else
+    --By deafult utl_encode.base64_encode adds newlines after each 64 characters. It gives a performance overhead while writing the base64 output on the filesystem using sqlplus.
+    --So removing newlines, so the result clobs contains strings no longer than 32767 which is sqlplus linesize limit.
+    return add_newlines(replace(replace(blob_to_clob(l_blob64),chr(10)),chr(13)),32767);
+  end if;
 end blob_to_base64;
 
 
-function encode_base64(p_blob in blob) return clob is
+function base64_to_blob(p_clob in clob) return blob is
+l_file_size pls_integer;
 l_clob clob;
-l_result clob;
-l_offset integer;
-l_chunk_size binary_integer:=(48/4)*3;
-l_buffer_varchar varchar2(48);
-l_buffer_raw raw(48);
-begin
-  if p_blob is null then
-    return null;
-  end if;
-  dbms_lob.createtemporary(l_clob,true);
-  l_offset:=1;
-  for i in 1..ceil(dbms_lob.getlength(p_blob)/l_chunk_size) loop
-    dbms_lob.read(p_blob,l_chunk_size,l_offset,l_buffer_raw);
-    l_buffer_varchar:=utl_raw.cast_to_varchar2(utl_encode.base64_encode(l_buffer_raw));
-    dbms_lob.writeappend(l_clob,length(l_buffer_varchar),l_buffer_varchar);
-    l_offset:=l_offset+l_chunk_size;
-    end loop;
-  l_result:=l_clob;
-  dbms_lob.freetemporary(l_clob);
-  return l_result;
-end encode_base64;
-
-
-function decode_base64(p_clob in clob) return blob is
+l_len pls_integer:=19200;
 l_blob64 blob;
-l_result blob;
-l_offset integer;
-l_buffer_size binary_integer:=48;
-l_buffer_varchar varchar2(48);
-l_buffer_raw raw(48);
 begin
-  if p_clob is null then
-    return null;
-  end if;
-  dbms_lob.createtemporary(l_blob64,true);
-  l_offset:=1;
-  for i in 1..ceil(dbms_lob.getlength(p_clob)/l_buffer_size) loop
-    dbms_lob.read(p_clob,l_buffer_size,l_offset,l_buffer_varchar);
-    l_buffer_raw:=utl_encode.base64_decode(utl_raw.cast_to_raw(l_buffer_varchar));
-    dbms_lob.writeappend(l_blob64,utl_raw.length(l_buffer_raw),l_buffer_raw);
-    l_offset:=l_offset+l_buffer_size;
+  l_clob:=replace(p_clob,chr(10));-- blob_to_base64 adds a new line after 32767 however to decode to blob we would need data without any newline.
+  l_file_size:=dbms_lob.getlength(l_clob);
+  dbms_lob.createtemporary(l_blob64, true);
+  for i in 0..trunc((l_file_size-1)/l_len) loop
+    dbms_lob.append(l_blob64,utl_encode.base64_decode(utl_raw.cast_to_raw(dbms_lob.substr(l_clob,l_len,i*l_len+1))));
   end loop;
-  l_result:=l_blob64;
-  dbms_lob.freetemporary(l_blob64);
-  return l_result;
-end decode_base64;
+  return l_blob64;
+end base64_to_blob;
 
 
 function clob_lengthb(p_clob in clob) return number is

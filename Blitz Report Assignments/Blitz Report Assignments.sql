@@ -9,7 +9,7 @@
 -- Library Link: https://www.enginatics.com/reports/blitz-report-assignments/
 -- Run Report: https://demo.enginatics.com/
 
-select
+select distinct
 xrav.report_name,
 xrv.category,
 xxen_util.meaning(xrv.enabled,'YES_NO',0) enabled,

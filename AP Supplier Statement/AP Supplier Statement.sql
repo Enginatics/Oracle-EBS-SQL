@@ -213,7 +213,10 @@ from
      y.*
     from 
      (select 
-       x.*
+       x.*,
+       sum(nvl(x.bbf,0)) over (partition by x.vendor_id) +
+       sum(nvl(x.Credit,0)) over (partition by x.vendor_id) -
+       sum(nvl(x.Debit,0)) over (partition by x.vendor_id) supplier_closing_balance
       from 
        (-- dummy period summary record
          select distinct 
@@ -446,7 +449,10 @@ from
        nvl(x.period_name,'####'),
        x.sort_order,
        x.gl_date,
-       x.document_date) y) z
+       x.document_date) y
+    where
+     (:p_incl_zero_bal_sup = 'Y' or y.vendor_id is null or nvl(y.supplier_closing_balance,0) != 0)
+   ) z
   order by 
    z.seq) q
 where

@@ -64,6 +64,13 @@ xah.description accounting_event_description,
 xah.accounting_date,
 xe.transaction_date,
 xte.transaction_number,
+-- Assets
+case
+when xte.application_id = 140 and xte.entity_code = 'TRANSACTIONS'
+then (select fab.asset_number from fa_additions_b fab,fa_transaction_headers fth where fth.asset_id=fab.asset_id and fth.transaction_header_id=xte.source_id_int_1 and fth.event_id = xe.event_id)
+when xte.application_id = 140 and xte.entity_code = 'DEPRECIATION'
+then (select fab.asset_number from fa_additions_b fab, fa_deprn_detail fdd where fab.asset_id=fdd.asset_id and fdd.asset_id=xte.source_id_int_1 and fdd.period_counter=xte.source_id_int_2 and fdd.event_id=xe.event_id and rownum=1)
+end asset_number,
 --AP
 coalesce(aia.invoice_num,rcta.trx_number) invoice_number,
 nvl(aia.description,rcta.comments) description,
@@ -75,7 +82,10 @@ aia.payment_method_code,
 aia.invoice_amount,
 (select pha.segment1 from po_headers_all pha where coalesce(aia.quick_po_header_id,rt.po_header_id,wt.po_header_id)=pha.po_header_id) purchase_order,
 --AR
-case when xte.entity_code='TRANSACTIONS' and rcta.interface_header_context in ('ORDER ENTRY','INTERCOMPANY') then rcta.interface_header_attribute1 end sales_order,
+case
+when xte.entity_code='TRANSACTIONS' and rcta.interface_header_context in ('ORDER ENTRY','INTERCOMPANY') then rcta.interface_header_attribute1
+when gxeh.txn_source='OM' then (select to_char(ooha.order_number) from oe_order_headers_all ooha,oe_order_lines_all oola where ooha.header_id=oola.header_id and oola.line_id=gxeh.source_line_id) --OPM
+end sales_order,
 jrrev.resource_name salesperson,
 (select name from ra_rules rr where rcta.invoicing_rule_id=rule_id) invoice_rule,
 (select rr.name from ra_customer_trx_lines_all rctla, ra_rules rr where rcta.customer_trx_id=rctla.customer_trx_id and rctla.line_type='LINE' and rctla.accounting_rule_id=rr.rule_id and rownum=1) accounting_rule,
@@ -201,7 +211,8 @@ rcv_transactions rt,
 wip_transactions wt,
 wip_entities we,
 bom_departments bd,
-bom_resources br
+bom_resources br,
+gmf_xla_extract_headers gxeh --OPM
 where
 1=1 and
 gl.period_set_name=gp.period_set_name and
@@ -248,11 +259,15 @@ nvl(aida.task_id,peia.task_id)=pt.task_id(+) and
 peia.expenditure_id=pea.expenditure_id(+) and
 peia.expenditure_type=pet.expenditure_type(+) and
 pea.incurred_by_person_id=papf.person_id(+) and
-case when xte.application_id=707 and xte.entity_code='RCV_ACCOUNTING_EVENTS' then xte.source_id_int_1 end=rt.transaction_id(+) and
+case
+when xte.application_id=707 and xte.entity_code='RCV_ACCOUNTING_EVENTS' then xte.source_id_int_1
+when xte.application_id=555 and gxeh.txn_source='PUR' then gxeh.source_line_id --OPM
+end=rt.transaction_id(+) and
 case when xte.application_id=707 and xte.entity_code='WIP_ACCOUNTING_EVENTS' then xte.source_id_int_1 end=wt.transaction_id(+) and
 wt.wip_entity_id=we.wip_entity_id(+) and
 wt.department_id=bd.department_id(+) and
-wt.resource_id=br.resource_id(+)
+wt.resource_id=br.resource_id(+) and
+case when xah.application_id=555 then xah.event_id end=gxeh.event_id(+) --OPM
 order by
 gl.name,
 gp.start_date desc,
