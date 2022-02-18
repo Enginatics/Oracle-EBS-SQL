@@ -1,6 +1,6 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2021 Enginatics GmbH                   */
+/*                       (c) 2010-2022 Enginatics GmbH                   */
 /*                              www.enginatics.com                       */
 /*                                                                       */
 /*************************************************************************/
@@ -45,7 +45,7 @@ where
 1=1 and
 xrtv.template_id=xrtc.template_id(+)
 order by
-xrtv.report_name,
+report_name,
 owner,
 xrtv.template_name
 &column_order_by

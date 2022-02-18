@@ -1,6 +1,6 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2021 Enginatics GmbH                   */
+/*                       (c) 2010-2022 Enginatics GmbH                   */
 /*                              www.enginatics.com                       */
 /*                                                                       */
 /*************************************************************************/
@@ -38,6 +38,7 @@ with ap_inv as
   aia.invoice_num,
   xxen_util.ap_invoice_status(aia.invoice_id,aia.invoice_amount,aia.payment_status_flag,aia.invoice_type_lookup_code,aia.validation_request_id) invoice_status,
   xxen_util.client_time(aia.creation_date) invoice_creation_date,
+  xxen_util.client_time(aia.invoice_received_date) invoice_received_date,
   aia.invoice_date,
   aia.gl_date invoice_gl_date,
   apsa.due_date,
@@ -363,6 +364,7 @@ ap_inv.invoice_num,
 ap_inv.doc_sequence_value document_number,
 ap_inv.invoice_status,
 ap_inv.invoice_creation_date,
+ap_inv.invoice_received_date,
 ap_inv.invoice_date,
 ap_inv.invoice_gl_date,
 ap_inv.due_date,

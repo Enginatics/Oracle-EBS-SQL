@@ -1,6 +1,6 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2021 Enginatics GmbH                   */
+/*                       (c) 2010-2022 Enginatics GmbH                   */
 /*                              www.enginatics.com                       */
 /*                                                                       */
 /*************************************************************************/
@@ -140,24 +140,33 @@ with ap_inv as -- ap invoice data
        where
            msiv.organization_id = fspa.inventory_organization_id
        )                           msi
-    , ( select distinct
+    , ( select /*+ push_pred */ distinct
           zl1.trx_id
         , zl1.trx_line_id
         , listagg (zl1.tax,'/ ') within group (order by zl1.tax) over (partition by zl1.trx_id,zl1.trx_line_id) tax
         , listagg (zl1.tax_rate_code,'/ ') within group (order by zl1.tax, zl1.tax_rate_code) over (partition by zl1.trx_id,zl1.trx_line_id) tax_rate_code
         , listagg (to_char(zl1.tax_rate),'/ ') within group (order by zl1.tax, zl1.tax_rate_code) over (partition by zl1.trx_id,zl1.trx_line_id) tax_rate
-        from (select distinct
+        from (select
                 zl2.trx_id
               , zl2.trx_line_id
               , zl2.tax
               , zl2.tax_rate_code
               , zl2.tax_rate
+              , sum(lengthb(zl2.tax)+2) over (partition by zl2.trx_id,zl2.trx_line_id order by zl2.tax rows between unbounded preceding and current row) len1
+              , sum(lengthb(zl2.tax_rate_code)+2) over (partition by zl2.trx_id,zl2.trx_line_id order by zl2.tax_rate_code rows between unbounded preceding and current row) len2
               from
                 zx_lines zl2
               where zl2.application_id    = 200
               and   zl2.entity_code       = 'AP_INVOICES'
               and   zl2.trx_level_type    = 'LINE'
+              group by
+                zl2.trx_id
+              , zl2.trx_line_id
+              , zl2.tax
+              , zl2.tax_rate_code
+              , zl2.tax_rate
              ) zl1
+        where zl1.len1 <= 4000 and zl1.len2 <= 4000
       ) zl
     where
         aila.invoice_id                = aia.invoice_id
@@ -210,21 +219,29 @@ with ap_inv as -- ap invoice data
     , pda.quantity_billed                              po_dist_qty_billed
     , mp1.organization_code                            po_ship_to_organization
     , mp2.organization_code                            po_destination_organization
-    , ( select
-          listagg(rsh.receipt_num,', ') within group (order by rsh.receipt_num)
-        from
-          (select distinct rsh.receipt_num
-           from rcv_transactions      rt
-           , rcv_shipment_headers  rsh
-           where
-               rsh.shipment_header_id = rt.shipment_header_id
-           and rt.po_header_id        = pda.po_header_id
-           and rt.po_line_id          = pda.po_line_id
-           and rt.po_line_location_id = pda.line_location_id
-           and nvl(rt.po_distribution_id,pda.po_distribution_id)  
-                                      = pda.po_distribution_id
-          ) rsh
-      )                                                po_dist_receipt_nums
+    , (
+      select
+      listagg(rsh.receipt_num,',') within group (order by rsh.receipt_num)
+      from
+      (
+      select
+      rsh.receipt_num,
+      sum(lengthb(rsh.receipt_num)+1) over (order by rsh.receipt_num rows between unbounded preceding and current row) len
+      from
+      rcv_transactions rt,
+      rcv_shipment_headers rsh
+      where
+      pda.line_location_id = rt.po_line_location_id and
+      pda.po_distribution_id = nvl(rt.po_distribution_id,pda.po_distribution_id) and
+      rsh.shipment_header_id = rt.shipment_header_id
+      group by
+      rsh.receipt_num
+      order by
+      rsh.receipt_num
+      ) rsh
+      where
+      rsh.len <= 4000
+      )  po_dist_receipt_nums
     , msi.inventory_item_id
     , msi.organization_id
     from

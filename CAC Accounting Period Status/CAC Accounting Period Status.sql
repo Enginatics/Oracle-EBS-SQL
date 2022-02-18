@@ -1,6 +1,6 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2021 Enginatics GmbH                   */
+/*                       (c) 2010-2022 Enginatics GmbH                   */
 /*                              www.enginatics.com                       */
 /*                                                                       */
 /*************************************************************************/
@@ -79,7 +79,11 @@ coalesce(
 	 where	regexp_like(hoh.organization_hierarchy_name,'&p_name_open|&p_name_close|&p_name_period','i')
 	 and	(mp.organization_id = hoh.child_organization_id or mp.organization_id = hoh.parent_organization_id)
 	)
-) hierarchy_name
+) hierarchy_name,
+ xxen_util.user_name(oap.created_by) created_by,
+ xxen_util.client_time(oap.creation_date) creation_date,
+ xxen_util.user_name(oap.last_updated_by) last_updated_by,
+ xxen_util.client_time(oap.last_update_date) last_update_date
 from	org_acct_periods oap,
 	mtl_parameters mp,
 	hr_organization_information hoi,
@@ -227,7 +231,11 @@ coalesce(
 	 where	regexp_like(hoh.organization_hierarchy_name,'&p_name_open|&p_name_close|&p_name_period','i')
 	 and	(mp.organization_id = hoh.child_organization_id or mp.organization_id = hoh.parent_organization_id)
 	)
-) hierarchy_name
+) hierarchy_name,
+ to_number(null) created_by,
+ to_date(null) creation_date,
+ to_number(null) last_updated_by,
+ to_date(null) last_update_date
 from	gl_periods gp,
 	mtl_parameters mp,
 	hr_organization_information hoi,
@@ -315,7 +323,11 @@ select	fav.application_name Functional_Area,
 	'' Summarized_Flag,
 	-- Revision for version 1.1
 	'' OPM_Period_Status,
-	'' Hierarchy_Name
+	'' Hierarchy_Name,
+ xxen_util.user_name(gps.created_by) created_by,
+ xxen_util.client_time(gps.creation_date) creation_date,
+ xxen_util.user_name(gps.last_updated_by) last_updated_by,
+ xxen_util.client_time(gps.last_update_date) last_update_date
 from	gl_period_statuses gps,
 	-- Revision for version 1.7 and 1.10
 	fnd_lookup_values_vl flvv,

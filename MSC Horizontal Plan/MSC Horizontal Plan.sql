@@ -1,6 +1,6 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2021 Enginatics GmbH                   */
+/*                       (c) 2010-2022 Enginatics GmbH                   */
 /*                              www.enginatics.com                       */
 /*                                                                       */
 /*************************************************************************/
@@ -10,7 +10,7 @@
 -- Library Link: https://www.enginatics.com/reports/msc-horizontal-plan/
 -- Run Report: https://demo.enginatics.com/
 
-with 
+with
   hp3 as
   ( select
      hp2.planning_instance
@@ -26,6 +26,13 @@ with
     ,hp2.supply_demand_code
     ,hp2.supply_demand_type
     ,to_char(decode(substr(:p_summary_level,1,1),'P',hp2.pe_date,'W',hp2.we_date,hp2.bucket_date),'YYYY/MM/DD') bucket_date
+    ,hp2.pn period_num
+    ,hp2.wn week_num
+    ,hp2.dn day_num
+    ,to_char(decode(substr(:p_summary_level,1,1),'P',hp2.pe_date,'W',hp2.we_date,hp2.bucket_date),'YYYY/MM/DD')
+     || ' P:' || hp2.pn
+     || decode(substr(:p_summary_level,1,1),'P',null,' W:' || hp2.wn)
+     || decode(substr(:p_summary_level,1,1),'D',' D:' || hp2.dn) bucket_label
     ,case substr(:p_summary_level,1,1)
      when 'P' then case hp2.supply_demand_code
                    when 110 then hp2.pe_qty_last
@@ -74,7 +81,7 @@ with
                             else hp2.we_qty_sum
                    end
      else hp2.quantity
-     end  quantity  
+     end  quantity
     from
       (select
         hp.planning_instance
@@ -91,6 +98,7 @@ with
        ,hp.supply_demand_type
        ,hp.pn
        ,hp.wn
+       ,hp.dn
        ,hp.bucket_date
        ,hp.quantity
        ,max(hp.bucket_date) keep (dense_rank last order by hp.bucket_date) over (partition by hp.planning_instance, hp.plan_name, hp.organization, hp.item, hp.supply_demand_code, hp.pn) pe_date
@@ -98,7 +106,7 @@ with
        ,max(hp.quantity) keep (dense_rank last order by hp.bucket_date) over (partition by hp.planning_instance, hp.plan_name, hp.organization, hp.item, hp.supply_demand_code, hp.pn) pe_qty_last
        ,max(hp.quantity) keep (dense_rank last order by hp.bucket_date) over (partition by hp.planning_instance, hp.plan_name, hp.organization, hp.item, hp.supply_demand_code, hp.wn) we_qty_last
        ,sum(hp.quantity) over (partition by hp.planning_instance, hp.plan_name, hp.organization, hp.item, hp.supply_demand_code, hp.pn) pe_qty_sum
-       ,sum(hp.quantity) over (partition by hp.planning_instance, hp.plan_name, hp.organization, hp.item, hp.supply_demand_code, hp.wn) we_qty_sum  
+       ,sum(hp.quantity) over (partition by hp.planning_instance, hp.plan_name, hp.organization, hp.item, hp.supply_demand_code, hp.wn) we_qty_sum
        from
          (select
            mai.instance_code             planning_instance
@@ -135,14 +143,15 @@ with
           ,mmp.item_segments             using_assemblies
           ,ml.lookup_code                supply_demand_code
           ,ml.meaning                    supply_demand_type
-          ,substr(mmp.organization_code,1,instr(mmp.organization_code,'|',1,1)-1)                             pn
+          ,substr(mmp.organization_code,1,instr(mmp.organization_code,'|',1,1)-1)  pn
           ,substr(mmp.organization_code,instr(mmp.organization_code,'|',1,1)+1,length(mmp.organization_code)) wn
+          ,(dense_rank() over (order by mmp.bucket_date))-1 dn
           ,mmp.bucket_date bucket_date
           ,round(
            case ml.lookup_code
            when 10  then mmp.quantity1
-           when 20  then mmp.quantity2 
-           when 25  then mmp.quantity3 
+           when 20  then mmp.quantity2
+           when 25  then mmp.quantity3
            when 30  then mmp.quantity4
            when 40  then mmp.quantity5
            when 45  then mmp.quantity6
@@ -198,7 +207,7 @@ with
            when 350 then mmp.quantity56
            end,nvl(to_number('&p_decimal_places'),1))  quantity
           --
-          from 
+          from
            mfg_lookups                  ml,
            msc_apps_instances           mai,
            msc_plans                    mp,
@@ -229,7 +238,7 @@ with
           and msi.organization_id    = mic.organization_id
           and msi.inventory_item_id  = mic.inventory_item_id
           and mic.sr_instance_id     = mcs.sr_instance_id
-          and mic.category_set_id    = mcs.category_set_id 
+          and mic.category_set_id    = mcs.category_set_id
           and mcs.category_set_name  = :p_cat_set_name
           --
           and ml.lookup_type  = '&msc_lookup_type'
@@ -243,23 +252,22 @@ with
                   (    nvl('&p_disp_pf','N') != 'Y'
                    or  mmp.inventory_item_id < 0
                    or  msi.bom_item_type not in (2,5)
-                  ) 
+                  )
               )
           --
-          and 1=1  
+          and 1=1
          ) hp
       ) hp2
+    where
+      hp2.bucket_date = decode(substr(:p_summary_level,1,1),'P',hp2.pe_date,'W',hp2.we_date,hp2.bucket_date)
   )
-select 
- hp4.*
+select
+ hp3.*
 from
   hp3
-  pivot 
-  ( max(quantity) for bucket_date in ( &pivot_columns ) 
-  ) hp4
 order by
- hp4.planning_instance
-,hp4.plan_name
-,hp4.organization
-,hp4.item 
-,hp4.supply_demand_code
+ hp3.planning_instance
+,hp3.plan_name
+,hp3.organization
+,hp3.item
+,hp3.supply_demand_code

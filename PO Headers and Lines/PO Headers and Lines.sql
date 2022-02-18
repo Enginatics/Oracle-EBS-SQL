@@ -1,6 +1,6 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2021 Enginatics GmbH                   */
+/*                       (c) 2010-2022 Enginatics GmbH                   */
 /*                              www.enginatics.com                       */
 /*                                                                       */
 /*************************************************************************/
@@ -13,6 +13,7 @@
 select
 x.operating_unit,
 x.po_number,
+x.closed_date,
 x.revision,
 x.release,
 x.type,
@@ -37,6 +38,7 @@ x.price,
 x.amount,
 x.currency,
 x.wip_job,
+x.wip_job_batch,
 xxen_util.client_time(x.need_by_date) need_by,
 xxen_util.client_time(x.last_accept_date) last_accept_date,
 xxen_util.client_time(x.promised_date) promised,
@@ -52,7 +54,8 @@ xxen_util.client_time(x.approved_date) approved_date,
 xxen_util.client_time(x.request_date) request_date,
 x.match_approval_level,
 x.match_option,
-xxen_util.client_time(x.receipt_date) receipt_date,
+trunc(xxen_util.client_time(x.receipt_date)) receipt_date,
+to_char(xxen_util.client_time(x.receipt_date),'HH24:MI:SS') receipt_time,
 round(x.receipt_date-x.approved_date) delivery_time,
 x.delivery_delay,
 aia.invoice_num invoice,
@@ -76,6 +79,8 @@ x.quantity_cancelled,
 x.quantity_received,
 x.quantity_due,
 x.quantity_billed,
+(x.receipt_quantity - x.quantity_billed) grni_quantity,
+(x.price * (x.receipt_quantity - x.quantity_billed)) grni_amount,
 x.primary_quantity,
 x.primary_unit_of_measure,
 x.po_unit_price,
@@ -105,6 +110,7 @@ select
 pla.operating_unit,
 pha.segment1 po_number,
 pha.revision_num revision,
+pha.closed_date,
 pra.release_num release,
 pdtav.type_name type,
 aps.vendor_name supplier_name,
@@ -154,6 +160,23 @@ mgr.disposition_id=we.wip_entity_id
 where
 pla.po_line_id=y.line_id
 ) wip_job,
+(
+select distinct
+listagg(y.wip_entity_name,', ') within group (order by y.wip_entity_name) over (partition by y.line_location_id) wip_entity_name
+from
+(
+select distinct
+pda.line_location_id,
+we.wip_entity_name
+from
+po_distributions_all pda,
+wip_entities we
+where
+pda.wip_entity_id = we.wip_entity_id
+) y
+where
+plla.line_location_id=y.line_location_id
+) wip_job_batch,
 plla.need_by_date,
 plla.last_accept_date,
 plla.promised_date,
@@ -328,7 +351,6 @@ ap_invoice_lines_all aila,
 ap_invoices_all aia
 where
 x.line_location_id=aila.po_line_location_id(+) and
---x.rcv_transaction_id=aila.rcv_transaction_id(+) and
 nvl(x.rcv_transaction_id,-1)=nvl(aila.rcv_transaction_id,nvl(x.rcv_transaction_id,-1)) and
 aila.invoice_id=aia.invoice_id(+)
 order by

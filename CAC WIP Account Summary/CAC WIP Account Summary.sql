@@ -1,6 +1,6 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2021 Enginatics GmbH                   */
+/*                       (c) 2010-2022 Enginatics GmbH                   */
 /*                              www.enginatics.com                       */
 /*                                                                       */
 /*************************************************************************/
@@ -55,6 +55,8 @@
 -- |   1.13   11 Mar 2021 Douglas Volz   Added Flow Schedules and Workorderless WIP
 -- |                                     and removed redundant joins and tables to 
 -- |                                     improve performance.
+-- |   1.14   22 Mar 2021 Douglas Volz   Add WIP Job parameter.
+-- |   1.15   20 Dec 2021 Douglas Volz   Add WIP Department.
 -- +=============================================================================+*/
 
 
@@ -83,11 +85,9 @@ select	nvl(gl.short_name, gl.name) Ledger,
 	-- Revision for version 1.13
 	ml4.meaning WIP_Type,
 	we.wip_entity_name WIP_Job,
+	-- Revision for version 1.15
+	bd.department_code WIP_Department,
 	-- Fix for version 1.6
-	(select	distinct listagg(bd.department_code,',') within group (order by bd.department_code) over (partition by bdr.department_id) department
-	 from	bom_department_resources bdr,
-     bom_departments bd
-	 where	wip.resource_id = bdr.resource_id and bdr.department_id=bd.department_id) WIP_Department,
 	(select	br.resource_code
 	 from	bom_resources br
 	 where	wip.resource_id = br.resource_id) WIP_Resource,
@@ -158,6 +158,8 @@ select	nvl(gl.short_name, gl.name) Ledger,
 from	wip_entities we,
 	wip_accounting_classes wac,
 	mtl_system_items_vl msiv,
+	-- Revision for version 1.15
+	bom_departments bd,
 	org_acct_periods oap,
 	gl_code_combinations gcc,
 	mfg_lookups ml1,
@@ -188,6 +190,8 @@ from	wip_entities we,
 		wdj.class_code,
 		wdj.wip_entity_id,
 		wta.resource_id,
+		-- Revision for version 1.15
+		wt.department_id,
 		wt.rcv_transaction_id,
 		wdj.project_id,
 		wta.primary_quantity,
@@ -207,6 +211,7 @@ from	wip_entities we,
 	 and	mp.organization_id               = wta.organization_id
 	 and	2=2                              -- p_org_code
 	 and	3=3                              -- p_trx_date_from, p_trx_date_to
+	 and	4=4                              -- p_wip_job
 	 union all
 	 select	mp.organization_code,
 		mp.organization_id,
@@ -218,6 +223,8 @@ from	wip_entities we,
 		wfs.class_code,
 		wfs.wip_entity_id,
 		wta.resource_id,
+		-- Revision for version 1.15
+		wt.department_id,
 		wt.rcv_transaction_id,
 		wfs.project_id,
 		wta.primary_quantity,
@@ -235,14 +242,17 @@ from	wip_entities we,
 	 and	wfs.wip_entity_id                = wta.wip_entity_id
 	 and	wfs.organization_id              = wta.organization_id
 	 and	mp.organization_id               = wta.organization_id
-	 and	2=2                              -- p_org_code
+	 and	2=2                              -- p_org_code, p_wip_Job
 	 and	3=3                              -- p_trx_date_from, p_trx_date_to
+	 and	4=4                              -- p_wip_job
 	) wip
 -- ========================================================
 -- WIP Transaction, org and item joins
 -- ========================================================
 where	msiv.organization_id             = wip.organization_id
 and	msiv.inventory_item_id           = wip.primary_item_id
+-- Revision for version 1.15
+and	bd.department_id (+)             = wip.department_id
 -- ========================================================
 and	wac.class_code                   = wip.class_code
 -- Revision for version 1.2
@@ -327,6 +337,8 @@ group by
 	-- Fix for version 1.6
 	-- Added for inline column selects
 	wip.resource_id,
+	-- Revision for version 1.15
+	bd.department_code,
 	wip.rcv_transaction_id,
 	-- End fix for version 1.6
 	-- Revision for version 1.8
@@ -382,4 +394,4 @@ order by
 	 where	rt.transaction_id = wip.rcv_transaction_id
 	 and	rt.po_header_id   = poh.po_header_id
 	 and	rt.po_line_id     = pol.po_line_id
-	 and	rt.po_release_id  = pr.po_release_id (+))  -- PO_Rel
+	 and	rt.po_release_id  = pr.po_release_id (+))
