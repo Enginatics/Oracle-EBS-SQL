@@ -22,7 +22,7 @@ with mmt as -- driving inventory transactions for intercompany
     , oola.ordered_quantity            source_document_qty
     , oola.order_quantity_uom          source_document_uom
     , 'INTERCOMPANY'                   source_line_context
-    , null                             receipt_number 
+    , null                             receipt_number
     , oola.line_id                     source_line_id
     , to_number(hoi.org_information3)  shipping_ou_id
     , oola.org_id                      selling_ou_id
@@ -47,12 +47,22 @@ with mmt as -- driving inventory transactions for intercompany
     , mmt.invoiced_flag
     , mmt.transaction_id          sla_inv_transaction_id
     , ( select distinct
-          listagg(micv.category_concat_segs,', ') within group (order by micv.category_concat_segs) over (partition by micv.inventory_item_id,micv.organization_id)  
+          listagg(micv.category_concat_segs,', ') within group (order by micv.category_concat_segs) over (partition by micv.inventory_item_id,micv.organization_id)
         from mtl_item_categories_v micv
         where micv.category_set_id   = :p_category_set_id
         and   micv.organization_id   = mmt.organization_id
         and   micv.inventory_item_id = mmt.inventory_item_id
       ) &l_category_set_name
+    , null            requisition_number
+    , to_number(null) requisition_line
+    , to_number(null) requisition_unit_price
+    , to_number(null) requisition_requested_qty
+    , to_number(null) requisition_delivered_qty
+    , to_number(null) requisition_delivered_amount
+    , to_number(null) requisition_shipped_qty
+    , to_number(null) requisition_shipped_amount
+    , to_number(null) requisition_qty_variance
+    , to_number(null) requisition_cost_variance
     from
       mtl_material_transactions    mmt
     , hr_organization_information  hoi
@@ -62,14 +72,14 @@ with mmt as -- driving inventory transactions for intercompany
     where
         mmt.transaction_source_type_id        in (2,12)  -- sales order/rma
     and mmt.transaction_action_id               in (1,27)  -- issue from stores/receipt into stores
-    and mmt.logical_transactions_created    is null 
+    and mmt.logical_transactions_created    is null
     and oola.line_id                         = mmt.trx_source_line_id
     and ooha.header_id                       = oola.header_id
     and hoi.organization_id                  = mmt.organization_id
     and hoi.org_information_context          = 'Accounting Information'
     and mip.ship_organization_id             = to_number(hoi.org_information3)
     and mip.sell_organization_id             = oola.org_id
-    &lp_include_sales_order
+    and nvl(:p_ico_source,'Sales Order')     = 'Sales Order'
     union
      select
       'Internal Sales Order'           source_document
@@ -105,12 +115,58 @@ with mmt as -- driving inventory transactions for intercompany
     , mmt.invoiced_flag
     , mmt2.transaction_id          sla_inv_transaction_id
     , ( select distinct
-          listagg(micv.category_concat_segs,', ') within group (order by micv.category_concat_segs) over (partition by micv.inventory_item_id,micv.organization_id)  
+          listagg(micv.category_concat_segs,', ') within group (order by micv.category_concat_segs) over (partition by micv.inventory_item_id,micv.organization_id)
         from mtl_item_categories_v micv
         where micv.category_set_id   = :p_category_set_id
         and   micv.organization_id   = mmt.organization_id
         and   micv.inventory_item_id = mmt.inventory_item_id
       ) &l_category_set_name
+    , prha.segment1 requisition_number
+    , prla.line_num requisition_line
+    , prla.unit_price requisition_unit_price
+    , (prla.quantity - nvl(prla.quantity_cancelled,0)) requisition_requested_qty
+    , prla.quantity_delivered requisition_delivered_qty
+    , prla.quantity_delivered * prla.unit_price requisition_delivered_amount
+    , (select sum(oola2.shipped_quantity) 
+       from oe_order_lines_all oola2 
+       where oola2.order_source_id = pspa.order_source_id 
+       and   oola2.orig_sys_document_ref = prha.segment1
+       and   oola2.orig_sys_line_ref = prla.line_num
+       and   oola2.source_document_id = prla.requisition_header_id 
+       and   oola2.source_document_line_id = prla.requisition_line_id 
+       and   oola2.shipped_quantity is not null 
+       and   prla.quantity_delivered > 0
+      ) requisition_shipped_qty
+    , (select sum(oola2.shipped_quantity * nvl(oola2.unit_selling_price,0)) 
+       from oe_order_lines_all oola2 
+       where oola2.order_source_id = pspa.order_source_id 
+       and   oola2.orig_sys_document_ref = prha.segment1
+       and   oola2.orig_sys_line_ref = prla.line_num
+       and   oola2.source_document_id = prla.requisition_header_id 
+       and   oola2.source_document_line_id = prla.requisition_line_id 
+       and   oola2.shipped_quantity is not null 
+       and   prla.quantity_delivered > 0
+      ) requisition_shipped_amount
+    , (select sum(oola2.shipped_quantity) - prla.quantity_delivered 
+       from oe_order_lines_all oola2 
+       where oola2.order_source_id = pspa.order_source_id 
+       and   oola2.orig_sys_document_ref = prha.segment1
+       and   oola2.orig_sys_line_ref = prla.line_num
+       and   oola2.source_document_id = prla.requisition_header_id 
+       and   oola2.source_document_line_id = prla.requisition_line_id 
+       and   oola2.shipped_quantity is not null 
+       and   prla.quantity_delivered > 0
+      ) requisition_qty_variance
+    , (select sum(oola2.shipped_quantity * nvl(oola2.unit_selling_price,0)) - (prla.quantity_delivered * nvl(prla.unit_price,0)) 
+       from oe_order_lines_all oola2 
+       where oola2.order_source_id = pspa.order_source_id 
+       and   oola2.orig_sys_document_ref = prha.segment1
+       and   oola2.orig_sys_line_ref = prla.line_num
+       and   oola2.source_document_id = prla.requisition_header_id 
+       and   oola2.source_document_line_id = prla.requisition_line_id 
+       and   oola2.shipped_quantity is not null 
+       and   prla.quantity_delivered > 0
+      ) requisition_cost_variance
     from
       mtl_material_transactions    mmt
     , oe_order_lines_all           oola
@@ -121,6 +177,9 @@ with mmt as -- driving inventory transactions for intercompany
     , rcv_transactions             rt
     , rcv_shipment_headers         rsh
     , mtl_material_transactions    mmt2
+    , po_requisition_headers_all   prha
+    , po_requisition_lines_all     prla
+    , po_system_parameters_all     pspa
     where
         mmt.transaction_source_type_id      in (8)     -- internal order
     and mmt.transaction_action_id           in (21)    -- intransit shipment
@@ -137,7 +196,11 @@ with mmt as -- driving inventory transactions for intercompany
     and mmt2.transfer_transaction_id     (+) = mmt.transaction_id -- mmt2 = intransit receiving transaction
     and rt.transaction_id                (+) = mmt2.rcv_transaction_id
     and rsh.shipment_header_id           (+) = rt.shipment_header_id
-    &lp_include_int_sales_order
+    and prla.requisition_header_id       (+) = oola.source_document_id
+    and prla.requisition_line_id         (+) = oola.source_document_line_id
+    and prha.requisition_header_id       (+) = prla.requisition_header_id
+    and pspa.org_id                      (+) = prha.org_id
+    and nvl(:p_ico_source,'Internal Sales Order') = 'Internal Sales Order'
     union
     select
       'Sales Order'                    source_document
@@ -148,7 +211,7 @@ with mmt as -- driving inventory transactions for intercompany
     , oola.ordered_quantity            source_document_qty
     , oola.order_quantity_uom          source_document_uom
     , 'INTERCOMPANY'                   source_line_context
-    , null                             receipt_number 
+    , null                             receipt_number
     , oola.line_id                     source_line_id
     , to_number(hoi1.org_information3) shipping_ou_id
     , to_number(hoi2.org_information3) selling_ou_id
@@ -173,12 +236,22 @@ with mmt as -- driving inventory transactions for intercompany
     , mmt.invoiced_flag
     , mmt.transaction_id          sla_inv_transaction_id
     , ( select distinct
-          listagg(micv.category_concat_segs,', ') within group (order by micv.category_concat_segs) over (partition by micv.inventory_item_id,micv.organization_id)  
+          listagg(micv.category_concat_segs,', ') within group (order by micv.category_concat_segs) over (partition by micv.inventory_item_id,micv.organization_id)
         from mtl_item_categories_v micv
         where micv.category_set_id   = :p_category_set_id
         and   micv.organization_id   = mmt.organization_id
         and   micv.inventory_item_id = mmt.inventory_item_id
       ) &l_category_set_name
+    , null            requisition_number
+    , to_number(null) requisition_line
+    , to_number(null) requisition_unit_price
+    , to_number(null) requisition_requested_qty
+    , to_number(null) requisition_delivered_qty
+    , to_number(null) requisition_delivered_amount
+    , to_number(null) requisition_shipped_qty
+    , to_number(null) requisition_shipped_amount
+    , to_number(null) requisition_qty_variance
+    , to_number(null) requisition_cost_variance
     from
       mtl_material_transactions    mmt
     , oe_order_lines_all           oola
@@ -201,7 +274,7 @@ with mmt as -- driving inventory transactions for intercompany
     and mtfh.flow_type                       = 1
     and mip.ship_organization_id             = to_number(hoi1.org_information3)
     and mip.sell_organization_id             = to_number(hoi2.org_information3)
-    &lp_include_sales_order
+    and nvl(:p_ico_source,'Sales Order')     = 'Sales Order'
     union
     select
       'Purchase Order'                 source_document
@@ -219,7 +292,7 @@ with mmt as -- driving inventory transactions for intercompany
          ,  plla.unit_meas_lookup_code
          )                             source_document_uom
     , 'GLOBAL_PROCUREMENT'             source_line_context
-    , rsh.receipt_num                  receipt_number 
+    , rsh.receipt_num                  receipt_number
     , plla.line_location_id            source_line_id
     , to_number(hoi1.org_information3) shipping_ou_id
     , to_number(hoi2.org_information3) selling_ou_id
@@ -244,12 +317,22 @@ with mmt as -- driving inventory transactions for intercompany
     , mmt.invoiced_flag
     , mmt.transaction_id          sla_inv_transaction_id
     , ( select distinct
-          listagg(micv.category_concat_segs,', ') within group (order by micv.category_concat_segs) over (partition by micv.inventory_item_id,micv.organization_id)  
+          listagg(micv.category_concat_segs,', ') within group (order by micv.category_concat_segs) over (partition by micv.inventory_item_id,micv.organization_id)
         from mtl_item_categories_v micv
         where micv.category_set_id   = :p_category_set_id
         and   micv.organization_id   = mmt.organization_id
         and   micv.inventory_item_id = mmt.inventory_item_id
       ) &l_category_set_name
+    , null            requisition_number
+    , to_number(null) requisition_line
+    , to_number(null) requisition_unit_price
+    , to_number(null) requisition_requested_qty
+    , to_number(null) requisition_delivered_qty
+    , to_number(null) requisition_delivered_amount
+    , to_number(null) requisition_shipped_qty
+    , to_number(null) requisition_shipped_amount
+    , to_number(null) requisition_qty_variance
+    , to_number(null) requisition_cost_variance
     from
       mtl_material_transactions    mmt
     , po_headers_all               pha
@@ -267,7 +350,7 @@ with mmt as -- driving inventory transactions for intercompany
     and mmt.logical_trx_type_code           in (1,3)
     and pha.po_header_id                     = mmt.transaction_source_id
     and rt.transaction_id                (+) = mmt.rcv_transaction_id
-    and rsh.shipment_header_id           (+) = rt.shipment_header_id 
+    and rsh.shipment_header_id           (+) = rt.shipment_header_id
     and plla.line_location_id            (+) = rt.po_line_location_id
     and pla.po_line_id                   (+) = rt.po_line_id
     and hoi1.organization_id                 = mmt.organization_id
@@ -278,7 +361,7 @@ with mmt as -- driving inventory transactions for intercompany
     and mtfh.flow_type                       = 2
     and mip.ship_organization_id             = to_number(hoi1.org_information3)
     and mip.sell_organization_id             = to_number(hoi2.org_information3)
-    &lp_include_purchase_order
+    and nvl(:p_ico_source,'Purchase Order')  = 'Purchase Order'
   )
 , ar_ico as
   ( select
@@ -391,7 +474,7 @@ with mmt as -- driving inventory transactions for intercompany
     , aila.line_number
     , xxen_util.meaning(aila.line_source,'LINE SOURCE',200)
                                line_source
-    , decode(aila.discarded_flag,'Y','Y',null) 
+    , decode(aila.discarded_flag,'Y','Y',null)
                                line_discarded_flag
     , aila.quantity_invoiced
     , nvl( ( select mufm.uom_code
@@ -512,6 +595,9 @@ and mmt.organization_id                    = ood1.organization_id
 and mmt.transfer_organization_id           = ood2.organization_id (+)
 and mmt.shipping_ou_id                     = haou1.organization_id
 and mmt.selling_ou_id                      = haou2.organization_id
+and (   mmt.shipping_ou_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual)   
+     or mmt.selling_ou_id  in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual)
+    ) 
 -- ar interface
 and ar_intf.interface_line_context     (+) = mmt.source_line_context
 and ar_intf.interface_line_attribute6  (+) = to_char(mmt.source_line_id)

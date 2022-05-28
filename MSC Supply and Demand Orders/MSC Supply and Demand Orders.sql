@@ -109,6 +109,12 @@ and mov.category_set_id   = mcs.category_set_id
 and mai.instance_code = :p_instance_code
 and mp.compile_designator = :p_plan_name
 and mcs.category_set_name = :p_cat_set_name
+and (   (mov.order_type NOT IN ( 18, 6, 7, 30, 31)) 
+      or (mov.order_type IN (18, 6, 7, 30) and mov.quantity_rate <> 0) 
+      or (mov.order_type = 30 and (mov.fill_kill_flag = 1 or mov.so_line_split =1)) 
+      or (mov.order_type = 31 and mov.quantity <> 0)
+    )
+and mov.order_type <> 60
 and 1=1
 order by 
  mai.instance_code,

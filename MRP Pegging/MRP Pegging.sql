@@ -11,6 +11,7 @@
 -- Run Report: https://demo.enginatics.com/
 
 select
+z.organization_code,
 z.origination_type,
 z.demand_number,
 z.order_line,
@@ -82,7 +83,6 @@ z.item_description_path,
 nvl(z.demand_date,z.plan_demand_date) nvl_demand_date,
 nvl(z.supply_date,z.plan_supply_date) nvl_supply_date,
 z.plan,
-z.organization_code,
 z.end_pegging_id,
 z.pegging_id,
 z.prev_pegging_id,
@@ -93,6 +93,7 @@ z.supply_line_id
 from
 (
 select
+y.organization_code,
 max(nvl2(y.prev_pegging_id,null,y.origination_type)) over (partition by y.end_pegging_id) origination_type,
 max(nvl2(y.prev_pegging_id,null,y.demand_number)) over (partition by y.end_pegging_id) demand_number,
 max(nvl2(y.prev_pegging_id,null,y.order_line)) over (partition by y.end_pegging_id) order_line,
@@ -174,7 +175,6 @@ y.supply_type_,
 y.item_path,
 y.item_description_path,
 y.plan,
-y.organization_code,
 y.end_pegging_id,
 y.pegging_id,
 y.prev_pegging_id,
@@ -329,24 +329,24 @@ from
 (
 select
 level level__,
-msibk.planner_code,
-msibk.planning_make_buy_code,
-msibk.primary_uom_code,
-msibk.item_type,
-msibk.end_assembly_pegging_flag,
-msibk.bom_item_type,
-decode(msibk.min_minmax_quantity,0,to_number(null),msibk.min_minmax_quantity) min_minmax_quantity,
-msibk.preprocessing_lead_time,
-msibk.cum_manufacturing_lead_time,
-msibk.cumulative_total_lead_time,
-msibk.postprocessing_lead_time,
-msibk.base_item_id,
-msibk.wip_supply_type,
-msibk.concatenated_segments item,
-msit.description item_description,
-msibk.buyer_id,
-substr(sys_connect_by_path(msibk.concatenated_segments,'-> '),4) item_path,
-substr(sys_connect_by_path(replace(msit.description,'-> ','->'),'-> '),4) item_description_path,
+msiv.planner_code,
+msiv.planning_make_buy_code,
+msiv.primary_uom_code,
+msiv.item_type,
+msiv.end_assembly_pegging_flag,
+msiv.bom_item_type,
+decode(msiv.min_minmax_quantity,0,to_number(null),msiv.min_minmax_quantity) min_minmax_quantity,
+msiv.preprocessing_lead_time,
+msiv.cum_manufacturing_lead_time,
+msiv.cumulative_total_lead_time,
+msiv.postprocessing_lead_time,
+msiv.base_item_id,
+msiv.wip_supply_type,
+msiv.concatenated_segments item,
+msiv.description item_description,
+msiv.buyer_id,
+substr(sys_connect_by_path(msiv.concatenated_segments,'-> '),4) item_path,
+substr(sys_connect_by_path(replace(msiv.description,'-> ','->'),'-> '),4) item_description_path,
 mfp.*
 from
 (
@@ -358,14 +358,10 @@ where
 1=1
 ) mfp,
 &xrrpv_table
-mtl_system_items_b_kfv msibk,
-mtl_system_items_tl msit
+mtl_system_items_vl msiv
 where
-mfp.organization_id=msibk.organization_id(+) and
-mfp.inventory_item_id=msibk.inventory_item_id(+) and
-mfp.organization_id=msit.organization_id(+) and
-mfp.inventory_item_id=msit.inventory_item_id(+) and
-msit.language(+)=userenv('lang')
+mfp.organization_id=msiv.organization_id(+) and
+mfp.inventory_item_id=msiv.inventory_item_id(+)
 connect by
 prior mfp.pegging_id=mfp.prev_pegging_id
 start with
@@ -529,9 +525,9 @@ y.vendor_id=aps.vendor_id(+)
 where
 3=3
 order by
-organization_code,
 plan,
 origination_type,
 demand_number,
 end_pegging_id,
-item_path
+item_path,
+organization_code

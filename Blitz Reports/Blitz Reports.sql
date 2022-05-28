@@ -61,7 +61,7 @@ xxen_api.category(xrv.report_id) category,
 xxen_util.meaning(case when xrv.row_num<=30 or xrv.seeded_blitz_report_flag='Y' then 'Y' end,'YES_NO',0) free_30_reports,
 &columns
 xrv.description,
-&modifications
+&modification
 xrv0.report_name copied_from,
 (select max(xrh.creation_date) from xxen_reports_h xrh where xrv.copied_from_guid=xrh.guid) copied_from_last_update_date,
 xrv.db_package,
@@ -97,7 +97,7 @@ xxen_reports_v xrv
 ) x
 ) xrv,
 xxen_reports_v xrv0,
-(select xrpv.* from xxen_report_parameters_v xrpv where '&enable_parameters'='Y' and xrpv.display_sequence is not null) xrpv,
+(select xrpv.* from xxen_report_parameters_v xrpv where '&enable_parameters'='Y') xrpv,
 (select xrav.* from xxen_report_assignments_v xrav where '&enable_assignments'='Y') xrav,
 (select count(*) execution_count, xrr.report_id from xxen_report_runs xrr where 2=2 and '&enable_exec_count'='Y' group by xrr.report_id) y,
 anchors,
@@ -116,7 +116,7 @@ order by
 &order_by_free_30_reports
 y.execution_count desc nulls last,
 xrv.report_name,
-xrpv.display_sequence,
+xrpv.sort_order,
 xrav.include_exclude desc,
 decode(xrav.assignment_level_desc,
 'Site',1,

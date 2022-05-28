@@ -170,8 +170,8 @@ with ap_inv as -- ap invoice data
       ) zl
     where
         aila.invoice_id                = aia.invoice_id
-    and aida.invoice_id             = aila.invoice_id
-    and aida.invoice_line_number    = aila.line_number
+    and aida.invoice_id                = aila.invoice_id
+    and aida.invoice_line_number       = aila.line_number
     and aia.vendor_id                  = asup.vendor_id
     and aia.vendor_site_id             = assa.vendor_site_id
     and haouv.organization_id          = aia.org_id
@@ -219,29 +219,7 @@ with ap_inv as -- ap invoice data
     , pda.quantity_billed                              po_dist_qty_billed
     , mp1.organization_code                            po_ship_to_organization
     , mp2.organization_code                            po_destination_organization
-    , (
-      select
-      listagg(rsh.receipt_num,',') within group (order by rsh.receipt_num)
-      from
-      (
-      select
-      rsh.receipt_num,
-      sum(lengthb(rsh.receipt_num)+1) over (order by rsh.receipt_num rows between unbounded preceding and current row) len
-      from
-      rcv_transactions rt,
-      rcv_shipment_headers rsh
-      where
-      pda.line_location_id = rt.po_line_location_id and
-      pda.po_distribution_id = nvl(rt.po_distribution_id,pda.po_distribution_id) and
-      rsh.shipment_header_id = rt.shipment_header_id
-      group by
-      rsh.receipt_num
-      order by
-      rsh.receipt_num
-      ) rsh
-      where
-      rsh.len <= 4000
-      )  po_dist_receipt_nums
+    , pdr.receipt_nums                                 po_dist_receipt_nums
     , msi.inventory_item_id
     , msi.organization_id
     from
@@ -268,6 +246,32 @@ with ap_inv as -- ap invoice data
        where
            msiv.organization_id = fspa.inventory_organization_id
        )                           msi
+    , (select distinct
+         po_line_location_id
+       , po_distribution_id
+       , listagg(receipt_num,',') within group (order by receipt_num) over (partition by po_line_location_id,po_distribution_id) receipt_nums
+       from
+         (select
+            po_line_location_id
+          , po_distribution_id
+          , receipt_num
+          , sum(lengthb(receipt_num)+1) over (partition by po_line_location_id,po_distribution_id order by receipt_num rows between unbounded preceding and current row) len
+          from
+            (select distinct
+               rt.po_line_location_id
+             , rt.po_distribution_id
+             , rsh.receipt_num
+             from
+               rcv_transactions rt
+             , rcv_shipment_headers rsh
+             where
+               rsh.shipment_header_id = rt.shipment_header_id and
+               rt.po_line_location_id is not null
+            )
+         )
+       where
+         len <= 4000
+      )  pdr
     where
         pda.po_header_id          = plla.po_header_id
     and pda.po_line_id            = plla.po_line_id
@@ -283,6 +287,8 @@ with ap_inv as -- ap invoice data
     and mufm.unit_of_measure  (+) = plla.unit_meas_lookup_code
     and mp1.organization_id   (+) = plla.ship_to_organization_id
     and mp2.organization_id   (+) = pda.destination_organization_id
+    and pdr.po_line_location_id (+) = pda.line_location_id
+    and nvl(pdr.po_distribution_id,pda.po_distribution_id) = pda.po_distribution_id
   )
 &l_ico_table
 &l_ap_sla_table

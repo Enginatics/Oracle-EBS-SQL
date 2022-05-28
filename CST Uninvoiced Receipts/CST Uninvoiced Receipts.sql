@@ -41,6 +41,7 @@ select
   when q.line_qty_accrued > 0 then round(q.line_func_accrual_amt / q.line_qty_accrued,q.po_func_precision)
   when q.line_qty_accrued = 0 then round(q.func_unit_price,q.po_func_precision)
  end                      line_functional_unit_price,
+ q.line_bill_of_lading,
  -- shipment
  q.shipment_num,
  case
@@ -51,6 +52,7 @@ select
   when q.ship_qty_accrued > 0 then round(q.ship_func_accrual_amt / q.ship_qty_accrued,q.po_func_precision)
   when q.ship_qty_accrued = 0 then round(q.func_unit_price,q.po_func_precision)
  end                      ship_functional_unit_price,
+ q.bill_of_lading,
  -- distribution
  q.distribution_num,
  q.uom_code,
@@ -81,7 +83,8 @@ from
     dense_rank() over (partition by x.po_shipment_id order by x.distribution_num) ship_rank,
     sum(x.quantity_accrued)    over (partition by x.po_shipment_id) ship_qty_accrued,
     sum(x.accrual_amount)      over (partition by x.po_shipment_id) ship_accrual_amt,
-    sum(x.func_accrual_amount) over (partition by x.po_shipment_id) ship_func_accrual_amt
+    sum(x.func_accrual_amount) over (partition by x.po_shipment_id) ship_func_accrual_amt,
+    listagg(x.bill_of_lading,',') within group (order by x.bill_of_lading) over (partition by x.po_header_id,x.po_line_id,x.po_release_number) line_bill_of_lading
    from
     (
       select
@@ -128,15 +131,33 @@ from
        nvl(fnc2.extended_precision,2)            po_precision,
        nvl(fnc1.extended_precision,2)            po_func_precision,
        nvl(fnc2.precision,2)                     accr_precision,
-       ( select 
+       ( select
            trunc(sysdate - max(rt.transaction_date))
-         from 
+         from
            rcv_transactions rt
          where
            rt.po_line_location_id = cpea.shipment_id and
            rt.transaction_type IN ('RECEIVE','MATCH') and
            rt.transaction_date <= :p_end_date
-       ) age_in_days
+       ) age_in_days,
+       ( select
+           listagg(rsh.bill_of_lading,',') within group (order by rsh.bill_of_lading)
+         from
+          ( select distinct
+              rt.po_line_location_id,
+              rsh.bill_of_lading
+            from
+              rcv_transactions rt,
+              rcv_shipment_headers rsh
+            where
+              rsh.shipment_header_id = rt.shipment_header_id and
+              rt.transaction_type IN ('RECEIVE','MATCH') and
+              rt.transaction_date <= :p_end_date and
+              rsh.bill_of_lading is not null
+          ) rsh
+         where
+           rsh.po_line_location_id = poll.line_location_id
+       ) bill_of_lading
       from
        cst_per_end_accruals_temp cpea,
        po_headers_all            poh,
@@ -174,7 +195,7 @@ from
     ) x
  ) q
 order by
- decode(:p_orderby, 1, q.category, 2, q.vendor_name),
+ decode(:p_orderby, 'Category' , q.category, 'Vendor' , q.vendor_name,null),
  q.po_number,
  q.po_release_number,
  q.line_num,

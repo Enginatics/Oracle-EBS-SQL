@@ -19,7 +19,7 @@ x.transaction_date,
 x.class,
 x.type,
 x.reference,
-x.credited_invoice,
+x.credited_or_paid_invoice,
 x.account_number,
 x.party_name,
 x.currency,
@@ -76,19 +76,38 @@ nvl(rcta.ct_reference,acra.customer_receipt_reference) reference,
 decode(apsa.class,'PMT',
 (
 select distinct
-listagg(nvl2(acia0.cons_billing_number,acia0.cons_billing_number||' - ',null)||rcta0.trx_number,', ') within group (order by rcta0.trx_number) over (partition by araa.cash_receipt_id) applied_trx
+listagg(z.trx_number,', ') within group (order by z.trx_number) over (partition by z.cash_receipt_id) applied_trx
+from
+(
+select
+y.*
+from
+(
+select
+sum(lengthb(x.trx_number)+2) over (partition by x.cash_receipt_id order by x.trx_number rows between unbounded preceding and current row) length,
+x.*
+from
+(
+select
+araa.cash_receipt_id,
+nvl2(acia0.cons_billing_number,acia0.cons_billing_number||' - ',null)||rcta0.trx_number trx_number
 from
 ar_receivable_applications_all araa,
 ra_customer_trx_all rcta0,
 ar_cons_inv_trx_all acita0,
 ar_cons_inv_all acia0
 where
-apsa.cash_receipt_id=araa.cash_receipt_id and
 araa.display='Y' and
 araa.status='APP' and
 araa.applied_customer_trx_id=rcta0.customer_trx_id and
 rcta0.customer_trx_id=acita0.customer_trx_id(+) and
 acita0.cons_inv_id=acia0.cons_inv_id(+)
+) x
+) y
+where y.length<=4000
+) z
+where
+apsa.cash_receipt_id=z.cash_receipt_id
 ),
 (
 select
@@ -102,7 +121,7 @@ rcta.previous_customer_trx_id=rcta0.customer_trx_id and
 rcta0.customer_trx_id=acita0.customer_trx_id(+) and
 acita0.cons_inv_id=acia0.cons_inv_id(+)
 )
-) credited_invoice,
+) credited_or_paid_invoice,
 hca.account_number,
 hp.party_name,
 hcsua.location bill_to_location,

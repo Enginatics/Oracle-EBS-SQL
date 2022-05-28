@@ -60,7 +60,7 @@ function lookup_code(p_meaning in varchar2, p_lookup_type in varchar2, p_applica
 /***********************************************************************************************/
 /*  escape regexp metacharacters with a backslash e.g. ( to \(                                 */
 /***********************************************************************************************/
-function regexp_escape(p_text in varchar2) return varchar;
+function regexp_escape(p_text in varchar2) return varchar2;
 
 /***********************************************************************************************/
 /*  used in LOVs to compare column values with parameter values they depend on                 */
@@ -116,7 +116,7 @@ p_id_flex_code in varchar2 default 'GL#'
 /*  /project/supervisor/gordon. this is useful e.g. for connect by sqls to show                */
 /*  sys connect by path in reverse order without changing the starting point of the query      */
 /***********************************************************************************************/
-function reverse(p_text in varchar2, p_delimiter in varchar2) return varchar;
+function reverse(p_text in varchar2, p_delimiter in varchar2) return varchar2;
 
 /***********************************************************************************************/
 /*  convert clob to blob                                                                       */
@@ -154,6 +154,11 @@ function clob_lengthb(p_clob in clob) return number;
 /*  substrb for clobs up to 32767 characters, see oracle note 1571041.1                        */
 /***********************************************************************************************/
 function clob_substrb(p_clob in clob, p_byte_length in pls_integer, p_char_position in pls_integer) return clob;
+
+/***********************************************************************************************/
+/*  instring for long multiple values as regexp on clobs is too slow, especially on 19c        */
+/***********************************************************************************************/
+function instring(p_text in varchar2, p_separator in varchar2, p_occurrence in pls_integer) return varchar2;
 
 /***********************************************************************************************/
 /*  generate x number of rows for use in sql e.g. for regexp: table(xxen_util.rowgen(n)) rowgen*/
@@ -324,14 +329,19 @@ function dis_user_type(p_user_id in number, p_eul in varchar2) return varchar2 r
 function dis_folder_sql(p_object_id in number, p_eul in varchar2) return clob;
 
 /***********************************************************************************************/
-/*  discoverer SQL text for a custom object, simplified, e.g. columns replaced by asterisk *   */
+/*  discoverer SQL text for a custom object                                                    */
 /***********************************************************************************************/
 function dis_folder_sql2(p_object_id in number, p_eul in varchar2) return clob;
 
 /***********************************************************************************************/
+/*  discoverer SQL text for a custom object, simplified, e.g. columns replaced by asterisk *   */
+/***********************************************************************************************/
+function dis_folder_sql3(p_object_id in number, p_eul in varchar2) return clob;
+
+/***********************************************************************************************/
 /*  discoverer SQL text for a custom object and column to create Blitz Report LOVs             */
 /***********************************************************************************************/
-function dis_lov_query(p_object_id in number, p_it_ext_column in varchar2, p_eul in varchar2) return clob;
+function dis_lov_query(p_exp_id in pls_integer, p_eul in varchar2) return clob;
 
 /***********************************************************************************************/
 /*  discoverer worksheet SQL text from logging table ams_discoverer_sql                        */
@@ -346,12 +356,12 @@ function dis_rpn_to_sql(p_formula in varchar2) return varchar2;
 /***********************************************************************************************/
 /*  translates discoverer item formula expressions to reverse polish notation                  */
 /***********************************************************************************************/
-function dis_formula(p_exp_id in pls_integer, p_eul in varchar2) return varchar2;
+function dis_formula(p_exp_id in pls_integer, p_eul in varchar2, p_lov in varchar2, p_parent_obj_id in varchar2) return varchar2;
 
 /***********************************************************************************************/
 /*  translates discoverer item formula expressions to a valid SQL condition                    */
 /***********************************************************************************************/
-function dis_formula_sql(p_exp_id in pls_integer, p_eul in varchar2) return varchar2;
+function dis_formula_sql(p_exp_id in pls_integer, p_eul in varchar2, p_lov in varchar2 default null) return varchar2;
 
 /***********************************************************************************************/
 /*  checks if discoverer EUL contains any data in ams_discoverer_sql to be imported            */
@@ -367,6 +377,11 @@ function dis_folder_exists(p_eul_name in varchar2) return varchar2;
 /*  returns a string of discoverer items ids used by a stat history (eul5_qpp_stats) record    */
 /***********************************************************************************************/
 function dis_qs_exp_ids(p_qs_id in number, p_eul in varchar2, p_type in varchar2 default null) return clob;
+
+/***********************************************************************************************/
+/*  returns a discoverer folders object type                                                   */
+/***********************************************************************************************/
+function dis_obj_type(p_obj_id in varchar2, p_eul in varchar2) return varchar2 result_cache;
 
 /***********************************************************************************************/
 /*  default mrp planning compile designator for a org_id                                       */
@@ -387,6 +402,17 @@ function sequence_nextval(p_sequence_name in varchar2) return number;
 /*  translates oracle language codes to BCP47 codes e.g. for use in ECC queries                */
 /***********************************************************************************************/
 function bcp47_language(p_language_code in varchar2) return varchar result_cache;
+
+/***********************************************************************************************/
+/*  returns location information such as country or city for a given ip address, see           */
+/*  https://www.enginatics.com/blog/find-an-ip-address-and-geolocation-of-ebs-clients-logins/  */
+/***********************************************************************************************/
+function geolocation(p_service_url in varchar2, p_ip_address in varchar2, p_path in varchar2, p_wallet_path in varchar2 default null) return varchar2 result_cache;
+
+/***********************************************************************************************/
+/*  returns parameter value for the currently running blitz report                             */
+/***********************************************************************************************/
+function parameter_value(p_parameter_name in varchar2 default null, p_parameter_bind in varchar2 default null) return varchar2;
 
 end xxen_util;
 /
@@ -536,7 +562,7 @@ begin
 end lookup_code;
 
 
-function regexp_escape(p_text in varchar2) return varchar is
+function regexp_escape(p_text in varchar2) return varchar2 is
 begin
 return
 replace(
@@ -1028,7 +1054,7 @@ begin
 end segment_description;
 
 
-function reverse(p_text in varchar2, p_delimiter in varchar2) return varchar is
+function reverse(p_text in varchar2, p_delimiter in varchar2) return varchar2 is
 l_text varchar2(32767);
 l_length_delim pls_integer:=length(p_delimiter);
 l_length pls_integer:=length(p_text)+1;
@@ -1208,6 +1234,14 @@ begin
 end clob_substrb;
 
 
+function instring(p_text in varchar2, p_separator in varchar2, p_occurrence in pls_integer) return varchar2 is
+l_start pls_integer:=case when p_occurrence=1 then 0 else instr(p_text,p_separator,1,p_occurrence-1) end;
+l_end pls_integer:=instr(p_text,p_separator,1,p_occurrence);
+begin
+  return trim(case when l_end>0 then substr(p_text,l_start+1,l_end-l_start-1) when p_occurrence=1 or l_start>0 then substr(p_text,l_start+1) end);
+end instring;
+
+
 function rowgen(p_rows in number) return fnd_table_of_number is
 l_number_tbl fnd_table_of_number:=fnd_table_of_number();
 begin
@@ -1323,7 +1357,7 @@ begin
     end if;
     l_line:=substr(p_clob,l_offset,l_line_length);
     if regexp_replace(l_line,'\s*') is not null then
-      dbms_lob.append(l_clob,l_line||chr(10));
+      dbms_lob.append(l_clob,case when length(l_clob)>0 then chr(10) end||l_line);
     end if;
     l_offset:=l_offset+l_line_length+1;
   end loop;
@@ -1939,17 +1973,17 @@ end dis_user_type;
 
 function dis_folder_sql(p_object_id in number, p_eul in varchar2) return clob is
 l_sql_chunk varchar2(32767);
-l_sql_text clob;
+l_text clob;
 type cur_type is ref cursor;
 l_cur cur_type;
 begin
   open l_cur for 'select to_clob(eo.obj_object_sql1)||to_clob(eo.obj_object_sql2)||to_clob(eo.obj_object_sql3) sql_text from '||p_eul||'.eul5_objs eo where eo.obj_id=:p_object_id and eo.obj_object_sql1 is not null' using p_object_id;
   loop
-    fetch l_cur into l_sql_text;
+    fetch l_cur into l_text;
     exit when l_cur%notfound;
   end loop;
   close l_cur;
-  if l_sql_text is null then
+  if l_text is null then
     open l_cur for '
     select
     es.seg_chunk1||es.seg_chunk2||es.seg_chunk3||es.seg_chunk4 sql_text
@@ -1965,32 +1999,85 @@ begin
     loop
       fetch l_cur into l_sql_chunk;
       exit when l_cur%notfound;
-      l_sql_text:=l_sql_text||l_sql_chunk;
+      l_text:=l_text||l_sql_chunk;
     end loop;
     close l_cur;
   end if;
-  return replace(l_sql_text,chr(13)||chr(10),chr(10));
+  return replace(l_text,chr(13)||chr(10),chr(10));
 end dis_folder_sql;
 
 
 function dis_folder_sql2(p_object_id in number, p_eul in varchar2) return clob is
-l_sql_text clob:=dis_folder_sql(p_object_id, p_eul);
+l_text clob:=dis_folder_sql(p_object_id, p_eul);
 begin
-  l_sql_text:=regexp_replace(l_sql_text,'^\( SELECT .+? FROM ','SELECT * FROM ',1,1);
-  l_sql_text:=trim(substr(l_sql_text,1,length(l_sql_text)-1));
-  if l_sql_text like 'SELECT * FROM (%) CUO'||p_object_id then
-    l_sql_text:=regexp_substr(l_sql_text,'^SELECT \* FROM \((.+)\) CUO'||p_object_id||'$',1,1,'n',1);
-  end if;
-  return l_sql_text;
+  l_text:=regexp_replace(l_text,'^\( SELECT .+? FROM ',null,1,1);
+  l_text:=regexp_replace(remove_empty_lines(regexp_replace(trim(substr(l_text,1,length(l_text)-1)),'(\W)CUO'||p_object_id||'($|\W)','\1o'||p_object_id||'\2')),'(^|\W)apps\.','\1',1,0,'i');
+  return l_text;
 end dis_folder_sql2;
 
 
-function dis_lov_query(p_object_id in number, p_it_ext_column in varchar2, p_eul in varchar2) return clob is
-l_sql_text clob:=dis_folder_sql(p_object_id, p_eul);
+function dis_folder_sql3(p_object_id in number, p_eul in varchar2) return clob is
 begin
-  l_sql_text:=rtrim(regexp_replace(l_sql_text,'^\( SELECT .+? FROM ','select distinct'||chr(10)||lower(p_it_ext_column)||' value,'||chr(10)||'null description'||chr(10)||'from'||chr(10),1,1));
-  l_sql_text:=trim(substr(l_sql_text,1,length(l_sql_text)-1))||case when l_sql_text is not null then chr(10)||'order by value' end;
-  return l_sql_text;
+  return 'select * from '||dis_folder_sql2(p_object_id, p_eul);
+end dis_folder_sql3;
+
+
+function dis_lov_query(p_exp_id in pls_integer, p_eul in varchar2) return clob is
+type cur_type is ref cursor;
+l_cur cur_type;
+l_text clob;
+c_object_id pls_integer;
+c_obj_type varchar2(10);
+c_sobj_ext_table varchar2(128);
+c_new_alias varchar2(100);
+c_column_name varchar2(4000);
+begin
+  open l_cur for '
+  select
+  x.it_obj_id,
+  x.obj_type,
+  x.sobj_ext_table,
+  x.alias||case when xxen_xdo.is_reserved_word(x.alias)=''Y'' then ''x'' end new_alias,
+  x.column_name
+  from
+  (
+  select
+  ee.it_obj_id,
+  eo.obj_type,
+  lower(eo.owner||nvl2(eo.owner,''.'',null)||eo.sobj_ext_table) sobj_ext_table,
+  lower(replace(regexp_replace(nvl(eo.sobj_ext_table,xxen_report.space_to_underscore(eo.obj_name)),''([^_]{1})[^_]*'',''\1''),''_'')) alias,
+  case when ee.exp_type=''CO'' then ''o''||ee.it_obj_id||''.''||xxen_xdo.column_name(
+  case when ee.it_ext_column like ''%#1'' and ee.it_ext_column=upper(ee.it_ext_column) then substr(ee.it_ext_column,1,length(ee.it_ext_column)-2) else ee.it_ext_column end
+  ) else
+  xxen_util.dis_formula_sql(ee.exp_id,:p_eul,''Y'')
+  end column_name
+  from
+  '||p_eul||'.eul5_expressions ee,
+  (select xxen_xdo.owner(eo.obj_ext_owner,eo.sobj_ext_table) owner, eo.* from '||p_eul||'.eul5_objs eo) eo
+  where
+  ee.exp_id=:p_exp_id and
+  ee.it_obj_id=eo.obj_id
+  ) x
+  ' using p_eul, p_exp_id;
+  loop
+    fetch l_cur into c_object_id, c_obj_type, c_sobj_ext_table, c_new_alias, c_column_name;
+    exit when l_cur%notfound;
+  end loop;
+  close l_cur;
+  if c_obj_type='SOBJ' then --Standard (view or table)
+    l_text:=c_sobj_ext_table||' o'||c_object_id;
+  else --Custom SQL or Complex view
+    l_text:=dis_folder_sql2(c_object_id, p_eul);
+    l_text:=remove_empty_lines(xxen_report.clear_text(
+    p_text=>l_text,
+    p_remove_comments=>'line',
+    p_replace_strings=>false,
+    p_remove_whitespace=>false,
+    p_lowercase=>true
+    ));
+  end if;
+  l_text:='select distinct'||chr(10)||c_column_name||' value,'||chr(10)||'null description'||chr(10)||'from'||chr(10)||l_text||chr(10)||'order by'||chr(10)||'value';
+  return replace(l_text,'o'||c_object_id,c_new_alias);
 end dis_lov_query;
 
 
@@ -2027,7 +2114,7 @@ begin
   select
   case
   when a.opr in ('+','-') then regexp_replace(form,',',a.opr,1,0,'i')
-  when a.opr in ('*','/','%','!=','=','>','<','>=','<=','<>') then regexp_replace(regexp_replace(form,',',a.opr,1,0,'i'),'^\(\s*(.+?)\s*\)$','\1',1,0,'imn')
+  when a.opr in ('*','/','%','!=','=','>','<','>=','<=','<>','||') then regexp_replace(regexp_replace(form,',',a.opr,1,0,'i'),'^\(\s*(.+?)\s*\)$','\1',1,0,'imn')
   when a.opr in ('and') then regexp_replace(regexp_replace(form,',',' '||a.opr||chr(10),1,0,'i'),'^\(\s*(.+?)\s*\)$','\1',1,0,'imn')
   when a.opr in ('or') then regexp_replace(form,',',' '||a.opr||' ',1,0,'i')
   when a.opr in ('between') then regexp_replace(form,'\(([^(),]+(\(\))?),([^(),]+(\(\))?),([^(),]+(\(\))?)\)','\1 between \3 and \5',1,0,'i')
@@ -2081,7 +2168,7 @@ begin
 end dis_rpn_to_sql;
 
 
-function dis_formula(p_exp_id in pls_integer, p_eul in varchar2) return varchar2 is
+function dis_formula(p_exp_id in pls_integer, p_eul in varchar2, p_lov in varchar2, p_parent_obj_id in varchar2) return varchar2 is
 type cur_type is ref cursor;
 l_cur cur_type;
 c_rownum pls_integer;
@@ -2102,8 +2189,8 @@ begin
   y.*,
   case
   when y.exp_type=''CO'' then ''o''||y.it_obj_id||''.''||lower(y.it_ext_column) --for standard items, use the column name directly
-  when y.param1=1 then (select lower(ef.fun_ext_name) from '||p_eul||'.eul5_functions ef where y.param2=ef.fun_id) --function
-  when y.param1=6 then (select decode(ee2.exp_type,''CI'',xxen_util.dis_formula(y.param2,'''||p_eul||'''),''o''||ee2.it_obj_id||''.''||nvl(lower(ee2.it_ext_column),''i''||y.param2)||decode(ee2.it_obj_id,y.outer_joined_obj_id,''(+)'')) from '||p_eul||'.eul5_expressions ee2 where y.param2=ee2.exp_id) --recursive for calculated items
+  when y.param1=1 then (select lower(case when nvl(ef.fun_ext_owner,''APPS'')<>''APPS'' then ef.fun_ext_owner||''.'' end||nvl2(ef.fun_ext_package,ef.fun_ext_package||''.'',null)||ef.fun_ext_name||nvl2(ef.fun_ext_db_link,''@''||ef.fun_ext_db_link,null)) from '||p_eul||'.eul5_functions ef where y.param2=ef.fun_id) --function
+  when y.param1=6 then (select decode(ee2.exp_type,''CI'',xxen_util.dis_formula(y.param2,:p_eul,:p_lov,:p_parent_obj_id),''o''||ee2.it_obj_id||nvl(case when :p_lov is null and y.obj_type=''COBJ'' then ''_''||y.it_obj_id end,:p_parent_obj_id)||''.''||nvl(xxen_xdo.column_name(ee2.it_ext_column),''i''||y.param2)||decode(ee2.it_obj_id,y.outer_joined_obj_id,''(+)'')) from '||p_eul||'.eul5_expressions ee2 where y.param2=ee2.exp_id) --recursive for calculated items
   when y.param1=5 and y.param2=1 then ''''''''||replace(substr(y.param3,2,length(y.param3)-2),''""'',''"'')||''''''''
   when y.param1=5 and y.param2=2 then trim(''"'' from y.param3)
   when y.param1=5 and y.param2=4 then ''to_date(''''''||to_char(to_date(substr(y.param3,2,instr(y.param3,''"'',2)-2),''YYYYMMDDHH24MISS''),''DD-MON-RRRR'')||'''''',''''DD-MON-RRRR'''')''
@@ -2114,6 +2201,7 @@ begin
   substr(x.param,1,instr(x.param,'','')-1) param1,
   trim(regexp_substr(x.param,''[^,]+'',1,2)) param2,
   case when instr(x.param,'','',1,2)>0 then trim(substr(x.param,instr(x.param,'','',1,2)+1)) end param3,
+  xxen_util.dis_obj_type(x.it_obj_id,:p_eul) obj_type,
   x.*
   from
   (
@@ -2137,21 +2225,60 @@ begin
   ) z
   where
   z.text is not null
-  ' using p_exp_id;
+  ' using p_eul, p_lov, p_parent_obj_id, p_lov, p_parent_obj_id, p_eul, p_exp_id;
   loop
     fetch l_cur into c_rownum, c_formula, c_param, c_text;
     exit when l_cur%notfound;
     l_formula:=replace(case when c_rownum=1 then c_formula else l_formula end,'['||c_param||']',c_text);
   end loop;
-  l_formula:=replace(l_formula,'sysdate()','sysdate');
   close l_cur;
+  l_formula:=replace(l_formula,'sysdate()','sysdate');
   return l_formula;
 end dis_formula;
 
 
-function dis_formula_sql(p_exp_id in pls_integer, p_eul in varchar2) return varchar2 is
+function dis_formula_sql(p_exp_id in pls_integer, p_eul in varchar2, p_lov in varchar2 default null) return varchar2 is
+type cur_type is ref cursor;
+l_cur cur_type;
+c_parent_obj_id varchar2(20);
 begin
-  return dis_rpn_to_sql(dis_formula(p_exp_id, p_eul));
+  open l_cur for '
+  select
+  case when :p_lov is null and y.obj_type=''COBJ'' then ''_''||y.it_obj_id end parent_obj_id
+  from
+  (
+  select
+  xxen_util.dis_obj_type(x.it_obj_id,:p_eul) obj_type,
+  x.*
+  from
+  (
+  select
+  nvl(ee.it_obj_id,ee.fil_obj_id) it_obj_id
+  from
+  '||p_eul||'.eul5_expressions ee
+  where
+  ee.exp_id=:p_exp_id and
+  ee.exp_formula1 like ''%[%]%''
+  ) x
+  ) y
+  ' using p_lov, p_eul, p_exp_id;
+  loop
+    fetch l_cur into c_parent_obj_id;
+    exit when l_cur%notfound;
+    return
+    replace(
+    regexp_replace(
+    regexp_replace(
+    regexp_replace(
+    regexp_replace(dis_rpn_to_sql(dis_formula(p_exp_id, p_eul, p_lov, c_parent_obj_id)),
+    'eul_date_trunc\((o\d+\.\w+),''YYYY''\)','trunc(\1,''YYYY'')'),
+    'eul_date_trunc\((o\d+\.\w+),''"Q"Q''\)','case when \1 is null then null else to_date(to_char(trunc(\1,''Q''),''MM'')||''1900'',''MMYYYY'') end'),
+    'eul_date_trunc\((o\d+\.\w+),''Mon''\)','case when \1 is null then null else to_date(to_char(trunc(\1,''MM''),''MM'')||''1900'',''MMYYYY'') end'),
+    'eul_date_trunc\((o\d+\.\w+),''DD''\)','case when \1 is null then null else to_date(to_char(trunc(\1,''DD''),''DD'')||''190001'',''DDYYYYMM'') end'),
+    'null()','null');
+  end loop;
+  close l_cur;
+  return null;
 end dis_formula_sql;
 
 
@@ -2443,13 +2570,26 @@ begin
       end loop;
     end if;
   end loop;
-
   return itmid;
 end dis_qs_exp_ids;
 
 
-function compile_designator(p_org_id in pls_integer) return varchar2 is
+function dis_obj_type(p_obj_id in varchar2, p_eul in varchar2) return varchar2 result_cache is
+type cur_type is ref cursor;
+l_cur cur_type;
+c_obj_type varchar2(10);
+begin
+  open l_cur for 'select eo.obj_type from '||p_eul||'.eul5_objs eo where eo.obj_id=:p_obj_id' using p_obj_id;
+  loop
+    fetch l_cur into c_obj_type;
+    exit when l_cur%notfound;
+  end loop;
+  close l_cur;
+  return c_obj_type;
+end dis_obj_type;
 
+
+function compile_designator(p_org_id in pls_integer) return varchar2 is
 function compile_designator(p_org_id in pls_integer, p_mrp_default_plan in varchar2, p_sysdate in date) return varchar2 result_cache is
 l_plan varchar2(10);
 begin
@@ -2536,6 +2676,65 @@ begin
     return c.bcp47_language;
   end loop;
 end bcp47_language;
+
+
+function geolocation(p_service_url in varchar2, p_ip_address in varchar2, p_path in varchar2, p_wallet_path in varchar2 default null) return varchar2 result_cache is
+l_text varchar2(32767);
+l_value varchar2(100);
+function http_response(p_url in varchar2, p_wallet_path in varchar2) return varchar2 result_cache is
+l_http_request utl_http.req;
+l_http_response utl_http.resp;
+l_text0 varchar2(32767);
+begin
+  if p_wallet_path is not null then --If using HTTPS, open the wallet with the trusted root certificate.
+    utl_http.set_wallet('file:'||p_wallet_path); --Setting a path for a wallet containing geolocation API site root certificate
+  end if;
+  l_http_request:=utl_http.begin_request(p_url); --Make a HTTP request and get the response
+  l_http_response:=utl_http.get_response(l_http_request);
+  loop --Loop through the response and get the geolocation information
+    utl_http.read_text(l_http_response,l_text0,32766);
+    l_text:=l_text0;
+  end loop;
+exception --The above request ends in an exception once it finishes reading all the information
+  when utl_http.end_of_body then --So when it occurs, just return the obtained information
+    utl_http.end_response(l_http_response);
+    return l_text;
+end http_response;
+begin
+  if p_ip_address is not null then
+    l_text:=http_response(p_service_url||p_ip_address, p_wallet_path);
+    if l_text is not null then
+      execute immediate 'select x.value from xmltable('''||substr(p_path,1,instr(p_path,'/',-1)-1)||''' passing xmltype(:l_text) columns value varchar2(100) path '''||substr(p_path,instr(p_path,'/',-1)+1)||''') x where rownum=1'
+      into l_value using l_text;
+    end if;
+  end if;
+  return l_value;
+end geolocation;
+
+
+function parameter_value(p_parameter_name in varchar2 default null, p_parameter_bind in varchar2 default null) return varchar2 is
+l_value varchar2(4000);
+begin
+  for c in (
+  select
+  dbms_lob.substr(xrrpv.value,4000,1) value
+  from
+  xxen_report_runs xrr,
+  xxen_report_run_param_values xrrpv,
+  xxen_report_parameters xrp,
+  xxen_report_parameters_tl xrpt
+  where
+  xrr.request_id=fnd_global.conc_request_id and
+  xrr.run_id=xrrpv.run_id and
+  xrrpv.parameter_id=xrp.parameter_id and
+  xrrpv.parameter_id=xrpt.parameter_id and
+  xrpt.language='US' and
+  (xrpt.parameter_name=p_parameter_name or xxen_api.bindvar_name(xrp.parameter_id)=':'||p_parameter_bind)
+  ) loop
+    l_value:=c.value;
+  end loop;
+  return l_value;
+end parameter_value;
 
 
 end xxen_util;

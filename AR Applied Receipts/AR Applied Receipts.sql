@@ -23,6 +23,10 @@ Short Name: RXARARRG
 -- Run Report: https://demo.enginatics.com/
 
 select
+ x.*
+from
+(
+select
  gl.name  ledger,
  gl.currency_code ledger_currency,
  haou.name  operating_unit,
@@ -99,6 +103,8 @@ select
  -- Additional Receipt Infor
  fds.name  doc_sequence_name,
  acra.doc_sequence_value,
+ acra.creation_date  receipt_creation_date,
+ acra.last_update_date receipt_last_updated_date,
  acra.deposit_date,
  acra.anticipated_clearing_date,
  acra.misc_payment_source,
@@ -107,6 +113,7 @@ select
  acra.exchange_rate,
  acra.exchange_date,
  acra.exchange_rate_type,
+ acra.application_notes,
  cbbv.bank_name,
  cbbv.bank_name_alt,
  cbbv.bank_number,
@@ -118,23 +125,25 @@ select
  cba.bank_account_num bank_account_number,
  cba.currency_code bank_account_currency,
  -- Debit GL Account Info
- fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_seg', 'SQLGL', 'GL#', :p_coa, NULL, gcc2.code_combination_id, 'ALL', 'Y', 'VALUE') debit_account,
- fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_seg', 'SQLGL', 'GL#', :p_coa, NULL, gcc2.code_combination_id, 'ALL', 'Y', 'DESCRIPTION') debit_account_desc,
- fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_seg', 'SQLGL', 'GL#', :p_coa, NULL, gcc2.code_combination_id, 'GL_BALANCING', 'Y', 'VALUE') balancing_segment,
- fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_seg', 'SQLGL', 'GL#', :p_coa, NULL, gcc2.code_combination_id, 'GL_BALANCING', 'Y', 'DESCRIPTION') balancing_segment_desc,
- fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_seg', 'SQLGL', 'GL#', :p_coa, NULL, gcc2.code_combination_id, 'GL_ACCOUNT', 'Y', 'VALUE') account_segment,
- fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_seg', 'SQLGL', 'GL#', :p_coa, NULL, gcc2.code_combination_id, 'GL_ACCOUNT', 'Y', 'DESCRIPTION') account_segment_desc,
- fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_seg', 'SQLGL', 'GL#', :p_coa, NULL, gcc2.code_combination_id, 'ALL', 'Y', 'VALUE') || ' - ' ||
- fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_seg', 'SQLGL', 'GL#', :p_coa, NULL, gcc2.code_combination_id, 'ALL', 'Y', 'DESCRIPTION') debit_account_pivot_label,
- fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_seg', 'SQLGL', 'GL#', :p_coa, NULL, gcc2.code_combination_id, 'GL_BALANCING', 'Y', 'VALUE') || ' - ' ||
- fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_seg', 'SQLGL', 'GL#', :p_coa, NULL, gcc2.code_combination_id, 'GL_BALANCING', 'Y', 'DESCRIPTION') bal_seg_pivot_label,
- fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_seg', 'SQLGL', 'GL#', :p_coa, NULL, gcc2.code_combination_id, 'GL_ACCOUNT', 'Y', 'VALUE') || ' - ' ||
- fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_seg', 'SQLGL', 'GL#', :p_coa, NULL, gcc2.code_combination_id, 'GL_ACCOUNT', 'Y', 'DESCRIPTION') account_pivot_label,
+ fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_seg', 'SQLGL', 'GL#', gcc2.chart_of_accounts_id, NULL, gcc2.code_combination_id, 'ALL', 'Y', 'VALUE') debit_account,
+ fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_seg', 'SQLGL', 'GL#', gcc2.chart_of_accounts_id, NULL, gcc2.code_combination_id, 'ALL', 'Y', 'DESCRIPTION') debit_account_desc,
+ fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_seg', 'SQLGL', 'GL#', gcc2.chart_of_accounts_id, NULL, gcc2.code_combination_id, 'GL_BALANCING', 'Y', 'VALUE') balancing_segment,
+ fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_seg', 'SQLGL', 'GL#', gcc2.chart_of_accounts_id, NULL, gcc2.code_combination_id, 'GL_BALANCING', 'Y', 'DESCRIPTION') balancing_segment_desc,
+ fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_seg', 'SQLGL', 'GL#', gcc2.chart_of_accounts_id, NULL, gcc2.code_combination_id, 'GL_ACCOUNT', 'Y', 'VALUE') account_segment,
+ fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_seg', 'SQLGL', 'GL#', gcc2.chart_of_accounts_id, NULL, gcc2.code_combination_id, 'GL_ACCOUNT', 'Y', 'DESCRIPTION') account_segment_desc,
+ fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_seg', 'SQLGL', 'GL#', gcc2.chart_of_accounts_id, NULL, gcc2.code_combination_id, 'ALL', 'Y', 'VALUE') || ' - ' ||
+ fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_seg', 'SQLGL', 'GL#', gcc2.chart_of_accounts_id, NULL, gcc2.code_combination_id, 'ALL', 'Y', 'DESCRIPTION') debit_account_pivot_label,
+ fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_seg', 'SQLGL', 'GL#', gcc2.chart_of_accounts_id, NULL, gcc2.code_combination_id, 'GL_BALANCING', 'Y', 'VALUE') || ' - ' ||
+ fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_seg', 'SQLGL', 'GL#', gcc2.chart_of_accounts_id, NULL, gcc2.code_combination_id, 'GL_BALANCING', 'Y', 'DESCRIPTION') bal_seg_pivot_label,
+ fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_seg', 'SQLGL', 'GL#', gcc2.chart_of_accounts_id, NULL, gcc2.code_combination_id, 'GL_ACCOUNT', 'Y', 'VALUE') || ' - ' ||
+ fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_seg', 'SQLGL', 'GL#', gcc2.chart_of_accounts_id, NULL, gcc2.code_combination_id, 'GL_ACCOUNT', 'Y', 'DESCRIPTION') account_pivot_label,
  hp.party_name || ' - ' || hca.account_number cust_name_pivot_label,
- hca.account_number || ' - ' || hp.party_name cust_number_pivot_label
+ hca.account_number || ' - ' || hp.party_name cust_number_pivot_label,
+ decode(:reporting_level,1000,gl.name,3000,haou.name,null) reporting_entity
 from
 &lp_table_list
 where
+ acra.org_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where not exists (select null from mo_glob_org_access_tmp mgoat)) and
  acra.org_id = haou.organization_id and
  acra.set_of_books_id = gl.ledger_id and
  acra.cash_receipt_id = acrha1.cash_receipt_id and
@@ -176,18 +185,17 @@ where
  apsa.org_id = acia.org_id(+) and
  aspa.org_id = araa.org_id and
  :reporting_level in (1000,3000) and
- :reporting_context is not null and
- :p_coa is not null and
+ nvl(:p_coa,-1) = nvl(:p_coa,-1) and
  :p_mrc_flag = :p_mrc_flag and
  1=1
+) x
+where
+ 2=2
 order by
- gl.name,
- fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_seg', 'SQLGL', 'GL#', :p_coa, NULL, gcc2.code_combination_id, 'GL_BALANCING', 'Y', 'VALUE'),
- haou.name,
- acra.currency_code,
- araa.apply_date,
- acra.receipt_number,
- case when aspa.show_billing_number_flag = 'Y'
- then decode(araa.status, 'ACC', xxen_util.meaning('ACC','PAYMENT_TYPE',222) , decode(acia.cons_billing_number, null, apsa.trx_number , substrb(rtrim(acia.cons_billing_number)||'/'||rtrim(to_char(rcta.trx_number)),1,30)))
- else decode(araa.status, 'ACC', xxen_util.meaning('ACC','PAYMENT_TYPE',222) , apsa.trx_number)
- end
+ x.ledger,
+ x.balancing_segment,
+ x.operating_unit,
+ x.receipt_currency,
+ x.apply_date,
+ x.receipt_number,
+ x.applied_to_trx_number

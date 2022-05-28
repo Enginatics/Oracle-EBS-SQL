@@ -5,11 +5,10 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Material Account Summary
--- Description: Report to get the material accounting entries for each item, organization, subinventory with amounts.  Including Ship From and Ship To information for inter-org transfers.  This report includes all material transactions but to keep the report smaller it does not displays WIP job information, such as WIP Accounting Class, Class Description, Assembly Number, Assembly Description or Job Order Number.
-Use the Show Subinventory parameter to reduce the size of this report, as needed.  If you choose Yes you get the Subinventory Code, if you choose No you only get the Accounting Line Type for inventory, (Inventory valuation) thus greatly reducing the size of this report.
+-- Description: Report to get the material accounting entries for each item, organization, subinventory with amounts.  Including Ship From and Ship To information for inter-org transfers.  This report includes all material transactions but to keep the report smaller it does not display WIP job information.  Use the Show Subinventory parameter to further reduce the size of this report, as needed.  If you choose Yes you get the Subinventory Code, if you choose No you only get the Accounting Line Type for inventory, (Inventory valuation) thus greatly reducing the size of this report.  Also note  this report version shows the latest item status and planning make buy codes, even if you run the report for prior accounting periods.
 
 /* +=============================================================================+
--- |  Copyright 2009-20 Douglas Volz Consulting, Inc.                            |
+-- |  Copyright 2009-22 Douglas Volz Consulting, Inc.                            |
 -- |  Permission to use this code is granted provided the original author is     |
 -- |  acknowledged.  No warranties, express or otherwise is included in this     |
 -- |  permission.                                                                |
@@ -42,17 +41,11 @@ Use the Show Subinventory parameter to reduce the size of this report, as needed
 -- |  Version Modified on Modified  by   Description
 -- |  ======= =========== ============== =========================================
 -- |  1.0     06 Nov 2009 Douglas Volz   Initial Coding
--- | 1.19    22 Apr 2020 Douglas Volz    Put Item Type lookup code into inner queries, to avoid
--- |                                     creating outer joins errors to multiple tables (12.1.3). 
--- |                                     Put item master back into inner queries for the item type
--- |                                     lookup and changed FOB point into a lookup code for languages.
--- | 1.20    03 May 2020 Douglas Volz    Can have multiple mta rows with the same CCID, quantity
--- |                                     and accounting line type.  To avoid summing incorrectly, 
--- |                                     need to count the number of rows and then divide into the
--- |                                     total quantity sum.  However, for Standard Cost Updates,
--- |                                     use the quantity adjusted.
 -- | 1.21    14 May 2020 Douglas Volz    Use multi-language table for UOM_Code, mtl_units_of_measure_vl
--- | 1.22    17 May 2020 Douglas Volz    Remove inner query group by, not needed.
+-- | 1.22    17 May 2020 Douglas Volz    Removed group by for inner queries, not needed.
+-- | 1.23    11 Mar 2021 Douglas Volz    Removed redundant joins and tables to improve
+-- |                                     performance.  Added Make Buy Code.
+-- | 1.24    28 Feb 2022 Douglas Volz    Move category columns to first select statement.
 -- +=============================================================================+*/
 
 
@@ -76,9 +69,12 @@ select	nvl(gl.short_name, gl.name) Ledger,
 	mtl_acct.item_number Item_Number,
 	mtl_acct.item_description Item_Description,
 	mtl_acct.item_type Item_Type,
-	mtl_acct.category1 "&p_category_set1",
-	mtl_acct.category2 "&p_category_set2",
-	-- End revision for version 1.12
+	-- Revision for version 1.22
+	mtl_acct.inventory_item_status_code Status_Code,
+	-- Revision for version 1.23
+	mtl_acct.make_buy_code Make_Buy_Code,
+	-- Revision for version 1.12 and 1.24
+&category_columns
 	mtl_acct.acct_line_type Accounting_Line_Type,
 	mtl_acct.transaction_type_name Transaction_Type,
 	mtl_acct.transaction_source Transaction_Source,	
@@ -103,8 +99,10 @@ from	gl_code_combinations gcc,
 	hr_all_organization_units_vl haou_to, -- inv_organization_id
 	hr_all_organization_units_vl haou2_to, -- operating unit
 	gl_ledgers gl,
-	xla.xla_transaction_entities ent,  -- apps synonym not working
-	xla_events xe,
+	-- Revision for version 1.23, remove tables to increase performance
+	-- xla.xla_transaction_entities ent,  -- apps synonym not working
+	-- xla_events xe,
+	-- End revision for version 1.23
 	xla_distribution_links xdl,
 	xla_ae_headers ah,
 	xla_ae_lines al,
@@ -178,47 +176,23 @@ from	gl_code_combinations gcc,
 		msiv.description item_description,
 		-- Revision for version 1.6 and 1.19, add in item type
 		fcl.meaning item_type,
-		-- Revision for version 1.12
-		nvl((select	max(mc.category_concat_segs)
-		     from	mtl_categories_v mc,
-				mtl_item_categories mic,
-				mtl_category_sets_b mcs,
-				mtl_category_sets_tl mcs_tl
-		     where	mic.category_set_id         = mcs.category_set_id
-		     and	2=2
-		     and	mic.inventory_item_id       = mta.inventory_item_id
-		     and	mic.organization_id         = mta.organization_id
-		     and	mc.category_id              = mic.category_id
-		     and	mcs.category_set_id         = mcs_tl.category_set_id
-		     and	mcs_tl.language             = userenv('lang')
-		   ),'') category1,
-		nvl((select	max(mc.category_concat_segs)
-		     from	mtl_categories_v mc,
-				mtl_item_categories mic,
-				mtl_category_sets_b mcs,
-				mtl_category_sets_tl mcs_tl
-		     where	mic.category_set_id         = mcs.category_set_id
-		     and	3=3 
-		     and	mic.inventory_item_id       = mta.inventory_item_id
-		     and	mic.organization_id         = mta.organization_id
-		     and	mc.category_id              = mic.category_id
-		     and	mcs.category_set_id         = mcs_tl.category_set_id
-		     and	mcs_tl.language             = userenv('lang')
-		   ),'') category2,
-		-- End revision for version 1.12
-		ml.meaning acct_line_type,
+		-- Revision for version 1.22
+		misv.inventory_item_status_code,
+		-- Revision for version 1.23
+		ml2.meaning Make_Buy_Code,
+		ml1.meaning acct_line_type,
 		mtt.transaction_type_name transaction_type_name,
 		-- Revision for version 1.13
 		mtst.transaction_source_type_name transaction_source,
 		-- Revision for version 1.15
 		decode(:p_show_subinv,                                                                    -- p_show_subinv
 			'N',  decode(mta.accounting_line_type, 
-				 7, ml.meaning, -- WIP
-				14, ml.meaning, -- Intransit
-				 1, ml.meaning, -- Subinventory / Inventory valuation
+				 7, ml1.meaning, -- WIP
+				14, ml1.meaning, -- Intransit
+				 1, ml1.meaning, -- Subinventory / Inventory valuation
 				null),
 			'Y',
-			decode(mta.accounting_line_type, 7, ml.meaning, 14, ml.meaning, 1,
+			decode(mta.accounting_line_type, 7, ml1.meaning, 14, ml1.meaning, 1,
 			 decode(mmt.transaction_action_id,
 				 2, decode(sign (mta.primary_quantity),
 					-1, mmt.subinventory_code,
@@ -250,9 +224,9 @@ from	gl_code_combinations gcc,
 		                ) 
 			      ),
 			decode(mta.accounting_line_type, 
-				 7, ml.meaning, -- WIP
-				14, ml.meaning, -- Intransit
-				 1, ml.meaning, -- Subinventory / Inventory valuation
+				 7, ml1.meaning, -- WIP
+				14, ml1.meaning, -- Intransit
+				 1, ml1.meaning, -- Subinventory / Inventory valuation
 				null)		
 		      ) subinventory_code,
 		-- End revision for version 1.15
@@ -292,6 +266,8 @@ from	gl_code_combinations gcc,
 		mtl_system_items_vl msiv,
 		-- Revision for version 1.21
 		mtl_units_of_measure_vl muomv,
+		-- Revision for version 1.22
+		mtl_item_status_vl misv,
 		-- Revision for version 1.13
 		mtl_txn_source_types mtst,
 		mtl_parameters mp,
@@ -304,42 +280,47 @@ from	gl_code_combinations gcc,
 		-- End revision for version 1.5
 		-- Revision for version 1.19
 		fnd_common_lookups fcl,
-		mfg_lookups ml
+		mfg_lookups ml1, -- Accounting Line Type
+		-- Revision for version 1.23
+		mfg_lookups ml2  -- Planning Make Buy Code
 	 -- ========================================================
 	 -- Material Transaction, org and item joins
 	 -- ========================================================
-	 where	mta.transaction_id             = mmt.transaction_id
-	 and	mmt.transaction_type_id        = mtt.transaction_type_id
-	 and	msiv.organization_id           = mta.organization_id
-	 and	msiv.inventory_item_id         = mta.inventory_item_id
-	 and	msiv.primary_uom_code          = muomv.uom_code
-	 and	mp.organization_id             = mta.organization_id
+	 where	mta.transaction_id              = mmt.transaction_id
+	 and	mmt.transaction_type_id         = mtt.transaction_type_id
+	 and	msiv.organization_id            = mta.organization_id
+	 and	msiv.inventory_item_id          = mta.inventory_item_id
+	 -- Revision for version 1.21
+	 and	msiv.primary_uom_code           = muomv.uom_code
+	 -- Revision for version 1.22
+	 and	msiv.inventory_item_status_code = misv.inventory_item_status_code
+	 and	mp.organization_id              = mta.organization_id
 	 -- Fix for version 1.6
 	 -- Revision for version 1.5
-	 -- and	mp_owning_org.organization_id  = nvl(mmt.owning_organization_id, mta.organization_id)
-	 -- and	mp_xfer_org.organization_id    = nvl(mmt.transfer_organization_id, mta.organization_id)
-	 -- and	mp_mmt_org.organization_id     = mmt.organization_id
+	 -- and	mp_owning_org.organization_id   = nvl(mmt.owning_organization_id, mta.organization_id)
+	 -- and	mp_xfer_org.organization_id     = nvl(mmt.transfer_organization_id, mta.organization_id)
+	 -- and	mp_mmt_org.organization_id      = mmt.organization_id
 	 -- End revision for version 1.5
-	 and	mp_xfer_org.organization_id    = nvl(mmt.transfer_organization_id, mmt.organization_id)
-	 and	mp_mmt_org.organization_id     = mmt.organization_id
+	 and	mp_xfer_org.organization_id     = nvl(mmt.transfer_organization_id, mmt.organization_id)
+	 and	mp_mmt_org.organization_id      = mmt.organization_id
 	 -- End fix for version 1.6
 	 -- ========================================================
 	 -- Material Transaction date and accounting code joins
 	 -- ========================================================
 	 and	4=4
-	 -- ========================================================
-	 -- Omit WIP transaction sources for material transactions 
-	 -- ========================================================
 	 -- Revision for version 1.14
 	 -- Join to mta instead of mmt for faster performance
 	 -- Revision for version 1.13
-	 -- and	mmt.transaction_source_type_id = mtst.transaction_source_type_id
-	 and	mta.transaction_source_type_id = mtst.transaction_source_type_id
+	 -- and	mmt.transaction_source_type_id  = mtst.transaction_source_type_id
+	 and	mta.transaction_source_type_id  = mtst.transaction_source_type_id
 	 -- End of revision for version 1.14
-	 and	fcl.lookup_code (+)            = msiv.item_type
-	 and	fcl.lookup_type (+)            = 'ITEM_TYPE'
-	 and	ml.lookup_type                 = 'CST_ACCOUNTING_LINE_TYPE'
-	 and	ml.lookup_code                 = mta.accounting_line_type
+	 and	fcl.lookup_code (+)             = msiv.item_type
+	 and	fcl.lookup_type (+)             = 'ITEM_TYPE'
+	 and	ml1.lookup_type                 = 'CST_ACCOUNTING_LINE_TYPE'
+	 and	ml1.lookup_code                 = mta.accounting_line_type
+	 -- Revision for version 1.23
+	 and	ml2.lookup_type                 = 'MTL_PLANNING_MAKE_BUY'
+	 and	ml2.lookup_code                 = msiv.planning_make_buy_code
 	) mtl_acct
 -- ========================================================
 -- using the base tables to avoid the performance issues
@@ -366,21 +347,25 @@ and	haou2_to.organization_id         = to_number(hoi_to.org_information3) -- thi
 -- ========================================================
 -- SLA table joins to get the exact account numbers
 -- ========================================================
-and	ent.entity_code                  = 'MTL_ACCOUNTING_EVENTS'
-and	ent.application_id               = 707
-and	xe.application_id                = ent.application_id
-and	xe.event_id                      = xdl.event_id
-and	ah.entity_id                     = ent.entity_id
-and	ah.ledger_id                     = ent.ledger_id
+-- Revision for version 1.23, performance improvements
+-- and	ent.entity_code                  = 'MTL_ACCOUNTING_EVENTS'
+-- and	ent.application_id               = 707
+-- and	xe.application_id                = ent.application_id
+-- and	xe.event_id                      = xdl.event_id
+-- and	ah.entity_id                     = ent.entity_id
+-- and	ah.ledger_id                     = ent.ledger_id
+-- and	ah.event_id                      = xe.event_id
+-- and	al.application_id                = ent.application_id
+-- and	xdl.application_id               = ent.application_id
+and	ah.ledger_id                     = gl.ledger_id
+-- End revisions for version 1.23
 and	ah.application_id                = al.application_id
 and	ah.application_id                = 707
-and	ah.event_id                      = xe.event_id
 and	ah.ae_header_id                  = al.ae_header_id
-and	al.application_id                = ent.application_id
 and	al.ledger_id                     = ah.ledger_id
 and	al.ae_header_id                  = xdl.ae_header_id
 and	al.ae_line_num 	                 = xdl.ae_line_num
-and	xdl.application_id               = ent.application_id
+and	xdl.application_id               = 707
 and	xdl.source_distribution_type     = 'MTL_TRANSACTION_ACCOUNTS'
 and	mtl_acct.inv_sub_ledger_id       = xdl.source_distribution_id_num_1
 -- Revision for version 1.17, outer join for CCIDs
@@ -400,8 +385,14 @@ group by
 	mtl_acct.item_number,
 	mtl_acct.item_description,
 	mtl_acct.item_type,
-	mtl_acct.category1,
-	mtl_acct.category2,
+	-- Revision for version 1.22
+	mtl_acct.inventory_item_status_code,
+	-- Revision for version 1.23
+	mtl_acct.make_buy_code,
+	-- Revision for version 1.12 and 1.24
+	mtl_acct.organization_id,
+	mtl_acct.inventory_item_id,
+	-- End revision for version 1.12 and 1.24
 	mtl_acct.subinventory_code,
 	mtl_acct.acct_line_type,
 	mtl_acct.transaction_type_name,

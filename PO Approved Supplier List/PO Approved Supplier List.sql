@@ -133,7 +133,8 @@ ca.reference_type(+)='ASL' and
 pasl.asl_id=psic.asl_id(+) and
 pasl.using_organization_id=psic.using_organization_id(+) and
 pasl.asl_id=psit.asl_id(+) and
-pasl.using_organization_id=psit.using_organization_id(+)
+pasl.using_organization_id=psit.using_organization_id(+) and
+assa.org_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual)
 order by
 mp1.organization_code,
 mck.concatenated_segments,

@@ -47,6 +47,10 @@ Note:  this report automatically looks for hierarchies which might be used with 
 -- |                                      organization_hierarchy_name subquery.
 -- |  1.10    28 May 2020 Douglas Volz    For language translation, replaced custom Report 
 -- |                                      Options LOV with compound Oracle lookup values.
+-- |  1.11    21 Jun 2020 Douglas Volz    Added Organization Hierarchy as a separate parameter
+-- |  1.12    07 Feb 2022 Eric Clegg      Added who columns using xxen_util functions.
+-- |  1.13    13 Mar 2022 Douglas Volz    Modified for financial apps, to show blank who
+-- |                                      column values if status = Never Opened.
 -- +=============================================================================+*/
 
 
@@ -68,7 +72,7 @@ select	fav.application_name Functional_Area,
 	fl2.meaning Summarized_Flag,
 	-- Revision for version 1.1
 	opm_status.period_status_tl OPM_Period_Status,
-coalesce(
+	coalesce(
 	(select	max(hoh.organization_hierarchy_name) organization_hierarchy_name
 	 from	hrfv_organization_hierarchies hoh
 	 where	hoh.organization_hierarchy_name= '&p_hierarchy_name'
@@ -79,11 +83,13 @@ coalesce(
 	 where	regexp_like(hoh.organization_hierarchy_name,'&p_name_open|&p_name_close|&p_name_period','i')
 	 and	(mp.organization_id = hoh.child_organization_id or mp.organization_id = hoh.parent_organization_id)
 	)
-) hierarchy_name,
- xxen_util.user_name(oap.created_by) created_by,
- xxen_util.client_time(oap.creation_date) creation_date,
- xxen_util.user_name(oap.last_updated_by) last_updated_by,
- xxen_util.client_time(oap.last_update_date) last_update_date
+		) hierarchy_name,
+	-- Revision for version 1.12
+	xxen_util.user_name(oap.created_by) created_by,
+	xxen_util.client_time(oap.creation_date) creation_date,
+	xxen_util.user_name(oap.last_updated_by) last_updated_by,
+	xxen_util.client_time(oap.last_update_date) last_update_date
+	-- End revision for version 1.12
 from	org_acct_periods oap,
 	mtl_parameters mp,
 	hr_organization_information hoi,
@@ -220,7 +226,7 @@ select	fav.application_name Functional_Area,
 	'' Summarized_Flag, 
 	-- Revision for version 1.1
 	'' OPM_Period_Status,
-coalesce(
+	coalesce(
 	(select	max(hoh.organization_hierarchy_name) organization_hierarchy_name
 	 from	hrfv_organization_hierarchies hoh
 	 where	hoh.organization_hierarchy_name= '&p_hierarchy_name'
@@ -231,12 +237,14 @@ coalesce(
 	 where	regexp_like(hoh.organization_hierarchy_name,'&p_name_open|&p_name_close|&p_name_period','i')
 	 and	(mp.organization_id = hoh.child_organization_id or mp.organization_id = hoh.parent_organization_id)
 	)
-) hierarchy_name,
- to_number(null) created_by,
- to_date(null) creation_date,
- to_number(null) last_updated_by,
- to_date(null) last_update_date
-from	gl_periods gp,
+		) hierarchy_name,
+	-- Revision for version 1.12
+	to_number(null) created_by,
+	to_date(null) creation_date,
+	to_number(null) last_updated_by,
+	to_date(null) last_update_date
+	-- End revision for version 1.12
+from	gl.gl_periods gp,
 	mtl_parameters mp,
 	hr_organization_information hoi,
 	hr_all_organization_units_vl haou,
@@ -324,10 +332,12 @@ select	fav.application_name Functional_Area,
 	-- Revision for version 1.1
 	'' OPM_Period_Status,
 	'' Hierarchy_Name,
- xxen_util.user_name(gps.created_by) created_by,
- xxen_util.client_time(gps.creation_date) creation_date,
- xxen_util.user_name(gps.last_updated_by) last_updated_by,
- xxen_util.client_time(gps.last_update_date) last_update_date
+	-- Revision for version 1.12
+	case when gps.closing_status = 'N' then null else xxen_util.user_name(gps.created_by) end created_by,
+	case when gps.closing_status = 'N' then null else xxen_util.client_time(gps.creation_date) end creation_date,
+	case when gps.closing_status = 'N' then null else xxen_util.user_name(gps.last_updated_by) end last_updated_by,
+	case when gps.closing_status = 'N' then null else xxen_util.client_time(gps.last_update_date) end last_update_date
+	-- End revision for version 1.12
 from	gl_period_statuses gps,
 	-- Revision for version 1.7 and 1.10
 	fnd_lookup_values_vl flvv,

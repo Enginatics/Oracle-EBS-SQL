@@ -16,7 +16,11 @@ fav.application_name application,
 xxen_util.meaning(frf.rule_type,'FND_RESP_FUNC_RULE_TYPE',0) type,
 decode(frf.rule_type,'F',fffv.user_function_name,fmv.user_menu_name) name,
 decode(frf.rule_type,'F',fffv.function_name,fmv.menu_name) system_name,
-decode(frf.rule_type,'F',fffv.description,fmv.description) description
+decode(frf.rule_type,'F',fffv.description,fmv.description) description,
+xxen_util.user_name(frf.created_by) created_by,
+xxen_util.client_time(frf.creation_date) creation_date,
+xxen_util.user_name(frf.last_updated_by) last_updated_by,
+xxen_util.client_time(frf.last_update_date) last_update_date
 from
 fnd_application_vl fav,
 fnd_responsibility_vl frv,

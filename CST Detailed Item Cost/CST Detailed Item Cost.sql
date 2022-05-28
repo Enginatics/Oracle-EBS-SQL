@@ -17,7 +17,7 @@ msiv.concatenated_segments item,
 mck.concatenated_segments category,
 msiv.description item_description,
 misv.inventory_item_status_code_tl item_status,
-muot.unit_of_measure_tl primary_uom,
+muomv.unit_of_measure_tl primary_uom,
 cic.shrinkage_rate shrinkage,
 cic.lot_size lot_size,
 cdcv.operation_seq_num op_seq,
@@ -50,7 +50,7 @@ cst_item_costs cic,
 cst_cost_types cct,
 cst_detail_cost_view cdcv,
 mtl_system_items_vl msiv,
-mtl_units_of_measure_tl muot,
+mtl_units_of_measure_vl muomv,
 mtl_item_status_vl misv,
 mtl_category_sets_v mcsv,
 mtl_item_categories mic,
@@ -69,8 +69,7 @@ cic.inventory_item_id=cdcv.inventory_item_id and
 cic.organization_id=cdcv.organization_id and
 cic.inventory_item_id=msiv.inventory_item_id and
 ood.organization_id=msiv.organization_id and
-msiv.primary_uom_code=muot.uom_code(+) and
-muot.language(+)=userenv('lang') and
+msiv.primary_uom_code=muomv.uom_code(+) and
 msiv.inventory_item_status_code=misv.inventory_item_status_code(+) and
 mcsv.category_set_id=mic.category_set_id and
 msiv.inventory_item_id=mic.inventory_item_id and

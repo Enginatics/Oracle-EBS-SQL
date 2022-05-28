@@ -127,7 +127,8 @@ to_char(obtl.bill_instance_number)=rctla.interface_line_attribute3(+) and
 rctla.interface_line_context(+)='OKS CONTRACTS' and
 rctla.customer_trx_id=rcta.customer_trx_id(+) and
 rcta.cust_trx_type_id=rctta.cust_trx_type_id(+) and
-rcta.org_id=rctta.org_id(+)
+rcta.org_id=rctta.org_id(+) and
+okhab.authoring_org_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual)
 order by
 haouv.name,
 okhab.scs_code,

@@ -11,7 +11,8 @@
 -- Run Report: https://demo.enginatics.com/
 
 select
-haouv.name operating_unit,
+gl.name ledger,
+hou.name operating_unit,
 ooha.order_number,
 rtrim(oola.line_number||'.'||oola.shipment_number||'.'||oola.option_number||'.'||oola.component_number||'.'||oola.service_number,'.') line,
 xxen_util.meaning(obpha.billing_plan_status,'BILLING_PLAN_STATUS',660) billing_plan_status,
@@ -36,7 +37,8 @@ xxen_util.client_time(obpha.creation_date) creation_date,
 xxen_util.user_name(obpha.last_updated_by) last_updated_by,
 xxen_util.client_time(obpha.last_update_date) last_update_date
 from
-hr_all_organization_units_vl haouv,
+hr_operating_units hou,
+gl_ledgers gl,
 oe_order_headers_all ooha,
 oe_order_lines_all oola,
 oe_billing_plan_headers_all obpha,
@@ -44,12 +46,14 @@ oe_billing_plan_lines_all obpla,
 oe_order_lines_all oola2
 where
 1=1 and
-haouv.organization_id=ooha.org_id and
+hou.organization_id=ooha.org_id and
+gl.ledger_id=hou.set_of_books_id and
 ooha.header_id=obpha.source_order_header_id and
 oola.line_id=obpha.source_order_line_id and
 obpha.billing_plan_header_id=obpla.billing_plan_header_id and
 obpla.billed_line_id=oola2.line_id(+)
 order by
+gl.name,
 haouv.name,
 ooha.order_number,
 line,

@@ -10,6 +10,8 @@ Description: Payables Posted Payment Register
 
 This report provides equivalent functionality to the Oracle standard Payables Posted Payment Register report.
 
+For scheduling the report to run periodically, use the relative period from/to offset parameters. These are the relative period offsets to the current period, so when the current period changes, the included periods will also automatically be updated when the report is re-run.
+
 Templates
 - Pivot: Summary by Account
   Equivalent to standard report in Summarize Report = Yes Mode 
@@ -27,6 +29,7 @@ Source: Payables Posted Payment Register
 Short Name: APXPOPMT
 DB package: XLA_JELINES_RPT_PKG
 
+Also requires custom package XXEN_XLA package to be installed to initialize the hidden parameters removed from the report to simplify scheduling of the report.
 -- Excel Examle Output: https://www.enginatics.com/example/ap-payables-posted-payment-register/
 -- Library Link: https://www.enginatics.com/reports/ap-payables-posted-payment-register/
 -- Run Report: https://demo.enginatics.com/
@@ -168,6 +171,7 @@ from
    &p_main_col_start
    &p_uti_col
    &lp_template_columns
+   &lp_init_sql
  from
    (&lp_template_table
     &p_sla_col_1
@@ -212,6 +216,11 @@ from
    &p_le_from
    &p_other_from
  where
+   nvl(:p_operating_unit,'?') = nvl(:p_operating_unit,'?') and
+   nvl(:p_relative_period_from,'?') = nvl(:p_relative_period_from,'?') and
+   nvl(:p_relative_period_to,'?') = nvl(:p_relative_period_to,'?') and
+   nvl(:p_report_code,'?') = nvl(:p_report_code,'?') and
+   nvl(:p_bank_account_num,'?') = nvl(:p_bank_account_num,'?') and  
    1=1
    &p_le_join
    &p_other_join

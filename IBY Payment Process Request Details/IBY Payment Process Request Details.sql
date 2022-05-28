@@ -162,6 +162,7 @@ idpa.pay_proc_trxn_type_code=ittv.pay_proc_trxn_type_code(+) and
 idpa.payment_id=ipa.payment_id(+) and
 ipa.payment_instruction_id=ipia.payment_instruction_id(+) and
 decode(idpa.org_type,'OPERATING_UNIT',idpa.org_id)=hou.organization_id(+) and
+(hou.organization_id is null or hou.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual)) and
 hou.set_of_books_id=gl.ledger_id(+) and
 idpa.legal_entity_id=xep.legal_entity_id(+) and
 idpa.internal_bank_account_id=cba.bank_account_id(+) and

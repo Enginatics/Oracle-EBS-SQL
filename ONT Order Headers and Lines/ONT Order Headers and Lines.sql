@@ -117,7 +117,7 @@ x.line_id,
 x.line_number
 from
 (
-select distinct
+select /*+ push_pred(oolh) push_pred(wda) */ distinct
 haouv.name operating_unit,
 hp.party_name customer,
 hca.account_number,

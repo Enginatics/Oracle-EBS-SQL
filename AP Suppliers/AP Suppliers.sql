@@ -53,6 +53,9 @@ nvl(assa.pay_group_lookup_code,aps.pay_group_lookup_code) pay_group,
 xxen_util.meaning(nvl(assa.pay_date_basis_lookup_code,aps.pay_date_basis_lookup_code),'PAY DATE BASIS',201) pay_date_basis,
 atv0.name payment_terms,
 (select distinct listagg(xxen_util.meaning(ieppm.payment_method_code,'PAYMENT METHOD',200,'Y'),', ') within group (order by ieppm.primary_flag desc, ieppm.payment_method_code) over () payment_method from iby_ext_party_pmt_mthds ieppm where iepa0.ext_payee_id=ieppm.ext_pmt_party_id) payment_method,
+(select gcck.concatenated_segments from gl_code_combinations_kfv gcck where assa.accts_pay_code_combination_id=gcck.code_combination_id) liability_account,
+(select gcck.concatenated_segments from gl_code_combinations_kfv gcck where assa.prepay_code_combination_id=gcck.code_combination_id) prepayment_account,
+(select gcck.concatenated_segments from gl_code_combinations_kfv gcck where assa.future_dated_payment_ccid=gcck.code_combination_id) bills_payable_account,
 iepa0.remit_advice_email,
 ipiua0.order_of_preference priority,
 cbbv0.bank_name,
@@ -76,8 +79,10 @@ cbbv0.branch_number site_branch_number,
 cbbv0.bank_branch_type site_branch_type,
 ieba1.iban site_iban,
 ieba1.bank_account_num site_bank_account,
-ieba1.currency_code site_currency_code
+ieba1.currency_code site_currency_code,
 &contacts_columns
+aps.vendor_id,
+assa.vendor_site_id
 from
 hr_all_organization_units_vl haouv,
 ap_suppliers aps,

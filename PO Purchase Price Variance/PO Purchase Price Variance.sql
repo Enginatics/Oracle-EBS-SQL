@@ -99,7 +99,7 @@ and      mp.organization_id = rct.organization_id
 and      mp.process_enabled_flag = 'N' 
 and      rct.shipment_header_id     = rsh.shipment_header_id
 and      rct.po_line_id             = pol.po_line_id
-and      rct.po_header_id           = poh.po_header_id 
+and      rct.po_header_id           = poh.po_header_id
 and      rct.po_line_location_id    = pll.line_location_id
 and      rct.po_distribution_id = pod.po_distribution_id
 and      pod.line_location_id       = pll.line_location_id
@@ -118,8 +118,7 @@ hr_security.show_record('PER_ALL_PEOPLE_F',papf.person_id, papf.person_type_id,
 papf.employee_number,papf.applicant_number )) = 'TRUE' 
 and decode(hr_general.get_xbg_profile,'Y', papf.business_group_id ,
 hr_general.get_business_group_id) = papf.business_group_id 
-and      pod.deliver_to_location_id = hrl.location_id(+) 
-&p_vendor_name_where  
+and      pod.deliver_to_location_id = hrl.location_id(+)   
 and  exists (select 1 from mtl_transaction_accounts mta1 where mta1.transaction_id = mmt.transaction_id
                            and mta1.accounting_line_type = 6)
 union
@@ -202,7 +201,7 @@ where
 3=3
 and      rct.shipment_header_id     = rsh.shipment_header_id
 and      rct.po_line_id             = pol.po_line_id
-and      rct.po_header_id           = poh.po_header_id
+and      rct.po_header_id           = poh.po_header_id 
 and      rct.po_line_location_id    = pll.line_location_id
 and      pod.line_location_id       = pll.line_location_id
 and     pod.po_distribution_id   = rct.po_distribution_id
@@ -221,8 +220,7 @@ hr_security.show_record('PER_ALL_PEOPLE_F',papf.person_id, papf.person_type_id,
 papf.employee_number,papf.applicant_number )) = 'TRUE' 
 and decode(hr_general.get_xbg_profile,'Y', papf.business_group_id ,
 hr_general.get_business_group_id) = papf.business_group_id
-and      pod.deliver_to_location_id = hrl.location_id(+) 
-&p_vendor_name_where
+and      pod.deliver_to_location_id = hrl.location_id(+)
 &p_where_wip
 and mp.organization_id = rct.organization_id
 and mp.process_enabled_flag='N'
@@ -333,8 +331,7 @@ hr_security.show_record('PER_ALL_PEOPLE_F',papf.person_id, papf.person_type_id,
 papf.employee_number,papf.applicant_number )) = 'TRUE' 
 and decode(hr_general.get_xbg_profile,'Y', papf.business_group_id ,
 hr_general.get_business_group_id) = papf.business_group_id 
-and      pod.deliver_to_location_id = hrl.location_id(+) 
-&p_vendor_name_where  
+and      pod.deliver_to_location_id = hrl.location_id(+)  
 and       rct.organization_id = mp.organization_id
 and      mp.process_enabled_flag = 'Y'
 union all
@@ -432,16 +429,15 @@ gl.currency_code=fc.currency_code
  and      rct.po_distribution_id   = pod.po_distribution_id
  and      pll.po_release_id        = por.po_release_id(+)     
  and      pod.destination_type_code in ('INVENTORY')
- and      rct.destination_type_code <> 'RECEIVING' 
- and      pol.item_id              = msi.inventory_item_id(+)     
+ and      rct.destination_type_code <> 'RECEIVING'
+ and      pol.item_id              = msi.inventory_item_id(+)
  and      pol.inventory_organization_id = msi.organization_id(+)     
- and      pol.category_id          = mca.category_id           
- and rsh.vendor_id            = pov.vendor_id
+ and      pol.category_id          = mca.category_id
+ and      rsh.vendor_id            = pov.vendor_id
  and      papf.person_id           = poh.agent_id
  and trunc(sysdate) between papf.effective_start_date and papf.effective_end_date     
- and decode(hr_security.view_all ,'Y' , 'TRUE',      
+ and decode(hr_security.view_all ,'Y' , 'TRUE',
  hr_security.show_record('PER_ALL_PEOPLE_F',papf.person_id, papf.person_type_id,     
- papf.employee_number,papf.applicant_number )) = 'TRUE'      
+ papf.employee_number,papf.applicant_number )) = 'TRUE'
  and decode(hr_general.get_xbg_profile,'Y', papf.business_group_id ,     
- hr_general.get_business_group_id) = papf.business_group_id     
- &p_vendor_name_where
+ hr_general.get_business_group_id) = papf.business_group_id

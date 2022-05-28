@@ -149,7 +149,8 @@ ftt.language(+)=userenv('lang') and
 hcasa.cust_acct_site_id=hcsua.cust_acct_site_id(+) and
 hca.cust_account_id=hcp1.cust_account_id(+) and
 hcsua.site_use_id=hcp2.site_use_id(+) and
-hp.party_id=hcas.owner_table_id(+)
+hp.party_id=hcas.owner_table_id(+) and
+(hcasa.org_id is null or hcasa.org_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual))
 ) x,
 qp_list_headers_tl qlht,
 jtf_rs_salesreps jrs,

@@ -89,7 +89,7 @@ z.*
 from
 (
 select
-sum(length(xrrpv.value)+2) over (partition by xrrpv.run_id,xrrpv.parameter_id order by dbms_lob.substr(xrrpv.value) rows between unbounded preceding and current row) listagg_length,
+sum(length(xrrpv.value)+2) over (partition by xrrpv.run_id,xrrpv.parameter_id order by dbms_lob.substr(xrrpv.value,4000,1) rows between unbounded preceding and current row) listagg_length,
 xrrpv.*
 from
 xxen_report_run_param_values xrrpv

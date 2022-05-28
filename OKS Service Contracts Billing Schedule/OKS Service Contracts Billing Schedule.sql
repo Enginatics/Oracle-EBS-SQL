@@ -80,7 +80,8 @@ oklb2.lse_id=olsb2.id(+) and
 oklb1.id=oslb.cle_id and
 oslb.id=ole.rul_id and
 oklb1.inv_rule_id=rr.rule_id(+) and
-okslb1.acct_rule_id=rr2.rule_id(+)
+okslb1.acct_rule_id=rr2.rule_id(+) and
+okhab.authoring_org_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual)
 order by
 haouv.name,
 okhab.scs_code,

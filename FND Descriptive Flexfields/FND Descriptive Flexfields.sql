@@ -12,6 +12,7 @@
 
 select
 fav.application_name application,
+fdfcv.descriptive_flexfield_name name,
 fdfv.title,
 fdfv.application_table_name table_name,
 fdfcv.descriptive_flex_context_code context_code,

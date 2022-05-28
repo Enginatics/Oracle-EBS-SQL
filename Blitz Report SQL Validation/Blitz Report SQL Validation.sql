@@ -12,21 +12,27 @@ This can be useful after mass migrating reports from other tools such as Discove
 -- Run Report: https://demo.enginatics.com/
 
 select
-x.*
+y.*
+from
+(
+select
+x.*,
+nvl2(x.error_message,'Error','Valid') validation_result
 from
 (
 select
 xrv.report_name,
 xxen_report.validate_sql(xrv.sql_text_full,'parse') error_message,
-regexp_substr(xrv.description,'Report ID: (\d+)',1,1,null,1) rwb_report_id,
 xrv.category,
-xrv.sql_text
+xrv.sql_text,
+regexp_substr(xrv.description,'Report ID: (\d+)',1,1,null,1) orig_report_id
 from
 xxen_reports_v xrv
 where
 1=1
 ) x
+) y
 where
-x.error_message is not null
+2=2
 order by
-x.report_name
+y.report_name

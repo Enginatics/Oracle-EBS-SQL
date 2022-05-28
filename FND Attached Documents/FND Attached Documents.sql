@@ -118,7 +118,9 @@ fl.program_name,
 fd.request_id,
 fcpv.user_concurrent_program_name concurrent_program,
 xxen_util.client_time(fd.program_update_date) program_update_date,
-fad.entity_name
+fad.entity_name,
+fd.category_id,
+fd.datatype_id
 from
 fnd_documents fd,
 fnd_documents_tl fdt,

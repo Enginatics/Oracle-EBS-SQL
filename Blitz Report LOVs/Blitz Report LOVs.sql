@@ -19,7 +19,8 @@ xxen_util.user_name(xrplv.created_by) created_by,
 xxen_util.client_time(xrplv.creation_date) creation_date,
 xxen_util.user_name(xrplv.last_updated_by) last_updated_by,
 xxen_util.client_time(xrplv.last_update_date) last_update_date,
-xrplv.lov_query
+xrplv.lov_query,
+length(xrplv.lov_query) lov_query_size
 from
 xxen_report_parameter_lovs_v xrplv
 where

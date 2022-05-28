@@ -13,7 +13,9 @@ Parameter 'Show Active Only' restricts to folders which have been accessed by wo
 -- Run Report: https://demo.enginatics.com/
 
 select
-xxen_util.dis_business_area(eo.obj_id,'&eul') business_area,
+xxen_util.dis_business_area(eo.obj_id,:eul) business_area,
+eo.obj_id,
+&exp_id
 eo.obj_name folder,
 eo.obj_developer_key folder_identifier,
 xxen_util.dis_folder_type(eo.obj_type) folder_type,
@@ -24,7 +26,6 @@ eqs.last_accessed,
 &sql_text_columns
 eo.obj_description folder_description,
 &item_columns
-eo.obj_id,
 xxen_util.dis_user_name(eo.obj_created_by) created_by,
 xxen_util.client_time(eo.obj_created_date) creation_date,
 xxen_util.dis_user_name(eo.obj_updated_by) last_updated_by,
@@ -86,5 +87,5 @@ ee2.it_obj_id=eo2.obj_id(+) and
 eo.obj_id=eqs.obj_id(+)
 order by
 eo.obj_name,
-decode(ee.exp_type,'FIL',2,1),
+decode(ee.exp_type,'CO',1,'CI',2,'FIL',3,'JP',4),
 ee.exp_sequence

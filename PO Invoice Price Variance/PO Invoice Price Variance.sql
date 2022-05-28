@@ -91,6 +91,7 @@ rcv_transactions rct
 where
 1=1 and
 gl.period_set_name=gp.period_set_name and
+gl.accounted_period_type=gp.period_type and
 gl.currency_code=fc.currency_code and
 gl.ledger_id=pla.set_of_books_id and
 pla.inventory_organization_id=mp.organization_id and

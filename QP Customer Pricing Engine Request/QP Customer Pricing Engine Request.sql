@@ -208,7 +208,7 @@ select
    where  qslhv.list_header_id = hcsua2.price_list_id
   )  bill_to_price_list,
 --
-hp.party_name        || ' - ' ||
+  hp.party_name        || ' - ' ||
   hca.account_number ||
   nvl2(nvl(hcsua1.location,hcsua2.location),
        ' - ' || nvl(hcsua1.location || ' ' || hl1.address1 || ' ' || hl1.address2 || ' ' || hl1.address3,
@@ -414,6 +414,10 @@ and qll3.list_header_id       (+) = xxqpd.created_from_list_header_id
 and qll3.list_line_id         (+) = xxqpd.created_from_list_line_id
 and qpbv3.list_header_id      (+) = xxqpd.created_from_list_header_id
 and qpbv3.list_line_id        (+) = xxqpd.created_from_list_line_id
+and (   hcsua1.org_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual)
+     or hcsua2.org_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual)
+     or (hcsua1.org_id is null and hcsua2.org_id is null)
+    )
 ) x
 where
 1=1

@@ -35,7 +35,7 @@ eap.gp_app_id
 )
 ,eap.ap_type) name,
 nvl(eb.ba_developer_key,ed.doc_developer_key) identifier,
-xxen_util.dis_user_name(ed.doc_eu_id,'&eul') owner,
+xxen_util.dis_user_name(ed.doc_eu_id,:eul) owner,
 nvl(eqs1.access_count,eqs2.access_count) access_count,
 nvl(eqs1.last_accessed,eqs2.last_accessed) last_accessed,
 xxen_util.meaning(decode(eap.ap_priv_level,1,'Y'),'YES_NO',0) allow_administration,
@@ -45,10 +45,10 @@ xxen_util.dis_user_name(eap.ap_updated_by) last_updated_by,
 eap.ap_updated_date last_update_date
 from
 (
-select xxen_util.dis_user_type(eap.ap_eu_id,'&eul') user_type, xxen_util.dis_user(eap.ap_eu_id,'&eul') username, eap.* from &eul.eul5_access_privs eap union all
+select xxen_util.dis_user_type(eap.ap_eu_id,:eul) user_type, xxen_util.dis_user(eap.ap_eu_id,:eul) username, eap.* from &eul.eul5_access_privs eap union all
 select
-xxen_util.dis_user_type(ed.doc_eu_id,'&eul') user_type,
-xxen_util.dis_user(ed.doc_eu_id,'&eul') username,
+xxen_util.dis_user_type(ed.doc_eu_id,:eul) user_type,
+xxen_util.dis_user(ed.doc_eu_id,:eul) username,
 null ap_id,
 'Workbook Owner' ap_type,
 null ap_eu_id,

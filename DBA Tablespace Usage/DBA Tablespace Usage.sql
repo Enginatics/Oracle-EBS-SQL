@@ -5,7 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: DBA Tablespace Usage
--- Description: Tablespace usage including currently active undo and temp tablepace usage
+-- Description: Tablespace usage including currently active undo and temp tablepace usage in Megabytes
 -- Excel Examle Output: https://www.enginatics.com/example/dba-tablespace-usage/
 -- Library Link: https://www.enginatics.com/reports/dba-tablespace-usage/
 -- Run Report: https://demo.enginatics.com/
