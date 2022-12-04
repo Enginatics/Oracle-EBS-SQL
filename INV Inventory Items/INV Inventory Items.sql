@@ -17,7 +17,7 @@ xxen_util.meaning(msiv.item_type,'ITEM_TYPE',3) user_item_type,
 msiv.concatenated_segments item,
 msiv.description,
 msiv.long_description,
-&columns
+&category_columns
 misv.inventory_item_status_code_tl item_status,
 muot.unit_of_measure_tl primary_uom,
 msiv.unit_weight,
@@ -120,7 +120,8 @@ mtl_item_categories mic,
 mtl_category_sets_v mcsv,
 mtl_categories_kfv mck
 where
-'&enable_categories'='Y' and
+mcsv.category_set_name=:category_set_name and
+mck.concatenated_segments=nvl(:category,mck.concatenated_segments) and
 2=2 and
 mic.category_set_id=mcsv.category_set_id and
 mic.category_id=mck.category_id

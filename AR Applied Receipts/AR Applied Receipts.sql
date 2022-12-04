@@ -47,27 +47,27 @@ select
              case
              when sum(decode(araa2.status,'UNID',araa2.amount_applied,0)) != 0
              then xxen_util.meaning('UNID','CHECK_STATUS',222)
-             when sum(decode(status,'UNAPP',amount_applied,0)) != 0
+             when sum(decode(araa2.status,'UNAPP',araa2.amount_applied,0)) != 0
              then xxen_util.meaning('UNAPP','CHECK_STATUS',222)
              else xxen_util.meaning('APP','CHECK_STATUS',222)
              end
             from
               ar_receivable_apps_all_mrc_v araa2
             where
-              cash_receipt_id = acra.cash_receipt_id
+              araa2.cash_receipt_id = acra.cash_receipt_id
            )
       else (select
              case
              when sum(decode(araa2.status,'UNID',araa2.amount_applied,0)) != 0
              then xxen_util.meaning('UNID','CHECK_STATUS',222)
-             when sum(decode(status,'UNAPP',amount_applied,0)) != 0
+             when sum(decode(araa2.status,'UNAPP',araa2.amount_applied,0)) != 0
              then xxen_util.meaning('UNAPP','CHECK_STATUS',222)
              else xxen_util.meaning('APP','CHECK_STATUS',222)
              end
             from
               ar_receivable_applications_all araa2
             where
-              cash_receipt_id = acra.cash_receipt_id
+              araa2.cash_receipt_id = acra.cash_receipt_id
            )
       end
  else xxen_util.meaning(acra.status,'CHECK_STATUS',222)
@@ -104,7 +104,9 @@ select
  fds.name  doc_sequence_name,
  acra.doc_sequence_value,
  acra.creation_date  receipt_creation_date,
+ xxen_util.user_name(acra.created_by) receipt_created_by,
  acra.last_update_date receipt_last_updated_date,
+ xxen_util.user_name(acra.last_updated_by) receipt_last_updated_by,
  acra.deposit_date,
  acra.anticipated_clearing_date,
  acra.misc_payment_source,
@@ -124,6 +126,7 @@ select
  cba.bank_account_name_alt,
  cba.bank_account_num bank_account_number,
  cba.currency_code bank_account_currency,
+ cba.description bank_account_description,
  -- Debit GL Account Info
  fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_seg', 'SQLGL', 'GL#', gcc2.chart_of_accounts_id, NULL, gcc2.code_combination_id, 'ALL', 'Y', 'VALUE') debit_account,
  fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_seg', 'SQLGL', 'GL#', gcc2.chart_of_accounts_id, NULL, gcc2.code_combination_id, 'ALL', 'Y', 'DESCRIPTION') debit_account_desc,

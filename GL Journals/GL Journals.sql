@@ -18,13 +18,13 @@ gl.currency_code ledger_currency,
 -- period
 gjh.period_name,
 gjh.default_effective_date effective_date,
-gjh.posted_date,
+xxen_util.client_time(gjh.posted_date) posted_date,
 --batch
 gjb.name batch_name,
 gjb.je_batch_id,
 xxen_util.meaning(substr(gjb.status,1,1),'MJE_BATCH_STATUS',101) batch_status,
-gjb.posted_date batch_posted_date,
-(select fu.user_name from fnd_user fu where fu.user_id = gjb.posted_by) batch_posted_by,
+xxen_util.client_time(gjb.posted_date) batch_posted_date,
+xxen_util.user_name(gjb.posted_by) batch_posted_by,
 xxen_util.meaning(gjb.budgetary_control_status,'JE_BATCH_BC_STATUS',101) batch_funds_status,
 xxen_util.meaning(gjb.approval_status_code,'JE_BATCH_APPROVAL_STATUS',101) approval_status,
 (select ppf.full_name from per_people_f ppf where gjb.approver_employee_id=ppf.person_id and gjb.creation_date between ppf.effective_start_date and ppf.effective_end_date) batch_approver,
@@ -38,8 +38,8 @@ gjh.external_reference,
 (select gjcv.user_je_category_name from gl_je_categories_vl gjcv where gjh.je_category=gjcv.je_category_name) category_name,
 xxen_util.meaning(gjh.status,'BATCH_STATUS',101) journal_status,
 xxen_util.description(gjh.actual_flag,'BATCH_TYPE',101) balance_type,
-(select get.encumbrance_type from gl_encumbrance_types get where get.encumbrance_type_id = gjh.encumbrance_type_id) encumbrance_type,
 (select gbv.budget_name from gl_budget_versions gbv where gjh.budget_version_id=gbv.budget_version_id) budget_name,
+(select get.encumbrance_type from gl_encumbrance_types get where gjh.encumbrance_type_id=get.encumbrance_type_id) encumbrance_type,
 xxen_util.meaning(gjh.tax_status_code,'TAX_STATUS',101) tax_status_code,
 xxen_util.meaning(gjb.average_journal_flag,'AB_JOURNAL_TYPE',101) journal_type,
 gjh.originating_bal_seg_value clearing_company,
@@ -53,37 +53,36 @@ nvl(gjh.running_total_accounted_dr,0)-nvl(gjh.running_total_accounted_cr,0) jour
 gjh.currency_conversion_date conversion_date,
 (select gdct.user_conversion_type from gl_daily_conversion_types gdct where gjh.currency_conversion_type=gdct.conversion_type) conversion_type,
 gjh.currency_conversion_rate conversion_rate,
---
 gjh.accrual_rev_effective_date reversal_effective_date,
 gjh.accrual_rev_period_name reversal_period,
 xxen_util.meaning(decode(gjh.accrual_rev_change_sign_flag,'N','S','Y','C'),'REVERSAL_OPTION_CODE',101) reversal_method,
 xxen_util.meaning(gjh.accrual_rev_status,'JE_REVERSAL_STATUS',101) reversal_status,
-(select gjh2.name from gl_je_headers gjh2 where gjh2.je_header_id = gjh.accrual_rev_je_header_id) reversal_journal_name,
+(select gjh2.name from gl_je_headers gjh2 where gjh.accrual_rev_je_header_id=gjh2.je_header_id) reversal_journal_name,
 -- journal lines
-gjl.je_line_num  line_number,
-gjl.description  line_description,
+gjl.je_line_num line_number,
+gjl.description line_description,
 xxen_util.meaning(gjl.status,'BATCH_STATUS',101) line_status,
 gjl.effective_date line_effective_date,
-gjl.entered_dr   entered_dr,
-gjl.entered_cr   entered_cr,
+gjl.entered_dr,
+gjl.entered_cr,
 nvl(gjl.entered_dr,0)-nvl(gjl.entered_cr,0) entered_amount,
-gjl.accounted_dr accounted_dr,
-gjl.accounted_cr accounted_cr,
+gjl.accounted_dr,
+gjl.accounted_cr,
 nvl(gjl.accounted_dr,0)-nvl(gjl.accounted_cr,0) accounted_amount,
-case when (select gsu.reconciliation_upg_flag from gl_system_usages gsu) = 'Y'
-then (select gjlr.jgzz_recon_ref from gl_je_lines_recon gjlr where gjlr.je_header_id=gjl.je_header_id and gjlr.je_line_num=gjl.je_line_num)
-else nvl((select gjlr.jgzz_recon_ref from gl_je_lines_recon gjlr where gjlr.je_header_id=gjl.je_header_id and gjlr.je_line_num=gjl.je_line_num),gjl.jgzz_recon_ref_11i)
+case when (select gsu.reconciliation_upg_flag from gl_system_usages gsu)='Y'
+then (select gjlr.jgzz_recon_ref from gl_je_lines_recon gjlr where gjl.je_header_id=gjlr.je_header_id and gjl.je_line_num=gjlr.je_line_num)
+else nvl((select gjlr.jgzz_recon_ref from gl_je_lines_recon gjlr where gjl.je_header_id=gjlr.je_header_id and gjl.je_line_num=gjlr.je_line_num),gjl.jgzz_recon_ref_11i)
 end line_reconcilation_reference,
-case when (select gsu.reconciliation_upg_flag from gl_system_usages gsu) = 'Y'
-then (select gjlr.jgzz_recon_date from gl_je_lines_recon gjlr where gjlr.je_header_id=gjl.je_header_id and gjlr.je_line_num=gjl.je_line_num)
-else nvl((select gjlr.jgzz_recon_date from gl_je_lines_recon gjlr where gjlr.je_header_id= gjl.je_header_id and gjlr.je_line_num=gjl.je_line_num),gjl.jgzz_recon_date_11i)
+case when (select gsu.reconciliation_upg_flag from gl_system_usages gsu)='Y'
+then (select gjlr.jgzz_recon_date from gl_je_lines_recon gjlr where gjl.je_header_id=gjlr.je_header_id and gjl.je_line_num=gjlr.je_line_num)
+else nvl((select gjlr.jgzz_recon_date from gl_je_lines_recon gjlr where gjl.je_header_id=gjlr.je_header_id and gjl.je_line_num=gjlr.je_line_num),gjl.jgzz_recon_date_11i)
 end line_reconcilation_date,
 case
-when gjl.tax_type_code = 'I'
-then nvl((select zrb.tax_rate_code from zx_rates_b zrb where zrb.source_id = gjl.tax_code_id)
-        ,(select zrb.tax_rate_code from zx_rates_b zrb where zrb.tax_rate_id = gjl.tax_code_id))
+when gjl.tax_type_code='I'
+then nvl((select zrb.tax_rate_code from zx_rates_b zrb where gjl.tax_code_id=zrb.source_id)
+        ,(select zrb.tax_rate_code from zx_rates_b zrb where gjl.tax_code_id=zrb.tax_rate_id))
 when gjl.tax_type_code in ('O','T')
-then (select zrb.tax_rate_code from zx_rates_b zrb where zrb.tax_rate_id = gjl.tax_code_id)
+then (select zrb.tax_rate_code from zx_rates_b zrb where gjl.tax_code_id=zrb.tax_rate_id)
 else null
 end line_tax_rate_code,
 -- accounts
@@ -122,7 +121,6 @@ gl_periods gp,
 gl_je_batches gjb,
 gl_je_headers gjh,
 gl_je_lines gjl,
---
 (select distinct fad.pk1_value,&fad_document_id count(*) over (partition by fad.pk1_value) count from fnd_attached_documents fad where fad.entity_name='GL_JE_BATCHES') fad1,
 (select distinct fad.pk2_value,&fad_document_id count(*) over (partition by fad.pk2_value) count from fnd_attached_documents fad where fad.entity_name='GL_JE_HEADERS') fad2,
 fnd_documents fd1,
@@ -146,7 +144,6 @@ gp.period_name=gjh.period_name and
 gl.ledger_id=gjh.ledger_id and
 gjb.je_batch_id=gjh.je_batch_id and
 gjh.je_header_id=gjl.je_header_id(+) and
---
 to_char(gjb.je_batch_id)=fad1.pk1_value(+) and
 to_char(gjh.je_header_id)=fad2.pk2_value(+) and
 fad1.document_id=fd1.document_id(+) and

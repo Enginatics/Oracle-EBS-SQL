@@ -53,6 +53,7 @@ xal.currency_conversion_date,
 xal.currency_conversion_rate,
 xxen_util.description(gjh.actual_flag,'BATCH_TYPE',101) balance_type,
 (select gbv.budget_name from gl_budget_versions gbv where gjh.budget_version_id=gbv.budget_version_id) budget_name,
+(select get.encumbrance_type from gl_encumbrance_types get where get.encumbrance_type_id = gjh.encumbrance_type_id) encumbrance_type,
 gjh.currency_conversion_date conversion_date,
 gjh.currency_conversion_type conversion_type,
 gjh.currency_conversion_rate conversion_rate,
@@ -70,7 +71,26 @@ aia.description description,
 (select pha.segment1 from po_headers_all pha where nvl(aia.quick_po_header_id,rt.po_header_id)=pha.po_header_id) purchase_order,
 --AR
 rt.quantity po_quantity,
-(select aps.vendor_name from ap_suppliers aps where coalesce(aia.vendor_id,aca.vendor_id,rt.vendor_id)=aps.vendor_id) vendor_or_customer,
+coalesce(
+(select aps.vendor_name from ap_suppliers aps where coalesce(decode(xal.party_type_code,'S',xal.party_id,null),aia.vendor_id,aca.vendor_id,rt.vendor_id)=aps.vendor_id),
+(select hp.party_name from hz_cust_accounts hca, hz_parties hp where decode(xal.party_type_code,'C',xal.party_id,null)=hca.cust_account_id and hca.party_id=hp.party_id)
+) vendor_or_customer,
+-- AP/AR MDM Party/Site Identifier
+case when xal.party_type_code is not null
+then xal.party_type_code || '-' || nvl(to_char(xal.party_id),'UNKNOWN') || '-' || nvl(to_char(xal.party_site_id),'0')
+else null
+end mdm_party_id,
+case xal.party_type_code
+when 'C'
+then xal.party_type_code || '-' ||
+     nvl((select hp.party_name from hz_parties hp, hz_cust_accounts hca where hp.party_id=hca.party_id and hca.cust_account_id=xal.party_id),'UNKNOWN') || '-' ||
+     nvl((select hcsua.location from hz_cust_site_uses_all hcsua where hcsua.site_use_id = xal.party_site_id),'0')
+when 'S'
+then xal.party_type_code || '-' ||
+     nvl((select aps.vendor_name from ap_suppliers aps where aps.vendor_id=xal.party_id),'UNKNOWN') || '-' ||
+     nvl((select apssa.vendor_site_code from ap_supplier_sites_all apssa where apssa.vendor_site_id = xal.party_site_id),'0')
+else null
+end mdm_party_desc,
 --Projects
 coalesce(
 (select ppa.segment1 from pa_projects_all ppa where aida.project_id=ppa.project_id),
@@ -111,7 +131,7 @@ gl_periods gp,
 gl_je_batches gjb,
 gl_je_headers gjh,
 gl_je_lines gjl,
-(select gir.* from gl_import_references gir where gir.gl_sl_link_table='XLAJEL' and gir.gl_sl_link_id is not null) gir,
+(select gir.* from gl_import_references gir where gir.gl_sl_link_table in ('XLAJEL','APECL') and gir.gl_sl_link_id is not null) gir,
 xla_ae_lines xal,
 xla_ae_headers xah,
 xla_events xe,

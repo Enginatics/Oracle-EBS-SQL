@@ -9,6 +9,40 @@
 Application: Bills of Material
 Source: COGS Revenue Matching Report
 Short Name: CSTRCMRX
+
+The COGS/Revenue Matching Report displays earned and unearned (deferred) revenue, and cost of goods sold amounts for sales orders issues specified in the report's run-time parameters.
+The report displays shipped sales order and associated sales order lines and shows the accounts where the earned and deferred COGS were charged.
+
+The report is based on the Revenue and COGS Matching functionality delivered in Oracle EBS R12. Please refer to the following documentation regarding this functionality:
+- Oracle Cost Management User Guide, Section: Revenue and COGS Matching
+- MOS Document 1060202.1 Understanding COGS and DCOGS Recognition Accounting
+
+Revenue / COGS Recognition Process Flow
+=======================================
+When you ship confirm one or more order lines in Oracle Order Management and then run the applicable Cost Management cost and accounting processes, the cost of goods sold associated with the sales order line is immediately debited to a Deferred COGS account pending the invoicing and recognition of the sales order revenue in Oracle Receivables.
+
+When Oracle Receivables recognizes all or part of the sales revenue associated with a sales order line, you run a cost process that calculates the percentage of total billed revenue recognized. Oracle Inventory then creates a cost recognition transaction that adjusts the Deferred COGS and regular COGS amount for the order line. The proportion of total shipment cost that is recognized as COGS will always match the proportion of total billable quantity that is recognized as revenue.
+
+Revenue / COGS Recognition Concurrent Processes
+================================================
+It is recommended the Revenue and COGS concurrent processes be run in the following order:
+
+Run the AR Concurrent Processes first:
+
+- Autoinvoice Master Program.  Run autoinvoice to generate the invoice transactions.
+- Revenue Recognition. Run the Revenue Recognition Master Program to generate the AR revenue recognition
+
+Then the COGS Concurrent Processes:
+
+- Record Order Management Transactions
+ The Record Order Management Transactions concurrent process picks up and costs all uncosted sales order issue and RMA return transactions and creates a record for each new order line in the costing COGS recognition matching table. This process is not for Perpetual Discrete Costing (Standard, Average, FIFO). In Discrete Costing, the cost processor selects and costs the uncosted sales order issues and inserts them into the COGS matching table
+
+- Collect Revenue Recognition Information
+ The Collect Revenue Recognition Information concurrent process calls an Oracle Receivables API to retrieve the latest revenue recognition percentage of all invoiced sales order lines in Oracle receivables for a specific ledger and with activity dates within a user-specified date range. This process must be run before the Generate COGS recognition Event concurrent process.
+
+- Generate COGS Recognition Events
+ The Generate COGS Recognition Events concurrent request compares the COGS recognition percentage for each sales order line and accounting period combination to the current earned revenue percentage. When the compared percentages are different, the process raises a COGS recognition event and creates a COGS recognition transaction in Oracle Inventory that adjusts the ratio of earned and deferred COGS to match that of earned and deferred revenue. You must run this process after completion of the Collect Revenue Recognition Information concurrent process.
+
 -- Excel Examle Output: https://www.enginatics.com/example/cst-cogs-revenue-matching/
 -- Library Link: https://www.enginatics.com/reports/cst-cogs-revenue-matching/
 -- Run Report: https://demo.enginatics.com/
@@ -23,29 +57,40 @@ perpetual_qry_1 as
     select /*+ leading(haou,crcml,oola,ooha,cce,mta) use_nl(haou,crcml, oola, ooha) index(crcml cst_rev_cogs_match_lines_n2) */
     crcml.operating_unit_id,
     haou.name operating_unit,
+    gl.name ledger,
+    gl.currency_code currency,
     ooha.order_number,
     ooha.booked_date,
     ooha.transactional_curr_code,
     oola.line_number,
     oola.sold_to_org_id,
     oola.item_type_code,
+    oola.order_quantity_uom uom,
+    crcml.sales_order_issue_date,
     crcml.revenue_om_line_id,
     crcml.organization_id,
     crcml.deferred_cogs_acct_id,
     crcml.cogs_om_line_id,
     crcml.inventory_item_id,
     crcml.unit_cost,
+    crcml.unit_material_cost,
+    crcml.unit_resource_cost,
+    crcml.unit_overhead_cost,        
     sum(decode(mta.accounting_line_type, 35, mta.base_transaction_value,0)) cogs_balance,
-    last_value(sum(decode(mta.accounting_line_type, 35, mta.base_transaction_value,0)))
+    last_value(sum(decode(mta.accounting_line_type, 35, mta.base_transaction_value,0)))  -- CST_ACCOUNTING_LINE_TYPE 35 = Cost of Goods Sold
     over ( partition by
            crcml.operating_unit_id,
            haou.name,
+           gl.name,
+           gl.currency_code,
            ooha.order_number,
            ooha.booked_date,
            ooha.transactional_curr_code,
            oola.line_number,
            oola.sold_to_org_id,
            oola.item_type_code,
+           oola.order_quantity_uom,
+           crcml.sales_order_issue_date,
            crcml.revenue_om_line_id,
            crcml.organization_id,
            crcml.deferred_cogs_acct_id,
@@ -53,28 +98,36 @@ perpetual_qry_1 as
            order by
            crcml.operating_unit_id,
            haou.name,
+           gl.name,
+           gl.currency_code,
            ooha.order_number,
            ooha.booked_date,
            ooha.transactional_curr_code,
            oola.line_number,
            oola.sold_to_org_id,
            oola.item_type_code,
+           oola.order_quantity_uom,
+           crcml.sales_order_issue_date,
            crcml.revenue_om_line_id,
            crcml.organization_id,
            crcml.deferred_cogs_acct_id,
            crcml.cogs_om_line_id
          ) total_cogs_balance,
     sum(decode(mta.accounting_line_type, 36, mta.base_transaction_value,0)) def_cogs_balance,
-    last_value(sum(decode(mta.accounting_line_type, 36, mta.base_transaction_value,0)))
+    last_value(sum(decode(mta.accounting_line_type, 36, mta.base_transaction_value,0))) -- CST_ACCOUNTING_LINE_TYPE 36 = Deferred Cost of Goods Sold
     over( partition by
           crcml.operating_unit_id,
           haou.name,
+          gl.name,
+          gl.currency_code,
           ooha.order_number,
           ooha.booked_date,
           ooha.transactional_curr_code,
           oola.line_number,
           oola.sold_to_org_id,
           oola.item_type_code,
+          oola.order_quantity_uom,
+          crcml.sales_order_issue_date,
           crcml.revenue_om_line_id,
           crcml.organization_id,
           crcml.deferred_cogs_acct_id,
@@ -82,90 +135,108 @@ perpetual_qry_1 as
           order by
           crcml.operating_unit_id,
           haou.name,
+          gl.name,
+          gl.currency_code,
           ooha.order_number,
           ooha.booked_date,
           ooha.transactional_curr_code,
           oola.line_number,
           oola.sold_to_org_id,
           oola.item_type_code,
+          oola.order_quantity_uom,
+          crcml.sales_order_issue_date,
           crcml.revenue_om_line_id,
           crcml.organization_id,
           crcml.deferred_cogs_acct_id,
           crcml.cogs_om_line_id
-        ) total_def_cogs_balance,
-    grouping(crcml.cogs_om_line_id) flg_cogs_om_line_id,
-    grouping(crcml.inventory_item_id) flg_inv_item_id,
-    grouping(crcml.unit_cost) flg_unit_cost
+        ) total_def_cogs_balance
     from
     cst_revenue_cogs_match_lines crcml,
     cst_cogs_events cce,
     oe_order_lines_all oola,
     oe_order_headers_all ooha,
     mtl_transaction_accounts mta,
+    gl_ledgers gl,
     hr_all_organization_units haou
     where
     1=1 and
     crcml.ledger_id = :p_ledger_id and
     crcml.pac_cost_type_id is null and
-    cce.event_date <= :p_gps_end_dt - (inv_le_timezone_pub.get_le_day_time_for_ou(sysdate,crcml.operating_unit_id)-sysdate) and
+    cce.event_date <= nvl2(:p_gps_end_dt,:p_gps_end_dt - (inv_le_timezone_pub.get_le_day_time_for_ou(sysdate,crcml.operating_unit_id)-sysdate),cce.event_date) and
     cce.cogs_om_line_id = crcml.cogs_om_line_id and
+    gl.ledger_id = crcml.ledger_id and
     oola.header_id = ooha.header_id and
     oola.line_id = crcml.cogs_om_line_id and
     mta.transaction_id (+) = cce.mmt_transaction_id and
     haou.organization_id (+) = crcml.operating_unit_id
     group by
-    rollup((crcml.operating_unit_id,
-            haou.name,
-            ooha.order_number,
-            ooha.booked_date,
-            ooha.transactional_curr_code,
-            oola.line_number,
-            oola.sold_to_org_id,
-            oola.item_type_code,
-            crcml.revenue_om_line_id,
-            crcml.organization_id,
-            crcml.deferred_cogs_acct_id,
-            crcml.cogs_om_line_id
-           ),
-           (crcml.cogs_om_line_id,
-            crcml.inventory_item_id,
-            crcml.unit_cost
-           )
-          )
+    crcml.operating_unit_id,
+    haou.name,
+    gl.name,
+    gl.currency_code,
+    ooha.order_number,
+    ooha.booked_date,
+    ooha.transactional_curr_code,
+    oola.line_number,
+    oola.sold_to_org_id,
+    oola.item_type_code,
+    oola.order_quantity_uom,
+    crcml.sales_order_issue_date,
+    crcml.revenue_om_line_id,
+    crcml.organization_id,
+    crcml.deferred_cogs_acct_id,
+    crcml.cogs_om_line_id,
+    crcml.inventory_item_id,
+    crcml.unit_cost,
+    crcml.unit_material_cost,
+    crcml.unit_resource_cost,
+    crcml.unit_overhead_cost  
   ) x
-  where
-  x.flg_cogs_om_line_id <>1 and
-  x.flg_inv_item_id <> 1 and
-  x.flg_unit_cost <> 1
 ),
 perpetual_qry_2 as
 (
   select /*+ index(rctla ra_customer_trx_lines_n9) leading (pq1, rctla) use_nl(pq1, rctla) */
   pq1.operating_unit_id,
   pq1.operating_unit,
+  pq1.ledger,
+  pq1.currency ledger_currency,
   pq1.order_number order_number,
   pq1.booked_date order_date,
   substrb(hp.party_name,1,50) customer_name,
-  pq1.transactional_curr_code currency,
+  pq1.transactional_curr_code order_currency,
   pq1.line_number sales_order_line,
+  pq1.sales_order_issue_date,
   pq1.revenue_om_line_id sales_order_line_id,
   pq1.item_type_code item_type_code,
-  msik.concatenated_segments item,
+  msiv.concatenated_segments item,
+  msiv.description item_description,
+  msiv.inventory_item_id,
+  mp.organization_code,
+  mp.organization_id,
   rctla.line_number invoice_line,
+  rctla.unit_selling_price,
   rctla.customer_trx_line_id,
   rctla.customer_trx_id,
   sum(cce.event_quantity) total_line_quantity,
+  decode(sum(cce.event_quantity),0,0,sum(cce.event_quantity * crcml.unit_cost) / sum(cce.event_quantity)) item_cost,
+  decode(sum(cce.event_quantity),0,0,sum(cce.event_quantity * crcml.unit_material_cost) / sum(cce.event_quantity)) material_cost,
+  decode(sum(cce.event_quantity),0,0,sum(cce.event_quantity * crcml.unit_resource_cost) / sum(cce.event_quantity)) resource_cost,
+  decode(sum(cce.event_quantity),0,0,sum(cce.event_quantity * crcml.unit_overhead_cost) / sum(cce.event_quantity)) overhead_cost,
+  pq1.uom,
   pq1.cogs_balance earned_cogs,
   pq1.total_cogs_balance total_earned_cogs,
   pq1.def_cogs_balance deferred_cogs,
   pq1.total_def_cogs_balance total_deferred_cogs,
   gcck_cogs.concatenated_segments cogs_account,
   gcck_dcogs.concatenated_segments deferred_cogs_account,
-  pq1.cogs_om_line_id cogs_om_line_id
+  pq1.cogs_om_line_id cogs_om_line_id,
+  gcck_cogs.code_combination_id cogs_account_ccid,
+  gcck_cogs.chart_of_accounts_id
   from
   perpetual_qry_1 pq1,
   cst_revenue_cogs_match_lines crcml,
-  mtl_system_items_kfv msik,
+  mtl_system_items_vl msiv,
+  mtl_parameters mp,
   gl_code_combinations_kfv gcck_cogs,
   gl_code_combinations_kfv gcck_dcogs,
   ra_customer_trx_lines_all rctla,
@@ -173,8 +244,9 @@ perpetual_qry_2 as
   hz_parties hp,
   cst_cogs_events cce
   where
-  msik.inventory_item_id = pq1.inventory_item_id and
-  msik.organization_id = pq1.organization_id and
+  msiv.inventory_item_id = pq1.inventory_item_id and
+  msiv.organization_id = pq1.organization_id and
+  mp.organization_id = pq1.organization_id and
   gcck_cogs.code_combination_id = crcml.cogs_acct_id and
   gcck_dcogs.code_combination_id = pq1.deferred_cogs_acct_id and
   rctla.line_type (+) = 'LINE' and
@@ -185,22 +257,31 @@ perpetual_qry_2 as
   hca.party_id = hp.party_id and
   cce.cogs_om_line_id = pq1.cogs_om_line_id and
   cce.event_type in (1,2) and
-  cce.event_date <= :p_gps_end_dt - (inv_le_timezone_pub.get_le_day_time_for_ou(sysdate,pq1.operating_unit_id)-sysdate) and
+  cce.event_date <= nvl2(:p_gps_end_dt,:p_gps_end_dt - (inv_le_timezone_pub.get_le_day_time_for_ou(sysdate,pq1.operating_unit_id)-sysdate),cce.event_date) and
   crcml.cogs_om_line_id = pq1.cogs_om_line_id and
   crcml.pac_cost_type_id is null and
   ( :p_all_lines = 'Y' or pq1.def_cogs_balance not between -1*:p_amt_tolerance and :p_amt_tolerance)
   group by
   pq1.operating_unit_id,
   pq1.operating_unit,
+  pq1.ledger,
+  pq1.currency,
   pq1.order_number,
   pq1.booked_date,
   substrb(hp.party_name,1,50),
   pq1.transactional_curr_code,
   pq1.line_number,
+  pq1.sales_order_issue_date,
   pq1.revenue_om_line_id,
   pq1.item_type_code,
-  msik.concatenated_segments,
+  pq1.uom,
+  msiv.concatenated_segments,
+  msiv.description,
+  msiv.inventory_item_id,
+  mp.organization_code,
+  mp.organization_id,
   rctla.line_number,
+  rctla.unit_selling_price,
   rctla.customer_trx_line_id,
   rctla.customer_trx_id,
   pq1.cogs_balance,
@@ -209,25 +290,40 @@ perpetual_qry_2 as
   pq1.total_def_cogs_balance,
   gcck_cogs.concatenated_segments,
   gcck_dcogs.concatenated_segments,
-  pq1.cogs_om_line_id
+  pq1.cogs_om_line_id,
+  gcck_cogs.code_combination_id,
+  gcck_cogs.chart_of_accounts_id
 ),
 perpetual_qry as
 (
   select
   pq2.operating_unit_id,
   pq2.operating_unit,
+  pq2.ledger,
+  pq2.ledger_currency,
   pq2.order_number,
   pq2.order_date,
   pq2.customer_name,
-  pq2.currency,
+  pq2.order_currency,
   pq2.sales_order_line,
+  pq2.sales_order_issue_date,
   pq2.sales_order_line_id,
   pq2.item_type_code,
   pq2.item,
+  pq2.item_description,
+  pq2.inventory_item_id,
+  pq2.organization_code,
+  pq2.organization_id,
   pq2.invoice_line,
+  pq2.unit_selling_price,
   pq2.customer_trx_line_id,
   pq2.customer_trx_id,
   pq2.total_line_quantity,
+  pq2.item_cost,
+  pq2.material_cost,
+  pq2.resource_cost,
+  pq2.overhead_cost,
+  pq2.uom,
   pq2.earned_cogs,
   case when pq2.item_type_code = 'INCLUDED'
   then (select
@@ -249,7 +345,9 @@ perpetual_qry as
   pq2.total_deferred_cogs,
   pq2.cogs_account,
   pq2.deferred_cogs_account,
-  pq2.cogs_om_line_id
+  pq2.cogs_om_line_id,
+  pq2.cogs_account_ccid,
+  pq2.chart_of_accounts_id
   from
   perpetual_qry_2 pq2
 ),
@@ -277,17 +375,29 @@ perpetual_lines_qry as
 -- Main Query Starts Here
 --
 select
-:p_ledger ledger,
+x.ledger,
 x.operating_unit,
 x.order_number,
 x.order_date,
 x.customer,
-x.currency,
+x.order_currency,
 x.order_line,
 x.order_quantity,
+x.uom,
+x.sales_order_issue_date,
 x.invoice_number,
 x.invoice_line,
-x.item_number,
+x.item,
+x.item_description,
+x.organization_code,
+x.ledger_currency,
+:p_period_name period,
+x.unit_selling_price,
+x.item_cost,
+x.material_cost,
+x.resource_cost,
+x.overhead_cost,
+&lp_cost_type_col
 x.earned_revenue,
 x.unearned_revenue,
 x.unbilled_revenue,
@@ -310,30 +420,54 @@ then case when x.earned_cogs + x.deferred_cogs = 0
      end
 end cogs_percent,
 x.cogs_account,
-x.deferred_cogs_account
+x.deferred_cogs_account,
+case when x.revenue_ccid is not null then fnd_flex_xml_publisher_apis.process_kff_combination_1('seg','SQLGL','GL#',x.chart_of_accounts_id,NULL,x.revenue_ccid,'ALL','Y','VALUE') end revenue_account_segments,
+case when x.unearn_ccid is not null then fnd_flex_xml_publisher_apis.process_kff_combination_1('seg','SQLGL','GL#',x.chart_of_accounts_id,NULL,x.unearn_ccid,'ALL','Y','VALUE') end unearned_account_segments,
+case when x.unbill_ccid is not null then fnd_flex_xml_publisher_apis.process_kff_combination_1('seg','SQLGL','GL#',x.chart_of_accounts_id,NULL,x.unbill_ccid,'ALL','Y','VALUE') end unbilled_account_segments,
+&lp_cogs_account_segments
+&lp_rev_account_segments
+x.cogs_om_line_id
 from
 (
 select /*+ leading(pq) no_merge(rctlgda) index(rctlgda ra_cust_trx_line_gl_dist_n1)*/
+pq.ledger,
+pq.ledger_currency,
 pq.operating_unit,
 pq.order_number order_number,
 pq.order_date order_date,
 pq.customer_name customer,
-decode(rcta.trx_number,min(plq.trx_number),decode(pq.invoice_line,min(plq.min_inv_line), pq.currency, null), null) currency,
+pq.order_currency order_currency,
 pq.sales_order_line order_line,
 decode(rcta.trx_number,min(plq.trx_number),decode(pq.invoice_line,min(plq.min_inv_line),pq.total_line_quantity,null),null) order_quantity,
+pq.uom,
+pq.sales_order_issue_date,
 rcta.trx_number invoice_number,
 pq.invoice_line invoice_line,
-pq.item item_number,
+pq.unit_selling_price,
+pq.item_cost,
+pq.material_cost,
+pq.resource_cost,
+pq.overhead_cost,
+pq.item,
+pq.item_description,
+pq.inventory_item_id,
+pq.organization_code,
+pq.organization_id,
 round(sum(decode(rctlgda.account_class,'UNEARN',0,'UNBILL',0, rctlgda.acctd_amount))*decode(pq.earned_cogs, pq.total_earned_cogs,1,pq.earned_cogs/decode(pq.total_earned_cogs,0,1,pq.total_earned_cogs)),2) earned_revenue,
 round(sum(decode(rctlgda.account_class,'REV',   0,'UNBILL',0, rctlgda.acctd_amount))*decode(pq.deferred_cogs, pq.total_deferred_cogs,1,pq.deferred_cogs/decode(pq.total_deferred_cogs,0,1,pq.total_deferred_cogs)),2) unearned_revenue,
 round(sum(decode(rctlgda.account_class,'REV',   0,'UNEARN',0, rctlgda.acctd_amount))*decode(pq.deferred_cogs, pq.total_deferred_cogs,1,pq.deferred_cogs/decode(pq.total_deferred_cogs,0,1,pq.total_deferred_cogs)),2) unbilled_revenue,
 decode(rcta.trx_number,min(plq.trx_number),decode(pq.invoice_line,min(plq.min_inv_line),pq.earned_cogs,null),null) earned_cogs,
 decode(rcta.trx_number,min(plq.trx_number),decode(pq.invoice_line,min(plq.min_inv_line),pq.deferred_cogs,null),null) deferred_cogs,
-decode(rcta.trx_number,min(plq.trx_number),decode(pq.invoice_line,min(plq.min_inv_line),pq.cogs_account,null),null) cogs_account,
-decode(rcta.trx_number,min(plq.trx_number),decode(pq.invoice_line,min(plq.min_inv_line),pq.deferred_cogs_account,null),null) deferred_cogs_account,
+pq.cogs_account cogs_account,
+pq.deferred_cogs_account deferred_cogs_account,
+min(decode(rctlgda.account_class,'REV',rctlgda.code_combination_id,null)) revenue_ccid,
+min(decode(rctlgda.account_class,'UNEARN',rctlgda.code_combination_id,null)) unearn_ccid,
+min(decode(rctlgda.account_class,'UNBILL',rctlgda.code_combination_id,null)) unbill_ccid,
 plq.interface_line_attribute6,
 pq.sales_order_line_id,
-pq.cogs_om_line_id
+pq.cogs_om_line_id,
+pq.cogs_account_ccid,
+pq.chart_of_accounts_id
 from
 perpetual_qry pq,
 ra_cust_trx_line_gl_dist_all rctlgda,
@@ -359,20 +493,33 @@ pq.customer_trx_id = rcta.customer_trx_id and
 rctlgda.customer_trx_line_id = rctla.customer_trx_line_id and
 rctlgda.account_set_flag = 'N' and
 rctlgda.account_class in ('REV', 'UNEARN', 'UNBILL') and
-rctlgda.gl_date <= :p_gps_end_dt and
+rctlgda.gl_date <= nvl(:p_gps_end_dt,rctlgda.gl_date) and
 to_char(pq.sales_order_line_id)=rctla.interface_line_attribute6 and
 to_char(pq.sales_order_line_id)=plq.interface_line_attribute6
 group by
+pq.ledger,
+pq.ledger_currency,
 pq.operating_unit,
 pq.order_number,
 pq.order_date,
 pq.customer_name,
-pq.currency,
+pq.order_currency,
 pq.sales_order_line,
+pq.sales_order_issue_date,
 rcta.trx_number,
 pq.invoice_line,
+pq.unit_selling_price,
+pq.item_cost,
+pq.material_cost,
+pq.resource_cost,
+pq.overhead_cost,
 pq.item,
+pq.item_description,
+pq.inventory_item_id,
+pq.organization_code,
+pq.organization_id,
 pq.total_line_quantity,
+pq.uom,
 pq.earned_cogs,
 pq.total_earned_cogs,
 pq.deferred_cogs,
@@ -381,7 +528,9 @@ pq.cogs_account,
 pq.deferred_cogs_account,
 plq.interface_line_attribute6,
 pq.sales_order_line_id,
-pq.cogs_om_line_id
+pq.cogs_om_line_id,
+pq.cogs_account_ccid,
+pq.chart_of_accounts_id
 having
 (
  :p_all_lines = 'Y' or
@@ -392,16 +541,29 @@ having
 )
 union
 select
+pq.ledger,
+pq.ledger_currency,
 pq.operating_unit,
 pq.order_number order_number,
 pq.order_date order_date,
 pq.customer_name customer,
-pq.currency currency,
+pq.order_currency,
 pq.sales_order_line order_line,
 pq.total_line_quantity order_quantity,
+pq.uom,
+pq.sales_order_issue_date,
 null invoice_number,
 null invoice_line,
-pq.item item_number,
+null unit_selling_price,
+pq.item_cost,
+pq.material_cost,
+pq.resource_cost,
+pq.overhead_cost,
+pq.item,
+pq.item_description,
+pq.inventory_item_id,
+pq.organization_code,
+pq.organization_id,
 null earned_revenue,
 null unearned_revenue,
 null unbilled_revenue,
@@ -409,9 +571,14 @@ pq.earned_cogs earned_cogs,
 pq.deferred_cogs deferred_cogs,
 pq.cogs_account cogs_account,
 pq.deferred_cogs_account deferred_cogs_account,
+null revenue_ccid,
+null unearn_ccid,
+null unbill_ccid,
 null interface_line_attribute6,
 pq.sales_order_line_id,
-pq.cogs_om_line_id
+pq.cogs_om_line_id,
+pq.cogs_account_ccid,
+pq.chart_of_accounts_id
 from
 perpetual_qry pq
 where
@@ -419,16 +586,29 @@ where
 (:p_all_lines = 'Y' or pq.deferred_cogs not between -1*:p_amt_tolerance and :p_amt_tolerance)
 union
 select
+pq.ledger,
+pq.ledger_currency,
 pq.operating_unit,
 pq.order_number order_number,
 pq.order_date order_date,
 pq.customer_name customer,
-pq.currency currency,
+pq.order_currency,
 pq.sales_order_line order_line,
 pq.total_line_quantity order_quantity,
+pq.uom,
+pq.sales_order_issue_date,
 null invoice_number,
 null invoice_line,
-pq.item item_number,
+null unit_selling_price,
+pq.item_cost,
+pq.material_cost,
+pq.resource_cost,
+pq.overhead_cost,
+pq.item,
+pq.item_description,
+pq.inventory_item_id,
+pq.organization_code,
+pq.organization_id,
 null earned_revenue,
 null unearned_revenue,
 null unbilled_revenue,
@@ -436,9 +616,14 @@ pq.earned_cogs earned_cogs,
 pq.deferred_cogs deferred_cogs,
 pq.cogs_account cogs_account,
 pq.deferred_cogs_account deferred_cogs_account,
+null revenue_ccid,
+null unearn_ccid,
+null unbill_ccid,
 null interface_line_attribute6,
 pq.sales_order_line_id,
-pq.cogs_om_line_id
+pq.cogs_om_line_id,
+pq.cogs_account_ccid,
+pq.chart_of_accounts_id
 from
 perpetual_qry pq
 where
@@ -454,12 +639,14 @@ not exists
   rctla.customer_trx_line_id = rctlgda.customer_trx_line_id and
   rctlgda.account_set_flag = 'N' and
   rctlgda.account_class in ('REV', 'UNEARN', 'UNBILL') and
-  rctlgda.gl_date <= :p_gps_end_dt
+  rctlgda.gl_date <= nvl(:p_gps_end_dt,rctlgda.gl_date)
  ) and
 (:p_all_lines = 'Y' or pq.deferred_cogs not between -1*:p_amt_tolerance and :p_amt_tolerance)
 ) x
 where
-:p_cost_method=1
+:p_ledger=:p_ledger and
+:p_cost_method=1 and
+nvl(:p_cost_type,'?')=nvl(:p_cost_type,'?')
 order by
 x.order_number,
 x.order_line,

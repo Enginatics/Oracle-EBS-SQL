@@ -5,6 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: FND Log Messages
+-- Description: None
 -- Excel Examle Output: https://www.enginatics.com/example/fnd-log-messages/
 -- Library Link: https://www.enginatics.com/reports/fnd-log-messages/
 -- Run Report: https://demo.enginatics.com/

@@ -5,6 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: FND Languages
+-- Description: None
 -- Excel Examle Output: https://www.enginatics.com/example/fnd-languages/
 -- Library Link: https://www.enginatics.com/reports/fnd-languages/
 -- Run Report: https://demo.enginatics.com/

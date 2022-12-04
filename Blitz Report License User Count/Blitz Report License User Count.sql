@@ -5,7 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: Blitz Report License User Count
--- Description: Shows the number of active Blitz Report users at evey month start (looking back the past 60 days)
+-- Description: Shows the number of active Blitz Report users at every month start (looking back the past 60 days)
 -- Excel Examle Output: https://www.enginatics.com/example/blitz-report-license-user-count/
 -- Library Link: https://www.enginatics.com/reports/blitz-report-license-user-count/
 -- Run Report: https://demo.enginatics.com/

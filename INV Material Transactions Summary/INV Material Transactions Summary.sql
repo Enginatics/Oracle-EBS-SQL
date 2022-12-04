@@ -5,7 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: INV Material Transactions Summary
--- Description: Summary report of Inventory item movement including transaction type, source type, and transaction ID?s.
+-- Description: Summary report of Inventory item movement including transaction type, source type, and transaction ID’s.
 -- Excel Examle Output: https://www.enginatics.com/example/inv-material-transactions-summary/
 -- Library Link: https://www.enginatics.com/reports/inv-material-transactions-summary/
 -- Run Report: https://demo.enginatics.com/

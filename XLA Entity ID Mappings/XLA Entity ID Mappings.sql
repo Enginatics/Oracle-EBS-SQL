@@ -5,7 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: XLA Entity ID Mappings
--- Description: Shows the column link between table xla_transaction_entities and subledger source tables such as and AP invoice_id or AR customer_trx_id, used when writing queries linking GL to subledger such as the GL Account Analysis report www.enginatics.com/reports/gl-account-analysis/
+-- Description: Shows the column link between table xla_transaction_entities and subledger source tables such as and AP invoice_id or AR customer_trx_id, used when writing queries linking GL to subledger such as the GL Account Analysis report <a href="www.enginatics.com/reports/gl-account-analysis/" rel="nofollow" target="_blank">www.enginatics.com/reports/gl-account-analysis/</a>
 -- Excel Examle Output: https://www.enginatics.com/example/xla-entity-id-mappings/
 -- Library Link: https://www.enginatics.com/reports/xla-entity-id-mappings/
 -- Run Report: https://demo.enginatics.com/
@@ -53,7 +53,7 @@ when xeim.application_id=9000 and xeim.entity_code='CLAIM_SETTLEMENT' then ''
 when xeim.application_id=9000 and xeim.entity_code='COST_UPDATE' then ''
 when xeim.application_id=200 and xeim.entity_code='AP_INVOICES' then 'ap_invoices_all aia'
 when xeim.application_id=200 and xeim.entity_code='AP_PAYMENTS' then 'ap_checks_all aca'
-when xeim.application_id=801 and xeim.entity_code='ASSIGNMENTS' then ''
+when xeim.application_id=801 and xeim.entity_code='ASSIGNMENTS' then 'pay_assignment_actions'
 when xeim.application_id=555 and xeim.entity_code='INVENTORY' then ''
 when xeim.application_id=555 and xeim.entity_code='ORDERMANAGEMENT' then ''
 when xeim.application_id=555 and xeim.entity_code='PRODUCTION' then ''

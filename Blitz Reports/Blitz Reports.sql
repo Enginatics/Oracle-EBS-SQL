@@ -70,7 +70,8 @@ xxen_util.client_time(xrv.creation_date) creation_date,
 xxen_util.user_name(xrv.last_updated_by) last_updated_by,
 xxen_util.client_time(xrv.last_update_date) last_update_date,
 xxen_util.meaning(nvl(xrv.enabled,'N'),'YES_NO',0) enabled,
-decode(xrv.template_count,0,null,xrv.template_count) template_count,
+decode(xrv.parameter_count,0,to_number(null),xrv.parameter_count) parameter_count,
+decode(xrv.template_count,0,to_number(null),xrv.template_count) template_count,
 (select count(distinct xra.id1||','||xra.id2) from xxen_report_assignments xra where xrv.report_id=xra.report_id and xra.include_exclude='I') assignments_count,
 (select count(distinct xra.id1||','||xra.id2) from xxen_report_assignments xra where xrv.report_id=xra.report_id and xra.assignment_level='A' and xra.include_exclude='I') application_assignments,
 (select count(distinct xra.id1||','||xra.id2) from xxen_report_assignments xra where xrv.report_id=xra.report_id and xra.assignment_level='G' and xra.include_exclude='I') request_group_assignments,
@@ -89,6 +90,7 @@ from
 (
 select
 xrv.*,
+(select count(*) from xxen_report_parameters xrp where xrv.report_id=xrp.report_id and xrp.display_sequence is not null) parameter_count,
 (select count(*) from xxen_report_templates xrt where xrv.report_id=xrt.report_id) template_count,
 (select 'Y' from fnd_user fu where fu.user_name in ('ANONYMOUS','ENGINATICS') and xrv.created_by=fu.user_id) seeded_flag,
 xxen_report.is_seeded_blitz_report(xrv.guid) seeded_blitz_report_flag

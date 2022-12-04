@@ -69,7 +69,9 @@ decode(fab.asset_type, 'CIP', fcb.cip_cost_acct, fcb.asset_cost_acct) asset_acco
 gl_flexfields_pkg.get_description(fbc.accounting_flex_structure,'GL_ACCOUNT',decode(fab.asset_type, 'CIP', fcb.cip_cost_acct, fcb.asset_cost_acct)) asset_account_description,
 decode(fab.asset_type, 'CIP', null,fcb.deprn_reserve_acct) reserve_account,
 decode(fab.asset_type, 'CIP', null,gl_flexfields_pkg.get_description(fbc.accounting_flex_structure,'GL_ACCOUNT',fcb.deprn_reserve_acct)) reserve_account_description,
-nvl(fbc.distribution_source_book,fbc.book_type_code) dist_book_type_code
+nvl(fbc.distribution_source_book,fbc.book_type_code) dist_book_type_code,
+(select fdp.period_name from fa_deprn_periods fdp where fdp.book_type_code = fb.book_type_code and fdp.period_counter = fb.period_counter_fully_retired) period_retired,
+fb.period_counter_fully_retired
 from
 fa_additions_b fab,
 fa_books fb,
@@ -80,7 +82,8 @@ fa_category_books fcb
 where
 fab.asset_id=fb.asset_id and
 nvl(fb.disabled_flag,'N')='N' and
-fb.transaction_header_id_out is null and
+fb.date_effective <= nvl2(:p_period,(select nvl(fdp2.period_close_date,sysdate) from fa_deprn_periods fdp2 where fdp2.book_type_code = fb.book_type_code and fdp2.period_name = :p_period),sysdate) and
+nvl(fb.date_ineffective,sysdate+1) > nvl2(:p_period,(select nvl(fdp2.period_close_date,sysdate) from fa_deprn_periods fdp2 where fdp2.book_type_code = fb.book_type_code and fdp2.period_name = :p_period),sysdate) and
 fbc.book_type_code=fb.book_type_code and
 fcb.book_type_code=fb.book_type_code and
 fcb.category_id=fab.asset_category_id and
@@ -95,11 +98,28 @@ fds.period_counter last_deprn_period_counter,
 fdp.period_name last_deprn_period_name,
 fdp.period_close_date last_deprn_period_close_date,
 fds.deprn_amount last_deprn_amount,
-decode(floor(decode(fds.deprn_source_code,'BOOKS',(fds.period_counter),(fds.period_counter-1))/fct.number_per_fiscal_year),fbc.current_fiscal_year,fds.ytd_deprn,0) ytd_deprn,
+case
+when fds.period_counter = nvl(fds.as_of_pc,fbc.last_period_counter)
+or   floor((fds.period_counter - fdp.period_num)/fct.number_per_fiscal_year) = nvl(fds.as_of_fy,fbc.current_fiscal_year)
+then fds.ytd_deprn
+else 0
+end ytd_deprn,
 fds.deprn_reserve,
 fds.deprn_source_code
 from
-(select x.* from (select max(fds.period_counter) over (partition by fds.asset_id,fds.book_type_code) max_period_counter, fds.* from fa_deprn_summary fds) x where x.period_counter=x.max_period_counter) fds,
+(select x.*
+ from
+ (select max(fds.period_counter) over (partition by fds.asset_id,fds.book_type_code) max_period_counter,
+  (select fdp2.period_counter from fa_deprn_periods fdp2 where fdp2.book_type_code = fds.book_type_code and fdp2.period_name = :p_period) as_of_pc,
+  (select fdp2.fiscal_year from fa_deprn_periods fdp2 where fdp2.book_type_code = fds.book_type_code and fdp2.period_name = :p_period) as_of_fy,
+  fds.*
+  from
+  fa_deprn_summary fds
+  where
+  fds.period_counter <= nvl2(:p_period,(select fdp2.period_counter from fa_deprn_periods fdp2 where fdp2.book_type_code = fds.book_type_code and fdp2.period_name = :p_period),fds.period_counter)
+ ) x
+ where x.period_counter=x.max_period_counter
+) fds,
 fa_deprn_periods fdp,
 fa_book_controls fbc,
 fa_calendar_types fct
@@ -112,7 +132,7 @@ fbc.deprn_calendar=fct.calendar_type and
 ),
 c_dist as(
 select
-fdh.book_type_code,
+fbc.book_type_code,
 fdh.asset_id,
 fdh.units_assigned assigned_units,
 papf.full_name assigned_owner,
@@ -120,12 +140,15 @@ fnd_flex_xml_publisher_apis.process_kff_combination_1('asset_location', 'OFA', '
 gcck.concatenated_segments expense_account_segments,
 fnd_flex_xml_publisher_apis.process_kff_combination_1('expense_account', 'SQLGL', 'GL#', gcck.chart_of_accounts_id, null, fdh.code_combination_id, 'ALL', 'Y', 'DESCRIPTION') expense_account_description
 from
+fa_book_controls fbc,
 fa_distribution_history fdh,
 fa_system_controls fsc,
 gl_code_combinations_kfv gcck,
 per_all_people_f papf
 where
-fdh.date_ineffective is null and
+fdh.book_type_code=nvl(fbc.distribution_source_book,fbc.book_type_code) and
+fdh.date_effective <= nvl2(:p_period,(select nvl(fdp2.period_close_date,sysdate) from fa_deprn_periods fdp2 where fdp2.book_type_code = fbc.book_type_code and fdp2.period_name = :p_period),sysdate) and
+nvl(fdh.date_ineffective,sysdate+1) > nvl2(:p_period,(select nvl(fdp2.period_close_date,sysdate) from fa_deprn_periods fdp2 where fdp2.book_type_code = fbc.book_type_code and fdp2.period_name = :p_period),sysdate) and
 fdh.code_combination_id=gcck.code_combination_id and
 fdh.assigned_to=papf.person_id(+) and
 fdh.date_effective between nvl(papf.effective_start_date,fdh.date_effective) and nvl(papf.effective_end_date,fdh.date_effective) and
@@ -154,6 +177,7 @@ fa_deprn_periods fdp,
 fa_book_controls fbc,
 fa_calendar_periods fcp
 where
+fth.date_effective <= nvl2(:p_period,(select nvl(fdp2.period_close_date,sysdate) from fa_deprn_periods fdp2 where fdp2.book_type_code = fth.book_type_code and fdp2.period_name = :p_period),sysdate) and
 fb.transaction_header_id_in=fb0.transaction_header_id_out(+) and
 (fb.cost<>fb0.cost or fb0.cost is null) and
 fb.transaction_header_id_in=fth.transaction_header_id and
@@ -169,6 +193,7 @@ fb.book_type_code=fdp.book_type_code and
 c_inv_src as (
 select
 faiv.asset_id,
+fb.book_type_code,
 faiv.vendor_name supplier,
 faiv.vendor_number supplier_number,
 faiv.po_number,
@@ -179,8 +204,12 @@ faiv.description invoice_description,
 faiv.payables_units invoice_units,
 faiv.payables_cost  invoice_amount
 from
-fa_invoice_details_v faiv
+fa_invoice_details_v faiv,
+fa_books fb
 where
+faiv.asset_id = fb.asset_id and
+faiv.date_effective <= nvl2(:p_period,(select nvl(fdp2.period_close_date,sysdate) from fa_deprn_periods fdp2 where fdp2.book_type_code = fb.book_type_code and fdp2.period_name = :p_period),sysdate) and
+nvl(faiv.date_ineffective,sysdate+1) > nvl2(:p_period,(select nvl(fdp2.period_close_date,sysdate) from fa_deprn_periods fdp2 where fdp2.book_type_code = fb.book_type_code and fdp2.period_name = :p_period),sysdate) and
 '&show_inv_src'='Y'
 )
 select --main SQL starts here
@@ -189,9 +218,9 @@ fbc.book_type_code asset_book,
 fbc.book_type_name asset_book_name,
 fbc.book_class class,
 fbc.distribution_source_book associated_corporate_book,
-(select fds.period_name from fa_deprn_periods fds where fds.period_counter=fbc.initial_period_counter and fds.book_type_code=fbc.book_type_code) initial_period_counter,
-(select fds.period_name from fa_deprn_periods fds where fds.period_counter=fbc.last_mass_copy_period_counter and fds.book_type_code=fbc.book_type_code) last_mass_copy_period_counter ,
-(select fds.period_name from fa_deprn_periods fds where fds.period_counter=fbc.last_period_counter and fds.book_type_code=fbc.book_type_code) last_period_counter,
+(select fds.period_name from fa_deprn_periods fds where fds.period_counter=fbc.initial_period_counter and fds.book_type_code=fbc.book_type_code) initial_period,
+(select fds.period_name from fa_deprn_periods fds where fds.period_counter=fbc.last_mass_copy_period_counter and fds.book_type_code=fbc.book_type_code) last_mass_copy_period,
+(select fds.period_name from fa_deprn_periods fds where fds.period_counter=fbc.last_period_counter and fds.book_type_code=fbc.book_type_code) last_deprn_period,
 &calendar_columns
 &alt_ledger_columns
 &accounting_rules_columns
@@ -204,7 +233,8 @@ fbc.distribution_source_book associated_corporate_book,
 &inv_src_columns
 haouv.name operating_unit,
 (select fift.id_flex_structure_name from fnd_id_flex_structures_tl fift where gl.chart_of_accounts_id=fift.id_flex_num and fift.application_id=101 and fift.id_flex_code='GL#' and fift.language=userenv('lang')) chart_of_accounts,
-fbc.org_id
+fbc.org_id,
+nvl(:p_period,'Current') as_of_period
 from
 fa_book_controls fbc,
 gl_ledgers gl,
@@ -222,11 +252,12 @@ fbc.book_type_code=c_alt_ledgers.book_type_code(+) and
 fbc.book_type_code=c_additions.book_type_code(+) and
 c_additions.book_type_code=c_dprn.book_type_code(+) and
 c_additions.asset_id=c_dprn.asset_id(+) and
-c_additions.dist_book_type_code=c_dist.book_type_code(+) and
+c_additions.book_type_code=c_dist.book_type_code(+) and
 c_additions.asset_id=c_dist.asset_id(+) and
 c_additions.book_type_code=c_fin_trx.book_type_code(+) and
 c_additions.asset_id=c_fin_trx.asset_id(+) and
 c_additions.asset_id=c_inv_src.asset_id(+) and
+c_additions.book_type_code=c_inv_src.book_type_code(+) and
 fbc.org_id=haouv.organization_id(+)
 order by
 fbc.book_type_code

@@ -13,6 +13,9 @@
 select
 x.ledger,
 x.balancing_segment,
+x.balancing_segment_desc,
+x.account_segment,
+x.account_segment_desc,
 x.customer_name,
 x.customer_number,
 x.batch_source_name,
@@ -22,6 +25,10 @@ x.receipt_number,
 x.issue_date,
 x.receipt_date,
 x.receipt_gl_date,
+x.receipt_creation_date,
+x.receipt_created_by,
+x.receipt_last_updated_date,
+x.receipt_last_updated_by,
 &apply_date_cols
 x.receipt_currency,
 x.currency,
@@ -41,12 +48,16 @@ x.bank_branch_country,
 x.bank_account_name,
 x.bank_account_name_alt,
 x.bank_account_number,
-x.bank_account_currency
+x.bank_account_currency,
+x.bank_account_description
 &receipt_dff_cols
 from
 (
 select
-gcc.segment1 balancing_segment,
+fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_bal_seg', 'SQLGL', 'GL#', gcc.chart_of_accounts_id, NULL, gcc.code_combination_id, 'GL_BALANCING', 'Y', 'VALUE') balancing_segment,
+fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_bal_seg', 'SQLGL', 'GL#', gcc.chart_of_accounts_id, NULL, gcc.code_combination_id, 'GL_BALANCING', 'Y', 'DESCRIPTION') balancing_segment_desc,
+fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_bal_seg', 'SQLGL', 'GL#', gcc.chart_of_accounts_id, NULL, gcc.code_combination_id, 'GL_ACCOUNT', 'Y', 'VALUE') account_segment,
+fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_bal_seg', 'SQLGL', 'GL#', gcc.chart_of_accounts_id, NULL, gcc.code_combination_id, 'GL_ACCOUNT', 'Y', 'DESCRIPTION') account_segment_desc,
 hp.party_name customer_name,
 hca.account_number customer_number,
 acra.receipt_number,
@@ -55,6 +66,10 @@ acra.receipt_date,
 apsa.gl_date receipt_gl_date,
 nvl2(:p_as_of_date,to_date(null),araa.apply_date) applied_date,
 nvl2(:p_as_of_date,to_date(null),araa.gl_date) applied_gl_date,
+acra.creation_date  receipt_creation_date,
+xxen_util.user_name(acra.created_by) receipt_created_by,
+acra.last_update_date receipt_last_updated_date,
+xxen_util.user_name(acra.last_updated_by) receipt_last_updated_by,
 max(araa.apply_date) latest_applied_date,
 max(araa.gl_date) latest_applied_gl_date,
 absa.name batch_source_name,
@@ -84,7 +99,8 @@ ftv.territory_short_name bank_branch_country,
 cba.bank_account_name,
 cba.bank_account_name_alt,
 cba.bank_account_num bank_account_number,
-cba.currency_code bank_account_currency
+cba.currency_code bank_account_currency,
+cba.description bank_account_description
 from
 gl_ledgers gl,
 hr_operating_units hou,
@@ -131,7 +147,10 @@ cba.bank_branch_id = cbbv.branch_party_id and
 cbaua.bank_account_id = cba.bank_account_id and
 ftv.territory_code (+) = cbbv.country
 group by
-gcc.segment1,
+fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_bal_seg', 'SQLGL', 'GL#', gcc.chart_of_accounts_id, NULL, gcc.code_combination_id, 'GL_BALANCING', 'Y', 'VALUE'),
+fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_bal_seg', 'SQLGL', 'GL#', gcc.chart_of_accounts_id, NULL, gcc.code_combination_id, 'GL_BALANCING', 'Y', 'DESCRIPTION'),
+fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_bal_seg', 'SQLGL', 'GL#', gcc.chart_of_accounts_id, NULL, gcc.code_combination_id, 'GL_ACCOUNT', 'Y', 'VALUE'),
+fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_bal_seg', 'SQLGL', 'GL#', gcc.chart_of_accounts_id, NULL, gcc.code_combination_id, 'GL_ACCOUNT', 'Y', 'DESCRIPTION'),
 hp.party_name,
 hca.account_number,
 absa.name,
@@ -141,6 +160,10 @@ acra.receipt_number,
 acra.issue_date,
 acra.receipt_date,
 apsa.gl_date,
+acra.creation_date,
+acra.created_by,
+acra.last_update_date,
+acra.last_updated_by,
 nvl2(:p_as_of_date,to_date(null),araa.apply_date),
 nvl2(:p_as_of_date,to_date(null),araa.gl_date),
 apsa.invoice_currency_code,
@@ -162,7 +185,8 @@ ftv.territory_short_name,
 cba.bank_account_name,
 cba.bank_account_name_alt,
 cba.bank_account_num,
-cba.currency_code
+cba.currency_code,
+cba.description
 having
 sum(decode(araa.status,'ACC',araa.acctd_amount_applied_from,0))!=0 or
 sum(decode(araa.status,'UNAPP',araa.acctd_amount_applied_from,'UNID',araa.acctd_amount_applied_from,0))!=0 or

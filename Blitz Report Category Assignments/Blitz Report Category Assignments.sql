@@ -5,6 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: Blitz Report Category Assignments
+-- Description: None
 -- Excel Examle Output: https://www.enginatics.com/example/blitz-report-category-assignments/
 -- Library Link: https://www.enginatics.com/reports/blitz-report-category-assignments/
 -- Run Report: https://demo.enginatics.com/

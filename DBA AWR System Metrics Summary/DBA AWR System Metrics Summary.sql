@@ -130,5 +130,5 @@ metric_name in (
 )
 )
 order by
-cast(end_interval_time as date) desc,
-instance_number
+instance_number,
+cast(end_interval_time as date) desc

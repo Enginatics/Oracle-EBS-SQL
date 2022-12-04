@@ -5,6 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: FND Menu Entries
+-- Description: None
 -- Excel Examle Output: https://www.enginatics.com/example/fnd-menu-entries/
 -- Library Link: https://www.enginatics.com/reports/fnd-menu-entries/
 -- Run Report: https://demo.enginatics.com/

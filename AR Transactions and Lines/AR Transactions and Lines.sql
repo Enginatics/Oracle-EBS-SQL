@@ -42,6 +42,8 @@ hp.party_name,
 hca.account_number,
 hcsua.location bill_to_location,
 hz_format_pub.format_address(hps.location_id,null,null,' , ') bill_to_address,
+hz_format_pub.format_address(nvl(hps2.location_id,hps3.location_id),null,null,' , ') ship_to_address_invoice,
+hz_format_pub.format_address(hps4.location_id,null,null,' , ') ship_to_address_order,
 hp.jgzz_fiscal_code taxpayer_id,
 rcta.invoice_currency_code currency,
 apsa.number_of_due_dates,
@@ -151,6 +153,17 @@ hz_cust_site_uses_all hcsua,
 ra_territories_kfv rtk,
 hz_cust_acct_sites_all hcasa,
 hz_party_sites hps,
+-- inv line, header and order ship to
+hz_cust_site_uses_all hcsua2,
+hz_cust_acct_sites_all hcasa2,
+hz_party_sites hps2,
+hz_cust_site_uses_all hcsua3,
+hz_cust_acct_sites_all hcasa3,
+hz_party_sites hps3,
+hz_cust_site_uses_all hcsua4,
+hz_cust_acct_sites_all hcasa4,
+hz_party_sites hps4,
+--
 jtf_rs_salesreps jrs,
 jtf_rs_resource_extns_vl jrrev,
 oe_order_lines_all oola,
@@ -200,6 +213,17 @@ rcta.org_id=jrs.org_id(+) and
 jrs.resource_id=jrrev.resource_id(+) and
 case when rctla.interface_line_context in ('INTERCOMPANY','ORDER ENTRY') then rctla.interface_line_attribute6 end=oola.line_id(+) and
 oola.header_id=ooha.header_id(+) and
+-- inv line, header, oe ship to
+rctla.ship_to_site_use_id=hcsua2.site_use_id(+) and
+hcsua2.cust_acct_site_id=hcasa2.cust_acct_site_id(+) and
+hcasa2.party_site_id=hps2.party_site_id(+) and
+rcta.ship_to_site_use_id=hcsua3.site_use_id(+) and
+hcsua3.cust_acct_site_id=hcasa3.cust_acct_site_id(+) and
+hcasa3.party_site_id=hps3.party_site_id(+) and
+oola.ship_to_org_id=hcsua4.site_use_id(+) and
+hcsua4.cust_acct_site_id=hcasa4.cust_acct_site_id(+) and
+hcasa4.party_site_id=hps4.party_site_id(+) and
+--
 ooha.salesrep_id=jrs2.salesrep_id(+) and
 ooha.org_id=jrs2.org_id(+) and
 jrs2.resource_id=jrrev2.resource_id(+) and

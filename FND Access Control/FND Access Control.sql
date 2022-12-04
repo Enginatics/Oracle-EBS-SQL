@@ -61,14 +61,26 @@ fmev.function_id in (select func.function_id from func)
 ),
 gl as (
 select distinct
-listagg(gl.name,chr(10)) within group (order by gl.name) over (partition by gasna.access_set_id) ledger,
-listagg(gasna.ledger_id,chr(10)) within group (order by gl.name) over (partition by gasna.access_set_id) ledger_id,
+listagg(gl.name,chr(10)) within group (order by gl.object_type_code desc, gl.name) over (partition by gl.access_set_id) ledger,
+listagg(gl.ledger_id,chr(10)) within group (order by gl.object_type_code desc, gl.name) over (partition by gl.access_set_id) ledger_id,
+gl.access_set_id
+from
+(
+select
+gl.name||decode(gl.object_type_code,'S',' ('||xxen_util.meaning(gl.object_type_code,'LEDGERS',101)||')') name,
+gl.ledger_id,
+gl.object_type_code,
 gasna.access_set_id
 from
-gl_access_set_norm_assign gasna,
+(
+select gasna.access_set_id, gasna.ledger_id, gasna.status_code from gl_access_set_norm_assign gasna union
+select gasna.access_set_id, glsnav.ledger_id, gasna.status_code from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.ledger_id=glsnav.ledger_set_id
+) gasna,
 gl_ledgers gl
 where
+nvl(gasna.status_code,'x') not in ('D','I') and
 gasna.ledger_id=gl.ledger_id
+) gl
 ),
 prof as
 (
@@ -87,9 +99,9 @@ psp.view_all_flag,
 nvl(pol.organization_id,nvl(hou.organization_id,hou0.organization_id)) organization_id
 from
 per_security_profiles psp,
-(select -1 view_all, hou.* from hr_operating_units hou where hou.usable_flag is null) hou0,
+(select pol.* from per_organization_list pol, hr_operating_units hou where pol.organization_id=hou.organization_id and hou.usable_flag is null) pol,
 (select hou.* from hr_operating_units hou where hou.usable_flag is null) hou,
-(select pol.* from per_organization_list pol, hr_operating_units hou where pol.organization_id=hou.organization_id and hou.usable_flag is null) pol
+(select -1 view_all, hou.* from hr_operating_units hou where hou.usable_flag is null) hou0
 where
 decode(psp.view_all_flag,'N',psp.security_profile_id)=pol.security_profile_id(+) and
 decode(psp.view_all_flag,'Y',psp.business_group_id)=hou.business_group_id(+) and

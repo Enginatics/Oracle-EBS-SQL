@@ -10,6 +10,84 @@
 -- Library Link: https://www.enginatics.com/reports/inv-onhand-quantities/
 -- Run Report: https://demo.enginatics.com/
 
+select
+x.organization_name,
+x.organization_code,
+x.subinventory,
+x.subinventory_type,
+x.locator,
+x.locator_type,
+x.status,
+x.item,
+x.item_description,
+x.item_category,
+x.item_category1,
+x.item_category2,
+x.make_buy,
+x.revision,
+x.unit_of_measure,
+x.on_hand,
+x.cost_type,
+x.item_cost,
+x.on_hand_value,
+x.reserved,
+x.unpacked,
+x.packed,
+x.license_plate_number,
+x.lot_number,
+x.lot_expiration_date,
+x.cost_group,
+x.project,
+x.task,
+x.owning_tp_type,
+x.owning_party,
+x.planning_tp_type,
+x.planning_org,
+x.serial_control,
+x.lot_control,
+x.availability_type,
+x.date_received,
+x.list_price_per_unit,
+x.min_minmax_quantity,
+x.max_minmax_quantity,
+x.safety_stock,
+x.inventory_item_id,
+x.organization_id,
+x.subinventory_code,
+x.on_hand_sum,
+x.on_hand_value_sum,
+x.stock_out_3m,
+x.stock_out_6m,
+x.stock_out_12m,
+x.stock_out_24m,
+x.stock_out_36m,
+x.stock_in_3m,
+x.stock_in_6m,
+x.stock_in_12m,
+x.stock_in_24m,
+x.stock_in_36m,
+x.stock_mvmt_3m,
+x.stock_mvmt_6m,
+x.stock_mvmt_12m,
+x.stock_mvmt_24m,
+x.stock_mvmt_36m,
+x.value_out_3m,
+x.value_out_6m,
+x.value_out_12m,
+x.value_out_24m,
+x.value_out_36m,
+x.value_in_3m,
+x.value_in_6m,
+x.value_in_12m,
+x.value_in_24m,
+x.value_in_36m,
+x.value_mvmt_3m,
+x.value_mvmt_6m,
+x.value_mvmt_12m,
+x.value_mvmt_24m,
+x.value_mvmt_36m
+from
+(
 select distinct
 ood.organization_name,
 ood.organization_code,
@@ -20,9 +98,16 @@ xxen_util.meaning(mil.inventory_location_type,'MTL_LOCATOR_TYPES',700) locator_t
 mmsv.status_code status,
 msiv.concatenated_segments item,
 msiv.description item_description,
+mck.concatenated_segments item_category,
+mck.segment1 item_category1,
+mck.segment2 item_category2,
+xxen_util.meaning(msiv.planning_make_buy_code,'MTL_PLANNING_MAKE_BUY',700) make_buy,
 moqd.revision,
 muot.unit_of_measure_tl unit_of_measure,
 sum(moqd.primary_transaction_quantity) over (partition by moqd.organization_id, moqd.inventory_item_id, moqd.revision, moqd.lot_number, moqd.cost_group_id, moqd.subinventory_code, moqd.locator_id, moqd.lpn_id, moqd.project_id, moqd.task_id, moqd.owning_tp_type, moqd.owning_organization_id, moqd.planning_tp_type, moqd.planning_organization_id) on_hand,
+cic.cost_type,
+cic.item_cost,
+round(sum(moqd.primary_transaction_quantity * nvl(cic.item_cost,0)) over (partition by moqd.organization_id, moqd.inventory_item_id, moqd.revision, moqd.lot_number, moqd.cost_group_id, moqd.subinventory_code, moqd.locator_id, moqd.lpn_id, moqd.project_id, moqd.task_id, moqd.owning_tp_type, moqd.owning_organization_id, moqd.planning_tp_type, moqd.planning_organization_id),2) on_hand_value,
 mr.reserved,
 sum(decode(moqd.containerized_flag,1,0,moqd.primary_transaction_quantity)) over (partition by moqd.organization_id, moqd.inventory_item_id, moqd.revision, moqd.lot_number, moqd.cost_group_id, moqd.subinventory_code, moqd.locator_id, moqd.lpn_id, moqd.project_id, moqd.task_id, moqd.owning_tp_type, moqd.owning_organization_id, moqd.planning_tp_type, moqd.planning_organization_id) unpacked,
 sum(decode(moqd.containerized_flag,1,moqd.primary_transaction_quantity,0)) over (partition by moqd.organization_id, moqd.inventory_item_id, moqd.revision, moqd.lot_number, moqd.cost_group_id, moqd.subinventory_code, moqd.locator_id, moqd.lpn_id, moqd.project_id, moqd.task_id, moqd.owning_tp_type, moqd.owning_organization_id, moqd.planning_tp_type, moqd.planning_organization_id) packed,
@@ -47,15 +132,51 @@ msiv.max_minmax_quantity,
 moqd.inventory_item_id,
 moqd.organization_id,
 moqd.subinventory_code,
-sum(moqd.primary_transaction_quantity) over (partition by moqd.inventory_item_id) on_hand_sum
+sum(moqd.primary_transaction_quantity) over (partition by moqd.inventory_item_id) on_hand_sum,
+round(sum(moqd.primary_transaction_quantity * nvl(cic.item_cost,0)) over (partition by moqd.inventory_item_id),2) on_hand_value_sum,
+--
+mmt.stock_out_3m,
+mmt.stock_out_6m,
+mmt.stock_out_12m,
+mmt.stock_out_24m,
+mmt.stock_out_36m,
+mmt.stock_in_3m,
+mmt.stock_in_6m,
+mmt.stock_in_12m,
+mmt.stock_in_24m,
+mmt.stock_in_36m,
+mmt.stock_mvmt_3m,
+mmt.stock_mvmt_6m,
+mmt.stock_mvmt_12m,
+mmt.stock_mvmt_24m,
+mmt.stock_mvmt_36m,
+--
+mmt.stock_out_3m   *  nvl(cic.item_cost,0) value_out_3m,
+mmt.stock_out_6m   *  nvl(cic.item_cost,0) value_out_6m,
+mmt.stock_out_12m  *  nvl(cic.item_cost,0) value_out_12m,
+mmt.stock_out_24m  *  nvl(cic.item_cost,0) value_out_24m,
+mmt.stock_out_36m  *  nvl(cic.item_cost,0) value_out_36m,
+mmt.stock_out_3m   *  nvl(cic.item_cost,0) value_in_3m,
+mmt.stock_out_6m   *  nvl(cic.item_cost,0) value_in_6m,
+mmt.stock_out_12m  *  nvl(cic.item_cost,0) value_in_12m,
+mmt.stock_out_24m  *  nvl(cic.item_cost,0) value_in_24m,
+mmt.stock_out_36m  *  nvl(cic.item_cost,0) value_in_36m,
+mmt.stock_mvmt_3m  *  nvl(cic.item_cost,0) value_mvmt_3m,
+mmt.stock_mvmt_6m  *  nvl(cic.item_cost,0) value_mvmt_6m,
+mmt.stock_mvmt_12m *  nvl(cic.item_cost,0) value_mvmt_12m,
+mmt.stock_mvmt_24m *  nvl(cic.item_cost,0) value_mvmt_24m,
+mmt.stock_mvmt_36m *  nvl(cic.item_cost,0) value_mvmt_36m
 from
 org_organization_definitions ood,
 mtl_onhand_quantities_detail moqd,
+&xrrpv_table
 mtl_secondary_inventories msi,
 mtl_item_locations mil,
+mtl_item_categories mic,
+mtl_category_sets mcs,
+mtl_categories_kfv mck,
 mtl_material_statuses_vl mmsv,
 wms_license_plate_numbers wlpn,
-&xrrpv_table
 mtl_system_items_vl msiv,
 mtl_units_of_measure_tl muot,
 ap_supplier_sites_all assa,
@@ -77,8 +198,82 @@ mr.organization_id,
 mr.subinventory_code
 from
 mtl_reservations mr
-) mr
+) mr,
+(
+select
+sum(case when mmt.transaction_action_id in (1,21) and mmt.transaction_date>add_months(sysdate,-3) then nvl(mtln.primary_quantity,mmt.primary_quantity) end)  stock_out_3m,
+sum(case when mmt.transaction_action_id in (1,21) and mmt.transaction_date>add_months(sysdate,-6) and mmt.transaction_date<=add_months(sysdate,-3) then nvl(mtln.primary_quantity,mmt.primary_quantity) end)  stock_out_6m,
+sum(case when mmt.transaction_action_id in (1,21) and mmt.transaction_date>add_months(sysdate,-12) and mmt.transaction_date<=add_months(sysdate,-6) then nvl(mtln.primary_quantity,mmt.primary_quantity) end) stock_out_12m,
+sum(case when mmt.transaction_action_id in (1,21) and mmt.transaction_date>add_months(sysdate,-24) and mmt.transaction_date<=add_months(sysdate,-12) then nvl(mtln.primary_quantity,mmt.primary_quantity) end) stock_out_24m,
+sum(case when mmt.transaction_action_id in (1,21) and mmt.transaction_date>add_months(sysdate,-36) and mmt.transaction_date<=add_months(sysdate,-24) then nvl(mtln.primary_quantity,mmt.primary_quantity) end) stock_out_36m,
+--
+sum(case when mmt.transaction_action_id in (27) and mmt.transaction_date>add_months(sysdate,-3) then nvl(mtln.primary_quantity,mmt.primary_quantity) end)  stock_in_3m,
+sum(case when mmt.transaction_action_id in (27) and mmt.transaction_date>add_months(sysdate,-6) and mmt.transaction_date<=add_months(sysdate,-3) then nvl(mtln.primary_quantity,mmt.primary_quantity) end)  stock_in_6m,
+sum(case when mmt.transaction_action_id in (27) and mmt.transaction_date>add_months(sysdate,-12) and mmt.transaction_date<=add_months(sysdate,-6) then nvl(mtln.primary_quantity,mmt.primary_quantity) end) stock_in_12m,
+sum(case when mmt.transaction_action_id in (27) and mmt.transaction_date>add_months(sysdate,-24) and mmt.transaction_date<=add_months(sysdate,-12) then nvl(mtln.primary_quantity,mmt.primary_quantity) end) stock_in_24m,
+sum(case when mmt.transaction_action_id in (27) and mmt.transaction_date>add_months(sysdate,-36) and mmt.transaction_date<=add_months(sysdate,-24) then nvl(mtln.primary_quantity,mmt.primary_quantity) end) stock_in_36m,
+--
+sum(case when mmt.transaction_date>add_months(sysdate,-3) then nvl(mtln.primary_quantity,mmt.primary_quantity) end)  stock_mvmt_3m,
+sum(case when mmt.transaction_date>add_months(sysdate,-6) and mmt.transaction_date<=add_months(sysdate,-3) then nvl(mtln.primary_quantity,mmt.primary_quantity) end)  stock_mvmt_6m,
+sum(case when mmt.transaction_date>add_months(sysdate,-12) and mmt.transaction_date<=add_months(sysdate,-6) then nvl(mtln.primary_quantity,mmt.primary_quantity) end) stock_mvmt_12m,
+sum(case when mmt.transaction_date>add_months(sysdate,-24) and mmt.transaction_date<=add_months(sysdate,-12) then nvl(mtln.primary_quantity,mmt.primary_quantity) end) stock_mvmt_24m,
+sum(case when mmt.transaction_date>add_months(sysdate,-36) and mmt.transaction_date<=add_months(sysdate,-24) then nvl(mtln.primary_quantity,mmt.primary_quantity) end) stock_mvmt_36m,
+--
+mmt.inventory_item_id,
+mmt.organization_id,
+mmt.subinventory_code,
+mmt.revision,
+mmt.cost_group_id,
+mmt.locator_id,
+mmt.lpn_id,
+mmt.project_id,
+mmt.task_id,
+mmt.owning_tp_type,
+mmt.owning_organization_id,
+mmt.planning_tp_type,
+mmt.planning_organization_id,
+mtln.lot_number
+from
+mtl_material_transactions   mmt,
+mtl_transaction_lot_numbers mtln
 where
+mmt.transaction_id = mtln.transaction_id(+) and
+mmt.transaction_action_id in (1,21,27) and
+mmt.transaction_date>add_months(sysdate,-36) and
+nvl(:p_show_trx_hist,'Y') = 'Y'
+group by
+mmt.inventory_item_id,
+mmt.organization_id,
+mmt.subinventory_code,
+mmt.revision,
+mmt.cost_group_id,
+mmt.locator_id,
+mmt.lpn_id,
+mmt.project_id,
+mmt.task_id,
+mmt.owning_tp_type,
+mmt.owning_organization_id,
+mmt.planning_tp_type,
+mmt.planning_organization_id,
+mtln.lot_number
+) mmt,
+(
+select
+cic.organization_id,
+cic.inventory_item_id,
+cct.cost_type,
+cic.item_cost
+from
+mtl_parameters mp,
+cst_cost_types cct,
+cst_item_costs cic
+where
+cic.organization_id=mp.organization_id and
+cic.cost_type_id=mp.primary_cost_method and
+cic.cost_type_id=cct.cost_type_id
+) cic
+where
+mcs.category_set_name=nvl(:p_cat_set_name,(select mcsv.category_set_name from mtl_default_category_sets mdcs, mtl_category_sets_v mcsv where mdcs.functional_area_id=1 and mdcs.category_set_id=mcsv.category_set_id)) and
 1=1 and
 ood.organization_id=moqd.organization_id and
 moqd.organization_id=msi.organization_id(+) and
@@ -103,9 +298,33 @@ moqd.project_id=ppa.project_id(+) and
 moqd.task_id=pt.task_id(+) and
 moqd.inventory_item_id=mr.inventory_item_id(+) and
 moqd.organization_id=mr.organization_id(+) and
-moqd.subinventory_code=mr.subinventory_code(+)
+moqd.subinventory_code=mr.subinventory_code(+) and
+--
+moqd.organization_id=mic.organization_id and
+moqd.inventory_item_id=mic.inventory_item_id and
+mcs.category_set_id=mic.category_set_id and
+mck.category_id=mic.category_id and
+--
+moqd.organization_id=cic.organization_id(+)and
+moqd.inventory_item_id=cic.inventory_item_id(+) and
+--
+moqd.inventory_item_id=mmt.inventory_item_id(+) and
+moqd.organization_id=mmt.organization_id(+) and
+moqd.subinventory_code=mmt.subinventory_code(+) and
+moqd.cost_group_id=nvl(mmt.cost_group_id(+),-1) and
+nvl(moqd.revision,-1)= nvl(mmt.revision(+),-1) and
+nvl(moqd.lot_number,'?')=nvl(mmt.lot_number(+),'?') and
+nvl(moqd.locator_id,-1)=nvl(mmt.locator_id(+),-1) and
+nvl(moqd.lpn_id,-1)=nvl(mmt.lpn_id(+),-1) and
+nvl(moqd.project_id,-1)=nvl(mmt.project_id(+),-1) and
+nvl(moqd.task_id,-1)=nvl(mmt.task_id(+),-1) and
+nvl(moqd.owning_tp_type,-1)=nvl(mmt.owning_tp_type(+),-1) and
+nvl(moqd.owning_organization_id,-1)=nvl(mmt.owning_organization_id(+),-1) and
+nvl(moqd.planning_tp_type,-1)=nvl(mmt.planning_tp_type(+),-1) and
+nvl(moqd.planning_organization_id,-1)=nvl(mmt.planning_organization_id(+),-1)
+--
 order by
 ood.organization_code,
 on_hand_sum desc,
 item,
-on_hand desc
+on_hand desc) x

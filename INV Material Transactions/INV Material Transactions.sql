@@ -49,6 +49,10 @@ aps.vendor_name,
 aps.segment1 vendor_number,
 mtt.transaction_type_name transaction_type,
 xxen_util.meaning(mmt.transaction_action_id,'MTL_TRANSACTION_ACTION',700) transaction_action,
+ppa.segment1 project,
+pt.task_number task,
+ppa2.segment1 to_project,
+pt2.task_number to_task,
 mtr.reason_name reason,
 mtr.description reason_description,
 mmt.source_line_id,
@@ -83,7 +87,11 @@ po_requisition_headers_all prha,
 wip_entities we,
 &xrrpv_table
 mtl_txn_request_headers mtrh,
-(select mtln.* from mtl_transaction_lot_numbers mtln where '&show_lots'='Y') mtln
+(select mtln.* from mtl_transaction_lot_numbers mtln where '&show_lots'='Y') mtln,
+pa_projects_all ppa,
+pa_tasks pt,
+pa_projects_all ppa2,
+pa_tasks pt2
 where
 1=1 and
 mp.organization_id=mmt.organization_id and
@@ -112,7 +120,11 @@ decode(mmt.transaction_source_type_id,16,mmt.transaction_source_id)=okhab.id(+) 
 decode(mmt.transaction_source_type_id,7,mmt.transaction_source_id)=prha.requisition_header_id(+) and
 decode(mmt.transaction_source_type_id,5,mmt.transaction_source_id)=we.wip_entity_id(+) and
 decode(mmt.transaction_source_type_id,4,mmt.transaction_source_id)=mtrh.header_id(+) and
-mmt.transaction_id=mtln.transaction_id(+)
+mmt.transaction_id=mtln.transaction_id(+) and
+mmt.project_id=ppa.project_id(+) and
+mmt.task_id=pt.task_id(+) and
+mmt.to_project_id=ppa2.project_id(+) and
+mmt.to_task_id=pt2.task_id(+)
 order by
 mp.organization_code,
 msiv.concatenated_segments,

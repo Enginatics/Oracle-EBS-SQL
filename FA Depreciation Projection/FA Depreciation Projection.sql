@@ -7,9 +7,9 @@
 -- Report Name: FA Depreciation Projection
 -- Description: Based on Oracle's 'Depreciation Projection Report' FASPRJ
 
-Uses custom DB package call XXEN_FASPRJ to launch Oracle standard Depreciation Projection concurrent FAPROJ. The data generation is explained in note:
+Uses custom DB package call XXEN_FA_FAS_XMLP to launch Oracle standard Depreciation Projection concurrent FAPROJ. The data generation is explained in note:
 How Does FA Depreciation Projections Handle Table FA_PROJ_INTERIM_XXX or FA_PROJ_INTERIM_REP ? (Doc ID 1607626.1)
-https://support.oracle.com/CSP/main/article?cmd=show&type=NOT&id=1607626.1
+<a href="https://support.oracle.com/CSP/main/article?cmd=show&type=NOT&id=1607626.1" rel="nofollow" target="_blank">https://support.oracle.com/CSP/main/article?cmd=show&type=NOT&id=1607626.1</a>
 -- Excel Examle Output: https://www.enginatics.com/example/fa-depreciation-projection/
 -- Library Link: https://www.enginatics.com/reports/fa-depreciation-projection/
 -- Run Report: https://demo.enginatics.com/

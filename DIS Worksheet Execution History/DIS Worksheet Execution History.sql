@@ -17,6 +17,7 @@ xxen_util.dis_user_name(eqs.qs_created_by) user_name,
 eqs.qs_doc_name workbook,
 ed.doc_developer_key workbook_identifier,
 eqs.qs_doc_details sheet,
+eqs.qs_doc_owner owner,
 xxen_util.client_time(eqs.qs_created_date) start_date,
 xxen_util.time(eqs.seconds) time,
 eqs.seconds,
@@ -24,7 +25,7 @@ eqs.qs_num_rows row_count,
 &object_columns
 length(eqs.qs_object_use_key)-length(translate(eqs.qs_object_use_key,'x.','x'))+1 folder_count,
 eqs.qs_object_use_key use_key,
-eqs.qs_doc_name||': '||eqs.qs_doc_details workbook_sheet,
+eqs.qs_doc_name||': '||eqs.qs_doc_details||' ('||eqs.qs_doc_owner||')' workbook_sheet,
 eqs.qs_created_by created_by
 from
 (
@@ -33,8 +34,10 @@ trim(regexp_substr(eqs.qs_object_use_key,'[^\.]+',1,rowgen.column_value)) obj_id
 greatest(nvl(eqs.qs_act_cpu_time,0),nvl(eqs.qs_act_elap_time,0)) seconds,
 eqs.*
 from
-&eul.eul5_qpp_stats eqs,
-table(xxen_util.rowgen(regexp_count(eqs.qs_object_use_key,'\.')+1)) rowgen
+&restrict_to_latest_workbook1
+&eul.eul5_qpp_stats eqs
+&restrict_to_latest_workbook2
+,table(xxen_util.rowgen(regexp_count(eqs.qs_object_use_key,'\.')+1)) rowgen
 where
 1=1
 ) eqs,

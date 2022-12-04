@@ -10,7 +10,7 @@ select dao.* from dba_autotask_operation dao
 select dajh.* from dba_autotask_job_history dajh
 
 - Automatic Optimizer Statistics Collection
-For EBS, the automated DB statistics collection must be deactivated by setting DB initialization parameter _optimizer_autostats_job=false, and concurrent 'Gather Schema Statistics' scheduled instead, see note 396009.1 https://support.oracle.com/CSP/main/article?cmd=show&type=NOT&id=396009.1
+For EBS, the automated DB statistics collection must be deactivated by setting DB initialization parameter _optimizer_autostats_job=false, and concurrent 'Gather Schema Statistics' scheduled instead, see note 396009.1 <a href="https://support.oracle.com/CSP/main/article?cmd=show&type=NOT&id=396009.1" rel="nofollow" target="_blank">https://support.oracle.com/CSP/main/article?cmd=show&type=NOT&id=396009.1</a>
 
 - Automatic Segment Advisor
 Identifies segments that have space available for reclamation, and makes recommendations on how to defragment those segments. This process can cause significant IO overhead and we therefore recommend disabling the automated scheduling. It can be run on demand instead, in case DBAs would want to take action on optimizing the storage.

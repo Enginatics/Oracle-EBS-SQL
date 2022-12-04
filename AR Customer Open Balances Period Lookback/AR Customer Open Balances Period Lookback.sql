@@ -24,7 +24,9 @@ Max Open over last <n> Periods - number of periods prior to the 'As of Date' per
 -- Run Report: https://demo.enginatics.com/
 
 select
-  trx.ledger                       ledger
+  trx.legal_entity                 legal_entity
+, trx.legal_entity_identifier      legal_entity_identifier
+, trx.ledger                       ledger
 , trx.ou_name                      operating_unit
 , trx.account_number               customer_number
 , trx.customer_name                customer_name
@@ -32,10 +34,15 @@ select
 --
 &lp_amt_due_max_col
 &lp_amt_due_cols1
+&lp_reval_cols
+&lp_amt_due_max_col_reval
+&lp_amt_due_cols1_reval
 --
 from
   ( select
-      gl.name                       ledger
+      xep.name                      legal_entity 
+    , xep.legal_entity_identifier   legal_entity_identifier
+    , gl.name                       ledger
     , hou.name                      ou_name
     , rcta.invoice_currency_code    currency_code
     , nvl(rcta.exchange_rate,1)     orig_invoice_rate
@@ -54,28 +61,31 @@ from
     , sum( case when aps.gl_date <= :p_as_of_date then 1 else 0 end *
           ((aps.amount_due_original * nvl(aps.exchange_rate,1))
            - nvl( ( select sum(ara.acctd_amount_applied_to + nvl(ara.acctd_earned_discount_taken,0) + nvl(ara.acctd_unearned_discount_taken,0))
-                    from   ar_receivable_applications ara
+                    from   ar_receivable_applications_all ara
                     where  ara.status                      = 'APP'
                     and    ara.applied_customer_trx_id     = aps.customer_trx_id
                     and    ara.applied_payment_schedule_id = aps.payment_schedule_id
+                    and    ara.org_id                      = aps.org_id
                     and    ara.gl_date                    <= :p_as_of_date
                   )
                 , 0)
            + nvl( ( select sum(ara.acctd_amount_applied_from)
-                    from   ar_receivable_applications ara
+                    from   ar_receivable_applications_all ara
                     where  ara.status                  = 'APP'
                     and    ara.application_type       != 'CASH'
                     and    rctt.type                   = 'CM'
                     and    ara.customer_trx_id         = aps.customer_trx_id
                     and    ara.payment_schedule_id     = aps.payment_schedule_id
+                    and    ara.org_id                  = aps.org_id
                     and    ara.gl_date                <= :p_as_of_date
                   )
                 , 0)
            + nvl( ( select sum(ara.acctd_amount)
-                    from ar_adjustments ara
+                    from ar_adjustments_all ara
                     where ara.customer_trx_id   = aps.customer_trx_id
                     and ara.payment_schedule_id = aps.payment_schedule_id
-                    and   ara.gl_date          <= :p_as_of_date
+                    and ara.org_id              = aps.org_id
+                    and ara.gl_date            <= :p_as_of_date
                   )
                 , 0)
            )
@@ -83,16 +93,19 @@ from
     --
     &lp_amt_due_cols2
     --
+    , gl.currency_code ledger_currency
+    , max(decode(gl.currency_code,:p_reval_currency,1,(select gdr.conversion_rate from gl_daily_conversion_types gdct, gl_daily_rates gdr where gl.currency_code=gdr.from_currency and gdr.to_currency=:p_reval_currency and :p_reval_conv_date=gdr.conversion_date and gdct.user_conversion_type=:p_reval_conv_type and gdct.conversion_type=gdr.conversion_type))) reval_conv_rate
     from
       hr_operating_units           hou
     , gl_ledgers                   gl
-    , ra_customer_trx              rcta
-    , ar_payment_schedules         aps
-    , ra_cust_trx_types            rctt
-    , ra_cust_trx_line_gl_dist     rctlgd
+    , ra_customer_trx_all          rcta
+    , ar_payment_schedules_all     aps
+    , ra_cust_trx_types_all        rctt
+    , ra_cust_trx_line_gl_dist_all rctlgd
     , hz_cust_accounts             hca
     , hz_parties                   hp
-    , ar_system_parameters         sp
+    , ar_system_parameters_all     sp
+    , xle_entity_profiles          xep
     where
         hou.set_of_books_id              = sp.set_of_books_id
     and gl.ledger_id                     = sp.set_of_books_id
@@ -107,13 +120,15 @@ from
     and rctlgd.latest_rec_flag           = 'Y'
     and rcta.bill_to_customer_id         = hca.cust_account_id
     and hp.party_id                      = hca.party_id
-    and sp.org_id                        = :p_org_id
-    and rcta.org_id                      = :p_org_id
+    and xep.legal_entity_id (+)          = rcta.legal_entity_id
+    and sp.org_id                        = rcta.org_id
     and aps.gl_date_closed               > :p_first_gl_date
     and aps.gl_date                     <= :p_as_of_date
     and 1=1
     group by
-      gl.name
+      xep.name
+    , xep.legal_entity_identifier
+    , gl.name
     , gl.currency_code
     , hou.name
     , rcta.invoice_currency_code
@@ -131,7 +146,9 @@ from
     , rcta.customer_trx_id
     union
     select
-      gl.name                                       ledger
+      xep.name                                      legal_entity
+    , xep.legal_entity_identifier                   legal_entity_identifier 
+    , gl.name                                       ledger
     , hou.name                                      ou_name
     , substr(acr.currency_code,1,3)                 currency_code
     , nvl(acr.exchange_rate,1)                      orig_invoice_rate    
@@ -149,17 +166,20 @@ from
     --
     &lp_amt_due_cols3
     --
+    , gl.currency_code ledger_currency
+    , max(decode(gl.currency_code,:p_reval_currency,1,(select gdr.conversion_rate from gl_daily_conversion_types gdct, gl_daily_rates gdr where gl.currency_code=gdr.from_currency and gdr.to_currency=:p_reval_currency and :p_reval_conv_date=gdr.conversion_date and gdct.user_conversion_type=:p_reval_conv_type and gdct.conversion_type=gdr.conversion_type))) reval_conv_rate
     from
-      hr_operating_units         hou
-    , gl_ledgers                 gl
-    , ar_receivable_applications ara
-    , ar_lookups                 al
-    , ar_cash_receipts           acr
-    , ar_cash_receipt_history    acrh
-    , ar_payment_schedules       aps
-    , hz_cust_accounts           hca
-    , hz_parties                 hp
-    , ar_system_parameters       sp
+      hr_operating_units             hou
+    , gl_ledgers                     gl
+    , ar_receivable_applications_all ara
+    , ar_lookups                     al
+    , ar_cash_receipts_all           acr
+    , ar_cash_receipt_history_all    acrh
+    , ar_payment_schedules_all       aps
+    , hz_cust_accounts               hca
+    , hz_parties                     hp
+    , ar_system_parameters_all       sp
+    , xle_entity_profiles            xep
     where
         hou.set_of_books_id              = sp.set_of_books_id
     and gl.ledger_id                     = sp.set_of_books_id
@@ -176,19 +196,22 @@ from
     and ara.status                       = 'ACC'
     and not exists
         ( select 'X'
-          from ar_cash_receipt_history crhin
+          from ar_cash_receipt_history_all crhin
           where crhin.cash_receipt_id = acr.cash_receipt_id
+          and   crhin.org_id = acr.org_id
           and crhin.status = 'REVERSED'
         )
     and nvl(ara.confirmed_flag,'Y')      = 'Y'
     and nvl(acr.confirmed_flag,'Y')      = 'Y'
-    and sp.org_id                        = :p_org_id
-    and acr.org_id                       = :p_org_id
+    and xep.legal_entity_id (+)          = acr.legal_entity_id
+    and sp.org_id                        = acr.org_id
     and aps.gl_date_closed               > :p_first_gl_date
     and aps.gl_date                     <= :p_as_of_date
     and 2=2
     group by
-      gl.name
+      xep.name
+    , xep.legal_entity_identifier
+    , gl.name
     , gl.currency_code
     , hou.name
     , hca.cust_account_id
@@ -205,7 +228,9 @@ from
     , acr.currency_code
     union
     select
-      gl.name                                       ledger
+      xep.name                                      legal_entity 
+    , xep.legal_entity_identifier                   legal_entity_identifier 
+    , gl.name                                       ledger
     , hou.name                                      ou_name
     , substr(acr.currency_code,1,3)                 currency_code
     , nvl(acr.exchange_rate,1)                      orig_invoice_rate    
@@ -223,17 +248,20 @@ from
     --
     &lp_amt_due_cols3
     --
+    , gl.currency_code ledger_currency
+    , max(decode(gl.currency_code,:p_reval_currency,1,(select gdr.conversion_rate from gl_daily_conversion_types gdct, gl_daily_rates gdr where gl.currency_code=gdr.from_currency and gdr.to_currency=:p_reval_currency and :p_reval_conv_date=gdr.conversion_date and gdct.user_conversion_type=:p_reval_conv_type and gdct.conversion_type=gdr.conversion_type))) reval_conv_rate
     from
-      hr_operating_units         hou
-    , gl_ledgers                 gl
-    , ar_receivable_applications ara
-    , ar_lookups                 al
-    , ar_cash_receipts           acr
-    , ar_cash_receipt_history    acrh
-    , ar_payment_schedules       aps
-    , hz_cust_accounts           hca
-    , hz_parties                 hp
-    , ar_system_parameters       sp
+      hr_operating_units             hou
+    , gl_ledgers                     gl
+    , ar_receivable_applications_all ara
+    , ar_lookups                     al
+    , ar_cash_receipts_all           acr
+    , ar_cash_receipt_history_all    acrh
+    , ar_payment_schedules_all       aps
+    , hz_cust_accounts               hca
+    , hz_parties                     hp
+    , ar_system_parameters_all       sp
+    , xle_entity_profiles            xep
     where
         hou.set_of_books_id              = sp.set_of_books_id
     and gl.ledger_id                     = sp.set_of_books_id
@@ -250,19 +278,22 @@ from
     and ara.status                       = 'UNAPP'
     and not exists
         ( select 'X'
-          from ar_cash_receipt_history crhin
+          from ar_cash_receipt_history_all crhin
           where crhin.cash_receipt_id = acr.cash_receipt_id
-          and crhin.status = 'REVERSED'
+          and   crhin.org_id = acr.org_id
+          and   crhin.status = 'REVERSED'
         )
     and nvl(ara.confirmed_flag,'Y')      = 'Y'
     and nvl(acr.confirmed_flag,'Y')      = 'Y'
-    and sp.org_id                        = :p_org_id
-    and acr.org_id                       = :p_org_id
+    and xep.legal_entity_id (+)          = acr.legal_entity_id
+    and sp.org_id                        = acr.org_id
     and aps.gl_date_closed               > :p_first_gl_date
     and aps.gl_date                     <= :p_as_of_date
     and 2=2
     group by
-      gl.name
+      xep.name
+    , xep.legal_entity_identifier
+    , gl.name
     , gl.currency_code
     , hou.name
     , hca.cust_account_id
@@ -279,7 +310,9 @@ from
     , acr.currency_code
     union
     select
-      gl.name                                       ledger
+      xep.name                                      legal_entity 
+    , xep.legal_entity_identifier                   legal_entity_identifier 
+    , gl.name                                       ledger
     , hou.name                                      ou_name
     , substr(acr.currency_code,1,3)                 currency_code
     , nvl(acr.exchange_rate,1)                      orig_invoice_rate    
@@ -297,17 +330,20 @@ from
     --
     &lp_amt_due_cols3
     --
+    , gl.currency_code ledger_currency
+    , max(decode(gl.currency_code,:p_reval_currency,1,(select gdr.conversion_rate from gl_daily_conversion_types gdct, gl_daily_rates gdr where gl.currency_code=gdr.from_currency and gdr.to_currency=:p_reval_currency and :p_reval_conv_date=gdr.conversion_date and gdct.user_conversion_type=:p_reval_conv_type and gdct.conversion_type=gdr.conversion_type))) reval_conv_rate
     from
-      hr_operating_units         hou
-    , gl_ledgers                 gl
-    , ar_receivable_applications ara
-    , ar_lookups                 al
-    , ar_cash_receipts           acr
-    , ar_cash_receipt_history    acrh
-    , ar_payment_schedules       aps
-    , hz_cust_accounts           hca
-    , hz_parties                 hp
-    , ar_system_parameters       sp
+      hr_operating_units             hou
+    , gl_ledgers                     gl
+    , ar_receivable_applications_all ara
+    , ar_lookups                     al
+    , ar_cash_receipts_all           acr
+    , ar_cash_receipt_history_all    acrh
+    , ar_payment_schedules_all       aps
+    , hz_cust_accounts               hca
+    , hz_parties                     hp
+    , ar_system_parameters_all       sp
+    , xle_entity_profiles            xep
     where
         hou.set_of_books_id              = sp.set_of_books_id
     and gl.ledger_id                     = sp.set_of_books_id
@@ -324,19 +360,22 @@ from
     and ara.status                       = 'OTHER ACC'
     and not exists
         ( select 'X'
-          from ar_cash_receipt_history crhin
+          from ar_cash_receipt_history_all crhin
           where crhin.cash_receipt_id = acr.cash_receipt_id
-          and crhin.status = 'REVERSED'
+          and   crhin.status = 'REVERSED'
+          and   crhin.org_id = acr.org_id
         )
     and nvl(ara.confirmed_flag,'Y')      = 'Y'
     and nvl(acr.confirmed_flag,'Y')      = 'Y'
-    and sp.org_id                        = :p_org_id
-    and acr.org_id                       = :p_org_id
+    and xep.legal_entity_id (+)          = acr.legal_entity_id
+    and sp.org_id                        = acr.org_id
     and aps.gl_date_closed               > :p_first_gl_date
     and aps.gl_date                     <= :p_as_of_date
     and 2=2
     group by
-      gl.name
+      xep.name
+    , xep.legal_entity_identifier
+    , gl.name
     , gl.currency_code
     , hou.name
     , hca.cust_account_id
@@ -353,11 +392,14 @@ from
     , acr.currency_code
   ) trx
 where
-    :p_operating_unit = :p_operating_unit
-and :p_periods_range = :p_periods_range
+    :p_periods_range = :p_periods_range
 and :p_max_open_periods_range = :p_max_open_periods_range
 group by
-  trx.ledger
+  trx.legal_entity
+, trx.legal_entity_identifier 
+, trx.ledger
+, trx.ledger_currency
+, trx.reval_conv_rate
 , trx.ou_name
 , trx.customer_name
 , trx.account_number

@@ -9,7 +9,7 @@
 
 Oracle's standard audit trail works with a concurrent program 'AuditTrail Update Tables', which creates a set of database triggers for updates, inserts and deletes. The triggers write table changes to an audit table with the name: audited_table_A.
 
-The whole audit trail setup process is describe in this blog: https://www.enginatics.com/blog/how-to-track-master-data-changes-using-oracle-ebs-audit-function-and-blitz-report/
+The whole audit trail setup process is describe in this blog: <a href="https://www.enginatics.com/blog/how-to-track-master-data-changes-using-oracle-ebs-audit-function-and-blitz-report/" rel="nofollow" target="_blank">https://www.enginatics.com/blog/how-to-track-master-data-changes-using-oracle-ebs-audit-function-and-blitz-report/</a>
 -- Excel Examle Output: https://www.enginatics.com/example/fnd-audit-setup/
 -- Library Link: https://www.enginatics.com/reports/fnd-audit-setup/
 -- Run Report: https://demo.enginatics.com/

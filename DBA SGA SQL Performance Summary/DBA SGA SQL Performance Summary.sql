@@ -6,7 +6,7 @@
 /*************************************************************************/
 -- Report Name: DBA SGA SQL Performance Summary
 -- Description: Database SQL performance summary from the SGA to give an overview of top SQL load and performance issues.
-The purpose of this report, compared to 'DBA AWR SQL Performance Summary' is to retrieve SQLs which are not in the AWR, either becasue they ran after the most recent snapshot or because their performance impact is too small to be written to the AWR (see topnsql https://docs.oracle.com/database/121/ARPLS/d_workload_repos.htm#ARPLS69140).
+The purpose of this report, compared to 'DBA AWR SQL Performance Summary' is to retrieve SQLs which are not in the AWR, either becasue they ran after the most recent snapshot or because their performance impact is too small to be written to the AWR (see topnsql <a href="https://docs.oracle.com/database/121/ARPLS/d_workload_repos.htm#ARPLS69140" rel="nofollow" target="_blank">https://docs.oracle.com/database/121/ARPLS/d_workload_repos.htm#ARPLS69140</a>).
 This is useful for example to:
 -Identify SQLs executed by a particular program or UI function without running a trace. Navigate to the UI functionality first, then directly after, execute this report and restrict to the module name in question. Sort by column 'Last Active Time'
 -Identify SQLs and example bind variables to reproduce a SQL execution in a DB access tool. Switch parameter 'Show Bind Values' to 'Yes'
@@ -36,6 +36,7 @@ xxen_util.time(gsa.elapsed_time*gsa.time_factor/1000000) time,
 decode(gsbc.row_number,null,gsa.elapsed_time*gsa.time_factor/1000000) elapsed_time,
 decode(gsbc.row_number,null,gsa.user_io_wait_time*gsa.time_factor/1000000) user_io_wait_time,
 decode(gsbc.row_number,null,gsa.cpu_time*gsa.time_factor/1000000) cpu_time,
+decode(gsbc.row_number,null,(gsa.user_io_wait_time+gsa.cpu_time)/xxen_util.zero_to_null(gsa.cpu_time)) io_factor,
 decode(gsbc.row_number,null,gsa.plsql_exec_time*gsa.time_factor/1000000) plsql_exec_time,
 decode(gsbc.row_number,null,gsa.concurrency_wait_time*gsa.time_factor/1000000) concurrency_wait_time,
 decode(gsbc.row_number,null,gsa.application_wait_time*gsa.time_factor/1000000) application_wait_time,

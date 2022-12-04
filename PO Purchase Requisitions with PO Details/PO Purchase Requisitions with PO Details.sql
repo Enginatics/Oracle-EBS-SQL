@@ -15,7 +15,7 @@ with req as (select
    xxen_util.meaning(prha.type_lookup_code,'REQUISITION TYPE',201) requisition_type,
    prha.segment1 requisition_number,
    trunc(prha.creation_date) creation_date,
-   xxen_util.user_name(prha.created_by) created_by_user,
+   fu.user_name created_by_user,
    ppx.full_name preparer_name,
    prha.description description,
    nvl(xxen_util.meaning(prha.authorization_status,'AUTHORIZATION STATUS',201) ,prha.authorization_status) status,
@@ -29,7 +29,7 @@ with req as (select
    xxen_util.meaning(prla.order_type_lookup_code,'ORDER TYPE',201) line_order_type,
    prla.need_by_date need_by_date,
    ppx2.full_name requestor_name,
-   hl.location_code deliver_to_location,
+   nvl(hrl.location_code,(substrb(rtrim(hzl.address1)||'-'||rtrim(hzl.city),1,60))) deliver_to_location,
    fnd_flex_xml_publisher_apis.process_kff_combination_1('c_flex_cat_disp', 'INV', 'MCAT', mc.structure_id, NULL, mc.category_id, 'ALL', 'Y', 'VALUE') category,
    nvl2(prla.item_id ,fnd_flex_xml_publisher_apis.process_kff_combination_1('c_flex_item_disp', 'INV', 'MSTK', 101, msiv.organization_id, msiv.inventory_item_id, 'ALL', 'Y', 'VALUE') ,null) item,
    nvl(prla.item_description ,msiv.description) line_description,
@@ -61,7 +61,9 @@ with req as (select
    hr_all_organization_units_vl haouv,
    per_people_x ppx,
    per_people_x ppx2,
-   hr_locations hl,
+   fnd_user fu,
+   hr_locations hrl,
+   hz_locations hzl,
    mtl_categories mc,
    mtl_system_items_vl msiv,
    (select 
@@ -84,7 +86,9 @@ with req as (select
    and haouv.organization_id = prha.org_id
    and ppx.person_id = prha.preparer_id
    and ppx2.person_id = prla.to_person_id
-   and hl.location_id = prla.deliver_to_location_id
+   and fu.user_id = prha.created_by
+   and hrl.location_id (+) = prla.deliver_to_location_id
+   and hzl.location_id (+) = prla.deliver_to_location_id
    and mc.category_id = prla.category_id
    and prla2.requisition_line_id (+) = prla.parent_req_line_id
    and msiv.inventory_item_id (+) = prla.item_id

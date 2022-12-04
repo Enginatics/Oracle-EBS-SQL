@@ -48,23 +48,23 @@ with xtb as
    from
     xla_trial_balances xtb,
     xla_tb_definitions_vl xtdv,
-    (select 
-      gl.ledger_id, 
+    (select
+      gl.ledger_id,
       :p_as_of_date as_of_date
      from
       gl_ledgers gl
-     where 
+     where
          :p_as_of_date is not null
      and ( (nvl(fnd_profile.value('XLA_USE_LEDGER_SECURITY'),'N')='N') or
-           (nvl(fnd_profile.value('XLA_USE_LEDGER_SECURITY'),'N')='Y' and 
+           (nvl(fnd_profile.value('XLA_USE_LEDGER_SECURITY'),'N')='Y' and
             exists
              (select 1
-              from 
+              from
                gl_access_sets gas,
                gl_access_set_assignments asa
-              where 
-               gas.access_set_id=asa.access_set_id and 
-               asa.ledger_id=gl.ledger_id and 
+              where
+               gas.access_set_id=asa.access_set_id and
+               asa.ledger_id=gl.ledger_id and
                ( gas.access_set_id=nvl(fnd_profile.value('GL_ACCESS_SET_ID'),'-1') or
                  gas.access_set_id=nvl(fnd_profile.value('XLA_GL_SECONDARY_ACCESS_SET_ID'),'-1')
                )
@@ -88,15 +88,15 @@ with xtb as
            :p_as_of_date is null
        and :p_relative_period is not null
        and ( (nvl(fnd_profile.value('XLA_USE_LEDGER_SECURITY'),'N')='N') or
-             (nvl(fnd_profile.value('XLA_USE_LEDGER_SECURITY'),'N')='Y' and 
+             (nvl(fnd_profile.value('XLA_USE_LEDGER_SECURITY'),'N')='Y' and
               exists
                (select 1
-                from 
+                from
                  gl_access_sets gas,
                  gl_access_set_assignments asa
-                where 
-                 gas.access_set_id=asa.access_set_id and 
-                 asa.ledger_id=gl.ledger_id and 
+                where
+                 gas.access_set_id=asa.access_set_id and
+                 asa.ledger_id=gl.ledger_id and
                  ( gas.access_set_id=nvl(fnd_profile.value('GL_ACCESS_SET_ID'),'-1') or
                    gas.access_set_id=nvl(fnd_profile.value('XLA_GL_SECONDARY_ACCESS_SET_ID'),'-1')
                  )
@@ -173,9 +173,11 @@ ap_inv as
   --
   hp.party_name               third_party_name,
   hps.party_site_name         third_party_site_name,
+  ftv2.territory_short_name   third_party_site_country,
   asu.segment1                vendor_number,
   asu.vendor_name             vendor_name,
   assa.vendor_site_code       vendor_site,
+  ftv1.territory_short_name   vendor_site_country,
   aia.invoice_num             invoice_number,
   aia.doc_sequence_value      invoice_document_number,
   aia.invoice_date            invoice_date,
@@ -189,6 +191,8 @@ ap_inv as
                               invoice_status,
   xxen_util.meaning(aia.payment_status_flag,'INVOICE PAYMENT STATUS',200)
                               invoice_payment_status,
+  aia.dispute_reason          dispute_reason,
+  apsa.iby_hold_reason        payment_hold_reason,
   aia.invoice_currency_code   invoice_currency,
   aia.invoice_amount          invoice_amount,
   nvl(aia.base_amount,aia.invoice_amount) invoice_base_amount,
@@ -226,8 +230,11 @@ ap_inv as
   ap_payment_schedules_all apsa,
   ap_suppliers asu,
   ap_supplier_sites_all assa,
+  fnd_territories_vl ftv1,
   hz_parties hp,
   hz_party_sites hps,
+  hz_locations hl,
+  fnd_territories_vl ftv2,
   gl_ledgers gl,
   fnd_currencies_vl fcv,
   hr_all_organization_units_vl haouv
@@ -241,11 +248,14 @@ ap_inv as
   apsa.invoice_id=nvl(xte.source_id_int_1,-99) and
   aia.vendor_id=asu.vendor_id(+) and
   aia.vendor_site_id=assa.vendor_site_id(+) and
+  assa.country=ftv1.territory_code(+) and
   aia.party_id=hp.party_id and
   aia.party_site_id=hps.party_site_id(+) and
   (   (asu.employee_id is null and hps.party_site_id is not null)
    or ( asu.employee_id is not null)
   ) and
+  hps.location_id=hl.location_id(+) and
+  hl.country=ftv2.territory_code(+) and
   xtb.ledger_id=gl.ledger_id and
   gl.currency_code=fcv.currency_code and
   haouv.organization_id=aia.org_id and
@@ -262,9 +272,11 @@ select
  ap_inv.third_party_name,
  ap_inv.third_party_number,
  ap_inv.third_party_site_name,
+ ap_inv.third_party_site_country,
  ap_inv.vendor_number,
  ap_inv.vendor_name,
  ap_inv.vendor_site,
+ ap_inv.vendor_site_country,
  ap_inv.operating_unit,
  ap_inv.source_trx_type transaction_type,
  ap_inv.source_transaction_number transaction_number,
@@ -277,6 +289,8 @@ select
  ap_inv.invoice_description,
  ap_inv.invoice_status,
  ap_inv.invoice_payment_status,
+ ap_inv.dispute_reason,
+ ap_inv.payment_hold_reason,
  ap_inv.invoice_currency,
  case when ap_inv.payment_num = first_value(ap_inv.payment_num) over (partition by ap_inv.invoice_id order by ap_inv.payment_num) then ap_inv.invoice_amount end invoice_amount,
  case when ap_inv.payment_num = first_value(ap_inv.payment_num) over (partition by ap_inv.invoice_id order by ap_inv.payment_num) then ap_inv.invoice_base_amount end invoice_base_amount,

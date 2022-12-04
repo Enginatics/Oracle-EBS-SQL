@@ -37,7 +37,7 @@ DB package:  CE_CEXSTMRR_XMLP_PKG (required to initialize security)
 
 with ce_bank_statements as
 (
-select
+select /*+ ordered index(hpb hz_parties_u1) index(hpbb hz_parties_u1) index(xep xle_entity_profiles_u1) index(gcc gl_code_combinations_u1) push_pred(nsf_recon) push_pred(oth_recon) */
  -- Statement Details
  xep.name legal_entity,
  cbagv.bank_account_num  bank_account_num,
@@ -190,7 +190,7 @@ select
  csl.original_amount trx_original_amount,
  --
  nvl( csl.customer_text
-    , ( select crtv.agent_name
+    , ( select /*+ push_pred */ crtv.agent_name
         from   ce_reconciled_transactions_v crtv
         where  crtv.statement_line_id = csl.statement_line_id and
                rownum <= 1
@@ -199,7 +199,7 @@ select
  csl.bank_account_text agent_bank_account,
  csl.invoice_text invoice,
  csl.trx_text description,
- ( select distinct
+ ( select /*+ push_pred */ distinct
      listagg(crev.error_message,', ') within group (order by crev.error_message) over ()
    from
      ( select distinct
@@ -289,75 +289,10 @@ where
  oth_recon.statement_line_id (+) = decode(csl.trx_type,'NSF',null,csl.statement_line_id) and
  1=1
 )
-,ce_recon_transactions as
-(
-select
- crtv.statement_line_id,
- crtv.type_meaning recon_trx_type,
- crtv.trx_number recon_trx_number,
- crtv.currency_code recon_trx_currency,
- crtv.amount recon_trx_amount,
- crtv.bank_account_amount recon_bank_account_amount,
- case when crtv.status in ('STOP INITIATED', 'VOIDED', 'V')
- then to_number(null)
- else crtv.amount_cleared
- end recon_trx_amount_cleared,
- trunc(crtv.cleared_date) recon_trx_cleared_date,
- trunc(crtv.maturity_date) recon_trx_maturity_date,
- trunc(crtv.value_date) recon_trx_value_date,
- trunc(crtv.gl_date) recon_trx_gl_date,
- trunc(crtv.trx_date) recon_trx_date,
- trunc(crtv.exchange_rate_date) recon_trx_exchange_rate_date,
- crtv.exchange_rate_type recon_trx_exchange_rate_type,
- crtv.exchange_rate_dsp recon_trx_exchange_rate,
- crtv.bank_charges recon_trx_bank_charges,
- crtv.bank_errors recon_trx_bank_errors,
- crtv.remittance_number recon_trx_remittance_number,
- crtv.batch_name recon_trx_batch_name,
- case when crtv.cash_receipt_id is not null
-       and crtv.application_id = 222
- then ( select ifte.payment_system_order_number
-        from   ar_cash_receipts_all acra,
-               iby_fndcpt_tx_extensions ifte
-        where  acra.payment_trxn_extension_id = ifte.trxn_extension_id(+)
-        and    acra.cash_receipt_id = crtv.cash_receipt_id
-        and    rownum <= 1
-      )
- else null
- end recon_trx_pson,
- crtv.agent_name recon_trx_agent_name,
- crtv.reference_type_dsp recon_trx_reference_type,
- case
- when crtv.reference_type = 'REMITTANCE'
- then ( select aba.name
-        from   ar_batches_all aba
-        where  aba.batch_id = crtv.reference_id
-        and    rownum <= 1)
- when crtv.reference_type = 'PAYMENT_BATCH'
- then to_char(crtv.reference_id)
- when crtv.reference_type = 'RECEIPT'
- then ( select acra.receipt_number
-        from   ar_cash_receipts_all acra
-        where  acra.cash_receipt_id = crtv.reference_id
-        and    rownum <= 1)
- when crtv.reference_type in ('PAYMENT','REFUND')
- then ( select to_char(aca.check_number)
-        from   ap_checks_all aca
-        where  aca.check_id = crtv.reference_id
-        and    rownum <= 1)
- end recon_trx_reference_number,
- haou.name recon_trx_operating_unit,
- crtv.status_dsp recon_trx_status
-from
- ce_reconciled_transactions_v crtv,
- hr_all_organization_units    haou
-where
- haou.organization_id (+) = crtv.org_id and
- 2=2
-)
+&lp_recon_trx_qry
 --
 -- Main Query Starts Here
-select /*+ use_nl(crt cebs) */
+select &lp_recon_trx_hint
  cebs.legal_entity,
  cebs.bank_account_num,
  cebs.bank_account_name,
@@ -436,30 +371,7 @@ select /*+ use_nl(crt cebs) */
  cebs.error_messages,
  --
  -- Reconcilation Trx Details
- crt.recon_trx_type,
- crt.recon_trx_number,
- crt.recon_trx_currency,
- crt.recon_trx_amount,
- crt.recon_bank_account_amount,
- crt.recon_trx_amount_cleared,
- crt.recon_trx_cleared_date,
- crt.recon_trx_maturity_date,
- crt.recon_trx_value_date,
- crt.recon_trx_gl_date,
- crt.recon_trx_date,
- crt.recon_trx_exchange_rate_date,
- crt.recon_trx_exchange_rate_type,
- crt.recon_trx_exchange_rate,
- crt.recon_trx_bank_charges,
- crt.recon_trx_bank_errors,
- crt.recon_trx_remittance_number,
- crt.recon_trx_batch_name,
- crt.recon_trx_pson,
- crt.recon_trx_agent_name,
- crt.recon_trx_reference_type,
- crt.recon_trx_reference_number,
- crt.recon_trx_operating_unit,
- crt.recon_trx_status,
+ &lp_recon_trx_col
  --
  -- GL Cash Account Details
  cebs.gl_company_code,
@@ -479,11 +391,11 @@ select /*+ use_nl(crt cebs) */
  cebs.bank_name || ' - ' || cebs.bank_account_num || ' - ' || cebs.bank_account_name || ' (' ||  cebs.bank_account_currency || ')' bank_account_pivot_label,
  to_char(cebs.statement_date,'YYYY-MM-DD') || ' - ' || cebs.statement_num  statement_num_pivot_label
 from
- ce_bank_statements        cebs,
- ce_recon_transactions     crt
+ ce_bank_statements        cebs
+ &lp_recon_trx_tab
 where
- crt.statement_line_id  (+) = cebs.statement_line_id and
  3=3
+ &lp_recon_trx_join
 order by
  cebs.legal_entity,
  cebs.bank_name,
@@ -491,5 +403,5 @@ order by
  cebs.statement_date,
  cebs.statement_num,
  cebs.line_num,
- cebs.recon_sort_num,
- lpad(crt.recon_trx_number, 240)
+ cebs.recon_sort_num
+ &lp_recon_trx_ord

@@ -11,6 +11,8 @@
 -- Run Report: https://demo.enginatics.com/
 
 select
+x.legal_entity,
+x.legal_entity_identifier,
 x.ledger,
 x.operating_unit,
 x.invoice_number,
@@ -29,6 +31,7 @@ x.adjustment,
 x.credit,
 x.due_remaining,
 x.dispute_amount,
+&reval_cols
 x.state,
 x.status,
 x.last_date_cash_applied,
@@ -65,6 +68,8 @@ xxen_util.client_time(x.last_update_date) last_update_date
 from
 (
 select
+nvl(xep1.name,xep2.name) legal_entity,
+nvl(xep1.legal_entity_identifier,xep2.legal_entity_identifier) legal_entity_identifier,
 gl.name ledger,
 hou.name operating_unit,
 acia.cons_billing_number invoice_number,
@@ -170,7 +175,16 @@ nvl(rcta.creation_date,acra.creation_date) creation_date,
 nvl(rcta.last_updated_by,acra.last_updated_by) last_updated_by,
 nvl(rcta.last_update_date,acra.last_update_date) last_update_date,
 nvl(rcta.receipt_method_id,acra.receipt_method_id) receipt_method_id,
-nvl(rcta.payment_trxn_extension_id,acra.payment_trxn_extension_id) payment_trxn_extension_id
+nvl(rcta.payment_trxn_extension_id,acra.payment_trxn_extension_id) payment_trxn_extension_id,
+-- reval
+gl.currency_code ledger_currency,
+decode(gl.currency_code,:p_reval_currency,1,(select gdr.conversion_rate from gl_daily_conversion_types gdct, gl_daily_rates gdr where gl.currency_code=gdr.from_currency and gdr.to_currency=:p_reval_currency and :p_reval_conv_date=gdr.conversion_date and gdct.user_conversion_type=:p_reval_conv_type and gdct.conversion_type=gdr.conversion_type)) reval_conv_rate,
+apsa.amount_due_original * nvl(apsa.exchange_rate,1) acctd_due_original,
+apsa.amount_applied * nvl(apsa.exchange_rate,1) acctd_payment_applied,
+apsa.amount_adjusted * nvl(apsa.exchange_rate,1) acctd_adjustment,
+apsa.amount_credited * nvl(apsa.exchange_rate,1) acctd_credit,
+apsa.acctd_amount_due_remaining,
+case when rctta.accounting_affect_flag='Y' and apsa.amount_in_dispute<>0 then apsa.amount_in_dispute * nvl(apsa.exchange_rate,1) end acctd_dispute_amount
 from
 gl_ledgers gl,
 hr_operating_units hou,
@@ -194,7 +208,9 @@ ce_bank_acct_uses_all cbaua,
 ce_bank_accounts cba,
 hz_parties hp4,
 hz_relationships hr,
-(select hop.* from hz_organization_profiles hop where sysdate between hop.effective_start_date and nvl(hop.effective_end_date,sysdate)) hop
+(select hop.* from hz_organization_profiles hop where sysdate between hop.effective_start_date and nvl(hop.effective_end_date,sysdate)) hop,
+xle_entity_profiles xep1,
+xle_entity_profiles xep2
 where
 1=1 and
 apsa.payment_schedule_id>0 and
@@ -233,7 +249,9 @@ hr.subject_table_name(+)='HZ_PARTIES' and
 hr.subject_type(+)='ORGANIZATION' and
 hr.object_table_name(+)='HZ_PARTIES' and
 hr.object_type(+)='ORGANIZATION' and
-hr.object_id=hop.party_id(+)
+hr.object_id=hop.party_id(+) and
+xep1.legal_entity_id(+)=rcta.legal_entity_id and
+xep2.legal_entity_id(+)=acra.legal_entity_id
 ) x,
 ar_receipt_methods arm,
 iby_fndcpt_pmt_chnnls_tl ifpct,

@@ -44,7 +44,7 @@ bre.organization_id=worp.organization_id and
 br1.resource_type=2)
 union
 (select msik.concatenated_segments
-from mtl_system_items_kfv msik, bom_resource_equipments bre,bom_resources br2
+from mtl_system_items_b_kfv msik, bom_resource_equipments bre,bom_resources br2
 where bre.inventory_item_id=msik.inventory_item_id and
 msik.item_type='EQ'  and
 bre.instance_id =worp.instance_id and

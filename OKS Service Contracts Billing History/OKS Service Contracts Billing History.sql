@@ -20,9 +20,9 @@ For subscription lines (lse_id=46, lty_code='SUBSCRIPTION') without a subline, f
 Unique identifier for the billing entry is obtl.bill_instance_number, which links to receivables line rctla.interface_line_attribute3.
 When driving queries from the OKS side, make sure to include a to_char() conversion for the numeric obtl.bill_instance_number, to enable index use on character type rctla.interface_line_attribute3.
 
-The OKS billing history does not have a link to the originating billing schedule record in oks_level_elements (see https://www.enginatics.com/reports/oks-service-contracts-billing-schedule/)
+The OKS billing history does not have a link to the originating billing schedule record in oks_level_elements (see <a href="https://www.enginatics.com/reports/oks-service-contracts-billing-schedule/" rel="nofollow" target="_blank">https://www.enginatics.com/reports/oks-service-contracts-billing-schedule/</a>)
 
-An overview of oracle service contracts and other line types can be found here: https://www.enginatics.com/reports/okc-contract-lines-summary/
+An overview of oracle service contracts and other line types can be found here: <a href="https://www.enginatics.com/reports/okc-contract-lines-summary/" rel="nofollow" target="_blank">https://www.enginatics.com/reports/okc-contract-lines-summary/</a>
 
 oks_billing_history_v
 -- Excel Examle Output: https://www.enginatics.com/example/oks-service-contracts-billing-history/

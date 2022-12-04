@@ -10,26 +10,31 @@
 -- Library Link: https://www.enginatics.com/reports/msc-exceptions/
 -- Run Report: https://demo.enginatics.com/
 
-select
+select /*+ push_pred(medv)*/
  mai.instance_code planning_instance,
  mp.compile_designator plan_name,
  medv.organization_code,
+ medv.project_number,
+ medv.task_number,
+ &lp_custom_attributes
  medv.planner_code,
  medv.buyer_name, 
- msc_phub_util.get_exception_group (medv.exception_type) exception_group,
+ msc_phub_util.get_exception_group&a2m_dblink (medv.exception_type) exception_group,
  medv.exception_type_text exception_type,
- msc_get_name.lookup_meaning ('MSC_ADI_YES_NO',medv.action_taken)  action_taken,
+ msc_get_name.lookup_meaning&a2m_dblink ('MSC_ADI_YES_NO',medv.action_taken)  action_taken,
  -- item
  medv.item_segments item,
  medv.item_description,
  mcs.category_set_name,
  medv.category_name,
+ regexp_substr(medv.category_name,'[^.]+',1,1) category1,
+ regexp_substr(medv.category_name,'[^.]+',1,2) category2,
  medv.end_item_segments                end_item,
  -- order details
  medv.quantity                         quantity, 
  medv.order_number                     order_number,
  coalesce(medv.order_type,
-          msc_get_name.lookup_meaning ('MSC_DEMAND_ORIGINATION',md.origination_type)
+          msc_get_name.lookup_meaning&a2m_dblink ('MSC_DEMAND_ORIGINATION',md.origination_type)
          )                             order_type,
  medv.end_order_number,
  medv.firm_type,
@@ -92,10 +97,10 @@ select
  medv.supply_planner_code,
  medv.supply_planning_group,
  medv.supply_project_number,
+ medv.supply_task_number,
  medv.supply_source_org_code,
  medv.supply_supplier_name,
  medv.supply_supplier_site,
- medv.supply_task_number,
  -- supplier details
  medv.supplier_name,
  medv.supplier_site,
@@ -112,25 +117,36 @@ select
  medv.department_line_code,
  medv.resource_type_code,
  medv.resource_code,
- medv.utilization_rate load_ratio
+ medv.utilization_rate load_ratio,
+ -- counts
+ count(distinct medv.item_segments) over () item_count,
+ count(distinct medv.end_item_segments) over () end_item_count,
+ count(distinct medv.order_type || ':' || medv.order_number) over () order_count,
+ -- item dff attributes
+ &lp_item_dff_cols
+ '.' last_col_flag
 from 
- msc_apps_instances       mai
-,msc_plans                mp 
-,msc_exception_details_v  medv
-,msc_category_sets        mcs
-,msc_demands              md
+ msc_apps_instances&a2m_dblink       mai
+,msc_plans&a2m_dblink                mp 
+,msc_exception_details_v&a2m_dblink  medv
+,msc_system_items&a2m_dblink         msi
+,msc_category_sets&a2m_dblink        mcs
+,msc_demands&a2m_dblink              md
 where
-    mai.instance_id       = mp.sr_instance_id 
-and mp.plan_id            = medv.plan_id
-and mp.sr_instance_id     = medv.sr_instance_id
-and medv.sr_instance_id   = mcs.sr_instance_id  (+)
-and medv.category_set_id  = mcs.category_set_id (+)
-and medv.sr_instance_id   = md.sr_instance_id (+)
-and medv.plan_id          = md.plan_id (+)
-and medv.demand_id        = md.demand_id (+)
-and mai.instance_code = :p_instance_code
-and mp.compile_designator = :p_plan_name
-and nvl(mcs.category_set_name,:p_cat_set_name) = :p_cat_set_name
+    mai.instance_id        = mp.sr_instance_id 
+and mp.plan_id             = medv.plan_id
+and mp.sr_instance_id      = medv.sr_instance_id
+and medv.sr_instance_id    = msi.sr_instance_id
+and medv.plan_id           = msi.plan_id
+and medv.organization_id   = msi.organization_id
+and medv.inventory_item_id = msi.inventory_item_id
+and medv.sr_instance_id    = mcs.sr_instance_id  (+)
+and medv.category_set_id   = mcs.category_set_id (+)
+and medv.sr_instance_id    = md.sr_instance_id (+)
+and medv.plan_id           = md.plan_id (+)
+and medv.demand_id         = md.demand_id (+)
+and mai.instance_code      = :p_instance_code
+and mp.compile_designator  = :p_plan_name
 and 1=1
 order by
  mai.instance_code,

@@ -5,6 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: Blitz Report Column Translations
+-- Description: None
 -- Excel Examle Output: https://www.enginatics.com/example/blitz-report-column-translations/
 -- Library Link: https://www.enginatics.com/reports/blitz-report-column-translations/
 -- Run Report: https://demo.enginatics.com/

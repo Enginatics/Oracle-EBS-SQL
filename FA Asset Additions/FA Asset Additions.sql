@@ -27,6 +27,11 @@ select
   x.reserve_account,
   x.asset_number,
   x.asset_description,
+  x.asset_category,
+  x.tag_number,
+  x.manufacturer_name,
+  x.serial_number,
+  x.model_number,
   x.date_placed_in_service,
   x.method depreciation_method,
   x.d_life "Life Yr.Mo",
@@ -50,6 +55,11 @@ from
      decode(fah.asset_type, 'CIP', null,fcb.deprn_reserve_acct) reserve_account,
      fa.asset_number,
      fa.description asset_description,
+     fcbk.concatenated_segments asset_category,
+     fa.tag_number,
+     fa.manufacturer_name,
+     fa.serial_number,
+     fa.model_number,
      fb.date_placed_in_service,
      fb.deprn_method_code method,
      fb.life_in_months life,
@@ -69,6 +79,7 @@ from
      fa_asset_history        fah,
      fa_transaction_headers  fth,
      fa_category_books       fcb,
+     fa_categories_b_kfv     fcbk,
      fa_distribution_history fdh,
      gl_code_combinations    gcc,
      &lp_fa_adjustments      fadj,
@@ -98,6 +109,7 @@ from
      fcb.book_type_code = fth.book_type_code and
      fcb.category_id = fah.category_id and
      fbc.book_type_code = :p_book and
+     fah.category_id = fcbk.category_id and
      gsob.set_of_books_id = fbc.set_of_books_id and
      gsob.currency_code = fc.currency_code and
      fdd.book_type_code (+) = fadj.book_type_code and
@@ -118,6 +130,11 @@ from
      decode(fah.asset_type, 'CIP', null,fcb.deprn_reserve_acct),
      fa.asset_number,
      fa.description,
+     fcbk.concatenated_segments,
+     fa.tag_number,
+     fa.manufacturer_name,
+     fa.serial_number,
+     fa.model_number,
      fb.date_placed_in_service,
      fb.deprn_method_code,
      fb.life_in_months,
@@ -140,6 +157,11 @@ from
      decode(fah.asset_type, 'CIP', null, fcb.deprn_reserve_acct) reserve_account,
      fa.asset_number,
      fa.description asset_description,
+     fcbk.concatenated_segments asset_category,
+     fa.tag_number,
+     fa.manufacturer_name,
+     fa.serial_number,
+     fa.model_number,
      fb.date_placed_in_service,
      fb.deprn_method_code method,
      fb.life_in_months life,
@@ -158,6 +180,7 @@ from
      fa_additions            fa,
      fa_asset_history        fah,
      fa_category_books       fcb,
+     fa_categories_b_kfv     fcbk,
      gl_code_combinations    gcc,
      fa_distribution_history fdh,
      &lp_fa_books            fb,
@@ -186,7 +209,7 @@ from
      fth.date_effective >= fdh.date_effective and
      fth.date_effective < nvl(fdh.date_ineffective, sysdate) and
      gcc.code_combination_id = fdh.code_combination_id and
-      fl.lookup_type = 'ASSET TYPE' and
+     fl.lookup_type = 'ASSET TYPE' and
      fah.asset_type =  fl.lookup_code and
      fa.asset_id = fth.asset_id and
      fah.asset_id = fth.asset_id and
@@ -197,12 +220,15 @@ from
      fcb.book_type_code = fth.book_type_code and
      fcb.category_id = fah.category_id and
      fbc.book_type_code = :p_book and
+     fah.category_id = fcbk.category_id and
      gsob.set_of_books_id = fbc.set_of_books_id and
      gsob.currency_code = fc.currency_code and
      fds.book_type_code (+) = fth.book_type_code and
      fds.asset_id (+) = fth.asset_id and
      fds.period_counter (+) = fth.period_counter
   ) x
+where
+1=1
 order by
   x.company_name,
   x.ledger,

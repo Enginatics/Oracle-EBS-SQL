@@ -65,6 +65,7 @@ xxen_util.time(x.elapsed_time) time,
 decode(x.row_number,null,x.elapsed_time) elapsed_time,
 decode(x.row_number,null,x.user_io_wait_time) user_io_wait_time,
 decode(x.row_number,null,x.cpu_time) cpu_time,
+decode(x.row_number,null,(x.user_io_wait_time+x.cpu_time)/xxen_util.zero_to_null(x.cpu_time)) io_factor,
 decode(x.row_number,null,x.plsql_exec_time) plsql_exec_time,
 decode(x.row_number,null,x.concurrency_wait_time) concurrency_wait_time,
 decode(x.row_number,null,x.application_wait_time) application_wait_time,
@@ -106,7 +107,8 @@ x0.buffer_io/xxen_util.zero_to_null(x0.elapsed_time) io_sec,
 (x0.buffer_io-x0.disk_io)/xxen_util.zero_to_null(x0.cpu_time) buffer_rate,
 x0.disk_io/xxen_util.zero_to_null(x0.user_io_wait_time) disk_rate,
 100*x0.disk_io/xxen_util.zero_to_null(x0.buffer_io) disk_percentage,
-x0.*
+x0.*,
+dhst.sql_text
 from
 (
 select distinct
@@ -221,7 +223,11 @@ dhss.dbid=dhsb.dbid(+) and
 dhss.instance_number=dhsb.instance_number(+) and
 dhss.snap_id=dhsb.snap_id(+) and
 dhss.sql_id=dhsb.sql_id(+)
-) x0
+) x0,
+dba_hist_sqltext dhst
+where
+x0.dbid=dhst.dbid and
+x0.sql_id=dhst.sql_id
 ) x
 order by
 case when :aggregate_level in ('Module per day','SQL per day') then x.date_ end desc,

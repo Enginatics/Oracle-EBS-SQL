@@ -11,8 +11,8 @@ Description: Transaction Historical Summary Report
 This report provides equivalent functionality to the Oracle standard Transaction historical summary (XML) report.
 
 Templates
-Quantity/Value Template ? for use with the Quantity and Value Selection Option
-Balance Template ? for use with the Balance Selection Option
+Quantity/Value Template – for use with the Quantity and Value Selection Option
+Balance Template – for use with the Balance Selection Option
 
 The templates provide a summary pivot based on the selected sort option parameter with drill down to the detail data.
 

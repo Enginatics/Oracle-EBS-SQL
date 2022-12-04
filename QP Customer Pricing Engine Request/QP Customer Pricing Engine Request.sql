@@ -362,8 +362,8 @@ from
   hz_customer_profiles         hcp2,
   hz_cust_profile_classes      hcpc2,
   -- items
-  mtl_system_items_kfv         msik,
-  mtl_system_items_kfv         msik2,
+  mtl_system_items_b_kfv         msik,
+  mtl_system_items_b_kfv         msik2,
   -- requested price list
   qp_secu_list_headers_vl      qslhv1,
   hr_all_organization_units_vl haouv3,

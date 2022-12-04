@@ -70,7 +70,7 @@ select
     , ( select msik.inventory_item_id
              , msik.concatenated_segments product
              , msik.description           product_description
-        from   mtl_system_items_kfv       msik
+        from   mtl_system_items_b_kfv       msik
         where  msik.organization_id =
                (select mp.master_organization_id
                 from   mtl_parameters mp

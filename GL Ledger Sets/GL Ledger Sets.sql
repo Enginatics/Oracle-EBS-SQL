@@ -5,7 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: GL Ledger Sets
--- Description: Master data report showing GL ledger sets and corresponding ledgers.
+-- Description: Master data report showing GL ledger sets and included ledgers.
 -- Excel Examle Output: https://www.enginatics.com/example/gl-ledger-sets/
 -- Library Link: https://www.enginatics.com/reports/gl-ledger-sets/
 -- Run Report: https://demo.enginatics.com/
@@ -24,13 +24,12 @@ xxen_util.meaning(gl.ledger_category_code,'GL_ASF_LEDGER_CATEGORY',101) ledger_c
 gl.description ledger_description
 from
 gl_ledger_sets_v glsv,
-gl_ledger_set_norm_assign glsna,
+gl_ledger_set_norm_assign_v glsnav,
 gl_ledgers gl
 where
 1=1 and
-glsv.ledger_id=glsna.ledger_set_id and
-nvl(glsna.status_code,'X')<>'D' and
-glsna.ledger_id=gl.ledger_id
+glsv.ledger_id=glsnav.ledger_set_id and
+glsnav.ledger_id=gl.ledger_id
 order by
 glsv.name,
 decode(gl.ledger_category_code,'PRIMARY',1,'SECONDARY',2,'ALC',3,'NONE',4),

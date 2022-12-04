@@ -16,6 +16,13 @@ DB package: XXEN_FA_FAS_XMLP
 -- Library Link: https://www.enginatics.com/reports/fa-depreciation-reserve/
 -- Run Report: https://demo.enginatics.com/
 
+with
+&lp_impairment_start_bal_query
+&lp_impairment_end_bal_query
+&lp_impairment_amt_query
+--
+-- Main Query
+--
 select
   x.company_name         company_name,
   x.ledger               ledger,
@@ -53,6 +60,19 @@ select
   when 'T' then 'Tax Adjustment'
   when 'B' then 'Revaluation and Tax Adjustments'
   end                    cost_ctr_adj_type,
+  --
+  -- Impairments
+  --
+  x.begin_impairment,
+  x.impairment,
+  x.end_impairment,
+  x.impair_reserve_acct impairment_reserve_account,
+  case when x.impair_reserve_acct != x.impair_reserve_acct_old
+  then
+   '*'
+  else
+   null
+  end impairment_rsv_acct_chg_flag,
   --
   x.company_name || ': ' || x.book || ' (' || x.currency || ')' comp_book_curr_label
 from
@@ -97,21 +117,41 @@ from
     fa_fasrsves_xmlp_pkg.reval_tax_flagformula
       ( round(sum(decode(fbrg.source_type_code, 'REVALUATION', nvl(fbrg.amount,0), null)), fc.precision)
       , round(sum(decode(fbrg.source_type_code, 'TAX'        , nvl(fbrg.amount,0), null)), fc.precision)
-      ) reval_tax_flag
+      ) reval_tax_flag,
+    --
+    -- Impairments
+    --
+    nvl(round(sum(decode(fbrg.source_type_code,'BEGIN',nvl(qisb.impairment_reserve,0) , null)), fc.precision),0) begin_impairment,
+    nvl(round(sum(decode(fbrg.source_type_code,'DEPRECIATION',nvl(qi.impairment_amount,0) , null)), fc.precision),0) impairment,
+    nvl(round(sum(decode(fbrg.source_type_code,'END',nvl(qieb.impairment_reserve,0) , null)), fc.precision),0) end_impairment,
+    max(decode(fbrg.source_type_code,'BEGIN',qisb.impair_reserve_acct)) impair_reserve_acct_old,
+    max(decode(fbrg.source_type_code,'END',qieb.impair_reserve_acct)) impair_reserve_acct
   from
-    fa_system_controls fsc,
-    gl_ledgers gl,
-    fnd_currencies fc,
-    fa_balances_report_gt fbrg,
-    fa_additions          fa,
-    gl_code_combinations  gcc_dh,
-    gl_code_combinations  gcc_aj
+    fa_system_controls      fsc,
+    gl_ledgers              gl,
+    fnd_currencies          fc,
+    fa_balances_report_gt   fbrg,
+    fa_additions            fa,
+    gl_code_combinations    gcc_dh,
+    gl_code_combinations    gcc_aj,
+    q_impairment_start_bal  qisb,
+    q_impairment_end_bal    qieb,
+    q_impairment            qi
   where
     gl.ledger_id                   = :p_ca_set_of_books_id and
     fc.currency_code               = gl.currency_code and
     fa.asset_id                    = fbrg.asset_id and
     gcc_dh.code_combination_id     = fbrg.distribution_ccid and
     gcc_aj.code_combination_id (+) = fbrg.adjustment_ccid and
+    qisb.asset_id              (+) = nvl2(:p_show_impairments,decode(fbrg.source_type_code,'BEGIN',fbrg.asset_id,null),null) and
+    qisb.code_combination_id   (+) = nvl2(:p_show_impairments,decode(fbrg.source_type_code,'BEGIN',fbrg.distribution_ccid,null),null) and
+    qisb.deprn_reserve_acct    (+) = nvl2(:p_show_impairments,decode(fbrg.source_type_code,'BEGIN',fbrg.category_books_account,null),null) and
+    qieb.asset_id              (+) = nvl2(:p_show_impairments,decode(fbrg.source_type_code,'END',fbrg.asset_id,null),null) and
+    qieb.code_combination_id   (+) = nvl2(:p_show_impairments,decode(fbrg.source_type_code,'END',fbrg.distribution_ccid,null),null) and
+    qieb.deprn_reserve_acct    (+) = nvl2(:p_show_impairments,decode(fbrg.source_type_code,'END',fbrg.category_books_account,null),null) and
+    qi.asset_id                (+) = nvl2(:p_show_impairments,decode(fbrg.source_type_code,'DEPRECIATION',fbrg.asset_id,null),null) and
+    qi.code_combination_id     (+) = nvl2(:p_show_impairments,decode(fbrg.source_type_code,'DEPRECIATION',fbrg.distribution_ccid,null),null) and
+    qi.deprn_reserve_acct      (+) = nvl2(:p_show_impairments,decode(fbrg.source_type_code,'DEPRECIATION',fbrg.category_books_account,null),null) and
     1=1
   group by
     fsc.company_name,

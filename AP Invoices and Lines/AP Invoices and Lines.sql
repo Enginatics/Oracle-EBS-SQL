@@ -46,6 +46,21 @@ with ap_inv as
   xxen_util.meaning(aia.invoice_type_lookup_code,'INVOICE TYPE',200) invoice_type,
   aia.source invoice_source,
   aia.description invoice_description,
+  nvl(
+   (select 
+    xxen_util.meaning('Y','YES_NO',0)
+    from 
+    fnd_document_entities fde,
+    fnd_attached_documents fad
+    where
+    fad.entity_name = fde.data_object_code and
+    fde.application_id = 200 and
+    fde.table_name = 'AP_INVOICES' and
+    fad.pk1_value = to_char(aia.invoice_id) and
+    rownum <= 1
+   ),
+   xxen_util.meaning('N','YES_NO',0)
+  ) has_attachment,
   aia.invoice_currency_code,
   aia.payment_currency_code,
   aia.invoice_amount,
@@ -372,6 +387,7 @@ ap_inv.days_due,
 ap_inv.invoice_type,
 ap_inv.invoice_source,
 ap_inv.invoice_description,
+ap_inv.has_attachment,
 ap_inv.invoice_currency_code,
 ap_inv.payment_currency_code,
 case ap_inv.first_invoice when 'Y' then ap_inv.invoice_amount end invoice_amount,

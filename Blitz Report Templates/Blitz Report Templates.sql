@@ -12,10 +12,12 @@
 
 select distinct
 xrtv.report_name,
+xrtv.report_description,
 xrtv.category,
 xrtv.template_name,
+xrtv.description,
 xrtv.owner,
-xxen_util.meaning(xrtv.public_flag,'YES_NO',0) public_flag,
+xrtv.sharing,
 xxen_util.meaning(xrtv.global_default,'YES_NO',0) global_default,
 xxen_util.meaning(xrtv.distinct_flag,'YES_NO',0) distinct_flag,
 count(*) over (partition by xrtv.template_id) column_count,

@@ -5,6 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: DBA External Table Creation
+-- Description: None
 -- Excel Examle Output: https://www.enginatics.com/example/dba-external-table-creation/
 -- Library Link: https://www.enginatics.com/reports/dba-external-table-creation/
 -- Run Report: https://demo.enginatics.com/

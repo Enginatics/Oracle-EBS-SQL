@@ -7,9 +7,18 @@
 -- Report Name: CST Supply Chain Indented Bills of Material Cost
 -- Description: Imported Oracle standard Supply Chain Indented Bills of Material Cost report
 Application: Bills of Material
+This report is based on the (static) Oracle Supply Chain Indented Bills of Material Cost Report and merely sums up the available information from the Cost Type.  It does not do a Cost Rollup and as a result, the "Extended Cost" column might not add up to the total item cost for the assembly especially  if changes have been made to the bills of material, routing or item costs, since the last cost rollup.  If this is the case, run a Supply Chain Cost Rollup in Pending or some other cost type (such as Current) for reporting purposes, to synchronize the cost information and then use this report, using the same cost type, to correctly report your item costs.
+
 Source: Supply Chain Indented Bills of Material Cost Report (XML)
 Short Name: CSTRSCCRI_XML
 DB package: BOM_CSTRSCCR_XMLP_PKG
+
+-- |  Version Modified on Modified  by   Description
+-- |  ======= =========== ============== =========================================
+-- |  1.0     06 Nov 2020 Eric Clegg     Initial Coding
+-- |  2.0     22 Jun 2022 Douglas Volz   Corrected Extended Cost column to only show this level costs.
+-- |  3.0     31 Aug 2022 Douglas Volz   Added Effectivity Date and Assignment Set parameters and cost type column.
+
 -- Excel Examle Output: https://www.enginatics.com/example/cst-supply-chain-indented-bills-of-material-cost/
 -- Library Link: https://www.enginatics.com/reports/cst-supply-chain-indented-bills-of-material-cost/
 -- Run Report: https://demo.enginatics.com/
@@ -50,8 +59,17 @@ nvl(cicd.usage_rate_or_amount,0) usage_rate_or_amount,
 decode(cicd.cost_element_id,2,csbs.extended_quantity,5,csbs.extended_quantity,1)*cicd.basis_factor*cicd.net_yield_or_shrinkage_factor basis_factor,
 decode(cicd.cost_element_id,2,1,5,1,csbs.extended_quantity)*cicd.usage_rate_or_amount ext_usage_rate_or_amount,
 decode(cicd.cost_element_id,3,cicd.resource_rate,4,cicd.resource_rate,to_number(NULL)) res_unit_cost,
-decode(decode(csbs.phantom_flag,1,1,0)*decode(csbs.assembly_organization_id,csbs.component_organization_id,1,0),1,decode(cicd.level_type,2,1,decode(cicd.cost_element_id,3,0,4,0,5,0,decode(:p_phantom_mat,1,1,0)))*
-decode(csbs.extend_cost_flag,2,0,csbs.extended_quantity*decode(cicd.item_cost,cicd.yielded_cost,0,cicd.item_cost)), decode(csbs.extend_cost_flag,2,0,csbs.extended_quantity*cicd.item_cost)) res_extended_cost,
+-- Revision for version 2, suppress previous level costs to agree with standard Oracle report and extended costs column to add up to the total item costs
+/*decode(decode(csbs.phantom_flag,1,1,0)*decode(csbs.assembly_organization_id,csbs.component_organization_id,1,0),1,decode(cicd.level_type,2,1,decode(cicd.cost_element_id,3,0,4,0,5,0,decode(:p_phantom_mat,1,1,0)))*
+decode(csbs.extend_cost_flag,2,0,csbs.extended_quantity*decode(cicd.item_cost,cicd.yielded_cost,0,cicd.item_cost)), decode(csbs.extend_cost_flag,2,0,csbs.extended_quantity*cicd.item_cost)) res_extended_cost,*/
+decode(csbs.sort_order,0,0,decode(cicd.level_type,
+    2, 0,
+    1, decode(decode(csbs.phantom_flag,1,1,0)*decode(csbs.assembly_organization_id,csbs.component_organization_id,1,0),1,decode(cicd.level_type,2,1,decode(cicd.cost_element_id,3,0,4,0,5,0,decode(:p_phantom_mat,1,1,0)))*
+       decode(csbs.extend_cost_flag,2,0,csbs.extended_quantity*decode(cicd.item_cost,cicd.yielded_cost,0,cicd.item_cost)), decode(csbs.extend_cost_flag,2,0,csbs.extended_quantity*cicd.item_cost))
+)) extended_cost,
+-- End revision for version 2
+-- Revision for version 3
+(select cct.cost_type from cst_cost_types cct where cct.cost_type_id = cic.cost_type_id) Cost_Type,
 decode(csbs.assembly_item_id,-1,1,2) sort_order2,
 csbs.rollup_id
 from

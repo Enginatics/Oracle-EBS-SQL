@@ -37,6 +37,7 @@ x.frozen_cost,
 x.pending_cost,
 --
 x.shipment_number,
+x.distribution_num,
 x.price,
 x.price_break_quantity,
 x.break_price,
@@ -44,6 +45,9 @@ x.break_price_discount,
 x.quantity,
 x.amount,
 x.currency,
+x.exchange_rate_type,
+x.exchange_rate_date,
+x.exchange_rate,
 x.wip_job,
 x.wip_job_batch,
 xxen_util.client_time(x.need_by_date) need_by,
@@ -119,6 +123,9 @@ x.document_min_release_amount,
 nvl2(x.po_release_id,x.release_amount,x.po_amount) document_amount,
 nvl2(x.po_release_id,x.release_matched_amount,x.po_matched_amount) document_matched_amount,
 --
+x.charge_account,
+x.accrual_account,
+--
 x.po_created_by,
 xxen_util.client_time(x.po_creation_date) po_creation_date,
 x.release_created_by,
@@ -160,16 +167,19 @@ pra.revision_num release_revision,
 po_releases_sv2.get_release_status(pra.po_release_id) release_status,
 nvl2(pra.po_release_id,po_inq_sv.get_po_total(null,null,pra.po_release_id),null) release_amount,
 nvl2(pra.po_release_id,
-(
-select
-nvl(sum(nvl(pda.amount_billed,0)),0)
-from
-po_distributions_all pda
-where
-pda.po_header_id = pra.po_header_id and
-pda.po_release_id = pra.po_release_id
-),
-null) release_matched_amount,
+ decode(:p_show_distributions,'Y',
+  nvl(pda.amount_billed,0),
+  (select
+   nvl(sum(nvl(pda.amount_billed,0)),0)
+   from
+   po_distributions_all pda
+   where
+   pda.po_header_id = pra.po_header_id and
+   pda.po_release_id = pra.po_release_id
+   )
+ ),
+ null
+) release_matched_amount,
 --
 pla.line_num,
 pltv.line_type,
@@ -182,13 +192,17 @@ muomt.unit_of_measure_tl uom,
 cic1.item_cost frozen_cost,
 cic3.item_cost pending_cost,
 plla.shipment_num shipment_number,
+pda.distribution_num,
 nvl(plla.price_override,pla.unit_price) price,
 to_number(null) price_break_quantity,
 to_number(null) break_price,
 to_number(null) break_price_discount,
-plla.quantity,
-plla.quantity*nvl(plla.price_override,pla.unit_price) amount,
+decode(:p_show_distributions,'Y',pda.quantity_ordered,plla.quantity) quantity,
+decode(:p_show_distributions,'Y',pda.quantity_ordered,plla.quantity)*nvl(plla.price_override,pla.unit_price) amount,
 pha.currency_code currency,
+(select gdct.user_conversion_type from gl_daily_conversion_types gdct where gdct.conversion_type = pha.rate_type) exchange_rate_type,
+pha.rate_date exchange_rate_date,
+pha.rate exchange_rate,
 (
 select distinct
 listagg(y.wip_entity_name,', ') within group (order by y.wip_entity_name) over (partition by y.line_id) wip_entity_name
@@ -216,22 +230,29 @@ mgr.disposition_id=we.wip_entity_id
 where
 pla.po_line_id=y.line_id
 ) wip_job,
-(
-select distinct
-listagg(y.wip_entity_name,', ') within group (order by y.wip_entity_name) over (partition by y.line_location_id) wip_entity_name
-from
-(
-select distinct
-pda.line_location_id,
-we.wip_entity_name
-from
-po_distributions_all pda,
-wip_entities we
-where
-pda.wip_entity_id = we.wip_entity_id
-) y
-where
-plla.line_location_id=y.line_location_id
+decode(:p_show_distributions,'Y',
+ (select 
+  we.wip_entity_name
+  from
+  wip_entities we
+  where
+  pda.wip_entity_id = we.wip_entity_id  
+ ),
+ (select distinct
+  listagg(y.wip_entity_name,', ') within group (order by y.wip_entity_name) over (partition by y.line_location_id) wip_entity_name
+  from
+  (select distinct
+   pda.line_location_id,
+   we.wip_entity_name
+   from
+   po_distributions_all pda,
+   wip_entities we
+   where
+   pda.wip_entity_id = we.wip_entity_id
+  ) y
+  where
+  plla.line_location_id=y.line_location_id
+ )
 ) wip_job_batch,
 plla.need_by_date,
 plla.last_accept_date,
@@ -241,7 +262,10 @@ pla.vendor_product_num supplier_item,
 nvl2(pvc.first_name,pvc.first_name||' ',null)||nvl2(pvc.middle_name,pvc.middle_name||' ',null)||pvc.first_name contact_name,
 pvc.area_code||pvc.phone contact_phone,
 pvc.email_address contact_email,
-(select xxen_util.meaning(pda.destination_type_code,'DESTINATION TYPE',201) destination_type from po_distributions_all pda where plla.line_location_id=pda.line_location_id and rownum=1) destination_type,
+decode(:p_show_distributions,'Y',
+ xxen_util.meaning(pda.destination_type_code,'DESTINATION TYPE',201),
+ (select xxen_util.meaning(pda.destination_type_code,'DESTINATION TYPE',201) destination_type from po_distributions_all pda where plla.line_location_id=pda.line_location_id and rownum=1)
+) destination_type,
 mp.organization_code ship_to_organization,
 hlat.location_code ship_to,
 rsh.receipt_num receipt,
@@ -272,11 +296,17 @@ mp2.organization_code receiving_organization,
 rsh.packing_slip,
 rsl.line_num receipt_line_number,
 rt.quantity receipt_quantity,
-nvl(plla.quantity, pla.quantity) quantity_ordered,
-plla.quantity_cancelled,
-plla.quantity_received,
-nvl(plla.quantity, pla.quantity)-nvl(plla.quantity_cancelled,0)-nvl(plla.quantity_received,0) quantity_due,
-plla.quantity_billed,
+decode(:p_show_distributions,'Y',pda.quantity_ordered,nvl(plla.quantity, pla.quantity)) quantity_ordered,
+decode(:p_show_distributions,'Y',pda.quantity_cancelled,plla.quantity_cancelled) quantity_cancelled,
+decode(:p_show_distributions,'Y',
+ plla.quantity_received * (pda.quantity_ordered - nvl(pda.quantity_cancelled,0))/(plla.quantity - nvl(plla.quantity_cancelled,0)),
+ plla.quantity_received 
+) quantity_received,
+decode(:p_show_distributions,'Y',
+ pda.quantity_ordered - nvl(pda.quantity_cancelled,0) - (plla.quantity_received * (pda.quantity_ordered - nvl(pda.quantity_cancelled,0))/(plla.quantity - nvl(plla.quantity_cancelled,0))),
+ nvl(plla.quantity, pla.quantity) - nvl(plla.quantity_cancelled,0) - nvl(plla.quantity_received,0) 
+) quantity_due,
+decode(:p_show_distributions,'Y',pda.quantity_billed,plla.quantity_billed) quantity_billed,
 rt.primary_quantity,
 rt.primary_unit_of_measure,
 rt.po_unit_price,
@@ -309,6 +339,9 @@ to_number(null) document_total_amount,
 to_number(null) document_amount_limit,
 to_number(null) document_min_release_amount,
 --
+fnd_flex_xml_publisher_apis.process_kff_combination_1('seg','SQLGL','GL#',pda.chart_of_accounts_id,NULL,pda.code_combination_id,'ALL','Y','VALUE') charge_account,
+fnd_flex_xml_publisher_apis.process_kff_combination_1('seg','SQLGL','GL#',pda.chart_of_accounts_id,NULL,pda.accrual_account_id,'ALL','Y','VALUE') accrual_account,
+--
 xxen_util.user_name(pha.created_by) po_created_by,
 pha.creation_date po_creation_date,
 xxen_util.user_name(pra.created_by) release_created_by,
@@ -334,6 +367,15 @@ where
 pla.org_id=hou.organization_id
 ) pla,
 po_line_locations_all plla,
+( 
+select
+pda.*,
+(select gsob.chart_of_accounts_id from gl_sets_of_books gsob where gsob.set_of_books_id = pda.set_of_books_id) chart_of_accounts_id
+from
+po_distributions_all pda
+where
+:p_show_distributions = 'Y'
+) pda,
 po_releases_all pra,
 (
 select distinct
@@ -388,6 +430,7 @@ pha.type_lookup_code in ('STANDARD','BLANKET','PLANNED') and
 pha.po_header_id=pla.po_header_id and
 pla.po_line_id=plla.po_line_id and
 plla.shipment_type in ('STANDARD','BLANKET','PLANNED','SCHEDULED') and
+plla.line_location_id=pda.line_location_id(+) and
 plla.po_release_id=pra.po_release_id(+) and
 plla.line_location_id=u.line_location_id(+) and
 plla.line_location_id=v.line_location_id(+) and
@@ -417,7 +460,7 @@ pla.item_id=cic3.inventory_item_id(+) and
 cic1.cost_type_id(+)=1 and
 cic3.cost_type_id(+)=3 and
 pha.agent_id=ppx.person_id(+) and
-plla.line_location_id=rsl.po_line_location_id(+) and
+&lp_shipment_line_join
 rsl.shipment_header_id=rsh.shipment_header_id(+) and
 rsl.shipment_line_id=rt.shipment_line_id(+) and
 rt.transaction_type(+)='RECEIVE' and
@@ -468,6 +511,7 @@ muomt.unit_of_measure_tl uom,
 cic1.item_cost frozen_cost,
 cic3.item_cost pending_cost,
 plla.shipment_num shipment_number,
+null distribution_num,
 pla.unit_price price,
 plla.quantity price_break_quantity,
 nvl(plla.price_override,pla.unit_price) break_price,
@@ -475,6 +519,9 @@ plla.price_discount break_price_discount,
 null quantity,
 null amount,
 pha.currency_code currency,
+(select gdct.user_conversion_type from gl_daily_conversion_types gdct where gdct.conversion_type = pha.rate_type) exchange_rate_type,
+pha.rate_date exchange_rate_date,
+pha.rate exchange_rate,
 null wip_job,
 null wip_job_batch,
 null need_by_date,
@@ -547,6 +594,9 @@ pha.revised_date document_revised_date,
 pha.blanket_total_amount document_total_amount,
 pha.amount_limit document_amount_limit,
 pha.min_release_amount document_min_release_amount,
+--
+null charge_account,
+null accrual_account,
 --
 xxen_util.user_name(pha.created_by) po_created_by,
 pha.creation_date po_creation_date,
@@ -626,7 +676,7 @@ ap_invoice_lines_all aila,
 ap_invoices_all aia
 where
 x.line_location_id=aila.po_line_location_id(+) and
-nvl(x.rcv_transaction_id,-1)=nvl(aila.rcv_transaction_id,nvl(x.rcv_transaction_id,-1)) and
+nvl(aila.discarded_flag(+),'N') = 'N' and
 aila.invoice_id=aia.invoice_id(+)
 order by
 x.operating_unit,
@@ -635,5 +685,6 @@ x.release desc,
 x.line_num,
 x.release desc nulls last,
 x.shipment_number desc,
+x.distribution_num,
 x.item,
 xxen_util.client_time(x.po_creation_date) desc

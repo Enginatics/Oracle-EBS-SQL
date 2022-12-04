@@ -135,7 +135,7 @@ with wip_detail_q as
       org_acct_periods     oap,
       mfg_lookups          ml,
       wip_entities         we,
-      mtl_system_items_kfv msik,
+      mtl_system_items_b_kfv msik,
       mfg_lookups          ml2,
       gl_code_combinations gcc
      where
@@ -234,7 +234,7 @@ with wip_detail_q as
       wip_entities             we,
       wip_lines                wl,
       wip_repetitive_items     wri,
-      mtl_system_items_kfv     msik,
+      mtl_system_items_b_kfv     msik,
       mfg_lookups              ml2,
       gl_code_combinations     gcc
      where

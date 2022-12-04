@@ -5,50 +5,34 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC WIP Account Summary
--- Description: Report to get the WIP accounting distributions, in summary, by WIP job, resource, overhead and WIP cost update.  And for outside processing, including the purchase order number, line and release number.  For Discrete, Flow and Workorderless WIP (but not Repetitive Schedules).  Note that both Flow and Workorderless show up as the WIP Type "Flow schedule".
+-- Description: Report to get the WIP accounting distributions, in summary, by WIP job, resource, overhead and WIP cost update.  With the Show SLA Accounting parameter you can choose to use the Release 12 Subledger Accounting (Create Accounting) account setups by selecting Yes.  And if you have not modified your SLA accounting rules, select No to allow this report to run a bit faster.  With parameters to limit the report size, Show Project to display or not display the project number and name, Show WIP Job to display or not display the WIP job (WIP job, description and resource codes) and Show WIP Outside Processing to display or not display the outside processing information (WIP OSP item number, supplier, purchase order, purchase order line and release).  For Discrete, Flow and Workorderless WIP (but not Repetitive Schedules).  Note that both Flow and Workorderless show up as the WIP Type "Flow schedule".
+
+Parameters:
+===========
+Transaction Date From:  enter the starting transaction date (mandatory).
+Transaction Date To:  enter the ending transaction date (mandatory).
+Show SLA Accounting:  enter Yes to use the Subledger Accounting rules for your accounting information (mandatory).  If you choose No the report uses the pre-Create Accounting entries.
+Show Projects:  display the project number and name.  Enter Yes or No, use to limit the report size. (mandatory).
+Show WIP Jobs:  display the WIP job, description, department and resource.  Enter Yes or No, use to limit the report size (mandatory).
+Show WIP Outside Processing:  display the WIP OSP item number, supplier, purchase order, purchase order line and release.  Enter Yes or No, use to limit the report size (mandatory).
+Category Set 1:  any item category you wish, typically the Cost or Product Line category set (optional).
+Category Set 2:  any item category you wish, typically the Inventory category set (optional).
+Assembly Number:  enter the specific assembly number(s) you wish to report (optional).
+Organization Code:  enter the specific inventory organization(s) you wish to report (optional).
+Operating Unit:  enter the specific operating unit(s) you wish to report (optional).
+Ledger:  enter the specific ledger(s) you wish to report (optional).
 
 /* +=============================================================================+
--- |  Copyright 2009- 2020 Douglas Volz Consulting, Inc.                         |
--- |  All rights reserved.                                                       |
--- |  Permission to use this code is granted provided the original author is     |
--- |  acknowledged.  No warranties, express or otherwise is included in this     |
--- |  permission.                                                                |
+-- |  Copyright 2009- 2022 Douglas Volz Consulting, Inc.
+-- |  All rights reserved.
+-- |  Permission to use this code is granted provided the original author is
+-- |  acknowledged.  No warranties, express or otherwise is included in this
+-- |  permission. 
 -- +=============================================================================+
--- |
--- |  Original Author: Douglas Volz (doug@volzconsulting.com)
--- |
--- |  Program Name:  xxx_wip_dist_xla_sum_rept.sql
--- |
--- |  Parameters:
--- |  p_trx_date_from    -- starting transaction date for WIP accounting transactions,
--- |                        mandatory.
--- |  p_trx_date_to      -- ending transaction date for WIP accounting transactions,
--- |                        mandatory.
--- |  p_item_number      -- Enter the specific item number you wish to report (optional)
--- |  p_org_code         -- Specific inventory organization you wish to report (optional)
--- |  p_operating_unit   -- Operating Unit you wish to report, leave blank for all
--- |                        operating units (optional) 
--- |  p_ledger           -- general ledger you wish to report, leave blank for all
--- |                        ledgers (optional)
--- |  p_category_set1    -- The first item category set to report, typically the
--- |                        Cost or Product Line Category Set
--- |  p_category_set2    -- The second item category set to report, typically the
--- |                        Inventory Category Set
--- |
--- |  Description:
--- |  Report to get the WIP accounting distributions, in summary, by WIP job,
--- |  resource, overhead and WIP cost update.  And for outside processing, 
--- |  including the purchase order number, line and release number.  
 -- | 
 -- |  Version Modified on Modified  by   Description
 -- |  ======= =========== ============== =========================================
 -- |  1.0     06 Nov 2009 Douglas Volz   Initial Coding
--- |  1.11    05 Jul 2019 Douglas Volz   Added:
--- |                                     a) Added the breakout of transaction mounts by cost 
--- |                                        element.
--- |                                     b) Added the sum of resource / overhead hours or
--- |                                        amounts to a primary quantity column, plus,
--- |                                        added the quantity UOM field.
 -- |  1.12    23 Apr 2020 Douglas Volz   Changed to multi-language views for the item
 -- |                                     master, item categories and operating units.
 -- |                                     Added Project Number.
@@ -57,6 +41,10 @@
 -- |                                     improve performance.
 -- |   1.14   22 Mar 2021 Douglas Volz   Add WIP Job parameter.
 -- |   1.15   20 Dec 2021 Douglas Volz   Add WIP Department.
+-- |   1.16   12 Aug 2022 Douglas Volz   Combine with WIP Account Summary No SLA report
+-- |                                     and add Show WIP Job and Show WIP OSP parameters.
+-- |   1.17   14 Aug 2022 Douglas Volz   Screen out zero job close variances for Flow Schedules.
+-- |  1.18   22 Aug 2022 Douglas Volz    Improve performance with outer joins and streamline dynamic SQL.
 -- +=============================================================================+*/
 
 
@@ -68,7 +56,7 @@
 
 select	nvl(gl.short_name, gl.name) Ledger,
 	haou2.name Operating_Unit,
-	wip.organization_code Org_Code,
+	acct_dist.organization_code Org_Code,
 	oap.period_name Period_Name,
 	&segment_columns
 	msiv.concatenated_segments Assembly_Number,
@@ -84,82 +72,45 @@ select	nvl(gl.short_name, gl.name) Ledger,
 	ml3.meaning Class_Type,
 	-- Revision for version 1.13
 	ml4.meaning WIP_Type,
-	we.wip_entity_name WIP_Job,
-	-- Revision for version 1.15
-	bd.department_code WIP_Department,
-	-- Fix for version 1.6
-	(select	br.resource_code
-	 from	bom_resources br
-	 where	wip.resource_id = br.resource_id) WIP_Resource,
-	(select poh.segment1
-	 from	po_headers_all poh,
-		po_lines_all pol,
-		po_releases_all pr,
-		rcv_transactions rt
-	 where	rt.transaction_id = wip.rcv_transaction_id
-	 and	rt.po_header_id   = poh.po_header_id
-	 and	rt.po_line_id     = pol.po_line_id
-	 and	rt.po_release_id  = pr.po_release_id (+)) PO_Number,
-	(select pol.line_num
-	 from	po_headers_all poh,
-		po_lines_all pol,
-		po_releases_all pr,
-		rcv_transactions rt
-	 where	rt.transaction_id = wip.rcv_transaction_id
-	 and	rt.po_header_id   = poh.po_header_id
-	 and	rt.po_line_id     = pol.po_line_id
-	 and	rt.po_release_id  = pr.po_release_id (+)) PO_Line,
-	(select pr.release_num
-	 from	po_headers_all poh,
-		po_lines_all pol,
-		po_releases_all pr,
-		rcv_transactions rt
-	 where	rt.transaction_id = wip.rcv_transaction_id
-	 and	rt.po_header_id   = poh.po_header_id
-	 and	rt.po_line_id     = pol.po_line_id
-	 and	rt.po_release_id  = pr.po_release_id (+)) PO_Release,
-	-- End fix for version 1.6
-	-- Revision for version 1.12
-	(select	max(pp.segment1)
-	 from	pa_projects_all pp
-	 where	pp.project_id     = wip.project_id) Project_Number,
-	-- Revision for version 1.11 and 1.12
-	(select	max(nvl(muomv.uom_code, br.unit_of_measure))
-	 from	bom_resources br,
-		mtl_units_of_measure_vl muomv
-	 where	wip.resource_id    = br.resource_id
-	 and	muomv.uom_code (+) = br.unit_of_measure) UOM_Code,
-	round(sum(decode(wip.transaction_type, 
+	-- Revision for version 1.17
+	&p_show_project
+	&p_show_wip_job
+	&p_show_wip_osp
+	-- End revision for version 1.17
+	-- Revision for version 1.11, 1.12 and 1.16
+	&p_show_wip_job_uom
+	round(sum(decode(acct_dist.transaction_type, 
 			 'Cost Update', 0,
-			 nvl(wip.primary_quantity,0)
+			 nvl(acct_dist.primary_quantity,0)
 			)
 		  )
 	   ,3) Primary_Quantity,
 	-- End revision for version 1.11
 	gl.currency_code Currency_Code,
 	-- Revision for version 1.11
-	sum(decode(wip.cost_element_id,
-			1, wip.base_transaction_value,
+	sum(decode(acct_dist.cost_element_id,
+			1, acct_dist.base_transaction_value,
 			0)) Material_Amount,
-	sum(decode(wip.cost_element_id,
-			2, wip.base_transaction_value,
+	sum(decode(acct_dist.cost_element_id,
+			2, acct_dist.base_transaction_value,
 			0)) Material_Overhead_Amount,
-	sum(decode(wip.cost_element_id,
-			3, wip.base_transaction_value,
+	sum(decode(acct_dist.cost_element_id,
+			3, acct_dist.base_transaction_value,
 			0)) Resource_Amount,
-	sum(decode(wip.cost_element_id,
-			4, wip.base_transaction_value,
+	sum(decode(acct_dist.cost_element_id,
+			4, acct_dist.base_transaction_value,
 			0)) Outside_Processing_Amount,
-	sum(decode(wip.cost_element_id,
-			5, wip.base_transaction_value,
+	sum(decode(acct_dist.cost_element_id,
+			5, acct_dist.base_transaction_value,
 			0)) Overhead_Amount,
 	-- End revision for version 1.11
-	sum(nvl(al.accounted_dr,0) - nvl(al.accounted_cr,0)) Amount
+	sum(acct_dist.base_transaction_value) Amount
 from	wip_entities we,
 	wip_accounting_classes wac,
 	mtl_system_items_vl msiv,
 	-- Revision for version 1.15
 	bom_departments bd,
+	bom_resources br,
 	org_acct_periods oap,
 	gl_code_combinations gcc,
 	mfg_lookups ml1,
@@ -173,103 +124,117 @@ from	wip_entities we,
 	hr_all_organization_units_vl haou, -- inv_organization_id
 	hr_all_organization_units_vl haou2, -- operating unit
 	gl_ledgers gl,
-	-- Revision for version 1.13, remove tables to increase performance
-	-- xla.xla_transaction_entities ent,  -- apps synonym not working
-	-- xla_events xe,
-	-- End revision for version 1.13
-	xla_distribution_links xdl,
-	xla_ae_headers ah,
-	xla_ae_lines al,
+	-- Revision for version 1.18
+	&project_tables
+	&wip_osp_tables
+	&wip_sla_tables
 	(select	mp.organization_code,
 		mp.organization_id,
 		wt.acct_period_id,
 		wta.reference_account,
-		wdj.primary_item_id,
+		nvl(wdj.primary_item_id, wfs.primary_item_id) primary_item_id,
 		wta.accounting_line_type,
 		wt.transaction_type,
-		wdj.class_code,
-		wdj.wip_entity_id,
+		-- Revision for version 1.17
+		wt.transaction_id,
+		wt.rcv_transaction_id,
+		wt.move_transaction_id,
+		wt.completion_transaction_id,
+		wt.transaction_date,
+		wt.creation_date,
+		wt.created_by,
+		-- Release 12.2 wt.reason_code,
+		wt.reference,
+		-- End revision for version 1.17
+		nvl(wdj.class_code, wfs.class_code) class_code,
+		nvl(wdj.wip_entity_id, wfs.wip_entity_id) wip_entity_id,
 		wta.resource_id,
+		wt.po_header_id,
+		wt.po_line_id,
+		wt.cost_update_id,
+		-- Revision for version 1.17
+		-- Release 12.2 wt.resource_instance,
 		-- Revision for version 1.15
 		wt.department_id,
-		wt.rcv_transaction_id,
-		wdj.project_id,
+		nvl(wdj.project_id, wfs.project_id) project_id,
+		-- Revision for version 1.17
+		wt.task_id,
+		wt.pm_cost_collected,
+		wt.operation_seq_num,
+		wt.resource_seq_num,
+		wt.autocharge_type,
+		wt.standard_rate_flag,
+		-- Release 12.2 wt.usage_rate_of_amount,
+		wt.actual_resource_rate,
+		wt.standard_resource_rate,
+		wta.rate_or_amount,
+		wta.basis_type,
+		wta.currency_code,
+		wta.currency_conversion_date,
+		wta.currency_conversion_rate,
+		wta.overhead_basis_factor,
+		wta.basis_resource_id,
+		wt.activity_id,
+		-- End revision for version 1.17
+		wt.transaction_uom,
+		wt.primary_uom,
 		wta.primary_quantity,
 		wta.cost_element_id,
 		wta.base_transaction_value,
 		wta.wip_sub_ledger_id
-	 from	wip_transaction_accounts wta,
-		wip_transactions wt,
-		wip_discrete_jobs wdj,
-		mtl_parameters mp
+	 from	apps.wip_transaction_accounts wta,
+		apps.wip_transactions wt,
+		apps.wip_discrete_jobs wdj,
+		-- Revision for version 1.18
+		apps.wip_flow_schedules wfs,
+		apps.mtl_parameters mp
 	 -- ========================================================
 	 -- WIP Transaction, org and item joins
 	 -- ========================================================
 	 where	wt.transaction_id                = wta.transaction_id
-	 and	wdj.wip_entity_id                = wta.wip_entity_id
-	 and	wdj.organization_id              = wta.organization_id
+	 -- Revision for version 1.18
+	 and	wdj.wip_entity_id (+)            = wta.wip_entity_id
+	 and	wdj.organization_id (+)          = wta.organization_id
+	 and	wfs.wip_entity_id (+)            = wta.wip_entity_id
+	 and	wfs.organization_id (+)          = wta.organization_id
+	 -- End revision for version 1.18
 	 and	mp.organization_id               = wta.organization_id
-	 and	2=2                              -- p_org_code
-	 and	3=3                              -- p_trx_date_from, p_trx_date_to
-	 and	4=4                              -- p_wip_job
-	 union all
-	 select	mp.organization_code,
-		mp.organization_id,
-		wt.acct_period_id,
-		wta.reference_account,
-		wfs.primary_item_id,
-		wta.accounting_line_type,
-		wt.transaction_type,
-		wfs.class_code,
-		wfs.wip_entity_id,
-		wta.resource_id,
-		-- Revision for version 1.15
-		wt.department_id,
-		wt.rcv_transaction_id,
-		wfs.project_id,
-		wta.primary_quantity,
-		wta.cost_element_id,
-		wta.base_transaction_value,
-		wta.wip_sub_ledger_id
-	 from	wip_transaction_accounts wta,
-		wip_transactions wt,
-		wip_flow_schedules wfs,
-		mtl_parameters mp
-	 -- ========================================================
-	 -- WIP Transaction, org and item joins
-	 -- ========================================================
-	 where	wt.transaction_id                = wta.transaction_id
-	 and	wfs.wip_entity_id                = wta.wip_entity_id
-	 and	wfs.organization_id              = wta.organization_id
-	 and	mp.organization_id               = wta.organization_id
-	 and	2=2                              -- p_org_code, p_wip_Job
-	 and	3=3                              -- p_trx_date_from, p_trx_date_to
-	 and	4=4                              -- p_wip_job
-	) wip
+	 -- Revision for version 1.17
+	 -- Do not show zero job and flow schedule close variances
+	 and	(wt.transaction_type <> 6 and wta.base_transaction_value <> 0)
+	 and	2=2                              -- p_org_code, p_trx_date_from, p_trx_date_to, p_wip_job
+	) acct_dist
 -- ========================================================
 -- WIP Transaction, org and item joins
 -- ========================================================
-where	msiv.organization_id             = wip.organization_id
-and	msiv.inventory_item_id           = wip.primary_item_id
+where	msiv.organization_id             = acct_dist.organization_id
+and	msiv.inventory_item_id           = acct_dist.primary_item_id
 -- Revision for version 1.15
-and	bd.department_id (+)             = wip.department_id
+and	we.wip_entity_id                 = acct_dist.wip_entity_id
+and	bd.department_id (+)             = acct_dist.department_id
+and	br.resource_id (+)               = acct_dist.resource_id
 -- ========================================================
-and	wac.class_code                   = wip.class_code
+-- Dynamic SQL joins
+-- ========================================================
+&project_table_joins
+&osp_wip_table_joins
+-- ========================================================
+and	wac.class_code (+)               = acct_dist.class_code
 -- Revision for version 1.2
-and	wac.organization_id              = wip.organization_id
-and	we.wip_entity_id                 = wip.wip_entity_id
+and	wac.organization_id (+)          = acct_dist.organization_id
+and	we.wip_entity_id                 = acct_dist.wip_entity_id
 -- ========================================================
 -- Inventory Org accounting period joins
 -- ========================================================
-and	oap.acct_period_id               = wip.acct_period_id
-and	oap.organization_id              = wip.organization_id
+and	oap.acct_period_id               = acct_dist.acct_period_id
+and	oap.organization_id              = acct_dist.organization_id
 -- ========================================================
 -- Version 1.3, added lookup values to see more detail
 -- ========================================================
 and	ml1.lookup_type                  = 'CST_ACCOUNTING_LINE_TYPE'
-and	ml1.lookup_code                  = wip.accounting_line_type
+and	ml1.lookup_code                  = acct_dist.accounting_line_type
 and	ml2.lookup_type                  = 'WIP_TRANSACTION_TYPE_SHORT'
-and	ml2.lookup_code                  = wip.transaction_type
+and	ml2.lookup_code                  = acct_dist.transaction_type
 and	ml3.lookup_type                  = 'WIP_CLASS_TYPE'
 and	ml3.lookup_code                  = wac.class_type
 -- Revision for version 1.13
@@ -286,41 +251,21 @@ and	fcl.lookup_type (+)              = 'ITEM_TYPE'
 -- org_organization_definitions and hr_operating_units
 -- ========================================================
 and	hoi.org_information_context      = 'Accounting Information'
-and	hoi.organization_id              = wip.organization_id
+and	hoi.organization_id              = acct_dist.organization_id
 and	hoi.organization_id              = haou.organization_id   -- this gets the organization name
 and	haou2.organization_id            = to_number(hoi.org_information3) -- this gets the operating unit id
 and	gl.ledger_id                     = to_number(hoi.org_information1) -- get the ledger_id
-and	1=1                              -- p_org_code, p_operating_unit, p_ledger
+and	1=1                              -- p_assy_number, p_operating_unit, p_ledger
 -- ========================================================
--- SLA table joins to get the exact account numbers
+-- Revision for version 1.17, SLA and Non-SLA joins.
 -- ========================================================
--- Revision for version 1.18, performance improvements
--- and	ent.entity_code                  = 'WIP_ACCOUNTING_EVENTS'
--- and	ent.application_id               = 707
--- and	xe.application_id                = ent.application_id
--- and	xe.event_id                      = xdl.event_id
--- and	ah.entity_id                     = ent.entity_id
--- and	ah.ledger_id                     = ent.ledger_id
--- and	ah.event_id                      = xe.event_id
--- and	al.application_id                = ent.application_id
--- and	xdl.application_id               = ent.application_id
-and	ah.ledger_id                     = gl.ledger_id
--- End revisions for version 1.18
-and	ah.application_id                = al.application_id
-and	ah.application_id                = 707
-and	ah.ae_header_id                  = al.ae_header_id
-and	al.ledger_id                     = ah.ledger_id
-and	al.ae_header_id                  = xdl.ae_header_id
-and	al.ae_line_num 	                 = xdl.ae_line_num
-and	xdl.application_id               = 707
-and	xdl.source_distribution_type     = 'WIP_TRANSACTION_ACCOUNTS'
-and	xdl.source_distribution_id_num_1 = wip.wip_sub_ledger_id
-and	gcc.code_combination_id (+)      = al.code_combination_id
+&wip_sla_table_joins
+&wip_non_sla_table_joins
 -- ==========================================================
 group by 
 	nvl(gl.short_name, gl.name),
 	haou2.name,
-	wip.organization_code,
+	acct_dist.organization_code,
 	oap.period_name,
 	&segment_columns_grp
 	msiv.concatenated_segments,
@@ -333,18 +278,11 @@ group by
 	ml3.meaning, -- WIP Class Type
 	-- Revision for version 1.13
 	ml4.meaning, -- WIP Entity Type
-	we.wip_entity_name,
-	-- Fix for version 1.6
-	-- Added for inline column selects
-	wip.resource_id,
-	-- Revision for version 1.15
-	bd.department_code,
-	wip.rcv_transaction_id,
-	-- End fix for version 1.6
-	-- Revision for version 1.8
+	&group_by_project
+	&group_by_wip_job
+	&group_by_wip_osp
 	-- Added for inline column selects
 	-- Revision for version 1.12
-	wip.project_id,
 	msiv.organization_id,
 	msiv.inventory_item_id,
 	-- End revision for version 1.8
@@ -354,44 +292,16 @@ order by
 	-- 1,3,4,5,6,7,8,9,10,12,13
 	nvl(gl.short_name, gl.name),
 	haou2.name,
-	wip.organization_code,
+	acct_dist.organization_code,
 	oap.period_name,
 	&segment_columns_grp
-	gcc.segment5,
 	msiv.concatenated_segments,
 	ml1.meaning, -- Accounting_Line_Type
 	ml2.meaning, -- Transaction_Type
 	wac.class_code, -- WIP_Class
 	-- Revision for version 1.13
-	ml4.meaning, -- WIP Entity Type
-	we.wip_entity_name, -- WIP_Job
-	(select	br.resource_code
-	 from	bom_resources br
-	 where	wip.resource_id = br.resource_id), -- WIP_Resource
-	(select poh.segment1
-	 from	po_headers_all poh,
-		po_lines_all pol,
-		po_releases_all pr,
-		rcv_transactions rt
-	 where	rt.transaction_id = wip.rcv_transaction_id
-	 and	rt.po_header_id   = poh.po_header_id
-	 and	rt.po_line_id     = pol.po_line_id
-	 and	rt.po_release_id  = pr.po_release_id (+)), -- PO_Number
-	(select pol.line_num
-	 from	po_headers_all poh,
-		po_lines_all pol,
-		po_releases_all pr,
-		rcv_transactions rt
-	 where	rt.transaction_id = wip.rcv_transaction_id
-	 and	rt.po_header_id   = poh.po_header_id
-	 and	rt.po_line_id     = pol.po_line_id
-	 and	rt.po_release_id  = pr.po_release_id (+)), -- PO_Line
-	(select pr.release_num
-	 from	po_headers_all poh,
-		po_lines_all pol,
-		po_releases_all pr,
-		rcv_transactions rt
-	 where	rt.transaction_id = wip.rcv_transaction_id
-	 and	rt.po_header_id   = poh.po_header_id
-	 and	rt.po_line_id     = pol.po_line_id
-	 and	rt.po_release_id  = pr.po_release_id (+))
+	ml4.meaning -- WIP Entity Type
+	&order_by_project
+	&order_by_wip_job
+	&order_by_wip_osp
+	,msiv.organization_id

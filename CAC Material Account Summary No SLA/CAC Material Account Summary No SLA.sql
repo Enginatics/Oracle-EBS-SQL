@@ -19,8 +19,8 @@
 -- |  Program Name:  xxx_mtl_dist_xla_sum_rept.sql
 -- |
 -- |  Parameters:
--- |  p_trx_date_from    -- starting transaction date for PII related transactions, mandatory
--- |  p_trx_date_to      -- ending transaction date for PII related transactions, mandatory
+-- |  p_trx_date_from    -- starting transaction date, mandatory
+-- |  p_trx_date_to      -- ending transaction date, mandatory
 -- |  p_category_set1    -- The first item category set to report, typically the
 -- |                        Cost or Product Line Category Set
 -- |  p_category_set2    -- The second item category set to report, typically the

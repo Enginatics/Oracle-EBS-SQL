@@ -167,7 +167,7 @@ from
        po_vendors                pov,
        po_line_types             plt,
        po_releases_all           porl,
-       mtl_system_items_kfv      msi,
+       mtl_system_items_b_kfv      msi,
        fnd_currencies            fnc1,
        fnd_currencies            fnc2,
        mtl_categories_kfv        mca,

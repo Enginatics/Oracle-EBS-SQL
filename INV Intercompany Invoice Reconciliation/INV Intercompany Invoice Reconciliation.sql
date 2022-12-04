@@ -576,7 +576,7 @@ select
 from
   mmt                          mmt   -- inventory material transaction
 , mtl_trx_types_view           mttv
-, mtl_system_items_kfv         msik
+, mtl_system_items_b_kfv         msik
 , org_organization_definitions ood1
 , org_organization_definitions ood2
 , hr_all_organization_units    haou1

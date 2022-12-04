@@ -40,7 +40,7 @@ with q_assemblies as
     listagg(mck.concatenated_segments,', ') within group (order by mck.concatenated_segments)
    from
     mtl_item_categories mic,
-    mtl_categories_kfv mck
+    mtl_categories_b_kfv mck
    where
        mic.category_set_id = :p_category_set_id
    and mic.organization_id = bbom.organization_id
@@ -176,7 +176,7 @@ q_components as
   mtl_system_items msi,
   mtl_item_categories mic,
   mtl_default_category_sets mdcs,
-  mtl_categories_kfv mck,
+  mtl_categories_b_kfv mck,
   mfg_lookups ml
  where
       bev.group_id = :p_group_id

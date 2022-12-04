@@ -13,7 +13,8 @@ Provides equivalent functionality to the following standard Oracle Forms/Reports
   Applicable Templates:
   Pivot: Reconciliation Summary
 
-Source: General Ledger Reconciliation Report (CEXRECRE)
+Source: General Ledger Reconciliation Report
+Short Name: CEXRECRE
 DB package: CE_CEXRECRE_XMLP_PKG
 -- Excel Examle Output: https://www.enginatics.com/example/ce-general-ledger-reconciliation/
 -- Library Link: https://www.enginatics.com/reports/ce-general-ledger-reconciliation/

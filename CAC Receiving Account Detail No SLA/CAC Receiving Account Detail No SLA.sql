@@ -5,10 +5,10 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Receiving Account Detail No SLA
--- Description: Report to get the receiving accounting distributions, in detail, by item, purchase order, purchase order line, release, project number, transaction date and transaction identifier.  This report version does not use the Release 12 Subledger Accounting (Create Accounting) tables.  For outside processing, including the WIP job, OSP item number and the OSP resource code.  And for expense destinations, even when there is no item number on the purchase order line, this report will get the expense category information, into the first category column.  (Note: this report has not been tested with encumbrance entries.)
+-- Description: Report to get the receiving accounting distributions, in detail, by item, purchase order, purchase order line, release, project number, transaction date and transaction identifier.  This "No SLA"  report version runs faster as it does not use the Release 12 Subledger Accounting (Create Accounting) account setups.  For outside processing, including the WIP job, OSP item number and the OSP resource code.  And for expense destinations, even when there is no item number on the purchase order line, this report will get the expense category information, into the first category column.  (Note: this report has not been tested with encumbrance entries.)
 
 /* +=============================================================================+
--- |  Copyright 2009- 2021 Douglas Volz Consulting, Inc.                         |
+-- |  Copyright 2009- 2022 Douglas Volz Consulting, Inc.                         |
 -- |  All rights reserved.                                                       |
 -- |  Permission to use this code is granted provided the original author is     |
 -- |  acknowledged.  No warranties, express or otherwise is included in this     |
@@ -20,20 +20,20 @@
 -- |  Program Name:  xxx_wip_dist_xla_sum_rept.sql
 -- |
 -- |  Parameters:
--- |  p_trx_date_from    -- starting transaction date for WIP accounting transactions,
--- |                        mandatory.
--- |  p_trx_date_to      -- ending transaction date for WIP accounting transactions,
--- |                        mandatory.
+-- |  p_trx_date_from    -- starting transaction date for PII related transactions, mandatory
+-- |  p_trx_date_to      -- ending transaction date for PII related transactions, mandatory
+-- |  p_dest_type_code   -- PO destination type code, such as Inventory, Expense or 
+-- |                        Shop Floor.  Optional.
+-- |  p_category_set1    -- The first item category set to report, typically the
+-- |                        Cost or Product Line Category Set
+-- |  p_category_set2    -- The second item category set to report, typically the
+-- |                        Inventory Category Set
 -- |  p_item_number      -- Enter the specific item number you wish to report (optional)
 -- |  p_org_code         -- Specific inventory organization you wish to report (optional)
 -- |  p_operating_unit   -- Operating Unit you wish to report, leave blank for all
 -- |                        operating units (optional) 
 -- |  p_ledger           -- general ledger you wish to report, leave blank for all
 -- |                        ledgers (optional)
--- |  p_category_set1    -- The first item category set to report, typically the
--- |                        Cost or Product Line Category Set
--- |  p_category_set2    -- The second item category set to report, typically the
--- |                        Inventory Category Set
 -- | 
 -- |  Version Modified on Modified  by   Description
 -- |  ======= =========== ============== =========================================
@@ -42,8 +42,7 @@
 -- |                                     summary report, version 1.14.  Adding Vendor,
 -- |                                     Transaction Date, Id and Account Line Type
 -- |                                     parameter. 
--- |  1.16     23 Sep 2021 Douglas Volz  Added unit price column from rcv_accounting_
--- |                                     events.  Removed sum and group by statements.
+-- |  1.16    08 Jul 2022 Douglas Volz   Added unit price column.
 -- +=============================================================================+*/
 
 
@@ -242,13 +241,11 @@ from	org_acct_periods oap,
 	 and	rt.po_line_id             = pol.po_line_id
 	 -- ========================================================
 	 -- Receiving Transaction date joins
-	 -- Fix for version 1.7
+	 -- Fix for version 1.7 and 1.10
+	 -- ========================================================																							 
+	 and	4=4                       -- p_trx_date_from, p_trx_date_to, p_item_number, p_po_number, p_org_code
 	 -- ========================================================
-	 -- Fix for version 1.10
-	 and	5=5                       -- p_item_number, p_po_number, p_org_code
-	 and	4=4                       -- p_trx_date_from, p_trx_date_to
-	 -- ========================================================
-	 -- For Item_Type
+	 -- For Item Type
 	 -- Revision for version 1.13
 	 -- ========================================================
 	 and	fcl.lookup_code  (+)      = msiv.item_type
@@ -309,6 +306,8 @@ and	1=1				  -- p_dest_type_code, p_operating_unit, p_ledger
 -- End of no SLA version changes
 and	gcc.code_combination_id (+)       = rcv_acct.code_combination_id
 -- ==========================================================
+-- Revision for version 1.13
+-- order by 1,2,3,4,5,6,7,8,9,10,15,16,17,18,19,20,21,22
 order by
 	nvl(gl.short_name, gl.name), -- Ledger
 	haou2.name, -- Operating_Unit

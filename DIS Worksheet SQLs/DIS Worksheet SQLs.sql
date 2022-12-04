@@ -6,7 +6,7 @@
 /*************************************************************************/
 -- Report Name: DIS Worksheet SQLs
 -- Description: Discoverer worksheet SQL queries.
-While the workbook documents are stored in a binary format in eul5_documents.doc_document and it's difficult extract their content (https://community.oracle.com/thread/2494216), there is an active trigger function
+While the workbook documents are stored in a binary format in eul5_documents.doc_document and it's difficult extract their content (<a href="https://community.oracle.com/thread/2494216" rel="nofollow" target="_blank">https://community.oracle.com/thread/2494216</a>), there is an active trigger function
 select ef.* from eul_us.eul5_functions ef where ef.fun_name='eul_trigger$post_save_document'
 writing each worksheets' SQL query to table ams_discoverer_sql
 -- Excel Examle Output: https://www.enginatics.com/example/dis-worksheet-sqls/

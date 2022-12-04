@@ -12,9 +12,9 @@
 
 select
 x.request_id,
+x.report_name,
 x.user_name,
 x.responsibility_name responsibility,
-x.report_name,
 x.options,
 x.parameters,
 x.status,

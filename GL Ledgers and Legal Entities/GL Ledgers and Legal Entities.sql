@@ -13,14 +13,13 @@
 select
 (
 select distinct
-listagg(gl0.name,', ') within group (order by gl0.name) over (partition by glsna.ledger_id) ledger_set
+listagg(gl0.name,', ') within group (order by gl0.name) over (partition by glsnav.ledger_id) ledger_set
 from
-gl_ledger_set_norm_assign glsna,
+gl_ledger_set_norm_assign_v glsnav,
 gl_ledgers gl0
 where
-gl.ledger_id=glsna.ledger_id and
-nvl(glsna.status_code,'X')<>'D' and
-glsna.ledger_set_id=gl0.ledger_id
+gl.ledger_id=glsnav.ledger_id and
+glsnav.ledger_set_id=gl0.ledger_id
 ) ledger_set,
 gl.name ledger,
 xxen_util.meaning(gl.ledger_category_code,'GL_ASF_LEDGER_CATEGORY',101) ledger_category,

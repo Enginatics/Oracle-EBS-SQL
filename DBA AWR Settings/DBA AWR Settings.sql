@@ -7,7 +7,7 @@
 -- Report Name: DBA AWR Settings
 -- Description: Automatic workload repository settings such as retention period, snapshot interval and number of top SQLs to capture (from table underlying the view dba_hist_wr_control).
 Note that for executing Blitz Report queries on AWR data, you require a Diagnostic pack license as explained in Oracle's note 1490798.1:
-https://support.oracle.com/CSP/main/article?cmd=show&type=NOT&id=1490798.1
+<a href="https://support.oracle.com/CSP/main/article?cmd=show&type=NOT&id=1490798.1" rel="nofollow" target="_blank">https://support.oracle.com/CSP/main/article?cmd=show&type=NOT&id=1490798.1</a>
 
 topnsql=DEFAULT means the database captures the top 30 SQLs from 5 different categories (Elapsed Time, CPU Time, Parse Calls, Shareable Memory, Version Count) for each snapshot interval.
 So the default setting would capture a maximum of 150 different SQLs per snapshot, depending on system load.
@@ -78,7 +78,7 @@ end loop;
 end;
 
 To purge obsolete data from old DBIDs:
-http://www.strategicdbs.com/p/removing-old-dbid-data.html
+<a href="http://www.strategicdbs.com/p/removing-old-dbid-data.html" rel="nofollow" target="_blank">http://www.strategicdbs.com/p/removing-old-dbid-data.html</a>
 
 begin
 for c in (select distinct dfus.dbid from dba_feature_usage_statistics dfus where dfus.dbid not in (select vd.dbid from v$database vd)) loop
