@@ -12,8 +12,7 @@ Tax lines summary to understand the different applications, entity codes and eve
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps)
 
-## Related reports
-[AR Aggregate VAT Statement](/AR%20Aggregate%20VAT%20Statement/), [GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20-Distributions/), [GL Account Analysis](/GL%20Account%20Analysis/), [GL Account Analysis (Distributions) 11g](/GL%20Account%20Analysis%20-Distributions-%2011g/), [DVTST: AP Invoices with PO, Intercompany and SLA Details](/DVTST-%20AP%20Invoices%20with%20PO-%20Intercompany%20and%20SLA%20Details/), [AP Invoices with PO, Intercompany and SLA Details](/AP%20Invoices%20with%20PO-%20Intercompany%20and%20SLA%20Details/), [GL Journals - Tax](/GL%20Journals%20-%20Tax/), [ZX Tax Reconciliation by Taxable Account Report- Not Supported: Reserved For Future Use](/ZX%20Tax%20Reconciliation%20by%20Taxable%20Account%20Report-%20Not%20Supported-%20Reserved%20For%20Future%20Use/), [XXSJ Report VAT Register](/XXSJ%20Report%20VAT%20Register/)
+
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

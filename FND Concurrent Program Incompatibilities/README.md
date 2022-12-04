@@ -13,7 +13,7 @@ Concurrent Program Name, Concurrent Program Short Name, Application Name
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - DBA](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20DBA), [Toolkit - Setup & Support](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Setup%20%26%20Support)
 
 ## Related reports
-[FND Concurrent Requests 11i](/FND%20Concurrent%20Requests%2011i/), [FND Concurrent Requests](/FND%20Concurrent%20Requests/), [FND Concurrent Request Conflicts](/FND%20Concurrent%20Request%20Conflicts/), [ECC Admin - Concurrent Programs](/ECC%20Admin%20-%20Concurrent%20Programs/), [FND Concurrent Requests Summary](/FND%20Concurrent%20Requests%20Summary/), [FND Concurrent Programs and Executables](/FND%20Concurrent%20Programs%20and%20Executables/), [XDO Publisher Data Definitions](/XDO%20Publisher%20Data%20Definitions/), [FND Flex Value Sets, Usages and Values](/FND%20Flex%20Value%20Sets-%20Usages%20and%20Values/), [FND Access Control 11i](/FND%20Access%20Control%2011i/)
+[FND Concurrent Requests 11i](/FND%20Concurrent%20Requests%2011i/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

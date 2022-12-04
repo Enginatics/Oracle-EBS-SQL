@@ -12,8 +12,7 @@ Chart of Accounts, Ledger, Country, Active Organizations only
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Setup & Support](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Setup%20%26%20Support)
 
-## Related reports
-[RW - GL Ledgers and Organizations](/RW%20-%20GL%20Ledgers%20and%20Organizations/), [PO Approval Groups](/PO%20Approval%20Groups/), [AP Accounted Invoice Aging](/AP%20Accounted%20Invoice%20Aging/), [ZX Tax Accounts](/ZX%20Tax%20Accounts/), [CAC Item vs. Component Include in Rollup Controls](/CAC%20Item%20vs-%20Component%20Include%20in%20Rollup%20Controls/), [FA Asset Book Details](/FA%20Asset%20Book%20Details/), [AR Unapplied Receipts Register](/AR%20Unapplied%20Receipts%20Register/), [AR European Sales Listing](/AR%20European%20Sales%20Listing/), [PO Headers and Lines](/PO%20Headers%20and%20Lines/)
+
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

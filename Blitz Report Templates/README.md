@@ -13,7 +13,7 @@ Report Name, Template Name, Category, Owner, Creation Date From, Has Excel Templ
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps)
 
 ## Related reports
-[Blitz Reports](/Blitz%20Reports/), [INV Transaction Historical Summary](/INV%20Transaction%20Historical%20Summary/), [Blitz Report Parameter Default Values](/Blitz%20Report%20Parameter%20Default%20Values/), [RWB Reports](/RWB%20Reports/), [GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20-Distributions/), [AP Trial Balance](/AP%20Trial%20Balance/), [GL Account Analysis](/GL%20Account%20Analysis/), [RWB Execution History](/RWB%20Execution%20History/), [GL Balance by Account Hierarchy](/GL%20Balance%20by%20Account%20Hierarchy/)
+[Blitz Reports](/Blitz%20Reports/), [INV Transaction Historical Summary](/INV%20Transaction%20Historical%20Summary/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

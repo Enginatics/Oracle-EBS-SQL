@@ -19,8 +19,7 @@ Ledger, Book Class, Book, From Period, To Period, From Category, To Category, Fr
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
-## Related reports
-[FA Adjusted Form 4626 - AMT Summary Report- Not Supported: Reserved For Future Use](/FA%20Adjusted%20Form%204626%20-%20AMT%20Summary%20Report-%20Not%20Supported-%20Reserved%20For%20Future%20Use/), [FA Form 4797 - Gain From Disposition of 1245 Property - draft](/FA%20Form%204797%20-%20Gain%20From%20Disposition%20of%201245%20Property%20-%20draft/), [FA Depreciation by period](/FA%20Depreciation%20by%20period/), [FA Mass Change Preview - draft](/FA%20Mass%20Change%20Preview%20-%20draft/), [FA Asset Retirements](/FA%20Asset%20Retirements/), [FA Cost Adjustments](/FA%20Cost%20Adjustments/), [FA Additions By Source](/FA%20Additions%20By%20Source/), [FA Asset Book Details](/FA%20Asset%20Book%20Details/), [FA Tax Preference - draft](/FA%20Tax%20Preference%20-%20draft/), [FA Asset Additions - draft](/FA%20Asset%20Additions%20-%20draft/)
+
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

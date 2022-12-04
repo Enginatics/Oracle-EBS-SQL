@@ -13,7 +13,7 @@ Date From, Date To, Level of Detail, Request Id (Time Restriction), Time Restric
 [Diagnostic Pack](https://www.enginatics.com/library/?pg=1&category[]=Diagnostic%20Pack), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps)
 
 ## Related reports
-[DBA AWR System Time Summary](/DBA%20AWR%20System%20Time%20Summary/), [DBA AWR System Time Summary Percentages](/DBA%20AWR%20System%20Time%20Summary%20Percentages/), [DBA AWR Blocking Session Summary](/DBA%20AWR%20Blocking%20Session%20Summary/), [DBA AWR Active Session History](/DBA%20AWR%20Active%20Session%20History/), [DBA AWR SQL Performance Summary](/DBA%20AWR%20SQL%20Performance%20Summary/), [DBA AWR Settings](/DBA%20AWR%20Settings/), [DBA SGA+PGA Memory Configuration](/DBA%20SGA-PGA%20Memory%20Configuration/), [DBA AWR System Metrics Summary](/DBA%20AWR%20System%20Metrics%20Summary/), [DBA AWR System Wait Event Summary](/DBA%20AWR%20System%20Wait%20Event%20Summary/)
+[DBA AWR System Time Summary](/DBA%20AWR%20System%20Time%20Summary/), [DBA AWR System Time Summary Percentages](/DBA%20AWR%20System%20Time%20Summary%20Percentages/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

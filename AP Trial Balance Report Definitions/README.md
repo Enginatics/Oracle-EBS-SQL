@@ -12,8 +12,7 @@ Report Definition
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
-## Related reports
-[XLA Trial Balance - Non AP Journal Amounts](/XLA%20Trial%20Balance%20-%20Non%20AP%20Journal%20Amounts/), [XLA Trial Balance - Manual SLA AP Amounts](/XLA%20Trial%20Balance%20-%20Manual%20SLA%20AP%20Amounts/), [AP Accounted Invoice Aging](/AP%20Accounted%20Invoice%20Aging/), [GL Account Analysis](/GL%20Account%20Analysis/), [GL Account Analysis (Distributions) 11g](/GL%20Account%20Analysis%20-Distributions-%2011g/), [GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20-Distributions/), [GL Account Analysis 11g](/GL%20Account%20Analysis%2011g/), [JA Third Party Detail Trial Balance with Contra Accounts](/JA%20Third%20Party%20Detail%20Trial%20Balance%20with%20Contra%20Accounts/), [FA Asset Book Details](/FA%20Asset%20Book%20Details/)
+
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

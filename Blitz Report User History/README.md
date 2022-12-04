@@ -14,7 +14,7 @@ Last Logon Date within x days, Executions within x days
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps)
 
 ## Related reports
-[FND Access Control 11i](/FND%20Access%20Control%2011i/), [FND Access Control](/FND%20Access%20Control/), [FND User Responsibilities](/FND%20User%20Responsibilities/), [AR Profile Option Migration](/AR%20Profile%20Option%20Migration/), [DIS Access Privileges](/DIS%20Access%20Privileges/), [EIS Execution History](/EIS%20Execution%20History/), [Blitz Report Execution History](/Blitz%20Report%20Execution%20History/), [Blitz Reports](/Blitz%20Reports/), [XXEN: FND User Login History with Geolocation](/XXEN-%20FND%20User%20Login%20History%20with%20Geolocation/)
+[FND Access Control 11i](/FND%20Access%20Control%2011i/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

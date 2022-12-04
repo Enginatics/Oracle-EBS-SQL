@@ -13,7 +13,7 @@ Calendar, Show Organizations, Organization Code, Show Dates, Future only
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related reports
-[MRP Pegging](/MRP%20Pegging/), [CAC ICP PII Inventory and Intransit Value (Period-End)](/CAC%20ICP%20PII%20Inventory%20and%20Intransit%20Value%20-Period-End/), [BOM Calendar Exceptions](/BOM%20Calendar%20Exceptions/), [CRP Resource Plan](/CRP%20Resource%20Plan/), [OPM WIP Value](/OPM%20WIP%20Value/), [OPM2](/OPM2/), [MRP Late Order](/MRP%20Late%20Order/), [MRP Supply Chain Late Order](/MRP%20Supply%20Chain%20Late%20Order/), [ECC Discrete Completions, Assembly Completion Transactions](/ECC%20Discrete%20Completions-%20Assembly%20Completion%20Transactions/)
+[MRP Pegging](/MRP%20Pegging/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

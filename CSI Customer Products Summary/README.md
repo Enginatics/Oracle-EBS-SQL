@@ -16,7 +16,7 @@ Account Number, Customer Name, Instance Number, Item, Status, City, Country, Cre
 [BI Publisher](https://www.enginatics.com/library/?pg=1&category[]=BI%20Publisher), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps)
 
 ## Related reports
-[OKL Termination Quotes](/OKL%20Termination%20Quotes/), [CSD Depot Repair XMLP Estimate](/CSD%20Depot%20Repair%20XMLP%20Estimate/), [CSD Depot Repair Traveler](/CSD%20Depot%20Repair%20Traveler/), [CSI Installed Base Summary by Organization](/CSI%20Installed%20Base%20Summary%20by%20Organization/), [WSH Shipping/Delivery Transactions](/WSH%20Shipping-Delivery%20Transactions/), [JG Regional Invoice Format Program- Not Supported: Reserved For Future Use](/JG%20Regional%20Invoice%20Format%20Program-%20Not%20Supported-%20Reserved%20For%20Future%20Use/), [ONT Orders and Lines](/ONT%20Orders%20and%20Lines/), [ONT DIFOT](/ONT%20DIFOT/), [ONT Unbooked Orders Detail](/ONT%20Unbooked%20Orders%20Detail/)
+[OKL Termination Quotes](/OKL%20Termination%20Quotes/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

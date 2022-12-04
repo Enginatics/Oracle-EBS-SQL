@@ -13,7 +13,7 @@ Database license feature usage statistics, such as the number of times that an A
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related reports
-[DBA SGA+PGA Memory Configuration](/DBA%20SGA-PGA%20Memory%20Configuration/), [DBA AWR Tablespace Usage](/DBA%20AWR%20Tablespace%20Usage/), [INV Movement Statistics](/INV%20Movement%20Statistics/), [DBA AWR System Metrics Summary](/DBA%20AWR%20System%20Metrics%20Summary/), [DBA AWR Settings](/DBA%20AWR%20Settings/), [DIS Access Privileges](/DIS%20Access%20Privileges/), [DBA Tablespace Usage](/DBA%20Tablespace%20Usage/), [ONT Defaulting Rules Listing](/ONT%20Defaulting%20Rules%20Listing/), [Compare Blitz Reports between environments](/Compare%20Blitz%20Reports%20between%20environments/)
+[DBA SGA+PGA Memory Configuration](/DBA%20SGA-PGA%20Memory%20Configuration/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

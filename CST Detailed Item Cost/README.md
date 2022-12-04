@@ -13,7 +13,7 @@ Cost Type, Category Set, Category From, Category To, Item, Item From, Item To, O
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Operations)
 
 ## Related reports
-[CST Item Cost Reports](/CST%20Item%20Cost%20Reports/), [CST Item Costs](/CST%20Item%20Costs/), [CAC Item Cost Out-of-Balance](/CAC%20Item%20Cost%20Out-of-Balance/), [CAC Item Cost Summary](/CAC%20Item%20Cost%20Summary/), [CAC Item vs. Component Include in Rollup Controls](/CAC%20Item%20vs-%20Component%20Include%20in%20Rollup%20Controls/), [CAC Material Account Detail](/CAC%20Material%20Account%20Detail/), [CAC Material Account Summary](/CAC%20Material%20Account%20Summary/), [GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20-Distributions/), [INV Cycle count entries and adjustments](/INV%20Cycle%20count%20entries%20and%20adjustments/)
+[CST Item Cost Reports](/CST%20Item%20Cost%20Reports/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

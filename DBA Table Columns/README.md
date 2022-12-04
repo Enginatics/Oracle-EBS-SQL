@@ -13,7 +13,7 @@ Column Name contains, Table Name starts with, Exclude Views
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps)
 
 ## Related reports
-[FND Audit Setup](/FND%20Audit%20Setup/), [Blitz Report VPD Policy Setup](/Blitz%20Report%20VPD%20Policy%20Setup/), [DBA Table Modifications](/DBA%20Table%20Modifications/), [FND Forms Personalizations](/FND%20Forms%20Personalizations/), [FND Audit Items](/FND%20Audit%20Items/), [FND Audit Table Changes by Column](/FND%20Audit%20Table%20Changes%20by%20Column/), [DBA AWR SQL Performance Summary](/DBA%20AWR%20SQL%20Performance%20Summary/), [DBA AWR Latch Summary](/DBA%20AWR%20Latch%20Summary/), [DBA SGA Active Session History](/DBA%20SGA%20Active%20Session%20History/)
+[FND Audit Setup](/FND%20Audit%20Setup/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

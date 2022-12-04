@@ -15,8 +15,7 @@ Reporting Level, Reporting Context, Report Summary, As Of Date, Aging Bucket Nam
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
-## Related reports
-[RK: AR Transactions and Lines](/RK-%20AR%20Transactions%20and%20Lines/), [AR Transactions and Payments](/AR%20Transactions%20and%20Payments/), [AR Transactions and Lines](/AR%20Transactions%20and%20Lines/), [AR Incomplete Transactions](/AR%20Incomplete%20Transactions/), [XX AR Transactions and Lines](/XX%20AR%20Transactions%20and%20Lines/), [Avalara VAT listing](/Avalara%20VAT%20listing/), [AR Customer Statement](/AR%20Customer%20Statement/), [AR Disputed Invoice](/AR%20Disputed%20Invoice/), [AR Sales Journal by GL Account Report- Obsoleted](/AR%20Sales%20Journal%20by%20GL%20Account%20Report-%20Obsoleted/)
+
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

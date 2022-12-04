@@ -16,7 +16,7 @@ Book, Set of Books Currency, Period
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related reports
-[FA Depreciation Reserve](/FA%20Depreciation%20Reserve/), [FA Asset Book Details](/FA%20Asset%20Book%20Details/), [FA Tax Reserve Ledger](/FA%20Tax%20Reserve%20Ledger/), [FA Asset Additions](/FA%20Asset%20Additions/), [FA Asset Retirements](/FA%20Asset%20Retirements/), [FA Asset Summary (Germany)](/FA%20Asset%20Summary%20-Germany/), [FA Revaluation Reserve](/FA%20Revaluation%20Reserve/), [FA Cost Adjustments](/FA%20Cost%20Adjustments/), [FA Fully Reserved Assets - draft](/FA%20Fully%20Reserved%20Assets%20-%20draft/)
+[FA Depreciation Reserve](/FA%20Depreciation%20Reserve/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

@@ -14,7 +14,7 @@ Manager Name, Show Specialization Rules, Show Processes, Active Processes only, 
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Setup & Support](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Setup%20%26%20Support)
 
 ## Related reports
-[FND Concurrent Requests 11i](/FND%20Concurrent%20Requests%2011i/), [FND Concurrent Requests](/FND%20Concurrent%20Requests/), [EIS Execution History](/EIS%20Execution%20History/), [ECC Admin - Concurrent Programs](/ECC%20Admin%20-%20Concurrent%20Programs/), [FND Concurrent Requests Summary](/FND%20Concurrent%20Requests%20Summary/), [FND Concurrent Request Conflicts](/FND%20Concurrent%20Request%20Conflicts/), [Concurrent Requests Bucketed](/Concurrent%20Requests%20Bucketed/), [FND Attached Documents](/FND%20Attached%20Documents/), [XDO Publisher Data Definitions](/XDO%20Publisher%20Data%20Definitions/)
+[FND Concurrent Requests 11i](/FND%20Concurrent%20Requests%2011i/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

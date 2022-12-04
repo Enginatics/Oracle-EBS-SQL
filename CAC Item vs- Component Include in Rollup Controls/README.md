@@ -48,7 +48,7 @@ Cost Type, Category Set 1, Category Set 2, Assignment Set, Item Number, Organiza
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related reports
-[CAC Cost vs. Planning Item Controls](/CAC%20Cost%20vs-%20Planning%20Item%20Controls/), [CAC User-Defined and Rolled Up Costs](/CAC%20User-Defined%20and%20Rolled%20Up%20Costs/), [MRP Pegging](/MRP%20Pegging/), [XXE4ARW Excel4apps Inventory Items](/XXE4ARW%20Excel4apps%20Inventory%20Items/), [XXINV Inventory Items](/XXINV%20Inventory%20Items/), [INV Inventory Items](/INV%20Inventory%20Items/), [MSC Pegging Hierarchy](/MSC%20Pegging%20Hierarchy/), [GW Items](/GW%20Items/), [INV Item Templates](/INV%20Item%20Templates/)
+[CAC Cost vs. Planning Item Controls](/CAC%20Cost%20vs-%20Planning%20Item%20Controls/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

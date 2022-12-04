@@ -13,7 +13,7 @@ Operating Unit, Payment Process Request, Request Creation Date From, Request Cre
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related reports
-[AP Invoices and Lines](/AP%20Invoices%20and%20Lines/), [AP Accounted Invoice Aging](/AP%20Accounted%20Invoice%20Aging/), [AP Invoice on Hold](/AP%20Invoice%20on%20Hold/), [CE Cash in Transit](/CE%20Cash%20in%20Transit/), [EC: CE Cash in Transit](/EC-%20CE%20Cash%20in%20Transit/), [AP Suppliers Report- Not Supported: Reserved For Future Use](/AP%20Suppliers%20Report-%20Not%20Supported-%20Reserved%20For%20Future%20Use/), [JE Israeli Withholding Tax File to Tax Authority](/JE%20Israeli%20Withholding%20Tax%20File%20to%20Tax%20Authority/), [JE Israeli Withholding Tax Reconciliation](/JE%20Israeli%20Withholding%20Tax%20Reconciliation/), [JE Israeli Withholding Tax Summary/Detail](/JE%20Israeli%20Withholding%20Tax%20Summary-Detail/)
+[AP Invoices and Lines](/AP%20Invoices%20and%20Lines/), [AP Accounted Invoice Aging](/AP%20Accounted%20Invoice%20Aging/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

@@ -12,8 +12,7 @@ Department, Resource, Plan, Organization Code
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Operations)
 
-## Related reports
-[CRP Bill of Resources](/CRP%20Bill%20of%20Resources/), [CRP Resource Plan](/CRP%20Resource%20Plan/), [ECC Discrete Manufacturing, Resources](/ECC%20Discrete%20Manufacturing-%20Resources/), [ECC Discrete Manufacturing, Outside Processing](/ECC%20Discrete%20Manufacturing-%20Outside%20Processing/), [BOM Department](/BOM%20Department/), [CAC WIP Account Summary](/CAC%20WIP%20Account%20Summary/), [WIP Repetitive Value](/WIP%20Repetitive%20Value/), [WIP Entities](/WIP%20Entities/), [WIP Resource Transaction](/WIP%20Resource%20Transaction/)
+
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

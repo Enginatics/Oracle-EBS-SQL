@@ -53,7 +53,7 @@ Cost Type, Include Inactive Items, Include Uncosted Items, Category Set 1, Categ
 [Cost Accounting - Assessment](https://www.enginatics.com/library/?pg=1&category[]=Cost%20Accounting%20-%20Assessment), [Cost Accounting - Cost](https://www.enginatics.com/library/?pg=1&category[]=Cost%20Accounting%20-%20Cost), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Cost Accounting](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Cost%20Accounting)
 
 ## Related reports
-[CAC Item vs. Component Include in Rollup Controls](/CAC%20Item%20vs-%20Component%20Include%20in%20Rollup%20Controls/), [CAC Item Cost Out-of-Balance](/CAC%20Item%20Cost%20Out-of-Balance/), [CAC Material Account Detail](/CAC%20Material%20Account%20Detail/), [CAC Open Internal ISO-IRO](/CAC%20Open%20Internal%20ISO-IRO/), [CAC Material Account Summary](/CAC%20Material%20Account%20Summary/), [CAC Inventory and Intransit Value (Period-End)](/CAC%20Inventory%20and%20Intransit%20Value%20-Period-End/), [CAC ICP PII Inventory and Intransit Value (Period-End)](/CAC%20ICP%20PII%20Inventory%20and%20Intransit%20Value%20-Period-End/), [CAC User-Defined and Rolled Up Costs](/CAC%20User-Defined%20and%20Rolled%20Up%20Costs/), [CAC Cost vs. Planning Item Controls](/CAC%20Cost%20vs-%20Planning%20Item%20Controls/)
+[CAC Item vs. Component Include in Rollup Controls](/CAC%20Item%20vs-%20Component%20Include%20in%20Rollup%20Controls/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

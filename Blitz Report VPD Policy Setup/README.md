@@ -13,7 +13,7 @@ Lists tables and columns to be secured by Blitz Report's VPD policy functionalit
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Setup & Support](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Setup%20%26%20Support)
 
 ## Related reports
-[FND Audit Setup](/FND%20Audit%20Setup/), [CAC Accounting Period Status](/CAC%20Accounting%20Period%20Status/), [FND Lookup Search](/FND%20Lookup%20Search/), [CAC Receiving Account Summary](/CAC%20Receiving%20Account%20Summary/), [CAC Material Account Detail](/CAC%20Material%20Account%20Detail/), [CAC WIP Account Summary No SLA](/CAC%20WIP%20Account%20Summary%20No%20SLA/), [CAC Inventory Out-of-Balance](/CAC%20Inventory%20Out-of-Balance/), [CAC Material Account Summary](/CAC%20Material%20Account%20Summary/), [CAC WIP Account Summary](/CAC%20WIP%20Account%20Summary/)
+[FND Audit Setup](/FND%20Audit%20Setup/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

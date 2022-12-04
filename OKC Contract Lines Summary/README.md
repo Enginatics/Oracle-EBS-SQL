@@ -14,7 +14,7 @@ Class, Category
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Setup & Support](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Setup%20%26%20Support)
 
 ## Related reports
-[OKS Service Contracts Billing Schedule](/OKS%20Service%20Contracts%20Billing%20Schedule/), [OKS Service Contracts Billing History](/OKS%20Service%20Contracts%20Billing%20History/), [PON Solicitation data template](/PON%20Solicitation%20data%20template/), [GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20-Distributions/), [ECC Service Contracts, Service Contract Details](/ECC%20Service%20Contracts-%20Service%20Contract%20Details/), [Avalara VAT listing](/Avalara%20VAT%20listing/), [RK: AR Transactions and Lines](/RK-%20AR%20Transactions%20and%20Lines/), [OKL Billing Inquiry Data](/OKL%20Billing%20Inquiry%20Data/), [PO IDV Data template](/PO%20IDV%20Data%20template/)
+[OKS Service Contracts Billing Schedule](/OKS%20Service%20Contracts%20Billing%20Schedule/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

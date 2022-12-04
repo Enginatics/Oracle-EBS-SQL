@@ -13,7 +13,7 @@ Organization Code, Calendar, Future only
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Operations), [Toolkit - Setup & Support](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Setup%20%26%20Support)
 
 ## Related reports
-[BOM Calendars](/BOM%20Calendars/), [CAC ICP PII Inventory and Intransit Value (Period-End)](/CAC%20ICP%20PII%20Inventory%20and%20Intransit%20Value%20-Period-End/), [OPM WIP Value](/OPM%20WIP%20Value/), [OPM2](/OPM2/), [CRP Resource Plan](/CRP%20Resource%20Plan/), [MRP Pegging](/MRP%20Pegging/), [CAC Inventory and Intransit Value (Period-End)](/CAC%20Inventory%20and%20Intransit%20Value%20-Period-End/), [PO Approved Supplier List](/PO%20Approved%20Supplier%20List/), [CAC Accounting Period Status](/CAC%20Accounting%20Period%20Status/)
+[BOM Calendars](/BOM%20Calendars/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

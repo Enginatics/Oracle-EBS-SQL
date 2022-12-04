@@ -13,7 +13,7 @@ Workbook, Submitted by User, Business Area, Folder, View Name, Accessed within D
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps)
 
 ## Related reports
-[DIS Access Privileges](/DIS%20Access%20Privileges/), [DIS Workbooks, Folders, Items and LOVs](/DIS%20Workbooks-%20Folders-%20Items%20and%20LOVs/), [DIS Folders, Business Areas, Items and LOVs](/DIS%20Folders-%20Business%20Areas-%20Items%20and%20LOVs/), [DIS Worksheet Execution History](/DIS%20Worksheet%20Execution%20History/), [DIS Business Areas](/DIS%20Business%20Areas/), [DIS Workbook Export Script](/DIS%20Workbook%20Export%20Script/), [DIS Users](/DIS%20Users/), [DIS Workbook Export FND Users](/DIS%20Workbook%20Export%20FND%20Users/), [DIS Worksheet SQLs](/DIS%20Worksheet%20SQLs/)
+[DIS Access Privileges](/DIS%20Access%20Privileges/), [DIS Workbooks, Folders, Items and LOVs](/DIS%20Workbooks-%20Folders-%20Items%20and%20LOVs/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

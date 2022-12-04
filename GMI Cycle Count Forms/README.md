@@ -15,8 +15,7 @@ Warehouse Code, Cycle, From Count, To Count, Sort By
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
-## Related reports
-[GML PO/Stock Return History](/GML%20PO-Stock%20Return%20History/), [GMI Inventory Transfer](/GMI%20Inventory%20Transfer/), [GMI Inventory Edit Journal](/GMI%20Inventory%20Edit%20Journal/), [GMI Lot Inventory](/GMI%20Lot%20Inventory/), [GMI Inventory Transfer Report By Batch](/GMI%20Inventory%20Transfer%20Report%20By%20Batch/), [GML Unallocated Orders](/GML%20Unallocated%20Orders/), [GML Unallocated Orders Report (OPM - OM)](/GML%20Unallocated%20Orders%20Report%20-OPM%20-%20OM/), [GML Items Received](/GML%20Items%20Received/), [GML Sales Order Audit Trail](/GML%20Sales%20Order%20Audit%20Trail/)
+
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

@@ -13,8 +13,7 @@ Last Name starts with, Business Group, Payroll Run Date From, Payroll Run Date T
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Operations)
 
-## Related reports
-[PAY Payroll Reconciliation (New Zealand)](/PAY%20Payroll%20Reconciliation%20-New%20Zealand/), [PAY Inland Revenue Remittance Certificate](/PAY%20Inland%20Revenue%20Remittance%20Certificate/), [RKD Employee Salary Element Wise](/RKD%20Employee%20Salary%20Element%20Wise/), [RKD Employee Element History](/RKD%20Employee%20Element%20History/), [PAY Tax Payments Listing](/PAY%20Tax%20Payments%20Listing/), [Payroll Balance Listing](/Payroll%20Balance%20Listing/), [SSP ShPP Birth Element Results](/SSP%20ShPP%20Birth%20Element%20Results/), [SSP ShPP Adoption Element Results](/SSP%20ShPP%20Adoption%20Element%20Results/), [PAY Payroll Reconciliation Detail](/PAY%20Payroll%20Reconciliation%20Detail/)
+
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

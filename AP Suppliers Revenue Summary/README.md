@@ -13,7 +13,7 @@ Supplier, Supplier Number, Country, As of Date, Summary Level, Operating Unit, L
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Operations)
 
 ## Related reports
-[FA Asset Book Details](/FA%20Asset%20Book%20Details/), [GL Category and subledger entities](/GL%20Category%20and%20subledger%20entities/), [CAC Inventory Out-of-Balance](/CAC%20Inventory%20Out-of-Balance/), [CAC ICP PII Inventory and Intransit Value (Period-End)](/CAC%20ICP%20PII%20Inventory%20and%20Intransit%20Value%20-Period-End/), [CAC Inventory to G/L Reconciliation (Unrestricted by Org Access)](/CAC%20Inventory%20to%20G-L%20Reconciliation%20-Unrestricted%20by%20Org%20Access/), [CAC Inventory to G/L Reconciliation (Restricted by Org Access)](/CAC%20Inventory%20to%20G-L%20Reconciliation%20-Restricted%20by%20Org%20Access/), [CAC Inventory and Intransit Value (Period-End)](/CAC%20Inventory%20and%20Intransit%20Value%20-Period-End/), [OPM WIP Value](/OPM%20WIP%20Value/), [GL Journal vs Subledger mismatches](/GL%20Journal%20vs%20Subledger%20mismatches/), [Mrugesh: GL Balance](/Mrugesh-%20GL%20Balance/)
+[FA Asset Book Details](/FA%20Asset%20Book%20Details/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

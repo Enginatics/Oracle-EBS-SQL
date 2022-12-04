@@ -24,7 +24,7 @@ Bank Name, Bank Branch, Bank Account Name, Bank Account Number, Transaction Type
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related reports
-[CE Cash in Transit](/CE%20Cash%20in%20Transit/), [EC: CE Cash in Transit](/EC-%20CE%20Cash%20in%20Transit/), [IBY Payment Process Request Details](/IBY%20Payment%20Process%20Request%20Details/), [CE General Ledger Reconciliation](/CE%20General%20Ledger%20Reconciliation/), [AR Transactions and Payments](/AR%20Transactions%20and%20Payments/), [AP Invoice Payments](/AP%20Invoice%20Payments/), [AR Miscellaneous Receipts](/AR%20Miscellaneous%20Receipts/), [CE Transactions Available for Reconciliation](/CE%20Transactions%20Available%20for%20Reconciliation/), [GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20-Distributions/)
+[CE Cash in Transit](/CE%20Cash%20in%20Transit/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

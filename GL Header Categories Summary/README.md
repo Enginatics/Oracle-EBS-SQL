@@ -12,8 +12,7 @@ Expand Sources
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Operations)
 
-## Related reports
-[GL Journals - Line](/GL%20Journals%20-%20Line/), [GL Category and subledger entities](/GL%20Category%20and%20subledger%20entities/), [XLA Trial Balance - Non AP Journal Amounts](/XLA%20Trial%20Balance%20-%20Non%20AP%20Journal%20Amounts/), [GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20-Distributions/), [GL Journals](/GL%20Journals/), [GL Account Analysis 11g](/GL%20Account%20Analysis%2011g/), [GL Account Analysis](/GL%20Account%20Analysis/), [GL Account Analysis (Distributions) 11g](/GL%20Account%20Analysis%20-Distributions-%2011g/), [GL Turnover for Selected Segments](/GL%20Turnover%20for%20Selected%20Segments/)
+
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

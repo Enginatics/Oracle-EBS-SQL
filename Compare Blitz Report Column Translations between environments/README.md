@@ -13,7 +13,7 @@ Remote Database, Language, Show Differences only
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Setup & Support](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Setup%20%26%20Support)
 
 ## Related reports
-[QP Customer Pricing Engine Request](/QP%20Customer%20Pricing%20Engine%20Request/), [GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20-Distributions/), [andy column translation test](/andy%20column%20translation%20test/), [Blitz Report Column Translations](/Blitz%20Report%20Column%20Translations/), [GL Account Analysis](/GL%20Account%20Analysis/), [INV Transaction Historical Summary](/INV%20Transaction%20Historical%20Summary/), [AP Trial Balance](/AP%20Trial%20Balance/), [FND Flex Value Sets, Usages and Values](/FND%20Flex%20Value%20Sets-%20Usages%20and%20Values/), [Mrugesh: GL Balance](/Mrugesh-%20GL%20Balance/)
+[QP Customer Pricing Engine Request](/QP%20Customer%20Pricing%20Engine%20Request/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

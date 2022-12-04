@@ -13,7 +13,7 @@ User Name, Logged within x Days, Date From, Date To, Log Level From, Log Level T
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Setup & Support](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Setup%20%26%20Support)
 
 ## Related reports
-[FND Concurrent Requests 11i](/FND%20Concurrent%20Requests%2011i/), [FND Concurrent Requests](/FND%20Concurrent%20Requests/), [JL Argentine Turnover Tax Data Upload Verification](/JL%20Argentine%20Turnover%20Tax%20Data%20Upload%20Verification/), [OTA OLM Forum](/OTA%20OLM%20Forum/), [POS Integrated Supplier Import Rejections](/POS%20Integrated%20Supplier%20Import%20Rejections/), [ECC Project Manufacturing, Commitments](/ECC%20Project%20Manufacturing-%20Commitments/), [PQH Report Under Budgeted Entities](/PQH%20Report%20Under%20Budgeted%20Entities/), [PO View Award Changes Data Definition](/PO%20View%20Award%20Changes%20Data%20Definition/), [ECC Contract Lifecycle Management, Solicitations, SQL1](/ECC%20Contract%20Lifecycle%20Management-%20Solicitations-%20SQL1/)
+[FND Concurrent Requests 11i](/FND%20Concurrent%20Requests%2011i/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

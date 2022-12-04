@@ -17,7 +17,7 @@ Audit Table, Audit Group
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related reports
-[FND Applications](/FND%20Applications/), [FND Lookup Search](/FND%20Lookup%20Search/), [FND Audit Table Changes by Column](/FND%20Audit%20Table%20Changes%20by%20Column/), [FND Audit Items](/FND%20Audit%20Items/), [Blitz Report VPD Policy Setup](/Blitz%20Report%20VPD%20Policy%20Setup/), [FND Audit Table Changes by Record](/FND%20Audit%20Table%20Changes%20by%20Record/), [FND Flex Value Sets, Usages and Values](/FND%20Flex%20Value%20Sets-%20Usages%20and%20Values/), [AP Expenses](/AP%20Expenses/), [FND Tables and Columns](/FND%20Tables%20and%20Columns/)
+[FND Applications](/FND%20Applications/), [FND Lookup Search](/FND%20Lookup%20Search/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

@@ -13,7 +13,7 @@ Organization Code, Date From, Date To, Account, Job, Line, Item, Transaction Typ
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Operations)
 
 ## Related reports
-[GL Account Analysis](/GL%20Account%20Analysis/), [WIP Discrete Job Shortage](/WIP%20Discrete%20Job%20Shortage/), [GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20-Distributions/), [FND Attached Documents](/FND%20Attached%20Documents/), [WIP Value](/WIP%20Value/), [COPY OF: INV Material Account Distribution Detail from Eng](/COPY%20OF-%20INV%20Material%20Account%20Distribution%20Detail%20from%20Eng/), [INV Material Account Distribution Detail](/INV%20Material%20Account%20Distribution%20Detail/), [PO Headers and Lines](/PO%20Headers%20and%20Lines/), [CST Periodic WIP Distribution Details](/CST%20Periodic%20WIP%20Distribution%20Details/)
+[GL Account Analysis](/GL%20Account%20Analysis/), [WIP Discrete Job Shortage](/WIP%20Discrete%20Job%20Shortage/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

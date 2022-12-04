@@ -12,8 +12,7 @@ Operating Unit, Document Type, Approval Group, Job, Position
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps), [Toolkit - Setup & Support](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Setup%20%26%20Support)
 
-## Related reports
-[PER Worker Organization Movements](/PER%20Worker%20Organization%20Movements/), [GL Account Analysis](/GL%20Account%20Analysis/), [PO Financials/Purchasing Options Listing](/PO%20Financials-Purchasing%20Options%20Listing/), [PO Approval Groups](/PO%20Approval%20Groups/), [INV Item Templates](/INV%20Item%20Templates/), [BEN Back-out Life Events Audit Log](/BEN%20Back-out%20Life%20Events%20Audit%20Log/), [ECC Contract Lifecycle Management, Solicitations, SQL2](/ECC%20Contract%20Lifecycle%20Management-%20Solicitations-%20SQL2/), [BEN Back-out Life Events Summary](/BEN%20Back-out%20Life%20Events%20Summary/), [FA Asset Book Details](/FA%20Asset%20Book%20Details/)
+
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

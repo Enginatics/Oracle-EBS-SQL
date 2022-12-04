@@ -14,8 +14,7 @@ Ledger, Operating Unit, Display Level, Customer Name like, Account Number, Conso
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Operations)
 
-## Related reports
-[AR Transaction Detail](/AR%20Transaction%20Detail/), [XX AR Transactions and Lines](/XX%20AR%20Transactions%20and%20Lines/), [RK: AR Transactions and Lines](/RK-%20AR%20Transactions%20and%20Lines/), [AR Incomplete Transactions](/AR%20Incomplete%20Transactions/), [Avalara VAT listing](/Avalara%20VAT%20listing/), [AR Aging - 7 Buckets - By Salesperson/Agent](/AR%20Aging%20-%207%20Buckets%20-%20By%20Salesperson-Agent/), [IGI Standing Charges: Transaction History Report- Not Supported: Reserved For Future Use](/IGI%20Standing%20Charges-%20Transaction%20History%20Report-%20Not%20Supported-%20Reserved%20For%20Future%20Use/), [AR Transaction Register](/AR%20Transaction%20Register/), [AR Transactions and Payments](/AR%20Transactions%20and%20Payments/)
+
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

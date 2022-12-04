@@ -32,7 +32,7 @@ Contract Number, Billed From, Billed To, Bill Action, Operating Unit
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps)
 
 ## Related reports
-[OKS Service Contracts Billing Schedule](/OKS%20Service%20Contracts%20Billing%20Schedule/), [OKC Contract Lines Summary](/OKC%20Contract%20Lines%20Summary/), [RK: AR Transactions and Lines](/RK-%20AR%20Transactions%20and%20Lines/), [Avalara VAT listing](/Avalara%20VAT%20listing/), [GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20-Distributions/), [OKL Termination Quotes](/OKL%20Termination%20Quotes/), [PON Solicitation data template](/PON%20Solicitation%20data%20template/), [ECC Service Contracts, Service Contract Details](/ECC%20Service%20Contracts-%20Service%20Contract%20Details/), [GL Account Analysis](/GL%20Account%20Analysis/)
+[OKS Service Contracts Billing Schedule](/OKS%20Service%20Contracts%20Billing%20Schedule/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

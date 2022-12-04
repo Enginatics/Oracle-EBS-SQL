@@ -13,7 +13,7 @@ Application, Name, Title, Table Name, Window Prompt, Validation Table Name
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related reports
-[FND Flex Value Sets, Usages and Values](/FND%20Flex%20Value%20Sets-%20Usages%20and%20Values/), [FND Concurrent Programs and Executables](/FND%20Concurrent%20Programs%20and%20Executables/), [FND Concurrent Programs and Executables 11i](/FND%20Concurrent%20Programs%20and%20Executables%2011i/), [PER Organizations](/PER%20Organizations/), [FND Key Flexfields](/FND%20Key%20Flexfields/), [BEN Life Events Summary](/BEN%20Life%20Events%20Summary/), [FND Flex Value Security Rules](/FND%20Flex%20Value%20Security%20Rules/), [JE Israeli Withholding Annual Certificate To Vendors](/JE%20Israeli%20Withholding%20Annual%20Certificate%20To%20Vendors/), [PO Headers and Lines](/PO%20Headers%20and%20Lines/)
+[FND Flex Value Sets, Usages and Values](/FND%20Flex%20Value%20Sets-%20Usages%20and%20Values/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

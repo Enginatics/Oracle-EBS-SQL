@@ -13,7 +13,7 @@ Category
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps)
 
 ## Related reports
-[Blitz Reports](/Blitz%20Reports/), [Blitz Report Text Search](/Blitz%20Report%20Text%20Search/), [GL FSG Reports](/GL%20FSG%20Reports/), [Blitz Report Execution Summary](/Blitz%20Report%20Execution%20Summary/), [Blitz Report Category Assignments](/Blitz%20Report%20Category%20Assignments/), [Blitz Report SQL Validation](/Blitz%20Report%20SQL%20Validation/), [Blitz Report Execution History](/Blitz%20Report%20Execution%20History/), [EIS Reports](/EIS%20Reports/), [DIS Import Performance](/DIS%20Import%20Performance/)
+[Blitz Reports](/Blitz%20Reports/), [Blitz Report Text Search](/Blitz%20Report%20Text%20Search/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

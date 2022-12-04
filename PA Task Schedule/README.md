@@ -12,8 +12,7 @@ Project, Operating Unit
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Operations)
 
-## Related reports
-[XX PA Task Schedule](/XX%20PA%20Task%20Schedule/), [ECC G-Invoicing, Projects: G-Invoicing](/ECC%20G-Invoicing-%20Projects-%20G-Invoicing/), [PON Solicitation data template](/PON%20Solicitation%20data%20template/), [PO Endeca Template](/PO%20Endeca%20Template/), [PA Implementation Options](/PA%20Implementation%20Options/), [ECC Project Manufacturing, Exceptions and Overdues, SQL6](/ECC%20Project%20Manufacturing-%20Exceptions%20and%20Overdues-%20SQL6/), [ECC Project Manufacturing, Exceptions and Overdues, SQL3](/ECC%20Project%20Manufacturing-%20Exceptions%20and%20Overdues-%20SQL3/), [ECC Project Manufacturing, Exceptions and Overdues, SQL1](/ECC%20Project%20Manufacturing-%20Exceptions%20and%20Overdues-%20SQL1/), [ECC Project Manufacturing, Exceptions and Overdues, SQL7](/ECC%20Project%20Manufacturing-%20Exceptions%20and%20Overdues-%20SQL7/)
+
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

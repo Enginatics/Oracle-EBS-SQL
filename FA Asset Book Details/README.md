@@ -14,7 +14,7 @@ Ledger, Book, As of Period, Show Calendar, Show Alternative Ledgers, Show Accoun
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Setup & Support](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Setup%20%26%20Support)
 
 ## Related reports
-[FA Asset Impairments](/FA%20Asset%20Impairments/), [FA Asset Cost](/FA%20Asset%20Cost/), [FA Tax Reserve Ledger](/FA%20Tax%20Reserve%20Ledger/), [FA Journal Entry Reserve Ledger](/FA%20Journal%20Entry%20Reserve%20Ledger/), [FA Revaluation Reserve](/FA%20Revaluation%20Reserve/), [FA Depreciation Reserve](/FA%20Depreciation%20Reserve/), [FA Cost Adjustments](/FA%20Cost%20Adjustments/), [FA CIP Cost](/FA%20CIP%20Cost/), [FA Asset Retirements](/FA%20Asset%20Retirements/)
+[FA Asset Impairments](/FA%20Asset%20Impairments/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

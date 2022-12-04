@@ -17,7 +17,7 @@ Days
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps), [Toolkit - DBA](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20DBA)
 
 ## Related reports
-[FND Concurrent Requests 11i](/FND%20Concurrent%20Requests%2011i/), [FND Concurrent Requests](/FND%20Concurrent%20Requests/), [DBA SGA Active Session History](/DBA%20SGA%20Active%20Session%20History/), [DBA AWR Blocking Session Summary](/DBA%20AWR%20Blocking%20Session%20Summary/), [DBA AWR Active Session History](/DBA%20AWR%20Active%20Session%20History/), [DBA SGA+PGA Memory Configuration](/DBA%20SGA-PGA%20Memory%20Configuration/), [DBA SGA Blocking Session Summary](/DBA%20SGA%20Blocking%20Session%20Summary/), [DBA Blocking Sessions](/DBA%20Blocking%20Sessions/), [DBA AWR SQL Performance Summary](/DBA%20AWR%20SQL%20Performance%20Summary/)
+[FND Concurrent Requests 11i](/FND%20Concurrent%20Requests%2011i/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

@@ -56,7 +56,7 @@ Period Name (Closed), Minimum Value Difference, Category Set 1, Category Set 2, 
 [Cost Accounting - Assessment](https://www.enginatics.com/library/?pg=1&category[]=Cost%20Accounting%20-%20Assessment), [Cost Accounting - Inventory Value](https://www.enginatics.com/library/?pg=1&category[]=Cost%20Accounting%20-%20Inventory%20Value), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Cost Accounting](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Cost%20Accounting)
 
 ## Related reports
-[CAC ICP PII Inventory and Intransit Value (Period-End)](/CAC%20ICP%20PII%20Inventory%20and%20Intransit%20Value%20-Period-End/), [CAC Inventory and Intransit Value (Period-End)](/CAC%20Inventory%20and%20Intransit%20Value%20-Period-End/), [CAC Material Account Detail](/CAC%20Material%20Account%20Detail/), [GL Account Analysis](/GL%20Account%20Analysis/), [GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20-Distributions/), [OPM2](/OPM2/), [OPM WIP Value - V2](/OPM%20WIP%20Value%20-%20V2/), [OPM WIP Value](/OPM%20WIP%20Value/), [CAC Material Account Summary](/CAC%20Material%20Account%20Summary/)
+[CAC ICP PII Inventory and Intransit Value (Period-End)](/CAC%20ICP%20PII%20Inventory%20and%20Intransit%20Value%20-Period-End/), [CAC Inventory and Intransit Value (Period-End)](/CAC%20Inventory%20and%20Intransit%20Value%20-Period-End/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

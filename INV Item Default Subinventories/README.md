@@ -13,7 +13,7 @@ Item, Subinventory, Organization Code
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Operations), [Toolkit - Setup & Support](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Setup%20%26%20Support)
 
 ## Related reports
-[INV Item Default Locators](/INV%20Item%20Default%20Locators/), [CAC Receiving Account Summary](/CAC%20Receiving%20Account%20Summary/), [CAC User-Defined and Rolled Up Costs](/CAC%20User-Defined%20and%20Rolled%20Up%20Costs/), [CAC WIP Account Summary No SLA](/CAC%20WIP%20Account%20Summary%20No%20SLA/), [Avalara VAT listing](/Avalara%20VAT%20listing/), [RD INV Inventory Aging](/RD%20INV%20Inventory%20Aging/), [CAC ICP PII Inventory and Intransit Value (Period-End)](/CAC%20ICP%20PII%20Inventory%20and%20Intransit%20Value%20-Period-End/), [CAC Material Account Summary](/CAC%20Material%20Account%20Summary/), [CAC WIP Account Summary](/CAC%20WIP%20Account%20Summary/)
+[INV Item Default Locators](/INV%20Item%20Default%20Locators/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

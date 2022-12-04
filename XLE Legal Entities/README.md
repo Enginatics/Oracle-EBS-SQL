@@ -13,7 +13,7 @@ Jurisdiction Country, Legal Entity Name
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps), [Toolkit - Setup & Support](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Setup%20%26%20Support)
 
 ## Related reports
-[ZX Party Tax Profiles](/ZX%20Party%20Tax%20Profiles/), [JE Italian Withholding Yearly](/JE%20Italian%20Withholding%20Yearly/), [XXSJ Report VAT Register](/XXSJ%20Report%20VAT%20Register/), [IBY Payment Process Request Details](/IBY%20Payment%20Process%20Request%20Details/), [JE Italian Annual Customer and Supplier Listing](/JE%20Italian%20Annual%20Customer%20and%20Supplier%20Listing/), [JE Italian Annual Customer and Supplier Electronic Format](/JE%20Italian%20Annual%20Customer%20and%20Supplier%20Electronic%20Format/), [CE Cleared Transactions](/CE%20Cleared%20Transactions/), [AR Transactions and Payments](/AR%20Transactions%20and%20Payments/), [JL Colombian Payables Withholding Certificate - draft](/JL%20Colombian%20Payables%20Withholding%20Certificate%20-%20draft/)
+[ZX Party Tax Profiles](/ZX%20Party%20Tax%20Profiles/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

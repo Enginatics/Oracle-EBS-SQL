@@ -16,7 +16,7 @@ Operating Unit, Supplier, PO Number, Type, Payment Status, Show Invoice Details,
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related reports
-[PO Headers](/PO%20Headers/), [PO Headers and Lines 11i](/PO%20Headers%20and%20Lines%2011i/), [PO Headers and Lines](/PO%20Headers%20and%20Lines/), [PO Receiving Transactions Pipeline](/PO%20Receiving%20Transactions%20Pipeline/), [CST AP and PO Accrual Reconciliation](/CST%20AP%20and%20PO%20Accrual%20Reconciliation/), [GL Account Analysis](/GL%20Account%20Analysis/), [GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20-Distributions/), [ECC Procurement, Agreements](/ECC%20Procurement-%20Agreements/), [ECC Procurement, Purchase Orders](/ECC%20Procurement-%20Purchase%20Orders/)
+[PO Headers](/PO%20Headers/), [PO Headers and Lines 11i](/PO%20Headers%20and%20Lines%2011i/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

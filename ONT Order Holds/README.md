@@ -12,8 +12,7 @@ Customer Name, Account Number, Order Number, Order Type, Line Type, Project, Tas
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Operations)
 
-## Related reports
-[OTA Attendance Signature Sheet](/OTA%20Attendance%20Signature%20Sheet/), [OTA Learner Sign-In Sheet](/OTA%20Learner%20Sign-In%20Sheet/), [GL Account Analysis](/GL%20Account%20Analysis/), [GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20-Distributions/), [ONT Internal Order and Purchasing Requisition Discrepancy](/ONT%20Internal%20Order%20and%20Purchasing%20Requisition%20Discrepancy/), [ONT Orders and Lines](/ONT%20Orders%20and%20Lines/), [ONT DIFOT](/ONT%20DIFOT/), [ONT Orders](/ONT%20Orders/), [ONT Orders on Credit Check Hold](/ONT%20Orders%20on%20Credit%20Check%20Hold/)
+
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

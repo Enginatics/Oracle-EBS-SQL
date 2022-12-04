@@ -13,7 +13,7 @@ Planning Instance, Plan, Organization, Category Set, Category, Item, Cutoff Date
 [Amazon](https://www.enginatics.com/library/?pg=1&category[]=Amazon), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related reports
-[MSC Horizontal Plan](/MSC%20Horizontal%20Plan/), [MSC Exceptions](/MSC%20Exceptions/), [MSC Pegging Hierarchy](/MSC%20Pegging%20Hierarchy/), [MSC Plan Orders](/MSC%20Plan%20Orders/), [CAC ICP PII Inventory and Intransit Value (Period-End)](/CAC%20ICP%20PII%20Inventory%20and%20Intransit%20Value%20-Period-End/), [CAC Inventory and Intransit Value (Period-End)](/CAC%20Inventory%20and%20Intransit%20Value%20-Period-End/), [MSC Sourcing Rules (Plan Side)](/MSC%20Sourcing%20Rules%20-Plan%20Side/), [PO RCV Interface](/PO%20RCV%20Interface/), [PO Purchase Requisition Interface](/PO%20Purchase%20Requisition%20Interface/)
+[MSC Horizontal Plan](/MSC%20Horizontal%20Plan/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

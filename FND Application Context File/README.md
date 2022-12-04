@@ -13,7 +13,7 @@ Context XML files retrieved from the database
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related reports
-[XDO Publisher Data Definitions](/XDO%20Publisher%20Data%20Definitions/), [Blitz Report Example XLSX Files](/Blitz%20Report%20Example%20XLSX%20Files/), [AD Applied Patches](/AD%20Applied%20Patches/), [AD Applied Patches 11i](/AD%20Applied%20Patches%2011i/), [ECC Procurement, Agreements](/ECC%20Procurement-%20Agreements/), [ECC Procurement, Purchase Orders (2)](/ECC%20Procurement-%20Purchase%20Orders%20-2/), [ECC Procurement, Purchase Orders (1)](/ECC%20Procurement-%20Purchase%20Orders%20-1/), [PAY Generate Employer Quarterly Tax Returns (India) - Excel](/PAY%20Generate%20Employer%20Quarterly%20Tax%20Returns%20-India-%20-%20Excel/), [PAY RTI FPS Run Reconciliation](/PAY%20RTI%20FPS%20Run%20Reconciliation/)
+[XDO Publisher Data Definitions](/XDO%20Publisher%20Data%20Definitions/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

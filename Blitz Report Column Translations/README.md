@@ -13,7 +13,7 @@ Language Code, Language, Last Updated By, Last Update Date From, Show obsolete o
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps)
 
 ## Related reports
-[QP Customer Pricing Engine Request](/QP%20Customer%20Pricing%20Engine%20Request/), [GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20-Distributions/), [GL Account Analysis](/GL%20Account%20Analysis/), [Mrugesh: GL Balance](/Mrugesh-%20GL%20Balance/), [RWB Execution History](/RWB%20Execution%20History/), [AP Invoices and Lines](/AP%20Invoices%20and%20Lines/), [GL Balance](/GL%20Balance/), [XXFT GL Balance](/XXFT%20GL%20Balance/), [FND Flex Value Sets, Usages and Values](/FND%20Flex%20Value%20Sets-%20Usages%20and%20Values/)
+[QP Customer Pricing Engine Request](/QP%20Customer%20Pricing%20Engine%20Request/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

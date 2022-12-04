@@ -13,7 +13,7 @@ Organization Code, Item, Item Number Contains, Item From, Item To, Category Set,
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related reports
-[GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20-Distributions/), [GL Account Analysis](/GL%20Account%20Analysis/), [INV Material Transactions](/INV%20Material%20Transactions/), [INV Material Account Distribution Detail](/INV%20Material%20Account%20Distribution%20Detail/), [COPY OF: INV Material Account Distribution Detail from Eng](/COPY%20OF-%20INV%20Material%20Account%20Distribution%20Detail%20from%20Eng/), [PO Headers and Lines](/PO%20Headers%20and%20Lines/), [MRP Pegging](/MRP%20Pegging/), [INV Transaction register](/INV%20Transaction%20register/), [PO Headers and Lines 11i](/PO%20Headers%20and%20Lines%2011i/)
+[GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20-Distributions/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

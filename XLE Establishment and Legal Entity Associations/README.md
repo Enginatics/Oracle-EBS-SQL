@@ -20,7 +20,7 @@ Parent Legal Entity, Entity Type
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps), [Toolkit - Setup & Support](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Setup%20%26%20Support)
 
 ## Related reports
-[IBY Payment Process Request Details](/IBY%20Payment%20Process%20Request%20Details/), [CE Bank Account Balances](/CE%20Bank%20Account%20Balances/), [CE Transactions Available for Reconciliation](/CE%20Transactions%20Available%20for%20Reconciliation/), [CE General Ledger Reconciliation](/CE%20General%20Ledger%20Reconciliation/), [CE General Ledger Cash Account Usage](/CE%20General%20Ledger%20Cash%20Account%20Usage/), [CE Cleared Transactions](/CE%20Cleared%20Transactions/), [CE Bank Statement and Reconciliation](/CE%20Bank%20Statement%20and%20Reconciliation/), [ZX Party Tax Profiles](/ZX%20Party%20Tax%20Profiles/), [JE Italian Withholding Yearly](/JE%20Italian%20Withholding%20Yearly/)
+[IBY Payment Process Request Details](/IBY%20Payment%20Process%20Request%20Details/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

@@ -13,7 +13,7 @@ Organization Code, Application Name, Responsibility Name
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Operations), [Toolkit - Setup & Support](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Setup%20%26%20Support)
 
 ## Related reports
-[CE Cleared Transactions](/CE%20Cleared%20Transactions/), [CE General Ledger Reconciliation](/CE%20General%20Ledger%20Reconciliation/), [FND Access Control](/FND%20Access%20Control/), [INV Intercompany Invoice Reconciliation](/INV%20Intercompany%20Invoice%20Reconciliation/), [AR Applied Receipts](/AR%20Applied%20Receipts/), [XXAR Applied Receipts](/XXAR%20Applied%20Receipts/), [AP Payables Open Interface Import- Not Supported: Reserved For Future Use](/AP%20Payables%20Open%20Interface%20Import-%20Not%20Supported-%20Reserved%20For%20Future%20Use/), [QP Customer Pricing Engine Request](/QP%20Customer%20Pricing%20Engine%20Request/), [CE General Ledger Cash Account Usage](/CE%20General%20Ledger%20Cash%20Account%20Usage/), [WSH Shipping/Delivery Transactions](/WSH%20Shipping-Delivery%20Transactions/)
+[CE Cleared Transactions](/CE%20Cleared%20Transactions/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

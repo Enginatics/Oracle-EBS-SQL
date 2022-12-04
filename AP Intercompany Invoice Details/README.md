@@ -14,7 +14,7 @@ Ledger, Operating Unit, Supplier, Invoice Number, Invoice Type, Invoice Date Fro
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related reports
-[GL Account Analysis](/GL%20Account%20Analysis/), [GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20-Distributions/), [PO Headers and Lines](/PO%20Headers%20and%20Lines/), [AP Invoices and Lines](/AP%20Invoices%20and%20Lines/), [DVTST: AP Invoices with PO, Intercompany and SLA Details](/DVTST-%20AP%20Invoices%20with%20PO-%20Intercompany%20and%20SLA%20Details/), [AP Invoices with PO, Intercompany and SLA Details](/AP%20Invoices%20with%20PO-%20Intercompany%20and%20SLA%20Details/), [PO Invoice Price Variance](/PO%20Invoice%20Price%20Variance/), [ECC Procurement, Purchase Orders](/ECC%20Procurement-%20Purchase%20Orders/), [ECC Procurement, Purchase Orders (1)](/ECC%20Procurement-%20Purchase%20Orders%20-1/)
+[GL Account Analysis](/GL%20Account%20Analysis/), [GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20-Distributions/), [PO Headers and Lines](/PO%20Headers%20and%20Lines/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

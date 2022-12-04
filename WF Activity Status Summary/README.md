@@ -13,7 +13,7 @@ Activity Status, Show all active or errored
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps), [Toolkit - Setup & Support](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Setup%20%26%20Support)
 
 ## Related reports
-[OKL Termination Quotes](/OKL%20Termination%20Quotes/), [ONT Transaction Types and Line WF Processes](/ONT%20Transaction%20Types%20and%20Line%20WF%20Processes/), [ONT Workflow Assignments](/ONT%20Workflow%20Assignments/), [ECC Contract Lifecycle Management, Acquisitions](/ECC%20Contract%20Lifecycle%20Management-%20Acquisitions/), [ECC Contract Lifecycle Management, Solicitations, SQL1](/ECC%20Contract%20Lifecycle%20Management-%20Solicitations-%20SQL1/), [PER Approvals Deviation](/PER%20Approvals%20Deviation/), [PO IDV Data template](/PO%20IDV%20Data%20template/), [PO Award Data template](/PO%20Award%20Data%20template/), [GW-Material Account Distributions](/GW-Material%20Account%20Distributions/)
+[OKL Termination Quotes](/OKL%20Termination%20Quotes/), [ONT Transaction Types and Line WF Processes](/ONT%20Transaction%20Types%20and%20Line%20WF%20Processes/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

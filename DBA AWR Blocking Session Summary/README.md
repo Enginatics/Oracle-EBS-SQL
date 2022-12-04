@@ -17,7 +17,7 @@ User Name, Module Type, Module contains, From Time, To Time, Wait Event, SID - S
 [Diagnostic Pack](https://www.enginatics.com/library/?pg=1&category[]=Diagnostic%20Pack), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - DBA](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20DBA)
 
 ## Related reports
-[DIS Items, Folders and Formulas](/DIS%20Items-%20Folders%20and%20Formulas/), [DIS Folders, Business Areas, Items and LOVs](/DIS%20Folders-%20Business%20Areas-%20Items%20and%20LOVs/), [DIS Workbooks, Folders, Items and LOVs](/DIS%20Workbooks-%20Folders-%20Items%20and%20LOVs/), [FND W3H_Object_Users](/FND%20W3H_Object_Users/), [DIS Business Areas](/DIS%20Business%20Areas/), [FA Database Index Listing - draft](/FA%20Database%20Index%20Listing%20-%20draft/), [DIS Access Privileges](/DIS%20Access%20Privileges/), [AR Customer Relationships Listing](/AR%20Customer%20Relationships%20Listing/), [GL Other - Definition Access By User](/GL%20Other%20-%20Definition%20Access%20By%20User/), [FND W3H_Role_Objects](/FND%20W3H_Role_Objects/)
+[DIS Items, Folders and Formulas](/DIS%20Items-%20Folders%20and%20Formulas/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

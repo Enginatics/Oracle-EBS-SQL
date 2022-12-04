@@ -17,8 +17,7 @@ Bank Name, Bank Branch Name, Bank Account Name, Bank Account Number
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
-## Related reports
-[CE Sweep Transactions Generation Execution - draft](/CE%20Sweep%20Transactions%20Generation%20Execution%20-%20draft/), [CE Bank Statement Cashflow Creation Execution - draft](/CE%20Bank%20Statement%20Cashflow%20Creation%20Execution%20-%20draft/), [CE Cleared Transactions](/CE%20Cleared%20Transactions/), [CE General Ledger Reconciliation](/CE%20General%20Ledger%20Reconciliation/), [AP Bank Account Listing- Not Supported: Reserved For Future Use](/AP%20Bank%20Account%20Listing-%20Not%20Supported-%20Reserved%20For%20Future%20Use/), [IBY Payment Process Request Details](/IBY%20Payment%20Process%20Request%20Details/), [GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20-Distributions/), [CE Cash Leveling Execution - draft](/CE%20Cash%20Leveling%20Execution%20-%20draft/), [AP Invoices and Lines](/AP%20Invoices%20and%20Lines/)
+
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

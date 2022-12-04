@@ -19,7 +19,7 @@ Book, Set of Books Currency, From Period, To Period
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related reports
-[FA Asset Cost](/FA%20Asset%20Cost/), [FA Revaluation Reserve](/FA%20Revaluation%20Reserve/), [FA Depreciation Reserve](/FA%20Depreciation%20Reserve/), [FA Tax Reserve Ledger](/FA%20Tax%20Reserve%20Ledger/), [FA Cost Adjustments](/FA%20Cost%20Adjustments/), [FA Journal Entry Reserve Ledger](/FA%20Journal%20Entry%20Reserve%20Ledger/), [GL Account Analysis](/GL%20Account%20Analysis/), [GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20-Distributions/), [FA Cost Detail Report- Not Supported: Reserved For Future Use](/FA%20Cost%20Detail%20Report-%20Not%20Supported-%20Reserved%20For%20Future%20Use/)
+[FA Asset Cost](/FA%20Asset%20Cost/), [FA Revaluation Reserve](/FA%20Revaluation%20Reserve/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

@@ -12,8 +12,7 @@ Business Group, Organization, Country, Organization Type, Classification, Intern
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Operations), [Toolkit - Setup & Support](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Setup%20%26%20Support)
 
-## Related reports
-[RK: AR Transactions and Lines](/RK-%20AR%20Transactions%20and%20Lines/), [CST AP and PO Accrual Reconciliation](/CST%20AP%20and%20PO%20Accrual%20Reconciliation/), [CST Miscellaneous Accrual Reconciliation](/CST%20Miscellaneous%20Accrual%20Reconciliation/), [Avalara VAT listing](/Avalara%20VAT%20listing/), [QP Customer Pricing Engine Request](/QP%20Customer%20Pricing%20Engine%20Request/), [PO Headers and Lines](/PO%20Headers%20and%20Lines/), [CAC Margin Analysis Summary](/CAC%20Margin%20Analysis%20Summary/), [CAC Margin Analysis Account Summary](/CAC%20Margin%20Analysis%20Account%20Summary/), [RD INV Inventory Aging](/RD%20INV%20Inventory%20Aging/)
+
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

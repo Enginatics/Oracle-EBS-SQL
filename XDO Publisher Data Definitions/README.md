@@ -18,7 +18,7 @@ Datasource Name, Datasource Code, Exclude Datasource Codes like, Concurrent Prog
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps)
 
 ## Related reports
-[PO Document Types](/PO%20Document%20Types/), [FND Concurrent Requests 11i](/FND%20Concurrent%20Requests%2011i/), [FND Concurrent Requests](/FND%20Concurrent%20Requests/), [FND Attached Documents](/FND%20Attached%20Documents/), [ECC Admin - Concurrent Programs](/ECC%20Admin%20-%20Concurrent%20Programs/), [FND Concurrent Programs and Executables 11i](/FND%20Concurrent%20Programs%20and%20Executables%2011i/), [FND Concurrent Requests Summary](/FND%20Concurrent%20Requests%20Summary/), [FND Concurrent Programs and Executables](/FND%20Concurrent%20Programs%20and%20Executables/), [FND Access Control 11i](/FND%20Access%20Control%2011i/)
+[PO Document Types](/PO%20Document%20Types/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

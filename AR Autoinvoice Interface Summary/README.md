@@ -13,7 +13,7 @@ Show Age
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps), [Toolkit - Setup & Support](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Setup%20%26%20Support)
 
 ## Related reports
-[INV Intercompany Invoice Reconciliation](/INV%20Intercompany%20Invoice%20Reconciliation/), [AR Transactions and Lines](/AR%20Transactions%20and%20Lines/), [XX AR Transactions and Lines](/XX%20AR%20Transactions%20and%20Lines/), [ONT Orders](/ONT%20Orders/), [RK: AR Transactions and Lines](/RK-%20AR%20Transactions%20and%20Lines/), [AR Incomplete Transactions](/AR%20Incomplete%20Transactions/), [WSH Shipping/Delivery Transactions](/WSH%20Shipping-Delivery%20Transactions/), [Avalara VAT listing](/Avalara%20VAT%20listing/), [CST COGS Revenue Matching](/CST%20COGS%20Revenue%20Matching/)
+[INV Intercompany Invoice Reconciliation](/INV%20Intercompany%20Invoice%20Reconciliation/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

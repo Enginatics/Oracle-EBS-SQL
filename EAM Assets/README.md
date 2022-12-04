@@ -13,7 +13,7 @@ Organization Code, Department, Asset Group, Asset Number
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Operations)
 
 ## Related reports
-[EAM Work Orders](/EAM%20Work%20Orders/), [EAM Weekly Schedule](/EAM%20Weekly%20Schedule/), [GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20-Distributions/), [GL Account Analysis](/GL%20Account%20Analysis/), [FND Attached Documents](/FND%20Attached%20Documents/), [ECC Procurement, Agreements](/ECC%20Procurement-%20Agreements/), [ECC Procurement, Purchase Orders (1)](/ECC%20Procurement-%20Purchase%20Orders%20-1/), [INV Intercompany Invoice Reconciliation](/INV%20Intercompany%20Invoice%20Reconciliation/), [ECC Procurement, Purchase Orders](/ECC%20Procurement-%20Purchase%20Orders/)
+[EAM Work Orders](/EAM%20Work%20Orders/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

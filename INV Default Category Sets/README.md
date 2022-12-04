@@ -13,7 +13,7 @@ Master data report that lists Inventory functional areas and their default categ
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps), [Toolkit - Setup & Support](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Setup%20%26%20Support)
 
 ## Related reports
-[WIP Discrete Job Shortage](/WIP%20Discrete%20Job%20Shortage/), [GW Items](/GW%20Items/), [INV Inventory Items](/INV%20Inventory%20Items/), [PO Receiving Account Distribution](/PO%20Receiving%20Account%20Distribution/), [INV Item Category Sets](/INV%20Item%20Category%20Sets/), [WSH Commercial Invoice PDF Output](/WSH%20Commercial%20Invoice%20PDF%20Output/), [INV Onhand Quantities](/INV%20Onhand%20Quantities/), [XXINV Inventory Items](/XXINV%20Inventory%20Items/), [WSH Commercial Invoice](/WSH%20Commercial%20Invoice/)
+[WIP Discrete Job Shortage](/WIP%20Discrete%20Job%20Shortage/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

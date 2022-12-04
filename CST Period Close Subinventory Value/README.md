@@ -13,7 +13,7 @@ Organization Code, Period, Ledger
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Operations)
 
 ## Related reports
-[CAC Inventory and Intransit Value (Period-End)](/CAC%20Inventory%20and%20Intransit%20Value%20-Period-End/), [CAC ICP PII Inventory and Intransit Value (Period-End)](/CAC%20ICP%20PII%20Inventory%20and%20Intransit%20Value%20-Period-End/), [CAC Inventory Out-of-Balance](/CAC%20Inventory%20Out-of-Balance/), [GL Account Analysis](/GL%20Account%20Analysis/), [CAC Inventory to G/L Reconciliation (Restricted by Org Access)](/CAC%20Inventory%20to%20G-L%20Reconciliation%20-Restricted%20by%20Org%20Access/), [GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20-Distributions/), [CAC Inventory to G/L Reconciliation (Unrestricted by Org Access)](/CAC%20Inventory%20to%20G-L%20Reconciliation%20-Unrestricted%20by%20Org%20Access/), [CAC Receiving Account Summary No SLA](/CAC%20Receiving%20Account%20Summary%20No%20SLA/), [CAC Receiving Account Detail No SLA](/CAC%20Receiving%20Account%20Detail%20No%20SLA/)
+[CAC Inventory and Intransit Value (Period-End)](/CAC%20Inventory%20and%20Intransit%20Value%20-Period-End/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

@@ -24,7 +24,7 @@ Run Id, Name, Line Number From, Line Number To, Time Unit
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps)
 
 ## Related reports
-[DBA AWR SQL Performance Summary](/DBA%20AWR%20SQL%20Performance%20Summary/), [DBA SGA Blocking Session Summary](/DBA%20SGA%20Blocking%20Session%20Summary/), [DBA AWR Blocking Session Summary](/DBA%20AWR%20Blocking%20Session%20Summary/), [DBA AWR Active Session History](/DBA%20AWR%20Active%20Session%20History/), [DBA SGA Active Session History](/DBA%20SGA%20Active%20Session%20History/), [FND Concurrent Requests 11i](/FND%20Concurrent%20Requests%2011i/), [FND Concurrent Requests](/FND%20Concurrent%20Requests/), [DBA SGA SQL Performance Summary](/DBA%20SGA%20SQL%20Performance%20Summary/), [XXINV Inventory Items](/XXINV%20Inventory%20Items/)
+[DBA AWR SQL Performance Summary](/DBA%20AWR%20SQL%20Performance%20Summary/), [DBA SGA Blocking Session Summary](/DBA%20SGA%20Blocking%20Session%20Summary/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

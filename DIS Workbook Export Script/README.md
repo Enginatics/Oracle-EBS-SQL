@@ -17,7 +17,7 @@ Accessed within Days, Accessed After, Delay Seconds, End User Layer, End User La
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related reports
-[DIS Worksheet Execution History](/DIS%20Worksheet%20Execution%20History/), [DIS Access Privileges](/DIS%20Access%20Privileges/), [DIS Workbooks, Folders, Items and LOVs](/DIS%20Workbooks-%20Folders-%20Items%20and%20LOVs/), [DIS Users](/DIS%20Users/), [DIS Workbook Export FND Users](/DIS%20Workbook%20Export%20FND%20Users/), [GL FSG Reports](/GL%20FSG%20Reports/), [DIS Worksheet Execution Summary](/DIS%20Worksheet%20Execution%20Summary/), [DIS Worksheet SQLs](/DIS%20Worksheet%20SQLs/), [DIS Business Areas](/DIS%20Business%20Areas/)
+[DIS Worksheet Execution History](/DIS%20Worksheet%20Execution%20History/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

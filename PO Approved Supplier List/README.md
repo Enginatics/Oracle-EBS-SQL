@@ -12,8 +12,7 @@ Item, Category, Supplier, Show Documents, Show Authorizations, Show Supplier Cap
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Operations), [Toolkit - Setup & Support](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Setup%20%26%20Support)
 
-## Related reports
-[ECC Project Procurement, Approved Supplier List](/ECC%20Project%20Procurement-%20Approved%20Supplier%20List/), [PO Headers and Lines](/PO%20Headers%20and%20Lines/), [PO Receiving Transactions Pipeline](/PO%20Receiving%20Transactions%20Pipeline/), [ECC Procurement, Purchase Orders](/ECC%20Procurement-%20Purchase%20Orders/), [ECC Procurement, Purchase Orders (2)](/ECC%20Procurement-%20Purchase%20Orders%20-2/), [ECC Procurement, Purchase Orders (1)](/ECC%20Procurement-%20Purchase%20Orders%20-1/), [PO Headers and Lines 11i](/PO%20Headers%20and%20Lines%2011i/), [GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20-Distributions/), [ECC Procurement, Agreements](/ECC%20Procurement-%20Agreements/)
+
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

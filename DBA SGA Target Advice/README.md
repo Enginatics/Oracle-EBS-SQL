@@ -14,7 +14,7 @@ It shows an estimation of how an SGA resize would affect overall database time a
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps), [Toolkit - DBA](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20DBA)
 
 ## Related reports
-[DBA SGA+PGA Memory Configuration](/DBA%20SGA-PGA%20Memory%20Configuration/), [DBA SGA Memory Allocation](/DBA%20SGA%20Memory%20Allocation/), [FND Concurrent Requests 11i](/FND%20Concurrent%20Requests%2011i/), [FND Concurrent Requests](/FND%20Concurrent%20Requests/), [AP Suppliers](/AP%20Suppliers/), [PAY Pay Advice (Australia)](/PAY%20Pay%20Advice%20-Australia/), [Payroll Balance Listing](/Payroll%20Balance%20Listing/), [PAY Pay Advice (Singapore)](/PAY%20Pay%20Advice%20-Singapore/), [PAY Pay Advice (Hong Kong)](/PAY%20Pay%20Advice%20-Hong%20Kong/)
+[DBA SGA+PGA Memory Configuration](/DBA%20SGA-PGA%20Memory%20Configuration/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

@@ -12,8 +12,7 @@ Master data report of extended Installed Base attribute levels and names
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Operations)
 
-## Related reports
-[ECC Oracle Asset Tracking, Oracle Asset Tracking: Assets](/ECC%20Oracle%20Asset%20Tracking-%20Oracle%20Asset%20Tracking-%20Assets/), [ECC Oracle Asset Tracking, Oracle Asset Tracking: Instances](/ECC%20Oracle%20Asset%20Tracking-%20Oracle%20Asset%20Tracking-%20Instances/), [PO IDV Modification](/PO%20IDV%20Modification/), [OKL Termination Quotes](/OKL%20Termination%20Quotes/), [AHL Supplier Warranty Visit](/AHL%20Supplier%20Warranty%20Visit/), [PO IDV Data template](/PO%20IDV%20Data%20template/), [PO Award Data template](/PO%20Award%20Data%20template/), [AHL Generate Visit Instances Warranty Contracts](/AHL%20Generate%20Visit%20Instances%20Warranty%20Contracts/), [PON Solicitation data template](/PON%20Solicitation%20data%20template/)
+
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

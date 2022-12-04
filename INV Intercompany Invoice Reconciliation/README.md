@@ -14,7 +14,7 @@ Report Detail, Shipping/Procuring Operating Unit, Receiving Operating Unit, Ship
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related reports
-[GL Account Analysis](/GL%20Account%20Analysis/), [GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20-Distributions/), [RK: AR Transactions and Lines](/RK-%20AR%20Transactions%20and%20Lines/), [Avalara VAT listing](/Avalara%20VAT%20listing/), [JG Regional Invoice Format Program- Not Supported: Reserved For Future Use](/JG%20Regional%20Invoice%20Format%20Program-%20Not%20Supported-%20Reserved%20For%20Future%20Use/), [HACTL AR Transaction Listings](/HACTL%20AR%20Transaction%20Listings/), [GL Account Analysis (Distributions) 11g](/GL%20Account%20Analysis%20-Distributions-%2011g/), [INV Intercompany by AP Invoice Number Diagnostics](/INV%20Intercompany%20by%20AP%20Invoice%20Number%20Diagnostics/), [ECC Receivables, AR Closing, SQL2](/ECC%20Receivables-%20AR%20Closing-%20SQL2/)
+[GL Account Analysis](/GL%20Account%20Analysis/), [GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20-Distributions/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

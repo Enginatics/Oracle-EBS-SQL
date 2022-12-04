@@ -13,7 +13,7 @@ Person Full Name, User Name, Person Type, Assignment Organization, Business Grou
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Operations)
 
 ## Related reports
-[GL Account Analysis](/GL%20Account%20Analysis/), [BEN Participation Audit Log](/BEN%20Participation%20Audit%20Log/), [BEN Back-out Life Events Summary](/BEN%20Back-out%20Life%20Events%20Summary/), [BEN Back-out Life Events Audit Log](/BEN%20Back-out%20Life%20Events%20Audit%20Log/), [PON Solicitation data template](/PON%20Solicitation%20data%20template/), [PQH IPEDS Report - Salary and Fringe Benefits Survey (SA) - Part A(obsoleted)](/PQH%20IPEDS%20Report%20-%20Salary%20and%20Fringe%20Benefits%20Survey%20-SA-%20-%20Part%20A-obsoleted/), [PAY Employee Salary](/PAY%20Employee%20Salary/), [ECC Sourcing, Negotiations, SQL1](/ECC%20Sourcing-%20Negotiations-%20SQL1/), [ECC Sourcing, Negotiations, SQL2](/ECC%20Sourcing-%20Negotiations-%20SQL2/)
+[GL Account Analysis](/GL%20Account%20Analysis/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

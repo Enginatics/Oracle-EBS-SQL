@@ -14,8 +14,7 @@ Audit Table, Audit Date From, Audit Date To, Audited User, Informational Audit T
 ## Categories
 [Audit](https://www.enginatics.com/library/?pg=1&category[]=Audit), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Data Management](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Data%20Management), [Toolkit - Metrics](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Metrics), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Operations), [Toolkit - Setup & Support](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Setup%20%26%20Support)
 
-## Related reports
-[PSP Post Upgrade Bad Data](/PSP%20Post%20Upgrade%20Bad%20Data/), [CAC Receiving Account Summary](/CAC%20Receiving%20Account%20Summary/), [AP Period Close Exceptions Report- Delete - Not Supported: Reserved For Future Use](/AP%20Period%20Close%20Exceptions%20Report-%20Delete%20-%20Not%20Supported-%20Reserved%20For%20Future%20Use/), [AP Unaccounted Transactions Report- Delete - Not Supported: Reserved For Future Use](/AP%20Unaccounted%20Transactions%20Report-%20Delete%20-%20Not%20Supported-%20Reserved%20For%20Future%20Use/), [CAC WIP Account Summary](/CAC%20WIP%20Account%20Summary/), [CAC Material Account Summary](/CAC%20Material%20Account%20Summary/), [FND Audit Items](/FND%20Audit%20Items/), [FND Audit Table Changes by Column](/FND%20Audit%20Table%20Changes%20by%20Column/), [CAC Material Account Detail](/CAC%20Material%20Account%20Detail/), [CAC Accounting Period Status](/CAC%20Accounting%20Period%20Status/)
+
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

@@ -13,7 +13,7 @@ Ledger, Ledger Category, Period From, Period To, Posted Date From, Posted Date T
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related reports
-[GL Account Analysis](/GL%20Account%20Analysis/), [GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20-Distributions/), [GL Account Analysis 11g](/GL%20Account%20Analysis%2011g/), [GL Account Analysis (Distributions) 11g](/GL%20Account%20Analysis%20-Distributions-%2011g/), [JG Global Third Party Account Balance](/JG%20Global%20Third%20Party%20Account%20Balance/), [XLA Third Party Balances](/XLA%20Third%20Party%20Balances/), [JG Global Third Party Balances Summary](/JG%20Global%20Third%20Party%20Balances%20Summary/), [JG Global Third Party Detail and Balances](/JG%20Global%20Third%20Party%20Detail%20and%20Balances/), [GL Category and subledger entities](/GL%20Category%20and%20subledger%20entities/)
+[GL Account Analysis](/GL%20Account%20Analysis/), [GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20-Distributions/), [GL Account Analysis 11g](/GL%20Account%20Analysis%2011g/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

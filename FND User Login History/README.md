@@ -18,8 +18,7 @@ Responsibility Name, Form Name, User Name, Logged in within Days, Date From, Dat
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
-## Related reports
-[XXEN: FND User Login History with Geolocation](/XXEN-%20FND%20User%20Login%20History%20with%20Geolocation/), [FND Access Control 11i](/FND%20Access%20Control%2011i/), [FND Access Control](/FND%20Access%20Control/), [PON Solicitation data template](/PON%20Solicitation%20data%20template/), [AP -SM Suppliers](/AP%20-SM%20Suppliers/), [ECC Procurement, Agreements](/ECC%20Procurement-%20Agreements/), [ECC Contract Lifecycle Management, Requisitions, SQL9](/ECC%20Contract%20Lifecycle%20Management-%20Requisitions-%20SQL9/), [GL Account Analysis](/GL%20Account%20Analysis/), [ECC Sourcing, Negotiations, SQL2](/ECC%20Sourcing-%20Negotiations-%20SQL2/)
+
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

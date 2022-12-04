@@ -12,8 +12,7 @@ From Currency, To Currency, Conversion Date From
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps)
 
-## Related reports
-[JE Spanish B2G Electronic Invoices XML File Output](/JE%20Spanish%20B2G%20Electronic%20Invoices%20XML%20File%20Output/), [AR Aging - 7 Buckets - By Salesperson/Agent](/AR%20Aging%20-%207%20Buckets%20-%20By%20Salesperson-Agent/), [GL Balance (pivot)](/GL%20Balance%20-pivot/), [AP Accounted Invoice Aging](/AP%20Accounted%20Invoice%20Aging/), [PON Solicitation data template](/PON%20Solicitation%20data%20template/), [AR Unapplied Receipts Register](/AR%20Unapplied%20Receipts%20Register/), [AP Trial Balance](/AP%20Trial%20Balance/), [Mrugesh: GL Balance](/Mrugesh-%20GL%20Balance/), [GL Balance by Account Hierarchy](/GL%20Balance%20by%20Account%20Hierarchy/), [GL Currency - Daily Conversion Rates Listing](/GL%20Currency%20-%20Daily%20Conversion%20Rates%20Listing/)
+
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

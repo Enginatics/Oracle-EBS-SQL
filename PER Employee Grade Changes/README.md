@@ -13,7 +13,7 @@ Effective Date, Business Group
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps)
 
 ## Related reports
-[PER Employee Salary Change](/PER%20Employee%20Salary%20Change/), [PER Employee Details](/PER%20Employee%20Details/), [BEN Back-out Life Events Audit Log](/BEN%20Back-out%20Life%20Events%20Audit%20Log/), [BEN Participation Audit Log](/BEN%20Participation%20Audit%20Log/), [PER Employee Assignments](/PER%20Employee%20Assignments/), [BEN Back-out Life Events Summary](/BEN%20Back-out%20Life%20Events%20Summary/), [PER Requisition Summary](/PER%20Requisition%20Summary/), [PER Full Applicant Details](/PER%20Full%20Applicant%20Details/), [PER Worker Summary](/PER%20Worker%20Summary/)
+[PER Employee Salary Change](/PER%20Employee%20Salary%20Change/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

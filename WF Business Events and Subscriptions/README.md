@@ -12,8 +12,7 @@ Event Name, Subscription Function
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps), [Toolkit - Setup & Support](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Setup%20%26%20Support)
 
-## Related reports
-[PER Approvals Deviation](/PER%20Approvals%20Deviation/), [PO IDV Modification](/PO%20IDV%20Modification/), [PO Award Data template for FPDS-NG](/PO%20Award%20Data%20template%20for%20FPDS-NG/), [PO IDV data template for FPDS-NG](/PO%20IDV%20data%20template%20for%20FPDS-NG/), [PO Award Mod data template for FPDS-NG](/PO%20Award%20Mod%20data%20template%20for%20FPDS-NG/), [PO IDV Data template](/PO%20IDV%20Data%20template/), [PO IDV Mod datatemplate for FPDS-NG](/PO%20IDV%20Mod%20datatemplate%20for%20FPDS-NG/), [PO Award Data template](/PO%20Award%20Data%20template/), [ECC Contract Lifecycle Management, Solicitations, SQL1](/ECC%20Contract%20Lifecycle%20Management-%20Solicitations-%20SQL1/)
+
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

@@ -12,8 +12,7 @@ Quote Number, Account Number, Customer Name, Quote Status, Quote Type, Creation 
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Operations)
 
-## Related reports
-[RK: AR Transactions and Lines](/RK-%20AR%20Transactions%20and%20Lines/), [Avalara VAT listing](/Avalara%20VAT%20listing/), [OKL Lease Property Tax](/OKL%20Lease%20Property%20Tax/), [OKL Payment Schedule](/OKL%20Payment%20Schedule/), [OKL Billing Inquiry Data](/OKL%20Billing%20Inquiry%20Data/), [OKL Loans Amortization Schedule](/OKL%20Loans%20Amortization%20Schedule/), [OKL Equipment Exchange Request](/OKL%20Equipment%20Exchange%20Request/), [OKL Report - Vendor Residual Share](/OKL%20Report%20-%20Vendor%20Residual%20Share/), [OKL Receipt Inquiry](/OKL%20Receipt%20Inquiry/)
+
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

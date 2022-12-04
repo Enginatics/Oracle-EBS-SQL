@@ -12,8 +12,7 @@ Item, Item Description, Item Type, BOM Item Type, Exclude Item Type, Contract It
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Operations), [Toolkit - Setup & Support](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Setup%20%26%20Support)
 
-## Related reports
-[XXE4ARW Excel4apps Inventory Items](/XXE4ARW%20Excel4apps%20Inventory%20Items/), [XXINV Inventory Items](/XXINV%20Inventory%20Items/), [RK: AR Transactions and Lines](/RK-%20AR%20Transactions%20and%20Lines/), [Avalara VAT listing](/Avalara%20VAT%20listing/), [AHL Supplier Warranty Visit](/AHL%20Supplier%20Warranty%20Visit/), [GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20-Distributions/), [CSD Depot Repair Traveler](/CSD%20Depot%20Repair%20Traveler/), [AHL Generate Visit Instances Warranty Contracts](/AHL%20Generate%20Visit%20Instances%20Warranty%20Contracts/), [INV Onhand Quantities](/INV%20Onhand%20Quantities/)
+
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

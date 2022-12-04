@@ -12,8 +12,7 @@ None
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Operations)
 
-## Related reports
-[ECC Procurement, Requisitions (1)](/ECC%20Procurement-%20Requisitions%20-1/), [ECC Procurement, Requisitions](/ECC%20Procurement-%20Requisitions/), [XXE4ARW Excel4apps Inventory Items](/XXE4ARW%20Excel4apps%20Inventory%20Items/), [WIP Discrete Job Shortage](/WIP%20Discrete%20Job%20Shortage/), [GW Items](/GW%20Items/), [INV Inventory Items](/INV%20Inventory%20Items/), [PO Endeca Template](/PO%20Endeca%20Template/), [XXINV Inventory Items](/XXINV%20Inventory%20Items/), [CST Uninvoiced Receipts](/CST%20Uninvoiced%20Receipts/)
+
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

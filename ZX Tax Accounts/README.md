@@ -13,7 +13,7 @@ Setup Level, Country, Ledger, Operating Unit
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps)
 
 ## Related reports
-[GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20-Distributions/), [GL Account Analysis](/GL%20Account%20Analysis/), [GL Account Analysis (Distributions) 11g](/GL%20Account%20Analysis%20-Distributions-%2011g/), [ZX Tax Regimes](/ZX%20Tax%20Regimes/), [IGI Standing Charges: Listing- Not Supported: Reserved For Future Use](/IGI%20Standing%20Charges-%20Listing-%20Not%20Supported-%20Reserved%20For%20Future%20Use/), [ZX Party Tax Profiles](/ZX%20Party%20Tax%20Profiles/), [AR Customer Statement](/AR%20Customer%20Statement/), [XXSJ Report VAT Register](/XXSJ%20Report%20VAT%20Register/), [JE Italian Withholding Yearly](/JE%20Italian%20Withholding%20Yearly/)
+[GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20-Distributions/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

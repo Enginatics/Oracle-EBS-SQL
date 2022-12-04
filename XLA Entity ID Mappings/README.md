@@ -13,7 +13,7 @@ Shows the column link between table xla_transaction_entities and subledger sourc
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps)
 
 ## Related reports
-[GL Account Analysis](/GL%20Account%20Analysis/), [GL Account Analysis 11g](/GL%20Account%20Analysis%2011g/), [PA Create Accounting](/PA%20Create%20Accounting/), [JL Create Accounting for Latin American FA](/JL%20Create%20Accounting%20for%20Latin%20American%20FA/), [OKL Create Accounting - Lease and Finance Management](/OKL%20Create%20Accounting%20-%20Lease%20and%20Finance%20Management/), [FA Create Accounting - Assets](/FA%20Create%20Accounting%20-%20Assets/), [JL Create Accounting for Latin American AR and AP](/JL%20Create%20Accounting%20for%20Latin%20American%20AR%20and%20AP/), [JA Third Party Detail Trial Balance with Contra Accounts](/JA%20Third%20Party%20Detail%20Trial%20Balance%20with%20Contra%20Accounts/), [GMF Create Accounting](/GMF%20Create%20Accounting/)
+[GL Account Analysis](/GL%20Account%20Analysis/), [GL Account Analysis 11g](/GL%20Account%20Analysis%2011g/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

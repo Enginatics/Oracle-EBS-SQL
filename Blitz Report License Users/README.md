@@ -13,7 +13,7 @@ Active Blitz Report users (within the past 60 days) and their most frequently ex
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps), [Toolkit - Setup & Support](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Setup%20%26%20Support)
 
 ## Related reports
-[Blitz Report Execution Summary](/Blitz%20Report%20Execution%20Summary/), [Blitz Report Execution History](/Blitz%20Report%20Execution%20History/), [Blitz Reports](/Blitz%20Reports/), [GL FSG Reports](/GL%20FSG%20Reports/), [FND Applications](/FND%20Applications/), [DIS End User Layers](/DIS%20End%20User%20Layers/), [Compare Blitz Report LOVs between environments](/Compare%20Blitz%20Report%20LOVs%20between%20environments/), [GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20-Distributions/), [Compare Blitz Reports between environments](/Compare%20Blitz%20Reports%20between%20environments/)
+[Blitz Report Execution Summary](/Blitz%20Report%20Execution%20Summary/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

@@ -17,8 +17,7 @@ Selling Operating Unit, Shipping Operating Unit, Organization Code, Assigned to 
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
-## Related reports
-[ECC Genealogy and Trace, Work Orders](/ECC%20Genealogy%20and%20Trace-%20Work%20Orders/), [ECC Genealogy and Trace, Purchase Orders](/ECC%20Genealogy%20and%20Trace-%20Purchase%20Orders/), [ONT Credit Order Discrepancy](/ONT%20Credit%20Order%20Discrepancy/), [INV Onhand Quantities](/INV%20Onhand%20Quantities/), [INV Lot transaction register](/INV%20Lot%20transaction%20register/), [INV Vendor lot trace](/INV%20Vendor%20lot%20trace/), [ECC Genealogy and Trace, Sales Orders](/ECC%20Genealogy%20and%20Trace-%20Sales%20Orders/), [ECC Genealogy and Trace, Process Batch](/ECC%20Genealogy%20and%20Trace-%20Process%20Batch/), [ECC Discrete Completions, Assembly Serial Transactions](/ECC%20Discrete%20Completions-%20Assembly%20Serial%20Transactions/)
+
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

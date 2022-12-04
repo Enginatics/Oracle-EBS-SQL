@@ -13,7 +13,7 @@ Changes per Day From, Last Analyzed within x Days
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps)
 
 ## Related reports
-[Blitz Report VPD Policy Setup](/Blitz%20Report%20VPD%20Policy%20Setup/), [FND Audit Setup](/FND%20Audit%20Setup/), [DBA Table Columns](/DBA%20Table%20Columns/), [FND Lookup Search](/FND%20Lookup%20Search/), [DIS End User Layers](/DIS%20End%20User%20Layers/), [FND Audit Table Changes by Column](/FND%20Audit%20Table%20Changes%20by%20Column/), [FND Audit Items](/FND%20Audit%20Items/), [FND Audit Table Changes by Record](/FND%20Audit%20Table%20Changes%20by%20Record/), [DBA AWR Active Session History](/DBA%20AWR%20Active%20Session%20History/)
+[Blitz Report VPD Policy Setup](/Blitz%20Report%20VPD%20Policy%20Setup/), [FND Audit Setup](/FND%20Audit%20Setup/), [DBA Table Columns](/DBA%20Table%20Columns/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

@@ -13,7 +13,7 @@ Name, Form Name, Level
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Setup & Support](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Setup%20%26%20Support)
 
 ## Related reports
-[FND Attached Documents](/FND%20Attached%20Documents/), [GL Journals](/GL%20Journals/), [EGO Item Image Definition Data Template](/EGO%20Item%20Image%20Definition%20Data%20Template/), [PON Solicitation data template](/PON%20Solicitation%20data%20template/), [FND Access Control 11i](/FND%20Access%20Control%2011i/), [FND Forms Personalizations](/FND%20Forms%20Personalizations/), [FND Access Control](/FND%20Access%20Control/), [FND FNDLOAD Object Transfer](/FND%20FNDLOAD%20Object%20Transfer/), [AP Invoices and Lines](/AP%20Invoices%20and%20Lines/)
+[FND Attached Documents](/FND%20Attached%20Documents/), [GL Journals](/GL%20Journals/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

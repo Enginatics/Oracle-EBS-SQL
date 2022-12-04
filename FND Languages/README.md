@@ -13,7 +13,7 @@ Show installed only
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Setup & Support](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Setup%20%26%20Support)
 
 ## Related reports
-[Blitz Report Column Translations](/Blitz%20Report%20Column%20Translations/), [FND Lookup Values](/FND%20Lookup%20Values/), [PER Person Synchronization](/PER%20Person%20Synchronization/), [FND Forms Personalizations](/FND%20Forms%20Personalizations/), [ECC Project Procurement, Approved Supplier List](/ECC%20Project%20Procurement-%20Approved%20Supplier%20List/), [ECC Project Procurement, Item Summary](/ECC%20Project%20Procurement-%20Item%20Summary/), [ECC Project Procurement, Deliverables](/ECC%20Project%20Procurement-%20Deliverables/), [ECC Project Procurement, Task Summary](/ECC%20Project%20Procurement-%20Task%20Summary/), [DBA Performance Benchmark1](/DBA%20Performance%20Benchmark1/)
+[Blitz Report Column Translations](/Blitz%20Report%20Column%20Translations/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

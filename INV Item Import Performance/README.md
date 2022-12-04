@@ -13,7 +13,7 @@ Past Days, Min Total Item Count
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps), [Toolkit - Setup & Support](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Setup%20%26%20Support)
 
 ## Related reports
-[FND Attached Documents](/FND%20Attached%20Documents/), [FND Concurrent Requests 11i](/FND%20Concurrent%20Requests%2011i/), [FND Concurrent Requests](/FND%20Concurrent%20Requests/), [Blitz Report Execution History](/Blitz%20Report%20Execution%20History/), [ECC Admin - Concurrent Programs](/ECC%20Admin%20-%20Concurrent%20Programs/), [GCS A&D Trial Balance Data Source](/GCS%20A-D%20Trial%20Balance%20Data%20Source/), [GCS A&D Trial Balance Base Data Source](/GCS%20A-D%20Trial%20Balance%20Base%20Data%20Source/), [ECC Enterprise Asset Management, Work Order Assets (Maintenance)](/ECC%20Enterprise%20Asset%20Management-%20Work%20Order%20Assets%20-Maintenance/), [ECC Procurement, Agreements](/ECC%20Procurement-%20Agreements/)
+[FND Attached Documents](/FND%20Attached%20Documents/), [FND Concurrent Requests 11i](/FND%20Concurrent%20Requests%2011i/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

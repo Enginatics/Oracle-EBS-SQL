@@ -32,8 +32,7 @@ Ledger Name, Period From, Period To, JE Batch Name, Account From, Account To, Fu
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
-## Related reports
-[XX AR Transactions and Lines](/XX%20AR%20Transactions%20and%20Lines/), [AR Transactions and Lines](/AR%20Transactions%20and%20Lines/), [GL Account Analysis](/GL%20Account%20Analysis/), [CST COGS Revenue Matching](/CST%20COGS%20Revenue%20Matching/), [PA Project Subledger:  Detail by Project](/PA%20Project%20Subledger-%20%20Detail%20by%20Project/), [PO Purchase Requisitions with PO Details](/PO%20Purchase%20Requisitions%20with%20PO%20Details/), [CAC Item Cost Summary](/CAC%20Item%20Cost%20Summary/), [CAC Margin Analysis Account Summary](/CAC%20Margin%20Analysis%20Account%20Summary/), [CAC Inventory Out-of-Balance](/CAC%20Inventory%20Out-of-Balance/)
+
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

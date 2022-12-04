@@ -17,7 +17,7 @@ Operating Unit, Show Transaction Details, Balancing Segment From, Balancing Segm
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps)
 
 ## Related reports
-[GL Account Analysis](/GL%20Account%20Analysis/), [CST Miscellaneous Accrual Reconciliation](/CST%20Miscellaneous%20Accrual%20Reconciliation/), [PO Headers and Lines](/PO%20Headers%20and%20Lines/), [PO Receiving Transactions Pipeline](/PO%20Receiving%20Transactions%20Pipeline/), [PO Headers and Lines 11i](/PO%20Headers%20and%20Lines%2011i/), [GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20-Distributions/), [MRP Pegging](/MRP%20Pegging/), [PO Purchase Price Variance](/PO%20Purchase%20Price%20Variance/), [CST Simulate Transfer Shop Floor Invoice Variance](/CST%20Simulate%20Transfer%20Shop%20Floor%20Invoice%20Variance/)
+[GL Account Analysis](/GL%20Account%20Analysis/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

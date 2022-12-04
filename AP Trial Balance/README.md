@@ -20,7 +20,7 @@ Operating Unit, Report Definition, Journal Source, As of Date, Third Party Name,
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related reports
-[AP Accounted Invoice Aging](/AP%20Accounted%20Invoice%20Aging/), [AR Aging - 7 Buckets - By Salesperson/Agent](/AR%20Aging%20-%207%20Buckets%20-%20By%20Salesperson-Agent/), [GL Account Analysis](/GL%20Account%20Analysis/), [GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20-Distributions/), [GL Account Analysis (Distributions) 11g](/GL%20Account%20Analysis%20-Distributions-%2011g/), [GL Balance by Account Hierarchy](/GL%20Balance%20by%20Account%20Hierarchy/), [AR Unapplied Receipts Register](/AR%20Unapplied%20Receipts%20Register/), [Mrugesh: GL Balance](/Mrugesh-%20GL%20Balance/), [XXFT GL Balance](/XXFT%20GL%20Balance/)
+[AP Accounted Invoice Aging](/AP%20Accounted%20Invoice%20Aging/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

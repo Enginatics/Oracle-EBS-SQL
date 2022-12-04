@@ -18,7 +18,7 @@ SQL Text contains, Module Type, Module contains, SQL Id, Plan Hash Value, Show B
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - DBA](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20DBA)
 
 ## Related reports
-[DBA AWR SQL Performance Summary](/DBA%20AWR%20SQL%20Performance%20Summary/), [DBA SGA Active Session History](/DBA%20SGA%20Active%20Session%20History/), [DBA SGA Blocking Session Summary](/DBA%20SGA%20Blocking%20Session%20Summary/), [DBA AWR Blocking Session Summary](/DBA%20AWR%20Blocking%20Session%20Summary/), [DBA AWR Active Session History](/DBA%20AWR%20Active%20Session%20History/), [DBA Blocking Sessions](/DBA%20Blocking%20Sessions/), [DBA SGA SQL Execution Plan History](/DBA%20SGA%20SQL%20Execution%20Plan%20History/), [FND Concurrent Requests 11i](/FND%20Concurrent%20Requests%2011i/), [FND Concurrent Requests](/FND%20Concurrent%20Requests/)
+[DBA AWR SQL Performance Summary](/DBA%20AWR%20SQL%20Performance%20Summary/), [DBA SGA Active Session History](/DBA%20SGA%20Active%20Session%20History/), [DBA SGA Blocking Session Summary](/DBA%20SGA%20Blocking%20Session%20Summary/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

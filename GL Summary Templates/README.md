@@ -13,7 +13,7 @@ Chart of Accounts
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Operations)
 
 ## Related reports
-[GL Balance by Account Hierarchy](/GL%20Balance%20by%20Account%20Hierarchy/), [GL Chart of Accounts - Account Hierarchy](/GL%20Chart%20of%20Accounts%20-%20Account%20Hierarchy/), [AR Open Balances Revaluation](/AR%20Open%20Balances%20Revaluation/), [CST Period Close Subinventory Value Summary](/CST%20Period%20Close%20Subinventory%20Value%20Summary/), [CAC Margin Analysis Account Summary](/CAC%20Margin%20Analysis%20Account%20Summary/), [CAC Inventory and Intransit Value (Period-End)](/CAC%20Inventory%20and%20Intransit%20Value%20-Period-End/), [CAC Margin Analysis Summary](/CAC%20Margin%20Analysis%20Summary/), [XLA Distribution Links Summary](/XLA%20Distribution%20Links%20Summary/), [FA Asset Book Details](/FA%20Asset%20Book%20Details/)
+[GL Balance by Account Hierarchy](/GL%20Balance%20by%20Account%20Hierarchy/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

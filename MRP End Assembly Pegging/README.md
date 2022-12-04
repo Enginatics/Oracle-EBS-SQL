@@ -13,7 +13,7 @@ Organization Code, Plan, End Assembly, Component, Supplier, Planner, Buyer, Make
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Operations)
 
 ## Related reports
-[MRP Pegging](/MRP%20Pegging/), [PO Headers and Lines](/PO%20Headers%20and%20Lines/), [PO Headers and Lines 11i](/PO%20Headers%20and%20Lines%2011i/), [XXE4ARW Excel4apps Inventory Items](/XXE4ARW%20Excel4apps%20Inventory%20Items/), [XXINV Inventory Items](/XXINV%20Inventory%20Items/), [INV Inventory Items](/INV%20Inventory%20Items/), [WIP Required Components](/WIP%20Required%20Components/), [WIP Discrete Job Shortage](/WIP%20Discrete%20Job%20Shortage/), [GL Account Analysis](/GL%20Account%20Analysis/)
+[MRP Pegging](/MRP%20Pegging/), [PO Headers and Lines](/PO%20Headers%20and%20Lines/), [PO Headers and Lines 11i](/PO%20Headers%20and%20Lines%2011i/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

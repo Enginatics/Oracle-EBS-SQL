@@ -13,8 +13,7 @@ Role Name, Role Code
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
-## Related reports
-[FND W3H_Role_Objects](/FND%20W3H_Role_Objects/), [FND User Roles](/FND%20User%20Roles/), [FND Roles](/FND%20Roles/), [GCS Consolidation Entries Writeback](/GCS%20Consolidation%20Entries%20Writeback/), [FND W3H_Role_Users](/FND%20W3H_Role_Users/), [FND W3H_User_Roles](/FND%20W3H_User_Roles/), [FND W3H_Role_Functions](/FND%20W3H_Role_Functions/), [FND W3H_Function_Users](/FND%20W3H_Function_Users/), [FND W3H_User_Functions](/FND%20W3H_User_Functions/)
+
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

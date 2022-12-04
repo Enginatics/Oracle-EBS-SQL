@@ -12,8 +12,7 @@ Locator Type, Status, Subinventory, Organization Code
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Operations), [Toolkit - Setup & Support](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Setup%20%26%20Support)
 
-## Related reports
-[ECC Discrete Manufacturing, Work Orders](/ECC%20Discrete%20Manufacturing-%20Work%20Orders/), [INV Onhand Quantities](/INV%20Onhand%20Quantities/), [ECC Discrete Completions, Assembly Completion Transactions](/ECC%20Discrete%20Completions-%20Assembly%20Completion%20Transactions/), [GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20-Distributions/), [ECC Discrete Manufacturing, Components](/ECC%20Discrete%20Manufacturing-%20Components/), [ECC Discrete Manufacturing, Operations](/ECC%20Discrete%20Manufacturing-%20Operations/), [INV Subinventories](/INV%20Subinventories/), [CAC Accounting Period Status](/CAC%20Accounting%20Period%20Status/), [ECC Project Manufacturing, On-Hand Values](/ECC%20Project%20Manufacturing-%20On-Hand%20Values/)
+
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

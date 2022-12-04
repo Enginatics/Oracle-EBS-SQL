@@ -25,8 +25,7 @@ Organization Code, Cost Type, Assignment Set, Effective Date, Material Details, 
 ## Categories
 [BI Publisher](https://www.enginatics.com/library/?pg=1&category[]=BI%20Publisher), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps)
 
-## Related reports
-[Rakesh Supply Chain - Draft Works](/Rakesh%20Supply%20Chain%20-%20Draft%20Works/), [CAC Cost vs. Planning Item Controls](/CAC%20Cost%20vs-%20Planning%20Item%20Controls/), [CAC Material Account Detail](/CAC%20Material%20Account%20Detail/), [CAC Item vs. Component Include in Rollup Controls](/CAC%20Item%20vs-%20Component%20Include%20in%20Rollup%20Controls/), [CAC User-Defined and Rolled Up Costs](/CAC%20User-Defined%20and%20Rolled%20Up%20Costs/), [TESTEP BOM](/TESTEP%20BOM/), [OPM2](/OPM2/), [OPM WIP Value](/OPM%20WIP%20Value/), [CAC Material Account Summary](/CAC%20Material%20Account%20Summary/)
+
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

@@ -13,7 +13,7 @@ Organization Code, Item, Item Description
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps), [Toolkit - Setup & Support](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Setup%20%26%20Support)
 
 ## Related reports
-[FND Attached Documents](/FND%20Attached%20Documents/), [WIP Resource Performance](/WIP%20Resource%20Performance/), [WIP Entities](/WIP%20Entities/), [MRP Pegging](/MRP%20Pegging/), [GL Account Analysis](/GL%20Account%20Analysis/), [GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20-Distributions/), [WIP MES Job Traveler Data Template](/WIP%20MES%20Job%20Traveler%20Data%20Template/), [WIP - WIP Production Job Details](/WIP%20-%20WIP%20Production%20Job%20Details/), [CRP Resource Plan](/CRP%20Resource%20Plan/)
+[FND Attached Documents](/FND%20Attached%20Documents/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

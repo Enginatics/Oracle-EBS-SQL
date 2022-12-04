@@ -13,7 +13,7 @@ Function Name, User Function Name like, Form Application Name, Form Application 
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Setup & Support](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Setup%20%26%20Support)
 
 ## Related reports
-[FND Access Control 11i](/FND%20Access%20Control%2011i/), [FND Menu Entries](/FND%20Menu%20Entries/), [FND Forms Personalizations](/FND%20Forms%20Personalizations/), [FND Access Control](/FND%20Access%20Control/), [FND Attachment Functions](/FND%20Attachment%20Functions/), [FND User Login History](/FND%20User%20Login%20History/), [FND FNDLOAD Object Transfer](/FND%20FNDLOAD%20Object%20Transfer/), [FND Responsibility Menu Exclusions](/FND%20Responsibility%20Menu%20Exclusions/), [XXEN: FND User Login History with Geolocation](/XXEN-%20FND%20User%20Login%20History%20with%20Geolocation/)
+[FND Access Control 11i](/FND%20Access%20Control%2011i/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

@@ -13,7 +13,7 @@ Owner, Object Type, Object Name
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps)
 
 ## Related reports
-[DBA Result Cache Objects and Invalidations](/DBA%20Result%20Cache%20Objects%20and%20Invalidations/), [DBA Dependencies (used by)](/DBA%20Dependencies%20-used%20by/), [RWB Database Objects used by Report Views](/RWB%20Database%20Objects%20used%20by%20Report%20Views/), [DBA Blocking Sessions](/DBA%20Blocking%20Sessions/), [DBA AWR Active Session History](/DBA%20AWR%20Active%20Session%20History/), [DBA SGA Buffer Cache Object Usage](/DBA%20SGA%20Buffer%20Cache%20Object%20Usage/), [DBA SGA Blocking Session Summary](/DBA%20SGA%20Blocking%20Session%20Summary/), [DBA Segments](/DBA%20Segments/), [DBA SGA Active Session History](/DBA%20SGA%20Active%20Session%20History/)
+[DBA Result Cache Objects and Invalidations](/DBA%20Result%20Cache%20Objects%20and%20Invalidations/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

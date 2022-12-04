@@ -12,8 +12,7 @@ Operating Unit, Order By, As of Date, Days Late Low, Days Late High, Balance Due
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Operations)
 
-## Related reports
-[Import Test: AR Past Due Invoice](/Import%20Test-%20AR%20Past%20Due%20Invoice/), [Test2 :  AR Past Due Invoice](/Test2%20-%20%20AR%20Past%20Due%20Invoice/), [AR Customers and Sites](/AR%20Customers%20and%20Sites/), [AR Disputed Invoice](/AR%20Disputed%20Invoice/), [AR Transactions and Payments](/AR%20Transactions%20and%20Payments/), [RK: AR Transactions and Lines](/RK-%20AR%20Transactions%20and%20Lines/), [GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20-Distributions/), [Avalara VAT listing](/Avalara%20VAT%20listing/), [GL Account Analysis](/GL%20Account%20Analysis/)
+
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

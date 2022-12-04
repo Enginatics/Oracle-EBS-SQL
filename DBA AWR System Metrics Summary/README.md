@@ -21,7 +21,7 @@ Date From, Date To, Show Daily Averages, Diagnostic Pack enabled, Container Data
 [Diagnostic Pack](https://www.enginatics.com/library/?pg=1&category[]=Diagnostic%20Pack), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps)
 
 ## Related reports
-[DBA AWR Settings](/DBA%20AWR%20Settings/), [DBA AWR SQL Performance Summary](/DBA%20AWR%20SQL%20Performance%20Summary/), [DBA SGA+PGA Memory Configuration](/DBA%20SGA-PGA%20Memory%20Configuration/), [DBA AWR PGA History](/DBA%20AWR%20PGA%20History/), [DBA AWR Active Session History](/DBA%20AWR%20Active%20Session%20History/), [DBA AWR Blocking Session Summary](/DBA%20AWR%20Blocking%20Session%20Summary/), [DBA AWR SQL Execution Plan History](/DBA%20AWR%20SQL%20Execution%20Plan%20History/), [DBA AWR Tablespace Usage](/DBA%20AWR%20Tablespace%20Usage/), [INV Transaction Historical Summary](/INV%20Transaction%20Historical%20Summary/)
+[DBA AWR Settings](/DBA%20AWR%20Settings/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

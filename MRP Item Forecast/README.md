@@ -13,7 +13,7 @@ Forecast Set, Forecast, Organization Code, Planner, Item, Project, Forecast Date
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Operations)
 
 ## Related reports
-[WIP Entities](/WIP%20Entities/), [MRP Pegging](/MRP%20Pegging/), [INV Inventory Items](/INV%20Inventory%20Items/), [XXINV Inventory Items](/XXINV%20Inventory%20Items/), [INV Onhand Quantities](/INV%20Onhand%20Quantities/), [XXE4ARW Excel4apps Inventory Items](/XXE4ARW%20Excel4apps%20Inventory%20Items/), [INV Safety Stocks](/INV%20Safety%20Stocks/), [PO Headers and Lines](/PO%20Headers%20and%20Lines/), [PO Headers and Lines 11i](/PO%20Headers%20and%20Lines%2011i/)
+[WIP Entities](/WIP%20Entities/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

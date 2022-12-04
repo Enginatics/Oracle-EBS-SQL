@@ -12,8 +12,7 @@ Bucket Type, Bucket Name, Bucket Status
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps)
 
-## Related reports
-[RD INV Inventory Aging](/RD%20INV%20Inventory%20Aging/), [ECC Lease Contracts, Lease Outstanding Receivables](/ECC%20Lease%20Contracts-%20Lease%20Outstanding%20Receivables/), [AP Invoices and Lines](/AP%20Invoices%20and%20Lines/), [ECC Receivables, Outstanding Receivables (1)](/ECC%20Receivables-%20Outstanding%20Receivables%20-1/), [Skeleton ecc](/Skeleton%20ecc/), [ECC Receivables, Outstanding Receivables (2)](/ECC%20Receivables-%20Outstanding%20Receivables%20-2/), [ECC Receivables, Outstanding Receivables](/ECC%20Receivables-%20Outstanding%20Receivables/), [AR Aging - 7 Buckets - By Salesperson/Agent](/AR%20Aging%20-%207%20Buckets%20-%20By%20Salesperson-Agent/), [AR Customer Credit Snapshot](/AR%20Customer%20Credit%20Snapshot/)
+
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

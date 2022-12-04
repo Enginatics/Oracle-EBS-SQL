@@ -26,7 +26,7 @@ User Name, Module Type, Module contains, Show Blocking Session Info, Blocked Ses
 [Diagnostic Pack](https://www.enginatics.com/library/?pg=1&category[]=Diagnostic%20Pack), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps), [Toolkit - DBA](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20DBA)
 
 ## Related reports
-[DBA AWR Active Session History](/DBA%20AWR%20Active%20Session%20History/), [DBA SGA Blocking Session Summary](/DBA%20SGA%20Blocking%20Session%20Summary/), [DBA AWR Blocking Session Summary](/DBA%20AWR%20Blocking%20Session%20Summary/), [DBA AWR SQL Performance Summary](/DBA%20AWR%20SQL%20Performance%20Summary/), [DBA Blocking Sessions](/DBA%20Blocking%20Sessions/), [DBA SGA SQL Performance Summary](/DBA%20SGA%20SQL%20Performance%20Summary/), [DBA AWR Settings](/DBA%20AWR%20Settings/), [Blitz Report Execution History](/Blitz%20Report%20Execution%20History/), [DBA SGA Buffer Cache Object Usage](/DBA%20SGA%20Buffer%20Cache%20Object%20Usage/)
+[DBA AWR Active Session History](/DBA%20AWR%20Active%20Session%20History/), [DBA SGA Blocking Session Summary](/DBA%20SGA%20Blocking%20Session%20Summary/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

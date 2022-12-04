@@ -31,8 +31,7 @@ alter system set "_addm_auto_enable"=false;
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
-## Related reports
-[INV Item definition detail](/INV%20Item%20definition%20detail/), [FND Descriptive Flexfields](/FND%20Descriptive%20Flexfields/), [FND Key Flexfields](/FND%20Key%20Flexfields/), [INV Item Templates](/INV%20Item%20Templates/), [XLA Distribution Links Summary](/XLA%20Distribution%20Links%20Summary/), [DBA AWR PGA History](/DBA%20AWR%20PGA%20History/), [DBA AWR System Wait Time Summary](/DBA%20AWR%20System%20Wait%20Time%20Summary/), [DIS End User Layers](/DIS%20End%20User%20Layers/), [DBA Table Columns](/DBA%20Table%20Columns/)
+
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

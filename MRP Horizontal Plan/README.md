@@ -19,7 +19,7 @@ Plan, Current or Snapshot Data, Buckets, Organization Code, Category Set, Catego
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related reports
-[MRP Pegging](/MRP%20Pegging/), [MRP Item Forecast](/MRP%20Item%20Forecast/), [MSC Horizontal Plan](/MSC%20Horizontal%20Plan/), [MSC Plan Orders](/MSC%20Plan%20Orders/), [INV Item Supply/Demand](/INV%20Item%20Supply-Demand/), [XXINV Inventory Items](/XXINV%20Inventory%20Items/), [INV Inventory Items](/INV%20Inventory%20Items/), [Supply Chain Hub - MRP Release Diagnostics](/Supply%20Chain%20Hub%20-%20MRP%20Release%20Diagnostics/), [MSC Vertical Plan](/MSC%20Vertical%20Plan/)
+[MRP Pegging](/MRP%20Pegging/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

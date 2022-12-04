@@ -20,7 +20,7 @@ alter system set result_cache_max_size=200M scope=both
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps), [Toolkit - DBA](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20DBA)
 
 ## Related reports
-[DBA SGA+PGA Memory Configuration](/DBA%20SGA-PGA%20Memory%20Configuration/), [DBA Result Cache Objects and Invalidations](/DBA%20Result%20Cache%20Objects%20and%20Invalidations/), [PAY STP Archive Exception](/PAY%20STP%20Archive%20Exception/), [INV Movement Statistics](/INV%20Movement%20Statistics/), [DBA Feature Usage Statistics](/DBA%20Feature%20Usage%20Statistics/), [DIS Access Privileges](/DIS%20Access%20Privileges/), [ECC Project Manufacturing, Commitments](/ECC%20Project%20Manufacturing-%20Commitments/), [INL Landed Cost Summary](/INL%20Landed%20Cost%20Summary/), [POS POSASNDATA](/POS%20POSASNDATA/)
+[DBA SGA+PGA Memory Configuration](/DBA%20SGA-PGA%20Memory%20Configuration/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

@@ -14,7 +14,7 @@ User Name, Responsibility Name, Application, Active only, End Dated from
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related reports
-[FND User Roles](/FND%20User%20Roles/), [AR Profile Option Migration](/AR%20Profile%20Option%20Migration/), [FND Access Control](/FND%20Access%20Control/), [Blitz Report User History](/Blitz%20Report%20User%20History/), [FND Access Control 11i](/FND%20Access%20Control%2011i/), [IGI Subledger Security: User Allocation Status - draft](/IGI%20Subledger%20Security-%20User%20Allocation%20Status%20-%20draft/), [DIS Access Privileges](/DIS%20Access%20Privileges/), [FND W3H_User_Roles](/FND%20W3H_User_Roles/), [AP -SM Suppliers](/AP%20-SM%20Suppliers/)
+[FND User Roles](/FND%20User%20Roles/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

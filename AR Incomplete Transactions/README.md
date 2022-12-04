@@ -12,8 +12,7 @@ Transaction Class, Transaction Type, Category, Created By, Period, Inv. Date Fro
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Operations)
 
-## Related reports
-[RK: AR Transactions and Lines](/RK-%20AR%20Transactions%20and%20Lines/), [AR Transactions and Lines](/AR%20Transactions%20and%20Lines/), [XX AR Transactions and Lines](/XX%20AR%20Transactions%20and%20Lines/), [Avalara VAT listing](/Avalara%20VAT%20listing/), [AR Transactions and Payments](/AR%20Transactions%20and%20Payments/), [GL Account Analysis](/GL%20Account%20Analysis/), [GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20-Distributions/), [AR Transaction Detail](/AR%20Transaction%20Detail/), [ONT Orders and Lines](/ONT%20Orders%20and%20Lines/)
+
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

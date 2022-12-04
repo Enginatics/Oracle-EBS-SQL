@@ -56,7 +56,7 @@ Transaction Date From, Transaction Date To, Show Subinventory, Category Set 1, C
 [Cost Accounting - Assessment](https://www.enginatics.com/library/?pg=1&category[]=Cost%20Accounting%20-%20Assessment), [Cost Accounting - Transactions](https://www.enginatics.com/library/?pg=1&category[]=Cost%20Accounting%20-%20Transactions), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Cost Accounting](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Cost%20Accounting)
 
 ## Related reports
-[CAC ICP PII Inventory and Intransit Value (Period-End)](/CAC%20ICP%20PII%20Inventory%20and%20Intransit%20Value%20-Period-End/), [CAC WIP Account Summary No SLA](/CAC%20WIP%20Account%20Summary%20No%20SLA/), [CAC Material Account Detail](/CAC%20Material%20Account%20Detail/), [CAC WIP Account Summary](/CAC%20WIP%20Account%20Summary/), [CAC Material Account Summary](/CAC%20Material%20Account%20Summary/), [CAC Inventory and Intransit Value (Period-End)](/CAC%20Inventory%20and%20Intransit%20Value%20-Period-End/), [CAC Inventory Out-of-Balance](/CAC%20Inventory%20Out-of-Balance/), [OPM2](/OPM2/), [CAC Accounting Period Status](/CAC%20Accounting%20Period%20Status/)
+[CAC ICP PII Inventory and Intransit Value (Period-End)](/CAC%20ICP%20PII%20Inventory%20and%20Intransit%20Value%20-Period-End/), [CAC WIP Account Summary No SLA](/CAC%20WIP%20Account%20Summary%20No%20SLA/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

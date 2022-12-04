@@ -15,7 +15,7 @@ Audit Table, Audit Date From, Audit Date To, Audited Users, Include Audit Column
 [Audit](https://www.enginatics.com/library/?pg=1&category[]=Audit), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Data Management](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Data%20Management), [Toolkit - Metrics](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Metrics), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Operations), [Toolkit - Setup & Support](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Setup%20%26%20Support)
 
 ## Related reports
-[FND Audit Setup](/FND%20Audit%20Setup/), [FND Audit Items](/FND%20Audit%20Items/), [FND Audit Table Changes by Record](/FND%20Audit%20Table%20Changes%20by%20Record/), [AP Expenses](/AP%20Expenses/), [AR Transactions and Lines](/AR%20Transactions%20and%20Lines/), [XX AR Transactions and Lines](/XX%20AR%20Transactions%20and%20Lines/), [PSP Post Upgrade Bad Data](/PSP%20Post%20Upgrade%20Bad%20Data/), [CAC Receiving Account Summary](/CAC%20Receiving%20Account%20Summary/), [CAC WIP Account Summary](/CAC%20WIP%20Account%20Summary/)
+[FND Audit Setup](/FND%20Audit%20Setup/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

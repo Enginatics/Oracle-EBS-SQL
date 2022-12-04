@@ -18,7 +18,7 @@ Contract Number, Due To Bill before Date, Show unbilled only, Operating Unit
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Operations)
 
 ## Related reports
-[OKS Service Contracts Billing History](/OKS%20Service%20Contracts%20Billing%20History/), [OKC Contract Lines Summary](/OKC%20Contract%20Lines%20Summary/), [RK: AR Transactions and Lines](/RK-%20AR%20Transactions%20and%20Lines/), [PON Solicitation data template](/PON%20Solicitation%20data%20template/), [OKL Termination Quotes](/OKL%20Termination%20Quotes/), [Avalara VAT listing](/Avalara%20VAT%20listing/), [GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20-Distributions/), [OKS Service Contracts Detail](/OKS%20Service%20Contracts%20Detail/), [OKL Lease Property Tax](/OKL%20Lease%20Property%20Tax/)
+[OKS Service Contracts Billing History](/OKS%20Service%20Contracts%20Billing%20History/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

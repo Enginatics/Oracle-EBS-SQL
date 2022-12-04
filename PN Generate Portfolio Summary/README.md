@@ -16,7 +16,7 @@ Operating Unit, As Of Period, End Date, Representation
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related reports
-[PN Generate Portfolio Detail](/PN%20Generate%20Portfolio%20Detail/), [PN Generate Lease Details](/PN%20Generate%20Lease%20Details/), [PN Generate Lease Analysis](/PN%20Generate%20Lease%20Analysis/), [PN GL Reconciliation](/PN%20GL%20Reconciliation/), [ECC Property Manager, Lease Pay Terms Data Set](/ECC%20Property%20Manager-%20Lease%20Pay%20Terms%20Data%20Set/), [ECC Property Manager, Normalized Data for Property Manager Leases](/ECC%20Property%20Manager-%20Normalized%20Data%20for%20Property%20Manager%20Leases/), [ECC Property Manager, Lease Expenses](/ECC%20Property%20Manager-%20Lease%20Expenses/), [ECC Property Manager, Projection Data Set](/ECC%20Property%20Manager-%20Projection%20Data%20Set/), [ECC Enterprise Asset Management, Work Order Assets (Maintenance)](/ECC%20Enterprise%20Asset%20Management-%20Work%20Order%20Assets%20-Maintenance/)
+[PN Generate Portfolio Detail](/PN%20Generate%20Portfolio%20Detail/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

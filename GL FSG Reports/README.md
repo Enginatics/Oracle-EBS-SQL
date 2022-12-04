@@ -13,7 +13,7 @@ Structure Name, Row Order
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps)
 
 ## Related reports
-[GL FSG Row Orders](/GL%20FSG%20Row%20Orders/), [GL FSG - Column Set Summary Listing](/GL%20FSG%20-%20Column%20Set%20Summary%20Listing/), [GL FSG - Row Set Summary Listing](/GL%20FSG%20-%20Row%20Set%20Summary%20Listing/), [GL FSG - Report Summary Listing](/GL%20FSG%20-%20Report%20Summary%20Listing/), [GL FSG - Report Detail Listing](/GL%20FSG%20-%20Report%20Detail%20Listing/), [GL Ledgers and Legal Entities](/GL%20Ledgers%20and%20Legal%20Entities/), [FA Asset Book Details](/FA%20Asset%20Book%20Details/), [ZX Tax Accounts](/ZX%20Tax%20Accounts/), [GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20-Distributions/)
+[GL FSG Row Orders](/GL%20FSG%20Row%20Orders/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

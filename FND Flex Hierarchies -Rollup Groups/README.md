@@ -13,7 +13,7 @@ Flex value sets with rollup groups
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related reports
-[FND Flex Values](/FND%20Flex%20Values/), [AR Customers and Sites](/AR%20Customers%20and%20Sites/), [INV Item cross-references listing](/INV%20Item%20cross-references%20listing/), [FND Concurrent Programs and Executables](/FND%20Concurrent%20Programs%20and%20Executables/), [COPY OF: INV Material Account Distribution Detail from Eng](/COPY%20OF-%20INV%20Material%20Account%20Distribution%20Detail%20from%20Eng/), [AR Aging - 7 Buckets - By Salesperson/Agent](/AR%20Aging%20-%207%20Buckets%20-%20By%20Salesperson-Agent/), [FA Asset Retirements](/FA%20Asset%20Retirements/), [INV Item categories](/INV%20Item%20categories/), [FND Flex Value Sets, Usages and Values](/FND%20Flex%20Value%20Sets-%20Usages%20and%20Values/)
+[FND Flex Values](/FND%20Flex%20Values/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

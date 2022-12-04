@@ -13,7 +13,7 @@ Report Level, Ledger, Operating Unit, Requisition Number From, Requisition Numbe
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related reports
-[GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20-Distributions/), [ECC Procurement, Purchase Orders](/ECC%20Procurement-%20Purchase%20Orders/), [ECC Procurement, Purchase Orders (2)](/ECC%20Procurement-%20Purchase%20Orders%20-2/), [ECC Procurement, Purchase Orders (1)](/ECC%20Procurement-%20Purchase%20Orders%20-1/), [FND Attached Documents](/FND%20Attached%20Documents/), [GL Account Analysis](/GL%20Account%20Analysis/), [ECC Sourcing, Negotiations, SQL1](/ECC%20Sourcing-%20Negotiations-%20SQL1/), [ECC Procurement, Requisitions](/ECC%20Procurement-%20Requisitions/), [ECC Procurement, Requisitions (1)](/ECC%20Procurement-%20Requisitions%20-1/)
+[GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20-Distributions/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

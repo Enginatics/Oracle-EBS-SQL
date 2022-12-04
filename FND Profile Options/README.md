@@ -12,8 +12,7 @@ User Profile Name starts with, System Profile Name starts with, Show active only
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Setup & Support](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Setup%20%26%20Support)
 
-## Related reports
-[Profile Setup Track and Change](/Profile%20Setup%20Track%20and%20Change/), [AR Profile Option Migration](/AR%20Profile%20Option%20Migration/), [FND Profile Option Values](/FND%20Profile%20Option%20Values/), [FND Access Control](/FND%20Access%20Control/), [FND Concurrent Requests](/FND%20Concurrent%20Requests/), [FND FNDLOAD Object Transfer](/FND%20FNDLOAD%20Object%20Transfer/), [ASO Quote Data Template](/ASO%20Quote%20Data%20Template/), [ONT Defaulting Rules Listing](/ONT%20Defaulting%20Rules%20Listing/), [ZX Tax Regimes](/ZX%20Tax%20Regimes/)
+
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

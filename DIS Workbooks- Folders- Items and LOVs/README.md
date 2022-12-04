@@ -13,7 +13,7 @@ Workbook, Folder, View Name, Access Count within x Days, Show Active only, Displ
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Setup & Support](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Setup%20%26%20Support)
 
 ## Related reports
-[DIS Folders, Business Areas, Items and LOVs](/DIS%20Folders-%20Business%20Areas-%20Items%20and%20LOVs/), [DIS Items, Folders and Formulas](/DIS%20Items-%20Folders%20and%20Formulas/), [DIS Worksheet Execution History](/DIS%20Worksheet%20Execution%20History/), [DIS Access Privileges](/DIS%20Access%20Privileges/), [DIS Workbook Export Script](/DIS%20Workbook%20Export%20Script/), [DIS Business Areas](/DIS%20Business%20Areas/), [CST Item Cost Reports](/CST%20Item%20Cost%20Reports/), [DIS Workbook Export FND Users](/DIS%20Workbook%20Export%20FND%20Users/), [DIS Worksheet Execution Summary](/DIS%20Worksheet%20Execution%20Summary/)
+[DIS Folders, Business Areas, Items and LOVs](/DIS%20Folders-%20Business%20Areas-%20Items%20and%20LOVs/), [DIS Items, Folders and Formulas](/DIS%20Items-%20Folders%20and%20Formulas/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

@@ -12,8 +12,7 @@ Operating Unit, Order Number, Quote Number, Customer Name, Account Number, Type,
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
-## Related reports
-[BEN Life Events Summary](/BEN%20Life%20Events%20Summary/), [ECC Admin - Concurrent Programs](/ECC%20Admin%20-%20Concurrent%20Programs/), [ECC Oracle Asset Tracking, Oracle Asset Tracking: Assets](/ECC%20Oracle%20Asset%20Tracking-%20Oracle%20Asset%20Tracking-%20Assets/), [WSM Pending Transactions](/WSM%20Pending%20Transactions/), [AR iReceivables Customers Statement Data Definition](/AR%20iReceivables%20Customers%20Statement%20Data%20Definition/), [CE General Ledger Reconciliation](/CE%20General%20Ledger%20Reconciliation/), [CE General Ledger Cash Account Usage](/CE%20General%20Ledger%20Cash%20Account%20Usage/), [ECC Procurement, Indirect Procurement, SQL1](/ECC%20Procurement-%20Indirect%20Procurement-%20SQL1/), [ECC Procurement, Indirect Procurement, SQL4](/ECC%20Procurement-%20Indirect%20Procurement-%20SQL4/), [ECC Procurement, Indirect Procurement, SQL3](/ECC%20Procurement-%20Indirect%20Procurement-%20SQL3/)
+
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

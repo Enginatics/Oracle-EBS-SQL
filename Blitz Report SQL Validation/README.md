@@ -14,7 +14,7 @@ Report Name like, Category, Validation Result
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [RWB](https://www.enginatics.com/library/?pg=1&category[]=RWB)
 
 ## Related reports
-[Blitz Report Text Search](/Blitz%20Report%20Text%20Search/), [Blitz Reports and Example Files (Web View)](/Blitz%20Reports%20and%20Example%20Files%20-Web%20View/), [Blitz Reports](/Blitz%20Reports/), [GL FSG Reports](/GL%20FSG%20Reports/), [Blitz Report Execution Summary](/Blitz%20Report%20Execution%20Summary/), [Blitz Report Category Assignments](/Blitz%20Report%20Category%20Assignments/), [Blitz Report Execution History](/Blitz%20Report%20Execution%20History/), [EIS Reports](/EIS%20Reports/), [DIS Import Performance](/DIS%20Import%20Performance/)
+[Blitz Report Text Search](/Blitz%20Report%20Text%20Search/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

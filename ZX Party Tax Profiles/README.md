@@ -12,8 +12,7 @@ Party Type, Country
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps)
 
-## Related reports
-[JE Italian Withholding Yearly](/JE%20Italian%20Withholding%20Yearly/), [XLE Legal Entities](/XLE%20Legal%20Entities/), [XXSJ Report VAT Register](/XXSJ%20Report%20VAT%20Register/), [IBY Payment Process Request Details](/IBY%20Payment%20Process%20Request%20Details/), [CE Cleared Transactions](/CE%20Cleared%20Transactions/), [JE Italian Annual Customer and Supplier Electronic Format](/JE%20Italian%20Annual%20Customer%20and%20Supplier%20Electronic%20Format/), [JE Italian Annual Customer and Supplier Listing](/JE%20Italian%20Annual%20Customer%20and%20Supplier%20Listing/), [AR Customers and Sites](/AR%20Customers%20and%20Sites/), [ZX Tax Accounts](/ZX%20Tax%20Accounts/)
+
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

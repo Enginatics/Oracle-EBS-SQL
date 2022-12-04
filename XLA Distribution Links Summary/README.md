@@ -26,7 +26,7 @@ How the gl_import_references tableis used in 11i vs R12 is described in notes 16
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps)
 
 ## Related reports
-[CAC Receiving Account Detail No SLA](/CAC%20Receiving%20Account%20Detail%20No%20SLA/), [GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20-Distributions/), [CAC Material Account Summary No SLA](/CAC%20Material%20Account%20Summary%20No%20SLA/), [GL Account Analysis](/GL%20Account%20Analysis/), [CAC Receiving Account Summary No SLA](/CAC%20Receiving%20Account%20Summary%20No%20SLA/), [GL Account Analysis (Distributions) 11g](/GL%20Account%20Analysis%20-Distributions-%2011g/), [ECC Receivables, AR Closing, SQL5](/ECC%20Receivables-%20AR%20Closing-%20SQL5/), [AP Open Items Revaluation](/AP%20Open%20Items%20Revaluation/), [ECC Receivables, AR Closing, SQL4](/ECC%20Receivables-%20AR%20Closing-%20SQL4/)
+[CAC Receiving Account Detail No SLA](/CAC%20Receiving%20Account%20Detail%20No%20SLA/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

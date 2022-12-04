@@ -12,8 +12,7 @@ Category, Datatype, File Name contains, Short Text contains, Text contains, Crea
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Setup & Support](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Setup%20%26%20Support)
 
-## Related reports
-[PO Receiving Transactions Pipeline](/PO%20Receiving%20Transactions%20Pipeline/), [GL Account Analysis](/GL%20Account%20Analysis/), [CST AP and PO Accrual Reconciliation](/CST%20AP%20and%20PO%20Accrual%20Reconciliation/), [PO Headers and Lines 11i](/PO%20Headers%20and%20Lines%2011i/), [CAC Receiving Account Summary No SLA](/CAC%20Receiving%20Account%20Summary%20No%20SLA/), [PO Headers 11i](/PO%20Headers%2011i/), [AP Invoices and Lines](/AP%20Invoices%20and%20Lines/), [PO Purchase Requisitions with PO Details](/PO%20Purchase%20Requisitions%20with%20PO%20Details/), [CAC WIP Account Summary No SLA](/CAC%20WIP%20Account%20Summary%20No%20SLA/), [DVTST: AP Invoices with PO, Intercompany and SLA Details](/DVTST-%20AP%20Invoices%20with%20PO-%20Intercompany%20and%20SLA%20Details/)
+
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

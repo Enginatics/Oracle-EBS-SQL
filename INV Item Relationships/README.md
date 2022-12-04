@@ -12,8 +12,7 @@ Item, Last Update Date From, Last Update Date To, Last Updated By, Creation Date
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps)
 
-## Related reports
-[CST All Inventories Value (13)](/CST%20All%20Inventories%20Value%20-13/), [CAC Margin Analysis Summary](/CAC%20Margin%20Analysis%20Summary/), [CAC WIP Account Summary](/CAC%20WIP%20Account%20Summary/), [CAC Receiving Account Summary](/CAC%20Receiving%20Account%20Summary/), [ONT Order Discount Detail](/ONT%20Order%20Discount%20Detail/), [CST Inventory Value Report - by Cost Group](/CST%20Inventory%20Value%20Report%20-%20by%20Cost%20Group/), [CST Detailed Item Cost](/CST%20Detailed%20Item%20Cost/), [ECC Discrete Completions, Assembly Completion Transactions](/ECC%20Discrete%20Completions-%20Assembly%20Completion%20Transactions/), [ECC Genealogy and Trace, Work Orders](/ECC%20Genealogy%20and%20Trace-%20Work%20Orders/)
+
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

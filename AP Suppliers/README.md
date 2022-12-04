@@ -13,7 +13,7 @@ Supplier, Supplier Number, Supplier starts with, Creation Date From, Creation Da
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Operations), [Toolkit - Setup & Support](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Setup%20%26%20Support)
 
 ## Related reports
-[AP Suppliers Revenue Summary](/AP%20Suppliers%20Revenue%20Summary/), [AP Invoices and Lines](/AP%20Invoices%20and%20Lines/), [EP-Bank Detail](/EP-Bank%20Detail/), [AUDIT-SUPPLIER-BANK-SITE-LEVEL](/AUDIT-SUPPLIER-BANK-SITE-LEVEL/), [AP Invoice Payments](/AP%20Invoice%20Payments/), [XX AR Transactions and Lines](/XX%20AR%20Transactions%20and%20Lines/), [AR Transactions and Lines](/AR%20Transactions%20and%20Lines/), [GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20-Distributions/), [Audit Supplier Site Bank A/C Changes](/Audit%20Supplier%20Site%20Bank%20A-C%20Changes/)
+[AP Suppliers Revenue Summary](/AP%20Suppliers%20Revenue%20Summary/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

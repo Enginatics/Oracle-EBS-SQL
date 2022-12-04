@@ -63,7 +63,7 @@ Report Level, Operating Unit, Customer Name, Account Number, Customer Ship To Lo
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related reports
-[ONT Orders](/ONT%20Orders/), [ONT DIFOT](/ONT%20DIFOT/), [ONT Orders and Lines](/ONT%20Orders%20and%20Lines/), [AR Customers and Sites](/AR%20Customers%20and%20Sites/), [ONT Transaction Types and Line WF Processes](/ONT%20Transaction%20Types%20and%20Line%20WF%20Processes/), [ONT Order Discount Detail](/ONT%20Order%20Discount%20Detail/), [ONT Salesperson Order Summary](/ONT%20Salesperson%20Order%20Summary/), [QP Price Lists](/QP%20Price%20Lists/), [ONT Comprehensive Order Detail](/ONT%20Comprehensive%20Order%20Detail/)
+[ONT Orders](/ONT%20Orders/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

@@ -64,7 +64,7 @@ Transaction Date From, Transaction Date To, Category Set 1, Category Set 2, Cust
 [Cost Accounting - Assessment](https://www.enginatics.com/library/?pg=1&category[]=Cost%20Accounting%20-%20Assessment), [Cost Accounting - Transactions](https://www.enginatics.com/library/?pg=1&category[]=Cost%20Accounting%20-%20Transactions), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Cost Accounting](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Cost%20Accounting)
 
 ## Related reports
-[CAC Margin Analysis Summary](/CAC%20Margin%20Analysis%20Summary/), [CAC Open Internal ISO-IRO](/CAC%20Open%20Internal%20ISO-IRO/), [GL Account Analysis](/GL%20Account%20Analysis/), [GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20-Distributions/), [CAC Material Account Detail](/CAC%20Material%20Account%20Detail/), [RK: AR Transactions and Lines](/RK-%20AR%20Transactions%20and%20Lines/), [Avalara VAT listing](/Avalara%20VAT%20listing/), [ONT DIFOT](/ONT%20DIFOT/), [CAC ICP PII Inventory and Intransit Value (Period-End)](/CAC%20ICP%20PII%20Inventory%20and%20Intransit%20Value%20-Period-End/)
+[CAC Margin Analysis Summary](/CAC%20Margin%20Analysis%20Summary/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

@@ -13,7 +13,7 @@ Code Text contains, Object Name starts with, FND Message Text, Object Type, Sche
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps), [Toolkit - DBA](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20DBA)
 
 ## Related reports
-[XLA Distribution Links Summary](/XLA%20Distribution%20Links%20Summary/), [RWB Database Objects used by Report Views](/RWB%20Database%20Objects%20used%20by%20Report%20Views/), [DBA DBMS Profiler Data](/DBA%20DBMS%20Profiler%20Data/), [DBA AWR Active Session History](/DBA%20AWR%20Active%20Session%20History/), [DBA AWR Blocking Session Summary](/DBA%20AWR%20Blocking%20Session%20Summary/), [DBA Segments](/DBA%20Segments/), [DBA AWR Settings](/DBA%20AWR%20Settings/), [DBA Tablespace Usage](/DBA%20Tablespace%20Usage/), [DBA SGA+PGA Memory Configuration](/DBA%20SGA-PGA%20Memory%20Configuration/)
+[XLA Distribution Links Summary](/XLA%20Distribution%20Links%20Summary/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

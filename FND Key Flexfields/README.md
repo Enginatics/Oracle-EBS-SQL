@@ -13,7 +13,7 @@ Title, Flexfield Code, Structure Name, Table Name, Window Prompt, Validation Tab
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Setup & Support](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Setup%20%26%20Support)
 
 ## Related reports
-[FND Flex Value Sets, Usages and Values](/FND%20Flex%20Value%20Sets-%20Usages%20and%20Values/), [FND Flex Value Security Rules](/FND%20Flex%20Value%20Security%20Rules/), [FND Descriptive Flexfields](/FND%20Descriptive%20Flexfields/), [GL Account Analysis](/GL%20Account%20Analysis/), [GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20-Distributions/), [XXFT GL Balance](/XXFT%20GL%20Balance/), [JA Third Party Detail Trial Balance with Contra Accounts](/JA%20Third%20Party%20Detail%20Trial%20Balance%20with%20Contra%20Accounts/), [GL Balance by Account Hierarchy](/GL%20Balance%20by%20Account%20Hierarchy/), [Mrugesh: GL Balance](/Mrugesh-%20GL%20Balance/)
+[FND Flex Value Sets, Usages and Values](/FND%20Flex%20Value%20Sets-%20Usages%20and%20Values/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

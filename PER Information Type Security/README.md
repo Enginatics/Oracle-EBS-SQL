@@ -13,7 +13,7 @@ None
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related reports
-[FND Access Control](/FND%20Access%20Control/), [ECC Sourcing, Negotiations, SQL1](/ECC%20Sourcing-%20Negotiations-%20SQL1/), [PON Solicitation data template](/PON%20Solicitation%20data%20template/), [FND Concurrent Requests 11i](/FND%20Concurrent%20Requests%2011i/), [FND Concurrent Requests](/FND%20Concurrent%20Requests/), [FND Access Control 11i](/FND%20Access%20Control%2011i/), [WSH Shipping/Delivery Transactions](/WSH%20Shipping-Delivery%20Transactions/), [FND User Login History](/FND%20User%20Login%20History/), [ECC Sourcing, Negotiations, SQL2](/ECC%20Sourcing-%20Negotiations-%20SQL2/)
+[FND Access Control](/FND%20Access%20Control/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

@@ -14,7 +14,7 @@ Run Id, Application, Data Set, Load Type, Status, Running within past x Days, St
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Data Management](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Data%20Management)
 
 ## Related reports
-[ECC Admin - Data Sets](/ECC%20Admin%20-%20Data%20Sets/), [ECC Admin - Metadata Attributes](/ECC%20Admin%20-%20Metadata%20Attributes/), [ECC Oracle Asset Tracking, Oracle Asset Tracking: Assets](/ECC%20Oracle%20Asset%20Tracking-%20Oracle%20Asset%20Tracking-%20Assets/), [ECC Sourcing, Negotiations, SQL1](/ECC%20Sourcing-%20Negotiations-%20SQL1/), [ECC Genealogy and Trace, Purchase Orders](/ECC%20Genealogy%20and%20Trace-%20Purchase%20Orders/), [ECC Oracle Asset Tracking, Oracle Asset Tracking: Instances](/ECC%20Oracle%20Asset%20Tracking-%20Oracle%20Asset%20Tracking-%20Instances/), [ECC Procurement, Indirect Procurement, SQL4](/ECC%20Procurement-%20Indirect%20Procurement-%20SQL4/), [ECC Procurement, Indirect Procurement, SQL1](/ECC%20Procurement-%20Indirect%20Procurement-%20SQL1/), [ECC Projects, Projects Costing: Transactions, SQL2](/ECC%20Projects-%20Projects%20Costing-%20Transactions-%20SQL2/)
+[ECC Admin - Data Sets](/ECC%20Admin%20-%20Data%20Sets/), [ECC Admin - Metadata Attributes](/ECC%20Admin%20-%20Metadata%20Attributes/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

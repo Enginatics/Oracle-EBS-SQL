@@ -12,8 +12,7 @@ Organization Code
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps), [Toolkit - Setup & Support](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Setup%20%26%20Support)
 
-## Related reports
-[RD INV Inventory Aging](/RD%20INV%20Inventory%20Aging/), [PO Headers and Lines](/PO%20Headers%20and%20Lines/), [PO Receiving Transactions Pipeline](/PO%20Receiving%20Transactions%20Pipeline/), [PO Headers and Lines 11i](/PO%20Headers%20and%20Lines%2011i/), [GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20-Distributions/), [CAC ICP PII Inventory and Intransit Value (Period-End)](/CAC%20ICP%20PII%20Inventory%20and%20Intransit%20Value%20-Period-End/), [CAC Material Account Detail](/CAC%20Material%20Account%20Detail/), [CAC Inventory and Intransit Value (Period-End)](/CAC%20Inventory%20and%20Intransit%20Value%20-Period-End/), [CAC Inventory Out-of-Balance](/CAC%20Inventory%20Out-of-Balance/)
+
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

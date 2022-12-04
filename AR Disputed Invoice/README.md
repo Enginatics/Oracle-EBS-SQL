@@ -16,7 +16,7 @@ Operating Unit, Order By, Customer Name Low, Customer Name High, Customer Number
 [BI Publisher](https://www.enginatics.com/library/?pg=1&category[]=BI%20Publisher), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related reports
-[AR Aging - 7 Buckets - By Salesperson/Agent](/AR%20Aging%20-%207%20Buckets%20-%20By%20Salesperson-Agent/), [AR Customers and Sites](/AR%20Customers%20and%20Sites/), [GL Account Analysis](/GL%20Account%20Analysis/), [AR Transactions and Payments](/AR%20Transactions%20and%20Payments/), [GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20-Distributions/), [XXSJ Report VAT Register](/XXSJ%20Report%20VAT%20Register/), [AR Open Balances Revaluation](/AR%20Open%20Balances%20Revaluation/), [AR Customer Statement](/AR%20Customer%20Statement/), [AR Customer Open Balances Period Lookback](/AR%20Customer%20Open%20Balances%20Period%20Lookback/)
+[AR Aging - 7 Buckets - By Salesperson/Agent](/AR%20Aging%20-%207%20Buckets%20-%20By%20Salesperson-Agent/), [AR Customers and Sites](/AR%20Customers%20and%20Sites/), [GL Account Analysis](/GL%20Account%20Analysis/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

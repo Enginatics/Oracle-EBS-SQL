@@ -14,7 +14,7 @@ Date From, Date To, Session Type, Level of Detail, Request Id (Time Restriction)
 [Diagnostic Pack](https://www.enginatics.com/library/?pg=1&category[]=Diagnostic%20Pack), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps)
 
 ## Related reports
-[DBA AWR System Wait Class by Time](/DBA%20AWR%20System%20Wait%20Class%20by%20Time/), [DBA AWR Active Session History](/DBA%20AWR%20Active%20Session%20History/), [DBA AWR Blocking Session Summary](/DBA%20AWR%20Blocking%20Session%20Summary/), [DBA SGA+PGA Memory Configuration](/DBA%20SGA-PGA%20Memory%20Configuration/), [DBA AWR System Wait Time Summary](/DBA%20AWR%20System%20Wait%20Time%20Summary/), [DBA AWR PGA History](/DBA%20AWR%20PGA%20History/), [DBA AWR Latch Summary](/DBA%20AWR%20Latch%20Summary/), [DBA AWR SQL Performance Summary](/DBA%20AWR%20SQL%20Performance%20Summary/), [DBA AWR System Metrics Summary](/DBA%20AWR%20System%20Metrics%20Summary/)
+[DBA AWR System Wait Class by Time](/DBA%20AWR%20System%20Wait%20Class%20by%20Time/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

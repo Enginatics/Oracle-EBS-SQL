@@ -13,7 +13,7 @@ Ledger, Operating Unit, Expense Status, Report Submitted Date From, Report Submi
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Operations)
 
 ## Related reports
-[GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20-Distributions/), [GL Account Analysis](/GL%20Account%20Analysis/), [AP Invoices and Lines](/AP%20Invoices%20and%20Lines/), [GL Account Analysis (Distributions) 11g](/GL%20Account%20Analysis%20-Distributions-%2011g/), [FA Asset Book Details](/FA%20Asset%20Book%20Details/), [PO Headers and Lines](/PO%20Headers%20and%20Lines/), [PO Purchase Requisitions with PO Details](/PO%20Purchase%20Requisitions%20with%20PO%20Details/), [FND Attached Documents](/FND%20Attached%20Documents/), [GL Account Analysis 11g](/GL%20Account%20Analysis%2011g/)
+[GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20-Distributions/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

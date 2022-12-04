@@ -12,8 +12,7 @@ Level, Item, Transaction within Days, Transaction Date From, Transaction Date To
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Operations)
 
-## Related reports
-[ECC Genealogy and Trace, Work Orders](/ECC%20Genealogy%20and%20Trace-%20Work%20Orders/), [GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20-Distributions/), [ECC Genealogy and Trace, Lot Numbers](/ECC%20Genealogy%20and%20Trace-%20Lot%20Numbers/), [CAC Material Account Summary No SLA](/CAC%20Material%20Account%20Summary%20No%20SLA/), [GL Account Analysis](/GL%20Account%20Analysis/), [CAC Material Account Detail](/CAC%20Material%20Account%20Detail/), [INV Material Account Distribution Detail](/INV%20Material%20Account%20Distribution%20Detail/), [CAC Material Account Summary](/CAC%20Material%20Account%20Summary/), [ECC Discrete Completions, Assembly Completion Transactions](/ECC%20Discrete%20Completions-%20Assembly%20Completion%20Transactions/)
+
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

@@ -16,7 +16,7 @@ Bank Name, Bank Branch Name, Bank Account Name, Bank Account Number, Statement N
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related reports
-[CE Bank Statement and Reconciliation](/CE%20Bank%20Statement%20and%20Reconciliation/), [CE AutoReconciliation Execution - draft](/CE%20AutoReconciliation%20Execution%20-%20draft/), [CE General Ledger Reconciliation](/CE%20General%20Ledger%20Reconciliation/), [EC: CE Cash in Transit](/EC-%20CE%20Cash%20in%20Transit/), [CE Cash in Transit](/CE%20Cash%20in%20Transit/), [CE Transactions Available for Reconciliation](/CE%20Transactions%20Available%20for%20Reconciliation/), [CE Sweep Transactions Generation Execution - draft](/CE%20Sweep%20Transactions%20Generation%20Execution%20-%20draft/), [CE Bank Statement Cashflow Creation Execution - draft](/CE%20Bank%20Statement%20Cashflow%20Creation%20Execution%20-%20draft/), [CE Cleared Transactions](/CE%20Cleared%20Transactions/)
+[CE Bank Statement and Reconciliation](/CE%20Bank%20Statement%20and%20Reconciliation/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

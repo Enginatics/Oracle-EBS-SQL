@@ -13,7 +13,7 @@ Master data report showing the payment terms codes with their respective profile
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps), [Toolkit - Setup & Support](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Setup%20%26%20Support)
 
 ## Related reports
-[AR Customers and Sites](/AR%20Customers%20and%20Sites/), [AR Incomplete Transactions](/AR%20Incomplete%20Transactions/), [Avalara VAT listing](/Avalara%20VAT%20listing/), [HACTL AR Transaction Listings](/HACTL%20AR%20Transaction%20Listings/), [RK: AR Transactions and Lines](/RK-%20AR%20Transactions%20and%20Lines/), [ONT Orders and Lines](/ONT%20Orders%20and%20Lines/), [AR iReceivables Customers Statement Data Definition](/AR%20iReceivables%20Customers%20Statement%20Data%20Definition/), [ONT DIFOT](/ONT%20DIFOT/), [AR Transactions and Payments](/AR%20Transactions%20and%20Payments/)
+[AR Customers and Sites](/AR%20Customers%20and%20Sites/), [AR Incomplete Transactions](/AR%20Incomplete%20Transactions/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

@@ -13,7 +13,7 @@ Folder, Folder Identifier, Folder Type, View Name, Item Id, Object Id, Used by W
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related reports
-[DIS Workbooks, Folders, Items and LOVs](/DIS%20Workbooks-%20Folders-%20Items%20and%20LOVs/), [DIS Folders, Business Areas, Items and LOVs](/DIS%20Folders-%20Business%20Areas-%20Items%20and%20LOVs/), [DIS Worksheet Execution History](/DIS%20Worksheet%20Execution%20History/), [DIS Access Privileges](/DIS%20Access%20Privileges/), [DIS Business Areas](/DIS%20Business%20Areas/), [DIS Worksheet Execution Summary](/DIS%20Worksheet%20Execution%20Summary/), [DIS End User Layers](/DIS%20End%20User%20Layers/), [EIS Reports](/EIS%20Reports/), [EIS Views](/EIS%20Views/)
+[DIS Workbooks, Folders, Items and LOVs](/DIS%20Workbooks-%20Folders-%20Items%20and%20LOVs/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

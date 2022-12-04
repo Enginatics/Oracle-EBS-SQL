@@ -13,7 +13,7 @@ None
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps)
 
 ## Related reports
-[Blitz Report Parameter Table Alias Validation](/Blitz%20Report%20Parameter%20Table%20Alias%20Validation/), [EIS Reports](/EIS%20Reports/), [GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20-Distributions/), [Blitz Report Text Search](/Blitz%20Report%20Text%20Search/), [Blitz Reports](/Blitz%20Reports/), [Blitz Report Execution Summary](/Blitz%20Report%20Execution%20Summary/), [Blitz Report SQL Validation](/Blitz%20Report%20SQL%20Validation/), [Blitz Report Execution History](/Blitz%20Report%20Execution%20History/), [DIS Import Performance](/DIS%20Import%20Performance/)
+[Blitz Report Parameter Table Alias Validation](/Blitz%20Report%20Parameter%20Table%20Alias%20Validation/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

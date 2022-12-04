@@ -13,7 +13,7 @@ User Name
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related reports
-[FND Access Control 11i](/FND%20Access%20Control%2011i/), [FND Access Control](/FND%20Access%20Control/), [FND Forms Personalizations](/FND%20Forms%20Personalizations/), [FND Menu Entries](/FND%20Menu%20Entries/), [FND Responsibility Menu Exclusions](/FND%20Responsibility%20Menu%20Exclusions/), [XXEN: FND User Login History with Geolocation](/XXEN-%20FND%20User%20Login%20History%20with%20Geolocation/), [FND User Login History](/FND%20User%20Login%20History/), [FND W3H_Function_Users](/FND%20W3H_Function_Users/), [FND W3H_User_Functions](/FND%20W3H_User_Functions/)
+[FND Access Control 11i](/FND%20Access%20Control%2011i/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

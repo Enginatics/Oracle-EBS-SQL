@@ -13,7 +13,7 @@ Application, Data Set, Attribute Key
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Data Management](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Data%20Management)
 
 ## Related reports
-[ECC Admin - Data Sets](/ECC%20Admin%20-%20Data%20Sets/), [ECC Admin - Data Load Tracking](/ECC%20Admin%20-%20Data%20Load%20Tracking/), [ECC Genealogy and Trace, Purchase Orders](/ECC%20Genealogy%20and%20Trace-%20Purchase%20Orders/), [ECC Projects, Projects Costing: Transactions, SQL2](/ECC%20Projects-%20Projects%20Costing-%20Transactions-%20SQL2/), [FEM Writeback Balances to General Gedger Data Source](/FEM%20Writeback%20Balances%20to%20General%20Gedger%20Data%20Source/), [ECC Discrete Completions, Assembly Completion Transactions](/ECC%20Discrete%20Completions-%20Assembly%20Completion%20Transactions/), [ECC Contract Lifecycle Management, CLM Deliverables, SQL1](/ECC%20Contract%20Lifecycle%20Management-%20CLM%20Deliverables-%20SQL1/), [GCS Unmapped Data Submission Trial Balance Data Source](/GCS%20Unmapped%20Data%20Submission%20Trial%20Balance%20Data%20Source/), [ECC Contract Lifecycle Management, CLM Closeout Tasks, SQL1](/ECC%20Contract%20Lifecycle%20Management-%20CLM%20Closeout%20Tasks-%20SQL1/)
+[ECC Admin - Data Sets](/ECC%20Admin%20-%20Data%20Sets/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

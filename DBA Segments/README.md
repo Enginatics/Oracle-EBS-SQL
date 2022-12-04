@@ -13,7 +13,7 @@ Group by, Segment Name like, Segment Type, Table Name, Tablespace Name, Owner
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps), [Toolkit - DBA](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20DBA)
 
 ## Related reports
-[DBA SGA Buffer Cache Object Usage](/DBA%20SGA%20Buffer%20Cache%20Object%20Usage/), [DBA Dependencies (uses)](/DBA%20Dependencies%20-uses/), [DIS End User Layers](/DIS%20End%20User%20Layers/), [DBA Dependencies (used by)](/DBA%20Dependencies%20-used%20by/), [DBA Result Cache Objects and Invalidations](/DBA%20Result%20Cache%20Objects%20and%20Invalidations/), [DBA AWR Blocking Session Summary](/DBA%20AWR%20Blocking%20Session%20Summary/), [DBA AWR Active Session History](/DBA%20AWR%20Active%20Session%20History/), [DBA SGA Active Session History](/DBA%20SGA%20Active%20Session%20History/), [DBA Blocking Sessions](/DBA%20Blocking%20Sessions/)
+[DBA SGA Buffer Cache Object Usage](/DBA%20SGA%20Buffer%20Cache%20Object%20Usage/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

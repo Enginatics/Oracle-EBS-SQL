@@ -14,7 +14,7 @@ Report Name, Report Name like, Category, Not in Category, Parameter Name, Parame
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Setup & Support](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Setup%20%26%20Support)
 
 ## Related reports
-[DIS End User Layers](/DIS%20End%20User%20Layers/), [GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20-Distributions/), [Blitz Report Execution History](/Blitz%20Report%20Execution%20History/), [Compare Blitz Report LOVs between environments](/Compare%20Blitz%20Report%20LOVs%20between%20environments/), [Blitz Report Assignments](/Blitz%20Report%20Assignments/), [Blitz Report Parameter Table Alias Validation](/Blitz%20Report%20Parameter%20Table%20Alias%20Validation/), [Blitz Report Text Search](/Blitz%20Report%20Text%20Search/), [GL FSG Reports](/GL%20FSG%20Reports/), [Compare Blitz Reports between environments](/Compare%20Blitz%20Reports%20between%20environments/)
+[DIS End User Layers](/DIS%20End%20User%20Layers/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

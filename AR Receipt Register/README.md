@@ -27,7 +27,7 @@ Reporting Level, Reporting Context, Balancing Segment Low, Balancing Segment Hig
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related reports
-[AR Applied Receipts](/AR%20Applied%20Receipts/), [XXAR Applied Receipts](/XXAR%20Applied%20Receipts/), [AR Cross Currency Exchange Gain/Loss](/AR%20Cross%20Currency%20Exchange%20Gain-Loss/), [OKL Lease Advance Monies](/OKL%20Lease%20Advance%20Monies/), [OKL Receipt Inquiry](/OKL%20Receipt%20Inquiry/), [AR Potential Reconciling Items](/AR%20Potential%20Reconciling%20Items/), [AR Format Automatic Receipts](/AR%20Format%20Automatic%20Receipts/), [AR Notes Receivable](/AR%20Notes%20Receivable/), [AR Unapplied Receipts Register](/AR%20Unapplied%20Receipts%20Register/)
+[AR Applied Receipts](/AR%20Applied%20Receipts/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

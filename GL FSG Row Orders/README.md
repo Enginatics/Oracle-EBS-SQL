@@ -13,7 +13,7 @@ Structure Name
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps)
 
 ## Related reports
-[GL FSG Reports](/GL%20FSG%20Reports/), [GL FSG - Report Summary Listing](/GL%20FSG%20-%20Report%20Summary%20Listing/), [GL FSG - Report Detail Listing](/GL%20FSG%20-%20Report%20Detail%20Listing/), [GL FSG - Row Order Detail Listing](/GL%20FSG%20-%20Row%20Order%20Detail%20Listing/), [GL FSG - Row Set Summary Listing](/GL%20FSG%20-%20Row%20Set%20Summary%20Listing/), [CAC Receiving Account Summary No SLA](/CAC%20Receiving%20Account%20Summary%20No%20SLA/), [GL Account Analysis](/GL%20Account%20Analysis/), [GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20-Distributions/), [GL FSG - Report Set Detail Listing](/GL%20FSG%20-%20Report%20Set%20Detail%20Listing/)
+[GL FSG Reports](/GL%20FSG%20Reports/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

@@ -12,8 +12,7 @@ Organization Code
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Operations)
 
-## Related reports
-[OPM WIP Value](/OPM%20WIP%20Value/), [WIP Discrete Job Shortage](/WIP%20Discrete%20Job%20Shortage/), [CRP Resource Plan](/CRP%20Resource%20Plan/), [ECC Project Manufacturing, Work Orders](/ECC%20Project%20Manufacturing-%20Work%20Orders/), [CAC Material Account Detail](/CAC%20Material%20Account%20Detail/), [ECC Discrete Manufacturing, Components](/ECC%20Discrete%20Manufacturing-%20Components/), [WIP Discrete Job Pick List](/WIP%20Discrete%20Job%20Pick%20List/), [CAC Material Account Summary](/CAC%20Material%20Account%20Summary/), [WIP Required Components](/WIP%20Required%20Components/)
+
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

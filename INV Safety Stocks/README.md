@@ -13,7 +13,7 @@ Item, Organization Code
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Operations), [Toolkit - Setup & Support](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Setup%20%26%20Support)
 
 ## Related reports
-[INV Onhand Quantities](/INV%20Onhand%20Quantities/), [ECC Discrete Completions, Assembly Completion Transactions](/ECC%20Discrete%20Completions-%20Assembly%20Completion%20Transactions/), [ONT DIFOT](/ONT%20DIFOT/), [ECC Discrete Manufacturing, Work Orders](/ECC%20Discrete%20Manufacturing-%20Work%20Orders/), [ONT Orders and Lines](/ONT%20Orders%20and%20Lines/), [WIP Entities](/WIP%20Entities/), [XXINV Inventory Items](/XXINV%20Inventory%20Items/), [CAC Receiving Account Summary No SLA](/CAC%20Receiving%20Account%20Summary%20No%20SLA/), [PO Receiving Transactions Pipeline](/PO%20Receiving%20Transactions%20Pipeline/)
+[INV Onhand Quantities](/INV%20Onhand%20Quantities/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

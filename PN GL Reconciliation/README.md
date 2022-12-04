@@ -14,8 +14,7 @@ Ledger, Operating Unit, Period, Representation, Regime, Lease Number, Lease Numb
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
-## Related reports
-[JA Third Party Detail Trial Balance with Contra Accounts](/JA%20Third%20Party%20Detail%20Trial%20Balance%20with%20Contra%20Accounts/), [OKL Create Accounting - Lease and Finance Management](/OKL%20Create%20Accounting%20-%20Lease%20and%20Finance%20Management/), [JA Create Accounting for Asia/Pacific FA](/JA%20Create%20Accounting%20for%20Asia-Pacific%20FA/), [CST Create Accounting - Receiving](/CST%20Create%20Accounting%20-%20Receiving/), [JA Create Accounting for Asia/Pacific AR and AP](/JA%20Create%20Accounting%20for%20Asia-Pacific%20AR%20and%20AP/), [FA Create Accounting - Assets](/FA%20Create%20Accounting%20-%20Assets/), [JL Create Accounting for Latin American AR and AP](/JL%20Create%20Accounting%20for%20Latin%20American%20AR%20and%20AP/), [GMF Create Accounting](/GMF%20Create%20Accounting/), [PA Create Accounting](/PA%20Create%20Accounting/)
+
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

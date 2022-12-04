@@ -13,7 +13,7 @@ Planning Instance, Plan, Organization, Category Set, Category, Item, Planner, Bu
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Operations)
 
 ## Related reports
-[MSC Pegging Hierarchy](/MSC%20Pegging%20Hierarchy/), [MSC Plan Orders](/MSC%20Plan%20Orders/), [MSC Vertical Plan](/MSC%20Vertical%20Plan/), [MSC Horizontal Plan](/MSC%20Horizontal%20Plan/), [CAC ICP PII Inventory and Intransit Value (Period-End)](/CAC%20ICP%20PII%20Inventory%20and%20Intransit%20Value%20-Period-End/), [MSC Sourcing Rules (Plan Side)](/MSC%20Sourcing%20Rules%20-Plan%20Side/), [CAC Inventory and Intransit Value (Period-End)](/CAC%20Inventory%20and%20Intransit%20Value%20-Period-End/), [PO Purchase Requisition Interface](/PO%20Purchase%20Requisition%20Interface/), [PO RCV Interface](/PO%20RCV%20Interface/)
+[MSC Pegging Hierarchy](/MSC%20Pegging%20Hierarchy/), [MSC Plan Orders](/MSC%20Plan%20Orders/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

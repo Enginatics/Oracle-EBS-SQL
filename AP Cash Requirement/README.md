@@ -13,7 +13,7 @@ Include Unvalidated Invoices, Include Unapproved Invoices, Pay Through Date, Pay
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Operations)
 
 ## Related reports
-[GL Account Analysis](/GL%20Account%20Analysis/), [GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20-Distributions/), [AP Invoice on Hold](/AP%20Invoice%20on%20Hold/), [AP Accounted Invoice Aging](/AP%20Accounted%20Invoice%20Aging/), [AP Cash Requirement - draft](/AP%20Cash%20Requirement%20-%20draft/), [AP Invoices and Lines](/AP%20Invoices%20and%20Lines/), [XXSJ Report VAT Register](/XXSJ%20Report%20VAT%20Register/), [ECC Payables, AP Closing, SQL4](/ECC%20Payables-%20AP%20Closing-%20SQL4/), [INV Intercompany Invoice Reconciliation](/INV%20Intercompany%20Invoice%20Reconciliation/)
+[GL Account Analysis](/GL%20Account%20Analysis/), [GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20-Distributions/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

@@ -13,7 +13,7 @@ Remote Database, Show Differences only
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Setup & Support](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Setup%20%26%20Support)
 
 ## Related reports
-[INV Transaction Historical Summary](/INV%20Transaction%20Historical%20Summary/), [AP Invoices and Lines](/AP%20Invoices%20and%20Lines/), [RWB Report Columns](/RWB%20Report%20Columns/), [GL Balance](/GL%20Balance/), [XXFT GL Balance](/XXFT%20GL%20Balance/), [RWB Database Functions used by Calculated Columns](/RWB%20Database%20Functions%20used%20by%20Calculated%20Columns/), [AP Trial Balance](/AP%20Trial%20Balance/), [FND Flex Value Sets, Usages and Values](/FND%20Flex%20Value%20Sets-%20Usages%20and%20Values/), [Mrugesh: GL Balance](/Mrugesh-%20GL%20Balance/)
+[INV Transaction Historical Summary](/INV%20Transaction%20Historical%20Summary/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

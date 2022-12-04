@@ -12,8 +12,7 @@ Show Status
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps)
 
-## Related reports
-[CSD Depot Repair Traveler](/CSD%20Depot%20Repair%20Traveler/), [OKL Termination Quotes](/OKL%20Termination%20Quotes/), [CSD Depot Repair XMLP Estimate](/CSD%20Depot%20Repair%20XMLP%20Estimate/), [CSI Customer Products Summary](/CSI%20Customer%20Products%20Summary/), [ECC Oracle Asset Tracking, Oracle Asset Tracking: Instances](/ECC%20Oracle%20Asset%20Tracking-%20Oracle%20Asset%20Tracking-%20Instances/), [WSH Shipping/Delivery Transactions](/WSH%20Shipping-Delivery%20Transactions/), [GL Account Analysis](/GL%20Account%20Analysis/), [ONT Orders and Lines](/ONT%20Orders%20and%20Lines/), [ONT DIFOT](/ONT%20DIFOT/)
+
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

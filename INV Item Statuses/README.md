@@ -12,8 +12,7 @@ Display Style
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Operations), [Toolkit - Setup & Support](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Setup%20%26%20Support)
 
-## Related reports
-[ECC Contract Lifecycle Management, Requisitions, SQL9](/ECC%20Contract%20Lifecycle%20Management-%20Requisitions-%20SQL9/), [PO Endeca Template](/PO%20Endeca%20Template/), [ECC Procurement, Purchase Orders](/ECC%20Procurement-%20Purchase%20Orders/), [ECC Procurement, Purchase Orders (2)](/ECC%20Procurement-%20Purchase%20Orders%20-2/), [ECC Procurement, Purchase Orders (1)](/ECC%20Procurement-%20Purchase%20Orders%20-1/), [GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20-Distributions/), [AHL Supplier Warranty Visit](/AHL%20Supplier%20Warranty%20Visit/), [ECC Sourcing, Negotiations, SQL1](/ECC%20Sourcing-%20Negotiations-%20SQL1/), [WSH Open Deliveries](/WSH%20Open%20Deliveries/)
+
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

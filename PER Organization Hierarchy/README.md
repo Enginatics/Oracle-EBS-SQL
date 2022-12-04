@@ -12,8 +12,7 @@ Hierarchy Name, Top Level Organization
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Operations)
 
-## Related reports
-[PA Implementation Options](/PA%20Implementation%20Options/), [PER ADA](/PER%20ADA/), [PA Organization Hierarchy](/PA%20Organization%20Hierarchy/), [PER COBRA Coverage](/PER%20COBRA%20Coverage/), [PER COBRA Payments](/PER%20COBRA%20Payments/), [FA Asset Book Details](/FA%20Asset%20Book%20Details/), [OKL Termination Quotes](/OKL%20Termination%20Quotes/), [PON Solicitation data template](/PON%20Solicitation%20data%20template/), [PER Work Force Count](/PER%20Work%20Force%20Count/)
+
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

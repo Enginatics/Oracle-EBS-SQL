@@ -36,8 +36,7 @@ Operating Unit, Ledger/Ledger Set, Period From, Period To, Journal Source, Inclu
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
-## Related reports
-[COPY OF: AP Payables Posted Payment Register (old to replicate scheduling issue)](/COPY%20OF-%20AP%20Payables%20Posted%20Payment%20Register%20-old%20to%20replicate%20scheduling%20issue/), [GL Account Analysis](/GL%20Account%20Analysis/), [AP Payables Posted Invoice Register](/AP%20Payables%20Posted%20Invoice%20Register/), [INV Transaction Historical Summary](/INV%20Transaction%20Historical%20Summary/), [ONT Processing Constraints Listing](/ONT%20Processing%20Constraints%20Listing/), [GL Trial Balance - Detail](/GL%20Trial%20Balance%20-%20Detail/), [AP Trial Balance](/AP%20Trial%20Balance/), [PA Revaluated Funding Audit](/PA%20Revaluated%20Funding%20Audit/), [XXEN_SCHUB_ITEM_CUSTOM_QUERY](/XXEN_SCHUB_ITEM_CUSTOM_QUERY/)
+
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

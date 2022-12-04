@@ -40,8 +40,7 @@ Organization Code, Report Mode, Include Bulk, Include Supplier, Job From, Job To
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
-## Related reports
-[GMF GL Item Cost Detail](/GMF%20GL%20Item%20Cost%20Detail/), [GW Items](/GW%20Items/), [INV Inventory Items](/INV%20Inventory%20Items/), [CST Period Close Subinventory Value](/CST%20Period%20Close%20Subinventory%20Value/), [PO Receiving Account Distribution](/PO%20Receiving%20Account%20Distribution/), [BOM Bill of Material Loop Report GUI](/BOM%20Bill%20of%20Material%20Loop%20Report%20GUI/), [INV Onhand Quantities](/INV%20Onhand%20Quantities/), [XXINV Inventory Items](/XXINV%20Inventory%20Items/), [BOM Structure Report for Lead Times](/BOM%20Structure%20Report%20for%20Lead%20Times/)
+
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

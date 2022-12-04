@@ -15,8 +15,7 @@ Operating Unit, Requisition Number From, Requisition Number To, Requester, Requi
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
-## Related reports
-[ECC Procurement, Requisitions](/ECC%20Procurement-%20Requisitions/), [ECC Procurement, Requisitions (1)](/ECC%20Procurement-%20Requisitions%20-1/), [GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20-Distributions/), [PO Receipt Adjustments](/PO%20Receipt%20Adjustments/), [FND Attached Documents](/FND%20Attached%20Documents/), [PO Receiving Transactions Pipeline](/PO%20Receiving%20Transactions%20Pipeline/), [GL Account Analysis](/GL%20Account%20Analysis/), [PO Backordered Internal Requisitions](/PO%20Backordered%20Internal%20Requisitions/), [PO Receiving Transactions Register](/PO%20Receiving%20Transactions%20Register/)
+
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

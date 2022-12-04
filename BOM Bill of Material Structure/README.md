@@ -25,8 +25,7 @@ All Organizations, Organization Hierarchy, Item From, Item To, Alternate Selecti
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
-## Related reports
-[ECC Procurement, Requisitions (1)](/ECC%20Procurement-%20Requisitions%20-1/), [ECC Procurement, Agreements](/ECC%20Procurement-%20Agreements/), [INV Intercompany Invoice Reconciliation](/INV%20Intercompany%20Invoice%20Reconciliation/), [CST Uninvoiced Receipts](/CST%20Uninvoiced%20Receipts/), [PO Endeca Template](/PO%20Endeca%20Template/), [ECC Project Procurement, Approved Supplier List](/ECC%20Project%20Procurement-%20Approved%20Supplier%20List/), [PO Receiving Transactions Pipeline](/PO%20Receiving%20Transactions%20Pipeline/), [XXINV Inventory Items](/XXINV%20Inventory%20Items/), [INV Min-max planning](/INV%20Min-max%20planning/), [RD INV Inventory Aging](/RD%20INV%20Inventory%20Aging/)
+
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

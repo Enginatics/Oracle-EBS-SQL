@@ -12,8 +12,7 @@ Item, Subinventory, Organization Code
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Operations)
 
-## Related reports
-[INV Physical Inventory Tags](/INV%20Physical%20Inventory%20Tags/), [EAM Assets](/EAM%20Assets/), [INV Item Default Subinventories](/INV%20Item%20Default%20Subinventories/), [ECC Procurement, Purchase Orders (1)](/ECC%20Procurement-%20Purchase%20Orders%20-1/), [ECC Procurement, Purchase Orders](/ECC%20Procurement-%20Purchase%20Orders/), [ECC Procurement, Purchase Orders (2)](/ECC%20Procurement-%20Purchase%20Orders%20-2/), [ECC Discrete Completions, Assembly Completion Transactions](/ECC%20Discrete%20Completions-%20Assembly%20Completion%20Transactions/), [Avalara VAT listing](/Avalara%20VAT%20listing/), [RD INV Inventory Aging](/RD%20INV%20Inventory%20Aging/)
+
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

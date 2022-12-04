@@ -14,7 +14,7 @@ Listing of all GL data access sets and the ledgers or ledger sets that each acce
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Operations), [Toolkit - Setup & Support](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Setup%20%26%20Support)
 
 ## Related reports
-[FND Access Control](/FND%20Access%20Control/), [GL Ledger Sets](/GL%20Ledger%20Sets/), [GL Other - Data Access Set Listing](/GL%20Other%20-%20Data%20Access%20Set%20Listing/), [GL Ledgers and Legal Entities](/GL%20Ledgers%20and%20Legal%20Entities/), [GL Other - Ledger Set Listing](/GL%20Other%20-%20Ledger%20Set%20Listing/), [RW - GL Ledgers and Organizations](/RW%20-%20GL%20Ledgers%20and%20Organizations/), [IBY Payment Process Request Details](/IBY%20Payment%20Process%20Request%20Details/), [GL Balance by Account Hierarchy](/GL%20Balance%20by%20Account%20Hierarchy/), [XXFT GL Balance](/XXFT%20GL%20Balance/)
+[FND Access Control](/FND%20Access%20Control/), [GL Ledger Sets](/GL%20Ledger%20Sets/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

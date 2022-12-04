@@ -12,8 +12,7 @@ Master data report that lists all item cost groups along with their correspondin
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Operations)
 
-## Related reports
-[CST Periodic Material and Receiving Distribution Details](/CST%20Periodic%20Material%20and%20Receiving%20Distribution%20Details/), [CAC Material Account Detail](/CAC%20Material%20Account%20Detail/), [INV Onhand Quantities](/INV%20Onhand%20Quantities/), [CAC Inventory and Intransit Value (Period-End)](/CAC%20Inventory%20and%20Intransit%20Value%20-Period-End/), [CST Intransit Value](/CST%20Intransit%20Value/), [CST Historical Inventory Standard Cost Adjustment Report - Warehouse Management](/CST%20Historical%20Inventory%20Standard%20Cost%20Adjustment%20Report%20-%20Warehouse%20Management/), [CST Period Close Value Summary - Warehouse Management](/CST%20Period%20Close%20Value%20Summary%20-%20Warehouse%20Management/), [CAC Inventory Out-of-Balance](/CAC%20Inventory%20Out-of-Balance/), [CAC ICP PII Inventory and Intransit Value (Period-End)](/CAC%20ICP%20PII%20Inventory%20and%20Intransit%20Value%20-Period-End/)
+
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

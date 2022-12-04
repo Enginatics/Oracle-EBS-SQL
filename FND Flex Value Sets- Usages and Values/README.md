@@ -13,7 +13,7 @@ Flex Value Set Name like, Show Usages, Show Values, Validation Type, Table Name
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Setup & Support](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Setup%20%26%20Support)
 
 ## Related reports
-[FND Descriptive Flexfields](/FND%20Descriptive%20Flexfields/), [FND Key Flexfields](/FND%20Key%20Flexfields/), [FND Concurrent Programs and Executables 11i](/FND%20Concurrent%20Programs%20and%20Executables%2011i/), [FND Concurrent Programs and Executables](/FND%20Concurrent%20Programs%20and%20Executables/), [FND Flex Value Security Rules](/FND%20Flex%20Value%20Security%20Rules/), [PER Organizations](/PER%20Organizations/), [PO Headers and Lines](/PO%20Headers%20and%20Lines/), [JE Israeli Withholding Annual Certificate To Vendors](/JE%20Israeli%20Withholding%20Annual%20Certificate%20To%20Vendors/), [GL Ledgers and Legal Entities](/GL%20Ledgers%20and%20Legal%20Entities/)
+[FND Descriptive Flexfields](/FND%20Descriptive%20Flexfields/), [FND Key Flexfields](/FND%20Key%20Flexfields/), [FND Concurrent Programs and Executables 11i](/FND%20Concurrent%20Programs%20and%20Executables%2011i/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

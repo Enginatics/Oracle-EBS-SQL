@@ -14,7 +14,7 @@ Effective Date
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps)
 
 ## Related reports
-[PAY Employee Payroll History](/PAY%20Employee%20Payroll%20History/), [PAY Payroll Reconciliation Detail](/PAY%20Payroll%20Reconciliation%20Detail/), [SSP ShPP Adoption Element Results](/SSP%20ShPP%20Adoption%20Element%20Results/), [SSP ShPP Birth Element Results](/SSP%20ShPP%20Birth%20Element%20Results/), [PAY List Payroll Actions and Results By Person](/PAY%20List%20Payroll%20Actions%20and%20Results%20By%20Person/), [PAY Employee Run Results](/PAY%20Employee%20Run%20Results/), [PAY Employee Run Results Report (CA)](/PAY%20Employee%20Run%20Results%20Report%20-CA/), [PAY Fringe Benefits](/PAY%20Fringe%20Benefits/), [PER Pay Element Details](/PER%20Pay%20Element%20Details/)
+[PAY Employee Payroll History](/PAY%20Employee%20Payroll%20History/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

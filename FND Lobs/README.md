@@ -12,8 +12,7 @@ File Name like, File Content Type, Program Name, File Format, Language, Include 
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
-## Related reports
-[WIP MES Job Traveler Data Template](/WIP%20MES%20Job%20Traveler%20Data%20Template/), [FND Attached Documents](/FND%20Attached%20Documents/), [GL Journals](/GL%20Journals/), [EGO Item Image Definition Data Template](/EGO%20Item%20Image%20Definition%20Data%20Template/), [XDO Publisher Data Definitions](/XDO%20Publisher%20Data%20Definitions/), [Blitz Report Example XLSX Files](/Blitz%20Report%20Example%20XLSX%20Files/), [FND Help Documents and Targets](/FND%20Help%20Documents%20and%20Targets/), [DBA Segments](/DBA%20Segments/), [FND Concurrent Requests](/FND%20Concurrent%20Requests/)
+
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

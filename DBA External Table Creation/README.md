@@ -12,8 +12,7 @@ Directory, Source Table, Source SQL, Source File Name, External Table Name, Writ
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
-## Related reports
-[INL Unaccounted Landed Costs for Full Returns](/INL%20Unaccounted%20Landed%20Costs%20for%20Full%20Returns/), [FND Audit Setup](/FND%20Audit%20Setup/), [PO IGT Order Data Template](/PO%20IGT%20Order%20Data%20Template/), [IGI Subledger Security: Secure Tables Status - draft](/IGI%20Subledger%20Security-%20Secure%20Tables%20Status%20-%20draft/), [FND Audit Table Changes by Column](/FND%20Audit%20Table%20Changes%20by%20Column/), [FND Audit Items](/FND%20Audit%20Items/), [IGI Subledger Security: Allocation Status - draft](/IGI%20Subledger%20Security-%20Allocation%20Status%20-%20draft/), [Blitz Report VPD Policy Setup](/Blitz%20Report%20VPD%20Policy%20Setup/), [AP Open Balances Revaluation (1)](/AP%20Open%20Balances%20Revaluation%20-1/), [DIS End User Layers](/DIS%20End%20User%20Layers/)
+
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

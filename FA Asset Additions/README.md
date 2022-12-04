@@ -18,7 +18,7 @@ Book, Set of Books Currency, From Period, To Period, Category From, Category To
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related reports
-[FA Asset Book Details](/FA%20Asset%20Book%20Details/), [FA Cost Adjustments](/FA%20Cost%20Adjustments/), [GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20-Distributions/), [FA Asset Retirements](/FA%20Asset%20Retirements/), [FA Asset Summary (Germany)](/FA%20Asset%20Summary%20-Germany/), [FA Form 4797 - Gain From Disposition of 1250 Property - draft](/FA%20Form%204797%20-%20Gain%20From%20Disposition%20of%201250%20Property%20-%20draft/), [FA Cost Adjustments - draft](/FA%20Cost%20Adjustments%20-%20draft/), [GL Account Analysis](/GL%20Account%20Analysis/), [FA Additions By Source](/FA%20Additions%20By%20Source/)
+[FA Asset Book Details](/FA%20Asset%20Book%20Details/), [FA Cost Adjustments](/FA%20Cost%20Adjustments/), [GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20-Distributions/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

@@ -34,7 +34,7 @@ Report Name, Cost Type, Category Set, Category From, Category To, Item From, Ite
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related reports
-[CST Detailed Item Cost](/CST%20Detailed%20Item%20Cost/), [CST Item Costs](/CST%20Item%20Costs/), [GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20-Distributions/), [CAC Item vs. Component Include in Rollup Controls](/CAC%20Item%20vs-%20Component%20Include%20in%20Rollup%20Controls/), [INV Onhand Quantities](/INV%20Onhand%20Quantities/), [GL Account Analysis](/GL%20Account%20Analysis/), [CAC Inventory and Intransit Value (Period-End)](/CAC%20Inventory%20and%20Intransit%20Value%20-Period-End/), [CAC ICP PII Inventory and Intransit Value (Period-End)](/CAC%20ICP%20PII%20Inventory%20and%20Intransit%20Value%20-Period-End/), [CAC Cost vs. Planning Item Controls](/CAC%20Cost%20vs-%20Planning%20Item%20Controls/)
+[CST Detailed Item Cost](/CST%20Detailed%20Item%20Cost/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

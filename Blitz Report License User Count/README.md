@@ -13,7 +13,7 @@ Shows the number of active Blitz Report users at every month start (looking back
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related reports
-[Blitz Report Execution History](/Blitz%20Report%20Execution%20History/), [Blitz Report License Users](/Blitz%20Report%20License%20Users/), [Blitz Reports](/Blitz%20Reports/), [Blitz Report Execution Summary](/Blitz%20Report%20Execution%20Summary/), [Blitz Report User History](/Blitz%20Report%20User%20History/), [QP Customer Pricing Engine Request](/QP%20Customer%20Pricing%20Engine%20Request/), [AD Applied Patches 11i](/AD%20Applied%20Patches%2011i/), [AD Applied Patches](/AD%20Applied%20Patches/), [PA Supplier Cost Audit](/PA%20Supplier%20Cost%20Audit/)
+[Blitz Report Execution History](/Blitz%20Report%20Execution%20History/), [Blitz Report License Users](/Blitz%20Report%20License%20Users/), [Blitz Reports](/Blitz%20Reports/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

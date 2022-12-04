@@ -13,7 +13,7 @@ Type, Code contains, Meaning contains, Description contains, Creation Date From,
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related reports
-[GL Balance by Account Hierarchy](/GL%20Balance%20by%20Account%20Hierarchy/), [XXFT GL Balance](/XXFT%20GL%20Balance/), [MRP Pegging](/MRP%20Pegging/), [GL Balance (pivot)](/GL%20Balance%20-pivot/), [PON Solicitation data template](/PON%20Solicitation%20data%20template/), [ECC Discrete Completions, Assembly Completion Transactions](/ECC%20Discrete%20Completions-%20Assembly%20Completion%20Transactions/), [JA Third Party Detail Trial Balance with Contra Accounts](/JA%20Third%20Party%20Detail%20Trial%20Balance%20with%20Contra%20Accounts/), [Mrugesh: GL Balance](/Mrugesh-%20GL%20Balance/), [ECC Genealogy and Trace, Work Orders](/ECC%20Genealogy%20and%20Trace-%20Work%20Orders/)
+[GL Balance by Account Hierarchy](/GL%20Balance%20by%20Account%20Hierarchy/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

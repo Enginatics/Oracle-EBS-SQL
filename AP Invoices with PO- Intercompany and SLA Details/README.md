@@ -12,8 +12,7 @@ Ledger, Operating Unit, Invoice Date From, Invoice Date To, Accounting Date From
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
-## Related reports
-[DVTST: AP Invoices with PO, Intercompany and SLA Details](/DVTST-%20AP%20Invoices%20with%20PO-%20Intercompany%20and%20SLA%20Details/), [PO Receiving Transactions Pipeline](/PO%20Receiving%20Transactions%20Pipeline/), [PO Receiving Transactions Register](/PO%20Receiving%20Transactions%20Register/), [GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20-Distributions/), [ECC Discrete Manufacturing, Resources](/ECC%20Discrete%20Manufacturing-%20Resources/), [ECC Process Manufacturing, Outside Processing Batch](/ECC%20Process%20Manufacturing-%20Outside%20Processing%20Batch/), [ECC Discrete Manufacturing, Outside Processing](/ECC%20Discrete%20Manufacturing-%20Outside%20Processing/), [PO Endeca Template](/PO%20Endeca%20Template/), [ECC Contract Lifecycle Management, Requisitions, SQL9](/ECC%20Contract%20Lifecycle%20Management-%20Requisitions-%20SQL9/)
+
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

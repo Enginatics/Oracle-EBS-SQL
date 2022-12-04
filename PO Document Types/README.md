@@ -12,8 +12,7 @@ Operating Unit
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps), [Toolkit - Data Management](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Data%20Management)
 
-## Related reports
-[ECC Contract Lifecycle Management, Requisitions, SQL9](/ECC%20Contract%20Lifecycle%20Management-%20Requisitions-%20SQL9/), [PON Solicitation data template](/PON%20Solicitation%20data%20template/), [ONT Transaction Types and Line WF Processes](/ONT%20Transaction%20Types%20and%20Line%20WF%20Processes/), [GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20-Distributions/), [GL Account Analysis](/GL%20Account%20Analysis/), [ECC Procurement, Purchase Orders](/ECC%20Procurement-%20Purchase%20Orders/), [ECC Procurement, Agreements](/ECC%20Procurement-%20Agreements/), [ECC Sourcing, Negotiations, SQL2](/ECC%20Sourcing-%20Negotiations-%20SQL2/), [ECC Sourcing, Negotiations, SQL1](/ECC%20Sourcing-%20Negotiations-%20SQL1/)
+
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

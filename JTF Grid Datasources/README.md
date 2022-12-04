@@ -13,7 +13,7 @@ Datasource Name
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps)
 
 ## Related reports
-[AR Aging - 7 Buckets - By Salesperson/Agent](/AR%20Aging%20-%207%20Buckets%20-%20By%20Salesperson-Agent/), [GL Account Analysis](/GL%20Account%20Analysis/), [AR Transactions and Lines](/AR%20Transactions%20and%20Lines/), [GL Account Analysis (Distributions) 11g](/GL%20Account%20Analysis%20-Distributions-%2011g/), [AR Incomplete Transactions](/AR%20Incomplete%20Transactions/), [Avalara VAT listing](/Avalara%20VAT%20listing/), [ONT Credit Order Detail](/ONT%20Credit%20Order%20Detail/), [ASO Quote Data Template](/ASO%20Quote%20Data%20Template/), [AR Customers and Sites](/AR%20Customers%20and%20Sites/)
+[AR Aging - 7 Buckets - By Salesperson/Agent](/AR%20Aging%20-%207%20Buckets%20-%20By%20Salesperson-Agent/), [GL Account Analysis](/GL%20Account%20Analysis/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

@@ -13,7 +13,7 @@ Ledger Set, Chart of Accounts
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Operations)
 
 ## Related reports
-[GL Data Access Sets](/GL%20Data%20Access%20Sets/), [FND Access Control](/FND%20Access%20Control/), [GL Ledgers and Legal Entities](/GL%20Ledgers%20and%20Legal%20Entities/), [GL Balance by Account Hierarchy](/GL%20Balance%20by%20Account%20Hierarchy/), [GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20-Distributions/), [PER Employee Assignments](/PER%20Employee%20Assignments/), [GL Balance](/GL%20Balance/), [XXFT GL Balance](/XXFT%20GL%20Balance/), [GL Other - Ledger Set Listing](/GL%20Other%20-%20Ledger%20Set%20Listing/)
+[GL Data Access Sets](/GL%20Data%20Access%20Sets/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

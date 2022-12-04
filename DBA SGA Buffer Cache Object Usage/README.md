@@ -22,8 +22,7 @@ Show Block Status
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps), [Toolkit - DBA](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20DBA)
 
-## Related reports
-[PAY Generate Employer Quarterly Tax Returns (India) - Excel](/PAY%20Generate%20Employer%20Quarterly%20Tax%20Returns%20-India-%20-%20Excel/), [ECC G-Invoicing, Projects: G-Invoicing](/ECC%20G-Invoicing-%20Projects-%20G-Invoicing/), [JE Italian Annual Supplier Listing](/JE%20Italian%20Annual%20Supplier%20Listing/), [JE Portuguese Suppliers Recapitulative](/JE%20Portuguese%20Suppliers%20Recapitulative/), [JG EMEA VAT: Turnover AP Non TRL Extract](/JG%20EMEA%20VAT-%20Turnover%20AP%20Non%20TRL%20Extract/), [DBA SGA+PGA Memory Configuration](/DBA%20SGA-PGA%20Memory%20Configuration/), [FND Concurrent Requests 11i](/FND%20Concurrent%20Requests%2011i/), [FND Concurrent Requests](/FND%20Concurrent%20Requests/), [DBA Blocking Sessions](/DBA%20Blocking%20Sessions/)
+
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

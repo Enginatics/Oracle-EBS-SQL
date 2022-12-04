@@ -13,7 +13,7 @@ End User Layer, History days
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related reports
-[DIS Workbooks, Folders, Items and LOVs](/DIS%20Workbooks-%20Folders-%20Items%20and%20LOVs/), [DIS Worksheet SQLs](/DIS%20Worksheet%20SQLs/), [Blitz Report VPD Policy Setup](/Blitz%20Report%20VPD%20Policy%20Setup/), [DIS Folders, Business Areas, Items and LOVs](/DIS%20Folders-%20Business%20Areas-%20Items%20and%20LOVs/), [Blitz Report Text Search](/Blitz%20Report%20Text%20Search/), [DBA AWR Active Session History](/DBA%20AWR%20Active%20Session%20History/), [DBA SGA Active Session History](/DBA%20SGA%20Active%20Session%20History/), [DBA Blocking Sessions](/DBA%20Blocking%20Sessions/), [DBA AWR SQL Execution Plan History](/DBA%20AWR%20SQL%20Execution%20Plan%20History/)
+[DIS Workbooks, Folders, Items and LOVs](/DIS%20Workbooks-%20Folders-%20Items%20and%20LOVs/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

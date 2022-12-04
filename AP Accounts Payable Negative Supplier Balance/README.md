@@ -16,7 +16,7 @@ Operating Unit, Report Definition, As of Date, Third Party Name, Show Transactio
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related reports
-[AP Trial Balance](/AP%20Trial%20Balance/), [XLA Open Account AP Balances Listing](/XLA%20Open%20Account%20AP%20Balances%20Listing/), [CE Israel - Bank Statement Reconciliation](/CE%20Israel%20-%20Bank%20Statement%20Reconciliation/), [XLA Open Account Balances Listing](/XLA%20Open%20Account%20Balances%20Listing/), [CE General Ledger Reconciliation](/CE%20General%20Ledger%20Reconciliation/), [XDO Publisher Data Definitions](/XDO%20Publisher%20Data%20Definitions/), [RWB Reports](/RWB%20Reports/), [AP Payables Posted Invoice Register](/AP%20Payables%20Posted%20Invoice%20Register/), [AP Payables Posted Payment Register](/AP%20Payables%20Posted%20Payment%20Register/)
+[AP Trial Balance](/AP%20Trial%20Balance/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

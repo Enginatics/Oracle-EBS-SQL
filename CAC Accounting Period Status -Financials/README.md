@@ -13,7 +13,7 @@ Period From, Period To, Ledger, Chart of Accounts
 [Cost Accounting - Other](https://www.enginatics.com/library/?pg=1&category[]=Cost%20Accounting%20-%20Other), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Cost Accounting](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Cost%20Accounting)
 
 ## Related reports
-[CAC Accounting Period Status](/CAC%20Accounting%20Period%20Status/), [CAC Receiving Account Summary No SLA](/CAC%20Receiving%20Account%20Summary%20No%20SLA/), [CAC Receiving Account Detail No SLA](/CAC%20Receiving%20Account%20Detail%20No%20SLA/), [CAC Material Account Summary No SLA](/CAC%20Material%20Account%20Summary%20No%20SLA/), [CAC Inventory Out-of-Balance](/CAC%20Inventory%20Out-of-Balance/), [CAC WIP Account Summary No SLA](/CAC%20WIP%20Account%20Summary%20No%20SLA/), [AP Accounted Invoice Aging](/AP%20Accounted%20Invoice%20Aging/), [CAC WIP Account Summary](/CAC%20WIP%20Account%20Summary/), [CAC Receiving Account Summary](/CAC%20Receiving%20Account%20Summary/)
+[CAC Accounting Period Status](/CAC%20Accounting%20Period%20Status/), [CAC Receiving Account Summary No SLA](/CAC%20Receiving%20Account%20Summary%20No%20SLA/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

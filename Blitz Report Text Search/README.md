@@ -15,7 +15,7 @@ SQL Text contains, Category, Record Type, Case sensitive, SQL Text does not cont
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related reports
-[Compare Blitz Report LOVs between environments](/Compare%20Blitz%20Report%20LOVs%20between%20environments/), [DIS End User Layers](/DIS%20End%20User%20Layers/), [Blitz Report Execution History](/Blitz%20Report%20Execution%20History/), [Blitz Report Parameter Table Alias Validation](/Blitz%20Report%20Parameter%20Table%20Alias%20Validation/), [Blitz Reports](/Blitz%20Reports/), [Blitz Report LOVs](/Blitz%20Report%20LOVs/), [GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20-Distributions/), [Compare Blitz Report Parameters](/Compare%20Blitz%20Report%20Parameters/), [Blitz Report Parameter Dependencies](/Blitz%20Report%20Parameter%20Dependencies/)
+[Compare Blitz Report LOVs between environments](/Compare%20Blitz%20Report%20LOVs%20between%20environments/), [DIS End User Layers](/DIS%20End%20User%20Layers/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

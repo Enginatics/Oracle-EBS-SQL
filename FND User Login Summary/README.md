@@ -13,7 +13,7 @@ Logged in within Days, Date From, Date To, Exclude User Name
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related reports
-[FND User Login History](/FND%20User%20Login%20History/), [XXEN: FND User Login History with Geolocation](/XXEN-%20FND%20User%20Login%20History%20with%20Geolocation/), [FND Concurrent Requests](/FND%20Concurrent%20Requests/), [FND W3H_Role_Functions](/FND%20W3H_Role_Functions/), [FND W3H_Object_Users](/FND%20W3H_Object_Users/), [FND W3H_Function_Users](/FND%20W3H_Function_Users/), [AR Profile Option Migration](/AR%20Profile%20Option%20Migration/), [PN Generate Lease Details](/PN%20Generate%20Lease%20Details/), [FND Access Control](/FND%20Access%20Control/)
+[FND User Login History](/FND%20User%20Login%20History/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

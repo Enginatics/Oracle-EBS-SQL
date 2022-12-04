@@ -16,7 +16,7 @@ Ledger, Operating Unit, Period From, Period To, Vendor Name
 [Concurrent Program](https://www.enginatics.com/library/?pg=1&category[]=Concurrent%20Program), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related reports
-[GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20-Distributions/), [PO Purchase Price Variance](/PO%20Purchase%20Price%20Variance/), [ECC Procurement, Requisitions](/ECC%20Procurement-%20Requisitions/), [ECC Procurement, Requisitions (1)](/ECC%20Procurement-%20Requisitions%20-1/), [ECC Contract Lifecycle Management, Requisitions, SQL9](/ECC%20Contract%20Lifecycle%20Management-%20Requisitions-%20SQL9/), [PO Headers and Lines](/PO%20Headers%20and%20Lines/), [GL Account Analysis](/GL%20Account%20Analysis/), [AP Invoices with PO, Intercompany and SLA Details](/AP%20Invoices%20with%20PO-%20Intercompany%20and%20SLA%20Details/), [DVTST: AP Invoices with PO, Intercompany and SLA Details](/DVTST-%20AP%20Invoices%20with%20PO-%20Intercompany%20and%20SLA%20Details/)
+[GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20-Distributions/), [PO Purchase Price Variance](/PO%20Purchase%20Price%20Variance/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

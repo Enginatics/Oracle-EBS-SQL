@@ -13,7 +13,7 @@ Price List, Item, Category Set, Category, Valid on Date, Organization Code
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Data Management](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Data%20Management), [Toolkit - Setup & Support](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Setup%20%26%20Support)
 
 ## Related reports
-[QP Customer Pricing Engine Request](/QP%20Customer%20Pricing%20Engine%20Request/), [ONT DIFOT](/ONT%20DIFOT/), [ONT Orders and Lines](/ONT%20Orders%20and%20Lines/), [ONT Orders](/ONT%20Orders/), [AR Customers and Sites](/AR%20Customers%20and%20Sites/), [ONT Order Discount Detail](/ONT%20Order%20Discount%20Detail/), [ONT Comprehensive Order Detail](/ONT%20Comprehensive%20Order%20Detail/), [FND Attached Documents](/FND%20Attached%20Documents/), [ONT Transaction Types and Line WF Processes](/ONT%20Transaction%20Types%20and%20Line%20WF%20Processes/)
+[QP Customer Pricing Engine Request](/QP%20Customer%20Pricing%20Engine%20Request/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

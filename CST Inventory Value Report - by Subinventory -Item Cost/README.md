@@ -16,7 +16,7 @@ Cost Type, As of Date, Item From, Item To, Category Set, Category From, Category
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps)
 
 ## Related reports
-[CST Inventory Value - Multi-Organization (Item Costs)](/CST%20Inventory%20Value%20-%20Multi-Organization%20-Item%20Costs/), [CST Inventory Value Report - by Cost Group](/CST%20Inventory%20Value%20Report%20-%20by%20Cost%20Group/), [CST Elemental Inventory Value Report - by Subinventory](/CST%20Elemental%20Inventory%20Value%20Report%20-%20by%20Subinventory/), [CST Elemental Inventory Value Report - by Cost Group](/CST%20Elemental%20Inventory%20Value%20Report%20-%20by%20Cost%20Group/), [INV Transaction Historical Summary](/INV%20Transaction%20Historical%20Summary/), [CST All Inventories Value (13)](/CST%20All%20Inventories%20Value%20-13/), [CST All Inventories Value (15)](/CST%20All%20Inventories%20Value%20-15/), [CST All Inventories Value (11)](/CST%20All%20Inventories%20Value%20-11/), [CST All Inventories Value (7)](/CST%20All%20Inventories%20Value%20-7/)
+[CST Inventory Value - Multi-Organization (Item Costs)](/CST%20Inventory%20Value%20-%20Multi-Organization%20-Item%20Costs/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

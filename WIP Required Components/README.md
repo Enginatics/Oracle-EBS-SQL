@@ -15,7 +15,7 @@ Organization Code, Job, Job Status, Date Required to, Show Shortage List, Projec
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Operations)
 
 ## Related reports
-[WIP Discrete Job Shortage](/WIP%20Discrete%20Job%20Shortage/), [ECC Discrete Manufacturing, Work Orders](/ECC%20Discrete%20Manufacturing-%20Work%20Orders/), [GL Account Analysis](/GL%20Account%20Analysis/), [ECC Discrete Manufacturing, Work Order Delays](/ECC%20Discrete%20Manufacturing-%20Work%20Order%20Delays/), [CAC WIP Account Summary No SLA](/CAC%20WIP%20Account%20Summary%20No%20SLA/), [GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20-Distributions/), [WIP Entities](/WIP%20Entities/), [MRP Pegging](/MRP%20Pegging/), [WIP Account Distribution](/WIP%20Account%20Distribution/)
+[WIP Discrete Job Shortage](/WIP%20Discrete%20Job%20Shortage/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

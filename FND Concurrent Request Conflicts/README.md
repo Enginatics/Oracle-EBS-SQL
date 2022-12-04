@@ -14,7 +14,7 @@ Started within Days, Requested Start Date From, Requested Start Date To
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - DBA](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20DBA), [Toolkit - Setup & Support](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Setup%20%26%20Support)
 
 ## Related reports
-[FND Concurrent Requests 11i](/FND%20Concurrent%20Requests%2011i/), [FND Concurrent Requests](/FND%20Concurrent%20Requests/), [ECC Admin - Concurrent Programs](/ECC%20Admin%20-%20Concurrent%20Programs/), [FND Concurrent Managers](/FND%20Concurrent%20Managers/), [FND Concurrent Requests Summary](/FND%20Concurrent%20Requests%20Summary/), [FND Concurrent Program Incompatibilities](/FND%20Concurrent%20Program%20Incompatibilities/), [INV Item Import Performance](/INV%20Item%20Import%20Performance/), [FND Access Control 11i](/FND%20Access%20Control%2011i/), [FND Flex Value Sets, Usages and Values](/FND%20Flex%20Value%20Sets-%20Usages%20and%20Values/)
+[FND Concurrent Requests 11i](/FND%20Concurrent%20Requests%2011i/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

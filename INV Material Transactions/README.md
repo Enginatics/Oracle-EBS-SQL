@@ -13,7 +13,7 @@ Item, Item Description, Transaction within Days, Transaction Date From, Transact
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Operations)
 
 ## Related reports
-[GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20-Distributions/), [INV Material Account Distribution Detail](/INV%20Material%20Account%20Distribution%20Detail/), [GL Account Analysis](/GL%20Account%20Analysis/), [COPY OF: INV Material Account Distribution Detail from Eng](/COPY%20OF-%20INV%20Material%20Account%20Distribution%20Detail%20from%20Eng/), [INV Transaction register](/INV%20Transaction%20register/), [INV Serial number transaction register](/INV%20Serial%20number%20transaction%20register/), [INV Lot transaction register](/INV%20Lot%20transaction%20register/), [ECC Discrete Completions, Assembly Completion Transactions](/ECC%20Discrete%20Completions-%20Assembly%20Completion%20Transactions/), [CAC Material Account Detail](/CAC%20Material%20Account%20Detail/)
+[GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20-Distributions/), [INV Material Account Distribution Detail](/INV%20Material%20Account%20Distribution%20Detail/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

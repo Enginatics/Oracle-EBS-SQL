@@ -30,8 +30,7 @@ Row Number
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps)
 
-## Related reports
-[ECC Project Procurement, Approved Supplier List](/ECC%20Project%20Procurement-%20Approved%20Supplier%20List/), [ECC Project Procurement, Deliverables](/ECC%20Project%20Procurement-%20Deliverables/), [FND Lookup Values](/FND%20Lookup%20Values/), [FND Forms Personalizations](/FND%20Forms%20Personalizations/), [PO IDV Modification](/PO%20IDV%20Modification/), [JL Argentine Sales Flat File - draft](/JL%20Argentine%20Sales%20Flat%20File%20-%20draft/), [AP Accounted Invoice Aging](/AP%20Accounted%20Invoice%20Aging/), [PON Solicitation data template](/PON%20Solicitation%20data%20template/), [GCS A&D Trial Balance Data Source](/GCS%20A-D%20Trial%20Balance%20Data%20Source/)
+
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

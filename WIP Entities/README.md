@@ -12,8 +12,7 @@ Organization Code, Planner Code, Schedule Group, Item, Job, Job Status, Project,
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Operations)
 
-## Related reports
-[ECC Discrete Completions, Assembly Completion Transactions](/ECC%20Discrete%20Completions-%20Assembly%20Completion%20Transactions/), [ECC Discrete Manufacturing, Work Orders](/ECC%20Discrete%20Manufacturing-%20Work%20Orders/), [ECC Discrete Manufacturing, Work Order Delays](/ECC%20Discrete%20Manufacturing-%20Work%20Order%20Delays/), [MRP Item Forecast](/MRP%20Item%20Forecast/), [INV Material Transactions](/INV%20Material%20Transactions/), [WIP Required Components](/WIP%20Required%20Components/), [MRP Pegging](/MRP%20Pegging/), [WIP Discrete Job Shortage](/WIP%20Discrete%20Job%20Shortage/), [ONT Orders and Lines](/ONT%20Orders%20and%20Lines/)
+
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

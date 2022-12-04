@@ -33,7 +33,7 @@ Responsibility Name, User Name like, Application, Access to Inventory Org, Acces
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related reports
-[FND Access Control](/FND%20Access%20Control/), [FND User Login History](/FND%20User%20Login%20History/), [FND Menu Entries](/FND%20Menu%20Entries/), [QP Customer Pricing Engine Request](/QP%20Customer%20Pricing%20Engine%20Request/), [XXEN: FND User Login History with Geolocation](/XXEN-%20FND%20User%20Login%20History%20with%20Geolocation/), [PON Solicitation data template](/PON%20Solicitation%20data%20template/), [ECC Contract Lifecycle Management, Requisitions, SQL9](/ECC%20Contract%20Lifecycle%20Management-%20Requisitions-%20SQL9/), [FND Responsibility Menu Exclusions](/FND%20Responsibility%20Menu%20Exclusions/), [PO Approved Supplier List](/PO%20Approved%20Supplier%20List/)
+[FND Access Control](/FND%20Access%20Control/), [FND User Login History](/FND%20User%20Login%20History/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

@@ -13,7 +13,7 @@ Customer Name, Account Number, Display Level, Operating Unit
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Operations)
 
 ## Related reports
-[QP Customer Pricing Engine Request](/QP%20Customer%20Pricing%20Engine%20Request/), [AR Customers and Sites](/AR%20Customers%20and%20Sites/), [XXSJ Report VAT Register](/XXSJ%20Report%20VAT%20Register/), [ONT Orders on Credit Check Hold](/ONT%20Orders%20on%20Credit%20Check%20Hold/), [ONT Orders](/ONT%20Orders/), [ONT Orders and Lines](/ONT%20Orders%20and%20Lines/), [GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20-Distributions/), [CAC Open Internal ISO-IRO](/CAC%20Open%20Internal%20ISO-IRO/), [ONT DIFOT](/ONT%20DIFOT/)
+[QP Customer Pricing Engine Request](/QP%20Customer%20Pricing%20Engine%20Request/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

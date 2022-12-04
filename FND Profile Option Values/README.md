@@ -13,8 +13,7 @@ User Profile Name starts with, User Profile Name any lang, Setup Level, Setup Le
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Setup & Support](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Setup%20%26%20Support)
 
-## Related reports
-[Profile Setup Track and Change](/Profile%20Setup%20Track%20and%20Change/), [FND User Login History](/FND%20User%20Login%20History/), [AR Profile Option Migration](/AR%20Profile%20Option%20Migration/), [FND Concurrent Requests](/FND%20Concurrent%20Requests/), [FND Access Control](/FND%20Access%20Control/), [FND Access Control 11i](/FND%20Access%20Control%2011i/), [FND Concurrent Requests 11i](/FND%20Concurrent%20Requests%2011i/), [FND Profile Options](/FND%20Profile%20Options/), [AP -SM Suppliers](/AP%20-SM%20Suppliers/)
+
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
