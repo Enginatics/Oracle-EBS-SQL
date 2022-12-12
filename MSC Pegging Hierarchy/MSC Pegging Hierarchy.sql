@@ -71,18 +71,6 @@ q_msc_full_pegging as
                   &org_restriction
                  )
   )
-),
-q_mtl_system_items_b as
-(
- select
-  rowidtochar(msib.rowid) row_id,
-  msib.attribute_category,
-  msib.inventory_item_id,
-  msib.organization_id
- from
-  mtl_system_items_b&m2a_dblink msib
- where
-  :p_show_item_dff is not null
 )
 ----------------------------------------------------
 -- Main Query Starts Here
@@ -715,4 +703,9 @@ from
    ),2)                                                    end_demand_days_late,
   -- exceptions
   mfp.planning_exception_set,
-  (se
+  (select /*+ ordered index(med msc_exception_details_n1) */
+    distinct listagg(med.exception_type_meaning,', ') within group (order by med.exception_type_meaning) over ()
+   from
+    (select distinct
+      med.number1,
+      med.s

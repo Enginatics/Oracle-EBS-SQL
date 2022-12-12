@@ -12,7 +12,8 @@ User Profile Name starts with, System Profile Name starts with, Show active only
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Setup & Support](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Setup%20%26%20Support)
 
-
+## Related reports
+[FND Profile Option Values](/FND%20Profile%20Option%20Values/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

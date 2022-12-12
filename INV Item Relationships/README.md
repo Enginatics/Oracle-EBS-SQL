@@ -12,7 +12,8 @@ Item, Last Update Date From, Last Update Date To, Last Updated By, Creation Date
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps)
 
-
+## Related reports
+[INV Material Transactions Summary](/INV%20Material%20Transactions%20Summary/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

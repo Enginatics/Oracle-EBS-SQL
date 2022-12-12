@@ -16,7 +16,7 @@ Organization Code, Cycle Count Name
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related reports
-[INV Cycle count hit/miss analysis](/INV%20Cycle%20count%20hit-miss%20analysis/)
+[INV Cycle count listing](/INV%20Cycle%20count%20listing/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

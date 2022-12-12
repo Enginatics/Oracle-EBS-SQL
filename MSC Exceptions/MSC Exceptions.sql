@@ -140,7 +140,6 @@ and medv.sr_instance_id    = msi.sr_instance_id
 and medv.plan_id           = msi.plan_id
 and medv.organization_id   = msi.organization_id
 and medv.inventory_item_id = msi.inventory_item_id
-and medv.sr_instance_id    = mcs.sr_instance_id  (+)
 and medv.category_set_id   = mcs.category_set_id (+)
 and medv.sr_instance_id    = md.sr_instance_id (+)
 and medv.plan_id           = md.plan_id (+)

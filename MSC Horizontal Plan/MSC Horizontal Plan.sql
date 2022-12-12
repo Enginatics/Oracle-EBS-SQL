@@ -6,6 +6,10 @@
 /*************************************************************************/
 -- Report Name: MSC Horizontal Plan
 -- Description: ASCP: Horizontal Plan from the Planners Workbench.
+
+Note: The maximum number of items included in the Horizontal Plan is limited by the Profile Option: 
+- MSC: HP Maximum Displayed Item Count
+The default value for this profile option if not set is 30.
 -- Excel Examle Output: https://www.enginatics.com/example/msc-horizontal-plan/
 -- Library Link: https://www.enginatics.com/reports/msc-horizontal-plan/
 -- Run Report: https://demo.enginatics.com/
@@ -360,7 +364,6 @@ with
           and msi.sr_instance_id     = mic.sr_instance_id
           and msi.organization_id    = mic.organization_id
           and msi.inventory_item_id  = mic.inventory_item_id
-          and mic.sr_instance_id     = mcs.sr_instance_id
           and mic.category_set_id    = mcs.category_set_id
           and mcs.category_set_name  = :p_cat_set_name
           --

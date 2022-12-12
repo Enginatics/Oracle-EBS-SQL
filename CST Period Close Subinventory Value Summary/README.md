@@ -13,7 +13,7 @@ Organization Code, Period, Ledger
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Operations)
 
 ## Related reports
-[CAC Inventory Out-of-Balance](/CAC%20Inventory%20Out-of-Balance/), [CST Period Close Subinventory Value](/CST%20Period%20Close%20Subinventory%20Value/)
+[CST Period Close Subinventory Value](/CST%20Period%20Close%20Subinventory%20Value/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

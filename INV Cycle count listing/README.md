@@ -15,8 +15,7 @@ Organization Code, Cycle Count Name, Start Date, End Date, Include Recounts Only
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
-## Related reports
-[INV Cycle count entries and adjustments](/INV%20Cycle%20count%20entries%20and%20adjustments/), [INV Cycle count open requests listing](/INV%20Cycle%20count%20open%20requests%20listing/), [INV Cycle counts pending approval](/INV%20Cycle%20counts%20pending%20approval/)
+
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

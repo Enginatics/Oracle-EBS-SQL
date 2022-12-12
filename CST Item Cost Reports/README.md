@@ -33,8 +33,7 @@ Report Name, Cost Type, Category Set, Category From, Category To, Item From, Ite
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
-## Related reports
-[CST Detailed Item Cost](/CST%20Detailed%20Item%20Cost/)
+
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

@@ -13,7 +13,7 @@ Form Name, Function Name, Application Name, Description like, Last Updated By, L
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - DBA](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20DBA), [Toolkit - Setup & Support](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Setup%20%26%20Support)
 
 ## Related reports
-[FND User Login Page Favorites](/FND%20User%20Login%20Page%20Favorites/), [FND Access Control 11i](/FND%20Access%20Control%2011i/)
+[FND User Login Page Favorites](/FND%20User%20Login%20Page%20Favorites/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

@@ -12,7 +12,8 @@ Department, Resource, Plan, Organization Code
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Operations)
 
-
+## Related reports
+[CRP Resource Plan](/CRP%20Resource%20Plan/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

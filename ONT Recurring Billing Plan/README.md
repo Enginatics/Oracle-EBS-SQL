@@ -12,7 +12,8 @@ Ledger, Operating Unit, Order Number
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Operations)
 
-
+## Related reports
+[AR Transactions and Lines](/AR%20Transactions%20and%20Lines/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

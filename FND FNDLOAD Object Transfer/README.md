@@ -13,7 +13,7 @@ Object Type, Object Name, Application Short Name, Output File Location, Apps Pas
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Setup & Support](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Setup%20%26%20Support)
 
 ## Related reports
-[FND Access Control](/FND%20Access%20Control/), [FND Access Control 11i](/FND%20Access%20Control%2011i/)
+[FND Access Control](/FND%20Access%20Control/), [FND Forms Personalizations](/FND%20Forms%20Personalizations/), [FND Access Control 11i](/FND%20Access%20Control%2011i/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

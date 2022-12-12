@@ -13,7 +13,7 @@ Shows the column link between table xla_transaction_entities and subledger sourc
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps)
 
 ## Related reports
-[GL Account Analysis](/GL%20Account%20Analysis/), [GL Account Analysis 11g](/GL%20Account%20Analysis%2011g/)
+[XLA Distribution Links Summary](/XLA%20Distribution%20Links%20Summary/), [CAC Material Account Summary No SLA](/CAC%20Material%20Account%20Summary%20No%20SLA/), [CAC Receiving Account Summary No SLA](/CAC%20Receiving%20Account%20Summary%20No%20SLA/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

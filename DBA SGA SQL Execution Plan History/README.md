@@ -10,7 +10,7 @@ SQL Id, Plan Hash Value, Using Index, Object Name, Options, Objects larger than 
 [gv$sql_plan](http://etrm.oracle.com/pls/etrm/etrm_pnav.show_object?c_name=&c_owner=SYS&c_type=VIEW), [v$parameter](http://etrm.oracle.com/pls/etrm/etrm_pnav.show_object?c_name=&c_owner=SYS&c_type=VIEW), [dba_segments](http://etrm.oracle.com/pls/etrm/etrm_pnav.show_object?c_name=DBA_SEGMENTS&c_owner=SYS&c_type=VIEW)
 
 ## Categories
-[DBA](https://www.enginatics.com/library/?pg=1&category[]=DBA), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps), [Toolkit - DBA](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20DBA)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps), [Toolkit - DBA](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20DBA)
 
 ## Related reports
 [DBA AWR SQL Performance Summary](/DBA%20AWR%20SQL%20Performance%20Summary/), [DBA AWR SQL Execution Plan History](/DBA%20AWR%20SQL%20Execution%20Plan%20History/)

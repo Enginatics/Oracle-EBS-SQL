@@ -13,7 +13,7 @@ Owner, Object Type, Object Name
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps)
 
 ## Related reports
-[DBA Result Cache Objects and Invalidations](/DBA%20Result%20Cache%20Objects%20and%20Invalidations/)
+[DBA Dependencies (used by)](/DBA%20Dependencies%20-used%20by/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

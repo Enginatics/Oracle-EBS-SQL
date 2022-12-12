@@ -12,7 +12,8 @@ Operating Unit
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps), [Toolkit - Data Management](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Data%20Management)
 
-
+## Related reports
+[ONT Transaction Types and Line WF Processes](/ONT%20Transaction%20Types%20and%20Line%20WF%20Processes/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

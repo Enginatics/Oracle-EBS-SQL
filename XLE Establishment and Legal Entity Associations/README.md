@@ -19,8 +19,7 @@ Parent Legal Entity, Entity Type
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps), [Toolkit - Setup & Support](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Setup%20%26%20Support)
 
-## Related reports
-[IBY Payment Process Request Details](/IBY%20Payment%20Process%20Request%20Details/)
+
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

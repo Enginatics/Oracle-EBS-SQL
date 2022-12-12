@@ -14,7 +14,7 @@ User Name, Responsibility Name, Application, Active only, End Dated from
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related reports
-[FND User Roles](/FND%20User%20Roles/)
+[FND Access Control](/FND%20Access%20Control/), [FND User Roles](/FND%20User%20Roles/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

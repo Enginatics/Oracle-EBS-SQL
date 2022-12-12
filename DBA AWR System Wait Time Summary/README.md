@@ -13,7 +13,7 @@ Date From, Date To, Level of Detail, Request Id (Time Restriction), Time Restric
 [Diagnostic Pack](https://www.enginatics.com/library/?pg=1&category[]=Diagnostic%20Pack), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps)
 
 ## Related reports
-[DBA AWR System Time Summary](/DBA%20AWR%20System%20Time%20Summary/), [DBA AWR System Time Summary Percentages](/DBA%20AWR%20System%20Time%20Summary%20Percentages/)
+[DBA AWR System Time Summary](/DBA%20AWR%20System%20Time%20Summary/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

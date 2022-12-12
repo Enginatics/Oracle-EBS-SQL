@@ -3,6 +3,10 @@
 ## Description: 
 ASCP: Horizontal Plan from the Planners Workbench.
 
+Note: The maximum number of items included in the Horizontal Plan is limited by the Profile Option: 
+- MSC: HP Maximum Displayed Item Count
+The default value for this profile option if not set is 30.
+
 ## Parameters
 Planning Instance, Plan, Organization, Category Set, Category, Item, Buckets, Preference, Show Item Descriptive Attributes
 

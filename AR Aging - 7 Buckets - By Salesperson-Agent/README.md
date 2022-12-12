@@ -15,7 +15,8 @@ Reporting Level, Reporting Context, Report Summary, As Of Date, Aging Bucket Nam
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
-
+## Related reports
+[AR Incomplete Transactions](/AR%20Incomplete%20Transactions/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

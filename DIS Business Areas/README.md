@@ -13,7 +13,7 @@ Business Area, Access Count within x Days, Show Active only, End User Layer
 [Draft](https://www.enginatics.com/library/?pg=1&category[]=Draft), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps)
 
 ## Related reports
-[DIS Access Privileges](/DIS%20Access%20Privileges/), [DIS Worksheet Execution History](/DIS%20Worksheet%20Execution%20History/)
+[DIS Access Privileges](/DIS%20Access%20Privileges/), [DIS Folders, Business Areas, Items and LOVs](/DIS%20Folders-%20Business%20Areas-%20Items%20and%20LOVs/), [DIS Worksheet Execution History](/DIS%20Worksheet%20Execution%20History/), [DIS Workbooks, Folders, Items and LOVs](/DIS%20Workbooks-%20Folders-%20Items%20and%20LOVs/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

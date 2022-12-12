@@ -14,7 +14,7 @@ Date From, Date To, Diagnostic Pack enabled, Container Data
 [Diagnostic Pack](https://www.enginatics.com/library/?pg=1&category[]=Diagnostic%20Pack), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - DBA](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20DBA)
 
 ## Related reports
-[DBA AWR Latch Summary](/DBA%20AWR%20Latch%20Summary/), [DBA AWR System Wait Time Summary](/DBA%20AWR%20System%20Wait%20Time%20Summary/)
+[DBA AWR Latch Summary](/DBA%20AWR%20Latch%20Summary/), [DBA SGA+PGA Memory Configuration](/DBA%20SGA-PGA%20Memory%20Configuration/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

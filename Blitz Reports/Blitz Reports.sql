@@ -57,11 +57,13 @@ where '&enable_anchors_lexicals_binds'='Y'
 select
 xrv.report_name,
 xxen_util.application_name(substr(xrv.report_name,1,instr(xrv.report_name,' ')-1)) application,
-xxen_api.category(xrv.report_id) category,
+xrv.category,
+decode(xrv.type,'P','Protected','S','System','U','Upload') type,
 xxen_util.meaning(case when xrv.row_num<=30 or xrv.seeded_blitz_report_flag='Y' then 'Y' end,'YES_NO',0) free_30_reports,
 &columns
 xrv.description,
 &modification
+xrv.version,
 xrv0.report_name copied_from,
 (select max(xrh.creation_date) from xxen_reports_h xrh where xrv.copied_from_guid=xrh.guid) copied_from_last_update_date,
 xrv.db_package,
@@ -77,6 +79,8 @@ decode(xrv.template_count,0,to_number(null),xrv.template_count) template_count,
 (select count(distinct xra.id1||','||xra.id2) from xxen_report_assignments xra where xrv.report_id=xra.report_id and xra.assignment_level='G' and xra.include_exclude='I') request_group_assignments,
 (select count(distinct xra.id1||','||xra.id2) from xxen_report_assignments xra where xrv.report_id=xra.report_id and xra.assignment_level='F' and xra.include_exclude='I') forms_assignments,
 &anchors_lexicals_binds
+xrv.required_parameters,
+xrv.required_parameters_message,
 xrv.sql_length,
 xrv.sql_text,
 xrv.report_id,

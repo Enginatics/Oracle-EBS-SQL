@@ -18,7 +18,7 @@ Operating Unit, Report Format, Revaluation Period, Include Up To Due Date, Rate 
 [BI Publisher](https://www.enginatics.com/library/?pg=1&category[]=BI%20Publisher), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related reports
-[AR Aging - 7 Buckets - By Salesperson/Agent](/AR%20Aging%20-%207%20Buckets%20-%20By%20Salesperson-Agent/)
+[AR Aging - 7 Buckets - By Salesperson/Agent](/AR%20Aging%20-%207%20Buckets%20-%20By%20Salesperson-Agent/), [AR Customers and Sites](/AR%20Customers%20and%20Sites/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

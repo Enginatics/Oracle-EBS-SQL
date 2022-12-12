@@ -16,7 +16,7 @@ Parameter Name, Non Default only, Different across Instances only
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps), [Toolkit - DBA](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20DBA)
 
 ## Related reports
-[FND Concurrent Requests 11i](/FND%20Concurrent%20Requests%2011i/)
+[Blitz Report Execution History](/Blitz%20Report%20Execution%20History/), [DBA SGA+PGA Memory Configuration](/DBA%20SGA-PGA%20Memory%20Configuration/), [FND Concurrent Requests 11i](/FND%20Concurrent%20Requests%2011i/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

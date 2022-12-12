@@ -110,7 +110,6 @@ where
  mvpv.sr_instance_id       = mic.sr_instance_id and
  mvpv.organization_id      = mic.organization_id and
  mvpv.inventory_item_id    = mic.inventory_item_id and
- mic.sr_instance_id        = mcs.sr_instance_id and
  mic.category_set_id       = mcs.category_set_id and
  (mcs.category_set_name    = :p_category_set_name or
   (:p_category_set_name   is null and mcs.default_flag = 1)

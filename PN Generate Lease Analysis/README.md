@@ -16,7 +16,7 @@ Operating Unit, As of Period, Representation, Lease Number, Lease Number From, L
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related reports
-[PN Generate Lease Details](/PN%20Generate%20Lease%20Details/), [PN Generate Portfolio Summary](/PN%20Generate%20Portfolio%20Summary/)
+[PN Generate Lease Details](/PN%20Generate%20Lease%20Details/), [PN Generate Portfolio Detail](/PN%20Generate%20Portfolio%20Detail/), [PN Generate Portfolio Summary](/PN%20Generate%20Portfolio%20Summary/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

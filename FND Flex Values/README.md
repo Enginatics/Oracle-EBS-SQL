@@ -14,7 +14,7 @@ Used by Key Flexfield, Used by Key Flex Structure, Flex Value Set, Flex Value li
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Setup & Support](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Setup%20%26%20Support)
 
 ## Related reports
-[FND Flex Value Hierarchy](/FND%20Flex%20Value%20Hierarchy/), [GL Balance by Account Hierarchy](/GL%20Balance%20by%20Account%20Hierarchy/)
+[FND Flex Value Hierarchy](/FND%20Flex%20Value%20Hierarchy/), [GL Balance](/GL%20Balance/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

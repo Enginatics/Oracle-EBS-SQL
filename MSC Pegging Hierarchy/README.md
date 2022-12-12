@@ -4,10 +4,10 @@
 ASCP Pegging Hierarchy. This reports shows the pegging hierarchy from the Top Level Demand.
 
 ## Parameters
-Planning Instance, Plan, Organization, Show Source Org. Pegging, Category Set, Category, End Assembly, Item, Project, Planner, Buyer, Make / Buy, Supply Type, Supplier, Supply Date From, Supply Date To, Exception, Demand Origination, Other Demand Origination, Exclude Other Demand, Demand Date From, Demand Date To, Pegging, Show End Pegs Only, Show Item Descriptive Attributes
+Planning Instance, Plan, Organization, Show Source Org. Pegging, Category Set, Category, End Assembly, Item, Project, Planner, Buyer, Make / Buy, Supply Type, Supplier, Supply Date From, Supply Date To, Exception, Demand Origination, Demand Order, Other Demand Origination, Exclude Other Demand, Demand Date From, Demand Date To, Pegging, Show End Pegs Only, Show Item Descriptive Attributes
 
 ## Used tables
-[msc_full_pegging&a2m_dblink](None), [msc_system_items&a2m_dblink](None), [mtl_system_items_b&m2a_dblink](None), [msc_boms&a2m_dblink](None), [msc_safety_stocks&a2m_dblink](None)
+[msc_full_pegging&a2m_dblink](None), [msc_system_items&a2m_dblink](None), [msc_boms&a2m_dblink](None), [msc_safety_stocks&a2m_dblink](None)
 
 ## Categories
 [Amazon](https://www.enginatics.com/library/?pg=1&category[]=Amazon), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Operations)

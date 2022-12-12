@@ -49,6 +49,18 @@ hcsua.tax_reference,
 avtab1.tax_rate,
 avtab2.tax_rate site_tax_rate,
 &column_trx_count
+coalesce(
+(select max(rcta.trx_date) from ra_customer_trx_all rcta where rcta.bill_to_customer_id = hca.cust_account_id and rcta.bill_to_site_use_id = nvl(hcsua.site_use_id,rcta.bill_to_site_use_id) and :detail_level != 'Site'),
+(select max(rcta.trx_date) from ra_customer_trx_all rcta where rcta.ship_to_customer_id = hca.cust_account_id and rcta.ship_to_site_use_id = nvl(hcsua.site_use_id,rcta.ship_to_site_use_id) and :detail_level != 'Site'),
+(select max(rcta.trx_date) from ra_customer_trx_all rcta, hz_cust_site_uses_all hcsua2 where rcta.ship_to_customer_id = hca.cust_account_id and rcta.bill_to_site_use_id = hcsua2.site_use_id and hcsua2.cust_acct_site_id = hcasa.cust_acct_site_id and :detail_level = 'Site'),
+(select max(rcta.trx_date) from ra_customer_trx_all rcta, hz_cust_site_uses_all hcsua2 where rcta.ship_to_customer_id = hca.cust_account_id and rcta.ship_to_site_use_id = hcsua2.site_use_id and hcsua2.cust_acct_site_id = hcasa.cust_acct_site_id and :detail_level = 'Site')
+) latest_trx_date,
+coalesce(
+(select max(xxen_util.client_time(apsa.last_update_date)) from ar_payment_schedules_all apsa where apsa.customer_id = hca.cust_account_id and apsa.customer_site_use_id = nvl(hcsua.site_use_id,apsa.customer_site_use_id) and :detail_level != 'Site'),
+(select max(xxen_util.client_time(apsa.last_update_date)) from ar_payment_schedules_all apsa, ra_customer_trx_all rcta where apsa.customer_trx_id = rcta.customer_trx_id and rcta.ship_to_customer_id = hca.cust_account_id and rcta.ship_to_site_use_id = nvl(hcsua.site_use_id,rcta.ship_to_site_use_id) and :detail_level != 'Site'),
+(select max(xxen_util.client_time(apsa.last_update_date)) from ar_payment_schedules_all apsa, hz_cust_site_uses_all hcsua2 where apsa.customer_id = hca.cust_account_id and apsa.customer_site_use_id = hcsua2.site_use_id and hcsua2.cust_acct_site_id = hcasa.cust_acct_site_id and :detail_level = 'Site'),
+(select max(xxen_util.client_time(apsa.last_update_date)) from ar_payment_schedules_all apsa, ra_customer_trx_all rcta, hz_cust_site_uses_all hcsua2 where apsa.customer_trx_id = rcta.customer_trx_id and rcta.ship_to_customer_id = hca.cust_account_id and rcta.ship_to_site_use_id = hcsua2.site_use_id and hcsua2.cust_acct_site_id = hcasa.cust_acct_site_id and :detail_level = 'Site')
+) pay_sched_last_update_date,
 xxen_util.meaning(hcsua.demand_class_code,'DEMAND_CLASS',3) demand_class,
 xxen_util.meaning(hcsua.ship_sets_include_lines_flag,'YES_NO',0) ship_sets,
 decode(hp.status,'A','Active','I','Inactive','D','Deleted') party_status,

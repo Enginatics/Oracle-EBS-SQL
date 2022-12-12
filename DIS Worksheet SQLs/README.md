@@ -16,7 +16,7 @@ Workbook, Worksheet, Access Count within x Days, Show Active only, End User Laye
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Setup & Support](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Setup%20%26%20Support)
 
 ## Related reports
-[DIS End User Layers](/DIS%20End%20User%20Layers/), [DIS Workbooks, Folders, Items and LOVs](/DIS%20Workbooks-%20Folders-%20Items%20and%20LOVs/)
+[DIS End User Layers](/DIS%20End%20User%20Layers/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

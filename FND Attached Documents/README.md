@@ -12,7 +12,8 @@ Category, Datatype, File Name contains, Short Text contains, Text contains, Crea
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Setup & Support](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Setup%20%26%20Support)
 
-
+## Related reports
+[CAC Receiving Account Summary No SLA](/CAC%20Receiving%20Account%20Summary%20No%20SLA/), [CAC WIP Account Summary No SLA](/CAC%20WIP%20Account%20Summary%20No%20SLA/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

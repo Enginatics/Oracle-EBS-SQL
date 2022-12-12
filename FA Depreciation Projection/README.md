@@ -17,7 +17,7 @@ Calendar, Number of Periods, Starting Period, Currency, Book1, Book2, Book3, Boo
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Operations)
 
 ## Related reports
-[FA Asset Book Details](/FA%20Asset%20Book%20Details/), [FA Asset Cost](/FA%20Asset%20Cost/), [FA Tax Reserve Ledger](/FA%20Tax%20Reserve%20Ledger/)
+[FA Asset Book Details](/FA%20Asset%20Book%20Details/), [FA Depreciation Reserve](/FA%20Depreciation%20Reserve/), [FA Tax Reserve Ledger](/FA%20Tax%20Reserve%20Ledger/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

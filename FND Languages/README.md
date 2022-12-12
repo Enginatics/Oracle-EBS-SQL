@@ -13,7 +13,7 @@ Show installed only
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Setup & Support](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Setup%20%26%20Support)
 
 ## Related reports
-[Blitz Report Column Translations](/Blitz%20Report%20Column%20Translations/)
+[FND Lookup Values](/FND%20Lookup%20Values/), [Blitz Report Column Translations](/Blitz%20Report%20Column%20Translations/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

@@ -13,7 +13,7 @@ User Name, Has Access to Responsibility, Has Access to Application, Active only,
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related reports
-[FND Access Control 11i](/FND%20Access%20Control%2011i/)
+[FND Access Control](/FND%20Access%20Control/), [FND Access Control 11i](/FND%20Access%20Control%2011i/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

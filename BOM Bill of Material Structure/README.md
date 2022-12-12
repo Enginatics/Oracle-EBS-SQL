@@ -25,7 +25,8 @@ All Organizations, Organization Hierarchy, Item From, Item To, Alternate Selecti
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
-
+## Related reports
+[INV Inventory Items](/INV%20Inventory%20Items/), [CST Inventory Value - Multi-Organization (Item Costs)](/CST%20Inventory%20Value%20-%20Multi-Organization%20-Item%20Costs/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
