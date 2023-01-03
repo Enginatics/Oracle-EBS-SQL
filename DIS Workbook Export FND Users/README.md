@@ -14,7 +14,7 @@ Accessed within Days, End User Layer
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related reports
-[DIS Access Privileges](/DIS%20Access%20Privileges/), [DIS Workbook Export Script](/DIS%20Workbook%20Export%20Script/)
+[DIS Workbook Export Script](/DIS%20Workbook%20Export%20Script/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
@@ -66,4 +66,4 @@ If you would like to optimize your Oracle EBS implementation and or operational 
 
 
 
-© 2022 Enginatics
+© 2023 Enginatics

@@ -1,6 +1,6 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2022 Enginatics GmbH                   */
+/*                       (c) 2010-2023 Enginatics GmbH                   */
 /*                              www.enginatics.com                       */
 /*                                                                       */
 /*************************************************************************/
@@ -15,6 +15,7 @@ fav.application_name,
 fav.application_short_name,
 fav.product_code,
 fou.oracle_username,
+(select fou2.oracle_username from fnd_data_group_units fdgu, fnd_oracle_userid fou2 where fav.application_id=fdgu.application_id and fdgu.data_group_id=0 and fdgu.oracle_id=fou2.oracle_id) datagroup_username,
 xxen_util.meaning(decode(du.editions_enabled,'Y','Y'),'YES_NO',0) editions_enabled,
 xxen_util.meaning(fpi.status,'FND_PRODUCT_STATUS',0) status,
 fpi.patch_level,

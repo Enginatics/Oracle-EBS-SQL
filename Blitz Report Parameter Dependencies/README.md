@@ -13,7 +13,7 @@ Report Name, Parameter Name, Dependent Parameter Name
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related reports
-[Blitz Report Parameter Default Values](/Blitz%20Report%20Parameter%20Default%20Values/)
+[Blitz Report Execution History](/Blitz%20Report%20Execution%20History/), [Blitz Report Parameter Default Values](/Blitz%20Report%20Parameter%20Default%20Values/), [Blitz Report Text Search](/Blitz%20Report%20Text%20Search/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
@@ -65,4 +65,4 @@ If you would like to optimize your Oracle EBS implementation and or operational 
 
 
 
-© 2022 Enginatics
+© 2023 Enginatics

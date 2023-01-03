@@ -14,7 +14,7 @@ Last Logon Date within x days, Executions within x days
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps)
 
 ## Related reports
-[FND Access Control](/FND%20Access%20Control/), [FND Access Control 11i](/FND%20Access%20Control%2011i/)
+[FND Access Control 11i](/FND%20Access%20Control%2011i/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
@@ -66,4 +66,4 @@ If you would like to optimize your Oracle EBS implementation and or operational 
 
 
 
-© 2022 Enginatics
+© 2023 Enginatics

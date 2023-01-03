@@ -1,6 +1,6 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2022 Enginatics GmbH                   */
+/*                       (c) 2010-2023 Enginatics GmbH                   */
 /*                              www.enginatics.com                       */
 /*                                                                       */
 /*************************************************************************/
@@ -49,7 +49,6 @@ select ppa.project_id, ppa.segment1 project_number from pa_projects_all ppa unio
 select psm.project_id, psm.project_number from pjm_seiban_numbers psm
 ) ppa,
 pa_tasks pt,
-&xrrpv_table
 wip_lines wl,
 mtl_planners mpl
 where

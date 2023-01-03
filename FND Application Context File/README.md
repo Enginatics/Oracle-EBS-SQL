@@ -13,7 +13,7 @@ Context XML files retrieved from the database
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related reports
-[XDO Publisher Data Definitions](/XDO%20Publisher%20Data%20Definitions/), [AD Applied Patches 11i](/AD%20Applied%20Patches%2011i/)
+[XDO Publisher Data Definitions](/XDO%20Publisher%20Data%20Definitions/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
@@ -65,4 +65,4 @@ If you would like to optimize your Oracle EBS implementation and or operational 
 
 
 
-© 2022 Enginatics
+© 2023 Enginatics

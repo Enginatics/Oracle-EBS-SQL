@@ -20,7 +20,7 @@ Remote Database
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related reports
-[Blitz Report License Users](/Blitz%20Report%20License%20Users/), [GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20-Distributions/), [DIS End User Layers](/DIS%20End%20User%20Layers/)
+[Blitz Report Execution History](/Blitz%20Report%20Execution%20History/), [Blitz Report License Users](/Blitz%20Report%20License%20Users/), [Compare Blitz Report LOVs between environments](/Compare%20Blitz%20Report%20LOVs%20between%20environments/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
@@ -72,4 +72,4 @@ If you would like to optimize your Oracle EBS implementation and or operational 
 
 
 
-© 2022 Enginatics
+© 2023 Enginatics

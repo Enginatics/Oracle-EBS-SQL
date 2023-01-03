@@ -1,15 +1,15 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2022 Enginatics GmbH                   */
+/*                       (c) 2010-2023 Enginatics GmbH                   */
 /*                              www.enginatics.com                       */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: MSC Horizontal Plan
 -- Description: ASCP: Horizontal Plan from the Planners Workbench.
 
-Note: The maximum number of items included in the Horizontal Plan is limited by the Profile Option: 
-- MSC: HP Maximum Displayed Item Count
-The default value for this profile option if not set is 30.
+Note: 
+The number of Items included in the HP is restricted by the parameter ‘Item Restriction Limit’. This parameter defaults from the profile option ‘MSC: HP Maximum Displayed Item Count’ in the ASCP Planning Instance. The value set in the Item Restriction Limit parameter will override the value specified in profile option.
+
 -- Excel Examle Output: https://www.enginatics.com/example/msc-horizontal-plan/
 -- Library Link: https://www.enginatics.com/reports/msc-horizontal-plan/
 -- Run Report: https://demo.enginatics.com/
@@ -181,7 +181,10 @@ with
         )
      else null
      end period_char,
-     'W:' || ltrim(to_char(hp2.wn,'000')) || ' ' || to_char(hp2.week_date,'DD-MON-YY') week_char
+     'W:' || ltrim(to_char(hp2.wn,'000')) || ' ' || to_char(hp2.week_date,'DD-MON-YY') week_char,
+     row_number() over (partition by hp2.planning_instance,hp2.plan_name,hp2.organization,hp2.item,hp2.supply_demand_code,to_char(hp2.bucket_date,'YYYY') order by hp2.bucket_date) yn_seq,
+     row_number() over (partition by hp2.planning_instance,hp2.plan_name,hp2.organization,hp2.item,hp2.supply_demand_code,hp2.pn order by hp2.bucket_date) pn_seq,
+     row_number() over (partition by hp2.planning_instance,hp2.plan_name,hp2.organization,hp2.item,hp2.supply_demand_code,hp2.wn order by hp2.bucket_date) wn_seq
     from
       (select
         hp.planning_instance
@@ -388,7 +391,10 @@ with
       hp2.bucket_date = decode(substr(:p_summary_level,1,1),'P',hp2.period_date_last,'W',hp2.week_date_last,hp2.bucket_date)
   )
 select
- hp3.*
+ hp3.*,
+ case when hp3.yn_seq = max(hp3.yn_seq) over (partition by hp3.plan_name,hp3.organization,hp3.item,hp3.supply_demand_code,hp3.year_char) then hp3.year_quantity else null end year_qty_last,
+ case when hp3.pn_seq = max(hp3.pn_seq) over (partition by hp3.plan_name,hp3.organization,hp3.item,hp3.supply_demand_code,hp3.period_num) then hp3.period_quantity else null end period_qty_last,
+ case when hp3.wn_seq = max(hp3.wn_seq) over (partition by hp3.plan_name,hp3.organization,hp3.item,hp3.supply_demand_code,hp3.week_num) then hp3.week_quantity else null end week_qty_last
 from
   hp3
 order by
@@ -396,4 +402,5 @@ order by
 ,hp3.plan_name
 ,hp3.organization
 ,hp3.item
+,hp3.bucket_date
 ,hp3.supply_demand_code

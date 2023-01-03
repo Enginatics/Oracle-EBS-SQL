@@ -1,6 +1,6 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2022 Enginatics GmbH                   */
+/*                       (c) 2010-2023 Enginatics GmbH                   */
 /*                              www.enginatics.com                       */
 /*                                                                       */
 /*************************************************************************/
@@ -85,7 +85,6 @@ ap_suppliers aps,
 okc_k_headers_all_b okhab,
 po_requisition_headers_all prha,
 wip_entities we,
-&xrrpv_table
 mtl_txn_request_headers mtrh,
 (select mtln.* from mtl_transaction_lot_numbers mtln where '&show_lots'='Y') mtln,
 pa_projects_all ppa,

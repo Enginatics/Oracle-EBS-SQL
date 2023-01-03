@@ -7,7 +7,7 @@ ASCP: Export Planning Exceptions from the Planners Workbench.
 Planning Instance, Plan, Organization, Category Set, Category, Item, Planner, Buyer, Exception Group, Exception Type, Due Date From, Due Date To, From Date From, From Date To, To Date From, To Date To, Show Item Descriptive Attributes
 
 ## Used tables
-[msc_apps_instances&a2m_dblink](None), [msc_plans&a2m_dblink](None), [msc_exception_details_v&a2m_dblink](None), [msc_system_items&a2m_dblink](None), [msc_category_sets&a2m_dblink](None), [msc_demands&a2m_dblink](None)
+[msc_category_sets&a2m_dblink](None), [msc_apps_instances&a2m_dblink](None), [msc_plans&a2m_dblink](None), [msc_exception_details_v&a2m_dblink](None), [msc_system_items&a2m_dblink](None), [msc_demands&a2m_dblink](None)
 
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Operations)
@@ -65,4 +65,4 @@ If you would like to optimize your Oracle EBS implementation and or operational 
 
 
 
-© 2022 Enginatics
+© 2023 Enginatics

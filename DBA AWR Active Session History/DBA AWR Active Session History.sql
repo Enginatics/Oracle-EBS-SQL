@@ -1,6 +1,6 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2022 Enginatics GmbH                   */
+/*                       (c) 2010-2023 Enginatics GmbH                   */
 /*                              www.enginatics.com                       */
 /*                                                                       */
 /*************************************************************************/
@@ -49,6 +49,8 @@ x.blocked_status,
 x.blocking_inst_id,
 x.blocking_sid_serial#,
 &blocking_cols2
+x.file_id,
+x.block_id,
 x.pga_allocated,
 x.pga_total,
 x.pga_percentage,
@@ -61,7 +63,13 @@ x.command_type,
 x.schema,
 x.action,
 x.module,
-x.program
+x.program,
+x.p1text,
+x.p1,
+x.p2text,
+x.p2,
+x.p3text,
+x.p3
 from
 (
 select
@@ -132,6 +140,8 @@ decode(dhash.blocking_session_status,'VALID','blocked') blocked_status,
 dhash.blocking_inst_id blocking_inst_id,
 nvl2(dhash.blocking_session,dhash.blocking_session||' - '||dhash.blocking_session_serial#,null) blocking_sid_serial#,
 &blocking_columns
+decode(dhash.p1text,'file#',dhash.p1) file_id,
+decode(dhash.p2text,'block#',dhash.p2) block_id,
 dhash.pga_allocated/1000000 pga_allocated,
 sum(dhash.pga_allocated) over (partition by dhash.sample_time)/1000000 pga_total,
 dhash.pga_allocated/xxen_util.zero_to_null(sum(dhash.pga_allocated) over (partition by dhash.sample_time))*100 pga_percentage,
@@ -144,17 +154,17 @@ lower(dhash.sql_opname) command_type,
 du.username schema,
 dhash.action,
 dhash.module,
-dhash.program
+dhash.program,
+dhash.p1text,
+dhash.p1,
+dhash.p2text,
+dhash.p2,
+dhash.p3text,
+dhash.p3
 from
 &request_id_table
 dba_hist_snapshot dhs,
-(
-select
-cast(dhash.sample_time as date) sample_time_,
-dhash.*
-from
-dba_hist_active_sess_history dhash
-) dhash,
+(select cast(dhash.sample_time as date) sample_time_, dhash.* from dba_hist_active_sess_history dhash) dhash,
 (
 select distinct
 dhash.instance_number,
@@ -165,7 +175,9 @@ max(dhash.action) keep (dense_rank last order by dhash.sample_id) over (partitio
 max(dhash.module) keep (dense_rank last order by dhash.sample_id) over (partition by dhash.instance_number,dhash.session_id,dhash.session_serial#) module,
 max(dhash.program) keep (dense_rank last order by dhash.sample_id) over (partition by dhash.instance_number,dhash.session_id,dhash.session_serial#) program,
 max(dhash.session_type) keep (dense_rank last order by dhash.sample_id) over (partition by dhash.instance_number,dhash.session_id,dhash.session_serial#) session_type,
-max(dhash.machine) keep (dense_rank last order by dhash.sample_id) over (partition by dhash.instance_number,dhash.session_id,dhash.session_serial#) machine
+max(dhash.machine) keep (dense_rank last order by dhash.sample_id) over (partition by dhash.instance_number,dhash.session_id,dhash.session_serial#) machine,
+max(decode(dhash.p1text,'file#',dhash.p1)) keep (dense_rank last order by dhash.sample_id) over (partition by dhash.instance_number,dhash.session_id,dhash.session_serial#) file_id,
+max(decode(dhash.p2text,'block#',dhash.p2)) keep (dense_rank last order by dhash.sample_id) over (partition by dhash.instance_number,dhash.session_id,dhash.session_serial#) block_id
 from
 dba_hist_active_sess_history dhash
 where

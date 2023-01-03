@@ -3,12 +3,12 @@
 ## Description: 
 ASCP: Horizontal Plan from the Planners Workbench.
 
-Note: The maximum number of items included in the Horizontal Plan is limited by the Profile Option: 
-- MSC: HP Maximum Displayed Item Count
-The default value for this profile option if not set is 30.
+Note: 
+The number of Items included in the HP is restricted by the parameter ‘Item Restriction Limit’. This parameter defaults from the profile option ‘MSC: HP Maximum Displayed Item Count’ in the ASCP Planning Instance. The value set in the Item Restriction Limit parameter will override the value specified in profile option.
+
 
 ## Parameters
-Planning Instance, Plan, Organization, Category Set, Category, Item, Buckets, Preference, Show Item Descriptive Attributes
+Planning Instance, Plan, Organization, Category Set, Category, Item, Item Restriction Limit, Buckets, Preference, Show Item Descriptive Attributes
 
 ## Used tables
 [msc_period_start_dates&a2m_dblink](None), [msc_trading_partners&a2m_dblink](None), [msc_form_query&a2m_dblink](None)
@@ -68,4 +68,4 @@ If you would like to optimize your Oracle EBS implementation and or operational 
 
 
 
-© 2022 Enginatics
+© 2023 Enginatics

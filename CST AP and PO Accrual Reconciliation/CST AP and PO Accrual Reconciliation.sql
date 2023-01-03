@@ -1,6 +1,6 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2022 Enginatics GmbH                   */
+/*                       (c) 2010-2023 Enginatics GmbH                   */
 /*                              www.enginatics.com                       */
 /*                                                                       */
 /*************************************************************************/
@@ -39,12 +39,8 @@ with capr as
   pod.quantity_cancelled,
   pod.quantity_delivered,
   pod.quantity_billed,
-  (select papf.full_name from hr.per_all_people_f papf where poh.agent_id=papf.person_id and trunc(sysdate) between papf.effective_start_date and papf.effective_end_date) buyer,
-  (select papf.full_name from hr.per_all_people_f papf where pod.deliver_to_person_id=papf.person_id and trunc(sysdate) between papf.effective_start_date and papf.effective_end_date) deliver_to_person,
-  poh.agent_id buyer_id,
-  pod.deliver_to_person_id,
-  (select count(*) from hr.per_all_people_f papf where poh.agent_id=papf.person_id) buyer_cnt,
-  (select count(*) from hr.per_all_people_f papf where pod.deliver_to_person_id=papf.person_id) deliver_to_person_cnt,
+  (select papf.full_name from per_all_people_f papf where poh.agent_id=papf.person_id and trunc(sysdate) between papf.effective_start_date and papf.effective_end_date) buyer,
+  (select papf.full_name from per_all_people_f papf where pod.deliver_to_person_id=papf.person_id and trunc(sysdate) between papf.effective_start_date and papf.effective_end_date) deliver_to_person,
   nvl(poh.clm_document_number,poh.segment1) ||
     nvl2(por.release_num,' (' || por.release_num || ')','') po_num_rel_ref,
   nvl(poh.clm_document_number,poh.segment1) ||
@@ -147,10 +143,6 @@ select distinct
  capr.quantity_billed,
  capr.buyer,
  capr.deliver_to_person,
- capr.buyer_id,
- capr.deliver_to_person_id,
- capr.buyer_cnt,
- capr.deliver_to_person_cnt,
  capr.po_balance,
  capr.ap_balance,
  capr.wo_balance,
@@ -215,10 +207,6 @@ select
  capr.quantity_billed,
  capr.buyer,
  capr.deliver_to_person,
- capr.buyer_id,
- capr.deliver_to_person_id,
- capr.buyer_cnt,
- capr.deliver_to_person_cnt,
  to_number(null) po_balance,
  to_number(null) ap_balance,
  to_number(null) wo_balance,

@@ -4,7 +4,7 @@
 Active session history from the automatic workload repository
 
 ## Parameters
-User Name, Module Type, Module contains, Show Blocking Session Info, Blocked Sessions only, Request Id, From Time, To Time, Package Name starts with, Wait Event, SID - Serial#, SQL Id, Plan Hash Value, Show SQL Text, UI Sessions only, Machine, Schema, Action contains, Entry Procedure contains, Diagnostic Pack enabled, Container Data
+User Name, Module Type, Module contains, Show Blocking Session Info, Blocked Sessions only, Request Id, From Time, To Time, Package Name starts with, Wait Event, Exclude Wait Event, SID - Serial#, SQL Id, Plan Hash Value, Show SQL Text, UI Sessions only, Machine, Schema, Action contains, Entry Procedure contains, Diagnostic Pack enabled, Container Data
 
 ## Used tables
 [obj$](None), [&request_id_table](None), [dba_hist_active_sess_history](http://etrm.oracle.com/pls/etrm/etrm_pnav.show_object?c_name=DBA_HIST_ACTIVE_SESS_HISTORY&c_owner=SYS&c_type=VIEW), [dba_hist_sqltext](http://etrm.oracle.com/pls/etrm/etrm_pnav.show_object?c_name=DBA_HIST_SQLTEXT&c_owner=SYS&c_type=VIEW), [dba_procedures](http://etrm.oracle.com/pls/etrm/etrm_pnav.show_object?c_name=DBA_PROCEDURES&c_owner=SYS&c_type=VIEW), [gv$sqlarea](http://etrm.oracle.com/pls/etrm/etrm_pnav.show_object?c_name=&c_owner=SYS&c_type=VIEW), [dba_users](http://etrm.oracle.com/pls/etrm/etrm_pnav.show_object?c_name=DBA_USERS&c_owner=SYS&c_type=VIEW)
@@ -65,4 +65,4 @@ If you would like to optimize your Oracle EBS implementation and or operational 
 
 
 
-© 2022 Enginatics
+© 2023 Enginatics

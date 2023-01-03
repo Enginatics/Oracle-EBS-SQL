@@ -63,7 +63,8 @@ Transaction Date From, Transaction Date To, Category Set 1, Category Set 2, Cust
 ## Categories
 [Cost Accounting - Assessment](https://www.enginatics.com/library/?pg=1&category[]=Cost%20Accounting%20-%20Assessment), [Cost Accounting - Transactions](https://www.enginatics.com/library/?pg=1&category[]=Cost%20Accounting%20-%20Transactions), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Cost Accounting](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Cost%20Accounting)
 
-
+## Related reports
+[CAC Margin Analysis Summary](/CAC%20Margin%20Analysis%20Summary/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
@@ -115,4 +116,4 @@ If you would like to optimize your Oracle EBS implementation and or operational 
 
 
 
-© 2022 Enginatics
+© 2023 Enginatics

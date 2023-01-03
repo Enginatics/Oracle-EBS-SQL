@@ -1,6 +1,6 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2022 Enginatics GmbH                   */
+/*                       (c) 2010-2023 Enginatics GmbH                   */
 /*                              www.enginatics.com                       */
 /*                                                                       */
 /*************************************************************************/
@@ -41,7 +41,6 @@ medv.utilization_rate,
 medv.exception_type
 from
 mrp_exception_details_v medv,
-&xrrpv_table
 mtl_system_items_vl msiv,
 per_people_x ppx,
 mtl_planners mpl

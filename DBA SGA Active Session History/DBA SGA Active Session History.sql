@@ -1,6 +1,6 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2022 Enginatics GmbH                   */
+/*                       (c) 2010-2023 Enginatics GmbH                   */
 /*                              www.enginatics.com                       */
 /*                                                                       */
 /*************************************************************************/
@@ -14,11 +14,14 @@ For scenarios where the blocking sessions are active and part of the ASH, Tanel 
 <a href="https://blog.tanelpoder.com/2013/11/06/diagnosing-buffer-busy-waits-with-the-ash_wait_chains-sql-script-v0-2/" rel="nofollow" target="_blank">https://blog.tanelpoder.com/2013/11/06/diagnosing-buffer-busy-waits-with-the-ash_wait_chains-sql-script-v0-2/</a>
 
 We recommend doing ASH performance analysis with a pivot in Excel rather than by SQL, as Excel's drag- and drop is a lot faster than typing commands manually.
-A typical use case is to analyze which EBS application user waited for how many seconds in which forms UI and to drill down further into the SQL or wait event root causes then.
+A typical use case is to analyze which EBS application user waited for how many seconds in which forms UI and to drill down further into the SQL or wait event root causes.
 
 Column 'Module Name' shows either the translated EBS module display name or, e.g. for background sessions, the process name (from the program column) to enable pivoting by this column only.
 Oracle's background process names are listed here:
 <a href="https://docs.oracle.com/database/121/REFRN/GUID-86184690-5531-405F-AA05-BB935F57B76D.htm#REFRN104" rel="nofollow" target="_blank">https://docs.oracle.com/database/121/REFRN/GUID-86184690-5531-405F-AA05-BB935F57B76D.htm#REFRN104</a>
+
+To identify an object or segment of a hot block, for example causing wait events, Oracle's dba_extents view is unusable due to performance bugs in 19c+, and Franck Pachot published a workaround here:
+<a href="https://www.dbi-services.com/blog/efficiently-query-dba_extents-for-file_id-block_id/" rel="nofollow" target="_blank">https://www.dbi-services.com/blog/efficiently-query-dba_extents-for-file_id-block_id/</a>
 -- Excel Examle Output: https://www.enginatics.com/example/dba-sga-active-session-history/
 -- Library Link: https://www.enginatics.com/reports/dba-sga-active-session-history/
 -- Run Report: https://demo.enginatics.com/
@@ -91,6 +94,8 @@ gash.qc_session_id||nvl2(gash.qc_session_serial#,' - '||gash.qc_session_serial#,
 gash.sql_plan_operation,
 gash.sql_plan_options,
 (select do.owner||'.'||do.object_name||' ('||do.object_type||')' from dba_objects do where gash.current_obj#=do.object_id) object,
+decode(gash.p1text,'file#',gash.p1) file_id,
+decode(gash.p2text,'block#',gash.p2) block_id,
 decode(gash.blocking_session_status,'VALID','blocked') blocked_status,
 gash.blocking_inst_id,
 nvl2(gash.blocking_session,gash.blocking_session||' - '||gash.blocking_session_serial#,null) blocking_sid_serial#,
@@ -107,7 +112,13 @@ lower(gash.sql_opname) command_type,
 du.username schema,
 gash.action,
 gash.module,
-gash.program
+gash.program,
+gash.p1text,
+gash.p1,
+gash.p2text,
+gash.p2,
+gash.p3text,
+gash.p3
 from
 &request_id_table
 (select cast(gash.sample_time as date) sample_time_, gash.* from gv$active_session_history gash) gash,
@@ -121,7 +132,9 @@ max(gash.action) keep (dense_rank last order by gash.sample_id) over (partition 
 max(gash.module) keep (dense_rank last order by gash.sample_id) over (partition by gash.inst_id,gash.session_id,gash.session_serial#) module,
 max(gash.program) keep (dense_rank last order by gash.sample_id) over (partition by gash.inst_id,gash.session_id,gash.session_serial#) program,
 max(gash.session_type) keep (dense_rank last order by gash.sample_id) over (partition by gash.inst_id,gash.session_id,gash.session_serial#) session_type,
-max(gash.machine) keep (dense_rank last order by gash.sample_id) over (partition by gash.inst_id,gash.session_id,gash.session_serial#) machine
+max(gash.machine) keep (dense_rank last order by gash.sample_id) over (partition by gash.inst_id,gash.session_id,gash.session_serial#) machine,
+max(decode(gash.p1text,'file#',gash.p1)) keep (dense_rank last order by gash.sample_id) over (partition by gash.inst_id,gash.session_id,gash.session_serial#) file_id,
+max(decode(gash.p2text,'block#',gash.p2)) keep (dense_rank last order by gash.sample_id) over (partition by gash.inst_id,gash.session_id,gash.session_serial#) block_id
 from
 gv$active_session_history gash
 where

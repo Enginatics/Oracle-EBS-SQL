@@ -1,6 +1,6 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2022 Enginatics GmbH                   */
+/*                       (c) 2010-2023 Enginatics GmbH                   */
 /*                              www.enginatics.com                       */
 /*                                                                       */
 /*************************************************************************/
@@ -357,7 +357,6 @@ mrp_full_pegging mfp
 where
 1=1
 ) mfp,
-&xrrpv_table
 mtl_system_items_vl msiv
 where
 mfp.organization_id=msiv.organization_id(+) and

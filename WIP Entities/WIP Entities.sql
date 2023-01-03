@@ -1,6 +1,6 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2022 Enginatics GmbH                   */
+/*                       (c) 2010-2023 Enginatics GmbH                   */
 /*                              www.enginatics.com                       */
 /*                                                                       */
 /*************************************************************************/
@@ -71,7 +71,6 @@ wip_schedule_groups wsg,
 select ppa.project_id, ppa.segment1 project_number from pa_projects_all ppa union
 select psm.project_id, psm.project_number from pjm_seiban_numbers psm
 ) ppa,
-&xrrpv_table
 pa_tasks pt,
 (
 select distinct

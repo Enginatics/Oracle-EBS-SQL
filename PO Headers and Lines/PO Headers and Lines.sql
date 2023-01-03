@@ -1,6 +1,6 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2022 Enginatics GmbH                   */
+/*                       (c) 2010-2023 Enginatics GmbH                   */
 /*                              www.enginatics.com                       */
 /*                                                                       */
 /*************************************************************************/
@@ -339,8 +339,14 @@ to_number(null) document_total_amount,
 to_number(null) document_amount_limit,
 to_number(null) document_min_release_amount,
 --
-fnd_flex_xml_publisher_apis.process_kff_combination_1('seg','SQLGL','GL#',pda.chart_of_accounts_id,NULL,pda.code_combination_id,'ALL','Y','VALUE') charge_account,
-fnd_flex_xml_publisher_apis.process_kff_combination_1('seg','SQLGL','GL#',pda.chart_of_accounts_id,NULL,pda.accrual_account_id,'ALL','Y','VALUE') accrual_account,
+case when pda.code_combination_id is not null
+then fnd_flex_xml_publisher_apis.process_kff_combination_1('seg','SQLGL','GL#',pda.chart_of_accounts_id,NULL,pda.code_combination_id,'ALL','Y','VALUE')
+else null
+end charge_account,
+case when pda.accrual_account_id is not null 
+then fnd_flex_xml_publisher_apis.process_kff_combination_1('seg','SQLGL','GL#',pda.chart_of_accounts_id,NULL,pda.accrual_account_id,'ALL','Y','VALUE') 
+else null
+end accrual_account,
 --
 xxen_util.user_name(pha.created_by) po_created_by,
 pha.creation_date po_creation_date,
@@ -359,7 +365,6 @@ pla.*,
 (select fspa.inventory_organization_id from financials_system_params_all fspa where hou.set_of_books_id=fspa.set_of_books_id and pla.org_id=fspa.org_id) inventory_organization_id,
 hou.name operating_unit
 from
-&xrrpv_table
 po_lines_all pla,
 hr_operating_units hou
 where
@@ -615,7 +620,6 @@ pla.*,
 (select fspa.inventory_organization_id from financials_system_params_all fspa where hou.set_of_books_id=fspa.set_of_books_id and pla.org_id=fspa.org_id) inventory_organization_id,
 hou.name operating_unit
 from
-&xrrpv_table
 po_lines_all pla,
 hr_operating_units hou
 where
@@ -632,6 +636,7 @@ po_vendor_contacts pvc,
 po_document_types_all_vl pdtav,
 po_line_types_v pltv,
 mtl_parameters mp,
+mtl_parameters mp2,
 hr_locations_all_tl hlat,
 per_people_x ppx,
 mtl_system_items_vl msiv,
@@ -658,6 +663,7 @@ pha.org_id=pdtav.org_id and
 pdtav.document_type_code in ('PA') and
 pla.line_type_id=pltv.line_type_id(+) and
 plla.ship_to_organization_id=mp.organization_id(+) and
+plla.ship_to_organization_id=mp2.organization_id(+) and
 plla.ship_to_location_id=hlat.location_id(+) and
 hlat.language(+)=userenv('lang') and
 pla.inventory_organization_id=msiv.organization_id(+) and

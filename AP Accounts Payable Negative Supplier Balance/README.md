@@ -16,7 +16,7 @@ Operating Unit, Report Definition, As of Date, Third Party Name, Show Transactio
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related reports
-[AP Trial Balance](/AP%20Trial%20Balance/)
+[AP Trial Balance](/AP%20Trial%20Balance/), [CE General Ledger Reconciliation](/CE%20General%20Ledger%20Reconciliation/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
@@ -68,4 +68,4 @@ If you would like to optimize your Oracle EBS implementation and or operational 
 
 
 
-© 2022 Enginatics
+© 2023 Enginatics

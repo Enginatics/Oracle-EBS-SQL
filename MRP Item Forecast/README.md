@@ -7,13 +7,13 @@ Detail report for item planning forecast, including forecast description, planne
 Forecast Set, Forecast, Organization Code, Planner, Item, Project, Forecast Date From, Forecast Date To, Forecast older than x days
 
 ## Used tables
-[org_organization_definitions](http://etrm.oracle.com/pls/etrm/etrm_pnav.show_object?c_name=ORG_ORGANIZATION_DEFINITIONS&c_owner=APPS&c_type=VIEW), [mrp_forecast_items_v](http://etrm.oracle.com/pls/etrm/etrm_pnav.show_object?c_name=MRP_FORECAST_ITEMS_V&c_owner=APPS&c_type=VIEW), [mrp_forecast_dates](http://etrm.oracle.com/pls/etrm/etrm_pnav.show_object?c_name=MRP_FORECAST_DATES&c_owner=MRP&c_type=TABLE), [mrp_forecast_designators](http://etrm.oracle.com/pls/etrm/etrm_pnav.show_object?c_name=MRP_FORECAST_DESIGNATORS&c_owner=MRP&c_type=TABLE), [mtl_system_items_vl](http://etrm.oracle.com/pls/etrm/etrm_pnav.show_object?c_name=MTL_SYSTEM_ITEMS_VL&c_owner=APPS&c_type=VIEW), [pa_projects_all](http://etrm.oracle.com/pls/etrm/etrm_pnav.show_object?c_name=PA_PROJECTS_ALL&c_owner=PA&c_type=TABLE), [pjm_seiban_numbers](http://etrm.oracle.com/pls/etrm/etrm_pnav.show_object?c_name=PJM_SEIBAN_NUMBERS&c_owner=PJM&c_type=TABLE), [pa_tasks](http://etrm.oracle.com/pls/etrm/etrm_pnav.show_object?c_name=PA_TASKS&c_owner=PA&c_type=TABLE), [&xrrpv_table](None), [mtl_planners](http://etrm.oracle.com/pls/etrm/etrm_pnav.show_object?c_name=MTL_PLANNERS&c_owner=INV&c_type=TABLE)
+[org_organization_definitions](http://etrm.oracle.com/pls/etrm/etrm_pnav.show_object?c_name=ORG_ORGANIZATION_DEFINITIONS&c_owner=APPS&c_type=VIEW), [mrp_forecast_items_v](http://etrm.oracle.com/pls/etrm/etrm_pnav.show_object?c_name=MRP_FORECAST_ITEMS_V&c_owner=APPS&c_type=VIEW), [mrp_forecast_dates](http://etrm.oracle.com/pls/etrm/etrm_pnav.show_object?c_name=MRP_FORECAST_DATES&c_owner=MRP&c_type=TABLE), [mrp_forecast_designators](http://etrm.oracle.com/pls/etrm/etrm_pnav.show_object?c_name=MRP_FORECAST_DESIGNATORS&c_owner=MRP&c_type=TABLE), [mtl_system_items_vl](http://etrm.oracle.com/pls/etrm/etrm_pnav.show_object?c_name=MTL_SYSTEM_ITEMS_VL&c_owner=APPS&c_type=VIEW), [pa_projects_all](http://etrm.oracle.com/pls/etrm/etrm_pnav.show_object?c_name=PA_PROJECTS_ALL&c_owner=PA&c_type=TABLE), [pjm_seiban_numbers](http://etrm.oracle.com/pls/etrm/etrm_pnav.show_object?c_name=PJM_SEIBAN_NUMBERS&c_owner=PJM&c_type=TABLE), [pa_tasks](http://etrm.oracle.com/pls/etrm/etrm_pnav.show_object?c_name=PA_TASKS&c_owner=PA&c_type=TABLE), [wip_lines](http://etrm.oracle.com/pls/etrm/etrm_pnav.show_object?c_name=WIP_LINES&c_owner=WIP&c_type=TABLE), [mtl_planners](http://etrm.oracle.com/pls/etrm/etrm_pnav.show_object?c_name=MTL_PLANNERS&c_owner=INV&c_type=TABLE)
 
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Operations)
 
 ## Related reports
-[WIP Entities](/WIP%20Entities/)
+[MRP Pegging](/MRP%20Pegging/), [WIP Entities](/WIP%20Entities/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
@@ -65,4 +65,4 @@ If you would like to optimize your Oracle EBS implementation and or operational 
 
 
 
-© 2022 Enginatics
+© 2023 Enginatics

@@ -7,7 +7,7 @@ Detail report for MRP Exception messages, including item, make or buy, default b
 Organization Code, Plan, Exception, Planner Code, Buyer, Item
 
 ## Used tables
-[mrp_exception_details_v](http://etrm.oracle.com/pls/etrm/etrm_pnav.show_object?c_name=MRP_EXCEPTION_DETAILS_V&c_owner=APPS&c_type=VIEW), [&xrrpv_table](None), [per_people_x](http://etrm.oracle.com/pls/etrm/etrm_pnav.show_object?c_name=PER_PEOPLE_X&c_owner=APPS&c_type=VIEW), [mtl_planners](http://etrm.oracle.com/pls/etrm/etrm_pnav.show_object?c_name=MTL_PLANNERS&c_owner=INV&c_type=TABLE)
+[mrp_exception_details_v](http://etrm.oracle.com/pls/etrm/etrm_pnav.show_object?c_name=MRP_EXCEPTION_DETAILS_V&c_owner=APPS&c_type=VIEW), [mtl_system_items_vl](http://etrm.oracle.com/pls/etrm/etrm_pnav.show_object?c_name=MTL_SYSTEM_ITEMS_VL&c_owner=APPS&c_type=VIEW), [per_people_x](http://etrm.oracle.com/pls/etrm/etrm_pnav.show_object?c_name=PER_PEOPLE_X&c_owner=APPS&c_type=VIEW), [mtl_planners](http://etrm.oracle.com/pls/etrm/etrm_pnav.show_object?c_name=MTL_PLANNERS&c_owner=INV&c_type=TABLE)
 
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - Operations](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Operations)
@@ -65,4 +65,4 @@ If you would like to optimize your Oracle EBS implementation and or operational 
 
 
 
-© 2022 Enginatics
+© 2023 Enginatics

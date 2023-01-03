@@ -7,19 +7,19 @@ Shows all applications, their installation status, correponding database schema,
 Application Short Name, Application Name
 
 ## Used tables
-[xxen_report_license_key](http://etrm.oracle.com/pls/etrm/etrm_pnav.show_object?c_name=XXEN_REPORT_LICENSE_KEY&c_owner=XXEN&c_type=TABLE), [fnd_application_vl](http://etrm.oracle.com/pls/etrm/etrm_pnav.show_object?c_name=FND_APPLICATION_VL&c_owner=APPS&c_type=VIEW), [fnd_product_installations](http://etrm.oracle.com/pls/etrm/etrm_pnav.show_object?c_name=FND_PRODUCT_INSTALLATIONS&c_owner=APPLSYS&c_type=TABLE), [fnd_oracle_userid](http://etrm.oracle.com/pls/etrm/etrm_pnav.show_object?c_name=FND_ORACLE_USERID&c_owner=APPLSYS&c_type=TABLE), [dba_users](http://etrm.oracle.com/pls/etrm/etrm_pnav.show_object?c_name=DBA_USERS&c_owner=SYS&c_type=VIEW), [fnd_audit_schemas](http://etrm.oracle.com/pls/etrm/etrm_pnav.show_object?c_name=FND_AUDIT_SCHEMAS&c_owner=APPLSYS&c_type=TABLE), [fnd_mo_product_init](http://etrm.oracle.com/pls/etrm/etrm_pnav.show_object?c_name=FND_MO_PRODUCT_INIT&c_owner=APPLSYS&c_type=TABLE)
+[fnd_data_group_units](http://etrm.oracle.com/pls/etrm/etrm_pnav.show_object?c_name=FND_DATA_GROUP_UNITS&c_owner=APPLSYS&c_type=TABLE), [fnd_oracle_userid](http://etrm.oracle.com/pls/etrm/etrm_pnav.show_object?c_name=FND_ORACLE_USERID&c_owner=APPLSYS&c_type=TABLE), [xxen_report_license_key](http://etrm.oracle.com/pls/etrm/etrm_pnav.show_object?c_name=XXEN_REPORT_LICENSE_KEY&c_owner=XXEN&c_type=TABLE), [fnd_application_vl](http://etrm.oracle.com/pls/etrm/etrm_pnav.show_object?c_name=FND_APPLICATION_VL&c_owner=APPS&c_type=VIEW), [fnd_product_installations](http://etrm.oracle.com/pls/etrm/etrm_pnav.show_object?c_name=FND_PRODUCT_INSTALLATIONS&c_owner=APPLSYS&c_type=TABLE), [dba_users](http://etrm.oracle.com/pls/etrm/etrm_pnav.show_object?c_name=DBA_USERS&c_owner=SYS&c_type=VIEW), [fnd_audit_schemas](http://etrm.oracle.com/pls/etrm/etrm_pnav.show_object?c_name=FND_AUDIT_SCHEMAS&c_owner=APPLSYS&c_type=TABLE), [fnd_mo_product_init](http://etrm.oracle.com/pls/etrm/etrm_pnav.show_object?c_name=FND_MO_PRODUCT_INIT&c_owner=APPLSYS&c_type=TABLE)
 
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Toolkit - DBA](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20DBA), [Toolkit - Setup & Support](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Setup%20%26%20Support)
 
 ## Related reports
-[FND Audit Setup](/FND%20Audit%20Setup/), [FND Lookup Search](/FND%20Lookup%20Search/)
+[FND Audit Setup](/FND%20Audit%20Setup/), [FND Lookup Search](/FND%20Lookup%20Search/), [FND Access Control 11i](/FND%20Access%20Control%2011i/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 
 # Example Report 
-[FND Applications 15-Aug-2020 091850.xlsx](https://www.enginatics.com/example/fnd-applications/)
+[FND Applications 20-Dec-2022 093439.xlsx](https://www.enginatics.com/example/fnd-applications/)
 
 # Report SQL
 [www.enginatics.com/reports/fnd-applications/](https://www.enginatics.com/reports/fnd-applications/)
@@ -65,4 +65,4 @@ If you would like to optimize your Oracle EBS implementation and or operational 
 
 
 
-© 2022 Enginatics
+© 2023 Enginatics

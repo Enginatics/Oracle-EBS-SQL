@@ -15,7 +15,7 @@ Book, Set of Books Currency, Start Period, End Period, Impairment, Cash Generati
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related reports
-[FA Asset Book Details](/FA%20Asset%20Book%20Details/), [INV Inventory Items](/INV%20Inventory%20Items/)
+[FA Asset Book Details](/FA%20Asset%20Book%20Details/), [GL Account Analysis](/GL%20Account%20Analysis/), [INV Inventory Items](/INV%20Inventory%20Items/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
@@ -67,4 +67,4 @@ If you would like to optimize your Oracle EBS implementation and or operational 
 
 
 
-© 2022 Enginatics
+© 2023 Enginatics

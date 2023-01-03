@@ -15,7 +15,7 @@ This setup controls how automatically imported BI publisher reports and concurre
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps), [Toolkit - Setup & Support](https://www.enginatics.com/library/?pg=1&category[]=Toolkit%20-%20Setup%20%26%20Support)
 
 ## Related reports
-[FND Lookup Search](/FND%20Lookup%20Search/), [GL Account Analysis](/GL%20Account%20Analysis/), [GL Balance by Account Hierarchy](/GL%20Balance%20by%20Account%20Hierarchy/)
+[GL Balance by Account Hierarchy](/GL%20Balance%20by%20Account%20Hierarchy/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
@@ -67,4 +67,4 @@ If you would like to optimize your Oracle EBS implementation and or operational 
 
 
 
-© 2022 Enginatics
+© 2023 Enginatics

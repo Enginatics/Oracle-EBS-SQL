@@ -1,6 +1,6 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2022 Enginatics GmbH                   */
+/*                       (c) 2010-2023 Enginatics GmbH                   */
 /*                              www.enginatics.com                       */
 /*                                                                       */
 /*************************************************************************/
@@ -31,6 +31,8 @@ x.time_model,
 x.sql_plan_operation,
 x.sql_plan_options,
 x.object,
+x.file_id,
+x.block_id,
 x.blocking_inst_id,
 x.blocking_sid_serial#,
 x.blocking_client_id,
@@ -39,6 +41,8 @@ x.blocking_module,
 x.blocking_program,
 x.blocking_session_type,
 x.blocking_machine,
+x.blocking_file_id,
+x.blocking_block_id,
 x.machine,
 x.command_type,
 x.schema,
@@ -61,6 +65,8 @@ x.time_model,
 x.sql_plan_operation,
 x.sql_plan_options,
 x.object,
+x.file_id,
+x.block_id,
 x.blocking_inst_id,
 x.blocking_sid_serial#,
 x.blocking_client_id,
@@ -69,6 +75,8 @@ x.blocking_module,
 x.blocking_program,
 x.blocking_session_type,
 x.blocking_machine,
+x.blocking_file_id,
+x.blocking_block_id,
 x.machine,
 x.command_type,
 x.schema,
@@ -127,6 +135,8 @@ case when bitand(dhash.time_model,power(2,23))=power(2,23) then 'TABLESPACE_ENCR
 dhash.sql_plan_operation,
 dhash.sql_plan_options,
 (select do.owner||'.'||do.object_name||' ('||do.object_type||')' from dba_objects do where dhash.current_obj#=do.object_id) object,
+decode(dhash.p1text,'file#',dhash.p1) file_id,
+decode(dhash.p2text,'block#',dhash.p2) block_id,
 dhash.blocking_inst_id blocking_inst_id,
 nvl2(dhash.blocking_session,dhash.blocking_session||' - '||dhash.blocking_session_serial#,null) blocking_sid_serial#,
 dhash0.client_id blocking_client_id,
@@ -135,6 +145,8 @@ dhash0.module blocking_module,
 dhash0.program blocking_program,
 dhash0.session_type blocking_session_type,
 dhash0.machine blocking_machine,
+dhash0.file_id blocking_file_id,
+dhash0.block_id blocking_block_id,
 dhash.machine,
 lower(dhash.sql_opname) command_type,
 du.username schema,
@@ -143,13 +155,7 @@ dhash.module,
 dhash.program
 from
 dba_hist_snapshot dhs,
-(
-select
-cast(dhash.sample_time as date) sample_time_,
-dhash.*
-from
-dba_hist_active_sess_history dhash
-) dhash,
+(select cast(dhash.sample_time as date) sample_time_, dhash.* from dba_hist_active_sess_history dhash) dhash,
 (
 select distinct
 dhash.instance_number,
@@ -160,7 +166,9 @@ max(dhash.action) keep (dense_rank last order by dhash.sample_id) over (partitio
 max(dhash.module) keep (dense_rank last order by dhash.sample_id) over (partition by dhash.instance_number,dhash.session_id,dhash.session_serial#) module,
 max(dhash.program) keep (dense_rank last order by dhash.sample_id) over (partition by dhash.instance_number,dhash.session_id,dhash.session_serial#) program,
 max(dhash.session_type) keep (dense_rank last order by dhash.sample_id) over (partition by dhash.instance_number,dhash.session_id,dhash.session_serial#) session_type,
-max(dhash.machine) keep (dense_rank last order by dhash.sample_id) over (partition by dhash.instance_number,dhash.session_id,dhash.session_serial#) machine
+max(dhash.machine) keep (dense_rank last order by dhash.sample_id) over (partition by dhash.instance_number,dhash.session_id,dhash.session_serial#) machine,
+max(decode(dhash.p1text,'file#',dhash.p1)) keep (dense_rank last order by dhash.sample_id) over (partition by dhash.instance_number,dhash.session_id,dhash.session_serial#) file_id,
+max(decode(dhash.p2text,'block#',dhash.p2)) keep (dense_rank last order by dhash.sample_id) over (partition by dhash.instance_number,dhash.session_id,dhash.session_serial#) block_id
 from
 dba_hist_active_sess_history dhash
 ) dhash0,
@@ -210,6 +218,8 @@ y.time_model,
 y.sql_plan_operation,
 y.sql_plan_options,
 y.object,
+y.file_id,
+y.block_id,
 y.blocking_inst_id,
 y.blocking_sid_serial#,
 xxen_util.user_name(y.blocking_module,y.blocking_action,y.blocking_client_id) blocking_user_name,
@@ -218,6 +228,8 @@ xxen_util.module_type(y.blocking_module,y.blocking_action) blocking_module_type,
 xxen_util.module_name(y.blocking_module,y.blocking_program) blocking_module_name,
 y.blocking_session_type,
 y.blocking_machine,
+y.blocking_file_id,
+y.blocking_block_id,
 y.machine,
 y.command_type,
 y.schema,

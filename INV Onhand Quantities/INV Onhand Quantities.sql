@@ -1,6 +1,6 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2022 Enginatics GmbH                   */
+/*                       (c) 2010-2023 Enginatics GmbH                   */
 /*                              www.enginatics.com                       */
 /*                                                                       */
 /*************************************************************************/
@@ -169,7 +169,6 @@ mmt.stock_mvmt_36m *  nvl(cic.item_cost,0) value_mvmt_36m
 from
 org_organization_definitions ood,
 mtl_onhand_quantities_detail moqd,
-&xrrpv_table
 mtl_secondary_inventories msi,
 mtl_item_locations mil,
 mtl_item_categories mic,

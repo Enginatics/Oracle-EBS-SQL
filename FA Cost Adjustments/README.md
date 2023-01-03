@@ -18,7 +18,7 @@ Book, Set of Books Currency, From Period, To Period
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related reports
-[FA Asset Additions](/FA%20Asset%20Additions/), [FA Asset Retirements](/FA%20Asset%20Retirements/), [FA Depreciation Reserve](/FA%20Depreciation%20Reserve/)
+[FA Asset Additions](/FA%20Asset%20Additions/), [FA Asset Retirements](/FA%20Asset%20Retirements/), [FA Depreciation Reserve](/FA%20Depreciation%20Reserve/), [FA Asset Summary (Germany)](/FA%20Asset%20Summary%20-Germany/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
@@ -70,4 +70,4 @@ If you would like to optimize your Oracle EBS implementation and or operational 
 
 
 
-© 2022 Enginatics
+© 2023 Enginatics

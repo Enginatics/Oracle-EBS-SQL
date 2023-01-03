@@ -10,11 +10,14 @@ For scenarios where the blocking sessions are active and part of the ASH, Tanel 
 <a href="https://blog.tanelpoder.com/2013/11/06/diagnosing-buffer-busy-waits-with-the-ash_wait_chains-sql-script-v0-2/" rel="nofollow" target="_blank">https://blog.tanelpoder.com/2013/11/06/diagnosing-buffer-busy-waits-with-the-ash_wait_chains-sql-script-v0-2/</a>
 
 We recommend doing ASH performance analysis with a pivot in Excel rather than by SQL, as Excel's drag- and drop is a lot faster than typing commands manually.
-A typical use case is to analyze which EBS application user waited for how many seconds in which forms UI and to drill down further into the SQL or wait event root causes then.
+A typical use case is to analyze which EBS application user waited for how many seconds in which forms UI and to drill down further into the SQL or wait event root causes.
 
 Column 'Module Name' shows either the translated EBS module display name or, e.g. for background sessions, the process name (from the program column) to enable pivoting by this column only.
 Oracle's background process names are listed here:
 <a href="https://docs.oracle.com/database/121/REFRN/GUID-86184690-5531-405F-AA05-BB935F57B76D.htm#REFRN104" rel="nofollow" target="_blank">https://docs.oracle.com/database/121/REFRN/GUID-86184690-5531-405F-AA05-BB935F57B76D.htm#REFRN104</a>
+
+To identify an object or segment of a hot block, for example causing wait events, Oracle's dba_extents view is unusable due to performance bugs in 19c+, and Franck Pachot published a workaround here:
+<a href="https://www.dbi-services.com/blog/efficiently-query-dba_extents-for-file_id-block_id/" rel="nofollow" target="_blank">https://www.dbi-services.com/blog/efficiently-query-dba_extents-for-file_id-block_id/</a>
 
 ## Parameters
 User Name, Module Type, Module contains, Show Blocking Session Info, Blocked Sessions only, Request Id, Restrict User Name to Client_ID, From Time, To Time, Package Name starts with, Wait Event, Exclude Wait Event, SID - Serial#, SQL Id, Plan Hash Value, Show SQL Text, UI Sessions only, Session Type, Instance Id, Machine, Schema, Action contains, Program contains, Entry Procedure contains, Diagnostic Pack enabled
@@ -78,4 +81,4 @@ If you would like to optimize your Oracle EBS implementation and or operational 
 
 
 
-© 2022 Enginatics
+© 2023 Enginatics

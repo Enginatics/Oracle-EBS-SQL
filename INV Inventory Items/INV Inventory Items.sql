@@ -1,6 +1,6 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2022 Enginatics GmbH                   */
+/*                       (c) 2010-2023 Enginatics GmbH                   */
 /*                              www.enginatics.com                       */
 /*                                                                       */
 /*************************************************************************/
@@ -126,7 +126,6 @@ mck.concatenated_segments=nvl(:category,mck.concatenated_segments) and
 mic.category_set_id=mcsv.category_set_id and
 mic.category_id=mck.category_id
 ) x,
-&xrrpv_table
 mtl_atp_rules mar,
 mtl_planners mpl
 where
