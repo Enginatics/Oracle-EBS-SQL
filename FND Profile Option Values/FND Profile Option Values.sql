@@ -12,8 +12,8 @@ Unlike Oracle's SQL script from note 201945.1, this report also shows the user v
 -- Run Report: https://demo.enginatics.com/
 
 select
-fav0.application_name,
 fpo.user_profile_option_name,
+fav0.application_name,
 decode(fpov.level_id,10001,'Site',10002,'Application', 10003,'Responsibility', 10004,'User', 10005,'Server',10006,'Operating Unit',
 10007,decode(to_char(fpov.level_value2),'-1','Responsibility',decode(to_char(fpov.level_value),'-1','Server','Server+Resp'))
 ) level_,

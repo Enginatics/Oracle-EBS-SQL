@@ -16,7 +16,7 @@ wias.item_type,
 witv.display_name type_display_name,
 wpa.instance_label,
 wias.activity_result_code,
-wias.activity_status
+xxen_util.meaning(wias.activity_status,'FND_WF_ACTIVITY_STATUS_LIST',0) activity_status
 from
 wf_item_activity_statuses wias,
 wf_process_activities wpa,

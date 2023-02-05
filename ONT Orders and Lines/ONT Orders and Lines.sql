@@ -116,7 +116,6 @@ x.line_category,
 x.header_id,
 x.line_id,
 x.line_number,
--- chg for DIFOT
 x.line_days_late,
 x.line_quantity_short,
 xxen_util.meaning(x.line_shipped_flag,'YES_NO',0) line_shipped,
@@ -130,42 +129,13 @@ x.orig_line_actual_shipment_date,
 x.orig_line_tot_shipped_quantity,
 nvl(xxen_util.meaning(x.deliv_in_full,'YES_NO',0),'N/A') line_dif,
 nvl(xxen_util.meaning(x.deliv_on_time,'YES_NO',0),'N/A') line_dot,
-xxen_util.meaning(decode(x.deliv_in_full||x.deliv_on_time,null,'N/A','YY','Y','N'),'YES_NO',0) line_difot,
-case
-when first_value(x.deliv_in_full) ignore nulls over (partition by x.header_id order by x.deliv_in_full rows between unbounded preceding and unbounded following) is null
-then 'N/A'
-when first_value(x.deliv_in_full) ignore nulls over (partition by x.header_id order by x.deliv_in_full rows between unbounded preceding and unbounded following) =
-     last_value(x.deliv_in_full) ignore nulls over (partition by x.header_id order by x.deliv_in_full rows between unbounded preceding and unbounded following)
-and  first_value(x.deliv_in_full) ignore nulls over (partition by x.header_id order by x.deliv_in_full rows between unbounded preceding and unbounded following) = 'Y'
-then xxen_util.meaning('Y','YES_NO',0)
-else xxen_util.meaning('N','YES_NO',0)
-end orders_dif,
-case
-when first_value(x.deliv_on_time) ignore nulls over (partition by x.header_id order by x.deliv_on_time rows between unbounded preceding and unbounded following) is null
-then 'N/A'
-when first_value(x.deliv_on_time) ignore nulls over (partition by x.header_id order by x.deliv_on_time rows between unbounded preceding and unbounded following) =
-     last_value(x.deliv_on_time) ignore nulls over (partition by x.header_id order by x.deliv_on_time rows between unbounded preceding and unbounded following)
-and  first_value(x.deliv_on_time) ignore nulls over (partition by x.header_id order by x.deliv_on_time rows between unbounded preceding and unbounded following) = 'Y'
-then xxen_util.meaning('Y','YES_NO',0)
-else xxen_util.meaning('N','YES_NO',0)
-end orders_dot,
-case
-when first_value(x.deliv_in_full) ignore nulls over (partition by x.header_id order by x.deliv_in_full rows between unbounded preceding and unbounded following) is null
-then 'N/A'
-when first_value(x.deliv_in_full) ignore nulls over (partition by x.header_id order by x.deliv_in_full rows between unbounded preceding and unbounded following) =
-     last_value(x.deliv_in_full) ignore nulls over (partition by x.header_id order by x.deliv_in_full rows between unbounded preceding and unbounded following)
-and  first_value(x.deliv_on_time) ignore nulls over (partition by x.header_id order by x.deliv_on_time rows between unbounded preceding and unbounded following) =
-     last_value(x.deliv_on_time) ignore nulls over (partition by x.header_id order by x.deliv_on_time rows between unbounded preceding and unbounded following)
-then case when first_value(x.deliv_in_full) ignore nulls over (partition by x.header_id order by x.deliv_in_full rows between unbounded preceding and unbounded following) = 'Y'
-           and first_value(x.deliv_on_time) ignore nulls over (partition by x.header_id order by x.deliv_on_time rows between unbounded preceding and unbounded following) = 'Y'
-     then xxen_util.meaning('Y','YES_NO',0)
-     else xxen_util.meaning('N','YES_NO',0)
-     end
-else xxen_util.meaning('N','YES_NO',0)
-end orders_difot
+nvl(xxen_util.meaning(decode(x.deliv_in_full||x.deliv_on_time,null,null,'YY','Y','N'),'YES_NO',0),'N/A') line_difot,
+nvl(xxen_util.meaning(min(x.deliv_in_full) over (partition by x.header_id),'YES_NO',0),'N/A') orders_dif,
+nvl(xxen_util.meaning(min(x.deliv_on_time) over (partition by x.header_id),'YES_NO',0),'N/A') orders_dot,
+nvl(xxen_util.meaning(decode(min(x.deliv_in_full) over (partition by x.header_id)||min(x.deliv_on_time) over (partition by x.header_id),null,null,'YY','Y','N'),'YES_NO',0),'N/A') orders_difot
 from
 (
-select /*+ push_pred(oolh) push_pred(wda) */ distinct
+select /*+ push_pred(oolh) push_pred(oolh2) push_pred(wda) */ distinct
 haouv.name operating_unit,
 hp.party_name customer,
 hca.account_number,
@@ -237,7 +207,7 @@ xxen_util.meaning(decode(oola.shippable_flag,'Y','Y'),'YES_NO',0) shippable_flag
 wnd.name delivery,
 wda.next_step_code,
 xxen_util.meaning(wda.next_step_code,'NEXT_STEP',665) next_step,
-xxen_util.meaning(case when ooha.cancelled_flag='Y' or oola.cancelled_flag='Y' then 'Y' else null end,'YES_NO',0) cancelled_flag,
+xxen_util.meaning(case when ooha.cancelled_flag='Y' or oola.cancelled_flag='Y' then 'Y' end,'YES_NO',0) cancelled_flag,
 xxen_util.client_time(oolh.hist_creation_date) cancel_date,
 xxen_util.user_name(oolh.hist_created_by) cancelled_by,
 xxen_util.meaning(oer.reason_code,'CANCEL_CODE',660) cancel_reason,
@@ -264,70 +234,42 @@ oola.service_number,
 oola.line_id,
 nvl(oola.ship_to_org_id,ooha.ship_to_org_id) ship_to_org_id,
 nvl(oola.invoice_to_org_id,ooha.invoice_to_org_id) invoice_to_org_id,
--- chg for DIFOT
 ooha.order_date_type_code,
 oola.split_line,
-nvl(oola.orig_line_id,oola.line_id) orig_line_id,
+oola.orig_line_id_ orig_line_id,
 case
-when oola.ordered_quantity <= 0
-or   nvl(oola.shippable_flag,'N') != 'Y'
-or   oola.line_category_code = 'RETURN'
-or   oola.cancelled_flag = 'Y'
-then null
-when nvl(oola.shipped_quantity,0) < 0
-then 'Y'
+when oola.ordered_quantity<=0 or oola.is_shippable='N' then null
+when oola.shipped_quantity<0 then 'Y'
 else 'N'
-end  line_shipped_flag,
+end line_shipped_flag,
+case when oola.ordered_quantity>0 and oola.is_shippable='Y' then greatest(trunc(decode(nvl(ooha.order_date_type_code,'SHIP'),'SHIP',nvl(oola.actual_shipment_date,sysdate),nvl(oola.actual_shipment_date,sysdate) + nvl(oola.delivery_lead_time,0)))-trunc(oola.promise_date),0) end line_days_late,
+case when oola.ordered_quantity>0 and oola.is_shippable='Y' then greatest(oola.ordered_quantity-nvl(oola.shipped_quantity,0),0) end line_quantity_short,
+coalesce(oolh2.delivery_lead_time,oola2.delivery_lead_time,oola.delivery_lead_time,0) orig_line_delivery_lead_time,
+xxen_util.client_time(trunc(coalesce(oolh2.promise_date,oola2.promise_date,oola.promise_date))) orig_line_promise_date,
+sum(oola.ordered_quantity) over (partition by oola.orig_line_id_) orig_line_quantity,
+xxen_util.client_time(trunc(coalesce(oolh2.actual_shipment_date,oola2.actual_shipment_date,oola.actual_shipment_date))) orig_line_actual_shipment_date,
+sum(oola.shipped_quantity) over (partition by oola.orig_line_id_) orig_line_tot_shipped_quantity,
 case
-when oola.ordered_quantity <= 0
-or   nvl(oola.shippable_flag,'N') != 'Y'
-or   oola.line_category_code = 'RETURN'
-or   oola.cancelled_flag = 'Y'
-then to_number(null)
-else greatest(trunc(decode(nvl(ooha.order_date_type_code,'SHIP'),'SHIP',nvl(oola.actual_shipment_date,sysdate),nvl(oola.actual_shipment_date,sysdate) + nvl(oola.delivery_lead_time,0)))-trunc(oola.promise_date),0)
-end line_days_late,
-case
-when oola.ordered_quantity <= 0
-or   nvl(oola.shippable_flag,'N') != 'Y'
-or   oola.line_category_code = 'RETURN'
-or   oola.cancelled_flag = 'Y'
-then to_number(null)
-else greatest(oola.ordered_quantity - nvl(oola.shipped_quantity,0),0)
-end line_quantity_short,
-nvl(coalesce((select distinct min(oolh.delivery_lead_time) keep (dense_rank first order by oolh.hist_creation_date) over (partition by oolh.line_id) from oe_order_lines_history oolh where oolh.line_id = oola.orig_line_id),oola2.delivery_lead_time,oola.delivery_lead_time),0) orig_line_delivery_lead_time,
-xxen_util.client_time(trunc(coalesce((select distinct min(oolh.promise_date) keep (dense_rank first order by oolh.hist_creation_date) over (partition by oolh.line_id) from oe_order_lines_history oolh where oolh.line_id = oola.orig_line_id),oola2.promise_date,oola.promise_date))) orig_line_promise_date,
-sum(oola.ordered_quantity) over (partition by nvl(oola.orig_line_id,oola.line_id)) orig_line_quantity,
-xxen_util.client_time(trunc(coalesce((select distinct min(oolh.actual_shipment_date) keep (dense_rank first order by oolh.hist_creation_date) over (partition by oolh.line_id) from oe_order_lines_history oolh where oolh.line_id = oola.orig_line_id),oola2.actual_shipment_date,oola.actual_shipment_date))) orig_line_actual_shipment_date,
-sum(oola.shipped_quantity) over (partition by nvl(oola.orig_line_id,oola.line_id)) orig_line_tot_shipped_quantity,
---
-case
-when sum(oola.ordered_quantity) over (partition by nvl(oola.orig_line_id,oola.line_id)) <= 0
-or   nvl(oola.shippable_flag,'N') != 'Y'
-or   oola.line_category_code = 'RETURN'
-or   oola.cancelled_flag = 'Y'
-then null
-when sum(oola.ordered_quantity) over (partition by nvl(oola.orig_line_id,oola.line_id)) <= nvl(sum(oola.shipped_quantity) over (partition by nvl(oola.orig_line_id,oola.line_id)),0)
-then 'Y'
+when sum(oola.ordered_quantity) over (partition by oola.orig_line_id_)<=0 or oola.is_shippable='N' then null
+when sum(oola.ordered_quantity) over (partition by oola.orig_line_id_)<=nvl(sum(oola.shipped_quantity) over (partition by oola.orig_line_id_),0) then 'Y'
 else 'N'
 end deliv_in_full,
 case
-when sum(oola.ordered_quantity) over (partition by nvl(oola.orig_line_id,oola.line_id)) <= 0
-or   nvl(oola.shippable_flag,'N') != 'Y'
-or   oola.line_category_code = 'RETURN'
-or   oola.cancelled_flag = 'Y'
-then null
-when trunc(coalesce((select distinct min(oolh.actual_shipment_date) keep (dense_rank first order by oolh.hist_creation_date) over (partition by oolh.line_id) from oe_order_lines_history oolh where oolh.line_id = oola.orig_line_id),
-                    oola2.actual_shipment_date,
-                    oola.actual_shipment_date,
-                    coalesce((select distinct min(oolh.promise_date) keep (dense_rank first order by oolh.hist_creation_date) over (partition by oolh.line_id) from oe_order_lines_history oolh where oolh.line_id = oola.orig_line_id),oola2.promise_date,oola.promise_date)+1))
-     + decode(nvl(ooha.order_date_type_code,'SHIP'),'SHIP',0,nvl(coalesce((select distinct min(oolh.delivery_lead_time) keep (dense_rank first order by oolh.hist_creation_date) over (partition by oolh.line_id) from oe_order_lines_history oolh where oolh.line_id = oola.orig_line_id),oola2.delivery_lead_time,oola.delivery_lead_time),0))
-     <= trunc(coalesce((select distinct min(oolh.promise_date) keep (dense_rank first order by oolh.hist_creation_date) over (partition by oolh.line_id) from oe_order_lines_history oolh where oolh.line_id = oola.orig_line_id),oola2.promise_date,oola.promise_date))
+when sum(oola.ordered_quantity) over (partition by oola.orig_line_id_)<=0 or oola.is_shippable='N' then null
+when trunc(coalesce(oolh2.actual_shipment_date,oola2.actual_shipment_date,oola.actual_shipment_date,coalesce(oolh2.promise_date,oola2.promise_date,oola.promise_date)+1))
+     + decode(nvl(ooha.order_date_type_code,'SHIP'),'SHIP',0,nvl(coalesce(oolh2.delivery_lead_time,oola2.delivery_lead_time,oola.delivery_lead_time),0))
+     <= trunc(coalesce(oolh2.promise_date,oola2.promise_date,oola.promise_date))
 then 'Y'
 else 'N'
 end deliv_on_time
 from
 hr_all_organization_units_vl haouv,
 oe_order_headers_all ooha,
+(
+select
+nvl(oola.orig_line_id,oola.line_id) orig_line_id_,
+oola.*
+from
 (
 select
 nvl(
@@ -349,27 +291,16 @@ opa.list_line_type_code='FREIGHT_CHARGE' and
 opa.applied_flag='Y'
 ) line_charges,
 max(oola.open_flag) over (partition by oola.header_id) max_open_flag,
--- chg for DIFOT
 sum(decode(oola.line_category_code,'ORDER',oola.shipped_quantity,0)) over (partition by oola.header_id) ord_shipped_qty,
+case when oola.shippable_flag='Y' and oola.line_category_code<>'RETURN' and oola.cancelled_flag='N' then 'Y' end is_shippable,
 xxen_util.meaning(nvl2(oola.split_from_line_id,'Y',null),'YES_NO',0) split_line,
-case when oola.split_from_line_id is not null
-then
- (select distinct
-   decode(connect_by_isleaf,1,oola2.line_id,null) orig_line_id
-  from
-   oe_order_lines_all oola2
-  where
-  decode(connect_by_isleaf,1,oola2.line_id,null) is not null
-  connect by
-  prior oola2.split_from_line_id = oola2.line_id
-  start with oola2.line_id = oola.split_from_line_id
- )
-else
- to_number(null)
-end orig_line_id,
+case when oola.split_from_line_id is not null then xxen_util.orig_order_line_id(oola.split_from_line_id) end orig_line_id,
 oola.*
 from
 oe_order_lines_all oola
+where
+2=2
+) oola
 ) oola,
 oe_transaction_types_tl ottt,
 oe_transaction_types_tl ottt2,
@@ -406,7 +337,6 @@ wsh_new_deliveries wnd,
 select ppa.project_id, ppa.segment1 project_number from pa_projects_all ppa union
 select psm.project_id, psm.project_number from pjm_seiban_numbers psm
 ) ppa,
-&xrrpv_table
 pa_tasks pt,
 ra_customer_trx_lines_all rctla,
 ra_customer_trx_all rcta,
@@ -421,8 +351,16 @@ oe_order_lines_history oolh
 where
 oolh.hist_type_code='CANCELLATION'
 ) oolh,
+(
+select distinct
+oolh.line_id,
+min(oolh.delivery_lead_time) keep (dense_rank first order by oolh.hist_creation_date) over (partition by oolh.line_id) delivery_lead_time,
+min(oolh.promise_date) keep (dense_rank first order by oolh.hist_creation_date) over (partition by oolh.line_id) promise_date,
+min(oolh.actual_shipment_date) keep (dense_rank first order by oolh.hist_creation_date) over (partition by oolh.line_id) actual_shipment_date
+from
+oe_order_lines_history oolh
+) oolh2,
 oe_reasons oer,
--- chg for DIFOT
 oe_order_lines_all oola2
 where
 1=1 and
@@ -452,8 +390,8 @@ rcta.org_id=jrs2.org_id(+) and
 jrs2.resource_id=jrrev2.resource_id(+) and
 oola.line_id=oolh.line_id(+) and
 oolh.reason_id=oer.reason_id(+) and
- -- chg for DIFOT
-oola.orig_line_id = oola2.line_id(+)
+oola.orig_line_id=oola2.line_id(+) and
+oola.orig_line_id=oolh2.line_id(+)
 ) x,
 hz_cust_site_uses_all hcsua1,
 hz_cust_site_uses_all hcsua2,

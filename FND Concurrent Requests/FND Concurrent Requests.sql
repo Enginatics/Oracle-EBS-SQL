@@ -19,11 +19,11 @@ decode(fcr.priority_request_id,fcr.request_id,null,fcr.priority_request_id) prio
 decode(fcr.parent_request_id,-1,null,fcr.parent_request_id) parent_id,
 case when fcr.program_application_id=160 and fcr.concurrent_program_id=20392 /*alecdc*/ or fcr.request_type='M' then fcr.description else fcpv.user_concurrent_program_name end program,
 case when fcr.request_type='M' and fcr.frr_display_sequence is not null then fcpv.user_concurrent_program_name||' ('||fcr.frr_display_sequence||')' else fcr.description end description,
-flv2.meaning phase,
-trim(flv1.meaning) status,
+flvv2.meaning phase,
+trim(flvv1.meaning) status,
 xxen_util.user_name(fcr.requested_by) user_name,
 haouv.name operating_unit,
-frt.responsibility_name responsibility,
+frv.responsibility_name responsibility,
 xxen_util.client_time(fcr.actual_start_date) start_date,
 xxen_util.client_time(fcr.actual_completion_date) completion_date,
 xxen_util.time(fcr.seconds) time,
@@ -112,6 +112,8 @@ fcr.logfile_name,
 fcr.lfile_size logfile_size,
 fcr.temp_out,
 fcr.temp_log,
+fcpoi.node_name1 target_node1,
+fcpoi.node_name2 target_node2,
 fcr.conc_manager,
 fcr.node,
 fcr.os_process_manager,
@@ -291,8 +293,9 @@ fcpr.concurrent_queue_id=fcqv.concurrent_queue_id(+) and
 case when fcr.request_type in ('B','M') then fcr.request_id end=frr.parent_request_id(+)
 ) fcr,
 fnd_concurrent_programs_vl fcpv,
+fnd_conc_prog_onsite_info fcpoi,
 fnd_executables_vl fev,
-fnd_responsibility_tl frt,
+fnd_responsibility_vl frv,
 fnd_conc_release_classes fcrc,
 hr_all_organization_units_vl haouv,
 fnd_conflicts_domain fcd,
@@ -306,8 +309,8 @@ fnd_conflicts_domain fcd,
 (select x.* from (select min(fcpa.sequence) over (partition by fcpa.concurrent_request_id,fcpa.action_type) min_sequence, fcpa.* from fnd_conc_pp_actions fcpa where '&enable_delivery'='Y' and fcpa.action_type=7 and fcpa.argument1='W') x where x.sequence=x.min_sequence) fcpa7w,
 (select x.* from (select min(fcpa.sequence) over (partition by fcpa.concurrent_request_id,fcpa.action_type) min_sequence, fcpa.* from fnd_conc_pp_actions fcpa where '&enable_delivery'='Y' and fcpa.action_type=7 and fcpa.argument1='C') x where x.sequence=x.min_sequence) fcpa7c,
 (select x.* from (select min(fcro.output_id) over (partition by fcro.concurrent_request_id) min_output_id, fcro.* from fnd_conc_req_outputs fcro where '&enable_delivery'='Y') x where x.output_id=x.min_output_id) fcro,
-fnd_lookup_values flv1,
-fnd_lookup_values flv2,
+fnd_lookup_values_vl flvv1,
+fnd_lookup_values_vl flvv2,
 gv$session gs,
 (
 select
@@ -329,11 +332,12 @@ where
 2=2 and
 fcr.program_application_id_=fcpv.application_id(+) and
 fcr.concurrent_program_id_=fcpv.concurrent_program_id(+) and
+fcr.program_application_id_=fcpoi.program_application_id(+) and
+fcr.concurrent_program_id_=fcpoi.concurrent_program_id(+) and
 fcpv.executable_application_id=fev.application_id(+) and
 fcpv.executable_id=fev.executable_id(+) and
-fcr.responsibility_application_id=frt.application_id(+) and
-fcr.responsibility_id=frt.responsibility_id(+) and
-frt.language(+)=userenv('lang') and
+fcr.responsibility_application_id=frv.application_id(+) and
+fcr.responsibility_id=frv.responsibility_id(+) and
 fcr.release_class_app_id=fcrc.application_id(+) and
 fcr.release_class_id=fcrc.release_class_id(+) and
 fcr.org_id_=haouv.organization_id(+) and
@@ -351,16 +355,14 @@ fcr.request_id=fcro.concurrent_request_id(+) and
 decode(fcr.phase_code,
 'P',decode(fcr.hold_flag,'Y','H',decode(fcpv.enabled_flag,'N','U',case when fcr.requested_start_date>sysdate then 'P' else fcr.status_code end)),
 'R',decode(fcr.hold_flag,'Y','S',decode(fcr.status_code,'Q','B','I','B',fcr.status_code)),
-fcr.status_code)=flv1.lookup_code and
-case when flv1.lookup_code in ('H','S','U','M') then 'I' else fcr.phase_code end=flv2.lookup_code and
-flv1.lookup_type(+)='CP_STATUS_CODE' and
-flv2.lookup_type(+)='CP_PHASE_CODE' and
-flv1.language(+)=userenv('lang') and
-flv2.language(+)=userenv('lang') and
-flv1.view_application_id(+)=0 and
-flv2.view_application_id(+)=0 and
-flv1.security_group_id(+)=0 and
-flv2.security_group_id(+)=0 and
+fcr.status_code)=flvv1.lookup_code and
+case when flvv1.lookup_code in ('H','S','U','M') then 'I' else fcr.phase_code end=flvv2.lookup_code and
+flvv1.lookup_type(+)='CP_STATUS_CODE' and
+flvv2.lookup_type(+)='CP_PHASE_CODE' and
+flvv1.view_application_id(+)=0 and
+flvv2.view_application_id(+)=0 and
+flvv1.security_group_id(+)=0 and
+flvv2.security_group_id(+)=0 and
 fcr.instance_number=gs.inst_id(+) and
 fcr.audsid=gs.audsid(+) and
 gs.inst_id=gse.inst_id(+) and
@@ -369,10 +371,10 @@ gs.inst_id=gsa.inst_id(+) and
 gs.sql_id=gsa.sql_id(+) and
 gs.sql_child_number=gsa.child_number(+)
 order by
-decode(flv2.lookup_code,'R',1,'P',2,'I',3,'C',4),
+decode(flvv2.lookup_code,'R',1,'P',2,'I',3,'C',4),
 nvl(fcr.actual_start_date,fcr.requested_start_date) desc,
 fcr.request_id desc,
 fcr.frr_display_sequence desc,
 xxen_util.user_name(fcr.requested_by),
 fcpv.user_concurrent_program_name,
-frt.responsibility_name
+frv.responsibility_name

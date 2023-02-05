@@ -11,6 +11,107 @@
 -- Run Report: https://demo.enginatics.com/
 
 select
+x.operating_unit,
+x.party_type,
+x.party_name,
+x.party_number,
+x.url,
+x.duns_number,
+x.sic_code,
+x.category,
+x.account_number,
+x.reference,
+x.site_reference,
+x.site_use_reference,
+x.account_type,
+x.classification,
+x.sales_channel,
+jrret1.resource_name primary_salesrep,
+jrret1.resource_name site_primary_salesrep,
+x.order_type,
+x.site_order_type,
+x.price_list,
+x.site_price_list,
+x.profile_class,
+x.site_profile_class,
+x.credit_classification,
+x.site_credit_classification,
+x.site_name,
+x.site_number,
+x.location,
+x.address,
+x.country,
+x.identifying_address_flag,
+x.site_use,
+x.primary_flag,
+x.ship_partial,
+x.tax_reference,
+avtab1.tax_rate,
+avtab2.tax_rate site_tax_rate,
+&column_trx_count
+x.latest_trx_date,
+x.pay_sched_last_update_date,
+x.demand_class,
+x.ship_sets,
+x.party_status,
+x.account_status,
+x.site_status,
+x.site_use_status,
+x.warehouse,
+x.site_warehouse,
+x.fob,
+x.site_fob,
+x.freight_term,
+x.site_freight_term,
+x.carrier,
+x.site_carrier,
+rtt1.name payment_term,
+rtt2.name site_payment_term,
+x.send_statement,
+x.site_send_statement,
+x.statement_cycle,
+x.site_statement_cycle,
+x.send_credit_balance,
+x.site_send_credit_balance,
+x.send_dunning_letters,
+x.site_send_dunning_letters,
+x.dunning_letter,
+x.site_dunning_letter,
+x.collector_name,
+x.site_collector_name,
+x.credit_class_code,
+x.site_credit_class_code,
+x.receivables_account,
+x.receivables_account_desc,
+x.created_by,
+x.creation_date,
+x.last_updated_by,
+x.last_update_date,
+x.account_created_by,
+x.account_creation_date,
+x.account_last_updated_by,
+x.account_last_update_date,
+x.site_created_by,
+x.site_creation_date,
+x.site_last_updated_by,
+x.site_last_update_date,
+x.profile_created_by,
+x.profile_creation_date,
+x.profile_last_updated_by,
+x.profile_last_update_date,
+x.site_profile_created_by,
+x.site_profile_creation_date,
+x.site_profile_last_updated_by,
+x.site_profile_last_update_date,
+x.org_id,
+x.profile_level,
+x.cust_account_profile_id,
+x.site_cust_account_profile_id,
+x.cust_account_id,
+x.site_use_id
+from
+(
+select
 hou.name operating_unit,
 initcap(hp.party_type) party_type,
 hp.party_name,
@@ -26,8 +127,6 @@ hcsua.orig_system_reference site_use_reference,
 decode(hca.customer_type,'R','External','I','Internal') account_type,
 xxen_util.meaning(hca.customer_class_code,'CUSTOMER CLASS',222) classification,
 xxen_util.meaning(hca.sales_channel_code,'SALES_CHANNEL',660) sales_channel,
-jrret1.resource_name primary_salesrep,
-jrret1.resource_name site_primary_salesrep,
 ottt1.name order_type,
 ottt2.name site_order_type,
 qlht1.name price_list,
@@ -46,9 +145,6 @@ xxen_util.meaning(hcsua.site_use_code,'SITE_USE_CODE',222) site_use,
 xxen_util.meaning(hcsua.primary_flag,'YES_NO',0) primary_flag,
 xxen_util.meaning(hcsua.ship_partial,'YES_NO',0) ship_partial,
 hcsua.tax_reference,
-avtab1.tax_rate,
-avtab2.tax_rate site_tax_rate,
-&column_trx_count
 coalesce(
 (select max(rcta.trx_date) from ra_customer_trx_all rcta where rcta.bill_to_customer_id = hca.cust_account_id and rcta.bill_to_site_use_id = nvl(hcsua.site_use_id,rcta.bill_to_site_use_id) and :detail_level != 'Site'),
 (select max(rcta.trx_date) from ra_customer_trx_all rcta where rcta.ship_to_customer_id = hca.cust_account_id and rcta.ship_to_site_use_id = nvl(hcsua.site_use_id,rcta.ship_to_site_use_id) and :detail_level != 'Site'),
@@ -75,8 +171,6 @@ xxen_util.meaning(hca.freight_term,'FREIGHT_TERMS',660) freight_term,
 xxen_util.meaning(hcsua.freight_term,'FREIGHT_TERMS',660) site_freight_term,
 xxen_util.meaning(hca.ship_via,'SHIP_METHOD',3) carrier,
 xxen_util.meaning(hcsua.ship_via,'SHIP_METHOD',3) site_carrier,
-rtt1.name payment_term,
-rtt2.name site_payment_term,
 xxen_util.meaning(hcp1.send_statements,'YES_NO',0) send_statement,
 xxen_util.meaning(hcp2.send_statements,'YES_NO',0) site_send_statement,
 ascl1.name statement_cycle,
@@ -89,8 +183,8 @@ adls1.name dunning_letter,
 adls2.name site_dunning_letter,
 ac1.name collector_name,
 ac2.name site_collector_name,
-hcp1.credit_classification,
-hcp2.credit_classification site_credit_classification,
+hcp1.credit_classification credit_class_code,
+hcp2.credit_classification site_credit_class_code,
 case when hcsua.gl_id_rec is not null then fnd_flex_xml_publisher_apis.process_kff_combination_1('recacct', 'SQLGL', 'GL#', gsob.chart_of_accounts_id, null, hcsua.gl_id_rec, 'ALL', 'Y', 'VALUE') else null end receivables_account,
 case when hcsua.gl_id_rec is not null then fnd_flex_xml_publisher_apis.process_kff_combination_1('recacct', 'SQLGL', 'GL#', gsob.chart_of_accounts_id, null, hcsua.gl_id_rec, 'ALL', 'Y', 'DESCRIPTION') else null end receivables_account_desc,
 xxen_util.user_name(hp.created_by) created_by,
@@ -118,7 +212,16 @@ nvl2(hcp2.cust_account_profile_id,'site',nvl2(hcp1.cust_account_profile_id,'acco
 hcp1.cust_account_profile_id,
 hcp1.cust_account_profile_id site_cust_account_profile_id,
 hca.cust_account_id,
-hcsua.site_use_id
+hcsua.site_use_id,
+--
+hou.set_of_books_id,
+hcasa.cust_acct_site_id,
+hca.primary_salesrep_id primary_salesrep_id,
+hcsua.primary_salesrep_id site_primary_salesrep_id,
+nvl(hcp1.standard_terms,hca.payment_term_id) payment_term_id,
+nvl(hcp2.standard_terms,hcsua.payment_term_id) site_payment_term_id,
+hca.tax_code tax_code,
+hcsua.tax_code site_tax_code
 from
 hr_operating_units hou,
 gl_sets_of_books gsob,
@@ -134,20 +237,12 @@ fnd_territories_tl ftt,
 (select hcas.* from hz_code_assignments hcas where hcas.owner_table_name='HZ_PARTIES' and hcas.class_category='CUSTOMER_CATEGORY' and hcas.primary_flag='Y') hcas,
 qp_list_headers_tl qlht1,
 qp_list_headers_tl qlht2,
-jtf_rs_salesreps jrs1,
-jtf_rs_salesreps jrs2,
-(select jrret.* from jtf_rs_resource_extns_tl jrret where jrret.language=userenv('lang') and jrret.category in ('EMPLOYEE','OTHER','PARTY','PARTNER','SUPPLIER_CONTACT')) jrret1,
-(select jrret.* from jtf_rs_resource_extns_tl jrret where jrret.language=userenv('lang') and jrret.category in ('EMPLOYEE','OTHER','PARTY','PARTNER','SUPPLIER_CONTACT')) jrret2,
 hz_cust_profile_classes hcpc1,
 hz_cust_profile_classes hcpc2,
 oe_transaction_types_tl ottt1,
 oe_transaction_types_tl ottt2,
 hr_all_organization_units_vl haouv1,
 hr_all_organization_units_vl haouv2,
-(select x.* from (select max(avtab.vat_tax_id) over (partition by avtab.set_of_books_id, avtab.tax_code) max_vat_tax_id, avtab.* from ar_vat_tax_all_b avtab where sysdate between avtab.start_date and nvl(avtab.end_date,sysdate)) x where x.vat_tax_id=x.max_vat_tax_id) avtab1,
-(select x.* from (select max(avtab.vat_tax_id) over (partition by avtab.set_of_books_id, avtab.tax_code) max_vat_tax_id, avtab.* from ar_vat_tax_all_b avtab where sysdate between avtab.start_date and nvl(avtab.end_date,sysdate)) x where x.vat_tax_id=x.max_vat_tax_id) avtab2,
-ra_terms_tl rtt1,
-ra_terms_tl rtt2,
 ar_dunning_letter_sets adls1,
 ar_dunning_letter_sets adls2,
 ar_statement_cycles ascl1,
@@ -173,12 +268,6 @@ hca.price_list_id=qlht1.list_header_id(+) and
 hcsua.price_list_id=qlht2.list_header_id(+) and
 qlht1.language(+)=userenv('lang') and
 qlht2.language(+)=userenv('lang') and
-hca.primary_salesrep_id=jrs1.salesrep_id(+) and
-hcsua.primary_salesrep_id=jrs2.salesrep_id(+) and
-nvl(hcsua.org_id,hcasa.org_id)=jrs1.org_id(+) and
-nvl(hcsua.org_id,hcasa.org_id)=jrs2.org_id(+) and
-jrs1.resource_id=jrret1.resource_id(+) and
-jrs2.resource_id=jrret2.resource_id(+) and
 hcp1.profile_class_id=hcpc1.profile_class_id(+) and
 hcp2.profile_class_id=hcpc2.profile_class_id(+) and
 hca.order_type_id=ottt1.transaction_type_id(+) and
@@ -187,23 +276,39 @@ ottt1.language(+)=userenv('lang') and
 ottt2.language(+)=userenv('lang') and
 hca.warehouse_id=haouv1.organization_id(+) and
 hcsua.warehouse_id=haouv2.organization_id(+) and
-hca.tax_code=avtab1.tax_code(+) and
-hcsua.tax_code=avtab2.tax_code(+) and
-hou.set_of_books_id=avtab1.set_of_books_id(+) and
-hou.set_of_books_id=avtab2.set_of_books_id(+) and
-nvl(hcp1.standard_terms,hca.payment_term_id)=rtt1.term_id(+) and
-nvl(hcp2.standard_terms,hcsua.payment_term_id)=rtt2.term_id(+) and
-rtt1.language(+)=userenv('lang') and
-rtt2.language(+)=userenv('lang') and
 hcp1.dunning_letter_set_id=adls1.dunning_letter_set_id(+) and
 hcp2.dunning_letter_set_id=adls2.dunning_letter_set_id(+) and
 hcp1.statement_cycle_id=ascl1.statement_cycle_id(+) and
 hcp2.statement_cycle_id=ascl2.statement_cycle_id(+) and
 hcp1.collector_id=ac1.collector_id(+) and
 hcp2.collector_id=ac2.collector_id(+)
+) x,
+jtf_rs_salesreps jrs1,
+jtf_rs_salesreps jrs2,
+(select jrret.* from jtf_rs_resource_extns_tl jrret where jrret.language=userenv('lang') and jrret.category in ('EMPLOYEE','OTHER','PARTY','PARTNER','SUPPLIER_CONTACT')) jrret1,
+(select jrret.* from jtf_rs_resource_extns_tl jrret where jrret.language=userenv('lang') and jrret.category in ('EMPLOYEE','OTHER','PARTY','PARTNER','SUPPLIER_CONTACT')) jrret2,
+(select x.* from (select max(avtab.vat_tax_id) over (partition by avtab.set_of_books_id, avtab.tax_code) max_vat_tax_id, avtab.* from ar_vat_tax_all_b avtab where sysdate between avtab.start_date and nvl(avtab.end_date,sysdate)) x where x.vat_tax_id=x.max_vat_tax_id) avtab1,
+(select x.* from (select max(avtab.vat_tax_id) over (partition by avtab.set_of_books_id, avtab.tax_code) max_vat_tax_id, avtab.* from ar_vat_tax_all_b avtab where sysdate between avtab.start_date and nvl(avtab.end_date,sysdate)) x where x.vat_tax_id=x.max_vat_tax_id) avtab2,
+ra_terms_tl rtt1,
+ra_terms_tl rtt2
+where
+x.payment_term_id=rtt1.term_id(+) and
+x.site_payment_term_id=rtt2.term_id(+) and
+rtt1.language(+)=userenv('lang') and
+rtt2.language(+)=userenv('lang') and
+x.tax_code=avtab1.tax_code(+) and
+x.site_tax_code=avtab2.tax_code(+) and
+x.set_of_books_id=avtab1.set_of_books_id(+) and
+x.set_of_books_id=avtab2.set_of_books_id(+) and
+x.primary_salesrep_id=jrs1.salesrep_id(+) and
+x.site_primary_salesrep_id=jrs2.salesrep_id(+) and
+x.org_id=jrs1.org_id(+) and
+x.org_id=jrs2.org_id(+) and
+jrs1.resource_id=jrret1.resource_id(+) and
+jrs2.resource_id=jrret2.resource_id(+)
 order by
-hp.party_name,
-hou.name,
-ftt.territory_short_name,
-address,
-site_use
+x.party_name,
+x.operating_unit,
+x.country,
+x.address,
+x.site_use

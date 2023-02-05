@@ -35,6 +35,9 @@
  mov.order_type,
  mov.order_number,
  --
+ mov.new_date,
+ mov.new_quantity,
+ --
  mov.suggested_order_date,
  mov.suggested_start_date,
  mov.days_from_today,
@@ -45,6 +48,11 @@
  --
  mov.qty,
  mov.released_qty,
+ --
+ mov.implement_date,
+ mov.implement_quantity_rate,
+ mov.implement_as,
+ mov.implement_location,
  --
  mov.firm,
  mov.firm_date,
@@ -62,6 +70,12 @@
  --
  mov.order_priority,
  mov.using_assembly,
+ mov.alternate_bom_designator,
+ mov.alternate_routing_designator,
+ mov.line_code,
+ mov.schedule_group,
+ mov.build_sequence,
+ mov.planning_group,
  --
  mov.intransit_lt,
  mov.planning_time_fence_date,
@@ -286,6 +300,38 @@ from
    mov.order_type_text                             order_type,
    mov.order_number                                order_number,
    --
+   case when mov.firm_date is not null
+   then trunc(mov.firm_date)
+   else
+    case when
+        mov.firm_planned_type = 1 and
+        (   (mov.source_table = 'MSC_SUPPLIES' and mov.order_type in (1,3,5,51,53,76,77,78,79,81))
+         or (mov.source_table = 'MSC_SUPPLIES' and mov.order_type = 2 and mov.source_organization_id != mov.organization_id)
+         or (mov.source_table = 'MSC_DEMANDS' and mov.order_type in (29,30,53,54))
+        )
+    then
+      case when (mov.source_table = 'MSC_DEMANDS' and mov.order_type in (53,54))
+      then nvl(mov.ship_date,mov.new_due_date)
+      else trunc(greatest(sysdate,mov.new_due_date))
+      end
+    else
+      to_date(null)
+    end
+   end                                             new_date,
+   case when mov.firm_quantity is not null
+   then mov.firm_quantity
+   else
+    case when
+        mov.firm_planned_type = 1 and
+        (   (mov.source_table = 'MSC_SUPPLIES' and mov.order_type in (1,3,5,51,53,76,77,78,79,81))
+         or (mov.source_table = 'MSC_SUPPLIES' and mov.order_type = 2 and mov.source_organization_id != mov.organization_id)
+         or (mov.source_table = 'MSC_DEMANDS' and mov.order_type in (29,30,53,54))
+        )
+    then abs(mov.quantity_rate)
+    else to_number(null)
+    end
+   end                                             new_quantity,
+   --
    trunc(mov.new_order_date)                       suggested_order_date,
    trunc(mov.new_start_date)                       suggested_start_date,
    mov.days_from_today                             days_from_today,
@@ -296,6 +342,40 @@ from
    --
    mov.quantity_rate                               qty,
    mov.implemented_quantity                        released_qty,
+   --
+   mov.implement_date,
+   mov.implement_quantity_rate,
+   mov.implement_as_text implement_as,
+   coalesce(
+    (select
+      mtps.location
+     from
+      msc_trading_partner_sites&a2m_dblink mtps,
+      msc_trading_partners&a2m_dblink mtp
+     where
+      mtp.partner_id = mtps.partner_id and
+      mtp.sr_tp_id = case when mov.source_table = 'MSC_DEMANDS' and mov.order_type= 53 then mov.dest_org_id else mov.organization_id end and
+      mtp.sr_instance_id = mov.sr_instance_id and
+      mtps.sr_tp_site_id = mov.implement_location_id and
+      mtp.partner_type = 3 and
+      rownum <= 1
+    ),
+    (select
+      mla.location_code
+     from
+      msc_location_associations&a2m_dblink mla,
+      msc_trading_partners&a2m_dblink mtp
+     where
+      mtp.sr_instance_id = mla.sr_instance_id and
+      mtp.partner_id = mla.partner_id and
+      mtp.sr_tp_id = mla.organization_id and
+      mtp.sr_tp_id = case when mov.source_table = 'MSC_DEMANDS' and mov.order_type= 53 then mov.dest_org_id else mov.organization_id end and
+      mtp.sr_instance_id = mov.sr_instance_id and
+      mla.location_id = mov.implement_location_id and
+      mtp.partner_type = 3 and
+      rownum <= 1
+    )
+   )                                               implement_location,
    --
    decode(mov.firm_planned_type
       , 2, null
@@ -319,6 +399,12 @@ from
    --
    mov.demand_priority                             order_priority,
    mov.using_assembly_segments                     using_assembly,
+   mov.alternate_bom_designator                    alternate_bom_designator,
+   mov.alternate_routing_designator                alternate_routing_designator,
+   mov.line_code                                   line_code,
+   mov.schedule_group_name                         schedule_group,
+   mov.build_sequence	                             build_sequence,
+   mov.planning_group                              planning_group,
    --
    mov.intransit_lead_time                         intransit_lt,
    trunc(msi.planning_time_fence_date)             planning_time_fence_date,
@@ -364,7 +450,7 @@ from
    case when mov.source_table = 'MSC_DEMANDS'
    then 1
    else null
-   end                                             demand_cnt   
+   end                                             demand_cnt
   from
    msc_orders_v&a2m_dblink          mov,
    msc_apps_instances&a2m_dblink    mai,
@@ -373,7 +459,7 @@ from
   where
       mov.sr_instance_id    = mai.instance_id
   and mov.plan_id           = mp.plan_id
-  and mov.category_set_id   = nvl(:p_category_set_id,(select mcs.category_set_id from msc_category_sets&a2m_dblink mcs where mcs.sr_instance_id = mov.sr_instance_id and mcs.default_flag = 1))
+  and mov.category_set_id   = nvl(:p_category_set_id,(select mcs.category_set_id from msc_category_sets&a2m_dblink mcs where mcs.default_flag = 1 and rownum <= 1))
   and mov.sr_instance_id    = msi.sr_instance_id
   and mov.plan_id           = msi.plan_id
   and mov.organization_id   = msi.organization_id

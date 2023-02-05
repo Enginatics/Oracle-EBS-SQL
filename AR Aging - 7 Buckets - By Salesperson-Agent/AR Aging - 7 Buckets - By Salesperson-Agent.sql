@@ -23,6 +23,7 @@ select
  x1.cust_name                        customer,
  x1.cust_no                          customer_Number,
  &lp_invoice_cols_s
+ x1.revaluation_from_currency        amounts_currency,
  nvl(sum(x1.amt_due_original),0)     original_amount,
  nvl(sum(x1.amt_due_remaining),0)    outstanding_amount,
  &lp_on_acc_summ_cols
@@ -46,6 +47,7 @@ from
    x.class,
    x.cons_billing_number,
    x.invnum,
+   x.invoice_currency_code,
    x.due_date,
    x.days_past_due,
    x.amt_due_original,
@@ -136,7 +138,7 @@ from
           xxen_ar_arxagrw_pkg.bucket_category,
           :p_in_as_of_date_low
         ) 
-    else to_number(null) end b0,
+     else to_number(null) end b0,
      case when xxen_ar_arxagrw_pkg.bucket_line_type(0) is not null
      then
        arpt_sql_func_util.bucket_function
@@ -149,7 +151,7 @@ from
           xxen_ar_arxagrw_pkg.bucket_category,
           :p_in_as_of_date_low
         ) 
-    else to_number(null) end b1,
+     else to_number(null) end b1,
      case when xxen_ar_arxagrw_pkg.bucket_line_type(0) is not null
      then
        arpt_sql_func_util.bucket_function
@@ -162,7 +164,7 @@ from
           xxen_ar_arxagrw_pkg.bucket_category,
           :p_in_as_of_date_low
         ) 
-    else to_number(null) end b2,
+     else to_number(null) end b2,
      case when xxen_ar_arxagrw_pkg.bucket_line_type(0) is not null
      then
        arpt_sql_func_util.bucket_function
@@ -175,7 +177,7 @@ from
           xxen_ar_arxagrw_pkg.bucket_category,
           :p_in_as_of_date_low
         ) 
-    else to_number(null) end b3,
+     else to_number(null) end b3,
      case when xxen_ar_arxagrw_pkg.bucket_line_type(0) is not null
      then
        arpt_sql_func_util.bucket_function
@@ -188,7 +190,7 @@ from
           xxen_ar_arxagrw_pkg.bucket_category,
           :p_in_as_of_date_low
         ) 
-    else to_number(null) end b4,
+     else to_number(null) end b4,
      case when xxen_ar_arxagrw_pkg.bucket_line_type(0) is not null
      then
        arpt_sql_func_util.bucket_function
@@ -201,7 +203,7 @@ from
           xxen_ar_arxagrw_pkg.bucket_category,
           :p_in_as_of_date_low
         ) 
-    else to_number(null) end b5,
+     else to_number(null) end b5,
      case when xxen_ar_arxagrw_pkg.bucket_line_type(0) is not null
      then
        arpt_sql_func_util.bucket_function
@@ -214,11 +216,12 @@ from
           xxen_ar_arxagrw_pkg.bucket_category,
           :p_in_as_of_date_low
         ) 
-    else to_number(null) end b6,
+     else to_number(null) end b6,
      c.code_combination_id,
      c.chart_of_accounts_id,
      ci.cons_billing_number  cons_billing_number,
      arpt_sql_func_util.get_org_trx_type_details(ps.cust_trx_type_id,ps.org_id) invoice_type,
+     ps.invoice_currency_code,
      gsob.currency_code functional_currency,
      gsob.name ledger,
      ps.org_id
@@ -619,6 +622,7 @@ from
      app.chart_of_accounts_id,
      ci.cons_billing_number cons_billing_number,
      initcap(:p_payment_meaning),
+     ps.invoice_currency_code,
      gsob.currency_code functional_currency,
      gsob.name ledger,
      ps.org_id
@@ -821,6 +825,7 @@ from
      c.chart_of_accounts_id,
      ci.cons_billing_number  cons_billing_number,
      initcap(:p_risk_meaning),
+     ps.invoice_currency_code,
      gsob.currency_code functional_currency,
      gsob.name ledger,
      ps.org_id
@@ -868,10 +873,4 @@ from
                       and ps.class='DM'
                       and ps.gl_date<= (:p_in_as_of_date_low))
     and gsob.set_of_books_id = cr.set_of_books_id
-    &lp_bal_seg_low
-    &lp_bal_seg_high
-    and ps.cons_inv_id = ci.cons_inv_id(+)
-    and sales.salesrep_id = -3
-    and sales.org_id = ps.org_id
-    and jrrev.resource_id = sales.resource_id
- 
+    &lp_bal_

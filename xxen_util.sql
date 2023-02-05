@@ -434,6 +434,17 @@ function geolocation(p_service_url in varchar2, p_ip_address in varchar2, p_path
 /***********************************************************************************************/
 function parameter_value(p_parameter_name in varchar2 default null, p_parameter_bind in varchar2 default null) return varchar2;
 
+/***********************************************************************************************/
+/*  replaces first occurrence of substring in a string                                         */
+/***********************************************************************************************/
+function replace_first_occurrence(p_source in clob, p_template in clob, p_replacement in clob) return clob;
+
+/***********************************************************************************************/
+/*  return the original order line id in case of line splitting for DIFOT data.                */
+/*  it is required as a workaround for an optimizer bug not executing the connect by correctly */
+/***********************************************************************************************/
+function orig_order_line_id(p_split_from_line_id in number) return number;
+
 end xxen_util;
 /
 
@@ -2845,6 +2856,32 @@ begin
   end loop;
   return l_value;
 end parameter_value;
+
+
+function replace_first_occurrence(p_source in clob, p_template in clob, p_replacement in clob) return clob is
+l_value number;
+begin
+  return concat(concat(substr(p_source,1,instr(p_source,p_template,1,1)-1), p_replacement),substr(p_source,instr(p_source,p_template,1,1)+length(p_template)));
+end replace_first_occurrence;
+
+
+function orig_order_line_id(p_split_from_line_id in number) return number is
+l_orig_line_id number;
+begin
+  for c in (
+  select
+  decode(connect_by_isleaf,1,oola2.line_id) orig_line_id
+  from
+  ont.oe_order_lines_all oola2
+  where
+  decode(connect_by_isleaf,1,oola2.line_id) is not null
+  connect by prior oola2.split_from_line_id=oola2.line_id
+  start with p_split_from_line_id=oola2.line_id
+  ) loop
+    l_orig_line_id:=c.orig_line_id;
+  end loop;
+  return l_orig_line_id;
+end orig_order_line_id;
 
 
 end xxen_util;

@@ -54,7 +54,7 @@ obpha.billing_plan_header_id=obpla.billing_plan_header_id and
 obpla.billed_line_id=oola2.line_id(+)
 order by
 gl.name,
-haouv.name,
+hou.name,
 ooha.order_number,
 line,
 obpla.sequence_number

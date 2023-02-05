@@ -5,35 +5,30 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC User-Defined and Rolled Up Costs
--- Description: Use this report to find items with both user-defined (manually entered) and rolled up costs.  Useful to find assemblies where the item costs have been accidentally doubled-up.
+-- Description: Use this report to find items with both user-defined (manually entered) and rolled up costs, for material and other cost elements.  Useful to find rolled up assemblies where the item costs have been accidentally doubled-up.
+
+Parameters:
+===========
+Cost Type: enter the cost type to report (mandatory).
+Category Set 1:  any item category you wish, typically the Cost or Product Line category set (optional).
+Category Set 2:  any item category you wish, typically the Inventory category set (optional).
+Assignment Set:  enter the sourcing rule assignment set, used when transferring items between inventory organizations on internal requisitions.
+Item Number:  enter the specific item number(s) you wish to report (optional).
+Organization Code:  enter the specific inventory organization(s) you wish to report (optional).
+Operating Unit:  enter the specific operating unit(s) you wish to report (optional).
+Ledger:  enter the specific ledger(s) you wish to report (optional).
 
 /* +=============================================================================+
--- |  Copyright 2010-2021 Douglas Volz Consulting, Inc.                          |
--- |  All rights reserved.                                                       |
--- |  Permission to use this code is granted provided the original author is     |
--- |  acknowledged.  No warranties, express or otherwise is included in this     |
--- |  permission.                                                                |
+-- |  Copyright 2010-2023 Douglas Volz Consulting, Inc.
+-- |  All rights reserved.
+-- |  Permission to use this code is granted provided the original author is
+-- |  acknowledged.  No warranties, express or otherwise is included in this
+-- |  permission.
 -- +=============================================================================+
 -- |
 -- |  Original Author: Douglas Volz (doug@volzconsulting.com)
 -- |
 -- |  Program Name:  xxx_user_defined_rolled_up_cost_rept.sql
--- |
--- |  Parameters:
--- | 
--- |  p_assignment_set        -- The assignment set for the sourcing rules (optional)
--- |  p_cost_type             -- Desired cost type, mandatory
--- |  p_item_number           -- Specific item number, to get all values enter a
--- |                             null or blank value (optional)
--- |  p_org_code             -- Specific inventory organization you wish to report (optional)
--- |  p_operating_unit       -- Operating_Unit you wish to report, leave blank for all
--- |                            operating units (optional) 
--- |  p_ledger               -- general ledger you wish to report, leave blank for all
--- |                            ledgers (optional)
--- | 
--- |  Description:
--- |  Use the below SQL script to find items with both user-defined and rolled up
--- |  item costs.  For material and other cost elements.
 -- | 
 -- |  Version Modified on Modified  by   Description
 -- |  ======= =========== ============== =========================================
@@ -43,7 +38,9 @@
 -- |  1.2     19 Oct 2019 Douglas Volz   Add columns for non-material costs
 -- |  1.3     27 Jan 2020 Douglas Volz   Added Operating_Unit parameter and outer
 -- |                                     join for Item_Type.
--- |  1.4     07 May 2021 Douglas Volz   Modify for multi-language tables.
+-- |  1.4     05 May 2021 Douglas Volz   Modify for multi-language tables.
+-- |  1.5     12 Jan 2023 Douglas Volz   Correction for definition of manually entered 
+-- |                                     material costs.
 -- +=============================================================================+*/
 -- Excel Examle Output: https://www.enginatics.com/example/cac-user-defined-and-rolled-up-costs/
 -- Library Link: https://www.enginatics.com/reports/cac-user-defined-and-rolled-up-costs/
@@ -87,8 +84,6 @@ select	nvl(gl.short_name, gl.name) Ledger,
 	 and	cicd.organization_id   = cic.organization_id
 	 and	cicd.cost_type_id      = cic.cost_type_id
 	 and	cicd.item_cost        <> 0
-	-- Bug fix for version 1.14
-	-- and	cicd.cost_element_id   = 1 -- Material_Costs
 	-- End bug fix for version 1.1
 	 and	cicd.cost_element_id   = 1)  Material_Sub_Element,
 	-- check to see if a bom exists
@@ -155,7 +150,9 @@ select	nvl(gl.short_name, gl.name) Ledger,
 	 and	cicd.item_cost         <> 0
 	 and	cicd.cost_element_id    = 1 -- Material_Costs
 	 and	cicd.level_type         = 1 -- This Level
-	 and	cicd.rollup_source_type in (1,2) -- manually entered or defaulted
+	 -- Revision for version 1.5
+	 -- and	cicd.rollup_source_type in (1,2) -- manually entered or defaulted
+	 and	cicd.rollup_source_type = 1      -- manually entered
 	 and	cicd.cost_element_id    = 1),0) Manual_Material_Costs,
 	nvl((select	sum(nvl(cicd.item_cost,0))
 	 from	cst_item_cost_details cicd
@@ -178,7 +175,9 @@ select	nvl(gl.short_name, gl.name) Ledger,
 	 and	cicd.item_cost         <> 0
 	 and	cicd.cost_element_id   <> 1 -- Material_Costs
 	 and	cicd.level_type         = 1 -- This Level
-	 and	cicd.rollup_source_type in (1,2) -- manually entered or defaulted
+	 -- Revision for version 1.5
+	 -- and	cicd.rollup_source_type in (1,2) -- manually entered or defaulted
+	 and	cicd.rollup_source_type = 1      -- manually entered
 	 and	cicd.cost_element_id    = 1),0) Manual_Other_Costs,
 	nvl((select	sum(nvl(cicd.item_cost,0))
 	 from	cst_item_cost_details cicd
@@ -188,7 +187,9 @@ select	nvl(gl.short_name, gl.name) Ledger,
 	 and	cicd.item_cost         <> 0
 	 and	cicd.cost_element_id   <> 1 -- Material_Costs
 	 and	cicd.level_type         = 2 -- Previous Level
-	 and	cicd.rollup_source_type = 3 -- rolled up material costs
+	 -- Revision for version 1.5
+	 -- and	cicd.rollup_source_type = 3      -- rolled up material costs
+	 and	cicd.rollup_source_type in (2,3) -- rolled up and defaulted material costs
 	 and	cicd.cost_element_id    = 1),0) Rolled_Up_Other_Costs,
 	msiv.creation_date Item_Creation_Date
 	-- End revision for version 1.2
@@ -291,12 +292,13 @@ and	exists
 		 from	cst_item_cost_details cicd
 		 where	cicd.organization_id    = cic.organization_id
 		 and	cicd.inventory_item_id  = cic.inventory_item_id
-		 -- fix for version 1.5
 		 and	cicd.cost_type_id       = cic.cost_type_id
 		 and	cicd.item_cost         <> 0
 		 and	cicd.level_type         = 1 -- This Level
 		 and	cicd.cost_element_id    = 1 -- Material_Costs
-		 and	cicd.rollup_source_type in (1,2)) -- manually entered or defaulted
+		 -- Revision for version 1.5
+		 -- and	cicd.rollup_source_type in (1,2)) -- manually entered or defaulted
+		 and	cicd.rollup_source_type = 1)      -- manually entered
 -- ===================================================================
 -- Check to see if costs exist for Previous Levels / Rolled Up Costs
 -- ===================================================================
@@ -305,7 +307,6 @@ and	exists
 		 from	cst_item_cost_details cicd
 		 where	cicd.organization_id    = cic.organization_id
 		 and	cicd.inventory_item_id  = cic.inventory_item_id
-		 -- fix for version 1.5
 		 and	cicd.cost_type_id       = cic.cost_type_id
 		 and	cicd.item_cost         <> 0
 		 and	cicd.cost_element_id    = 1 -- Material_Costs
