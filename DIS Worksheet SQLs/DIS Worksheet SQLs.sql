@@ -37,7 +37,7 @@ where
 ) ads,
 (
 select
-eqs.qs_doc_owner,
+upper(eqs.qs_doc_owner) qs_doc_owner,
 eqs.qs_doc_name,
 eqs.qs_doc_details,
 count(*) access_count,
@@ -47,7 +47,7 @@ from
 where
 2=2
 group by
-eqs.qs_doc_owner,
+upper(eqs.qs_doc_owner),
 eqs.qs_doc_name,
 eqs.qs_doc_details
 ) eqs

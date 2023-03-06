@@ -25,13 +25,14 @@ eqs.qs_num_rows row_count,
 &object_columns
 length(eqs.qs_object_use_key)-length(translate(eqs.qs_object_use_key,'x.','x'))+1 folder_count,
 eqs.qs_object_use_key use_key,
-eqs.qs_doc_name||': '||eqs.qs_doc_details||' ('||eqs.qs_doc_owner||')' workbook_sheet,
+eqs.qs_doc_name||': '||eqs.qs_doc_details||' ('||eqs.qs_doc_owner_||')' workbook_sheet,
 eqs.qs_created_by created_by
 from
 (
 select
 trim(regexp_substr(eqs.qs_object_use_key,'[^\.]+',1,rowgen.column_value)) obj_id,
 greatest(nvl(eqs.qs_act_cpu_time,0),nvl(eqs.qs_act_elap_time,0)) seconds,
+upper(eqs.qs_doc_owner) qs_doc_owner_,
 eqs.*
 from
 &restrict_to_latest_workbook1
@@ -44,22 +45,21 @@ where
 &eul.eul5_objs eo,
 (
 select
-ed.doc_name,
-fu.user_name,
-ed.doc_developer_key
+nvl(fu.user_name,eeu.eu_username) doc_owner,
+ed.*
 from
 &eul.eul5_documents ed,
 &eul.eul5_eul_users eeu,
 fnd_user fu
 where
 ed.doc_eu_id=eeu.eu_id and
-case when eeu.eu_username like '#%' and eeu.eu_username not like '#%#%' then to_number(substr(eeu.eu_username,2)) end=fu.user_id
+case when eeu.eu_username like '#%' then to_number(substr(eeu.eu_username,2)) end=fu.user_id
 ) ed
 where
 2=2 and
 translate(eqs.obj_id,'x0123456789','x') is null and
 eqs.obj_id=eo.obj_id(+) and
 eqs.qs_doc_name=ed.doc_name(+) and
-eqs.qs_doc_owner=ed.user_name(+)
+eqs.qs_doc_owner_=ed.doc_owner(+)
 order by
 eqs.qs_id desc

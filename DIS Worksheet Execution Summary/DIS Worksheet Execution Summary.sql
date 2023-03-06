@@ -44,7 +44,7 @@ from
 select
 eqs.qs_id id,
 eqs.qs_created_by,
-eqs.qs_doc_owner workbook_owner,
+upper(eqs.qs_doc_owner) workbook_owner,
 eqs.qs_doc_name workbook,
 eqs.qs_doc_details sheet,
 trunc(eqs.qs_created_date,'month') month,

@@ -45,6 +45,7 @@ Ledger:  enter the specific ledger(s) you wish to report (optional).
 -- |                                     and add Show WIP Job and Show WIP OSP parameters.
 -- |   1.17   14 Aug 2022 Douglas Volz   Screen out zero job close variances for Flow Schedules.
 -- |  1.18   22 Aug 2022 Douglas Volz    Improve performance with outer joins and streamline dynamic SQL.
+-- |  1.19   26 Feb 2023 Douglas Volz    Fix to show job close variances.
 -- +=============================================================================+*/
 
 
@@ -127,6 +128,7 @@ from	wip_entities we,
 	-- Revision for version 1.18
 	&project_tables
 	&wip_osp_tables
+	-- Revision for version 1.17
 	&wip_sla_tables
 	(select	mp.organization_code,
 		mp.organization_id,
@@ -199,9 +201,18 @@ from	wip_entities we,
 	 and	wfs.organization_id (+)          = wta.organization_id
 	 -- End revision for version 1.18
 	 and	mp.organization_id               = wta.organization_id
+	 -- Revision for version 1.19
+	 -- Improve logic to screen out zero job close and flow schedule variances
 	 -- Revision for version 1.17
 	 -- Do not show zero job and flow schedule close variances
-	 and	(wt.transaction_type <> 6 and wta.base_transaction_value <> 0)
+	 -- and	(wt.transaction_type <> 6 and wta.base_transaction_value <> 0)
+	 and	1 = case
+			when wt.transaction_type =  5 and wta.base_transaction_value = 0 then 2
+			when wt.transaction_type =  6 and wta.base_transaction_value = 0 then 2
+			when wt.transaction_type =  7 and wta.base_transaction_value = 0 then 2
+			else 1
+		     end
+	 -- End for revision for version 1.19
 	 and	2=2                              -- p_org_code, p_trx_date_from, p_trx_date_to, p_wip_job
 	) acct_dist
 -- ========================================================
@@ -221,7 +232,7 @@ and	br.resource_id (+)               = acct_dist.resource_id
 -- ========================================================
 and	wac.class_code (+)               = acct_dist.class_code
 -- Revision for version 1.2
-and	wac.organization_id (+)          = acct_dist.organization_id
+and	wac.organization_id              = acct_dist.organization_id
 and	we.wip_entity_id                 = acct_dist.wip_entity_id
 -- ========================================================
 -- Inventory Org accounting period joins

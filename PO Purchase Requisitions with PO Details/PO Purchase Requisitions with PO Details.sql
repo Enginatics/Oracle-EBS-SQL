@@ -19,19 +19,17 @@ with req as (select
    ppx.full_name preparer_name,
    prha.description description,
    nvl(xxen_util.meaning(prha.authorization_status,'AUTHORIZATION STATUS',201) ,prha.authorization_status) status,
-   prha.note_to_authorizer note_to_authorizor,
+   prha.note_to_authorizer,
    prha.agent_return_flag agent_return_flag,
    xxen_util.meaning(prha.closed_code,'DOCUMENT STATE',201) closed_status,
    prla.line_num line_number,
-   prla.item_revision line_revision,
    trunc(prla.creation_date) line_creation_date,
+   xxen_util.meaning(prla.source_type_code,'REQUISITION SOURCE TYPE',201) line_source_type,
    xxen_util.meaning(prla.purchase_basis,'PURCHASE BASIS',201) line_type,
    xxen_util.meaning(prla.order_type_lookup_code,'ORDER TYPE',201) line_order_type,
-   prla.need_by_date need_by_date,
-   ppx2.full_name requestor_name,
-   nvl(hrl.location_code,(substrb(rtrim(hzl.address1)||'-'||rtrim(hzl.city),1,60))) deliver_to_location,
+   msiv.concatenated_segments item,
+   prla.item_revision item_revision,
    fnd_flex_xml_publisher_apis.process_kff_combination_1('c_flex_cat_disp', 'INV', 'MCAT', mc.structure_id, NULL, mc.category_id, 'ALL', 'Y', 'VALUE') category,
-   nvl2(prla.item_id ,fnd_flex_xml_publisher_apis.process_kff_combination_1('c_flex_item_disp', 'INV', 'MSTK', 101, msiv.organization_id, msiv.inventory_item_id, 'ALL', 'Y', 'VALUE') ,null) item,
    nvl(prla.item_description ,msiv.description) line_description,
    prla.unit_meas_lookup_code uom,
    prla.quantity,
@@ -40,6 +38,16 @@ with req as (select
    prla.quantity_delivered,
    prla.unit_price unit_price,
    prla.amount amount,
+   prla.need_by_date need_by_date,
+   ppx2.full_name requestor_name,
+   (select mp.organization_code from mtl_parameters mp where mp.organization_id = prla.destination_organization_id) destination_organization,
+   nvl(hrl.location_code,(substrb(rtrim(hzl.address1)||'-'||rtrim(hzl.city),1,60))) deliver_to_location,
+   (select mp.organization_code from mtl_parameters mp where mp.organization_id = prla.source_organization_id) source_organization,
+   prla.source_subinventory,    
+   prla.suggested_vendor_name suggested_supplier,
+   prla.suggested_vendor_location suggested_supplier_site,
+   prla.suggested_vendor_contact suggested_supplier_contact,
+   prla.suggested_vendor_product_code supplier_item,
    prla.note_to_agent note_to_agent,
    xxen_util.meaning(nvl(prla.on_rfq_flag,'N'),'YES/NO',201) on_rfq,
    prla2.line_num parent_req_line_number,
@@ -49,7 +57,13 @@ with req as (select
    pah.cancelled_by,
    prla.requisition_header_id,
    prla.requisition_line_id,
-   prla.line_location_id
+   prla.line_location_id,
+   prha.attribute_category req_hdr_dff_cat,
+   prha.rowid req_hdr_rowid,
+   prla.attribute_category req_line_dff_cat,
+   prla.rowid req_line_rowid,
+   msiv.attribute_category item_dff_category,
+   msiv.rowid item_rowid
    &lp_req_dist_columns
   from 
    po_requisition_headers_all prha,
@@ -97,7 +111,6 @@ with req as (select
    and prha.type_lookup_code = 'PURCHASE'
    and nvl(prha.contractor_requisition_flag , 'N') <> 'Y'
    and nvl(prha.authorization_status,'INCOMPLETE') != 'INCOMPLETE'
-   and prla.source_type_code = 'VENDOR'
    and 1=1 ),
 po as (select 
    haouv.name po_operating_unit,
@@ -117,6 +130,9 @@ po as (select
    msiv.item po_line_item,
    nvl(pla.item_description,msiv.description) po_line_description,
    plla.shipment_num po_shipment_number,
+   plla.need_by_date po_shipment_need_by_date,
+   plla.promised_date po_shipment_promised_date,
+   plla.firm_date po_shipment_firm_date,
    plla.unit_meas_lookup_code po_uom,
    plla.quantity - nvl(plla.quantity_cancelled,0) po_quantity_ordered,
    plla.quantity_accepted po_quantity_accepted,
@@ -138,7 +154,11 @@ po as (select
    hl1.location_code po_ship_to_location,
    plla.po_header_id,
    plla.po_line_id,
-   plla.line_location_id 
+   plla.line_location_id,
+   pha.attribute_category po_hdr_dff_cat,
+   pha.rowid po_hdr_rowid,
+   pla.attribute_category po_line_dff_cat,
+   pla.rowid po_line_rowid
    &lp_po_dist_columns
   from 
    po_line_locations_all plla,
@@ -157,7 +177,7 @@ po as (select
    (select 
      fspa.org_id,
      msiv.inventory_item_id,
-     fnd_flex_xml_publisher_apis.process_kff_combination_1('c_flex_item_disp', 'INV', 'MSTK', 101, msiv.organization_id, msiv.inventory_item_id, 'ALL', 'Y', 'VALUE') item,
+     msiv.concatenated_segments item,
      xxen_util.meaning(msiv.item_type,'ITEM_TYPE',3) item_type,
      msiv.description
     from 
@@ -200,25 +220,35 @@ select
  req.cancelled_date,
  req.cancelled_reason,
  req.cancelled_by,
- req.note_to_authorizor,
+ req.note_to_authorizer,
  req.agent_return_flag,
  req.line_number,
- req.line_revision,
+ req.line_source_type,
  req.line_type,
  req.line_order_type,
  req.line_creation_date,
- req.need_by_date,
- req.requestor_name,
- req.deliver_to_location,
- req.category,
  req.item,
+ req.item_revision,
+ req.category,
  req.line_description,
+ req.need_by_date,
  req.unit_price, 
+ req.requestor_name,
+ req.destination_organization,
+ req.deliver_to_location,
+ req.source_organization,
+ req.source_subinventory,
+ req.suggested_supplier,
+ req.suggested_supplier_site,
+ req.suggested_supplier_contact,
+ req.supplier_item,
  &lp_req_line_columns_disp 
  &lp_req_dist_columns_disp
  req.note_to_agent,
  req.on_rfq,
  req.parent_req_line_number,
+ &lp_item_dff_cols
+ &lp_req_dff_cols
  po.po_vendor_name,
  po.po_vendor_number,
  po.po_vendor_site,
@@ -235,12 +265,16 @@ select
  po.po_line_item,
  po.po_line_description,
  po.po_shipment_number,
+ po.po_shipment_need_by_date,
+ po.po_shipment_promised_date,
+ po.po_shipment_firm_date,
  po.po_ship_to_organization,
  po.po_ship_to_location,
  po.po_unit_price,
  po.po_uom, 
  &lp_po_line_columns_disp 
  &lp_po_dist_columns_disp
+ &lp_po_dff_cols
  po.po_shipment_creation_date,
  po.po_shipment_cancelled_flag,
  po.po_shipment_cancelled_date,

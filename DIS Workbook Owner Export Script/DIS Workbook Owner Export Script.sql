@@ -5,13 +5,13 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: DIS Workbook Owner Export Script
--- Description: If Enginatics helps you with the Discoverer migration, this report generates a script for the mapping between workbook owners and fnd_user ids, which is required when running the Discoverer migration of customer EUL data on Enginatics' servers.
+-- Description: This export of workbook owners is required to remotely export workbook XMLs on the Enginatics environments for customers requiring support when migrating from Discoverer to Blitz Report.
 -- Excel Examle Output: https://www.enginatics.com/example/dis-workbook-owner-export-script/
 -- Library Link: https://www.enginatics.com/reports/dis-workbook-owner-export-script/
 -- Run Report: https://demo.enginatics.com/
 
 select
-'insert into xxen_discoverer_fnd_user xdfu values ('''||:eul||''','||fu.user_id||','''||fu.user_name||''',xxen_util.user_id(''ENGINATICS''),sysdate,xxen_util.user_id(''ENGINATICS''),sysdate);' insert_sql
+'insert into xxen_discoverer_fnd_user (eul,user_id,user_name) values ('''||:eul||''','||fu.user_id||','''||fu.user_name||''');' insert_sql
 from
 fnd_user fu
 where
@@ -23,6 +23,7 @@ from
 &eul.eul5_documents ed,
 &eul.eul5_eul_users eeu
 where
-ed.doc_batch=0 and
 ed.doc_eu_id=eeu.eu_id
 )
+union all
+select 'commit;' insert_sql from dual

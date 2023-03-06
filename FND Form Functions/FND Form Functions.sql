@@ -24,14 +24,14 @@ xxen_util.client_time(fffv.creation_date) creation_date,
 xxen_util.user_name(fffv.last_updated_by) last_updated_by,
 xxen_util.client_time(fffv.last_update_date) last_update_date
 from
-fnd_application_vl fav,
 fnd_form_functions_vl fffv,
+fnd_application_vl fav,
 fnd_form_vl ffv
 where
 1=1 and
+ffv.application_id=fav.application_id(+) and
 fffv.application_id=ffv.application_id(+) and
-fffv.form_id=ffv.form_id(+) and
-ffv.application_id=fav.application_id(+)
+fffv.form_id=ffv.form_id(+)
 order by
 ffv.form_name,
 fffv.function_name

@@ -65,6 +65,7 @@ with ap_inv as
   aia.payment_currency_code,
   aia.invoice_amount,
   aia.total_tax_amount,
+  aia.self_assessed_tax_amount,
   aia.amount_applicable_to_discount,
   aia.discount_amount_taken,
   aia.approved_amount,
@@ -80,6 +81,18 @@ with ap_inv as
   aia.doc_sequence_value,
   apsa.payment_priority,
   apsa.payment_num,
+  (select 
+   max(aca.check_date) 
+   from 
+   ap_invoice_payments_all aipa, 
+   ap_checks_all aca
+   where
+   aipa.check_id = aca.check_id and
+   aca.void_date is null and
+   aca.stopped_date is null and
+   aipa.invoice_id = apsa.invoice_id and
+   aipa.payment_num = apsa.payment_num
+  ) payment_date,
   apsa.gross_amount,
   apsa.amount_remaining/aia.payment_cross_rate*nvl(aia.exchange_rate,1) amount_remaining,
   &aging_bucket_cols1
@@ -120,6 +133,11 @@ with ap_inv as
   aila.amount line_amount,
   nvl(aila.base_amount,aila.amount) line_base_amount,
   aila.accounting_date line_accounting_date,
+  aila.tax_regime_code,
+  aila.tax,
+  aila.tax_jurisdiction_code,
+  aila.tax_rate_code,
+  aila.tax_rate,
   aida.distribution_line_number dist_line_number,
   xxen_util.meaning(aida.line_type_lookup_code,'INVOICE DISTRIBUTION TYPE',200) distribution_type,
   aida.period_name,
@@ -139,6 +157,7 @@ with ap_inv as
   xxen_util.segments_description(aida.price_var_code_combination_id) price_variance_account_desc,
   xxen_util.meaning(aida.dist_match_type,'MATCH_STATUS',200) dist_match_type,
   decode(aida.match_status_flag,'A','Validated','T','Tested','S','Stopped','Never Validated') dist_match_status,
+  (select pha.segment1 from po_headers_all pha, po_distributions_all pda where pha.po_header_id = pda.po_header_id and pda.po_distribution_id = nvl(aida.po_distribution_id,aila.po_distribution_id)) po_number,
   xxen_util.meaning(aida.assets_tracking_flag,'YES_NO',0) dist_asset_tracking_flag,
   aida.assets_addition_flag dist_assets_addition_flag,
   replace(aida.description,'~','-') dist_description,
@@ -396,6 +415,7 @@ case ap_inv.first_invoice when 'Y' then ap_invoices_utility_pkg.get_retained_tot
 case ap_inv.first_invoice when 'Y' then ap_invoices_utility_pkg.get_prepaid_amount(ap_inv.invoice_id) end  prepayments_applied_total,
 case ap_inv.first_invoice when 'Y' then ap_invoices_utility_pkg.get_amount_withheld(ap_inv.invoice_id) end witholding_total,
 case ap_inv.first_invoice when 'Y' then ap_inv.total_tax_amount end tax_total,
+case ap_inv.first_invoice when 'Y' then ap_inv.self_assessed_tax_amount end self_assessed_tax_amount,
 case ap_inv.first_invoice when 'Y' then ap_invoices_utility_pkg.get_freight_total(ap_inv.invoice_id, ap_inv.org_id) end freight_total,
 case ap_inv.first_invoice when 'Y' then ap_invoices_utility_pkg.get_misc_total(ap_inv.invoice_id, ap_inv.org_id) end miscellaneous_total,
 case ap_inv.first_invoice when 'Y'
@@ -422,6 +442,7 @@ case ap_inv.first_invoice when 'Y' then ap_inv.approved_amount_base end approved
 case ap_inv.first_invoice when 'Y' then ap_inv.amount_paid_base end amount_paid_base,
 --
 ap_inv.payment_num,
+ap_inv.payment_date,
 case ap_inv.first_psched when 'Y' then ap_inv.gross_amount end payment_num_gross_amount,
 case ap_inv.first_psched when 'Y' then ap_inv.amount_remaining end payment_num_amount_remaining,
 &aging_bucket_cols2

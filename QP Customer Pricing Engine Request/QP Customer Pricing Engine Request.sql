@@ -5,23 +5,25 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: QP Customer Pricing Engine Request
--- Description: This report requests Item Selling Price information by Customer across Price Lists from the Pricing Engine.
+-- Description: QP Customer Pricing Engine Request
+==============================
+This report requests Item Selling Price information by Customer across Price Lists from the Pricing Engine.
 
-The report also displays the Items Costs for the specified Organization, and based on the Unit Selling Price and Item Cost, displays a Margin Analysis.
+The report also displays the Items Costs for the specified Organization and based on the Unit Selling Price and Item Cost, displays a Margin Analysis.
 
 The report can be run in Summary or Detail Mode.
 
 In Summary Mode, the report will display a summary of Applied Price Lists, List Price, Adjustment Amount, Final Unit Selling Price, Accrual Amount, Charge Amount, Item Cost, and Margin per Customer, requested Price List and Item. Summary Records can be identified in the report with Record Type=Summary
 
-In Detail Mode, in additional to the summary information, the report will include the following reocrd types:
-- Detail Record Type which provides a break down of the Price List and Modifier Lines the pricing engine has applied in the calculation of the final unit selling price
+In Detail Mode, in additional to the summary information, the report will include the following record types:
+- Detail Record Type which provides a breakdown of the Price List and Modifier Lines the pricing engine has applied in the calculation of the final unit selling price
 - Pricing Attribute Record Type provides details of the Pricing Attributes considered by the Pricing Engine in selecting a specified Price List or Modifier
-- Qualifer Attribute Record Type provides details of any Qualifier Attributes considered by the Pricing Engine in selecting a specific Price List or Modifier
+- Qualifier Attribute Record Type provides details of any Qualifier Attributes considered by the Pricing Engine in selecting a specific Price List or Modifier
 
 Detail Record Types follow the Summary Record Type they apply to
 Pricing Attribute and Qualifier Attribute Record Types follow the Detail Record Type they apply to.
 
-Additionally, the report supports the following options
+Additionally, the report supports the following options:
 
 - Use Secondary Price Lists (Yes/No)
   When No, the report will restrict to displaying Prices on the requested Price Lists only
@@ -29,22 +31,22 @@ Additionally, the report supports the following options
 
 - Expand Price Breaks (Yes/No)
   When No, the report will display the pricing based on the requested Pricing Only
-  When Yes, the report will display one line per Price Break to provide an indication of the the unit selling price will vary across the Price Breaks and the impact that may have on margins
+  When Yes, the report will display one line per Price Break to provide an indication of the unit selling price will vary across the Price Breaks and the impact that may have on margins
 
 - Display Promotional Goods (Buy One Get One free type Promotions))
-  When No, the report will not display any Promotional Goods the Customer maybe eligibe to receive
+  When No, the report will not display any Promotional Goods the Customer maybe eligible to receive
   When Yes, the report will display any Promotional Goods the Customer maybe eligible to receive
 
 - Display Site Pricing Differences
   When No, the report will only check the Pricing Based on the specified Customer Accounts
   When Yes, the report will also check the Pricing based on the specified Ship To/Bill To Locations. 
 
-  If the pricing at the Customer Site is the same as at the Customer Level, only the Customer Level pricing is displayed in the report
+  If the pricing at the Customer Site is the same as at the Customer Level, only the Customer Level pricing is displayed in the report.
   If the pricing at the Customer Site differs to the pricing at the Customer Level, then both the Customer Pricing and Site Pricing is included in the report.
-  If a Ship To or Bill To location is not specified, and the Display Site Pricing Differences is set to Yes, the the report will check all active ship to sites for the Customer within the specified Operating Units.
+  If a Ship To or Bill To location is not specified, and the Display Site Pricing Differences is set to Yes, the report will check all active ship to sites for the Customer within the specified Operating Units.
 
 It is also possible to specify some additional Order Qualifiers to be considered by the Pricing Engine. These are: 
-- Organization - this is used as the Shipping Warehouse, It also determines from which Items can be slected and also determines the Organization from which the Item Costs are derived.
+- Organization - this is used as the Shipping Warehouse, It also determines from which Items can be selected and also determines the Organization from which the Item Costs are derived.
 - Sales Agreement
 - Order Source
 - Order Type

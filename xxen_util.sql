@@ -2861,7 +2861,11 @@ end parameter_value;
 function replace_first_occurrence(p_source in clob, p_template in clob, p_replacement in clob) return clob is
 l_value number;
 begin
-  return concat(concat(substr(p_source,1,instr(p_source,p_template,1,1)-1), p_replacement),substr(p_source,instr(p_source,p_template,1,1)+length(p_template)));
+  if(length(p_template)>0) then
+    return concat(concat(substr(p_source,1,instr(p_source,p_template,1,1)-1), p_replacement),substr(p_source,instr(p_source,p_template,1,1)+length(p_template)));
+  else
+    return p_source;
+  end if;
 end replace_first_occurrence;
 
 

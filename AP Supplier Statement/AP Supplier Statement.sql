@@ -13,7 +13,7 @@ DB package: AP_TP_STMT_PKG
 -- Library Link: https://www.enginatics.com/reports/ap-supplier-statement/
 -- Run Report: https://demo.enginatics.com/
 
-with q_supplier as (SELECT 
+with q_supplier as (select 
    asup.segment1 vendor_number,
    asup.vendor_name vendor_name,
    asup.vendor_name_alt vendor_name_alt,
@@ -25,74 +25,74 @@ with q_supplier as (SELECT
    ass.vat_registration_num vat_registration_num,
    hro.name organization_name,
    hro.organization_id organization_id,
-   AP_TP_STMT_PKG.balance_brought_forward(ass.vendor_id,ass.vendor_site_id,ass.org_id) balance_brought_forward
-  FROM 
+   ap_tp_stmt_pkg.balance_brought_forward(ass.vendor_id,ass.vendor_site_id,ass.org_id) balance_brought_forward
+  from 
    ap_suppliers asup,
    ap_supplier_sites_all ass,
    hr_operating_units hro
-  WHERE
+  where
    asup.vendor_id = ass.vendor_id
-   AND ass.org_id = hro.organization_id
-   AND asup.enabled_flag = 'Y' 
+   and ass.org_id = hro.organization_id
+   and asup.enabled_flag = 'Y' 
    &gc_reporting_entity 
    &gc_supplier_name 
    &gc_vend_type 
    &gc_pay_group 
    ),
-q_main as (SELECT 
+q_main as (select 
    'I' transaction_type,
    alc.displayed_field lookup_value,
    ai.invoice_type_lookup_code lookup_code,
    ai.invoice_num doc_number,
-   TO_CHAR(ai.invoice_date, 'DD-MON-YYYY') doc_date,
-   ai.payment_status_flag payment_status_flag,
-   TO_CHAR(ai.gl_date, 'DD-MON-YYYY') gl_date,
+   ai.invoice_date doc_date,
+   ai.payment_status_flag,
+   ai.gl_date,
    ai.invoice_currency_code currency_code,
-   ai.invoice_amount * NVL(ai.exchange_rate,1) accounted_amount,
+   ai.invoice_amount * nvl(ai.exchange_rate,1) accounted_amount,
    ai.invoice_amount entered_amount,
    ai.description description,
    gp.period_name gp_period_name,
    gp.period_num gp_period_num,
    gp.start_date gp_start_date,
-   AP_INVOICES_PKG.get_posting_status (ai.invoice_id) posting_status,
-   AP_INVOICES_PKG.get_wfapproval_status(ai.invoice_id,ai.org_id) approval_status,
-   AP_TP_STMT_PKG.invoice_validate_status(ai.invoice_id) validate_status,
-   fnd_date.date_to_chardate(ai.cancelled_date) cancel_date,
+   ap_invoices_pkg.get_posting_status (ai.invoice_id) posting_status,
+   ap_invoices_pkg.get_wfapproval_status(ai.invoice_id,ai.org_id) approval_status,
+   ap_tp_stmt_pkg.invoice_validate_status(ai.invoice_id) validate_status,
+   ai.cancelled_date cancel_date,
    ai.vendor_id,
    ai.vendor_site_id,
    'I' || ai.invoice_id id
-  FROM 
+  from 
    ap_invoices ai,
    gl_periods gp,
    gl_ledgers gled,
    ap_lookup_codes alc
-  WHERE
+  where
    gled.period_set_name = gp.period_set_name
-   AND gled.accounted_period_type = gp.period_type
-   AND gp.adjustment_period_flag ='N'
-   AND gled.ledger_id = ai.set_of_books_id
-   AND ai.invoice_type_lookup_code = alc.lookup_code
-   AND ai.invoice_type_lookup_code <> 'PREPAYMENT'
-   AND alc.lookup_type = 'INVOICE TYPE'
-   AND ai.gl_date BETWEEN gp.start_date AND gp.end_date
-   AND ai.gl_date BETWEEN :P_FROM_GL_DATE AND :P_TO_GL_DATE
-   AND AP_INVOICES_PKG.get_posting_status(ai.invoice_id) = DECODE(:P_ACCOUNTED,'ACCOUNTED','Y' ,'UNACCOUNTED','N' ,AP_INVOICES_PKG.get_posting_status(ai.invoice_id))
+   and gled.accounted_period_type = gp.period_type
+   and gp.adjustment_period_flag ='N'
+   and gled.ledger_id = ai.set_of_books_id
+   and ai.invoice_type_lookup_code = alc.lookup_code
+   and ai.invoice_type_lookup_code <> 'PREPAYMENT'
+   and alc.lookup_type = 'INVOICE TYPE'
+   and ai.gl_date between gp.start_date and gp.end_date
+   and ai.gl_date between :p_from_gl_date and :p_to_gl_date
+   and ap_invoices_pkg.get_posting_status(ai.invoice_id) = decode(:p_accounted,'ACCOUNTED','Y' ,'UNACCOUNTED','N' ,ap_invoices_pkg.get_posting_status(ai.invoice_id))
    and 1=1 
    &gc_unapproved_trx 
    &gc_currency 
    &gc_validate_inv 
    &gc_org_id 
-  UNION ALL 
-  SELECT 
+  union all 
+  select 
    'P' transaction_type,
    alc.displayed_field lookup_value,
    ac.payment_method_lookup_code lookup_code,
    to_char(ac.check_number)||'/'||ai.invoice_num doc_number,
-   TO_CHAR(ac.check_date, 'DD-MON-YYYY') doc_date,
-   NULL payment_status_flag,
-   TO_CHAR(aip.accounting_date, 'DD-MON-YYYY') gl_date,
+   ac.check_date doc_date,
+   null payment_status_flag,
+   aip.accounting_date gl_date,
    ac.currency_code currency_code,
-   aip.amount * NVL(aip.exchange_rate,1) accounted_amount,
+   aip.amount * nvl(aip.exchange_rate,1) accounted_amount,
    aip.amount entered_amount,
    ac.description description ,
    gp.period_name gp_period_name,
@@ -100,12 +100,12 @@ q_main as (SELECT
    gp.start_date gp_start_date,
    aip.accrual_posted_flag posting_status,
    alc1.displayed_field approval_status,
-   NULL validate_status,
-   NULL cancel_date,
+   null validate_status,
+   to_date(null) cancel_date,
    ac.vendor_id,
    ac.vendor_site_id,
    'P' || aip.invoice_payment_id id
-  FROM 
+  from 
    ap_invoices ai,
    ap_invoice_payments aip,
    ap_checks ac,
@@ -113,39 +113,39 @@ q_main as (SELECT
    gl_ledgers gled,
    ap_lookup_codes alc,
    ap_lookup_codes alc1
-  WHERE
+  where
    aip.check_id = ac.check_id
-   AND aip.invoice_id = ai.invoice_id
-   AND gled.period_set_name = gp.period_set_name
-   AND gled.accounted_period_type = gp.period_type
-   AND gp.adjustment_period_flag ='N'
-   AND gled.ledger_id = aip.set_of_books_id
-   AND ac.payment_type_flag = alc.lookup_code
-   AND alc.lookup_type = 'PAYMENT TYPE'
-   AND alc1.lookup_type = 'CHECK STATE'
-   AND ac.status_lookup_code = alc1.lookup_code
-   AND aip.accounting_date BETWEEN gp.start_date AND gp.end_date
-   AND aip.accounting_date BETWEEN :P_FROM_GL_DATE AND :P_TO_GL_DATE
-   AND 2=2 
+   and aip.invoice_id = ai.invoice_id
+   and gled.period_set_name = gp.period_set_name
+   and gled.accounted_period_type = gp.period_type
+   and gp.adjustment_period_flag ='N'
+   and gled.ledger_id = aip.set_of_books_id
+   and ac.payment_type_flag = alc.lookup_code
+   and alc.lookup_type = 'PAYMENT TYPE'
+   and alc1.lookup_type = 'CHECK STATE'
+   and ac.status_lookup_code = alc1.lookup_code
+   and aip.accounting_date between gp.start_date and gp.end_date
+   and aip.accounting_date between :p_from_gl_date and :p_to_gl_date
+   and 2=2 
    &gc_pmt_accounted 
    &gc_pmt_org_id 
    &gc_pmt_currency 
    )
 --
--- Main Query Start Here
+-- main query start here
 --
 select 
- :p_reporting_entity_name &reporting_entity_col_name ,
- q.Vendor_name supplier_name,
- q.Vendor_Number supplier_number,
- q.Vendor_Alternative_Name supplier_alt_name,
- q.Vendor_Tax_Registration supplier_tax_registration,
- q.Vendor_Site_Code supplier_site_code,
- q.Vendor_Site_Alternative_Code supplier_site_alt_code,
+ :p_reporting_entity_name &reporting_entity_col_name,
+ q.vendor_name supplier_name,
+ q.vendor_number supplier_number,
+ q.vendor_alternative_name supplier_alt_name,
+ q.vendor_tax_registration supplier_tax_registration,
+ q.vendor_site_code supplier_site_code,
+ q.vendor_site_alternative_code supplier_site_alt_code,
  q.vendor_site_address supplier_site_address, 
  &lp_operating_unit_column
- q.Period_Name,
- replace(q.Record_Type,'_',' ') record_type,
+ q.period_name,
+ replace(q.record_type,'_',' ') record_type,
  q.balance_bought_forward_debit,
  q.balance_bought_forward_credit,
  q.net_debit,
@@ -160,7 +160,7 @@ from
  (select 
    z.*,
    case z.record_type
-    when 'Period Summary' then sum(nvl(z.Debit,0)) over (partition by z.vendor_site_id order by z.seq rows between unbounded preceding and current row) - sum(nvl(z.Debit,0)) over (partition by z.vendor_site_id,z.period_name)
+    when 'Period Summary' then sum(nvl(z.debit,0)) over (partition by z.vendor_site_id order by z.seq rows between unbounded preceding and current row) - sum(nvl(z.debit,0)) over (partition by z.vendor_site_id,z.period_name)
     when 'Supplier Site Summary' then 0
     when 'Operating Unit Summary' then 0
     when 'Supplier Summary' then 0
@@ -168,7 +168,7 @@ from
     else null
    end balance_bought_forward_debit,
    case z.record_type
-    when 'Period Summary' then sum(nvl(z.Credit,0)) over (partition by z.vendor_site_id order by z.seq rows between unbounded preceding and current row) + sum(nvl(z.bbf,0)) over (partition by z.vendor_site_id) - sum(nvl(z.Credit,0)) over (partition by z.vendor_site_id,z.period_name)
+    when 'Period Summary' then sum(nvl(z.credit,0)) over (partition by z.vendor_site_id order by z.seq rows between unbounded preceding and current row) + sum(nvl(z.bbf,0)) over (partition by z.vendor_site_id) - sum(nvl(z.credit,0)) over (partition by z.vendor_site_id,z.period_name)
     when 'Supplier Site Summary' then sum(nvl(z.bbf,0)) over (partition by z.vendor_site_id)
     when 'Operating Unit Summary' then sum(nvl(z.bbf,0)) over (partition by z.vendor_id,z.organization_id)
     when 'Supplier Summary' then sum(nvl(z.bbf,0)) over (partition by z.vendor_id)
@@ -176,35 +176,35 @@ from
     else null
    end balance_bought_forward_credit,
    case z.record_type
-    when 'Period Summary' then sum(nvl(z.Debit,0)) over (partition by z.vendor_site_id,z.period_name)
-    when 'Supplier Site Summary' then sum(nvl(z.Debit,0)) over (partition by z.vendor_site_id)
-    when 'Operating Unit Summary' then sum(nvl(z.Debit,0)) over (partition by z.vendor_id,z.organization_id)
-    when 'Supplier Summary' then sum(nvl(z.Debit,0)) over (partition by z.vendor_id)
-    when '&reporting_entity_col_name Summary' then sum(nvl(z.Debit,0)) over ()
+    when 'Period Summary' then sum(nvl(z.debit,0)) over (partition by z.vendor_site_id,z.period_name)
+    when 'Supplier Site Summary' then sum(nvl(z.debit,0)) over (partition by z.vendor_site_id)
+    when 'Operating Unit Summary' then sum(nvl(z.debit,0)) over (partition by z.vendor_id,z.organization_id)
+    when 'Supplier Summary' then sum(nvl(z.debit,0)) over (partition by z.vendor_id)
+    when '&reporting_entity_col_name Summary' then sum(nvl(z.debit,0)) over ()
     else null
    end net_debit,
    case z.record_type
-    when 'Period Summary' then sum(nvl(z.Credit,0)) over (partition by z.vendor_site_id,z.period_name)
-    when 'Supplier Site Summary' then sum(nvl(z.Credit,0)) over (partition by z.vendor_site_id)
-    when 'Operating Unit Summary' then sum(nvl(z.Credit,0)) over (partition by z.vendor_id,z.organization_id)
-    when 'Supplier Summary' then sum(nvl(z.Credit,0)) over (partition by z.vendor_id)
-    when '&reporting_entity_col_name Summary' then sum(nvl(z.Credit,0)) over ()
+    when 'Period Summary' then sum(nvl(z.credit,0)) over (partition by z.vendor_site_id,z.period_name)
+    when 'Supplier Site Summary' then sum(nvl(z.credit,0)) over (partition by z.vendor_site_id)
+    when 'Operating Unit Summary' then sum(nvl(z.credit,0)) over (partition by z.vendor_id,z.organization_id)
+    when 'Supplier Summary' then sum(nvl(z.credit,0)) over (partition by z.vendor_id)
+    when '&reporting_entity_col_name Summary' then sum(nvl(z.credit,0)) over ()
     else null
    end net_credit,
    case z.record_type
-    when 'Period Summary' then sum(nvl(z.Debit,0)) over (partition by z.vendor_site_id order by z.seq rows between unbounded preceding and current row)
-    when 'Supplier Site Summary' then sum(nvl(z.Debit,0)) over (partition by z.vendor_site_id order by z.seq rows between unbounded preceding and current row)
-    when 'Operating Unit Summary' then sum(nvl(z.Debit,0)) over (partition by z.vendor_id,z.organization_id order by z.seq rows between unbounded preceding and current row)
-    when 'Supplier Summary' then sum(nvl(z.Debit,0)) over (partition by z.vendor_id order by z.seq rows between unbounded preceding and current row)
-    when '&reporting_entity_col_name Summary' then sum(nvl(z.Debit,0)) over ()
+    when 'Period Summary' then sum(nvl(z.debit,0)) over (partition by z.vendor_site_id order by z.seq rows between unbounded preceding and current row)
+    when 'Supplier Site Summary' then sum(nvl(z.debit,0)) over (partition by z.vendor_site_id order by z.seq rows between unbounded preceding and current row)
+    when 'Operating Unit Summary' then sum(nvl(z.debit,0)) over (partition by z.vendor_id,z.organization_id order by z.seq rows between unbounded preceding and current row)
+    when 'Supplier Summary' then sum(nvl(z.debit,0)) over (partition by z.vendor_id order by z.seq rows between unbounded preceding and current row)
+    when '&reporting_entity_col_name Summary' then sum(nvl(z.debit,0)) over ()
     else null
    end cumulative_debit,
    case z.record_type
-    when 'Period Summary' then sum(nvl(z.Credit,0)) over (partition by z.vendor_site_id order by z.seq rows between unbounded preceding and current row) + sum(nvl(z.bbf,0)) over (partition by z.vendor_site_id)
-    when 'Supplier Site Summary' then sum(nvl(z.Credit,0)) over (partition by z.vendor_site_id order by z.seq rows between unbounded preceding and current row) + sum(nvl(z.bbf,0)) over (partition by z.vendor_site_id)
-    when 'Operating Unit Summary' then sum(nvl(z.Credit,0)) over (partition by z.vendor_id,z.organization_id order by z.seq rows between unbounded preceding and current row) + sum(nvl(z.bbf,0)) over (partition by z.vendor_id,z.organization_id)
-    when 'Supplier Summary' then sum(nvl(z.Credit,0)) over (partition by z.vendor_id order by z.seq rows between unbounded preceding and current row) + sum(nvl(z.bbf,0)) over (partition by z.vendor_id)
-    when '&reporting_entity_col_name Summary' then sum(nvl(z.Credit,0)) over () + sum(nvl(z.bbf,0)) over ()
+    when 'Period Summary' then sum(nvl(z.credit,0)) over (partition by z.vendor_site_id order by z.seq rows between unbounded preceding and current row) + sum(nvl(z.bbf,0)) over (partition by z.vendor_site_id)
+    when 'Supplier Site Summary' then sum(nvl(z.credit,0)) over (partition by z.vendor_site_id order by z.seq rows between unbounded preceding and current row) + sum(nvl(z.bbf,0)) over (partition by z.vendor_site_id)
+    when 'Operating Unit Summary' then sum(nvl(z.credit,0)) over (partition by z.vendor_id,z.organization_id order by z.seq rows between unbounded preceding and current row) + sum(nvl(z.bbf,0)) over (partition by z.vendor_id,z.organization_id)
+    when 'Supplier Summary' then sum(nvl(z.credit,0)) over (partition by z.vendor_id order by z.seq rows between unbounded preceding and current row) + sum(nvl(z.bbf,0)) over (partition by z.vendor_id)
+    when '&reporting_entity_col_name Summary' then sum(nvl(z.credit,0)) over () + sum(nvl(z.bbf,0)) over ()
     else null
    end cumulative_credit
   from 
@@ -215,31 +215,31 @@ from
      (select 
        x.*,
        sum(nvl(x.bbf,0)) over (partition by x.vendor_id) +
-       sum(nvl(x.Credit,0)) over (partition by x.vendor_id) -
-       sum(nvl(x.Debit,0)) over (partition by x.vendor_id) supplier_closing_balance
+       sum(nvl(x.credit,0)) over (partition by x.vendor_id) -
+       sum(nvl(x.debit,0)) over (partition by x.vendor_id) supplier_closing_balance
       from 
        (-- dummy period summary record
          select distinct 
-         'Period Summary' Record_Type,
-         q_supplier.vendor_name Vendor_name,
-         q_supplier.vendor_number Vendor_Number,
-         q_supplier.vendor_name_alt Vendor_Alternative_Name,
-         q_supplier.vat_registration_num Vendor_Tax_Registration,
-         q_supplier.organization_name Operating_Unit,
-         q_supplier.vendor_site_code Vendor_Site_Code,
-         q_supplier.vendor_site_code_alt Vendor_Site_Alternative_Code,
+         'Period Summary' record_type,
+         q_supplier.vendor_name vendor_name,
+         q_supplier.vendor_number vendor_number,
+         q_supplier.vendor_name_alt vendor_alternative_name,
+         q_supplier.vat_registration_num vendor_tax_registration,
+         q_supplier.organization_name operating_unit,
+         q_supplier.vendor_site_code vendor_site_code,
+         q_supplier.vendor_site_code_alt vendor_site_alternative_code,
          q_supplier.vendor_site_address vendor_site_address,
-         q_main.gp_period_name Period_Name,
-         null Document_Type,
-         null Document_Number,
-         null Document_Date,
-         null Document_Status,
-         null GL_Date,
-         null Description,
-         to_number(null) Debit,
-         to_number(null) Credit,
-         to_number(null) Original_Amount,
-         null Currency_Code,
+         q_main.gp_period_name period_name,
+         null document_type,
+         null document_number,
+         to_date(null) document_date,
+         null document_status,
+         to_date(null) gl_date,
+         null description,
+         to_number(null) debit,
+         to_number(null) credit,
+         to_number(null) original_amount,
+         null currency_code,
          1 sort_order,
          q_main.gp_start_date period_start_date,
          q_main.gp_period_num period_num,
@@ -256,26 +256,26 @@ from
         union all 
         -- dummy supplier site summary record
         select distinct 
-         'Supplier Site Summary' Record_Type,
-         q_supplier.vendor_name Vendor_name,
-         q_supplier.vendor_number Vendor_Number,
-         q_supplier.vendor_name_alt Vendor_Alternative_Name,
-         q_supplier.vat_registration_num Vendor_Tax_Registration,
-         q_supplier.organization_name Operating_Unit,
-         q_supplier.vendor_site_code Vendor_Site_Code,
-         q_supplier.vendor_site_code_alt Vendor_Site_Alternative_Code,
+         'Supplier Site Summary' record_type,
+         q_supplier.vendor_name vendor_name,
+         q_supplier.vendor_number vendor_number,
+         q_supplier.vendor_name_alt vendor_alternative_name,
+         q_supplier.vat_registration_num vendor_tax_registration,
+         q_supplier.organization_name operating_unit,
+         q_supplier.vendor_site_code vendor_site_code,
+         q_supplier.vendor_site_code_alt vendor_site_alternative_code,
          q_supplier.vendor_site_address vendor_site_address,
-         null Period_Name,
-         null Document_Type,
-         null Document_Number,
-         null Document_Date,
-         null Document_Status,
-         null GL_Date,
-         null Description,
-         to_number(null) Debit,
-         to_number(null) Credit,
-         to_number(null) Original_Amount,
-         null Currency_Code,
+         null period_name,
+         null document_type,
+         null document_number,
+         to_date(null) document_date,
+         null document_status,
+         to_date(null) gl_date,
+         null description,
+         to_number(null) debit,
+         to_number(null) credit,
+         to_number(null) original_amount,
+         null currency_code,
          2 sort_order,
          to_date(null) period_start_date,
          to_number(null) period_num,
@@ -288,26 +288,26 @@ from
         union all 
         -- dummy operating unit summary record
         select distinct 
-         'Operating Unit Summary' Record_Type,
-         q_supplier.vendor_name Vendor_name,
-         q_supplier.vendor_number Vendor_Number,
-         q_supplier.vendor_name_alt Vendor_Alternative_Name,
-         null Vendor_Tax_Registration,
-         q_supplier.organization_name Operating_Unit,
-         null Vendor_Site_Code,
-         null Vendor_Site_Alternative_Code,
+         'Operating Unit Summary' record_type,
+         q_supplier.vendor_name vendor_name,
+         q_supplier.vendor_number vendor_number,
+         q_supplier.vendor_name_alt vendor_alternative_name,
+         null vendor_tax_registration,
+         q_supplier.organization_name operating_unit,
+         null vendor_site_code,
+         null vendor_site_alternative_code,
          null vendor_site_address,
-         null Period_Name,
-         null Document_Type,
-         null Document_Number,
-         null Document_Date,
-         null Document_Status,
-         null GL_Date,
-         null Description,
-         to_number(null) Debit,
-         to_number(null) Credit,
-         to_number(null) Original_Amount,
-         null Currency_Code,
+         null period_name,
+         null document_type,
+         null document_number,
+         to_date(null) document_date,
+         null document_status,
+         to_date(null) gl_date,
+         null description,
+         to_number(null) debit,
+         to_number(null) credit,
+         to_number(null) original_amount,
+         null currency_code,
          3 sort_order,
          to_date(null) period_start_date,
          to_number(null) period_num,
@@ -318,30 +318,30 @@ from
         from 
          q_supplier
         where
-         :p_reporting_level != '3000' -- don't show OU Summary when run by OU
+         :p_reporting_level != '3000' -- don't show ou summary when run by ou
         union all 
         -- dummy supplier summary record
         select distinct 
-         'Supplier Summary' Record_Type,
-         q_supplier.vendor_name Vendor_name,
-         q_supplier.vendor_number Vendor_Number,
-         q_supplier.vendor_name_alt Vendor_Alternative_Name,
-         null Vendor_Tax_Registration,
-         null Operating_Unit,
-         null Vendor_Site_Code,
-         null Vendor_Site_Alternative_Code,
+         'Supplier Summary' record_type,
+         q_supplier.vendor_name vendor_name,
+         q_supplier.vendor_number vendor_number,
+         q_supplier.vendor_name_alt vendor_alternative_name,
+         null vendor_tax_registration,
+         null operating_unit,
+         null vendor_site_code,
+         null vendor_site_alternative_code,
          null vendor_site_address,
-         null Period_Name,
-         null Document_Type,
-         null Document_Number,
-         null Document_Date,
-         null Document_Status,
-         null GL_Date,
-         null Description,
-         to_number(null) Debit,
-         to_number(null) Credit,
-         to_number(null) Original_Amount,
-         null Currency_Code,
+         null period_name,
+         null document_type,
+         null document_number,
+         to_date(null) document_date,
+         null document_status,
+         to_date(null) gl_date,
+         null description,
+         to_number(null) debit,
+         to_number(null) credit,
+         to_number(null) original_amount,
+         null currency_code,
          4 sort_order,
          to_date(null) period_start_date,
          to_number(null) period_num,
@@ -354,26 +354,26 @@ from
         union all 
         -- dummy reporting entity summary record
         select distinct 
-         '&reporting_entity_col_name Summary' Record_Type,
-         null Vendor_name,
-         null Vendor_Number,
-         null Vendor_Alternative_Name,
-         null Vendor_Tax_Registration,
-         null Operating_Unit,
-         null Vendor_Site_Code,
-         null Vendor_Site_Alternative_Code,
+         '&reporting_entity_col_name Summary' record_type,
+         null vendor_name,
+         null vendor_number,
+         null vendor_alternative_name,
+         null vendor_tax_registration,
+         null operating_unit,
+         null vendor_site_code,
+         null vendor_site_alternative_code,
          null vendor_site_address,
-         null Period_Name,
-         null Document_Type,
-         null Document_Number,
-         null Document_Date,
-         null Document_Status,
-         null GL_Date,
-         null Description,
-         to_number(null) Debit,
-         to_number(null) Credit,
-         to_number(null) Original_Amount,
-         null Currency_Code,
+         null period_name,
+         null document_type,
+         null document_number,
+         to_date(null) document_date,
+         null document_status,
+         to_date(null) gl_date,
+         null description,
+         to_number(null) debit,
+         to_number(null) credit,
+         to_number(null) original_amount,
+         null currency_code,
          5 sort_order,
          to_date(null) period_start_date,
          to_number(null) period_num,
@@ -386,22 +386,22 @@ from
         union all 
         -- transactions
         select 
-         'Transaction' Record_Type,
-         q_supplier.vendor_name Vendor_name,
-         q_supplier.vendor_number Vendor_Number,
-         q_supplier.vendor_name_alt Vendor_Alternative_Name,
-         q_supplier.vat_registration_num Vendor_Tax_Registration,
-         q_supplier.organization_name Operating_Unit,
-         q_supplier.vendor_site_code Vendor_Site_Code,
-         q_supplier.vendor_site_code_alt Vendor_Site_Alternative_Code,
+         'Transaction' record_type,
+         q_supplier.vendor_name vendor_name,
+         q_supplier.vendor_number vendor_number,
+         q_supplier.vendor_name_alt vendor_alternative_name,
+         q_supplier.vat_registration_num vendor_tax_registration,
+         q_supplier.organization_name operating_unit,
+         q_supplier.vendor_site_code vendor_site_code,
+         q_supplier.vendor_site_code_alt vendor_site_alternative_code,
          q_supplier.vendor_site_address vendor_site_address,
-         q_main.gp_period_name Period_Name,
+         q_main.gp_period_name period_name,
          case q_main.transaction_type
           when 'A' then 'Prepayment Application'
           else q_main.lookup_value
-         end Document_Type,
-         q_main.doc_number Document_Number,
-         q_main.doc_date Document_Date,
+         end document_type,
+         q_main.doc_number document_number,
+         q_main.doc_date document_date,
          nvl2(q_main.cancel_date,'Cancelled/ ',null) || case q_main.validate_status
           when 'Y' then 'Validated/ '
           when 'N' then 'Un-Validated/ '
@@ -413,19 +413,19 @@ from
          end ||case q_main.lookup_code
           when 'PA' then '/ Applied'
           else null
-         end Document_Status,
-         q_main.gl_date GL_Date,
-         q_main.description Description,
+         end document_status,
+         q_main.gl_date,
+         q_main.description,
          case q_main.transaction_type
           when 'I' then to_number(null)
           else q_main.accounted_amount
-         end Debit,
+         end debit,
          case q_main.transaction_type
           when 'I' then q_main.accounted_amount
           else to_number(null)
-         end Credit,
-         q_main.entered_amount Original_Amount,
-         q_main.currency_code Currency_Code,
+         end credit,
+         q_main.entered_amount original_amount,
+         q_main.currency_code,
          -1 sort_order,
          q_main.gp_start_date period_start_date,
          q_main.gp_period_num period_num,

@@ -47,7 +47,18 @@ eex.ex_to_devkey,
 eex.ex_to_type,
 ed.doc_id
 from
+(
+select
+nvl(fu.user_name,eeu.eu_username) doc_owner,
+ed.*
+from
 &eul.eul5_documents ed,
+&eul.eul5_eul_users eeu,
+fnd_user fu
+where
+ed.doc_eu_id=eeu.eu_id and
+case when eeu.eu_username like '#%' then to_number(substr(eeu.eu_username,2)) end=fu.user_id
+) ed,
 (select distinct eex.ex_from_id, eex.ex_to_par_devkey, decode(:display_level,'Items',eex.ex_to_type) ex_to_type, decode(:display_level,'Items',eex.ex_to_devkey) ex_to_devkey from &eul.eul5_elem_xrefs eex where eex.ex_from_type='DOC' and :display_level in ('Folders','Items')) eex,
 (
 select
@@ -71,6 +82,7 @@ from
 (
 select
 eqs.qs_doc_name,
+upper(eqs.qs_doc_owner) qs_doc_owner,
 count(*) access_count,
 max(eqs.qs_created_date) last_accessed
 from
@@ -78,13 +90,15 @@ from
 where
 2=2
 group by
-eqs.qs_doc_name
+eqs.qs_doc_name,
+eqs.qs_doc_owner
 ) eqs
 where
 1=1 and
 ed.doc_id=eex.ex_from_id(+) and
 eex.ex_to_par_devkey=eo.obj_developer_key(+) and
-ed.doc_name=eqs.qs_doc_name(+)
+ed.doc_name=eqs.qs_doc_name(+) and
+ed.doc_owner=eqs.qs_doc_owner(+)
 ) x,
 (
 select ee.it_obj_id obj_id, ee.* from &eul.eul5_expressions ee where ee.exp_type in ('CI','CO') and ee.fil_obj_id is null and :display_level='Items' union all

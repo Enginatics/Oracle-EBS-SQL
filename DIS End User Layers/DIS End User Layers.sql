@@ -19,9 +19,11 @@ y.ads_sqls,
 y.folders,
 y.workbooks "Workbooks (ed)",
 y.active_workbooks "Active Workbooks (eqs)",
+y.active_existing_workbooks "Active existing Workbooks",
 xdwx.count "Uploaded Workbooks (xdwx)",
 xdw.count "Flattened Workbooks (xdw)",
 xds.count "Flattened Sheet (xds)",
+xrtv.workbook_count "Imported Workbooks (xrt)",
 xrtv.count "Imported Templates (xrt)",
 xrv.count "Imported Reports (xr)",
 'begin'||chr(10)||
@@ -54,7 +56,7 @@ do.object_name='EUL5_VERSIONS'
 (select count(*) count, xdwx.eul from xxen_discoverer_workbook_xmls xdwx group by xdwx.eul) xdwx,
 (select count(distinct xdw.doc_name||'.'||xdw.doc_owner) count, xdw.eul from xxen_discoverer_workbooks xdw group by xdw.eul) xdw,
 (select count(distinct xds.doc_name||'.'||xds.doc_owner||'.'||xds.sheet_name) count, xds.eul from xxen_discoverer_sheets xds group by xds.eul) xds,
-(select count(*) count, regexp_substr(xrtv.report_description,chr(10)||'EUL: (\w+)',1,1,null,1) eul from xxen_report_templates_v xrtv where xrtv.report_description like 'Imported Discoverer folders:%Object IDs: %EUL: %' group by regexp_substr(xrtv.report_description,chr(10)||'EUL: (\w+)',1,1,null,1)) xrtv,
+(select count(*) count, count(distinct xxen_util.instring(xrtv.template_name,':',1)) workbook_count, regexp_substr(xrtv.report_description,chr(10)||'EUL: (\w+)',1,1,null,1) eul from xxen_report_templates_v xrtv where xrtv.report_description like 'Imported Discoverer folders:%Object IDs: %EUL: %' group by regexp_substr(xrtv.report_description,chr(10)||'EUL: (\w+)',1,1,null,1)) xrtv,
 (select count(*) count, regexp_substr(xrv.description,chr(10)||'EUL: (\w+)',1,1,null,1) eul from xxen_reports_v xrv where xrv.description like 'Imported Discoverer folders:%Object IDs: %EUL: %' group by regexp_substr(xrv.description,chr(10)||'EUL: (\w+)',1,1,null,1)) xrv
 where
 x.owner=y.owner(+) and
