@@ -609,7 +609,9 @@ replace(
 replace(
 replace(
 replace(
+replace(
 replace(p_text,
+chr(0)),
 '\','\\'),
 '^','\^'),
 '.','\.'),
@@ -2834,7 +2836,7 @@ end geolocation;
 
 
 function parameter_value(p_parameter_name in varchar2 default null, p_parameter_bind in varchar2 default null) return varchar2 is
-l_value varchar2(4000);
+l_value varchar2(32767);
 begin
   for c in (
   select
@@ -2851,8 +2853,10 @@ begin
   xrrpv.parameter_id=xrpt.parameter_id and
   xrpt.language='US' and
   (xrpt.parameter_name=p_parameter_name or xxen_api.bindvar_name(xrp.parameter_id)=':'||p_parameter_bind)
+  order by
+  value
   ) loop
-    l_value:=c.value;
+    l_value:=l_value||case when l_value is not null then ';' end||c.value;
   end loop;
   return l_value;
 end parameter_value;

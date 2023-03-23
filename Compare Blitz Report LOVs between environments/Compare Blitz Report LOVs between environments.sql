@@ -29,6 +29,7 @@ when xrplv.guid is not null and xrplv2.guid is null then 'transfer'
 else 'update'
 end result,
 case when xrplv.lov_name<>xrplv2.lov_name then 'Y' end name_diff,
+case when xrplv.guid<>xrplv2.guid then 'Y' end guid_diff,
 case when dbms_lob.substr(xrplv.lov_query,4000,1)<>xrplv2.lov_query_short then 'Y' end query_diff,
 case when xrplv.description<>xrplv2.description then 'Y' end descr_diff,
 xrplv.lov_name,
@@ -74,7 +75,8 @@ xxen_report_parameter_lovs_v xrplv
 full join
 xxen_report_parameter_lovs_v_@&database_link xrplv2
 on
-xrplv.guid=xrplv2.guid
+xrplv.guid=xrplv2.guid or
+xrplv.lov_name=xrplv2.lov_name
 where
 1=1
 ) x

@@ -30,6 +30,7 @@ from
 select
 (select 'Y' from fnd_user@&database_link fu where xrv2.last_updated_by=fu.user_id and fu.user_name not in ('ANONYMOUS','ENGINATICS')) updated_remote,
 case when xrv.report_name<>xrv2.report_name then 'Y' end name_diff,
+case when xrv.guid<>xrv2.guid then 'Y' end guid_diff,
 case when xrv.sql_text_short<>xrv2.sql_text_short or xrv.sql_length<>xrv2.sql_length then 'Y' end sql_diff,
 case when xrv.description<>xrv2.description then 'Y' end descr_diff,
 case when xrv.report_name is not null and xrv2.report_name is not null and nvl(xrv.category,'x')<>nvl(xrv2.category,'x') then 'Y' end category_diff,
@@ -54,7 +55,8 @@ from
 full join
 xxen_reports_v_@&database_link xrv2
 on
-xrv.guid=xrv2.guid
+xrv.guid=xrv2.guid or
+xrv.report_name=xrv2.report_name
 ) x
 where
 nvl(x.report_name,'x')<>nvl(x.report_name_remote,'x') or

@@ -15,7 +15,7 @@ Set the parameter to null to review all shipping transations regardless of deliv
 -- Library Link: https://www.enginatics.com/reports/wsh-shipping-delivery-transactions/
 -- Run Report: https://demo.enginatics.com/
 
-select
+select /*+ push_pred(wfc) */
  haou2.name selling_operating_unit,
  haou1.name shipping_operating_unit,
  ood.organization_code,
@@ -31,6 +31,11 @@ select
  wdd.delivery_detail_id,
  xxen_util.meaning(wdd.released_status,'PICK_STATUS',665) release_status,
  trunc(wpb.creation_date) released_date,
+ -- freight cost details
+ wfc.freight_cost_currency,
+ wfc.freight_cost_name,
+ wfc.freight_cost_type,
+ wfc.freight_cost,
  -- customer details
  hca.account_number customer_number,
  nvl(hca.account_name,hp.party_name) customer_name,
@@ -59,10 +64,14 @@ select
  -- shipment details
  wnd.waybill,
  wsh_util_core.derive_shipment_priority(wnd.delivery_id) shipment_priority,
- wc.freight_code,
- xxen_util.meaning(wnd.ship_method_code,'SHIP_METHOD',3) shipping_method,
- xxen_util.meaning(wnd.freight_terms_code,'FREIGHT_TERMS',660) freight_terms,
- nvl(xxen_util.meaning(wnd.fob_code,'FOB',222),wnd.fob_code) fob,
+ wsh_util_core.ship_method_to_freight(wnd.ship_method_code,wdd.organization_id) delivery_freight_code,
+ xxen_util.meaning(wnd.ship_method_code,'SHIP_METHOD',3) delivery_shipping_method,
+ xxen_util.meaning(wnd.freight_terms_code,'FREIGHT_TERMS',660) delivery_freight_terms,
+ nvl(xxen_util.meaning(wnd.fob_code,'FOB',222),wnd.fob_code) delivery_fob,
+ wsh_util_core.ship_method_to_freight(nvl(wdd.ship_method_code,wnd.ship_method_code),wdd.organization_id) delivery_line_freight_code,
+ xxen_util.meaning(nvl(wdd.ship_method_code,wnd.ship_method_code),'SHIP_METHOD',3) delivery_line_shipping_method,
+ xxen_util.meaning(nvl(wdd.freight_terms_code,wnd.freight_terms_code),'FREIGHT_TERMS',660) delivery_line_freight_terms,
+ nvl(xxen_util.meaning(nvl(wdd.fob_code,wnd.fob_code),'FOB',222),wnd.fob_code) delivery_line_fob,
  wdd.tracking_number,
  wdd.customer_dock_code,
  -- container/lot details
@@ -73,13 +82,16 @@ select
            from   mtl_material_transactions mmt,
                   mtl_transaction_lot_numbers mtln
            where  mmt.picking_line_id = wdd.delivery_detail_id
+           and    mmt.transaction_source_type_id in (2,8)
+           and    mmt.transaction_quantity  < 0
            and    mtln.transaction_id = mmt.transaction_id
           ),
           (select listagg(mtln.lot_number,',') within group (order by mtln.lot_number) -- picked
            from   mtl_material_transactions mmt,
                   mtl_transaction_lot_numbers mtln
            where  mmt.move_order_line_id = wdd.move_order_line_id
-           and    nvl(mmt.transaction_quantity,0) < 0 --> to prevent duplicates, just take the -qty trx leg sub to staging.
+           and    mmt.transaction_source_type_id in (2,8)
+           and    mmt.transaction_quantity < 0 --> to prevent duplicates, just take the -qty trx leg sub to staging.
            and    mtln.transaction_id = mmt.transaction_id
           ),
           wdd.lot_number
@@ -101,6 +113,7 @@ select
            from   mtl_material_transactions mmt
            where  mmt.move_order_line_id = wdd.move_order_line_id
            and    mmt.transaction_id = decode(nvl(wdd.transaction_id ,-99),-99,mmt.transaction_id,wdd.transaction_id)
+           and    mmt.transaction_source_type_id in (2,8)
            and    nvl(mmt.transaction_quantity,0) < 0 --> to prevent duplicates, just take the -qty trx leg sub to staging.
            and    mmt.pick_slip_number is not null
            and    wdd.source_code = 'OE'
@@ -174,11 +187,11 @@ select
  trunc(wnd.initial_pickup_date) delivery_initial_pickup_date,
  trunc(wnd.ultimate_dropoff_date) delivery_ultimate_dropoff_date,
  -- ship from/to locations
- wsh_util_core.get_location_description(nvl(wnd.initial_pickup_location_id,wdd.ship_from_location_id), 'NEW UI CODE') ship_from_location,
- wsh_util_core.get_location_description(nvl(wnd.ultimate_dropoff_location_id,wdd.ship_to_location_id), 'NEW UI CODE') ship_to_location,
- wsh_util_core.get_location_description(wdd.deliver_to_location_id, 'NEW UI CODE') deliver_to_location,
- wsh_util_core.get_location_description(nvl(wnd.intmed_ship_to_location_id,wdd.intmed_ship_to_location_id), 'NEW UI CODE') int_med_ship_to_location,
- wsh_util_core.get_location_description(wnd.fob_location_id, 'NEW UI CODE') fob_location,
+ wsh_util_core.get_location_description(nvl(wnd.initial_pickup_location_id,wdd.ship_from_location_id), case :p_loc_format when 'City State Zip' then 'CSZ' when 'City State Zip Country' then 'CSZC' when 'Code Address1 City' then 'NEW UI CODE INFO' else 'NEW UI CODE' end) ship_from_location,
+ wsh_util_core.get_location_description(nvl(wnd.ultimate_dropoff_location_id,wdd.ship_to_location_id), case :p_loc_format when 'City State Zip' then 'CSZ' when 'City State Zip Country' then 'CSZC' when 'Code Address1 City' then 'NEW UI CODE INFO' else 'NEW UI CODE' end) ship_to_location,
+ wsh_util_core.get_location_description(wdd.deliver_to_location_id, case :p_loc_format when 'City State Zip' then 'CSZ' when 'City State Zip Country' then 'CSZC' when 'Code Address1 City' then 'NEW UI CODE INFO' else 'NEW UI CODE' end) deliver_to_location,
+ wsh_util_core.get_location_description(nvl(wnd.intmed_ship_to_location_id,wdd.intmed_ship_to_location_id), case :p_loc_format when 'City State Zip' then 'CSZ' when 'City State Zip Country' then 'CSZC' when 'Code Address1 City' then 'NEW UI CODE INFO' else 'NEW UI CODE' end) int_med_ship_to_location,
+ wsh_util_core.get_location_description(wnd.fob_location_id, case :p_loc_format when 'City State Zip' then 'CSZ' when 'City State Zip Country' then 'CSZC' when 'Code Address1 City' then 'NEW UI CODE INFO' else 'NEW UI CODE' end) fob_location,
  -- packing/shipping instructions
  wdd.packing_instructions,
  wdd.shipping_instructions
@@ -189,6 +202,19 @@ from
  wsh_picking_batches wpb,
  wsh_document_instances wdi,
  wsh_carriers wc,
+ (select distinct
+   wfc.delivery_detail_id,
+   wfc.currency_code freight_cost_currency,
+   listagg(wfct.name,',') within group (order by wfct.freight_cost_type_code,wfct.name) over (partition by wfc.delivery_detail_id,wfc.currency_code) freight_cost_name,
+   listagg(xxen_util.meaning(wfct.freight_cost_type_code,'FREIGHT_COST_TYPE',665),',') within group (order by wfct.freight_cost_type_code) over (partition by wfc.delivery_detail_id,wfc.currency_code) freight_cost_type,
+   sum(nvl(wfc.total_amount,wfc.unit_amount * nvl(wfc.quantity,1))) over (partition by wfc.delivery_detail_id,wfc.currency_code) freight_cost
+  from
+   wsh_freight_costs wfc,
+   wsh_freight_cost_types wfct
+  where
+   wfc.freight_cost_type_id = wfct.freight_cost_type_id and
+   nvl(wfc.charge_source_code, 'MANUAL') in ('PRICING_ENGINE' ,'MANUAL')
+ ) wfc,
  mtl_system_items_vl msiv,
  mtl_material_transactions mmt,
  oe_order_headers_all ooha,
@@ -219,6 +245,9 @@ and wdd.carrier_id = wc.carrier_id(+)
 and wdd.organization_id = msiv.organization_id(+)
 and wdd.inventory_item_id = msiv.inventory_item_id(+)
 and wdd.delivery_detail_id = mmt.picking_line_id(+)
+and mmt.transaction_source_type_id (+) in (2,8)
+and mmt.transaction_quantity (+) < 0
+and wdd.delivery_detail_id = wfc.delivery_detail_id (+)
 --
 and decode(wdd.source_code,'OE',wdd.source_header_id) = ooha.header_id(+)
 and decode(wdd.source_code,'OE',wdd.source_line_id)  = oola.line_id(+)
@@ -227,6 +256,7 @@ and decode(wdd.source_code,'OE',wdd.source_header_number) = rctla.interface_line
 and decode(wdd.source_code,'OE',wdd.source_header_type_name) = rctla.interface_line_attribute2(+)
 and decode(wdd.source_code,'OE',to_char(wdd.source_line_id)) = rctla.interface_line_attribute6(+)
 and nvl(rctla.interface_line_attribute3,nvl(wnd.name,'??')) = nvl(wnd.name,'??')
+and nvl(rctla.interface_line_attribute11,'0') = '0'
 and rctla.customer_trx_id = rcta.customer_trx_id(+)
 --
 and wdd.organization_id = ood.organization_id(+)
