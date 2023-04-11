@@ -26,7 +26,7 @@ with q_cleared_transactions as
 select --Q1 Cleared Payments
  cbagv.bank_account_id            bank_account_id,
  cbagv.bank_account_name          bank_account_name,
- cbagv.bank_account_num           bank_account_num,
+ cbagv.masked_account_num         bank_account_num,
  hp_bank.party_name               bank_name,
  hp_branch.party_name             branch_name,
  xep.name                         legal_entity,
@@ -45,8 +45,8 @@ select --Q1 Cleared Payments
  to_char(ipa.payment_instruction_id)
                                   remittance_number,
  ipia.payment_currency_code       batch_currency,
- nvl2(cbagv2.bank_account_num,
-      hp_batch_bank.party_name || ' - ' || cbagv2.bank_account_num || ' - ' || cbagv2.bank_account_name,
+ nvl2(cbagv2.masked_account_num,
+      hp_batch_bank.party_name || ' - ' || cbagv2.masked_account_num || ' - ' || cbagv2.bank_account_name,
       null)                       batch_bank_account,
  ipa.payment_date                 batch_date,
  aca.cleared_date                 cleared_date,
@@ -105,7 +105,7 @@ union all
 select --Q2 Cleared Receipts
  cbagv.bank_account_id,
  cbagv.bank_account_name,
- cbagv.bank_account_num,
+ cbagv.masked_account_num,
  hp_bank.party_name bank_name,
  hp_branch.party_name branch_name,
  xep.name legal_entity,
@@ -122,8 +122,8 @@ select --Q2 Cleared Receipts
  aba.name batch_name,
  aba.bank_deposit_number remittance_number,
  aba.currency_code batch_currency,
- nvl2(cbagv2.bank_account_num,
-      hp_batch_bank.party_name || ' - ' || cbagv2.bank_account_num || ' - ' || cbagv2.bank_account_name,
+ nvl2(cbagv2.masked_account_num,
+      hp_batch_bank.party_name || ' - ' || cbagv2.masked_account_num || ' - ' || cbagv2.bank_account_name,
       null) batch_bank_account,
  aba.batch_date batch_date,
  acrha.trx_date cleared_date,
@@ -189,7 +189,7 @@ union all --Q5 payroll payments
 select
  cbagv.bank_account_id,
  cbagv.bank_account_name,
- cbagv.bank_account_num,
+ cbagv.masked_account_num,
  hp_bank.party_name bank_name,
  hp_branch.party_name branch_name,
  xep.name legal_entity,
@@ -247,7 +247,7 @@ union all --Q6 eft payroll
 select
  cbagv.bank_account_id,
  cbagv.bank_account_name,
- cbagv.bank_account_num,
+ cbagv.masked_account_num,
  hp_bank.party_name bank_name,
  hp_branch.party_name branch_name,
  xep.name legal_entity,
@@ -305,7 +305,7 @@ union all --Q7 roi_line
 select
  cbagv.bank_account_id,
  cbagv.bank_account_name,
- cbagv.bank_account_num,
+ cbagv.masked_account_num,
  cbbv.bank_name,
  cbbv.bank_branch_name branch_name,
  xep.name legal_entity,
@@ -353,7 +353,7 @@ union all
 select --Q8 roi_line
  cbagv.bank_account_id,
  cbagv.bank_account_name,
- cbagv.bank_account_num,
+ cbagv.masked_account_num,
  cbbv.bank_name,
  cbbv.bank_branch_name branch_name,
  xep.name legal_entity,
@@ -401,7 +401,7 @@ union all
 select --Q9 xtr_line
  cbagv.bank_account_id,
  cbagv.bank_account_name,
- cbagv.bank_account_num,
+ cbagv.masked_account_num,
  cbbv.bank_name,
  cbbv.bank_branch_name branch_name,
  xep.name legal_entity,
@@ -451,7 +451,7 @@ union all
 select --Q10 xtr_line
  cbagv.bank_account_id,
  cbagv.bank_account_name,
- cbagv.bank_account_num,
+ cbagv.masked_account_num,
  cbbv.bank_name bank_name,
  cbbv.bank_branch_name branch_name,
  xep.name legal_entity,
@@ -501,7 +501,7 @@ union all --Q11 cashflow receipt
 select
  cbagv.bank_account_id,
  cbagv.bank_account_name,
- cbagv.bank_account_num,
+ cbagv.masked_account_num,
  hp_bank.party_name bank_name,
  hp_branch.party_name branch_name,
  cspg.name legal_entity,
@@ -560,7 +560,7 @@ union all --Q12 cashflow payments
 select
  cbagv.bank_account_id,
  cbagv.bank_account_name,
- cbagv.bank_account_num,
+ cbagv.masked_account_num,
  hp_bank.party_name bank_name,
  hp_branch.party_name branch_name,
  cspg.name legal_entity,

@@ -303,7 +303,7 @@ with ce_bank_acct_bal_qry1 as
 ce_bank_acct_bal_qry2 as
 ( select
    xep.name                            legal_entity,
-   cbacv.bank_account_num              bank_account_num,
+   cbacv.masked_account_num            masked_account_num,
    cbacv.bank_account_name             bank_account_name,
    cbacv.currency_code                 bank_account_currency,
    hpb.party_name                      bank_name,
@@ -358,7 +358,7 @@ ce_bank_acct_bal_qry2 as
   union all
   select
    xep.name                          legal_entity,
-   cbacv.bank_account_num            bank_account_num,
+   cbacv.masked_account_num          masked_account_num,
    cc.name                           bank_account_name,
    cbacv.currency_code               bank_account_currency,
    hpb.party_name                    bank_name,
@@ -429,7 +429,7 @@ ce_bank_acct_bal_qry2 as
 --
 select
  cbab.legal_entity,
- cbab.bank_account_num,
+ cbab.masked_account_num bank_account_num,
  cbab.bank_account_name,
  cbab.bank_account_currency,
  cbab.bank_name,
@@ -565,12 +565,12 @@ select
  nvl2(cbab.asset_ccid,fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_bal_seg', 'SQLGL', 'GL#', cbab.coaid, NULL, cbab.asset_ccid, 'ALL', 'Y', 'VALUE'),null) gl_cash_account,
  nvl2(cbab.asset_ccid,fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_bal_seg', 'SQLGL', 'GL#', cbab.coaid, NULL, cbab.asset_ccid, 'ALL', 'Y', 'DESCRIPTION'),null) gl_cash_account_desc,
  -- pivot labels
- cbab.bank_name || ' - ' || cbab.bank_account_num || ' - ' || cbab.bank_account_name || ' (' ||  cbab.bank_account_currency || ')' bank_account_pivot_label
+ cbab.bank_name || ' - ' || cbab.masked_account_num || ' - ' || cbab.bank_account_name || ' (' ||  cbab.bank_account_currency || ')' bank_account_pivot_label
 from
  ce_bank_acct_bal_qry2 cbab
 where
  1=1
 order by
  cbab.bank_name,
- cbab.bank_account_num,
+ cbab.masked_account_num,
  cbab.balance_date

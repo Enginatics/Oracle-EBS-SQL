@@ -12,7 +12,8 @@ Type, Code contains, Meaning contains, Description contains, Creation Date From,
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
-
+## Related reports
+[GL Balance by Account Hierarchy](/GL%20Balance%20by%20Account%20Hierarchy/), [MRP Pegging](/MRP%20Pegging/), [CAC Receiving Activity Summary](/CAC%20Receiving%20Activity%20Summary/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

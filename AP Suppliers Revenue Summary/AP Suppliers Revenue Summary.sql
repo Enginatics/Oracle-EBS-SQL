@@ -54,7 +54,7 @@ sum(aia.invoice_amount) over (partition by nvl(assa.location_id,assa.vendor_id),
 nvl(aia.invoice_currency_code,gl.currency_code) currency,
 (
 select
-ieba.iban
+ieba.masked_iban
 from
 (select iepa.* from iby_external_payees_all iepa where iepa.party_site_id is null and iepa.supplier_site_id is null) iepa,
 (select ipiua.* from iby_pmt_instr_uses_all ipiua where ipiua.payment_flow='DISBURSEMENTS' and sysdate between ipiua.start_date and nvl(ipiua.end_date,sysdate)) ipiua,
@@ -68,7 +68,7 @@ ipiua.instrument_id=ieba.ext_bank_account_id
 ) iban_prio1,
 (
 select
-ieba.iban
+ieba.masked_iban
 from
 (select iepa.* from iby_external_payees_all iepa where iepa.party_site_id is null and iepa.supplier_site_id is null) iepa,
 (select ipiua.* from iby_pmt_instr_uses_all ipiua where ipiua.payment_flow='DISBURSEMENTS' and sysdate between ipiua.start_date and nvl(ipiua.end_date,sysdate)) ipiua,
@@ -82,7 +82,7 @@ ipiua.instrument_id=ieba.ext_bank_account_id
 ) iban_prio2,
 (
 select
-ieba.iban
+ieba.masked_iban
 from
 (select iepa.* from iby_external_payees_all iepa where iepa.party_site_id is null and iepa.supplier_site_id is null) iepa,
 (select ipiua.* from iby_pmt_instr_uses_all ipiua where ipiua.payment_flow='DISBURSEMENTS' and sysdate between ipiua.start_date and nvl(ipiua.end_date,sysdate)) ipiua,
@@ -96,7 +96,7 @@ ipiua.instrument_id=ieba.ext_bank_account_id
 ) iban_prio3,
 (
 select
-ieba.iban
+ieba.masked_iban
 from
 (select iepa.* from iby_external_payees_all iepa where iepa.party_site_id is null and iepa.supplier_site_id is null) iepa,
 (select ipiua.* from iby_pmt_instr_uses_all ipiua where ipiua.payment_flow='DISBURSEMENTS' and sysdate between ipiua.start_date and nvl(ipiua.end_date,sysdate)) ipiua,

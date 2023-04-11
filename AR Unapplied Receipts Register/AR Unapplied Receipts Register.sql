@@ -98,7 +98,7 @@ cbbv.branch_number,
 ftv.territory_short_name bank_branch_country,
 cba.bank_account_name,
 cba.bank_account_name_alt,
-cba.bank_account_num bank_account_number,
+cba.masked_account_num bank_account_number,
 cba.currency_code bank_account_currency,
 cba.description bank_account_description
 from
@@ -184,7 +184,7 @@ cbbv.branch_number,
 ftv.territory_short_name,
 cba.bank_account_name,
 cba.bank_account_name_alt,
-cba.bank_account_num,
+cba.masked_account_num,
 cba.currency_code,
 cba.description
 having

@@ -124,4 +124,19 @@ select to_number(null) inst_id, 'Use large pages: '||vp.value name, null value f
 select to_number(null) inst_id, 'Pack License: '||vp.value name, null value from v$parameter vp where vp.name='control_management_pack_access' union all
 select distinct to_number(null) inst_id, 'AWR Report last usage date: '||max(dfus.last_usage_date) over () name, null value from dba_feature_usage_statistics dfus where dfus.name='AWR Report' and dfus.dbid in (select vd.dbid from v$database vd) union all
 select distinct to_number(null) inst_id, 'AWR Report usages' name, sum(dfus.detected_usages) over () value from dba_feature_usage_statistics dfus where dfus.name='AWR Report' and dfus.dbid in (select vd.dbid from v$database vd) union all
-select to_number(null) inst_id, 'Database size' name, sum((select vp.value from v$parameter vp where vp.name like 'db_block_size')*dtum.used_space)/1024/1024/1024 value from dba_tablespace_usage_metrics dtum
+select to_number(null) inst_id, 'Database size' name, sum((select vp.value from v$parameter vp where vp.name like 'db_block_size')*dtum.used_space)/1024/1024/1024 value from dba_tablespace_usage_metrics dtum union all
+select to_number(null) inst_id, 'Wait IO percentage' name,
+sum(dhss.iowait_delta)/(sum(dhss.iowait_delta)+sum(dhss.cpu_time_delta))*100 value
+from
+dba_hist_snapshot dhs,
+dba_hist_sqlstat dhss,
+dba_hist_sqltext dhst
+where
+1=1 and
+dhs.begin_interval_time>=sysdate-7 and
+dhst.command_type not in (47) and
+dhs.dbid=dhss.dbid and
+dhs.instance_number=dhss.instance_number and
+dhs.snap_id=dhss.snap_id and
+dhss.dbid=dhst.dbid and
+dhss.sql_id=dhst.sql_id

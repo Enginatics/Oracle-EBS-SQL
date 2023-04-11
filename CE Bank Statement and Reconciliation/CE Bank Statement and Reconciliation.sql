@@ -40,7 +40,7 @@ with ce_bank_statements as
 select /*+ ordered index(hpb hz_parties_u1) index(hpbb hz_parties_u1) index(xep xle_entity_profiles_u1) index(gcc gl_code_combinations_u1) push_pred(nsf_recon) push_pred(oth_recon) */
  -- Statement Details
  xep.name legal_entity,
- cbagv.bank_account_num  bank_account_num,
+ cbagv.masked_account_num bank_account_num,
  cbagv.bank_account_name bank_account_name,
  nvl(xxen_util.meaning(cbagv.bank_account_type,'BANK_ACCOUNT_TYPE',260),cbagv.bank_account_type) bank_account_type,
  cbagv.currency_code bank_account_currency,

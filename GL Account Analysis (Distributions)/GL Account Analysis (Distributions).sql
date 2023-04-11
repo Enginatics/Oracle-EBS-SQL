@@ -160,8 +160,8 @@ decode(aca.currency_code,gl.currency_code,aipa.amount,aipa.payment_base_amount) 
 cbbv.bank_name,
 cbbv.eft_swift_code swift_code,
 cba.bank_account_name,
-cba.bank_account_num,
-cba.iban_number,
+cba.masked_account_num bank_account_num,
+cba.masked_iban iban_number,
 pha.segment1 purchase_order,
 pra.release_num release,
 pla.line_num purchase_order_line,
@@ -684,6 +684,4 @@ nvl(gb.begin_balance_cr,0)+nvl(gb.period_net_cr,0) line_accounted_cr,
 nvl(gb.begin_balance_dr,0)-nvl(gb.begin_balance_cr,0)+nvl(gb.period_net_dr,0)-nvl(gb.period_net_cr,0) line_accounted_amount,
 null line_description,
 null tax_rate_code,
-null tax_rate,
-null tax_line,
-nu
+n

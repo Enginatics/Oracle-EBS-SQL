@@ -49,8 +49,7 @@ Transaction Date From, Transaction Date To, Show SLA Accounting, Show Projects, 
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
-## Related reports
-[CAC ICP PII Material Account Detail](/CAC%20ICP%20PII%20Material%20Account%20Detail/)
+
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

@@ -47,8 +47,8 @@ idpa.document_currency_code document_currency,
 idpa.payment_amount amount_paid,
 idpa.payment_currency_code payment_currency,
 idpa.payment_date document_payment_date,
-iebav.bank_account_number payee_bank_account,
-iebav.iban_number iban,
+ieba.masked_bank_account_num payee_bank_account,
+ieba.masked_iban iban,
 iebav.bank_name payee_bank_name,
 idpa.bank_charge_bearer,
 xxen_util.meaning(idpa.exclusive_payment_flag,'YES_NOW',0) pay_each_document_alone,
@@ -102,6 +102,7 @@ hz_parties hp2,
 hz_party_sites hps,
 fnd_application_vl fav,
 iby_ext_bank_accounts_v iebav,
+iby_ext_bank_accounts ieba,
 iby_payment_reasons_vl iprv,
 iby_payment_methods_vl ipmv,
 iby_acct_pmt_profiles_vl iappv,
@@ -153,6 +154,7 @@ idpa.inv_payee_party_id=hp2.party_id(+) and
 idpa.party_site_id=hps.party_site_id(+) and
 idpa.calling_app_id=fav.application_id and
 idpa.external_bank_account_id=iebav.bank_account_id(+) and
+idpa.external_bank_account_id=ieba.ext_bank_account_id(+) and
 idpa.payment_reason_code=iprv.payment_reason_code(+) and
 idpa.payment_method_code=ipmv.payment_method_code(+) and
 idpa.payment_profile_id=iappv.payment_profile_id(+) and

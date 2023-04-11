@@ -26,11 +26,11 @@ select
  x1.revaluation_from_currency        amounts_currency,
  nvl(sum(x1.amt_due_original),0)     original_amount,
  nvl(sum(x1.amt_due_remaining),0)    outstanding_amount,
- &lp_on_acc_summ_cols
- &lp_aging_amount_cols
- &lp_aging_pct_cols 
+&lp_on_acc_summ_cols
+&lp_aging_amount_cols
+&lp_aging_pct_cols 
  -- Revaluation Columns
- &lp_reval_columns
+&lp_reval_columns
  --
  fnd_flex_xml_publisher_apis.process_kff_combination_1('lp_acct_flex_bal_seg', 'SQLGL', 'GL#', x1.chart_of_accounts_id, NULL, x1.code_combination_id, 'GL_BALANCING', 'Y', 'DESCRIPTION') "&lp_bal_seg_p Desc",
  fnd_flex_xml_publisher_apis.process_kff_combination_1('lp_acct_flex_acc_seg', 'SQLGL', 'GL#', x1.chart_of_accounts_id, NULL, x1.code_combination_id, 'GL_ACCOUNT', 'Y', 'DESCRIPTION') "&lp_acc_seg_p Desc",
@@ -60,13 +60,9 @@ from
    x.code_combination_id,
    x.chart_of_accounts_id,
    x.invoice_type,
-   x.b0,
-   x.b1,
-   x.b2,
-   x.b3,
-   x.b4,
-   x.b5,
-   x.b6,
+   --
+&lp_bucket_cols1
+   --
    case when (:p_credit_option = 'SUMMARY' and x.class in ('PMT','CM','CLAIM'))
           or (:p_risk_option = 'SUMMARY' AND x.invoice_type = :p_risk_meaning)
      then to_number(null)
@@ -126,97 +122,9 @@ from
      ps.gl_date gl_date,
      decode(ps.invoice_currency_code, gsob.currency_code, NULL, decode(ps.exchange_rate, null, '*', null)) data_converted,
      nvl(ps.exchange_rate, 1) ps_exchange_rate,
-     case when xxen_ar_arxagrw_pkg.bucket_line_type(0) is not null
-     then
-       arpt_sql_func_util.bucket_function
-        ( xxen_ar_arxagrw_pkg.bucket_line_type(0),
-          dh.amount_in_dispute,
-          ps.amount_adjusted_pending,
-          xxen_ar_arxagrw_pkg.bucket_days_from(0),
-          xxen_ar_arxagrw_pkg.bucket_days_to(0),
-          ps.due_date,
-          xxen_ar_arxagrw_pkg.bucket_category,
-          :p_in_as_of_date_low
-        ) 
-     else to_number(null) end b0,
-     case when xxen_ar_arxagrw_pkg.bucket_line_type(0) is not null
-     then
-       arpt_sql_func_util.bucket_function
-        ( xxen_ar_arxagrw_pkg.bucket_line_type(1),
-          dh.amount_in_dispute,
-          ps.amount_adjusted_pending,
-          xxen_ar_arxagrw_pkg.bucket_days_from(1),
-          xxen_ar_arxagrw_pkg.bucket_days_to(1),
-          ps.due_date,
-          xxen_ar_arxagrw_pkg.bucket_category,
-          :p_in_as_of_date_low
-        ) 
-     else to_number(null) end b1,
-     case when xxen_ar_arxagrw_pkg.bucket_line_type(0) is not null
-     then
-       arpt_sql_func_util.bucket_function
-        ( xxen_ar_arxagrw_pkg.bucket_line_type(2),
-          dh.amount_in_dispute,
-          ps.amount_adjusted_pending,
-          xxen_ar_arxagrw_pkg.bucket_days_from(2),
-          xxen_ar_arxagrw_pkg.bucket_days_to(2),
-          ps.due_date,
-          xxen_ar_arxagrw_pkg.bucket_category,
-          :p_in_as_of_date_low
-        ) 
-     else to_number(null) end b2,
-     case when xxen_ar_arxagrw_pkg.bucket_line_type(0) is not null
-     then
-       arpt_sql_func_util.bucket_function
-        ( xxen_ar_arxagrw_pkg.bucket_line_type(3),
-          dh.amount_in_dispute,
-          ps.amount_adjusted_pending,
-          xxen_ar_arxagrw_pkg.bucket_days_from(3),
-          xxen_ar_arxagrw_pkg.bucket_days_to(3),
-          ps.due_date,
-          xxen_ar_arxagrw_pkg.bucket_category,
-          :p_in_as_of_date_low
-        ) 
-     else to_number(null) end b3,
-     case when xxen_ar_arxagrw_pkg.bucket_line_type(0) is not null
-     then
-       arpt_sql_func_util.bucket_function
-        ( xxen_ar_arxagrw_pkg.bucket_line_type(4),
-          dh.amount_in_dispute,
-          ps.amount_adjusted_pending,
-          xxen_ar_arxagrw_pkg.bucket_days_from(4),
-          xxen_ar_arxagrw_pkg.bucket_days_to(4),
-          ps.due_date,
-          xxen_ar_arxagrw_pkg.bucket_category,
-          :p_in_as_of_date_low
-        ) 
-     else to_number(null) end b4,
-     case when xxen_ar_arxagrw_pkg.bucket_line_type(0) is not null
-     then
-       arpt_sql_func_util.bucket_function
-        ( xxen_ar_arxagrw_pkg.bucket_line_type(5),
-          dh.amount_in_dispute,
-          ps.amount_adjusted_pending,
-          xxen_ar_arxagrw_pkg.bucket_days_from(5),
-          xxen_ar_arxagrw_pkg.bucket_days_to(5),
-          ps.due_date,
-          xxen_ar_arxagrw_pkg.bucket_category,
-          :p_in_as_of_date_low
-        ) 
-     else to_number(null) end b5,
-     case when xxen_ar_arxagrw_pkg.bucket_line_type(0) is not null
-     then
-       arpt_sql_func_util.bucket_function
-        ( xxen_ar_arxagrw_pkg.bucket_line_type(6),
-          dh.amount_in_dispute,
-          ps.amount_adjusted_pending,
-          xxen_ar_arxagrw_pkg.bucket_days_from(6),
-          xxen_ar_arxagrw_pkg.bucket_days_to(6),
-          ps.due_date,
-          xxen_ar_arxagrw_pkg.bucket_category,
-          :p_in_as_of_date_low
-        ) 
-     else to_number(null) end b6,
+     --
+&lp_bucket_cols2
+     --
      c.code_combination_id,
      c.chart_of_accounts_id,
      ci.cons_billing_number  cons_billing_number,
@@ -549,75 +457,9 @@ from
      ps.gl_date,
      decode(ps.invoice_currency_code, gsob.currency_code, NULL, decode(ps.exchange_rate, NULL, '*', NULL)),
      nvl(ps.exchange_rate, 1),
-     arpt_sql_func_util.bucket_function
-      ( xxen_ar_arxagrw_pkg.bucket_line_type(0),
-        ps.amount_in_dispute,
-        ps.amount_adjusted_pending,
-        xxen_ar_arxagrw_pkg.bucket_days_from(0),
-        xxen_ar_arxagrw_pkg.bucket_days_to(0),
-        ps.due_date,
-        xxen_ar_arxagrw_pkg.bucket_category,
-        :p_in_as_of_date_low
-      ) b0,
-     arpt_sql_func_util.bucket_function
-      ( xxen_ar_arxagrw_pkg.bucket_line_type(1),
-        ps.amount_in_dispute,
-        ps.amount_adjusted_pending,
-        xxen_ar_arxagrw_pkg.bucket_days_from(1),
-        xxen_ar_arxagrw_pkg.bucket_days_to(1),
-        ps.due_date,
-        xxen_ar_arxagrw_pkg.bucket_category,:p_in_as_of_date_low
-      ) b1,
-     arpt_sql_func_util.bucket_function
-      ( xxen_ar_arxagrw_pkg.bucket_line_type(2),
-        ps.amount_in_dispute,
-        ps.amount_adjusted_pending,
-        xxen_ar_arxagrw_pkg.bucket_days_from(2),
-        xxen_ar_arxagrw_pkg.bucket_days_to(2),
-        ps.due_date,
-        xxen_ar_arxagrw_pkg.bucket_category,
-        :p_in_as_of_date_low
-      ) b2,
-     arpt_sql_func_util.bucket_function
-      ( xxen_ar_arxagrw_pkg.bucket_line_type(3),
-        ps.amount_in_dispute,
-        ps.amount_adjusted_pending,
-        xxen_ar_arxagrw_pkg.bucket_days_from(3),
-        xxen_ar_arxagrw_pkg.bucket_days_to(3),
-        ps.due_date,
-        xxen_ar_arxagrw_pkg.bucket_category,
-        :p_in_as_of_date_low
-      ) b3,
-     arpt_sql_func_util.bucket_function
-      ( xxen_ar_arxagrw_pkg.bucket_line_type(4),
-        ps.amount_in_dispute,
-        ps.amount_adjusted_pending,
-        xxen_ar_arxagrw_pkg.bucket_days_from(4),
-        xxen_ar_arxagrw_pkg.bucket_days_to(4),
-        ps.due_date,
-        xxen_ar_arxagrw_pkg.bucket_category,
-        :p_in_as_of_date_low
-      ) b4,
-     arpt_sql_func_util.bucket_function
-      ( xxen_ar_arxagrw_pkg.bucket_line_type(5),
-        ps.amount_in_dispute,
-        ps.amount_adjusted_pending,
-        xxen_ar_arxagrw_pkg.bucket_days_from(5),
-        xxen_ar_arxagrw_pkg.bucket_days_to(5),
-        ps.due_date,
-        xxen_ar_arxagrw_pkg.bucket_category,
-        :p_in_as_of_date_low
-      ) b5,
-     arpt_sql_func_util.bucket_function
-      ( xxen_ar_arxagrw_pkg.bucket_line_type(6),
-        ps.amount_in_dispute,
-        ps.amount_adjusted_pending,
-        xxen_ar_arxagrw_pkg.bucket_days_from(6),
-        xxen_ar_arxagrw_pkg.bucket_days_to(6),
-        ps.due_date,
-        xxen_ar_arxagrw_pkg.bucket_category,
-        :p_in_as_of_date_low
-      ) b6,
+     --
+&lp_bucket_cols3
+     --
      app.code_combination_id,
      app.chart_of_accounts_id,
      ci.cons_billing_number cons_billing_number,
@@ -752,75 +594,9 @@ from
      crh.gl_date,
      decode(ps.invoice_currency_code, gsob.currency_code, NULL, decode(crh.exchange_rate, NULL, '*', NULL)),
      nvl(crh.exchange_rate, 1),
-     arpt_sql_func_util.bucket_function
-      ( xxen_ar_arxagrw_pkg.bucket_line_type(0),
-        0,
-        0,
-        xxen_ar_arxagrw_pkg.bucket_days_from(0),
-        xxen_ar_arxagrw_pkg.bucket_days_to(0),
-        ps.due_date,
-        xxen_ar_arxagrw_pkg.bucket_category,
-        :p_in_as_of_date_low
-      ) b0,
-     arpt_sql_func_util.bucket_function
-      ( xxen_ar_arxagrw_pkg.bucket_line_type(1),
-        0,
-        0,
-        xxen_ar_arxagrw_pkg.bucket_days_from(1),
-        xxen_ar_arxagrw_pkg.bucket_days_to(1),
-        ps.due_date,
-        xxen_ar_arxagrw_pkg.bucket_category,
-        :p_in_as_of_date_low
-      ) b1,
-     arpt_sql_func_util.bucket_function
-      ( xxen_ar_arxagrw_pkg.bucket_line_type(2),
-        0,
-        0,xxen_ar_arxagrw_pkg.bucket_days_from(2),
-        xxen_ar_arxagrw_pkg.bucket_days_to(2),
-        ps.due_date,
-        xxen_ar_arxagrw_pkg.bucket_category,
-        :p_in_as_of_date_low
-      ) b2,
-     arpt_sql_func_util.bucket_function
-      ( xxen_ar_arxagrw_pkg.bucket_line_type(3),
-        0,
-        0,
-        xxen_ar_arxagrw_pkg.bucket_days_from(3),
-        xxen_ar_arxagrw_pkg.bucket_days_to(3),
-        ps.due_date,
-        xxen_ar_arxagrw_pkg.bucket_category,
-        :p_in_as_of_date_low
-      ) b3,
-     arpt_sql_func_util.bucket_function
-      ( xxen_ar_arxagrw_pkg.bucket_line_type(4),
-        0,
-        0,
-        xxen_ar_arxagrw_pkg.bucket_days_from(4),
-        xxen_ar_arxagrw_pkg.bucket_days_to(4),
-        ps.due_date,
-        xxen_ar_arxagrw_pkg.bucket_category,
-        :p_in_as_of_date_low
-      ) b4,
-     arpt_sql_func_util.bucket_function
-      ( xxen_ar_arxagrw_pkg.bucket_line_type(5),
-        0,
-        0,
-        xxen_ar_arxagrw_pkg.bucket_days_from(5),
-        xxen_ar_arxagrw_pkg.bucket_days_to(5),
-        ps.due_date,
-        xxen_ar_arxagrw_pkg.bucket_category,
-        :p_in_as_of_date_low
-      ) b5,
-     arpt_sql_func_util.bucket_function
-      ( xxen_ar_arxagrw_pkg.bucket_line_type(6),
-        0,
-        0,
-        xxen_ar_arxagrw_pkg.bucket_days_from(6),
-        xxen_ar_arxagrw_pkg.bucket_days_to(6),
-        ps.due_date,
-        xxen_ar_arxagrw_pkg.bucket_category,
-        :p_in_as_of_date_low
-      ) b6,
+     --
+&lp_bucket_cols4
+     --
      c.code_combination_id,
      c.chart_of_accounts_id,
      ci.cons_billing_number  cons_billing_number,
@@ -873,4 +649,138 @@ from
                       and ps.class='DM'
                       and ps.gl_date<= (:p_in_as_of_date_low))
     and gsob.set_of_books_id = cr.set_of_books_id
-    &lp_bal_
+    &lp_bal_seg_low
+    &lp_bal_seg_high
+    and ps.cons_inv_id = ci.cons_inv_id(+)
+    and sales.salesrep_id = -3
+    and sales.org_id = ps.org_id
+    and jrrev.resource_id = sales.resource_id
+    and crh.org_id = ps.org_id
+    and cr.org_id = ps.org_id
+    and site.org_id (+) = ps.org_id
+    and 2=2
+    union all
+    select
+     substrb(party.party_name,1,50) cust_name,
+     cust_acct.account_number cust_no,
+     nvl(sales.name,jrrev.resource_name) sort_field1,
+     arpt_sql_func_util.get_org_trx_type_details(ps.cust_trx_type_id,ps.org_id) sort_field2,
+     nvl(sales.salesrep_id, -3)  inv_tid,
+     site.site_use_id contact_site_id,
+     loc.state cust_state,
+     loc.city cust_city,
+     decode(decode(upper(rtrim(rpad(:p_in_format_option_low, 1))),'D','D',null),null,-1,acct_site.cust_acct_site_id) addr_id,
+     nvl(cust_acct.cust_account_id,-999) cust_id,
+     ps.payment_schedule_id payment_sched_id,
+     ps.class class,
+     ps.due_date  due_date,
+     decode(nvl2(:p_in_currency,'N','Y'), 'Y', ps.amount_due_original * nvl(ps.exchange_rate, 1), ps.amount_due_original) amt_due_original,
+     xxen_ar_arxagrw_pkg.comp_amt_due_remainingformula
+      ( ps.class,
+        arpt_sql_func_util.get_org_trx_type_details(ps.cust_trx_type_id,ps.org_id),
+        ps.payment_schedule_id,
+        decode( nvl2(:p_in_currency,'N','Y'), 'Y', ps.acctd_amount_due_remaining,ps.amount_due_remaining), -- amount due remaining
+        ps.amount_applied,
+        ps.amount_credited,
+        ps.amount_adjusted
+      )  amt_due_remaining,
+     ps.trx_number invnum,
+     ceil(:p_in_as_of_date_low - ps.due_date) days_past_due,
+     ps.amount_adjusted amount_adjusted,
+     ps.amount_applied amount_applied,
+     ps.amount_credited amount_credited,
+     ps.gl_date gl_date,
+     decode(ps.invoice_currency_code, gsob.currency_code, NULL, decode(ps.exchange_rate, NULL, '*', NULL)) data_converted,
+     nvl(ps.exchange_rate, 1) ps_exchange_rate,
+     --
+&lp_bucket_cols3
+     --
+     c.code_combination_id,
+     c.chart_of_accounts_id,
+     ci.cons_billing_number cons_billing_number,
+     arpt_sql_func_util.get_org_trx_type_details(ps.cust_trx_type_id,ps.org_id) invoice_type,
+     ps.invoice_currency_code,
+     gsob.currency_code functional_currency,
+     gsob.name ledger,
+     ps.org_id
+    from
+     hz_cust_accounts cust_acct,
+     hz_parties party,
+     ar_payment_schedules ps,
+     ar_cons_inv ci,
+     ra_salesreps_all sales,
+     jtf_rs_resource_extns_vl jrrev,
+     hz_cust_site_uses site,
+     hz_cust_acct_sites acct_site,
+     hz_party_sites party_site,
+     hz_locations loc,
+     ar_transaction_history th,
+     ar_distributions   dist,
+     gl_code_combinations c,
+     ra_customer_trx ct,
+     gl_sets_of_books gsob
+    where
+        ps.gl_date <= :p_in_as_of_date_low
+    --and   upper(RTRIM(RPAD(:p_in_summary_option_low,1)) ) = 'I'
+    and    ps.customer_site_use_id = site.site_use_id
+    and    xxen_ar_arxagrw_pkg.include_org_id(ps.org_id) = 'Y'
+    and    site.cust_acct_site_id = acct_site.cust_acct_site_id
+    and   acct_site.party_site_id  = party_site.party_site_id
+    and   loc.location_id = party_site.location_id
+    and   ps.gl_date_closed  > :p_in_as_of_date_low
+    and   ps.class = 'BR'
+    and   decode(upper(:p_in_currency),NULL, ps.invoice_currency_code, upper(:p_in_currency)) = ps.invoice_currency_code
+    and   cust_acct.party_id = party.party_id
+    and   th.transaction_history_id =
+                  (select max(transaction_history_id)
+                   from   ar_transaction_history th2,
+                          ar_distributions  dist2
+                   where  th2.transaction_history_id = dist2.source_id
+                   and    dist2.source_table = 'TH'
+                   and    th2.gl_date <= :p_in_as_of_date_low
+                   and    dist2.amount_dr is not null
+                   and    th2.customer_trx_id = ps.customer_trx_id)
+    and   th.transaction_history_id = dist.source_id
+    and   dist.source_table = 'TH'
+    and   dist.amount_dr is not null
+    and   dist.source_table_secondary is NULL
+    and   dist.code_combination_id = c.code_combination_id
+    and   gsob.set_of_books_id = ct.set_of_books_id
+    &lp_invoice_type_low
+    &lp_invoice_type_high
+    &lp_bal_seg_low
+    &lp_bal_seg_high
+    and ps.cons_inv_id = ci.cons_inv_id(+)
+    and ps.customer_id = cust_acct.cust_account_id
+    and ps.customer_trx_id = ct.customer_trx_id
+    and ct.customer_trx_id = th.customer_trx_id
+    and nvl(ct.primary_salesrep_id,-3) = sales.salesrep_id
+    and sales.org_id = ct.org_id
+    and jrrev.resource_id = sales.resource_id
+    and ct.org_id = ps.org_id
+    and site.org_id = ps.org_id
+    and :p_br_enabled = 'Y'
+    and 2=2
+   ) x
+  where
+    nvl(x.amt_due_remaining,0) != 0
+ ) x1
+where
+  1=1
+group by
+ x1.ledger,
+ x1.operating_unit,
+ x1.code_combination_id,
+ x1.chart_of_accounts_id,
+ x1.sort_field1,
+ x1.cust_name,
+ x1.cust_no,
+ x1.revaluation_from_currency,
+ x1.reval_conv_rate
+ &lp_invoice_cols_g
+order by
+ fnd_flex_xml_publisher_apis.process_kff_combination_1('lp_acct_flex_bal_seg', 'SQLGL', 'GL#', x1.chart_of_accounts_id, NULL, x1.code_combination_id, 'GL_BALANCING', 'Y', 'VALUE'),
+ x1.sort_field1,
+ x1.cust_name,
+ x1.cust_no
+ &lp_invoice_cols_g

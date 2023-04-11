@@ -56,7 +56,7 @@ select
  'PAYMENTS' type,
  nvl(c.vendor_name,c.remit_to_supplier_name) supplier_customer,
  ba.bank_account_name bank_account_name,
- ba.bank_account_num bank_account_num,
+ ba.masked_account_num bank_account_num,
  ba.currency_code bank_account_currency,
  bb.bank_name,
  bb.bank_branch_name,
@@ -113,50 +113,50 @@ and ou.name                   = nvl(ou.name,ou.name)
 union all
 --
 select
- 'RECEIPTS'	type,
-	hz.party_name	supplier_customer,
-	ba.bank_account_name	bank_account_name,
-	ba.bank_account_num	bank_account_num,
-	ba.currency_code	bank_account_currency,
+ 'RECEIPTS'    type,
+    hz.party_name    supplier_customer,
+    ba.bank_account_name    bank_account_name,
+    ba.masked_account_num    bank_account_num,
+    ba.currency_code    bank_account_currency,
  bb.bank_name,
  bb.bank_branch_name,
-	acrh.trx_date payment_date,
-	ps.due_date	maturity_date,
-	acr.receipt_number	payrcpt_num,
-	arm.name	payment_method,
-	acr.currency_code	c_currency_code,
-	nvl(acrh.amount,0)	amount,
-	decode(acr.currency_code,ba.currency_code,nvl(acrh.amount,0),nvl(acrh.acctd_amount,0)) cash_in_transit,
-	decode(acr.currency_code,ba.currency_code,nvl(acrh.amount,0),nvl(acrh.acctd_amount,0)) base_amount,
-	0	check_number,
-	'10'	transaction_order,
-	ou.name  org_name
+    acrh.trx_date payment_date,
+    ps.due_date    maturity_date,
+    acr.receipt_number    payrcpt_num,
+    arm.name    payment_method,
+    acr.currency_code    c_currency_code,
+    nvl(acrh.amount,0)    amount,
+    decode(acr.currency_code,ba.currency_code,nvl(acrh.amount,0),nvl(acrh.acctd_amount,0)) cash_in_transit,
+    decode(acr.currency_code,ba.currency_code,nvl(acrh.amount,0),nvl(acrh.acctd_amount,0)) base_amount,
+    0    check_number,
+    '10'    transaction_order,
+    ou.name  org_name
 from
- ar_receipt_methods		    		  arm,
-	ar_payment_schedules_all		  ps,
-	ce_bank_accounts				        ba,
-	ce_bank_branches_v 			      bb,
+ ar_receipt_methods                      arm,
+    ar_payment_schedules_all          ps,
+    ce_bank_accounts                        ba,
+    ce_bank_branches_v                   bb,
  hz_cust_accounts            cu,
-	hz_parties 				             hz,
-	ar_cash_receipts 				       acr,
-	ar_cash_receipt_history_all acrh,
-	ce_bank_acct_uses_all 			   bau,
-	ce_security_profiles_gt			  ou,
-	ce_system_parameters			     sys
+    hz_parties                              hz,
+    ar_cash_receipts                        acr,
+    ar_cash_receipt_history_all acrh,
+    ce_bank_acct_uses_all                bau,
+    ce_security_profiles_gt              ou,
+    ce_system_parameters                 sys
 where
-    arm.receipt_method_id 			= acr.receipt_method_id
-and	cu.cust_account_id(+)		 	= acr.pay_from_customer
-and hz.party_id(+) 			      	= cu.party_id
-and	ba.bank_branch_id 				   = bb.branch_party_id
-and	ba.bank_account_id 				  = bau.bank_account_id
-and bau.bank_acct_use_id		  	= acr.remit_bank_acct_use_id
-and	bau.org_id 			          	= acr.org_id
-and bau.org_id 		          		= ou.organization_id
-and ou.organization_type 	  	= 'OPERATING_UNIT'
-and ba.account_owner_org_id 	= sys.legal_entity_id
-and	acr.type 		          			in ('CASH','MISC')
-and	ps.cash_receipt_id (+) 		= acrh.cash_receipt_id
-and acr.cash_receipt_id 				 = acrh.cash_receipt_id
+    arm.receipt_method_id             = acr.receipt_method_id
+and    cu.cust_account_id(+)             = acr.pay_from_customer
+and hz.party_id(+)                       = cu.party_id
+and    ba.bank_branch_id                    = bb.branch_party_id
+and    ba.bank_account_id                   = bau.bank_account_id
+and bau.bank_acct_use_id              = acr.remit_bank_acct_use_id
+and    bau.org_id                           = acr.org_id
+and bau.org_id                           = ou.organization_id
+and ou.organization_type           = 'OPERATING_UNIT'
+and ba.account_owner_org_id     = sys.legal_entity_id
+and    acr.type                               in ('CASH','MISC')
+and    ps.cash_receipt_id (+)         = acrh.cash_receipt_id
+and acr.cash_receipt_id                  = acrh.cash_receipt_id
 and acrh.status              = 'REMITTED'
 and acrh.trx_date           <= nvl(:p_as_of_date, sysdate)
 and not exists
@@ -167,103 +167,103 @@ and not exists
    and    acrh2.trx_date       <= nvl(:p_as_of_date, sysdate)
    and    acrh2.trx_date       >= acrh.trx_date
   )
-and	acr.receipt_date			   	 <= nvl(:p_as_of_date,sysdate)
-and	acrh.trx_date			       	>= sys.cashbook_begin_date
-and	:p_type                 in ('AR_AND_AP', 'RECEIPTS','ALL')
+and    acr.receipt_date                    <= nvl(:p_as_of_date,sysdate)
+and    acrh.trx_date                       >= sys.cashbook_begin_date
+and    :p_type                 in ('AR_AND_AP', 'RECEIPTS','ALL')
 and ou.name                  = nvl(ou.name,ou.name)
 --
 union all
 --
 select
- 'ROI_LINE'	type,
-	null	supplier_customer,
-	ba.bank_account_name	bank_account_name,
-	ba.bank_account_num	bank_account_num,
-	ba.currency_code	bank_account_currency,
+ 'ROI_LINE'    type,
+    null    supplier_customer,
+    ba.bank_account_name    bank_account_name,
+    ba.masked_account_num    bank_account_num,
+    ba.currency_code    bank_account_currency,
  bb.bank_name,
  bb.bank_branch_name,
-	roi.trx_date	payment_date,
-	to_date(null)	maturity_date,
-	roi.trx_number	payrcpt_num,
-	trx_type_dsp	payment_method,
-	roi.currency_code	c_currency_code,
-	nvl(roi.amount,0)	amount,
-	decode(roi.currency_code
+    roi.trx_date    payment_date,
+    to_date(null)    maturity_date,
+    roi.trx_number    payrcpt_num,
+    trx_type_dsp    payment_method,
+    roi.currency_code    c_currency_code,
+    nvl(roi.amount,0)    amount,
+    decode(roi.currency_code
        ,ba.currency_code, decode(roi.trx_type, 'PAYMENT', nvl(-roi.amount,0), nvl(roi.amount, 0))
                         , decode(roi.trx_type, 'PAYMENT', nvl(-roi.acctd_amount,0), nvl(roi.acctd_amount,0))
-       )	cash_in_transit,
-	decode(roi.currency_code,ba.currency_code, nvl(roi.amount,0),nvl(roi.acctd_amount,0)) base_amount,
-	0	check_number,
-	'30'	transaction_order,
-	null org_name
+       )    cash_in_transit,
+    decode(roi.currency_code,ba.currency_code, nvl(roi.amount,0),nvl(roi.acctd_amount,0)) base_amount,
+    0    check_number,
+    '30'    transaction_order,
+    null org_name
 from
- ce_999_interface_v			   roi,
-	ce_bank_accts_gt_v			   ba,
+ ce_999_interface_v               roi,
+    ce_bank_accts_gt_v               ba,
  ce_bank_branches_v      bb,
-	ce_system_parameters			 sys,
+    ce_system_parameters             sys,
  ce_statement_recon_gt_v cre
 where
-    ba.bank_branch_id 				           = bb.branch_party_id
-and	ba.bank_account_id	 			          = roi.bank_account_id
-and ba.account_owner_org_id 			      = sys.legal_entity_id
-and	ba.RECON_ENABLE_OI_FLAG			       = 'Y'
-and roi.status	 				                 = ba.recon_oi_float_status
-and	roi.trx_date 				               <= nvl(:p_as_of_date, sysdate)
-and	roi.trx_date				                >= sys.cashbook_begin_date
-and	cre.reference_id             (+)	= roi.trx_id
-and	cre.reference_type           (+) = 'ROI_LINE'
-and	nvl(cre.status_flag,'U') 			     = 'U'
-and	nvl(cre.current_record_flag,'Y') = 'Y'
+    ba.bank_branch_id                            = bb.branch_party_id
+and    ba.bank_account_id                           = roi.bank_account_id
+and ba.account_owner_org_id                   = sys.legal_entity_id
+and    ba.RECON_ENABLE_OI_FLAG                   = 'Y'
+and roi.status                                      = ba.recon_oi_float_status
+and    roi.trx_date                                <= nvl(:p_as_of_date, sysdate)
+and    roi.trx_date                                >= sys.cashbook_begin_date
+and    cre.reference_id             (+)    = roi.trx_id
+and    cre.reference_type           (+) = 'ROI_LINE'
+and    nvl(cre.status_flag,'U')                  = 'U'
+and    nvl(cre.current_record_flag,'Y') = 'Y'
 and :p_type                         in ('ROI_LINES', 'ALL')
 --
 union all --  Payroll Payments
 --
 select
- 'PAYROLL'	type,
-	null	supplier_customer,
-	ba.bank_account_name	bank_account_name,
-	ba.bank_account_num	bank_account_num,
-	ba.currency_code	bank_account_currency,
+ 'PAYROLL'    type,
+    null    supplier_customer,
+    ba.bank_account_name    bank_account_name,
+    ba.masked_account_num    bank_account_num,
+    ba.currency_code    bank_account_currency,
  bb.bank_name,
  bb.bank_branch_name,
-	ppa.effective_date	payment_date,
-	to_date(null)	maturity_date,
-	paa.serial_number	payrcpt_num,
-	popm.org_payment_method_name	payment_method,
-	popm.currency_code	c_currency_code,
-	ppp.value	amount,
-	decode(popm.currency_code,ba.currency_code,nvl(-ppp.value,0),nvl(-ppp.base_currency_value,0)) cash_in_transit,
-	decode(popm.currency_code,ba.currency_code,nvl(ppp.value,0),nvl(ppp.base_currency_value,0)) base_amount,
-	0 check_number,
-	'40'	transaction_order,
-	ou.name org_name
+    ppa.effective_date    payment_date,
+    to_date(null)    maturity_date,
+    paa.serial_number    payrcpt_num,
+    popm.org_payment_method_name    payment_method,
+    popm.currency_code    c_currency_code,
+    ppp.value    amount,
+    decode(popm.currency_code,ba.currency_code,nvl(-ppp.value,0),nvl(-ppp.base_currency_value,0)) cash_in_transit,
+    decode(popm.currency_code,ba.currency_code,nvl(ppp.value,0),nvl(ppp.base_currency_value,0)) base_amount,
+    0 check_number,
+    '40'    transaction_order,
+    ou.name org_name
 FROM
- ce_bank_branches_v		       bb,
-	ce_bank_accounts		         ba,
-	gl_sets_of_books			        sob,
-	ce_system_parameters	     	sys,
-	pay_ce_reconciled_payments	pcrp,
-	pay_pre_payments		         ppp,
-	pay_assignment_actions		   paa,
-	pay_payroll_actions		      ppa,
-	pay_org_payment_methods_f	 popm,
-	ce_bank_acct_uses_all 			  bau,
-	ce_security_profiles_gt			 ou,
-	pay_payment_types          ppt
+ ce_bank_branches_v               bb,
+    ce_bank_accounts                 ba,
+    gl_sets_of_books                    sob,
+    ce_system_parameters             sys,
+    pay_ce_reconciled_payments    pcrp,
+    pay_pre_payments                 ppp,
+    pay_assignment_actions           paa,
+    pay_payroll_actions              ppa,
+    pay_org_payment_methods_f     popm,
+    ce_bank_acct_uses_all               bau,
+    ce_security_profiles_gt             ou,
+    pay_payment_types          ppt
 where
-    bb.branch_party_id 				           = ba.bank_branch_id
-and	ba.bank_account_id 				           = bau.bank_account_id
-and	bau.payroll_bank_account_id 			   = popm.external_account_id
+    bb.branch_party_id                            = ba.bank_branch_id
+and    ba.bank_account_id                            = bau.bank_account_id
+and    bau.payroll_bank_account_id                = popm.external_account_id
 and bau.org_id                        = ou.organization_id
 and ou.organization_type              = 'BUSINESS_GROUP'
-and ba.account_owner_org_id 			       = sys.legal_entity_id
-and	sys.set_of_books_id			           	= sob.set_of_books_id
-and	pcrp.assignment_action_id     (+)	= paa.assignment_action_id
-and ppp.org_payment_method_id 			     = popm.org_payment_method_id
-and	ppa.payroll_action_id				         = paa.payroll_action_id
-and	paa.pre_payment_id 				           = ppp.pre_payment_id
-and ppt.payment_type_id          			  = popm.payment_type_id	--9495956
-and	ppa.action_type                  in ( 'P', 'H', 'E','M')
+and ba.account_owner_org_id                    = sys.legal_entity_id
+and    sys.set_of_books_id                           = sob.set_of_books_id
+and    pcrp.assignment_action_id     (+)    = paa.assignment_action_id
+and ppp.org_payment_method_id                  = popm.org_payment_method_id
+and    ppa.payroll_action_id                         = paa.payroll_action_id
+and    paa.pre_payment_id                            = ppp.pre_payment_id
+and ppt.payment_type_id                        = popm.payment_type_id    --9495956
+and    ppa.action_type                  in ( 'P', 'H', 'E','M')
 and (   ppa.action_type   <> 'E'
      or (ppa.action_type   = 'E' and paa.serial_number not in ('-1','-2'))
     )
@@ -278,70 +278,70 @@ and (   (    (pcrp.cleared_date is null )
          and (ppa.effective_date > nvl(:p_as_of_date, sysdate) )
         )
     )
-and	ppa.effective_date		             <= nvl(:p_as_of_date, sysdate)
-and	ppa.effective_date		             >= sys.cashbook_begin_date
+and    ppa.effective_date                     <= nvl(:p_as_of_date, sysdate)
+and    ppa.effective_date                     >= sys.cashbook_begin_date
 and ppa.effective_date          between popm.effective_start_date and popm.effective_end_date
 and not exists
       (select *
        from   pay_action_interlocks pai
        where  pai.locked_action_id = paa.assignment_action_id
       )
-and	:p_type                          IN ( 'PAYROLLS','ALL')
+and    :p_type                          IN ( 'PAYROLLS','ALL')
 and ou.name                           = nvl(:p_business_group,ou.name)
 --
 union all --  Voided Payroll Payments
 --
 select
- 'PAYROLL'	type,
-	null	supplier_customer,
-	ba.bank_account_name	bank_account_name,
-	ba.bank_account_num	bank_account_num,
-	ba.currency_code	bank_account_currency,
+ 'PAYROLL'    type,
+    null    supplier_customer,
+    ba.bank_account_name    bank_account_name,
+    ba.masked_account_num    bank_account_num,
+    ba.currency_code    bank_account_currency,
  bb.bank_name,
  bb.bank_branch_name,
-	ppa.effective_date	payment_date,
-	to_date(null)	maturity_date,
-	paa.serial_number	payrcpt_num,
-	popm.org_payment_method_name	payment_method,
-	popm.currency_code	c_currency_code,
-	ppp.value	amount,
-	decode(popm.currency_code,ba.currency_code,nvl(-ppp.value,0),nvl(-ppp.base_currency_value,0)) cash_in_transit,
-	decode(popm.currency_code,ba.currency_code,nvl(ppp.value,0),nvl(ppp.base_currency_value,0)) base_amount,
+    ppa.effective_date    payment_date,
+    to_date(null)    maturity_date,
+    paa.serial_number    payrcpt_num,
+    popm.org_payment_method_name    payment_method,
+    popm.currency_code    c_currency_code,
+    ppp.value    amount,
+    decode(popm.currency_code,ba.currency_code,nvl(-ppp.value,0),nvl(-ppp.base_currency_value,0)) cash_in_transit,
+    decode(popm.currency_code,ba.currency_code,nvl(ppp.value,0),nvl(ppp.base_currency_value,0)) base_amount,
  0 check_number,
-	'40'	transaction_order,
-	ou.name org_name
+    '40'    transaction_order,
+    ou.name org_name
 from
- ce_bank_branches_v		       bb,
-	ce_bank_accounts		         ba,
-	gl_sets_of_books		         sob,
-	ce_system_parameters		     sys,
-	pay_ce_reconciled_payments	pcrp,
-	pay_pre_payments		         ppp,
-	pay_assignment_actions		   paa,
-	pay_payroll_actions		      ppa,
-	pay_org_payment_methods_f	 popm,
- pay_action_interlocks   		 pai,
-	ce_bank_acct_uses_all 		 	 bau,
-	ce_security_profiles_gt		  ou
+ ce_bank_branches_v               bb,
+    ce_bank_accounts                 ba,
+    gl_sets_of_books                 sob,
+    ce_system_parameters             sys,
+    pay_ce_reconciled_payments    pcrp,
+    pay_pre_payments                 ppp,
+    pay_assignment_actions           paa,
+    pay_payroll_actions              ppa,
+    pay_org_payment_methods_f     popm,
+ pay_action_interlocks            pai,
+    ce_bank_acct_uses_all               bau,
+    ce_security_profiles_gt          ou
 where
-    bb.branch_party_id 				                  = ba.bank_branch_id
-and	ba.bank_account_id 				                  = bau.bank_account_id
-and	bau.payroll_bank_account_id 			          = popm.external_account_id
+    bb.branch_party_id                                   = ba.bank_branch_id
+and    ba.bank_account_id                                   = bau.bank_account_id
+and    bau.payroll_bank_account_id                       = popm.external_account_id
 and bau.org_id                               = ou.organization_id
 and ou.organization_type                     = 'BUSINESS_GROUP'
-and ba.account_owner_org_id 			              = sys.legal_entity_id
-and	sys.set_of_books_id				                  = sob.set_of_books_id
-and	pcrp.assignment_action_id            (+)	= paa.assignment_action_id
-and ppp.org_payment_method_id 			            = popm.org_payment_method_id
-and	ppa.payroll_action_id				                = paa.payroll_action_id
-and	paa.pre_payment_id 				                  = ppp.pre_payment_id
-and	ppa.action_type                          = 'H'
+and ba.account_owner_org_id                           = sys.legal_entity_id
+and    sys.set_of_books_id                                  = sob.set_of_books_id
+and    pcrp.assignment_action_id            (+)    = paa.assignment_action_id
+and ppp.org_payment_method_id                         = popm.org_payment_method_id
+and    ppa.payroll_action_id                                = paa.payroll_action_id
+and    paa.pre_payment_id                                   = ppp.pre_payment_id
+and    ppa.action_type                          = 'H'
 and paa.action_status                        = 'C'
-and	nvl(ppa.date_earned,ppa.effective_date)	<= nvl(:p_as_of_date, sysdate)
-and	nvl(ppa.date_earned,ppa.effective_date)	>= sys.cashbook_begin_date
-and pai.locked_action_id 			                 = paa.assignment_action_id
+and    nvl(ppa.date_earned,ppa.effective_date)    <= nvl(:p_as_of_date, sysdate)
+and    nvl(ppa.date_earned,ppa.effective_date)    >= sys.cashbook_begin_date
+and pai.locked_action_id                              = paa.assignment_action_id
 and ppa.effective_date                 between popm.effective_start_date and popm.effective_end_date
-and	exists
+and    exists
      (select *
       from   pay_assignment_actions paa2,
              pay_payroll_actions ppa2
@@ -350,7 +350,7 @@ and	exists
       and    ppa2.effective_date       > nvl(:p_as_of_date, sysdate)
       and    ppa2.action_type          = 'D'
      )
-and	:p_type                                 in ( 'PAYROLLS','ALL')
+and    :p_type                                 in ( 'PAYROLLS','ALL')
 and ou.name                                  = nvl(:p_business_group,ou.name)
 ) x
 where

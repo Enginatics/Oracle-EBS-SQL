@@ -430,7 +430,8 @@ function bcp47_language(p_language_code in varchar2) return varchar result_cache
 function geolocation(p_service_url in varchar2, p_ip_address in varchar2, p_path in varchar2, p_wallet_path in varchar2 default null) return varchar2 result_cache;
 
 /***********************************************************************************************/
-/*  returns parameter value for the currently running blitz report                             */
+/*  returns parameter value for the currently running blitz report to be used in beforereport  */
+/*  plsql code, for example: xxen_util.parameter_value('Operating Unit')                       */
 /***********************************************************************************************/
 function parameter_value(p_parameter_name in varchar2 default null, p_parameter_bind in varchar2 default null) return varchar2;
 
@@ -2856,7 +2857,7 @@ begin
   order by
   value
   ) loop
-    l_value:=l_value||case when l_value is not null then ';' end||c.value;
+    l_value:=case when l_value not like '<multiple_values>%' then '<multiple_values>' end||l_value||case when l_value is not null then ';' end||c.value;
   end loop;
   return l_value;
 end parameter_value;

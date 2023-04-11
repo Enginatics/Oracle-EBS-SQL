@@ -1,26 +1,24 @@
 # [CST Supply Chain Indented Bills of Material Cost](https://www.enginatics.com/reports/cst-supply-chain-indented-bills-of-material-cost/)
 
 ## Description: 
-Imported Oracle standard Supply Chain Indented Bills of Material Cost report
-Application: Bills of Material
 This report is based on the (static) Oracle Supply Chain Indented Bills of Material Cost Report and merely sums up the available information from the Cost Type.  It does not do a Cost Rollup and as a result, the "Extended Cost" column might not add up to the total item cost for the assembly especially  if changes have been made to the bills of material, routing or item costs, since the last cost rollup.  If this is the case, run a Supply Chain Cost Rollup in Pending or some other cost type (such as Current) for reporting purposes, to synchronize the cost information and then use this report, using the same cost type, to correctly report your item costs.
 
+Imported from BI Publisher
+Description: Supply Chain Indented Bills of Material Cost Report
+Application: Bills of Material
 Source: Supply Chain Indented Bills of Material Cost Report (XML)
 Short Name: CSTRSCCRI_XML
 DB package: BOM_CSTRSCCR_XMLP_PKG
 
--- |  Version Modified on Modified  by   Description
+-- |  Version   Modified on      Modified  by            Description
 -- |  ======= =========== ============== =========================================
--- |  1.0     06 Nov 2020 Eric Clegg     Initial Coding
--- |  2.0     22 Jun 2022 Douglas Volz   Corrected Extended Cost column to only show this level costs.
--- |  3.0     31 Aug 2022 Douglas Volz   Added Effectivity Date and Assignment Set parameters and cost type column.
-
+-- |  1.0            04-APR-2023    Eric Clegg               Initial Conversion
 
 ## Parameters
-Organization Code, Cost Type, Assignment Set, Effective Date, Material Details, Material Overhead Details, Routing Details, Item From, Item To
+Description, Cost Type, Organization, Assignment Set, Material Detail, Material Overhead Detail, Routing Detail, Report Number of Levels, Past Rollup, Effective Date, Include Unimplemented ECOs, Alternate Bill, Engineering Bills, Item From, Item To, Category set, Category From, Category To
 
 ## Used tables
-[cst_cost_types](http://etrm.oracle.com/pls/etrm/etrm_pnav.show_object?c_name=CST_COST_TYPES&c_owner=BOM&c_type=TABLE), [cst_sc_bom_structures](http://etrm.oracle.com/pls/etrm/etrm_pnav.show_object?c_name=CST_SC_BOM_STRUCTURES&c_owner=BOM&c_type=TABLE), [org_organization_definitions](http://etrm.oracle.com/pls/etrm/etrm_pnav.show_object?c_name=ORG_ORGANIZATION_DEFINITIONS&c_owner=APPS&c_type=VIEW), [gl_ledgers](http://etrm.oracle.com/pls/etrm/etrm_pnav.show_object?c_name=GL_LEDGERS&c_owner=GL&c_type=TABLE), [mtl_system_items_vl](http://etrm.oracle.com/pls/etrm/etrm_pnav.show_object?c_name=MTL_SYSTEM_ITEMS_VL&c_owner=APPS&c_type=VIEW), [bom_components_b](http://etrm.oracle.com/pls/etrm/etrm_pnav.show_object?c_name=BOM_COMPONENTS_B&c_owner=BOM&c_type=TABLE), [cst_item_costs](http://etrm.oracle.com/pls/etrm/etrm_pnav.show_object?c_name=CST_ITEM_COSTS&c_owner=BOM&c_type=TABLE), [cst_cost_elements](http://etrm.oracle.com/pls/etrm/etrm_pnav.show_object?c_name=CST_COST_ELEMENTS&c_owner=BOM&c_type=TABLE), [cst_item_cost_details](http://etrm.oracle.com/pls/etrm/etrm_pnav.show_object?c_name=CST_ITEM_COST_DETAILS&c_owner=BOM&c_type=TABLE), [bom_resources](http://etrm.oracle.com/pls/etrm/etrm_pnav.show_object?c_name=BOM_RESOURCES&c_owner=BOM&c_type=TABLE), [bom_departments](http://etrm.oracle.com/pls/etrm/etrm_pnav.show_object?c_name=BOM_DEPARTMENTS&c_owner=BOM&c_type=TABLE)
+[cst_sc_bom_structures](http://etrm.oracle.com/pls/etrm/etrm_pnav.show_object?c_name=CST_SC_BOM_STRUCTURES&c_owner=BOM&c_type=TABLE), [mtl_system_items_kfv](http://etrm.oracle.com/pls/etrm/etrm_pnav.show_object?c_name=MTL_SYSTEM_ITEMS_B_KFV&c_owner=APPS&c_type=VIEW), [mtl_item_categories](http://etrm.oracle.com/pls/etrm/etrm_pnav.show_object?c_name=MTL_ITEM_CATEGORIES&c_owner=INV&c_type=TABLE), [mtl_categories_kfv](http://etrm.oracle.com/pls/etrm/etrm_pnav.show_object?c_name=MTL_CATEGORIES_B_KFV&c_owner=APPS&c_type=VIEW), [org_organization_definitions](http://etrm.oracle.com/pls/etrm/etrm_pnav.show_object?c_name=ORG_ORGANIZATION_DEFINITIONS&c_owner=APPS&c_type=VIEW), [gl_sets_of_books](http://etrm.oracle.com/pls/etrm/etrm_pnav.show_object?c_name=GL_SETS_OF_BOOKS&c_owner=APPS&c_type=VIEW), [fnd_currencies](http://etrm.oracle.com/pls/etrm/etrm_pnav.show_object?c_name=FND_CURRENCIES&c_owner=APPLSYS&c_type=TABLE), [bom_parameters](http://etrm.oracle.com/pls/etrm/etrm_pnav.show_object?c_name=BOM_PARAMETERS&c_owner=BOM&c_type=TABLE), [bom_inventory_components](http://etrm.oracle.com/pls/etrm/etrm_pnav.show_object?c_name=BOM_INVENTORY_COMPONENTS&c_owner=APPS&c_type=VIEW), [hr_organization_information](http://etrm.oracle.com/pls/etrm/etrm_pnav.show_object?c_name=HR_ORGANIZATION_INFORMATION&c_owner=HR&c_type=TABLE), [cst_item_costs](http://etrm.oracle.com/pls/etrm/etrm_pnav.show_object?c_name=CST_ITEM_COSTS&c_owner=BOM&c_type=TABLE), [mtl_parameters](http://etrm.oracle.com/pls/etrm/etrm_pnav.show_object?c_name=MTL_PARAMETERS&c_owner=INV&c_type=TABLE), [cst_item_cost_details](http://etrm.oracle.com/pls/etrm/etrm_pnav.show_object?c_name=CST_ITEM_COST_DETAILS&c_owner=BOM&c_type=TABLE), [cst_cost_elements](http://etrm.oracle.com/pls/etrm/etrm_pnav.show_object?c_name=CST_COST_ELEMENTS&c_owner=BOM&c_type=TABLE), [bom_resources](http://etrm.oracle.com/pls/etrm/etrm_pnav.show_object?c_name=BOM_RESOURCES&c_owner=BOM&c_type=TABLE), [bom_departments](http://etrm.oracle.com/pls/etrm/etrm_pnav.show_object?c_name=BOM_DEPARTMENTS&c_owner=BOM&c_type=TABLE)
 
 ## Categories
 [BI Publisher](https://www.enginatics.com/library/?pg=1&category[]=BI%20Publisher), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Kcapps](https://www.enginatics.com/library/?pg=1&category[]=Kcapps)
@@ -31,7 +29,7 @@ Organization Code, Cost Type, Assignment Set, Effective Date, Material Details, 
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 
 # Example Report 
-[CST Supply Chain Indented Bills of Material Cost 01-Sep-2022 005225.xlsx](https://www.enginatics.com/example/cst-supply-chain-indented-bills-of-material-cost/)
+[CST Supply Chain Indented Bills of Material Cost - Default 04-Apr-2023 074926.xlsx](https://www.enginatics.com/example/cst-supply-chain-indented-bills-of-material-cost/)
 
 # Report SQL
 [www.enginatics.com/reports/cst-supply-chain-indented-bills-of-material-cost/](https://www.enginatics.com/reports/cst-supply-chain-indented-bills-of-material-cost/)

@@ -113,9 +113,9 @@ where
  mta.transaction_source_type_id not in (2,3,6,8,12,101) and
  mta.accounting_line_type <> 15 and
  mta.organization_id = hoi.organization_id and
- hoi.org_information_context || '' ='Accounting Information' and
- haou.organization_id = to_number(hoi.org_information3) and
- gsob.set_of_books_id = to_number(hoi.org_information1)
+ hoi.org_information_context='Accounting Information' and
+ haou.organization_id = hoi.org_information3 and
+ gsob.set_of_books_id = hoi.org_information1
 union all
 select --Q2
  gsob.name ledger,
@@ -196,9 +196,9 @@ where
  mta.transaction_source_type_id in (2,8,12,101) and
  mta.accounting_line_type <> 15 and
  mta.organization_id = hoi.organization_id and
- hoi.org_information_context || '' ='Accounting Information' and
- haou.organization_id = to_number(hoi.org_information3) and
- gsob.set_of_books_id = to_number(hoi.org_information1)
+ hoi.org_information_context='Accounting Information' and
+ haou.organization_id = hoi.org_information3 and
+ gsob.set_of_books_id = hoi.org_information1
 union all
 select --Q3
  gsob.name ledger,
@@ -280,9 +280,9 @@ where
  mta.transaction_source_type_id = 6 and
  mta.accounting_line_type <> 15 and
  mta.organization_id = hoi.organization_id and
- hoi.org_information_context || '' ='Accounting Information' and
- haou.organization_id = to_number(hoi.org_information3) and
- gsob.set_of_books_id = to_number(hoi.org_information1)
+ hoi.org_information_context='Accounting Information' and
+ haou.organization_id = hoi.org_information3 and
+ gsob.set_of_books_id = hoi.org_information1
 union all
 select --Q4
  gsob.name ledger,
@@ -364,9 +364,9 @@ where
  mta.transaction_source_type_id = 3 and
  mta.accounting_line_type <> 15 and
  mta.organization_id = hoi.organization_id and
- hoi.org_information_context || '' ='Accounting Information' and
- haou.organization_id = to_number(hoi.org_information3) and
- gsob.set_of_books_id = to_number(hoi.org_information1)
+ hoi.org_information_context='Accounting Information' and
+ haou.organization_id = hoi.org_information3 and
+ gsob.set_of_books_id = hoi.org_information1
 )
 --
 -- Main Query Starts Here

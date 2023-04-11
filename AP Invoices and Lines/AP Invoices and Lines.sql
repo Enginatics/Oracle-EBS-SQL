@@ -112,7 +112,7 @@ with ap_inv as
   apsa.discount_amount_remaining,
   apsa.inv_curr_gross_amount,
   cbv.bank_name,
-  ieba.iban,
+  ieba.masked_iban iban,
   at.name invoice_terms,
   aia.terms_date,
   aia.cancelled_date invoice_cancelled_date,

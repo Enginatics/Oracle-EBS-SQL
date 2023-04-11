@@ -124,7 +124,7 @@ select
  cbbv.branch_number,
  cba.bank_account_name,
  cba.bank_account_name_alt,
- cba.bank_account_num bank_account_number,
+ cba.masked_account_num bank_account_number,
  cba.currency_code bank_account_currency,
  cba.description bank_account_description,
  -- Debit GL Account Info

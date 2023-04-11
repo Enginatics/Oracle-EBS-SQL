@@ -22,7 +22,7 @@ Ledger, Operating Unit, Organization Code, Transaction Date From, Transaction Da
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 
 # Example Report 
-[None](https://www.enginatics.com/example/inv-material-account-distribution-detail/)
+[INV Material Account Distribution Detail - Pivot Summary Template 04-Apr-2023 235602.xlsx](https://www.enginatics.com/example/inv-material-account-distribution-detail/)
 
 # Report SQL
 [www.enginatics.com/reports/inv-material-account-distribution-detail/](https://www.enginatics.com/reports/inv-material-account-distribution-detail/)

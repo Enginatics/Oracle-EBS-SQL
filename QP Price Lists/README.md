@@ -12,7 +12,8 @@ Price List, Item, Category Set, Category, Valid on Date, Organization Code
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
-
+## Related reports
+[QP Customer Pricing Engine Request](/QP%20Customer%20Pricing%20Engine%20Request/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

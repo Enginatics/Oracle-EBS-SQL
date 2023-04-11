@@ -13,7 +13,7 @@ Organization Code, Plan, End Assembly, Component, Supplier, Planner, Buyer, Make
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related reports
-[GL Account Analysis](/GL%20Account%20Analysis/), [MRP Pegging](/MRP%20Pegging/)
+[MRP Pegging](/MRP%20Pegging/), [PO Headers and Lines](/PO%20Headers%20and%20Lines/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
