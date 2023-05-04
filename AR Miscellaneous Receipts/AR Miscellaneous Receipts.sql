@@ -29,25 +29,25 @@ select
                    , aba1.name)
                                        batch_name,
  acra.receipt_number,
+ xxen_util.meaning(acra.type,'PAYMENT_CATEGORY_TYPE',222) receipt_type,
+ arm.name receipt_method,
+ xxen_util.meaning(acra.status,'CHECK_STATUS',222) receipt_status,
+ xxen_util.meaning(acrha2.status,'RECEIPT_CREATION_STATUS',222) receipt_history_status, 
  acrha1.gl_date,
  acra.receipt_date,
  acra.deposit_date,
  acra.anticipated_clearing_date,
  acra.currency_code                    currency,
- case amcda.misc_cash_distribution_id
- when min(amcda.misc_cash_distribution_id) over (partition by acra.cash_receipt_id)
+ case when 1 = row_number() over (partition by acra.cash_receipt_id,acrha2.cash_receipt_history_id order by amcda.misc_cash_distribution_id)
  then decode(acrha2.status,'REVERSED',acrha2.amount*-1,acrha2.amount)
  end                                   amount,
- case amcda.misc_cash_distribution_id
- when min(amcda.misc_cash_distribution_id) over (partition by acra.cash_receipt_id)
+ case when 1 = row_number() over (partition by acra.cash_receipt_id,acrha2.cash_receipt_history_id order by amcda.misc_cash_distribution_id)
  then decode(acrha2.status,'REVERSED',acrha2.acctd_amount*-1,acrha2.acctd_amount)
  end                                   accounted_amount,
- case amcda.misc_cash_distribution_id
- when min(amcda.misc_cash_distribution_id) over (partition by acra.cash_receipt_id)
+ case when 1 = row_number() over (partition by acra.cash_receipt_id,acrha2.cash_receipt_history_id order by amcda.misc_cash_distribution_id)
  then decode(acrha2.status,'REVERSED',acrha2.factor_discount_amount*-1,acrha2.factor_discount_amount)
  end                                   discount_amount,
- case amcda.misc_cash_distribution_id
- when min(amcda.misc_cash_distribution_id) over (partition by acra.cash_receipt_id)
+ case when 1 = row_number() over (partition by acra.cash_receipt_id,acrha2.cash_receipt_history_id order by amcda.misc_cash_distribution_id)
  then decode(acrha2.status,'REVERSED',acrha2.acctd_factor_discount_amount*-1,acrha2.acctd_factor_discount_amount)
  end                                   accounted_discount_amount,
  --gcck1.concatenated_segments           accounting_flexfield,
@@ -55,9 +55,6 @@ select
  acra.exchange_rate,
  acra.exchange_date,
  acra.exchange_rate_type               exchange_type,
- xxen_util.meaning('CASH','PAYMENT_CATEGORY_TYPE',222)
-                                       receipt_type,
- arm.name                              receipt_method,
  acra.misc_payment_source              payment_source,
  arta.name                             activity,
  adsa.distribution_set_name            distribution_set,
@@ -90,6 +87,9 @@ select
  hz_format_pub.format_address (hps.location_id,null,null,' , ')
                                        customer_address,
  hp.jgzz_fiscal_code                   customer_tax_number,
+ nvl(ac2.name,ac.name)                 collector,
+ ac.name                               collector_account,
+ ac2.name                              collector_site,
  ifpct.payment_channel_name            payment_method,
  hp2.party_name                        bank_name,
  hp3.party_name                        bank_branch,
@@ -139,6 +139,10 @@ from
  hz_cust_site_uses_all          hcsua,
  hz_cust_acct_sites_all         hcasa,
  hz_party_sites                 hps,
+ hz_customer_profiles           hcp,
+ ar_collectors                  ac,
+ hz_customer_profiles           hcp2,
+ ar_collectors                  ac2,
  -- remit bank info
  ce_bank_accounts               cba,
  ce_bank_acct_uses_all          cbaua,
@@ -193,10 +197,10 @@ where
  and acra.doc_sequence_id                = fds.doc_sequence_id(+)
  and acra.vat_tax_id                     = avta.vat_tax_id(+)
  -- distribution info
- and amcda.cash_receipt_id               = acra.cash_receipt_id
+ and decode(:p_report_detail,'Receipt',-999,acra.cash_receipt_id) = amcda.cash_receipt_id (+) 
  and amcda.misc_cash_distribution_id     = ada.source_id(+)
  and ada.source_table(+)                 = 'MCD'
- and ada.code_combination_id             = gcck2.code_combination_id
+ and ada.code_combination_id             = gcck2.code_combination_id (+)
  -- remit bank info
  and acra.remit_bank_acct_use_id         = cbaua.bank_acct_use_id
  and cbaua.bank_account_id               = cba.bank_account_id
@@ -207,6 +211,12 @@ where
  and acra.customer_site_use_id           = hcsua.site_use_id (+)
  and hcsua.cust_acct_site_id             = hcasa.cust_acct_site_id (+)
  and hcasa.party_site_id                 = hps.party_site_id (+)
+ and acra.pay_from_customer              = hcp.cust_account_id (+)
+ and nvl(hcp.site_use_id(+),-999)        = -999
+ and hcp.collector_id                    = ac.collector_id (+)
+ and acra.pay_from_customer              = hcp2.cust_account_id (+)
+ and acra.customer_site_use_id           = hcp2.site_use_id (+)
+ and hcp2.collector_id                   = ac2.collector_id (+)
  --  customer payment info
  and acra.payment_trxn_extension_id      = ifte.trxn_extension_id (+)
  and ifte.origin_application_id          = fa.application_id(+)
@@ -231,6 +241,7 @@ order by
 ,acra.receipt_date
 ,acra.receipt_number
 ,acra.cash_receipt_id
+,acrha2.cash_receipt_history_id
 ,amcda.misc_cash_distribution_id
 ) misc_receipts
 where

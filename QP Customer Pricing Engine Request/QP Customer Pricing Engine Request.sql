@@ -68,7 +68,7 @@ with xxen_qp_preq_data as
   xml_res.*
  from
   xmltable
-    ( '/PRICING_DATA/REQUEST'
+    ( 'REPORT/PRICING_DATA/REQUEST'
       passing xmltype(xxen_qp_preq.get_report_xml_clob)
       columns
         line_number                         number          path 'LNUM',
@@ -240,7 +240,7 @@ select
   decode(qll1.list_line_type_code,'PBH','Y') price_break_flag,
   xxen_qp_preq.get_pricing_currency pricing_currency_code,
 -- order qualifiers
-  xxen_qp_preq.get_agreement_name pricing_agreement_name,
+  xxen_qp_preq.get_agreement pricing_agreement_name,
   xxen_qp_preq.get_order_source pricing_order_source,
   (select ottt.name
    from   oe_transaction_types_tl  ottt
@@ -268,7 +268,7 @@ select
   xxen_util.meaning(msik.bom_item_type,'BOM_ITEM_TYPE',700) bom_item_type,
   xxen_qp_preq.get_category_set_name category_set,
   &category_set_columns
-  cst_cost_api.get_item_cost(1,msik2.inventory_item_id,xxen_qp_preq.get_cost_organization_id,null,xxen_qp_preq.get_cost_type_id,null) priced_item_cost,
+  cst_cost_api.get_item_cost(1,msik2.inventory_item_id,xxen_qp_preq.get_cost_organization_id,null,xxen_qp_preq.get_cost_type_id) priced_item_cost,
   xxen_qp_preq.get_cost_organization_code item_cost_organization,
   case xxqpd.record_type
   when 'S'  then 'Summary'
@@ -310,8 +310,8 @@ select
   xxen_util.meaning(qpbv3.price_break_type_code,'PRICE_BREAK_TYPE_CODE',661) pb_type,
   qp_qp_form_pricing_attr.get_attribute('QP_ATTR_DEFNS_PRICING', qpbv3.pricing_attribute_context, qpbv3.pricing_attribute) pb_attribute,
   xxen_util.meaning(qpbv3.comparison_operator_code,'COMPARISON_OPERATOR',661) pb_operator,
-  qpbv3.pricing_attr_value_from_number pb_from,
-  qpbv3.pricing_attr_value_to_number pb_to,
+  qpbv3.pricing_attr_value_from pb_from,
+  qpbv3.pricing_attr_value_to pb_to,
   xxqpd.benefit,
   xxqpd.benefit_method,
   xxqpd.benefit_value,

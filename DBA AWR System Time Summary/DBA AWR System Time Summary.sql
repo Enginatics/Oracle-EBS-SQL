@@ -5,7 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: DBA AWR System Time Summary
--- Description: Historic system time model values from the automated workload repository showing a breakdown of how the database time was spent e.g. on excuting SQL, PL/SQL or Java code, parsing statements etc..
+-- Description: Historic system time model values from the automated workload repository showing how the database time was spent e.g. on excuting SQL, PL/SQL or Java code, parsing statements etc..
 -- Excel Examle Output: https://www.enginatics.com/example/dba-awr-system-time-summary/
 -- Library Link: https://www.enginatics.com/reports/dba-awr-system-time-summary/
 -- Run Report: https://demo.enginatics.com/
@@ -19,21 +19,22 @@ select
 y.instance_number,
 y.stat_name,
 &elapsed_time
-xxen_util.time(nvl(y.delta/1000000,0)) time_
+case when y.stat_name in ('active sessions','active CPU sessions') then to_char(y.delta/1000000/y.time_interval,'fm999g990d00') else xxen_util.time(nvl(y.delta/1000000,0)) end time_
 from
 (
 select distinct
 &pivot_time2
 x.instance_number,
 x.stat_name,
-greatest(0, max(x.value) over (partition by x.stat_id, x.dbid, x.instance_number &pivot_partition2)-
-&delta_prev_value) delta
+greatest(0, max(x.value) over (partition by x.stat_name, x.dbid, x.instance_number &pivot_partition2)-
+&delta_prev_value) delta,
+sum(x.time_interval) over (partition by x.stat_name, x.dbid, x.instance_number &time_partition_by) time_interval
 from
 (
 select
 to_char(xxen_util.client_time(dhs.end_interval_time),'Day') day_of_week,
 xxen_util.client_time(dhs.end_interval_time) end_interval_time,
-dhstm.stat_id,
+(cast(dhs.end_interval_time as date)-cast(dhs.begin_interval_time as date))*86400 time_interval,
 dhstm.dbid,
 dhstm.instance_number,
 case
@@ -48,12 +49,13 @@ when dhstm.stat_name='background cpu time' then greatest(0,dhstm.value-sum(case 
 else dhstm.value end value
 from
 dba_hist_snapshot dhs,
-dba_hist_sys_time_model dhstm
+(
+select dhstm.dbid, dhstm.instance_number, dhstm.snap_id, dhstm.stat_name, dhstm.value from dba_hist_sys_time_model dhstm union all
+select dhstm.dbid, dhstm.instance_number, dhstm.snap_id, decode(dhstm.stat_name,'DB time','active sessions','active CPU sessions') stat_name, dhstm.value from dba_hist_sys_time_model dhstm where dhstm.stat_name in ('DB time','DB CPU')
+) dhstm
 where
 1=1 and
 dhstm.stat_name not in (
-'DB time',
-'DB CPU',
 'hard parse (sharing criteria) elapsed time',
 'hard parse (bind mismatch) elapsed time',
 'failed parse (out of shared memory) elapsed time'

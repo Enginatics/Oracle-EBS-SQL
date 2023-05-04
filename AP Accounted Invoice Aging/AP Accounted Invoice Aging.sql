@@ -191,11 +191,16 @@ ap_inv as
                               invoice_status,
   xxen_util.meaning(aia.payment_status_flag,'INVOICE PAYMENT STATUS',200)
                               invoice_payment_status,
+  xxen_util.meaning(aia.pay_group_lookup_code,'PAY GROUP',201) pay_group,
+  (select ipmv.payment_method_name from iby_payment_methods_vl ipmv where ipmv.payment_method_code = aia.payment_method_code) payment_method,
   aia.dispute_reason          dispute_reason,
   apsa.iby_hold_reason        payment_hold_reason,
-  aia.invoice_currency_code   invoice_currency,
+  aia.invoice_currency_code   invoice_currency, 
   aia.invoice_amount          invoice_amount,
   nvl(aia.base_amount,aia.invoice_amount) invoice_base_amount,
+  case when aia.invoice_currency_code != gl.currency_code then aia.exchange_rate end invoice_exchange_rate,
+  case when aia.invoice_currency_code != gl.currency_code then (select gdct.user_conversion_type from gl_daily_conversion_types gdct where gdct.conversion_type = aia.exchange_rate_type) end invoice_exchange_rate_type,
+  case when aia.invoice_currency_code != gl.currency_code then aia.exchange_date end invoice_exchange_rate_date,
   aia.invoice_id,
   apsa.payment_num,
   apsa.due_date,
@@ -221,7 +226,14 @@ ap_inv as
        end
   else 0 -- all remaining amount already consumed
   end ps_amount_remaining,
-  decode(gl.currency_code,:p_reval_currency,1,(select gdr.conversion_rate from gl_daily_conversion_types gdct, gl_daily_rates gdr where gl.currency_code=gdr.from_currency and gdr.to_currency=:p_reval_currency and :p_reval_conv_date=gdr.conversion_date and gdct.user_conversion_type=:p_reval_conv_type and gdct.conversion_type=gdr.conversion_type)) reval_conv_rate
+  decode(gl.currency_code,:p_reval_currency,1,(select gdr.conversion_rate from gl_daily_conversion_types gdct, gl_daily_rates gdr where gl.currency_code=gdr.from_currency and gdr.to_currency=:p_reval_currency and :p_reval_conv_date=gdr.conversion_date and gdct.user_conversion_type=:p_reval_conv_type and gdct.conversion_type=gdr.conversion_type)) reval_conv_rate,
+  --
+  cbbv.bank_name               remit_to_bank_name,
+  cbbv.bank_number             remit_to_bank_number,
+  cbbv.bank_branch_name        remit_to_branch_name,
+  cbbv.branch_number           remit_to_branch_number,
+  cbbv.country                 remit_to_branch_country,
+  ieba.masked_bank_account_num remit_to_account_num
  from
   xtb xtb,
   xla_transaction_entities xte,
@@ -237,7 +249,9 @@ ap_inv as
   fnd_territories_vl ftv2,
   gl_ledgers gl,
   fnd_currencies_vl fcv,
-  hr_all_organization_units_vl haouv
+  hr_all_organization_units_vl haouv,
+  iby_ext_bank_accounts ieba,
+  ce_bank_branches_v cbbv
  where
   xtb.entity_id=xte.entity_id and
   xtb.source_application_id=xte.application_id and
@@ -259,7 +273,10 @@ ap_inv as
   xtb.ledger_id=gl.ledger_id and
   gl.currency_code=fcv.currency_code and
   haouv.organization_id=aia.org_id and
-  aia.org_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where not exists (select null from mo_glob_org_access_tmp mgoat))
+  aia.org_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where not exists (select null from mo_glob_org_access_tmp mgoat)) and
+  apsa.external_bank_account_id = ieba.ext_bank_account_id(+) and
+  ieba.branch_id = cbbv.branch_party_id(+) and
+  ieba.bank_id = cbbv.bank_party_id(+)
 )
 --
 -- Main Query Starts Here
@@ -289,9 +306,14 @@ select
  ap_inv.invoice_description,
  ap_inv.invoice_status,
  ap_inv.invoice_payment_status,
+ ap_inv.pay_group,
+ ap_inv.payment_method,
  ap_inv.dispute_reason,
  ap_inv.payment_hold_reason,
  ap_inv.invoice_currency,
+ ap_inv.invoice_exchange_rate,
+ ap_inv.invoice_exchange_rate_type,
+ ap_inv.invoice_exchange_rate_date,
  case when ap_inv.payment_num = first_value(ap_inv.payment_num) over (partition by ap_inv.invoice_id order by ap_inv.payment_num) then ap_inv.invoice_amount end invoice_amount,
  case when ap_inv.payment_num = first_value(ap_inv.payment_num) over (partition by ap_inv.invoice_id order by ap_inv.payment_num) then ap_inv.invoice_base_amount end invoice_base_amount,
  case when ap_inv.payment_num = first_value(ap_inv.payment_num) over (partition by ap_inv.invoice_id order by ap_inv.payment_num) then ap_inv.acctd_rounded_orig_amount end transaction_original_amount,
@@ -308,6 +330,14 @@ select
  gl_flexfields_pkg.get_description(gcck.chart_of_accounts_id,'GL_ACCOUNT',ap_inv.natural_account_segment_value) account_segment_desc,
  ap_inv.cost_center_segment_value cost_center_segment,
  gl_flexfields_pkg.get_description(gcck.chart_of_accounts_id,'FA_COST_CTR',ap_inv.cost_center_segment_value) cost_center_segment_desc,
+ --
+ ap_inv.remit_to_bank_name,
+ ap_inv.remit_to_bank_number,
+ ap_inv.remit_to_branch_name,
+ ap_inv.remit_to_branch_number,
+ ap_inv.remit_to_branch_country,
+ ap_inv.remit_to_account_num,
+ --
  ap_inv.invoice_id
 from
  ap_inv ap_inv,

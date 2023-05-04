@@ -40,6 +40,8 @@ x.avg_non_conflict_wait_seconds,
 x.sum_non_conflict_wait_seconds,
 x.avg_conflict_wait_seconds,
 x.sum_conflict_wait_seconds,
+x.min_start_date,
+x.max_start_date,
 x.execution_method_code,
 x.total_users
 &time_percentage
@@ -65,6 +67,8 @@ avg(fcr.non_conflict_wait_seconds) over (partition by fcpv.user_concurrent_progr
 sum(fcr.non_conflict_wait_seconds) over (partition by fcpv.user_concurrent_program_name,fcr.description_,fcpv.concurrent_program_name,fe.executable_name,fe.execution_file_name &partition_argument) sum_non_conflict_wait_seconds,
 avg(fcr.conflict_wait_seconds) over (partition by fcpv.user_concurrent_program_name,fcr.description_,fcpv.concurrent_program_name,fe.executable_name,fe.execution_file_name &partition_argument) avg_conflict_wait_seconds,
 sum(fcr.conflict_wait_seconds) over (partition by fcpv.user_concurrent_program_name,fcr.description_,fcpv.concurrent_program_name,fe.executable_name,fe.execution_file_name &partition_argument) sum_conflict_wait_seconds,
+min(fcr.actual_start_date) over (partition by fcpv.user_concurrent_program_name,fcr.description_,fcpv.concurrent_program_name,fe.executable_name,fe.execution_file_name &partition_argument) min_start_date,
+max(fcr.actual_start_date) over (partition by fcpv.user_concurrent_program_name,fcr.description_,fcpv.concurrent_program_name,fe.executable_name,fe.execution_file_name &partition_argument) max_start_date,
 count(distinct fcr.requested_by) over () total_users
 from
 (

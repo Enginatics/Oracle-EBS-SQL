@@ -33,6 +33,13 @@ select
  hp.party_name customer_name,
  hca.account_number customer_number,
  decode(hp.party_type, 'ORGANIZATION',hp.organization_name_phonetic, null) customer_name_alt,
+ hcsua.location customer_location,
+ hz_format_pub.format_address(hps.location_id,null,null,' , ') customer_address,
+ ftv2.territory_short_name customer_country,
+ hp.jgzz_fiscal_code customer_tax_number,
+ nvl(ac2.name,ac.name) collector,
+ ac.name collector_account,
+ ac2.name collector_site,
  -- Receipt Main Details
  decode(acrha.status, 'REVERSED', aba1.name, aba1.name) batch_name,
  absa.name batch_source,
@@ -74,10 +81,10 @@ select
  end  receipt_status,
  xxen_util.meaning(acrha.status,'RECEIPT_CREATION_STATUS',222) receipt_history_status, 
  acra.currency_code receipt_currency,
- decode(acrha.status,'REVERSED',acrha.amount*-1,acrha.amount) + decode(acrha.status,'REVERSED',acrha.factor_discount_amount*-1,acrha.factor_discount_amount) receipt_amount,
- decode(acrha.status,'REVERSED',acrha.factor_discount_amount*-1,acrha.factor_discount_amount) factor_discount_amount,
- decode(acrha.status,'REVERSED',acrha.acctd_amount*-1,acrha.acctd_amount) + decode(acrha.status,'REVERSED',acrha.acctd_factor_discount_amount*-1,acrha.acctd_factor_discount_amount) acctd_receipt_amount,
- decode(acrha.status,'REVERSED',acrha.acctd_factor_discount_amount*-1,acrha.acctd_factor_discount_amount) acctd_factor_discount_amount,
+ decode(acrha.status,'REVERSED',0,acrha.amount) + decode(acrha.status,'REVERSED',0,nvl(acrha.factor_discount_amount,0)) receipt_amount,
+ decode(acrha.status,'REVERSED',0,acrha.factor_discount_amount) factor_discount_amount,
+ decode(acrha.status,'REVERSED',0,acrha.acctd_amount) + decode(acrha.status,'REVERSED',0,nvl(acrha.acctd_factor_discount_amount,0)) acctd_receipt_amount,
+ decode(acrha.status,'REVERSED',0,acrha.acctd_factor_discount_amount) acctd_factor_discount_amount,
  -- Applied To Trx Details
  case when aspa.show_billing_number_flag = 'Y'
  then decode(araa.status, 'ACC', xxen_util.meaning('ACC','PAYMENT_TYPE',222) , decode(acia.cons_billing_number, null, apsa.trx_number , substrb(rtrim(acia.cons_billing_number)||'/'||rtrim(to_char(rcta.trx_number)),1,30)))
@@ -169,6 +176,17 @@ where
  gcc.code_combination_id = acrha.account_code_combination_id and
  acra.pay_from_customer = hca.cust_account_id(+) and
  hca.party_id = hp.party_id(+) and
+ acra.customer_site_use_id=hcsua.site_use_id(+) and
+ hcsua.cust_acct_site_id=hcasa.cust_acct_site_id(+) and
+ hcasa.party_site_id=hps.party_site_id(+) and
+ hps.location_id=hl.location_id(+) and
+ hl.country=ftv2.territory_code(+) and
+ acra.pay_from_customer=hcp.cust_account_id(+) and
+ nvl(hcp.site_use_id(+),-999)=-999 and
+ hcp.collector_id=ac.collector_id(+) and
+ acra.pay_from_customer=hcp2.cust_account_id(+) and
+ acra.customer_site_use_id=hcp2.site_use_id(+) and
+ hcp2.collector_id=ac2.collector_id(+) and
  araa.cash_receipt_id = acra.cash_receipt_id and
  araa.org_id = acra.org_id and
  ( araa.status = 'APP' or (araa.status = 'ACTIVITY' and araa.receivables_trx_id = -16)) and
@@ -183,13 +201,14 @@ where
  apsa.customer_id = hca2.cust_account_id(+) and
  rctlgda.latest_rec_flag(+) = 'Y' and
  araa.code_combination_id = gcc2.code_combination_id and
- acrha.first_posted_record_flag = 'Y' and
  apsa.cons_inv_id = acia.cons_inv_id(+) and
  apsa.org_id = acia.org_id(+) and
  aspa.org_id = araa.org_id and
  :reporting_level in (1000,3000) and
  nvl(:p_coa,-1) = nvl(:p_coa,-1) and
  :p_mrc_flag = :p_mrc_flag and
+ nvl(:p_gl_date_low_h,sysdate) = nvl(:p_gl_date_low_h,sysdate) and
+ nvl(:p_gl_date_high_h,sysdate) = nvl(:p_gl_date_high_h,sysdate) and
  1=1
 ) x
 where

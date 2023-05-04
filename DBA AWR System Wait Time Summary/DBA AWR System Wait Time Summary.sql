@@ -53,6 +53,7 @@ dhs.snap_id=dhstm.snap_id
 where
 x.seconds>0
 group by
+&instance_number
 x.total_seconds,
 rollup(x.stat_name)
 ) y
