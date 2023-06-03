@@ -294,7 +294,7 @@ with ce_bank_acct_bal_qry1 as
    end projected_bf
   from
    ce_bank_acct_balances  cbab
-   full outer join
+   full join
    ce_projected_balances  cpb
   on
    cpb.bank_account_id  = cbab.bank_account_id and

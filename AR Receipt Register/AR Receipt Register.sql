@@ -25,7 +25,121 @@ Short Name: ARRXRCRG/RXARRCRG
 -- Run Report: https://demo.enginatics.com/
 
 select
- x.*
+ x.ledger,
+ x.ledger_currency,
+ x.operating_unit,
+ x.customer_name,
+ x.customer_number,
+ x.customer_name_alt,
+ x.customer_location,
+ x.customer_address,
+ x.customer_country,
+ x.customer_tax_number,
+ x.collector,
+ x.collector_account,
+ x.collector_site,
+  -- Receipt Main Details
+ x.batch_name,
+ x.batch_source,
+ x.receipt_number,
+ x.receipt_date,
+ x.gl_date,
+ x.receipt_type,
+ x.receipt_method,
+ x.receipt_status,
+ x.receipt_history_status,
+ x.receipt_currency,
+ -- entered amounts
+ x.receipt_amount,
+ x.factor_discount_amount,
+ x.applied_amount,
+ x.on_account_amount,
+ x.unidentified_amount,
+ x.unapplied_amount,
+ x.miscellaneous_amount,
+ x.cash_claims_amount,
+ x.writeoff_amount,
+ x.refund_amount,
+ x.chargeback_amount,
+ x.short_term_debt_amount,
+ x.earned_discount_taken,
+ x.unearned_discount_taken,
+ -- acctd amounts
+ x.acctd_receipt_amount,
+ x.acctd_factor_discount_amount,
+ x.acctd_applied_amount,
+ x.acctd_on_account_amount,
+ x.acctd_unidentified_amount,
+ x.acctd_unapplied_amount,
+ x.acctd_miscellaneous_amount,
+ x.acctd_cash_claims_amount,
+ x.acctd_writeoff_amount,
+ x.acctd_refund_amount,
+ x.acctd_chargeback_amount,
+ x.acctd_short_term_debt_amount,
+ x.acctd_earned_discount_taken,
+ x.acctd_unearned_discount_taken,
+ x.acctd_gain_loss,
+ -- Revaluation Columns
+ &lp_reval_columns
+ --
+ x.first_apply_date,
+ x.last_apply_date,
+ x.first_applied_in_full_date,
+ x.first_apply_gl_date,
+ x.last_apply_gl_date,
+ x.first_applied_in_full_gl_date,
+ -- Additional Receipt Info
+ x.doc_sequence_name,
+ x.doc_sequence_value,
+ x.receipt_creation_date,
+ x.receipt_created_by,
+ x.receipt_last_updated_date,
+ x.receipt_last_updated_by,
+ x.issue_date,
+ x.deposit_date,
+ x.anticipated_clearing_date,
+ x.misc_payment_source,
+ x.reference_type,
+ x.reference_number,
+ x.customer_receipt_reference,
+ x.tax_code,
+ x.exchange_rate,
+ x.exchange_date,
+ x.exchange_rate_type,
+ x.receipt_comments,
+ x.application_notes,
+ x.reversal_date,
+ x.reversal_category,
+ x.reversal_reason,
+ x.reversal_comments,
+ --
+ x.bank_name,
+ x.bank_name_alt,
+ x.bank_number,
+ x.bank_branch_name,
+ x.bank_branch_name_alt,
+ x.branch_number,
+ x.bank_branch_country,
+ x.bank_account_name,
+ x.bank_account_name_alt,
+ x.bank_account_number,
+ x.bank_account_currency,
+ x.bank_account_description,
+ -- Debit GL Account Info
+ x.debit_account,
+ x.debit_account_desc,
+ x.balancing_segment,
+ x.balancing_segment_desc,
+ x.account_segment,
+ x.account_segment_desc,
+ x.debit_account_pivot_label,
+ x.bal_seg_pivot_label,
+ x.account_pivot_label,
+ x.cust_name_pivot_label,
+ x.cust_number_pivot_label,
+ x.reporting_entity,
+ x.cash_receipt_id
 from
 (
 select /*+ push_pred(araa, araa2) */
@@ -86,31 +200,31 @@ select /*+ push_pred(araa, araa2) */
  acra.currency_code receipt_currency,
  decode(acrha.status,
         'REVERSED',decode(acrha3.cash_receipt_history_id , acrha.cash_receipt_history_id, 0 , (nvl(acrha3.amount,0))* -1),
-		                 decode(acrha3.cash_receipt_history_id, acrha.cash_receipt_history_id, (acrha.amount), (acrha.amount -(nvl(acrha3.amount,0))))
-	      ) +
+                   decode(acrha3.cash_receipt_history_id, acrha.cash_receipt_history_id, (acrha.amount), (acrha.amount -(nvl(acrha3.amount,0))))
+       ) +
  decode(acrha.status,
         'REVERSED',decode(acrha3.cash_receipt_history_id , acrha.cash_receipt_history_id, 0, (nvl(acrha3.factor_discount_amount,0))* -1),
-		                 decode(acrha3.cash_receipt_history_id ,acrha.cash_receipt_history_id, nvl(acrha.factor_discount_amount,0), (nvl(acrha.factor_discount_amount,0) -(nvl(acrha3.factor_discount_amount,0))))
-	      ) receipt_amount,
+                   decode(acrha3.cash_receipt_history_id ,acrha.cash_receipt_history_id, nvl(acrha.factor_discount_amount,0), (nvl(acrha.factor_discount_amount,0) -(nvl(acrha3.factor_discount_amount,0))))
+       ) receipt_amount,
  decode(acrha.status,
         'REVERSED',decode(acrha3.cash_receipt_history_id , acrha.cash_receipt_history_id, 0, (nvl(acrha3.factor_discount_amount,0))* -1),
-		                 decode(acrha3.cash_receipt_history_id ,acrha.cash_receipt_history_id, nvl(acrha.factor_discount_amount,0), (nvl(acrha.factor_discount_amount,0) -(nvl(acrha3.factor_discount_amount,0))))
-	      ) factor_discount_amount,
+                   decode(acrha3.cash_receipt_history_id ,acrha.cash_receipt_history_id, nvl(acrha.factor_discount_amount,0), (nvl(acrha.factor_discount_amount,0) -(nvl(acrha3.factor_discount_amount,0))))
+       ) factor_discount_amount,
  araa.applied_amount,
  araa.on_account_amount,
  araa.unidentified_amount,
- decode(araa.unapplied_amt,0,to_number(null),araa.unapplied_amt) unapplied_amt,
+ decode(araa.unapplied_amt,0,to_number(null),araa.unapplied_amt) unapplied_amount,
  case when acra.type = 'MISC'
  then
    decode(acrha.status,
           'REVERSED',decode(acrha3.cash_receipt_history_id , acrha.cash_receipt_history_id, 0 , (nvl(acrha3.amount,0))* -1),
-	                    decode(acrha3.cash_receipt_history_id, acrha.cash_receipt_history_id, (acrha.amount), (acrha.amount -(nvl(acrha3.amount,0))))
-	        ) +
+                     decode(acrha3.cash_receipt_history_id, acrha.cash_receipt_history_id, (acrha.amount), (acrha.amount -(nvl(acrha3.amount,0))))
+         ) +
    decode(acrha.status,
           'REVERSED',decode(acrha3.cash_receipt_history_id , acrha.cash_receipt_history_id, 0, (nvl(acrha3.factor_discount_amount,0))* -1),
-		                   decode(acrha3.cash_receipt_history_id ,acrha.cash_receipt_history_id, nvl(acrha.factor_discount_amount,0), (nvl(acrha.factor_discount_amount,0) -(nvl(acrha3.factor_discount_amount,0))))
-	   )
-	end miscellaneous_amount, 
+                     decode(acrha3.cash_receipt_history_id ,acrha.cash_receipt_history_id, nvl(acrha.factor_discount_amount,0), (nvl(acrha.factor_discount_amount,0) -(nvl(acrha3.factor_discount_amount,0))))
+    )
+ end miscellaneous_amount,
  araa.cash_claims_amount,
  araa.writeoff_amount,
  araa.refund_amount,
@@ -121,30 +235,30 @@ select /*+ push_pred(araa, araa2) */
  -- acctd
  decode(acrha.status,
         'REVERSED',decode(acrha3.cash_receipt_history_id , acrha.cash_receipt_history_id, 0, (nvl(acrha3.acctd_amount,0))* -1),
-		                 decode(acrha3.cash_receipt_history_id, acrha.cash_receipt_history_id, (acrha.acctd_amount) , (acrha.acctd_amount -(nvl(acrha3.acctd_amount,0))))
-	      ) +
+                   decode(acrha3.cash_receipt_history_id, acrha.cash_receipt_history_id, (acrha.acctd_amount) , (acrha.acctd_amount -(nvl(acrha3.acctd_amount,0))))
+       ) +
  decode(acrha.status,
         'REVERSED',decode(acrha3.cash_receipt_history_id , acrha.cash_receipt_history_id,0, (nvl(acrha3.acctd_factor_discount_amount,0))* -1),
-		                 decode(acrha3.cash_receipt_history_id ,acrha.cash_receipt_history_id, nvl(acrha.acctd_factor_discount_amount,0), (nvl(acrha.acctd_factor_discount_amount,0) -(nvl(acrha3.acctd_factor_discount_amount,0))))
-	      ) acctd_receipt_amount,
+                   decode(acrha3.cash_receipt_history_id ,acrha.cash_receipt_history_id, nvl(acrha.acctd_factor_discount_amount,0), (nvl(acrha.acctd_factor_discount_amount,0) -(nvl(acrha3.acctd_factor_discount_amount,0))))
+       ) acctd_receipt_amount,
  decode(acrha.status,
         'REVERSED',decode(acrha3.cash_receipt_history_id , acrha.cash_receipt_history_id,0, (nvl(acrha3.acctd_factor_discount_amount,0))* -1),
-		                 decode(acrha3.cash_receipt_history_id ,acrha.cash_receipt_history_id, nvl(acrha.acctd_factor_discount_amount,0), (nvl(acrha.acctd_factor_discount_amount,0) -(nvl(acrha3.acctd_factor_discount_amount,0))))
-	      ) acctd_factor_discount_amount,
+                   decode(acrha3.cash_receipt_history_id ,acrha.cash_receipt_history_id, nvl(acrha.acctd_factor_discount_amount,0), (nvl(acrha.acctd_factor_discount_amount,0) -(nvl(acrha3.acctd_factor_discount_amount,0))))
+       ) acctd_factor_discount_amount,
  araa.acctd_applied_amount,
  araa.acctd_on_account_amount,
- araa.acctd_unidentified_amt,
- decode(araa.acctd_unapplied_amt,0,to_number(null),araa.acctd_unapplied_amt) acctd_unapplied_amt,
+ araa.acctd_unidentified_amt acctd_unidentified_amount,
+ decode(araa.acctd_unapplied_amt,0,to_number(null),araa.acctd_unapplied_amt) acctd_unapplied_amount,
  case when acra.type = 'MISC'
  then
    decode(acrha.status,
           'REVERSED',decode(acrha3.cash_receipt_history_id , acrha.cash_receipt_history_id, 0, (nvl(acrha3.acctd_amount,0))* -1),
-		                   decode(acrha3.cash_receipt_history_id, acrha.cash_receipt_history_id, (acrha.acctd_amount) , (acrha.acctd_amount -(nvl(acrha3.acctd_amount,0))))
-	        ) +
+                     decode(acrha3.cash_receipt_history_id, acrha.cash_receipt_history_id, (acrha.acctd_amount) , (acrha.acctd_amount -(nvl(acrha3.acctd_amount,0))))
+         ) +
    decode(acrha.status,
           'REVERSED',decode(acrha3.cash_receipt_history_id , acrha.cash_receipt_history_id,0, (nvl(acrha3.acctd_factor_discount_amount,0))* -1),
-		                   decode(acrha3.cash_receipt_history_id ,acrha.cash_receipt_history_id, nvl(acrha.acctd_factor_discount_amount,0), (nvl(acrha.acctd_factor_discount_amount,0) -(nvl(acrha3.acctd_factor_discount_amount,0))))
-	        ) 
+                     decode(acrha3.cash_receipt_history_id ,acrha.cash_receipt_history_id, nvl(acrha.acctd_factor_discount_amount,0), (nvl(acrha.acctd_factor_discount_amount,0) -(nvl(acrha3.acctd_factor_discount_amount,0))))
+         )
  end acctd_miscellaneous_amount,
  araa.acctd_cash_claims_amount,
  araa.acctd_writeoff_amount,
@@ -175,7 +289,7 @@ select /*+ push_pred(araa, araa2) */
   araa.cash_receipt_id = acra.cash_receipt_id and
   araa.applied_payment_schedule_id = apsa.payment_schedule_id and
   nvl(araa.confirmed_flag,'Y')='Y' and
-  araa.status = 'APP' and 
+  araa.status = 'APP' and
   decode(sign(araa.amount_applied),-1,-1,1) = decode(sign(apsa.amount_due_original),-1,-1,1)
  ) last_apply_date,
  araa2.first_applied_in_full_date,
@@ -199,11 +313,15 @@ select /*+ push_pred(araa, araa2) */
   araa.cash_receipt_id = acra.cash_receipt_id and
   araa.applied_payment_schedule_id = apsa.payment_schedule_id and
   nvl(araa.confirmed_flag,'Y')='Y' and
-  araa.status = 'APP' and 
+  araa.status = 'APP' and
   decode(sign(araa.amount_applied),-1,-1,1) = decode(sign(apsa.amount_due_original),-1,-1,1)
  ) last_apply_gl_date,
  araa2.first_applied_in_full_gl_date,
- -- Additional Receipt Infor
+ -- Additional Receipt Info
+ acra.reversal_date,
+ xxen_util.meaning(acra.reversal_category,'REVERSAL_CATEGORY_TYPE',222) reversal_category,
+ xxen_util.meaning(acra.reversal_reason_code,'CKAJST_REASON',222) reversal_reason,
+ acra.reversal_comments,
  fds.name doc_sequence_name,
  acra.doc_sequence_value doc_sequence_value,
  acra.creation_date  receipt_creation_date,
@@ -257,7 +375,8 @@ select /*+ push_pred(araa, araa2) */
  hp.party_name || ' - ' || hca.account_number cust_name_pivot_label,
  hca.account_number || ' - ' || hp.party_name cust_number_pivot_label,
  decode(:reporting_level,1000,gl.name,3000,haou.name,null) reporting_entity,
- acra.cash_receipt_id
+ acra.cash_receipt_id,
+ decode(gl.currency_code,:p_reval_currency,1,(select gdr.conversion_rate from gl_daily_conversion_types gdct, gl_daily_rates gdr where gl.currency_code=gdr.from_currency and gdr.to_currency=:p_reval_currency and :p_reval_conv_date=gdr.conversion_date and gdct.user_conversion_type=:p_reval_conv_type and gdct.conversion_type=gdr.conversion_type)) reval_conv_rate
 from
  (select
   araa.org_id,
@@ -440,7 +559,7 @@ where
  acrha2.first_posted_record_flag = 'Y' and
  acrha2.org_id = aba.org_id(+) and
  acrha2.batch_id = aba.batch_id(+) and
- nvl(aba.org_id,-1) = absa.org_id(+) and 
+ nvl(aba.org_id,-1) = absa.org_id(+) and
  nvl(aba.batch_source_id,-1) = absa.batch_source_id(+) and
  acra.doc_sequence_id = fds.doc_sequence_id(+) and
  acra.vat_tax_id = avta.vat_tax_id(+) and

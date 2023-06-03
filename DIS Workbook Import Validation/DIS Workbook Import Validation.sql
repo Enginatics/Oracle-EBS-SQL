@@ -5,7 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: DIS Workbook Import Validation
--- Description: Discoverer workbooks, their owners, folders, items and item class LOVs, derived from dependency table eul5_elem_xrefs.
+-- Description: Discoverer workbook migraton validation report showing the workbooks, sheets, how ofthen they were accessed within the given number of days, columns for the number of records in the different import process tables, and the created blitz report and template information.
 -- Excel Examle Output: https://www.enginatics.com/example/dis-workbook-import-validation/
 -- Library Link: https://www.enginatics.com/reports/dis-workbook-import-validation/
 -- Run Report: https://demo.enginatics.com/
@@ -34,7 +34,7 @@ x.*
 from
 (
 select
-coalesce(xxen_util.dis_user_name(ed.doc_eu_id,:eul),xxen_util.dis_user(ed.doc_eu_id,:eul),xxen_util.user_name(eqs.qs_doc_owner_)) owner,
+nvl(xxen_util.dis_user_name(ed.doc_eu_id,:eul),xxen_util.user_name(eqs.qs_doc_owner_)) owner,
 nvl(ed.doc_name,eqs.qs_doc_name) workbook,
 xxen_util.meaning(nvl2(ed.doc_name,'Y',null),'YES_NO',0) workbook_exists,
 eqs.qs_doc_details sheet,
@@ -45,19 +45,7 @@ xxen_util.dis_user_name(ed.doc_updated_by) last_updated_by,
 ed.doc_updated_date last_update_date,
 ed.doc_id
 from
-(
-select
-nvl(fu.user_name,eeu.eu_username) doc_owner,
-ed.*
-from
-&eul.eul5_documents ed,
-&eul.eul5_eul_users eeu,
-fnd_user fu
---(select xdfu.* from xxen_discoverer_fnd_user xdfu where xdfu.eul=:eul) fu
-where
-ed.doc_eu_id=eeu.eu_id and
-case when eeu.eu_username like '#%' then substr(eeu.eu_username,2) end=to_char(fu.user_id(+))
-) ed
+&eul.eul5_documents ed
 &full join
 (
 select distinct
@@ -88,7 +76,7 @@ eqs.qs_object_use_key
 ) eqs
 on
 ed.doc_name=eqs.qs_doc_name and
-ed.doc_owner=eqs.qs_doc_owner_
+xxen_util.dis_user_name(ed.doc_eu_id,:eul,'N')=eqs.qs_doc_owner_
 ) x
 ) y,
 (select xdwx.* from xxen_discoverer_workbook_xmls xdwx where xdwx.eul=:eul) xdwx,

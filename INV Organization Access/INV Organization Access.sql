@@ -13,6 +13,7 @@
 select
 oav.organization_code,
 oav.organization_name,
+(select xxen_util.meaning('Y','YES_NO',0) from mtl_parameters mp where oav.organization_id=mp.organization_id and mp.organization_id=mp.master_organization_id) is_master_org,
 fav.application_name application,
 frv.responsibility_name responsibility,
 oa.comments,

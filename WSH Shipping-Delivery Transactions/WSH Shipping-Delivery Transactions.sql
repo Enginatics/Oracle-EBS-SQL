@@ -118,7 +118,7 @@ select /*+ push_pred(wfc) */
            and    mmt.pick_slip_number is not null
            and    wdd.source_code = 'OE'
            and    wdd.released_status != 'S' -- released to warehouse
-           and    rownum <= 1
+           and    rownum=1
           ),
           (select mtrl.pick_slip_number
            from   mtl_txn_request_lines mtrl
@@ -127,7 +127,7 @@ select /*+ push_pred(wfc) */
            and    wdd.source_code = 'OE'
            and    wdd.released_status != 'S' -- released to warehouse
            and    wdd.transaction_id is null
-           and    rownum <= 1
+           and    rownum=1
           ),
           (select mmtt.pick_slip_number
            from   mtl_material_transactions_temp mmtt
@@ -136,7 +136,7 @@ select /*+ push_pred(wfc) */
            and    mmtt.pick_slip_number is not null
            and    wdd.source_code = 'OE'
            and    wdd.released_status = 'S' -- released to warehouse
-           and    rownum <= 1
+           and    rownum=1
           ),
           (select mmttp.pick_slip_number
            from   mtl_material_transactions_temp mmtt,
@@ -149,7 +149,7 @@ select /*+ push_pred(wfc) */
            and    mmttp.pick_slip_number is not null
            and    wdd.source_code = 'OE'
            and    wdd.released_status = 'S' -- released to warehouse
-           and    rownum <= 1
+           and    rownum=1
           ),
           (select mmtt.pick_slip_number
            from   mtl_material_transactions_temp mmtt
@@ -159,7 +159,7 @@ select /*+ push_pred(wfc) */
            and    mmtt.pick_slip_number is not null
            and    wdd.source_code = 'OE'
            and    wdd.released_status = 'S' -- released to warehouse
-           and    rownum <= 1
+           and    rownum=1
           )
          ) pick_slip_number,
  (select mtrh.request_number

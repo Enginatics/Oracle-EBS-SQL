@@ -53,66 +53,67 @@ This report approximates the layout for the More4Apps Item Cost Wizard; run this
 -- Library Link: https://www.enginatics.com/reports/cac-load-more4apps-buy-item-costs/
 -- Run Report: https://demo.enginatics.com/
 
-select	mp.organization_code Org_Code,
-	:p_to_cost_type To_Cost_Type,                                                -- p_to_cost_type
-	msiv.concatenated_segments Item_Number,
-	cic.lot_size Lot_Size,
-	decode(cic.based_on_rollup_flag,1,'Yes','No')  Based_on_Rollup,
-	cic.shrinkage_rate MFG_Shrinkage,
-	cce.cost_element Cost_Element,
-	br.resource_code SubElement,
-	ml.meaning Basis_Type,
-	cicd.usage_rate_or_amount Rate_or_Amount,
-	gl.currency_code Currency_Code
-from	bom_resources br,
-	mtl_system_items_vl msiv,
-	mtl_parameters mp, 
-	cst_cost_types cct,
-	cst_cost_elements cce,
-	cst_item_costs cic,
-	cst_item_cost_details cicd,
-	mfg_lookups ml,
-	hr_organization_information hoi,
-	hr_all_organization_units_vl haou,  -- inv_organization_id
-	hr_all_organization_units_vl haou2, -- operating unit
-	gl_ledgers gl
-where	mp.organization_id          = msiv.organization_id
-and	decode (msiv.planning_make_buy_code, 1,'Make',2,'Buy','Unknown') = 'Buy'
-and	msiv.inventory_asset_flag   = 'Y'  -- only valued items
+select mp.organization_code Org_Code,
+ :p_to_cost_type To_Cost_Type,                                                -- p_to_cost_type
+ msiv.concatenated_segments Item_Number,
+ cic.lot_size Lot_Size,
+ decode(cic.based_on_rollup_flag,1,'Yes','No')  Based_on_Rollup,
+ cic.shrinkage_rate MFG_Shrinkage,
+ cce.cost_element Cost_Element,
+ br.resource_code SubElement,
+ ml.meaning Basis_Type,
+ cicd.usage_rate_or_amount Rate_or_Amount,
+ gl.currency_code Currency_Code
+from bom_resources br,
+ mtl_system_items_vl msiv,
+ mtl_parameters mp, 
+ cst_cost_types cct,
+ cst_cost_elements cce,
+ cst_item_costs cic,
+ cst_item_cost_details cicd,
+ mfg_lookups ml,
+ hr_organization_information hoi,
+ hr_all_organization_units_vl haou,  -- inv_organization_id
+ hr_all_organization_units_vl haou2, -- operating unit
+ gl_ledgers gl
+where mp.organization_id          = msiv.organization_id
+and decode (msiv.planning_make_buy_code, 1,'Make',2,'Buy','Unknown') = 'Buy'
+and msiv.inventory_asset_flag   = 'Y'  -- only valued items
 -- ========================================================
 -- Cost Type Joins
 -- ========================================================
-and	cic.inventory_item_id       = msiv.inventory_item_id
-and	cic.organization_id         = msiv.organization_id
-and	cic.cost_type_id            = cct.cost_type_id
-and	cicd.cost_type_id           = cct.cost_type_id
-and	cicd.organization_id        = cic.organization_id
-and	cicd.inventory_item_id      = cic.inventory_item_id
-and	cicd.level_type             = 1 -- This level
-and	cicd.cost_type_id           = cct.cost_type_id
+and cic.inventory_item_id       = msiv.inventory_item_id
+and cic.organization_id         = msiv.organization_id
+and cic.cost_type_id            = cct.cost_type_id
+and cicd.cost_type_id           = cct.cost_type_id
+and cicd.organization_id        = cic.organization_id
+and cicd.inventory_item_id      = cic.inventory_item_id
+and cicd.level_type             = 1 -- This level
+and cicd.cost_type_id           = cct.cost_type_id
 -- ========================================================
 -- Organization, Bom Resources and Cost Element Joins
 -- ========================================================
-and	cicd.resource_id            = br.resource_id
-and	cce.cost_element_id         = br.cost_element_id
-and	br.cost_element_id          in (1,2)  -- Material and material overhead
-and	mp.organization_id          = br.organization_id
+and cicd.resource_id            = br.resource_id
+and cce.cost_element_id         = br.cost_element_id
+and br.cost_element_id          in (1,2)  -- Material and material overhead
+and mp.organization_id          = br.organization_id
 -- Revision for version 1.1
-and	cic.based_on_rollup_flag    = 2  -- 2 = No
+and cic.based_on_rollup_flag    = 2  -- 2 = No
 -- ========================================================
 -- Lookup Joins
 -- ========================================================
-and	ml.lookup_type              = 'CST_BASIS_SHORT'
-and	ml.lookup_code              = cicd.basis_type
+and ml.lookup_type              = 'CST_BASIS_SHORT'
+and ml.lookup_code              = cicd.basis_type
 -- ========================================================
 -- using the base tables to avoid the performance issues
 -- with org_organization_definitions and hr_operating_units
 -- ========================================================
-and	hoi.org_information_context = 'Accounting Information'
-and	hoi.organization_id         = mp.organization_id
-and	hoi.organization_id         = haou.organization_id            -- this gets the organization name
-and	haou2.organization_id       = hoi.org_information3            -- this gets the operating unit id
-and	gl.ledger_id                = to_number(hoi.org_information1) -- get the ledger_id
-and	1=1                         -- p_org_code, p_operating_unit, p_ledger
+and hoi.org_information_context = 'Accounting Information'
+and hoi.organization_id         = mp.organization_id
+and hoi.organization_id         = haou.organization_id            -- this gets the organization name
+and haou2.organization_id       = hoi.org_information3            -- this gets the operating unit id
+and gl.ledger_id                = to_number(hoi.org_information1) -- get the ledger_id
+and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
+and 1=1                         -- p_org_code, p_operating_unit, p_ledger
 -- order by Org Code, Item, Cost Type, Cost Element and Sub-Element
 order by 1,2,3,7,8

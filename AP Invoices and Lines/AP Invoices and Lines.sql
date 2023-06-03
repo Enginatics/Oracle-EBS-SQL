@@ -57,7 +57,7 @@ with ap_inv as
     fde.application_id = 200 and
     fde.table_name = 'AP_INVOICES' and
     fad.pk1_value = to_char(aia.invoice_id) and
-    rownum <= 1
+    rownum=1
    ),
    xxen_util.meaning('N','YES_NO',0)
   ) has_attachment,

@@ -26,6 +26,7 @@ xrpv.report_id
 from
 xxen_report_parameters_v xrpv
 where
+1=1 and
 xrpv.anchor not like '&%' and
 xrpv.report_id in (select xrca.report_id from xxen_report_categories_v xrcv, xxen_report_category_assigns xrca where xrcv.category='Enginatics' and xrcv.category_id=xrca.category_id) and
 (xrpv.display_sequence>0 or xrpv.display_sequence is null) and

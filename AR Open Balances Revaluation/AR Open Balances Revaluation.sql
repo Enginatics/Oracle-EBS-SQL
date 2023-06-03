@@ -45,20 +45,20 @@ from
     , hp.party_name                 customer_name
     , hca.account_number            account_number
     , rcta.trx_number               invoice_number
-  	 , ''                            lookup_code
-  	 , rcta.trx_date                 invoice_date
-  	 , rcta.doc_sequence_value       internal_invoice_no
-  	 , rctt.type                     transaction_type
-  	 , rcta.customer_trx_id          cust_trx_id
-  	 , case '&lp_exchange_rate_type'
-  	   when 'User'
-  	   then :p_exchange_rate
-  	   else case when gl_currency_api.get_rate_sql(rcta.invoice_currency_code,gl.currency_code,:p_as_of_date,'&lp_exchange_rate_type') in (-1,-2)
-  	        then to_number(null)
-  	        else gl_currency_api.get_rate_sql(rcta.invoice_currency_code,gl.currency_code,:p_as_of_date,'&lp_exchange_rate_type')
+    , ''                            lookup_code
+    , rcta.trx_date                 invoice_date
+    , rcta.doc_sequence_value       internal_invoice_no
+    , rctt.type                     transaction_type
+    , rcta.customer_trx_id          cust_trx_id
+    , case '&lp_exchange_rate_type'
+      when 'User'
+      then :p_exchange_rate
+      else case when gl_currency_api.get_rate_sql(rcta.invoice_currency_code,gl.currency_code,:p_as_of_date,'&lp_exchange_rate_type') in (-1,-2)
+           then to_number(null)
+           else gl_currency_api.get_rate_sql(rcta.invoice_currency_code,gl.currency_code,:p_as_of_date,'&lp_exchange_rate_type')
            end
       end                           exchange_rate
-  	 , sum(aps.amount_due_original)  invoice_amt_entered
+    , sum(aps.amount_due_original)  invoice_amt_entered
     , 0                             invoice_amt_accounted
     , sum(aps.amount_due_original)
         - nvl( ( select sum(ara.amount_applied)
@@ -132,11 +132,11 @@ from
                , 0)
       )
         * case '&lp_exchange_rate_type'
-  	       when 'User'
-  	       then :p_exchange_rate
-  	       else case when gl_currency_api.get_rate_sql(rcta.invoice_currency_code,gl.currency_code,:p_as_of_date,'&lp_exchange_rate_type') in (-1,-2)
-  	            then to_number(null)
-  	            else gl_currency_api.get_rate_sql(rcta.invoice_currency_code,gl.currency_code,:p_as_of_date,'&lp_exchange_rate_type')
+          when 'User'
+          then :p_exchange_rate
+          else case when gl_currency_api.get_rate_sql(rcta.invoice_currency_code,gl.currency_code,:p_as_of_date,'&lp_exchange_rate_type') in (-1,-2)
+               then to_number(null)
+               else gl_currency_api.get_rate_sql(rcta.invoice_currency_code,gl.currency_code,:p_as_of_date,'&lp_exchange_rate_type')
                end
           end                       inv_amt_due_reval
     from
@@ -195,13 +195,13 @@ from
     , hp.party_name
     , hca.account_number
     , rcta.trx_number
-  	 , rcta.trx_date
-  	 , rcta.doc_sequence_value
+    , rcta.trx_date
+    , rcta.doc_sequence_value
     , rcta.invoice_currency_code
-  	 , rctt.type
-  	 , hca.cust_account_id
-  	 , rcta.customer_trx_id
-  	 , nvl(APS.exchange_rate,1)
+    , rctt.type
+    , hca.cust_account_id
+    , rcta.customer_trx_id
+    , nvl(APS.exchange_rate,1)
     having
       ( sum(aps.amount_due_original)
           - nvl( ( select sum(ara.amount_applied)
@@ -236,7 +236,7 @@ from
     , hp.party_name                 customer_name
     , hca.account_number            account_number
     , abc.invoice_number            invoice_number
-    , abc.lookup_code   	           lookup_code
+    , abc.lookup_code               lookup_code
     , abc.receipt_date              invoice_date
     , abc.int_invoice_number        internal_invoice_no
     , abc.trans_type                transaction_type
@@ -265,19 +265,19 @@ from
         , sum(nvl(acr.exchange_rate,1) * nvl(ara.amount_applied,0)) historic_amount
         , sum(nvl(ara.amount_applied,0))
             * case '&lp_exchange_rate_type'
-      	       when 'User'
-      	       then :p_exchange_rate
-      	       else case when gl_currency_api.get_rate_sql(acr.currency_code,gl.currency_code,:p_as_of_date,'&lp_exchange_rate_type') in (-1,-2)
-      	            then to_number(null)
-      	            else gl_currency_api.get_rate_sql(acr.currency_code,gl.currency_code,:p_as_of_date,'&lp_exchange_rate_type')
+              when 'User'
+              then :p_exchange_rate
+              else case when gl_currency_api.get_rate_sql(acr.currency_code,gl.currency_code,:p_as_of_date,'&lp_exchange_rate_type') in (-1,-2)
+                   then to_number(null)
+                   else gl_currency_api.get_rate_sql(acr.currency_code,gl.currency_code,:p_as_of_date,'&lp_exchange_rate_type')
                    end
               end                                       closing_amount
-      	 , case '&lp_exchange_rate_type'
-      	   when 'User'
-      	   then :p_exchange_rate
-      	   else case when gl_currency_api.get_rate_sql(acr.currency_code,gl.currency_code,:p_as_of_date,'&lp_exchange_rate_type') in (-1,-2)
-      	        then to_number(null)
-      	        else gl_currency_api.get_rate_sql(acr.currency_code,gl.currency_code,:p_as_of_date,'&lp_exchange_rate_type')
+        , case '&lp_exchange_rate_type'
+          when 'User'
+          then :p_exchange_rate
+          else case when gl_currency_api.get_rate_sql(acr.currency_code,gl.currency_code,:p_as_of_date,'&lp_exchange_rate_type') in (-1,-2)
+               then to_number(null)
+               else gl_currency_api.get_rate_sql(acr.currency_code,gl.currency_code,:p_as_of_date,'&lp_exchange_rate_type')
                end
           end                                           exchange_rate
         from
@@ -366,19 +366,19 @@ from
         , sum(nvl(acr.exchange_rate,1) * nvl(ara.amount_applied,0)) historic_amount
         , sum(ara.amount_applied)
             * case '&lp_exchange_rate_type'
-      	       when 'User'
-      	       then :p_exchange_rate
-      	       else case when gl_currency_api.get_rate_sql(acr.currency_code,gl.currency_code,:p_as_of_date,'&lp_exchange_rate_type') in (-1,-2)
-      	            then to_number(null)
-      	            else gl_currency_api.get_rate_sql(acr.currency_code,gl.currency_code,:p_as_of_date,'&lp_exchange_rate_type')
+              when 'User'
+              then :p_exchange_rate
+              else case when gl_currency_api.get_rate_sql(acr.currency_code,gl.currency_code,:p_as_of_date,'&lp_exchange_rate_type') in (-1,-2)
+                   then to_number(null)
+                   else gl_currency_api.get_rate_sql(acr.currency_code,gl.currency_code,:p_as_of_date,'&lp_exchange_rate_type')
                    end
               end                                       closing_amount
-      	 , case '&lp_exchange_rate_type'
-      	   when 'User' 
+        , case '&lp_exchange_rate_type'
+          when 'User' 
           then :p_exchange_rate
-      	   else case when gl_currency_api.get_rate_sql(acr.currency_code,gl.currency_code,:p_as_of_date,'&lp_exchange_rate_type') in (-1,-2)
-      	        then to_number(null)
-      	        else gl_currency_api.get_rate_sql(acr.currency_code,gl.currency_code,:p_as_of_date,'&lp_exchange_rate_type')
+          else case when gl_currency_api.get_rate_sql(acr.currency_code,gl.currency_code,:p_as_of_date,'&lp_exchange_rate_type') in (-1,-2)
+               then to_number(null)
+               else gl_currency_api.get_rate_sql(acr.currency_code,gl.currency_code,:p_as_of_date,'&lp_exchange_rate_type')
                end
           end                                           exchange_rate
         from
@@ -418,8 +418,8 @@ from
         and xal.application_id               = 222
         and xal.accounting_class_code        = 'UNAPP'
         and ads.source_type                 <> 'BANK_CHARGES'
-  	     and ads.source_table                 = 'CRH'
-  	     and xdl.source_distribution_type     = 'AR_DISTRIBUTIONS_ALL'
+        and ads.source_table                 = 'CRH'
+        and xdl.source_distribution_type     = 'AR_DISTRIBUTIONS_ALL'
         and gcc.code_combination_id          = xal.code_combination_id
         and gir.gl_sl_link_id                = xal.gl_sl_link_id
         and gir.gl_sl_link_table             = xal.gl_sl_link_table

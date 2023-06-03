@@ -66,15 +66,12 @@ cst_inv_qty_temp ciqt,
 cst_inv_cost_temp cict,
 mtl_parameters mp,
 org_organization_definitions ood,
-org_access_view oav,
 hr_all_organization_units haou,
 gl_sets_of_books gsob,
 cst_item_costs cic
 where
 1=1 and
-oav.organization_id = ciqt.organization_id and
-oav.resp_application_id = fnd_global.resp_appl_id and
-oav.responsibility_id = fnd_global.resp_id and
+ciqt.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
 msi.organization_id = ciqt.organization_id and
 msi.inventory_item_id = ciqt.inventory_item_id and
 mp.organization_id = ciqt.organization_id and

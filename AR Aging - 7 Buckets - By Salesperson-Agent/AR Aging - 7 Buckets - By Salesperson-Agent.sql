@@ -416,6 +416,8 @@ from
     &lp_invoice_type_high
     &lp_bal_seg_low
     &lp_bal_seg_high
+    &lp_acc_seg_low
+    &lp_acc_seg_high
     and ps.cons_inv_id = ci.cons_inv_id(+)
     and nvl(ps.primary_salesrep_id,-3) = sales.salesrep_id
     and sales.org_id = ps.org_id
@@ -512,6 +514,8 @@ from
       and nvl( ps.receipt_confirmed_flag, 'Y' ) = 'Y'
       &lp_bal_seg_low
       &lp_bal_seg_high
+      &lp_acc_seg_low
+      &lp_acc_seg_high
       and app.org_id = ps.org_id
      ) app
     where
@@ -651,6 +655,8 @@ from
     and gsob.set_of_books_id = cr.set_of_books_id
     &lp_bal_seg_low
     &lp_bal_seg_high
+    &lp_acc_seg_low
+    &lp_acc_seg_high
     and ps.cons_inv_id = ci.cons_inv_id(+)
     and sales.salesrep_id = -3
     and sales.org_id = ps.org_id
@@ -750,6 +756,8 @@ from
     &lp_invoice_type_high
     &lp_bal_seg_low
     &lp_bal_seg_high
+    &lp_acc_seg_low
+    &lp_acc_seg_high
     and ps.cons_inv_id = ci.cons_inv_id(+)
     and ps.customer_id = cust_acct.cust_account_id
     and ps.customer_trx_id = ct.customer_trx_id

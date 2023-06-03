@@ -24,6 +24,9 @@ seconds	rows/s	CPU
 29	17241	Intel(R) Xeon(R) Platinum 8167M CPU @ 2.00GHz
 39	12821	Intel(R) Xeon(R) Platinum 8167M CPU @ 2.00GHz
 140	3571	SPARC-T5 chipid 1, clock 3600 MHz
+
+Oracle Ace Johannes Michler from Promatis has written a blog about this topic:
+<a href="https://promatis.com/de/benchmarking-cpus-for-oracle-e-business-suite-database/" rel="nofollow" target="_blank">https://promatis.com/de/benchmarking-cpus-for-oracle-e-business-suite-database/</a>
 -- Excel Examle Output: https://www.enginatics.com/example/dba-cpu-benchmark1/
 -- Library Link: https://www.enginatics.com/reports/dba-cpu-benchmark1/
 -- Run Report: https://demo.enginatics.com/

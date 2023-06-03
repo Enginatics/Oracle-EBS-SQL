@@ -17,9 +17,9 @@ x.*
 from
 (
 select
-'Report SQL' record_type,
-xrv.report_name,
 xrv.category,
+xrv.report_name,
+'Report SQL' record_type,
 xrv.report_name name,
 xrv.sql_text text,
 xxen_util.user_name(xrv.created_by) created_by,
@@ -30,12 +30,12 @@ from
 xxen_reports_v xrv
 where
 1=1 and
-(:case_sensitive is null and regexp_like(xrv.sql_text_full,xxen_util.regexp_escape(:sql_text),'i') or xrv.sql_text_full like '%'||:sql_text||'%')
+(:case_sensitive is null and regexp_like(xrv.sql_text_full,xxen_util.regexp_escape(:sql_text),'i') or xrv.sql_text_full like '%'||replace(:sql_text,'_','\_')||'%' escape '\')
 union all
 select
-'Parameter SQL Text' record_type,
-xrpv.report_name,
 xrpv.category,
+xrpv.report_name,
+'Parameter SQL Text' record_type,
 xrpv.parameter_name name,
 xrpv.sql_text text,
 xxen_util.user_name(xrpv.created_by) created_by,
@@ -47,12 +47,12 @@ xxen_report_parameters_v xrpv
 where
 2=2 and
 5=5 and
-(:case_sensitive is null and regexp_like(xrpv.sql_text,xxen_util.regexp_escape(:sql_text),'i') or xrpv.sql_text like '%'||:sql_text||'%')
+(:case_sensitive is null and regexp_like(xrpv.sql_text,xxen_util.regexp_escape(:sql_text),'i') or xrpv.sql_text like '%'||replace(:sql_text,'_','\_')||'%' escape '\')
 union all
 select
-'Parameter Default Value' record_type,
-xrpv.report_name,
 xrpv.category,
+xrpv.report_name,
+'Parameter Default Value' record_type,
 xrpv.parameter_name name,
 to_clob(xrpv.default_value) text,
 xxen_util.user_name(xrpv.created_by) created_by,
@@ -64,12 +64,12 @@ xxen_report_parameters_v xrpv
 where
 2=2 and
 6=6 and
-(:case_sensitive is null and regexp_like(xrpv.default_value,xxen_util.regexp_escape(:sql_text),'i') or xrpv.default_value like '%'||:sql_text||'%')
+(:case_sensitive is null and regexp_like(xrpv.default_value,xxen_util.regexp_escape(:sql_text),'i') or xrpv.default_value like '%'||replace(:sql_text,'_','\_')||'%' escape '\')
 union all
 select
-'Parameter Custom LOV Query' record_type,
-xrpv.report_name,
 xrpv.category,
+xrpv.report_name,
+'Parameter Custom LOV Query' record_type,
 xrpv.parameter_name name,
 xrpv.lov_query text,
 xxen_util.user_name(xrpv.created_by) created_by,
@@ -81,12 +81,12 @@ xxen_report_parameters_v xrpv
 where
 2=2 and
 7=7 and
-(:case_sensitive is null and regexp_like(xrpv.lov_query,xxen_util.regexp_escape(:sql_text),'i') or xrpv.lov_query like '%'||:sql_text||'%')
+(:case_sensitive is null and regexp_like(xrpv.lov_query,xxen_util.regexp_escape(:sql_text),'i') or xrpv.lov_query like '%'||replace(:sql_text,'_','\_')||'%' escape '\')
 union all
 select
-'LOV Query' record_type,
-null report_name,
 null category,
+null report_name,
+'LOV Query' record_type,
 xrpl.lov_name name,
 xrpl.lov_query text,
 xxen_util.user_name(xrpl.created_by) created_by,
@@ -97,7 +97,7 @@ from
 xxen_report_parameter_lovs xrpl
 where
 3=3 and
-(:case_sensitive is null and regexp_like(xrpl.lov_query,xxen_util.regexp_escape(:sql_text),'i') or xrpl.lov_query like '%'||:sql_text||'%')
+(:case_sensitive is null and regexp_like(xrpl.lov_query,xxen_util.regexp_escape(:sql_text),'i') or xrpl.lov_query like '%'||replace(:sql_text,'_','\_')||'%' escape '\')
 ) x
 where
 4=4

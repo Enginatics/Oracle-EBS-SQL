@@ -56,7 +56,7 @@ from
      fa.asset_number,
      fa.description asset_desciption,
      fr.date_retired,
-     (select fdp.period_name from fa_deprn_periods fdp where fdp.book_type_code=fb.book_type_code and fth.date_effective >= fdp.calendar_period_open_date and fth.date_effective < fdp.calendar_period_close_date + 1 and rownum<=1) period,
+     (select fdp.period_name from fa_deprn_periods fdp where fdp.book_type_code=fb.book_type_code and fth.date_effective >= fdp.calendar_period_open_date and fth.date_effective < fdp.calendar_period_close_date + 1 and rownum=1) period,
      fth.transaction_type_code,
      (select flv.meaning from fa_lookups_vl flv where flv.lookup_type='FAXOLTRX' and fth.transaction_type_code=flv.lookup_code) transaction_type,
      fth.asset_id,
@@ -150,7 +150,7 @@ from
      fa.asset_number,
      fa.description asset_desciption,
      fr.date_retired,
-     (select fdp.period_name from fa_deprn_periods fdp where fdp.book_type_code=fb.book_type_code and fth.date_effective >= fdp.calendar_period_open_date and fth.date_effective < fdp.calendar_period_close_date + 1 and rownum<=1) period,
+     (select fdp.period_name from fa_deprn_periods fdp where fdp.book_type_code=fb.book_type_code and fth.date_effective >= fdp.calendar_period_open_date and fth.date_effective < fdp.calendar_period_close_date + 1 and rownum=1) period,
      fth.transaction_type_code,
      (select flv.meaning from fa_lookups_vl flv where flv.lookup_type='FAXOLTRX' and fth.transaction_type_code=flv.lookup_code) transaction_type,
      fth.asset_id,
@@ -159,7 +159,7 @@ from
      0  net_book_value_retired,
      nvl(fr.proceeds_of_sale,0) proceeds_of_sale,
      nvl(fr.cost_of_removal,0) removal_cost,
-	    0		reval_reserve_retired,
+     0 reval_reserve_retired,
      fth.transaction_header_id transaction_number
    from
      fa_system_controls      fsc,

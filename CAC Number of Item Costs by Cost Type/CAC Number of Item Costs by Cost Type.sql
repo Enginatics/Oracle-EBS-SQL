@@ -40,34 +40,34 @@
 -- Library Link: https://www.enginatics.com/reports/cac-number-of-item-costs-by-cost-type/
 -- Run Report: https://demo.enginatics.com/
 
-select	count(*) Count,
-	mp.organization_code Org_Code,
-	cct.cost_type Cost_Type,
-	cct.description Description
+select count(*) Count,
+ mp.organization_code Org_Code,
+ cct.cost_type Cost_Type,
+ cct.description Description
 from    cst_item_costs cic,
-	mtl_parameters mp,
-	cst_cost_types cct
-where	cic.organization_id   = mp.organization_id
-and	cic.cost_type_id      = cct.cost_type_id
-and	1=1
+ mtl_parameters mp,
+ cst_cost_types cct
+where cic.organization_id   = mp.organization_id
+and cic.cost_type_id      = cct.cost_type_id
+and 1=1
 group by
-	mp.organization_code,
-	cct.description,
-	cct.cost_type
+ mp.organization_code,
+ cct.description,
+ cct.cost_type
 union all
-select	count(*) Count,
-	mp.organization_code Org_Code,
-	cct.cost_type Cost_Type,
-	cct.description Description
+select count(*) Count,
+ mp.organization_code Org_Code,
+ cct.cost_type Cost_Type,
+ cct.description Description
 from    cst_item_costs cic,
-	mtl_parameters mp,
-	cst_cost_types cct
-where	cic.organization_id   = mp.organization_id
-and	cic.cost_type_id      = cct.cost_type_id
-and	2=2
+ mtl_parameters mp,
+ cst_cost_types cct
+where cic.organization_id   = mp.organization_id
+and cic.cost_type_id      = cct.cost_type_id
+and 2=2
 group by
-	mp.organization_code,
-	cct.description,
-	cct.cost_type
+ mp.organization_code,
+ cct.description,
+ cct.cost_type
 -- Order by Cost Type, Organization Code
 order by 2,3

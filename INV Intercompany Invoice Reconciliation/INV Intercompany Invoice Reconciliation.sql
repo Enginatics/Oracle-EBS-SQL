@@ -287,7 +287,7 @@ with mmt as -- driving inventory transactions for intercompany
     , nvl( ( select mufm.uom_code
              from  mtl_units_of_measure mufm
              where mufm.unit_of_measure = plla.unit_meas_lookup_code
-             and   rownum <= 1
+             and   rownum=1
             )
          ,  plla.unit_meas_lookup_code
          )                             source_document_uom
@@ -480,7 +480,7 @@ with mmt as -- driving inventory transactions for intercompany
     , nvl( ( select mufm.uom_code
              from  mtl_units_of_measure mufm
              where mufm.unit_of_measure = aila.unit_meas_lookup_code
-             and   rownum <= 1
+             and   rownum=1
             )
          ,  aila.unit_meas_lookup_code
          )                     unit_meas_lookup_code

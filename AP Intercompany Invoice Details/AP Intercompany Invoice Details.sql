@@ -45,7 +45,7 @@ select
     , nvl( ( select mufm.uom_code
              from  mtl_units_of_measure mufm
              where mufm.unit_of_measure = aila.unit_meas_lookup_code
-             and   rownum <= 1
+             and   rownum=1
             )
          ,  aila.unit_meas_lookup_code
          )                                       unit_meas_lookup_code
@@ -74,7 +74,7 @@ select
         where  msik.organization_id =
                (select mp.master_organization_id
                 from   mtl_parameters mp
-                where  rownum <= 1
+                where  rownum=1
                )
        )                           msik
     where

@@ -77,7 +77,7 @@ with wip_detail as
        and mic.organization_id     = wdj.organization_id
        and mic.inventory_item_id   = wdj.primary_item_id
        and mck.category_id         = mic.category_id
-       and rownum <= 1
+       and rownum=1
       )                                              assembly_costing_category
     , msiv1.inventory_item_id                        assembly_id
     , trunc(wro.date_required)                       date_required

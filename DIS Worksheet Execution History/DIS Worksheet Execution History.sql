@@ -43,23 +43,12 @@ where
 1=1
 ) eqs,
 &eul.eul5_objs eo,
-(
-select
-nvl(fu.user_name,eeu.eu_username) doc_owner,
-ed.*
-from
-&eul.eul5_documents ed,
-&eul.eul5_eul_users eeu,
-fnd_user fu
-where
-ed.doc_eu_id=eeu.eu_id and
-case when eeu.eu_username like '#%' then to_number(substr(eeu.eu_username,2)) end=fu.user_id
-) ed
+&eul.eul5_documents ed
 where
 2=2 and
 translate(eqs.obj_id,'x0123456789','x') is null and
 eqs.obj_id=eo.obj_id(+) and
 eqs.qs_doc_name=ed.doc_name(+) and
-eqs.qs_doc_owner_=ed.doc_owner(+)
+eqs.qs_doc_owner_=xxen_util.dis_user_name(ed.doc_eu_id(+),:eul,'N')
 order by
 eqs.qs_id desc

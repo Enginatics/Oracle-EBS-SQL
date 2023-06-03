@@ -16,6 +16,9 @@ ffvs.description,
 xxen_util.meaning(ffvs.format_type,'FIELD_TYPE',0) format_type,
 ffvs.maximum_size,
 xxen_util.meaning(ffvs.validation_type,'SEG_VAL_TYPES',0) validation_type,
+(select ffvs0.flex_value_set_name from fnd_flex_value_sets ffvs0 where ffvs.parent_flex_value_set_id=ffvs0.flex_value_set_id) parent_value_set,
+ffvs.dependant_default_value,
+ffvs.dependant_default_meaning dependant_default_description,
 &col_usages
 &col_values
 fav.application_name table_application,
@@ -29,9 +32,14 @@ ffvt.meaning_column_size,
 ffvt.id_column_name,
 xxen_util.meaning(ffvt.id_column_type,'COLUMN_TYPE',0) id_column_type,
 ffvt.id_column_size,
-ffvt.additional_where_clause where_order_by,
+xxen_util.long_to_clob('fnd_flex_validation_tables','additional_where_clause',ffvt.rowid) where_order_by,
 ffvt.additional_quickpick_columns additional_columns,
-xxen_report.oracle_lov_query(ffvs.flex_value_set_id) lov_query
+&lov_query
+xxen_util.user_name(ffvs.created_by) created_by,
+xxen_util.client_time(ffvs.creation_date) creation_date,
+xxen_util.user_name(ffvs.last_updated_by) last_updated_by,
+xxen_util.client_time(ffvs.last_update_date) last_update_date,
+ffvs.flex_value_set_id
 from
 fnd_flex_value_sets ffvs,
 fnd_flex_validation_tables ffvt,

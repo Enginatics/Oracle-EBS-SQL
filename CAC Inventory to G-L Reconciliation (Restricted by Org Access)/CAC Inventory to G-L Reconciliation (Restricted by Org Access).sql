@@ -74,13 +74,13 @@ mp.primary_cost_method=1 and --frozen
 -- Revision for version 1.8
 -- nvl(mp.cost_group_accounting,-99)<>1
 2 = case
-	when nvl(mp.cost_group_accounting,2) = 1 then 1
-	when	exists (select 'x'
-			from   pjm_org_parameters pop
-			where  mp.organization_id = pop.organization_id) then 1 -- Project MFG Enabled
-	when nvl(mp.wms_enabled_flag, 'N') = 'Y' then 1 -- WMS uses Cost Group Accounting
-	when nvl(mp.cost_group_accounting,2) = 2 then 2
-	else 2
+ when nvl(mp.cost_group_accounting,2) = 1 then 1
+ when exists (select 'x'
+   from   pjm_org_parameters pop
+   where  mp.organization_id = pop.organization_id) then 1 -- Project MFG Enabled
+ when nvl(mp.wms_enabled_flag, 'N') = 'Y' then 1 -- WMS uses Cost Group Accounting
+ when nvl(mp.cost_group_accounting,2) = 2 then 2
+ else 2
     end and
 5=5
 -- End for revision 1.8
@@ -101,13 +101,13 @@ mp.primary_cost_method<>1 and --non frozen
 -- Revision for version 1.8
 -- nvl(mp.cost_group_accounting,-99)<>1
 2 = case
-	when nvl(mp.cost_group_accounting,2) = 1 then 1
-	when	exists (select 'x'
-			from   pjm_org_parameters pop
-			where  mp.organization_id = pop.organization_id) then 1 -- Project MFG Enabled
-	when nvl(mp.wms_enabled_flag, 'N') = 'Y' then 1 -- WMS uses Cost Group Accounting
-	when nvl(mp.cost_group_accounting,2) = 2 then 2
-	else 2
+ when nvl(mp.cost_group_accounting,2) = 1 then 1
+ when exists (select 'x'
+   from   pjm_org_parameters pop
+   where  mp.organization_id = pop.organization_id) then 1 -- Project MFG Enabled
+ when nvl(mp.wms_enabled_flag, 'N') = 'Y' then 1 -- WMS uses Cost Group Accounting
+ when nvl(mp.cost_group_accounting,2) = 2 then 2
+ else 2
     end and
 5=5
 -- End for revision 1.8
@@ -140,13 +140,13 @@ wac.class_type not in (4,6,7) and --4-expense non-standard, 6-maintenance, 7-exp
 wac.organization_id in 
 (select mp.organization_id from mtl_parameters mp where
  2 = case
-	when nvl(mp.cost_group_accounting,2) = 1 then 1
-	when	exists (select 'x'
-			from   pjm_org_parameters pop
-			where  mp.organization_id = pop.organization_id) then 1 -- Project MFG Enabled
-	when nvl(mp.wms_enabled_flag, 'N') = 'Y' then 1 -- WMS uses Cost Group Accounting
-	when nvl(mp.cost_group_accounting,2) = 2 then 2
-	else 2
+ when nvl(mp.cost_group_accounting,2) = 1 then 1
+ when exists (select 'x'
+   from   pjm_org_parameters pop
+   where  mp.organization_id = pop.organization_id) then 1 -- Project MFG Enabled
+ when nvl(mp.wms_enabled_flag, 'N') = 'Y' then 1 -- WMS uses Cost Group Accounting
+ when nvl(mp.cost_group_accounting,2) = 2 then 2
+ else 2
     end and
  5=5
 )
@@ -176,13 +176,13 @@ msi.asset_inventory=1 and
 msi.organization_id in 
 (select mp.organization_id from mtl_parameters mp where
  1 = case
-	when nvl(mp.cost_group_accounting,2) = 1 then 1
-	when	exists (select 'x'
-			from   pjm_org_parameters pop
-			where  mp.organization_id = pop.organization_id) then 1 -- Project MFG Enabled
-	when nvl(mp.wms_enabled_flag, 'N') = 'Y' then 1 -- WMS uses Cost Group Accounting
-	when nvl(mp.cost_group_accounting,2) = 2 then 2
-	else 2
+ when nvl(mp.cost_group_accounting,2) = 1 then 1
+ when exists (select 'x'
+   from   pjm_org_parameters pop
+   where  mp.organization_id = pop.organization_id) then 1 -- Project MFG Enabled
+ when nvl(mp.wms_enabled_flag, 'N') = 'Y' then 1 -- WMS uses Cost Group Accounting
+ when nvl(mp.cost_group_accounting,2) = 2 then 2
+ else 2
     end and
  5=5
 )
@@ -203,13 +203,13 @@ wac.class_type not in (4,6,7) and --4-expense non-standard, 6-maintenance, 7-exp
 wac.organization_id in 
 (select mp.organization_id from mtl_parameters mp where
  1 = case
-	when nvl(mp.cost_group_accounting,2) = 1 then 1
-	when	exists (select 'x'
-			from   pjm_org_parameters pop
-			where  mp.organization_id = pop.organization_id) then 1 -- Project MFG Enabled
-	when nvl(mp.wms_enabled_flag, 'N') = 'Y' then 1 -- WMS uses Cost Group Accounting
-	when nvl(mp.cost_group_accounting,2) = 2 then 2
-	else 2
+ when nvl(mp.cost_group_accounting,2) = 1 then 1
+ when exists (select 'x'
+   from   pjm_org_parameters pop
+   where  mp.organization_id = pop.organization_id) then 1 -- Project MFG Enabled
+ when nvl(mp.wms_enabled_flag, 'N') = 'Y' then 1 -- WMS uses Cost Group Accounting
+ when nvl(mp.cost_group_accounting,2) = 2 then 2
+ else 2
     end and
  5=5
 -- End revision for version 1.8
@@ -499,7 +499,7 @@ select gb.period_name period_name,
     -- organization joins to the hr org model
     -- ===========================================
     -- avoid selecting disabled inventory organizations
-    and	   sysdate < nvl(haou.date_to, sysdate + 1)
+    and    sysdate < nvl(haou.date_to, sysdate + 1)
     and    hoi.org_information_context   = 'Accounting Information'
     and    hoi.organization_id           = mp.organization_id
     and    hoi.organization_id           = haou.organization_id   -- this gets the organization name

@@ -53,134 +53,136 @@ If the resource/overhead association exists, the first column of the report will
 -- Library Link: https://www.enginatics.com/reports/cac-resources-associated-with-overheads-setup/
 -- Run Report: https://demo.enginatics.com/
 
-select	flv.meaning Status, -- Set Up
-	nvl(gl.short_name, gl.name) Ledger,
-	haou.name Operating_Unit,
-	mp.organization_code Org_Code,
-	cct.cost_type Cost_Type,	
-	brr.resource_code Resource_Code,
-	brr.unit_of_measure Resource_UOM,
-	-- Revision for version 1.1
-	cce.cost_element Cost_Element,
-	ml_basis.meaning Resource_Basis,
-	crc.resource_rate Resource_Rate,
-	bd.department_code Department,
-	bro.resource_code Overhead_Code,
-	bro.unit_of_measure Overhead_UOM
-from	cst_resource_overheads cro,
-	bom_department_resources bdr,
-	bom_departments bd,
-	cst_resource_costs crc,
-	bom_resources bro, -- Overhead Sub-Elements
-	bom_resources brr, -- Resource and OSP Sub-Elements
-	cst_cost_types cct,
-	-- Revision for version 1.4
-	cst_cost_types cct2, -- Avg Rates Cost_Type
-	-- Revision for version 1.1
-	cst_cost_elements cce,
-	mtl_parameters mp,
-	mfg_lookups ml_basis,
-	hr_organization_information hoi,
-	hr_all_organization_units_vl haou,
-	hr_all_organization_units_vl haou2,
-	gl_ledgers gl,
-	-- Revision for version 1.5
-	fnd_lookup_values flv
-where	brr.resource_id             = cro.resource_id
-and	bro.resource_id             = cro.overhead_id
-and	brr.resource_id             = bdr.resource_id
-and	bdr.department_id           = bd.department_id
-and	brr.resource_id             = crc.resource_id(+)
-and	cct.cost_type_id            = cro.cost_type_id
-and	cro.resource_id             = brr.resource_id 
-and	cct.cost_type_id            = crc.cost_type_id
+select flv.meaning Status, -- Set Up
+ nvl(gl.short_name, gl.name) Ledger,
+ haou.name Operating_Unit,
+ mp.organization_code Org_Code,
+ cct.cost_type Cost_Type, 
+ brr.resource_code Resource_Code,
+ brr.unit_of_measure Resource_UOM,
+ -- Revision for version 1.1
+ cce.cost_element Cost_Element,
+ ml_basis.meaning Resource_Basis,
+ crc.resource_rate Resource_Rate,
+ bd.department_code Department,
+ bro.resource_code Overhead_Code,
+ bro.unit_of_measure Overhead_UOM
+from cst_resource_overheads cro,
+ bom_department_resources bdr,
+ bom_departments bd,
+ cst_resource_costs crc,
+ bom_resources bro, -- Overhead Sub-Elements
+ bom_resources brr, -- Resource and OSP Sub-Elements
+ cst_cost_types cct,
+ -- Revision for version 1.4
+ cst_cost_types cct2, -- Avg Rates Cost_Type
+ -- Revision for version 1.1
+ cst_cost_elements cce,
+ mtl_parameters mp,
+ mfg_lookups ml_basis,
+ hr_organization_information hoi,
+ hr_all_organization_units_vl haou,
+ hr_all_organization_units_vl haou2,
+ gl_ledgers gl,
+ -- Revision for version 1.5
+ fnd_lookup_values flv
+where brr.resource_id             = cro.resource_id
+and bro.resource_id             = cro.overhead_id
+and brr.resource_id             = bdr.resource_id
+and bdr.department_id           = bd.department_id
+and brr.resource_id             = crc.resource_id(+)
+and cct.cost_type_id            = cro.cost_type_id
+and cro.resource_id             = brr.resource_id 
+and cct.cost_type_id            = crc.cost_type_id
 -- Revision for version 1.4
-and	cct2.cost_type_id           = nvl(mp.avg_rates_cost_type_id, mp.primary_cost_method)
-and	cct.cost_type               = nvl(:p_cost_type, cct2.cost_type)                                     -- p_cost_type
+and cct2.cost_type_id           = nvl(mp.avg_rates_cost_type_id, mp.primary_cost_method)
+and cct.cost_type               = nvl(:p_cost_type, cct2.cost_type)                                     -- p_cost_type
 -- End revision for version 1.4
-and	mp.organization_id          = brr.organization_id
-and	brr.organization_id         = bro.organization_id
-and	ml_basis.lookup_code        = brr.default_basis_type
-and	ml_basis.lookup_type        = 'CST_BASIS_SHORT'
+and mp.organization_id          = brr.organization_id
+and brr.organization_id         = bro.organization_id
+and ml_basis.lookup_code        = brr.default_basis_type
+and ml_basis.lookup_type        = 'CST_BASIS_SHORT'
 -- Revision for version 1.5
-and	flv.lookup_type             = 'CHECK RANGE STATUS'
-and	flv.lookup_code             = 'SET UP'
-and	flv.language                = userenv('lang')
+and flv.lookup_type             = 'CHECK RANGE STATUS'
+and flv.lookup_code             = 'SET UP'
+and flv.language                = userenv('lang')
 -- Revision for version 1.1
-and	cce.cost_element_id         = brr.cost_element_id
+and cce.cost_element_id         = brr.cost_element_id
 -- ===========================================
 -- Organization joins to the HR org model
 -- ===========================================
-and	hoi.org_information_context = 'Accounting Information'
-and	hoi.organization_id         = mp.organization_id
-and	hoi.organization_id         = haou.organization_id -- this gets the organization name
-and	haou2.organization_id       = to_number(hoi.org_information3) -- this gets the operating unit id
-and	gl.ledger_id                = to_number(hoi.org_information1) -- get the ledger_id
-and	1=1                         -- p_org_code, p_operating_unit, p_ledger, p_cost_type
+and hoi.org_information_context = 'Accounting Information'
+and hoi.organization_id         = mp.organization_id
+and hoi.organization_id         = haou.organization_id -- this gets the organization name
+and haou2.organization_id       = to_number(hoi.org_information3) -- this gets the operating unit id
+and gl.ledger_id                = to_number(hoi.org_information1) -- get the ledger_id
+and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
+and 1=1                         -- p_org_code, p_operating_unit, p_ledger, p_cost_type
 -- Revision for version 1.1
 -- Add check for resources which are not associated with overheads
 union all
-select	fcl.meaning Status, -- Missing
-	nvl(gl.short_name, gl.name) Ledger,
-	haou.name Operating_Unit,
-	mp.organization_code Org_Code,
-	cct.cost_type Cost_Type,	
-	brr.resource_code Resource_Code,
-	brr.unit_of_measure Resource_UOM,
-	-- Revision for version 1.1
-	cce.cost_element Cost_Element,
-	ml_basis.meaning Resource_Basis,
-	crc.resource_rate Resource_Rate,
-	bd.department_code Department,
-	fcl.meaning Overhead_Code, -- Missing
-	null Overhead_UOM
-from	bom_department_resources bdr,
-	bom_departments bd,
-	cst_resource_costs crc,
-	bom_resources brr, -- Resource and OSP Sub-Elements
-	cst_cost_types cct,
-	-- Revision for version 1.4
-	cst_cost_types cct2,
-	-- Revision for version 1.1
-	cst_cost_elements cce,
-	mtl_parameters mp,
-	mfg_lookups ml_basis,
-	hr_organization_information hoi,
-	hr_all_organization_units_vl haou,
-	hr_all_organization_units_vl haou2,
-	gl_ledgers gl,
-	fnd_common_lookups fcl
-where	brr.resource_id             = bdr.resource_id
-and	bdr.department_id           = bd.department_id
-and	brr.resource_id             = crc.resource_id(+)
-and	cct.cost_type_id            = crc.cost_type_id
+select fcl.meaning Status, -- Missing
+ nvl(gl.short_name, gl.name) Ledger,
+ haou.name Operating_Unit,
+ mp.organization_code Org_Code,
+ cct.cost_type Cost_Type, 
+ brr.resource_code Resource_Code,
+ brr.unit_of_measure Resource_UOM,
+ -- Revision for version 1.1
+ cce.cost_element Cost_Element,
+ ml_basis.meaning Resource_Basis,
+ crc.resource_rate Resource_Rate,
+ bd.department_code Department,
+ fcl.meaning Overhead_Code, -- Missing
+ null Overhead_UOM
+from bom_department_resources bdr,
+ bom_departments bd,
+ cst_resource_costs crc,
+ bom_resources brr, -- Resource and OSP Sub-Elements
+ cst_cost_types cct,
+ -- Revision for version 1.4
+ cst_cost_types cct2,
+ -- Revision for version 1.1
+ cst_cost_elements cce,
+ mtl_parameters mp,
+ mfg_lookups ml_basis,
+ hr_organization_information hoi,
+ hr_all_organization_units_vl haou,
+ hr_all_organization_units_vl haou2,
+ gl_ledgers gl,
+ fnd_common_lookups fcl
+where brr.resource_id             = bdr.resource_id
+and bdr.department_id           = bd.department_id
+and brr.resource_id             = crc.resource_id(+)
+and cct.cost_type_id            = crc.cost_type_id
 -- Revision for version 1.4
-and	cct2.cost_type_id           = nvl(mp.avg_rates_cost_type_id, mp.primary_cost_method)
-and	cct.cost_type               = nvl(:p_cost_type, cct2.cost_type)                                     -- p_cost_type
+and cct2.cost_type_id           = nvl(mp.avg_rates_cost_type_id, mp.primary_cost_method)
+and cct.cost_type               = nvl(:p_cost_type, cct2.cost_type)                                     -- p_cost_type
 -- End revision for version 1.4   
-and	mp.organization_id          = brr.organization_id
-and	ml_basis.lookup_code        = brr.default_basis_type
-and	ml_basis.lookup_type        = 'CST_BASIS_SHORT'
+and mp.organization_id          = brr.organization_id
+and ml_basis.lookup_code        = brr.default_basis_type
+and ml_basis.lookup_type        = 'CST_BASIS_SHORT'
 -- Revision for version 1.5
-and	fcl.lookup_type             = 'NL_IZA_REJECT_REASON'
-and	fcl.lookup_code             = 'MISSING'
+and fcl.lookup_type             = 'NL_IZA_REJECT_REASON'
+and fcl.lookup_code             = 'MISSING'
 -- Revision for version 1.1
-and	cce.cost_element_id         = brr.cost_element_id
-and	brr.resource_id not in 
-		(select cro.resource_id
-		 from	cst_resource_overheads cro
-		 where	cro.resource_id             = brr.resource_id
-		 and	cro.organization_id         = brr.organization_id
-		 and	cct.cost_type_id            = cro.cost_type_id)
+and cce.cost_element_id         = brr.cost_element_id
+and brr.resource_id not in 
+  (select cro.resource_id
+   from cst_resource_overheads cro
+   where cro.resource_id             = brr.resource_id
+   and cro.organization_id         = brr.organization_id
+   and cct.cost_type_id            = cro.cost_type_id)
 -- ===========================================
 -- Organization joins to the HR org model
 -- ===========================================
-and	hoi.org_information_context = 'Accounting Information'
-and	hoi.organization_id         = mp.organization_id
-and	hoi.organization_id         = haou.organization_id -- this gets the organization name
-and	haou2.organization_id       = to_number(hoi.org_information3) -- this gets the operating unit id
-and	gl.ledger_id                = to_number(hoi.org_information1) -- get the ledger_id
-and	1=1                         -- p_org_code, p_operating_unit, p_ledger, p_cost_type
+and hoi.org_information_context = 'Accounting Information'
+and hoi.organization_id         = mp.organization_id
+and hoi.organization_id         = haou.organization_id -- this gets the organization name
+and haou2.organization_id       = to_number(hoi.org_information3) -- this gets the operating unit id
+and gl.ledger_id                = to_number(hoi.org_information1) -- get the ledger_id
+and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
+and 1=1                         -- p_org_code, p_operating_unit, p_ledger, p_cost_type
 -- Order by Status, Ledger, Operating_Unit, Org_Code, Cost_Type, Resource_Code, Res Basis, Department and Overhead Code
 order by 
-	1,2,3,4,5,6,9,11,12
+ 1,2,3,4,5,6,9,11,12

@@ -70,7 +70,7 @@ from
      sum(nvl(decode(fadj.debit_credit_flag,'DR',1,-1) * fadj.adjustment_amount, fdd.addition_cost_to_clear) ) cost,
      sum(nvl(fdd.ytd_deprn,0)) ytd_depreciation,
      sum(fdd.deprn_reserve) initial_depreciation_reserve,
-     (select fdp.period_name from fa_deprn_periods fdp where fdp.book_type_code=fbc.book_type_code and fth.date_effective >= fdp.calendar_period_open_date and fth.date_effective < fdp.calendar_period_close_date + 1 and rownum<=1) period,
+     (select fdp.period_name from fa_deprn_periods fdp where fdp.book_type_code=fbc.book_type_code and fth.date_effective >= fdp.calendar_period_open_date and fth.date_effective < fdp.calendar_period_close_date + 1 and rownum=1) period,
      fth.transaction_header_id thid
    from
      fa_system_controls      fsc,
@@ -172,7 +172,7 @@ from
      0 cost,
      0 ytd_depreciation,
      0 initial_depreciation_reserve,
-     (select fdp.period_name from fa_deprn_periods fdp where fdp.book_type_code=fbc.book_type_code and fth.date_effective >= fdp.calendar_period_open_date and fth.date_effective < fdp.calendar_period_close_date + 1 and rownum<=1) period,
+     (select fdp.period_name from fa_deprn_periods fdp where fdp.book_type_code=fbc.book_type_code and fth.date_effective >= fdp.calendar_period_open_date and fth.date_effective < fdp.calendar_period_close_date + 1 and rownum=1) period,
      fth.transaction_header_id thid
    from
      fa_system_controls      fsc,

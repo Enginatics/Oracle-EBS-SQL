@@ -193,7 +193,7 @@ select /*+ ordered index(hpb hz_parties_u1) index(hpbb hz_parties_u1) index(xep 
     , ( select /*+ push_pred */ crtv.agent_name
         from   ce_reconciled_transactions_v crtv
         where  crtv.statement_line_id = csl.statement_line_id and
-               rownum <= 1
+               rownum=1
       )
     ) agent,
  csl.bank_account_text agent_bank_account,

@@ -304,7 +304,7 @@ from
        and mb.plan_id          = mfp.plan_id
        and mb.organization_id  = mfp.organization_id
        and mb.assembly_item_id = nvl(md.using_assembly_item_id,mfp.inventory_item_id)
-       and rownum <= 1
+       and rownum=1
       ),'N')                                               is_bom,
   (select distinct
     max(mss.safety_stock_quantity) keep (dense_rank last order by mss.period_start_date) over (partition by mss.organization_id,mss.inventory_item_id) safety_stock
@@ -708,4 +708,4 @@ from
    from
     (select distinct
       med.number1,
-      med.s
+      med.sr_i

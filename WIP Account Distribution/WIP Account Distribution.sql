@@ -11,6 +11,8 @@
 -- Run Report: https://demo.enginatics.com/
 
 select
+ood.organization_code,
+ood.organization_name,
 wta.transaction_date,
 we.wip_entity_name job_schedule,
 msiv.concatenated_segments assembly,
@@ -38,16 +40,13 @@ decode(wta.currency_code,gl.currency_code,null,wta.currency_conversion_date) con
 xxen_util.meaning(wt.transaction_type,'WIP_TRANSACTION_TYPE',700) transaction_type,
 ca.activity,
 xxen_util.meaning(wt.standard_rate_flag,'SYS_YES_NO',700) standard_rate,
-xxen_util.segments_description(wta.reference_account) account_description,
-gcck.segment3,
-xxen_util.segment_description(gcck.segment5,'SEGMENT5',gcck.chart_of_accounts_id) segment5_description,
+xxen_util.segments_description(wta.reference_account,gl.chart_of_accounts_id) account_description,
+&gl_account_segments
 nvl(wri.class_code,wdj.class_code) accounting_class,
 xxen_util.meaning(we.entity_type,'WIP_ENTITY',700) type,
 xxen_util.meaning(wdj.job_type,'WIP_DISCRETE_JOB',700) job_type,
 xxen_util.meaning(wdj.wip_supply_type,'WIP_SUPPLY',700) wip_supply_type,
 mck.concatenated_segments item_category,
-ood.organization_code,
-ood.organization_name,
 nvl(ppx.npw_number,ppx.employee_number) employee_num,
 ppx.full_name employee,
 poh.segment1 po_number,
@@ -78,6 +77,7 @@ per_people_x ppx,
 po_headers_all poh
 where
 1=1 and
+wta.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
 wta.accounting_line_type<>15 and
 wta.transaction_id=wt.transaction_id and
 wta.wip_entity_id=we.wip_entity_id and
@@ -107,6 +107,8 @@ wta.gl_batch_id=ogb.gl_batch_id(+) and
 ppx.person_id(+)=wt.employee_id and
 poh.po_header_id(+)=wt.po_header_id
 order by
+ood.organization_code,
+ood.organization_name,
 wta.transaction_date desc,
 wta.transaction_id desc,
 cost_type,

@@ -201,6 +201,7 @@ cicd.organization_id
 ) cicd
 where
 1=1 and
+mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
 oap.organization_id=we.organization_id and
 wdj.date_closed>=oap.period_start_date and
 wdj.date_closed<oap.schedule_close_date+1 and

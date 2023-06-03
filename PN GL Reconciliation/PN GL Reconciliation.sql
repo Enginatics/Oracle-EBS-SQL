@@ -125,10 +125,10 @@ select
 ,qt.pn_trx_status   trx_status
 ,qt.pn_trx_curr     trx_currency
 -- SLA Status Information
-,nvl((select xetv.name from xla_entity_types_vl xetv where xetv.application_id = 240 and xetv.entity_code = qt.sla_entity and rownum <= 1)
+,nvl((select xetv.name from xla_entity_types_vl xetv where xetv.application_id = 240 and xetv.entity_code = qt.sla_entity and rownum=1)
     ,qt.sla_entity
     ) sla_entity
-,nvl((select xetv.name from xla_event_types_vl xetv where xetv.application_id = 240 and xetv.event_type_code = qt.sla_event and rownum <= 1)
+,nvl((select xetv.name from xla_event_types_vl xetv where xetv.application_id = 240 and xetv.event_type_code = qt.sla_event and rownum=1)
     ,qt.sla_event
     ) sla_event
 ,qt.sla_event_status

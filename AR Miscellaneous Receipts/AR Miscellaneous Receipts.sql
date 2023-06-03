@@ -126,8 +126,8 @@ from
  ar_batches_all                 aba2,
  ar_batch_sources_all           absa,
  ar_receipt_methods             arm,
- ar_distribution_sets_all	      adsa,
- ar_receivables_trx_all	        arta,
+ ar_distribution_sets_all       adsa,
+ ar_receivables_trx_all         arta,
  -- distribution info
  ar_misc_cash_distributions_all amcda,
  ar_distributions_all           ada,

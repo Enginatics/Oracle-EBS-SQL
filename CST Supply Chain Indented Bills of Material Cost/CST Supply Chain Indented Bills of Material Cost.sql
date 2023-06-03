@@ -293,60 +293,60 @@ select
             5, cic.overhead_cost
            ),
      0) summary_report_value,
-	bom_cstrsccr_xmlp_pkg.cf_s_differenceformula
-	  ( nvl(decode(cce.cost_element_id,
-	               1, frozen.material_cost,
-	               2, frozen.material_overhead_cost,
-	               3, frozen.resource_cost,
-	               4, frozen.outside_processing_cost,
-	               5, frozen.overhead_cost
-	              ),
-	       0)
-	  , nvl(decode(cce.cost_element_id,
-	               1, cic.material_cost,
-	               2, cic.material_overhead_cost,
-	               3, cic.resource_cost,
-	               4, cic.outside_processing_cost,
-	               5, cic.overhead_cost
-	              ),
-	        0)
-	  ) summary_difference,
-	bom_cstrsccr_xmlp_pkg.cf_s_percentformula
-	  ( nvl(decode(cce.cost_element_id,
-	               1, frozen.material_cost,
-	               2, frozen.material_overhead_cost,
-	               3, frozen.resource_cost,
-	               4, frozen.outside_processing_cost,
-	               5, frozen.overhead_cost
-	              ),
-	        0)
-	  , nvl(decode(cce.cost_element_id,
-	               1, cic.material_cost,
-	               2, cic.material_overhead_cost,
-	               3, cic.resource_cost,
-	               4, cic.outside_processing_cost,
-	               5, cic.overhead_cost
-	              ),
-	        0)
-	  , bom_cstrsccr_xmlp_pkg.cf_s_differenceformula
-	      ( nvl(decode(cce.cost_element_id,
-	                   1, frozen.material_cost,
-	                   2, frozen.material_overhead_cost,
-	                   3, frozen.resource_cost,
-	                   4, frozen.outside_processing_cost,
-	                   5,frozen.overhead_cost
-	                  ),
-	            0)
-	      , nvl(decode(cce.cost_element_id,
-	                   1, cic.material_cost,
-	                   2, cic.material_overhead_cost,
-	                   3, cic.resource_cost,
-	                   4, cic.outside_processing_cost,
-	                   5, cic.overhead_cost
-	                  ),
-	            0)
-	      )
-	  ) summary_difference_percent,
+ bom_cstrsccr_xmlp_pkg.cf_s_differenceformula
+   ( nvl(decode(cce.cost_element_id,
+               1, frozen.material_cost,
+               2, frozen.material_overhead_cost,
+               3, frozen.resource_cost,
+               4, frozen.outside_processing_cost,
+               5, frozen.overhead_cost
+              ),
+       0)
+  , nvl(decode(cce.cost_element_id,
+               1, cic.material_cost,
+               2, cic.material_overhead_cost,
+               3, cic.resource_cost,
+               4, cic.outside_processing_cost,
+               5, cic.overhead_cost
+              ),
+        0)
+  ) summary_difference,
+ bom_cstrsccr_xmlp_pkg.cf_s_percentformula
+  ( nvl(decode(cce.cost_element_id,
+               1, frozen.material_cost,
+               2, frozen.material_overhead_cost,
+               3, frozen.resource_cost,
+               4, frozen.outside_processing_cost,
+               5, frozen.overhead_cost
+              ),
+        0)
+  , nvl(decode(cce.cost_element_id,
+               1, cic.material_cost,
+               2, cic.material_overhead_cost,
+               3, cic.resource_cost,
+               4, cic.outside_processing_cost,
+               5, cic.overhead_cost
+              ),
+        0)
+  , bom_cstrsccr_xmlp_pkg.cf_s_differenceformula
+      ( nvl(decode(cce.cost_element_id,
+                   1, frozen.material_cost,
+                   2, frozen.material_overhead_cost,
+                   3, frozen.resource_cost,
+                   4, frozen.outside_processing_cost,
+                   5,frozen.overhead_cost
+                  ),
+            0)
+      , nvl(decode(cce.cost_element_id,
+                   1, cic.material_cost,
+                   2, cic.material_overhead_cost,
+                   3, cic.resource_cost,
+                   4, cic.outside_processing_cost,
+                   5, cic.overhead_cost
+                  ),
+            0)
+      )
+  ) summary_difference_percent,
  -- summary hidden columns
  cce.cost_element_id,
  nvl(cic.item_cost,0) - nvl(frozen.item_cost,0) s_diff_total

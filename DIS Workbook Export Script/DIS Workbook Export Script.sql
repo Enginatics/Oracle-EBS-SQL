@@ -5,25 +5,26 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: DIS Workbook Export Script
--- Description: Use this report to generate the commands to export your recently excuted workbooks as individual XML files (20 seconds delay between each export).
-You can open several (e.g. 5) cmd windows in parallel and copy the commands from each sheet into the windows to run the export.
+-- Description: Use this report to migrate Discoverer workbooks to Blitz Report through the following steps:
 
-Discoverer admin might fail to export some of the workbooks or create them with zero size.
-In such case, you should remove any zero size workbook xml files and rerun the whole script (already existing files are not re-exported)
+1. Run this report 'DIS Workbook Export Script' to generate a list of commands to export xmls for all recently used Discoverer workbooks.
+2. Create a new folder on a windows machine having the Discoverer Admin executable dis51adm.exe installed (contact Enginatics, if you need help with the Discoverer Administrator installation).
+3. Open a Command Prompt window, cd to the new folder, and execute (copy and paste) the commands generated in step 1. This will start individual processes to export the workbooks as .eex files. Depending on your client capacity, you can run between 100 and 200 export processes at the same time. In case of errors, delete all zero size .eex files and rerun the script.
+4. Zip together all generated (non-zero size) workbook_*.eex files. Do not include the generated *.log files.
+5. If you have more than one EUL, set the profile option 'Blitz Report Discoverer Default EUL' to the end user layer for which you run the migration
+6. Navigate to Setup>Tools>Import>XML Upload and upload the .zip file generated in step 4. You will see a message with the count of uploaded xml files.
+7. Run concurrent program 'Blitz Report Discoverer Import' from the System Administrator responsibility, and specify a report name prefix to easily distinguish the migrated reports.
+8. Verify the migration result by running reports: Blitz Report SQL Validation, Blitz Report LOV SQL Validation, DIS Workbook Import Validation, DIS End User Layers. The migrated reports are assigned to a new Discoverer category.
 -- Excel Examle Output: https://www.enginatics.com/example/dis-workbook-export-script/
 -- Library Link: https://www.enginatics.com/reports/dis-workbook-export-script/
 -- Run Report: https://demo.enginatics.com/
 
 select
-'if not exist workbook_'||ed.doc_id||'.eex (start '||:executable_path||' /connect '||:eul||'/'||:eul_password||'@'||:db_service_name||' /export "workbook_'||ed.doc_id||'.eex" /workbook "'||nvl(fu.user_name,eeu.eu_username)||'.'||ed.doc_name||'" /xmlworkbook'||chr(38)||' ping /n '||:delay_seconds||' localhost >NUL) else (echo workbook_'||ed.doc_id||'.eex exists)' text
+'if not exist workbook_'||ed.doc_id||'.eex (start '||:executable_path||' /connect '||:eul||'/'||:eul_password||'@'||:db_service_name||' /export "workbook_'||ed.doc_id||'.eex" /workbook "'||xxen_util.dis_user_name(ed.doc_eu_id,:eul,'N')||'.'||ed.doc_name||'" /xmlworkbook'||chr(38)||' ping /n '||:delay_seconds||' localhost >NUL) else (echo workbook_'||ed.doc_id||'.eex exists)' text
 from
-&eul.eul5_documents ed,
-&eul.eul5_eul_users eeu,
-fnd_user fu
+&eul.eul5_documents ed
 where
 1=1 and
-ed.doc_name in (select eqs.qs_doc_name from &eul.eul5_qpp_stats eqs where 2=2) and
-ed.doc_eu_id=eeu.eu_id and
-case when eeu.eu_username like '#%' then to_number(substr(eeu.eu_username,2)) end=fu.user_id(+)
+ed.doc_name in (select eqs.qs_doc_name from &eul.eul5_qpp_stats eqs where 2=2 &or_owner_restriction)
 order by
 ed.doc_id

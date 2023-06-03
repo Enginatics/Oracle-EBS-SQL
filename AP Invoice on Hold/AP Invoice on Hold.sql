@@ -32,7 +32,7 @@ select
    and       ah.line_location_id = poll.line_location_id
    and       poll.po_header_id = poh.po_header_id
    and    ah.invoice_id = x.c_invoice_id
-   and    rownum <= 1
+   and    rownum=1
  )  po_number
 ,to_char(x.c_invoice_date,'fmMonth YYYY') invoice_month
 ,x.c_invoice_date invoice_date

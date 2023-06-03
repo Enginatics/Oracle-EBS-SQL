@@ -358,7 +358,7 @@ from
       mtp.sr_instance_id = mov.sr_instance_id and
       mtps.sr_tp_site_id = mov.implement_location_id and
       mtp.partner_type = 3 and
-      rownum <= 1
+      rownum=1
     ),
     (select
       mla.location_code
@@ -373,7 +373,7 @@ from
       mtp.sr_instance_id = mov.sr_instance_id and
       mla.location_id = mov.implement_location_id and
       mtp.partner_type = 3 and
-      rownum <= 1
+      rownum=1
     )
    )                                               implement_location,
    --
@@ -403,7 +403,7 @@ from
    mov.alternate_routing_designator                alternate_routing_designator,
    mov.line_code                                   line_code,
    mov.schedule_group_name                         schedule_group,
-   mov.build_sequence	                             build_sequence,
+   mov.build_sequence                              build_sequence,
    mov.planning_group                              planning_group,
    --
    mov.intransit_lead_time                         intransit_lt,
@@ -459,7 +459,7 @@ from
   where
       mov.sr_instance_id    = mai.instance_id
   and mov.plan_id           = mp.plan_id
-  and mov.category_set_id   = nvl(:p_category_set_id,(select mcs.category_set_id from msc_category_sets&a2m_dblink mcs where mcs.default_flag = 1 and rownum <= 1))
+  and mov.category_set_id   = nvl(:p_category_set_id,(select mcs.category_set_id from msc_category_sets&a2m_dblink mcs where mcs.default_flag = 1 and rownum=1))
   and mov.sr_instance_id    = msi.sr_instance_id
   and mov.plan_id           = msi.plan_id
   and mov.organization_id   = msi.organization_id

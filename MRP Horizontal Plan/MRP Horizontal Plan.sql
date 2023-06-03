@@ -131,7 +131,7 @@ select
   hp.*
 from
 (
-select
+select /*+ push_pred(mea) */
   mmp.compile_designator                             plan
 , mmp.organization_code                              organization_code
 , nvl( mea.end_assembly
@@ -207,21 +207,27 @@ from
 , mtl_item_categories  mic
 , mtl_categories_kfv   mck
 , mtl_planners         mpl
-, ( select
-      mea2.compile_designator
-    , mea2.organization_id
-    , mea2.inventory_item_id
-    , mea2.end_assembly_id
-    , msiv2.concatenated_segments end_assembly
-    , msiv2.description           end_assembly_desc
-    from
-      mrp_end_assemblies   mea2
-    , mtl_system_items_vl  msiv2
-    where
-        msiv2.organization_id   = mea2.organization_id
-    and msiv2.inventory_item_id = mea2.end_assembly_id
-    and msiv2.bom_item_type    in (1,2,3,4)
-  )                    mea
+, (
+   select distinct
+      mea.compile_designator
+    , bset.organization_id
+    , bset.component_item_id inventory_item_id
+    , bset.top_item_id end_assembly_id
+    , msiv.concatenated_segments end_assembly
+    , msiv.description           end_assembly_desc 
+   from   
+      bom_small_expl_temp      bset   
+    , mtl_system_items_vl      msiv
+    , mrp_end_assemblies       mea
+   where
+       bset.organization_id     = msiv.organization_id
+   and bset.top_item_id         = msiv.inventory_item_id 
+   and bset.component_item_id  != bset.top_item_id
+   and mea.compile_designator   = xxen_mrp_horizplan.get_compile_designator
+   and mea.organization_id      = bset.organization_id
+   and mea.end_assembly_id      = bset.top_item_id
+   and mea.inventory_item_id    = bset.component_item_id
+  ) mea
 where
     msiv.organization_id        = mmp.organization_id
 and msiv.inventory_item_id      = mmp.inventory_item_id

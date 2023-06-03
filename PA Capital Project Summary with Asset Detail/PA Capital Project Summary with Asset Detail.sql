@@ -77,7 +77,23 @@ select
  null asset_line_cip_account,
  null asset_line_fa_period,
  null asset_line_status,
- null asset_line_rejection_reason
+ null asset_line_rejection_reason,
+ --
+ null detail_expenditure_type,
+ null detail_expenditure_category,
+ to_date(null) detail_expenditure_item_date,
+ null detail_employee_vendor_name,
+ null detail_employee_vendor_number,
+ to_number(null) detail_quantity,
+ null detail_unit_of_measure_m,
+ to_number(null) detail_cip_cost,
+ null detail_expenditure_comment,
+ null detail_expenditure_organization,
+ null detail_non_labor_resource,
+ null detail_non_labor_resource_org,
+ null detail_transaction_source,
+ null detail_source_transaction_ref,
+ null detail_job_name
 from
  hr_all_organization_units_vl haouv,
  fa_locations_kfv flk,
@@ -184,10 +200,27 @@ select
  (select gcck.concatenated_segments from gl_code_combinations_kfv gcck where gcck.code_combination_id = ppalv.cip_ccid) asset_line_cip_account,
  ppalv.fa_period_name asset_line_fa_period,
  ppalv.transfer_status_m asset_line_transfer_status,
- ppalv.transfer_rejection_reason_m asset_line_rejection_reason
+ ppalv.transfer_rejection_reason_m asset_line_rejection_reason,
+ --
+ paldv.expenditure_type              detail_expenditure_type,
+ paldv.expenditure_category          detail_expenditure_category,
+ paldv.expenditure_item_date         detail_expenditure_item_date,
+ paldv.employee_vendor_name          detail_employee_vendor_name,
+ paldv.employee_vendor_number        detail_employee_vendor_number,
+ paldv.quantity                      detail_quantity,
+ paldv.unit_of_measure_m             detail_unit_of_measure_m,
+ paldv.cip_cost                      detail_cip_cost,
+ paldv.expenditure_comment           detail_expenditure_comment,
+ paldv.expenditure_organization_name detail_expenditure_organization,
+ paldv.non_labor_resource            detail_non_labor_resource,
+ paldv.nlr_organization_name         detail_non_labor_resource_org,
+ paldv.transaction_source            detail_transaction_source,
+ paldv.orig_transaction_reference    detail_source_transaction_ref,
+ paldv.job_name                      detail_job_name
 from
  hr_all_organization_units_vl haouv,
  pa_project_asset_lines_v ppalv,
+ pa_asset_line_details_v paldv,
  pa_capital_projects_v cv,
  (select
    sum(prcv.retirable_cost) retirable_cost,
@@ -204,9 +237,11 @@ from
 where
     :p_incl_unassigned_lines is not null
 and 1=1
-and 3=3 
+and 3=3
 and haouv.organization_id=cv.org_id
 and ppalv.project_id=cv.project_id
+and decode(:p_incl_unassigned_lines,'Lines',-999,ppalv.project_id) = paldv.project_id (+)
+and decode(:p_incl_unassigned_lines,'Lines',-999,ppalv.project_asset_line_detail_id) = paldv.project_asset_line_detail_id (+)
 and ppalv.project_asset_id=0
 and rv.project_id(+)=cv.project_id
 ) x
@@ -214,4 +249,5 @@ order by
  x.project_type,
  x.project_organization,
  x.project_name,
+ decode(x.asset_name,'UNASSIGNED',2,1),
  x.asset_name

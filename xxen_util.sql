@@ -101,20 +101,32 @@ p_org_information_id in number default null
 function concatenated_segments(p_code_combination_id in number) return varchar2 result_cache;
 
 /***********************************************************************************************/
-/*  gl account segments description for a given gl code combination                            */
-/***********************************************************************************************/
-function segments_description(p_code_combination_id in number) return varchar2;
-
-/***********************************************************************************************/
-/*  single gl account segment description for a given segment value                            */
+/*  single gl account or other key flexfield segment description for a given segment value     */
 /***********************************************************************************************/
 function segment_description(
 p_segment_value in varchar2,
 p_column_name in varchar2,
-p_chart_of_accounts_id in number,
-p_application_id in number default 101,
+p_id_flex_num in pls_integer,
+p_parent_segment_value in varchar2 default null,
+p_application_id in pls_integer default 101,
 p_id_flex_code in varchar2 default 'GL#'
 ) return varchar2;
+
+/***********************************************************************************************/
+/*  Concatenated key flexfield segment value description for a given id, for example           */
+/*  gl code combination. Provide the chart of accounts id for better performance               */
+/***********************************************************************************************/
+function segments_description(
+p_id in number,
+p_id_flex_num in pls_integer,
+p_application_id in pls_integer default 101,
+p_id_flex_code in varchar2 default 'GL#'
+) return varchar2;
+
+/***********************************************************************************************/
+/*  overloeaded (slower) segment value description function, without chart of accounts id      */
+/***********************************************************************************************/
+function segments_description(p_code_combination_id in number) return varchar2;
 
 /***********************************************************************************************/
 /*  reverse the element order of a delimited text e.g. a path /gordon/supervisor/project to    */
@@ -161,7 +173,7 @@ function clob_lengthb(p_clob in clob) return number;
 function clob_substrb(p_clob in clob, p_byte_length in pls_integer, p_char_position in pls_integer default 1) return clob;
 
 /***********************************************************************************************/
-/*  instring for long multiple values as regexp on clobs is too slow, especially on 19c        */
+/*  instring for long multiple values as regexp_substr on clobs is too slow, especially on 19c */
 /***********************************************************************************************/
 function instring(p_text in varchar2, p_separator in varchar2, p_occurrence in pls_integer) return varchar2;
 
@@ -215,15 +227,15 @@ function module_name(p_module in varchar2, p_program in varchar2 default null) r
 function responsibility(p_module in varchar2, p_action in varchar2) return varchar2;
 
 /***********************************************************************************************/
-/*  translates an apps session client_id e.g. sysadmin to a user_name including description    */
-/*  e.g. sysadmin: system administrator                                                        */
+/*  translates an fnd user_name e.g. CLAUDIA to a user_name including description              */
+/*  e.g. CLAUDIA (Claudia Renner)                                                              */
 /***********************************************************************************************/
 function user_name(p_user_name in varchar2) return varchar2;
 
 /***********************************************************************************************/
-/*  returns user_name including description for a user_id                                      */
+/*  returns user_name including description for an fnd user_id                                 */
 /***********************************************************************************************/
-function user_name(p_user_id in pls_integer) return varchar2;
+function user_name(p_user_id in pls_integer, p_show_description in varchar2 default null) return varchar2;
 
 /***********************************************************************************************/
 /*  returns user_id for a user_name                                                            */
@@ -311,12 +323,12 @@ function dis_user(p_user_id in number, p_eul in varchar2) return varchar2 result
 /***********************************************************************************************/
 /*  discoverer username to application user name or responsibility                             */
 /***********************************************************************************************/
-function dis_user_name(p_username in varchar2) return varchar2;
+function dis_user_name(p_username in varchar2, p_show_description in varchar2 default null) return varchar2;
 
 /***********************************************************************************************/
 /*  discoverer user_id to application user name or responsibility                              */
 /***********************************************************************************************/
-function dis_user_name(p_user_id in number, p_eul in varchar2) return varchar2 result_cache;
+function dis_user_name(p_user_id in number, p_eul in varchar2, p_show_description in varchar2 default null) return varchar2 result_cache;
 
 /***********************************************************************************************/
 /*  discoverer username to user type                                                           */
@@ -352,21 +364,6 @@ function dis_lov_query(p_exp_id in pls_integer, p_eul in varchar2) return clob;
 /*  discoverer worksheet SQL text from logging table ams_discoverer_sql                        */
 /***********************************************************************************************/
 function dis_worksheet_sql(p_workbook_owner_name in varchar2, p_workbook_name in varchar2, p_worksheet_name in varchar2) return clob;
-
-/***********************************************************************************************/
-/*  translates reverse polish notation discoverer formulas to a valid SQL condition            */
-/***********************************************************************************************/
-function dis_rpn_to_sql(p_formula in varchar2) return varchar2;
-
-/***********************************************************************************************/
-/*  translates discoverer item formula expressions to reverse polish notation                  */
-/***********************************************************************************************/
-function dis_formula(p_exp_id in pls_integer, p_eul in varchar2, p_lov in varchar2, p_parent_obj_id in varchar2) return varchar2;
-
-/***********************************************************************************************/
-/*  translates discoverer item formula expressions to a valid SQL condition                    */
-/***********************************************************************************************/
-function dis_formula_sql(p_exp_id in pls_integer, p_eul in varchar2, p_lov in varchar2 default null) return varchar2 result_cache;
 
 /***********************************************************************************************/
 /*  checks if discoverer EUL contains any data in ams_discoverer_sql to be imported            */
@@ -957,141 +954,149 @@ begin
 end concatenated_segments;
 
 
-function segments_description(p_code_combination_id in number) return varchar2 is
+function segment_description(
+p_segment_value in varchar2,
+p_column_name in varchar2,
+p_id_flex_num in pls_integer,
+p_parent_segment_value in varchar2 default null,
+p_application_id in pls_integer default 101,
+p_id_flex_code in varchar2 default 'GL#'
+) return varchar2 is
 
-function segments_description(p_code_combination_id in number, p_userenv_lang in varchar2) return varchar2 result_cache is
+function segment_description(
+p_column_name in varchar2,
+p_id_flex_num in pls_integer,
+p_application_id in pls_integer,
+p_id_flex_code in varchar2,
+p_segment_value in varchar2,
+p_parent_segment_value in varchar2,
+p_userenv_lang in varchar2
+) return varchar2 result_cache is
+l_segment_description fnd_flex_values_tl.description%type;
+begin
+  if p_parent_segment_value is null then
+    for c in (
+    select
+    ffvt.description
+    from
+    fnd_id_flex_segments fifs,
+    fnd_flex_values ffv,
+    fnd_flex_values_tl ffvt
+    where
+    fifs.application_column_name=p_column_name and
+    fifs.id_flex_num=p_id_flex_num and
+    fifs.application_id=p_application_id and
+    fifs.id_flex_code=p_id_flex_code and
+    fifs.flex_value_set_id=ffv.flex_value_set_id and
+    ffv.parent_flex_value_low is null and
+    ffv.flex_value=p_segment_value and
+    ffv.flex_value_id=ffvt.flex_value_id and
+    ffvt.language=p_userenv_lang
+    ) loop
+      l_segment_description:=c.description;
+    end loop;
+  else
+    for c in (
+    select
+    ffvt.description
+    from
+    fnd_id_flex_segments fifs,
+    fnd_flex_values ffv,
+    fnd_flex_values_tl ffvt
+    where
+    fifs.application_column_name=p_column_name and
+    fifs.id_flex_num=p_id_flex_num and
+    fifs.application_id=p_application_id and
+    fifs.id_flex_code=p_id_flex_code and
+    fifs.flex_value_set_id=ffv.flex_value_set_id and
+    p_parent_segment_value between ffv.parent_flex_value_low and nvl(ffv.parent_flex_value_high,ffv.parent_flex_value_low) and
+    ffv.flex_value=p_segment_value and
+    ffv.flex_value_id=ffvt.flex_value_id and
+    ffvt.language=p_userenv_lang
+    ) loop
+      l_segment_description:=c.description;
+    end loop;
+  end if;
+  return l_segment_description;
+end segment_description;
+
+begin
+  return segment_description(p_column_name,p_id_flex_num,p_application_id,p_id_flex_code,p_segment_value,p_parent_segment_value,userenv('lang'));
+end segment_description;
+
+
+function segments_description(
+p_id in number,
+p_id_flex_num in pls_integer,
+p_application_id in pls_integer default 101,
+p_id_flex_code in varchar2 default 'GL#'
+) return varchar2 is
+type cur_type is ref cursor;
+c_cur cur_type;
 l_segments_description varchar2(4000);
+
+function seqments_query(p_id_flex_num in pls_integer, p_application_id in pls_integer, p_id_flex_code in varchar2, p_userenv_lang in varchar2, p_delimiter in varchar2 default chr(10), p_show_segment_name in varchar2 default 'Y') return varchar2 result_cache is
+l_sql_text varchar2(4000);
 begin
   for c in (
   select
-  ffvt.description,
-  x.*
-  from
+  decode(fifs.segment_num,min(fifs.segment_num) over (),'select ')||
+  decode(p_show_segment_name,'Y',''''||fifst.form_left_prompt||': ''||')||'xxen_util.segment_description(x.'||fifs.application_column_name||', '''||fifs.application_column_name||''', '||fifs.id_flex_num||
   (
   select
-  fifs.segment_num,
-  fifst.form_left_prompt,
-  decode(fifs.application_column_name,
-  'SEGMENT1',gcck.segment1,
-  'SEGMENT2',gcck.segment2,
-  'SEGMENT3',gcck.segment3,
-  'SEGMENT4',gcck.segment4,
-  'SEGMENT5',gcck.segment5,
-  'SEGMENT6',gcck.segment6,
-  'SEGMENT7',gcck.segment7,
-  'SEGMENT8',gcck.segment8,
-  'SEGMENT9',gcck.segment9,
-  'SEGMENT10',gcck.segment10,
-  'SEGMENT11',gcck.segment11,
-  'SEGMENT12',gcck.segment12,
-  'SEGMENT13',gcck.segment13,
-  'SEGMENT14',gcck.segment14,
-  'SEGMENT15',gcck.segment15,
-  'SEGMENT16',gcck.segment16,
-  'SEGMENT17',gcck.segment17,
-  'SEGMENT18',gcck.segment18,
-  'SEGMENT19',gcck.segment19,
-  'SEGMENT20',gcck.segment20,
-  'SEGMENT21',gcck.segment21,
-  'SEGMENT22',gcck.segment22,
-  'SEGMENT23',gcck.segment23,
-  'SEGMENT24',gcck.segment24,
-  'SEGMENT25',gcck.segment25,
-  'SEGMENT26',gcck.segment26,
-  'SEGMENT27',gcck.segment27,
-  'SEGMENT28',gcck.segment28,
-  'SEGMENT29',gcck.segment29,
-  'SEGMENT30',gcck.segment30
-  ) segment_value,
-  fifs.flex_value_set_id
+  ', x.'||fifs0.application_column_name
   from
-  gl_code_combinations_kfv gcck,
+  fnd_id_flex_segments fifs0
+  where
+  fifs.application_id=fifs.application_id and
+  fifs.id_flex_code=fifs0.id_flex_code and
+  fifs.id_flex_num=fifs0.id_flex_num and
+  fifs.enabled_flag=fifs0.enabled_flag and
+  fifs0.flex_value_set_id=(select ffvs.parent_flex_value_set_id from fnd_flex_value_sets ffvs where fifs.flex_value_set_id=ffvs.flex_value_set_id)
+  )||')'||decode(fifs.segment_num,max(fifs.segment_num) over (),' segments_description from '||fif.application_table_name||' x where x.'||fif.unique_id_column_name||'=:p_id','||'''||p_delimiter||'''||') sql_text
+  from
+  fnd_id_flexs fif,
   fnd_id_flex_segments fifs,
   fnd_id_flex_segments_tl fifst
   where
-  gcck.code_combination_id=p_code_combination_id and
-  gcck.chart_of_accounts_id=fifs.id_flex_num and
-  fifs.application_id=101 and
-  fifs.id_flex_code='GL#' and
+  fif.application_id=fifs.application_id and
+  fif.id_flex_code=fifs.id_flex_code and
+  fifs.application_id=p_application_id and
+  fifs.id_flex_code=p_id_flex_code and
+  fifs.id_flex_num=p_id_flex_num and
+  fifs.enabled_flag='Y' and
   fifs.application_id=fifst.application_id and
   fifs.id_flex_code=fifst.id_flex_code and
   fifs.id_flex_num=fifst.id_flex_num and
   fifs.application_column_name=fifst.application_column_name and
   fifst.language=p_userenv_lang
-  ) x,
-  fnd_flex_values ffv,
-  fnd_flex_values_tl ffvt
-  where
-  x.flex_value_set_id=ffv.flex_value_set_id and
-  ffv.parent_flex_value_low is null and
-  x.segment_value=ffv.flex_value and
-  ffv.flex_value_id=ffvt.flex_value_id and
-  ffvt.language=p_userenv_lang
   order by
-  x.segment_num
+  fifs.segment_num
   ) loop
-    l_segments_description:=l_segments_description||c.form_left_prompt||': '||c.description||chr(10);
+    l_sql_text:=l_sql_text||c.sql_text;
   end loop;
+  return l_sql_text;
+end seqments_query;
+
+begin
+  open c_cur for seqments_query(p_id_flex_num, p_application_id, p_id_flex_code, userenv('lang')) using p_id;
+  loop
+    fetch c_cur into l_segments_description;
+    exit when c_cur%notfound;
+  end loop;
+  close c_cur;
   return l_segments_description;
 end segments_description;
 
+
+function segments_description(p_code_combination_id in number) return varchar2 is
+l_id_flex_num fnd_id_flex_structures.id_flex_num%type;
 begin
-  return trim(segments_description(p_code_combination_id, userenv('lang')));
-end segments_description;
-
-
-function segment_description(
-p_segment_value in varchar2,
-p_column_name in varchar2,
-p_chart_of_accounts_id in number,
-p_application_id in number default 101,
-p_id_flex_code in varchar2 default 'GL#'
-) return varchar2 is
-
-function segment_description(
-p_segment_value in varchar2,
-p_column_name in varchar2,
-p_chart_of_accounts_id in number,
-p_application_id in number,
-p_id_flex_code in varchar2,
-p_userenv_lang in varchar2
-) return varchar2 result_cache is
-l_segment_description varchar2(4000);
-begin
-  for c in (
-  select
-  ffvt.description
-  from
-  fnd_id_flex_segments fifs,
-  fnd_flex_values ffv,
-  fnd_flex_values_tl ffvt
-  where
-  fifs.application_column_name=p_column_name and
-  fifs.id_flex_num=p_chart_of_accounts_id and
-  fifs.application_id=p_application_id and
-  fifs.id_flex_code=p_id_flex_code and
-  fifs.flex_value_set_id=ffv.flex_value_set_id and
-  ffv.parent_flex_value_low is null and
-  ffv.flex_value=p_segment_value and
-  ffv.flex_value_id=ffvt.flex_value_id and
-  ffvt.language=p_userenv_lang
-  ) loop
-    l_segment_description:=c.description;
+  for c in (select gcc.chart_of_accounts_id from gl_code_combinations gcc where gcc.code_combination_id=p_code_combination_id) loop
+    l_id_flex_num:=c.chart_of_accounts_id;
   end loop;
-  return l_segment_description;
-end segment_description;
-
-begin
-  return
-  segment_description(
-  p_segment_value,
-  p_column_name,
-  p_chart_of_accounts_id,
-  p_application_id,
-  p_id_flex_code,
-  userenv('lang')
-  );
-end segment_description;
+  return case when l_id_flex_num is not null then segments_description(p_code_combination_id,l_id_flex_num) end;
+end segments_description;
 
 
 function reverse(p_text in varchar2, p_delimiter in varchar2) return varchar2 is
@@ -1626,7 +1631,7 @@ begin
   if p_show_description='Y' then
     for c in (
     select
-    x.user_name||nvl2(x.description,' ('||x.description||')',null) user_name
+    ' ('||x.description||')' description
     from
     (
     select
@@ -1644,8 +1649,10 @@ begin
     fu.user_name=p_user_name and
     fu.employee_id=papf.person_id(+)
     ) x
+    where
+    x.description is not null
     ) loop
-      l_user_name:=c.user_name;
+      l_user_name:=l_user_name||c.description;
     end loop;
   end if;
   return l_user_name;
@@ -1656,45 +1663,19 @@ begin
 end user_name;
 
 
-function user_name(p_user_id in pls_integer) return varchar2 is
+function user_name(p_user_id in pls_integer, p_show_description in varchar2 default null) return varchar2 is
 
 function user_name(p_user_id in pls_integer, p_sysdate in date, p_show_description in varchar2) return varchar2 result_cache is
 l_user_name varchar2(342);
 begin
-  if p_show_description='N' then
-    for c in (select fu.user_name from fnd_user fu where fu.user_id=p_user_id) loop
-      l_user_name:=c.user_name;
-    end loop;
-  else
-    for c in (
-    select
-    x.user_name||nvl2(x.description,' ('||x.description||')',null) user_name
-    from
-    (
-    select
-    fu.user_name,
-    coalesce(
-    trim(papf.first_name||' '||papf.last_name),
-    fu.description,
-    fu.email_address,
-    papf.email_address
-    ) description
-    from
-    fnd_user fu,
-    (select papf.* from per_all_people_f papf where p_sysdate between papf.effective_start_date and papf.effective_end_date) papf
-    where
-    fu.user_id=p_user_id and
-    fu.employee_id=papf.person_id(+)
-    ) x
-    ) loop
-      l_user_name:=c.user_name;
-    end loop;
-  end if;
+  for c in (select fu.user_name from fnd_user fu where fu.user_id=p_user_id) loop
+    l_user_name:=case when p_show_description='N' then c.user_name else xxen_util.user_name(c.user_name) end;
+  end loop;
   return l_user_name;
 end user_name;
 
 begin
-  return user_name(p_user_id, trunc(sysdate), nvl(fnd_profile.value('XXEN_REPORT_SHOW_USER_DESCRIPTION'),'Y'));
+  return user_name(p_user_id, trunc(sysdate), nvl(p_show_description,fnd_profile.value('XXEN_REPORT_SHOW_USER_DESCRIPTION')));
 end user_name;
 
 
@@ -1964,9 +1945,9 @@ exception
 end dis_user;
 
 
-function dis_user_name(p_username in varchar2) return varchar2 is
+function dis_user_name(p_username in varchar2, p_show_description in varchar2 default null) return varchar2 is
 
-function dis_user_name_(p_username in varchar2, p_userenv_lang in varchar2) return varchar2 result_cache is
+function dis_user_name_(p_username in varchar2, p_userenv_lang in varchar2, p_show_description in varchar2 default null) return varchar2 result_cache is
 l_user_name varchar2(342):=p_username;
 begin
   if p_username like '#%#%' then
@@ -1983,19 +1964,19 @@ begin
       l_user_name:=c.responsibility_name;
     end loop;
   elsif p_username like '#%' then
-    l_user_name:=user_name(to_number(substr(p_username,2)));
+    l_user_name:=user_name(to_number(substr(p_username,2)),p_show_description);
   end if;
-  return l_user_name;
+  return nvl(l_user_name,p_username);
 end dis_user_name_;
 
 begin
-  return dis_user_name_(p_username, userenv('lang'));
+  return dis_user_name_(p_username, userenv('lang'), p_show_description);
 end dis_user_name;
 
 
-function dis_user_name(p_user_id in number, p_eul in varchar2) return varchar2 result_cache is
+function dis_user_name(p_user_id in number, p_eul in varchar2, p_show_description in varchar2 default null) return varchar2 result_cache is
 begin
-  return dis_user_name(dis_user(p_user_id, p_eul));
+  return dis_user_name(dis_user(p_user_id, p_eul), p_show_description);
 end dis_user_name;
 
 
@@ -2091,12 +2072,12 @@ begin
     select
     ee.it_obj_id,
     eo.obj_type,
-    lower(eo.owner||nvl2(eo.owner,''.'',null)||eo.sobj_ext_table) sobj_ext_table,
+    lower(eo.owner||nvl2(eo.owner,''.'',null)||eo.sobj_ext_table||nvl2(eo.obj_ext_db_link,''@''||eo.obj_ext_db_link,null)) sobj_ext_table,
     lower(replace(regexp_replace(nvl(eo.sobj_ext_table,xxen_report.space_to_underscore(eo.obj_name)),''([^_]{1})[^_]*'',''\1''),''_'')) alias,
     case when ee.exp_type=''CO'' then ''o''||ee.it_obj_id||''.''||xxen_xdo.column_name(
     case when ee.it_ext_column like ''%#1'' and ee.it_ext_column=upper(ee.it_ext_column) then substr(ee.it_ext_column,1,length(ee.it_ext_column)-2) else ee.it_ext_column end
     ) else
-    xxen_util.dis_formula_sql(ee.exp_id,:p_eul,''Y'')
+    xxen_api.dis_formula_sql(ee.exp_id,:p_eul,''Y'')
     end column_name
     from
     '||p_eul||'.eul5_expressions ee,
@@ -2149,212 +2130,6 @@ begin
   end loop;
   return replace(l_sql_text,chr(13)||chr(10),chr(10));
 end dis_worksheet_sql;
-
-
-function dis_rpn_to_sql(p_formula in varchar2) return varchar2 is
-l_result varchar2(4000);
-type f_item is record (hash_val number, formula varchar2(4000));
-type f_items is table of f_item;
-f_items1 f_items;
-l_hash number;
-
-function rpn_align(p_formula in clob) return clob is
-l_result clob;
-begin
-  select
-  regexp_replace(b.formula,'([(,]''[^'',|]*?)''([^'',|]*?)''?([^'',|]*?)''?([^'',|]*?''[,)])','\1\2\3\4',1,0,'i')
-  into
-  l_result
-  from
-  (
-  select
-  case
-  when a.opr in ('+','-') and regexp_count(form,',')>0 then regexp_replace(form,',',a.opr,1,0,'i')
-  when a.opr in ('*','/','%','!=','=','>','<','>=','<=','<>','||') then regexp_replace(regexp_replace(form,',',a.opr,1,0,'i'),'^\(\s*(.+?)\s*\)$','\1',1,0,'imn')
-  when a.opr in ('like') then regexp_replace(regexp_replace(form,',',') '||a.opr||' lower(',1,0,'i'),'^\(\s*(.+?)\s*\)$','lower(\1)',1,0,'imn')
-  when a.opr in ('not like') then regexp_replace(regexp_replace(form,',',' '||a.opr||' ',1,0,'i'),'^\(\s*(.+?)\s*\)$','\1',1,0,'imn')
-  when a.opr in ('and') then regexp_replace(regexp_replace(form,',',' '||a.opr||chr(10),1,0,'i'),'^\(\s*(.+?)\s*\)$','\1',1,0,'imn')
-  when a.opr in ('or') then regexp_replace(form,',',' '||a.opr||' ',1,0,'i')
-  when a.opr in ('between') then regexp_replace(form,'\(([^(),]+(\(\))?),([^(),]+(\(\))?),([^(),]+(\(\))?)\)','\1 between \3 and \5',1,0,'i')
-  when a.opr in ('is null','is not null') then regexp_replace(form,'\(([^(),]+(\(\))?)\)','\1 '||a.opr,1,0,'i')
-  when a.opr in ('()') then regexp_replace(form,'\(([^(),]+(\(\))?)\)','(\1)',1,0,'i')
-  when a.opr in ('in') then regexp_replace(form,'\((.+?),(.+?)\)','\1 in (\2)',1,0,'i')
-  when a.opr in ('not in') then regexp_replace(form,'\((.+?),(.+?)\)','\1 not in (\2)',1,0,'i')
-  when a.opr in ('sum','count','avg','min','max','count_distinct') then regexp_replace(form,'\((.+)\)','\1',1,0,'i')
-  when a.opr in ('eul_date_trunc') then
-    regexp_replace(
-    regexp_replace(
-    regexp_replace(
-    regexp_replace(
-    regexp_replace(
-    regexp_replace(
-    regexp_replace(
-    regexp_replace(form,
-    '^\((.+),''YYYY''\)','trunc(\1,''YYYY'')'),
-    '^\((.+),''MMM''\)','trunc(\1,''MON'')'),
-    '^\((.+),''"Q"Q''\)','case when \1 is null then null else to_date(to_char(trunc(\1,''Q''),''MM'')||''1900'',''MMYYYY'') end'),
-    '^\((.+),''"Q"Q-RR''\)','case when \1 is null then null else to_date(to_char(trunc(\1,''Q''),''MM'')||''1900'',''MMYYYY'') end'),
-    '^\((.+),''Mon''\)','case when \1 is null then null else to_date(to_char(trunc(\1,''MM''),''MM'')||''1900'',''MMYYYY'') end'),
-    '^\((.+),''DD''\)','case when \1 is null then null else to_date(to_char(trunc(\1,''DD''),''DD'')||''190001'',''DDYYYYMM'') end'),
-    '^\((.+),(''dd-mon-yyyy''|''dd-mom-yyyy''|''dd-mmm-yyyy'')\)','trunc(\1)',1,0,'i'),
-    '^\((.+)\)$','trunc(\1)',1,0,'i')
-  else p_formula
-  end formula
-  from
-  (
-  select
-  dbms_lob.substr(regexp_replace(p_formula,'([^(),]+|(\(\)))\(([^(),]+)(\(\))?(,[^(),]+(\(\))?)*\)','\1',1,0,'i')) opr,
-  regexp_substr(p_formula,'\(([^(),]+)(\(\))?(,[^(),]+(\(\))?)*\)',1,1,'i') form
-  from
-  dual
-  ) a
-  ) b;
-  return l_result;
-end rpn_align;
-
-begin
-  l_result:=p_formula;
-  select
-  a.hash_val,
-  a.formula
-  bulk collect into
-  f_items1
-  from
-  (
-  select
-  regexp_substr(l_result,'([^(),]+|(\(\)))\(([^(),]+)(\(\))?(,[^(),]+(\(\))?)*\)',1,level,'i') formula,
-  ora_hash(regexp_substr(l_result,'([^(),]+|(\(\)))\(([^(),]+)(\(\))?(,[^(),]+(\(\))?)*\)',1,level,'i')) hash_val
-  from dual
-  connect by level<=regexp_count(l_result,'([^(),]+|(\(\)))\(([^(),]+)(\(\))?(,[^(),]+(\(\))?)*\)')
-  ) a;
-
-  for i in f_items1.first..f_items1.last loop
-    l_hash:=f_items1(i).hash_val;
-    l_result:=replace(l_result,f_items1(i).formula,f_items1(i).hash_val);
-  end loop;
-
-  if regexp_count(l_result,'\([^)]+?')>1 and l_hash is not null and l_result<>p_formula then
-    l_result:=dis_rpn_to_sql(l_result);
-  else
-    l_result:=rpn_align(l_result);
-  end if;
-
-  for i in f_items1.first..f_items1.last loop
-    l_result:=replace(l_result,f_items1(i).hash_val,rpn_align(f_items1(i).formula));
-  end loop;
-  f_items1.delete;
-  return l_result;
-end dis_rpn_to_sql;
-
-
-function dis_formula(p_exp_id in pls_integer, p_eul in varchar2, p_lov in varchar2, p_parent_obj_id in varchar2) return varchar2 is
-type cur_type is ref cursor;
-l_cur cur_type;
-c_rownum pls_integer;
-c_formula varchar2(1000);
-c_param varchar2(1000);
-c_text varchar2(1000);
-l_formula varchar2(4000);
-begin
-  open l_cur for '
-  select
-  rownum,
-  z.exp_formula1,
-  z.param,
-  z.text
-  from
-  (
-  select
-  y.*,
-  case
-  when y.exp_type=''CO'' then ''o''||y.it_obj_id||''.''||xxen_xdo.column_name(y.it_ext_column) --for standard items, use the column name directly
-  when y.param1=1 then (select lower(case when nvl(ef.fun_ext_owner,''APPS'')<>''APPS'' then ef.fun_ext_owner||''.'' end||nvl2(ef.fun_ext_package,ef.fun_ext_package||''.'',null)||ef.fun_ext_name||nvl2(ef.fun_ext_db_link,''@''||ef.fun_ext_db_link,null)) from '||p_eul||'.eul5_functions ef where y.param2=ef.fun_id) --function
-  when y.param1=6 then (select decode(ee2.exp_type,''CI'',xxen_util.dis_formula(y.param2,:p_eul,:p_lov,:p_parent_obj_id),''o''||ee2.it_obj_id||nvl(case when :p_lov is null and y.obj_type=''COBJ'' then ''_''||y.it_obj_id end,:p_parent_obj_id)||''.''||nvl(xxen_xdo.column_name(ee2.it_ext_column),''i''||y.param2)||decode(ee2.it_obj_id,y.outer_joined_obj_id,''(+)'')) from '||p_eul||'.eul5_expressions ee2 where y.param2=ee2.exp_id) --recursive for calculated items
-  when y.param1=5 and y.param2=1 then ''''''''||replace(substr(y.param3,2,length(y.param3)-2),''""'',''"'')||''''''''
-  when y.param1=5 and y.param2=2 then trim(''"'' from y.param3)
-  when y.param1=5 and y.param2=4 then ''to_date(''''''||to_char(to_date(substr(y.param3,2,instr(y.param3,''"'',2)-2),''YYYYMMDDHH24MISS''),''DD-MON-RRRR'')||'''''',''''DD-MON-RRRR'''')''
-  when y.param1=2 then ''enginatics''
-  end text
-  from
-  (
-  select
-  substr(x.param,1,instr(x.param,'','')-1) param1,
-  trim(regexp_substr(x.param,''[^,]+'',1,2)) param2,
-  case when instr(x.param,'','',1,2)>0 then trim(substr(x.param,instr(x.param,'','',1,2)+1)) end param3,
-  xxen_util.dis_obj_type(x.it_obj_id,:p_eul) obj_type,
-  x.*
-  from
-  (
-  select
-  nvl(ee.it_obj_id,ee.fil_obj_id) it_obj_id,
-  case when ee.it_ext_column like ''%#1'' and ee.it_ext_column=upper(ee.it_ext_column) then substr(ee.it_ext_column,1,length(ee.it_ext_column)-2) else ee.it_ext_column end it_ext_column,
-  ee.exp_type,
-  ee.exp_formula1,
-  regexp_substr(ee.exp_formula1,''\[(.+?)\]'',1,rowgen.column_value,null,1) param,
-  decode(ekc.fk_mstr_no_detail,1,ekc.key_obj_id,decode(ekc.fk_dtl_no_master,1,ekc.fk_obj_id_remote)) outer_joined_obj_id
-  from
-  '||p_eul||'.eul5_expressions ee,
-  table(xxen_util.rowgen(regexp_count(ee.exp_formula1,''\[.+?\]''))) rowgen,
-  '||p_eul||'.eul5_key_cons ekc
-  where
-  ee.exp_id=:p_exp_id and
-  ee.exp_formula1 like ''%[%]%'' and
-  decode(ee.exp_type,''JP'',ee.jp_key_id)=ekc.key_id(+)
-  ) x
-  ) y
-  ) z
-  where
-  z.text is not null
-  ' using p_eul, p_lov, p_parent_obj_id, p_lov, p_parent_obj_id, p_eul, p_exp_id;
-  loop
-    fetch l_cur into c_rownum, c_formula, c_param, c_text;
-    exit when l_cur%notfound;
-    l_formula:=replace(case when c_rownum=1 then c_formula else l_formula end,'['||c_param||']',c_text);
-  end loop;
-  close l_cur;
-  l_formula:=replace(replace(replace(replace(l_formula,'sysdate()','sysdate'),'null()','null'),'current_date()','sysdate'),'rownum()','rownum');
-  return l_formula;
-end dis_formula;
-
-
-function dis_formula_sql(p_exp_id in pls_integer, p_eul in varchar2, p_lov in varchar2 default null) return varchar2 result_cache is
-type cur_type is ref cursor;
-l_cur cur_type;
-c_parent_obj_id varchar2(20);
-begin
-  open l_cur for '
-  select
-  case when :p_lov is null and y.obj_type=''COBJ'' then ''_''||y.it_obj_id end parent_obj_id
-  from
-  (
-  select
-  xxen_util.dis_obj_type(x.it_obj_id,:p_eul) obj_type,
-  x.*
-  from
-  (
-  select
-  nvl(ee.it_obj_id,ee.fil_obj_id) it_obj_id
-  from
-  '||p_eul||'.eul5_expressions ee
-  where
-  ee.exp_id=:p_exp_id and
-  ee.exp_formula1 like ''%[%]%''
-  ) x
-  ) y
-  ' using p_lov, p_eul, p_exp_id;
-  loop
-    fetch l_cur into c_parent_obj_id;
-    exit when l_cur%notfound;
-    return
-    replace(
-    replace(
-    dis_rpn_to_sql(dis_formula(p_exp_id, p_eul, p_lov, c_parent_obj_id)),
-    'null()','null'),
-    'current_date()','sysdate');
-  end loop;
-  close l_cur;
-  return null;
-end dis_formula_sql;
 
 
 function dis_worksheet_exists(p_eul_name in varchar2) return varchar2 is
@@ -2866,7 +2641,7 @@ end parameter_value;
 function replace_first_occurrence(p_source in clob, p_template in clob, p_replacement in clob) return clob is
 l_value number;
 begin
-  if(length(p_template)>0) then
+  if length(p_template)>0 then
     return concat(concat(substr(p_source,1,instr(p_source,p_template,1,1)-1), p_replacement),substr(p_source,instr(p_source,p_template,1,1)+length(p_template)));
   else
     return p_source;

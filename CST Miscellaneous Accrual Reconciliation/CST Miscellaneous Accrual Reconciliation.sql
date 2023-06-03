@@ -56,7 +56,7 @@ with cmr as
      where rsh.shipment_header_id = rt.shipment_header_id and
            rt.transaction_id = mmt.rcv_transaction_id and
            mmt.source_code = 'RCV' and
-           rownum <= 1
+           rownum=1
    ) receipt_number,
    cmr.inventory_transaction_id inventory_transaction_id,
    nvl2(cmr.inventory_item_id,
