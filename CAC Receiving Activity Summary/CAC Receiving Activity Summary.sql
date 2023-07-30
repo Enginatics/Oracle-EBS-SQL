@@ -64,6 +64,7 @@ select rcv_sum. Destination_Type,
  rcv_sum.WIP_Job,
  rcv_sum.Item_Number,
  rcv_sum.Item_Description,
+ rcv_sum.User_Item_Type,
  sum(rcv_sum.Amount) Amount
 from gl_code_combinations_kfv gcc1,
  gl_code_combinations_kfv gcc2,
@@ -91,6 +92,7 @@ from gl_code_combinations_kfv gcc1,
     where we.wip_entity_id = pod.wip_entity_id),'') WIP_Job,
   msiv.concatenated_segments Item_Number,
   msiv.description Item_Description,
+  xxen_util.meaning(msiv.item_type,'ITEM_TYPE',3) user_item_type,
   sum(nvl(al.accounted_dr,0) - nvl(al.accounted_cr,0)) Amount
   from rcv_receiving_sub_ledger rrsl,
   rcv_transactions rt,
@@ -206,7 +208,8 @@ from gl_code_combinations_kfv gcc1,
   pod.code_combination_id, -- pod_ccid, -- gcc2
   pod.wip_entity_id,
   msiv.concatenated_segments,
-  msiv.description
+  msiv.description,
+  msiv.item_type
   -- =============================================================
   -- Get the Deliveries from Receiving Inspection to WIP for
   -- outside processing
@@ -232,6 +235,7 @@ from gl_code_combinations_kfv gcc1,
     where we.wip_entity_id = pod.wip_entity_id),'') WIP_Job,
   msiv.concatenated_segments Item_Number,
   msiv.description Item_Description,
+  xxen_util.meaning(msiv.item_type,'ITEM_TYPE',3) user_item_type,
   sum(nvl(al.accounted_dr,0) - nvl(al.accounted_cr,0)) Amount
   from wip_transaction_accounts wta,
   wip_transactions wt,
@@ -354,7 +358,8 @@ from gl_code_combinations_kfv gcc1,
   pod.code_combination_id, -- pod_ccid, -- gcc2
   pod.wip_entity_id,
   msiv.concatenated_segments,
-  msiv.description
+  msiv.description,
+  msiv.item_type
   -- =============================================================
   -- Get the Deliveries from Receiving Inspection to Stores
   -- inventory for purchase order receipt transactions
@@ -380,6 +385,7 @@ from gl_code_combinations_kfv gcc1,
     where we.wip_entity_id = pod.wip_entity_id),'') WIP_Job,
   msiv.concatenated_segments Item_Number,
   msiv.description Item_Description,
+  xxen_util.meaning(msiv.item_type,'ITEM_TYPE',3) user_item_type,
   sum(nvl(al.accounted_dr,0) - nvl(al.accounted_cr,0)) Amount
   from mtl_transaction_accounts mta,
   mtl_material_transactions mmt,
@@ -493,7 +499,8 @@ from gl_code_combinations_kfv gcc1,
   pod.code_combination_id, -- pod_ccid, -- gcc2
   pod.wip_entity_id,
   msiv.concatenated_segments,
-  msiv.description
+  msiv.description,
+  msiv.item_type
  ) rcv_sum
 -- Revision for version 1.4, outer join for CCIDs
 where gcc1.code_combination_id (+)     = rcv_sum.rcv_ccid
@@ -511,6 +518,7 @@ group by
  &segment_columns_grp
  rcv_sum.WIP_Job,
  rcv_sum.Item_Number,
- rcv_sum.Item_Description
+ rcv_sum.Item_Description,
+ rcv_sum.User_Item_Type
 having  round(sum(rcv_sum.Amount),3)    <> 0
 order by 1,2,3,4,6,7,8,9

@@ -76,6 +76,7 @@ select nvl(gl.short_name, gl.name) Ledger,
  wdj.completion_subinventory Completion_Subinventory,
  msiv.concatenated_segments Item_Number,
  msiv.description Item_Description,
+ xxen_util.meaning(msiv.item_type,'ITEM_TYPE',3) user_item_type,
  -- Revision for version 1.9
 &category_columns
  -- End revision for version 1.9
@@ -726,6 +727,7 @@ group by
  wdj.completion_subinventory,
  msiv.concatenated_segments,
  msiv.description,
+ msiv.item_type,
  wdj.start_quantity,
  wdj.quantity_completed,
  wdj.quantity_scrapped,

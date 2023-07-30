@@ -46,6 +46,7 @@ nvl(x.subtotal,0)+nvl(x.tax,0)+nvl(x.line_charges_total,0)+nvl(x.header_charges,
 x.payment_terms,
 x.invoice_number,
 x.invoice_date,
+x.invoice_gl_date,
 x.invoice_status,
 x.invoiced_amount,
 x.warehouse,
@@ -107,9 +108,10 @@ sum(decode(oola.cancelled_flag,'N',oola.line_charges)) over (partition by oola.h
 (select rtv.name from ra_terms_vl rtv where ooha.payment_term_id=rtv.term_id) payment_terms,
 max(rcta.trx_number) keep (dense_rank last order by rcta.customer_trx_id) over (partition by oola.header_id) invoice_number,
 max(rcta.trx_date) keep (dense_rank last order by rcta.customer_trx_id) over (partition by oola.header_id) invoice_date,
+max(rctlgda0.gl_date) keep (dense_rank last order by rcta.customer_trx_id) over (partition by oola.header_id) invoice_gl_date,
 xxen_util.meaning(max(rcta.status_trx) keep (dense_rank last order by rcta.customer_trx_id) over (partition by oola.header_id),'PAYMENT_SCHEDULE_STATUS',222) invoice_status,
 sum(rctla.extended_amount) over (partition by oola.header_id) invoiced_amount,
-(select mp.organization_code from mtl_parameters mp where ooha.ship_from_org_id=mp.organization_id) warehouse,
+mp.organization_code warehouse,
 xxen_util.meaning(ooha.shipping_method_code,'SHIP_METHOD',3) ship_method,
 xxen_util.meaning(ooha.customer_preference_set_code,'REQUEST_DATE_TYPE',660) line_set,
 xxen_util.meaning(ooha.freight_terms_code,'FREIGHT_TERMS',660) freight_terms,
@@ -168,7 +170,9 @@ jtf_rs_salesreps jrs2,
 jtf_rs_resource_extns_vl jrrev,
 jtf_rs_resource_extns_vl jrrev2,
 ra_customer_trx_lines_all rctla,
-ra_customer_trx_all rcta
+ra_customer_trx_all rcta,
+(select rctlgda.* from ra_cust_trx_line_gl_dist_all rctlgda where rctlgda.account_class='REC' and rctlgda.latest_rec_flag='Y') rctlgda0,
+mtl_parameters mp
 where
 1=1 and
 haouv.organization_id=ooha.org_id and
@@ -184,9 +188,11 @@ jrs.resource_id=jrrev.resource_id(+) and
 to_char(oola.line_id)=rctla.interface_line_attribute6(+) and
 rctla.interface_line_context(+) in ('INTERCOMPANY','ORDER ENTRY') and
 rctla.customer_trx_id=rcta.customer_trx_id(+) and
+rcta.customer_trx_id=rctlgda0.customer_trx_id(+) and
 rcta.primary_salesrep_id=jrs2.salesrep_id(+) and
 rcta.org_id=jrs2.org_id(+) and
-jrs2.resource_id=jrrev2.resource_id(+)
+jrs2.resource_id=jrrev2.resource_id(+) and
+ooha.ship_from_org_id=mp.organization_id(+)
 ) x,
 hz_cust_site_uses_all hcsua1,
 hz_cust_site_uses_all hcsua2,

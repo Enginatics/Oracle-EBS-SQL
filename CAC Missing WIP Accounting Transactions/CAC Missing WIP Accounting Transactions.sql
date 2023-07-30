@@ -65,6 +65,7 @@ select nvl(gl.short_name, gl.name) Ledger,
  cce.cost_element Cost_Element,
  msiv.concatenated_segments Outside_Processing_Item,
  msiv.description Outside_Processing_Description,
+ xxen_util.meaning(msiv.item_type,'ITEM_TYPE',3) Outside_Processing_Item_Type,
  ml2.meaning Resource_Type,
  ml3.meaning Charge_Type,
  ml4.meaning Basis_Type,
@@ -171,6 +172,7 @@ group by
  cce.cost_element, -- Cost Element
  msiv.concatenated_segments, -- Outside Processing Item
  msiv.description, -- Outside Processing Description
+ msiv.item_type, -- user_item_type,
  ml2.meaning, -- Resource Type
  ml3.meaning, -- Charge Type
  ml4.meaning, -- Basis Type
@@ -218,6 +220,7 @@ select nvl(gl.short_name, gl.name) Ledger,
  null Cost_Element,
  null Outside_Processing_Item,
  null Outside_Processing_Description,
+ null Outside_Processing_Item_Type,
  null Resource_Type,
  null Charge_Type,
  null Basis_Type,
@@ -298,6 +301,7 @@ group by
  null, -- Cost Element
  null, -- Outside Processing Item
  null, -- Outside Processing Description
+ null, -- Outside_Processing_Item_Type
  null, -- Resource Type
  null, -- Charge Type
  null, -- Basis Type

@@ -32,9 +32,9 @@ with ap_inv as
   select
   gl.name ledger,
   haouv.name operating_unit,
-  aps.vendor_name supplier,
-  aps.segment1 supplier_number,
-  assa.vendor_site_code supplier_site,
+  nvl(aps.vendor_name,hp.party_name) supplier,
+  nvl(aps.segment1,hp.party_number) supplier_number,
+  nvl(assa.vendor_site_code,hps.party_site_number) supplier_site,
   aia.invoice_num,
   xxen_util.ap_invoice_status(aia.invoice_id,aia.invoice_amount,aia.payment_status_flag,aia.invoice_type_lookup_code,aia.validation_request_id) invoice_status,
   xxen_util.client_time(aia.creation_date) invoice_creation_date,
@@ -202,16 +202,16 @@ with ap_inv as
   xxen_util.meaning(assa.tax_reporting_site_flag,'YES_NO',0) tax_reporting_site,
   xxen_util.meaning(assa.pcard_site_flag,'YES_NO',0)         p_card_site,
   xxen_util.meaning(assa.attention_ar_flag,'YES_NO',0)       attention_ar,
-  assa.address_line1,
-  assa.address_line2,
-  assa.address_line3,
-  assa.address_line4,
-  assa.city,
-  assa.state,
-  assa.zip,
-  assa.county,
-  assa.province,
-  assa.country,
+  nvl(assa.address_line1,hl.address1) address_line1,
+  nvl(assa.address_line2,hl.address2) address_line2,
+  nvl(assa.address_line3,hl.address3) address_line3,
+  nvl(assa.address_line4,hl.address4) address_line4,
+  nvl(assa.city,hl.city) city,
+  nvl(assa.state,hl.state) state,
+  nvl(assa.zip,hl.postal_code)  zip,
+  nvl(assa.county,hl.county) county,
+  nvl(assa.province,hl.province) province,
+  nvl(assa.country,hl.country) country,
   assa.area_code,
   assa.phone,
   assa.fax_area_code,
@@ -249,6 +249,9 @@ with ap_inv as
   ce_banks_v cbv,
   ap_suppliers aps,
   ap_supplier_sites_all assa,
+  hz_parties hp,
+  hz_party_sites hps,
+  hz_locations hl,
   (select aila2.* from ap_invoice_lines_all aila2 where '&enable_aila'='Y') aila,
   (select aida2.*
    from ap_invoice_distributions_all aida2,
@@ -271,8 +274,11 @@ with ap_inv as
   aia.invoice_id=apsa.invoice_id and
   apsa.external_bank_account_id=ieba.ext_bank_account_id(+) and
   ieba.bank_id=cbv.bank_party_id(+) and
-  aia.vendor_id=aps.vendor_id and
-  aia.vendor_site_id=assa.vendor_site_id and
+  aia.vendor_id=aps.vendor_id(+) and
+  aia.vendor_site_id=assa.vendor_site_id(+) and
+  aia.party_id=hp.party_id(+) and
+  aia.party_site_id=hps.party_site_id(+) and
+  hps.location_id=hl.location_id(+) and
   decode(apsa.payment_num,1,apsa.invoice_id,null) = aila.invoice_id(+) and
   aila.invoice_id=aida.invoice_id(+)and
   aila.line_number=aida.invoice_line_number(+) and

@@ -47,6 +47,8 @@ case when ds.segment_type in ('INDEX','INDEX PARTITION','INDEX SUBPARTITION') th
 case when ds.segment_type in ('INDEX','INDEX PARTITION','INDEX SUBPARTITION') then ds.segment_name end=di.index_name(+) and
 case when ds.segment_type in ('LOBSEGMENT','LOB PARTITION','LOB SUBPARTITION') then ds.segment_name end=dl.segment_name(+)
 ) x
-&where2
+&dba_tables
+where
+2=2
 order by
 x.bytes desc

@@ -123,6 +123,7 @@ select nvl(gl.short_name, gl.name) Ledger,
  msub.description Subinventory_Description,
  msiv.concatenated_segments  Item_Number,
  msiv.description Item_Description,
+ xxen_util.meaning(msiv.item_type,'ITEM_TYPE',3) user_item_type,
  -- Revision for version 1.13
 &category_columns
  -- Revision for version 1.20
@@ -899,4 +900,4 @@ group by
   when (nvl(wip_value.date_completed,wip_value.schedule_close_date) - we.creation_date) < 31  then '30 days'
   when (nvl(wip_value.date_completed,wip_value.schedule_close_date) - we.creation_date) < 61  then '60 days'
   when (nvl(wip_value.date_completed,wip_value.schedule_close_date) - we.creation_date) < 91  then '90 days'
-  when (nvl(wip_value.date_completed,wip_value.schedule_close_date) - w
+  when

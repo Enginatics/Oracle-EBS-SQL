@@ -38,13 +38,24 @@ rcta0.customer_trx_id=acita0.customer_trx_id(+) and
 acita0.cons_inv_id=acia0.cons_inv_id(+)
 ) credited_invoice,
 (select rctla0.line_number from ra_customer_trx_lines_all rctla0 where rctla.previous_customer_trx_line_id=rctla0.customer_trx_line_id) credited_invoice_line,
-hp.party_name,
-hca.account_number,
-hcsua.location bill_to_location,
-hz_format_pub.format_address(hps.location_id,null,null,' , ') bill_to_address,
-hz_format_pub.format_address(nvl(hps2.location_id,hps3.location_id),null,null,' , ') ship_to_address_invoice,
+hp0.party_name sold_to_customer,
+hca0.account_number sold_to_customer_number,
+hp5.party_name paying_customer,
+hca5.account_number paying_customer_number,
+hcsua5.location paying_location,
+hp1.party_name bill_to_customer,
+hca1.account_number bill_to_customer_number,
+hcsua1.location bill_to_location,
+hz_format_pub.format_address(hps1.location_id,null,null,' , ') bill_to_address,
+ftv1.territory_short_name bill_to_country,
+coalesce(hcsua1.tax_reference,hp1.tax_reference,hp1.jgzz_fiscal_code) bill_to_tax_reference,
+hp3.party_name ship_to_customer,
+hca3.account_number ship_to_customer_number,
+nvl(hcsua2.location,hcsua3.location) ship_to_location,
+hz_format_pub.format_address(nvl(hps2.location_id,hps3.location_id),null,null,' , ') ship_to_address,
+nvl(ftv2.territory_short_name,ftv3.territory_short_name) ship_to_country,
+coalesce(hcsua2.tax_reference,hcsua3.tax_reference,hp2.tax_reference,hp3.tax_reference,hp2.jgzz_fiscal_code,hp3.jgzz_fiscal_code) ship_to_tax_reference,
 hz_format_pub.format_address(hps4.location_id,null,null,' , ') ship_to_address_order,
-hp.jgzz_fiscal_code taxpayer_id,
 rcta.invoice_currency_code currency,
 apsa.number_of_due_dates,
 apsa.terms_sequence_number,
@@ -59,15 +70,15 @@ case when apsa.terms_sequence_number=1 and rctla.not_first_line is null and rctl
 case when apsa.terms_sequence_number=1 and rctla.not_first_line is null and rctlgda.not_first_line is null then apsa.tax_original*nvl(apsa.exchange_rate,1) end accounted_tax_amount,
 case when apsa.terms_sequence_number=1 and rctla.not_first_line is null and rctlgda.not_first_line is null then apsa.acctd_amount_due_remaining end accounted_total_due_remaining,
 xxen_util.meaning(apsa.status,'PAYMENT_SCHEDULE_STATUS',222) status,
+rtt.name payment_term,
+decode(rcta.invoicing_rule_id,-3,'Arrears','Advance') invoicing_rule,
 apsa.due_date,
 case when apsa.class in ('INV','DM') and apsa.status='OP' then greatest(trunc(sysdate)-apsa.due_date,0) end overdue_days,
-decode(rcta.invoicing_rule_id,-3,'Arrears','Advance') invoicing_rule,
-rtt.name payment_term,
 rcta.ship_date_actual ship_date,
-arm.name receipt_method,
 decode(apsa.status,'OP',to_date(null),apsa.actual_date_closed) actual_date_closed,
 apsa.gl_date payment_sched_gl_date,
 decode(apsa.status,'OP',to_date(null),apsa.gl_date_closed) payment_sched_gl_date_closed,
+arm.name receipt_method,
 ifpct.payment_channel_name payment_method,
 decode(ipiua.instrument_type,'BANKACCOUNT',ieba.masked_bank_account_num,'CREDITCARD',ic.masked_cc_number) instrument_number,
 xxen_util.meaning(rcta.printing_option,'INVOICE_PRINT_OPTIONS',222) print_option,
@@ -147,23 +158,36 @@ ra_cust_trx_types_all rctta,
 ra_terms_tl rtt,
 ar_cons_inv_all acia,
 oe_sys_parameters_all ospa,
-hz_cust_accounts hca,
-hz_parties hp,
-hz_cust_site_uses_all hcsua,
-ra_territories_kfv rtk,
-hz_cust_acct_sites_all hcasa,
-hz_party_sites hps,
--- inv line, header and order ship to
-hz_cust_site_uses_all hcsua2,
+hz_cust_accounts hca0, --sold_to
+hz_cust_accounts hca1, --bill_to
+hz_cust_accounts hca2, --ship_to invoice line
+hz_cust_accounts hca3, --ship_to invoice header
+hz_cust_accounts hca5, --paying
+hz_parties hp0,
+hz_parties hp1,
+hz_parties hp2,
+hz_parties hp3,
+hz_parties hp5,
+hz_cust_site_uses_all hcsua1, --bill_to
+hz_cust_site_uses_all hcsua2, --ship_to invoice line
+hz_cust_site_uses_all hcsua3, --ship_to invoice header
+hz_cust_site_uses_all hcsua4, --ship_to order line
+hz_cust_site_uses_all hcsua5,
+hz_cust_acct_sites_all hcasa1,
 hz_cust_acct_sites_all hcasa2,
-hz_party_sites hps2,
-hz_cust_site_uses_all hcsua3,
 hz_cust_acct_sites_all hcasa3,
-hz_party_sites hps3,
-hz_cust_site_uses_all hcsua4,
 hz_cust_acct_sites_all hcasa4,
+hz_party_sites hps1,
+hz_party_sites hps2,
+hz_party_sites hps3,
 hz_party_sites hps4,
---
+hz_locations hl1,
+hz_locations hl2,
+hz_locations hl3,
+fnd_territories_vl ftv1,
+fnd_territories_vl ftv2,
+fnd_territories_vl ftv3,
+ra_territories_kfv rtk,
 jtf_rs_salesreps jrs,
 jtf_rs_resource_extns_vl jrrev,
 oe_order_lines_all oola,
@@ -202,28 +226,41 @@ rtt.language(+)=userenv('lang') and
 apsa.cons_inv_id=acia.cons_inv_id(+) and
 rcta.org_id=ospa.org_id(+) and
 ospa.parameter_code(+)='MASTER_ORGANIZATION_ID' and
-apsa.customer_id=hca.cust_account_id and
-hca.party_id=hp.party_id and
-apsa.customer_site_use_id=hcsua.site_use_id and
-hcsua.territory_id=rtk.territory_id(+) and
-hcsua.cust_acct_site_id=hcasa.cust_acct_site_id and
-hcasa.party_site_id=hps.party_site_id and
+rcta.sold_to_customer_id=hca0.cust_account_id(+) and
+apsa.customer_id=hca1.cust_account_id(+) and
+rctla.ship_to_customer_id=hca2.cust_account_id(+) and
+rcta.ship_to_customer_id=hca3.cust_account_id(+) and
+rcta.paying_customer_id=hca5.cust_account_id(+) and
+hca0.party_id=hp0.party_id(+) and
+hca1.party_id=hp1.party_id(+) and
+hca2.party_id=hp2.party_id(+) and
+hca3.party_id=hp3.party_id(+) and
+hca5.party_id=hp5.party_id(+) and
+apsa.customer_site_use_id=hcsua1.site_use_id(+) and
+rctla.ship_to_site_use_id=hcsua2.site_use_id(+) and
+rcta.ship_to_site_use_id=hcsua3.site_use_id(+) and
+oola.ship_to_org_id=hcsua4.site_use_id(+) and
+rcta.paying_site_use_id=hcsua5.site_use_id(+) and
+hcsua1.cust_acct_site_id=hcasa1.cust_acct_site_id(+) and
+hcsua2.cust_acct_site_id=hcasa2.cust_acct_site_id(+) and
+hcsua3.cust_acct_site_id=hcasa3.cust_acct_site_id(+) and
+hcsua4.cust_acct_site_id=hcasa4.cust_acct_site_id(+) and
+hcasa1.party_site_id=hps1.party_site_id(+) and
+hcasa2.party_site_id=hps2.party_site_id(+) and
+hcasa3.party_site_id=hps3.party_site_id(+) and
+hcasa4.party_site_id=hps4.party_site_id(+) and
+hps1.location_id=hl1.location_id(+) and
+hps2.location_id=hl2.location_id(+) and
+hps3.location_id=hl3.location_id(+) and
+hl1.country=ftv1.territory_code(+) and
+hl2.country=ftv2.territory_code(+) and
+hl3.country=ftv3.territory_code(+) and 
+hcsua1.territory_id=rtk.territory_id(+) and
 rcta.primary_salesrep_id=jrs.salesrep_id(+) and
 rcta.org_id=jrs.org_id(+) and
 jrs.resource_id=jrrev.resource_id(+) and
 case when rctla.interface_line_context in ('INTERCOMPANY','ORDER ENTRY') then rctla.interface_line_attribute6 end=oola.line_id(+) and
 oola.header_id=ooha.header_id(+) and
--- inv line, header, oe ship to
-rctla.ship_to_site_use_id=hcsua2.site_use_id(+) and
-hcsua2.cust_acct_site_id=hcasa2.cust_acct_site_id(+) and
-hcasa2.party_site_id=hps2.party_site_id(+) and
-rcta.ship_to_site_use_id=hcsua3.site_use_id(+) and
-hcsua3.cust_acct_site_id=hcasa3.cust_acct_site_id(+) and
-hcasa3.party_site_id=hps3.party_site_id(+) and
-oola.ship_to_org_id=hcsua4.site_use_id(+) and
-hcsua4.cust_acct_site_id=hcasa4.cust_acct_site_id(+) and
-hcasa4.party_site_id=hps4.party_site_id(+) and
---
 ooha.salesrep_id=jrs2.salesrep_id(+) and
 ooha.org_id=jrs2.org_id(+) and
 jrs2.resource_id=jrrev2.resource_id(+) and
@@ -237,8 +274,8 @@ decode(ipiua.instrument_type,'BANKACCOUNT',ipiua.instrument_id)=ieba.ext_bank_ac
 &contracts_joins
 order by
 operating_unit,
-party_name,
-account_number,
+hp1.party_name,
+hca1.account_number,
 trx_date,
 payment_sched_gl_date,
 invoice_number,

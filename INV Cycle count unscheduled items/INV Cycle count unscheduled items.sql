@@ -24,6 +24,7 @@ else (select ml.meaning from mfg_lookups ml where ml.lookup_type = 'MTL_CC_SCHED
 end scheduled_interval,
 msiv.concatenated_segments item,
 msiv.description description,
+xxen_util.meaning(msiv.item_type,'ITEM_TYPE',3) user_item_type,
 mcci.item_last_schedule_date,
 mac.abc_class_name,
 mcch.f_nworkdaysyear/decode( mccc.num_counts_per_year,null,1,0,1,mccc.num_counts_per_year) count_interval_work_days
@@ -66,6 +67,7 @@ else (select mfg.meaning from mfg_lookups mfg where mfg.lookup_type = 'MTL_CC_SC
 end scheduled_interval,
 msiv.concatenated_segments item,
 msiv.description description,
+xxen_util.meaning(msiv.item_type,'ITEM_TYPE',3) user_item_type,
 mcci.item_last_schedule_date,
 mac.abc_class_name,
 null count_interval_work_days

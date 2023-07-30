@@ -323,7 +323,7 @@ function dis_user(p_user_id in number, p_eul in varchar2) return varchar2 result
 /***********************************************************************************************/
 /*  discoverer username to application user name or responsibility                             */
 /***********************************************************************************************/
-function dis_user_name(p_username in varchar2, p_show_description in varchar2 default null) return varchar2;
+function dis_user_name(p_username in varchar2, p_show_description in varchar2 default null, p_eul in varchar2 default null) return varchar2;
 
 /***********************************************************************************************/
 /*  discoverer user_id to application user name or responsibility                              */
@@ -368,12 +368,12 @@ function dis_worksheet_sql(p_workbook_owner_name in varchar2, p_workbook_name in
 /***********************************************************************************************/
 /*  checks if discoverer EUL contains any data in ams_discoverer_sql to be imported            */
 /***********************************************************************************************/
-function dis_worksheet_exists(p_eul_name in varchar2) return varchar2;
+function dis_worksheet_exists(p_eul in varchar2) return varchar2;
 
 /***********************************************************************************************/
 /*  checks if discoverer EUL contains any data in eul5_qpp_stats to be imported as folders     */
 /***********************************************************************************************/
-function dis_folder_exists(p_eul_name in varchar2) return varchar2;
+function dis_folder_exists(p_eul in varchar2) return varchar2;
 
 /***********************************************************************************************/
 /*  returns a string of discoverer items ids used by a stat history (eul5_qpp_stats) record    */
@@ -435,7 +435,12 @@ function parameter_value(p_parameter_name in varchar2 default null, p_parameter_
 /***********************************************************************************************/
 /*  replaces first occurrence of substring in a string                                         */
 /***********************************************************************************************/
-function replace_first_occurrence(p_source in clob, p_template in clob, p_replacement in clob) return clob;
+function replace_first_occurrence(p_source in clob, p_search in clob, p_replacement in clob) return clob;
+
+/***********************************************************************************************/
+/*  replaces all occurrences of clob in a clob                                                 */
+/***********************************************************************************************/
+function clob_replace(p_source in clob, p_search in clob, p_replacement in clob) return clob;
 
 /***********************************************************************************************/
 /*  return the original order line id in case of line splitting for DIFOT data.                */
@@ -1945,10 +1950,11 @@ exception
 end dis_user;
 
 
-function dis_user_name(p_username in varchar2, p_show_description in varchar2 default null) return varchar2 is
+function dis_user_name(p_username in varchar2, p_show_description in varchar2 default null, p_eul in varchar2 default null) return varchar2 is
 
-function dis_user_name_(p_username in varchar2, p_userenv_lang in varchar2, p_show_description in varchar2 default null) return varchar2 result_cache is
-l_user_name varchar2(342):=p_username;
+function dis_user_name_(p_username in varchar2, p_userenv_lang in varchar2, p_show_description in varchar2, p_eul in varchar2) return varchar2 result_cache is
+l_user_name varchar2(342);
+l_use_fnd_user boolean:=true;
 begin
   if p_username like '#%#%' then
     for c in (
@@ -1964,19 +1970,27 @@ begin
       l_user_name:=c.responsibility_name;
     end loop;
   elsif p_username like '#%' then
-    l_user_name:=user_name(to_number(substr(p_username,2)),p_show_description);
+    for d in (select null from xxen_discoverer_fnd_user xdfu where xdfu.eul=p_eul and rownum=1) loop --when running on Enginatics environments, use xxen_discoverer_fnd_user instead of fnd_user for workbook owner matching
+      for c in (select xdfu.user_name from xxen_discoverer_fnd_user xdfu where xdfu.eul=p_eul and xdfu.user_id=to_number(substr(p_username,2))) loop
+        l_user_name:=c.user_name;
+      end loop;
+      l_use_fnd_user:=false;
+    end loop;
+    if l_use_fnd_user then
+      l_user_name:=user_name(to_number(substr(p_username,2)),p_show_description);
+    end if;
   end if;
   return nvl(l_user_name,p_username);
 end dis_user_name_;
 
 begin
-  return dis_user_name_(p_username, userenv('lang'), p_show_description);
+  return dis_user_name_(p_username, userenv('lang'), p_show_description, p_eul);
 end dis_user_name;
 
 
 function dis_user_name(p_user_id in number, p_eul in varchar2, p_show_description in varchar2 default null) return varchar2 result_cache is
 begin
-  return dis_user_name(dis_user(p_user_id, p_eul), p_show_description);
+  return dis_user_name(dis_user(p_user_id, p_eul), p_show_description, p_eul);
 end dis_user_name;
 
 
@@ -2132,7 +2146,7 @@ begin
 end dis_worksheet_sql;
 
 
-function dis_worksheet_exists(p_eul_name in varchar2) return varchar2 is
+function dis_worksheet_exists(p_eul in varchar2) return varchar2 is
 l_result varchar2(1);
 type cur_type is ref cursor;
 c_cur cur_type;
@@ -2142,7 +2156,7 @@ begin
   ''Y''
   from
   ams_discoverer_sql ads,
-  '||p_eul_name||'.eul5_documents ed
+  '||p_eul||'.eul5_documents ed
   where
   ads.workbook_name=ed.doc_name and
   rownum=1';
@@ -2159,7 +2173,7 @@ exception
 end dis_worksheet_exists;
 
 
-function dis_folder_exists(p_eul_name varchar2) return varchar2 is
+function dis_folder_exists(p_eul varchar2) return varchar2 is
 l_result varchar2(1);
 type cur_type is ref cursor;
 c_cur cur_type;
@@ -2168,7 +2182,7 @@ begin
   select
   ''Y''
   from
-  '||p_eul_name||'.eul5_qpp_stats eqs
+  '||p_eul||'.eul5_qpp_stats eqs
   where
   rownum=1';
   loop
@@ -2638,15 +2652,40 @@ begin
 end parameter_value;
 
 
-function replace_first_occurrence(p_source in clob, p_template in clob, p_replacement in clob) return clob is
-l_value number;
+function replace_first_occurrence(p_source in clob, p_search in clob, p_replacement in clob) return clob is
+l_offset_before_template number;
+l_offset_with_template number;
+l_result clob;
 begin
-  if length(p_template)>0 then
-    return concat(concat(substr(p_source,1,instr(p_source,p_template,1,1)-1), p_replacement),substr(p_source,instr(p_source,p_template,1,1)+length(p_template)));
+  if dbms_lob.getlength(p_search)>0 then
+    l_offset_before_template:=dbms_lob.instr(p_source,p_search);
+    l_offset_with_template:=l_offset_before_template+dbms_lob.getlength(p_search);
+    l_result:=dbms_lob.substr(p_source,l_offset_before_template-1,1)
+    ||p_replacement
+    ||dbms_lob.substr(p_source,dbms_lob.getlength(p_source)-l_offset_with_template+1,l_offset_with_template);
   else
     return p_source;
   end if;
+  return l_result;
 end replace_first_occurrence;
+
+
+function clob_replace(p_source in clob, p_search in clob, p_replacement in clob) return clob is
+l_result clob;
+begin
+  l_result:=p_source;
+  if dbms_lob.getlength(p_search)>0 then
+    loop
+      if dbms_lob.instr(l_result,p_search)=0 then
+        exit;
+      end if;
+      l_result:=replace_first_occurrence(l_result,p_search,p_replacement);
+    end loop;
+  else
+    return p_source;
+  end if;
+  return l_result;
+end clob_replace;
 
 
 function orig_order_line_id(p_split_from_line_id in number) return number is

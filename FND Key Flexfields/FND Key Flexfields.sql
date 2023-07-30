@@ -62,6 +62,10 @@ xxen_util.meaning(decode(fifsgv.security_enabled_flag,'Y','Y'),'YES_NO',0) secur
 xxen_util.meaning(ffvs.validation_type,'SEG_VAL_TYPES',0) validation_type,
 ffvt.application_table_name validation_table,
 ffvt.additional_where_clause where_clause,
+xxen_util.user_name(fifsgv.created_by) created_by,
+xxen_util.client_time(fifsgv.creation_date) creation_date,
+xxen_util.user_name(fifsgv.last_updated_by) last_updated_by,
+xxen_util.client_time(fifsgv.last_update_date) last_update_date,
 fifsgv.flex_value_set_id
 from
 fnd_application_vl fav,

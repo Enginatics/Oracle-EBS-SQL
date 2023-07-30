@@ -11,14 +11,19 @@
 -- Run Report: https://demo.enginatics.com/
 
 select
-xrpv.category,
 xrpv.report_name,
+xrpv.category,
 xrpv.display_sequence,
 xrpv.parameter_name,
 xrpv.anchor,
 xrpv.sql_text,
+(select count(*) from xxen_report_parameter_anchors xrpa where xrpv.report_id=xrpa.report_id) report_anchor_count,
+xxen_util.user_name(xrpv.created_by) created_by,
+xxen_util.client_time(xrpv.creation_date) creation_date,
+xxen_util.user_name(xrpv.last_updated_by) last_updated_by,
+xxen_util.client_time(xrpv.last_update_date) last_update_date,
 xrpv.report_id,
-(select count(*) from xxen_report_parameter_anchors xrpa where xrpv.report_id=xrpa.report_id) report_anchor_count
+xrpv.parameter_id
 from
 xxen_report_parameters_v xrpv
 where

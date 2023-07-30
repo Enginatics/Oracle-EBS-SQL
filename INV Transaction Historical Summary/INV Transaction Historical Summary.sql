@@ -34,6 +34,7 @@ select
  x.category,
  x.item,
  x.item_description,
+ x.user_item_type,
  x.uom,
  --
  :p_hist_date        rollback_date,
@@ -146,6 +147,7 @@ from
    mck.concatenated_segments category,
    msiv.concatenated_segments item,
    msiv.description item_description,
+   xxen_util.meaning(msiv.item_type,'ITEM_TYPE',3) user_item_type,
    msiv.primary_uom_code uom,
    msiv.inventory_item_id,
    --
@@ -210,6 +212,7 @@ from
    msiv.concatenated_segments,
    v.item_cost,
    msiv.description,
+   xxen_util.meaning(msiv.item_type,'ITEM_TYPE',3),
    msiv.primary_uom_code,
    msub.asset_inventory,
    xxen_util.meaning(msub.asset_inventory,'SYS_YES_NO',700),
@@ -222,6 +225,7 @@ from
    mck.concatenated_segments category,
    msiv.concatenated_segments item,
    msiv.description item_description,
+   xxen_util.meaning(msiv.item_type,'ITEM_TYPE',3) user_item_type,
    msiv.primary_uom_code uom,
    msiv.inventory_item_id item_id,
    --
@@ -269,6 +273,7 @@ from
    mck.concatenated_segments,
    msiv.concatenated_segments,
    msiv.description,
+   xxen_util.meaning(msiv.item_type,'ITEM_TYPE',3),
    msiv.primary_uom_code,
    msiv.inventory_item_id,
    past_cost.item_cost

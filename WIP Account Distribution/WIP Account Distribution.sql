@@ -17,6 +17,7 @@ wta.transaction_date,
 we.wip_entity_name job_schedule,
 msiv.concatenated_segments assembly,
 msiv.description assembly_description,
+xxen_util.meaning(msiv.item_type,'ITEM_TYPE',3) user_item_type,
 wl.line_code line,
 wta.transaction_id,
 wt.operation_seq_num operation_seq,
@@ -65,6 +66,7 @@ wip_lines wl,
 mtl_item_categories mic,
 mtl_categories_kfv mck,
 mtl_system_items_vl msiv,
+mtl_parameters mp,
 wip_repetitive_items wri,
 bom_departments bd,
 bom_resources br,
@@ -77,6 +79,7 @@ per_people_x ppx,
 po_headers_all poh
 where
 1=1 and
+wta.organization_id = mp.organization_id and
 wta.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
 wta.accounting_line_type<>15 and
 wta.transaction_id=wt.transaction_id and

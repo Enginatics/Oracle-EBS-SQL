@@ -61,9 +61,13 @@ xxen_util.segments_description(msifv.resource_account) resource_account_desc,
 xxen_util.concatenated_segments(msifv.expense_account) expense_account,
 xxen_util.segments_description(msifv.expense_account) expense_account_desc,
 xxen_util.concatenated_segments(msifv.encumbrance_account) encumbrance_account,
-xxen_util.segments_description(msifv.encumbrance_account) encumbrance_account_desc
+xxen_util.segments_description(msifv.encumbrance_account) encumbrance_account_desc,
+xxen_util.user_name(msifv.created_by) created_by,
+xxen_util.client_time(msifv.creation_date) creation_date,
+xxen_util.user_name(msifv.last_updated_by) last_updated_by,
+xxen_util.client_time(msifv.last_update_date) last_update_date
 from
-inv.mtl_parameters mp,
+mtl_parameters mp,
 hr_all_organization_units_vl haouv,
 mtl_secondary_inventories_fk_v msifv,
 hr_all_organization_units_vl haouv2,

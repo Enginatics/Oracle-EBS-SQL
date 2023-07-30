@@ -20,6 +20,7 @@ xxen_util.meaning(mil.inventory_location_type,'MTL_LOCATOR_TYPES',700) locator_t
 mmsv.status_code status,
 msiv.concatenated_segments item,
 msiv.description item_description,
+xxen_util.meaning(msiv.item_type,'ITEM_TYPE',3) user_item_type,
 mck.concatenated_segments item_category,
 mck.segment1 item_category1,
 mck.segment2 item_category2,

@@ -15,14 +15,19 @@ select
 fcr.request_id,
 case when fcr.program_application_id=160 and fcr.concurrent_program_id=20392 /*alecdc*/ or fcr.request_type='M' then fcr.description else fcpv.user_concurrent_program_name end program,
 xxen_util.user_name(fcr.requested_by) user_name,
-fcr.requested_start_date,
+xxen_util.client_time(fcr.requested_start_date) requested_start_date,
 xxen_util.time(fcr.conflict_wait_seconds) conflict_wait_time,
 fcr.conflict_wait_seconds,
+xxen_util.client_time(fcr.actual_start_date) start_date,
+xxen_util.client_time(fcr.actual_completion_date) completion_date,
+xxen_util.time(fcr.seconds) run_time,
 fcr2.request_id blocking_request_id,
 case when fcr2.program_application_id=160 and fcr2.concurrent_program_id=20392 /*alecdc*/ or fcr2.request_type='M' then fcr2.description else fcpv2.user_concurrent_program_name end blocking_program,
-xxen_util.user_name(fcr.requested_by) blocking_user_name,
-xxen_util.time(fcr.seconds) blocking_time,
-fcr.seconds blocking_seconds
+xxen_util.user_name(fcr2.requested_by) blocking_user_name,
+xxen_util.client_time(fcr2.actual_start_date) blocking_start_date,
+xxen_util.client_time(fcr2.actual_completion_date) blocking_completion_date,
+xxen_util.time(fcr2.seconds) blocking_run_time,
+fcr2.seconds blocking_run_seconds
 from
 (
 select
@@ -55,6 +60,7 @@ fcr.hold_flag='N'
 fnd_concurrent_programs_vl fcpv,
 fnd_concurrent_programs_vl fcpv2
 where
+2=2 and
 fcr.program_application_id=fcps.running_application_id and
 fcr.concurrent_program_id=fcps.running_concurrent_program_id and
 fcps.to_run_application_id=fcr2.program_application_id and
@@ -67,4 +73,5 @@ fcr.concurrent_program_id=fcpv.concurrent_program_id(+) and
 fcr2.program_application_id=fcpv2.application_id(+) and
 fcr2.concurrent_program_id=fcpv2.concurrent_program_id(+)
 order by
-fcr.requested_start_date desc
+fcr.requested_start_date desc,
+fcr.request_id desc

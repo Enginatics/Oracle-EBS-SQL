@@ -28,6 +28,7 @@ select
  --
  msi.concatenated_segments item,
  msi.description,
+ xxen_util.meaning(msi.item_type,'ITEM_TYPE',3) user_item_type,
  msi.primary_uom_code uom,
  --
  mdh.sales_order_demand sales_orders,

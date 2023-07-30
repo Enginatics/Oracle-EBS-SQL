@@ -12,6 +12,7 @@
 
 select
 x.request_id,
+xxen_util.client_time(x.start_date) start_date,
 x.report_name,
 x.category,
 x.user_name,
@@ -19,7 +20,6 @@ x.responsibility_name responsibility,
 x.options,
 x.parameters,
 x.status,
-xxen_util.client_time(x.start_date) start_date,
 xxen_util.client_time(x.completion_date) completion_date,
 xxen_util.time(x.seconds) time,
 x.seconds,

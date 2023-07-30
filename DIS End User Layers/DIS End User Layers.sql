@@ -17,6 +17,7 @@ decode(x.current_lov_eul,x.new_lov_eul,xxen_util.meaning('Y','YES_NO',0)) lov_sc
 x.created,
 y.ads_sqls,
 y.folders,
+y.xdfu_count,
 y.workbooks "Workbooks (ed)",
 y.active_workbooks "Active Workbooks (eqs)",
 y.active_existing_workbooks "Active existing Workbooks",

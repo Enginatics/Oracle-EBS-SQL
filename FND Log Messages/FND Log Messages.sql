@@ -19,4 +19,4 @@ fnd_log_messages flm
 where
 1=1
 order by
-flm.timestamp desc
+flm.log_sequence desc

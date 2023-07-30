@@ -18,6 +18,7 @@ decode(bor.cfm_routing_flag,1,'Flow',2,'Discrete Job',bor.cfm_routing_flag) cfm_
 wl.line_code,
 msiv.concatenated_segments item,
 msiv.description item_description,
+xxen_util.meaning(msiv.item_type,'ITEM_TYPE',3) user_item_type,
 bor.alternate_routing_designator alternate,
 bos.operation_seq_num operation_sequence,
 bso.operation_code,

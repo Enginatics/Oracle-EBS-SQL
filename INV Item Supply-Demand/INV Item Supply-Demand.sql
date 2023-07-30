@@ -13,6 +13,7 @@
 select
 sd.item,
 sd.item_description,
+sd.user_item_type,
 sd.organization_code,
 sd.organization_name,
 &category_set_columns
@@ -31,6 +32,7 @@ from
    (select
      msiv.concatenated_segments item,
      msiv.description item_description,
+     xxen_util.meaning(msiv.item_type,'ITEM_TYPE',3) user_item_type,
      ood.organization_code,
      ood.organization_name,
      msdt.requirement_date,

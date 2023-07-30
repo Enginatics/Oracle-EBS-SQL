@@ -13,7 +13,7 @@
 select
 x.operating_unit,
 x.customer,
-x.account_number,
+x.customer_number,
 x.order_number,
 x.quote_number,
 x.source_type,
@@ -22,15 +22,17 @@ x.type,
 x.order_type,
 x.customer_po,
 hp1.party_name ship_to_customer,
-hca1.account_number ship_to_account,
+hca1.account_number ship_to_customer_number,
 hcsua1.location ship_to_location,
 (select hz_format_pub.format_address(hps1.location_id,null,null,' , ') from dual) ship_to_address,
 ftv1.territory_short_name ship_to_country,
+coalesce(hcsua1.tax_reference,hp1.tax_reference,hp1.jgzz_fiscal_code) ship_to_tax_reference,
 hp2.party_name bill_to_customer,
-hca2.account_number bill_to_account,
+hca2.account_number bill_to_customer_number,
 hcsua2.location bill_to_location,
 (select hz_format_pub.format_address(hps2.location_id,null,null,' , ') from dual) bill_to_address,
 ftv2.territory_short_name bill_to_country,
+coalesce(hcsua2.tax_reference,hp2.tax_reference,hp2.jgzz_fiscal_code) bill_to_tax_reference,
 x.ordered_date,
 x.price_list,
 x.salesperson,
@@ -44,13 +46,18 @@ x.tax,
 nvl(x.line_charges_total,0)+nvl(x.header_charges,0) charges,
 nvl(x.subtotal,0)+nvl(x.tax,0)+nvl(x.line_charges_total,0)+nvl(x.header_charges,0) total,
 x.payment_terms,
+x.invoice_class,
+x.invoice_type,
 x.invoice_number,
 x.invoice_date,
+x.invoice_gl_date,
 x.invoice_status,
 x.invoice_line,
-x.invoiced_amount,
+x.invoice_amount,
+x.invoice_currency,
+x.invoice_accounted_amount,
 x.warehouse,
-x.ship_method,
+x.shipping_method,
 x.line_set,
 x.freight_terms,
 x.fob,
@@ -70,6 +77,7 @@ x.cancelled_amount,
 x.item,
 x.description,
 x.item_type,
+&category_columns
 x.quantity,
 x.uom,
 x.list_price,
@@ -138,7 +146,7 @@ from
 select /*+ push_pred(oolh) push_pred(oolh2) push_pred(wda) */ distinct
 haouv.name operating_unit,
 hp.party_name customer,
-hca.account_number,
+hca.account_number customer_number,
 ooha.order_number,
 nvl(ooha.quote_number,regexp_substr(ooha.orig_sys_document_ref,'^(\d+).',1,1,null,1)) quote_number,
 decode(ooha.source_document_type_id,10,'Requisitions',2,'Orders',16,'Quotes',7,'Incidents',(select oos0.name from oe_order_sources oos0 where ooha.source_document_type_id=oos0.order_source_id)) source_type,
@@ -164,13 +172,19 @@ sum(decode(oola.cancelled_flag,'N',oola.tax_amount)) over (partition by oola.hea
 sum(decode(oola.cancelled_flag,'N',oola.line_charges)) over (partition by oola.header_id) line_charges_total,
 (select sum(decode(opa.credit_or_charge_flag,'C',-1,1)*opa.operand) from oe_price_adjustments opa where ooha.header_id=opa.header_id and opa.line_id is null and opa.list_line_type_code='FREIGHT_CHARGE' and opa.applied_flag='Y') header_charges,
 (select rtv.name from ra_terms_vl rtv where nvl(oola.payment_term_id,ooha.payment_term_id)=rtv.term_id) payment_terms,
+xxen_util.meaning(max(rctta.type) keep (dense_rank last order by rcta.customer_trx_id) over (partition by rctla.interface_line_attribute6),'INV/CM/ADJ',222) invoice_class,
+max(rctta.name) keep (dense_rank last order by rcta.customer_trx_id) over (partition by rctla.interface_line_attribute6) invoice_type,
 max(rcta.trx_number) keep (dense_rank last order by rcta.customer_trx_id) over (partition by rctla.interface_line_attribute6) invoice_number,
 max(rcta.trx_date) keep (dense_rank last order by rcta.customer_trx_id) over (partition by rctla.interface_line_attribute6) invoice_date,
+max(rctlgda0.gl_date) keep (dense_rank last order by rcta.customer_trx_id) over (partition by rctla.interface_line_attribute6) invoice_gl_date,
 xxen_util.meaning(max(rcta.status_trx) keep (dense_rank last order by rcta.customer_trx_id) over (partition by rctla.interface_line_attribute6),'PAYMENT_SCHEDULE_STATUS',222) invoice_status,
 listagg(decode(rctla.line_type,'FREIGHT',null,rctla.line_number),', ') within group (order by decode(rctla.line_type,'FREIGHT',null,rctla.line_number)) over (partition by rctla.interface_line_attribute6) invoice_line,
-sum(rctla.extended_amount) over (partition by rctla.interface_line_attribute6) invoiced_amount,
+sum(rctla.extended_amount) over (partition by rctla.interface_line_attribute6) invoice_amount,
+max(rcta.invoice_currency_code) keep (dense_rank last order by rcta.customer_trx_id) over (partition by rctla.interface_line_attribute6) invoice_currency,
+sum(rctlgda.acctd_amount) over (partition by rctla.interface_line_attribute6) invoice_accounted_amount,
 (select mp.organization_code from mtl_parameters mp where nvl(oola.ship_from_org_id,ooha.ship_from_org_id)=mp.organization_id) warehouse,
-xxen_util.meaning(nvl(oola.shipping_method_code,ooha.shipping_method_code),'SHIP_METHOD',3) ship_method,
+(select wcv.carrier_name from wsh_carriers_v wcv where oola.freight_carrier_code=wcv.freight_code) freight_carrier,
+xxen_util.meaning(nvl(oola.shipping_method_code,ooha.shipping_method_code),'SHIP_METHOD',3) shipping_method,
 xxen_util.meaning(ooha.customer_preference_set_code,'REQUEST_DATE_TYPE',660) line_set,
 xxen_util.meaning(nvl(oola.freight_terms_code,ooha.freight_terms_code),'FREIGHT_TERMS',660) freight_terms,
 xxen_util.meaning(nvl(oola.fob_point_code,ooha.fob_point_code),'FOB',222) fob,
@@ -261,7 +275,9 @@ when trunc(coalesce(oolh2.actual_shipment_date,oola2.actual_shipment_date,oola.a
      <= trunc(coalesce(oolh2.promise_date,oola2.promise_date,oola.promise_date))
 then 'Y'
 else 'N'
-end deliv_on_time
+end deliv_on_time,
+oola.inventory_item_id,
+oola.ship_from_org_id
 from
 hr_all_organization_units_vl haouv,
 oe_order_headers_all ooha,
@@ -340,6 +356,9 @@ select psm.project_id, psm.project_number from pjm_seiban_numbers psm
 pa_tasks pt,
 ra_customer_trx_lines_all rctla,
 ra_customer_trx_all rcta,
+ra_cust_trx_types_all rctta,
+(select rctlgda.* from ra_cust_trx_line_gl_dist_all rctlgda where rctlgda.account_class='REC' and rctlgda.latest_rec_flag='Y') rctlgda0,
+(select rctlgda.customer_trx_line_id, sum(rctlgda.acctd_amount) acctd_amount from ra_cust_trx_line_gl_dist_all rctlgda where rctlgda.account_set_flag='N' group by rctlgda.customer_trx_line_id) rctlgda,
 (
 select distinct
 oolh.line_id,
@@ -385,6 +404,10 @@ oola.task_id=pt.task_id(+) and
 to_char(oola.line_id)=rctla.interface_line_attribute6(+) and
 rctla.interface_line_context(+) in ('INTERCOMPANY','ORDER ENTRY') and
 rctla.customer_trx_id=rcta.customer_trx_id(+) and
+rcta.cust_trx_type_id=rctta.cust_trx_type_id(+) and
+rcta.org_id=rctta.org_id(+) and
+rcta.customer_trx_id=rctlgda0.customer_trx_id(+) and
+rctla.customer_trx_line_id=rctlgda.customer_trx_line_id(+) and
 rcta.primary_salesrep_id=jrs2.salesrep_id(+) and
 rcta.org_id=jrs2.org_id(+) and
 jrs2.resource_id=jrrev2.resource_id(+) and
@@ -424,7 +447,7 @@ hl1.country=ftv1.territory_code(+) and
 hl2.country=ftv2.territory_code(+)
 order by
 x.operating_unit,
-x.account_number,
+x.customer_number,
 x.order_number,
 x.line_number,
 x.shipment_number,

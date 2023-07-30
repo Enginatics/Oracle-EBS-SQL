@@ -47,6 +47,7 @@ select /*+ push_pred(wfc) */
  -- delivery item details
  msiv.concatenated_segments item,
  wdd.item_description item_description,
+ xxen_util.meaning(msiv.item_type,'ITEM_TYPE',3) user_item_type,
  wdd.requested_quantity,
  decode(wdd.released_status,'Y',nvl(wdd.picked_quantity,wdd.requested_quantity),NULL) picked_qty,
  wdd.shipped_quantity,

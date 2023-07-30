@@ -13,7 +13,7 @@ Listing of all GL data access sets and the ledgers or ledger sets that each acce
 
 select
 gasv.name access_set,
-gasv.description access_set_description,
+gasv.description,
 gasv.chart_of_accounts_name chart_of_accounts,
 gasv.period_set_name calendar,
 gasv.user_period_type period_type,

@@ -29,6 +29,8 @@ xrtv.file_name excel_file_name,
 xxen_util.client_time(xrtv.file_last_modified_date) file_last_modified,
 xxen_util.user_name(xrtv.created_by) created_by,
 xxen_util.client_time(xrtv.creation_date) creation_date,
+xxen_util.user_name(xrtv.last_updated_by) last_updated_by,
+xxen_util.client_time(xrtv.last_update_date) last_update_date,
 &columns
 xrtv.template_id
 from
@@ -43,6 +45,9 @@ xxen_util.meaning(xrtc.sheet_break,'YES_NO',0) sheet_break_,
 xrtc.*
 from
 xxen_report_template_columns xrtc
+where
+'&show_columns'='Y' and
+xrtc.display_sequence is not null
 ) xrtc
 where
 1=1 and

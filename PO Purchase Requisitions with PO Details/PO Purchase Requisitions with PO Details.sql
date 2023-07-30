@@ -10,7 +10,8 @@
 -- Library Link: https://www.enginatics.com/reports/po-purchase-requisitions-with-po-details/
 -- Run Report: https://demo.enginatics.com/
 
-with req as (select 
+with req as (
+   select 
    haouv.name operating_unit,
    xxen_util.meaning(prha.type_lookup_code,'REQUISITION TYPE',201) requisition_type,
    prha.segment1 requisition_number,
@@ -111,8 +112,10 @@ with req as (select
    and prha.type_lookup_code = 'PURCHASE'
    and nvl(prha.contractor_requisition_flag , 'N') <> 'Y'
    and nvl(prha.authorization_status,'INCOMPLETE') != 'INCOMPLETE'
-   and 1=1 ),
-po as (select 
+   and 1=1
+   ),
+po as (
+   select 
    haouv.name po_operating_unit,
    asu.vendor_name po_vendor_name,
    asu.segment1 po_vendor_number,
@@ -202,10 +205,11 @@ po as (select
    and msiv.org_id (+) = pla.org_id
    and mp1.organization_id (+) = plla.ship_to_organization_id
    and hl1.location_id (+) = plla.ship_to_location_id
-   and trunc(plla.creation_date) >= nvl(:plla_creation_date_from,trunc(plla.creation_date))
-   and trunc(plla.creation_date) < nvl(:plla_creation_date_to,trunc(plla.creation_date)) + 1 
+   and plla.creation_date >= nvl(:plla_creation_date_from,plla.creation_date)
+   and plla.creation_date < nvl(:plla_creation_date_to,plla.creation_date) + 1 
    &lp_po_dist_joins
-   and 2=2 )
+   and 2=2
+   )
 select 
  req.operating_unit,
  req.requisition_type,

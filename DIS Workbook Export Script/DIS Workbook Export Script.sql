@@ -20,11 +20,14 @@
 -- Run Report: https://demo.enginatics.com/
 
 select
-'if not exist workbook_'||ed.doc_id||'.eex (start '||:executable_path||' /connect '||:eul||'/'||:eul_password||'@'||:db_service_name||' /export "workbook_'||ed.doc_id||'.eex" /workbook "'||xxen_util.dis_user_name(ed.doc_eu_id,:eul,'N')||'.'||ed.doc_name||'" /xmlworkbook'||chr(38)||' ping /n '||:delay_seconds||' localhost >NUL) else (echo workbook_'||ed.doc_id||'.eex exists)' text
+'if not exist workbook_'||ed.doc_id||'.eex (start '||:executable_path||' /connect '||:eul||'/'||:eul_password||'@'||:db_service_name||' /export "workbook_'||ed.doc_id||'.eex" /workbook "'||xxen_util.dis_user_name(ed.doc_eu_id,:eul,'N')||'.'||ed.doc_name||'" /xmlworkbook'||chr(38)||' ping /n '||:delay_seconds||' localhost >NUL) else (echo workbook_'||ed.doc_id||'.eex exists)' text,
+ed.doc_name workbook,
+xxen_util.dis_user_name(ed.doc_eu_id,:eul) owner,
+'workbook_'||ed.doc_id||'.eex' file_name
 from
 &eul.eul5_documents ed
 where
 1=1 and
-ed.doc_name in (select eqs.qs_doc_name from &eul.eul5_qpp_stats eqs where 2=2 &or_owner_restriction)
+(ed.doc_name, xxen_util.dis_user_name(ed.doc_eu_id,:eul,'N')) in (select eqs.qs_doc_name, upper(eqs.qs_doc_owner) qs_doc_owner from &eul.eul5_qpp_stats eqs where 2=2 &or_owner_restriction)
 order by
 ed.doc_id

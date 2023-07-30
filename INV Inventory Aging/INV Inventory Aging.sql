@@ -5,7 +5,12 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: INV Inventory Aging
--- Description: Imported from BI Publisher
+-- Description: The Inventory Aging Report indicates how long an inventory item has been in a FIFO warehouse. You can define bucket days to identify the period from when an item is in the inventory.
+NOTES: 
+This report will only run for clients running R12.2.8 or later.
+This report requires the profile 'INV: FIFO for Original Receipt Date' to be set to Yes in order to return data.
+
+Imported from BI Publisher
 Application: Inventory
 Source: Inventory Aging Report(XML)
 Short Name: INVAGERP_XML
@@ -26,6 +31,7 @@ moqd as
   mic.category_concat_segs item_category,
   --fnd_flex_xml_publisher_apis.process_kff_combination_1('cf_cat_field' ,'INV' ,'MCAT' ,mic.structure_id ,null ,mic.category_id ,'ALL' ,'Y' ,'VALUE') item_category,
   msib.description item_desc,
+  xxen_util.meaning(msib.item_type,'ITEM_TYPE',3) user_item_type,
   decode(is_consigned
         ,1 ,decode(moqd.owning_tp_type
                   ,1 ,(select vendor_name || '-' || pvsa.vendor_site_code
@@ -113,6 +119,7 @@ select
  x.item_code,
  x.item_category,
  x.item_desc,
+ x.user_item_type,
  x.uom_code,
  x.owning_party,
  to_char(max(x.last_trx_date), 'DD-MON-YYYY') last_trx_date,
@@ -139,6 +146,7 @@ from
    moqd.item_code,
    moqd.item_category,
    moqd.item_desc,
+   moqd.user_item_type,
    moqd.uom_code,
    moqd.owning_party,
    moqd.buckets_days_heading,
@@ -164,6 +172,7 @@ from
    moqd.item_code,
    moqd.item_category,
    moqd.item_desc,
+   moqd.user_item_type,
    moqd.uom_code,
    moqd.owning_party,
    inv_agerpxml_pkg.f_bucket_days_seq(:p_buckets_id ,moqd.buckets_days_heading),
@@ -181,6 +190,7 @@ from
    moqd2.item_code,
    moqd2.item_category,
    moqd2.item_desc,
+   moqd2.user_item_type,
    moqd2.uom_code,
    moqd2.owning_party,
    aablt.report_heading1 || ' ' || aablt.report_heading2 buckets_days_heading,
@@ -200,6 +210,7 @@ from
      moqd.item_code,
      moqd.item_category,
      moqd.item_desc,
+     moqd.user_item_type,
      moqd.uom_code,
      moqd.owning_party,
      moqd.buckets_days_heading,
@@ -220,6 +231,7 @@ from
      moqd.item_code,
      moqd.item_category,
      moqd.item_desc,
+     moqd.user_item_type,
      moqd.uom_code,
      moqd.owning_party,
      inv_agerpxml_pkg.f_bucket_days_seq(:p_buckets_id ,moqd.buckets_days_heading),
@@ -253,6 +265,7 @@ group by
  x.item_code,
  x.item_category,
  x.item_desc,
+ x.user_item_type,
  x.uom_code,
  x.owning_party,
  x.buckets_days_heading,

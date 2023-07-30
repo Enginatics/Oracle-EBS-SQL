@@ -24,7 +24,7 @@ eqs.seconds,
 eqs.qs_num_rows row_count,
 &object_columns
 length(eqs.qs_object_use_key)-length(translate(eqs.qs_object_use_key,'x.','x'))+1 folder_count,
-eqs.qs_object_use_key use_key,
+eqs.qs_object_use_key object_use_key,
 eqs.qs_doc_name||': '||eqs.qs_doc_details||' ('||eqs.qs_doc_owner_||')' workbook_sheet,
 eqs.qs_created_by created_by
 from

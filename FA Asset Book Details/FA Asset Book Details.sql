@@ -70,7 +70,7 @@ gl_flexfields_pkg.get_description(fbc.accounting_flex_structure,'GL_ACCOUNT',dec
 decode(fab.asset_type, 'CIP', null,fcb.deprn_reserve_acct) reserve_account,
 decode(fab.asset_type, 'CIP', null,gl_flexfields_pkg.get_description(fbc.accounting_flex_structure,'GL_ACCOUNT',fcb.deprn_reserve_acct)) reserve_account_description,
 nvl(fbc.distribution_source_book,fbc.book_type_code) dist_book_type_code,
-(select fdp.period_name from fa_deprn_periods fdp where fdp.book_type_code = fb.book_type_code and fdp.period_counter = fb.period_counter_fully_retired) period_retired,
+(select fdp.period_name from fa_deprn_periods fdp where fb.book_type_code=fdp.book_type_code and fb.period_counter_fully_retired=fdp.period_counter) period_retired,
 fb.period_counter_fully_retired
 from
 fa_additions_b fab,
@@ -82,8 +82,8 @@ fa_category_books fcb
 where
 fab.asset_id=fb.asset_id and
 nvl(fb.disabled_flag,'N')='N' and
-fb.date_effective <= nvl2(:p_period,(select nvl(fdp2.period_close_date,sysdate) from fa_deprn_periods fdp2 where fdp2.book_type_code = fb.book_type_code and fdp2.period_name = :p_period),sysdate) and
-nvl(fb.date_ineffective,sysdate+1) > nvl2(:p_period,(select nvl(fdp2.period_close_date,sysdate) from fa_deprn_periods fdp2 where fdp2.book_type_code = fb.book_type_code and fdp2.period_name = :p_period),sysdate) and
+fb.date_effective<=nvl2(:p_period,(select nvl(fdp2.period_close_date,sysdate) from fa_deprn_periods fdp2 where fb.book_type_code=fdp2.book_type_code and fdp2.period_name=:p_period),sysdate) and
+nvl(fb.date_ineffective,sysdate+1)>nvl2(:p_period,(select nvl(fdp2.period_close_date,sysdate) from fa_deprn_periods fdp2 where fb.book_type_code=fdp2.book_type_code and fdp2.period_name=:p_period),sysdate) and
 fbc.book_type_code=fb.book_type_code and
 fcb.book_type_code=fb.book_type_code and
 fcb.category_id=fab.asset_category_id and
@@ -107,18 +107,20 @@ end ytd_deprn,
 fds.deprn_reserve,
 fds.deprn_source_code
 from
-(select x.*
- from
- (select max(fds.period_counter) over (partition by fds.asset_id,fds.book_type_code) max_period_counter,
-  (select fdp2.period_counter from fa_deprn_periods fdp2 where fdp2.book_type_code = fds.book_type_code and fdp2.period_name = :p_period) as_of_pc,
-  (select fdp2.fiscal_year from fa_deprn_periods fdp2 where fdp2.book_type_code = fds.book_type_code and fdp2.period_name = :p_period) as_of_fy,
-  fds.*
-  from
-  fa_deprn_summary fds
-  where
-  fds.period_counter <= nvl2(:p_period,(select fdp2.period_counter from fa_deprn_periods fdp2 where fdp2.book_type_code = fds.book_type_code and fdp2.period_name = :p_period),fds.period_counter)
- ) x
- where x.period_counter=x.max_period_counter
+(
+select x.* from (
+select
+max(fds.period_counter) over (partition by fds.asset_id,fds.book_type_code) max_period_counter,
+(select fdp2.period_counter from fa_deprn_periods fdp2 where fds.book_type_code=fdp2.book_type_code and fdp2.period_name=:p_period) as_of_pc,
+(select fdp2.fiscal_year from fa_deprn_periods fdp2 where fds.book_type_code=fdp2.book_type_code and fdp2.period_name=:p_period) as_of_fy,
+fds.*
+from
+fa_deprn_summary fds
+where
+fds.period_counter<=nvl2(:p_period,(select fdp2.period_counter from fa_deprn_periods fdp2 where fds.book_type_code=fdp2.book_type_code and fdp2.period_name=:p_period),fds.period_counter)
+) x
+where
+x.period_counter=x.max_period_counter
 ) fds,
 fa_deprn_periods fdp,
 fa_book_controls fbc,
@@ -177,7 +179,7 @@ fa_deprn_periods fdp,
 fa_book_controls fbc,
 fa_calendar_periods fcp
 where
-fth.date_effective <= nvl2(:p_period,(select nvl(fdp2.period_close_date,sysdate) from fa_deprn_periods fdp2 where fdp2.book_type_code = fth.book_type_code and fdp2.period_name = :p_period),sysdate) and
+fth.date_effective<=nvl2(:p_period,(select nvl(fdp2.period_close_date,sysdate) from fa_deprn_periods fdp2 where fth.book_type_code=fdp2.book_type_code and fdp2.period_name=:p_period),sysdate) and
 fb.transaction_header_id_in=fb0.transaction_header_id_out(+) and
 (fb.cost<>fb0.cost or fb0.cost is null) and
 fb.transaction_header_id_in=fth.transaction_header_id and
@@ -207,9 +209,9 @@ from
 fa_invoice_details_v faiv,
 fa_books fb
 where
-faiv.asset_id = fb.asset_id and
-faiv.date_effective <= nvl2(:p_period,(select nvl(fdp2.period_close_date,sysdate) from fa_deprn_periods fdp2 where fdp2.book_type_code = fb.book_type_code and fdp2.period_name = :p_period),sysdate) and
-nvl(faiv.date_ineffective,sysdate+1) > nvl2(:p_period,(select nvl(fdp2.period_close_date,sysdate) from fa_deprn_periods fdp2 where fdp2.book_type_code = fb.book_type_code and fdp2.period_name = :p_period),sysdate) and
+faiv.asset_id=fb.asset_id and
+faiv.date_effective<=nvl2(:p_period,(select nvl(fdp2.period_close_date,sysdate) from fa_deprn_periods fdp2 where fb.book_type_code=fdp2.book_type_code and fdp2.period_name=:p_period),sysdate) and
+nvl(faiv.date_ineffective,sysdate+1)>nvl2(:p_period,(select nvl(fdp2.period_close_date,sysdate) from fa_deprn_periods fdp2 where fb.book_type_code=fdp2.book_type_code and fdp2.period_name=:p_period),sysdate) and
 '&show_inv_src'='Y'
 )
 select --main SQL starts here

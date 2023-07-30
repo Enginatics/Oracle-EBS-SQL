@@ -59,12 +59,31 @@ with capr as
   capr.currency_code entered_currency,
   trunc(sysdate - decode(fnd_profile.value('CST_ACCRUAL_AGE_IN_DAYS'), 1, nvl(crs.last_receipt_date,crs.last_invoice_dist_date), greatest(nvl(crs.last_receipt_date,crs.last_invoice_dist_date), nvl(crs.last_invoice_dist_date, crs.last_receipt_date)) ) ) age_in_days,
   nvl2(crs.inventory_item_id,
-       (select msi.concatenated_segments
-        from mtl_system_items_vl msi
-        where inventory_item_id = crs.inventory_item_id and
+       (select msiv.concatenated_segments
+        from mtl_system_items_vl msiv
+        where 
+        msiv.inventory_item_id = crs.inventory_item_id and
+        msiv.organization_id = nvl(capr.inventory_organization_id,msiv.organization_id) and
         rownum <2
        ),
        null) item,
+  nvl2(crs.inventory_item_id,
+       (select msiv.description
+        from mtl_system_items_vl msiv
+        where 
+        msiv.inventory_item_id = crs.inventory_item_id and
+        msiv.organization_id = nvl(capr.inventory_organization_id,msiv.organization_id) and
+        rownum <2
+       ),
+       null) item_description,
+  nvl2(crs.inventory_item_id,
+       (select xxen_util.meaning(msiv.item_type,'ITEM_TYPE',3)
+        from mtl_system_items_vl msiv
+        where msiv.inventory_item_id = crs.inventory_item_id and
+        msiv.organization_id = nvl(capr.inventory_organization_id,msiv.organization_id) and
+        rownum <2
+       ),
+       null) user_item_type,
   decode(capr.inventory_organization_id, NULL, NULL, mp.organization_code) inventory_organization,
   pdt.displayed_field destination,
   crs.po_distribution_id po_distribution_id,
@@ -150,6 +169,8 @@ select distinct
  capr.age_in_days,
  capr.destination,
  capr.item,
+ capr.item_description,
+ capr.user_item_type,
  --
  null transaction_source,
  null transaction_type,
@@ -214,6 +235,8 @@ select
  capr.age_in_days,
  capr.destination,
  capr.item,
+ capr.item_description,
+ capr.user_item_type,
  --
  capr.transaction_source,
  capr.transaction_type,

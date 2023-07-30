@@ -392,6 +392,7 @@ xah.application_id=xte.application_id(+) and
 xal.application_id=xdl.application_id(+) and
 xal.ae_header_id=xdl.ae_header_id(+) and
 xal.ae_line_num=xdl.ae_line_num(+) and
+gl_security_pkg.validate_access(null,gjl.code_combination_id)='TRUE' and
 gjl.code_combination_id=gcck.code_combination_id and
 coalesce(xal.currency_conversion_date,gjh.currency_conversion_date,trunc(xe.transaction_date))=gdr.conversion_date(+) and
 decode(nvl2(xal.gl_sl_link_id,xal.currency_code,gjh.currency_code),:revaluation_currency,null,nvl2(xal.gl_sl_link_id,xal.currency_code,gjh.currency_code))=gdr.from_currency(+) and
@@ -642,6 +643,7 @@ gb.period_name(+)=gp.period_name and
 gb.ledger_id(+)=gl.ledger_id and
 gb.currency_code(+)=gl.currency_code and
 gb.template_id(+) is null and
+gl_security_pkg.validate_access(null,gcck.code_combination_id)='TRUE' and
 gb.code_combination_id(+)=gcck.code_combination_id and
 gp.start_date=gdr.conversion_date(+) and
 exists
@@ -681,7 +683,4 @@ null line_entered_cr,
 null line_entered_amount,
 nvl(gb.begin_balance_dr,0)+nvl(gb.period_net_dr,0) line_accounted_dr,
 nvl(gb.begin_balance_cr,0)+nvl(gb.period_net_cr,0) line_accounted_cr,
-nvl(gb.begin_balance_dr,0)-nvl(gb.begin_balance_cr,0)+nvl(gb.period_net_dr,0)-nvl(gb.period_net_cr,0) line_accounted_amount,
-null line_description,
-null tax_rate_code,
-n
+nvl(gb.begin_balance_d

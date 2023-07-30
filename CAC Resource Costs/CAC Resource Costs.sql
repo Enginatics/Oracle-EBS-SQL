@@ -77,6 +77,7 @@ select nvl(gl.short_name, gl.name) Ledger,
  -- End revision for version 1.10
  msiv.concatenated_segments OSP_Item_Number,
  msiv.description OSP_Item_Description,
+ xxen_util.meaning(msiv.item_type,'ITEM_TYPE',3) osp_item_type,
  -- Revision for version 1.4 and 1.5 
  -- br.attribute1 Res Type, 
  (select   ca.activity
@@ -195,6 +196,7 @@ select nvl(gl.short_name, gl.name) Ledger,
  -- End revision for version 1.10
  msiv.concatenated_segments OSP_Item_Number,
  msiv.description OSP_Item_Description,
+ xxen_util.meaning(msiv.item_type,'ITEM_TYPE',3) osp_item_type,
  -- Revision for version 1.5
  -- br.attribute1 Res Type, 
  (select   ca.activity

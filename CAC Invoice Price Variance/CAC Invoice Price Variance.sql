@@ -67,6 +67,7 @@ select gl.name Ledger,
  he.full_name Buyer,
  msiv.concatenated_segments Item_Number,
  msiv.description Item_Description,
+ xxen_util.meaning(msiv.item_type,'ITEM_TYPE',3) user_item_type,
  -- Revision for version 1.11 and 1.12
 &category_columns
  -- End revision for version 1.11
@@ -455,6 +456,7 @@ select gl.name Ledger,
  wo_txns.full_name Buyer,
  wo_txns.item_number Item_Number,
  wo_txns.item_description Item_Description,
+ wo_txns.user_item_type,
  -- Revision for version 1.11 and 1.12
 &category_columns2
  -- End revision for version 1.11
@@ -526,6 +528,7 @@ from mtl_parameters                      mp,
   -- Revision for version 1.11
   msiv.inventory_item_id,
   msiv.description item_description,
+  xxen_util.meaning(msiv.item_type,'ITEM_TYPE',3) user_item_type,
   cwo.destination_type_code destination_type_code,
   al.code_combination_id,
   cwo.offset_account_id,
@@ -613,6 +616,7 @@ from mtl_parameters                      mp,
   -- Revision for version 1.11
   msiv.inventory_item_id,
   msiv.description, -- item_description
+  msiv.item_type,
   cwo.destination_type_code, -- destination_type_code
   al.code_combination_id,
   cwo.offset_account_id,
@@ -655,6 +659,7 @@ from mtl_parameters                      mp,
   -- Revision for version 1.11
   msiv.inventory_item_id,
   msiv.description item_description,
+  xxen_util.meaning(msiv.item_type,'ITEM_TYPE',3) user_item_type,
   cwo.destination_type_code destination_type_code,
   al.code_combination_id,
   cwo.offset_account_id,
@@ -712,8 +717,4 @@ from mtl_parameters                      mp,
   and poh.agent_id                 = he.employee_id
   and msiv.inventory_item_id       = pol.item_id
   and msiv.inventory_item_id       = ucr.inventory_item_id
-  and msiv.organization_id         = ucr.organization_id
-  and ucr.unit_of_measure          = pol.unit_meas_lookup_code
-  and msiv.organization_id         = pll.ship_to_organization_id
-  -- ========================================================
-  -- SLA t
+  and msiv.organi

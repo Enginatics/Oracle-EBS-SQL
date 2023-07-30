@@ -40,6 +40,7 @@ nvl(msi.description,xxen_util.meaning('1','CST_PER_CLOSE_MISC',700)) description
 ccg.cost_group,
 msiv.concatenated_segments item,
 msiv.description item_description,
+xxen_util.meaning(msiv.item_type,'ITEM_TYPE',3) user_item_type,
 (
 select
 mck.concatenated_segments

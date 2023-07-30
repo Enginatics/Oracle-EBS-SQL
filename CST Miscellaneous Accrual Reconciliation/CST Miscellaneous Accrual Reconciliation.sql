@@ -60,12 +60,32 @@ with cmr as
    ) receipt_number,
    cmr.inventory_transaction_id inventory_transaction_id,
    nvl2(cmr.inventory_item_id,
-        (select msi.concatenated_segments
-         from mtl_system_items_vl msi
-         where inventory_item_id = cmr.inventory_item_id and
+        (select msiv.concatenated_segments
+         from mtl_system_items_vl msiv
+         where 
+         msiv.inventory_item_id = cmr.inventory_item_id and
+         msiv.organization_id = nvl(mp.organization_id,msiv.organization_id) and
          rownum <2
         ),
         null) item,
+   nvl2(cmr.inventory_item_id,
+        (select msiv.description
+         from mtl_system_items_vl msiv
+         where 
+         msiv.inventory_item_id = cmr.inventory_item_id and
+         msiv.organization_id = nvl(mp.organization_id,msiv.organization_id) and
+         rownum <2
+        ),
+        null) item_description,
+   nvl2(cmr.inventory_item_id,
+        (select xxen_util.meaning(msiv.item_type,'ITEM_TYPE',3)
+         from mtl_system_items_vl msiv
+         where 
+         msiv.inventory_item_id = cmr.inventory_item_id and
+         msiv.organization_id = nvl(mp.organization_id,msiv.organization_id) and
+         rownum <2
+        ),
+        null) user_item_type,
    mp.organization_code inventory_organization
   from
    cst_misc_reconciliation cmr,

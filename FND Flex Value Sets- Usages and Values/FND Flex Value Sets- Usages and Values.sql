@@ -13,8 +13,12 @@
 select
 ffvs.flex_value_set_name,
 ffvs.description,
+xxen_util.meaning(ffvs.longlist_flag,'FLEX_VALUESET_LONGLIST_FLAG',0) list_type,
+xxen_util.meaning(ffvs.security_enabled_flag,'FLEX_VST_SECURITY_ENABLED_FLAG',0) security_type,
 xxen_util.meaning(ffvs.format_type,'FIELD_TYPE',0) format_type,
 ffvs.maximum_size,
+xxen_util.meaning(decode(ffvs.alphanumeric_allowed_flag,'N','Y'),'YES_NO',0) numbers_only,
+xxen_util.meaning(decode(ffvs.uppercase_only_flag,'Y','Y'),'YES_NO',0) uppercase_only,
 xxen_util.meaning(ffvs.validation_type,'SEG_VAL_TYPES',0) validation_type,
 (select ffvs0.flex_value_set_name from fnd_flex_value_sets ffvs0 where ffvs.parent_flex_value_set_id=ffvs0.flex_value_set_id) parent_value_set,
 ffvs.dependant_default_value,

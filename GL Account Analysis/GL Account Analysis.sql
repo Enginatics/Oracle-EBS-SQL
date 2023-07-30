@@ -512,6 +512,7 @@ xah.event_id=xe.event_id(+) and
 xah.application_id=xe.application_id(+) and
 xah.entity_id=xte.entity_id(+) and
 xah.application_id=xte.application_id(+) and
+gl_security_pkg.validate_access(null,gjl.code_combination_id)='TRUE' and
 gjl.code_combination_id=gcck.code_combination_id and
 coalesce(xal.currency_conversion_date,gjh.currency_conversion_date,trunc(xe.transaction_date))=gdr.conversion_date(+) and
 decode(nvl2(xal.gl_sl_link_id,xal.currency_code,gjh.currency_code),:revaluation_currency,null,nvl2(xal.gl_sl_link_id,xal.currency_code,gjh.currency_code))=gdr.from_currency(+) and
@@ -645,7 +646,3 @@ null sl_batch_no, -- XXECL
 null asset_number,
 --AP
 null invoice_number,
-null description,
-null invoice_date,
-null gl_date,
-null invoice_currency_

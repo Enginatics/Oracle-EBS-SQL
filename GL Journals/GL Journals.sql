@@ -86,14 +86,14 @@ then (select zrb.tax_rate_code from zx_rates_b zrb where gjl.tax_code_id=zrb.tax
 else null
 end line_tax_rate_code,
 -- accounts
-fnd_flex_xml_publisher_apis.process_kff_combination_1('account', 'SQLGL', 'GL#', gjb.chart_of_accounts_id, null, gjl.code_combination_id, 'ALL', 'Y', 'VALUE') concatenated_account,
-fnd_flex_xml_publisher_apis.process_kff_combination_1('account', 'SQLGL', 'GL#', gjb.chart_of_accounts_id, null, gjl.code_combination_id, 'ALL', 'Y', 'DESCRIPTION') concatenated_account_desc,
-fnd_flex_xml_publisher_apis.process_kff_combination_1('bal_seg', 'SQLGL', 'GL#', gjb.chart_of_accounts_id, NULL, gjl.code_combination_id, 'GL_BALANCING', 'Y', 'VALUE') balancing_segment,
-fnd_flex_xml_publisher_apis.process_kff_combination_1('bal_seg', 'SQLGL', 'GL#', gjb.chart_of_accounts_id, NULL, gjl.code_combination_id, 'GL_BALANCING', 'Y', 'DESCRIPTION') balancing_segment_desc,
-fnd_flex_xml_publisher_apis.process_kff_combination_1('account', 'SQLGL', 'GL#', gjb.chart_of_accounts_id, NULL, gjl.code_combination_id, 'GL_ACCOUNT', 'Y', 'VALUE') account_segment,
-fnd_flex_xml_publisher_apis.process_kff_combination_1('account', 'SQLGL', 'GL#', gjb.chart_of_accounts_id, NULL, gjl.code_combination_id, 'GL_ACCOUNT', 'Y', 'DESCRIPTION') account_segment_desc,
-fnd_flex_xml_publisher_apis.process_kff_combination_1('account', 'SQLGL', 'GL#', gjb.chart_of_accounts_id, NULL, gjl.code_combination_id, 'FA_COST_CTR', 'Y', 'VALUE') cost_center_segment,
-fnd_flex_xml_publisher_apis.process_kff_combination_1('account', 'SQLGL', 'GL#', gjb.chart_of_accounts_id, NULL, gjl.code_combination_id, 'FA_COST_CTR', 'Y', 'DESCRIPTION') cost_center_segment_desc,
+gcck.concatenated_segments,
+fnd_flex_xml_publisher_apis.process_kff_combination_1('account', 'SQLGL', 'GL#', gjb.chart_of_accounts_id, null, gjl.code_combination_id, 'ALL', 'Y', 'DESCRIPTION') concatenated_segments_desc,
+fnd_flex_xml_publisher_apis.process_kff_combination_1('bal_seg', 'SQLGL', 'GL#', gjb.chart_of_accounts_id, null, gjl.code_combination_id, 'GL_BALANCING', 'Y', 'VALUE') balancing_segment,
+fnd_flex_xml_publisher_apis.process_kff_combination_1('bal_seg', 'SQLGL', 'GL#', gjb.chart_of_accounts_id, null, gjl.code_combination_id, 'GL_BALANCING', 'Y', 'DESCRIPTION') balancing_segment_desc,
+fnd_flex_xml_publisher_apis.process_kff_combination_1('account', 'SQLGL', 'GL#', gjb.chart_of_accounts_id, null, gjl.code_combination_id, 'GL_ACCOUNT', 'Y', 'VALUE') account_segment,
+fnd_flex_xml_publisher_apis.process_kff_combination_1('account', 'SQLGL', 'GL#', gjb.chart_of_accounts_id, null, gjl.code_combination_id, 'GL_ACCOUNT', 'Y', 'DESCRIPTION') account_segment_desc,
+fnd_flex_xml_publisher_apis.process_kff_combination_1('account', 'SQLGL', 'GL#', gjb.chart_of_accounts_id, null, gjl.code_combination_id, 'FA_COST_CTR', 'Y', 'VALUE') cost_center_segment,
+fnd_flex_xml_publisher_apis.process_kff_combination_1('account', 'SQLGL', 'GL#', gjb.chart_of_accounts_id, null, gjl.code_combination_id, 'FA_COST_CTR', 'Y', 'DESCRIPTION') cost_center_segment_desc,
 -- attachment details
 fad1.count batch_attachment_count,
 fad2.count journal_attachment_count,
@@ -121,6 +121,7 @@ gl_periods gp,
 gl_je_batches gjb,
 gl_je_headers gjh,
 gl_je_lines gjl,
+gl_code_combinations_kfv gcck,
 (select distinct fad.pk1_value,&fad_document_id count(*) over (partition by fad.pk1_value) count from fnd_attached_documents fad where fad.entity_name='GL_JE_BATCHES') fad1,
 (select distinct fad.pk2_value,&fad_document_id count(*) over (partition by fad.pk2_value) count from fnd_attached_documents fad where fad.entity_name='GL_JE_HEADERS') fad2,
 fnd_documents fd1,
@@ -144,6 +145,8 @@ gp.period_name=gjh.period_name and
 gl.ledger_id=gjh.ledger_id and
 gjb.je_batch_id=gjh.je_batch_id and
 gjh.je_header_id=gjl.je_header_id(+) and
+(gjl.code_combination_id is null or gl_security_pkg.validate_access(null,gjl.code_combination_id)='TRUE') and
+gjl.code_combination_id=gcck.code_combination_id(+) and
 to_char(gjb.je_batch_id)=fad1.pk1_value(+) and
 to_char(gjh.je_header_id)=fad2.pk2_value(+) and
 fad1.document_id=fd1.document_id(+) and

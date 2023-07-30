@@ -15,7 +15,15 @@ xrtv.report_name,
 xrtv.category,
 xrtv.template_name,
 nvl2(xrtc.template_id,'column exists','corrupt') template_column_check,
-xrtp.*
+xrtp.column_name,
+xrtp.field_type,
+xrtp.display_sequence,
+xrtp.aggregation,
+xxen_util.user_name(xrtp.created_by) created_by,
+xxen_util.client_time(xrtp.creation_date) creation_date,
+xxen_util.user_name(xrtp.last_updated_by) last_updated_by,
+xxen_util.client_time(xrtp.last_update_date) last_update_date,
+xrtp.template_id
 from
 xxen_report_templates_v xrtv,
 xxen_report_template_pivot xrtp,

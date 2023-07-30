@@ -11,26 +11,21 @@
 -- Run Report: https://demo.enginatics.com/
 
 select
-y.owner,
-y.workbook,
-y.workbook_exists,
-y.sheet,
-y.access_count,
-y.last_accessed,
-y.object_use_key,
-y.last_updated_by,
-y.last_update_date,
-y.doc_id,
-xxen_util.meaning(nvl2(xdwx.doc_id,'Y',null),'YES_NO',0) xml_uploaded,
+x.owner,
+x.workbook,
+x.workbook_exists,
+x.sheet,
+x.access_count,
+x.last_accessed,
+x.object_use_key,
+x.last_updated_by,
+x.last_update_date,
+x.doc_id,
+xxen_util.meaning(nvl2(xdwx.doc_id,'Y',null),'YES_NO',0) eex_uploaded,
 xdw.count flattened_count,
 xrtv.report_name,
 xrtv.template_name,
 xrtv.description template_description
-from
-(
-select
-trim(substrb(x.workbook||case when count(distinct x.sheet) over (partition by x.doc_id)>1 or x.sheet not like 'Sheet %' then ': '||x.sheet end,1,240)) template_name,
-x.*
 from
 (
 select
@@ -77,17 +72,17 @@ eqs.qs_object_use_key
 on
 ed.doc_name=eqs.qs_doc_name and
 xxen_util.dis_user_name(ed.doc_eu_id,:eul,'N')=eqs.qs_doc_owner_
-) x
-) y,
+) x,
 (select xdwx.* from xxen_discoverer_workbook_xmls xdwx where xdwx.eul=:eul) xdwx,
 (select xdw.doc_id, count(*) count from xxen_discoverer_workbooks xdw where xdw.eul=:eul group by xdw.eul, xdw.doc_id) xdw,
-(select xrtv.* from xxen_report_templates_v xrtv where regexp_substr(xrtv.report_description,chr(10)||'EUL: (\w+)',1,1,null,1)=:eul) xrtv
+(select regexp_substr(xrtv.description,chr(10)||'Sheet: (.+)',1,1,null,1) sheet, regexp_substr(xrtv.description,chr(10)||'Doc Id: (\d+)',1,1,null,1) doc_id, xrtv.* from xxen_report_templates_v xrtv where regexp_substr(xrtv.report_description,chr(10)||'EUL: (\w+)',1,1,null,1)=:eul) xrtv
 where
 1=1 and
-y.doc_id=xdwx.doc_id(+) and
-y.doc_id=xdw.doc_id(+) and
-y.template_name=xrtv.template_name(+)
+x.doc_id=xdwx.doc_id(+) and
+x.doc_id=xdw.doc_id(+) and
+x.doc_id=xrtv.doc_id(+) and
+x.sheet=xrtv.sheet(+)
 order by
-y.owner,
-y.workbook,
-y.sheet
+x.owner,
+x.workbook,
+x.sheet
