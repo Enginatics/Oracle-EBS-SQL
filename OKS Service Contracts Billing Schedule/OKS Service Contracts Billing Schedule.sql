@@ -30,21 +30,25 @@ okslb2.base_reading,
 okslb1.usage_period,
 rr.name invoice_rule,
 rr2.name accounting_rule,
-oslb.sequence_no,
+oslb.sequence_no stream_level_sequence,
 oslb.level_periods,
 oslb.uom_per_period,
 oslb.uom_code,
-oslb.start_date,
-oslb.end_date,
-ole.sequence_number,
-ole.date_start,
-ole.date_end,
+oslb.start_date stream_level_start_date,
+oslb.end_date stream_level_end_date,
+to_number(ole.sequence_number) level_sequence,
+ole.date_start bill_from,
+ole.date_end bill_to,
+ole.date_to_interface interface_date,
 ole.date_completed,
 ole.amount,
-ole.date_to_interface,
 okhab.scs_code,
 okslb1.usage_type,
-olsb1.lty_code
+olsb1.lty_code,
+xxen_util.user_name(ole.created_by) created_by,
+xxen_util.client_time(ole.creation_date) creation_date,
+xxen_util.user_name(ole.last_updated_by) last_updated_by,
+xxen_util.client_time(ole.last_update_date) last_update_date
 from
 hr_all_organization_units_vl haouv,
 okc_k_headers_all_b okhab,
@@ -54,7 +58,7 @@ okc_statuses_v osv0,
 okc_statuses_v osv1,
 okc_statuses_v osv2,
 okc_k_lines_b oklb1,
-okc_k_lines_b oklb2,
+(select oklb.* from okc_k_lines_b oklb where '&show_subline'='Y') oklb2,
 oks_k_lines_b okslb1,
 oks_k_lines_b okslb2,
 okc_line_styles_b olsb1,
@@ -65,6 +69,7 @@ ra_rules rr,
 ra_rules rr2
 where
 1=1 and
+okhab.authoring_org_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual) and
 haouv.organization_id=okhab.authoring_org_id and
 okhab.scs_code=osclv.code(+) and
 osclv.cls_code=ocv.code(+) and
@@ -77,16 +82,14 @@ oklb1.id=okslb1.cle_id and
 oklb2.id=okslb2.cle_id(+) and
 oklb1.lse_id=olsb1.id and
 oklb2.lse_id=olsb2.id(+) and
-oklb1.id=oslb.cle_id and
 oslb.id=ole.rul_id and
 oklb1.inv_rule_id=rr.rule_id(+) and
-okslb1.acct_rule_id=rr2.rule_id(+) and
-okhab.authoring_org_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual)
+okslb1.acct_rule_id=rr2.rule_id(+)
 order by
 haouv.name,
 okhab.scs_code,
 okhab.contract_number,
 okhab.contract_number_modifier,
 line_number,
-oslb.start_date desc,
-ole.sequence_number desc
+oslb.sequence_no,
+to_number(ole.sequence_number)

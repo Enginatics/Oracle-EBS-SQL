@@ -5,7 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: MSC Plan Order Upload
--- Description: Report: MSC Plan Order Upload
+-- Description: Report: MSC Plan Orders Upload
 Description: ASCP: Upload to action Plan Order recommendations.
 
 This upload can be used to either select for release or release Plan Order Recommendations.
@@ -41,20 +41,10 @@ If a plan order is already selected for release, then the user can amend the imp
 -- Library Link: https://www.enginatics.com/reports/msc-plan-order-upload/
 -- Run Report: https://demo.enginatics.com/
 
-with q_mtl_system_items_b as
-(
- select
-  rowidtochar(msib.rowid) row_id,
-  msib.attribute_category,
-  msib.inventory_item_id,
-  msib.organization_id
- from
-  mtl_system_items_b&m2a_dblink msib
- where
-  :p_show_item_dff is not null
-)
-select 
+select
 x.*,
+-- custom attributes from lookup XXEN_MSC_CUSTOM_ATTRIBUTES
+&lp_custom_attributes
 -- item dff attributes
 &lp_item_dff_cols
 '.' last_col_flag
@@ -65,13 +55,15 @@ mov.*
 from
 (
 select
- null                                            processing_action,
- null                                            processing_status,
- null                                            processing_message,
- null                                            process_request_id,
+ case when :p_autopopulate_release_status is not null and :p_upload_mode is not null then 'Update' else null end action_,
+ case when :p_autopopulate_release_status is not null and :p_upload_mode is not null then 'New' else null end status_,
+ case when :p_autopopulate_release_status is not null and :p_upload_mode is not null then 'Validation pending' else null end message_,
+ null                                            request_id_,
  nvl(:p_instance_code,mai.instance_code)         instance,
  nvl(:p_plan_name,mp.compile_designator)         plan,
  mpo.organization_code                           organization,
+ decode(mov.project_id, null, null, msc_get_name.project(mov.project_id, mov.organization_id, mov.plan_id, mov.sr_instance_id)) project_number,
+ decode(mov.task_id, null, null, msc_get_name.task(mov.task_id, mov.project_id, mov.organization_id, mov.plan_id, mov.sr_instance_id)) task_number,
  msi.planner_code                                planner,
  msi.buyer_name                                  buyer_name,
  --
@@ -110,6 +102,25 @@ select
  nvl(mov.daily_rate,mov.new_order_quantity) quantity,
  msc_get_name.action('MSC_SUPPLIES', msi.bom_item_type, msi.base_item_id, msi.wip_supply_type, mov.order_type, mov.reschedule_flag, mov.disposition_status_type, mov.new_schedule_date, mov.old_schedule_date, mov.implemented_quantity, mov.quantity_in_process, mov.new_order_quantity, msi.release_time_fence_code, mov.reschedule_days, mov.firm_quantity, mov.plan_id, msi.critical_component_flag, msi.mrp_planning_code, msi.lots_exist, mov.item_type_value, mov.transaction_id) action,
  --
+ nvl(decode(mov.implement_as,null,null,msc_get_name.lookup_meaning('MRP_WORKBENCH_IMPLEMENT_AS',mov.implement_as))
+    ,nvl2(:p_default_impl_cols,
+      xxen_util.meaning(xxen_msc_rel_plan_api.implement_as
+      ( mov.sr_instance_id
+      , mp.plan_type
+      , 'MSC_SUPPLIES'
+      , mov.order_type
+      , mov.organization_id
+      , msi.purchasing_enabled_flag
+      , msi.planning_make_buy_code
+      , msi.build_in_wip_flag
+      , msi.repetitive_type
+      , mov.source_sr_instance_id
+      , mov.source_organization_id
+      , mov.source_supplier_id
+      , null -- dest_inst_id
+      , null -- dest_org_id
+      ),'MRP_WORKBENCH_IMPLEMENT_AS',700)
+     ,null))                                     implement_as,
  to_char(nvl(mov.implement_date,nvl2(:p_default_impl_cols,
       xxen_msc_rel_plan_api.implement_date
       ( mov.sr_instance_id
@@ -157,26 +168,7 @@ select
       , mov.quantity_in_process
       , mov.implemented_quantity
      ),null))                                    implement_quantity,
- nvl(decode(mov.implement_as,null,null,msc_get_name.lookup_meaning('MRP_WORKBENCH_IMPLEMENT_AS',mov.implement_as))
-    ,nvl2(:p_default_impl_cols,
-      xxen_util.meaning(xxen_msc_rel_plan_api.implement_as
-      ( mov.sr_instance_id
-      , mp.plan_type
-      , 'MSC_SUPPLIES'
-      , mov.order_type
-      , mov.organization_id
-      , msi.purchasing_enabled_flag
-      , msi.planning_make_buy_code
-      , msi.build_in_wip_flag
-      , msi.repetitive_type
-      , mov.source_sr_instance_id
-      , mov.source_organization_id
-      , mov.source_supplier_id
-      , null -- dest_inst_id
-      , null -- dest_org_id
-      ),'MRP_WORKBENCH_IMPLEMENT_AS',700)
-     ,null))                                     implement_as,
- null                                            update_release_status,
+ case when :p_autopopulate_release_status is not null then :p_upload_mode else null end update_release_status,
  --
  case
  when  mov.release_status = 1
@@ -192,6 +184,7 @@ select
  end                                             released_status,
  mov.implemented_quantity                        implemented_quantity,
  --
+ msc_get_name.get_order_comments(mov.plan_id, 'SUPPLY', mov.transaction_id) comments,
  decode(mov.firm_planned_type, 1, 'Y',null)      firm,
  to_char(trunc(mov.firm_date),'DD-Mon-YYYY')     firm_date,
  mov.firm_quantity                               firm_quantity,
@@ -211,7 +204,7 @@ select
  mov.inventory_item_id,
  msi.sr_inventory_item_id,
  mic.category_set_id category_set_id,
- mov.release_status
+ nvl(mov.release_status,2) release_status
 from
  msc_supplies           mov,
  msc_apps_instances     mai,
@@ -241,6 +234,8 @@ and (   xxen_util.lookup_code(msc_get_name.action('MSC_SUPPLIES', msi.bom_item_t
      or mov.release_status = 1
     )
 and nvl(:p_ebs_org_code,'?')=nvl(:p_ebs_org_code,'?')
+and nvl('&m2a_dblink','?') = nvl('&m2a_dblink','?')
+and nvl(:p_show_item_dff,'?') = nvl(:p_show_item_dff,'?')
 and 1=1
 ) mov
 where
@@ -250,17 +245,13 @@ where
 &report_table_select &report_table_name &report_table_where_clause &success_records1 &success_records2
 &processed_run
 --
-) x,
-q_mtl_system_items_b msib
-where
-x.organization_id = msib.organization_id(+) and
-x.sr_inventory_item_id = msib.inventory_item_id(+)
+) x
 order by
 x.instance,
 x.plan,
 x.organization,
 x.planner,
 x.item,
-x.suggested_due_date,
+to_date(x.suggested_due_date,'DD-Mon-YYYY'),
 x.order_type,
 x.order_number

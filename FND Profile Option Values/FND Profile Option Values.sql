@@ -22,14 +22,14 @@ decode(fpov.level_id,10001,null,10002,fav.application_name,10003,frv.responsibil
 ) level_name,
 xxen_util.display_profile_option_value(fpo.application_id,fpo.profile_option_id,fpov.profile_option_value) profile_option_value,
 fpov.profile_option_value system_profile_option_value,
+xxen_util.user_name(fpov.created_by) created_by,
+xxen_util.client_time(fpov.creation_date) creation_date,
 xxen_util.user_name(fpov.last_updated_by) last_updated_by,
 xxen_util.client_time(fpov.last_update_date) last_update_date,
 fpo.profile_option_name system_profile_option_name,
 fpo.profile_option_id,
 fpov.level_value,
-fpov.level_value2,
-xxen_util.user_name(fpov.created_by) created_by,
-xxen_util.client_time(fpov.creation_date) creation_date
+fpov.level_value2
 from
 fnd_application_vl fav0,
 fnd_profile_options_vl fpo,

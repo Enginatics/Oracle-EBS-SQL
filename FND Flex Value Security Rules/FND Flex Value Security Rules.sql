@@ -11,11 +11,11 @@
 -- Run Report: https://demo.enginatics.com/
 
 select
+ffvs.flex_value_set_name value_set_name,
 ffvrv.flex_value_rule_name rule_name,
 ffvrv.description,
 ffvrv.error_message,
 &responsibility_column
-ffvs.flex_value_set_name value_set_name,
 &flexfield_columns
 xxen_util.user_name(ffvrv.created_by) rule_created_by,
 xxen_util.client_time(ffvrv.creation_date) rule_creation_date,

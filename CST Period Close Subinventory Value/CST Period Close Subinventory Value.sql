@@ -41,24 +41,11 @@ ccg.cost_group,
 msiv.concatenated_segments item,
 msiv.description item_description,
 xxen_util.meaning(msiv.item_type,'ITEM_TYPE',3) user_item_type,
-(
-select
-mck.concatenated_segments
-from
-mtl_item_categories mic,
-mtl_categories_kfv mck
-where
-cpcs.organization_id=mic.organization_id and
-cpcs.inventory_item_id=mic.inventory_item_id and
-mic.category_id=mck.category_id and
-rownum=1
-) cost_category,
+&category_columns
 cpcs.rollback_value value,
 cpcs.rollback_quantity quantity,
 cpcs.rollback_value/xxen_util.zero_to_null(cpcs.rollback_quantity) item_cost,
-mmt.last_purchase_price,
-mmt.last_po_receipt_date,
-mmt.last_misc_receipt_date
+&last_po_columns
 from
 (
 select
@@ -95,7 +82,7 @@ mtl_system_items_vl msiv,
 cst_cost_groups ccg,
 (
 select distinct
-max(decode(mtt.transaction_type_name,'PO Receipt',mmt.actual_cost)) over (partition by mmt.organization_id,mmt.inventory_item_id,mmt.subinventory_code) last_purchase_price,
+max(decode(mtt.transaction_type_name,'PO Receipt',mmt.actual_cost)) keep (dense_rank last order by decode(mtt.transaction_type_name,'PO Receipt',mmt.transaction_date)) over (partition by mmt.organization_id,mmt.inventory_item_id,mmt.subinventory_code) last_purchase_price,
 max(decode(mtt.transaction_type_name,'PO Receipt',mmt.transaction_date)) over (partition by mmt.organization_id,mmt.inventory_item_id,mmt.subinventory_code) last_po_receipt_date,
 max(decode(mtt.transaction_type_name,'Miscellaneous receipt',mmt.transaction_date)) over (partition by mmt.organization_id,mmt.inventory_item_id,mmt.subinventory_code) last_misc_receipt_date,
 mmt.organization_id,
@@ -106,6 +93,7 @@ oap,
 mtl_transaction_types mtt,
 mtl_material_transactions mmt
 where
+'&show_last_po_details'='Y' and
 mtt.transaction_type_name in ('PO Receipt','Miscellaneous receipt') and
 mtt.transaction_type_id=mmt.transaction_type_id and
 oap.schedule_close_date>=mmt.transaction_date

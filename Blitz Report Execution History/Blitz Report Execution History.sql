@@ -15,6 +15,7 @@ x.request_id,
 xxen_util.client_time(x.start_date) start_date,
 x.report_name,
 x.category,
+decode(x.type,'P','Protected','S','System','U','Upload','F','FSG') type,
 x.user_name,
 x.responsibility_name responsibility,
 x.options,
@@ -28,8 +29,8 @@ round(x.row_count/decode(x.seconds,0,0.25,x.seconds),2) rows_second,
 x.file_size,
 xxen_util.client_time(x.actual_completion_date) request_completion_date,
 (x.actual_completion_date-x.completion_date)*86400 file_writing_seconds,
-decode(x.type,'S','System','P','Protected') type,
-x.run_id
+x.run_id,
+x.report_id
 from
 (
 select
@@ -37,8 +38,8 @@ case when xrr.request_id>-1 then xrr.request_id end request_id,
 xxen_util.user_name(xrr.created_by) user_name,
 frt.responsibility_name,
 coalesce(xrv.report_name,
-(select distinct min(xrh.report_name) keep (dense_rank last order by xrh.creation_date) over () report_name from xxen_reports_h xrh where xrr.report_id=xrh.report_id),
-(select fcr.argument1 from fnd_concurrent_requests fcr where xrr.request_id=fcr.request_id)
+(select distinct min(xrh.report_name||' (deleted)') keep (dense_rank last order by xrh.creation_date) over () report_name from xxen_reports_h xrh where xrr.report_id=xrh.report_id and xrr.creation_date>xrh.creation_date),
+(select fcr.argument1||' (deleted)' from fnd_concurrent_requests fcr where xrr.request_id=fcr.request_id)
 ) report_name,
 xrrpv0.options,
 y.parameters,
@@ -59,7 +60,8 @@ xrr.file_size,
 fcr.actual_completion_date,
 xxen_api.category(xrv.report_id) category,
 xrr.type,
-xrr.run_id
+xrr.run_id,
+xrr.report_id
 from
 (
 select

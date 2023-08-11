@@ -43,6 +43,7 @@ Ledger:  enter the specific ledger(s) you wish to report (optional).
 -- |                                    accounts and costs by cost element.
 -- |  1.3    09 Jul 2023 Douglas Volz   Remove tabs and restrict to only orgs you have
 -- |                                    access to, using the org access view.
+-- |  1.4    08 Aug 2023 Douglas Volz   Fix item status code to use translated values. 
 -- +=============================================================================+*/
 -- Excel Examle Output: https://www.enginatics.com/example/cac-new-items/
 -- Library Link: https://www.enginatics.com/reports/cac-new-items/
@@ -55,8 +56,8 @@ select  nvl(gl.short_name, gl.name) Ledger,
         msiv.description Item_Description,
         fcl.meaning Item_Type,
         msiv.creation_date Item_Creation_Date,
-        -- Revision for version 1.2
-        msiv.inventory_item_status_code Item_Status,
+        -- Revision for version 1.4
+        misv.inventory_item_status_code_tl Item_Status,
         ml1.meaning Make_Buy_Code,
         -- End revision for version 1.2
 &category_columns

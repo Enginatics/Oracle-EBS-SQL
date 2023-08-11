@@ -102,6 +102,7 @@ ra_customer_trx_all rcta,
 ra_cust_trx_types_all rctta
 where
 1=1 and
+okhab.authoring_org_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual) and
 okhab.scs_code in (select osb.code from okc_subclasses_b osb where osb.cls_code='SERVICE') and
 haouv.organization_id= okhab.authoring_org_id and
 okhab.scs_code=osclv.code(+) and
@@ -127,8 +128,7 @@ to_char(obtl.bill_instance_number)=rctla.interface_line_attribute3(+) and
 rctla.interface_line_context(+)='OKS CONTRACTS' and
 rctla.customer_trx_id=rcta.customer_trx_id(+) and
 rcta.cust_trx_type_id=rctta.cust_trx_type_id(+) and
-rcta.org_id=rctta.org_id(+) and
-okhab.authoring_org_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual)
+rcta.org_id=rctta.org_id(+)
 order by
 haouv.name,
 okhab.scs_code,

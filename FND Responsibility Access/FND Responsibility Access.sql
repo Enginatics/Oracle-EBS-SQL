@@ -67,6 +67,11 @@ gl.access_set_id
 from
 (
 select
+sum(lengthb(gl.name)+1) over (partition by gl.access_set_id order by gl.object_type_code desc, gl.name rows between unbounded preceding and current row) total_length,
+gl.*
+from
+(
+select
 gl.name||decode(gl.object_type_code,'S',' ('||xxen_util.meaning(gl.object_type_code,'LEDGERS',101)||')') name,
 gl.ledger_id,
 gl.object_type_code,
@@ -81,14 +86,23 @@ where
 nvl(gasna.status_code,'x') not in ('D','I') and
 gasna.ledger_id=gl.ledger_id
 ) gl
+) gl
+where
+gl.total_length<=4000
 ),
 prof as
 (
 select /*+ materialize*/ distinct
-x.security_profile_id,
-x.security_profile,
-decode('&expand_operating_units','Y',haouv.name,listagg(haouv.name,chr(10)) within group (order by haouv.name) over (partition by x.security_profile_id)) operating_unit,
-decode('&expand_operating_units','Y',to_char(haouv.organization_id),listagg(haouv.organization_id,chr(10)) within group (order by haouv.name) over (partition by x.security_profile_id)) operating_unit_id
+y.security_profile_id,
+y.security_profile,
+decode('&expand_operating_units','Y',y.operating_unit,listagg(y.operating_unit,chr(10)) within group (order by y.operating_unit) over (partition by y.security_profile_id)) operating_unit,
+decode('&expand_operating_units','Y',to_char(y.organization_id),listagg(y.organization_id,chr(10)) within group (order by y.operating_unit) over (partition by y.security_profile_id)) operating_unit_id
+from
+(
+select
+decode('&expand_operating_units','Y',0,sum(lengthb(haouv.name)+1) over (partition by x.security_profile_id order by haouv.name rows between unbounded preceding and current row)) total_length,
+haouv.name operating_unit,
+x.*
 from
 (
 select
@@ -110,6 +124,9 @@ decode(psp.view_all_flag,'Y',nvl2(psp.business_group_id,null,-1))=hou0.view_all(
 (select haouv.* from hr_all_organization_units_vl haouv where sysdate between haouv.date_from and nvl(haouv.date_to,sysdate)) haouv
 where
 x.organization_id=haouv.organization_id(+)
+) y
+where
+y.total_length<=4000
 ),
 org as (
 select distinct
@@ -118,7 +135,15 @@ listagg(oav.organization_id,chr(10)) within group (order by oav.organization_cod
 oav.resp_application_id,
 oav.responsibility_id
 from
+(
+select
+sum(lengthb(oav.organization_code)+1) over (partition by oav.resp_application_id, oav.responsibility_id order by oav.organization_code rows between unbounded preceding and current row) total_length,
+oav.*
+from
 org_access_view oav
+) oav
+where
+oav.total_length<=4000
 ),
 usr as
 (
