@@ -66,7 +66,7 @@ If you would like to optimize your Oracle EBS implementation and or operational 
 <b><ins>Useful Links</ins></b>
 
 
-[Blitz Report™ – World’s fastest reporting tool for Oracle E-Business Suite](https://www.enginatics.com/blitz-report/)
+[Blitz Report™ – World’s fastest reporting and data upload for Oracle EBS](https://www.enginatics.com/blitz-report/)
 
 [Oracle Discoverer replacement – importing worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
 
