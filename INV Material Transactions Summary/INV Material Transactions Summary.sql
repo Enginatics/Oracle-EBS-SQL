@@ -24,7 +24,7 @@ from
 mtl_material_transactions mmt,
 mtl_transaction_types mtt,
 mtl_txn_source_types mtst,
-(select msiv.* from mtl_system_items_vl msiv where '&enable_item'='Y') msiv,
+(select msiv.* from mtl_system_items_vl msiv where '&show_item'='Y') msiv,
 mtl_parameters mp,
 mtl_parameters mp2
 where

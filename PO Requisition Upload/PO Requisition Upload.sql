@@ -182,6 +182,7 @@ po_document_types_all_tl podt,
 po_document_types_all_b podb
 where
 1=1 and
+:p_group_by=:p_group_by and
 prha.org_id=haouv.organization_id and
 prha.requisition_header_id=prla.requisition_header_id and
 prla.requisition_line_id=prda.requisition_line_id and

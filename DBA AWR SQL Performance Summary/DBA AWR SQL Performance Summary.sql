@@ -204,7 +204,7 @@ from
 gv$sqlarea gsa
 where
 2=2 and
-'&enable_sql'='Y'
+'&show_sql'='Y'
 ) gsa0,
 gv$sqlarea gsa,
 (select vp.value from v$parameter vp where vp.name like 'db_block_size') vp

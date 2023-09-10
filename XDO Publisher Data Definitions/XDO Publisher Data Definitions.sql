@@ -52,7 +52,7 @@ from
 (select xddv.*, fav.application_name, fav.application_id from xdo_ds_definitions_vl xddv, fnd_application_vl fav where xddv.application_short_name=fav.application_short_name) xddv,
 fnd_concurrent_programs_vl fcpv,
 fnd_executables_vl fev,
-(select xtv.* from xdo_templates_vl xtv where '&enable_template'='Y') xtv,
+(select xtv.* from xdo_templates_vl xtv where '&show_template'='Y') xtv,
 (select
 xl.*,
 xxen_util.blob_to_clob(xl.file_data) text,

@@ -43,10 +43,9 @@ u.effective_period_num,
 (select gbv.budget_name from gl_budget_versions gbv where gbv.budget_version_id=u.budget_version_id) budget_name,
 (select get.encumbrance_type from gl_encumbrance_types get where get.encumbrance_type_id = u.encumbrance_type_id) encumbrance_type,
 case u.actual_flag
-when 'A' then '(A) ' || (select flvv.description from fnd_lookup_values_vl flvv where u.actual_flag=flvv.lookup_code and flvv.lookup_type='BATCH_TYPE' and flvv.view_application_id=101 and flvv.security_group_id=0)
-when 'B' then '(B) ' || (select gbv.budget_name from gl_budget_versions gbv where gbv.budget_version_id=u.budget_version_id)
-when 'E' then '(E) ' || (select get.encumbrance_type from gl_encumbrance_types get where get.encumbrance_type_id = u.encumbrance_type_id)
-else null
+when 'A' then '(A) '||xxen_util.description(u.actual_flag,'BATCH_TYPE',101)
+when 'B' then '(B) '||(select gbv.budget_name from gl_budget_versions gbv where u.budget_version_id=gbv.budget_version_id)
+when 'E' then '(E) '||(select get.encumbrance_type from gl_encumbrance_types get where u.encumbrance_type_id=get.encumbrance_type_id)
 end balance_type_label,
 u.period_name_label,
 u.period_start
@@ -98,7 +97,7 @@ select
 y.column_value,
 decode(y.column_value,2,x.period_start - 1,x.period_start) period_start,
 decode(y.column_value,2,'Open Bal.',x.period_name) period_name,
-decode(y.column_value,2,'00 '||xxen_report.column_translation('START_BALANCE'),to_char(x.period_year) || '-' || lpad(x.period_num,2,'0')||' ('||x.period_name||')') period_name_label,
+decode(y.column_value,2,'00 '||xxen_report.column_translation('START_BALANCE'),to_char(x.period_year)||'-'||lpad(x.period_num,2,'0')||' ('||x.period_name||')') period_name_label,
 x.ledger,
 x.ledger_currency,
 x.balance_currency,
@@ -162,7 +161,6 @@ then case when :p_currency_type = 'T' or gb.actual_flag != 'A'
      else nvl(gb.begin_balance_dr_beq,0)-nvl(gb.begin_balance_cr_beq,0)
      end
 when gb.translated_flag = 'R' then nvl(gb.begin_balance_dr_beq,0)-nvl(gb.begin_balance_cr_beq,0)
-else to_number(null)
 end start_balance_func,
 --
 case
@@ -173,7 +171,6 @@ then case when :p_currency_type = 'T' or gb.actual_flag != 'A'
      else gb.period_net_dr_beq
      end
 when gb.translated_flag = 'R' then gb.period_net_dr_beq
-else to_number(null)
 end debit_func,
 --
 case
@@ -184,7 +181,6 @@ then case when :p_currency_type = 'T' or gb.actual_flag != 'A'
      else gb.period_net_cr_beq
      end
 when gb.translated_flag = 'R' then gb.period_net_cr_beq
-else to_number(null)
 end credit_func,
 --
 case
@@ -195,7 +191,6 @@ then case when :p_currency_type = 'T' or gb.actual_flag != 'A'
      else nvl(gb.period_net_dr_beq,0)-nvl(gb.period_net_cr_beq,0)
      end
 when gb.translated_flag = 'R' then nvl(gb.period_net_dr_beq,0)-nvl(gb.period_net_cr_beq,0)
-else to_number(null)
 end amount_func,
 --
 case
@@ -206,7 +201,6 @@ then case when :p_currency_type = 'T' or gb.actual_flag != 'A'
      else nvl(gb.begin_balance_dr_beq,0)-nvl(gb.begin_balance_cr_beq,0)+nvl(gb.period_net_dr_beq,0)-nvl(gb.period_net_cr_beq,0)
      end
 when gb.translated_flag = 'R' then nvl(gb.begin_balance_dr_beq,0)-nvl(gb.begin_balance_cr_beq,0)+nvl(gb.period_net_dr_beq,0)-nvl(gb.period_net_cr_beq,0)
-else to_number(null)
 end end_balance_func,
 --
 decode(gl.currency_code,:reval_currency,1,(select gdr.conversion_rate from gl_daily_conversion_types gdct, gl_daily_rates gdr where gl.currency_code=gdr.from_currency and gdr.to_currency=:reval_currency and gp.end_date=gdr.conversion_date and gdct.user_conversion_type=:reval_conversion_type and gdct.conversion_type=gdr.conversion_type)) rate,
@@ -242,10 +236,8 @@ case nvl(gb.translated_flag,'?')
       when 'E' then case gb.currency_code when gl.currency_code then 'R' else 'X' end
       when 'S' then 'S'
       when 'T' then case gb.currency_code when 'STAT' then 'X' else 'Y' end
-      else null
       end
- else null
- end = case :p_currency_type when 'E' then 'R' when 'S' then 'S' when 'T' then 'Y' else null end
+ end = case :p_currency_type when 'E' then 'R' when 'S' then 'S' when 'T' then 'Y' end
 ) x,
 table(xxen_util.rowgen(case when :show_start_balance is not null and x.effective_period_num=x.start_effective_period_num then 2 else 1 end)) y
 where

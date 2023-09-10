@@ -28,10 +28,10 @@ fnd_attachment_functions faf,
 fnd_form_functions_vl fffv,
 fnd_form_vl ffv,
 fnd_concurrent_programs_vl fcpv,
-(select fdcu.* from fnd_doc_category_usages fdcu where '&enable_fdcu'='Y') fdcu,
+(select fdcu.* from fnd_doc_category_usages fdcu where '&show_fdcu'='Y') fdcu,
 fnd_document_categories_vl fdcv,
-(select fab.* from fnd_attachment_blocks fab where '&enable_fab'='Y') fab,
-(select fabev.* from fnd_attachment_blk_entities_vl fabev where '&enable_fabev'='Y') fabev
+(select fab.* from fnd_attachment_blocks fab where '&show_fab'='Y') fab,
+(select fabev.* from fnd_attachment_blk_entities_vl fabev where '&show_fabev'='Y') fabev
 where
 1=1 and
 decode(faf.function_type,'F',faf.function_name)=fffv.function_name(+) and

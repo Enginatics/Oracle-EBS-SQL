@@ -157,7 +157,7 @@ bom_tree as
      msiv.organization_id = bbom.organization_id and
      msiv.inventory_item_id = bbom.assembly_item_id and
      msiv.bom_enabled_flag = 'Y' and
-     msiv.bom_item_type in (1,2,4) and
+     msiv.bom_item_type != 5 and -- Exclude Product Family
      bbom.assembly_type = 1 and -- BOM
      nvl(bbom.effectivity_control,1) < 3 and
      nvl(bbom.alternate_bom_designator,'?') = nvl(:p_alternate_bom,'?') and

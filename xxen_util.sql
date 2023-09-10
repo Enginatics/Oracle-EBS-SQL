@@ -448,6 +448,15 @@ function clob_replace(p_source in clob, p_search in clob, p_replacement in clob)
 /***********************************************************************************************/
 function orig_order_line_id(p_split_from_line_id in number) return number;
 
+/***********************************************************************************************/
+/*  Wait for request completion, for example for upload                                        */
+/***********************************************************************************************/
+function wait_for_request(
+p_conc_request_id in number,
+x_status out varchar2,
+x_message out varchar2
+) return varchar2;
+
 end xxen_util;
 /
 
@@ -895,7 +904,7 @@ begin
 
             --replace :$FLEX$. with bind string
             for i in l_flex.first..l_flex.last loop
-              l_sql_text:=replace(l_sql_text,l_flex(i).flex,':'||substr(l_flex(i).bind,1,30));
+              l_sql_text:=replace(l_sql_text,l_flex(i).flex,':'||substrb(l_flex(i).bind,1,30));
             end loop;
           end if;
         end if;
@@ -919,7 +928,7 @@ begin
             for i in l_flex.first..l_flex.last loop
               execute immediate 'select x.'||l_flex(i).column_name||' from '||l_table_name||' x where x.rowid=:p_rowid' into l_bind_value using p_rowid;
               if l_flex(i).bind<>l_prev_bind_name or l_bind_value is not null then
-                dbms_sql.bind_variable(l_cursor,':'||substr(l_flex(i).bind,1,30),l_bind_value);
+                dbms_sql.bind_variable(l_cursor,':'||substrb(l_flex(i).bind,1,30),l_bind_value);
                 l_prev_bind_name:=l_flex(i).bind;
                 l_prev_bind_value:=l_bind_value;
               end if;
@@ -1147,7 +1156,7 @@ begin
       amount=>l_amount,
       dest_offset=>l_dest_offset,
       src_offset=>l_src_offset,
-      blob_csid=>nvl(p_charset_id,dbms_lob.default_csid),
+      blob_csid=>nvl(p_charset_id,nls_charset_id('al32utf8')),
       lang_context=>l_lang_context,
       warning=>l_warning
       );
@@ -1385,7 +1394,7 @@ exception
     l_sql_desc_tab.extend();
     l_sql_desc_tab(1):=xxen_sql_desc_rec(null,null,null,null,null,null,null);
     l_sql_desc_tab(1).column_name:='---- error ----';
-    l_sql_desc_tab(1).data_type:=substr(dbms_utility.format_error_stack,1,106);
+    l_sql_desc_tab(1).data_type:=substrb(dbms_utility.format_error_stack,1,106);
     return l_sql_desc_tab;
 end sql_columns;
 
@@ -2630,7 +2639,7 @@ l_value varchar2(32767);
 begin
   for c in (
   select
-  dbms_lob.substr(xrrpv.value,4000,1) value
+  dbms_lob.substr(xxen_util.clob_substrb(xrrpv.value,4000,1)) value
   from
   xxen_report_runs xrr,
   xxen_report_run_param_values xrrpv,
@@ -2705,6 +2714,33 @@ begin
   end loop;
   return l_orig_line_id;
 end orig_order_line_id;
+
+
+function wait_for_request(
+p_conc_request_id in number,
+x_status out varchar2,
+x_message out varchar2
+) return varchar2 is
+  l_phase varchar2(50);
+  l_dev_status varchar2(50);
+  l_dev_phase varchar2(50);
+  l_req_return_status boolean;
+begin
+  l_req_return_status:=fnd_concurrent.wait_for_request(
+  request_id=>p_conc_request_id,
+  interval =>0.5,
+  phase=>l_phase,
+  status=>x_status,
+  dev_phase=>l_dev_phase,
+  dev_status=>l_dev_status,
+  message=>x_message
+  );
+  if l_dev_phase='COMPLETE' and l_dev_status in ('NORMAL','WARNING') then
+    return 'Success';
+  else
+    return 'Error';
+  end if;
+end wait_for_request;
 
 
 end xxen_util;

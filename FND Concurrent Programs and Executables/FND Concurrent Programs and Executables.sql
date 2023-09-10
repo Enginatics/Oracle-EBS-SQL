@@ -41,7 +41,7 @@ from
 fnd_application_vl fav,
 fnd_concurrent_programs_vl fcpv,
 fnd_executables_vl fev,
-(select fdfcuv.* from fnd_descr_flex_col_usage_vl fdfcuv where '&enable_parameters'='Y') fdfcuv,
+(select fdfcuv.* from fnd_descr_flex_col_usage_vl fdfcuv where '&show_parameters'='Y') fdfcuv,
 fnd_flex_value_sets ffvs,
 fnd_concurrent_request_class fcrc,
 fnd_conc_prog_onsite_info fcpoi

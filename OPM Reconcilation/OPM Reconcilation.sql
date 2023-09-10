@@ -6,7 +6,7 @@
 /*************************************************************************/
 -- Report Name: OPM Reconcilation
 -- Description: OPM Reconciliation Report.
-Blitz Implmentation of the Oracle Sql Script: OPMRecon.sql 
+Blitz Report implementation of the Oracle sql script: OPMRecon.sql 
 Reference MOS Document: OPM Inventory Balance Reconciliation (Doc ID 1510357.1)
 -- Excel Examle Output: https://www.enginatics.com/example/opm-reconcilation/
 -- Library Link: https://www.enginatics.com/reports/opm-reconcilation/

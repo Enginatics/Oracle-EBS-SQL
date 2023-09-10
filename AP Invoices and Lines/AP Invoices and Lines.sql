@@ -252,11 +252,11 @@ with ap_inv as
   hz_parties hp,
   hz_party_sites hps,
   hz_locations hl,
-  (select aila2.* from ap_invoice_lines_all aila2 where '&enable_aila'='Y') aila,
+  (select aila2.* from ap_invoice_lines_all aila2 where '&show_aila'='Y') aila,
   (select aida2.*
    from ap_invoice_distributions_all aida2,
         gl_code_combinations gcc
-    where '&enable_aida'='Y' and
+    where '&show_aida'='Y' and
       gcc.code_combination_id = aida2.dist_code_combination_id and
       2=2
   ) aida,

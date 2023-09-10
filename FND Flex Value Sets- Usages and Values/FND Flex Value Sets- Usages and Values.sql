@@ -48,7 +48,7 @@ from
 fnd_flex_value_sets ffvs,
 fnd_flex_validation_tables ffvt,
 fnd_application_vl fav,
-(select ffvv.* from fnd_flex_values_vl ffvv where '&enable_values'='Y') ffvv,
+(select ffvv.* from fnd_flex_values_vl ffvv where '&show_values'='Y') ffvv,
 (
 select
 fdfcuv.flex_value_set_id,
@@ -63,7 +63,7 @@ fnd_descr_flex_col_usage_vl fdfcuv,
 fnd_descriptive_flexs_vl fdfv,
 fnd_application_vl fav
 where
-'&enable_usages'='Y' and
+'&show_usages'='Y' and
 fdfcuv.descriptive_flexfield_name not like '$SRS$.%' and
 fdfcuv.application_id=fdfv.application_id and
 fdfcuv.descriptive_flexfield_name=fdfv.descriptive_flexfield_name and
@@ -83,7 +83,7 @@ fnd_id_flex_structures_vl fifsv,
 fnd_id_flexs fif,
 fnd_application_vl fav
 where
-'&enable_usages'='Y' and
+'&show_usages'='Y' and
 fifs.application_id=fifsv.application_id and
 fifs.id_flex_code=fifsv.id_flex_code and
 fifs.id_flex_num=fifsv.id_flex_num and
@@ -104,7 +104,7 @@ fnd_descr_flex_col_usage_vl fdfcuv,
 fnd_concurrent_programs_vl fcpv,
 fnd_application_vl fav
 where
-'&enable_usages'='Y' and
+'&show_usages'='Y' and
 fdfcuv.descriptive_flexfield_name like '$SRS$.%' and
 fdfcuv.application_id=fcpv.application_id and
 substr(fdfcuv.descriptive_flexfield_name,7)=fcpv.concurrent_program_name and

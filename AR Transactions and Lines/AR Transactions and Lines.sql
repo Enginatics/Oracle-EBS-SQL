@@ -117,7 +117,7 @@ rctla.*
 from
 ra_customer_trx_lines_all rctla
 where
-'&enable_rctla'='Y' and
+'&show_rctla'='Y' and
 rctla.line_type in ('LINE','FREIGHT','CB')
 ) rctla,
 (
@@ -128,7 +128,7 @@ listagg(rctla2.tax_rate,', ') within group (order by rctla2.tax_rate) over (part
 from
 ra_customer_trx_lines_all rctla2
 where
-'&enable_rctla'='Y' and
+'&show_rctla'='Y' and
 rctla2.line_type='TAX'
 ) rctla2,
 ra_cust_trx_line_gl_dist_all rctlgda0,
@@ -147,7 +147,7 @@ ra_cust_trx_line_gl_dist_all rctlgda
 where
 2=2 and
 &gl_distribution_where_clause2
-'&enable_rctlgda'='Y' and
+'&show_rctlgda'='Y' and
 rctla3.customer_trx_line_id=rctlgda.customer_trx_line_id and
 rctlgda.account_set_flag='N'
 ) rctlgda,

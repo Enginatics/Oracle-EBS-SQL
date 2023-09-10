@@ -37,7 +37,7 @@ hr_all_organization_units_vl haouv,
 hr_all_organization_units_vl haouv0,
 hr_locations_all hla,
 fnd_territories_vl ftv,
-(select xxen_util.meaning(hoi.org_information1,'ORG_CLASS',3) classification, hoi.* from hr_organization_information hoi where '&enable_classification'='Y' and hoi.org_information_context='CLASS' and hoi.org_information2='Y') hoi,
+(select xxen_util.meaning(hoi.org_information1,'ORG_CLASS',3) classification, hoi.* from hr_organization_information hoi where '&show_classification'='Y' and hoi.org_information_context='CLASS' and hoi.org_information2='Y') hoi,
 (
 select
 fdfcuv.application_id,
@@ -88,7 +88,7 @@ fnd_descr_flex_col_usage_vl fdfcuv,
 hr_org_information_types hoit
 where
 2=2 and
-'&enable_attributes'='Y' and
+'&show_attributes'='Y' and
 hoi.org_information_context<>'CLASS' and
 hoi.org_information_context=fdfcuv.descriptive_flex_context_code and
 fdfcuv.application_id=800 and

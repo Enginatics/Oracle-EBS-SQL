@@ -54,8 +54,8 @@ ecc.ecc_audit_request ear,
 (select ead.*, (nvl(ead.end_time,sysdate)-ead.start_time)*86400 seconds from ecc.ecc_audit_dataset ead) ead,
 ecc.ecc_dataset_b edb,
 ecc.ecc_dataset_tl edt,
-(select ealr.*, (nvl(ealr.end_time,sysdate)-ealr.start_time)*86400 seconds from ecc.ecc_audit_load_rule ealr where '&enable_ealr'='Y') ealr,
-(select eald.*, (nvl(eald.end_time,sysdate)-eald.start_time)*86400 seconds from ecc.ecc_audit_load_details eald where '&enable_eald'='Y') eald
+(select ealr.*, (nvl(ealr.end_time,sysdate)-ealr.start_time)*86400 seconds from ecc.ecc_audit_load_rule ealr where '&show_ealr'='Y') ealr,
+(select eald.*, (nvl(eald.end_time,sysdate)-eald.start_time)*86400 seconds from ecc.ecc_audit_load_details eald where '&show_eald'='Y') eald
 where
 1=1 and
 ear.audit_request_id=ead.audit_request_id(+) and

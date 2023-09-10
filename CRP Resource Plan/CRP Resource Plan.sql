@@ -150,7 +150,7 @@ wdj.schedule_group_id=wsg.schedule_group_id(+) and
 crp.source_transaction_id=x.transaction_id(+)
 ) y,
 wip_operations wo,
-(select row_number() over (partition by wro.wip_entity_id, wro.operation_seq_num, wro.organization_id order by wro.inventory_item_id) row_number, wro.* from wip_requirement_operations wro where '&enable_wro'='Y' and wro.wip_supply_type<>6) wro,
+(select row_number() over (partition by wro.wip_entity_id, wro.operation_seq_num, wro.organization_id order by wro.inventory_item_id) row_number, wro.* from wip_requirement_operations wro where '&show_wro'='Y' and wro.wip_supply_type<>6) wro,
 mtl_system_items_vl msiv2,
 mtl_units_of_measure_tl muot,
 mtl_item_locations_kfv milk,

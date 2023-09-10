@@ -11,7 +11,6 @@
 -- Run Report: https://demo.enginatics.com/
 
 select
-x.operating_unit,
 x.party_name,
 x.currency_code,
 &column_party
@@ -49,10 +48,25 @@ hz_parties hp,
 fnd_currencies fc
 where
 1=1 and
+hp.party_id in (
+select
+hca1.party_id
+from
+mo_glob_org_access_tmp mgoat,
+hz_cust_acct_sites_all hcasa1,
+hz_cust_accounts hca1
+where
+3=3 and
+mgoat.organization_id=hcasa1.org_id and
+hcasa1.cust_account_id=hca1.cust_account_id and
+hcasa1.status='A' and
+hca1.status='A'
+) and
 hp.party_id=hca.party_id(+) and
 hca.cust_account_id=hcasa.cust_account_id(+) and
 hcasa.org_id=haouv.organization_id(+) and
-hcasa.cust_acct_site_id=hcsua.cust_acct_site_id(+)
+hcasa.cust_acct_site_id=hcsua.cust_acct_site_id(+) and
+(decode(:display_level,'Site Use',nvl(hcasa.org_id,-1),hcasa.org_id) is null or hcasa.org_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual))
 ) x,
 hz_cust_profile_amts hcpa0,
 hz_cust_profile_amts hcpa1,
@@ -79,6 +93,7 @@ fnd_territories_tl ftt,
   apsa.customer_id = hca.cust_account_id and
   hca.party_id = hp.party_id and
   :p_show_open_rec_bal_flag is not null and
+  apsa.org_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual) and
   2=2
  group by
   hp.party_id,
@@ -128,6 +143,7 @@ where
     rctla.line_type = 'LINE'
   ) and
   :p_show_open_oe_bal_flag is not null and
+  ooha.org_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual) and
   2=2
 group by
   hp.party_id,
@@ -137,24 +153,33 @@ group by
 ) oola
 where
 (
-hcpa0.auto_rec_min_receipt_amount is not null or
-hcpa0.overall_credit_limit is not null or
-hcpa0.trx_credit_limit is not null or
-hcpa0.min_statement_amount is not null or
-hcpa0.min_dunning_amount is not null or
-hcpa0.min_dunning_invoice_amount is not null or
-hcpa1.auto_rec_min_receipt_amount is not null or
-hcpa1.overall_credit_limit is not null or
-hcpa1.trx_credit_limit is not null or
-hcpa1.min_statement_amount is not null or
-hcpa1.min_dunning_amount is not null or
-hcpa1.min_dunning_invoice_amount is not null or
-hcpa2.auto_rec_min_receipt_amount is not null or
-hcpa2.overall_credit_limit is not null or
-hcpa2.trx_credit_limit is not null or
-hcpa2.min_statement_amount is not null or
-hcpa2.min_dunning_amount is not null or
-hcpa2.min_dunning_invoice_amount is not null
+(:display_level in ('All','Party') and
+ (hcpa0.auto_rec_min_receipt_amount is not null or
+  hcpa0.overall_credit_limit is not null or
+  hcpa0.trx_credit_limit is not null or
+  hcpa0.min_statement_amount is not null or
+  hcpa0.min_dunning_amount is not null or
+  hcpa0.min_dunning_invoice_amount is not null
+ )
+) or
+(:display_level in ('All','Account') and
+ (hcpa1.auto_rec_min_receipt_amount is not null or
+  hcpa1.overall_credit_limit is not null or
+  hcpa1.trx_credit_limit is not null or
+  hcpa1.min_statement_amount is not null or
+  hcpa1.min_dunning_amount is not null or
+  hcpa1.min_dunning_invoice_amount is not null
+ )
+) or
+(:display_level in ('All','Site Use') and
+ (hcpa2.auto_rec_min_receipt_amount is not null or
+  hcpa2.overall_credit_limit is not null or
+  hcpa2.trx_credit_limit is not null or
+  hcpa2.min_statement_amount is not null or
+  hcpa2.min_dunning_amount is not null or
+  hcpa2.min_dunning_invoice_amount is not null
+ )
+)
 ) and
 x.party_level_id=hcpa0.cust_account_profile_id(+) and
 x.account_level_id=hcpa1.cust_account_profile_id(+) and
@@ -178,6 +203,7 @@ oola.customer_site_use_id (+) = nvl(x.site_use_id,-999)
 order by
 x.party_name,
 hl.country,
+x.account_number,
 hps.party_site_number,
 x.operating_unit,
 x.currency_code

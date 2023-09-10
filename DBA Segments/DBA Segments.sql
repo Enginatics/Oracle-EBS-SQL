@@ -24,7 +24,7 @@ sum(ds.bytes) over (partition by &partition_by) bytes,
 sum(ds.bytes) over () total_bytes
 from
 dba_segments ds,
-(select di.owner, di.index_name, di.table_owner, di.table_name from dba_indexes di where '&enable_table'='Y') di,
+(select di.owner, di.index_name, di.table_owner, di.table_name from dba_indexes di where '&show_table'='Y') di,
 (
 select
 dl.segment_name,
@@ -35,7 +35,7 @@ dba_lobs dl,
 dba_secondary_objects dso,
 dba_indexes di
 where
-'&enable_table'='Y' and
+'&show_table'='Y' and
 dl.owner=dso.secondary_object_owner(+) and
 dl.table_name=dso.secondary_object_name(+) and
 dso.index_owner=di.owner(+) and

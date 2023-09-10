@@ -213,6 +213,8 @@ select /*+ ordered index(hpb hz_parties_u1) index(hpbb hz_parties_u1) index(xep 
      crev.statement_header_id = csl.statement_header_id and
      crev.statement_line_id   = csl.statement_line_id
  ) error_messages,
+ xxen_util.user_name(csl.last_updated_by) line_last_updated_by,
+ xxen_util.client_time(csl.last_update_date) line_last_updated_date,
  --
  -- GL Cash Account Details
  nvl2(gcc.code_combination_id,fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_bal_seg', 'SQLGL', 'GL#', gcc.chart_of_accounts_id, NULL, gcc.code_combination_id, 'GL_BALANCING', 'Y', 'VALUE'),null)  gl_company_code,
@@ -369,6 +371,8 @@ select &lp_recon_trx_hint
  cebs.invoice,
  cebs.description,
  cebs.error_messages,
+ cebs.line_last_updated_by,
+ cebs.line_last_updated_date,
  --
  -- Reconcilation Trx Details
  &lp_recon_trx_col

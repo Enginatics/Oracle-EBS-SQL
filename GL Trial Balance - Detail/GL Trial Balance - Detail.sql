@@ -48,7 +48,7 @@ where
  and :p_access_set_id = :p_access_set_id
  and :p_chart_of_accounts_id = :p_chart_of_accounts_id
  and :p_ledger_name = :p_ledger_name
- and :p_entered_currency = :p_entered_currency
+ and nvl(:p_entered_currency,'?') = nvl(:p_entered_currency,'?')
  and glb.actual_flag = 'A'
  and glb.period_name in (:p_period_name, decode(:p_type, 'PTD', :p_period_name, 'PJTD', :p_period_name, 'YTD', :p_first_period_name))
  and glb.code_combination_id = glcc.code_combination_id

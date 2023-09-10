@@ -33,13 +33,34 @@ null action_,
 null status_,
 null message_,
 null request_id_,
-rowidtochar(msiv.row_id) row_id,
+:p_upload_mode upload_mode_,
+null item_row_id,
+null item_cat_row_id,
+null set_process_id,
 --
-mp.organization_code,
+to_number(null) number_of_import_workers,
+to_number(null) purge_interface_days,
+--
 msiv.concatenated_segments item,
+mp.organization_code,
 null assign_from_master,
 null copy_from_template,
 null copy_from_item,
+-- Category Assignment
+:p_category_set_name category_set,
+(select
+ min(mck.concatenated_segments)
+ from
+ mtl_category_sets mcs,
+ mtl_item_categories mic,
+ mtl_categories_kfv mck
+ where
+ mcs.category_set_name = :p_category_set_name and
+ mic.category_set_id = mcs.category_set_id and
+ mic.organization_id = msiv.organization_id and
+ mic.inventory_item_id = msiv.inventory_item_id and
+ mck.category_id = mic.category_id
+) item_category,
 -- Main
 msiv.description description,
 msiv.long_description long_description,
@@ -90,7 +111,7 @@ xxen_util.meaning(msiv.lot_status_enabled,'YES_NO',0) lot_status_enabled,
 (select mms.status_code from mtl_material_statuses mms where mms.status_id = msiv.default_lot_status_id) default_lot_status,
 xxen_util.meaning(msiv.serial_status_enabled,'YES_NO',0) serial_status_enabled,
 (select mms.status_code from mtl_material_statuses mms where mms.status_id = msiv.default_serial_status_id) default_serial_status,
-xxen_util.meaning(msiv.lot_split_enabled,'MRP_PLANNING_CODE',700) lot_split_enabled,
+xxen_util.meaning(msiv.lot_split_enabled,'YES_NO',0) lot_split_enabled,
 xxen_util.meaning(msiv.lot_merge_enabled,'YES_NO',0) lot_merge_enabled,
 xxen_util.meaning(msiv.lot_translate_enabled,'YES_NO',0) lot_translate_enabled,
 xxen_util.meaning(msiv.lot_substitution_enabled,'YES_NO',0) lot_substitution_enabled,
@@ -123,12 +144,12 @@ xxen_util.meaning(msiv.default_include_in_rollup_flag,'YES_NO',0) include_in_rol
 (select gcck.concatenated_segments from gl_code_combinations_kfv gcck where gcck.code_combination_id = msiv.cost_of_sales_account) cost_of_goods_sold_account,
 msiv.std_lot_size standard_lot_size,
 -- Asset Management
-xxen_util.meaning(msiv.eam_item_type,'MTL_EAM_ITEM_TYPE',700) eam_item_type,
-xxen_util.meaning(msiv.eam_activity_type_code,'MTL_EAM_ACTIVITY_TYPE',700) eam_activity_type,
-xxen_util.meaning(msiv.eam_activity_cause_code,'MTL_EAM_ACTIVITY_CAUSE' ,700) eam_activity_cause,
-xxen_util.meaning(msiv.eam_activity_source_code,'MTL_EAM_ACTIVITY_SOURCE',700) eam_activity_source,
-xxen_util.meaning(msiv.eam_act_shutdown_status, 'BOM_EAM_SHUTDOWN_TYPE',700) eam_shutdown_type,
-xxen_util.meaning(msiv.eam_act_notification_flag,'YES_NO',0) eam_notification_required,
+xxen_util.meaning(msiv.eam_item_type,'MTL_EAM_ITEM_TYPE',700) asset_item_type,
+xxen_util.meaning(msiv.eam_activity_type_code,'MTL_EAM_ACTIVITY_TYPE',700) asset_activity_type,
+xxen_util.meaning(msiv.eam_activity_cause_code,'MTL_EAM_ACTIVITY_CAUSE' ,700) asset_activity_cause,
+xxen_util.meaning(msiv.eam_activity_source_code,'MTL_EAM_ACTIVITY_SOURCE',700) asset_activity_source,
+xxen_util.meaning(msiv.eam_act_shutdown_status, 'BOM_EAM_SHUTDOWN_TYPE',700) asset_shutdown_type,
+xxen_util.meaning(msiv.eam_act_notification_flag,'YES_NO',0) asset_notification_required,
 -- Purchasing
 xxen_util.meaning(msiv.purchasing_item_flag,'YES_NO',0) purchased,
 xxen_util.meaning(msiv.purchasing_enabled_flag,'YES_NO',0) purchasable,
@@ -316,7 +337,7 @@ xxen_util.meaning(msiv.tax_code,'ZX_OUTPUT_CLASSIFICATIONS',0) output_tax_classi
 (select gcck.concatenated_segments from gl_code_combinations_kfv gcck where gcck.code_combination_id = msiv.sales_account) sales_account,
 (select rtv.name from ra_terms_vl rtv where rtv.term_id = msiv.payment_terms_id) payment_terms,
 -- Service
-xxen_util.meaning(msiv.serv_req_enabled_code,'CS_SR_SERV_REQ_ENABLED_TYPE',542) service_request,
+xxen_util.meaning(msiv.serv_req_enabled_code,'CS_SR_SERV_REQ_ENABLED_TYPE',170) service_request,
 xxen_util.meaning(msiv.serviceable_product_flag,'YES_NO',0) enable_contract_coverage,
 xxen_util.meaning(msiv.defect_tracking_on_flag,'YES_NO',0) enable_defect_tracking,
 xxen_util.meaning(msiv.comms_activation_reqd_flag,'YES_NO',0) enable_provisioning,
@@ -334,7 +355,7 @@ xxen_util.meaning(msiv.ib_item_instance_class,'CSI_ITEM_CLASS',170) item_instanc
 --
 xxen_util.meaning(msiv.recovered_part_disp_code,'CSP_RECOVERED_PART_DISP_CODE',0) recovered_part_disposition,
 xxen_util.meaning(msiv.serv_billing_enabled_flag,'YES_NO',0) enable_service_billing,
-xxen_util.meaning(msiv.material_billable_flag,'MTL_SERVICE_BILLABLE_FLAG',542) billing_type,
+xxen_util.meaning(msiv.material_billable_flag,'MTL_SERVICE_BILLABLE_FLAG',170) billing_type,
 -- Web Option
 xxen_util.meaning(msiv.web_status,'IBE_ITEM_STATUS',0) web_status,
 xxen_util.meaning(msiv.orderable_on_web_flag,'YES_NO',0) orderable_on_the_web,
@@ -392,8 +413,12 @@ mtl_parameters mp,
 mtl_system_items_vl msiv
 where
 :p_upload_mode != 'Create' and
+nvl(:p_coa_id,-1)=nvl(:p_coa_id,-1) and
+nvl(:p_num_import_workers,1) = nvl(:p_num_import_workers,1) and
+nvl(:p_purge_after_days,-1) = nvl(:p_purge_after_days,-1) and
 1=1 and
-msiv.organization_id = mp.organization_id
+msiv.organization_id = mp.organization_id and
+mp.organization_id in (select oav.organization_id from org_access_view oav where oav.responsibility_id = fnd_global.resp_id and oav.resp_application_id = fnd_global.resp_appl_id)
 &not_use_first_block
 &report_table_select &report_table_name &report_table_where_clause &success_records
 &processed_run

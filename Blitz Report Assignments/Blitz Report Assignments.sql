@@ -12,6 +12,7 @@
 
 select distinct
 xrav.report_name,
+xrv.type_dsp type,
 xrv.category,
 xxen_util.meaning(xrv.enabled,'YES_NO',0) enabled,
 xxen_util.meaning(xrav.include_exclude,'INCLUDE_EXCLUDE',0) include_exclude,

@@ -23,6 +23,7 @@ from
 select
 xrv.report_name,
 xxen_report.validate_sql(xrv.sql_text_full,'parse') error_message,
+xrv.type_dsp type,
 xrv.category,
 xrv.sql_text,
 regexp_substr(xrv.description,'Report ID: (\d+)',1,1,null,1) orig_report_id

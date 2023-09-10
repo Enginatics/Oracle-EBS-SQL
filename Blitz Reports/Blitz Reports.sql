@@ -6,7 +6,7 @@
 /*************************************************************************/
 -- Report Name: Blitz Reports
 -- Description: Blitz Reports with parameters and assignments.
-If you are using the free version of Blitz Report, column 'Free 30 Reports' shows which reports are currently included.
+If you are using the free version of Blitz Report, you can use the parameter 'Sort by Free 30 Reports' to show your free reports in column 'Free 30 Reports'.
 -- Excel Examle Output: https://www.enginatics.com/example/blitz-reports/
 -- Library Link: https://www.enginatics.com/reports/blitz-reports/
 -- Run Report: https://demo.enginatics.com/
@@ -22,9 +22,9 @@ select distinct
 xr.report_id,
 dbms_lob.substr(regexp_substr(regexp_substr(xr.sql_text,'(\D|^)(\d+)=\2(\D|$)',1,x.column_value),'\d+=\d+')) anchor
 from
-(select xr.report_id, regexp_replace(replace(xr.sql_text,''''''),'''[^'']*''','''x''') sql_text from xxen_reports xr where 3=3) xr,
+(select xrv.report_id, regexp_replace(replace(xrv.sql_text_full,''''''),'''[^'']*''','''x''') sql_text from xxen_reports_v xrv where 3=3) xr,
 table(xxen_util.rowgen(regexp_count(xr.sql_text,'(\D|^)(\d+)=\2(\D|$)'))) x
-where '&enable_anchors_lexicals_binds'='Y'
+where '&show_anchors_lexicals_binds'='Y'
 ) y),
 lexicals as (
 select distinct
@@ -36,9 +36,9 @@ select distinct
 xr.report_id,
 lower(dbms_lob.substr(regexp_substr(xr.sql_text,'&\w+',1,x.column_value))) lexical
 from
-(select xr.report_id, xr.sql_text from xxen_reports xr where 3=3 and xr.sql_text like '%&%') xr,
+(select xrv.report_id, xrv.sql_text_full sql_text from xxen_reports_v xrv where 3=3 and xrv.sql_text_full like '%&%') xr,
 table(xxen_util.rowgen(regexp_count(xr.sql_text,'&\w+'))) x
-where '&enable_anchors_lexicals_binds'='Y'
+where '&show_anchors_lexicals_binds'='Y'
 ) y),
 binds as (
 select distinct
@@ -50,21 +50,15 @@ select distinct
 xr.report_id,
 lower(dbms_lob.substr(regexp_substr(xr.sql_text,':\w+',1,x.column_value))) bind
 from
-(select xr.report_id, regexp_replace(replace(xr.sql_text,''''''),'''[^'']*''','''x''') sql_text from xxen_reports xr where 3=3 and xr.sql_text like '%:%') xr,
+(select xrv.report_id, regexp_replace(replace(xrv.sql_text_full,''''''),'''[^'']*''','''x''') sql_text from xxen_reports_v xrv where 3=3 and xrv.sql_text_full like '%:%') xr,
 table(xxen_util.rowgen(regexp_count(xr.sql_text,':\w+'))) x
-where '&enable_anchors_lexicals_binds'='Y'
+where '&show_anchors_lexicals_binds'='Y'
 ) y)
 select
 xrv.report_name,
 xxen_util.application_name(substr(xrv.report_name,1,instr(xrv.report_name,' ')-1)) application,
+xrv.type_dsp type,
 xrv.category,
-decode(xrv.type,'P','Protected','S','System','U','Upload','F','FSG') type,
-decode(xrv.upload_type,'I','Interface Table','A','API') upload_type,
-xxen_util.meaning(xrv.upload_create_only,'YES_NO',0) upload_create_only,
-xrv.upload_object,
-xrv.upload_post_procedure,
-xrv.upload_excel_validation,
-xxen_util.meaning(case when xrv.row_num<=30 or xrv.seeded_blitz_report_flag='Y' then 'Y' end,'YES_NO',0) free_30_reports,
 &columns
 xrv.description,
 &modification
@@ -84,6 +78,11 @@ xrv.additional_out_dir_db,
 xrv.additional_out_fname,
 xrv.request_type,
 xrv.target_database,
+decode(xrv.upload_type,'I','Interface Table','A','API') upload_type,
+xxen_util.meaning(xrv.upload_create_only,'YES_NO',0) upload_create_only,
+xrv.upload_object,
+xrv.upload_post_procedure,
+xrv.upload_excel_validation,
 xxen_util.user_name(xrv.created_by) created_by,
 xxen_util.client_time(xrv.creation_date) creation_date,
 xxen_util.user_name(xrv.last_updated_by) last_updated_by,
@@ -106,7 +105,7 @@ from
 (
 select
 x.*,
-row_number() over (order by x.seeded_flag nulls first,x.seeded_blitz_report_flag nulls first,x.report_id desc) row_num
+row_number() over (partition by x.type_ order by x.seeded_flag nulls first,x.seeded_blitz_report_flag nulls first,x.report_id desc) row_num
 from
 (
 select
@@ -114,15 +113,18 @@ xrv.*,
 (select count(*) from xxen_report_parameters xrp where xrv.report_id=xrp.report_id and xrp.display_sequence is not null) parameter_count,
 (select count(*) from xxen_report_templates xrt where xrv.report_id=xrt.report_id) template_count,
 (select 'Y' from fnd_user fu where fu.user_name in ('ANONYMOUS','ENGINATICS') and xrv.created_by=fu.user_id) seeded_flag,
-xxen_report.is_seeded_blitz_report(xrv.guid) seeded_blitz_report_flag
+xxen_report.is_seeded_blitz_report(xrv.guid) seeded_blitz_report_flag,
+decode(xrv.type,'U','U') type_
 from
 xxen_reports_v xrv
 ) x
 ) xrv,
 xxen_reports_v xrv0,
-(select xrpv.* from xxen_report_parameters_v xrpv where '&enable_parameters'='Y') xrpv,
-(select xrav.* from xxen_report_assignments_v xrav where '&enable_assignments'='Y') xrav,
-(select count(*) execution_count, xrr.report_id from xxen_report_runs xrr where 2=2 and '&enable_exec_count'='Y' group by xrr.report_id) y,
+(select xrpv.* from xxen_report_parameters_v xrpv where '&show_parameters'='Y') xrpv,
+(select xrav.* from xxen_report_assignments_v xrav where '&show_assignments'='Y') xrav,
+(select count(*) execution_count, xrr.report_id from xxen_report_runs xrr where 2=2 and '&show_exec_count'='Y' group by xrr.report_id) y,
+(select xup.* from xxen_upload_parameters xup where '&show_upload_parameters'='Y') xup,
+(select xucv.* from xxen_upload_columns_v xucv where '&show_upload_columns'='Y') xucv,
 anchors,
 lexicals,
 binds
@@ -132,6 +134,8 @@ xrv.copied_from_guid=xrv0.guid(+) and
 xrv.report_id=xrpv.report_id(+) and
 xrv.report_id=xrav.report_id(+) and
 xrv.report_id=y.report_id(+) and
+xrv.report_id=xup.report_id(+) and
+xrv.report_id=xucv.report_id(+) and
 xrv.report_id=anchors.report_id(+) and
 xrv.report_id=lexicals.report_id(+) and
 xrv.report_id=binds.report_id(+)
@@ -140,6 +144,8 @@ order by
 y.execution_count desc nulls last,
 xrv.report_name,
 xrpv.sort_order,
+xup.display_sequence,
+xucv.column_number,
 xrav.include_exclude desc,
 decode(xrav.assignment_level_desc,
 'Site',1,

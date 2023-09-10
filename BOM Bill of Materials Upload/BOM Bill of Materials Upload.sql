@@ -132,7 +132,6 @@ bom_tree as
      bbom.common_organization_id is null and
      bbom.common_assembly_item_id is null and
      mp.organization_code = :p_organization_code and
-     :p_upload_mode= 'Create or Update' and
      1=1
   )
 ),
