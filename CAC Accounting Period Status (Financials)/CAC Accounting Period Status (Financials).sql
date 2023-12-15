@@ -56,7 +56,8 @@ gl_ledgers gl,
 hr_operating_units hou,
 gl_periods gp
 where
-1=1 and
+gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
+and 1=1 and
 fav.application_id in (222,8405,8721,283,201,200,101,275,540,401) and
 gl.ledger_id=hou.set_of_books_id and
 gl.period_set_name=gp.period_set_name and

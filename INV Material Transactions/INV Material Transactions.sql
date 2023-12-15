@@ -22,12 +22,16 @@ mmt.primary_quantity,
 mmt.secondary_transaction_quantity secondary_quantity,
 mmt.secondary_uom_code secondary_uom,
 mmt.subinventory_code subinventory,
-inv_project.get_locator(mmt.locator_id,mmt.organization_id) locator,
+nvl(inv_project.get_locator(mmt.locator_id,mmt.organization_id),
+    (select milk.concatenated_segments from mtl_item_locations_kfv milk where milk.inventory_location_id = mmt.locator_id and milk.organization_id = mmt.organization_id)
+) locator,
 decode(inv_check_product_install.check_cse_install,'Y',nvl(hl.clli_code,substr(hl.city,1,10)||substr(hl.location_id,1,10)),substr(hl.city,1,10)||substr(hl.location_id,1,10)) location,
 mmt.revision,
 &lot_columns
 mmt.transfer_subinventory,
-inv_project.get_locator(mmt.transfer_locator_id,mmt.transfer_organization_id) transfer_locator,
+nvl(inv_project.get_locator(mmt.transfer_locator_id,mmt.transfer_organization_id), 
+    (select milk.concatenated_segments from mtl_item_locations_kfv milk where milk.inventory_location_id = mmt.transfer_locator_id and milk.organization_id = mmt.transfer_organization_id)
+) transfer_locator,
 mp2.organization_code transfer_org,
 mp3.organization_code||'-'||haouv3.name owning_party,
 mp4.organization_code||'-'||haouv4.name planning_party,
@@ -50,10 +54,14 @@ aps.vendor_name,
 aps.segment1 vendor_number,
 mtt.transaction_type_name transaction_type,
 xxen_util.meaning(mmt.transaction_action_id,'MTL_TRANSACTION_ACTION',700) transaction_action,
-ppa.segment1 project,
-pt.task_number task,
-ppa2.segment1 to_project,
-pt2.task_number to_task,
+ppa.segment1 project_number,
+pt.task_number task_number,
+ppa.name project_name,
+pt.task_name task_name,
+ppa2.segment1 to_project_number,
+pt2.task_number to_task_number,
+ppa2.name to_project_name,
+pt2.task_name to_task_name,
 mtr.reason_name reason,
 mtr.description reason_description,
 mmt.source_line_id,
@@ -94,6 +102,7 @@ pa_projects_all ppa2,
 pa_tasks pt2
 where
 1=1 and
+mmt.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
 mp.organization_id=mmt.organization_id and
 mmt.transaction_type_id=mtt.transaction_type_id and
 mmt.transaction_source_type_id=mtst.transaction_source_type_id(+) and

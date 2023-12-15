@@ -22,8 +22,8 @@ mcce.subinventory subinventory,
 mcce.item_number,
 mcce.item_description,
 mcce.user_item_type,
-inv_project.get_locator(mil.inventory_location_id,mil.organization_id) locator,
-mil.description locator_description,
+nvl(inv_project.get_locator(milk.inventory_location_id,milk.organization_id),milk.concatenated_segments) locator,
+milk.description locator_description,
 mcce.revision revision,
 mac.abc_class_name abc_class_name,
 mcce.current_date count_date,
@@ -52,7 +52,7 @@ mcce.neg_adj negtaive_adjustment_values,
 mcce.serials,
 mcce.lot_number lot_number
 from
-mtl_item_locations mil,
+mtl_item_locations_kfv milk,
 mtl_cycle_count_items mcci,
 mtl_abc_classes mac,
 (
@@ -135,6 +135,7 @@ wms_license_plate_numbers wlpn1,
 wms_license_plate_numbers wlpn2
 where
 1=1 and
+mcce.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
 ood.set_of_books_id=gl.ledger_id and
 gl.currency_code=fc.currency_code and
 ood.organization_id=mcce.organization_id and
@@ -147,8 +148,8 @@ mcce.outermost_lpn_id=wlpn1.lpn_id(+) and
 mcce.parent_lpn_id=wlpn2.lpn_id(+)
 ) mcce
 where
-mcce.locator_id=mil.inventory_location_id(+) and
-mcce.organization_id=mil.organization_id(+) and
+mcce.locator_id=milk.inventory_location_id(+) and
+mcce.organization_id=milk.organization_id(+) and
 mcci.cycle_count_header_id=mcce.cycle_count_header_id and
 mcci.inventory_item_id=mcce.inventory_item_id and
 mcci.abc_class_id=mac.abc_class_id 

@@ -102,7 +102,7 @@ ra_customer_trx_all rcta,
 ra_cust_trx_types_all rctta
 where
 1=1 and
-okhab.authoring_org_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual) and
+okhab.authoring_org_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11) and
 okhab.scs_code in (select osb.code from okc_subclasses_b osb where osb.cls_code='SERVICE') and
 haouv.organization_id= okhab.authoring_org_id and
 okhab.scs_code=osclv.code(+) and

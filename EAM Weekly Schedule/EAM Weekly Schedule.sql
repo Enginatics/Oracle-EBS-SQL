@@ -103,6 +103,7 @@ eam_org_maint_defaults eomd,
 mtl_eam_locations mel
 where
 1=1 and
+wdj.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
 we.wip_entity_id=wdj.wip_entity_id and
 we.organization_id=wdj.organization_id and
 wdj.status_type=3 and /*released*/

@@ -308,6 +308,8 @@ and hoi.organization_id             = haou.organization_id   -- this gets the or
 and haou2.organization_id           = to_number(hoi.org_information3) -- this gets the operating unit id
 and gl.ledger_id                    = to_number(hoi.org_information1) -- get the ledger_id
 and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
+and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
+and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
 and 1=1                             -- p_item_number, p_org_code, operating_unit, p_ledger
 -- ========================================================
 -- SLA table joins to get the exact account numbers
@@ -558,6 +560,8 @@ and hoi.organization_id             = haou.organization_id   -- this gets the or
 and haou2.organization_id           = to_number(hoi.org_information3) -- this gets the operating unit id
 and gl.ledger_id                    = to_number(hoi.org_information1) -- get the ledger_id
 and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
+and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
+and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
 and 1=1                             -- p_item_number, p_org_code, operating_unit, p_ledger
 -- ========================================================
 -- SLA table joins to get the exact account numbers
@@ -624,21 +628,4 @@ select nvl(gl.short_name, gl.name) Ledger,
  -- Revision for version 1.20
  mmt.creation_date Shipment_Creation_Date,
  ml.meaning Accounting_Line_Type,
- mtt.transaction_type_name Transaction_Type,
- mmt.transaction_id Transaction_Id,
- trunc(mmt.transaction_date) Transaction_Date,
- mtln.lot_number Lot_Number,
- -- Revision for version 1.14
- muomv.uom_code UOM_Code,
- -- ================================================================
- -- Revision for version 1.16
- -- Check by fob_point to determine the sign of the quantity
- -- ================================================================   
- decode(mmt.fob_point, 
-  1, (decode(mtln.lot_number, null, -1 * mmt.primary_quantity, -1 * mtln.primary_quantity)),
-  2, (decode(mtln.lot_number, null,  1 * mmt.primary_quantity,  1 * mtln.primary_quantity))
-       ) Received_Quantity,
- nvl(mta.currency_code, gl.currency_code) PO_Currency_Code,
- round((nvl(mmt.variance_amount,0)/
-  decode(mmt.fob_point, 
-   1, (decode(mtln.lot_number, null, -1 * mmt.primary_quantity, -1 * mtln.p
+ mtt.transaction_type_name Transaction_Typ

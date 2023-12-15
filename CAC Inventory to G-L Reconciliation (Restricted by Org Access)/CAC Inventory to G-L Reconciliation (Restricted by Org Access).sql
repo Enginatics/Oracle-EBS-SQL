@@ -82,7 +82,8 @@ mp.primary_cost_method=1 and --frozen
  when nvl(mp.cost_group_accounting,2) = 2 then 2
  else 2
     end and
-5=5
+5=5 and
+mp.organization_id in (select ood.organization_id from org_organization_definitions ood where nvl(ood.disable_date,sysdate+1)>sysdate and ood.set_of_books_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+)))
 -- End for revision 1.8
 union
 --organization
@@ -115,12 +116,17 @@ union
 --intransit accounting
 select mip.intransit_inv_account from mtl_interorg_parameters mip
 -- Revision for version 1.8
-where 6=6
+where 6=6 and
+(
+mip.from_organization_id in (select ood.organization_id from org_organization_definitions ood where nvl(ood.disable_date,sysdate+1)>sysdate and ood.set_of_books_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))) or
+mip.to_organization_id in (select ood.organization_id from org_organization_definitions ood where nvl(ood.disable_date,sysdate+1)>sysdate and ood.set_of_books_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+)))
+)
 union
 --receiving accounting
 select rp.receiving_account_id from rcv_parameters rp
 -- Revision for version 1.8
-where 7=7
+where 7=7 and
+rp.organization_id in (select ood.organization_id from org_organization_definitions ood where nvl(ood.disable_date,sysdate+1)>sysdate and ood.set_of_books_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+)))
 union
 --wip accounting when cost group accounting is not in use
 select distinct
@@ -334,6 +340,7 @@ select gb.period_name period_name,
                  and    sysdate < nvl(haou.date_to, sysdate + 1)
                  -- Revision for version 1.8
                  and    8=8
+                 and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
                 )
      -- ======================================
      group by
@@ -814,43 +821,4 @@ select gb.period_name period_name,
          where 3=3 -- oap.period_name=:period_name
          and    wpb.wip_entity_id         = wdj.wip_entity_id
          and    wpb.acct_period_id       <= oap.acct_period_id
-         and    wpb.organization_id       = oap.organization_id
-         -- Revision for version 1.8
-         and    wac.class_code            = wdj.class_code 
-         and    wac.organization_id       = wdj.organization_id
-         and    wac.class_type not in (4,6,7) -- 4-expense non-standard, 6-maintenance, 7-expense non-standard lot based
-         -- End revision for version 1.8
-         group by
-            oap.period_name,
-            wpb.acct_period_id,
-            wpb.organization_id,
-            wdj.resource_account,
-            wdj.class_code,
-            wdj.primary_item_id
-         -- =====================================================
-         -- 3.14 now get the osp value for the wip jobs
-         -- =====================================================
-         union all
-         select oap.period_name period_name,
-            wpb.acct_period_id acct_period_id,
-            wpb.organization_id organization_id,
-            wdj.outside_processing_account code_combination_id,
-            wdj.class_code class_code,
-            wdj.primary_item_id inventory_item_id,
-            sum(nvl(tl_outside_processing_in,0)+
-             nvl(pl_outside_processing_in,0)-
-             nvl(tl_outside_processing_out,0)-
-             nvl(pl_outside_processing_out,0)-
-             nvl(tl_outside_processing_var,0)-
-             nvl(pl_outside_processing_var,0)) wip_value
-         from wip_period_balances wpb,
-              wip_discrete_jobs wdj,
-              org_acct_periods oap,
-              -- Revision for version 1.8
-              wip_accounting_classes wac
-         -- ===========================================
-         -- wip job entity and accounting period joins
-         -- ===========================================
-         where 3=3 -- oap.period_name=:period_name
-         and    wpb.wip_entity_id         = wdj.wip_entity_id
-      
+         and   

@@ -129,7 +129,9 @@ and     fcl.lookup_code                 = msiv.item_type
 and     mp.organization_id             <> mp.master_organization_id     -- remove the global master org
 -- End revision for version 1.3
 and     msiv.organization_id            = mp.organization_id
-and     1=1
+and     gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
+and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
+and 1=1
 -- Revision for version 1.9
 and    mp.organization_code in (select oav.organization_code from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
 -- ===================================================================
@@ -217,7 +219,9 @@ and     fcl.lookup_code                 = msiv.item_type
 -- Revision for version 1.3
 and     mp.organization_id             <> mp.master_organization_id     -- remove the global master org
 -- End revision for version 1.3
-and     1=1
+and     gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
+and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
+and 1=1
 -- Revision for version 1.9
 and    mp.organization_code in (select oav.organization_code from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
 and     not exists (

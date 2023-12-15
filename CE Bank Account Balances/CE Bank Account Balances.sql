@@ -50,6 +50,25 @@ with ce_bank_acct_bal_qry1 as
 ( select
    nvl(cbab.bank_account_id,cpb.bank_account_id) bank_account_id,
    nvl(cbab.balance_date,cpb.balance_date) balance_date,
+   -- actual_balance_date
+   case when nvl2(:p_as_of_date,'Y','N') || substr(nvl(:p_bf_flag,'N'),1,1) != 'YY'
+   then cbab.balance_date
+   else case when trunc(cbab.balance_date) = :p_as_of_date
+              and cbab.ledger_balance is not null
+        then cbab.balance_date
+        else (select cbab.balance_date
+              from   ce_bank_acct_balances  cbab2
+              where  (cbab2.bank_account_id,cbab2.balance_date) =
+                     (select   cbab3.bank_account_id,max(cbab3.balance_date)
+                      from     ce_bank_acct_balances  cbab3
+                      where    cbab3.bank_account_id = nvl(cbab.bank_account_id,cpb.bank_account_id)  and
+                               cbab3.balance_date < :p_as_of_date and
+                               cbab3.ledger_balance is not null
+                      group by cbab3.bank_account_id
+                     )
+             )
+        end
+   end actual_balance_date,   
    --cbab.ledger_balance,
    case when nvl2(:p_as_of_date,'Y','N') || substr(nvl(:p_bf_flag,'N'),1,1) != 'YY'
    then cbab.ledger_balance
@@ -335,7 +354,8 @@ ce_bank_acct_bal_qry2 as
    'BA'                                type_code,
    cbacv.bank_account_id               bank_account_id,
    gcc.code_combination_id             asset_ccid,
-   gcc.chart_of_accounts_id            coaid
+   gcc.chart_of_accounts_id            coaid,
+   cbabq1.actual_balance_date          actual_balance_date
   from
    ce_bank_acct_bal_qry1     cbabq1,
    ce_bank_accts_calc_v      cbacv,
@@ -393,7 +413,8 @@ ce_bank_acct_bal_qry2 as
    'CP'                              type_code,
    cbacv.bank_account_id             bank_account_id,
    gcc.code_combination_id           asset_ccid,
-   gcc.chart_of_accounts_id          coaid
+   gcc.chart_of_accounts_id          coaid,
+   to_date(null)                     actual_balance_date
   from
    ce_bank_accts_calc_v   cbacv,
    ce_cashpools           cc,
@@ -479,7 +500,12 @@ select
    nvl2(cbab.average_closing_ledger_ytd   , cbab.avg_close_ledger_ytd_bf   , null) ||
    nvl2(cbab.average_closing_available_ytd, cbab.avg_close_available_ytd_bf, null)
  end as_of_date_balances_bf_flag,
- --
+ -- Statement Details
+ csh.statement_number,
+ csh.statement_date,
+ csh.control_begin_balance statement_opening_balance,
+ csh.control_end_balance statement_closing_balance,
+ -- Reporting Currency
  :p_rep_currency reporting_currency,
  case
  when :p_rep_currency is null
@@ -554,7 +580,6 @@ select
  then to_number(null)
  else cbab.max_target_balance * ce_bankacct_ba_report_util.get_rate(cbab.bank_account_currency,:p_rep_currency,to_char(:p_rep_exchange_rate_date,'YYYY/MM/DD HH24:MI:SS'),:p_rep_exchange_rate_type)
  end rep_curr_max_target_balance,
- --
  -- GL Cash Account Details
  nvl2(cbab.asset_ccid,fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_bal_seg', 'SQLGL', 'GL#', cbab.coaid, NULL, cbab.asset_ccid, 'GL_BALANCING', 'Y', 'VALUE'),null) gl_company_code,
  nvl2(cbab.asset_ccid,fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_bal_seg', 'SQLGL', 'GL#', cbab.coaid, NULL, cbab.asset_ccid, 'GL_BALANCING', 'Y', 'DESCRIPTION'),null) gl_company_desc,
@@ -567,9 +592,12 @@ select
  -- pivot labels
  cbab.bank_name || ' - ' || cbab.masked_account_num || ' - ' || cbab.bank_account_name || ' (' ||  cbab.bank_account_currency || ')' bank_account_pivot_label
 from
- ce_bank_acct_bal_qry2 cbab
+ ce_bank_acct_bal_qry2 cbab,
+ ce_statement_headers csh
 where
- 1=1
+ 1=1 and
+ decode(cbab.type_code,'BA',cbab.bank_account_id,null) = csh.bank_account_id (+) and
+ decode(cbab.type_code,'BA',cbab.actual_balance_date,null) = csh.statement_date (+) 
 order by
  cbab.bank_name,
  cbab.masked_account_num,

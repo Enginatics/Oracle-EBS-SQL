@@ -66,7 +66,7 @@ hp.party_id=hca.party_id(+) and
 hca.cust_account_id=hcasa.cust_account_id(+) and
 hcasa.org_id=haouv.organization_id(+) and
 hcasa.cust_acct_site_id=hcsua.cust_acct_site_id(+) and
-(decode(:display_level,'Site Use',nvl(hcasa.org_id,-1),hcasa.org_id) is null or hcasa.org_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual))
+(decode(:display_level,'Site Use',nvl(hcasa.org_id,-1),hcasa.org_id) is null or hcasa.org_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11))
 ) x,
 hz_cust_profile_amts hcpa0,
 hz_cust_profile_amts hcpa1,
@@ -93,7 +93,7 @@ fnd_territories_tl ftt,
   apsa.customer_id = hca.cust_account_id and
   hca.party_id = hp.party_id and
   :p_show_open_rec_bal_flag is not null and
-  apsa.org_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual) and
+  apsa.org_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11) and
   2=2
  group by
   hp.party_id,
@@ -143,7 +143,7 @@ where
     rctla.line_type = 'LINE'
   ) and
   :p_show_open_oe_bal_flag is not null and
-  ooha.org_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual) and
+  ooha.org_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11) and
   2=2
 group by
   hp.party_id,

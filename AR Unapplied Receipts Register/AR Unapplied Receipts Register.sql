@@ -171,7 +171,7 @@ where
 1=1 and
 gl.ledger_id=hou.set_of_books_id and
 hou.organization_id=araa.org_id and
-hou.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where not exists (select null from mo_glob_org_access_tmp mgoat)) and
+hou.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11) and
 apsa.class='PMT' and
 apsa.invoice_currency_code=nvl(upper(:p_in_curr_code),apsa.invoice_currency_code) and
 apsa.gl_date_closed >= nvl(:p_as_of_date+1,to_date ('31-12-4712','DD-MM-YYYY')) and -- to_date ('31-12-4712','DD-MM-YYYY') and

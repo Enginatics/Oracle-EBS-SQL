@@ -13,6 +13,7 @@
 -- Run Report: https://demo.enginatics.com/
 
 select
+ood.organization_code,
 mso.segment1 sales_order,
 ppa.segment1 project,
 we.wip_entity_name job,
@@ -50,7 +51,6 @@ msiv.planner_code planner_code,
 mp.description planner,
 ppx.full_name buyer,
 ood.organization_name organization,
-ood.organization_code,
 we.wip_entity_id,
 wro.inventory_item_id
 from
@@ -89,6 +89,7 @@ moqd.inventory_item_id
 ) moqd
 where
 1=1 and
+we.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
 ood.organization_id=we.organization_id and
 we.wip_entity_id=mr.supply_source_header_id(+) and
 mr.demand_source_header_id=mso.sales_order_id(+) and

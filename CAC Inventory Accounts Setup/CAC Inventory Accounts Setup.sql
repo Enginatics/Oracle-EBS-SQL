@@ -74,6 +74,8 @@ and hoi.organization_id              = haou.organization_id -- this gets the org
 and haou2.organization_id            = to_number(hoi.org_information3) -- this gets the operating unit id
 and gl.ledger_id                     = to_number(hoi.org_information1) -- get the ledger_id
 and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
+and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
+and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
 and 1=1                                                                                                   -- p_ledger, p_operating_unit, p_org_code
 and (:p_account_group = 'Inter-Org'
   or
@@ -106,6 +108,8 @@ and hoi.organization_id             = haou.organization_id -- this gets the orga
 and haou2.organization_id           = to_number(hoi.org_information3) -- this gets the operating unit id
 and gl.ledger_id                    = to_number(hoi.org_information1) -- get the ledger_id
 and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
+and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
+and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
 and 1=1                                                                                                   -- p_ledger, p_operating_unit, p_org_code
 and (:p_account_group = 'Inter-Org'
   or
@@ -138,6 +142,8 @@ and hoi.organization_id             = haou.organization_id -- this gets the orga
 and haou2.organization_id           = to_number(hoi.org_information3) -- this gets the operating unit id
 and gl.ledger_id                    = to_number(hoi.org_information1) -- get the ledger_id
 and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
+and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
+and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
 and 1=1                                                                                                   -- p_ledger, p_operating_unit, p_org_code
 and (:p_account_group = 'Inter-Org'
   or
@@ -170,6 +176,8 @@ and hoi.organization_id             = haou.organization_id -- this gets the orga
 and haou2.organization_id           = to_number(hoi.org_information3) -- this gets the operating unit id
 and gl.ledger_id                    = to_number(hoi.org_information1) -- get the ledger_id
 and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
+and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
+and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
 and 1=1                                                                                                   -- p_ledger, p_operating_unit, p_org_code
 and (:p_account_group = 'Inter-Org'
   or
@@ -202,6 +210,8 @@ and hoi.organization_id             = haou.organization_id -- this gets the orga
 and haou2.organization_id           = to_number(hoi.org_information3) -- this gets the operating unit id
 and gl.ledger_id                    = to_number(hoi.org_information1) -- get the ledger_id
 and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
+and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
+and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
 and 1=1                                                                                                   -- p_ledger, p_operating_unit, p_org_code
 and (:p_account_group = 'Inter-Org'
   or
@@ -238,6 +248,8 @@ and hoi.organization_id             = haou.organization_id -- this gets the orga
 and haou2.organization_id           = to_number(hoi.org_information3) -- this gets the operating unit id
 and gl.ledger_id                    = to_number(hoi.org_information1) -- get the ledger_id
 and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
+and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
+and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
 and 1=1                                                                                                   -- p_ledger, p_operating_unit, p_org_code
 and (:p_account_group = 'Profit and Loss'
   or
@@ -270,6 +282,8 @@ and hoi.organization_id             = haou.organization_id -- this gets the orga
 and haou2.organization_id           = to_number(hoi.org_information3) -- this gets the operating unit id
 and gl.ledger_id = to_number(hoi.org_information1) -- get the ledger_id
 and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
+and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
+and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
 and 1=1                                                                                                   -- p_ledger, p_operating_unit, p_org_codee
 and (:p_account_group = 'Profit and Loss'
   or
@@ -308,6 +322,8 @@ and hoi.organization_id             = haou.organization_id -- this gets the orga
 and haou2.organization_id           = to_number(hoi.org_information3) -- this gets the operating unit id
 and gl.ledger_id                    = to_number(hoi.org_information1) -- get the ledger_id
 and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
+and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
+and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
 and 1=1                                                                                                   -- p_ledger, p_operating_unit, p_org_code
 and (:p_account_group = 'Profit and Loss'
   or
@@ -346,6 +362,8 @@ and hoi.organization_id             = haou.organization_id -- this gets the orga
 and haou2.organization_id           = to_number(hoi.org_information3) -- this gets the operating unit id
 and gl.ledger_id                    = to_number(hoi.org_information1) -- get the ledger_id
 and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
+and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
+and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
 and 1=1                                                                                                   -- p_ledger, p_operating_unit, p_org_code
 and (:p_account_group = 'Other Accounts'
   or
@@ -382,6 +400,8 @@ and hoi.organization_id             = haou.organization_id -- this gets the orga
 and haou2.organization_id           = to_number(hoi.org_information3) -- this gets the operating unit id
 and gl.ledger_id                    = to_number(hoi.org_information1) -- get the ledger_id
 and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
+and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
+and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
 and 1=1                                                                                                   -- p_ledger, p_operating_unit, p_org_code
 and (:p_account_group = 'Other Accounts'
   or
@@ -415,6 +435,8 @@ and hoi.organization_id             = haou.organization_id -- this gets the orga
 and haou2.organization_id           = to_number(hoi.org_information3) -- this gets the operating unit id
 and gl.ledger_id                    = to_number(hoi.org_information1) -- get the ledger_id
 and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
+and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
+and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
 and 1=1                                                                                                   -- p_ledger, p_operating_unit, p_org_code
 and (:p_account_group = 'Other Accounts'
   or
@@ -451,6 +473,8 @@ and hoi.organization_id             = haou.organization_id -- this gets the orga
 and haou2.organization_id           = to_number(hoi.org_information3) -- this gets the operating unit id
 and gl.ledger_id                    = to_number(hoi.org_information1) -- get the ledger_id
 and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
+and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
+and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
 and 1=1                                                                                                   -- p_ledger, p_operating_unit, p_org_code
 and (:p_account_group = 'Receiving'
   or
@@ -492,6 +516,8 @@ and hoi.organization_id             = haou.organization_id -- this gets the orga
 and haou2.organization_id           = to_number(hoi.org_information3) -- this gets the operating unit id
 and gl.ledger_id                    = to_number(hoi.org_information1) -- get the ledger_id
 and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
+and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
+and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
 and 1=1                                                                                                   -- p_ledger, p_operating_unit, p_org_code
 and (:p_account_group = 'Other Accounts'
   or
@@ -524,6 +550,8 @@ and hoi.organization_id             = haou.organization_id -- this gets the orga
 and haou2.organization_id           = to_number(hoi.org_information3) -- this gets the operating unit id
 and gl.ledger_id                    = to_number(hoi.org_information1) -- get the ledger_id
 and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
+and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
+and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
 and 1=1                                                                                                   -- p_ledger, p_operating_unit, p_org_code
 and (:p_account_group = 'Receiving'
   or
@@ -556,126 +584,5 @@ and hoi.organization_id             = haou.organization_id -- this gets the orga
 and haou2.organization_id           = to_number(hoi.org_information3) -- this gets the operating unit id
 and gl.ledger_id                    = to_number(hoi.org_information1) -- get the ledger_id
 and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-and 1=1                                                                                                   -- p_ledger, p_operating_unit, p_org_code
-and (:p_account_group = 'Receiving'
-  or
-  :p_account_group is null)                                                                          -- Receiving
--- avoid selecting disabled inventory organizations
-and sysdate < nvl(haou.date_to, sysdate + 1)
--- End fix for version 1.4
-       and sysdate < nvl(haou.date_to, sysdate + 1)
-union all
--- Revision for version 1.12, add the Clearing Account
--- from Receiving Options, rcv_parameters
-select 'Receiving' Account_Group,
- 'Clearing Account' Account_Type,
- nvl(gl.short_name, gl.name) Ledger,
- haou2.name Operating_Unit,
- mp.organization_code Org_Code,
- haou.name Organization_Name,
- &segment_columns
- mp.last_update_date Last_Update_Date
-from rcv_parameters rp,
- mtl_parameters mp,
- gl_code_combinations gcc,
- hr_organization_information hoi,
- hr_all_organization_units_vl haou,
- hr_all_organization_units_vl haou2,
- gl_ledgers gl
-where rp.organization_id              = mp.organization_id
-and rp.clearing_account_id          = gcc.code_combination_id (+)
--- ===========================================
--- Organization joins to the HR org model
--- ===========================================
-and hoi.org_information_context     = 'Accounting Information'
-and hoi.organization_id             = mp.organization_id
-and hoi.organization_id             = haou.organization_id -- this gets the organization name
-and haou2.organization_id           = to_number(hoi.org_information3) -- this gets the operating unit id
-and gl.ledger_id                    = to_number(hoi.org_information1) -- get the ledger_id
-and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-and 1=1                                                                                                   -- p_ledger, p_operating_unit, p_org_code
-and (:p_account_group = 'Receiving'
-  or
-  :p_account_group is null)                                                                          -- Receiving
--- avoid selecting disabled inventory organizations
-and sysdate < nvl(haou.date_to, sysdate + 1)
--- End fix for version 1.12
-union all
--- Revision for version 1.12, add the Expense_Accrual_Account
--- from Purchasing Options, po_system_parameters_all
-select 'Receiving' Account_Group,
- 'Expense A/P Accrual Account' Account_Type,
- nvl(gl.short_name, gl.name) Ledger,
- haou2.name Operating_Unit,
- mp.organization_code Org_Code,
- haou.name Organization_Name,
- &segment_columns
- mp.last_update_date Last_Update_Date
-from po_system_parameters_all psp,
- mtl_parameters mp,
- gl_code_combinations gcc,
- hr_organization_information hoi,
- hr_all_organization_units_vl haou,
- hr_all_organization_units_vl haou2,
- gl_ledgers gl
-where mp.master_organization_id       = mp.organization_id
-and psp.org_id                      = haou2.organization_id
-and psp.accrued_code_combination_id = gcc.code_combination_id (+)
--- ===========================================
--- Organization joins to the HR org model
--- ===========================================
-and hoi.org_information_context     = 'Accounting Information'
-and hoi.organization_id             = mp.organization_id
-and hoi.organization_id             = haou.organization_id -- this gets the organization name
-and haou2.organization_id           = to_number(hoi.org_information3) -- this gets the operating unit id
-and gl.ledger_id                    = to_number(hoi.org_information1) -- get the ledger_id
-and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-and 1=1                                                                                                   -- p_ledger, p_operating_unit, p_org_code
-and (:p_account_group = 'Receiving'
-  or
-  :p_account_group is null)                                                                          -- Receiving
--- avoid selecting disabled inventory organizations
-and sysdate < nvl(haou.date_to, sysdate + 1)
--- End fix for version 1.12
-union all
--- ===========================================
--- This fourth group of select statements is
--- for the Valuation Account_Group
--- ===========================================
-select 'Valuation' Account_Group,
- 'Material Value Account' Account_Type,
- nvl(gl.short_name, gl.name) Ledger,
- haou2.name Operating_Unit,
- mp.organization_code Org_Code,
- haou.name Organization_Name,
- &segment_columns
- mp.last_update_date Last_Update_Date
-from mtl_parameters mp,
- gl_code_combinations gcc,
- hr_organization_information hoi,
- hr_all_organization_units_vl haou,
- hr_all_organization_units_vl haou2,
- gl_ledgers gl
-where mp.material_account             = gcc.code_combination_id (+)
--- ===========================================
--- Organization joins to the HR org model
--- ===========================================
-and hoi.org_information_context     = 'Accounting Information'
-and hoi.organization_id             = mp.organization_id
-and hoi.organization_id             = haou.organization_id -- this gets the organization name
-and haou2.organization_id           = to_number(hoi.org_information3) -- this gets the operating unit id
-and gl.ledger_id                    = to_number(hoi.org_information1) -- get the ledger_id
-and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-and 1=1                                                                                                   -- p_ledger, p_operating_unit, p_org_code
-and (:p_account_group = 'Valuation'
-  or
-  :p_account_group is null)                                                                          -- Valuation
--- avoid selecting disabled inventory organizations
-and sysdate < nvl(haou.date_to, sysdate + 1)
--- End fix for version 1.4
-union all
-select 'Valuation' Account_Group,
- 'Matl Ovhd Value Account' Account_Type,
- nvl(gl.short_name, gl.name) Ledger,
- haou2.name Operating_Unit,
- mp.organization_code Org_Code
+and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
+and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release

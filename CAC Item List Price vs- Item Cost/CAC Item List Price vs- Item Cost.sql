@@ -64,8 +64,8 @@ select nvl(gl.short_name, gl.name) Ledger,
  ml3.meaning Based_on_Rollup,
  cic1.shrinkage_rate Shrinkage_Rate,
  gl.currency_code From_Currency_Code,
- gdr.to_currency To_Currency_Code,
- gdr.conversion_rate Conversion_Rate,
+ :p_currency_code To_Currency_Code,
+ nvl(gdr.conversion_rate,1) Conversion_Rate,
  -- Revision for version 1.3
  -- msiv.market_price Market_Price,
  -- Revision for version 1.2
@@ -157,149 +157,16 @@ from    cst_item_costs cic1,
   and    gl.ledger_id                    = to_number(hoi.org_information1) -- get the ledger_id
   -- End revision for version 1.2
   -- Revision for version 1.2
-  and    1=1                             -- p_operating_unit, p_ledger
+  and    gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
+and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
+and 1=1                             -- p_operating_unit, p_ledger
   and    5=5                             -- p_cost_type2
   and    6=6                             -- p_item_number
   and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
   and    7=7                             -- p_org_code
  ) cic2,
- -- ===========================================================================
- -- Revision for version 1.2
- -- Tables to get currency exchange rate information for the inventory orgs
- -- Select Currency Rates based on the currency conversion date and type
- -- ===========================================================================
- (select gdr.from_currency,
-  gdr.to_currency,
-  gdct.user_conversion_type,
-  gdr.conversion_date,
-  gdr.conversion_rate
-  from gl_daily_rates gdr,
-         gl_daily_conversion_types gdct
-  -- =================================================
-  -- Check for the currencies needed for the To Orgs
-  -- =================================================
-  where exists  (
-    select 'x'
-    from mtl_parameters mp,
-    hr_organization_information hoi,
-    gl_ledgers gl
-    where hoi.org_information_context   = 'Accounting Information'
-    and    hoi.organization_id           = mp.organization_id
-    and    gl.ledger_id                  = to_number(hoi.org_information1) -- get the ledger_id
-    and    gdr.to_currency               = gl.currency_code
-    and    mp.organization_id           <> mp.master_organization_id
-            )
-  -- =================================================
-  -- Check for the currencies needed for from inventory Orgs
-  -- =================================================
-  and exists  (
-    select 'x'
-    from    mtl_parameters mp,
-    hr_organization_information hoi,
-    gl_ledgers gl
-    where hoi.org_information_context   = 'Accounting Information'
-    and hoi.organization_id           = mp.organization_id
-    and gl.ledger_id                  = to_number(hoi.org_information1) -- get the ledger_id
-    and gdr.from_currency             = gl.currency_code
-    and mp.organization_id           <> mp.master_organization_id
-   )
-  and gdr.conversion_type       = gdct.conversion_type
-  and    8=8                                           -- p_curr_conv_type
-  and    9=9                                           -- p_curr_conv_date
-  union all
-  -- =================================================
-  -- Get the currencies where the From and To is the 
-  -- same.  Example, where the From currency = USD 
-  -- and To currency = USD
-  -- =================================================
-  select gl.currency_code,              -- from_currency
-  gl.currency_code,              -- to_currency
-  gdct.user_conversion_type,     -- conversion_type
-  :p_curr_conv_date,             -- p_curr_conv_date
-  1                              -- conversion_rate
-  from gl_ledgers gl,
-  gl_daily_conversion_types gdct
-  where 8=8                             -- p_curr_conv_type
-  -- Revision for version 1.33
-  and gl.accounted_period_type  =    (select max(gl.accounted_period_type) 
-      from mtl_parameters mp,
-       hr_organization_information hoi,
-       gl_ledgers gl
-       where hoi.org_information_context   = 'Accounting Information'
-       and hoi.organization_id           = mp.organization_id
-       and gl.ledger_id                  = to_number(hoi.org_information1) -- get the ledger_id
-       and mp.organization_id           <> mp.master_organization_id
-      )
-  group by
-  gl.currency_code,
-  gl.currency_code,
-  gdct.user_conversion_type,
-  :p_curr_conv_date,             -- p_curr_conv_date
-  1
- ) gdr, -- Currency Exchange Rates to use for all inventory orgs
- -- ===========================================================================
- -- Revision for version 1.2
- -- Tables to get currency exchange rate information for the inventory orgs
- -- Select Currency Rates based on the currency conversion date and type
- -- ===========================================================================
- (select gdr.from_currency,
-  gdr.to_currency,
-  gdct.user_conversion_type,
-  gdr.conversion_date,
-  gdr.conversion_rate
-  from gl_daily_rates gdr,
-         gl_daily_conversion_types gdct
-  -- =================================================
-  -- Check for the currencies needed for the To Orgs
-  -- =================================================
-  where exists  (
-    select 'x'
-    from mtl_parameters mp,
-    hr_organization_information hoi,
-    gl_ledgers gl
-    where hoi.org_information_context   = 'Accounting Information'
-    and    hoi.organization_id           = mp.organization_id
-    and    gl.ledger_id                  = to_number(hoi.org_information1) -- get the ledger_id
-    and    gdr.to_currency               = gl.currency_code
-    and    mp.organization_id           <> mp.master_organization_id
-            )
-  -- =================================================
-  -- Get all From Currencies as the PO may be in any currency
-  -- =================================================
-  and gdr.conversion_type       = gdct.conversion_type
-  and    8=8                                           -- p_curr_conv_type
-  and    9=9                                           -- p_curr_conv_date
-  union all
-  -- =================================================
-  -- Get the currencies where the From and To is the 
-  -- same.  Example, where the From currency = USD 
-  -- and To currency = USD
-  -- =================================================
-  select gl.currency_code,              -- from_currency
-  gl.currency_code,              -- to_currency
-  gdct.user_conversion_type,     -- conversion_type
-  :p_curr_conv_date,             -- p_curr_conv_date
-  1                              -- conversion_rate
-  from gl_ledgers gl,
-  gl_daily_conversion_types gdct
-  where 8=8                             -- p_curr_conv_type
-  -- Revision for version 1.33
-  and gl.accounted_period_type  =    (select max(gl.accounted_period_type) 
-      from mtl_parameters mp,
-       hr_organization_information hoi,
-       gl_ledgers gl
-       where hoi.org_information_context   = 'Accounting Information'
-       and hoi.organization_id           = mp.organization_id
-       and gl.ledger_id                  = to_number(hoi.org_information1) -- get the ledger_id
-       and mp.organization_id           <> mp.master_organization_id
-      )
-  group by
-  gl.currency_code,
-  gl.currency_code,
-  gdct.user_conversion_type,
-  :p_curr_conv_date,             -- p_curr_conv_date
-  1
- ) gdr_po, -- Currency Exchange Rates to use for the purchase orders
+(select gdr.* from gl_daily_rates gdr, gl_daily_conversion_types gdct where gdr.to_currency=:p_currency_code and gdr.conversion_date=:conversion_date and gdct.user_conversion_type=:user_conversion_type and gdct.conversion_type=gdr.conversion_type) gdr,
+(select gdr.* from gl_daily_rates gdr, gl_daily_conversion_types gdct where gdr.to_currency=:p_currency_code and gdr.conversion_date=:conversion_date and gdct.user_conversion_type=:user_conversion_type and gdct.conversion_type=gdr.conversion_type) gdr_po, -- Currency Exchange Rates to use for the purchase orders
  -- Now get the last PO Price information
  (
   select x.*,
@@ -370,6 +237,8 @@ and cic1.organization_id (+)        = cic2.organization_id
 and msiv.primary_uom_code           = muomv.uom_code
 and msiv.inventory_item_status_code = misv.inventory_item_status_code
 and cic1.cost_type_id               = cct1.cost_type_id
+and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
+and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
 and 1=1                          -- p_operating_unit, p_ledger
 and 4=4                          -- p_cost_type1
 and 6=6                          -- p_item_number
@@ -379,12 +248,9 @@ and 7=7                          -- p_org_code
 -- ===================================================================
 -- Revision for version 1.2
 -- Translate for inventory for the To Currency
--- and    gdr.to_currency                 = cic2.currency_code
-and gdr.to_currency                 = :p_currency_code
 and gdr.from_currency   (+)         = gl.currency_code -- based on the inventory organization
 -- Revision for version 1.3
 -- Translate for the purhase orders for the To Currency
-and gdr_po.to_currency (+)          = :p_currency_code
 and gdr_po.from_currency (+)        = po.Last_PO_Currency_Code -- based on the purchase order
 -- End revision for version 1.3
 -- ===================================================================
@@ -434,8 +300,8 @@ select nvl(gl.short_name, gl.name) Ledger,
  'N/A' Based_on_Rollup,
  null Shrinkage_Rate,
  gl.currency_code Currency_Code,
- gdr.to_currency To_Currency_Code,
- gdr.conversion_rate Conversion_Rate,
+ :p_currency_code To_Currency_Code,
+ nvl(gdr.conversion_rate,1) Conversion_Rate,
  -- Revision for version 1.3
  -- msiv.market_price Market_Price,
  -- Revision for version 1.2
@@ -464,9 +330,7 @@ select nvl(gl.short_name, gl.name) Ledger,
  -- Revision for version 1.3
  -- Need to compare the PO currency to the To Currency
  -- po.Last_PO_Price * nvl(gdr.conversion_rate,1) Converted_Last_PO_Price_USD,
- po.Last_PO_Price * decode(po.Last_PO_Currency_Code,
-    gdr.to_currency, 1,
-    nvl(gdr.conversion_rate,1)) Converted_Last_PO_Price_USD,
+ po.Last_PO_Price * decode(po.Last_PO_Currency_Code,:p_currency_code, 1, nvl(gdr.conversion_rate,1)) Converted_Last_PO_Price_USD,
  -- End revision for version 1.3
  -- End revision for version 1.2
  null Cost_Type_1,
@@ -488,143 +352,9 @@ select nvl(gl.short_name, gl.name) Ledger,
  null Item_Cost2,
  null Cost_Creation_Date2,
  null Last_Cost_Update_Date2
-from -- ===========================================================================
- -- Revision for version 1.2
- -- Tables to get currency exchange rate information for the inventory orgs
- -- Select Currency Rates based on the currency conversion date and type
- -- ===========================================================================
- (select gdr.from_currency,
-  gdr.to_currency,
-  gdct.user_conversion_type,
-  gdr.conversion_date,
-  gdr.conversion_rate
-  from gl_daily_rates gdr,
-         gl_daily_conversion_types gdct
-  -- =================================================
-  -- Check for the currencies needed for the To Orgs
-  -- =================================================
-  where exists  (
-    select 'x'
-    from mtl_parameters mp,
-    hr_organization_information hoi,
-    gl_ledgers gl
-    where hoi.org_information_context   = 'Accounting Information'
-    and    hoi.organization_id           = mp.organization_id
-    and    gl.ledger_id                  = to_number(hoi.org_information1) -- get the ledger_id
-    and    gdr.to_currency               = gl.currency_code
-    and    mp.organization_id           <> mp.master_organization_id
-            )
-  -- =================================================
-  -- Check for the currencies needed for from inventory Orgs
-  -- =================================================
-  and exists  (
-    select 'x'
-    from    mtl_parameters mp,
-    hr_organization_information hoi,
-    gl_ledgers gl
-    where hoi.org_information_context   = 'Accounting Information'
-    and hoi.organization_id           = mp.organization_id
-    and gl.ledger_id                  = to_number(hoi.org_information1) -- get the ledger_id
-    and gdr.from_currency             = gl.currency_code
-    and mp.organization_id           <> mp.master_organization_id
-   )
-  and gdr.conversion_type       = gdct.conversion_type
-  and    8=8                                           -- p_curr_conv_type
-  and    9=9                                           -- p_curr_conv_date
-  union all
-  -- =================================================
-  -- Get the currencies where the From and To is the 
-  -- same.  Example, where the From currency = USD 
-  -- and To currency = USD
-  -- =================================================
-  select gl.currency_code,              -- from_currency
-  gl.currency_code,              -- to_currency
-  gdct.user_conversion_type,     -- conversion_type
-  :p_curr_conv_date,             -- p_curr_conv_date
-  1                              -- conversion_rate
-  from gl_ledgers gl,
-  gl_daily_conversion_types gdct
-  where 8=8                             -- p_curr_conv_type
-  -- Revision for version 1.33
-  and gl.accounted_period_type  =    (select max(gl.accounted_period_type) 
-      from mtl_parameters mp,
-       hr_organization_information hoi,
-       gl_ledgers gl
-       where hoi.org_information_context   = 'Accounting Information'
-       and hoi.organization_id           = mp.organization_id
-       and gl.ledger_id                  = to_number(hoi.org_information1) -- get the ledger_id
-       and mp.organization_id           <> mp.master_organization_id
-      )
-  group by
-  gl.currency_code,
-  gl.currency_code,
-  gdct.user_conversion_type,
-  :p_curr_conv_date,             -- p_curr_conv_date
-  1
- ) gdr, -- Currency Exchange Rates to use for all inventory orgs
- -- ===========================================================================
- -- Revision for version 1.2
- -- Tables to get currency exchange rate information for the inventory orgs
- -- Select Currency Rates based on the currency conversion date and type
- -- ===========================================================================
- (select gdr.from_currency,
-  gdr.to_currency,
-  gdct.user_conversion_type,
-  gdr.conversion_date,
-  gdr.conversion_rate
-  from gl_daily_rates gdr,
-         gl_daily_conversion_types gdct
-  -- =================================================
-  -- Check for the currencies needed for the To Orgs
-  -- =================================================
-  where exists  (
-    select 'x'
-    from mtl_parameters mp,
-    hr_organization_information hoi,
-    gl_ledgers gl
-    where hoi.org_information_context   = 'Accounting Information'
-    and    hoi.organization_id           = mp.organization_id
-    and    gl.ledger_id                  = to_number(hoi.org_information1) -- get the ledger_id
-    and    gdr.to_currency               = gl.currency_code
-    and    mp.organization_id           <> mp.master_organization_id
-            )
-  -- =================================================
-  -- Get all From Currencies as the PO may be in any currency
-  -- =================================================
-  and gdr.conversion_type       = gdct.conversion_type
-  and    8=8                                           -- p_curr_conv_type
-  and    9=9                                           -- p_curr_conv_date
-  union all
-  -- =================================================
-  -- Get the currencies where the From and To is the 
-  -- same.  Example, where the From currency = USD 
-  -- and To currency = USD
-  -- =================================================
-  select gl.currency_code,              -- from_currency
-  gl.currency_code,              -- to_currency
-  gdct.user_conversion_type,     -- conversion_type
-  :p_curr_conv_date,             -- p_curr_conv_date
-  1                              -- conversion_rate
-  from gl_ledgers gl,
-  gl_daily_conversion_types gdct
-  where 8=8                             -- p_curr_conv_type
-  -- Revision for version 1.33
-  and gl.accounted_period_type  =    (select max(gl.accounted_period_type) 
-      from mtl_parameters mp,
-       hr_organization_information hoi,
-       gl_ledgers gl
-       where hoi.org_information_context   = 'Accounting Information'
-       and hoi.organization_id           = mp.organization_id
-       and gl.ledger_id                  = to_number(hoi.org_information1) -- get the ledger_id
-       and mp.organization_id           <> mp.master_organization_id
-      )
-  group by
-  gl.currency_code,
-  gl.currency_code,
-  gdct.user_conversion_type,
-  :p_curr_conv_date,             -- p_curr_conv_date
-  1
- ) gdr_po, -- Currency Exchange Rates to use for the purchase orders
+from
+(select gdr.* from gl_daily_rates gdr, gl_daily_conversion_types gdct where gdr.to_currency=:p_currency_code and gdr.conversion_date=:conversion_date and gdct.user_conversion_type=:user_conversion_type and gdct.conversion_type=gdr.conversion_type) gdr,
+(select gdr.* from gl_daily_rates gdr, gl_daily_conversion_types gdct where gdr.to_currency=:p_currency_code and gdr.conversion_date=:conversion_date and gdct.user_conversion_type=:user_conversion_type and gdct.conversion_type=gdr.conversion_type) gdr_po,
  -- Now get the last PO Price information
  (
   select x.*,
@@ -689,6 +419,8 @@ and msiv_mas.organization_id        = msiv.organization_id
 and po.inventory_item_id (+)        = msiv.inventory_item_id
 and po.organization_id (+)          = msiv.organization_id
 -- End for revision for version 1.2
+and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
+and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
 and 1=1                          -- p_operating_unit, p_ledger
 and 6=6                          -- p_item_number
 and 7=7                          -- p_org_code
@@ -703,11 +435,9 @@ and msiv.costing_enabled_flag       = 'N'
 -- Revision for version 1.2
 -- Translate for inventory for the To Currency
 -- and    gdr.to_currency                 = cic2.currency_code
-and gdr.to_currency                 = :p_currency_code
 and gdr.from_currency (+)           = gl.currency_code -- based on the inventory organization
 -- Revision for version 1.3
 -- Translate for the purhase orders for the To Currency
-and gdr_po.to_currency (+)          = :p_currency_code
 and gdr_po.from_currency (+)        = po.Last_PO_Currency_Code -- based on the purchase order
 -- End revision for version 1.3
 -- ===================================================================
@@ -720,4 +450,21 @@ and mp.organization_id             <> mp.master_organization_id    -- remove the
 and ml1.lookup_type                 = 'MTL_PLANNING_MAKE_BUY'
 and ml1.lookup_code                 = msiv.planning_make_buy_code
 and fl1.lookup_type                 = 'YES_NO'
-and fl1.lookup_code        
+and fl1.lookup_code                 = msiv.costing_enabled_flag
+and fl2.lookup_type                 = 'YES_NO'
+and fl2.lookup_code                 = msiv.inventory_asset_flag
+and fcl.lookup_type (+)             = 'ITEM_TYPE'
+and fcl.lookup_code (+)             = msiv.item_type
+-- ===================================================================
+-- Using the base tables to avoid using org_organization_definitions
+-- and hr_operating_units
+-- ===================================================================
+and hoi.org_information_context     = 'Accounting Information'
+and hoi.organization_id             = mp.organization_id
+and hoi.organization_id             = haou.organization_id   -- this gets the organization name
+and haou2.organization_id           = to_number(hoi.org_information3) -- this gets the operating unit id
+and gl.ledger_id                    = to_number(hoi.org_information1) -- get the ledger_id
+-- avoid selecting disabled inventory organizations
+and sysdate < nvl(haou.date_to, sysdate + 1)
+-- order by Ledger, Operating_Unit, Org_Code, Item and Cost_Type
+order by 1,2,3,4,5

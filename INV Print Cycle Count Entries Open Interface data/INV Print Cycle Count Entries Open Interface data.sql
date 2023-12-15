@@ -22,8 +22,8 @@ ml.meaning action_code,
 msiv.concatenated_segments item_number,
 msiv.description item_description,
 xxen_util.meaning(msiv.item_type,'ITEM_TYPE',3) user_item_type,
-inv_project.get_locator(mil.inventory_location_id,mil.organization_id) locator,
-mil.description locator_description,
+nvl(inv_project.get_locator(milk.inventory_location_id,milk.organization_id),milk.concatenated_segments) locator,
+milk.description locator_description,
 mceiv.revision,
 mceiv.subinventory,
 mceiv.lot_number,
@@ -44,17 +44,18 @@ mcie.error_message
 from
 mtl_cc_entries_interface_v mceiv,
 mtl_system_items_vl msiv,
-mtl_item_locations mil,
+mtl_item_locations_kfv milk,
 mfg_lookups ml,
 cst_cost_groups ccg,
 mtl_cc_interface_errors mcie,
 org_organization_definitions ood
 where
 1=1 and
+ood.organization_code in (select oav.organization_code from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
 mceiv.inventory_item_id=msiv.inventory_item_id(+) and
 mceiv.organization_id=msiv.organization_id(+) and
-mceiv.organization_id=mil.organization_id(+) and
-mceiv.locator_id=mil.inventory_location_id(+) and
+mceiv.organization_id=milk.organization_id(+) and
+mceiv.locator_id=milk.inventory_location_id(+) and
 mceiv.action_code=ml.lookup_code and
 ml.lookup_type='MTL_CCEOI_ACTION_CODE' and
 nvl(mceiv.error_flag,2)=1 and

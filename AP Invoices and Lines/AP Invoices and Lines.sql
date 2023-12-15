@@ -37,6 +37,7 @@ with ap_inv as
   nvl(assa.vendor_site_code,hps.party_site_number) supplier_site,
   aia.invoice_num,
   xxen_util.ap_invoice_status(aia.invoice_id,aia.invoice_amount,aia.payment_status_flag,aia.invoice_type_lookup_code,aia.validation_request_id) invoice_status,
+  aba.batch_name,
   xxen_util.client_time(aia.creation_date) invoice_creation_date,
   xxen_util.client_time(aia.invoice_received_date) invoice_received_date,
   aia.invoice_date,
@@ -47,9 +48,9 @@ with ap_inv as
   aia.source invoice_source,
   aia.description invoice_description,
   nvl(
-   (select 
+   (select
     xxen_util.meaning('Y','YES_NO',0)
-    from 
+    from
     fnd_document_entities fde,
     fnd_attached_documents fad
     where
@@ -78,13 +79,14 @@ with ap_inv as
   aia.discount_amount_taken/aia.payment_cross_rate*nvl(aia.exchange_rate,1) discount_amount_taken_base,
   aia.approved_amount*nvl(aia.exchange_rate,1) approved_amount_base,
   aia.amount_paid/aia.payment_cross_rate*nvl(aia.exchange_rate,1) amount_paid_base,
+  aia.dispute_reason,
   aia.doc_sequence_value,
   apsa.payment_priority,
   apsa.payment_num,
-  (select 
-   max(aca.check_date) 
-   from 
-   ap_invoice_payments_all aipa, 
+  (select
+   max(aca.check_date)
+   from
+   ap_invoice_payments_all aipa,
    ap_checks_all aca
    where
    aipa.check_id = aca.check_id and
@@ -100,7 +102,15 @@ with ap_inv as
   aia.payment_cross_rate_date,
   apsa.discount_date,
   apsa.future_pay_due_date,
-  xxen_util.meaning(apsa.hold_flag,'YES_NO',0) hold_flag,
+  case when
+  assa.hold_all_payments_flag = 'Y' and
+  aia.cancelled_date is null and
+  aia.payment_status_flag != 'Y'
+  then xxen_util.meaning('Y','YES_NO',0)
+  else null
+  end supplier_site_payment_hold,
+  decode(apsa.hold_flag,'Y',xxen_util.meaning(apsa.hold_flag,'YES_NO',0),null) scheduled_payment_hold,
+  decode(apsa.hold_flag,'Y',apsa.iby_hold_reason,null) scheduled_payment_hold_reason,
   nvl(xxen_util.meaning(apsa.payment_method_code,'PAYMENT METHOD',200),apsa.payment_method_code) payment_method,
   xxen_util.meaning(aia.payment_status_flag,'INVOICE PAYMENT STATUS',200) invoice_payment_status,
   xxen_util.meaning(apsa.payment_status_flag,'INVOICE PAYMENT STATUS',200) schedule_payment_status,
@@ -244,6 +254,7 @@ with ap_inv as
   hr_all_organization_units_vl haouv2,
   hr_all_organization_units_vl haouv3,
   ap_invoices_all aia,
+  ap_batches_all aba,
   ap_payment_schedules_all apsa,
   iby_ext_bank_accounts ieba,
   ce_banks_v cbv,
@@ -266,6 +277,7 @@ with ap_inv as
   pa_tasks pt
   where
   1=1 and
+  aia.batch_id = aba.batch_id (+) and
   aia.set_of_books_id=gl.ledger_id and
   aia.org_id=haouv.organization_id(+) and
   aia.expenditure_organization_id=haouv1.organization_id(+) and
@@ -285,30 +297,21 @@ with ap_inv as
   aida.project_id=ppa.project_id(+)and
   aida.task_id=pt.task_id(+)and
   aia.recurring_payment_id=arpa.recurring_payment_id(+) and
-  aia.terms_id=at.term_id(+)
-  and exists -- need this to apply dist level restrictions in case report is run at header or line level
-  (select null
-   from
-    ap_invoice_distributions_all aida2,
-    gl_code_combinations gcc
-   where
-    aida2.invoice_id                 = aia.invoice_id and
-    aida2.invoice_line_number        = nvl(aila.line_number,aida2.invoice_line_number) and
-    aida2.distribution_line_number   = nvl(aida.distribution_line_number,aida2.distribution_line_number) and
-    gcc.code_combination_id          = aida2.dist_code_combination_id and
-    2=2
+  aia.terms_id=at.term_id(+) and
+  ( (:period_name is null and :accounting_date_from is null and :accounting_date_to is null and :p_expense_account_from is null and :p_expense_account_to is null) or
+    exists -- need this to apply dist level restrictions in case report is run at header or line level
+     (select null
+      from
+       ap_invoice_distributions_all aida2,
+       gl_code_combinations gcc
+      where
+       aida2.invoice_id                 = aia.invoice_id and
+       aida2.invoice_line_number        = nvl(aila.line_number,aida2.invoice_line_number) and
+       aida2.distribution_line_number   = nvl(aida.distribution_line_number,aida2.distribution_line_number) and
+       gcc.code_combination_id          = aida2.dist_code_combination_id and
+       2=2
+     )
   )
-  order by
-  haouv.name,
-  aps.vendor_name,
-  aps.segment1,
-  aia.invoice_date,
-  aia.gl_date,
-  aia.invoice_num,
-  apsa.payment_num,
-  aila.line_number,
-  aida.accounting_date,
-  aida.distribution_line_number
 ),
 ap_holds as
 (
@@ -355,7 +358,6 @@ ap_holds as
         po_releases_all pra
        where
         aha.release_lookup_code is null and
-        nvl(aha.status_flag,'S') = 'S' and
         plla.line_location_id = aha.line_location_id and
         pla.po_line_id = plla.po_line_id and
         pha.po_header_id = plla.po_header_id and
@@ -376,7 +378,6 @@ ap_holds as
         rcv_shipment_headers rsh
        where
         aha.release_lookup_code is null and
-        nvl(aha.status_flag,'S') = 'S' and
         rt.transaction_id = aha.rcv_transaction_id and
         rsl.shipment_line_id = rt.shipment_line_id and
         rsh.shipment_header_id = rt.shipment_header_id
@@ -384,7 +385,6 @@ ap_holds as
     ) rcv
    where
     aha.release_lookup_code is null and
-    nvl(aha.status_flag,'S') = 'S' and
     alc.lookup_type = 'HOLD CODE' and
     alc.lookup_code = aha.hold_lookup_code and
     po.invoice_id (+) = aha.invoice_id and
@@ -403,6 +403,7 @@ ap_inv.supplier_site,
 ap_inv.invoice_num,
 ap_inv.doc_sequence_value document_number,
 ap_inv.invoice_status,
+ap_inv.batch_name,
 ap_inv.invoice_creation_date,
 ap_inv.invoice_received_date,
 ap_inv.invoice_date,
@@ -457,7 +458,6 @@ ap_inv.payment_cross_rate,
 ap_inv.payment_cross_rate_date,
 ap_inv.discount_date,
 ap_inv.future_pay_due_date,
-ap_inv.hold_flag,
 ap_inv.payment_method,
 ap_inv.payment_priority,
 ap_inv.invoice_payment_status,
@@ -480,17 +480,22 @@ case ap_inv.first_invoice when 'Y' then ap_inv.invoice_temp_cancelled_amount end
 ap_inv.auto_tax_calculation_method,
 ap_inv.invoice_pay_group,
 ap_inv.invoice_exclusive_payment_flag,
-ap_inv.accts_pay_account,
-ap_inv.accts_pay_account_descripton,
+--
+ap_inv.dispute_reason,
+ap_inv.supplier_site_payment_hold,
+ap_inv.scheduled_payment_hold,
+ap_inv.scheduled_payment_hold_reason,
+ap_holds.holds invoice_holds,
+ap_holds.hold_dates invoice_hold_dates,
+ap_holds.holds_held_by invoice_holds_held_by,
+ap_holds.hold_po_references invoice_hold_purchase_orders,
+ap_holds.hold_receipt_references invoice_hold_receipts,
 --
 &invoice_detail_columns
 --
-ap_holds.holds,
-ap_holds.hold_dates,
-ap_holds.holds_held_by,
-ap_holds.hold_po_references,
-ap_holds.hold_receipt_references,
 --
+ap_inv.accts_pay_account,
+ap_inv.accts_pay_account_descripton,
 ap_inv.recurring_pmt_number,
 ap_inv.recurring_pmt_period_type,
 ap_inv.recurring_number_of_periods,
@@ -541,3 +546,14 @@ gl_code_combinations_kfv gcck
 where
 ap_holds.invoice_id (+) = ap_inv.invoice_id and
 gcck.code_combination_id (+) = ap_inv.dist_code_combination_id
+order by
+ap_inv.operating_unit,
+ap_inv.supplier,
+ap_inv.supplier_number,
+ap_inv.invoice_date,
+ap_inv.invoice_gl_date,
+ap_inv.invoice_num,
+ap_inv.payment_num,
+ap_inv.line_number,
+ap_inv.dist_accounting_date,
+ap_inv.dist_line_number

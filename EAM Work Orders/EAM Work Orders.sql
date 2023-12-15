@@ -89,6 +89,7 @@ wip_entities we,
 wip_discrete_jobs wdj
 where
 1=1 and
+wdj.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
 wdj.status_type not in (7,5,12,14,15) and
 mp.organization_id=we.organization_id and
 we.entity_type in (6,7) and

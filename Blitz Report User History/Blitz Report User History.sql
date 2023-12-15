@@ -39,9 +39,11 @@ where
 ) xrr
 where
 2=2 and
+trunc(sysdate) between fu.start_date and nvl(fu.end_date,sysdate) and
 fu.user_id=furg.user_id and
 furg.responsibility_application_id=frv.application_id and
 furg.responsibility_id=frv.responsibility_id and
+trunc(sysdate) between frv.start_date and nvl(frv.end_date,sysdate) and
 furg.responsibility_application_id=fav.application_id and
 frv.group_application_id=frg.application_id(+) and
 frv.request_group_id=frg.request_group_id(+) and

@@ -11,8 +11,9 @@
 -- Run Report: https://demo.enginatics.com/
 
 select
+gl.name ledger,
+haouv.name operating_unit,
 ood.organization_code,
-ood.organization_name,
 wta.transaction_date,
 we.wip_entity_name job_schedule,
 msiv.concatenated_segments assembly,
@@ -51,12 +52,14 @@ mck.concatenated_segments item_category,
 nvl(ppx.npw_number,ppx.employee_number) employee_num,
 ppx.full_name employee,
 poh.segment1 po_number,
-gl.name ledger,
 wta.gl_batch_id gl_batch,
 ogb.gl_batch_date,
 ogb.description gl_batch_description,
 wta.wip_entity_id
 from
+gl_ledgers gl,
+hr_all_organization_units_vl haouv,
+org_organization_definitions ood,
 wip_transaction_accounts wta,
 wip_transactions wt,
 wip_entities we,
@@ -66,20 +69,22 @@ wip_lines wl,
 mtl_item_categories mic,
 mtl_categories_kfv mck,
 mtl_system_items_vl msiv,
-mtl_parameters mp,
 wip_repetitive_items wri,
 bom_departments bd,
 bom_resources br,
 mtl_units_of_measure_tl muot,
 cst_activities ca,
-org_organization_definitions ood,
-gl_ledgers gl,
 org_gl_batches ogb,
 per_people_x ppx,
 po_headers_all poh
 where
 1=1 and
-wta.organization_id = mp.organization_id and
+&account_where_clause
+wta.organization_id=ood.organization_id and
+ood.set_of_books_id=gl.ledger_id and
+ood.operating_unit=haouv.organization_id and
+gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+)) and
+haouv.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11) and
 wta.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
 wta.accounting_line_type<>15 and
 wta.transaction_id=wt.transaction_id and
@@ -103,12 +108,10 @@ wta.resource_id=br.resource_id(+) and
 br.unit_of_measure=muot.uom_code(+) and
 muot.language(+)=userenv('lang') and
 wta.activity_id=ca.activity_id(+) and
-wta.organization_id=ood.organization_id and
-ood.set_of_books_id=gl.ledger_id and
 wta.organization_id=ogb.organization_id(+) and
 wta.gl_batch_id=ogb.gl_batch_id(+) and
-ppx.person_id(+)=wt.employee_id and
-poh.po_header_id(+)=wt.po_header_id
+wt.employee_id=ppx.person_id(+) and
+wt.po_header_id=poh.po_header_id(+)
 order by
 ood.organization_code,
 ood.organization_name,

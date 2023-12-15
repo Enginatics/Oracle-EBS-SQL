@@ -29,6 +29,7 @@ mtl_item_sub_defaults misd,
 mtl_system_items_vl msiv
 where
 1=1 and
+mp.organization_code in (select oav.organization_code from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
 haouv.organization_id=misd.organization_id and
 mp.organization_id=misd.organization_id and
 misd.inventory_item_id=msiv.inventory_item_id and

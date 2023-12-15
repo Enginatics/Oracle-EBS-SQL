@@ -69,7 +69,7 @@ ra_rules rr,
 ra_rules rr2
 where
 1=1 and
-okhab.authoring_org_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual) and
+okhab.authoring_org_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11) and
 haouv.organization_id=okhab.authoring_org_id and
 okhab.scs_code=osclv.code(+) and
 osclv.cls_code=ocv.code(+) and

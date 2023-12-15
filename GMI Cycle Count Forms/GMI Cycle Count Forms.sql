@@ -46,4 +46,4 @@ ipc.item_id=iimv.item_id and
 ipc.item_id=ilm.item_id and
 ipc.lot_id=ilm.lot_id
 order by 
-&f_order_by
+count_no

@@ -11,8 +11,9 @@
 -- Run Report: https://demo.enginatics.com/
 
 select
-fmv.menu_name,
 fmv.user_menu_name,
+fmv.menu_name,
+xxen_util.meaning(fmv.type,'MENU_TYPE',0) type,
 fmev.entry_sequence sequence,
 fmev.prompt,
 fmt.user_menu_name sub_menu,

@@ -153,7 +153,7 @@ select
 from
 &lp_table_list
 where
- acra.org_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where not exists (select null from mo_glob_org_access_tmp mgoat)) and
+ acra.org_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11) and
  acra.org_id = haou.organization_id and
  acra.set_of_books_id = gl.ledger_id and
  acra.cash_receipt_id = acrha1.cash_receipt_id and

@@ -98,23 +98,38 @@ select
  cic.shrinkage_rate component_shrinkage_rate,
  csbs.extended_quantity component_extended_quantity,
  nvl( cic.item_cost,0) component_item_unit_cost,
+-- decode(csbs.extend_cost_flag,
+--   2,0,(decode(:p_material_dtl_flag,
+--               1,0,decode(csbs.bom_level,:lp_report_level,nvl(cic.pl_material,0),0) +
+--                   decode(decode(:p_phantom_mat,1,0,1) * decode(csbs.bom_level,1,0,1) * decode(csbs.phantom_flag,1,1,0),1,0,nvl(cic.tl_material,0))
+--              ) +
+--        decode(:p_material_overhead_dtl_flag,
+--               1,0,decode(csbs.bom_level,:lp_report_level,nvl(cic.pl_material_overhead,0),0) +
+--                   decode(decode(:p_phantom_mat,1,0,1) * decode(csbs.bom_level,1,0,1) * decode(csbs.phantom_flag,1,1,0),1,0,nvl(cic.tl_material_overhead,0))
+--              ) +
+--        decode(decode(nvl(bp.use_phantom_routings,2),1,1,0) * decode(csbs.phantom_flag,1,1,0),
+--               1,0,decode(:p_routing_dtl_flag,
+--                          1,0,decode(csbs.bom_level,:lp_report_level,nvl(cic.pl_resource,0) + nvl(cic.pl_outside_processing,0) + nvl(cic.pl_overhead,0),0) +
+--                              decode(decode(nvl(bp.use_phantom_routings,2),1,0,1) * decode(csbs.phantom_flag,1,1,0),1,0,nvl(cic.tl_resource,0) + nvl(cic.tl_outside_processing,0) + nvl(cic.tl_overhead,0))
+--                         )
+--              )
+--       )
+-- ) * csbs.extended_quantity component_extended_cost,
+ nvl( cic.item_cost,0) * csbs.extended_quantity component_extended_cost,
  decode(csbs.extend_cost_flag,
-   2,0,(decode(:p_material_dtl_flag,
-               1,0,decode(csbs.bom_level,:lp_report_level,nvl(cic.pl_material,0),0) +
-                   decode(decode(:p_phantom_mat,1,0,1) * decode(csbs.bom_level,1,0,1) * decode(csbs.phantom_flag,1,1,0),1,0,nvl(cic.tl_material,0))
-              ) +
-        decode(:p_material_overhead_dtl_flag,
-               1,0,decode(csbs.bom_level,:lp_report_level,nvl(cic.pl_material_overhead,0),0) +
-                   decode(decode(:p_phantom_mat,1,0,1) * decode(csbs.bom_level,1,0,1) * decode(csbs.phantom_flag,1,1,0),1,0,nvl(cic.tl_material_overhead,0))
-              ) +
+   2,0,((decode(csbs.bom_level,:lp_report_level,nvl(cic.pl_material,0),0) +
+         decode(decode(:p_phantom_mat,1,0,1) * decode(csbs.bom_level,1,0,1) * decode(csbs.phantom_flag,1,1,0),1,0,nvl(cic.tl_material,0))
+        ) +
+        (decode(csbs.bom_level,:lp_report_level,nvl(cic.pl_material_overhead,0),0) +
+         decode(decode(:p_phantom_mat,1,0,1) * decode(csbs.bom_level,1,0,1) * decode(csbs.phantom_flag,1,1,0),1,0,nvl(cic.tl_material_overhead,0))
+        ) +
         decode(decode(nvl(bp.use_phantom_routings,2),1,1,0) * decode(csbs.phantom_flag,1,1,0),
-               1,0,decode(:p_routing_dtl_flag,
-                          1,0,decode(csbs.bom_level,:lp_report_level,nvl(cic.pl_resource,0) + nvl(cic.pl_outside_processing,0) + nvl(cic.pl_overhead,0),0) +
-                              decode(decode(nvl(bp.use_phantom_routings,2),1,0,1) * decode(csbs.phantom_flag,1,1,0),1,0,nvl(cic.tl_resource,0) + nvl(cic.tl_outside_processing,0) + nvl(cic.tl_overhead,0))
-                         )
+               1,0,(decode(csbs.bom_level,:lp_report_level,nvl(cic.pl_resource,0) + nvl(cic.pl_outside_processing,0) + nvl(cic.pl_overhead,0),0) +
+                    decode(decode(nvl(bp.use_phantom_routings,2),1,0,1) * decode(csbs.phantom_flag,1,1,0),1,0,nvl(cic.tl_resource,0) + nvl(cic.tl_outside_processing,0) + nvl(cic.tl_overhead,0))
+                   )
               )
        )
- ) * csbs.extended_quantity component_extended_cost,
+ ) * csbs.extended_quantity component_contributing_cost,
  fc.currency_code component_currency_code,
  -- component hidden columns
  csbs.sort_order comp_sort_order,
@@ -520,6 +535,7 @@ x.component_shrinkage_rate,
 x.component_extended_quantity,
 x.component_item_unit_cost,
 x.component_extended_cost,
+x.component_contributing_cost,
 x.component_currency_code,
 -- costs
 x.cost_type,
@@ -558,6 +574,21 @@ x.source_cost_percent,
 x.source_total_item_unit_cost,
 x.source_user_defined_costs,
 x.source_user_defined_costs_pct,
+dense_rank() over (
+partition by
+x.record_type,
+x.organization_code,
+x.assembly
+order by
+x.assm_rollup_id,
+x.assembly,
+decode(x.record_type,'Indented Bill',1,'Summary Costs',2,3),
+x.record_type,
+x.comp_sort_order_1,
+x.comp_sort_order_2,
+x.component,
+x.component_organiziation
+) comp_sort_seq,
 row_number() over (
 order by
 x.assm_rollup_id,
@@ -617,6 +648,7 @@ comp.component_shrinkage_rate,
 comp.component_extended_quantity,
 comp.component_item_unit_cost,
 comp.component_extended_cost,
+comp.component_contributing_cost,
 comp.component_currency_code,
 -- costs
 :p_cost_type_name cost_type,
@@ -632,7 +664,7 @@ costs.rate_or_amount,
 costs.basis_factor,
 costs.extended_rate_or_amount,
 costs.resource_unit_cost,
-costs.extended_cost,
+nvl(costs.extended_cost,0) extended_cost,
 -- summary costs
 to_number(null) summary_standard_cost,
 to_number(null) summary_report_value,
@@ -713,6 +745,7 @@ to_number(null) component_shrinkage_rate,
 to_number(null) component_extended_quantity,
 to_number(null) component_item_unit_cost,
 to_number(null) component_extended_cost,
+to_number(null) component_contributing_cost,
 null            component_currency_code,
 -- costs
 :p_cost_type_name cost_type,
@@ -803,6 +836,7 @@ to_number(null) component_shrinkage_rate,
 to_number(null) component_extended_quantity,
 to_number(null) component_item_unit_cost,
 to_number(null) component_extended_cost,
+to_number(null) component_contributing_cost,
 null            component_currency_code,
 -- costs
 :p_cost_type_name cost_type,

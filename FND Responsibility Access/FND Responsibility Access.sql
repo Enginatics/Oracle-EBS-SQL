@@ -23,7 +23,7 @@ The parameters 'User', 'Form', 'Function' and 'Concurrent Program' are optional 
 
 Example: To show all users having access to the user maintenance form, enter parameters as follows:
 User Name: %
-User Form Name: Define Application User
+Form Name: FNDSCAUS
 
 Please note that the SQL currently doesn't consider menu exclusions yet, which means that it's not 100% accurate as excluded functions would still show up in the report.
 -- Excel Examle Output: https://www.enginatics.com/example/fnd-responsibility-access/

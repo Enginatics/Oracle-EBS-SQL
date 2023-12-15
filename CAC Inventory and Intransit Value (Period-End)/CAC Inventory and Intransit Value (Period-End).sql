@@ -96,7 +96,9 @@ with inv_organizations as
   and hoi.organization_id             = haou.organization_id   -- this gets the organization name
   and haou2.organization_id           = to_number(hoi.org_information3) -- this gets the operating unit id
   and gl.ledger_id                    = to_number(hoi.org_information1) -- get the ledger_id
-  and 1=1                             -- p_operating_unit, p_ledger
+  and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
+and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
+and 1=1                             -- p_operating_unit, p_ledger
   and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
   and 2=2                             -- p_org_code
   group by
@@ -852,18 +854,4 @@ from inv_organizations mp,
    and cpcs.inventory_item_id          = msiv.inventory_item_id
    -- Don't get zero quantities
    and nvl(cpcs.rollback_quantity,0)  <> 0
-   and 4=4                             -- p_period_name, p_item_number
-   group by
-   mp.organization_id,
-   mp.category_set_id,
-   mp.category_organization_id,
-   msiv.inventory_item_id,
-   msiv.concatenated_segments,
-   regexp_replace(msiv.description,'[^[:alnum:]'' '']', null),
-   msiv.primary_uom_code,
-    msiv.inventory_item_status_code,
-   msiv.item_type,
-   oap.period_name,
-   nvl(cpcs.subinventory_code, 'Intransit') -- subinventory_code
-  ) onhand2
-  where mic.inventory
+   and 4=4                             -- p_period_name, p_item_

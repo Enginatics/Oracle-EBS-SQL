@@ -87,7 +87,9 @@ with inv_organizations as
   and hoi.organization_id             = haou.organization_id   -- this gets the organization name
   and haou2.organization_id           = to_number(hoi.org_information3) -- this gets the operating unit id
   and gl.ledger_id                    = to_number(hoi.org_information1) -- get the ledger_id
-  and 1=1                             -- p_operating_unit, p_ledger
+  and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
+and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
+and 1=1                             -- p_operating_unit, p_ledger
   and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
   and 9=9                             -- p_org_code
   group by
@@ -698,13 +700,4 @@ from mtl_system_items_vl msiv,
   -- Revision for version 1.11
   and msiv.organization_id        = cic1.organization_id
   and msiv.inventory_item_id      = cic1.inventory_item_id
-  and 8=8                         -- p_cost_type1
-  -- Revision for version 1.11
-  and 15=15                       -- p_item_number
-  union all
-  -- =============================================================
-  -- Get the costs from the frozen cost type that is not in cost
-  -- type 1 so that all of the inventory value is reported
-  -- =============================================================
-  select cic_frozen.organization_id    organization_id,
-  
+  and 8=8                         -- p_cos

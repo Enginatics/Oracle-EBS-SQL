@@ -206,6 +206,8 @@ and fu1.user_id                 = msub.created_by
 and fu2.user_id                 = msub.last_updated_by
 -- Revision for version 1.1, 1.3
 and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
+and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
+and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
 and 1=1                                                           -- p_org_code, p_operating_unit, p_ledger
 union all
 -- Get the Material Overhead Account
@@ -355,6 +357,8 @@ and fu1.user_id                 = msub.created_by
 and fu2.user_id                 = msub.last_updated_by
 -- Revision for version 1.1, 1.3
 and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
+and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
+and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
 and 1=1                                                           -- p_org_code, p_operating_unit, p_ledger
 union all
 -- Get the Resource Account
@@ -507,6 +511,8 @@ and fu1.user_id                 = msub.created_by
 and fu2.user_id                 = msub.last_updated_by
 -- Revision for version 1.1, 1.3
 and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
+and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
+and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
 and 1=1                                                           -- p_org_code, p_operating_unit, p_ledger
 union all
 -- Get the Outside Processing Account
@@ -659,6 +665,8 @@ and fu1.user_id                 = msub.created_by
 and fu2.user_id                 = msub.last_updated_by
 -- Revision for version 1.1, 1.3
 and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
+and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
+and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
 and 1=1                                                           -- p_org_code, p_operating_unit, p_ledger
 union all
 -- Get the Overhead Account
@@ -808,6 +816,8 @@ and fu1.user_id                 = msub.created_by
 and fu2.user_id                 = msub.last_updated_by
 -- Revision for version 1.1, 1.3
 and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
+and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
+and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
 and 1=1                                                           -- p_org_code, p_operating_unit, p_ledger
 union all
 -- Get the Expense Account
@@ -923,41 +933,4 @@ from -- Revision for version 1.4
  mfg_lookups ml1,
  mfg_lookups ml2,
  -- Revision for version 1.9
- mfg_lookups ml3, -- Account Type
- gl_code_combinations gcc,
- hr_organization_information hoi,
- hr_all_organization_units_vl haou,
- hr_all_organization_units_vl haou2,
- gl_ledgers gl,
- fnd_user fu1,
- fnd_user fu2
-where msub.expense_account        = gcc.code_combination_id (+)
-and msub.organization_id        = mp.organization_id
--- Revision for version 1.8
-and ml1.lookup_type             = 'SYS_YES_NO'
-and ml1.lookup_code             = msub.asset_inventory
-and ml2.lookup_type             = 'SYS_YES_NO'
-and ml2.lookup_code             = msub.quantity_tracked
--- Revision for version 1.9
-and ml3.lookup_type             = 'CST_ACCOUNT_TYPE'
-and ml3.lookup_code             = 3 -- Expense
--- ===========================================
--- Organization joins to the HR org model
--- ===========================================
-and hoi.org_information_context = 'Accounting Information'
-and hoi.organization_id         = mp.organization_id
-and hoi.organization_id         = haou.organization_id -- this gets the organization name
-and haou2.organization_id       = to_number(hoi.org_information3) -- this gets the operating unit id
-and gl.ledger_id                = to_number(hoi.org_information1) -- get the ledger_id
--- Revision for version 1.4
--- Avoid selecting disabled inventory organizations
-and sysdate < nvl(haou.date_to, sysdate + 1)
--- Revision for version 1.6
-and fu1.user_id                 = msub.created_by
-and fu2.user_id                 = msub.last_updated_by
--- Revision for version 1.1, 1.3
-and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-and 1=1                                                           -- p_org_code, p_operating_unit, p_ledger
--- End revision for version 1.1, 1.3
--- Order by Status, Ledger, Operating_Unit, Org_Code, Cost_Type, Resource_Code, Res Basis, Department and Overhead Code
-order by 1,2,3,6,10
+ mfg_lookups ml3, -- Account Typ

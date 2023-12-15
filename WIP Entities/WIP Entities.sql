@@ -11,6 +11,7 @@
 -- Run Report: https://demo.enginatics.com/
 
 select
+mp.organization_code,
 we.wip_entity_name job,
 xxen_util.meaning(we.entity_type,'WIP_ENTITY',700) type,
 xxen_util.meaning(wdj.status_type,'WIP_JOB_STATUS',700) status,
@@ -55,10 +56,9 @@ wo.completed,
 xxen_util.client_time(wo.first_unit_start_date) first_unit_start_date,
 xxen_util.client_time(wo.last_unit_completion_date) last_unit_completion_date,
 xxen_util.user_name(wo.last_updated_by) operation_last_updated_by,
-haouv.name organization,
-mp.organization_code,
 xxen_util.user_name(we.created_by) created_by,
 xxen_util.client_time(we.creation_date) creation_date,
+haouv.name organization,
 we.wip_entity_id
 from
 hr_all_organization_units_vl haouv,
@@ -111,6 +111,7 @@ wip_operation_resources wor
 bom_resources br
 where
 1=1 and
+we.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
 haouv.organization_id=mp.organization_id and
 mp.organization_id=we.organization_id and
 we.primary_item_id=msiv.inventory_item_id(+) and
@@ -131,4 +132,5 @@ wo.organization_id=wor.organization_id(+) and
 wo.operation_seq_num=wor.operation_seq_num(+) and
 wor.resource_id=br.resource_id(+)
 order by
+mp.organization_code,
 we.creation_date desc

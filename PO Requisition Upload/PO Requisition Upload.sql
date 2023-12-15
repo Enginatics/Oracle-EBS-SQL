@@ -77,14 +77,14 @@ papf2.full_name deliver_to_requestor,
 plc1.displayed_field source_type,
 mps.organization_code source_organization,
 prla.source_subinventory source_subinventory,
-msib.segment1 item,
+msiv.concatenated_segments item,
 prla.item_description,
 prla.item_revision,
 mcv.category_concat_segs category,
 prla.unit_meas_lookup_code unit_of_measure,
 prla.quantity,
 prla.unit_price,
-to_char(prla.need_by_date,'DD-Mon-YYYY') need_by_date,
+prla.need_by_date need_by_date,
 prla.reference_num reference_number,
 --source--
 prla.suggested_vendor_name supplier,
@@ -97,7 +97,7 @@ prla.note_to_agent note_to_buyer,
 --currency--
 prla.currency_code currency,
 prla.rate_type conversion_type,
-to_char(prla.rate_date,'DD-Mon-YYYY') conversion_date,
+prla.rate_date conversion_date,
 prla.rate conversion_rate,
 prla.attribute_category line_attribute_category,
 prla.attribute1 line_attribute1,
@@ -134,7 +134,7 @@ ppv.segment1 project_number,
 ptv.task_number,
 prda.expenditure_type,
 haouve.name expenditure_organization,
-to_char(prda.expenditure_item_date,'DD-Mon-YYYY') expenditure_item_date,
+prda.expenditure_item_date expenditure_item_date,
 prda.attribute_category dist_attribute_category,
 prda.attribute1 dist_attribute1,
 prda.attribute2 dist_attribute2,
@@ -156,7 +156,12 @@ to_char(null) group_by,
 to_char(null) initiate_reqappr_after_imp,
 to_char(null) interface_source_code,
 to_char(null) multi_distributions,
+to_char(null) allow_dynamic_ccid,
 to_char(null) authorization_status,
+to_char(null) attachment_type,
+to_char(null) attachment_category,
+to_char(null) attachment_title,
+to_char(null) attachment_description,
 to_char(null) preparer_id,
 prha.type_lookup_code requisition_type
 from
@@ -170,7 +175,7 @@ pa_tasks_v ptv,
 hr_all_organization_units_vl haouve,
 mtl_parameters mps,
 mtl_parameters mpd,
-mtl_system_items_b msib,
+mtl_system_items_vl msiv,
 hr_all_organization_units_vl haouv,
 per_all_people_f papf1,
 per_all_people_f papf2,
@@ -217,8 +222,8 @@ po_req_distributions_all prda
 where pda.req_distribution_id = prda.distribution_id and
 prda.requisition_line_id = prla.requisition_line_id
 ) and
-prla.item_id=msib.inventory_item_id(+) and
-po_lines_sv4.get_inventory_orgid(prla.org_id)=msib.organization_id(+) and
+prla.item_id=msiv.inventory_item_id(+) and
+po_lines_sv4.get_inventory_orgid(prla.org_id)=msiv.organization_id(+) and
 prla.destination_organization_id=mpd.organization_id(+) and
 prla.source_organization_id=mps.organization_id(+) and
 prla.category_id=mcv.category_id(+) and
@@ -229,4 +234,7 @@ prda.expenditure_organization_id=haouve.organization_id(+)
 &not_use_first_block
 &report_table_select &report_table_name &report_table_where_clause &success_records
 &processed_run
-order by 7,27,73
+order by 
+7,   -- requisition number
+26, -- line number
+72 -- distribution line number

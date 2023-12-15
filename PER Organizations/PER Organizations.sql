@@ -13,18 +13,19 @@
 select
 haouv0.name business_group,
 ftv.territory_short_name country,
+hla.town_or_city city,
 xxen_util.meaning(haouv.type,'ORG_TYPE',3) type,
 haouv.name organization,
 mp.organization_code,
 decode(haouv.internal_external_flag,'EXT','External','INT','Internal') internal_or_external,
 &col_classification
+decode(haouv.head_count,0,null,haouv.head_count) head_count,
 hla.location_code,
-nvl2(hla.address_line_1,hla.address_line_1||' ','')||
-nvl2(hla.address_line_2,hla.address_line_2||' ','')||
-nvl2(hla.address_line_3,hla.address_line_3||' ','')||
-nvl2(hla.town_or_city,hla.town_or_city||' ','')||
-nvl2(hla.region_2,hla.region_2||' ','')||
-hla.postal_code address,
+nvl2(hla.address_line_1,hla.address_line_1||', ','')||
+nvl2(hla.address_line_2,hla.address_line_2||', ','')||
+nvl2(hla.address_line_3,hla.address_line_3||', ','')||
+nvl2(hla.region_2,hla.region_2||', ','') address,
+hla.postal_code,
 &col_attributes
 haouv.date_to,
 xxen_util.user_name(haouv.created_by) created_by,
@@ -33,7 +34,13 @@ xxen_util.user_name(haouv.last_updated_by) last_updated_by,
 xxen_util.client_time(haouv.last_update_date) last_update_date,
 haouv.organization_id
 from
-hr_all_organization_units_vl haouv,
+(
+select
+(select count(distinct paaf.person_id) from per_all_assignments_f paaf where haouv.organization_id=paaf.organization_id and paaf.assignment_type in ('E','C') and paaf.primary_flag='Y' and trunc(sysdate) between paaf.effective_start_date and paaf.effective_end_date) head_count,
+haouv.*
+from
+hr_all_organization_units_vl haouv
+) haouv,
 hr_all_organization_units_vl haouv0,
 hr_locations_all hla,
 fnd_territories_vl ftv,

@@ -234,6 +234,8 @@ and ml3.lookup_code                 = cic.based_on_rollup_flag
 -- End revision for version 1.6
 and fcl.lookup_type (+)             = 'ITEM_TYPE'
 and fcl.lookup_code (+)             = msiv.item_type
+and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
+and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
 and 1=1                             -- p_operating_unit, p_ledger
 and 2=2                             -- p_org_code
 -- Revision for version 1.35

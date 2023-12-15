@@ -17,7 +17,10 @@ Short Name: AROBRR
 select
   trx.ledger                       "Ledger"
 , trx.ou_name                      "Operating Unit"
-, trx.accounting_flexfield         "Accounting Flexfield"
+, trx.c_balancing                  "Balancing Segment"
+, trx.c_account                    "Account Segment"
+, trx.c_flexdata                   "Accounting Flexfield"
+, trx.c_flexdata_desc              "Accounting Flexfield Desc."
 , trx.currency_code                "Currency"
 , trx.customer_name                "Trading Partner"
 , trx.account_number               "Customer Number"
@@ -34,12 +37,15 @@ select
 , trx.inv_amt_due_reval            "Open Revalued Amount"
 , nvl(trx.inv_amt_due_reval,0)
    - nvl(trx.inv_amt_due_er,0)     "Profit/Loss"
-, nvl2(trx.exchange_rate,null,'*') "No Revaluation Rate"
+, nvl2(trx.exchange_rate,null,'Yes') "Missing Revaluation Rates"
 from
   ( select
       gl.name                       ledger
     , hou.name                      ou_name
-    , fnd_flex_xml_publisher_apis.process_kff_combination_1('flex_select_all', 'SQLGL', 'GL#', gcc.chart_of_accounts_id, NULL, gcc.code_combination_id, 'ALL', 'Y', 'VALUE')  accounting_flexfield
+    , fnd_flex_xml_publisher_apis.process_kff_combination_1('flex_select_all', 'SQLGL', 'GL#', gcc.chart_of_accounts_id, NULL, gcc.code_combination_id, 'GL_BALANCING', 'Y', 'VALUE')  c_balancing
+    , fnd_flex_xml_publisher_apis.process_kff_combination_1('flex_select_all', 'SQLGL', 'GL#', gcc.chart_of_accounts_id, NULL, gcc.code_combination_id, 'GL_ACCOUNT', 'Y', 'VALUE')  c_account
+    , fnd_flex_xml_publisher_apis.process_kff_combination_1('flex_select_all', 'SQLGL', 'GL#', gcc.chart_of_accounts_id, NULL, gcc.code_combination_id, 'ALL', 'Y', 'VALUE')  c_flexdata
+    , fnd_flex_xml_publisher_apis.process_kff_combination_1('flex_select_all', 'SQLGL', 'GL#', gcc.chart_of_accounts_id, NULL, gcc.code_combination_id, 'ALL', 'Y', 'DESCRIPTION') c_flexdata_desc
     , rcta.invoice_currency_code    currency_code
     , nvl(rcta.exchange_rate,1)     orig_invoice_rate
     , hp.party_name                 customer_name
@@ -155,7 +161,8 @@ from
     , hz_parties                   hp
     , ar_system_parameters         sp
     where
-        hou.set_of_books_id              = sp.set_of_books_id
+        hou.organization_id              = sp.org_id
+    and hou.set_of_books_id              = sp.set_of_books_id
     and gl.ledger_id                     = sp.set_of_books_id
     and rcta.customer_trx_id             = aps.customer_trx_id
     and rcta.org_id                      = hou.organization_id
@@ -180,7 +187,7 @@ from
     and gjh.je_header_id                 = gir.je_header_id
     and gjh.status                       = 'P'
     and gjh.ledger_id                    = sp.set_of_books_id
-    and sp.org_id                        = :P_ORG_ID
+    --and sp.org_id                        = :P_ORG_ID
     and rcta.bill_to_customer_id         = hca.cust_account_id
     and hp.party_id                      = hca.party_id
     and rcta.trx_date                   <= :p_as_of_date
@@ -189,7 +196,8 @@ from
       gl.name
     , gl.currency_code
     , hou.name
-    , fnd_flex_xml_publisher_apis.process_kff_combination_1('flex_select_all', 'SQLGL', 'GL#', gcc.chart_of_accounts_id, NULL, gcc.code_combination_id, 'ALL', 'Y', 'VALUE')
+    , gcc.chart_of_accounts_id
+    , gcc.code_combination_id
     , rcta.invoice_currency_code
     , nvl(rcta.exchange_rate,1)
     , hp.party_name
@@ -230,7 +238,10 @@ from
     select
       abc.ledger                    ledger
     , abc.op_name                   ou_name
-    , abc.accounting_flexfield      accounting_flexfield
+    , abc.c_balancing               c_balancing
+    , abc.c_account                 c_account
+    , abc.c_flexdata                c_flexdata
+    , abc.c_flexdata_desc           c_flexdata_desc
     , abc.currency_code             currency_code
     , abc.orig_invoice_rate         orig_invoice_rate
     , hp.party_name                 customer_name
@@ -251,7 +262,10 @@ from
       ( select
           gl.name                                       ledger
         , hou.name                                      op_name
-        , fnd_flex_xml_publisher_apis.process_kff_combination_1('flex_select_all', 'SQLGL', 'GL#', gcc.chart_of_accounts_id, null, gcc.code_combination_id, 'ALL', 'Y', 'VALUE') accounting_flexfield
+        , fnd_flex_xml_publisher_apis.process_kff_combination_1('flex_select_all', 'SQLGL', 'GL#', gcc.chart_of_accounts_id, NULL, gcc.code_combination_id, 'GL_BALANCING', 'Y', 'VALUE')  c_balancing
+        , fnd_flex_xml_publisher_apis.process_kff_combination_1('flex_select_all', 'SQLGL', 'GL#', gcc.chart_of_accounts_id, NULL, gcc.code_combination_id, 'GL_ACCOUNT', 'Y', 'VALUE')  c_account
+        , fnd_flex_xml_publisher_apis.process_kff_combination_1('flex_select_all', 'SQLGL', 'GL#', gcc.chart_of_accounts_id, NULL, gcc.code_combination_id, 'ALL', 'Y', 'VALUE')  c_flexdata
+        , fnd_flex_xml_publisher_apis.process_kff_combination_1('flex_select_all', 'SQLGL', 'GL#', gcc.chart_of_accounts_id, NULL, gcc.code_combination_id, 'ALL', 'Y', 'DESCRIPTION') c_flexdata_desc
         , hca.cust_account_id                           custid
         , decode(ara.status,'ACC','*' || al.meaning)    trans_type
         , acr.receipt_number                            invoice_number
@@ -296,7 +310,8 @@ from
         , gl_je_headers              gjh
         , ar_system_parameters       sp
         where
-            hou.set_of_books_id              = sp.set_of_books_id
+            hou.organization_id              = sp.org_id
+        and hou.set_of_books_id              = sp.set_of_books_id
         and gl.ledger_id                     = sp.set_of_books_id
         and acr.org_id                       = hou.organization_id
         and acr.org_id                       = ara.org_id
@@ -327,7 +342,7 @@ from
         and gir.gl_sl_link_table             = xal.gl_sl_link_table
         and gjh.je_header_id                 = gir.je_header_id
         and gjh.ledger_id                    = sp.set_of_books_id
-        and sp.org_id                        = :P_ORG_ID
+        --and sp.org_id                        = :P_ORG_ID
         and gjh.status                       = 'P'
         and ara.gl_date                     <= :p_as_of_date
         and 2=2
@@ -335,7 +350,8 @@ from
           gl.name
         , gl.currency_code
         , hou.name
-        , fnd_flex_xml_publisher_apis.process_kff_combination_1('flex_select_all', 'SQLGL', 'GL#', gcc.chart_of_accounts_id, NULL, gcc.code_combination_id, 'ALL', 'Y', 'VALUE')
+        , gcc.chart_of_accounts_id
+        , gcc.code_combination_id
         , hca.cust_account_id
         , decode(ara.status,'ACC','*' || al.meaning)
         , acr.receipt_number
@@ -352,7 +368,10 @@ from
         select
           gl.name                                        ledger
         , hou.name                                       op_name
-        , fnd_flex_xml_publisher_apis.process_kff_combination_1('flex_select_all', 'SQLGL', 'GL#', gcc.chart_of_accounts_id, null, gcc.code_combination_id, 'ALL', 'Y', 'VALUE') accounting_flexfield
+        , fnd_flex_xml_publisher_apis.process_kff_combination_1('flex_select_all', 'SQLGL', 'GL#', gcc.chart_of_accounts_id, NULL, gcc.code_combination_id, 'GL_BALANCING', 'Y', 'VALUE')  c_balancing
+        , fnd_flex_xml_publisher_apis.process_kff_combination_1('flex_select_all', 'SQLGL', 'GL#', gcc.chart_of_accounts_id, NULL, gcc.code_combination_id, 'GL_ACCOUNT', 'Y', 'VALUE')  c_account
+        , fnd_flex_xml_publisher_apis.process_kff_combination_1('flex_select_all', 'SQLGL', 'GL#', gcc.chart_of_accounts_id, NULL, gcc.code_combination_id, 'ALL', 'Y', 'VALUE')  c_flexdata
+        , fnd_flex_xml_publisher_apis.process_kff_combination_1('flex_select_all', 'SQLGL', 'GL#', gcc.chart_of_accounts_id, NULL, gcc.code_combination_id, 'ALL', 'Y', 'DESCRIPTION') c_flexdata_desc
         , hca.cust_account_id                            custid
         , decode(ara.status,'UNAPP','*' || al.meaning)   trans_type
         , acr.receipt_number                             invoice_number
@@ -374,7 +393,7 @@ from
                    end
               end                                       closing_amount
         , case '&lp_exchange_rate_type'
-          when 'User' 
+          when 'User'
           then :p_exchange_rate
           else case when gl_currency_api.get_rate_sql(acr.currency_code,gl.currency_code,:p_as_of_date,'&lp_exchange_rate_type') in (-1,-2)
                then to_number(null)
@@ -397,7 +416,8 @@ from
         , gl_je_headers              gjh
         , ar_system_parameters       sp
         where
-            hou.set_of_books_id              = sp.set_of_books_id
+            hou.organization_id              = sp.org_id
+        and hou.set_of_books_id              = sp.set_of_books_id
         and gl.ledger_id                     = sp.set_of_books_id
         and acr.org_id                       = hou.organization_id
         and acr.org_id                       = ara.org_id
@@ -425,7 +445,7 @@ from
         and gir.gl_sl_link_table             = xal.gl_sl_link_table
         and gjh.je_header_id                 = gir.je_header_id
         and gjh.ledger_id                    = sp.set_of_books_id
-        and sp.org_id                        = :P_ORG_ID
+        --and sp.org_id                        = :P_ORG_ID
         and gjh.status                       = 'P'
         and not exists
             ( select 'X'
@@ -439,7 +459,8 @@ from
           gl.name
         , gl.currency_code
         , hou.name
-        , fnd_flex_xml_publisher_apis.process_kff_combination_1('flex_select_all', 'SQLGL', 'GL#', gcc.chart_of_accounts_id, null, gcc.code_combination_id, 'ALL', 'Y', 'VALUE')
+        , gcc.chart_of_accounts_id
+        , gcc.code_combination_id
         , hca.cust_account_id
         , decode(ara.status,'UNAPP','*' || al.meaning)
         , acr.receipt_number
@@ -462,8 +483,9 @@ from
   ) trx
 order by
   trx.ledger
-, trx.ou_name
-, trx.accounting_flexfield
+, trx.c_balancing
+, trx.c_account
+, trx.c_flexdata
 , trx.currency_code
 , trx.customer_name
 , trx.invoice_number

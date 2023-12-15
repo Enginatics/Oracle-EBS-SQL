@@ -15,8 +15,8 @@ ood.organization_name,
 ood.organization_code,
 msi.secondary_inventory_name subinventory,
 xxen_util.meaning(nvl(msi.subinventory_type, 1),'MTL_SUB_TYPES',700) subinventory_type,
-inv_project.get_locator(moqd.locator_id,moqd.organization_id) locator,
-xxen_util.meaning(mil.inventory_location_type,'MTL_LOCATOR_TYPES',700) locator_type,
+nvl(inv_project.get_locator(milk.inventory_location_id,milk.organization_id),milk.concatenated_segments) locator,
+xxen_util.meaning(milk.inventory_location_type,'MTL_LOCATOR_TYPES',700) locator_type,
 mmsv.status_code status,
 msiv.concatenated_segments item,
 msiv.description item_description,
@@ -26,7 +26,7 @@ mck.segment1 item_category1,
 mck.segment2 item_category2,
 xxen_util.meaning(msiv.planning_make_buy_code,'MTL_PLANNING_MAKE_BUY',700) make_buy,
 moqd.revision,
-muot.unit_of_measure_tl unit_of_measure,
+muomv.unit_of_measure_tl unit_of_measure,
 sum(moqd.primary_transaction_quantity) over (partition by moqd.organization_id, moqd.inventory_item_id, moqd.revision, moqd.lot_number, moqd.cost_group_id, moqd.subinventory_code, moqd.locator_id, moqd.lpn_id, moqd.project_id, moqd.task_id, moqd.owning_tp_type, moqd.owning_organization_id, moqd.planning_tp_type, moqd.planning_organization_id) on_hand,
 cic.cost_type,
 cic.item_cost,
@@ -91,14 +91,14 @@ from
 org_organization_definitions ood,
 mtl_onhand_quantities_detail moqd,
 mtl_secondary_inventories msi,
-mtl_item_locations mil,
+mtl_item_locations_kfv milk,
 mtl_material_statuses_vl mmsv,
 wms_license_plate_numbers wlpn,
 mtl_category_sets mcs,
 mtl_item_categories mic,
 mtl_categories_kfv mck,
 mtl_system_items_vl msiv,
-mtl_units_of_measure_tl muot,
+mtl_units_of_measure_vl muomv,
 ap_supplier_sites_all assa,
 ap_suppliers aps,
 mtl_parameters mp2,
@@ -154,7 +154,7 @@ from
 mtl_material_transactions mmt,
 mtl_transaction_lot_numbers mtln
 where
-'&p_show_trx_hist'='Y' and
+:p_show_trx_hist is not null and
 mmt.transaction_id=mtln.transaction_id(+) and
 mmt.transaction_action_id in (1,21,27) and
 mmt.transaction_date>add_months(sysdate,-36)
@@ -191,12 +191,13 @@ cic.cost_type_id=cct.cost_type_id
 ) cic
 where
 1=1 and
+ood.organization_code in (select oav.organization_code from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
 ood.organization_id=moqd.organization_id and
 moqd.organization_id=msi.organization_id(+) and
 moqd.subinventory_code=msi.secondary_inventory_name(+) and
-moqd.organization_id=mil.organization_id(+) and
-moqd.locator_id=mil.inventory_location_id(+) and
-mil.status_id=mmsv.status_id(+) and
+moqd.organization_id=milk.organization_id(+) and
+moqd.locator_id=milk.inventory_location_id(+) and
+milk.status_id=mmsv.status_id(+) and
 moqd.lpn_id=wlpn.lpn_id(+) and
 mcs.category_set_name=nvl(:p_cat_set_name,(select mcsv.category_set_name from mtl_default_category_sets mdcs, mtl_category_sets_v mcsv where mdcs.functional_area_id=1 and mdcs.category_set_id=mcsv.category_set_id)) and
 mcs.category_set_id=mic.category_set_id and
@@ -205,8 +206,7 @@ moqd.inventory_item_id=mic.inventory_item_id and
 mic.category_id=mck.category_id and
 moqd.organization_id=msiv.organization_id and
 moqd.inventory_item_id=msiv.inventory_item_id and
-msiv.primary_uom_code=muot.uom_code(+) and
-muot.language(+)=userenv('lang') and
+msiv.primary_uom_code=muomv.uom_code(+) and
 decode(moqd.owning_tp_type,1,moqd.owning_organization_id)=assa.vendor_site_id(+) and
 assa.vendor_id=aps.vendor_id(+) and
 decode(moqd.planning_tp_type,2,moqd.planning_organization_id)=mp2.organization_id(+) and

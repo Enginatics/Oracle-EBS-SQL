@@ -290,7 +290,9 @@ from    -- Revision for version 1.4
          and     msiv2.inventory_item_status_code  <> 'Inactive'
          and     mp_to_org.organization_code in (select oav.organization_code from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
          and     8=8                               -- p_include_expense_items, p_include_uncosted_items
-         and     1=1                               -- p_operating_unit, p_ledger
+         and     gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
+and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
+and 1=1                               -- p_operating_unit, p_ledger
          and     4=4                               -- p_to_org
          and     5=5                               -- p_component_number
          and     7=7                               -- p_assy_number
@@ -573,12 +575,4 @@ from    -- Revision for version 1.4
                      and    cicd.inventory_item_id = cic.inventory_item_id
                      and    cicd.organization_id   = cic.organization_id
                      and    cicd.resource_id       = br.resource_id
-                    ),0) pii_cost
-         from   cst_item_costs cic,
-                cst_cost_types cct,
-                mtl_parameters mp
-         -- ====================================
-         -- Item Cost Joins for the Source Org
-         -- ====================================
-         where  cic.organization_id           = mp.organization_id
-         and    cic.cost_type_id              = mp.primary_cost_method  -- this gets the 
+                    ),0

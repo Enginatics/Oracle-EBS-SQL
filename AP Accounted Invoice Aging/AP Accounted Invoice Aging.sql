@@ -273,7 +273,7 @@ ap_inv as
   xtb.ledger_id=gl.ledger_id and
   gl.currency_code=fcv.currency_code and
   haouv.organization_id=aia.org_id and
-  aia.org_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where not exists (select null from mo_glob_org_access_tmp mgoat)) and
+  aia.org_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11) and
   apsa.external_bank_account_id = ieba.ext_bank_account_id(+) and
   ieba.branch_id = cbbv.branch_party_id(+) and
   ieba.bank_id = cbbv.bank_party_id(+)

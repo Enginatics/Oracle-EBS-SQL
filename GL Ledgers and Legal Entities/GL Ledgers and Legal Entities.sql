@@ -24,6 +24,8 @@ glsnav.ledger_set_id=gl0.ledger_id
 gl.name ledger,
 xxen_util.meaning(gl.ledger_category_code,'GL_ASF_LEDGER_CATEGORY',101) ledger_category,
 gl.currency_code currency,
+ftv.territory_short_name country,
+xfi.town_or_city city,
 xfi.name legal_entity,
 xfi.legal_entity_identifier,
 (
@@ -46,12 +48,10 @@ gleb.flex_value_set_id=ffvs.flex_value_set_id(+) and
 gleb.flex_segment_value=ffvs.flex_value(+)
 ) bsv_description,
 xfi.registration_number,
-ftv.territory_short_name country,
 ftv.territory_short_name||nvl2(xfi.legislative_cat_code,' - '||xxen_util.meaning(xfi.legislative_cat_code,'LEGISLATIVE_CATEGORY',222),null) juristdiction,
 xfi.address_line_1,
 xfi.address_line_2,
 xfi.address_line_3,
-xfi.town_or_city city,
 xfi.postal_code,
 (select fifsv.id_flex_structure_name from fnd_id_flex_structures_vl fifsv where gl.chart_of_accounts_id=fifsv.id_flex_num and fifsv.application_id=101 and fifsv.id_flex_code='GL#') chart_of_accounts_name,
 gl.ledger_id,

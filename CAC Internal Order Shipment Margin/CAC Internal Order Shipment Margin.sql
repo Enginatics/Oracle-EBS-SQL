@@ -126,45 +126,17 @@ select txns_sum.from_ledger From_Ledger,
  txns_sum.cogs_amount - txns_sum.revenue_amount +
   round((txns_sum.from_org_pii_cost * txns_sum.cogs_primary_quantity),2) From_Org_Net_Margin_Amount,
  txns_sum.to_curr_code To_Org_Curr_Code,
- to_char(gdr.conversion_date,'DD-Mon-YYYY') Curr_Conv_Date,
- round(gdr.conversion_rate,6) Curr_Conv_Rate,
+ nvl(gdr.conversion_date,:conversion_date) Curr_Conv_Date,
+ round(nvl(gdr.conversion_rate,1),6) Curr_Conv_Rate,
  round((txns_sum.cogs_amount - txns_sum.revenue_amount + round((txns_sum.from_org_pii_cost * txns_sum.cogs_primary_quantity),2))
-   * gdr.conversion_rate,2) Conv_Net_Margin_Amount,
+   * nvl(gdr.conversion_rate,1),2) Conv_Net_Margin_Amount,
  txns_sum.to_org_pii_cost To_Org_PII_Item_Cost,
  round(txns_sum.cogs_primary_quantity * txns_sum.to_org_pii_cost,2) To_Org_PII_Amount,
  -- Conv Margin Amount + To_Org_PII_Amount
  round((txns_sum.cogs_amount - txns_sum.revenue_amount + round((txns_sum.from_org_pii_cost * txns_sum.cogs_primary_quantity),2))
-   * gdr.conversion_rate,2) + round(txns_sum.cogs_primary_quantity * txns_sum.to_org_pii_cost,2) Conv_Net_Margin_Less_PII
-from -- ========================================================
- -- Section II:  Get all currency conversion rates based
- --  on the standard cost budget rate type
- -- ========================================================
- (select gdr.from_currency,
-  gdr.to_currency,
-  gdct.user_conversion_type,
-  gdr.conversion_date,
-  round(gdr.conversion_rate,6) conversion_rate
-  from gl_daily_rates gdr,
-  gl_daily_conversion_types gdct
-  where gdr.conversion_type        = gdct.conversion_type
-  and 1=1                        -- p_curr_conv_date
-  and 4=4                        -- p_std_cost_curr_conv_type
-  union all
-  select gl.currency_code,              -- from_currency
-  gl.currency_code,              -- to_currency
-  gdct.user_conversion_type,     -- conversion_type
-  :p_curr_conv_date,             -- conversion_date, p_curr_conv_date
-  1 conversion_rate              -- conversion_rate
-  from gl_ledgers gl,
-  gl_daily_conversion_types gdct
-  where 4=4                            -- p_std_cost_curr_conv_type
-  group by
-  gl.currency_code,
-  gl.currency_code,
-  gdct.user_conversion_type,
-  :p_curr_conv_date,             -- p_curr_conv_date
-  1
- ) gdr, -- Standard Cost Budgeted Currency Rate
+   * nvl(gdr.conversion_rate,1),2) + round(txns_sum.cogs_primary_quantity * txns_sum.to_org_pii_cost,2) Conv_Net_Margin_Less_PII
+from
+(select gdr.* from gl_daily_rates gdr, gl_daily_conversion_types gdct where gdr.conversion_date=:conversion_date and gdct.user_conversion_type=:user_conversion_type and gdct.conversion_type=gdr.conversion_type) gdr,
  -- ========================================================
  -- Section III: Condense the 2 union all statements into one line
  --              for each Transaction Id, reports 1 - 2.
@@ -425,6 +397,7 @@ from -- ========================================================
   and haou_from_org.organization_id   = to_number(hoi_from_org.org_information3) -- this gets the operating unit id
   and gl_from_org.ledger_id           = to_number(hoi_from_org.org_information1) 
   and 8=8                             -- p_from_org_ledger
+  and gl_from_org.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
   -- ========================================================
   -- To organization information
   -- ========================================================
@@ -434,6 +407,7 @@ from -- ========================================================
   and haou_to_org.organization_id     = to_number(hoi_to_org.org_information3) -- this gets the operating unit id
   and gl_to_org.ledger_id             = to_number(hoi_to_org.org_information1)
   and 9=9                             -- p_to_org_ledger
+  and gl_to_org.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
   -- End revision for version 1.14
   -- Only report entries which cross operating units
   -- Doing this screens out transfers to the consignment organizations
@@ -748,4 +722,9 @@ from -- ========================================================
     where prh.type_lookup_code = 'INTERNAL'
     and ooh.source_document_id = prh.requisition_header_id
     and prl.requisition_header_id = prh.requisition_header_id
-    and prl.requisition_li
+    and prl.requisition_line_id = ool.source_document_line_id)
+  and hoi_to_org.org_information_context = 'Accounting Information'
+  and hoi_to_org.organization_id      = mp_to.organization_id     -- ship to org for sales and COGS
+  and haou_to_org.organization_id     = to_number(hoi_to_org.org_information3) -- gets the operating unit id
+  and gl_to_org.ledger_id             = to_number(hoi_to_org.org_information1)
+  and 9=9                             -- p_to_org_ledg

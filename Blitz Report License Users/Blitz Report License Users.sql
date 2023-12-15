@@ -5,15 +5,17 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: Blitz Report License Users
--- Description: Active Blitz Report users (within the past 60 days) and their most frequently executed reports.
+-- Description: Currently active Blitz Report users (running reports within the past 60 days) and their most frequently executeds reports.
 -- Excel Examle Output: https://www.enginatics.com/example/blitz-report-license-users/
 -- Library Link: https://www.enginatics.com/reports/blitz-report-license-users/
 -- Run Report: https://demo.enginatics.com/
 
 select
 xxen_util.user_name(xrlu.user_id) user_name,
+fu.start_date user_start_date,
+xxen_util.client_time(y.first_run_date) first_run_date,
 xxen_util.client_time(xrlu.last_run_date) last_run_date,
-y.report_executions,
+y.run_count,
 y.distinct_reports,
 xrv.report_name most_popular,
 y.most_popular_count
@@ -23,7 +25,8 @@ fnd_user fu,
 (
 select distinct
 x.created_by,
-x.report_executions,
+x.first_run_date,
+x.run_count,
 x.distinct_reports,
 max(x.report_id) keep (dense_rank last order by x.count) over (partition by x.created_by) most_popular,
 max(x.count) keep (dense_rank last order by x.count) over (partition by x.created_by) most_popular_count
@@ -31,12 +34,13 @@ from
 (
 select distinct
 xrr.created_by,
+xrr.first_run_date,
 xrr.report_id,
-count(*) over (partition by xrr.created_by) report_executions,
+count(*) over (partition by xrr.created_by) run_count,
 count(distinct xrr.report_id) over (partition by xrr.created_by) distinct_reports,
 count(*) over (partition by xrr.created_by, xrr.report_id) count
 from
-xxen_report_runs xrr
+(select min(xrr.creation_date) over (partition by xrr.created_by) first_run_date,  xrr.* from xxen_report_runs xrr) xrr
 where
 nvl(xrr.type,'x')<>'S' and
 xrr.creation_date>sysdate-60

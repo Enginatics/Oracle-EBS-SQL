@@ -103,7 +103,7 @@ otta.cust_trx_type_id=rctt.cust_trx_type_id(+) and
 otta.currency_code=fcv.currency_code(+) and
 otta.conversion_type_code=gdct.conversion_type(+) and
 otta.cost_of_goods_sold_account=gcck.code_combination_id(+) and
-otta.org_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual)
+otta.org_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
 order by
 haouv.name,
 ottt.name

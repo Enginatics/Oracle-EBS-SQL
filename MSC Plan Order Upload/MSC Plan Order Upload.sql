@@ -95,10 +95,10 @@ select
        ,msc_get_name.lookup_meaning('MRP_ORDER_TYPE',decode(mov.order_type,92,70,mov.order_type))
        ) order_type,
  msc_get_name.supply_order_number (mov.order_type ,mov.order_number ,mov.plan_id ,mov.sr_instance_id ,mov.transaction_id ,mov.disposition_id) order_number,
- to_char(trunc(mov.need_by_date),'DD-Mon-YYYY')  need_by_date,
- to_char(trunc(mov.promised_date),'DD-Mon-YYYY')  promise_date,
- to_char(trunc(mov.old_schedule_date),'DD-Mon-YYYY')  old_due_date,
- to_char(trunc(mov.new_schedule_date),'DD-Mon-YYYY')  suggested_due_date,
+ trunc(mov.need_by_date)  need_by_date,
+ trunc(mov.promised_date)  promise_date,
+ trunc(mov.old_schedule_date)  old_due_date,
+ trunc(mov.new_schedule_date)  suggested_due_date,
  nvl(mov.daily_rate,mov.new_order_quantity) quantity,
  msc_get_name.action('MSC_SUPPLIES', msi.bom_item_type, msi.base_item_id, msi.wip_supply_type, mov.order_type, mov.reschedule_flag, mov.disposition_status_type, mov.new_schedule_date, mov.old_schedule_date, mov.implemented_quantity, mov.quantity_in_process, mov.new_order_quantity, msi.release_time_fence_code, mov.reschedule_days, mov.firm_quantity, mov.plan_id, msi.critical_component_flag, msi.mrp_planning_code, msi.lots_exist, mov.item_type_value, mov.transaction_id) action,
  --
@@ -121,7 +121,7 @@ select
       , null -- dest_org_id
       ),'MRP_WORKBENCH_IMPLEMENT_AS',700)
      ,null))                                     implement_as,
- to_char(nvl(mov.implement_date,nvl2(:p_default_impl_cols,
+ nvl(mov.implement_date,nvl2(:p_default_impl_cols,
       xxen_msc_rel_plan_api.implement_date
       ( mov.sr_instance_id
       , mov.plan_id
@@ -153,7 +153,7 @@ select
       , mov.firm_date
       , mov.new_ship_date
       , null -- dmd_satisfied_date
-     ),null)),'DD-Mon-YYYY')                      implement_date,
+     ),null))                      implement_date,
  nvl(nvl(mov.implement_daily_rate,mov.implement_quantity),nvl2(:p_default_impl_cols,
       xxen_msc_rel_plan_api.implement_qty_rate
       ( mov.sr_instance_id
@@ -186,7 +186,7 @@ select
  --
  msc_get_name.get_order_comments(mov.plan_id, 'SUPPLY', mov.transaction_id) comments,
  decode(mov.firm_planned_type, 1, 'Y',null)      firm,
- to_char(trunc(mov.firm_date),'DD-Mon-YYYY')     firm_date,
+ trunc(mov.firm_date)                            firm_date,
  mov.firm_quantity                               firm_quantity,
  --
  msc_get_name.org_code(mov.source_organization_id,mov.source_sr_instance_id) source_organization,
@@ -252,6 +252,6 @@ x.plan,
 x.organization,
 x.planner,
 x.item,
-to_date(x.suggested_due_date,'DD-Mon-YYYY'),
+x.suggested_due_date,
 x.order_type,
 x.order_number

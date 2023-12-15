@@ -39,6 +39,10 @@ select
 ,x.c_original_amount "Original Amount (Func Curr)"
 ,x.c_amount_remaining "Amount Remaining (Func Curr)"
 ,x.c_description description
+,trunc(x.c_inv_creation_date) invoice_creation_date
+,trunc(x.payment_date) payment_date
+,x.invoice_pay_group
+,x.dispute_reason
 ,(select distinct listagg(description,', ') within group (order by description) description
   from
    (
@@ -127,14 +131,27 @@ select -- invoices on hold
                  c_amount_remaining,
   inv1.description c_description,
   'Invoice Hold' c_hold_type,
-  inv1.creation_date c_inv_creation_date
+  inv1.creation_date c_inv_creation_date,
+  inv1.pay_group_lookup_code invoice_pay_group,
+  inv1.dispute_reason,
+  (select 
+   max(aca.check_date) 
+   from 
+   ap_invoice_payments_all aipa, 
+   ap_checks_all aca
+   where
+   aipa.check_id = aca.check_id and
+   aca.void_date is null and
+   aca.stopped_date is null and
+   aipa.invoice_id = inv1.invoice_id
+  ) payment_date
 from
   gl_sets_of_books gsob,
   hr_all_organization_units haou,
   hz_parties hp,
   ap_supplier_sites vs,
   ap_invoices inv1,
-  ap_batches b,
+  ap_batches_all b,
   ap_payment_schedules s,
   ap_holds h,
   ap_hold_codes ahc,
@@ -201,7 +218,9 @@ group by
                                     f.minimum_accountable_unit) *
                                     f.minimum_accountable_unit)),
   inv1.description,
-  inv1.creation_date
+  inv1.creation_date,
+  inv1.pay_group_lookup_code,
+  inv1.dispute_reason
 union
 select -- payments on hold
   gsob.name ledger,
@@ -248,14 +267,27 @@ select -- payments on hold
                                     f.minimum_accountable_unit)) c_amount_remaining,
   max(s.iby_hold_reason) c_description,
   'Scheduled Payment Hold' c_hold_type,
-  inv1.creation_date c_inv_creation_date
+  inv1.creation_date c_inv_creation_date,
+  inv1.pay_group_lookup_code invoice_pay_group,
+  inv1.dispute_reason,
+  (select 
+   max(aca.check_date) 
+   from 
+   ap_invoice_payments_all aipa, 
+   ap_checks_all aca
+   where
+   aipa.check_id = aca.check_id and
+   aca.void_date is null and
+   aca.stopped_date is null and
+   aipa.invoice_id = inv1.invoice_id
+  ) payment_date
 from
   gl_sets_of_books gsob,
   hr_all_organization_units haou,
   hz_parties hp,
   ap_supplier_sites vs,
   ap_invoices inv1,
-  ap_batches b,
+  ap_batches_all b,
   ap_payment_schedules s,
   fnd_currencies_vl f
 where
@@ -309,7 +341,9 @@ group by
                                     nvl(inv1.discount_amount_taken,0)) /
                                     f.minimum_accountable_unit) *
                                     f.minimum_accountable_unit)),
-  inv1.creation_date
+  inv1.creation_date,
+  inv1.pay_group_lookup_code,
+  inv1.dispute_reason
 union
 select -- vendor sites on hold
   gsob.name ledger,
@@ -356,7 +390,20 @@ select -- vendor sites on hold
                                     f.minimum_accountable_unit)) c_amount_remaining,
   inv1.description c_description,
   'Supplier Site Hold' c_hold_type,
-  inv1.creation_date c_inv_creation_date
+  inv1.creation_date c_inv_creation_date,
+  inv1.pay_group_lookup_code invoice_pay_group,
+  inv1.dispute_reason,
+  (select 
+   max(aca.check_date) 
+   from 
+   ap_invoice_payments_all aipa, 
+   ap_checks_all aca
+   where
+   aipa.check_id = aca.check_id and
+   aca.void_date is null and
+   aca.stopped_date is null and
+   aipa.invoice_id = inv1.invoice_id
+  ) payment_date
 from
   gl_sets_of_books gsob,
   hr_all_organization_units haou,
@@ -364,7 +411,7 @@ from
   ap_suppliers v,
   ap_supplier_sites vs,
   ap_invoices inv1,
-  ap_batches b,
+  ap_batches_all b,
   ap_payment_schedules s,
   fnd_currencies_vl f
 where
@@ -421,7 +468,9 @@ group by
                                     f.minimum_accountable_unit) *
                                     f.minimum_accountable_unit)),
   inv1.description,
-  inv1.creation_date
+  inv1.creation_date,
+  inv1.pay_group_lookup_code,
+  inv1.dispute_reason
 ) x
 where
  1=1

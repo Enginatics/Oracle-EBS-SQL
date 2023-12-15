@@ -21,7 +21,8 @@ xxen_util.meaning(psp.view_all_flag,'YES_NO',0) view_all_operating_units,
 xxen_util.user_name(psp.created_by) created_by,
 xxen_util.client_time(psp.creation_date) creation_date,
 xxen_util.user_name(psp.last_updated_by) last_updated_by,
-xxen_util.client_time(psp.last_update_date) last_update_date
+xxen_util.client_time(psp.last_update_date) last_update_date,
+psp.security_profile_id
 from
 (
 select
@@ -41,6 +42,7 @@ hr_all_organization_units_vl haouv,
 hr_locations_all hla,
 fnd_territories_vl ftv
 where
+1=1 and
 psp.operating_unit_id=haouv.organization_id(+) and
 haouv.location_id=hla.location_id(+) and
 hla.country=ftv.territory_code(+)

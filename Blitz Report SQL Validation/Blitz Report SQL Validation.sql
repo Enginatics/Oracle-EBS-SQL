@@ -22,7 +22,7 @@ from
 (
 select
 xrv.report_name,
-xxen_report.validate_sql(xrv.sql_text_full,'parse') error_message,
+xxen_report.validate_sql(&sql_text_full,'parse') error_message,
 xrv.type_dsp type,
 xrv.category,
 xrv.sql_text,

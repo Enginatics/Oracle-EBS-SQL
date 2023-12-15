@@ -595,8 +595,8 @@ and mmt.organization_id                    = ood1.organization_id
 and mmt.transfer_organization_id           = ood2.organization_id (+)
 and mmt.shipping_ou_id                     = haou1.organization_id
 and mmt.selling_ou_id                      = haou2.organization_id
-and (   mmt.shipping_ou_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual)   
-     or mmt.selling_ou_id  in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual)
+and (   mmt.shipping_ou_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)   
+     or mmt.selling_ou_id  in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
     ) 
 -- ar interface
 and ar_intf.interface_line_context     (+) = mmt.source_line_context

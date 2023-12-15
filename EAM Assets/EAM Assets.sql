@@ -11,6 +11,7 @@
 -- Run Report: https://demo.enginatics.com/
 
 select
+cii.organization_code,
 cii.instance_number asset_number,
 cii.instance_description,
 msiv.concatenated_segments asset_group,
@@ -25,7 +26,6 @@ msn2.serial_number equipment_serial_number,
 null asset_route,
 cii.supplier_warranty_exp_date,
 efs.set_name failure_set,
-cii.organization_code,
 cii.inv_subinventory_name subinventory,
 milk.concatenated_segments locator,
 mel.location_codes area,
@@ -53,6 +53,7 @@ mtl_parameters mp,
 csi_item_instances cii
 where
 1=1 and
+cii.last_vld_organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
 mp.organization_id=cii.last_vld_organization_id
 ) cii,
 mtl_system_items_vl msiv,

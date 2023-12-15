@@ -55,9 +55,10 @@
 -- Library Link: https://www.enginatics.com/reports/cac-po-price-vs-costing-method-comparison/
 -- Run Report: https://demo.enginatics.com/
 
-select nvl(gl.short_name, gl.name) Ledger,
- haou2.name Operating_Unit,
- mp.organization_code Org_Code,
+select
+ pll.Ledger,
+ pll.Operating_Unit,
+ pll.organization_code Org_Code,
  pv.vendor_name Supplier,
  emp.full_name Buyer,
  msiv.concatenated_segments Item_Number,
@@ -98,29 +99,21 @@ select nvl(gl.short_name, gl.name) Ledger,
  muomv_po.uom_code PO_UOM,
  pll.quantity PO_Quantity,
  pll.quantity_received PO_Quantity_Received,
- nvl(ph.currency_code, gl.currency_code) PO_Currency_Code,
+ nvl(ph.currency_code, pll.gl_currency_code) PO_Currency_Code,
  nvl(pll.price_override, pl.unit_price) PO_Unit_Price,
  -- Revision for version 1.20
  -- pod.rate_date Currency_Rate_Date,
  -- nvl(pod.rate,1) PO_Exchange_Rate,
  decode(pll.match_option, 
-  'P', trunc(nvl(pod.rate_date, pll.creation_date)),
-  'R', trunc(nvl(gdr1.conversion_date, sysdate)),
-  trunc(nvl(gdr1.conversion_date, sysdate))) Currency_Rate_Date,
+  'P', trunc(nvl(pod.rate_date, pll.creation_date)), trunc(nvl(gdr1.conversion_date, sysdate))) Currency_Rate_Date,
  decode(pll.match_option, 
-  'P', nvl(pod.rate,1),
-  'R', gdr1.conversion_rate,
-  gdr1.conversion_rate) PO_Exchange_Rate,
- gl.currency_code GL_Currency_Code,
+  'P', nvl(pod.rate,1), nvl(gdr1.conversion_rate,1)) PO_Exchange_Rate,
+ pll.gl_currency_code,
  decode(pll.match_option, 
-  'P', nvl(pod.rate,1),
-  'R', gdr1.conversion_rate,
-  gdr1.conversion_rate) * nvl(pll.price_override, pl.unit_price) Converted_PO_Unit_Price,
+  'P', nvl(pod.rate,1), nvl(gdr1.conversion_rate,1)) * nvl(pll.price_override, pl.unit_price) Converted_PO_Unit_Price,
  ucr.conversion_rate PO_UOM_Conversion_Rate,
  decode(pll.match_option, 
-  'P', nvl(pod.rate,1),
-  'R', gdr1.conversion_rate,
-  gdr1.conversion_rate) * nvl(pll.price_override, pl.unit_price) * ucr.conversion_rate Converted_PO_at_Primary_UOM,
+  'P', nvl(pod.rate,1), nvl(gdr1.conversion_rate,1)) * nvl(pll.price_override, pl.unit_price) * ucr.conversion_rate Converted_PO_at_Primary_UOM,
  -- End revision for version 1.20
  -- Revision for version 1.19
  -- msiv.primary_uom_code UOM_Code,
@@ -131,15 +124,11 @@ select nvl(gl.short_name, gl.name) Ledger,
  -- Revision for version 1.20
  -- PO Price - Unburdened Cost = Unit Cost Difference
  round((decode(pll.match_option, 
-  'P', nvl(pod.rate,1),
-  'R', gdr1.conversion_rate,
-  gdr1.conversion_rate) * 
+  'P', nvl(pod.rate,1), nvl(gdr1.conversion_rate,1)) * 
   nvl(pll.price_override, pl.unit_price)) - nvl(cic.unburdened_cost,0),5) Unit_Cost_Difference,
  -- PO Price - Unburdened Cost X Quantity = Extended Cost Difference
  round((decode(pll.match_option, 
-  'P', nvl(pod.rate,1),
-  'R', gdr1.conversion_rate,
-  gdr1.conversion_rate) * nvl(pll.price_override, pl.unit_price) -
+  'P', nvl(pod.rate,1), nvl(gdr1.conversion_rate,1)) * nvl(pll.price_override, pl.unit_price) -
   nvl(cic.unburdened_cost,0)) * nvl(pll.quantity,0),2) Extended_Cost_Difference,
  -- Revision for version 1.20
  -- round(((nvl(ph.rate,1) * nvl(pll.price_override, pl.unit_price)) - nvl(cic.unburdened_cost,0)) /
@@ -151,23 +140,17 @@ select nvl(gl.short_name, gl.name) Ledger,
  -- else (PO price - item cost) / item cost
  case
     when round(decode(pll.match_option, 
-   'P', nvl(pod.rate,1), 
-   'R', gdr1.conversion_rate,
-   gdr1.conversion_rate
+   'P', nvl(pod.rate,1), nvl(gdr1.conversion_rate,1)
        ) * nvl(pll.price_override, pl.unit_price) - nvl(cic.unburdened_cost,0),5) = 0
   then 0
     when round(nvl(cic.unburdened_cost,0),5) = 0
   then 100 * SIGN(nvl(pll.price_override, pl.unit_price))
     when round(decode(pll.match_option, 
-   'P', nvl(pod.rate,1), 
-   'R', gdr1.conversion_rate,
-   gdr1.conversion_rate
+   'P', nvl(pod.rate,1), nvl(gdr1.conversion_rate,1)
        ) * nvl(pll.price_override, pl.unit_price),5) = 0
   then -100 * SIGN(nvl(cic.unburdened_cost,0))
     else round(decode(pll.match_option, 
-  'P', nvl(pod.rate,1), 
-  'R', gdr1.conversion_rate,
-  gdr1.conversion_rate) * nvl(pll.price_override, pl.unit_price) - nvl(cic.unburdened_cost,0) /
+  'P', nvl(pod.rate,1), nvl(gdr1.conversion_rate,1)) * nvl(pll.price_override, pl.unit_price) - nvl(cic.unburdened_cost,0) /
   nvl(cic.unburdened_cost,0) * 100,2)
  end Percent_Difference,
  -- End revision for version 1.20
@@ -179,9 +162,32 @@ select nvl(gl.short_name, gl.name) Ledger,
  cic.outside_processing_cost Outside_Processing_Cost,
  cic.overhead_cost           Overhead_Cost,
  cic.item_cost               Item_Cost
-from po_headers_all              ph,
+from
+ po_headers_all              ph,
  po_lines_all                pl,
- po_line_locations_all       pll,
+(
+select
+pha.currency_code currency_code,
+gl.currency_code gl_currency_code,
+nvl(gl.short_name, gl.name) Ledger,
+haouv.name operating_unit,
+ood.organization_code,
+pll.*
+from
+po_line_locations_all pll,
+po_headers_all pha,
+org_organization_definitions ood,
+gl_ledgers gl,
+hr_all_organization_units_vl haouv
+where
+gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
+and haouv.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
+and 2=2 and
+pll.po_header_id=pha.po_header_id and
+pll.ship_to_organization_id=ood.organization_id and
+ood.set_of_books_id=gl.ledger_id and
+ood.operating_unit=haouv.organization_id
+ ) pll,
  po_distributions_all        pod,
  po_releases_all             pr,
  po_vendors                  pv,
@@ -253,62 +259,11 @@ from po_headers_all              ph,
   and 6=6                   -- p_org_code
  ) cic, -- costs per the Cost Method
  hr_employees                 emp,
- mtl_parameters               mp,
  hr_locations                 hl,
- hr_organization_information  hoi,
- hr_all_organization_units_vl haou,  -- inv_organization_id
- hr_all_organization_units_vl haou2, -- operating unit
- gl_ledgers                   gl,
- -- Revision for version 1.20
  -- ===========================================================================
  -- Select current Currency Rates based on the concurrency conversion date
  -- ===========================================================================
- (select gdr1.from_currency,
-  gdr1.to_currency,
-  gdct1.user_conversion_type,
-  gdr1.conversion_date,
-  gdr1.conversion_rate
-  from gl_daily_rates gdr1,
-  gl_daily_conversion_types gdct1
-  where exists (
-   select 'x'
-   from mtl_parameters mp,
-    hr_organization_information hoi,
-    hr_all_organization_units_vl haou,
-    hr_all_organization_units_vl haou2,
-    gl_ledgers gl
-   -- =================================================
-   -- Get inventory ledger and operating unit information
-   -- =================================================
-   where hoi.org_information_context   = 'Accounting Information'
-   and hoi.organization_id           = mp.organization_id
-   and hoi.organization_id           = haou.organization_id            -- this gets the organization name
-   and haou2.organization_id         = to_number(hoi.org_information3) -- this gets the operating unit id
-   and gl.ledger_id                  = to_number(hoi.org_information1) -- get the ledger_id
-   and gdr1.to_currency              = gl.currency_code
-   -- Do not report the master inventory organization
-   and mp.organization_id           <> mp.master_organization_id
-      )
-  and gdr1.conversion_type       = gdct1.conversion_type
-  and 4=4                        -- p_curr_conv_date1
-  and 5=5                        -- p_curr_conv_type1
-  union all
-  select gl.currency_code,              -- from_currency
-  gl.currency_code,              -- to_currency
-  gdct1.user_conversion_type,    -- user_conversion_type
-  :p_curr_conv_date1,            -- conversion_date                                             -- p_curr_conv_date1
-  1                              -- conversion_rate
-  from gl_ledgers gl,
-  gl_daily_conversion_types gdct1
-  where 5=5                            -- p_curr_conv_type1
-  group by
-  gl.currency_code,
-  gl.currency_code,
-  gdct1.user_conversion_type,                                                                  -- p_curr_conv_date1
-  :p_curr_conv_date1,           -- conversion_date                                             -- p_curr_conv_date1
-  1
- ) gdr1 -- Current Currency Rates
- -- End for revision 1.20
+(select gdr.* from gl_daily_rates gdr, gl_daily_conversion_types gdct where gdr.conversion_date=:conversion_date and gdct.user_conversion_type=:user_conversion_type and gdct.conversion_type=gdr.conversion_type) gdr1 -- Current Currency Rates
 where ph.po_header_id                 = pl.po_header_id
 and pl.po_line_id                   = pll.po_line_id
 and pll.line_location_id            = pod.line_location_id
@@ -325,38 +280,27 @@ and msiv.inventory_item_id          = ucr.inventory_item_id
 and msiv.organization_id            = ucr.organization_id
 and ucr.unit_of_measure             = pl.unit_meas_lookup_code
 and pl.item_id                      = msiv.inventory_item_id
-and cic.inventory_item_id           = msiv.inventory_item_id
-and cic.organization_id             = msiv.organization_id
+and cic.inventory_item_id           = pl.item_id
+and cic.organization_id             = pll.ship_to_organization_id
 and ml.lookup_type                  = 'MTL_PLANNING_MAKE_BUY'
 and ml.lookup_code                  = msiv.planning_make_buy_code
 and fcl.lookup_type (+)             = 'ITEM_TYPE'
 and fcl.lookup_code (+)             = msiv.item_type
 and ph.agent_id                     = emp.employee_id
-and mp.organization_id              = msiv.organization_id
 and pll.ship_to_location_id         = hl.ship_to_location_id
 and msiv.organization_id            = pll.ship_to_organization_id
 and 1=1 -- p_creation_date_from, p_creation_date_to, p_operating_unit, p_ledger
             -- p_min_value_diff, p_min_cost_diff
-and 6=6 -- p_org_code
 -- ===================================================================
 -- Joins for the currency exchange rates
 -- ===================================================================
 -- Current FX rate
-and ph.currency_code                = gdr1.from_currency
-and gl.currency_code                = gdr1.to_currency
--- ===================================================================
--- Using the base tables instead of HR organization views
--- ===================================================================
-and hoi.org_information_context     = 'Accounting Information'
-and hoi.organization_id             = mp.organization_id
-and hoi.organization_id             = haou.organization_id   -- this gets the organization name
-and haou2.organization_id           = to_number(hoi.org_information3) -- this gets the operating unit id
-and gl.ledger_id                    = to_number(hoi.org_information1) -- get the ledger_id
--- ===================================================================
+and pll.currency_code                = gdr1.from_currency(+)
+and pll.gl_currency_code                = gdr1.to_currency(+)
 order by
- nvl(gl.short_name, gl.name), -- Ledger
- haou2.name, -- Operating_Unit
- mp.organization_code, -- Org_Code
+ pll.ledger, -- Ledger
+ pll.operating_unit, -- Operating_Unit
+ pll.organization_code, -- Org_Code
  pv.vendor_name, -- Supplier
  msiv.concatenated_segments, -- Item_Number
  pl.vendor_product_num, -- Supplier_Item

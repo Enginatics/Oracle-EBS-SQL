@@ -142,6 +142,7 @@ and hoi.organization_id             = mp.organization_id
 and hoi.organization_id             = haou.organization_id   -- this gets the organization name
 and haou2.organization_id           = hoi.org_information3   -- this gets the operating unit id
 and gl.ledger_id                    = to_number(hoi.org_information1) -- get the ledger_id
+and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
 and 1=1                             -- p_trx_date_from, p_trx_date_to, p_org_code, p_operating_unit, p_ledger
 order by
  nvl(gl.short_name, gl.name), -- Ledger

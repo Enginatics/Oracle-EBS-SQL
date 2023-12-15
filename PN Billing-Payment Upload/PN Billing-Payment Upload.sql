@@ -44,39 +44,30 @@ pptv.actual_amount,
 pptv.currency_code,
 pptv.rate,
 --
-to_char(
-  case when not(:p_upload_mode = 'Copy' and :p_date_incr_type is not null and :p_date_incr_unit is not null)
-  then pptv.start_date
-  else case upper(:p_date_incr_type)
-       when 'DAYS'   then pptv.start_date + :p_date_incr_unit
-       when 'MONTHS' then add_months(pptv.start_date,:p_date_incr_unit)
-       when 'YEARS'  then add_months(pptv.start_date,:p_date_incr_unit*12)
-       end
-  end
-,'DD-Mon-YYYY') start_date,
-to_char(
-  case when not(:p_upload_mode = 'Copy' and :p_date_incr_type is not null and :p_date_incr_unit is not null)
-  then pptv.end_date
-  else case upper(:p_date_incr_type)
-       when 'DAYS'   then pptv.end_date + :p_date_incr_unit
-       when 'MONTHS' then add_months(pptv.end_date,:p_date_incr_unit)
-       when 'YEARS'  then add_months(pptv.end_date,:p_date_incr_unit*12)
-       end
-  end
-,'DD-Mon-YYYY') end_date,
-to_char(
-  case when not(:p_upload_mode = 'Copy' and :p_date_incr_type is not null and :p_date_incr_unit is not null)
-  then pptv.target_date
-  else case upper(:p_date_incr_type)
-       when 'DAYS'   then pptv.target_date + :p_date_incr_unit
-       when 'MONTHS' then add_months(pptv.target_date,:p_date_incr_unit)
-       when 'YEARS'  then add_months(pptv.target_date,:p_date_incr_unit*12)
-       end
-  end
-,'DD-Mon-YYYY') target_date,
---to_char(pptv.start_date,'DD-Mon-YYYY') start_date,
---to_char(pptv.end_date,'DD-Mon-YYYY') end_date,
---to_char(pptv.target_date,'DD-Mon-YYYY') target_date,
+case when not(:p_upload_mode = 'Copy' and :p_date_incr_type is not null and :p_date_incr_unit is not null)
+then pptv.start_date
+else case upper(:p_date_incr_type)
+     when 'DAYS'   then pptv.start_date + :p_date_incr_unit
+     when 'MONTHS' then add_months(pptv.start_date,:p_date_incr_unit)
+     when 'YEARS'  then add_months(pptv.start_date,:p_date_incr_unit*12)
+     end
+end start_date,
+case when not(:p_upload_mode = 'Copy' and :p_date_incr_type is not null and :p_date_incr_unit is not null)
+then pptv.end_date
+else case upper(:p_date_incr_type)
+     when 'DAYS'   then pptv.end_date + :p_date_incr_unit
+     when 'MONTHS' then add_months(pptv.end_date,:p_date_incr_unit)
+     when 'YEARS'  then add_months(pptv.end_date,:p_date_incr_unit*12)
+     end
+end end_date,
+case when not(:p_upload_mode = 'Copy' and :p_date_incr_type is not null and :p_date_incr_unit is not null)
+then pptv.target_date
+else case upper(:p_date_incr_type)
+     when 'DAYS'   then pptv.target_date + :p_date_incr_unit
+     when 'MONTHS' then add_months(pptv.target_date,:p_date_incr_unit)
+     when 'YEARS'  then add_months(pptv.target_date,:p_date_incr_unit*12)
+     end
+end target_date,
 --
 pptv.schedule_day,
 --
@@ -114,7 +105,7 @@ pptv.inv_group_name invoice_grouping_rule,
 --pptv.agreement_name,
 --pptv.agreement_number,
 pptv.expenditure_type,
-to_char(pptv.expenditure_item_date,'DD-Mon-YYYY') expenditure_item_date,
+pptv.expenditure_item_date expenditure_item_date,
 (select poev.name from pa_organizations_expend_v poev where poev.organization_id = pptv.organization_id) expenditure_organization,
 -- tax
 xxen_util.meaning(decode(pptv.tax_included,'A','Y',pptv.tax_included),'YES_NO',0) tax_included,

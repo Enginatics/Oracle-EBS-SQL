@@ -16,6 +16,7 @@ with ap_inv as -- ap invoice data
     , haouv.name                       operating_unit
     , asup.vendor_name
     , asup.segment1                    vendor_num
+    , xxen_util.meaning(asup.vendor_type_lookup_code,'VENDOR TYPE',201) vendor_type
     , assa.vendor_site_code
     , aia.source
     , aia.invoice_id
@@ -299,8 +300,9 @@ with ap_inv as -- ap invoice data
 select
   ap_inv.ledger                         ledger
 , ap_inv.operating_unit                 operating_unit
-, ap_inv.vendor_name                    vendor_name
-, ap_inv.vendor_num                     vendor_num
+, ap_inv.vendor_name                    supplier_name
+, ap_inv.vendor_num                     supplier_num
+, ap_inv.vendor_type                    supplier_type
 , ap_inv.vendor_site_code               vendor_site_code
 , ap_inv.source                         invoice_source
 , ap_inv.invoice_num                    invoice_num

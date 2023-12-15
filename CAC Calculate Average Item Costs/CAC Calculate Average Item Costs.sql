@@ -32,19 +32,18 @@ Ledger:  enter the specific ledger(s) you wish to report (optional).
 -- |  All rights reserved.
 -- |  Permission to use this code is granted provided the original author is
 -- |  acknowledged.  No warranties, express or otherwise is included in this permission.
--- 
 -- |
 -- | Version Modified on Modified by Description
 -- | ======= =========== ============== =========================================
 -- | 1.0     05 Jan 2019 Douglas Volz   Initial Coding based on item_cost_history.sql
--- | 1.10    14 Nov 2022 Douglas Volz   Add logic and parameter for material overheads.
--- | 1.11    17 Nov 2022 Douglas Volz   Add parameter for excluding rolled up items.
--- | 1.12    18 Nov 2022 Douglas Volz   Get item costs from the cost type or primary cost method.
--- | 1.13    01 Dec 2022 Douglas Volz   Correct basis type calculations.
 -- | 1.14    07 Dec 2022 Douglas Volz   Performance improvements.  Added Item Status parameter.
 -- | 1.15    10 Jan 2023 Douglas Volz   Fix for Average Cost calculations, UOM issue.
 -- | 1.16    21 Aug 2023 Douglas Volz   Remove tabs and restrict to only orgs you have access to,
 -- |                                    Add last payables invoice and purchase order price information.
+-- | 1.17    25 Sep 2023 Douglas Volz   Fix for the Last PO and Last A/P information
+-- | 1.18    13 Oct 2023 Andy Haack     Fix for G/L Daily Rates, outer joins
+-- | 1.19    24 Nov 2023 Douglas Volz   Fixed item number parameter for last PO information
+-- |                                    and fix Last A/P Invoice info for G/L Daily Rates
 -- +=============================================================================+*/
 -- Excel Examle Output: https://www.enginatics.com/example/cac-calculate-average-item-costs/
 -- Library Link: https://www.enginatics.com/reports/cac-calculate-average-item-costs/
@@ -145,7 +144,7 @@ select  nvl(gl.short_name, gl.name) Ledger,
         po.Last_PO_Price,
         po.Converted_Last_PO_Price,
         &last_ap_invoice_columns
-        receipts.list_price List_Price
+        receipts.list_price Item_Master_List_Price
         -- End revision for version 1.16    
 from    -- Revision for version 1.6
         mtl_units_of_measure_vl muomv,
@@ -625,4 +624,3 @@ from    -- Revision for version 1.6
                                 null default_category_id,
                                 ciod.basis_type,
                                 ciod.usage_rate_or_amount default_rate_or_amount,
-           

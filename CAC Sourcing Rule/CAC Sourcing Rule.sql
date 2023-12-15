@@ -133,6 +133,8 @@ and msiv.inventory_item_status_code = misv.inventory_item_status_code
 -- End revision for version 1.11
 -- Revision for version 1.9
 and (msr.organization_id is null or msr.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id))
+and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
+and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
 and 1=1                             -- p_item_number, p_to_org_code, p_operating_unit, p_ledger
 and decode(flv.sourcing_rule_type,
   'Supplier', -999,
@@ -246,6 +248,8 @@ and msiv.inventory_item_status_code = misv.inventory_item_status_code
 -- End revision for version 1.11
 -- Revision for version 1.9
 and (msr.organization_id is null or msr.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id))
+and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
+and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
 and 1=1                             -- p_item_number, p_to_org_code, p_operating_unit, p_ledger
 and decode(flv.sourcing_rule_type,
  'Supplier', -1000,

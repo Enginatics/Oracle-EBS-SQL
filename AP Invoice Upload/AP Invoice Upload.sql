@@ -34,12 +34,12 @@ null submit_validation,
 'VEND_NAME'             supplier_name,
 '99999'                 supplier_number,
 'VEND_SITE_CODE'        supplier_site,
-to_char(sysdate,'DD-Mon-YYYY') invoice_date,
+trunc(sysdate)          invoice_date,
 'INV#0001'              invoice_number,
 100                     invoice_amount,
 'USD'                   invoice_currency,
 '30 Days'               terms,
-to_char(sysdate,'DD-Mon-YYYY') gl_date,
+trunc(sysdate)          gl_date,
 'USD'                   payment_currency,
 'Check'                 payment_method,
 1                       line_number,
@@ -47,13 +47,23 @@ to_char(sysdate,'DD-Mon-YYYY') gl_date,
 100                     line_amount,
 'Line Description'      line_description,
 'Distribution Alias'    distribution_account_alias,
-'00-000-0000-0000-000'  distribution_account
+'00-000-0000-0000-000'  distribution_account,
+'Tax Class code'        tax_classification,
+'Primary Intended Use'  primary_intended_use,
+'Ship To Location'      ship_to_location,
+'Prod Fix Class'        product_fiscal_classification,
+'Fiscal Class'          fiscal_classification,
+'Business Category'     business_category,
+'Product Type'          product_type,
+'Product Category'      product_category
 from
 q_dual
 where
 :p_operating_unit = :p_operating_unit and
 :p_source = :p_source and
 :p_batch_name = :p_batch_name and
+nvl(:p_tax_inclusive_flag,'?') = nvl(:p_tax_inclusive_flag,'?') and
+nvl(:p_calulate_tax_flag,'?') = nvl(:p_calulate_tax_flag,'?') and
 nvl(:p_gl_date,sysdate) = nvl(:p_gl_date,sysdate) and
 nvl(:p_submit_validation,'N') = nvl(:p_submit_validation,'N') and
 1=0

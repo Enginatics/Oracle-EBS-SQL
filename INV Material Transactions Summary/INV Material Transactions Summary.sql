@@ -12,6 +12,7 @@
 
 select
 count(*) count,
+&proj_cols
 &org_cols
 &item_cols
 xxen_util.meaning(mmt.transaction_action_id,'MTL_TRANSACTION_ACTION',700) transaction_action,
@@ -26,7 +27,11 @@ mtl_transaction_types mtt,
 mtl_txn_source_types mtst,
 (select msiv.* from mtl_system_items_vl msiv where '&show_item'='Y') msiv,
 mtl_parameters mp,
-mtl_parameters mp2
+mtl_parameters mp2,
+pa_projects_all ppa,
+pa_tasks pt,
+pa_projects_all ppa2,
+pa_tasks pt2
 where
 1=1 and
 mmt.transaction_type_id=mtt.transaction_type_id and
@@ -34,8 +39,13 @@ mtt.transaction_source_type_id=mtst.transaction_source_type_id(+) and
 mmt.organization_id=msiv.organization_id(+) and
 mmt.inventory_item_id=msiv.inventory_item_id(+) and
 mmt.organization_id=mp.organization_id(+) and
-mmt.transfer_organization_id=mp2.organization_id(+)
+mmt.transfer_organization_id=mp2.organization_id(+) and
+mmt.project_id=ppa.project_id(+) and
+mmt.task_id=pt.task_id(+) and
+mmt.to_project_id=ppa2.project_id(+) and
+mmt.to_task_id=pt2.task_id(+)
 group by
+&proj_group_cols
 &org_group_by
 &item_group_by
 mtt.transaction_type_name,

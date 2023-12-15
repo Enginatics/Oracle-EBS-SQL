@@ -92,7 +92,7 @@ where
 aipvv.accounting_date>=:accounting_date_from and
 aipvv.accounting_date<=:accounting_date_to and
 aipvv.po_distribution_id=pda.po_distribution_id and
-pda.org_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual) and
+pda.org_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11) and
 pda.destination_type_code in('INVENTORY','SHOP FLOOR') and
 pda.code_combination_id=gcck.code_combination_id and
 pda.variance_account_id=gcck1.code_combination_id and

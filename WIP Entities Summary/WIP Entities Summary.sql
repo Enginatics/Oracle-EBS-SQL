@@ -36,10 +36,12 @@ wdj.job_type wdj_job_type,
 wdj.status_type wdj_status_type,
 wdj.wip_supply_type wdj_wip_supply_type
 from
+mtl_parameters mp,
 wip_entities we,
 wip_discrete_jobs wdj
 where
 1=1 and
+mp.organization_id=we.organization_id and
 we.wip_entity_id=wdj.wip_entity_id(+) and
 we.organization_id=wdj.organization_id(+)
 ) x

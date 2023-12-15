@@ -23,13 +23,15 @@ mcce.count_list_sequence sequence,
 msiv.concatenated_segments item,
 msiv.description description,
 xxen_util.meaning(msiv.item_type,'ITEM_TYPE',3) user_item_type,
-inv_project.get_locator(mcce.locator_id,mcce.organization_id) locator,
+nvl(inv_project.get_locator(mcce.locator_id,mcce.organization_id),
+(select milk.concatenated_segments from mtl_item_locations_kfv milk where milk.inventory_location_id = mcce.locator_id and milk.organization_id = mcce.organization_id)
+) locator,
 mcce.revision revision,
 mcce.lot_number lot_number,
 mac.abc_class_name,
 mcce.count_due_date due_date,
 msiv.primary_uom_code uom,
-mfg.meaning status,
+xxen_util.meaning(mcce.entry_status_code,'MTL_CC_ENTRY_STATUSES',700) status,
 case 
 when (msiv.serial_number_control_code in (1,6) or mcch.serial_count_option=1) then
 (select 
@@ -62,15 +64,8 @@ end system_quantity,
 case when (nvl(mcch.container_enabled_flag,-99)>0) then wlpn1.license_plate_number end outermost_license_plate_number,
 case when (nvl(mcch.container_enabled_flag,-99)>0) then wlpn2.license_plate_number end parent_license_plate_number,
 ccg.cost_group cost_group,
-(select distinct 
-listagg(mcsn.serial_number,', ') within group (order by mcsn.cycle_count_entry_id) 
-from 
-mtl_cc_serial_numbers mcsn
-where
-mcsn.cycle_count_entry_id=mcce.cycle_count_entry_id
-) serial_numbers
-from 
-mfg_lookups mfg,
+(select distinct listagg(mcsn.serial_number,', ') within group (order by mcsn.cycle_count_entry_id) from mtl_cc_serial_numbers mcsn where mcsn.cycle_count_entry_id=mcce.cycle_count_entry_id) serial_numbers
+from
 mtl_abc_classes mac,
 mtl_system_items_vl msiv, 
 mtl_cycle_count_headers mcch,
@@ -84,6 +79,7 @@ wms_license_plate_numbers wlpn2
 where
 msiv.organization_id=ood.organization_id and
 1=1 and
+ood.organization_code in (select oav.organization_code from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
 ood.set_of_books_id=gl.ledger_id and
 mcch.organization_id=ood.organization_id and
 nvl(mcch.disable_date,sysdate+1)>sysdate and
@@ -94,8 +90,6 @@ mcci.abc_class_id=mac.abc_class_id and
 mcce.cycle_count_header_id=mcci.cycle_count_header_id and
 mcce.cycle_count_header_id=mcch.cycle_count_header_id and
 msiv.inventory_item_id=mcce.inventory_item_id and
-mfg.lookup_type='MTL_CC_ENTRY_STATUSES' and
-mfg.lookup_code=mcce.entry_status_code and
 mcce.cost_group_id=ccg.cost_group_id(+) and
 mcce.outermost_lpn_id=wlpn1.lpn_id(+) and
 mcce.parent_lpn_id=wlpn2.lpn_id(+)

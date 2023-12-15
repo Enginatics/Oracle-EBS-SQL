@@ -40,8 +40,10 @@ x.avg_non_conflict_wait_seconds,
 x.sum_non_conflict_wait_seconds,
 x.avg_conflict_wait_seconds,
 x.sum_conflict_wait_seconds,
-x.min_start_date,
-x.max_start_date,
+xxen_util.client_time(x.first_run_date) first_run_date,
+xxen_util.client_time(x.last_run_date) last_run_date,
+xxen_util.user_name(x.last_user) last_user,
+x.last_responsibility,
 x.execution_method_code,
 x.total_users
 &time_percentage
@@ -67,8 +69,10 @@ avg(fcr.non_conflict_wait_seconds) over (partition by fcpv.user_concurrent_progr
 sum(fcr.non_conflict_wait_seconds) over (partition by fcpv.user_concurrent_program_name,fcr.description_,fcpv.concurrent_program_name,fe.executable_name,fe.execution_file_name &partition_argument) sum_non_conflict_wait_seconds,
 avg(fcr.conflict_wait_seconds) over (partition by fcpv.user_concurrent_program_name,fcr.description_,fcpv.concurrent_program_name,fe.executable_name,fe.execution_file_name &partition_argument) avg_conflict_wait_seconds,
 sum(fcr.conflict_wait_seconds) over (partition by fcpv.user_concurrent_program_name,fcr.description_,fcpv.concurrent_program_name,fe.executable_name,fe.execution_file_name &partition_argument) sum_conflict_wait_seconds,
-min(fcr.actual_start_date) over (partition by fcpv.user_concurrent_program_name,fcr.description_,fcpv.concurrent_program_name,fe.executable_name,fe.execution_file_name &partition_argument) min_start_date,
-max(fcr.actual_start_date) over (partition by fcpv.user_concurrent_program_name,fcr.description_,fcpv.concurrent_program_name,fe.executable_name,fe.execution_file_name &partition_argument) max_start_date,
+min(fcr.actual_start_date) over (partition by fcpv.user_concurrent_program_name,fcr.description_,fcpv.concurrent_program_name,fe.executable_name,fe.execution_file_name &partition_argument) first_run_date,
+max(fcr.actual_start_date) over (partition by fcpv.user_concurrent_program_name,fcr.description_,fcpv.concurrent_program_name,fe.executable_name,fe.execution_file_name &partition_argument) last_run_date,
+max(fcr.requested_by) keep (dense_rank last order by fcr.actual_start_date, fcr.request_id) over (partition by fcpv.user_concurrent_program_name,fcr.description_,fcpv.concurrent_program_name,fe.executable_name,fe.execution_file_name &partition_argument) last_user,
+max(frv.responsibility_name) keep (dense_rank last order by fcr.actual_start_date, fcr.request_id) over (partition by fcpv.user_concurrent_program_name,fcr.description_,fcpv.concurrent_program_name,fe.executable_name,fe.execution_file_name &partition_argument) last_responsibility,
 count(distinct fcr.requested_by) over () total_users
 from
 (
@@ -84,14 +88,18 @@ fnd_concurrent_requests fcr
 ) fcr,
 fnd_concurrent_programs_vl fcpv,
 fnd_user fu,
-fnd_executables fe
+fnd_executables fe,
+fnd_responsibility_vl frv
 where
 1=1 and
 fcr.actual_completion_date is not null and
 fcr.requested_by=fu.user_id and
 fcr.concurrent_program_id=fcpv.concurrent_program_id and
 fcpv.executable_application_id=fe.application_id and
-fcpv.executable_id=fe.executable_id
+fcpv.executable_id=fe.executable_id and
+fcr.responsibility_application_id=frv.application_id(+) and
+fcr.responsibility_id=frv.responsibility_id(+)
 ) x
 order by
+x.executions desc,
 x.sum_seconds desc

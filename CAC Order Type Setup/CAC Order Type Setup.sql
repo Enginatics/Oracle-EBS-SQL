@@ -108,5 +108,7 @@ and hoi.organization_id         = haou.organization_id -- this gets the operatin
 and gl.ledger_id                = to_number(hoi.org_information3) -- this joins OU to GL
 -- End revision for version 1.7 
 and haou.organization_id        = otta.org_id -- this gets the operating unit id
+and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
+and haou.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
 and 1=1                         -- p_operating_unit, p_ledger
 order by 1,2,3,4,5,7

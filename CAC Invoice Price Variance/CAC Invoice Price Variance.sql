@@ -438,6 +438,8 @@ and hoi.organization_id          = haou.organization_id   -- this gets the organ
 and haou2.organization_id        = to_number(hoi.org_information3) -- this gets the operating unit id
 and gl.ledger_id                 = to_number(hoi.org_information1) 
 and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
+and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
+and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
 and 1=1                          -- p_operating_unit, p_ledger
 and 3=3                          -- p_vendor_name
 -- ===================================================================
@@ -709,12 +711,4 @@ from mtl_parameters                      mp,
   where cwo.transaction_date        >= :p_trx_from         -- p_trx_date_from
   and cwo.transaction_date        <  :p_trx_to           -- p_trx_date_to
   and cwo.po_distribution_id       = pod.po_distribution_id
-  and pod.line_location_id         = pll.line_location_id
-  and pod.po_header_id             = poh.po_header_id
-  and pod.po_line_id               = pol.po_line_id   
-  and pll.po_release_id            = pr.po_release_id (+)
-  and pov.vendor_id                = poh.vendor_id
-  and poh.agent_id                 = he.employee_id
-  and msiv.inventory_item_id       = pol.item_id
-  and msiv.inventory_item_id       = ucr.inventory_item_id
-  and msiv.organi
+  and pod.line_location_id         

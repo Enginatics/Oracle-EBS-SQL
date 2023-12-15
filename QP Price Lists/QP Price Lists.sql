@@ -66,7 +66,7 @@ where
 qlhv.list_header_id=qllv.list_header_id and
 (qllv.product_attribute<>'PRICING_ATTRIBUTE1' or msiv.inventory_item_id is not null) and
 case when qllv.product_attribute_context='ITEM' and qllv.product_attribute='PRICING_ATTRIBUTE1' then qllv.product_attr_value end=msiv.inventory_item_id(+) and
-msiv.organization_id(+)=:organization_id and
+msiv.organization_id(+)=fnd_profile.value('QP_ORGANIZATION_ID') and
 qlhv.currency_header_id=qclv.currency_header_id(+) and
 qlhv.currency_code=fcv.currency_code(+) and
 qlhv.terms_id=rtt.term_id(+) and

@@ -15,6 +15,8 @@ DB package: FA_FAS840_XMLP_PKG
 -- Library Link: https://www.enginatics.com/reports/fa-cost-adjustments/
 -- Run Report: https://demo.enginatics.com/
 
+with fa_trx as
+(
 select
   x.company_name,
   x.ledger,
@@ -32,7 +34,7 @@ select
   sum(decode(x.unit_sum,x.units,x.new_cost1+x.new_cost-x.new_cost_rsum,x.new_cost1)) new_cost,
   sum(decode(x.unit_sum,x.units,x.new_cost1+x.new_cost-x.new_cost_rsum,x.new_cost1) - decode(x.unit_sum,x.units,x.old_cost1+x.old_cost-x.old_cost_rsum,x.old_cost1)) net_change,
   x.transaction_number,
-  x.company_name || ': ' || x.book || ' (' || x.currency || ')' comp_book_curr_label
+  x.invoice_transaction_id
 from
   ( select
       fsc.company_name,
@@ -55,7 +57,8 @@ from
       fah.units units,
       fb_old.cost old_cost,
       fb_new.cost new_cost,
-      fth.transaction_header_id transaction_number
+      fth.transaction_header_id transaction_number,
+      fth.invoice_transaction_id
     from
       fa_system_controls      fsc,
       gl_ledgers              gl,
@@ -113,15 +116,62 @@ group by
   x.asset_description,
   x.category,
   x.period,
-  x.transaction_number
+  x.transaction_number,
+  x.invoice_transaction_id
+)
+--
+--
+--
+select
+  ft.company_name,
+  ft.ledger,
+  ft.book,
+  ft.currency,
+  ft.balancing_segment,
+  ft.asset_type,
+  ft.asset_account,
+  ft.cost_center,
+  ft.asset_number,
+  ft.asset_description,
+  ft.category category,
+  ft.period,
+  case when 1 = row_number() over (partition by ft.transaction_number order by ft.transaction_number)
+  then ft.old_cost
+  else null
+  end old_cost,
+  case when 1 = row_number() over (partition by ft.transaction_number order by ft.transaction_number)
+  then ft.new_cost
+  else null
+  end new_cost,
+  case when 1 = row_number() over (partition by ft.transaction_number order by ft.transaction_number)
+  then ft.net_change
+  else null
+  end net_change,
+  ft.transaction_number,
+  --
+  asu.vendor_name vendor,
+  asu.segment1 vendor_num,
+  fai.po_number,
+  fai.invoice_number,
+  fai.fixed_assets_cost invoice_cost,
+  fai.description invoice_description,
+  --
+  ft.company_name || ': ' || ft.book || ' (' || ft.currency || ')' comp_book_curr_label
+from
+  fa_trx ft,
+  fa_asset_invoices fai,
+  ap_suppliers asu
+where
+  nvl2(:p_show_invoice_details,ft.invoice_transaction_id,null) = fai.invoice_transaction_id_in (+) and
+  fai.po_vendor_id = asu.vendor_id (+)
 order by
-  x.company_name,
-  x.ledger,
-  x.book,
-  x.currency,
-  x.balancing_segment,
-  x.asset_type,
-  x.asset_account,
-  x.cost_center,
-  x.asset_number,
-  x.transaction_number
+  ft.company_name,
+  ft.ledger,
+  ft.book,
+  ft.currency,
+  ft.balancing_segment,
+  ft.asset_type,
+  ft.asset_account,
+  ft.cost_center,
+  ft.asset_number,
+  ft.transaction_number

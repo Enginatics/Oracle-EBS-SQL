@@ -25,8 +25,8 @@ xxen_util.meaning(mif.item_type,'ITEM_TYPE',3) user_item_type,
 mcce.revision revision,
 mcce.lot_number lot_number,
 mac.abc_class_name abc_class_name, 
-inv_project.get_locator(mil.inventory_location_id,mil.organization_id) locator,
-mil.description locator_description,  
+nvl(inv_project.get_locator(milk.inventory_location_id,milk.organization_id),milk.concatenated_segments) locator,
+milk.description locator_description,  
 mcce.creation_date request_date,
 mcce.count_due_date due_date, 
 ml2.meaning count_type,
@@ -45,7 +45,7 @@ mcsn.cycle_count_entry_id=mcce.cycle_count_entry_id
 from 
 mfg_lookups ml1,
 mfg_lookups ml2,
-mtl_item_locations mil,
+mtl_item_locations_kfv milk,
 mtl_item_flexfields mif,
 mtl_cycle_count_headers mcch,
 mtl_cycle_count_items mcci,
@@ -58,13 +58,14 @@ wms_license_plate_numbers wlpn1,
 wms_license_plate_numbers wlpn2
 where
 1=1 and
+ood.organization_code in (select oav.organization_code from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
 mif.organization_id=ood.organization_id and
 mcch.organization_id=ood.organization_id and
 mcce.organization_id=ood.organization_id and
 mac.organization_id=ood.organization_id and
 ood.set_of_books_id=gl.ledger_id and
-mcce.locator_id=mil.inventory_location_id(+) and
-mcce.organization_id=mil.organization_id(+) and
+mcce.locator_id=milk.inventory_location_id(+) and
+mcce.organization_id=milk.organization_id(+) and
 mcce.cycle_count_header_id=mcch.cycle_count_header_id and
 nvl(mcch.disable_date,sysdate+1)>sysdate and
 mif.item_id=mcce.inventory_item_id and

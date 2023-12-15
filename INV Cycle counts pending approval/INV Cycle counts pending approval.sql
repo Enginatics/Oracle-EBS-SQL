@@ -22,8 +22,8 @@ mcce.subinventory,
 msiv.concatenated_segments item_number,
 msiv.description,
 xxen_util.meaning(msiv.item_type,'ITEM_TYPE',3) user_item_type,
-inv_project.get_locator(mil.inventory_location_id,mil.organization_id) locator,
-mil.description locator_description,
+nvl(inv_project.get_locator(milk.inventory_location_id,milk.organization_id),milk.concatenated_segments) locator,
+milk.description locator_description,
 mcce.count_date_current,
 mcce.revision,
 mcce.lot_number,
@@ -45,7 +45,7 @@ where
 mcsn.cycle_count_entry_id=mcce.cycle_count_entry_id
 ) serial_numbers
 from 
-mtl_item_locations mil,
+mtl_item_locations_kfv milk,
 mtl_system_items_vl msiv,
 mtl_cycle_count_headers mcch,
 mtl_cycle_count_items mcci,
@@ -67,14 +67,15 @@ wms_license_plate_numbers wlpn1,
 wms_license_plate_numbers wlpn2
 where
 1=1 and
+ood.organization_code in (select oav.organization_code from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
 msiv.organization_id=ood.organization_id and
 ood.set_of_books_id=gl.ledger_id and
 mcch.organization_id=ood.organization_id and
 nvl(mcch.disable_date,sysdate+1)>sysdate and
 mcch.organization_id=mcce.organization_id and
 mac.organization_id=mcch.organization_id and
-mcce.locator_id=mil.inventory_location_id(+) and
-mcce.organization_id=mil.organization_id(+) and
+mcce.locator_id=milk.inventory_location_id(+) and
+mcce.organization_id=milk.organization_id(+) and
 mcce.cycle_count_header_id=mcch.cycle_count_header_id and
 mcce.entry_status_code=2 and
 msiv.inventory_item_id=mcce.inventory_item_id and
@@ -88,5 +89,5 @@ order by
 ood.organization_name,
 mcce.subinventory,
 mcch.cycle_count_header_name,
-decode(:p_sort_option,1,msiv.concatenated_segments,(mil.segment1||'\n'||mil.segment2||'\n'||mil.segment3||'\n'||mil.segment4||'\n'||mil.segment5||'\n'||mil.segment6||'\n'||mil.segment7||'\n'||mil.segment8||'\n'||mil.segment9||'\n'||mil.segment10||'\n'||mil.segment11||'\n'||mil.segment12||'\n'||mil.segment13||'\n'||mil.segment14||'\n'||mil.segment15||'\n')),
-decode(:p_sort_option,1,(mil.segment1||'\n'||mil.segment2||'\n'||mil.segment3||'\n'||mil.segment4||'\n'||mil.segment5||'\n'||mil.segment6||'\n'||mil.segment7||'\n'||mil.segment8||'\n'||mil.segment9||'\n'||mil.segment10||'\n'||mil.segment11||'\n'||mil.segment12||'\n'||mil.segment13||'\n'||mil.segment14||'\n'||mil.segment15||'\n'),msiv.concatenated_segments)
+decode(:p_sort_option,1,msiv.concatenated_segments,milk.concatenated_segments),
+decode(:p_sort_option,1,milk.concatenated_segments,msiv.concatenated_segments)

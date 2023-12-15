@@ -63,7 +63,8 @@
 -- Library Link: https://www.enginatics.com/reports/cac-item-cost-comparison/
 -- Run Report: https://demo.enginatics.com/
 
-select nvl(gl.short_name, gl.name) Ledger,
+select
+ nvl(gl.short_name, gl.name) Ledger,
  haou2.name Operating_Unit,
  msiv.concatenated_segments Item_Number,
  msiv.description Item_Description,
@@ -94,8 +95,8 @@ select nvl(gl.short_name, gl.name) Ledger,
  round(nvl(cic1.overhead_cost,0),5) Org1_Overhead_Cost,
  -- End of revision for version 1.9
  round(nvl(cic1.item_cost,0),5) Org1_Item_Cost,
- nvl(gdr.conversion_rate,1) Currency_Conversion_Rate,
- round(nvl(cic1.item_cost,0) * nvl(gdr.conversion_rate,1) ,5) Converted_Org1_Cost,
+ cic1.conversion_rate Currency_Conversion_Rate,
+ round(nvl(cic1.item_cost,0) * cic1.conversion_rate ,5) Converted_Org1_Cost,
  -- Revision for version 1.13
  cic2.ledger Ledger2,
  cic2.operating_unit Operating_Unit2,
@@ -119,32 +120,60 @@ select nvl(gl.short_name, gl.name) Ledger,
  -- End of revision for version 1.9
  round(nvl(cic2.item_cost,0),5) Org2_Item_Cost,
  -- Revision for version 1.13
- nvl(gdr.conversion_rate,1) Currency_Conversion_Rate,
+ cic1.conversion_rate Currency_Conversion_Rate,
  -- Revision for version 1.9
- round((nvl(cic1.material_cost,0) * nvl(gdr.conversion_rate,1)) - nvl(cic2.material_cost,0),5) Material_Difference,
- round((nvl(cic1.material_overhead_cost,0) * nvl(gdr.conversion_rate,1)) - nvl(cic2.material_overhead_cost,0),5) Material_Overhead_Difference,
- round((nvl(cic1.resource_cost,0) * nvl(gdr.conversion_rate,1)) - nvl(cic2.resource_cost,0),5) Resource_Difference,
- round((nvl(cic1.outside_processing_cost,0) * nvl(gdr.conversion_rate,1)) - nvl(cic2.outside_processing_cost,0),5) Outside_Processing_Difference,
- round((nvl(cic1.overhead_cost,0) * nvl(gdr.conversion_rate,1)) - nvl(cic2.overhead_cost,0),5) Overhead_Difference,
+ round((nvl(cic1.material_cost,0) * cic1.conversion_rate) - nvl(cic2.material_cost,0),5) Material_Difference,
+ round((nvl(cic1.material_overhead_cost,0) * cic1.conversion_rate) - nvl(cic2.material_overhead_cost,0),5) Material_Overhead_Difference,
+ round((nvl(cic1.resource_cost,0) * cic1.conversion_rate) - nvl(cic2.resource_cost,0),5) Resource_Difference,
+ round((nvl(cic1.outside_processing_cost,0) * cic1.conversion_rate) - nvl(cic2.outside_processing_cost,0),5) Outside_Processing_Difference,
+ round((nvl(cic1.overhead_cost,0) * cic1.conversion_rate) - nvl(cic2.overhead_cost,0),5) Overhead_Difference,
  -- End of revision for version 1.9
- round((nvl(cic1.item_cost,0) * nvl(gdr.conversion_rate,1)) - nvl(cic2.item_cost,0),5) Item_Cost_Difference,
+ round((nvl(cic1.item_cost,0) * cic1.conversion_rate) - nvl(cic2.item_cost,0),5) Item_Cost_Difference,
  -- Revision for version 1.13
-   -- round(round((nvl(cic1.item_cost,0) * nvl(gdr.conversion_rate,1)) - nvl(cic2.item_cost,0),5)
- -- / decode((nvl(cic1.item_cost,0) * nvl(gdr.conversion_rate,1)),0,1, (nvl(cic1.item_cost,0) * nvl(gdr.conversion_rate,1))) * 100,1) Percent
+   -- round(round((nvl(cic1.item_cost,0) * cic1.conversion_rate) - nvl(cic2.item_cost,0),5)
+ -- / decode((nvl(cic1.item_cost,0) * cic1.conversion_rate),0,1, (nvl(cic1.item_cost,0) * cic1.conversion_rate)) * 100,1) Percent
  --  Case
  --  when difference = 0 then 0
  --  when difference = org2 then 100%
  --  when difference = org1 then -100%
  --  else org2 - org1 / org1
  case
-    when round((nvl(cic1.item_cost,0) * nvl(gdr.conversion_rate,1)) - nvl(cic2.item_cost,0),5) = 0 then 0
-    when round((nvl(cic1.item_cost,0) * nvl(gdr.conversion_rate,1)) - nvl(cic2.item_cost,0),5) = round(nvl(cic1.item_cost,0) * nvl(gdr.conversion_rate,1),5) then 100
-    when round((nvl(cic1.item_cost,0) * nvl(gdr.conversion_rate,1)) - nvl(cic2.item_cost,0),5) = round(nvl(cic2.item_cost,0),5) then -100
-    else round(round((nvl(cic1.item_cost,0) * nvl(gdr.conversion_rate,1)) - nvl(cic2.item_cost,0),5)
-  / decode((nvl(cic1.item_cost,0) * nvl(gdr.conversion_rate,1)),0,1, (nvl(cic1.item_cost,0) * nvl(gdr.conversion_rate,1))) * 100,1)
+    when round((nvl(cic1.item_cost,0) * cic1.conversion_rate) - nvl(cic2.item_cost,0),5) = 0 then 0
+    when round((nvl(cic1.item_cost,0) * cic1.conversion_rate) - nvl(cic2.item_cost,0),5) = round(nvl(cic1.item_cost,0) * cic1.conversion_rate,5) then 100
+    when round((nvl(cic1.item_cost,0) * cic1.conversion_rate) - nvl(cic2.item_cost,0),5) = round(nvl(cic2.item_cost,0),5) then -100
+    else round(round((nvl(cic1.item_cost,0) * cic1.conversion_rate) - nvl(cic2.item_cost,0),5)
+  / decode((nvl(cic1.item_cost,0) * cic1.conversion_rate),0,1, (nvl(cic1.item_cost,0) * cic1.conversion_rate)) * 100,1)
  end Percent
  -- End revision for version 1.13
-from cst_item_costs cic1, -- source item costs
+from
+(
+select
+case when gl1.currency_code=gl2.currency_code then 1 else (
+select
+gdr.conversion_rate
+from
+gl_daily_rates gdr,
+gl_daily_conversion_types gdct
+where
+gl1.currency_code=gdr.from_currency and
+gl2.currency_code=gdr.to_currency and
+gdr.conversion_date=:conversion_date and
+gdct.user_conversion_type=:user_conversion_type and
+gdct.conversion_type=gdr.conversion_type
+) end conversion_rate,
+cic.*
+from
+cst_item_costs cic,
+org_organization_definitions ood1,
+org_organization_definitions ood2,
+gl_ledgers gl1,
+gl_ledgers gl2
+where
+cic.organization_id=ood1.organization_id and
+ood2.organization_code=:p_org_code2 and
+ood1.set_of_books_id=gl1.ledger_id and
+ood2.set_of_books_id=gl2.ledger_id
+) cic1, -- source item costs
  cst_cost_types cct1, -- source cost type
  mtl_system_items_vl msiv,
  -- Revision for version 1.8
@@ -211,84 +240,6 @@ from cst_item_costs cic1, -- source item costs
   and 4=4                             -- p_org_code2 and p_cost_type2
   and 5=5                             -- p_item_number
  ) cic2,
- -- End revision for version 1.10
- -- Revision for version 1.11
- -- gl_daily_rates gdr,
- -- ===========================================================================
- -- Revision for version 1.11
- -- Tables to get currency exchange rate information for the inventory orgs
- -- Select Currency Rates based on the currency conversion date and type
- -- ===========================================================================
- (select gdr.from_currency,
-  gdr.to_currency,
-  gdct.user_conversion_type,
-  gdr.conversion_date,
-  gdr.conversion_rate
-  from gl_daily_rates gdr,
-  gl_daily_conversion_types gdct
-  -- =================================================
-  -- Check for the currencies needed for the To Orgs
-  -- =================================================
-  where exists  (
-    select 'x'
-    from mtl_parameters mp,
-    hr_organization_information hoi,
-    gl_ledgers gl
-    where hoi.org_information_context   = 'Accounting Information'
-    and hoi.organization_id           = mp.organization_id
-    and gl.ledger_id                  = to_number(hoi.org_information1) -- get the ledger_id
-    and gdr.to_currency               = gl.currency_code
-    and mp.organization_id           <> mp.master_organization_id
-   )
-  -- =================================================
-  -- Check for the currencies needed for the Src Orgs
-  -- =================================================
-  and exists  (
-    select 'x'
-    from mtl_parameters mp,
-    hr_organization_information hoi,
-    gl_ledgers gl
-    where hoi.org_information_context   = 'Accounting Information'
-    and hoi.organization_id           = mp.organization_id
-    and gl.ledger_id                  = to_number(hoi.org_information1) -- get the ledger_id
-    and gdr.from_currency             = gl.currency_code
-    and mp.organization_id           <> mp.master_organization_id
-   )
-  and gdr.conversion_type       = gdct.conversion_type
-  and 6=6                                           -- p_curr_conv_type
-  and 7=7                                           -- p_curr_conv_date
-  union all
-  -- =================================================
-  -- Get the currencies where the From and To is the 
-  -- same.  Example, where the From currency = USD 
-  -- and To currency = USD
-  -- =================================================
-  select gl.currency_code,              -- from_currency
-  gl.currency_code,              -- to_currency
-  gdct.user_conversion_type,     -- conversion_type
-  :p_curr_conv_date,             -- p_curr_conv_date
-  1                              -- conversion_rate
-  from gl_ledgers gl,
-  gl_daily_conversion_types gdct
-  where 6=6                             -- p_curr_conv_type
- -- Revision for version 1.11
-  and gl.accounted_period_type  = (select max(gl.accounted_period_type) 
-       from mtl_parameters mp,
-       hr_organization_information hoi,
-       gl_ledgers gl
-       where hoi.org_information_context   = 'Accounting Information'
-       and hoi.organization_id           = mp.organization_id
-       and gl.ledger_id                  = to_number(hoi.org_information1) -- get the ledger_id
-       and mp.organization_id           <> mp.master_organization_id
-      )
-  group by
-  gl.currency_code,
-  gl.currency_code,
-  gdct.user_conversion_type,
-  :p_curr_conv_date,             -- p_curr_conv_date
-  1
- ) gdr, -- Currency Exchange Rates to use for all inventory orgs
- -- End revision for version 1.11
  hr_organization_information hoi,
  hr_all_organization_units_vl haou, -- inv_organization_id
  hr_all_organization_units_vl haou2,  -- operating unit
@@ -322,17 +273,6 @@ and ml4.lookup_type                 = 'SYS_YES_NO'
 and ml4.lookup_code                 = to_char(cic2.inventory_asset_flag)
 and ml5.lookup_type                 = 'CST_BONROLLUP_VAL'
 and ml5.lookup_code                 = cic2.based_on_rollup_flag
--- End revision for version 1.13
--- ===================================================================
--- Joins for currency translation rate
--- ===================================================================
--- Revision for version 1.12
--- Revision for version 1.11
--- and gdr.to_currency     (+)         = 'USD' -- version 1.10
--- and gdr.to_currency                 = cic2.currency_code  -- version 1.11
-and gdr.to_currency                 = nvl(cic2.currency_code, gl.currency_code) -- version 1.12
--- End of revision for version 1.12
-and gdr.from_currency   (+)         = gl.currency_code
 -- ===================================================================
 -- using the base tables for HR organizations
 -- ===================================================================

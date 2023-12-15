@@ -38,7 +38,8 @@ select
   x.cost initial_cost,
   x.ytd_depreciation,
   x.initial_depreciation_reserve,
-  x.period,
+  x.period_effective,
+  x.period_entered,
   x.thid transaction_number,
   x.company_name || ': ' || x.book || ' (' || x.currency || ')' comp_book_curr_label
 from
@@ -70,7 +71,8 @@ from
      sum(nvl(decode(fadj.debit_credit_flag,'DR',1,-1) * fadj.adjustment_amount, fdd.addition_cost_to_clear) ) cost,
      sum(nvl(fdd.ytd_deprn,0)) ytd_depreciation,
      sum(fdd.deprn_reserve) initial_depreciation_reserve,
-     (select fdp.period_name from fa_deprn_periods fdp where fdp.book_type_code=fbc.book_type_code and fth.date_effective >= fdp.calendar_period_open_date and fth.date_effective < fdp.calendar_period_close_date + 1 and rownum=1) period,
+     (select fcp.period_name from fa_calendar_periods fcp where fcp.calendar_type=fbc.deprn_calendar and fth.transaction_date_entered between fcp.start_date and fcp.end_date) period_effective,
+     (select fdp.period_name from fa_deprn_periods fdp where fdp.book_type_code=fbc.book_type_code and fth.date_effective between fdp.period_open_date and nvl(fdp.period_close_date,fth.date_effective)) period_entered,
      fth.transaction_header_id thid
    from
      fa_system_controls      fsc,
@@ -90,8 +92,9 @@ from
      &lp_fa_book_controls    fbc,
      gl_sets_of_books        gsob
    where
-     fth.book_type_code = :p_book and
-     fth.date_effective between :period1_pod and :period2_pcd and
+     2=2 and
+     fbc.set_of_books_id = :p_ca_set_of_books_id and
+     fth.book_type_code in (select fbcs.book_type_code from fa_book_controls_sec fbcs) and
      fadj.book_type_code = fth.book_type_code and
      fadj.transaction_header_id = fth.transaction_header_id and
      ((fadj.source_type_code = 'CIP ADDITION' and fadj.adjustment_type = 'CIP COST') or
@@ -99,7 +102,7 @@ from
      ) and
      fdh.distribution_id = fadj.distribution_id and
      gcc.code_combination_id = fdh.code_combination_id and
-      fl.lookup_type = 'ASSET TYPE' and
+     fl.lookup_type = 'ASSET TYPE' and
      fah.asset_type =  fl.lookup_code and
      fa.asset_id = fth.asset_id and
      fah.asset_id = fth.asset_id and
@@ -108,7 +111,7 @@ from
      fb.transaction_header_id_in = fth.transaction_header_id and
      fcb.book_type_code = fth.book_type_code and
      fcb.category_id = fah.category_id and
-     fbc.book_type_code = :p_book and
+     fbc.book_type_code = fth.book_type_code and
      fah.category_id = fcbk.category_id and
      gsob.set_of_books_id = fbc.set_of_books_id and
      gsob.currency_code = fc.currency_code and
@@ -122,6 +125,7 @@ from
      fsc.company_name,
      gsob.name,
      fbc.book_type_code,
+     fbc.deprn_calendar,
      gsob.currency_code,
      fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_bal_seg', 'SQLGL', 'GL#', gcc.chart_of_accounts_id, null, gcc.code_combination_id, 'GL_BALANCING', 'Y', 'VALUE'),
      fl.meaning,
@@ -143,6 +147,7 @@ from
      decode (fah.asset_type, 'CIP', 0,nvl(fds.bonus_rate,0)),
      fth.transaction_header_id,
      fth.date_effective,
+     fth.transaction_date_entered,
      fc.precision
    union
    select distinct --0 cost assets
@@ -172,7 +177,8 @@ from
      0 cost,
      0 ytd_depreciation,
      0 initial_depreciation_reserve,
-     (select fdp.period_name from fa_deprn_periods fdp where fdp.book_type_code=fbc.book_type_code and fth.date_effective >= fdp.calendar_period_open_date and fth.date_effective < fdp.calendar_period_close_date + 1 and rownum=1) period,
+     (select fcp.period_name from fa_calendar_periods fcp where fcp.calendar_type=fbc.deprn_calendar and fth.transaction_date_entered between fcp.start_date and fcp.end_date) period_effective,
+     (select fdp.period_name from fa_deprn_periods fdp where fdp.book_type_code=fbc.book_type_code and fth.date_effective between fdp.period_open_date and nvl(fdp.period_close_date,fth.date_effective)) period_entered,
      fth.transaction_header_id thid
    from
      fa_system_controls      fsc,
@@ -193,18 +199,22 @@ from
         fth.transaction_header_id,
         fth.asset_id,
         fth.date_effective,
+        fth.transaction_date_entered,
         dp.period_counter
       from
         fa_transaction_headers fth,
-        &lp_fa_deprn_periods dp
+        &lp_fa_book_controls   fbc,
+        &lp_fa_deprn_periods   dp
       where
-        fth.book_type_code = :p_book
-        and fth.transaction_type_code in ('ADDITION', 'CIP ADDITION')
-        and fth.date_effective between :period1_pod and :period2_pcd
-        and dp.book_type_code = fth.book_type_code
-        and fth.date_effective between dp.period_open_date and nvl (dp.period_close_date, sysdate)
+        2=2 and
+        fth.book_type_code = fbc.book_type_code and 
+        fth.book_type_code in (select fbcs.book_type_code from fa_book_controls_sec fbcs) and
+        fth.transaction_type_code in ('ADDITION', 'CIP ADDITION') and
+        dp.book_type_code = fth.book_type_code and
+        fth.date_effective between dp.period_open_date and nvl (dp.period_close_date, sysdate)
      )                       fth
    where
+     fbc.set_of_books_id = :p_ca_set_of_books_id and
      fdh.asset_id = fth.asset_id and
      fth.date_effective >= fdh.date_effective and
      fth.date_effective < nvl(fdh.date_ineffective, sysdate) and
@@ -219,7 +229,7 @@ from
      fb.cost = 0 and
      fcb.book_type_code = fth.book_type_code and
      fcb.category_id = fah.category_id and
-     fbc.book_type_code = :p_book and
+     fbc.book_type_code = fth.book_type_code and
      fah.category_id = fcbk.category_id and
      gsob.set_of_books_id = fbc.set_of_books_id and
      gsob.currency_code = fc.currency_code and
@@ -228,6 +238,7 @@ from
      fds.period_counter (+) = fth.period_counter
   ) x
 where
+:p_ledger_name=:p_ledger_name and
 1=1
 order by
   x.company_name,

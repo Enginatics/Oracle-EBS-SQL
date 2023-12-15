@@ -20,7 +20,7 @@
 -- Run Report: https://demo.enginatics.com/
 
 select
-'if not exist workbook_'||ed.doc_id||'.eex (start '||:executable_path||' /connect '||:eul||'/'||:eul_password||'@'||:db_service_name||' /export "workbook_'||ed.doc_id||'.eex" /workbook "'||xxen_util.dis_user_name(ed.doc_eu_id,:eul,'N')||'.'||ed.doc_name||'" /xmlworkbook'||chr(38)||' ping /n '||:delay_seconds||' localhost >NUL) else (echo workbook_'||ed.doc_id||'.eex exists)' text,
+'if not exist workbook_'||ed.doc_id||'.eex (start "'||:executable_path||'" /connect '||:eul||'/'||:eul_password||'@'||:db_service_name||' /export "workbook_'||ed.doc_id||'.eex" /workbook "'||xxen_util.dis_user_name(ed.doc_eu_id,:eul,'N')||'.'||ed.doc_name||'" /xmlworkbook'||chr(38)||' ping /n '||:delay_seconds||' localhost >NUL) else (echo workbook_'||ed.doc_id||'.eex exists)' text,
 ed.doc_name workbook,
 xxen_util.dis_user_name(ed.doc_eu_id,:eul) owner,
 'workbook_'||ed.doc_id||'.eex' file_name

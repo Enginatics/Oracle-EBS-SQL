@@ -13,7 +13,9 @@
 select
 mp.organization_code,
 haout.name organization,
-inv_project.get_locator(mil.inventory_location_id,mil.organization_id) locator,
+nvl(inv_project.get_locator(mil.inventory_location_id,mil.organization_id),
+    (select milk.concatenated_segments from mtl_item_locations_kfv milk where milk.inventory_location_id = mil.inventory_location_id and milk.organization_id = mil.organization_id)
+) locator,
 mil.description locator_description,
 xxen_util.meaning(mil.inventory_location_type,'MTL_LOCATOR_TYPES',700) locator_type,
 mmsv.status_code status,
@@ -55,6 +57,7 @@ mtl_item_locations mil,
 mtl_material_statuses_vl mmsv
 where
 1=1 and
+mp.organization_code in (select oav.organization_code from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
 mil.organization_id=haout.organization_id and
 haout.language=userenv('lang') and
 mil.organization_id=mp.organization_id and

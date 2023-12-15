@@ -102,7 +102,9 @@ with inv_organizations as
   and hoi.organization_id             = haou.organization_id   -- this gets the organization name
   and haou2.organization_id           = to_number(hoi.org_information3) -- this gets the operating unit id
   and gl.ledger_id                    = to_number(hoi.org_information1) -- get the ledger_id
-  and 1=1                             -- p_operating_unit, p_ledger
+  and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
+and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
+and 1=1                             -- p_operating_unit, p_ledger
   and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
   and 2=2                             -- p_org_code
   group by
@@ -843,14 +845,4 @@ and ml1.lookup_code                 = 3 -- Intransit
 and ml1.lookup_type                 = 'MSC_CALENDAR_TYPE'
 -- Revision for version 1.19
 and ml2.lookup_code                 = nvl(msub.asset_inventory,1)
-and ml2.lookup_type                 = 'SYS_YES_NO'
--- ===========================================
--- Revision for version 1.12
--- Run this query if the Cost Type parameter 
--- is null, to get the snapshot inventory value.
--- ===========================================
-and decode(:p_cost_type,            -- p_cost_type
-  null, 'use snapshot values', 
-  'do not use snapshot values') =  'use snapshot values'
-union all
--- ==========
+and ml2.lookup

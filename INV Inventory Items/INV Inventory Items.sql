@@ -19,7 +19,7 @@ msiv.description,
 msiv.long_description,
 &category_columns
 misv.inventory_item_status_code_tl item_status,
-muot.unit_of_measure_tl primary_uom,
+muomv.unit_of_measure_tl primary_uom,
 msiv.unit_weight,
 msiv.weight_uom_code weight_uom,
 msiv.unit_volume,
@@ -43,7 +43,7 @@ xxen_util.meaning(msiv.serviceable_product_flag,'YES_NO',0) enable_contract_cove
 xxen_util.meaning(msiv.serviceable_component_flag,'YES_NO',0) serviceable_component_flag,
 xxen_util.meaning(msiv.contract_item_type_code,'OKB_CONTRACT_ITEM_TYPE',0) contract_item_type,
 msiv.service_duration,
-(select muot.unit_of_measure from mtl_units_of_measure_tl muot where msiv.service_duration_period_code=muot.uom_code and muot.language=userenv('lang')) service_duration_period,
+(select muomv.unit_of_measure from mtl_units_of_measure_vl muomv where msiv.service_duration_period_code=muomv.uom_code) service_duration_period,
 (select oklv.name from okc_k_lines_v oklv where msiv.coverage_schedule_id=oklv.id) coverate_template,
 msiv.service_starting_delay service_starting_delay_days,
 (select xxen_util.meaning('Y','YES_NO',0) from csi_item_instances cii where msiv.inventory_item_id=cii.inventory_item_id and cii.accounting_class_code='CUST_PROD' and rownum=1) ib_exists,
@@ -100,7 +100,7 @@ hr_all_organization_units_vl haouv,
 mtl_parameters mp,
 mtl_system_items_vl msiv,
 mtl_parameters mp2,
-mtl_units_of_measure_tl muot,
+mtl_units_of_measure_vl muomv,
 mtl_item_status_vl misv,
 cs_ctr_associations cca,
 cs_counter_groups ccg,
@@ -130,11 +130,11 @@ mtl_atp_rules mar,
 mtl_planners mpl
 where
 1=1 and
+msiv.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
 msiv.organization_id=haouv.organization_id and
 msiv.organization_id=mp.organization_id and
 msiv.default_shipping_org=mp2.organization_id(+) and
-msiv.primary_uom_code=muot.uom_code(+) and
-muot.language(+)=userenv('lang') and
+msiv.primary_uom_code=muomv.uom_code(+) and
 msiv.inventory_item_status_code=misv.inventory_item_status_code(+) and
 msiv.inventory_item_id=cca.source_object_id(+) and
 cca.counter_group_id=ccg.counter_group_id(+) and

@@ -85,6 +85,8 @@ and gl.ledger_id                   = to_number(hoi.org_information1) -- get the 
 and sysdate < nvl(haou.date_to, sysdate + 1)
 and fu1.user_id                    = mca.created_by
 and fu2.user_id                    = mca.last_updated_by
+and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
+and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
 and 1=1                            -- p_org_code, p_operating_unit, p_ledger
 union all
 -- Get the Material Overhead Account
@@ -135,6 +137,8 @@ and gl.ledger_id                   = to_number(hoi.org_information1) -- get the 
 and sysdate < nvl(haou.date_to, sysdate + 1)
 and fu1.user_id                    = mca.created_by
 and fu2.user_id                    = mca.last_updated_by
+and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
+and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
 and 1=1                            -- p_org_code, p_operating_unit, p_ledger
 union all
 -- Get the Resource Account
@@ -185,6 +189,8 @@ and gl.ledger_id                   = to_number(hoi.org_information1) -- get the 
 and sysdate < nvl(haou.date_to, sysdate + 1)
 and fu1.user_id                    = mca.created_by
 and fu2.user_id                    = mca.last_updated_by
+and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
+and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
 and 1=1                            -- p_org_code, p_operating_unit, p_ledger
 union all
 -- Get the Outside Processing Account
@@ -235,6 +241,8 @@ and gl.ledger_id                   = to_number(hoi.org_information1) -- get the 
 and sysdate < nvl(haou.date_to, sysdate + 1)
 and fu1.user_id                    = mca.created_by
 and fu2.user_id                    = mca.last_updated_by
+and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
+and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
 and 1=1                            -- p_org_code, p_operating_unit, p_ledger
 union all
 -- Get the Overhead Account
@@ -285,6 +293,8 @@ and gl.ledger_id                   = to_number(hoi.org_information1) -- get the 
 and sysdate < nvl(haou.date_to, sysdate + 1)
 and fu1.user_id                    = mca.created_by
 and fu2.user_id                    = mca.last_updated_by
+and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
+and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
 and 1=1                            -- p_org_code, p_operating_unit, p_ledger
 union all
 -- Get the Expense Account
@@ -335,6 +345,8 @@ and gl.ledger_id                   = to_number(hoi.org_information1) -- get the 
 and sysdate < nvl(haou.date_to, sysdate + 1)
 and fu1.user_id                    = mca.created_by
 and fu2.user_id                    = mca.last_updated_by
+and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
+and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
 and 1=1                            -- p_org_code, p_operating_unit, p_ledger
 union all
 -- Get the Encumbrance Account
@@ -386,6 +398,8 @@ and gl.ledger_id                   = to_number(hoi.org_information1) -- get the 
 and sysdate < nvl(haou.date_to, sysdate + 1)
 and fu1.user_id                    = mca.created_by
 and fu2.user_id                    = mca.last_updated_by
+and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
+and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
 and 1=1                            -- p_org_code, p_operating_unit, p_ledger
 union all
 -- Get the Bridging Account
@@ -437,6 +451,8 @@ and gl.ledger_id                   = to_number(hoi.org_information1) -- get the 
 and sysdate < nvl(haou.date_to, sysdate + 1)
 and fu1.user_id                    = mca.created_by
 and fu2.user_id                    = mca.last_updated_by
+and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
+and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
 and 1=1                            -- p_org_code, p_operating_unit, p_ledger
 -- Order by Status, Ledger, Operating_Unit, Org_Code, Category, Subinventory, Account Type
 order by 1,2,3,5,7,9

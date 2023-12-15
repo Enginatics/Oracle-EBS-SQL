@@ -33,7 +33,7 @@ msifv.dropping_order,
 msifv.disable_date inactive_on,
 msifv.notify_list notify,
 msifv.location_code location,
-muot.unit_of_measure_tl picking_uom,
+muomv.unit_of_measure_tl picking_uom,
 xxen_util.meaning(msifv.default_count_type_code,'MTL_COUNT_TYPES',700) default_repl_count_type,
 msifv.preprocessing_lead_time,
 msifv.processing_lead_time,
@@ -73,16 +73,16 @@ mtl_secondary_inventories_fk_v msifv,
 hr_all_organization_units_vl haouv2,
 hr_locations_all hla,
 fnd_territories_vl ftv,
-mtl_units_of_measure_tl muot
+mtl_units_of_measure_vl muomv
 where
 1=1 and
+mp.organization_code in (select oav.organization_code from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
 haouv.organization_id=mp.organization_id and
 mp.organization_id=msifv.organization_id and
 msifv.location_id=hla.location_id(+) and
 hla.country=ftv.territory_code(+) and
 msifv.source_organization_id=haouv2.organization_id(+) and
-msifv.pick_uom_code=muot.uom_code(+) and
-muot.language(+)=userenv('lang')
+msifv.pick_uom_code=muomv.uom_code(+)
 order by
 mp.organization_code,
 msifv.secondary_inventory_name

@@ -279,9 +279,9 @@ select  nvl(gl.short_name, gl.name)     Ledger,
 -- ========================================================
 -- Select the new and old currency rates
 -- ========================================================
- gdr1.conversion_rate      New_FX_Rate,
- gdr2.conversion_rate      Old_FX_Rate,
- gdr1.conversion_rate - gdr2.conversion_rate   Exchange_Rate_Difference,
+ nvl(gdr1.conversion_rate,1)      New_FX_Rate,
+ nvl(gdr2.conversion_rate,1)      Old_FX_Rate,
+ nvl(gdr1.conversion_rate,1) - nvl(gdr2.conversion_rate,1)   Exchange_Rate_Difference,
 -- ===========================================================
 -- Select To Currency WIP quantities and values
 -- ===========================================================
@@ -291,11 +291,11 @@ select  nvl(gl.short_name, gl.name)     Ledger,
 -- ===========================================================
  -- Revision for version 1.3
  decode(sumwip.txn_source, 'WIP Completion',-1,1) * (
- round(nvl(cic1.material_cost,0) * gdr1.conversion_rate
+ round(nvl(cic1.material_cost,0) * nvl(gdr1.conversion_rate,1)
  * sumwip.quantity,2))      "&p_to_currency_code New Material Value",
  -- Revision for version 1.3
  decode(sumwip.txn_source, 'WIP Completion',-1,1) * (
- round(nvl(cic2.material_cost,0) * gdr2.conversion_rate
+ round(nvl(cic2.material_cost,0) * nvl(gdr2.conversion_rate,1)
  * sumwip.quantity,2))      "&p_to_currency_code Old Material Value",
  -- Revision for version 1.3
  decode(sumwip.txn_source, 'WIP Completion',-1,1) * (
@@ -305,7 +305,7 @@ select  nvl(gl.short_name, gl.name)     Ledger,
     when sumwip.txn_source = 'WIP Completion' and sumwip.class_type in (1,5) then 
   round(nvl(cic1.material_overhead_cost,0) - nvl(cic1.tl_material_overhead,0),5)
     else round(nvl(cic1.material_overhead_cost,0),5)  
- end * sumwip.quantity * gdr1.conversion_rate
+ end * sumwip.quantity * nvl(gdr1.conversion_rate,1)
     ,2))        "&p_to_currency_code New Material Ovhd Value",
  -- Revision for version 1.3
  decode(sumwip.txn_source, 'WIP Completion',-1,1) * (
@@ -314,32 +314,32 @@ select  nvl(gl.short_name, gl.name)     Ledger,
     when sumwip.txn_source = 'WIP Completion' and sumwip.class_type in (1,5) then 
   round(nvl(cic2.material_overhead_cost,0) - nvl(cic2.tl_material_overhead,0),5)
     else round(nvl(cic2.material_overhead_cost,0),5)  
- end * sumwip.quantity * gdr2.conversion_rate
+ end * sumwip.quantity * nvl(gdr2.conversion_rate,1)
     ,2))        "&p_to_currency_code Old Material Ovhd Value",
  -- End revision for version 1.1
  -- Revision for version 1.3
  decode(sumwip.txn_source, 'WIP Completion',-1,1) * (
- round(nvl(cic1.resource_cost,0) * gdr1.conversion_rate
+ round(nvl(cic1.resource_cost,0) * nvl(gdr1.conversion_rate,1)
  * sumwip.quantity,2))      "&p_to_currency_code New Resource Value",
  -- Revision for version 1.3
  decode(sumwip.txn_source, 'WIP Completion',-1,1) * (
- round(nvl(cic2.resource_cost,0) * gdr2.conversion_rate
+ round(nvl(cic2.resource_cost,0) * nvl(gdr2.conversion_rate,1)
  * sumwip.quantity,2))      "&p_to_currency_code Old Resource Value",
  -- Revision for version 1.3
  decode(sumwip.txn_source, 'WIP Completion',-1,1) * (
- round(nvl(cic1.outside_processing_cost,0) * gdr1.conversion_rate
+ round(nvl(cic1.outside_processing_cost,0) * nvl(gdr1.conversion_rate,1)
  * sumwip.quantity,2))      "&p_to_currency_code New OSP Value",
  -- Revision for version 1.3
  decode(sumwip.txn_source, 'WIP Completion',-1,1) * (
- round(nvl(cic2.outside_processing_cost,0) * gdr2.conversion_rate
+ round(nvl(cic2.outside_processing_cost,0) * nvl(gdr2.conversion_rate,1)
  * sumwip.quantity,2))      "&p_to_currency_code Old OSP Value",
  -- Revision for version 1.3
  decode(sumwip.txn_source, 'WIP Completion',-1,1) * (
- round(nvl(cic1.overhead_cost,0) * gdr1.conversion_rate
+ round(nvl(cic1.overhead_cost,0) * nvl(gdr1.conversion_rate,1)
  * sumwip.quantity,2))      "&p_to_currency_code New Overhead Value",
  -- Revision for version 1.3
  decode(sumwip.txn_source, 'WIP Completion',-1,1) * (
- round(nvl(cic2.overhead_cost,0) * gdr2.conversion_rate
+ round(nvl(cic2.overhead_cost,0) * nvl(gdr2.conversion_rate,1)
  * sumwip.quantity,2))      "&p_to_currency_code Old Overhead Value",
 -- ===========================================================
 -- WIP Values expressed in the To Currency, new values at 
@@ -353,7 +353,7 @@ select  nvl(gl.short_name, gl.name)     Ledger,
     when sumwip.txn_source = 'WIP Completion' and sumwip.class_type in (1,5) then 
   round(nvl(cic1.item_cost,0) - nvl(cic1.tl_material_overhead,0),5)
     else round(nvl(cic1.item_cost,0),5)  
- end * sumwip.quantity * gdr1.conversion_rate
+ end * sumwip.quantity * nvl(gdr1.conversion_rate,1)
     ,2))        "&p_to_currency_code New Onhand Value",
  -- Revision for version 1.3
  decode(sumwip.txn_source, 'WIP Completion',-1,1) * (
@@ -362,7 +362,7 @@ select  nvl(gl.short_name, gl.name)     Ledger,
     when sumwip.txn_source = 'WIP Completion' and sumwip.class_type in (1,5) then 
   round(nvl(cic2.item_cost,0) - nvl(cic2.tl_material_overhead,0),5)
     else round(nvl(cic2.item_cost,0),5)  
- end * sumwip.quantity * gdr2.conversion_rate
+ end * sumwip.quantity * nvl(gdr2.conversion_rate,1)
     ,2))        "&p_to_currency_code Old Onhand Value",
  -- Revision for version 1.2
  -- Show WIP Completion adjustments as negative to match the Oracle WIP Standard Cost Adjustment Report
@@ -373,14 +373,14 @@ select  nvl(gl.short_name, gl.name)     Ledger,
     when sumwip.txn_source = 'WIP Completion' and sumwip.class_type in (1,5) then 
   round(nvl(cic1.item_cost,0) - nvl(cic1.tl_material_overhead,0),5)
     else round(nvl(cic1.item_cost,0),5)  
- end * sumwip.quantity * gdr1.conversion_rate
+ end * sumwip.quantity * nvl(gdr1.conversion_rate,1)
     ,2) -
  round(
  case
     when sumwip.txn_source = 'WIP Completion' and sumwip.class_type in (1,5) then 
   round(nvl(cic2.item_cost,0) - nvl(cic2.tl_material_overhead,0),5)
     else round(nvl(cic2.item_cost,0),5)  
- end * sumwip.quantity * gdr2.conversion_rate
+ end * sumwip.quantity * nvl(gdr2.conversion_rate,1)
     ,2))        "&p_to_currency_code Onhand Value Difference",
  -- End revision for version 1.1
  -- Revision for version 1.4, show absolute difference
@@ -393,14 +393,14 @@ select  nvl(gl.short_name, gl.name)     Ledger,
     when sumwip.txn_source = 'WIP Completion' and sumwip.class_type in (1,5) then 
   round(nvl(cic1.item_cost,0) - nvl(cic1.tl_material_overhead,0),5)
     else round(nvl(cic1.item_cost,0),5)  
- end * sumwip.quantity * gdr1.conversion_rate
+ end * sumwip.quantity * nvl(gdr1.conversion_rate,1)
     ,2) -
  round(
  case
     when sumwip.txn_source = 'WIP Completion' and sumwip.class_type in (1,5) then 
   round(nvl(cic2.item_cost,0) - nvl(cic2.tl_material_overhead,0),5)
     else round(nvl(cic2.item_cost,0),5)  
- end * sumwip.quantity * gdr2.conversion_rate
+ end * sumwip.quantity * nvl(gdr2.conversion_rate,1)
     ,2)))        "&p_to_currency_code Abs Onhand Value Diff",
  -- End revision for version 1.4
 -- ===========================================================
@@ -416,14 +416,14 @@ select  nvl(gl.short_name, gl.name)     Ledger,
  round(
  (case
     when sumwip.txn_source = 'WIP Completion' and sumwip.class_type in (1,5) then 
-  round(nvl(cic1.item_cost,0) - nvl(cic1.tl_material_overhead,0),5) * gdr1.conversion_rate 
-    else round(nvl(cic1.item_cost,0),5) * gdr1.conversion_rate 
+  round(nvl(cic1.item_cost,0) - nvl(cic1.tl_material_overhead,0),5) * nvl(gdr1.conversion_rate,1) 
+    else round(nvl(cic1.item_cost,0),5) * nvl(gdr1.conversion_rate,1) 
  end -
  -- Old_Item_Cost      
  case
     when sumwip.txn_source = 'WIP Completion' and sumwip.class_type in (1,5) then 
-  round(nvl(cic2.item_cost,0) - nvl(cic2.tl_material_overhead,0),5) * gdr1.conversion_rate
-    else round(nvl(cic2.item_cost,0),5) * gdr1.conversion_rate 
+  round(nvl(cic2.item_cost,0) - nvl(cic2.tl_material_overhead,0),5) * nvl(gdr1.conversion_rate,1)
+    else round(nvl(cic2.item_cost,0),5) * nvl(gdr1.conversion_rate,1) 
  end) *
  -- multiplied by the total onhand quantity
  sumwip.quantity,2))      "&p_to_currency_code Value Difference-New Rate",
@@ -439,14 +439,14 @@ select  nvl(gl.short_name, gl.name)     Ledger,
  round(
  (case
     when sumwip.txn_source = 'WIP Completion' and sumwip.class_type in (1,5) then 
-  round(nvl(cic1.item_cost,0) - nvl(cic1.tl_material_overhead,0),5) * gdr2.conversion_rate
-    else round(nvl(cic1.item_cost,0),5) * gdr2.conversion_rate 
+  round(nvl(cic1.item_cost,0) - nvl(cic1.tl_material_overhead,0),5) * nvl(gdr2.conversion_rate,1)
+    else round(nvl(cic1.item_cost,0),5) * nvl(gdr2.conversion_rate,1) 
  end -
  -- Old_Item_Cost      
  case
     when sumwip.txn_source = 'WIP Completion' and sumwip.class_type in (1,5) then 
-  round(nvl(cic2.item_cost,0) - nvl(cic2.tl_material_overhead,0),5) * gdr2.conversion_rate
-    else round(nvl(cic2.item_cost,0),5) * gdr2.conversion_rate 
+  round(nvl(cic2.item_cost,0) - nvl(cic2.tl_material_overhead,0),5) * nvl(gdr2.conversion_rate,1)
+    else round(nvl(cic2.item_cost,0),5) * nvl(gdr2.conversion_rate,1) 
  end) *
  -- multiplied by the total onhand quantity
  sumwip.quantity,2))      "&p_to_currency_code Value Difference-Old Rate",
@@ -462,14 +462,14 @@ select  nvl(gl.short_name, gl.name)     Ledger,
  round(
  (case
     when sumwip.txn_source = 'WIP Completion' and sumwip.class_type in (1,5) then 
-  round(nvl(cic1.item_cost,0) - nvl(cic1.tl_material_overhead,0),5) * gdr1.conversion_rate 
-    else round(nvl(cic1.item_cost,0),5) * gdr1.conversion_rate 
+  round(nvl(cic1.item_cost,0) - nvl(cic1.tl_material_overhead,0),5) * nvl(gdr1.conversion_rate,1) 
+    else round(nvl(cic1.item_cost,0),5) * nvl(gdr1.conversion_rate,1) 
  end -
  -- Old_Item_Cost      
  case
     when sumwip.txn_source = 'WIP Completion' and sumwip.class_type in (1,5) then 
-  round(nvl(cic2.item_cost,0) - nvl(cic2.tl_material_overhead,0),5) * gdr1.conversion_rate 
-    else round(nvl(cic2.item_cost,0),5) * gdr1.conversion_rate 
+  round(nvl(cic2.item_cost,0) - nvl(cic2.tl_material_overhead,0),5) * nvl(gdr1.conversion_rate,1) 
+    else round(nvl(cic2.item_cost,0),5) * nvl(gdr1.conversion_rate,1) 
  end) *
  -- multiplied by the total onhand quantity
  sumwip.quantity,2)) -
@@ -481,14 +481,14 @@ select  nvl(gl.short_name, gl.name)     Ledger,
  round(
  (case
     when sumwip.txn_source = 'WIP Completion' and sumwip.class_type in (1,5) then 
-  round(nvl(cic1.item_cost,0) - nvl(cic1.tl_material_overhead,0),5) * gdr2.conversion_rate
-    else round(nvl(cic1.item_cost,0),5) * gdr2.conversion_rate 
+  round(nvl(cic1.item_cost,0) - nvl(cic1.tl_material_overhead,0),5) * nvl(gdr2.conversion_rate,1)
+    else round(nvl(cic1.item_cost,0),5) * nvl(gdr2.conversion_rate,1) 
  end -
  -- Old_Item_Cost      
  case
     when sumwip.txn_source = 'WIP Completion' and sumwip.class_type in (1,5) then 
-  round(nvl(cic2.item_cost,0) - nvl(cic2.tl_material_overhead,0),5) * gdr2.conversion_rate
-    else round(nvl(cic2.item_cost,0),5) * gdr2.conversion_rate 
+  round(nvl(cic2.item_cost,0) - nvl(cic2.tl_material_overhead,0),5) * nvl(gdr2.conversion_rate,1)
+    else round(nvl(cic2.item_cost,0),5) * nvl(gdr2.conversion_rate,1) 
  end) *
  -- multiplied by the total onhand quantity
  sumwip.quantity,2))      "&p_to_currency_code Value FX Difference"
@@ -511,137 +511,11 @@ from mtl_system_items_vl msiv,
  -- ===========================================================================
  -- Select New Currency Rates based on the new concurrency conversion date
  -- ===========================================================================
- (select gdr1.from_currency,
-  gdr1.to_currency,
-  gdct1.user_conversion_type,
-  gdr1.conversion_date,
-  gdr1.conversion_rate
-  from gl_daily_rates gdr1,
-  gl_daily_conversion_types gdct1
-  where exists (
-   select 'x'
-   from mtl_parameters mp,
-    hr_organization_information hoi,
-    hr_all_organization_units_vl haou,
-    hr_all_organization_units_vl haou2,
-    gl_ledgers gl
-   -- =================================================
-   -- Get inventory ledger and operating unit information
-   -- =================================================
-   where hoi.org_information_context   = 'Accounting Information'
-   and hoi.organization_id           = mp.organization_id
-   and hoi.organization_id           = haou.organization_id            -- this gets the organization name
-   and haou2.organization_id         = to_number(hoi.org_information3) -- this gets the operating unit id
-   and gl.ledger_id                  = to_number(hoi.org_information1) -- get the ledger_id
-   and gdr1.to_currency              = gl.currency_code
-   -- Do not report the master inventory organization
-   and mp.organization_id           <> mp.master_organization_id
-      )
-  and exists (
-   select 'x'
-   from mtl_parameters mp,
-    hr_organization_information hoi,
-    hr_all_organization_units_vl haou,
-    hr_all_organization_units_vl haou2,
-    gl_ledgers gl
-   -- =================================================
-   -- Get inventory ledger and operating unit information
-   -- =================================================
-   where hoi.org_information_context   = 'Accounting Information'
-   and hoi.organization_id           = mp.organization_id
-   and hoi.organization_id           = haou.organization_id            -- this gets the organization name
-   and haou2.organization_id         = to_number(hoi.org_information3) -- this gets the operating unit id
-   and gl.ledger_id                  = to_number(hoi.org_information1) -- get the ledger_id
-   and gdr1.from_currency            = gl.currency_code
-   -- Do not report the master inventory organization
-   and mp.organization_id           <> mp.master_organization_id
-      )
-  and gdr1.conversion_type       = gdct1.conversion_type
-  and 4=4                        -- p_curr_conv_date1
-  and 5=5                        -- p_curr_conv_type1
-  union all
-  select gl.currency_code,              -- from_currency
-  gl.currency_code,              -- to_currency
-  gdct1.user_conversion_type,    -- user_conversion_type                                        -- p_curr_conv_date1
-  :p_curr_conv_date1,            -- conversion_date                                             -- p_curr_conv_date1
-  1                              -- conversion_rate
-  from gl_ledgers gl,
-  gl_daily_conversion_types gdct1
-  where 5=5                            -- user_conversion_type                                        -- p_user_conversion_type
-  group by
-  gl.currency_code,
-  gl.currency_code,
-  gdct1.user_conversion_type,
-  :p_curr_conv_date1,            -- conversion_date                                             -- p_curr_conv_date1
-  1
- ) gdr1, -- NEW Currency Rates
+(select gdr.* from gl_daily_rates gdr, gl_daily_conversion_types gdct where gdr.conversion_date=:conversion_date1 and gdct.user_conversion_type=:user_conversion_type1 and gdr.to_currency=:to_currency and gdct.conversion_type=gdr.conversion_type) gdr1, -- NEW Currency Rates
  -- ===========================================================================
  -- Select Old Currency Rates based on the old concurrency conversion date
  -- ===========================================================================
- (select gdr2.from_currency,
-  gdr2.to_currency,
-  gdct2.USER_CONVERSION_TYPE,
-  gdr2.conversion_date,
-  gdr2.conversion_rate
-  from gl_daily_rates gdr2,
-  gl_daily_conversion_types gdct2
-  where exists (
-   select 'x'
-   from mtl_parameters mp,
-    hr_organization_information hoi,
-    hr_all_organization_units_vl haou,
-    hr_all_organization_units_vl haou2,
-    gl_ledgers gl
-    -- =================================================
-    -- Get inventory ledger and operating unit information
-    -- =================================================
-    where hoi.org_information_context   = 'Accounting Information'
-    and hoi.organization_id           = mp.organization_id
-    and hoi.organization_id           = haou.organization_id            -- this gets the organization name
-    and haou2.organization_id         = to_number(hoi.org_information3) -- this gets the operating unit id
-    and gl.ledger_id                  = to_number(hoi.org_information1) -- get the ledger_id
-    and gdr2.to_currency              = gl.currency_code
-    -- Do not report the master inventory organization
-    and mp.organization_id   <> mp.master_organization_id
-   )
-  and exists (
-   select 'x'
-   from mtl_parameters mp,
-    hr_organization_information hoi,
-    hr_all_organization_units_vl haou,
-    hr_all_organization_units_vl haou2,
-    gl_ledgers gl
-   -- =================================================
-   -- Get inventory ledger and operating unit information
-   -- =================================================
-   where hoi.org_information_context   = 'Accounting Information'
-   and hoi.organization_id           = mp.organization_id
-   and hoi.organization_id           = haou.organization_id            -- this gets the organization name
-   and haou2.organization_id         = to_number(hoi.org_information3) -- this gets the operating unit id
-   and gl.ledger_id                  = to_number(hoi.org_information1) -- get the ledger_id
-   and gdr2.from_currency            = gl.currency_code
-   -- Do not report the master inventory organization
-   and mp.organization_id   <> mp.master_organization_id
-      )
-  and gdr2.conversion_type       = gdct2.conversion_type
-  and 6=6                        -- p_curr_conv_date2 
-  and 7=7                        -- p_curr_conv_type2
-  union all
-  select gl.currency_code,              -- from_currency
-  gl.currency_code,              -- to_currency
-  gdct2.user_conversion_type,    -- user_conversion_type
-  :p_curr_conv_date2,            -- conversion_date                                             -- p_curr_conv_date2
-  1                              -- conversion_rate 
-  from gl_ledgers gl,
-  gl_daily_conversion_types gdct2
-  where 7=7                            -- user_conversion_type                                        -- p_user_conversion_type
-  group by
-  gl.currency_code,
-  gl.currency_code,
-  gdct2.user_conversion_type,
-  :p_curr_conv_date2,            -- conversion_date                                             -- p_curr_conv_date2
-  1
- ) gdr2,  -- OLD Currency Rates
+(select gdr.* from gl_daily_rates gdr, gl_daily_conversion_types gdct where gdr.conversion_date=:conversion_date2 and gdct.user_conversion_type=:user_conversion_type2 and gdr.to_currency=:to_currency and gdct.conversion_type=gdr.conversion_type) gdr2,  -- OLD Currency Rates
  -- =================================================
  -- Get the item costs for Cost_Type 1 - New Costs
  -- =================================================
@@ -745,4 +619,140 @@ from mtl_system_items_vl msiv,
   nvl(cic_frozen.material_cost,0)   material_cost,
    nvl(cic_frozen.material_overhead_cost,0) material_overhead_cost,
   nvl(cic_frozen.resource_cost,0)   resource_cost,
-  nvl(cic_frozen.outside_
+  nvl(cic_frozen.outside_processing_cost,0) outside_processing_cost,
+  nvl(cic_frozen.overhead_cost,0)   overhead_cost,
+  nvl(cic_frozen.item_cost,0)   item_cost,
+  -- Revision for version 1.1
+  nvl(cic_frozen.tl_material_overhead,0)  tl_material_overhead
+  from cst_item_costs cic_frozen,
+  cst_cost_types cct2,
+  mtl_parameters mp
+  where cic_frozen.cost_type_id     = 1  -- get the frozen costs for the standard cost update
+  -- Do not report the master inventory organization
+  and mp.organization_id   <> mp.master_organization_id
+  -- =============================================================
+  -- If p_cost_type2 = frozen cost_type_id then we have all the 
+  -- costs and don't need this union all statement
+  -- =============================================================
+  and cct2.cost_type_id    <> 1 -- frozen cost type
+  and cic_frozen.organization_id  = mp.organization_id
+  and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
+  and 9=9                         -- p_org_code
+  and 10=10                       -- p_cost_type2
+  -- =============================================================
+  -- Check to see if the costs exist in cost type 1 
+  -- =============================================================
+  and not exists (
+   select 'x'
+   from cst_item_costs cic2
+   where cic2.cost_type_id      = cct2.cost_type_id
+   and cic2.organization_id   = cic_frozen.organization_id
+   and cic2.inventory_item_id = cic_frozen.inventory_item_id
+      )
+  ) cic2,
+  -- ===========================
+ -- end of getting item costs 
+  -- ===========================
+ -- ==================================================================================
+ -- Get WIP component and assembly completion from the WIP job information in
+ -- wip_discrete_jobs (completions), wip_operation_resources (resources) and
+ -- wip_requirement_operations (components).
+  -- ==================================================================================
+ -- ==============================================
+ -- Part III: Get the WIP Component Quantities
+ -- ==============================================
+ -- ================================================
+ -- Condense down to Org, Items, WIP_Jobs and Op
+ -- ================================================
+ (select wip.txn_source,
+  wip.organization_id,
+  wip.inventory_item_id,
+  wip.wip_entity_id,
+  wip.class_code,
+  wip.class_type,
+  wip.status_type,
+  wip.date_released,
+  wip.date_completed,
+  wip.last_update_date,
+  wip.resource_code,
+  wip.resource_id,
+  wip.transaction_type,
+  max(wip.wip_supply_type) wip_supply_type,
+  wip.op_seq_num,
+  wip.res_seq_num,
+  wip.basis_type,
+  wip.quantity,
+  wip.resource_value,
+  wip.scrapped_quantity
+  from (
+   -- ==============================================
+   -- Part I: Get the WIP Completion Quantities
+   -- ==============================================
+   select 'WIP Completion' txn_source,
+   wdj.organization_id,
+   wdj.primary_item_id inventory_item_id,
+   wdj.wip_entity_id,
+   wdj.class_code,
+   wac.class_type,
+   wdj.status_type,
+   wdj.date_released,
+   wdj.date_completed,
+   wdj.last_update_date,
+   null resource_code,
+   -999 resource_id,
+   mtt.transaction_type_name transaction_type,
+   null wip_supply_type,
+   null op_seq_num,
+   null res_seq_num,
+   -- WIP completion quantities always has a basis of Item
+   1 basis_type, -- 1 - item
+   -- Revision for version 1.2
+   -- sum(wdj.quantity_completed * -1) quantity,
+   sum(wdj.quantity_completed) quantity,
+   sum(0) resource_value,
+   sum(wdj.quantity_scrapped) scrapped_quantity
+    from wip_discrete_jobs wdj,
+   wip_accounting_classes wac,
+   mtl_parameters mp,
+   mtl_transaction_types mtt
+   where mp.organization_id              = wdj.organization_id
+   and mtt.transaction_type_id         = 44 -- WIP Completion
+   and wac.class_code                  = wdj.class_code
+   and wac.organization_id             = wdj.organization_id
+   -- Only want asset jobs
+   and wac.class_type not in (4,6,7)
+   -- ===========================================
+   -- Expense WIP Accounting Classes
+   -- 4 - Expense Non-standard
+   -- 6 - Maintenance
+   -- 7 - Expense Non-standard Lot Based
+   -- ===========================================
+   -- Avoid assemblies issued from expense subinventories at zero cost
+   and nvl(wdj.issue_zero_cost_flag, 'N') = 'N'
+   -- Only want open WIP jobs
+   and wdj.date_closed is null
+   -- Do not report the master inventory organization
+   and mp.organization_id             <> mp.master_organization_id
+   and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
+  and 9=9                             -- p_org_code
+   group by
+   'WIP Completion', -- txn_source,
+   wdj.organization_id,
+   wdj.primary_item_id,
+   wdj.wip_entity_id,
+   wdj.class_code,
+   wac.class_type,
+   wdj.status_type,
+   wdj.date_released,
+   wdj.date_completed,
+   wdj.last_update_date,
+   null, -- resource_code
+   -999, -- resource_id
+   mtt.transaction_type_name,
+   null, -- wip_supply_type
+   null, -- op_seq_num
+   null, -- res_seq_num
+   1 -- basis_type 1 -- item
+   having sum(wdj.quantity_completed) + sum(wdj.quantity_scrapped) <> 0
+   union all
+   -- =

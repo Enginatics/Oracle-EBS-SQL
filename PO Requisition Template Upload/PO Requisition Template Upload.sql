@@ -62,7 +62,7 @@ haouv.name operating_unit,
 prha.express_name template_name,
 prha.description template_description,
 podt.type_name type,
-to_char(prha.inactive_date,'DD-Mon-YYYY') inactive_date,
+prha.inactive_date inactive_date,
 xxen_util.meaning(prha.reserve_po_number,'RESERVE PO NUM',201) reserve_po_number,
 -- lines
 prla.sequence_num line_number,
@@ -87,13 +87,13 @@ decode(prla.negotiated_by_preparer_flag,'Y',xxen_util.meaning(prla.rfq_required_
 decode(prla.rfq_required_flag,'Y',xxen_util.meaning(prla.rfq_required_flag,'YES_NO',0),null) rfq_required,
 --
 xxen_util.user_name(prha.last_updated_by) template_last_updated_by,
-to_char(prha.last_update_date,'DD-Mon-YYYY') template_last_updated_on,
+prha.last_update_date template_last_updated_on,
 xxen_util.user_name(prla.last_updated_by) line_last_updated_by,
-to_char(prla.last_update_date,'DD-Mon-YYYY') line_last_updated_on,
+prla.last_update_date line_last_updated_on,
 xxen_util.user_name(prha.created_by) template_created_by,
-to_char(prha.creation_date,'DD-Mon-YYYY') template_created_on,
+prha.creation_date template_created_on,
 xxen_util.user_name(prla.created_by) line_created_by,
-to_char(prla.creation_date,'DD-Mon-YYYY') line_created_on
+prla.creation_date line_created_on
 --
 from
 po_reqexpress_headers_all prha,

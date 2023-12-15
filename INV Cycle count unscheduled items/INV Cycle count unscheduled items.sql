@@ -43,6 +43,7 @@ org_organization_definitions ood,
 gl_ledgers gl
 where
 1=1 and
+ood.organization_code in (select oav.organization_code from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
 ood.set_of_books_id=gl.ledger_id and
 mcch.organization_id=ood.organization_id and
 msiv.organization_id=ood.organization_id and
@@ -80,6 +81,7 @@ org_organization_definitions ood,
 gl_ledgers gl
 where
 1=1 and
+ood.organization_code in (select oav.organization_code from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
 ood.set_of_books_id=gl.ledger_id and
 mcch.organization_id=ood.organization_id and
 msiv.organization_id=ood.organization_id and

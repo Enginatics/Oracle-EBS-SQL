@@ -19,17 +19,17 @@ xxen_util.meaning(pasl.vendor_business_type,'ASL_VENDOR_BUSINESS_TYPE',201) busi
 decode(pasl.vendor_business_type,'MANUFACTURER',null,aps.segment1) supplier_number,
 decode(pasl.vendor_business_type,'MANUFACTURER',mm.manufacturer_name,aps.vendor_name) supplier,
 assa.vendor_site_code supplier_site,
-haout3.name operating_unit,
+haouv3.name operating_unit,
 pas.status,
 xxen_util.meaning(pasl.disable_flag,'YES_NO',0) disabled,
 pasl.primary_vendor_item supplier_item,
 mm1.manufacturer_name manufacturer,
 pasl.review_by_date review_by,
 mp1.organization_code owning_organization_code,
-haout1.name owning_organization,
+haouv1.name owning_organization,
 xxen_util.meaning(decode(pasl.using_organization_id,-1,'Y','N'),'YES_NO',0) global,
 mp2.organization_code using_organization_code,
-haout2.name using_organization,
+haouv2.name using_organization,
 xxen_util.user_name(pasl.created_by) created_by,
 xxen_util.client_time(pasl.creation_date) creation_date,
 xxen_util.user_name(pasl.last_updated_by) last_updated_by,
@@ -79,9 +79,9 @@ from
 po_approved_supplier_list pasl,
 mtl_parameters mp1,
 mtl_parameters mp2,
-hr_all_organization_units_tl haout1,
-hr_all_organization_units_tl haout2,
-hr_all_organization_units_tl haout3,
+hr_all_organization_units_vl haouv1,
+hr_all_organization_units_vl haouv2,
+hr_all_organization_units_vl haouv3,
 mtl_system_items_vl msiv,
 mtl_categories_kfv mck,
 ap_suppliers aps,
@@ -102,19 +102,16 @@ chv_bucket_patterns cbp2,
 where
 1=1 and
 pasl.owning_organization_id=mp1.organization_id and
-pasl.owning_organization_id=haout1.organization_id and
+pasl.owning_organization_id=haouv1.organization_id and
 pasl.using_organization_id=mp2.organization_id(+) and
-pasl.using_organization_id=haout2.organization_id(+) and
-haout1.language(+)=userenv('lang') and
-haout2.language(+)=userenv('lang') and
-haout3.language(+)=userenv('lang') and
+pasl.using_organization_id=haouv2.organization_id(+) and
 pasl.owning_organization_id=msiv.organization_id(+) and
 pasl.item_id=msiv.inventory_item_id(+) and
 pasl.category_id=mck.category_id(+) and
 pasl.vendor_id=aps.vendor_id(+) and
 pasl.vendor_site_id=assa.vendor_site_id(+) and
 (pasl.vendor_site_id is not null and assa.vendor_site_code is not null or pasl.vendor_site_id is null and assa.vendor_site_code is null) and
-assa.org_id=haout3.organization_id(+) and
+assa.org_id=haouv3.organization_id(+) and
 pasl.manufacturer_id=mm.manufacturer_id(+) and
 pasl.asl_status_id=pas.status_id and
 pasl.manufacturer_asl_id=pasl1.asl_id(+) and
@@ -134,7 +131,7 @@ pasl.asl_id=psic.asl_id(+) and
 pasl.using_organization_id=psic.using_organization_id(+) and
 pasl.asl_id=psit.asl_id(+) and
 pasl.using_organization_id=psit.using_organization_id(+) and
-assa.org_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual)
+assa.org_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
 order by
 mp1.organization_code,
 mck.concatenated_segments,

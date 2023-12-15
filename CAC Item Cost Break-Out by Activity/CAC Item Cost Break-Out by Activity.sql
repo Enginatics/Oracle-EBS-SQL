@@ -97,7 +97,8 @@ select  nvl(gl.short_name, gl.name) Ledger,
      where  cicd.inventory_item_id = msiv.inventory_item_id
      and    cicd.organization_id   = mp.organization_id
      and    br.resource_id         = cicd.resource_id
-     and    1=1                    -- p_activity1
+     and    haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
+and 1=1                    -- p_activity1
      and    br.default_activity_id = ca.activity_id
      and    cct.cost_type_id       = cicd.cost_type_id
      and    br.cost_element_id     = 3 -- Resource
@@ -111,7 +112,8 @@ select  nvl(gl.short_name, gl.name) Ledger,
      where  cicd.inventory_item_id = msiv.inventory_item_id
      and    cicd.organization_id   = mp.organization_id
      and    br.resource_id         = cicd.resource_id
-     and    1=1                    -- p_activity1
+     and    haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
+and 1=1                    -- p_activity1
      and    br.default_activity_id = ca.activity_id
      and    cct.cost_type_id       = cicd.cost_type_id
      and    br.cost_element_id     = 4 -- Outside Processing
@@ -125,7 +127,8 @@ select  nvl(gl.short_name, gl.name) Ledger,
      where  cicd.inventory_item_id = msiv.inventory_item_id
      and    cicd.organization_id   = mp.organization_id
      and    bro.resource_id        = cicd.resource_id
-     and    1=1                    -- p_activity1
+     and    haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
+and 1=1                    -- p_activity1
      and    bro.default_activity_id = ca.activity_id
      and    cct.cost_type_id       = cicd.cost_type_id
      and    bro.cost_element_id    = 5 -- Overhead
@@ -499,6 +502,7 @@ and gl.ledger_id                    = to_number(hoi.org_information1) -- get the
 -- avoid selecting disabled inventory organizations
 and sysdate < nvl(haou.date_to, sysdate + 1)
 and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
+and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
 and 7=7                             -- p_item_number, p_org_code, p_operating_unit, p_ledger
 order by
  nvl(gl.short_name,gl.name), -- Ledger

@@ -299,7 +299,10 @@ from gl_code_combinations gcc,
   and mta.accounting_line_type = 36 -- Deferred COGS
  ) mtl_acct
 -- Revision for version 1.4
-where ml1.lookup_type                  = 'MTL_PLANNING_MAKE_BUY'
+where 1=1
+and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
+and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
+and ml1.lookup_type                  = 'MTL_PLANNING_MAKE_BUY'
 and ml1.lookup_code                  = mtl_acct.planning_make_buy_code
 and ml2.lookup_type                  = 'CST_ACCOUNTING_LINE_TYPE'
 and ml2.lookup_code                  = mtl_acct.accounting_line_type

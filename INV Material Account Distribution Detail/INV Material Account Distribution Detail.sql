@@ -37,6 +37,10 @@ select --Q1
  when 11 then (select ccu.description from  cst_cost_updates ccu where ccu.cost_update_id = mmt.transaction_source_id)
  else nvl(mmt.transaction_source_name, to_char(mmt.transaction_source_id))
  end source,
+ case mta.transaction_source_type_id
+ when 1  then (select pla.line_num from po_lines_all pla, rcv_transactions rt where pla.po_line_id = rt.po_line_id and rt.transaction_id = mmt.source_line_id and mmt.source_code = 'RCV')
+ else null
+ end source_line,
  decode(mmt.transaction_action_id
        , 3, decode(mmt.organization_id,mta.organization_id,mmt.subinventory_code, mmt.transfer_subinventory)
        , 2, decode(sign(mta.primary_quantity),-1,mmt.subinventory_code,1, mmt.transfer_subinventory,mmt.subinventory_code)
@@ -84,7 +88,9 @@ select --Q1
  mta.reference_account code_combination_id,
  mta.gl_batch_id,
  mmt.reason_id,
- mta.transaction_id
+ mta.transaction_id,
+ mta.inv_sub_ledger_id,
+ gsob.set_of_books_id
 from
  mtl_transaction_accounts mta,
  mtl_material_transactions mmt,
@@ -102,12 +108,12 @@ where
  1=1 and
  mta.transaction_id = mmt.transaction_id and
  mta.organization_id = mp.organization_id and
- mta.inventory_item_id = msi.inventory_item_id and 
+ mta.inventory_item_id = msi.inventory_item_id and
  mta.organization_id = msi.organization_id and
  mic.inventory_item_id = msi.inventory_item_id and
  mic.organization_id = msi.organization_id and
  mic.category_set_id = :p_cat_set_id and
- mc.category_id = mic.category_id and 
+ mc.category_id = mic.category_id and
  mta.transaction_source_type_id = mtst.transaction_source_type_id and
  mmt.transaction_type_id = mtt.transaction_type_id and
  mta.reference_account = gcc.code_combination_id and
@@ -129,6 +135,7 @@ select --Q2
  mtst.transaction_source_type_name,
  mtt.transaction_type_name,
  fnd_flex_xml_publisher_apis.process_kff_combination_1('so', 'INV', 'MKTS', 101, null, mkts.sales_order_id, 'ALL', 'Y', 'VALUE') source,
+ (select oola.line_number from oe_order_lines_all oola where oola.line_id = mmt.trx_source_line_id) source_line,
  decode(mmt.transaction_action_id
        , 3, decode(mmt.organization_id,mta.organization_id,mmt.subinventory_code, mmt.transfer_subinventory)
        , 2, decode(sign(mta.primary_quantity),-1,mmt.subinventory_code,1, mmt.transfer_subinventory,mmt.subinventory_code)
@@ -166,7 +173,9 @@ select --Q2
  mta.reference_account code_combination_id,
  mta.gl_batch_id,
  mmt.reason_id,
- mta.transaction_id
+ mta.transaction_id,
+ mta.inv_sub_ledger_id,
+ gsob.set_of_books_id
 from
  mtl_transaction_accounts mta,
  mtl_material_transactions mmt,
@@ -186,11 +195,11 @@ where
  mta.transaction_id = mmt.transaction_id and
  mta.organization_id = mp.organization_id and
  mta.organization_id = msi.organization_id and
- mta.inventory_item_id = msi.inventory_item_id and 
- mic.organization_id = msi.organization_id and 
+ mta.inventory_item_id = msi.inventory_item_id and
+ mic.organization_id = msi.organization_id and
  mic.inventory_item_id = msi.inventory_item_id and
  mic.category_set_id = :p_cat_set_id and
- mic.category_id = mc.category_id and  
+ mic.category_id = mc.category_id and
  mta.transaction_source_type_id = mtst.transaction_source_type_id and
  mmt.transaction_type_id = mtt.transaction_type_id and
  mta.reference_account = gcc.code_combination_id and
@@ -213,6 +222,7 @@ select --Q3
  mtst.transaction_source_type_name,
  mtt.transaction_type_name,
  fnd_flex_xml_publisher_apis.process_kff_combination_1('alias', 'INV', 'MDSP', 101, mdsp.organization_id, mdsp.disposition_id, 'ALL', 'Y', 'VALUE') source,
+ null source_line,
  decode(mmt.transaction_action_id
        , 3, decode(mmt.organization_id,mta.organization_id,mmt.subinventory_code, mmt.transfer_subinventory)
        , 2, decode(sign(mta.primary_quantity),-1,mmt.subinventory_code,1, mmt.transfer_subinventory,mmt.subinventory_code)
@@ -251,7 +261,9 @@ select --Q3
  mta.reference_account code_combination_id,
  mta.gl_batch_id,
  mmt.reason_id,
- mta.transaction_id
+ mta.transaction_id,
+ mta.inv_sub_ledger_id,
+ gsob.set_of_books_id
 from
  mtl_transaction_accounts mta,
  mtl_material_transactions mmt,
@@ -265,14 +277,14 @@ from
  mtl_generic_dispositions mdsp,
  hr_organization_information hoi,
  hr_all_organization_units haou,
- gl_sets_of_books gsob 
+ gl_sets_of_books gsob
 where
  1=1 and
  mta.transaction_id = mmt.transaction_id and
  mta.organization_id = mp.organization_id and
  mta.organization_id = msi.organization_id and
  mta.inventory_item_id = msi.inventory_item_id and
- mic.organization_id = msi.organization_id and 
+ mic.organization_id = msi.organization_id and
  mic.inventory_item_id = msi.inventory_item_id and
  mic.category_set_id = :p_cat_set_id and
  mic.category_id = mc.category_id and
@@ -298,6 +310,7 @@ select --Q4
  mtst.transaction_source_type_name,
  mtt.transaction_type_name,
  glc.concatenated_segments source,
+ null source_line,
  decode(mmt.transaction_action_id
        , 3, decode(mmt.organization_id,mta.organization_id,mmt.subinventory_code, mmt.transfer_subinventory)
        , 2, decode(sign(mta.primary_quantity),-1,mmt.subinventory_code,1, mmt.transfer_subinventory,mmt.subinventory_code)
@@ -336,7 +349,9 @@ select --Q4
  mta.reference_account code_combination_id,
  mta.gl_batch_id,
  mmt.reason_id,
- mta.transaction_id
+ mta.transaction_id,
+ mta.inv_sub_ledger_id,
+ gsob.set_of_books_id
 from
  mtl_transaction_accounts mta,
  mtl_material_transactions mmt,
@@ -355,9 +370,9 @@ where
  1=1 and
  mta.transaction_id = mmt.transaction_id and
  mta.organization_id = mp.organization_id and
- mta.organization_id = msi.organization_id and 
- mta.inventory_item_id = msi.inventory_item_id and 
- mic.organization_id = msi.organization_id and 
+ mta.organization_id = msi.organization_id and
+ mta.inventory_item_id = msi.inventory_item_id and
+ mic.organization_id = msi.organization_id and
  mic.inventory_item_id = msi.inventory_item_id and
  mic.category_set_id = :p_cat_set_id and
  mic.category_id = mc.category_id and
@@ -375,7 +390,7 @@ where
 --
 -- Main Query Starts Here
 --
-select
+select /*+ push_pred(sla) */
  mad.ledger,
  mad.operating_unit,
  mad.organization_code,
@@ -384,6 +399,7 @@ select
  mad.transaction_source_type_name source_type,
  mad.transaction_type_name transaction_type,
  mad.source,
+ mad.source_line,
  mad.subinv subinventory,
  mad.account_segments,
  mad.account_segments_desc,
@@ -400,14 +416,18 @@ select
  mad.unit_cost,
  mad.value transaction_value,
  (select mtr.reason_name from mtl_transaction_reasons mtr where mtr.reason_id = mad.reason_id) transaction_reason,
- mad.gl_batch_id,
- mad.transaction_id
+ --
+ &lp_sla_columns
+ --
+ mad.transaction_id,
+ mad.inv_sub_ledger_id,
+ mad.gl_batch_id
 from
  material_account_dist_q mad
 where
-2=2 and
-:p_category_set_name=:p_category_set_name and
-nvl(:p_source_type_id,-1) = nvl(:p_source_type_id,-1)
+ :p_category_set_name=:p_category_set_name and
+ nvl(:p_source_type_id,-1) = nvl(:p_source_type_id,-1) and
+ 2=2
 order by
  mad.ledger,
  mad.account_segments,
