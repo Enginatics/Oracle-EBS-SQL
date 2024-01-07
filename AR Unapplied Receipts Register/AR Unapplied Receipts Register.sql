@@ -1,6 +1,6 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2023 Enginatics GmbH                   */
+/*                       (c) 2010-2024 Enginatics GmbH                   */
 /*                              www.enginatics.com                       */
 /*                                                                       */
 /*************************************************************************/
@@ -44,7 +44,7 @@ then
   from
     ar_receivable_applications_all araa2
   where
-    araa2.cash_receipt_id = x.cash_receipt_id
+    x.cash_receipt_id=araa2.cash_receipt_id
  )
 else
  xxen_util.meaning(x.receipt_status,'CHECK_STATUS',222)
@@ -53,10 +53,6 @@ xxen_util.meaning(x.receipt_history_status,'RECEIPT_CREATION_STATUS',222) receip
 x.issue_date,
 x.receipt_date,
 x.receipt_gl_date,
-x.receipt_creation_date,
-x.receipt_created_by,
-x.receipt_last_updated_date,
-x.receipt_last_updated_by,
 &apply_date_cols
 x.receipt_currency,
 x.currency,
@@ -78,8 +74,12 @@ x.bank_account_name,
 x.bank_account_name_alt,
 x.bank_account_number,
 x.bank_account_currency,
-x.bank_account_description
+x.bank_account_description,
 &receipt_dff_cols
+x.receipt_created_by,
+x.receipt_creation_date,
+x.receipt_last_updated_by,
+x.receipt_last_update_date
 from
 (
 select
@@ -104,10 +104,10 @@ acra.receipt_date,
 apsa.gl_date receipt_gl_date,
 nvl2(:p_as_of_date,to_date(null),araa.apply_date) applied_date,
 nvl2(:p_as_of_date,to_date(null),araa.gl_date) applied_gl_date,
-acra.creation_date  receipt_creation_date,
 xxen_util.user_name(acra.created_by) receipt_created_by,
-acra.last_update_date receipt_last_updated_date,
+xxen_util.client_time(acra.creation_date) receipt_creation_date,
 xxen_util.user_name(acra.last_updated_by) receipt_last_updated_by,
+xxen_util.client_time(acra.last_update_date) receipt_last_update_date,
 max(araa.apply_date) latest_applied_date,
 max(araa.gl_date) latest_applied_gl_date,
 absa.name batch_source_name,
@@ -127,7 +127,6 @@ max(decode(nvl(upper(:p_in_curr_code),gl.currency_code),:p_reval_currency,1,(sel
 acra.rowid row_id,
 acra.attribute_category,
 acra.cash_receipt_id,
---
 cbbv.bank_name,
 cbbv.bank_name_alt,
 cbbv.bank_number,

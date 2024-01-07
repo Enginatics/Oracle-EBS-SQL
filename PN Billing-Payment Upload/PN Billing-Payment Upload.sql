@@ -1,6 +1,6 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2023 Enginatics GmbH                   */
+/*                       (c) 2010-2024 Enginatics GmbH                   */
 /*                              www.enginatics.com                       */
 /*                                                                       */
 /*************************************************************************/
@@ -15,9 +15,9 @@ x.*
 from
 (
 select
-decode(:p_upload_mode,'Copy','Create',null) action_,
-decode(:p_upload_mode,'Copy','New',null) status_,
-decode(:p_upload_mode,'Copy','Validation pending',null) message_,
+decode(:p_upload_mode,'Copy',xxen_upload.action_meaning(xxen_upload.action_create),null) action_,
+decode(:p_upload_mode,'Copy',xxen_upload.status_meaning(xxen_upload.status_new),null) status_,
+decode(:p_upload_mode,'Copy',xxen_util.description('U_EXCEL_MSG_VALIDATION_PENDING', 'XXEN_REPORT_TRANSLATIONS', 0),null) message_,
 null request_id_,
 null row_id,
 haouv.name operating_unit,
@@ -190,7 +190,7 @@ pn_locations_all pla,
 hr_all_organization_units_vl haouv
 where
 1=1 and
-:p_upload_mode in ('Create or Update','Copy') and
+:p_upload_mode in (xxen_upload.action_meaning(xxen_upload.action_create)||', '||xxen_upload.action_meaning(xxen_upload.action_update),'Copy') and
 plv.lease_id = pptv.lease_id and
 plv.org_id = haouv.organization_id and
 --

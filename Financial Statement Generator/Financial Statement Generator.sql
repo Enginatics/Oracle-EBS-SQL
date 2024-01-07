@@ -1,6 +1,6 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2023 Enginatics GmbH                   */
+/*                       (c) 2010-2024 Enginatics GmbH                   */
 /*                              www.enginatics.com                       */
 /*                                                                       */
 /*************************************************************************/
@@ -34,7 +34,10 @@ select
 :hierarchy_name,
 :gl_segment,
 :next_segment_value,
+:discover_period_name,
 :daily_rates,
+:period_year,
+:period_num,
 :gl_segment1 gl_segment1,
 :gl_segment2 gl_segment2,
 :gl_segment3 gl_segment3,

@@ -1,6 +1,6 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2023 Enginatics GmbH                   */
+/*                       (c) 2010-2024 Enginatics GmbH                   */
 /*                              www.enginatics.com                       */
 /*                                                                       */
 /*************************************************************************/
@@ -58,10 +58,14 @@ ppa.segment1 project_number,
 pt.task_number task_number,
 ppa.name project_name,
 pt.task_name task_name,
-ppa2.segment1 to_project_number,
-pt2.task_number to_task_number,
-ppa2.name to_project_name,
-pt2.task_name to_task_name,
+ppa2.segment1 source_project_number,
+pt2.task_number source_task_number,
+ppa2.name source_project_name,
+pt2.task_name source_task_name,
+ppa3.segment1 to_project_number,
+pt3.task_number to_task_number,
+ppa3.name to_project_name,
+pt3.task_name to_task_name,
 mtr.reason_name reason,
 mtr.description reason_description,
 mmt.source_line_id,
@@ -99,7 +103,9 @@ mtl_txn_request_headers mtrh,
 pa_projects_all ppa,
 pa_tasks pt,
 pa_projects_all ppa2,
-pa_tasks pt2
+pa_tasks pt2,
+pa_projects_all ppa3,
+pa_tasks pt3
 where
 1=1 and
 mmt.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
@@ -132,8 +138,10 @@ decode(mmt.transaction_source_type_id,4,mmt.transaction_source_id)=mtrh.header_i
 mmt.transaction_id=mtln.transaction_id(+) and
 mmt.project_id=ppa.project_id(+) and
 mmt.task_id=pt.task_id(+) and
-mmt.to_project_id=ppa2.project_id(+) and
-mmt.to_task_id=pt2.task_id(+)
+mmt.source_project_id=ppa2.project_id(+) and
+mmt.source_task_id=pt2.task_id(+) and
+mmt.to_project_id=ppa3.project_id(+) and
+mmt.to_task_id=pt3.task_id(+)
 order by
 mp.organization_code,
 msiv.concatenated_segments,

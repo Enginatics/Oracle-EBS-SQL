@@ -1,6 +1,6 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2023 Enginatics GmbH                   */
+/*                       (c) 2010-2024 Enginatics GmbH                   */
 /*                              www.enginatics.com                       */
 /*                                                                       */
 /*************************************************************************/
@@ -37,6 +37,7 @@ Ledger:  enter the specific ledger(s) you wish to report (optional).
 -- |                                    and BOM/Routing/Sourcing Rules exist columns.
 -- |  1.2    22 Nov 2023 Douglas Volz   Add item master and costing lot sizes, and 
 -- |                                    use default controls columns.
+-- |  1.3    05 Dec 2023 Douglas Volz   Added G/L and Operating Unit security restrictions. 
 -- +=============================================================================+*/
 -- Excel Examle Output: https://www.enginatics.com/example/cac-new-standard-item-costs/
 -- Library Link: https://www.enginatics.com/reports/cac-new-standard-item-costs/
@@ -314,13 +315,15 @@ and     hoi.organization_id             = csc.organization_id
 and     hoi.organization_id             = haou.organization_id   -- this gets the organization name
 and     haou2.organization_id           = to_number(hoi.org_information3) -- this gets the operating unit id
 and     gl.ledger_id                    = to_number(hoi.org_information1) -- get the ledger_id
+-- Revision for version 1.3
+and     mp.organization_code in (select oav.organization_code from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
 and     gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
-and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
-and 1=1                             -- p_operating_unit, p_ledger
+and     haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
+-- End revision for version 1.3
+and     1=1                             -- p_operating_unit, p_ledger
 and     2=2                             -- p_cost_update_date_from, p_cost_update_date_to
 and     3=3                             -- p_org_code
 and     4=4                             -- p_cost_type
-and     mp.organization_code in (select oav.organization_code from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
 -- order by ledger, operating unit, org code, item number, cost update revision date and cost update id
 order by
         nvl(gl.short_name, gl.name), -- Ledger

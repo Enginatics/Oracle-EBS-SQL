@@ -1,6 +1,6 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2023 Enginatics GmbH                   */
+/*                       (c) 2010-2024 Enginatics GmbH                   */
 /*                              www.enginatics.com                       */
 /*                                                                       */
 /*************************************************************************/
@@ -69,7 +69,7 @@ from
   fnd_application_vl   fav2,
   fnd_security_groups  fsg
 where
-    :p_mode in ('Create and Update','Update')
+    :p_mode in (xxen_upload.action_meaning(xxen_upload.action_create)||', '||xxen_upload.action_meaning(xxen_upload.action_update),xxen_upload.action_meaning(xxen_upload.action_update))
 and fav1.application_name=:p_view_appl
 and 1=1
 and fltv.view_application_id   = fav1.application_id

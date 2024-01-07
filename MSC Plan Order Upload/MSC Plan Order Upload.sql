@@ -1,6 +1,6 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2023 Enginatics GmbH                   */
+/*                       (c) 2010-2024 Enginatics GmbH                   */
 /*                              www.enginatics.com                       */
 /*                                                                       */
 /*************************************************************************/
@@ -55,9 +55,9 @@ mov.*
 from
 (
 select
- case when :p_autopopulate_release_status is not null and :p_upload_mode is not null then 'Update' else null end action_,
- case when :p_autopopulate_release_status is not null and :p_upload_mode is not null then 'New' else null end status_,
- case when :p_autopopulate_release_status is not null and :p_upload_mode is not null then 'Validation pending' else null end message_,
+ case when :p_autopopulate_release_status is not null and :p_upload_mode is not null then xxen_upload.action_meaning(xxen_upload.action_update) else null end action_,
+ case when :p_autopopulate_release_status is not null and :p_upload_mode is not null then xxen_upload.status_meaning(xxen_upload.status_new) else null end status_,
+ case when :p_autopopulate_release_status is not null and :p_upload_mode is not null then xxen_util.description('U_EXCEL_MSG_VALIDATION_PENDING','XXEN_REPORT_TRANSLATIONS',0) else null end message_,
  null                                            request_id_,
  nvl(:p_instance_code,mai.instance_code)         instance,
  nvl(:p_plan_name,mp.compile_designator)         plan,

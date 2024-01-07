@@ -1,6 +1,6 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2023 Enginatics GmbH                   */
+/*                       (c) 2010-2024 Enginatics GmbH                   */
 /*                              www.enginatics.com                       */
 /*                                                                       */
 /*************************************************************************/
@@ -45,6 +45,7 @@ Ledger:  enter the specific ledger(s) you wish to report (optional).
 -- |                                   Asset columns; added Item Status, Make Buy
 -- |                                   and Cost Element parameters, removed tabs
 -- |                                   and added org access controls.
+-- |  1.6    05 Dec 2023 Douglas Volz  Added G/L and Operating Unit security restrictions.
 -- +=============================================================================+*/
 
 -- Excel Examle Output: https://www.enginatics.com/example/cac-load-more4apps-buy-item-costs/
@@ -133,9 +134,11 @@ and     hoi.organization_id             = mp.organization_id
 and     hoi.organization_id             = haou.organization_id            -- this gets the organization name
 and     haou2.organization_id           = hoi.org_information3            -- this gets the operating unit id
 and     gl.ledger_id                    = to_number(hoi.org_information1) -- get the ledger_id
+-- Revision for version 1.6
 and     mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
 and     gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
-and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
-and 1=1                             -- p_from_cost_type, p_to_cost_type, p_item_status_to_exclude, p_make_or_buy, p_cost_element, p_org_code, p_operating_unit, p_ledger
+and     haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
+-- End revision for version 1.6
+and     1=1                             -- p_from_cost_type, p_to_cost_type, p_item_status_to_exclude, p_make_or_buy, p_cost_element, p_org_code, p_operating_unit, p_ledger
 -- order by Org Code, Item, Cost Type, Cost Element and Sub-Element
 order by 1,2,3,7,8,9

@@ -1,6 +1,6 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2023 Enginatics GmbH                   */
+/*                       (c) 2010-2024 Enginatics GmbH                   */
 /*                              www.enginatics.com                       */
 /*                                                                       */
 /*************************************************************************/
@@ -13,11 +13,11 @@
 select y.* from
 (
 select
-NULL action_,
-NULL status_,
-NULL message_,
+null action_,
+null status_,
+null message_,
 fu.user_name,
-NULL unencrypted_password,
+null unencrypted_password,
 fu.description,
 papf.business_group,
 papf.employee_number,
@@ -43,7 +43,7 @@ frt.end_date responsiblity_end,
 frt.description responsiblity_description
 from
 fnd_user fu,
-(select pbg.name business_group,pp.* from per_all_people_f pp, per_business_groups pbg where pbg.business_group_id=pp.business_group_id) papf,
+(select pbg.name business_group,pp.* from per_all_people_f pp, per_business_groups pbg where pbg.business_group_id=pp.business_group_id  and trunc(nvl(pp.effective_end_date,sysdate))>=trunc(sysdate)) papf,
 (
 select
 furg.user_id,
@@ -72,6 +72,7 @@ furg.responsibility_id=frt.responsibility_id and
 frg.security_group_id=fsgt.security_group_id and
 fsgt.language=userenv ('LANG') and
 fat.application_id=fa.application_id and
+trunc(nvl(furg.end_date,sysdate))>=trunc(sysdate) and
 fat.language=userenv ('LANG') and
 frt.language=userenv ('LANG')
 )frt

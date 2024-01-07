@@ -1,6 +1,6 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2023 Enginatics GmbH                   */
+/*                       (c) 2010-2024 Enginatics GmbH                   */
 /*                              www.enginatics.com                       */
 /*                                                                       */
 /*************************************************************************/
@@ -14,9 +14,10 @@ Source: Supply Chain Indented Bills of Material Cost Report (XML)
 Short Name: CSTRSCCRI_XML
 DB package: BOM_CSTRSCCR_XMLP_PKG
 
--- |  Version   Modified on      Modified  by            Description
--- |  ======= =========== ============== =========================================
+-- |  Version   Modified on       Modified  by              Description
+-- |  ======= ===========   ==============  =========================================
 -- |  1.0            04-APR-2023    Eric Clegg               Initial Conversion
+--|   1.1            24-DEC-2023   Eric Clegg               Added Multi-Select Item Parameter
 -- Excel Examle Output: https://www.enginatics.com/example/cst-supply-chain-indented-bills-of-material-cost/
 -- Library Link: https://www.enginatics.com/reports/cst-supply-chain-indented-bills-of-material-cost/
 -- Run Report: https://demo.enginatics.com/
@@ -45,7 +46,7 @@ select
  fc_assm.extended_precision assm_ext_precision
 from
  cst_sc_bom_structures        csbs,
- mtl_system_items_kfv         msi_assm,
+ mtl_system_items_vl          msi_assm,
  mtl_item_categories          mic_assm,
  mtl_categories_kfv           mc_assm,
  org_organization_definitions ood_assm,
@@ -59,7 +60,7 @@ where
  msi_assm.organization_id   = csbs.top_organization_id and
  mic_assm.inventory_item_id = csbs.top_inventory_item_id and
  mic_assm.organization_id   = csbs.top_organization_id and
- mic_assm.category_set_id   = :lp_category_set_id and
+ mic_assm.category_set_id   = :p_category_set_id_out and
  mc_assm.category_id        = mic_assm.category_id and
  ood_assm.organization_id   = csbs.top_organization_id and
  sob_assm.set_of_books_id   = ood_assm.set_of_books_id and
@@ -80,12 +81,12 @@ select
  -- component visible columns
  decode(:p_report_type_type, 1, lpad('.',csbs.bom_level-1,'.')||to_char(csbs.bom_level-1), null) component_level,
  bic.operation_seq_num operation_seq,
- msi.concatenated_segments component,
- msi.description component_description,
- xxen_util.meaning(msi.item_type,'ITEM_TYPE',3) component_item_type,
+ msiv.concatenated_segments component,
+ msiv.description component_description,
+ xxen_util.meaning(msiv.item_type,'ITEM_TYPE',3) component_item_type,
  mp.organization_code component_organiziation,
  csbs.component_revision revision,
- xxen_util.meaning(msi.planning_make_buy_code,'MTL_PLANNING_MAKE_BUY',700) make_buy,
+ xxen_util.meaning(msiv.planning_make_buy_code,'MTL_PLANNING_MAKE_BUY',700) make_buy,
  xxen_util.meaning(csbs.include_in_cost_rollup,'SYS_YES_NO',700) include_in_rollup,
  xxen_util.meaning(nvl(cic.based_on_rollup_flag,2),'SYS_YES_NO',700) based_on_rollup,
  xxen_util.meaning(nvl(cic.inventory_asset_flag,2),'SYS_YES_NO',700) inventory_asset,
@@ -93,23 +94,23 @@ select
  xxen_util.meaning(nvl(bic.basis_type,1),'CST_BASIS',700) basis,
  bic.component_yield_factor yield,
  bic.planning_factor planning_percent,
- msi.primary_uom_code component_uom,
+ msiv.primary_uom_code component_uom,
  decode(:p_report_type_type, 1, csbs.component_quantity, null) component_quantity,
  cic.shrinkage_rate component_shrinkage_rate,
  csbs.extended_quantity component_extended_quantity,
  nvl( cic.item_cost,0) component_item_unit_cost,
 -- decode(csbs.extend_cost_flag,
 --   2,0,(decode(:p_material_dtl_flag,
---               1,0,decode(csbs.bom_level,:lp_report_level,nvl(cic.pl_material,0),0) +
+--               1,0,decode(csbs.bom_level,:p_report_level_out,nvl(cic.pl_material,0),0) +
 --                   decode(decode(:p_phantom_mat,1,0,1) * decode(csbs.bom_level,1,0,1) * decode(csbs.phantom_flag,1,1,0),1,0,nvl(cic.tl_material,0))
 --              ) +
 --        decode(:p_material_overhead_dtl_flag,
---               1,0,decode(csbs.bom_level,:lp_report_level,nvl(cic.pl_material_overhead,0),0) +
+--               1,0,decode(csbs.bom_level,:p_report_level_out,nvl(cic.pl_material_overhead,0),0) +
 --                   decode(decode(:p_phantom_mat,1,0,1) * decode(csbs.bom_level,1,0,1) * decode(csbs.phantom_flag,1,1,0),1,0,nvl(cic.tl_material_overhead,0))
 --              ) +
 --        decode(decode(nvl(bp.use_phantom_routings,2),1,1,0) * decode(csbs.phantom_flag,1,1,0),
 --               1,0,decode(:p_routing_dtl_flag,
---                          1,0,decode(csbs.bom_level,:lp_report_level,nvl(cic.pl_resource,0) + nvl(cic.pl_outside_processing,0) + nvl(cic.pl_overhead,0),0) +
+--                          1,0,decode(csbs.bom_level,:p_report_level_out,nvl(cic.pl_resource,0) + nvl(cic.pl_outside_processing,0) + nvl(cic.pl_overhead,0),0) +
 --                              decode(decode(nvl(bp.use_phantom_routings,2),1,0,1) * decode(csbs.phantom_flag,1,1,0),1,0,nvl(cic.tl_resource,0) + nvl(cic.tl_outside_processing,0) + nvl(cic.tl_overhead,0))
 --                         )
 --              )
@@ -117,14 +118,14 @@ select
 -- ) * csbs.extended_quantity component_extended_cost,
  nvl( cic.item_cost,0) * csbs.extended_quantity component_extended_cost,
  decode(csbs.extend_cost_flag,
-   2,0,((decode(csbs.bom_level,:lp_report_level,nvl(cic.pl_material,0),0) +
+   2,0,((decode(csbs.bom_level,:p_report_level_out,nvl(cic.pl_material,0),0) +
          decode(decode(:p_phantom_mat,1,0,1) * decode(csbs.bom_level,1,0,1) * decode(csbs.phantom_flag,1,1,0),1,0,nvl(cic.tl_material,0))
         ) +
-        (decode(csbs.bom_level,:lp_report_level,nvl(cic.pl_material_overhead,0),0) +
+        (decode(csbs.bom_level,:p_report_level_out,nvl(cic.pl_material_overhead,0),0) +
          decode(decode(:p_phantom_mat,1,0,1) * decode(csbs.bom_level,1,0,1) * decode(csbs.phantom_flag,1,1,0),1,0,nvl(cic.tl_material_overhead,0))
         ) +
         decode(decode(nvl(bp.use_phantom_routings,2),1,1,0) * decode(csbs.phantom_flag,1,1,0),
-               1,0,(decode(csbs.bom_level,:lp_report_level,nvl(cic.pl_resource,0) + nvl(cic.pl_outside_processing,0) + nvl(cic.pl_overhead,0),0) +
+               1,0,(decode(csbs.bom_level,:p_report_level_out,nvl(cic.pl_resource,0) + nvl(cic.pl_outside_processing,0) + nvl(cic.pl_overhead,0),0) +
                     decode(decode(nvl(bp.use_phantom_routings,2),1,0,1) * decode(csbs.phantom_flag,1,1,0),1,0,nvl(cic.tl_resource,0) + nvl(cic.tl_outside_processing,0) + nvl(cic.tl_overhead,0))
                    )
               )
@@ -141,7 +142,7 @@ from
  cst_sc_bom_structures       csbs,
  bom_parameters              bp,
  bom_inventory_components    bic,
- mtl_system_items_kfv        msi,
+ mtl_system_items_vl         msiv,
  hr_organization_information hoi,
  gl_sets_of_books            sob,
  fnd_currencies              fc,
@@ -149,11 +150,11 @@ from
  mtl_parameters              mp
 where
  csbs.rollup_id = decode(:p_report_type_type, 1, :p_rollup_id, -1*:p_rollup_id) and
- csbs.bom_level <= :lp_report_level and
+ csbs.bom_level <= :p_report_level_out and
  bp.organization_id (+) = csbs.component_organization_id and
  bic.component_sequence_id(+) = csbs.component_sequence_id and
- msi.inventory_item_id = csbs.component_item_id and
- msi.organization_id = csbs.component_organization_id and
+ msiv.inventory_item_id = csbs.component_item_id and
+ msiv.organization_id = csbs.component_organization_id and
  hoi.organization_id = csbs.component_organization_id and
  hoi.org_information_context = 'Accounting Information' and
  sob.set_of_books_id = to_number(hoi.org_information1) and
@@ -241,7 +242,7 @@ from
  cst_sc_bom_structures    csbs,
  bom_parameters           bp,
  bom_inventory_components bic,
- mtl_system_items_kfv     msi,
+ mtl_system_items_vl      msiv,
  cst_item_cost_details    cicd,
  cst_cost_elements        cce,
  bom_resources            br,
@@ -249,16 +250,16 @@ from
  mtl_parameters           mp2
 where
  csbs.rollup_id = decode(:p_report_type_type,1,:p_rollup_id,-1*:p_rollup_id) and
- csbs.bom_level <= :lp_report_level and
+ csbs.bom_level <= :p_report_level_out and
  bp.organization_id (+) = csbs.component_organization_id and
  bic.component_sequence_id(+) = csbs.component_sequence_id and
- msi.inventory_item_id = csbs.component_item_id and
- msi.organization_id = csbs.component_organization_id and
+ msiv.inventory_item_id = csbs.component_item_id and
+ msiv.organization_id = csbs.component_organization_id and
  cicd.inventory_item_id = csbs.component_item_id and
  cicd.organization_id = csbs.component_organization_id and
- (   (csbs.bom_level < :lp_report_level and cicd.level_type <> 2)
+ (   (csbs.bom_level < :p_report_level_out and cicd.level_type <> 2)
   or (cicd.item_cost=cicd.yielded_cost and nvl(cicd.source_organization_id,cicd.organization_id) = cicd.organization_id)
-  or (csbs.bom_level = :lp_report_level)
+  or (csbs.bom_level = :p_report_level_out)
   or (cicd.vendor_id is not null)
   or exists
      (select 'x'
@@ -408,7 +409,7 @@ select distinct
  dense_rank() over (order by cssr.rollup_id,csbs.top_inventory_item_id,cssr.inventory_item_id,cssr.organization_id) s_r_seq
 from
  cst_sc_sourcing_rules       cssr,
- mtl_system_items_kfv        msiv,
+ mtl_system_items_vl         msiv,
  hr_organization_information hoi,
  mtl_parameters              mp,
  cst_item_costs              cic,
@@ -497,6 +498,20 @@ group by
  cssr.ship_method,
  cssr.item_cost,
  cssr.allocation_percent
+),
+--
+-- Q Dummy. Not used. just here to support multi-select item parameter
+--
+q_dummy as
+(
+select
+ msiv.organization_id,
+ msiv.inventory_item_id
+from
+ mtl_system_items_vl msiv
+where
+ 1=1 and
+ 'X'='Y'
 )
 --
 -- Main Query Starts Here

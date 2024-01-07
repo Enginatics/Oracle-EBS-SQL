@@ -1,6 +1,6 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2023 Enginatics GmbH                   */
+/*                       (c) 2010-2024 Enginatics GmbH                   */
 /*                              www.enginatics.com                       */
 /*                                                                       */
 /*************************************************************************/
@@ -387,7 +387,7 @@ ce_bank_branches_v cbbv1,
 po_vendor_contacts pvc
 --
 where
-:p_upload_mode = 'Create or Update' and
+:p_upload_mode = xxen_upload.action_meaning(xxen_upload.action_create)||', '||xxen_upload.action_meaning(xxen_upload.action_update) and
 1=1 and
 aps.parent_vendor_id = aps1.vendor_id(+) and
 aps.party_id = hp.party_id and

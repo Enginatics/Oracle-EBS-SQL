@@ -1,6 +1,6 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2023 Enginatics GmbH                   */
+/*                       (c) 2010-2024 Enginatics GmbH                   */
 /*                              www.enginatics.com                       */
 /*                                                                       */
 /*************************************************************************/
@@ -43,6 +43,7 @@ xxen_util.user_name(ffvs.created_by) created_by,
 xxen_util.client_time(ffvs.creation_date) creation_date,
 xxen_util.user_name(ffvs.last_updated_by) last_updated_by,
 xxen_util.client_time(ffvs.last_update_date) last_update_date,
+ffvs.validation_type validation_type_code,
 ffvs.flex_value_set_id
 from
 fnd_flex_value_sets ffvs,

@@ -1,6 +1,6 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2023 Enginatics GmbH                   */
+/*                       (c) 2010-2024 Enginatics GmbH                   */
 /*                              www.enginatics.com                       */
 /*                                                                       */
 /*************************************************************************/
@@ -51,7 +51,7 @@ fu.user_name created_by,
 gdr.creation_date creation_date,
 null batch_number,
 xxen_util.meaning('I','GL_CRM_DR_MODE_FLAG',101) mode_flag,
-'N' launch_rate_change
+xxen_util.meaning('N','YES_NO',0) launch_rate_change
 from
 gl_daily_rates gdr,
 gl_daily_conversion_types gdct,

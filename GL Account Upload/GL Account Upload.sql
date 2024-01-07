@@ -1,6 +1,6 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2023 Enginatics GmbH                   */
+/*                       (c) 2010-2024 Enginatics GmbH                   */
 /*                              www.enginatics.com                       */
 /*                                                                       */
 /*************************************************************************/
@@ -20,13 +20,13 @@ to_char(null) message_,
 to_char(null) ledger,
 gcck.concatenated_segments,
 ffvv.description account_type,
-gcck.summary_flag summary,
+xxen_util.meaning(gcck.summary_flag,'YES_NO',0) summary,
 --fifs.id_flex_structure_name chart_of_accounts_name,
-gcck.enabled_flag enabled,
+xxen_util.meaning(gcck.enabled_flag,'YES_NO',0) enabled,
 gcck.start_date_active,
 gcck.end_date_active,
-gcck.detail_budgeting_allowed,
-gcck.detail_posting_allowed,
+xxen_util.meaning(gcck.detail_budgeting_allowed,'YES_NO',0) detail_budgeting_allowed,
+xxen_util.meaning(gcck.detail_posting_allowed,'YES_NO',0) detail_posting_allowed,
 gcck.code_combination_id,
 --gccka.concatenated_segments alternate_account,
 --gcck.igi_balanced_budget_flag balanced_budget,

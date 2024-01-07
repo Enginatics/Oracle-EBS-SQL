@@ -1,6 +1,6 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2023 Enginatics GmbH                   */
+/*                       (c) 2010-2024 Enginatics GmbH                   */
 /*                              www.enginatics.com                       */
 /*                                                                       */
 /*************************************************************************/
@@ -129,7 +129,7 @@ gcc.segment8 charge_account_segment8,
 gcc.segment9 charge_account_segment9,
 gcc.segment10 charge_account_segment10,
 --distribution projects--
-case when prda.project_accounting_context='Yes' then 'Y' when prda.project_accounting_context='No' then 'N' end  project_accounting,
+prda.project_accounting_context project_accounting,
 ppv.segment1 project_number,
 ptv.task_number,
 prda.expenditure_type,

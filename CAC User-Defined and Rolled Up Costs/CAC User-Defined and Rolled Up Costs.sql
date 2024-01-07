@@ -1,6 +1,6 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2023 Enginatics GmbH                   */
+/*                       (c) 2010-2024 Enginatics GmbH                   */
 /*                              www.enginatics.com                       */
 /*                                                                       */
 /*************************************************************************/
@@ -42,6 +42,7 @@ Ledger:  enter the specific ledger(s) you wish to report (optional).
 -- |  1.5     12 Jan 2023 Douglas Volz   Correction for definition of manually entered 
 -- |                                     material costs.
 -- |  1.6     20 Nov 2023 Douglas Volz   Fix for Manual Other Costs and Rolled Up Other Costs columns.
+-- |  1.7     05 Dec 2023 Douglas Volz   Added G/L and Operating Unit security restrictions.
 -- +=============================================================================+*/
 -- Excel Examle Output: https://www.enginatics.com/example/cac-user-defined-and-rolled-up-costs/
 -- Library Link: https://www.enginatics.com/reports/cac-user-defined-and-rolled-up-costs/
@@ -262,10 +263,12 @@ and     hoi.organization_id             = haou.organization_id            -- thi
 and     sysdate                         < nvl(haou.date_to, sysdate +1)
 and     haou2.organization_id           = to_number(hoi.org_information3) -- this gets the operating unit id
 and     hoi.org_information1            = gl.ledger_id                    -- this gets the ledger id
+-- Revision for version 1.7
 and     mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
 and     gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
-and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
-and 1=1                             -- p_cost_type, p_item_number, p_org_code, p_operating_unit, p_ledger
+and     haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
+-- End revision for version 1.7
+and     1=1                             -- p_cost_type, p_item_number, p_org_code, p_operating_unit, p_ledger
 -- ===================================================================
 -- Check to see if BOMS or Routings or Sourcing Rules exist
 -- ===================================================================

@@ -1,6 +1,6 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2023 Enginatics GmbH                   */
+/*                       (c) 2010-2024 Enginatics GmbH                   */
 /*                              www.enginatics.com                       */
 /*                                                                       */
 /*************************************************************************/
@@ -45,9 +45,9 @@ select
  pe.bill_trans_currency_code                 currency,
  pe.bill_trans_bill_amount                   bill_amount,
  pe.bill_trans_rev_amount                    revenue_amount,
- pe.bill_hold_flag                           bill_hold_flag,
- pe.revenue_hold_flag                        revenue_hold_flag,
- pe.adjusting_revenue_flag                   adjusting_revenue_flag,
+ xxen_util.meaning( pe.bill_hold_flag,'YES_NO',0) bill_hold_flag,
+ xxen_util.meaning( pe.revenue_hold_flag,'YES_NO',0) revenue_hold_flag,
+ xxen_util.meaning( pe.adjusting_revenue_flag,'YES_NO',0) adjusting_revenue_flag,
  pe.bill_group                               bill_group,
  --
  pp.projfunc_currency_code                   proj_func_currency,
@@ -136,7 +136,7 @@ from
  pa_conversion_types_v        pct2,
  pa_conversion_types_v        pct3
 where
- :p_upload_mode != 'Create' and
+ :p_upload_mode != xxen_upload.action_meaning(xxen_upload.action_create) and
  :p_pm_product_code = :p_pm_product_code and
  1=1 and
  haouv.organization_id = pe.organization_id and

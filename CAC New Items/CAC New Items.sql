@@ -1,6 +1,6 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2023 Enginatics GmbH                   */
+/*                       (c) 2010-2024 Enginatics GmbH                   */
 /*                              www.enginatics.com                       */
 /*                                                                       */
 /*************************************************************************/
@@ -49,6 +49,7 @@ Ledger:  enter the specific ledger(s) you wish to report (optional).
 -- |  1.5    22 Nov 2023 Douglas Volz   Add BOM/Routing/Sourcing Rule columns, item master
 -- |                                    created by and std lot size and costing created by,
 -- |                                    costing lot size and defaulted flag. 
+-- |  1.6    05 Dec 2023 Douglas Volz   Added G/L and Operating Unit security restrictions. 
 -- +=============================================================================+*/
 -- Excel Examle Output: https://www.enginatics.com/example/cac-new-items/
 -- Library Link: https://www.enginatics.com/reports/cac-new-items/
@@ -269,9 +270,11 @@ and     hoi.organization_id             = msiv.organization_id
 and     hoi.organization_id             = haou.organization_id   -- this gets the organization name
 and     haou2.organization_id           = to_number(hoi.org_information3) -- this gets the operating unit id
 and     gl.ledger_id                    = to_number(hoi.org_information1) -- get the ledger_id
+-- Revision for version 1.6
 and     gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
-and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
-and 3=3                             -- p_operating_unit, p_ledger
+and     haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
+-- End revision for version 1.6
+and     3=3                             -- p_operating_unit, p_ledger
 -- ===================================================================
 -- order by ledger, operating unit, org code and item
 order by 1,2,3,4,5

@@ -1,6 +1,6 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2023 Enginatics GmbH                   */
+/*                       (c) 2010-2024 Enginatics GmbH                   */
 /*                              www.enginatics.com                       */
 /*                                                                       */
 /*************************************************************************/
@@ -85,7 +85,7 @@ hr_all_organization_units_vl haouv3,
 mtl_system_items_vl msiv,
 mtl_categories_kfv mck,
 ap_suppliers aps,
-ap_supplier_sites_all assa,
+(select assa.* from ap_supplier_sites_all assa where assa.org_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)) assa,
 mtl_manufacturers mm,
 po_asl_statuses pas,
 po_approved_supplier_list pasl1 ,
@@ -101,6 +101,7 @@ chv_bucket_patterns cbp2,
 (select psit.* from po_supplier_item_tolerance psit where '&supplier_tolerance_enable'='Y') psit
 where
 1=1 and
+pasl.owning_organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and 
 pasl.owning_organization_id=mp1.organization_id and
 pasl.owning_organization_id=haouv1.organization_id and
 pasl.using_organization_id=mp2.organization_id(+) and
@@ -130,8 +131,7 @@ ca.reference_type(+)='ASL' and
 pasl.asl_id=psic.asl_id(+) and
 pasl.using_organization_id=psic.using_organization_id(+) and
 pasl.asl_id=psit.asl_id(+) and
-pasl.using_organization_id=psit.using_organization_id(+) and
-assa.org_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
+pasl.using_organization_id=psit.using_organization_id(+)
 order by
 mp1.organization_code,
 mck.concatenated_segments,

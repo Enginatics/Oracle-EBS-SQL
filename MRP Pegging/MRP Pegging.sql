@@ -1,6 +1,6 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2023 Enginatics GmbH                   */
+/*                       (c) 2010-2024 Enginatics GmbH                   */
 /*                              www.enginatics.com                       */
 /*                                                                       */
 /*************************************************************************/
@@ -48,6 +48,9 @@ z.demand_date-z.supply_date delay,
 xxen_util.client_time(z.need_by_date) need_by_date,
 xxen_util.client_time(z.promised_date) promised_date,
 xxen_util.client_time(z.receipt_date) receipt_date,
+z.po_type,
+z.po_status,
+z.po_contract,
 z.department_code,
 z.operation_sequence,
 z.operation_code,
@@ -142,6 +145,9 @@ bcd1.exception_set_id=-1
 nvl(plla.need_by_date,prla.need_by_date) need_by_date,
 plla.promised_date,
 (select max(rt.transaction_date) from rcv_transactions rt where plla.line_location_id=rt.po_line_location_id and rt.transaction_type='RECEIVE') receipt_date,
+y.po_type,
+y.po_status,
+y.po_contract,
 y.department_code,
 y.operation_sequence,
 y.operation_code,
@@ -217,6 +223,29 @@ xxen_util.meaning(x.planning_make_buy_code,'MTL_PLANNING_MAKE_BUY',700) make_or_
 round(x.supply_quantity,4) supply_quantity,
 lpad(' ',2*(x.level__-1))||xxen_util.meaning(x.supply_type,'MRP_ORDER_TYPE',700) supply_type,
 nvl(we.wip_entity_name,mipo.po_number) supply_number,
+case when mipo.order_type in (1,8)
+then
+ (select
+  pdtav.type_name
+  from
+  po_headers_all pha,
+  po_document_types_all_vl pdtav
+  where
+  pha.po_header_id=mipo.purchase_order_id and
+  pha.type_lookup_code=pdtav.document_subtype and
+  pha.org_id=pdtav.org_id and
+  pdtav.document_type_code in ('PO','PA')
+  )
+else null
+end po_type,
+case when mipo.order_type in (1,8)
+then po_headers_sv3.get_po_status(mipo.purchase_order_id) 
+else null
+end po_status,
+case when mipo.order_type in (1,8)
+then (select pha.segment1 from po_headers_all pha,po_lines_all pla where pla.po_line_id = mipo.line_id and pha.po_header_id = pla.contract_id) 
+else null
+end po_contract,
 wdj0.scheduled_start_date demand_date,
 wdj.scheduled_completion_date,
 bd.department_code,

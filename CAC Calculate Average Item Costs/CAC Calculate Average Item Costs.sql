@@ -1,6 +1,6 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2023 Enginatics GmbH                   */
+/*                       (c) 2010-2024 Enginatics GmbH                   */
 /*                              www.enginatics.com                       */
 /*                                                                       */
 /*************************************************************************/
@@ -36,7 +36,6 @@ Ledger:  enter the specific ledger(s) you wish to report (optional).
 -- | Version Modified on Modified by Description
 -- | ======= =========== ============== =========================================
 -- | 1.0     05 Jan 2019 Douglas Volz   Initial Coding based on item_cost_history.sql
--- | 1.14    07 Dec 2022 Douglas Volz   Performance improvements.  Added Item Status parameter.
 -- | 1.15    10 Jan 2023 Douglas Volz   Fix for Average Cost calculations, UOM issue.
 -- | 1.16    21 Aug 2023 Douglas Volz   Remove tabs and restrict to only orgs you have access to,
 -- |                                    Add last payables invoice and purchase order price information.
@@ -44,6 +43,7 @@ Ledger:  enter the specific ledger(s) you wish to report (optional).
 -- | 1.18    13 Oct 2023 Andy Haack     Fix for G/L Daily Rates, outer joins
 -- | 1.19    24 Nov 2023 Douglas Volz   Fixed item number parameter for last PO information
 -- |                                    and fix Last A/P Invoice info for G/L Daily Rates
+-- | 1.20    08 Dec 2023 Douglas Volz   Added G/L and Operating Unit security restrictions.
 -- +=============================================================================+*/
 -- Excel Examle Output: https://www.enginatics.com/example/cac-calculate-average-item-costs/
 -- Library Link: https://www.enginatics.com/reports/cac-calculate-average-item-costs/

@@ -1,6 +1,6 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2023 Enginatics GmbH                   */
+/*                       (c) 2010-2024 Enginatics GmbH                   */
 /*                              www.enginatics.com                       */
 /*                                                                       */
 /*************************************************************************/
@@ -81,9 +81,9 @@ select x.*
 from
 (
 select
-case when nvl2(:p_autopopulate_upload_status,'Y','N') = 'Y' then 'Update' else null end action_,
-case when nvl2(:p_autopopulate_upload_status,'Y','N') = 'Y' then 'New' else null end status_,
-case when nvl2(:p_autopopulate_upload_status,'Y','N') = 'Y' then 'Validation pending' else null end message_,
+case when nvl2(:p_autopopulate_upload_status,'Y','N') = 'Y' then xxen_upload.action_meaning(xxen_upload.action_update) else null end action_,
+case when nvl2(:p_autopopulate_upload_status,'Y','N') = 'Y' then xxen_upload.status_meaning(xxen_upload.status_new) else null end status_,
+case when nvl2(:p_autopopulate_upload_status,'Y','N') = 'Y' then xxen_util.description('U_EXCEL_MSG_VALIDATION_PENDING','XXEN_REPORT_TRANSLATIONS',0) else null end message_,
 to_number(null)         request_id_,
 null                    row_id,
 -- Item
@@ -94,8 +94,8 @@ msiv.description item_description,
 -- cic.item_cost total_item_cost,
 xxen_util.meaning(cic.inventory_asset_flag,'SYS_YES_NO',700) inventory_asset,
 xxen_util.meaning(cic.based_on_rollup_flag,'CST_BONROLLUP_VAL',700) based_on_rollup,
-cic.lot_size,
-cic.shrinkage_rate,
+coalesce(cic.lot_size,msiv.std_lot_size,1) lot_size,
+coalesce(cic.shrinkage_rate,msiv.shrinkage_rate,0) shrinkage_rate,
 -- Item Cost Element Details
 cdcv.cost_element,
 cdcv.resource_code sub_element,

@@ -1,6 +1,6 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2023 Enginatics GmbH                   */
+/*                       (c) 2010-2024 Enginatics GmbH                   */
 /*                              www.enginatics.com                       */
 /*                                                                       */
 /*************************************************************************/
@@ -31,7 +31,9 @@ mtl_parameters mp2,
 pa_projects_all ppa,
 pa_tasks pt,
 pa_projects_all ppa2,
-pa_tasks pt2
+pa_tasks pt2,
+pa_projects_all ppa3,
+pa_tasks pt3
 where
 1=1 and
 mmt.transaction_type_id=mtt.transaction_type_id and
@@ -42,8 +44,10 @@ mmt.organization_id=mp.organization_id(+) and
 mmt.transfer_organization_id=mp2.organization_id(+) and
 mmt.project_id=ppa.project_id(+) and
 mmt.task_id=pt.task_id(+) and
-mmt.to_project_id=ppa2.project_id(+) and
-mmt.to_task_id=pt2.task_id(+)
+mmt.source_project_id=ppa2.project_id(+) and
+mmt.source_task_id=pt2.task_id(+) and
+mmt.to_project_id=ppa3.project_id(+) and
+mmt.to_task_id=pt3.task_id(+)
 group by
 &proj_group_cols
 &org_group_by

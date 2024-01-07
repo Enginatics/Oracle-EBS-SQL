@@ -1,6 +1,6 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2023 Enginatics GmbH                   */
+/*                       (c) 2010-2024 Enginatics GmbH                   */
 /*                              www.enginatics.com                       */
 /*                                                                       */
 /*************************************************************************/
@@ -18,6 +18,7 @@ fdfv.application_table_name table_name,
 fdfcv.descriptive_flex_context_code context_code,
 fdfcv.descriptive_flex_context_name context_name,
 fdfcv.description context_description,
+xxen_util.meaning(decode(fdfcv.enabled_flag,'Y','Y'),'YES_NO',0) context_enabled,
 fdfcuv.column_seq_num seq_num,
 fdfcuv.form_left_prompt window_prompt,
 fdfcuv.application_column_name table_column,
@@ -29,6 +30,7 @@ xxen_util.meaning(decode(fdfcuv.security_enabled_flag,'Y','Y'),'YES_NO',0) secur
 xxen_util.meaning(ffvs.validation_type,'SEG_VAL_TYPES',0) validation_type,
 ffvt.application_table_name validation_table,
 ffvt.additional_where_clause where_clause,
+&lov_query
 xxen_util.user_name(fdfcuv.created_by) created_by,
 xxen_util.client_time(fdfcuv.creation_date) creation_date,
 xxen_util.user_name(fdfcuv.last_updated_by) last_updated_by,

@@ -1,6 +1,6 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2023 Enginatics GmbH                   */
+/*                       (c) 2010-2024 Enginatics GmbH                   */
 /*                              www.enginatics.com                       */
 /*                                                                       */
 /*************************************************************************/
@@ -45,6 +45,7 @@ Ledger:  enter the specific ledger(s) you wish to report (optional).
 -- |  1.3     13 Nov 2023 Douglas Volz   Modified for organization access, removed tabs and
 -- |                                     added subledger accounting ccids.
 -- |  1.4     16 Nov 2023 Douglas Volz   Remove org_acct_periods, use period name from xla_ae_headers.
+-- |  1.5     05 Dec 2023 Douglas Volz   Added G/L and Operating Unit security restrictions.
 -- +=============================================================================+*/
 -- Excel Examle Output: https://www.enginatics.com/example/cac-recost-cost-of-goods-sold/
 -- Library Link: https://www.enginatics.com/reports/cac-recost-cost-of-goods-sold/
@@ -250,8 +251,9 @@ from    -- Revision for version 1.3
          -- Revision for version 1.3
          -- Limit to COGS entries or to material transactions which replicate COGS entries
          and    mta.accounting_line_type   in (35, 2) -- Cost of Goods Sold, Account
-         and    mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
          -- End revision for version 1.3
+         -- Revision for version 1.5
+         and    mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
         ) cogs,
         -- End revision for version 1.2
         gl_code_combinations gcc,
@@ -310,9 +312,11 @@ and     xdl.source_distribution_type     = 'MTL_TRANSACTION_ACCOUNTS'
 and     xdl.source_distribution_id_num_1 = cogs.inv_sub_ledger_id
 -- End revision for version 1.3
 -- ===================================================================
+-- Revision for version 1.5
 and     gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
-and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
-and 1=1                              -- p_ledger, p_operating_unit, p_cost_type
+and     haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
+-- End revision for version 1.5
+and     1=1                              -- p_ledger, p_operating_unit, p_cost_type
 group by
         gl.name, -- Ledger
         haou2.name, -- Operating Unit

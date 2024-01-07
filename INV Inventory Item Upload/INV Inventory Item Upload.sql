@@ -1,6 +1,6 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2023 Enginatics GmbH                   */
+/*                       (c) 2010-2024 Enginatics GmbH                   */
 /*                              www.enginatics.com                       */
 /*                                                                       */
 /*************************************************************************/
@@ -412,7 +412,7 @@ from
 mtl_parameters mp,
 mtl_system_items_vl msiv
 where
-:p_upload_mode != 'Create' and
+:p_upload_mode != xxen_upload.action_meaning(xxen_upload.action_create) and
 nvl(:p_coa_id,-1)=nvl(:p_coa_id,-1) and
 nvl(:p_num_import_workers,1) = nvl(:p_num_import_workers,1) and
 nvl(:p_purge_after_days,-1) = nvl(:p_purge_after_days,-1) and

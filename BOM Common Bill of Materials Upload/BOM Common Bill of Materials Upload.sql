@@ -1,6 +1,6 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2023 Enginatics GmbH                   */
+/*                       (c) 2010-2024 Enginatics GmbH                   */
 /*                              www.enginatics.com                       */
 /*                                                                       */
 /*************************************************************************/
@@ -214,13 +214,13 @@ from
 (
 select /*+ push_pred(bom_subst) */
  --process--
- case when nvl2(:p_autopopulate_upload_status,'Y','N') = 'Y' then 'Update' else null end action_,
- case when nvl2(:p_autopopulate_upload_status,'Y','N') = 'Y' then 'New' else null end status_,
- case when nvl2(:p_autopopulate_upload_status,'Y','N') = 'Y' then 'Validation pending' else null end message_,
+ case when nvl2(:p_autopopulate_upload_status,'Y','N') = 'Y' then xxen_upload.action_meaning(xxen_upload.action_update) else null end action_,
+ case when nvl2(:p_autopopulate_upload_status,'Y','N') = 'Y' then xxen_upload.status_meaning(xxen_upload.status_new) else null end status_,
+ case when nvl2(:p_autopopulate_upload_status,'Y','N') = 'Y' then xxen_util.description('U_EXCEL_MSG_VALIDATION_PENDING', 'XXEN_REPORT_TRANSLATIONS', 0) else null end message_,
  null request_id_,
  to_char(null) row_id,
  :p_enable_attrs_update enable_attrs_update,
- case when nvl2(:p_autopopulate_upload_status,'Y','N') = 'Y' then 'Yes' else null end create_common_bom,
+ case when nvl2(:p_autopopulate_upload_status,'Y','N') = 'Y' then xxen_util.meaning('Y','YES_NO',0) else null end create_common_bom,
  boms.source_organization,
  boms.assembly_item,
  boms.assembly_description,
