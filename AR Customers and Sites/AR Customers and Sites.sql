@@ -36,7 +36,6 @@ x.profile_class,
 x.site_profile_class,
 x.credit_classification,
 x.site_credit_classification,
---
 x.location,
 x.site_name,
 x.site_number,
@@ -53,13 +52,16 @@ x.province,
 x.postal_code,
 x.addressee,
 x.identifying_address_flag,
---
 x.site_use,
 x.primary_flag,
 x.ship_partial,
 x.taxpayer_id,
 x.party_tax_registration_number,
+(select ftv.territory_short_name from fnd_territories_vl ftv where zptp.country_code=ftv.territory_code) tax_profile_default_country,
+zptp.rep_registration_number tax_profile_default_reg_number,
 x.site_tax_registration_number,
+(select ftv.territory_short_name from fnd_territories_vl ftv where zptp2.country_code=ftv.territory_code) site_tax_prof_default_country,
+zptp2.rep_registration_number site_tax_prof_default_reg_num,
 avtab1.tax_rate,
 avtab2.tax_rate site_tax_rate,
 &column_trx_count
@@ -98,7 +100,6 @@ x.credit_class_code,
 x.site_credit_class_code,
 x.receivables_account,
 x.receivables_account_desc,
---
 acv.title_meaning contact_title,
 acv.first_name contact_first_name,
 acv.last_name contact_last_name,
@@ -111,7 +112,7 @@ hpc.primary_phone_extension contact_phone_extension,
 xxen_util.meaning(hpc.primary_phone_line_type,'PHONE_LINE_TYPE',222) contact_phone_line_type,
 hpc.email_address contact_email,
 acv.mail_stop contact_mail_stop,
---
+&dff_columns2
 x.created_by,
 x.creation_date,
 x.last_updated_by,
@@ -229,6 +230,7 @@ hcp1.credit_classification credit_class_code,
 hcp2.credit_classification site_credit_class_code,
 case when hcsua.gl_id_rec is not null then fnd_flex_xml_publisher_apis.process_kff_combination_1('recacct', 'SQLGL', 'GL#', gsob.chart_of_accounts_id, null, hcsua.gl_id_rec, 'ALL', 'Y', 'VALUE') else null end receivables_account,
 case when hcsua.gl_id_rec is not null then fnd_flex_xml_publisher_apis.process_kff_combination_1('recacct', 'SQLGL', 'GL#', gsob.chart_of_accounts_id, null, hcsua.gl_id_rec, 'ALL', 'Y', 'DESCRIPTION') else null end receivables_account_desc,
+&dff_columns
 xxen_util.user_name(hp.created_by) created_by,
 xxen_util.client_time(hp.creation_date) creation_date,
 xxen_util.user_name(hp.last_updated_by) last_updated_by,
@@ -253,10 +255,12 @@ nvl(hcsua.org_id,hcasa.org_id) org_id,
 nvl2(hcp2.cust_account_profile_id,'site',nvl2(hcp1.cust_account_profile_id,'account',null)) profile_level,
 hcp1.cust_account_profile_id,
 hcp1.cust_account_profile_id site_cust_account_profile_id,
+hp.party_id,
 hca.cust_account_id,
 hcsua.site_use_id,
 hou.set_of_books_id,
 hcasa.cust_acct_site_id,
+hps.party_site_id,
 hca.primary_salesrep_id primary_salesrep_id,
 hcsua.primary_salesrep_id site_primary_salesrep_id,
 nvl(hcp1.standard_terms,hca.payment_term_id) payment_term_id,
@@ -333,7 +337,9 @@ jtf_rs_salesreps jrs2,
 ra_terms_tl rtt1,
 ra_terms_tl rtt2,
 ar_contacts_v acv,
-hz_parties hpc
+hz_parties hpc,
+zx_party_tax_profile zptp,
+zx_party_tax_profile zptp2
 where
 x.payment_term_id=rtt1.term_id(+) and
 x.site_payment_term_id=rtt2.term_id(+) and
@@ -349,10 +355,14 @@ x.org_id=jrs1.org_id(+) and
 x.org_id=jrs2.org_id(+) and
 jrs1.resource_id=jrret1.resource_id(+) and
 jrs2.resource_id=jrret2.resource_id(+) and
-nvl2(:show_contacts,x.cust_account_id,null) = acv.customer_id (+) and
-nvl(x.cust_acct_site_id,-1) = nvl(acv.address_id(+),-1) and
-acv.status (+) = 'A' and
-acv.rel_party_id = hpc.party_id (+)
+nvl2(:show_contacts,x.cust_account_id,null)=acv.customer_id(+) and
+nvl(x.cust_acct_site_id,-1)=nvl(acv.address_id(+),-1) and
+acv.status(+)='A' and
+acv.rel_party_id=hpc.party_id(+) and
+x.party_id=zptp.party_id(+) and
+zptp.party_type_code(+)='THIRD_PARTY' and
+x.party_site_id=zptp2.party_id(+) and
+zptp2.party_type_code(+)='THIRD_PARTY_SITE'
 order by
 x.party_name,
 x.party_number,

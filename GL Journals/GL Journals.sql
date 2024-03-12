@@ -10,7 +10,8 @@
 -- Library Link: https://www.enginatics.com/reports/gl-journals/
 -- Run Report: https://demo.enginatics.com/
 
-select
+with gcck as (select &materialoze_hint gcck.* from gl_code_combinations_kfv gcck where 2=2)
+select &leading_hint
 --ledger
 gl.name ledger,
 xxen_util.meaning(gl.ledger_category_code,'GL_ASF_LEDGER_CATEGORY',101) ledger_category,
@@ -69,31 +70,18 @@ nvl(gjl.entered_dr,0)-nvl(gjl.entered_cr,0) entered_amount,
 gjl.accounted_dr,
 gjl.accounted_cr,
 nvl(gjl.accounted_dr,0)-nvl(gjl.accounted_cr,0) accounted_amount,
-case when (select gsu.reconciliation_upg_flag from gl_system_usages gsu)='Y'
-then (select gjlr.jgzz_recon_ref from gl_je_lines_recon gjlr where gjl.je_header_id=gjlr.je_header_id and gjl.je_line_num=gjlr.je_line_num)
-else nvl((select gjlr.jgzz_recon_ref from gl_je_lines_recon gjlr where gjl.je_header_id=gjlr.je_header_id and gjl.je_line_num=gjlr.je_line_num),gjl.jgzz_recon_ref_11i)
-end line_reconcilation_reference,
-case when (select gsu.reconciliation_upg_flag from gl_system_usages gsu)='Y'
-then (select gjlr.jgzz_recon_date from gl_je_lines_recon gjlr where gjl.je_header_id=gjlr.je_header_id and gjl.je_line_num=gjlr.je_line_num)
-else nvl((select gjlr.jgzz_recon_date from gl_je_lines_recon gjlr where gjl.je_header_id=gjlr.je_header_id and gjl.je_line_num=gjlr.je_line_num),gjl.jgzz_recon_date_11i)
-end line_reconcilation_date,
+case when (select gsu.reconciliation_upg_flag from gl_system_usages gsu)='Y' then gjlr.jgzz_recon_ref else nvl(gjlr.jgzz_recon_ref,gjl.jgzz_recon_ref_11i) end line_reconcilation_reference,
+case when (select gsu.reconciliation_upg_flag from gl_system_usages gsu)='Y' then gjlr.jgzz_recon_date else nvl(gjlr.jgzz_recon_date,gjl.jgzz_recon_date_11i) end line_reconcilation_date,
 case
 when gjl.tax_type_code='I'
-then nvl((select zrb.tax_rate_code from zx_rates_b zrb where gjl.tax_code_id=zrb.source_id)
-        ,(select zrb.tax_rate_code from zx_rates_b zrb where gjl.tax_code_id=zrb.tax_rate_id))
+then coalesce((select zrb.tax_rate_code from zx_rates_b zrb where gjl.tax_code_id=zrb.source_id),
+              (select zrb.tax_rate_code from zx_rates_b zrb where gjl.tax_code_id=zrb.tax_rate_id))
 when gjl.tax_type_code in ('O','T')
 then (select zrb.tax_rate_code from zx_rates_b zrb where gjl.tax_code_id=zrb.tax_rate_id)
-else null
 end line_tax_rate_code,
 -- accounts
 gcck.concatenated_segments,
-fnd_flex_xml_publisher_apis.process_kff_combination_1('account', 'SQLGL', 'GL#', gjb.chart_of_accounts_id, null, gjl.code_combination_id, 'ALL', 'Y', 'DESCRIPTION') concatenated_segments_desc,
-fnd_flex_xml_publisher_apis.process_kff_combination_1('bal_seg', 'SQLGL', 'GL#', gjb.chart_of_accounts_id, null, gjl.code_combination_id, 'GL_BALANCING', 'Y', 'VALUE') balancing_segment,
-fnd_flex_xml_publisher_apis.process_kff_combination_1('bal_seg', 'SQLGL', 'GL#', gjb.chart_of_accounts_id, null, gjl.code_combination_id, 'GL_BALANCING', 'Y', 'DESCRIPTION') balancing_segment_desc,
-fnd_flex_xml_publisher_apis.process_kff_combination_1('account', 'SQLGL', 'GL#', gjb.chart_of_accounts_id, null, gjl.code_combination_id, 'GL_ACCOUNT', 'Y', 'VALUE') account_segment,
-fnd_flex_xml_publisher_apis.process_kff_combination_1('account', 'SQLGL', 'GL#', gjb.chart_of_accounts_id, null, gjl.code_combination_id, 'GL_ACCOUNT', 'Y', 'DESCRIPTION') account_segment_desc,
-fnd_flex_xml_publisher_apis.process_kff_combination_1('account', 'SQLGL', 'GL#', gjb.chart_of_accounts_id, null, gjl.code_combination_id, 'FA_COST_CTR', 'Y', 'VALUE') cost_center_segment,
-fnd_flex_xml_publisher_apis.process_kff_combination_1('account', 'SQLGL', 'GL#', gjb.chart_of_accounts_id, null, gjl.code_combination_id, 'FA_COST_CTR', 'Y', 'DESCRIPTION') cost_center_segment_desc,
+&segment_columns
 -- attachment details
 fad1.count batch_attachment_count,
 fad2.count journal_attachment_count,
@@ -121,7 +109,8 @@ gl_periods gp,
 gl_je_batches gjb,
 gl_je_headers gjh,
 gl_je_lines gjl,
-gl_code_combinations_kfv gcck,
+gl_je_lines_recon gjlr,
+gcck,
 (select distinct fad.pk1_value,&fad_document_id count(*) over (partition by fad.pk1_value) count from fnd_attached_documents fad where fad.entity_name='GL_JE_BATCHES') fad1,
 (select distinct fad.pk2_value,&fad_document_id count(*) over (partition by fad.pk2_value) count from fnd_attached_documents fad where fad.entity_name='GL_JE_HEADERS') fad2,
 fnd_documents fd1,
@@ -142,10 +131,13 @@ where
 1=1 and
 gl.period_set_name=gp.period_set_name and
 gp.period_name=gjh.period_name and
+gp.period_name=gjl.period_name(+) and
 gl.ledger_id=gjh.ledger_id and
 gjb.je_batch_id=gjh.je_batch_id and
 gjh.je_header_id=gjl.je_header_id(+) and
-(gjl.code_combination_id is null or gl_security_pkg.validate_access(null,gjl.code_combination_id)='TRUE') and
+&gl_flex_value_security
+gjl.je_header_id=gjlr.je_header_id(+) and
+gjl.je_line_num=gjlr.je_line_num(+) and
 gjl.code_combination_id=gcck.code_combination_id(+) and
 to_char(gjb.je_batch_id)=fad1.pk1_value(+) and
 to_char(gjh.je_header_id)=fad2.pk2_value(+) and

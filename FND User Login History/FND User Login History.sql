@@ -70,8 +70,8 @@ from
 select
 &clientip1
 ixs.first_connect,
-nvl(flrf.start_time,nvl(flr.start_time,fl.start_time)) start_time,
-nvl(flrf.end_time,nvl(flr.end_time,fl.end_time)) end_time,
+coalesce(flrf.start_time,flr.start_time,fl.start_time) start_time,
+coalesce(flrf.end_time,flr.end_time,fl.end_time) end_time,
 xxen_util.user_name(fl.user_id) user_name,
 ffv.user_form_name form,
 fffv.user_function_name icx_function,

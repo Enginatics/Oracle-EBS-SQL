@@ -14,7 +14,7 @@ The upload supports
 - the generation of new tags.
   to generate a new tag leave the tag number blank. This will be automatically generated when the tag is created
 
-For clients on R12.2 ro later
+For clients on R12.2 or later
 - the upload will support the voiding/unvoiding of existing tags as well
    
 

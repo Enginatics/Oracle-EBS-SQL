@@ -13,7 +13,7 @@
 select
 xrc.column_name,
 xrc.number_format,
-flv.description language,
+xrct.language_desc language,
 xrct.translation,
 xrct.language language_code,
 xxen_util.user_name(xrc.created_by) column_created_by,
@@ -26,12 +26,10 @@ xxen_util.user_name(xrct.last_updated_by) translation_last_updated_by,
 xxen_util.client_time(xrct.last_update_date) translation_last_update_date
 from
 xxen_report_columns xrc,
-xxen_report_columns_tl xrct,
-fnd_languages_vl flv
+(select flv.description language_desc, xrct.* from xxen_report_columns_tl xrct, fnd_languages_vl flv where 2=2 and xrct.language=flv.language_code) xrct
 where
 1=1 and
-xrc.column_id=xrct.column_id(+) and
-xrct.language=flv.language_code(+)
+xrc.column_id=xrct.column_id(+)
 order by
 xrc.column_name,
-flv.description
+xrct.language_desc

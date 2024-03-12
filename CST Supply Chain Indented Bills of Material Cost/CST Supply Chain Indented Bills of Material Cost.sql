@@ -418,8 +418,10 @@ from
  cst_sc_bom_structures       csbs
 where
  cssr.rollup_id = :p_rollup_id and
+ csbs.rollup_id = cssr.rollup_id and
  csbs.component_item_id = cssr.inventory_item_id and
  csbs.component_organization_id = cssr.organization_id and
+ cssr.assignment_set_id = :p_assignment_set_id  and 
  msiv.inventory_item_id = cssr.inventory_item_id and
  msiv.organization_id   = cssr.organization_id   and
  hoi.organization_id    = cssr.organization_id   and

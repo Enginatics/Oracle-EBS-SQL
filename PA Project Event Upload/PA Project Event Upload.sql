@@ -7,7 +7,7 @@
 -- Report Name: PA Project Event Upload
 -- Description: PA Project Event Upload
 ===================
-This upload can be used to create new Project Billing and Revenue Events against the Projects owned by the Operating Units accessible to the current responsibility.
+This upload can be used to create new Project Billing and Revenue Events against the Projects belonging to the Operating Units accessible to the current responsibility.
 
 If the Operating Unit parameter is specified, then the upload will be restricted to Projects within the specified Operating Unit only.
 
@@ -41,6 +41,7 @@ select
  pet.event_type_classification               event_type_classification,
  pe.completion_date                          event_date,
  pe.event_num                                event_number,
+ haouv2.name                                 organization,
  pe.description                              description,
  pe.bill_trans_currency_code                 currency,
  pe.bill_trans_bill_amount                   bill_amount,
@@ -92,7 +93,6 @@ select
  pe.reference9                               reference9,
  pe.reference10                              reference10,
  --
- 'PA_EVENTS_DESC_FLEX'                       desc_flexfield_name,
  pe.attribute_category                       attribute_category,
  pe.attribute1                               attribute1,
  pe.attribute2                               attribute2,
@@ -105,6 +105,8 @@ select
  pe.attribute9                               attribute9,
  pe.attribute10                              attribute10,
  --
+ pe.event_id                                 event_id,
+--
  null                                        delivery_event,
  (select
    ppe.name
@@ -123,12 +125,14 @@ select
    ppe.object_type      = 'PA_ACTIONS'
  )                                           action,
  --
- pe.event_id                                 event_id
+ 'PA_EVENTS_DESC_FLEX' desc_flexfield_name
 from
+ pa_events                    pe,
  pa_projects                  pp,
  pa_tasks                     pt,
- hr_all_organization_units_vl haouv,
- pa_events                    pe,
+ hr_all_organization_units_vl haouv, -- ou
+ pa_all_organizations         pao,
+ hr_all_organization_units_vl haouv2, -- organization
  pa_event_types               pet,
  pa_agreements                paa,
  pa_customers_v               pcv,
@@ -138,22 +142,29 @@ from
 where
  :p_upload_mode != xxen_upload.action_meaning(xxen_upload.action_create) and
  :p_pm_product_code = :p_pm_product_code and
+ nvl(:p_operating_unit,'Y') = nvl(:p_operating_unit,'Y') and
+ nvl(:p_validate_dff,'Y') = nvl(:p_validate_dff,'Y') and
  1=1 and
- haouv.organization_id = pe.organization_id and
- pe.project_id         = pp.project_id and
- pe.task_id            = pt.task_id (+) and
- pe.event_type         = pet.event_type and
- pe.agreement_id       = paa.agreement_id (+) and
- paa.customer_id       = pcv.customer_id (+) and
- pe.projfunc_rate_type = pct1.conversion_type(+) and
- pe.project_rate_type  = pct2.conversion_type(+) and
- pe.funding_rate_type  = pct3.conversion_type(+)
+ haouv.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11) and
+ pe.project_id          = pp.project_id and
+ pp.org_id              = haouv.organization_id and 
+ pe.task_id             = pt.task_id (+) and
+ pe.organization_id     = pao.organization_id and 
+ pao.org_id             = haouv.organization_id and
+ pao.pa_org_use_type    = 'EXPENDITURES' and 
+ pao.organization_id    = haouv2.organization_id and
+ pe.event_type          = pet.event_type and
+ pe.agreement_id        = paa.agreement_id (+) and
+ paa.customer_id        = pcv.customer_id (+) and
+ pe.projfunc_rate_type  = pct1.conversion_type(+) and
+ pe.project_rate_type   = pct2.conversion_type(+) and
+ pe.funding_rate_type   = pct3.conversion_type(+)
  &not_use_first_block
  &report_table_select &report_table_name &report_table_where_clause &success_records
  &processed_run
 ) x
 order by
- x.operating_unit,
+ x.organization,
  x.project_number,
  x.task_number,
  x.event_date,

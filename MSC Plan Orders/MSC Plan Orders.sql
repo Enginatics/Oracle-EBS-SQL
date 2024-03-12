@@ -16,6 +16,7 @@
  mov.plan,
  mov.organization,
  mov.subinventory,
+ mov.demand_class,
  mov.project_number,
  mov.task_number,
  &lp_custom_attributes
@@ -59,6 +60,8 @@
  mov.firm_quantity,
  --
  mov.source_organization,
+ mov.source_vendor_name,
+ mov.source_vendor_site_code,
  mov.supplier,
  mov.supplier_site,
  --
@@ -79,6 +82,7 @@
  --
  mov.intransit_lt,
  mov.planning_time_fence_date,
+ mov.release_time_fence_days,
  mov.fixed_lt,
  mov.variable_lt,
  mov.pre_processing_lt,
@@ -271,7 +275,9 @@ from
    nvl(:p_plan_name,mov.compile_designator)        plan,
    mov.organization_code                           organization,
    mov.subinventory_code                           subinventory,
+   mov.demand_class                                demand_class,
    mov.planner_code                                planner,
+   mpl.employee_id                                 planner_emp_id,
    mov.buyer_name                                  buyer_name,
    mov.project_number                              project_number,
    mov.task_number                                 task_number,
@@ -298,6 +304,7 @@ from
    xxen_util.meaning(decode(mov.source_table,'MSC_SUPPLIES','SUPPLY','DEMAND'),'MSC_QUESTION_TYPE',3)
                                                    supply_demand,
    mov.order_type_text                             order_type,
+   mov.order_type                                  order_type_num,
    mov.order_number                                order_number,
    --
    case when mov.firm_date is not null
@@ -385,6 +392,8 @@ from
    mov.firm_quantity                               firm_quantity,
    --
    mov.source_organization_code                    source_organization,
+   mov.source_vendor_name                          source_vendor_name,
+   mov.source_vendor_site_code                     source_vendor_site_code,
    mov.supplier_name                               supplier,
    mov.supplier_site_code                          supplier_site,
    --
@@ -408,6 +417,7 @@ from
    --
    mov.intransit_lead_time                         intransit_lt,
    trunc(msi.planning_time_fence_date)             planning_time_fence_date,
+   msi.release_time_fence_days                     release_time_fence_days,
    msi.fixed_lead_time                             fixed_lt,
    msi.variable_lead_time                          variable_lt,
    msi.preprocessing_lead_time                     pre_processing_lt,
@@ -455,7 +465,8 @@ from
    msc_orders_v&a2m_dblink          mov,
    msc_apps_instances&a2m_dblink    mai,
    msc_plans&a2m_dblink             mp,
-   msc_system_items&a2m_dblink      msi
+   msc_system_items&a2m_dblink      msi,
+   msc_planners&a2m_dblink          mpl
   where
       mov.sr_instance_id    = mai.instance_id
   and mov.plan_id           = mp.plan_id
@@ -464,6 +475,8 @@ from
   and mov.plan_id           = msi.plan_id
   and mov.organization_id   = msi.organization_id
   and mov.inventory_item_id = msi.inventory_item_id
+  and mov.organization_id   = mpl.organization_id (+)
+  and mov.planner_code      = mpl.planner_code (+)
   and (   (mov.order_type NOT IN ( 18, 6, 7, 30, 31))
         or (mov.order_type IN (18, 6, 7, 30) and mov.quantity_rate <> 0)
         or (mov.order_type = 30 and (mov.fill_kill_flag = 1 or mov.so_line_split =1))

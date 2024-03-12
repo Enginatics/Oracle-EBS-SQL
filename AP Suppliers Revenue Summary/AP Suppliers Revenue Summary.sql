@@ -29,7 +29,7 @@ where
 :as_of_date between gp.start_date and gp.end_date
 )
 select distinct
-&columns
+&lp_columns
 aps.vendor_name supplier_name,
 xxen_util.meaning(aps.vendor_type_lookup_code,'VENDOR TYPE',201) type,
 aps.segment1 supplier_number,

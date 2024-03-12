@@ -121,7 +121,7 @@ gash.p3text,
 gash.p3
 from
 &request_id_table
-(select cast(gash.sample_time as date) sample_time_, gash.* from gv$active_session_history gash) gash,
+(select cast(gash.sample_time as date) sample_time_, max(gash.temp_space_allocated/1000000) over (partition by gash.inst_id,gash.session_id,gash.session_serial#) max_temp_space_allocated, gash.* from gv$active_session_history gash) gash,
 (
 select distinct
 gash.inst_id,

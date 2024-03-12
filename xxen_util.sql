@@ -214,7 +214,7 @@ function time(p_seconds in number) return varchar2 deterministic;
 /*  returns the apps module type e.g. concurrent                                               */
 /*  from a db session's module name e.g. e:per:cp:pay/pyuslv                                   */
 /***********************************************************************************************/
-function module_type(p_module in varchar2, p_action in varchar2) return varchar2 result_cache;
+function module_type(p_module in varchar2, p_action in varchar2 default null) return varchar2 result_cache;
 
 /***********************************************************************************************/
 /*  returns the display application module name e.g. payroll worker process                    */
@@ -473,7 +473,8 @@ p_table_name in varchar2,
 p_table_alias in varchar2 default null,
 p_descr_flex_context_code in varchar2 default null,
 p_column_name_prefix in varchar2 default null,
-p_prefix in varchar2 default null
+p_prefix in varchar2 default null,
+p_hide_column_name in varchar2 default null
 ) return clob;
 
 /***********************************************************************************************/
@@ -484,6 +485,43 @@ p_conc_request_id in number,
 x_status out varchar2,
 x_message out varchar2
 ) return varchar2;
+
+/***********************************************************************************************/
+/*  returns the functional currency code for the ledger                                        */
+/***********************************************************************************************/
+function functional_currency_code(
+p_ledger_name in varchar2
+) return varchar2;
+
+/***********************************************************************************************/
+/*  returns the latest open period for the ledger                                              */
+/***********************************************************************************************/
+function latest_open_period(
+p_ledger_name in varchar2
+) return varchar2;
+
+/***********************************************************************************************/
+/*  returns the segment name for the ledger and segment value from property                       */
+/***********************************************************************************************/
+function segment_name(
+p_ledger_name in varchar2,
+p_segment_prop_value in varchar2,
+p_segment_num in number
+) return varchar2;
+
+/***********************************************************************************************/
+/*  returns the ledger id for the ledger                                                       */
+/***********************************************************************************************/
+function get_ledger_id(
+p_ledger_name in varchar2
+) return number result_cache;
+
+/***********************************************************************************************/
+/*  returns the chart of accounts id for the ledger                                            */
+/***********************************************************************************************/
+function get_coa_id(
+p_ledger_name in varchar2
+) return number result_cache;
 
 end xxen_util;
 /
@@ -1479,7 +1517,7 @@ begin
 end time;
 
 
-function module_type(p_module in varchar2, p_action in varchar2) return varchar2 result_cache is
+function module_type(p_module in varchar2, p_action in varchar2 default null) return varchar2 result_cache is
 l_module_type varchar2(260);
 begin
   l_module_type:=
@@ -2861,7 +2899,8 @@ p_table_name in varchar2,
 p_table_alias in varchar2 default null,
 p_descr_flex_context_code in varchar2 default null,
 p_column_name_prefix in varchar2 default null,
-p_prefix in varchar2 default null
+p_prefix in varchar2 default null,
+p_hide_column_name in varchar2 default null
 ) return clob is
 l_text clob;
 begin
@@ -2873,7 +2912,7 @@ begin
   ||x.table_alias||lower(x.application_column_name)||
   case when x.validation_type in ('D','I','X','Y','F') then ')' end
   ||case when x.descriptive_flex_context_code<>'Global Data Elements' then ')' end||' '
-  )||xxen_xdo.column_name(p_column_name_prefix||x.form_left_prompt)||','||chr(10) sql_text
+  )||case when nvl(p_hide_column_name,'N')='N' then xxen_xdo.column_name(p_column_name_prefix||x.form_left_prompt) end||','||chr(10) sql_text
   from
   (
   select distinct
@@ -2941,6 +2980,121 @@ begin
     return 'Error';
   end if;
 end wait_for_request;
+
+
+function functional_currency_code(
+p_ledger_name in varchar2
+) return varchar2 is
+l_functional_currency_code varchar2(15);
+begin
+  if fnd_release.major_version=11 then
+    return null;
+  else
+    execute immediate 'select gl.currency_code from gl_ledgers gl where gl.name=:p_ledger_name' into l_functional_currency_code using p_ledger_name;
+    return l_functional_currency_code;
+  end if;
+end functional_currency_code;
+
+
+function latest_open_period(
+p_ledger_name in varchar2
+) return varchar2 is
+l_latest_open_period varchar2(15);
+begin
+  if fnd_release.major_version=11 then
+    return null;
+  else
+    execute immediate '
+	select
+    x.period_name
+    from
+    (
+    select
+    gps.period_name,
+    row_number() over (partition by 1 order by period_year desc, period_num desc) row_
+    from
+    gl_period_statuses gps
+    where
+    gps.ledger_id=(select gl.ledger_id from gl_ledgers gl where gl.name=:p_ledger_name) and
+    gps.application_id=101 and
+    gps.closing_status=''O''
+    ) x
+    where
+    x.row_=1' into l_latest_open_period using p_ledger_name;
+    return l_latest_open_period;
+  end if;
+end latest_open_period;
+
+
+function segment_name(
+p_ledger_name in varchar2,
+p_segment_prop_value in varchar2,
+p_segment_num in number
+) return varchar2 is
+l_segment_name varchar2(30);
+begin
+  if fnd_release.major_version=11 then
+    return null;
+  else
+    execute immediate '
+    select * from (
+    select
+    fifsv.form_left_prompt||'' (''||fifsv.segment_num||'')'' segment_name
+    from
+    fnd_id_flex_segments_vl fifsv
+    where
+    fifsv.application_id=101 and
+    fifsv.id_flex_code=''GL#'' and
+    fifsv.form_left_prompt||'' (''||fifsv.segment_num||'')''=:p_segment_prop_value and
+    fifsv.id_flex_num in (select gl.chart_of_accounts_id from gl_ledgers gl where gl.name=:p_ledger_name and gl.ledger_category_code=''PRIMARY'' and gl.object_type_code=''L'' and gl.complete_flag=''Y'')
+    union
+    select
+    fifsv.form_left_prompt||'' (''||fifsv.segment_num||'')'' segment_name
+    from
+    fnd_id_flex_segments_vl fifsv
+    where
+    fifsv.application_id=101 and
+    fifsv.id_flex_code=''GL#'' and
+    fifsv.segment_num=:p_segment_num and
+    fifsv.id_flex_num in (select gl.chart_of_accounts_id from gl_ledgers gl where gl.name=:p_ledger_name and gl.ledger_category_code=''PRIMARY'' and gl.object_type_code=''L'' and gl.complete_flag=''Y'')
+    )
+    where
+    rownum=1' into l_segment_name using p_segment_prop_value, p_ledger_name, p_segment_num, p_ledger_name;
+
+    return l_segment_name;
+  end if;
+end segment_name;
+
+
+function get_ledger_id(
+p_ledger_name in varchar2
+) return number result_cache is
+l_ledger_id number;
+begin
+  if fnd_release.major_version=11 then
+    return null;
+  else
+    execute immediate 'select gl.ledger_id from gl_ledgers gl where gl.name=:p_ledger_name' into l_ledger_id using p_ledger_name;
+    return l_ledger_id;
+  end if;
+
+end get_ledger_id;
+
+
+function get_coa_id(
+p_ledger_name in varchar2
+) return number result_cache is
+l_coa_id number;
+begin
+  if fnd_release.major_version=11 then
+    return null;
+  else
+    execute immediate 'select gl.chart_of_accounts_id from gl_ledgers gl where gl.name=:p_ledger_name' into l_coa_id using p_ledger_name;
+    return l_coa_id;
+  end if;
+
+end get_coa_id;
+
 
 end xxen_util;
 /

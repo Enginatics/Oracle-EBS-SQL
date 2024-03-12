@@ -44,6 +44,7 @@ ciqt.subinventory_code subinventory,
 sec.description subinventory_desc,
 xxen_util.meaning(sec.asset_inventory,'SYS_YES_NO',700) asset_subinventory,
 decode(ciqt.subinventory_code,null,'Intransit','On-hand') type,
+ccg.cost_group,
 round(sum(nvl(ciqt.rollback_qty,0)),:p_qty_precision) qty,
 --
 round(nvl(cict.item_cost,0)*:p_exchange_rate, :p_ext_precision) item_unit_cost,
@@ -68,7 +69,8 @@ mtl_parameters mp,
 org_organization_definitions ood,
 hr_all_organization_units haou,
 gl_sets_of_books gsob,
-cst_item_costs cic
+cst_item_costs cic,
+cst_cost_groups ccg
 where
 1=1 and
 ciqt.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
@@ -86,7 +88,8 @@ sec.secondary_inventory_name(+) = ciqt.subinventory_code and
 mc.category_id = ciqt.category_id and
 cic.organization_id = ciqt.organization_id and
 cic.inventory_item_id = ciqt.inventory_item_id and
-cic.cost_type_id = cict.cost_type_id
+cic.cost_type_id = cict.cost_type_id and
+ccg.cost_group_id (+) = nvl(ciqt.cost_group_id,cict.cost_group_id)
 group by
 gsob.name,
 haou.name,
@@ -104,6 +107,7 @@ decode(msi.inventory_planning_code,6, xxen_util.meaning(nvl(msi.mrp_planning_cod
 decode(:p_item_revision, 1, ciqt.revision, null),
 ciqt.subinventory_code,
 decode(ciqt.subinventory_code,null,'Intransit','On-hand'),
+ccg.cost_group,
 sec.description,
 sec.asset_inventory,
 round(nvl(cict.item_cost,0) * :p_exchange_rate, :p_ext_precision)

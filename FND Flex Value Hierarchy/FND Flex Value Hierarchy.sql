@@ -24,9 +24,9 @@ select
 lpad(' ',2*(level-1))||level level_,
 lpad(' ',2*(level-1))||ffvnh.parent_flex_value value,
 ffvv.description,
+ffvnh.child_flex_value_low||nvl2(ffvnh.child_flex_value_low,'-',null)||ffvnh.child_flex_value_high child_range,
 xxen_util.meaning(ffvnh.range_attribute,'RANGE_ATTRIBUTE',0) range_attribute,
-ffvnh.child_flex_value_low,
-ffvnh.child_flex_value_high,
+ffhv.hierarchy_name rollup_group,
 xxen_util.meaning(connect_by_isleaf,'SYS_YES_NO',700) is_leaf,
 connect_by_root ffvnh.parent_flex_value root_value,
 substr(sys_connect_by_path(ffvnh.parent_flex_value,'-> '),4) path,
@@ -73,11 +73,13 @@ where
 ffv2.summary_flag='N' and
 ffv2.flex_value_set_id=(select ffvs.flex_value_set_id from fnd_flex_value_sets ffvs where ffvs.flex_value_set_name=:flex_value_set_name)
 ) ffvnh,
-fnd_flex_values_vl ffvv
+fnd_flex_values_vl ffvv,
+fnd_flex_hierarchies_vl ffhv
 where
 3=3 and
 ffvnh.parent_flex_value=ffvv.flex_value and
-ffvnh.flex_value_set_id=ffvv.flex_value_set_id
+ffvnh.flex_value_set_id=ffvv.flex_value_set_id and
+ffvv.structured_hierarchy_level=ffhv.hierarchy_id(+)
 connect by nocycle
 ffvnh.parent_flex_value between prior ffvnh.child_flex_value_low and prior ffvnh.child_flex_value_high and
 decode(nvl(prior ffvnh.range_attribute,'P'),'P','Y','N')=ffvv.summary_flag

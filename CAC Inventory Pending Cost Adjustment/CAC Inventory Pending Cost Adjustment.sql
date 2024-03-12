@@ -30,7 +30,7 @@ Operating Unit:  enter the specific operating unit(s) you wish to report (option
 Ledger:  enter the specific ledger(s) you wish to report (optional).
 
 /* +=============================================================================+
--- |  Copyright 2008-2023 Douglas Volz Consulting, Inc
+-- |  Copyright 2008-2024 Douglas Volz Consulting, Inc
 -- |  All rights reserved
 -- |  Permission to use this code is granted provided the original author is
 -- |  acknowledged.  No warranties, express or otherwise is included in this permission.
@@ -42,11 +42,11 @@ Ledger:  enter the specific ledger(s) you wish to report (optional).
 -- |  Version Modified on  Modified  by   Description
 -- |  ======= =========== ============== =========================================
 -- |      1.0 21 Nov 2010 Douglas Volz   Created initial Report for prior client
--- |     1.11 05 Jun 2022 Douglas Volz   Fix for category accounts (valuation accounts) and
--- |                                     added subinventory description.
 -- |     1.12 23 Sep 2023 Douglas Volz   Add parameter to not include zero item cost differences,
 -- |                                     removed tabs and added org access controls.
--- |     1.13 22 Oct 2023 Andy Haack     Fix for G/L Daily Currency Rates,
+-- |     1.13 22 Oct 2023 Andy Haack     Fix for G/L Daily Currency Rates
+-- |     1.14 07 Feb 2024 Douglas Volz   Add item master and costing lot sizes, use default controls, 
+-- |                                     based on rollup and shrinkage rate columns
 -- +=============================================================================+*/
 
 
@@ -90,9 +90,7 @@ with inv_organizations as
          and    hoi.organization_id             = haou.organization_id   -- this gets the organization name
          and    haou2.organization_id           = to_number(hoi.org_information3) -- this gets the operating unit id
          and    gl.ledger_id                    = to_number(hoi.org_information1) -- get the ledger_id
-         and    gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
-and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
-and 1=1                             -- p_operating_unit, p_ledger
+         and    1=1                             -- p_operating_unit, p_ledger
          and    mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
          and    9=9                             -- p_org_code
          group by
@@ -302,8 +300,16 @@ select  mp.ledger                                                        Ledger,
         -- Revision for version 1.7
         misv.inventory_item_status_code_tl                               Item_Status,
         ml1.meaning                                                      Make_Buy_Code,
+        -- Revision for version 1.14
+        msiv.std_lot_size                                                Std_Lot_Size,
         -- Revision for version 1.5
 &category_columns
+        -- Revision for version 1.14
+        ml2.meaning                                                      Use_Default_Controls,
+        ml3.meaning                                                      Based_on_Rollup,
+        cic1.lot_size                                                    Costing_Lot_Size,
+        cic1.shrinkage_rate                                              Shrinkage_Rate,
+        -- End revision for version 1.14
         -- Revision for version 1.11
         mp.currency_code                                                 Currency_Code,
 -- ==========================================================
@@ -358,7 +364,7 @@ select  mp.ledger                                                        Ledger,
 -- ========================================================
         nvl(gdr1.conversion_rate,1)                                            New_FX_Rate,
         nvl(gdr2.conversion_rate,1)                                            Old_FX_Rate,
-        nvl(gdr1.conversion_rate,1) - nvl(gdr2.conversion_rate,1)                     Exchange_Rate_Difference,
+        nvl(gdr1.conversion_rate,1) - nvl(gdr2.conversion_rate,1)              Exchange_Rate_Difference,
 -- ===========================================================
 -- Select To Currency onhand and intransit quantities and values
 -- ===========================================================
@@ -437,6 +443,10 @@ from    mtl_system_items_vl msiv,
         -- Revision for version 1.3
         -- org_acct_periods oap,
         mfg_lookups ml1,
+        -- Revision for version 1.14
+        mfg_lookups ml2, -- defaulted_flag, SYS_YES_NO
+        mfg_lookups ml3, -- based on rollup, CST_BONROLLUP_VAL
+        -- End revision for version 1.14
         fnd_common_lookups fcl,
         -- Revision for version 1.11
         gl_code_combinations gcc,
@@ -445,11 +455,17 @@ from    mtl_system_items_vl msiv,
         -- ===========================================================================
         -- Select New Currency Rates based on the new concurrency conversion date
         -- ===========================================================================
-        (select gdr.* from gl_daily_rates gdr, gl_daily_conversion_types gdct where gdr.conversion_date=:conversion_date1 and gdr.to_currency=:to_currency and gdct.user_conversion_type=:user_conversion_type1 and gdct.conversion_type=gdr.conversion_type) gdr1, -- NEW Currency Rates
-        -- ===========================================================================
-        -- Select Old Currency Rates based on the old concurrency conversion date
-        -- ===========================================================================
-        (select gdr.* from gl_daily_rates gdr, gl_daily_conversion_types gdct where gdr.conversion_date=:conversion_date2 and gdr.to_currency=:to_currency and gdct.user_conversion_type=:user_conversion_type2 and gdct.conversion_type=gdr.conversion_type) gdr2,  -- OLD Currency Rates
+ -- End revision for version 1.11
+ -- ===========================================================================
+ -- Select New Currency Rates based on the new concurrency conversion date
+ -- ===========================================================================
+        -- Revision for version 1.13
+        (select gdr.* from gl_daily_rates gdr, gl_daily_conversion_types gdct where gdr.conversion_date=:p_conversion_date1 and gdr.to_currency=:p_to_currency and gdct.user_conversion_type=:p_user_conversion_type1 and gdct.conversion_type=gdr.conversion_type) gdr1, -- NEW Currency Rates
+ -- ===========================================================================
+ -- Select Old Currency Rates based on the old concurrency conversion date
+ -- ===========================================================================
+        -- Revision for version 1.13
+        (select gdr.* from gl_daily_rates gdr, gl_daily_conversion_types gdct where gdr.conversion_date=:conversion_date2 and gdr.to_currency=:p_to_currency and gdct.user_conversion_type=:p_user_conversion_type2 and gdct.conversion_type=gdr.conversion_type) gdr2,  -- OLD Currency Rates
         -- ===========================================================================
         -- GET THE ITEM COSTS FOR COST TYPE 1
         -- ===========================================================================
@@ -460,7 +476,13 @@ from    mtl_system_items_vl msiv,
                 nvl(cic1.resource_cost,0)                resource_cost,
                 nvl(cic1.outside_processing_cost,0)      outside_processing_cost,
                 nvl(cic1.overhead_cost,0)                overhead_cost,
-                nvl(cic1.item_cost,0)                    item_cost
+                nvl(cic1.item_cost,0)                    item_cost,
+                -- Revision for version 1.14
+                cic1.based_on_rollup_flag                based_on_rollup_flag,
+                cic1.defaulted_flag                      defaulted_flag,
+                cic1.lot_size                            lot_size,
+                cic1.shrinkage_rate                      shrinkage_rate
+                -- End revision for version 1.14
          from   cst_item_costs cic1,
                 cst_cost_types cct1,
                  -- Revision for version 1.11
@@ -488,7 +510,13 @@ from    mtl_system_items_vl msiv,
                 nvl(cic_frozen.resource_cost,0)           resource_cost,
                 nvl(cic_frozen.outside_processing_cost,0) outside_processing_cost,
                 nvl(cic_frozen.overhead_cost,0)           overhead_cost,
-                nvl(cic_frozen.item_cost,0)               item_cost
+                nvl(cic_frozen.item_cost,0)               item_cost,
+                -- Revision for version 1.14
+                cic_frozen.based_on_rollup_flag           based_on_rollup_flag,
+                cic_frozen.defaulted_flag                 defaulted_flag,
+                cic_frozen.lot_size                       lot_size,
+                cic_frozen.shrinkage_rate                 shrinkage_rate
+                -- End revision for version 1.14
          from   cst_item_costs cic_frozen,
                 cst_cost_types cct1,
                  -- Revision for version 1.11
@@ -561,27 +589,4 @@ from    mtl_system_items_vl msiv,
                 nvl(cic_frozen.material_cost,0)                 material_cost,
                 nvl(cic_frozen.material_overhead_cost,0)        material_overhead_cost,
                 nvl(cic_frozen.resource_cost,0)                 resource_cost,
-                nvl(cic_frozen.outside_processing_cost,0)       outside_processing_cost,
-                nvl(cic_frozen.overhead_cost,0)                 overhead_cost,
-                nvl(cic_frozen.item_cost,0)                     item_cost
-         from   cst_item_costs cic_frozen,
-                cst_cost_types cct2,
-                 -- Revision for version 1.11
-                mtl_system_items_vl msiv,
-                inv_organizations mp
-                -- End revision for version 1.11
-         -- Revision for version 1.8
-         where  cic_frozen.cost_type_id     = mp.primary_cost_method  -- get the frozen costs for the standard cost update
-         -- Revision for version 1.11
-         and    msiv.organization_id        = cic_frozen.organization_id
-         and    msiv.inventory_item_id      = cic_frozen.inventory_item_id
-         -- End revision for version 1.11
-         -- =============================================================
-         -- If p_cost_type2 = frozen cost_type_id then we have all the 
-         -- costs and don't need this union all statement
-         -- Changed the default cost type from 1 (Frozen) to the primary_
-         -- cost_method so you can use this report for any Costing Method.
-         -- =============================================================
-         and    cct2.cost_type_id           <> mp.primary_cost_method  -- frozen cost type
-         and    cic_frozen.organization_id  = mp.organization_id
-         and    10=10                    
+                nvl(cic_frozen.outside_processing_cost,0)     

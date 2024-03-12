@@ -118,6 +118,7 @@ gsa.inst_id=gsbc.inst_id(+) and
 gsa.sql_id=gsbc.sql_id(+)
 order by
 &literals_order_by
+&order_by_last_active_time
 &order_by desc nulls last,
 gsa.sql_id
 &bind_order

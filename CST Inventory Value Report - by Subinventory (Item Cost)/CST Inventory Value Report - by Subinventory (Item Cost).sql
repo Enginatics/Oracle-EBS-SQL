@@ -28,6 +28,7 @@ ciqt.subinventory_code subinventory,
 sec.description subinventory_desc,
 xxen_util.meaning(sec.asset_inventory,'SYS_YES_NO',700) asset_subinventory,
 decode(ciqt.subinventory_code,null,'Intransit','On-hand') type,
+ccg.cost_group,
 round(sum(nvl(ciqt.rollback_qty,0)),:p_qty_precision) qty,
 --
 round(  sum(nvl(ciqt.rollback_qty,0) * decode(nvl(sec.asset_inventory,1),1,nvl(cict.item_cost,0),0) * :p_exchange_rate)
@@ -50,7 +51,8 @@ mtl_secondary_inventories sec,
 cst_inv_qty_temp ciqt,
 cst_inv_cost_temp cict,
 mtl_parameters mp,
-cst_item_costs cic
+cst_item_costs cic,
+cst_cost_groups ccg
 where
 1=1 and
 msi.organization_id = ciqt.organization_id and
@@ -64,7 +66,8 @@ sec.secondary_inventory_name(+) = ciqt.subinventory_code and
 mc.category_id = ciqt.category_id and
 cic.organization_id = ciqt.organization_id and
 cic.inventory_item_id = ciqt.inventory_item_id and
-cic.cost_type_id = cict.cost_type_id
+cic.cost_type_id = cict.cost_type_id and
+ccg.cost_group_id (+) = nvl(ciqt.cost_group_id,cict.cost_group_id)
 group by
 xxen_util.meaning(msi.item_type,'ITEM_TYPE',3),
 msi.concatenated_segments,
@@ -80,6 +83,7 @@ ciqt.subinventory_code,
 decode(ciqt.subinventory_code,null,'Intransit','On-hand'),
 sec.description,
 sec.asset_inventory,
+ccg.cost_group,
 round(nvl(cict.item_cost,0) * :p_exchange_rate, :p_ext_precision)
 having
 2=2 and

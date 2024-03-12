@@ -7,9 +7,8 @@
 -- Report Name: CAC Calculate ICP PII Item Costs
 -- Description: Report to identify the intercompany "To Org" profit in inventory (also known as PII or ICP) for each inventory organization and item.  Report gets the PII item costs across organizations, by joining the sourcing rule information from the first "hop" to the sourcing rule information to the second "hop".  In addition, if an item has a source organization in the item master, but the sourcing rule does not exist, this item relationship will still be reported.  This report also assumes that the first hop may have profit in inventory from another source organization and will not include any profit in inventory from the source org for the "To Org" profit in inventory calculations.  Likewise for the "To Org", any this level material overheads, resources, outside processing or overhead costs are ignored for the profit in inventory calculations.  In addition, inactive items and disabled organizations are ignored.
 
-Note:  there are two hidden parameters: 
+Note:  there is one hidden parameter: 
 1) Numeric Sign for PII which allows you to set the sign of the profit in inventory amounts.  You can specify positive or negative values based on how you enter PII amounts.  Defaulted as positive (+1).
-2) Include Transfers to Same OU which allows you to include or exclude transfers within the same Operating Unit (OU).  Defaulted to include these internal transfers.
 
 Displayed Parameters:
 Assignment Set:  the set of sourcing rules to use with calculating the PII item costs (mandatory).
@@ -19,6 +18,7 @@ PII Sub-Element:  the sub-element or resource for profit in inventory, such as P
 Currency Conversion Date:  the exchange rate conversion date that was used to set the standard costs (mandatory).
 Currency Conversion Type:  the exchange rate conversion type that was used to set the standard costs (mandatory).
 Period Name:  the accounting period you wish to report for; this value does not change any PII or item costs, it is merely a reference value for reporting purposes (mandatory).
+Include Transfers to Same OU:  allows you to include or exclude transfers within the same Operating Unit (OU).  Defaulted to include these internal transfers.
 From Organization: the shipping from inventory organization you wish to report (optional).
 To Organization: the shipping to inventory organization you wish to report (optional).
 Category Set 1:  the first item category set to report, typically the Cost or Product Line Category Set.
@@ -41,6 +41,7 @@ Item Number:  enter a specific item number you wish to report (optional).
 -- |                                    for PII Amounts (p_sign_pii), to determine 
 -- |                                    if PII is entered as a positive or negative.
 -- | 1.36     28 Nov 2023 Andy Haack     Remove tabs, add org access controls, fix for G/L Daily Rates, outer joins
+-- | 1.37     28 Jan 2024 Douglas Volz   Make Include Transfers to Same OU a displayed parameter. 
 +=============================================================================+*/
 -- Excel Examle Output: https://www.enginatics.com/example/cac-calculate-icp-pii-item-costs/
 -- Library Link: https://www.enginatics.com/reports/cac-calculate-icp-pii-item-costs/
@@ -73,7 +74,7 @@ select   :p_period_name Period_Name,
         -- item_sourcing.thirdorg_assignment_set To_Org_Assignment_Set,
         item_sourcing.firstorg_sourcing_rule Sourcing_Rule,
         -- Revision for version 1.36
-        -- gdr.from_currency Src_Curr_Code,
+        -- gdr.from_currency Src_Currency_Code,
         item_sourcing.firstorg_src_currency Src_Curr_Code,
         -- Revision for version 1.30, 1.32
         -- Use the Planning Make/Buy Code, not the MFG Org Code
@@ -257,7 +258,7 @@ select   :p_period_name Period_Name,
                                 2, nvl(to_org_costs.net_cost,0),
                                 nvl(to_org_costs.net_cost,0)
                       )
-                -- End revision for version 1.30, 1.32
+               -- End revision for version 1.30, 1.32
                )
          -- Revision for version 1.35, invert the sign for the Converted Source Item Cost
          * decode(sign(src_org_costs.pii_cost),1,-1,-1,1,-1)
@@ -314,9 +315,9 @@ from    gl_ledgers gl,
                 ThirdOrg.planning_make_buy_code thirdorg_make_buy_code
          -- Revision for version 1.35
          -- from   mtl_categories_v mc,
-         --         mtl_item_categories mic,
-         --         mtl_category_sets_b mcs,
-         --         mtl_category_sets_tl mcs_tl,
+         --        mtl_item_categories mic,
+         --        mtl_category_sets_b mcs,
+         --        mtl_category_sets_tl mcs_tl,
          from
                 -- ==========================================================
                 -- Get the First Org Information

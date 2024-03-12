@@ -47,20 +47,8 @@ null assign_from_master,
 null copy_from_template,
 null copy_from_item,
 -- Category Assignment
-:p_category_set_name category_set,
-(select
- min(mck.concatenated_segments)
- from
- mtl_category_sets mcs,
- mtl_item_categories mic,
- mtl_categories_kfv mck
- where
- mcs.category_set_name = :p_category_set_name and
- mic.category_set_id = mcs.category_set_id and
- mic.organization_id = msiv.organization_id and
- mic.inventory_item_id = msiv.inventory_item_id and
- mck.category_id = mic.category_id
-) item_category,
+mcs.category_set_name category_set,
+mck.concatenated_segments item_category,
 -- Main
 msiv.description description,
 msiv.long_description long_description,
@@ -407,23 +395,33 @@ msiv.attribute30,
 --
 msiv.organization_id,
 msiv.inventory_item_id,
-decode(mp.organization_id,mp.master_organization_id,'Y',null) master_flag
+decode(mp.organization_id,mp.master_organization_id,'Y',null) master_flag,
+0 row_num
 from
 mtl_parameters mp,
-mtl_system_items_vl msiv
+mtl_system_items_vl msiv,
+mtl_category_sets mcs,
+mtl_item_categories mic,
+mtl_categories_kfv mck
 where
 :p_upload_mode != xxen_upload.action_meaning(xxen_upload.action_create) and
 nvl(:p_coa_id,-1)=nvl(:p_coa_id,-1) and
 nvl(:p_num_import_workers,1) = nvl(:p_num_import_workers,1) and
 nvl(:p_purge_after_days,-1) = nvl(:p_purge_after_days,-1) and
 1=1 and
+mp.organization_id in (select oav.organization_id from org_access_view oav where oav.responsibility_id = fnd_global.resp_id and oav.resp_application_id = fnd_global.resp_appl_id) and
 msiv.organization_id = mp.organization_id and
-mp.organization_id in (select oav.organization_id from org_access_view oav where oav.responsibility_id = fnd_global.resp_id and oav.resp_application_id = fnd_global.resp_appl_id)
+mic.category_set_id = mcs.category_set_id and
+mic.organization_id = msiv.organization_id and
+mic.inventory_item_id = msiv.inventory_item_id and
+mck.category_id = mic.category_id
 &not_use_first_block
 &report_table_select &report_table_name &report_table_where_clause &success_records
 &processed_run
 ) x
 order by
+x.row_num,
 x.item,
 decode(x.master_flag,'Y',1,2),
-x.organization_code
+x.organization_code,
+x.category_set

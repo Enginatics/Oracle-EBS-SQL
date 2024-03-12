@@ -30,7 +30,10 @@ rs.name salesperson,
 xxen_util.user_name(rcta.created_by) created_by,
 xxen_util.client_time(rcta.creation_date) creation_date,
 xxen_util.user_name(rcta.last_updated_by) last_updated_by,
-xxen_util.client_time(rcta.last_update_date) last_update_date
+xxen_util.client_time(rcta.last_update_date) last_update_date,
+apsa.payment_schedule_id,
+hcp.cust_account_profile_id,
+hcp1.cust_account_profile_id hcp1_cust_account_profile_id
 from
 hr_all_organization_units_vl haouv,
 ar_payment_schedules_all apsa,

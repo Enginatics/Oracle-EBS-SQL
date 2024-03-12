@@ -11,6 +11,7 @@ Application: Receivables
 Source: Open Items Revaluation Report (XML)
 Short Name: ARXINREV_XML
 DB package: AR_ARXINREV_XMLP_PKG
+
 -- Excel Examle Output: https://www.enginatics.com/example/ar-open-items-revaluation/
 -- Library Link: https://www.enginatics.com/reports/ar-open-items-revaluation/
 -- Run Report: https://demo.enginatics.com/
@@ -56,11 +57,14 @@ from
   ,  ps.c_cm1formula
   --
   , (nvl(ps.c_pay_amount,0) - nvl(ps.c_receiptsformula,0)  + nvl(ps.c_adjustformula,0) - nvl(ps.c_cmformula,0) + nvl(ps.c_cm1formula,0)) c_open_orig
-  , (nvl(ps.c_pay_amount,0) - nvl(ps.c_receiptsformula,0)  + nvl(ps.c_adjustformula,0) - nvl(ps.c_cmformula,0) + nvl(ps.c_cm1formula,0)) * ps.c_exchange_rate calc_open_func
+  , case when ps.p_minimum_accountable_unit is null
+    then round(((nvl(ps.c_pay_amount,0) - nvl(ps.c_receiptsformula,0)  + nvl(ps.c_adjustformula,0) - nvl(ps.c_cmformula,0) + nvl(ps.c_cm1formula,0)) * ps.c_exchange_rate),ps.p_precision)
+    else round(((nvl(ps.c_pay_amount,0) - nvl(ps.c_receiptsformula,0)  + nvl(ps.c_adjustformula,0) - nvl(ps.c_cmformula,0) + nvl(ps.c_cm1formula,0)) * ps.c_exchange_rate) / ps.p_minimum_accountable_unit) * ps.p_minimum_accountable_unit
+    end calc_open_func
   --
-  , case when ps.c_eop_rate is not null
-    then (nvl(ps.c_pay_amount,0) - nvl(ps.c_receiptsformula,0)  + nvl(ps.c_adjustformula,0) - nvl(ps.c_cmformula,0) + nvl(ps.c_cm1formula,0)) * ps.c_eop_rate
-    else null
+  , case when ps.p_minimum_accountable_unit is null
+    then round(((nvl(ps.c_pay_amount,0) - nvl(ps.c_receiptsformula,0)  + nvl(ps.c_adjustformula,0) - nvl(ps.c_cmformula,0) + nvl(ps.c_cm1formula,0)) * ps.c_eop_rate),ps.p_precision)
+    else round(((nvl(ps.c_pay_amount,0) - nvl(ps.c_receiptsformula,0)  + nvl(ps.c_adjustformula,0) - nvl(ps.c_cmformula,0) + nvl(ps.c_cm1formula,0)) * ps.c_eop_rate) / ps.p_minimum_accountable_unit) * ps.p_minimum_accountable_unit
     end calc_eop_amount
   --
 --  , case
@@ -70,12 +74,15 @@ from
 --    then (nvl(ps.c_pay_amount,0) - nvl(ps.c_receiptsformula,0)  + nvl(ps.c_adjustformula,0) - nvl(ps.c_cmformula,0) + nvl(ps.c_cm1formula,0)) * ps.c_eop_rate
 --    else (nvl(ps.c_pay_amount,0) - nvl(ps.c_receiptsformula,0)  + nvl(ps.c_adjustformula,0) - nvl(ps.c_cmformula,0) + nvl(ps.c_cm1formula,0)) * ps.c_exchange_rate
 --    end calc_open_rev
-  , case
-    when ps.c_eop_rate is not null
-    then   ((nvl(ps.c_pay_amount,0) - nvl(ps.c_receiptsformula,0)  + nvl(ps.c_adjustformula,0) - nvl(ps.c_cmformula,0) + nvl(ps.c_cm1formula,0)) * ps.c_eop_rate)
-         - ((nvl(ps.c_pay_amount,0) - nvl(ps.c_receiptsformula,0)  + nvl(ps.c_adjustformula,0) - nvl(ps.c_cmformula,0) + nvl(ps.c_cm1formula,0)) * ps.c_exchange_rate)
-    else null
-    end calc_open_rev  
+  , case when ps.c_eop_rate is null
+    then
+      to_number(null)
+    else
+      case when ps.p_minimum_accountable_unit is null
+      then round((((nvl(ps.c_pay_amount,0) - nvl(ps.c_receiptsformula,0)  + nvl(ps.c_adjustformula,0) - nvl(ps.c_cmformula,0) + nvl(ps.c_cm1formula,0)) * ps.c_eop_rate) - ((nvl(ps.c_pay_amount,0) - nvl(ps.c_receiptsformula,0)  + nvl(ps.c_adjustformula,0) - nvl(ps.c_cmformula,0) + nvl(ps.c_cm1formula,0)) * ps.c_exchange_rate)),ps.p_precision)
+      else round((((nvl(ps.c_pay_amount,0) - nvl(ps.c_receiptsformula,0)  + nvl(ps.c_adjustformula,0) - nvl(ps.c_cmformula,0) + nvl(ps.c_cm1formula,0)) * ps.c_eop_rate) - ((nvl(ps.c_pay_amount,0) - nvl(ps.c_receiptsformula,0)  + nvl(ps.c_adjustformula,0) - nvl(ps.c_cmformula,0) + nvl(ps.c_cm1formula,0)) * ps.c_exchange_rate)) / ps.p_minimum_accountable_unit) * ps.p_minimum_accountable_unit
+      end
+    end calc_open_rev
   from
    (select
        dist.code_combination_id c_ccid
@@ -100,6 +107,8 @@ from
     ,  nvl(previous_customer_trx_id,0) c_previous_cust_trx_id
     ,  length(ltrim(rtrim(nvl(to_char(doc_sequence_value),trx.trx_number)))) c_trx_length
     ,  sob.name c_ledger
+    ,  fc.precision p_precision
+    ,  fc.minimum_accountable_unit p_minimum_accountable_unit
     ,  haouv.name c_operating_unit
     ,  fnd_flex_xml_publisher_apis.process_kff_combination_1('c_desc_all', 'SQLGL', 'GL#', cc.chart_of_accounts_id, NULL, cc.code_combination_id, 'ALL', 'Y', 'DESCRIPTION') c_desc_all
     --
@@ -204,6 +213,7 @@ from
     , hz_cust_site_uses      site
     , gl_code_combinations   cc
     , gl_sets_of_books       sob
+    , fnd_currencies         fc
     , hr_all_organization_units_vl haouv
     , ra_customer_trx        trx
     , ar_xla_ctlgd_lines_v   dist
@@ -232,8 +242,10 @@ from
     and dist.account_set_flag      = 'N'
     and trx.complete_flag          = 'Y'
     and trx.set_of_books_id        = sob.set_of_books_id
+    and sob.currency_code          = fc.currency_code
     and trx.org_id                 = haouv.organization_id
     and typ.cust_trx_type_id       = pay.cust_trx_type_id
+    and typ.org_id = pay.org_id
     and dist.code_combination_id   = cc.code_combination_id
     and dist.set_of_books_id       = sob.set_of_books_id
     and ar_arxinrev_xmlp_pkg.c_daily_rate_lookup_error_p

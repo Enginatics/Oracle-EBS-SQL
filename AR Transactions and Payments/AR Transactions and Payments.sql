@@ -143,15 +143,15 @@ nvl(xxen_util.meaning(acrha.status,'RECEIPT_CREATION_STATUS',222),decode(apsa.st
 apsa.status,
 (
 select
-max(ara.apply_date)
+max(araa.apply_date)
 from
-ar_receivable_applications_all ara
+ar_receivable_applications_all araa
 where
-apsa.status = 'OP' and
-ara.applied_customer_trx_id = apsa.customer_trx_id and
-ara.applied_payment_schedule_id = apsa.payment_schedule_id and
-ara.cash_receipt_id is not null and
-ara.reversal_gl_date is null
+apsa.status='OP' and
+apsa.customer_trx_id=araa.applied_customer_trx_id and
+apsa.payment_schedule_id=araa.applied_payment_schedule_id and
+araa.cash_receipt_id is not null and
+araa.reversal_gl_date is null
 ) last_date_cash_applied,
 decode(apsa.status,'OP',to_date(null),apsa.actual_date_closed) actual_date_closed,
 apsa.gl_date payment_sched_gl_date,

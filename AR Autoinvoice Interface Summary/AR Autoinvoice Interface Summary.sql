@@ -14,7 +14,7 @@ select
 haouv.name operating_unit,
 count(*) count,
 count(distinct decode(rila.interface_line_context,'ORDER ENTRY',rila.interface_line_attribute1)) order_count,
-&columns
+&lp_columns
 sum(rila.amount) amount,
 rila.currency_code,
 riea.message_text,

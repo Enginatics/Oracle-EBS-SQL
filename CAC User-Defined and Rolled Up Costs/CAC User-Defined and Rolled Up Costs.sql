@@ -43,6 +43,7 @@ Ledger:  enter the specific ledger(s) you wish to report (optional).
 -- |                                     material costs.
 -- |  1.6     20 Nov 2023 Douglas Volz   Fix for Manual Other Costs and Rolled Up Other Costs columns.
 -- |  1.7     05 Dec 2023 Douglas Volz   Added G/L and Operating Unit security restrictions.
+-- |  1.8     07 Jan 2024 Douglas Volz   Add onhand quantities, to help find valuation issues.  Remove tabs.
 -- +=============================================================================+*/
 -- Excel Examle Output: https://www.enginatics.com/example/cac-user-defined-and-rolled-up-costs/
 -- Library Link: https://www.enginatics.com/reports/cac-user-defined-and-rolled-up-costs/
@@ -203,6 +204,10 @@ select  nvl(gl.short_name, gl.name) Ledger,
              -- and    cicd.cost_element_id    = 1),0) Rolled_Up_Other_Costs,
             ),0) Rolled_Up_Other_Costs,
         -- End revision for version 1.6
+        -- Revision for version 1.8
+        onhand.quantity Onhand_Quantity,
+        -- End revision for version 1.8
+        cic.creation_date Cost_Creation_Date,
         msiv.creation_date Item_Creation_Date
         -- End revision for version 1.2
 from    mtl_parameters mp,
@@ -213,6 +218,20 @@ from    mtl_parameters mp,
         -- End revision for version 1.4
         cst_item_costs cic,
         cst_cost_types cct,
+        -- Revision for version 1.8
+        (select moqd.organization_id,
+                moqd.inventory_item_id,
+                sum(moqd.transaction_quantity) quantity
+         from   mtl_onhand_quantities_detail moqd,
+                mtl_parameters mp
+         where  moqd.is_consigned              = 2 -- No
+         and    mp.organization_id             = moqd.organization_id
+         and    3=3                            -- p_org_code
+         group by
+                moqd.organization_id,
+                moqd.inventory_item_id
+        ) onhand,
+        -- End revision for version 1.8
         mfg_lookups ml1, -- planning make buy code
         -- Revision for version 1.4
         mfg_lookups ml2, -- based on rollup, CST_BONROLLUP_VAL
@@ -238,6 +257,10 @@ and     msiv.inventory_item_status_code <> 'Inactive'
 and     msiv.primary_uom_code           = muomv.uom_code
 and     msiv.inventory_item_status_code = misv.inventory_item_status_code
 -- End revision for version 1.4
+-- Revision for version 1.8
+and     onhand.organization_id (+)      = cic.organization_id
+and     onhand.inventory_item_id (+)    = cic.inventory_item_id
+-- End revision for version 1.8
 -- Avoid master inventory organizations
 and     mp.organization_id             <> mp.master_organization_id -- the item master org usually does not have costs
 -- ===================================================================
@@ -268,7 +291,8 @@ and     mp.organization_id in (select oav.organization_id from org_access_view o
 and     gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
 and     haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
 -- End revision for version 1.7
-and     1=1                             -- p_cost_type, p_item_number, p_org_code, p_operating_unit, p_ledger
+and     1=1                             -- p_cost_type, p_item_number, p_operating_unit, p_ledger
+and     3=3                             -- p_org_code
 -- ===================================================================
 -- Check to see if BOMS or Routings or Sourcing Rules exist
 -- ===================================================================

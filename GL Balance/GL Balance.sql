@@ -256,7 +256,7 @@ from
 gl_code_combinations_kfv gcck
 where
 4=4 and
-gl_security_pkg.validate_access(null,gcck.code_combination_id)='TRUE'
+&gl_flex_value_security
 ) gcck,
 (
 select

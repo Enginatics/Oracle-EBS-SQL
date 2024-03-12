@@ -21,7 +21,8 @@ aerha.description purpose,
 case when aerha.source in ('Both Pay','CREDIT CARD') then aps.vendor_name end card_provider,
 trunc(aerha.week_end_date) expense_report_date,
 aerha.total expense_amount,
-aerha.payment_currency_code currency,
+aerha.default_currency_code currency,
+gcck.concatenated_segments gl_account,
 nvl(aerha.report_submitted_date,aerha.creation_date) report_submitted_date,
 initcap(aerha.receipts_status) original_receipt_status,
 aerha.receipts_received_date,
@@ -38,13 +39,25 @@ ap_web_expense_form.get_num_violation_lines(aerha.report_header_id) num_violatio
 aerha.report_filing_number,
 xxen_util.meaning(nvl2(aia.cancelled_date,'CANCELLED',aerha.expense_status_code),'EXPENSE REPORT STATUS',200) expense_status,
 decode(aerha.workflow_approved_flag,'S','saved','I','implicit save','R','manager rejected','T','returned to preparer','M','manager approved','P','payables approved','A','automatically approved','W','withdrawn','Y','manager and payables approved','submitted') workflow_approved_status,
-xxen_util.meaning(case when aerha.workflow_approved_flag in ('Y','A','M') then 'Y' end,'YES_NO',0) mgmt_reviewed_flag,
-xxen_util.meaning(case when aerha.audit_code='AUTO_APPROVE' or aerha.workflow_approved_flag='A' then 'Y' end,'YES_NO',0) auto_approved_flag,
-xxen_util.meaning(case when aerha.workflow_approved_flag in ('Y','A','P') or aerha.audit_code='AUTO_APPROVE' then 'Y' end,'YES_NO',0) ap_reviewed_flag,
-xxen_util.meaning(decode(aia.payment_status_flag,'Y','Y'),'YES_NO',0) ap_status_paid_flag,
-xxen_util.meaning(nvl2(aia.invoice_num,'Y',null),'YES_NO',0) ap_status_invoice_created_flag,
-xxen_util.meaning(decode(decode(aia.payment_status_flag,'P','Y','N'),'Y','Y'),'YES_NO',0) ap_status_partially_paid_flag,
+xxen_util.meaning(case when aerha.workflow_approved_flag in ('Y','A','M') then 'Y' end,'YES_NO',0) mgmt_reviewed,
+xxen_util.meaning(case when aerha.audit_code='AUTO_APPROVE' or aerha.workflow_approved_flag='A' then 'Y' end,'YES_NO',0) auto_approved,
+(select ppx.full_name from per_people_x ppx where aerha.expense_current_approver_id=ppx.person_id) current_approver,
 xxen_util.meaning(nvl2(aerha.holding_report_header_id,'Y',null),'YES_NO',0) hold_flag,
+xxen_util.meaning(case when aerha.workflow_approved_flag in ('Y','A','P') or aerha.audit_code='AUTO_APPROVE' then 'Y' end,'YES_NO',0) ap_reviewed,
+xxen_util.meaning(nvl2(aia.invoice_num,'Y',null),'YES_NO',0) ap_invoice_created,
+xxen_util.meaning(aia.payment_status_flag,'INVOICE PAYMENT STATUS',200) payment_status,
+(
+select
+max(aca.check_date)
+from
+ap_invoice_payments_all aipa,
+ap_checks_all aca
+where
+aia.invoice_id=aipa.invoice_id and
+aipa.check_id=aca.check_id and
+aca.void_date is null and
+aca.stopped_date is null
+) payment_date,
 &lines_columns
 &per_diem_columns
 &proj_tasks_columns
@@ -54,6 +67,7 @@ gl_ledgers gl,
 hr_operating_units hou,
 ap_expense_report_headers_all aerha,
 per_people_x ppx,
+gl_code_combinations_kfv gcck,
 ap_aud_queues aaq,
 ap_suppliers aps,
 ap_invoices_all aia,
@@ -66,6 +80,7 @@ where
 aerha.set_of_books_id=gl.ledger_id and
 hou.organization_id=aerha.org_id and
 aerha.employee_id=ppx.person_id(+) and
+aerha.employee_ccid=gcck.code_combination_id(+) and
 aerha.vendor_id=aps.vendor_id(+) and
 aerha.vouchno=aia.invoice_id(+) and
 aerha.report_header_id=aaq.expense_report_id(+) and

@@ -15,7 +15,7 @@ Set the parameter to null to review all shipping transations regardless of deliv
 -- Library Link: https://www.enginatics.com/reports/wsh-shipping-delivery-transactions/
 -- Run Report: https://demo.enginatics.com/
 
-select /*+ push_pred(wfc) */
+select /*+ push_pred(wfc) push_pred(shipped_lots) push_pred(picked_lots) */
  haou2.name selling_operating_unit,
  haou1.name shipping_operating_unit,
  ood.organization_code,
@@ -79,22 +79,8 @@ select /*+ push_pred(wfc) */
  wdd.container_flag,
  xxen_util.meaning(wdd.container_type_code,'CONTAINER_TYPE',401) container_type,
  wdd.container_name,
- coalesce((select listagg(mtln.lot_number,',') within group (order by mtln.lot_number) -- shipped
-           from   mtl_material_transactions mmt,
-                  mtl_transaction_lot_numbers mtln
-           where  mmt.picking_line_id = wdd.delivery_detail_id
-           and    mmt.transaction_source_type_id in (2,8)
-           and    mmt.transaction_quantity  < 0
-           and    mtln.transaction_id = mmt.transaction_id
-          ),
-          (select listagg(mtln.lot_number,',') within group (order by mtln.lot_number) -- picked
-           from   mtl_material_transactions mmt,
-                  mtl_transaction_lot_numbers mtln
-           where  mmt.move_order_line_id = wdd.move_order_line_id
-           and    mmt.transaction_source_type_id in (2,8)
-           and    mmt.transaction_quantity < 0 --> to prevent duplicates, just take the -qty trx leg sub to staging.
-           and    mtln.transaction_id = mmt.transaction_id
-          ),
+ coalesce(shipped_lots.lot_numbers,
+          picked_lots.lot_numbers,
           wdd.lot_number
          ) lot_numbers,
  -- exceptions
@@ -204,20 +190,71 @@ from
  wsh_document_instances wdi,
  wsh_carriers wc,
  (select distinct
-   wfc.delivery_detail_id,
-   wfc.currency_code freight_cost_currency,
-   listagg(wfct.name,',') within group (order by wfct.freight_cost_type_code,wfct.name) over (partition by wfc.delivery_detail_id,wfc.currency_code) freight_cost_name,
-   listagg(xxen_util.meaning(wfct.freight_cost_type_code,'FREIGHT_COST_TYPE',665),',') within group (order by wfct.freight_cost_type_code) over (partition by wfc.delivery_detail_id,wfc.currency_code) freight_cost_type,
-   sum(nvl(wfc.total_amount,wfc.unit_amount * nvl(wfc.quantity,1))) over (partition by wfc.delivery_detail_id,wfc.currency_code) freight_cost
+   x.delivery_detail_id,
+   x.freight_cost_currency,
+   x.freight_cost,
+   listagg(x.freight_cost_name,',') within group (order by x.freight_cost_type_code,x.freight_cost_name) over (partition by x.delivery_detail_id,x.freight_cost_currency) freight_cost_name,
+   listagg(x.freight_cost_type,',') within group (order by x.freight_cost_type_code,x.freight_cost_name) over (partition by x.delivery_detail_id,x.freight_cost_currency) freight_cost_type
   from
-   wsh_freight_costs wfc,
-   wsh_freight_cost_types wfct
+   (select
+     wfc.delivery_detail_id,
+     wfc.currency_code freight_cost_currency,
+     wfct.name freight_cost_name,
+     wfct.freight_cost_type_code,
+     xxen_util.meaning(wfct.freight_cost_type_code,'FREIGHT_COST_TYPE',665) freight_cost_type,
+     sum(nvl(wfc.total_amount,wfc.unit_amount * nvl(wfc.quantity,1))) over (partition by wfc.delivery_detail_id,wfc.currency_code) freight_cost,
+     sum(lengthb(wfct.name)+1) over (partition by wfc.delivery_detail_id,wfc.currency_code order by wfct.freight_cost_type_code,wfct.name rows between unbounded preceding and current row) lengthb1,
+     sum(lengthb(xxen_util.meaning(wfct.freight_cost_type_code,'FREIGHT_COST_TYPE',665))+1) over (partition by wfc.delivery_detail_id,wfc.currency_code order by wfct.freight_cost_type_code,wfct.name rows between unbounded preceding and current row) lengthb2
+    from
+     wsh_freight_costs wfc,
+     wsh_freight_cost_types wfct
+    where
+     wfc.freight_cost_type_id = wfct.freight_cost_type_id and
+     nvl(wfc.charge_source_code, 'MANUAL') in ('PRICING_ENGINE' ,'MANUAL')
+   ) x
   where
-   wfc.freight_cost_type_id = wfct.freight_cost_type_id and
-   nvl(wfc.charge_source_code, 'MANUAL') in ('PRICING_ENGINE' ,'MANUAL')
+   (x.lengthb1 <= 4000 and x.lengthb2 <= 4000)
  ) wfc,
  mtl_system_items_vl msiv,
  mtl_material_transactions mmt,
+ (select distinct
+   x.picking_line_id,
+   listagg(x.lot_number,',') within group (order by x.lot_number) over (partition by x.picking_line_id) lot_numbers
+  from
+   (select
+     mmt.picking_line_id,
+     mtln.lot_number,
+     sum(lengthb(mtln.lot_number)+1) over (partition by mmt.picking_line_id order by mtln.lot_number rows between unbounded preceding and current row) lengthb
+    from
+     mtl_material_transactions mmt,
+     mtl_transaction_lot_numbers mtln
+    where
+        mmt.transaction_source_type_id in (2,8)
+    and mmt.transaction_quantity  < 0
+    and mtln.transaction_id = mmt.transaction_id
+   ) x
+  where
+   x.lengthb <= 4000
+ ) shipped_lots,
+ (select distinct
+   x.move_order_line_id,
+   listagg(x.lot_number,',') within group (order by x.lot_number) over (partition by x.move_order_line_id) lot_numbers
+  from
+   (select
+     mmt.move_order_line_id,
+     mtln.lot_number,
+     sum(lengthb(mtln.lot_number)+1) over (partition by mmt.move_order_line_id order by mtln.lot_number rows between unbounded preceding and current row) lengthb
+    from
+     mtl_material_transactions mmt,
+     mtl_transaction_lot_numbers mtln
+    where
+        mmt.transaction_source_type_id in (2,8)
+    and mmt.transaction_quantity  < 0
+    and mtln.transaction_id = mmt.transaction_id
+   ) x
+  where
+   x.lengthb <= 4000
+ ) picked_lots,
  oe_order_headers_all ooha,
  oe_order_lines_all oola,
  ra_customer_trx_lines_all rctla,
@@ -249,6 +286,9 @@ and wdd.delivery_detail_id = mmt.picking_line_id(+)
 and mmt.transaction_source_type_id (+) in (2,8)
 and mmt.transaction_quantity (+) < 0
 and wdd.delivery_detail_id = wfc.delivery_detail_id (+)
+--
+and wdd.delivery_detail_id = shipped_lots.picking_line_id (+)
+and wdd.move_order_line_id = picked_lots.move_order_line_id (+)
 --
 and decode(wdd.source_code,'OE',wdd.source_header_id) = ooha.header_id(+)
 and decode(wdd.source_code,'OE',wdd.source_line_id)  = oola.line_id(+)

@@ -45,30 +45,7 @@ round(mfp1.supply_quantity,4) supply_quantity,
 xxen_util.meaning(mfp1.supply_type,'MRP_ORDER_TYPE',700) supply_type,
 nvl(we.wip_entity_name,mipo.po_number) supply_number,
 wdj0.scheduled_start_date demand_date,
-wdj.scheduled_completion_date,
-case when mipo.order_type in (1,8)
-then
- (select
-  pdtav.type_name
-  from
-  po_headers_all pha,
-  po_document_types_all_vl pdtav
-  where
-  pha.po_header_id=mipo.purchase_order_id and
-  pha.type_lookup_code=pdtav.document_subtype and
-  pha.org_id=pdtav.org_id and
-  pdtav.document_type_code in ('PO','PA')
-  )
-else null
-end po_type,
-case when mipo.order_type in (1,8)
-then po_headers_sv3.get_po_status(mipo.purchase_order_id) 
-else null
-end po_status,
-case when mipo.order_type in (1,8)
-then (select pha.segment1 from po_headers_all pha,po_lines_all pla where pla.po_line_id = mipo.line_id and pha.po_header_id = pla.contract_id) 
-else null
-end po_contract
+wdj.scheduled_completion_date
 from
 mtl_parameters mp,
 mrp_full_pegging mfp0,
@@ -96,8 +73,15 @@ mp.organization_code=:organization_code and
 mfp0.compile_designator=:compile_designator and
 mp.organization_id=mfp0.organization_id and
 mfp0.pegging_id=mfp1.end_pegging_id and
-mfp1.end_pegging_id<>mfp1.pegging_id and
-mfp1.prev_pegging_id is not null and
+( :p_assbly_pegging_only is null or
+ (:p_assbly_pegging_only is not null and
+  exists
+  (select null
+   from   mrp_full_pegging mfp
+   where  mfp.prev_pegging_id = mfp0.pegging_id
+  )
+ )
+) and
 mfp0.inventory_item_id=msiv0.inventory_item_id and
 mfp1.inventory_item_id=msiv1.inventory_item_id and
 mfp0.organization_id=msiv0.organization_id and

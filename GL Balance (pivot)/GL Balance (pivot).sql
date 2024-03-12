@@ -17,7 +17,7 @@ y.ledger,
 y.start_balance,
 &period_columns
 y.total,
-nvl(y.start_balance,0)+nvl(y.total,0) ytd,
+nvl(y.start_balance,0)+nvl(y.total,0) end_balance,
 y.currency_code currency,
 &start_balance_reval
 &period_columns_reval

@@ -20,6 +20,7 @@ xxen_reports_v xrv,
 xxen_report_category_assigns xrca,
 xxen_report_categories_v xrcv
 where
+1=1 and
 xrv.report_id=xrca.report_id and
 xrca.category_id=xrcv.category_id
 order by

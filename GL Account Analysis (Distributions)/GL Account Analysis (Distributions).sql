@@ -37,7 +37,8 @@ prior ffvnh.range_attribute='P'
 start with
 ffvnh.parent_flex_value=:parent_flex_value
 ) x
-)
+),
+gcck as (select &materialize_hint gcck.* from gl_code_combinations_kfv gcck where 2=2)
 --
 -- Main Query
 --
@@ -53,7 +54,7 @@ case when max(x.je_header_id) over (partition by x.ledger,x.concatenated_segment
 case when sum(case when x.record_type='Balance' then abs(nvl(x.accounted_amount,0)) else 0 end) over (partition by x.ledger,x.concatenated_segments)=0 then 'Y' else 'N' end zero_balance
 from
 (
-select
+select &leading_hint
 case when count(distinct gp.period_num) over ()>1 then lpad(gp.period_num,2,'0')||' ' end||gjh.period_name period_name,
 lpad(gp.period_num,2,'0')||' '||gjh.period_name period_name_label,
 gl.name ledger,
@@ -305,13 +306,12 @@ gl_periods gp,
 gl_je_batches gjb,
 gl_je_headers gjh,
 gl_je_lines gjl,
-(select gir.je_header_id, gir.je_line_num, xal.* from gl_import_references gir, xla_ae_lines xal where gir.gl_sl_link_id=xal.gl_sl_link_id and gir.gl_sl_link_table=xal.gl_sl_link_table
-) xal,
+gcck,
+(select gir.je_header_id, gir.je_line_num, xal.* from gl_import_references gir, xla_ae_lines xal where gir.gl_sl_link_id=xal.gl_sl_link_id and gir.gl_sl_link_table=xal.gl_sl_link_table) xal,
 xla_ae_headers xah,
 xla_events xe,
 xla.xla_transaction_entities xte,
 xla_distribution_links xdl,
-gl_code_combinations_kfv gcck,
 (select gdr.* from gl_daily_rates gdr where gdr.to_currency=:revaluation_currency and gdr.conversion_type=(select gdct.conversion_type from gl_daily_conversion_types gdct where gdct.user_conversion_type=:revaluation_conversion_type)) gdr,
 zx_rates_b zrb,
 ap_invoices_all aia,
@@ -379,6 +379,8 @@ gp.period_name=gjl.period_name and
 gl.ledger_id=gjh.ledger_id and
 gjb.je_batch_id=gjh.je_batch_id and
 gjh.je_header_id=gjl.je_header_id and
+gjl.code_combination_id=gcck.code_combination_id and
+&gl_flex_value_security
 gjl.je_header_id=xal.je_header_id(+) and
 gjl.je_line_num=xal.je_line_num(+) and
 xal.ae_header_id=xah.ae_header_id(+) and
@@ -392,8 +394,6 @@ xah.application_id=xte.application_id(+) and
 xal.application_id=xdl.application_id(+) and
 xal.ae_header_id=xdl.ae_header_id(+) and
 xal.ae_line_num=xdl.ae_line_num(+) and
-gl_security_pkg.validate_access(null,gjl.code_combination_id)='TRUE' and
-gjl.code_combination_id=gcck.code_combination_id and
 coalesce(xal.currency_conversion_date,gjh.currency_conversion_date,trunc(xe.transaction_date))=gdr.conversion_date(+) and
 decode(nvl2(xal.gl_sl_link_id,xal.currency_code,gjh.currency_code),:revaluation_currency,null,nvl2(xal.gl_sl_link_id,xal.currency_code,gjh.currency_code))=gdr.from_currency(+) and
 gjl.tax_code_id=zrb.tax_rate_id(+) and
@@ -625,8 +625,8 @@ gcck.chart_of_accounts_id,
 from
 gl_ledgers gl,
 gl_periods gp,
+gcck,
 gl_balances gb,
-gl_code_combinations_kfv gcck,
 (select gdr.* from gl_daily_rates gdr where gdr.to_currency=:revaluation_currency and gdr.conversion_type=(select gdct.conversion_type from gl_daily_conversion_types gdct where gdct.user_conversion_type=:revaluation_conversion_type)) gdr
 where
 -- opening balance is outer joined in case account became active after period from
@@ -637,14 +637,13 @@ where
 :show_balances is not null and
 gp.period_name=nvl(:period_name,:period_name_from) and
 gl.period_set_name=gp.period_set_name and
-gl.accounted_period_type=gp.period_type and
-gcck.chart_of_accounts_id=gl.chart_of_accounts_id and
-gb.period_name(+)=gp.period_name and
-gb.ledger_id(+)=gl.ledger_id and
-gb.currency_code(+)=gl.currency_code and
+gl.chart_of_accounts_id=gcck.chart_of_accounts_id and
+&gl_flex_value_security
+gcck.code_combination_id=gb.code_combination_id(+) and
+gl.ledger_id=gb.ledger_id(+) and
+gl.currency_code=gb.currency_code(+) and
+gp.period_name=gb.period_name(+) and
 gb.template_id(+) is null and
-gl_security_pkg.validate_access(null,gcck.code_combination_id)='TRUE' and
-gb.code_combination_id(+)=gcck.code_combination_id and
 gp.start_date=gdr.conversion_date(+) and
 exists
 (select null
@@ -683,4 +682,4 @@ null line_entered_cr,
 null line_entered_amount,
 nvl(gb.begin_balance_dr,0)+nvl(gb.period_net_dr,0) line_accounted_dr,
 nvl(gb.begin_balance_cr,0)+nvl(gb.period_net_cr,0) line_accounted_cr,
-nvl(gb.begin_balance_d
+nvl(gb.begin_balance_dr,0)-nvl(gb.begin_balance_cr,0)+nvl(gb.period_net_dr,0)-nvl(gb.period_net_cr,0) line_account
