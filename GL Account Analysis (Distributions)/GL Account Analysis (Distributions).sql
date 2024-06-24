@@ -236,6 +236,7 @@ when mmt.transaction_source_type_id=7 then (select prha.segment1 from po_requisi
 when mmt.transaction_source_type_id=5 then (select we.wip_entity_name from wip_entities we where mmt.transaction_source_id=we.wip_entity_id) --WIP Job or Schedule
 when mmt.transaction_source_type_id=4 then (select mtrh.request_number from mtl_txn_request_headers mtrh where mmt.transaction_source_id=mtrh.header_id) --Move Order
 end inv_transaction_source,
+&dff_cols
 mmt.transaction_id inv_transaction_id,
 coalesce(pla.operating_unit,
 (select haouv.name from hr_all_organization_units_vl haouv where
@@ -299,7 +300,22 @@ gp.start_date period_date,
 gp.period_name period,
 'Journal' record_type,
 gcck.chart_of_accounts_id,
-(select fifs.flex_value_set_id from fnd_id_flex_segments fifs where gcck.chart_of_accounts_id=fifs.id_flex_num and fifs.application_id=101 and fifs.id_flex_code='GL#' and fifs.application_column_name='&hierarchy_segment_column') flex_value_set_id
+(
+select
+fifs.flex_value_set_id
+from
+fnd_id_flex_segments fifs,
+fnd_flex_values ffv
+where
+gcck.chart_of_accounts_id=fifs.id_flex_num and
+fifs.application_id=101 and
+fifs.id_flex_code='GL#' and
+fifs.application_column_name='&hierarchy_segment_column' and
+fifs.flex_value_set_id=ffv.flex_value_set_id and
+ffv.parent_flex_value_low is null and
+ffv.summary_flag='N' and
+7=7
+) flex_value_set_id
 from
 gl_ledgers gl,
 gl_periods gp,
@@ -591,6 +607,7 @@ null inv_transaction_reference,
 null inv_transaction_source_type,
 null inv_transaction_type,
 null inv_transaction_source,
+&dff_cols_null
 null inv_transaction_id,
 null operating_unit,
 -- AP/AR MDM Party/Site Identifier
@@ -621,7 +638,22 @@ gp.start_date-1 period_date,
 gp.period_name period,
 'Balance' record_type,
 gcck.chart_of_accounts_id,
-(select fifs.flex_value_set_id from fnd_id_flex_segments fifs where gcck.chart_of_accounts_id=fifs.id_flex_num and fifs.application_id=101 and fifs.id_flex_code='GL#' and fifs.application_column_name='&hierarchy_segment_column') flex_value_set_id
+(
+select
+fifs.flex_value_set_id
+from
+fnd_id_flex_segments fifs,
+fnd_flex_values ffv
+where
+gcck.chart_of_accounts_id=fifs.id_flex_num and
+fifs.application_id=101 and
+fifs.id_flex_code='GL#' and
+fifs.application_column_name='&hierarchy_segment_column' and
+fifs.flex_value_set_id=ffv.flex_value_set_id and
+ffv.parent_flex_value_low is null and
+ffv.summary_flag='N' and
+7=7
+) flex_value_set_id
 from
 gl_ledgers gl,
 gl_periods gp,
@@ -677,9 +709,4 @@ null document_number,
 null tax_status_code,
 null line_number,
 gcck.concatenated_segments,
-null line_entered_dr,
-null line_entered_cr,
-null line_entered_amount,
-nvl(gb.begin_balance_dr,0)+nvl(gb.period_net_dr,0) line_accounted_dr,
-nvl(gb.begin_balance_cr,0)+nvl(gb.period_net_cr,0) line_accounted_cr,
-nvl(gb.begin_balance_dr,0)-nvl(gb.begin_balance_cr,0)+nvl(gb.period_net_dr,0)-nvl(gb.period_net_cr,0) line_account
+null line_ent

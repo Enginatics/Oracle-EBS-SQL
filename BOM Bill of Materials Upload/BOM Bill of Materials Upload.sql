@@ -37,12 +37,20 @@ with bom as
   bic.item_num item_seq,
   bic.operation_seq_num operation_seq,
   bic.component_quantity,
+  round(decode(bic.component_quantity,0,0,1/bic.component_quantity),37) inverse_quantity,
   bic.effectivity_date  date_effective_from,
   bic.disable_date      date_effective_to,
   bic.from_end_item_unit_number end_item_unit_number_from,
   bic.to_end_item_unit_number end_item_unit_number_to,
   nvl(bic.basis_type,1) basis_type,
   xxen_util.meaning(nvl(bic.basis_type,1),'BOM_BASIS_TYPE',700) basis,
+  bic.planning_factor planning_percent,
+  bic.component_yield_factor yield,
+  xxen_util.meaning(bic.enforce_int_requirements,'BOM_ENFORCE_INT_REQUIREMENTS',700) enforce_integer_quantity,
+  xxen_util.meaning(bic.include_in_cost_rollup,'SYS_YES_NO',700) include_in_cost_rollup,
+  xxen_util.meaning(bic.wip_supply_type,'WIP_SUPPLY',700) supply_type,
+  bic.supply_subinventory,
+  (select milk.concatenated_segments from mtl_item_locations_kfv milk where milk.inventory_location_id = bic.supply_locator_id) supply_locator,
   xxen_util.meaning(decode(bic.implementation_date,null,2,1),'SYS_YES_NO',700) component_implemented_flag,
   bic.implementation_date component_implementation_date
  from
@@ -59,7 +67,7 @@ with bom as
   --
   nvl(bbom.alternate_bom_designator,'?') = nvl(:p_alternate_bom,'?') and
   -- exclude common boms for the moment
-  bbom.bill_sequence_id = bbom.common_bill_sequence_id and 
+  bbom.bill_sequence_id = bbom.common_bill_sequence_id and
   bbom.common_organization_id is null and
   bbom.common_assembly_item_id is null
 ),
@@ -82,12 +90,20 @@ bom_tree as
   bom.item_seq,
   bom.operation_seq,
   bom.component_quantity,
+  bom.inverse_quantity,
   bom.date_effective_from,
   bom.date_effective_to,
   bom.end_item_unit_number_from,
   bom.end_item_unit_number_to,
   bom.basis_type,
   bom.basis,
+  bom.planning_percent,
+  bom.yield,
+  bom.enforce_integer_quantity,
+  bom.include_in_cost_rollup,
+  bom.supply_type,
+  bom.supply_subinventory,
+  bom.supply_locator,
   bom.component_implemented_flag,
   bom.component_implementation_date,
   --
@@ -123,12 +139,12 @@ bom_tree as
      msiv.organization_id = bbom.organization_id and
      msiv.inventory_item_id = bbom.assembly_item_id and
      msiv.bom_enabled_flag = 'Y' and
-     msiv.bom_item_type in (1,2,4) and
+     msiv.bom_item_type != 5 and -- exclude product family
      bbom.assembly_type = 1 and -- BOM
      nvl(bbom.effectivity_control,1) < 3 and
      nvl(bbom.alternate_bom_designator,'?') = nvl(:p_alternate_bom,'?') and
      -- exclude common boms for the moment
-     bbom.bill_sequence_id = bbom.common_bill_sequence_id and 
+     bbom.bill_sequence_id = bbom.common_bill_sequence_id and
      bbom.common_organization_id is null and
      bbom.common_assembly_item_id is null and
      mp.organization_code = :p_organization_code and
@@ -143,6 +159,7 @@ bom_subst as
   msiv.concatenated_segments substitute_item,
   msiv.description substitute_description,
   bsc.substitute_item_quantity substitute_quantity,
+  round(decode(bsc.substitute_item_quantity,0,0,1/bsc.substitute_item_quantity),37) substitute_inverse_quantity,
   xxen_util.meaning(bsc.enforce_int_requirements,'BOM_ENFORCE_INT_REQUIREMENTS',700) subst_integer_requirements
  from
   bom_substitute_components bsc,
@@ -223,6 +240,7 @@ select /*+ push_pred(bom_subst) */
  bom_tree.component_item,
  bom_tree.component_description,
  bom_tree.component_quantity,
+ bom_tree.inverse_quantity,
  bom_tree.date_effective_from date_effective_from_old,
  bom_tree.date_effective_from date_effective_from,
  bom_tree.date_effective_to date_effective_to,
@@ -231,6 +249,13 @@ select /*+ push_pred(bom_subst) */
  bom_tree.end_item_unit_number_to,
  bom_tree.basis_type,
  bom_tree.basis,
+ bom_tree.planning_percent,
+ bom_tree.yield,
+ bom_tree.enforce_integer_quantity,
+ bom_tree.include_in_cost_rollup,
+ bom_tree.supply_type,
+ bom_tree.supply_subinventory,
+ bom_tree.supply_locator,
  bom_tree.component_implemented_flag,
  bom_tree.component_implementation_date component_implementation_date,
  --
@@ -238,6 +263,7 @@ select /*+ push_pred(bom_subst) */
  bom_subst.substitute_item,
  bom_subst.substitute_description,
  bom_subst.substitute_quantity,
+ bom_subst.substitute_inverse_quantity,
  bom_subst.subst_integer_requirements,
  --
  bom_tree.bill_sequence_id,
@@ -257,8 +283,8 @@ where
 --
 &not_use_first_block
 &report_table_select1
-&report_table_select2 
-&report_table_name &report_table_where_clause 
+&report_table_select2
+&report_table_name &report_table_where_clause
 &processed_run
 ) x,
 item_dff cidff

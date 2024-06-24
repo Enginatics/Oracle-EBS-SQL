@@ -110,7 +110,7 @@ psp.security_profile_name security_profile,
 psp.security_profile_id,
 psp.business_group_id,
 psp.view_all_flag,
-nvl(pol.organization_id,nvl(hou.organization_id,hou0.organization_id)) organization_id
+coalesce(pol.organization_id,hou.organization_id,hou0.organization_id) organization_id
 from
 per_security_profiles psp,
 (select pol.* from per_organization_list pol, hr_operating_units hou where pol.organization_id=hou.organization_id and hou.usable_flag is null) pol,

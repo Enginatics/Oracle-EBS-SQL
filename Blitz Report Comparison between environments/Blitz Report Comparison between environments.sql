@@ -44,6 +44,8 @@ xrv.report_name,
 xrv2.report_name report_name_remote,
 xrv.description,
 xrv2.description description_remote,
+(select count(*) from xxen_report_parameters xrp where xrv.report_id=xrp.report_id) parameter_count,
+(select count(*) from xxen_report_parameters@&database_link xrp where xrv2.report_id=xrp.report_id) parameter_count_remote,
 xxen_util.user_name(xrv.last_updated_by) last_updated_by,
 xrv.last_update_date,
 xxen_util.user_name@&database_link(xrv2.last_updated_by) last_updated_by_remote,
@@ -55,19 +57,15 @@ xrv2.creation_date creation_date_remote,
 xrv.sql_text_short sql_text,
 xrv2.sql_text_short sql_text_remote
 from
-(select xrv.*, dbms_lob.substr(xrv.sql_text,4000,1) sql_text_short from xxen_reports_v xrv) xrv
+(select xrv.*, dbms_lob.substr(xrv.sql_text,4000,1) sql_text_short from xxen_reports_v xrv where 1=1) xrv
 full join
-xxen_reports_v_@&database_link xrv2
+(select xrv.* from xxen_reports_v_@&database_link xrv where 1=1) xrv2
 on
 xrv.guid=xrv2.guid or
 xrv.report_name=xrv2.report_name
 ) x
 where
-nvl(x.report_name,'x')<>nvl(x.report_name_remote,'x') or
-x.name_diff is not null or
-x.sql_diff is not null or
-x.descr_diff is not null or
-x.category_diff is not null
+2=2
 order by
 coalesce(x.name_diff,x.descr_diff,x.sql_diff),
 x.last_update_date_remote desc nulls last,

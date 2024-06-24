@@ -46,6 +46,7 @@ Ledger:  enter the specific ledger(s) you wish to report (optional).
 -- |                                     added subledger accounting ccids.
 -- |  1.4     16 Nov 2023 Douglas Volz   Remove org_acct_periods, use period name from xla_ae_headers.
 -- |  1.5     05 Dec 2023 Douglas Volz   Added G/L and Operating Unit security restrictions.
+-- |  1.6     12 Mar 2024 Douglas Volz   Add cost elements for COGS per client request.
 -- +=============================================================================+*/
 -- Excel Examle Output: https://www.enginatics.com/example/cac-recost-cost-of-goods-sold/
 -- Library Link: https://www.enginatics.com/reports/cac-recost-cost-of-goods-sold/
@@ -79,7 +80,21 @@ select  gl.name Ledger,
 &category_columns
         muomv.uom_code UOM_Code,
         sum(cogs.primary_quantity) Quantity,
+        -- Revision for version 1.6
+        sum(cogs.material_value) Original_COGS_Material,
+        sum(cogs.material_overhead_value) Original_COGS_Material_Ovhd,
+        sum(cogs.resource_value) Original_COGS_Resource,
+        sum(cogs.outside_processing_value) Original_COGS_OSP,
+        sum(cogs.overhead_value) Original_COGS_Overhead,
+        -- End revision for version 1.6
         sum(cogs.base_transaction_value) Original_COGS,
+        -- Revision for version 1.6
+        round(sum(decode(cic.material_cost, null, cogs.material_value, cic.material_cost * cogs.primary_quantity)),2) New_COGS_Material,
+        round(sum(decode(cic.material_overhead_cost, null, cogs.material_overhead_value, cic.material_overhead_cost * cogs.primary_quantity)),2) New_COGS_Material_Overhead,
+        round(sum(decode(cic.resource_cost, null, cogs.resource_value, cic.resource_cost * cogs.primary_quantity)),2) New_COGS_Resource,
+        round(sum(decode(cic.outside_processing_cost, null, cogs.outside_processing_value, cic.outside_processing_cost * cogs.primary_quantity)),2) New_COGS_OSP,
+        round(sum(decode(cic.overhead_cost, null, cogs.overhead_value, cic.overhead_cost * cogs.primary_quantity)),2) New_COGS_Overhead,
+        -- End revision for version 1.6
         -- Revision for version 1.3
         round(sum(decode(cic.item_cost, null, cogs.base_transaction_value, cic.item_cost * cogs.primary_quantity)),2) New_COGS,
         round(decode(sign(sum(decode(cic.item_cost, null, cogs.base_transaction_value, cic.item_cost * cogs.primary_quantity)) - sum(cogs.base_transaction_value)),-1,0,1,
@@ -231,6 +246,13 @@ from    -- Revision for version 1.3
                                         and     mta2.accounting_line_type = mta.accounting_line_type)
                 ) primary_quantity,
                 -- End revision for version 1.3
+                -- Revision for version 1.6
+                decode(nvl(mta.cost_element_id,1), 1, mta.base_transaction_value, 0) material_value,
+                decode(mta.cost_element_id, 2, mta.base_transaction_value, 0) material_overhead_value,
+                decode(mta.cost_element_id, 3, mta.base_transaction_value, 0) resource_value,
+                decode(mta.cost_element_id, 4, mta.base_transaction_value, 0) outside_processing_value,
+                decode(mta.cost_element_id, 5, mta.base_transaction_value, 0) overhead_value,
+                -- End revision for version 1.6
                 mta.base_transaction_value base_transaction_value
          from   mtl_transaction_accounts mta,
                 mtl_material_transactions mmt,

@@ -39,7 +39,7 @@ fnd_form_functions_vl fffv,
 fnd_form_vl ffv
 where
 2=2 and
-'&enable_function'='Y' and
+'&show_function'='Y' and
 fffv.form_id=ffv.form_id(+) and
 fffv.application_id=ffv.application_id(+)
 ),
@@ -52,11 +52,11 @@ sys_connect_by_path(to_char(fmev.entry_sequence,'000000.0'),'>') entry_sequence_
 fmev.menu_id,
 connect_by_root fmev.function_id function_id
 from
-(select fmt.user_menu_name, fmev.* from fnd_menu_entries_vl fmev, fnd_menus_tl fmt where '&enable_function'='Y' and fmev.sub_menu_id=fmt.menu_id(+) and fmt.language(+)=userenv('lang')) fmev
+(select fmt.user_menu_name, fmev.* from fnd_menu_entries_vl fmev, fnd_menus_tl fmt where '&show_function'='Y' and fmev.sub_menu_id=fmt.menu_id(+) and fmt.language(+)=userenv('lang')) fmev
 connect by nocycle
 prior fmev.menu_id=fmev.sub_menu_id
 start with
-'&enable_function'='Y' and
+'&show_function'='Y' and
 fmev.function_id in (select func.function_id from func)
 ),
 prof as
@@ -120,7 +120,7 @@ per_all_people_f papf
 hr_all_organization_units_vl haouv
 where
 3=3 and
-'&enable_user'='Y' and
+'&show_user'='Y' and
 furg.user_id=fu.user_id and
 fu.employee_id=papf.person_id(+) and
 papf.business_group_id=haouv.organization_id(+)
@@ -216,14 +216,14 @@ from
 fnd_responsibility_vl frv) frv,
 fnd_application_vl fav3,
 fnd_request_groups frg,
-(select frgu.* from fnd_request_group_units frgu where '&enable_concurrent'='Y') frgu,
+(select frgu.* from fnd_request_group_units frgu where '&show_concurrent'='Y') frgu,
 (select fcpv.* from fnd_concurrent_programs_vl fcpv where fcpv.srs_flag in ('Y','Q') and fcpv.enabled_flag='Y') fcpv,
-(select fcpv2.* from fnd_concurrent_programs_vl fcpv2 where 4=4 and '&enable_concurrent'='Y' and fcpv2.srs_flag in ('Y','Q') and fcpv2.enabled_flag='Y') fcpv2,
+(select fcpv2.* from fnd_concurrent_programs_vl fcpv2 where 4=4 and '&show_concurrent'='Y' and fcpv2.srs_flag in ('Y','Q') and fcpv2.enabled_flag='Y') fcpv2,
 fnd_application_vl fav2,
 fnd_request_sets_vl frsv,
 fnd_menus_vl fmv,
 usr,
-(select fcmf.* from fnd_compiled_menu_functions fcmf where '&enable_function'='Y' and fcmf.function_id in (select func.function_id from func) and nvl(fcmf.grant_flag,'Y')='Y') fcmf,
+(select fcmf.* from fnd_compiled_menu_functions fcmf where '&show_function'='Y' and fcmf.function_id in (select func.function_id from func) and nvl(fcmf.grant_flag,'Y')='Y') fcmf,
 nav,
 fnd_form_functions_vl fffv,
 fnd_form_vl ffv,

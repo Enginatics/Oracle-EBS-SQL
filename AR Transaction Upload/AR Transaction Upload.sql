@@ -375,8 +375,8 @@ case when rctla.line_type = 'TAX' then rctla.tax_line_id end = zl.tax_line_id (+
 nvl(:p_default_trx_type,'?') = nvl(:p_default_trx_type,'?') and
 nvl(:p_default_gl_date,sysdate) = nvl(:p_default_gl_date,sysdate) and
 nvl(:p_default_trx_date,sysdate) = nvl(:p_default_trx_date,sysdate) and
-nvl(:p_default_trx_curr,sysdate) = nvl(:p_default_trx_curr,sysdate) and
-nvl(:p_default_exch_rate_type,sysdate) = nvl(:p_default_exch_rate_type,sysdate) and
+nvl(:p_default_trx_curr,'?') = nvl(:p_default_trx_curr,'?') and
+nvl(:p_default_exch_rate_type,'?') = nvl(:p_default_exch_rate_type,'?') and
 1=0
 &not_use_first_block
 &processed_errors_query

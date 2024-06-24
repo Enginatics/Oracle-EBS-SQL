@@ -10,9 +10,11 @@
 -- Library Link: https://www.enginatics.com/reports/ar-customer-credit-limits/
 -- Run Report: https://demo.enginatics.com/
 
-select
+select distinct
 x.party_name,
 x.currency_code,
+&lp_missing_credit_limit_flag
+--
 &column_party
 &column_account
 &column_site_use
@@ -159,7 +161,8 @@ where
   hcpa0.trx_credit_limit is not null or
   hcpa0.min_statement_amount is not null or
   hcpa0.min_dunning_amount is not null or
-  hcpa0.min_dunning_invoice_amount is not null
+  hcpa0.min_dunning_invoice_amount is not null or
+  (xxen_util.lookup_code(:p_show_missing_credit_limits,'YES_NO',0) = 'Y' and hcpa0.currency_code is not null)
  )
 ) or
 (:display_level in ('All','Account') and
@@ -168,7 +171,8 @@ where
   hcpa1.trx_credit_limit is not null or
   hcpa1.min_statement_amount is not null or
   hcpa1.min_dunning_amount is not null or
-  hcpa1.min_dunning_invoice_amount is not null
+  hcpa1.min_dunning_invoice_amount is not null or
+  (xxen_util.lookup_code(:p_show_missing_credit_limits,'YES_NO',0) = 'Y' and hcpa1.currency_code is not null)
  )
 ) or
 (:display_level in ('All','Site Use') and
@@ -177,7 +181,8 @@ where
   hcpa2.trx_credit_limit is not null or
   hcpa2.min_statement_amount is not null or
   hcpa2.min_dunning_amount is not null or
-  hcpa2.min_dunning_invoice_amount is not null
+  hcpa2.min_dunning_invoice_amount is not null or
+  (xxen_util.lookup_code(:p_show_missing_credit_limits,'YES_NO',0) = 'Y' and hcpa2.currency_code is not null)
  )
 )
 ) and
@@ -202,8 +207,5 @@ oola.customer_id (+) = nvl(x.cust_account_id,-999) and
 oola.customer_site_use_id (+) = nvl(x.site_use_id,-999)
 order by
 x.party_name,
-hl.country,
-x.account_number,
-hps.party_site_number,
-x.operating_unit,
+&order_by
 x.currency_code

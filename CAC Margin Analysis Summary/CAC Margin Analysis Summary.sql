@@ -5,36 +5,31 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Margin Analysis Summary
--- Description: Report for the margin from the customer invoices and shipments, based on the standard Oracle Margin table, cst_margin_summary.  (If you want to show the COGS and Sales Accounts use report CAC Margin Analysis Account Summary.)  You first need to run the Margin Analysis Load Run request, to populate this table.
+-- Description: Report for the margin from the customer invoices and shipments, based on the standard Oracle Margin table, cst_margin_summary.  (If you want to show the COGS and Sales Accounts use report CAC Margin Analysis Account Summary.)  
+
+Note:  in order to run this report, you first need to run the Margin Analysis Load Run request (to populate the standard Oracle Margin table).
+
+Parameters:
+===========
+Transaction Date From:  enter the starting transaction date (mandatory).
+Transaction Date To:  enter the ending transaction date (mandatory).
+Category Set 1:  any item category you wish, typically the Cost or Product Line category set (optional).
+Category Set 2:  any item category you wish, typically the Inventory category set (optional).
+Customer Name:  enter the specific customer name you wish to report (optional).
+Item Number:  enter the specific item number(s) you wish to report (optional).
+Organization Code:  enter the specific inventory organization(s) you wish to report (optional).
+Operating Unit:  enter the specific operating unit(s) you wish to report (optional).
+Ledger:  enter the specific ledger(s) you wish to report (optional).
+
 /* +=============================================================================+
--- |  Copyright 2006 - 2020 Douglas Volz Consulting, Inc.                        |
--- |  All rights reserved.                                                       |
--- |  Permission to use this code is granted provided the original author is     |
--- |  acknowledged.  No warranties, express or otherwise is included in this     |
--- |  permission.                                                                |
+-- |  Copyright 2006 - 2024 Douglas Volz Consulting, Inc.
+-- |  All rights reserved.
+-- |  Permission to use this code is granted provided the original author is 
+-- |  acknowledged.  No warranties, express or otherwise is included in this
+-- |  permission.
 -- +=============================================================================+
 -- |
 -- |  Original Author: Douglas Volz (doug@volzconsulting.com)
--- |
--- |  Parameters:
--- |  p_trx_date_from    -- Starting transaction date for the customer shipments
--- |  p_trx_date_to      -- Ending transaction date for the customer shipments
--- |  p_category_set1    -- The first item category set to report, typically the
--- |                        Cost or Product Line Category Set
--- |  p_category_set2    -- The second item category set to report, typically the
--- |                        Inventory Category Set
--- |  p_customer_name    -- Enter the specific customer name you wish to report (optional)
--- |  p_item_number      -- Enter the specific item number you wish to report (optional)
--- |  p_org_code         -- Specific inventory organization you wish to report (optional)
--- |  p_operating_unit   -- Operating Unit you wish to report, leave blank for all
--- |                        operating units (optional) 
--- |  p_ledger           -- General ledger you wish to report, leave blank for all
--- |                        ledgers (optional)
--- |
--- |  Description:
--- |  Report for the margin from the customer invoices and shipments, based
--- |  on the standard Oracle Margin table, cst_margin_summary.  You first need
--- |  to run the Margin Analysis Build request, to populate this table.
 -- | 
 -- |  Version Modified on Modified  by   Description
 -- |  ======= =========== ============== =========================================
@@ -57,6 +52,7 @@
 -- |  1.9     22 May 2017 Douglas Volz   Adding Inventory item category
 -- |  1.10    23 May 2020 Douglas Volz   Use multi-language table for UOM Code, item 
 -- |                                     master, OE transaction types and hr organization names. 
+-- |  1.11    14 Jun 2024 Douglas Volz   Remove tabs, reinstall parameters and org access controls.
 -- +=============================================================================+*/
 
 -- Excel Examle Output: https://www.enginatics.com/example/cac-margin-analysis-summary/
@@ -67,7 +63,7 @@ select  nvl(gl.short_name, gl.name) Ledger,
  haou2.name Operating_Unit,
  mp.organization_code Org_Code,
  -- Revision for version 1.7
- -- mas.sold_to_customer_name Sold_To_Customer,
+ -- cms.sold_to_customer_name Sold_To_Customer,
  -- Revision for version 1.10
  cms.customer_class_code Customer_Class_Code,
  hz.party_name Customer,
@@ -87,6 +83,7 @@ select  nvl(gl.short_name, gl.name) Ledger,
  msiv.description  Item_Description,
  -- Revision for version 1.10
  fcl.meaning Item_Type,
+ -- Revision for version 1.9
 &category_columns
  muomv.uom_code UOM_Code,
         round(sum(nvl(cms.invoiced_amount,0)) / 
@@ -143,7 +140,7 @@ and hz.party_id                  = hca.party_id
 -- Causing cross-joining
 -- and rsa.salesrep_id              = cms.primary_salesrep_id
 and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-and 1=1    -- p_trx_date_from, p_trx_date_to, p_customer, p_item_number, p_org_code, p_operating_unit, p_ledger   -- 
+and 1=1    -- p_trx_date_from, p_trx_date_to, p_customer, p_item_number, p_org_code, p_operating_unit, p_ledger
 -- End revision for version 1.5
 -- ===================================================================
 -- using the base tables to avoid using
@@ -174,7 +171,7 @@ group by
  trunc(cms.gl_date),
  msiv.concatenated_segments,
  msiv.description,
- fcl.meaning, -- Item_Type
+ fcl.meaning, -- Item Type
  -- Revision for version 1.10
  muomv.uom_code,
  -- Revision for version 1.9, needed for inline select
@@ -182,8 +179,8 @@ group by
  msiv.organization_id
 order by
  nvl(gl.short_name, gl.name), -- Ledger
- haou2.name, -- Operating_Unit
- mp.organization_code, -- Org_Code
+ haou2.name, -- Operating Unit
+ mp.organization_code, -- Org Code
  hz.party_name, -- Customer
- cms.order_number, -- Order_Number
- cms.line_number -- Order_Line
+ cms.order_number, -- Order Number
+ cms.line_number -- Order Line

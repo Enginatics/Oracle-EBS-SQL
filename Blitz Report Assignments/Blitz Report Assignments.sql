@@ -26,7 +26,8 @@ xxen_util.client_time(xrav.creation_date) creation_date,
 xxen_util.user_name(xrav.last_updated_by) last_updated_by,
 xxen_util.client_time(xrav.last_update_date) last_update_date,
 xrav.report_id,
-xrav.id1
+xrav.id1,
+xrav.id2
 from
 xxen_reports_v xrv,
 xxen_report_assignments_v xrav,

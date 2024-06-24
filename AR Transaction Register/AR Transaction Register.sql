@@ -80,8 +80,8 @@ where
  and rx.request_id = fnd_global.conc_request_id
 order by
   rx.organization_name,
-  rx.rec_postable_flag,
   rx.rec_balance,
+  rx.rec_postable_flag,
   rx.trx_currency,
   arpt_sql_func_util.get_lookup_meaning('INV/CM',trx_types.type),
   rx.trx_number,

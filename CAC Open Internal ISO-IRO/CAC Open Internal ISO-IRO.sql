@@ -19,6 +19,7 @@
 -- |  Program Name:  xxx_open_iro.sql
 -- |
 -- |  Parameters:
+-- |  p_src_dest_type -- Determines if the specified Inventory Organization is the Source Org or Desintation Org or either (if left null)
 -- |  p_org_code         -- Specific inventory organization you wish to report (optional)
 -- |  p_operating_unit   -- Operating Unit you wish to report, leave blank for all
 -- |                        operating units (optional) 
@@ -48,6 +49,9 @@
 -- |                                     mtl_categories_b with mtl_categories_vl
 -- |                                     hr_all_organization_units with hr_all_organization_units_vl
 -- |  1.6     07 Jul 2022 Douglas Volz   Replace with multi-lang item status and UOM_Codes.
+-- |  1.7     05 May 2024 Eric Clegg Added ability to choose Source Organization or Detination Organization (or either)
+-- |                                     Removed the OU and Ledger securoty clauses as they dont make sense in this report
+-- |                                     Removed restriction on Requisition Type so report has visibility of ISOs from internally sourced PO Requisition Lines
 -- +=============================================================================+*/
 -- Excel Examle Output: https://www.enginatics.com/example/cac-open-internal-iso-iro/
 -- Library Link: https://www.enginatics.com/reports/cac-open-internal-iso-iro/
@@ -70,6 +74,7 @@ select nvl(gl.short_name, gl.name) Ledger,
  iso.order_number Sales_Order_Number,
  iso_line.line_number SO_Line,
  decode(iso.order_source_id, 10, iso.orig_sys_document_ref, '') Requisition_Number,
+ xxen_util.meaning(prh.type_lookup_code,'REQUISITION TYPE',201) requisition_type,
  fu_iso.user_name IRO_Created_By,
  fu_iso2.user_name IRO_Last_Updated_By,
  ottt.name Order_Type,
@@ -85,7 +90,7 @@ select nvl(gl.short_name, gl.name) Ledger,
  trunc(iso_line.request_date) Request_Date,
  trunc(iso_line.promise_date) Promise_Date,
  trunc((sysdate - iso.request_date)) Days_Outstanding,
- case 
+ case
   when (sysdate - iso.request_date) < 31  then '30 days'
   when (sysdate - iso.request_date) < 61  then '31 to 60 days'
   when (sysdate - iso.request_date) < 91  then '61 to 90 days'
@@ -104,13 +109,13 @@ from mtl_system_items_vl msiv,
  mtl_item_status_vl misv,
  mtl_units_of_measure_vl muomv,
  -- End revision for version 1.6
- cst_item_costs cic,    
- oe_order_headers_all iso,  
- oe_order_lines_all iso_line,  
+ cst_item_costs cic,
+ oe_order_headers_all iso,
+ oe_order_lines_all iso_line,
  oe_transaction_types_tl ottt,
- po_requisition_headers_all prh,   
+ po_requisition_headers_all prh,
  po_requisition_lines_all prl,
- mtl_parameters mp,    
+ mtl_parameters mp,
  mtl_parameters mp2,
  -- Revision for version 1.4
  fnd_common_lookups fcl,
@@ -128,26 +133,26 @@ from mtl_system_items_vl msiv,
  hr_organization_information hoi,
  hr_all_organization_units_vl haou,
  hr_all_organization_units_vl haou2,
- gl_ledgers gl    
+ gl_ledgers gl
 -- =============================================
 -- Internal order, item, cost and org joins
 -- =============================================
 where iso_line.open_flag              = 'Y'
-and msiv.inventory_item_id          = iso_line.inventory_item_id  
+and msiv.inventory_item_id          = iso_line.inventory_item_id
 and msiv.organization_id            = iso_line.ship_from_org_id
 -- Revision for version 1.6
 and msiv.primary_uom_code           = muomv.uom_code
 and msiv.inventory_item_status_code = misv.inventory_item_status_code
 -- End revision for version 1.6
-and msiv.inventory_item_id          = cic.inventory_item_id  
+and msiv.inventory_item_id          = cic.inventory_item_id
 and msiv.organization_id            = cic.organization_id
 -- Revision for version 1.6
-and cic.cost_type_id                = mp.primary_cost_method     
+and cic.cost_type_id                = mp.primary_cost_method
 and iso_line.line_category_code in ('ORDER')
 -- use this condition to limit this sql for internal requisitions
 and iso_line.order_source_id        = 10 -- internal requisitions
 and iso.header_id                   = iso_line.header_id
-and iso_line.line_type_id           = ottt.transaction_type_id  
+and iso_line.line_type_id           = ottt.transaction_type_id
 and ottt.language                   = userenv('lang')
 and mp.organization_id              = msiv.organization_id
 -- Revision for version 1.3
@@ -156,7 +161,7 @@ and sysdate                         <  nvl(haou.date_to, sysdate +1)
 -- =============================================
 -- Use these conditions to join to purchase reqs
 -- =============================================
-and prh.type_lookup_code            = 'INTERNAL'
+--e.clegg 05-05-24: and prh.type_lookup_code            = 'INTERNAL'
 and iso.source_document_id          = prh.requisition_header_id
 and prl.requisition_header_id       = prh.requisition_header_id
 and prl.requisition_line_id         = iso_line.source_document_line_id
@@ -193,12 +198,21 @@ and gl.ledger_id                    = to_number(hoi.org_information1) -- get the
 -- =============================================
 -- Parameters, revision for version 1.1 and 1.4
 -- =============================================
+and
+--e.clegg 05-05-24:
+( mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) or
+  mp2.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
+)
+and nvl(:p_src_dest_type,'Either') = nvl(:p_src_dest_type,'Either') 
+/*
 and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
 and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
 and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
+*/
+--e.clegg 05-05-24
 and 1=1                             -- p_item number, p_org_code, p_operating Unit, p_ledger
 -- Order by Ledger, Operating_Unit, Ship From, Ship To, Item, customer, order number and order line
-order by 
+order by
  nvl(gl.short_name, gl.name), -- Ledger
  haou2.name, --  Operating_Unit
  mp.organization_code, --  Ship_From_Org

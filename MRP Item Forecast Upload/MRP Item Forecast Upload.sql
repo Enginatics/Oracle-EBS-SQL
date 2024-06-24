@@ -83,7 +83,7 @@ select
  null request_id_,
  to_char(null) row_id,
  to_char(null) request_id,
- to_char(null) upload_mode,
+ :p_upload_mode upload_mode,
  to_char(null) source_code,
  to_char(null) replace_forecast,
  --

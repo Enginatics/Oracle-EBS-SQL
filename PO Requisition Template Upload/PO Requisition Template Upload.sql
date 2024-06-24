@@ -55,7 +55,7 @@ rowidtochar(prha.rowid) header_row_id,
 rowidtochar(prla.line_row_id) line_row_id,
 to_char(null) delete_this_line,
 to_char(null) pre_delete_template_lines,
-to_char(null) upload_mode,
+:p_upload_mode upload_mode,
 to_char(null) publish_template_to_icx,
 -- header
 haouv.name operating_unit,

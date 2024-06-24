@@ -42,7 +42,7 @@ coalesce(xrv.report_name,
 (select fcr.argument1||' (deleted)' from fnd_concurrent_requests fcr where xrr.request_id=fcr.request_id)
 ) report_name,
 xrrpv0.options,
-y.parameters,
+xxen_api.parameters(xrr.run_id) parameters,
 coalesce(xrr.completion_message,
 nvl2(fcr.request_id,
 decode(fcr.phase_code,'P','Pending - ','R','Running - ')||trim(
@@ -75,43 +75,6 @@ fnd_responsibility_tl frt,
 (
 select distinct
 x.run_id,
-listagg(nvl(xrpt.parameter_name,'('||x.rank||')')||': '||case when x.dupl_count>1 then '('||x.value||')' else x.value end,chr(10)) within group (order by nvl(xrp.display_sequence,x.parameter_id)) over (partition by x.run_id) parameters
-from
-(
-select distinct
-xrrpv.run_id,
-xrrpv.parameter_id,
-rank() over (partition by xrrpv.run_id order by xrrpv.parameter_id) rank,
-count(*) over (partition by xrrpv.run_id,xrrpv.parameter_id) dupl_count,
-listagg(xrrpv.value,';') within group (order by xrrpv.value) over (partition by xrrpv.run_id,xrrpv.parameter_id) value
-from
-(
-select
-z.*
-from
-(
-select
-sum(length(xrrpv.value)+2) over (partition by xrrpv.run_id,xrrpv.parameter_id order by dbms_lob.substr(xrrpv.value,4000,1) rows between unbounded preceding and current row) listagg_length,
-xrrpv.*
-from
-xxen_report_run_param_values xrrpv
-where
-xrrpv.parameter_id>0
-) z
-where
-z.listagg_length<3500
-) xrrpv
-) x,
-xxen_report_parameters xrp,
-xxen_report_parameters_tl xrpt
-where
-x.parameter_id=xrp.parameter_id(+) and
-x.parameter_id=xrpt.parameter_id(+) and
-xrpt.language(+)=userenv('lang')
-) y,
-(
-select distinct
-x.run_id,
 listagg(x.parameter_name||': '||x.value,chr(10)) within group (order by x.parameter_id desc) over (partition by x.run_id) options
 from
 (
@@ -133,7 +96,6 @@ xrr.request_id=fcr.request_id(+) and
 xrr.responsibility_application_id=frt.application_id(+) and
 xrr.responsibility_id=frt.responsibility_id(+) and
 frt.language(+)=userenv('lang') and
-xrr.run_id=y.run_id(+) and
 xrr.run_id=xrrpv0.run_id(+)
 ) x
 order by

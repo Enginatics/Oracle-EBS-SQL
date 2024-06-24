@@ -54,10 +54,10 @@ gcck.gl_account_type=ffvv.flex_value and
 ffvv.flex_value_set_id=ffvs.flex_value_set_id and
 ffvs.flex_value_set_name='GL_SRS_ACCOUNT_TYPE' and
 gcck.alternate_code_combination_id=gccka.code_combination_id(+) and
-fifs.id_flex_num =gcck.chart_of_accounts_id and
-fifs.application_id = 101 and
-fifs.id_flex_code = 'GL#' and
-fifs.language = userenv ('LANG')
+fifs.id_flex_num=gcck.chart_of_accounts_id and
+fifs.application_id=101 and
+fifs.id_flex_code='GL#' and
+fifs.language=userenv ('lang')
 &not_use_first_block
 &report_table_select &report_table_name &report_table_where_clause &success_records
 &processed_run

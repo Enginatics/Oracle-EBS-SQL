@@ -117,7 +117,7 @@ gjh.close_acct_seq_value gl_close_acct_seq_val,
 xah.close_acct_seq_value sl_close_acct_seq_val,
 nvl2(xe.event_id,xah.close_acct_seq_value,gjh.close_acct_seq_value) reporting_seq,
 nvl2(xal.gl_sl_link_id,xal.jgzz_recon_ref,(select gjlr.jgzz_recon_ref from gl_je_lines_recon gjlr where gjl.je_header_id=gjlr.je_header_id and gjl.je_line_num=gjlr.je_line_num)) reconciliation_reference,
-&lp_gjl_dff_cols
+&dff_cols
 coalesce(aia.source,rbsa.name,gjsv.user_je_source_name) sl_source,
 decode(gjsv.user_je_source_name,'Assets',to_char(xte.source_id_int_3),'Payables',aba.batch_name,'Receivables',decode(xah.je_category_name,'Receipts',arba.name,rba.name)) sl_batch_no,
 --Assets
@@ -256,7 +256,22 @@ gp.start_date period_date,
 gp.period_name period,
 'Journal' record_type,
 gcck.chart_of_accounts_id,
-(select fifs.flex_value_set_id from fnd_id_flex_segments fifs where gcck.chart_of_accounts_id=fifs.id_flex_num and fifs.application_id=101 and fifs.id_flex_code='GL#' and fifs.application_column_name='&hierarchy_segment_column') flex_value_set_id
+(
+select
+fifs.flex_value_set_id
+from
+fnd_id_flex_segments fifs,
+fnd_flex_values ffv
+where
+gcck.chart_of_accounts_id=fifs.id_flex_num and
+fifs.application_id=101 and
+fifs.id_flex_code='GL#' and
+fifs.application_column_name='&hierarchy_segment_column' and
+fifs.flex_value_set_id=ffv.flex_value_set_id and
+ffv.parent_flex_value_low is null and
+ffv.summary_flag='N' and
+7=7
+) flex_value_set_id
 from
 gl_ledgers gl,
 gl_periods gp,
@@ -487,7 +502,7 @@ null gl_close_acct_seq_val,
 null sl_close_acct_seq_val,
 null reporting_seq,
 null reconciliation_reference,
-&lp_gjl_dff_cols_null
+&dff_cols_null
 null sl_source,
 null sl_batch_no,
 --Assets
@@ -581,7 +596,22 @@ gp.start_date-1 period_date,
 gp.period_name period,
 'Balance' record_type,
 gcck.chart_of_accounts_id,
-(select fifs.flex_value_set_id from fnd_id_flex_segments fifs where gcck.chart_of_accounts_id=fifs.id_flex_num and fifs.application_id=101 and fifs.id_flex_code='GL#' and fifs.application_column_name='&hierarchy_segment_column') flex_value_set_id
+(
+select
+fifs.flex_value_set_id
+from
+fnd_id_flex_segments fifs,
+fnd_flex_values ffv
+where
+gcck.chart_of_accounts_id=fifs.id_flex_num and
+fifs.application_id=101 and
+fifs.id_flex_code='GL#' and
+fifs.application_column_name='&hierarchy_segment_column' and
+fifs.flex_value_set_id=ffv.flex_value_set_id and
+ffv.parent_flex_value_low is null and
+ffv.summary_flag='N' and
+7=7
+) flex_value_set_id
 from
 gl_ledgers gl,
 gl_periods gp,
@@ -621,15 +651,4 @@ exists
 ) and
 decode(gb.currency_code,:revaluation_currency,null,gb.currency_code)=gdr.from_currency(+)
 union all
-select -- GL Closing Balance
-'ο'||gp.period_name||' Close Bal' period_name,
-'99 '||gp.period_name||' Close Bal' period_name_label,
-gl.name ledger,
-null source_name,
-null reference,
-null category_name,
-null batch_name,
-null batch_status,
-null posted_date,
-null journal_name,
-nul
+select

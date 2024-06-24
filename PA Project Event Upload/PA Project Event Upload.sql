@@ -140,7 +140,7 @@ from
  pa_conversion_types_v        pct2,
  pa_conversion_types_v        pct3
 where
- :p_upload_mode != xxen_upload.action_meaning(xxen_upload.action_create) and
+ :p_upload_mode like '%' || xxen_upload.action_update and
  :p_pm_product_code = :p_pm_product_code and
  nvl(:p_operating_unit,'Y') = nvl(:p_operating_unit,'Y') and
  nvl(:p_validate_dff,'Y') = nvl(:p_validate_dff,'Y') and

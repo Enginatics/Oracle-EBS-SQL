@@ -65,7 +65,7 @@ mtl_system_items_vl msiv,
 pjm_projects_org_v ppov,
 pjm_tasks_v ptv
 where
-:p_upload_mode != xxen_upload.action_meaning(xxen_upload.action_create) and
+:p_upload_mode like '%' || xxen_upload.action_update and
 1=1 and
 mss.organization_id = mp.organization_id and
 mss.organization_id = msiv.organization_id and

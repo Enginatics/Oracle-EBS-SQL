@@ -57,7 +57,7 @@ gl_daily_rates gdr,
 gl_daily_conversion_types gdct,
 fnd_user fu
 where
-:p_upload_mode is null and
+:p_upload_mode like '%' || xxen_upload.action_update and
 :p_action = :p_action and
 nvl(:p_user_conv_type,'?') = nvl(:p_user_conv_type,'?') and
 1=1 and

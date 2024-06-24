@@ -26,7 +26,6 @@ u.ledger_debit,
 u.ledger_credit,
 u.ledger_amount,
 u.ledger_end_balance,
---
 u.ledger_amount_act actual,
 u.ledger_amount_bud budget,
 u.ledger_amount_bud_v_act budget_v_actual,
@@ -34,7 +33,6 @@ u.ledger_amount_bud_v_act budget_v_actual,
 u.ledger_amount_enc encumbrance,
 u.ledger_amount_enc_v_act encumb_v_actual,
 -u.ledger_amount_enc_v_act actual_v_encumb,
---
 &reval_columns
 &segment_columns3
 &hierarchy_levels4
@@ -65,20 +63,17 @@ sum(z.debit) over (partition by z.ledger, z.period_name, z.ledger_currency, z.ba
 sum(z.credit) over (partition by z.ledger, z.period_name, z.ledger_currency, z.balance_currency, &segment_columns z.actual_flag, z.budget_version_id, z.encumbrance_type_id) credit,
 sum(z.amount) over (partition by z.ledger, z.period_name, z.ledger_currency, z.balance_currency, &segment_columns z.actual_flag, z.budget_version_id, z.encumbrance_type_id) amount,
 sum(z.end_balance) over (partition by z.ledger, z.period_name, z.ledger_currency, z.balance_currency, &segment_columns z.actual_flag, z.budget_version_id, z.encumbrance_type_id) end_balance,
---
 z.ledger_currency,
 sum(z.start_balance_func) over (partition by z.ledger, z.period_name, z.ledger_currency, z.balance_currency, &segment_columns z.actual_flag, z.budget_version_id, z.encumbrance_type_id) ledger_start_balance,
 sum(z.debit_func) over (partition by z.ledger, z.period_name, z.ledger_currency, z.balance_currency, &segment_columns z.actual_flag, z.budget_version_id, z.encumbrance_type_id) ledger_debit,
 sum(z.credit_func) over (partition by z.ledger, z.period_name, z.ledger_currency, z.balance_currency, &segment_columns z.actual_flag, z.budget_version_id, z.encumbrance_type_id) ledger_credit,
 sum(z.amount_func) over (partition by z.ledger, z.period_name, z.ledger_currency, z.balance_currency, &segment_columns z.actual_flag, z.budget_version_id, z.encumbrance_type_id) ledger_amount,
 sum(z.end_balance_func) over (partition by z.ledger, z.period_name, z.ledger_currency, z.balance_currency, &segment_columns z.actual_flag, z.budget_version_id, z.encumbrance_type_id) ledger_end_balance,
---
 sum(decode(z.actual_flag,'A',z.amount_func,0)) over (partition by z.ledger, z.period_name, z.ledger_currency, z.balance_currency, &segment_columns z.actual_flag, z.budget_version_id, z.encumbrance_type_id) ledger_amount_act,
 sum(decode(z.actual_flag,'B',z.amount_func,0)) over (partition by z.ledger, z.period_name, z.ledger_currency, z.balance_currency, &segment_columns z.actual_flag, z.budget_version_id, z.encumbrance_type_id) ledger_amount_bud,
 sum(decode(z.actual_flag,'E',z.amount_func,0)) over (partition by z.ledger, z.period_name, z.ledger_currency, z.balance_currency, &segment_columns z.actual_flag, z.budget_version_id, z.encumbrance_type_id) ledger_amount_enc,
 sum(decode(z.actual_flag,'B',z.amount_func,'A',-z.amount_func,0)) over (partition by z.ledger, z.period_name, z.ledger_currency, z.balance_currency, &segment_columns z.actual_flag, z.budget_version_id, z.encumbrance_type_id) ledger_amount_bud_v_act,
 sum(decode(z.actual_flag,'E',z.amount_func,'A',-z.amount_func,0)) over (partition by z.ledger, z.period_name, z.ledger_currency, z.balance_currency, &segment_columns z.actual_flag, z.budget_version_id, z.encumbrance_type_id) ledger_amount_enc_v_act,
---
 :reval_currency reval_currency,
 z.rate reval_rate,
 sum(z.start_balance_func*z.rate) over (partition by z.ledger, z.period_name, z.ledger_currency, z.balance_currency, &segment_columns z.actual_flag, z.budget_version_id, z.encumbrance_type_id) reval_start_balance,
@@ -106,13 +101,11 @@ decode(y.column_value,2,null,x.debit) debit,
 decode(y.column_value,2,null,x.credit) credit,
 decode(y.column_value,2,x.start_balance,x.amount) amount,
 decode(y.column_value,2,null,x.end_balance) end_balance,
---
 decode(y.column_value,2,null,x.start_balance_func) start_balance_func,
 decode(y.column_value,2,null,x.debit_func) debit_func,
 decode(y.column_value,2,null,x.credit_func) credit_func,
 decode(y.column_value,2,x.start_balance_func,x.amount_func) amount_func,
 decode(y.column_value,2,null,x.end_balance_func) end_balance_func,
---
 x.rate,
 decode(y.column_value,2,0,x.effective_period_num) effective_period_num,
 x.start_effective_period_num,
@@ -250,13 +243,28 @@ gcck.*
 from
 (
 select
-(select fifs.flex_value_set_id from fnd_id_flex_segments fifs where gcck.chart_of_accounts_id=fifs.id_flex_num and fifs.application_id=101 and fifs.id_flex_code='GL#' and fifs.application_column_name='&hierarchy_segment_column') flex_value_set_id,
+(
+select
+fifs.flex_value_set_id
+from
+fnd_id_flex_segments fifs,
+fnd_flex_values ffv
+where
+gcck.chart_of_accounts_id=fifs.id_flex_num and
+fifs.application_id=101 and
+fifs.id_flex_code='GL#' and
+fifs.application_column_name='&hierarchy_segment_column' and
+fifs.flex_value_set_id=ffv.flex_value_set_id and
+ffv.parent_flex_value_low is null and
+ffv.summary_flag='N' and
+5=5
+) flex_value_set_id,
 gcck.*
 from
 gl_code_combinations_kfv gcck
 where
-4=4 and
 &gl_flex_value_security
+4=4
 ) gcck,
 (
 select

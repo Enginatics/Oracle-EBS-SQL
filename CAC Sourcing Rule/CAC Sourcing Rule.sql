@@ -57,9 +57,10 @@
 -- Library Link: https://www.enginatics.com/reports/cac-sourcing-rule/
 -- Run Report: https://demo.enginatics.com/
 
-select nvl(gl.short_name, gl.name) Ledger,
-  haou2.name Operating_Unit,
- :p_sourcing_rule_type Sourcing_Rule_Type,
+select
+ nvl(gl.short_name, gl.name) Ledger,
+ haou2.name Operating_Unit,
+ xxen_util.meaning(:p_sourcing_rule_type,'MTL_SOURCE_TYPES',700) Sourcing_Rule_Type,
  mp_to_org.organization_code To_Org, 
  -- Revision for version 1.8
  -- mp_src_org.organization_code Src_Org,
@@ -98,21 +99,6 @@ from mrp_sr_source_org msso,
  mfg_lookups ml2,
  -- Revision for version 1.9
  fnd_common_lookups fcl,
- -- Revision for version 1.10
- (select flv.meaning sourcing_rule_type
-  from fnd_lookup_values flv
-  where flv.lookup_type = 'MSC_CRITERIA_FIELD_PROMPT'
-  and flv.lookup_code in ('ORGANIZATION_CODE', ' SUPPLIER_ID')
-  and flv.language = 'US'
-  and flv.lookup_code =
-  (select fl2.lookup_code
-   from fnd_lookups fl2 -- Original language
-   where fl2.lookup_type = 'MSC_CRITERIA_FIELD_PROMPT'
-   and fl2.lookup_code in ('ORGANIZATION_CODE', ' SUPPLIER_ID')
-   and fl2.meaning     = :p_sourcing_rule_type
-  )
- ) flv,
- -- End revision for version 1.10
  hr_organization_information hoi,
  hr_all_organization_units_vl haou, -- inv_organization_id
  hr_all_organization_units_vl haou2, -- operating unit 
@@ -136,10 +122,7 @@ and (msr.organization_id is null or msr.organization_id in (select oav.organizat
 and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
 and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
 and 1=1                             -- p_item_number, p_to_org_code, p_operating_unit, p_ledger
-and decode(flv.sourcing_rule_type,
-  'Supplier', -999,
-  'Org', msso.source_organization_id,
-  null, msso.source_organization_id) = msso.source_organization_id
+and decode(:p_sourcing_rule_type,'2',-999,msso.source_organization_id) = msso.source_organization_id
 -- End revision for version 1.9 
 -- ====================================
 -- Lookup Code Joins
@@ -174,9 +157,10 @@ and sysdate < nvl(haou.date_to, sysdate + 1)
 -- Get the Vendor Sourcing_Rules
 -- ====================================
 union all
-select nvl(gl.short_name, gl.name) Ledger,
-  haou2.name Operating_Unit,
- :p_sourcing_rule_type Sourcing_Rule_Type,
+select
+ nvl(gl.short_name, gl.name) Ledger,
+ haou2.name Operating_Unit,
+ xxen_util.meaning(:p_sourcing_rule_type,'MTL_SOURCE_TYPES',700) Sourcing_Rule_Type,
  mp_to_org.organization_code To_Org, 
  pv.vendor_name From_Org_or_Supplier,
  mas.assignment_set_name Assignment_Set,
@@ -213,21 +197,6 @@ from mrp_sr_source_org msso,
  mfg_lookups ml2,
  -- Revision for version 1.9
  fnd_common_lookups fcl,
- -- Revision for version 1.10
- (select flv.meaning sourcing_rule_type
-  from fnd_lookup_values flv
-  where flv.lookup_type = 'MSC_CRITERIA_FIELD_PROMPT'
-  and flv.lookup_code in ('ORGANIZATION_CODE', ' SUPPLIER_ID')
-  and flv.language = 'US'
-  and flv.lookup_code =
-  (select fl2.lookup_code
-   from fnd_lookups fl2 -- Original language
-   where fl2.lookup_type = 'MSC_CRITERIA_FIELD_PROMPT'
-   and fl2.lookup_code in ('ORGANIZATION_CODE', ' SUPPLIER_ID')
-   and fl2.meaning     = :p_sourcing_rule_type
-  )
- ) flv,
- -- End revision for version 1.10
  hr_organization_information hoi,
  hr_all_organization_units_vl haou, -- inv_organization_id
  hr_all_organization_units_vl haou2, -- operating unit 
@@ -251,10 +220,7 @@ and (msr.organization_id is null or msr.organization_id in (select oav.organizat
 and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
 and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
 and 1=1                             -- p_item_number, p_to_org_code, p_operating_unit, p_ledger
-and decode(flv.sourcing_rule_type,
- 'Supplier', -1000,
- 'Org', -999,
- null, -1000) = nvl(msso.source_organization_id, -1000)
+and decode(:p_sourcing_rule_type,'1',-999,-1000) = nvl(msso.source_organization_id, -1000)
 -- End revision for version 1.9
 -- ====================================
 -- Lookup Code Joins

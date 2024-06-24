@@ -23,7 +23,10 @@ sd.identifier,
 sd.quantity,
 (sum(sd.qty_) over (partition by sd.item, sd.organization_code order by sd.seq)) +  sd.avail_qty_ available_quantity,
 sd.onhand_qty_ current_onhand,
-sd.avail_qty_ current_available
+sd.avail_qty_ current_available,
+sd.reservable_onhand_qty_ current_reservable_onhand,
+sd.reservable_avail_qty_ current_reservable_available,
+sd.reserved_qty_ current_reserved
 from
 ( select
    rownum seq,
@@ -99,6 +102,9 @@ from
      nvl2(msdt.on_hand_quantity,msdt.quantity,0) qty_,
      nvl(xxen_inv_sd.get_item_start_qty(msdt.inventory_item_id,msdt.organization_id,'ONHAND'),0) onhand_qty_,
      nvl(xxen_inv_sd.get_item_start_qty(msdt.inventory_item_id,msdt.organization_id,'AVAILABLE'),0) avail_qty_,
+     nvl(xxen_inv_sd.get_item_start_qty(msdt.inventory_item_id,msdt.organization_id,'RESERVABLE_ONHAND'),0) reservable_onhand_qty_,
+     nvl(xxen_inv_sd.get_item_start_qty(msdt.inventory_item_id,msdt.organization_id,'RESERVABLE_AVAILABLE'),0) reservable_avail_qty_,
+     nvl(xxen_inv_sd.get_item_start_qty(msdt.inventory_item_id,msdt.organization_id,'RESERVED'),0) reserved_qty_,
      msdt.inventory_item_id,
      msdt.organization_id
     from

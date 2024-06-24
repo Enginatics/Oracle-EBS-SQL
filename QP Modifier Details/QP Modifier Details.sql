@@ -59,7 +59,11 @@ q1 as
   --a.list_type_code,
   --a.gsa_indicator,
   a.parent_list_header_id parent_list_header_id1,
-  a.list_header_id list_header_id1
+  a.list_header_id list_header_id1,
+  xxen_util.client_time(a.creation_date) creation_date,
+  xxen_util.user_name(a.created_by,'N') created_by,
+  xxen_util.client_time(a.last_update_date) last_update_date,
+  xxen_util.user_name(a.last_updated_by,'N') last_updated_by
  from
   qp_secu_list_headers_vl a
  where
@@ -88,7 +92,11 @@ q2 as
   --a.qualifier_attr_value_to,
   --a.qualifier_datatype,
   a.list_header_id list_header_id2,
-  a.list_line_id list_line_id2
+  a.list_line_id list_line_id2,
+  xxen_util.client_time(a.creation_date) creation_date,
+  xxen_util.user_name(a.created_by,'N') created_by,
+  xxen_util.client_time(a.last_update_date) last_update_date,
+  xxen_util.user_name(a.last_updated_by,'N') last_updated_by
  from
   qp_qualifiers_v a
  order by
@@ -170,7 +178,11 @@ q3 as
 --  a.charge_subtype_code,
 --  a.net_amount_flag,
   a.list_line_id list_line_id3,
-  a.list_header_id list_header_id3
+  a.list_header_id list_header_id3,
+  xxen_util.client_time(a.creation_date) creation_date,
+  xxen_util.user_name(a.created_by,'N') created_by,
+  xxen_util.client_time(a.last_update_date) last_update_date,
+  xxen_util.user_name(a.last_updated_by,'N') last_updated_by
  from
   qp_modifier_summary_v a
  where
@@ -208,7 +220,11 @@ q4 as
 --  b.pricing_attribute_id,
   b.list_line_id list_line_id4,
   b.list_header_id list_header_id4,
-  b.parent_list_line_id parent_list_line_id4
+  b.parent_list_line_id parent_list_line_id4,
+  xxen_util.client_time(b.creation_date) creation_date,
+  xxen_util.user_name(b.created_by,'N') created_by,
+  xxen_util.client_time(b.last_update_date) last_update_date,
+  xxen_util.user_name(b.last_updated_by,'N') last_updated_by
  from
   qp_price_breaks_v b
 ),
@@ -236,7 +252,11 @@ q5 as
 --  a.pricing_attribute_id,
   a.list_line_id list_line_id5,
   a.list_header_id list_header_id5,
-  a.parent_list_line_id parent_list_line_id5
+  a.parent_list_line_id parent_list_line_id5,
+  xxen_util.client_time(a.creation_date) creation_date,
+  xxen_util.user_name(a.created_by,'N') created_by,
+  xxen_util.client_time(a.last_update_date) last_update_date,
+  xxen_util.user_name(a.last_updated_by,'N') last_updated_by
  from
   qp_pricing_attr_v a
 ),
@@ -267,7 +287,11 @@ q6 as
 --  g.pricing_attribute_id,
   g.list_line_id list_line_id6,
   g.list_header_id list_header_id6,
-  g.parent_list_line_id parent_list_line_id6
+  g.parent_list_line_id parent_list_line_id6,
+  xxen_util.client_time(g.creation_date) creation_date,
+  xxen_util.user_name(g.created_by,'N') created_by,
+  xxen_util.client_time(g.last_update_date) last_update_date,
+  xxen_util.user_name(g.last_updated_by,'N') last_updated_by
  from
   qp_pricing_attr_get_v g
 )
@@ -379,6 +403,11 @@ select /*+ push_pred(q2) push_pred(q3) push_pred(q4) push_pred(q5) push_pred(q6)
  q6.get_uom,
  q6.get_price,
  --
+ q2.creation_date,
+ q2.created_by,
+ q2.last_update_date,
+ q2.last_updated_by,
+ --
  1 sort_order
 from
  q1,
@@ -397,7 +426,7 @@ where
 --
 union
 -- List Lines
--- Q1, Q3, Q4
+-- Q1, Q3
 select /*+ push_pred(q2) push_pred(q3) push_pred(q4) push_pred(q5) push_pred(q6) */
  q1.modifier_number,
  q1.modifier_name,
@@ -497,6 +526,11 @@ select /*+ push_pred(q2) push_pred(q3) push_pred(q4) push_pred(q5) push_pred(q6)
  q6.get_uom,
  q6.get_price,
  --
+ q3.creation_date,
+ q3.created_by,
+ q3.last_update_date,
+ q3.last_updated_by,
+ --
  2 sort_order
 from
  q1,
@@ -510,7 +544,7 @@ where
  q1.list_header_id1 = q3.list_header_id3 and
  nvl2(q3.list_line_id3,-1,-1) = q4.parent_list_line_id4 (+) and
  nvl2(q3.list_line_id3,-1,-1) = q5.parent_list_line_id5 (+) and
- nvl2(q3.list_line_id3,-1,-1) = q6.parent_list_line_id6 (+) 
+ nvl2(q3.list_line_id3,-1,-1) = q6.parent_list_line_id6 (+)
  --and
  --not exists
  --(select 'X' from q2 where q3.list_line_id3 = q2.list_line_id2
@@ -523,8 +557,8 @@ where
  --)
 --
 union
--- List Header Qualifiers
--- Q1, Q2
+-- List Line Qualifiers
+-- Q1, Q3, Q2
 select /*+ push_pred(q2) push_pred(q3) push_pred(q4) push_pred(q5) push_pred(q6) */
  q1.modifier_number,
  q1.modifier_name,
@@ -623,6 +657,11 @@ select /*+ push_pred(q2) push_pred(q3) push_pred(q4) push_pred(q5) push_pred(q6)
  q6.get_quantity,
  q6.get_uom,
  q6.get_price,
+ --
+ q2.creation_date,
+ q2.created_by,
+ q2.last_update_date,
+ q2.last_updated_by,
  --
  3 sort_order
 from
@@ -742,6 +781,11 @@ select /*+ push_pred(q2) push_pred(q3) push_pred(q4) push_pred(q5) push_pred(q6)
  q6.get_uom,
  q6.get_price,
  --
+ q4.creation_date,
+ q4.created_by,
+ q4.last_update_date,
+ q4.last_updated_by,
+ --
  4 sort_order
 from
  q1,
@@ -859,6 +903,11 @@ select /*+ push_pred(q2) push_pred(q3) push_pred(q4) push_pred(q5) push_pred(q6)
  q6.get_uom,
  q6.get_price,
  --
+ q5.creation_date,
+ q5.created_by,
+ q5.last_update_date,
+ q5.last_updated_by,
+ --
  5 sort_order
 from
  q1,
@@ -975,6 +1024,11 @@ select /*+ push_pred(q2) push_pred(q3) push_pred(q4) push_pred(q5) push_pred(q6)
  q6.get_quantity,
  q6.get_uom,
  q6.get_price,
+ --
+ q6.creation_date,
+ q6.created_by,
+ q6.last_update_date,
+ q6.last_updated_by,
  --
  6 sort_order
 from

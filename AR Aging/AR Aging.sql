@@ -22,6 +22,7 @@ select
  x1.sort_field1                      salesperson,
  x1.cust_name                        customer,
  x1.cust_no                          customer_number,
+ x1.cust_country                     customer_country,
  x1.collector                        collector,
  &lp_invoice_cols_s
  x1.revaluation_from_currency        amounts_currency,
@@ -33,6 +34,7 @@ select
  &lp_aging_pct_cols
  -- Revaluation Columns
  &lp_reval_columns
+ &lp_reval_aging_amount_cols
  --
  &party_dff_cols1
  &cust_dff_cols1
@@ -49,6 +51,7 @@ from
    x.sort_field2,
    x.cust_name,
    x.cust_no,
+   x.cust_country,
    (select ac.name
     from   ar_collectors ac
     where  ac.collector_id = nvl(hcps.collector_id,hcpa.collector_id)
@@ -116,6 +119,7 @@ from
      site.site_use_id,
      loc.state cust_state,
      loc.city cust_city,
+     (select ftv.territory_short_name from fnd_territories_vl ftv where ftv.territory_code = loc.country) cust_country,
      decode(decode(upper(rtrim(rpad(:p_in_format_option_low, 1))),'D','D',null),null,-1,acct_site.cust_acct_site_id) addr_id,
      nvl(hca.cust_account_id,-999) cust_id,
      hca.party_id,
@@ -390,7 +394,7 @@ from
        and ps.customer_trx_id = adj.chargeback_customer_trx_id (+)
        and ps.org_id = adj.org_id (+)
        and adj.customer_trx_id = ct.customer_trx_id (+)
-       and ps.org_id = ct.org_id (+) 
+       and adj.org_id = ct.org_id (+) 
        and xxen_ar_arxagrw_pkg.include_org_id(ps.org_id) = 'Y'
       ) a
      group by
@@ -478,7 +482,8 @@ from
      null term,
      site.site_use_id,
      loc.state cust_state,
-     loc.city cust_state,
+     loc.city cust_city,
+     (select ftv.territory_short_name from fnd_territories_vl ftv where ftv.territory_code = loc.country) cust_country,
      decode(decode(upper(RTRIM(RPAD(:p_in_format_option_low, 1))),'D','D',NULL),NULL,-1,acct_site.cust_acct_site_id) addr_id,
      nvl(hca.cust_account_id, -999) cust_id,
      hca.party_id,
@@ -592,6 +597,7 @@ from
      nvl(sales.salesrep_id,-3),
      loc.state,
      loc.city,
+     loc.country,
      acct_site.cust_acct_site_id,
      hca.cust_account_id,
      hca.party_id,
@@ -632,6 +638,7 @@ from
      site.site_use_id,
      loc.state cust_state,
      loc.city cust_city,
+     (select ftv.territory_short_name from fnd_territories_vl ftv where ftv.territory_code = loc.country) cust_country,
      decode(decode(upper(RTRIM(RPAD(:p_in_format_option_low, 1))),'D','D',NULL),NULL,-1,acct_site.cust_acct_site_id) addr_id,
      nvl(hca.cust_account_id, -999) cust_id,
      hca.party_id,
@@ -740,6 +747,7 @@ from
      site.site_use_id contact_site_id,
      loc.state cust_state,
      loc.city cust_city,
+     (select ftv.territory_short_name from fnd_territories_vl ftv where ftv.territory_code = loc.country) cust_country,
      decode(decode(upper(rtrim(rpad(:p_in_format_option_low, 1))),'D','D',null),null,-1,acct_site.cust_acct_site_id) addr_id,
      nvl(hca.cust_account_id,-999) cust_id,
      hca.party_id,
@@ -863,6 +871,7 @@ group by
  x1.sort_field1,
  x1.cust_name,
  x1.cust_no,
+ x1.cust_country,
  --
  &party_dff_cols1_g
  &cust_dff_cols1_g

@@ -187,7 +187,69 @@ select /*+ ordered index(hpb hz_parties_u1) index(hpbb hz_parties_u1) index(xep 
    where gdct.conversion_type = csl.exchange_rate_type
  ) exchange_rate_type,
  csl.exchange_rate,
- csl.original_amount trx_original_amount,
+ csl.original_amount line_original_amount,
+ (select
+  sum(
+  case
+  when crtv.application_id = 101
+  then nvl((select nvl(gjl.entered_dr,gjl.entered_cr) from gl_je_lines gjl where gjl.je_header_id = crtv.cash_receipt_id and gjl.je_line_num = crtv.trx_id),0)
+  when crtv.application_id = 200
+  then nvl((select aca.amount from ap_checks_all aca where aca.check_id = crtv.trx_id),0)
+  when crtv.application_id = 222
+  then nvl((select nvl(acrha.amount+nvl(acrha.factor_discount_amount,0), acrha.amount+nvl(acrha.factor_discount_amount,0)) from ar_cash_receipt_history_all acrha where acrha.cash_receipt_history_id = crtv.trx_id),0)
+  when crtv.application_id = 260 and crtv.clearing_trx_type = 'CASHFLOW'
+  then nvl((select cc.cashflow_amount
+            from ce_cashflows cc, fnd_currencies fc where cc.cashflow_id = crtv.trx_id and cc.cashflow_currency_code = fc.currency_code),0)
+  when crtv.application_id = 260 and crtv.clearing_trx_type = 'STATEMENT'
+  then nvl((select csl.amount from ce_statement_lines csl where csl.statement_line_id = crtv.trx_id),0)
+  when crtv.application_id = 801 and crtv.clearing_trx_type = 'PAY_EFT'
+  then nvl((select ppp.value from pay_assignment_actions paa, pay_pre_payments ppp where paa.assignment_action_id = crtv.trx_id and paa.pre_payment_id = ppp.pre_payment_id),0)
+  when crtv.application_id = 801 and crtv.clearing_trx_type = 'PAY' and crtv.status = 'V'
+  then nvl((select ppp.value from  pay_action_interlocks pai, pay_assignment_actions paa, pay_pre_payments ppp where pai.locking_action_id = crtv.trx_id and pai.locked_action_id = paa.assignment_action_id and paa.pre_payment_id = ppp.pre_payment_id),0)
+  when crtv.application_id = 801 and crtv.clearing_trx_type = 'PAY' and nvl(crtv.status,'X') != 'V'
+  then nvl((select ppp.value from pay_assignment_actions paa, pay_pre_payments ppp where paa.assignment_action_id = crtv.trx_id and paa.pre_payment_id = ppp.pre_payment_id),0)
+  when crtv.application_id = 999
+  then nvl((select civ.amount from ce_999_interface_v civ where civ.trx_id = crtv.trx_id),0)
+  when crtv.application_id = 185
+  then nvl((select abs(xss.settlement_amount) from xtr_settlement_summary xss where xss.settlement_summary_id = crtv.trx_id),0)
+  end
+  )
+  from
+  ce_reconciled_transactions_v crtv
+  where
+  crtv.statement_line_id = csl.statement_line_id
+ ) trx_original_amount,
+ (select
+  sum(
+  case
+  when crtv.application_id = 101
+  then nvl((select nvl(gjl.accounted_dr,gjl.accounted_cr) from gl_je_lines gjl where gjl.je_header_id = crtv.cash_receipt_id and gjl.je_line_num = crtv.trx_id),0)
+  when crtv.application_id = 200
+  then nvl((select nvl(aca.base_amount,aca.amount) from ap_checks_all aca where aca.check_id = crtv.trx_id),0)
+  when crtv.application_id = 222
+  then nvl((select nvl(acrha.acctd_amount+nvl(acrha.acctd_factor_discount_amount,0), acrha.amount+nvl(acrha.factor_discount_amount,0)) from ar_cash_receipt_history_all acrha where acrha.cash_receipt_history_id = crtv.trx_id),0)
+  when crtv.application_id = 260 and crtv.clearing_trx_type = 'CASHFLOW'
+  then nvl((select nvl(cc.base_amount,decode(fc.minimum_accountable_unit, null, round((cc.cashflow_amount * nvl(cc.cashflow_exchange_rate,1)), nvl(fc.precision,2)), (round(((cc.cashflow_amount * nvl(cc.cashflow_exchange_rate,1))/fc.minimum_accountable_unit),0) * fc.minimum_accountable_unit)))
+            from ce_cashflows cc, fnd_currencies fc where cc.cashflow_id = crtv.trx_id and cc.cashflow_currency_code = fc.currency_code),0)
+  when crtv.application_id = 260 and crtv.clearing_trx_type = 'STATEMENT'
+  then nvl((select nvl(csl.original_amount,csl.amount) from ce_statement_lines csl where csl.statement_line_id = crtv.trx_id),0)
+  when crtv.application_id = 801 and crtv.clearing_trx_type = 'PAY_EFT'
+  then nvl((select nvl(ppp.base_currency_value, ppp.value) from pay_assignment_actions paa, pay_pre_payments ppp where paa.assignment_action_id = crtv.trx_id and paa.pre_payment_id = ppp.pre_payment_id),0)
+  when crtv.application_id = 801 and crtv.clearing_trx_type = 'PAY' and crtv.status = 'V'
+  then nvl((select nvl(ppp.base_currency_value, ppp.value) from  pay_action_interlocks pai, pay_assignment_actions paa, pay_pre_payments ppp where pai.locking_action_id = crtv.trx_id and pai.locked_action_id = paa.assignment_action_id and paa.pre_payment_id = ppp.pre_payment_id),0)
+  when crtv.application_id = 801 and crtv.clearing_trx_type = 'PAY' and nvl(crtv.status,'X') != 'V'
+  then nvl((select nvl(ppp.base_currency_value, ppp.value) from pay_assignment_actions paa, pay_pre_payments ppp where paa.assignment_action_id = crtv.trx_id and paa.pre_payment_id = ppp.pre_payment_id),0)
+  when crtv.application_id = 999
+  then nvl((select nvl(civ.acctd_amount,civ.amount) from ce_999_interface_v civ where civ.trx_id = crtv.trx_id),0)
+  when crtv.application_id = 185
+  then nvl((select abs(xss.settlement_amount) from xtr_settlement_summary xss where xss.settlement_summary_id = crtv.trx_id),0)
+  end
+  )
+  from
+  ce_reconciled_transactions_v crtv
+  where
+  crtv.statement_line_id = csl.statement_line_id
+ ) trx_original_amount_acctd,
  --
  nvl( csl.customer_text
     , ( select /*+ push_pred */ crtv.agent_name
@@ -291,10 +353,76 @@ where
  oth_recon.statement_line_id (+) = decode(csl.trx_type,'NSF',null,csl.statement_line_id) and
  1=1
 )
-&lp_recon_trx_qry
+,ce_recon_transactions as
+(
+select  /*+ push_pred */
+ crtv.statement_line_id,
+ crtv.type_meaning recon_trx_type,
+ crtv.trx_number recon_trx_number,
+ crtv.currency_code recon_trx_currency,
+ crtv.amount recon_trx_amount,
+ crtv.bank_account_amount recon_bank_account_amount,
+ case when crtv.status in ('STOP INITIATED', 'VOIDED', 'V')
+ then to_number(null)
+ else crtv.amount_cleared
+ end recon_trx_amount_cleared,
+ trunc(crtv.cleared_date) recon_trx_cleared_date,
+ trunc(crtv.maturity_date) recon_trx_maturity_date,
+ trunc(crtv.value_date) recon_trx_value_date,
+ trunc(crtv.gl_date) recon_trx_gl_date,
+ trunc(crtv.trx_date) recon_trx_date,
+ trunc(crtv.exchange_rate_date) recon_trx_exchange_rate_date,
+ crtv.exchange_rate_type recon_trx_exchange_rate_type,
+ crtv.exchange_rate_dsp recon_trx_exchange_rate,
+ crtv.bank_charges recon_trx_bank_charges,
+ crtv.bank_errors recon_trx_bank_errors,
+ crtv.remittance_number recon_trx_remittance_number,
+ crtv.batch_name recon_trx_batch_name,
+ case when crtv.cash_receipt_id is not null
+       and crtv.application_id = 222
+ then ( select ifte.payment_system_order_number
+        from   ar_cash_receipts_all acra,
+               iby_fndcpt_tx_extensions ifte
+        where  acra.payment_trxn_extension_id = ifte.trxn_extension_id(+)
+        and    acra.cash_receipt_id = crtv.cash_receipt_id
+        and    rownum=1
+      )
+ else null
+ end recon_trx_pson,
+ crtv.agent_name recon_trx_agent_name,
+ crtv.reference_type_dsp recon_trx_reference_type,
+ case
+ when crtv.reference_type = 'REMITTANCE'
+ then ( select aba.name
+        from   ar_batches_all aba
+        where  aba.batch_id = crtv.reference_id
+        and    rownum=1)
+ when crtv.reference_type = 'PAYMENT_BATCH'
+ then to_char(crtv.reference_id)
+ when crtv.reference_type = 'RECEIPT'
+ then ( select acra.receipt_number
+        from   ar_cash_receipts_all acra
+        where  acra.cash_receipt_id = crtv.reference_id
+        and    rownum=1)
+ when crtv.reference_type in ('PAYMENT','REFUND')
+ then ( select to_char(aca.check_number)
+        from   ap_checks_all aca
+        where  aca.check_id = crtv.reference_id
+        and    rownum=1)
+ end recon_trx_reference_number,
+ haou.name recon_trx_operating_unit,
+ crtv.status_dsp recon_trx_status
+from
+ ce_reconciled_transactions_v crtv,
+ hr_all_organization_units    haou
+where
+ 2=2 and
+ :p_show_trx is not null and
+ haou.organization_id (+) = crtv.org_id
+)
 --
 -- Main Query Starts Here
-select &lp_recon_trx_hint
+select /*+ use_nl(crt cebs) */
  cebs.legal_entity,
  cebs.bank_account_num,
  cebs.bank_account_name,
@@ -365,7 +493,11 @@ select &lp_recon_trx_hint
  cebs.exchange_date,
  cebs.exchange_rate_type,
  cebs.exchange_rate,
+ cebs.line_original_amount,
  cebs.trx_original_amount,
+ cebs.trx_original_amount_acctd,
+ decode(sign(cebs.net_reconciled_amount),-1,-1,1) * abs(cebs.trx_original_amount) net_trx_original_amount,
+ decode(sign(cebs.net_reconciled_amount),-1,-1,1) * abs(cebs.trx_original_amount) net_trx_original_amount_acctd, 
  cebs.agent,
  cebs.agent_bank_account,
  cebs.invoice,
@@ -375,7 +507,30 @@ select &lp_recon_trx_hint
  cebs.line_last_updated_date,
  --
  -- Reconcilation Trx Details
- &lp_recon_trx_col
+ crt.recon_trx_type,
+ crt.recon_trx_number,
+ crt.recon_trx_currency,
+ crt.recon_trx_amount,
+ crt.recon_bank_account_amount,
+ crt.recon_trx_amount_cleared,
+ crt.recon_trx_cleared_date,
+ crt.recon_trx_maturity_date,
+ crt.recon_trx_value_date,
+ crt.recon_trx_gl_date,
+ crt.recon_trx_date,
+ crt.recon_trx_exchange_rate_date,
+ crt.recon_trx_exchange_rate_type,
+ crt.recon_trx_exchange_rate,
+ crt.recon_trx_bank_charges,
+ crt.recon_trx_bank_errors,
+ crt.recon_trx_remittance_number,
+ crt.recon_trx_batch_name,
+ crt.recon_trx_pson,
+ crt.recon_trx_agent_name,
+ crt.recon_trx_reference_type,
+ crt.recon_trx_reference_number,
+ crt.recon_trx_operating_unit,
+ crt.recon_trx_status,
  --
  -- GL Cash Account Details
  cebs.gl_company_code,
@@ -395,11 +550,11 @@ select &lp_recon_trx_hint
  cebs.bank_name || ' - ' || cebs.bank_account_num || ' - ' || cebs.bank_account_name || ' (' ||  cebs.bank_account_currency || ')' bank_account_pivot_label,
  to_char(cebs.statement_date,'YYYY-MM-DD') || ' - ' || cebs.statement_num  statement_num_pivot_label
 from
- ce_bank_statements        cebs
- &lp_recon_trx_tab
+ ce_bank_statements    cebs,
+ ce_recon_transactions crt
 where
- 3=3
- &lp_recon_trx_join
+ 3=3 and 
+ cebs.statement_line_id = crt.statement_line_id (+)
 order by
  cebs.legal_entity,
  cebs.bank_name,
@@ -407,5 +562,5 @@ order by
  cebs.statement_date,
  cebs.statement_num,
  cebs.line_num,
- cebs.recon_sort_num
- &lp_recon_trx_ord
+ cebs.recon_sort_num,
+ lpad(crt.recon_trx_number, 240)

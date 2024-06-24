@@ -15,23 +15,17 @@ with reporting_table as
 document_types_ as
 (
 select
-distinct
-case when pdtat.document_type_code='QUOTATION' then pdtat.document_type_code else pdtat.document_subtype end document_type,
-pdtat.type_name document_type_name
+case when pdtav.document_type_code='QUOTATION' then pdtav.document_type_code else pdtav.document_subtype end document_type,
+pdtav.type_name document_type_name
 from
-po_document_types_all_tl pdtat,
-po_document_types_all_b pdtab,
+po_document_types_all_vl pdtav,
 hr_all_organization_units_vl haouv
 where
 2=2 and
 3=3 and
-pdtab.org_id=haouv.organization_id and
-pdtab.org_id=pdtat.org_id and
-pdtab.document_type_code in ('PO','PA','QUOTATION') and
-pdtab.document_subtype in ('BLANKET','CONTRACT','STANDARD') and
-pdtab.document_type_code=pdtat.document_type_code and
-pdtab.document_subtype=pdtat.document_subtype and
-pdtat.language=userenv ('lang')
+pdtav.org_id=haouv.organization_id and
+pdtav.document_type_code in ('PO','PA','QUOTATION') and
+pdtav.document_subtype in ('BLANKET','CONTRACT','STANDARD')
 ),
 po_lines_ as
 (
@@ -81,7 +75,8 @@ mtl_parameters mp,
 hr_locations_all hla
 where
 plla.ship_to_location_id=hla.location_id(+) and
-plla.ship_to_organization_id=mp.organization_id(+)
+plla.ship_to_organization_id=mp.organization_id(+) and
+plla.po_release_id is null
 )
 select
 null action_,
@@ -96,7 +91,7 @@ null group_,
 pha.revision_num,
 pha.creation_date,
 pt.document_type_name document_type,
-pha.authorization_status approval_status,
+po_headers_sv3.get_po_status(pha.po_header_id) document_status,
 pha.currency_code,
 pha.reference_num header_reference_num,
 pha.comments header_description,
@@ -133,6 +128,7 @@ pda.po_distribution_id,
 pda.distribution_num,
 pda.quantity_ordered,
 gcck.concatenated_segments charge_account,
+null approval_status,
 null create_or_update_items,
 null group_lines
 from
@@ -162,7 +158,11 @@ pha.ship_to_location_id=hla2.location_id(+) and
 pha.po_header_id=pl.po_header_id(+) and
 pl.po_line_id=pll.po_line_id(+) and
 pll.line_location_id=pda.line_location_id(+) and
-pda.code_combination_id=gcck.code_combination_id(+)
+pda.code_combination_id=gcck.code_combination_id(+) and
+nvl(pha.cancel_flag,'N')='N' and
+nvl(pha.closed_code,'OPEN')='OPEN' and
+nvl(pha.frozen_flag,'N')='N' and
+nvl(pha.user_hold_flag,'N')='N'
 &not_use_first_block
 &report_table_select &report_table_where_clause &success_records
 &processed_run

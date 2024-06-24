@@ -30,6 +30,7 @@ x.task,
 x.item,
 x.item_description,
 x.item_type,
+x.item_category,
 x.uom,
 x.frozen_cost,
 x.pending_cost,
@@ -95,10 +96,12 @@ x.po_unit_price,
 x.receiving_shipment_number,
 x.shipped_date,
 x.quantity_shipped,
-x.item_category,
 x.vendor_item_num,
 x.shipment_line_status,
 x.asn_line_flag,
+x.note_to_vendor,
+x.header_note_to_receiver,
+x.line_note_to_receiver,
 x.supplier_number,
 x.supplier_address1,
 x.supplier_address2,
@@ -167,6 +170,7 @@ v.task,
 msiv.concatenated_segments item,
 coalesce(rsl.item_description,msiv.description,pla.item_description) item_description,
 xxen_util.meaning(msiv.item_type,'ITEM_TYPE',3) item_type,
+mck.concatenated_segments item_category,
 muomt.unit_of_measure_tl uom,
 cic1.item_cost frozen_cost,
 cic3.item_cost pending_cost,
@@ -270,11 +274,11 @@ decode(:p_show_distributions,'Y',pda.quantity_ordered,nvl(plla.quantity, pla.qua
 decode(:p_show_distributions,'Y',pda.quantity_cancelled,plla.quantity_cancelled) quantity_cancelled,
 decode(:p_show_distributions,'Y',
 plla.quantity_received*(pda.quantity_ordered-nvl(pda.quantity_cancelled,0))/xxen_util.zero_to_null(plla.quantity-nvl(plla.quantity_cancelled,0)),
-plla.quantity_received 
+plla.quantity_received
 ) quantity_received,
 decode(:p_show_distributions,'Y',
 pda.quantity_ordered-nvl(pda.quantity_cancelled,0)-(plla.quantity_received*(pda.quantity_ordered-nvl(pda.quantity_cancelled,0))/xxen_util.zero_to_null(plla.quantity-nvl(plla.quantity_cancelled,0))),
-nvl(plla.quantity, pla.quantity)-nvl(plla.quantity_cancelled,0)-nvl(plla.quantity_received,0) 
+nvl(plla.quantity, pla.quantity)-nvl(plla.quantity_cancelled,0)-nvl(plla.quantity_received,0)
 ) quantity_due,
 decode(:p_show_distributions,'Y',pda.quantity_billed,plla.quantity_billed) quantity_billed,
 rt.primary_quantity,
@@ -283,10 +287,12 @@ rt.po_unit_price,
 rsh.shipment_num receiving_shipment_number,
 rsh.shipped_date,
 rsl.quantity_shipped,
-mck.concatenated_segments item_category,
 rsl.vendor_item_num,
 xxen_util.meaning(rsl.shipment_line_status_code,'SHIPMENT LINE STATUS',201) shipment_line_status,
 xxen_util.meaning(rsl.asn_line_flag,'YES_NO',0) asn_line_flag,
+pla.note_to_vendor,
+pha.note_to_receiver header_note_to_receiver,
+plla.note_to_receiver line_note_to_receiver,
 aps.segment1 supplier_number,
 assa.address_line1 supplier_address1,
 assa.address_line2 supplier_address2,
@@ -334,7 +340,7 @@ where
 pla.org_id=hou.organization_id
 ) pla,
 po_line_locations_all plla,
-( 
+(
 select
 pda.*,
 (select gsob.chart_of_accounts_id from gl_sets_of_books gsob where gsob.set_of_books_id = pda.set_of_books_id) chart_of_accounts_id
@@ -388,9 +394,9 @@ mtl_parameters mp,
 mtl_parameters mp2,
 mtl_system_items_vl msiv,
 mtl_units_of_measure_tl muomt,
+mtl_categories_kfv mck,
 cst_item_costs cic1,
-cst_item_costs cic3,
-mtl_categories_kfv mck
+cst_item_costs cic3
 where
 1=1 and
 3=3 and
@@ -419,6 +425,7 @@ pla.inventory_organization_id=msiv.organization_id(+) and
 pla.item_id=msiv.inventory_item_id(+) and
 pla.unit_meas_lookup_code=muomt.unit_of_measure(+) and
 muomt.language(+)=userenv('lang') and
+pla.category_id=mck.category_id(+) and
 pla.inventory_organization_id=cic1.organization_id(+) and
 pla.inventory_organization_id=cic3.organization_id(+) and
 pla.item_id=cic1.inventory_item_id(+) and
@@ -432,8 +439,7 @@ rsl.shipment_line_id=rt.shipment_line_id(+) and
 rt.transaction_type(+)='RECEIVE' and
 rt.employee_id=ppx2.person_id(+) and
 rt.location_id=hla.location_id(+) and
-rt.organization_id=mp2.organization_id(+) and
-rsl.category_id=mck.category_id(+)
+rt.organization_id=mp2.organization_id(+)
 union all
 --Q2 Blanket and Contract Purchase Agreements
 select
@@ -471,6 +477,7 @@ null task,
 msiv.concatenated_segments item,
 coalesce(msiv.description,pla.item_description) item_description,
 xxen_util.meaning(msiv.item_type,'ITEM_TYPE',3) item_type,
+mck.concatenated_segments item_category,
 muomt.unit_of_measure_tl uom,
 cic1.item_cost frozen_cost,
 cic3.item_cost pending_cost,
@@ -533,10 +540,12 @@ null po_unit_price,
 null receiving_shipment_number,
 null shipped_date,
 null quantity_shipped,
-null item_category,
 null vendor_item_num,
 null shipment_line_status,
 null asn_line_flag,
+pla.note_to_vendor,
+null header_note_to_receiver,
+null line_note_to_receiver,
 aps.segment1 supplier_number,
 assa.address_line1 supplier_address1,
 assa.address_line2 supplier_address2,
@@ -596,6 +605,7 @@ hr_locations_all_tl hlat,
 per_people_x ppx,
 mtl_system_items_vl msiv,
 mtl_units_of_measure_tl muomt,
+mtl_categories_kfv mck,
 cst_item_costs cic1,
 cst_item_costs cic3
 where
@@ -606,8 +616,8 @@ pha.po_header_id=pla.po_header_id(+) and
 pla.po_line_id=plla.po_line_id(+) and
 plla.shipment_type(+) not in ('BLANKET') and
 --po_releases added for the common dynamic parameter where clauses
---but does not return anything in this query 
-pra.po_release_id(+)= -plla.po_release_id and 
+--but does not return anything in this query
+pra.po_release_id(+)= -plla.po_release_id and
 pha.vendor_id=aps.vendor_id and
 pha.vendor_site_id=assa.vendor_site_id and
 pha.org_id=hou.organization_id and
@@ -625,6 +635,7 @@ pla.inventory_organization_id=msiv.organization_id(+) and
 pla.item_id=msiv.inventory_item_id(+) and
 pla.unit_meas_lookup_code=muomt.unit_of_measure(+) and
 muomt.language(+)=userenv('lang') and
+pla.category_id=mck.category_id(+) and
 pla.inventory_organization_id=cic1.organization_id(+) and
 pla.inventory_organization_id=cic3.organization_id(+) and
 pla.item_id=cic1.inventory_item_id(+) and

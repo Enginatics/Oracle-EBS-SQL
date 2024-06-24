@@ -12,9 +12,10 @@
 
 select
 y.month,
-y.execution_count,
 y.user_count,
 (select count(distinct eqs2.qs_created_by) from &eul.eul5_qpp_stats eqs2 where eqs2.qs_created_date>=y.month-60 and eqs2.qs_created_date<y.month) user_count_60_days,
+&qs_created_by
+y.execution_count,
 y.workbook_count,
 y.sheet_count,
 y.use_key_count,
@@ -28,17 +29,18 @@ from
 (
 select distinct
 x.month,
-count(*) over (partition by x.month) execution_count,
 count(distinct x.qs_created_by) over (partition by x.month) user_count,
-count(distinct x.workbook_owner||x.workbook) over (partition by x.month) workbook_count,
-count(distinct x.workbook_owner||x.workbook||x.sheet) over (partition by x.month) sheet_count,
-count(distinct x.use_key) over (partition by x.month) use_key_count,
-count(distinct decode(x.folder_count,1,x.use_key)) over (partition by x.month) "1 Folder Count",
-count(distinct decode(x.folder_count,2,x.use_key)) over (partition by x.month) "2 Folder Count",
-count(distinct decode(x.folder_count,3,x.use_key)) over (partition by x.month) "3 Folder Count",
-count(distinct decode(x.folder_count,4,x.use_key)) over (partition by x.month) "4 Folder Count",
-count(distinct decode(x.folder_count,5,x.use_key)) over (partition by x.month) "5 Folder Count",
-count(distinct case when x.folder_count>5 then x.use_key end) over (partition by x.month) ">5 Folder Count"
+&qs_created_by
+count(*) over (partition by &qs_created_by x.month) execution_count,
+count(distinct x.workbook_owner||x.workbook) over (partition by &qs_created_by x.month) workbook_count,
+count(distinct x.workbook_owner||x.workbook||x.sheet) over (partition by &qs_created_by x.month) sheet_count,
+count(distinct x.use_key) over (partition by &qs_created_by x.month) use_key_count,
+count(distinct decode(x.folder_count,1,x.use_key)) over (partition by &qs_created_by x.month) "1 Folder Count",
+count(distinct decode(x.folder_count,2,x.use_key)) over (partition by &qs_created_by x.month) "2 Folder Count",
+count(distinct decode(x.folder_count,3,x.use_key)) over (partition by &qs_created_by x.month) "3 Folder Count",
+count(distinct decode(x.folder_count,4,x.use_key)) over (partition by &qs_created_by x.month) "4 Folder Count",
+count(distinct decode(x.folder_count,5,x.use_key)) over (partition by &qs_created_by x.month) "5 Folder Count",
+count(distinct case when x.folder_count>5 then x.use_key end) over (partition by &qs_created_by x.month) ">5 Folder Count"
 from
 (
 select
@@ -58,4 +60,6 @@ where
 ) x
 ) y
 order by
-y.month desc
+y.month desc,
+y.execution_count desc,
+y.workbook_count desc

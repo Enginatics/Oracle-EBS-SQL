@@ -16,6 +16,8 @@ For GL flex value hierarchies, there are additional tables gl_seg_val_norm_hiera
 These tables are updated automatically after each flex value hierarchy change by concurrent 'General Ledger Accounting Setup Program' (GLSTFL).
 gl_seg_val_norm_hierarchy stores one record for every child and their direct parent.
 gl_seg_val_hierarchies stores one record for every node in the hierarchy (regardless if child or parent) and all their parent records, regardless on which level. It can be used, for example, to directly find all childs of one parent node.
+
+Table gl_account_hierarchies stores the relation between summary template and detail code combination ids.
 -- Excel Examle Output: https://www.enginatics.com/example/fnd-flex-value-hierarchy/
 -- Library Link: https://www.enginatics.com/reports/fnd-flex-value-hierarchy/
 -- Run Report: https://demo.enginatics.com/
@@ -23,7 +25,7 @@ gl_seg_val_hierarchies stores one record for every node in the hierarchy (regard
 select
 lpad(' ',2*(level-1))||level level_,
 lpad(' ',2*(level-1))||ffvnh.parent_flex_value value,
-ffvv.description,
+ffvv.description||case when ffvv.enabled_flag='Y' and sysdate between nvl(ffvv.start_date_active,sysdate) and nvl(ffvv.end_date_active,sysdate) then null else ' (inactive)' end description,
 ffvnh.child_flex_value_low||nvl2(ffvnh.child_flex_value_low,'-',null)||ffvnh.child_flex_value_high child_range,
 xxen_util.meaning(ffvnh.range_attribute,'RANGE_ATTRIBUTE',0) range_attribute,
 ffhv.hierarchy_name rollup_group,

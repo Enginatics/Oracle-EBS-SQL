@@ -273,8 +273,8 @@ aida.period_name,
 aida.accounting_date dist_accounting_date,
 aida.creation_date dist_creation_date,
 aida.last_update_date dist_last_update_date,
-aida.quantity_invoiced,
-aida.unit_price,
+case when '&show_aida'='Y' then aida.quantity_invoiced else aila.quantity_invoiced end quantity_invoiced,
+case when '&show_aida'='Y' then aida.unit_price else aila.unit_price end unit_price,
 aida.amount dist_amount,
 nvl(aida.base_amount,aida.amount) dist_base_amount,
 aida.invoice_price_variance dist_invoice_price_variance,
@@ -397,8 +397,8 @@ aida.project_id=ppa.project_id(+)and
 aida.task_id=pt.task_id(+)and
 aia.recurring_payment_id=arpa.recurring_payment_id(+) and
 aia.terms_id=at.term_id(+) and
-(:period_name is null and :accounting_date_from is null and :accounting_date_to is null and :p_expense_account_from is null and :p_expense_account_to is null or
-  exists --need this to apply dist level restrictions in case report is run at header or line level
+(:p_has_dist_criteria = 'N' or
+ exists --need this to apply dist level restrictions in case report is run at header or line level
    (select null
     from
      ap_invoice_distributions_all aida2,

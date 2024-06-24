@@ -48,6 +48,23 @@ aps.customer_num,
 xxen_util.meaning(aps.one_time_flag,'YES_NO',0) one_time_flag,
 xxen_util.meaning(aps.small_business_flag,'YES_NO',0) small_business_flag,
 hp.url,
+-- # Vendor DFF
+aps.attribute_category vendor_attribute_category,
+xxen_util.display_flexfield_value(201,'PO_VENDORS',aps.attribute_category,'ATTRIBUTE1',aps.rowid,aps.attribute1) vendor_attribute1,
+xxen_util.display_flexfield_value(201,'PO_VENDORS',aps.attribute_category,'ATTRIBUTE2',aps.rowid,aps.attribute2) vendor_attribute2,
+xxen_util.display_flexfield_value(201,'PO_VENDORS',aps.attribute_category,'ATTRIBUTE3',aps.rowid,aps.attribute3) vendor_attribute3,
+xxen_util.display_flexfield_value(201,'PO_VENDORS',aps.attribute_category,'ATTRIBUTE4',aps.rowid,aps.attribute4) vendor_attribute4,
+xxen_util.display_flexfield_value(201,'PO_VENDORS',aps.attribute_category,'ATTRIBUTE5',aps.rowid,aps.attribute5) vendor_attribute5,
+xxen_util.display_flexfield_value(201,'PO_VENDORS',aps.attribute_category,'ATTRIBUTE6',aps.rowid,aps.attribute6) vendor_attribute6,
+xxen_util.display_flexfield_value(201,'PO_VENDORS',aps.attribute_category,'ATTRIBUTE7',aps.rowid,aps.attribute7) vendor_attribute7,
+xxen_util.display_flexfield_value(201,'PO_VENDORS',aps.attribute_category,'ATTRIBUTE8',aps.rowid,aps.attribute8) vendor_attribute8,
+xxen_util.display_flexfield_value(201,'PO_VENDORS',aps.attribute_category,'ATTRIBUTE9',aps.rowid,aps.attribute9) vendor_attribute9,
+xxen_util.display_flexfield_value(201,'PO_VENDORS',aps.attribute_category,'ATTRIBUTE10',aps.rowid,aps.attribute10) vendor_attribute10,
+xxen_util.display_flexfield_value(201,'PO_VENDORS',aps.attribute_category,'ATTRIBUTE11',aps.rowid,aps.attribute11) vendor_attribute11,
+xxen_util.display_flexfield_value(201,'PO_VENDORS',aps.attribute_category,'ATTRIBUTE12',aps.rowid,aps.attribute12) vendor_attribute12,
+xxen_util.display_flexfield_value(201,'PO_VENDORS',aps.attribute_category,'ATTRIBUTE13',aps.rowid,aps.attribute13) vendor_attribute13,
+xxen_util.display_flexfield_value(201,'PO_VENDORS',aps.attribute_category,'ATTRIBUTE14',aps.rowid,aps.attribute14) vendor_attribute14,
+xxen_util.display_flexfield_value(201,'PO_VENDORS',aps.attribute_category,'ATTRIBUTE15',aps.rowid,aps.attribute15) vendor_attribute15,
 -- ## Vendor Purchasing Options
 aps.min_order_amount min_order_amount,
 xxen_util.meaning(aps.hold_flag,'YES_NO',0) purchasing_hold_flag,
@@ -114,7 +131,7 @@ aps.name_control tax_reporting_name_control,
 aps.tax_verification_date tax_reporting_verif_date,
 -- # Vendor Payment Details
 (select
- xxen_util.meaning(ieppm.payment_method_code,'PAYMENT METHOD',200,'Y')
+ ipmv.payment_method_name
  from
  iby_ext_party_pmt_mthds ieppm,
  iby_payment_methods_vl ipmv
@@ -208,6 +225,23 @@ xxen_util.meaning(assa.tax_reporting_site_flag,'YES_NO',0) tax_reporting_site,
 nvl(zptp1.rep_registration_number,assa.vat_registration_num) site_tax_reg_number,
 zptp1.registration_type_code site_tax_reg_type,
 (select territory_short_name from fnd_territories_vl ftv where ftv.territory_code = zptp1.country_code) site_tax_reg_country,
+-- # Vendor Site DFF
+assa.attribute_category site_attribute_category,
+xxen_util.display_flexfield_value(201,'PO_VENDOR_SITES',assa.attribute_category,'ATTRIBUTE1',assa.rowid,assa.attribute1) site_attribute1,
+xxen_util.display_flexfield_value(201,'PO_VENDOR_SITES',assa.attribute_category,'ATTRIBUTE2',assa.rowid,assa.attribute2) site_attribute2,
+xxen_util.display_flexfield_value(201,'PO_VENDOR_SITES',assa.attribute_category,'ATTRIBUTE3',assa.rowid,assa.attribute3) site_attribute3,
+xxen_util.display_flexfield_value(201,'PO_VENDOR_SITES',assa.attribute_category,'ATTRIBUTE4',assa.rowid,assa.attribute4) site_attribute4,
+xxen_util.display_flexfield_value(201,'PO_VENDOR_SITES',assa.attribute_category,'ATTRIBUTE5',assa.rowid,assa.attribute5) site_attribute5,
+xxen_util.display_flexfield_value(201,'PO_VENDOR_SITES',assa.attribute_category,'ATTRIBUTE6',assa.rowid,assa.attribute6) site_attribute6,
+xxen_util.display_flexfield_value(201,'PO_VENDOR_SITES',assa.attribute_category,'ATTRIBUTE7',assa.rowid,assa.attribute7) site_attribute7,
+xxen_util.display_flexfield_value(201,'PO_VENDOR_SITES',assa.attribute_category,'ATTRIBUTE8',assa.rowid,assa.attribute8) site_attribute8,
+xxen_util.display_flexfield_value(201,'PO_VENDOR_SITES',assa.attribute_category,'ATTRIBUTE9',assa.rowid,assa.attribute9) site_attribute9,
+xxen_util.display_flexfield_value(201,'PO_VENDOR_SITES',assa.attribute_category,'ATTRIBUTE10',assa.rowid,assa.attribute10) site_attribute10,
+xxen_util.display_flexfield_value(201,'PO_VENDOR_SITES',assa.attribute_category,'ATTRIBUTE11',assa.rowid,assa.attribute11) site_attribute11,
+xxen_util.display_flexfield_value(201,'PO_VENDOR_SITES',assa.attribute_category,'ATTRIBUTE12',assa.rowid,assa.attribute12) site_attribute12,
+xxen_util.display_flexfield_value(201,'PO_VENDOR_SITES',assa.attribute_category,'ATTRIBUTE13',assa.rowid,assa.attribute13) site_attribute13,
+xxen_util.display_flexfield_value(201,'PO_VENDOR_SITES',assa.attribute_category,'ATTRIBUTE14',assa.rowid,assa.attribute14) site_attribute14,
+xxen_util.display_flexfield_value(201,'PO_VENDOR_SITES',assa.attribute_category,'ATTRIBUTE15',assa.rowid,assa.attribute15) site_attribute15,
 -- ## Vendor Site Purchasing Options
 (select hl.location_code from hr_locations hl where hl.location_id = assa.ship_to_location_id) site_ship_to_location,
 (select hl.location_code from hr_locations hl where hl.location_id = assa.bill_to_location_id) site_bill_to_location,
@@ -260,7 +294,7 @@ xxen_util.meaning(nvl(zptp1.allow_offset_tax_flag,nvl(zptp0.allow_offset_tax_fla
 nvl(zptp1.tax_classification_code,assa.vat_code) site_tax_classification,
 -- # Vendor Site Payment Details
 (select
- xxen_util.meaning(ieppm.payment_method_code,'PAYMENT METHOD',200,'Y')
+ ipmv.payment_method_name
  from
  iby_ext_party_pmt_mthds ieppm,
  iby_payment_methods_vl ipmv
@@ -350,6 +384,23 @@ pvc.alt_phone contact_alt_phone_number,
 pvc.fax_area_code contact_fax_area_code,
 pvc.fax contact_fax_number,
 decode(pvc.inactive_date,to_date('31/12/4712','DD/MM/YYYY'),to_date(null),pvc.inactive_date) contact_inactive_date,
+-- # Contacts DFF
+pvc.attribute_category contact_attribute_category,
+xxen_util.display_flexfield_value(200,'AP_SUPPLIER_CONTACTS',asco.attribute_category,'ATTRIBUTE1',asco.rowid,asco.attribute1) contact_attribute1,
+xxen_util.display_flexfield_value(200,'AP_SUPPLIER_CONTACTS',asco.attribute_category,'ATTRIBUTE2',asco.rowid,asco.attribute2) contact_attribute2,
+xxen_util.display_flexfield_value(200,'AP_SUPPLIER_CONTACTS',asco.attribute_category,'ATTRIBUTE3',asco.rowid,asco.attribute3) contact_attribute3,
+xxen_util.display_flexfield_value(200,'AP_SUPPLIER_CONTACTS',asco.attribute_category,'ATTRIBUTE4',asco.rowid,asco.attribute4) contact_attribute4,
+xxen_util.display_flexfield_value(200,'AP_SUPPLIER_CONTACTS',asco.attribute_category,'ATTRIBUTE5',asco.rowid,asco.attribute5) contact_attribute5,
+xxen_util.display_flexfield_value(200,'AP_SUPPLIER_CONTACTS',asco.attribute_category,'ATTRIBUTE6',asco.rowid,asco.attribute6) contact_attribute6,
+xxen_util.display_flexfield_value(200,'AP_SUPPLIER_CONTACTS',asco.attribute_category,'ATTRIBUTE7',asco.rowid,asco.attribute7) contact_attribute7,
+xxen_util.display_flexfield_value(200,'AP_SUPPLIER_CONTACTS',asco.attribute_category,'ATTRIBUTE8',asco.rowid,asco.attribute8) contact_attribute8,
+xxen_util.display_flexfield_value(200,'AP_SUPPLIER_CONTACTS',asco.attribute_category,'ATTRIBUTE9',asco.rowid,asco.attribute9) contact_attribute9,
+xxen_util.display_flexfield_value(200,'AP_SUPPLIER_CONTACTS',asco.attribute_category,'ATTRIBUTE10',asco.rowid,asco.attribute10) contact_attribute10,
+xxen_util.display_flexfield_value(200,'AP_SUPPLIER_CONTACTS',asco.attribute_category,'ATTRIBUTE11',asco.rowid,asco.attribute11) contact_attribute11,
+xxen_util.display_flexfield_value(200,'AP_SUPPLIER_CONTACTS',asco.attribute_category,'ATTRIBUTE12',asco.rowid,asco.attribute12) contact_attribute12,
+xxen_util.display_flexfield_value(200,'AP_SUPPLIER_CONTACTS',asco.attribute_category,'ATTRIBUTE13',asco.rowid,asco.attribute13) contact_attribute13,
+xxen_util.display_flexfield_value(200,'AP_SUPPLIER_CONTACTS',asco.attribute_category,'ATTRIBUTE14',asco.rowid,asco.attribute14) contact_attribute14,
+xxen_util.display_flexfield_value(200,'AP_SUPPLIER_CONTACTS',asco.attribute_category,'ATTRIBUTE15',asco.rowid,asco.attribute15) contact_attribute15,
 -- ########
 -- IDs
 -- ########
@@ -384,11 +435,13 @@ zx_party_tax_profile zptp1,
 iby_ext_bank_accounts ieba1,
 ce_bank_branches_v cbbv1,
 --
-po_vendor_contacts pvc
+po_vendor_contacts pvc,
+ap_supplier_contacts asco
 --
 where
-:p_upload_mode = xxen_upload.action_meaning(xxen_upload.action_create)||', '||xxen_upload.action_meaning(xxen_upload.action_update) and
+:p_upload_mode like '%' || xxen_upload.action_update and
 1=1 and
+aps.employee_id is null and
 aps.parent_vendor_id = aps1.vendor_id(+) and
 aps.party_id = hp.party_id and
 aps.party_id = zptp0.party_id (+) and
@@ -412,7 +465,8 @@ decode(xxen_util.lookup_code(:p_show_site_banks,'YES_NO',0),'Y',iepa1.ext_payee_
 decode(ipiua1.instrument_type,'BANKACCOUNT',ipiua1.instrument_id) = ieba1.ext_bank_account_id(+) and
 ieba1.branch_id=cbbv1.branch_party_id(+) and
 --
-decode(xxen_util.lookup_code(:p_show_site_contacts,'YES_NO',0),'Y',assa.vendor_site_id,-99) = pvc.vendor_site_id (+)
+decode(xxen_util.lookup_code(:p_show_site_contacts,'YES_NO',0),'Y',assa.vendor_site_id,-99) = pvc.vendor_site_id (+) and
+pvc.vendor_contact_id = asco.vendor_contact_id (+)
 --
 &not_use_first_block
 &report_table_select

@@ -115,7 +115,7 @@ fnd_form_functions_vl fffv,
 fnd_user fu
 where
 1=1 and
-fl.login_type='FORM' and
+fl.login_type is not null and
 fl.login_id=flr.login_id(+) and
 flr.login_id=flrf.login_id(+) and
 flr.login_resp_id=flrf.login_resp_id(+) and

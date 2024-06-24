@@ -296,14 +296,14 @@ fnd_responsibility_tl frt,
 fnd_conc_release_classes fcrc,
 hr_all_organization_units_vl haouv,
 fnd_conflicts_domain fcd,
-(select x.* from (select min(fcpa.sequence) over (partition by fcpa.concurrent_request_id,fcpa.action_type) min_sequence, fcpa.* from fnd_conc_pp_actions fcpa where '&enable_delivery'='Y' and fcpa.action_type=1 and fcpa.number_of_copies>0) x where x.sequence=x.min_sequence) fcpa1,
-(select x.* from (select min(fcpa.sequence) over (partition by fcpa.concurrent_request_id,fcpa.action_type) min_sequence, fcpa.* from fnd_conc_pp_actions fcpa where '&enable_delivery'='Y' and fcpa.action_type=2) x where x.sequence=x.min_sequence) fcpa2,
-(select x.* from (select min(fcpa.sequence) over (partition by fcpa.concurrent_request_id,fcpa.action_type) min_sequence, fcpa.* from fnd_conc_pp_actions fcpa where '&enable_delivery'='Y' and fcpa.action_type=6) x where x.sequence=x.min_sequence) fcpa6,
-(select x.* from (select min(fcpa.sequence) over (partition by fcpa.concurrent_request_id,fcpa.action_type) min_sequence, fcpa.* from fnd_conc_pp_actions fcpa where '&enable_delivery'='Y' and fcpa.action_type=7 and fcpa.argument1 in ('T','S')) x where x.sequence=x.min_sequence) fcpa7t,
-(select x.* from (select min(fcpa.sequence) over (partition by fcpa.concurrent_request_id,fcpa.action_type) min_sequence, fcpa.* from fnd_conc_pp_actions fcpa where '&enable_delivery'='Y' and fcpa.action_type=7 and fcpa.argument1='E') x where x.sequence=x.min_sequence) fcpa7e,
-(select x.* from (select min(fcpa.sequence) over (partition by fcpa.concurrent_request_id,fcpa.action_type) min_sequence, fcpa.* from fnd_conc_pp_actions fcpa where '&enable_delivery'='Y' and fcpa.action_type=7 and fcpa.argument1='W') x where x.sequence=x.min_sequence) fcpa7w,
-(select x.* from (select min(fcpa.sequence) over (partition by fcpa.concurrent_request_id,fcpa.action_type) min_sequence, fcpa.* from fnd_conc_pp_actions fcpa where '&enable_delivery'='Y' and fcpa.action_type=7 and fcpa.argument1='C') x where x.sequence=x.min_sequence) fcpa7c,
-(select x.* from (select min(fcro.output_id) over (partition by fcro.concurrent_request_id) min_output_id, fcro.* from fnd_conc_req_outputs fcro where '&enable_delivery'='Y') x where x.output_id=x.min_output_id) fcro,
+(select x.* from (select min(fcpa.sequence) over (partition by fcpa.concurrent_request_id,fcpa.action_type) min_sequence, fcpa.* from fnd_conc_pp_actions fcpa where '&show_delivery'='Y' and fcpa.action_type=1 and fcpa.number_of_copies>0) x where x.sequence=x.min_sequence) fcpa1,
+(select x.* from (select min(fcpa.sequence) over (partition by fcpa.concurrent_request_id,fcpa.action_type) min_sequence, fcpa.* from fnd_conc_pp_actions fcpa where '&show_delivery'='Y' and fcpa.action_type=2) x where x.sequence=x.min_sequence) fcpa2,
+(select x.* from (select min(fcpa.sequence) over (partition by fcpa.concurrent_request_id,fcpa.action_type) min_sequence, fcpa.* from fnd_conc_pp_actions fcpa where '&show_delivery'='Y' and fcpa.action_type=6) x where x.sequence=x.min_sequence) fcpa6,
+(select x.* from (select min(fcpa.sequence) over (partition by fcpa.concurrent_request_id,fcpa.action_type) min_sequence, fcpa.* from fnd_conc_pp_actions fcpa where '&show_delivery'='Y' and fcpa.action_type=7 and fcpa.argument1 in ('T','S')) x where x.sequence=x.min_sequence) fcpa7t,
+(select x.* from (select min(fcpa.sequence) over (partition by fcpa.concurrent_request_id,fcpa.action_type) min_sequence, fcpa.* from fnd_conc_pp_actions fcpa where '&show_delivery'='Y' and fcpa.action_type=7 and fcpa.argument1='E') x where x.sequence=x.min_sequence) fcpa7e,
+(select x.* from (select min(fcpa.sequence) over (partition by fcpa.concurrent_request_id,fcpa.action_type) min_sequence, fcpa.* from fnd_conc_pp_actions fcpa where '&show_delivery'='Y' and fcpa.action_type=7 and fcpa.argument1='W') x where x.sequence=x.min_sequence) fcpa7w,
+(select x.* from (select min(fcpa.sequence) over (partition by fcpa.concurrent_request_id,fcpa.action_type) min_sequence, fcpa.* from fnd_conc_pp_actions fcpa where '&show_delivery'='Y' and fcpa.action_type=7 and fcpa.argument1='C') x where x.sequence=x.min_sequence) fcpa7c,
+(select x.* from (select min(fcro.output_id) over (partition by fcro.concurrent_request_id) min_output_id, fcro.* from fnd_conc_req_outputs fcro where '&show_delivery'='Y') x where x.output_id=x.min_output_id) fcro,
 fnd_lookup_values flv1,
 fnd_lookup_values flv2,
 fnd_lookup_values flv3,
@@ -323,7 +323,7 @@ gv$session_event gse
 ) x
 pivot (sum(x.time) time for wait_class in ('User I/O' user_io, 'Network' network, 'System I/O' system_io, 'Configuration' configuration, 'Application' application, 'Commit' commit, 'Concurrency' concurrency, 'Other' other))
 ) gse,
-(select gsa.* from gv$sql gsa where '&enable_sql_text'='Y') gsa
+(select gsa.* from gv$sql gsa where '&show_sql_text'='Y') gsa
 where
 2=2 and
 fcr.program_application_id_=fcp.application_id(+) and
