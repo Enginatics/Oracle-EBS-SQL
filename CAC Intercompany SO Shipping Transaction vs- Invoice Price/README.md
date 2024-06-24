@@ -63,26 +63,11 @@ If you would like to try one of these Oracle EBS SQLs without having Blitz Repor
 We provide an open source Oracle EBS SQLs as a part of operational and project implementation support [toolkits](https://www.enginatics.com/blitz-report-toolkits/) for rapid Excel reports generation. 
 
 [Blitz Report™](https://www.enginatics.com/blitz-report/) is based on Oracle EBS forms technology, and hence requires minimal training. There are no data or performance limitations since the output files are created directly from the database without going through intermediate file formats such as XML. 
-<div style="display: table; width: 100%;">
-  <div style="display: table-row;">
-    <div style="display: table-cell; padding-right: 60px; width: 33%;">
-      <a href="https://www.youtube.com/watch?v=AnNMzmayOdQ">
-        <img src="https://www.enginatics.com/wp-content/uploads/Blitz-Report-and-Upload-in-20-minutes.png" alt="Blitz Report and Upload in 20 minutes" style="width: 100%; display: block;">
-      </a>
-    </div>
-    <div style="display: table-cell; width: 33%;padding-right:30px; padding-left:30px">
-      <a href="https://www.youtube.com/watch?v=n_uKYDjj6lQ">
-        <img src="https://www.enginatics.com/wp-content/uploads/Supply-Chain-Hub-in-4-minutes.png" alt="Supply Chain Hub in 4 minutes" style="width: 100%; display: block;">
-      </a>
-    </div>
-    <div style="display: table-cell; padding-left: 60px; width: 33%;">
-      <a href="https://www.youtube.com/watch?v=17_Au_11IBE">
-        <img src="https://www.enginatics.com/wp-content/uploads/Discoverer-replacement-with-Blitz-Report-in-15-minutes.png" alt="Discoverer replacement with Blitz Report in 15 minutes" style="width: 100%; display: block;">
-      </a>
-    </div>
-  </div>
-</div>
-<br>  
+
+[![Blitz Report and Upload in 20 minutes](https://www.enginatics.com/wp-content/uploads/Blitz-Report-and-Upload-in-20-minutes.png)](https://www.youtube.com/watch?v=AnNMzmayOdQ) 
+[![Supply Chain Hub in 4 minutes](https://www.enginatics.com/wp-content/uploads/Supply-Chain-Hub-in-4-minutes.png)](https://www.youtube.com/watch?v=n_uKYDjj6lQ) 
+[![Discoverer replacement with Blitz Report in 15 minutes](https://www.enginatics.com/wp-content/uploads/Discoverer-replacement-with-Blitz-Report-in-15-minutes.png)](https://www.youtube.com/watch?v=17_Au_11IBE)
+
 Blitz Report can be used as BI Publisher and [Oracle Discoverer replacement tool](https://www.enginatics.com/blog/discoverer-replacement/). Standard Oracle [BI Publisher](https://www.enginatics.com/blitz-report-developer-guide/#bi-publisher) and [Discoverer](https://www.enginatics.com/blog/importing-discoverer-worksheets-into-blitz-report/) reports can also be imported into Blitz Report for immediate output to Excel. Typically, reports can be created and version tracked within hours instead of days. The concurrent request output automatically opens upon completion without the need for re-formatting.
 
 The Filters, Columns, Rows and Values fields are used to create and deliver the data in pivot table format with full drill down to details.
