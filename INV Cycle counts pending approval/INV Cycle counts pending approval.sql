@@ -21,6 +21,7 @@ mcch.cycle_count_header_name cycle_count_name,
 mcce.subinventory,
 msiv.concatenated_segments item_number,
 msiv.description,
+&category_columns
 xxen_util.meaning(msiv.item_type,'ITEM_TYPE',3) user_item_type,
 nvl(inv_project.get_locator(milk.inventory_location_id,milk.organization_id),milk.concatenated_segments) locator,
 milk.description locator_description,

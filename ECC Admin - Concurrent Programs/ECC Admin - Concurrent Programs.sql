@@ -76,47 +76,71 @@ fcr.responsibility_id=frv.responsibility_id
 from
 (
 select
-case when x.text like '%:%' then substr(x.text,instr(x.text,':')+2) else x.text end concurrent_program
+case when x.text like '%Dashboard:%' then substr(x.text,instr(x.text,':')+2) else x.text end concurrent_program
 from
 (
+select 'QP: Enterprise Command Center Data Load' text from dual union all
 select 'Oracle Asset Tracking Command Center Data Load' text from dual union all
 select 'Assets Command Center Data Load' text from dual union all
+select 'Bills of Material ECC Data Load' text from dual union all
+select 'Cash Management Command Center Data Load' text from dual union all
 select 'Channel Revenue Management Command Center Data Load' text from dual union all
 select 'PO CLM ECC Data Load' text from dual union all
 select 'Cost Management Command Center Data Load' text from dual union all
 select 'Depot Command Center Data Load' text from dual union all
 select 'WIP ECC Data Load' text from dual union all
+select 'WIP Completions ECC Data Load' text from dual union all
+select 'Genealogy ECC Data Load' text from dual union all
 select 'Enterprise Asset Management Command Center Data Load' text from dual union all
 select 'Field Service Command Center Data Load' text from dual union all
+select 'Electronic Kanban ECC Data Load' text from dual union all
+select 'General Ledger Command Center Data Load' text from dual union all
 select 'PER ECC Data Load' text from dual union all
+select 'Payroll ECC Data Load' text from dual union all
 select 'OIC ECC Data Load' text from dual union all
 select 'Activity Dashboard: Activity Details Data Load' text from dual union all
 select 'Aging Inventory Dashboard: Inventory On Hand Data Load' text from dual union all
 select 'Inventory Cycle Counting Dashboard: Inventory Cycle Counting Data Load' text from dual union all
-select 'Items Dashboard Data Load' text from dual union all
+select 'Inventory Physical Inventory Data Load' text from dual union all
+select 'Inventory Space Utilization Data Load' text from dual union all
+select 'Inventory Track and Trace Data Load' text from dual union all
+select 'Inventory Transaction Management Data Load' text from dual union all
+select 'Items Dashboard: Items Dashboard Data Load' text from dual union all
+select 'Move Orders Dashboard: Inventory Move Orders Data Load' text from dual union all
 select 'Receiving Dashboard: Inbound Details Data Load' text from dual union all
+select 'Reservations Dashboard: Inventory Reservations Data Load' text from dual union all
 select 'Shipping Dashboard: Delivery Details Data Load' text from dual union all
+select 'Supply/Demand Dashboard: Inventory Supply/Demand Data Load' text from dual union all
 select 'iProcurement ECC Data Load' text from dual union all
-select 'Receivables Command Center Data Load' text from dual union all
+select 'iStore Command Center Data Load' text from dual union all
 select 'Landed Cost Data Load' text from dual union all
 select 'Lease Asset Management ECC Loader' text from dual union all
 select 'Lease ECC AR Cash Data Loader' text from dual union all
+select 'Lease ECC Contract Revision Data Load' text from dual union all
 select 'Lease ECC Data Loader' text from dual union all
+select 'Lease ECC Meter Management Loader' text from dual union all
 select 'Lease Period Balances Data Load' text from dual union all
 select 'Property Manager ECC Data Loader' text from dual union all
 select 'OM Command Center Data Load' text from dual union all
+select 'OM Command Center Credit Check Data Load' text from dual union all
+select 'OM Command Center Returns Data Load' text from dual union all
 select 'Outsourced Manufacturing Command Center Data Load' text from dual union all
 select 'Payables Command Center Data Load' text from dual union all
+select 'Employee Expenses Command Center Data Load' text from dual union all
 select 'Process Manufacturing Command Center Data Load' text from dual union all
+select 'Process Quality Command Center Data Load' text from dual union all
 select 'PO PCC ECC Data Load' text from dual union all
 select 'PO ECC Supplier Analysis Data Load' text from dual union all
 select 'PO ECC Strategic Sourcing Data Load' text from dual union all
 select 'Project Procurement - Item Analysis ECC Data Load' text from dual union all
-select 'Project Procurement - ECC Data Load' text from dual union all
+select 'Project Manufacturing Command Center Data Load' text from dual union all
 select 'Project Procurement - Procurement Plan ECC Data Load' text from dual union all
-select 'Projects Costing and Accounting ECC Data Load' text from dual union all
+select 'Projects Costing and Billing ECC Data Load' text from dual union all
 select 'Projects Costing Budgetary Control ECC Data Load' text from dual union all
+select 'Projects G-Invoicing ECC Data Load' text from dual union all
+select 'Projects Investment Turn ECC Data Load' text from dual union all
 select 'Quality Command Center Data Load' text from dual union all
+select 'Receivables Command Center Data Load' text from dual union all
 select 'Service Command Center Data Load' text from dual union all
 select 'Service Contracts Command Center Data Load' text from dual
 ) x

@@ -92,6 +92,15 @@ p_profile_option_value in varchar2
 ) return varchar2;
 
 /***********************************************************************************************/
+/*  translate a descriptive flexfield context code into the user visible context name          */
+/***********************************************************************************************/
+function display_flexfield_context(
+p_application_id in number,
+p_descriptive_flexfield_name in varchar2,
+p_context_code in varchar2
+) return varchar2;
+
+/***********************************************************************************************/
 /*  translate a descriptive flexfield value into the user visible value                        */
 /***********************************************************************************************/
 function display_flexfield_value(
@@ -113,7 +122,7 @@ p_concatenate_description in varchar2 default null
 function dff_attribute_lov(
 p_application_id in number,
 p_descriptive_flexfield_name in varchar2,
-p_context_code in varchar2,
+p_context_name in varchar2,
 p_column_name in varchar2,
 p_lov_delimter in varchar2 default '~',
 p_attribute1 in varchar2 default null,
@@ -539,7 +548,7 @@ function default_operating_unit return varchar2;
 function previous_parameter_value(p_parameter_id in pls_integer) return varchar2;
 
 /***********************************************************************************************/
-/*  returns the sql text for descriptive flexfield columns                                     */
+/*  returns sql text for descriptive flexfield columns                                         */
 /***********************************************************************************************/
 function dff_columns(
 p_table_name in varchar2,
@@ -550,6 +559,11 @@ p_prefix in varchar2 default null,
 p_hide_column_name in varchar2 default null,
 p_row_id in varchar2 default null
 ) return clob;
+
+/***********************************************************************************************/
+/*  returns sql text for item category columns                                                 */
+/***********************************************************************************************/
+function item_category_columns(p_category_set_name in varchar2, p_table_alias in varchar2 default 'msiv', p_item_id_column in varchar2 default 'inventory_item_id', p_org_id_column in varchar2 default 'organization_id') return clob;
 
 /***********************************************************************************************/
 /*  Wait for request completion, for example for upload                                        */
@@ -580,6 +594,11 @@ function ledger_id(p_ledger_name in varchar2) return number result_cache;
 /*  returns the chart of accounts id for a ledger                                              */
 /***********************************************************************************************/
 function coa_id(p_ledger_name in varchar2) return number result_cache;
+
+/***********************************************************************************************/
+/*  returns 'Y' if flex value security needs to be applied                                     */
+/***********************************************************************************************/
+function has_flex_value_security return varchar2;
 
 /***********************************************************************************************/
 /*  Escapes characters that may break XML structure                                            */
@@ -839,7 +858,7 @@ end contains;
 
 function init_cap(p_text in varchar2) return varchar2 is
 begin
-  return case when upper(p_text)=p_text and length(p_text)>3 then initcap(p_text) else p_text end;
+  return case when upper(p_text)=p_text and length(p_text)>3 and p_text=regexp_replace(upper(p_text),'[^[:alpha:]_#$0-9]') then initcap(p_text) else p_text end;
 end init_cap;
 
 
@@ -981,8 +1000,8 @@ begin
   ) loop
     if c.validation_type in ('D','I','X','Y') then
       l_sql_text:='select ffvv.flex_value id,ffvv.flex_value_meaning value,ffvv.description description from fnd_flex_values_vl ffvv where ffvv.flex_value_set_id= :p_flex_value_set_id';
-      if c.validation_type in ('D','Y') and c.parent_flex_value_set_id is not null then 
-        l_sql_text := l_sql_text || ' and ffvv.parent_flex_value_low = (select ffvv2.flex_value from fnd_flex_values_vl ffvv2 where ffvv2.flex_value_set_id = :p_parent_flex_value_set_id and ffvv2.flex_value_meaning = :p_parent_flex_value_low)'; 
+      if c.validation_type in ('D','Y') and c.parent_flex_value_set_id is not null then
+        l_sql_text := l_sql_text || ' and ffvv.parent_flex_value_low = (select ffvv2.flex_value from fnd_flex_values_vl ffvv2 where ffvv2.flex_value_set_id = :p_parent_flex_value_set_id and ffvv2.flex_value_meaning = :p_parent_flex_value_low)';
       end if ;
       if p_enabled_only = 'Y' then
         l_sql_text := l_sql_text || ' and ffvv.enabled_flag = ''Y'' and trunc(sysdate) between nvl(ffvv.start_date_active,trunc(sysdate)) and nvl(ffvv.end_date_active,trunc(sysdate))';
@@ -1002,9 +1021,9 @@ begin
       if p_org_information_id is not null then
         l_additional_where_clause:=regexp_replace(l_additional_where_clause,':\$PROFILES\$\.per_org_information_id(:null)*',':p_org_information_id',1,0,'i');
       end if;
-      if upper(l_additional_where_clause) like '%:$PROFILES$.%' then 
+      if upper(l_additional_where_clause) like '%:$PROFILES$.%' then
         l_additional_where_clause := regexp_replace(l_additional_where_clause,':\$PROFILES\$\.(PER_BUSINESS_GROUP_ID|USER_ID|ORG_ID|RESP_APPL_ID|RESP_ID|PER_SECURITY_PROFILE_ID)(:null)?','fnd_global.\1',1,0,'i');
-        l_additional_where_clause := regexp_replace(l_additional_where_clause,':\$PROFILES\$\.(\w+)(:null)?','fnd_profile.value(''\1'')',1,0,'i');        
+        l_additional_where_clause := regexp_replace(l_additional_where_clause,':\$PROFILES\$\.(\w+)(:null)?','fnd_profile.value(''\1'')',1,0,'i');
       end if;
       if lower(l_additional_where_clause) not like 'where%' and lower(l_additional_where_clause) not like 'order by%' then
         l_additional_where_clause:='where '||l_additional_where_clause;
@@ -1068,6 +1087,30 @@ exception
     x_sql_text:=null;
 end dff_lov_sql;
 
+function display_flexfield_context(
+p_application_id in number,
+p_descriptive_flexfield_name in varchar2,
+p_context_code in varchar2
+) return varchar2 is
+l_context_name fnd_descr_flex_contexts_vl.descriptive_flex_context_name%type;
+begin
+ for c in (
+ select  /*+ result_cache*/
+ fdfcv.descriptive_flex_context_name
+ from
+ fnd_descriptive_flexs_vl     fdfv,
+ fnd_descr_flex_contexts_vl   fdfcv
+ where
+ fdfv.application_id = fdfcv.application_id and
+ fdfv.descriptive_flexfield_name = fdfcv.descriptive_flexfield_name and
+ fdfv.application_id = p_application_id and
+ fdfv.descriptive_flexfield_name = p_descriptive_flexfield_name and
+ fdfcv.descriptive_flex_context_code = p_context_code
+ ) loop
+   return(c.descriptive_flex_context_name);
+ end loop;
+ return(p_context_code);
+end display_flexfield_context;
 
 function display_flexfield_value(
 p_application_id in number,
@@ -1106,8 +1149,8 @@ begin
   end loop;
 end application_table_name;
 begin
-  if p_application_id is null 
-  or p_descriptive_flexfield_name is null 
+  if p_application_id is null
+  or p_descriptive_flexfield_name is null
   or p_column_name is null then
     return p_value;
   end if;
@@ -1125,7 +1168,7 @@ begin
     fdfcu.flex_value_set_id,
     ffvs.parent_flex_value_set_id,
     (
-    select 
+    select
     fdfcu2.application_column_name
     from
     fnd_descr_flex_column_usages fdfcu2
@@ -1138,7 +1181,7 @@ begin
     ) parent_column_name,
     ffvs.validation_type,
     ffvs.format_type,
-    nvl2(ffvt.id_column_name,ffvt.id_column_type,ffvs.format_type) id_column_type 
+    nvl2(ffvt.id_column_name,ffvt.id_column_type,ffvs.format_type) id_column_type
     from
     fnd_descr_flex_column_usages fdfcu,
     fnd_flex_value_sets ffvs,
@@ -1152,7 +1195,7 @@ begin
     fdfcu.application_column_name=p_column_name and
     fdfcu.flex_value_set_id=ffvs.flex_value_set_id and
     fdfcu.flex_value_set_id=ffvt.flex_value_set_id (+)
-    ) loop      
+    ) loop
       dff_lov_sql(
       p_application_id=>p_application_id,
       p_descriptive_flexfield_name=>p_descriptive_flexfield_name,
@@ -1163,12 +1206,12 @@ begin
       p_org_information_id=>p_org_information_id,
       x_sql_text=>l_sql_text,
       x_dff_bind_tbl=>l_flex
-      ); 
-      if l_sql_text is not null then        
+      );
+      if l_sql_text is not null then
         l_sql_text:='select '||
         case when c.validation_type = 'F' and c.format_type = 'X' then 'fnd_date.date_to_displaydate(x.value)' when c.validation_type = 'F' and c.format_type = 'Y' then 'fnd_date.date_to_displayDT(x.value)' else 'x.value' end||
-        case when p_concatenate_description='Y' then '||nvl2(x.description,'': ''||x.description,null)' end||' display_value from ('||l_sql_text||') x where x.id='||        
-        case 
+        case when p_concatenate_description='Y' then '||nvl2(x.description,'': ''||x.description,null)' end||' display_value from ('||l_sql_text||') x where x.id='||
+        case
         when c.id_column_type = 'D' then 'fnd_date.displaydate_to_date(:p_flexfield_value)'
         when c.id_column_type in ('X','Y') then 'fnd_date.canonical_to_date(:p_flexfield_value)'
         else ':p_flexfield_value'
@@ -1180,7 +1223,7 @@ begin
 
         --bind
         dbms_sql.bind_variable(l_cursor,':p_flexfield_value',l_flexfield_value);
-          
+
         if l_sql_text like '%:p_flex_value_set_id%' then
           dbms_sql.bind_variable(l_cursor,':p_flex_value_set_id',c.flex_value_set_id);
         end if;
@@ -1274,9 +1317,9 @@ p_recursion_path in varchar2 default null
 ) return varchar2 is
 l_sql_text                 varchar2(32767);
 l_cursor                   pls_integer;
-l_row_count                pls_integer;     
+l_row_count                pls_integer;
 l_bind_value               varchar2(4000);
-l_display_value            varchar2(4000); 
+l_display_value            varchar2(4000);
 l_id_value                 varchar2(4000);
 l_flex g_dff_bind_tbl_type;
 l_prev_bind_name varchar2(100):='-99';
@@ -1288,8 +1331,8 @@ l_attribute_id_value varchar2(4000);
 begin
   if instr(p_recursion_path,':'||p_get_column_name||':',1,1)>0 then
     -- recursive loop -- we've already called this api for column name in this recursive check
-    return null;   
-  end if;  
+    return null;
+  end if;
   l_recursion_path:=nvl(l_recursion_path,':')||p_column_name||':';
   l_attribute_id_value:=
   dff_attribute_value_to_id(
@@ -1328,60 +1371,60 @@ begin
   p_attribute29,
   p_attribute30,
   l_recursion_path
-  ); 
+  );
   return l_attribute_id_value;
 end get_bind_attribute_val;
 
-begin  
+begin
   l_display_value:=
   case p_column_name
-  when 'ATTRIBUTE1' then p_attribute1 
+  when 'ATTRIBUTE1' then p_attribute1
   when 'ATTRIBUTE2' then p_attribute2
   when 'ATTRIBUTE3' then p_attribute3
-  when 'ATTRIBUTE4' then p_attribute4 
-  when 'ATTRIBUTE5' then p_attribute5 
-  when 'ATTRIBUTE6' then p_attribute6 
-  when 'ATTRIBUTE7' then p_attribute7 
-  when 'ATTRIBUTE8' then p_attribute8 
-  when 'ATTRIBUTE9' then p_attribute9 
-  when 'ATTRIBUTE10' then p_attribute10   
-  when 'ATTRIBUTE11' then p_attribute11 
+  when 'ATTRIBUTE4' then p_attribute4
+  when 'ATTRIBUTE5' then p_attribute5
+  when 'ATTRIBUTE6' then p_attribute6
+  when 'ATTRIBUTE7' then p_attribute7
+  when 'ATTRIBUTE8' then p_attribute8
+  when 'ATTRIBUTE9' then p_attribute9
+  when 'ATTRIBUTE10' then p_attribute10
+  when 'ATTRIBUTE11' then p_attribute11
   when 'ATTRIBUTE12' then p_attribute12
   when 'ATTRIBUTE13' then p_attribute13
-  when 'ATTRIBUTE14' then p_attribute14 
-  when 'ATTRIBUTE15' then p_attribute15 
-  when 'ATTRIBUTE16' then p_attribute16 
-  when 'ATTRIBUTE17' then p_attribute17 
-  when 'ATTRIBUTE18' then p_attribute18 
-  when 'ATTRIBUTE19' then p_attribute19 
+  when 'ATTRIBUTE14' then p_attribute14
+  when 'ATTRIBUTE15' then p_attribute15
+  when 'ATTRIBUTE16' then p_attribute16
+  when 'ATTRIBUTE17' then p_attribute17
+  when 'ATTRIBUTE18' then p_attribute18
+  when 'ATTRIBUTE19' then p_attribute19
   when 'ATTRIBUTE20' then p_attribute20
-  when 'ATTRIBUTE21' then p_attribute21 
+  when 'ATTRIBUTE21' then p_attribute21
   when 'ATTRIBUTE22' then p_attribute22
   when 'ATTRIBUTE23' then p_attribute23
-  when 'ATTRIBUTE24' then p_attribute24 
-  when 'ATTRIBUTE25' then p_attribute25 
-  when 'ATTRIBUTE26' then p_attribute26 
-  when 'ATTRIBUTE27' then p_attribute27 
-  when 'ATTRIBUTE28' then p_attribute28 
-  when 'ATTRIBUTE29' then p_attribute29 
+  when 'ATTRIBUTE24' then p_attribute24
+  when 'ATTRIBUTE25' then p_attribute25
+  when 'ATTRIBUTE26' then p_attribute26
+  when 'ATTRIBUTE27' then p_attribute27
+  when 'ATTRIBUTE28' then p_attribute28
+  when 'ATTRIBUTE29' then p_attribute29
   when 'ATTRIBUTE30' then p_attribute30
   else null
   end;
   l_id_value:=l_display_value;
 
-  if p_application_id is null 
-  or p_descriptive_flexfield_name is null 
+  if p_application_id is null
+  or p_descriptive_flexfield_name is null
   or p_column_name is null then
     return l_id_value;
   end if;
-  
+
   if l_display_value is not null then
     for c in (
     select /*+ result_cache*/
     fdfcu.flex_value_set_id,
     ffvs.parent_flex_value_set_id,
     (
-    select 
+    select
     fdfcu2.application_column_name
     from
     fnd_descr_flex_column_usages fdfcu2
@@ -1394,7 +1437,7 @@ begin
     ) parent_column_name,
     ffvs.validation_type,
     ffvs.format_type,
-    nvl2(ffvt.id_column_name,ffvt.id_column_type,ffvs.format_type) id_column_type    
+    nvl2(ffvt.id_column_name,ffvt.id_column_type,ffvs.format_type) id_column_type
     from
     fnd_descr_flex_column_usages fdfcu,
     fnd_flex_value_sets ffvs,
@@ -1407,7 +1450,7 @@ begin
     fdfcu.enabled_flag='Y' and
     fdfcu.flex_value_set_id=ffvs.flex_value_set_id and
     fdfcu.flex_value_set_id=ffvt.flex_value_set_id (+)
-    ) loop     
+    ) loop
       dff_lov_sql(
       p_application_id=>p_application_id,
       p_descriptive_flexfield_name=>p_descriptive_flexfield_name,
@@ -1415,24 +1458,24 @@ begin
       p_flex_value_set_id=>c.flex_value_set_id,
       x_sql_text=>l_sql_text,
       x_dff_bind_tbl=>l_flex
-      ); 
-      if l_sql_text is not null then           
+      );
+      if l_sql_text is not null then
         l_sql_text := 'select x.id from (' || l_sql_text || ') x where ' ||
         'x.value=' ||
-        case 
+        case
         when c.format_type = 'D' then 'fnd_date.displaydate_to_date(:p_flexfield_value)'
         when c.format_type = 'X' then 'fnd_date.displaydate_to_date(:p_flexfield_value)'
         when c.format_type = 'Y' then 'fnd_date.displayDT_to_date(:p_flexfield_value)'
         else ':p_flexfield_value'
         end;
-        
-        --parse      
+
+        --parse
         l_cursor:=dbms_sql.open_cursor;
         dbms_sql.parse(l_cursor, l_sql_text, dbms_sql.native);
 
         --bind
         dbms_sql.bind_variable(l_cursor,':p_flexfield_value',l_display_value);
-            
+
         if l_sql_text like '%:p_flex_value_set_id%' then
           dbms_sql.bind_variable(l_cursor,':p_flex_value_set_id',c.flex_value_set_id);
         end if;
@@ -1463,11 +1506,11 @@ begin
           dbms_sql.column_value(l_cursor, 1, l_id_value);
           if c.format_type in ('X','Y') then
             l_id_value := fnd_date.date_to_canonical(l_id_value);
-          end if;       
+          end if;
         end if;
         dbms_sql.close_cursor(l_cursor);
-      end if; -- l_sql_text is not null  
-    end loop;  
+      end if; -- l_sql_text is not null
+    end loop;
   end if; -- l_display_value is not null
   return l_id_value;
 exception
@@ -1482,7 +1525,7 @@ end dff_attribute_value_to_id;
 function dff_attribute_lov(
 p_application_id in number,
 p_descriptive_flexfield_name in varchar2,
-p_context_code in varchar2,
+p_context_name in varchar2,
 p_column_name in varchar2,
 p_lov_delimter in varchar2,
 p_attribute1 in varchar2,
@@ -1518,17 +1561,18 @@ p_attribute30 in varchar2
 ) return fnd_table_of_varchar2_4000 pipelined is
 l_sql_text                 varchar2(32767);
 l_cursor                   pls_integer;
-l_row_count                pls_integer;     
-l_bind_value               varchar2(4000); 
+l_row_count                pls_integer;
+l_bind_value               varchar2(4000);
 l_entered_value            varchar2(4000);
 l_value                    varchar2(4000);
 l_description              varchar2(4000);
- 
+
 l_flex g_dff_bind_tbl_type;
 l_prev_bind_name varchar2(100):='-99';
 l_prev_bind_value varchar2(4000);
+l_context_code fnd_descr_flex_contexts_vl.descriptive_flex_context_code%type;
 
-function get_bind_attribute_val(p_get_column_name in varchar2) return varchar2 is
+function get_bind_attribute_val(p_context_code in varchar2, p_get_column_name in varchar2) return varchar2 is
 l_attribute_id_value varchar2(4000);
 begin
   l_attribute_id_value:=
@@ -1567,13 +1611,13 @@ begin
   p_attribute28,
   p_attribute29,
   p_attribute30
-  ); 
+  );
   return l_attribute_id_value;
 end get_bind_attribute_val;
 
-begin    
-  if p_application_id is null 
-  or p_descriptive_flexfield_name is null 
+begin
+  if p_application_id is null
+  or p_descriptive_flexfield_name is null
   or p_column_name is null
   then
     return;
@@ -1581,45 +1625,63 @@ begin
 
   l_entered_value:=
   case p_column_name
-  when 'ATTRIBUTE1' then p_attribute1 
+  when 'ATTRIBUTE1' then p_attribute1
   when 'ATTRIBUTE2' then p_attribute2
   when 'ATTRIBUTE3' then p_attribute3
-  when 'ATTRIBUTE4' then p_attribute4 
-  when 'ATTRIBUTE5' then p_attribute5 
-  when 'ATTRIBUTE6' then p_attribute6 
-  when 'ATTRIBUTE7' then p_attribute7 
-  when 'ATTRIBUTE8' then p_attribute8 
-  when 'ATTRIBUTE9' then p_attribute9 
-  when 'ATTRIBUTE10' then p_attribute10   
-  when 'ATTRIBUTE11' then p_attribute11 
+  when 'ATTRIBUTE4' then p_attribute4
+  when 'ATTRIBUTE5' then p_attribute5
+  when 'ATTRIBUTE6' then p_attribute6
+  when 'ATTRIBUTE7' then p_attribute7
+  when 'ATTRIBUTE8' then p_attribute8
+  when 'ATTRIBUTE9' then p_attribute9
+  when 'ATTRIBUTE10' then p_attribute10
+  when 'ATTRIBUTE11' then p_attribute11
   when 'ATTRIBUTE12' then p_attribute12
   when 'ATTRIBUTE13' then p_attribute13
-  when 'ATTRIBUTE14' then p_attribute14 
-  when 'ATTRIBUTE15' then p_attribute15 
-  when 'ATTRIBUTE16' then p_attribute16 
-  when 'ATTRIBUTE17' then p_attribute17 
-  when 'ATTRIBUTE18' then p_attribute18 
-  when 'ATTRIBUTE19' then p_attribute19 
+  when 'ATTRIBUTE14' then p_attribute14
+  when 'ATTRIBUTE15' then p_attribute15
+  when 'ATTRIBUTE16' then p_attribute16
+  when 'ATTRIBUTE17' then p_attribute17
+  when 'ATTRIBUTE18' then p_attribute18
+  when 'ATTRIBUTE19' then p_attribute19
   when 'ATTRIBUTE20' then p_attribute20
-  when 'ATTRIBUTE21' then p_attribute21 
+  when 'ATTRIBUTE21' then p_attribute21
   when 'ATTRIBUTE22' then p_attribute22
   when 'ATTRIBUTE23' then p_attribute23
-  when 'ATTRIBUTE24' then p_attribute24 
-  when 'ATTRIBUTE25' then p_attribute25 
-  when 'ATTRIBUTE26' then p_attribute26 
-  when 'ATTRIBUTE27' then p_attribute27 
-  when 'ATTRIBUTE28' then p_attribute28 
-  when 'ATTRIBUTE29' then p_attribute29 
+  when 'ATTRIBUTE24' then p_attribute24
+  when 'ATTRIBUTE25' then p_attribute25
+  when 'ATTRIBUTE26' then p_attribute26
+  when 'ATTRIBUTE27' then p_attribute27
+  when 'ATTRIBUTE28' then p_attribute28
+  when 'ATTRIBUTE29' then p_attribute29
   when 'ATTRIBUTE30' then p_attribute30
   else null
   end;
+
+  -- get the descriptive flex context code. The upload will pass in the context name
+  for c in (
+  select  /*+ result_cache*/
+  fdfcv.descriptive_flex_context_code
+  from
+  fnd_descriptive_flexs_vl     fdfv,
+  fnd_descr_flex_contexts_vl   fdfcv
+  where
+  fdfv.application_id = fdfcv.application_id and
+  fdfv.descriptive_flexfield_name = fdfcv.descriptive_flexfield_name and
+  fdfv.application_id = p_application_id and
+  fdfv.descriptive_flexfield_name = p_descriptive_flexfield_name and
+  fdfcv.descriptive_flex_context_name = p_context_name
+  ) loop
+    l_context_code := c.descriptive_flex_context_code;
+  end loop;
+  l_context_code := nvl(l_context_code,p_context_name);
 
   for c in (
   select /*+ result_cache*/
   fdfcu.flex_value_set_id,
   ffvs.parent_flex_value_set_id,
   (
-  select 
+  select
   fdfcu2.application_column_name
   from
   fnd_descr_flex_column_usages fdfcu2
@@ -1632,7 +1694,7 @@ begin
   ) parent_column_name,
   ffvs.validation_type,
   ffvs.format_type,
-  nvl2(ffvt.id_column_name,ffvt.id_column_type,ffvs.format_type) id_column_type  
+  nvl2(ffvt.id_column_name,ffvt.id_column_type,ffvs.format_type) id_column_type
   from
   fnd_descr_flex_column_usages fdfcu,
   fnd_flex_value_sets ffvs,
@@ -1640,7 +1702,7 @@ begin
   where
   fdfcu.application_id=p_application_id and
   fdfcu.descriptive_flexfield_name=p_descriptive_flexfield_name and
-  fdfcu.descriptive_flex_context_code in ('Global Data Elements',p_context_code) and
+  fdfcu.descriptive_flex_context_code in ('Global Data Elements',l_context_code) and
   fdfcu.application_column_name=p_column_name and
   fdfcu.enabled_flag='Y' and
   fdfcu.flex_value_set_id=ffvs.flex_value_set_id (+) and
@@ -1649,17 +1711,17 @@ begin
     dff_lov_sql(
     p_application_id=>p_application_id,
     p_descriptive_flexfield_name=>p_descriptive_flexfield_name,
-    p_context_code=>p_context_code,
+    p_context_code=>l_context_code,
     p_flex_value_set_id=>c.flex_value_set_id,
     p_enabled_only=>'Y',
     x_sql_text=>l_sql_text,
     x_dff_bind_tbl=>l_flex
-    ); 
+    );
     if l_sql_text is null then
       if l_entered_value is not null then
         pipe row(substrb(l_entered_value||p_lov_delimter,1,4000));
       end if;
-    else 
+    else
       l_sql_text := 'select x.value, x.description from ('||l_sql_text||') x';
       if l_entered_value is null then
         l_sql_text:=l_sql_text||' where replace(x.value,chr(0),null) is not null';
@@ -1680,12 +1742,12 @@ begin
         dbms_sql.bind_variable(l_cursor,':p_parent_flex_value_set_id',c.parent_flex_value_set_id);
       end if;
       if l_sql_text like '%:p_parent_flex_value_low%' then
-        l_bind_value := get_bind_attribute_val(c.parent_column_name);
+        l_bind_value := get_bind_attribute_val(l_context_code,c.parent_column_name);
         dbms_sql.bind_variable(l_cursor,':p_parent_flex_value_low',l_bind_value);
       end if;
       if l_flex.first is not null then
         for i in l_flex.first..l_flex.last loop
-          l_bind_value := get_bind_attribute_val(l_flex(i).column_name);
+          l_bind_value := get_bind_attribute_val(l_context_code,l_flex(i).column_name);
           if l_flex(i).bind<>l_prev_bind_name or l_bind_value is not null then
             dbms_sql.bind_variable(l_cursor,':'||substrb(l_flex(i).bind,1,30),l_bind_value);
             l_prev_bind_name:=l_flex(i).bind;
@@ -1706,21 +1768,21 @@ begin
       --execute and fetch
       l_row_count:=dbms_sql.execute(l_cursor);
       loop
-       if dbms_sql.fetch_rows(l_cursor)>0 
+       if dbms_sql.fetch_rows(l_cursor)>0
        then
          dbms_sql.column_value(l_cursor, 1, l_value);
          dbms_sql.column_value(l_cursor, 2, l_description);
          if c.format_type = 'X'
          then l_value := fnd_date.date_to_displaydate(l_value);
          elsif c.format_type = 'Y'
-         then l_value := fnd_date.date_to_displayDT(l_value); 
+         then l_value := fnd_date.date_to_displayDT(l_value);
          end if;
          pipe row(substrb(l_value || p_lov_delimter || l_description,1,4000));
        else
          exit;
        end if;
       end loop;
-      dbms_sql.close_cursor(l_cursor);      
+      dbms_sql.close_cursor(l_cursor);
     end if;  -- l_sql_text is not null
   end loop;
   return;
@@ -3594,7 +3656,7 @@ begin
   select
   decode(connect_by_isleaf,1,oola2.line_id) orig_line_id
   from
-  ont.oe_order_lines_all oola2
+  oe_order_lines_all oola2
   where
   decode(connect_by_isleaf,1,oola2.line_id) is not null
   connect by prior oola2.split_from_line_id=oola2.line_id
@@ -3638,7 +3700,7 @@ begin
   where
   (xxen_util.default_operating_unit is null or gl.ledger_id=(select hou.set_of_books_id from hr_operating_units hou where hou.name=xxen_util.default_operating_unit)) and
   gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value(''GL_ACCESS_SET_ID'') and gasna.ledger_id=glsnav.ledger_set_id(+))'
-  end||' 
+  end||'
   ) x
   ) y
   where
@@ -3686,21 +3748,27 @@ end default_operating_unit;
 function previous_parameter_value(p_parameter_id in pls_integer) return varchar2 is
 begin
   for c in (
-  select distinct
-  max(dbms_lob.substr(clob_substrb(xrrpv.value,4000,1))) keep (dense_rank last order by xrr.creation_date, xrr.run_id) over () value
+  select
+  dbms_lob.substr(xxen_util.clob_substrb(xrrpv.value,4000,1)) value
+  from
+  (
+  select
+  max(xrr.run_id) run_id
   from
   xxen_report_parameters xrp,
-  xxen_report_runs xrr,
-  xxen_report_run_param_values xrrpv
+  xxen_report_runs xrr
   where
   xrp.parameter_id=p_parameter_id and
   xrp.report_id=xrr.report_id and
   xrr.responsibility_application_id=fnd_global.resp_appl_id and
   xrr.responsibility_id=fnd_global.resp_id and
   xrr.created_by=fnd_global.user_id and
-  xrr.creation_date>sysdate-60 and
+  xrr.creation_date>sysdate-60
+  ) xrr,
+  xxen_report_run_param_values xrrpv
+  where
   xrr.run_id=xrrpv.run_id and
-  xrp.parameter_id=xrrpv.parameter_id
+  xrrpv.parameter_id=p_parameter_id
   ) loop
     return c.value;
   end loop;
@@ -3717,57 +3785,163 @@ p_prefix in varchar2 default null,
 p_hide_column_name in varchar2 default null,
 p_row_id in varchar2 default null
 ) return clob is
+l_value_text varchar2(32767);
 l_text clob;
 begin
   for c in (
   select
-  nvl(p_prefix,
-  case when x.descriptive_flex_context_code<>'Global Data Elements' then 'decode('||x.table_alias||x.context_column_name||','''||x.descriptive_flex_context_code||''',' end||
-  case when x.validation_type in ('D','I','X','Y','F') then 'xxen_util.display_flexfield_value('||x.application_id||','''||x.descriptive_flexfield_name||''','''||x.descriptive_flex_context_code||''','''||x.application_column_name||''','||x.table_alias||nvl(p_row_id,'rowid')||',' end 
-  ||x.table_alias||lower(x.application_column_name)||
-  case when x.validation_type in ('D','I','X','Y','F') then ')' end
-  ||case when x.descriptive_flex_context_code<>'Global Data Elements' then ')' end||' '
-  )||case when nvl(p_hide_column_name,'N')='N' then xxen_xdo.column_name(p_column_name_prefix||x.form_left_prompt) end||','||chr(10) sql_text
+  u.*
+  from
+  (
+  select
+  case when z.is_case='Y' and z.sort_order=min(z.sort_order) over (partition by z.name_text) then 'case ' end||
+  z.value_text||
+  case when z.is_case='Y' and z.sort_order=max(z.sort_order) over (partition by z.name_text) then 'end ' end value_text,
+  case when z.sort_order=max(z.sort_order) over (partition by z.name_text) then name_text end name_text
   from
   (
   select distinct
-  min(replace(fdfc.descriptive_flex_context_code,'''','''''')) keep (dense_rank first order by decode(fdfc.descriptive_flex_context_code,'Global Data Elements',1,2), fdfc.descriptive_flex_context_code, fdfcuv.column_seq_num, fdfcuv.application_column_name) over (partition by fdfcuv.form_left_prompt) descriptive_flex_context_code,
-  min(fdfcuv.column_seq_num) keep (dense_rank first order by decode(fdfc.descriptive_flex_context_code,'Global Data Elements',1,2), fdfc.descriptive_flex_context_code, fdfcuv.column_seq_num, fdfcuv.application_column_name) over (partition by fdfcuv.form_left_prompt) column_seq_num,
-  min(fdfcuv.application_column_name) keep (dense_rank first order by decode(fdfc.descriptive_flex_context_code,'Global Data Elements',1,2), fdfc.descriptive_flex_context_code, fdfcuv.column_seq_num, fdfcuv.application_column_name) over (partition by fdfcuv.form_left_prompt) application_column_name,
-  min(ffvs.validation_type) keep (dense_rank first order by decode(fdfc.descriptive_flex_context_code,'Global Data Elements',1,2), fdfc.descriptive_flex_context_code, fdfcuv.column_seq_num, fdfcuv.application_column_name) over (partition by fdfcuv.form_left_prompt) validation_type,
-  fdfcuv.form_left_prompt,
-  fdf.application_id,
-  fdf.descriptive_flexfield_name,
+  nvl2(y.descriptive_flex_context_code,
+  'when '||y.context_column||case
+  when count(distinct y.descriptive_flex_context_code) over (partition by y.form_left_prompt__,y.value_text)>1 then ' in ('||listagg(''''||y.descriptive_flex_context_code||'''',',') within group (order by y.descriptive_flex_context_code) over (partition by y.form_left_prompt__,y.value_text)||')'
+  else '='''||y.descriptive_flex_context_code||''''
+  end||' then ',
+  nvl2(y.is_case,'else ',null))
+  ||y.value_text||' ' value_text,
+  y.form_left_prompt__ name_text,
+  min(y.sort_order) over (partition by y.form_left_prompt__,y.value_text) sort_order,
+  y.is_case
+  from
+  (
+  select
+  decode(x.has_lov,'Y','xxen_util.display_flexfield_value('||x.application_id||','''||x.descriptive_flexfield_name||''',nvl('||x.table_alias||x.context_column_name||',''Global Data Elements''),'''||x.application_column_name||''','||x.table_alias||nvl(p_row_id,'rowid')||',')
+  ||x.table_alias||lower(x.application_column_name)||
+  decode(x.has_lov,'Y',')') value_text,
+  x.table_alias,
+  row_number() over (order by
+  case when x.descriptive_flex_context_count>1 then 1 else 2 end,
+  case when x.descriptive_flex_context_count>1 then x.min_column_seq_num end,
+  case when x.descriptive_flex_context_count>1 then x.form_left_prompt__ end,
+  case when x.descriptive_flex_context_count>1 then x.descriptive_flex_context_code end,
+  x.descriptive_flex_context_code nulls first,
+  x.column_seq_num) sort_order,
+  x.application_id,
+  x.descriptive_flexfield_name,
+  x.table_alias||x.context_column_name context_column,
+  x.descriptive_flex_context_code,
+  x.has_lov,
+  x.application_column_name,
+  x.form_left_prompt__,
+  x.is_case
+  from
+  (
+  select
+  nvl(p_table_alias,replace(regexp_replace(p_table_name,'([^_]{1})[^_]*','\1'),'_'))||'.' table_alias,
+  fdfcuv.application_id,
+  fdfcuv.descriptive_flexfield_name,
   lower(fdf.context_column_name) context_column_name,
-  nvl(p_table_alias,replace(regexp_replace(p_table_name,'([^_]{1})[^_]*','\1'),'_'))||'.' table_alias
+  case when fdfcuv.descriptive_flex_context_code<>'Global Data Elements' then replace(fdfc.descriptive_flex_context_code,'''','''''') end descriptive_flex_context_code,
+  count(distinct fdfc.descriptive_flex_context_code) over (partition by fdfcuv.form_left_prompt__) descriptive_flex_context_count,
+  min(fdfcuv.column_seq_num) over (partition by fdfcuv.form_left_prompt__) min_column_seq_num,
+  case when ffvs.validation_type in ('D','I','X','Y','F') then 'Y' end has_lov,
+  fdfcuv.column_seq_num,
+  fdfcuv.application_column_name,
+  fdfcuv.form_left_prompt__,
+  case when count(*) over (partition by fdfcuv.form_left_prompt__)>1 or fdfcuv.descriptive_flex_context_code<>'Global Data Elements' then 'Y' end is_case
   from
   fnd_descriptive_flexs fdf,
   fnd_descr_flex_contexts fdfc,
-  fnd_descr_flex_col_usage_vl fdfcuv,
+  (
+  select
+  xxen_xdo.column_name(
+  case
+  when fdfcuv.row_count=1 then fdfcuv.form_left_prompt_
+  else substrb(fdfcuv.form_left_prompt_,1,xxen_report.max_column_length-length(fdfcuv.row_count))||fdfcuv.row_number
+  end) form_left_prompt__,
+  fdfcuv.*
+  from
+  (
+  select
+  row_number() over (partition by fdfcuv.application_id,fdfcuv.descriptive_flexfield_name,fdfcuv.descriptive_flex_context_code,fdfcuv.form_left_prompt_ order by fdfcuv.column_seq_num) row_number,
+      count(*) over (partition by fdfcuv.application_id,fdfcuv.descriptive_flexfield_name,fdfcuv.descriptive_flex_context_code,fdfcuv.form_left_prompt_) row_count,
+  fdfcuv.*
+  from
+  (
+  select
+  substrb(xxen_util.init_cap(replace(p_column_name_prefix||fdfcuv.form_left_prompt,'"')),1,xxen_report.max_column_length) form_left_prompt_,
+  fdfcuv.*
+  from
+  fnd_descr_flex_col_usage_vl fdfcuv
+  where
+  fdfcuv.application_column_name like 'ATTRIBUTE%' and
+  fdfcuv.enabled_flag='Y' and
+  fdfcuv.display_flag='Y'
+  ) fdfcuv
+  ) fdfcuv
+  ) fdfcuv,
   fnd_flex_value_sets ffvs
   where
   fdf.application_table_name=upper(p_table_name) and
+  (nvl(p_descr_flex_context_code,'All')='All' or fdfc.descriptive_flex_context_code=p_descr_flex_context_code) and
   fdf.application_id=fdfc.application_id and
   fdf.descriptive_flexfield_name=fdfc.descriptive_flexfield_name and
-  (nvl(p_descr_flex_context_code,'All')='All' or fdfc.descriptive_flex_context_code=p_descr_flex_context_code) and
   fdfc.enabled_flag='Y' and
   fdfc.application_id=fdfcuv.application_id and
   fdfc.descriptive_flexfield_name=fdfcuv.descriptive_flexfield_name and
   fdfc.descriptive_flex_context_code=fdfcuv.descriptive_flex_context_code and
-  fdfcuv.application_column_name like 'ATTRIBUTE%' and
-  fdfcuv.enabled_flag='Y' and
-  fdfcuv.display_flag='Y' and
   fdfcuv.flex_value_set_id=ffvs.flex_value_set_id(+)
   ) x
+  ) y
+  order by sort_order
+  ) z
   order by
-  decode(x.descriptive_flex_context_code,'Global Data Elements',1,2),
-  x.descriptive_flex_context_code,
-  x.column_seq_num
+  z.sort_order
+  ) u
+  where
+  p_prefix is null or u.name_text is not null
   ) loop
-    l_text:=l_text||c.sql_text;
+    l_value_text:=l_value_text||nvl(p_prefix,c.value_text);
+    if c.name_text is not null then
+      l_text:=rtrim(l_text||l_value_text||case when nvl(p_hide_column_name,'N')='N' then c.name_text end)||','||chr(10);
+      l_value_text:=null;
+    end if;
   end loop;
   return l_text;
 end dff_columns;
+
+
+function item_category_columns(p_category_set_name in varchar2, p_table_alias in varchar2 default 'msiv', p_item_id_column in varchar2 default 'inventory_item_id', p_org_id_column in varchar2 default 'organization_id') return clob is
+l_text clob;
+begin
+  for c in (
+  select x.* from (
+  select
+  '(select min(mcb.'||lower(fifsv.application_column_name)||') keep (dense_rank first order by mic.category_id) from mtl_item_categories mic, mtl_categories_b mcb where mic.category_set_id='||mcsv.category_set_id||' and '||p_table_alias||'.'||p_org_id_column||'=mic.organization_id and '||p_table_alias||'.'||p_item_id_column||'=mic.inventory_item_id and mic.category_id=mcb.category_id) "'||substrb(fifsv.form_left_prompt_,1,xxen_report.max_column_length)||'",' sql_text
+  from
+  mtl_category_sets_vl mcsv,
+  (select xxen_util.init_cap(fifsv.form_left_prompt) form_left_prompt_, fifsv.* from fnd_id_flex_segments_vl fifsv) fifsv
+  where
+  mcsv.category_set_name=p_category_set_name and
+  mcsv.structure_id=fifsv.id_flex_num and
+  fifsv.application_id=401 and
+  fifsv.id_flex_code='MCAT' and
+  fifsv.enabled_flag='Y'
+  order by
+  fifsv.id_flex_num,
+  fifsv.segment_num
+  ) x
+  union all
+  select
+  '(select min(mct.description) keep (dense_rank first order by mic.category_id) from mtl_item_categories mic, mtl_categories_tl mct where mic.category_set_id='||mcsv.category_set_id||' and '||p_table_alias||'.'||p_org_id_column||'=mic.organization_id and '||p_table_alias||'.'||p_item_id_column||'=mic.inventory_item_id and mic.category_id=mct.category_id and mct.language=userenv(''lang'')) "'||substrb(mcsv.category_set_name||' '||xxen_report.parameter_translation('Description'),1,xxen_report.max_column_length)||'",' sql_text
+  from
+  mtl_category_sets_vl mcsv
+  where
+  mcsv.category_set_name=p_category_set_name
+  ) loop
+    l_text:=l_text||case when l_text is not null then chr(10) end||c.sql_text;
+  end loop;
+  return l_text;
+end item_category_columns;
 
 
 function wait_for_request(p_conc_request_id in number, x_status out varchar2, x_message out varchar2) return varchar2 is
@@ -3798,7 +3972,7 @@ l_functional_currency_code varchar2(15);
 begin
   if fnd_release.major_version=11 then
     return null;
-  else  
+  else
     execute immediate 'select gl.currency_code from gl_ledgers gl where gl.name=:p_ledger_name' into l_functional_currency_code using p_ledger_name;
     return l_functional_currency_code;
   end if;
@@ -3810,24 +3984,16 @@ l_latest_open_period varchar2(15);
 begin
   if fnd_release.major_version=11 then
     return null;
-  else  
+  else
     execute immediate '
-	select
-    x.period_name
-    from
-    (
     select
-    gps.period_name,
-    row_number() over (partition by 1 order by period_year desc, period_num desc) row_
+    max(gps.period_name) keep (dense_rank last order by gps.effective_period_num) period_name
     from
     gl_period_statuses gps
     where
     gps.ledger_id=(select gl.ledger_id from gl_ledgers gl where gl.name=:p_ledger_name) and
     gps.application_id=101 and
-    gps.closing_status=''O''
-    ) x
-    where
-    x.row_=1' into l_latest_open_period using p_ledger_name;
+    gps.closing_status in (''P'',''C'',''O'')' into l_latest_open_period using p_ledger_name;
     return l_latest_open_period;
   end if;
 end latest_open_period;
@@ -3874,7 +4040,7 @@ l_ledger_id number;
 begin
   if fnd_release.major_version=11 then
     return null;
-  else  
+  else
     execute immediate 'select gl.ledger_id from gl_ledgers gl where gl.name=:p_ledger_name' into l_ledger_id using p_ledger_name;
     return l_ledger_id;
   end if;
@@ -3886,11 +4052,28 @@ l_coa_id number;
 begin
   if fnd_release.major_version=11 then
     return null;
-  else  
+  else
     execute immediate 'select gl.chart_of_accounts_id from gl_ledgers gl where gl.name=:p_ledger_name' into l_coa_id using p_ledger_name;
     return l_coa_id;
   end if;
 end coa_id;
+
+
+function has_flex_value_security return varchar2 is
+function has_flex_value_security_(p_application_id in pls_integer, p_responsibility_id in pls_integer) return varchar2 result_cache is
+begin
+  for c in (select 'Y' from fnd_flex_value_rule_usages ffvru where ffvru.application_id=p_application_id and ffvru.responsibility_id=p_responsibility_id and rownum=1) loop
+    return 'Y';
+  end loop;
+  return null;
+end has_flex_value_security_;
+begin
+  if fnd_profile.value('XXEN_REPORT_DISABLE_GL_FLEX_VALUE_SECURITY')='Y' then
+    return null;
+  else
+    return has_flex_value_security_(fnd_global.resp_appl_id,fnd_global.resp_id);
+  end if;
+end has_flex_value_security;
 
 
 function xml_escape(p_text in varchar2) return varchar2 is
@@ -3977,6 +4160,5 @@ end concurrent_request_file_url;
 
 
 end xxen_util;
-
 /
 

@@ -29,18 +29,17 @@ xxen_util.user_name(flv.last_updated_by) last_updated_by,
 xxen_util.client_time(flv.last_update_date) last_update_date,
 'xxen_util.meaning(x.'||lower(flv.lookup_type)||','''||flv.lookup_type||''','||flv.view_application_id||') '||lower(flv.lookup_type)||',' sql_text,
 'select
-flv.lookup_code,
-flv.meaning,
-flv.description
+flvv.lookup_code,
+flvv.meaning,
+flvv.description
 from
-fnd_lookup_values flv
+fnd_lookup_values_vl flvv
 where
-flv.lookup_type(+)='''||flv.lookup_type||''' and
-flv.view_application_id(+)='||flv.view_application_id||' and
-flv.language(+)=userenv(''lang'') and
-flv.security_group_id(+)=0
+flvv.lookup_type(+)='''||flv.lookup_type||''' and
+flvv.view_application_id(+)='||flv.view_application_id||' and
+flvv.security_group_id(+)=0
 order by
-flv.lookup_code' lookup_values
+flvv.lookup_code' lookup_values
 from
 fnd_application_vl fav0,
 fnd_application_vl fav,

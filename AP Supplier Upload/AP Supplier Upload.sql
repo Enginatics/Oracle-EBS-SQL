@@ -10,21 +10,83 @@
 -- Library Link: https://www.enginatics.com/reports/ap-supplier-upload/
 -- Run Report: https://demo.enginatics.com/
 
+with
+q_bank_accounts as
+(select
+ iepa.payee_party_id,
+ iepa.party_site_id,
+ iepa.org_id,
+ iepa.supplier_site_id,
+ ipiua.instrument_payment_use_id,
+ iepa.ext_payee_id,
+ ieba.ext_bank_account_id bank_account_id,
+ case when iepa.supplier_site_id is not null
+ then xxen_util.meaning('SITE','POS_SBD_BYR_USAGE_LIST',0)
+ when iepa.org_id is not null
+ then xxen_util.meaning('ADDRESS_OU','POS_SBD_BYR_USAGE_LIST',0)
+ when iepa.party_site_id is not null
+ then xxen_util.meaning('ADDRESS','POS_SBD_BYR_USAGE_LIST',0)
+ else xxen_util.meaning('SUPPLIER','POS_SBD_BYR_USAGE_LIST',0)
+ end                               bank_assignment_level,
+ cbbv.bank_name                    bank_name,
+ cbbv.bank_number                  bank_number,
+ (select ftv.territory_short_name
+  from   fnd_territories_vl ftv
+  where  ftv.territory_code = cbbv.bank_home_country
+ )                                 bank_country,
+ cbbv.bank_branch_name             bank_branch_name,
+ cbbv.branch_number                bank_branch_number,
+ cbbv.bank_branch_type             bank_branch_type,
+ cbbv.eft_swift_code               bank_branch_bic,
+ ieba.bank_account_name            bank_acct_name,
+ ieba.bank_account_num             bank_acct_num,
+ ieba.check_digits                 bank_acct_check_digits,
+ ieba.currency_code                bank_acct_currency,
+ xxen_util.meaning(ieba.foreign_payment_use_flag,'YES_NO',0) bank_acct_allow_foreign_pay,
+ ieba.iban                         bank_acct_iban,
+ ieba.bank_account_name_alt        bank_acct_name_alt,
+ ieba.account_suffix               bank_acct_suffix,
+ xxen_util.meaning(ieba.bank_account_type,'BANK_ACCOUNT_TYPE',260)
+                                   bank_acct_type,
+ ieba.secondary_account_reference  bank_acct_sec_reference,
+ ieba.description                  bank_acct_description,
+ ieba.contact_name                 bank_acct_contact,
+ ieba.contact_phone                bank_acct_contact_phone,
+ ieba.contact_fax                  bank_acct_contact_fax,
+ ieba.contact_email                bank_acct_contact_email,
+ ipiua.start_date                  bank_acct_assignmt_start_date,
+ ipiua.end_date                    bank_acct_assignmt_end_date
+ from
+ iby_external_payees_all iepa,
+ iby_pmt_instr_uses_all ipiua,
+ iby_ext_bank_accounts ieba,
+ ce_bank_branches_v cbbv
+ where
+ iepa.ext_payee_id = ipiua.ext_pmt_party_id and
+ ipiua.instrument_id = ieba.ext_bank_account_id and
+ ieba.branch_id = cbbv.branch_party_id and
+ iepa.payment_function = 'PAYABLES_DISB' and
+ ipiua.payment_function = 'PAYABLES_DISB' and
+ ipiua.instrument_type = 'BANKACCOUNT'
+)
+--
+-- Main query starts here
+--
 select
 x.*
 from
 (
-select distinct
+select /*+ push_pred(ba0) push_pred(ba1) */ distinct
 null action_,
 null status_,
 null message_,
 null request_id_,
 :p_upload_mode upload_mode_,
-to_char(null) supplier_row_id,
+to_char(null) vend_row_id,
 to_char(null) site_row_id,
 to_char(null) site_contact_row_id,
-to_char(null) supplier_bank_acct_row_id,
-to_char(null) site_bank_acct_row_id,
+to_char(null) vend_bank_intsr_pay_use_row_id,
+to_char(null) site_bank_intsr_pay_use_row_id,
 -- ########
 -- Vendor
 -- ########
@@ -49,7 +111,7 @@ xxen_util.meaning(aps.one_time_flag,'YES_NO',0) one_time_flag,
 xxen_util.meaning(aps.small_business_flag,'YES_NO',0) small_business_flag,
 hp.url,
 -- # Vendor DFF
-aps.attribute_category vendor_attribute_category,
+xxen_util.display_flexfield_context(201,'PO_VENDORS',aps.attribute_category) vendor_attribute_category,
 xxen_util.display_flexfield_value(201,'PO_VENDORS',aps.attribute_category,'ATTRIBUTE1',aps.rowid,aps.attribute1) vendor_attribute1,
 xxen_util.display_flexfield_value(201,'PO_VENDORS',aps.attribute_category,'ATTRIBUTE2',aps.rowid,aps.attribute2) vendor_attribute2,
 xxen_util.display_flexfield_value(201,'PO_VENDORS',aps.attribute_category,'ATTRIBUTE3',aps.rowid,aps.attribute3) vendor_attribute3,
@@ -118,11 +180,11 @@ xxen_util.meaning(aps.allow_awt_flag,'YES_NO',0) allow_withholding_tax,
 (select aag.name from ap_awt_groups aag where aag.group_id = aps.pay_awt_group_id) pay_withholding_tax_group,
 -- ## Vendor Tax Details - Transaction Tax
 xxen_util.meaning(zptp0.rounding_level_code,'ZX_ROUNDING_LEVEL',0) tax_rounding_level,
-nvl(xxen_util.meaning(zptp0.rounding_rule_code,'ZX_ROUNDING_RULE',0),:p_default_tax_rounding_rule) tax_rounding_rule,
-xxen_util.meaning(nvl(zptp0.inclusive_tax_flag,'N'),'YES_NO',0) inclusive_tax,
+nvl(xxen_util.meaning(zptp0.rounding_rule_code,'ZX_ROUNDING_RULE',0),xxen_util.meaning(:p_default_tax_rounding_rule,'AP_TAX_ROUNDING_RULE',200)) tax_rounding_rule,
+xxen_util.meaning(nvl(zptp0.inclusive_tax_flag,:p_default_inclusive_tax),'YES_NO',0) inclusive_tax,
 xxen_util.meaning(nvl(zptp0.process_for_applicability_flag,'Y'),'YES_NO',0) allow_tax_applicability,
 xxen_util.meaning(nvl(zptp0.self_assess_flag,'N'),'YES_NO',0) self_assessment,
-xxen_util.meaning(nvl(zptp0.allow_offset_tax_flag,'N'),'YES_NO',0) allow_offset_taxes,
+xxen_util.meaning(nvl(zptp0.allow_offset_tax_flag,:p_default_allow_offset_taxes),'YES_NO',0) allow_offset_taxes,
 nvl(zptp0.tax_classification_code,aps.vat_code) tax_classification,
 aps.offset_vat_code,
 -- ## Vendor Tax Details - Tax Reporting
@@ -145,13 +207,13 @@ aps.tax_verification_date tax_reporting_verif_date,
  ieppm.ext_pmt_party_id = iepa0.ext_payee_id and
  rownum <= 1
 ) default_payment_method,
-xxen_util.meaning(nvl(iepa0.exclusive_payment_flag,'N'),'YES_NO',0) pay_each_document_alone,
+xxen_util.meaning(nvl(iepa0.exclusive_payment_flag,:p_default_pay_document_alone),'YES_NO',0) pay_each_document_alone,
 xxen_util.meaning(iepa0.bank_charge_bearer,'IBY_BANK_CHARGE_BEARER',0) bank_charge_bearer,
 (select iprv.meaning from iby_payment_reasons_vl iprv where iprv.payment_reason_code = iepa0.payment_reason_code) payment_reason,
 iepa0.payment_reason_comments payment_reason_comments,
 (select ifv.format_name from iby_formats_vl ifv where ifv.format_code = iepa0.payment_format_code) payee_payment_format,
 xxen_util.meaning(iepa0.service_level_code,'IBY_SERVICE_LEVEL',0) payment_service_level,
-xxen_util.meaning(iepa0.delivery_channel_code,'IBY_LOCAL_INSTRUMENT',0) payment_delivery_channel,
+(select idcv.meaning from iby_delivery_channels_vl idcv where idcv.delivery_channel_code = iepa0.delivery_channel_code) payment_delivery_channel,
 (select ibiv.meaning from iby_bank_instructions_vl ibiv where ibiv.bank_instruction_code = iepa0.bank_instruction1_code) bank_instruction1,
 (select ibiv.meaning from iby_bank_instructions_vl ibiv where ibiv.bank_instruction_code = iepa0.bank_instruction2_code) bank_instruction2,
 iepa0.bank_instruction_details bank_instruction_details,
@@ -166,67 +228,78 @@ iepa0.settlement_priority settlement_priority,
 -- ########
 -- Vendor Bank Accounts
 -- ########
-cbbv0.bank_name                    vendor_bank_name,
-cbbv0.bank_number                  vendor_bank_number,
-(select ftv.territory_short_name
- from   fnd_territories_vl ftv
- where  ftv.territory_code = cbbv0.bank_home_country
-) vendor_bank_country,
-cbbv0.bank_branch_name             vendor_bank_branch_name,
-cbbv0.branch_number                vendor_bank_branch_number,
-cbbv0.bank_branch_type             vendor_bank_branch_type,
-cbbv0.eft_swift_code               vendor_bank_branch_bic,
-ieba0.bank_account_name            vendor_bank_acct_name,
-ieba0.bank_account_num             vendor_bank_acct_num,
-ieba0.check_digits                 vendor_bank_acct_check_digits,
-ieba0.currency_code                vendor_bank_acct_currency,
---xxen_util.meaning(ieba0.foreign_payment_use_flag,'YES_NO',0)  vendor_bank_allow_foreign_pay,
-ieba0.iban                         vendor_bank_acct_iban,
-ieba0.bank_account_name_alt        vendor_bank_acct_name_alt,
-ieba0.account_suffix               vendor_bank_acct_suffix,
-ieba0.start_date                   vendor_bank_acct_start_date,
-ieba0.end_date                     vendor_bank_acct_end_date,
-xxen_util.meaning(ieba0.bank_account_type,'BANK_ACCOUNT_TYPE',260)
-                                   vendor_bank_acct_type,
-ieba0.secondary_account_reference  vendor_bank_acct_sec_reference,
-ieba0.description                  vendor_bank_acct_description,
-ieba0.contact_name                 vendor_bank_acct_contact,
-ieba0.contact_phone                vendor_bank_acct_contact_phone,
-ieba0.contact_fax                  vendor_bank_acct_contact_fax,
-ieba0.contact_email                vendor_bank_acct_contact_email,
+ba0.bank_name                      vendor_bank_name,
+ba0.bank_number                    vendor_bank_number,
+ba0.bank_country                   vendor_bank_country,
+ba0.bank_branch_name               vendor_bank_branch_name,
+ba0.bank_branch_number             vendor_bank_branch_number,
+ba0.bank_branch_type               vendor_bank_branch_type,
+ba0.bank_branch_bic                vendor_bank_branch_bic,
+ba0.bank_acct_name                 vendor_bank_acct_name,
+ba0.bank_acct_num                  vendor_bank_acct_num,
+ba0.bank_acct_check_digits         vendor_bank_acct_check_digits,
+ba0.bank_acct_currency             vendor_bank_acct_currency,
+ba0.bank_acct_allow_foreign_pay    vendor_bank_acct_allow_foreign,
+ba0.bank_acct_iban                 vendor_bank_acct_iban,
+ba0.bank_acct_name_alt             vendor_bank_acct_name_alt,
+ba0.bank_acct_suffix               vendor_bank_acct_suffix,
+ba0.bank_acct_type                 vendor_bank_acct_type,
+ba0.bank_acct_sec_reference        vendor_bank_acct_sec_reference,
+ba0.bank_acct_description          vendor_bank_acct_description,
+ba0.bank_acct_contact              vendor_bank_acct_contact,
+ba0.bank_acct_contact_phone        vendor_bank_acct_contact_phone,
+ba0.bank_acct_contact_fax          vendor_bank_acct_contact_fax,
+ba0.bank_acct_contact_email        vendor_bank_acct_contact_email,
+ba0.bank_acct_assignmt_start_date  vendor_bank_acct_assign_start,
+ba0.bank_acct_assignmt_end_date    vendor_bank_acct_assign_end,
+-- ########
+-- Party Site/Address
+-- ########
+hps.party_site_name address_name,
+(select territory_short_name from fnd_territories_vl ftv where ftv.territory_code = hl.country) country,
+hl.address1 address_line1,
+hl.address2 address_line2,
+hl.address3 address_line3,
+hl.address4 address_line4,
+hl.city,
+hl.county,
+hl.state,
+hl.postal_code zip,
+hl.province,
+xxen_util.meaning(hl.address_style,'ADDRESS_STYLE',0) address_style,
+initcap(fl.nls_language) address_language,
+--
+hcp1.phone_area_code address_phone_area_code,
+hcp1.phone_number address_phone_number,
+hcp2.phone_area_code address_fax_area_code,
+hcp2.phone_number address_fax_number,
+hcp3.email_address address_email_address,
+(select xxen_util.meaning('Y','YES_NO',0) from hz_party_site_uses hpsu where hpsu.party_site_id = assa.party_site_id and hpsu.site_use_type = 'PURCHASING' and hpsu.status = 'A') purchasing_address,
+(select xxen_util.meaning('Y','YES_NO',0) from hz_party_site_uses hpsu where hpsu.party_site_id = assa.party_site_id and hpsu.site_use_type = 'PAY' and hpsu.status = 'A') pay_address,
+(select xxen_util.meaning('Y','YES_NO',0) from hz_party_site_uses hpsu where hpsu.party_site_id = assa.party_site_id and hpsu.site_use_type = 'RFQ' and hpsu.status = 'A') rfq_only_address,
 -- ########
 -- Vendor Site
 -- ########
-hps.party_site_name address_name,
 assa.vendor_site_code site_name,
 assa.vendor_site_code_alt alt_site_name,
 hou.name operating_unit,
-(select territory_short_name from fnd_territories_vl ftv where ftv.territory_code = assa.country) country,
-assa.address_line1,
-assa.address_line2,
-assa.address_line3,
-assa.city,
-assa.county,
-assa.state,
-assa.zip,
-assa.province,
-xxen_util.meaning(assa.address_style,'ADDRESS_STYLE',0) address_style,
-initcap(fl.nls_language) language,
-assa.area_code,
-assa.phone,
-assa.fax_area_code,
-assa.fax,
-assa.customer_num site_customer_num,
 assa.inactive_date site_inactive_date,
-xxen_util.meaning(assa.purchasing_site_flag,'YES_NO',0) purchasing_site,
-xxen_util.meaning(assa.pay_site_flag,'YES_NO',0) pay_site,
-xxen_util.meaning(assa.rfq_only_site_flag,'YES_NO',0) rfq_only_site,
-xxen_util.meaning(assa.tax_reporting_site_flag,'YES_NO',0) tax_reporting_site,
+xxen_util.meaning(assa.supplier_notif_method,'DOCUMENT_COMMUNICATION_METHOD',201) site_notification_method,
+assa.area_code site_phone_area_code,
+assa.phone site_phone_number,
+assa.fax_area_code site_fax_area_code,
+assa.fax site_fax_number,
+assa.email_address site_email_address,
+decode(assa.purchasing_site_flag,'Y',xxen_util.meaning('Y','YES_NO',0),null) purchasing_site,
+decode(assa.pay_site_flag,'Y',xxen_util.meaning('Y','YES_NO',0),null) pay_site,
+decode(assa.rfq_only_site_flag,'Y',xxen_util.meaning('Y','YES_NO',0),null) rfq_only_site,
+decode(assa.tax_reporting_site_flag,'Y',xxen_util.meaning('Y','YES_NO',0),null) tax_reporting_site,
 nvl(zptp1.rep_registration_number,assa.vat_registration_num) site_tax_reg_number,
 zptp1.registration_type_code site_tax_reg_type,
 (select territory_short_name from fnd_territories_vl ftv where ftv.territory_code = zptp1.country_code) site_tax_reg_country,
+assa.customer_num site_customer_num,
 -- # Vendor Site DFF
-assa.attribute_category site_attribute_category,
+xxen_util.display_flexfield_context(201,'PO_VENDOR_SITES',assa.attribute_category) site_attribute_category,
 xxen_util.display_flexfield_value(201,'PO_VENDOR_SITES',assa.attribute_category,'ATTRIBUTE1',assa.rowid,assa.attribute1) site_attribute1,
 xxen_util.display_flexfield_value(201,'PO_VENDOR_SITES',assa.attribute_category,'ATTRIBUTE2',assa.rowid,assa.attribute2) site_attribute2,
 xxen_util.display_flexfield_value(201,'PO_VENDOR_SITES',assa.attribute_category,'ATTRIBUTE3',assa.rowid,assa.attribute3) site_attribute3,
@@ -287,10 +360,10 @@ xxen_util.meaning(assa.allow_awt_flag,'YES_NO',0) site_allow_withholding_tax,
 (select aag.name from ap_awt_groups aag where aag.group_id = assa.awt_group_id) site_inv_withholding_tax_group,
 (select aag.name from ap_awt_groups aag where aag.group_id = assa.pay_awt_group_id) site_pay_withholding_tax_group,
 xxen_util.meaning(nvl(zptp1.rounding_level_code,zptp1.rounding_level_code),'ZX_ROUNDING_LEVEL',0) site_tax_rounding_level,
-nvl(xxen_util.meaning(nvl(zptp1.rounding_rule_code,zptp0.rounding_rule_code),'ZX_ROUNDING_RULE',0),:p_default_tax_rounding_rule) site_tax_rounding_rule,
-xxen_util.meaning(nvl(zptp1.inclusive_tax_flag,nvl(zptp0.inclusive_tax_flag,'N')),'YES_NO',0) site_inclusive_tax,
+nvl(xxen_util.meaning(nvl(zptp1.rounding_rule_code,zptp0.rounding_rule_code),'ZX_ROUNDING_RULE',0),xxen_util.meaning(:p_default_tax_rounding_rule,'AP_TAX_ROUNDING_RULE',200)) site_tax_rounding_rule,
+xxen_util.meaning(nvl(zptp1.inclusive_tax_flag,nvl(zptp0.inclusive_tax_flag,:p_default_inclusive_tax)),'YES_NO',0) site_inclusive_tax,
 xxen_util.meaning(nvl(zptp1.process_for_applicability_flag,nvl(zptp0.process_for_applicability_flag,'Y')),'YES_NO',0) site_calculate_tax,
-xxen_util.meaning(nvl(zptp1.allow_offset_tax_flag,nvl(zptp0.allow_offset_tax_flag,'N')),'YES_NO',0) site_allow_offset_taxes,
+xxen_util.meaning(nvl(zptp1.allow_offset_tax_flag,nvl(zptp0.allow_offset_tax_flag,:p_default_allow_offset_taxes)),'YES_NO',0) site_allow_offset_taxes,
 nvl(zptp1.tax_classification_code,assa.vat_code) site_tax_classification,
 -- # Vendor Site Payment Details
 (select
@@ -308,14 +381,14 @@ nvl(zptp1.tax_classification_code,assa.vat_code) site_tax_classification,
  ieppm.ext_pmt_party_id = iepa1.ext_payee_id and
  rownum <= 1
 ) site_default_payment_method,
-xxen_util.meaning(nvl(iepa1.exclusive_payment_flag,nvl(iepa0.exclusive_payment_flag,'N')),'YES_NO',0) site_pay_each_document_alone,
+xxen_util.meaning(nvl(iepa1.exclusive_payment_flag,nvl(iepa0.exclusive_payment_flag,:p_default_pay_document_alone)),'YES_NO',0) site_pay_each_document_alone,
 xxen_util.meaning(assa.bank_charge_bearer,'BANK CHARGE BEARER',200) site_deduct_charge_from_bank,
 xxen_util.meaning(iepa1.bank_charge_bearer,'IBY_BANK_CHARGE_BEARER',0) site_bank_charge_bearer,
 (select iprv.meaning from iby_payment_reasons_vl iprv where iprv.payment_reason_code = iepa1.payment_reason_code) site_payment_reason,
 iepa1.payment_reason_comments site_payment_reason_comments,
 (select ifv.format_name from iby_formats_vl ifv where ifv.format_code = iepa1.payment_format_code) site_payee_payment_format,
 xxen_util.meaning(iepa1.service_level_code,'IBY_SERVICE_LEVEL',0) site_payment_service_level,
-xxen_util.meaning(iepa1.delivery_channel_code,'IBY_LOCAL_INSTRUMENT',0) site_payment_delivery_channel,
+(select idcv.meaning from iby_delivery_channels_vl idcv where idcv.delivery_channel_code = iepa1.delivery_channel_code) site_payment_delivery_channel,
 (select ibiv.meaning from iby_bank_instructions_vl ibiv where ibiv.bank_instruction_code = iepa1.bank_instruction1_code) site_bank_instruction1,
 (select ibiv.meaning from iby_bank_instructions_vl ibiv where ibiv.bank_instruction_code = iepa1.bank_instruction2_code) site_bank_instruction2,
 iepa1.bank_instruction_details site_bank_instruction_details,
@@ -330,62 +403,130 @@ iepa1.settlement_priority site_settlement_priority,
 -- ########
 -- Vendor Site Bank Accounts
 -- ########
-cbbv1.bank_name                    site_bank_name,
-cbbv1.bank_number                  site_bank_number,
-(select ftv.territory_short_name
- from   fnd_territories_vl ftv
- where  ftv.territory_code = cbbv1.bank_home_country
-) site_bank_country,
-cbbv1.bank_branch_name             site_bank_branch_name,
-cbbv1.branch_number                site_bank_branch_number,
-cbbv1.bank_branch_type             site_bank_branch_type,
-cbbv1.eft_swift_code               site_bank_branch_bic,
-ieba1.bank_account_name            site_bank_acct_name,
-ieba1.bank_account_num             site_bank_acct_num,
-ieba1.check_digits                 site_bank_acct_check_digits,
-ieba1.currency_code                site_bank_acct_currency,
---xxen_util.meaning(ieba1.foreign_payment_use_flag,'YES_NO',0)  site_bank_allow_foreign_pay,
-ieba1.iban                         site_bank_acct_iban,
-ieba1.bank_account_name_alt        site_bank_acct_name_alt,
-ieba1.account_suffix               site_bank_acct_suffix,
-ieba1.start_date                   site_bank_acct_start_date,
-ieba1.end_date                     site_bank_acct_end_date,
-xxen_util.meaning(ieba1.bank_account_type,'BANK_ACCOUNT_TYPE',260)
-                                   site_bank_acct_type,
-ieba1.secondary_account_reference  site_bank_acct_sec_reference,
-ieba1.description                  site_bank_acct_description,
-ieba1.contact_name                 site_bank_acct_contact,
-ieba1.contact_phone                site_bank_acct_contact_phone,
-ieba1.contact_fax                  site_bank_acct_contact_fax,
-ieba1.contact_email                site_bank_acct_contact_email,
+ba1.bank_assignment_level          site_bank_assignment_level,
+ba1.bank_name                      site_bank_name,
+ba1.bank_number                    site_bank_number,
+ba1.bank_country                   site_bank_country,
+ba1.bank_branch_name               site_bank_branch_name,
+ba1.bank_branch_number             site_bank_branch_number,
+ba1.bank_branch_type               site_bank_branch_type,
+ba1.bank_branch_bic                site_bank_branch_bic,
+ba1.bank_acct_name                 site_bank_acct_name,
+ba1.bank_acct_num                  site_bank_acct_num,
+ba1.bank_acct_check_digits         site_bank_acct_check_digits,
+ba1.bank_acct_currency             site_bank_acct_currency,
+ba1.bank_acct_allow_foreign_pay    site_bank_acct_allow_foreign,
+ba1.bank_acct_iban                 site_bank_acct_iban,
+ba1.bank_acct_name_alt             site_bank_acct_name_alt,
+ba1.bank_acct_suffix               site_bank_acct_suffix,
+ba1.bank_acct_type                 site_bank_acct_type,
+ba1.bank_acct_sec_reference        site_bank_acct_sec_reference,
+ba1.bank_acct_description          site_bank_acct_description,
+ba1.bank_acct_contact              site_bank_acct_contact,
+ba1.bank_acct_contact_phone        site_bank_acct_contact_phone,
+ba1.bank_acct_contact_fax          site_bank_acct_contact_fax,
+ba1.bank_acct_contact_email        site_bank_acct_contact_email,
+ba1.bank_acct_assignmt_start_date  site_bank_acct_assign_start,
+ba1.bank_acct_assignmt_end_date    site_bank_acct_assign_end,
 -- ########
 -- Vendor Site Contacts
 -- ########
-xxen_util.meaning(pvc.prefix,'CONTACT_TITLE',222) contact_title,
-pvc.first_name contact_first_name,
-pvc.middle_name contact_middle_name,
-pvc.last_name contact_last_name,
-(select hp.known_as
- from   hz_parties hp
- where  hp.party_id = pvc.per_party_id
-) contact_alternate_name,
-pvc.title contact_job_title,
-pvc.department contact_department,
-pvc.email_address contact_email_address,
-pvc.url contact_url,
-pvc.area_code contact_phone_area_code,
-pvc.phone contact_phone_number,
-(select hp.primary_phone_extension
- from   hz_parties hp
- where  hp.party_id = pvc.rel_party_id
-) contact_phone_ext,
-pvc.alt_area_code contact_alt_phone_area_code,
-pvc.alt_phone contact_alt_phone_number,
-pvc.fax_area_code contact_fax_area_code,
-pvc.fax contact_fax_number,
-decode(pvc.inactive_date,to_date('31/12/4712','DD/MM/YYYY'),to_date(null),pvc.inactive_date) contact_inactive_date,
+nvl(xxen_util.meaning(nvl(hpc.person_pre_name_adjunct,hpc.salutation),'CONTACT_TITLE',222),nvl(hpc.person_pre_name_adjunct,hpc.salutation)) contact_title,
+hpc.person_first_name contact_first_name,
+hpc.person_middle_name contact_middle_name,
+hpc.person_last_name contact_last_name,
+hpc.known_as contact_alternate_name,
+hpc.person_title contact_job_title,
+(select hoc.department
+ from hz_org_contacts hoc
+ where hoc.org_contact_id = asco.org_contact_id
+) contact_department,
+nvl(
+ (select hcp.email_address
+  from   hz_contact_points hcp
+  where  hcp.contact_point_id =
+  (select
+   max(hcp2.contact_point_id)
+   from
+   hz_contact_points hcp2
+   where
+   hcp2.owner_table_name = 'HZ_PARTIES' and
+   hcp2.owner_table_id = asco.rel_party_id and
+   hcp2.contact_point_type = 'EMAIL' and
+   hcp2.status = 'A'
+  )
+ ),
+ hpr.email_address
+) contact_email_address,
+hpr.url contact_url,
+case when hpr.primary_phone_line_type='GEN' then hpr.primary_phone_area_code else null end contact_phone_area_code,
+case when hpr.primary_phone_line_type='GEN' then hpr.primary_phone_number else null end contact_phone_number,
+case when hpr.primary_phone_line_type='GEN' then hpr.primary_phone_extension else null end contact_phone_ext,
+(select hcp.phone_area_code
+ from   hz_contact_points hcp
+ where  hcp.contact_point_id =
+ (select
+  max(hcp2.contact_point_id)
+  from
+  hz_contact_points hcp2
+  where
+  hcp2.owner_table_name = 'HZ_PARTIES' and
+  hcp2.owner_table_id = asco.rel_party_id and
+  hcp2.contact_point_type = 'PHONE' and
+  hcp2.phone_line_type = 'GEN' and
+  hcp2.primary_flag = 'N' and
+  hcp2.status = 'A'
+ )
+) contact_alt_phone_area_code,
+(select hcp.phone_number
+ from   hz_contact_points hcp
+ where  hcp.contact_point_id =
+ (select
+  max(hcp2.contact_point_id)
+  from
+  hz_contact_points hcp2
+  where
+  hcp2.owner_table_name = 'HZ_PARTIES' and
+  hcp2.owner_table_id = asco.rel_party_id and
+  hcp2.contact_point_type = 'PHONE' and
+  hcp2.phone_line_type = 'GEN' and
+  hcp2.primary_flag = 'N' and
+  hcp2.status = 'A'
+ )
+) contact_alt_phone_number,
+(select hcp.phone_area_code
+ from   hz_contact_points hcp
+ where  hcp.contact_point_id =
+ (select
+  max(hcp2.contact_point_id)
+  from
+  hz_contact_points hcp2
+  where
+  hcp2.owner_table_name = 'HZ_PARTIES' and
+  hcp2.owner_table_id = asco.rel_party_id and
+  hcp2.contact_point_type = 'PHONE' and
+  hcp2.phone_line_type = 'FAX' and
+  hcp2.status = 'A'
+ )
+) contact_fax_area_code,
+(select hcp.phone_number
+ from   hz_contact_points hcp
+ where  hcp.contact_point_id =
+ (select
+  max(hcp2.contact_point_id)
+  from
+  hz_contact_points hcp2
+  where
+  hcp2.owner_table_name = 'HZ_PARTIES' and
+  hcp2.owner_table_id = asco.rel_party_id and
+  hcp2.contact_point_type = 'PHONE' and
+  hcp2.phone_line_type = 'FAX' and
+  hcp2.status = 'A'
+ )
+) contact_fax_number,
+(select hr.end_date from hz_relationships hr where hr.relationship_id = asco.relationship_id and hr.directional_flag = 'F' and trunc(hr.end_date) != to_date('31/12/4712','DD/MM/YYYY')) contact_inactive_date,
 -- # Contacts DFF
-pvc.attribute_category contact_attribute_category,
+xxen_util.display_flexfield_context(200,'AP_SUPPLIER_CONTACTS',asco.attribute_category) contact_attribute_category,
 xxen_util.display_flexfield_value(200,'AP_SUPPLIER_CONTACTS',asco.attribute_category,'ATTRIBUTE1',asco.rowid,asco.attribute1) contact_attribute1,
 xxen_util.display_flexfield_value(200,'AP_SUPPLIER_CONTACTS',asco.attribute_category,'ATTRIBUTE2',asco.rowid,asco.attribute2) contact_attribute2,
 xxen_util.display_flexfield_value(200,'AP_SUPPLIER_CONTACTS',asco.attribute_category,'ATTRIBUTE3',asco.rowid,asco.attribute3) contact_attribute3,
@@ -409,83 +550,10 @@ hp.party_id,
 assa.vendor_site_id,
 assa.party_site_id,
 assa.org_id,
-pvc.vendor_contact_id,
-gl.ledger_id set_of_books_id,
-gl.chart_of_accounts_id,
-ieba0.ext_bank_account_id supplier_bank_account_id,
-ieba1.ext_bank_account_id site_bank_account_id
-from
-ap_suppliers aps,
-hz_parties hp,
-zx_party_tax_profile zptp0,
-ap_suppliers aps1,
-(select iepa.* from iby_external_payees_all iepa where iepa.payment_function='PAYABLES_DISB' and iepa.party_site_id is null and iepa.supplier_site_id is null) iepa0,
-(select ipiua.* from iby_pmt_instr_uses_all ipiua where ipiua.payment_function='PAYABLES_DISB' and sysdate between ipiua.start_date and nvl(ipiua.end_date,sysdate)) ipiua0,
-iby_ext_bank_accounts ieba0,
-ce_bank_branches_v cbbv0,
---
-ap_supplier_sites_all assa,
-hz_party_sites hps,
-fnd_languages fl,
-hr_operating_units hou,
-gl_ledgers gl,
-zx_party_tax_profile zptp1,
-(select iepa.* from iby_external_payees_all iepa where iepa.payment_function='PAYABLES_DISB' and iepa.supplier_site_id is not null) iepa1,
-(select ipiua.* from iby_pmt_instr_uses_all ipiua where ipiua.payment_function='PAYABLES_DISB' and sysdate between ipiua.start_date and nvl(ipiua.end_date,sysdate)) ipiua1,
-iby_ext_bank_accounts ieba1,
-ce_bank_branches_v cbbv1,
---
-po_vendor_contacts pvc,
-ap_supplier_contacts asco
---
-where
-:p_upload_mode like '%' || xxen_upload.action_update and
-1=1 and
-aps.employee_id is null and
-aps.parent_vendor_id = aps1.vendor_id(+) and
-aps.party_id = hp.party_id and
-aps.party_id = zptp0.party_id (+) and
-'THIRD_PARTY' = zptp0.party_type_code (+) and
-aps.party_id = iepa0.payee_party_id(+) and
-decode(xxen_util.lookup_code(:p_show_vendor_banks,'YES_NO',0),'Y',iepa0.ext_payee_id,-99) = ipiua0.ext_pmt_party_id(+) and
-decode(ipiua0.instrument_type,'BANKACCOUNT',ipiua0.instrument_id) = ieba0.ext_bank_account_id(+) and
-ieba0.branch_id=cbbv0.branch_party_id(+) and
---
-decode(xxen_util.lookup_code(:p_show_vendor_sites,'YES_NO',0),'Y',aps.vendor_id,-1) = assa.vendor_id (+) and
-(assa.org_id is null or mo_global.check_access(assa.org_id)='Y') and
-assa.party_site_id = hps.party_site_id (+) and
-assa.language = fl.language_code (+) and
-assa.org_id = hou.organization_id (+) and
-hou.set_of_books_id = gl.ledger_id (+) and
-assa.party_site_id = zptp1.party_id (+) and
-'THIRD_PARTY_SITE' = zptp1.party_type_code (+) and
-assa.party_site_id = iepa1.party_site_id (+) and
-assa.vendor_site_id = iepa1.supplier_site_id (+) and
-decode(xxen_util.lookup_code(:p_show_site_banks,'YES_NO',0),'Y',iepa1.ext_payee_id,-99) = ipiua1.ext_pmt_party_id(+) and
-decode(ipiua1.instrument_type,'BANKACCOUNT',ipiua1.instrument_id) = ieba1.ext_bank_account_id(+) and
-ieba1.branch_id=cbbv1.branch_party_id(+) and
---
-decode(xxen_util.lookup_code(:p_show_site_contacts,'YES_NO',0),'Y',assa.vendor_site_id,-99) = pvc.vendor_site_id (+) and
-pvc.vendor_contact_id = asco.vendor_contact_id (+)
---
-&not_use_first_block
-&report_table_select
-&report_table_name
-&report_table_where_clause
-&success_query
-&processed_run
-) x
-order by
-x.supplier_name,
-x.supplier_number,
-x.operating_unit,
-x.country,
-x.site_name,
-x.contact_last_name,
-x.contact_first_name,
-x.site_bank_name,
-x.site_bank_number,
-x.site_bank_branch_name,
-x.site_bank_branch_number,
-x.site_bank_acct_name,
-x.site_bank_acct_num
+asco.vendor_contact_id,
+ba0.instrument_payment_use_id supplier_bank_intsr_pay_use_id,
+ba1.instrument_payment_use_id site_bank_instr_pay_use_id,
+-- defaults
+:p_default_tax_rounding_rule default_tax_rounding_rule,
+:p_default_inclusive_tax default_inclusive_tax_flag,
+:p_default_allow_offset_taxes 

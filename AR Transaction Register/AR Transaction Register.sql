@@ -8,12 +8,15 @@
 -- Description: Application: Receivables
 Source: Transaction Register
 Short Name: ARRXINVR
+
+The report has now been enhanced to allow multiple accessible Ledgers or Operating Units to be selected in the Reporting Context parameter. Additionally, the Reporting Context parameter has been made optional. Leaving it null will allow the report to be run across all accessible Ledgers or Operating Units.
 -- Excel Examle Output: https://www.enginatics.com/example/ar-transaction-register/
 -- Library Link: https://www.enginatics.com/reports/ar-transaction-register/
 -- Run Report: https://demo.enginatics.com/
 
 select
   rx.organization_name                   ledger,
+  haouv.name                             operating_unit,
   rx.rec_postable_flag                   postable,
   rx.rec_balance                         "&bal_segment_p",
   rx.rec_balance_desc                    "&bal_segment_d",
@@ -61,9 +64,11 @@ from
   ra_cust_trx_types_all trx_types,
   ar_receipt_methods methods,
   ra_batches_all ba,
-  ra_batch_sources_all bas
+  ra_batch_sources_all bas,
+  hr_all_organization_units_vl haouv
 where
-  rx.ship_to_customer_id = ship_to.cust_account_id(+)
+  1=1
+  and rx.ship_to_customer_id = ship_to.cust_account_id(+)
   and ship_to.party_id = ship_to_party.party_id(+)
   and rx.ship_to_site_use_id = ship_to_site.site_use_id(+)
   and rx.bill_to_customer_id = bill_to.cust_account_id
@@ -77,7 +82,8 @@ where
   and rx.batch_id = ba.batch_id(+)
   and rx.batch_source_id = bas.batch_source_id(+)
   and nvl(rx.org_id, -99) = nvl(bas.org_id, -99)
- and rx.request_id = fnd_global.conc_request_id
+  and rx.request_id = fnd_global.conc_request_id
+  and rx.org_id = haouv.organization_id (+)
 order by
   rx.organization_name,
   rx.rec_balance,

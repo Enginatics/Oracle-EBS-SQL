@@ -20,6 +20,7 @@ gl.currency_code,
 mcch.cycle_count_header_name cycle_count_name,
 msiv.concatenated_segments item,
 msiv.description description,
+&category_columns
 xxen_util.meaning(msiv.item_type,'ITEM_TYPE',3) user_item_type,
 mcsr.subinventory subinventory,
 mcsr.revision revision,

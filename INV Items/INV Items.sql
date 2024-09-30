@@ -93,7 +93,7 @@ xxen_util.meaning(msiv.customer_order_flag,'YES_NO',0) customer_ordered,
 xxen_util.meaning(msiv.internal_order_enabled_flag,'YES_NO',0) internal_orders_enabled,
 xxen_util.meaning(msiv.invoiceable_item_flag,'YES_NO',0) invoiceable_item,
 xxen_util.meaning(msiv.invoice_enabled_flag,'YES_NO',0) invoice_enabled,
-&flexfield_columns
+&dff_columns
 msiv.inventory_item_id
 from
 hr_all_organization_units_vl haouv,
@@ -109,23 +109,6 @@ fa_categories_b_kfv fcbk,
 mtl_mfg_part_numbers mmpn,
 mtl_manufacturers mm,
 gl_code_combinations_kfv gcc,
-(
-select
-mic.organization_id,
-mic.inventory_item_id,
-mcsv.category_set_name,
-mck.concatenated_segments
-from
-mtl_item_categories mic,
-mtl_category_sets_v mcsv,
-mtl_categories_kfv mck
-where
-mcsv.category_set_name=:category_set_name and
-mck.concatenated_segments=nvl(:category,mck.concatenated_segments) and
-2=2 and
-mic.category_set_id=mcsv.category_set_id and
-mic.category_id=mck.category_id
-) x,
 mtl_atp_rules mar,
 mtl_planners mpl
 where
@@ -144,12 +127,9 @@ msiv.inventory_item_id=mmpn.inventory_item_id(+) and
 msiv.organization_id=mmpn.organization_id(+) and
 mmpn.manufacturer_id=mm.manufacturer_id(+) and
 msiv.cost_of_sales_account=gcc.code_combination_id(+) and
-msiv.organization_id=x.organization_id(+) and
-msiv.inventory_item_id=x.inventory_item_id(+) and
 msiv.atp_rule_id=mar.rule_id(+) and
 msiv.planner_code=mpl.planner_code(+) and
 msiv.organization_id=mpl.organization_id(+)
 order by
 mp.organization_code,
-msiv.concatenated_segments,
-x.category_set_name
+msiv.concatenated_segments

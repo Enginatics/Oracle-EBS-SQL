@@ -5,14 +5,18 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Inventory and Intransit Value (Period-End) - Discrete/OPM
--- Description: Report showing amount of inventory at the end of the month for both Discrete and Process Manufacturing (OPM) inventory organizations.  If you enter a cost type this report uses the item costs from the cost type; if you leave the cost type blank it uses the item costs from the month-end snapshot.  In either case this report uses the month-end quantities, based on the entered period name (and calendar code and period code for OPM).  And as these quantities come from the month-end snapshot (created when you close the inventory accounting period or run the GMF Period Close Process) this snapshot is only by inventory organization, subinventory and item and not split out by cost element.  And to be consistent with DIscrete and OPM reporting, this report uses the Material Account, based upon your Costing Method and valuation options (Cost Group/Average, Subinventory/Standard, Cost Group/PJM, Cost Group/WMS, or Category Accounts).
+-- Description: Report showing amount of inventory at the end of the month for both Discrete and Process Manufacturing (OPM) inventory organizations.  If you enter a cost type this report uses the item costs from the cost type; if you leave the cost type blank it uses the item costs from the month-end snapshot.  In either case this report uses the month-end quantities, based on the entered period name, OPM calendar code and OPM period code.  And as these quantities come from the month-end snapshot (created when you close the inventory accounting period or run the GMF Period Close Process) and this snapshot is only by inventory organization, subinventory and item and not split out by cost element, this report only shows the Material Account, based upon your Costing Method.
 
-Note:  if you enter a cost type this report uses the item costs from the cost type; if you leave the cost type blank it uses the item costs from the month-end snapshot.
+Notes:  
+1)  OPM intransit balances based upon last two years of Intransit Shipments.  As of Release 12.2.13, OPM does not have a month-end snapshot for intransit quantities or balances.
+2)  This report assumes you use both OPM and Discrete Manufacturing.  If you only use Discrete Manufacturing, use the CAC Inventory and Intransit Value (Period-End) report instead.
 
 Discrete and OPM Parameters:
 ============================
 Period Name (Closed):  the closed inventory accounting period you wish to report (mandatory).
-Cost Type:  enter a Cost Type to value the quantities using the Cost Type item costs; or, if Cost Type is not entered the report will use the stored month-end snapshot values.
+Cost Type:  enter a Cost Type to value the quantities using the Cost Type item costs; or, if Cost Type is not entered the report will use the stored month-end snapshot values (optional).
+OPM Calendar Code:  Choose the OPM Calendar Code which corresponds to the inventory accounting period you wish to report (mandatory).
+OPM Period Code:  enter the OPM Period Code related to the inventory accounting period and OPM Calendar Code you wish to report (mandatory).
 Category Set 1:  the first item category set to report, typically the Cost or Product Line Category Set (optional).
 Category Set 2:  The second item category set to report, typically the Inventory Category Set (optional).
 Item Number:  specific buy or make item you wish to report (optional).
@@ -21,27 +25,21 @@ Organization Code:  any inventory organization, defaults to your session's inven
 Operating Unit:  specific operating unit (optional).
 Ledger:  specific ledger (optional).
 
-OPM Parameters:
-==============
-Show OPM Inventory:  Choose Yes to report OPM inventory month-end balances, choose No to ignore OPM inventory organizations (mandatory).
-OPM Calendar Code:  Choose the OPM Calendar Code which corresponds to the inventory accounting period you wish to report (mandatory for reporting OPM results).
-OPM Period Code:  enter the OPM Period Code related to the inventory accounting period and OPM Calendar Code you wish to report (mandatory for reporting OPM results).
-
--- | ===================================================================
--- | Version Modified on Modified by Description
--- | ======= =========== ============== =========================================
+/* +=============================================================================+
+-- | Copyright 2009 - 2024 Douglas Volz Consulting, Inc.
+-- |  All rights reserved.
+-- |  Permission to use this code is granted provided the original author is
+-- |  acknowledged.  No warranties, express or otherwise is included in this permission.                                                                           
+-- +=============================================================================+
 -- | 1.0     27 Sep 2009 Douglas Volz Initial Coding
--- | 1.1     28 Sep 2009 Douglas Volz Added a sum for the ICP costs from cicd
--- | 1.24    02 Apr 2024 Douglas Volz Add Period Code parameter to prevent cross-joining with gmf_period_statuses.
--- | 1.25    23 Apr 2024 Douglas Volz To avoid rounding errors, change OPM item cost rounding from 5 to 8 decimals.
--- | 1.26    14 May 2024 Douglas Volz Remove lot number parameters and columns.
--- | 1.27    15 May 2024 Douglas Volz Fix for OPM intransit accounts.
--- | 1.28    27 May 2024 Douglas Volz Fix for OPM Calendar Code, OPM Period Code and OPM Cost Type parameters.
--- |                                  Check for OPM delete_mark (where the information is no longer shown).
--- |                                  Fix OPM Period Code and Cost Type parameters, remove duplicates.
 -- | 1.29    04 Jun 2024 Douglas Volz Fix SQL error for Intransit code section, due to duplicate transactions in GXEH
 -- |                                  (ORA-01427: single-row subquery returns more than one row).
 -- | 1.30    09 Jun 2024 Douglas Volz Fix Intransit joins for UOMs, organizations and for duplicate Intransit quantities.
+-- | 1.31    25 Jun 2024 Douglas Volz Add Period Code join for Intransit, to avoid cross-joining.
+-- | 1.32    27 Jun 2024 Douglas Volz Get intransit account based on the Shipping Network, to avoid duplicate quantities.
+-- | 1.33    28 Jun 2024 Douglas Volz Base Intransit SQL logic on two years of Intransit Shipments, not on mtl_supply.
+-- | 1.34    30 Jun 2024 Douglas Volz Get default intransit account in case the Shipping Network has been deleted or changed.
+-- | 1.35    08 Aug 2024 Douglas Volz Add OPM Cost Organizations to get correct item costs and qtys.
 -- +=============================================================================+*/
 -- Excel Examle Output: https://www.enginatics.com/example/cac-inventory-and-intransit-value-period-end-discrete-opm/
 -- Library Link: https://www.enginatics.com/reports/cac-inventory-and-intransit-value-period-end-discrete-opm/
@@ -58,10 +56,18 @@ with inv_organizations as
                 haou2.organization_id operating_unit_id,
                 mp.organization_code,
                 mp.organization_id,
+                 -- Revision for version 1.35
+                decode(nvl(mp.process_enabled_flag,'N'),
+                                'Y', nvl(cwa.cost_organization_id, mp.organization_id), 
+                                'N', nvl(mp.cost_organization_id, mp.organization_id)
+                      ) cost_organization_id,
+                -- End revision for version 1.35
                 mca.organization_id category_organization_id,
                 -- Revision for version 1.18
                 mca.category_set_id, 
                 mp.material_account,
+                -- Revision for version 1.34
+                mp.intransit_inv_account,
                 -- Revision for version 1.21, better logic for Cost Group Accounting
                  -- mp.cost_group_accounting,
                 case
@@ -87,6 +93,8 @@ with inv_organizations as
                 gl.currency_code
          from   mtl_category_accounts mca,
                 mtl_parameters mp,
+                -- Revision for version 1.35
+                cm_whse_asc cwa,
                 hr_organization_information hoi,
                 hr_all_organization_units_vl haou, -- inv_organization_id
                 hr_all_organization_units_vl haou2, -- operating unit
@@ -98,6 +106,8 @@ with inv_organizations as
          and    mp.organization_id             <> mp.master_organization_id
          -- Avoid disabled inventory organizations
          and    sysdate                        <  nvl(haou.date_to, sysdate +1)
+         -- Revision for version 1.35
+         and    mp.organization_id              = cwa.organization_id (+)
          and    hoi.org_information_context     = 'Accounting Information'
          and    hoi.organization_id             = mp.organization_id
          and    hoi.organization_id             = haou.organization_id   -- this gets the organization name
@@ -118,10 +128,18 @@ with inv_organizations as
                 haou2.organization_id, -- operating_unit_id
                 mp.organization_code,
                 mp.organization_id,
+                -- Revision for version 1.35
+                decode(nvl(mp.process_enabled_flag,'N'),
+                                'Y', nvl(cwa.cost_organization_id, mp.organization_id), 
+                                'N', nvl(mp.cost_organization_id, mp.organization_id)
+                      ), -- cost_organization_id
+                -- End revision for version 1.35
                 mca.organization_id, -- category_organization_id
                 -- Revision for version 1.18
                 mca.category_set_id,
                 mp.material_account,
+                -- Revision for version 1.34
+                mp.intransit_inv_account,
                 -- Revision for version 1.21
                 -- mp.cost_group_accounting,
                 -- Revision for version 1.22
@@ -168,8 +186,8 @@ valuation_accounts as
          and    nvl(mp.cost_group_accounting,2) = 2 -- No
          -- Avoid organizations with category accounts
          and    mp.category_organization_id is null
-   -- Revision for version 1.27
-   -- Avoid process organizations
+         -- Revision for version 1.27
+         -- Avoid process organizations
          and    nvl(mp.process_enabled_flag, 'N') <> 'N'
          and    3=3                             -- p_subinventory
          -- Revision for version 1.20
@@ -321,30 +339,9 @@ valuation_accounts as
                         ic.organization_id
                 ) interco
          where  mp.organization_id = interco.organization_id
-         union all
-         -- Revision for version 1.27
-         -- Process Costing
-         select 'Process Costing' valuation_type,
-                msub.organization_id,
-                msub.secondary_inventory_name,
-                null category_id,
-                null category_set_id,
-                msub.material_account,
-                msub.asset_inventory,
-                msub.quantity_tracked,
-                msub.default_cost_group_id cost_group_id
-         from   mtl_secondary_inventories msub,
-                inv_organizations mp
-         where  msub.organization_id = mp.organization_id
-         and    nvl(mp.cost_group_accounting,2) = 2 -- No
-         -- Avoid organizations with category accounts
-         and    mp.category_organization_id is null
-         -- Get process organizations
-         and    nvl(mp.process_enabled_flag, 'N') = 'Y'
-         and    3=3                             -- p_subinventory
-         -- End revision for version 1.27
         )
 -- End revision for version 1.17
+-- Revision for version 1.33, remove Process Costing valuation_accounts from WITH statement
 
 ----------------main query starts here--------------
 
@@ -695,10 +692,4 @@ select  mp.ledger Ledger,
         fcl.meaning Item_Type,
         -- Revision for version 1.14 and 1.16
         misv.inventory_item_status_code_tl Item_Status,
-        -- Revision for version 1.22
-        ml1.meaning Make_Buy_Code,
-        -- Revision for version 1.11
-&category_columns
-        mp.currency_code Currency_Code,
-        decode(onhand.subinventory_code,
-                        null, roun
+ 

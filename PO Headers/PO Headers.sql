@@ -106,4 +106,5 @@ pha.po_header_id=aila.po_header_id(+) and
 nvl(pha.po_release_id,-99)=nvl(aila.po_release_id(+),-99) and
 aila.invoice_id=aia.invoice_id(+)
 order by
-po_creation_date desc
+po_creation_date desc,
+pha.release_num desc

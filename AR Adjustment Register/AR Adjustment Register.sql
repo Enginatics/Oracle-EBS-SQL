@@ -8,6 +8,8 @@
 -- Description: Application: Receivables
 Source: Adjustment Register
 Short Name: ARRXARPB
+
+The report has now been enhanced to allow multiple accessible Ledgers or Operating Units to be selected in the Reporting Context parameter. Additionally, the Reporting Context parameter has been made optional. Leaving it null will allow the report to be run across all accessible Ledgers or Operating Units.
 -- Excel Examle Output: https://www.enginatics.com/example/ar-adjustment-register/
 -- Library Link: https://www.enginatics.com/reports/ar-adjustment-register/
 -- Run Report: https://demo.enginatics.com/
@@ -37,7 +39,8 @@ select
 from
   ar_adjustments_rep_itf rx
 where
-  rx.request_id = fnd_global.conc_request_id
+    1=1
+and rx.request_id = fnd_global.conc_request_id 
 order by
   rx.organization_name,
   rx.functional_currency_code,

@@ -7,7 +7,7 @@
 -- Report Name: CAC Inventory Lot and Locator OPM Value (Period-End)
 -- Description: Report showing amount of inventory at the end of the month for Process Manufacturing (OPM) inventory organizations, for both onhand and intransit inventory.  If you enter a cost type this report uses the item costs from the cost type; if you leave the cost type blank it uses the item costs from the month-end snapshot.  In either case this report uses the month-end quantities, based on the entered period name, calendar code and period code.  As these quantities come from the month-end snapshot, this also also allows you to specify the lot number and locator (row/rack/bin) for your onhand quantities. And as a default valuation account, this report uses the Material Account from your subinventory setups and your Intransit Account from your Shipping Network setups.
 
-Note:  if you enter a cost type this report uses the item costs from the cost type; if you leave the cost type blank it uses the item costs from the month-end snapshot.
+Note:  OPM intransit balances based upon last two years of Intransit Shipments.  As of Release 12.2.13, OPM does not have a month-end snapshot for intransit quantities or balances.
 
 General Parameters:
 ===================
@@ -25,18 +25,21 @@ Organization Code:  any inventory organization, defaults to your session's inven
 Operating Unit:  specific operating unit (optional).
 Ledger:  specific ledger (optional).
 
+/* +=============================================================================+
+-- | Copyright 2024 Douglas Volz Consulting, Inc.
+-- |  All rights reserved.
+-- |  Permission to use this code is granted provided the original author is
+-- |  acknowledged.  No warranties, express or otherwise is included in this permission.                                                                           
+-- +=============================================================================+
+-- |
 -- | Version Modified on Modified by Description
 -- | ======= =========== ============== =========================================
--- | 1.0     10 May 2024 Douglas Volz Initial Coding based on CAC Inventory & Intransit Value Discrete/OPM V1.26
--- | 1.1     12 May 2024 Douglas Volz Fix rounding issue, replace decimal precision from 5 to 9.
--- | 1.2     14 May 2024 Douglas Volz Add Locator Status to report.
--- | 1.3     15 May 2024 Douglas Volz Fix for OPM intransit accounts.
--- | 1.4     27 May 2024 Douglas Volz Fix cross-joining, replace mtl_material_statuses_tl with mtl_material_statuses_vl.
--- |                     Fix for OPM Period Code and OPM Cost Type parameters.  Add conditions for delete_mark = 0
--- | 1.5     04 Jun 2024 Douglas Volz Fix SQL error for Intransit code section, due to duplicate transactions in GXEH
--- |                                  (ORA-01427: single-row subquery returns more than one row).
--- | 1.6     09 Jun 2024 Douglas Volz Fix Intransit joins for UOMs, organizations and for duplicate Intransit quantities.
+-- | 1.0     10 May 2024 Douglas Volz Initial Coding.
+-- | 1.1     30 Jun 2024 Douglas Volz Cumulative fixes for OPM intransit balances and accounts.
+-- | 1.2     02 Aug 2024 Douglas Volz Add OPM Cost Organizations to get correct item costs and qtys.
 -- +=============================================================================+*/
+
+
 -- Excel Examle Output: https://www.enginatics.com/example/cac-inventory-lot-and-locator-opm-value-period-end/
 -- Library Link: https://www.enginatics.com/reports/cac-inventory-lot-and-locator-opm-value-period-end/
 -- Run Report: https://demo.enginatics.com/
@@ -50,9 +53,15 @@ with inv_organizations as
                 haou2.organization_id operating_unit_id,
                 mp.organization_code,
                 mp.organization_id,
-                mca.organization_id category_organization_id,
+                -- Revision for version 1.2
+                decode(nvl(mp.process_enabled_flag,'N'),
+                                'Y', nvl(cwa.cost_organization_id, mp.organization_id), 
+                                'N', nvl(mp.cost_organization_id, mp.organization_id)
+                      ) cost_organization_id,
+                -- End revision for version 1.2
                 mca.category_set_id, 
                 mp.material_account,
+                mp.intransit_inv_account,
                 case
                    when nvl(mp.cost_group_accounting,2) = 1 then 1
                    when pop.organization_id is not null then 1 -- Project MFG Enabled
@@ -67,6 +76,8 @@ with inv_organizations as
                 gl.currency_code
          from   mtl_category_accounts mca,
                 mtl_parameters mp,
+                -- Revision for version 1.2
+                cm_whse_asc cwa,
                 hr_organization_information hoi,
                 hr_all_organization_units_vl haou, -- inv_organization_id
                 hr_all_organization_units_vl haou2, -- operating unit
@@ -77,6 +88,8 @@ with inv_organizations as
          and    mp.organization_id             <> mp.master_organization_id
          -- Avoid disabled inventory organizations
          and    sysdate                        <  nvl(haou.date_to, sysdate +1)
+         -- Revision for version 1.2
+         and    mp.organization_id              = cwa.organization_id (+)
          and    hoi.org_information_context     = 'Accounting Information'
          and    hoi.organization_id             = mp.organization_id
          and    hoi.organization_id             = haou.organization_id   -- this gets the organization name
@@ -94,9 +107,16 @@ with inv_organizations as
                 haou2.organization_id, -- operating_unit_id
                 mp.organization_code,
                 mp.organization_id,
+                -- Revision for version 1.2
+                decode(nvl(mp.process_enabled_flag,'N'),
+                                'Y', nvl(cwa.cost_organization_id, mp.organization_id), 
+                                'N', nvl(mp.cost_organization_id, mp.organization_id)
+                      ), -- cost_organization_id
+                -- End revision for version 1.2
                 mca.organization_id, -- category_organization_id
                 mca.category_set_id,
                 mp.material_account,
+                mp.intransit_inv_account,
                 case
                    when nvl(mp.cost_group_accounting,2) = 1 then 1
                    when pop.organization_id is not null then 1 -- Project MFG Enabled
@@ -111,62 +131,6 @@ with inv_organizations as
                 mp.default_cost_group_id,
                 haou.date_to,
                 gl.currency_code
-        ),
--- Get the inventory valuation accounts by organization, subinventory and category
-valuation_accounts as
-        (select 'Intransit Accounting' valuation_type,
-                interco.organization_id,
-                'Intransit' secondary_inventory_name,
-                null category_id,
-                null category_set_id,
-                interco.intransit_inv_account material_account,
-                1 asset_inventory,
-                1 quantity_tracked,
-                mp.default_cost_group_id cost_group_id
-         from   inv_organizations mp,
-                (select ic.intransit_inv_account,
-                        ic.organization_id
-                 from   (select mip.intransit_inv_account,
-                                mip.to_organization_id organization_id
-                         from   mtl_interorg_parameters mip,
-                                inv_organizations mp
-                         where  mip.fob_point               = 1 -- shipment
-                         and    mp.organization_id          = mip.to_organization_id
-                         union all
-                         select mip.intransit_inv_account,
-                                mip.from_organization_id organization_id
-                         from   mtl_interorg_parameters mip,
-                                inv_organizations mp
-                         where  mip.fob_point               = 2 -- receipt
-                         and    mp.organization_id          = mip.from_organization_id
-                        ) ic
-                 group by
-                        ic.intransit_inv_account,
-                        ic.organization_id
-                ) interco
-         where  mp.organization_id = interco.organization_id
-         union all
-         -- Revision for version 1.3
-         -- Process Costing
-         select 'Process Costing' valuation_type,
-                msub.organization_id,
-                msub.secondary_inventory_name,
-                null category_id,
-                null category_set_id,
-                msub.material_account,
-                msub.asset_inventory,
-                msub.quantity_tracked,
-                msub.default_cost_group_id cost_group_id
-         from   mtl_secondary_inventories msub,
-                inv_organizations mp
-         where  msub.organization_id = mp.organization_id
-         and    nvl(mp.cost_group_accounting,2) = 2 -- No
-         -- Avoid organizations with category accounts
-         and    mp.category_organization_id is null
-         -- Get process organizations
-         and    nvl(mp.process_enabled_flag, 'N') = 'Y'
-         and    3=3                             -- p_subinventory
-         -- End revision for version 1.3
         )
 
 ----------------main query starts here--------------
@@ -177,6 +141,7 @@ valuation_accounts as
 --            If the Cost Type is not entered use the latest month-end
 --            item costs from the gl_item_cst table.  But if the cost type
 --            has been entered, use the item costs from the cost type.
+--            Note:  Cost Calendar only required when entering a cost type.
 -- =======================================================================
 select  mp.ledger Ledger,
         mp.operating_unit Operating_Unit,
@@ -197,17 +162,15 @@ select  mp.ledger Ledger,
         &p_locator_opm
         ml2.meaning Asset,
         muomv.uom_code UOM_Code,
-        onhand.primary_quantity Onhand_Quantity,
+        -- Revision for version 1.2, sum up the quantity
+        sum(onhand.primary_quantity) Onhand_Quantity,
         round(sum(onhand.primary_quantity * onhand.item_cost),2) Onhand_Value
 from    inv_organizations mp,
         mtl_units_of_measure_vl muomv,
         mtl_item_status_vl misv,
         mtl_secondary_inventories msub,
         mtl_item_locations_kfv mil_kfv,
-        -- Revision for version 1.2 and 1.4
         mtl_material_statuses_vl mms_vl,
-        -- Revision for version 1.3
-        valuation_accounts va,
         fnd_common_lookups fcl, -- Item Type
         mfg_lookups ml1, -- Planning Make Buy
         mfg_lookups ml2, -- Inventory Asset
@@ -219,7 +182,10 @@ from    inv_organizations mp,
          select gps.legal_entity_id,
                 gic.cost_type_id,
                 mp.organization_code,
-                gic.organization_id,
+                -- Revision for version 1.2
+                -- gic.organization_id,
+                mp.organization_id,
+                -- End revision for version 1.2
                 gic.inventory_item_id,
                 msiv.concatenated_segments,
                 msiv.description item_description,
@@ -249,11 +215,16 @@ from    inv_organizations mp,
                 inv_organizations mp
          where  gic.period_id                   = gps.period_id
          and    gic.cost_type_id                = gfp.cost_type_id
-         and    gic.organization_id             = gpb.organization_id
+         -- Revision for version 1.2
+         -- and    gic.organization_id             = gpb.organization_id
+         -- and    gic.organization_id             = msiv.organization_id
+         -- and    mp.organization_id              = gic.organization_id
+         and    mp.organization_id              = gpb.organization_id
+         and    mp.organization_id              = msiv.organization_id
+         and    mp.cost_organization_id         = gic.organization_id
+         -- End revision for version 1.2
          and    gic.inventory_item_id           = gpb.inventory_item_id
-         and    gic.organization_id             = msiv.organization_id
          and    gic.inventory_item_id           = msiv.inventory_item_id
-         -- Revision for version 1.4
          and    gic.delete_mark                 = 0
          and    msiv.inventory_asset_flag       = 'Y'
          and    gps.legal_entity_id             = gfp.legal_entity_id
@@ -266,7 +237,6 @@ from    inv_organizations mp,
          -- and    gps.calendar_code               = gic.calendar_code
          and    oap.acct_period_id              = gpb.acct_period_id
          and    oap.organization_id             = gpb.organization_id
-         and    mp.organization_id              = gic.organization_id
          and    mp.legal_entity_id              = gps.legal_entity_id
          and    mp.process_enabled_flag         = 'Y'
          and    :p_cost_type is null            -- p_cost_type
@@ -280,7 +250,10 @@ from    inv_organizations mp,
                 gps.legal_entity_id,
                 gic.cost_type_id,
                 mp.organization_code,
-                gic.organization_id,
+                -- Revision for version 1.2
+                -- gic.organization_id,
+                mp.organization_id,
+                -- End revision for version 1.2
                 gic.inventory_item_id,
                 msiv.concatenated_segments,
                 msiv.description, -- item description
@@ -324,7 +297,11 @@ from    inv_organizations mp,
          from   (select gps.legal_entity_id,
                         cmm.cost_type_id,
                         mp.organization_code,
-                        ccd.organization_id,
+                        -- Revision for version 1.2
+                        -- ccd.organization_id,
+                        mp.organization_id,
+                        mp.cost_organization_id,
+                        -- End revision for version 1.2
                         ccd.inventory_item_id,
                         msiv.primary_uom_code,
                         gps.period_code period_code,
@@ -341,14 +318,16 @@ from    inv_organizations mp,
                  where  ccd.cost_cmpntcls_id            = ccm.cost_cmpntcls_id
                  and    ccm.product_cost_ind            = 1 -- Yes
                  and    ccd.cost_type_id                = cmm.cost_type_id
-                 -- Revision for version 1.4, can't use ccd.calendar_code
+                 -- Revision for version 1.1, can't use ccd.calendar_code, null value after final cost update.
                  -- and    ccd.calendar_code               = gca.calendar_code
                  and    ccd.period_id                   = gps.period_id
-                 -- End revision for version 1.4
-                 and    ccd.organization_id             = mp.organization_id
+                 -- End revision for version 1.1
+                 -- Revision for version 1.2
+                 -- and    ccd.organization_id             = mp.organization_id
+                 and    ccd.organization_id             = mp.cost_organization_id
+                 -- End revision for version 1.2
                  and    ccd.organization_id             = msiv.organization_id
                  and    ccd.inventory_item_id           = msiv.inventory_item_id
-                 -- Revision for version 1.4
                  and    ccd.delete_mark                 = 0
                  and    msiv.inventory_asset_flag       = 'Y'
                  and    mp.process_enabled_flag         = 'Y'
@@ -366,7 +345,11 @@ from    inv_organizations mp,
                         gps.legal_entity_id,
                         cmm.cost_type_id,
                         mp.organization_code,
-                        ccd.organization_id,
+                        -- Revision for version 1.2
+                        -- ccd.organization_id,
+                        mp.organization_id,
+                        mp.cost_organization_id,
+                        -- End revision for version 1.2
                         ccd.inventory_item_id,
                         msiv.primary_uom_code,
                         gps.period_code,
@@ -433,7 +416,6 @@ from    inv_organizations mp,
                         gpb.locator_id -- locator
                 ) qty
          where  qty.inventory_item_id = cost.inventory_item_id
-   -- Revision for version 1.6, outer join for item costs
          and    qty.organization_id   = cost.organization_id (+)
          and    qty.period_id         = cost.period_id (+)
          and    qty.legal_entity_id   = cost.legal_entity_id
@@ -446,7 +428,6 @@ and     muomv.uom_code                  = onhand.primary_uom_code
 and     misv.inventory_item_status_code = onhand.inventory_item_status_code
 and     onhand.locator_id               = mil_kfv.inventory_location_id (+)
 and     onhand.organization_id          = mil_kfv.organization_id (+)
--- Revision for version 1.2 and 1.4
 and     mil_kfv.status_id               = mms_vl.status_id (+)
 -- ===========================================
 -- Lookup Codes
@@ -464,14 +445,7 @@ and     ml4.lookup_code                 = 2 -- Intransit Inventory
 -- ===========================================
 -- For Inventory Valuation Accounts
 -- ===========================================
--- Revision for version 1.3
--- and     msub.material_account           = gcc.code_combination_id (+)
-and     va.material_account             = gcc.code_combination_id (+)
-and     va.valuation_type               = 'Process Costing'
-and     va.secondary_inventory_name     = msub.secondary_inventory_name
-and     va.organization_id              = mp.organization_id
--- End revision for version 1.3
--- Revision for version 1.4
+and     msub.material_account           = gcc.code_combination_id (+)
 and     onhand.primary_quantity        <> 0
 group by
         mp.ledger,
@@ -493,7 +467,8 @@ group by
         &p_locator_opm_grp
         ml2.meaning, -- Asset
         muomv.uom_code,
-        onhand.primary_quantity,
+        -- Revision for version 1.2, sum up the onhand quantities
+        -- onhand.primary_quantity,
         -- For inline selects
         onhand.inventory_item_id,
         onhand.organization_id
@@ -529,10 +504,7 @@ from    inv_organizations mp,
         mtl_units_of_measure_vl muomv,
         mtl_item_status_vl misv,
         mtl_item_locations_kfv mil_kfv,
-        -- Revision for version 1.2 and 1.4
         mtl_material_statuses_vl mms_vl,
-        -- Revision for version 1.3
-        valuation_accounts va,
         fnd_common_lookups fcl, -- Item Type
         mfg_lookups ml1, -- Planning Make Buy
         mfg_lookups ml2, -- Inventory Asset
@@ -542,8 +514,6 @@ from    inv_organizations mp,
         org_acct_periods oap,
         -- ================================================
         -- Part IV OPM Intransit Sub-Query
-        -- From the As of Onhand Lot Value Report
-        -- Version 1.27 dated 8-Apr-2015
         -- ================================================
         (select allqty.organization_id organization_id,
                 allqty.from_organization_id from_organization_id,
@@ -561,16 +531,10 @@ from    inv_organizations mp,
                 from  -- ==============================================================
                       -- Part IV.E
                       -- Calculate Intransit for OPM Process Organizations.
-                      -- For Process orgs only, created new logic to calculate lot quantities.
-                      -- For both Discrete and process orgs, the intransit qtys in mtl_supply
-                      -- supposed to be in rcv_supply_lots per metalink doc id 601623.1.  But
-                      -- sometimes the shipment_line_id values do not appear to be correct;
-                      -- when joined to rcv_shipment_lines and rcv_supply_lots the sql gets
-                      -- incorrect lot numbers.  To get around this created a new section IV.E
-                      -- to get intransit quantities and values, just for process orgs.  This
-                      -- new logic gets all of the mmt intransit shipments and receipts from
-                      -- the earliest transaction date from mtl_supply (mtl_supply joined to
-                      -- rcv_shipment_lines joined to mmt) and rebuilds quantities by lot number.
+                      -- For Process orgs only, created new logic to calculate intransit quantities.
+                      -- This new logic gets the mmt intransit shipments and receipts based on the
+                      -- last two years of Intransit Shipments, as anything older than two years is
+                      -- is probably not real.
                       -- ==============================================================
                       -- Part IV.E.1 Condense the information
                       -- Rollback the intransit transactions and get the cost information
@@ -583,7 +547,7 @@ from    inv_organizations mp,
                                 itr_txn.locator_id,
                                 itr_txn.subinventory_code subinventory_code,
                                 itr_txn.asset_inventory asset_inventory,
-                                itr_txn.code_combination_id code_combination_id,
+                                nvl(mip.intransit_inv_account, itr_txn.intransit_inv_account) code_combination_id,
                                 0 onhand_quantity,
                                 decode(itr_txn.subinventory_code,'Intransit', itr_txn.intransit_quantity, 0) intransit_quantity,
                                 itr_txn.transaction_id transaction_id,
@@ -598,7 +562,10 @@ from    inv_organizations mp,
                                                                                 'N', nvl(sum(itr_costs.item_cost * itr_txn.intransit_quantity), 0)),
                                         nvl(sum(itr_costs.item_cost * itr_txn.intransit_quantity),0)
                                       ) itr_intransit_value
-                      from      -- ==============================================================
+                      from      -- Revision for version 1.1
+                                -- Get Intransit Account by To and From Relationship, as Intransit Account may vary.
+                                mtl_interorg_parameters mip,
+                                -- ==============================================================
                                 -- Part IV.E.1 Item Costs
                                 -- ==============================================================
                                 (-- If the Cost Type is null, get the OPM Intransit Item Costs based on the month-end costs.
@@ -613,12 +580,16 @@ from    inv_organizations mp,
                                         cm_mthd_mst cmm,
                                         mtl_system_items_vl msiv,
                                         inv_organizations mp
-                                 where  gic.organization_id             = msiv.organization_id
+                                 -- Revision for version 1.2
+                                 -- where  gic.organization_id             = msiv.organization_id
+                                 -- and    mp.organization_id              = gic.organization_id
+                                 where  mp.cost_organization_id         = gic.organization_id
+                                 and    mp.organization_id              = msiv.organization_id
+                                 -- End revision for version 1.2
                                  and    gic.inventory_item_id           = msiv.inventory_item_id
                                  and    gic.period_id                   = gps.period_id
                                  and    gic.cost_type_id                = gps.cost_type_id
                                  and    gic.cost_type_id                = gfp.cost_type_id
-                                 -- Revision for version 1.4
                                  and    gic.delete_mark                 = 0
                                  and    gps.legal_entity_id             = mp.legal_entity_id
                                  and    gps.legal_entity_id             = gfp.legal_entity_id
@@ -631,7 +602,23 @@ from    inv_organizations mp,
                                  -- and    gps.calendar_code               = gic.calendar_code
                                  and    gic.cost_type_id                = cmm.cost_type_id
                                  and    mp.process_enabled_flag         = 'Y'
-                                 and    mp.organization_id              = gic.organization_id
                                  and    :p_cost_type is null            -- p_cost_type
                                  and    mp.organization_id              = msiv.organization_id
-                                 and    6=6               
+                                 and    6=6                             -- p_item_number
+                                 and    7=7                             -- p_calendar_code
+                                 and    8=8                             -- p_period_code
+                                 group by 
+                                        gic.organization_id,
+                                        gic.inventory_item_id,
+                                        -- Revision for version 1.1, change decimal precision from 5 to 9
+                                        round(nvl(gic.acctg_cost,0),9) -- item cost
+                                 union all
+                                 -- If the Cost Type is not null, get the OPM Intransit Item Costs based on the Cost Type.
+                                 select ccd.organization_id,
+                                        ccd.inventory_item_id,
+                                        -- Revision for version 1.1, change decimal precision from 5 to 9
+                                        round(sum(nvl(ccd.cmpnt_cost,0)),9) item_cost
+                                 from   cm_cmpt_dtl ccd,
+                                        cm_cmpt_mst_b ccm,
+                                        cm_mthd_mst cmm,
+                                        gmf_period_s

@@ -179,6 +179,7 @@ q_main as (SELECT
    AND acr.reversal_date IS NOT NULL
    AND acrh.current_record_flag = 'Y'
    AND acrh.status = 'REVERSED' 
+   AND acrh.gl_date BETWEEN :P_FROM_GL_DATE AND :P_TO_GL_DATE
 -- To Consider the first status for Reversed Receipts
    AND gp.adjustment_period_flag = 'N'
    AND 3=3 

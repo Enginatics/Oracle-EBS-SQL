@@ -15,6 +15,8 @@ haouv.name operating_unit,
 aps.vendor_name supplier,
 aps.segment1 supplier_number,
 aps.vendor_name_alt alternate_supplier,
+hp.known_as  trading_partner,
+&dff_columns
 xxen_util.meaning(aps.vendor_type_lookup_code,'VENDOR TYPE',201) type,
 aps.type_1099 income_tax_type,
 decode(aps.organization_type_lookup_code,'INDIVIDUAL',aps.individual_1099,aps.num_1099) taxpayer_id,
@@ -36,7 +38,14 @@ aps.end_date_active,
 aps.min_order_amount,
 aps.price_tolerance,
 assa.vendor_site_code site_code,
+hps.party_site_name address_name,
 xxen_util.meaning(decode(assa.primary_pay_site_flag,'Y','Y'),'YES_NO',0) primary_pay_site,
+xxen_util.meaning(decode(assa.purchasing_site_flag,'Y','Y'),'YES_NO',0) purchasing_site,
+xxen_util.meaning(decode(assa.rfq_only_site_flag,'Y','Y'),'YES_NO',0) rfq_only,
+xxen_util.meaning(decode(assa.pay_site_flag,'Y','Y'),'YES_NO',0) pay_site,
+xxen_util.meaning(decode(assa.pcard_site_flag,'Y','Y'),'YES_NO',0) procurement_card,
+assa.freight_terms_lookup_code freight_terms,
+assa.fob_lookup_code free_on_board_code,
 assa.address_line1,
 assa.address_line2,
 assa.address_line3,
@@ -67,6 +76,7 @@ xxen_util.meaning(assa.allow_awt_flag,'YES_NO',0) site_allow_withholding_tax,
 iepa0.remit_advice_email,
 ipiua0.order_of_preference priority,
 cbbv0.bank_name,
+cbbv0.bank_number,
 cbbv0.country bank_country,
 cbbv0.eft_swift_code swift_code,
 cbbv0.bank_branch_name bank_branch,
@@ -80,11 +90,12 @@ atv1.name site_payment_terms,
 iepa1.remit_advice_email site_remit_advice_email,
 ipiua1.order_of_preference site_priority,
 cbbv1.bank_name site_bank_name,
+cbbv1.bank_number site_bank_number,
 cbbv1.country site_bank_country,
 cbbv1.eft_swift_code site_swift_code,
 cbbv1.bank_branch_name site_bank_branch,
-cbbv0.branch_number site_branch_number,
-cbbv0.bank_branch_type site_branch_type,
+cbbv1.branch_number site_branch_number,
+cbbv1.bank_branch_type site_branch_type,
 ieba1.masked_iban site_iban,
 ieba1.masked_bank_account_num site_bank_account,
 ieba1.currency_code site_currency_code,
@@ -115,7 +126,9 @@ ap_terms_vl atv1,
 iby_ext_bank_accounts ieba0,
 iby_ext_bank_accounts ieba1,
 ce_bank_branches_v cbbv0,
-ce_bank_branches_v cbbv1
+ce_bank_branches_v cbbv1,
+hz_parties hp,
+hz_party_sites hps
 where
 1=1 and
 aps.vendor_id=assa.vendor_id(+) and
@@ -132,4 +145,6 @@ iepa1.ext_payee_id=ipiua1.ext_pmt_party_id(+) and
 decode(ipiua0.instrument_type,'BANKACCOUNT',ipiua0.instrument_id)=ieba0.ext_bank_account_id(+) and
 decode(ipiua1.instrument_type,'BANKACCOUNT',ipiua1.instrument_id)=ieba1.ext_bank_account_id(+) and
 ieba0.branch_id=cbbv0.branch_party_id(+) and
-ieba1.branch_id=cbbv1.branch_party_id(+)
+ieba1.branch_id=cbbv1.branch_party_id(+) and 
+aps.party_id=hp.party_id(+) and
+assa.party_site_id=hps.party_site_id(+)

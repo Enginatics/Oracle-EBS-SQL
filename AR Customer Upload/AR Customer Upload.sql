@@ -43,6 +43,17 @@ Contact Status
 ============
 Determines the status of the contacts to be downloaded. By default, only active contacts will be downloaded. But his can be changed to download all contacts, or inactive contacts only.
 
+Default Operating Unit and Default Profile Class
+======================================
+For creation of new Customers/Customer Sites, the Operating Unit and Profile Class to be used can be defaulted automatically if specified by these parameters
+
+Default <entity> Assign. Level
+========================
+For the creation of new Customers/Customer Sites, these parameters can be used to explicitly specify the level (Account or Site) to which the Profile Class, Tax Registration, Bank Accounts, Contacts, and Attachments should be assigned to respectively.
+Normally the upload will determine the level based on the existence of site level identifying data in the excel row being uploaded. If no site level identifying data is present, then it will be associated the entity with the Account, otherwise the entity will be associated with the site.
+This would require a separate excel row to be specified for the customer account and a separate row for the customer site if some entities are to be associated with the customer account and some with the customer site.
+These parameters allow you to create the customer account and customer site in a single excel row and explicitly specify for each entity at what level the entity should be associated with.
+
 -- Excel Examle Output: https://www.enginatics.com/example/ar-customer-upload/
 -- Library Link: https://www.enginatics.com/reports/ar-customer-upload/
 -- Run Report: https://demo.enginatics.com/
@@ -137,16 +148,17 @@ q_contacts as
 ),
 q_bank_accounts as
 (select
+ iepa.cust_account_id              cust_account_id,
+ iepa.acct_site_use_id             site_use_id,
+ ipiua.instrument_payment_use_id,
  iepa.ext_payer_id,
  ieba.ext_bank_account_id          bank_account_id,
- iepa.cust_account_id,
- iepa.acct_site_use_id             site_use_id,
  cbbv.bank_name                    bank_name,
  cbbv.bank_number                  bank_number,
  (select ftv.territory_short_name
   from   fnd_territories_vl ftv
   where  ftv.territory_code = cbbv.bank_home_country
- ) bank_country,
+ )                                 bank_country,
  cbbv.bank_branch_name             bank_branch_name,
  cbbv.branch_number                bank_branch_number,
  cbbv.bank_branch_type             bank_branch_type,
@@ -159,16 +171,16 @@ q_bank_accounts as
  ieba.iban                         bank_acct_iban,
  ieba.bank_account_name_alt        bank_acct_name_alt,
  ieba.account_suffix               bank_acct_suffix,
- ieba.start_date                   bank_acct_start_date,
- ieba.end_date                     bank_acct_end_date,
  xxen_util.meaning(ieba.bank_account_type,'BANK_ACCOUNT_TYPE',260)
-                                    bank_acct_type,
+                                   bank_acct_type,
  ieba.secondary_account_reference  bank_acct_sec_reference,
  ieba.description                  bank_acct_description,
  ieba.contact_name                 bank_acct_contact,
  ieba.contact_phone                bank_acct_contact_phone,
  ieba.contact_fax                  bank_acct_contact_fax,
- ieba.contact_email                bank_acct_contact_email
+ ieba.contact_email                bank_acct_contact_email,
+ ipiua.start_date                  bank_acct_assignmt_start_date,
+ ipiua.end_date                    bank_acct_assignmt_end_date
  from
  iby_external_payers_all iepa,
  iby_pmt_instr_uses_all ipiua,
@@ -180,8 +192,34 @@ q_bank_accounts as
  ieba.branch_id = cbbv.branch_party_id and
  iepa.payment_function = 'CUSTOMER_PAYMENT' and
  ipiua.payment_function = 'CUSTOMER_PAYMENT' and
- ipiua.instrument_type = 'BANKACCOUNT' and
- sysdate between ipiua.start_date and nvl(ipiua.end_date,sysdate)
+ ipiua.instrument_type = 'BANKACCOUNT'
+ -- and sysdate between ipiua.start_date and nvl(ipiua.end_date,sysdate)
+),
+q_attachments as
+(select
+ fad.attached_document_id attachment_id,
+ fad.entity_name,
+ fad.pk1_value entity_id,
+ fad.seq_num,
+ fdv.datatype_name type,
+ fdcav.user_name category,
+ fdv.title,
+ fdv.description,
+ case fdv.datatype_id
+ when 1 then (select fdst.short_text from fnd_documents_short_text fdst where fdst.media_id = fdv.media_id)
+ when 5 then fdv.url
+ when 6 then (select fl.file_name from fnd_lobs fl where fl.file_id = fdv.media_id)
+ else null
+ end content,
+ case when fdv.datatype_id = 6 then fdv.media_id else null end file_id
+ from
+ fnd_attached_documents fad,
+ fnd_documents_vl fdv,
+ fnd_doc_categories_active_vl fdcav
+ where
+ fad.document_id = fdv.document_id and
+ fdv.category_id = fdcav.category_id and
+ fdv.datatype_id in (1,5,6)
 )
 --
 -- main query starts here
@@ -202,16 +240,22 @@ to_number(null) cust_site_use_row_id,
 to_number(null) cust_profile_row_id,
 to_number(null) cust_profile_amt_row_id,
 to_number(null) cust_account_role_row_id,
-to_number(null) bank_account_row_id,
+to_number(null) bank_intsr_pay_use_row_id,
+to_number(null) tax_registration_row_id,
+to_number(null) attachment_row_id,
 :p_created_by_module created_by_module,
-:p_validate_dff validate_dff_attributes,
+:p_dflt_prof_assign_lvl dflt_profile_assign_lvl,
+:p_dflt_tax_reg_assign_lvl dflt_tax_reg_assign_lvl,
+:p_dflt_bank_acct_assign_lvl dflt_bank_acct_assign_lvl,
+:p_dflt_ctct_assign_lvl dflt_ctct_assign_lvl,
+:p_dflt_attchmt_assign_lvl dflt_attchmt_assign_lvl,
 x.*
 from
 (
 --
 -- Q1 Account Level Profile or Account with no sites
 --
-select
+select /*+ push_pred(ctct) push_pred(ba) push_pred(attchmt) */
 --
 -- party
 --
@@ -221,8 +265,9 @@ hp.party_number registry_id,
 hp.known_as alias,
 hp.organization_name_phonetic name_pronunciation,
 hp.duns_number,
+hp.tax_reference tax_registration_num,
 -- party dff
-hp.attribute_category party_dff_context,
+xxen_util.display_flexfield_context(222,'HZ_PARTIES',hp.attribute_category) party_dff_context,
 xxen_util.display_flexfield_value(222,'HZ_PARTIES',hp.attribute_category,'ATTRIBUTE1',hp.rowid,hp.attribute1) hz_party_attribute1,
 xxen_util.display_flexfield_value(222,'HZ_PARTIES',hp.attribute_category,'ATTRIBUTE2',hp.rowid,hp.attribute2) hz_party_attribute2,
 xxen_util.display_flexfield_value(222,'HZ_PARTIES',hp.attribute_category,'ATTRIBUTE3',hp.rowid,hp.attribute3) hz_party_attribute3,
@@ -294,14 +339,14 @@ xxen_util.meaning(hca.ship_sets_include_lines_flag,'YES_NO',0) acct_lines_in_shi
 xxen_util.meaning(zptp0.process_for_applicability_flag,'YES_NO',0) acct_allow_tax_applicability,
 xxen_util.meaning(zptp0.allow_offset_tax_flag,'YES_NO',0) acct_allow_offset_taxes,
 xxen_util.meaning(zptp0.self_assess_flag,'YES_NO',0) acct_self_assessment,
-xxen_util.meaning(nvl(zptp0.rounding_level_code,decode(hca.tax_header_level_flag,'Y','HEADER','LINE')),'ZX_ROUNDING_LEVEL',0) acct_tax_rounding_level,
+xxen_util.meaning(nvl(zptp0.rounding_level_code,decode(hca.tax_header_level_flag,'Y','HEADER','N','LINE',null)),'ZX_ROUNDING_LEVEL',0) acct_tax_rounding_level,
 xxen_util.meaning(nvl(zptp0.rounding_rule_code,hca.tax_rounding_rule),'ZX_ROUNDING_RULE',0) acct_tax_rounding_rule,
 xxen_util.meaning(zptp0.inclusive_tax_flag,'YES_NO',0) acct_inclusive_tax,
 (select territory_short_name from fnd_territories_vl ftv where ftv.territory_code = zptp0.country_code) acct_tax_reporting_country,
 zptp0.registration_type_code acct_tax_reporting_reg_type,
 zptp0.rep_registration_number acct_tax_reporting_reg_number,
 -- cust account dff
-hca.attribute_category acct_dff_context,
+xxen_util.display_flexfield_context(222,'RA_CUSTOMERS_HZ',hca.attribute_category) acct_dff_context,
 xxen_util.display_flexfield_value(222,'RA_CUSTOMERS_HZ',hca.attribute_category,'ATTRIBUTE1',hca.rowid,hca.attribute1) hz_cust_acct_attribute1,
 xxen_util.display_flexfield_value(222,'RA_CUSTOMERS_HZ',hca.attribute_category,'ATTRIBUTE2',hca.rowid,hca.attribute2) hz_cust_acct_attribute2,
 xxen_util.display_flexfield_value(222,'RA_CUSTOMERS_HZ',hca.attribute_category,'ATTRIBUTE3',hca.rowid,hca.attribute3) hz_cust_acct_attribute3,
@@ -343,8 +388,19 @@ hl.postal_code,
 --xxen_util.meaning(hl.address_style,'ADDRESS_STYLE',0) address_style,
 hl.sales_tax_geocode geography_code_override,
 hz_format_pub.format_address(hl.location_id,null,null,', ') site_address,
+--
+hcp1.phone_country_code site_phone_country_code,
+hcp1.phone_area_code site_phone_area_code,
+hcp1.phone_number site_phone_number,
+hcp1.phone_extension site_phone_extension,
+xxen_util.meaning(hcp1.phone_line_type,'PHONE_LINE_TYPE',222) site_phone_type,
+hcp2.email_address site_email_address,
+xxen_util.meaning(hcp2.email_format,'EMAIL_FORMAT',222) site_email_format,
+xxen_util.meaning(hcp2.contact_point_purpose,'CONTACT_POINT_PURPOSE',222) site_email_purpose,
+hcp3.url site_url,
+xxen_util.meaning(hcp3.contact_point_purpose,'CONTACT_POINT_PURPOSE_WEB',222) site_url_purpose,
 -- party site dff
-hps.attribute_category site_dff_context,
+xxen_util.display_flexfield_context(222,'HZ_PARTY_SITES',hps.attribute_category) site_dff_context,
 xxen_util.display_flexfield_value(222,'HZ_PARTY_SITES',hps.attribute_category,'ATTRIBUTE1',hps.rowid,hps.attribute1) hz_party_site_attribute1,
 xxen_util.display_flexfield_value(222,'HZ_PARTY_SITES',hps.attribute_category,'ATTRIBUTE2',hps.rowid,hps.attribute2) hz_party_site_attribute2,
 xxen_util.display_flexfield_value(222,'HZ_PARTY_SITES',hps.attribute_category,'ATTRIBUTE3',hps.rowid,hps.attribute3) hz_party_site_attribute3,
@@ -375,7 +431,7 @@ xxen_util.meaning(decode(hps.status || hcasa.status,null,null,'AA','A','I'),'REG
 hcasa.translated_customer_name translated_cust_name,
 hcasa.ece_tp_location_code edi_location,
 -- account site dff
-hcasa.attribute_category acct_site_dff_context,
+xxen_util.display_flexfield_context(222,'RA_ADDRESSES_HZ',hcasa.attribute_category) acct_site_dff_context,
 xxen_util.display_flexfield_value(222,'RA_ADDRESSES_HZ',hcasa.attribute_category,'ATTRIBUTE1',hcasa.rowid,hcasa.attribute1) hz_cust_acct_site_attribute1,
 xxen_util.display_flexfield_value(222,'RA_ADDRESSES_HZ',hcasa.attribute_category,'ATTRIBUTE2',hcasa.rowid,hcasa.attribute2) hz_cust_acct_site_attribute2,
 xxen_util.display_flexfield_value(222,'RA_ADDRESSES_HZ',hcasa.attribute_category,'ATTRIBUTE3',hcasa.rowid,hcasa.attribute3) hz_cust_acct_site_attribute3,
@@ -456,13 +512,13 @@ xxen_util.meaning(hcsua.demand_class_code,'DEMAND_CLASS',3) site_demand_class,
 xxen_util.meaning(zptp1.process_for_applicability_flag,'YES_NO',0) site_allow_tax_applicability,
 xxen_util.meaning(zptp1.allow_offset_tax_flag,'YES_NO',0) site_allow_offset_taxes,
 xxen_util.meaning(zptp1.self_assess_flag,'YES_NO',0) site_self_assessment,
-xxen_util.meaning(nvl(zptp1.rounding_level_code,decode(hcsua.tax_header_level_flag,'Y','HEADER','LINE')),'ZX_ROUNDING_LEVEL',0) site_tax_rounding_level,
+xxen_util.meaning(nvl(zptp1.rounding_level_code,decode(hcsua.tax_header_level_flag,'Y','HEADER','N','LINE',null)),'ZX_ROUNDING_LEVEL',0) site_tax_rounding_level,
 xxen_util.meaning(nvl(zptp1.rounding_rule_code,hcsua.tax_rounding_rule),'ZX_ROUNDING_RULE',0) site_tax_rounding_rule,
 xxen_util.meaning(zptp1.inclusive_tax_flag,'YES_NO',0) site_inclusive_tax,
 (select territory_short_name from fnd_territories_vl ftv where ftv.territory_code = zptp1.country_code) site_tax_reporting_country,
 zptp1.registration_type_code site_tax_reporting_reg_type,
 zptp1.rep_registration_number site_tax_reporting_reg_number,
-hcsua.tax_reference site_tax_registration_number,
+hcsua.tax_reference site_use_tax_registration_num,
 (select
  zocv.meaning
  from
@@ -473,10 +529,10 @@ hcsua.tax_reference site_tax_registration_number,
  zocv.enabled_flag = 'Y' and
  sysdate between nvl(zocv.start_date_active,sysdate) and nvl(zocv.end_date_active,sysdate) and
  rownum <= 1
-) site_tax_classification,
-xxen_util.meaning(hcsua.tax_classification,'ZX_PTPTR_GEO_TYPE_CLASS',0) site_tax_geography_type,
+) site_use_tax_classification,
+xxen_util.meaning(hcsua.tax_classification,'ZX_PTPTR_GEO_TYPE_CLASS',0) site_use_tax_geography_type,
 -- site use dff
-hcsua.attribute_category site_use_dff_context,
+xxen_util.display_flexfield_context(222,'RA_SITE_USES_HZ',hcsua.attribute_category) site_use_dff_context,
 xxen_util.display_flexfield_value(222,'RA_SITE_USES_HZ',hcsua.attribute_category,'ATTRIBUTE1',hcsua.rowid,hcsua.attribute1) hz_cust_site_use_attribute1,
 xxen_util.display_flexfield_value(222,'RA_SITE_USES_HZ',hcsua.attribute_category,'ATTRIBUTE2',hcsua.rowid,hcsua.attribute2) hz_cust_site_use_attribute2,
 xxen_util.display_flexfield_value(222,'RA_SITE_USES_HZ',hcsua.attribute_category,'ATTRIBUTE3',hcsua.rowid,hcsua.attribute3) hz_cust_site_use_attribute3,
@@ -485,17 +541,4 @@ xxen_util.display_flexfield_value(222,'RA_SITE_USES_HZ',hcsua.attribute_category
 xxen_util.display_flexfield_value(222,'RA_SITE_USES_HZ',hcsua.attribute_category,'ATTRIBUTE6',hcsua.rowid,hcsua.attribute6) hz_cust_site_use_attribute6,
 xxen_util.display_flexfield_value(222,'RA_SITE_USES_HZ',hcsua.attribute_category,'ATTRIBUTE7',hcsua.rowid,hcsua.attribute7) hz_cust_site_use_attribute7,
 xxen_util.display_flexfield_value(222,'RA_SITE_USES_HZ',hcsua.attribute_category,'ATTRIBUTE8',hcsua.rowid,hcsua.attribute8) hz_cust_site_use_attribute8,
-xxen_util.display_flexfield_value(222,'RA_SITE_USES_HZ',hcsua.attribute_category,'ATTRIBUTE9',hcsua.rowid,hcsua.attribute9) hz_cust_site_use_attribute9,
-xxen_util.display_flexfield_value(222,'RA_SITE_USES_HZ',hcsua.attribute_category,'ATTRIBUTE10',hcsua.rowid,hcsua.attribute10) hz_cust_site_use_attribute10,
-xxen_util.display_flexfield_value(222,'RA_SITE_USES_HZ',hcsua.attribute_category,'ATTRIBUTE11',hcsua.rowid,hcsua.attribute11) hz_cust_site_use_attribute11,
-xxen_util.display_flexfield_value(222,'RA_SITE_USES_HZ',hcsua.attribute_category,'ATTRIBUTE12',hcsua.rowid,hcsua.attribute12) hz_cust_site_use_attribute12,
-xxen_util.display_flexfield_value(222,'RA_SITE_USES_HZ',hcsua.attribute_category,'ATTRIBUTE13',hcsua.rowid,hcsua.attribute13) hz_cust_site_use_attribute13,
-xxen_util.display_flexfield_value(222,'RA_SITE_USES_HZ',hcsua.attribute_category,'ATTRIBUTE14',hcsua.rowid,hcsua.attribute14) hz_cust_site_use_attribute14,
-xxen_util.display_flexfield_value(222,'RA_SITE_USES_HZ',hcsua.attribute_category,'ATTRIBUTE15',hcsua.rowid,hcsua.attribute15) hz_cust_site_use_attribute15,
-xxen_util.display_flexfield_value(222,'RA_SITE_USES_HZ',hcsua.attribute_category,'ATTRIBUTE16',hcsua.rowid,hcsua.attribute16) hz_cust_site_use_attribute16,
-xxen_util.display_flexfield_value(222,'RA_SITE_USES_HZ',hcsua.attribute_category,'ATTRIBUTE17',hcsua.rowid,hcsua.attribute17) hz_cust_site_use_attribute17,
-xxen_util.display_flexfield_value(222,'RA_SITE_USES_HZ',hcsua.attribute_category,'ATTRIBUTE18',hcsua.rowid,hcsua.attribute18) hz_cust_site_use_attribute18,
-xxen_util.display_flexfield_value(222,'RA_SITE_USES_HZ',hcsua.attribute_category,'ATTRIBUTE19',hcsua.rowid,hcsua.attribute19) hz_cust_site_use_attribute19,
-xxen_util.display_flexfield_value(222,'RA_SITE_USES_HZ',hcsua.attribute_category,'ATTRIBUTE20',hcsua.rowid,hcsua.attribute20) hz_cust_site_use_attribute20,
-xxen_util.display_flexfield_value(222,'RA_SITE_USES_HZ',hcsua.attribute_category,'ATTRIBUTE21',hcsua.rowid,hcsua.attribute21) hz_cust_site_use_attribute21,
-xxen_util.display_flexfield_value(222,'RA_SITE_USES_HZ',hcsua.attribute_category,'ATTRIBUTE22',hcsua.rowid,hcsua.attribute22) hz_cust_site_use_attribut
+xxen_util.display_flexfield_

@@ -16,19 +16,18 @@ PII Cost Type:  the profit in inventory cost type you wish to report (mandatory)
 PII Sub-Element:  the sub-element or resource for profit in inventory, such as PII or ICP (mandatory).
 Assignment Set:  the set of sourcing rules to use with calculating the PII item costs (mandatory).
 Cost Type:  the cost type to use for the item costs, such as Frozen or Pending (mandatory).
-Category Set 1:  any item category you wish, typically the Cost or Product Line category set (optional).
-Category Set 2:  any item category you wish, typically the Inventory category set (optional).
+Category Set:  any item category you wish, typically the Cost or Product Line category set (optional).
 Item Number:  enter the specific item numbers(s) you wish to report (optional).
 Operating Unit:  enter the specific operating unit(s) you wish to report (optional).
-To Org Ledger:  enter the specific "To Org" ledger(s) you wish to report (optional).
 To Org Code:  enter the specific To Org you wish to report (optional).
+To Operating Unit:  enter the specific operating unit(s) you wish to report (optional).
+To Org Ledger:  enter the specific "To Org" ledger(s) you wish to report (optional).
 
 /* +=============================================================================+
 -- |  Copyright 2010 - 2024 Douglas Volz Consulting, Inc.
 -- |  All rights reserved.
 -- |  Permission to use this code is granted provided the original author is
--- |  acknowledged.  No warranties, express or otherwise is included in this
--- |  permission.
+-- |  acknowledged.  No warranties, express or otherwise is included in this permission.
 -- +=============================================================================+
 -- |
 -- |  Original Author: Douglas Volz (doug@volzconsulting.com)
@@ -38,8 +37,6 @@ To Org Code:  enter the specific To Org you wish to report (optional).
 -- |  Version Modified on  Modified  by   Description
 -- |  ======= =========== =========================================
 -- |     1.0  26 Nov 2010 Douglas Volz    Created initial Report
--- |    1.17 12 Dec 2018 Douglas Volz     Added in the items which do not have sourcing rules but do 
--- |                                      have a source organization in the item master.  
 -- |    1.18 13 Dec 2018 Douglas Volz     Add Source Org OU to the InterCo_OUs inline table, to ensure 
 -- |                                      uniqueness.  Add Source Org joins for Src_Org item costs.
 -- |                                      Removed Release 11i edits.  Replaced gl.name with gl.short_name.
@@ -53,6 +50,7 @@ To Org Code:  enter the specific To Org you wish to report (optional).
 -- |                                      information based on both category or item-specific price lists.
 -- |    1.23 28 Nov 2023 Andy Haack       Added G/L security for the "To Org" G/L and removed tabs.
 -- |    1.24 06 Feb 2024 Douglas Volz     Fix for G/L Daily Rates and add "To Org" inventory security.
+-- |    1.25 25 Jun 2024 Douglas Volz     Reinstall missing parameters, Item Number and To Operating Unit.
 -- +=============================================================================+*/
 -- Excel Examle Output: https://www.enginatics.com/example/cac-intercompany-so-price-list-vs-item-cost-comparison/
 -- Library Link: https://www.enginatics.com/reports/cac-intercompany-so-price-list-vs-item-cost-comparison/
@@ -444,7 +442,7 @@ from    (select Src_Org.ledger Source_Ledger,
                  -- Organization, cost type, item cost and COGS acct joins
                  -- =======================================================
                  where  cct.cost_type_id                = cic.cost_type_id
-                 and    6=6                             -- p_cost_type, p_category_set
+                 and    6=6                             -- p_cost_type, p_category_set, p_item_number
                  and    cic.organization_id             = mp.organization_id
                  and    msiv.organization_id            = mp.organization_id
                  and    cic.inventory_item_id           = msiv.inventory_item_id
@@ -533,4 +531,4 @@ from    (select Src_Org.ledger Source_Ledger,
                              and    4=4                    -- p_pii_cost_type, p_pii_sub_element
                              and    cct.cost_type          = '&p_pii_cost_type'                                         -- p_pii_cost_type
                              and    br.resource_code       = '&p_pii_sub_element'                                       -- p_pii_sub_element
-                             and  
+                   

@@ -20,7 +20,7 @@ Operating Unit:  enter the specific operating unit(s) you wish to report (option
 Ledger:  enter the specific ledger(s) you wish to report (optional).
 
 /* +=============================================================================+
--- | Copyright 2009-2023 Douglas Volz Consulting, Inc.
+-- | Copyright 2009-2024 Douglas Volz Consulting, Inc.
 -- | All rights reserved.
 -- | Permission to use this code is granted provided the original author is
 -- | acknowledged. No warranties, express or otherwise is included in this
@@ -28,8 +28,6 @@ Ledger:  enter the specific ledger(s) you wish to report (optional).
 -- +=============================================================================+
 -- |
 -- | Original Author: Douglas Volz (doug@volzconsulting.com)
--- |
--- | Program Name: xxx_item_cost_rept.sql
 -- |
 -- | Description:
 -- | Report to show item costs in any cost type
@@ -51,6 +49,8 @@ Ledger:  enter the specific ledger(s) you wish to report (optional).
 -- |  1.10    22 Nov 2023 Douglas Volz  Add item master std lot size, costing lot size,
 -- |                                    remove tabs and add org access controls
 -- |  1.11    05 Dec 2023 Douglas Volz  Added G/L and Operating Unit security restrictions.
+-- |  1.12    30 Jun 2024 Douglas Volz  Reinstalled missing parameter for Item Status to Exclude
+-- |                                    and commented out G/L and Operating Unit security restrictions.
 -- +=============================================================================+*/
 -- Excel Examle Output: https://www.enginatics.com/example/cac-item-cost-summary/
 -- Library Link: https://www.enginatics.com/reports/cac-item-cost-summary/
@@ -116,7 +116,7 @@ from    cst_item_costs cic,
         -- Revision for version 1.10
         mfg_lookups ml4, -- defaulted_flag, SYS_YES_NO
         fnd_lookups fl1, -- allow costs, YES_NO
-        fnd_common_lookups fcl, -- item type
+        fnd_common_lookups fcl, -- Item Type
         hr_organization_information hoi,
         hr_all_organization_units_vl haou,  -- inv_organization_id
         hr_all_organization_units_vl haou2, -- operating unit
@@ -138,9 +138,9 @@ and     msiv.inventory_item_status_code = misv.inventory_item_status_code
 and     cic.cost_type_id                = cct.cost_type_id
 -- Revision for version 1.10
 and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
--- Revision for version 1.11
-and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
-and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
+-- Revision for version 1.11 and 1.12
+-- and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
+-- and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
 and     1=1                             -- p_item_status_to_exclude, p_item_number, p_org_code, p_operating_unit, p_ledger
 and     2=2                             -- p_cost_type
 -- ===================================================================
@@ -235,9 +235,9 @@ from    mtl_system_items_vl msiv,
         -- End revision for version 1.7
         mtl_parameters mp,
         mfg_lookups ml1, -- planning make/buy code, MTL_PLANNING_MAKE_BUY
-        fnd_lookups fl1, -- inventory_asset_flag, YES_NO
-        fnd_lookups fl2, -- allow costs, YES_NO
-        fnd_common_lookups fcl,
+        fnd_lookups fl1, -- allow costs, YES_NO
+        fnd_lookups fl2, -- inventory_asset_flag, YES_NO
+        fnd_common_lookups fcl, -- Item Type
         hr_organization_information hoi,
         hr_all_organization_units_vl haou,  -- inv_organization_id
         hr_all_organization_units_vl haou2, -- operating unit
@@ -256,9 +256,9 @@ and     msiv.inventory_item_status_code = misv.inventory_item_status_code
 -- End revision for version 1.7
 -- Revision for version 1.10
 and     mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
--- Revision for version 1.11
-and     gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
-and     haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
+-- Revision for version 1.11 and 1.12
+-- and     gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
+-- and     haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
 and     1=1                             -- p_item_status_to_exclude, p_item_number, p_org_code, p_operating_unit, p_ledger
 -- Include or exclude uncosted items
 and     3=3                             -- p_include_uncosted_items
@@ -298,5 +298,6 @@ and     sysdate < nvl(haou.date_to, sysdate + 1)
 -- ===================================================================
 and     gcc1.code_combination_id (+)    = msiv.cost_of_sales_account
 and     gcc2.code_combination_id (+)    = msiv.sales_account
--- order by Ledger, Operating_Unit, Org_Code, Item and Cost_Type
+-- End fix for version 1.3
+-- order by Ledger, Operating Unit, Org Code, Item and Cost Type
 order by 1,2,3,4,5

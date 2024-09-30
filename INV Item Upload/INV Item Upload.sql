@@ -6,19 +6,40 @@
 /*************************************************************************/
 -- Report Name: INV Item Upload
 -- Description: INV Inventory Item Upload
-===================
+======================
 This upload can be used to create and update Inventory Items.
 
-It allows creation of Inventory Items:
+It supports creation of Inventory Items:
 - by manually entering the Item details.
 - from the same item in the Master Organization (equivalent to Assigning the item to a child organization)
-- from an item template (Copy From Template)
-- from an existing item in the same Organization (Copy From Item)
+- from an item template (Copy from Template)
+- from an existing item in the same Organization (Copy from Item)
 
-It allows update of existing Inventory Items
-- to update the details of an existing inventory items, they must first be downloaded. Use the report parameters to select and download the items to be updated.
+It supports update of existing Inventory Items either by:
+- update the details of an existing inventory items by downloading the items to be updated. Use the report parameters to select and download the items to be updated.
+- pasting the details of the items to be updated into an empty upload excel.
 
-Use the pre-defined templates to restrict the Item Attributes to be displayed and updated in the report, or you define a custom template containing only the Item Attributes of interest.
+It also supports the item category assignment to multiple Inventory Category Sets
+-  to assign an item to another category set, repeat the Organization Code and Item Number on a separate row in the excel and add the details of the additional category set and item category to which the item is to be assigned.
+- for child organizations, only the category sets controlled at the organization level can be selected.   
+
+Upload Mode parameter:
+Create - allows creation of new items only
+Update - allows updates to existing items only
+Create, Update – allows the creation of new items and the updating of existing items
+
+Create Empty File parameter
+Setting the Create Empty File parameter to Yes will open an empty upload excel. 
+This parameter is only applicable to the 'Update' and 'Create, Update' upload modes and suppresses the download of existing item details. ‘Create’ upload mode always opens an empty upload excel regardless of the setting of this parameter.
+This is useful for users who want to paste the details of the items to be updated into an empty upload excel file from another source.
+
+Number of Import Workers parameter
+This parameter determines the number of Item Import worker concurrent requests that will be submitted in parallel to import the uploaded items into Oracle Inventory. The number of workers can be increased to improve the throughput of the process when uploading a larger number of item changes.
+Remaining parameters
+The remaining parameters are used to restrict the items to be downloaded for update in ‘Update’ or ‘Create, Update’ mode, and only when the ‘Create Empty File’ parameter is not set to Yes.  
+ 
+Available Templates
+Use the pre-defined templates to restrict the Item Attributes to be displayed and updated in the report. Alternatively, users can define their own custom template containing the Item Attributes of interest.
 
 -- Excel Examle Output: https://www.enginatics.com/example/inv-item-upload/
 -- Library Link: https://www.enginatics.com/reports/inv-item-upload/
@@ -40,7 +61,6 @@ null set_process_id,
 --
 to_number(null) number_of_import_workers,
 to_number(null) purge_interface_days,
-:p_validate_dff validate_dff,
 --
 msiv.concatenated_segments item,
 mp.organization_code,
@@ -49,6 +69,8 @@ null copy_from_item,
 -- Category Assignment
 mcs.category_set_name category_set,
 mck.concatenated_segments item_category,
+-- Catalog Assignment
+(select micgbk.concatenated_segments from mtl_item_catalog_groups_b_kfv micgbk where micgbk.item_catalog_group_id = msiv.item_catalog_group_id) item_catalog,
 -- Main
 msiv.description description,
 msiv.long_description long_description,
@@ -337,7 +359,7 @@ msiv.service_duration contract_duration,
 msiv.service_starting_delay starting_delay_days,
 --
 xxen_util.meaning(msiv.comms_nl_trackable_flag,'YES_NO',0) track_in_installed_base,
-xxen_util.meaning(msiv.asset_creation_code,'SYS_YES_NO',700) create_fixed_asset,
+xxen_util.meaning(decode(msiv.asset_creation_code,0,2,msiv.asset_creation_code),'SYS_YES_NO',700) create_fixed_asset,
 --msiv.ib_item_tracking_level level_of_ib_tracking,
 xxen_util.meaning(msiv.ib_item_instance_class,'CSI_ITEM_CLASS',170) item_instance_class,
 --
@@ -361,7 +383,7 @@ msiv.process_yield_subinventory process_yield_subinventory,
 xxen_util.meaning(msiv.hazardous_material_flag,'YES_NO',0) hazardous_material,
 msiv.cas_number cas_number,
 -- DFF Attributes
-msiv.attribute_category,
+xxen_util.display_flexfield_context(401,'MTL_SYSTEM_ITEMS',msiv.attribute_category) attribute_category,
 xxen_util.display_flexfield_value(401,'MTL_SYSTEM_ITEMS',msiv.attribute_category,'ATTRIBUTE1',msiv.row_id,msiv.attribute1) inv_item_attribute1,
 xxen_util.display_flexfield_value(401,'MTL_SYSTEM_ITEMS',msiv.attribute_category,'ATTRIBUTE2',msiv.row_id,msiv.attribute2) inv_item_attribute2,
 xxen_util.display_flexfield_value(401,'MTL_SYSTEM_ITEMS',msiv.attribute_category,'ATTRIBUTE3',msiv.row_id,msiv.attribute3) inv_item_attribute3,
@@ -405,6 +427,7 @@ mtl_item_categories mic,
 mtl_categories_kfv mck
 where
 :p_upload_mode like '%' || xxen_upload.action_update and
+nvl(:p_create_empty_file,'N')  != 'Y' and
 nvl(:p_coa_id,-1)=nvl(:p_coa_id,-1) and
 nvl(:p_num_import_workers,1) = nvl(:p_num_import_workers,1) and
 nvl(:p_purge_after_days,-1) = nvl(:p_purge_after_days,-1) and

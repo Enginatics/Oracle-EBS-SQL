@@ -63,13 +63,15 @@ q1 as
   xxen_util.client_time(a.creation_date) creation_date,
   xxen_util.user_name(a.created_by,'N') created_by,
   xxen_util.client_time(a.last_update_date) last_update_date,
-  xxen_util.user_name(a.last_updated_by,'N') last_updated_by
+  xxen_util.user_name(a.last_updated_by,'N') last_updated_by,
+  xxen_util.meaning(a.pte_code,'QP_PTE_TYPE',661) pricing_transaction_entity,
+  (select fav.application_name from fnd_application_vl fav where fav.application_short_name = a.source_system_code) source_application
  from
   qp_secu_list_headers_vl a
  where
   1=1 and
   a.list_type_code not in ('PRL','AGR') and
-  nvl(a.PTE_CODE, 'ORDFUL') <> 'LOGSTX'
+  nvl(a.pte_code, 'ORDFUL') = nvl(fnd_profile.value('QP_PRICING_TRANSACTION_ENTITY'),'ORDFUL')
 ),
 --
 --
@@ -83,8 +85,22 @@ q2 as
   a.qualifier_context,
   QP_QPXPRMLS_XMLP_PKG.cf_qualifier_attributeformula(a.qualifier_context, a.qualifier_attribute) qualifier_attribute,
   qualify_hier_descendents_flag applies_to_party_hierarchy,
+  a.qualifier_precedence,
   a.comparision_operator_code qualifier_operator_code,
-  QP_QPXPRMLS_XMLP_PKG.cf_attr_value_fromformula(a.qualifier_context, a.qualifier_attribute, a.qualifier_attr_value, a.comparision_operator_code,qualifier_datatype,a.comparision_operator_code) qualifier_value_from,
+  qp_util.Get_Attribute_Value
+  ('QP_ATTR_DEFNS_QUALIFIER',
+   a.qualifier_context,
+   (select qsb.segment_code from qp_segments_b qsb,qp_prc_contexts_b qpcb where qsb.prc_context_id = qpcb.prc_context_id and qpcb.prc_context_type = 'QUALIFIER' and qpcb.prc_context_code = a.qualifier_context and qsb.segment_mapping_column = a.qualifier_attribute),
+   a.qualifier_attr_value,
+   a.comparision_operator_code
+  ) qualifier_value_from,
+  qp_util.Get_Attribute_Value_Meaning
+  ('QP_ATTR_DEFNS_QUALIFIER',
+   a.qualifier_context,
+   (select qsb.segment_code from qp_segments_b qsb,qp_prc_contexts_b qpcb where qsb.prc_context_id = qpcb.prc_context_id and qpcb.prc_context_type = 'QUALIFIER' and qpcb.prc_context_code = a.qualifier_context and qsb.segment_mapping_column = a.qualifier_attribute),
+   a.qualifier_attr_value,
+   a.comparision_operator_code
+  ) qualifier_value_from_meaning,
   QP_QPXPRMLS_XMLP_PKG.cf_attr_value_toformula(a.qualifier_context, a.qualifier_attribute, a.qualifier_attr_value_to, a.comparision_operator_code,qualifier_datatype,a.comparision_operator_code,a.qualifier_attr_value) qualifier_value_to,
   --
   --a.qualifier_attribute,
@@ -335,8 +351,10 @@ select /*+ push_pred(q2) push_pred(q3) push_pred(q4) push_pred(q5) push_pred(q6)
  q2.qualifier_context,
  q2.qualifier_attribute,
  q2.applies_to_party_hierarchy,
+ q2.qualifier_precedence,
  q2.qualifier_operator_code,
  q2.qualifier_value_from,
+ q2.qualifier_value_from_meaning,
  q2.qualifier_value_to,
  --
  q3.list_line_no,
@@ -408,6 +426,8 @@ select /*+ push_pred(q2) push_pred(q3) push_pred(q4) push_pred(q5) push_pred(q6)
  q2.last_update_date,
  q2.last_updated_by,
  --
+ q1.pricing_transaction_entity,
+ q1.source_application,
  1 sort_order
 from
  q1,
@@ -458,8 +478,10 @@ select /*+ push_pred(q2) push_pred(q3) push_pred(q4) push_pred(q5) push_pred(q6)
  q2.qualifier_context,
  q2.qualifier_attribute,
  q2.applies_to_party_hierarchy,
+ q2.qualifier_precedence,
  q2.qualifier_operator_code,
  q2.qualifier_value_from,
+ q2.qualifier_value_from_meaning,
  q2.qualifier_value_to,
  --
  q3.list_line_no,
@@ -531,6 +553,8 @@ select /*+ push_pred(q2) push_pred(q3) push_pred(q4) push_pred(q5) push_pred(q6)
  q3.last_update_date,
  q3.last_updated_by,
  --
+ q1.pricing_transaction_entity,
+ q1.source_application,
  2 sort_order
 from
  q1,
@@ -590,8 +614,10 @@ select /*+ push_pred(q2) push_pred(q3) push_pred(q4) push_pred(q5) push_pred(q6)
  q2.qualifier_context,
  q2.qualifier_attribute,
  q2.applies_to_party_hierarchy,
+ q2.qualifier_precedence,
  q2.qualifier_operator_code,
  q2.qualifier_value_from,
+ q2.qualifier_value_from_meaning,
  q2.qualifier_value_to,
  --
  q3.list_line_no,
@@ -663,6 +689,8 @@ select /*+ push_pred(q2) push_pred(q3) push_pred(q4) push_pred(q5) push_pred(q6)
  q2.last_update_date,
  q2.last_updated_by,
  --
+ q1.pricing_transaction_entity,
+ q1.source_application,
  3 sort_order
 from
  q1,
@@ -713,8 +741,10 @@ select /*+ push_pred(q2) push_pred(q3) push_pred(q4) push_pred(q5) push_pred(q6)
  q2.qualifier_context,
  q2.qualifier_attribute,
  q2.applies_to_party_hierarchy,
+ q2.qualifier_precedence,
  q2.qualifier_operator_code,
  q2.qualifier_value_from,
+ q2.qualifier_value_from_meaning,
  q2.qualifier_value_to,
  --
  q3.list_line_no,
@@ -786,6 +816,8 @@ select /*+ push_pred(q2) push_pred(q3) push_pred(q4) push_pred(q5) push_pred(q6)
  q4.last_update_date,
  q4.last_updated_by,
  --
+ q1.pricing_transaction_entity,
+ q1.source_application,
  4 sort_order
 from
  q1,
@@ -835,8 +867,10 @@ select /*+ push_pred(q2) push_pred(q3) push_pred(q4) push_pred(q5) push_pred(q6)
  q2.qualifier_context,
  q2.qualifier_attribute,
  q2.applies_to_party_hierarchy,
+ q2.qualifier_precedence,
  q2.qualifier_operator_code,
  q2.qualifier_value_from,
+ q2.qualifier_value_from_meaning,
  q2.qualifier_value_to,
  --
  q3.list_line_no,
@@ -908,6 +942,8 @@ select /*+ push_pred(q2) push_pred(q3) push_pred(q4) push_pred(q5) push_pred(q6)
  q5.last_update_date,
  q5.last_updated_by,
  --
+ q1.pricing_transaction_entity,
+ q1.source_application,
  5 sort_order
 from
  q1,
@@ -957,8 +993,10 @@ select /*+ push_pred(q2) push_pred(q3) push_pred(q4) push_pred(q5) push_pred(q6)
  q2.qualifier_context,
  q2.qualifier_attribute,
  q2.applies_to_party_hierarchy,
+ q2.qualifier_precedence,
  q2.qualifier_operator_code,
  q2.qualifier_value_from,
+ q2.qualifier_value_from_meaning,
  q2.qualifier_value_to,
  --
  q3.list_line_no,
@@ -1030,6 +1068,8 @@ select /*+ push_pred(q2) push_pred(q3) push_pred(q4) push_pred(q5) push_pred(q6)
  q6.last_update_date,
  q6.last_updated_by,
  --
+ q1.pricing_transaction_entity,
+ q1.source_application,
  6 sort_order
 from
  q1,

@@ -104,13 +104,13 @@ cdcv.basis,
 cdcv.activity,
 cdcv.activity_units,
 cdcv.item_units,
-cdcv.resource_rate,
 -- other enterable fields
 cdcv.operation_seq_num,
 cdcv.department,
 -- display only - calculated by Item Cost Import
 cdcv.basis_factor,
 cdcv.net_yield_or_shrinkage_factor,
+cdcv.resource_rate,
 cdcv.item_cost element_unit_cost,
 -- Item Cost Summary Amounts
 cic.material_cost item_material_cost,

@@ -33,6 +33,14 @@ xxen_util.meaning(ipia.payment_instruction_status,'IBY_PAY_INSTRUCTION_STATUSES'
 ipa.payment_reference_number,
 ipa.paper_document_number,
 ipa.payment_amount,
+case
+when aca.check_id is not null
+then nvl(aca.base_amount,aca.amount)
+when ipa.payment_currency_code = gl.currency_code
+then ipa.payment_amount
+when ipa.payment_currency_code = gl.currency_code and :p_pay_inv_exch_rate_type is not null
+then round(ipa.payment_amount * gl_currency_api.get_rate(ipa.payment_currency_code,gl.currency_code,trunc(aisca.check_date),:p_pay_inv_exch_rate_type),2)
+end payment_func_curr_amount,
 ipa.payment_date,
 ipa.payment_currency_code currency,
 xxen_util.meaning(ipa.payment_status,'IBY_PAYMENT_STATUSES',0) payment_status,
@@ -45,8 +53,56 @@ idpa.document_date,
 idpa.document_amount,
 idpa.document_currency_code document_currency,
 idpa.payment_amount amount_paid,
-idpa.payment_currency_code payment_currency,
+idpa.payment_currency_code document_payment_currency,
 idpa.payment_date document_payment_date,
+--
+case when idpa.document_currency_code != gl.currency_code then (select gdct.user_conversion_type from gl_daily_conversion_types gdct where gdct.conversion_type = aia.exchange_rate_type) end document_exch_rate_type,
+case when idpa.document_currency_code != gl.currency_code then aia.exchange_date end document_exch_rate_date,
+case when idpa.document_currency_code != gl.currency_code then aia.exchange_rate end document_exch_rate,
+nvl(aia.base_amount,idpa.document_amount) document_func_curr_amount,
+--
+case
+when idpa.payment_currency_code != gl.currency_code and aca.check_id is not null
+then (select gdct.user_conversion_type from gl_daily_conversion_types gdct where gdct.conversion_type = aca.exchange_rate_type)
+when idpa.payment_currency_code != gl.currency_code and :p_pay_inv_exch_rate_type is not null
+then (select gdct.user_conversion_type from gl_daily_conversion_types gdct where gdct.conversion_type = :p_pay_inv_exch_rate_type)
+end payment_exch_rate_type,
+case
+when idpa.payment_currency_code != gl.currency_code and aca.check_id is not null
+then aca.exchange_date
+when idpa.payment_currency_code != gl.currency_code and :p_pay_inv_exch_rate_type is not null
+then trunc(aisca.check_date)
+end payment_exch_rate_date,
+case
+when idpa.payment_currency_code != gl.currency_code and aca.check_id is not null
+then aca.exchange_rate
+when idpa.payment_currency_code != gl.currency_code and :p_pay_inv_exch_rate_type is not null
+then gl_currency_api.get_rate(idpa.payment_currency_code,gl.currency_code,trunc(aisca.check_date),:p_pay_inv_exch_rate_type)
+end payment_exch_rate,
+case
+when idpa.payment_currency_code = gl.currency_code
+then idpa.payment_amount
+when idpa.payment_currency_code != gl.currency_code and aca.check_id is not null
+then round(idpa.payment_amount * aca.exchange_rate,2)
+when idpa.payment_currency_code != gl.currency_code and :p_pay_inv_exch_rate_type is not null
+then round(idpa.payment_amount * gl_currency_api.get_rate(idpa.payment_currency_code,gl.currency_code,trunc(aisca.check_date),:p_pay_inv_exch_rate_type),2)
+end amount_paid_func_curr_amount,
+--
+nvl(cba.currency_code,(select cba2.currency_code from ce_bank_accounts cba2 where cba2.bank_account_id = ipsr.internal_bank_account_id)) payment_currency,
+--
+case when :p_pay_inv_exch_rate_type is not null and idpa.document_currency_code != idpa.payment_currency_code
+then (select gdct.user_conversion_type from gl_daily_conversion_types gdct where gdct.conversion_type = :p_pay_inv_exch_rate_type)
+else null
+end pay_inv_curr_exch_rate_type,
+case when :p_pay_inv_exch_rate_type is not null and idpa.document_currency_code != idpa.payment_currency_code
+then gl_currency_api.get_rate(idpa.payment_currency_code,idpa.document_currency_code,ipa.payment_date,:p_pay_inv_exch_rate_type)
+else null
+end payment_inv_curr_exch_rate,
+case when :p_pay_inv_exch_rate_type is not null and idpa.document_currency_code != idpa.payment_currency_code
+then round(idpa.payment_amount * gl_currency_api.get_rate(idpa.payment_currency_code,idpa.document_currency_code,ipa.payment_date,:p_pay_inv_exch_rate_type),2)
+else null
+end payment_inv_curr_amount,
+--
 ieba.masked_bank_account_num payee_bank_account,
 ieba.masked_iban iban,
 iebav.bank_name payee_bank_name,
@@ -97,6 +153,8 @@ from
 iby_pay_service_requests ipsr,
 ap_inv_selection_criteria_all aisca,
 iby_docs_payable_all idpa,
+ap_invoices_all aia,
+ap_checks_all aca,
 hz_parties hp1,
 hz_parties hp2,
 hz_party_sites hps,
@@ -149,6 +207,8 @@ where
 1=1 and
 ipsr.call_app_pay_service_req_code=aisca.checkrun_name(+) and
 ipsr.payment_service_request_id=idpa.payment_service_request_id and
+decode(idpa.calling_app_id,200,to_number(idpa.calling_app_doc_unique_ref2)) = aia.invoice_id (+) and
+idpa.payment_id = aca.payment_id (+) and
 idpa.payee_party_id=hp1.party_id and
 idpa.inv_payee_party_id=hp2.party_id(+) and
 idpa.party_site_id=hps.party_site_id(+) and

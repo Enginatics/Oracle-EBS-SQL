@@ -11,10 +11,16 @@
 -- Run Report: https://demo.enginatics.com/
 
 select
-mp.organization_code org,
+gl.name ledger,
+haouv.name operating_unit,
+ood.organization_code org,
 xxen_util.client_time(mmt.transaction_date) transaction_date,
+(select gp.period_name from gl_periods gp where mmt.transaction_date>=gp.start_date and mmt.transaction_date<gp.end_date+1 and gl.period_set_name=gp.period_set_name and gl.accounted_period_type=gp.period_type and gp.adjustment_period_flag='N') period,
+to_number(to_char(mmt.transaction_date,'yyyy')) year,
+to_number(to_char(mmt.transaction_date,'ww')) week,
 msiv.concatenated_segments item,
 msiv.description item_desc,
+&category_columns
 xxen_util.meaning(msiv.item_type,'ITEM_TYPE',3) user_item_type,
 mmt.transaction_quantity,
 mmt.transaction_uom,
@@ -22,16 +28,12 @@ mmt.primary_quantity,
 mmt.secondary_transaction_quantity secondary_quantity,
 mmt.secondary_uom_code secondary_uom,
 mmt.subinventory_code subinventory,
-nvl(inv_project.get_locator(mmt.locator_id,mmt.organization_id),
-    (select milk.concatenated_segments from mtl_item_locations_kfv milk where milk.inventory_location_id = mmt.locator_id and milk.organization_id = mmt.organization_id)
-) locator,
+coalesce(inv_project.get_locator(mmt.locator_id,mmt.organization_id),(select milk.concatenated_segments from mtl_item_locations_kfv milk where mmt.locator_id=milk.inventory_location_id and mmt.organization_id=milk.organization_id)) locator,
 decode(inv_check_product_install.check_cse_install,'Y',nvl(hl.clli_code,substr(hl.city,1,10)||substr(hl.location_id,1,10)),substr(hl.city,1,10)||substr(hl.location_id,1,10)) location,
 mmt.revision,
 &lot_columns
 mmt.transfer_subinventory,
-nvl(inv_project.get_locator(mmt.transfer_locator_id,mmt.transfer_organization_id), 
-    (select milk.concatenated_segments from mtl_item_locations_kfv milk where milk.inventory_location_id = mmt.transfer_locator_id and milk.organization_id = mmt.transfer_organization_id)
-) transfer_locator,
+coalesce(inv_project.get_locator(mmt.transfer_locator_id,mmt.transfer_organization_id),(select milk.concatenated_segments from mtl_item_locations_kfv milk where mmt.transfer_locator_id=milk.inventory_location_id and mmt.transfer_organization_id=milk.organization_id)) transfer_locator,
 mp2.organization_code transfer_org,
 mp3.organization_code||'-'||haouv3.name owning_party,
 mp4.organization_code||'-'||haouv4.name planning_party,
@@ -75,7 +77,9 @@ xxen_util.user_name(mmt.created_by) created_by,
 xxen_util.client_time(mmt.creation_date) creation_date,
 sum(mmt.transaction_quantity) over (partition by mmt.inventory_item_id order by mmt.transaction_date,mmt.transaction_id) sum_transaction_quantity
 from
-mtl_parameters mp,
+gl_ledgers gl,
+hr_all_organization_units_vl haouv,
+org_organization_definitions ood,
 mtl_material_transactions mmt,
 mtl_transaction_types mtt,
 mtl_txn_source_types mtst,
@@ -108,8 +112,10 @@ pa_projects_all ppa3,
 pa_tasks pt3
 where
 1=1 and
+gl.ledger_id=ood.set_of_books_id and
+haouv.organization_id=ood.operating_unit and
 mmt.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
-mp.organization_id=mmt.organization_id and
+ood.organization_id=mmt.organization_id and
 mmt.transaction_type_id=mtt.transaction_type_id and
 mmt.transaction_source_type_id=mtst.transaction_source_type_id(+) and
 mmt.organization_id=msiv.organization_id(+) and
@@ -143,7 +149,8 @@ mmt.source_task_id=pt2.task_id(+) and
 mmt.to_project_id=ppa3.project_id(+) and
 mmt.to_task_id=pt3.task_id(+)
 order by
-mp.organization_code,
+haouv.name,
+ood.organization_code,
 msiv.concatenated_segments,
 mmt.transaction_date desc,
 mmt.transaction_id desc

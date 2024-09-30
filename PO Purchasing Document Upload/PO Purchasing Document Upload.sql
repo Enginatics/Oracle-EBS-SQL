@@ -10,11 +10,15 @@
 -- Library Link: https://www.enginatics.com/reports/po-purchasing-document-upload/
 -- Run Report: https://demo.enginatics.com/
 
+select
+x.*
+from
+(
 with reporting_table as
 ( select * from &report_table_name),
 document_types_ as
 (
-select
+select /*+ inline */
 case when pdtav.document_type_code='QUOTATION' then pdtav.document_type_code else pdtav.document_subtype end document_type,
 pdtav.type_name document_type_name
 from
@@ -29,8 +33,9 @@ pdtav.document_subtype in ('BLANKET','CONTRACT','STANDARD')
 ),
 po_lines_ as
 (
-select
+select /*+ inline */
 pla.po_line_id,
+pla.note_to_vendor,
 pla.line_reference_num,
 pla.po_header_id,
 pla.line_num,
@@ -40,15 +45,31 @@ pla.unit_meas_lookup_code unit_of_measure,
 pla.unit_price,
 pla.quantity line_quantity,
 pla.item_description description,
-mcv.category_concat_segs category
+mcv.category_concat_segs category,
+xxen_util.display_flexfield_context(201,'PO_LINES',pla.attribute_category) line_dff_context,
+xxen_util.display_flexfield_value(201,'PO_LINES',pla.attribute_category,'ATTRIBUTE1',pla.rowid,pla.attribute1) line_attribute1,
+xxen_util.display_flexfield_value(201,'PO_LINES',pla.attribute_category,'ATTRIBUTE2',pla.rowid,pla.attribute2) line_attribute2,
+xxen_util.display_flexfield_value(201,'PO_LINES',pla.attribute_category,'ATTRIBUTE3',pla.rowid,pla.attribute3) line_attribute3,
+xxen_util.display_flexfield_value(201,'PO_LINES',pla.attribute_category,'ATTRIBUTE4',pla.rowid,pla.attribute4) line_attribute4,
+xxen_util.display_flexfield_value(201,'PO_LINES',pla.attribute_category,'ATTRIBUTE5',pla.rowid,pla.attribute5) line_attribute5,
+xxen_util.display_flexfield_value(201,'PO_LINES',pla.attribute_category,'ATTRIBUTE6',pla.rowid,pla.attribute6) line_attribute6,
+xxen_util.display_flexfield_value(201,'PO_LINES',pla.attribute_category,'ATTRIBUTE7',pla.rowid,pla.attribute7) line_attribute7,
+xxen_util.display_flexfield_value(201,'PO_LINES',pla.attribute_category,'ATTRIBUTE8',pla.rowid,pla.attribute8) line_attribute8,
+xxen_util.display_flexfield_value(201,'PO_LINES',pla.attribute_category,'ATTRIBUTE9',pla.rowid,pla.attribute9) line_attribute9,
+xxen_util.display_flexfield_value(201,'PO_LINES',pla.attribute_category,'ATTRIBUTE10',pla.rowid,pla.attribute10) line_attribute10,
+xxen_util.display_flexfield_value(201,'PO_LINES',pla.attribute_category,'ATTRIBUTE11',pla.rowid,pla.attribute11) line_attribute11,
+xxen_util.display_flexfield_value(201,'PO_LINES',pla.attribute_category,'ATTRIBUTE12',pla.rowid,pla.attribute12) line_attribute12,
+xxen_util.display_flexfield_value(201,'PO_LINES',pla.attribute_category,'ATTRIBUTE13',pla.rowid,pla.attribute13) line_attribute13,
+xxen_util.display_flexfield_value(201,'PO_LINES',pla.attribute_category,'ATTRIBUTE14',pla.rowid,pla.attribute14) line_attribute14,
+xxen_util.display_flexfield_value(201,'PO_LINES',pla.attribute_category,'ATTRIBUTE15',pla.rowid,pla.attribute15) line_attribute15
 from
 po_lines_all pla,
 po_line_types_tl pltt,
 mtl_categories_v mcv,
 mtl_system_items_vl msiv
 where
-nvl(pla.cancel_flag,'N') = 'N' and
-nvl(pla.closed_code,'OPEN') != 'FINALLY CLOSED' and
+nvl(pla.cancel_flag,'N')='N' and
+nvl(pla.closed_code,'OPEN')<>'FINALLY CLOSED' and
 pltt.language=userenv('lang') and
 pltt.line_type_id=pla.line_type_id and
 pla.category_id=mcv.category_id(+) and
@@ -57,7 +78,7 @@ msiv.organization_id(+) = po_lines_sv4.get_inventory_orgid(pla.org_id)
 ),
 po_line_locations_ as
 (
-select
+select /*+ inline */
 plla.po_line_id,
 plla.line_location_id,
 plla.shipment_num,
@@ -68,7 +89,23 @@ plla.price_discount discount,
 mp.organization_code ship_to_organization_code,
 hla.location_code ship_to_location_code,
 plla.need_by_date,
-plla.promised_date
+plla.promised_date,
+xxen_util.display_flexfield_context(201,'PO_LINE_LOCATIONS',plla.attribute_category) line_location_dff_context,
+xxen_util.display_flexfield_value(201,'PO_LINE_LOCATIONS',plla.attribute_category,'ATTRIBUTE1',plla.rowid,plla.attribute1) line_location_attribute1,
+xxen_util.display_flexfield_value(201,'PO_LINE_LOCATIONS',plla.attribute_category,'ATTRIBUTE2',plla.rowid,plla.attribute2) line_location_attribute2,
+xxen_util.display_flexfield_value(201,'PO_LINE_LOCATIONS',plla.attribute_category,'ATTRIBUTE3',plla.rowid,plla.attribute3) line_location_attribute3,
+xxen_util.display_flexfield_value(201,'PO_LINE_LOCATIONS',plla.attribute_category,'ATTRIBUTE4',plla.rowid,plla.attribute4) line_location_attribute4,
+xxen_util.display_flexfield_value(201,'PO_LINE_LOCATIONS',plla.attribute_category,'ATTRIBUTE5',plla.rowid,plla.attribute5) line_location_attribute5,
+xxen_util.display_flexfield_value(201,'PO_LINE_LOCATIONS',plla.attribute_category,'ATTRIBUTE6',plla.rowid,plla.attribute6) line_location_attribute6,
+xxen_util.display_flexfield_value(201,'PO_LINE_LOCATIONS',plla.attribute_category,'ATTRIBUTE7',plla.rowid,plla.attribute7) line_location_attribute7,
+xxen_util.display_flexfield_value(201,'PO_LINE_LOCATIONS',plla.attribute_category,'ATTRIBUTE8',plla.rowid,plla.attribute8) line_location_attribute8,
+xxen_util.display_flexfield_value(201,'PO_LINE_LOCATIONS',plla.attribute_category,'ATTRIBUTE9',plla.rowid,plla.attribute9) line_location_attribute9,
+xxen_util.display_flexfield_value(201,'PO_LINE_LOCATIONS',plla.attribute_category,'ATTRIBUTE10',plla.rowid,plla.attribute10) line_location_attribute10,
+xxen_util.display_flexfield_value(201,'PO_LINE_LOCATIONS',plla.attribute_category,'ATTRIBUTE11',plla.rowid,plla.attribute11) line_location_attribute11,
+xxen_util.display_flexfield_value(201,'PO_LINE_LOCATIONS',plla.attribute_category,'ATTRIBUTE12',plla.rowid,plla.attribute12) line_location_attribute12,
+xxen_util.display_flexfield_value(201,'PO_LINE_LOCATIONS',plla.attribute_category,'ATTRIBUTE13',plla.rowid,plla.attribute13) line_location_attribute13,
+xxen_util.display_flexfield_value(201,'PO_LINE_LOCATIONS',plla.attribute_category,'ATTRIBUTE14',plla.rowid,plla.attribute14) line_location_attribute14,
+xxen_util.display_flexfield_value(201,'PO_LINE_LOCATIONS',plla.attribute_category,'ATTRIBUTE15',plla.rowid,plla.attribute15) line_location_attribute15
 from
 po_line_locations_all plla,
 mtl_parameters mp,
@@ -88,6 +125,7 @@ to_number(null) interface_header_id,
 pha.po_header_id,
 pha.segment1 po_number,
 null group_,
+null document_number,
 pha.revision_num,
 pha.creation_date,
 pt.document_type_name document_type,
@@ -99,6 +137,25 @@ papf.full_name buyer,
 pv.vendor_name supplier_name,
 pvsa.vendor_site_code supplier_site,
 pha.blanket_total_amount amount_agreed,
+pha.quote_warning_delay,
+pha.note_to_vendor header_note_to_vendor,
+pha.note_to_receiver header_note_to_receiver,
+xxen_util.display_flexfield_context(201,'PO_HEADERS',pha.attribute_category) header_dff_context,
+xxen_util.display_flexfield_value(201,'PO_HEADERS',pha.attribute_category,'ATTRIBUTE1',pha.rowid,pha.attribute1) header_attribute1,
+xxen_util.display_flexfield_value(201,'PO_HEADERS',pha.attribute_category,'ATTRIBUTE2',pha.rowid,pha.attribute2) header_attribute2,
+xxen_util.display_flexfield_value(201,'PO_HEADERS',pha.attribute_category,'ATTRIBUTE3',pha.rowid,pha.attribute3) header_attribute3,
+xxen_util.display_flexfield_value(201,'PO_HEADERS',pha.attribute_category,'ATTRIBUTE4',pha.rowid,pha.attribute4) header_attribute4,
+xxen_util.display_flexfield_value(201,'PO_HEADERS',pha.attribute_category,'ATTRIBUTE5',pha.rowid,pha.attribute5) header_attribute5,
+xxen_util.display_flexfield_value(201,'PO_HEADERS',pha.attribute_category,'ATTRIBUTE6',pha.rowid,pha.attribute6) header_attribute6,
+xxen_util.display_flexfield_value(201,'PO_HEADERS',pha.attribute_category,'ATTRIBUTE7',pha.rowid,pha.attribute7) header_attribute7,
+xxen_util.display_flexfield_value(201,'PO_HEADERS',pha.attribute_category,'ATTRIBUTE8',pha.rowid,pha.attribute8) header_attribute8,
+xxen_util.display_flexfield_value(201,'PO_HEADERS',pha.attribute_category,'ATTRIBUTE9',pha.rowid,pha.attribute9) header_attribute9,
+xxen_util.display_flexfield_value(201,'PO_HEADERS',pha.attribute_category,'ATTRIBUTE10',pha.rowid,pha.attribute10) header_attribute10,
+xxen_util.display_flexfield_value(201,'PO_HEADERS',pha.attribute_category,'ATTRIBUTE11',pha.rowid,pha.attribute11) header_attribute11,
+xxen_util.display_flexfield_value(201,'PO_HEADERS',pha.attribute_category,'ATTRIBUTE12',pha.rowid,pha.attribute12) header_attribute12,
+xxen_util.display_flexfield_value(201,'PO_HEADERS',pha.attribute_category,'ATTRIBUTE13',pha.rowid,pha.attribute13) header_attribute13,
+xxen_util.display_flexfield_value(201,'PO_HEADERS',pha.attribute_category,'ATTRIBUTE14',pha.rowid,pha.attribute14) header_attribute14,
+xxen_util.display_flexfield_value(201,'PO_HEADERS',pha.attribute_category,'ATTRIBUTE15',pha.rowid,pha.attribute15) header_attribute15,
 hla2.location_code header_ship_to_location,
 hla1.location_code header_bill_to_location,
 to_number(null) interface_line_id,
@@ -111,7 +168,24 @@ pl.category,
 pl.description,
 pl.unit_of_measure,
 pl.unit_price price,
-pl.line_quantity, 
+pl.line_quantity,
+pl.note_to_vendor line_note_to_vendor,
+pl.line_dff_context,
+pl.line_attribute1,
+pl.line_attribute2,
+pl.line_attribute3,
+pl.line_attribute4,
+pl.line_attribute5,
+pl.line_attribute6,
+pl.line_attribute7,
+pl.line_attribute8,
+pl.line_attribute9,
+pl.line_attribute10,
+pl.line_attribute11,
+pl.line_attribute12,
+pl.line_attribute13,
+pl.line_attribute14,
+pl.line_attribute15,
 to_number(null) interface_line_location_id,
 pll.line_location_id,
 pll.shipment_num,
@@ -123,14 +197,58 @@ pll.ship_to_organization_code,
 pll.ship_to_location_code,
 pll.need_by_date,
 pll.promised_date,
+pll.line_location_dff_context,
+pll.line_location_attribute1,
+pll.line_location_attribute2,
+pll.line_location_attribute3,
+pll.line_location_attribute4,
+pll.line_location_attribute5,
+pll.line_location_attribute6,
+pll.line_location_attribute7,
+pll.line_location_attribute8,
+pll.line_location_attribute9,
+pll.line_location_attribute10,
+pll.line_location_attribute11,
+pll.line_location_attribute12,
+pll.line_location_attribute13,
+pll.line_location_attribute14,
+pll.line_location_attribute15,
 to_number(null) interface_distribution_id,
 pda.po_distribution_id,
 pda.distribution_num,
 pda.quantity_ordered,
 gcck.concatenated_segments charge_account,
+case when pda.deliver_to_person_id is not null then (select papf.full_name from per_all_people_f papf where papf.person_id=pda.deliver_to_person_id and trunc(sysdate) between papf.effective_start_date and papf.effective_end_date) end requestor,
+case when pda.project_id is not null then (select ppev.project_number from pa_projects_expend_v ppev where ppev.project_id=pda.project_id) end project_number,
+case when pda.task_id is not null then (select ptaev.task_number from pa_tasks_all_expend_v ptaev where ptaev.task_id= pda.task_id and ptaev.expenditure_org_id=pda.org_id) end task_number,
+pda.expenditure_type,
+pda.expenditure_item_date expenditure_date,
+case when pda.expenditure_organization_id is not null then  (select poev.name from pa_organizations_expend_v poev where poev.organization_id= pda.expenditure_organization_id) end expenditure_org,
+xxen_util.display_flexfield_context(201,'PO_DISTRIBUTIONS',pda.attribute_category) distribution_dff_context,
+xxen_util.display_flexfield_value(201,'PO_DISTRIBUTIONS',pda.attribute_category,'ATTRIBUTE1',pda.rowid,pda.attribute1) distribution_attribute1,
+xxen_util.display_flexfield_value(201,'PO_DISTRIBUTIONS',pda.attribute_category,'ATTRIBUTE2',pda.rowid,pda.attribute2) distribution_attribute2,
+xxen_util.display_flexfield_value(201,'PO_DISTRIBUTIONS',pda.attribute_category,'ATTRIBUTE3',pda.rowid,pda.attribute3) distribution_attribute3,
+xxen_util.display_flexfield_value(201,'PO_DISTRIBUTIONS',pda.attribute_category,'ATTRIBUTE4',pda.rowid,pda.attribute4) distribution_attribute4,
+xxen_util.display_flexfield_value(201,'PO_DISTRIBUTIONS',pda.attribute_category,'ATTRIBUTE5',pda.rowid,pda.attribute5) distribution_attribute5,
+xxen_util.display_flexfield_value(201,'PO_DISTRIBUTIONS',pda.attribute_category,'ATTRIBUTE6',pda.rowid,pda.attribute6) distribution_attribute6,
+xxen_util.display_flexfield_value(201,'PO_DISTRIBUTIONS',pda.attribute_category,'ATTRIBUTE7',pda.rowid,pda.attribute7) distribution_attribute7,
+xxen_util.display_flexfield_value(201,'PO_DISTRIBUTIONS',pda.attribute_category,'ATTRIBUTE8',pda.rowid,pda.attribute8) distribution_attribute8,
+xxen_util.display_flexfield_value(201,'PO_DISTRIBUTIONS',pda.attribute_category,'ATTRIBUTE9',pda.rowid,pda.attribute9) distribution_attribute9,
+xxen_util.display_flexfield_value(201,'PO_DISTRIBUTIONS',pda.attribute_category,'ATTRIBUTE10',pda.rowid,pda.attribute10) distribution_attribute10,
+xxen_util.display_flexfield_value(201,'PO_DISTRIBUTIONS',pda.attribute_category,'ATTRIBUTE11',pda.rowid,pda.attribute11) distribution_attribute11,
+xxen_util.display_flexfield_value(201,'PO_DISTRIBUTIONS',pda.attribute_category,'ATTRIBUTE12',pda.rowid,pda.attribute12) distribution_attribute12,
+xxen_util.display_flexfield_value(201,'PO_DISTRIBUTIONS',pda.attribute_category,'ATTRIBUTE13',pda.rowid,pda.attribute13) distribution_attribute13,
+xxen_util.display_flexfield_value(201,'PO_DISTRIBUTIONS',pda.attribute_category,'ATTRIBUTE14',pda.rowid,pda.attribute14) distribution_attribute14,
+xxen_util.display_flexfield_value(201,'PO_DISTRIBUTIONS',pda.attribute_category,'ATTRIBUTE15',pda.rowid,pda.attribute15) distribution_attribute15,
 null approval_status,
 null create_or_update_items,
-null group_lines
+null group_lines,
+null attachment_category_,
+null attachment_title_,
+null attachment_description_,
+null attachment_type_,
+null attachment_content_,
+null attachment_file_id_
 from
 po_headers_all pha,
 per_all_people_f papf,
@@ -166,4 +284,10 @@ nvl(pha.user_hold_flag,'N')='N'
 &not_use_first_block
 &report_table_select &report_table_where_clause &success_records
 &processed_run
-order by 7,11,25,36,46
+) x
+order by
+x.creation_date desc,
+x.po_number,
+x.line_num,
+x.shipment_num,
+x.distribution_num

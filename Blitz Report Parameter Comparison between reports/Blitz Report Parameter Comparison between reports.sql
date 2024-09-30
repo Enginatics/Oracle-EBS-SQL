@@ -15,6 +15,8 @@ x.*
 from
 (
 select
+xrpv1.report_name report_name1,
+xrpv2.report_name report_name2,
 xrpv1.display_sequence display_sequence1,
 xrpv2.display_sequence display_sequence2,
 xrpv1.parameter_name parameter_name1,
@@ -52,7 +54,7 @@ full join
 on
 (
 xrpv1.parameter_name=xrpv2.parameter_name and
-nvl(xrpv1.anchor,'x')=nvl(xrpv2.anchor,'x') and
+xrpv1.anchor=xrpv2.anchor and
 nvl(xrpv1.matching_value,'x')=nvl(xrpv2.matching_value,'x')
 )
 ) x

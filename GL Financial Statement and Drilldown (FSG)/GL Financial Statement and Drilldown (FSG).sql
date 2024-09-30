@@ -5,9 +5,17 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: GL Financial Statement and Drilldown (FSG)
--- Description: GL Financial Statement and Drilldown report offers the capability to generate reports on balances and delve into specific details. It allows for the linking of Excel cells to Oracle data through provided functions, enabling users to refresh the data as needed for the latest provided information. Furthermore, users can execute drilldown actions to access information at the balance, journal, and subledger levels.
+-- Description: The GL Financial Statement and Drilldown (FSG) Report empowers users to generate comprehensive reports on financial balances while providing detailed insights through drilldown capabilities. This tool allows users to link Excel cells directly to Oracle data via built-in functions, ensuring that data can be refreshed as needed to reflect the most up-to-date information.
+Key features include:
+1. Balance and Detail Reporting: Generate high-level balance reports and drill down into the details, including journal entries and subledger transactions.
+2. Oracle Data Integration: Seamlessly link Excel cells to Oracle data, with the ability to refresh the data for real-time updates.
+3. Drilldown Functionality: Access detailed information at various levels, including balances, journal entries, and subledger details.
+4. Migration Tools: Converters are available to migrate reports from Oracle FSG, GL Wand, and Spreadsheet Server to this solution.
 
-Do not delete the sheet ""Financial Statement Generator" and do not modify the Advanced Custom Properties of the excel output.
+For a quick demonstration, refer to our YouTube video.
+<a href="https://youtu.be/dsRWXT2bem8?si=bA8cAxuXjfrMI-SI" rel="nofollow" target="_blank">https://youtu.be/dsRWXT2bem8?si=bA8cAxuXjfrMI-SI</a>
+
+Important: Please do not delete the "Financial Statement Generator" sheet or modify the Advanced Custom Properties in the Excel output, as these are essential for the proper functioning of the report.
 -- Excel Examle Output: https://www.enginatics.com/example/gl-financial-statement-and-drilldown-fsg/
 -- Library Link: https://www.enginatics.com/reports/gl-financial-statement-and-drilldown-fsg/
 -- Run Report: https://demo.enginatics.com/
@@ -29,6 +37,8 @@ select
 :movement movement,
 :translated_flag translated_flag,
 :gl_segments gl_segments,
+:fsg_report,
+:fsg_converter,
 :gl_segments_cb gl_segments_cb,
 :get_balance_function get_balance_function,
 :balance_drilldown_function balance_drilldown_function,

@@ -186,7 +186,7 @@ gp.start_date period_date,
 gp.period_name period,
 gcck.chart_of_accounts_id,
 case when nvl(fnd_profile.value('XXEN_FSG_DRILLDOWN_TO_SAME_WORKBOOK'), 'N')='N' then '=dd' else '=dds' end
-||'("VT","'||gl.name||','||gjsv.user_je_source_name||','||xah.event_id||'")' view_transaction
+||'("VT","'||gl.ledger_id||','||gjsv.user_je_source_name||','||xah.event_id||'")' view_transaction
 from
 gl_ledgers gl,
 gl_periods gp,

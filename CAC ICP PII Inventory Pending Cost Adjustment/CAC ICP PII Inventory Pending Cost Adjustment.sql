@@ -5,7 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC ICP PII Inventory Pending Cost Adjustment
--- Description: Report showing the potential standard cost changes for onhand and intransit inventory value which you own, for gross, profit in inventory and net inventory values.  If you enter a period name this report uses the quantities from the month-end snapshot; if you leave the period name blank it uses the real-time quantities.  The Cost Type (Old) defaults to your Costing Method Cost Type (Average, Standard, etc.); the Currency Conversion Dates default to the latest open or closed accounting period; and the To Currency Code and the Organization Code default from the organization code set for this session.  And if you want to enter a period name to use the quantities from the month-end snapshot, you can only choose closed accounting periods; this is because the month-end snapshot is created when you close the inventory accounting period.
+-- Description: Report showing potential standard cost changes for onhand and intransit inventory value which you own, for gross, profit in inventory and net inventory values.  If you enter a period name this report uses quantities from the month-end snapshot; if you leave the period name blank it uses the real-time quantities.  The Cost Type (Old) defaults to your Costing Method Cost Type (Average, Standard, etc.), the Currency Conversion Dates default to the current accounting period, and the To Currency Code and the Organization Code default from the organization code set for this session.  And to use the quantities from the month-end snapshot, you can only choose closed accounting periods as the month-end snapshot is created when you close the inventory accounting period.
 
 Note:  If using this report for reporting after the standard cost update this report requires both the before and after cost types available after the standard cost update is run.
            Please save your frozen costs to another Cost Type before running the standard cost update, using the item cost copy.
@@ -39,12 +39,13 @@ Ledger:  general ledger you wish to report, leave blank for all ledgers, optiona
 -- |  All rights reserved.
 -- |  Permission to use this code is granted provided the original author is
 -- |  acknowledged.  No warranties, express or otherwise is included in this permission.
+
+-- |  Version Modified on  Modified  by   Desc
 -- |  ======= =========== ============== =========================================
--- |      1.0 21 Nov 2010 Douglas Volz   Created initial Report for prior client
--- |                                     based on BBCI_INV_VALUE_STD_ADJ_FX_REPT1.7.sql
+-- |      1.0 21 Nov 2010 Douglas Volz   Created initial Report for prior client based on BBCI_INV_VALUE_STD_ADJ_FX_REPT1.7.sql
 -- |     1.14 07 Feb 2024 Douglas Volz   Add item master and costing lot sizes, use default controls,
--- |                                     based on rollup and shrinkage rate columns, added
--- |                                     G/L and Operating Unit security restrictions.
+-- |                                     based on rollup and shrinkage rate columns.  Added in GL and OU security restrictions.
+-- |     1.15 25 Jun 2024 Douglas Volz   Reinstalled missing parameter, To Currency Code.  Commented out GL and OU security restrictions.
 -- +=============================================================================
 
 -- Excel Examle Output: https://www.enginatics.com/example/cac-icp-pii-inventory-pending-cost-adjustment/
@@ -90,10 +91,10 @@ with inv_organizations as
          and    1=1                             -- p_operating_unit, p_ledger
          -- Revision for version 1.12
          and     mp.organization_code in (select oav.organization_code from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-         -- Revision for version 1.14
-         and    gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
-         and    haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
-         -- End revision for version 1.14
+         -- Revision for version 1.14 and 1.15
+         -- and    gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
+         -- and    haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
+         -- End revision for version 1.14 and 1.15
          and    9=9                             -- p_org_code
          group by
                 nvl(gl.short_name, gl.name),
@@ -560,4 +561,4 @@ select  mp.ledger                                                        Ledger,
                 (nvl(cic2.item_cost,0) * nvl(gdr2.conversion_rate,1))) *
                 (nvl(sumqty.intransit_quantity,0) + nvl(sumqty.onhand_quantity,0)),2)  "&p_to_currency_code Gross Value FX Diff",
 -- Revision for version 1.11 for PII
-        -- USD PII Value Diff
+     

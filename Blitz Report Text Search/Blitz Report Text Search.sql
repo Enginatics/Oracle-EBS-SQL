@@ -31,8 +31,8 @@ from
 xxen_reports_v xrv
 where
 1=1 and
-(:case_sensitive is null and regexp_like(xrv.sql_text_full,xxen_util.regexp_escape(:sql_text),'i') or xrv.sql_text_full like '%'||replace(:sql_text,'_','\_')||'%' escape '\') and
-(:not_sql_text is null or (not regexp_like(xrv.sql_text_full,xxen_util.regexp_escape(:not_sql_text),'i') or :case_sensitive='Y' and xrv.sql_text_full not like '%'||:not_sql_text||'%'))
+(:match_case is null and regexp_like(xrv.sql_text_full,xxen_util.regexp_escape(:sql_text),'i') or xrv.sql_text_full like '%'||replace(replace(:sql_text,'\','\\'),'_','\_')||'%' escape '\') and
+(:not_sql_text is null or (not regexp_like(xrv.sql_text_full,xxen_util.regexp_escape(:not_sql_text),'i') or :match_case='Y' and xrv.sql_text_full not like '%'||:not_sql_text||'%'))
 union all
 select
 xrv.report_name,
@@ -49,8 +49,8 @@ from
 xxen_reports_v xrv
 where
 1=1 and
-(:case_sensitive is null and regexp_like(xrv.upload_excel_validation,xxen_util.regexp_escape(:sql_text),'i') or xrv.upload_excel_validation like '%'||replace(:sql_text,'_','\_')||'%' escape '\') and
-(:not_sql_text is null or (not regexp_like(xrv.upload_excel_validation,xxen_util.regexp_escape(:not_sql_text),'i') or :case_sensitive='Y' and xrv.upload_excel_validation not like '%'||:not_sql_text||'%'))
+(:match_case is null and regexp_like(xrv.upload_excel_validation,xxen_util.regexp_escape(:sql_text),'i') or xrv.upload_excel_validation like '%'||replace(replace(:sql_text,'\','\\'),'_','\_')||'%' escape '\') and
+(:not_sql_text is null or (not regexp_like(xrv.upload_excel_validation,xxen_util.regexp_escape(:not_sql_text),'i') or :match_case='Y' and xrv.upload_excel_validation not like '%'||:not_sql_text||'%'))
 union all
 select
 xrpv.report_name,
@@ -67,8 +67,8 @@ from
 xxen_report_parameters_v xrpv
 where
 2=2 and
-(:case_sensitive is null and regexp_like(xrpv.sql_text,xxen_util.regexp_escape(:sql_text),'i') or xrpv.sql_text like '%'||replace(:sql_text,'_','\_')||'%' escape '\') and
-(:not_sql_text is null or (not regexp_like(xrpv.sql_text,xxen_util.regexp_escape(:not_sql_text),'i') or :case_sensitive='Y' and xrpv.sql_text not like '%'||:not_sql_text||'%'))
+(:match_case is null and regexp_like(xrpv.sql_text,xxen_util.regexp_escape(:sql_text),'i') or xrpv.sql_text like '%'||replace(replace(:sql_text,'\','\\'),'_','\_')||'%' escape '\') and
+(:not_sql_text is null or (not regexp_like(xrpv.sql_text,xxen_util.regexp_escape(:not_sql_text),'i') or :match_case='Y' and xrpv.sql_text not like '%'||:not_sql_text||'%'))
 union all
 select
 xrpv.report_name,
@@ -85,8 +85,8 @@ from
 xxen_report_parameters_v xrpv
 where
 2=2 and
-(:case_sensitive is null and regexp_like(xrpv.lov_query,xxen_util.regexp_escape(:sql_text),'i') or xrpv.lov_query like '%'||replace(:sql_text,'_','\_')||'%' escape '\') and
-(:not_sql_text is null or (not regexp_like(xrpv.lov_query,xxen_util.regexp_escape(:not_sql_text),'i') or :case_sensitive='Y' and xrpv.lov_query not like '%'||:not_sql_text||'%'))
+(:match_case is null and regexp_like(xrpv.lov_query,xxen_util.regexp_escape(:sql_text),'i') or xrpv.lov_query like '%'||replace(replace(:sql_text,'\','\\'),'_','\_')||'%' escape '\') and
+(:not_sql_text is null or (not regexp_like(xrpv.lov_query,xxen_util.regexp_escape(:not_sql_text),'i') or :match_case='Y' and xrpv.lov_query not like '%'||:not_sql_text||'%'))
 union all
 select
 xrpv.report_name,
@@ -103,8 +103,8 @@ from
 xxen_report_parameters_v xrpv
 where
 2=2 and
-(:case_sensitive is null and regexp_like(xrpv.default_value,xxen_util.regexp_escape(:sql_text),'i') or xrpv.default_value like '%'||replace(:sql_text,'_','\_')||'%' escape '\') and
-(:not_sql_text is null or (not regexp_like(xrpv.default_value,xxen_util.regexp_escape(:not_sql_text),'i') or :case_sensitive='Y' and xrpv.default_value not like '%'||:not_sql_text||'%'))
+(:match_case is null and regexp_like(xrpv.default_value,xxen_util.regexp_escape(:sql_text),'i') or xrpv.default_value like '%'||replace(replace(:sql_text,'\','\\'),'_','\_')||'%' escape '\') and
+(:not_sql_text is null or (not regexp_like(xrpv.default_value,xxen_util.regexp_escape(:not_sql_text),'i') or :match_case='Y' and xrpv.default_value not like '%'||:not_sql_text||'%'))
 union all
 select
 null report_name,
@@ -121,8 +121,8 @@ from
 xxen_report_parameter_lovs xrpl
 where
 3=3 and
-(:case_sensitive is null and regexp_like(xrpl.lov_query,xxen_util.regexp_escape(:sql_text),'i') or xrpl.lov_query like '%'||replace(:sql_text,'_','\_')||'%' escape '\') and
-(:not_sql_text is null or (not regexp_like(xrpl.lov_query,xxen_util.regexp_escape(:not_sql_text),'i') or :case_sensitive='Y' and xrpl.lov_query not like '%'||:not_sql_text||'%'))
+(:match_case is null and regexp_like(xrpl.lov_query,xxen_util.regexp_escape(:sql_text),'i') or xrpl.lov_query like '%'||replace(replace(:sql_text,'\','\\'),'_','\_')||'%' escape '\') and
+(:not_sql_text is null or (not regexp_like(xrpl.lov_query,xxen_util.regexp_escape(:not_sql_text),'i') or :match_case='Y' and xrpl.lov_query not like '%'||:not_sql_text||'%'))
 union all
 select
 xupcv.report_name,
@@ -139,8 +139,8 @@ from
 xxen_upload_parameter_cols_v xupcv
 where
 4=4 and
-(:case_sensitive is null and regexp_like(xupcv.upload_query,xxen_util.regexp_escape(:sql_text),'i') or xupcv.upload_query like '%'||replace(:sql_text,'_','\_')||'%' escape '\') and
-(:not_sql_text is null or (not regexp_like(xupcv.upload_query,xxen_util.regexp_escape(:not_sql_text),'i') or :case_sensitive='Y' and xupcv.upload_query not like '%'||:not_sql_text||'%'))
+(:match_case is null and regexp_like(xupcv.upload_query,xxen_util.regexp_escape(:sql_text),'i') or xupcv.upload_query like '%'||replace(replace(:sql_text,'\','\\'),'_','\_')||'%' escape '\') and
+(:not_sql_text is null or (not regexp_like(xupcv.upload_query,xxen_util.regexp_escape(:not_sql_text),'i') or :match_case='Y' and xupcv.upload_query not like '%'||:not_sql_text||'%'))
 union all
 select
 xucv.report_name,
@@ -157,8 +157,8 @@ from
 xxen_upload_columns_v xucv
 where
 5=5 and
-(:case_sensitive is null and regexp_like(xucv.lov_query,xxen_util.regexp_escape(:sql_text),'i') or xucv.lov_query like '%'||replace(:sql_text,'_','\_')||'%' escape '\') and
-(:not_sql_text is null or (not regexp_like(xucv.lov_query,xxen_util.regexp_escape(:not_sql_text),'i') or :case_sensitive='Y' and xucv.lov_query not like '%'||:not_sql_text||'%'))
+(:match_case is null and regexp_like(xucv.lov_query,xxen_util.regexp_escape(:sql_text),'i') or xucv.lov_query like '%'||replace(replace(:sql_text,'\','\\'),'_','\_')||'%' escape '\') and
+(:not_sql_text is null or (not regexp_like(xucv.lov_query,xxen_util.regexp_escape(:not_sql_text),'i') or :match_case='Y' and xucv.lov_query not like '%'||:not_sql_text||'%'))
 union all
 select
 xucv.report_name,
@@ -175,8 +175,8 @@ from
 xxen_upload_columns_v xucv
 where
 5=5 and
-(:case_sensitive is null and regexp_like(xucv.default_value,xxen_util.regexp_escape(:sql_text),'i') or xucv.default_value like '%'||replace(:sql_text,'_','\_')||'%' escape '\') and
-(:not_sql_text is null or (not regexp_like(xucv.default_value,xxen_util.regexp_escape(:not_sql_text),'i') or :case_sensitive='Y' and xucv.default_value not like '%'||:not_sql_text||'%'))
+(:match_case is null and regexp_like(xucv.default_value,xxen_util.regexp_escape(:sql_text),'i') or xucv.default_value like '%'||replace(replace(:sql_text,'\','\\'),'_','\_')||'%' escape '\') and
+(:not_sql_text is null or (not regexp_like(xucv.default_value,xxen_util.regexp_escape(:not_sql_text),'i') or :match_case='Y' and xucv.default_value not like '%'||:not_sql_text||'%'))
 union all
 select
 xucv.report_name,
@@ -193,8 +193,8 @@ from
 xxen_upload_columns_v xucv
 where
 5=5 and
-(:case_sensitive is null and regexp_like(xucv.comments,xxen_util.regexp_escape(:sql_text),'i') or xucv.comments like '%'||replace(:sql_text,'_','\_')||'%' escape '\') and
-(:not_sql_text is null or (not regexp_like(xucv.comments,xxen_util.regexp_escape(:not_sql_text),'i') or :case_sensitive='Y' and xucv.comments not like '%'||:not_sql_text||'%'))
+(:match_case is null and regexp_like(xucv.comments,xxen_util.regexp_escape(:sql_text),'i') or xucv.comments like '%'||replace(replace(:sql_text,'\','\\'),'_','\_')||'%' escape '\') and
+(:not_sql_text is null or (not regexp_like(xucv.comments,xxen_util.regexp_escape(:not_sql_text),'i') or :match_case='Y' and xucv.comments not like '%'||:not_sql_text||'%'))
 ) x
 where
 10=10

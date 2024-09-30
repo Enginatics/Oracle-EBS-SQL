@@ -19,6 +19,8 @@ acia.cons_billing_number invoice_number,
 rcta.trx_number,
 rcta.trx_date,
 to_number(to_char(rcta.trx_date,'MM')) trx_month,
+rcta.billing_date,
+to_number(to_char(rcta.billing_date,'MM')) billing_month,
 xxen_util.meaning(apsa.class,'INV/CM/ADJ',222) class,
 rctta.name type,
 rbsa.name batch_source,
@@ -91,6 +93,7 @@ rtk.name sales_region_name,
 xxen_util.concatenated_segments(rctlgda0.code_combination_id) receivables_account,
 xxen_util.segments_description(rctlgda0.code_combination_id) receivables_account_desc,
 rctlgda0.gl_date receivables_account_gl_date,
+&category_columns
 &line_columns
 &distribution_columns
 &segment_columns
@@ -113,12 +116,16 @@ decode(rctla.customer_trx_line_id,min(rctla.customer_trx_line_id) keep (dense_ra
 case when rctla.interface_line_context in ('OKL_CONTRACTS','OKL_INVESTOR') then rctla.interface_line_attribute1 end okl_contract_number,
 case when rctla.interface_line_context in ('OKS_CONTRACTS') then to_date(rctla.interface_line_attribute4,'YYYY/MM/DD HH24:MI:SS') end oks_billed_from,
 case when rctla.interface_line_context in ('OKS_CONTRACTS') then to_date(rctla.interface_line_attribute5,'YYYY/MM/DD HH24:MI:SS') end oks_billed_to,
+nvl(rctla.warehouse_id,ospa.parameter_value) organization_id,
 rctla.*
 from
-ra_customer_trx_lines_all rctla
+ra_customer_trx_lines_all rctla,
+oe_sys_parameters_all ospa
 where
 '&show_rctla'='Y' and
-rctla.line_type in ('LINE','FREIGHT','CB')
+rctla.line_type in ('LINE','FREIGHT','CB') and
+rctla.org_id=ospa.org_id(+) and
+ospa.parameter_code(+)='MASTER_ORGANIZATION_ID'
 ) rctla,
 (
 select distinct
@@ -151,13 +158,13 @@ where
 rctla3.customer_trx_line_id=rctlgda.customer_trx_line_id and
 rctlgda.account_set_flag='N'
 ) rctlgda,
+mtl_system_items_vl msiv,
 gl_code_combinations_kfv gcck,
 ra_batch_sources_all rbsa,
 ra_batches_all rba,
 ra_cust_trx_types_all rctta,
 ra_terms_tl rtt,
 ar_cons_inv_all acia,
-oe_sys_parameters_all ospa,
 hz_cust_accounts hca0, --sold_to
 hz_cust_accounts hca1, --bill_to
 hz_cust_accounts hca2, --ship_to invoice line
@@ -214,6 +221,8 @@ rcta.customer_trx_id=rctlgda0.customer_trx_id and
 rctlgda0.account_class='REC' and
 rctlgda0.latest_rec_flag='Y' and
 rctla.customer_trx_line_id=rctlgda.link_to_cust_trx_line_id(+) and
+rctla.inventory_item_id=msiv.inventory_item_id(+) and
+rctla.organization_id=msiv.organization_id(+) and
 rctlgda.code_combination_id=gcck.code_combination_id(+) and
 rcta.batch_source_id=rbsa.batch_source_id(+) and
 rcta.org_id=rbsa.org_id(+) and
@@ -224,8 +233,6 @@ rcta.org_id=rctta.org_id and
 apsa.term_id=rtt.term_id(+) and
 rtt.language(+)=userenv('lang') and
 apsa.cons_inv_id=acia.cons_inv_id(+) and
-rcta.org_id=ospa.org_id(+) and
-ospa.parameter_code(+)='MASTER_ORGANIZATION_ID' and
 rcta.sold_to_customer_id=hca0.cust_account_id(+) and
 apsa.customer_id=hca1.cust_account_id(+) and
 rctla.ship_to_customer_id=hca2.cust_account_id(+) and
@@ -254,7 +261,7 @@ hps2.location_id=hl2.location_id(+) and
 hps3.location_id=hl3.location_id(+) and
 hl1.country=ftv1.territory_code(+) and
 hl2.country=ftv2.territory_code(+) and
-hl3.country=ftv3.territory_code(+) and 
+hl3.country=ftv3.territory_code(+) and
 hcsua1.territory_id=rtk.territory_id(+) and
 rcta.primary_salesrep_id=jrs.salesrep_id(+) and
 rcta.org_id=jrs.org_id(+) and

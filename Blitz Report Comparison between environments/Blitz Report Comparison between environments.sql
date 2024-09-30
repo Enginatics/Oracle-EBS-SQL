@@ -12,7 +12,7 @@ Requires following view to be created on the remote environment to avoid ORA-642
 create or replace view xxen_reports_v_ as
 select
 xrv.*,
-dbms_lob.substr(xrv.sql_text_full,4000,1) sql_text_short
+dbms_lob.substr(xxen_util.clob_substrb(xrv.sql_text_full,4000,1)) sql_text_short
 from
 xxen_reports_v xrv;
 -- Excel Examle Output: https://www.enginatics.com/example/blitz-report-comparison-between-environments/

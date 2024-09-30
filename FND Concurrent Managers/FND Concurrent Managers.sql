@@ -30,7 +30,8 @@ fcqv.cache_size,
 fcqv.sleep_seconds,
 fcqv.node_name primary_node,
 fcqv.node_name2 secondary_node,
-fcqv.concurrent_queue_id
+fcqv.concurrent_queue_id,
+fcqv.application_id
 from
 fnd_concurrent_queues_vl fcqv,
 fnd_application_vl fav,

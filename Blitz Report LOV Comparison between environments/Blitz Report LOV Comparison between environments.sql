@@ -10,7 +10,7 @@
 create or replace view xxen_report_parameter_lovs_v_ as
 select
 xrplv.*,
-dbms_lob.substr(xrplv.lov_query,4000,1) lov_query_short
+dbms_lob.substr(xxen_util.clob_substrb(xrplv.lov_query,4000,1)) lov_query_short
 from
 xxen_report_parameter_lovs_v xrplv;
 -- Excel Examle Output: https://www.enginatics.com/example/blitz-report-lov-comparison-between-environments/
@@ -30,7 +30,7 @@ else 'update'
 end result,
 case when xrplv.lov_name<>xrplv2.lov_name then 'Y' end name_diff,
 case when xrplv.guid<>xrplv2.guid then 'Y' end guid_diff,
-case when dbms_lob.substr(xrplv.lov_query,4000,1)<>xrplv2.lov_query_short then 'Y' end query_diff,
+case when dbms_lob.substr(xxen_util.clob_substrb(xrplv.lov_query,4000,1))<>xrplv2.lov_query_short then 'Y' end query_diff,
 case when xrplv.description<>xrplv2.description then 'Y' end descr_diff,
 xrplv.lov_name,
 xrplv2.lov_name lov_name_remote,

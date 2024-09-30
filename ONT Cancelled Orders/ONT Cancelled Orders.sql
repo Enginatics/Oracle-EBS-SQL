@@ -24,10 +24,10 @@ select
  x.salesperson,
  x.order_currency,
  x.currency report_currency,
- --
  x.line_number,
  x.category,
  x.item,
+ &category_columns
  x.cancelled_qty,
  x.uom,
  x.amount,
@@ -58,7 +58,6 @@ select distinct
  sr.name salesperson,
  h.transactional_curr_code order_currency,
  ont_oexoeocs_xmlp_pkg.c_currency_codeformula(h.transactional_curr_code) currency,
- --
  decode(l.item_type_code,'SERVICE',l.line_number ||'.'|| l.shipment_number||'.'|| l.option_number ||'.'||l.component_number || decode(l.service_number,null,null,'.'||l.service_number), 'INCLUDED',l.line_number ||'.'|| l.shipment_number||'.'|| l.option_number ||'.'||l.component_number ||decode(l.service_number,null,null,'.'||l.service_number), l.line_number || '.' || l.shipment_number || decode(l.option_number,null,null,'.'||l.option_number)) line_number,
  l.line_number line_num,
  l.shipment_number shipment_num,
@@ -78,7 +77,9 @@ select distinct
  xxen_util.user_name(oolh.hist_created_by) cancelled_by,
  nvl(xxen_util.meaning(ore.reason_code,'CANCEL_CODE',660),ore.reason_code) cancelled_reason,
  ore.comments cancelled_comments,
- l.line_id order_line_id
+ l.line_id order_line_id,
+ si.organization_id,
+ si.inventory_item_id
 from
  oe_order_lines_all l,
  oe_order_headers_all h,

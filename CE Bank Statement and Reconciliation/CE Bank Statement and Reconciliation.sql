@@ -497,7 +497,7 @@ select /*+ use_nl(crt cebs) */
  cebs.trx_original_amount,
  cebs.trx_original_amount_acctd,
  decode(sign(cebs.net_reconciled_amount),-1,-1,1) * abs(cebs.trx_original_amount) net_trx_original_amount,
- decode(sign(cebs.net_reconciled_amount),-1,-1,1) * abs(cebs.trx_original_amount) net_trx_original_amount_acctd, 
+ decode(sign(cebs.net_reconciled_amount),-1,-1,1) * abs(cebs.trx_original_amount_acctd) net_trx_original_amount_acctd, 
  cebs.agent,
  cebs.agent_bank_account,
  cebs.invoice,

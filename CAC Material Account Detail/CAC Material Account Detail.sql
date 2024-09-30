@@ -107,6 +107,8 @@ select nvl(gl.short_name, gl.name) Ledger,
  -- Revision for version 1.13
  mtst.transaction_source_type_name Transaction_Source,
  -- Revision for version 1.27
+ mtr.reason_name reason,
+ mtr.description reason_description,
  acct_dist.document_order_num Document_Number,
  decode(acct_dist.transaction_source_type_id,
      2, acct_dist.order_type, -- Sales order

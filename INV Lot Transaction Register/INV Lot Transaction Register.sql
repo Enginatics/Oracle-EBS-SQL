@@ -145,8 +145,8 @@ where
  micat.category_set_id = :p_catg_set_id and
  mtln.organization_id = micat.organization_id and
  mtln.transaction_id = mmt.transaction_id and
- (mtln.transaction_date) >= :p_txn_date_lo and
- (mtln.transaction_date) <= :p_txn_date_hi +1-1/(24*3600) and
+ mtln.transaction_date >= :p_txn_date_lo and
+ mtln.transaction_date < :p_txn_date_hi+1 and
  mtln.organization_id = :p_org
 group by
  msi.inventory_item_id,
