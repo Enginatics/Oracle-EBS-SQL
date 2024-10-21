@@ -12,7 +12,7 @@ Optionally include special columns for service contracts (OKS) and lease contrac
 -- Library Link: https://www.enginatics.com/reports/ar-transactions-and-lines/
 -- Run Report: https://demo.enginatics.com/
 
-select
+select /*+ push_pred(rctlgda) */
 gl.name ledger,
 haouv.name operating_unit,
 acia.cons_billing_number invoice_number,
@@ -72,7 +72,7 @@ case when apsa.terms_sequence_number=1 and rctla.not_first_line is null and rctl
 case when apsa.terms_sequence_number=1 and rctla.not_first_line is null and rctlgda.not_first_line is null then apsa.tax_original*nvl(apsa.exchange_rate,1) end accounted_tax_amount,
 case when apsa.terms_sequence_number=1 and rctla.not_first_line is null and rctlgda.not_first_line is null then apsa.acctd_amount_due_remaining end accounted_total_due_remaining,
 xxen_util.meaning(apsa.status,'PAYMENT_SCHEDULE_STATUS',222) status,
-rtt.name payment_term,
+rtv.name payment_term,
 decode(rcta.invoicing_rule_id,-3,'Arrears','Advance') invoicing_rule,
 apsa.due_date,
 case when apsa.class in ('INV','DM') and apsa.status='OP' then greatest(trunc(sysdate)-apsa.due_date,0) end overdue_days,
@@ -81,7 +81,7 @@ decode(apsa.status,'OP',to_date(null),apsa.actual_date_closed) actual_date_close
 apsa.gl_date payment_sched_gl_date,
 decode(apsa.status,'OP',to_date(null),apsa.gl_date_closed) payment_sched_gl_date_closed,
 arm.name receipt_method,
-ifpct.payment_channel_name payment_method,
+ifpcv.payment_channel_name payment_method,
 decode(ipiua.instrument_type,'BANKACCOUNT',ieba.masked_bank_account_num,'CREDITCARD',ic.masked_cc_number) instrument_number,
 xxen_util.meaning(rcta.printing_option,'INVOICE_PRINT_OPTIONS',222) print_option,
 rcta.printing_original_date first_printed_date,
@@ -90,9 +90,9 @@ rcta.comments,
 jrrev.resource_name salesperson,
 rtk.concatenated_segments sales_region,
 rtk.name sales_region_name,
-xxen_util.concatenated_segments(rctlgda0.code_combination_id) receivables_account,
-xxen_util.segments_description(rctlgda0.code_combination_id) receivables_account_desc,
-rctlgda0.gl_date receivables_account_gl_date,
+xxen_util.concatenated_segments(axclv0.code_combination_id) receivables_account,
+xxen_util.segments_description(axclv0.code_combination_id) receivables_account_desc,
+axclv0.gl_date receivables_account_gl_date,
 &category_columns
 &line_columns
 &distribution_columns
@@ -138,32 +138,32 @@ where
 '&show_rctla'='Y' and
 rctla2.line_type='TAX'
 ) rctla2,
-ra_cust_trx_line_gl_dist_all rctlgda0,
+ar_xla_ctlgd_lines_v axclv0,
 (
-select
-decode(rctlgda.cust_trx_line_gl_dist_id,min(rctlgda.cust_trx_line_gl_dist_id) keep (dense_rank first order by decode(rctlgda.account_class,'TAX',2,1)) over (partition by rctla3.link_to_cust_trx_line_id),null,'Y') not_first_line,
+select /*+ push_pred(axclv) */
+decode(axclv.cust_trx_line_gl_dist_id,min(axclv.cust_trx_line_gl_dist_id) keep (dense_rank first order by decode(axclv.account_class,'TAX',2,1)) over (partition by rctla3.link_to_cust_trx_line_id),null,'Y') not_first_line,
 rctla3.link_to_cust_trx_line_id,
 rctla3.tax_rate,
-rctlgda.*
+axclv.*
 from
 (
 select rctla.link_to_cust_trx_line_id, rctla.customer_trx_line_id, rctla.tax_rate from ra_customer_trx_lines_all rctla where rctla.link_to_cust_trx_line_id is not null union all
 select rctla.customer_trx_line_id, rctla.customer_trx_line_id, rctla.tax_rate from ra_customer_trx_lines_all rctla where rctla.link_to_cust_trx_line_id is null
 ) rctla3,
-ra_cust_trx_line_gl_dist_all rctlgda
+ar_xla_ctlgd_lines_v axclv
 where
 2=2 and
 &gl_distribution_where_clause2
 '&show_rctlgda'='Y' and
-rctla3.customer_trx_line_id=rctlgda.customer_trx_line_id and
-rctlgda.account_set_flag='N'
+rctla3.customer_trx_line_id=axclv.customer_trx_line_id and
+axclv.account_set_flag='N'
 ) rctlgda,
 mtl_system_items_vl msiv,
 gl_code_combinations_kfv gcck,
 ra_batch_sources_all rbsa,
 ra_batches_all rba,
 ra_cust_trx_types_all rctta,
-ra_terms_tl rtt,
+ra_terms_vl rtv,
 ar_cons_inv_all acia,
 hz_cust_accounts hca0, --sold_to
 hz_cust_accounts hca1, --bill_to
@@ -202,7 +202,7 @@ oe_order_headers_all ooha,
 jtf_rs_salesreps jrs2,
 jtf_rs_resource_extns_vl jrrev2,
 ar_receipt_methods arm,
-iby_fndcpt_pmt_chnnls_tl ifpct,
+iby_fndcpt_pmt_chnnls_vl ifpcv,
 iby_fndcpt_tx_extensions ifte,
 iby_pmt_instr_uses_all ipiua,
 iby_creditcard ic,
@@ -217,9 +217,9 @@ haouv.organization_id=rcta.org_id and
 rcta.customer_trx_id=apsa.customer_trx_id and
 decode(apsa.terms_sequence_number,1,apsa.customer_trx_id)=rctla.customer_trx_id(+) and
 rctla.customer_trx_line_id=rctla2.link_to_cust_trx_line_id(+) and
-rcta.customer_trx_id=rctlgda0.customer_trx_id and
-rctlgda0.account_class='REC' and
-rctlgda0.latest_rec_flag='Y' and
+rcta.customer_trx_id=axclv0.customer_trx_id and
+axclv0.account_class='REC' and
+axclv0.latest_rec_flag='Y' and
 rctla.customer_trx_line_id=rctlgda.link_to_cust_trx_line_id(+) and
 rctla.inventory_item_id=msiv.inventory_item_id(+) and
 rctla.organization_id=msiv.organization_id(+) and
@@ -230,8 +230,7 @@ rcta.batch_id=rba.batch_id(+) and
 rcta.org_id=rba.org_id(+) and
 rcta.cust_trx_type_id=rctta.cust_trx_type_id and
 rcta.org_id=rctta.org_id and
-apsa.term_id=rtt.term_id(+) and
-rtt.language(+)=userenv('lang') and
+apsa.term_id=rtv.term_id(+) and
 apsa.cons_inv_id=acia.cons_inv_id(+) and
 rcta.sold_to_customer_id=hca0.cust_account_id(+) and
 apsa.customer_id=hca1.cust_account_id(+) and
@@ -272,8 +271,7 @@ ooha.salesrep_id=jrs2.salesrep_id(+) and
 ooha.org_id=jrs2.org_id(+) and
 jrs2.resource_id=jrrev2.resource_id(+) and
 rcta.receipt_method_id=arm.receipt_method_id(+) and
-arm.payment_channel_code=ifpct.payment_channel_code(+) and
-ifpct.language(+)=userenv('lang') and
+arm.payment_channel_code=ifpcv.payment_channel_code(+) and
 rcta.payment_trxn_extension_id=ifte.trxn_extension_id(+) and
 ifte.instr_assignment_id=ipiua.instrument_payment_use_id(+) and
 decode(ipiua.instrument_type,'CREDITCARD',ipiua.instrument_id)=ic.instrid(+) and

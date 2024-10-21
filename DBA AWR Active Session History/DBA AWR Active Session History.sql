@@ -163,7 +163,6 @@ dhash.p3text,
 dhash.p3
 from
 &request_id_table
-dba_hist_snapshot dhs,
 (select cast(dhash.sample_time as date) sample_time_, dhash.* from dba_hist_active_sess_history dhash) dhash,
 (
 select distinct
@@ -200,10 +199,6 @@ gv$sqlarea gsa,
 dba_users du
 where
 1=1 and
-dhs.dbid=dhash.dbid and
-dhs.snap_id=dhash.snap_id and
-dhs.instance_number=dhash.instance_number and
-dhash.session_type='FOREGROUND' and
 dhash.dbid=dhst.dbid(+) and
 dhash.sql_id=dhst.sql_id(+) and
 dhash.plsql_entry_object_id=dp0.object_id(+) and

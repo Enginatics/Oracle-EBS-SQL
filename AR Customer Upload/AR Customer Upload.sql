@@ -265,7 +265,6 @@ hp.party_number registry_id,
 hp.known_as alias,
 hp.organization_name_phonetic name_pronunciation,
 hp.duns_number,
-hp.tax_reference tax_registration_num,
 -- party dff
 xxen_util.display_flexfield_context(222,'HZ_PARTIES',hp.attribute_category) party_dff_context,
 xxen_util.display_flexfield_value(222,'HZ_PARTIES',hp.attribute_category,'ATTRIBUTE1',hp.rowid,hp.attribute1) hz_party_attribute1,
@@ -541,4 +540,4 @@ xxen_util.display_flexfield_value(222,'RA_SITE_USES_HZ',hcsua.attribute_category
 xxen_util.display_flexfield_value(222,'RA_SITE_USES_HZ',hcsua.attribute_category,'ATTRIBUTE6',hcsua.rowid,hcsua.attribute6) hz_cust_site_use_attribute6,
 xxen_util.display_flexfield_value(222,'RA_SITE_USES_HZ',hcsua.attribute_category,'ATTRIBUTE7',hcsua.rowid,hcsua.attribute7) hz_cust_site_use_attribute7,
 xxen_util.display_flexfield_value(222,'RA_SITE_USES_HZ',hcsua.attribute_category,'ATTRIBUTE8',hcsua.rowid,hcsua.attribute8) hz_cust_site_use_attribute8,
-xxen_util.display_flexfield_
+xxen_util.display_flexfield_value(222,'RA_SITE_USES_HZ',hcsua.attri

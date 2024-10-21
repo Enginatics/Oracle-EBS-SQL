@@ -24,8 +24,7 @@ How the gl_import_references tableis used in 11i vs R12 is described in notes 16
 -- Run Report: https://demo.enginatics.com/
 
 select /*+ parallel*/
-xah.period_name,
-gl.name ledger,
+&columns
 fav.application_short_name,
 fav.application_name,
 count(*) count,
@@ -155,8 +154,7 @@ xal.ae_line_num=xdl.ae_line_num and
 xal.application_id=xdl.application_id and
 xal.application_id=fav.application_id(+)
 group by
-xah.period_name,
-gl.name,
+&group_by
 fav.application_short_name,
 fav.application_name,
 xte.entity_code,

@@ -47,6 +47,26 @@ To perform this check automatically, install and run Oracle's 'Database Performa
 -- Library Link: https://www.enginatics.com/reports/dba-sga-pga-memory-configuration/
 -- Run Report: https://demo.enginatics.com/
 
+with dhss as (
+select distinct
+dhss.instance_number inst_id,
+sum(dhss.iowait_delta) over (partition by dhss.instance_number)/1000000 iowait,
+sum(dhss.cpu_time_delta) over (partition by dhss.instance_number)/1000000 cpu_time,
+(max(cast(dhs.end_interval_time as date)) over (partition by dhss.instance_number)-min(cast(dhs.begin_interval_time as date)) over (partition by dhss.instance_number))*86400 time_interval
+from
+dba_hist_snapshot dhs,
+dba_hist_sqlstat dhss,
+dba_hist_sqltext dhst
+where
+1=1 and
+dhs.begin_interval_time>=sysdate-7 and
+dhst.command_type not in (47) and
+dhs.dbid=dhss.dbid and
+dhs.instance_number=dhss.instance_number and
+dhs.snap_id=dhss.snap_id and
+dhss.dbid=dhst.dbid and
+dhss.sql_id=dhst.sql_id
+)
 select
 *
 from
@@ -112,24 +132,11 @@ v$database vd
 order by gi.inst_id
 )
 union all
-select * from (
-select distinct dhss.instance_number inst_id, 'Wait IO percentage' name,
-sum(dhss.iowait_delta) over (partition by dhss.instance_number)/(sum(dhss.iowait_delta) over (partition by dhss.instance_number)+sum(dhss.cpu_time_delta) over (partition by dhss.instance_number))*100 value
-from
-dba_hist_snapshot dhs,
-dba_hist_sqlstat dhss,
-dba_hist_sqltext dhst
-where
-1=1 and
-dhs.begin_interval_time>=sysdate-7 and
-dhst.command_type not in (47) and
-dhs.dbid=dhss.dbid and
-dhs.instance_number=dhss.instance_number and
-dhs.snap_id=dhss.snap_id and
-dhss.dbid=dhst.dbid and
-dhss.sql_id=dhst.sql_id
-order by dhss.instance_number
-)
+select * from (select dhss.inst_id, 'Wait IO percentage' name, dhss.iowait/(dhss.iowait+dhss.cpu_time)*100 value from dhss order by dhss.inst_id)
+union all
+select * from (select dhss.inst_id, 'Wait IO average active sessions' name, dhss.iowait/time_interval value from dhss order by dhss.inst_id)
+union all
+select * from (select dhss.inst_id, 'CPU average active sessions' name, dhss.cpu_time/time_interval value from dhss order by dhss.inst_id)
 union all
 select
 to_number(null) inst_id,

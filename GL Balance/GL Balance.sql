@@ -39,7 +39,7 @@ u.ledger_amount_enc_v_act encumb_v_actual,
 u.effective_period_num,
 (select flvv.description from fnd_lookup_values_vl flvv where u.actual_flag=flvv.lookup_code and flvv.lookup_type='BATCH_TYPE' and flvv.view_application_id=101 and flvv.security_group_id=0) balance_type,
 (select gbv.budget_name from gl_budget_versions gbv where gbv.budget_version_id=u.budget_version_id) budget_name,
-(select get.encumbrance_type from gl_encumbrance_types get where get.encumbrance_type_id = u.encumbrance_type_id) encumbrance_type,
+(select get.encumbrance_type from gl_encumbrance_types get where get.encumbrance_type_id=u.encumbrance_type_id) encumbrance_type,
 case u.actual_flag
 when 'A' then '(A) '||xxen_util.description(u.actual_flag,'BATCH_TYPE',101)
 when 'B' then '(B) '||(select gbv.budget_name from gl_budget_versions gbv where u.budget_version_id=gbv.budget_version_id)
@@ -118,84 +118,71 @@ from
 select
 gb.period_name,
 gl.name ledger,
---nvl(gb.begin_balance_dr,0)-nvl(gb.begin_balance_cr,0) start_balance,
-case when :p_currency_type = 'E' and gb.currency_code = gl.currency_code and gb.actual_flag = 'A'
-then nvl(gb.begin_balance_dr_beq,0)-nvl(gb.begin_balance_cr_beq,0)
-else nvl(gb.begin_balance_dr,0)-nvl(gb.begin_balance_cr,0)
+case when :p_currency_type='E' and gb.currency_code=gl.currency_code and gb.actual_flag='A' then
+nvl(gb.begin_balance_dr_beq,0)-nvl(gb.begin_balance_cr_beq,0) else
+nvl(gb.begin_balance_dr,0)-nvl(gb.begin_balance_cr,0)
 end start_balance,
---gb.period_net_dr debit,
-case when :p_currency_type = 'E' and gb.currency_code = gl.currency_code and gb.actual_flag = 'A'
-then gb.period_net_dr_beq
-else gb.period_net_dr
+case when :p_currency_type='E' and gb.currency_code=gl.currency_code and gb.actual_flag='A' then
+gb.period_net_dr_beq else
+gb.period_net_dr
 end debit,
---gb.period_net_cr credit,
-case when :p_currency_type = 'E' and gb.currency_code = gl.currency_code and gb.actual_flag = 'A'
-then gb.period_net_cr_beq
-else gb.period_net_cr
+case when :p_currency_type='E' and gb.currency_code=gl.currency_code and gb.actual_flag='A' then
+gb.period_net_cr_beq else
+gb.period_net_cr
 end credit,
---nvl(gb.period_net_dr,0)-nvl(gb.period_net_cr,0) amount,
-case when :p_currency_type = 'E' and gb.currency_code = gl.currency_code and gb.actual_flag = 'A'
-then nvl(gb.period_net_dr_beq,0)-nvl(gb.period_net_cr_beq,0)
-else nvl(gb.period_net_dr,0)-nvl(gb.period_net_cr,0)
+case when :p_currency_type='E' and gb.currency_code=gl.currency_code and gb.actual_flag='A' then
+nvl(gb.period_net_dr_beq,0)-nvl(gb.period_net_cr_beq,0) else
+nvl(gb.period_net_dr,0)-nvl(gb.period_net_cr,0)
 end amount,
---nvl(gb.begin_balance_dr,0)-nvl(gb.begin_balance_cr,0)+nvl(gb.period_net_dr,0)-nvl(gb.period_net_cr,0) end_balance,
-case when :p_currency_type = 'E' and gb.currency_code = gl.currency_code and gb.actual_flag = 'A'
-then nvl(gb.begin_balance_dr_beq,0)-nvl(gb.begin_balance_cr_beq,0)+nvl(gb.period_net_dr_beq,0)-nvl(gb.period_net_cr_beq,0)
-else nvl(gb.begin_balance_dr,0)-nvl(gb.begin_balance_cr,0)+nvl(gb.period_net_dr,0)-nvl(gb.period_net_cr,0)
+case when :p_currency_type='E' and gb.currency_code=gl.currency_code and gb.actual_flag='A' then
+nvl(gb.begin_balance_dr_beq,0)-nvl(gb.begin_balance_cr_beq,0)+nvl(gb.period_net_dr_beq,0)-nvl(gb.period_net_cr_beq,0) else
+nvl(gb.begin_balance_dr,0)-nvl(gb.begin_balance_cr,0)+nvl(gb.period_net_dr,0)-nvl(gb.period_net_cr,0)
 end end_balance,
---
--- functional amounts
---
 case
-when gb.currency_code = 'STAT' then to_number(null)
-when gb.currency_code = gl.currency_code
-then case when :p_currency_type = 'T' or gb.actual_flag != 'A'
+when gb.currency_code='STAT' then to_number(null)
+when gb.currency_code=gl.currency_code
+then case when :p_currency_type='T' or gb.actual_flag<>'A'
      then nvl(gb.begin_balance_dr,0)-nvl(gb.begin_balance_cr,0)
      else nvl(gb.begin_balance_dr_beq,0)-nvl(gb.begin_balance_cr_beq,0)
      end
-when gb.translated_flag = 'R' then nvl(gb.begin_balance_dr_beq,0)-nvl(gb.begin_balance_cr_beq,0)
+when gb.translated_flag='R' then nvl(gb.begin_balance_dr_beq,0)-nvl(gb.begin_balance_cr_beq,0)
 end start_balance_func,
---
 case
-when gb.currency_code = 'STAT' then to_number(null)
-when gb.currency_code = gl.currency_code
-then case when :p_currency_type = 'T' or gb.actual_flag != 'A'
+when gb.currency_code='STAT' then to_number(null)
+when gb.currency_code=gl.currency_code
+then case when :p_currency_type='T' or gb.actual_flag<>'A'
      then gb.period_net_dr
      else gb.period_net_dr_beq
      end
-when gb.translated_flag = 'R' then gb.period_net_dr_beq
+when gb.translated_flag='R' then gb.period_net_dr_beq
 end debit_func,
---
 case
-when gb.currency_code = 'STAT' then to_number(null)
-when gb.currency_code = gl.currency_code
-then case when :p_currency_type = 'T' or gb.actual_flag != 'A'
+when gb.currency_code='STAT' then to_number(null)
+when gb.currency_code=gl.currency_code
+then case when :p_currency_type='T' or gb.actual_flag<>'A'
      then gb.period_net_cr
      else gb.period_net_cr_beq
      end
-when gb.translated_flag = 'R' then gb.period_net_cr_beq
+when gb.translated_flag='R' then gb.period_net_cr_beq
 end credit_func,
---
 case
-when gb.currency_code = 'STAT' then to_number(null)
-when gb.currency_code = gl.currency_code
-then case when :p_currency_type = 'T' or gb.actual_flag != 'A'
+when gb.currency_code='STAT' then to_number(null)
+when gb.currency_code=gl.currency_code
+then case when :p_currency_type='T' or gb.actual_flag<>'A'
      then nvl(gb.period_net_dr,0)-nvl(gb.period_net_cr,0)
      else nvl(gb.period_net_dr_beq,0)-nvl(gb.period_net_cr_beq,0)
      end
-when gb.translated_flag = 'R' then nvl(gb.period_net_dr_beq,0)-nvl(gb.period_net_cr_beq,0)
+when gb.translated_flag='R' then nvl(gb.period_net_dr_beq,0)-nvl(gb.period_net_cr_beq,0)
 end amount_func,
---
 case
-when gb.currency_code = 'STAT' then to_number(null)
-when gb.currency_code = gl.currency_code
-then case when :p_currency_type = 'T' or gb.actual_flag != 'A'
+when gb.currency_code='STAT' then to_number(null)
+when gb.currency_code=gl.currency_code
+then case when :p_currency_type='T' or gb.actual_flag<>'A'
      then nvl(gb.period_net_dr,0)-nvl(gb.period_net_cr,0)
      else nvl(gb.begin_balance_dr_beq,0)-nvl(gb.begin_balance_cr_beq,0)+nvl(gb.period_net_dr_beq,0)-nvl(gb.period_net_cr_beq,0)
      end
-when gb.translated_flag = 'R' then nvl(gb.begin_balance_dr_beq,0)-nvl(gb.begin_balance_cr_beq,0)+nvl(gb.period_net_dr_beq,0)-nvl(gb.period_net_cr_beq,0)
+when gb.translated_flag='R' then nvl(gb.begin_balance_dr_beq,0)-nvl(gb.begin_balance_cr_beq,0)+nvl(gb.period_net_dr_beq,0)-nvl(gb.period_net_cr_beq,0)
 end end_balance_func,
---
 decode(gl.currency_code,:reval_currency,1,(select gdr.conversion_rate from gl_daily_conversion_types gdct, gl_daily_rates gdr where gl.currency_code=gdr.from_currency and gdr.to_currency=:reval_currency and gp.end_date=gdr.conversion_date and gdct.user_conversion_type=:reval_conversion_type and gdct.conversion_type=gdr.conversion_type)) rate,
 gl.currency_code ledger_currency,
 gb.currency_code balance_currency,
@@ -221,16 +208,16 @@ gp.period_name=gb.period_name and
 gl.ledger_id=gb.ledger_id and
 gb.currency_code=decode(:p_currency_type,'T',gl.currency_code,'S','STAT',nvl(:p_entered_currency,decode(gb.currency_code,'STAT',null,gb.currency_code))) and
 case nvl(gb.translated_flag,'?')
- when 'R' then 'R'
- when 'Y' then 'Y'
- when 'N' then 'Y'
- when '?'
- then case :p_currency_type
-      when 'E' then case gb.currency_code when gl.currency_code then 'R' else 'X' end
-      when 'S' then 'S'
-      when 'T' then case gb.currency_code when 'STAT' then 'X' else 'Y' end
-      end
- end = case :p_currency_type when 'E' then 'R' when 'S' then 'S' when 'T' then 'Y' end
+when 'R' then 'R'
+when 'Y' then 'Y'
+when 'N' then 'Y'
+when '?'
+then case :p_currency_type
+     when 'E' then case gb.currency_code when gl.currency_code then 'R' else 'X' end
+     when 'S' then 'S'
+     when 'T' then case gb.currency_code when 'STAT' then 'X' else 'Y' end
+     end
+end=translate(:p_currency_type,'ET','RY')
 ) x,
 table(xxen_util.rowgen(case when :show_start_balance is not null and x.effective_period_num=x.start_effective_period_num then 2 else 1 end)) y
 where

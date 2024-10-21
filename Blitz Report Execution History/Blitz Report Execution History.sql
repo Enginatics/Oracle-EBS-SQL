@@ -19,7 +19,7 @@ decode(x.type,'P','Protected','S','System','U','Upload','F','FSG') type,
 x.user_name,
 x.responsibility_name responsibility,
 x.options,
-x.parameters,
+&parameters
 x.status,
 xxen_util.client_time(x.completion_date) completion_date,
 xxen_util.time(x.seconds) time,
@@ -42,7 +42,6 @@ coalesce(xrv.report_name,
 (select fcr.argument1||' (deleted)' from fnd_concurrent_requests fcr where xrr.request_id=fcr.request_id)
 ) report_name,
 xrrpv0.options,
-xxen_api.parameters(xrr.run_id) parameters,
 coalesce(xrr.completion_message,
 nvl2(fcr.request_id,
 decode(fcr.phase_code,'P','Pending - ','R','Running - ')||trim(
@@ -50,28 +49,24 @@ xxen_util.meaning(case when not (fcr.phase_code='C' and fcr.status_code='C') the
 decode(fcr.phase_code,'P',decode(fcr.hold_flag,'Y','H',decode(sign(fcr.requested_start_date-sysdate),1,'P',fcr.status_code)),'R',decode(fcr.hold_flag,'Y','S',decode(fcr.status_code,'Q', 'B','I', 'B',fcr.status_code)),fcr.status_code)
 end,'CP_STATUS_CODE',0)
 ),
-nvl2(xrr.completion_date,null,nvl2(xrr.active_session,'Running - Online','Error'))),
+nvl2(xrr.completion_date,null,nvl2(gs.run_id,'Running - Online','Error'))),
 'Completed') status,
 nvl(xrr.start_date,xrr.creation_date) start_date,
 xrr.completion_date completion_date,
-round((nvl(xrr.completion_date,nvl2(xrr.active_session,sysdate,fcr.actual_completion_date))-nvl(xrr.start_date,xrr.creation_date))*86400) seconds,
+round((nvl(xrr.completion_date,nvl2(gs.run_id,sysdate,fcr.actual_completion_date))-nvl(xrr.start_date,xrr.creation_date))*86400) seconds,
 xrr.row_count,
 xrr.file_size,
 fcr.actual_completion_date,
-xxen_api.category(xrv.report_id) category,
+xrv.category,
 xrr.type,
 xrr.run_id,
 xrr.report_id
 from
-(
-select
-(select 'Y' from gv$session gs where gs.action like xrr.run_id||'|%' and gs.module like 'XXEN_REPORT - %' and gs.status='ACTIVE' and rownum=1) active_session,
-xrr.*
-from
-xxen_report_runs xrr) xrr,
+xxen_report_runs xrr,
 xxen_reports_v xrv,
 fnd_concurrent_requests fcr,
 fnd_responsibility_tl frt,
+(select distinct xxen_util.instring(gs.action,'|',1) run_id from gv$session gs where regexp_like(gs.action,'^\d+\|.*') and gs.module like 'XXEN_REPORT - %' and gs.status='ACTIVE') gs,
 (
 select distinct
 x.run_id,
@@ -96,6 +91,7 @@ xrr.request_id=fcr.request_id(+) and
 xrr.responsibility_application_id=frt.application_id(+) and
 xrr.responsibility_id=frt.responsibility_id(+) and
 frt.language(+)=userenv('lang') and
+xrr.run_id=gs.run_id(+) and
 xrr.run_id=xrrpv0.run_id(+)
 ) x
 order by

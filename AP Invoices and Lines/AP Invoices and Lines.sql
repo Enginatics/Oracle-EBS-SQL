@@ -162,6 +162,18 @@ ap_inv.supplier_notif_method,
 ap_inv.email_address,
 ap_inv.remittance_email,
 &gcc_dist_segment_columns
+ap_inv.created_by,
+ap_inv.creation_date,
+ap_inv.last_updated_by,
+ap_inv.last_update_date,
+ap_inv.line_created_by,
+ap_inv.line_creation_date,
+ap_inv.line_last_updated_by,
+ap_inv.line_last_update_date,
+ap_inv.dist_created_by,
+ap_inv.dist_creation_date,
+ap_inv.dist_last_updated_by,
+ap_inv.dist_last_update_date,
 ap_inv.invoice_id
 from
 (
@@ -271,8 +283,6 @@ aida.distribution_line_number dist_line_number,
 xxen_util.meaning(aida.line_type_lookup_code,'INVOICE DISTRIBUTION TYPE',200) distribution_type,
 aida.period_name,
 aida.accounting_date dist_accounting_date,
-aida.creation_date dist_creation_date,
-aida.last_update_date dist_last_update_date,
 case when '&show_aida'='Y' then aida.quantity_invoiced else aila.quantity_invoiced end quantity_invoiced,
 case when '&show_aida'='Y' then aida.unit_price else aila.unit_price end unit_price,
 aida.amount dist_amount,
@@ -286,7 +296,7 @@ xxen_util.segments_description(aida.dist_code_combination_id) expense_account_de
 xxen_util.segments_description(aida.price_var_code_combination_id) price_variance_account_desc,
 xxen_util.meaning(aida.dist_match_type,'MATCH_STATUS',200) dist_match_type,
 decode(aida.match_status_flag,'A','Validated','T','Tested','S','Stopped','Never Validated') dist_match_status,
-(select pha.segment1 from po_headers_all pha, po_distributions_all pda where pha.po_header_id = pda.po_header_id and pda.po_distribution_id = nvl(aida.po_distribution_id,aila.po_distribution_id)) po_number,
+(select pha.segment1 from po_headers_all pha where nvl((select pda.po_header_id from po_distributions_all pda where nvl(aida.po_distribution_id,aila.po_distribution_id)=pda.po_distribution_id),aia.quick_po_header_id)=pha.po_header_id) po_number,
 xxen_util.meaning(aida.assets_tracking_flag,'YES_NO',0) dist_asset_tracking_flag,
 aida.assets_addition_flag dist_assets_addition_flag,
 replace(aida.description,'~','-') dist_description,
@@ -347,6 +357,18 @@ assa.supplier_notif_method,
 assa.email_address,
 assa.remittance_email,
 &dff_columns
+xxen_util.user_name(aia.created_by) created_by,
+xxen_util.client_time(aia.creation_date) creation_date,
+xxen_util.user_name(aia.last_updated_by) last_updated_by,
+xxen_util.client_time(aia.last_update_date) last_update_date,
+xxen_util.user_name(aila.created_by) line_created_by,
+xxen_util.client_time(aila.creation_date) line_creation_date,
+xxen_util.user_name(aila.last_updated_by) line_last_updated_by,
+xxen_util.client_time(aila.last_update_date) line_last_update_date,
+xxen_util.user_name(aida.created_by) dist_created_by,
+xxen_util.client_time(aida.creation_date) dist_creation_date,
+xxen_util.user_name(aida.last_updated_by) dist_last_updated_by,
+xxen_util.client_time(aida.last_update_date) dist_last_update_date,
 aia.invoice_id,
 aia.org_id,
 decode(row_number() over (partition by apsa.invoice_id order by nvl(apsa.payment_num,1),aila.line_number,aida.accounting_date,aida.distribution_line_number),1,'Y') first_invoice,
@@ -368,7 +390,7 @@ ap_supplier_sites_all assa,
 hz_parties hp,
 hz_party_sites hps,
 hz_locations hl,
-(select aila2.* from ap_invoice_lines_all aila2 where '&show_aila'='Y') aila,
+(select aila.* from ap_invoice_lines_all aila where '&show_aila'='Y') aila,
 (select aida2.* from ap_invoice_distributions_all aida2, gl_code_combinations gcc where '&show_aida'='Y' and 2=2 and aida2.dist_code_combination_id=gcc.code_combination_id) aida,
 ap_recurring_payments_all arpa,
 ap_terms at,
@@ -390,26 +412,27 @@ aia.vendor_site_id=assa.vendor_site_id(+) and
 aia.party_id=hp.party_id(+) and
 aia.party_site_id=hps.party_site_id(+) and
 hps.location_id=hl.location_id(+) and
-decode(apsa.payment_num,1,apsa.invoice_id) = aila.invoice_id(+) and
+decode(apsa.payment_num,1,apsa.invoice_id)=aila.invoice_id(+) and
 aila.invoice_id=aida.invoice_id(+)and
 aila.line_number=aida.invoice_line_number(+) and
 aida.project_id=ppa.project_id(+)and
 aida.task_id=pt.task_id(+)and
 aia.recurring_payment_id=arpa.recurring_payment_id(+) and
 aia.terms_id=at.term_id(+) and
-(:p_has_dist_criteria = 'N' or
- exists --need this to apply dist level restrictions in case report is run at header or line level
-   (select null
-    from
-     ap_invoice_distributions_all aida2,
-     gl_code_combinations gcc
-    where
-     aida2.invoice_id                 = aia.invoice_id and
-     aida2.invoice_line_number        = nvl(aila.line_number,aida2.invoice_line_number) and
-     aida2.distribution_line_number   = nvl(aida.distribution_line_number,aida2.distribution_line_number) and
-     gcc.code_combination_id          = aida2.dist_code_combination_id and
-     2=2
-   )
+(
+:p_has_dist_criteria is null or aia.invoice_id in --need this to apply dist level restrictions in case report is run at header or line level
+(
+select
+aida2.invoice_id
+from
+ap_invoice_distributions_all aida2,
+gl_code_combinations gcc
+where
+2=2 and
+nvl(aila.line_number,aida2.invoice_line_number)=aida2.invoice_line_number and
+nvl(aida.distribution_line_number,aida2.distribution_line_number)=aida2.distribution_line_number and
+aida2.dist_code_combination_id=gcc.code_combination_id
+)
 )
 ) ap_inv,
 (
@@ -427,11 +450,12 @@ case count(distinct x.held_by_user_name) over (partition by x.invoice_id)
 x.po_ref hold_po_references,
 x.receipt_ref hold_receipt_references
 from
-(select distinct
+(
+select distinct
   aha.invoice_id,
   alc.displayed_field hold_name,
   first_value(aha.hold_date) over (partition by aha.invoice_id,aha.hold_lookup_code order by aha.hold_date) hold_date,
-  first_value(decode(aha.held_by,5,(select alc.displayed_field from ap_lookup_codes alc where alc.lookup_type='NLS TRANSLATION' and alc.lookup_code='SYSTEM'),xxen_util.user_name(aha.held_by))) over (partition by aha.invoice_id,aha.hold_lookup_code order by aha.hold_date) held_by_user_name,
+  first_value(decode(aha.held_by,5,xxen_util.meaning('SYSTEM','NLS TRANSLATION',200),xxen_util.user_name(aha.held_by))) over (partition by aha.invoice_id,aha.hold_lookup_code order by aha.hold_date) held_by_user_name,
   po.po_ref,
   rcv.receipt_ref
  from
@@ -443,7 +467,7 @@ from
    from
     (select distinct
       aha.invoice_id,
-      nvl(pha.clm_document_number,pha.segment1) || '(' || nvl(to_char(pra.release_num),' ') || ')(' || nvl(pla.line_num_display, to_char(pla.line_num)) || ')(' || plla.shipment_num || ')' po_ref
+      nvl(pha.clm_document_number,pha.segment1)||'('||nvl(to_char(pra.release_num),' ')||')('||nvl(pla.line_num_display, to_char(pla.line_num))||')('||plla.shipment_num||')' po_ref
      from
       ap_holds_all aha,
       po_line_locations_all plla,
@@ -452,10 +476,10 @@ from
       po_releases_all pra
      where
       aha.release_lookup_code is null and
-      plla.line_location_id = aha.line_location_id and
-      pla.po_line_id = plla.po_line_id and
-      pha.po_header_id = plla.po_header_id and
-      pra.po_release_id (+) = plla.po_release_id
+      plla.line_location_id=aha.line_location_id and
+      pla.po_line_id=plla.po_line_id and
+      pha.po_header_id=plla.po_header_id and
+      pra.po_release_id (+)=plla.po_release_id
     ) x
   ) po,
   (select distinct
@@ -464,7 +488,7 @@ from
    from
     (select distinct
       aha.invoice_id,
-      rsh.receipt_num || '(' || rsl.line_num || ')' receipt_ref
+      rsh.receipt_num||'('||rsl.line_num||')' receipt_ref
      from
       ap_holds_all aha,
       rcv_transactions rt,
@@ -472,9 +496,9 @@ from
       rcv_shipment_headers rsh
      where
       aha.release_lookup_code is null and
-      rt.transaction_id = aha.rcv_transaction_id and
-      rsl.shipment_line_id = rt.shipment_line_id and
-      rsh.shipment_header_id = rt.shipment_header_id
+      rt.transaction_id=aha.rcv_transaction_id and
+      rsl.shipment_line_id=rt.shipment_line_id and
+      rsh.shipment_header_id=rt.shipment_header_id
     ) x
   ) rcv
  where

@@ -109,7 +109,7 @@ p_descriptive_flexfield_name in varchar2,
 p_context_code in varchar2,
 p_column_name in varchar2,
 p_rowid in rowid default null,
-p_value in varchar2 default fnd_api.g_miss_char,
+p_value in varchar2 default chr(0),
 p_business_group_id in number default null,
 p_organization_id in number default null,
 p_org_information_id in number default null,
@@ -233,6 +233,16 @@ function clob_lengthb(p_clob in clob) return number;
 /*  substrb for clobs up to 32767 characters, see oracle note 1571041.1                        */
 /***********************************************************************************************/
 function clob_substrb(p_clob in clob, p_byte_length in pls_integer, p_char_position in pls_integer default 1) return clob;
+
+/***********************************************************************************************/
+/*  replaces first occurrence of substring in a string                                         */
+/***********************************************************************************************/
+function replace_first_occurrence(p_source in clob, p_search in clob, p_replacement in clob) return clob;
+
+/***********************************************************************************************/
+/*  replaces all occurrences of clob in a clob                                                 */
+/***********************************************************************************************/
+function clob_replace(p_source in clob, p_search in clob, p_replacement in clob) return clob;
 
 /***********************************************************************************************/
 /*  instring for long multiple values as regexp_substr on clobs is too slow, especially on 19c */
@@ -515,16 +525,6 @@ function geolocation(p_service_url in varchar2, p_ip_address in varchar2, p_path
 /*  plsql code, for example: xxen_util.parameter_value('Operating Unit')                       */
 /***********************************************************************************************/
 function parameter_value(p_parameter_name in varchar2 default null, p_parameter_bind in varchar2 default null) return varchar2;
-
-/***********************************************************************************************/
-/*  replaces first occurrence of substring in a string                                         */
-/***********************************************************************************************/
-function replace_first_occurrence(p_source in clob, p_search in clob, p_replacement in clob) return clob;
-
-/***********************************************************************************************/
-/*  replaces all occurrences of clob in a clob                                                 */
-/***********************************************************************************************/
-function clob_replace(p_source in clob, p_search in clob, p_replacement in clob) return clob;
 
 /***********************************************************************************************/
 /*  return the original order line id in case of line splitting for DIFOT data.                */
@@ -1118,7 +1118,7 @@ p_descriptive_flexfield_name in varchar2,
 p_context_code in varchar2,
 p_column_name in varchar2,
 p_rowid in rowid default null,
-p_value in varchar2 default fnd_api.g_miss_char,
+p_value in varchar2 default chr(0),
 p_business_group_id in number default null,
 p_organization_id in number default null,
 p_org_information_id in number default null,
@@ -2128,6 +2128,43 @@ function clob_substrb(p_clob in clob, p_byte_length in pls_integer, p_char_posit
 begin
   return substrb(dbms_lob.substr(p_clob,p_byte_length,p_char_position),1,p_byte_length);
 end clob_substrb;
+
+
+function replace_first_occurrence(p_source in clob, p_search in clob, p_replacement in clob) return clob is
+l_offset_before_template number;
+l_offset_with_template number;
+l_result clob;
+begin
+  if dbms_lob.getlength(p_search)>0 then
+    l_offset_before_template:=dbms_lob.instr(p_source,p_search);
+    l_offset_with_template:=l_offset_before_template+dbms_lob.getlength(p_search);
+    l_result:= substr(p_source,1,l_offset_before_template-1)
+    || p_replacement
+    || substr(p_source,l_offset_with_template,dbms_lob.getlength(p_source)-l_offset_with_template+1);
+    return l_result;
+  else
+    return p_source;
+  end if;
+  return p_source;
+end replace_first_occurrence;
+
+
+function clob_replace(p_source in clob, p_search in clob, p_replacement in clob) return clob is
+l_result clob;
+begin
+  l_result:=p_source;
+  if dbms_lob.getlength(p_search)>0 then
+    loop
+      if dbms_lob.instr(l_result,p_search)=0 then
+        exit;
+      end if;
+      l_result:=replace_first_occurrence(l_result,p_search,p_replacement);
+    end loop;
+  else
+    return p_source;
+  end if;
+  return l_result;
+end clob_replace;
 
 
 function instring(p_text in varchar2, p_separator in varchar2, p_occurrence in pls_integer) return varchar2 is
@@ -3610,43 +3647,6 @@ begin
   end loop;
   return l_value;
 end parameter_value;
-
-
-function replace_first_occurrence(p_source in clob, p_search in clob, p_replacement in clob) return clob is
-l_offset_before_template number;
-l_offset_with_template number;
-l_result clob;
-begin
-  if dbms_lob.getlength(p_search)>0 then
-    l_offset_before_template:=dbms_lob.instr(p_source,p_search);
-    l_offset_with_template:=l_offset_before_template+dbms_lob.getlength(p_search);
-    l_result:= substr(p_source,1,l_offset_before_template-1)
-    || p_replacement
-    || substr(p_source,l_offset_with_template,dbms_lob.getlength(p_source)-l_offset_with_template+1);
-    return l_result;
-  else
-    return p_source;
-  end if;
-  return p_source;
-end replace_first_occurrence;
-
-
-function clob_replace(p_source in clob, p_search in clob, p_replacement in clob) return clob is
-l_result clob;
-begin
-  l_result:=p_source;
-  if dbms_lob.getlength(p_search)>0 then
-    loop
-      if dbms_lob.instr(l_result,p_search)=0 then
-        exit;
-      end if;
-      l_result:=replace_first_occurrence(l_result,p_search,p_replacement);
-    end loop;
-  else
-    return p_source;
-  end if;
-  return l_result;
-end clob_replace;
 
 
 function orig_order_line_id(p_split_from_line_id in number) return number is

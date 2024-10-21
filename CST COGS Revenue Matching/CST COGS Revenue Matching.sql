@@ -54,7 +54,7 @@ perpetual_qry_1 as
   x.*
   from
   (
-    select /*+ leading(haou,crcml,oola,ooha,cce,mta) use_nl(haou,crcml, oola, ooha) index(crcml cst_rev_cogs_match_lines_n2) */
+    select /* leading(haou,crcml,oola,ooha,cce,mta) use_nl(haou,crcml, oola, ooha) index(crcml cst_rev_cogs_match_lines_n2) */
     crcml.operating_unit_id,
     haou.name operating_unit,
     gl.name ledger,
@@ -195,7 +195,7 @@ perpetual_qry_1 as
 ),
 perpetual_qry_2 as
 (
-  select /*+ index(rctla ra_customer_trx_lines_n9) leading (pq1, rctla) use_nl(pq1, rctla) */
+  select /* index(rctla ra_customer_trx_lines_n9) leading (pq1, rctla) use_nl(pq1, rctla) */
   pq1.operating_unit_id,
   pq1.operating_unit,
   pq1.ledger,
@@ -328,20 +328,7 @@ perpetual_qry as
   pq2.overhead_cost,
   pq2.uom,
   pq2.earned_cogs,
-  case when pq2.item_type_code = 'INCLUDED'
-  then (select
-        sum(pq2_1.earned_cogs)
-        from
-        perpetual_qry_2 pq2_1
-        where
-        pq2_1.operating_unit_id = pq2.operating_unit_id and
-        pq2_1.order_number = pq2.order_number and
-        pq2_1.sales_order_line = pq2.sales_order_line and
-        pq2_1.sales_order_line_id = pq2.sales_order_line_id and
-        pq2_1.item_type_code = 'INCLUDED' and
-        pq2_1.customer_trx_line_id = pq2.customer_trx_line_id and
-        pq2_1.customer_trx_id = pq2.customer_trx_id
-       )
+  case when pq2.item_type_code='INCLUDED' then sum(nvl2(pq2.customer_trx_line_id,pq2.earned_cogs,null)) over (partition by pq2.operating_unit_id, pq2.order_number, pq2.sales_order_line, pq2.sales_order_line_id, pq2.item_type_code, pq2.customer_trx_line_id)
   else pq2.total_earned_cogs
   end total_earned_cogs,
   pq2.deferred_cogs,
@@ -356,7 +343,7 @@ perpetual_qry as
 ),
 perpetual_lines_qry as
 (
-  select /*+ leading(pq2,rctla) index(rctla ra_customer_trx_lines_n9)*/
+  select /* leading(pq2,rctla) index(rctla ra_customer_trx_lines_n9)*/
   rctla.interface_line_attribute1,
   rctla.interface_line_attribute6,
   rcta.trx_number,
@@ -434,20 +421,20 @@ case when x.unbill_ccid is not null then fnd_flex_xml_publisher_apis.process_kff
 x.cogs_om_line_id
 from
 (
-select /*+ leading(pq) no_merge(rctlgda) index(rctlgda ra_cust_trx_line_gl_dist_n1)*/
+select /* leading(pq) no_merge(rctlgda) index(rctlgda ra_cust_trx_line_gl_dist_n1)*/
 pq.ledger,
 pq.ledger_currency,
 pq.operating_unit,
-pq.order_number order_number,
-pq.order_date order_date,
+pq.order_number,
+pq.order_date,
 pq.customer_name customer,
-pq.order_currency order_currency,
+pq.order_currency,
 pq.sales_order_line order_line,
 decode(rcta.trx_number,min(plq.trx_number),decode(pq.invoice_line,min(plq.min_inv_line),pq.total_line_quantity)) order_quantity,
 pq.uom,
 pq.sales_order_issue_date,
 rcta.trx_number invoice_number,
-pq.invoice_line invoice_line,
+pq.invoice_line,
 pq.unit_selling_price,
 pq.item_cost,
 pq.material_cost,
@@ -459,16 +446,16 @@ pq.user_item_type,
 pq.inventory_item_id,
 pq.organization_code,
 pq.organization_id,
-round(sum(decode(rctlgda.account_class,'UNEARN',0,'UNBILL',0, rctlgda.acctd_amount))*decode(pq.earned_cogs, pq.total_earned_cogs,1,pq.earned_cogs/decode(pq.total_earned_cogs,0,1,pq.total_earned_cogs)),2) earned_revenue,
-round(sum(decode(rctlgda.account_class,'REV',   0,'UNBILL',0, rctlgda.acctd_amount))*decode(pq.deferred_cogs, pq.total_deferred_cogs,1,pq.deferred_cogs/decode(pq.total_deferred_cogs,0,1,pq.total_deferred_cogs)),2) unearned_revenue,
-round(sum(decode(rctlgda.account_class,'REV',   0,'UNEARN',0, rctlgda.acctd_amount))*decode(pq.deferred_cogs, pq.total_deferred_cogs,1,pq.deferred_cogs/decode(pq.total_deferred_cogs,0,1,pq.total_deferred_cogs)),2) unbilled_revenue,
+round(sum(decode(axclv.account_class,'UNEARN',0,'UNBILL',0, axclv.acctd_amount))*decode(pq.earned_cogs, pq.total_earned_cogs,1,pq.earned_cogs/decode(pq.total_earned_cogs,0,1,pq.total_earned_cogs)),2) earned_revenue,
+round(sum(decode(axclv.account_class,'REV',   0,'UNBILL',0, axclv.acctd_amount))*decode(pq.deferred_cogs, pq.total_deferred_cogs,1,pq.deferred_cogs/decode(pq.total_deferred_cogs,0,1,pq.total_deferred_cogs)),2) unearned_revenue,
+round(sum(decode(axclv.account_class,'REV',   0,'UNEARN',0, axclv.acctd_amount))*decode(pq.deferred_cogs, pq.total_deferred_cogs,1,pq.deferred_cogs/decode(pq.total_deferred_cogs,0,1,pq.total_deferred_cogs)),2) unbilled_revenue,
 decode(rcta.trx_number,min(plq.trx_number),decode(pq.invoice_line,min(plq.min_inv_line),pq.earned_cogs)) earned_cogs,
 decode(rcta.trx_number,min(plq.trx_number),decode(pq.invoice_line,min(plq.min_inv_line),pq.deferred_cogs)) deferred_cogs,
-pq.cogs_account cogs_account,
-pq.deferred_cogs_account deferred_cogs_account,
-min(decode(rctlgda.account_class,'REV',rctlgda.code_combination_id)) revenue_ccid,
-min(decode(rctlgda.account_class,'UNEARN',rctlgda.code_combination_id)) unearn_ccid,
-min(decode(rctlgda.account_class,'UNBILL',rctlgda.code_combination_id)) unbill_ccid,
+pq.cogs_account,
+pq.deferred_cogs_account,
+min(decode(axclv.account_class,'REV',axclv.code_combination_id)) revenue_ccid,
+min(decode(axclv.account_class,'UNEARN',axclv.code_combination_id)) unearn_ccid,
+min(decode(axclv.account_class,'UNBILL',axclv.code_combination_id)) unbill_ccid,
 plq.interface_line_attribute6,
 pq.sales_order_line_id,
 pq.cogs_om_line_id,
@@ -476,30 +463,31 @@ pq.cogs_account_ccid,
 pq.chart_of_accounts_id
 from
 perpetual_qry pq,
-ra_cust_trx_line_gl_dist_all rctlgda,
+ar_xla_ctlgd_lines_v axclv,
 ra_customer_trx_lines_all rctla,
 ra_customer_trx_all rcta,
-(select
- plq.interface_line_attribute1,
- plq.interface_line_attribute6,
- plq.trx_number,
- min(plq.line_number) min_inv_line
- from
- perpetual_lines_qry plq
- where
- plq.rctla_rank=1
- group by
- plq.interface_line_attribute1,
- plq.interface_line_attribute6,
- plq.trx_number
+(
+select
+plq.interface_line_attribute1,
+plq.interface_line_attribute6,
+plq.trx_number,
+min(plq.line_number) min_inv_line
+from
+perpetual_lines_qry plq
+where
+plq.rctla_rank=1
+group by
+plq.interface_line_attribute1,
+plq.interface_line_attribute6,
+plq.trx_number
 ) plq
 where
 (pq.customer_trx_line_id = rctla.customer_trx_line_id or pq.customer_trx_line_id = rctla.previous_customer_trx_line_id) and
 pq.customer_trx_id = rcta.customer_trx_id and
-rctlgda.customer_trx_line_id = rctla.customer_trx_line_id and
-rctlgda.account_set_flag = 'N' and
-rctlgda.account_class in ('REV', 'UNEARN', 'UNBILL') and
-rctlgda.gl_date <= nvl(:p_gps_end_dt,rctlgda.gl_date) and
+axclv.customer_trx_line_id = rctla.customer_trx_line_id and
+axclv.account_set_flag = 'N' and
+axclv.account_class in ('REV', 'UNEARN', 'UNBILL') and
+axclv.gl_date <= nvl(:p_gps_end_dt,axclv.gl_date) and
 to_char(pq.sales_order_line_id)=rctla.interface_line_attribute6 and
 to_char(pq.sales_order_line_id)=plq.interface_line_attribute6
 group by
@@ -539,20 +527,18 @@ pq.cogs_om_line_id,
 pq.cogs_account_ccid,
 pq.chart_of_accounts_id
 having
-(
- :p_all_lines = 'Y' or
- (decode(sum(rctla.revenue_amount),0,1,round(sum(decode(rctlgda.account_class,'UNEARN',0,'UNBILL',0, rctlgda.amount))/(sum(rctla.revenue_amount)/count(rctlgda.cust_trx_line_gl_dist_id)),3)) <>
-  decode(pq.earned_cogs,0,decode(pq.deferred_cogs,0,1,0),round((pq.earned_cogs/decode(pq.deferred_cogs+pq.earned_cogs,0,1,pq.deferred_cogs+pq.earned_cogs)),3)) and
-  pq.deferred_cogs not between -1*:p_amt_tolerance and :p_amt_tolerance
- )
+:p_all_lines = 'Y' or
+(decode(sum(rctla.revenue_amount),0,1,round(sum(decode(axclv.account_class,'UNEARN',0,'UNBILL',0, axclv.amount))/(sum(rctla.revenue_amount)/count(axclv.cust_trx_line_gl_dist_id)),3)) <>
+decode(pq.earned_cogs,0,decode(pq.deferred_cogs,0,1,0),round((pq.earned_cogs/decode(pq.deferred_cogs+pq.earned_cogs,0,1,pq.deferred_cogs+pq.earned_cogs)),3)) and
+pq.deferred_cogs not between -1*:p_amt_tolerance and :p_amt_tolerance
 )
 union
 select
 pq.ledger,
 pq.ledger_currency,
 pq.operating_unit,
-pq.order_number order_number,
-pq.order_date order_date,
+pq.order_number,
+pq.order_date,
 pq.customer_name customer,
 pq.order_currency,
 pq.sales_order_line order_line,
@@ -575,10 +561,10 @@ pq.organization_id,
 null earned_revenue,
 null unearned_revenue,
 null unbilled_revenue,
-pq.earned_cogs earned_cogs,
-pq.deferred_cogs deferred_cogs,
-pq.cogs_account cogs_account,
-pq.deferred_cogs_account deferred_cogs_account,
+pq.earned_cogs,
+pq.deferred_cogs,
+pq.cogs_account,
+pq.deferred_cogs_account,
 null revenue_ccid,
 null unearn_ccid,
 null unbill_ccid,
@@ -597,8 +583,8 @@ select
 pq.ledger,
 pq.ledger_currency,
 pq.operating_unit,
-pq.order_number order_number,
-pq.order_date order_date,
+pq.order_number,
+pq.order_date,
 pq.customer_name customer,
 pq.order_currency,
 pq.sales_order_line order_line,
@@ -621,10 +607,10 @@ pq.organization_id,
 null earned_revenue,
 null unearned_revenue,
 null unbilled_revenue,
-pq.earned_cogs earned_cogs,
-pq.deferred_cogs deferred_cogs,
-pq.cogs_account cogs_account,
-pq.deferred_cogs_account deferred_cogs_account,
+pq.earned_cogs,
+pq.deferred_cogs,
+pq.cogs_account,
+pq.deferred_cogs_account,
 null revenue_ccid,
 null unearn_ccid,
 null unbill_ccid,
@@ -636,20 +622,22 @@ pq.chart_of_accounts_id
 from
 perpetual_qry pq
 where
-(pq.customer_trx_line_id is not null and pq.customer_trx_id is not null) and
+pq.customer_trx_line_id is not null and
+pq.customer_trx_id is not null and
 not exists
- (select /*+ use_concat no_unnest leading(rctla) use_nl(rctla,rctlgda) */
-  null
-  from
-  ra_customer_trx_lines_all rctla,
-  ra_cust_trx_line_gl_dist_all rctlgda
-  where
-  (pq.customer_trx_line_id = rctla.customer_trx_line_id or pq.customer_trx_line_id = rctla.previous_customer_trx_line_id) and
-  rctla.customer_trx_line_id = rctlgda.customer_trx_line_id and
-  rctlgda.account_set_flag = 'N' and
-  rctlgda.account_class in ('REV', 'UNEARN', 'UNBILL') and
-  rctlgda.gl_date <= nvl(:p_gps_end_dt,rctlgda.gl_date)
- ) and
+(
+select /* use_concat no_unnest leading(rctla) use_nl(rctla,rctlgda) */
+null
+from
+ra_customer_trx_lines_all rctla,
+ra_cust_trx_line_gl_dist_all rctlgda
+where
+(pq.customer_trx_line_id = rctla.customer_trx_line_id or pq.customer_trx_line_id = rctla.previous_customer_trx_line_id) and
+rctla.customer_trx_line_id = rctlgda.customer_trx_line_id and
+rctlgda.account_set_flag = 'N' and
+rctlgda.account_class in ('REV', 'UNEARN', 'UNBILL') and
+rctlgda.gl_date <= nvl(:p_gps_end_dt,rctlgda.gl_date)
+) and
 (:p_all_lines = 'Y' or pq.deferred_cogs not between -1*:p_amt_tolerance and :p_amt_tolerance)
 ) x
 where

@@ -21,7 +21,8 @@ xxen_api.bindvar_name(xrpv.parameter_id) bindvar_name,
 xxen_report.is_select_(xrpv.sql_text) is_dynamic_sql_text,
 xrpv.sql_text,
 y.binds,
-y.bind_count
+y.bind_count,
+xrpv.parameter_id
 from
 xxen_report_parameters_v xrpv,
 (

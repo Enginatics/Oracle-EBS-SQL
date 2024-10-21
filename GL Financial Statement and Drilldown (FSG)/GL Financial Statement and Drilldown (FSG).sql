@@ -79,8 +79,11 @@ select
 :create_lov create_lov,
 :responsibility_name responsibility_name,
 :responsibility_key,
+:balance_drilldown_new,
 :gl_journal_drilldown,
 :gl_subledger_details,
+:gl_journal_drilldown_m,
+:gl_subledger_details_m,
 :gl_full_journal_drilldown,
 :gl_journal_attachment_dd,
 :drilldown_resp

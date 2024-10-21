@@ -79,19 +79,19 @@ wo.wip_entity_id,
 wo.organization_id,
 wo.repetitive_schedule_id,
 min(wo.operation_seq_num) over (partition by wo.wip_entity_id, wo.organization_id, wo.repetitive_schedule_id) operation_seq_num,
-max(wo.department_id) keep (dense_rank first order by wo.operation_seq_num) over (partition by wo.wip_entity_id, wo.organization_id, wo.repetitive_schedule_id) department_id,
-max(wo.standard_operation_id) keep (dense_rank first order by wo.operation_seq_num) over (partition by wo.wip_entity_id, wo.organization_id, wo.repetitive_schedule_id) standard_operation_id,
-max(wo.description) keep (dense_rank first order by wo.operation_seq_num) over (partition by wo.wip_entity_id, wo.organization_id, wo.repetitive_schedule_id) description,
-max(wo.date_last_moved) keep (dense_rank first order by wo.operation_seq_num) over (partition by wo.wip_entity_id, wo.organization_id, wo.repetitive_schedule_id) date_last_moved,
-max(decode(wo.quantity_in_queue,0,null,wo.quantity_in_queue)) keep (dense_rank first order by wo.operation_seq_num) over (partition by wo.wip_entity_id, wo.organization_id, wo.repetitive_schedule_id) in_queue,
-max(decode(wo.quantity_running,0,null,wo.quantity_running)) keep (dense_rank first order by wo.operation_seq_num) over (partition by wo.wip_entity_id, wo.organization_id, wo.repetitive_schedule_id) running,
-max(decode(wo.quantity_waiting_to_move,0,null,wo.quantity_waiting_to_move)) keep (dense_rank first order by wo.operation_seq_num) over (partition by wo.wip_entity_id, wo.organization_id, wo.repetitive_schedule_id) to_move,
-max(decode(wo.quantity_rejected,0,null,wo.quantity_rejected)) keep (dense_rank first order by wo.operation_seq_num) over (partition by wo.wip_entity_id, wo.organization_id, wo.repetitive_schedule_id) rejected,
-max(decode(wo.quantity_scrapped,0,null,wo.quantity_scrapped)) keep (dense_rank first order by wo.operation_seq_num) over (partition by wo.wip_entity_id, wo.organization_id, wo.repetitive_schedule_id) scrapped,
-max(decode(wo.quantity_completed,0,null,wo.quantity_completed)) keep (dense_rank first order by wo.operation_seq_num) over (partition by wo.wip_entity_id, wo.organization_id, wo.repetitive_schedule_id) completed,
-max(wo.first_unit_start_date) keep (dense_rank first order by wo.operation_seq_num) over (partition by wo.wip_entity_id, wo.organization_id, wo.repetitive_schedule_id) first_unit_start_date,
-max(wo.last_unit_completion_date) keep (dense_rank first order by wo.operation_seq_num) over (partition by wo.wip_entity_id, wo.organization_id, wo.repetitive_schedule_id) last_unit_completion_date,
-max(wo.last_updated_by) keep (dense_rank first order by wo.operation_seq_num) over (partition by wo.wip_entity_id, wo.organization_id, wo.repetitive_schedule_id) last_updated_by
+first_value(wo.department_id) over (partition by wo.wip_entity_id, wo.organization_id, wo.repetitive_schedule_id order by wo.operation_seq_num) department_id,
+first_value(wo.standard_operation_id) over (partition by wo.wip_entity_id, wo.organization_id, wo.repetitive_schedule_id order by wo.operation_seq_num) standard_operation_id,
+first_value(wo.description) over (partition by wo.wip_entity_id, wo.organization_id, wo.repetitive_schedule_id order by wo.operation_seq_num) description,
+first_value(wo.date_last_moved) over (partition by wo.wip_entity_id, wo.organization_id, wo.repetitive_schedule_id order by wo.operation_seq_num) date_last_moved,
+first_value(decode(wo.quantity_in_queue,0,null,wo.quantity_in_queue)) over (partition by wo.wip_entity_id, wo.organization_id, wo.repetitive_schedule_id order by wo.operation_seq_num) in_queue,
+first_value(decode(wo.quantity_running,0,null,wo.quantity_running)) over (partition by wo.wip_entity_id, wo.organization_id, wo.repetitive_schedule_id order by wo.operation_seq_num) running,
+first_value(decode(wo.quantity_waiting_to_move,0,null,wo.quantity_waiting_to_move)) over (partition by wo.wip_entity_id, wo.organization_id, wo.repetitive_schedule_id order by wo.operation_seq_num) to_move,
+first_value(decode(wo.quantity_rejected,0,null,wo.quantity_rejected)) over (partition by wo.wip_entity_id, wo.organization_id, wo.repetitive_schedule_id order by wo.operation_seq_num) rejected,
+first_value(decode(wo.quantity_scrapped,0,null,wo.quantity_scrapped)) over (partition by wo.wip_entity_id, wo.organization_id, wo.repetitive_schedule_id order by wo.operation_seq_num) scrapped,
+first_value(decode(wo.quantity_completed,0,null,wo.quantity_completed)) over (partition by wo.wip_entity_id, wo.organization_id, wo.repetitive_schedule_id order by wo.operation_seq_num) completed,
+first_value(wo.first_unit_start_date) over (partition by wo.wip_entity_id, wo.organization_id, wo.repetitive_schedule_id order by wo.operation_seq_num) first_unit_start_date,
+first_value(wo.last_unit_completion_date) over (partition by wo.wip_entity_id, wo.organization_id, wo.repetitive_schedule_id order by wo.operation_seq_num) last_unit_completion_date,
+first_value(wo.last_updated_by) over (partition by wo.wip_entity_id, wo.organization_id, wo.repetitive_schedule_id order by wo.operation_seq_num) last_updated_by
 from
 wip_operations wo
 where
@@ -104,7 +104,7 @@ select distinct
 wor.organization_id,
 wor.wip_entity_id,
 wor.operation_seq_num,
-max(wor.resource_id) keep (dense_rank first order by wor.resource_seq_num) over (partition by wor.wip_entity_id, wor.organization_id, wor.operation_seq_num, wor.repetitive_schedule_id) resource_id
+first_value(wor.resource_id) over (partition by wor.wip_entity_id, wor.organization_id, wor.operation_seq_num, wor.repetitive_schedule_id order by wor.resource_seq_num) resource_id
 from
 wip_operation_resources wor
 ) wor,

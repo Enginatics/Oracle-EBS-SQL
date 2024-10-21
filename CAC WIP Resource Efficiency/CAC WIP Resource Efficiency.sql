@@ -309,11 +309,11 @@ select res_sum.report_type Report_Type,
  res_sum.resource_rate Resource_Rate,
  res_sum.res_unit_of_measure Resource_UOM_Code, 
  res_sum.usage_rate_or_amount Quantity_Per_Assembly,
- round(res_sum.total_req_quantity,3)  Total_Required_Quantity,
- round(res_sum.applied_resource_units,3) Total_Units_Applied,
+ res_sum.total_req_quantity  Total_Required_Quantity,
+ res_sum.applied_resource_units Total_Units_Applied,
  -- Revision for version 1.17
  -- res_sum.qty_variance Quantity_Variance,
- round(res_sum.applied_resource_units - res_sum.total_req_quantity,3) Quantity_Variance,
+ round(res_sum.applied_resource_units - res_sum.total_req_quantity,6) Quantity_Variance,
  res_sum.std_resource_value Standard_Resource_Value,
  round(res_sum.applied_resource_value,2) Applied_Resource_Value,
  -- res_sum.res_efficiency_variance Resource_Efficiency_Variance,
@@ -564,10 +564,12 @@ from mtl_system_items_vl msiv_fg,
      decode(wor.basis_type,
       2, nvl(wor.usage_rate_or_amount,0),                                                     -- Lot
          nvl(wor.usage_rate_or_amount,0)                                                      -- Any other basis
-       * decode(wdj.class_type,
-         5, nvl(wdj.quantity_completed, 0),
-            nvl(wdj.quantity_completed, 0) + decode(:p_include_scrap, 'N', 0, null, 0, nvl(wdj.quantity_scrapped, 0))
-        )
+         -- Use the logic in wip_operation_resources_v as the same is used in Oracle forms to derive total_required_quantity
+         * decode(wor.repetitive_schedule_id,
+           null,
+           wdj.start_quantity - decode(:p_include_scrap, 'N', 0, null, 0, nvl(wo.cumulative_scrap_quantity, 0)),
+           wrs.daily_production_rate * wrs.processing_work_days
+           )
             ) else
      -- else use the start quantity times the usage rate or amount
      decode(:p_use_completion_qtys,
@@ -582,7 +584,13 @@ from mtl_system_items_vl msiv_fg,
       -- Revision for version 1.24
       'N', decode(wor.basis_type,
         2, nvl(wor.usage_rate_or_amount,0),                                                     -- Lot
-           nvl(wor.usage_rate_or_amount,0) * nvl(wdj.start_quantity, 0)                         -- Any other basis
+           nvl(wor.usage_rate_or_amount,0)                                                      -- Any other basis
+           -- Use the logic in wip_operation_resources_v as the same is used in Oracle forms to derive total_required_quantity
+           * decode(wor.repetitive_schedule_id,
+             null,
+             wdj.start_quantity - decode(:p_include_scrap, 'N', 0, null, 0, nvl(wo.cumulative_scrap_quantity, 0)),
+             wrs.daily_production_rate * wrs.processing_work_days
+             )
           )
            ) end
        ,6),0) total_req_quantity,
@@ -596,10 +604,12 @@ from mtl_system_items_vl msiv_fg,
      decode(wor.basis_type,
       2, nvl(wor.usage_rate_or_amount,0),                                                     -- Lot
          nvl(wor.usage_rate_or_amount,0)                                                      -- Any other basis
-       * decode(wdj.class_type,
-         5, nvl(wdj.quantity_completed, 0),
-            nvl(wdj.quantity_completed, 0) + decode(:p_include_scrap, 'N', 0, null, 0, nvl(wdj.quantity_scrapped, 0))
-        )
+         -- Use the logic in wip_operation_resources_v as the same is used in Oracle forms to derive total_required_quantity
+         * decode(wor.repetitive_schedule_id,
+           null,
+           wdj.start_quantity - decode(:p_include_scrap, 'N', 0, null, 0, nvl(wo.cumulative_scrap_quantity, 0)),
+           wrs.daily_production_rate * wrs.processing_work_days
+           )
             ) else
      -- else use the start quantity times the usage rate or amount
      decode(:p_use_completion_qtys,
@@ -614,7 +624,13 @@ from mtl_system_items_vl msiv_fg,
       -- Revision for version 1.24
       'N', decode(wor.basis_type,
         2, nvl(wor.usage_rate_or_amount,0),                                                     -- Lot
-           nvl(wor.usage_rate_or_amount,0) * nvl(wdj.start_quantity, 0)                         -- Any other basis
+           nvl(wor.usage_rate_or_amount,0)                                                      -- Any other basis
+           -- Use the logic in wip_operation_resources_v as the same is used in Oracle forms to derive total_required_quantity
+           * decode(wor.repetitive_schedule_id,
+             null,
+             wdj.start_quantity - decode(:p_include_scrap, 'N', 0, null, 0, nvl(wo.cumulative_scrap_quantity, 0)),
+             wrs.daily_production_rate * wrs.processing_work_days
+             )
           )
            ) end
        ,6),0) -- total_req_quantity
@@ -632,6 +648,7 @@ from mtl_system_items_vl msiv_fg,
     -- End revision for version 1.22
     wip_operations wo,
     wip_operation_resources wor,
+    wip_repetitive_schedules wrs,
     bom_resources br,
     po_headers_all poh,
     po_lines_all pol,
@@ -768,6 +785,12 @@ from mtl_system_items_vl msiv_fg,
     -- ===========================================
     and wor.resource_id           = crc.resource_id (+) 
     and wor.organization_id       = crc.organization_id (+) 
+    -- ===========================================
+    -- Use the joins in wip_operation_resources_v as the same is used in Oracle forms
+    -- ===========================================
+    and wrs.organization_id(+)= wor.organization_id
+    and wrs.wip_entity_id(+)= wor.wip_entity_id
+    and wrs.repetitive_schedule_id(+)= wor.repetitive_schedule_id
     and 8=8                       -- p_resource_code
     union all
     -- =======================================================
@@ -835,10 +858,12 @@ from mtl_system_items_vl msiv_fg,
      decode(wor.basis_type,
       2, nvl(wor.usage_rate_or_amount,0),                                                     -- Lot
          nvl(wor.usage_rate_or_amount,0)                                                      -- Any other basis
-       * decode(wdj.class_type,
-         5, nvl(wdj.quantity_completed, 0),
-            nvl(wdj.quantity_completed, 0) + decode(:p_include_scrap, 'N', 0, null, 0, nvl(wdj.quantity_scrapped, 0))
-        )
+         -- Use the logic in wip_operation_resources_v as the same is used in Oracle forms to derive total_required_quantity
+         * decode(wor.repetitive_schedule_id,
+           null,
+           wdj.start_quantity - decode(:p_include_scrap, 'N', 0, null, 0, nvl(wo.cumulative_scrap_quantity, 0)),
+           wrs.daily_production_rate * wrs.processing_work_days
+           )
             ) else
      -- else use the start quantity times the usage rate or amount
      decode(:p_use_completion_qtys,
@@ -852,32 +877,4 @@ from mtl_system_items_vl msiv_fg,
           ),
       -- Revision for version 1.24
       'N', decode(wor.basis_type,
-        2, nvl(wor.usage_rate_or_amount,0),                                                     -- Lot
-           nvl(wor.usage_rate_or_amount,0) * nvl(wdj.start_quantity, 0)                         -- Any other basis
-          )
-           ) end
-       ,6),0) total_req_quantity,
-    -- End revision for version 1.22
-    nvl(applied_resource_units,0) applied_resource_units,
-    -- Revision for version 1.17 and 1.22
-    -- If the job status is "Complete" then use the completions plus
-    -- scrap quantities else use the planned required quantities; and
-    -- use the completions plus scrap quantities unless for lot-based jobs
-    -- Get the total required quantity
-    nvl(round(case when wdj.status_type in (4,5,7,12,14,15) then
-     decode(wor.basis_type,
-      2, nvl(wor.usage_rate_or_amount,0),                                                     -- Lot
-         nvl(wor.usage_rate_or_amount,0)                                                      -- Any other basis
-       * decode(wdj.class_type,
-         5, nvl(wdj.quantity_completed, 0),
-            nvl(wdj.quantity_completed, 0) + decode(:p_include_scrap, 'N', 0, null, 0, nvl(wdj.quantity_scrapped, 0))
-        )
-            ) else
-     -- else use the start quantity times the usage rate or amount
-     decode(:p_use_completion_qtys,
-      'Y', decode(wor.basis_type,
-        2, nvl(wor.usage_rate_or_amount,0),                                                     -- Lot
-           nvl(wor.usage_rate_or_amount,0)                                                      -- Any other basis
-         * decode(wdj.class_type,
-           5, nvl(wdj.quantity_completed, 0),
-              nvl(wdj.quantity_completed, 0) + decod
+        2, nvl(w

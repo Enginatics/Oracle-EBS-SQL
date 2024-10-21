@@ -56,368 +56,202 @@ Ledger:  enter the specific ledger(s) you wish to report (optional).
 -- Library Link: https://www.enginatics.com/reports/cac-open-purchase-orders/
 -- Run Report: https://demo.enginatics.com/
 
-select  -- Revision for version 1.8
-        -- nvl(gl.short_name, gl.name) Ledger,
-        -- haou2.name Operating_Unit,
-        pll.ledger Ledger,
-        pll.operating_unit Operating_Unit,
-        -- End revision for version 1.8
-        mp.organization_code Org_Code,
-        pov.vendor_name Supplier,
-        hr.full_name Buyer,
-        msiv.concatenated_segments Item_Number,
-        msiv.description Item_Description,
-        fcl.meaning Item_Type,
-        -- Revision for version 1.6
-        misv.inventory_item_status_code Item_Status,
+select
+plla.ledger,
+plla.operating_unit,
+mp.organization_code org_code,
+aps.vendor_name supplier,
+hr.full_name buyer,
+msiv.concatenated_segments item_number,
+msiv.description item_description,
+xxen_util.meaning(msiv.item_type,'ITEM_TYPE',3) item_type,
+misv.inventory_item_status_code item_status,
 &category_columns
-        pl1.displayed_field PO_Destination_Type,
-        --we.wip_entity_name WIP_Job,
-        cic.resource_code OSP_Resource,
-        pl.vendor_product_num Supplier_Item,
-        round(msiv.list_price_per_unit,5) Target_or_List_Price,
-        -- Revision for version 1.8
-        -- ph.segment1 PO_Number,
-        pll.po_number PO_Number,
-        -- End revision for version 1.8
-        to_char(pl.line_num)  PO_Line,
-        nvl(pl4.displayed_field,nvl(pl3.displayed_field, pl2.displayed_field))  PO_Line_Status,
-        pp.segment1 Project_Number,
-        pp.name Project_Name,
-        pll.creation_date Creation_Date,
-        -- Revision for version 1.2
-        pll.promised_date Promise_Date,
-        pll.need_by_date Need_by_Date,
-        to_char(pr.release_num) PO_Release,
-        pr.release_date Release_Date,
-        (select  max(ms.expected_delivery_date)
-         from    mtl_supply ms
-         where   ms.supply_type_code in ('PO','RECEIVING','SHIPMENT')
-         and     ms.item_id                = msiv.inventory_item_id
-         and     ms.to_organization_id     = msiv.organization_id
-         and     ms.destination_type_code in ('INVENTORY','SHOP FLOOR')
-         and     ms.po_distribution_id     = pod.po_distribution_id
-        ) Expected_Receipt_Date,
-        -- Revision for version 1.1
-        fcl.meaning Inspection_Required,
-        muomv_po.uom_code PO_UOM,
-        -- Revision for version 1.8
-        -- nvl(ph.currency_code, gl.currency_code) PO_Currency_Code,
-        nvl(pll.currency_code, pll.gl_currency_code) PO_Currency_Code,
-        -- End revision for version 1.8
-        nvl(pll.price_override, pl.unit_price) PO_Unit_Price,
-        decode(pll.match_option, 
-             'P', trunc(nvl(pod.rate_date, pll.creation_date)),
-             'R', trunc(nvl(gdr_po.conversion_date, sysdate)),
-             trunc(nvl(gdr_po.conversion_date, sysdate))) Currency_Rate_Date,
-        round(decode(pll.match_option, 
-             'P', nvl(pod.rate,1),
-             'R', gdr_po.conversion_rate,
-             gdr_po.conversion_rate),6) PO_Exchange_Rate,
-        -- Revision for version 1.8
-        -- gl.currency_code GL_Currency_Code,
-        pll.currency_code GL_Currency_Code,
-        -- End revision for version 1.8
-        round(decode(pll.match_option, 
-             'P', nvl(pod.rate,1),
-             'R', gdr_po.conversion_rate,
-             gdr_po.conversion_rate) * nvl(pll.price_override, pl.unit_price),6) Converted_PO_Unit_Price,
-        ucr.conversion_rate PO_UOM_Conversion_Rate,
-        round(decode(pll.match_option, 
-             'P', nvl(pod.rate,1),
-             'R', gdr_po.conversion_rate,
-             gdr_po.conversion_rate) * nvl(pll.price_override, pl.unit_price) * ucr.conversion_rate,6) Converted_PO_at_Primary_UOM,
-        -- Revision for version 1.4
-        muomv_msi.uom_code UOM_Code,
-        round(nvl(cic.unburdened_cost,0),5) Unburdened_Unit_Cost,
-        -- Revision for version 1.20
-        -- PO Price - Unburdened Cost = Unit_Cost_Difference
-        round((decode(pll.match_option, 
-             'P', nvl(pod.rate,1),
-             'R', gdr_po.conversion_rate,
-             gdr_po.conversion_rate) * 
-             nvl(pll.price_override, pl.unit_price)) - nvl(cic.unburdened_cost,0),5) Unit_Cost_Difference,
-        -- Revision for version 1.20
-        -- (PO Price - Unburdened Cost) * nvl(pll.quantity,0) = Extended_Cost_Difference
-        round(((decode(pll.match_option, 
-             'P', nvl(pod.rate,1),
-             'R', gdr_po.conversion_rate,
-             gdr_po.conversion_rate) * 
-             nvl(pll.price_override, pl.unit_price)) - nvl(cic.unburdened_cost,0)) * nvl(pll.quantity,0),2) Extended_Cost_Difference,
-        -- Calculate the Percent Difference
-        --   when difference = 0 then 0
-        --   when item cost = 0 then 100%
-        --   when PO unit price = 0 then -100%
-        --   else PO Price - item cost / item cost
-        case
-        when round(decode(pll.match_option, 
-                          'P', nvl(pod.rate,1),
-                          'R', gdr_po.conversion_rate,
-                          gdr_po.conversion_rate * 
-                          nvl(pll.price_override, pl.unit_price)
-                      ) - nvl(cic.unburdened_cost,0),5) = 0 then 0
-        when round(nvl(cic.unburdened_cost,0),5) = 0 then 100
-        when round(decode(pll.match_option, 
-                          'P', nvl(pod.rate,1), 
-                          'R', gdr_po.conversion_rate,
-                          gdr_po.conversion_rate
-                      ) * nvl(pll.price_override, pl.unit_price),5) = 0 then -100
-        else round(((decode(pll.match_option, 
-                          'P', nvl(pod.rate,1),
-                          'R', gdr_po.conversion_rate,
-                          gdr_po.conversion_rate) * 
-                          nvl(pll.price_override, pl.unit_price)) - nvl(cic.unburdened_cost,0)) / nvl(cic.unburdened_cost,0) * 100,2)
-        end Percent_Difference,
-        -- End revision for version 1.20
-        cct_curr.cost_type Current_Cost_Type,
-        -- Revision for version 1.5
-        round(cic.material_cost,5) Material_Cost,
-        round(cic.material_overhead_cost,5) Material_Overhead_Cost,
-        round(cic.resource_cost,5) Resource_Cost,
-        round(cic.outside_processing_cost,5) Outside_Processing_Cost,
-        round(cic.overhead_cost,5) Overhead_Cost,
-        round(cic.item_cost,5) Current_Item_Cost,
-        -- Revision for version 1.5
-        (select round(cic.material_cost,5) - round(cic.tl_material_overhead,5)
-         from   cst_item_costs cic,
-                cst_cost_types cct,
-                mtl_parameters mp             
-         where  cic.inventory_item_id = msiv.inventory_item_id
-         and    cic.organization_id   = msiv.organization_id
-         and    cic.cost_type_id      = cct.cost_type_id
-         and    mp.organization_id    = cic.organization_id
-         and    mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-         and    6=6                   -- p_org_code
-         and    10=10                 -- p_cost_type
-        ) Comparison_Material_Cost,
-        receipts.receipt_qty Average_Receipt_Quantity,
-        receipts.receipt_amount Average_Receipt_Amount,
-        receipts.avg_receipt_cost Average_Receipt_Cost,
-        -- End revision for version 1.5
-        pll.quantity Quantity_Ordered,
-        pll.quantity_received Quantity_Received,
-        pll.quantity_billed Quantity_Invoiced,
-        round(nvl(pod.rate,1) * pll.price_override * (pll.quantity * ucr.conversion_rate),2) Total_PO_Amount,
-        -- Revision for version 1.1
-        &segment_columns
-        pl.creation_date PO_Line_Creation_Date
-from    po_vendors pov,
-        wip_entities we,
-        -- Revision for version 1.8
-        -- po_headers_all ph,
-        po_lines_all pl,
-        (select pha.currency_code currency_code,
-                -- Revision for version 1.8
-                gl.currency_code gl_currency_code,
-                nvl(gl.short_name, gl.name) Ledger,
-                haouv.name operating_unit,
-                pha.segment1 PO_Number,
-                pha.agent_id,
-                pha.vendor_id,
-                pha.closed_date ph_closed_date,
-                pha.closed_code ph_closed_code,
-                pll.*
-                -- End revision for version 1.8
-         from   po_line_locations_all pll,
-                po_headers_all pha,
-                org_organization_definitions ood,
-                gl_ledgers gl,
-                hr_all_organization_units_vl haouv
-         where  gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
-         and    haouv.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
-         and    1=1                         -- p_operating_unit, p_ledger
-         and    pll.po_header_id            = pha.po_header_id
-         and    pll.ship_to_organization_id = ood.organization_id
-         and    ood.set_of_books_id         = gl.ledger_id
-         and    ood.operating_unit          = haouv.organization_id
-        ) pll,
-        po_releases_all pr,
-        po_distributions_all pod,
-        mtl_system_items_vl msiv,
-        -- Revision for version 1.5
-        cst_cost_types cct_curr,
-        mtl_uom_conversions_view ucr,
-        -- Revision for version 1.4
-        mtl_units_of_measure_vl muomv_msi,
-        mtl_units_of_measure_vl muomv_po,
-        pa_projects_all pp,
-        -- End revision for version 1.4
-        -- Revision for version 1.6
-        mtl_item_status_vl misv,
-        -- Revision for version 1.4
-        (select crc.organization_id,
-                msiv.inventory_item_id purchase_item_id,
-                br.resource_code,
-                br.resource_id,
-                crc.cost_type_id,
-                0 material_cost,
-                0 material_overhead_cost,
-                0 resource_cost,
-                nvl(crc.resource_rate,0) outside_processing_cost,
-                0 overhead_cost,
-                nvl(crc.resource_rate,0) item_cost,
-                nvl(crc.resource_rate,0) unburdened_cost
-         from   cst_resource_costs crc,
-                bom_resources br,
-                mtl_system_items_vl msiv,
-                mtl_parameters mp
-         where  crc.cost_type_id      = mp.primary_cost_method
-         and    crc.resource_id       = br.resource_id
-         and    crc.organization_id   = mp.organization_id
-         and    br.purchase_item_id   = msiv.inventory_item_id
-         and    br.organization_id    = msiv.organization_id
-         and    br.cost_element_id    = 4 -- OSP cost element
-         and    mp.organization_id    = msiv.organization_id
-         and    msiv.item_type        = 'OP'
-         and    mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-         and    6=6                -- p_org_code
-         and    7=7                -- p_item_number
-         union
-         select cic.organization_id,
-                cic.inventory_item_id purchase_item_id,
-                null resource_code,
-                -999 resource_id,
-                cic.cost_type_id,
-                cic.material_cost,
-                cic.material_overhead_cost,
-                cic.resource_cost,
-                cic.outside_processing_cost,
-                cic.overhead_cost,
-                cic.item_cost,
-                cic.unburdened_cost
-         from   cst_item_costs cic,
-                mtl_system_items_vl msiv,
-                mtl_parameters mp
-         where  cic.organization_id   = mp.organization_id
-         and    cic.organization_id   = msiv.organization_id
-         and    cic.inventory_item_id = msiv.inventory_item_id
-         and    cic.cost_type_id      = mp.primary_cost_method
-         and    mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-         and    6=6                   -- p_org_code
-         and    7=7                   -- p_item_number
-        ) cic, -- item costs
-        -- End revision for version 1.4
-        -- Revision for version 1.5
-        -- ===========================================================================
-        -- Get the average PO receipt cost over a date range
-        -- ===========================================================================
-        (select mp.organization_id,
-                mmt.inventory_item_id,
-                sum(mmt.primary_quantity) receipt_qty,
-                round(sum(nvl(mmt.transaction_cost,0) * mmt.primary_quantity),2)  receipt_amount,
-                round(sum(nvl(mmt.transaction_cost,0) * mmt.primary_quantity) /
-                          decode(sum(mmt.primary_quantity),
-                               0,1,
-                               sum(mmt.primary_quantity)),5) avg_receipt_cost
-         from   mtl_material_transactions mmt,
-                mtl_system_items_vl msiv,
-                mtl_parameters mp
-         where  mmt.inventory_item_id       = msiv.inventory_item_id
-         and    mmt.organization_id         = msiv.organization_id
-         and    11=11                       -- p_trx_date_from, p_trx_date_to
-         and    mmt.transaction_source_type_id = 1 -- purchase orders
-         and    mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-         and    6=6                         -- p_org_code
-         and    7=7                         -- p_item_number
-         and    mmt.organization_id         = mp.organization_id
-         and    nvl(mmt.transaction_cost,0) <> 0
-         and    msiv.inventory_asset_flag   = 'Y'
-         group by
-                mp.organization_id,
-                mmt.inventory_item_id
-        ) receipts,
-        -- ===========================================================================
-        -- Get a set of currency rates to translate the PO Price into the G/L Currency
-        -- ===========================================================================
-        (select gdr.* from gl_daily_rates gdr, gl_daily_conversion_types gdct where gdr.conversion_date=:p_conversion_date and gdct.user_conversion_type=:p_user_conversion_type and gdct.conversion_type=gdr.conversion_type) gdr_po,
-        mtl_parameters mp, 
-        hr_employees hr,
-        fnd_common_lookups fcl,
-        -- Revision for version 1.1
-        fnd_common_lookups fcl2,
-        po_lookup_codes pl1,  -- Destination_Type
-        po_lookup_codes pl2,  -- Header
-        po_lookup_codes pl3,  -- Line
-        po_lookup_codes pl4,  -- Line location
-        -- Revision for version 1.8
-        -- hr_organization_information hoi,
-        -- hr_all_organization_units haou, -- inv_organization_id
-        -- hr_all_organization_units haou2, -- operating unit
-        -- gl_ledgers gl,
-        -- End revision for version 1.8
-        gl_code_combinations gcc1,
-        gl_code_combinations gcc2,
-        gl_code_combinations gcc3
--- ========================================================
--- Organization, resource, item, costs and PO joins
--- ========================================================
-where   msiv.inventory_item_id          = pl.item_id
-and     msiv.organization_id            = pll.ship_to_organization_id
-and     ucr.inventory_item_id           = msiv.inventory_item_id
-and     ucr.organization_id             = msiv.organization_id
-and     ucr.unit_of_measure             = pl.unit_meas_lookup_code
--- Revision for version 1.6
-and     msiv.inventory_item_status_code = misv.inventory_item_status_code
--- Revision for version 1.4
-and     msiv.primary_uom_code           = muomv_msi.uom_code
-and     ucr.uom_code                    = muomv_po.uom_code
-and     mp.organization_id              = msiv.organization_id
--- Revision for version 1.5
-and     cct_curr.cost_type_id           = mp.primary_cost_method
-and     nvl(cic.resource_id,-999)       = nvl(pod.bom_resource_id,-999)
-and     we.wip_entity_id (+)            = pod.wip_entity_id
--- Revision for version 1.8
--- and     ph.po_header_id                 = pl.po_header_id
-and     pll.po_header_id                = pl.po_header_id
--- End revision for version 1.8
-and     pl.po_line_id                   = pll.po_line_id
-and     pll.po_release_id               = pr.po_release_id (+)
-and     pod.line_location_id            = pll.line_location_id
-and     pod.destination_type_code in ('SHOP FLOOR', 'INVENTORY')
-and     pp.project_id (+)               = pod.project_id
--- Revision for version 1.8
--- and     pov.vendor_id                   = ph.vendor_id
--- and     ph.agent_id                     = hr.employee_id
--- and     ph.closed_date is null
-and     pov.vendor_id                   = pll.vendor_id
-and     hr.employee_id                  = pll.agent_id
-and     pll.ph_closed_date is null
--- End revision for version 1.8
-and     pl.closed_date is null
-and     pll.closed_date is null
-and     cic.organization_id             = msiv.organization_id (+)
-and     cic.purchase_item_id            = msiv.inventory_item_id (+)
--- ========================================================
--- Lookup values to see more detail
--- ========================================================
-and     fcl.lookup_type (+)             = 'ITEM_TYPE'
-and     fcl.lookup_code (+)             = msiv.item_type
--- Revision for version 1.1
-and     fcl2.lookup_type (+)            = 'YES_NO'
-and     fcl2.lookup_code (+)            = pll.inspection_required_flag
-and     pl1.lookup_type                 = 'DESTINATION TYPE'
-and     pl1.lookup_code                 = pod.destination_type_code
-and     pl2.lookup_type (+)             = 'DOCUMENT STATE'
--- Revision for version 1.8
--- and     pl2.lookup_code (+)             = ph.closed_code
-and     pl2.lookup_code (+)             = pll.ph_closed_code
--- End revision for version 1.8
-and     pl3.lookup_type (+)             = 'DOCUMENT STATE'
-and     pl3.lookup_code (+)             = pl.closed_code
-and     pl4.lookup_type (+)             = 'DOCUMENT STATE'
-and     pl4.lookup_code (+)             = pll.closed_code
--- ===================================================================
--- Joins for the currency exchange rates
--- ===================================================================
-and     gdr_po.from_currency(+)         = pll.currency_code
-and     gdr_po.to_currency(+)           = pll.gl_currency_code
-and     receipts.organization_id (+)    = cic.organization_id
-and     receipts.inventory_item_id (+)  = cic.purchase_item_id
-and     7=7                             -- p_item_number
-and     8=8                             -- p_vendor_name
--- ========================================================
--- Accounting information
--- ========================================================
-and     gcc1.code_combination_id (+)    = pod.code_combination_id
-and     gcc2.code_combination_id (+)    = pod.variance_account_id
-and     gcc3.code_combination_id (+)    = pod.accrual_account_id
+xxen_util.meaning(pda.destination_type_code,'DESTINATION TYPE',201) po_destination_type,
+cic.resource_code osp_resource,
+pla.vendor_product_num supplier_item,
+round(msiv.list_price_per_unit,5) target_or_list_price,
+plla.pha_po_number po_number,
+pla.line_num po_line,
+coalesce(
+xxen_util.meaning(plla.closed_code,'DOCUMENT STATE',201),
+xxen_util.meaning(pla.closed_code,'DOCUMENT STATE',201),
+xxen_util.meaning(plla.pha_closed_code,'DOCUMENT STATE',201) 
+) po_line_status,
+ppa.segment1 project_number,
+ppa.name project_name,
+plla.creation_date creation_date,
+plla.promised_date promise_date,
+plla.need_by_date need_by_date,
+to_char(pra.release_num) po_release,
+pra.release_date release_date,
+(select max(ms.expected_delivery_date) from mtl_supply ms where pda.po_distribution_id=ms.po_distribution_id and ms.supply_type_code in ('PO','RECEIVING','SHIPMENT') and ms.destination_type_code in ('INVENTORY','SHOP FLOOR')) expected_receipt_date,
+xxen_util.meaning(decode(plla.inspection_required_flag,'Y','Y'),'YES_NO',0) inspection_required,
+muomv_po.uom_code po_uom,
+nvl(plla.gl_currency_code,plla.gl_currency_code) po_currency_code,
+nvl(plla.price_override,pla.unit_price) po_unit_price,
+decode(plla.match_option,'P',trunc(nvl(pda.rate_date,plla.creation_date)),:conversion_date) currency_rate_date,
+round(decode(plla.match_option,'P',nvl(pda.rate,1),gdr.conversion_rate),6) po_exchange_rate,
+plla.gl_currency_code,
+round(decode(plla.match_option,'P',nvl(pda.rate,1),gdr.conversion_rate) * nvl(plla.price_override,pla.unit_price),6) converted_po_unit_price,
+mucv.conversion_rate po_uom_conversion_rate,
+round(decode(plla.match_option,'P',nvl(pda.rate,1),gdr.conversion_rate) * nvl(plla.price_override,pla.unit_price) * mucv.conversion_rate,6) converted_po_at_primary_uom,
+muomv_msi.uom_code uom_code,
+round(nvl(cic.unburdened_cost,0),5) unburdened_unit_cost,
+round(decode(plla.match_option,'P',nvl(pda.rate,1),gdr.conversion_rate) * nvl(plla.price_override,pla.unit_price) - nvl(cic.unburdened_cost,0),5) unit_cost_difference,
+round((decode(plla.match_option,'P',nvl(pda.rate,1),gdr.conversion_rate) * nvl(plla.price_override,pla.unit_price) - nvl(cic.unburdened_cost,0)) * nvl(plla.quantity,0),2) extended_cost_difference,
+case
+when round(decode(plla.match_option,'P',nvl(pda.rate,1),gdr.conversion_rate * nvl(plla.price_override, pla.unit_price)) - nvl(cic.unburdened_cost,0),5) = 0 then 0 --difference = 0
+when round(nvl(cic.unburdened_cost,0),5) = 0 then 100 --item cost = 0
+when round(decode(plla.match_option,'P',nvl(pda.rate,1),gdr.conversion_rate) * nvl(plla.price_override, pla.unit_price),5) = 0 then -100 --PO unit price = 0
+else round((decode(plla.match_option,'P', nvl(pda.rate,1),gdr.conversion_rate) * nvl(plla.price_override, pla.unit_price) - nvl(cic.unburdened_cost,0)) / xxen_util.zero_to_null(cic.unburdened_cost) * 100,2) --PO Price - item cost / item cost
+end percent_difference,
+(select cct.cost_type from cst_cost_types cct where mp.primary_cost_method=cct.cost_type_id) current_cost_type,
+round(cic.material_cost,5) material_cost,
+round(cic.material_overhead_cost,5) material_overhead_cost,
+round(cic.resource_cost,5) resource_cost,
+round(cic.outside_processing_cost,5) outside_processing_cost,
+round(cic.overhead_cost,5) overhead_cost,
+round(cic.item_cost,5) current_item_cost,
+(select round(cic.material_cost-cic.tl_material_overhead,5) from cst_item_costs cic where pla.item_id=cic.inventory_item_id and plla.ship_to_organization_id=cic.organization_id and cic.cost_type_id=:comparison_cost_type_id) comparison_material_cost,
+mmt.receipt_qty average_receipt_quantity,
+round(mmt.receipt_amount,2) average_receipt_amount,
+round(mmt.receipt_amount/xxen_util.zero_to_null(mmt.receipt_qty),5) average_receipt_cost,
+plla.quantity quantity_ordered,
+plla.quantity_received quantity_received,
+plla.quantity_billed quantity_invoiced,
+round(nvl(pda.rate,1) * plla.price_override * plla.quantity * mucv.conversion_rate,2) total_po_amount,
+&sla_columns
+&segment_columns
+pla.creation_date po_line_creation_date
+from
+po_lines_all pla,
+(
+select
+gl.ledger_id,
+gl.name ledger,
+haouv.name operating_unit,
+gl.currency_code gl_currency_code,
+pha.currency_code pha_currency_code,
+pha.vendor_id pha_vendor_id,
+pha.agent_id pha_agent_id,
+pha.closed_code pha_closed_code,
+pha.segment1 pha_po_number,
+plla.*
+from
+po_line_locations_all plla,
+po_headers_all pha,
+org_organization_definitions ood,
+hr_all_organization_units_vl haouv,
+gl_ledgers gl
+where
+1=1 and
+(nvl(fnd_profile.value('XXEN_REPORT_USE_LEDGER_SECURITY'),'N')='N' or ood.set_of_books_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))) and
+(nvl(fnd_profile.value('XXEN_REPORT_USE_OPERATING_UNIT_SECURITY'),'N')='N' or ood.operating_unit in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)) and
+plla.ship_to_organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
+pha.closed_date is null and
+plla.closed_date is null and
+plla.po_header_id=pha.po_header_id and
+plla.ship_to_organization_id=ood.organization_id and
+ood.operating_unit=haouv.organization_id and
+ood.set_of_books_id=gl.ledger_id
+) plla,
+po_distributions_all pda,
+&sla_tables
+po_releases_all pra,
+mtl_parameters mp,
+ap_suppliers aps,
+mtl_system_items_vl msiv,
+mtl_item_status_vl misv,
+mtl_uom_conversions_view mucv,
+mtl_units_of_measure_vl muomv_po,
+mtl_units_of_measure_vl muomv_msi,
+wip_entities we,
+pa_projects_all ppa,
+hr_employees hr,
+(select gdr.* from gl_daily_rates gdr where gdr.conversion_date=:conversion_date and gdr.conversion_type=:conversion_type) gdr, --Set of currency rates to translate the PO Price into the GL Currency
+gl_code_combinations gcc1,
+gl_code_combinations gcc2,
+gl_code_combinations gcc3,
+( --Item or resource cost
+select
+cic.organization_id,
+cic.inventory_item_id,
+cic.cost_type_id,
+null resource_code,
+-999 resource_id,
+cic.material_cost,
+cic.material_overhead_cost,
+cic.resource_cost,
+cic.outside_processing_cost,
+cic.overhead_cost,
+cic.item_cost,
+cic.unburdened_cost
+from
+cst_item_costs cic
+union all
+select
+br.organization_id,
+br.purchase_item_id,
+crc.cost_type_id,
+br.resource_code,
+br.resource_id,
+0 material_cost,
+0 material_overhead_cost,
+0 resource_cost,
+nvl(crc.resource_rate,0) outside_processing_cost,
+0 overhead_cost,
+nvl(crc.resource_rate,0) item_cost,
+nvl(crc.resource_rate,0) unburdened_cost
+from
+bom_resources br,
+cst_resource_costs crc
+where
+br.cost_element_id=4 and
+br.resource_id=crc.resource_id
+) cic,
+( --Average PO receipt cost over a date range
+select distinct
+mmt.organization_id,
+mmt.inventory_item_id,
+sum(mmt.primary_quantity) over (partition by mmt.organization_id, mmt.inventory_item_id) receipt_qty,
+sum(mmt.transaction_cost*mmt.primary_quantity) over (partition by mmt.organization_id, mmt.inventory_item_id) receipt_amount
+from
+mtl_material_transactions mmt
+where
+mmt.transaction_date>=:transaction_from and
+mmt.transaction_date<:transaction_date_to+1 and
+mmt.transaction_source_type_id=1 and --purchase orders
+mmt.transaction_cost<>0
+) mmt
+where
+2=2 and
+pla.po_line_id=plla.po_line_id and
+plla.line_location_id=pda.line_location_id and
+pda.destination_type_code in ('SHOP FLOOR','INVENTORY') and
+pla.closed_date is null and
+plla.po_release_id=pra.po_release_id(+) and
+plla.ship_to_organization_id=mp.organization_id and
+plla.pha_vendor_id=aps.vendor_id and
+pla.item_id=msiv.inventory_item_id and 
+plla.ship_to_organization_id=msiv.organization_id and
+msiv.inventory_item_status_code=misv.inventory_item_status_code and
+pla.unit_meas_lookup_code=mucv.unit_of_measure and
+pla.item_id=mucv.inventory_item_id and
+plla.ship_to_organization_id=mucv.organization_id and
+mucv.uom_code=muomv_po.uom_code and
+msiv.primary_uom_code=muomv_msi.uom_code and
+pda.wip_entity_id=we.wip_entity_id(+) and
+pda.project_id=ppa.project_id(+) and
+plla.pha_agent_id=hr.employee_id(+) and
+plla.pha_currency_code=gdr.from_currency(+) and
+plla.gl_currency_code=gdr.to_currency(+) and
+&sla_join
+pda.variance_account_id=gcc2.code_combination_id(+) and
+pda.accrual_account_id=gcc3.code_combination_id(+) and
+plla.ship_to_organization_id=cic.organization_id and
+pla.item_id=cic.inventory_item_id and
+mp.primary_cost_method=cic.cost_type_id and
+nvl(pda.bom_resource_id,-999)=nvl(cic.resource_id,-999) and
+decode(msiv.inventory_asset_flag,'Y',msiv.organization_id)=mmt.organization_id(+) and 
+decode(msiv.inventory_asset_flag,'Y',msiv.inventory_item_id)=mmt.inventory_item_id(+)

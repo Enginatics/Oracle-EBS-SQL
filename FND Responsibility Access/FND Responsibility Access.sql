@@ -153,22 +153,12 @@ furg.responsibility_id,
 furg.user_id,
 xxen_util.user_name(furg.user_id) user_name,
 nvl(fu.email_address,papf.email_address) email,
-papf.global_name person,
+papf.first_name||' '||papf.last_name person,
 haouv.name person_bg
 from
 fnd_user_resp_groups furg,
 fnd_user fu,
-(
-select
-papf.person_id,
-papf.email_address,
-papf.global_name,
-papf.business_group_id
-from
-per_all_people_f papf
-where
-sysdate between papf.effective_start_date and papf.effective_end_date+1
-) papf,
+(select papf.* from per_all_people_f papf where sysdate between papf.effective_start_date and papf.effective_end_date+1) papf,
 (select haouv.* from hr_all_organization_units_vl haouv where sysdate between haouv.date_from and nvl(haouv.date_to,sysdate)) haouv
 where
 3=3 and

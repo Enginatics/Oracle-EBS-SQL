@@ -5,7 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: GL Journals (Drilldown)
--- Description: GL batches and journals report, including amounts and attachments
+-- Description: GL batches and journals report, including amounts and attachments. This report is used by the GL Financial Statement and Drilldown report, to show subledger details.
 -- Excel Examle Output: https://www.enginatics.com/example/gl-journals-drilldown/
 -- Library Link: https://www.enginatics.com/reports/gl-journals-drilldown/
 -- Run Report: https://demo.enginatics.com/
@@ -136,7 +136,6 @@ where
 1=1 and
 gl.period_set_name=gp.period_set_name and
 gp.period_name=gjh.period_name and
-gp.period_name=gjl.period_name(+) and
 gl.ledger_id=gjh.ledger_id and
 gjb.je_batch_id=gjh.je_batch_id and
 gjh.je_header_id=gjl.je_header_id(+) and

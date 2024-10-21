@@ -34,7 +34,7 @@ qpa as
  xxen_util.meaning(opcv.list_type_code,'LIST_TYPE_CODE',661) price_list_type,
  opcv.price_list,
  opcv.currency_code,
- (select qclv.name from qp_currency_lists_vl qclv where qclv.currency_header_id = opcv.currency_header_id) multi_currency_conversion,
+ (select qclt.name from qp_currency_lists_tl qclt where qclt.currency_header_id = opcv.currency_header_id and qclt.language = userenv('LANG') and rownum <= 1) multi_currency_conversion,
  opcv.rounding_factor,
  opcv.description,
  opcv.ship_method_code,

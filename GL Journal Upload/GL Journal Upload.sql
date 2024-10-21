@@ -68,7 +68,13 @@ sysdate date_created,
 to_number(null) created_by,
 to_number(null) user_id,
 null summary_flag,
-null post_to_suspense_flag
+null post_to_suspense_flag,
+null attachment_category_,
+null attachment_title_,
+null attachment_description_,
+null attachment_type_,
+null attachment_content_,
+null attachment_file_id_
 from 
 dual 
 where

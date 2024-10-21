@@ -79,10 +79,7 @@ select /*+ push_pred(wfc) push_pred(shipped_lots) push_pred(picked_lots) */
  wdd.container_flag,
  xxen_util.meaning(wdd.container_type_code,'CONTAINER_TYPE',401) container_type,
  wdd.container_name,
- coalesce(shipped_lots.lot_numbers,
-          picked_lots.lot_numbers,
-          wdd.lot_number
-         ) lot_numbers,
+ coalesce(wdd.lot_number,shipped_lots.lot_numbers,picked_lots.lot_numbers) lot_numbers,
  -- exceptions
  (select dbms_lob.substr(rtrim(xmlagg(xmlelement(name excptn,wev.description,',').extract('//text()') order by wev.description).GetClobVal(),','),4000,1)
   from   (select distinct
@@ -229,9 +226,10 @@ from
      mtl_material_transactions mmt,
      mtl_transaction_lot_numbers mtln
     where
-        mmt.transaction_source_type_id in (2,8)
-    and mmt.transaction_quantity  < 0
+        2=2
     and mtln.transaction_id = mmt.transaction_id
+    and mmt.transaction_source_type_id in (2,8)
+    and mmt.transaction_quantity  < 0
    ) x
   where
    x.lengthb <= 4000
@@ -248,9 +246,10 @@ from
      mtl_material_transactions mmt,
      mtl_transaction_lot_numbers mtln
     where
-        mmt.transaction_source_type_id in (2,8)
-    and mmt.transaction_quantity  < 0
+        2=2
     and mtln.transaction_id = mmt.transaction_id
+    and mmt.transaction_source_type_id in (2,8)
+    and mmt.transaction_quantity  < 0
    ) x
   where
    x.lengthb <= 4000
@@ -287,8 +286,8 @@ and mmt.transaction_source_type_id (+) in (2,8)
 and mmt.transaction_quantity (+) < 0
 and wdd.delivery_detail_id = wfc.delivery_detail_id (+)
 --
-and wdd.delivery_detail_id = shipped_lots.picking_line_id (+)
-and wdd.move_order_line_id = picked_lots.move_order_line_id (+)
+and nvl2(wdd.lot_number,-1,wdd.delivery_detail_id) = shipped_lots.picking_line_id (+)
+and nvl2(wdd.lot_number,-1,wdd.move_order_line_id) = picked_lots.move_order_line_id (+)
 --
 and decode(wdd.source_code,'OE',wdd.source_header_id) = ooha.header_id(+)
 and decode(wdd.source_code,'OE',wdd.source_line_id)  = oola.line_id(+)

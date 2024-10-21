@@ -131,6 +131,9 @@ pha.creation_date,
 pt.document_type_name document_type,
 po_headers_sv3.get_po_status(pha.po_header_id) document_status,
 pha.currency_code,
+gdct.user_conversion_type rate_type,
+pha.rate_date,
+pha.rate,
 pha.reference_num header_reference_num,
 pha.comments header_description,
 papf.full_name buyer,
@@ -251,6 +254,7 @@ null attachment_content_,
 null attachment_file_id_
 from
 po_headers_all pha,
+gl_daily_conversion_types gdct,
 per_all_people_f papf,
 po_vendors pv,
 po_vendor_sites_all pvsa,
@@ -266,6 +270,7 @@ where
 1=1 and
 2=2 and
 pha.org_id=haouv.organization_id and
+pha.rate_type=gdct.conversion_type(+) and
 pha.type_lookup_code=pt.document_type and
 papf.person_id=pha.agent_id and
 trunc(sysdate) between papf.effective_start_date and papf.effective_end_date and

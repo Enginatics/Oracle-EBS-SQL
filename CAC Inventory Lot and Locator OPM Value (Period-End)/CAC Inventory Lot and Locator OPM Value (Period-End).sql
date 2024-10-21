@@ -14,7 +14,7 @@ General Parameters:
 Period Name (Closed):  the closed inventory accounting period you wish to report (mandatory).
 Cost Type:  enter a Cost Type to value the quantities using the Cost Type item costs; or, if Cost Type is not entered the report will use the stored month-end snapshot values (optional).
 Show OPM Lot Number:  choose Yes to show the OPM lot number for the inventory quantities.  Otherwise choose No (mandatory).
-Show OPM Locator:  choose Yes to show the OPM locator for the inventory quantities.  Otherwise choose No (mandatory).
+Show OPM Locator:  choose Yes to show the OPM locator and Lot Expiration Date for the inventory quantities.  Otherwise choose No (mandatory).
 OPM Calendar Code:  Choose the OPM Calendar Code which corresponds to the inventory accounting period you wish to report (mandatory).
 OPM Period Code:  enter the OPM Period Code related to the inventory accounting period and OPM Calendar Code you wish to report (mandatory).
 Category Set 1:  the first item category set to report, typically the Cost or Product Line Category Set (optional).
@@ -37,6 +37,7 @@ Ledger:  specific ledger (optional).
 -- | 1.0     10 May 2024 Douglas Volz Initial Coding.
 -- | 1.1     30 Jun 2024 Douglas Volz Cumulative fixes for OPM intransit balances and accounts.
 -- | 1.2     02 Aug 2024 Douglas Volz Add OPM Cost Organizations to get correct item costs and qtys.
+-- | 1.3     30 Sep 2024 Douglas Volz Add Lot expiration date to report.
 -- +=============================================================================+*/
 
 
@@ -171,6 +172,8 @@ from    inv_organizations mp,
         mtl_secondary_inventories msub,
         mtl_item_locations_kfv mil_kfv,
         mtl_material_statuses_vl mms_vl,
+        -- Revision for version 1.3
+        mtl_lot_numbers mln,
         fnd_common_lookups fcl, -- Item Type
         mfg_lookups ml1, -- Planning Make Buy
         mfg_lookups ml2, -- Inventory Asset
@@ -429,6 +432,11 @@ and     misv.inventory_item_status_code = onhand.inventory_item_status_code
 and     onhand.locator_id               = mil_kfv.inventory_location_id (+)
 and     onhand.organization_id          = mil_kfv.organization_id (+)
 and     mil_kfv.status_id               = mms_vl.status_id (+)
+-- Revision for version 1.3
+and     onhand.lot_number               = mln.lot_number (+)
+and     onhand.organization_id          = mln.organization_id (+)
+and     onhand.inventory_item_id        = mln.inventory_item_id (+)
+-- End revision for version 1.3
 -- ===========================================
 -- Lookup Codes
 -- ===========================================
@@ -505,6 +513,8 @@ from    inv_organizations mp,
         mtl_item_status_vl misv,
         mtl_item_locations_kfv mil_kfv,
         mtl_material_statuses_vl mms_vl,
+        -- Revision for version 1.3
+        mtl_lot_numbers mln,
         fnd_common_lookups fcl, -- Item Type
         mfg_lookups ml1, -- Planning Make Buy
         mfg_lookups ml2, -- Inventory Asset
@@ -616,9 +626,4 @@ from    inv_organizations mp,
                                  -- If the Cost Type is not null, get the OPM Intransit Item Costs based on the Cost Type.
                                  select ccd.organization_id,
                                         ccd.inventory_item_id,
-                                        -- Revision for version 1.1, change decimal precision from 5 to 9
-                                        round(sum(nvl(ccd.cmpnt_cost,0)),9) item_cost
-                                 from   cm_cmpt_dtl ccd,
-                                        cm_cmpt_mst_b ccm,
-                                        cm_mthd_mst cmm,
-                                        gmf_period_s
+                                

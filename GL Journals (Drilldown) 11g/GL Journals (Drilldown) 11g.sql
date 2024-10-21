@@ -5,7 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: GL Journals (Drilldown) 11g
--- Description: GL batches and journals report, including amounts and attachments
+-- Description: GL batches and journals report, including amounts and attachments.This report is used by the GL Financial Statement and Drilldown report, to show subledger details.
 -- Excel Examle Output: https://www.enginatics.com/example/gl-journals-drilldown-11g/
 -- Library Link: https://www.enginatics.com/reports/gl-journals-drilldown-11g/
 -- Run Report: https://demo.enginatics.com/

@@ -70,7 +70,7 @@ with pii as
 
 ----------------main query starts here--------------
 
-select nvl(gl.short_name, gl.name) Ledger,
+select  &p_show_sla_ledger
         haou2.name Operating_Unit,
         acct_dist.organization_code Org_Code,
         -- Revision for version 1.8
@@ -139,6 +139,7 @@ from    mtl_system_items_vl msiv,
         hr_all_organization_units_vl haou_to, -- inv_organization_id
         hr_all_organization_units_vl haou2_to, -- operating unit
         gl_ledgers gl,
+  &subledger_tab
         -- Revision for version 1.19
         fnd_common_lookups fcl, -- Item Type
         mfg_lookups ml1, -- Accounting Line Type
@@ -551,4 +552,4 @@ from    mtl_system_items_vl msiv,
                                 1, mta.base_transaction_value,
                                 0) Matl_Amount,
                         decode(mta.cost_element_id,
-                                2, mta.base_tr
+                                2, mta.base_t

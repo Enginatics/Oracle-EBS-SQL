@@ -11,7 +11,7 @@
 -- Run Report: https://demo.enginatics.com/
 
 with req as (
-select
+select /*+ push_pred(x) */
 haouv.name operating_unit,
 xxen_util.meaning(prha.type_lookup_code,'REQUISITION TYPE',201) requisition_type,
 prha.segment1 requisition_number,
@@ -30,7 +30,7 @@ xxen_util.meaning(prla.purchase_basis,'PURCHASE BASIS',201) line_type,
 xxen_util.meaning(prla.order_type_lookup_code,'ORDER TYPE',201) line_order_type,
 msiv.concatenated_segments item,
 prla.item_revision item_revision,
-fnd_flex_xml_publisher_apis.process_kff_combination_1('c_flex_cat_disp', 'INV', 'MCAT', mc.structure_id, NULL, mc.category_id, 'ALL', 'Y', 'VALUE') category,
+(select mck.concatenated_segments from mtl_categories_kfv mck where prla.category_id=mck.category_id) category,
 nvl(prla.item_description ,msiv.description) line_description,
 prla.unit_meas_lookup_code uom,
 prla.quantity,
@@ -57,6 +57,8 @@ trunc(nvl(prla.cancel_date ,pah.cancelled_date)) cancelled_date,
 nvl(prla.cancel_reason,pah.cancelled_note) cancelled_reason,
 pah.cancelled_by,
 &req_dist_columns
+&req_dff_cols
+&item_dff_cols
 prla.requisition_header_id,
 prla.requisition_line_id,
 prla.line_location_id,
@@ -80,7 +82,6 @@ per_people_x ppx,
 per_people_x ppx2,
 hr_locations hrl,
 hz_locations hzl,
-mtl_categories mc,
 mtl_system_items_vl msiv,
 (
 select
@@ -111,13 +112,12 @@ prla.to_person_id=ppx2.person_id and
 prla.deliver_to_location_id=hrl.location_id(+) and
 prla.deliver_to_location_id=hzl.location_id(+) and
 prla.parent_req_line_id=prla2.requisition_line_id(+) and
-prla.category_id=mc.category_id and
 prla.item_id=msiv.inventory_item_id(+) and
 fspa.inventory_organization_id=nvl(msiv.organization_id,fspa.inventory_organization_id) and
 prha.requisition_header_id=pah.requisition_header_id(+)
 ),
 po as (
-select 
+select /*+ push_pred(x) */
 haouv.name po_operating_unit,
 asu.vendor_name po_vendor_name,
 asu.segment1 po_vendor_number,
@@ -131,7 +131,7 @@ trunc(pra.release_date) po_release_date,
 pha.currency_code po_currency,
 pla.line_num po_line_number,
 pltv.line_type po_line_type,
-nvl2(pla.category_id ,fnd_flex_xml_publisher_apis.process_kff_combination_1('c_flex_cat_disp', 'INV', 'MCAT', mc.structure_id, NULL, mc.category_id, 'ALL', 'Y', 'VALUE') ,null) po_line_category,
+(select mck.concatenated_segments from mtl_categories_kfv mck where pla.category_id=mck.category_id) po_line_category,
 msiv.item po_line_item,
 nvl(pla.item_description,msiv.description) po_line_description,
 plla.shipment_num po_shipment_number,
@@ -158,6 +158,7 @@ xxen_util.user_name(plla.cancelled_by) po_shipment_cancelled_by,
 mp1.organization_code po_ship_to_organization,
 hl1.location_code po_ship_to_location,
 &po_dist_columns
+&po_dff_cols
 plla.po_header_id,
 plla.po_line_id,
 plla.line_location_id,
@@ -179,7 +180,6 @@ gl_ledgers gl,
 hr_all_organization_units_vl haouv,
 hr_locations hl1,
 mtl_parameters mp1,
-mtl_categories mc,
 (
 select 
 fspa.org_id,
@@ -206,7 +206,6 @@ pha.org_id=fspa.org_id and
 gl.ledger_id=fspa.set_of_books_id and
 haouv.organization_id=pha.org_id and
 pla.line_type_id=pltv.line_type_id and
-pla.category_id=mc.category_id(+) and
 pla.item_id=msiv.inventory_item_id(+) and
 pla.org_id=msiv.org_id(+) and
 plla.ship_to_organization_id=mp1.organization_id(+) and
@@ -254,8 +253,8 @@ req.supplier_item,
 req.note_to_agent,
 req.on_rfq,
 req.parent_req_line_number,
-&item_dff_cols
-&req_dff_cols
+&req_dff_cols_disp
+&item_dff_cols_disp
 po.po_vendor_name,
 po.po_vendor_number,
 po.po_vendor_site,
@@ -281,7 +280,7 @@ po.po_unit_price,
 po.po_uom, 
 &po_line_columns_disp 
 &po_dist_columns_disp
-&po_dff_cols
+&po_dff_cols_disp
 po.po_shipment_creation_date,
 po.po_shipment_cancelled_flag,
 po.po_shipment_cancelled_date,
