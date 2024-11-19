@@ -131,8 +131,8 @@ gl_periods gp,
 gl_je_batches gjb,
 gl_je_headers gjh,
 gl_je_lines gjl,
-(select gir.* from gl_import_references gir where gir.gl_sl_link_table in ('XLAJEL','APECL') and gir.gl_sl_link_id is not null) gir,
-xla_ae_lines xal,
+(select gir.je_header_id, gir.je_line_num, xal.* from gl_import_references gir, xla_ae_lines xal where gir.gl_sl_link_id=xal.gl_sl_link_id and gir.gl_sl_link_table=xal.gl_sl_link_table
+) xal,
 xla_ae_headers xah,
 xla_events xe,
 xla.xla_transaction_entities xte,
@@ -143,7 +143,22 @@ gcck.*
 from
 (
 select
-(select fifs.flex_value_set_id from fnd_id_flex_segments fifs where gcck.chart_of_accounts_id=fifs.id_flex_num and fifs.application_id=101 and fifs.id_flex_code='GL#' and fifs.application_column_name='&hierarchy_segment_column') flex_value_set_id,
+(
+select
+fifs.flex_value_set_id
+from
+fnd_id_flex_segments fifs,
+fnd_flex_values ffv
+where
+gcck.chart_of_accounts_id=fifs.id_flex_num and
+fifs.application_id=101 and
+fifs.id_flex_code='GL#' and
+fifs.application_column_name='&hierarchy_segment_column' and
+fifs.flex_value_set_id=ffv.flex_value_set_id and
+ffv.parent_flex_value_low is null and
+ffv.summary_flag='N' and
+5=5
+) flex_value_set_id,
 gcck.*
 from
 gl_code_combinations_kfv gcck
@@ -198,10 +213,8 @@ gp.period_name=gjl.period_name and
 gl.ledger_id=gjh.ledger_id and
 gjb.je_batch_id=gjh.je_batch_id and
 gjh.je_header_id=gjl.je_header_id and
-gjl.je_header_id=gir.je_header_id(+) and
-gjl.je_line_num=gir.je_line_num(+) and
-gir.gl_sl_link_id=xal.gl_sl_link_id(+) and
-gir.gl_sl_link_table=xal.gl_sl_link_table(+) and
+gjl.je_header_id=xal.je_header_id(+) and
+gjl.je_line_num=xal.je_line_num(+) and
 xal.ae_header_id=xah.ae_header_id(+) and
 xal.application_id=xah.application_id(+) and
 xah.gl_transfer_status_code(+)='Y' and
@@ -210,6 +223,7 @@ xah.event_id=xe.event_id(+) and
 xah.application_id=xe.application_id(+) and
 xah.entity_id=xte.entity_id(+) and
 xah.application_id=xte.application_id(+) and
+gl_security_pkg.validate_access(null,gjl.code_combination_id)='TRUE' and
 gjl.code_combination_id=gcck.code_combination_id and
 case when xte.application_id=200 and xte.entity_code='AP_INVOICES' then xte.source_id_int_1 end=aia.invoice_id(+) and
 aia.invoice_id=aida.invoice_id(+) and

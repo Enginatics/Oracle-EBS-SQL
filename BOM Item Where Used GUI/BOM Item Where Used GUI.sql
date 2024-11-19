@@ -21,6 +21,7 @@ DB package: BOM_BOMRWUIT_XMLP_PKG
 select
 x.item,
 x.item_description,
+x.item_type,
 :p_item_rev revision,
 x.orgcode organization,
 x.p_level bom_level,
@@ -28,12 +29,13 @@ x.op op_seq,
 x.parent bom,
 x.alternate alternate_bom,
 x.description bom_description,
+x.parent_item_type,
 x.effective_date,
 x.disable_date,
 x.basis_type basis,
 x.quantity,
 x.uom,
-x.type eng_bill,
+x.eng_bill,
 x.status revised_item_status,
 x.notice revised_item_eco
 from
@@ -41,19 +43,20 @@ from
 select
  msi.concatenated_segments item,
  msi.description item_description,
+ xxen_util.meaning(msi.item_type,'ITEM_TYPE',3) item_type,
  bv.display_plan_level p_level,
  bv.component_op_seq_num op,
  bv.parent,
  bv.parent_alternate_designator alternate,
  bv.parent_description description,
- lu2.meaning item_type,
+ xxen_util.meaning(f.item_type,'ITEM_TYPE',3) parent_item_type,
  msi.inventory_item_status_code item_status,
  bv.component_effective_date effective_date,
  bv.component_disable_date disable_date,
  bv.basis_type basis_type,
  bv.component_quantity quantity,
  bv.parent_uom uom,
- lu.meaning type,
+ xxen_util.meaning(bv.parent_engineering_bill,'BOM_NO_YES',700) eng_bill,
  bv.change_notice notice,
  bv.implemented_flag implemented_flag,
  bv.lowest_item_id,
@@ -65,9 +68,7 @@ select
 from
  mtl_system_items_vl msi,
  mtl_item_flexfields f,
- mfg_lookups lu,
- bom_implosion_view bv,
- fnd_lookup_values lu2
+ bom_implosion_view bv
 where
  bv.lowest_item_id = msi.inventory_item_id and
  msi.organization_id = bv.organization_id and
@@ -76,14 +77,7 @@ where
  bv.parent is not null and
  bv.sequence_id = :p_sequence_id and
  bv.current_level != 0 and
- lu.lookup_code = bv.parent_engineering_bill and
- lu.lookup_type = 'BOM_NO_YES' and
- nvl(xxen_util.lookup_code(:p_top_assly_flg,'SYS_YES_NO',700), 2) = 2 and
- f.item_type = lu2.lookup_code(+) and
- lu2.lookup_type(+) = 'ITEM_TYPE' and
- lu2.language(+) = userenv('LANG') and
- lu2.view_application_id(+) = 3 and
- (lu2.lookup_code is null or lu2.security_group_id = fnd_global.lookup_security_group(lu2.lookup_type,lu2.view_application_id))
+ nvl(xxen_util.lookup_code(:p_top_assly_flg,'SYS_YES_NO',700), 2) = 2
  &lp_top_assemblies_only_qry
 ) x
 where

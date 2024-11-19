@@ -86,7 +86,13 @@ select
 :gl_subledger_details_m,
 :gl_full_journal_drilldown,
 :gl_journal_attachment_dd,
-:drilldown_resp
+:drilldown_resp,
+:batch_name,
+:journal_name,
+:document_number,
+:posting_status,
+:fund_status,
+:created_by
 from
 dual
 where

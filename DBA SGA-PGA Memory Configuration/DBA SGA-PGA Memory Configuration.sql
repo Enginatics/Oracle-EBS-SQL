@@ -37,6 +37,14 @@ The following command checks if hugepages are configured and how many are in use
 grep Huge /proc/meminfo
 <a href="https://access.redhat.com/solutions/320303" rel="nofollow" target="_blank">https://access.redhat.com/solutions/320303</a>
 
+To configure hugepages, set the vm.nr_hugepages in the /etc/sysctl.conf file and hard and soft memlock in /etc/security/limits.conf for the oracle user.
+/etc/sysctl.conf
+vm.nr_hugepages = SGA GB x 512 + 5
+/etc/security/limits.conf
+oracle               soft    memlock (SGA GB x 512 + 5) * 2048
+oracle               hard    memlock (SGA GB x 512 + 5) * 2048
+<a href="https://www.carajandb.com/en/2016/09/22/7-easy-steps-to-configure-hugepages-for-your-oracle-database-server/" rel="nofollow" target="_blank">https://www.carajandb.com/en/2016/09/22/7-easy-steps-to-configure-hugepages-for-your-oracle-database-server/</a>
+
 Check if all database parameters are set according to Oracle's requirement:
 Database Initialization Parameters for Oracle E-Business Suite Release 12 (Note 396009.1)
 <a href="https://support.oracle.com/rs?type=doc&id=396009.1" rel="nofollow" target="_blank">https://support.oracle.com/rs?type=doc&id=396009.1</a>

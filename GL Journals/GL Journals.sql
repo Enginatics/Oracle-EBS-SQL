@@ -82,6 +82,7 @@ end line_tax_rate_code,
 -- accounts
 gcck.concatenated_segments,
 &segment_columns
+&dff_cols
 -- attachment details
 fad1.count batch_attachment_count,
 fad2.count journal_attachment_count,

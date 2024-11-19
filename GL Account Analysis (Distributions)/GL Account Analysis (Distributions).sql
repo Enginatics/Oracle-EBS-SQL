@@ -58,7 +58,7 @@ select &leading_hint
 case when count(distinct gp.period_num) over ()>1 then lpad(gp.period_num,2,'0')||' ' end||gjh.period_name period_name,
 lpad(gp.period_num,2,'0')||' '||gjh.period_name period_name_label,
 gl.name ledger,
-(select gjsv.user_je_source_name from gl_je_sources_vl gjsv where gjh.je_source=gjsv.je_source_name) source_name,
+gjsv.user_je_source_name source_name,
 gjh.external_reference reference,
 (select gjcv.user_je_category_name from gl_je_categories_vl gjcv where gjh.je_category=gjcv.je_category_name) category_name,
 gjb.name batch_name,
@@ -133,6 +133,8 @@ xah.accounting_date,
 xe.transaction_date,
 xte.transaction_number,
 --Source Line Description
+coalesce(aia.source,rbsa.name,gjsv.user_je_source_name) sl_source,
+decode(gjsv.user_je_source_name,'Assets',to_char(xte.source_id_int_3),'Payables',aba.batch_name,'Receivables',decode(xah.je_category_name,'Receipts',arba.name,rba.name)) sl_batch_no,
 coalesce(aida.description,aila.description,aila.item_description,rctla.description,pla.item_description,rsl.item_description) source_line_description,
 --Assets
 case
@@ -188,6 +190,11 @@ coalesce(
 (select hp.party_name from hz_cust_accounts hca, hz_parties hp where coalesce(decode(xal.party_type_code,'C',xal.party_id,null),rcta.bill_to_customer_id,acra.pay_from_customer,paa.customer_id)=hca.cust_account_id and hca.party_id=hp.party_id),
 (select hp.party_name from hz_parties hp,hz_cust_accounts hca,oe_order_lines_all oola where hca.party_id=hp.party_id and hca.cust_account_id=oola.sold_to_org_id and oola.line_id=coalesce(gxeh.source_line_id,case when mmt.transaction_source_type_id in (2,8,12) then mmt.trx_source_line_id end))
 ) vendor_or_customer,
+coalesce(
+(select aps.segment1 from ap_suppliers aps where coalesce(decode(xal.party_type_code,'S',xal.party_id,null),aia.vendor_id,aca.vendor_id,rt.vendor_id,pha.vendor_id)=aps.vendor_id),
+(select hca.account_number from hz_cust_accounts hca where coalesce(decode(xal.party_type_code,'C',xal.party_id,null),rcta.bill_to_customer_id,acra.pay_from_customer,paa.customer_id)=hca.cust_account_id),
+(select hca.account_number from hz_cust_accounts hca,oe_order_lines_all oola where hca.cust_account_id=oola.sold_to_org_id and oola.line_id=coalesce(gxeh.source_line_id,case when mmt.transaction_source_type_id in (2,8,12) then mmt.trx_source_line_id end))
+) vendor_or_customer_number,
 --Projects
 nvl(case when xte.entity_code='TRANSACTIONS' and rcta.interface_header_context='PROJECTS INVOICES' then rcta.interface_header_attribute1 end,ppa.segment1) project,
 pt.task_number task,
@@ -322,6 +329,7 @@ gl_periods gp,
 gl_je_batches gjb,
 gl_je_headers gjh,
 gl_je_lines gjl,
+gl_je_sources_vl gjsv,
 gcck,
 (select gir.je_header_id, gir.je_line_num, xal.* from gl_import_references gir, xla_ae_lines xal where gir.gl_sl_link_id=xal.gl_sl_link_id and gir.gl_sl_link_table=xal.gl_sl_link_table) xal,
 xla_ae_headers xah,
@@ -331,6 +339,7 @@ xla_distribution_links xdl,
 (select gdr.* from gl_daily_rates gdr where gdr.to_currency=:revaluation_currency and gdr.conversion_type=(select gdct.conversion_type from gl_daily_conversion_types gdct where gdct.user_conversion_type=:revaluation_conversion_type)) gdr,
 zx_rates_b zrb,
 ap_invoices_all aia,
+ap_batches_all aba,
 ap_payment_hist_dists aphd,
 ap_invoice_payments_all aipa,
 ap_checks_all aca,
@@ -358,11 +367,15 @@ po_req_distributions_all prda,
 ra_customer_trx_all rcta,
 ra_cust_trx_line_gl_dist_all rctlgda,
 ra_customer_trx_lines_all rctla,
+ra_batch_sources_all rbsa,
+ra_batches_all rba,
 zx_lines zl,
 jtf_rs_salesreps jrs,
 jtf_rs_resource_extns_vl jrrev,
 ar_adjustments_all aaa,
 ar_cash_receipts_all acra,
+(select acrha.* from ar_cash_receipt_history_all acrha where acrha.current_record_flag='Y') acrha,
+ar_batches_all arba,
 pa_projects_all ppa,
 pa_tasks pt,
 pa_draft_revenues_all pdra,
@@ -396,6 +409,7 @@ gl.ledger_id=gjh.ledger_id and
 gjb.je_batch_id=gjh.je_batch_id and
 gjh.je_header_id=gjl.je_header_id and
 gjl.code_combination_id=gcck.code_combination_id and
+gjh.je_source=gjsv.je_source_name and
 &gl_flex_value_security
 gjl.je_header_id=xal.je_header_id(+) and
 gjl.je_line_num=xal.je_line_num(+) and
@@ -425,6 +439,7 @@ aca.ce_bank_acct_use_id=cbaua.bank_acct_use_id(+) and
 cbaua.bank_account_id=cba.bank_account_id(+) and
 cba.bank_branch_id=cbbv.branch_party_id(+) and
 aida.invoice_id=aia.invoice_id(+) and
+aia.batch_id=aba.batch_id(+) and
 aida.invoice_id=aila.invoice_id(+) and
 aida.invoice_line_number=aila.line_number(+) and
 coalesce(pda.po_header_id,plla.po_header_id,rt.po_header_id,aia.quick_po_header_id,wt.po_header_id,decode(mmt.transaction_source_type_id,1,mmt.transaction_source_id))=pha.po_header_id(+) and
@@ -434,11 +449,15 @@ coalesce(pda.line_location_id,aila.po_line_location_id,rt.po_line_location_id)=p
 coalesce(pda.po_line_id,plla.po_line_id,rt.po_line_id,wt.po_line_id)=pla.po_line_id(+) and
 case when xdl.application_id=201 and xdl.source_distribution_type='PO_REQ_DISTRIBUTIONS_ALL' then xdl.source_distribution_id_num_1 end=prda.distribution_id(+) and
 case when xte.application_id=222 then case when xte.entity_code in ('TRANSACTIONS','BILLS_RECEIVABLE') then xte.source_id_int_1 when xte.entity_code='ADJUSTMENTS' then aaa.customer_trx_id end end=rcta.customer_trx_id(+) and
+rcta.batch_source_id=rbsa.batch_source_id(+) and
+rcta.batch_id=rba.batch_id(+) and
 rcta.primary_salesrep_id=jrs.salesrep_id(+) and
 rcta.org_id=jrs.org_id(+) and
 jrs.resource_id=jrrev.resource_id(+) and
 case when xte.application_id=222 and xte.entity_code='ADJUSTMENTS' then xte.source_id_int_1 end=aaa.adjustment_id(+) and
 case when xte.application_id=222 and xte.entity_code='RECEIPTS' then xte.source_id_int_1 end=acra.cash_receipt_id(+) and
+acra.cash_receipt_id=acrha.cash_receipt_id(+) and
+acrha.batch_id=arba.batch_id(+) and
 case when xdl.application_id=222 and xdl.source_distribution_type='RA_CUST_TRX_LINE_GL_DIST_ALL' then xdl.source_distribution_id_num_1 end=rctlgda.cust_trx_line_gl_dist_id(+) and
 rctlgda.customer_trx_line_id=rctla.customer_trx_line_id(+) and
 rctla.tax_line_id=zl.tax_line_id(+) and
@@ -532,6 +551,8 @@ null accounting_date,
 null transaction_date,
 null transaction_number,
 -- Source Line Description
+null sl_source,
+null sl_batch_no,
 null source_line_description,
 -- Assets
 null asset_number,
@@ -572,6 +593,7 @@ null invoice_rule,
 null accounting_rule,
 null po_quantity,
 null vendor_or_customer,
+null vendor_or_customer_number,
 --Projects
 null project,
 null task,
@@ -682,31 +704,4 @@ exists
  from
  gl_balances gb2
  where
- gb2.period_name=nvl(:period_name,:period_name_to) and
- gb2.ledger_id=gl.ledger_id and
- gb2.currency_code=gl.currency_code and
- gb2.template_id is null and
- gb2.code_combination_id=gcck.code_combination_id and
- (:balance_type is null or gb2.actual_flag=(select flvv.lookup_code from fnd_lookup_values_vl flvv where xxen_util.contains(:balance_type,flvv.description)='Y' and flvv.lookup_type='BATCH_TYPE' and flvv.view_application_id=101 and flvv.security_group_id=0)) and
- (:budget_name is null or gb2.actual_flag<>'B' or gb2.budget_version_id in (select gbv.budget_version_id from gl_budget_versions gbv where xxen_util.contains(:budget_name,gbv.budget_name)='Y')) and
- (:encumbrance_type is null or gb2.actual_flag<>'E' or gb2.encumbrance_type_id in (select get.encumbrance_type_id from gl_encumbrance_types get where xxen_util.contains(:encumbrance_type,get.encumbrance_type)='Y'))
-) and
-decode(gb.currency_code,:revaluation_currency,null,gb.currency_code)=gdr.from_currency(+)
-union all
-select -- GL Closing Balance
-'ο' || gp.period_name || ' Close Bal' period_name,
-'99 ' || gp.period_name || ' Close Bal' period_name_label,
-gl.name ledger,
-null source_name,
-null reference,
-null category_name,
-null batch_name,
-null batch_status,
-null posted_date,
-null journal_name,
-null journal_description,
-null document_number,
-null tax_status_code,
-null line_number,
-gcck.concatenated_segments,
-null line_ent
+ gb2.period_name=nvl(:period_name

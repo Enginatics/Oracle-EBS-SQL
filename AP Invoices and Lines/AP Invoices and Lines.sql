@@ -297,6 +297,9 @@ xxen_util.segments_description(aida.price_var_code_combination_id) price_varianc
 xxen_util.meaning(aida.dist_match_type,'MATCH_STATUS',200) dist_match_type,
 decode(aida.match_status_flag,'A','Validated','T','Tested','S','Stopped','Never Validated') dist_match_status,
 (select pha.segment1 from po_headers_all pha where nvl((select pda.po_header_id from po_distributions_all pda where nvl(aida.po_distribution_id,aila.po_distribution_id)=pda.po_distribution_id),aia.quick_po_header_id)=pha.po_header_id) po_number,
+nvl((select max(rt.transaction_date) from rcv_transactions rt where rt.transaction_id = nvl(aida.rcv_transaction_id,aila.rcv_transaction_id) and rt.transaction_type in ('RECEIVE','DELIVER')),
+    (select max(rt.transaction_date) from rcv_transactions rt where rt.po_line_id = aila.po_line_id and rt.po_line_location_id = aila.po_line_location_id and rt.transaction_type in ('RECEIVE','DELIVER'))
+) receipt_date,
 xxen_util.meaning(aida.assets_tracking_flag,'YES_NO',0) dist_asset_tracking_flag,
 aida.assets_addition_flag dist_assets_addition_flag,
 replace(aida.description,'~','-') dist_description,

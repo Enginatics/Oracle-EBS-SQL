@@ -6,37 +6,34 @@
 /*************************************************************************/
 -- Report Name: MSC Plan Order Upload
 -- Description: Report: MSC Plan Orders Upload
-Description: ASCP: Upload to action Plan Order recommendations.
+Description: Upload to action Plan Order recommendations.
 
-This upload can be used to either select for release or release Plan Order Recommendations.
+This upload can be used to either select for release or release Plan Order Recommendations from ASCP planning instances.
 
 Currently supported recommendations that can be actioned by this upload are:
--	Planned Order Releases
--	Reschedule In/Out recommendations
+- Planned Order Releases
+- Reschedule In/Out recommendations
 
  Additionally, it allows the user to amend the recommended Implement Date and/or Quantity.
 
 In the generated Excel the user can amend the following columns:
--	Implement Date
--	Implement Quantity
--	Update Release Status
+- Implement Date
+- Implement Quantity
+- Update Release Status
 
 Update Release Status can be either
--	Select for Release
--	Release the Order
+- Select for Release
+- Release the Order
 
-This is determined by the Report Parameter: Allow Release in Upload
+This is determined by the Report Parameter: Upload Mode
 
-If left null, then the user can only “Select for Release”
-If set to Yes, then the user can only select “Release the Order”
-
-‘Select for Release’ will update the implement date and quantity and flag the Plan Order for Release.
-‘Release the Order’ will update the implement date and quantity and release the Plan Order
-
-For Plan Orders not yet selected for release, to amend the implement date and/or implement quantity, the plan order must also be either selected for release or released.
-
+For plan orders not yet selected for release, to amend the implement date and/or implement quantity, the Update Release Status column must also be specified as 'Select for Release' or 'Release the Order' against the Plan Order. 
 If a plan order is already selected for release, then the user can amend the implement date and/or quantity in the generated excel without specifying a value in the Update Release Status column.
 
+The report parameter Upload mode determines the allowable action to be taken against the plan order recommendations in the upload ('Select for Release' or 'Release the Order') 
+
+The report parameter Auto Populate Release Status  if set to Yes, will automatically populate the 'Update Release Status' column and set the status to pending validation against all downloaded plan order recommendations in the generated excel. 
+In this scenario, the generated excel can be saved and uploaded without the user needing to manually review and select the specific plan orders to be updated in the generated excel
 -- Excel Examle Output: https://www.enginatics.com/example/msc-plan-order-upload/
 -- Library Link: https://www.enginatics.com/reports/msc-plan-order-upload/
 -- Run Report: https://demo.enginatics.com/

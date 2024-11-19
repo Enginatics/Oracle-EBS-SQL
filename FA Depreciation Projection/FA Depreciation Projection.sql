@@ -18,7 +18,7 @@ select distinct
 gl.name ledger,
 fpiv.book_type_code book,
 &segment_columns
-&asset_number
+&asset_columns
 fpiv.period_name period,
 sum(fpiv.depreciation) over (partition by fpiv.request_id, fpiv.book_type_code, &segment_columns2 &asset_number fpiv.period_name, fpiv.fiscal_year) depreciation,
 fpiv.fiscal_year,
@@ -29,13 +29,17 @@ from
 gl_ledgers gl,
 fa_book_controls fbc,
 fa_proj_interim_v fpiv,
-fa_additions fa,
+fa_additions_vl fav,
+fa_categories_b_kfv fcbk,
+fa_asset_keywords_kfv fakk,
 gl_code_combinations gcc
 where
 1=1 and
 gl.ledger_id=fbc.set_of_books_id and
 fbc.book_type_code=fpiv.book_type_code and
-fpiv.asset_id=fa.asset_id and
+fpiv.asset_id=fav.asset_id and
+fav.asset_category_id=fcbk.category_id(+) and
+fav.asset_key_ccid=fakk.code_combination_id(+) and
 fpiv.code_combination_id=gcc.code_combination_id
 order by
 fpiv.request_id,

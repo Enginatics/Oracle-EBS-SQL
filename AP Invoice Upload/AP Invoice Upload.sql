@@ -78,6 +78,9 @@ aila.quantity_invoiced quantity,
 aila.unit_meas_lookup_code uom,
 aila.unit_price,
 --
+aila.line_group_number line_prorate_group,
+xxen_util.meaning(aila.prorate_across_all_items,'YES_NO',0) prorate_flag,
+--
 (select
   fsfa.alias_name
  from
@@ -121,6 +124,15 @@ aila.pa_quantity project_quantity,
 -- tax
 aila.type_1099 income_tax_type,
 aila.income_tax_region,
+--xm.taxation_country
+(select
+ ft.territory_short_name
+ from
+ fnd_territories_vl ft
+ where
+ ft.territory_code = aia.taxation_country
+) taxation_country,
+-- xm.tax_classification,
 (select
   zicv.meaning
  from
@@ -137,20 +149,9 @@ aila.income_tax_region,
 (select
   zfiuv.classification_name
  from
-  hr_operating_units hou,
-  xle_entity_profiles xep,
-  xle_registrations xr,
-  hr_locations_all hla,
   zx_fc_intended_use_v zfiuv
  where
-  hou.organization_id = aila.org_id and
-  xep.legal_entity_id = to_number(hou.default_legal_context_id) and
-  xep.legal_entity_id = xr.source_id and
-  xr.source_table = 'XLE_ENTITY_PROFILES' and
-  xr.identifying_flag = 'Y' and
-  trunc(sysdate) between nvl(xr.effective_from,trunc(sysdate)) and nvl(xr.effective_to,trunc(sysdate)) and
-  xr.location_id = hla.location_id and
-  (zfiuv.country_code = hla.country or zfiuv.country_code is null) and
+  (zfiuv.country_code = aia.taxation_country or zfiuv.country_code is null) and
   trunc(sysdate) between nvl(zfiuv.effective_from,trunc(sysdate)) and nvl(zfiuv.effective_to,trunc(sysdate)) and
   trunc(sysdate) <= nvl(zfiuv.disable_date,trunc(sysdate)) and
   zfiuv.classification_code = aila.primary_intended_use and
@@ -170,20 +171,9 @@ aila.income_tax_region,
 (select
   zfpcv.classification_name
  from
-  hr_operating_units hou,
-  xle_entity_profiles xep,
-  xle_registrations xr,
-  hr_locations_all hla,
   zx_fc_product_fiscal_v zfpcv
  where
-  hou.organization_id = aila.org_id and
-  xep.legal_entity_id = to_number(hou.default_legal_context_id) and
-  xep.legal_entity_id = xr.source_id and
-  xr.source_table = 'XLE_ENTITY_PROFILES' and
-  xr.identifying_flag = 'Y' and
-  trunc(sysdate) between nvl(xr.effective_from,trunc(sysdate)) and nvl(xr.effective_to,trunc(sysdate)) and
-  xr.location_id = hla.location_id and
-  (zfpcv.country_code = hla.country or zfpcv.country_code is null) and
+  (zfpcv.country_code = aia.taxation_country or zfpcv.country_code is null) and
   (zfpcv.effective_to >= trunc(sysdate) or zfpcv.effective_to is null) and
   zfpcv.classification_code = aila.product_fisc_classification and
   rownum <= 1
@@ -192,20 +182,9 @@ aila.income_tax_region,
 (select
   zfudv.classification_name
  from
-  hr_operating_units hou,
-  xle_entity_profiles xep,
-  xle_registrations xr,
-  hr_locations_all hla,
   zx_fc_user_defined_v zfudv
  where
-  hou.organization_id = aila.org_id and
-  xep.legal_entity_id = to_number(hou.default_legal_context_id) and
-  xep.legal_entity_id = xr.source_id and
-  xr.source_table = 'XLE_ENTITY_PROFILES' and
-  xr.identifying_flag = 'Y' and
-  trunc(sysdate) between nvl(xr.effective_from,trunc(sysdate)) and nvl(xr.effective_to,trunc(sysdate)) and
-  xr.location_id = hla.location_id and
-  (zfudv.country_code = hla.country or zfudv.country_code is null) and
+  (zfudv.country_code = aia.taxation_country or zfudv.country_code is null) and
   trunc(sysdate) between nvl(zfudv.effective_from,trunc(sysdate)) and nvl(zfudv.effective_to,trunc(sysdate)) and
   zfudv.classification_code = aila.user_defined_fisc_class and
   rownum <= 1
@@ -214,20 +193,9 @@ aila.income_tax_region,
 (select
   zfbcv.classification_name
  from
-  hr_operating_units hou,
-  xle_entity_profiles xep,
-  xle_registrations xr,
-  hr_locations_all hla,
   zx_fc_business_categories_v zfbcv
  where
-  hou.organization_id = aila.org_id and
-  xep.legal_entity_id = to_number(hou.default_legal_context_id) and
-  xep.legal_entity_id = xr.source_id and
-  xr.source_table = 'XLE_ENTITY_PROFILES' and
-  xr.identifying_flag = 'Y' and
-  trunc(sysdate) between nvl(xr.effective_from,trunc(sysdate)) and nvl(xr.effective_to,trunc(sysdate)) and
-  xr.location_id = hla.location_id and
-  (zfbcv.country_code = hla.country or zfbcv.country_code is null) and
+  (zfbcv.country_code = aia.taxation_country or zfbcv.country_code is null) and
   trunc(sysdate) between nvl(zfbcv.effective_from,trunc(sysdate)) and nvl(zfbcv.effective_to,trunc(sysdate)) and
   zfbcv.application_id = 200 and
   zfbcv.entity_code = 'AP_INVOICES' and
@@ -248,24 +216,21 @@ aila.income_tax_region,
 (select
   zfpcv.classification_name
  from
-  hr_operating_units hou,
-  xle_entity_profiles xep,
-  xle_registrations xr,
-  hr_locations_all hla,
   zx_fc_product_categories_v zfpcv
  where
-  hou.organization_id = aila.org_id and
-  xep.legal_entity_id = to_number(hou.default_legal_context_id) and
-  xep.legal_entity_id = xr.source_id and
-  xr.source_table = 'XLE_ENTITY_PROFILES' and
-  xr.identifying_flag = 'Y' and
-  trunc(sysdate) between nvl(xr.effective_from,trunc(sysdate)) and nvl(xr.effective_to,trunc(sysdate)) and
-  xr.location_id = hla.location_id and
-  (zfpcv.country_code = hla.country or zfpcv.country_code is null) and
+  (zfpcv.country_code = aia.taxation_country or zfpcv.country_code is null) and
   trunc(sysdate) between nvl(zfpcv.effective_from,trunc(sysdate)) and nvl(zfpcv.effective_to,trunc(sysdate)) and
   zfpcv.classification_code = aila.product_category and
   rownum <= 1
 ) product_category,
+-- tax line only columns
+aila.tax_regime_code tax_regime,
+aila.tax tax,
+aila.tax_status_code tax_status,
+aila.tax_jurisdiction_code tax_jurisdiction,
+aila.tax_rate_code tax_rate_name,
+aila.tax_rate tax_rate,
+--
 aila.assessable_value,
 (select aag.name from ap_awt_groups aag where aag.group_id = aila.awt_group_id) line_invoice_awt_group,
 (select aag.name from ap_awt_groups aag where aag.group_id = aila.awt_group_id) line_payment_awt_group,
@@ -355,6 +320,7 @@ nvl(:p_tax_inclusive_flag,'?') = nvl(:p_tax_inclusive_flag,'?') and
 nvl(:p_calulate_tax_flag,'?') = nvl(:p_calulate_tax_flag,'?') and
 nvl(:p_gl_date,sysdate) = nvl(:p_gl_date,sysdate) and
 nvl(:p_submit_validation,'N') = nvl(:p_submit_validation,'N') and
+nvl(:p_default_taxation_country,'XX') = nvl(:p_default_taxation_country,'XX') and
 1=0
 &not_use_first_block
 &processed_run_query

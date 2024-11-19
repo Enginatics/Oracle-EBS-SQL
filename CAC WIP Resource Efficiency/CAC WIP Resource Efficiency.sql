@@ -44,8 +44,29 @@ Ledger:  Specific ledger you wish to report (optional)
 -- Library Link: https://www.enginatics.com/reports/cac-wip-resource-efficiency/
 -- Run Report: https://demo.enginatics.com/
 
-with wdj0 as
- (select wdj.wip_entity_id,
+with wdj00 as
+( select /*+ materialize */ wdj.wip_entity_id,min(wt.transaction_date) transaction_date
+  from wip_discrete_jobs wdj,
+  org_acct_periods oap,
+  mtl_parameters mp,
+  wip_accounting_classes wac,
+  wip_transactions wt
+  where wdj.class_code = wac.class_code
+  and wdj.organization_id = wac.organization_id
+  and wac.class_type in (1,3,5)
+  and oap.organization_id             = wdj.organization_id
+  and mp.organization_id              = wdj.organization_id
+  and wt.wip_entity_id=wdj.wip_entity_id 
+  and wt.resource_id is not null
+  and wt.transaction_date < oap.schedule_close_date + 1
+  and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
+  and 2=2                             -- p_org_code
+  and 3=3                             -- p_assembly_number
+  and 4=4                             -- p_period_name, p_wip_job, wip_status, p_wip_class_code
+  group by wdj.wip_entity_id
+),
+ wdj0 as
+ (select /*+ materialize */ wdj.wip_entity_id,
   wdj.organization_id,
   wdj.class_code,
   wdj.creation_date,
@@ -88,16 +109,20 @@ with wdj0 as
   from wip_discrete_jobs wdj,
   org_acct_periods oap,
   mtl_parameters mp,
-  wip_accounting_classes wac
+  wip_accounting_classes wac,
+  wdj00
   where wdj.class_code = wac.class_code
   and wdj.organization_id = wac.organization_id
   and wac.class_type in (1,3,5)
+  and wdj.wip_entity_id=wdj00.wip_entity_id(+)
   and oap.organization_id             = wdj.organization_id
   and mp.organization_id              = wdj.organization_id
   -- find jobs that were open or closed during or after the report period
   -- the job is open or opened before the period close date
   and ( (wdj.date_closed is null -- the job is open
-     and wdj.creation_date <  oap.schedule_close_date + 1
+     and((wdj.creation_date <  oap.schedule_close_date + 1 and not exists (select null from wip_transactions wt where wt.wip_entity_id=wdj.wip_entity_id and wt.resource_id is not null))
+      or(wdj00.transaction_date<oap.schedule_close_date + 1)
+     )
      and :p_report_option in ('Open jobs', 'All jobs')    -- p_report_option
     )
     or -- the job is closed and ...the job was closed after the accounting period 
@@ -294,6 +319,7 @@ select res_sum.report_type Report_Type,
  res_sum.resource_code Resource_Code,
  -- Revision for version 1.22
  res_sum.description Resource_Description,
+ xxen_util.meaning(res_sum.transaction_type,'WIP_TRANSACTION_TYPE',700) transaction_type_name,
  -- Revision for version 1.25
  ml5.meaning Auto_Charge,
  ml6.meaning Std_Rate,
@@ -474,6 +500,7 @@ from mtl_system_items_vl msiv_fg,
   max(res.line_num) line_num,
   max(res.release_num) release_num,
   max(res.purchase_item_id) purchase_item_id,
+  min(res.transaction_type)transaction_type,
   res.department_id,
   -- Revision for version 1.22
   1 level_num,
@@ -550,6 +577,7 @@ from mtl_system_items_vl msiv_fg,
     -- Revision for version 1.25
     wor.autocharge_type,
     wor.standard_rate_flag,
+    wt.transaction_type,
     poh.currency_code po_currency_code,
     -- End revision for version 1.25
     br.unit_of_measure res_unit_of_measure,
@@ -650,6 +678,7 @@ from mtl_system_items_vl msiv_fg,
     wip_operation_resources wor,
     wip_repetitive_schedules wrs,
     bom_resources br,
+    wip_transactions wt,
     po_headers_all poh,
     po_lines_all pol,
     po_line_locations_all pll,
@@ -791,6 +820,10 @@ from mtl_system_items_vl msiv_fg,
     and wrs.organization_id(+)= wor.organization_id
     and wrs.wip_entity_id(+)= wor.wip_entity_id
     and wrs.repetitive_schedule_id(+)= wor.repetitive_schedule_id
+    and wor.wip_entity_id=wt.wip_entity_id(+)
+    and wor.resource_id=wt.resource_id(+)
+    and wor.operation_seq_num=wt.operation_seq_num(+)
+    and wor.resource_seq_num=wt.resource_seq_num(+)
     and 8=8                       -- p_resource_code
     union all
     -- =======================================================
@@ -842,39 +875,11 @@ from mtl_system_items_vl msiv_fg,
     -- Revision for version 1.25
     wor.autocharge_type,
     wor.standard_rate_flag,
+    wt.transaction_type,
     null po_currency_code,
     -- End revision for version 1.25
     br.unit_of_measure res_unit_of_measure,
     0 po_unit_price,
     -- Revision for version 1.22
     crc.cost_type,
-    nvl(crc.resource_rate,0) resource_rate,
-    -- End revision for version 1.22
-    nvl(wor.usage_rate_or_amount,0) usage_rate_or_amount,
-    -- Revision for version 1.22
-    -- For 'Complete', 'Complete - No Charges', 'Cancelled', 'Closed', 'Pending Close' and 'Failed Close'
-    -- use the completions plus scrap quantities unless for lot-based jobs
-    nvl(round(case when wdj.status_type in (4,5,7,12,14,15) then
-     decode(wor.basis_type,
-      2, nvl(wor.usage_rate_or_amount,0),                                                     -- Lot
-         nvl(wor.usage_rate_or_amount,0)                                                      -- Any other basis
-         -- Use the logic in wip_operation_resources_v as the same is used in Oracle forms to derive total_required_quantity
-         * decode(wor.repetitive_schedule_id,
-           null,
-           wdj.start_quantity - decode(:p_include_scrap, 'N', 0, null, 0, nvl(wo.cumulative_scrap_quantity, 0)),
-           wrs.daily_production_rate * wrs.processing_work_days
-           )
-            ) else
-     -- else use the start quantity times the usage rate or amount
-     decode(:p_use_completion_qtys,
-      'Y', decode(wor.basis_type,
-        2, nvl(wor.usage_rate_or_amount,0),                                                     -- Lot
-           nvl(wor.usage_rate_or_amount,0)                                                      -- Any other basis
-         * decode(wdj.class_type,
-           5, nvl(wdj.quantity_completed, 0),
-              nvl(wdj.quantity_completed, 0) + decode(:p_include_scrap, 'N', 0, null, 0, nvl(wdj.quantity_scrapped, 0))
-          )
-          ),
-      -- Revision for version 1.24
-      'N', decode(wor.basis_type,
-        2, nvl(w
+    nvl(crc.resource_rate,
