@@ -44,6 +44,7 @@ decode(mmt.transaction_source_type_id,
  12,mkts.concatenated_segments,
     mmt.transaction_source_name
 )  transaction_source,
+poh.comments po_description,
 mmt.transaction_reference,
 mtr.reason_name reason,
 decode(:p_rpt_uom,

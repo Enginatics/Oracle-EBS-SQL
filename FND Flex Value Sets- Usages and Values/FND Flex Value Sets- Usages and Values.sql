@@ -36,7 +36,7 @@ ffvt.meaning_column_size,
 ffvt.id_column_name,
 xxen_util.meaning(ffvt.id_column_type,'COLUMN_TYPE',0) id_column_type,
 ffvt.id_column_size,
-xxen_util.long_to_clob('fnd_flex_validation_tables','additional_where_clause',ffvt.rowid) where_order_by,
+&additional_where_clause where_order_by,
 ffvt.additional_quickpick_columns additional_columns,
 &lov_query
 xxen_util.user_name(ffvs.created_by) created_by,

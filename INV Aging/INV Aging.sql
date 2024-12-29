@@ -10,6 +10,13 @@ NOTES:
 This report will only run for clients running R12.2.8 or later.
 This report requires the profile 'INV: FIFO for Original Receipt Date' to be set to Yes in order to return data.
 
+For customers encountering an error running this Blitz report, please first verify the Oracle standard report Inventory Aging Report(XML) can be run in the same instance.
+If the standard Oracle report does not complete successfully, or returns no data, then you will need apply a patch in order to use this report.
+
+Please refer to the following My Oracle Support documents for the related patches:
+Does the Inventory Aging Report Work for Process Manufacturing (OPM) Organizations? (Doc ID 2914438.1) refers to one off Patch 28858086:R12.INV.C in order to use the Inventory Aging Report.
+Inventory Aging Report (XML) Does Not Show Correct Quantity In The Age Buckets For Few Items (Doc ID 2880403.1) refers to Patch 33663520:R12.INV.C for the latest bug fixes for the Inventory Aging Report.
+
 Imported from BI Publisher
 Application: Inventory
 Source: Inventory Aging Report(XML)

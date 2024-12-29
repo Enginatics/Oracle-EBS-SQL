@@ -34,6 +34,7 @@ The report parameter Upload mode determines the allowable action to be taken aga
 
 The report parameter Auto Populate Release Status  if set to Yes, will automatically populate the 'Update Release Status' column and set the status to pending validation against all downloaded plan order recommendations in the generated excel. 
 In this scenario, the generated excel can be saved and uploaded without the user needing to manually review and select the specific plan orders to be updated in the generated excel
+
 -- Excel Examle Output: https://www.enginatics.com/example/msc-plan-order-upload/
 -- Library Link: https://www.enginatics.com/reports/msc-plan-order-upload/
 -- Run Report: https://demo.enginatics.com/

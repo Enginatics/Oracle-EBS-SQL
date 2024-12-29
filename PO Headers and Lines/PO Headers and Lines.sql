@@ -650,7 +650,8 @@ ap_invoice_lines_all aila,
 ap_invoices_all aia
 where
 x.line_location_id=aila.po_line_location_id(+) and
-nvl(aila.discarded_flag(+),'N') = 'N' and
+(x.rcv_transaction_id=aila.rcv_transaction_id or x.rcv_transaction_id is null or aila.rcv_transaction_id is null) and
+nvl(aila.discarded_flag(+),'N')='N' and
 aila.invoice_id=aia.invoice_id(+)
 order by
 x.operating_unit,

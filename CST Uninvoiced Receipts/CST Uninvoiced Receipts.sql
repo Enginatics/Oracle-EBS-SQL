@@ -54,6 +54,8 @@ select
   when q.ship_qty_accrued = 0 then round(q.func_unit_price,q.po_func_precision)
  end                      ship_functional_unit_price,
  q.bill_of_lading,
+ q.receipt_num,
+ q.receipt_date,
  -- distribution
  q.distribution_num,
  q.uom_code,
@@ -143,6 +145,15 @@ from
            rt.transaction_date <= :p_end_date
        ) age_in_days,
        ( select
+           trunc(max(rt.transaction_date))
+         from
+           rcv_transactions rt
+         where
+           rt.po_line_location_id = cpea.shipment_id and
+           rt.transaction_type IN ('RECEIVE','MATCH') and
+           rt.transaction_date <= :p_end_date
+       ) receipt_date,
+       ( select
            listagg(rsh.bill_of_lading,',') within group (order by rsh.bill_of_lading)
          from
           ( select distinct
@@ -159,7 +170,26 @@ from
           ) rsh
          where
            rsh.po_line_location_id = poll.line_location_id
-       ) bill_of_lading
+       ) bill_of_lading,
+       ( select
+           listagg(rsh.receipt_num,',') within group (order by rsh.shipment_header_id)
+         from
+          ( select distinct
+              rt.po_line_location_id,
+              rsh.receipt_num,
+              rsh.shipment_header_id
+            from
+              rcv_transactions rt,
+              rcv_shipment_headers rsh
+            where
+              rsh.shipment_header_id = rt.shipment_header_id and
+              rt.transaction_type IN ('RECEIVE','MATCH') and
+              rt.transaction_date <= :p_end_date and
+              rsh.receipt_num is not null
+          ) rsh
+         where
+           rsh.po_line_location_id = poll.line_location_id
+       ) receipt_num
       from
        cst_per_end_accruals_temp cpea,
        po_headers_all            poh,

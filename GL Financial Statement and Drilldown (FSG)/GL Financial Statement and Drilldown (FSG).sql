@@ -13,7 +13,7 @@ Key features include:
 4. Migration Tools: Converters are available to migrate reports from Oracle FSG, GL Wand, and Spreadsheet Server to this solution.
 
 For a quick demonstration, refer to our YouTube video.
-<a href="https://youtu.be/dsRWXT2bem8?si=bA8cAxuXjfrMI-SI" rel="nofollow" target="_blank">https://youtu.be/dsRWXT2bem8?si=bA8cAxuXjfrMI-SI</a>
+<a href="https://youtu.be/dsRWXT2bem8" rel="nofollow" target="_blank">https://youtu.be/dsRWXT2bem8</a>
 
 Important: Please do not delete the "Financial Statement Generator" sheet or modify the Advanced Custom Properties in the Excel output, as these are essential for the proper functioning of the report.
 -- Excel Examle Output: https://www.enginatics.com/example/gl-financial-statement-and-drilldown-fsg/
@@ -92,7 +92,8 @@ select
 :document_number,
 :posting_status,
 :fund_status,
-:created_by
+:created_by,
+:effective_date
 from
 dual
 where

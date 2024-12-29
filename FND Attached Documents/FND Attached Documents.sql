@@ -101,7 +101,7 @@ fdd.user_name data_type,
 decode(fd.datatype_id,5,&url_column,nvl(fl.file_name,fd.file_name)) name,
 &url_text
 fdn.short_name location,
-decode(fd.datatype_id,1,to_clob(fdst.short_text),2,xxen_util.long_to_clob('FND_DOCUMENTS_LONG_TEXT','LONG_TEXT',fdlt.rowid)) text,
+decode(fd.datatype_id,1,to_clob(fdst.short_text),2,fdlt.long_text) text,
 length(fl.file_data) file_size,
 fl.file_content_type content_type,
 lower(fl.file_format) file_format,

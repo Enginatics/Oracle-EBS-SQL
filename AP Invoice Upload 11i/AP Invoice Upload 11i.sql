@@ -120,7 +120,7 @@ aida.amount_includes_tax_flag,
 aida.reference_1 line_reference_1,
 aida.reference_2 line_reference_2,
 --
-aia.attribute_category invoice_attribute_category,
+xxen_util.display_flexfield_context(200,'AP_INVOICES',aia.attribute_category) invoice_attribute_category,
 xxen_util.display_flexfield_value(200,'AP_INVOICES',aia.attribute_category,'ATTRIBUTE1',aia.rowid,aia.attribute1) ap_inv_attribute1,
 xxen_util.display_flexfield_value(200,'AP_INVOICES',aia.attribute_category,'ATTRIBUTE2',aia.rowid,aia.attribute2) ap_inv_attribute2,
 xxen_util.display_flexfield_value(200,'AP_INVOICES',aia.attribute_category,'ATTRIBUTE3',aia.rowid,aia.attribute3) ap_inv_attribute3,

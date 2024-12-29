@@ -47,7 +47,15 @@ pvsa.email_address,
 nvl(pvsa.terms_date_basis,pv.terms_date_basis) terms_date_basis,
 nvl(pvsa.pay_group_lookup_code,pv.pay_group_lookup_code) pay_group,
 nvl(att1.name,att0.name) payment_terms,
-xxen_util.meaning(nvl(pvsa.pay_date_basis_lookup_code,pv.pay_date_basis_lookup_code),'PAY DATE BASIS',201) pay_date_basis
+xxen_util.meaning(nvl(pvsa.pay_date_basis_lookup_code,pv.pay_date_basis_lookup_code),'PAY DATE BASIS',201) pay_date_basis,
+xxen_util.client_time(pv.creation_date) supplier_creation_date,
+xxen_util.user_name(pv.created_by) supplier_created_by,
+xxen_util.client_time(pv.last_update_date) supplier_last_update_date,
+xxen_util.user_name(pv.last_updated_by) supplier_last_updated_by,
+xxen_util.client_time(pvsa.creation_date) site_creation_date,
+xxen_util.user_name(pvsa.created_by) site_created_by,
+xxen_util.client_time(pvsa.last_update_date) site_last_update_date,
+xxen_util.user_name(pvsa.last_updated_by) site_last_updated_by
 &contacts_columns
 from
 hr_all_organization_units_vl haouv,

@@ -43,8 +43,8 @@ x.header_status,
 x.currency,
 x.subtotal,
 x.tax,
-nvl(x.line_charges_total,0)+nvl(x.header_charges,0) charges,
-nvl(x.subtotal,0)+nvl(x.tax,0)+nvl(x.line_charges_total,0)+nvl(x.header_charges,0) total,
+nvl(x.line_charges_total,0) + nvl(x.header_charges,0) charges,
+nvl(x.subtotal,0) + nvl(x.tax,0) + nvl(x.line_charges_total,0) + nvl(x.header_charges,0) total,
 x.payment_terms,
 x.invoice_class,
 x.invoice_type,
@@ -52,10 +52,10 @@ x.invoice_number,
 x.invoice_date,
 x.invoice_gl_date,
 x.invoice_status,
-x.invoice_line,
-x.invoice_amount,
 x.invoice_currency,
-x.invoice_accounted_amount,
+x.invoice_line,
+case when row_number() over (partition by x.line_id order by wnd.name nulls last) = 1 then x.invoice_amount else null end invoice_amount,
+case when row_number() over (partition by x.line_id order by wnd.name nulls last) = 1 then x.invoice_accounted_amount else null end invoice_accounted_amount,
 x.warehouse,
 x.shipping_method,
 x.line_set,
@@ -72,34 +72,34 @@ x.cancelled_flag,
 x.cancel_date,
 x.cancelled_by,
 x.cancel_reason,
-x.cancelled_quantity,
-x.cancelled_amount,
+case when row_number() over (partition by x.line_id order by wnd.name nulls last) = 1 then x.cancelled_quantity else null end cancelled_quantity,
+case when row_number() over (partition by x.line_id order by wnd.name nulls last) = 1 then x.cancelled_amount else null end cancelled_amount,
 x.item,
 x.description,
 x.item_type,
 &category_columns
-x.quantity,
 x.uom,
 x.list_price,
 x.discounted_price,
 x.unit_selling_price,
-x.extended_price,
-x.line_charges,
+case when row_number() over (partition by x.line_id order by wnd.name nulls last) = 1 then x.quantity else null end quantity,
+case when row_number() over (partition by x.line_id order by wnd.name nulls last) = 1 then x.extended_price else null end extended_price,
+case when row_number() over (partition by x.line_id order by wnd.name nulls last) = 1 then x.line_charges else null end line_charges,
+case when row_number() over (partition by x.line_id order by wnd.name nulls last) = 1 then x.tax_amount else null end tax_amount,
 x.tax_code,
-x.tax_amount,
 x.calculate_price_flag,
-x.pricing_quantity,
+case when row_number() over (partition by x.line_id order by wnd.name nulls last) = 1 then x.pricing_quantity else null end pricing_quantity,
 x.pricing_uom,
 x.pricing_date,
 x.request_date,
 x.promise_date,
 x.schedule_ship_date,
 x.actual_shipment_date,
-x.shipped_quantity,
+case when row_number() over (partition by x.line_id order by wnd.name nulls last) = 1 then x.shipped_quantity else null end shipped_quantity,
 x.shippable_flag,
 x.ship_set,
-x.delivery,
-x.next_step,
+wnd.name delivery,
+wda.next_step,
 x.project,
 x.task,
 &dff_columns2
@@ -123,10 +123,10 @@ x.order_date_type_code,
 x.split_line,
 x.orig_line_id,
 x.orig_line_promise_date,
-x.orig_line_quantity,
+case when row_number() over (partition by x.line_id order by wnd.name nulls last) = 1 and x.line_id = x.orig_line_id then x.orig_line_quantity else null end orig_line_quantity,
 x.orig_line_delivery_lead_time,
 x.orig_line_actual_shipment_date,
-x.orig_line_tot_shipped_quantity,
+case when row_number() over (partition by x.line_id order by wnd.name nulls last) = 1 and x.line_id = x.orig_line_id then x.orig_line_tot_shipped_quantity else null end orig_line_tot_shipped_quantity,
 nvl(xxen_util.meaning(x.deliv_in_full,'YES_NO',0),'N/A') line_dif,
 nvl(xxen_util.meaning(x.deliv_on_time,'YES_NO',0),'N/A') line_dot,
 nvl(xxen_util.meaning(decode(x.deliv_in_full||x.deliv_on_time,null,null,'YY','Y','N'),'YES_NO',0),'N/A') line_difot,
@@ -159,9 +159,9 @@ oos.name order_source,
 ooha.orig_sys_document_ref order_source_reference,
 xxen_util.meaning(ooha.flow_status_code,'FLOW_STATUS',660) header_status,
 ooha.transactional_curr_code currency,
-sum(decode(oola.cancelled_flag,'N',oola.extended_price)) over (partition by oola.header_id) subtotal,
-sum(decode(oola.cancelled_flag,'N',oola.tax_amount)) over (partition by oola.header_id) tax,
-sum(decode(oola.cancelled_flag,'N',oola.line_charges)) over (partition by oola.header_id) line_charges_total,
+oola.ord_subtotal subtotal,
+oola.ord_tax tax,
+oola.ord_line_charges_total line_charges_total,
 (select sum(decode(opa.credit_or_charge_flag,'C',-1,1)*opa.operand) from oe_price_adjustments opa where ooha.header_id=opa.header_id and opa.line_id is null and opa.list_line_type_code='FREIGHT_CHARGE' and opa.applied_flag='Y') header_charges,
 (select rtv.name from ra_terms_vl rtv where nvl(oola.payment_term_id,ooha.payment_term_id)=rtv.term_id) payment_terms,
 xxen_util.meaning(max(rctta.type) keep (dense_rank last order by rcta.customer_trx_id) over (partition by rctla.interface_line_attribute6),'INV/CM/ADJ',222) invoice_class,
@@ -210,8 +210,6 @@ xxen_util.client_time(oola.actual_shipment_date) actual_shipment_date,
 oola.shipped_quantity,
 xxen_util.meaning(decode(oola.shippable_flag,'Y','Y'),'YES_NO',0) shippable_flag,
 (select distinct listagg(os.set_name,', ') within group (order by os.set_name) over (partition by oola.line_id) set_name from oe_sets os where oola.ship_set_id=os.set_id) ship_set,
-wnd.name delivery,
-wda.next_step,
 xxen_util.meaning(case when ooha.cancelled_flag='Y' or oola.cancelled_flag='Y' then 'Y' end,'YES_NO',0) cancelled_flag,
 xxen_util.client_time(oolh.hist_creation_date) cancel_date,
 xxen_util.user_name(oolh.hist_created_by) cancelled_by,
@@ -252,16 +250,16 @@ case when oola.ordered_quantity>0 and oola.is_shippable='Y' then greatest(trunc(
 case when oola.ordered_quantity>0 and oola.is_shippable='Y' then greatest(oola.ordered_quantity-nvl(oola.shipped_quantity,0),0) end line_quantity_short,
 coalesce(oolh2.delivery_lead_time,oola2.delivery_lead_time,oola.delivery_lead_time,0) orig_line_delivery_lead_time,
 xxen_util.client_time(trunc(coalesce(oolh2.promise_date,oola2.promise_date,oola.promise_date))) orig_line_promise_date,
-sum(oola.ordered_quantity) over (partition by oola.orig_line_id_) orig_line_quantity,
+oola.orig_line_quantity,
 xxen_util.client_time(trunc(coalesce(oolh2.actual_shipment_date,oola2.actual_shipment_date,oola.actual_shipment_date))) orig_line_actual_shipment_date,
-sum(oola.shipped_quantity) over (partition by oola.orig_line_id_) orig_line_tot_shipped_quantity,
+oola.orig_line_tot_shipped_quantity,
 case
-when sum(oola.ordered_quantity) over (partition by oola.orig_line_id_)<=0 or oola.is_shippable='N' then null
-when sum(oola.ordered_quantity) over (partition by oola.orig_line_id_)<=nvl(sum(oola.shipped_quantity) over (partition by oola.orig_line_id_),0) then 'Y'
+when oola.orig_line_quantity<=0 or oola.is_shippable='N' then null
+when oola.orig_line_quantity<=nvl(oola.orig_line_tot_shipped_quantity,0) then 'Y'
 else 'N'
 end deliv_in_full,
 case
-when sum(oola.ordered_quantity) over (partition by oola.orig_line_id_)<=0 or oola.is_shippable='N' then null
+when oola.orig_line_quantity<=0 or oola.is_shippable='N' then null
 when trunc(coalesce(oolh2.actual_shipment_date,oola2.actual_shipment_date,oola.actual_shipment_date,coalesce(oolh2.promise_date,oola2.promise_date,oola.promise_date)+1))
      + decode(nvl(ooha.order_date_type_code,'SHIP'),'SHIP',0,nvl(coalesce(oolh2.delivery_lead_time,oola2.delivery_lead_time,oola.delivery_lead_time),0))
      <= trunc(coalesce(oolh2.promise_date,oola2.promise_date,oola.promise_date))
@@ -276,6 +274,11 @@ oe_order_headers_all ooha,
 (
 select
 nvl(oola.orig_line_id,oola.line_id) orig_line_id_,
+sum(oola.ordered_quantity) over (partition by nvl(oola.orig_line_id,oola.line_id)) orig_line_quantity,
+sum(oola.shipped_quantity) over (partition by nvl(oola.orig_line_id,oola.line_id)) orig_line_tot_shipped_quantity,
+sum(decode(oola.cancelled_flag,'N',oola.extended_price)) over (partition by oola.header_id) ord_subtotal,
+sum(decode(oola.cancelled_flag,'N',oola.tax_amount)) over (partition by oola.header_id) ord_tax,
+sum(decode(oola.cancelled_flag,'N',oola.line_charges)) over (partition by oola.header_id) ord_line_charges_total,
 oola.*
 from
 (
@@ -321,19 +324,6 @@ jtf_rs_salesreps jrs,
 jtf_rs_salesreps jrs2,
 jtf_rs_resource_extns_vl jrrev,
 jtf_rs_resource_extns_vl jrrev2,
-(
-select distinct
-wdd.source_line_id,
-wda.delivery_id,
-xxen_util.wsh_next_step(wdd.container_flag,wdd.released_status,wdd.source_code,wdd.inv_interfaced_flag,wdd.oe_interfaced_flag,wdd.client_id,wdd.replenishment_status,wdd.move_order_line_id) next_step
-from
-wsh_delivery_details wdd,
-wsh_delivery_assignments wda
-where
-wdd.source_code='OE' and
-wdd.delivery_detail_id=wda.delivery_detail_id
-) wda,
-wsh_new_deliveries wnd,
 (
 select ppa.project_id, ppa.segment1 project_number from pa_projects_all ppa union
 select psm.project_id, psm.project_number from pjm_seiban_numbers psm
@@ -382,8 +372,6 @@ oola.ship_from_org_id=msiv.organization_id(+) and
 ooha.salesrep_id=jrs.salesrep_id(+) and
 ooha.org_id=jrs.org_id(+) and
 jrs.resource_id=jrrev.resource_id(+) and
-oola.line_id=wda.source_line_id(+) and
-wda.delivery_id=wnd.delivery_id(+) and
 oola.project_id=ppa.project_id(+) and
 oola.task_id=pt.task_id(+) and
 to_char(oola.line_id)=rctla.interface_line_attribute6(+) and
@@ -401,6 +389,19 @@ oolh.reason_id=oer.reason_id(+) and
 oola.orig_line_id=oola2.line_id(+) and
 oola.orig_line_id=oolh2.line_id(+)
 ) x,
+(
+select distinct
+wdd.source_line_id,
+wda.delivery_id,
+xxen_util.wsh_next_step(wdd.container_flag,wdd.released_status,wdd.source_code,wdd.inv_interfaced_flag,wdd.oe_interfaced_flag,wdd.client_id,wdd.replenishment_status,wdd.move_order_line_id) next_step
+from
+wsh_delivery_details wdd,
+wsh_delivery_assignments wda
+where
+wdd.source_code='OE' and
+wdd.delivery_detail_id=wda.delivery_detail_id
+) wda,
+wsh_new_deliveries wnd,
 hz_cust_site_uses_all hcsua1,
 hz_cust_site_uses_all hcsua2,
 hz_cust_acct_sites_all hcasa1,
@@ -416,6 +417,8 @@ hz_locations hl2,
 fnd_territories_vl ftv1,
 fnd_territories_vl ftv2
 where
+x.line_id=wda.source_line_id(+) and
+wda.delivery_id=wnd.delivery_id(+) and
 x.ship_to_org_id=hcsua1.site_use_id(+) and
 x.invoice_to_org_id=hcsua2.site_use_id(+) and
 hcsua1.cust_acct_site_id=hcasa1.cust_acct_site_id(+) and
@@ -438,4 +441,5 @@ x.line_number,
 x.shipment_number,
 nvl(x.option_number,-1),
 nvl(x.component_number,-1),
-nvl(x.service_number,-1)
+nvl(x.service_number,-1),
+wnd.name nulls last

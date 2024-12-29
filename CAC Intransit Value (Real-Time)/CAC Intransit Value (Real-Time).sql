@@ -54,6 +54,7 @@
 -- |                                     from mtl_supply; if you change the shipping 
 -- |                                     network FOB Point and you can no longer get
 -- |                                     the FOB Point from cst_intransit_value_view.
+-- |  1.12    27 Nov 2024 Eric Clegg. Added Minimum Absolute Intransit Quantity parameter
 -- +=============================================================================+*/
 -- Excel Examle Output: https://www.enginatics.com/example/cac-intransit-value-real-time/
 -- Library Link: https://www.enginatics.com/reports/cac-intransit-value-real-time/
@@ -233,7 +234,8 @@ group by
  -- Needed for category column inline selects
  msiv.inventory_item_id,
  msiv.organization_id
--- order by ledger, owning org, operating unit, from org, to org, account segments and aging date 
+-- order by ledger, owning org, operating unit, from org, to org, account segments and aging date
+ &lp_min_intransit_qty_clause 
 order by
  nvl(gl.short_name, gl.name), -- Ledger
  haou2.name, -- Operating_Unit

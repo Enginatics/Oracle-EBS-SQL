@@ -86,18 +86,23 @@ with wdj00 as
   wdj.resource_account,
   wdj.outside_processing_account,
   -- End revision for version 1.22
+  wdj.material_overhead_account,
+  wdj.overhead_account,
   wdj.quantity_completed,
   wdj.quantity_scrapped,
   oap.period_start_date,
   oap.schedule_close_date,
   oap.period_name,
   -- Revision for version 1.22
-  (case
-     when wdj.date_closed >= oap.period_start_date then 'Variance'
-     -- the job is open
-     when wdj.date_closed is null and wdj.creation_date < oap.schedule_close_date + 1 then 'Valuation'
-     -- the job is closed and ...the job was closed after the accounting period
-     when wdj.date_closed is not null and wdj.date_closed >= oap.schedule_close_date + 1 then 'Valuation'
+  (case when wdj.date_closed >= oap.period_start_date and wdj.date_closed < oap.schedule_close_date + 1 
+   then 'Variance'
+   -- the job is open
+   when wdj.date_closed is null and((wdj.creation_date <  oap.schedule_close_date + 1 and not exists(select null from wip_transactions wt where wt.wip_entity_id=wdj.wip_entity_id and wt.resource_id is not null))
+                                    or(wdj00.transaction_date<oap.schedule_close_date + 1))
+   then 'Valuation'
+   -- the job is closed and ...the job was closed after the accounting period
+   when wdj.date_closed is not null and wdj.date_closed >= oap.schedule_close_date + 1 
+   then 'Valuation'
    end
   ) Report_Type,
   -- End revision for version 1.22
@@ -128,6 +133,9 @@ with wdj00 as
     or -- the job is closed and ...the job was closed after the accounting period 
     (wdj.date_closed is not null
      and wdj.date_closed >= oap.schedule_close_date + 1
+     and((wdj.creation_date <  oap.schedule_close_date + 1 and not exists (select null from wip_transactions wt where wt.wip_entity_id=wdj.wip_entity_id and wt.resource_id is not null))
+      or(wdj00.transaction_date<oap.schedule_close_date + 1)
+     )
      and :p_report_option in ('Open jobs', 'All jobs')    -- p_report_option
     )
     or -- find jobs that were closed during the report period
@@ -161,6 +169,8 @@ wdj as
   -- Revision for version 1.22
   wdjsum.resource_account,
   wdjsum.outside_processing_account,
+  wdjsum.material_overhead_account,
+  wdjsum.overhead_account,
   -- End revision for version 1.22
   wdjsum.period_start_date,
   wdjsum.schedule_close_date,
@@ -198,6 +208,8 @@ wdj as
    -- Revision for version 1.22
    wdj0.resource_account,
    wdj0.outside_processing_account,
+   wdj0.material_overhead_account,
+   wdj0.overhead_account,
    -- End revision for version 1.22
    decode(mmt.transaction_type_id,
     90, 0,                         -- scrap assemblies from wip
@@ -249,6 +261,8 @@ wdj as
   wdjsum.resource_account,
   wdjsum.outside_processing_account,
   -- End revision for version 1.22
+  wdjsum.material_overhead_account,
+  wdjsum.overhead_account,
   wdjsum.period_start_date,
   wdjsum.schedule_close_date,
   wdjsum.period_name,
@@ -261,9 +275,28 @@ wdj as
   wdjsum.class_type
  ),
 -- Revision for version 1.22
-wdj_assys as (select distinct wdj.primary_item_id, wdj.organization_id, wdj.primary_cost_method from wdj) 
+wdj_assys as (select distinct wdj.primary_item_id, wdj.organization_id, wdj.primary_cost_method from wdj),
+wdj_wip_trxn as
+(
+select 
+max(wt.transaction_date) transaction_date,
+wt.transaction_type,
+wt.resource_id,
+wt.operation_seq_num,
+wt.resource_seq_num,
+wt.wip_entity_id
+from wip_transactions wt,
+wdj00 wdj
+where wt.wip_entity_id=wdj.wip_entity_id and
+wt.resource_id is not null
+group by
+wt.resource_id,
+wt.operation_seq_num,
+wt.resource_seq_num,
+wt.wip_entity_id,
+wt.transaction_type
+)
 ----------------main query starts here--------------
-
 select res_sum.report_type Report_Type,
  nvl(gl.short_name, gl.name) Ledger,
  haou2.name Operating_Unit,
@@ -315,6 +348,7 @@ select res_sum.report_type Report_Type,
  decode(res_sum.release_num, 0, null, res_sum.release_num) PO_Release,
  bd.department_code Department,
  res_sum.operation_seq_num Operation_Seq_Number,
+ res_sum.operation_code,
  res_sum.resource_seq_num Resource_Seq_Number,
  res_sum.resource_code Resource_Code,
  -- Revision for version 1.22
@@ -331,6 +365,7 @@ select res_sum.report_type Report_Type,
  decode(res_sum.line_num, 0, null, res_sum.po_unit_price) PO_Unit_Price,
  res_sum.cost_type Resource_Cost_Type,
  -- Revision for version 1.21
+ nvl(xxen_util.meaning(res_sum.cost_element_id ,'CST_COST_CODE_TYPE',700),'No Cost') cost_element_type,
  gl.currency_code Currency_Code,
  res_sum.resource_rate Resource_Rate,
  res_sum.res_unit_of_measure Resource_UOM_Code, 
@@ -518,6 +553,8 @@ from mtl_system_items_vl msiv_fg,
   res.res_unit_of_measure,
   max(res.po_unit_price) po_unit_price,
   res.cost_type,
+  res.cost_element_id,
+  res.operation_code,
   res.resource_rate,
   sum(res.usage_rate_or_amount) usage_rate_or_amount,
   sum(res.total_req_quantity) total_req_quantity,
@@ -542,7 +579,17 @@ from mtl_system_items_vl msiv_fg,
     -- cct.cost_type primary_cost_type,
     wdj.primary_cost_method,
     -- End revision for version 1.22
-    wdj.outside_processing_account account,
+    --wdj.outside_processing_account account,
+    br.cost_element_id,
+    bso.operation_code,
+    decode(br.cost_element_id,
+           1, wdj.material_account,
+           2, wdj.material_overhead_account,
+           3, wdj.resource_account,
+           4, wdj.outside_processing_account,
+           5, wdj.overhead_account,
+            wdj.outside_processing_account
+           )account,
     wdj.class_code,
     wdj.class_type,
     wdj.wip_entity_id,
@@ -600,7 +647,7 @@ from mtl_system_items_vl msiv_fg,
            )
             ) else
      -- else use the start quantity times the usage rate or amount
-     decode(:p_use_completion_qtys,
+     decode(nvl(:p_use_completion_qtys,'N'),
       'Y', decode(wor.basis_type,
         2, nvl(wor.usage_rate_or_amount,0),                                                     -- Lot
            nvl(wor.usage_rate_or_amount,0)                                                      -- Any other basis
@@ -640,7 +687,7 @@ from mtl_system_items_vl msiv_fg,
            )
             ) else
      -- else use the start quantity times the usage rate or amount
-     decode(:p_use_completion_qtys,
+     decode(nvl(:p_use_completion_qtys,'N'),
       'Y', decode(wor.basis_type,
         2, nvl(wor.usage_rate_or_amount,0),                                                     -- Lot
            nvl(wor.usage_rate_or_amount,0)                                                      -- Any other basis
@@ -678,7 +725,8 @@ from mtl_system_items_vl msiv_fg,
     wip_operation_resources wor,
     wip_repetitive_schedules wrs,
     bom_resources br,
-    wip_transactions wt,
+    bom_standard_operations bso,
+    wdj_wip_trxn wt,
     po_headers_all poh,
     po_lines_all pol,
     po_line_locations_all pll,
@@ -824,62 +872,4 @@ from mtl_system_items_vl msiv_fg,
     and wor.resource_id=wt.resource_id(+)
     and wor.operation_seq_num=wt.operation_seq_num(+)
     and wor.resource_seq_num=wt.resource_seq_num(+)
-    and 8=8                       -- p_resource_code
-    union all
-    -- =======================================================
-    -- Section II.B. Non-OSP
-    -- Now get the non-OSP resource information
-    -- =======================================================
-   -- Revision for version 1.22
-    select 'II.B' section,
-    wdj.report_type,
-    wdj.period_name,
-    wdj.organization_code,
-    wdj.organization_id,
-    -- Revision for version 1.22
-    -- cct.cost_type primary_cost_type,
-    wdj.primary_cost_method,
-    -- End revision for version 1.22
-    wdj.resource_account account,
-    wdj.class_code,
-    wdj.class_type,
-    wdj.wip_entity_id,
-    wdj.project_id,
-    wdj.status_type,
-    wdj.primary_item_id,
-    -- Revision for version 1.22
-    wdj.lot_number,
-    -- Revision for version 1.21
-    wdj.creation_date,
-    wdj.scheduled_start_date,
-    -- End revision for version 1.21
-    wdj.date_released,
-    wdj.date_completed,
-    wdj.date_closed,
-    wdj.last_update_date,
-    wdj.start_quantity,
-    wdj.quantity_completed,
-    wdj.quantity_scrapped,
-    nvl(wdj.quantity_completed,0) + nvl(wdj.quantity_scrapped,0) fg_total_qty,
-    0 purchase_item_id,
-    0 po_header_id,
-    0 line_num,
-    0 release_num,
-    wo.department_id,
-    wo.operation_seq_num,
-    wor.resource_seq_num,
-    br.resource_code,
-    -- Revision for version 1.22
-    br.description,
-    wor.basis_type,
-    -- Revision for version 1.25
-    wor.autocharge_type,
-    wor.standard_rate_flag,
-    wt.transaction_type,
-    null po_currency_code,
-    -- End revision for version 1.25
-    br.unit_of_measure res_unit_of_measure,
-    0 po_unit_price,
-    -- Revision for version 1.22
-    crc.cost_type,
-    nvl(crc.resource_rate,
+    and

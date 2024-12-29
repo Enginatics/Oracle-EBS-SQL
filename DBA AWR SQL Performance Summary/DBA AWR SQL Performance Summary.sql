@@ -10,10 +10,9 @@ The report shows the summarized execution stats such as elapsed time and IO figu
 All IO figures are shown in MB.
 
 Parameter 'Level' can be switched to aggregate data either by Module or by individual SQL and to show summarised figures or to split them by day.
-Parameter 'Time Restriction' can be set to show either daytime or nightbatch figures only.
 
-For SQL IO tuning or database server load optimization, a sorting by IO is recommended to show the most IO intensive SQLs on top.
-Non server or SQL IO related performance bottlenecks, such as wait time caused by Network e.g. 'SQL*Net message from dblink', can be spotted when sorting by 'elapsed time' instead of IO.
+The default sorting shows the most CPU intensive SQLs on top, as the tuning goal is usually server load optimization.
+Other performance bottlenecks, such as wait times caused by Network e.g. 'SQL*Net message from dblink', can be spotted when sorting by 'elapsed time' instead of CPU.
 
 Columns:
 
@@ -29,6 +28,7 @@ Columns:
 -Time: Total elapsed time in a readable format split into days, hours, minutes and seconds
 -User Io Wait Time: Total elapsed time in seconds from wait event class 'User I/O'
 -Cpu Time: Total elapsed time in seconds that the SQL spent on CPU. High figures here usually indicate that massive amounts of data are read from the buffer cache
+-IO Factor: Indicates how much faster the query would execute without wait IO times or unlimited memory
 -Plsql Exec Time: Total elapsed time in seconds for PLSQL execution
 -Concurrency Wait Time: Total elapsed time in seconds from wait event class 'Concurrency' e.g. 'buffer busy waits' or 'enq: TX - index contention'
 -Application Wait Time: Total elapsed time in seconds from wait event class 'Application' e.g. 'enq: TX - row lock contention', an uncommitted session's update blocking another session.

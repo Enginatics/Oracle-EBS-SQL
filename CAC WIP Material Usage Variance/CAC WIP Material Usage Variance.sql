@@ -47,8 +47,30 @@ Ledger:  specific ledger (optional)
 -- Library Link: https://www.enginatics.com/reports/cac-wip-material-usage-variance/
 -- Run Report: https://demo.enginatics.com/
 
-with wdj0 as
-        (select wdj.wip_entity_id,
+with wdj00 as
+(      select /*+ materialize */ wdj.wip_entity_id,min(mmt.transaction_date) transaction_date
+       from wip_discrete_jobs wdj, 
+       org_acct_periods oap,
+       mtl_parameters mp,
+       wip_accounting_classes wac,
+       mtl_material_transactions mmt
+       where wdj.class_code=wac.class_code and
+       wdj.organization_id=wac.organization_id and
+       wac.class_type in (1,3,5) and
+       oap.organization_id= wdj.organization_id and
+       mp.organization_id= wdj.organization_id and
+       mmt.transaction_source_id=wdj.wip_entity_id and
+       mmt.transaction_source_type_id=5 and 
+       mmt.transaction_date >= oap.period_start_date and mmt.transaction_date < oap.schedule_close_date + 1 and
+       mmt.organization_id=mp.organization_id and
+       mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
+       2=2 and -- p_org_code
+       3=3 and -- p_assembly_number
+       4=4 -- p_period_name, p_wip_job, wip_status, p_wip_class_code
+       group by wdj.wip_entity_id
+),
+ wdj0 as
+ (        select /*+ materialize */ wdj.wip_entity_id,
                 wdj.organization_id,
                 wdj.class_code,
                 wdj.creation_date,
@@ -79,9 +101,10 @@ with wdj0 as
                 oap.period_name,
                 -- Revision for version 1.12
                 (case
-                   when wdj.date_closed >= oap.period_start_date then 'Variance'
+                   when wdj.date_closed >= oap.period_start_date and wdj.date_closed < oap.schedule_close_date + 1 then 'Variance'
                    -- the job is open
-                   when wdj.date_closed is null and wdj.creation_date < oap.schedule_close_date + 1 then 'Valuation'
+                   when wdj.date_closed is null and((wdj.creation_date <  oap.schedule_close_date + 1 and not exists (select null from mtl_material_transactions mmt where mmt.transaction_source_id=wdj.wip_entity_id and mmt.transaction_source_type_id=5 and mmt.organization_id=mp.organization_id))
+                   or(wdj00.transaction_date<oap.schedule_close_date + 1)) then 'Valuation'
                    -- the job is closed and ...the job was closed after the accounting period
                    when wdj.date_closed is not null and wdj.date_closed >= oap.schedule_close_date + 1 then 'Valuation'
                  end
@@ -96,7 +119,8 @@ with wdj0 as
                 org_acct_periods oap,
                 mtl_parameters mp,
                 wip_accounting_classes wac,
-                mtl_system_items_vl msiv
+                mtl_system_items_vl msiv,
+                wdj00
          where  wdj.class_code = wac.class_code
          and    wdj.organization_id = wac.organization_id
          and    wac.class_type in (1,3,5)
@@ -104,20 +128,29 @@ with wdj0 as
          and    mp.organization_id              = wdj.organization_id
          and    msiv.organization_id            = wdj.organization_id
          and    msiv.inventory_item_id          = wdj.primary_item_id
+         and    wdj.wip_entity_id=wdj00.wip_entity_id(+)
          -- find jobs that were open or closed during or after the report period
                 -- the job is open or opened before the period close date
-         and    (wdj.date_closed is null -- the job is open
-                 and wdj.creation_date <  oap.schedule_close_date + 1
-                 and :p_report_option in ('Open jobs', 'All jobs')    -- p_report_option
-                  or -- the job is closed and ...the job was closed after the accounting period 
-                 wdj.date_closed is not null
-                 and wdj.date_closed >= oap.schedule_close_date + 1
-                 and :p_report_option in ('Open jobs', 'All jobs')    -- p_report_option
-                  or -- find jobs that were closed during the report period
-                 wdj.date_closed >= oap.period_start_date
-                 and wdj.date_closed < oap.schedule_close_date + 1
-                 and :p_report_option in ('Closed jobs', 'All jobs')  -- p_report_option
-                )
+         and ( (wdj.date_closed is null -- the job is open
+            and((wdj.creation_date <  oap.schedule_close_date + 1 and not exists (select null from mtl_material_transactions mmt where mmt.transaction_source_id=wdj.wip_entity_id and mmt.transaction_source_type_id=5 and mmt.organization_id=mp.organization_id))
+                or(wdj00.transaction_date<oap.schedule_close_date + 1)
+               )
+            and :p_report_option in ('Open jobs', 'All jobs')    -- p_report_option
+               )
+             or -- the job is closed and ...the job was closed after the accounting period 
+            (wdj.date_closed is not null
+            and wdj.date_closed >= oap.schedule_close_date + 1
+            and((wdj.creation_date <  oap.schedule_close_date + 1 and not exists (select null from mtl_material_transactions mmt where mmt.transaction_source_id=wdj.wip_entity_id and mmt.transaction_source_type_id=5 and mmt.organization_id=mp.organization_id))
+            or(wdj00.transaction_date<oap.schedule_close_date + 1)
+            )
+            and :p_report_option in ('Open jobs', 'All jobs')    -- p_report_option
+            )
+             or -- find jobs that were closed during the report period
+            (wdj.date_closed >= oap.period_start_date
+            and wdj.date_closed < oap.schedule_close_date + 1
+            and :p_report_option in ('Closed jobs', 'All jobs')  -- p_report_option
+            )
+           )
          and    2=2                             -- p_org_code
          and    3=3                             -- p_assembly_number
          and    4=4                             -- p_period_name, p_wip_job, wip_status, p_wip_class_code
@@ -371,62 +404,57 @@ cic_comp as
                 cic.last_update_date,
                 cct.cost_type_id,
                 cct.cost_type,
-                sum(case
-                       when cicd.level_type = 1 and cicd.cost_element_id = 1 and cicd.basis_type = 2 then 1 -- material lot basis type
-                       when cicd.level_type = 1 and cicd.cost_element_id = 2 and cicd.basis_type = 2 then 1 -- moh lot basis type
-                       when cicd.level_type = 2 and cicd.basis_type = 2 then 1 -- previous level lot basis type
-                       else 0
-                    end) lot_basis_type,
-                sum(case
-                       when cicd.level_type = 1 and cicd.cost_element_id = 1 and cicd.basis_type = 2 then cicd.item_cost -- material lot basis cost
-                       when cicd.level_type = 1 and cicd.cost_element_id = 2 and cicd.basis_type = 2 then cicd.item_cost -- moh lot basis cost
-                       when cicd.level_type = 2 and cicd.basis_type = 2 then cicd.item_cost -- previous level lot basis cost
-                       else 0
-                    end) lot_basis_cost,
-                sum(case
-                       when cicd.level_type = 1 and cicd.cost_element_id = 1 and cicd.basis_type = 2 then 0 -- material item basis type
-                       when cicd.level_type = 1 and cicd.cost_element_id = 2 and cicd.basis_type = 2 then 0 -- moh item basis type
-                       when cicd.level_type = 2 and cicd.basis_type = 2 then 0 -- previous level item basis type
-                       else 1
-                    end) item_basis_type,
-                sum(case
-                       when cicd.level_type = 1 and cicd.cost_element_id = 1 and cicd.basis_type = 2 then 0 -- material item basis cost
-                       when cicd.level_type = 1 and cicd.cost_element_id = 2 and cicd.basis_type = 2 then 0 -- moh item basis cost
-                       when cicd.level_type = 2 and cicd.basis_type = 2 then 0 -- previous level item basis cost
-                       else cicd.item_cost
-                    end) item_basis_cost,
-                nvl(cic.item_cost,0) item_cost
-         from   cst_item_cost_details cicd,
-                cst_item_costs cic,
+                mcacd.cost_element_id,
+                null lot_basis_type,
+                null lot_basis_cost,
+                null item_basis_type,
+                null item_basis_cost,
+                wdj.wip_entity_id,
+                max(nvl(mcacd.actual_cost,0)) item_cost
+         from   cst_item_costs cic,
                 cst_cost_types cct,
-                mtl_parameters mp
-         where  mp.organization_id           = cic.organization_id
-         and    cic.cost_type_id             = cct.cost_type_id
-         and    cic.cost_type_id             = cicd.cost_type_id (+)
-         and    cic.inventory_item_id        = cicd.inventory_item_id (+)
-         and    cic.organization_id          = cicd.organization_id (+)
-         and    cct.cost_type                = decode(:p_cost_type,                                                -- p_cost_type
-                                                        null, (select cct.cost_type 
-                                                               from   dual 
-                                                               where  cct.cost_type_id = mp.primary_cost_method
-                                                              ), 
-                                                        :p_cost_type
-                                                     )
-         and    2=2                          -- p_org_code
+                mtl_parameters mp,
+                wdj wdj,
+                mtl_material_transactions mmt,
+                mtl_cst_actual_cost_details mcacd,
+                org_acct_periods oap
+         where  4=4 and
+         2=2 and -- p_org_code
+         mp.organization_id=cic.organization_id and
+         cic.cost_type_id=cct.cost_type_id and
+         mcacd.transaction_id = mmt.transaction_id and
+         mmt.inventory_item_id=mcacd.inventory_item_id and
+         mmt.organization_id = mcacd.organization_id and
+         mmt.transaction_source_id=wdj.wip_entity_id and
+         mmt.transaction_source_type_id=5 and 
+         oap.organization_id=mp.organization_id and
+         mmt.transaction_date >= oap.period_start_date and mmt.transaction_date < oap.schedule_close_date + 1 and
+         cic.inventory_item_id= mcacd.inventory_item_id and
+         cic.organization_id= mcacd.organization_id and
+         cct.cost_type= decode(:p_cost_type, -- p_cost_type
+                               null, (select cct.cost_type 
+                                      from dual 
+                                      where cct.cost_type_id = mp.primary_cost_method
+                                      ), 
+                              :p_cost_type
+                              )
          group by
-                cic.inventory_item_id,
-                cic.organization_id,
-                cic.last_update_date,
-                cct.cost_type_id,
-                cct.cost_type,
-                nvl(cic.item_cost,0)
+         cic.inventory_item_id,
+         cic.organization_id,
+         cic.last_update_date,
+         cct.cost_type_id,
+         cct.cost_type,
+         mcacd.cost_element_id,
+         mcacd.level_type,
+         wdj.wip_entity_id
          union all
          select cic.inventory_item_id,
                 cic.organization_id,
                 cic.last_update_date,
                 cct.cost_type_id,
                 cct.cost_type,
-                sum(case
+                cicd.cost_element_id,
+                max(case
                        when cicd.level_type = 1 and cicd.cost_element_id = 1 and cicd.basis_type = 2 then 1 -- material lot basis type
                        when cicd.level_type = 1 and cicd.cost_element_id = 2 and cicd.basis_type = 2 then 1 -- moh lot basis type
                        when cicd.level_type = 2 and cicd.basis_type = 2 then 1 -- previous level lot basis type
@@ -438,7 +466,7 @@ cic_comp as
                        when cicd.level_type = 2 and cicd.basis_type = 2 then cicd.item_cost -- previous level lot basis cost
                        else 0
                     end) lot_basis_cost,
-                sum(case
+                max(case
                        when cicd.level_type = 1 and cicd.cost_element_id = 1 and cicd.basis_type = 2 then 0 -- material item basis type
                        when cicd.level_type = 1 and cicd.cost_element_id = 2 and cicd.basis_type = 2 then 0 -- moh item basis type
                        when cicd.level_type = 2 and cicd.basis_type = 2 then 0 -- previous level item basis type
@@ -450,45 +478,134 @@ cic_comp as
                        when cicd.level_type = 2 and cicd.basis_type = 2 then 0 -- previous level item basis cost
                        else cicd.item_cost
                     end) item_basis_cost,
-                nvl(cic.item_cost,0) item_cost
+                wdj.wip_entity_id,
+                nvl(cicd.item_cost,0) item_cost
          from   cst_item_cost_details cicd,
                 cst_item_costs cic,
+                wdj wdj,
+                wip_requirement_operations wro,
                 cst_cost_types cct,
                 mtl_parameters mp
-         where  mp.organization_id           = cic.organization_id
-         and    cic.cost_type_id             = mp.primary_cost_method  -- this gets the Frozen Costs
-         and    cic.cost_type_id             = cicd.cost_type_id (+)
-         and    cic.inventory_item_id        = cicd.inventory_item_id (+)
-         and    cic.organization_id          = cicd.organization_id (+)
-         and    cct.cost_type_id            <> mp.primary_cost_method  -- this avoids getting the Frozen costs twice
-         and    cct.cost_type                = decode(:p_cost_type,                                                -- p_cost_type
-                                                        null, (select cct.cost_type 
-                                                               from   dual 
-                                                               where  cct.cost_type_id = mp.primary_cost_method
-                                                              ), 
-                                                        :p_cost_type
-                                                     )
-         and    2=2                          -- p_org_code
-         -- ====================================
-         -- Find all the Frozen costs not in the
-         -- Pending or unimplemented cost type
-         -- ====================================
-         and    not exists 
-                        (select 'x'
-                         from   cst_item_costs cic2
-                         where  cic2.organization_id   = cic.organization_id
-                         and    cic2.inventory_item_id = cic.inventory_item_id
-                         and    cic2.cost_type_id      = cct.cost_type_id
-                        )
+         where 2=2 and  -- p_org_code
+         mp.organization_id=cic.organization_id and
+         cic.cost_type_id=cct.cost_type_id and
+         wdj.wip_entity_id=wro.wip_entity_id and
+         mp.organization_id=wro.organization_id and
+         wro.wip_supply_type<>6 and
+         cic.inventory_item_id=wro.inventory_item_id and
+         cic.cost_type_id=cicd.cost_type_id (+) and
+         not exists(
+         select null 
+         from 
+         mtl_cst_actual_cost_details mcacd_new,
+         mtl_material_transactions mmt_new,
+         org_acct_periods oap
+         where 4=4 and
+         oap.organization_id=mp.organization_id and
+         mcacd_new.transaction_id = mmt_new.transaction_id and
+         mmt_new.transaction_date >= oap.period_start_date and mmt_new.transaction_date < oap.schedule_close_date + 1 and
+         mmt_new.transaction_source_id=wdj.wip_entity_id and
+         mmt_new.transaction_source_type_id=5 and 
+         mmt_new.inventory_item_id=cic.inventory_item_id and
+         mmt_new.organization_id = cic.organization_id
+         ) and
+         cic.inventory_item_id=cicd.inventory_item_id (+) and
+         cic.organization_id=cicd.organization_id (+) and
+         cct.cost_type=decode(:p_cost_type,-- p_cost_type
+                              null, (select cct.cost_type 
+                                     from dual 
+                                     where cct.cost_type_id = mp.primary_cost_method
+                                     ), 
+                             :p_cost_type
+                             )
          group by
-                cic.inventory_item_id,
+         cic.inventory_item_id,
+         cic.organization_id,
+         cic.last_update_date,
+         cct.cost_type_id,
+         cct.cost_type,
+         cicd.cost_element_id,
+         wdj.wip_entity_id,
+         cicd.level_type,
+         nvl(cicd.item_cost,0)
+         union all
+         select cic.inventory_item_id,
                 cic.organization_id,
                 cic.last_update_date,
                 cct.cost_type_id,
                 cct.cost_type,
-                nvl(cic.item_cost,0)
+                cicd.cost_element_id,
+                max(case
+                       when cicd.level_type = 1 and cicd.cost_element_id = 1 and cicd.basis_type = 2 then 1 -- material lot basis type
+                       when cicd.level_type = 1 and cicd.cost_element_id = 2 and cicd.basis_type = 2 then 1 -- moh lot basis type
+                       when cicd.level_type = 2 and cicd.basis_type = 2 then 1 -- previous level lot basis type
+                       else 0
+                    end) lot_basis_type,
+                sum(case
+                       when cicd.level_type = 1 and cicd.cost_element_id = 1 and cicd.basis_type = 2 then cicd.item_cost -- material lot basis cost
+                       when cicd.level_type = 1 and cicd.cost_element_id = 2 and cicd.basis_type = 2 then cicd.item_cost -- moh lot basis cost
+                       when cicd.level_type = 2 and cicd.basis_type = 2 then cicd.item_cost -- previous level lot basis cost
+                       else 0
+                    end) lot_basis_cost,
+                max(case
+                       when cicd.level_type = 1 and cicd.cost_element_id = 1 and cicd.basis_type = 2 then 0 -- material item basis type
+                       when cicd.level_type = 1 and cicd.cost_element_id = 2 and cicd.basis_type = 2 then 0 -- moh item basis type
+                       when cicd.level_type = 2 and cicd.basis_type = 2 then 0 -- previous level item basis type
+                       else 1
+                    end) item_basis_type,
+                sum(case
+                       when cicd.level_type = 1 and cicd.cost_element_id = 1 and cicd.basis_type = 2 then 0 -- material item basis cost
+                       when cicd.level_type = 1 and cicd.cost_element_id = 2 and cicd.basis_type = 2 then 0 -- moh item basis cost
+                       when cicd.level_type = 2 and cicd.basis_type = 2 then 0 -- previous level item basis cost
+                       else cicd.item_cost
+                    end) item_basis_cost,
+                wdj.wip_entity_id,
+                nvl(cicd.item_cost,0) item_cost
+         from   cst_item_cost_details cicd,
+                cst_item_costs cic,
+                cst_cost_types cct,
+                mtl_parameters mp,
+                wdj wdj,
+                wip_requirement_operations wro
+         where 2=2 and
+         mp.organization_id=cic.organization_id and
+         cic.cost_type_id=mp.primary_cost_method and  -- this gets the Frozen Costs
+         cic.cost_type_id=cicd.cost_type_id (+) and
+         cic.inventory_item_id=cicd.inventory_item_id (+) and
+         cic.organization_id=cicd.organization_id (+) and
+         wdj.wip_entity_id=wro.wip_entity_id and
+         wro.wip_supply_type<>6 and
+         mp.organization_id=wro.organization_id and
+         cic.inventory_item_id=wro.inventory_item_id and
+         cct.cost_type_id<>mp.primary_cost_method and  -- this avoids getting the Frozen costs twice
+         cct.cost_type= decode(:p_cost_type,                                                -- p_cost_type
+                               null, (select cct.cost_type 
+                                        from dual 
+                                      where  cct.cost_type_id = mp.primary_cost_method
+                                      ), 
+                               :p_cost_type
+                              ) and
+         -- ====================================
+         -- Find all the Frozen costs not in the
+         -- Pending or unimplemented cost type
+         -- ====================================
+         not exists(select 'x'
+                    from cst_item_costs cic2
+                    where cic2.organization_id=cic.organization_id
+                    and cic2.inventory_item_id=cic.inventory_item_id
+                    and cic2.cost_type_id=cct.cost_type_id
+                   )
+         group by
+         cic.inventory_item_id,
+         cic.organization_id,
+         cic.last_update_date,
+         cct.cost_type_id,
+         cicd.level_type,
+         cct.cost_type,
+         cicd.cost_element_id,
+         nvl(cicd.item_cost,0),
+         wdj.wip_entity_id
         )
-
 ----------------main query starts here--------------
 
 select  mtl_sum.report_type Report_Type,
@@ -548,146 +665,27 @@ select  mtl_sum.report_type Report_Type,
         ml6.meaning Component_Basis_Type,
         mtl_sum.cost_type Cost_Type,
         gl.currency_code Currency_Code,
+        nvl(xxen_util.meaning(mtl_sum.cost_element_id ,'CST_COST_CODE_TYPE',700),'No Cost') cost_element_type,
         mtl_sum.item_cost Item_Cost,
         muomv2.uom_code UOM_Code,        
         mtl_sum.quantity_per_assembly Quantity_Per_Assembly,
         round(mtl_sum.total_req_quantity,3) Total_Required_Quantity,
         -- Revision for version 1.18
-        mtl_sum.last_txn_date Last_Transaction_Date,
+        case when mtl_sum.last_txn_date is null then 'No WIP Issue' else to_char(mtl_sum.last_txn_date,'DD-Mon-RRRR HH24:MI:SS') end Last_Transaction_Date,
+        nvl(mtl_sum.last_txn_type,'No WIP Issue') Last_Transaction_Type,
         round(mtl_sum.quantity_issued,3) Quantity_Issued,
         -- ===========================================
         -- Quantity_Left_in_WIP = Quantity_Issued minus the Quantity Required 
         -- ===========================================
         round(mtl_sum.quantity_issued - mtl_sum.total_req_quantity,3) Quantity_Left_in_WIP,
-        mtl_sum.wip_std_component_value WIP_Standard_Component_Value,
-        round(mtl_sum.applied_component_value,2) Applied_Component_Value,
+        round(mtl_sum.wip_std_component_value,fc.precision) WIP_Standard_Component_Value,
+        round(mtl_sum.applied_component_value,fc.precision) Applied_Component_Value,
         -- Revision for version 1.8 and 1.9
         -- To match the Oracle Discrete Job Value Report, for cancelled wip jobs, turn off 
         -- material usage variances when there are no completions and no applied or charged quantities.
         -- round(mtl_sum.applied_component_value - mtl_sum.wip_std_component_value,2) Material_Usage_Variance,
         case
-           when mtl_sum.fg_total_qty = 0 and round(mtl_sum.applied_component_value,2) = 0 then 0
+           when mtl_sum.fg_total_qty = 0 and mtl_sum.applied_component_value = 0 then 0
            -- End revision for version 1.9
-           else round(mtl_sum.applied_component_value - mtl_sum.wip_std_component_value,2)
-        end Material_Usage_Variance,
-        -- End revision for version 1.8
-        -- Revision for version 1.8
-        fl2.meaning Rolled_Up,
-        cic_assys.last_rollup_date Last_Cost_Rollup
-        -- End revision for version 1.8
--- Revision for version 1.22
--- from mtl_system_items_vl msiv2,
-from    mtl_units_of_measure_vl muomv,
-        mtl_units_of_measure_vl muomv2,
-        mtl_item_status_vl misv,
-        mtl_item_status_vl misv2,
-        bom_departments bd,
-        wip_entities we,
-        mfg_lookups ml1, -- WIP_Class
-        mfg_lookups ml2, -- WIP Status
-        mfg_lookups ml3, -- Assy Planning Make Buy
-        mfg_lookups ml4, -- Component Planning Make Buy
-        mfg_lookups ml5, -- WIP_Supply_Type
-        mfg_lookups ml6, -- Component Basis Type
-        -- Revision for version 1.20, comment out Phantom Parent
-        -- Revision for version 1.6
-        -- fnd_lookups fl1,  -- Phantom Parent
-        -- Revision for version 1.8
-        fnd_lookups fl2,  -- Rolled Up
-        fnd_common_lookups fcl1, -- Assy Item Type
-        fnd_common_lookups fcl2, -- Component Item Type
-        gl_code_combinations gcc,  -- wip job accounts
-        hr_organization_information hoi,
-        hr_all_organization_units haou,
-        hr_all_organization_units haou2,
-        gl_ledgers gl,
-        -- Revision for version 1.8
-        -- cst_item_costs cic,
-        -- Revision for version 1.22
-        cic_assys,
-        -- ========================================================
-        -- Get the WIP Component Information in a multi-part union
-        -- which is then condensed into a summary data set
-        -- ========================================================
-        -- ========================================================
-        -- Section I  Condense into a summary data set.
-        -- =======================================================
-        (select mtl.report_type,
-                mtl.period_name,
-                mtl.organization_code,
-                mtl.organization_id,
-                mtl.primary_cost_method,
-                -- Revision for version 1.12
-                -- mtl.primary_cost_type,
-                mtl.account,
-                mtl.class_code,
-                mtl.class_type,
-                mtl.wip_entity_id,
-                mtl.project_id,
-                mtl.status_type,
-                mtl.primary_item_id,
-                -- Revision for version 1.22
-                mtl.assembly_number,
-                mtl.assy_description,
-                mtl.assy_item_type,
-                mtl.assy_item_status_code,
-                mtl.assy_uom_code,
-                mtl.planning_make_buy_code,
-                mtl.std_lot_size,
-                -- End revision for version 1.22
-                -- Revision for version 1.7
-                mtl.lot_number,
-                mtl.creation_date,
-                -- Revision for version 1.5
-                mtl.scheduled_start_date,
-                mtl.date_released,
-                mtl.date_completed,
-                mtl.date_closed,
-                mtl.last_update_date,
-                mtl.start_quantity,
-                mtl.quantity_completed,
-                mtl.quantity_scrapped,
-                mtl.fg_total_qty,
-                mtl.inventory_item_id,
-                mtl.department_id,
-                -- Revision for version 1.12 and 1.14
-                -- mtl.level_num,
-                mtl.operation_seq_num,
-                mtl.wip_supply_type,
-                -- Revision for version 1.6 and 1.22
-                mtl.component_number,
-                mtl.component_description,
-                mtl.component_item_type,
-                mtl.comp_planning_make_buy_code,
-                mtl.component_item_status_code,
-                mtl.component_uom_code,
-                -- End revision for version 1.22
-                -- Revision for version 1.21
-                -- case
-                --    when sum(mtl.phantom_parent) > 0 then 'Y'
-                --    else 'N'
-                -- end phantom_parent,
-                -- Revision for version 1.8
-                mtl.basis_type,
-                mtl.lot_basis_type,
-                mtl.lot_basis_cost,
-                mtl.item_basis_type,
-                mtl.item_basis_cost,
-                -- End revision for version 1.8
-                mtl.cost_type,
-                mtl.item_cost,
-                sum(mtl.quantity_per_assembly) quantity_per_assembly,
-                sum(mtl.total_req_quantity) total_req_quantity,
-                -- Revision for version 1.18
-                (select max(mmt.transaction_date)
-                 from   mtl_material_transactions mmt
-                 where  mmt.inventory_item_id          = mtl.inventory_item_id
-                 and    mmt.organization_id            = mtl.organization_id
-                 and    mmt.transaction_source_id      = mtl.wip_entity_id
-                 and    mmt.transaction_source_type_id = 5
-                 and    mmt.transaction_date           < mtl.schedule_close_date + 1) last_txn_date,
-                -- End revision for version 1.18
-                sum(mtl.quantity_issued) quantity_issued,
-                sum(mtl.wip_std_component_value) wip_std_component_value,
-                sum(mtl.applied_component_value) applied_component_value
+           else mtl_sum.applied_component_value - mtl_sum.wip_std_component_value
  

@@ -7,6 +7,8 @@
 -- Report Name: GL Oracle FSG Converter 11g
 -- Description: The GL Oracle FSG Converter is used for migration of financial statement reports from Oracle Financial Statement Generator (FSG) into the GL Financial Statement and Drilldown (FSG) report. This converter simplifies the process of transferring the existing Oracle FSG reports, allowing users to leverage advanced reporting and drilldown capabilities with minimal setup.
 
+This version supports DB versions 11g and 12c. To apply the converter, the profile 'Blitz FSG Oracle to Blitz Report Converter' must be updated with the relevant report name based on the db version.
+
 For a quick demonstration of GL Financial Statement and Drilldown (FSG), refer to our YouTube video.
 <a href="https://youtu.be/dsRWXT2bem8?si=bA8cAxuXjfrMI-SI" rel="nofollow" target="_blank">https://youtu.be/dsRWXT2bem8?si=bA8cAxuXjfrMI-SI</a>
 -- Excel Examle Output: https://www.enginatics.com/example/gl-oracle-fsg-converter-11g/
@@ -16,34 +18,56 @@ For a quick demonstration of GL Financial Statement and Drilldown (FSG), refer t
 select x.* from (
 with merged_data as (
 select distinct
-listagg(x.sequence,'|')within group (order by x.sequence_) over (partition by 1) sequence,
-listagg(x.description,'|')within group (order by x.sequence_) over (partition by 1) description,
-listagg(x.amount_type,'|')within group (order by x.sequence_) over (partition by 1) amount_type,
-listagg(x.period,'|')within group (order by x.sequence_) over (partition by 1) period,
-replace(listagg(nvl(x.calculation,'~^'),'|')within group (order by x.sequence_) over (partition by 1),'~^') calculation,
-x.report_title,
-x.segment_override
+listagg(y.sequence,'|')within group (order by y.sequence_) over (partition by 1) sequence,
+listagg(y.description,'|')within group (order by y.sequence_) over (partition by 1) description,
+replace(listagg(y.amount_type,'|')within group (order by y.sequence_) over (partition by 1),'~^') amount_type,
+replace(listagg(y.period,'|')within group (order by y.sequence_) over (partition by 1),'~^') period,
+replace(listagg(nvl(y.calculation,'~^'),'|')within group (order by y.sequence_) over (partition by 1),'~^') calculation,
+y.report_title,
+&column_segments
+y.segment_override
 from
 (
-select
+select distinct
+&column_segments_
+x.*
+from 
+(
+select distinct
 rrv.report_title,
+rrav.position,
 rrv.segment_override,
 rrav.sequence||':'||rrav.name sequence,
 rrav.sequence sequence_,
 rrav.description,
-rrav.amount_type,
+nvl(rrav.amount_type,'~^') amount_type,
 case 
 when rrav.period_offset=0 then '''=enter_period_name' 
 when nvl(rrav.period_offset,0)<>0 then '''=br_period_offset(enter_period_name,"'||rrav.period_offset||'",,,)'
-else null
+when rrav.amount_type is not null then '''=enter_period_name' 
+else '~^'
 end period,
-(select distinct
-'''='||listagg(case when rrc.axis_seq_low=rrc.axis_seq_high then replace(rrc.operator||rrc.axis_seq_low,'ENTER') when rrc.axis_name_low=rrc.axis_name_high then replace(rrc.operator||rrc.axis_name_low,'ENTER') else case when rrc.operator='+' then 'sum('||nvl(rrc.axis_seq_low,rrc.axis_name_low)||':'||nvl(rrc.axis_seq_high,rrc.axis_name_high)||')' else nvl(rrc.axis_seq_high,rrc.axis_name_high)||'-'||nvl(rrc.axis_seq_low,rrc.axis_name_low) end end,'') within group (order by rrc.calculation_seq) over (partition by rrc.axis_seq)
+nvl((select distinct
+'''='||listagg(case when rrc.axis_seq_low=rrc.axis_seq_high then replace(rrc.operator||rrc.axis_seq_low,'ENTER') when rrc.axis_name_low=rrc.axis_name_high then replace(rrc.operator||rrc.axis_name_low,'ENTER') 
+else 
+case when rrc.operator='+' then  case when rrc.constant is null then nvl(to_char(rrc.axis_seq_high),rrc.axis_name_high)||'+'||nvl(to_char(rrc.axis_seq_low),rrc.axis_name_low) else '+'||rrc.constant end 
+when rrc.operator='-' then case when rrc.constant is null then nvl(to_char(rrc.axis_seq_high),rrc.axis_name_high)||'-'||nvl(to_char(rrc.axis_seq_low),rrc.axis_name_low) else '-'||rrc.constant end 
+when rrc.operator='*' then case when rrc.constant is null then nvl(to_char(rrc.axis_seq_high),rrc.axis_name_high)||'*'||nvl(to_char(rrc.axis_seq_low),rrc.axis_name_low) else '*'||rrc.constant end 
+when rrc.operator='/' then case when rrc.constant is null then nvl(to_char(rrc.axis_seq_high),rrc.axis_name_high)||'/'||nvl(to_char(rrc.axis_seq_low),rrc.axis_name_low) else '/'||rrc.constant end 
+when rrc.operator='ENTER' then  case 
+when nvl(to_char(rrc.axis_seq_low),rrc.axis_name_low) is not null and nvl(to_char(rrc.axis_seq_high),rrc.axis_name_high) is not null then 'sum('||nvl(to_char(rrc.axis_seq_high),rrc.axis_name_high)||':'||nvl(to_char(rrc.axis_seq_low),rrc.axis_name_low)||')' 
+when rrc.constant is null then '+'||nvl(nvl(to_char(rrc.axis_seq_high),rrc.axis_name_high),nvl(to_char(rrc.axis_seq_low),rrc.axis_name_low))
+else '+'||rrc.constant 
+end 
+else nvl(to_char(rrc.axis_seq_high),rrc.axis_name_high)||'%'||nvl(to_char(rrc.axis_seq_low),rrc.axis_name_low) end
+end,'') within group (order by rrc.calculation_seq) over (partition by rrc.axis_seq)
 from
 rg_report_calculations rrc
 where 
 rrav.axis_set_id=rrc.axis_set_id and
-rrav.sequence=rrc.axis_seq ) calculation
+rrav.sequence=rrc.axis_seq ),'~^') calculation,
+&column_segments_base
+count(*) over (partition by rrav.sequence) cnt
 from
 rg_reports_v rrv,
 rg_report_axes_v rrav,
@@ -56,6 +80,7 @@ rrav.sequence=rrac.axis_seq(+)
 order by
 rrav.position
 ) x
+) y
 )
 select null multiply, null movement, &columnset_null_segments 'Ledger:' description, null sequence, null calculation, null line_format, :ledger column_value from merged_data
 union all
@@ -72,9 +97,10 @@ union all
 select null multiply, null movement, &columnset_null_segments 'Periods' description, null sequence, null calculation, null line_format, period column_value from merged_data
 union all
 select null multiply, null movement, &columnset_null_segments 'Column Calculations' description, null sequence, null calculation, null line_format, calculation column_value from merged_data
+&column_segments_union
 ) x
 union all
-select y.* from (
+select distinct y.* from (
 select distinct
 case when x.sign = '+' then 1 when x.sign = '-' then -1 end multiply,
 case when x.dr_cr_net_code='N' then 'Net' when x.dr_cr_net_code='D' then 'Dr' when x.dr_cr_net_code='C' then 'Cr' end movement,
@@ -83,7 +109,19 @@ x.description,
 x.sequence||':'||x.axis_name sequence,
 case when x.row_type='C' then
 (select distinct
-'''='||listagg(case when rrc.axis_seq_low=rrc.axis_seq_high then replace(rrc.operator||rrc.axis_seq_low,'ENTER') when rrc.axis_name_low=rrc.axis_name_high then replace(rrc.operator||rrc.axis_name_low,'ENTER') else case when rrc.operator='+' then 'sum('||nvl(rrc.axis_seq_low,rrc.axis_name_low)||':'||nvl(rrc.axis_seq_high,rrc.axis_name_high)||')' else nvl(rrc.axis_seq_high,rrc.axis_name_high)||'-'||nvl(rrc.axis_seq_low,rrc.axis_name_low) end end,'') within group (order by rrc.calculation_seq) over (partition by rrc.axis_seq)
+'''='||listagg(case when rrc.axis_seq_low=rrc.axis_seq_high then replace(rrc.operator||rrc.axis_seq_low,'ENTER') when rrc.axis_name_low=rrc.axis_name_high then replace(rrc.operator||rrc.axis_name_low,'ENTER') 
+else 
+case when rrc.operator='+' then  case when rrc.constant is null then nvl(to_char(rrc.axis_seq_high),rrc.axis_name_high)||'+'||nvl(to_char(rrc.axis_seq_low),rrc.axis_name_low) else '+'||rrc.constant end 
+when rrc.operator='-' then case when rrc.constant is null then nvl(to_char(rrc.axis_seq_high),rrc.axis_name_high)||'-'||nvl(to_char(rrc.axis_seq_low),rrc.axis_name_low) else '-'||rrc.constant end 
+when rrc.operator='*' then case when rrc.constant is null then nvl(to_char(rrc.axis_seq_high),rrc.axis_name_high)||'*'||nvl(to_char(rrc.axis_seq_low),rrc.axis_name_low) else '*'||rrc.constant end 
+when rrc.operator='/' then case when rrc.constant is null then nvl(to_char(rrc.axis_seq_high),rrc.axis_name_high)||'/'||nvl(to_char(rrc.axis_seq_low),rrc.axis_name_low) else '/'||rrc.constant end 
+when rrc.operator='ENTER' then  case 
+when nvl(to_char(rrc.axis_seq_low),rrc.axis_name_low) is not null and nvl(to_char(rrc.axis_seq_high),rrc.axis_name_high) is not null then 'sum('||nvl(to_char(rrc.axis_seq_high),rrc.axis_name_high)||':'||nvl(to_char(rrc.axis_seq_low),rrc.axis_name_low)||')' 
+when rrc.constant is null then '+'||nvl(nvl(to_char(rrc.axis_seq_high),rrc.axis_name_high),nvl(to_char(rrc.axis_seq_low),rrc.axis_name_low))
+else '+'||rrc.constant 
+end 
+else nvl(to_char(rrc.axis_seq_high),rrc.axis_name_high)||'%'||nvl(to_char(rrc.axis_seq_low),rrc.axis_name_low) end
+end,'') within group (order by rrc.calculation_seq) over (partition by rrc.axis_seq)
 from
 rg_report_calculations rrc
 where

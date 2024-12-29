@@ -19,6 +19,7 @@ q_trx_lines as
 (
 -- Q1
 select
+ trx.org_id c_org_id,
  trx.invoice_currency_code c_currency,
  cy.precision c_precision,
  cy.minimum_accountable_unit c_minimum_accountable_unit,
@@ -134,10 +135,10 @@ where
  acct_site.party_site_id = party_site.party_site_id and
  loc.location_id = party_site.location_id and
  loc.location_id = loc_assign.location_id and
- nvl(acct_site.org_id,-99) = nvl(loc_assign.org_id,-99) and
+ acct_site.org_id = loc_assign.org_id and
  loc.country = 'US' and
  trx.cust_trx_type_id = types.cust_trx_type_id and
- nvl(trx.org_id,-99) = nvl(types.org_id,-99) and
+ trx.org_id = types.org_id and
  types.type in ( 'CM', 'INV', 'DM' ) and
  cy.currency_code = trx.invoice_currency_code and
  cust_acct.cust_account_id = zx_det.bill_third_pty_acct_id and
@@ -173,6 +174,7 @@ where
 union
 -- Q2
 select
+ trx.org_id c_org_id,
  trx.invoice_currency_code c_currency,
  cy.precision c_precision,
  cy.minimum_accountable_unit c_minimum_accountable_unit,
@@ -288,10 +290,10 @@ where
  acct_site.party_site_id = party_site.party_site_id and
  loc.location_id = party_site.location_id and
  loc.location_id = loc_assign.location_id and
- nvl(acct_site.org_id,-99) = nvl(loc_assign.org_id,-99) and
+ acct_site.org_id = loc_assign.org_id and
  loc.country = 'US' and
  trx.cust_trx_type_id = types.cust_trx_type_id and
- nvl(trx.org_id,-99) = nvl(types.org_id,-99) and
+ trx.org_id = types.org_id and
  types.type in ( 'CM', 'INV', 'DM' ) and
  cy.currency_code = trx.invoice_currency_code and
  cust_acct.cust_account_id = zx_det.bill_third_pty_acct_id and
@@ -327,6 +329,7 @@ where
 union
 -- Q3
 select
+ adj.org_id c_org_id,
  trx.invoice_currency_code c_currency,
  cy.precision c_precision,
  cy.minimum_accountable_unit c_minimum_accountable_unit,
@@ -410,7 +413,7 @@ from
  hz_loc_assignments_obs loc_assign
 where
  trx.customer_trx_id = adj.customer_trx_id and
- nvl(trx.org_id,-99) = nvl(adj.org_id,-99) and
+ trx.org_id = adj.org_id and
  nvl(zx_det.ship_to_cust_acct_site_use_id, zx_det.bill_to_cust_acct_site_use_id) = su.site_use_id and
  zx_det.trx_line_id = line.customer_trx_line_id and
  zx_det.internal_organization_id = line.org_id and
@@ -428,7 +431,7 @@ where
  acct_site.party_site_id = party_site.party_site_id and
  loc.location_id = party_site.location_id and
  loc.location_id = loc_assign.location_id and
- nvl(acct_site.org_id,-99) = nvl(loc_assign.org_id, -99) and
+ acct_site.org_id = loc_assign.org_id and
  cust_acct.cust_account_id = zx_det.bill_third_pty_acct_id and
  cust_acct.party_id = party.party_id and
  trx.customer_trx_id = line.customer_trx_id and
@@ -458,6 +461,7 @@ where
 union
 -- Q4
 select
+ trx.internal_organization_id c_org_id,
  trx.trx_currency_code c_currency,
  trx.precision c_precision,
  trx.minimum_accountable_unit c_minimum_accountable_unit,
@@ -581,6 +585,7 @@ where
 union
 -- Q5
 select
+ trx.internal_organization_id c_org_id,
  trx.trx_currency_code c_currency,
  trx.precision c_precision,
  trx.minimum_accountable_unit c_minimum_accountable_unit,
@@ -673,7 +678,7 @@ where
  cust_acct.cust_account_id = trx.bill_third_pty_acct_id and
  party.party_id = cust_acct.party_id and
  adj.customer_trx_id = lines.trx_id and
- nvl(adj.org_id,-99) = nvl(lines.internal_organization_id,-99) and
+ adj.org_id = lines.internal_organization_id and
  adj.type in ('TAX', 'LINE','INVOICE') and
  zx_exmp.tax_exemption_id(+) = nvl(lines.tax_exemption_id,-1) and
  adj.chargeback_customer_trx_id is null and
@@ -693,7 +698,8 @@ where
 union /* this query reports transaction with no tax lines  in zx lines */
 -- Q6
 select
-  trx.trx_currency_code c_currency,
+ trx.internal_organization_id c_org_id,
+ trx.trx_currency_code c_currency,
  trx.precision c_precision,
  trx.minimum_accountable_unit c_minimum_accountable_unit,
  upper(loc.state) c_state,
@@ -810,10 +816,9 @@ where
 union
 -- Q7
 select
+ trx.internal_organization_id c_org_id,
  trx.trx_currency_code c_currency,
  trx.precision c_precision,
  trx.minimum_accountable_unit c_minimum_accountable_unit,
  upper(loc.state) c_state,
- decode(:p_detail_level, 'Detail State', 'X', loc.county) c_county,
- decode(:p_detail_level, 'Detail State', 'X', loc.city) c_city,
- loc.
+ decode(:p_detail_level, 'Detail State'

@@ -10,13 +10,7 @@
 -- Library Link: https://www.enginatics.com/reports/po-purchasing-document-upload/
 -- Run Report: https://demo.enginatics.com/
 
-select
-x.*
-from
-(
-with reporting_table as
-( select * from &report_table_name),
-document_types_ as
+with document_types_ as
 (
 select /*+ inline */
 case when pdtav.document_type_code='QUOTATION' then pdtav.document_type_code else pdtav.document_subtype end document_type,
@@ -289,13 +283,3 @@ nvl(pha.cancel_flag,'N')='N' and
 nvl(pha.closed_code,'OPEN')='OPEN' and
 nvl(pha.frozen_flag,'N')='N' and
 nvl(pha.user_hold_flag,'N')='N'
-&not_use_first_block
-&report_table_select &report_table_where_clause &success_records
-&processed_run
-) x
-order by
-x.creation_date desc,
-x.po_number,
-x.line_num,
-x.shipment_num,
-x.distribution_num

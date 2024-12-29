@@ -103,20 +103,12 @@ furg.responsibility_id,
 furg.user_id,
 xxen_util.user_name(furg.user_id) user_name,
 nvl(fu.email_address,papf.email_address) email,
-papf.global_name person,
+papf.first_name||' '||papf.last_name person,
 haouv.name person_bg
 from
 fnd_user_resp_groups furg,
 fnd_user fu,
-(
-select distinct
-papf.person_id,
-max(papf.email_address) keep (dense_rank last order by papf.effective_end_date) over (partition by papf.person_id) email_address,
-max(papf.global_name) keep (dense_rank last order by papf.effective_end_date) over (partition by papf.person_id) global_name,
-max(papf.business_group_id) keep (dense_rank last order by papf.effective_end_date) over (partition by papf.person_id) business_group_id
-from
-per_all_people_f papf
-) papf,
+(select papf.* from per_all_people_f papf where sysdate between papf.effective_start_date and papf.effective_end_date+1) papf,
 hr_all_organization_units_vl haouv
 where
 3=3 and
