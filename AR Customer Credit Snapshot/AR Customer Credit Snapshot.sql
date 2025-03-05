@@ -620,3 +620,80 @@ select /*+ ordered push_pred(curr) push_pred(qb) push_pred(qsc) */
  -- to_date(qc.c_last_st_date) last_statement_date,
  --qc.c_last_st_days_since last_statement_days_since,
  --to_date(qc.c_last_stmnt_next_trx_date) next_statement_date,
+ case
+ when qsc.statement_date is null
+ then ar_arxccs_xmlp_pkg.rp_none_p
+ else ar_arxccs_xmlp_pkg.rp_na_upper_p
+ end last_statement_number,
+ qsc.statement_type last_statement_type,
+ qsc.statement_date last_statement_date,
+ qsc.days_since last_statement_days_since,
+ (select distinct
+  first_value(ascd.statement_date) over (order by ascd.statement_date,ascd.statement_cycle_date_id)
+  from
+  hz_customer_profiles hcp,
+  ar_statement_cycle_dates ascd
+  where
+  hcp.statement_cycle_id = ascd.statement_cycle_id and
+  ascd.printed = 'N' and
+  ascd.statement_date > qsc.statement_date and
+  hcp.cust_account_id = qc.customer_id and
+  hcp.site_use_id is null
+ ) next_statement_date,
+ --qc.c_last_dn_formula,
+ qc.c_last_dn_number last_dunning_number,
+ qc.c_last_dn_type last_dunning_type,
+ qc.c_last_dn_currency last_dunning_curr,
+ qc.c_last_dn_amount last_dunning_amount,
+ to_date(qc.c_last_dn_date) last_dunning_date,
+ qc.c_last_dn_days_since last_dunning_days_since,
+ --qc.c_last_nsf_formula,
+ qc.c_last_nsf_number last_nsf_stop_pmt_number,
+ qc.c_last_nsf_type last_nsf_stop_pmt_type,
+ qc.c_last_nsf_currency last_nsf_stop_pmt_curr,
+ qc.c_last_nsf_amount last_nsf_stop_pmt_amount,
+ to_date(qc.c_last_nsf_date) last_nsf_stop_pmt_date,
+ qc.c_last_nsf_days_since last_nsf_stop_pmt_days_since,
+ --qc.c_last_contact_formula,
+ qc.c_last_contact_number last_phone_contact_number,
+ qc.c_last_contact_rel_invoice last_phone_contact_related_inv,
+ qc.c_last_contact_currency last_phone_contact_curr,
+ qc.c_last_contact_amount last_phone_contact_amount,
+ to_date(qc.c_last_contact_date) last_phone_contact_date,
+ qc.c_last_contact_days_since last_phone_contact_days_since,
+ --qc.c_last_hold_formula,
+ qc.c_last_hold_number last_credit_hold_number,
+ qc.c_last_hold_amount last_credit_hold_amount,
+ to_date(qc.c_last_hold_date) last_credit_hold_date,
+ qc.c_last_hold_days_since last_credit_hold_days_since,
+ --
+ to_char(qc.set_of_books_id) set_of_books_id,
+ to_char(qc.qcust_org_id) org_id,
+ to_char(qc.customer_id) customer_id,
+ to_char(qc.site_use_id) site_use_id,
+ to_char(qc.c_customer_profile_id) customer_profile_id
+from
+ q_cust qc,
+ q_currencies curr,
+ hz_cust_profile_amts hcpa,
+ q_stmt_cycles qsc,
+ q_buckets qb
+where
+ qc.customer_id  = curr.customer_id (+) and
+ qc.site_use_id  = curr.site_use_id (+) and
+ qc.qcust_org_id = curr.org_id (+) and
+ qc.customer_profile_id = curr.cust_account_profile_id (+) and
+ --
+ curr.cust_account_profile_id = hcpa.cust_account_profile_id (+) and
+ curr.currency_code = hcpa.currency_code (+) and
+ --
+ curr.customer_id = qb.ps_customer_id (+) and
+ curr.site_use_id = qb.ps_site_use_id (+) and
+ curr.currency_code = qb.currency_bucket (+) and
+ --
+ qc.statement_cycle_id = qsc.statement_cycle_id (+)
+order by
+ qc.customer_name,
+ qc.primary_flag desc,
+ qc.location,
+ curr.currency_code

@@ -1,58 +1,32 @@
-# [CAC WIP Resource Efficiency with Method and Lot Variances](https://www.enginatics.com/reports/cac-wip-resource-efficiency-with-method-and-lot-variances/)
+# [QP Qualifier Group Upload](https://www.enginatics.com/reports/qp-qualifier-group-upload/)
 
 ## Description: 
-Report your resource efficiency, method and lot size variances for your open and closed WIP jobs.  Resource efficiency measures the WIP routing requirements against the actual applied resources.  Methods variances measure the difference between the WIP routing and the primary routing (for routing operations effective per the schedule end date of your accounting period, or for Standard Costing, the Frozen item cost resource details).  And for Standard Costing, lot variances measure the lot-based resource cost variances due to differences between the planned WIP units or completed work order units and the standard costing lot size.  If the WIP job has a larger planned or completed number of units, the WIP Assembly CompIetion transaction will relieve a lower amount of lot charges than charged to the WIP job.  If the WIP job has a smaller planned or completed number of units, the WIP Assembly CompIetion transaction will relieve more lot values than charged to the job.  
+This upload supports the creation and update of Qualifier Groups in Oracle Advanced Pricing.
 
-If you leave the Cost Type parameter blank the report uses either your Costing Method Cost Type (Standard) or your Costing Method "Avg Rates" Cost Type (Average, FIFO, LIFO) for your resource rates.  If the WIP job is open the Report Type column displays "Valuation", as this WIP job and potential material usage variance is still in your WIP inventory balances.  If the job has been closed during the reporting period, the Report Type column displays "Variance", as this WIP job was written off on a WIP Job Close Variance transaction during the reporting period.  Closed, Pending Close, Cancelled, Complete and Complete No Charges WIP job statuses use the completion quantities.  All other WIP jobs use the parameter "Use Completion Quantities" to determine if completion or planned quantities are used for requirements.  If you choose Yes for including scrap, this report will automatically include the scrapped quantities as part of the resource quantity requirements.  And this report automatically includes WIP jobs which were either open during the reported accounting period or if closed, were closed doing the reporting period.
-
-Parameters:
-=========
-Report Option:  You can choose to limit the report size with this parameter.  The choices are:  Open jobs, All jobs or Closed jobs. (mandatory)
-Period Name:  Enter the Period_Name you wish to report for WIP Jobs (mandatory)
-Cost Type:  Enter the resource rates cost type.  If left blank, the report uses the Costing Method rates cost type.
-Include Scrap Quantities:  Include scrap for quantity requirements.  (mandatory)
-Include Unreleased Jobs:  Include jobs which have not been released and are not started.  (mandatory)
-Use Completion Quantities:  For Released jobs, use the completion quantities for resource variance calculations else use the planned start quantities (mandatory).
-Category Set 1:  Choose any item category to report.  Does not limit what is reported.
-Category Set 2:  Choose any item category to report.  Does not limit what is reported.
-Class Code:  Specific WIP class code to report (optional).
-Job Status:  Specific WIP job status to report (optional).
-WIP Job:  Specific WIP job number to report (optional).
-Resource Code:  Specific resource code to report (optional).
-Outside Processing Item:  Specific outside processing component to report (optional).
-Assembly Number:  Specific assembly to report (optional).
-Organization Code:  Specific inventory organization you wish to report (optional)
-Operating Unit:  Specific operating unit you wish to report (optional)
-Ledger:  Specific ledger you wish to report (optional)
-
--- |   ======= =========== ============== =========================================
--- |  Version Modified on Modified  by   Description
--- |  ======= =========== ============== =========================================
--- |  1.0     28 Jan 2010 Douglas Volz   Initial Coding
--- |  1.26    12 Oct 2022 Douglas Volz   Fix divide by zero error with the start quantity.
 
 ## Parameters
-Report Option, Period Name, Cost Type, Include Scrap Quantities, Include Unreleased Jobs, Use Completion Quantities, Category Set 1, Category Set 2, Category Set 3, Organization Code, Class Code, Job Status, WIP Job, Resource Code, Outside Processing Item, Assembly Number, Operating Unit, Ledger
+Upload Mode, Qualifier Group, Qualifier Effective Date
 
 ## Used tables
-[wip_discrete_jobs](https://www.enginatics.com/library/?pg=1&find=wip_discrete_jobs), [org_acct_periods](https://www.enginatics.com/library/?pg=1&find=org_acct_periods), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters), [wip_accounting_classes](https://www.enginatics.com/library/?pg=1&find=wip_accounting_classes), [org_access_view](https://www.enginatics.com/library/?pg=1&find=org_access_view), [wdj0](https://www.enginatics.com/library/?pg=1&find=wdj0), [mtl_material_transactions](https://www.enginatics.com/library/?pg=1&find=mtl_material_transactions), [wdj](https://www.enginatics.com/library/?pg=1&find=wdj), [pa_projects_all](https://www.enginatics.com/library/?pg=1&find=pa_projects_all), [po_headers_all](https://www.enginatics.com/library/?pg=1&find=po_headers_all)
+[qp_qualifier_rules](https://www.enginatics.com/library/?pg=1&find=qp_qualifier_rules), [qp_qualifiers_v](https://www.enginatics.com/library/?pg=1&find=qp_qualifiers_v)
 
 ## Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Upload](https://www.enginatics.com/library/?pg=1&category[]=Upload)
 
-
+## Related reports
+[QP Price List Upload](/QP%20Price%20List%20Upload/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 
 # Example Report 
-[CAC WIP Resource Efficiency with Method and Lot Variances 10-Jul-2022 170225.xlsx](https://www.enginatics.com/example/cac-wip-resource-efficiency-with-method-and-lot-variances/)
+[None](https://www.enginatics.com/example/qp-qualifier-group-upload/)
 
 # Report SQL
-[www.enginatics.com/reports/cac-wip-resource-efficiency-with-method-and-lot-variances/](https://www.enginatics.com/reports/cac-wip-resource-efficiency-with-method-and-lot-variances/)
+[www.enginatics.com/reports/qp-qualifier-group-upload/](https://www.enginatics.com/reports/qp-qualifier-group-upload/)
 
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[CAC_WIP_Resource_Efficiency_with_Method_and_Lot_Variances.xml](https://www.enginatics.com/xml/cac-wip-resource-efficiency-with-method-and-lot-variances/)
+[QP_Qualifier_Group_Upload.xml](https://www.enginatics.com/xml/qp-qualifier-group-upload/)
 # Oracle E-Business Suite [Reporting Library](https://www.enginatics.com/library/)
     
 We provide an open source Oracle EBS SQLs as a part of operational and project implementation support [toolkits](https://www.enginatics.com/blitz-report-toolkits/) for rapid Excel reports generation. 

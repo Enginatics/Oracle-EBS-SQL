@@ -828,4 +828,466 @@ from -- Revision for version 1.37
     and rt.parent_transaction_id     = parent_rt.transaction_id (+)
     and rt.organization_id           = parent_rt.organization_id (+)
     -- Revision for version 1.36
-   
+    and wt.organization_id           = rt.organization_id
+    -- Revision for version 1.29
+    -- and rt.po_line_id                = pol.po_line_id
+    and rt.po_line_location_id       = pll.line_location_id
+    and pll.line_location_id         = pod.line_location_id
+    and rt.shipment_line_id          = rsl.shipment_line_id
+    -- Revision for version 1.36
+    and rt.shipment_header_id        = rsh.shipment_header_id
+    and rsl.shipment_header_id       = rsh.shipment_header_id
+    -- Revision for version 1.34, to prevent cross-joining with pod
+    and pod.po_distribution_id       = nvl(rsl.po_distribution_id, pod.po_distribution_id)
+    and oap.organization_id          = wta.organization_id
+    and 3=3                          -- p_period_name
+    -- Revision for version 1.32
+    -- Fix for version 1.16
+    -- The oap.schedule_close_date does not have a timestamp so we have to trunc to make the comparison
+    --and wta.transaction_date        >= oap.schedule_close_date
+    -- and trunc(wta.transaction_date) > oap.schedule_close_date
+    and wta.transaction_date        >= oap.schedule_close_date + 1
+    -- End revision for version 1.32
+    -- Revision for version 1.36
+    and wt.transaction_date         >= oap.schedule_close_date + 1
+    and rt.transaction_date         >= oap.schedule_close_date + 1
+    -- End revision for version 1.36
+    and rp.receiving_account_id      = wta.reference_account
+    and rp.organization_id           = wta.organization_id
+    and pod.destination_type_code <> 'EXPENSE'
+   -- Fix for version 1.2, to avoid doubling up results
+    and pod.wip_entity_id            = wta.wip_entity_id
+    -- Revision for version 1.32
+    and rt.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
+    and 2=2                          -- p_org_code
+    group by
+    'Section 1.3', -- section
+    -- Revision for version 1.28
+    rt.transaction_id,
+    wta.organization_id,
+    rsl.item_id,
+    pod.destination_type_code,
+    rt.po_header_id,
+    rt.po_line_id,
+    rt.po_line_location_id,
+    -- Revision for version 1.29
+    rsl.po_release_id,
+    -- Revision for version 1.36
+    -- Move Txn Date Logic to all_rcv Query
+    rsh.shipment_header_id,
+    rsl.shipment_line_id,
+    -- End revision for version 1.36
+    pod.project_id,
+    -- End revision for version 1.29
+    rsh.receipt_num,
+    pod.wip_entity_id,
+    pod.bom_resource_id,
+    -- Revision for version 1.38, decode on accounted amounts does not work if it is zero
+    round(decode(rt.transaction_type,
+     'DELIVER', 1 * rt.primary_quantity,
+     'RETURN TO RECEIVING', -1 * rt.primary_quantity,
+     'CORRECT',
+      decode(parent_rt.transaction_type,
+       'UNORDERED', 0,
+       'DELIVER', 1 * rt.primary_quantity,
+       'RETURN TO RECEIVING', -1 * rt.primary_quantity,
+       'MATCH', -1 * rt.primary_quantity,
+       0),
+     0)
+       ,3), -- quantity
+    -- Revision for version 1.26
+    -- for receipt date inline select
+    rsh.organization_id
+    -- End revision for version 1.26
+    -- ==========================================================
+    -- 1.4 Get the unprocessed PO deliveries (wip_cost_txn_interface)
+    -- from WIP receiving inspection into WIP, as the receiving
+    -- quantities in MTL_SUPPLY have already been updated, but the
+    -- WIP transactions and WIP accounting entries do not exist.
+    -- ==========================================================
+    union all
+     select 'Section 1.4' section,
+    -- Revision for version 1.28, added because Section 1.1
+    -- needed the rae.rcv_transaction_id for uniqueness
+    rt.transaction_id,
+    wcti.organization_id organization_id,
+    rsl.item_id inventory_item_id,
+    pod.destination_type_code destination_type_code,
+    rt.po_header_id po_header_id,
+    rt.po_line_id po_line_id,
+    rt.po_line_location_id po_line_location_id,
+    -- Revision for version 1.29
+    rsl.po_release_id po_release_id,
+    -- Revision for version 1.36
+    -- Move Txn Date Logic to all_rcv Query
+    rsh.shipment_header_id,
+    rsl.shipment_line_id,
+    -- End revision for version 1.36
+    pod.project_id project_id,
+    -- End revision for version 1.29
+    rsh.receipt_num receipt_num,
+    pod.wip_entity_id wip_entity_id,
+    pod.bom_resource_id bom_resource_id,
+    -- Revision for version 1.28, round qtys to 3 decimals
+    -- no need to invert the SIGN of the quantity, already a positive QTY
+    round(sum((nvl(wcti.primary_quantity,0))),3) quantity,
+    -- no need to invert the SIGN of the quantity, already a positive QTY
+    -- Fix for version 1.18
+    round(sum(nvl(wcti.primary_quantity,0) *
+       -- Fix for version 1.28
+       -- Make sure the price is in the primary UOM
+       (rt.source_doc_quantity/rt.primary_quantity) *
+       decode(rt.currency_conversion_rate, null, nvl(rt.po_unit_price,0),
+          nvl(rt.po_unit_price,0) * rt.currency_conversion_rate)),2) amount
+    from wip_cost_txn_interface wcti,
+    rcv_transactions rt,
+    rcv_parameters rp,
+    -- Revision for version 1.29
+    -- po_lines_all pol,
+    po_line_locations_all pll,
+    rcv_shipment_headers rsh,
+    rcv_shipment_lines rsl,
+    po_distributions_all pod,
+    org_acct_periods oap
+    where wcti.rcv_transaction_id      = rt.transaction_id
+    and wcti.transaction_type        = 3 -- outside processing
+    -- Revision for version 1.29
+    -- and rt.po_line_id                = pol.po_line_id
+    and rt.po_line_location_id       = pll.line_location_id
+    and pll.line_location_id         = pod.line_location_id
+    and rt.shipment_line_id          = rsl.shipment_line_id
+    and rsl.shipment_header_id       = rsh.shipment_header_id
+    and rt.shipment_line_id          = rsl.shipment_line_id
+    -- Revision for version 1.36
+    and rt.shipment_header_id        = rsh.shipment_header_id
+    -- Revision for version 1.34, to prevent cross-joining with pod
+    and pod.po_distribution_id       = nvl(rsl.po_distribution_id, pod.po_distribution_id)
+    and oap.organization_id          = wcti.organization_id
+    and 3=3                          -- p_period_name
+    -- Revision for version 1.32
+    -- Fix for version 1.16
+    -- The oap.schedule_close_date does not have a timestamp so we have to trunc to make the comparison
+    -- and wcti.transaction_date       >= oap.schedule_close_date
+    -- and trunc(wcti.transaction_date) > oap.schedule_close_date
+    and wcti.transaction_date       >= oap.schedule_close_date + 1
+    -- Revision for version 1.36
+    and rt.transaction_date         >= oap.schedule_close_date + 1
+    and wcti.organization_id         = rt.organization_id
+    -- End revision for version 1.32
+    and rp.receiving_account_id      = wcti.receiving_account_id
+    and rp.organization_id           = wcti.organization_id
+    -- revision for version 1.28
+    -- To avoid cross-joining with multiple PO distributions, multiple WIP jobs per receipt
+    and pod.wip_entity_id            = wcti.wip_entity_id
+    and pod.destination_type_code <> 'EXPENSE'
+    -- Revision for version 1.32
+    and rt.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
+    and 2=2                          -- p_org_code
+    group by
+    'Section 1.4', -- section
+    -- Revision for version 1.28
+    rt.transaction_id,
+    wcti.organization_id,
+    rsl.item_id,
+    pod.destination_type_code,
+    rt.po_header_id,
+    rt.po_line_id,
+    rt.po_line_location_id,
+    -- Revision for version 1.29
+    rsl.po_release_id,
+    -- Revision for version 1.36
+    -- Move Txn Date Logic to all_rcv Query
+    rsh.shipment_header_id,
+    rsl.shipment_line_id,
+    -- End revision for version 1.36
+    pod.project_id,
+    -- End revision for version 1.29
+    rsh.receipt_num,
+    pod.wip_entity_id,
+    pod.bom_resource_id,
+    -- Revision for version 1.26
+    -- for receipt date inline select
+    rsh.organization_id
+    -- End revision for version 1.26
+    -- ==========================================================
+    -- 1.5 Get the retroactive price adjustments on the DELIVER
+    -- transaction type from rrsl.  Retroactive price adjust-
+    -- ments have entries in rrsl on DELIVER rt.transaction_type.
+    -- Normally there are no accounting entries in rrsl for
+    -- DELIVER rt.transaction types.
+    -- This logic applies to material and WIP DELIVER txns.
+    -- Fix for version 1.19
+    -- ==========================================================
+    union all
+     select 'Section 1.5' section,
+    -- Revision for version 1.28, added because Section 1.1
+    -- needed the rae.rcv_transaction_id for uniqueness
+    rt.transaction_id,
+    rt.organization_id organization_id,
+    rsl.item_id inventory_item_id,
+    pod.destination_type_code destination_type_code,
+    rt.po_header_id po_header_id,
+    rt.po_line_id po_line_id,
+    rt.po_line_location_id po_line_location_id,
+    -- Revision for version 1.29
+    rsl.po_release_id po_release_id,
+    -- Revision for version 1.36
+    -- Move Txn Date Logic to all_rcv Query
+    rsh.shipment_header_id,
+    rsl.shipment_line_id,
+    -- End revision for version 1.36
+    pod.project_id project_id,
+    -- End revision for version 1.29
+    rsh.receipt_num receipt_num,
+    pod.wip_entity_id wip_entity_id,
+    pod.bom_resource_id bom_resource_id,
+    -- the quantities have already been included in sections
+    -- 1.1 to 1.4, no "real" qty for retroactive price adjustments
+    -- as this works like a valuation adjustment
+    sum(0) quantity,
+    -- invert the SIGN as we will subtract away these amounts
+    round(sum(-1*(nvl(rrsl.accounted_dr,0) - nvl(rrsl.accounted_cr,0))),2) amount
+    from rcv_transactions rt,
+    rcv_receiving_sub_ledger rrsl,
+    rcv_parameters rp,
+    -- Revision for version 1.29
+    -- po_lines_all pol,
+    po_line_locations_all pll,
+    po_distributions_all pod,
+    rcv_shipment_headers rsh,
+    rcv_shipment_lines rsl,
+    org_acct_periods oap
+    -- Revision for version 1.29
+    -- where rt.po_line_id               = pol.po_line_id
+    where rt.po_line_location_id       = pll.line_location_id
+    and pll.line_location_id         = pod.line_location_id
+    and rt.shipment_line_id          = rsl.shipment_line_id
+    -- Revision for version 1.36
+    and rt.shipment_header_id        = rsh.shipment_header_id
+    -- Revision for version 1.34, to prevent cross-joining with pod
+    -- and pod.po_distribution_id       = nvl(rsl.po_distribution_id, pod.po_distribution_id)
+    and pod.po_distribution_id       = rrsl.reference3
+    -- End revision for version 1.36
+    and rsl.shipment_header_id       = rsh.shipment_header_id
+    and oap.organization_id          = rt.organization_id
+    and 3=3                          -- p_period_name
+    -- Revision for version 1.32
+    -- Fix for version 1.16
+    -- The oap.schedule_close_date does not have a timestamp so we have to trunc to make the comparison
+    -- Use rt.transaction_date as this correctly references the quantity movement, even
+    -- though the rrsl.accounting_date is when the retroactive adjustment happened
+    -- and trunc(rt.transaction_date)  > oap.schedule_close_date
+    and rt.transaction_date         >= oap.schedule_close_date + 1
+    and rp.organization_id           = rt.organization_id
+    -- Revision for version 1.36
+    and rrsl.transaction_date       >= oap.schedule_close_date + 1
+    -- ==============================================
+    -- These joins will get the retroactive price
+    -- adjustments for both inventory and WIP, that
+    -- hit the receiving inspection account
+    -- ==============================================
+    and rp.receiving_account_id      = rrsl.code_combination_id
+    and rt.transaction_type          = 'DELIVER'
+    and pod.destination_type_code   <> 'EXPENSE'
+    and rt.transaction_id            = rrsl.rcv_transaction_id
+    -- Oracle difference =>  the RRSL table is using the meaning as the value for the CST_ACCOUNTING_LINE_TYPE
+    --                       lookup code, as opposed to the lookup code values 1 - 99
+    -- Revision for version 1.34, receiving transactions also use 'Clearing'
+    -- and rrsl.accounting_line_type    = 'Receiving Inspection'
+    and rrsl.accounting_line_type in ('Clearing', 'Receiving Inspection')
+    -- End revision for version 1.34
+    -- Revision for version 1.32
+    and rt.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
+    and 2=2                          -- p_org_code
+    group by
+    'Section 1.5', -- section
+    -- Revision for version 1.28
+    rt.transaction_id,
+    rt.organization_id,
+    rsl.item_id,
+    pod.destination_type_code,
+    rt.po_header_id,
+    rt.po_line_id,
+    rt.po_line_location_id,
+    -- Revision for version 1.29
+    rsl.po_release_id,
+    -- Revision for version 1.36
+    -- Move Txn Date Logic to all_rcv Query
+    rsh.shipment_header_id,
+    rsl.shipment_line_id,
+    -- End revision for version 1.36
+    pod.project_id,
+    -- End revision for version 1.29
+    rsh.receipt_num,
+    pod.wip_entity_id,
+    pod.bom_resource_id,
+    -- Revision for version 1.26
+    -- for receipt date inline select
+    rsh.organization_id
+    -- End revision for version 1.26
+   ) post_close_rcv_txns
+   group by
+   post_close_rcv_txns.section,
+   post_close_rcv_txns.organization_id,
+   post_close_rcv_txns.inventory_item_id,
+   post_close_rcv_txns.destination_type_code,
+   post_close_rcv_txns.po_header_id,
+   post_close_rcv_txns.po_line_id,
+   post_close_rcv_txns.po_line_location_id,
+   -- Revision for version 1.29
+   post_close_rcv_txns.po_release_id,
+   -- Revision for version 1.36
+   -- Move Txn Date Logic to all_rcv Query
+   post_close_rcv_txns.shipment_header_id,
+   post_close_rcv_txns.shipment_line_id,
+   -- End revision for version 1.36
+   post_close_rcv_txns.project_id,
+   -- End revision for version 1.29
+   post_close_rcv_txns.receipt_num,
+   post_close_rcv_txns.wip_entity_id,
+   post_close_rcv_txns.bom_resource_id
+   -- Revision for version 1.36
+   -- post_close_rcv_txns.transaction_date
+  ) all_rcv
+ group by
+  all_rcv.section,
+  all_rcv.organization_id,
+  all_rcv.inventory_item_id,
+  all_rcv.destination_type_code,
+  all_rcv.po_header_id,
+  all_rcv.po_line_id,
+  all_rcv.po_line_location_id,
+  -- Revision for version 1.29
+  all_rcv.po_release_id,
+  -- Revision for version 1.36
+  all_rcv.shipment_header_id,
+  all_rcv.project_id,
+  -- End revision for version 1.29
+  all_rcv.receipt_num,
+  all_rcv.wip_entity_id,
+  all_rcv.bom_resource_id
+  -- Revision for version 1.36
+  -- trunc(all_rcv.transaction_date)
+ -- Fix for version 1.26
+ -- Caused corrections to be missed with incorrect results
+ -- Fix for version 1.18
+ -- having abs(sum(nvl(all_rcv.quantity,0))) > .01
+ ) net_rcv
+ -- ===========================
+ -- End of getting quantities
+ -- ===========================
+-- ===================================================================
+-- Item master to quantity and item master to cost joins
+-- ===================================================================
+where rp_items.inventory_item_id      = net_rcv.inventory_item_id
+and rp_items.organization_id        = net_rcv.organization_id
+-- Revision for version 1.33
+and muomv.uom_code                  = rp_items.primary_uom_code
+and misv.inventory_item_status_code = rp_items.inventory_item_status_code
+-- End revision for version 1.33
+and mp.organization_id              = oap.organization_id
+and 3=3                             -- p_period_name
+-- ===================================================================
+-- PO Header joins
+-- ===================================================================
+and poh.po_header_id                = net_rcv.po_header_id
+-- Revision for version 1.29
+and pol.po_line_id                  = net_rcv.po_line_id
+-- Revision for version 1.36
+and pll.line_location_id            = net_rcv.po_line_location_id
+and pov.vendor_id                   = poh.vendor_id
+and hr.employee_id                  = poh.agent_id
+and pp.project_id (+)               = net_rcv.project_id
+and pr.po_release_id (+)            = net_rcv.po_release_id
+-- End revision for version 1.29
+-- ===================================================================
+-- Receiving accrual account to account number join and org joins
+-- ===================================================================
+and rp_items.receiving_account_id   = gcc.code_combination_id (+)
+and rp_items.organization_id        = mp.organization_id
+-- ===================================================================
+-- Joins for the lookup codes
+-- ===================================================================
+and ml.lookup_type                  = 'MTL_PLANNING_MAKE_BUY'
+and ml.lookup_code                  = rp_items.planning_make_buy_code
+-- revision for version 1.11
+and fcl.lookup_type (+)             = 'ITEM_TYPE'
+and fcl.lookup_code (+)             = rp_items.item_type
+and pl1.lookup_type                 = 'DESTINATION TYPE'
+and pl1.lookup_code                 = net_rcv.destination_type_code
+and pl2.lookup_type (+)             = 'DOCUMENT STATE'
+and pl2.lookup_code (+)             = poh.closed_code
+and pl3.lookup_type (+)             = 'DOCUMENT STATE'
+and pl3.lookup_code (+)             = pol.closed_code
+and pl4.lookup_type (+)             = 'DOCUMENT STATE'
+and pl4.lookup_code (+)             = pll.closed_code
+-- ===================================================================
+-- Using the base tables to avoid the performance issues
+-- with org_organization_definitions and hr_operating_units
+-- ===================================================================
+and hoi.org_information_context     = 'Accounting Information'
+and hoi.organization_id             = mp.organization_id
+and hoi.organization_id             = haou.organization_id             -- this gets the organization name
+-- avoid selecting disabled inventory organizations
+and sysdate                         < nvl(haou.date_to, sysdate +1)
+and haou2.organization_id           = to_number(hoi.org_information3)  -- this gets the operating unit id
+and gl.ledger_id                    = to_number(hoi.org_information1)  -- get the ledger_id
+and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
+and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
+and 1=1                             -- p_item_number, p_operating_unit, p_ledger
+group by
+ nvl(gl.short_name, gl.name),
+ haou2.name,
+ mp.organization_code,
+ haou.name,
+ oap.period_name,
+ &column_segments_grp
+ -- Revision for version 1.29
+ pov.vendor_name,
+  hr.full_name,
+ -- End revision for version 1.29
+ rp_items.concatenated_segments,
+ rp_items.description,
+ fcl.meaning, -- Item Type
+ -- Revision for version 1.33
+ misv.inventory_item_status_code_tl,
+ ml.meaning, -- Planning Make Buy Code
+ -- Revision for version 1.27
+ -- mc.segment1,
+ pl1.displayed_field, -- Destination_Type
+ -- Revision for version 1.36
+ nvl(pl4.displayed_field,nvl(pl3.displayed_field, pl2.displayed_field)), --  PO_Line_Status
+ poh.segment1,
+ -- Revision for version 1.29
+ pol.line_num,
+ pr.release_num,
+ pp.segment1, -- Project Number
+ pp.name, -- Project Name
+ -- For inline column category select
+ net_rcv.po_line_location_id,
+ -- End revision for version 1.29
+ net_rcv.receipt_num,
+ net_rcv.transaction_date,
+ &p_show_wip_osp_grp
+ -- net_rcv.wip_entity_id,
+ -- net_rcv.bom_resource_id,
+ gl.currency_code,
+ -- Revision for version 1.33
+ muomv.uom_code,
+ -- For inline column category select
+ rp_items.inventory_item_id,
+ rp_items.organization_id
+-- Revision for version 1.28, screen out zero quantities and amounts at the very end
+having abs(sum(nvl(net_rcv.quantity,0) + nvl(net_rcv.amount,0))) > .01
+-- Order by Ledger, Operating Unit, Org Code, Account Segments, Item Number, PO Number and Receipt Number
+order by
+ nvl(gl.short_name, gl.name), -- Ledger
+ haou2.name, -- Operating Unit
+ mp.organization_code, -- Org Code
+ &column_segments_grp
+ pov.vendor_name, -- Supplier
+ rp_items.concatenated_segments, -- Item Number
+ poh.segment1, -- PO Number
+ pol.line_num, -- PO Line
+ pr.release_num, -- PO Rel
+ net_rcv.transaction_date

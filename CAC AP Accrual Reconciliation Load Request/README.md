@@ -1,30 +1,54 @@
-# [Blitz Report Sample Upload (Interface Table)](https://www.enginatics.com/reports/blitz-report-sample-upload-interface-table/)
+# [CAC AP Accrual Reconciliation Load Request](https://www.enginatics.com/reports/cac-ap-accrual-reconciliation-load-request/)
 
 ## Description: 
-Sample upload to be used as a template by copying (Tools>Copy Report) to create new uploads using Interface Table.
+Report to show when the A/P Accrual Reconciliation Load program was run and by whom, including the Ledger, Operating Unit, Build Id, Request Id, Creation Date and Last Updated By.
+
+Parameters:
+===========
+Beginning Creation Date:  enter the starting creation date to report, based on the operating unit for your session's inventory organization (optional).
+Operating Unit:  enter the specific operating unit(s) you wish to report (optional).
+Ledger:  enter the specific ledger(s) you wish to report (optional).
+
+/* +=============================================================================+
+-- |  Copyright 2019 - 2025 Douglas Volz Consulting, Inc.
+-- |  All rights reserved.
+-- | Permission to use this code is granted provided the original author is
+-- | acknowledged. No warranties, express or otherwise is included in this permission.
+-- +=============================================================================+
+-- |
+-- |  Original Author: Douglas Volz (doug@volzconsulting.com)
+-- | 
+-- |  Version Modified on Modified  by   Description
+-- |  ======= =========== ============== =========================================
+-- |  1.0     31 Oct 2019 Douglas Volz   Initial Coding
+-- |  1.1     28 Jan 2025 Douglas Volz   Added creation date parameter
+-- |  1.2     15 Feb 2025 Douglas Volz   Added Operating Unit and Ledger Security
+-- |                                     Profile Controls and parameters.
+-- +=============================================================================+*/
 
 ## Parameters
-Name
+Beginning Creation Date, Operating Unit, Ledger
 
 ## Used tables
-[xxen_upload_sample](https://www.enginatics.com/library/?pg=1&find=xxen_upload_sample)
+[cst_reconciliation_build](https://www.enginatics.com/library/?pg=1&find=cst_reconciliation_build), [hr_organization_information](https://www.enginatics.com/library/?pg=1&find=hr_organization_information), [hr_all_organization_units_vl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_vl), [gl_ledgers](https://www.enginatics.com/library/?pg=1&find=gl_ledgers), [fnd_user](https://www.enginatics.com/library/?pg=1&find=fnd_user), [gl_access_set_norm_assign](https://www.enginatics.com/library/?pg=1&find=gl_access_set_norm_assign), [gl_ledger_set_norm_assign_v](https://www.enginatics.com/library/?pg=1&find=gl_ledger_set_norm_assign_v), [mo_glob_org_access_tmp](https://www.enginatics.com/library/?pg=1&find=mo_glob_org_access_tmp), [dual](https://www.enginatics.com/library/?pg=1&find=dual)
 
 ## Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Upload](https://www.enginatics.com/library/?pg=1&category[]=Upload)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
-
+## Related reports
+[CAC Inventory Organization Summary](/CAC%20Inventory%20Organization%20Summary/), [CAC AP Accrual IR ISO Match Analysis](/CAC%20AP%20Accrual%20IR%20ISO%20Match%20Analysis/), [CAC AP Accrual Reconciliation Summary by Match Type](/CAC%20AP%20Accrual%20Reconciliation%20Summary%20by%20Match%20Type/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 
 # Example Report 
-[None](https://www.enginatics.com/example/blitz-report-sample-upload-interface-table/)
+[None](https://www.enginatics.com/example/cac-ap-accrual-reconciliation-load-request/)
 
 # Report SQL
-[www.enginatics.com/reports/blitz-report-sample-upload-interface-table/](https://www.enginatics.com/reports/blitz-report-sample-upload-interface-table/)
+[www.enginatics.com/reports/cac-ap-accrual-reconciliation-load-request/](https://www.enginatics.com/reports/cac-ap-accrual-reconciliation-load-request/)
 
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[Blitz_Report_Sample_Upload_Interface_Table.xml](https://www.enginatics.com/xml/blitz-report-sample-upload-interface-table/)
+[CAC_AP_Accrual_Reconciliation_Load_Request.xml](https://www.enginatics.com/xml/cac-ap-accrual-reconciliation-load-request/)
 # Oracle E-Business Suite [Reporting Library](https://www.enginatics.com/library/)
     
 We provide an open source Oracle EBS SQLs as a part of operational and project implementation support [toolkits](https://www.enginatics.com/blitz-report-toolkits/) for rapid Excel reports generation. 

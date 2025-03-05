@@ -531,4 +531,270 @@ from    (select Src_Org.ledger Source_Ledger,
                              and    4=4                    -- p_pii_cost_type, p_pii_sub_element
                              and    cct.cost_type          = '&p_pii_cost_type'                                         -- p_pii_cost_type
                              and    br.resource_code       = '&p_pii_sub_element'                                       -- p_pii_sub_element
-                   
+                             and    cicd.inventory_item_id = cic.inventory_item_id  -- get the source org item id
+                             and    cicd.organization_id   = cic.organization_id    -- get the source org id
+                             and    cicd.resource_id       = br.resource_id
+                            ),0)                                        pii_cost
+                 -- =======================================================
+                 -- Item, costs, organization and ledger tables
+                 -- =======================================================
+                 from   cst_item_costs cic,
+                        cst_cost_types cct,
+                        mtl_parameters mp,
+                        mtl_system_items_vl msiv,
+                        -- Revision for version 1.15
+                        mtl_categories_v mc,
+                        mtl_item_categories mic,
+                        mtl_category_sets_b mcs,
+                        mtl_category_sets_tl mcs_tl,
+                        -- End revision for version 1.15
+                        -- Revision for version 1.17
+                        -- Add in the item master source organizations
+                        -- mrp_sr_source_org msso,
+                        -- mrp_sr_receipt_org msro,
+                        -- mrp_sourcing_rules msr,
+                        -- mrp_sr_assignments msa,
+                        -- mrp_assignment_sets mas,
+                        -- =======================================================
+                        -- Revision for version 1.17
+                        -- Get both sourcing rules and item master source org
+                        -- information.  Missing lots of sourcing rules.
+                        -- =======================================================
+                        (select mas.assignment_set_name assignment_set_name,
+                                msr.sourcing_rule_name sourcing_rule_name,
+                                msa.organization_id to_organization_id,
+                                msso.source_organization_id src_organization_id,
+                                msa.inventory_item_id inventory_item_id
+                         from   mrp_sr_source_org msso,
+                                mrp_sr_receipt_org msro,
+                                mrp_sourcing_rules msr,
+                                mrp_sr_assignments msa,
+                                mrp_assignment_sets mas
+                         where  msso.sr_receipt_id              = msro.sr_receipt_id
+                         and    msr.sourcing_rule_id            = msro.sourcing_rule_id
+                         and    msa.sourcing_rule_id            = msr.sourcing_rule_id
+                         -- Most clients only have one Assignment Set
+                         and    5=5                             -- p_assignment_set
+                         and    mas.assignment_set_name         = '&p_assignment_set'                          -- p_assignment_set
+                         and    msa.assignment_set_id           = mas.assignment_set_id
+                         -- exclude vendor sourcing rules
+                         and    msso.source_organization_id is not null
+                         union all
+                         -- Revision for version 1.22
+                         -- select   'None' assignment_set_name,
+                         --         'None' sourcing_rule_name,
+                         select ml.meaning assignment_set_name,
+                                ml.meaning sourcing_rule_name,
+                         -- End revision for version 1.22
+                                msiv.organization_id to_organization_id,
+                                msiv.source_organization_id src_organization_id,
+                                msiv.inventory_item_id inventory_item_id
+                         from   mtl_system_items_vl msiv,
+                                mtl_parameters inv_to_org,
+                                mtl_parameters inv_src_org,
+                                -- Revision for version 1.22
+                                mfg_lookups ml
+                         where  msiv.source_organization_id is not null
+                         and    msiv.organization_id           = inv_to_org.organization_id
+                         and    msiv.source_organization_id    = inv_src_org.organization_id
+                         and    msiv.inventory_item_status_code <>'Inactive'
+                         -- Revision for version 1.22
+                         and    ml.lookup_type                 = 'YES_NO_SYS'
+                         and    ml.lookup_code                 = 2 -- None
+                         -- End revision for version 1.22
+                         and    msiv.organization_id          <> inv_to_org.master_organization_id
+                         and    msiv.source_organization_id   <> inv_src_org.master_organization_id
+                         and    (msiv.organization_id,msiv.source_organization_id,msiv.inventory_item_id) not in
+                                        (select msa.organization_id,msso.source_organization_id,msa.inventory_item_id
+                                         from   mrp_sr_source_org msso,
+                                                mrp_sr_receipt_org msro,
+                                                mrp_sourcing_rules msr,
+                                                mrp_sr_assignments msa,
+                                                mrp_assignment_sets mas
+                                         where  msso.sr_receipt_id            = msro.sr_receipt_id
+                                         and           msr.sourcing_rule_id          = msro.sourcing_rule_id
+                                         and           msa.sourcing_rule_id          = msr.sourcing_rule_id
+                                         -- Most clients only have one Assignment Set
+                                         and           5=5                           -- p_assignment_set
+                                         and           msa.assignment_set_id         = mas.assignment_set_id
+                                         and           msiv.organization_id          = msa.organization_id
+                                         and           msiv.inventory_item_id        = msa.inventory_item_id
+                                         and           msso.source_organization_id is not null
+                                         -- ===================================
+                                         -- Material Parameter joins for to_org
+                                         -- ====================================
+                                         and           msa.organization_id           = inv_to_org.organization_id
+                                         and           msso.source_organization_id   = inv_src_org.organization_id
+                                        )
+                        ) srcg_rules,
+                        -- End for revision 1.17
+                        hr_organization_information hoi,
+                        hr_all_organization_units_vl haou,
+                        hr_all_organization_units_vl haou2,
+                        gl_ledgers gl,
+                        -- Revision for version 1.15
+                        -- gl_code_combinations gcc,
+                        mfg_lookups ml1, 
+                        mfg_lookups ml2,
+                        fnd_common_lookups fcl
+                 -- =======================================================
+                 -- Organization, cost type, item cost and COGS acct joins
+                 -- =======================================================
+                 where  cct.cost_type_id                = cic.cost_type_id
+                 and    6=6                             -- p_cost_type, p_category_set, p_item_number
+                 and    cic.organization_id             = msiv.organization_id
+                 and    cic.inventory_item_id           = msiv.inventory_item_id
+                 and    mp.organization_id              = srcg_rules.to_organization_id  -- To_Org Organization Id
+                 -- Revision for version 1.15
+                 and    msiv.inventory_item_status_code <> 'Inactive'
+                 -- End revision for version 1.20
+                 -- =======================================================
+                 -- Sourcing rule joins
+                 -- =======================================================
+                 and    msiv.organization_id            = srcg_rules.to_organization_id
+                 and    msiv.inventory_item_id          = srcg_rules.inventory_item_id
+                 -- ====================================
+                 -- Item Master Lookup Code Joins
+                 -- ====================================
+                 and    msiv.planning_make_buy_code     = ml1.lookup_code
+                 and    ml1.lookup_type                 = 'MTL_PLANNING_MAKE_BUY'
+                 and    ml2.lookup_code                 = cic.based_on_rollup_flag
+                 and    ml2.lookup_type                 = 'SYS_YES_NO'
+                 -- Lookup codes for item types
+                 and    fcl.lookup_code (+)             = msiv.item_type
+                 and    fcl.lookup_type (+)             = 'ITEM_TYPE'
+                 -- =================================================
+                 -- Revision for version 1.15
+                 -- Joins for category product line values
+                 -- =================================================
+                 and    mcs.category_set_id             = mcs_tl.category_set_id
+                 and    mcs_tl.language                 = userenv('lang')
+                 and    mic.inventory_item_id           = msiv.inventory_item_id (+)
+                 and    mic.organization_id             = msiv.organization_id  (+)
+                 and    mic.category_id                 = mc.category_id
+                 and    mic.category_set_id             = mcs.category_set_id
+                 -- End revision for version 1.15
+                 -- ====================================
+                 -- Revision for version 1.15
+                 -- Not applicable, client does not have product line accounting segment
+                 -- Account code combination joins
+                 -- ====================================
+                 -- and    gcc.code_combination_id        = msiv.cost_of_sales_account
+                 -- ===========================================
+                 -- Organization joins to the HR org model
+                 -- ===========================================
+                 and    hoi.org_information_context    = 'Accounting Information'
+                 and    hoi.organization_id            = mp.organization_id
+                 and    hoi.organization_id            = haou.organization_id            -- this gets the organization name
+                 and    haou2.organization_id          = to_number(hoi.org_information3) -- this gets the operating unit id
+                 and    gl.ledger_id                   = to_number(hoi.org_information1) -- get the ledger_id
+                 -- Revision for version 1.24
+                 and    mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
+                 and    7=7                            -- p_to_org_ledger, p_to_org_code, p_to_operating_unit
+                 -- =================================================
+                 -- Don't pick up the master org - no transactions
+                 -- =================================================
+                 and    mp.organization_id            <> mp.master_organization_id
+                 -- Revision for version 1.11
+                 -- and mp.process_enabled_flag = 'N'--Added to restrict only discrete orgs 11/3/14
+                ) To_Org
+        -- =======================================================
+        -- Joins for mtl_intercompany_parameters "Interco" to the
+        -- To_Org operating unit, Src-Org operating unit and price lists
+        -- =======================================================
+        where  InterCo_OUs.sell_organization_id = To_Org.operating_unit_id   -- operating unit joins
+        -- The SELL organization is the OU getting the goods from the SHIP organization/OU
+        -- Revision for version 1.18
+        and    InterCo_OUs.ship_organization_id = Src_Org.operating_unit_id   -- operating unit joins
+        -- The SHIP organization is the OU sending the goods to the SELL organization/OU
+        and    List_Price.list_header_id        = InterCo_OUs.price_list_id
+        and    List_Price.inventory_item_id     = To_Org.inventory_item_id   -- joining to the validation item master
+        -- =======================================================
+        -- Source org joins for the org, item master and costs
+        -- =======================================================
+        and    Src_Org.inventory_item_id        = To_Org.inventory_item_id   -- joins to the To_Org item master
+        and    Src_Org.src_organization_id      = To_Org.src_organization_id -- joins to sourcing rules from the To_Org
+        -- Revision for version 1.16
+        and    Src_Org.to_organization_id       = To_Org.to_organization_id
+        -- Revision for version 1.11
+        -- Group to reduce the number of rows
+        group by
+                Src_Org.ledger,
+                Src_Org.operating_unit,
+                Src_Org.organization_code,
+                -- Revision for version 1.10
+                -- To_Org.assignment_set,
+                To_Org.sourcing_rule,
+                List_Price.item_number,
+                List_Price.item_description,
+                Src_Org.primary_uom_code,
+                Src_Org.item_status,
+                Src_Org.item_type,
+                Src_Org.mb_code,
+                To_Org.mb_code,
+                -- Revision for version 1.22
+                Src_Org.category_set_name,
+                Src_Org.prod_grp,
+                To_Org.prod_grp,
+                List_Price.name,
+                List_Price.currency_code,
+                List_Price.price_in_primary_uom, 
+                To_Org.currency_code,
+                Src_Org.currency_code,
+                -- Revision for version 1.19
+                -- Src_Org.tl_material_overhead_cost,
+                -- Src_Org.tl_resource_cost,
+                -- Src_Org.tl_outside_processing_cost,
+                -- Src_Org.tl_overhead_cost,
+                -- Src_Org.tl_added_cost,
+                -- End revision for version 1.19
+                Src_Org.item_cost, 
+                To_Org.currency_code,
+                Src_Org.pii_cost,
+                To_Org.ledger,
+                To_Org.operating_unit,
+                To_Org.organization_code,
+                -- Fix for version 1.5
+                -- InterCo.party_name "Internal Customer",
+                -- Revision for version 1.19
+                -- To_Org.tl_material_overhead_cost,
+                -- To_Org.tl_resource_cost,
+                -- To_Org.tl_outside_processing_cost,
+                -- To_Org.tl_overhead_cost,
+                -- To_Org.tl_added_cost,
+                -- End revision for version 1.19
+                To_Org.item_cost,
+                To_Org.pii_cost,
+                List_Price.start_date,
+                List_Price.revision_date
+        ) rpt,
+        -- ===========================================================================
+        -- Tables to get currency exchange rate information for the Price List prices
+        -- Select Currency Rates based on the currency conversion date
+        -- ===========================================================================
+        (select gdr.* from gl_daily_rates gdr, gl_daily_conversion_types gdct where gdr.conversion_date=:p_conversion_date and gdct.user_conversion_type=:p_user_conversion_type and gdct.conversion_type=gdr.conversion_type) Price_gdr,
+        -- ===========================================================================
+        -- Tables to get currency exchange rate information for the To_Org
+        -- Select Currency Rates based on the currency conversion date
+        -- ===========================================================================
+        (select gdr.* from gl_daily_rates gdr, gl_daily_conversion_types gdct where gdr.conversion_date=:p_conversion_date and gdct.user_conversion_type=:p_user_conversion_type and gdct.conversion_type=gdr.conversion_type) To_Org_gdr
+        -- End revision for version 1.24
+        -- =======================================================
+        -- Joins for the currency exchange rates for the Price Lists
+        -- =======================================================
+        where   Price_gdr.from_currency (+)      = rpt.Price_Currency_Code   -- price list currency code
+        and     Price_gdr.to_currency (+)        = rpt.To_Org_Currency_Code  -- will translate prices into the "To_Org" currency
+        -- =======================================================
+        -- Joins for the currency exchange rates for the Src_Org
+        -- =======================================================
+        and     To_Org_gdr.from_currency (+)     = rpt.Source_Currency_Code  -- Source Org currency code
+        and     To_Org_gdr.to_currency (+)       = rpt.To_Org_Currency_Code  -- will translate source costs into the "To_Org" currency
+        -- End revision for version 1.24
+order by
+        rpt.source_ledger,
+        rpt.source_operating_unit,
+        rpt.source_org,
+        rpt.item_number,
+        rpt.to_org_ledger,
+        rpt.to_org_operating_unit,
+        rpt.to_org_code

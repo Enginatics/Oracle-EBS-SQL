@@ -13,7 +13,7 @@ Item, Last Update Date From, Last Update Date To, Last Updated By, Creation Date
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related reports
-[CAC Internal Order Shipment Margin](/CAC%20Internal%20Order%20Shipment%20Margin/), [CAC Manufacturing Variance Detail](/CAC%20Manufacturing%20Variance%20Detail/)
+[CAC Internal Order Shipment Margin](/CAC%20Internal%20Order%20Shipment%20Margin/), [CAC Invoice Price Variance](/CAC%20Invoice%20Price%20Variance/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

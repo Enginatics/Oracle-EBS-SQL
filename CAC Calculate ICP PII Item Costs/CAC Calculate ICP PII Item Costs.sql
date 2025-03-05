@@ -564,4 +564,255 @@ from    gl_ledgers gl,
          -- 1.27                OR
          -- 1.27           (Firstorg.to_org = Secorg.src_org and SecOrg.to_org <> ThirdOrg.src_org)
          -- 1.27         )
-         -- Only use point-to-point sourcing rule logic, using the first and 
+         -- Only use point-to-point sourcing rule logic, using the first and third set 
+         -- of sourcing rules.
+         and    (Firstorg.to_org = ThirdOrg.to_org)
+         -- =============================
+         -- End change for version 1.9
+         -- =============================
+         -- End revision for version 1.27
+         -- =================================================
+         -- Revision for version 1.28
+         -- Joins for category product line values
+         -- =================================================
+         -- Revision for version 1.35
+         -- and    mcs.category_set_id        = mcs_tl.category_set_id
+         -- and    mcs_tl.language            = userenv('lang')
+         -- and         mic.inventory_item_id      = FirstOrg.inventory_item_id (+)
+         -- and    mic.organization_id        = FirstOrg.src_org_id  (+)
+         -- and    mic.category_id            = mc.category_id
+         -- and    mic.category_set_id        = mcs.category_set_id
+         -- and    mcs_tl.category_set_name   = 'p_cost_category_set'
+         -- End revision for version 1.28 and 1.35
+         -- =================================================
+         -- change for version 1.10
+         -- Now exclude PII if is zero
+         -- =================================================
+         -- Change for version 1.21
+         -- Don't exclude if the costs are the same as there
+         -- still may be PII from lower level or previous 
+         -- level costs.
+         -- =================================================
+         -- and (FirstOrg.source_item_cost) - ThirdOrg.to_org_item_cost <> 0
+         group by 
+                FirstOrg.item_number,
+                FirstOrg.inventory_item_id,
+                FirstOrg.description,
+                FirstOrg.primary_uom_code,
+                -- Revision for version 1.29
+                FirstOrg.item_type,
+                FirstOrg.item_status_code,
+                -- End revision for version 1.29
+                -- Revision for version 1.30
+                FirstOrg.planning_make_buy_code,
+                -- Revision for version 1.28 and 1.35
+                -- nvl(mc.segment1,''), -- Product group category
+                FirstOrg.src_org,
+                FirstOrg.src_org_id,
+                -- Revision for version 1.36
+                FirstOrg.src_ledger_id,
+                FirstOrg.src_currency,
+                FirstOrg.assignment_set,
+                ThirdOrg.assignment_set,
+                FirstOrg.sourcing_rule,
+                ThirdOrg.to_org,
+                ThirdOrg.to_org_id,
+                -- Revision for version 1.36
+                ThirdOrg.to_currency,
+                -- revision for version 1.30
+                ThirdOrg.planning_make_buy_code
+         ) item_sourcing,
+        -- =================================================
+        -- Get To Org Cost information
+        -- =================================================
+         (select cic.organization_id,
+                 cic.inventory_item_id,
+                 cic.cost_type_id,
+                 cic.item_cost,
+                 cic.material_cost,
+                 cic.tl_material_overhead,
+                 cic.tl_resource,
+                 cic.tl_outside_processing,
+                 cic.tl_overhead,
+                 cic.item_cost - cic.tl_material_overhead - cic.tl_resource - 
+                                 cic.tl_outside_processing - cic.tl_overhead net_cost,
+                 nvl((select sum(cicd.item_cost)
+                      from   cst_item_cost_details cicd,
+                             cst_cost_types cct,
+                             bom_resources br
+                      where  cicd.cost_type_id      = cct.cost_type_id
+                      and    2=2                    -- p_pii_cost_type
+                      and    cicd.inventory_item_id = cic.inventory_item_id
+                      and    cicd.organization_id   = cic.organization_id
+                      and    cicd.resource_id       = br.resource_id
+                      -- Revision for version 1.33
+                      and    8=8                    -- p_pii_sub_element
+                     ),0) pii_cost
+         from   cst_item_costs cic,
+                cst_cost_types cct
+         -- ====================================
+         -- Item_Cost Joins for the To_Org
+         -- ====================================
+         where  cic.cost_type_id              = cct.cost_type_id
+         and    3=3                           -- p_cost_type
+         union all
+         select cic.organization_id,
+                cic.inventory_item_id,
+                cic.cost_type_id,
+                cic.item_cost,
+                cic.material_cost,
+                cic.tl_material_overhead,
+                cic.tl_resource,
+                cic.tl_outside_processing,
+                cic.tl_overhead,
+                cic.item_cost - cic.tl_material_overhead - cic.tl_resource - 
+                                cic.tl_outside_processing - cic.tl_overhead net_cost,
+                nvl((select sum(cicd.item_cost)
+                     from   cst_item_cost_details cicd,
+                            cst_cost_types cct,
+                            bom_resources br
+                     where  cicd.cost_type_id      = cct.cost_type_id
+                     and    2=2                    -- p_pii_cost_type
+                     and    cicd.inventory_item_id = cic.inventory_item_id
+                     and    cicd.organization_id   = cic.organization_id
+                     and    cicd.resource_id       = br.resource_id
+                     -- Revision for version 1.33
+                     and    8=8                    -- p_pii_sub_element
+                    ),0) pii_cost
+         from   cst_item_costs cic,
+                cst_cost_types cct,
+                mtl_parameters mp
+         -- ====================================
+         -- Item_Cost Joins for the To Org
+         -- ====================================
+         where  cic.organization_id           = mp.organization_id
+         and    cic.cost_type_id              = mp.primary_cost_method  -- this gets the Frozen Costs
+         and    cct.cost_type_id             <> mp.primary_cost_method  -- this avoids getting the Frozen costs twice
+         and    3=3                           -- p_cost_type
+         -- ====================================
+         -- Find all the Frozen costs not in the
+         -- Pending or unimplemented cost type
+         -- ====================================
+         and    not exists
+                        (select 'x'
+                         from   cst_item_costs cic2
+                         where  cic2.organization_id   = cic.organization_id
+                         and    cic2.inventory_item_id = cic.inventory_item_id
+                         and    cic2.cost_type_id      = cct.cost_type_id
+                        )
+        ) to_org_costs,
+        -- =================================================
+        -- Get Source Org Cost information
+        -- =================================================
+        (select cic.organization_id,
+                cic.inventory_item_id,
+                cic.cost_type_id,
+                cic.item_cost,
+                cic.material_cost,
+                cic.tl_material_overhead,
+                cic.tl_resource,
+                cic.tl_outside_processing,
+                cic.tl_overhead,
+                cic.item_cost - cic.tl_material_overhead - cic.tl_resource - 
+                                cic.tl_outside_processing - cic.tl_overhead net_cost,
+                nvl((select sum(cicd.item_cost)
+                     from   cst_item_cost_details cicd,
+                            cst_cost_types cct,
+                            bom_resources br
+                     where  cicd.cost_type_id      = cct.cost_type_id
+                     and    2=2                    -- p_pii_cost_type
+                     and    cicd.inventory_item_id = cic.inventory_item_id
+                     and    cicd.organization_id   = cic.organization_id
+                     and    cicd.resource_id       = br.resource_id
+                     -- Revision for version 1.33
+                     and    8=8                    -- p_pii_sub_element
+                    ),0) pii_cost
+         from  cst_item_costs cic,
+               cst_cost_types cct
+         -- ====================================
+         -- Item_Cost Joins for the Source Org
+         -- ====================================
+         where  cic.cost_type_id              = cct.cost_type_id
+         and    3=3                           -- p_cost_type
+         union all
+         select cic.organization_id,
+                cic.inventory_item_id,
+                cic.cost_type_id,
+                cic.item_cost,
+                cic.material_cost,
+                cic.tl_material_overhead,
+                cic.tl_resource,
+                cic.tl_outside_processing,
+                cic.tl_overhead,
+                cic.item_cost - cic.tl_material_overhead - cic.tl_resource - 
+                                cic.tl_outside_processing - cic.tl_overhead net_cost,
+                nvl((select sum(cicd.item_cost)
+                     from   cst_item_cost_details cicd,
+                            cst_cost_types cct,
+                            bom_resources br
+                     where  cicd.cost_type_id      = cct.cost_type_id
+                     and    2=2                    -- p_pii_cost_type
+                     and    cicd.inventory_item_id = cic.inventory_item_id
+                     and    cicd.organization_id   = cic.organization_id
+                     and    cicd.resource_id       = br.resource_id
+                     -- Revision for version 1.33
+                     and    8=8                    -- p_pii_sub_element
+                    ),0) pii_cost
+         from   cst_item_costs cic,
+                cst_cost_types cct,
+                mtl_parameters mp
+         -- ====================================
+         -- Item_Cost Joins for the Source Org
+         -- ====================================
+         where  cic.organization_id           = mp.organization_id
+         and    cic.cost_type_id              = mp.primary_cost_method  -- this gets the Frozen Costs
+         and    cct.cost_type_id             <> mp.primary_cost_method  -- this avoids getting the Frozen costs twice
+         and    3=3                           -- p_cost_type
+         -- ====================================
+         -- Find all the Frozen costs not in the
+         -- Pending or unimplemented cost type
+         -- ====================================
+         and   not exists 
+                        (select 'x'
+                         from   cst_item_costs cic2
+                         where  cic2.organization_id   = cic.organization_id
+                         and    cic2.inventory_item_id = cic.inventory_item_id
+                         and    cic2.cost_type_id      = cct.cost_type_id
+                        )
+        ) src_org_costs,
+        -- =================================================
+        -- Get To Org Currency information
+        -- =================================================
+ -- Tables to get currency exchange rate information for the inventory orgs
+ -- Select Currency Rates based on the currency conversion date and type
+ -- ===========================================================================
+(select gdr.* from gl_daily_rates gdr, gl_daily_conversion_types gdct where gdr.conversion_date=:p_conversion_date and gdct.user_conversion_type=:p_user_conversion_type and gdct.conversion_type=gdr.conversion_type) gdr
+-- ============================================
+-- Joins for inv orgs and curr to sourcing rules
+-- ============================================
+where   gdr.from_currency(+)            = item_sourcing.firstorg_src_currency
+and     gdr.to_currency(+)              = item_sourcing.thirdorg_to_currency
+-- ============================================
+-- Joins for inv orgs and item costs
+-- ============================================
+and     to_org_costs.organization_id    = item_sourcing.thirdorg_to_org_id  -- get the To Org costs
+and     to_org_costs.inventory_item_id  = item_sourcing.inventory_item_id   -- get the To Org costs
+and     src_org_costs.organization_id   = item_sourcing.firstorg_src_org_id -- get the Source Org costs
+and     src_org_costs.inventory_item_id = item_sourcing.inventory_item_id   -- get the Source Org costs
+and     gl.ledger_id                    = item_sourcing.firstorg_src_ledger_id
+-- ============================================
+-- Change for version 1.17
+-- Logic to not report where the firstorg_src_org
+-- code equals the thirdorg_to_org code
+-- ============================================
+and     item_sourcing.firstorg_src_org <> item_sourcing.thirdorg_to_org
+and     item_sourcing.thirdorg_to_org in (select oav.organization_code from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
+and     7=7                             -- p_from_org_code, p_to_org_code
+-- Revision for version 1.35
+and     9=9                             -- p_item_number
+order by
+        -- Revision for version 1.36
+        -- gp.period_name, -- Period_Name
+        item_sourcing.item_number, -- Item_Number
+        item_sourcing.thirdorg_to_org, -- To_Org
+        item_sourcing.firstorg_src_org -- Src_Org

@@ -887,4 +887,135 @@ q_stmt_error_lines as
     to_date(null)      je_posted_date,
     sh.statement_number statement_number,
     sl.line_number     statement_line,
-    sl.trx_type        statement_trx_type
+    sl.trx_type        statement_trx_type,
+    'ERROR'            status,
+    nvl(sl.currency_code,nvl(sh.currency_code,aba.currency_code))
+                       currency,
+    decode(nvl(sl.currency_code,nvl(sh.currency_code,aba.currency_code)),
+           sob.currency_code, sl.amount,nvl(sl.original_amount, sl.amount)
+          )            transaction_amount,
+    decode(sl.trx_type,
+           'CREDIT'     , - sl.amount,
+           'MISC_CREDIT', - sl.amount,
+           'STOP'       , - sl.amount,
+           'DEBIT'      , sl.amount,
+           'MISC_DEBIT' , sl.amount,
+           'NSF'        , sl.amount,
+           'REJECTED'   , sl.amount,
+                          0
+          )            accounted_amount,
+    to_number(null)    gl_end_balance,
+    aba.asset_code_combination_id cash_account_ccid
+  from
+    ce_statement_lines sl,
+    ce_statement_headers sh,
+    ce_bank_accts_gt_v aba,
+    gl_sets_of_books sob,
+    ce_system_parameters sys
+  where
+    sl.statement_header_id = sh.statement_header_id and
+    sh.bank_account_id = :p_bank_account_id and
+    sh.statement_date <= :c_as_of_date and
+    sh.statement_date >= sys.cashbook_begin_date and
+    sl.status = 'ERROR' and
+    aba.bank_account_id = sh.bank_account_id and
+    sob.set_of_books_id = sys.set_of_books_id and
+    sys.legal_entity_id = aba.account_owner_org_id
+)
+--
+-- Main Query Starts Here
+--
+select
+  (select xep.name legal_entity
+   from   xle_entity_profiles xep,
+          ce_bank_accounts cba
+   where  xep.legal_entity_id = cba.account_owner_org_id and
+          cba.bank_account_id = :p_bank_account_id
+  )                     legal_entity,
+  :c_name               ledger,
+  :p_period_name        period,
+  :c_account_number_dsp bank_account_num,
+  :c_account_name_dsp   bank_account_name,
+  :c_bank_curr_dsp      bank_account_currency,
+  :c_bank_name_dsp      bank_name,
+  :c_bank_branch_dsp    bank_branch,
+  case x.seq
+  when 1 then 'General Ledger Cash Account Balance'
+  when 2 then 'Bank Statement Closing Balance'
+  when 3 then 'Unreconciled Receipts'
+  when 4 then 'Unreconciled Payments'
+  when 5 then 'Unreconciled Cashflows'
+  when 6 then 'Unreconciled Journal Lines'
+  when 7 then 'Stmnt Lines Marked As Errors'
+  end                        record_type,
+  x.gl_date,
+  x.effective_date,
+  x.currency,
+  x.transaction_amount,
+  x.accounted_amount,
+  x.operating_unit,
+  x.agent,
+  x.transaction_number,
+  x.payment_method,
+  x.transaction_subtype,
+  x.je_name,
+  x.je_line,
+  x.je_line_type,
+  x.je_posted_date,
+  x.statement_number,
+  x.statement_line,
+  x.statement_trx_type,
+  x.status,
+  x.gl_end_balance,
+  case when x.seq = 1
+  then sum(x.gl_end_balance) over () - sum(x.accounted_amount) over ()
+  else to_number(null)
+  end   difference_amount,
+  --gl cash account
+  fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_bal_seg', 'SQLGL', 'GL#', :c_chart_of_accounts_id, NULL, x.cash_account_ccid, 'GL_BALANCING', 'Y', 'VALUE') gl_company_code,
+  fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_bal_seg', 'SQLGL', 'GL#', :c_chart_of_accounts_id, NULL, x.cash_account_ccid, 'GL_BALANCING', 'Y', 'DESCRIPTION') gl_company_desc,
+  fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_bal_seg', 'SQLGL', 'GL#', :c_chart_of_accounts_id, NULL, x.cash_account_ccid, 'GL_ACCOUNT', 'Y', 'VALUE') gl_account_code,
+  fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_bal_seg', 'SQLGL', 'GL#', :c_chart_of_accounts_id, NULL, x.cash_account_ccid, 'GL_ACCOUNT', 'Y', 'DESCRIPTION') gl_account_desc,
+  fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_bal_seg', 'SQLGL', 'GL#', :c_chart_of_accounts_id, NULL, x.cash_account_ccid, 'FA_COST_CTR', 'Y', 'VALUE') gl_cost_center_code,
+  fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_bal_seg', 'SQLGL', 'GL#', :c_chart_of_accounts_id, NULL, x.cash_account_ccid, 'FA_COST_CTR', 'Y', 'DESCRIPTION') gl_cost_center_desc,
+  fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_bal_seg', 'SQLGL', 'GL#', :c_chart_of_accounts_id, NULL, x.cash_account_ccid, 'ALL', 'Y', 'VALUE') gl_cash_account,
+  fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_bal_seg', 'SQLGL', 'GL#', :c_chart_of_accounts_id, NULL, x.cash_account_ccid, 'ALL', 'Y', 'DESCRIPTION') gl_cash_account_desc,
+  -- pivot labels
+  :c_bank_name_dsp || ' - ' || :c_account_number_dsp || ' - ' || :c_account_name_dsp || ' (' || :c_bank_curr_dsp || ')' bank_account,
+  case x.seq
+  when 1 then 'A: General Ledger Cash Account Balance'
+  when 2 then 'B: Bank Statement Closing Balance'
+  when 3 then 'C: + Unreconciled Receipts'
+  when 4 then 'D: +/- Unreconciled Payments'
+  when 5 then 'E: +/- Unreconciled Cashflows'
+  when 6 then 'F: +/- Unreconciled Journal Lines'
+  when 7 then 'G: +/- Stmnt Lines Marked As Errors'
+  end                        record_type_label,
+  x.seq
+from
+  ( select 1 seq, q_gl_end_bal.* from q_gl_end_bal
+    union all
+    select 2 seq, q_stmt_end_bal.* from q_stmt_end_bal
+    union all
+    select 3 seq, q_ar_receipts.* from q_ar_receipts
+    union all
+    select 4 seq, q_ap_payments.* from q_ap_payments
+    union all
+    select 5 seq, q_cashflows.* from q_cashflows
+    union all
+    select 6 seq, q_gl_je_lines.* from q_gl_je_lines
+    union all
+    select 7 seq, q_stmt_error_lines.* from q_stmt_error_lines
+  ) x
+where
+  1=1
+order by
+  x.seq,
+  x.gl_date nulls  first,
+  x.effective_date nulls first,
+  x.agent,
+  x.je_name,
+  x.je_line,
+  x.statement_number,
+  x.statement_line,
+  x.transaction_number

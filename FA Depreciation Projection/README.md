@@ -17,7 +17,7 @@ Ledger, Calendar, Number of Periods, Starting Period, Currency, Book1, Book2, Bo
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related reports
-[FA Asset Book Details](/FA%20Asset%20Book%20Details/)
+[FA Asset Book Details](/FA%20Asset%20Book%20Details/), [FA Asset Summary (Germany)](/FA%20Asset%20Summary%20%28Germany%29/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

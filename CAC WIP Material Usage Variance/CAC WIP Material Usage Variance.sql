@@ -688,4 +688,787 @@ select  mtl_sum.report_type Report_Type,
            when mtl_sum.fg_total_qty = 0 and mtl_sum.applied_component_value = 0 then 0
            -- End revision for version 1.9
            else mtl_sum.applied_component_value - mtl_sum.wip_std_component_value
- 
+        end Material_Usage_Variance,
+        -- End revision for version 1.8
+        -- Revision for version 1.8
+        fl2.meaning Rolled_Up,
+        cic_assys.last_rollup_date Last_Cost_Rollup
+        -- End revision for version 1.8
+-- Revision for version 1.22
+-- from mtl_system_items_vl msiv2,
+from    mtl_units_of_measure_vl muomv,
+        mtl_units_of_measure_vl muomv2,
+        mtl_item_status_vl misv,
+        mtl_item_status_vl misv2,
+        bom_departments bd,
+        wip_entities we,
+        mfg_lookups ml1, -- WIP_Class
+        mfg_lookups ml2, -- WIP Status
+        mfg_lookups ml3, -- Assy Planning Make Buy
+        mfg_lookups ml4, -- Component Planning Make Buy
+        mfg_lookups ml5, -- WIP_Supply_Type
+        mfg_lookups ml6, -- Component Basis Type
+        -- Revision for version 1.20, comment out Phantom Parent
+        -- Revision for version 1.6
+        -- fnd_lookups fl1,  -- Phantom Parent
+        -- Revision for version 1.8
+        fnd_lookups fl2,  -- Rolled Up
+        fnd_common_lookups fcl1, -- Assy Item Type
+        fnd_common_lookups fcl2, -- Component Item Type
+        gl_code_combinations gcc,  -- wip job accounts
+        hr_organization_information hoi,
+        hr_all_organization_units haou,
+        hr_all_organization_units haou2,
+        gl_ledgers gl,
+        fnd_currencies fc,
+        -- Revision for version 1.8
+        -- cst_item_costs cic,
+        -- Revision for version 1.22
+        cic_assys,
+        -- ========================================================
+        -- Get the WIP Component Information in a multi-part union
+        -- which is then condensed into a summary data set
+        -- ========================================================
+        -- ========================================================
+        -- Section I  Condense into a summary data set.
+        -- =======================================================
+        (select mtl.report_type,
+                mtl.period_name,
+                mtl.organization_code,
+                mtl.organization_id,
+                mtl.primary_cost_method,
+                -- Revision for version 1.12
+                -- mtl.primary_cost_type,
+                mtl.account,
+                mtl.class_code,
+                mtl.class_type,
+                mtl.wip_entity_id,
+                mtl.project_id,
+                mtl.status_type,
+                mtl.primary_item_id,
+                -- Revision for version 1.22
+                mtl.assembly_number,
+                mtl.assy_description,
+                mtl.assy_item_type,
+                mtl.assy_item_status_code,
+                mtl.assy_uom_code,
+                mtl.planning_make_buy_code,
+                mtl.std_lot_size,
+                -- End revision for version 1.22
+                -- Revision for version 1.7
+                mtl.lot_number,
+                mtl.creation_date,
+                -- Revision for version 1.5
+                mtl.scheduled_start_date,
+                mtl.date_released,
+                mtl.date_completed,
+                mtl.date_closed,
+                mtl.last_update_date,
+                mtl.start_quantity,
+                mtl.quantity_completed,
+                mtl.quantity_scrapped,
+                mtl.fg_total_qty,
+                mtl.inventory_item_id,
+                mtl.department_id,
+                -- Revision for version 1.12 and 1.14
+                -- mtl.level_num,
+                mtl.operation_seq_num,
+                mtl.wip_supply_type,
+                -- Revision for version 1.6 and 1.22
+                mtl.component_number,
+                mtl.component_description,
+                mtl.component_item_type,
+                mtl.comp_planning_make_buy_code,
+                mtl.component_item_status_code,
+                mtl.component_uom_code,
+                -- End revision for version 1.22
+                -- Revision for version 1.21
+                -- case
+                --    when sum(mtl.phantom_parent) > 0 then 'Y'
+                --    else 'N'
+                -- end phantom_parent,
+                -- Revision for version 1.8
+                mtl.basis_type,
+                mtl.lot_basis_type,
+                mtl.lot_basis_cost,
+                mtl.item_basis_type,
+                mtl.item_basis_cost,
+                -- End revision for version 1.8
+                mtl.cost_type,
+                mtl.item_cost,
+                mtl.cost_element_id,
+                sum(mtl.quantity_per_assembly) quantity_per_assembly,
+                sum(mtl.total_req_quantity) total_req_quantity,
+                -- Revision for version 1.18
+                (select max(mmt.transaction_date)
+                 from   mtl_material_transactions mmt
+                 where  mmt.inventory_item_id          = mtl.inventory_item_id
+                 and    mmt.organization_id            = mtl.organization_id
+                 and    mmt.transaction_source_id      = mtl.wip_entity_id
+                 and    mmt.transaction_source_type_id = 5
+                 and    mmt.transaction_date           < mtl.schedule_close_date + 1) last_txn_date,
+                (select mtt.transaction_type_name
+                from
+                (select mtt.transaction_type_name,row_number() over (order by mmt.transaction_date desc) row_num
+                 from 
+                 mtl_material_transactions mmt,
+                 mtl_transaction_types mtt
+                 where mmt.inventory_item_id=mtl.inventory_item_id and
+                 mmt.organization_id=mtl.organization_id and
+                 mmt.transaction_source_id=mtl.wip_entity_id and
+                 mmt.transaction_source_type_id=5 and
+                 mtt.transaction_type_id=mmt.transaction_type_id and
+                 mmt.transaction_date<mtl.schedule_close_date + 1
+                 )mtt
+                 where mtt.row_num=1) last_txn_type,
+                -- End revision for version 1.18
+                sum(mtl.quantity_issued) quantity_issued,
+                sum(mtl.wip_std_component_value) wip_std_component_value,
+                sum(mtl.applied_component_value) applied_component_value
+                from    -- =======================================================
+                        -- Section II.A. WIP and WIP Material Components
+                        -- =======================================================
+                        -- Revision for version 1.12
+                        (select 'II.A' section,
+                                -- Revision for version 1.22
+                                wro.report_type,
+                                wro.period_name,
+                                wro.organization_code,
+                                wro.organization_id,
+                                wro.primary_cost_method,
+                                -- Revision for version 1.12
+                                -- cct.cost_type primary_cost_type,
+                                -- Revision for deriving account as per cost element
+                                --wro.account,
+                               decode(cic_comp.cost_element_id,
+                                      1, wdj_accounts.material_account,
+                                      2, wdj_accounts.material_overhead_account,
+                                      3, wdj_accounts.resource_account,
+                                      4, wdj_accounts.outside_processing_account,
+                                      5, wdj_accounts.overhead_account,
+                                      wdj_accounts.material_account
+                                     )account,
+                                wro.class_code,
+                                wro.class_type,
+                                wro.wip_entity_id,
+                                wro.project_id,
+                                wro.status_type,
+                                wro.primary_item_id,
+                                -- Revision for version 1.22
+                                wro.assembly_number,
+                                wro.assy_description,
+                                wro.assy_item_type,
+                                wro.assy_item_status_code,
+                                wro.assy_uom_code,
+                                wro.planning_make_buy_code,
+                                wro.std_lot_size,
+                                -- End revision for version 1.22
+                                -- Revision for version 1.7
+                                wro.lot_number,
+                                wro.creation_date,
+                                -- Revision for version 1.5
+                                wro.scheduled_start_date,
+                                wro.date_released,
+                                wro.date_completed,
+                                wro.date_closed,
+                                -- Revision for version 1.18
+                                wro.schedule_close_date,
+                                wro.last_update_date,
+                                wro.start_quantity,
+                                wro.quantity_completed,
+                                wro.quantity_scrapped,
+                                wro.fg_total_qty,
+                                -- End revision for version 1.22
+                                wro.inventory_item_id,
+                                -- Revision for version 1.14
+                                -- nvl(wo.department_id,0) department_id,
+                                wo.department_id department_id,
+                                -- Revision for version 1.6
+                                wro.level_num,
+                                -- Revision for version 1.24
+                                -- wo.operation_seq_num,
+                                wro.operation_seq_num,
+                                -- Revision for version 1.14
+                                wro.component_sequence_id,
+                                wro.wip_supply_type,
+                                -- Revision for version 1.6 and 1.22
+                                wro.component_number,
+                                wro.component_description,
+                                wro.component_item_type,
+                                wro.comp_planning_make_buy_code,
+                                wro.component_item_status_code,
+                                wro.component_uom_code,
+                                -- End revision for version 1.22
+                                -- Revision for version 1.21
+                                -- wro.phantom_parent,
+                                -- End revision for version 1.6
+                                -- Revision for version 1.8
+                                -- coalesce(wro.basis_type, cic_comp.basis_type, 1) basis_type,
+                                nvl(wro.basis_type, 1) basis_type,
+                                decode(cic_comp.lot_basis_type, 0, 'N', 'Y') lot_basis_type,
+                                -- Revision for version 1.12
+                                nvl(cic_comp.lot_basis_cost,0) lot_basis_cost,
+                                decode(nvl(wro.basis_type,1),
+                                            1, 'Y',
+                                            2, 'N',
+                                            decode(cic_comp.item_basis_type, 0, 'N', 'Y')
+                                      ) item_basis_type,
+                                -- Revision for version 1.12
+                                nvl(cic_comp.item_basis_cost,0) item_basis_cost,
+                                cic_comp.cost_type cost_type,
+                                nvl(cic_comp.item_cost,0) item_cost,
+                                cic_comp.cost_element_id,
+                                -- a basis of 2 indicates the component is issued per lot not per assembly and the component yield factor is ignored
+                                decode(nvl(wro.basis_type,1), 
+                                        1, nvl(wro.quantity_per_assembly,0) * 1/nvl(wro.component_yield_factor,1),                    -- Item basis
+                                        2, nvl(wro.required_quantity,1),                                                              -- Lot
+                                           nvl(wro.quantity_per_assembly,0) * 1/nvl(wro.component_yield_factor,1)                     -- Any other basis
+                                      ) quantity_per_assembly,
+                                -- If the job status is 'Complete' or 'Complete - No Charges' then use the 
+                                -- completions plus scrap quantities else use the planned required quantities;
+                                -- and use the completions plus scrap quantities unless for lot-based jobs
+                                -- For 'Complete', 'Complete - No Charges', 'Cancelled', 'Closed', 'Pending Close' and 'Failed Close'
+                                round(decode(:p_use_completion_qtys,
+                                             'Y',
+                                                 case when wro.status_type in (4,5,7,12,14,15) then
+                                                   -- use the completions plus scrap quantities unless for lot-based jobs
+                                                   decode(nvl(wro.basis_type, 1),
+                                                          2, nvl(wro.quantity_per_assembly,0),                                           -- Lot
+                                                          nvl(wro.quantity_per_assembly,0) * 1/nvl(wro.component_yield_factor,1)         -- Any other basis
+                                                          * decode(wro.class_type,
+                                                                    5, nvl(wro.quantity_completed, 0),
+                                                                    nvl(wro.quantity_completed, 0) + decode(:p_include_scrap, 'N', 0, null, 0, nvl(wro.quantity_scrapped, 0))
+                                                                   )
+                                                         ) 
+                                                 else
+                                                    -- else use the start quantity times the usage rate or amount
+                                                    decode(:p_use_completion_qtys,
+                                                           'Y', decode(nvl(wro.basis_type, 1),
+                                                                       -- use the completions plus scrap quantities unless for lot-based jobs
+                                                                       2, nvl(wro.quantity_per_assembly,0),                                          -- Lot
+                                                                       nvl(wro.quantity_per_assembly,0) * 1/nvl(wro.component_yield_factor,1) -- Any other basis
+                                                                       * decode(wro.class_type,
+                                                                                 5, nvl(wro.quantity_completed, 0),
+                                                                                    nvl(wro.quantity_completed, 1) + decode(:p_include_scrap, 'N', 0, null, 0, nvl(wro.quantity_scrapped, 0))
+                                                                                )
+                                                                      ),
+                                                           'N', decode(nvl(wro.basis_type, 1),
+                                                                       2, nvl(wro.quantity_per_assembly,0),                                                           -- Lot
+                                                                       nvl(wro.quantity_per_assembly,0) * wro.start_quantity * 1/nvl(wro.component_yield_factor,1) -- Any other basis
+                                                                      )
+                                                           )
+                                                 end,
+                                              wro.required_quantity-decode(:p_include_scrap, 'Y', 0, nvl(wro.quantity_per_assembly,0)*nvl(wro.quantity_scrapped, 0))
+                                           )
+                                   ,6) total_req_quantity,
+                                nvl(wro.quantity_issued,0) quantity_issued,
+                                -- If the job status is 'Complete' or 'Complete - No Charges' then use the 
+                                -- completions plus scrap quantities else use the planned required quantities;
+                                -- and use the completions plus scrap quantities unless for lot-based jobs
+                                -- For 'Complete', 'Complete - No Charges', 'Cancelled', 'Closed', 'Pending Close' and 'Failed Close'
+                                round(decode(:p_use_completion_qtys,
+                                             'Y',
+                                                 case when wro.status_type in (4,5,7,12,14,15) then
+                                                   -- use the completions plus scrap quantities unless for lot-based jobs
+                                                   decode(nvl(wro.basis_type, 1),
+                                                          2, nvl(wro.quantity_per_assembly,0),                                           -- Lot
+                                                          nvl(wro.quantity_per_assembly,0) * 1/nvl(wro.component_yield_factor,1)         -- Any other basis
+                                                          * decode(wro.class_type,
+                                                                    5, nvl(wro.quantity_completed, 0),
+                                                                    nvl(wro.quantity_completed, 0) + decode(:p_include_scrap, 'N', 0, null, 0, nvl(wro.quantity_scrapped, 0))
+                                                                   )
+                                                         ) 
+                                                 else
+                                                    -- else use the start quantity times the usage rate or amount
+                                                    decode(:p_use_completion_qtys,
+                                                           'Y', decode(nvl(wro.basis_type, 1),
+                                                                       -- use the completions plus scrap quantities unless for lot-based jobs
+                                                                       2, nvl(wro.quantity_per_assembly,0),                                          -- Lot
+                                                                       nvl(wro.quantity_per_assembly,0) * 1/nvl(wro.component_yield_factor,1) -- Any other basis
+                                                                       * decode(wro.class_type,
+                                                                                 5, nvl(wro.quantity_completed, 0),
+                                                                                    nvl(wro.quantity_completed, 1) + decode(:p_include_scrap, 'N', 0, null, 0, nvl(wro.quantity_scrapped, 0))
+                                                                                )
+                                                                      ),
+                                                           'N', decode(nvl(wro.basis_type, 1),
+                                                                       2, nvl(wro.quantity_per_assembly,0),                                                           -- Lot
+                                                                       nvl(wro.quantity_per_assembly,0) * wro.start_quantity * 1/nvl(wro.component_yield_factor,1) -- Any other basis
+                                                                      )
+                                                           )
+                                                 end,
+                                              wro.required_quantity-decode(:p_include_scrap, 'Y', 0, nvl(wro.quantity_per_assembly,0)*nvl(wro.quantity_scrapped, 0))
+                                           )
+                                   ,6) -- total_req_quantity
+                                -- And multiply by the Cost_Type or Costing_Method costs
+                                * nvl(cic_comp.item_cost,0) wip_std_component_value,
+                                nvl(wro.quantity_issued,0)
+                                -- And multiply by the Cost_Type or Costing_Method costs
+                                * nvl(cic_comp.item_cost,0) applied_component_value
+                         from   wip_discrete_jobs wdj_accounts,
+                                wip_operations wo,
+                                -- Revision for version 1.12
+                                -- cst_cost_types cct,
+                                -- Revision for version 1.22
+                                -- mtl_system_items_vl msiv,
+                                -- Revision for version 1.22
+                                cic_comp, -- Get the Cost Basis Type and Component Item Costs
+                                -- wdj, -- get the corrected wip qty completed and qty scrapped
+                                -- End revision for version 1.22
+                                -- get the corrected wip component issue quantities
+                                -- Revision for version 1.6
+                                (select wrosum.level_num,
+                                        -- Revision for version 1.22
+                                        wrosum.report_type,
+                                        wrosum.period_name,
+                                        wrosum.organization_code,
+                                        wrosum.organization_id,
+                                        wrosum.primary_cost_method,
+                                        wrosum.account,
+                                        wrosum.class_code,
+                                        wrosum.class_type,
+                                        wrosum.wip_entity_id,
+                                        wrosum.project_id,
+                                        wrosum.status_type,
+                                        wrosum.primary_item_id,
+                                        wrosum.assembly_number,
+                                        wrosum.assy_description,
+                                        wrosum.assy_item_type,
+                                        wrosum.assy_item_status_code,
+                                        wrosum.assy_uom_code,
+                                        wrosum.planning_make_buy_code,
+                                        wrosum.std_lot_size,
+                                        wrosum.lot_number,
+                                        wrosum.creation_date,
+                                        wrosum.scheduled_start_date,
+                                        wrosum.date_released,
+                                        wrosum.date_completed,
+                                        wrosum.date_closed,
+                                        wrosum.schedule_close_date,
+                                        wrosum.last_update_date,
+                                        wrosum.start_quantity,
+                                        wrosum.quantity_completed,
+                                        wrosum.quantity_scrapped,
+                                        wrosum.quantity_completed + wrosum.quantity_scrapped fg_total_qty,
+                                        -- wrosum.wip_entity_id,
+                                        -- wrosum.organization_id,
+                                        -- End revision for version 1.22
+                                        wrosum.inventory_item_id,
+                                        wrosum.operation_seq_num,
+                                        wrosum.component_sequence_id,
+                                        wrosum.quantity_per_assembly,
+                                        max(wrosum.required_quantity) required_quantity,
+                                        wrosum.component_yield_factor,
+                                        sum(wrosum.quantity_issued) quantity_issued,
+                                        wrosum.basis_type basis_type,
+                                        wrosum.wip_supply_type,
+                                        -- Revision for version 1.22
+                                        msiv_comp.concatenated_segments component_number,
+                                        msiv_comp.description component_description,
+                                        msiv_comp.item_type component_item_type,
+                                        msiv_comp.planning_make_buy_code comp_planning_make_buy_code,
+                                        msiv_comp.inventory_item_status_code component_item_status_code,
+                                        msiv_comp.primary_uom_code component_uom_code,
+                                        -- End revision for version 1.22
+                                        -- Revision for version 1.6 and 1.21
+                                        -- sum(wrosum.phantom_parent) phantom_parent,
+                                        -- Revision for version 1.2
+                                        wrosum.comments
+                                        -- Revision for version 1.6 and 1.14
+                                        -- Get the WIP material requirements
+                                 -- Revision for version 1.22
+                                 -- from (select  1 level_num,
+                                 from   mtl_system_items_vl msiv_comp,
+                                        (select 1 level_num,
+                                                -- Revision for version 1.22
+                                                wdj.report_type,
+                                                wdj.period_name,
+                                                wdj.organization_code,
+                                                wdj.organization_id,
+                                                wdj.primary_cost_method,
+                                                wdj.material_account account,
+                                                wdj.class_code,
+                                                wdj.class_type,
+                                                wdj.wip_entity_id,
+                                                wdj.project_id,
+                                                wdj.status_type,
+                                                wdj.primary_item_id,
+                                                wdj.assembly_number,
+                                                wdj.assy_description,
+                                                wdj.assy_item_type,
+                                                wdj.assy_item_status_code,
+                                                wdj.assy_uom_code,
+                                                wdj.planning_make_buy_code,
+                                                wdj.std_lot_size,
+                                                wdj.lot_number,
+                                                wdj.creation_date,
+                                                wdj.scheduled_start_date,
+                                                wdj.date_released,
+                                                wdj.date_completed,
+                                                wdj.date_closed,
+                                                wdj.schedule_close_date,
+                                                wdj.last_update_date,
+                                                wdj.start_quantity,
+                                                wdj.quantity_completed,
+                                                wdj.quantity_scrapped,
+                                                -- wdj.primary_item_id level_1_parent_assy_id,
+                                                -- End revision for version 1.22
+                                                0 level_2_parent_assy_id,
+                                                0 level_3_parent_assy_id,
+                                                0 level_4_parent_assy_id,
+                                                -- Revision for version 1.21
+                                                -- 0 level_1_from_phantom_assy,
+                                                -- 0 level_2_from_phantom_assy,
+                                                -- 0 level_3_from_phantom_assy,
+                                                -- 0 level_4_from_phantom_assy,
+                                                -- End revision for version 1.21
+                                                0 level_1_comp_is_phantom,
+                                                0 level_2_comp_is_phantom,
+                                                0 level_3_comp_is_phantom,
+                                                0 level_4_comp_is_phantom,
+                                                -- Revision for version 1.6 and 1.22
+                                                -- wro.wip_entity_id,
+                                                -- wro.organization_id,
+                                                -- End revision for version 1.22
+                                                wro.inventory_item_id,
+                                                wro.operation_seq_num,
+                                                wro.component_sequence_id,
+                                                wro.quantity_per_assembly,
+                                                wro.required_quantity,
+                                                wro.component_yield_factor,
+                                                wro.quantity_issued,
+                                                wro.basis_type,
+                                                wro.wip_supply_type,
+                                                -- Revision for version 1.6 and 1.21
+                                                -- 0 phantom_parent, -- 0 is no
+                                                -- Revision for version 1.2
+                                                regexp_replace(wro.comments,'[^[:alnum:]'' '']', null) comments
+                                         from   wip_requirement_operations wro,
+                                                wdj
+                                         where  wdj.wip_entity_id               = wro.wip_entity_id
+                                         and    wdj.organization_id             = wro.organization_id
+                                         -- Revision for version 1.14
+                                         -- Do not select phantom WIP supply types, not issued to WIP
+                                         and    wro.wip_supply_type            <> 6 -- Phantom
+                                         and    6=6                             -- p_include_bulk_items
+                                         union all
+                                         -- Subtract away the transactions which happened after the reported period
+                                         -- Revision for version 1.6
+                                         select 1 level_num,
+                                                -- Revision for version 1.22
+                                                wdj.report_type,
+                                                wdj.period_name,
+                                                wdj.organization_code,
+                                                wdj.organization_id,
+                                                wdj.primary_cost_method,
+                                                wdj.material_account account,
+                                                wdj.class_code,
+                                                wdj.class_type,
+                                                wdj.wip_entity_id,
+                                                wdj.project_id,
+                                                wdj.status_type,
+                                                wdj.primary_item_id,
+                                                wdj.assembly_number,
+                                                wdj.assy_description,
+                                                wdj.assy_item_type,
+                                                wdj.assy_item_status_code,
+                                                wdj.assy_uom_code,
+                                                wdj.planning_make_buy_code,
+                                                wdj.std_lot_size,
+                                                wdj.lot_number,
+                                                wdj.creation_date,
+                                                wdj.scheduled_start_date,
+                                                wdj.date_released,
+                                                wdj.date_completed,
+                                                wdj.date_closed,
+                                                wdj.schedule_close_date,
+                                                wdj.last_update_date,
+                                                wdj.start_quantity,
+                                                wdj.quantity_completed,
+                                                wdj.quantity_scrapped,
+                                                -- wdj.primary_item_id level_1_parent_assy_id,
+                                                -- End revision for version 1.22
+                                                0 level_2_parent_assy_id,
+                                                0 level_3_parent_assy_id,
+                                                0 level_4_parent_assy_id,
+                                                -- Revision for version 1.21
+                                                -- 0 level_1_from_phantom_assy,
+                                                -- 0 level_2_from_phantom_assy,
+                                                -- 0 level_3_from_phantom_assy,
+                                                -- 0 level_4_from_phantom_assy,
+                                                -- End revision for version 1.21
+                                                0 level_1_comp_is_phantom,
+                                                0 level_2_comp_is_phantom,
+                                                0 level_3_comp_is_phantom,
+                                                0 level_4_comp_is_phantom,
+                                                -- Revision for version 1.6
+                                                -- Revision for version 1.22
+                                                -- mmt.transaction_source_id,
+                                                -- wro.organization_id,
+                                                -- End revision for version 1.22
+                                                mmt.inventory_item_id,
+                                                mmt.operation_seq_num,
+                                                wro.component_sequence_id,
+                                                wro.quantity_per_assembly,
+                                                wro.required_quantity,
+                                                wro.component_yield_factor,
+                                                decode(mmt.transaction_type_id,
+                                                        35, mmt.primary_quantity,     -- wip component issue
+                                                        43, -1 * mmt.primary_quantity -- wip component return
+                                                      ) quantity_issued,
+                                                wro.basis_type,
+                                                wro.wip_supply_type,
+                                                -- Revision for version 1.6 and 1.21
+                                                -- 0 phantom_parent, -- 0 is no
+                                                -- Revision for version 1.2
+                                                regexp_replace(wro.comments,'[^[:alnum:]'' '']', null) comments
+                                         from   mtl_material_transactions mmt,
+                                                wdj,
+                                                -- Revision for version 1.10
+                                                -- oap.org_acct_periods oap,
+                                                wip_requirement_operations wro
+                                         -- Revision for version 1.23
+                                         where  mmt.transaction_source_type_id  = 5 -- WIP
+                                         and    mmt.transaction_source_id       = wro.wip_entity_id
+                                         and    mmt.organization_id             = wro.organization_id
+                                         and    mmt.operation_seq_num           = wro.operation_seq_num
+                                         and    mmt.inventory_item_id           = wro.inventory_item_id
+                                         and    wro.wip_entity_id               = wdj.wip_entity_id
+                                         and    wro.organization_id             = wdj.organization_id
+                                         -- and wdj.acct_period_id              = mmt.acct_period_id
+                                         -- and wdj.organization_id             = mmt.organization_id
+                                         -- Revision for version 1.10
+                                         -- and oap.acct_period_id              = mmt.acct_period_id
+                                         -- and wdj.organization_id             = oap.organization_id
+                                         -- and mmt.transaction_date           >= oap.schedule_close_date + 1
+                                         and    mmt.transaction_date           >= wdj.schedule_close_date + 1
+                                         -- End revision for version 1.10
+                                         -- End revision for version 1.23
+                                         -- Revision for version 1.3
+                                         and        6=6                             -- p_include_bulk_items
+                                        ) wrosum
+                                 where  msiv_comp.organization_id   = wrosum.organization_id
+                                 and    msiv_comp.inventory_item_id = wrosum.inventory_item_id
+                                 group by
+                                        -- Revision for version 1.6
+                                        wrosum.level_num,
+                                        -- Revision for version 1.22
+                                        wrosum.report_type,
+                                        wrosum.period_name,
+                                        wrosum.organization_code,
+                                        wrosum.organization_id,
+                                        wrosum.primary_cost_method,
+                                        wrosum.account,
+                                        wrosum.class_code,
+                                        wrosum.class_type,
+                                        wrosum.wip_entity_id,
+                                        wrosum.project_id,
+                                        wrosum.status_type,
+                                        wrosum.primary_item_id,
+                                        wrosum.assembly_number,
+                                        wrosum.assy_description,
+                                        wrosum.assy_item_type,
+                                        wrosum.assy_item_status_code,
+                                        wrosum.assy_uom_code,
+                                        wrosum.planning_make_buy_code,
+                                        wrosum.std_lot_size,
+                                        wrosum.lot_number,
+                                        wrosum.creation_date,
+                                        wrosum.scheduled_start_date,
+                                        wrosum.date_released,
+                                        wrosum.date_completed,
+                                        wrosum.date_closed,
+                                        wrosum.schedule_close_date,
+                                        wrosum.last_update_date,
+                                        wrosum.start_quantity,
+                                        wrosum.quantity_completed,
+                                        wrosum.quantity_scrapped,
+                                        wrosum.quantity_completed + wrosum.quantity_scrapped, -- wrosum.fg_total_qty
+                                        -- wrosum.wip_entity_id,
+                                        -- wrosum.organization_id,
+                                        -- End revision for version 1.22
+                                        wrosum.inventory_item_id,
+                                        wrosum.operation_seq_num,
+                                        wrosum.component_sequence_id,
+                                        wrosum.quantity_per_assembly,
+                                        wrosum.component_yield_factor,
+                                        wrosum.basis_type,
+                                        wrosum.wip_supply_type,
+                                        -- Revision for version 1.22
+                                        msiv_comp.concatenated_segments, -- component_number
+                                        msiv_comp.description, -- component_description
+                                        msiv_comp.item_type, -- component_item_type
+                                        msiv_comp.planning_make_buy_code, -- comp_planning_make_buy_code
+                                        msiv_comp.inventory_item_status_code, --  component_item_status_code
+                                        msiv_comp.primary_uom_code, --  component_uom_code
+                                        -- End revision for version 1.22
+                                        -- Revision for version 1.2
+                                        wrosum.comments
+                                ) wro
+                         -- ===========================================
+                         -- WIP_Job Entity, Class and Period joins
+                         -- ===========================================
+                         -- Revision for version 1.22
+                         -- where wro.wip_entity_id         = wdj.wip_entity_id
+                         -- and   wro.organization_id       = wdj.organization_id
+                         -- and   wo.operation_seq_num (+)  = wro.operation_seq_num
+                         -- End revision for version 1.22
+                         where wo.operation_seq_num (+)  = wro.operation_seq_num
+                         and wo.wip_entity_id (+)      = wro.wip_entity_id
+                         and wdj_accounts.wip_entity_id=wro.wip_entity_id
+                         and wdj_accounts.organization_id=wro.organization_id
+                         and wo.organization_id (+)    = wro.organization_id    
+                        -- Revision for version 1.12
+                        -- and   cct.cost_type_id          = wdj.primary_cost_method
+                         and wro.organization_id       = cic_comp.organization_id (+)
+                         and wro.inventory_item_id     = cic_comp.inventory_item_id (+)
+                         and wro.wip_entity_id         = cic_comp.wip_entity_id(+)
+                         -- Revision for version 1.22
+                         -- and        msiv.organization_id      = wro.organization_id
+                         -- and        msiv.inventory_item_id    = wro.inventory_item_id
+                         -- End revision for version 1.22
+                        ) mtl
+         group by
+                mtl.report_type,
+                mtl.period_name,
+                mtl.organization_code,
+                mtl.organization_id,
+                mtl.primary_cost_method,
+                -- Revision for version 1.12
+                -- mtl.primary_cost_type,
+                mtl.account,
+                mtl.class_code,
+                mtl.class_type,
+                mtl.wip_entity_id,
+                mtl.project_id,
+                mtl.status_type,
+                mtl.primary_item_id,
+                -- Revision for version 1.22
+                mtl.assembly_number,
+                mtl.assy_description,
+                mtl.assy_item_type,
+                mtl.assy_item_status_code,
+                mtl.assy_uom_code,
+                mtl.planning_make_buy_code,
+                mtl.std_lot_size,
+                -- End revision for version 1.22
+                -- Revision for version 1.7
+                mtl.lot_number,
+                mtl.creation_date,
+                -- Revision for version 1.5
+                mtl.scheduled_start_date,
+                mtl.date_released,
+                mtl.date_completed,
+                mtl.date_closed,
+                -- Revision for version 1.18
+                mtl.schedule_close_date,
+                mtl.last_update_date,
+                mtl.start_quantity,
+                mtl.quantity_completed,
+                mtl.quantity_scrapped,
+                mtl.fg_total_qty,
+                mtl.inventory_item_id,
+                -- Revision for version 1.14
+                mtl.department_id,
+                -- Revision for version 1.19
+                mtl.inventory_item_id,
+                -- Revision for version 1.12 and 1.14
+                -- mtl.level_num,
+                -- Revision for version 1.14
+                mtl.operation_seq_num,
+                mtl.wip_supply_type,
+                -- End revision for version 1.14
+                -- Revision for version 1.6 and 1.22
+                mtl.component_number,
+                mtl.component_description,
+                mtl.component_item_type,
+                mtl.comp_planning_make_buy_code,
+                mtl.component_item_status_code,
+                mtl.component_uom_code,
+                -- End revision for version 1.22
+                -- Revision for version 1.8
+                mtl.basis_type,
+                mtl.lot_basis_type,
+                mtl.lot_basis_cost,
+                mtl.item_basis_type,
+                mtl.item_basis_cost,
+                -- End revision for version 1.8
+                mtl.cost_type,
+                mtl.item_cost,
+                mtl.cost_element_id
+        ) mtl_sum
+-- ===========================================
+-- Account, cost and department joins
+-- ===========================================
+where   we.wip_entity_id                = mtl_sum.wip_entity_id
+-- and  msiv2.organization_id           = mtl_sum.organization_id
+-- and  msiv2.inventory_item_id         = mtl_sum.inventory_item_id  -- Component item
+-- and  muomv.uom_code                  = mtl_sum.primary_uom_code
+and     muomv.uom_code                  = mtl_sum.assy_uom_code
+-- End revision for version 1.22
+and     misv.inventory_item_status_code = mtl_sum.assy_item_status_code
+and     muomv2.uom_code                 = mtl_sum.component_uom_code
+and     misv2.inventory_item_status_code (+) = mtl_sum.component_item_status_code
+and     bd.department_id (+)            = mtl_sum.department_id
+-- Revision for version 1.6
+-- Screen out phantoms from the WIP BOM as these are never issued from stock
+-- Phantoms on the WIP BOM have a negative operation_seq_num
+and     nvl(mtl_sum.operation_seq_num,0) > 0
+-- These joins get the Item Lot_Size
+and     cic_assys.organization_id (+)   = mtl_sum.organization_id
+and     cic_assys.inventory_item_id (+) = mtl_sum.primary_item_id
+and     gcc.code_combination_id (+)     = mtl_sum.account
+-- Revision for version 1.5
+-- Remove noise from the report, if no quantities required do not report the component
+and     nvl(mtl_sum.quantity_per_assembly,0) + round(mtl_sum.quantity_issued,3) <> 0
+-- ===========================================
+-- Lookup Codes
+-- ===========================================
+and     ml1.lookup_type                 = 'WIP_CLASS_TYPE'
+and     ml1.lookup_code                 = mtl_sum.class_type
+and     ml2.lookup_type                 = 'WIP_JOB_STATUS'
+and     ml2.lookup_code                 = mtl_sum.status_type
+and     ml3.lookup_type                 = 'MTL_PLANNING_MAKE_BUY'
+and     ml3.lookup_code                 = mtl_sum.planning_make_buy_code
+and     ml4.lookup_type                 = 'MTL_PLANNING_MAKE_BUY'
+and     ml4.lookup_code                 = mtl_sum.comp_planning_make_buy_code
+and     ml5.lookup_type (+)             = 'WIP_SUPPLY'
+and     ml5.lookup_code (+)             = mtl_sum.wip_supply_type
+and     ml6.lookup_type                 = 'CST_BASIS'
+and     ml6.lookup_code                 = mtl_sum.basis_type
+-- Revision for version 1.20, comment out Phantom Parent
+-- Revision for version 1.6
+-- and  fl1.lookup_type                 = 'YES_NO'
+-- and  fl1.lookup_code                 = mtl_sum.phantom_parent
+-- Revision for version 1.8
+and     fl2.lookup_type                 = 'YES_NO'
+and     fl2.lookup_code                 = cic_assys.rolled_up
+and     fcl1.lookup_type (+)            = 'ITEM_TYPE'
+and     fcl1.lookup_code (+)            = mtl_sum.assy_item_type
+and     fcl2.lookup_type (+)            = 'ITEM_TYPE'
+and     fcl2.lookup_code (+)            = mtl_sum.component_item_type
+-- ===========================================
+-- Organization joins to the HR org model
+-- ===========================================
+and     hoi.org_information_context     = 'Accounting Information'
+and     hoi.organization_id             = mtl_sum.organization_id
+and     hoi.organization_id             = haou.organization_id   -- this gets the organization name
+and     haou2.organization_id           = to_number(hoi.org_information3) -- this gets the operating unit id
+and     gl.ledger_id                    = to_number(hoi.org_information1) -- get the ledger_id
+and     gl.currency_code                = fc.currency_code
+and     1=1                            -- p_component_number, p_operating_unit, p_ledger
+and     mtl_sum.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
+-- order by Report_Type, Ledger, Operating_Unit, Org_Code, Period_Name, Accounts, WIP_Class, WIP_Job, Component and Operation
+order by
+        mtl_sum.report_type,
+        nvl(gl.short_name, gl.name),
+        haou2.name, --  Operating_Unit
+        mtl_sum.organization_code,
+        &segment_columns_grp
+        mtl_sum.class_code,
+        we.wip_entity_name,
+        -- Revision for version 1.14
+        -- Revision for version 1.22
+        -- msiv2.concatenated_segments,
+        mtl_sum.operation_seq_num,
+        mtl_sum.component_number,
+        bd.department_code

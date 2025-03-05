@@ -13,7 +13,7 @@ Segment Name like, Segment Type, Table Name, Tablespace Name, Owner, Size bigger
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related reports
-[DBA SGA Buffer Cache Object Usage](/DBA%20SGA%20Buffer%20Cache%20Object%20Usage/), [DBA Index Columns](/DBA%20Index%20Columns/)
+[DBA Index Columns](/DBA%20Index%20Columns/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

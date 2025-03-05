@@ -583,4 +583,76 @@ with
            msc_plans&a2m_dblink                    mp,
            msc_plan_organizations&a2m_dblink       mpo,
            msc_system_items&a2m_dblink             msi,
-           msc_item_categories&a2m_dblink          mi
+           msc_item_categories&a2m_dblink          mic,
+           msc_trading_partners&a2m_dblink         mtp,
+           msc_material_plans&a2m_dblink           mmp
+          where
+              mmp.query_id           = :p_query_id
+          and mmp.sr_instance_id     = mai.instance_id
+          and mmp.sr_instance_id     = mp.sr_instance_id
+          and mmp.plan_id            = mp.plan_id
+          --
+          and mmp.sr_instance_id     = mpo.sr_instance_id
+          and mmp.plan_id            = mpo.plan_id
+          and mmp.organization_id    = mpo.organization_id
+          --
+          and mmp.sr_instance_id     = msi.sr_instance_id
+          and mmp.plan_id            = msi.plan_id
+          and mmp.organization_id    = msi.organization_id
+          and abs(mmp.inventory_item_id)
+                                     = msi.inventory_item_id
+          and msi.new_plan_id       is null
+          and msi.simulation_set_id is null
+          --
+          and msi.sr_instance_id     = mic.sr_instance_id
+          and msi.organization_id    = mic.organization_id
+          and msi.inventory_item_id  = mic.inventory_item_id
+          and mic.category_set_id    = :p_cat_set_id
+          --
+          and mtp.sr_instance_id (+) = mmp.sr_instance_id
+          and mtp.sr_tp_id       (+) = mmp.organization_id
+          and mtp.partner_type   (+) = 3
+          --
+          and mmp.bucket_date       <= :p_cutoff_date
+          --
+          and (   (    nvl('&p_disp_pf','N') = 'Y'
+                   and mmp.inventory_item_id > 0
+                   and msi.bom_item_type in (2,5)
+                   and ml.lookup_code in (20,70,90,100,110)
+                  )
+               or
+                  (    nvl('&p_disp_pf','N') != 'Y'
+                   or  mmp.inventory_item_id < 0
+                   or  msi.bom_item_type not in (2,5)
+                  )
+              )
+          --
+          and (:p_uom_code is null or xxen_msc_horizplan.get_uom_conversion(msi.organization_id,msi.inventory_item_id,:p_uom_code,msi.uom_code) is not null)
+          and 1=1
+         ) hp
+      ) hp2
+  )
+select
+ hp3.*,
+ --
+ case when hp3.yn_seq = max(hp3.yn_seq) over (partition by hp3.plan_name,hp3.dashboard_metric,hp3.aggregation_level,hp3.operating_unit,hp3.organization,hp3.category,hp3.item,hp3.supply_demand_code,to_char(hp3.bucket_date,'YYYY')) then hp3.year_quantity else null end year_qty_last,
+ case when hp3.pn_seq = max(hp3.pn_seq) over (partition by hp3.plan_name,hp3.dashboard_metric,hp3.aggregation_level,hp3.operating_unit,hp3.organization,hp3.category,hp3.item,hp3.supply_demand_code,hp3.period_num) then hp3.period_quantity else null end period_qty_last,
+ case when hp3.wn_seq = max(hp3.wn_seq) over (partition by hp3.plan_name,hp3.dashboard_metric,hp3.aggregation_level,hp3.operating_unit,hp3.organization,hp3.category,hp3.item,hp3.supply_demand_code,hp3.week_num) then hp3.week_quantity else null end week_qty_last,
+ case when hp3.yn_seq = max(hp3.yn_seq) over (partition by hp3.plan_name,hp3.dashboard_metric,hp3.aggregation_level,hp3.operating_unit,hp3.organization,hp3.category,hp3.item,hp3.supply_demand_code,to_char(hp3.bucket_date,'YYYY')) then hp3.year_value else null end year_value_last,
+ case when hp3.pn_seq = max(hp3.pn_seq) over (partition by hp3.plan_name,hp3.dashboard_metric,hp3.aggregation_level,hp3.operating_unit,hp3.organization,hp3.category,hp3.item,hp3.supply_demand_code,hp3.period_num) then hp3.period_value else null end period_value_last,
+ case when hp3.wn_seq = max(hp3.wn_seq) over (partition by hp3.plan_name,hp3.dashboard_metric,hp3.aggregation_level,hp3.operating_unit,hp3.organization,hp3.category,hp3.item,hp3.supply_demand_code,hp3.week_num) then hp3.week_value else null end week_value_last
+from
+  hp3
+where
+    2=2
+and hp3.aggregation_level = nvl(:p_aggregation_level,hp3.aggregation_level)
+order by
+ hp3.planning_instance
+,hp3.plan_name
+,hp3.dashboard_metric
+,hp3.aggregation_level desc
+,hp3.operating_unit
+,hp3.organization
+,hp3.item
+,hp3.bucket_date
+,hp3.supply_demand_code

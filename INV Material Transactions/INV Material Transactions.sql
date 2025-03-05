@@ -22,10 +22,10 @@ msiv.concatenated_segments item,
 msiv.description item_desc,
 &category_columns
 xxen_util.meaning(msiv.item_type,'ITEM_TYPE',3) user_item_type,
-mmt.transaction_quantity,
+nvl(mtln.transaction_quantity,mmt.transaction_quantity) transaction_quantity,
 mmt.transaction_uom,
-mmt.primary_quantity,
-mmt.secondary_transaction_quantity secondary_quantity,
+nvl(mtln.primary_quantity,mmt.primary_quantity) primary_quantity,
+nvl(mtln.secondary_transaction_quantity,mmt.secondary_transaction_quantity) secondary_quantity,
 mmt.secondary_uom_code secondary_uom,
 mmt.subinventory_code subinventory,
 coalesce(inv_project.get_locator(mmt.locator_id,mmt.organization_id),(select milk.concatenated_segments from mtl_item_locations_kfv milk where mmt.locator_id=milk.inventory_location_id and mmt.organization_id=milk.organization_id)) locator,
@@ -75,7 +75,7 @@ mmt.transaction_id,
 mmt.rcv_transaction_id receiving_transaction_id,
 xxen_util.user_name(mmt.created_by) created_by,
 xxen_util.client_time(mmt.creation_date) creation_date,
-sum(mmt.transaction_quantity) over (partition by mmt.inventory_item_id order by mmt.transaction_date,mmt.transaction_id) sum_transaction_quantity
+sum(nvl(mtln.transaction_quantity,mmt.transaction_quantity)) over (partition by mmt.inventory_item_id order by mmt.transaction_date,mmt.transaction_id) sum_transaction_quantity
 from
 gl_ledgers gl,
 hr_all_organization_units_vl haouv,

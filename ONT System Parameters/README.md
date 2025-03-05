@@ -4,7 +4,7 @@
 None
 
 ## Parameters
-Operating Unit, Parameter Name, Enabled Only
+Operating Unit, Parameter Name, Parameter Code, Enabled Only
 
 ## Used tables
 [fnd_flex_value_sets](https://www.enginatics.com/library/?pg=1&find=fnd_flex_value_sets), [oe_sys_parameter_def_vl](https://www.enginatics.com/library/?pg=1&find=oe_sys_parameter_def_vl), [oe_sys_parameters_all](https://www.enginatics.com/library/?pg=1&find=oe_sys_parameters_all), [hr_all_organization_units_vl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_vl)

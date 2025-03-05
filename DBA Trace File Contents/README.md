@@ -14,7 +14,7 @@ Trace Filename
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related reports
-[DBA Alert Log](/DBA%20Alert%20Log/), [ZX Financial Tax Register](/ZX%20Financial%20Tax%20Register/)
+[DBA Alert Log](/DBA%20Alert%20Log/), [DBA Tablespace Usage](/DBA%20Tablespace%20Usage/), [ECC Admin - Concurrent Programs](/ECC%20Admin%20-%20Concurrent%20Programs/), [ECC Admin - Data Load Tracking](/ECC%20Admin%20-%20Data%20Load%20Tracking/), [GL Oracle FSG Converter](/GL%20Oracle%20FSG%20Converter/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

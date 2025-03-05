@@ -1,61 +1,60 @@
-# [CAC Manufacturing Variance Detail](https://www.enginatics.com/reports/cac-manufacturing-variance-detail/)
+# [CAC AP Accrual Reconciliation Summary by Match Type](https://www.enginatics.com/reports/cac-ap-accrual-reconciliation-summary-by-match-type/)
 
 ## Description: 
-Report your detailed manufacturing variances for your open and closed WIP jobs.  If the job is open the Report Type column displays "Valuation", as this WIP job and potential variances are still in your WIP inventory balances.  If the job has been closed during the reporting period, the Report Type column displays "Variance", as this WIP job was written off on a WIP Job Close Variance transaction.  You can report prior periods and this report will automatically adjust the assembly completion quantities and component issue quantities to reflect the quantities for the specified accounting period, as well as report only jobs which were open or closed during that prior period.
-
-Closed, Pending Close, Cancelled, Complete and Complete No Charges WIP job statuses use the completion quantities.  All other WIP jobs use the parameter "Use Completion Quantities".  And if you use Standard Costing, for standard discrete jobs this report also shows your configuration and method variances; the difference between your WIP BOM/routing and your primary or standard BOM/routing.  Non-standard jobs usually do not have configuration variances, as they are "non-standard" without standard BOM or routing requirements.
+Use this report to summarize the A/P Accrual entries from the Accrual Reconcilation Report tables, by operating unit, accrual match type and inventory organization.  Use this report for summary reconciliation purposes, to justify the "at time of receipt" accrual balances for your inventory and expense A/P accrual accounts.
 
 Parameters:
-==========
-Report Option:  Open jobs, Closed jobs or All jobs.  Use this to limit the size of the report.  (mandatory)
-Period Name:  the accounting period you wish to report.  (mandatory)
-Cost Type:  defaults to your Costing Method; if the cost type is missing component costs the report will find any missing item costs from your Costing Method cost type.
-Include Scrap Quantities:  for calculating your completion quantities and component quantity requirements, include or exclude any scrapped assembly quantities.  (mandatory)
-Include Unreleased Jobs:  include jobs which have not been released and are not started.  (mandatory)
-Include Bulk Supply Items:  include Bulk items to match the results from the Oracle Discrete Job Value Report; exclude knowing that Bulk items are usually not issued to the WIP job.  (mandatory)
-Use Completion Qtys:  for jobs in a released status, use the completion quantities for the material usage and configuration variance calculations.  Useful if you backflush your materials based on your completion quantities.  Complete, Complete - No Charges, Cancelled, Closed, Pending Close or Failed Close alway use the completion quantities in the variance calculations.  (mandatory)
-Config/Lot Variances for Non-Std:  calculate configuration and lot variances for non-standard jobs.
-Include Unimplemented ECOs:  include future BOMs changes.
-Alternate BOM Designator:  if you save your BOMs during your Cost Rollups (based on your Cost Type step ups), use this parameter to get the correct BOMs for the configuration variance calculations.  If you leave this field blank the report uses the latest BOM component effectivity date up to the period close date.  (optional)
-Category Set 1:  any item category you wish (optional).
-Category Set 2:  any item category you wish (optional).
-Class Code:  specific type of WIP class to report (optional).
-Job Status:  specific WIP job status (optional).
-WIP Job:  specific WIP job (optional).
-Assembly Number:  specific assembly number you wish to report (optional)
-Component Number:   specific component item you wish to report (optional)
-Outside Processing Item:  Specific outside processing component to report (optional).
-Resource Code:  Specific resource code to report (optional).
-Organization Code:  any inventory organization, defaults to your session's inventory organization (optional).
+===========
+Transaction Date From:  enter the accrual starting transaction date you wish to report.  Defaults to the earliest date found (mandatory).
+Transaction Date To:  enter the accrual ending transaction date you wish to report.  Defaults to the latest date found (mandatory).
+Operating Unit:  operating unit you wish to report (optional).
+Ledger:  general ledger you wish to report (optional).
 
--- |  Copyright 2011-22 Douglas Volz Consulting, Inc. 
+/* +=============================================================================+
+-- |  Copyright 2011-2025 Douglas Volz Consulting, Inc.
+-- |  All rights reserved.
+-- |  Permission to use this code is granted provided the original author is
+-- |  acknowledged.
+-- +=============================================================================+
+-- |
+-- |  Original Author: Douglas Volz (doug@volzconsulting.com)
+-- | 
 -- |  Version Modified on Modified  by   Description
--- |  ======= =========== =============== =========================================
--- |  1.33     13 Oct 2022 Douglas Volz   Fix divide by zero error with the start quantity and
--- |                                      fix single-row subquery returns more than one row error..
+-- |  ======= =========== ============== =========================================
+-- |  1.0     11 Nov 2011 Douglas Volz   Initial Coding based on xxx_ap_accrual_summary_rept.sql
+-- |                                     Retrofitted to R12 A/P Accrual tables
+-- |  1.1     07 May 2019 Douglas Volz   Modified for upgrade client
+-- |  1.2     06 Feb 2020 Douglas Volz   Added Ledger parameter.
+-- |  1.3     09 Apr 2020 Douglas Volz   Commented out capr.inventory_transaction_id column
+-- |                                     Was added by Oracle for consignment transactions in
+-- |                                     Release 12.1.6.
+-- |  1.4     15 Apr 2020 Douglas Volz   Undid modifications for upgrade client
+-- |  1.5     17 Feb 2025 Douglas Volz   Formatted for Blitz Report.
+-- +=============================================================================+*/
 
 ## Parameters
-Report Option, Period Name, Cost Type, Include Scrap Quantities, Include Unreleased Jobs, Include Bulk Supply Items, Use Completion Quantities, Config/Lot Variances for Non-Std, Include Unimplemented ECOs, Alternate BOM Designator, Category Set 1, Category Set 2, Category Set 3, Organization Code, Class Code, Job Status, WIP Job, Component Number, Assembly Number, Outside Processing Item, Resource Code, Operating Unit, Ledger
+Transaction Date From, Transaction Date To, Organization Code, Operating Unit, Ledger
 
 ## Used tables
-[wip_discrete_jobs](https://www.enginatics.com/library/?pg=1&find=wip_discrete_jobs), [org_acct_periods](https://www.enginatics.com/library/?pg=1&find=org_acct_periods), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters), [wip_accounting_classes](https://www.enginatics.com/library/?pg=1&find=wip_accounting_classes), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl), [org_access_view](https://www.enginatics.com/library/?pg=1&find=org_access_view), [wdj0](https://www.enginatics.com/library/?pg=1&find=wdj0), [mtl_material_transactions](https://www.enginatics.com/library/?pg=1&find=mtl_material_transactions), [wdj](https://www.enginatics.com/library/?pg=1&find=wdj), [cst_item_costs](https://www.enginatics.com/library/?pg=1&find=cst_item_costs), [cst_item_cost_details](https://www.enginatics.com/library/?pg=1&find=cst_item_cost_details), [cst_cost_types](https://www.enginatics.com/library/?pg=1&find=cst_cost_types), [wdj_assys](https://www.enginatics.com/library/?pg=1&find=wdj_assys), [dual](https://www.enginatics.com/library/?pg=1&find=dual)
+[mtl_transaction_types](https://www.enginatics.com/library/?pg=1&find=mtl_transaction_types), [fnd_lookup_values_vl](https://www.enginatics.com/library/?pg=1&find=fnd_lookup_values_vl), [cst_ap_po_reconciliation](https://www.enginatics.com/library/?pg=1&find=cst_ap_po_reconciliation), [gl_code_combinations_kfv](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations_kfv), [hr_organization_information](https://www.enginatics.com/library/?pg=1&find=hr_organization_information), [hr_all_organization_units](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units), [xla_ae_headers](https://www.enginatics.com/library/?pg=1&find=xla_ae_headers), [xla_ae_lines](https://www.enginatics.com/library/?pg=1&find=xla_ae_lines), [gl_ledgers](https://www.enginatics.com/library/?pg=1&find=gl_ledgers), [po_distributions_all](https://www.enginatics.com/library/?pg=1&find=po_distributions_all), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters), [accrual_type](https://www.enginatics.com/library/?pg=1&find=accrual_type), [gl_access_set_norm_assign](https://www.enginatics.com/library/?pg=1&find=gl_access_set_norm_assign), [gl_ledger_set_norm_assign_v](https://www.enginatics.com/library/?pg=1&find=gl_ledger_set_norm_assign_v), [mo_glob_org_access_tmp](https://www.enginatics.com/library/?pg=1&find=mo_glob_org_access_tmp), [dual](https://www.enginatics.com/library/?pg=1&find=dual), [cst_misc_reconciliation](https://www.enginatics.com/library/?pg=1&find=cst_misc_reconciliation)
 
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
-
+## Related reports
+[CAC AP Accrual IR ISO Match Analysis](/CAC%20AP%20Accrual%20IR%20ISO%20Match%20Analysis/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 
 # Example Report 
-[CAC Manufacturing Variance Detail 11-Oct-2022 225802.xlsx](https://www.enginatics.com/example/cac-manufacturing-variance-detail/)
+[None](https://www.enginatics.com/example/cac-ap-accrual-reconciliation-summary-by-match-type/)
 
 # Report SQL
-[www.enginatics.com/reports/cac-manufacturing-variance-detail/](https://www.enginatics.com/reports/cac-manufacturing-variance-detail/)
+[www.enginatics.com/reports/cac-ap-accrual-reconciliation-summary-by-match-type/](https://www.enginatics.com/reports/cac-ap-accrual-reconciliation-summary-by-match-type/)
 
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[CAC_Manufacturing_Variance_Detail.xml](https://www.enginatics.com/xml/cac-manufacturing-variance-detail/)
+[CAC_AP_Accrual_Reconciliation_Summary_by_Match_Type.xml](https://www.enginatics.com/xml/cac-ap-accrual-reconciliation-summary-by-match-type/)
 # Oracle E-Business Suite [Reporting Library](https://www.enginatics.com/library/)
     
 We provide an open source Oracle EBS SQLs as a part of operational and project implementation support [toolkits](https://www.enginatics.com/blitz-report-toolkits/) for rapid Excel reports generation. 

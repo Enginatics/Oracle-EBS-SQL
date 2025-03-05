@@ -14,8 +14,7 @@ Organization Code, Scheduled Start Date From, Scheduled Start Date To, Job, Job 
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
-## Related reports
-[WIP Discrete Job Shortage](/WIP%20Discrete%20Job%20Shortage/)
+
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

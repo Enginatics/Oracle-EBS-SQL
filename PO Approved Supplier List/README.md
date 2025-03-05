@@ -13,7 +13,7 @@ Operating Unit, Owning Organization Code, Using Organization Code, Item, Categor
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related reports
-[CAC Calculate Average Item Costs](/CAC%20Calculate%20Average%20Item%20Costs/), [INV Intercompany Invoice Reconciliation](/INV%20Intercompany%20Invoice%20Reconciliation/), [PO Requisition Template Upload](/PO%20Requisition%20Template%20Upload/)
+[PO Approved Supplier List Upload](/PO%20Approved%20Supplier%20List%20Upload/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

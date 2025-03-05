@@ -4,7 +4,7 @@
 History of Blitz Report executions
 
 ## Parameters
-Report Name, Category, Report Name starts with, Submitted by User, Started within Days, Start Date From, Start Date To, Show Parameters, Running or Errored, Request Id, Run Id, Exclude System Reports, Exclude Submissions from User
+Report Name, Category, Report Name starts with, Submitted by User, Started within Days, Start Date From, Start Date To, Show Parameters, Running or Errored, Request Id, Run Id, Exclude System Reports, Exclude Submissions from User, Exclude Enginatics Team
 
 ## Used tables
 [xxen_reports_h](https://www.enginatics.com/library/?pg=1&find=xxen_reports_h), [fnd_concurrent_requests](https://www.enginatics.com/library/?pg=1&find=fnd_concurrent_requests), [xxen_report_runs](https://www.enginatics.com/library/?pg=1&find=xxen_report_runs), [xxen_reports_v](https://www.enginatics.com/library/?pg=1&find=xxen_reports_v), [fnd_responsibility_tl](https://www.enginatics.com/library/?pg=1&find=fnd_responsibility_tl), [gv$session](https://www.enginatics.com/library/?pg=1&find=gv$session), [fnd_lookup_values](https://www.enginatics.com/library/?pg=1&find=fnd_lookup_values), [xxen_report_run_param_values](https://www.enginatics.com/library/?pg=1&find=xxen_report_run_param_values)

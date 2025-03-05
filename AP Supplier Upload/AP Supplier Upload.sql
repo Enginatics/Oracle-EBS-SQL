@@ -558,4 +558,108 @@ ba1.instrument_payment_use_id site_bank_instr_pay_use_id,
 :p_default_inclusive_tax default_inclusive_tax_flag,
 :p_default_allow_offset_taxes default_allow_offset_tax_flag,
 :p_default_pay_document_alone default_pay_alone_flag,
-:p_site_bank_assign_level def
+:p_site_bank_assign_level default_site_bank_assign_lvl
+from
+ap_suppliers aps,
+hz_parties hp,
+zx_party_tax_profile zptp0,
+ap_suppliers aps1,
+iby_external_payees_all iepa0,  -- to get the supplier level payment distribution
+q_bank_accounts ba0,
+--
+ap_supplier_sites_all assa,
+hz_party_sites hps,
+hz_locations hl,
+fnd_languages fl,
+hr_operating_units hou,
+gl_ledgers gl,
+hz_contact_points hcp1,
+hz_contact_points hcp2,
+hz_contact_points hcp3,
+zx_party_tax_profile zptp1,
+iby_external_payees_all iepa1,  -- to get the site level payment distribution
+q_bank_accounts ba1,
+--
+ap_supplier_contacts asco,
+hz_parties hpc,
+hz_parties hpr
+--
+where
+:p_upload_mode like '%' || xxen_upload.action_update and
+1=1 and
+aps.employee_id is null and
+aps.parent_vendor_id = aps1.vendor_id(+) and
+aps.party_id = hp.party_id and
+aps.party_id = zptp0.party_id (+) and
+'THIRD_PARTY' = zptp0.party_type_code (+) and
+--
+aps.party_id = iepa0.payee_party_id (+) and
+nvl(iepa0.party_site_id (+),0) = 0 and
+iepa0.payment_function (+) = 'PAYABLES_DISB' and
+--
+decode(:p_show_vendor_banks,'Y',aps.party_id) = ba0.payee_party_id (+) and
+nvl(ba0.party_site_id (+),0) = 0 and
+--
+decode(:p_show_vendor_sites,'Y',aps.vendor_id,-1) = assa.vendor_id (+) and
+(assa.org_id is null or mo_global.check_access(assa.org_id)='Y') and
+assa.party_site_id = hps.party_site_id (+) and
+hps.location_id = hl.location_id (+) and
+hl.language = fl.language_code (+) and
+assa.org_id = hou.organization_id (+) and
+hou.set_of_books_id = gl.ledger_id (+) and
+--
+hps.party_site_id = hcp1.owner_table_id (+) and
+hcp1.owner_table_name (+) = 'HZ_PARTY_SITES' and
+hcp1.contact_point_type (+) = 'PHONE' and
+hcp1.phone_line_type (+) = 'GEN' and
+hcp1.primary_flag (+) = 'Y' and
+hcp1.status (+) = 'A' and
+hps.party_site_id = hcp2.owner_table_id (+) and
+hcp2.owner_table_name (+) = 'HZ_PARTY_SITES' and
+hcp2.contact_point_type (+) = 'PHONE' and
+hcp2.phone_line_type (+) = 'FAX' and
+hcp2.status (+) = 'A' and
+hps.party_site_id = hcp3.owner_table_id (+) and
+hcp3.owner_table_name (+) = 'HZ_PARTY_SITES' and
+hcp3.contact_point_type (+) = 'EMAIL' and
+hcp3.primary_flag (+) = 'Y' and
+hcp3.status (+) = 'A' and
+--
+assa.party_site_id = zptp1.party_id (+) and
+'THIRD_PARTY_SITE' = zptp1.party_type_code (+) and
+--
+assa.party_site_id = iepa1.party_site_id (+) and
+assa.vendor_site_id = iepa1.supplier_site_id (+) and
+iepa1.payment_function (+) = 'PAYABLES_DISB' and
+--
+decode(:p_show_site_banks,'Y',assa.party_site_id) = ba1.party_site_id (+) and
+assa.org_id = nvl(ba1.org_id (+),assa.org_id) and
+assa.vendor_site_id = nvl(ba1.supplier_site_id (+),assa.vendor_site_id) and
+--
+decode(:p_show_site_contacts,'Y',assa.party_site_id,-99) = asco.org_party_site_id (+) and
+assa.vendor_site_id = nvl(asco.vendor_site_id (+),assa.vendor_site_id) and
+asco.per_party_id = hpc.party_id (+) and
+asco.rel_party_id = hpr.party_id (+)
+--
+&not_use_first_block
+&report_table_select
+&report_table_name
+&report_table_where_clause
+&success_query1
+&success_query2
+&processed_run
+) x
+order by
+x.supplier_name,
+x.supplier_number,
+x.operating_unit,
+x.country,
+x.site_name,
+x.contact_last_name,
+x.contact_first_name,
+x.site_bank_name,
+x.site_bank_number,
+x.site_bank_branch_name,
+x.site_bank_branch_number,
+x.site_bank_acct_name,
+x.site_bank_acct_num

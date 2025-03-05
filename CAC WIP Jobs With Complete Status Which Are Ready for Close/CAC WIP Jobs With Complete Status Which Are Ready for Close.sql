@@ -721,4 +721,156 @@ and not exists
                                 null, nvl(wro.quantity_per_assembly, 0) * 1 / nvl(wro.component_yield_factor, 1) *
                                          (nvl(wdj.quantity_completed, 0) + decode(:p_include_scrap,'N',0,nvl(wdj.quantity_scrapped, 0))),
                                 1,    nvl(wro.quantity_per_assembly, wdj.start_quantity) * 1 / nvl(wro.component_yield_factor, 1) *
-                                         (nvl(wdj.quantity_completed, 0) + decode(:p_include_scrap,'N',0,nvl(wdj.quantity_scrapp
+                                         (nvl(wdj.quantity_completed, 0) + decode(:p_include_scrap,'N',0,nvl(wdj.quantity_scrapped, 0))),
+                                2,    nvl(wro.required_quantity,1),
+                                      nvl(wro.quantity_per_assembly, 0) * 1 / nvl(wro.component_yield_factor, 1) *
+                                         (nvl(wdj.quantity_completed, 0) + decode(:p_include_scrap,'N',0,nvl(wdj.quantity_scrapped, 0)))
+                            )
+                   ,3) - round(nvl(wro.quantity_issued, 0),3) > 0 -- Quantity_Left_in_WIP
+        )
+group by
+        nvl(gl.short_name, gl.name),
+        haou2.name,
+        mp.organization_code,
+        -- Revision for version 1.6
+        -- 'p_date_completed',
+        we.wip_entity_name,
+        wac.class_code,
+        ml1.meaning, -- Class Type
+        we.wip_entity_name,
+        we.organization_id,
+        ml2.meaning, -- Job Status
+        -- Revision for version 1.14
+        wdj.date_released,
+        -- Revision for version 1.2
+        -- decode(wdj.attribute15, null, 'No', 'Yes'),
+        wdj.date_completed,
+        wdj.last_update_date,
+        wdj.completion_subinventory,
+        msiv.concatenated_segments,
+        msiv.description,
+        -- Revision for version 1.14
+        fcl.meaning, -- Item Type
+        misv.inventory_item_status_code, -- Item Status
+        ml3.meaning, -- Make Buy Code
+        -- End revision for version 1.14
+        wdj.start_quantity,
+        wdj.quantity_completed,
+        wdj.quantity_scrapped,
+        wp.mandatory_scrap_flag,
+        -- Revision for version 1.10
+        muomv.uom_code,
+        gl.currency_code,
+        -- Needed for inline queries
+        msiv.inventory_item_id,
+        msiv.organization_id,
+        wdj.organization_id,
+        wdj.wip_entity_id,
+        -- Revision for version 1.1
+        wip_interfaces.wip_entity_id
+-- ===========================================
+-- Check for variance tolerances
+-- ===========================================
+having  abs(sum(nvl(wpb.pl_material_in,0)-
+            nvl(wpb.tl_material_out,0)-
+            nvl(wpb.pl_material_out,0)-
+            nvl(wpb.tl_material_var,0)-
+            nvl(wpb.pl_material_var,0) +
+        -- Material Overhead Balance 
+            nvl(wpb.pl_material_overhead_in,0)-
+            nvl(wpb.tl_material_overhead_out,0)-
+            nvl(wpb.pl_material_overhead_out,0)-
+            nvl(wpb.tl_material_overhead_var,0)-
+            nvl(wpb.pl_material_overhead_var,0) +
+        -- Resource Balance
+            nvl(wpb.tl_resource_in,0)+
+            nvl(wpb.pl_resource_in,0)-
+            nvl(wpb.tl_resource_out,0)-
+            nvl(wpb.pl_resource_out,0)-
+            nvl(wpb.tl_resource_var,0)-
+            nvl(wpb.pl_resource_var,0)+
+        -- Outside Processing Balance
+            nvl(wpb.tl_outside_processing_in,0)+
+            nvl(wpb.pl_outside_processing_in,0)-
+            nvl(wpb.tl_outside_processing_out,0)-
+            nvl(wpb.pl_outside_processing_out,0)-
+            nvl(wpb.tl_outside_processing_var,0)-
+            nvl(wpb.pl_outside_processing_var,0) +
+        -- Overhead Balance
+            nvl(wpb.tl_overhead_in,0)+
+            nvl(wpb.pl_overhead_in,0)-
+            nvl(wpb.tl_overhead_out,0)-
+            nvl(wpb.pl_overhead_out,0)-
+            nvl(wpb.tl_overhead_var,0)-
+            nvl(wpb.pl_overhead_var,0) +
+        -- Estimated Scrap Balances
+            nvl(wpb.tl_scrap_in,0)-
+            nvl(wpb.tl_scrap_out,0)-
+            -- Revision for version 1.6
+            nvl(wpb.tl_scrap_var,0))) <  :p_wip_var_threshold
+-- Revision for version 1.15
+and     -- Revision for version 1.15
+        -- WIP variance percentage = WIP Net Value / WIP Costs In
+        -- WIP Net Value
+        abs(round(
+                sum(nvl(wpb.pl_material_in,0)-
+                    nvl(wpb.tl_material_out,0)-
+                    nvl(wpb.pl_material_out,0)-
+                    nvl(wpb.tl_material_var,0)-
+                    nvl(wpb.pl_material_var,0) +
+                -- Material Overhead Balance 
+                    nvl(wpb.pl_material_overhead_in,0)-
+                    nvl(wpb.tl_material_overhead_out,0)-
+                    nvl(wpb.pl_material_overhead_out,0)-
+                    nvl(wpb.tl_material_overhead_var,0)-
+                    nvl(wpb.pl_material_overhead_var,0) +
+                -- Resource Balance
+                    nvl(wpb.tl_resource_in,0)+
+                    nvl(wpb.pl_resource_in,0)-
+                    nvl(wpb.tl_resource_out,0)-
+                    nvl(wpb.pl_resource_out,0)-
+                    nvl(wpb.tl_resource_var,0)-
+                    nvl(wpb.pl_resource_var,0)+
+                -- Outside Processing Balance
+                    nvl(wpb.tl_outside_processing_in,0)+
+                    nvl(wpb.pl_outside_processing_in,0)-
+                    nvl(wpb.tl_outside_processing_out,0)-
+                    nvl(wpb.pl_outside_processing_out,0)-
+                    nvl(wpb.tl_outside_processing_var,0)-
+                    nvl(wpb.pl_outside_processing_var,0) +
+                -- Overhead Balance
+                    nvl(wpb.tl_overhead_in,0)+
+                    nvl(wpb.pl_overhead_in,0)-
+                    nvl(wpb.tl_overhead_out,0)-
+                    nvl(wpb.pl_overhead_out,0)-
+                    nvl(wpb.tl_overhead_var,0)-
+                    nvl(wpb.pl_overhead_var,0) +
+                -- Estimated Scrap Balances
+                    nvl(wpb.tl_scrap_in,0)-
+                    nvl(wpb.tl_scrap_out,0)-
+                    nvl(wpb.tl_scrap_var,0)
+                   ) /
+        -- WIP Costs In
+        decode(
+                sum(nvl(wpb.pl_material_in,0)+
+                    nvl(wpb.pl_material_overhead_in,0)+
+                    nvl(wpb.tl_resource_in,0)+
+                    nvl(wpb.pl_resource_in,0)+
+                    nvl(wpb.tl_outside_processing_in,0)+
+                    nvl(wpb.pl_outside_processing_in,0)+
+                    nvl(wpb.tl_overhead_in,0)+
+                    nvl(wpb.pl_overhead_in,0)+
+                    nvl(wpb.tl_scrap_in,0)
+                   ), 0, 1,
+                sum(nvl(wpb.pl_material_in,0)+
+                    nvl(wpb.pl_material_overhead_in,0)+
+                    nvl(wpb.tl_resource_in,0)+
+                    nvl(wpb.pl_resource_in,0)+
+                    nvl(wpb.tl_outside_processing_in,0)+
+                    nvl(wpb.pl_outside_processing_in,0)+
+                    nvl(wpb.tl_overhead_in,0)+
+                    nvl(wpb.pl_overhead_in,0)+
+                    nvl(wpb.tl_scrap_in,0)
+                   )
+              )
+           ,3)) * 100 <  :p_wip_var_percent

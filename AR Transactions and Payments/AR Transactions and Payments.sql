@@ -18,6 +18,7 @@ x.operating_unit,
 x.invoice_number,
 x.transaction_number,
 x.transaction_date,
+&period_name_2
 x.class,
 x.type,
 x.reference,
@@ -161,6 +162,7 @@ decode(rcta.invoicing_rule_id,-3,'Arrears',-2,'Advance') invoicing_rule,
 apsa.due_date,
 case when apsa.class in ('INV','DM') and apsa.status='OP' then greatest(trunc(sysdate)-apsa.due_date,0) end overdue_days,
 rcta.ship_date_actual ship_date,
+&period_name_1
 hop.organization_name remit_bank_name,
 hp4.party_name remit_bank_branch,
 case when cba.bank_account_id is not null then ce_bank_and_account_util.get_masked_bank_acct_num(cba.bank_account_id) end remit_bank_account,
@@ -209,6 +211,7 @@ ce_bank_accounts cba,
 hz_parties hp4,
 hz_relationships hr,
 (select hop.* from hz_organization_profiles hop where sysdate between hop.effective_start_date and nvl(hop.effective_end_date,sysdate)) hop,
+&gl_period_statuses
 xle_entity_profiles xep1,
 xle_entity_profiles xep2
 where

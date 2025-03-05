@@ -3,43 +3,36 @@
 ## Description: 
 Report to show WIP values and all accounts for discrete manufacturing, in summary by inventory, organization, with WIP class, job status, name and other details.  This report uses the valuation accounts from each discrete job and reports both jobs which were open during the accounting period as well as jobs closed during the accounting period.  You can also run this report for earlier accounting periods and still get the correct amounts and the jobs that were open at that time.
 
+Parameters
+==========
+Period Name:  the accounting period you wish to report (mandatory).
+Include Expense WIP:  enter Yes to include Expense WIP jobs.  Defaults to No.
+Category Sets 1 - 3:  any item category you wish (optional).
+Item Number:  specific item you wish to report (optional)
+Organization Code:  specific inventory organization to report (optional)
+Operating Unit:  specific operating unit (optional)
+Ledger:  specific ledger (optional)
+
 /* +=============================================================================+
--- |  Copyright 2009 - 2022 Douglas Volz Consulting, Inc.                        |
--- |  All rights reserved.                                                       |
--- |  Permission to use this code is granted provided the original author is     |
--- |  acknowledged. No warranties, express or otherwise is included in this      |
--- |  permission.                                                                |
+-- |  Copyright 2009 - 2025 Douglas Volz Consulting, Inc.
+-- |  All rights reserved.
+-- |  Permission to use this code is granted provided the original author is
+-- |  acknowledged. No warranties, express or otherwise is included in this permission. 
 -- +=============================================================================+
 -- |
 -- |  Original Author: Douglas Volz (doug@volzconsulting.com)
--- |
--- |  Program Name:  xxx_wip_acct_value_rept.sql
--- |
--- |  Parameters:
--- |  p_org_code             -- Specific inventory organization you wish to report (optional)
--- |  p_operating_unit       -- Operating Unit you wish to report, leave blank for all
--- |                            operating units (optional) 
--- |  p_ledger               -- general ledger you wish to report, leave blank for all
--- |                            ledgers (optional)
--- |  p_period_name          -- Enter the Period Name you wish to report for WIP Period
--- |                            balances (mandatory)
--- |  p_include_expense_wip  -- Enter Y to include Expense WIP jobs.  Defaults to N (no).
--- |  p_category_set1        -- The first item category set to report, typically the
--- |                            Cost or Product Line Category Set
--- |  p_category_set2        -- The second item category set to report, typically the
--- |                            Inventory Category Set
--- | 
--- |  Description:
--- |  Report to show WIP values and all accounts for discrete manufacturing, in  
--- |  summary by inventory, organization, with WIP class, job status, name and other details.
--- |  This report uses the valuation accounts from each discrete job and reports both jobs
--- |  which were open during the accounting period as well as jobs closed during the accounting
--- |  period.  You can also run this report for earlier accounting periods and still get the 
--- |  correct amounts and the jobs that were open at that time.
 -- | 
 -- |  Version Modified on Modified  by   Description
 -- |  ======= =========== ============== =========================================
 -- |  1.0     29 Oct 2009 Douglas Volz   Based on XXX_WIP_VALUE_REPT.sql
+-- |  1.13    22 May 2017 Douglas Volz   Added cost item category
+-- |  1.14    10 Jul 2017 Douglas Volz   Added column to indicate a WIP job was converted
+-- |                                     from the Legacy Systems
+-- |  1.15    26 Jul 2018 Douglas Volz   Modified for chart of accounts and for categories
+-- |  1.16    04 Dec 2018 Douglas Volz   Modified for chart of accounts and removed converted 
+-- |                                     job column. Fixed outer join for completion subinventories
+-- |  1.17    19 Jun 2019 Douglas Volz   Changed to G/L short name, for brevity, added
+-- |                                     inventory category.  Added Date Released column.
 -- |  1.17    19 Jun 2019 Douglas Volz   Changed to G/L short name, for brevity, added
 -- |                                     inventory category.  Added Date Released column.
 -- |  1.18    24 Oct 2019 Douglas Volz   Added aging dates, creation date and date released columns
@@ -52,19 +45,18 @@ Report to show WIP values and all accounts for discrete manufacturing, in summar
 -- |  1.21    17 Aug 2020 Douglas Volz   Change categories to use category_concat_segs not segment1
 -- |  1.22    09 Oct 2020 Douglas Volz   Added unit of measure column
 -- |  1.23    13 Mar 2022 Douglas Volz   Added WIP job description column.
+-- |  1.24    27 Feb 2025 Douglas Volz   Removed tabs, fixed OU and GL security profiles.
 +=============================================================================+*/
-
-
 
 
 ## Parameters
 Period Name, Include Expense WIP, Category Set 1, Category Set 2, Category Set 3, Item Number, Organization Code, Operating Unit, Ledger
 
 ## Used tables
-[gl_ledgers](https://www.enginatics.com/library/?pg=1&find=gl_ledgers), [gl_code_combinations](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations), [hr_organization_information](https://www.enginatics.com/library/?pg=1&find=hr_organization_information), [hr_all_organization_units_vl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_vl), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl), [mtl_units_of_measure_vl](https://www.enginatics.com/library/?pg=1&find=mtl_units_of_measure_vl), [pa_projects_all](https://www.enginatics.com/library/?pg=1&find=pa_projects_all), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters), [wip_accounting_classes](https://www.enginatics.com/library/?pg=1&find=wip_accounting_classes), [wip_entities](https://www.enginatics.com/library/?pg=1&find=wip_entities), [mtl_secondary_inventories](https://www.enginatics.com/library/?pg=1&find=mtl_secondary_inventories), [mfg_lookups](https://www.enginatics.com/library/?pg=1&find=mfg_lookups), [wip_period_balances](https://www.enginatics.com/library/?pg=1&find=wip_period_balances), [wip_discrete_jobs](https://www.enginatics.com/library/?pg=1&find=wip_discrete_jobs), [org_acct_periods](https://www.enginatics.com/library/?pg=1&find=org_acct_periods)
+[gl_ledgers](https://www.enginatics.com/library/?pg=1&find=gl_ledgers), [gl_code_combinations_kfv](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations_kfv), [hr_organization_information](https://www.enginatics.com/library/?pg=1&find=hr_organization_information), [hr_all_organization_units_vl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_vl), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl), [mtl_units_of_measure_vl](https://www.enginatics.com/library/?pg=1&find=mtl_units_of_measure_vl), [pa_projects_all](https://www.enginatics.com/library/?pg=1&find=pa_projects_all), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters), [wip_accounting_classes](https://www.enginatics.com/library/?pg=1&find=wip_accounting_classes), [wip_entities](https://www.enginatics.com/library/?pg=1&find=wip_entities), [mtl_secondary_inventories](https://www.enginatics.com/library/?pg=1&find=mtl_secondary_inventories), [mfg_lookups](https://www.enginatics.com/library/?pg=1&find=mfg_lookups), [fnd_common_lookups](https://www.enginatics.com/library/?pg=1&find=fnd_common_lookups), [wip_period_balances](https://www.enginatics.com/library/?pg=1&find=wip_period_balances), [wip_discrete_jobs](https://www.enginatics.com/library/?pg=1&find=wip_discrete_jobs), [org_acct_periods](https://www.enginatics.com/library/?pg=1&find=org_acct_periods)
 
 ## Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Cost Accounting - Inventory Value](https://www.enginatics.com/library/?pg=1&category[]=Cost%20Accounting%20-%20Inventory%20Value), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 
 

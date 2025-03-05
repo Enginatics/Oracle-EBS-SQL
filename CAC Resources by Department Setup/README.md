@@ -44,7 +44,7 @@ Resource/Overhead Cost Type, Organization Code, Operating Unit, Ledger
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related reports
-[CAC Item Cost & Routing](/CAC%20Item%20Cost%20-%20Routing/), [CAC Resources Associated with Overheads Setup](/CAC%20Resources%20Associated%20with%20Overheads%20Setup/), [CAC WIP Account Detail](/CAC%20WIP%20Account%20Detail/)
+[CAC Item Cost & Routing](/CAC%20Item%20Cost%20-%20Routing/), [CAC Manufacturing Variance](/CAC%20Manufacturing%20Variance/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

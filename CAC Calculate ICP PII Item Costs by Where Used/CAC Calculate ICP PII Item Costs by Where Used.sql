@@ -546,4 +546,253 @@ from    (select :p_period_name Period_Name,
                  and    mp_to_org.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
                  and    cic.cost_type_id              = mp_to_org.primary_cost_method  -- this gets the Frozen Costs
                  and    cct.cost_type_id             <> mp_to_org.primary_cost_method  -- this avoids getting the Frozen costs twice
-                 and
+                 and    10=10                         -- p_cost_type
+                 and    cic.inventory_item_id in 
+                                (select msiv2.inventory_item_id
+                                 from   mtl_system_items_vl msiv2,
+                                        mtl_parameters mp_to_org
+                                 where  msiv2.organization_id       = mp_to_org.organization_id
+                                 and    mp_to_org.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
+                                 and    4=4                         -- p_to_org
+                                 and    5=5                         -- p_component_number
+                                )
+                 -- ====================================
+                 -- Find all the Frozen costs not in the
+                 -- Pending or unimplemented cost type
+                 -- ====================================
+                 and    not exists (
+                                    select  'x'
+                                    from    cst_item_costs cic2
+                                    where   cic2.organization_id   = cic.organization_id
+                                    and     cic2.inventory_item_id = cic.inventory_item_id
+                                    and     cic2.cost_type_id      = cct.cost_type_id
+                                   )
+                ) to_org_costs,
+                -- =================================================
+                -- Get Source Org Cost information
+                -- =================================================
+                (select cic.organization_id,
+                        cic.inventory_item_id,
+                        cic.cost_type_id,
+                        cic.item_cost,
+                        cic.material_cost,
+                        cic.tl_material_overhead,
+                        cic.tl_resource,
+                        cic.tl_outside_processing,
+                        cic.tl_overhead,
+                        cic.item_cost - cic.tl_material_overhead - cic.tl_resource - 
+                                         cic.tl_outside_processing - cic.tl_overhead net_cost,
+                        nvl((select sum(cicd.item_cost)
+                             from   cst_item_cost_details cicd,
+                                    cst_cost_types cct,
+                                    bom_resources br
+                             where  cicd.cost_type_id      = cct.cost_type_id
+                             and    9=9                    -- p_pii_cost_type, p_pii_resource_code
+                             and    cicd.inventory_item_id = cic.inventory_item_id
+                             and    cicd.organization_id   = cic.organization_id
+                             and    cicd.resource_id       = br.resource_id
+                            ),0) pii_cost
+                 from   cst_item_costs cic,
+                        cst_cost_types cct
+                 -- ====================================
+                 -- Item Cost Joins for the Source Org
+                 -- ====================================
+                 where  cic.cost_type_id              = cct.cost_type_id
+                 and    10=10                         -- p_cost_type
+                 and    cic.inventory_item_id in 
+                                (select msiv2.inventory_item_id
+                                 from   mtl_system_items_vl msiv2,
+                                        mtl_parameters mp_src_org
+                                 where  msiv2.organization_id        = mp_src_org.organization_id
+                                 and    3=3                          -- p_src_org
+                                 and    5=5                          -- p_component_number
+                                )
+                 union all
+                 select cic.organization_id,
+                        cic.inventory_item_id,
+                        cic.cost_type_id,
+                        cic.item_cost,
+                        cic.material_cost,
+                        cic.tl_material_overhead,
+                        cic.tl_resource,
+                        cic.tl_outside_processing,
+                        cic.tl_overhead,
+                        cic.item_cost - cic.tl_material_overhead - cic.tl_resource - 
+                                        cic.tl_outside_processing - cic.tl_overhead net_cost,
+                        nvl((select sum(cicd.item_cost)
+                             from   cst_item_cost_details cicd,
+                                    cst_cost_types cct,
+                                    bom_resources br
+                             where  cicd.cost_type_id      = cct.cost_type_id
+                             and    9=9                    -- p_pii_cost_type, p_pii_resource_code
+                             and    cicd.inventory_item_id = cic.inventory_item_id
+                             and    cicd.organization_id   = cic.organization_id
+                             and    cicd.resource_id       = br.resource_id
+                            ),0) pii_cost
+                 from   cst_item_costs cic,
+                        cst_cost_types cct,
+                        mtl_parameters mp
+                 -- ====================================
+                 -- Item Cost Joins for the Source Org
+                 -- ====================================
+                 where  cic.organization_id           = mp.organization_id
+                 and    cic.cost_type_id              = mp.primary_cost_method  -- this gets the Frozen Costs
+                 and    cct.cost_type_id             <> mp.primary_cost_method  -- this avoids getting the Frozen costs twice
+                 and    10=10                         -- p_cost_type
+                 and    cic.inventory_item_id in 
+                                (select  msiv2.inventory_item_id
+                                 from    mtl_system_items_vl msiv2,
+                                         mtl_parameters mp_src_org
+                                 where  msiv2.organization_id        = mp_src_org.organization_id
+                                 and    3=3                          -- p_src_org
+                                 and    5=5                          -- p_component_number
+                                )
+                 -- ====================================
+                 -- Find all the Frozen costs not in the
+                 -- Pending or unimplemented cost type
+                 -- ====================================
+                 and not exists (
+                                 select  'x'
+                                 from    cst_item_costs cic2
+                                 where   cic2.organization_id   = cic.organization_id
+                                 and     cic2.inventory_item_id = cic.inventory_item_id
+                                 and     cic2.cost_type_id      = cct.cost_type_id)
+                ) src_org_costs,        
+                -- =================================================
+                -- Get To Org Currency information
+                -- =================================================
+                (select mp.organization_id,
+                        gl.ledger_id,
+                        gl.name gl_name,
+                        gl.currency_code,
+                        haou2.organization_id operating_unit_id,
+                        haou2.name operating_unit,
+                        -- Revision for version 1.4
+                        gl.short_name gl_short_name
+                 from   mtl_parameters mp,
+                        hr_organization_information hoi,
+                        hr_all_organization_units_vl haou,
+                        hr_all_organization_units_vl haou2,
+                        gl_ledgers gl
+                        -- =================================================
+                        -- Get inventory ledger and operating unit information
+                        -- =================================================
+                 where  hoi.org_information_context   = 'Accounting Information'
+                 and    hoi.organization_id           = mp.organization_id
+                 and    hoi.organization_id           = haou.organization_id            -- this gets the organization name
+                 and    haou2.organization_id         = to_number(hoi.org_information3) -- this gets the operating unit id
+                 and    gl.ledger_id                  = to_number(hoi.org_information1) -- get the ledger_id
+                 -- End revision for version 1.1
+                 and     mp.organization_id <> mp.master_organization_id
+                 -- Revision for version 1.4
+                 -- Avoid selecting disabled inventory organizations
+                 and     sysdate < nvl(haou.date_to, sysdate + 1)
+                ) inv_to_org,
+                -- =================================================
+                -- Get Src Org Currency information
+                -- =================================================
+                (select mp.organization_id,
+                        gl.ledger_id,
+                        gl.name gl_name,
+                        gl.currency_code,
+                        haou2.organization_id operating_unit_id,
+                        haou2.name operating_unit,
+                        -- Revision for version 1.4
+                        gl.short_name gl_short_name,
+                        gl.period_set_name,
+                        gl.accounted_period_type
+                        -- End revision for version 1.4
+                 from   mtl_parameters mp,
+                        hr_organization_information hoi,
+                        hr_all_organization_units_vl haou,
+                        hr_all_organization_units_vl haou2,
+                        gl_ledgers gl
+                 -- =================================================
+                 -- Get inventory ledger and operating unit information
+                 -- =================================================
+                 where  hoi.org_information_context   = 'Accounting Information'
+                 and    hoi.organization_id           = mp.organization_id
+                 and    hoi.organization_id           = haou.organization_id            -- this gets the organization name
+                 and    haou2.organization_id         = to_number(hoi.org_information3) -- this gets the operating unit id
+                 and    gl.ledger_id                  = to_number(hoi.org_information1) -- get the ledger_id
+                 and    mp.organization_id           <> mp.master_organization_id
+                 -- Revision for version 1.4
+                 -- Avoid selecting disabled inventory organizations
+                 and    sysdate < nvl(haou.date_to, sysdate + 1)
+                ) inv_src_org
+         -- End for revision 1.1
+         -- Revision for version 1.5
+         -- Item Sourcing and Component joins
+         where   item_sourcing.src_item_id            = to_org_wu.component_item_id
+         and     item_sourcing.to_org_id              = to_org_wu.organization_id
+         -- Revised lookup joins
+         and     muomv_bom.uom_code                   = to_org_wu.assembly_uom
+         and     misv_bom.inventory_item_status_code  = to_org_wu.assembly_status_code
+         and     muomv_comp.uom_code                  = to_org_wu.component_uom
+         and     misv_comp.inventory_item_status_code = to_org_wu.component_status_code
+         and     muomv_src.uom_code                   = item_sourcing.src_uom_code
+         and     misv_src.inventory_item_status_code  = item_sourcing.src_item_status_code
+         -- End revision for version 1.5
+         -- Revision for version 1.5, add p_include_same_ou_xfers parameter
+         and     13=13                                -- p_include_same_ou_xfers
+         -- ============================================
+         -- Use gl_periods instead of org_acct_periods
+         -- in case of new invent. orgs with no calendar
+         -- ============================================
+         -- Revision for version 1.4 and 1.6
+         -- and     gp.period_set_name                  = inv_src_org.period_set_name
+         -- and     gp.period_type                      = inv_src_org.accounted_period_type
+         -- End revision for version 1.6
+         -- ============================================
+         -- Joins for inv orgs, currency and sourcing rules
+         -- ============================================
+         and     inv_src_org.organization_id         = item_sourcing.src_org_id
+         and     inv_to_org.organization_id          = item_sourcing.to_org_id
+         -- ============================================
+         -- Joins for inv orgs and item costs
+         -- ============================================
+         and     to_org_costs.organization_id        = item_sourcing.to_org_id     -- get the To Org costs
+         and     to_org_costs.inventory_item_id      = item_sourcing.src_item_id   -- get the To Org costs
+         and     src_org_costs.organization_id       = item_sourcing.src_org_id    -- get the Source Org costs
+         and     src_org_costs.inventory_item_id     = item_sourcing.src_item_id   -- get the Source Org costs
+         -- End revision for version 1.1
+         -- Lookup codes
+         and     fcl_bom.lookup_code (+)             = to_org_wu.assembly_item_type
+         and     fcl_bom.lookup_type (+)             = 'ITEM_TYPE'
+         and     fcl_comp.lookup_code (+)            = to_org_wu.component_item_type
+         and     fcl_comp.lookup_type (+)            = 'ITEM_TYPE'
+         and     fcl_src.lookup_code (+)             = item_sourcing.src_item_type
+         and     fcl_src.lookup_type (+)             = 'ITEM_TYPE'
+         and     ml_bom.lookup_type                  = 'MTL_PLANNING_MAKE_BUY'
+         and     ml_bom.lookup_code                  = to_org_wu.assembly_mb_code
+         and     ml_bom2.lookup_type                 = 'BOM_TRANSITION_TYPE'
+         and     ml_bom2.lookup_code                 = 1 -- Primary
+         and     ml_comp.lookup_type                 = 'MTL_PLANNING_MAKE_BUY'
+         and     ml_comp.lookup_code                 = to_org_wu.component_mb_code
+         and     ml_comp2.lookup_type                = 'SYS_YES_NO'
+         and     ml_comp2.lookup_code                = to_org_wu.include_in_cost_rollup
+         and     ml_comp3.lookup_type                = 'WIP_SUPPLY'
+         and     ml_comp3.lookup_code                = to_org_wu.wip_supply_type
+         and     ml_src.lookup_type                  = 'MTL_PLANNING_MAKE_BUY'
+         and     ml_src.lookup_code                  = item_sourcing.src_mb_code
+         order by
+                -- Revision for version 1.6
+                -- gp.period_name,
+                :p_period_name,
+                -- End revision for version 1.6 
+                -- Revision for version 1.4
+                nvl(inv_src_org.gl_short_name, inv_src_org.gl_name),
+                nvl(inv_to_org.gl_short_name, inv_to_org.gl_name),
+                inv_src_org.operating_unit,
+                inv_to_org.operating_unit,
+                -- End revision for version 1.4
+                item_sourcing.to_org_code,
+                item_sourcing.src_org_code, 
+                to_org_wu.assembly_item,
+                to_org_wu.component_item,
+                to_org_wu.comp_op_seq
+        ) rpt,
+        -- Revision for version 1.6, Currency Exchange Rates to use for all inventory orgs
+       (select gdr.* from gl_daily_rates gdr, gl_daily_conversion_types gdct where gdr.conversion_date=:p_conversion_date and gdct.user_conversion_type=:p_user_conversion_type and gdct.conversion_type=gdr.conversion_type) gdr
+where   gdr.from_currency (+)               = rpt.src_currency_code
+and     gdr.to_currency   (+)               = rpt.to_org_currency_code

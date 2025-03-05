@@ -31,6 +31,22 @@ with bom as
   xxen_util.meaning(bbom.effectivity_control,'MTL_EFFECTIVITY_CONTROL',700) effectivity_control,
   bbom.alternate_bom_designator alternate_bom,
   xxen_util.meaning(nvl2(bbom.common_assembly_item_id,1,2),'SYS_YES_NO',700) common_bill_flag,
+  xxen_util.display_flexfield_context(702,'BOM_BILL_OF_MATERIALS',bbom.attribute_category) bill_attribute_category,
+  xxen_util.display_flexfield_value(702,'BOM_BILL_OF_MATERIALS',bbom.attribute_category,'ATTRIBUTE1',bbom.rowid) bom_bill_attribute1,
+  xxen_util.display_flexfield_value(702,'BOM_BILL_OF_MATERIALS',bbom.attribute_category,'ATTRIBUTE2',bbom.rowid) bom_bill_attribute2,
+  xxen_util.display_flexfield_value(702,'BOM_BILL_OF_MATERIALS',bbom.attribute_category,'ATTRIBUTE3',bbom.rowid) bom_bill_attribute3,
+  xxen_util.display_flexfield_value(702,'BOM_BILL_OF_MATERIALS',bbom.attribute_category,'ATTRIBUTE4',bbom.rowid) bom_bill_attribute4,
+  xxen_util.display_flexfield_value(702,'BOM_BILL_OF_MATERIALS',bbom.attribute_category,'ATTRIBUTE5',bbom.rowid) bom_bill_attribute5,
+  xxen_util.display_flexfield_value(702,'BOM_BILL_OF_MATERIALS',bbom.attribute_category,'ATTRIBUTE6',bbom.rowid) bom_bill_attribute6,
+  xxen_util.display_flexfield_value(702,'BOM_BILL_OF_MATERIALS',bbom.attribute_category,'ATTRIBUTE7',bbom.rowid) bom_bill_attribute7,
+  xxen_util.display_flexfield_value(702,'BOM_BILL_OF_MATERIALS',bbom.attribute_category,'ATTRIBUTE8',bbom.rowid) bom_bill_attribute8,
+  xxen_util.display_flexfield_value(702,'BOM_BILL_OF_MATERIALS',bbom.attribute_category,'ATTRIBUTE9',bbom.rowid) bom_bill_attribute9,
+  xxen_util.display_flexfield_value(702,'BOM_BILL_OF_MATERIALS',bbom.attribute_category,'ATTRIBUTE10',bbom.rowid) bom_bill_attribute10,
+  xxen_util.display_flexfield_value(702,'BOM_BILL_OF_MATERIALS',bbom.attribute_category,'ATTRIBUTE11',bbom.rowid) bom_bill_attribute11,
+  xxen_util.display_flexfield_value(702,'BOM_BILL_OF_MATERIALS',bbom.attribute_category,'ATTRIBUTE12',bbom.rowid) bom_bill_attribute12,
+  xxen_util.display_flexfield_value(702,'BOM_BILL_OF_MATERIALS',bbom.attribute_category,'ATTRIBUTE13',bbom.rowid) bom_bill_attribute13,
+  xxen_util.display_flexfield_value(702,'BOM_BILL_OF_MATERIALS',bbom.attribute_category,'ATTRIBUTE14',bbom.rowid) bom_bill_attribute14,
+  xxen_util.display_flexfield_value(702,'BOM_BILL_OF_MATERIALS',bbom.attribute_category,'ATTRIBUTE15',bbom.rowid) bom_bill_attribute15,
   --
   bic.component_sequence_id,
   bic.component_item_id,
@@ -52,7 +68,23 @@ with bom as
   bic.supply_subinventory,
   (select milk.concatenated_segments from mtl_item_locations_kfv milk where milk.inventory_location_id = bic.supply_locator_id) supply_locator,
   xxen_util.meaning(decode(bic.implementation_date,null,2,1),'SYS_YES_NO',700) component_implemented_flag,
-  bic.implementation_date component_implementation_date
+  bic.implementation_date component_implementation_date,
+  xxen_util.display_flexfield_context(702,'BOM_INVENTORY_COMPONENTS',bic.attribute_category) component_attribute_category,
+  xxen_util.display_flexfield_value(702,'BOM_INVENTORY_COMPONENTS',bic.attribute_category,'ATTRIBUTE1',bic.rowid) bom_comp_attribute1,
+  xxen_util.display_flexfield_value(702,'BOM_INVENTORY_COMPONENTS',bic.attribute_category,'ATTRIBUTE2',bic.rowid) bom_comp_attribute2,
+  xxen_util.display_flexfield_value(702,'BOM_INVENTORY_COMPONENTS',bic.attribute_category,'ATTRIBUTE3',bic.rowid) bom_comp_attribute3,
+  xxen_util.display_flexfield_value(702,'BOM_INVENTORY_COMPONENTS',bic.attribute_category,'ATTRIBUTE4',bic.rowid) bom_comp_attribute4,
+  xxen_util.display_flexfield_value(702,'BOM_INVENTORY_COMPONENTS',bic.attribute_category,'ATTRIBUTE5',bic.rowid) bom_comp_attribute5,
+  xxen_util.display_flexfield_value(702,'BOM_INVENTORY_COMPONENTS',bic.attribute_category,'ATTRIBUTE6',bic.rowid) bom_comp_attribute6,
+  xxen_util.display_flexfield_value(702,'BOM_INVENTORY_COMPONENTS',bic.attribute_category,'ATTRIBUTE7',bic.rowid) bom_comp_attribute7,
+  xxen_util.display_flexfield_value(702,'BOM_INVENTORY_COMPONENTS',bic.attribute_category,'ATTRIBUTE8',bic.rowid) bom_comp_attribute8,
+  xxen_util.display_flexfield_value(702,'BOM_INVENTORY_COMPONENTS',bic.attribute_category,'ATTRIBUTE9',bic.rowid) bom_comp_attribute9,
+  xxen_util.display_flexfield_value(702,'BOM_INVENTORY_COMPONENTS',bic.attribute_category,'ATTRIBUTE10',bic.rowid) bom_comp_attribute10,
+  xxen_util.display_flexfield_value(702,'BOM_INVENTORY_COMPONENTS',bic.attribute_category,'ATTRIBUTE11',bic.rowid) bom_comp_attribute11,
+  xxen_util.display_flexfield_value(702,'BOM_INVENTORY_COMPONENTS',bic.attribute_category,'ATTRIBUTE12',bic.rowid) bom_comp_attribute12,
+  xxen_util.display_flexfield_value(702,'BOM_INVENTORY_COMPONENTS',bic.attribute_category,'ATTRIBUTE13',bic.rowid) bom_comp_attribute13,
+  xxen_util.display_flexfield_value(702,'BOM_INVENTORY_COMPONENTS',bic.attribute_category,'ATTRIBUTE14',bic.rowid) bom_comp_attribute14,
+  xxen_util.display_flexfield_value(702,'BOM_INVENTORY_COMPONENTS',bic.attribute_category,'ATTRIBUTE15',bic.rowid) bom_comp_attribute15
  from
   bom_bill_of_materials    bbom
  ,bom_inventory_components bic
@@ -84,6 +116,22 @@ bom_tree as
   bom.effectivity_control,
   bom.alternate_bom,
   bom.common_bill_flag,
+  bom.bill_attribute_category,
+  bom.bom_bill_attribute1,
+  bom.bom_bill_attribute2,
+  bom.bom_bill_attribute3,
+  bom.bom_bill_attribute4,
+  bom.bom_bill_attribute5,
+  bom.bom_bill_attribute6,
+  bom.bom_bill_attribute7,
+  bom.bom_bill_attribute8,
+  bom.bom_bill_attribute9,
+  bom.bom_bill_attribute10,
+  bom.bom_bill_attribute11,
+  bom.bom_bill_attribute12,
+  bom.bom_bill_attribute13,
+  bom.bom_bill_attribute14,
+  bom.bom_bill_attribute15,
   --
   msiv2.concatenated_segments component_item,
   msiv2.description component_description,
@@ -106,6 +154,22 @@ bom_tree as
   bom.supply_locator,
   bom.component_implemented_flag,
   bom.component_implementation_date,
+  bom.component_attribute_category,
+  bom.bom_comp_attribute1,
+  bom.bom_comp_attribute2,
+  bom.bom_comp_attribute3,
+  bom.bom_comp_attribute4,
+  bom.bom_comp_attribute5,
+  bom.bom_comp_attribute6,
+  bom.bom_comp_attribute7,
+  bom.bom_comp_attribute8,
+  bom.bom_comp_attribute9,
+  bom.bom_comp_attribute10,
+  bom.bom_comp_attribute11,
+  bom.bom_comp_attribute12,
+  bom.bom_comp_attribute13,
+  bom.bom_comp_attribute14,
+  bom.bom_comp_attribute15,
   --
   bom.bill_sequence_id,
   bom.organization_id,
@@ -160,7 +224,23 @@ bom_subst as
   msiv.description substitute_description,
   bsc.substitute_item_quantity substitute_quantity,
   round(decode(bsc.substitute_item_quantity,0,0,1/bsc.substitute_item_quantity),37) substitute_inverse_quantity,
-  xxen_util.meaning(bsc.enforce_int_requirements,'BOM_ENFORCE_INT_REQUIREMENTS',700) subst_integer_requirements
+  xxen_util.meaning(bsc.enforce_int_requirements,'BOM_ENFORCE_INT_REQUIREMENTS',700) subst_integer_requirements,
+  xxen_util.display_flexfield_context(702,'BOM_SUBSTITUTE_COMPONENTS',bsc.attribute_category) substitute_attribute_category,
+  xxen_util.display_flexfield_value(702,'BOM_SUBSTITUTE_COMPONENTS',bsc.attribute_category,'ATTRIBUTE1',bsc.rowid) bom_sub_attribute1,
+  xxen_util.display_flexfield_value(702,'BOM_SUBSTITUTE_COMPONENTS',bsc.attribute_category,'ATTRIBUTE2',bsc.rowid) bom_sub_attribute2,
+  xxen_util.display_flexfield_value(702,'BOM_SUBSTITUTE_COMPONENTS',bsc.attribute_category,'ATTRIBUTE3',bsc.rowid) bom_sub_attribute3,
+  xxen_util.display_flexfield_value(702,'BOM_SUBSTITUTE_COMPONENTS',bsc.attribute_category,'ATTRIBUTE4',bsc.rowid) bom_sub_attribute4,
+  xxen_util.display_flexfield_value(702,'BOM_SUBSTITUTE_COMPONENTS',bsc.attribute_category,'ATTRIBUTE5',bsc.rowid) bom_sub_attribute5,
+  xxen_util.display_flexfield_value(702,'BOM_SUBSTITUTE_COMPONENTS',bsc.attribute_category,'ATTRIBUTE6',bsc.rowid) bom_sub_attribute6,
+  xxen_util.display_flexfield_value(702,'BOM_SUBSTITUTE_COMPONENTS',bsc.attribute_category,'ATTRIBUTE7',bsc.rowid) bom_sub_attribute7,
+  xxen_util.display_flexfield_value(702,'BOM_SUBSTITUTE_COMPONENTS',bsc.attribute_category,'ATTRIBUTE8',bsc.rowid) bom_sub_attribute8,
+  xxen_util.display_flexfield_value(702,'BOM_SUBSTITUTE_COMPONENTS',bsc.attribute_category,'ATTRIBUTE9',bsc.rowid) bom_sub_attribute9,
+  xxen_util.display_flexfield_value(702,'BOM_SUBSTITUTE_COMPONENTS',bsc.attribute_category,'ATTRIBUTE10',bsc.rowid) bom_sub_attribute10,
+  xxen_util.display_flexfield_value(702,'BOM_SUBSTITUTE_COMPONENTS',bsc.attribute_category,'ATTRIBUTE11',bsc.rowid) bom_sub_attribute11,
+  xxen_util.display_flexfield_value(702,'BOM_SUBSTITUTE_COMPONENTS',bsc.attribute_category,'ATTRIBUTE12',bsc.rowid) bom_sub_attribute12,
+  xxen_util.display_flexfield_value(702,'BOM_SUBSTITUTE_COMPONENTS',bsc.attribute_category,'ATTRIBUTE13',bsc.rowid) bom_sub_attribute13,
+  xxen_util.display_flexfield_value(702,'BOM_SUBSTITUTE_COMPONENTS',bsc.attribute_category,'ATTRIBUTE14',bsc.rowid) bom_sub_attribute14,
+  xxen_util.display_flexfield_value(702,'BOM_SUBSTITUTE_COMPONENTS',bsc.attribute_category,'ATTRIBUTE15',bsc.rowid) bom_sub_attribute15
  from
   bom_substitute_components bsc,
   bom_bill_of_materials bbom,
@@ -188,35 +268,18 @@ bom_subst as
     bsc3.substitute_component_id = bsc.substitute_component_id and
     bic3.effectivity_date <= bic2.effectivity_date
   )
-),
-item_dff as
-(
- select
-  rowidtochar(msib.rowid) row_id,
-  msib.attribute_category,
-  msib.inventory_item_id,
-  msib.organization_id
- from
-  mtl_system_items_b msib
- where
-  :p_show_comp_item_dff is not null
 )
 &processed_sub_query1
 &processed_sub_query2
 --
 -- Main Query Starts Here
-select /*+ push_pred(item_dff) */
- x.*
- &lp_component_item_dffs
-from
-(
 select /*+ push_pred(bom_subst) */
  --process--
  null action_,
  null status_,
  null message_,
  null request_id_,
-:p_upload_mode upload_mode,
+ :p_upload_mode upload_mode,
  :p_enable_attrs_update enable_attrs_update,
  --
  case row_number() over (partition by bom_tree.bill_sequence_id,bom_tree.component_sequence_id order by bom_tree.bill_sequence_id,bom_tree.component_sequence_id,bom_subst.substitute_item)
@@ -233,6 +296,22 @@ select /*+ push_pred(bom_subst) */
  bom_tree.common_bill_flag,
  bom_tree.effectivity_control,
  bom_tree.effectivity_control_code,
+ bom_tree.bill_attribute_category,
+ bom_tree.bom_bill_attribute1,
+ bom_tree.bom_bill_attribute2,
+ bom_tree.bom_bill_attribute3,
+ bom_tree.bom_bill_attribute4,
+ bom_tree.bom_bill_attribute5,
+ bom_tree.bom_bill_attribute6,
+ bom_tree.bom_bill_attribute7,
+ bom_tree.bom_bill_attribute8,
+ bom_tree.bom_bill_attribute9,
+ bom_tree.bom_bill_attribute10,
+ bom_tree.bom_bill_attribute11,
+ bom_tree.bom_bill_attribute12,
+ bom_tree.bom_bill_attribute13,
+ bom_tree.bom_bill_attribute14,
+ bom_tree.bom_bill_attribute15,
  --
  bom_tree.item_seq,
  bom_tree.operation_seq operation_seq_old,
@@ -258,6 +337,22 @@ select /*+ push_pred(bom_subst) */
  bom_tree.supply_locator,
  bom_tree.component_implemented_flag,
  bom_tree.component_implementation_date component_implementation_date,
+ bom_tree.component_attribute_category,
+ bom_tree.bom_comp_attribute1,
+ bom_tree.bom_comp_attribute2,
+ bom_tree.bom_comp_attribute3,
+ bom_tree.bom_comp_attribute4,
+ bom_tree.bom_comp_attribute5,
+ bom_tree.bom_comp_attribute6,
+ bom_tree.bom_comp_attribute7,
+ bom_tree.bom_comp_attribute8,
+ bom_tree.bom_comp_attribute9,
+ bom_tree.bom_comp_attribute10,
+ bom_tree.bom_comp_attribute11,
+ bom_tree.bom_comp_attribute12,
+ bom_tree.bom_comp_attribute13,
+ bom_tree.bom_comp_attribute14,
+ bom_tree.bom_comp_attribute15,
  --
  bom_subst.substitute_item substitute_item_old,
  bom_subst.substitute_item,
@@ -265,6 +360,22 @@ select /*+ push_pred(bom_subst) */
  bom_subst.substitute_quantity,
  bom_subst.substitute_inverse_quantity,
  bom_subst.subst_integer_requirements,
+ bom_subst.substitute_attribute_category,
+ bom_subst.bom_sub_attribute1,
+ bom_subst.bom_sub_attribute2,
+ bom_subst.bom_sub_attribute3,
+ bom_subst.bom_sub_attribute4,
+ bom_subst.bom_sub_attribute5,
+ bom_subst.bom_sub_attribute6,
+ bom_subst.bom_sub_attribute7,
+ bom_subst.bom_sub_attribute8,
+ bom_subst.bom_sub_attribute9,
+ bom_subst.bom_sub_attribute10,
+ bom_subst.bom_sub_attribute11,
+ bom_subst.bom_sub_attribute12,
+ bom_subst.bom_sub_attribute13,
+ bom_subst.bom_sub_attribute14,
+ bom_subst.bom_sub_attribute15,
  --
  bom_tree.bill_sequence_id,
  bom_tree.organization_id,
@@ -280,21 +391,3 @@ where
  :p_display_option = :p_display_option and
  nvl(:p_restrict_org,'?') = nvl(:p_restrict_org,'?') and
  bom_tree.component_sequence_id = bom_subst.component_sequence_id (+)
---
-&not_use_first_block
-&report_table_select1
-&report_table_select2
-&report_table_name &report_table_where_clause
-&processed_run
-) x,
-item_dff cidff
-where
- x.organization_id = cidff.organization_id(+) and
- x.component_item_id = cidff.inventory_item_id(+)
-order by
- organization_code,
- assembly_item,
- operation_seq,
- item_seq,
- component_item,
- substitute_item

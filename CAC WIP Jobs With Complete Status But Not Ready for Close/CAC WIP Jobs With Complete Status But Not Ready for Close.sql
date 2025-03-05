@@ -718,4 +718,80 @@ having  ((abs(sum(nvl(wpb.pl_material_in,0)-
                                                 (nvl(wdj.quantity_completed, 0) + decode(:p_include_scrap,'N',0,nvl(wdj.quantity_scrapped, 0))),
                                         1,    nvl(wro.quantity_per_assembly, wdj.start_quantity) * 1 / nvl(wro.component_yield_factor, 1) *
                                                 (nvl(wdj.quantity_completed, 0) + decode(:p_include_scrap,'N',0,nvl(wdj.quantity_scrapped, 0))),
-                                       
+                                        2,    nvl(wro.required_quantity,1),
+                                              nvl(wro.quantity_per_assembly, 0) * 1 / nvl(wro.component_yield_factor, 1) *
+                                                (nvl(wdj.quantity_completed, 0) + decode(:p_include_scrap,'N',0,nvl(wdj.quantity_scrapped, 0)))
+                                        )
+                                 )
+                           ,3) - 
+                        round(sum(nvl(wro.quantity_issued, 0)),3) > 0 -- Quantity_Left_in_WIP
+                )
+        -- ===========================================
+        -- Check for WIP variance percent
+        -- ===========================================
+        -- Revision for version 1.15
+        or
+         -- WIP variance percentage = WIP Net Value / WIP Costs In
+         -- WIP Net Value
+         abs(round(
+                sum(nvl(wpb.pl_material_in,0)-
+                    nvl(wpb.tl_material_out,0)-
+                    nvl(wpb.pl_material_out,0)-
+                    nvl(wpb.tl_material_var,0)-
+                    nvl(wpb.pl_material_var,0) +
+                -- Material Overhead Balance 
+                    nvl(wpb.pl_material_overhead_in,0)-
+                    nvl(wpb.tl_material_overhead_out,0)-
+                    nvl(wpb.pl_material_overhead_out,0)-
+                    nvl(wpb.tl_material_overhead_var,0)-
+                    nvl(wpb.pl_material_overhead_var,0) +
+                -- Resource Balance
+                    nvl(wpb.tl_resource_in,0)+
+                    nvl(wpb.pl_resource_in,0)-
+                    nvl(wpb.tl_resource_out,0)-
+                    nvl(wpb.pl_resource_out,0)-
+                    nvl(wpb.tl_resource_var,0)-
+                    nvl(wpb.pl_resource_var,0)+
+                -- Outside Processing Balance
+                    nvl(wpb.tl_outside_processing_in,0)+
+                    nvl(wpb.pl_outside_processing_in,0)-
+                    nvl(wpb.tl_outside_processing_out,0)-
+                    nvl(wpb.pl_outside_processing_out,0)-
+                    nvl(wpb.tl_outside_processing_var,0)-
+                    nvl(wpb.pl_outside_processing_var,0) +
+                -- Overhead Balance
+                    nvl(wpb.tl_overhead_in,0)+
+                    nvl(wpb.pl_overhead_in,0)-
+                    nvl(wpb.tl_overhead_out,0)-
+                    nvl(wpb.pl_overhead_out,0)-
+                    nvl(wpb.tl_overhead_var,0)-
+                    nvl(wpb.pl_overhead_var,0) +
+                -- Estimated Scrap Balances
+                    nvl(wpb.tl_scrap_in,0)-
+                    nvl(wpb.tl_scrap_out,0)-
+                    nvl(wpb.tl_scrap_var,0)
+                   ) /
+         decode(
+                sum(nvl(wpb.pl_material_in,0)+
+                    nvl(wpb.pl_material_overhead_in,0)+
+                    nvl(wpb.tl_resource_in,0)+
+                    nvl(wpb.pl_resource_in,0)+
+                    nvl(wpb.tl_outside_processing_in,0)+
+                    nvl(wpb.pl_outside_processing_in,0)+
+                    nvl(wpb.tl_overhead_in,0)+
+                    nvl(wpb.pl_overhead_in,0)+
+                    nvl(wpb.tl_scrap_in,0)
+                   ), 0, 1,
+                sum(nvl(wpb.pl_material_in,0)+
+                    nvl(wpb.pl_material_overhead_in,0)+
+                    nvl(wpb.tl_resource_in,0)+
+                    nvl(wpb.pl_resource_in,0)+
+                    nvl(wpb.tl_outside_processing_in,0)+
+                    nvl(wpb.pl_outside_processing_in,0)+
+                    nvl(wpb.tl_overhead_in,0)+
+                    nvl(wpb.pl_overhead_in,0)+
+                    nvl(wpb.tl_scrap_in,0)
+                   )
+              )
+           ,3)) * 100 >=  :p_wip_var_percent
+        )

@@ -13,7 +13,7 @@ Remote Database, Language, Show Differences only
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related reports
-[CAC Calculate ICP PII Item Costs](/CAC%20Calculate%20ICP%20PII%20Item%20Costs/), [GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20%28Distributions%29/), [AP Invoice Upload](/AP%20Invoice%20Upload/)
+[CAC WIP Account Value](/CAC%20WIP%20Account%20Value/), [GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20%28Distributions%29/), [AP Invoice Upload](/AP%20Invoice%20Upload/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

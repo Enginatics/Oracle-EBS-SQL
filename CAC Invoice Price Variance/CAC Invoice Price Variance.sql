@@ -764,4 +764,167 @@ from
   plla.ship_to_organization_id, -- organization_id
   xah.period_name,
   null, -- item_number
-  
+  null, -- inventory_item_id
+  pla.item_description, -- item_description
+  null, -- user_item_type
+  cwo.destination_type_code, -- destination_type_code
+  xal.code_combination_id,
+  cwo.offset_account_id,
+  cwo.accrual_account_id,
+  cwo.write_off_id,
+  'AP-PO WO', -- Accrual Write-Off Type
+  xal.accounting_class_code,
+  pha.segment1, -- po_num
+  to_char(pla.line_num), -- po_line_num
+  pra.release_num, -- release_num
+  null, -- invoice_num
+  -- Set to value of 0 so the union all works with no errors
+  0, -- ipv_distribution_line_number
+  0, -- erv_distribution_line_number
+  null, -- accounting_line_type
+  null, -- transaction_id,
+  null, -- invoice_date
+  cwo.transaction_date, -- accounting_date,
+  pla.unit_meas_lookup_code,  -- unit_meas_lookup_code
+  0, -- quantity_invoiced
+  nvl(cwo.currency_conversion_rate,1), -- conversion_rate
+  cwo.currency_code,
+  plla.price_override, -- price_override
+  nvl(pda.rate, pha.rate), -- rate
+  null, -- invoice_currency_code
+  0,  -- unit_price
+  1   -- exchange_rate
+ -- =================================================================================
+ -- 4.0 union all
+ -- Get the Accrual Write-Offs for unmatched Payables entries (AP No Match).
+ -- =================================================================================
+  union all
+  select pv.vendor_name vendor_name,
+  fu.user_name full_name,
+  xal.ledger_id,
+  osp.master_organization_id organization_id,
+  xah.period_name,
+  null item_number,
+  null inventory_item_id,
+  aida.description item_description,
+  null user_item_type,
+  cwo.destination_type_code destination_type_code,
+  xal.code_combination_id,
+  cwo.offset_account_id,
+  cwo.accrual_account_id,
+  cwo.write_off_id,
+  'AP No PO WO' write_off_type,
+  xal.accounting_class_code,
+  null po_num,
+  null po_line_num,
+  null release_num,
+  null invoice_num,
+  aida.distribution_line_number ipv_distribution_line_number,
+  -- Set to value of 0 so the union all works with no errors
+  0 erv_distribution_line_number,
+  null accounting_line_type,
+  null transaction_id,
+  aia.invoice_date invoice_date,
+  cwo.transaction_date accounting_date,
+  nvl(aida.matched_uom_lookup_code,aia.invoice_currency_code) unit_meas_lookup_code,
+  nvl(aida.quantity_invoiced,0) quantity_invoiced,
+  nvl(cwo.currency_conversion_rate,1) conversion_rate,
+  cwo.currency_code,
+  0 price_override, -- po unit price
+  1 rate, -- po exchange rate
+  aia.invoice_currency_code invoice_currency_code,
+  aida.unit_price unit_price,
+  nvl(aida.exchange_rate,1) exchange_rate,
+  sum(nvl(xal.accounted_dr,0) - nvl(xal.accounted_cr,0)) ipv_amount,
+  sum(0) erv_amount
+  from
+  cst_write_offs                      cwo,
+  ap_invoices_all                       aia,
+  ap_invoice_distributions_all          aida,
+  po_vendors                          pv,
+  -- oe_system_parameters_all holds the validation inventory org
+  -- for order management, A/R and A/P
+  oe_system_parameters_all            osp,
+  fnd_user                            fu,
+  xla_distribution_links              xdl,
+  xla_ae_headers                      xah,
+  xla_ae_lines                        xal
+  where cwo.transaction_date        >= :p_trx_from         -- p_trx_date_from
+  and cwo.transaction_date        <  :p_trx_to           -- p_trx_date_to
+  and cwo.invoice_distribution_id  = aida.invoice_distribution_id
+  and cwo.invoice_distribution_id is not null
+  and aia.invoice_id                = aida.invoice_id
+  and pv.vendor_id                = aia.vendor_id
+  and aia.created_by                = fu.user_id
+  and osp.org_id                   = aida.org_id
+  -- ========================================================
+  -- SLA table joins to get the exact account numbers
+  -- ========================================================
+  and xah.ae_header_id              = xal.ae_header_id
+  and xah.application_id            = xal.application_id
+  and xal.ae_header_id              = xdl.ae_header_id
+  and xal.ae_line_num               = xdl.ae_line_num
+  and xah.application_id            = xdl.application_id
+  and xdl.source_distribution_type = 'CST_WRITE_OFFS'
+  and xdl.application_id           = 707
+  and xdl.source_distribution_id_num_1 = cwo.write_off_id
+  and 2=2                          -- p_trx_date_from, p_trx_date_to
+  and 3=3                          -- p_vendor_name
+  group by
+  pv.vendor_name,
+  fu.user_name,
+  xal.ledger_id,
+  osp.master_organization_id,
+  xah.period_name,
+  null, -- item_number
+  aida.description, -- item_description
+  null, -- user_item_type
+  cwo.destination_type_code,
+  xal.code_combination_id,
+  cwo.offset_account_id,
+  cwo.accrual_account_id,
+  cwo.write_off_id,
+  'AP No PO WO', -- write_off_type
+  xal.accounting_class_code,
+  null, -- po_num
+  null, -- po_line_num
+  null, -- release_num
+  null, -- invoice_num
+  aida.distribution_line_number, -- ipv_distribution_line_number
+  -- Set to value of 0 so the union all works with no errors
+  0, -- erv_distribution_line_number
+  null, -- accounting_line_type
+  null, -- transaction_id
+  aia.invoice_date,
+  cwo.transaction_date,
+  nvl(aida.matched_uom_lookup_code,aia.invoice_currency_code), -- unit_meas_lookup_code
+  nvl(aida.quantity_invoiced,0), -- quantity_invoiced
+  nvl(cwo.currency_conversion_rate,1), -- conversion_rate
+  cwo.currency_code,
+  0, -- po unit price or price_override
+  1, -- po exchange rate
+  aia.invoice_currency_code,
+  aida.unit_price, -- invoice unit_price
+  nvl(aida.exchange_rate,1)  -- invoice exchange_rate
+ ) wo_txns  -- ipv_amount
+where mp.organization_id           = wo_txns.organization_id
+and gcc1.code_combination_id (+) = wo_txns.code_combination_id
+and pl.lookup_type               = 'DESTINATION TYPE'
+and pl.lookup_code               = wo_txns.destination_type_code
+and flv.lookup_type              = 'XLA_ACCOUNTING_CLASS'
+and flv.lookup_code              = wo_txns.accounting_class_code
+and flv.language                 = userenv('lang')
+-- ===================================================================
+-- using the base tables to avoid the performance issues
+-- with org_organization_definitions and hr_operating_units
+-- ===================================================================
+and hoi.org_information_context  = 'Accounting Information'
+and hoi.organization_id          = mp.organization_id
+and hoi.organization_id          = haou.organization_id   -- this gets the organization name
+and haou2.organization_id        = to_number(hoi.org_information3) -- this gets the operating unit id
+and gl.ledger_id                 = wo_txns.ledger_id
+and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
+and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
+and 1=1                          -- p_operating_unit, p_ledger
+-- ===================================================================
+order by 1,2,3,4,5,6,7,8,9,10,11,14,15,16,17,18,19,20,23,26,27,28,29,30

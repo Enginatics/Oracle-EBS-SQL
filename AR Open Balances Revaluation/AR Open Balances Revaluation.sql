@@ -74,6 +74,15 @@ from
                  and    ara.gl_date                <= :p_as_of_date
                )
              , 0)
+        - nvl( ( select sum(nvl( earned_discount_taken,0)+nvl( unearned_discount_taken, 0 ))
+                 from   ar_receivable_applications ara
+                 where  ara.status = 'APP'
+                 and    ara.application_type= 'CASH'
+                 and    nvl( ara.confirmed_flag, 'Y' ) = 'Y'
+                 and    ara.applied_customer_trx_id = rcta.customer_trx_id
+                 and    ara.gl_date                <= :p_as_of_date
+               )
+             , 0)
         + nvl( ( select sum(ara.amount_applied)
                  from   ar_receivable_applications ara
                  where  ara.status                  = 'APP'
@@ -98,6 +107,15 @@ from
                        and    ara.gl_date                 <= :p_as_of_date
                      )
                    , 0)
+              - nvl( ( select sum(nvl( earned_discount_taken,0)+nvl( unearned_discount_taken, 0 ))
+                       from   ar_receivable_applications ara
+                       where  ara.status = 'APP'
+                       and    ara.application_type= 'CASH'
+                       and    nvl( ara.confirmed_flag, 'Y' ) = 'Y'
+                       and    ara.applied_customer_trx_id = rcta.customer_trx_id
+                       and    ara.gl_date                <= :p_as_of_date
+               )
+             , 0)
               + nvl( ( select sum(ara.amount_applied)
                        from   ar_receivable_applications ara
                        where  ara.status                  = 'APP'
@@ -118,6 +136,15 @@ from
           - nvl( ( select sum(ara.amount_applied)
                    from   ar_receivable_applications ara
                    where  ara.status                  = 'APP'
+                   and    ara.applied_customer_trx_id = rcta.customer_trx_id
+                   and    ara.gl_date                <= :p_as_of_date
+                 )
+               , 0)
+          - nvl( ( select sum(nvl( earned_discount_taken,0)+nvl( unearned_discount_taken, 0 ))
+                   from   ar_receivable_applications ara
+                   where  ara.status = 'APP'
+                   and    ara.application_type= 'CASH'
+                   and    nvl( ara.confirmed_flag, 'Y' ) = 'Y'
                    and    ara.applied_customer_trx_id = rcta.customer_trx_id
                    and    ara.gl_date                <= :p_as_of_date
                  )
@@ -155,8 +182,6 @@ from
     , gl_code_combinations         gcc
     , xla_distribution_links       xdl
     , xla_ae_lines                 xal
-    , gl_import_references         gir
-    , gl_je_headers                gjh
     , hz_cust_accounts             hca
     , hz_parties                   hp
     , ar_system_parameters         sp
@@ -182,12 +207,17 @@ from
     and xal.application_id               = 222
     and xal.accounting_class_code        = 'RECEIVABLE'
     and gcc.code_combination_id          = xal.code_combination_id
-    and gir.gl_sl_link_id                = xal.gl_sl_link_id
-    and gir.gl_sl_link_table             = xal.gl_sl_link_table
-    and gjh.je_header_id                 = gir.je_header_id
-    and gjh.status                       = 'P'
-    and gjh.ledger_id                    = sp.set_of_books_id
-    --and sp.org_id                        = :P_ORG_ID
+    and exists(
+    select null
+    from
+    gl_import_references gir,
+    gl_je_headers gjh
+    where gir.gl_sl_link_id=xal.gl_sl_link_id and 
+    gir.gl_sl_link_table=xal.gl_sl_link_table and
+    gjh.je_header_id=gir.je_header_id and
+    gjh.status='P' and
+    gjh.ledger_id=sp.set_of_books_id
+    ) 
     and rcta.bill_to_customer_id         = hca.cust_account_id
     and hp.party_id                      = hca.party_id
     and rcta.trx_date                   <= :p_as_of_date
@@ -215,6 +245,15 @@ from
           - nvl( ( select sum(ara.amount_applied)
                    from   ar_receivable_applications ara
                    where  ara.status                  = 'APP'
+                   and    ara.applied_customer_trx_id = rcta.customer_trx_id
+                   and    ara.gl_date                <= :p_as_of_date
+                 )
+               , 0)
+          - nvl( ( select sum(nvl( earned_discount_taken,0)+nvl( unearned_discount_taken, 0 ))
+                   from   ar_receivable_applications ara
+                   where  ara.status = 'APP'
+                   and    ara.application_type= 'CASH'
+                   and    nvl( ara.confirmed_flag, 'Y' ) = 'Y'
                    and    ara.applied_customer_trx_id = rcta.customer_trx_id
                    and    ara.gl_date                <= :p_as_of_date
                  )
@@ -293,7 +332,7 @@ from
                then to_number(null)
                else gl_currency_api.get_rate_sql(acr.currency_code,gl.currency_code,:p_as_of_date,'&lp_exchange_rate_type')
                end
-          end                                           exchange_rate
+          end exchange_rate
         from
           hr_operating_units         hou
         , gl_ledgers                 gl
@@ -306,8 +345,6 @@ from
         , ar_distributions           ads
         , xla_distribution_links     xdl
         , xla_ae_lines               xal
-        , gl_import_references       gir
-        , gl_je_headers              gjh
         , ar_system_parameters       sp
         where
             hou.organization_id              = sp.org_id
@@ -338,12 +375,17 @@ from
         and xal.application_id               = 222
         and xal.accounting_class_code        = 'ACC'
         and gcc.code_combination_id          = xal.code_combination_id
-        and gir.gl_sl_link_id                = xal.gl_sl_link_id
-        and gir.gl_sl_link_table             = xal.gl_sl_link_table
-        and gjh.je_header_id                 = gir.je_header_id
-        and gjh.ledger_id                    = sp.set_of_books_id
-        --and sp.org_id                        = :P_ORG_ID
-        and gjh.status                       = 'P'
+        and exists(
+        select null
+        from
+        gl_import_references gir,
+        gl_je_headers gjh
+        where gir.gl_sl_link_id=xal.gl_sl_link_id and 
+        gir.gl_sl_link_table=xal.gl_sl_link_table and
+        gjh.je_header_id=gir.je_header_id and
+        gjh.status='P' and
+        gjh.ledger_id=sp.set_of_books_id
+        ) 
         and ara.gl_date                     <= :p_as_of_date
         and 2=2
         group by
@@ -391,7 +433,7 @@ from
                    then to_number(null)
                    else gl_currency_api.get_rate_sql(acr.currency_code,gl.currency_code,:p_as_of_date,'&lp_exchange_rate_type')
                    end
-              end                                       closing_amount
+              end closing_amount
         , case '&lp_exchange_rate_type'
           when 'User'
           then :p_exchange_rate
@@ -399,7 +441,7 @@ from
                then to_number(null)
                else gl_currency_api.get_rate_sql(acr.currency_code,gl.currency_code,:p_as_of_date,'&lp_exchange_rate_type')
                end
-          end                                           exchange_rate
+          end exchange_rate
         from
           hr_operating_units         hou
         , gl_ledgers                 gl
@@ -412,8 +454,6 @@ from
         , ar_distributions           ads
         , xla_distribution_links     xdl
         , xla_ae_lines               xal
-        , gl_import_references       gir
-        , gl_je_headers              gjh
         , ar_system_parameters       sp
         where
             hou.organization_id              = sp.org_id
@@ -441,19 +481,24 @@ from
         and ads.source_table                 = 'CRH'
         and xdl.source_distribution_type     = 'AR_DISTRIBUTIONS_ALL'
         and gcc.code_combination_id          = xal.code_combination_id
-        and gir.gl_sl_link_id                = xal.gl_sl_link_id
-        and gir.gl_sl_link_table             = xal.gl_sl_link_table
-        and gjh.je_header_id                 = gir.je_header_id
-        and gjh.ledger_id                    = sp.set_of_books_id
-        --and sp.org_id                        = :P_ORG_ID
-        and gjh.status                       = 'P'
+        and exists(
+        select null
+        from
+        gl_import_references gir,
+        gl_je_headers gjh
+        where gir.gl_sl_link_id=xal.gl_sl_link_id and 
+        gir.gl_sl_link_table=xal.gl_sl_link_table and
+        gjh.je_header_id=gir.je_header_id and
+        gjh.status='P' and
+        gjh.ledger_id=sp.set_of_books_id
+        ) 
         and not exists
             ( select 'X'
               from ar_cash_receipt_history crhin
               where crhin.cash_receipt_id = acr.cash_receipt_id
               and crhin.status = 'REVERSED'
             )
-        and ara.gl_date                    <=:p_as_of_date
+        and ara.gl_date<=:p_as_of_date
         and 2=2
         group by
           gl.name

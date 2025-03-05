@@ -821,4 +821,608 @@ select
  trx.precision c_precision,
  trx.minimum_accountable_unit c_minimum_accountable_unit,
  upper(loc.state) c_state,
- decode(:p_detail_level, 'Detail State'
+ decode(:p_detail_level, 'Detail State', 'X', loc.county) c_county,
+ decode(:p_detail_level, 'Detail State', 'X', loc.city) c_city,
+ loc.postal_code c_ship_to_zip,
+ decode(lower(:p_order_by), 'invoice date', adj.apply_date, null) c_order_by_1,
+ rtrim(rpad(decode(lower(:p_order_by), 'invoice number', trx.trx_number, 'transaction type', '3', /* order adjustments 3rd */
+ 'customer number', cust_acct.account_number, 'customer name', party.party_name, null),30)) c_order_by_2,
+ adj.apply_date c_order_by_3,
+ trx.trx_number c_inv_number,
+ trx.event_class_code c_inv_type,
+ 'ADJ' c_inv_type_code,
+ 30 c_inv_type_code_order,
+ adj.adjustment_number c_adj_number,
+ adj.line_adjusted c_adj_line_amount,
+ adj.tax_adjusted c_adj_tax_amount,
+ adj.freight_adjusted c_adj_freight_amount,
+ adj.type c_adj_type,
+ adj.apply_date c_inv_date,
+ substrb(party.party_name,1,50) c_cust_name,
+ cust_acct.account_number c_cust_number,
+ su.location c_location,
+ nvl(su.tax_code, cust_acct.tax_code) c_cust_tax_code,
+ 'ADJUSTMENT' c_type_flag,
+ trx.trx_id c_inv_cust_trx_id,
+ trx.trx_id c_cust_trx_id,
+ trx.batch_source_id c_batch_source_id,
+ adj.adjustment_id c_adjustment_id,
+ trx.trx_line_id c_trx_line_id,
+ trx.trx_line_number c_line_number,
+ trx.trx_line_description c_description,
+ null c_line_amount,
+ null c_tax_line_number,
+ null c_tax_cust_trx_line_id,
+ null c_tax_rate,
+ null c_vat_code,
+ to_char(null) c_tax_vendor_return_code,
+ null c_vat_code_type,
+ null c_tax,
+ null c_exempt_number,
+ null c_exempt_reason,
+ null c_exempt_percent,
+ null c_tax_amount,
+ null c_tax_except_rate_id,
+ null c_tax_authority_id,
+ null c_tax_authority_zip_code,
+ null c_adjusted_doc_date,
+ null c_sales_tax_id,
+ null c_gltax_inrange_flag,
+ 'N' c_historical_flag,
+ null c_global_attribute_category,
+ null c_vendor_location_qualifier,
+ null c_vendor_state_amt,
+ null c_vendor_state_rate,
+ null c_vendor_county_amt,
+ null c_vendor_county_rate,
+ null c_vendor_city_amt,
+ null c_vendor_city_rate,
+ null c_vendor_taxable_amts,
+ null c_vendor_non_taxable_amts,
+ null c_vendor_exempt_amts
+from
+ zx_lines_det_factors trx,
+ hz_cust_site_uses_all su,
+ hz_cust_acct_sites_all acct_site,
+ hz_party_sites party_site,
+ hz_locations loc,
+ hz_cust_accounts cust_acct,
+ hz_parties party,
+ ar_adjustments_all adj
+where
+ trx.application_id = 222 and
+ trx.tax_reporting_flag = 'Y' and
+ nvl(trx. ship_to_cust_acct_site_use_id, trx. bill_to_cust_acct_site_use_id) = su.site_use_id and
+ su.cust_acct_site_id = acct_site.cust_acct_site_id and
+ acct_site.party_site_id = party_site.party_site_id and
+ loc.location_id = party_site.location_id and
+ loc.country = 'US' and
+ cust_acct.cust_account_id = trx.bill_third_pty_acct_id and
+ party.party_id = cust_acct.party_id and
+ adj.customer_trx_id = trx.trx_id and
+ adj.org_id = trx.internal_organization_id and
+ adj.type = 'TAX' and
+ not exists
+  (select
+    1
+   from
+    zx_lines lines
+   where
+    lines.internal_organization_id = trx.internal_organization_id and
+    trx.application_id = lines.application_id and
+    trx.entity_code = lines.entity_code and
+    trx.event_class_code = lines.event_class_code and
+    trx.trx_id = lines.trx_id and
+    trx.trx_line_id = lines.trx_line_id
+  ) and
+ adj.chargeback_customer_trx_id is null and
+ adj.approved_by is not null and
+ --
+ &lp_adj_trx_date_where
+ &lp_adj_gl_date
+ &lp_state_where_low
+ &lp_state_where_high
+ &lp_inv_number
+ &lp_zx_curr_low
+ &lp_zx_curr_high
+ &lp_where_gl_acct_adj
+ &lp_gl_posted_status_adj
+ &lp_show_trx_wo_tax
+ &lp_where_org_trx_zx
+ 7=7
+)
+/*
+--
+-- ## Main Query starts here ##
+--
+*/
+select
+t3.c_currency currency,
+t3.c_state state,
+t3.c_county county,
+t3.c_city city,
+-- G_INVOICE
+t3.c_inv_number invoice_number,
+xxen_util.meaning(t3.c_inv_type,'ZX_TRL_TAXABLE_TRX_TYPE',0) invoice_type,
+-- G_TRANSACTIONS
+t3.c_adj_number adjustment_number,
+t3.c_inv_date inv_or_adj_date,
+t3.c_cust_name customer_name,
+t3.c_cust_number customer_number,
+t3.operating_unit,
+xxen_util.meaning(t3.c_inv_exempt_reason,'ZX_EXEMPTION_REASON_CODE',0) invoice_exempt_reason,
+case when t3.trx_rownum = 1
+then t3.c_sum_item_line_amt
+else null
+end invoice_lines_amount,
+case when t3.trx_rownum = 1
+then t3.c_sum_tax_line_amt
+else null
+end invoice_tax_amount,
+t3.c_footnote footnote,
+-- G_ITEM_LINES
+t3.c_line_number line_number,
+t3.c_description line_description,
+case when t3.line_rownum = 1
+then t3.c_line_amount_calc
+else null
+end line_amount,
+-- G_TAX_LINES
+t3.c_tax_line_number tax_line_number,
+t3.c_tax_rate tax_rate,
+t3.c_vat_code tax_code,
+t3.c_exempt_number exempt_number,
+xxen_util.meaning(t3.c_exempt_reason,'ZX_EXEMPTION_REASON_CODE',0) exempt_reason,
+t3.c_tax_amount_calc tax_line_amount,
+--
+-- Invoice Line Invoice Only Amounts
+case when t3.line_rownum = 1
+then case when t3.c_type_flag = 'INVOICE' then nvl(t3.c_line_amount_calc,0) else 0 end
+else null
+end invoice_trx_line_amount,
+case when t3.line_rownum = 1
+then case when t3.c_type_flag = 'INVOICE' then nvl(t3.c_inv_line_exempt_amt,0) else 0 end
+else null
+end invoice_trx_exempt_amount,
+case when t3.line_rownum = 1
+then case when t3.c_type_flag = 'INVOICE' then nvl(t3.c_line_amount_calc,0) - nvl(t3.c_inv_line_exempt_amt,0) else 0 end
+else null
+end invoice_trx_taxable_amount,
+case when t3.line_rownum = 1
+then case when t3.c_type_flag = 'INVOICE' then nvl(t3.c_inv_line_tax_amt,0) else 0 end
+else null
+end invoice_trx_tax_amount,
+--
+-- Invoice Line Credit Memo Only Amounts
+case when t3.line_rownum = 1
+then case when t3.c_type_flag = 'CREDIT MEMO' then nvl(t3.c_line_amount_calc,0) else 0 end
+else null
+end credit_trx_line_amount,
+case when t3.line_rownum = 1
+then case when t3.c_type_flag = 'CREDIT MEMO' then nvl(t3.c_inv_line_exempt_amt,0) else 0 end
+else null
+end credit_trx_exempt_amount,
+case when t3.line_rownum = 1
+then case when t3.c_type_flag = 'CREDIT MEMO' then nvl(t3.c_line_amount_calc,0) - nvl(t3.c_inv_line_exempt_amt,0) else 0 end
+else null
+end credit_trx_taxable_amount,
+case when t3.line_rownum = 1
+then case when t3.c_type_flag = 'CREDIT MEMO' then nvl(t3.c_inv_line_tax_amt,0) else 0 end
+else null
+end credit_trx_tax_amount,
+--
+-- Invoice Line Adjustment Only Amounts
+case when t3.line_rownum = 1
+then case when t3.c_type_flag = 'ADJUSTMENT' then nvl(t3.c_line_amount_calc,0) else 0 end
+else null
+end adjustment_line_amount,
+case when t3.line_rownum = 1
+then nvl(t3.c_inv_line_exempt_amt,0) - case when t3.c_type_flag in ('INVOICE','CREDIT MEMO') then nvl(t3.c_inv_line_exempt_amt,0) else 0 end
+else null
+end adjustment_exempt_amount,
+case when t3.line_rownum = 1
+then (case when t3.c_type_flag = 'ADJUSTMENT' then nvl(t3.c_line_amount_calc,0) else 0 end) -
+     (nvl(t3.c_inv_line_exempt_amt,0) - case when t3.c_type_flag in ('INVOICE','CREDIT MEMO') then nvl(t3.c_inv_line_exempt_amt,0) else 0 end)
+else null
+end adjustment_taxable_amount,
+case when t3.line_rownum = 1
+then case when t3.c_type_flag = 'ADJUSTMENT' then nvl(t3.c_inv_line_tax_amt,0) else 0 end
+else null
+end adjustment_tax_amount,
+--
+-- Invoice Line Total Amounts
+case when t3.line_rownum = 1
+then nvl(t3.c_line_amount_calc,0)
+else null
+end net_line_amount,
+case when t3.line_rownum = 1
+then nvl(t3.c_inv_line_exempt_amt,0)
+else null
+end net_exempt_amount,
+case when t3.line_rownum = 1
+then nvl(t3.c_line_amount_calc,0) - nvl(t3.c_inv_line_exempt_amt,0)
+else null
+end net_taxable_amount,
+case when t3.line_rownum = 1
+then nvl(t3.c_inv_line_tax_amt,0)
+else null
+end net_tax_amount,
+--
+-- tax authority amounts
+t3.c_city_tax_amt city_authority_tax_amount,
+t3.c_county_tax_amt county_authority_tax_amount,
+t3.c_state_tax_amt state_authority_tax_amount,
+t3.c_other_tax_amt other_authority_tax_amount,
+--
+&lp_debug_columns
+--
+'.' last_col
+from
+(
+select
+t2.*,
+-- Invoice Footnote
+max(t2.c_trx_comment_flag) over (partition by t2.c_inv_cust_trx_id,t2.c_cust_trx_id,t2.c_adjustment_id) c_footnote,
+-- Line Exempt Amount
+case when t2.line_rownum = 1
+then
+  case
+  when nvl(t2.c_cnt_tax_lines_for_inv_line,0) <= 1
+  then
+    sum(t2.c_exempt_amount) over (partition by t2.c_inv_cust_trx_id,t2.c_cust_trx_id,t2.c_adjustment_id,t2.c_trx_line_id)  -- c_inv_line_tot_exempt_amt
+  when nvl(t2.c_cnt_tax_lines_for_inv_line,0) > 1
+  and  nvl(sum(t2.c_exempt_flag) over (partition by t2.c_inv_cust_trx_id,t2.c_cust_trx_id,t2.c_adjustment_id,t2.c_trx_line_id),0) > 1 -- c_cnt_ext_tax_lines_for_inv_l
+  then
+    -- :c_inv_line_tot_exempt_amt / :c_cnt_ext_tax_lines_for_inv_l
+    xxen_zx.aol_round
+    (sum(t2.c_exempt_amount) over (partition by t2.c_inv_cust_trx_id,t2.c_cust_trx_id,t2.c_adjustment_id,t2.c_trx_line_id) /
+     sum(t2.c_exempt_flag) over (partition by t2.c_inv_cust_trx_id,t2.c_cust_trx_id,t2.c_adjustment_id,t2.c_trx_line_id),
+     t2.c_precision,t2.c_minimum_accountable_unit
+    )
+  else
+    sum(t2.c_exempt_amount) over (partition by t2.c_inv_cust_trx_id,t2.c_cust_trx_id,t2.c_adjustment_id,t2.c_trx_line_id) -- :c_inv_line_tot_exempt_amt
+  end
+else
+  null
+end c_inv_line_exempt_amt,
+case when t2.line_rownum = 1
+then
+  sum(t2.c_tax_amount_calc) over (partition by t2.c_inv_cust_trx_id,t2.c_cust_trx_id,t2.c_adjustment_id,t2.c_trx_line_id)
+else
+  null
+end c_inv_line_tax_amt,
+nvl(sum(t2.c_exempt_flag) over (partition by t2.c_inv_cust_trx_id,t2.c_cust_trx_id,t2.c_adjustment_id,t2.c_trx_line_id),0) c_cnt_ext_tax_lines_for_inv_l,
+sum(t2.c_exempt_amount) over (partition by t2.c_inv_cust_trx_id,t2.c_cust_trx_id,t2.c_adjustment_id,t2.c_trx_line_id) c_inv_line_tot_exempt_amt
+from
+(
+select
+t1.*,
+--
+-- G_TRANSACTIONS_4 Columns
+--
+case when t1.trx_rownum = 1
+then
+  xxen_zx.c_sum_item_line_amount
+   (p_cust_trx_id              => t1.c_cust_trx_id
+   ,p_adj_id                   => t1.c_adjustment_id
+   ,p_type_flag                => t1.c_type_flag
+   ,p_adj_line_amount          => t1.c_adj_line_amount
+   ,p_adj_tax_amount           => t1.c_adj_tax_amount
+   ,p_precision                => t1.c_precision
+   ,p_minimum_accountable_unit => t1.c_minimum_accountable_unit
+  )
+else
+ null
+end c_sum_item_line_amt,
+--
+case when t1.trx_rownum = 1
+then
+  xxen_zx.c_sum_tax_line_amount
+   (p_cust_trx_id              => t1.c_cust_trx_id
+   ,p_adj_id                   => t1.c_adjustment_id
+   ,p_type_flag                => t1.c_type_flag
+   ,p_adj_line_amount          => t1.c_adj_line_amount
+   ,p_adj_tax_amount           => t1.c_adj_tax_amount
+   ,p_precision                => t1.c_precision
+   ,p_minimum_accountable_unit => t1.c_minimum_accountable_unit
+  )
+else null
+end c_sum_tax_line_amt,
+--
+case when t1.trx_rownum = 1
+then
+  xxen_zx.c_trx_comment_flag
+  (p_type_flag           => t1.c_type_flag
+  ,p_adj_type            => t1.c_adj_type
+  ,p_warn_gltax_range    => min(t1.c_gltax_inrange_flag) over (partition by t1.c_inv_cust_trx_id,t1.c_cust_trx_id,t1.c_adjustment_id)
+  ,p_adj_line_amount     => t1.c_adj_line_amount
+  ,p_adj_freight_amount  => t1.c_adj_freight_amount
+  ,p_sum_tax_line_amount =>
+     xxen_zx.c_sum_tax_line_amount
+     (p_cust_trx_id              => t1.c_cust_trx_id
+     ,p_adj_id                   => t1.c_adjustment_id
+     ,p_type_flag                => t1.c_type_flag
+     ,p_adj_line_amount          => t1.c_adj_line_amount
+     ,p_adj_tax_amount           => t1.c_adj_tax_amount
+     ,p_precision                => t1.c_precision
+     ,p_minimum_accountable_unit => t1.c_minimum_accountable_unit
+     )
+  )
+else
+  null
+end c_trx_comment_flag,
+max(t1.c_exempt_reason) over (partition by t1.c_inv_cust_trx_id,t1.c_cust_trx_id,t1.c_adjustment_id) c_inv_exempt_reason,
+--
+-- G_ITEM_LINES columns
+--
+case when t1.line_rownum = 1
+then
+  xxen_zx.c_line_amount_calc
+  (p_type_flag                => t1.c_type_flag
+  ,p_line_amount              => t1.c_line_amount
+  ,p_adj_line_amount          => t1.c_adj_line_amount
+  ,p_adj_freight_amount       => t1.c_adj_freight_amount
+  ,p_inv_line_lines_count     => t1.c_inv_line_lines_count
+  ,p_inv_line_amount_abs      => t1.c_inv_line_amount_abs
+  ,p_precision                => t1.c_precision
+  ,p_minimum_accountable_unit => t1.c_minimum_accountable_unit
+  )
+else
+  null
+end c_line_amount_calc,
+--
+-- G_TAX_LINES columns
+--
+xxen_zx.c_tax_amount_calc
+(p_type_flag                => t1.c_type_flag
+,p_tax_amount               => t1.c_tax_amount
+,p_adj_tax_amount           => t1.c_adj_tax_amount
+,p_inv_line_lines_count     => t1.c_inv_line_lines_count
+,p_inv_tax_lines_count      => t1.c_inv_tax_lines_count
+,p_inv_tax_amount_abs       => t1.c_inv_tax_amount_abs
+,p_precision                => t1.c_precision
+,p_minimum_accountable_unit => t1.c_minimum_accountable_unit
+) c_tax_amount_calc,
+--
+xxen_zx.c_exempt_amount
+(p_exempt_reason               => t1.c_exempt_reason
+,p_exempt_number               => t1.c_exempt_number
+,p_exempt_percent              => t1.c_exempt_percent
+,p_vat_code                    => t1.c_vat_code
+,p_tax_rate                    => t1.c_tax_rate
+,p_historical_flag             => t1.c_historical_flag
+,p_line_amount_calc            =>
+   xxen_zx.c_line_amount_calc
+   (p_type_flag                => t1.c_type_flag
+   ,p_line_amount              => t1.c_line_amount
+   ,p_adj_line_amount          => t1.c_adj_line_amount
+   ,p_adj_freight_amount       => t1.c_adj_freight_amount
+   ,p_inv_line_lines_count     => t1.c_inv_line_lines_count
+   ,p_inv_line_amount_abs      => t1.c_inv_line_amount_abs
+   ,p_precision                => t1.c_precision
+   ,p_minimum_accountable_unit => t1.c_minimum_accountable_unit
+   )
+,p_vendor_exempt_amts          => t1.c_vendor_exempt_amts
+,p_vendor_non_taxable_amts     => t1.c_vendor_non_taxable_amts
+,p_tax_auth_name               => t1.cp_tax_auth_name
+,p_cnt_tax_lines_for_inv_line  => t1.c_cnt_tax_lines_for_inv_line
+,p_precision                   => t1.c_precision
+,p_minimum_accountable_unit    => t1.c_minimum_accountable_unit
+) c_exempt_amount,
+--
+decode(
+ xxen_zx.c_exempt_amount
+ (p_exempt_reason               => t1.c_exempt_reason
+ ,p_exempt_number               => t1.c_exempt_number
+ ,p_exempt_percent              => t1.c_exempt_percent
+ ,p_vat_code                    => t1.c_vat_code
+ ,p_tax_rate                    => t1.c_tax_rate
+ ,p_historical_flag             => t1.c_historical_flag
+ ,p_line_amount_calc            =>
+    xxen_zx.c_line_amount_calc
+    (p_type_flag                => t1.c_type_flag
+    ,p_line_amount              => t1.c_line_amount
+    ,p_adj_line_amount          => t1.c_adj_line_amount
+    ,p_adj_freight_amount       => t1.c_adj_freight_amount
+    ,p_inv_line_lines_count     => t1.c_inv_line_lines_count
+    ,p_inv_line_amount_abs      => t1.c_inv_line_amount_abs
+    ,p_precision                => t1.c_precision
+    ,p_minimum_accountable_unit => t1.c_minimum_accountable_unit
+    )
+ ,p_vendor_exempt_amts          => t1.c_vendor_exempt_amts
+ ,p_vendor_non_taxable_amts     => t1.c_vendor_non_taxable_amts
+ ,p_tax_auth_name               => t1.cp_tax_auth_name
+ ,p_cnt_tax_lines_for_inv_line  => t1.c_cnt_tax_lines_for_inv_line
+ ,p_precision                   => t1.c_precision
+ ,p_minimum_accountable_unit    => t1.c_minimum_accountable_unit
+ ),0,0,1
+) c_exempt_flag,
+--
+case when t1.c_tax_cust_trx_line_id is not null
+then
+xxen_zx.c_city_count_state_oth_tax_amt
+(p_cust_trx_id                => t1.c_cust_trx_id
+,p_adj_id                     => t1.c_adjustment_id
+,p_tax_cust_trx_line_id       => t1.c_tax_cust_trx_line_id
+,p_city_county_state_other    => 'CITY'
+,p_tax_amount                 => t1.c_tax_amount
+,p_adj_tax_amount             => t1.c_adj_tax_amount
+,p_type_flag                  => t1.c_type_flag
+,p_vat_code                   => t1.c_vat_code
+,p_tax_except_rate_id         => t1.c_tax_except_rate_id
+,p_sales_tax_id               => t1.c_sales_tax_id
+,p_tax_authority_id           => t1.c_tax_authority_id
+,p_tax_authority_zip_code     => t1.c_tax_authority_zip_code
+,p_tax                        => t1.c_tax
+,p_inv_date                   => t1.c_inv_date
+,p_adjusted_doc_date          => t1.c_adjusted_doc_date
+,p_global_attribute_category  => t1.c_global_attribute_category
+,p_vendor_location_qualifier  => t1.c_vendor_location_qualifier
+,p_vendor_state_amt           => t1.c_vendor_state_amt
+,p_vendor_county_amt          => t1.c_vendor_county_amt
+,p_vendor_city_amt            => t1.c_vendor_city_amt
+,p_vendor_state_rate          => t1.c_vendor_state_rate
+,p_vendor_county_rate         => t1.c_vendor_county_rate
+,p_vendor_city_rate           => t1.c_vendor_city_rate
+,p_historical_flag            => t1.c_historical_flag
+,p_precision                  => t1.c_precision
+,p_minimum_accountable_unit   => t1.c_minimum_accountable_unit
+)
+else
+0
+end c_city_tax_amt,
+--
+case when t1.c_tax_cust_trx_line_id is not null
+then
+xxen_zx.c_city_count_state_oth_tax_amt
+(p_cust_trx_id                => t1.c_cust_trx_id
+,p_adj_id                     => t1.c_adjustment_id
+,p_tax_cust_trx_line_id       => t1.c_tax_cust_trx_line_id
+,p_city_county_state_other    => 'COUNTY'
+,p_tax_amount                 => t1.c_tax_amount
+,p_adj_tax_amount             => t1.c_adj_tax_amount
+,p_type_flag                  => t1.c_type_flag
+,p_vat_code                   => t1.c_vat_code
+,p_tax_except_rate_id         => t1.c_tax_except_rate_id
+,p_sales_tax_id               => t1.c_sales_tax_id
+,p_tax_authority_id           => t1.c_tax_authority_id
+,p_tax_authority_zip_code     => t1.c_tax_authority_zip_code
+,p_tax                        => t1.c_tax
+,p_inv_date                   => t1.c_inv_date
+,p_adjusted_doc_date          => t1.c_adjusted_doc_date
+,p_global_attribute_category  => t1.c_global_attribute_category
+,p_vendor_location_qualifier  => t1.c_vendor_location_qualifier
+,p_vendor_state_amt           => t1.c_vendor_state_amt
+,p_vendor_county_amt          => t1.c_vendor_county_amt
+,p_vendor_city_amt            => t1.c_vendor_city_amt
+,p_vendor_state_rate          => t1.c_vendor_state_rate
+,p_vendor_county_rate         => t1.c_vendor_county_rate
+,p_vendor_city_rate           => t1.c_vendor_city_rate
+,p_historical_flag            => t1.c_historical_flag
+,p_precision                  => t1.c_precision
+,p_minimum_accountable_unit   => t1.c_minimum_accountable_unit
+)
+else
+0
+end c_county_tax_amt,
+--
+case when t1.c_tax_cust_trx_line_id is not null
+then
+xxen_zx.c_city_count_state_oth_tax_amt
+(p_cust_trx_id                => t1.c_cust_trx_id
+,p_adj_id                     => t1.c_adjustment_id
+,p_tax_cust_trx_line_id       => t1.c_tax_cust_trx_line_id
+,p_city_county_state_other    => 'STATE'
+,p_tax_amount                 => t1.c_tax_amount
+,p_adj_tax_amount             => t1.c_adj_tax_amount
+,p_type_flag                  => t1.c_type_flag
+,p_vat_code                   => t1.c_vat_code
+,p_tax_except_rate_id         => t1.c_tax_except_rate_id
+,p_sales_tax_id               => t1.c_sales_tax_id
+,p_tax_authority_id           => t1.c_tax_authority_id
+,p_tax_authority_zip_code     => t1.c_tax_authority_zip_code
+,p_tax                        => t1.c_tax
+,p_inv_date                   => t1.c_inv_date
+,p_adjusted_doc_date          => t1.c_adjusted_doc_date
+,p_global_attribute_category  => t1.c_global_attribute_category
+,p_vendor_location_qualifier  => t1.c_vendor_location_qualifier
+,p_vendor_state_amt           => t1.c_vendor_state_amt
+,p_vendor_county_amt          => t1.c_vendor_county_amt
+,p_vendor_city_amt            => t1.c_vendor_city_amt
+,p_vendor_state_rate          => t1.c_vendor_state_rate
+,p_vendor_county_rate         => t1.c_vendor_county_rate
+,p_vendor_city_rate           => t1.c_vendor_city_rate
+,p_historical_flag            => t1.c_historical_flag
+,p_precision                  => t1.c_precision
+,p_minimum_accountable_unit   => t1.c_minimum_accountable_unit
+)
+else
+0
+end c_state_tax_amt,
+--
+case when t1.c_tax_cust_trx_line_id is not null
+then
+xxen_zx.c_city_count_state_oth_tax_amt
+(p_cust_trx_id                => t1.c_cust_trx_id
+,p_adj_id                     => t1.c_adjustment_id
+,p_tax_cust_trx_line_id       => t1.c_tax_cust_trx_line_id
+,p_city_county_state_other    => 'OTHER'
+,p_tax_amount                 => t1.c_tax_amount
+,p_adj_tax_amount             => t1.c_adj_tax_amount
+,p_type_flag                  => t1.c_type_flag
+,p_vat_code                   => t1.c_vat_code
+,p_tax_except_rate_id         => t1.c_tax_except_rate_id
+,p_sales_tax_id               => t1.c_sales_tax_id
+,p_tax_authority_id           => t1.c_tax_authority_id
+,p_tax_authority_zip_code     => t1.c_tax_authority_zip_code
+,p_tax                        => t1.c_tax
+,p_inv_date                   => t1.c_inv_date
+,p_adjusted_doc_date          => t1.c_adjusted_doc_date
+,p_global_attribute_category  => t1.c_global_attribute_category
+,p_vendor_location_qualifier  => t1.c_vendor_location_qualifier
+,p_vendor_state_amt           => t1.c_vendor_state_amt
+,p_vendor_county_amt          => t1.c_vendor_county_amt
+,p_vendor_city_amt            => t1.c_vendor_city_amt
+,p_vendor_state_rate          => t1.c_vendor_state_rate
+,p_vendor_county_rate         => t1.c_vendor_county_rate
+,p_vendor_city_rate           => t1.c_vendor_city_rate
+,p_historical_flag            => t1.c_historical_flag
+,p_precision                  => t1.c_precision
+,p_minimum_accountable_unit   => t1.c_minimum_accountable_unit
+)
+else
+0
+end c_other_tax_amt
+from
+(select
+ qtl.*,
+ -- transaction level
+ xxen_zx.c_inv_line_amount_abs(qtl.c_cust_trx_id,qtl.c_adjustment_id,qtl.c_type_flag) c_inv_line_amount_abs,
+ xxen_zx.c_inv_freight_amount_abs(qtl.c_cust_trx_id,qtl.c_adjustment_id,qtl.c_type_flag) c_inv_freight_amount_abs,
+ xxen_zx.c_inv_tax_amount_abs(qtl.c_cust_trx_id,qtl.c_adjustment_id,qtl.c_type_flag) c_inv_tax_amount_abs,
+ xxen_zx.c_inv_line_lines_count(qtl.c_cust_trx_id,qtl.c_adjustment_id,qtl.c_type_flag) c_inv_line_lines_count,
+ xxen_zx.c_inv_tax_lines_count(qtl.c_cust_trx_id,qtl.c_adjustment_id,qtl.c_type_flag) c_inv_tax_lines_count,
+ xxen_zx.c_inv_freight_lines_count(qtl.c_cust_trx_id,qtl.c_adjustment_id,qtl.c_type_flag) c_inv_freight_lines_count,
+ -- line level
+ sum(nvl2(qtl.c_tax_cust_trx_line_id,1,0)) over (partition by qtl.c_inv_cust_trx_id,qtl.c_cust_trx_id,qtl.c_adjustment_id,qtl.c_trx_line_id) c_cnt_tax_lines_for_inv_line,
+ --tax level
+ xxen_zx.cp_tax_auth_name(qtl.c_historical_flag,qtl.c_sales_tax_id,qtl.c_tax_authority_id,qtl.c_tax) cp_tax_auth_name,
+ -- row seq indicators
+ row_number() over (partition by qtl.c_currency,qtl.c_state order by qtl.c_county,qtl.c_city,qtl.c_order_by_1,qtl.c_order_by_2,qtl.c_order_by_3,qtl.c_inv_number,qtl.c_cust_trx_id,qtl.c_adjustment_id,qtl.c_line_number,qtl.c_tax_line_number) state_rownum,
+ row_number() over (partition by qtl.c_currency,qtl.c_state,qtl.c_county order by qtl.c_city,qtl.c_order_by_1,qtl.c_order_by_2,qtl.c_order_by_3,qtl.c_inv_number,qtl.c_cust_trx_id,qtl.c_adjustment_id,qtl.c_line_number,qtl.c_tax_line_number) county_rownum,
+ row_number() over (partition by qtl.c_currency,qtl.c_state,qtl.c_county,qtl.c_city order by qtl.c_order_by_1,qtl.c_order_by_2,qtl.c_order_by_3,qtl.c_inv_number,qtl.c_cust_trx_id,qtl.c_adjustment_id,qtl.c_line_number,qtl.c_tax_line_number) city_rownum,
+ row_number() over (partition by qtl.c_inv_cust_trx_id order by qtl.c_cust_trx_id,qtl.c_adjustment_id,qtl.c_line_number,qtl.c_tax_line_number) inv_rownum,
+ row_number() over (partition by qtl.c_inv_cust_trx_id,qtl.c_cust_trx_id,qtl.c_adjustment_id order by qtl.c_line_number,qtl.c_tax_line_number) trx_rownum,
+ row_number() over (partition by qtl.c_inv_cust_trx_id,qtl.c_cust_trx_id,qtl.c_adjustment_id,qtl.c_trx_line_id order by qtl.c_tax_line_number) line_rownum,
+ haouv.name operating_unit
+ from
+ q_trx_lines qtl,
+ hr_all_organization_units_vl haouv
+ where
+ qtl.c_org_id = haouv.organization_id (+)
+) t1
+) t2
+) t3
+where
+nvl(:p_trx_date_low,sysdate) = nvl(:p_trx_date_low,sysdate) and
+nvl(:p_trx_date_high,sysdate) = nvl(:p_trx_date_high,sysdate) and
+nvl(:p_gl_date_low,sysdate) = nvl(:p_gl_date_low,sysdate) and
+nvl(:p_gl_date_high,sysdate) = nvl(:p_gl_date_high,sysdate) and
+nvl(:p_show_cms_adjs_outside_date,'Y') = nvl(:p_show_cms_adjs_outside_date,'Y')
+order by
+t3.c_currency,
+t3.c_state,
+t3.c_county,
+t3.c_city,
+t3.c_order_by_1,
+t3.c_order_by_2,
+t3.c_order_by_3,
+t3.c_inv_number,
+t3.c_inv_cust_trx_id,
+t3.c_inv_type_code_order,
+t3.c_inv_date,
+t3.c_cust_trx_id,
+t3.c_adjustment_id,
+t3.c_line_number,
+t3.c_trx_line_id,
+t3.c_tax_line_number

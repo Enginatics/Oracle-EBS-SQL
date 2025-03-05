@@ -13,7 +13,7 @@ Category, Datatype, File Name contains, Short Text contains, Text contains, Crea
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related reports
-[CAC Purchase Price Variance](/CAC%20Purchase%20Price%20Variance/)
+[CAC Purchase Price Variance](/CAC%20Purchase%20Price%20Variance/), [CAC Manufacturing Variance](/CAC%20Manufacturing%20Variance/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

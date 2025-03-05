@@ -872,4 +872,427 @@ from mtl_system_items_vl msiv_fg,
     and wor.resource_id=wt.resource_id(+)
     and wor.operation_seq_num=wt.operation_seq_num(+)
     and wor.resource_seq_num=wt.resource_seq_num(+)
-    and
+    and case when wt.wip_entity_id=wor.wip_entity_id and wt.transaction_date<wdj.schedule_close_date+1 then 'Y' 
+    when not exists(select null from wip_transactions wt1 where wt1.wip_entity_id=wdj.wip_entity_id) then 'Y'
+    end='Y'
+    and bso.standard_operation_id(+)=wo.standard_operation_id
+    and nvl(bso.operation_type, 1)=1
+    and bso.line_id is null
+    and 8=8                       -- p_resource_code
+    union all
+    -- =======================================================
+    -- Section II.B. Non-OSP
+    -- Now get the non-OSP resource information
+    -- =======================================================
+   -- Revision for version 1.22
+    select 'II.B' section,
+    wdj.report_type,
+    wdj.period_name,
+    wdj.organization_code,
+    wdj.organization_id,
+    -- Revision for version 1.22
+    -- cct.cost_type primary_cost_type,
+    wdj.primary_cost_method,
+    -- End revision for version 1.22
+    --wdj.resource_account account,
+    br.cost_element_id,
+    bso.operation_code,
+    decode(br.cost_element_id,
+           1, wdj.material_account,
+           2, wdj.material_overhead_account,
+           3, wdj.resource_account,
+           4, wdj.outside_processing_account,
+           5, wdj.overhead_account,
+            wdj.resource_account
+           )account,
+    wdj.class_code,
+    wdj.class_type,
+    wdj.wip_entity_id,
+    wdj.project_id,
+    wdj.status_type,
+    wdj.primary_item_id,
+    -- Revision for version 1.22
+    wdj.lot_number,
+    -- Revision for version 1.21
+    wdj.creation_date,
+    wdj.scheduled_start_date,
+    -- End revision for version 1.21
+    wdj.date_released,
+    wdj.date_completed,
+    wdj.date_closed,
+    wdj.last_update_date,
+    wdj.start_quantity,
+    wdj.quantity_completed,
+    wdj.quantity_scrapped,
+    nvl(wdj.quantity_completed,0) + nvl(wdj.quantity_scrapped,0) fg_total_qty,
+    0 purchase_item_id,
+    0 po_header_id,
+    0 line_num,
+    0 release_num,
+    wo.department_id,
+    wo.operation_seq_num,
+    wor.resource_seq_num,
+    br.resource_code,
+    -- Revision for version 1.22
+    br.description,
+    wor.basis_type,
+    -- Revision for version 1.25
+    wor.autocharge_type,
+    wor.standard_rate_flag,
+    wt.transaction_type,
+    null po_currency_code,
+    -- End revision for version 1.25
+    br.unit_of_measure res_unit_of_measure,
+    0 po_unit_price,
+    -- Revision for version 1.22
+    crc.cost_type,
+    nvl(crc.resource_rate,0) resource_rate,
+    -- End revision for version 1.22
+    nvl(wor.usage_rate_or_amount,0) usage_rate_or_amount,
+    -- Revision for version 1.22
+    -- For 'Complete', 'Complete - No Charges', 'Cancelled', 'Closed', 'Pending Close' and 'Failed Close'
+    -- use the completions plus scrap quantities unless for lot-based jobs
+    nvl(round(case when wdj.status_type in (4,5,7,12,14,15) then
+     decode(wor.basis_type,
+      2, nvl(wor.usage_rate_or_amount,0),                                                     -- Lot
+         nvl(wor.usage_rate_or_amount,0)                                                      -- Any other basis
+         -- Use the logic in wip_operation_resources_v as the same is used in Oracle forms to derive total_required_quantity
+         * decode(wor.repetitive_schedule_id,
+           null,
+           wdj.start_quantity - decode(:p_include_scrap, 'N', 0, null, 0, nvl(wo.cumulative_scrap_quantity, 0)),
+           wrs.daily_production_rate * wrs.processing_work_days
+           )
+            ) else
+     -- else use the start quantity times the usage rate or amount
+     decode(nvl(:p_use_completion_qtys,'N'),
+      'Y', decode(wor.basis_type,
+        2, nvl(wor.usage_rate_or_amount,0),                                                     -- Lot
+           nvl(wor.usage_rate_or_amount,0)                                                      -- Any other basis
+         * decode(wdj.class_type,
+           5, nvl(wdj.quantity_completed, 0),
+              nvl(wdj.quantity_completed, 0) + decode(:p_include_scrap, 'N', 0, null, 0, nvl(wdj.quantity_scrapped, 0))
+          )
+          ),
+      -- Revision for version 1.24
+      'N', decode(wor.basis_type,
+        2, nvl(wor.usage_rate_or_amount,0),                                                     -- Lot
+           nvl(wor.usage_rate_or_amount,0)                                                      -- Any other basis
+           -- Use the logic in wip_operation_resources_v as the same is used in Oracle forms to derive total_required_quantity
+           * decode(wor.repetitive_schedule_id,
+             null,
+             wdj.start_quantity - decode(:p_include_scrap, 'N', 0, null, 0, nvl(wo.cumulative_scrap_quantity, 0)),
+             wrs.daily_production_rate * wrs.processing_work_days
+             )
+          )
+           ) end
+       ,6),0) total_req_quantity,
+    -- End revision for version 1.22
+    nvl(applied_resource_units,0) applied_resource_units,
+    -- Revision for version 1.17 and 1.22
+    -- If the job status is "Complete" then use the completions plus
+    -- scrap quantities else use the planned required quantities; and
+    -- use the completions plus scrap quantities unless for lot-based jobs
+    -- Get the total required quantity
+    nvl(round(case when wdj.status_type in (4,5,7,12,14,15) then
+     decode(wor.basis_type,
+      2, nvl(wor.usage_rate_or_amount,0),                                                     -- Lot
+         nvl(wor.usage_rate_or_amount,0)                                                      -- Any other basis
+         -- Use the logic in wip_operation_resources_v as the same is used in Oracle forms to derive total_required_quantity
+         * decode(wor.repetitive_schedule_id,
+           null,
+           wdj.start_quantity - decode(:p_include_scrap, 'N', 0, null, 0, nvl(wo.cumulative_scrap_quantity, 0)),
+           wrs.daily_production_rate * wrs.processing_work_days
+           )
+            ) else
+     -- else use the start quantity times the usage rate or amount
+     decode(nvl(:p_use_completion_qtys,'N'),
+      'Y', decode(wor.basis_type,
+        2, nvl(wor.usage_rate_or_amount,0),                                                     -- Lot
+           nvl(wor.usage_rate_or_amount,0)                                                      -- Any other basis
+         * decode(wdj.class_type,
+           5, nvl(wdj.quantity_completed, 0),
+              nvl(wdj.quantity_completed, 0) + decode(:p_include_scrap, 'N', 0, null, 0, nvl(wdj.quantity_scrapped, 0))
+          )
+          ),
+      -- Revision for version 1.24
+      'N', decode(wor.basis_type,
+        2, nvl(wor.usage_rate_or_amount,0),                                                     -- Lot
+           nvl(wor.usage_rate_or_amount,0)                                                      -- Any other basis
+           -- Use the logic in wip_operation_resources_v as the same is used in Oracle forms to derive total_required_quantity
+           * decode(wor.repetitive_schedule_id,
+             null,
+             wdj.start_quantity - decode(:p_include_scrap, 'N', 0, null, 0, nvl(wo.cumulative_scrap_quantity, 0)),
+             wrs.daily_production_rate * wrs.processing_work_days
+             )
+          )
+           ) end
+       ,6),0) -- total_req_quantity
+     -- And multiply by the AvgRate or Frozen standard costs
+     *  nvl(crc.resource_rate,0) std_resource_value,
+    -- End revision for version 1.17 and 1.22
+    nvl(wor.applied_resource_value,0) applied_resource_value
+    from -- Revision for version 1.22
+    -- wip_accounting_classes wac,
+    -- org_acct_periods oap
+    -- mtl_parameters mp,
+    -- cst_cost_types cct,
+    wdj,
+    wip_operations wo,
+    wip_operation_resources wor,
+    wip_repetitive_schedules wrs,
+    wdj_wip_trxn wt,
+    bom_standard_operations bso,
+    bom_resources br,
+    -- Revision for version 1.22
+    -- Get the Resource Cost Type, Cost Basis Type and Resource Rates
+    (select crc.resource_id,
+     crc.organization_id,
+     crc.last_update_date,
+     crc.cost_type_id,
+     cct.cost_type,
+     crc.resource_rate resource_rate
+     from cst_resource_costs crc,
+     cst_cost_types cct,
+     mtl_parameters mp
+     where crc.cost_type_id             = decode(cct.cost_type_id, 
+          2, mp.avg_rates_cost_type_id, -- Average Costing
+          5, mp.avg_rates_cost_type_id, -- FIFO Costing
+          6, mp.avg_rates_cost_type_id, -- LIFO Costing
+          cct.cost_type_id)
+     and crc.organization_id          = mp.organization_id
+     and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
+  and 2=2                          -- p_org_code
+     and cct.cost_type                = decode(:p_cost_type,
+          null, (select cct.cost_type 
+                 from   dual 
+                 where  cct.cost_type_id = mp.primary_cost_method
+                ), 
+          :p_cost_type
+               )  
+     group by
+     crc.resource_id,
+     crc.organization_id,
+     crc.last_update_date,
+     crc.cost_type_id,
+     cct.cost_type,
+     crc.resource_rate
+     union all
+     -- If missing from the above query, get the Frozen or AvgRates Resource Costs
+     select crc.resource_id,
+     crc.organization_id,
+     crc.last_update_date,
+     crc.cost_type_id,
+     cct.cost_type,
+     crc.resource_rate resource_rate
+     from cst_resource_costs crc,
+     cst_cost_types cct,
+     mtl_parameters mp
+     where crc.organization_id          = mp.organization_id
+     and crc.cost_type_id             = decode(mp.primary_cost_method,
+          1, 1, -- Standard Costing, Frozen Cost Type
+          2, mp.avg_rates_cost_type_id, -- Average Costing
+          3, -99,                       -- Periodic Average
+          4, -99,                       -- Periodic Incremental LIFO
+          5, mp.avg_rates_cost_type_id, -- FIFO Costing
+          6, mp.avg_rates_cost_type_id  -- LIFO Costing
+              )
+     -- Don't get the Frozen or AvgRates resource costs twice
+     and cct.cost_type_id            <> decode(mp.primary_cost_method,
+          1, 1, -- Standard Costing, Frozen Cost Type
+          2, mp.avg_rates_cost_type_id, -- Average Costing
+          3, -99,                       -- Periodic Average
+          4, -99,                       -- Periodic Incremental LIFO
+          5, mp.avg_rates_cost_type_id, -- FIFO Costing
+          6, mp.avg_rates_cost_type_id  -- LIFO Costing
+              )
+     and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
+  and 2=2                          -- p_org_code
+     and cct.cost_type                = decode(:p_cost_type,
+          null, (select cct.cost_type 
+                 from   dual 
+                 where  cct.cost_type_id = mp.primary_cost_method
+                ), 
+          :p_cost_type
+               )  
+     -- ====================================
+     -- Find all the resource costs not in the
+     -- Pending or unimplemented cost type
+     -- ====================================
+     and not exists
+      (select 'x'
+       from cst_resource_costs crc2
+       where crc2.organization_id   = crc.organization_id
+       and crc2.resource_id       = crc.resource_id
+       and crc2.cost_type_id      = case
+             when mp.primary_cost_method = 1 then cct.cost_type_id
+             when mp.primary_cost_method = 2 and cct.cost_type_id <> 2 then cct.cost_type_id
+             when mp.primary_cost_method = 2 and cct.cost_type_id = 2 then mp.avg_rates_cost_type_id
+             when mp.primary_cost_method = 3 then -99
+             when mp.primary_cost_method = 4 then -99
+             when mp.primary_cost_method = 5 and cct.cost_type_id <> 5 then cct.cost_type_id
+             when mp.primary_cost_method = 5 and cct.cost_type_id = 5 then mp.avg_rates_cost_type_id
+             when mp.primary_cost_method = 6 and cct.cost_type_id <> 6 then cct.cost_type_id
+             when mp.primary_cost_method = 6 and cct.cost_type_id = 6 then mp.avg_rates_cost_type_id
+             else cct.cost_type_id
+           end
+      )
+     group by
+     crc.resource_id,
+     crc.organization_id,
+     crc.last_update_date,
+     crc.cost_type_id,
+     cct.cost_type,
+     crc.resource_rate
+    ) crc
+    -- End revision for version 1.22
+    -- ===========================================
+    -- WIP_Job Entity, Class and Period joins
+    -- ===========================================
+    where wo.wip_entity_id          = wdj.wip_entity_id
+    and wo.organization_id        = wdj.organization_id
+    and wo.wip_entity_id          = wor.wip_entity_id
+    and wo.organization_id        = wor.organization_id
+    and wo.operation_seq_num      = wor.operation_seq_num
+    and br.resource_id            = wor.resource_id
+    -- Only select non-OSP resources
+    and br.purchase_item_id is null
+    -- Revision for version 1.22
+    -- and cct.cost_type_id          = mp.primary_cost_method
+    -- ===========================================
+    -- Cost Table Joins for version 1.22
+    -- ===========================================
+    and wor.resource_id           = crc.resource_id (+) 
+    and wor.organization_id       = crc.organization_id (+) 
+    -- ===========================================
+    -- Use the joins in wip_operation_resources_v as the same is used in Oracle forms
+    -- ===========================================
+    and wrs.organization_id(+)= wor.organization_id
+    and wrs.wip_entity_id(+)= wor.wip_entity_id
+    and wrs.repetitive_schedule_id(+)= wor.repetitive_schedule_id
+    and wor.wip_entity_id=wt.wip_entity_id(+)
+    and wor.resource_id=wt.resource_id(+)
+    and wor.operation_seq_num=wt.operation_seq_num(+)
+    and wor.resource_seq_num=wt.resource_seq_num(+)
+    and case when wt.wip_entity_id=wor.wip_entity_id and wt.transaction_date<wdj.schedule_close_date+1 then 'Y' 
+    when not exists(select null from wip_transactions wt1 where wt1.wip_entity_id=wdj.wip_entity_id) then 'Y'
+    end='Y'
+    and bso.standard_operation_id(+)=wo.standard_operation_id
+    and nvl(bso.operation_type, 1)=1
+    and bso.line_id is null
+    and 8=8                       -- p_resource_code
+   ) res
+ group by
+  res.report_type,
+  res.period_name,
+  res.organization_code,
+  res.organization_id,
+  res.primary_cost_method,
+  res.cost_element_id,
+  res.operation_code,
+  res.account,
+  res.class_code,
+  res.class_type,
+  res.wip_entity_id,
+  res.project_id,
+  res.status_type,
+  res.primary_item_id,
+  -- Revision for version 1.22
+  res.lot_number,
+  -- Revision for version 1.21
+  res.creation_date,
+  res.scheduled_start_date,
+  -- End revision for version 1.21
+  res.date_released,
+  res.date_completed,
+  res.date_closed,
+  res.last_update_date,
+  res.start_quantity,
+  res.quantity_completed,
+  res.quantity_scrapped,
+  res.fg_total_qty,
+  res.department_id,
+  -- Revision for version 1.22
+  1, -- level_num
+  res.operation_seq_num,
+  -- Revision for version 1.25
+  res.autocharge_type,
+  res.standard_rate_flag,
+  res.po_currency_code,
+  -- End revision for version 1.25
+  res.resource_seq_num,
+  res.resource_code,
+  -- Revision for version 1.22
+  res.description,
+  res.basis_type,
+  res.res_unit_of_measure,
+  -- Revision for version 1.22
+  res.cost_type,
+  res.resource_rate
+ ) res_sum
+-- ===========================================
+-- Account, cost and department joins
+-- ===========================================
+where we.wip_entity_id                = res_sum.wip_entity_id
+and msiv_fg.organization_id         = res_sum.organization_id
+and msiv_fg.inventory_item_id       = res_sum.primary_item_id    -- FG assembly item
+and msiv_osp.organization_id (+)    = res_sum.organization_id
+and msiv_osp.inventory_item_id (+)  = res_sum.purchase_item_id   -- OSP item
+and muomv.uom_code                  = msiv_fg.primary_uom_code
+and misv.inventory_item_status_code = msiv_fg.inventory_item_status_code
+and bd.department_id                = res_sum.department_id
+and cic.organization_id             = res_sum.organization_id
+and cic.inventory_item_id           = res_sum.primary_item_id
+-- Revision for version 1.22
+-- and cic.cost_type_id                = res_sum.primary_cost_method
+and gcc.code_combination_id (+)     = res_sum.account
+-- ===========================================
+-- Lookup Codes
+-- ===========================================
+and ml1.lookup_type                 = 'WIP_CLASS_TYPE'
+and ml1.lookup_code                 = res_sum.class_type
+and ml2.lookup_type                 = 'WIP_JOB_STATUS'
+and ml2.lookup_code                 = res_sum.status_type
+and ml3.lookup_type                 = 'CST_BASIS'
+and ml3.lookup_code                 = res_sum.basis_type
+and ml4.lookup_type                 = 'MTL_PLANNING_MAKE_BUY'
+and ml4.lookup_code                 = msiv_fg.planning_make_buy_code
+-- Revision for version 1.25
+and ml5.lookup_type (+)             = 'BOM_AUTOCHARGE_TYPE'
+and ml5.lookup_code (+)             = res_sum.autocharge_type
+and ml6.lookup_type                 = 'SYS_YES_NO'
+and ml6.lookup_code                 = res_sum.standard_rate_flag
+-- End revision for version 1.25
+and fcl.lookup_type (+)             = 'ITEM_TYPE'
+and fcl.lookup_code (+)             = msiv_fg.item_type
+-- Revision for version 1.8
+and fl.lookup_type                  = 'YES_NO'
+and fl.lookup_code                  = cic.rolled_up
+-- ===========================================
+-- Organization joins to the HR org model
+-- ===========================================
+and hoi.org_information_context     = 'Accounting Information'
+and hoi.organization_id             = res_sum.organization_id
+and hoi.organization_id             = haou.organization_id   -- this gets the organization name
+and haou2.organization_id           = to_number(hoi.org_information3) -- this gets the operating unit id
+and gl.ledger_id                    = to_number(hoi.org_information1) -- get the ledger_id
+and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
+and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
+and 1=1                             -- p_osp_item, p_operating_unit, p_ledger                          -- 
+-- order by Report Type, Ledger, Operating_Unit, Org_Code, Period_Name, Accounts, WIP_Class, WIP_Job, 
+order by
+ res_sum.report_type,
+ nvl(gl.short_name, gl.name),
+ haou2.name, --  Operating Unit
+ res_sum.organization_code,
+ &segment_columns_grp
+ res_sum.class_code,
+ we.wip_entity_name,
+ msiv_osp.concatenated_segments,
+ (select poh.segment1
+  from po_headers_all poh
+  where poh.po_header_id = res_sum.po_header_id), -- PO Number
+ decode(res_sum.line_num, 0, null, res_sum.line_num), -- Line Number
+ decode(res_sum.release_num, 0, null, res_sum.release_num), -- PO Release
+ res_sum.operation_seq_num,
+ res_sum.resource_seq_num,
+ res_sum.resource_code

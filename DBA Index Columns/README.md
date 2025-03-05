@@ -7,7 +7,7 @@ None
 Table Name starts with
 
 ## Used tables
-[dba_indexes](https://www.enginatics.com/library/?pg=1&find=dba_indexes), [dba_ind_columns](https://www.enginatics.com/library/?pg=1&find=dba_ind_columns)
+[dba_indexes](https://www.enginatics.com/library/?pg=1&find=dba_indexes), [dba_ind_columns](https://www.enginatics.com/library/?pg=1&find=dba_ind_columns), [dba_objects](https://www.enginatics.com/library/?pg=1&find=dba_objects)
 
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)

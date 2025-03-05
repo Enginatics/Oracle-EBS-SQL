@@ -58,7 +58,7 @@ Creation Date From, Creation Date To, Cost Type, Minimum Value Difference, Minim
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related reports
-[CAC WIP Material Usage with Configuration and Lot Variances](/CAC%20WIP%20Material%20Usage%20with%20Configuration%20and%20Lot%20Variances/)
+[CAC Calculate ICP PII Item Costs by Where Used](/CAC%20Calculate%20ICP%20PII%20Item%20Costs%20by%20Where%20Used/), [CAC Manufacturing Variance](/CAC%20Manufacturing%20Variance/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

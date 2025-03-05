@@ -6,7 +6,9 @@ CST Item Cost Upload
 This upload can be used to 
 - Upload New Item Costs
 - Download the current Item Costs, Update, and Upload the amended item costs for a specified Cost Type
-- Download the current item Costs from one Source cost type, update, and upload the amended item costs to a different Target Cost Type 
+- Download the current item Costs from one Source cost type, update, and upload the amended item costs to a different Target Cost Type
+
+Note: The Item Cost Interface only support importing ‘This Level’ costs, As such, this upload does not support the upload of rolled up costs. 
 
 Parameters
 ==========
@@ -30,8 +32,13 @@ If left blank, the downloaded records will only be flagged for upload when the u
 In this case, it is important to remember where an Item Cost has multiple cost elements, then all the cost element records for that item would need to be amended to flag them for update. Only records flagged for update are uploaded. If all cost elements for an item are to be uploaded, even if some do not require any amendment, then the user must trigger the record to be uploaded by making a change against the record.
 
 Source Cost Type
+Source Cost Element
+Exclude Source Cost Element
 ----------------
 Optionally specify the source Cost Type from which to download the current Item Costs. For the scenarios where you want to amend the current items costs for a Cost Type or want to copy the current item costs for a Cost Type to a different Target Cost Type.
+
+Additionally you can use the Source Cost Element  and Exclude Source Cost Element to restict the Cost Elements to be downloaded from the Source Cost Type.
+
 
 Organization Code
 -----------------
@@ -41,11 +48,10 @@ Item
 ----
 Optionally select the Item(s) for which you want to download the Item Costs for
 
-Exclude Rolled Up Items	(Required, Default: Yes)
-------------------------------------------------
-Specify Yes to exclude Items with Rolled Up Costs.
-Specify No to include items with Rolled Up Costs.
-Note: The Item Cost Interface only support importing ‘This Level’ costs.
+Make or Buy
+----------------
+Optionally restrict the items to be downloaded based on the Items Make or Buy status.
+
 
 Excluded Item Statuses (Default: Inactive)
 ------------------------------------------
@@ -71,7 +77,7 @@ The following columns in the Excel are display only and are populated initially 
 - Item Burden Cost              The summary Item Level Burden Cost.
 
 ## Parameters
-Target Cost Type, Mode, Auto Populate Upload Columns, Source Cost Type, Organization Code, Item, Exclude Rolled Up Items, Excluded Item Statuses
+Target Cost Type, Mode, Auto Populate Upload Columns, Source Cost Type, Source Cost Element, Exclude Source Cost Element, Organization Code, Item, Make or Buy, Excluded Item Statuses
 
 ## Used tables
 [cst_cost_types](https://www.enginatics.com/library/?pg=1&find=cst_cost_types), [cst_item_costs](https://www.enginatics.com/library/?pg=1&find=cst_item_costs), [cst_detail_cost_view](https://www.enginatics.com/library/?pg=1&find=cst_detail_cost_view), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters)
@@ -80,7 +86,7 @@ Target Cost Type, Mode, Auto Populate Upload Columns, Source Cost Type, Organiza
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Upload](https://www.enginatics.com/library/?pg=1&category[]=Upload)
 
 ## Related reports
-[CAC User-Defined and Rolled Up Costs](/CAC%20User-Defined%20and%20Rolled%20Up%20Costs/)
+[CAC Cost vs. Planning Item Controls](/CAC%20Cost%20vs-%20Planning%20Item%20Controls/), [CAC Where Used by Cost Type](/CAC%20Where%20Used%20by%20Cost%20Type/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

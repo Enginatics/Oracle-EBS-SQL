@@ -1,47 +1,50 @@
-# [CAC Manufacturing Variance Summary](https://www.enginatics.com/reports/cac-manufacturing-variance-summary/)
+# [QP Price List Upload](https://www.enginatics.com/reports/qp-price-list-upload/)
 
 ## Description: 
-Report your summary manufacturing variances for your open and closed WIP jobs.  If the job is open the Report Type column displays "Valuation", as this WIP job and potential variances are still in your WIP inventory balances.  If the job has been closed during the reporting period, the Report Type column displays "Variance", as this WIP job was written off on a WIP Job Close Variance transaction.  You can report prior periods and this report will automatically adjust the assembly completion quantities and component issue quantities to reflect the quantities for the specified accounting period, as well as report only jobs which were open or closed during that prior period.
+This upload supports the creation and update of Standard Price Lists in Oracle Advanced Pricing.
 
-Closed, Pending Close, Cancelled, Complete and Complete No Charges WIP job statuses use the completion quantities.  All other WIP jobs use the parameter "Use Completion Quantities".  And if you use Standard Costing, for standard discrete jobs this report also shows your configuration and method variances; the difference between your WIP BOM/routing and your primary or standard BOM/routing.  Non-standard jobs usually do not have configuration variances, as they are "non-standard" without standard BOM or routing requirements.
+The upload supports creation/update/deletion of the following entities within the Price List:
 
-Parameters:
-==========
-Report Option:  Open jobs, Closed jobs or All jobs.  Use this to limit the size of the report.  (mandatory)
-Period Name:  the accounting period you wish to report.  (mandatory)
-Cost Type:  defaults to your Costing Method; if the cost type is missing component costs the report will find any missing item costs from your Costing Method cost type.
-Include Scrap Quantities:  for calculating your completion quantities and component quantity requirements, include or exclude any scrapped assembly quantities.  (mandatory)
-Include Unreleased Jobs:  include jobs which have not been released and are not started.  (mandatory)
-Include Bulk Supply Items:  include Bulk items to match the results from the Oracle Discrete Job Value Report; exclude knowing that Bulk items are usually not issued to the WIP job.  (mandatory)
-Use Completion Qtys:  for jobs in a released status, use the completion quantities for the material usage and configuration variance calculations.  Useful if you backflush your materials based on your completion quantities.  Complete, Complete - No Charges, Cancelled, Closed, Pending Close or Failed Close alway use the completion quantities in the variance calculations.  (mandatory)
-Config/Lot Variances for Non-Std:  calculate configuration and lot variances for non-standard jobs.
-Include Unimplemented ECOs:  include future BOMs changes.
-Alternate BOM Designator:  if you save your BOMs during your Cost Rollups (based on your Cost Type step ups), use this parameter to get the correct BOMs for the configuration variance calculations.  If you leave this field blank the report uses the latest BOM component effectivity date up to the period close date.  (optional)
-Category Set 1:  any item category you wish (optional).
-Category Set 2:  any item category you wish (optional).
-Class Code:  specific type of WIP class to report (optional).
-Job Status:  specific WIP job status (optional).
-WIP Job:  specific WIP job (optional).
-Assembly Number:  specific assembly number you wish to report (optional)
-Component Number:   specific component item you wish to report (optional)
-Outside Processing Item:  Specific outside processing component to report (optional).
-Resource Code:  Specific resource code to report (optional).
-Organization Code:  any inventory organization, defaults to your session's inventory organization (optional).
+- Price List Lines
 
--- |  Copyright 2011-22 Douglas Volz Consulting, Inc. 
--- |  Version Modified on Modified  by   Description
--- |  ======= =========== =============== =========================================
--- |  1.33     13 Oct 2022 Douglas Volz   Fix divide by zero error with the start quantity and
--- |                                      fix single-row subquery returns more than one row error.
+- Price Breaks
+
+To enter the Price Breaks in the upload, repeat the Price Break Header Line and enter/adjust the Price Break Columns for each Price Break.
+
+- Price List Line Pricing Attributes
+
+By default, the upload will treat all rows with the same Product, Unit of Measure, and Start Date as the same Price List Line.
+
+If you have different Price List Lines that use the same Product, Unit of Measure and Start Date but which have different Pricing Attribute assignments, the use the ‘Line No’ column to distinguish the different Price List Lines. If not specified, then all rows with the same Product, Unit of Measure, and Start Date will be uploaded as a single Price List Line and any Pricing Attributes will be added to that Price List Line. 
+
+The Line Number entered here is not uploaded to Oracle. It is only used by the upload to distinguish different lines with the same product, Unit of Measure, and Start date.
+
+- Price Lists Qualifiers
+
+Qualifier Groups can be copied to the Price List by selecting the Qualifier Group and leaving all other qualifier columns blank. The upload will copy and attach all the qualifier group's qualifiers to the price list.
+Alternatively, you can select specific qualifiers from a Qualifier Group by selecting the Qualifier Group and the Qualifier Group Qualifier ID. The upload excel will then default in the details of that qualifier into the excel. In this scenario you would enter each qualifier on  a separate row in the excel. 
+
+- Secondary Price Lists
+
+Note:
+When downloading existing Price List data into the upload excel:
+  - Header level Qualifiers and Secondary Price Lists will be downloaded into separate rows in the excel
+  - Line level Price Breaks and Pricing Attributes will be downloaded into separate rows in the excel
+
+This is to minimize the duplication of data in the excel. However, when entering data for upload Qualifiers, Secondary Price Lists, Price Breaks, and Pricing Attributes can be added in the same excel row.
+i.e. You can upload an excel row containing a header level qualifier, header level secondary price list, price list line details with associated price break and pricing attribute. 
+
+
+
 
 ## Parameters
-Report Option, Period Name, Cost Type, Include Scrap Quantities, Include Unreleased Jobs, Include Bulk Supply Items, Use Completion Quantities, Config/Lot Variances for Non-Std, Include Unimplemented ECOs, Alternate BOM Designator, Category Set 1, Category Set 2, Category Set 3, Organization Code, Class Code, Job Status, WIP Job, Component Number, Assembly Number, Outside Processing Item, Resource Code, Operating Unit, Ledger
+Upload Mode, Price List, Product Attribute Context, Product Attribute, Product Value, Item Category Set, Item Category, Effective Date, Download Price List Lines, Line Type, Download Pricing Attributes, Download Qualifiers, Download Secondary Price Lists
 
 ## Used tables
-[wip_discrete_jobs](https://www.enginatics.com/library/?pg=1&find=wip_discrete_jobs), [org_acct_periods](https://www.enginatics.com/library/?pg=1&find=org_acct_periods), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters), [wip_accounting_classes](https://www.enginatics.com/library/?pg=1&find=wip_accounting_classes), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl), [org_access_view](https://www.enginatics.com/library/?pg=1&find=org_access_view), [wdj0](https://www.enginatics.com/library/?pg=1&find=wdj0), [mtl_material_transactions](https://www.enginatics.com/library/?pg=1&find=mtl_material_transactions), [wdj](https://www.enginatics.com/library/?pg=1&find=wdj), [cst_item_costs](https://www.enginatics.com/library/?pg=1&find=cst_item_costs), [cst_item_cost_details](https://www.enginatics.com/library/?pg=1&find=cst_item_cost_details), [cst_cost_types](https://www.enginatics.com/library/?pg=1&find=cst_cost_types), [wdj_assys](https://www.enginatics.com/library/?pg=1&find=wdj_assys), [dual](https://www.enginatics.com/library/?pg=1&find=dual)
+[qp_currency_lists_vl](https://www.enginatics.com/library/?pg=1&find=qp_currency_lists_vl), [ra_terms_tl](https://www.enginatics.com/library/?pg=1&find=ra_terms_tl), [qp_secu_list_headers_vl](https://www.enginatics.com/library/?pg=1&find=qp_secu_list_headers_vl), [qp_qualifiers_v](https://www.enginatics.com/library/?pg=1&find=qp_qualifiers_v), [qp_list_lines_v](https://www.enginatics.com/library/?pg=1&find=qp_list_lines_v), [mtl_system_items](https://www.enginatics.com/library/?pg=1&find=mtl_system_items)
 
 ## Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Upload](https://www.enginatics.com/library/?pg=1&category[]=Upload)
 
 
 
@@ -49,13 +52,13 @@ Report Option, Period Name, Cost Type, Include Scrap Quantities, Include Unrelea
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 
 # Example Report 
-[CAC Manufacturing Variance Summary 11-Oct-2022 230638.xlsx](https://www.enginatics.com/example/cac-manufacturing-variance-summary/)
+[None](https://www.enginatics.com/example/qp-price-list-upload/)
 
 # Report SQL
-[www.enginatics.com/reports/cac-manufacturing-variance-summary/](https://www.enginatics.com/reports/cac-manufacturing-variance-summary/)
+[www.enginatics.com/reports/qp-price-list-upload/](https://www.enginatics.com/reports/qp-price-list-upload/)
 
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[CAC_Manufacturing_Variance_Summary.xml](https://www.enginatics.com/xml/cac-manufacturing-variance-summary/)
+[QP_Price_List_Upload.xml](https://www.enginatics.com/xml/qp-price-list-upload/)
 # Oracle E-Business Suite [Reporting Library](https://www.enginatics.com/library/)
     
 We provide an open source Oracle EBS SQLs as a part of operational and project implementation support [toolkits](https://www.enginatics.com/blitz-report-toolkits/) for rapid Excel reports generation. 

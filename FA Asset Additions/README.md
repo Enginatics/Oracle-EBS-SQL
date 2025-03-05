@@ -18,7 +18,7 @@ Ledger, Book, From Period Entered, To Period Entered, From Period Effective, To 
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related reports
-[FA Asset Book Details](/FA%20Asset%20Book%20Details/), [FA Asset Reclassification](/FA%20Asset%20Reclassification/), [FA Asset Retirements](/FA%20Asset%20Retirements/), [FA Cost Adjustments](/FA%20Cost%20Adjustments/)
+[FA Asset Book Details](/FA%20Asset%20Book%20Details/), [FA Asset Summary (Germany)](/FA%20Asset%20Summary%20%28Germany%29/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

@@ -48,10 +48,10 @@ with q_assemblies as
    and mck.category_id = mic.category_id
   ) category,
   (select
-    substr(rtrim(xmlagg(
+    rtrim(dbms_lob.substr(xmlagg(
       xmlelement(name delem,bdde.element_name ||
                             nvl2(bom_bomrboms_xmlp_pkg.get_ele_desc(mif.bom_item_type, bdde.element_name, mif.item_catalog_group_id),': ' || bom_bomrboms_xmlp_pkg.get_ele_desc(mif.bom_item_type, bdde.element_name, mif.item_catalog_group_id),null)
-                ,', ').extract('//text()') order by bdde.element_name).GetClobVal(),', '),1,4000)
+                ,', ').extract('//text()') order by bdde.element_name).GetClobVal(),4000,1),', ')
    from
     bom_dependent_desc_elements bdde
    where
@@ -111,7 +111,7 @@ with q_assemblies as
 ),
 q_components as
 (
- select
+ select /*+ push_pred(mic) */
   bev.sort_order comp_sort_order,
   lpad(to_char(bev.plan_level), least(9,bev.plan_level),'.') plan_level,
   bev.item_num comp_item_seq_num,
@@ -154,7 +154,7 @@ q_components as
   bom_bomrboms_xmlp_pkg.required_for_revenue_dispformu(bev.required_for_revenue) required_for_revenue,
   bom_bomrboms_xmlp_pkg.include_on_ship_docs_dispformu(bev.include_on_ship_docs) include_on_ship_docs,
   (select
-    substr(rtrim(xmlagg(xmlelement(name refd,brd.component_reference_designator || nvl2(brd.ref_designator_comment,': ' || brd.ref_designator_comment,null),', ').extract('//text()') order by brd.component_reference_designator).GetClobVal(),', '),1,4000)
+    rtrim(dbms_lob.substr(xmlagg(xmlelement(name refd,brd.component_reference_designator || nvl2(brd.ref_designator_comment,': ' || brd.ref_designator_comment,null),', ').extract('//text()') order by brd.component_reference_designator).GetClobVal(),4000,1),', ')
    from
     bom_ref_designators_view brd
    where brd.component_sequence_id = bev.component_sequence_id
@@ -174,10 +174,16 @@ q_components as
   bom_bill_of_materials bom,
   mtl_system_items parent,
   mtl_system_items msi,
-  mtl_item_categories mic,
-  mtl_default_category_sets mdcs,
-  mtl_categories_b_kfv mck,
-  mfg_lookups ml
+  (select
+   mic.*
+   from
+   mtl_default_category_sets mdcs,
+   mtl_item_categories mic
+   where
+   mdcs.functional_area_id = 1 and
+   mdcs.category_set_id = mic.category_set_id
+  ) mic,
+  mtl_categories_b_kfv mck
  where
       bev.group_id = :p_group_id
   and bev.plan_level > 0
@@ -186,13 +192,9 @@ q_components as
   and bev.parent_item_id = parent.inventory_item_id
   and bev.component_item_id = msi.inventory_item_id
   and msi.organization_id = bev.organization_id
-  and msi.inventory_item_id = mic.inventory_item_id
-  and mic.organization_id = msi.organization_id
-  and mic.category_set_id = mdcs.category_set_id
-  and mdcs.functional_area_id = ml.lookup_code
-  and ml.lookup_type = 'MTL_FUNCTIONAL_AREAS'
-  and ml.lookup_code = 1
-  and mic.category_id = mck.category_id
+  and msi.inventory_item_id = mic.inventory_item_id (+)
+  and msi.organization_id = mic.organization_id (+)
+  and mic.category_id = mck.category_id (+)
   and bom.bill_sequence_id = bev.bill_sequence_id
   and ( ( (:p_verify_flag is null) or (:p_verify_flag <> 1) ) or ( (:p_verify_flag = 1) and (bev.loop_flag = 1) ) )
 ),

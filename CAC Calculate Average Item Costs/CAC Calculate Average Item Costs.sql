@@ -624,3 +624,218 @@ from    -- Revision for version 1.6
                                 null default_category_id,
                                 ciod.basis_type,
                                 ciod.usage_rate_or_amount default_rate_or_amount,
+                                ciod.item_units,
+                                ciod.activity_units
+                         from   bom_resources br,
+                                cst_item_overhead_defaults ciod,
+                                -- Revision for version 1.14, performance improvement
+                                -- mtl_system_items_vl msiv,
+                                mtl_system_items_b msiv,
+                                -- End revision for version 1.14
+                                mtl_parameters mp
+                         -- ================================================
+                         -- joins for the resources and organizations
+                         -- ================================================
+                         where  br.resource_id                  = ciod.material_overhead_id
+                         and    br.organization_id              = ciod.organization_id
+                         and    br.cost_element_id              = 2 -- material overhead
+                         -- Revision for version 1.4
+                         -- Change to <= and use trunc(sysdate) as a comparison
+                         and    decode(:p_only_active,                                                            -- p_only_active
+                                        'N',  nvl(br.disable_date, '01-jan-1961'),
+                                        'Y',  trunc(sysdate)
+                                                  ) <=
+                                decode(:p_only_active,                                                              -- p_only_active
+                                        'N',   nvl(br.disable_date, '01-jan-1961'),
+                                        'Y',   decode(br.disable_date, null, trunc(sysdate), br.disable_date)
+                                          )
+                         and    ciod.category_set_id is null
+                         and    ciod.organization_id            = mp.organization_id
+                         and    ciod.organization_id            = msiv.organization_id
+                         -- Revision for version 1.1
+                         and    msiv.inventory_asset_flag       = 'Y'
+                         -- Revision for version 1.14
+                         -- and     msiv.inventory_item_status_code <> 'Inactive'
+                         and    9=9                             -- p_item_status_to_exclude
+                         -- End revision for version 1.14
+                         -- Revision for version 1.16
+                         and    mp.organization_code in (select oav.organization_code from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
+                         and    2=2                             -- p_org_code
+                         and    5=5                             -- p_item_number
+                         union all
+                         -- ================================================
+                         -- Get the Resource Information for those resources
+                         -- with category level default material overheads
+                         -- ================================================
+                         select br.resource_code,
+                                br.resource_id,
+                                br.organization_id,
+                                br.unit_of_measure,
+                                br.functional_currency_flag,
+                                br.default_basis_type,
+                                br.absorption_account,
+                                br.disable_date,
+                                decode(ciod.category_set_id, null, 'Org', 'Category') default_level,
+                                ciod.item_type default_item_type,
+                                msiv.inventory_item_id,
+                                ciod.category_set_id default_category_set_id,
+                                ciod.category_id default_category_id,
+                                ciod.basis_type,
+                                ciod.usage_rate_or_amount default_rate_or_amount,
+                                ciod.item_units,
+                                ciod.activity_units
+                         from   bom_resources br,
+                                cst_item_overhead_defaults ciod,
+                                -- Revision for version 1.14, performance improvement
+                                -- mtl_system_items_vl msiv,
+                                mtl_system_items_b msiv,
+                                -- End revision for version 1.14
+                                mtl_item_categories mic,
+                                mtl_parameters mp
+                         -- ================================================
+                         -- joins for the resources and organizations
+                         -- ================================================
+                         where  br.resource_id              = ciod.material_overhead_id
+                         and    br.organization_id          = ciod.organization_id
+                         and    br.cost_element_id          = 2 -- material overhead
+                         -- Revision for version 1.4
+                         -- Change to <= and use trunc(sysdate) as a comparison
+                         and    decode(:p_only_active,                                                -- p_only_active
+                                        'N',   nvl(br.disable_date, '01-jan-1961'),
+                                        'Y',  trunc(sysdate)
+                                          ) <=
+                                decode(:p_only_active,                                                -- p_only_active
+                                        'N',   nvl(br.disable_date, '01-jan-1961'),
+                                        'Y',   decode(br.disable_date, null, trunc(sysdate), br.disable_date)
+                                          )
+                         and    ciod.category_set_id is not null
+                         and    ciod.organization_id            = mp.organization_id
+                         and    ciod.organization_id            = mic.organization_id
+                         and    ciod.category_set_id            = mic.category_set_id
+                         and    ciod.category_id                = mic.category_id
+                         and    msiv.inventory_item_id          = mic.inventory_item_id
+                         and    msiv.organization_id            = mic.organization_id
+                         -- Revision for version 1.1
+                         and    msiv.inventory_asset_flag       = 'Y'
+                         -- Revision for version 1.14
+                         -- and     msiv.inventory_item_status_code <> 'Inactive'
+                         and    9=9                             -- p_item_status_to_exclude
+                         -- End revision for version 1.14
+                         -- Revision for version 1.16
+                         and    mp.organization_code in (select oav.organization_code from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
+                         and    2=2                             -- p_org_code
+                         and    5=5                             -- p_item_number
+                        ) moh2
+                 group by
+                        moh2.organization_id,
+                        moh2.inventory_item_id
+        ) default_moh,
+        -- Revision for version 1.16
+        (
+         select po2.*,
+                round(po2.po_unit_price * mucv.conversion_rate, 6) last_po_price,
+                round(round(po2.po_unit_price * mucv.conversion_rate, 6) * nvl(gdr.conversion_rate,1),6) converted_last_po_price
+         from
+                (
+                 select distinct
+                        pla.item_id inventory_item_id,
+                        plla.ship_to_organization_id organization_id,
+                        max(pha.segment1) keep (dense_rank last order by plla.po_date,pda.po_distribution_id) over (partition by plla.ship_to_organization_id, pla.item_id) last_purchase_order,
+                        max(pla.line_num) keep (dense_rank last order by plla.po_date,pda.po_distribution_id) over (partition by plla.ship_to_organization_id, pla.item_id) last_po_line,
+                        max(plla.po_date) over (partition by plla.ship_to_organization_id, pla.item_id) last_po_date,
+                        max(pha.currency_code) keep (dense_rank last order by plla.po_date,pda.po_distribution_id) over (partition by plla.ship_to_organization_id, pla.item_id) last_po_currency_code,
+                        -- Revision for version 1.18
+                        cod.currency_code,
+                        max(nvl(plla.price_override,pla.unit_price)) keep (dense_rank last order by plla.po_date,pda.po_distribution_id) over (partition by plla.ship_to_organization_id, pla.item_id) po_unit_price,
+                        max(pla.unit_meas_lookup_code) keep (dense_rank last order by plla.po_date,pda.po_distribution_id) over (partition by plla.ship_to_organization_id, pla.item_id) unit_meas_lookup_code
+                 from   po_headers_all pha,
+                        po_lines_all pla,
+                        (select coalesce(plla.promised_date,plla.need_by_date,plla.last_update_date) po_date, plla.* from po_line_locations_all plla) plla,
+                        po_distributions_all pda,
+                        -- Revision for version 1.18
+                        cst_organization_definitions cod
+                 where  pla.item_id is not null
+                 and    11=11                    -- p_org_code, p_item_number
+                 and    plla.ship_to_organization_id is not null
+                 and    pha.authorization_status = 'APPROVED'
+                 -- Revision for version 1.3 and 1.17
+                 -- and    pla.closed_code not in ('CANCELLED', 'INCOMPLETE', 'ON HOLD', 'REJECTED', 'RETURNED')
+                 and    nvl(pla.closed_code,'OPEN') not in ('CANCELLED', 'INCOMPLETE', 'ON HOLD', 'REJECTED', 'RETURNED')
+                 -- End revision for version 1.17
+                 and    pha.po_header_id          = pla.po_header_id
+                 and    pla.po_line_id            = plla.po_line_id
+                 and    plla.line_location_id     = pda.line_location_id
+                 and    pda.destination_type_code = 'INVENTORY'
+                 -- Revision for version 1.18
+                 and    cod.organization_id       = plla.ship_to_organization_id
+                ) po2,
+                mtl_uom_conversions_view mucv,
+                -- Revision for version 1.18
+                -- cst_organization_definitions cod
+                -- ===========================================================================
+                -- For POs, get currency exchange rate information for the inventory orgs.
+                -- Select Currency Rates based on the currency conversion date and type.
+                -- ===========================================================================
+-- Revision for version 1.18
+(select gdr.* from gl_daily_rates gdr, gl_daily_conversion_types gdct where gdr.conversion_date=:conversion_date and gdct.user_conversion_type=:user_conversion_type and gdct.conversion_type=gdr.conversion_type) gdr
+         where  po2.unit_meas_lookup_code = mucv.unit_of_measure(+)
+         and    po2.inventory_item_id     = mucv.inventory_item_id(+)
+         and    po2.organization_id       = mucv.organization_id(+)
+         -- Translate from the PO currency to the GL Currency
+         -- Revision for version 1.18
+         -- and    cod.organization_id       = po2.organization_id
+         -- and    gdr.from_currency         = po2.last_po_currency_code
+         -- and    gdr.to_currency           = cod.currency_code
+         and    gdr.from_currency(+)         = po2.last_po_currency_code
+         and    gdr.to_currency(+)           = po2.currency_code
+         -- End revision for version 1.18
+        ) po
+-- Revision for version 1.19
+        &p_last_ap_invoice_sql
+        -- End revision for version 1.16
+where   receipts.inventory_item_id      = cicd_moh.inventory_item_id
+and     receipts.organization_id        = cicd_moh.organization_id
+and     cicd_moh.organization_id        = default_moh.organization_id (+)
+and     cicd_moh.inventory_item_id      = default_moh.inventory_item_id (+)
+-- End revision for version 1.10
+-- Revision for version 1.7
+and     cic.inventory_item_id           = receipts.inventory_item_id
+and     cic.organization_id             = receipts.organization_id
+-- End revision for version 1.7
+-- Revision for version 1.2
+and     fcl.lookup_code (+)             =  cicd_moh.item_type
+and     fcl.lookup_type (+)             = 'ITEM_TYPE'
+-- Revision for version 1.10
+and     ml1.lookup_type                 = 'MTL_PLANNING_MAKE_BUY'
+and     ml1.lookup_code                 = cicd_moh.planning_make_buy_code
+-- Revision for version 1.11
+and     ml2.lookup_type                 = 'CST_BONROLLUP_VAL'
+and     ml2.lookup_code                 = cic.based_on_rollup_flag
+-- Revision for version 1.6
+and     cicd_moh.primary_uom_code       = muomv.uom_code
+and     misv.inventory_item_status_code = cicd_moh.inventory_item_status_code
+-- Revision for version 1.16
+and     po.inventory_item_id (+)        = cic.inventory_item_id
+and     po.organization_id (+)          = cic.organization_id
+and     10=10                           -- last_ap_invoice_joins
+-- End revision for version 1.16
+-- ===================================================================
+-- using the base tables for organization definition
+-- ===================================================================
+and     hoi.org_information_context     = 'Accounting Information'
+and     hoi.organization_id             = cicd_moh.organization_id
+and     hoi.organization_id             = haou.organization_id   -- this gets the organization name
+and     haou2.organization_id           = hoi.org_information3   -- this gets the operating unit id
+-- avoid selecting disabled inventory organizations
+and     sysdate < nvl(haou.date_to, sysdate + 1)
+and     gl.ledger_id                    = to_number(hoi.org_information1) -- get the ledger_id
+-- Revision for version 1.20
+and     gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
+and     haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
+-- End Revision for version 1.20
+and     1=1                             -- p_operating_unit, p_ledger
+order by
+        nvl(gl.short_name, gl.name),
+        haou2.name,
+        cicd_moh.organization_code,
+        cicd_moh.concatenated_segments

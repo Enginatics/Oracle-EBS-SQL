@@ -4,25 +4,25 @@
 /*                              www.enginatics.com                       */
 /*                                                                       */
 /*************************************************************************/
--- Report Name: Blitz Report Sample Upload (Interface Table)
+-- Report Name: Blitz Upload Example (Interface Table)
 -- Description: Sample upload to be used as a template by copying (Tools>Copy Report) to create new uploads using Interface Table.
--- Excel Examle Output: https://www.enginatics.com/example/blitz-report-sample-upload-interface-table/
--- Library Link: https://www.enginatics.com/reports/blitz-report-sample-upload-interface-table/
+-- Excel Examle Output: https://www.enginatics.com/example/blitz-upload-example-interface-table/
+-- Library Link: https://www.enginatics.com/reports/blitz-upload-example-interface-table/
 -- Run Report: https://demo.enginatics.com/
 
 select
 null action_,
 null status_,
 null message_,
-xus.rowid row_id_,
-xus.id,
-xus.name,
-xus.date_of_birth,
-xus.created_by,
-xus.creation_date,
+xue.rowid row_id_,
+xue.id,
+xue.name,
+xue.date_of_birth,
+xue.created_by,
+xue.creation_date,
 to_number(null) last_updated_by,
 to_date(null) last_update_date
 from
-xxen_upload_sample xus
+xxen_upload_example xue
 where
 1=1

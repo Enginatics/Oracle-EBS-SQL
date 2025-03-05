@@ -4,10 +4,10 @@
 Detail AP expense report listing corresponding AP invoices with status, line details, expense type and expense justification. Including projects task related expenses.
 
 ## Parameters
-Ledger, Operating Unit, Expense Status, Report Submitted Date From, Report Submitted Date To, Employee Name, Expense Report Number, Auditor Name, Audit Reason, Audit Type, Source, Expense Type, Show Lines, Show per diem details, Show Projects Tasks
+Ledger, Operating Unit, Expense Status, Report Submitted Date From, Report Submitted Date To, Employee Name, Expense Report Number, Auditor Name, Audit Reason, Audit Type, Source, Expense Type, Show Lines, Show per diem details
 
 ## Used tables
-[per_people_x](https://www.enginatics.com/library/?pg=1&find=per_people_x), [ap_invoice_payments_all](https://www.enginatics.com/library/?pg=1&find=ap_invoice_payments_all), [ap_checks_all](https://www.enginatics.com/library/?pg=1&find=ap_checks_all), [gl_ledgers](https://www.enginatics.com/library/?pg=1&find=gl_ledgers), [hr_operating_units](https://www.enginatics.com/library/?pg=1&find=hr_operating_units), [ap_expense_report_headers_all](https://www.enginatics.com/library/?pg=1&find=ap_expense_report_headers_all), [gl_code_combinations_kfv](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations_kfv), [ap_aud_queues](https://www.enginatics.com/library/?pg=1&find=ap_aud_queues), [ap_suppliers](https://www.enginatics.com/library/?pg=1&find=ap_suppliers), [ap_invoices_all](https://www.enginatics.com/library/?pg=1&find=ap_invoices_all), [ap_expense_report_lines_all](https://www.enginatics.com/library/?pg=1&find=ap_expense_report_lines_all), [&per_diem_table](https://www.enginatics.com/library/?pg=1&find=&per_diem_table)
+[per_people_x](https://www.enginatics.com/library/?pg=1&find=per_people_x), [ap_invoice_payments_all](https://www.enginatics.com/library/?pg=1&find=ap_invoice_payments_all), [ap_checks_all](https://www.enginatics.com/library/?pg=1&find=ap_checks_all), [gl_ledgers](https://www.enginatics.com/library/?pg=1&find=gl_ledgers), [hr_operating_units](https://www.enginatics.com/library/?pg=1&find=hr_operating_units), [ap_expense_report_headers_all](https://www.enginatics.com/library/?pg=1&find=ap_expense_report_headers_all), [gl_code_combinations_kfv](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations_kfv), [ap_aud_queues](https://www.enginatics.com/library/?pg=1&find=ap_aud_queues), [ap_suppliers](https://www.enginatics.com/library/?pg=1&find=ap_suppliers), [ap_invoices_all](https://www.enginatics.com/library/?pg=1&find=ap_invoices_all), [ap_expense_report_lines_all](https://www.enginatics.com/library/?pg=1&find=ap_expense_report_lines_all), [&per_diem_table](https://www.enginatics.com/library/?pg=1&find=&per_diem_table), [gms_awards_all](https://www.enginatics.com/library/?pg=1&find=gms_awards_all)
 
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
@@ -19,7 +19,7 @@ Ledger, Operating Unit, Expense Status, Report Submitted Date From, Report Submi
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 
 # Example Report 
-[AP Expenses 05-Oct-2019 002046.xlsx](https://www.enginatics.com/example/ap-expenses/)
+[AP Expenses 24-Jan-2025 014015.xlsx](https://www.enginatics.com/example/ap-expenses/)
 
 # Report SQL
 [www.enginatics.com/reports/ap-expenses/](https://www.enginatics.com/reports/ap-expenses/)

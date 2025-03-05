@@ -40,7 +40,7 @@ DB package:  CE_CEXSTMRR_XMLP_PKG (required to initialize security)
 
 
 ## Parameters
-Legal Entity, Bank Name, Bank Branch, Bank Account Name, Bank Account Number, Balance Type, Balance Date From, Balance Date To, Balance As Of Date, Bring Forward Prior Balances, Actual vs Projected Balance Type, Bank Account Currency, Reporting Currency, Reporting Exchange Rate Type, Reporting Exchange Rate Date
+Account, Bank Name, Bank Branch, Bank Account Name, Bank Account Number, Balance Type, Balance Date From, Balance Date To, Balance As Of Date, Bring Forward Prior Balances, Actual vs Projected Balance Type, Bank Account Currency, Reporting Currency, Reporting Exchange Rate Type, Reporting Exchange Rate Date
 
 ## Used tables
 [ce_bank_acct_balances](https://www.enginatics.com/library/?pg=1&find=ce_bank_acct_balances), [ce_projected_balances](https://www.enginatics.com/library/?pg=1&find=ce_projected_balances)

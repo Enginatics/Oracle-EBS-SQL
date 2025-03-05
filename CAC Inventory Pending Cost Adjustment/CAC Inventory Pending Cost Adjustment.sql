@@ -589,4 +589,451 @@ from    mtl_system_items_vl msiv,
                 nvl(cic_frozen.material_cost,0)                 material_cost,
                 nvl(cic_frozen.material_overhead_cost,0)        material_overhead_cost,
                 nvl(cic_frozen.resource_cost,0)                 resource_cost,
-                nvl(cic_frozen.outside_processing_cost,0)     
+                nvl(cic_frozen.outside_processing_cost,0)       outside_processing_cost,
+                nvl(cic_frozen.overhead_cost,0)                 overhead_cost,
+                nvl(cic_frozen.item_cost,0)                     item_cost
+         from   cst_item_costs cic_frozen,
+                cst_cost_types cct2,
+                 -- Revision for version 1.11
+                mtl_system_items_vl msiv,
+                inv_organizations mp
+                -- End revision for version 1.11
+         -- Revision for version 1.8
+         where  cic_frozen.cost_type_id     = mp.primary_cost_method  -- get the frozen costs for the standard cost update
+         -- Revision for version 1.11
+         and    msiv.organization_id        = cic_frozen.organization_id
+         and    msiv.inventory_item_id      = cic_frozen.inventory_item_id
+         -- End revision for version 1.11
+         -- =============================================================
+         -- If p_cost_type2 = frozen cost_type_id then we have all the 
+         -- costs and don't need this union all statement
+         -- Changed the default cost type from 1 (Frozen) to the primary_
+         -- cost_method so you can use this report for any Costing Method.
+         -- =============================================================
+         and    cct2.cost_type_id           <> mp.primary_cost_method  -- frozen cost type
+         and    cic_frozen.organization_id  = mp.organization_id
+         and    10=10                       -- p_cost_type2
+         -- Revision for version 1.11
+         and    15=15                       -- p_item_number
+         -- =============================================================
+         -- Check to see if the costs exist in cost type 1 
+         -- =============================================================
+         and not exists (
+                         select 'x'
+                         from   cst_item_costs cic2
+                         where  cic2.cost_type_id      = cct2.cost_type_id
+                         and    cic2.organization_id   = cic_frozen.organization_id
+                         and    cic2.inventory_item_id = cic_frozen.inventory_item_id
+                        )
+         ) cic2,
+         -- ===========================
+        -- end of getting cost 
+         -- ===========================
+        -- ==================================================================================
+        -- Get Intransit and Onhand quantities from the month-end snapshot or from the
+        -- real-time intransit and onhand tables
+         -- ==================================================================================
+         -- ===================================================================
+         -- Part 1: Get the month-end snapshot
+         -- ===================================================================
+         -- Part 1a: Get the month-end snapshot for non-category accounting
+         -- ===================================================================
+        (select cpcs.organization_id organization_id,
+                 -- Revision for version 1.11
+                mp.category_organization_id,
+                mp.category_set_id,
+                null category_id,
+                cpcs.inventory_item_id,
+                nvl(cpcs.subinventory_code, ml2.meaning) subinventory_code,
+                nvl(regexp_replace(msub.description,'[^[:alnum:]'' '']', null), ml2.meaning) subinv_description,
+                va.material_account code_combination_id,
+                -- End revision for version 1.11
+                sum(decode(cpcs.subinventory_code, null, 0, cpcs.rollback_quantity)) onhand_quantity,
+                sum(decode(cpcs.subinventory_code, null, cpcs.rollback_quantity, 0)) intransit_quantity
+          from  cst_period_close_summary cpcs,
+                org_acct_periods oap,
+                mtl_secondary_inventories msub,
+                -- Revision for version 1.11
+                -- mtl_parameters mp
+                mtl_system_items_vl msiv,
+                inv_organizations mp,
+                valuation_accounts va,
+                mfg_lookups ml2
+                -- End revision for version 1.11
+         where  cpcs.acct_period_id             = oap.acct_period_id
+         and    mp.organization_id              = oap.organization_id
+         and    cpcs.subinventory_code          = msub.secondary_inventory_name (+)
+         and    cpcs.organization_id            = msub.organization_id (+)
+         -- Revision for version 1.11
+         and    mp.category_organization_id is null
+         and    cpcs.inventory_item_id          = msiv.inventory_item_id
+         and    cpcs.organization_id            = msiv.organization_id
+         and    va.secondary_inventory_name (+) = nvl(cpcs.subinventory_code,'Intransit')
+         and    va.organization_id (+)          = cpcs.organization_id
+         and    va.valuation_type              <> 'Category Accounting'
+         and    ml2.lookup_code                 = 3 -- Intransit
+         and    ml2.lookup_type                 = 'MSC_CALENDAR_TYPE'
+         -- End revision for version 1.11
+         -- Revision for version 1.3
+         and    11=11                           -- p_period_name oap.period_name = :p_period_name
+         and    :p_period_name is not null      -- p_period_name
+         -- Revision for version 1.11
+         and    15=15                           -- p_item_number
+         and    nvl(cpcs.rollback_quantity,0) <> 0
+         group by
+                cpcs.organization_id,
+                 -- Revision for version 1.11
+                mp.category_organization_id,
+                mp.category_set_id,
+                null, -- category_id
+                cpcs.inventory_item_id,
+                nvl(cpcs.subinventory_code, ml2.meaning), -- Subinventory
+                nvl(regexp_replace(msub.description,'[^[:alnum:]'' '']', null), ml2.meaning), -- subinv_description
+                va.material_account -- code_combination_id
+                -- End revision for version 1.11
+        -- Revision for version 1.11
+         union all
+         -- ===================================================================
+         -- Part 1b: Get the month-end snapshot for category accounting
+         -- ===================================================================
+         select cat_onhand.organization_id,
+                cat_onhand.category_organization_id,
+                cat_onhand.category_set_id,
+                cat_onhand.category_id,
+                cat_onhand.inventory_item_id,
+                nvl(cat_onhand.subinventory_code, ml2.meaning) subinventory_code,
+                nvl(cat_onhand.subinv_description, ml2.meaning) subinv_description,
+                va.material_account code_combination_id,
+                cat_onhand.onhand_quantity,
+                cat_onhand.intransit_quantity
+         from   -- Inner select to have consistent outer joins with valuation accounts
+                valuation_accounts va,
+                mfg_lookups ml2,
+                (select onhand2.organization_id,
+                        onhand2.category_organization_id,
+                        onhand2.category_set_id,
+                        mic.category_id,
+                        onhand2.inventory_item_id,
+                        onhand2.subinventory_code,
+                        onhand2.subinv_description,
+                        onhand2.onhand_quantity,
+                        onhand2.intransit_quantity        
+                 from   -- Inner select to have consistent outer joins with categories
+                        mtl_item_categories mic,
+                        (select mp.organization_id,
+                                mp.category_organization_id,
+                                mp.category_set_id,
+                                msiv.inventory_item_id,
+                                cpcs.subinventory_code,
+                                regexp_replace(msub.description,'[^[:alnum:]'' '']', null) subinv_description,
+                                sum(decode(cpcs.subinventory_code, null, 0, cpcs.rollback_quantity)) onhand_quantity,
+                                sum(decode(cpcs.subinventory_code, null, cpcs.rollback_quantity, 0)) intransit_quantity
+                         from   mtl_system_items_vl msiv,
+                                cst_period_close_summary cpcs,
+                                org_acct_periods oap,
+                                mtl_secondary_inventories msub,
+                                inv_organizations mp
+                         where  mp.organization_id              = msiv.organization_id
+                         and    mp.category_organization_id is not null
+                         and    oap.organization_id             = mp.organization_id
+                         and    oap.acct_period_id              = cpcs.acct_period_id
+                         and    cpcs.organization_id            = msiv.organization_id
+                         and    cpcs.inventory_item_id          = msiv.inventory_item_id
+                         and    cpcs.subinventory_code          = msub.secondary_inventory_name (+)
+                         and    cpcs.organization_id            = msub.organization_id (+)
+                         -- Don't get zero quantities
+                         and    nvl(cpcs.rollback_quantity,0)  <> 0
+                         and    11=11                           -- p_period_name oap.period_name = :p_period_name
+                         and    :p_period_name is not null      -- p_period_name
+                         -- Revision for version 1.11
+                         and    15=15                           -- p_item_number
+                         group by
+                                mp.organization_id,
+                                mp.category_organization_id,
+                                mp.category_set_id,
+                                msiv.inventory_item_id,
+                                cpcs.subinventory_code,
+                                regexp_replace(msub.description,'[^[:alnum:]'' '']', null) -- subinv_description
+                        ) onhand2
+                 where  mic.inventory_item_id (+)       = onhand2.inventory_item_id
+                 and    mic.organization_id (+)         = onhand2.organization_id
+                 and    mic.category_set_id (+)         = onhand2.category_set_id
+                ) cat_onhand
+         where  va.secondary_inventory_name (+) = nvl(cat_onhand.subinventory_code, 'Intransit')
+         and    va.organization_id (+)          = cat_onhand.organization_id
+         and    va.category_set_id (+)          = cat_onhand.category_set_id
+         and    va.category_id (+)              = cat_onhand.category_id
+         and    va.valuation_type (+)           in ('Category Accounting', 'Intransit Accounting')
+         and    ml2.lookup_code                 = 3 -- Intransit
+         and    ml2.lookup_type                 = 'MSC_CALENDAR_TYPE'
+         union all
+         -- ===================================================================
+        -- Part 2: Or get Real-Time Intransit and Onhand quantities
+         -- ===================================================================
+        -- ================================================
+        -- Condense the Union down to individual Org/Items
+        -- ================================================
+         select allqty.organization_id,
+                -- Revision for version 1.11
+                allqty.category_organization_id,
+                allqty.category_set_id,
+                allqty.category_id,
+                allqty.inventory_item_id,
+                nvl(allqty.subinventory_code, ml2.meaning) subinventory_code,
+                nvl(allqty.subinv_description, ml2.meaning) subinv_description,
+                allqty.code_combination_id,
+                sum(allqty.onhand_quantity) onhand_quantity,
+                sum(allqty.intransit_quantity) intransit_quantity
+         from   mfg_lookups ml2,
+                 -- ===================================================================
+                 -- Part 2a: Get real-time onhand quantities for non-category accounting
+                 -- =================================================================== 
+                (select moqd.organization_id,
+                        -- Revision for version 1.11
+                        mp.category_organization_id,
+                        mp.category_set_id,
+                        null category_id,
+                        msiv.inventory_item_id,
+                        moqd.subinventory_code,
+                        regexp_replace(msub.description,'[^[:alnum:]'' '']', null) subinv_description,
+                        va.material_account code_combination_id,
+                        sum(moqd.primary_transaction_quantity) onhand_quantity,
+                        min(0) intransit_quantity
+                 from   mtl_onhand_quantities_detail moqd,
+                        mtl_secondary_inventories msub,
+                        -- Revision for version 1.11
+                        mtl_system_items_vl msiv,
+                        inv_organizations mp,
+                        valuation_accounts va
+                 -- End revision for version 1.11
+                 where  moqd.subinventory_code          = msub.secondary_inventory_name 
+                 and    moqd.organization_id            = msub.organization_id
+                 and    moqd.organization_id            = mp.organization_id
+                 -- Revision for version 1.8
+                 and    moqd.is_consigned               = 2 -- No
+                 -- Don't select expense subinventories
+                 and    msub.asset_inventory            = 1
+                 -- End revision for version 1.3
+                 -- Revision for version 1.11
+                 and    moqd.inventory_item_id          = msiv.inventory_item_id
+                 and    moqd.organization_id            = msiv.organization_id
+                 and    mp.category_organization_id is null
+                 and    va.secondary_inventory_name (+) = moqd.subinventory_code
+                 and    va.organization_id (+)          = moqd.organization_id
+                 and    va.valuation_type              <> 'Category Accounting'
+                 -- End revision for version 1.11
+                 -- If Period Name is null get real-time onhand qtys
+                 -- Revision for version 1.3
+                 and    :p_period_name is null          -- p_period_name
+                 -- Revision for version 1.11
+                 and    15=15                           -- p_item_number
+                group by
+                        moqd.organization_id,
+                        -- Revision for version 1.11
+                        mp.category_organization_id,
+                        mp.category_set_id,
+                        null, -- category_id
+                        msiv.inventory_item_id,
+                        moqd.subinventory_code,
+                        regexp_replace(msub.description,'[^[:alnum:]'' '']', null), -- subinv_description
+                        va.material_account -- code_combination_id
+                 -- Revision for version 1.11
+                 union all
+                 -- ===================================================================
+                 -- Part 2b: Get real-time onhand quantities for category accounting
+                 -- ===================================================================
+                 select cat_onhand.organization_id,
+                        cat_onhand.category_organization_id,
+                        cat_onhand.category_set_id,
+                        cat_onhand.category_id,
+                        cat_onhand.inventory_item_id,
+                        cat_onhand.subinventory_code,
+                        cat_onhand.subinv_description,
+                        va.material_account code_combination_id,
+                        cat_onhand.onhand_quantity,
+                        cat_onhand.intransit_quantity        
+                 from   -- Inner select to have consistent outer joins with valuation accounts
+                        valuation_accounts va,
+                        (select onhand2.organization_id,
+                                onhand2.category_organization_id,
+                                onhand2.category_set_id,
+                                mic.category_id,
+                                onhand2.inventory_item_id,
+                                onhand2.subinventory_code,
+                                onhand2.subinv_description,
+                                onhand2.onhand_quantity,
+                                onhand2.intransit_quantity
+                         from   -- Inner select to have consistent outer joins with categories
+                                mtl_item_categories mic,
+                                (select moqd.organization_id,
+                                        -- Revision for version 1.11
+                                        mp.category_organization_id,
+                                        mp.category_set_id,
+                                        msiv.inventory_item_id,
+                                        moqd.subinventory_code,
+                                        regexp_replace(msub.description,'[^[:alnum:]'' '']', null) subinv_description,
+                                        sum(moqd.primary_transaction_quantity) onhand_quantity,
+                                        min(0) intransit_quantity
+                                 from   mtl_onhand_quantities_detail moqd,
+                                        mtl_secondary_inventories msub,
+                                        -- Revision for version 1.11
+                                        mtl_system_items_vl msiv,
+                                        inv_organizations mp
+                                -- End revision for version 1.11
+                                 where  moqd.subinventory_code          = msub.secondary_inventory_name 
+                                 and    moqd.organization_id            = msub.organization_id
+                                 and    moqd.organization_id            = mp.organization_id
+                                 -- Revision for version 1.8
+                                 and    moqd.is_consigned               = 2 -- No
+                                 -- Don't select expense subinventories
+                                 and    msub.asset_inventory            = 1
+                                 -- End revision for version 1.3
+                                 -- Revision for version 1.11
+                                 and    moqd.inventory_item_id          = msiv.inventory_item_id
+                                 and    moqd.organization_id            = msiv.organization_id
+                                 and    mp.category_organization_id is not null
+                                 -- End revision for version 1.11
+                                 -- If Period Name is null get real-time onhand qtys
+                                 -- Revision for version 1.3
+                                 and    :p_period_name is null          -- p_period_name
+                                 -- Revision for version 1.11
+                                 and    15=15                           -- p_item_number
+                                 group by moqd.organization_id,
+                                        -- Revision for version 1.11
+                                        mp.category_organization_id,
+                                        mp.category_set_id,
+                                        msiv.inventory_item_id,
+                                        moqd.subinventory_code,
+                                        regexp_replace(msub.description,'[^[:alnum:]'' '']', null) -- subinv_description
+                                ) onhand2
+                         where  mic.inventory_item_id (+)       = onhand2.inventory_item_id
+                         and    mic.organization_id (+)         = onhand2.organization_id
+                         and    mic.category_set_id (+)         = onhand2.category_set_id
+                        ) cat_onhand
+                 where  va.secondary_inventory_name (+) = cat_onhand.subinventory_code
+                 and    va.organization_id (+)          = cat_onhand.organization_id
+                 and    va.valuation_type               = 'Category Accounting'
+                 -- End revision for version 1.11
+                 union all
+                 -- ===================================================================
+                 -- Part 2b: Get real-time intransit quantities for category accounting
+                 -- ===================================================================
+                 -- Revision for version 1.8
+                 -- Use intransit_owning_org_id instead of mip FOB point for 
+                 -- ownership; when the shipping network is direct edited for  
+                 -- FOB point without fixing mtl_supply, you cannot use mip.
+                 -- select decode(mip.fob_point,1,sup.to_organization_id,2,sup.from_organization_id) organization_id,
+                 select sup.intransit_owning_org_id organization_id,
+                 -- End revision for version 1.8
+                        -- Revision for version 1.11
+                        mp.category_organization_id,
+                        mp.category_set_id,
+                        null category_id,
+                        sup.item_id inventory_item_id,
+                        null subinventory_code,
+                        null subinv_description,
+                        -- End revision for version 1.11
+                        mip.intransit_inv_account code_combination_id,
+                        min(0) onhand_quantity,
+                        sum(sup.to_org_primary_quantity) intransit_quantity
+                 from   mtl_interorg_parameters mip,
+                        mtl_supply sup,
+                        -- Revision for version 1.11
+                        mtl_system_items_vl msiv,
+                        inv_organizations mp
+                 where  sup.supply_type_code in ('SHIPMENT', 'RECEIVING') 
+                 and    mip.from_organization_id = sup.from_organization_id 
+                 and    mip.to_organization_id   = sup.to_organization_id
+                 and    sup.item_id is not null -- screen out expense receipts
+                 -- Revision for version 1.11
+                 and    sup.item_id                 = msiv.inventory_item_id
+                 and    sup.intransit_owning_org_id = msiv.organization_id
+                 -- End revision for version 1.3
+                 -- Revision for version 1.8
+                 -- and mp.organization_id     = decode(mip.fob_point,1,sup.to_organization_id,2,sup.from_organization_id)
+                 and    mp.organization_id     = sup.intransit_owning_org_id
+                 -- Revision for version 1.3
+                 and    :p_period_name is null          -- p_period_name
+                 -- Revision for version 1.11
+                 and    15=15                           -- p_item_number
+                 group by
+                        -- Revision for version 1.8
+                        -- decode(mip.fob_point,1,sup.to_organization_id,2,sup.from_organization_id),
+                        sup.intransit_owning_org_id,
+                        -- Revision for version 1.11
+                        mp.category_organization_id,
+                        mp.category_set_id,
+                        null, -- category_id
+                        sup.item_id, -- inventory_item_id
+                        null, -- subinventory_code
+                        null, -- subinv_description
+                        -- End revision for version 1.11
+                        mip.intransit_inv_account
+                ) allqty
+         where  ml2.lookup_code                        = 3 -- Intransit
+         and    ml2.lookup_type                        = 'MSC_CALENDAR_TYPE'
+         group by
+                allqty.organization_id,
+                -- Revision for version 1.11
+                allqty.category_organization_id,
+                allqty.category_set_id,
+                allqty.category_id,
+                allqty.inventory_item_id,
+                nvl(allqty.subinventory_code, ml2.meaning), -- subinventory_code
+                nvl(allqty.subinv_description, ml2.meaning), -- subinv_description
+                allqty.code_combination_id
+        ) sumqty
+        -- ===========================
+        -- End of getting quantities
+         -- ===========================
+-- ===================================================================
+-- Joins for the item master, organization, and item costs
+-- ===================================================================
+-- Revision for version 1.10, needed outer join
+where   msiv.inventory_item_id          = sumqty.inventory_item_id (+)
+and     msiv.organization_id            = sumqty.organization_id (+)
+-- Revision for version 1.12
+and     13=13                           -- p_include_zero_onhand_quantities, p_include_zero_cost_differences
+-- Revision for version 1.7
+and     msiv.primary_uom_code           = muomv.uom_code
+and     misv.inventory_item_status_code = msiv.inventory_item_status_code
+-- End revision for version 1.7
+and     msiv.inventory_item_id          = cic1.inventory_item_id
+and     msiv.organization_id            = cic1.organization_id
+-- Outer join as you may have newly costed items in the new cost
+-- type which were never existed in the old cost type
+and     msiv.inventory_item_id          = cic2.inventory_item_id (+)
+and     msiv.organization_id            = cic2.organization_id   (+)
+and     msiv.organization_id            = mp.organization_id
+-- ===================================================================
+-- joins for the Lookup Codes
+-- ===================================================================
+-- Revision for version 1.11
+and     ml1.lookup_type                  = 'MTL_PLANNING_MAKE_BUY'
+and     ml1.lookup_code                  = msiv.planning_make_buy_code
+-- End revision for version 1.11
+-- Revision for version 1.14
+and     ml2.lookup_type                 = 'SYS_YES_NO'
+and     ml2.lookup_code                 = cic1.defaulted_flag
+and     ml3.lookup_type                 = 'CST_BONROLLUP_VAL'
+and     ml3.lookup_code                 = cic1.based_on_rollup_flag
+-- End revision for version 1.14
+-- Lookup codes for item types
+and     fcl.lookup_code (+)             = msiv.item_type
+and     fcl.lookup_type (+)             = 'ITEM_TYPE'
+-- ===================================================================
+-- Joins for the currency exchange rates
+-- ===================================================================
+-- new FX rate
+-- Revision for version 1.11 and 1.13 - outer join
+and     mp.currency_code                = gdr1.from_currency(+)
+-- old FX rate
+-- Revision for version 1.11 and 1.13 - outer join
+and     mp.currency_code                = gdr2.from_currency(+)
+-- ===================================================================
+-- Inventory valuation account joins and org joins, material account only
+-- ===================================================================
+-- Revision for version 1.10, needed outer join
+and     sumqty.code_combination_id      = gcc.code_combination_id (+)
+-- Revision for version 1.11, remove hr organization tables
+order by 1,2,3,4,5,6,7,8,9,10,11

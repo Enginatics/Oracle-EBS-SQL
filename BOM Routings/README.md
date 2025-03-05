@@ -4,16 +4,16 @@
 Master data report showing bill of material routings with item codes and sequences.
 
 ## Parameters
-Organization Code, Item, Item Description
+Organization Code, Item, Item Description, Excluded Item Statuses
 
 ## Used tables
-[hr_all_organization_units_vl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_vl), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters), [bom_operational_routings](https://www.enginatics.com/library/?pg=1&find=bom_operational_routings), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl), [wip_lines](https://www.enginatics.com/library/?pg=1&find=wip_lines), [bom_operation_sequences](https://www.enginatics.com/library/?pg=1&find=bom_operation_sequences), [bom_standard_operations](https://www.enginatics.com/library/?pg=1&find=bom_standard_operations), [bom_departments](https://www.enginatics.com/library/?pg=1&find=bom_departments)
+[mtl_item_status_vl](https://www.enginatics.com/library/?pg=1&find=mtl_item_status_vl), [hr_all_organization_units_vl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_vl), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters), [bom_operational_routings](https://www.enginatics.com/library/?pg=1&find=bom_operational_routings), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl), [wip_lines](https://www.enginatics.com/library/?pg=1&find=wip_lines), [bom_operation_sequences](https://www.enginatics.com/library/?pg=1&find=bom_operation_sequences), [bom_standard_operations](https://www.enginatics.com/library/?pg=1&find=bom_standard_operations), [bom_departments](https://www.enginatics.com/library/?pg=1&find=bom_departments)
 
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related reports
-[CAC Manufacturing Variance Summary](/CAC%20Manufacturing%20Variance%20Summary/)
+[CAC Manufacturing Variance](/CAC%20Manufacturing%20Variance/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

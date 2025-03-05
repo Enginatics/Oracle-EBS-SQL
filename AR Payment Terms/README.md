@@ -13,7 +13,7 @@ Master data report showing the payment terms codes with their respective profile
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related reports
-[INV Item Upload](/INV%20Item%20Upload/)
+[AR Customer Upload](/AR%20Customer%20Upload/), [INV Item Upload](/INV%20Item%20Upload/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

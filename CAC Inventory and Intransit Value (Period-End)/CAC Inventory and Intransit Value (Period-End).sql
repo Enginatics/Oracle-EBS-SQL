@@ -854,4 +854,89 @@ from inv_organizations mp,
    and cpcs.inventory_item_id          = msiv.inventory_item_id
    -- Don't get zero quantities
    and nvl(cpcs.rollback_quantity,0)  <> 0
-   and 4=4                             -- p_period_name, p_item_
+   and 4=4                             -- p_period_name, p_item_number
+   group by
+   mp.organization_id,
+   mp.category_set_id,
+   mp.category_organization_id,
+   msiv.inventory_item_id,
+   msiv.concatenated_segments,
+   regexp_replace(msiv.description,'[^[:alnum:]'' '']', null),
+   msiv.primary_uom_code,
+    msiv.inventory_item_status_code,
+   msiv.item_type,
+   oap.period_name,
+   nvl(cpcs.subinventory_code, 'Intransit') -- subinventory_code
+  ) onhand2
+  where mic.inventory_item_id (+)       = onhand2.inventory_item_id
+  and mic.organization_id (+)         = onhand2.organization_id
+  and mic.category_set_id (+)         = onhand2.category_set_id
+  -- Need to group by due to possibility for having multiple cost groups by subinventory
+  group by
+  onhand2.organization_id,
+  onhand2.category_organization_id,
+  onhand2.category_set_id,
+  mic.category_id,
+  onhand2.inventory_item_id,
+  onhand2.concatenated_segments,
+  onhand2.description,
+  onhand2.primary_uom_code,
+  onhand2.inventory_item_status_code,
+  onhand2.item_type,
+  onhand2.period_name,
+  onhand2.subinventory_code
+ ) onhand
+ -- End revision for version 1.19
+-- ========================================================================
+-- Subinventory, mtl parameter, item master and period close snapshot joins
+-- ========================================================================
+where mp.organization_id              = onhand.organization_id
+and muomv.uom_code                  = onhand.primary_uom_code
+and misv.inventory_item_status_code = onhand.inventory_item_status_code
+and mp.category_organization_id is not null
+-- Revision for version 1.19
+and onhand.subinventory_code        = msub.secondary_inventory_name (+)
+and onhand.organization_id          = msub.organization_id (+)
+-- ===========================================
+-- Accounting code combination joins
+-- ===========================================
+--- Revision for version 1.19
+and va.material_account             = gcc.code_combination_id (+)
+and va.secondary_inventory_name (+) = onhand.subinventory_code 
+and va.organization_id (+)          = onhand.organization_id
+and va.category_set_id (+)          = onhand.category_set_id
+and va.category_id (+)              = onhand.category_id
+and va.valuation_type (+)           = 'Category Accounting'
+-- End revision for version 1.19
+-- ===========================================
+-- Cost Type Joins
+-- Revision for version 1.12
+-- ===========================================
+and 5=5    -- p_cost_type
+and cct.cost_type_id                = cic.cost_type_id
+-- Revision for version 1.16 and 1.19
+and cic.organization_id (+)         = onhand.organization_id
+and cic.inventory_item_id (+)       = onhand.inventory_item_id
+-- End for revision for version 1.16 and 1.19
+-- ===========================================
+-- Lookup Codes
+-- ===========================================
+-- Revision for version 1.13
+and fcl.lookup_code (+)             = onhand.item_type
+and fcl.lookup_type (+)             = 'ITEM_TYPE'
+-- Revision for version 1.16
+and ml1.lookup_code                 = 3 -- Intransit
+and ml1.lookup_type                 = 'MSC_CALENDAR_TYPE'
+-- Revision for version 1.19
+and ml2.lookup_code                 = nvl(msub.asset_inventory,1)
+and ml2.lookup_type                 = 'SYS_YES_NO'
+-- ===========================================
+-- Revision for version 1.12
+-- Run this query if the Cost Type parameter 
+-- is not null, use the Cost Type Costs
+-- to get the reported inventory value.
+-- ===========================================
+and decode(:p_cost_type,            -- p_cost_type
+  null, 'do not use snapshot values', 
+  'use cost type values') =  'use cost type values'
+order by 1,2,3,5,6,7,8,9,10,11,12,20

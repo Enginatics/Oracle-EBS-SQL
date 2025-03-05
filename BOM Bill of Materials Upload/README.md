@@ -15,13 +15,12 @@ The functionality does not support the creation and update of Common Bills.
 Upload Mode, Organization Code, Restrict Organization, Assembly, Alternate BOM, Include Sub-Assemblies, Implemented Only, Display, Effective Date
 
 ## Used tables
-[mtl_item_locations_kfv](https://www.enginatics.com/library/?pg=1&find=mtl_item_locations_kfv), [bom_bill_of_materials](https://www.enginatics.com/library/?pg=1&find=bom_bill_of_materials), [bom_inventory_components](https://www.enginatics.com/library/?pg=1&find=bom_inventory_components), [bom](https://www.enginatics.com/library/?pg=1&find=bom), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters), [bom_substitute_components](https://www.enginatics.com/library/?pg=1&find=bom_substitute_components), [mtl_system_items_b](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_b), [bom_tree](https://www.enginatics.com/library/?pg=1&find=bom_tree), [bom_subst](https://www.enginatics.com/library/?pg=1&find=bom_subst), [item_dff](https://www.enginatics.com/library/?pg=1&find=item_dff)
+[mtl_item_locations_kfv](https://www.enginatics.com/library/?pg=1&find=mtl_item_locations_kfv), [bom_bill_of_materials](https://www.enginatics.com/library/?pg=1&find=bom_bill_of_materials), [bom_inventory_components](https://www.enginatics.com/library/?pg=1&find=bom_inventory_components), [bom](https://www.enginatics.com/library/?pg=1&find=bom), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters), [bom_substitute_components](https://www.enginatics.com/library/?pg=1&find=bom_substitute_components)
 
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Upload](https://www.enginatics.com/library/?pg=1&category[]=Upload)
 
-## Related reports
-[FND Attached Documents](/FND%20Attached%20Documents/)
+
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

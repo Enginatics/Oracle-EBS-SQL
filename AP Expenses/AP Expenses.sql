@@ -27,8 +27,8 @@ nvl(aerha.report_submitted_date,aerha.creation_date) report_submitted_date,
 initcap(aerha.receipts_status) original_receipt_status,
 aerha.receipts_received_date,
 &image_receipt_columns
-xxen_util.meaning(case when aerha.audit_code in ('PAPERLESS_AUDIT','RECEIPT_BASED') and nvl(aerha.workflow_approved_flag,'M') in ('N','M') then 'Y' else 'N' end,'YES_NO',0) requires_audit,
-xxen_util.meaning(nvl2(aaq.auditor_id,'Y','N'),'YES_NO',0) auditor_assigned,
+xxen_util.meaning(case when aerha.audit_code in ('PAPERLESS_AUDIT','RECEIPT_BASED') and nvl(aerha.workflow_approved_flag,'M') in ('N','M') then 'Y' end,'YES_NO',0) requires_audit,
+xxen_util.meaning(nvl2(aaq.auditor_id,'Y',null),'YES_NO',0) auditor_assigned,
 ap_web_audit_utils.get_audit_reason(aerha.report_header_id) audit_reason,
 decode(aaq.auditor_id,-1,fnd_message.get_string('SQLAP','OIE_AUD_FALLBACK_AUDITOR'),xxen_util.user_name(aaq.auditor_id)) auditor,
 xxen_util.meaning(nvl(aerha.audit_code,'AUDIT'),'OIE_AUDIT_TYPES',200) audit_type,
@@ -60,7 +60,6 @@ aca.stopped_date is null
 ) payment_date,
 &lines_columns
 &per_diem_columns
-&proj_tasks_columns
 aerha.expense_report_id
 from
 gl_ledgers gl,
@@ -73,7 +72,9 @@ ap_suppliers aps,
 ap_invoices_all aia,
 (select aerla.* from ap_expense_report_lines_all aerla where '&show_lines'='Y') aerla,
 &per_diem_table
-(select aerda.* from ap_exp_report_dists_all aerda where '&show_protasks'='Y') aerda
+(select aerda.* from ap_exp_report_dists_all aerda where '&show_lines'='Y') aerda,
+gl_code_combinations_kfv gcck2,
+gms_awards_all gaa
 &proj_tasks_tables
 where
 1=1 and
@@ -86,5 +87,7 @@ aerha.vouchno=aia.invoice_id(+) and
 aerha.report_header_id=aaq.expense_report_id(+) and
 aerha.report_header_id=aerla.report_header_id(+) and
 &per_diem_join
-aerla.report_line_id=aerda.report_line_id(+)
+aerla.report_line_id=aerda.report_line_id(+) and
+aerda.code_combination_id=gcck2.code_combination_id(+) and
+aerda.award_id=gaa.award_id(+)
 &proj_tasks_joins

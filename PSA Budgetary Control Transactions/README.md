@@ -33,7 +33,7 @@ Ledger Name, Period From, Period To, JE Batch Name, Account From, Account To, Fu
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related reports
-[CAC Intransit Value (Real-Time)](/CAC%20Intransit%20Value%20%28Real-Time%29/), [CAC Last Standard Item Cost](/CAC%20Last%20Standard%20Item%20Cost/)
+[CAC AP Accrual IR ISO Match Analysis](/CAC%20AP%20Accrual%20IR%20ISO%20Match%20Analysis/), [CAC AP Accrual Reconciliation Summary by Match Type](/CAC%20AP%20Accrual%20Reconciliation%20Summary%20by%20Match%20Type/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

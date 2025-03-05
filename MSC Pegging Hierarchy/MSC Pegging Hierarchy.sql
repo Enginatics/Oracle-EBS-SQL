@@ -708,4 +708,94 @@ from
    from
     (select distinct
       med.number1,
-      med.sr_i
+      med.sr_instance_id,
+      med.plan_id,
+      med.organization_id,
+      med.inventory_item_id,
+      flvv.meaning exception_type_meaning
+     from
+      msc_exception_details&a2m_dblink med,
+      fnd_lookup_values_vl&a2m_dblink flvv
+     where
+         med.exception_type      in (1,2,3,4,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29)
+     and flvv.lookup_type         = 'MRP_EXCEPTION_CODE_TYPE'
+     and flvv.view_application_id = 700
+     and flvv.lookup_code         = med.exception_type
+    ) med
+   where
+       med.sr_instance_id       = mfp.sr_instance_id
+   and med.plan_id              = mfp.plan_id
+   and med.number1              = mfp.transaction_id
+   and med.organization_id      = mfp.organization_id
+   and med.inventory_item_id    = mfp.inventory_item_id
+  ) exceptions
+ from
+  q_msc_full_pegging                mfp,
+  msc_apps_instances&a2m_dblink     mai,
+  msc_plans&a2m_dblink              mp,
+  msc_plan_organizations&a2m_dblink mpo,
+  msc_item_categories&a2m_dblink    mic,
+  msc_category_sets&a2m_dblink      mcs,
+  msc_supplies&a2m_dblink           ms,
+  msc_demands&a2m_dblink            md,
+  msc_full_pegging&a2m_dblink       mfpe,
+  msc_plan_organizations&a2m_dblink mpoe,
+  msc_system_items&a2m_dblink       msie,
+  msc_demands&a2m_dblink            mde
+  --
+ where
+     mfp.sr_instance_id       = mai.instance_id
+ --
+ and mfp.sr_instance_id       = mp.sr_instance_id
+ and mfp.plan_id              = mp.plan_id
+ --
+ and mfp.sr_instance_id       = mpo.sr_instance_id
+ and mfp.plan_id              = mpo.plan_id
+ and mfp.organization_id      = mpo.organization_id
+ --
+ and mfp.sr_instance_id       = mic.sr_instance_id
+ and mfp.organization_id      = mic.organization_id
+ and mfp.inventory_item_id    = mic.inventory_item_id
+ and mic.category_set_id      = mcs.category_set_id
+ and (   mcs.category_set_name = :p_category_set_name
+      or (:p_category_set_name is null and mcs.default_flag = 1)
+     )
+ --
+ --
+ and mfp.sr_instance_id       = ms.sr_instance_id (+)
+ and mfp.plan_id              = ms.plan_id (+)
+ and mfp.transaction_id       = ms.transaction_id (+)
+ --
+ and mfp.sr_instance_id       = md.sr_instance_id (+)
+ and mfp.plan_id              = md.plan_id (+)
+ and mfp.demand_id            = md.demand_id (+)
+ --
+ and mfp.sr_instance_id       = mfpe.sr_instance_id (+)
+ and mfp.plan_id              = mfpe.plan_id (+)
+ and mfp.end_pegging_id       = mfpe.pegging_id (+)
+ and mfpe.sr_instance_id      = mpoe.sr_instance_id (+)
+ and mfpe.plan_id             = mpoe.plan_id (+)
+ and mfpe.organization_id     = mpoe.organization_id (+)
+ and mfpe.sr_instance_id      = msie.sr_instance_id (+)
+ and mfpe.plan_id             = msie.plan_id (+)
+ and mfpe.organization_id     = msie.organization_id (+)
+ and mfpe.inventory_item_id   = msie.inventory_item_id (+)
+ and mfpe.sr_instance_id      = mde.sr_instance_id (+)
+ and mfpe.plan_id             = mde.plan_id (+)
+ and mfpe.demand_id           = mde.demand_id (+)
+ --
+ and 1=1
+) x
+) y
+where
+ 4=4
+order by
+ instance,
+ plan,
+ demand_organization,
+ is_bom desc,
+ end_peg_demand_date         nulls last,
+ end_peg_demand_origination  nulls last,
+ end_peg_demand_order_number nulls last,
+ end_pegging_id,
+ seq

@@ -42,6 +42,7 @@ pp.parent_table='PER_ALL_PEOPLE_F' and
 :effective_date between pp.date_from and nvl(pp.date_to,sysdate)
 ) phone_number,
 papf2.full_name supervisor_name,
+papf2.email_address supervisor_email,
 paaf.assignment_number,
 decode(paaf.assignment_type,
 'A','Applicant',

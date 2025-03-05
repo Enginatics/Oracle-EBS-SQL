@@ -77,6 +77,17 @@ x.last_update_date,
 x.header_id
 from
 (
+select
+-- order
+ooh.*,
+-- invoice
+jrrev2.resource_name invoice_salesperson,
+rcta.trx_number invoice_number,
+rcta.trx_date invoice_date,
+rctlgda.gl_date invoice_gl_date,
+xxen_util.meaning(max(rcta.status_trx) keep (dense_rank first order by rcta.customer_trx_id desc nulls last) over (partition by ooh.header_id),'PAYMENT_SCHEDULE_STATUS',222) invoice_status
+from
+(
 select distinct
 haouv.name operating_unit,
 hp.party_name customer,
@@ -96,7 +107,6 @@ nvl(oola.cust_po_number,ooha.cust_po_number) customer_po,
 xxen_util.client_time(ooha.ordered_date) ordered_date,
 (select qlhv.name from qp_list_headers_vl qlhv where ooha.price_list_id=qlhv.list_header_id) price_list,
 jrrev.resource_name salesperson,
-max(jrrev2.resource_name) keep (dense_rank first order by rcta.customer_trx_id desc nulls last) over (partition by oola.header_id) invoice_salesperson,
 oos.name order_source,
 ooha.orig_sys_document_ref order_source_reference,
 xxen_util.meaning(ooha.flow_status_code,'FLOW_STATUS',660) header_status,
@@ -106,11 +116,6 @@ sum(decode(oola.cancelled_flag,'N',oola.tax_amount)) over (partition by oola.hea
 sum(decode(oola.cancelled_flag,'N',oola.line_charges)) over (partition by oola.header_id) line_charges_total,
 (select sum(decode(opa.credit_or_charge_flag,'C',-1,1)*opa.operand) from oe_price_adjustments opa where ooha.header_id=opa.header_id and opa.line_id is null and opa.list_line_type_code='FREIGHT_CHARGE' and opa.applied_flag='Y') header_charges,
 (select rtv.name from ra_terms_vl rtv where ooha.payment_term_id=rtv.term_id) payment_terms,
-max(rcta.trx_number) keep (dense_rank first order by rcta.customer_trx_id desc nulls last) over (partition by oola.header_id) invoice_number,
-max(rcta.trx_date) keep (dense_rank first order by rcta.customer_trx_id desc nulls last) over (partition by oola.header_id) invoice_date,
-max(rctlgda0.gl_date) keep (dense_rank first order by rcta.customer_trx_id desc nulls last) over (partition by oola.header_id) invoice_gl_date,
-xxen_util.meaning(max(rcta.status_trx) keep (dense_rank first order by rcta.customer_trx_id desc nulls last) over (partition by oola.header_id),'PAYMENT_SCHEDULE_STATUS',222) invoice_status,
-sum(rctla.extended_amount) over (partition by oola.header_id) invoiced_amount,
 mp.organization_code warehouse,
 xxen_util.meaning(ooha.shipping_method_code,'SHIP_METHOD',3) ship_method,
 xxen_util.meaning(ooha.customer_preference_set_code,'REQUEST_DATE_TYPE',660) line_set,
@@ -125,6 +130,7 @@ sum(oola.extended_price) over (partition by oola.header_id) extended_price,
 sum(oola.line_charges) over (partition by oola.header_id) line_charges,
 max(oola.tax_code) over (partition by oola.header_id) tax_code,
 sum(oola.tax_amount) over (partition by oola.header_id) tax_amount,
+sum(oola.invoiced_amount) over (partition by oola.header_id) invoiced_amount,
 xxen_util.client_time(min(oola.request_date) over (partition by oola.header_id)) request_date,
 xxen_util.client_time(min(oola.promise_date) over (partition by oola.header_id)) promise_date,
 xxen_util.client_time(min(oola.schedule_ship_date) over (partition by oola.header_id)) schedule_ship_date,
@@ -138,7 +144,8 @@ xxen_util.user_name(ooha.last_updated_by) last_updated_by,
 xxen_util.client_time(ooha.last_update_date) last_update_date,
 ooha.header_id,
 ooha.ship_to_org_id,
-ooha.invoice_to_org_id
+ooha.invoice_to_org_id,
+max(oola.last_trx_id)  over (partition by oola.header_id) last_trx_id
 from
 hr_all_organization_units_vl haouv,
 oe_order_headers_all ooha,
@@ -157,6 +164,26 @@ opa.list_line_type_code='FREIGHT_CHARGE' and
 opa.applied_flag='Y'
 ) line_charges,
 max(oola.open_flag) over (partition by oola.header_id) max_open_flag,
+(
+select
+sum(rctla.extended_amount)
+from
+ra_customer_trx_lines_all rctla
+where
+rctla.interface_line_context in ('INTERCOMPANY','ORDER ENTRY') and
+rctla.interface_line_attribute6 = to_char(oola.line_id) and
+exists (select null from ra_cust_trx_line_gl_dist_all rctlgda where 2=2 and rctlgda.customer_trx_id=rctla.customer_trx_id and rctlgda.account_class='REC' and rctlgda.latest_rec_flag='Y')
+) invoiced_amount,
+(
+select
+max(rctla.customer_trx_id)
+from
+ra_customer_trx_lines_all rctla
+where
+rctla.interface_line_context in ('INTERCOMPANY','ORDER ENTRY') and
+rctla.interface_line_attribute6 = to_char(oola.line_id) and
+exists (select null from ra_cust_trx_line_gl_dist_all rctlgda where 2=2 and rctlgda.customer_trx_id=rctla.customer_trx_id and rctlgda.account_class='REC' and rctlgda.latest_rec_flag='Y')
+) last_trx_id,
 oola.*
 from
 oe_order_lines_all oola
@@ -166,12 +193,7 @@ hz_cust_accounts hca,
 hz_parties hp,
 oe_order_sources oos,
 jtf_rs_salesreps jrs,
-jtf_rs_salesreps jrs2,
 jtf_rs_resource_extns_vl jrrev,
-jtf_rs_resource_extns_vl jrrev2,
-ra_customer_trx_lines_all rctla,
-ra_customer_trx_all rcta,
-(select rctlgda.* from ra_cust_trx_line_gl_dist_all rctlgda where rctlgda.account_class='REC' and rctlgda.latest_rec_flag='Y') rctlgda0,
 mtl_parameters mp
 where
 1=1 and
@@ -185,14 +207,19 @@ ooha.header_id=oola.header_id(+) and
 ooha.salesrep_id=jrs.salesrep_id(+) and
 ooha.org_id=jrs.org_id(+) and
 jrs.resource_id=jrrev.resource_id(+) and
-to_char(oola.line_id)=rctla.interface_line_attribute6(+) and
-rctla.interface_line_context(+) in ('INTERCOMPANY','ORDER ENTRY') and
-rctla.customer_trx_id=rcta.customer_trx_id(+) and
-rcta.customer_trx_id=rctlgda0.customer_trx_id(+) and
+ooha.ship_from_org_id=mp.organization_id(+)
+) ooh,
+ra_customer_trx_all rcta,
+(select rctlgda.* from ra_cust_trx_line_gl_dist_all rctlgda where rctlgda.account_class='REC' and rctlgda.latest_rec_flag='Y') rctlgda,
+jtf_rs_salesreps jrs2,
+jtf_rs_resource_extns_vl jrrev2
+where
+2=2 and
+ooh.last_trx_id=rcta.customer_trx_id(+) and
+rcta.customer_trx_id=rctlgda.customer_trx_id(+) and
 rcta.primary_salesrep_id=jrs2.salesrep_id(+) and
 rcta.org_id=jrs2.org_id(+) and
-jrs2.resource_id=jrrev2.resource_id(+) and
-ooha.ship_from_org_id=mp.organization_id(+)
+jrs2.resource_id=jrrev2.resource_id(+)
 ) x,
 hz_cust_site_uses_all hcsua1,
 hz_cust_site_uses_all hcsua2,

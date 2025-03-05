@@ -727,4 +727,56 @@ from
   and hoi_to_org.organization_id      = mp_to.organization_id     -- ship to org for sales and COGS
   and haou_to_org.organization_id     = to_number(hoi_to_org.org_information3) -- gets the operating unit id
   and gl_to_org.ledger_id             = to_number(hoi_to_org.org_information1)
-  and 9=9                             -- p_to_org_ledg
+  and 9=9                             -- p_to_org_ledger
+ ) txns
+ group by
+  txns.from_ledger_id,
+  txns.from_ledger,
+  txns.from_operating_unit_id,
+  txns.from_operating_unit,
+  txns.to_ledger_id,
+  txns.to_ledger,
+  txns.to_operating_unit_id,
+  txns.to_operating_unit,
+  txns.ship_to_org_id,
+  txns.ship_to_org,
+  txns.ship_from_org_id,
+  txns.ship_from_org,
+  txns.from_curr_code,
+  txns.to_curr_code,
+  txns.inventory_item_id,
+  txns.item_number,
+  txns.item_description,
+  txns.item_type,
+  txns.customer,
+  txns.customer_number,
+  txns.so_order_number,
+  txns.so_header_id,
+  txns.so_line_number,
+  txns.so_line_id,
+  txns.line_type_id,
+  txns.transaction_type_id,
+  txns.price_list_id,
+  txns.transaction_type_id,
+  txns.transaction_id,
+  txns.transaction_date,
+  txns.lot_number,
+  txns.currency_code,
+  txns.uom_code
+ ) txns_sum,
+ mtl_transaction_types mtt,
+ oe_transaction_types_tl ottt,
+ qp_list_headers_tl qlh_tl,
+ fnd_common_lookups fcl
+-- Joins for currency codes
+where txns_sum.from_curr_code         = gdr.from_currency(+)
+and txns_sum.to_curr_code           = gdr.to_currency(+)
+and mtt.transaction_type_id         = txns_sum.transaction_type_id
+and ottt.transaction_type_id        = txns_sum.line_type_id
+and ottt.language                   = userenv('lang')
+and qlh_tl.list_header_id           = txns_sum.price_list_id
+and qlh_tl.language                 = userenv('lang')
+and fcl.lookup_code (+)             = txns_sum.item_type
+and fcl.lookup_type (+)             = 'ITEM_TYPE'
+-- Order by From Ledger, From Operating Unit, To Ledger, To Operating Unit, Ship From Org, Ship To Org, Item Number
+order by 1,2,3,4,5,6,7

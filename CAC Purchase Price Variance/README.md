@@ -48,13 +48,12 @@ Ledger:  enter the specific ledger(s) you wish to report (optional).
 Transaction Date From, Transaction Date To, Currency Conversion Type, Category Set 1, Category Set 2, Category Set 3, Item Number, Organization Code, Operating Unit, Ledger
 
 ## Used tables
-[mtl_transaction_accounts](https://www.enginatics.com/library/?pg=1&find=mtl_transaction_accounts), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters), [wip_transaction_accounts](https://www.enginatics.com/library/?pg=1&find=wip_transaction_accounts)
+[mtl_transaction_accounts](https://www.enginatics.com/library/?pg=1&find=mtl_transaction_accounts), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters), [wip_transaction_accounts](https://www.enginatics.com/library/?pg=1&find=wip_transaction_accounts), [ppv_txns](https://www.enginatics.com/library/?pg=1&find=ppv_txns), [rcv_transactions](https://www.enginatics.com/library/?pg=1&find=rcv_transactions), [rcv_shipment_headers](https://www.enginatics.com/library/?pg=1&find=rcv_shipment_headers), [po_headers_all](https://www.enginatics.com/library/?pg=1&find=po_headers_all), [po_lines_all](https://www.enginatics.com/library/?pg=1&find=po_lines_all), [po_line_locations_all](https://www.enginatics.com/library/?pg=1&find=po_line_locations_all), [po_releases_all](https://www.enginatics.com/library/?pg=1&find=po_releases_all), [po_distributions_all](https://www.enginatics.com/library/?pg=1&find=po_distributions_all), [po_vendors](https://www.enginatics.com/library/?pg=1&find=po_vendors), [hr_employees](https://www.enginatics.com/library/?pg=1&find=hr_employees), [gl_code_combinations](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl), [po_requisition_headers_all](https://www.enginatics.com/library/?pg=1&find=po_requisition_headers_all), [po_requisition_lines_all](https://www.enginatics.com/library/?pg=1&find=po_requisition_lines_all), [rcv_shipment_lines](https://www.enginatics.com/library/?pg=1&find=rcv_shipment_lines), [fnd_user](https://www.enginatics.com/library/?pg=1&find=fnd_user)
 
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
-## Related reports
-[CAC Missing WIP Accounting Transactions](/CAC%20Missing%20WIP%20Accounting%20Transactions/)
+
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

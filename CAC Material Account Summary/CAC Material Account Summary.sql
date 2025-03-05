@@ -552,4 +552,217 @@ from    mtl_system_items_vl msiv,
                                 1, mta.base_transaction_value,
                                 0) Matl_Amount,
                         decode(mta.cost_element_id,
-                                2, mta.base_t
+                                2, mta.base_transaction_value,
+                                0) Matl_Ovhd_Amount,
+                        decode(mta.cost_element_id,
+                                3, mta.base_transaction_value,
+                                0) Resource_Amount,
+                        decode(mta.cost_element_id,
+                                4, mta.base_transaction_value,
+                                0) OSP_Amount,
+                        decode(mta.cost_element_id,
+                                5, mta.base_transaction_value,
+                                0) Overhead_Amount,
+                        -- End revision for version 1.13
+                        mta.base_transaction_value mta_amount
+                        -- Revision for version 1.28
+                        &p_show_pii3
+                 from   mtl_transaction_accounts mta,
+                        mtl_material_transactions mmt,
+                        mtl_parameters mp,
+                        -- Revision for version 1.25
+                        wip_entities we,
+                        wip_accounting_classes wac,
+                        wip_discrete_jobs wdj,
+                        wip_flow_schedules wfs,
+                        mtl_system_items_vl msiv2,
+                        mfg_lookups ml1, -- Accounting Line Type
+                        mfg_lookups ml3, -- Class Type
+                        mfg_lookups ml4  -- WIP Type
+                        -- End revision for version 1.25
+                 -- ========================================================
+                 -- Material Transaction, date, wip job, org and item joins
+                 -- ========================================================
+                 where  mta.transaction_id              = mmt.transaction_id
+                 and    mp.organization_id              = mta.organization_id
+                 and    mta.transaction_source_type_id  = 5
+                 -- This gets rid of the full table scan on wip_entities
+                 and    wdj.wip_entity_id (+)           = mta.transaction_source_id
+                 and    wdj.organization_id (+)         = mta.organization_id
+                 and    wfs.wip_entity_id (+)           = mta.transaction_source_id
+                 and    wfs.organization_id (+)         = mta.organization_id
+                 and    we.wip_entity_id  (+)           = mta.transaction_source_id
+                 and    wac.class_code                  = nvl(wdj.class_code, wfs.class_code)
+                 and    wac.organization_id             = mp.organization_id
+                 and    we.primary_item_id              = msiv2.inventory_item_id
+                 and    we.organization_id              = msiv2.organization_id
+                 and    ml1.lookup_type                 = 'CST_ACCOUNTING_LINE_TYPE'
+                 and    ml1.lookup_code                 = mta.accounting_line_type
+                 and    ml3.lookup_type (+)             = 'WIP_CLASS_TYPE'
+                 and    ml3.lookup_code (+)             = wac.class_type
+                 and    ml4.lookup_type (+)             = 'WIP_ENTITY'
+                 and    ml4.lookup_code (+)             = we.entity_type
+                 -- to use the mmt index N1 by inventory_item_id, organization_id and date
+                 and    mmt.inventory_item_id           = mta.inventory_item_id
+                 and    2=2                             -- p_trx_date_from, p_trx_date_to
+                 and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
+                 and    3=3                             -- p_org_code
+                 and    4=4                             -- p_item_number
+                 &only_non_wip_sources2
+                 -- and        1 = 2 -- invalidate this WIP select statement
+                 -- End revision for version 1.25
+                ) acct_dist2
+        where   acct_dist2.organization_id       = wro_pii.organization_id (+)
+        and     acct_dist2.inventory_item_id     = wro_pii.primary_item_id (+)
+        and     acct_dist2.transaction_source_id = wro_pii.wip_entity_id (+)
+        and     acct_dist2.transaction_source_type_id = wro_pii.transaction_source_type_id (+)
+        -- Revision for version 1.26
+        &pii_table_joins
+        &mtl_sla_table_joins
+         group by
+                acct_dist2.organization_code,
+                acct_dist2.ship_from_org,
+                acct_dist2.ship_to_org,
+                acct_dist2.organization_id,
+                acct_dist2.ship_from_org_id,
+                acct_dist2.ship_to_org_id,
+                acct_dist2.fob_point,
+                acct_dist2.acct_period_id,
+                &group_by_non_sla
+                &group_by_sla
+                acct_dist2.inventory_item_id,
+                acct_dist2.transaction_source_type_id,
+                acct_dist2.transaction_type_id,
+                -- Revision for version 1.25
+                &group_by_subinventory2
+                &group_by_project2
+                &group_by_wip_job2
+                &group_by_pii2
+                acct_dist2.accounting_line_type
+        ) acct_dist
+-- ========================================================
+-- Material Transaction, org and item joins
+-- ========================================================
+where   msiv.organization_id             = acct_dist.organization_id
+and     msiv.inventory_item_id           = acct_dist.inventory_item_id
+and     mtt.transaction_type_id          = acct_dist.transaction_type_id
+-- Revision for version 1.14
+-- Join to mta instead of mmt for faster performance
+-- and  mmt.transaction_source_type_id   = mtst.transaction_source_type_id
+and     mtst.transaction_source_type_id  = acct_dist.transaction_source_type_id
+-- Revision for version 1.21
+and     msiv.primary_uom_code            = muomv.uom_code
+-- Revision for version 1.22
+and     msiv.inventory_item_status_code  = misv.inventory_item_status_code
+and     oap.acct_period_id               = acct_dist.acct_period_id
+-- Revision for version 1.27
+-- This join does not work with interorg transfers
+-- and        oap.organization_id              = acct_dist.organization_id
+-- Revision for version 1.26
+and     acct_dist.inventory_item_id      = pii.inventory_item_id (+)
+and     acct_dist.organization_id        = pii.organization_id (+)
+-- End revision for version 1.26
+-- ========================================================
+-- Revision for version 1.25, Dynamic SQL joins
+-- ========================================================
+&subinv_table_joins
+&project_table_joins
+-- ========================================================
+-- using base tables for organization information
+-- ========================================================
+and     hoi.org_information_context      = 'Accounting Information'
+and     hoi.organization_id              = acct_dist.organization_id
+and     hoi.organization_id              = haou.organization_id   -- this gets the organization name
+and     haou2.organization_id            = to_number(hoi.org_information3) -- this gets the operating unit id
+and     gl.ledger_id                     = to_number(hoi.org_information1) -- get the ledger_id
+and     1=1                              -- p_operating_unit, p_ledger
+&subledger_join
+-- ========================================================
+-- Revision for version 1.8
+-- Joins for From and To Operating Units
+-- ========================================================
+and     hoi_from.org_information_context = 'Accounting Information'
+and     hoi_from.organization_id         = acct_dist.ship_from_org_id
+and     hoi_from.organization_id         = haou_from.organization_id   -- this gets the organization name
+and     haou2_from.organization_id       = to_number(hoi_from.org_information3) -- this gets the operating unit id
+and     hoi_to.org_information_context   = 'Accounting Information'
+and     hoi_to.organization_id           = acct_dist.ship_to_org_id
+and     hoi_to.organization_id           = haou_to.organization_id   -- this gets the organization name
+and     haou2_to.organization_id         = to_number(hoi_to.org_information3) -- this gets the operating unit id
+-- ========================================================
+-- Lookup values to see more detail
+-- ========================================================
+and     fcl.lookup_code (+)              = msiv.item_type
+and     fcl.lookup_type (+)              = 'ITEM_TYPE'
+and     ml1.lookup_type                  = 'CST_ACCOUNTING_LINE_TYPE'
+and     ml1.lookup_code                  = acct_dist.accounting_line_type
+-- Revision for version 1.23
+and     ml2.lookup_type                  = 'MTL_PLANNING_MAKE_BUY'
+and     ml2.lookup_code                  = msiv.planning_make_buy_code
+-- Revision for version 1.17, outer join for CCIDs
+and     gcc.code_combination_id (+)      = acct_dist.code_combination_id
+-- ==========================================================
+group by 
+        nvl(gl.short_name, gl.name),
+  &group_by_subledger
+        haou2.name,
+        acct_dist.organization_code,
+        -- Revision for version 1.8
+        haou2_from.name, -- From OU
+        haou2_to.name, -- To OU
+        -- Revision for version 1.19
+        acct_dist.fob_point, -- FOB Point
+        -- End revision for version 1.8
+        -- Revision for version 1.5
+        acct_dist.ship_from_org,
+        acct_dist.ship_to_org,
+        -- End revision for version 1.5
+        -- Revision for version 1.25
+        -- ah.period_name,
+        oap.period_name,
+        -- End revision for version 1.25
+        &segment_columns_grp
+        msiv.concatenated_segments,
+        msiv.description,
+        -- Revision for version 1.19
+        fcl.meaning, -- item_type
+        -- Revision for version 1.22
+        misv.inventory_item_status_code,
+        -- Revision for version 1.23
+        ml2.meaning, -- make_buy_code
+        -- Revision for version 1.12 and 1.24
+        acct_dist.organization_id,
+        acct_dist.inventory_item_id,
+        -- End revision for version 1.12 and 1.24
+        -- Revision for version 1.11
+        ml1.meaning, -- accounting line type
+        mtt.transaction_type_name,
+        -- Revision for version 1.13
+        mtst.transaction_source_type_name,
+        -- Revision for version 1.25
+        &group_by_subinventory        
+        &group_by_project
+        &group_by_wip_job
+        muomv.uom_code,
+        -- Revision for version 1.26
+        &group_by_pii
+        gl.currency_code
+-- Revision for version 1.15
+order by
+        nvl(gl.short_name, gl.name), -- Ledger
+  &order_by_subledger
+        haou2.name, -- Operating_Unit
+        acct_dist.organization_code, -- Org_Code
+        -- Revision for version 1.25
+        -- ah.period_name,
+        oap.period_name,
+        -- End revision for version 1.25
+        &segment_columns_grp
+        msiv.concatenated_segments, -- Item_Number
+        ml1.meaning, -- Accounting Line Type
+        mtt.transaction_type_name
+        -- Revision for version 1.25
+        &order_by_subinventory
+        &order_by_project
+        &order_by_wip_job
+        ,acct_dist.organization_id

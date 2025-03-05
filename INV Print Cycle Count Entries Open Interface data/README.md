@@ -15,8 +15,7 @@ Organization Code, Cycle Count Name, Request Id, Action Code, Count Date From, C
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
-## Related reports
-[CAC Receiving Value (Period-End)](/CAC%20Receiving%20Value%20%28Period-End%29/), [INV Cycle count open requests listing](/INV%20Cycle%20count%20open%20requests%20listing/)
+
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

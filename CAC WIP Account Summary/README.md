@@ -55,7 +55,7 @@ Transaction Date From, Transaction Date To, Show SLA Accounting, Show Projects, 
 [Cost Accounting - Transactions](https://www.enginatics.com/library/?pg=1&category[]=Cost%20Accounting%20-%20Transactions), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related reports
-[CAC Manufacturing Variance Detail](/CAC%20Manufacturing%20Variance%20Detail/), [CAC WIP Account Detail](/CAC%20WIP%20Account%20Detail/), [CAC WIP Resource Efficiency](/CAC%20WIP%20Resource%20Efficiency/), [CAC WIP Resource Efficiency with Method and Lot Variances](/CAC%20WIP%20Resource%20Efficiency%20with%20Method%20and%20Lot%20Variances/)
+[CAC WIP Account Detail](/CAC%20WIP%20Account%20Detail/), [CAC WIP Resource Efficiency](/CAC%20WIP%20Resource%20Efficiency/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

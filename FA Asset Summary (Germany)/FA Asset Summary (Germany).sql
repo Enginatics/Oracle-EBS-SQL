@@ -26,6 +26,7 @@ select
  x.book_class,
  x.asset_number,
  x.asset_description,
+ x.asset_key,
  x.date_placed_in_service,
  x.life_in_months,
 case when x.life_in_months is not null then to_char(fnd_number.canonical_to_number((lpad(substr(to_char(trunc(x.life_in_months/12,0),'999'),2,3),3,' ') || '.' || substr(to_char(mod(x.life_in_months,12),'00'),2,2))),'990D99') end life_yr_mo,
@@ -68,6 +69,7 @@ from
    fl.meaning book_class,
    fadd.asset_number asset_number,
    fadd.description asset_description,
+   fakk.concatenated_segments asset_key,
    trunc(fb.date_placed_in_service) date_placed_in_service,
    fb.life_in_months,
    (select
@@ -113,6 +115,7 @@ from
    fa_categories_b fc,
    fa_category_books fcb,
    fa_additions fadd,
+   fa_asset_keywords_kfv fakk,
    fa_deprn_periods fdp1,
    fa_deprn_periods fdp2,
    fa_book_controls_sec fbcs,
@@ -125,6 +128,7 @@ from
    and fah.asset_id = fadd.asset_id
    and fbcs.book_type_code = fb.book_type_code
    and fb.asset_id = fadd.asset_id
+   and fadd.asset_key_ccid = fakk.code_combination_id(+)
    and fb.transaction_header_id_in =
     (select
       max(fb2.transaction_header_id_in)
@@ -161,6 +165,7 @@ group by
  x.book_class,
  x.asset_number,
  x.asset_description,
+ x.asset_key,
  x.date_placed_in_service,
  x.life_in_months,
  x.remaining_life_in_months,
@@ -194,6 +199,7 @@ select
  fs.book_name,
  fs.asset_number,
  fs.asset_description,
+ fs.asset_key,
  fs.date_placed_in_service,
  fs.life_in_months,
  fs.life_yr_mo,
@@ -239,7 +245,8 @@ select
  fs.book_name || ' (' || fs.book_class || ')' book_label,
  fs.company || ' - ' || fs.company_description company_label,
  fs.account || ' - ' || fs.account_description account_label,
- fs.cost_center || ' - ' || fs.cost_center_description cost_centre_label
+ fs.cost_center || ' - ' || fs.cost_center_description cost_centre_label,
+ fs.asset_key||' - '||fs.asset_description asset_key_description
 from
  fa_summary fs
 order by

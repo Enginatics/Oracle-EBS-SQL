@@ -211,6 +211,7 @@ x.province,
 x.postal_code,
 x.addressee,
 x.identifying_address_flag,
+x.edi_location,
 x.site_use,
 x.site_tax_registration_number,
 x.primary_flag,
@@ -511,6 +512,7 @@ hl.province,
 hl.postal_code,
 hps.addressee,
 xxen_util.meaning(decode(hps.identifying_address_flag,'Y','Y'),'YES_NO',0) identifying_address_flag,
+hcasa.ece_tp_location_code edi_location,
 xxen_util.meaning(hcsua.site_use_code,'SITE_USE_CODE',222) site_use,
 xxen_util.meaning(hcsua.primary_flag,'YES_NO',0) primary_flag,
 xxen_util.meaning(hcsua.ship_partial,'YES_NO',0) ship_partial,
@@ -712,4 +714,32 @@ nvl2(:show_debit_auth,ba.bank_account_id,null) = ida.external_bank_account_id (+
 ) and
 --
 nvl2(:show_contacts,x.cust_account_id,0) = ctct.cust_account_id (+) and
-nvl(x.cust_acct_site_id,-
+nvl(x.cust_acct_site_id,-99) = nvl(ctct.cust_acct_site_id,nvl(x.cust_acct_site_id,-99)) and
+(:show_contacts = 'Y' or
+ ctct.cust_account_role_id is null or
+ ctct.status = 'A'
+) and
+2=2
+order by
+x.party_name,
+x.party_number,
+x.account_number,
+x.operating_unit,
+x.country,
+x.address,
+x.site_use,
+nvl2(zr.party_site_id,2,1),
+nvl2(rcrm.site_use_id,2,1),
+nvl2(ba.site_use_id,2,1),
+ba.bank_name,
+ba.bank_number,
+ba.bank_branch_name,
+ba.bank_branch_number,
+ba.bank_acct_name,
+ba.bank_acct_num,
+ida.priority,
+nvl2(ctct.cust_acct_site_id,2,1),
+ctct.contact_last_name,
+ctct.contact_first_name,
+ctct.contact_prefix,
+nvl2(zr.party_site_id,2,1)

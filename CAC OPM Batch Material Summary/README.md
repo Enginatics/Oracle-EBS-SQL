@@ -1,45 +1,42 @@
-# [CAC WIP Material Usage with Configuration and Lot Variances](https://www.enginatics.com/reports/cac-wip-material-usage-with-configuration-and-lot-variances/)
+# [CAC OPM Batch Material Summary](https://www.enginatics.com/reports/cac-opm-batch-material-summary/)
 
 ## Description: 
-Report your material usage variances for your open and closed WIP jobs.  If the job is open the Report Type column displays "Valuation" as this WIP job and potential material usage variance is still in your WIP inventory balances.  If the job has been closed during the reporting period, the Report Type column displays "Variance" as this WIP job was written off on a WIP Job Close Variance transaction.  You can report prior periods and this report will automatically adjust the assembly completion quantities and component issue quantities to reflect the quantities for the specified accounting period, as well as report only jobs which were open or closed during that prior period.
-
-Closed, Pending Close, Cancelled, Complete and Complete No Charges WIP job statuses use the completion quantities.  All other WIP jobs use the parameter "Use Completion Quantities".  And if you use Standard Costing, for standard discrete jobs this report also shows your configuration variances; the difference between your WIP BOM and your primary or standard BOM.  Non-standard jobs usually do not have configuration variances, as they are "non-standard" without standard BOM requirements.
+Report showing Batch materials in summary for each product, byproduct and ingredient.  Displaying batches which were open during the monthly inventory accounting period or batches which were closed during the monthly inventory accounting period.  If you enter a cost type this report uses the item costs from the cost type; if you leave the cost type blank it uses the item costs from the month-end item costs.
 
 Parameters:
 ==========
-Report Option:  Open jobs, Closed jobs or All jobs.  Use this to limit the size of the report.  (mandatory)
-Period Name:  the accounting period you wish to report.  (mandatory)
-Cost Type:  defaults to your Costing Method; if the cost type is missing component costs the report will find any missing item costs from your Costing Method cost type. (optional)
-Include Scrap Quantities:  for calculating your completion quantities and component quantity requirements, include or exclude any scrapped assembly quantities.  (mandatory)
-Include Unreleased Jobs:  include jobs which have not been released and are not started.  (mandatory)
-Include Bulk Supply Items:  include Bulk items to match the results from the Oracle Discrete Job Value Report; exclude knowing that Bulk items are usually not issued to the WIP job.  (mandatory)
-Use Completion Qtys:  for jobs in a released status, use the completion quantities for the material usage and configuration variance calculations.  Useful if you backflush your materials based on your completion quantities.  Complete, Complete - No Charges, Cancelled, Closed, Pending Close or Failed Close alway use the completion quantities in the variance calculations.  (mandatory)
-Config/Lot Variances for Non-Std:  calculate configuration and lot variances for non-standard jobs.
-Include Unimplemented ECOs:  include future BOMs changes. (mandatory)
-Alternate BOM Designator:  if you save your BOMs during your Cost Rollups (based on your Cost Type step ups), use this parameter to get the correct BOMs for the configuration variance calculations.  If you leave this field blank the report uses the latest BOM component effectivity date up to the period close date.  (optional)
-Category Set 1:  any item category you wish (optional).
-Category Set 2:  any item category you wish (optional).
-Class Code:  specific type of WIP class to report (optional).
-Job Status:  specific WIP job status (optional).
-WIP Job:  specific WIP job (optional).
-Assembly Number:  specific assembly number you wish to report (optional)
-Component Number:   specific component item you wish to report (optional)
-Organization Code:  specific inventory organization, defaults to your session's inventory organization (optional).
+Period Name:  enter the monthly inventory accounting period you wish to report (mandatory).
+Cost Type:  enter a Cost Type to value the quantities using the Cost Type item costs; if Cost Type is not entered the report will use the Cost Type from your Fiscal Policies (optional).
+OPM Calendar Code:  choose the OPM Calendar Code which corresponds to the period costs you wish to report (mandatory).
+OPM Period Code:  enter the OPM Period Code which corresponds to the period costs and OPM Calendar Code you wish to report (mandatory).
+Category Sets 1 - 3:  enter up to three item category sets you wish to report (optional).
+Item Number:  specific Product, By-Product or Ingredient you wish to report (optional).
+Batch Number: enter any batch number which is open or was closed within the date range of the OPM Period Code and Calendar Code (optional).
+Batch Status:  to minimize the report size, specify the batch statuses you wish to report (optional).
+Batch Number From:  (optional).
+Batch Number To:  (optional).
+Organization Code:  enter the inventory organization(s), defaults to your session's inventory organization (optional).
+Operating Unit:  enter the operating unit(s) you wish to report (optional).
+Ledger:  enter the ledger(s) you wish to report (optional).
 
--- |  Copyright 2009 - 2022 Douglas Volz Consulting, Inc.
--- |  All rights reserved.  
--- |  Version Modified on Modified  by   Description
--- |  ======= =========== =============== =========================================
--- |  1.0     12 Oct 2020 Douglas Volz    Initial Coding Based on ICP WIP Component Var and ICP WIP
--- |             Component Valuation 
--- |  1.31    12 Oct 2022 Douglas Volz    Fix divide by zero error with the start quantity.
--- |  ======= =========== =============== =========================================
+/* +=============================================================================+
+-- | Copyright 2025 Douglas Volz Consulting, Inc.
+-- | All rights reserved.
+-- | Permission to use this code is granted provided the original author is
+-- | acknowledged. No warranties, express or otherwise is included in this permission.
+-- +=============================================================================+
+-- |
+-- | Version Modified on Modified by Description
+-- | ======= =========== ============== =========================================
+-- | 1.0     22 Jan 2025 Douglas Volz Initial Coding based on client's sample report.
+-- +=============================================================================*/
+
 
 ## Parameters
-Report Option, Period Name, Cost Type, Include Scrap Quantities, Include Unreleased Jobs, Include Bulk Supply Items, Use Completion Quantities, Config/Lot Variances for Non-Std, Include Unimplemented ECOs, Alternate BOM Designator, Category Set 1, Category Set 2, Category Set 3, Organization Code, Class Code, Job Status, WIP Job, Component Number, Assembly Number, Operating Unit, Ledger
+Period Name, Cost Type, OPM Calendar Code, OPM Period Code, Batch Status, Batch Number, Batch Number From, Batch Number To, Category Set 1, Category Set 2, Category Set 3, Item Number, Organization Code, Operating Unit, Ledger
 
 ## Used tables
-[wip_discrete_jobs](https://www.enginatics.com/library/?pg=1&find=wip_discrete_jobs), [org_acct_periods](https://www.enginatics.com/library/?pg=1&find=org_acct_periods), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters), [wip_accounting_classes](https://www.enginatics.com/library/?pg=1&find=wip_accounting_classes), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl), [org_access_view](https://www.enginatics.com/library/?pg=1&find=org_access_view), [wdj0](https://www.enginatics.com/library/?pg=1&find=wdj0), [mtl_material_transactions](https://www.enginatics.com/library/?pg=1&find=mtl_material_transactions), [wdj](https://www.enginatics.com/library/?pg=1&find=wdj), [cst_item_costs](https://www.enginatics.com/library/?pg=1&find=cst_item_costs), [cst_item_cost_details](https://www.enginatics.com/library/?pg=1&find=cst_item_cost_details), [cst_cost_types](https://www.enginatics.com/library/?pg=1&find=cst_cost_types), [wdj_assys](https://www.enginatics.com/library/?pg=1&find=wdj_assys), [dual](https://www.enginatics.com/library/?pg=1&find=dual)
+[gme_batch_header](https://www.enginatics.com/library/?pg=1&find=gme_batch_header), [gme_material_details](https://www.enginatics.com/library/?pg=1&find=gme_material_details), [mtl_uom_conversions_view](https://www.enginatics.com/library/?pg=1&find=mtl_uom_conversions_view), [item_cost](https://www.enginatics.com/library/?pg=1&find=item_cost), [gmf_period_statuses](https://www.enginatics.com/library/?pg=1&find=gmf_period_statuses), [gmf_fiscal_policies](https://www.enginatics.com/library/?pg=1&find=gmf_fiscal_policies), [gmf_calendar_assignments](https://www.enginatics.com/library/?pg=1&find=gmf_calendar_assignments), [org_acct_periods](https://www.enginatics.com/library/?pg=1&find=org_acct_periods), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl), [mtl_item_status_vl](https://www.enginatics.com/library/?pg=1&find=mtl_item_status_vl), [gem_lookups](https://www.enginatics.com/library/?pg=1&find=gem_lookups), [fnd_common_lookups](https://www.enginatics.com/library/?pg=1&find=fnd_common_lookups), [mfg_lookups](https://www.enginatics.com/library/?pg=1&find=mfg_lookups), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters), [hr_organization_information](https://www.enginatics.com/library/?pg=1&find=hr_organization_information), [hr_all_organization_units_vl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_vl), [gl_ledgers](https://www.enginatics.com/library/?pg=1&find=gl_ledgers)
 
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
@@ -50,13 +47,13 @@ Report Option, Period Name, Cost Type, Include Scrap Quantities, Include Unrelea
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 
 # Example Report 
-[CAC WIP Material Usage with Configuration and Lot Variances 11-Oct-2022 233620.xlsx](https://www.enginatics.com/example/cac-wip-material-usage-with-configuration-and-lot-variances/)
+[None](https://www.enginatics.com/example/cac-opm-batch-material-summary/)
 
 # Report SQL
-[www.enginatics.com/reports/cac-wip-material-usage-with-configuration-and-lot-variances/](https://www.enginatics.com/reports/cac-wip-material-usage-with-configuration-and-lot-variances/)
+[www.enginatics.com/reports/cac-opm-batch-material-summary/](https://www.enginatics.com/reports/cac-opm-batch-material-summary/)
 
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
-[CAC_WIP_Material_Usage_with_Configuration_and_Lot_Variances.xml](https://www.enginatics.com/xml/cac-wip-material-usage-with-configuration-and-lot-variances/)
+[CAC_OPM_Batch_Material_Summary.xml](https://www.enginatics.com/xml/cac-opm-batch-material-summary/)
 # Oracle E-Business Suite [Reporting Library](https://www.enginatics.com/library/)
     
 We provide an open source Oracle EBS SQLs as a part of operational and project implementation support [toolkits](https://www.enginatics.com/blitz-report-toolkits/) for rapid Excel reports generation. 

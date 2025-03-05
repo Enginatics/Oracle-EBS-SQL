@@ -4,10 +4,10 @@
 Summary report of Inventory item movement including transaction type, source type, and transaction ID’s.
 
 ## Parameters
-Level, Item, Transaction within Days, Transaction Date From, Transaction Date To, Source Type, Exclude Source Type, Action, Exclude Action, Transaction Type, Exclude Transaction Type, Created By, Exclude Logical Transactions, Organization Code, Subinventory
+Level, Item, Show Subinventory, Include Expense Subinventory, Category Set 1, Category Set 2, Category Set 3, Transaction within Days, Transaction Date From, Transaction Date To, Source Type, Exclude Source Type, Action, Exclude Action, Transaction Type, Exclude Transaction Type, Created By, Exclude Logical Transactions, Organization Code, Subinventory
 
 ## Used tables
-[mtl_material_transactions](https://www.enginatics.com/library/?pg=1&find=mtl_material_transactions), [mtl_transaction_types](https://www.enginatics.com/library/?pg=1&find=mtl_transaction_types), [mtl_txn_source_types](https://www.enginatics.com/library/?pg=1&find=mtl_txn_source_types), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters), [pa_projects_all](https://www.enginatics.com/library/?pg=1&find=pa_projects_all), [pa_tasks](https://www.enginatics.com/library/?pg=1&find=pa_tasks)
+[mtl_material_transactions](https://www.enginatics.com/library/?pg=1&find=mtl_material_transactions), [mtl_transaction_types](https://www.enginatics.com/library/?pg=1&find=mtl_transaction_types), [mtl_txn_source_types](https://www.enginatics.com/library/?pg=1&find=mtl_txn_source_types), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl), [&mtl_subinventory](https://www.enginatics.com/library/?pg=1&find=&mtl_subinventory), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters), [pa_projects_all](https://www.enginatics.com/library/?pg=1&find=pa_projects_all), [pa_tasks](https://www.enginatics.com/library/?pg=1&find=pa_tasks)
 
 ## Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
@@ -18,7 +18,7 @@ Level, Item, Transaction within Days, Transaction Date From, Transaction Date To
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).
 
 # Example Report 
-[INV Material Transactions Summary 27-Jul-2018 213119.xlsx](https://www.enginatics.com/example/inv-material-transactions-summary/)
+[INV Material Transactions Summary 18-Feb-2025 065902.xlsx](https://www.enginatics.com/example/inv-material-transactions-summary/)
 
 # Report SQL
 [www.enginatics.com/reports/inv-material-transactions-summary/](https://www.enginatics.com/reports/inv-material-transactions-summary/)

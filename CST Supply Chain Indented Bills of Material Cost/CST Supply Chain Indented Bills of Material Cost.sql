@@ -80,7 +80,7 @@ select
  csbs.top_organization_id comp_top_organization_id,
  cic.lot_size,
  -- component visible columns
- decode(:p_report_type_type, 1, lpad('.',csbs.bom_level-1,'.')||to_char(csbs.bom_level-1), null) component_level,
+ decode(:p_report_type_type, 1, lpad('.',csbs.bom_level-1,'.')||to_char(csbs.bom_level-1)) component_level,
  bic.operation_seq_num operation_seq,
  msiv.concatenated_segments component,
  msiv.description component_description,
@@ -96,7 +96,7 @@ select
  bic.component_yield_factor yield,
  bic.planning_factor planning_percent,
  msiv.primary_uom_code component_uom,
- decode(:p_report_type_type, 1, csbs.component_quantity, null) component_quantity,
+ decode(:p_report_type_type, 1, csbs.component_quantity) component_quantity,
  cic.shrinkage_rate component_shrinkage_rate,
  csbs.extended_quantity component_extended_quantity,
  nvl( cic.item_cost,0) component_item_unit_cost,
@@ -150,6 +150,7 @@ from
  cst_item_costs              cic,
  mtl_parameters              mp
 where
+2=2 and
  csbs.rollup_id = decode(:p_report_type_type, 1, :p_rollup_id, -1*:p_rollup_id) and
  csbs.bom_level <= :p_report_level_out and
  bp.organization_id (+) = csbs.component_organization_id and
@@ -211,13 +212,13 @@ select
  decode(cicd.basis_resource_id,null,cce.cost_element, ' ' || cce.cost_element) cost_element,
  br.resource_code sub_element,
  nvl(bd.department_code,decode(cicd.source_organization_id,cicd.organization_id,null,mp2.organization_code)) department,
- decode(cicd.cost_element_id, 3, xxen_util.meaning(nvl(br.allow_costs_flag,1),'SYS_YES_NO',700), 4, xxen_util.meaning(nvl(br.allow_costs_flag,1),'SYS_YES_NO',700), to_char(null)) costed,
+ decode(cicd.cost_element_id, 3, xxen_util.meaning(nvl(br.allow_costs_flag,1),'SYS_YES_NO',700), 4, xxen_util.meaning(nvl(br.allow_costs_flag,1),'SYS_YES_NO',700)) costed,
  xxen_util.meaning(cicd.basis_type,'CST_BASIS_SHORT',700) resource_basis,
  br.unit_of_measure resource_uom,
  nvl(cicd.usage_rate_or_amount,0) rate_or_amount,
  decode(cicd.cost_element_id,2,csbs.extended_quantity,5,csbs.extended_quantity,1) * cicd.basis_factor * cicd.net_yield_or_shrinkage_factor basis_factor,
  decode(cicd.cost_element_id,2,1,5,1,csbs.extended_quantity ) * cicd.usage_rate_or_amount extended_rate_or_amount,
- decode(cicd.cost_element_id,3,cicd.resource_rate,4,cicd.resource_rate,to_number(null)) resource_unit_cost,
+ decode(cicd.cost_element_id,3,cicd.resource_rate,4,cicd.resource_rate) resource_unit_cost,
  decode(decode(csbs.phantom_flag,1,1,0) * decode(csbs.assembly_organization_id,csbs.component_organization_id,1,0),
         1, decode(cicd.level_type,
                   2,1,
@@ -712,8 +713,8 @@ assm.assm_rollup_id,
 decode(:p_report_type_type,1,nvl(comp.comp_sort_order,0),0) comp_sort_order_1,
 decode(comp.assembly_item_id,-1,1,2) comp_sort_order_2,
 costs.level_type_code costs_sort_order_1,
-decode(costs.cost_element_id,1,costs.cost_element_id,2,costs.cost_element_id,null) costs_sort_order_2,
-decode(costs.cost_element_id,3,costs.resource_id,4,costs.resource_id,5,costs.basis_resource_id,null ) costs_sort_order_3,
+decode(costs.cost_element_id,1,costs.cost_element_id,2,costs.cost_element_id) costs_sort_order_2,
+decode(costs.cost_element_id,3,costs.resource_id,4,costs.resource_id,5,costs.basis_resource_id) costs_sort_order_3,
 costs.cost_element_id costs_sort_order_4
 from
 q_assembly     assm,

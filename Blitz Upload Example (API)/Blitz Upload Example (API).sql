@@ -4,20 +4,20 @@
 /*                              www.enginatics.com                       */
 /*                                                                       */
 /*************************************************************************/
--- Report Name: Blitz Report Sample Upload (API)
--- Description: Sample upload to be used as a template by copying (Tools>Copy Report) to create new uploads using API.
--- Excel Examle Output: https://www.enginatics.com/example/blitz-report-sample-upload-api/
--- Library Link: https://www.enginatics.com/reports/blitz-report-sample-upload-api/
+-- Report Name: Blitz Upload Example (API)
+-- Description: Example upload, which can be used as a template by copying (Tools>Copy Report) to create new uploads using an API.
+-- Excel Examle Output: https://www.enginatics.com/example/blitz-upload-example-api/
+-- Library Link: https://www.enginatics.com/reports/blitz-upload-example-api/
 -- Run Report: https://demo.enginatics.com/
 
 select
 null action_,
 null status_,
 null message_,
-xus.id,
-xus.name,
-xus.date_of_birth
+xue.id,
+xue.name,
+xue.date_of_birth
 from
-xxen_upload_sample xus
+xxen_upload_example xue
 where
 1=1

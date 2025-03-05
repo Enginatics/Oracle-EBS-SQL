@@ -13,7 +13,7 @@ Report Level, Ledger, Operating Unit, Requisition Number, Creation Date From, Cr
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Nidec changes](https://www.enginatics.com/library/?pg=1&category[]=Nidec%20changes)
 
 ## Related reports
-[PO Headers and Lines](/PO%20Headers%20and%20Lines/), [CST Inventory Value - Multi-Organization (Element Costs) 11i](/CST%20Inventory%20Value%20-%20Multi-Organization%20%28Element%20Costs%29%2011i/)
+[PO Headers and Lines](/PO%20Headers%20and%20Lines/), [CAC New Standard Item Costs](/CAC%20New%20Standard%20Item%20Costs/), [CAC Standard Cost Update Submissions](/CAC%20Standard%20Cost%20Update%20Submissions/), [PO Approved Supplier List Upload](/PO%20Approved%20Supplier%20List%20Upload/)
 
 ## Dependencies
 If you would like to try one of these Oracle EBS SQLs without having Blitz Report installed, note that some of the reports require functions from utility package [xxen_util](https://www.enginatics.com/xxen_util/true).

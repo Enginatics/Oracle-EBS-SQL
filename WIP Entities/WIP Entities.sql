@@ -5,7 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: WIP Entities
--- Description: Detail WIP report that lists job, type, status, planner, item, item description, planning method, pegging type, entity, job Description, WIP resource transaction account distributions, project number, task, source code, source line item, WIP type, class code, scheduling dates, quantities, department, resource and organization.
+-- Description: Detail WIP report that lists job, type, status, planner, item, item description, planning method, pegging type, entity, job Description, WIP resource transaction account distributions, project number, task, source code, source line item,Sales Order,Sales Order Line, WIP type, class code, scheduling dates, quantities, department, resource and organization.
 -- Excel Examle Output: https://www.enginatics.com/example/wip-entities/
 -- Library Link: https://www.enginatics.com/reports/wip-entities/
 -- Run Report: https://demo.enginatics.com/
@@ -29,6 +29,8 @@ ppa.project_number,
 pt.task_number,
 wdj.source_code,
 wdj.source_line_id,
+ooha.order_number sales_order_number,
+rtrim(oola.line_number||'.'||oola.shipment_number||'.'||oola.option_number||'.'||oola.component_number||'.'||oola.service_number,'.') sales_order_line,
 xxen_util.meaning(wdj.firm_planned_flag,'SYS_YES_NO',700) firm,
 xxen_util.meaning(wdj.job_type,'WIP_DISCRETE_JOB',700) job_type,
 xxen_util.meaning(wdj.wip_supply_type,'WIP_SUPPLY',700) wip_supply_type,
@@ -108,7 +110,9 @@ first_value(wor.resource_id) over (partition by wor.wip_entity_id, wor.organizat
 from
 wip_operation_resources wor
 ) wor,
-bom_resources br
+bom_resources br,
+oe_order_headers_all ooha,
+oe_order_lines_all oola
 where
 1=1 and
 we.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
@@ -130,7 +134,9 @@ wo.standard_operation_id=bso.standard_operation_id(+) and
 wo.wip_entity_id=wor.wip_entity_id(+) and
 wo.organization_id=wor.organization_id(+) and
 wo.operation_seq_num=wor.operation_seq_num(+) and
-wor.resource_id=br.resource_id(+)
+wor.resource_id=br.resource_id(+) and 
+case when wdj.source_code like 'WICDOL%'  and wdj.source_line_id=oola.line_id(+)  then 'Y' when -999=oola.line_id(+) then 'Y' end='Y' and
+oola.header_id=ooha.header_id(+) 
 order by
 mp.organization_code,
 we.creation_date desc
