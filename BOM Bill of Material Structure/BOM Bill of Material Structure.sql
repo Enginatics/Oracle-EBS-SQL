@@ -36,7 +36,7 @@ with q_assemblies as
   bad.description alt_bom_designator_desc,
   rev.revision assembly_revision,
   fnd_date.date_to_displaydt(:lp_revision_date) assembly_revision_date,
-  (select
+  (select distinct
     listagg(mck.concatenated_segments,', ') within group (order by mck.concatenated_segments)
    from
     mtl_item_categories mic,
@@ -47,16 +47,15 @@ with q_assemblies as
    and mic.inventory_item_id = bbom.assembly_item_id
    and mck.category_id = mic.category_id
   ) category,
-  (select
-    rtrim(dbms_lob.substr(xmlagg(
-      xmlelement(name delem,bdde.element_name ||
-                            nvl2(bom_bomrboms_xmlp_pkg.get_ele_desc(mif.bom_item_type, bdde.element_name, mif.item_catalog_group_id),': ' || bom_bomrboms_xmlp_pkg.get_ele_desc(mif.bom_item_type, bdde.element_name, mif.item_catalog_group_id),null)
-                ,', ').extract('//text()') order by bdde.element_name).GetClobVal(),4000,1),', ')
+  (select distinct
+    listagg(bdde.element_name || nvl2(bom_bomrboms_xmlp_pkg.get_ele_desc(mif.bom_item_type, bdde.element_name, mif.item_catalog_group_id),': ' || bom_bomrboms_xmlp_pkg.get_ele_desc(mif.bom_item_type, bdde.element_name, mif.item_catalog_group_id),null),', ') within group (order by bdde.element_name)
    from
     bom_dependent_desc_elements bdde
    where
-    bdde.bill_sequence_id=bet.top_bill_sequence_id
+    bdde.bill_sequence_id=bet.top_bill_sequence_id and
+    rownum <= 40 -- cap to ensure listagg doesnt exceed 4K
   ) descriptive_elements,
+  --
   xxen_util.meaning(bet.loop_flag,'SYS_YES_NO',700) assembly_has_loop,
   --
   to_char(bet.top_bill_sequence_id ) top_bill_sequence_id,
@@ -153,12 +152,16 @@ q_components as
   bom_bomrboms_xmlp_pkg.required_to_ship_dispformula(bev.required_to_ship) required_to_ship,
   bom_bomrboms_xmlp_pkg.required_for_revenue_dispformu(bev.required_for_revenue) required_for_revenue,
   bom_bomrboms_xmlp_pkg.include_on_ship_docs_dispformu(bev.include_on_ship_docs) include_on_ship_docs,
-  (select
-    rtrim(dbms_lob.substr(xmlagg(xmlelement(name refd,brd.component_reference_designator || nvl2(brd.ref_designator_comment,': ' || brd.ref_designator_comment,null),', ').extract('//text()') order by brd.component_reference_designator).GetClobVal(),4000,1),', ')
+  --
+  (select distinct
+    listagg(brd.component_reference_designator || nvl2(brd.ref_designator_comment,': ' || brd.ref_designator_comment,null),', ') within group (order by brd.component_reference_designator)
    from
     bom_ref_designators_view brd
-   where brd.component_sequence_id = bev.component_sequence_id
+   where
+    brd.component_sequence_id=bev.component_sequence_id and
+    rownum <= 15 -- cap to ensure listagg doesnt exceed 4K
   ) reference_designators,
+  --
   xxen_util.meaning(bev.loop_flag,'SYS_YES_NO',700) component_has_loop,
   --
   parent.organization_id assembly_organization_id,

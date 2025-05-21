@@ -15,6 +15,7 @@ null action_,
 null status_,
 null message_,
 null request_id_,
+null modified_columns_,
 pav.acceptance_id,
 --
 hou.name operating_unit,
@@ -35,7 +36,7 @@ else po_inq_sv.get_party_vendor_name(pav.created_by)
 end accepted_by_employee,
 pav.employee_num accepted_by_employee_num,
 pav.role,
-&lp_note_column comments,
+&lp_note_column
 xxen_util.meaning(pav.signature_flag,'YES_NO',0) signature, -- not relevant for buyer acceptances
 pav.erecord_id, -- not relevant for buyer acceptances
 --
@@ -58,7 +59,7 @@ xxen_util.display_flexfield_value(201,'PO_ACCEPTANCES',pav.attribute_category,'A
 --
 :p_default_action default_action,
 :p_default_date default_action_date,
-1 seq
+1 upload_row
 from
 po_acceptances_v pav,
 po_headers_all pha,

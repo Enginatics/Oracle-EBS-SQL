@@ -13,6 +13,8 @@ Column 'Hierarchy Position' can be used to validate your account hierarchy setup
 
 select
 ffvs.flex_value_set_name,
+xxen_util.meaning(ffvs.validation_type,'SEG_VAL_TYPES',0) validation_type,
+ffvs0.flex_value_set_name parent_flex_value_set,
 ffvv.parent_flex_value_low independent_value,
 ffvv.flex_value,
 ffvv.flex_value_meaning translated_value,
@@ -28,6 +30,7 @@ ffvv.hierarchy_level,
 (select distinct listagg(ffvnh.parent_flex_value,', ') within group (order by ffvnh.parent_flex_value) over () from fnd_flex_value_norm_hierarchy ffvnh where 2=2 and ffvv.summary_flag=decode(ffvnh.range_attribute,'P','Y','N') and ffvv.flex_value between ffvnh.child_flex_value_low and ffvnh.child_flex_value_high and ffvs.flex_value_set_id=ffvnh.flex_value_set_id) parent_values,
 &value_attributes
 ffvv.compiled_value_attributes,
+&dff_columns
 xxen_util.user_name(ffvv.created_by) created_by,
 xxen_util.client_time(ffvv.creation_date) creation_date,
 xxen_util.user_name(ffvv.last_updated_by) last_updated_by,
@@ -35,11 +38,13 @@ xxen_util.client_time(ffvv.last_update_date) last_update_date,
 ffvv.flex_value_set_id
 from
 fnd_flex_value_sets ffvs,
+fnd_flex_value_sets ffvs0,
 fnd_flex_values_vl ffvv,
 fnd_flex_hierarchies_vl ffhv,
 fnd_flex_value_norm_hierarchy ffvnh
 where
 1=1 and
+ffvs.parent_flex_value_set_id=ffvs0.flex_value_set_id(+) and
 ffvs.flex_value_set_id=ffvv.flex_value_set_id and
 ffvv.structured_hierarchy_level=ffhv.hierarchy_id(+) and
 ffvv.flex_value_set_id=ffvnh.flex_value_set_id(+) and

@@ -66,7 +66,9 @@ where
  sob_assm.set_of_books_id   = ood_assm.set_of_books_id and
  fc_assm.currency_code      = sob_assm.currency_code and
  bp.organization_id         = csbs.top_organization_id and
- msi_assm.inventory_item_status_code <> nvl(bp.bom_delete_status_code , 'NOT' || msi_assm.inventory_item_status_code)
+ (:p_include_inactive_boms = 'Y' or 
+  msi_assm.inventory_item_status_code <> nvl(bp.bom_delete_status_code , 'NOT' || msi_assm.inventory_item_status_code)
+ )
 ),
 --
 -- Q_COMPONENTS

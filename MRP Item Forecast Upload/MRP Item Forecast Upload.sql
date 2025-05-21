@@ -73,14 +73,11 @@ This can be overridden in the Upload spreadsheet for individual forecast entries
 -- Run Report: https://demo.enginatics.com/
 
 select
-x.*
-from
-(
-select
  null action_,
  null status_,
  null message_,
  null request_id_,
+ null modified_columns_,
  to_char(null) row_id,
  to_char(null) request_id,
  :p_upload_mode upload_mode,
@@ -97,6 +94,7 @@ select
  msiv.planner_code planner,
  mfd.forecast_date forecast_date,
  mfd.rate_end_date forecast_end_date,
+ mfd.original_forecast_quantity original_quantity,
  mfd.current_forecast_quantity quantity,
  mfd.comments,
  xxen_util.meaning(mfd.bucket_type,'MRP_BUCKET_TYPE',700) bucket_type,
@@ -132,6 +130,8 @@ from
  mrp_forecast_dates mfd,
  mtl_system_items_vl msiv
 where
+ 1=1 and
+ mfds.forecast_set        = nvl(:p_forecast_set,mfds.forecast_set) and 
  mfds.organization_id     = mp.organization_id and
  mfds.organization_id     = mfiv.organization_id and
  mfds.forecast_designator = mfiv.forecast_designator and
@@ -139,16 +139,4 @@ where
  mfiv.forecast_designator = mfd.forecast_designator and
  mfiv.inventory_item_id   = mfd.inventory_item_id and
  mfiv.organization_id     = msiv.organization_id and
- mfiv.inventory_item_id   = msiv.inventory_item_id and
- --
- mfds.forecast_set        = nvl(:p_forecast_set,mfds.forecast_set) and
- 1=1
-&not_use_first_block
-&report_table_select
-&report_table_name &report_table_where_clause
-&processed_run
-) x
-order by
-x.forecast,
-x.item,
-x.forecast_date asc
+ mfiv.inventory_item_id   = msiv.inventory_item_id

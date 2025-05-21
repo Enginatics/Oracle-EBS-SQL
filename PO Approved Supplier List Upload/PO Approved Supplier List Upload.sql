@@ -49,6 +49,7 @@ null action_,
 null status_,
 null message_,
 null request_id_,
+null modified_columns_,
 :p_upload_mode upload_mode_,
 null asl_id,
 null att_row_id,
@@ -226,7 +227,7 @@ rowidtochar(pad.rowid) old_doc_row_id,
 null old_ath_row_id,
 null old_cap_row_id,
 null old_tol_row_id,
-to_number(null) seq
+to_number(null) upload_row
 from
 po_approved_supplier_list pasl,
 mtl_system_items_vl msiv,
@@ -436,7 +437,7 @@ null old_doc_row_id,
 rowidtochar(ca.rowid) old_ath_row_id,
 null old_cap_row_id,
 null old_tol_row_id,
-to_number(null) seq
+to_number(null) upload_row
 from
 po_approved_supplier_list pasl,
 mtl_system_items_vl msiv,
@@ -647,7 +648,7 @@ null old_doc_row_id,
 null old_ath_row_id,
 rowidtochar(psic.rowid) old_cap_row_id,
 null old_tol_row_id,
-to_number(null) seq
+to_number(null) upload_row
 from
 po_approved_supplier_list pasl,
 mtl_system_items_vl msiv,
@@ -857,7 +858,7 @@ null old_doc_row_id,
 null old_ath_row_id,
 null old_cap_row_id,
 rowidtochar(psit.rowid) old_tol_row_id,
-to_number(null) seq
+to_number(null) upload_row
 from
 po_approved_supplier_list pasl,
 mtl_system_items_vl msiv,

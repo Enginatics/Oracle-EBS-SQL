@@ -45,30 +45,26 @@ Use the pre-defined templates to restrict the Item Attributes to be displayed an
 -- Library Link: https://www.enginatics.com/reports/inv-item-upload/
 -- Run Report: https://demo.enginatics.com/
 
-select
-x.*
-from
-(
-select
+select /*+ push_pred(mic) */
 null action_,
 null status_,
 null message_,
 null request_id_,
+null modified_columns_,
 :p_upload_mode upload_mode_,
 null item_row_id,
 null item_cat_row_id,
 null set_process_id,
 --
 to_number(null) number_of_import_workers,
-to_number(null) purge_interface_days,
 --
 msiv.concatenated_segments item,
 mp.organization_code,
 null copy_from_template,
 null copy_from_item,
 -- Category Assignment
-mcs.category_set_name category_set,
-mck.concatenated_segments item_category,
+mic.category_set_name category_set,
+mic.category item_category,
 -- Catalog Assignment
 (select micgbk.concatenated_segments from mtl_item_catalog_groups_b_kfv micgbk where micgbk.item_catalog_group_id = msiv.item_catalog_group_id) item_catalog,
 -- Main
@@ -116,7 +112,6 @@ msiv.positive_measurement_error positive_measurement_error,
 xxen_util.meaning(msiv.grade_control_flag,'YES_NO',0) grade_controlled,
 (select mg.description from mtl_grades mg where mg.grade_code = msiv.default_grade) default_grade,
 ----Not Visible in Form
-(select mms.status_code from mtl_material_statuses mms where mms.status_id = msiv.default_material_status_id) default_material_status,
 xxen_util.meaning(msiv.lot_status_enabled,'YES_NO',0) lot_status_enabled,
 (select mms.status_code from mtl_material_statuses mms where mms.status_id = msiv.default_lot_status_id) default_lot_status,
 xxen_util.meaning(msiv.serial_status_enabled,'YES_NO',0) serial_status_enabled,
@@ -418,13 +413,25 @@ xxen_util.display_flexfield_value(401,'MTL_SYSTEM_ITEMS',msiv.attribute_category
 msiv.organization_id,
 msiv.inventory_item_id,
 decode(mp.organization_id,mp.master_organization_id,'Y',null) master_flag,
-0 row_num
+0 upload_row
 from
 mtl_parameters mp,
 mtl_system_items_vl msiv,
-mtl_category_sets mcs,
-mtl_item_categories mic,
-mtl_categories_kfv mck
+(select
+ mic.organization_id,
+ mic.inventory_item_id,
+ mcs.category_set_name,
+ mck.concatenated_segments category
+ from
+ mtl_item_categories mic,
+ mtl_category_sets mcs,
+ mtl_categories_kfv mck
+ where
+ mic.category_set_id = mcs.category_set_id and
+ mic.category_id = mck.category_id and
+ '&lp_templ_includes_cat_cols' = 'Y' and
+ 2=2
+) mic
 where
 :p_upload_mode like '%' || xxen_upload.action_update and
 nvl(:p_create_empty_file,'N')  != 'Y' and
@@ -434,17 +441,5 @@ nvl(:p_purge_after_days,-1) = nvl(:p_purge_after_days,-1) and
 1=1 and
 mp.organization_id in (select oav.organization_id from org_access_view oav where oav.responsibility_id = fnd_global.resp_id and oav.resp_application_id = fnd_global.resp_appl_id) and
 msiv.organization_id = mp.organization_id and
-mic.category_set_id = mcs.category_set_id and
-mic.organization_id = msiv.organization_id and
-mic.inventory_item_id = msiv.inventory_item_id and
-mck.category_id = mic.category_id
-&not_use_first_block
-&report_table_select &report_table_name &report_table_where_clause &success_records
-&processed_run
-) x
-order by
-x.row_num,
-x.item,
-decode(x.master_flag,'Y',1,2),
-x.organization_code,
-x.category_set
+msiv.organization_id = mic.organization_id (+) and
+msiv.inventory_item_id = mic.inventory_item_id (+)

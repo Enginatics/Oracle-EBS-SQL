@@ -183,6 +183,8 @@ where
   hcpa2.min_dunning_amount is not null or
   hcpa2.min_dunning_invoice_amount is not null or
   (xxen_util.lookup_code(:p_show_missing_credit_limits,'YES_NO',0) = 'Y' and hcpa2.currency_code is not null)
+ ) or
+ (nvl(apsa.receivables_balance,0) != 0
  )
 )
 ) and

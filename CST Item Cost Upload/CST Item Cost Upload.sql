@@ -88,6 +88,7 @@ case when nvl2(:p_autopopulate_upload_status,'Y','N') = 'Y' then xxen_upload.act
 case when nvl2(:p_autopopulate_upload_status,'Y','N') = 'Y' then xxen_upload.status_meaning(xxen_upload.status_new) else null end status_,
 case when nvl2(:p_autopopulate_upload_status,'Y','N') = 'Y' then xxen_util.description('U_EXCEL_MSG_VALIDATION_PENDING','XXEN_REPORT_TRANSLATIONS',0) else null end message_,
 to_number(null)         request_id_,
+null modified_columns_,
 null                    row_id,
 -- Item
 cct_t.cost_type target_cost_type,
@@ -141,6 +142,7 @@ mtl_parameters mp
 where
 1=1 and
 :p_upload_mode = :p_upload_mode and
+mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
 --
 cct_s.cost_type = :p_source_cost_type and
 cct_t.cost_type = :p_target_cost_type and

@@ -155,6 +155,7 @@ select /*+ push_pred(sra) */
  null status_,
  null message_,
  null request_id_,
+ null modified_columns_,
  null set_row_id,
  null ass_row_id,
  :p_upload_mode upload_mode,

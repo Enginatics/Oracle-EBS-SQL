@@ -5,7 +5,9 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: GL Account Analysis (Drilldown) (with inventory and WIP)
--- Description: Detail GL transaction report with one line per transaction including all segments and subledger data, with amounts in both transaction currency and ledger currency. This report is used by the GL Financial Statement and Drilldown report, to show subledger details. This also has inventory and WIP details.
+-- Description: ** This report is used by the GL Financial Statement and Drilldown report, to show Subledger details. **
+
+Detail GL transaction report with one line per transaction including all segments and subledger data, with amounts in both transaction currency and ledger currency. This also has inventory and WIP details.
 -- Excel Examle Output: https://www.enginatics.com/example/gl-account-analysis-drilldown-with-inventory-and-wip/
 -- Library Link: https://www.enginatics.com/reports/gl-account-analysis-drilldown-with-inventory-and-wip/
 -- Run Report: https://demo.enginatics.com/
@@ -33,6 +35,7 @@ case when 1=row_number() over (partition by gjl.je_header_id,gjl.je_line_num ord
 case when 1=row_number() over (partition by gjl.je_header_id,gjl.je_line_num order by gjl.je_header_id,gjl.je_line_num,xal.gl_sl_link_id) then gjl.accounted_dr end line_accounted_dr,
 case when 1=row_number() over (partition by gjl.je_header_id,gjl.je_line_num order by gjl.je_header_id,gjl.je_line_num,xal.gl_sl_link_id) then gjl.accounted_cr end line_accounted_cr,
 case when 1=row_number() over (partition by gjl.je_header_id,gjl.je_line_num order by gjl.je_header_id,gjl.je_line_num,xal.gl_sl_link_id) then nvl(gjl.accounted_dr,0)-nvl(gjl.accounted_cr,0) end line_accounted_amount,
+case when 1=row_number() over (partition by gjl.je_header_id,gjl.je_line_num order by gjl.je_header_id,gjl.je_line_num,xal.gl_sl_link_id) then gjl.stat_amount end line_stat_amount,
 gjl.description line_description,
 zrb.tax_rate_code,
 xxen_util.meaning(gjl.tax_line_flag,'YES_NO',0) tax_line,

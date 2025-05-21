@@ -37,6 +37,9 @@ xxen_util.meaning(wdj.wip_supply_type,'WIP_SUPPLY',700) wip_supply_type,
 wdj.class_code,
 xxen_util.client_time(wdj.scheduled_start_date) scheduled_start_date,
 xxen_util.client_time(wdj.scheduled_completion_date) scheduled_completion_date,
+xxen_util.client_time(wdj.date_released) released_date,
+xxen_util.client_time(wdj.date_completed) completed_date,
+xxen_util.client_time(wdj.date_closed) closed_date,
 wdj.start_quantity,
 decode(wdj.quantity_scrapped,0,null,wdj.quantity_scrapped) quantity_scrapped,
 decode(wdj.quantity_completed,0,null,wdj.quantity_completed) quantity_completed,
@@ -135,7 +138,7 @@ wo.wip_entity_id=wor.wip_entity_id(+) and
 wo.organization_id=wor.organization_id(+) and
 wo.operation_seq_num=wor.operation_seq_num(+) and
 wor.resource_id=br.resource_id(+) and 
-case when wdj.source_code like 'WICDOL%'  and wdj.source_line_id=oola.line_id(+)  then 'Y' when -999=oola.line_id(+) then 'Y' end='Y' and
+wdj.source_line_id=oola.line_id(+) and
 oola.header_id=ooha.header_id(+) 
 order by
 mp.organization_code,

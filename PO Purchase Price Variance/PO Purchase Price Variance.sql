@@ -329,8 +329,14 @@ round((nvl(mmt.transaction_cost,0)/nvl(mmt.currency_conversion_rate,1)),fc.exten
 round(nvl(mmt.transaction_cost,0),fc.extended_precision) po_functional_price,
 round(nvl(mmt.actual_cost,0),fc.extended_precision) std_unit_cost_f,
 null material_cost_f,
-round(decode(po_poxrcppv_xmlp_pkg.overheadabsorpalt(mmt.transaction_id),3,nvl(mcacd2.actual_cost,0),0),fc.extended_precision) moh_absorbed_per_unit,
-po_poxrcppv_xmlp_pkg.c_price_variance1formula(round(nvl(mmt.transaction_cost,0),fc.extended_precision),round(nvl(mmt.actual_cost,0),fc.extended_precision),round(decode(po_poxrcppv_xmlp_pkg.overheadabsorpalt(mmt.transaction_id),3,nvl(mcacd2.actual_cost,0),0),fc.extended_precision),round(mmt.primary_quantity,:p_qty_precision ),fc.precision) c_price_variance,
+round(case when (select count(*) from mtl_transaction_accounts where transaction_id = mmt.transaction_id and accounting_line_type = 3) > 0 then nvl(mcacd2.actual_cost,0) else 0 end,fc.extended_precision) moh_absorbed_per_unit, 
+po_poxrcppv_xmlp_pkg.c_price_variance1formula
+(round(nvl(mmt.transaction_cost,0),
+ fc.extended_precision),
+ round(nvl(mmt.actual_cost,0),fc.extended_precision),
+ round(case when (select count(*) from mtl_transaction_accounts where transaction_id = mmt.transaction_id and accounting_line_type = 3) > 0 then nvl(mcacd2.actual_cost,0) else 0 end,fc.extended_precision),
+ round(mmt.primary_quantity,:p_qty_precision ),fc.precision
+) c_price_variance,
 mp.process_enabled_flag,
 null rct_id,
 mmt.inventory_item_id

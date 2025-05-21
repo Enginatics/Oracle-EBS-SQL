@@ -125,22 +125,22 @@ where
 (:not_sql_text is null or (not regexp_like(xrpl.lov_query,xxen_util.regexp_escape(:not_sql_text),'i') or :match_case='Y' and xrpl.lov_query not like '%'||:not_sql_text||'%'))
 union all
 select
-xupcv.report_name,
-'Upload' report_type,
-xupcv.category,
-'Upload Parameter Upload Query' record_type,
-xupcv.parameter_name name,
-to_clob(xupcv.upload_query) text,
-xxen_util.user_name(xupcv.created_by) created_by,
-xxen_util.client_time(xupcv.creation_date) creation_date,
-xxen_util.user_name(xupcv.last_updated_by) last_updated_by,
-xxen_util.client_time(xupcv.last_update_date) last_update_date
+null report_name,
+null report_type,
+null category,
+'LOV Value to Id Query' record_type,
+xrpl.lov_name name,
+to_clob(xrpl.value_to_id_query) text,
+xxen_util.user_name(xrpl.created_by) created_by,
+xxen_util.client_time(xrpl.creation_date) creation_date,
+xxen_util.user_name(xrpl.last_updated_by) last_updated_by,
+xxen_util.client_time(xrpl.last_update_date) last_update_date
 from
-xxen_upload_parameter_cols_v xupcv
+xxen_report_parameter_lovs xrpl
 where
-4=4 and
-(:match_case is null and regexp_like(xupcv.upload_query,xxen_util.regexp_escape(:sql_text),'i') or xupcv.upload_query like '%'||replace(replace(:sql_text,'\','\\'),'_','\_')||'%' escape '\') and
-(:not_sql_text is null or (not regexp_like(xupcv.upload_query,xxen_util.regexp_escape(:not_sql_text),'i') or :match_case='Y' and xupcv.upload_query not like '%'||:not_sql_text||'%'))
+3=3 and
+(:match_case is null and regexp_like(xrpl.value_to_id_query,xxen_util.regexp_escape(:sql_text),'i') or xrpl.value_to_id_query like '%'||replace(replace(:sql_text,'\','\\'),'_','\_')||'%' escape '\') and
+(:not_sql_text is null or (not regexp_like(xrpl.value_to_id_query,xxen_util.regexp_escape(:not_sql_text),'i') or :match_case='Y' and xrpl.value_to_id_query not like '%'||:not_sql_text||'%'))
 union all
 select
 xucv.report_name,
@@ -156,9 +156,27 @@ xxen_util.client_time(xucv.last_update_date) last_update_date
 from
 xxen_upload_columns_v xucv
 where
-5=5 and
+4=4 and
 (:match_case is null and regexp_like(xucv.lov_query,xxen_util.regexp_escape(:sql_text),'i') or xucv.lov_query like '%'||replace(replace(:sql_text,'\','\\'),'_','\_')||'%' escape '\') and
 (:not_sql_text is null or (not regexp_like(xucv.lov_query,xxen_util.regexp_escape(:not_sql_text),'i') or :match_case='Y' and xucv.lov_query not like '%'||:not_sql_text||'%'))
+union all
+select
+xucv.report_name,
+'Upload' report_type,
+xucv.category,
+'Upload Column Value to Id Query' record_type,
+xucv.column_name name,
+to_clob(xucv.value_to_id_query) text,
+xxen_util.user_name(xucv.created_by) created_by,
+xxen_util.client_time(xucv.creation_date) creation_date,
+xxen_util.user_name(xucv.last_updated_by) last_updated_by,
+xxen_util.client_time(xucv.last_update_date) last_update_date
+from
+xxen_upload_columns_v xucv
+where
+4=4 and
+(:match_case is null and regexp_like(xucv.value_to_id_query,xxen_util.regexp_escape(:sql_text),'i') or xucv.value_to_id_query like '%'||replace(replace(:sql_text,'\','\\'),'_','\_')||'%' escape '\') and
+(:not_sql_text is null or (not regexp_like(xucv.value_to_id_query,xxen_util.regexp_escape(:not_sql_text),'i') or :match_case='Y' and xucv.value_to_id_query not like '%'||:not_sql_text||'%'))
 union all
 select
 xucv.report_name,
@@ -174,7 +192,7 @@ xxen_util.client_time(xucv.last_update_date) last_update_date
 from
 xxen_upload_columns_v xucv
 where
-5=5 and
+4=4 and
 (:match_case is null and regexp_like(xucv.default_value,xxen_util.regexp_escape(:sql_text),'i') or xucv.default_value like '%'||replace(replace(:sql_text,'\','\\'),'_','\_')||'%' escape '\') and
 (:not_sql_text is null or (not regexp_like(xucv.default_value,xxen_util.regexp_escape(:not_sql_text),'i') or :match_case='Y' and xucv.default_value not like '%'||:not_sql_text||'%'))
 union all
@@ -192,7 +210,7 @@ xxen_util.client_time(xucv.last_update_date) last_update_date
 from
 xxen_upload_columns_v xucv
 where
-5=5 and
+4=4 and
 (:match_case is null and regexp_like(xucv.comments,xxen_util.regexp_escape(:sql_text),'i') or xucv.comments like '%'||replace(replace(:sql_text,'\','\\'),'_','\_')||'%' escape '\') and
 (:not_sql_text is null or (not regexp_like(xucv.comments,xxen_util.regexp_escape(:not_sql_text),'i') or :match_case='Y' and xucv.comments not like '%'||:not_sql_text||'%'))
 ) x

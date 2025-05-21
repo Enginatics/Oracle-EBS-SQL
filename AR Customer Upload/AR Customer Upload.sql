@@ -60,7 +60,7 @@ These parameters allow you to create the customer account and customer site in a
 
 with
 q_contacts as
-(select
+(select /*+ inline */
  hcar.cust_account_role_id,
  hcar.cust_account_id,
  hcar.cust_acct_site_id cust_acct_site_id,
@@ -147,7 +147,7 @@ q_contacts as
  )
 ),
 q_bank_accounts as
-(select
+(select /*+ inline */
  iepa.cust_account_id              cust_account_id,
  iepa.acct_site_use_id             site_use_id,
  ipiua.instrument_payment_use_id,
@@ -196,7 +196,7 @@ q_bank_accounts as
  -- and sysdate between ipiua.start_date and nvl(ipiua.end_date,sysdate)
 ),
 q_attachments as
-(select
+(select /*+ inline */
  fad.attached_document_id attachment_id,
  fad.entity_name,
  fad.pk1_value entity_id,
@@ -240,6 +240,7 @@ null action_,
 null status_,
 null message_,
 null request_id_,
+null modified_columns_,
 :p_upload_mode upload_mode_,
 to_number(null) cust_account_row_id,
 to_number(null) cust_acct_site_row_id,
@@ -479,7 +480,7 @@ case when hcsua.site_use_code = 'BILL_TO' then (select arta.name from ar_receiva
 --
 (select rtk.concatenated_segments from ra_territories_kfv rtk where rtk.territory_id = hcsua.territory_id) site_territory,
 (select rtv.name from ra_terms_vl rtv where rtv.term_id = hcsua.payment_term_id) site_payment_terms,
-(select nvl(jrret.resource_name,jrs.name) from jtf_rs_salesreps jrs, jtf_rs_resource_extns_tl jrret where jrs.resource_id=jrret.resource_id(+) and jrret.language (+) =userenv('lang') and jrs.salesrep_id = hcsua.primary_salesrep_id and jrs.org_id = hcsua.org_id) site_primary_salesperson,
+(select nvl(jrret.resource_name,jrs.name) || ' (' || jrs.salesrep_number || ')' from jtf_rs_salesreps jrs, jtf_rs_resource_extns_tl jrret where jrs.resource_id=jrret.resource_id(+) and jrret.language (+) =userenv('lang') and jrs.salesrep_id = hcsua.primary_salesrep_id and jrs.org_id = hcsua.org_id) site_primary_salesperson,
 (select hpc.party_name || ' (' || acv.orig_system_reference || ')' from ar_contacts_v acv, hz_parties hpc where acv.contact_party_id = hpc.party_id and acv.contact_id = hcsua.contact_id and acv.customer_id = hca.cust_account_id and rownum <= 1) site_contact,
 hcsua.sic_code site_sic_code,
 -- site use order management
@@ -764,9 +765,7 @@ q_bank_accounts ba,
 q_attachments attchmt
 where
 2=2 and
-(:p_update_level = 'ACCOUNT' or
- (:p_update_level is null and (:p_update_profile_amts = 'Y' or :p_update_tax_registrations = 'Y' or :p_update_bank_accts = 'Y' or :p_update_contacts = 'Y' or :p_update_attachments = 'Y'))
-) and
+nvl(:p_update_level,'ACCOUNT') = 'ACCOUNT' and
 hp.party_id = hca.party_id and
 nvl2(hca.cust_account_id,-99,-99) = hcasa.cust_account_id (+) and -- dummy join to return null site level values
 hcasa.cust_acct_site_id = hcsua.cust_acct_site_id (+) and
@@ -1059,7 +1058,7 @@ case when hcsua.site_use_code = 'BILL_TO' then (select arta.name from ar_receiva
 --
 (select rtk.concatenated_segments from ra_territories_kfv rtk where rtk.territory_id = hcsua.territory_id) site_territory,
 (select rtv.name from ra_terms_vl rtv where rtv.term_id = hcsua.payment_term_id) site_payment_terms,
-(select nvl(jrret.resource_name,jrs.name) from jtf_rs_salesreps jrs, jtf_rs_resource_extns_tl jrret where jrs.resource_id=jrret.resource_id(+) and jrret.language (+) =userenv('lang') and jrs.salesrep_id = hcsua.primary_salesrep_id and jrs.org_id = hcsua.org_id) site_primary_salesperson,
+(select nvl(jrret.resource_name,jrs.name) || ' (' || jrs.salesrep_number || ')' from jtf_rs_salesreps jrs, jtf_rs_resource_extns_tl jrret where jrs.resource_id=jrret.resource_id(+) and jrret.language (+) =userenv('lang') and jrs.salesrep_id = hcsua.primary_salesrep_id and jrs.org_id = hcsua.org_id) site_primary_salesperson,
 (select hpc.party_name || ' (' || acv.orig_system_reference || ')' from ar_contacts_v acv, hz_parties hpc where acv.contact_party_id = hpc.party_id and acv.contact_id = hcsua.contact_id and acv.customer_id = hca.cust_account_id and rownum <= 1) site_contact,
 hcsua.sic_code site_sic_code,
 -- site use order management

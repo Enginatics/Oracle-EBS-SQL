@@ -26,6 +26,8 @@ hr_all_organization_units_vl haouv,
 ra_interface_lines_all rila,
 ra_interface_errors_all riea
 where
+1=1 and
+haouv.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11) and
 haouv.organization_id=rila.org_id and
 rila.interface_line_id=riea.interface_line_id(+)
 group by

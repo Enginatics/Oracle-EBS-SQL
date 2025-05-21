@@ -5,10 +5,44 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: AR Aging
--- Description: Application: Receivables
-Source: Aging - 7 Buckets  - By Salesperson/Agent Report
-Short Name: ARXAGRW
-Package: XXEN_AR_ARXAGRW_PKG
+-- Description: The AR Aging report allows users to review information about their open receivables items at a specified point in time (the As of Date). The report will show the aging of the open receivables items based on the selected aging bucket.
+
+- The report includes detailed (Transaction Level) or summary (Customer Level) information about customers current and past due invoices, debit memos, and chargebacks.
+- Optionally the report can include details of credit memos, on-account credits, unidentified payments, on-account and unapplied cash amounts, and receipts at risk.
+- Optionally the report allows the open receivables items to be revalued to a different currency on a specified revaluation date using a specified revaluation currency rate type.
+- All amounts in the report are shown in functional currency, except where the report is run for a specified entered currency, in which case the amounts are shown in the specified entered currency.
+
+Report Parameters:
+
+Reporting Level: The report can be run by Ledger or by Operating Unit. 
+
+Reporting Context: The Ledgers or Operating Units the report is to be run for. Only Ledgers or Operating Units accessible to the current responsibility maybe selected. The report supports the multiple selection of Ledgers or Operating Units allowing to be run for more than one Ledger or Operating Unit. If the Reporting Context is left null, then the report will be run for all Operating Units accessible to the current responsibility. 
+
+Report Summary: The report is summarized at either the Customer Level (Customer Summary) or at Transaction Level (Invoice Summary). The Customer Summary report includes open receivables totals at the customer level only and does not include transaction level details. The Invoice Summary report includes details and the outstanding amounts of the open receivables transactions.
+
+As of Date: The report can be run to provide an aging snapshot at a specified point in time in the past. By default, the As of Date will be the current date. 
+
+Aging Bucket Name:  The Aging Bucket Name determine the Aging Buckets to be used for aging the open receivables items. The aging amount columns in the report are dynamically determined based on the selected Aging Buket. 
+
+Aging Basis: Transactions can be aged based on their Due Date (default) or on their Transaction (Invoice) Date.
+
+Show On Account: The report can optionally include the details and/or amounts for credit memos, on-account credits, unidentified payments, on-account and unapplied cash amounts.
+The options for displaying these are:
+Do Not Show – they are not included in the report.
+Summarize – the amounts are shown as separate columns in the report and are not included in the Aging Amount report columns.
+Age – the amounts are included in the Aging Amount report columns.
+
+Show Receipts At Risk: The report can optionally include the details and/or amounts for receipts at risk.
+Do Not Show – they are not included in the report.
+Summarize – the amounts are shown as separate a column in the report and are not included in the Aging Amount report columns.
+Age – the amounts are included in the Aging Amount report columns.
+
+Entered Currency: Restrict the report to open receivables items entered in the specified currency. By default, all amounts in the report are shown in functional currency, except in the case the report is run in for a specified Entered Currency. In this case the amounts are shown in the specified entered currency. 
+
+Revaluation Date, Revaluation Currency, Revaluation Rate Type: 
+If a revaluation date, currency, and rate type are specified, the report will include additional columns showing the open receivables amounts and aging in the specified revaluation currency.
+
+Additionally, there are several additional parameters which can be used to restrict the data returned by the report.
 -- Excel Examle Output: https://www.enginatics.com/example/ar-aging/
 -- Library Link: https://www.enginatics.com/reports/ar-aging/
 -- Run Report: https://demo.enginatics.com/

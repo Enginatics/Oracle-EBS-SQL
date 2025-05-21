@@ -22,18 +22,12 @@ If the 'Reverse in Future Period' parameter is set to Yes, then the 'Accrual Fla
 -- Library Link: https://www.enginatics.com/reports/pa-project-transaction-upload/
 -- Run Report: https://demo.enginatics.com/
 
-/*
-&report_table_name
-*/
-select
-x.*
-from
-(
 select
 null action_,
 null status_,
 null message_,
 null request_id_,
+null modified_columns_,
 null row_id,
 --
 haouv.name operating_unit,
@@ -139,19 +133,3 @@ ptia.batch_name = nvl(:p_batch_name,ptia.batch_name) and
 nvl(:p_expnd_ending_date,sysdate) = nvl(:p_expnd_ending_date,sysdate) and
 nvl(:p_unmatched_neg_txn_flag,'X') = nvl(:p_unmatched_neg_txn_flag,'X') and
 nvl(:p_accrual_flag,'X') = nvl(:p_accrual_flag,'X')
-&not_use_first_block
-&report_table_select
-&success_records1
-&success_records2
-&processed_run
-) x
-order by
-x.operating_unit,
-x.transaction_source,
-x.expnd_ending_date,
-x.batch_name,
-x.organization_name,
-x.employee_name,
-x.employee_number,
-x.expnd_item_date,
-x.original_trans_ref

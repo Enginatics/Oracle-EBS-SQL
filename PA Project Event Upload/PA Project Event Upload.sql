@@ -24,6 +24,7 @@ select
  null status_,
  null message_,
  null request_id_,
+ null modified_columns_,
  to_char(pe.event_id)                        row_id,
  haouv.name                                  operating_unit,
  pp.segment1                                 project_number,

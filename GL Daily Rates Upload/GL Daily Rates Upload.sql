@@ -15,14 +15,11 @@ If exchange rates do already exist for the entered data, they will be updated.
 -- Run Report: https://demo.enginatics.com/
 
 select
-x.*
-from
-(
-select
 null action_,
 null status_,
 null message_,
 null request_id_,
+null modified_columns_,
 null row_id,
 gdr.from_currency,
 gdr.to_currency,
@@ -31,22 +28,22 @@ gdr.conversion_date from_conversion_date,
 gdr.conversion_date to_conversion_date,
 gdr.conversion_rate,
 1/gdr.conversion_rate inverse_conversion_rate,
-gdr.context attribute_context,
-gdr.attribute1,
-gdr.attribute2,
-gdr.attribute3,
-gdr.attribute4,
-gdr.attribute5,
-gdr.attribute6,
-gdr.attribute7,
-gdr.attribute8,
-gdr.attribute9,
-gdr.attribute10,
-gdr.attribute11,
-gdr.attribute12,
-gdr.attribute13,
-gdr.attribute14,
-gdr.attribute15,
+xxen_util.display_flexfield_context(101,'GL_DAILY_RATES',gdr.context) attribute_context,
+xxen_util.display_flexfield_value(101,'GL_DAILY_RATES',gdr.context,'ATTRIBUTE1',gdr.rowid,gdr.attribute1) gl_daily_rate_attribute1,
+xxen_util.display_flexfield_value(101,'GL_DAILY_RATES',gdr.context,'ATTRIBUTE2',gdr.rowid,gdr.attribute2) gl_daily_rate_attribute2,
+xxen_util.display_flexfield_value(101,'GL_DAILY_RATES',gdr.context,'ATTRIBUTE3',gdr.rowid,gdr.attribute3) gl_daily_rate_attribute3,
+xxen_util.display_flexfield_value(101,'GL_DAILY_RATES',gdr.context,'ATTRIBUTE4',gdr.rowid,gdr.attribute4) gl_daily_rate_attribute4,
+xxen_util.display_flexfield_value(101,'GL_DAILY_RATES',gdr.context,'ATTRIBUTE5',gdr.rowid,gdr.attribute5) gl_daily_rate_attribute5,
+xxen_util.display_flexfield_value(101,'GL_DAILY_RATES',gdr.context,'ATTRIBUTE6',gdr.rowid,gdr.attribute6) gl_daily_rate_attribute6,
+xxen_util.display_flexfield_value(101,'GL_DAILY_RATES',gdr.context,'ATTRIBUTE7',gdr.rowid,gdr.attribute7) gl_daily_rate_attribute7,
+xxen_util.display_flexfield_value(101,'GL_DAILY_RATES',gdr.context,'ATTRIBUTE8',gdr.rowid,gdr.attribute8) gl_daily_rate_attribute8,
+xxen_util.display_flexfield_value(101,'GL_DAILY_RATES',gdr.context,'ATTRIBUTE9',gdr.rowid,gdr.attribute9) gl_daily_rate_attribute9,
+xxen_util.display_flexfield_value(101,'GL_DAILY_RATES',gdr.context,'ATTRIBUTE10',gdr.rowid,gdr.attribute10) gl_daily_rate_attribute10,
+xxen_util.display_flexfield_value(101,'GL_DAILY_RATES',gdr.context,'ATTRIBUTE11',gdr.rowid,gdr.attribute11) gl_daily_rate_attribute11,
+xxen_util.display_flexfield_value(101,'GL_DAILY_RATES',gdr.context,'ATTRIBUTE12',gdr.rowid,gdr.attribute12) gl_daily_rate_attribute12,
+xxen_util.display_flexfield_value(101,'GL_DAILY_RATES',gdr.context,'ATTRIBUTE13',gdr.rowid,gdr.attribute13) gl_daily_rate_attribute13,
+xxen_util.display_flexfield_value(101,'GL_DAILY_RATES',gdr.context,'ATTRIBUTE14',gdr.rowid,gdr.attribute14) gl_daily_rate_attribute14,
+xxen_util.display_flexfield_value(101,'GL_DAILY_RATES',gdr.context,'ATTRIBUTE15',gdr.rowid,gdr.attribute15) gl_daily_rate_attribute15,
 fu.user_name created_by,
 gdr.creation_date creation_date,
 null batch_number,
@@ -57,22 +54,8 @@ gl_daily_rates gdr,
 gl_daily_conversion_types gdct,
 fnd_user fu
 where
-:p_upload_mode like '%' || xxen_upload.action_update and
-:p_action = :p_action and
-nvl(:p_user_conv_type,'?') = nvl(:p_user_conv_type,'?') and
 1=1 and
+:p_upload_mode like '%' || xxen_upload.action_update and
+nvl(:p_user_conv_type,'?') = nvl(:p_user_conv_type,'?') and
 gdr.conversion_type = gdct.conversion_type and
-gdr.created_by = fu.user_id
-&not_use_first_block
-&report_table_select
-&report_table_name
-&report_table_where_clause
-&success_query
-&processed_run
-) x
-order by
-x.from_currency,
-x.to_currency,
-x.user_conversion_type,
-x.from_conversion_date,
-x.to_conversion_date
+gdr.created_by = fu.user_id (+)

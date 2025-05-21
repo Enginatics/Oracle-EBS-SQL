@@ -14,6 +14,7 @@ select
 to_char(null) action_,
 to_char(null) status_,
 to_char(null) message_,
+null modified_columns_,
 gl.name ledger,
 gcck.concatenated_segments,
 gl_flexfields_pkg.get_concat_description(gl.chart_of_accounts_id,gcck.code_combination_id) description,
@@ -52,7 +53,8 @@ gcck.alternate_code_combination_id=gccka.code_combination_id(+) and
 fifs.id_flex_num=gcck.chart_of_accounts_id and
 fifs.application_id=101 and
 fifs.id_flex_code='GL#' and
-fifs.language=userenv ('lang')
+fifs.language=userenv ('lang') and
+trunc(sysdate) between nvl(gcck.start_date_active,trunc(sysdate)) and nvl(gcck.end_date_active,trunc(sysdate))
 &not_use_first_block
 &report_table_select &report_table_name &report_table_where_clause &success_records
 &processed_run

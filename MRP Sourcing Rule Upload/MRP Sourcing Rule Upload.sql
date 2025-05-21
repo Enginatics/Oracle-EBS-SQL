@@ -131,6 +131,7 @@ select /*+ push_pred(sr) */
  null status_,
  null message_,
  null request_id_,
+ null modified_columns_,
  null sr_row_id,
  null ro_row_id,
  null so_row_id,

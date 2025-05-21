@@ -60,6 +60,7 @@ xxen_util.application_name(substr(xrv.report_name,1,instr(xrv.report_name,' ')-1
 xrv.type_dsp type,
 xrv.category,
 &columns
+regexp_substr(xrv.description,chr(10)||'Object IDs: (.+)'||chr(10),1,1,null,1) object_use_key,
 xrv.description,
 &modification
 xrv.version,
@@ -125,7 +126,7 @@ xxen_reports_v xrv0,
 (select xrpv.* from xxen_report_parameters_v xrpv where '&show_parameters'='Y') xrpv,
 (select xrav.* from xxen_report_assignments_v xrav where '&show_assignments'='Y') xrav,
 (select count(*) execution_count, xrr.report_id from xxen_report_runs xrr where 2=2 and '&show_exec_count'='Y' group by xrr.report_id) y,
-(select xup.* from xxen_upload_parameters xup where '&show_upload_parameters'='Y') xup,
+(select xupv.* from xxen_upload_parameters_v xupv where '&show_upload_parameters'='Y') xupv,
 (select xucv.* from xxen_upload_columns_v xucv where '&show_upload_columns'='Y') xucv,
 anchors,
 lexicals,
@@ -136,7 +137,7 @@ xrv.copied_from_guid=xrv0.guid(+) and
 xrv.report_id=xrpv.report_id(+) and
 xrv.report_id=xrav.report_id(+) and
 xrv.report_id=y.report_id(+) and
-xrv.report_id=xup.report_id(+) and
+xrv.report_id=xupv.report_id(+) and
 xrv.report_id=xucv.report_id(+) and
 xrv.report_id=anchors.report_id(+) and
 xrv.report_id=lexicals.report_id(+) and
@@ -146,7 +147,7 @@ order by
 y.execution_count desc nulls last,
 xrv.report_name,
 xrpv.sort_order,
-xup.display_sequence,
+xupv.display_sequence,
 xucv.column_number,
 xrav.include_exclude desc,
 decode(xrav.assignment_level_desc,

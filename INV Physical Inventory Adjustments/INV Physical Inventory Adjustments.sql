@@ -21,7 +21,7 @@ q_dual as (select dummy from dual)
 --
 -- Main Query starts here
 --
-select
+select /*+ push_pred(qm) */
 qm.physical_inventory_name,
 qm.c_item_flex item,
 qm.rev,

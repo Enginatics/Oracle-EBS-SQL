@@ -18,6 +18,7 @@ select
 null action_,
 null status_,
 null message_,
+null modified_columns_,
 fu.user_name,
 null unencrypted_password,
 fu.description,

@@ -73,7 +73,8 @@ select
  --
  x.item|| ' - ' || x.item_description item_label,
  x.subinventory || ' - ' || x.subinventory_desc subinventory_label,
- ood.organization_code || ' - ' || ood.organization_name organization_label
+ ood.organization_code || ' - ' || ood.organization_name organization_label,
+ sysdate report_run_date
 from
 (
  select

@@ -146,12 +146,11 @@ select /*+ push_pred(mea) */
        else null
        end
      )                                               end_assembly_description
+, xxen_util.meaning(nvl(mea.mrp_end_assembly,xxen_mrp_horizplan.is_end_assembly(mmp.compile_designator,mmp.organization_id,mmp.inventory_item_id)),'YES_NO',0) mrp_end_assembly
 , case when mea.end_assembly_id is not null
-  then xxen_mrp_horizplan.get_bom_level(mmp.organization_id,mea.end_assembly_id,msiv.inventory_item_id)
-  else case when xxen_mrp_horizplan.is_end_assembly(mmp.compile_designator,mmp.organization_id,mmp.inventory_item_id)='Y'
-  then xxen_mrp_horizplan.get_bom_level(mmp.organization_id,msiv.inventory_item_id,msiv.inventory_item_id)
+  then nvl(xxen_mrp_horizplan.get_bom_level(mmp.organization_id,mea.end_assembly_id,msiv.inventory_item_id),0)
   else null
-  end end                                            bom_level
+  end                                                bom_level
 , mmp.item_segments                                  item
 , msiv.description                                   item_description
 , xxen_util.meaning(msiv.item_type,'ITEM_TYPE',3)    item_type
@@ -196,37 +195,34 @@ select /*+ push_pred(mea) */
 , mmp.bucket_quantity
 , mmp.horizontal_plan_type                           source_type
 , case when mea.end_assembly_id is not null
-  then xxen_mrp_horizplan.get_bom_sort_order(mmp.organization_id,mea.end_assembly_id,msiv.inventory_item_id)
-  else case when xxen_mrp_horizplan.is_end_assembly(mmp.compile_designator,mmp.organization_id,mmp.inventory_item_id)='Y'
-  then xxen_mrp_horizplan.get_bom_sort_order(mmp.organization_id,msiv.inventory_item_id,msiv.inventory_item_id)
+  then nvl(xxen_mrp_horizplan.get_bom_sort_order(mmp.organization_id,mea.end_assembly_id,msiv.inventory_item_id),'0000001')
   else null
-  end end                                            bom_sort_order
+  end                                                bom_sort_order
 from
-  mmp                 mmp
+  mmp                  mmp
 , mtl_system_items_vl  msiv
 , mtl_item_categories  mic
 , mtl_categories_kfv   mck
 , mtl_planners         mpl
 , (
    select distinct
-      mea.compile_designator
-    , bset.organization_id
+      bset.organization_id
     , bset.component_item_id inventory_item_id
     , bset.top_item_id end_assembly_id
     , msiv.concatenated_segments end_assembly
-    , msiv.description           end_assembly_desc 
-   from   
-      bom_small_expl_temp      bset   
+    , msiv.description           end_assembly_desc
+    , nvl2(mea.end_assembly_id,'Y',null) mrp_end_assembly
+   from
+      bom_small_expl_temp      bset
     , mtl_system_items_vl      msiv
     , mrp_end_assemblies       mea
    where
        bset.organization_id     = msiv.organization_id
-   and bset.top_item_id         = msiv.inventory_item_id 
-   and bset.component_item_id  != bset.top_item_id
-   and mea.compile_designator   = xxen_mrp_horizplan.get_compile_designator
-   and mea.organization_id      = bset.organization_id
-   and mea.end_assembly_id      = bset.top_item_id
-   and mea.inventory_item_id    = bset.component_item_id
+   and bset.top_item_id         = msiv.inventory_item_id
+   and mea.compile_designator   (+) = xxen_mrp_horizplan.get_compile_designator
+   and mea.organization_id      (+) = bset.organization_id
+   and mea.end_assembly_id      (+) = bset.top_item_id
+   and mea.inventory_item_id    (+) = bset.component_item_id
   ) mea
 where
     msiv.organization_id        = mmp.organization_id
@@ -237,7 +233,6 @@ and mic.inventory_item_id   (+) = mmp.inventory_item_id
 and mck.category_id         (+) = mic.category_id
 and mpl.planner_code        (+) = msiv.planner_code
 and mpl.organization_id     (+) = msiv.organization_id
-and mea.compile_designator  (+) = mmp.compile_designator
 and mea.organization_id     (+) = mmp.organization_id
 and mea.inventory_item_id   (+) = mmp.inventory_item_id
 )  hp

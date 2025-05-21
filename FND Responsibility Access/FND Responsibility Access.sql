@@ -225,15 +225,13 @@ fffv.web_html_call html_call,
 fav3.application_name request_group_application,
 frg.request_group_name,
 decode(frgu.request_unit_type,'P','Program','A','Application','S','Set') assignment_type,
-decode(frgu.request_unit_type,
-'P',fcpv.user_concurrent_program_name,
-'A',fav2.application_name,
-'S',frsv.user_request_set_name
-) assignment_name,
+decode(frgu.request_unit_type,'P',fcpv.user_concurrent_program_name,'A',fav2.application_name,'S',frsv.user_request_set_name) assignment_name,
 fmv.user_menu_name,
 frv.responsibility_key,
 nvl(fcpv.user_concurrent_program_name,fcpv2.user_concurrent_program_name) concurrent_program,
 nvl(fcpv.concurrent_program_name,fcpv2.concurrent_program_name) conc_program_code,
+xxen_util.meaning(nvl(fev.execution_method_code,fev2.execution_method_code),'CP_EXECUTION_METHOD_CODE',0) execution_method,
+nvl(fev.execution_file_name,fev2.execution_file_name) execution_file_name,
 fmv.menu_name||'-> '||substr(xxen_util.reverse(nav.menu_path_,'-> '),4) menu_path,
 fffv.function_name,
 ffv.form_name,
@@ -288,7 +286,9 @@ fnd_application_vl fav3,
 fnd_request_groups frg,
 (select frgu.* from fnd_request_group_units frgu where '&show_concurrent'='Y') frgu,
 (select fcpv.* from fnd_concurrent_programs_vl fcpv where fcpv.srs_flag in ('Y','Q') and fcpv.enabled_flag='Y') fcpv,
+fnd_executables_vl fev,
 (select fcpv2.* from fnd_concurrent_programs_vl fcpv2 where 4=4 and '&show_concurrent'='Y' and fcpv2.srs_flag in ('Y','Q') and fcpv2.enabled_flag='Y') fcpv2,
+fnd_executables_vl fev2,
 fnd_application_vl fav2,
 fnd_request_sets_vl frsv,
 fnd_menus_vl fmv,
@@ -308,8 +308,12 @@ frg.application_id=frgu.application_id(+) and
 frg.request_group_id=frgu.request_group_id(+) and
 decode(frgu.request_unit_type,'P',frgu.unit_application_id)=fcpv.application_id(+) and
 decode(frgu.request_unit_type,'P',frgu.request_unit_id)=fcpv.concurrent_program_id(+) and
+fcpv.executable_application_id=fev.application_id(+) and
+fcpv.executable_id=fev.executable_id(+) and
 decode(frgu.request_unit_type,'A',frgu.unit_application_id)=fav2.application_id(+) and
 decode(frgu.request_unit_type,'A',frgu.unit_application_id)=fcpv2.application_id(+) and
+fcpv2.executable_application_id=fev2.application_id(+) and
+fcpv2.executable_id=fev2.executable_id(+) and
 decode(frgu.request_unit_type,'S',frgu.unit_application_id)=frsv.application_id(+) and
 decode(frgu.request_unit_type,'S',frgu.request_unit_id)=frsv.request_set_id(+) and
 frv.responsibility_id=usr.responsibility_id(+) and

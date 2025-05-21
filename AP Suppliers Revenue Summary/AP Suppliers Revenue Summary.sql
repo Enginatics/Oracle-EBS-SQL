@@ -53,8 +53,8 @@ sum(case when aia.gl_date>=:as_of_date-365 then aia.invoice_amount end) over (pa
 sum(aia.invoice_amount) over (partition by nvl(assa.location_id,assa.vendor_id),nvl(aia.invoice_currency_code,gl.currency_code) &partition_by) amount_total,
 nvl(aia.invoice_currency_code,gl.currency_code) currency,
 (
-select
-ieba.masked_iban
+select distinct
+listagg(ieba.masked_iban,',') within group (order by ieba.masked_iban)
 from
 (select iepa.* from iby_external_payees_all iepa where iepa.party_site_id is null and iepa.supplier_site_id is null) iepa,
 (select ipiua.* from iby_pmt_instr_uses_all ipiua where ipiua.payment_flow='DISBURSEMENTS' and sysdate between ipiua.start_date and nvl(ipiua.end_date,sysdate)) ipiua,
@@ -67,8 +67,8 @@ ipiua.order_of_preference=1 and
 ipiua.instrument_id=ieba.ext_bank_account_id
 ) iban_prio1,
 (
-select
-ieba.masked_iban
+select distinct
+listagg(ieba.masked_iban,',') within group (order by ieba.masked_iban)
 from
 (select iepa.* from iby_external_payees_all iepa where iepa.party_site_id is null and iepa.supplier_site_id is null) iepa,
 (select ipiua.* from iby_pmt_instr_uses_all ipiua where ipiua.payment_flow='DISBURSEMENTS' and sysdate between ipiua.start_date and nvl(ipiua.end_date,sysdate)) ipiua,
@@ -81,8 +81,8 @@ ipiua.order_of_preference=2 and
 ipiua.instrument_id=ieba.ext_bank_account_id
 ) iban_prio2,
 (
-select
-ieba.masked_iban
+select distinct
+listagg(ieba.masked_iban,',') within group (order by ieba.masked_iban)
 from
 (select iepa.* from iby_external_payees_all iepa where iepa.party_site_id is null and iepa.supplier_site_id is null) iepa,
 (select ipiua.* from iby_pmt_instr_uses_all ipiua where ipiua.payment_flow='DISBURSEMENTS' and sysdate between ipiua.start_date and nvl(ipiua.end_date,sysdate)) ipiua,
@@ -95,8 +95,8 @@ ipiua.order_of_preference=3 and
 ipiua.instrument_id=ieba.ext_bank_account_id
 ) iban_prio3,
 (
-select
-ieba.masked_iban
+select distinct
+listagg(ieba.masked_iban,',') within group (order by ieba.masked_iban)
 from
 (select iepa.* from iby_external_payees_all iepa where iepa.party_site_id is null and iepa.supplier_site_id is null) iepa,
 (select ipiua.* from iby_pmt_instr_uses_all ipiua where ipiua.payment_flow='DISBURSEMENTS' and sysdate between ipiua.start_date and nvl(ipiua.end_date,sysdate)) ipiua,

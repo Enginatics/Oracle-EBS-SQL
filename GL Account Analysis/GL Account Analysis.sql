@@ -257,7 +257,7 @@ gp.period_name period,
 'Journal' record_type,
 gcck.chart_of_accounts_id,
 (
-select
+select distinct
 fifs.flex_value_set_id
 from
 fnd_id_flex_segments fifs,
@@ -597,7 +597,7 @@ gp.period_name period,
 'Balance' record_type,
 gcck.chart_of_accounts_id,
 (
-select
+select distinct
 fifs.flex_value_set_id
 from
 fnd_id_flex_segments fifs,
@@ -810,7 +810,7 @@ gp.period_name period,
 'Balance' record_type,
 gcck.chart_of_accounts_id,
 (
-select
+select distinct
 fifs.flex_value_set_id
 from
 fnd_id_flex_segments fifs,

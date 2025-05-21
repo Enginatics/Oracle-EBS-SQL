@@ -5,8 +5,9 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: GL Account Analysis (Drilldown)
--- Description: Detail GL transaction report with one line per transaction including all segments and subledger data, with amounts in both transaction currency and ledger currency.This report is used by the GL Financial Statement and Drilldown report, to show subledger details
+-- Description: ** This report is used by the GL Financial Statement and Drilldown report, to show Subledger details. **
 
+Detail GL transaction report with one line per transaction including all segments and subledger data, with amounts in both transaction currency and ledger currency.
 For drilldown to the transaction screen please ensure the column View Transaction is present in the Displayed Columns
 View Transaction
 -- Excel Examle Output: https://www.enginatics.com/example/gl-account-analysis-drilldown/

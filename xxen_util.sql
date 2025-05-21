@@ -247,7 +247,7 @@ function clob_replace(p_source in clob, p_search in clob, p_replacement in clob)
 /***********************************************************************************************/
 /*  instring for long multiple values as regexp_substr on clobs is too slow, especially on 19c */
 /***********************************************************************************************/
-function instring(p_text in varchar2, p_separator in varchar2, p_occurrence in pls_integer) return varchar2;
+function instring(p_text in clob, p_separator in varchar2, p_occurrence in pls_integer) return varchar2;
 
 /***********************************************************************************************/
 /*  generate x number of rows for use in sql e.g. for regexp: table(xxen_util.rowgen(n)) rowgen*/
@@ -269,6 +269,11 @@ function sql_columns(p_sql in clob, p_skip_binding in varchar2 default null) ret
 /*  removes empty lines from sql queries                                                       */
 /***********************************************************************************************/
 function remove_empty_lines(p_clob in clob) return clob;
+
+/***********************************************************************************************/
+/*  Converts html formatted text to plain text                                                 */
+/***********************************************************************************************/
+function html_to_text(p_html in clob, p_remove_empty_lines in varchar2 default null) return clob;
 
 /***********************************************************************************************/
 /*  useful to avoid ora-01476: divisor is equal to zero                                        */
@@ -616,9 +621,9 @@ function xml_unescape(p_text in varchar2) return varchar2;
 function xml_attribute_value(p_vchr in varchar2) return varchar2;
 
 /***********************************************************************************************/
-/* Cut the order by clause and return SQL back                                                 */
+/* Remove the order by clause from the end of a SQL                                            */
 /***********************************************************************************************/
-function cut_order_by(p_text in clob) return clob;
+function remove_order_by(p_text in clob) return clob;
 
 /***********************************************************************************************/
 /* Identify if the current database is running Oracle EBS                                      */
@@ -629,6 +634,26 @@ function is_ebs_database return boolean;
 /* Concurrent request log- or out file url, p_file_type: 'O' for out, 'L' for log              */
 /***********************************************************************************************/
 function concurrent_request_file_url(p_file_type in varchar2, p_request_id in number) return varchar2;
+
+/***********************************************************************************************/
+/* Excel column name for a given column number, for example 3 -> C                             */
+/***********************************************************************************************/
+function colname(p_col in pls_integer) return varchar2;
+
+/***********************************************************************************************/
+/* Column position for a given Excel column number, for example C -> 3                         */
+/***********************************************************************************************/
+function colnum(p_column_name in varchar2) return pls_integer;
+
+/***********************************************************************************************/
+/* Converts an Oracle date to the equivalent numeric value in Excel date format                */
+/***********************************************************************************************/
+function date_to_excel_date(p_date in date) return varchar2 deterministic;
+
+/***********************************************************************************************/
+/* Converts a numeric Exel date to the equivalent Oracle date                                  */
+/***********************************************************************************************/
+function excel_date_to_date(p_excel_date in varchar2) return date deterministic;
 
 end xxen_util;
 /
@@ -1265,6 +1290,12 @@ begin
           dbms_sql.column_value(l_cursor, 1, l_display_value);
         end if;
         dbms_sql.close_cursor(l_cursor);
+      else
+        if c.id_column_type = 'D' then
+          l_display_value:=fnd_date.displaydate_to_date(l_display_value);
+        elsif c.id_column_type in ('X','Y') then
+          l_display_value:=fnd_date.canonical_to_date(l_display_value);
+        end if;
       end if; --l_sql_text is not null then
     end loop;
   end if; --l_flexfield_value is not null
@@ -1986,7 +2017,7 @@ begin
     if l_amount=0 then
       return null;
     else
-      dbms_lob.createtemporary(l_blob,true);
+      dbms_lob.createtemporary(l_blob,true,dbms_lob.call);
       dbms_lob.converttoblob(
       dest_lob=>l_blob,
       src_clob=>p_clob,
@@ -2023,7 +2054,7 @@ begin
     if l_amount=0 then
       return null;
     else
-      dbms_lob.createtemporary(l_clob,true);
+      dbms_lob.createtemporary(l_clob,true,dbms_lob.call);
       dbms_lob.converttoclob(
       dest_lob=>l_clob,
       src_blob=>p_blob,
@@ -2070,9 +2101,9 @@ l_clob clob;
 l_offset pls_integer:=1;
 l_total_length pls_integer:=length(p_clob);
 begin
-  dbms_lob.createtemporary(l_clob, true);
+  dbms_lob.createtemporary(l_clob,true,dbms_lob.call);
   while l_offset<=l_total_length loop
-    dbms_lob.append(l_clob,substr(p_clob,l_offset,p_line_length)||chr(10));
+    dbms_lob.append(l_clob,replace(replace(substr(p_clob,l_offset,p_line_length),chr(10)),chr(13))||chr(10));
     l_offset:=l_offset+p_line_length;
   end loop;
   return l_clob;
@@ -2088,7 +2119,7 @@ begin
   for c in (select platform_name from v$database) loop
     l_platform_name:=c.platform_name;
   end loop;
-  dbms_lob.createtemporary(l_blob64, true);
+  dbms_lob.createtemporary(l_blob64,true,dbms_lob.call);
   for i in 0..trunc((l_file_size-1)/l_len) loop
     dbms_lob.append(l_blob64,utl_encode.base64_encode(dbms_lob.substr(p_blob,l_len,i*l_len+1)));
   end loop;
@@ -2096,8 +2127,9 @@ begin
     return blob_to_clob(l_blob64);
   else
     --By deafult utl_encode.base64_encode adds newlines after each 64 characters. It gives a performance overhead while writing the base64 output on the filesystem using sqlplus.
-    --So removing newlines, so the result clobs contains strings no longer than 32767 which is sqlplus linesize limit.
-    return add_newlines(replace(replace(blob_to_clob(l_blob64),chr(10)),chr(13)),32767);
+    --So removing newlines after each 64 characters and adding them after each 32767 characters which is sqlplus linesize limit.
+    --Providing 33726 as a second parameter as it will become 32767 after all the newlines are removed
+    return add_newlines(blob_to_clob(l_blob64),33726);
   end if;
 end blob_to_base64;
 
@@ -2110,7 +2142,7 @@ l_blob64 blob;
 begin
   l_clob:=replace(p_clob,chr(10));-- blob_to_base64 adds a new line after 32767 however to decode to blob we would need data without any newline.
   l_file_size:=dbms_lob.getlength(l_clob);
-  dbms_lob.createtemporary(l_blob64, true);
+  dbms_lob.createtemporary(l_blob64,true,dbms_lob.call);
   for i in 0..trunc((l_file_size-1)/l_len) loop
     dbms_lob.append(l_blob64,utl_encode.base64_decode(utl_raw.cast_to_raw(dbms_lob.substr(l_clob,l_len,i*l_len+1))));
   end loop;
@@ -2167,7 +2199,7 @@ begin
 end clob_replace;
 
 
-function instring(p_text in varchar2, p_separator in varchar2, p_occurrence in pls_integer) return varchar2 is
+function instring(p_text in clob, p_separator in varchar2, p_occurrence in pls_integer) return varchar2 is
 l_start pls_integer:=case when p_occurrence=1 then 1 else instr(p_text,p_separator,1,p_occurrence-1)+length(p_separator) end;
 l_end pls_integer:=instr(p_text,p_separator,1,p_occurrence);
 begin
@@ -2221,7 +2253,8 @@ begin
   return case
   when p_data_type in (12, 178, 179, 180, 181, 231) then 'date'
   when p_data_type in (2, 100, 101) then 'number'
-  when p_data_type=112 then 'clob'
+  when p_data_type in (8, 24, 112) then 'clob'
+  when p_data_type=11 then 'rowid'
   else 'varchar2'
   end;
 end data_type_class;
@@ -2287,7 +2320,7 @@ l_line varchar2(32767);
 l_line_length pls_integer;
 l_total_length pls_integer:=length(p_clob);
 begin
-  dbms_lob.createtemporary(l_clob, true);
+  dbms_lob.createtemporary(l_clob,true,dbms_lob.call);
   while l_offset<=l_total_length loop
     l_line_number:=l_line_number+1;
     l_line_length:=instr(p_clob,chr(10),l_offset)-l_offset;
@@ -2302,6 +2335,25 @@ begin
   end loop;
   return l_clob;
 end remove_empty_lines;
+
+
+function html_to_text(p_html in clob, p_remove_empty_lines in varchar2 default null) return clob is
+l_clob clob;
+begin
+  l_clob:=utl_i18n.unescape_reference( --Decode HTML-Entities
+  regexp_replace(
+  regexp_replace(
+  regexp_replace(p_html,
+  '<br\s*/?>',chr(10),1,0,'i'), --Replace line breaks
+  '<p[^>]*>(.*?)</p>',chr(10)||'\1'||chr(10),1,0,'i'), --Remove paragraphs
+  '<[^>]*>') --Remove all other HTML-Tags
+  );
+  if p_remove_empty_lines='Y' then
+    return regexp_replace(l_clob,'(^\s*'||chr(10)||')|('||chr(10)||'\s*$)',null,1,0,'m'); --Remove all empty lines
+  else
+    return regexp_replace(l_clob,'(^\s*'||chr(10)||')|('||chr(10)||'\s*$)'); --Remove empty lines only from the start and end
+  end if;
+end html_to_text;
 
 
 function zero_to_null(p_number in number) return number is
@@ -3790,10 +3842,12 @@ l_text clob;
 begin
   for c in (
   select
+  rownum,
   u.*
   from
   (
   select
+  z.context_column_,
   case when z.is_case='Y' and z.sort_order=min(z.sort_order) over (partition by z.name_text) then 'case ' end||
   z.value_text||
   case when z.is_case='Y' and z.sort_order=max(z.sort_order) over (partition by z.name_text) then 'end ' end value_text,
@@ -3801,6 +3855,7 @@ begin
   from
   (
   select distinct
+  nvl(p_prefix,case when p_hide_column_name='Y' then y.context_column else '(select fdfcv.descriptive_flex_context_name from fnd_descr_flex_contexts_vl fdfcv where '||y.context_column||'=fdfcv.descriptive_flex_context_code and fdfcv.application_id='||y.application_id||' and fdfcv.descriptive_flexfield_name='''||y.descriptive_flexfield_name||''')' end||' ')||case when nvl(p_hide_column_name,'N')='N' then '"'||substrb(p_column_name_prefix||'DFF Context',1,xxen_report.max_column_length)||'"' end||','||chr(10) context_column_,
   nvl2(y.descriptive_flex_context_code,
   'when '||y.context_column||case
   when count(distinct y.descriptive_flex_context_code) over (partition by y.form_left_prompt__,y.value_text)>1 then ' in ('||listagg(''''||y.descriptive_flex_context_code||'''',',') within group (order by y.descriptive_flex_context_code) over (partition by y.form_left_prompt__,y.value_text)||')'
@@ -3900,6 +3955,9 @@ begin
   where
   p_prefix is null or u.name_text is not null
   ) loop
+    if c.rownum=1 then
+      l_text:=c.context_column_;
+    end if;
     l_value_text:=l_value_text||nvl(p_prefix,c.value_text);
     if c.name_text is not null then
       l_text:=rtrim(l_text||l_value_text||case when nvl(p_hide_column_name,'N')='N' then c.name_text end)||','||chr(10);
@@ -4127,15 +4185,15 @@ begin
 end xml_attribute_value;
 
 
-function cut_order_by(p_text in clob) return clob is
-l_cut_text clob:=regexp_substr(p_text,'(^|\s+)order\s+by\s+.+$',1,1,'in');
+function remove_order_by(p_text in clob) return clob is
+l_remove_text clob:=regexp_substr(p_text,'(^|\s+)order\s+by\s+.+$',1,1,'in');
 begin
-  if not regexp_like(l_cut_text,'\s+(from|where|select)\s+','i') and regexp_count(l_cut_text,'\(')=regexp_count(l_cut_text,'\)') then
-    return to_clob(dbms_lob.substr(p_text,length(p_text)-length(l_cut_text)));
+  if not regexp_like(l_remove_text,'\s+(from|where|select)\s+','i') and regexp_count(l_remove_text,'\(')=regexp_count(l_remove_text,'\)') then
+    return to_clob(dbms_lob.substr(p_text,length(p_text)-length(l_remove_text)));
   else
     return p_text;
   end if;
-end cut_order_by;
+end remove_order_by;
 
 
 function is_ebs_database return boolean is
@@ -4157,6 +4215,38 @@ begin
   expire_time=>500
   );
 end concurrent_request_file_url;
+
+
+function colname(p_col in pls_integer) return varchar2 is
+begin
+  return case
+  when p_col<=26 then chr(64+p_col)
+  when p_col<=702 then chr(64+trunc((p_col-1)/26))||chr(65+mod(p_col-1,26))
+  else chr(64+trunc((p_col-27)/676))||chr(65+mod(trunc((p_col-1)/26)-1,26))||chr(65+mod(p_col-1,26))
+  end;
+end colname;
+
+
+function colnum(p_column_name in varchar2) return pls_integer is
+begin
+  return case
+  when length(p_column_name)=1 then ascii(p_column_name)-64
+  when length(p_column_name)=2 then (ascii(p_column_name)-64)*26+ascii(substr(p_column_name,2))-64
+  when length(p_column_name)=3 then (ascii(p_column_name)-64)*676+(ascii(substr(p_column_name,2))-64)*26+ascii(substr(p_column_name,3))-64
+  end;
+end colnum;
+
+
+function date_to_excel_date(p_date in date) return varchar2 deterministic is
+begin
+  return to_char(round(p_date-to_date('01.01.1900','DD.MM.YYYY')+2,12),'TM9','nls_numeric_characters=.,');
+end date_to_excel_date;
+
+
+function excel_date_to_date(p_excel_date in varchar2) return date deterministic is
+begin
+  return to_date('01.01.1900','DD.MM.YYYY')+fnd_number.canonical_to_number(p_excel_date)-2;
+end excel_date_to_date;
 
 
 end xxen_util;

@@ -155,7 +155,7 @@ select distinct --subquery required as there are a few cases with more than one 
 xdl.source_distribution_id_num_1,
 xdl.ae_header_id,
 xdl.application_id,
-min(xdl.ae_line_num) keep (dense_rank first order by decode(xdl.accounting_line_code,'INTERCOMPANY_COGS',1,2)) over (partition by xdl.application_id,xdl.source_distribution_id_num_1,xdl.ae_header_id) ae_line_num
+min(xdl.ae_line_num) keep (dense_rank first order by decode(xdl.accounting_line_code,'INTERCOMPANY_COGS',1,2)) over (partition by xdl.application_id,xdl.source_distribution_id_num_1,xdl.accounting_line_code,xdl.ae_header_id) ae_line_num
 from
 xla_distribution_links xdl
 where
@@ -179,6 +179,7 @@ xal.code_combination_id=gcck.code_combination_id
 ) x
 where
 1=1 and
+nvl(:p_coa_id,-1)=nvl(:p_coa_id,-1) and
 mta.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
 mta.transaction_id=mmt.transaction_id and
 mta.inventory_item_id=msiv.inventory_item_id and
@@ -192,7 +193,7 @@ mic.category_id=mck.category_id and
 mta.transaction_source_type_id=mtst.transaction_source_type_id and
 mmt.transaction_type_id=mtt.transaction_type_id and
 mta.reference_account=gcck.code_combination_id and
-mta.operating_unit=haouv.organization_id and
+mta.operating_unit=haouv.organization_id(+) and
 mta.set_of_books_id=gl.ledger_id and
 mta.accounting_line_type<>15 and
 case when mmt.transaction_source_type_id=1 then mmt.transaction_source_id end=pha.po_header_id(+) and

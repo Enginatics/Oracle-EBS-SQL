@@ -35,6 +35,7 @@ select
 null action_,
 null status_,
 null message_,
+null modified_columns_,
 pbg.name business_group,
 papf.full_name employee_name,
 papf.employee_number,

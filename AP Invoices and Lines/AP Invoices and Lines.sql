@@ -162,6 +162,7 @@ ap_inv.supplier_notif_method,
 ap_inv.email_address,
 ap_inv.remittance_email,
 &gcc_dist_segment_columns
+&attachment_columns
 ap_inv.created_by,
 ap_inv.creation_date,
 ap_inv.last_updated_by,
@@ -512,9 +513,43 @@ select distinct
   aha.invoice_id=rcv.invoice_id(+)
 ) x
 ) ap_holds,
+(select
+ fad.attached_document_id attachment_id,
+ fad.entity_name,
+ fad.pk1_value entity_id,
+ fad.seq_num,
+ fdd.user_name type,
+ fdct.user_name category,
+ fdt.title,
+ fdt.description,
+ case fd.datatype_id
+ when 1 then (select fdst.short_text from fnd_documents_short_text fdst where fdst.media_id = fd.media_id)
+ when 5 then fd.url
+ when 6 then (select fl.file_name from fnd_lobs fl where fl.file_id = fd.media_id)
+ else null
+ end content,
+ case when fd.datatype_id = 6 then fd.media_id else null end file_id
+ from
+ fnd_attached_documents fad,
+ fnd_documents fd,
+ fnd_documents_tl fdt,
+ fnd_document_datatypes fdd,
+ fnd_document_categories_tl fdct
+ where
+ fad.document_id = fd.document_id and
+ fd.document_id = fdt.document_id and
+ fdt.language = userenv('lang') and
+ fd.datatype_id = fdd.datatype_id and
+ fdd.language = userenv('lang') and
+ fd.category_id = fdct.category_id and
+ fdct.language = userenv('lang') and
+ fd.datatype_id in (1,5,6)
+) attchmt,
 gl_code_combinations_kfv gcck
 where
 ap_inv.invoice_id=ap_holds.invoice_id(+) and
+decode(:p_show_attachments,'Y','AP_INVOICES',null)=attchmt.entity_name(+) and
+decode(:p_show_attachments,'Y',to_char(ap_inv.invoice_id),null)=attchmt.entity_id(+) and
 ap_inv.dist_code_combination_id=gcck.code_combination_id(+)
 order by
 ap_inv.operating_unit,
@@ -526,4 +561,5 @@ ap_inv.invoice_num,
 ap_inv.payment_num,
 ap_inv.line_number,
 ap_inv.dist_accounting_date,
-ap_inv.dist_line_number
+ap_inv.dist_line_number,
+attchmt.seq_num

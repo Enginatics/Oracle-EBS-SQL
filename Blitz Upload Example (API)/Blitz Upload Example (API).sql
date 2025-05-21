@@ -14,6 +14,7 @@ select
 null action_,
 null status_,
 null message_,
+null modified_columns_,
 xue.id,
 xue.name,
 xue.date_of_birth

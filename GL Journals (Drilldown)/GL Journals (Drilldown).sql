@@ -5,9 +5,9 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: GL Journals (Drilldown)
--- Description: GL batches and journals report, including amounts and attachments. This report is used by the GL Financial Statement and Drilldown report, to show subledger details.
+-- Description: ** This report is used by the GL Financial Statement and Drilldown report, to show Journal details. **
 
-To enable next level drilldown below columns should be present in Display columns of the custom templates
+GL batches and journals report, including amounts and attachments.To enable next level drilldown below columns should be present in Display columns of the custom templates
 Drill To Subledger
 Drill To Journal Attachment
 Drill To Full Journal

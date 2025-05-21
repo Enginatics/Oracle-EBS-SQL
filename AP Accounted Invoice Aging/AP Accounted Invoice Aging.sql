@@ -7,12 +7,15 @@
 -- Report Name: AP Accounted Invoice Aging
 -- Description: Application: Payables
 Report: Accounts Payable Accounted Invoice Aging Report
+Pre-requisite: XLA_TRIAL_BALANCES should be populated before running this report.
 
 Description.
-Report details Aging of outstanding amounts at a specified point in time for Accounted Invoices.
+Report details Aging of outstanding amounts at a specified point in time for Accounted Invoices and relies mainly on the data in XLA_TRIAL_BALANCES table for the accounting information.
+XLA_TRIAL_BALANCES data is inserted by the Open Account Balances Data Manager.
+The Open Account Balances Data Manager maintains reportable information for all enabled open account balance listing definitions. This program is submitted automatically after a successful transfer to General Ledger for the same ledger or
+manually by running the Open Account Balances Data Manager program. When changes are applied to a Open Account Balances Listing Definition, the Open Account Balances Data Manager program is automatically submitted for the changed definition.
 
 For scheduling the report to run periodically, use the 'as of relative period close' offset parameter. This is the relative period offset to the current period, so when the current period changes, the period close as of date will also be automatically updated when the report is re-run.
-
 -- Excel Examle Output: https://www.enginatics.com/example/ap-accounted-invoice-aging/
 -- Library Link: https://www.enginatics.com/reports/ap-accounted-invoice-aging/
 -- Run Report: https://demo.enginatics.com/

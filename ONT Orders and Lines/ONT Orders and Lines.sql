@@ -170,7 +170,24 @@ max(rcta.trx_number) keep (dense_rank last order by rcta.customer_trx_id) over (
 max(rcta.trx_date) keep (dense_rank last order by rcta.customer_trx_id) over (partition by rctla.interface_line_attribute6) invoice_date,
 max(rctlgda0.gl_date) keep (dense_rank last order by rcta.customer_trx_id) over (partition by rctla.interface_line_attribute6) invoice_gl_date,
 xxen_util.meaning(max(rcta.status_trx) keep (dense_rank last order by rcta.customer_trx_id) over (partition by rctla.interface_line_attribute6),'PAYMENT_SCHEDULE_STATUS',222) invoice_status,
-listagg(decode(rctla.line_type,'FREIGHT',null,rctla.line_number),', ') within group (order by decode(rctla.line_type,'FREIGHT',null,rctla.line_number)) over (partition by rctla.interface_line_attribute6) invoice_line,
+(select /*+ push_pred(x) */ distinct
+ listagg(x.line_number,', ') within group (order by x.line_number) over ()
+ from
+ (select
+  rctla.interface_line_context,
+  rctla.interface_line_attribute6,
+  rctla.line_number,
+  sum(lengthb(rctla.line_number)+2) over (partition by rctla.interface_line_attribute6 order by rctla.line_number rows between unbounded preceding and current row) len
+  from
+  ra_customer_trx_lines_all rctla
+  where
+  rctla.line_type != 'FREIGHT'
+ ) x
+ where
+ x.interface_line_context in ('INTERCOMPANY','ORDER ENTRY') and
+ x.interface_line_attribute6=to_char(oola.line_id) and
+ x.len <= 4000
+) invoice_line,
 sum(rctla.extended_amount) over (partition by rctla.interface_line_attribute6) invoice_amount,
 max(rcta.invoice_currency_code) keep (dense_rank last order by rcta.customer_trx_id) over (partition by rctla.interface_line_attribute6) invoice_currency,
 sum(rctlgda.acctd_amount) over (partition by rctla.interface_line_attribute6) invoice_accounted_amount,
@@ -209,7 +226,7 @@ xxen_util.client_time(oola.schedule_ship_date) schedule_ship_date,
 xxen_util.client_time(oola.actual_shipment_date) actual_shipment_date,
 oola.shipped_quantity,
 xxen_util.meaning(decode(oola.shippable_flag,'Y','Y'),'YES_NO',0) shippable_flag,
-(select distinct listagg(os.set_name,', ') within group (order by os.set_name) over (partition by oola.line_id) set_name from oe_sets os where oola.ship_set_id=os.set_id) ship_set,
+(select os.set_name from oe_sets os where oola.ship_set_id=os.set_id) ship_set,
 xxen_util.meaning(case when ooha.cancelled_flag='Y' or oola.cancelled_flag='Y' then 'Y' end,'YES_NO',0) cancelled_flag,
 xxen_util.client_time(oolh.hist_creation_date) cancel_date,
 xxen_util.user_name(oolh.hist_created_by) cancelled_by,

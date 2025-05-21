@@ -27,20 +27,20 @@ Allows the user to
 - modify (update/delete) the downloaded Safety Stock entries
 - create new Safety Stock entries
 
+Note:
+The greyed out columns are display only and included to provide additional information. These cannot be altered and are ignored by the upload.
+
 
 -- Excel Examle Output: https://www.enginatics.com/example/inv-safety-stock-upload/
 -- Library Link: https://www.enginatics.com/reports/inv-safety-stock-upload/
 -- Run Report: https://demo.enginatics.com/
 
 select
-x.*
-from
-(
-select
 null action_,
 null status_,
 null message_,
 null request_id_,
+null modified_columns_,
 rowidtochar(mss.rowid) row_id,
 mp.organization_code,
 msiv.concatenated_segments item,
@@ -57,7 +57,17 @@ xxen_util.meaning(mss.safety_stock_code,'MTL_SAFETY_STOCK',700) safety_stock_met
 mss.forecast_designator forecast,
 mss.safety_stock_percent,
 mss.service_level service_level_percent,
-msiv.planner_code planner
+msiv.planner_code planner,
+(select 
+ sum(moq.transaction_quantity)
+ from   
+ mtl_onhand_quantities moq
+ where
+ moq.organization_id = mss.organization_id and  
+ moq.inventory_item_id = mss.inventory_item_id
+ having 
+ sum(moq.transaction_quantity) != 0
+) onhand
 from
 mtl_safety_stocks mss,
 mtl_parameters mp,
@@ -74,13 +84,3 @@ mss.organization_id = ppov.inventory_organization_id (+) and
 mss.project_id = ppov.project_id (+) and
 mss.project_id = ptv.project_id (+) and
 mss.task_id = ptv.task_id (+)
-&not_use_first_block
-&report_table_select &report_table_name &report_table_where_clause &success_records
-&processed_run
-) x
-order by
-x.organization_code,
-x.item,
-x.effective_date,
-x.project_number,
-x.task_number

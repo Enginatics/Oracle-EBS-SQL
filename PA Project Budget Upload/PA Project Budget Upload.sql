@@ -42,6 +42,7 @@ decode(:p_upload_mode,xxen_upload.action_create,xxen_upload.status_meaning(xxen_
 null message_,
 null baseline_message_,
 null request_id_,
+null modified_columns_,
 :p_upload_mode upload_mode_,
 decode(:p_upload_mode,xxen_upload.action_create,to_number(null),pbl.budget_line_id) budget_line_id,
 --

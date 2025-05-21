@@ -11,6 +11,7 @@
 -- Run Report: https://demo.enginatics.com/
 
 select
+fsre.message_id,
 fsre.error_date,
 fsre.error_code,
 fsre.error_detail
@@ -19,4 +20,5 @@ fnd_soa_runtime_error fsre
 where
 1=1
 order by
-fsre.error_date desc
+fsre.error_date desc,
+fsre.message_id desc

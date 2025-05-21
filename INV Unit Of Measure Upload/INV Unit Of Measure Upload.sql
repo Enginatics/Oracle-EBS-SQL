@@ -91,6 +91,7 @@ null action_,
 null status_,
 null message_,
 null request_id_,
+null modified_columns_,
 to_date(null) timestamp_,
 :p_upload_mode upload_mode_,
 --

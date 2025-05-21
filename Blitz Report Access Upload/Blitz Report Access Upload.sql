@@ -18,6 +18,7 @@ select
 null action_,
 null status_,
 null message_,
+null modified_columns_,
 fpo.user_profile_option_name profile_option_name,
 decode(fpov.level_id, 10003, 'Responsibility', 10004, 'User') level_,
 decode(fpov.level_id, 10003, frv.responsibility_name, 10004, fu.user_name) value,

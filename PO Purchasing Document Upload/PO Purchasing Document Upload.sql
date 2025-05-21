@@ -69,7 +69,7 @@ pltt.language=userenv('lang') and
 pltt.line_type_id=pla.line_type_id and
 pla.category_id=mcv.category_id(+) and
 msiv.inventory_item_id(+) = pla.item_id and
-msiv.organization_id(+) = po_lines_sv4.get_inventory_orgid(pla.org_id)
+msiv.organization_id(+) = xxen_po_upload.get_inv_org_id(pla.org_id)
 ),
 po_line_locations_ as
 (
@@ -114,6 +114,7 @@ select
 null action_,
 null status_,
 null message_,
+null modified_columns_,
 pha.org_id,
 to_number(null) request_id_,
 to_number(null) interface_header_id,
@@ -264,6 +265,7 @@ document_types_ pt,
 po_lines_ pl,
 po_line_locations_ pll
 where
+nvl(:p_create_empty_file,'N')<>'Y' and
 1=1 and
 2=2 and
 pha.org_id=haouv.organization_id and

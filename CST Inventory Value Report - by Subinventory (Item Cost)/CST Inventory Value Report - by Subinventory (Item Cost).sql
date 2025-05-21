@@ -43,7 +43,8 @@ sum(ciqt.rollback_qty * nvl(cict.outside_processing_cost,0) * decode(sec.asset_i
 sum(ciqt.rollback_qty * nvl(cict.overhead_cost,0)           * decode(sec.asset_inventory,2,0,1) * :p_exchange_rate) overhead_cost,
 --
 msi.concatenated_segments || ' - ' || msi.description item_label,
-ciqt.subinventory_code || ' - ' || sec.description subinventory_label
+ciqt.subinventory_code || ' - ' || sec.description subinventory_label,
+sysdate report_run_date
 from
 mtl_categories_b_kfv mc,
 mtl_system_items_vl msi,
@@ -84,7 +85,8 @@ decode(ciqt.subinventory_code,null,'Intransit','On-hand'),
 sec.description,
 sec.asset_inventory,
 ccg.cost_group,
-round(nvl(cict.item_cost,0) * :p_exchange_rate, :p_ext_precision)
+round(nvl(cict.item_cost,0) * :p_exchange_rate, :p_ext_precision),
+sysdate
 having
 2=2 and
 decode(:p_neg_qty,1,1,2) = decode(:p_neg_qty,1,decode(sign(sum(ciqt.rollback_qty)),'-1',1,2),2) and
