@@ -129,8 +129,8 @@ case when bitand(dhash.time_model,power(2,21))=power(2,21) then 'INMEMORY_REPOPU
 case when bitand(dhash.time_model,power(2,22))=power(2,22) then 'INMEMORY_TREPOPULATE ' end||
 case when bitand(dhash.time_model,power(2,23))=power(2,23) then 'TABLESPACE_ENCRYPTION ' end
 ) time_model,
-xxen_util.meaning(decode(dhash.in_parse,'Y','Y'),'YES_NO',0) in_parse,
-xxen_util.meaning(decode(dhash.in_hard_parse,'Y','Y'),'YES_NO',0) in_hard_parse,
+xxen_util.yes(dhash.in_parse) in_parse,
+xxen_util.yes(dhash.in_hard_parse) in_hard_parse,
 dhash.qc_instance_id,
 dhash.qc_session_id||nvl2(dhash.qc_session_serial#,' - '||dhash.qc_session_serial#,null) qc_sid_serial#,
 dhash.sql_plan_operation,

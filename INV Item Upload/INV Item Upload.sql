@@ -41,6 +41,11 @@ The remaining parameters are used to restrict the items to be downloaded for upd
 Available Templates
 Use the pre-defined templates to restrict the Item Attributes to be displayed and updated in the report. Alternatively, users can define their own custom template containing the Item Attributes of interest.
 
+NOTE:
+When creating new child items, the master-controlled item attributes are not passed to the Import API so they are defaulted from the Master Org. 
+When updating existing child items, the master-controlled item attributes are copied directly from the Master Org, in case there is any pre-existing inconsistency between the Child Org and Master Org values. 
+Effectively this means, for creation/updates to items in child organizations, the uploaded values for Master Controlled Item attributes are cot considered by upload.
+
 -- Excel Examle Output: https://www.enginatics.com/example/inv-item-upload/
 -- Library Link: https://www.enginatics.com/reports/inv-item-upload/
 -- Run Report: https://demo.enginatics.com/

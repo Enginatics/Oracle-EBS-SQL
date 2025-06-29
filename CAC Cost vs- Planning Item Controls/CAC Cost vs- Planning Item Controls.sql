@@ -37,19 +37,17 @@ Parameters:
 ===========
 Cost Type:  the Frozen or Pending cost type you wish to report (mandatory).
 Assignment Set:  for your organization sourcing rules, enter an assignment set (optional).
-Category Set 1:  any item category you wish, typically the Cost or Product Line category set (optional).
-Category Set 2:  any item category you wish, typically the Inventory category set (optional).
+Category Sets 1 - 3:  any item category you wish, typically the Cost or Product Line category sets (optional).
 Item Number:  enter the specific item number(s) you wish to report (optional).
 Organization Code:  enter the specific inventory organization(s) you wish to report (optional).
 Operating Unit:  enter the specific operating unit(s) you wish to report (optional).
 Ledger:  enter the specific ledger(s) you wish to report (optional).
 
 /* +=============================================================================+
--- |  Copyright 2008-2024 Douglas Volz Consulting, Inc.
+-- |  Copyright 2008-2025 Douglas Volz Consulting, Inc.
 -- |  All rights reserved.
 -- |  Permission to use this code is granted provided the original author is
--- |  acknowledged. No warranties, express or otherwise is included in this
--- |  permission.
+-- |  acknowledged. No warranties, express or otherwise is included in this permission.
 -- +=============================================================================+
 -- |  1.0     15 Oct 2008 Douglas Volz   Initial Coding
 -- |  1.34    06 May 2021 Douglas Volz   Using a with statement, summarized report type queries for efficiency.
@@ -59,6 +57,8 @@ Ledger:  enter the specific ledger(s) you wish to report (optional).
 -- |                                     type during cost rollup.
 -- |  1.36   07 Jan 2024 Douglas Volz    Add current onhand quantities, to help find valuation issues.  Remove
 -- |                                     tabs, add operating unit and ledger security and inventory access controls.
+-- |  1.37   10 Apr 2025 Douglas Volz    Added in new GL and OU security profiles.
+-- |  1.38   13 Apr 2025 Douglas Volz    Fix ORA-43916 Collation Error for character expressions 'Y', 'N'.
 -- +=============================================================================+*/
 
 -- Excel Examle Output: https://www.enginatics.com/example/cac-cost-vs-planning-item-controls/
@@ -78,37 +78,50 @@ with rept as
                 msiv.inventory_item_id,
                 msiv.organization_id,
                 -- check to see if a bom exists
-                nvl((select     distinct 'Y'
-                     from       bom_structures_b bom
-                     where      bom.organization_id     = mp.organization_id
-                     and        bom.assembly_item_id    = msiv.inventory_item_id
-                     and        bom.alternate_bom_designator is null),
-                'N') BOM,
+                -- Revision for version 1.38, fix ORA-43916
+                -- nvl((select distinct 'Y'
+                nvl((select distinct mp.organization_code
+                     from   bom_structures_b bom
+                     where  bom.organization_id     = mp.organization_id
+                     and    bom.assembly_item_id    = msiv.inventory_item_id
+                     and    bom.alternate_bom_designator is null
+                -- Revision for version 1.38, fix ORA-43916
+                -- ), 'N') bom,
+                ), null) bom,
                 -- check to see if a routing exists
-                nvl((select     distinct 'Y'
-                     from       bom_operational_routings bor
-                     where      bor.organization_id     = mp.organization_id
-                     and        bor.assembly_item_id    = msiv.inventory_item_id
-                     and        bor.alternate_routing_designator is null),
-                'N') Routing,
-                 -- check to see if a sourcing rule exists for the receipt org
-                nvl((select     distinct 'Y'
-                     from       mrp_sr_receipt_org msro,
-                                mrp_sr_source_org msso,
-                                mrp_sourcing_rules msr,
-                                mrp_sr_assignments msa,
-                                mrp_assignment_sets mas
-                     where      msr.sourcing_rule_id    = msro.sourcing_rule_id
+                -- Revision for version 1.38, fix ORA-43916
+                -- nvl((select distinct 'Y'
+                nvl((select distinct mp.organization_code
+                     from   bom_operational_routings bor
+                     where  bor.organization_id     = mp.organization_id
+                     and    bor.assembly_item_id    = msiv.inventory_item_id
+                     and    bor.alternate_routing_designator is null
+                -- Revision for version 1.38, fix ORA-43916
+                -- ), 'N') routing,
+                ), null) routing,
+                -- check to see if a sourcing rule exists for the receipt org
+                -- Revision for version 1.38, fix ORA-43916
+                -- nvl((select distinct 'Y'
+                nvl((select distinct mp.organization_code
+                     from   mrp_sr_receipt_org msro,
+                            mrp_sr_source_org msso,
+                            mrp_sourcing_rules msr,
+                            mrp_sr_assignments msa,
+                            mrp_assignment_sets mas
+                     where  msr.sourcing_rule_id    = msro.sourcing_rule_id
                      -- fix for version 1.4, check to see if the sourcing rule is
                      -- for an inventory org, not a vendor
-                     and        msso.sr_receipt_id      = msro.sr_receipt_id
-                     and        msso.source_organization_id is not null
-                     and        msa.sourcing_rule_id    = msr.sourcing_rule_id
-                     and        msa.assignment_set_id   = mas.assignment_set_id
-                     and        msiv.organization_id    = msa.organization_id
-                     and        msiv.inventory_item_id  = msa.inventory_item_id
-                     and        3=3                     -- p_assignment_set
-                     and        mp.organization_id      = msa.organization_id),'N') Sourcing_Rule,
+                     and    msso.sr_receipt_id      = msro.sr_receipt_id
+                     and    msso.source_organization_id is not null
+                     and    msa.sourcing_rule_id    = msr.sourcing_rule_id
+                     and    msa.assignment_set_id   = mas.assignment_set_id
+                     and    msiv.organization_id    = msa.organization_id
+                     and    msiv.inventory_item_id  = msa.inventory_item_id
+                     and    mp.organization_id      = msa.organization_id
+                     and    3=3                     -- p_assignment_set
+                     -- Revision for version 1.38, fix ORA-43916
+                -- ), 'N') sourcing_rule,
+                ), null) sourcing_rule,
                 cic.based_on_rollup_flag,
                 -- Revision for version 1.35
                 cic.defaulted_flag,
@@ -161,10 +174,11 @@ with rept as
          and    mp.organization_id             <> mp.master_organization_id -- the item master org usually does not have costs
          and    mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
          and    2=2                             -- p_cost_type, p_item_number
-         and    4=4                             -- p_org_code 
+         and    4=4                             -- p_org_code
         )
 
 --------------- main sql starts here -----------------------
+
 
 select  rept_all.report_type,
         nvl(gl.short_name, gl.name) Ledger,
@@ -180,7 +194,7 @@ select  rept_all.report_type,
 &category_columns
         fl1.meaning BOM,
         fl2.meaning Routing,
-        fl3.meaning Sourcing_Rule,  -- p_assignment_set
+        fl3.meaning Sourcing_Rule,
         ml2.meaning Based_on_Rollup,
         -- Revision for version 1.35
         ml4.meaning Defaulted_Flag,
@@ -215,7 +229,7 @@ from    mfg_lookups ml1, -- Make/buy code, MTL_PLANNING_MAKE_BUY
          -- ===============================================
          -- Report 1 - 'Based on Rollup Yes - No BOMs'
          -- ===============================================
-         select        'Based on Rollup Yes - No BOMs' report_type, rept.* from rept where rept.costing_enabled_flag = 'Y' and rept.planning_make_buy_code = 1 and rept.based_on_rollup_flag = 1 and rept.bom = 'N' 
+         select 'Based on Rollup Yes - No BOMs' report_type, rept.* from rept where rept.costing_enabled_flag = 'Y' and rept.planning_make_buy_code = 1 and rept.based_on_rollup_flag = 1 and rept.bom = 'N' 
          union all
          -- ===============================================
          -- Report 2 - 'Based on Rollup Yes - No Routing'
@@ -317,12 +331,14 @@ and     ml3.lookup_code             = rept_all.cost_asset_flag
 and     ml4.lookup_type             = 'SYS_YES_NO'
 and     ml4.lookup_code             = rept_all.defaulted_flag
 -- End revision for version 1.35
+-- Revision for version 1.38
 and     fl1.lookup_type             = 'YES_NO'
-and     fl1.lookup_code             = rept_all.bom
+and     fl1.lookup_code             = decode(rept_all.bom, rept_all.organization_code, 'Y', 'N')
 and     fl2.lookup_type             = 'YES_NO'
-and     fl2.lookup_code             = rept_all.routing
+and     fl2.lookup_code             = decode(rept_all.routing, rept_all.organization_code, 'Y', 'N')
 and     fl3.lookup_type             = 'YES_NO'
-and     fl3.lookup_code             = rept_all.sourcing_rule
+and     fl3.lookup_code             = decode(rept_all.sourcing_rule, rept_all.organization_code, 'Y', 'N')
+-- End revision for version 1.38
 and     fl4.lookup_type             = 'YES_NO'
 and     fl4.lookup_code             = rept_all.costing_enabled_flag
 and     fl5.lookup_type             = 'YES_NO'
@@ -339,8 +355,11 @@ and     hoi.organization_id         = haou.organization_id -- this gets the orga
 and     sysdate < nvl(haou.date_to, sysdate + 1)
 and     haou2.organization_id       = to_number(hoi.org_information3) -- this gets the operating unit id
 and     hoi.org_information1        = gl.ledger_id      -- this gets the ledger id
-and     gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
-and     haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)                                                                                                                                                                         
+-- Revision for version 1.37
+-- Revision for Operating Unit and Ledger Controls and Parameters, replacing prior method.
+and     (nvl(fnd_profile.value('XXEN_REPORT_USE_LEDGER_SECURITY'),'N')='N' or gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+)))
+and     (nvl(fnd_profile.value('XXEN_REPORT_USE_OPERATING_UNIT_SECURITY'),'N')='N' or haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11))
+-- End revision for version 1.37
 and     1=1                         -- p_operating_unit, p_ledger
 -- Order by Report Type, Ledger, Operating_Unit, Org_Code, Cost_Type, Item_Number
 order by

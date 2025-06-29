@@ -20,7 +20,7 @@ xxen_util.meaning(decode(mtt.type_class,1,1),'SYS_YES_NO',700) project,
 xxen_util.meaning(decode(mtt.shortage_msg_online_flag,1,1),'SYS_YES_NO',700) shortage_msg_online,
 xxen_util.meaning(decode(mtt.shortage_msg_background_flag,1,1),'SYS_YES_NO',700) shortage_msg_notification,
 xxen_util.meaning(decode(mtt.status_control_flag,1,1),'SYS_YES_NO',700) status_control,
-xxen_util.meaning(decode(mtt.location_required_flag,'Y','Y'),'YES_NO',0) location_required,
+xxen_util.yes(mtt.location_required_flag) location_required,
 &dff_columns
 xxen_util.user_name(mtt.created_by) created_by,
 xxen_util.client_time(mtt.creation_date) creation_date,

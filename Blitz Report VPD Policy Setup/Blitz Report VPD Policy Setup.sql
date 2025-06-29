@@ -18,7 +18,7 @@ flv.column_name,
 xxen_util.meaning((select 'Y' from dba_policies dp where dp.policy_name='XXEN_VPD' and flv.owner=dp.object_owner and flv.table_name=dp.object_name and dp.enable='YES'),'YES_NO',0) vpd_policy_active,
 flv.description,
 flv.tag,
-xxen_util.meaning(decode(flv.enabled_flag,'Y','Y'),'YES_NO',0) enabled,
+xxen_util.yes(flv.enabled_flag) enabled,
 flv.start_date_active,
 flv.end_date_active,
 case

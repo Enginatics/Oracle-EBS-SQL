@@ -1351,8 +1351,8 @@ hcasa.party_site_id = hps.party_site_id  and
 hp.party_id = hps.party_id and
 hcasa.org_id = hou.organization_id and
 to_number(hou.set_of_books_id) = gl.ledger_id and
-hcasa.cust_acct_site_id = hcsua.cust_acct_site_id (+) and
-hcasa.org_id = hcsua.org_id (+) and
+decode(:p_update_site_uses,'Y',hcasa.cust_acct_site_id,null) = hcsua.cust_acct_site_id (+) and
+decode(:p_update_site_uses,'Y',hcasa.org_id,null) = hcsua.org_id (+) and
 hps.location_id = hl.location_id (+) and
 --
 case when hcsua.site_use_code in ('BILL_TO','DUN','STMTS') and hcsua.status = 'A' then hcsua.site_use_id else null end = hcp.site_use_id (+) and

@@ -66,6 +66,7 @@ hcsua_s.location                   ship_to_site,
 hz_format_pub.format_address(hps_s.location_id,null,null,', ') ship_to_address,
 --
 rctta.name                         trx_type,
+rctta.type                           trx_class,
 rcta.trx_number                    trx_number,
 rcta.trx_date                      trx_date,
 apsa.gl_date                       gl_date,

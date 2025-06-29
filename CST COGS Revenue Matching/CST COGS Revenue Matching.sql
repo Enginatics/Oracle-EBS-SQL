@@ -54,7 +54,7 @@ perpetual_qry_1 as
   x.*
   from
   (
-    select /* leading(haou,crcml,oola,ooha,cce,mta) use_nl(haou,crcml, oola, ooha) index(crcml cst_rev_cogs_match_lines_n2) */
+    select
     crcml.operating_unit_id,
     haou.name operating_unit,
     gl.name ledger,
@@ -74,8 +74,10 @@ perpetual_qry_1 as
     crcml.inventory_item_id,
     crcml.unit_cost,
     crcml.unit_material_cost,
+    crcml.unit_moh_cost,
+    crcml.unit_op_cost,
     crcml.unit_resource_cost,
-    crcml.unit_overhead_cost,        
+    crcml.unit_overhead_cost,
     sum(decode(mta.accounting_line_type, 35, mta.base_transaction_value,0)) cogs_balance,
     last_value(sum(decode(mta.accounting_line_type, 35, mta.base_transaction_value,0)))  -- CST_ACCOUNTING_LINE_TYPE 35 = Cost of Goods Sold
     over ( partition by
@@ -162,7 +164,8 @@ perpetual_qry_1 as
     1=1 and
     crcml.ledger_id = :p_ledger_id and
     crcml.pac_cost_type_id is null and
-    cce.event_date <= nvl2(:p_gps_end_dt,:p_gps_end_dt - (inv_le_timezone_pub.get_le_day_time_for_ou(sysdate,crcml.operating_unit_id)-sysdate),cce.event_date) and
+    cce.event_date<=:p_gps_end_dt and
+    cce.event_date>=:p_gps_start_dt and
     cce.cogs_om_line_id = crcml.cogs_om_line_id and
     gl.ledger_id = crcml.ledger_id and
     oola.header_id = ooha.header_id and
@@ -189,13 +192,15 @@ perpetual_qry_1 as
     crcml.inventory_item_id,
     crcml.unit_cost,
     crcml.unit_material_cost,
+    crcml.unit_moh_cost,
+    crcml.unit_op_cost,
     crcml.unit_resource_cost,
     crcml.unit_overhead_cost  
   ) x
 ),
 perpetual_qry_2 as
 (
-  select /* index(rctla ra_customer_trx_lines_n9) leading (pq1, rctla) use_nl(pq1, rctla) */
+  select
   pq1.operating_unit_id,
   pq1.operating_unit,
   pq1.ledger,
@@ -219,10 +224,12 @@ perpetual_qry_2 as
   rctla.customer_trx_line_id,
   rctla.customer_trx_id,
   sum(cce.event_quantity) total_line_quantity,
-  decode(sum(cce.event_quantity),0,0,sum(cce.event_quantity * crcml.unit_cost) / sum(cce.event_quantity)) item_cost,
-  decode(sum(cce.event_quantity),0,0,sum(cce.event_quantity * crcml.unit_material_cost) / sum(cce.event_quantity)) material_cost,
-  decode(sum(cce.event_quantity),0,0,sum(cce.event_quantity * crcml.unit_resource_cost) / sum(cce.event_quantity)) resource_cost,
-  decode(sum(cce.event_quantity),0,0,sum(cce.event_quantity * crcml.unit_overhead_cost) / sum(cce.event_quantity)) overhead_cost,
+  decode(sum(cce.event_quantity),0,0,sum(cce.event_quantity * crcml.unit_cost) / sum(cce.event_quantity))item_cost,
+  decode(sum(cce.event_quantity),0,0,sum(cce.event_quantity * crcml.unit_material_cost) / sum(cce.event_quantity))material_cost,
+  decode(sum(cce.event_quantity),0,0,sum(cce.event_quantity * crcml.unit_moh_cost) / sum(cce.event_quantity))material_oh_cost,
+  decode(sum(cce.event_quantity),0,0,sum(cce.event_quantity * crcml.unit_op_cost) / sum(cce.event_quantity))osp_cost,
+  decode(sum(cce.event_quantity),0,0,sum(cce.event_quantity * crcml.unit_resource_cost) / sum(cce.event_quantity))resource_cost,
+  decode(sum(cce.event_quantity),0,0,sum(cce.event_quantity * crcml.unit_overhead_cost) / sum(cce.event_quantity))overhead_cost,
   pq1.uom,
   pq1.cogs_balance earned_cogs,
   pq1.total_cogs_balance total_earned_cogs,
@@ -232,7 +239,8 @@ perpetual_qry_2 as
   gcck_dcogs.concatenated_segments deferred_cogs_account,
   pq1.cogs_om_line_id cogs_om_line_id,
   gcck_cogs.code_combination_id cogs_account_ccid,
-  gcck_cogs.chart_of_accounts_id
+  gcck_cogs.chart_of_accounts_id,
+  cce.event_date gl_date
   from
   perpetual_qry_1 pq1,
   cst_revenue_cogs_match_lines crcml,
@@ -258,7 +266,8 @@ perpetual_qry_2 as
   hca.party_id = hp.party_id and
   cce.cogs_om_line_id = pq1.cogs_om_line_id and
   cce.event_type in (1,2) and
-  cce.event_date <= nvl2(:p_gps_end_dt,:p_gps_end_dt - (inv_le_timezone_pub.get_le_day_time_for_ou(sysdate,pq1.operating_unit_id)-sysdate),cce.event_date) and
+  cce.event_date<=:p_gps_end_dt and
+  cce.event_date>=:p_gps_start_dt and
   crcml.cogs_om_line_id = pq1.cogs_om_line_id and
   crcml.pac_cost_type_id is null and
   ( :p_all_lines = 'Y' or pq1.def_cogs_balance not between -1*:p_amt_tolerance and :p_amt_tolerance)
@@ -294,7 +303,8 @@ perpetual_qry_2 as
   gcck_dcogs.concatenated_segments,
   pq1.cogs_om_line_id,
   gcck_cogs.code_combination_id,
-  gcck_cogs.chart_of_accounts_id
+  gcck_cogs.chart_of_accounts_id,
+  cce.event_date
 ),
 perpetual_qry as
 (
@@ -324,11 +334,26 @@ perpetual_qry as
   pq2.total_line_quantity,
   pq2.item_cost,
   pq2.material_cost,
+  pq2.material_oh_cost,
+  pq2.osp_cost,
   pq2.resource_cost,
   pq2.overhead_cost,
   pq2.uom,
   pq2.earned_cogs,
-  case when pq2.item_type_code='INCLUDED' then sum(nvl2(pq2.customer_trx_line_id,pq2.earned_cogs,null)) over (partition by pq2.operating_unit_id, pq2.order_number, pq2.sales_order_line, pq2.sales_order_line_id, pq2.item_type_code, pq2.customer_trx_line_id)
+  case when pq2.item_type_code = 'INCLUDED'
+  then (select
+        sum(pq2_1.earned_cogs)
+        from
+        perpetual_qry_2 pq2_1
+        where
+        pq2_1.operating_unit_id = pq2.operating_unit_id and
+        pq2_1.order_number = pq2.order_number and
+        pq2_1.sales_order_line = pq2.sales_order_line and
+        pq2_1.sales_order_line_id = pq2.sales_order_line_id and
+        pq2_1.item_type_code = 'INCLUDED' and
+        pq2_1.customer_trx_line_id = pq2.customer_trx_line_id and
+        pq2_1.customer_trx_id = pq2.customer_trx_id
+       )
   else pq2.total_earned_cogs
   end total_earned_cogs,
   pq2.deferred_cogs,
@@ -337,13 +362,14 @@ perpetual_qry as
   pq2.deferred_cogs_account,
   pq2.cogs_om_line_id,
   pq2.cogs_account_ccid,
-  pq2.chart_of_accounts_id
+  pq2.chart_of_accounts_id,
+  pq2.gl_date
   from
   perpetual_qry_2 pq2
 ),
 perpetual_lines_qry as
 (
-  select /* leading(pq2,rctla) index(rctla ra_customer_trx_lines_n9)*/
+  select /*+ leading(pq,rctla) index(rctla ra_customer_trx_lines_n9)*/
   rctla.interface_line_attribute1,
   rctla.interface_line_attribute6,
   rcta.trx_number,
@@ -376,17 +402,21 @@ x.order_quantity,
 x.uom,
 x.sales_order_issue_date,
 x.invoice_number,
+x.quantity_invoiced,
 x.invoice_line,
 x.item,
 x.item_description,
 &category_columns
 x.user_item_type,
 x.organization_code,
+(select mp.organization_code from mtl_parameters mp,oe_order_lines_all oola where oola.line_id=x.cogs_om_line_id and oola.ship_from_org_id=mp.organization_id)ship_from_warehouse,
 x.ledger_currency,
 :p_period_name period,
 x.unit_selling_price,
 x.item_cost,
 x.material_cost,
+x.material_oh_cost,
+x.osp_cost,
 x.resource_cost,
 x.overhead_cost,
 &lp_cost_type_col
@@ -405,6 +435,8 @@ end revenue_percent,
 x.earned_cogs,
 x.deferred_cogs,
 x.earned_cogs+x.deferred_cogs total_cogs,
+(select actual_shipment_date from oe_order_lines_all where line_id = x.sales_order_line_id) so_line_closed_date,
+x.gl_date,
 case when x.earned_cogs is not null and x.deferred_cogs is not null
 then case when x.earned_cogs + x.deferred_cogs = 0
      then 100
@@ -421,7 +453,7 @@ case when x.unbill_ccid is not null then fnd_flex_xml_publisher_apis.process_kff
 x.cogs_om_line_id
 from
 (
-select /* leading(pq) no_merge(rctlgda) index(rctlgda ra_cust_trx_line_gl_dist_n1)*/
+select
 pq.ledger,
 pq.ledger_currency,
 pq.operating_unit,
@@ -434,10 +466,13 @@ decode(rcta.trx_number,min(plq.trx_number),decode(pq.invoice_line,min(plq.min_in
 pq.uom,
 pq.sales_order_issue_date,
 rcta.trx_number invoice_number,
+rctla.quantity_invoiced,
 pq.invoice_line,
 pq.unit_selling_price,
 pq.item_cost,
 pq.material_cost,
+pq.material_oh_cost,
+pq.osp_cost,
 pq.resource_cost,
 pq.overhead_cost,
 pq.item,
@@ -460,7 +495,8 @@ plq.interface_line_attribute6,
 pq.sales_order_line_id,
 pq.cogs_om_line_id,
 pq.cogs_account_ccid,
-pq.chart_of_accounts_id
+pq.chart_of_accounts_id,
+axclv.gl_date
 from
 perpetual_qry pq,
 ar_xla_ctlgd_lines_v axclv,
@@ -487,7 +523,8 @@ pq.customer_trx_id = rcta.customer_trx_id and
 axclv.customer_trx_line_id = rctla.customer_trx_line_id and
 axclv.account_set_flag = 'N' and
 axclv.account_class in ('REV', 'UNEARN', 'UNBILL') and
-axclv.gl_date <= nvl(:p_gps_end_dt,axclv.gl_date) and
+axclv.gl_date<=:p_gps_end_dt and
+axclv.gl_date>=:p_gps_start_dt and
 to_char(pq.sales_order_line_id)=rctla.interface_line_attribute6 and
 to_char(pq.sales_order_line_id)=plq.interface_line_attribute6
 group by
@@ -501,10 +538,13 @@ pq.order_currency,
 pq.sales_order_line,
 pq.sales_order_issue_date,
 rcta.trx_number,
+rctla.quantity_invoiced,
 pq.invoice_line,
 pq.unit_selling_price,
 pq.item_cost,
 pq.material_cost,
+pq.material_oh_cost,
+pq.osp_cost,
 pq.resource_cost,
 pq.overhead_cost,
 pq.item,
@@ -525,7 +565,8 @@ plq.interface_line_attribute6,
 pq.sales_order_line_id,
 pq.cogs_om_line_id,
 pq.cogs_account_ccid,
-pq.chart_of_accounts_id
+pq.chart_of_accounts_id,
+axclv.gl_date
 having
 :p_all_lines = 'Y' or
 (decode(sum(rctla.revenue_amount),0,1,round(sum(decode(axclv.account_class,'UNEARN',0,'UNBILL',0, axclv.amount))/(sum(rctla.revenue_amount)/count(axclv.cust_trx_line_gl_dist_id)),3)) <>
@@ -546,10 +587,13 @@ pq.total_line_quantity order_quantity,
 pq.uom,
 pq.sales_order_issue_date,
 null invoice_number,
+null quantity_invoiced,
 null invoice_line,
 null unit_selling_price,
 pq.item_cost,
 pq.material_cost,
+pq.material_oh_cost,
+pq.osp_cost,
 pq.resource_cost,
 pq.overhead_cost,
 pq.item,
@@ -572,7 +616,8 @@ null interface_line_attribute6,
 pq.sales_order_line_id,
 pq.cogs_om_line_id,
 pq.cogs_account_ccid,
-pq.chart_of_accounts_id
+pq.chart_of_accounts_id,
+pq.gl_date
 from
 perpetual_qry pq
 where
@@ -592,10 +637,13 @@ pq.total_line_quantity order_quantity,
 pq.uom,
 pq.sales_order_issue_date,
 null invoice_number,
+null quantity_invoiced,
 null invoice_line,
 null unit_selling_price,
 pq.item_cost,
 pq.material_cost,
+pq.material_oh_cost,
+pq.osp_cost,
 pq.resource_cost,
 pq.overhead_cost,
 pq.item,
@@ -618,7 +666,8 @@ null interface_line_attribute6,
 pq.sales_order_line_id,
 pq.cogs_om_line_id,
 pq.cogs_account_ccid,
-pq.chart_of_accounts_id
+pq.chart_of_accounts_id,
+pq.gl_date
 from
 perpetual_qry pq
 where
@@ -626,7 +675,7 @@ pq.customer_trx_line_id is not null and
 pq.customer_trx_id is not null and
 not exists
 (
-select /* use_concat no_unnest leading(rctla) use_nl(rctla,rctlgda) */
+select /*+ use_concat no_unnest leading(rctla) use_nl(rctla,rctlgda) */
 null
 from
 ra_customer_trx_lines_all rctla,
@@ -636,11 +685,13 @@ where
 rctla.customer_trx_line_id = rctlgda.customer_trx_line_id and
 rctlgda.account_set_flag = 'N' and
 rctlgda.account_class in ('REV', 'UNEARN', 'UNBILL') and
-rctlgda.gl_date <= nvl(:p_gps_end_dt,rctlgda.gl_date)
+rctlgda.gl_date<=:p_gps_end_dt and
+rctlgda.gl_date>=:p_gps_start_dt
 ) and
 (:p_all_lines = 'Y' or pq.deferred_cogs not between -1*:p_amt_tolerance and :p_amt_tolerance)
 ) x
 where
+3=3 and
 :p_ledger=:p_ledger and
 :p_cost_method=1 and
 nvl(:p_cost_type,'?')=nvl(:p_cost_type,'?')

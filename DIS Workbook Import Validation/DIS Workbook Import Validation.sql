@@ -58,7 +58,7 @@ select
 max(eqs.qs_object_use_key) keep (dense_rank last order by eqs.qs_id) over (partition by eqs.qs_doc_name,eqs.qs_doc_details,eqs.qs_doc_owner_) max_object_use_key,
 eqs.*
 from
-(select upper(eqs.qs_doc_owner) qs_doc_owner_, eqs.* from &eul.eul5_qpp_stats eqs where 2=2) eqs
+(select upper(eqs.qs_doc_owner) qs_doc_owner_, eqs.* from &eul.eul5_qpp_stats eqs where 2=2 &or_owner_restriction) eqs
 ) x
 where
 x.qs_object_use_key=x.max_object_use_key

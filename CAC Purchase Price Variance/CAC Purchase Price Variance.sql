@@ -12,15 +12,14 @@ Parameters:
 Transaction Date From:  enter the starting transaction date (mandatory).
 Transaction Date To:  enter the ending transaction date (mandatory).
 Currency Conversion Type:  enter the currency conversion type to use for converting foreign currency purchases into the currency of hhe general ledger (mandatory).
-Category Set 1:  any item category you wish, typically the Cost or Product Line category set (optional).
-Category Set 2:  any item category you wish, typically the Inventory category set (optional).
+Category Sets 1-3:  any item category you wish, typically the Cost, Product Line or Inventory category sets (optional).
 Item Number:  enter the specific item number(s) you wish to report (optional).
 Organization Code:  enter the specific inventory organization(s) you wish to report (optional).
 Operating Unit:  enter the specific operating unit(s) you wish to report (optional).
 Ledger:  enter the specific ledger(s) you wish to report (optional).
 
 /* +=============================================================================+
--- | Copyright 2010-24 Douglas Volz Consulting, Inc.
+-- | Copyright 2010-25 Douglas Volz Consulting, Inc.
 -- | All rights reserved.
 -- | Permission to use this code is granted provided the original author is
 -- | acknowledged. No warranties, express or otherwise is included in this permission.
@@ -28,13 +27,7 @@ Ledger:  enter the specific ledger(s) you wish to report (optional).
 -- |
 -- |  Original Author: Douglas Volz (doug@volzconsulting.com)
 -- |  ======= =========== ============== =========================================
--- |  1.0     26 Jan 2010 Douglas Volz   Initial Coding   
--- |  1.16    30 Dec 2020 Douglas Volz   Revise calculations for Percent Difference, to:
--- |                                       when difference = 0 then 0
--- |                                       when standard = 0 then 100%
--- |                                       when PO unit price = 0 then -100%
--- |                                       else PO - std / std
--- |                                     Performance improvements for Sections 3 and 4.
+-- |  1.0     26 Jan 2010 Douglas Volz   Initial Coding
 -- |  1.17    01 Jan 2021 Douglas Volz   Added Section 5 PPV for Transfer to Regular transactions.
 -- |  1.18    08 Jan 2021 Douglas Volz   Removed redundant joins and tables to improve performance.
 -- |  1.19    14 Dec 2021 Douglas Volz   Bug fix, Section I and V were both picking up
@@ -46,6 +39,9 @@ Ledger:  enter the specific ledger(s) you wish to report (optional).
 -- |                                     add Transaction Exchange Rate, PPV Cost Amount and PPV FX columns,
 -- |                                     improve performance and fix PPV amount and percent calculations.
 -- |  1.24    24 Jan 2024 Douglas Volz   Rename column Standard Unit Cost to Standard Purchase Unit Cost.
+-- |  1.25    30 May 2025 Douglas Volz   Bug fix for PO Unit Price, added in Clearing Accounting Line Type.
+-- |  1.26    16 Jun 2025 Douglas Volz   Bug fix for Intransit Shipment and Internal Order Intransit
+-- |                                     Shipment transaction types.
 +=============================================================================+*/
 -- Excel Examle Output: https://www.enginatics.com/example/cac-purchase-price-variance/
 -- Library Link: https://www.enginatics.com/reports/cac-purchase-price-variance/
@@ -242,13 +238,25 @@ ppv_txns as
                 round(nvl(mta.currency_conversion_rate,1),8) PO_Exchange_Rate,
                 sum(case
                       when (mmt.transaction_action_id = 1  and mmt.transaction_source_type_id = 1  and mta.accounting_line_type = 5)  then nvl(mta.rate_or_amount,0) -- Return to Vendor
+                      -- Revision for version 1.25, adding in Clearing accounting_line_type.
+                      when (mmt.transaction_action_id = 1  and mmt.transaction_source_type_id = 1  and mta.accounting_line_type = 31) then nvl(mta.rate_or_amount,0) -- Return to Vendor
                       when (mmt.transaction_action_id = 3  and mmt.transaction_source_type_id = 13 and mta.accounting_line_type = 9)  then nvl(mta.rate_or_amount,0) -- Direct Transfer
                       when (mmt.transaction_action_id = 3  and mmt.transaction_source_type_id = 8  and mta.accounting_line_type = 9)  then nvl(mta.rate_or_amount,0) -- Internal Orders
                       when (mmt.transaction_action_id = 6  and mmt.transaction_source_type_id = 1  and mta.accounting_line_type = 16) then nvl(mta.rate_or_amount,0) -- Transfer to Regular
                       when (mmt.transaction_action_id = 12 and mmt.transaction_source_type_id = 7  and mta.accounting_line_type = 9)  then nvl(mta.rate_or_amount,0) -- Internal Reqs
-                      when (mmt.transaction_action_id = 12 and mmt.transaction_source_type_id = 13 and mta.accounting_line_type = 9)  then nvl(mta.rate_or_amount,0) -- Intransit
+                      when (mmt.transaction_action_id = 12 and mmt.transaction_source_type_id = 13 and mta.accounting_line_type = 9)  then nvl(mta.rate_or_amount,0) -- Intransit Receipt
+                      -- Revision for version 1.26
+                      when (mmt.transaction_action_id = 21 and mmt.transaction_source_type_id = 8  and mta.accounting_line_type = 2)  then nvl(mta.rate_or_amount,0) -- Internal Orders, Account Accounting_Line_Type
+                      when (mmt.transaction_action_id = 21 and mmt.transaction_source_type_id = 8  and mta.accounting_line_type = 9)  then nvl(mta.rate_or_amount,0) -- Internal Orders, Inter-org payables Accounting_Line_Type
+                      when (mmt.transaction_action_id = 21 and mmt.transaction_source_type_id = 13 and mta.accounting_line_type = 9)  then nvl(mta.rate_or_amount,0) -- Intransit Shipment, Inter-org payables Accounting_Line_Type
+                      -- End revision for version 1.26
                       when (mmt.transaction_action_id = 27 and mmt.transaction_source_type_id = 1  and mta.accounting_line_type = 5)  then nvl(mta.rate_or_amount,0) -- PO Receipt
+                      -- Revision for version 1.25, adding in Clearing accounting_line_type.
+                      when (mmt.transaction_action_id = 27 and mmt.transaction_source_type_id = 1  and mta.accounting_line_type = 31) then nvl(mta.rate_or_amount,0) -- PO Receipt
                       when (mmt.transaction_action_id = 29 and mmt.transaction_source_type_id = 1  and mta.accounting_line_type = 5)  then nvl(mta.rate_or_amount,0) -- PO Rcpt Adjust
+                      -- Revision for version 1.25, adding in Clearing accounting_line_type.
+                      when (mmt.transaction_action_id = 29 and mmt.transaction_source_type_id = 1  and mta.accounting_line_type = 31) then nvl(mta.rate_or_amount,0) -- PO Rcpt Adjust
+                      -- End revision for version 1.25
                       else 0
                     end
                    ) Converted_PO_Unit_Price,
@@ -262,8 +270,12 @@ ppv_txns as
                       when (mmt.transaction_action_id =  6 and mmt.transaction_source_type_id = 1  and mta.accounting_line_type =  1) then nvl(mta.rate_or_amount,0) -- Transfer to Regular
                       when (mmt.transaction_action_id = 12 and mmt.transaction_source_type_id = 7  and mta.accounting_line_type =  1) then nvl(mta.rate_or_amount,0) -- Internal Requisitions
                       when (mmt.transaction_action_id = 12 and mmt.transaction_source_type_id = 7  and mta.accounting_line_type = 14) then nvl(mta.rate_or_amount,0) -- Internal Requisitions
-                      when (mmt.transaction_action_id = 12 and mmt.transaction_source_type_id = 13 and mta.accounting_line_type =  1) then nvl(mta.rate_or_amount,0) -- Intransit
-                      when (mmt.transaction_action_id = 12 and mmt.transaction_source_type_id = 13 and mta.accounting_line_type = 14) then nvl(mta.rate_or_amount,0) -- Intransit
+                      when (mmt.transaction_action_id = 12 and mmt.transaction_source_type_id = 13 and mta.accounting_line_type =  1) then nvl(mta.rate_or_amount,0) -- Intransit Receipt
+                      when (mmt.transaction_action_id = 12 and mmt.transaction_source_type_id = 13 and mta.accounting_line_type = 14) then nvl(mta.rate_or_amount,0) -- Intransit Receipt
+                      -- Revision for version 1.26
+                      when (mmt.transaction_action_id = 21 and mmt.transaction_source_type_id = 8  and mta.accounting_line_type = 14) then nvl(mta.rate_or_amount,0) -- Intransit Shipment
+                      when (mmt.transaction_action_id = 21 and mmt.transaction_source_type_id = 13 and mta.accounting_line_type = 14) then nvl(mta.rate_or_amount,0) -- Intransit Shipment
+                      -- End revision for version 1.26
                       when (mmt.transaction_action_id = 27 and mmt.transaction_source_type_id = 1  and mta.accounting_line_type =  1) then nvl(mta.rate_or_amount,0) -- PO Receipt
                       when (mmt.transaction_action_id = 29 and mmt.transaction_source_type_id = 1  and mta.accounting_line_type =  1) then nvl(mta.rate_or_amount,0) -- PO Rcpt Adjust
                       else 0
@@ -276,7 +288,11 @@ ppv_txns as
                       when (mmt.transaction_action_id =  3 and mmt.transaction_source_type_id = 8  and mta.accounting_line_type =  3) then nvl(mta.rate_or_amount,0) -- Internal Orders
                       when (mmt.transaction_action_id =  6 and mmt.transaction_source_type_id = 1  and mta.accounting_line_type =  3) then nvl(mta.rate_or_amount,0) -- Transfer to Regular
                       when (mmt.transaction_action_id = 12 and mmt.transaction_source_type_id = 7  and mta.accounting_line_type =  3) then nvl(mta.rate_or_amount,0) -- Internal Requisitions
-                      when (mmt.transaction_action_id = 12 and mmt.transaction_source_type_id = 13 and mta.accounting_line_type =  3) then nvl(mta.rate_or_amount,0) -- Intransit
+                      when (mmt.transaction_action_id = 12 and mmt.transaction_source_type_id = 13 and mta.accounting_line_type =  3) then nvl(mta.rate_or_amount,0) -- Intransit Receipt
+                      -- Revision for version 1.26
+                      when (mmt.transaction_action_id = 21 and mmt.transaction_source_type_id = 8  and mta.accounting_line_type =  3) then nvl(mta.rate_or_amount,0) -- Intransit Shipment
+                      when (mmt.transaction_action_id = 21 and mmt.transaction_source_type_id = 13 and mta.accounting_line_type =  3) then nvl(mta.rate_or_amount,0) -- Intransit Shipment
+                      -- End revision for version 1.26
                       when (mmt.transaction_action_id = 27 and mmt.transaction_source_type_id = 1  and mta.accounting_line_type =  3) then nvl(mta.rate_or_amount,0) -- PO Receipt
                       when (mmt.transaction_action_id = 29 and mmt.transaction_source_type_id = 1  and mta.accounting_line_type =  3) then nvl(mta.rate_or_amount,0) -- PO Rcpt Adjust
                       else 0
@@ -569,14 +585,14 @@ ppv_txns as
          -- WIP Job, Transaction, org, osp resource and item joins
          -- ========================================================
          where  wta.transaction_id              = wt.transaction_id
-         and    wta.transaction_id              = wta_id.transaction_id 
+         and    wta.transaction_id              = wta_id.transaction_id
          and    wta.organization_id             = mp.organization_id
          and    mp.organization_id              = msiv.organization_id
          -- Revision for version 1.14
          and    msiv.primary_uom_code           = muomv.uom_code
          and    misv.inventory_item_status_code = msiv.inventory_item_status_code
          -- End revision for version 1.14
-         and    wta.resource_id            = br.resource_id 
+         and    wta.resource_id                 = br.resource_id 
          -- Only pick up OSP resources where the standard_rate_flag is checked
          -- When the wt.standard_rate_flag is checked PPV entries are created
          -- 1 = Yes, 2 = No
@@ -1253,7 +1269,7 @@ select  ppv_txns.Ledger,
            when round(ppv_txns.PPV_Rate_or_Amount,5) = 0 then 0
            when round((ppv_txns.Standard_Unit_Cost - ppv_txns.MOH_Unit_cost),5) = 0 then 100
            when round(ppv_txns.Converted_PO_Unit_Price,5) = 0 then -100
-           else round((ppv_txns.Converted_PO_Unit_Price - (ppv_txns.Standard_Unit_Cost - ppv_txns.MOH_Unit_cost)) / (ppv_txns.Standard_Unit_Cost - ppv_txns.MOH_Unit_cost),5)  * sign(ppv_txns.Received_Quantity) * 100
+           else round((ppv_txns.Converted_PO_Unit_Price - (ppv_txns.Standard_Unit_Cost - ppv_txns.MOH_Unit_cost)) / (ppv_txns.Standard_Unit_Cost - ppv_txns.MOH_Unit_cost),5) * sign(ppv_txns.Received_Quantity) * 100
         end Percent_Difference,
         -- End revision for version 1.23
         -- Revision for version 1.23, add PPV Cost Amount and PPV FX Amount

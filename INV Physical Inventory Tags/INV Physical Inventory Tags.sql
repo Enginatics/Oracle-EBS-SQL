@@ -30,7 +30,12 @@ x.lot_number,
 x.serial_number,
 x.parent_lpn,
 x.outermost_lpn,
-x.cost_group
+x.cost_group,
+x.phys_inv_adjust_applicable,
+x.adjustments_posted,
+x.last_adjustment_date,
+x.adjustment_approval_status,
+x.adjustment_id
 from
 (
 select
@@ -53,7 +58,25 @@ select
  null locator,
  decode(:p_wms_installed,'TRUE',inv_invarptp_xmlp_pkg.cf_parent_lpnformula(mpit.parent_lpn_id),null) parent_lpn,
  decode(:p_wms_installed,'TRUE',inv_invarptp_xmlp_pkg.cf_outermost_lpnformula(mpit.outermost_lpn_id,mpit.parent_lpn_id),null) outermost_lpn,
- decode(:p_wms_installed,'TRUE',inv_invarptp_xmlp_pkg.cf_cost_groupformula(mpit.cost_group_id),null) cost_group
+ decode(:p_wms_installed,'TRUE',inv_invarptp_xmlp_pkg.cf_cost_groupformula(mpit.cost_group_id),null) cost_group,
+ --
+ inv_material_status_grp.is_status_applicable( null, null,8,null,null,mpit.organization_id,mpit.inventory_item_id,mpit.subinventory,mpit.locator_id,mpit.lot_number,mpit.serial_num,'A') phys_inv_adjust_applicable,
+ xxen_util.meaning(decode(mpi.last_adjustment_date ,null,2,1),'SYS_YES_NO',700) adjustments_posted,
+ mpi.last_adjustment_date,
+ nvl(
+  (select
+   decode(nvl(mpa.approval_status,0),0,'None',1,'Approved',2,'Rejected',3,'Processed',mpa.approval_status)
+   from
+   mtl_physical_adjustments mpa
+   where
+   mpit.organization_id = mpa.organization_id and
+   mpit.physical_inventory_id= mpa.physical_inventory_id and
+   mpit.adjustment_id = mpa.adjustment_id and
+   mpit.inventory_item_id = mpa.inventory_item_id
+  ),
+  'No Adjustment Exists'
+ ) adjustment_approval_status,
+ mpit.adjustment_id
 from
  mtl_parameters mp,
  mtl_physical_inventories mpi,
@@ -88,7 +111,25 @@ select
  mil.concatenated_segments locator,
  decode(:p_wms_installed,'TRUE',inv_invarptp_xmlp_pkg.cf_parent_lpnformula(mpit.parent_lpn_id),null) parent_lpn,
  decode(:p_wms_installed,'TRUE',inv_invarptp_xmlp_pkg.cf_outermost_lpnformula(mpit.outermost_lpn_id,mpit.parent_lpn_id),null) outermost_lpn,
- decode(:p_wms_installed,'TRUE',inv_invarptp_xmlp_pkg.cf_cost_groupformula(mpit.cost_group_id),null) cost_group
+ decode(:p_wms_installed,'TRUE',inv_invarptp_xmlp_pkg.cf_cost_groupformula(mpit.cost_group_id),null) cost_group,
+ --
+ inv_material_status_grp.is_status_applicable( null, null,8,null,null,mpit.organization_id,mpit.inventory_item_id,mpit.subinventory,mpit.locator_id,mpit.lot_number,mpit.serial_num,'A') phys_inv_adjust_applicable,
+ xxen_util.meaning(decode(mpi.last_adjustment_date ,null,2,1),'SYS_YES_NO',700) adjustments_posted,
+ mpi.last_adjustment_date,
+ nvl(
+  (select
+   decode(nvl(mpa.approval_status,0),0,'None',1,'Approved',2,'Rejected',3,'Processed',mpa.approval_status)
+   from
+   mtl_physical_adjustments mpa
+   where
+   mpit.organization_id = mpa.organization_id and
+   mpit.physical_inventory_id= mpa.physical_inventory_id and
+   mpit.adjustment_id = mpa.adjustment_id and
+   mpit.inventory_item_id = mpa.inventory_item_id
+  ),
+  'No Adjustment Exists'
+ ) adjustment_approval_status,
+ mpit.adjustment_id
 from
  mtl_system_items_vl msi,
  mtl_item_locations_kfv mil,

@@ -188,8 +188,9 @@ xte.source_id_int_1,
 gp.start_date period_date,
 gp.period_name period,
 gcck.chart_of_accounts_id,
+case when gjsv.user_je_source_name not in ('Property Manager','Global Intercompany','Payroll','Inflation Accting','Projects','Spreadsheet') then
 case when nvl(fnd_profile.value('XXEN_FSG_DRILLDOWN_TO_SAME_WORKBOOK'), 'N')='N' then '=dd' else '=dds' end
-||'("VT","'||gl.ledger_id||','||gjsv.user_je_source_name||','||xah.event_id||','||gjl.je_line_num||'")' view_transaction
+||'("VT","'||gl.ledger_id||','||gjsv.user_je_source_name||','||xah.event_id||','||gjl.je_line_num||'")' end view_transaction
 from
 gl_ledgers gl,
 gl_periods gp,

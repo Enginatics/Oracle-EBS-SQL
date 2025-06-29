@@ -10,17 +10,13 @@
 -- Library Link: https://www.enginatics.com/reports/ap-invoice-upload/
 -- Run Report: https://demo.enginatics.com/
 
-/*
-&report_table_name
-*/
-select
-x.*
-from
-(
 with
 q_dual as (select * from dual) -- dummy to allow the lexical to follow
 &error_with_query
 &success_with_query
+--
+-- Main Query Starts Here
+--
 select
 null                    action_,
 null                    status_,
@@ -67,10 +63,11 @@ aia.payment_cross_rate,
 (select iprv.meaning from iby_payment_reasons_vl iprv where iprv.payment_reason_code = aia.payment_reason_code) payment_reason,
 aia.payment_reason_comments,
 (select flvv.meaning from fnd_lookup_values_vl flvv where flvv.lookup_type='PAY GROUP' and flvv.view_application_id = 201 and flvv.lookup_code = aia.pay_group_lookup_code) payment_group,
---apsa.payment_priority,  -- only applicable for payment request invoiece type
+--apsa.payment_priority,  -- only applicable for payment request invoice type
 (select aag.name from ap_awt_groups aag where aag.group_id = aia.awt_group_id) invoice_awt_group,
 (select aag.name from ap_awt_groups aag where aag.group_id = aia.awt_group_id) payment_awt_group,
 --aia.ussgl_transaction_code, -- not imported by the Payables Import process
+aia.tax_invoice_recording_date internal_recording_date,
 --
 aila.line_number,
 xxen_util.meaning(aila.line_type_lookup_code,'INVOICE LINE TYPE',200) line_type,
@@ -291,6 +288,22 @@ xxen_util.display_flexfield_value(200,'AP_INVOICE_LINES',aila.attribute_category
 xxen_util.display_flexfield_value(200,'AP_INVOICE_LINES',aila.attribute_category,'ATTRIBUTE13',aila.rowid,aila.attribute13) ap_inv_line_attribute13,
 xxen_util.display_flexfield_value(200,'AP_INVOICE_LINES',aila.attribute_category,'ATTRIBUTE14',aila.rowid,aila.attribute14) ap_inv_line_attribute14,
 xxen_util.display_flexfield_value(200,'AP_INVOICE_LINES',aila.attribute_category,'ATTRIBUTE15',aila.rowid,aila.attribute15) ap_inv_line_attribute15,
+xxen_util.display_flexfield_context(200,'AP_INVOICE_DISTRIBUTIONS',aida.attribute_category) dist_attribute_category,
+xxen_util.display_flexfield_value(200,'AP_INVOICE_DISTRIBUTIONS',aida.attribute_category,'ATTRIBUTE1',aida.rowid,aida.attribute1) ap_inv_dist_attribute1,
+xxen_util.display_flexfield_value(200,'AP_INVOICE_DISTRIBUTIONS',aida.attribute_category,'ATTRIBUTE2',aida.rowid,aida.attribute2) ap_inv_dist_attribute2,
+xxen_util.display_flexfield_value(200,'AP_INVOICE_DISTRIBUTIONS',aida.attribute_category,'ATTRIBUTE3',aida.rowid,aida.attribute3) ap_inv_dist_attribute3,
+xxen_util.display_flexfield_value(200,'AP_INVOICE_DISTRIBUTIONS',aida.attribute_category,'ATTRIBUTE4',aida.rowid,aida.attribute4) ap_inv_dist_attribute4,
+xxen_util.display_flexfield_value(200,'AP_INVOICE_DISTRIBUTIONS',aida.attribute_category,'ATTRIBUTE5',aida.rowid,aida.attribute5) ap_inv_dist_attribute5,
+xxen_util.display_flexfield_value(200,'AP_INVOICE_DISTRIBUTIONS',aida.attribute_category,'ATTRIBUTE6',aida.rowid,aida.attribute6) ap_inv_dist_attribute6,
+xxen_util.display_flexfield_value(200,'AP_INVOICE_DISTRIBUTIONS',aida.attribute_category,'ATTRIBUTE7',aida.rowid,aida.attribute7) ap_inv_dist_attribute7,
+xxen_util.display_flexfield_value(200,'AP_INVOICE_DISTRIBUTIONS',aida.attribute_category,'ATTRIBUTE8',aida.rowid,aida.attribute8) ap_inv_dist_attribute8,
+xxen_util.display_flexfield_value(200,'AP_INVOICE_DISTRIBUTIONS',aida.attribute_category,'ATTRIBUTE9',aida.rowid,aida.attribute9) ap_inv_dist_attribute9,
+xxen_util.display_flexfield_value(200,'AP_INVOICE_DISTRIBUTIONS',aida.attribute_category,'ATTRIBUTE10',aida.rowid,aida.attribute10) ap_inv_dist_attribute10,
+xxen_util.display_flexfield_value(200,'AP_INVOICE_DISTRIBUTIONS',aida.attribute_category,'ATTRIBUTE11',aida.rowid,aida.attribute11) ap_inv_dist_attribute11,
+xxen_util.display_flexfield_value(200,'AP_INVOICE_DISTRIBUTIONS',aida.attribute_category,'ATTRIBUTE12',aida.rowid,aida.attribute12) ap_inv_dist_attribute12,
+xxen_util.display_flexfield_value(200,'AP_INVOICE_DISTRIBUTIONS',aida.attribute_category,'ATTRIBUTE13',aida.rowid,aida.attribute13) ap_inv_dist_attribute13,
+xxen_util.display_flexfield_value(200,'AP_INVOICE_DISTRIBUTIONS',aida.attribute_category,'ATTRIBUTE14',aida.rowid,aida.attribute14) ap_inv_dist_attribute14,
+xxen_util.display_flexfield_value(200,'AP_INVOICE_DISTRIBUTIONS',aida.attribute_category,'ATTRIBUTE15',aida.rowid,aida.attribute15) ap_inv_dist_attribute15,
 null attachment_category_,
 null attachment_title_,
 null attachment_description_,
@@ -301,6 +314,7 @@ from
 ap_invoices_all aia,
 ap_payment_schedules_all apsa,
 ap_invoice_lines_all aila,
+ap_invoice_distributions_all aida,
 hr_all_organization_units_vl haouv,
 ap_suppliers asu,
 ap_supplier_sites_all assa,
@@ -309,6 +323,8 @@ ap_lookup_codes alc
 where
 aia.invoice_id = apsa.invoice_id (+) and
 aia.invoice_id = aila.invoice_id and
+aila.invoice_id = aida.invoice_id (+) and
+aila.line_number = aida.invoice_line_number (+) and
 aia.vendor_id = asu.vendor_id and
 aia.vendor_site_id = assa.vendor_site_id and
 aia.org_id = haouv.organization_id and
@@ -324,13 +340,3 @@ nvl(:p_gl_date,sysdate) = nvl(:p_gl_date,sysdate) and
 nvl(:p_submit_validation,'N') = nvl(:p_submit_validation,'N') and
 nvl(:p_default_taxation_country,'XX') = nvl(:p_default_taxation_country,'XX') and
 1=0
-&not_use_first_block
-&processed_run_query
-&processed_run
-) x
-order by
-x.operating_unit,
-x.invoice_date,
-x.supplier_name,
-x.invoice_number,
-x.line_number

@@ -20,12 +20,12 @@ specific node to support distributed processing.
 
 select
 fn.node_name,
-xxen_util.meaning(decode(fn.support_db,'Y','Y'),'YES_NO',0) database,
-xxen_util.meaning(decode(fn.support_cp,'Y','Y'),'YES_NO',0) concurrent,
-xxen_util.meaning(decode(fn.support_forms,'Y','Y'),'YES_NO',0) forms,
-xxen_util.meaning(decode(fn.support_web,'Y','Y'),'YES_NO',0) web,
-xxen_util.meaning(decode(fn.support_admin,'Y','Y'),'YES_NO',0) admin,
-xxen_util.meaning(decode(fn.status,'Y','Y'),'YES_NO',0) status,
+xxen_util.yes(fn.support_db) database,
+xxen_util.yes(fn.support_cp) concurrent,
+xxen_util.yes(fn.support_forms) forms,
+xxen_util.yes(fn.support_web) web,
+xxen_util.yes(fn.support_admin) admin,
+xxen_util.yes(fn.status) status,
 fn.description,
 fn.ping_response,
 xxen_util.meaning(fn.platform_code,'PLATFORM',0) platform,

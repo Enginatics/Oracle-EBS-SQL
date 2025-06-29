@@ -21,11 +21,11 @@ when zptp.party_type_code='THIRD_PARTY_SITE' then zptp.address
 when zptp.party_type_code in ('TAX_AUTHORITY','TAX_PARTNER') then nvl(hp.address1,'')||' '||nvl(hp.address2,'')||' '||nvl(hp.address3,'')||' '||nvl(hp.address4,'')||' '||nvl(hp.city,'')||' '||nvl(hp.state,'')||' '||nvl(hp.province,'')||' '||nvl(hp.postal_code,'')
 end address,
 (select ftv.territory_short_name from fnd_territories_vl ftv where nvl(hla.country,zptp.country)=ftv.territory_code) country,
-xxen_util.meaning(decode(zptp.self_assess_flag,'Y','Y'),'YES_NO',0) self_assess_flag,
+xxen_util.yes(zptp.self_assess_flag) self_assess_flag,
 zptp.tax_classification_code tax_classification,
 xxen_util.meaning(zptp.rounding_level_code,'ZX_ROUNDING_LEVEL',0) rounding_level,
 xxen_util.meaning(zptp.rounding_rule_code,'ZX_ROUNDING_RULE',0) rounding_rule,
-xxen_util.meaning(decode(zptp.inclusive_tax_flag,'Y','Y'),'YES_NO',0) inclusive_tax_flag,
+xxen_util.yes(zptp.inclusive_tax_flag) inclusive_tax_flag,
 zr.tax_regime_code,
 zr.tax,
 zr.tax_jurisdiction_code,

@@ -40,10 +40,12 @@ xrpv.report_id,
 xrpv.parameter_id
 from
 xxen_report_parameters_v xrpv
+where
+1=1
 ) xrpv
 ) x
 where
-1=1
+2=2
 order by
 x.report_name,
 x.sort_order

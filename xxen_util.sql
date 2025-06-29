@@ -68,9 +68,19 @@ function description(p_lookup_code in varchar2, p_lookup_type in varchar2, p_app
 function lookup_code(p_meaning in varchar2, p_lookup_type in varchar2, p_application_id in varchar2, p_meaning_if_null in varchar2 default null) return varchar2;
 
 /***********************************************************************************************/
+/*  shows the lookup meaning for Y from the YES_NO value set                                   */
+/***********************************************************************************************/
+function yes(p_lookup_code in varchar2) return varchar2;
+
+/***********************************************************************************************/
 /*  escape regexp metacharacters with a backslash e.g. ( to \(                                 */
 /***********************************************************************************************/
 function regexp_escape(p_text in varchar2) return varchar2;
+
+/***********************************************************************************************/
+/*  escape json metacharacters, for example / with ~^                                          */
+/***********************************************************************************************/
+function json_escape(p_text in varchar2) return varchar2;
 
 /***********************************************************************************************/
 /*  used in LOVs to compare column values with parameter values they depend on                 */
@@ -829,6 +839,15 @@ begin
 end lookup_code;
 
 
+function yes(p_lookup_code in varchar2) return varchar2 is
+begin
+  if p_lookup_code='Y' then
+    return(meaning('Y','YES_NO',0));
+  end if;
+  return null;
+end yes;
+
+
 function regexp_escape(p_text in varchar2) return varchar2 is
 begin
 return
@@ -863,6 +882,12 @@ chr(0)),
 '{','\{'),
 '}','\}');
 end regexp_escape;
+
+
+function json_escape(p_text in varchar2) return varchar2 is
+begin
+  return replace(replace(replace(p_text,'/','~^'),'|','`^'),'\','@^');
+end json_escape;
 
 
 function contains(p_parameter_value in varchar2, p_column_value in varchar2) return varchar2 is
@@ -2099,7 +2124,7 @@ end long_to_clob;
 function add_newlines(p_clob in clob, p_line_length in pls_integer) return clob is
 l_clob clob;
 l_offset pls_integer:=1;
-l_total_length pls_integer:=length(p_clob);
+l_total_length number:=length(p_clob);
 begin
   dbms_lob.createtemporary(l_clob,true,dbms_lob.call);
   while l_offset<=l_total_length loop
@@ -4073,7 +4098,7 @@ begin
     fifsv.application_id=101 and
     fifsv.id_flex_code=''GL#'' and
     fifsv.form_left_prompt||'' (''||fifsv.segment_num||'')''=:p_segment_prop_value and
-    fifsv.id_flex_num in (select gl.chart_of_accounts_id from gl_ledgers gl where gl.name=:p_ledger_name and gl.ledger_category_code=''PRIMARY'' and gl.object_type_code=''L'' and gl.complete_flag=''Y'')
+    fifsv.id_flex_num=(select gl.chart_of_accounts_id from gl_ledgers gl where gl.name=:p_ledger_name)
     union
     select
     fifsv.form_left_prompt||'' (''||fifsv.segment_num||'')'' segment_name
@@ -4083,7 +4108,7 @@ begin
     fifsv.application_id=101 and
     fifsv.id_flex_code=''GL#'' and
     fifsv.segment_num=:p_segment_num and
-    fifsv.id_flex_num in (select gl.chart_of_accounts_id from gl_ledgers gl where gl.name=:p_ledger_name and gl.ledger_category_code=''PRIMARY'' and gl.object_type_code=''L'' and gl.complete_flag=''Y'')
+    fifsv.id_flex_num=(select gl.chart_of_accounts_id from gl_ledgers gl where gl.name=:p_ledger_name)
     )
     where
     rownum=1' into l_segment_name using p_segment_prop_value, p_ledger_name, p_segment_num, p_ledger_name;

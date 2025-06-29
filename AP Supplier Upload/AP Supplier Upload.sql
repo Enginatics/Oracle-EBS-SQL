@@ -481,7 +481,7 @@ ba1.bank_acct_assignmt_end_date    site_bank_acct_assign_end,
 -- ########
 -- Vendor Site Contacts
 -- ########
-nvl(xxen_util.meaning(nvl(hpc.person_pre_name_adjunct,hpc.salutation),'CONTACT_TITLE',222),nvl(hpc.person_pre_name_adjunct,hpc.salutation)) contact_title,
+xxen_util.meaning(nvl(hpc.person_pre_name_adjunct,hpc.salutation),'CONTACT_TITLE',222) contact_title,
 hpc.person_first_name contact_first_name,
 hpc.person_middle_name contact_middle_name,
 hpc.person_last_name contact_last_name,
@@ -496,7 +496,7 @@ nvl(
   from   hz_contact_points hcp
   where  hcp.contact_point_id =
   (select
-   max(hcp2.contact_point_id)
+   distinct first_value(hcp2.contact_point_id) over (order by hcp2.last_update_date desc, hcp2.contact_point_id desc rows between unbounded preceding and unbounded following)
    from
    hz_contact_points hcp2
    where
@@ -516,7 +516,7 @@ case when hpr.primary_phone_line_type='GEN' then hpr.primary_phone_extension els
  from   hz_contact_points hcp
  where  hcp.contact_point_id =
  (select
-  max(hcp2.contact_point_id)
+  distinct first_value(hcp2.contact_point_id) over (order by hcp2.last_update_date desc, hcp2.contact_point_id desc rows between unbounded preceding and unbounded following)
   from
   hz_contact_points hcp2
   where
@@ -532,7 +532,7 @@ case when hpr.primary_phone_line_type='GEN' then hpr.primary_phone_extension els
  from   hz_contact_points hcp
  where  hcp.contact_point_id =
  (select
-  max(hcp2.contact_point_id)
+  distinct first_value(hcp2.contact_point_id) over (order by hcp2.last_update_date desc, hcp2.contact_point_id desc rows between unbounded preceding and unbounded following)
   from
   hz_contact_points hcp2
   where
@@ -548,7 +548,7 @@ case when hpr.primary_phone_line_type='GEN' then hpr.primary_phone_extension els
  from   hz_contact_points hcp
  where  hcp.contact_point_id =
  (select
-  max(hcp2.contact_point_id)
+  distinct first_value(hcp2.contact_point_id) over (order by hcp2.last_update_date desc, hcp2.contact_point_id desc rows between unbounded preceding and unbounded following)
   from
   hz_contact_points hcp2
   where
@@ -563,7 +563,7 @@ case when hpr.primary_phone_line_type='GEN' then hpr.primary_phone_extension els
  from   hz_contact_points hcp
  where  hcp.contact_point_id =
  (select
-  max(hcp2.contact_point_id)
+  distinct first_value(hcp2.contact_point_id) over (order by hcp2.last_update_date desc, hcp2.contact_point_id desc rows between unbounded preceding and unbounded following)
   from
   hz_contact_points hcp2
   where
@@ -687,7 +687,9 @@ assa.org_id = nvl(ba1.org_id (+),assa.org_id) and
 assa.vendor_site_id = nvl(ba1.supplier_site_id (+),assa.vendor_site_id) and
 --
 decode(:p_show_site_contacts,'Y',assa.party_site_id,-99) = asco.org_party_site_id (+) and
-assa.vendor_site_id = nvl(asco.vendor_site_id (+),assa.vendor_site_id) and
+(asco.vendor_contact_id is null or
+ asco.vendor_contact_id = xxen_ap_upload.get_vendor_contact_id(assa.vendor_site_id,aps.party_id,assa.party_site_id,asco.relationship_id,asco.rel_party_id)
+) and
 asco.per_party_id = hpc.party_id (+) and
 asco.rel_party_id = hpr.party_id (+)
 --

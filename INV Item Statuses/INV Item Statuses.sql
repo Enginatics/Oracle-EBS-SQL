@@ -19,7 +19,7 @@ msavav.inventory_item_status_code status_code,
 misv.inventory_item_status_code_tl status,
 misv.description,
 &column1
-xxen_util.meaning(decode(msavav.attribute_value,'Y','Y'),'YES_NO',0) value,
+xxen_util.yes(msavav.attribute_value) value,
 &column2
 substr(msavav.attribute_name,18) column_name
 from

@@ -16,8 +16,8 @@ xrr.creation_date,
 xxen_util.user_name(xrr.created_by) user_name,
 frt.responsibility_name responsibility,
 xrv.report_name,
-'begin xxen_upload.g_run_id:='||xud.run_id||'; end;' init_sql,
-xud.*
+'begin xxen_upload.g_run_id:='||xud.run_id||'; end;'||chr(10)||chr(10)||'select xu.* from '||xrv.upload_view||' xu' sql,
+&upload_columns
 from
 xxen_upload_data xud,
 xxen_report_runs xrr,

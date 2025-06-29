@@ -13,7 +13,7 @@
 select
 qlhv.name price_list,
 qlhv.description,
-xxen_util.meaning(decode(qlhv.global_flag,'Y','Y'),'YES_NO',0) global,
+xxen_util.yes(qlhv.global_flag) global,
 qlhv.currency_code currency,
 fcv.name currency_name,
 qclv.name multi_currency_name,

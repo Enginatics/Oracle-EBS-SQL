@@ -13,7 +13,7 @@
 select
 rrv.name report_name,
 rrv.report_title,
-xxen_util.meaning(decode(rrv.security_flag,'Y','Y'),'YES_NO',0) security,
+xxen_util.yes(rrv.security_flag) security,
 rrv.row_set,
 rrv.column_set,
 rrv.content_set,

@@ -51,15 +51,17 @@ with wip_detail as
     , trunc(wdj.date_completed)                      job_completed_date
     , trunc(wdj.date_closed)                         job_closed_date
     , wdj.start_quantity                             job_start_qty
-    , xxen_util.meaning(wdj.job_type
-                       ,'WIP_DISCRETE_JOB',700)      job_type
-    , xxen_util.meaning(wdj.status_type
-                       ,'WIP_JOB_STATUS',700)        job_status
+    , xxen_util.meaning(wdj.job_type ,'WIP_DISCRETE_JOB',700)  job_type
+    , xxen_util.meaning(wdj.status_type ,'WIP_JOB_STATUS',700) job_status
+    , xxen_util.meaning(wdj.firm_planned_flag,'SYS_YES_NO',700) firm
+    , case when wdj.common_bom_sequence_id is not null then 'Yes' else 'No' end bom_exists
+    , case when wdj.common_routing_sequence_id is not null then 'Yes' else 'No' end routing_exists
     , ppa.segment1                                   project
     , mso.segment1                                   sales_order_reservation
     , wsg.schedule_group_name                        schedule_group_name
     , wdj.build_sequence                             build_sequence
     , wro.operation_seq_num                          operation_seq_num
+    , min(wro.operation_seq_num) over (partition by wro.wip_entity_id, wro.organization_id) first_operation_seq_num
     , wl.line_code                                   wip_line_code
     , msiv1.concatenated_segments                    assembly
     , msiv1.description                              assembly_desc
@@ -96,6 +98,11 @@ with wip_detail as
     , xxen_util.meaning(wro.mrp_net_flag
                        ,'SYS_YES_NO',700)            mrp_net_flag
     , msiv2.planner_code                             planner
+    -- Lead Times
+    ,msiv2.preprocessing_lead_time preprocessing_lead_time
+    ,msiv2.full_lead_time processing_lead_time
+    ,msiv2.postprocessing_lead_time postprocessing_lead_time
+    ,msiv2.cumulative_total_lead_time cumulative_total_lead_time
     , ppx.full_name                                  buyer
     , wro.supply_subinventory                        supply_subinventory
     , milk.concatenated_segments                     supply_locator
@@ -290,6 +297,9 @@ select
 , wip_dtl.job_start_qty
 , wip_dtl.job_type
 , wip_dtl.job_status
+, wip_dtl.firm firm_status
+, wip_dtl.bom_exists
+, wip_dtl.routing_exists
 , wip_dtl.project
 , wip_dtl.sales_order_reservation
 , wip_dtl.schedule_group_name
@@ -308,9 +318,13 @@ select
 , wip_dtl.component_desc
 , wip_dtl.component_type
 , wip_dtl.make_or_buy
+, wip_dtl.preprocessing_lead_time component_preprocessing_lead_time
+, wip_dtl.processing_lead_time component_processing_lead_time
+, wip_dtl.postprocessing_lead_time component_postprocessing_lead_time
+, wip_dtl.cumulative_total_lead_time component_cumulative_total_lead_time
 , wip_dtl.wip_supply_type
 , wip_dtl.mrp_net_flag
-, wip_dtl.planner
+, wip_dtl.planner component_planner
 , wip_dtl.buyer
 , wip_dtl.supply_subinventory
 , wip_dtl.supply_locator

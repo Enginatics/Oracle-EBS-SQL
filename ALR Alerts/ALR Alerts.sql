@@ -15,7 +15,7 @@ fav.application_name application,
 aa.alert_name,
 aa.sql_statement_text,
 aa.description,
-xxen_util.meaning(decode(aa.enabled_flag,'Y','Y'),'YES_NO',0) enabled,
+xxen_util.yes(aa.enabled_flag) enabled,
 xxen_util.meaning(aa.alert_condition_type,'ALERT_CONDITION_TYPE',0) alert_condition_type,
 case
 when aa.frequency_type='C' and aa.days_between_checks=1 then 'Every Day'

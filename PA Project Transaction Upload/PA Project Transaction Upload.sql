@@ -32,7 +32,7 @@ null row_id,
 --
 haouv.name operating_unit,
 (select pts.user_transaction_source from pa_transaction_sources pts where pts.transaction_source = ptia.transaction_source) transaction_source,
-ptia.system_linkage expnd_type_class,
+xxen_pa_upload.get_system_linkage_meaning(ptia.system_linkage) expnd_type_class, 
 ptia.expenditure_ending_date expnd_ending_date,
 ptia.batch_name batch_name,
 ptia.orig_transaction_reference original_trans_ref,

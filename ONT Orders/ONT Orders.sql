@@ -136,7 +136,7 @@ xxen_util.client_time(min(oola.promise_date) over (partition by oola.header_id))
 xxen_util.client_time(min(oola.schedule_ship_date) over (partition by oola.header_id)) schedule_ship_date,
 xxen_util.client_time(min(oola.actual_shipment_date) over (partition by oola.header_id)) actual_shipment_date,
 sum(oola.shipped_quantity) over (partition by oola.header_id) shipped_quantity,
-xxen_util.meaning(decode(max(oola.shippable_flag) over (partition by oola.header_id),'Y','Y'),'YES_NO',0) shippable_flag,
+xxen_util.yes(max(oola.shippable_flag) over (partition by oola.header_id)) shippable_flag,
 xxen_util.meaning(ooha.order_category_code,'ORDER_CATEGORY',660) order_category,
 xxen_util.user_name(ooha.created_by) created_by,
 xxen_util.client_time(ooha.creation_date) creation_date,

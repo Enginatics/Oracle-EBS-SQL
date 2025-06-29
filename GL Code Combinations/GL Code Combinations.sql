@@ -16,19 +16,19 @@ R12: Troubleshooting Misclassified Accounts in General Ledger (Doc ID 872162.1)
 
 select
 gcck.chart_of_accounts,
-xxen_util.meaning(decode(gcck.enabled_flag,'Y','Y'),'YES_NO',0) enabled,
-xxen_util.meaning(decode(gcck.preserve_flag,'Y','Y'),'YES_NO',0) preserved,
+xxen_util.yes(gcck.enabled_flag) enabled,
+xxen_util.yes(gcck.preserve_flag) preserved,
 gcck.concatenated_segments,
 nvl(xxen_util.meaning(gcck.gl_account_type,'ACCOUNT_TYPE',0),gcck.gl_account_type) account_type,
 (select gst.template_name from gl_summary_templates gst where gcck.template_id=gst.template_id) summary_template,
 &balance_columns
 gcck.start_date_active date_from,
 gcck.end_date_active date_to,
-xxen_util.meaning(decode(gcck.detail_posting_allowed,'Y','Y'),'YES_NO',0) posting_allowed,
-xxen_util.meaning(decode(gcck.detail_budgeting_allowed,'Y','Y'),'YES_NO',0) budgeting_allowed,
+xxen_util.yes(gcck.detail_posting_allowed) posting_allowed,
+xxen_util.yes(gcck.detail_budgeting_allowed) budgeting_allowed,
 (select gcck2.concatenated_segments from gl_code_combinations_kfv gcck2 where gcck.alternate_code_combination_id=gcck2.code_combination_id) alternate_account,
-xxen_util.meaning(decode(gcck.reconciliation_flag,'Y','Y'),'YES_NO',0) reconcile,
-xxen_util.meaning(decode(gcck.igi_balanced_budget_flag,'Y','Y'),'YES_NO',0) enforce_balanced_budget,
+xxen_util.yes(gcck.reconciliation_flag) reconcile,
+xxen_util.yes(gcck.igi_balanced_budget_flag) enforce_balanced_budget,
 &segment_columns
 &dff_columns
 xxen_util.meaning(gcck.flex_val_account_type,'ACCOUNT_TYPE',0) flex_value_account_type,

@@ -28,7 +28,7 @@ eat.language=xxen_util.bcp47_language(userenv('lang'))
 edt.display_name data_set,
 edb.dataset_key data_set_key,
 decode(edt.dataset_description,'null',null,edt.dataset_description) description,
-xxen_util.meaning(decode(edb.enabled_flag,'Y','Y'),'YES_NO',0) enabled,
+xxen_util.yes(edb.enabled_flag) enabled,
 x.*,
 esr.security_handler_name
 from

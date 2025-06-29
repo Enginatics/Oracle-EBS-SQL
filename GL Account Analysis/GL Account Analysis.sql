@@ -271,7 +271,8 @@ fifs.flex_value_set_id=ffv.flex_value_set_id and
 ffv.parent_flex_value_low is null and
 ffv.summary_flag='N' and
 7=7
-) flex_value_set_id
+) flex_value_set_id,
+xxen_fsg.view_transaction_(fnd_global.resp_appl_id,xxen_util.user_name(fnd_global.user_id),gl.ledger_id,fnd_global.resp_id,fnd_global.security_group_id,gjsv.user_je_source_name,xah.event_id) view_transaction
 from
 gl_ledgers gl,
 gl_periods gp,
@@ -611,7 +612,8 @@ fifs.flex_value_set_id=ffv.flex_value_set_id and
 ffv.parent_flex_value_low is null and
 ffv.summary_flag='N' and
 7=7
-) flex_value_set_id
+) flex_value_set_id,
+null view_transaction
 from
 gl_ledgers gl,
 gl_periods gp,
@@ -824,7 +826,8 @@ fifs.flex_value_set_id=ffv.flex_value_set_id and
 ffv.parent_flex_value_low is null and
 ffv.summary_flag='N' and
 7=7
-) flex_value_set_id
+) flex_value_set_id,
+null view_transaction
 from
 gl_ledgers gl,
 gl_periods gp,

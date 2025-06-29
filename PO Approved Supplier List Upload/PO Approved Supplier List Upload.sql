@@ -36,10 +36,7 @@ i.e. You can upload an excel row containing a Source Document, Authorization, Ca
 - By default, Authorizations, Supplier Capacities, and Supplier Tolerances are not included in the downloaded data. The following report parameters may be Yes in order to include these in the download:
   Download Authorizations
   Download Capacities
-  Download Tolerances 
-
-
-
+  Download Tolerances
 -- Excel Examle Output: https://www.enginatics.com/example/po-approved-supplier-list-upload/
 -- Library Link: https://www.enginatics.com/reports/po-approved-supplier-list-upload/
 -- Run Report: https://demo.enginatics.com/

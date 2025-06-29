@@ -97,7 +97,7 @@ fad.seq_num,
 fdcv.user_name category,
 &title_column
 fdt.description,
-fdd.user_name data_type,
+fddv.user_name data_type,
 decode(fd.datatype_id,5,&url_column,nvl(fl.file_name,fd.file_name)) name,
 &url_text
 fdn.short_name location,
@@ -124,7 +124,7 @@ fd.datatype_id
 from
 fnd_documents fd,
 fnd_documents_tl fdt,
-fnd_document_datatypes fdd,
+fnd_document_datatypes_vl fddv,
 fnd_document_categories_vl fdcv,
 hr_all_organization_units_vl haouv,
 gl_ledgers gl,
@@ -139,12 +139,11 @@ where
 1=1 and
 fd.document_id=fdt.document_id and
 fdt.language=userenv('lang') and
-fd.datatype_id=fdd.datatype_id and
-fdd.language=userenv('lang') and
+fd.datatype_id=fddv.datatype_id and
 fd.category_id=fdcv.category_id and
 decode(fd.security_type,1,fd.security_id)=haouv.organization_id(+) and
 decode(fd.security_type,2,fd.security_id)=gl.ledger_id(+) and
-fd.media_id=fl.file_id(+) and
+case when fd.datatype_id in (3,6) then fd.media_id end=fl.file_id(+) and
 fd.program_application_id=fcpv.application_id(+) and
 fd.program_id=fcpv.concurrent_program_id(+) and
 decode(fd.datatype_id,1,fd.media_id)=fdst.media_id(+) and

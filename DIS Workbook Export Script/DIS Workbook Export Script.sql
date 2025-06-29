@@ -15,7 +15,16 @@ Use this report to migrate Discoverer workbooks to Blitz Report through the foll
 5. If you have more than one EUL, set the profile option 'Blitz Report Discoverer Default EUL' to the end user layer for which you run the migration
 6. Navigate to Setup>Tools>Import>XML Upload and upload the .zip file generated in step 4. You will see a message with the count of uploaded xml files.
 7. Run concurrent program 'Blitz Report Discoverer Import' from the System Administrator responsibility, and specify a report name prefix to easily distinguish the migrated reports.
-8. Verify the migration result by running reports: Blitz Report SQL Validation, Blitz Report LOV SQL Validation, DIS Workbook Import Validation, DIS End User Layers. The migrated reports are assigned to a new Discoverer category.
+8. Verify the migration result by running reports:
+'Blitz Report Parameter Uniqueness Validation' and correct the nonunique parameter names.
+'Blitz Report LOV SQL Validation' and correct errors plus change slow 'distinct' style ones to fast SQLs
+'Blitz Report SQL Validation' and correct problems
+'Blitz Report Parameter Bind Variable Validation'
+'DIS Migration identify missing EulConditions'
+'Blitz Report Parameter Table Alias Validation'
+'Blitz Reports' for Discoverer check for column 'required_parameters'
+'Blitz Report Parameter Default Values' for discoverer check for default value having partition
+'Blitz Report Templates' and search for Subtotals: Y in the description and train the users to switch compact pivot to tabular format
 -- Excel Examle Output: https://www.enginatics.com/example/dis-workbook-export-script/
 -- Library Link: https://www.enginatics.com/reports/dis-workbook-export-script/
 -- Run Report: https://demo.enginatics.com/

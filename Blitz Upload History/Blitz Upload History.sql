@@ -11,11 +11,11 @@
 -- Run Report: https://demo.enginatics.com/
 
 select
-xrr.request_id,
+fcr.parent_request_id request_id,
 xrr.creation_date,
 xxen_util.user_name(xrr.created_by) user_name,
 frt.responsibility_name responsibility,
-xrv.report_name,
+xrv.report_name upload_name,
 nullif(x.c_v,0) create_valid,
 nullif(x.c_e,0) create_error,
 nullif(x.c_s,0) create_success,

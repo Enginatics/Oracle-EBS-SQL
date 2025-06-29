@@ -39,8 +39,8 @@ select
  mcsv.structure_name cat_set_flex_structure,
  mcsv.control_level_disp cat_set_control_level,
  (select mck2.concatenated_segments from mtl_categories_kfv mck2 where mck2.category_id = mcsv.default_category_id) cat_set_default_category,
- xxen_util.meaning(decode(mcsv.validate_flag,'Y','Y'),'YES_NO',0) enforce_valid_categories,
- xxen_util.meaning(decode(mcsv.mult_item_cat_assign_flag,'Y','Y'),'YES_NO',0) multi_item_cat_assign_allowed,
+ xxen_util.yes(mcsv.validate_flag) enforce_valid_categories,
+ xxen_util.yes(mcsv.mult_item_cat_assign_flag) multi_item_cat_assign_allowed,
  (select count(*) from mtl_category_set_valid_cats mcsvc where mcsv.category_set_id = mcsvc.category_set_id) cat_set_valid_category_count,
  (select count(*) from mtl_categories_b mcb where mcsv.structure_id = mcb.structure_id) cat_set_category_count,
  --

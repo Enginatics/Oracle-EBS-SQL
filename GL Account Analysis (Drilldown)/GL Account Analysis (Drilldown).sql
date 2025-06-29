@@ -129,8 +129,9 @@ xte.source_id_int_1,
 case when xte.application_id=222 then case when xte.entity_code in ('TRANSACTIONS','BILLS_RECEIVABLE') then xte.source_id_int_1 when xte.entity_code='ADJUSTMENTS' then aaa.customer_trx_id end end customer_trx_id,
 paa.customer_id paa_customer_id,
 acra.pay_from_customer acra_pay_from_customer,
+case when gjsv.user_je_source_name not in ('Property Manager','Global Intercompany','Payroll','Inflation Accting','Projects','Spreadsheet') then
 case when nvl(fnd_profile.value('XXEN_FSG_DRILLDOWN_TO_SAME_WORKBOOK'), 'N')='N' then '=dd' else '=dds' end
-||'("VT","'||gl.ledger_id||','||gjsv.user_je_source_name||','||xah.event_id||','||gjl.je_line_num||'")' view_transaction
+||'("VT","'||gl.ledger_id||','||gjsv.user_je_source_name||','||xah.event_id||','||gjl.je_line_num||'")' end view_transaction
 from
 gl_ledgers gl,
 gl_periods gp,

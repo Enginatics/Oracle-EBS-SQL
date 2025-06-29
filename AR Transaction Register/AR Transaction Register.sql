@@ -32,6 +32,8 @@ select
   rx.receivables_gl_date                 gl_date,
   rx.trx_amount                          entered_amount,
   rx.trx_acctd_amount                    functional_amount,
+  rx.trx_amount-arpt_sql_func_util.get_sum_of_trx_lines(rx.customer_trx_id,'TAX') total_line_amount,
+  arpt_sql_func_util.get_sum_of_trx_lines(rx.customer_trx_id,'TAX') total_tax_amount,
   rx.rec_natacct                         receivables_account,
   rx.rec_natacct_desc                    receivables_account_desc,
   rx.rec_account                         receivables_account_full,

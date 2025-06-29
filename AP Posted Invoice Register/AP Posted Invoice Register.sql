@@ -33,7 +33,7 @@ Also requires custom package XXEN_XLA package to be installed to initialize the 
 -- Library Link: https://www.enginatics.com/reports/ap-posted-invoice-register/
 -- Run Report: https://demo.enginatics.com/
 
-select
+select /*+ push_pred(i) */
  x.application_name
 ,x.ledger_short_name
 ,x.ledger_description
@@ -45,7 +45,7 @@ select
 ,x.control_account_flag
 -- gl data
 ,x.period_name
-,x.gl_date
+,to_date(x.gl_date,'YYYY-MM-DD') gl_date
 ,x.gl_batch_name
 ,x.je_source_name     gl_journal_source
 ,x.je_category_name   gl_journal_category
@@ -65,22 +65,47 @@ select
 -- source transaction data
 ,x.user_trx_identifier_value_1  supplier_name
 ,x.transaction_number           invoice_number
-,x.transaction_date             invoice_date
+,trunc(to_date(x.transaction_date,'YYYY-MM-DD"T"hh:mi:ss')) invoice_date
 ,x.user_trx_identifier_value_10 invoice_description
-,to_number(x.user_trx_identifier_value_4)  invoice_amount
+,case when trim(translate(x.user_trx_identifier_value_4, '0123456789-.',' ')) is null
+ then to_number(x.user_trx_identifier_value_4) else to_number(null)
+ end  invoice_amount
+-----------------------------------
+,case when trim(translate(x.user_trx_identifier_value_4, '0123456789-.',' ')) is null then to_number(x.user_trx_identifier_value_4) else to_number(null) end - nvl(i.total_tax_amount,0) total_line_amount 
+,i.total_tax_amount total_tax_amount
+,i.last_update_date invoice_last_updated
+,xxen_util.user_name(i.last_updated_by,'Y') invoice_last_updated_by
+,(select
+  max(aha.last_update_date)
+  from
+  ap_holds_all aha
+  where
+  aha.invoice_id=i.invoice_id and
+  aha.release_lookup_code is not null
+ ) invoice_hold_released_date
+,(select
+  decode(aha.last_updated_by,5,xxen_util.meaning('SYSTEM','NLS TRANSLATION',200),xxen_util.user_name(aha.last_updated_by,'Y'))
+  from
+  ap_holds_all aha
+  where
+  aha.invoice_id=i.invoice_id and
+  aha.release_lookup_code is not null and
+  aha.last_update_date = (select max(aha2.last_update_date) from ap_holds_all aha2 where aha2.invoice_id = aha.invoice_id and aha2.release_lookup_code is not null) and
+  rownum <= 1
+ ) invoice_hold_released_by
 -- other gl specific data
 ,x.gl_default_effective_date
 ,x.gl_batch_status
-,x.posted_date        gl_posted_date
+,to_date(x.posted_date,'YYYY-MM-DD') gl_posted_date
 ,x.external_reference gl_external_reference
 ,x.reference_1        gl_reference_1
 ,x.reference_4        gl_reference_4
 ,x.gl_doc_sequence_name
 ,x.gl_doc_sequence_value
 -- other date, status, type data
-,x.gl_transfer_date
+,trunc(to_date(x.gl_transfer_date ,'YYYY-MM-DD"T"hh:mi:ss')) gl_transfer_date
 ,x.reference_date
-,x.completed_date
+,trunc(to_date(x.completed_date ,'YYYY-MM-DD"T"hh:mi:ss')) completed_date
 ,x.journal_entry_status
 ,x.transfer_to_gl_status
 ,x.balance_type_code
@@ -89,7 +114,8 @@ select
 ,x.encumbrance_type
 ,x.fund_status
 -- sla specific data
-,x.event_date                        sla_event_date
+,x.event_id                          sla_event_id
+,to_date(x.event_date,'YYYY-MM-DD')  sla_event_date
 ,x.event_number                      sla_event_number
 ,x.event_class_code                  sla_event_class_code
 ,x.event_class_name                  sla_event_class_name
@@ -110,10 +136,10 @@ select
 -- period data points
 ,x.period_year
 ,x.period_number
-,x.period_start_date
-,x.period_end_date
-,x.period_year_start_date
-,x.period_year_end_date
+,to_date(x.period_start_date,'YYYY-MM-DD') period_start_date
+,to_date(x.period_end_date,'YYYY-MM-DD') period_end_date
+,to_date(x.period_year_start_date,'YYYY-MM-DD') period_year_start_date
+,to_date(x.period_year_end_date,'YYYY-MM-DD') period_year_end_date
 -- exchange type/rate data
 ,x.conversion_rate
 ,x.conversion_rate_date
@@ -157,8 +183,8 @@ select
 ,x.user_trx_identifier_value_10
 -- sla or gl audit colummns
 ,x.created_by
-,x.creation_date
-,x.last_update_date
+,trunc(to_date(x.creation_date ,'YYYY-MM-DD"T"hh:mi:ss')) creation_date
+,to_date(x.last_update_date,'YYYY-MM-DD') last_update_date
 --
 ,x.accounting_code_combination || ' (' || x.code_combination_description || ')' account_pivot_label
 from
@@ -217,4 +243,27 @@ from
    &p_trx_id_filter
    &p_le_join
    &p_other_join
-) x
+) x,
+(select 
+ xah.event_id i_event_id,
+ xah.ae_header_id i_ae_header_id,
+ xah.ledger_id i_ledger_id,
+ xah.application_id i_application_id,
+ aia.*
+ from
+ xla_ae_headers xah,
+ xla.xla_transaction_entities xte,
+ xla_events xe,
+ ap_invoices_all aia
+ where
+ xte.entity_id=xah.entity_id and 
+ xte.application_id=xah.application_id and
+ xe.application_id=xah.application_id and 
+ xe.event_id=xah.event_id and 
+ aia.invoice_id=xte.source_id_int_1
+) i
+where
+ x.event_id=i.i_event_id(+) and
+ x.s_header_id=i.i_ae_header_id(+) and
+ x.ledger_id=i.i_ledger_id(+) and
+ x.application_id=i.i_application_id(+)

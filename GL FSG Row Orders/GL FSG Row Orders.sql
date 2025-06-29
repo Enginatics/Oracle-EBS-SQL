@@ -13,7 +13,7 @@
 select
 rro.name row_order,
 rro.description,
-xxen_util.meaning(decode(rro.security_flag,'Y','Y'),'YES_NO',0) security,
+xxen_util.yes(rro.security_flag) security,
 rro.column_name,
 rro.column_number column_order,
 xxen_util.meaning(rro.row_rank_type,'RANKING_TYPE',168) ranking,

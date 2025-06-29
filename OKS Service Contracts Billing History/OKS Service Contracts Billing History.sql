@@ -52,7 +52,7 @@ obsl.manual_credit,
 obcl.currency_code,
 obsl.average,
 obsld.unit_of_measure,
-xxen_util.meaning(decode(obsld.amcv_yn,'Y','Y'),'YES_NO',0) amcv_yn,
+xxen_util.yes(obsld.amcv_yn) amcv_yn,
 &counter_cols
 obsld.start_reading,
 obsld.end_reading,

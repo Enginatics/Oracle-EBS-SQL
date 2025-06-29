@@ -26,7 +26,7 @@ For clients on R12.2 or later
 
 with mpit_qry as
 (
-select
+select /*+ INLINE */
  -- Physical Inventory
  mp.organization_code,
  mpiv.physical_inventory_name,
@@ -137,8 +137,11 @@ where
  -- from INVADPPI (Physical Inventory Tag Counts) form
  inv_material_status_grp.is_status_applicable( null, null,8,null,null,mpit.organization_id,mpit.inventory_item_id,mpit.subinventory,mpit.locator_id,mpit.lot_number,mpit.serial_num,'A') = 'Y' and
  mpiv.adjustments_posted = 2 and
- -- from INV_PHY_INV_PUB.UPDATE_TAGS
- exists
+ -- Exclude Serial Controlled Items in Physical Inventories defined for Multiple Serial Numbers Requests per Tag.
+ -- We are not handling this scenario as yet
+ &lp_multiple_sn_clause
+ --
+ not exists
  (select
    null
   from
@@ -148,16 +151,12 @@ where
    mpit.physical_inventory_id= mpa.physical_inventory_id and
    mpit.adjustment_id = mpa.adjustment_id and
    mpit.inventory_item_id = mpa.inventory_item_id and
-   nvl(mpa.approval_status,0) <> 3
+   nvl(mpa.approval_status,0) = 3 -- processed
  )
 )
 --
 -- Main Query Starts Here
 --
-select
-x.*
-from
-(
 select /*+ push_pred(mpit) */
 null action_,
 null status_,
@@ -186,7 +185,7 @@ mpit.serial_number,
 mpit.parent_lpn,
 mpit.outermost_lpn,
 --
-mpit.uom,
+nvl(mpit.uom,mpit.item_primary_uom) uom,
 mpit.quantity,
 mpit.secondary_uom,
 mpit.secondary_quantity,
@@ -223,18 +222,3 @@ where
 mpit.organization_code = :p_organization_code  and
 mpit.physical_inventory_name = :p_physical_inv_name and
 1=1
-&not_use_first_block
-&report_table_select
-&report_table_name &report_table_where_clause
-&processed_run
-) x
-order by
- x.tag_number,
- x.item,
- x.revision,
- x.subinventory,
- x.locator,
- x.lot_number,
- x.serial_number,
- x.uom,
- x.quantity

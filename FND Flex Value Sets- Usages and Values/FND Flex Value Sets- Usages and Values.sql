@@ -18,7 +18,7 @@ xxen_util.meaning(ffvs.security_enabled_flag,'FLEX_VST_SECURITY_ENABLED_FLAG',0)
 xxen_util.meaning(ffvs.format_type,'FIELD_TYPE',0) format_type,
 ffvs.maximum_size,
 xxen_util.meaning(decode(ffvs.alphanumeric_allowed_flag,'N','Y'),'YES_NO',0) numbers_only,
-xxen_util.meaning(decode(ffvs.uppercase_only_flag,'Y','Y'),'YES_NO',0) uppercase_only,
+xxen_util.yes(ffvs.uppercase_only_flag) uppercase_only,
 xxen_util.meaning(ffvs.validation_type,'SEG_VAL_TYPES',0) validation_type,
 (select ffvs0.flex_value_set_name from fnd_flex_value_sets ffvs0 where ffvs.parent_flex_value_set_id=ffvs0.flex_value_set_id) parent_value_set,
 ffvs.dependant_default_value,

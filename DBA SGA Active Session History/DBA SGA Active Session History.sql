@@ -87,8 +87,8 @@ case when bitand(gash.time_model,power(2,21))=power(2,21) then 'INMEMORY_REPOPUL
 case when bitand(gash.time_model,power(2,22))=power(2,22) then 'INMEMORY_TREPOPULATE ' end||
 case when bitand(gash.time_model,power(2,23))=power(2,23) then 'TABLESPACE_ENCRYPTION ' end
 ) time_model,
-xxen_util.meaning(decode(gash.in_parse,'Y','Y'),'YES_NO',0) in_parse,
-xxen_util.meaning(decode(gash.in_hard_parse,'Y','Y'),'YES_NO',0) in_hard_parse,
+xxen_util.yes(gash.in_parse) in_parse,
+xxen_util.yes(gash.in_hard_parse) in_hard_parse,
 gash.qc_instance_id,
 gash.qc_session_id||nvl2(gash.qc_session_serial#,' - '||gash.qc_session_serial#,null) qc_sid_serial#,
 gash.sql_plan_operation,

@@ -12,6 +12,15 @@ Templates are provided for the following Journal Types
 - Foreign Actuals
 - Budget Journals
 - Encumbrance Journals
+
+Submit for Approval
+---------------------------
+Imported Journals requiring approval can be submitted for approval after import if they are eligble.
+
+Submit Journal Post
+---------------------------
+Imported Journals can be submitted for immediate posting after import if they are eligible.
+In order to submit journals for posting, the current responsibility must have access to post journals.
 -- Excel Examle Output: https://www.enginatics.com/example/gl-journal-upload/
 -- Library Link: https://www.enginatics.com/reports/gl-journal-upload/
 -- Run Report: https://demo.enginatics.com/
@@ -72,6 +81,7 @@ to_number(null) user_id,
 null summary_flag,
 null post_to_suspense_flag,
 null submit_approval,
+null submit_posting,
 --
 null line_dff_context,
 null gl_je_line_attribute1,
