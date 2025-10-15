@@ -86,10 +86,11 @@ x.receipt_quantity,
 x.quantity_ordered,
 x.quantity_cancelled,
 x.quantity_received,
+x.quantity_delivered, 
 x.quantity_due,
 x.quantity_billed,
-(x.receipt_quantity - x.quantity_billed) grni_quantity,
-(x.price * (x.receipt_quantity - x.quantity_billed)) grni_amount,
+case when(x.quantity_delivered - x.quantity_billed)<0 then 0 else (x.quantity_delivered - x.quantity_billed) end grni_quantity,
+case when(x.quantity_delivered - x.quantity_billed)<0 then 0 else (x.price * (x.quantity_delivered - x.quantity_billed)) end grni_amount,
 x.primary_quantity,
 x.primary_unit_of_measure,
 x.po_unit_price,
@@ -123,6 +124,9 @@ nvl2(x.po_release_id,x.release_amount,x.po_amount) document_amount,
 nvl2(x.po_release_id,x.release_matched_amount,x.po_matched_amount) document_matched_amount,
 x.charge_account,
 x.accrual_account,
+x.item_expense_account,
+x.item_expense_account_desc,
+&dff_columns2
 x.po_created_by,
 xxen_util.client_time(x.po_creation_date) po_creation_date,
 x.release_created_by,
@@ -282,6 +286,7 @@ pda.quantity_ordered-nvl(pda.quantity_cancelled,0)-(plla.quantity_received*(pda.
 nvl(plla.quantity, pla.quantity)-nvl(plla.quantity_cancelled,0)-nvl(plla.quantity_received,0)
 ) quantity_due,
 decode(:p_show_distributions,'Y',pda.quantity_billed,plla.quantity_billed) quantity_billed,
+decode(:p_show_distributions,'Y',pda.quantity_delivered,0) quantity_delivered,
 rt.primary_quantity,
 rt.primary_unit_of_measure,
 rt.po_unit_price,
@@ -317,6 +322,9 @@ to_number(null) document_min_release_amount,
 case when pda.code_combination_id is not null then fnd_flex_xml_publisher_apis.process_kff_combination_1('seg','SQLGL','GL#',pda.chart_of_accounts_id,NULL,pda.code_combination_id,'ALL','Y','VALUE') end charge_account,
 case when pda.accrual_account_id is not null then fnd_flex_xml_publisher_apis.process_kff_combination_1('seg','SQLGL','GL#',pda.chart_of_accounts_id,NULL,pda.accrual_account_id,'ALL','Y','VALUE') else null
 end accrual_account,
+xxen_util.concatenated_segments(msiv.expense_account) item_expense_account,
+xxen_util.segments_description(msiv.expense_account) item_expense_account_desc,
+&dff_columns
 xxen_util.user_name(pha.created_by) po_created_by,
 pha.creation_date po_creation_date,
 xxen_util.user_name(pra.created_by) release_created_by,
@@ -330,6 +338,7 @@ from
 po_headers_all pha,
 (
 select
+pla.rowid row_id,
 pla.*,
 (select fspa.inventory_organization_id from financials_system_params_all fspa where hou.set_of_books_id=fspa.set_of_books_id and pla.org_id=fspa.org_id) inventory_organization_id,
 hou.name operating_unit
@@ -534,6 +543,7 @@ null receipt_quantity,
 nvl(plla.quantity, pla.quantity) quantity_ordered,
 null quantity_cancelled,
 null quantity_received,
+null quantity_delivered,
 null quantity_due,
 null quantity_billed,
 null primary_quantity,
@@ -570,6 +580,9 @@ pha.amount_limit document_amount_limit,
 pha.min_release_amount document_min_release_amount,
 null charge_account,
 null accrual_account,
+xxen_util.concatenated_segments(msiv.expense_account) item_expense_account,
+xxen_util.segments_description(msiv.expense_account) item_expense_account_desc,
+&dff_columns
 xxen_util.user_name(pha.created_by) po_created_by,
 pha.creation_date po_creation_date,
 null release_created_by,
@@ -583,6 +596,7 @@ from
 po_headers_all pha,
 (
 select
+pla.rowid row_id,
 pla.*,
 (select fspa.inventory_organization_id from financials_system_params_all fspa where hou.set_of_books_id=fspa.set_of_books_id and pla.org_id=fspa.org_id) inventory_organization_id,
 hou.name operating_unit
@@ -593,6 +607,14 @@ where
 2=2 and
 pla.org_id=hou.organization_id
 ) pla,
+(
+select
+pda.*
+from
+po_distributions_all pda
+where
+'N'='Y'
+) pda,
 po_line_locations_all plla,
 po_releases_all pra,
 hr_operating_units hou,
@@ -620,6 +642,7 @@ plla.shipment_type(+) not in ('BLANKET') and
 --po_releases added for the common dynamic parameter where clauses
 --but does not return anything in this query
 pra.po_release_id(+)= -plla.po_release_id and
+pda.po_header_id(+)=pha.po_header_id and
 pha.vendor_id=aps.vendor_id and
 pha.vendor_site_id=assa.vendor_site_id and
 pha.org_id=hou.organization_id and

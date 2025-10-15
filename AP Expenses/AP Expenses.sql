@@ -11,7 +11,7 @@
 -- Run Report: https://demo.enginatics.com/
 
 select
-gl.name Ledger,
+gl.name ledger,
 hou.name operating_unit,
 ppx.full_name employee_name,
 xxen_util.meaning(aerha.source,'SOURCE',200) source,
@@ -58,6 +58,7 @@ aipa.check_id=aca.check_id and
 aca.void_date is null and
 aca.stopped_date is null
 ) payment_date,
+&dff_columns
 &lines_columns
 &per_diem_columns
 aerha.expense_report_id
@@ -71,6 +72,7 @@ ap_aud_queues aaq,
 ap_suppliers aps,
 ap_invoices_all aia,
 (select aerla.* from ap_expense_report_lines_all aerla where '&show_lines'='Y') aerla,
+ap_expense_report_params_all aerpa,
 &per_diem_table
 (select aerda.* from ap_exp_report_dists_all aerda where '&show_lines'='Y') aerda,
 gl_code_combinations_kfv gcck2,
@@ -86,8 +88,13 @@ aerha.vendor_id=aps.vendor_id(+) and
 aerha.vouchno=aia.invoice_id(+) and
 aerha.report_header_id=aaq.expense_report_id(+) and
 aerha.report_header_id=aerla.report_header_id(+) and
+aerla.web_parameter_id=aerpa.parameter_id(+) and
 &per_diem_join
 aerla.report_line_id=aerda.report_line_id(+) and
 aerda.code_combination_id=gcck2.code_combination_id(+) and
 aerda.award_id=gaa.award_id(+)
 &proj_tasks_joins
+order by
+report_submitted_date desc,
+aerha.invoice_num
+&order_by

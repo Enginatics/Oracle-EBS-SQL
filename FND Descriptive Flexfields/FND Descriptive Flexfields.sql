@@ -12,7 +12,7 @@
 
 select
 fav.application_name application,
-fdfcv.descriptive_flexfield_name name,
+fdfv.descriptive_flexfield_name flexfield_name,
 fdfv.title,
 fdfv.application_table_name table_name,
 fdfcv.descriptive_flex_context_code context_code,
@@ -29,14 +29,13 @@ xxen_util.yes(fdfcuv.required_flag) required,
 xxen_util.yes(fdfcuv.security_enabled_flag) security_enabled,
 xxen_util.meaning(ffvs.validation_type,'SEG_VAL_TYPES',0) validation_type,
 ffvt.application_table_name validation_table,
-ffvt.additional_where_clause where_clause,
+&additional_where_clause where_clause,
 &lov_query
 xxen_util.user_name(fdfcuv.created_by) created_by,
 xxen_util.client_time(fdfcuv.creation_date) creation_date,
 xxen_util.user_name(fdfcuv.last_updated_by) last_updated_by,
 xxen_util.client_time(fdfcuv.last_update_date) last_update_date,
-fdfv.application_id,
-fdfv.descriptive_flexfield_name
+fdfv.application_id
 from
 fnd_application_vl fav,
 fnd_descriptive_flexs_vl fdfv,
@@ -48,8 +47,8 @@ where
 1=1 and
 fdfv.descriptive_flexfield_name not like '$SRS$.%' and
 fav.application_id=fdfv.application_id and
-fdfv.application_id=fdfcv.application_id and
-fdfv.descriptive_flexfield_name=fdfcv.descriptive_flexfield_name and
+fdfv.application_id=fdfcv.application_id(+) and
+fdfv.descriptive_flexfield_name=fdfcv.descriptive_flexfield_name(+) and
 fdfcv.application_id=fdfcuv.application_id(+) and
 fdfcv.descriptive_flexfield_name=fdfcuv.descriptive_flexfield_name(+) and
 fdfcv.descriptive_flex_context_code=fdfcuv.descriptive_flex_context_code(+) and

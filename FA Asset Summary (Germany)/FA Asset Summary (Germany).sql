@@ -27,6 +27,7 @@ select
  x.asset_number,
  x.asset_description,
  x.asset_key,
+ x.property_type,
  x.date_placed_in_service,
  x.life_in_months,
 case when x.life_in_months is not null then to_char(fnd_number.canonical_to_number((lpad(substr(to_char(trunc(x.life_in_months/12,0),'999'),2,3),3,' ') || '.' || substr(to_char(mod(x.life_in_months,12),'00'),2,2))),'990D99') end life_yr_mo,
@@ -44,9 +45,8 @@ case when x.remaining_life_in_months is not null then to_char(fnd_number.canonic
  x.cost_center_description,
  x.asset_type,
  x.transaction_sub_type,
- sum(nvl(x.original_cost,0))original_cost,
- sum(nvl(x.current_cost,0)) current_cost,
  sum(nvl(x.begin_cost,0)) begin_cost,
+ sum(nvl(x.opening_cost,0)) opening_cost,
  sum(nvl(x.reserve_amount,0)) reserve_amount,
  sum(nvl(x.retirements,0)) retirements,
  sum(nvl(x.changes_of_accounts,0)) changes_of_accounts,
@@ -55,6 +55,7 @@ case when x.remaining_life_in_months is not null then to_char(fnd_number.canonic
  sum(nvl(x.appreciation_amount,0)) appreciation_amount,
  sum(nvl(x.accum_deprn,0)) accum_deprn,
  sum(nvl(x.deprn_expenses,0)) deprn_expenses,
+ sum(nvl(x.retirement_reserve,0)) retirement_reserve,
  x.asset_id,
  x.category_id,
  x.asset_rowid,
@@ -70,6 +71,7 @@ from
    fadd.asset_number asset_number,
    fadd.description asset_description,
    fakk.concatenated_segments asset_key,
+   flpt.meaning property_type,
    trunc(fb.date_placed_in_service) date_placed_in_service,
    fb.life_in_months,
    (select
@@ -92,9 +94,8 @@ from
    fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_cc_seg' , 'SQLGL', 'GL#', gcc.chart_of_accounts_id, null, gcc.code_combination_id, 'FA_COST_CTR', 'Y', 'DESCRIPTION') cost_center_description,
    fah.asset_type asset_type,
    null transaction_sub_type,
-   xxen_fa_fas_xmlp.fassumrpt_amount('ASSIGNED_UNITS'     ,fbcs.book_type_code,fdp1.period_name,fdp2.period_name,fadd.asset_id,fc.category_id,fah.asset_type,gcc.code_combination_id,fah.transaction_header_id_in) original_cost,
-   xxen_fa_fas_xmlp.fassumrpt_amount('CURRENT_AMOUNT'     ,fbcs.book_type_code,fdp1.period_name,fdp2.period_name,fadd.asset_id,fc.category_id,fah.asset_type,gcc.code_combination_id,fah.transaction_header_id_in) current_cost,
    xxen_fa_fas_xmlp.fassumrpt_amount('BEGIN_COST'         ,fbcs.book_type_code,fdp1.period_name,fdp2.period_name,fadd.asset_id,fc.category_id,fah.asset_type,gcc.code_combination_id,fah.transaction_header_id_in) begin_cost,
+   xxen_fa_fas_xmlp.fassumrpt_amount('CURRENT_AMOUNT'     ,fbcs.book_type_code,fdp1.period_name,fdp2.period_name,fadd.asset_id,fc.category_id,fah.asset_type,gcc.code_combination_id,fah.transaction_header_id_in) opening_cost,
    xxen_fa_fas_xmlp.fassumrpt_amount('RESERVE_AMOUNT'     ,fbcs.book_type_code,fdp1.period_name,fdp2.period_name,fadd.asset_id,fc.category_id,fah.asset_type,gcc.code_combination_id,fah.transaction_header_id_in) reserve_amount,
    xxen_fa_fas_xmlp.fassumrpt_amount('RETIREMENT_AMOUNT'  ,fbcs.book_type_code,fdp1.period_name,fdp2.period_name,fadd.asset_id,fc.category_id,fah.asset_type,gcc.code_combination_id,fah.transaction_header_id_in) retirements,
    xxen_fa_fas_xmlp.fassumrpt_amount('CHANGES_OF_ACCOUNTS',fbcs.book_type_code,fdp1.period_name,fdp2.period_name,fadd.asset_id,fc.category_id,fah.asset_type,gcc.code_combination_id,fah.transaction_header_id_in) changes_of_accounts,
@@ -102,6 +103,7 @@ from
    xxen_fa_fas_xmlp.fassumrpt_amount('APPRECIATION_AMOUNT',fbcs.book_type_code,fdp1.period_name,fdp2.period_name,fadd.asset_id,fc.category_id,fah.asset_type,gcc.code_combination_id,fah.transaction_header_id_in) appreciation_amount,
    xxen_fa_fas_xmlp.fassumrpt_amount('ACCM_DEPRN_AMT'     ,fbcs.book_type_code,fdp1.period_name,fdp2.period_name,fadd.asset_id,fc.category_id,fah.asset_type,gcc.code_combination_id,fah.transaction_header_id_in) accum_deprn,
    xxen_fa_fas_xmlp.fassumrpt_amount('DEPRN_EXPENSE'      ,fbcs.book_type_code,fdp1.period_name,fdp2.period_name,fadd.asset_id,fc.category_id,fah.asset_type,gcc.code_combination_id,fah.transaction_header_id_in) deprn_expenses,
+   xxen_fa_fas_xmlp.fassumrpt_amount('RETIREMENT_RESERVE' ,fbcs.book_type_code,fdp1.period_name,fdp2.period_name,fadd.asset_id,fc.category_id,fah.asset_type,gcc.code_combination_id,fah.transaction_header_id_in) retirement_reserve,
    fb.cost latest_book_cost,
    fadd.asset_id,
    fc.category_id,
@@ -122,7 +124,8 @@ from
    fa_books fb,
    fa_system_controls fsc,
    gl_sets_of_books gsob,
-   fa_lookups fl
+   fa_lookups fl,
+   fa_lookups flpt
   where
        1=1
    and fah.asset_id = fadd.asset_id
@@ -157,6 +160,8 @@ from
    and gsob.set_of_books_id = fbcs.set_of_books_id
    and fl.lookup_type = 'BOOK CLASS'
    and fl.lookup_code = fbcs.book_class
+   and flpt.lookup_type(+) = 'PROPERTY TYPE'
+   and flpt.lookup_code(+) = fadd.property_type_code
   ) x
 group by
  x.ledger,
@@ -166,6 +171,7 @@ group by
  x.asset_number,
  x.asset_description,
  x.asset_key,
+ x.property_type,
  x.date_placed_in_service,
  x.life_in_months,
  x.remaining_life_in_months,
@@ -181,7 +187,6 @@ group by
  x.cost_center_description,
  x.asset_type,
  x.transaction_sub_type,
- x.original_cost,
  x.asset_id,
  x.category_id,
  x.asset_rowid,
@@ -200,6 +205,7 @@ select
  fs.asset_number,
  fs.asset_description,
  fs.asset_key,
+ fs.property_type,
  fs.date_placed_in_service,
  fs.life_in_months,
  fs.life_yr_mo,
@@ -217,27 +223,38 @@ select
  --
  case
  when fs.asset_type = 'CIP'
- then fs.current_cost
- when fs.asset_type != 'CIP' and fs.changes_of_accounts <= 0 and fs.current_cost > 0
- then fs.current_cost
+ then fs.opening_cost
+ when fs.asset_type != 'CIP' and fs.changes_of_accounts <= 0 and fs.opening_cost > 0
+ then fs.opening_cost
  else 0
- end original_asset_cost,
+ end opening_asset_cost,
  fs.additions,
  fs.retirements,
  fs.changes_of_accounts,
  fs.appreciation_amount,
+ fs.opening_cost + fs.additions + fs.changes_of_accounts - fs.retirements closing_asset_cost,
  case
  when fs.asset_type = 'CAPITALIZED'
- then fs.accum_deprn
+ then fs.reserve_amount
  else null
- end accumulated_depreciation,
+ end accum_depreciation_begin,
  case
  when fs.asset_type = 'CAPITALIZED'
  then fs.deprn_expenses
  else null
  end depreciation_expense,
- fs.current_cost + fs.additions + fs.changes_of_accounts - fs.retirements - fs.accum_deprn nbv_ending_period,
- fs.current_cost - fs.reserve_amount nbv_beginning_period,
+ case
+ when fs.asset_type = 'CAPITALIZED'
+ then fs.retirement_reserve
+ else null
+ end accum_depreciation_retired,
+ case
+ when fs.asset_type = 'CAPITALIZED'
+ then fs.accum_deprn
+ else null
+ end accum_depreciation_end,
+ fs.opening_cost + fs.additions + fs.changes_of_accounts - fs.retirements - fs.accum_deprn nbv_ending_period,
+ fs.opening_cost - fs.reserve_amount nbv_beginning_period,
  --
  &dff_segments
  --

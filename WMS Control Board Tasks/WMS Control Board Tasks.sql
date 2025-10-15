@@ -12,6 +12,7 @@ Task Type: Filter by Task Type
 User Task Type: Filter by selected user task type based on task.
 Task Status : Filter by Task Statuses.
 Excluded Task Status: Filter the tasks excluding status like "Completed"
+Task Creation Date From and To : Filter based on task creation date
 Show WIP Material Movements: In case WIP details to be extracted corresponding to tasks
 Show Sales Order Movements: In case Sales Order details to be extracted corresponding to tasks
 -------------------------------------------------------------------------------------------------------------------------

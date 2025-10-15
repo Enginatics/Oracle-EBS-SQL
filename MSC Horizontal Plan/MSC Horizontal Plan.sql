@@ -388,7 +388,7 @@ with
        ,hp.inventory_item_id
        ,hp.sr_inventory_item_id 
        from
-         (select
+         (select /*+ ordered */
            -- hp organization id would be -1 for all org aggregation, however not using this opton in this code as we always pass the list of Org IDs even for all orgs
            -- hp inventory item id will be negative for product family details when display product family details = True
            mai.instance_code             planning_instance
@@ -501,7 +501,7 @@ with
            -- common user defined
            when 500 then mmp.quantity45 -- this could be a qty or some other unit, so we won't uom convert this
            -- PAB Days Stock Cover is captured in quantity 43
-           -- However for higher level aggreagations it needs to be reclated across the aggregation level
+           -- However for higher level aggreagations it needs to be recalculated across the aggregation level
            when 900 then mmp.quantity43
            end
            , nvl(to_number('&p_decimal_places'),1)
@@ -578,14 +578,14 @@ with
           ,case when mmp.horizontal_plan_type_text not in ('IA','CA') then mtp.operating_unit end operating_unit_id
           ,mmp.horizontal_plan_type_text
           from
-           mfg_sd_lookups                          ml,
+           msc_material_plans&a2m_dblink           mmp,
            msc_apps_instances&a2m_dblink           mai,
            msc_plans&a2m_dblink                    mp,
            msc_plan_organizations&a2m_dblink       mpo,
            msc_system_items&a2m_dblink             msi,
            msc_item_categories&a2m_dblink          mic,
            msc_trading_partners&a2m_dblink         mtp,
-           msc_material_plans&a2m_dblink           mmp
+           mfg_sd_lookups                          ml
           where
               mmp.query_id           = :p_query_id
           and mmp.sr_instance_id     = mai.instance_id

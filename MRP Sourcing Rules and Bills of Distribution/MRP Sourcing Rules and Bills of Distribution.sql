@@ -90,13 +90,9 @@ from
 mrp_sr_assignments_v msav
 ) msav
 where
- (msav.assignment_type in (1,2,4,5) or
-  msav.organization_id is not null or
-  (msav.assignment_type in (3,6) and
-   msav.organization_id is null and
-   exists (select null from mtl_system_items_vl msiv where msiv.inventory_item_id = msav.inventory_item_id and msiv.organization_id = msav.organization_id_)
-  )
- )
+msav.assignment_type in (1,2,4,5) or
+msav.organization_id is not null or
+msav.assignment_type in (3,6) and msav.organization_id is null and (msav.organization_id_,msav.inventory_item_id) in (select msib.organization_id, msib.inventory_item_id from mtl_system_items_b msib)
 ) msav,
 mrp_assignment_sets mas,
 mtl_system_items_vl msiv,

@@ -11,7 +11,7 @@ Use this report to migrate Discoverer workbooks to Blitz Report through the foll
 1. Run this report 'DIS Workbook Export Script' to generate a list of commands to export xmls for all recently used Discoverer workbooks.
 2. Create a new folder on a windows machine having the Discoverer Admin executable dis51adm.exe installed (contact Enginatics, if you need help with the Discoverer Administrator installation).
 3. Open a Command Prompt window, cd to the new folder, and execute (copy and paste) the commands generated in step 1. This will start individual processes to export the workbooks as .eex files. Depending on your client capacity, you can run between 100 and 200 export processes at the same time. In case of errors, delete all zero size .eex files and rerun the script.
-4. Zip together all generated (non-zero size) workbook_*.eex files. Do not include the generated *.log files.
+4. Zip together all generated (non-zero size) workbook_*.eex files. Do not include the generated *.log files. Note that the .zip needs to be created with older Windows10 compression methods, as the latest Windows11 method cannot be processed by the Oracle 19c database yet.
 5. If you have more than one EUL, set the profile option 'Blitz Report Discoverer Default EUL' to the end user layer for which you run the migration
 6. Navigate to Setup>Tools>Import>XML Upload and upload the .zip file generated in step 4. You will see a message with the count of uploaded xml files.
 7. Run concurrent program 'Blitz Report Discoverer Import' from the System Administrator responsibility, and specify a report name prefix to easily distinguish the migrated reports.

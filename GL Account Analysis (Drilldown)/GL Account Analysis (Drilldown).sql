@@ -23,7 +23,7 @@ coalesce(x.project_,nvl(x.project_,case when x.entity_code='TRANSACTIONS' and rc
 coalesce(x.vendor_or_customer,(select hp.party_name from hz_cust_accounts hca, hz_parties hp where coalesce(rcta.bill_to_customer_id,x.acra_pay_from_customer,x.paa_customer_id)=hca.cust_account_id and hca.party_id=hp.party_id)) vendor_or_customer_
 from
 (
-select
+select /*+ push_pred(aida)*/
 case when count(distinct gp.period_num) over ()>1 then lpad(gp.period_num,2,'0')||' ' end||gjh.period_name period_name,
 gl.name ledger,
 (select gjsv.user_je_source_name from gl_je_sources_vl gjsv where gjh.je_source=gjsv.je_source_name) source_name,
@@ -40,7 +40,6 @@ gcck.concatenated_segments,
 gjl.description line_description,
 xxen_util.meaning(xal.accounting_class_code,'XLA_ACCOUNTING_CLASS',602) accounting_class_code,
 xxen_util.meaning(gcck.gl_account_type,'ACCOUNT_TYPE',0) account_type,
-&hierarchy_levels3
 &segment_columns
 nvl2(xal.gl_sl_link_id,xal.entered_dr,gjl.entered_dr) entered_dr,
 nvl2(xal.gl_sl_link_id,xal.entered_cr,gjl.entered_cr) entered_cr,
@@ -57,45 +56,38 @@ xal.currency_conversion_date,
 xal.currency_conversion_rate,
 xxen_util.description(gjh.actual_flag,'BATCH_TYPE',101) balance_type,
 (select gbv.budget_name from gl_budget_versions gbv where gjh.budget_version_id=gbv.budget_version_id) budget_name,
-(select get.encumbrance_type from gl_encumbrance_types get where get.encumbrance_type_id = gjh.encumbrance_type_id) encumbrance_type,
+(select get.encumbrance_type from gl_encumbrance_types get where get.encumbrance_type_id=gjh.encumbrance_type_id) encumbrance_type,
 gjh.currency_conversion_date conversion_date,
 gjh.currency_conversion_type conversion_type,
 gjh.currency_conversion_rate conversion_rate,
 xe.transaction_date,
 xte.transaction_number,
--- Assets
-case
-when xte.application_id = 140 and xte.entity_code = 'TRANSACTIONS'
-then (select fab.asset_number from fa_additions_b fab,fa_transaction_headers fth where fth.asset_id=fab.asset_id and fth.transaction_header_id=xte.source_id_int_1 and fth.event_id = xe.event_id)
-when xte.application_id = 140 and xte.entity_code = 'DEPRECIATION'
-then (select fab.asset_number from fa_additions_b fab, fa_deprn_detail fdd where fab.asset_id=fdd.asset_id and fdd.asset_id=xte.source_id_int_1 and fdd.period_counter=xte.source_id_int_2 and fdd.event_id=xe.event_id and rownum=1)
-end asset_number,
---subledger columns
+fab.asset_number,
+(
+select distinct
+listagg(fdh.concatenated_segments,chr(10)) within group (order by fdh.concatenated_segments) over (partition by fdh.asset_id) expense_account
+from
+(
+select
+fdh.asset_id,
+gcck.concatenated_segments,
+sum(lengthb(gcck.concatenated_segments)+1) over (partition by fdh.asset_id order by gcck.concatenated_segments rows between unbounded preceding and current row) total_length
+from
+(select distinct fdh.asset_id, fdh.code_combination_id from fa_distribution_history fdh where fab.asset_id=fdh.asset_id and fdh.date_ineffective is null) fdh,
+gl_code_combinations_kfv gcck
+where
+fdh.code_combination_id=gcck.code_combination_id
+) fdh
+where
+fdh.total_length<=4000
+) expense_account,
 aia.description description,
 (select pha.segment1 from po_headers_all pha where nvl(aia.quick_po_header_id,rt.po_header_id)=pha.po_header_id) purchase_order,
---AR
 rt.quantity po_quantity,
 coalesce(
 (select aps.vendor_name from ap_suppliers aps where coalesce(decode(xal.party_type_code,'S',xal.party_id,null),aia.vendor_id,aca.vendor_id,rt.vendor_id)=aps.vendor_id),
 (select hp.party_name from hz_cust_accounts hca, hz_parties hp where decode(xal.party_type_code,'C',xal.party_id,null)=hca.cust_account_id and hca.party_id=hp.party_id)
 ) vendor_or_customer,
--- AP/AR MDM Party/Site Identifier
-case when xal.party_type_code is not null
-then xal.party_type_code || '-' || nvl(to_char(xal.party_id),'UNKNOWN') || '-' || nvl(to_char(xal.party_site_id),'0')
-else null
-end mdm_party_id,
-case xal.party_type_code
-when 'C'
-then xal.party_type_code || '-' ||
-     nvl((select hp.party_name from hz_parties hp, hz_cust_accounts hca where hp.party_id=hca.party_id and hca.cust_account_id=xal.party_id),'UNKNOWN') || '-' ||
-     nvl((select hcsua.location from hz_cust_site_uses_all hcsua where hcsua.site_use_id = xal.party_site_id),'0')
-when 'S'
-then xal.party_type_code || '-' ||
-     nvl((select aps.vendor_name from ap_suppliers aps where aps.vendor_id=xal.party_id),'UNKNOWN') || '-' ||
-     nvl((select apssa.vendor_site_code from ap_supplier_sites_all apssa where apssa.vendor_site_id = xal.party_site_id),'0')
-else null
-end mdm_party_desc,
---Projects
 coalesce(
 (select ppa.segment1 from pa_projects_all ppa where aida.project_id=ppa.project_id),
 (select ppa.segment1 from pa_projects_all ppa where case when xte.application_id=275 then decode(xte.entity_code,'REVENUE',xte.source_id_int_1,'EXPENDITURES',peia.project_id) end=ppa.project_id)
@@ -129,9 +121,8 @@ xte.source_id_int_1,
 case when xte.application_id=222 then case when xte.entity_code in ('TRANSACTIONS','BILLS_RECEIVABLE') then xte.source_id_int_1 when xte.entity_code='ADJUSTMENTS' then aaa.customer_trx_id end end customer_trx_id,
 paa.customer_id paa_customer_id,
 acra.pay_from_customer acra_pay_from_customer,
-case when gjsv.user_je_source_name not in ('Property Manager','Global Intercompany','Payroll','Inflation Accting','Projects','Spreadsheet') then
-case when nvl(fnd_profile.value('XXEN_FSG_DRILLDOWN_TO_SAME_WORKBOOK'), 'N')='N' then '=dd' else '=dds' end
-||'("VT","'||gl.ledger_id||','||gjsv.user_je_source_name||','||xah.event_id||','||gjl.je_line_num||'")' end view_transaction
+case when nvl(fnd_profile.value('XXEN_FSG_DRILLDOWN_TO_SAME_WORKBOOK'), 'Y')='N' then '=dd' else '=dds' end
+||'("VT","'||gl.ledger_id||','||gjsv.user_je_source_name||','||xah.event_id||','||gjl.je_line_num||'")' view_transaction
 from
 gl_ledgers gl,
 gl_periods gp,
@@ -145,48 +136,9 @@ xla_ae_lines xal,
 xla_ae_headers xah,
 xla_events xe,
 xla.xla_transaction_entities xte, 
-(
-select
-&hierarchy_levels2
-gcck.*
-from
-(
-select
-(select fifs.flex_value_set_id from fnd_id_flex_segments fifs where gcck.chart_of_accounts_id=fifs.id_flex_num and fifs.application_id=101 and fifs.id_flex_code='GL#' and fifs.application_column_name='&hierarchy_segment_column') flex_value_set_id,
-gcck.*
-from
-gl_code_combinations_kfv gcck
-) gcck,
-(
-select
-&hierarchy_levels
-x.flex_value_set_id,
-x.child_flex_value_low,
-x.child_flex_value_high
-from
-(
-select
-substr(sys_connect_by_path(ffvnh.parent_flex_value,'|'),2) path,
-ffvnh.child_flex_value_low,
-ffvnh.child_flex_value_high,
-ffvnh.flex_value_set_id
-from
-(select ffvnh.* from fnd_flex_value_norm_hierarchy ffvnh where ffvnh.flex_value_set_id=:flex_value_set_id) ffvnh
-where
-connect_by_isleaf=1 and
-ffvnh.range_attribute='C'
-connect by nocycle
-ffvnh.parent_flex_value between prior ffvnh.child_flex_value_low and prior ffvnh.child_flex_value_high and
-ffvnh.flex_value_set_id=prior ffvnh.flex_value_set_id and
-prior ffvnh.range_attribute='P'
-start with
-ffvnh.parent_flex_value=:parent_flex_value
-) x
-) h
-where
-2=2 and
-gcck.flex_value_set_id=h.flex_value_set_id(+)
-) gcck,
+gl_code_combinations_kfv gcck,
+fa_transaction_headers fth,
+fa_additions_b fab,
 ap_invoices_all aia,
 (select distinct aida.invoice_id, min(aida.project_id) keep (dense_rank first order by aida.invoice_distribution_id) over (partition by aida.invoice_id) project_id, min(aida.task_id) keep (dense_rank first order by aida.invoice_distribution_id) over (partition by aida.invoice_id) task_id from ap_invoice_distributions_all aida where aida.task_id is not null) aida,
 ap_checks_all aca,
@@ -223,6 +175,8 @@ xah.entity_id=xte.entity_id(+) and
 xah.application_id=xte.application_id(+) and
 &gl_flex_value_security
 gjl.code_combination_id=gcck.code_combination_id and
+case when xte.application_id=140 and xte.entity_code='TRANSACTIONS' then xte.source_id_int_1 end=fth.transaction_header_id(+) and
+case when xte.application_id=140 then case when xte.entity_code in ('DEPRECIATION','DEFERRED_DEPRECIATION') then xte.source_id_int_1 when xte.entity_code='TRANSACTIONS' then fth.asset_id end end=fab.asset_id(+) and
 case when xte.application_id=200 and xte.entity_code='AP_INVOICES' then xte.source_id_int_1 end=aia.invoice_id(+) and
 aia.invoice_id=aida.invoice_id(+) and
 case when xte.application_id=200 and xte.entity_code='AP_PAYMENTS' then xte.source_id_int_1 end=aca.check_id(+) and

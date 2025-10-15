@@ -5,7 +5,16 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: FND User Roles
--- Description: Report for User Management (UMX) roles and their assigned users to manage role-based access control (RBAC)
+-- Description: Report for User Management (UMX) roles and their assigned users to manage role-based access control (RBAC).
+User uoles are maintained from the User Management responsibility, but you would require the UMX|SECURITY_ADMIN role for this. If you do not have this role but apps DB access, you can add it from the backend:
+
+begin
+  wf_local_synch.propagateuserrole(
+  p_user_name=>'ANDY.HAACK',
+  p_role_name=>'UMX|SECURITY_ADMIN'
+  );
+  commit;
+end;
 -- Excel Examle Output: https://www.enginatics.com/example/fnd-user-roles/
 -- Library Link: https://www.enginatics.com/reports/fnd-user-roles/
 -- Run Report: https://demo.enginatics.com/

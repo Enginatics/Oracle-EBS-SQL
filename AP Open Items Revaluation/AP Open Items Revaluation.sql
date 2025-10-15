@@ -20,48 +20,45 @@ select
 ,trx.operating_unit
 ,trx.balancing_segment
 ,trx.account_segment
-,trx.account              "Accounting Flexfield"
-,trx.account_description  "Accouting Flexfield Desc."
+,trx.account "Accounting Flexfield"
+,trx.account_description "Accouting Flexfield Desc."
 &lp_report_format_cols
 from
  (select 
    (select sob.name from gl_ledgers sob where sob.ledger_id = :g_ledger_id) ledger,
    (select haou.name from hr_all_organization_units haou where haou.organization_id = :p_org_id) operating_unit, 
-   opit.balancing_segment     balancing_segment,
-   opit.account_segment       account_segment,
+   opit.balancing_segment,
+   opit.account_segment,
    opit.code_combination_id,
-   opit.account               account,
+   opit.account,
    fnd_flex_xml_publisher_apis.process_kff_combination_1('account_description', 'SQLGL', 'GL#', :p_coa_id, null, opit.code_combination_id, 'ALL', 'Y', 'DESCRIPTION') account_description,
-   opit.party_id              party_id,
-   opit.party_site_id         party_site_id,
-   opit.vendor_id             vendor_id,
-   opit.party_name            vendor_name,
-   opit.vendor_number         vendor_number,
-   opit.vendor_site_id        vendor_site_id,
-   opit.vendor_site_code      vendor_site_code,
-   opit.txn_id                txn_id,
-   opit.txn_number            txn_number,
-   opit.txn_type_lookup_code  txn_type_lookup_code,
-   opit.txn_date              txn_date,
-   opit.txn_currency_code     txn_currency_code,
+   opit.party_id,
+   opit.party_site_id,
+   opit.vendor_id,
+   opit.party_name vendor_name,
+   opit.vendor_number,
+   opit.vendor_site_id,
+   opit.vendor_site_code,
+   opit.txn_id,
+   opit.txn_number,
+   opit.txn_type_lookup_code,
+   opit.txn_date,
+   opit.txn_currency_code,
    opit.payment_currency_code pmt_currency_code,
-   round(opit.txn_base_exchange_rate, 5)         exchange_rate,
-   opit.payment_cross_rate    payment_cross_rate,
-   decode(opit.revaluation_rate,
-          null, 'No Rate',
-                round(opit.revaluation_rate, 5)
-         )               revaluation_rate,
-   opit.payment_status_flag   payment_status_flag,
-   opit.entered_amount        entered_amount,
-   opit.accounted_amount      accounted_amount,
-   opit.open_entered_amount   open_entered_amount,
-   opit.open_accounted_amount open_accounted_amount,
+   round(opit.txn_base_exchange_rate, 5) exchange_rate,
+   opit.payment_cross_rate,
+   nvl2(opit.revaluation_rate, to_char(round(opit.revaluation_rate, 5)), 'No Rate') revaluation_rate,
+   opit.payment_status_flag,
+   opit.entered_amount,
+   opit.accounted_amount,
+   opit.open_entered_amount,
+   opit.open_accounted_amount,
    nvl(to_char(round(opit.open_entered_amount * opit.revaluation_rate, :g_base_precision)), '*') revalued_amount_dsp,
    round(opit.open_entered_amount * opit.revaluation_rate, :g_base_precision) revalued_amount,
-   case when opit.revaluation_rate is null or opit.open_accounted_amount > round(opit.open_entered_amount * opit.revaluation_rate, :g_base_precision)
-   then opit.open_accounted_amount
+   case
+   when opit.revaluation_rate is null or opit.open_accounted_amount > round(opit.open_entered_amount * opit.revaluation_rate, :g_base_precision) then opit.open_accounted_amount
    else round(opit.open_entered_amount * opit.revaluation_rate, :g_base_precision)
-   end                   open_revalued_amount,
+   end open_revalued_amount,
    ap_open_items_reval_pkg.get_due_date(opit.txn_id, opit.txn_type_lookup_code) due_date
   from
    (select  
@@ -161,8 +158,7 @@ from
      b.payment_currency_code,
      b.txn_base_exchange_rate,
      b.payment_cross_rate,
-     ap_open_items_reval_pkg.get_revaluation_rate(b.txn_currency_code,
-     b.payment_cross_rate_type) revaluation_rate,
+     ap_open_items_reval_pkg.get_revaluation_rate(b.txn_currency_code, b.payment_cross_rate_type) revaluation_rate,
      b.payment_status_flag,
      b.entered_amount,
      b.accounted_amount,

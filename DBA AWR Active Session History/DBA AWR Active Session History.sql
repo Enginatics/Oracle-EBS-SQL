@@ -13,6 +13,9 @@
 select
 xxen_util.client_time(x.sample_time) sample_time,
 x.instance_number inst_id,
+x.active_sessions,
+x.active_cpu_sessions,
+x.active_waiting_sessions,
 x.sid_serial#,
 xxen_util.user_name(x.module,x.action,x.client_id) user_name,
 xxen_util.responsibility(x.module,x.action) responsibility,
@@ -75,10 +78,13 @@ from
 select
 dhash.sample_time_ sample_time,
 dhash.instance_number,
+count(*) over (partition by dhash.sample_id) active_sessions,
+xxen_util.zero_to_null(count(decode(dhash.session_state,'ON CPU',1)) over (partition by dhash.sample_id)) active_cpu_sessions,
+xxen_util.zero_to_null(count(decode(dhash.session_state,'WAITING',1)) over (partition by dhash.sample_id)) active_waiting_sessions,
 dhash.session_id||' - '||dhash.session_serial# sid_serial#,
 dhash.client_id,
-(select so.name from sys.obj$ so where gsa.program_id=so.obj#) code,
-case when gsa.program_line#>0 then gsa.program_line# end code_line#,
+xxen_util.instring(dhash.code_and_line,'|',1) code,
+xxen_util.instring(dhash.code_and_line,'|',2) code_line#,
 dhash.sql_id,
 dhash.sql_plan_hash_value plan_hash_value,
 count(*) over (partition by dhash.instance_number, dhash.session_id, dhash.session_serial#, dhash.sql_id) count_sql_id,
@@ -143,12 +149,11 @@ nvl2(dhash.blocking_session,dhash.blocking_session||' - '||dhash.blocking_sessio
 decode(dhash.p1text,'file#',dhash.p1) file_id,
 decode(dhash.p2text,'block#',dhash.p2) block_id,
 dhash.pga_allocated/1000000 pga_allocated,
-sum(dhash.pga_allocated) over (partition by dhash.sample_time)/1000000 pga_total,
-dhash.pga_allocated/xxen_util.zero_to_null(sum(dhash.pga_allocated) over (partition by dhash.sample_time))*100 pga_percentage,
+sum(dhash.pga_allocated) over (partition by dhash.sample_id)/1000000 pga_total,
+dhash.pga_allocated/xxen_util.zero_to_null(sum(dhash.pga_allocated) over (partition by dhash.sample_id))*100 pga_percentage,
 dhash.temp_space_allocated/1000000 temp_space_allocated,
-sum(dhash.temp_space_allocated) over (partition by dhash.sample_time)/1000000 temp_space_total,
-dhash.temp_space_allocated/xxen_util.zero_to_null(sum(dhash.temp_space_allocated) over (partition by dhash.sample_time))*100 temp_space_percentage,
-count(*) over (partition by dhash.sample_time) active_sessions,
+sum(dhash.temp_space_allocated) over (partition by dhash.sample_id)/1000000 temp_space_total,
+dhash.temp_space_allocated/xxen_util.zero_to_null(sum(dhash.temp_space_allocated) over (partition by dhash.sample_id))*100 temp_space_percentage,
 dhash.machine,
 lower(dhash.sql_opname) command_type,
 du.username schema,
@@ -162,60 +167,22 @@ dhash.p2,
 dhash.p3text,
 dhash.p3
 from
-&request_id_table
-(select cast(dhash.sample_time as date) sample_time_, dhash.* from dba_hist_active_sess_history dhash) dhash,
 (
-select distinct
-dhash.instance_number,
-dhash.session_id,
-dhash.session_serial#,
-max(dhash.client_id) keep (dense_rank last order by dhash.sample_id) over (partition by dhash.instance_number,dhash.session_id,dhash.session_serial#) client_id,
-max(dhash.action) keep (dense_rank last order by dhash.sample_id) over (partition by dhash.instance_number,dhash.session_id,dhash.session_serial#) action,
-max(dhash.module) keep (dense_rank last order by dhash.sample_id) over (partition by dhash.instance_number,dhash.session_id,dhash.session_serial#) module,
-max(dhash.program) keep (dense_rank last order by dhash.sample_id) over (partition by dhash.instance_number,dhash.session_id,dhash.session_serial#) program,
-max(dhash.session_type) keep (dense_rank last order by dhash.sample_id) over (partition by dhash.instance_number,dhash.session_id,dhash.session_serial#) session_type,
-max(dhash.machine) keep (dense_rank last order by dhash.sample_id) over (partition by dhash.instance_number,dhash.session_id,dhash.session_serial#) machine,
-max(decode(dhash.p1text,'file#',dhash.p1)) keep (dense_rank last order by dhash.sample_id) over (partition by dhash.instance_number,dhash.session_id,dhash.session_serial#) file_id,
-max(decode(dhash.p2text,'block#',dhash.p2)) keep (dense_rank last order by dhash.sample_id) over (partition by dhash.instance_number,dhash.session_id,dhash.session_serial#) block_id
+select
+(select so.name||'|'||case when gsa.program_line#>0 then gsa.program_line# end from gv$sqlarea gsa, sys.obj$ so where dhash.sql_id=gsa.sql_id and gsa.program_id=so.obj#(+) and rownum=1) code_and_line,
+cast(dhash.sample_time as date) sample_time_,
+dhash.*
 from
 dba_hist_active_sess_history dhash
 where
-'&show_blocking_session'='Y'
-) dhash0,
-dba_hist_sqltext dhst,
-dba_procedures dp0,
-dba_procedures dp,
-(
-select distinct
-gsa.sql_id,
-min(gsa.inst_id) keep (dense_rank first order by gsa.inst_id, gsa.plan_hash_value) over (partition by gsa.sql_id) inst_id,
-min(gsa.plan_hash_value) keep (dense_rank first order by gsa.inst_id, gsa.plan_hash_value) over (partition by gsa.sql_id) plan_hash_value
-from
-gv$sqlarea gsa
-where
-2=2
-) gsa0,
-gv$sqlarea gsa,
-dba_users du
-where
-1=1 and
-dhash.dbid=dhst.dbid(+) and
-dhash.sql_id=dhst.sql_id(+) and
-dhash.plsql_entry_object_id=dp0.object_id(+) and
-dhash.plsql_entry_subprogram_id=dp0.subprogram_id(+) and
-dhash.plsql_object_id=dp.object_id(+) and
-dhash.plsql_subprogram_id=dp.subprogram_id(+) and
-dhash.sql_id=gsa0.sql_id(+) and
-gsa0.sql_id=gsa.sql_id(+) and
-gsa0.inst_id=gsa.inst_id(+) and
-gsa0.plan_hash_value=gsa.plan_hash_value(+) and
-dhash.user_id=du.user_id(+) and
-dhash.blocking_inst_id=dhash0.instance_number(+) and
-dhash.blocking_session=dhash0.session_id(+) and
-dhash.blocking_session_serial#=dhash0.session_serial#(+)
+1=1
+) dhash
+&dynamic_tables
+left join dba_hist_sqltext dhst on dhash.dbid=dhst.dbid and dhash.sql_id=dhst.sql_id
+left join dba_procedures dp0 on dhash.plsql_entry_object_id=dp0.object_id and dhash.plsql_entry_subprogram_id=dp0.subprogram_id
+left join dba_procedures dp on dhash.plsql_object_id=dp.object_id and dhash.plsql_subprogram_id=dp.subprogram_id
+left join dba_users du on dhash.user_id=du.user_id
 ) x
-where
-3=3
 order by
 sample_time,
 sess_first_time desc,

@@ -57,6 +57,7 @@ x1.sort_field1                      salesperson,
 x1.cust_name                        customer,
 x1.cust_no                          customer_number,
 x1.cust_country                     customer_country,
+x1.cust_class                       customer_classification,
 x1.collector                        collector,
 &lp_invoice_cols_s
 x1.revaluation_from_currency        amounts_currency,
@@ -64,11 +65,11 @@ nvl(sum(x1.amt_due_original),0)     original_amount,
 nvl(sum(x1.amt_due_remaining),0)    outstanding_amount,
 --
 nvl(sum(
- case 
- when x1.days_past_due > 0 
+ case
+ when x1.days_past_due > 0
  or  (:p_credit_option = 'DETAIL' and x1.class in ('PMT','CM','CLAIM'))
- or  (:p_risk_option = 'DETAIL' and x1.invoice_type = :p_risk_meaning) 
- then x1.amt_due_remaining 
+ or  (:p_risk_option = 'DETAIL' and x1.invoice_type = :p_risk_meaning)
+ then x1.amt_due_remaining
  else 0
  end
 ),0) past_due_amount,
@@ -97,6 +98,7 @@ from
   x.cust_name,
   x.cust_no,
   x.cust_country,
+  x.cust_class,
   (select ac.name
    from   ar_collectors ac
    where  ac.collector_id = nvl(hcps.collector_id,hcpa.collector_id)
@@ -120,6 +122,7 @@ from
   x.code_combination_id,
   x.chart_of_accounts_id,
   x.invoice_type,
+  x.comments,
   --
   &lp_bucket_cols1
   --
@@ -165,6 +168,7 @@ from
     loc.state cust_state,
     loc.city cust_city,
     (select ftv.territory_short_name from fnd_territories_vl ftv where ftv.territory_code = loc.country) cust_country,
+    xxen_util.meaning(hca.customer_class_code,'CUSTOMER CLASS',222) cust_class,
     decode(decode(upper(rtrim(rpad(:p_in_format_option_low, 1))),'D','D',null),null,-1,acct_site.cust_acct_site_id) addr_id,
     nvl(hca.cust_account_id,-999) cust_id,
     hca.party_id,
@@ -202,6 +206,7 @@ from
     c.chart_of_accounts_id,
     ci.cons_billing_number  cons_billing_number,
     arpt_sql_func_util.get_org_trx_type_details(ps.cust_trx_type_id,ps.org_id) invoice_type,
+    rct.comments,
     ps.invoice_currency_code,
     gsob.currency_code functional_currency,
     gsob.name ledger,
@@ -529,6 +534,7 @@ from
     loc.state cust_state,
     loc.city cust_city,
     (select ftv.territory_short_name from fnd_territories_vl ftv where ftv.territory_code = loc.country) cust_country,
+    xxen_util.meaning(hca.customer_class_code,'CUSTOMER CLASS',222) cust_class,
     decode(decode(upper(RTRIM(RPAD(:p_in_format_option_low, 1))),'D','D',NULL),NULL,-1,acct_site.cust_acct_site_id) addr_id,
     nvl(hca.cust_account_id, -999) cust_id,
     hca.party_id,
@@ -565,7 +571,8 @@ from
     app.code_combination_id,
     app.chart_of_accounts_id,
     ci.cons_billing_number cons_billing_number,
-    initcap(:p_payment_meaning),
+    initcap(:p_payment_meaning) invoice_type,
+    acr.comments,
     ps.invoice_currency_code,
     gsob.currency_code functional_currency,
     gsob.name ledger,
@@ -637,6 +644,7 @@ from
    group by
     hp.party_name,
     hca.account_number,
+    hca.customer_class_code,
     site.site_use_id,
     nvl(sales.name,jrrev.resource_name),
     nvl(sales.salesrep_id,-3),
@@ -669,6 +677,7 @@ from
     decode( app.status, 'UNID', 'UNID','OTHER ACC','OTHER ACC','UNAPP'),
     ci.cons_billing_number ,
     initcap(:p_payment_meaning),
+    acr.comments,
     gsob.currency_code,
     gsob.name,
     ps.org_id
@@ -684,6 +693,7 @@ from
     loc.state cust_state,
     loc.city cust_city,
     (select ftv.territory_short_name from fnd_territories_vl ftv where ftv.territory_code = loc.country) cust_country,
+    xxen_util.meaning(hca.customer_class_code,'CUSTOMER CLASS',222) cust_class,
     decode(decode(upper(RTRIM(RPAD(:p_in_format_option_low, 1))),'D','D',NULL),NULL,-1,acct_site.cust_acct_site_id) addr_id,
     nvl(hca.cust_account_id, -999) cust_id,
     hca.party_id,
@@ -720,7 +730,8 @@ from
     c.code_combination_id,
     c.chart_of_accounts_id,
     ci.cons_billing_number  cons_billing_number,
-    initcap(:p_risk_meaning),
+    initcap(:p_risk_meaning) invoice_type,
+    cr.comments,
     ps.invoice_currency_code,
     gsob.currency_code functional_currency,
     gsob.name ledger,
@@ -793,6 +804,7 @@ from
     loc.state cust_state,
     loc.city cust_city,
     (select ftv.territory_short_name from fnd_territories_vl ftv where ftv.territory_code = loc.country) cust_country,
+    xxen_util.meaning(hca.customer_class_code,'CUSTOMER CLASS',222) cust_class,
     decode(decode(upper(rtrim(rpad(:p_in_format_option_low, 1))),'D','D',null),null,-1,acct_site.cust_acct_site_id) addr_id,
     nvl(hca.cust_account_id,-999) cust_id,
     hca.party_id,
@@ -830,6 +842,7 @@ from
     c.chart_of_accounts_id,
     ci.cons_billing_number cons_billing_number,
     arpt_sql_func_util.get_org_trx_type_details(ps.cust_trx_type_id,ps.org_id) invoice_type,
+    ct.comments,
     ps.invoice_currency_code,
     gsob.currency_code functional_currency,
     gsob.name ledger,
@@ -917,6 +930,7 @@ x1.sort_field1,
 x1.cust_name,
 x1.cust_no,
 x1.cust_country,
+x1.cust_class,
 --
 &party_dff_cols1_g
 &cust_dff_cols1_g

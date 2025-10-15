@@ -91,8 +91,8 @@ dhash.sample_time_ sample_time,
 dhash.instance_number,
 dhash.session_id||' - '||dhash.session_serial# sid_serial#,
 dhash.client_id,
-(select so.name from sys.obj$ so where gsa.program_id=so.obj#) code,
-case when gsa.program_line#>0 then gsa.program_line# end code_line#,
+xxen_util.instring(dhash.code_and_line,'|',1) code,
+xxen_util.instring(dhash.code_and_line,'|',2) code_line#,
 dhash.sql_id,
 dhash.sql_plan_hash_value plan_hash_value,
 dhash.session_type,
@@ -154,8 +154,21 @@ dhash.action,
 dhash.module,
 dhash.program
 from
+(
+select
+(select so.name||'|'||case when gsa.program_line#>0 then gsa.program_line# end from gv$sqlarea gsa, sys.obj$ so where dhash.sql_id=gsa.sql_id and gsa.program_id=so.obj#(+) and rownum=1) code_and_line,
+cast(dhash.sample_time as date) sample_time_,
+dhash.*
+from
 dba_hist_snapshot dhs,
-(select cast(dhash.sample_time as date) sample_time_, dhash.* from dba_hist_active_sess_history dhash) dhash,
+dba_hist_active_sess_history dhash
+where
+1=1 and
+dhash.blocking_session is not null and
+dhs.dbid=dhash.dbid and
+dhs.snap_id=dhash.snap_id and
+dhs.instance_number=dhash.instance_number
+) dhash,
 (
 select distinct
 dhash.instance_number,
@@ -172,26 +185,9 @@ max(decode(dhash.p2text,'block#',dhash.p2)) keep (dense_rank last order by dhash
 from
 dba_hist_active_sess_history dhash
 ) dhash0,
-(
-select distinct
-gsa.sql_id,
-min(gsa.inst_id) keep (dense_rank first order by gsa.inst_id, gsa.plan_hash_value) over (partition by gsa.sql_id) inst_id,
-min(gsa.plan_hash_value) keep (dense_rank first order by gsa.inst_id, gsa.plan_hash_value) over (partition by gsa.sql_id) plan_hash_value
-from
-gv$sqlarea gsa
-) gsa0,
-gv$sqlarea gsa,
 dba_users du
 where
-1=1 and
-dhash.blocking_session is not null and
-dhs.dbid=dhash.dbid and
-dhs.snap_id=dhash.snap_id and
-dhs.instance_number=dhash.instance_number and
-dhash.sql_id=gsa0.sql_id(+) and
-gsa0.sql_id=gsa.sql_id(+) and
-gsa0.inst_id=gsa.inst_id(+) and
-gsa0.plan_hash_value=gsa.plan_hash_value(+) and
+2=2 and
 dhash.user_id=du.user_id(+) and
 dhash.blocking_inst_id=dhash0.instance_number(+) and
 dhash.blocking_session=dhash0.session_id(+) and

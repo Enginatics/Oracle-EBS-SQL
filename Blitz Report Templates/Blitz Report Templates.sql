@@ -23,6 +23,10 @@ xxen_util.meaning(xrtv.distinct_flag,'YES_NO',0) distinct_flag,
 count(*) over (partition by xrtv.template_id) column_count,
 max(xxen_util.meaning(xrtc.aggregation,'AMS_EXPN_BUILDER_OPERATORS',530)) over (partition by xrtv.template_id) max_aggregation,
 max(nvl2(xrtc.sort_order,xrtc.direction||' ',null)||xrtc.sort_order_) over (partition by xrtv.template_id) max_sort_order,
+xxen_util.zero_to_null(xrtp.filter_count) filter_count,
+xxen_util.zero_to_null(xrtp.column_count) column_count,
+xxen_util.zero_to_null(xrtp.row_count) row_count,
+xxen_util.zero_to_null(xrtp.value_count) value_count,
 (select sum(length(xrtf.file_data)) from xxen_report_template_files xrtf where xrtv.template_id=xrtf.template_id) file_size,
 xrtv.file_name excel_file_name,
 (select xrtf.sheet_name from xxen_report_template_files xrtf where xrtv.template_id=xrtf.template_id and xrtf.sheet_type='data') data_sheet_name,
@@ -48,10 +52,23 @@ xxen_report_template_columns xrtc
 where
 '&show_columns'='Y' and
 xrtc.display_sequence is not null
-) xrtc
+) xrtc,
+(
+select
+xrtp.template_id,
+count(decode(xrtp.field_type,'FILTER',1)) filter_count,
+count(decode(xrtp.field_type,'COLUMN',1)) column_count,
+count(decode(xrtp.field_type,'ROW',1)) row_count,
+count(decode(xrtp.field_type,'VALUE',1)) value_count
+from
+xxen_report_template_pivot xrtp
+group by
+xrtp.template_id
+) xrtp
 where
 1=1 and
-xrtv.template_id=xrtc.template_id(+)
+xrtv.template_id=xrtc.template_id(+) and
+xrtv.template_id=xrtp.template_id(+)
 order by
 report_name,
 owner,

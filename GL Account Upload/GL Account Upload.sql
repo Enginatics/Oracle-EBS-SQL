@@ -29,6 +29,11 @@ gcck.segment7 gl_segment7,
 gcck.segment8 gl_segment8,
 gcck.segment9 gl_segment9,
 gcck.segment10 gl_segment10,
+gcck.segment11 gl_segment11,
+gcck.segment12 gl_segment12,
+gcck.segment13 gl_segment13,
+gcck.segment14 gl_segment14,
+gcck.segment15 gl_segment15,
 xxen_util.meaning(gcck.summary_flag,'YES_NO',0) summary,
 xxen_util.meaning(gcck.enabled_flag,'YES_NO',0) enabled,
 gcck.start_date_active,
@@ -54,7 +59,4 @@ fifs.id_flex_num=gcck.chart_of_accounts_id and
 fifs.application_id=101 and
 fifs.id_flex_code='GL#' and
 fifs.language=userenv ('lang') and
-trunc(sysdate) between nvl(gcck.start_date_active,trunc(sysdate)) and nvl(gcck.end_date_active,trunc(sysdate))
-&not_use_first_block
-&report_table_select &report_table_name &report_table_where_clause &success_records
-&processed_run
+nvl(gcck.summary_flag,'N')<>'Y'

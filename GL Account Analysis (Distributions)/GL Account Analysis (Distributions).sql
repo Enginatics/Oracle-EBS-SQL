@@ -138,12 +138,25 @@ coalesce(aia.source,rbsa.name,gjsv.user_je_source_name) sl_source,
 decode(gjsv.user_je_source_name,'Assets',to_char(xte.source_id_int_3),'Payables',aba.batch_name,'Receivables',decode(xah.je_category_name,'Receipts',arba.name,rba.name)) sl_batch_no,
 coalesce(aida.description,aila.description,aila.item_description,rctla.description,pla.item_description,rsl.item_description) source_line_description,
 --Assets
-case
-when xte.application_id = 140 and xte.entity_code = 'TRANSACTIONS'
-then (select fab.asset_number from fa_additions_b fab,fa_transaction_headers fth where fth.asset_id=fab.asset_id and fth.transaction_header_id=xte.source_id_int_1 and fth.event_id = xe.event_id)
-when xte.application_id = 140 and xte.entity_code = 'DEPRECIATION'
-then (select fab.asset_number from fa_additions_b fab, fa_deprn_detail fdd where fab.asset_id=fdd.asset_id and fdd.asset_id=xte.source_id_int_1 and fdd.period_counter=xte.source_id_int_2 and fdd.event_id=xe.event_id and rownum=1)
-end asset_number,
+fab.asset_number,
+(
+select distinct
+listagg(fdh.concatenated_segments,chr(10)) within group (order by fdh.concatenated_segments) over (partition by fdh.asset_id) expense_account
+from
+(
+select
+fdh.asset_id,
+gcck.concatenated_segments,
+sum(lengthb(gcck.concatenated_segments)+1) over (partition by fdh.asset_id order by gcck.concatenated_segments rows between unbounded preceding and current row) total_length
+from
+(select distinct fdh.asset_id, fdh.code_combination_id from fa_distribution_history fdh where fab.asset_id=fdh.asset_id and fdh.date_ineffective is null) fdh,
+gl_code_combinations_kfv gcck
+where
+fdh.code_combination_id=gcck.code_combination_id
+) fdh
+where
+fdh.total_length<=4000
+) expense_account,
 --AP
 coalesce(aia.invoice_num,rcta.trx_number,(select distinct last_value(aia.invoice_num) over (order by aipa.invoice_payment_id range between unbounded preceding and unbounded following) from ap_invoice_payments_all aipa,ap_invoices_all aia where aipa.invoice_id=aia.invoice_id and aipa.check_id=aca.check_id)) invoice_number,
 coalesce(aia.description,rcta.comments,(select distinct last_value(aia.description) over (order by aipa.invoice_payment_id range between unbounded preceding and unbounded following) from ap_invoice_payments_all aipa,ap_invoices_all aia where aipa.invoice_id=aia.invoice_id and aipa.check_id=aca.check_id)) invoice_description,
@@ -339,6 +352,8 @@ xla.xla_transaction_entities xte,
 xla_distribution_links xdl,
 (select gdr.* from gl_daily_rates gdr where gdr.to_currency=:revaluation_currency and gdr.conversion_type=(select gdct.conversion_type from gl_daily_conversion_types gdct where gdct.user_conversion_type=:revaluation_conversion_type)) gdr,
 zx_rates_b zrb,
+fa_adjustments fa,
+fa_additions_b fab,
 ap_invoices_all aia,
 ap_batches_all aba,
 ap_payment_hist_dists aphd,
@@ -428,6 +443,9 @@ xal.ae_line_num=xdl.ae_line_num(+) and
 coalesce(xal.currency_conversion_date,gjh.currency_conversion_date,trunc(xe.transaction_date))=gdr.conversion_date(+) and
 decode(nvl2(xal.gl_sl_link_id,xal.currency_code,gjh.currency_code),:revaluation_currency,null,nvl2(xal.gl_sl_link_id,xal.currency_code,gjh.currency_code))=gdr.from_currency(+) and
 gjl.tax_code_id=zrb.tax_rate_id(+) and
+case when xdl.application_id=140 and xdl.source_distribution_type='TRX' then xdl.source_distribution_id_num_1 end=fa.transaction_header_id(+) and
+case when xdl.application_id=140 and xdl.source_distribution_type='TRX' then xdl.source_distribution_id_num_2 end=fa.adjustment_line_id(+) and
+case when xdl.application_id=140 then case when xdl.source_distribution_type in ('DEPRN','IAC') then xdl.source_distribution_id_num_1 when xdl.source_distribution_type='TRX' then fa.asset_id end end=fab.asset_id(+) and
 case when xte.application_id=200 and xte.entity_code='AP_PAYMENTS' then xte.source_id_int_1 end=aca.check_id(+) and
 coalesce(case
 when xdl.application_id=200 and xdl.source_distribution_type='AP_INV_DIST' then xdl.source_distribution_id_num_1
@@ -451,6 +469,7 @@ coalesce(pda.po_line_id,plla.po_line_id,rt.po_line_id,wt.po_line_id)=pla.po_line
 case when xdl.application_id=201 and xdl.source_distribution_type='PO_REQ_DISTRIBUTIONS_ALL' then xdl.source_distribution_id_num_1 end=prda.distribution_id(+) and
 case when xte.application_id=222 then case when xte.entity_code in ('TRANSACTIONS','BILLS_RECEIVABLE') then xte.source_id_int_1 when xte.entity_code='ADJUSTMENTS' then aaa.customer_trx_id end end=rcta.customer_trx_id(+) and
 rcta.batch_source_id=rbsa.batch_source_id(+) and
+rcta.org_id=rbsa.org_id(+) and
 rcta.batch_id=rba.batch_id(+) and
 rcta.primary_salesrep_id=jrs.salesrep_id(+) and
 rcta.org_id=jrs.org_id(+) and
@@ -558,6 +577,7 @@ null sl_batch_no,
 null source_line_description,
 -- Assets
 null asset_number,
+null expense_account,
 --AP
 null invoice_number,
 null invoice_description,
@@ -779,6 +799,7 @@ null sl_batch_no,
 null source_line_description,
 -- Assets
 null asset_number,
+null expense_account,
 --AP
 null invoice_number,
 null invoice_description,

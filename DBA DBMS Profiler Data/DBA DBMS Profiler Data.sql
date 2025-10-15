@@ -17,10 +17,25 @@ alter session set plsql_code_type=interpreted;
 To start and stop profiling code, use the following commands (see use <a href="https://docs.oracle.com/cd/B19306_01/appdev.102/b14258/d_profil.htm#i1000047" rel="nofollow" target="_blank">https://docs.oracle.com/cd/B19306_01/appdev.102/b14258/d_profil.htm#i1000047</a>):
 dbms_profiler.start_profiler(optional run_comment);
 dbms_profiler.stop_profiler;
+
+To purge and reset the profiler data, execute the following as sys:
+truncate table sys.plsql_profiler_data;
+truncate table sys.plsql_profiler_units;
+truncate table sys.plsql_profiler_runs;
+alter sequence plsql_profiler_runnumber restart start with 1;
 -- Excel Examle Output: https://www.enginatics.com/example/dba-dbms-profiler-data/
 -- Library Link: https://www.enginatics.com/reports/dba-dbms-profiler-data/
 -- Run Report: https://demo.enginatics.com/
 
+with
+function ds_text(p_unit_type in varchar2, p_unit_owner in varchar2, p_unit_name in varchar2, p_line# pls_integer) return varchar2 is
+begin
+  for c in (select ds.text from dba_source ds where p_unit_type=ds.type and p_unit_owner=ds.owner and p_unit_name=ds.name and p_line#=ds.line) loop
+    return c.text;
+  end loop;
+  return null;
+end ds_text;
+select x.* from ( 
 select
 ppr.runid,
 ppr.run_date,
@@ -29,10 +44,10 @@ sum(ppd.total_time) over (partition by ppd.runid)/decode(:time_unit,'Seconds',10
 ppu.unit_type type,
 ppu.unit_owner||'.'||ppu.unit_name name,
 ppd.total_time*100/sum(ppd.total_time) over (partition by ppd.runid) percentage,
-ppd.line#,
 ppd.total_occur executions,
 ppd.total_time/decode(:time_unit,'Seconds',1000000000,1000000) time,
-(select ds.text from dba_source ds where ppu.unit_type=ds.type and ppu.unit_owner=ds.owner and ppu.unit_name=ds.name and ppd.line#=ds.line) line_text
+ppd.line#,
+ds_text(ppu.unit_type,ppu.unit_owner,ppu.unit_name,ppd.line#) line_text
 from
 plsql_profiler_runs ppr,
 plsql_profiler_units ppu,
@@ -42,6 +57,9 @@ where
 ppr.runid=ppu.runid and
 ppu.runid=ppd.runid and
 ppu.unit_number=ppd.unit_number
+) x
+where
+2=2
 order by
-ppr.runid desc,
-ppd.total_time desc
+x.runid desc,
+x.time desc

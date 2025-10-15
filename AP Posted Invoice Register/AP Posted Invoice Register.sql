@@ -67,12 +67,14 @@ select /*+ push_pred(i) */
 ,x.transaction_number           invoice_number
 ,trunc(to_date(x.transaction_date,'YYYY-MM-DD"T"hh:mi:ss')) invoice_date
 ,x.user_trx_identifier_value_10 invoice_description
-,case when trim(translate(x.user_trx_identifier_value_4, '0123456789-.',' ')) is null
+,case when row_number() over (partition by i.invoice_id order by nvl2(x.event_id,x.line_number,null))=1 then
+ case when trim(translate(x.user_trx_identifier_value_4, '0123456789-.',' ')) is null
  then to_number(x.user_trx_identifier_value_4) else to_number(null)
+ end
  end  invoice_amount
 -----------------------------------
-,case when trim(translate(x.user_trx_identifier_value_4, '0123456789-.',' ')) is null then to_number(x.user_trx_identifier_value_4) else to_number(null) end - nvl(i.total_tax_amount,0) total_line_amount 
-,i.total_tax_amount total_tax_amount
+,case when row_number() over (partition by i.invoice_id order by nvl2(x.event_id,x.line_number,null))=1 then case when trim(translate(x.user_trx_identifier_value_4, '0123456789-.',' ')) is null then to_number(x.user_trx_identifier_value_4) else to_number(null) end - nvl(i.total_tax_amount,0) end total_line_amount 
+,case when row_number() over (partition by i.invoice_id order by nvl2(x.event_id,x.line_number,null))=1 then i.total_tax_amount end total_tax_amount
 ,i.last_update_date invoice_last_updated
 ,xxen_util.user_name(i.last_updated_by,'Y') invoice_last_updated_by
 ,(select

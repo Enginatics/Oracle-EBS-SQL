@@ -40,10 +40,10 @@ xxen_util.user_name(fu.last_updated_by) user_last_updated_by,
 xxen_util.client_time(fu.last_update_date) user_last_update_date,
 frv.responsibility_name,
 frv.application_name responsiblity_application,
-frv.security_group_name,
 frv.start_date responsiblity_start,
 frv.end_date responsiblity_end,
-frv.description assignment_description
+frv.description assignment_description,
+0 upload_row
 from
 fnd_user fu,
 (select pbg.name business_group, papf.* from per_all_people_f papf, per_business_groups pbg where papf.business_group_id=pbg.business_group_id and nvl(papf.effective_end_date,sysdate)>=trunc(sysdate)) papf,
@@ -52,19 +52,16 @@ select
 furgd.user_id,
 frv.responsibility_name,
 fa.application_short_name application_name,
-fsg.security_group_key security_group_name,
 furgd.start_date,
 furgd.end_date,
 furgd.description
 from
 fnd_responsibility_vl frv,
 fnd_application fa,
-fnd_security_groups fsg,
 fnd_user_resp_groups_direct furgd
 where
 2=2 and
 frv.application_id=fa.application_id and
-frv.data_group_id=fsg.security_group_id and
 frv.application_id=furgd.responsibility_application_id and
 frv.responsibility_id=furgd.responsibility_id
 ) frv
@@ -72,11 +69,4 @@ where
 1=1 and
 fu.employee_id=papf.person_id(+) and
 fu.user_id=frv.user_id(+)
-&not_use_first_block
-&report_table_select &report_table_name &report_table_where_clause
-&processed_run
-)y
-order by
-case when nvl(y.user_end_date,sysdate)>=trunc(sysdate) then 1 else 2 end,
-to_date(y.user_creation_date) desc,
-y.user_name
+) y

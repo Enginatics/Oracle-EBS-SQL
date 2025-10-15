@@ -29,8 +29,8 @@ q_inv_val_cur as
    iim.secondary_uom_code secondary_uom,
    nvl(sum(gpb.secondary_quantity),0) secondary_quantity,
    decode(iim.dual_uom_control,1,'Primary',2,'Fixed',3,'Default','No Default') dual_uom_control,
-   xxen_inv_value.gmfinval_unit_cost(to_number(hoi.org_information2),oap.period_year,oap.period_num,iim.inventory_item_id, mp.organization_id, (oap.schedule_close_date + (86399/86400))) unit_cost,
-   (nvl(sum(gpb.primary_quantity),0) * xxen_inv_value.gmfinval_unit_cost(to_number(hoi.org_information2),oap.period_year,oap.period_num,iim.inventory_item_id, mp.organization_id, (oap.schedule_close_date + (86399/86400)))) total_cost,
+   xxen_opm.gmfinval_unit_cost(to_number(hoi.org_information2),oap.period_year,oap.period_num,iim.inventory_item_id, mp.organization_id, (oap.schedule_close_date + (86399/86400))) unit_cost,
+   (nvl(sum(gpb.primary_quantity),0) * xxen_opm.gmfinval_unit_cost(to_number(hoi.org_information2),oap.period_year,oap.period_num,iim.inventory_item_id, mp.organization_id, (oap.schedule_close_date + (86399/86400)))) total_cost,
    --
    to_number(null) sub_ledger_value,
    --
@@ -98,8 +98,8 @@ q_inv_val_pri as
    iim.secondary_uom_code secondary_uom,
    nvl(sum(gpb.secondary_quantity),0) secondary_quantity,
    decode(iim.dual_uom_control,1,'Primary',2,'Fixed',3,'Default','No Default') dual_uom_control,
-   xxen_inv_value.gmfinval_unit_cost(to_number(hoi.org_information2),oap.period_year,oap.period_num,iim.inventory_item_id, mp.organization_id, (oap.schedule_close_date + (86399/86400))) unit_cost,
-   (nvl(sum(gpb.primary_quantity),0) * xxen_inv_value.gmfinval_unit_cost(to_number(hoi.org_information2),oap.period_year,oap.period_num,iim.inventory_item_id, mp.organization_id, (oap.schedule_close_date + (86399/86400)))) total_cost,
+   xxen_opm.gmfinval_unit_cost(to_number(hoi.org_information2),oap.period_year,oap.period_num,iim.inventory_item_id, mp.organization_id, (oap.schedule_close_date + (86399/86400))) unit_cost,
+   (nvl(sum(gpb.primary_quantity),0) * xxen_opm.gmfinval_unit_cost(to_number(hoi.org_information2),oap.period_year,oap.period_num,iim.inventory_item_id, mp.organization_id, (oap.schedule_close_date + (86399/86400)))) total_cost,
    --
    to_number(null) sub_ledger_value,
    --

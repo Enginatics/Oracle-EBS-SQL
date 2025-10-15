@@ -148,10 +148,23 @@ cct_s.cost_type = :p_source_cost_type and
 cct_t.cost_type = :p_target_cost_type and
 --
 cct_s.cost_type_id = cic.cost_type_id and
-cic.cost_type_id = cdcv.cost_type_id and
-cic.organization_id = cdcv.organization_id and
-cic.inventory_item_id = cdcv.inventory_item_id and
+cic.cost_type_id = cdcv.cost_type_id (+) and
+cic.organization_id = cdcv.organization_id (+) and
+cic.inventory_item_id = cdcv.inventory_item_id (+) and
 cic.organization_id = mp.organization_id and
 cic.organization_id = msiv.organization_id and
 cic.inventory_item_id = msiv.inventory_item_id and
-cdcv.cost_source_type =  xxen_util.meaning('1','CST_SOURCE_TYPE',700)
+(cdcv.cost_source_type =  xxen_util.meaning('1','CST_SOURCE_TYPE',700) or
+ (nvl(:p_exclude_no_cost_iterms,'N') != 'Y' and
+  not exists
+  (select 
+   null 
+   from 
+   cst_detail_cost_view cdcv2 
+   where
+   cdcv2.cost_type_id = cic.cost_type_id and
+   cdcv2.organization_id = cic.organization_id and
+   cdcv2.inventory_item_id = cic.inventory_item_id
+  )
+ )
+)

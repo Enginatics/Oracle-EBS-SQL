@@ -74,6 +74,15 @@ gcck.concatenated_segments asset_account,
 (select gjb.name from gl_je_batches gjb where aipa.je_batch_id=gjb.je_batch_id) je_batch_name,
 count(*) over (partition by aipa.invoice_id) payments_per_invoice,
 count(*) over (partition by aipa.check_id) payments_per_check,
+(
+select
+rtrim(xmlagg(xmlelement(e,gcck.concatenated_segments||','||chr(10))).extract('//text()').getclobval(),','||chr(10)) dist_acct
+from
+(select distinct aida.dist_code_combination_id from ap_invoice_distributions_all aida where aipa.invoice_id=aida.invoice_id) aida,
+gl_code_combinations_kfv gcck
+where
+aida.dist_code_combination_id=gcck.code_combination_id
+) distribution_account,
 xxen_util.user_name(aipa.created_by) created_by,
 xxen_util.client_time(aipa.creation_date) creation_date,
 xxen_util.user_name(aipa.last_updated_by) last_updated_by,

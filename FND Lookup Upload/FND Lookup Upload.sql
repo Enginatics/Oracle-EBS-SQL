@@ -41,8 +41,8 @@ flvv.meaning,
 flvv.description,
 flvv.tag,
 xxen_util.meaning(flvv.enabled_flag,'YES_NO',0) enabled_flag,
-flvv.start_date_active start_date_active,
-flvv.end_date_active end_date_active,
+flvv.start_date_active,
+flvv.end_date_active,
 xxen_util.display_flexfield_context(0,'FND_COMMON_LOOKUPS',flvv.attribute_category) lookup_attribute_category,
 xxen_util.display_flexfield_value(0,'FND_COMMON_LOOKUPS',flvv.attribute_category,'ATTRIBUTE1',flvv.row_id,flvv.attribute1)  fnd_lkp_attribute1,
 xxen_util.display_flexfield_value(0,'FND_COMMON_LOOKUPS',flvv.attribute_category,'ATTRIBUTE2',flvv.row_id,flvv.attribute2)  fnd_lkp_attribute2,
@@ -60,30 +60,21 @@ xxen_util.display_flexfield_value(0,'FND_COMMON_LOOKUPS',flvv.attribute_category
 xxen_util.display_flexfield_value(0,'FND_COMMON_LOOKUPS',flvv.attribute_category,'ATTRIBUTE14',flvv.row_id,flvv.attribute14)  fnd_lkp_attribute14,
 xxen_util.display_flexfield_value(0,'FND_COMMON_LOOKUPS',flvv.attribute_category,'ATTRIBUTE15',flvv.row_id,flvv.attribute15)  fnd_lkp_attribute15,
 flvv.territory_code,
-fsg.security_group_key security_group,
-fav1.application_short_name || ':' || fltv.lookup_type old_lookup_type_key,
-flvv.lookup_code old_lookup_code
+fav1.application_short_name||':'||fltv.lookup_type old_lookup_type_key,
+flvv.lookup_code old_lookup_code,
+null upload_row
 from
-  fnd_lookup_types_vl  fltv,
-  fnd_lookup_values_vl flvv,
-  fnd_application_vl   fav1,
-  fnd_application_vl   fav2,
-  fnd_security_groups  fsg
+fnd_lookup_types_vl fltv,
+fnd_lookup_values_vl flvv,
+fnd_application_vl fav1,
+fnd_application_vl fav2
 where
-    :p_mode in (xxen_upload.action_meaning(xxen_upload.action_create)||', '||xxen_upload.action_meaning(xxen_upload.action_update),xxen_upload.action_meaning(xxen_upload.action_update))
-and fav1.application_name=:p_view_appl
-and 1=1
-and fltv.view_application_id   = fav1.application_id
-and fltv.application_id        = fav2.application_id
-and fltv.security_group_id     = fsg.security_group_id
-and fltv.customization_level  in ('U','E')
-and fltv.security_group_id     = fnd_global.security_group_id
-and fltv.lookup_type           = flvv.lookup_type
-and fltv.view_application_id   = flvv.view_application_id
-and fltv.security_group_id     = flvv.security_group_id
-&not_use_first_block
-&report_table_select &report_table_name &report_table_where_clause &success_records
-&processed_run
-order by
- lookup_type,
- lookup_code
+:p_mode in (xxen_upload.action_meaning(xxen_upload.action_create)||', '||xxen_upload.action_meaning(xxen_upload.action_update),xxen_upload.action_meaning(xxen_upload.action_update)) and
+fav1.application_name=:p_view_appl and
+1=1 and
+fltv.view_application_id=fav1.application_id and fltv.application_id=fav2.application_id and
+fltv.customization_level in ('U','E') and
+fltv.security_group_id=fnd_global.security_group_id and
+fltv.lookup_type=flvv.lookup_type and
+fltv.view_application_id=flvv.view_application_id and
+fltv.security_group_id=flvv.security_group_id

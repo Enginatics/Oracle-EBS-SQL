@@ -39,6 +39,8 @@ ds.segment_name,
 sum(ds.blocks)*(select vp.value from v$parameter vp where vp.name like 'db_block_size')/1000000 object_size
 from
 dba_segments ds
+where
+'&show_object_size'='Y'
 group by
 ds.owner,
 ds.segment_type,

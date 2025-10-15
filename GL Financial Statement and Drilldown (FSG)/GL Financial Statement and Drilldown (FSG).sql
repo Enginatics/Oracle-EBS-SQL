@@ -50,6 +50,7 @@ select
 :gl_segment,
 :gl_segment_value,
 :next_segment_value,
+:segment_hierarchy_values,
 :discover_period_name,
 :daily_rates,
 :period_year,

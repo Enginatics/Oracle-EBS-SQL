@@ -27,6 +27,24 @@ DB package: INV_AGERPXML_PKG
 -- Run Report: https://demo.enginatics.com/
 
 with
+aab as
+(select  
+  aabl.days_start,
+  aabl.days_to,
+  aablt.report_heading1 || ' ' || aablt.report_heading2 heading
+ from    
+  ar_aging_buckets aab,
+  ar_aging_bucket_lines_b aabl,
+  ar_aging_bucket_lines_tl aablt
+ where   
+     aab.aging_type = 'INVENTORYAGE'
+ and aabl.aging_bucket_id = aab.aging_bucket_id
+ and aabl.type = 'INVENTORYAGE'
+ and aab.status = 'A'
+ and aablt.aging_bucket_line_id = aabl.aging_bucket_line_id
+ and aablt.language = userenv ('LANG')
+ and aab.aging_bucket_id = :p_buckets_id
+),
 moqd as
 (select
   msib.concatenated_segments item_code,
@@ -89,8 +107,16 @@ moqd as
                  over(partition by moqd.organization_id ,moqd.inventory_item_id ,moqd.subinventory_code ,moqd.locator_id ,moqd.is_consigned ,moqd.owning_tp_type ,decode(moqd.is_consigned ,1 ,moqd.owning_organization_id ,null))
   end sum_value,
   msib.primary_uom_code uom_code,
-  inv_agerpxml_pkg.f_bucket_days_heading(:p_buckets_id ,nvl(moqd.orig_date_received ,moqd.creation_date)) buckets_days_heading --p_buckets_day
-  --moqd.orig_date_received
+  --
+  --inv_agerpxml_pkg.f_bucket_days_heading(:p_buckets_id ,nvl(moqd.orig_date_received ,moqd.creation_date)) buckets_days_heading, --p_buckets_day
+  --trunc(sysdate+1) - trunc(nvl(moqd.orig_date_received ,moqd.creation_date)) age
+  case (select count(*) from aab where (trunc(sysdate+1) - trunc(nvl(moqd.orig_date_received ,moqd.creation_date))) between aab.days_start and aab.days_to)
+  when 0 then 'No heading'
+  when 1 then (select aab.heading from aab where (trunc(sysdate+1) - trunc(nvl(moqd.orig_date_received ,moqd.creation_date))) between aab.days_start and aab.days_to)  
+  else 'Matched more heading'
+  end buckets_days_heading, 
+  trunc(sysdate+1) - trunc(nvl(moqd.orig_date_received ,moqd.creation_date)) age
+  --
  from
   mtl_onhand_quantities_detail moqd,
   mtl_system_items_vl msib,
@@ -135,7 +161,7 @@ select
  x.buckets_days_heading,
  sum(x.on_hand) on_hand,
  sum(round(x.value, 2)) value,
- trunc(sysdate) - min(x.first_trx_date) age,
+ max(x.age) age,
  --
  x.organization_name || decode(:p_age_level, 1, null, ' : ' || x.subinventory_code) || decode(:p_age_level, 3, ' : ' || x.locator_code, null) report_level,
  '(' || ltrim(to_char(x.bucket_seq,'00')) || ') ' || x.buckets_days_heading bucket_label
@@ -157,6 +183,7 @@ from
    moqd.uom_code,
    moqd.owning_party,
    moqd.buckets_days_heading,
+   max(moqd.age) age,
    inv_agerpxml_pkg.f_bucket_days_seq(:p_buckets_id ,moqd.buckets_days_heading) bucket_seq,
    trunc(max(moqd.last_trx_date)) last_trx_date,
    trunc(min(moqd.first_trx_date)) first_trx_date,
@@ -201,6 +228,7 @@ from
    moqd2.uom_code,
    moqd2.owning_party,
    aablt.report_heading1 || ' ' || aablt.report_heading2 buckets_days_heading,
+   0 age,
    aabl.bucket_sequence_num bucket_seq,
    moqd2.last_trx_date,
    moqd2.first_trx_date,
@@ -221,6 +249,7 @@ from
      moqd.uom_code,
      moqd.owning_party,
      moqd.buckets_days_heading,
+     max(moqd.age) age,
      inv_agerpxml_pkg.f_bucket_days_seq(:p_buckets_id ,moqd.buckets_days_heading) bucket_seq,
      trunc(max(moqd.last_trx_date)) last_trx_date,
      trunc(min(moqd.first_trx_date)) first_trx_date,

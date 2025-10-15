@@ -21,6 +21,14 @@ misv.inventory_item_status_code_tl item_status,
 muomv.unit_of_measure_tl primary_uom,
 cic.shrinkage_rate shrinkage,
 cic.lot_size lot_size,
+--
+round(cic.material_cost,fc.extended_precision) item_material_cost,
+round(cic.material_overhead_cost,fc.extended_precision) item_material_overhead_cost,
+round(cic.resource_cost,fc.extended_precision) item_resource_cost,
+round(cic.outside_processing_cost,fc.extended_precision) item_outside_processing,
+round(cic.overhead_cost,fc.extended_precision) item_overhead,
+round(cic.item_cost,fc.extended_precision) item_cost,
+--
 cicd.operation_seq_num op_seq,
 xxen_util.meaning(cicd.level_type,'CST_LEVEL',700) op_level,
 xxen_util.meaning(cicd.cost_element_id,'CST_COST_CODE_TYPE',700) cost_element,
@@ -36,12 +44,12 @@ round(cicd.item_cost, fc.extended_precision) unit_cost,
 (select ca.activity from cst_activities ca where cicd.activity_id=ca.activity_id) activity,
 cicd.item_units,
 cicd.activity_units,
-round(decode(cicd.cost_element_id,1,cicd.item_cost,0),fc.extended_precision) material_cost,
-round(decode(cicd.cost_element_id,2,cicd.item_cost,0),fc.extended_precision) material_overhead_cost,
-round(decode(cicd.cost_element_id,3,cicd.item_cost,0),fc.extended_precision) resource_cost,
-round(decode(cicd.cost_element_id,4,cicd.item_cost,0),fc.extended_precision) outside_processing,
-round(decode(cicd.cost_element_id,5,cicd.item_cost,0),fc.extended_precision) overhead, 
-round(sum(cicd.item_cost) over (partition by cicd.organization_id, cicd.inventory_item_id, cicd.cost_type_id), fc.extended_precision) total_unit_cost,
+round(decode(cicd.cost_element_id,1,cicd.item_cost,0),fc.extended_precision) detail_material_cost,
+round(decode(cicd.cost_element_id,2,cicd.item_cost,0),fc.extended_precision) detail_material_overhead_cost,
+round(decode(cicd.cost_element_id,3,cicd.item_cost,0),fc.extended_precision) detail_resource_cost,
+round(decode(cicd.cost_element_id,4,cicd.item_cost,0),fc.extended_precision) detail_outside_processing,
+round(decode(cicd.cost_element_id,5,cicd.item_cost,0),fc.extended_precision) detail_overhead,
+round(sum(cicd.item_cost) over (partition by cicd.organization_id, cicd.inventory_item_id, cicd.cost_type_id), fc.extended_precision) detail_total_unit_cost,
 xxen_util.user_name(cicd.created_by) created_by,
 xxen_util.client_time(cicd.creation_date) creation_date,
 xxen_util.user_name(cicd.last_updated_by) last_updated_by,
@@ -67,14 +75,28 @@ gl.ledger_id=ood.set_of_books_id and
 ood.organization_id=mp.organization_id and
 mp.cost_organization_id=cic.organization_id and
 cic.cost_type_id=cct.cost_type_id and
-cic.cost_type_id=cicd.cost_type_id and
-cic.inventory_item_id=cicd.inventory_item_id and
-cic.organization_id=cicd.organization_id and
+cic.cost_type_id=cicd.cost_type_id(+) and
+cic.inventory_item_id=cicd.inventory_item_id(+) and
+cic.organization_id=cicd.organization_id(+) and
 cic.inventory_item_id=msiv.inventory_item_id and
 ood.organization_id=msiv.organization_id and
 msiv.primary_uom_code=muomv.uom_code(+) and
 msiv.inventory_item_status_code=misv.inventory_item_status_code(+) and
-cicd.resource_id=br.resource_id(+)
+cicd.resource_id=br.resource_id(+) and
+(cicd.cost_type_id is not null or
+ (nvl(:p_exclude_no_cost_iterms,'N') != 'Y' and
+  not exists
+  (select
+   null
+   from
+   cst_item_cost_details cicd2
+   where
+   cicd2.cost_type_id = cic.cost_type_id and
+   cicd2.organization_id = cic.organization_id and
+   cicd2.inventory_item_id = cic.inventory_item_id
+  )
+ )
+)
 order by
 ledger,
 organization_code,

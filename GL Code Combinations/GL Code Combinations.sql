@@ -33,7 +33,8 @@ xxen_util.yes(gcck.igi_balanced_budget_flag) enforce_balanced_budget,
 &dff_columns
 xxen_util.meaning(gcck.flex_val_account_type,'ACCOUNT_TYPE',0) flex_value_account_type,
 xxen_util.user_name(gcck.last_updated_by) last_updated_by,
-xxen_util.client_time(gcck.last_update_date) last_update_date
+xxen_util.client_time(gcck.last_update_date) last_update_date,
+gcck.code_combination_id
 from
 (
 select

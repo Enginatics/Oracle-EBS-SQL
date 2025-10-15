@@ -29,6 +29,9 @@ Templates are provided that match the existing standard Oracle Reports of the sa
 
 DB package: XXEN_INV_VALUE
 
+Notes:
+To run the report including non-costed items the As of Date parameter must be left blank (current date). The report cannot be run historically when including non-costed items due to a bug in the Oracle API uses to populate the interminm costing tables used by the report. The API will error with the following error, however the report will complete but  return no data: ORA-01403: no data found in Package CST_Inventory_PVT Procedure Calculate_InventoryCost
+
 -- Excel Examle Output: https://www.enginatics.com/example/cst-inventory-value-multi-organization-item-costs/
 -- Library Link: https://www.enginatics.com/reports/cst-inventory-value-multi-organization-item-costs/
 -- Run Report: https://demo.enginatics.com/
@@ -44,6 +47,7 @@ select
  x.uom,
  x.item_status,
  x.inventory_asset,
+ x.costing_enabled,
  x.make_buy,
  x.planning_method,
  x.revision,
@@ -87,6 +91,7 @@ from
   msi.primary_uom_code uom,
   msi.inventory_item_status_code item_status,
   xxen_util.meaning(cict.inventory_asset_flag,'SYS_YES_NO',700) inventory_asset,
+  xxen_util.meaning(msi.costing_enabled_flag,'YES_NO',0) costing_enabled, 
   xxen_util.meaning(msi.planning_make_buy_code,'MTL_PLANNING_MAKE_BUY',700) make_buy,
   decode(msi.inventory_planning_code,6, xxen_util.meaning(nvl(msi.mrp_planning_code,6),'MRP_PLANNING_CODE',700), xxen_util.meaning(nvl(msi.inventory_planning_code,6),'MTL_MATERIAL_PLANNING',700)) planning_method,
   decode(:p_item_revision, 1, ciqt.revision, null) revision,
@@ -134,8 +139,8 @@ from
      oav.responsibility_id=fnd_global.resp_id
   ) and
   --
-  cict.organization_id = ciqt.organization_id and
-  cict.inventory_item_id = ciqt.inventory_item_id and
+  cict.organization_id (+) = ciqt.organization_id and
+  cict.inventory_item_id (+) = ciqt.inventory_item_id and
   --
   mp.organization_id = ciqt.organization_id and
   --
@@ -163,7 +168,11 @@ from
     (  ciqt.qty_source in (9,10) and
        cict.cost_source in (3,4) and
        cict.rcv_transaction_id = ciqt.rcv_transaction_id
-    )
+    ) or
+   -- Non Costed
+   ( :p_cost_enabled_only = '2' and
+     nvl(msi.costing_enabled_flag,'N') = 'N' 
+   ) 
   )
  group by
   mp.organization_id,
@@ -175,6 +184,7 @@ from
   msi.primary_uom_code,
   msi.inventory_item_status_code,
   cict.inventory_asset_flag,
+  xxen_util.meaning(msi.costing_enabled_flag,'YES_NO',0),
   msi.planning_make_buy_code,
   decode(msi.inventory_planning_code,6, xxen_util.meaning(nvl(msi.mrp_planning_code,6),'MRP_PLANNING_CODE',700), xxen_util.meaning(nvl(msi.inventory_planning_code,6),'MTL_MATERIAL_PLANNING',700)),
   decode(:p_item_revision, 1, ciqt.revision, null),

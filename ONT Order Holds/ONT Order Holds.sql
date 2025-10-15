@@ -16,10 +16,15 @@ hca.account_number,
 hp.party_name,
 ooha.order_number,
 ottt.name order_type,
+ooha.cust_po_number customer_po,
 xxen_util.meaning(ooha.flow_status_code,'FLOW_STATUS',660) order_status,
 rtrim(oola.line_number||'.'||oola.shipment_number||'.'||oola.option_number||'.'||oola.component_number||'.'||oola.service_number,'.') line,
 ottt2.name line_type,
 xxen_util.meaning(oola.flow_status_code,'FLOW_STATUS',660) line_status,
+msiv.concatenated_segments item_number,
+mci.customer_item_number,
+xxen_util.meaning(msiv.item_type,'ITEM_TYPE',3) item_type,
+(select mp.organization_code from mtl_parameters mp where oola.ship_from_org_id=mp.organization_id) ship_from_warehouse,
 oola.unit_selling_price*oola.ordered_quantity extended_price,
 xxen_util.meaning(oohoa.released_flag,'YES_NO',0) released,
 xxen_util.meaning(ohd.type_code,'HOLD_TYPE',660) hold_type,
@@ -43,6 +48,8 @@ oe_hold_releases ohr,
 oe_hold_definitions ohd,
 oe_order_headers_all ooha,
 oe_order_lines_all oola,
+mtl_system_items_vl msiv,
+mtl_customer_items mci,
 hz_cust_accounts hca,
 hz_parties hp,
 oe_transaction_types_tl ottt,
@@ -64,6 +71,9 @@ ooha.sold_to_org_id=hca.cust_account_id(+) and
 hca.party_id=hp.party_id(+) and
 ooha.order_type_id=ottt.transaction_type_id(+) and
 ottt.language(+)=userenv('lang') and
+oola.inventory_item_id=msiv.inventory_item_id(+) and
+oola.ship_from_org_id=msiv.organization_id(+) and
+oola.ordered_item_id=mci.customer_item_id(+) and
 oola.line_type_id=ottt2.transaction_type_id(+) and
 ottt2.language(+)=userenv('lang') and
 oola.project_id=ppa.project_id(+) and

@@ -49,6 +49,8 @@ to_char(null) row_id,
 --header--
 prha.requisition_header_id,
 prha.segment1 requisition_number,
+papf3.full_name preparer,
+prha.note_to_authorizer,
 --prh.type_lookup_disp requisition_type,
 prha.description header_description,
 xxen_util.display_flexfield_context(201,'PO_REQUISITION_HEADERS',prha.attribute_category) header_attribute_category,
@@ -100,6 +102,8 @@ prla.currency_code currency,
 prla.rate_type conversion_type,
 prla.rate_date conversion_date,
 prla.rate conversion_rate,
+prla.currency_unit_price,
+--
 xxen_util.display_flexfield_context(201,'PO_REQUISITION_LINES',prla.attribute_category) line_attribute_category,
 xxen_util.display_flexfield_value(201,'PO_REQUISITION_LINES',prla.attribute_category,'ATTRIBUTE1',prla.rowid,prla.attribute1) line_attribute1,
 xxen_util.display_flexfield_value(201,'PO_REQUISITION_LINES',prla.attribute_category,'ATTRIBUTE2',prla.rowid,prla.attribute2) line_attribute2,
@@ -181,6 +185,7 @@ mtl_system_items_vl msiv,
 hr_all_organization_units_vl haouv,
 per_all_people_f papf1,
 per_all_people_f papf2,
+per_all_people_f papf3,
 po_lookup_codes plc1,
 po_lookup_codes plc2,
 hr_locations_all_tl hlat,
@@ -208,6 +213,8 @@ podt.org_id = podb.org_id and
 podb.org_id = prha.org_id and
 papf2.person_id = prla.to_person_id and
 trunc (sysdate) between papf2.effective_start_date and papf2.effective_end_date and
+papf3.person_id = prha.preparer_id and
+trunc (sysdate) between papf3.effective_start_date and papf3.effective_end_date and
 pltt.line_type_id=prla.line_type_id and
 pltt.language=userenv ('LANG') and
 hlat.location_id(+) = prla.deliver_to_location_id and
@@ -236,7 +243,7 @@ prda.expenditure_organization_id=haouve.organization_id(+)
 &not_use_first_block
 &report_table_select &report_table_name &report_table_where_clause &success_records
 &processed_run
-order by 
+order by
 7,   -- requisition number
 26, -- line number
 72 -- distribution line number

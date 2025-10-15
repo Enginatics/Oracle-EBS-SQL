@@ -70,6 +70,7 @@ gl_flexfields_pkg.get_description(fbc.accounting_flex_structure,'GL_ACCOUNT',dec
 decode(fab.asset_type, 'CIP', null,fcb.deprn_reserve_acct) reserve_account,
 decode(fab.asset_type, 'CIP', null,gl_flexfields_pkg.get_description(fbc.accounting_flex_structure,'GL_ACCOUNT',fcb.deprn_reserve_acct)) reserve_account_description,
 nvl(fbc.distribution_source_book,fbc.book_type_code) dist_book_type_code,
+trunc(fb.date_placed_in_service) date_in_service,
 (select fdp.period_name from fa_deprn_periods fdp where fb.book_type_code=fdp.book_type_code and fb.period_counter_fully_retired=fdp.period_counter) period_retired,
 fb.period_counter_fully_retired
 from

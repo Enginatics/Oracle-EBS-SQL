@@ -22,6 +22,7 @@ msiv.concatenated_segments item,
 msiv.description item_description,
 to_char(msiv.creation_date,'DD-Mon-YYYY HH24:MI:SS') item_creation_date,
 xxen_util.meaning(msiv.item_type,'ITEM_TYPE',3) user_item_type,
+xxen_util.meaning(msiv.wip_supply_type,'WIP_SUPPLY',700) wip_supply_type,
 (
 select listagg(mac.abc_class_name, ',') within group ( order by mac.abc_class_name) 
 from (

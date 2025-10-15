@@ -572,7 +572,9 @@ p_descr_flex_context_code in varchar2 default null,
 p_column_name_prefix in varchar2 default null,
 p_prefix in varchar2 default null,
 p_hide_column_name in varchar2 default null,
-p_row_id in varchar2 default null
+p_row_id in varchar2 default null,
+p_regional_localization in varchar2 default null,
+p_org_id in number default null
 ) return clob;
 
 /***********************************************************************************************/
@@ -626,6 +628,11 @@ function xml_escape(p_text in varchar2) return varchar2;
 function xml_unescape(p_text in varchar2) return varchar2;
 
 /***********************************************************************************************/
+/* Translates escaped characters back to get an original string                                */
+/***********************************************************************************************/
+function xml_unescape_clob(p_text in clob) return clob;
+
+/***********************************************************************************************/
 /* Get the XML attribute value                                                                 */
 /***********************************************************************************************/
 function xml_attribute_value(p_vchr in varchar2) return varchar2;
@@ -664,6 +671,11 @@ function date_to_excel_date(p_date in date) return varchar2 deterministic;
 /* Converts a numeric Exel date to the equivalent Oracle date                                  */
 /***********************************************************************************************/
 function excel_date_to_date(p_excel_date in varchar2) return date deterministic;
+
+/***********************************************************************************************/
+/* Returns the file content type(MIME Type) based on file name                                 */
+/***********************************************************************************************/
+function file_content_type(p_file_name in varchar2) return varchar2;
 
 end xxen_util;
 /
@@ -1137,6 +1149,7 @@ exception
     x_sql_text:=null;
 end dff_lov_sql;
 
+
 function display_flexfield_context(
 p_application_id in number,
 p_descriptive_flexfield_name in varchar2,
@@ -1162,6 +1175,7 @@ begin
  return(p_context_code);
 end display_flexfield_context;
 
+
 function display_flexfield_value(
 p_application_id in number,
 p_descriptive_flexfield_name in varchar2,
@@ -1184,6 +1198,7 @@ l_display_value varchar2(4000);
 l_flex g_dff_bind_tbl_type;
 l_prev_bind_name varchar2(100):='-99';
 l_prev_bind_value varchar2(4000);
+l_icx_date_format varchar2(20);
 function application_table_name(p_application_id in varchar2, p_descriptive_flexfield_name in varchar2) return varchar2 result_cache is
 begin
   for c in (
@@ -1204,6 +1219,8 @@ begin
   or p_column_name is null then
     return p_value;
   end if;
+  l_icx_date_format:=coalesce(fnd_profile.value('XXEN_REPORT_XLSX_DATE_FORMAT'),fnd_profile.value('ICX_DATE_FORMAT_MASK'),'DD-MON-RRRR');
+  l_icx_date_format:=replace(replace(l_icx_date_format,'RRRR',case when fnd_profile.value('XXEN_REPORT_XLSX_USE_LONG_DATE_FORMAT')='Y' then 'yyyy' else 'yy' end),'MON','Mon');
 
   l_table_name:=application_table_name(p_application_id, p_descriptive_flexfield_name);
   if p_value=fnd_api.g_miss_char then
@@ -1317,9 +1334,9 @@ begin
         dbms_sql.close_cursor(l_cursor);
       else
         if c.id_column_type = 'D' then
-          l_display_value:=fnd_date.displaydate_to_date(l_display_value);
+          l_display_value:=to_char(fnd_date.displaydate_to_date(l_display_value),l_icx_date_format);
         elsif c.id_column_type in ('X','Y') then
-          l_display_value:=fnd_date.canonical_to_date(l_display_value);
+          l_display_value:=to_char(fnd_date.canonical_to_date(l_display_value),l_icx_date_format);
         end if;
       end if; --l_sql_text is not null then
     end loop;
@@ -1433,37 +1450,37 @@ end get_bind_attribute_val;
 
 begin
   l_display_value:=
-  case p_column_name
-  when 'ATTRIBUTE1' then p_attribute1
-  when 'ATTRIBUTE2' then p_attribute2
-  when 'ATTRIBUTE3' then p_attribute3
-  when 'ATTRIBUTE4' then p_attribute4
-  when 'ATTRIBUTE5' then p_attribute5
-  when 'ATTRIBUTE6' then p_attribute6
-  when 'ATTRIBUTE7' then p_attribute7
-  when 'ATTRIBUTE8' then p_attribute8
-  when 'ATTRIBUTE9' then p_attribute9
-  when 'ATTRIBUTE10' then p_attribute10
-  when 'ATTRIBUTE11' then p_attribute11
-  when 'ATTRIBUTE12' then p_attribute12
-  when 'ATTRIBUTE13' then p_attribute13
-  when 'ATTRIBUTE14' then p_attribute14
-  when 'ATTRIBUTE15' then p_attribute15
-  when 'ATTRIBUTE16' then p_attribute16
-  when 'ATTRIBUTE17' then p_attribute17
-  when 'ATTRIBUTE18' then p_attribute18
-  when 'ATTRIBUTE19' then p_attribute19
-  when 'ATTRIBUTE20' then p_attribute20
-  when 'ATTRIBUTE21' then p_attribute21
-  when 'ATTRIBUTE22' then p_attribute22
-  when 'ATTRIBUTE23' then p_attribute23
-  when 'ATTRIBUTE24' then p_attribute24
-  when 'ATTRIBUTE25' then p_attribute25
-  when 'ATTRIBUTE26' then p_attribute26
-  when 'ATTRIBUTE27' then p_attribute27
-  when 'ATTRIBUTE28' then p_attribute28
-  when 'ATTRIBUTE29' then p_attribute29
-  when 'ATTRIBUTE30' then p_attribute30
+  case
+  when p_column_name like '%ATTRIBUTE1' then p_attribute1
+  when p_column_name like '%ATTRIBUTE2' then p_attribute2
+  when p_column_name like '%ATTRIBUTE3' then p_attribute3
+  when p_column_name like '%ATTRIBUTE4' then p_attribute4
+  when p_column_name like '%ATTRIBUTE5' then p_attribute5
+  when p_column_name like '%ATTRIBUTE6' then p_attribute6
+  when p_column_name like '%ATTRIBUTE7' then p_attribute7
+  when p_column_name like '%ATTRIBUTE8' then p_attribute8
+  when p_column_name like '%ATTRIBUTE9' then p_attribute9
+  when p_column_name like '%ATTRIBUTE10' then p_attribute10
+  when p_column_name like '%ATTRIBUTE11' then p_attribute11
+  when p_column_name like '%ATTRIBUTE12' then p_attribute12
+  when p_column_name like '%ATTRIBUTE13' then p_attribute13
+  when p_column_name like '%ATTRIBUTE14' then p_attribute14
+  when p_column_name like '%ATTRIBUTE15' then p_attribute15
+  when p_column_name like '%ATTRIBUTE16' then p_attribute16
+  when p_column_name like '%ATTRIBUTE17' then p_attribute17
+  when p_column_name like '%ATTRIBUTE18' then p_attribute18
+  when p_column_name like '%ATTRIBUTE19' then p_attribute19
+  when p_column_name like '%ATTRIBUTE20' then p_attribute20
+  when p_column_name like '%ATTRIBUTE21' then p_attribute21
+  when p_column_name like '%ATTRIBUTE22' then p_attribute22
+  when p_column_name like '%ATTRIBUTE23' then p_attribute23
+  when p_column_name like '%ATTRIBUTE24' then p_attribute24
+  when p_column_name like '%ATTRIBUTE25' then p_attribute25
+  when p_column_name like '%ATTRIBUTE26' then p_attribute26
+  when p_column_name like '%ATTRIBUTE27' then p_attribute27
+  when p_column_name like '%ATTRIBUTE28' then p_attribute28
+  when p_column_name like '%ATTRIBUTE29' then p_attribute29
+  when p_column_name like '%ATTRIBUTE30' then p_attribute30
   else null
   end;
   l_id_value:=l_display_value;
@@ -1680,37 +1697,37 @@ begin
   end if;
 
   l_entered_value:=
-  case p_column_name
-  when 'ATTRIBUTE1' then p_attribute1
-  when 'ATTRIBUTE2' then p_attribute2
-  when 'ATTRIBUTE3' then p_attribute3
-  when 'ATTRIBUTE4' then p_attribute4
-  when 'ATTRIBUTE5' then p_attribute5
-  when 'ATTRIBUTE6' then p_attribute6
-  when 'ATTRIBUTE7' then p_attribute7
-  when 'ATTRIBUTE8' then p_attribute8
-  when 'ATTRIBUTE9' then p_attribute9
-  when 'ATTRIBUTE10' then p_attribute10
-  when 'ATTRIBUTE11' then p_attribute11
-  when 'ATTRIBUTE12' then p_attribute12
-  when 'ATTRIBUTE13' then p_attribute13
-  when 'ATTRIBUTE14' then p_attribute14
-  when 'ATTRIBUTE15' then p_attribute15
-  when 'ATTRIBUTE16' then p_attribute16
-  when 'ATTRIBUTE17' then p_attribute17
-  when 'ATTRIBUTE18' then p_attribute18
-  when 'ATTRIBUTE19' then p_attribute19
-  when 'ATTRIBUTE20' then p_attribute20
-  when 'ATTRIBUTE21' then p_attribute21
-  when 'ATTRIBUTE22' then p_attribute22
-  when 'ATTRIBUTE23' then p_attribute23
-  when 'ATTRIBUTE24' then p_attribute24
-  when 'ATTRIBUTE25' then p_attribute25
-  when 'ATTRIBUTE26' then p_attribute26
-  when 'ATTRIBUTE27' then p_attribute27
-  when 'ATTRIBUTE28' then p_attribute28
-  when 'ATTRIBUTE29' then p_attribute29
-  when 'ATTRIBUTE30' then p_attribute30
+  case
+  when p_column_name like '%ATTRIBUTE1' then p_attribute1
+  when p_column_name like '%ATTRIBUTE2' then p_attribute2
+  when p_column_name like '%ATTRIBUTE3' then p_attribute3
+  when p_column_name like '%ATTRIBUTE4' then p_attribute4
+  when p_column_name like '%ATTRIBUTE5' then p_attribute5
+  when p_column_name like '%ATTRIBUTE6' then p_attribute6
+  when p_column_name like '%ATTRIBUTE7' then p_attribute7
+  when p_column_name like '%ATTRIBUTE8' then p_attribute8
+  when p_column_name like '%ATTRIBUTE9' then p_attribute9
+  when p_column_name like '%ATTRIBUTE10' then p_attribute10
+  when p_column_name like '%ATTRIBUTE11' then p_attribute11
+  when p_column_name like '%ATTRIBUTE12' then p_attribute12
+  when p_column_name like '%ATTRIBUTE13' then p_attribute13
+  when p_column_name like '%ATTRIBUTE14' then p_attribute14
+  when p_column_name like '%ATTRIBUTE15' then p_attribute15
+  when p_column_name like '%ATTRIBUTE16' then p_attribute16
+  when p_column_name like '%ATTRIBUTE17' then p_attribute17
+  when p_column_name like '%ATTRIBUTE18' then p_attribute18
+  when p_column_name like '%ATTRIBUTE19' then p_attribute19
+  when p_column_name like '%ATTRIBUTE20' then p_attribute20
+  when p_column_name like '%ATTRIBUTE21' then p_attribute21
+  when p_column_name like '%ATTRIBUTE22' then p_attribute22
+  when p_column_name like '%ATTRIBUTE23' then p_attribute23
+  when p_column_name like '%ATTRIBUTE24' then p_attribute24
+  when p_column_name like '%ATTRIBUTE25' then p_attribute25
+  when p_column_name like '%ATTRIBUTE26' then p_attribute26
+  when p_column_name like '%ATTRIBUTE27' then p_attribute27
+  when p_column_name like '%ATTRIBUTE28' then p_attribute28
+  when p_column_name like '%ATTRIBUTE29' then p_attribute29
+  when p_column_name like '%ATTRIBUTE30' then p_attribute30
   else null
   end;
 
@@ -2165,7 +2182,7 @@ l_clob clob;
 l_len pls_integer:=19200;
 l_blob64 blob;
 begin
-  l_clob:=replace(p_clob,chr(10));-- blob_to_base64 adds a new line after 32767 however to decode to blob we would need data without any newline.
+  l_clob:=regexp_replace(p_clob,chr(10));-- blob_to_base64 adds a new line after 32767 however to decode to blob we would need data without any newline.
   l_file_size:=dbms_lob.getlength(l_clob);
   dbms_lob.createtemporary(l_blob64,true,dbms_lob.call);
   for i in 0..trunc((l_file_size-1)/l_len) loop
@@ -2278,7 +2295,7 @@ begin
   return case
   when p_data_type in (12, 178, 179, 180, 181, 231) then 'date'
   when p_data_type in (2, 100, 101) then 'number'
-  when p_data_type in (8, 24, 112) then 'clob'
+  when p_data_type=112 then 'clob'
   when p_data_type=11 then 'rowid'
   else 'varchar2'
   end;
@@ -3767,15 +3784,13 @@ begin
   (
   select
   gl.name,
-  decode(gl.ledger_category_code,''PRIMARY'',1,''SECONDARY'',2,''ALC'',3,''NONE'',4) priority
+  decode(gl.ledger_category_code,''PRIMARY'',1,''SECONDARY'',2,''ALC'',3,''NONE'',4)-decode(gl.'||case when fnd_release.major_version=11 then 'set_of_books_id' else 'ledger_id' end||',(select hou.set_of_books_id from hr_operating_units hou where hou.name=xxen_util.default_operating_unit and hou.business_group_id=fnd_global.per_business_group_id),0.1,0) priority
   from
   '||case when fnd_release.major_version=11 then 'xxen_gl_ledgers_v gl
   where
-  (xxen_util.default_operating_unit is null or gl.set_of_books_id=(select hou.set_of_books_id from hr_operating_units hou where hou.name=xxen_util.default_operating_unit)) and
   gl.ledger_id in (select nvl(glsnav.set_of_books_id,gasna.set_of_books_id) from xxen_gl_access_set_norm_ass_v gasna, (select null ledger_set_id, null set_of_books_id from dual) glsnav where gasna.access_set_id=fnd_profile.value(''GL_ACCESS_SET_ID'') and gasna.ledger_id=glsnav.ledger_set_id(+))'
   else 'gl_ledgers gl
   where
-  (xxen_util.default_operating_unit is null or gl.ledger_id=(select hou.set_of_books_id from hr_operating_units hou where hou.name=xxen_util.default_operating_unit)) and
   gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value(''GL_ACCESS_SET_ID'') and gasna.ledger_id=glsnav.ledger_set_id(+))'
   end||'
   ) x
@@ -3860,7 +3875,9 @@ p_descr_flex_context_code in varchar2 default null,
 p_column_name_prefix in varchar2 default null,
 p_prefix in varchar2 default null,
 p_hide_column_name in varchar2 default null,
-p_row_id in varchar2 default null
+p_row_id in varchar2 default null,
+p_regional_localization in varchar2 default null,
+p_org_id in number default null
 ) return clob is
 l_value_text varchar2(32767);
 l_text clob;
@@ -3954,6 +3971,36 @@ begin
   fnd_descr_flex_col_usage_vl fdfcuv
   where
   fdfcuv.application_column_name like 'ATTRIBUTE%' and
+  fdfcuv.enabled_flag='Y' and
+  fdfcuv.display_flag='Y' and
+  p_regional_localization is null
+  union all
+  select
+  substrb(xxen_util.init_cap(replace(p_column_name_prefix||fdfcuv.form_left_prompt,'"')),1,xxen_report.max_column_length) form_left_prompt_,
+  fdfcuv.*
+  from
+  fnd_descr_flex_col_usage_vl fdfcuv
+  where
+  regexp_like(fdfcuv.application_column_name, '^GLOBAL.*ATTRIBUTE') and
+  fdfcuv.application_id=7003 and
+  fdfcuv.descriptive_flex_context_code like '%.'||(
+  select
+  hla.country
+  from
+  hr_operating_units hou,
+  xle_entity_profiles xep,
+  xle_registrations xr,
+  hr_locations_all hla
+  where
+  (hou.name=xxen_util.default_operating_unit or hou.organization_id=p_org_id) and
+  hou.default_legal_context_id=xep.legal_entity_id and
+  xep.legal_entity_id=xr.source_id and
+  xr.source_table='XLE_ENTITY_PROFILES' and
+  xr.identifying_flag='Y' and
+  xr.location_id=hla.location_id and
+  rownum=1
+  )||'.%' and
+  p_regional_localization='Y' and
   fdfcuv.enabled_flag='Y' and
   fdfcuv.display_flag='Y'
   ) fdfcuv
@@ -4193,6 +4240,21 @@ begin
 end xml_unescape;
 
 
+function xml_unescape_clob(p_text in clob) return clob is
+begin
+  return
+  replace(
+  replace(
+  replace(
+  replace(
+  p_text,
+  '&amp;','&'),
+  '&lt;','<'),
+  '&gt;','>'),
+  '&quot;','"');
+end xml_unescape_clob;
+
+
 function xml_attribute_value(p_vchr in varchar2) return varchar2 is
 begin
   return translate(
@@ -4272,6 +4334,1013 @@ function excel_date_to_date(p_excel_date in varchar2) return date deterministic 
 begin
   return to_date('01.01.1900','DD.MM.YYYY')+fnd_number.canonical_to_number(p_excel_date)-2;
 end excel_date_to_date;
+
+
+function file_content_type(p_file_name in varchar2) return varchar2 is
+type l_file_content_tab_type is table of varchar2(100) index by varchar2(20);
+l_file_content_tab l_file_content_tab_type;
+l_file_extension varchar2(20);
+l_file_content_type varchar2(100):='application/octet-stream';
+procedure init_file_content_types is
+begin
+  l_file_content_tab.delete;
+  l_file_content_tab('123'):='application/vnd.lotus-1-2-3';
+  l_file_content_tab('3dml'):='text/vnd.in3d.3dml';
+  l_file_content_tab('3ds'):='image/x-3ds';
+  l_file_content_tab('3g2'):='video/3gpp2';
+  l_file_content_tab('3gp'):='video/3gpp';
+  l_file_content_tab('7z'):='application/x-7z-compressed';
+  l_file_content_tab('aab'):='application/x-authorware-bin';
+  l_file_content_tab('aac'):='audio/x-aac';
+  l_file_content_tab('aam'):='application/x-authorware-map';
+  l_file_content_tab('aas'):='application/x-authorware-seg';
+  l_file_content_tab('abw'):='application/x-abiword';
+  l_file_content_tab('ac'):='application/pkix-attr-cert';
+  l_file_content_tab('acc'):='application/vnd.americandynamics.acc';
+  l_file_content_tab('ace'):='application/x-ace-compressed';
+  l_file_content_tab('acu'):='application/vnd.acucobol';
+  l_file_content_tab('acutc'):='application/vnd.acucorp';
+  l_file_content_tab('adp'):='audio/adpcm';
+  l_file_content_tab('aep'):='application/vnd.audiograph';
+  l_file_content_tab('afm'):='application/x-font-type1';
+  l_file_content_tab('afp'):='application/vnd.ibm.modcap';
+  l_file_content_tab('ahead'):='application/vnd.ahead.space';
+  l_file_content_tab('ai'):='application/postscript';
+  l_file_content_tab('aif'):='audio/x-aiff';
+  l_file_content_tab('aifc'):='audio/x-aiff';
+  l_file_content_tab('aiff'):='audio/x-aiff';
+  l_file_content_tab('air'):='application/vnd.adobe.air-application-installer-package+zip';
+  l_file_content_tab('ait'):='application/vnd.dvb.ait';
+  l_file_content_tab('ami'):='application/vnd.amiga.ami';
+  l_file_content_tab('apk'):='application/vnd.android.package-archive';
+  l_file_content_tab('appcache'):='text/cache-manifest';
+  l_file_content_tab('application'):='application/x-ms-application';
+  l_file_content_tab('apr'):='application/vnd.lotus-approach';
+  l_file_content_tab('arc'):='application/x-freearc';
+  l_file_content_tab('asc'):='application/pgp-signature';
+  l_file_content_tab('asf'):='video/x-ms-asf';
+  l_file_content_tab('asm'):='text/x-asm';
+  l_file_content_tab('aso'):='application/vnd.accpac.simply.aso';
+  l_file_content_tab('asx'):='video/x-ms-asf';
+  l_file_content_tab('atc'):='application/vnd.acucorp';
+  l_file_content_tab('atom'):='application/atom+xml';
+  l_file_content_tab('atomcat'):='application/atomcat+xml';
+  l_file_content_tab('atomsvc'):='application/atomsvc+xml';
+  l_file_content_tab('atx'):='application/vnd.antix.game-component';
+  l_file_content_tab('au'):='audio/basic';
+  l_file_content_tab('avi'):='video/x-msvideo';
+  l_file_content_tab('aw'):='application/applixware';
+  l_file_content_tab('azf'):='application/vnd.airzip.filesecure.azf';
+  l_file_content_tab('azs'):='application/vnd.airzip.filesecure.azs';
+  l_file_content_tab('azw'):='application/vnd.amazon.ebook';
+  l_file_content_tab('bat'):='application/x-msdownload';
+  l_file_content_tab('bcpio'):='application/x-bcpio';
+  l_file_content_tab('bdf'):='application/x-font-bdf';
+  l_file_content_tab('bdm'):='application/vnd.syncml.dm+wbxml';
+  l_file_content_tab('bed'):='application/vnd.realvnc.bed';
+  l_file_content_tab('bh2'):='application/vnd.fujitsu.oasysprs';
+  l_file_content_tab('bin'):='application/octet-stream';
+  l_file_content_tab('blb'):='application/x-blorb';
+  l_file_content_tab('blorb'):='application/x-blorb';
+  l_file_content_tab('bmi'):='application/vnd.bmi';
+  l_file_content_tab('bmp'):='image/bmp';
+  l_file_content_tab('book'):='application/vnd.framemaker';
+  l_file_content_tab('box'):='application/vnd.previewsystems.box';
+  l_file_content_tab('boz'):='application/x-bzip2';
+  l_file_content_tab('bpk'):='application/octet-stream';
+  l_file_content_tab('btif'):='image/prs.btif';
+  l_file_content_tab('bz'):='application/x-bzip';
+  l_file_content_tab('bz2'):='application/x-bzip2';
+  l_file_content_tab('c'):='text/x-c';
+  l_file_content_tab('c11amc'):='application/vnd.cluetrust.cartomobile-config';
+  l_file_content_tab('c11amz'):='application/vnd.cluetrust.cartomobile-config-pkg';
+  l_file_content_tab('c4d'):='application/vnd.clonk.c4group';
+  l_file_content_tab('c4f'):='application/vnd.clonk.c4group';
+  l_file_content_tab('c4g'):='application/vnd.clonk.c4group';
+  l_file_content_tab('c4p'):='application/vnd.clonk.c4group';
+  l_file_content_tab('c4u'):='application/vnd.clonk.c4group';
+  l_file_content_tab('cab'):='application/vnd.ms-cab-compressed';
+  l_file_content_tab('caf'):='audio/x-caf';
+  l_file_content_tab('cap'):='application/vnd.tcpdump.pcap';
+  l_file_content_tab('car'):='application/vnd.curl.car';
+  l_file_content_tab('cat'):='application/vnd.ms-pki.seccat';
+  l_file_content_tab('cb7'):='application/x-cbr';
+  l_file_content_tab('cba'):='application/x-cbr';
+  l_file_content_tab('cbr'):='application/x-cbr';
+  l_file_content_tab('cbt'):='application/x-cbr';
+  l_file_content_tab('cbz'):='application/x-cbr';
+  l_file_content_tab('cc'):='text/x-c';
+  l_file_content_tab('cct'):='application/x-director';
+  l_file_content_tab('ccxml'):='application/ccxml+xml';
+  l_file_content_tab('cdbcmsg'):='application/vnd.contact.cmsg';
+  l_file_content_tab('cdf'):='application/x-netcdf';
+  l_file_content_tab('cdkey'):='application/vnd.mediastation.cdkey';
+  l_file_content_tab('cdmia'):='application/cdmi-capability';
+  l_file_content_tab('cdmic'):='application/cdmi-container';
+  l_file_content_tab('cdmid'):='application/cdmi-domain';
+  l_file_content_tab('cdmio'):='application/cdmi-object';
+  l_file_content_tab('cdmiq'):='application/cdmi-queue';
+  l_file_content_tab('cdx'):='chemical/x-cdx';
+  l_file_content_tab('cdxml'):='application/vnd.chemdraw+xml';
+  l_file_content_tab('cdy'):='application/vnd.cinderella';
+  l_file_content_tab('cer'):='application/pkix-cert';
+  l_file_content_tab('cfs'):='application/x-cfs-compressed';
+  l_file_content_tab('cgm'):='image/cgm';
+  l_file_content_tab('chat'):='application/x-chat';
+  l_file_content_tab('chm'):='application/vnd.ms-htmlhelp';
+  l_file_content_tab('chrt'):='application/vnd.kde.kchart';
+  l_file_content_tab('cif'):='chemical/x-cif';
+  l_file_content_tab('cii'):='application/vnd.anser-web-certificate-issue-initiation';
+  l_file_content_tab('cil'):='application/vnd.ms-artgalry';
+  l_file_content_tab('cla'):='application/vnd.claymore';
+  l_file_content_tab('class'):='application/java-vm';
+  l_file_content_tab('clkk'):='application/vnd.crick.clicker.keyboard';
+  l_file_content_tab('clkp'):='application/vnd.crick.clicker.palette';
+  l_file_content_tab('clkt'):='application/vnd.crick.clicker.template';
+  l_file_content_tab('clkw'):='application/vnd.crick.clicker.wordbank';
+  l_file_content_tab('clkx'):='application/vnd.crick.clicker';
+  l_file_content_tab('clp'):='application/x-msclip';
+  l_file_content_tab('cmc'):='application/vnd.cosmocaller';
+  l_file_content_tab('cmdf'):='chemical/x-cmdf';
+  l_file_content_tab('cml'):='chemical/x-cml';
+  l_file_content_tab('cmp'):='application/vnd.yellowriver-custom-menu';
+  l_file_content_tab('cmx'):='image/x-cmx';
+  l_file_content_tab('cod'):='application/vnd.rim.cod';
+  l_file_content_tab('com'):='application/x-msdownload';
+  l_file_content_tab('conf'):='text/plain';
+  l_file_content_tab('cpio'):='application/x-cpio';
+  l_file_content_tab('cpp'):='text/x-c';
+  l_file_content_tab('cpt'):='application/mac-compactpro';
+  l_file_content_tab('crd'):='application/x-mscardfile';
+  l_file_content_tab('crl'):='application/pkix-crl';
+  l_file_content_tab('crt'):='application/x-x509-ca-cert';
+  l_file_content_tab('cryptonote'):='application/vnd.rig.cryptonote';
+  l_file_content_tab('csh'):='application/x-csh';
+  l_file_content_tab('csml'):='chemical/x-csml';
+  l_file_content_tab('csp'):='application/vnd.commonspace';
+  l_file_content_tab('css'):='text/css';
+  l_file_content_tab('cst'):='application/x-director';
+  l_file_content_tab('csv'):='text/csv';
+  l_file_content_tab('cu'):='application/cu-seeme';
+  l_file_content_tab('curl'):='text/vnd.curl';
+  l_file_content_tab('cww'):='application/prs.cww';
+  l_file_content_tab('cxt'):='application/x-director';
+  l_file_content_tab('cxx'):='text/x-c';
+  l_file_content_tab('dae'):='model/vnd.collada+xml';
+  l_file_content_tab('daf'):='application/vnd.mobius.daf';
+  l_file_content_tab('dart'):='application/vnd.dart';
+  l_file_content_tab('dataless'):='application/vnd.fdsn.seed';
+  l_file_content_tab('davmount'):='application/davmount+xml';
+  l_file_content_tab('dbk'):='application/docbook+xml';
+  l_file_content_tab('dcr'):='application/x-director';
+  l_file_content_tab('dcurl'):='text/vnd.curl.dcurl';
+  l_file_content_tab('dd2'):='application/vnd.oma.dd2+xml';
+  l_file_content_tab('ddd'):='application/vnd.fujixerox.ddd';
+  l_file_content_tab('deb'):='application/x-debian-package';
+  l_file_content_tab('def'):='text/plain';
+  l_file_content_tab('deploy'):='application/octet-stream';
+  l_file_content_tab('der'):='application/x-x509-ca-cert';
+  l_file_content_tab('dfac'):='application/vnd.dreamfactory';
+  l_file_content_tab('dgc'):='application/x-dgc-compressed';
+  l_file_content_tab('dic'):='text/x-c';
+  l_file_content_tab('dir'):='application/x-director';
+  l_file_content_tab('dis'):='application/vnd.mobius.dis';
+  l_file_content_tab('dist'):='application/octet-stream';
+  l_file_content_tab('distz'):='application/octet-stream';
+  l_file_content_tab('djv'):='image/vnd.djvu';
+  l_file_content_tab('djvu'):='image/vnd.djvu';
+  l_file_content_tab('dll'):='application/x-msdownload';
+  l_file_content_tab('dmg'):='application/x-apple-diskimage';
+  l_file_content_tab('dmp'):='application/vnd.tcpdump.pcap';
+  l_file_content_tab('dms'):='application/octet-stream';
+  l_file_content_tab('dna'):='application/vnd.dna';
+  l_file_content_tab('doc'):='application/msword';
+  l_file_content_tab('docm'):='application/vnd.ms-word.document.macroenabled.12';
+  l_file_content_tab('docx'):='application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+  l_file_content_tab('dot'):='application/msword';
+  l_file_content_tab('dotm'):='application/vnd.ms-word.template.macroenabled.12';
+  l_file_content_tab('dotx'):='application/vnd.openxmlformats-officedocument.wordprocessingml.template';
+  l_file_content_tab('dp'):='application/vnd.osgi.dp';
+  l_file_content_tab('dpg'):='application/vnd.dpgraph';
+  l_file_content_tab('dra'):='audio/vnd.dra';
+  l_file_content_tab('dsc'):='text/prs.lines.tag';
+  l_file_content_tab('dssc'):='application/dssc+der';
+  l_file_content_tab('dtb'):='application/x-dtbook+xml';
+  l_file_content_tab('dtd'):='application/xml-dtd';
+  l_file_content_tab('dts'):='audio/vnd.dts';
+  l_file_content_tab('dtshd'):='audio/vnd.dts.hd';
+  l_file_content_tab('dump'):='application/octet-stream';
+  l_file_content_tab('dvb'):='video/vnd.dvb.file';
+  l_file_content_tab('dvi'):='application/x-dvi';
+  l_file_content_tab('dwf'):='model/vnd.dwf';
+  l_file_content_tab('dwg'):='image/vnd.dwg';
+  l_file_content_tab('dxf'):='image/vnd.dxf';
+  l_file_content_tab('dxp'):='application/vnd.spotfire.dxp';
+  l_file_content_tab('dxr'):='application/x-director';
+  l_file_content_tab('ecelp4800'):='audio/vnd.nuera.ecelp4800';
+  l_file_content_tab('ecelp7470'):='audio/vnd.nuera.ecelp7470';
+  l_file_content_tab('ecelp9600'):='audio/vnd.nuera.ecelp9600';
+  l_file_content_tab('ecma'):='application/ecmascript';
+  l_file_content_tab('edm'):='application/vnd.novadigm.edm';
+  l_file_content_tab('edx'):='application/vnd.novadigm.edx';
+  l_file_content_tab('efif'):='application/vnd.picsel';
+  l_file_content_tab('ei6'):='application/vnd.pg.osasli';
+  l_file_content_tab('elc'):='application/octet-stream';
+  l_file_content_tab('emf'):='application/x-msmetafile';
+  l_file_content_tab('eml'):='message/rfc822';
+  l_file_content_tab('emma'):='application/emma+xml';
+  l_file_content_tab('emz'):='application/x-msmetafile';
+  l_file_content_tab('eol'):='audio/vnd.digital-winds';
+  l_file_content_tab('eot'):='application/vnd.ms-fontobject';
+  l_file_content_tab('eps'):='application/postscript';
+  l_file_content_tab('epub'):='application/epub+zip';
+  l_file_content_tab('es3'):='application/vnd.eszigno3+xml';
+  l_file_content_tab('esa'):='application/vnd.osgi.subsystem';
+  l_file_content_tab('esf'):='application/vnd.epson.esf';
+  l_file_content_tab('et3'):='application/vnd.eszigno3+xml';
+  l_file_content_tab('etx'):='text/x-setext';
+  l_file_content_tab('eva'):='application/x-eva';
+  l_file_content_tab('evy'):='application/x-envoy';
+  l_file_content_tab('exe'):='application/x-msdownload';
+  l_file_content_tab('exi'):='application/exi';
+  l_file_content_tab('ext'):='application/vnd.novadigm.ext';
+  l_file_content_tab('ez'):='application/andrew-inset';
+  l_file_content_tab('ez2'):='application/vnd.ezpix-album';
+  l_file_content_tab('ez3'):='application/vnd.ezpix-package';
+  l_file_content_tab('f'):='text/x-fortran';
+  l_file_content_tab('f4v'):='video/x-f4v';
+  l_file_content_tab('f77'):='text/x-fortran';
+  l_file_content_tab('f90'):='text/x-fortran';
+  l_file_content_tab('fbs'):='image/vnd.fastbidsheet';
+  l_file_content_tab('fcdt'):='application/vnd.adobe.formscentral.fcdt';
+  l_file_content_tab('fcs'):='application/vnd.isac.fcs';
+  l_file_content_tab('fdf'):='application/vnd.fdf';
+  l_file_content_tab('fe_launch'):='application/vnd.denovo.fcselayout-link';
+  l_file_content_tab('fg5'):='application/vnd.fujitsu.oasysgp';
+  l_file_content_tab('fgd'):='application/x-director';
+  l_file_content_tab('fh'):='image/x-freehand';
+  l_file_content_tab('fh4'):='image/x-freehand';
+  l_file_content_tab('fh5'):='image/x-freehand';
+  l_file_content_tab('fh7'):='image/x-freehand';
+  l_file_content_tab('fhc'):='image/x-freehand';
+  l_file_content_tab('fig'):='application/x-xfig';
+  l_file_content_tab('flac'):='audio/x-flac';
+  l_file_content_tab('fli'):='video/x-fli';
+  l_file_content_tab('flo'):='application/vnd.micrografx.flo';
+  l_file_content_tab('flv'):='video/x-flv';
+  l_file_content_tab('flw'):='application/vnd.kde.kivio';
+  l_file_content_tab('flx'):='text/vnd.fmi.flexstor';
+  l_file_content_tab('fly'):='text/vnd.fly';
+  l_file_content_tab('fm'):='application/vnd.framemaker';
+  l_file_content_tab('fnc'):='application/vnd.frogans.fnc';
+  l_file_content_tab('for'):='text/x-fortran';
+  l_file_content_tab('fpx'):='image/vnd.fpx';
+  l_file_content_tab('frame'):='application/vnd.framemaker';
+  l_file_content_tab('fsc'):='application/vnd.fsc.weblaunch';
+  l_file_content_tab('fst'):='image/vnd.fst';
+  l_file_content_tab('ftc'):='application/vnd.fluxtime.clip';
+  l_file_content_tab('fti'):='application/vnd.anser-web-funds-transfer-initiation';
+  l_file_content_tab('fvt'):='video/vnd.fvt';
+  l_file_content_tab('fxp'):='application/vnd.adobe.fxp';
+  l_file_content_tab('fxpl'):='application/vnd.adobe.fxp';
+  l_file_content_tab('fzs'):='application/vnd.fuzzysheet';
+  l_file_content_tab('g2w'):='application/vnd.geoplan';
+  l_file_content_tab('g3'):='image/g3fax';
+  l_file_content_tab('g3w'):='application/vnd.geospace';
+  l_file_content_tab('gac'):='application/vnd.groove-account';
+  l_file_content_tab('gam'):='application/x-tads';
+  l_file_content_tab('gbr'):='application/rpki-ghostbusters';
+  l_file_content_tab('gca'):='application/x-gca-compressed';
+  l_file_content_tab('gdl'):='model/vnd.gdl';
+  l_file_content_tab('geo'):='application/vnd.dynageo';
+  l_file_content_tab('gex'):='application/vnd.geometry-explorer';
+  l_file_content_tab('ggb'):='application/vnd.geogebra.file';
+  l_file_content_tab('ggt'):='application/vnd.geogebra.tool';
+  l_file_content_tab('ghf'):='application/vnd.groove-help';
+  l_file_content_tab('gif'):='image/gif';
+  l_file_content_tab('gim'):='application/vnd.groove-identity-message';
+  l_file_content_tab('gml'):='application/gml+xml';
+  l_file_content_tab('gmx'):='application/vnd.gmx';
+  l_file_content_tab('gnumeric'):='application/x-gnumeric';
+  l_file_content_tab('gph'):='application/vnd.flographit';
+  l_file_content_tab('gpx'):='application/gpx+xml';
+  l_file_content_tab('gqf'):='application/vnd.grafeq';
+  l_file_content_tab('gqs'):='application/vnd.grafeq';
+  l_file_content_tab('gram'):='application/srgs';
+  l_file_content_tab('gramps'):='application/x-gramps-xml';
+  l_file_content_tab('gre'):='application/vnd.geometry-explorer';
+  l_file_content_tab('grv'):='application/vnd.groove-injector';
+  l_file_content_tab('grxml'):='application/srgs+xml';
+  l_file_content_tab('gsf'):='application/x-font-ghostscript';
+  l_file_content_tab('gtar'):='application/x-gtar';
+  l_file_content_tab('gtm'):='application/vnd.groove-tool-message';
+  l_file_content_tab('gtw'):='model/vnd.gtw';
+  l_file_content_tab('gv'):='text/vnd.graphviz';
+  l_file_content_tab('gxf'):='application/gxf';
+  l_file_content_tab('gxt'):='application/vnd.geonext';
+  l_file_content_tab('h'):='text/x-c';
+  l_file_content_tab('h261'):='video/h261';
+  l_file_content_tab('h263'):='video/h263';
+  l_file_content_tab('h264'):='video/h264';
+  l_file_content_tab('hal'):='application/vnd.hal+xml';
+  l_file_content_tab('hbci'):='application/vnd.hbci';
+  l_file_content_tab('hdf'):='application/x-hdf';
+  l_file_content_tab('hh'):='text/x-c';
+  l_file_content_tab('hlp'):='application/winhlp';
+  l_file_content_tab('hpgl'):='application/vnd.hp-hpgl';
+  l_file_content_tab('hpid'):='application/vnd.hp-hpid';
+  l_file_content_tab('hps'):='application/vnd.hp-hps';
+  l_file_content_tab('hqx'):='application/mac-binhex40';
+  l_file_content_tab('htke'):='application/vnd.kenameaapp';
+  l_file_content_tab('htm'):='text/html';
+  l_file_content_tab('html'):='text/html';
+  l_file_content_tab('hvd'):='application/vnd.yamaha.hv-dic';
+  l_file_content_tab('hvp'):='application/vnd.yamaha.hv-voice';
+  l_file_content_tab('hvs'):='application/vnd.yamaha.hv-script';
+  l_file_content_tab('i2g'):='application/vnd.intergeo';
+  l_file_content_tab('icc'):='application/vnd.iccprofile';
+  l_file_content_tab('ice'):='x-conference/x-cooltalk';
+  l_file_content_tab('icm'):='application/vnd.iccprofile';
+  l_file_content_tab('ico'):='image/x-icon';
+  l_file_content_tab('ics'):='text/calendar';
+  l_file_content_tab('ief'):='image/ief';
+  l_file_content_tab('ifb'):='text/calendar';
+  l_file_content_tab('ifm'):='application/vnd.shana.informed.formdata';
+  l_file_content_tab('iges'):='model/iges';
+  l_file_content_tab('igl'):='application/vnd.igloader';
+  l_file_content_tab('igm'):='application/vnd.insors.igm';
+  l_file_content_tab('igs'):='model/iges';
+  l_file_content_tab('igx'):='application/vnd.micrografx.igx';
+  l_file_content_tab('iif'):='application/vnd.shana.informed.interchange';
+  l_file_content_tab('imp'):='application/vnd.accpac.simply.imp';
+  l_file_content_tab('ims'):='application/vnd.ms-ims';
+  l_file_content_tab('in'):='text/plain';
+  l_file_content_tab('ink'):='application/inkml+xml';
+  l_file_content_tab('inkml'):='application/inkml+xml';
+  l_file_content_tab('install'):='application/x-install-instructions';
+  l_file_content_tab('iota'):='application/vnd.astraea-software.iota';
+  l_file_content_tab('ipfix'):='application/ipfix';
+  l_file_content_tab('ipk'):='application/vnd.shana.informed.package';
+  l_file_content_tab('irm'):='application/vnd.ibm.rights-management';
+  l_file_content_tab('irp'):='application/vnd.irepository.package+xml';
+  l_file_content_tab('iso'):='application/x-iso9660-image';
+  l_file_content_tab('itp'):='application/vnd.shana.informed.formtemplate';
+  l_file_content_tab('ivp'):='application/vnd.immervision-ivp';
+  l_file_content_tab('ivu'):='application/vnd.immervision-ivu';
+  l_file_content_tab('jad'):='text/vnd.sun.j2me.app-descriptor';
+  l_file_content_tab('jam'):='application/vnd.jam';
+  l_file_content_tab('jar'):='application/java-archive';
+  l_file_content_tab('java'):='text/x-java-source';
+  l_file_content_tab('jisp'):='application/vnd.jisp';
+  l_file_content_tab('jlt'):='application/vnd.hp-jlyt';
+  l_file_content_tab('jnlp'):='application/x-java-jnlp-file';
+  l_file_content_tab('joda'):='application/vnd.joost.joda-archive';
+  l_file_content_tab('jpe'):='image/jpeg';
+  l_file_content_tab('jpeg'):='image/jpeg';
+  l_file_content_tab('jpg'):='image/jpeg';
+  l_file_content_tab('jpgm'):='video/jpm';
+  l_file_content_tab('jpgv'):='video/jpeg';
+  l_file_content_tab('jpm'):='video/jpm';
+  l_file_content_tab('js'):='application/javascript';
+  l_file_content_tab('json'):='application/json';
+  l_file_content_tab('jsonml'):='application/jsonml+json';
+  l_file_content_tab('kar'):='audio/midi';
+  l_file_content_tab('karbon'):='application/vnd.kde.karbon';
+  l_file_content_tab('kfo'):='application/vnd.kde.kformula';
+  l_file_content_tab('kia'):='application/vnd.kidspiration';
+  l_file_content_tab('kml'):='application/vnd.google-earth.kml+xml';
+  l_file_content_tab('kmz'):='application/vnd.google-earth.kmz';
+  l_file_content_tab('kne'):='application/vnd.kinar';
+  l_file_content_tab('knp'):='application/vnd.kinar';
+  l_file_content_tab('kon'):='application/vnd.kde.kontour';
+  l_file_content_tab('kpr'):='application/vnd.kde.kpresenter';
+  l_file_content_tab('kpt'):='application/vnd.kde.kpresenter';
+  l_file_content_tab('kpxx'):='application/vnd.ds-keypoint';
+  l_file_content_tab('ksp'):='application/vnd.kde.kspread';
+  l_file_content_tab('ktr'):='application/vnd.kahootz';
+  l_file_content_tab('ktx'):='image/ktx';
+  l_file_content_tab('ktz'):='application/vnd.kahootz';
+  l_file_content_tab('kwd'):='application/vnd.kde.kword';
+  l_file_content_tab('kwt'):='application/vnd.kde.kword';
+  l_file_content_tab('lasxml'):='application/vnd.las.las+xml';
+  l_file_content_tab('latex'):='application/x-latex';
+  l_file_content_tab('lbd'):='application/vnd.llamagraphics.life-balance.desktop';
+  l_file_content_tab('lbe'):='application/vnd.llamagraphics.life-balance.exchange+xml';
+  l_file_content_tab('les'):='application/vnd.hhe.lesson-player';
+  l_file_content_tab('lha'):='application/x-lzh-compressed';
+  l_file_content_tab('link66'):='application/vnd.route66.link66+xml';
+  l_file_content_tab('list'):='text/plain';
+  l_file_content_tab('list3820'):='application/vnd.ibm.modcap';
+  l_file_content_tab('listafp'):='application/vnd.ibm.modcap';
+  l_file_content_tab('lnk'):='application/x-ms-shortcut';
+  l_file_content_tab('log'):='text/plain';
+  l_file_content_tab('lostxml'):='application/lost+xml';
+  l_file_content_tab('lrf'):='application/octet-stream';
+  l_file_content_tab('lrm'):='application/vnd.ms-lrm';
+  l_file_content_tab('ltf'):='application/vnd.frogans.ltf';
+  l_file_content_tab('lvp'):='audio/vnd.lucent.voice';
+  l_file_content_tab('lwp'):='application/vnd.lotus-wordpro';
+  l_file_content_tab('lzh'):='application/x-lzh-compressed';
+  l_file_content_tab('m13'):='application/x-msmediaview';
+  l_file_content_tab('m14'):='application/x-msmediaview';
+  l_file_content_tab('m1v'):='video/mpeg';
+  l_file_content_tab('m21'):='application/mp21';
+  l_file_content_tab('m2a'):='audio/mpeg';
+  l_file_content_tab('m2v'):='video/mpeg';
+  l_file_content_tab('m3a'):='audio/mpeg';
+  l_file_content_tab('m3u'):='audio/x-mpegurl';
+  l_file_content_tab('m3u8'):='application/vnd.apple.mpegurl';
+  l_file_content_tab('m4a'):='audio/mp4';
+  l_file_content_tab('m4u'):='video/vnd.mpegurl';
+  l_file_content_tab('m4v'):='video/x-m4v';
+  l_file_content_tab('ma'):='application/mathematica';
+  l_file_content_tab('mads'):='application/mads+xml';
+  l_file_content_tab('mag'):='application/vnd.ecowin.chart';
+  l_file_content_tab('maker'):='application/vnd.framemaker';
+  l_file_content_tab('man'):='text/troff';
+  l_file_content_tab('mar'):='application/octet-stream';
+  l_file_content_tab('mathml'):='application/mathml+xml';
+  l_file_content_tab('mb'):='application/mathematica';
+  l_file_content_tab('mbk'):='application/vnd.mobius.mbk';
+  l_file_content_tab('mbox'):='application/mbox';
+  l_file_content_tab('mc1'):='application/vnd.medcalcdata';
+  l_file_content_tab('mcd'):='application/vnd.mcd';
+  l_file_content_tab('mcurl'):='text/vnd.curl.mcurl';
+  l_file_content_tab('mdb'):='application/x-msaccess';
+  l_file_content_tab('mdi'):='image/vnd.ms-modi';
+  l_file_content_tab('me'):='text/troff';
+  l_file_content_tab('mesh'):='model/mesh';
+  l_file_content_tab('meta4'):='application/metalink4+xml';
+  l_file_content_tab('metalink'):='application/metalink+xml';
+  l_file_content_tab('mets'):='application/mets+xml';
+  l_file_content_tab('mfm'):='application/vnd.mfmp';
+  l_file_content_tab('mft'):='application/rpki-manifest';
+  l_file_content_tab('mgp'):='application/vnd.osgeo.mapguide.package';
+  l_file_content_tab('mgz'):='application/vnd.proteus.magazine';
+  l_file_content_tab('mid'):='audio/midi';
+  l_file_content_tab('midi'):='audio/midi';
+  l_file_content_tab('mie'):='application/x-mie';
+  l_file_content_tab('mif'):='application/vnd.mif';
+  l_file_content_tab('mime'):='message/rfc822';
+  l_file_content_tab('mj2'):='video/mj2';
+  l_file_content_tab('mjp2'):='video/mj2';
+  l_file_content_tab('mk3d'):='video/x-matroska';
+  l_file_content_tab('mka'):='audio/x-matroska';
+  l_file_content_tab('mks'):='video/x-matroska';
+  l_file_content_tab('mkv'):='video/x-matroska';
+  l_file_content_tab('mlp'):='application/vnd.dolby.mlp';
+  l_file_content_tab('mmd'):='application/vnd.chipnuts.karaoke-mmd';
+  l_file_content_tab('mmf'):='application/vnd.smaf';
+  l_file_content_tab('mmr'):='image/vnd.fujixerox.edmics-mmr';
+  l_file_content_tab('mng'):='video/x-mng';
+  l_file_content_tab('mny'):='application/x-msmoney';
+  l_file_content_tab('mobi'):='application/x-mobipocket-ebook';
+  l_file_content_tab('mods'):='application/mods+xml';
+  l_file_content_tab('mov'):='video/quicktime';
+  l_file_content_tab('movie'):='video/x-sgi-movie';
+  l_file_content_tab('mp2'):='audio/mpeg';
+  l_file_content_tab('mp21'):='application/mp21';
+  l_file_content_tab('mp2a'):='audio/mpeg';
+  l_file_content_tab('mp3'):='audio/mpeg';
+  l_file_content_tab('mp4'):='video/mp4';
+  l_file_content_tab('mp4a'):='audio/mp4';
+  l_file_content_tab('mp4s'):='application/mp4';
+  l_file_content_tab('mp4v'):='video/mp4';
+  l_file_content_tab('mpc'):='application/vnd.mophun.certificate';
+  l_file_content_tab('mpe'):='video/mpeg';
+  l_file_content_tab('mpeg'):='video/mpeg';
+  l_file_content_tab('mpg'):='video/mpeg';
+  l_file_content_tab('mpg4'):='video/mp4';
+  l_file_content_tab('mpga'):='audio/mpeg';
+  l_file_content_tab('mpkg'):='application/vnd.apple.installer+xml';
+  l_file_content_tab('mpm'):='application/vnd.blueice.multipass';
+  l_file_content_tab('mpn'):='application/vnd.mophun.application';
+  l_file_content_tab('mpp'):='application/vnd.ms-project';
+  l_file_content_tab('mpt'):='application/vnd.ms-project';
+  l_file_content_tab('mpy'):='application/vnd.ibm.minipay';
+  l_file_content_tab('mqy'):='application/vnd.mobius.mqy';
+  l_file_content_tab('mrc'):='application/marc';
+  l_file_content_tab('mrcx'):='application/marcxml+xml';
+  l_file_content_tab('ms'):='text/troff';
+  l_file_content_tab('mscml'):='application/mediaservercontrol+xml';
+  l_file_content_tab('mseed'):='application/vnd.fdsn.mseed';
+  l_file_content_tab('mseq'):='application/vnd.mseq';
+  l_file_content_tab('msf'):='application/vnd.epson.msf';
+  l_file_content_tab('msh'):='model/mesh';
+  l_file_content_tab('msi'):='application/x-msdownload';
+  l_file_content_tab('msl'):='application/vnd.mobius.msl';
+  l_file_content_tab('msty'):='application/vnd.muvee.style';
+  l_file_content_tab('mts'):='model/vnd.mts';
+  l_file_content_tab('mus'):='application/vnd.musician';
+  l_file_content_tab('musicxml'):='application/vnd.recordare.musicxml+xml';
+  l_file_content_tab('mvb'):='application/x-msmediaview';
+  l_file_content_tab('mwf'):='application/vnd.mfer';
+  l_file_content_tab('mxf'):='application/mxf';
+  l_file_content_tab('mxl'):='application/vnd.recordare.musicxml';
+  l_file_content_tab('mxml'):='application/xv+xml';
+  l_file_content_tab('mxs'):='application/vnd.triscape.mxs';
+  l_file_content_tab('mxu'):='video/vnd.mpegurl';
+  l_file_content_tab('n-gage'):='application/vnd.nokia.n-gage.symbian.install';
+  l_file_content_tab('n3'):='text/n3';
+  l_file_content_tab('nb'):='application/mathematica';
+  l_file_content_tab('nbp'):='application/vnd.wolfram.player';
+  l_file_content_tab('nc'):='application/x-netcdf';
+  l_file_content_tab('ncx'):='application/x-dtbncx+xml';
+  l_file_content_tab('nfo'):='text/x-nfo';
+  l_file_content_tab('ngdat'):='application/vnd.nokia.n-gage.data';
+  l_file_content_tab('nitf'):='application/vnd.nitf';
+  l_file_content_tab('nlu'):='application/vnd.neurolanguage.nlu';
+  l_file_content_tab('nml'):='application/vnd.enliven';
+  l_file_content_tab('nnd'):='application/vnd.noblenet-directory';
+  l_file_content_tab('nns'):='application/vnd.noblenet-sealer';
+  l_file_content_tab('nnw'):='application/vnd.noblenet-web';
+  l_file_content_tab('npx'):='image/vnd.net-fpx';
+  l_file_content_tab('nsc'):='application/x-conference';
+  l_file_content_tab('nsf'):='application/vnd.lotus-notes';
+  l_file_content_tab('ntf'):='application/vnd.nitf';
+  l_file_content_tab('nzb'):='application/x-nzb';
+  l_file_content_tab('oa2'):='application/vnd.fujitsu.oasys2';
+  l_file_content_tab('oa3'):='application/vnd.fujitsu.oasys3';
+  l_file_content_tab('oas'):='application/vnd.fujitsu.oasys';
+  l_file_content_tab('obd'):='application/x-msbinder';
+  l_file_content_tab('obj'):='application/x-tgif';
+  l_file_content_tab('oda'):='application/oda';
+  l_file_content_tab('odb'):='application/vnd.oasis.opendocument.database';
+  l_file_content_tab('odc'):='application/vnd.oasis.opendocument.chart';
+  l_file_content_tab('odf'):='application/vnd.oasis.opendocument.formula';
+  l_file_content_tab('odft'):='application/vnd.oasis.opendocument.formula-template';
+  l_file_content_tab('odg'):='application/vnd.oasis.opendocument.graphics';
+  l_file_content_tab('odi'):='application/vnd.oasis.opendocument.image';
+  l_file_content_tab('odm'):='application/vnd.oasis.opendocument.text-master';
+  l_file_content_tab('odp'):='application/vnd.oasis.opendocument.presentation';
+  l_file_content_tab('ods'):='application/vnd.oasis.opendocument.spreadsheet';
+  l_file_content_tab('odt'):='application/vnd.oasis.opendocument.text';
+  l_file_content_tab('oga'):='audio/ogg';
+  l_file_content_tab('ogg'):='audio/ogg';
+  l_file_content_tab('ogv'):='video/ogg';
+  l_file_content_tab('ogx'):='application/ogg';
+  l_file_content_tab('omdoc'):='application/omdoc+xml';
+  l_file_content_tab('onepkg'):='application/onenote';
+  l_file_content_tab('onetmp'):='application/onenote';
+  l_file_content_tab('onetoc'):='application/onenote';
+  l_file_content_tab('onetoc2'):='application/onenote';
+  l_file_content_tab('opf'):='application/oebps-package+xml';
+  l_file_content_tab('opml'):='text/x-opml';
+  l_file_content_tab('oprc'):='application/vnd.palm';
+  l_file_content_tab('org'):='application/vnd.lotus-organizer';
+  l_file_content_tab('osf'):='application/vnd.yamaha.openscoreformat';
+  l_file_content_tab('osfpvg'):='application/vnd.yamaha.openscoreformat.osfpvg+xml';
+  l_file_content_tab('otc'):='application/vnd.oasis.opendocument.chart-template';
+  l_file_content_tab('otf'):='application/x-font-otf';
+  l_file_content_tab('otg'):='application/vnd.oasis.opendocument.graphics-template';
+  l_file_content_tab('oth'):='application/vnd.oasis.opendocument.text-web';
+  l_file_content_tab('oti'):='application/vnd.oasis.opendocument.image-template';
+  l_file_content_tab('otp'):='application/vnd.oasis.opendocument.presentation-template';
+  l_file_content_tab('ots'):='application/vnd.oasis.opendocument.spreadsheet-template';
+  l_file_content_tab('ott'):='application/vnd.oasis.opendocument.text-template';
+  l_file_content_tab('oxps'):='application/oxps';
+  l_file_content_tab('oxt'):='application/vnd.openofficeorg.extension';
+  l_file_content_tab('p'):='text/x-pascal';
+  l_file_content_tab('p10'):='application/pkcs10';
+  l_file_content_tab('p12'):='application/x-pkcs12';
+  l_file_content_tab('p7b'):='application/x-pkcs7-certificates';
+  l_file_content_tab('p7c'):='application/pkcs7-mime';
+  l_file_content_tab('p7m'):='application/pkcs7-mime';
+  l_file_content_tab('p7r'):='application/x-pkcs7-certreqresp';
+  l_file_content_tab('p7s'):='application/pkcs7-signature';
+  l_file_content_tab('p8'):='application/pkcs8';
+  l_file_content_tab('pas'):='text/x-pascal';
+  l_file_content_tab('paw'):='application/vnd.pawaafile';
+  l_file_content_tab('pbd'):='application/vnd.powerbuilder6';
+  l_file_content_tab('pbm'):='image/x-portable-bitmap';
+  l_file_content_tab('pcap'):='application/vnd.tcpdump.pcap';
+  l_file_content_tab('pcf'):='application/x-font-pcf';
+  l_file_content_tab('pcl'):='application/vnd.hp-pcl';
+  l_file_content_tab('pclxl'):='application/vnd.hp-pclxl';
+  l_file_content_tab('pct'):='image/x-pict';
+  l_file_content_tab('pcurl'):='application/vnd.curl.pcurl';
+  l_file_content_tab('pcx'):='image/x-pcx';
+  l_file_content_tab('pdb'):='application/vnd.palm';
+  l_file_content_tab('pdf'):='application/pdf';
+  l_file_content_tab('pfa'):='application/x-font-type1';
+  l_file_content_tab('pfb'):='application/x-font-type1';
+  l_file_content_tab('pfm'):='application/x-font-type1';
+  l_file_content_tab('pfr'):='application/font-tdpfr';
+  l_file_content_tab('pfx'):='application/x-pkcs12';
+  l_file_content_tab('pgm'):='image/x-portable-graymap';
+  l_file_content_tab('pgn'):='application/x-chess-pgn';
+  l_file_content_tab('pgp'):='application/pgp-encrypted';
+  l_file_content_tab('pic'):='image/x-pict';
+  l_file_content_tab('pkg'):='application/octet-stream';
+  l_file_content_tab('pki'):='application/pkixcmp';
+  l_file_content_tab('pkipath'):='application/pkix-pkipath';
+  l_file_content_tab('plb'):='application/vnd.3gpp.pic-bw-large';
+  l_file_content_tab('plc'):='application/vnd.mobius.plc';
+  l_file_content_tab('plf'):='application/vnd.pocketlearn';
+  l_file_content_tab('pls'):='application/pls+xml';
+  l_file_content_tab('pml'):='application/vnd.ctc-posml';
+  l_file_content_tab('png'):='image/png';
+  l_file_content_tab('pnm'):='image/x-portable-anymap';
+  l_file_content_tab('portpkg'):='application/vnd.macports.portpkg';
+  l_file_content_tab('pot'):='application/vnd.ms-powerpoint';
+  l_file_content_tab('potm'):='application/vnd.ms-powerpoint.template.macroenabled.12';
+  l_file_content_tab('potx'):='application/vnd.openxmlformats-officedocument.presentationml.template';
+  l_file_content_tab('ppam'):='application/vnd.ms-powerpoint.addin.macroenabled.12';
+  l_file_content_tab('ppd'):='application/vnd.cups-ppd';
+  l_file_content_tab('ppm'):='image/x-portable-pixmap';
+  l_file_content_tab('pps'):='application/vnd.ms-powerpoint';
+  l_file_content_tab('ppsm'):='application/vnd.ms-powerpoint.slideshow.macroenabled.12';
+  l_file_content_tab('ppsx'):='application/vnd.openxmlformats-officedocument.presentationml.slideshow';
+  l_file_content_tab('ppt'):='application/vnd.ms-powerpoint';
+  l_file_content_tab('pptm'):='application/vnd.ms-powerpoint.presentation.macroenabled.12';
+  l_file_content_tab('pptx'):='application/vnd.openxmlformats-officedocument.presentationml.presentation';
+  l_file_content_tab('pqa'):='application/vnd.palm';
+  l_file_content_tab('prc'):='application/x-mobipocket-ebook';
+  l_file_content_tab('pre'):='application/vnd.lotus-freelance';
+  l_file_content_tab('prf'):='application/pics-rules';
+  l_file_content_tab('ps'):='application/postscript';
+  l_file_content_tab('psb'):='application/vnd.3gpp.pic-bw-small';
+  l_file_content_tab('psd'):='image/vnd.adobe.photoshop';
+  l_file_content_tab('psf'):='application/x-font-linux-psf';
+  l_file_content_tab('pskcxml'):='application/pskc+xml';
+  l_file_content_tab('ptid'):='application/vnd.pvi.ptid1';
+  l_file_content_tab('pub'):='application/x-mspublisher';
+  l_file_content_tab('pvb'):='application/vnd.3gpp.pic-bw-var';
+  l_file_content_tab('pwn'):='application/vnd.3m.post-it-notes';
+  l_file_content_tab('pya'):='audio/vnd.ms-playready.media.pya';
+  l_file_content_tab('pyv'):='video/vnd.ms-playready.media.pyv';
+  l_file_content_tab('qam'):='application/vnd.epson.quickanime';
+  l_file_content_tab('qbo'):='application/vnd.intu.qbo';
+  l_file_content_tab('qfx'):='application/vnd.intu.qfx';
+  l_file_content_tab('qps'):='application/vnd.publishare-delta-tree';
+  l_file_content_tab('qt'):='video/quicktime';
+  l_file_content_tab('qwd'):='application/vnd.quark.quarkxpress';
+  l_file_content_tab('qwt'):='application/vnd.quark.quarkxpress';
+  l_file_content_tab('qxb'):='application/vnd.quark.quarkxpress';
+  l_file_content_tab('qxd'):='application/vnd.quark.quarkxpress';
+  l_file_content_tab('qxl'):='application/vnd.quark.quarkxpress';
+  l_file_content_tab('qxt'):='application/vnd.quark.quarkxpress';
+  l_file_content_tab('ra'):='audio/x-pn-realaudio';
+  l_file_content_tab('ram'):='audio/x-pn-realaudio';
+  l_file_content_tab('rar'):='application/x-rar-compressed';
+  l_file_content_tab('ras'):='image/x-cmu-raster';
+  l_file_content_tab('rcprofile'):='application/vnd.ipunplugged.rcprofile';
+  l_file_content_tab('rdf'):='application/rdf+xml';
+  l_file_content_tab('rdz'):='application/vnd.data-vision.rdz';
+  l_file_content_tab('rep'):='application/vnd.businessobjects';
+  l_file_content_tab('res'):='application/x-dtbresource+xml';
+  l_file_content_tab('rgb'):='image/x-rgb';
+  l_file_content_tab('rif'):='application/reginfo+xml';
+  l_file_content_tab('rip'):='audio/vnd.rip';
+  l_file_content_tab('ris'):='application/x-research-info-systems';
+  l_file_content_tab('rl'):='application/resource-lists+xml';
+  l_file_content_tab('rlc'):='image/vnd.fujixerox.edmics-rlc';
+  l_file_content_tab('rld'):='application/resource-lists-diff+xml';
+  l_file_content_tab('rm'):='application/vnd.rn-realmedia';
+  l_file_content_tab('rmi'):='audio/midi';
+  l_file_content_tab('rmp'):='audio/x-pn-realaudio-plugin';
+  l_file_content_tab('rms'):='application/vnd.jcp.javame.midlet-rms';
+  l_file_content_tab('rmvb'):='application/vnd.rn-realmedia-vbr';
+  l_file_content_tab('rnc'):='application/relax-ng-compact-syntax';
+  l_file_content_tab('roa'):='application/rpki-roa';
+  l_file_content_tab('roff'):='text/troff';
+  l_file_content_tab('rp9'):='application/vnd.cloanto.rp9';
+  l_file_content_tab('rpss'):='application/vnd.nokia.radio-presets';
+  l_file_content_tab('rpst'):='application/vnd.nokia.radio-preset';
+  l_file_content_tab('rq'):='application/sparql-query';
+  l_file_content_tab('rs'):='application/rls-services+xml';
+  l_file_content_tab('rsd'):='application/rsd+xml';
+  l_file_content_tab('rss'):='application/rss+xml';
+  l_file_content_tab('rtf'):='application/rtf';
+  l_file_content_tab('rtx'):='text/richtext';
+  l_file_content_tab('s'):='text/x-asm';
+  l_file_content_tab('s3m'):='audio/s3m';
+  l_file_content_tab('saf'):='application/vnd.yamaha.smaf-audio';
+  l_file_content_tab('sbml'):='application/sbml+xml';
+  l_file_content_tab('sc'):='application/vnd.ibm.secure-container';
+  l_file_content_tab('scd'):='application/x-msschedule';
+  l_file_content_tab('scm'):='application/vnd.lotus-screencam';
+  l_file_content_tab('scq'):='application/scvp-cv-request';
+  l_file_content_tab('scs'):='application/scvp-cv-response';
+  l_file_content_tab('scurl'):='text/vnd.curl.scurl';
+  l_file_content_tab('sda'):='application/vnd.stardivision.draw';
+  l_file_content_tab('sdc'):='application/vnd.stardivision.calc';
+  l_file_content_tab('sdd'):='application/vnd.stardivision.impress';
+  l_file_content_tab('sdkd'):='application/vnd.solent.sdkm+xml';
+  l_file_content_tab('sdkm'):='application/vnd.solent.sdkm+xml';
+  l_file_content_tab('sdp'):='application/sdp';
+  l_file_content_tab('sdw'):='application/vnd.stardivision.writer';
+  l_file_content_tab('see'):='application/vnd.seemail';
+  l_file_content_tab('seed'):='application/vnd.fdsn.seed';
+  l_file_content_tab('sema'):='application/vnd.sema';
+  l_file_content_tab('semd'):='application/vnd.semd';
+  l_file_content_tab('semf'):='application/vnd.semf';
+  l_file_content_tab('ser'):='application/java-serialized-object';
+  l_file_content_tab('setpay'):='application/set-payment-initiation';
+  l_file_content_tab('setreg'):='application/set-registration-initiation';
+  l_file_content_tab('sfd-hdstx'):='application/vnd.hydrostatix.sof-data';
+  l_file_content_tab('sfs'):='application/vnd.spotfire.sfs';
+  l_file_content_tab('sfv'):='text/x-sfv';
+  l_file_content_tab('sgi'):='image/sgi';
+  l_file_content_tab('sgl'):='application/vnd.stardivision.writer-global';
+  l_file_content_tab('sgm'):='text/sgml';
+  l_file_content_tab('sgml'):='text/sgml';
+  l_file_content_tab('sh'):='application/x-sh';
+  l_file_content_tab('shar'):='application/x-shar';
+  l_file_content_tab('shf'):='application/shf+xml';
+  l_file_content_tab('sid'):='image/x-mrsid-image';
+  l_file_content_tab('sig'):='application/pgp-signature';
+  l_file_content_tab('sil'):='audio/silk';
+  l_file_content_tab('silo'):='model/mesh';
+  l_file_content_tab('sis'):='application/vnd.symbian.install';
+  l_file_content_tab('sisx'):='application/vnd.symbian.install';
+  l_file_content_tab('sit'):='application/x-stuffit';
+  l_file_content_tab('sitx'):='application/x-stuffitx';
+  l_file_content_tab('skd'):='application/vnd.koan';
+  l_file_content_tab('skm'):='application/vnd.koan';
+  l_file_content_tab('skp'):='application/vnd.koan';
+  l_file_content_tab('skt'):='application/vnd.koan';
+  l_file_content_tab('sldm'):='application/vnd.ms-powerpoint.slide.macroenabled.12';
+  l_file_content_tab('sldx'):='application/vnd.openxmlformats-officedocument.presentationml.slide';
+  l_file_content_tab('slt'):='application/vnd.epson.salt';
+  l_file_content_tab('sm'):='application/vnd.stepmania.stepchart';
+  l_file_content_tab('smf'):='application/vnd.stardivision.math';
+  l_file_content_tab('smi'):='application/smil+xml';
+  l_file_content_tab('smil'):='application/smil+xml';
+  l_file_content_tab('smv'):='video/x-smv';
+  l_file_content_tab('smzip'):='application/vnd.stepmania.package';
+  l_file_content_tab('snd'):='audio/basic';
+  l_file_content_tab('snf'):='application/x-font-snf';
+  l_file_content_tab('so'):='application/octet-stream';
+  l_file_content_tab('spc'):='application/x-pkcs7-certificates';
+  l_file_content_tab('spf'):='application/vnd.yamaha.smaf-phrase';
+  l_file_content_tab('spl'):='application/x-futuresplash';
+  l_file_content_tab('spot'):='text/vnd.in3d.spot';
+  l_file_content_tab('spp'):='application/scvp-vp-response';
+  l_file_content_tab('spq'):='application/scvp-vp-request';
+  l_file_content_tab('spx'):='audio/ogg';
+  l_file_content_tab('sql'):='application/x-sql';
+  l_file_content_tab('src'):='application/x-wais-source';
+  l_file_content_tab('srt'):='application/x-subrip';
+  l_file_content_tab('sru'):='application/sru+xml';
+  l_file_content_tab('srx'):='application/sparql-results+xml';
+  l_file_content_tab('ssdl'):='application/ssdl+xml';
+  l_file_content_tab('sse'):='application/vnd.kodak-descriptor';
+  l_file_content_tab('ssf'):='application/vnd.epson.ssf';
+  l_file_content_tab('ssml'):='application/ssml+xml';
+  l_file_content_tab('st'):='application/vnd.sailingtracker.track';
+  l_file_content_tab('stc'):='application/vnd.sun.xml.calc.template';
+  l_file_content_tab('std'):='application/vnd.sun.xml.draw.template';
+  l_file_content_tab('stf'):='application/vnd.wt.stf';
+  l_file_content_tab('sti'):='application/vnd.sun.xml.impress.template';
+  l_file_content_tab('stk'):='application/hyperstudio';
+  l_file_content_tab('stl'):='application/vnd.ms-pki.stl';
+  l_file_content_tab('str'):='application/vnd.pg.format';
+  l_file_content_tab('stw'):='application/vnd.sun.xml.writer.template';
+  l_file_content_tab('sub'):='image/vnd.dvb.subtitle';
+  l_file_content_tab('sub'):='text/vnd.dvb.subtitle';
+  l_file_content_tab('sus'):='application/vnd.sus-calendar';
+  l_file_content_tab('susp'):='application/vnd.sus-calendar';
+  l_file_content_tab('sv4cpio'):='application/x-sv4cpio';
+  l_file_content_tab('sv4crc'):='application/x-sv4crc';
+  l_file_content_tab('svc'):='application/vnd.dvb.service';
+  l_file_content_tab('svd'):='application/vnd.svd';
+  l_file_content_tab('svg'):='image/svg+xml';
+  l_file_content_tab('svgz'):='image/svg+xml';
+  l_file_content_tab('swa'):='application/x-director';
+  l_file_content_tab('swf'):='application/x-shockwave-flash';
+  l_file_content_tab('swi'):='application/vnd.aristanetworks.swi';
+  l_file_content_tab('sxc'):='application/vnd.sun.xml.calc';
+  l_file_content_tab('sxd'):='application/vnd.sun.xml.draw';
+  l_file_content_tab('sxg'):='application/vnd.sun.xml.writer.global';
+  l_file_content_tab('sxi'):='application/vnd.sun.xml.impress';
+  l_file_content_tab('sxm'):='application/vnd.sun.xml.math';
+  l_file_content_tab('sxw'):='application/vnd.sun.xml.writer';
+  l_file_content_tab('t'):='text/troff';
+  l_file_content_tab('t3'):='application/x-t3vm-image';
+  l_file_content_tab('taglet'):='application/vnd.mynfc';
+  l_file_content_tab('tao'):='application/vnd.tao.intent-module-archive';
+  l_file_content_tab('tar'):='application/x-tar';
+  l_file_content_tab('tcap'):='application/vnd.3gpp2.tcap';
+  l_file_content_tab('tcl'):='application/x-tcl';
+  l_file_content_tab('teacher'):='application/vnd.smart.teacher';
+  l_file_content_tab('tei'):='application/tei+xml';
+  l_file_content_tab('teicorpus'):='application/tei+xml';
+  l_file_content_tab('tex'):='application/x-tex';
+  l_file_content_tab('texi'):='application/x-texinfo';
+  l_file_content_tab('texinfo'):='application/x-texinfo';
+  l_file_content_tab('text'):='text/plain';
+  l_file_content_tab('tfi'):='application/thraud+xml';
+  l_file_content_tab('tfm'):='application/x-tex-tfm';
+  l_file_content_tab('tga'):='image/x-tga';
+  l_file_content_tab('thmx'):='application/vnd.ms-officetheme';
+  l_file_content_tab('tif'):='image/tiff';
+  l_file_content_tab('tiff'):='image/tiff';
+  l_file_content_tab('tmo'):='application/vnd.tmobile-livetv';
+  l_file_content_tab('torrent'):='application/x-bittorrent';
+  l_file_content_tab('tpl'):='application/vnd.groove-tool-template';
+  l_file_content_tab('tpt'):='application/vnd.trid.tpt';
+  l_file_content_tab('tr'):='text/troff';
+  l_file_content_tab('tra'):='application/vnd.trueapp';
+  l_file_content_tab('trm'):='application/x-msterminal';
+  l_file_content_tab('tsd'):='application/timestamped-data';
+  l_file_content_tab('tsv'):='text/tab-separated-values';
+  l_file_content_tab('ttc'):='application/x-font-ttf';
+  l_file_content_tab('ttf'):='application/x-font-ttf';
+  l_file_content_tab('ttl'):='text/turtle';
+  l_file_content_tab('twd'):='application/vnd.simtech-mindmapper';
+  l_file_content_tab('twds'):='application/vnd.simtech-mindmapper';
+  l_file_content_tab('txd'):='application/vnd.genomatix.tuxedo';
+  l_file_content_tab('txf'):='application/vnd.mobius.txf';
+  l_file_content_tab('txt'):='text/plain';
+  l_file_content_tab('u32'):='application/x-authorware-bin';
+  l_file_content_tab('udeb'):='application/x-debian-package';
+  l_file_content_tab('ufd'):='application/vnd.ufdl';
+  l_file_content_tab('ufdl'):='application/vnd.ufdl';
+  l_file_content_tab('ulx'):='application/x-glulx';
+  l_file_content_tab('umj'):='application/vnd.umajin';
+  l_file_content_tab('unityweb'):='application/vnd.unity';
+  l_file_content_tab('uoml'):='application/vnd.uoml+xml';
+  l_file_content_tab('uri'):='text/uri-list';
+  l_file_content_tab('uris'):='text/uri-list';
+  l_file_content_tab('urls'):='text/uri-list';
+  l_file_content_tab('ustar'):='application/x-ustar';
+  l_file_content_tab('utz'):='application/vnd.uiq.theme';
+  l_file_content_tab('uu'):='text/x-uuencode';
+  l_file_content_tab('uva'):='audio/vnd.dece.audio';
+  l_file_content_tab('uvd'):='application/vnd.dece.data';
+  l_file_content_tab('uvf'):='application/vnd.dece.data';
+  l_file_content_tab('uvg'):='image/vnd.dece.graphic';
+  l_file_content_tab('uvh'):='video/vnd.dece.hd';
+  l_file_content_tab('uvi'):='image/vnd.dece.graphic';
+  l_file_content_tab('uvm'):='video/vnd.dece.mobile';
+  l_file_content_tab('uvp'):='video/vnd.dece.pd';
+  l_file_content_tab('uvs'):='video/vnd.dece.sd';
+  l_file_content_tab('uvt'):='application/vnd.dece.ttml+xml';
+  l_file_content_tab('uvu'):='video/vnd.uvvu.mp4';
+  l_file_content_tab('uvv'):='video/vnd.dece.video';
+  l_file_content_tab('uvva'):='audio/vnd.dece.audio';
+  l_file_content_tab('uvvd'):='application/vnd.dece.data';
+  l_file_content_tab('uvvf'):='application/vnd.dece.data';
+  l_file_content_tab('uvvg'):='image/vnd.dece.graphic';
+  l_file_content_tab('uvvh'):='video/vnd.dece.hd';
+  l_file_content_tab('uvvi'):='image/vnd.dece.graphic';
+  l_file_content_tab('uvvm'):='video/vnd.dece.mobile';
+  l_file_content_tab('uvvp'):='video/vnd.dece.pd';
+  l_file_content_tab('uvvs'):='video/vnd.dece.sd';
+  l_file_content_tab('uvvt'):='application/vnd.dece.ttml+xml';
+  l_file_content_tab('uvvu'):='video/vnd.uvvu.mp4';
+  l_file_content_tab('uvvv'):='video/vnd.dece.video';
+  l_file_content_tab('uvvx'):='application/vnd.dece.unspecified';
+  l_file_content_tab('uvvz'):='application/vnd.dece.zip';
+  l_file_content_tab('uvx'):='application/vnd.dece.unspecified';
+  l_file_content_tab('uvz'):='application/vnd.dece.zip';
+  l_file_content_tab('vcard'):='text/vcard';
+  l_file_content_tab('vcd'):='application/x-cdlink';
+  l_file_content_tab('vcf'):='text/x-vcard';
+  l_file_content_tab('vcg'):='application/vnd.groove-vcard';
+  l_file_content_tab('vcs'):='text/x-vcalendar';
+  l_file_content_tab('vcx'):='application/vnd.vcx';
+  l_file_content_tab('vis'):='application/vnd.visionary';
+  l_file_content_tab('viv'):='video/vnd.vivo';
+  l_file_content_tab('vob'):='video/x-ms-vob';
+  l_file_content_tab('vor'):='application/vnd.stardivision.writer';
+  l_file_content_tab('vox'):='application/x-authorware-bin';
+  l_file_content_tab('vrml'):='model/vrml';
+  l_file_content_tab('vsd'):='application/vnd.visio';
+  l_file_content_tab('vsf'):='application/vnd.vsf';
+  l_file_content_tab('vss'):='application/vnd.visio';
+  l_file_content_tab('vst'):='application/vnd.visio';
+  l_file_content_tab('vsw'):='application/vnd.visio';
+  l_file_content_tab('vtu'):='model/vnd.vtu';
+  l_file_content_tab('vxml'):='application/voicexml+xml';
+  l_file_content_tab('w3d'):='application/x-director';
+  l_file_content_tab('wad'):='application/x-doom';
+  l_file_content_tab('wav'):='audio/x-wav';
+  l_file_content_tab('wax'):='audio/x-ms-wax';
+  l_file_content_tab('wbmp'):='image/vnd.wap.wbmp';
+  l_file_content_tab('wbs'):='application/vnd.criticaltools.wbs+xml';
+  l_file_content_tab('wbxml'):='application/vnd.wap.wbxml';
+  l_file_content_tab('wcm'):='application/vnd.ms-works';
+  l_file_content_tab('wdb'):='application/vnd.ms-works';
+  l_file_content_tab('wdp'):='image/vnd.ms-photo';
+  l_file_content_tab('weba'):='audio/webm';
+  l_file_content_tab('webm'):='video/webm';
+  l_file_content_tab('webp'):='image/webp';
+  l_file_content_tab('wg'):='application/vnd.pmi.widget';
+  l_file_content_tab('wgt'):='application/widget';
+  l_file_content_tab('wks'):='application/vnd.ms-works';
+  l_file_content_tab('wm'):='video/x-ms-wm';
+  l_file_content_tab('wma'):='audio/x-ms-wma';
+  l_file_content_tab('wmd'):='application/x-ms-wmd';
+  l_file_content_tab('wmf'):='application/x-msmetafile';
+  l_file_content_tab('wml'):='text/vnd.wap.wml';
+  l_file_content_tab('wmlc'):='application/vnd.wap.wmlc';
+  l_file_content_tab('wmls'):='text/vnd.wap.wmlscript';
+  l_file_content_tab('wmlsc'):='application/vnd.wap.wmlscriptc';
+  l_file_content_tab('wmv'):='video/x-ms-wmv';
+  l_file_content_tab('wmx'):='video/x-ms-wmx';
+  l_file_content_tab('wmz'):='application/x-ms-wmz';
+  l_file_content_tab('wmz'):='application/x-msmetafile';
+  l_file_content_tab('woff'):='application/font-woff';
+  l_file_content_tab('wpd'):='application/vnd.wordperfect';
+  l_file_content_tab('wpl'):='application/vnd.ms-wpl';
+  l_file_content_tab('wps'):='application/vnd.ms-works';
+  l_file_content_tab('wqd'):='application/vnd.wqd';
+  l_file_content_tab('wri'):='application/x-mswrite';
+  l_file_content_tab('wrl'):='model/vrml';
+  l_file_content_tab('wsdl'):='application/wsdl+xml';
+  l_file_content_tab('wspolicy'):='application/wspolicy+xml';
+  l_file_content_tab('wtb'):='application/vnd.webturbo';
+  l_file_content_tab('wvx'):='video/x-ms-wvx';
+  l_file_content_tab('x32'):='application/x-authorware-bin';
+  l_file_content_tab('x3d'):='model/x3d+xml';
+  l_file_content_tab('x3db'):='model/x3d+binary';
+  l_file_content_tab('x3dbz'):='model/x3d+binary';
+  l_file_content_tab('x3dv'):='model/x3d+vrml';
+  l_file_content_tab('x3dvz'):='model/x3d+vrml';
+  l_file_content_tab('x3dz'):='model/x3d+xml';
+  l_file_content_tab('xaml'):='application/xaml+xml';
+  l_file_content_tab('xap'):='application/x-silverlight-app';
+  l_file_content_tab('xar'):='application/vnd.xara';
+  l_file_content_tab('xbap'):='application/x-ms-xbap';
+  l_file_content_tab('xbd'):='application/vnd.fujixerox.docuworks.binder';
+  l_file_content_tab('xbm'):='image/x-xbitmap';
+  l_file_content_tab('xdf'):='application/xcap-diff+xml';
+  l_file_content_tab('xdm'):='application/vnd.syncml.dm+xml';
+  l_file_content_tab('xdp'):='application/vnd.adobe.xdp+xml';
+  l_file_content_tab('xdssc'):='application/dssc+xml';
+  l_file_content_tab('xdw'):='application/vnd.fujixerox.docuworks';
+  l_file_content_tab('xenc'):='application/xenc+xml';
+  l_file_content_tab('xer'):='application/patch-ops-error+xml';
+  l_file_content_tab('xfdf'):='application/vnd.adobe.xfdf';
+  l_file_content_tab('xfdl'):='application/vnd.xfdl';
+  l_file_content_tab('xht'):='application/xhtml+xml';
+  l_file_content_tab('xhtml'):='application/xhtml+xml';
+  l_file_content_tab('xhvml'):='application/xv+xml';
+  l_file_content_tab('xif'):='image/vnd.xiff';
+  l_file_content_tab('xla'):='application/vnd.ms-excel';
+  l_file_content_tab('xlam'):='application/vnd.ms-excel.addin.macroenabled.12';
+  l_file_content_tab('xlc'):='application/vnd.ms-excel';
+  l_file_content_tab('xlf'):='application/x-xliff+xml';
+  l_file_content_tab('xlm'):='application/vnd.ms-excel';
+  l_file_content_tab('xls'):='application/vnd.ms-excel';
+  l_file_content_tab('xlsb'):='application/vnd.ms-excel.sheet.binary.macroenabled.12';
+  l_file_content_tab('xlsm'):='application/vnd.ms-excel.sheet.macroenabled.12';
+  l_file_content_tab('xlsx'):='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+  l_file_content_tab('xlt'):='application/vnd.ms-excel';
+  l_file_content_tab('xltm'):='application/vnd.ms-excel.template.macroenabled.12';
+  l_file_content_tab('xltx'):='application/vnd.openxmlformats-officedocument.spreadsheetml.template';
+  l_file_content_tab('xlw'):='application/vnd.ms-excel';
+  l_file_content_tab('xm'):='audio/xm';
+  l_file_content_tab('xml'):='application/xml';
+  l_file_content_tab('xo'):='application/vnd.olpc-sugar';
+  l_file_content_tab('xop'):='application/xop+xml';
+  l_file_content_tab('xpi'):='application/x-xpinstall';
+  l_file_content_tab('xpl'):='application/xproc+xml';
+  l_file_content_tab('xpm'):='image/x-xpixmap';
+  l_file_content_tab('xpr'):='application/vnd.is-xpr';
+  l_file_content_tab('xps'):='application/vnd.ms-xpsdocument';
+  l_file_content_tab('xpw'):='application/vnd.intercon.formnet';
+  l_file_content_tab('xpx'):='application/vnd.intercon.formnet';
+  l_file_content_tab('xsl'):='application/xml';
+  l_file_content_tab('xslt'):='application/xslt+xml';
+  l_file_content_tab('xsm'):='application/vnd.syncml+xml';
+  l_file_content_tab('xspf'):='application/xspf+xml';
+  l_file_content_tab('xul'):='application/vnd.mozilla.xul+xml';
+  l_file_content_tab('xvm'):='application/xv+xml';
+  l_file_content_tab('xvml'):='application/xv+xml';
+  l_file_content_tab('xwd'):='image/x-xwindowdump';
+  l_file_content_tab('xyz'):='chemical/x-xyz';
+  l_file_content_tab('xz'):='application/x-xz';
+  l_file_content_tab('yang'):='application/yang';
+  l_file_content_tab('yin'):='application/yin+xml';
+  l_file_content_tab('z1'):='application/x-zmachine';
+  l_file_content_tab('z2'):='application/x-zmachine';
+  l_file_content_tab('z3'):='application/x-zmachine';
+  l_file_content_tab('z4'):='application/x-zmachine';
+  l_file_content_tab('z5'):='application/x-zmachine';
+  l_file_content_tab('z6'):='application/x-zmachine';
+  l_file_content_tab('z7'):='application/x-zmachine';
+  l_file_content_tab('z8'):='application/x-zmachine';
+  l_file_content_tab('zaz'):='application/vnd.zzazz.deck+xml';
+  l_file_content_tab('zip'):='application/zip';
+  l_file_content_tab('zir'):='application/vnd.zul';
+  l_file_content_tab('zirz'):='application/vnd.zul';
+  l_file_content_tab('zmm'):='application/vnd.handheld-entertainment+xml';
+end init_file_content_types;
+begin
+  l_file_extension:=substr(p_file_name,instr(p_file_name,'.',-1)+1);
+  if l_file_content_tab.exists(lower(l_file_extension)) then
+    l_file_content_type:=l_file_content_tab(lower(l_file_extension));
+  else
+    init_file_content_types;
+    if l_file_content_tab.exists(lower(l_file_extension)) then
+      l_file_content_type:=l_file_content_tab(lower(l_file_extension));
+    end if;
+  end if;
+  return l_file_content_type;
+end file_content_type;
 
 
 end xxen_util;

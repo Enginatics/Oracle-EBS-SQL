@@ -85,8 +85,8 @@ gash.sample_time_,
 gash.inst_id,
 gash.session_id||' - '||gash.session_serial# sid_serial#,
 case when lower(gash.module) like '%frm%' then 'Forms' when lower(gash.module) like '%fwk%' then 'OAF' end ui_type,
-(select so.name from sys.obj$ so where gsa.program_id=so.obj#) code,
-case when gsa.program_line#>0 then gsa.program_line# end code_line#,
+xxen_util.instring(gash.code_and_line,'|',1) code,
+xxen_util.instring(gash.code_and_line,'|',2) code_line#,
 gash.sql_id,
 gash.sql_plan_hash_value plan_hash_value,
 gash.session_type,
@@ -145,7 +145,16 @@ gash.action,
 gash.module,
 gash.program
 from
-(select cast(gash.sample_time as date) sample_time_, gash.* from gv$active_session_history gash) gash,
+(
+select
+(select so.name||'|'||case when gsa.program_line#>0 then gsa.program_line# end from gv$sqlarea gsa, sys.obj$ so where gash.sql_id=gsa.sql_id and gsa.program_id=so.obj#(+) and rownum=1) code_and_line,
+cast(gash.sample_time as date) sample_time_,
+gash.*
+from
+gv$active_session_history gash
+where
+1=1
+) gash,
 (
 select distinct
 gash.inst_id,
@@ -160,18 +169,9 @@ max(gash.machine) keep (dense_rank last order by gash.sample_id) over (partition
 from
 gv$active_session_history gash
 ) gash0,
-(
-select distinct
-gsa.sql_id,
-min(gsa.inst_id) keep (dense_rank first order by gsa.inst_id, gsa.plan_hash_value) over (partition by gsa.sql_id) inst_id,
-min(gsa.plan_hash_value) keep (dense_rank first order by gsa.inst_id, gsa.plan_hash_value) over (partition by gsa.sql_id) plan_hash_value
-from
-gv$sqlarea gsa
-) gsa0,
-gv$sqlarea gsa,
 dba_users du
 where
-1=1 and
+2=2 and
 gash.blocking_session is not null and
 gash.sql_id=gsa0.sql_id(+) and
 gsa0.sql_id=gsa.sql_id(+) and

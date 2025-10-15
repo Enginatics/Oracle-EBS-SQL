@@ -56,7 +56,14 @@ decode(wip_picking_pub.quantity_allocated(wro.wip_entity_id, wro.operation_seq_n
 wro.released_quantity quantity_released,
 decode(mr.primary_reservation_quantity, 0,null, mr.primary_reservation_quantity) quantity_reserved,
 --
-moqd.on_hand,
+moqd.on_hand inv_quantity_onhand,
+decode(xxen_inv_sd.get_inv_qty(wro.inventory_item_id,wro.organization_id,'AVAILABLE',wro.supply_subinventory)
+      ,0,to_number(null),xxen_inv_sd.get_inv_qty(wro.inventory_item_id,wro.organization_id,'AVAILABLE',wro.supply_subinventory)
+      ) subinv_quantity_available,
+decode(xxen_inv_sd.get_inv_qty(wro.inventory_item_id,wro.organization_id,'ONHAND',wro.supply_subinventory)
+      ,0,to_number(null),xxen_inv_sd.get_inv_qty(wro.inventory_item_id,wro.organization_id,'AVAILABLE',wro.supply_subinventory)
+      ) subinv_quantity_onhand,
+--
 wro.date_required,
 xxen_util.meaning(wro.wip_supply_type,'WIP_SUPPLY',700) supply_type,
 xxen_util.meaning(msiv.atp_flag,'ATP_FLAG',3) atp_flag,
@@ -108,7 +115,7 @@ where
 1=1 and
 we.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
 ood.organization_id=we.organization_id and
-wro.wip_entity_id=mr.supply_source_header_id(+) and
+wro.wip_entity_id=mr.demand_source_header_id(+) and
 wro.organization_id=mr.organization_id(+) and
 mr.demand_source_type_id(+)=5 and
 wro.operation_seq_num=mr.demand_source_line_id(+) and

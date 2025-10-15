@@ -53,6 +53,20 @@ to_char(null) period12_name,
 to_number(null) period12_amount,
 to_char(null) period13_name,
 to_number(null) period13_amount,
+to_char(null) period14_name,
+to_number(null) period14_amount,
+to_char(null) period15_name,
+to_number(null) period15_amount,
+to_char(null) period16_name,
+to_number(null) period16_amount,
+to_char(null) period17_name,
+to_number(null) period17_amount,
+to_char(null) period18_name,
+to_number(null) period18_amount,
+to_char(null) period19_name,
+to_number(null) period19_amount,
+to_char(null) period20_name,
+to_number(null) period20_amount,
 to_char(null) gl_segment1,
 to_char(null) gl_segment2,
 to_char(null) gl_segment3,
@@ -71,9 +85,3 @@ to_char(null) gl_segment15
 from
 dual
 where 1=1
-&not_use_first_block
-&report_table_select 
-&report_table_name 
-&report_table_where_clause 
-&success_records
-&processed_run

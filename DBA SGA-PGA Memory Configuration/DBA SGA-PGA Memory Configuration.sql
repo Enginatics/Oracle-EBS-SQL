@@ -87,7 +87,7 @@ from
 (
 select go.inst_id, 'cpu physical' name, go.value, 11 order_by from gv$osstat go where go.stat_name='NUM_CPUS' union all
 select go.inst_id, 'memory physical' name, go.value, 1 order_by from gv$osstat go where go.stat_name='PHYSICAL_MEMORY_BYTES' union all
-select go.inst_id, 'memory unused' name, go.value-(select sum(gp.value) from gv$parameter gp where go.inst_id=gp.inst_id and gp.name in ('sga_target','memory_target','pga_aggregate_target')) value, 2 order_by from gv$osstat go where go.stat_name='PHYSICAL_MEMORY_BYTES' union all
+select go.inst_id, 'memory unused' name, go.value-(select sum(gp.value) from gv$system_parameter gp where go.inst_id=gp.inst_id and gp.name in ('sga_target','memory_target','pga_aggregate_target')) value, 2 order_by from gv$osstat go where go.stat_name='PHYSICAL_MEMORY_BYTES' union all
 select gp.inst_id, gp.name, to_number(gp.value) value,
 decode(gp.name,
 'cpu_count',12,
@@ -99,7 +99,7 @@ decode(gp.name,
 'memory_target',8,
 'result_cache_max_size',9
 ) order_by
-from gv$parameter gp where gp.name in ('cpu_count','pga_aggregate_limit','pga_aggregate_target','sga_max_size','sga_target','memory_max_target','memory_target','result_cache_max_size')
+from gv$system_parameter gp where gp.name in ('cpu_count','pga_aggregate_limit','pga_aggregate_target','sga_max_size','sga_target','memory_max_target','memory_target','result_cache_max_size')
 ) x
 order by
 x.inst_id,
@@ -111,21 +111,19 @@ union all
 select * from (
 select
 gi.inst_id,
-'PGA record date: '||least(gi.startup_time,(select min(dhs.begin_interval_time) from dba_hist_snapshot dhs where vd.dbid=dhs.dbid and gi.instance_number=dhs.instance_number)) name,
+'PGA record date: '||least(gi.startup_time,(select min(dhs.begin_interval_time) from dba_hist_snapshot dhs where 1=1 and gi.instance_number=dhs.instance_number)) name,
 null value
 from
-gv$instance gi,
-v$database vd
+gv$instance gi
 order by gi.inst_id
 )
 union all
 select * from (select
 gi.inst_id,
 'average PGA' name,
-(select avg(dhp.value)/1024/1024/1024 from dba_hist_pgastat dhp where vd.dbid=dhp.dbid and gi.instance_number=dhp.instance_number and dhp.name='total PGA allocated') value
+(select avg(dhp.value)/1024/1024/1024 from dba_hist_pgastat dhp where 2=2 and gi.instance_number=dhp.instance_number and dhp.name='total PGA allocated') value
 from
-gv$instance gi,
-v$database vd
+gv$instance gi
 order by gi.inst_id
 )
 union all
@@ -133,10 +131,9 @@ select * from (
 select
 gi.inst_id,
 'maximum PGA' name,
-(select max(dhp.value)/1024/1024/1024 from dba_hist_pgastat dhp where vd.dbid=dhp.dbid and gi.instance_number=dhp.instance_number and dhp.name='maximum PGA allocated') value
+(select max(dhp.value)/1024/1024/1024 from dba_hist_pgastat dhp where 2=2 and gi.instance_number=dhp.instance_number and dhp.name='maximum PGA allocated') value
 from
-gv$instance gi,
-v$database vd
+gv$instance gi
 order by gi.inst_id
 )
 union all
@@ -156,6 +153,8 @@ ass.pname in ('DSTART','CPUSPEEDNW','IOSEEKTIM','IOTFRSPEED','MBRC')
 union all
 select to_number(null) inst_id, 'Use large pages: '||vp.value name, null value from v$parameter vp where vp.name='use_large_pages' union all
 select to_number(null) inst_id, 'Pack License: '||vp.value name, null value from v$parameter vp where vp.name='control_management_pack_access' union all
+select to_number(null) inst_id, 'AWR pdb autoflush enabled: '||vp.value name, null value from v$parameter vp where vp.name='awr_pdb_autoflush_enabled' union all
 select distinct to_number(null) inst_id, 'AWR Report last usage date: '||max(dfus.last_usage_date) over () name, null value from dba_feature_usage_statistics dfus where dfus.name='AWR Report' and dfus.dbid in (select vd.dbid from v$database vd) union all
 select distinct to_number(null) inst_id, 'AWR Report usages' name, sum(dfus.detected_usages) over () value from dba_feature_usage_statistics dfus where dfus.name='AWR Report' and dfus.dbid in (select vd.dbid from v$database vd) union all
+select to_number(null) inst_id, 'Database Editions: ' name, count(*) value from dba_editions de union all
 select to_number(null) inst_id, 'Database size' name, sum((select vp.value from v$parameter vp where vp.name like 'db_block_size')*dtum.used_space)/1024/1024/1024 value from dba_tablespace_usage_metrics dtum

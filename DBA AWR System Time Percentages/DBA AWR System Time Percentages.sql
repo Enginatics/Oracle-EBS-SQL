@@ -6,6 +6,12 @@
 /*************************************************************************/
 -- Report Name: DBA AWR System Time Percentages
 -- Description: Historic system time model values from the automated workload repository showing a breakdown of how much percent of the database time was spent e.g. on excuting SQL, PL/SQL or Java code, parsing statements etc..
+
+To see data in this report based on dba_hist_sys_time_model, set the following:
+alter session set container=PDB1;
+alter system set awr_pdb_autoflush_enabled=true;
+
+<a href="https://www.enginatics.com/blog/updated-dba-awr-blitz-reports-now-work-with-plugglable-databases/" rel="nofollow" target="_blank">https://www.enginatics.com/blog/updated-dba-awr-blitz-reports-now-work-with-plugglable-databases/</a>
 -- Excel Examle Output: https://www.enginatics.com/example/dba-awr-system-time-percentages/
 -- Library Link: https://www.enginatics.com/reports/dba-awr-system-time-percentages/
 -- Run Report: https://demo.enginatics.com/

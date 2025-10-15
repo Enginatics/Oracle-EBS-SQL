@@ -64,6 +64,7 @@ hp_s.party_name                    ship_to_customer_name,
 hca_s.account_number               ship_to_customer_number,
 hcsua_s.location                   ship_to_site,
 hz_format_pub.format_address(hps_s.location_id,null,null,', ') ship_to_address,
+hp_sold.party_name                    sold_to_customer_name,
 --
 rctta.name                         trx_type,
 rctta.type                           trx_class,
@@ -309,6 +310,23 @@ zl.tax_rate,
 --
 rcta.internal_notes invoice_special_instructions,
 rcta.comments invoice_comments,
+-- interface header attributes
+xxen_util.display_flexfield_context(222,'RA_INTERFACE_HEADER',rcta.interface_header_context) interface_header_context,
+xxen_util.display_flexfield_value(222,'RA_INTERFACE_HEADER',rcta.interface_header_context,'INTERFACE_HEADER_ATTRIBUTE1', rcta.rowid,rcta.interface_header_attribute1) ar_int_header_attribute1,
+xxen_util.display_flexfield_value(222,'RA_INTERFACE_HEADER',rcta.interface_header_context,'INTERFACE_HEADER_ATTRIBUTE2', rcta.rowid,rcta.interface_header_attribute2) ar_int_header_attribute2,
+xxen_util.display_flexfield_value(222,'RA_INTERFACE_HEADER',rcta.interface_header_context,'INTERFACE_HEADER_ATTRIBUTE3', rcta.rowid,rcta.interface_header_attribute3) ar_int_header_attribute3,
+xxen_util.display_flexfield_value(222,'RA_INTERFACE_HEADER',rcta.interface_header_context,'INTERFACE_HEADER_ATTRIBUTE4', rcta.rowid,rcta.interface_header_attribute4) ar_int_header_attribute4,
+xxen_util.display_flexfield_value(222,'RA_INTERFACE_HEADER',rcta.interface_header_context,'INTERFACE_HEADER_ATTRIBUTE5', rcta.rowid,rcta.interface_header_attribute5) ar_int_header_attribute5,
+xxen_util.display_flexfield_value(222,'RA_INTERFACE_HEADER',rcta.interface_header_context,'INTERFACE_HEADER_ATTRIBUTE6', rcta.rowid,rcta.interface_header_attribute6) ar_int_header_attribute6,
+xxen_util.display_flexfield_value(222,'RA_INTERFACE_HEADER',rcta.interface_header_context,'INTERFACE_HEADER_ATTRIBUTE7', rcta.rowid,rcta.interface_header_attribute7) ar_int_header_attribute7,
+xxen_util.display_flexfield_value(222,'RA_INTERFACE_HEADER',rcta.interface_header_context,'INTERFACE_HEADER_ATTRIBUTE8', rcta.rowid,rcta.interface_header_attribute8) ar_int_header_attribute8,
+xxen_util.display_flexfield_value(222,'RA_INTERFACE_HEADER',rcta.interface_header_context,'INTERFACE_HEADER_ATTRIBUTE9', rcta.rowid,rcta.interface_header_attribute9) ar_int_header_attribute9,
+xxen_util.display_flexfield_value(222,'RA_INTERFACE_HEADER',rcta.interface_header_context,'INTERFACE_HEADER_ATTRIBUTE10',rcta.rowid,rcta.interface_header_attribute10) ar_int_header_attribute10,
+xxen_util.display_flexfield_value(222,'RA_INTERFACE_HEADER',rcta.interface_header_context,'INTERFACE_HEADER_ATTRIBUTE11',rcta.rowid,rcta.interface_header_attribute11) ar_int_header_attribute11,
+xxen_util.display_flexfield_value(222,'RA_INTERFACE_HEADER',rcta.interface_header_context,'INTERFACE_HEADER_ATTRIBUTE12',rcta.rowid,rcta.interface_header_attribute12) ar_int_header_attribute12,
+xxen_util.display_flexfield_value(222,'RA_INTERFACE_HEADER',rcta.interface_header_context,'INTERFACE_HEADER_ATTRIBUTE13',rcta.rowid,rcta.interface_header_attribute13) ar_int_header_attribute13,
+xxen_util.display_flexfield_value(222,'RA_INTERFACE_HEADER',rcta.interface_header_context,'INTERFACE_HEADER_ATTRIBUTE14',rcta.rowid,rcta.interface_header_attribute14) ar_int_header_attribute14,
+xxen_util.display_flexfield_value(222,'RA_INTERFACE_HEADER',rcta.interface_header_context,'INTERFACE_HEADER_ATTRIBUTE15',rcta.rowid,rcta.interface_header_attribute15) ar_int_header_attribute15,
 -- header dff
 xxen_util.display_flexfield_context(222,'RA_CUSTOMER_TRX',rcta.attribute_category) invoice_attribute_category,
 xxen_util.display_flexfield_value(222,'RA_CUSTOMER_TRX',rcta.attribute_category,'ATTRIBUTE1', rcta.rowid,rcta.attribute1)  ar_inv_attribute1,
@@ -380,6 +398,8 @@ hz_parties hp_s,
 hz_cust_site_uses_all hcsua_s,
 hz_cust_acct_sites_all hcasa_s,
 hz_party_sites hps_s,
+hz_cust_accounts hca_sold,
+hz_parties hp_sold,
 jtf_rs_salesreps jrs,
 jtf_rs_resource_extns_vl jrrev,
 zx_lines_det_factors zldt,
@@ -411,6 +431,8 @@ hca_s.party_id = hp_s.party_id(+) and
 rcta.ship_to_site_use_id = hcsua_s.site_use_id (+) and
 hcsua_s.cust_acct_site_id = hcasa_s.cust_acct_site_id (+) and
 hcasa_s.party_site_id = hps_s.party_site_id (+) and
+rcta.sold_to_customer_id = hca_sold.cust_account_id(+) and
+hca_sold.party_id = hp_sold.party_id(+) and
 rcta.primary_salesrep_id=jrs.salesrep_id(+) and
 rcta.org_id=jrs.org_id(+) and
 jrs.resource_id=jrrev.resource_id(+) and

@@ -41,6 +41,7 @@ gs.*,
 case
 when gs.metric_unit like 'Blocks %' or gs.metric_unit like 'Reads %' or gs.metric_unit like 'Writes %' then vp.value/1000000
 when gs.metric_unit like '%Bytes%' then 1/1000000
+when gs.metric_unit='CentiSeconds Per Second' then 1/(select gsp.value from gv$system_parameter gsp where gs.inst_id=gsp.inst_id and gsp.name='cpu_count')
 else 1 end unit_factor
 from
 (select vp.value from v$parameter vp where vp.name='db_block_size') vp,
@@ -48,6 +49,8 @@ from
 where
 gs.metric_name in (
 'Host CPU Utilization (%)',
+'CPU Usage Per Sec',
+'Background CPU Usage Per Sec',
 'Database Wait Time Ratio',
 'Average Active Sessions',
 'Logical Reads Per Sec',
@@ -81,6 +84,7 @@ select
 case
 when dhss.metric_unit like 'Blocks %' or dhss.metric_unit like 'Reads %' or dhss.metric_unit like 'Writes %' then vp.value/1000000
 when dhss.metric_unit like '%Bytes%' then 1/1000000
+when dhss.metric_unit='CentiSeconds Per Second' then 1/(select gsp.value from gv$system_parameter gsp where dhss.instance_number=gsp.inst_id and gsp.name='cpu_count')
 else 1 end unit_factor,
 dhss.*
 from
@@ -90,6 +94,8 @@ where
 vp.name='db_block_size' and
 dhss.metric_name in (
 'Host CPU Utilization (%)',
+'CPU Usage Per Sec',
+'Background CPU Usage Per Sec',
 'Database Wait Time Ratio',
 'Average Active Sessions',
 'Logical Reads Per Sec',
@@ -116,8 +122,10 @@ sum(maxval_) max
 &day_avg2
 for
 metric_name in (
-'Host CPU Utilization (%)' "CPU%",
-'Database Wait Time Ratio' "WAIT%",
+'Host CPU Utilization (%)' "Host CPU %",
+'CPU Usage Per Sec' "Foreground CPU %",
+'Background CPU Usage Per Sec' "Background CPU %",
+'Database Wait Time Ratio' "Wait %",
 'Average Active Sessions' act_sess,
 'Logical Reads Per Sec' buff_read,
 'Physical Read Total Bytes Per Sec' phys_read,

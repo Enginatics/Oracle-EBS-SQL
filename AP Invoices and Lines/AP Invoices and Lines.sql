@@ -36,10 +36,12 @@ ap_inv.supplier_site,
 ap_inv.invoice_num,
 ap_inv.doc_sequence_value document_number,
 ap_inv.invoice_status,
+ap_inv.accounting_status,
 ap_inv.batch_name,
 ap_inv.invoice_creation_date,
 ap_inv.invoice_received_date,
 ap_inv.invoice_date,
+ap_inv.validation_date,
 ap_inv.invoice_gl_date,
 ap_inv.due_date,
 ap_inv.days_due,
@@ -54,6 +56,12 @@ decode(ap_inv.first_invoice,'Y',ap_invoices_utility_pkg.get_item_total(ap_inv.in
 decode(ap_inv.first_invoice,'Y',ap_invoices_utility_pkg.get_retained_total(ap_inv.invoice_id, ap_inv.org_id)) retainage_total,
 decode(ap_inv.first_invoice,'Y',ap_invoices_utility_pkg.get_prepaid_amount(ap_inv.invoice_id)) prepayments_applied_total,
 decode(ap_inv.first_invoice,'Y',ap_invoices_utility_pkg.get_amount_withheld(ap_inv.invoice_id)) witholding_total,
+decode(ap_inv.first_invoice,'Y',
+nvl(ap_invoices_utility_pkg.get_item_total(ap_inv.invoice_id, ap_inv.org_id),0)
++ nvl(ap_invoices_utility_pkg.get_retained_total(ap_inv.invoice_id, ap_inv.org_id),0)
+- nvl(abs(ap_invoices_utility_pkg.get_prepaid_amount(ap_inv.invoice_id)),0)
+- nvl(ap_invoices_utility_pkg.get_amount_withheld(ap_inv.invoice_id),0)
+) invoice_subtotal,
 decode(ap_inv.first_invoice,'Y',ap_inv.total_tax_amount) tax_total,
 decode(ap_inv.first_invoice,'Y',ap_inv.self_assessed_tax_amount) self_assessed_tax_amount,
 decode(ap_inv.first_invoice,'Y',ap_invoices_utility_pkg.get_freight_total(ap_inv.invoice_id, ap_inv.org_id)) freight_total,
@@ -72,13 +80,13 @@ decode(ap_inv.first_invoice,'Y',ap_inv.discount_amount_taken) discount_amount_ta
 decode(ap_inv.first_invoice,'Y',ap_inv.approved_amount) approved_amount,
 decode(ap_inv.first_invoice,'Y',ap_inv.pay_curr_invoice_amount) payment_curr_invoice_amount,
 decode(ap_inv.first_invoice,'Y',ap_inv.amount_paid) amount_paid,
-ap_inv.base_currency,
-decode(ap_inv.first_invoice,'Y',ap_inv.invoice_amount_base) invoice_amount_base,
-decode(ap_inv.first_invoice,'Y',ap_inv.tax_amount_base) tax_amount_base,
-decode(ap_inv.first_invoice,'Y',ap_inv.amt_applicable_to_disc_base) amt_applicable_to_disc_base,
-decode(ap_inv.first_invoice,'Y',ap_inv.discount_amount_taken_base) discount_amount_taken_base,
-decode(ap_inv.first_invoice,'Y',ap_inv.approved_amount_base) approved_amount_base,
-decode(ap_inv.first_invoice,'Y',ap_inv.amount_paid_base) amount_paid_base,
+ap_inv.functional_currency,
+decode(ap_inv.first_invoice,'Y',ap_inv.invoice_amount_functional) invoice_amount_functional,
+decode(ap_inv.first_invoice,'Y',ap_inv.tax_amount_functional) tax_amount_functional,
+decode(ap_inv.first_invoice,'Y',ap_inv.amt_applicable_to_disc_funct) amt_applicable_to_disc_funct,
+decode(ap_inv.first_invoice,'Y',ap_inv.discount_amount_taken_funct) discount_amount_taken_funct,
+decode(ap_inv.first_invoice,'Y',ap_inv.approved_amount_functional) approved_amount_functional,
+decode(ap_inv.first_invoice,'Y',ap_inv.amount_paid_functional) amount_paid_functional,
 ap_inv.payment_num,
 ap_inv.payment_date,
 decode(ap_inv.first_psched,'Y',ap_inv.gross_amount) payment_num_gross_amount,
@@ -186,11 +194,33 @@ nvl(aps.segment1,hp.party_number) supplier_number,
 nvl(assa.vendor_site_code,hps.party_site_number) supplier_site,
 aia.invoice_num,
 xxen_util.ap_invoice_status(aia.invoice_id,aia.invoice_amount,aia.payment_status_flag,aia.invoice_type_lookup_code,aia.validation_request_id) invoice_status,
+decode(ap_invoices_pkg.get_posting_status(aia.invoice_id),
+'N',xxen_util.meaning('N','YES_NO',0),
+'D',xxen_util.meaning('N','YES_NO',0),
+'Y',xxen_util.yes('Y'),
+'P',xxen_util.meaning('P','POSTING STATUS',200),
+'S',xxen_util.meaning('S','POSTING STATUS',200)
+) accounting_status,
 aba.batch_name,
 xxen_util.client_time(aia.creation_date) invoice_creation_date,
 xxen_util.client_time(aia.invoice_received_date) invoice_received_date,
 aia.invoice_date,
 aia.gl_date invoice_gl_date,
+(
+select
+min(xe.creation_date)
+from
+xla.xla_transaction_entities xte,
+xla_events xe
+where
+aia.invoice_id=xte.source_id_int_1 and
+aia.set_of_books_id=xte.ledger_id and
+xte.application_id=200 and
+xte.entity_code='AP_INVOICES' and
+xte.application_id=xe.application_id and
+xte.entity_id=xe.entity_id and
+xe.event_type_code like '%VALIDATED%'
+) validation_date,
 apsa.due_date,
 ceil(sysdate-apsa.due_date) days_due,
 xxen_util.meaning(aia.invoice_type_lookup_code,'INVOICE TYPE',200) invoice_type,
@@ -207,13 +237,13 @@ aia.discount_amount_taken,
 aia.approved_amount,
 aia.pay_curr_invoice_amount,
 aia.amount_paid,
-gl.currency_code base_currency,
-decode(aia.invoice_currency_code,gl.currency_code,aia.invoice_amount,aia.base_amount) invoice_amount_base,
-aia.total_tax_amount*nvl(aia.exchange_rate,1) tax_amount_base,
-aia.amount_applicable_to_discount*nvl(aia.exchange_rate,1) amt_applicable_to_disc_base,
-aia.discount_amount_taken/aia.payment_cross_rate*nvl(aia.exchange_rate,1) discount_amount_taken_base,
-aia.approved_amount*nvl(aia.exchange_rate,1) approved_amount_base,
-aia.amount_paid/aia.payment_cross_rate*nvl(aia.exchange_rate,1) amount_paid_base,
+gl.currency_code functional_currency,
+decode(aia.invoice_currency_code,gl.currency_code,aia.invoice_amount,aia.base_amount) invoice_amount_functional,
+aia.total_tax_amount*nvl(aia.exchange_rate,1) tax_amount_functional,
+aia.amount_applicable_to_discount*nvl(aia.exchange_rate,1) amt_applicable_to_disc_funct,
+aia.discount_amount_taken/aia.payment_cross_rate*nvl(aia.exchange_rate,1) discount_amount_taken_funct,
+aia.approved_amount*nvl(aia.exchange_rate,1) approved_amount_functional,
+aia.amount_paid/aia.payment_cross_rate*nvl(aia.exchange_rate,1) amount_paid_functional,
 aia.dispute_reason,
 aia.doc_sequence_value,
 apsa.payment_priority,
@@ -270,7 +300,7 @@ xxen_util.meaning(aila.line_source,'LINE SOURCE',200) line_source,
 decode(aila.discarded_flag,'Y','Y') line_discarded,
 replace(aila.description,'~','-') line_description,
 aila.amount line_amount,
-nvl(aila.base_amount,aila.amount) line_base_amount,
+nvl(aila.base_amount,aila.amount) line_amount_functional,
 aila.accounting_date line_accounting_date,
 decode(aila.deferred_acctg_flag,'Y',xxen_util.meaning(aila.deferred_acctg_flag,'YES_NO',0)) deferred_option,
 aila.def_acctg_start_date deferred_start_date,
@@ -280,6 +310,7 @@ aila.tax,
 aila.tax_jurisdiction_code,
 aila.tax_rate_code,
 aila.tax_rate,
+hl_ship_to.location_code ship_to_location_code,
 aida.distribution_line_number dist_line_number,
 xxen_util.meaning(aida.line_type_lookup_code,'INVOICE DISTRIBUTION TYPE',200) distribution_type,
 aida.period_name,
@@ -287,9 +318,9 @@ aida.accounting_date dist_accounting_date,
 case when '&show_aida'='Y' then aida.quantity_invoiced else aila.quantity_invoiced end quantity_invoiced,
 case when '&show_aida'='Y' then aida.unit_price else aila.unit_price end unit_price,
 aida.amount dist_amount,
-nvl(aida.base_amount,aida.amount) dist_base_amount,
+nvl(aida.base_amount,aida.amount) dist_amount_functional,
 aida.invoice_price_variance dist_invoice_price_variance,
-aida.base_invoice_price_variance dist_base_inv_price_variance,
+aida.base_invoice_price_variance dist_inv_price_variance_funct,
 aida.dist_code_combination_id,
 xxen_util.concatenated_segments(aida.dist_code_combination_id) expense_account,
 xxen_util.concatenated_segments(aida.price_var_code_combination_id) price_variance_account,
@@ -301,6 +332,21 @@ decode(aida.match_status_flag,'A','Validated','T','Tested','S','Stopped','Never 
 nvl((select max(rt.transaction_date) from rcv_transactions rt where rt.transaction_id = nvl(aida.rcv_transaction_id,aila.rcv_transaction_id) and rt.transaction_type in ('RECEIVE','DELIVER')),
     (select max(rt.transaction_date) from rcv_transactions rt where rt.po_line_id = aila.po_line_id and rt.po_line_location_id = aila.po_line_location_id and rt.transaction_type in ('RECEIVE','DELIVER'))
 ) receipt_date,
+(select listagg(x.receipt_num,',') within group (order by x.receipt_num) receipt_num
+from
+(select distinct
+ rsh.receipt_num
+ from
+ rcv_transactions rt,
+ rcv_shipment_lines rsl,
+ rcv_shipment_headers rsh
+ where
+ rt.transaction_id=nvl(aida.rcv_transaction_id,aila.rcv_transaction_id)  and
+ rsl.shipment_line_id=rt.shipment_line_id and
+ rt.transaction_type in ('RECEIVE','DELIVER') and
+ rsh.shipment_header_id=rt.shipment_header_id
+ ) x
+) receipt_number,
 xxen_util.meaning(aida.assets_tracking_flag,'YES_NO',0) dist_asset_tracking_flag,
 aida.assets_addition_flag dist_assets_addition_flag,
 replace(aida.description,'~','-') dist_description,
@@ -394,6 +440,7 @@ ap_supplier_sites_all assa,
 hz_parties hp,
 hz_party_sites hps,
 hz_locations hl,
+hr_locations hl_ship_to,
 (select aila.* from ap_invoice_lines_all aila where '&show_aila'='Y') aila,
 (select aida2.* from ap_invoice_distributions_all aida2, gl_code_combinations gcc where '&show_aida'='Y' and 2=2 and aida2.dist_code_combination_id=gcc.code_combination_id) aida,
 ap_recurring_payments_all arpa,
@@ -416,6 +463,7 @@ aia.vendor_site_id=assa.vendor_site_id(+) and
 aia.party_id=hp.party_id(+) and
 aia.party_site_id=hps.party_site_id(+) and
 hps.location_id=hl.location_id(+) and
+aila.ship_to_location_id=hl_ship_to.location_id(+) and
 decode(apsa.payment_num,1,apsa.invoice_id)=aila.invoice_id(+) and
 aila.invoice_id=aida.invoice_id(+)and
 aila.line_number=aida.invoice_line_number(+) and

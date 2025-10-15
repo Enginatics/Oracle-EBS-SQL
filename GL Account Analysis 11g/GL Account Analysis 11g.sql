@@ -124,13 +124,15 @@ xte.entity_code,
 xte.source_id_int_1,
 case when xte.application_id=222 then case when xte.entity_code in ('TRANSACTIONS','BILLS_RECEIVABLE') then xte.source_id_int_1 when xte.entity_code='ADJUSTMENTS' then aaa.customer_trx_id end end customer_trx_id,
 paa.customer_id paa_customer_id,
-acra.pay_from_customer acra_pay_from_customer
+acra.pay_from_customer acra_pay_from_customer,
+xxen_fsg.view_transaction_(fnd_global.resp_appl_id,gl.ledger_id,fnd_global.resp_id,fnd_global.security_group_id,gjsv.user_je_source_name,xah.event_id) view_transaction
 from
 gl_ledgers gl,
 gl_periods gp,
 gl_je_batches gjb,
 gl_je_headers gjh,
 gl_je_lines gjl,
+gl_je_sources_vl gjsv,
 (select gir.je_header_id, gir.je_line_num, xal.* from gl_import_references gir, xla_ae_lines xal where gir.gl_sl_link_id=xal.gl_sl_link_id and gir.gl_sl_link_table=xal.gl_sl_link_table
 ) xal,
 xla_ae_headers xah,
@@ -213,6 +215,7 @@ gp.period_name=gjl.period_name and
 gl.ledger_id=gjh.ledger_id and
 gjb.je_batch_id=gjh.je_batch_id and
 gjh.je_header_id=gjl.je_header_id and
+gjh.je_source=gjsv.je_source_name and
 gjl.je_header_id=xal.je_header_id(+) and
 gjl.je_line_num=xal.je_line_num(+) and
 xal.ae_header_id=xah.ae_header_id(+) and

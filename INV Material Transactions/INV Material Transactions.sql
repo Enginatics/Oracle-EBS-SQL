@@ -22,6 +22,7 @@ msiv.concatenated_segments item,
 msiv.description item_desc,
 &category_columns
 xxen_util.meaning(msiv.item_type,'ITEM_TYPE',3) user_item_type,
+xxen_util.meaning(msiv.wip_supply_type,'WIP_SUPPLY',700) wip_supply_type,
 nvl(mtln.transaction_quantity,mmt.transaction_quantity) transaction_quantity,
 mmt.transaction_uom,
 nvl(mtln.primary_quantity,mmt.primary_quantity) primary_quantity,

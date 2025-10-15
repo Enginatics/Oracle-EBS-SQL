@@ -107,11 +107,11 @@ xxen_util.client_time(gjl.last_update_date) line_last_update_date,
 -- period labels
 gp.start_date period_start,
 gp.end_date period_end,
-case when nvl(fnd_profile.value('XXEN_FSG_DRILLDOWN_TO_SAME_WORKBOOK'), 'N')='N' then '=dd' else '=dds' end
+case when nvl(fnd_profile.value('XXEN_FSG_DRILLDOWN_TO_SAME_WORKBOOK'), 'Y')='N' then '=dd' else '=dds' end
 ||'("SD","'||gl.ledger_id||','||gp.period_name||','||:amount_type||','||gjh.currency_code||',,,,," & "'||gjh.je_header_id||'|'||gjl.je_line_num||',,")' drill_to_subledger,
-case when nvl(fnd_profile.value('XXEN_FSG_DRILLDOWN_TO_SAME_WORKBOOK'), 'N')='N' then '=dd' else '=dds' end
+case when nvl(fnd_profile.value('XXEN_FSG_DRILLDOWN_TO_SAME_WORKBOOK'), 'Y')='N' then '=dd' else '=dds' end
 ||'("GJA","'||gl.ledger_id||','||gp.period_name||','||:amount_type||','||gjh.currency_code||','||gjh.actual_flag||','||(select gbv.budget_name from gl_budget_versions gbv where gjh.budget_version_id=gbv.budget_version_id)||','||(select get.encumbrance_type from gl_encumbrance_types get where gjh.encumbrance_type_id=get.encumbrance_type_id)||','||gcck.code_combination_id||'," & "'||gjh.je_header_id||'," & "'||gjb.je_batch_id||','||gjl.je_line_num||'")' drill_to_journal_attachment,
-case when nvl(fnd_profile.value('XXEN_FSG_DRILLDOWN_TO_SAME_WORKBOOK'), 'N')='N' then '=dd' else '=dds' end
+case when nvl(fnd_profile.value('XXEN_FSG_DRILLDOWN_TO_SAME_WORKBOOK'), 'Y')='N' then '=dd' else '=dds' end
 ||'("GFJ","'||gl.ledger_id||','||gp.period_name||','||:amount_type||','||gjh.currency_code||','||gjh.actual_flag||','||(select gbv.budget_name from gl_budget_versions gbv where gjh.budget_version_id=gbv.budget_version_id)||','||(select get.encumbrance_type from gl_encumbrance_types get where gjh.encumbrance_type_id=get.encumbrance_type_id)||',,'||gjh.je_header_id||'," & "'||gjb.je_batch_id||',")' drill_to_full_journal
 from
 gl_ledgers gl,
@@ -121,8 +121,8 @@ gl_je_headers gjh,
 gl_je_lines gjl,
 gl_je_lines_recon gjlr,
 gcck,
-(select distinct fad.pk1_value,&fad_document_id count(*) over (partition by fad.pk1_value) count from fnd_attached_documents fad where fad.entity_name='GL_JE_BATCHES') fad1,
-(select distinct fad.pk2_value,&fad_document_id count(*) over (partition by fad.pk2_value) count from fnd_attached_documents fad where fad.entity_name='GL_JE_HEADERS') fad2,
+(select distinct fad.pk1_value,&fad_document_id count(*) over (partition by fad.pk1_value) count from fnd_attached_documents fad where '&show_attachments'='Y' and fad.entity_name='GL_JE_BATCHES') fad1,
+(select distinct fad.pk1_value,fad.pk2_value,&fad_document_id count(*) over (partition by fad.pk1_value,fad.pk2_value) count from fnd_attached_documents fad where '&show_attachments'='Y' and fad.entity_name='GL_JE_HEADERS') fad2,
 fnd_documents fd1,
 fnd_documents fd2,
 fnd_documents_tl fdt1,
@@ -149,9 +149,10 @@ gjl.je_header_id=gjlr.je_header_id(+) and
 gjl.je_line_num=gjlr.je_line_num(+) and
 gjl.code_combination_id=gcck.code_combination_id(+) and
 to_char(gjb.je_batch_id)=fad1.pk1_value(+) and
+to_char(gjh.je_batch_id)=fad2.pk1_value(+) and
 to_char(gjh.je_header_id)=fad2.pk2_value(+) and
-decode(:show_attachments,'Y',fad1.document_id)=fd1.document_id(+) and
-decode(:show_attachments,'Y',fad2.document_id)=fd2.document_id(+) and
+fad1.document_id=fd1.document_id(+) and
+fad2.document_id=fd2.document_id(+) and
 fd1.document_id=fdt1.document_id(+) and
 fd2.document_id=fdt2.document_id(+) and
 fdt1.language(+)=userenv('lang') and

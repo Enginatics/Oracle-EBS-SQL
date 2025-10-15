@@ -11,6 +11,7 @@
 -- Run Report: https://demo.enginatics.com/
 
 select
+trunc(flm.timestamp,'month') month,
 xxen_util.user_name(flm.user_id) user_name,
 xxen_util.meaning(flm.log_level,'AFLOG_LEVELS',0) log_level_name,
 flm.*

@@ -18,12 +18,12 @@ q_main as
  (select
    'I' transaction_type,
    asup.segment1 vendor_number,
-   asup.vendor_name vendor_name,
-   asup.vendor_name_alt vendor_name_alt,
-   ass.vendor_site_code vendor_site_code,
-   ass.vendor_site_code_alt vendor_site_code_alt,
+   asup.vendor_name,
+   asup.vendor_name_alt,
+   ass.vendor_site_code,
+   ass.vendor_site_code_alt,
    ass.address_line1 ||' '|| ass.address_line2 ||' '|| ass.address_line3 ||' '|| ass.city ||' '|| ass.state ||' '|| ass.zip vendor_site_address,
-   ass.vat_registration_num vat_registration_num,
+   ass.vat_registration_num,
    hro.name organization_name,
    ap_tp_stmt_pkg.balance_brought_forward(ass.vendor_id,ass.vendor_site_id,ass.org_id) balance_brought_forward,
    alc.displayed_field lookup_value,
@@ -36,13 +36,11 @@ q_main as
    ai.invoice_currency_code currency_code,
    ai.invoice_amount entered_amount,
    nvl(ai.base_amount,round(ai.invoice_amount * nvl(ai.exchange_rate,1),2)) accounted_amount,
-   --
    to_number(null) paid_amount,
    to_number(null) inv_disc_taken,
    to_number(null) inv_paid_amount,
    to_number(null) paid_exchange_rate,
    nvl(ai.exchange_rate,1) inv_exchange_rate,
-   --
    ai.description description,
    gp.period_name gp_period_name,
    gp.period_num gp_period_num,
@@ -90,12 +88,12 @@ q_main as
   select
    decode(ai.invoice_type_lookup_code,'PREPAYMENT','A','P') transaction_type,
    asup.segment1 vendor_number,
-   asup.vendor_name vendor_name,
-   asup.vendor_name_alt vendor_name_alt,
-   ass.vendor_site_code vendor_site_code,
-   ass.vendor_site_code_alt vendor_site_code_alt,
+   asup.vendor_name,
+   asup.vendor_name_alt,
+   ass.vendor_site_code,
+   ass.vendor_site_code_alt,
    ass.address_line1 ||' '|| ass.address_line2 ||' '|| ass.address_line3 ||' '|| ass.city ||' '|| ass.state ||' '|| ass.zip vendor_site_address,
-   ass.vat_registration_num vat_registration_num,
+   ass.vat_registration_num,
    hro.name organization_name,
    ap_tp_stmt_pkg.balance_brought_forward(ass.vendor_id,ass.vendor_site_id,ass.org_id) balance_brought_forward,
    alc.displayed_field lookup_value,
@@ -105,7 +103,7 @@ q_main as
    ac.check_date doc_date,
    null payment_status_flag,
    aip.accounting_date gl_date,
-   ac.currency_code currency_code,
+   ac.currency_code,
    aip.amount entered_amount,
    nvl(aip.payment_base_amount,round(aip.amount * nvl(aip.exchange_rate,1),2)) accounted_amount,
    --
@@ -139,8 +137,7 @@ q_main as
        else nvl(aip.exchange_rate,1)
        end
    )  inv_exchange_rate,
-   --
-   ac.description description ,
+   ac.description,
    gp.period_name gp_period_name,
    gp.period_num gp_period_num,
    gp.start_date gp_start_date,
@@ -191,16 +188,16 @@ q_main as
 q_supplier as
  (select
    asup.segment1 vendor_number,
-   asup.vendor_name vendor_name,
-   asup.vendor_name_alt vendor_name_alt,
-   asup.vendor_id vendor_id,
-   ass.vendor_site_id vendor_site_id,
-   ass.vendor_site_code vendor_site_code,
-   ass.vendor_site_code_alt vendor_site_code_alt,
+   asup.vendor_name,
+   asup.vendor_name_alt,
+   asup.vendor_id,
+   ass.vendor_site_id,
+   ass.vendor_site_code,
+   ass.vendor_site_code_alt,
    ass.address_line1 ||' '|| ass.address_line2 ||' '|| ass.address_line3 ||' '|| ass.city ||' '|| ass.state ||' '|| ass.zip vendor_site_address,
-   ass.vat_registration_num vat_registration_num,
+   ass.vat_registration_num,
    hro.name organization_name,
-   hro.organization_id organization_id,
+   hro.organization_id,
    ap_tp_stmt_pkg.balance_brought_forward(ass.vendor_id,ass.vendor_site_id,ass.org_id) balance_brought_forward,
    row_number() over (partition by asup.vendor_id order by ass.vendor_site_code) site_count
   from

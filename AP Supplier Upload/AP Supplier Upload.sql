@@ -10,73 +10,11 @@
 -- Library Link: https://www.enginatics.com/reports/ap-supplier-upload/
 -- Run Report: https://demo.enginatics.com/
 
-with
-q_bank_accounts as
-(select /*+ inline */
- iepa.payee_party_id,
- iepa.party_site_id,
- iepa.org_id,
- iepa.supplier_site_id,
- ipiua.instrument_payment_use_id,
- iepa.ext_payee_id,
- ieba.ext_bank_account_id bank_account_id,
- case when iepa.supplier_site_id is not null
- then xxen_util.meaning('SITE','POS_SBD_BYR_USAGE_LIST',0)
- when iepa.org_id is not null
- then xxen_util.meaning('ADDRESS_OU','POS_SBD_BYR_USAGE_LIST',0)
- when iepa.party_site_id is not null
- then xxen_util.meaning('ADDRESS','POS_SBD_BYR_USAGE_LIST',0)
- else xxen_util.meaning('SUPPLIER','POS_SBD_BYR_USAGE_LIST',0)
- end                               bank_assignment_level,
- cbbv.bank_name                    bank_name,
- cbbv.bank_number                  bank_number,
- (select ftv.territory_short_name
-  from   fnd_territories_vl ftv
-  where  ftv.territory_code = cbbv.bank_home_country
- )                                 bank_country,
- cbbv.bank_branch_name             bank_branch_name,
- cbbv.branch_number                bank_branch_number,
- cbbv.bank_branch_type             bank_branch_type,
- cbbv.eft_swift_code               bank_branch_bic,
- ieba.bank_account_name            bank_acct_name,
- ieba.bank_account_num             bank_acct_num,
- ieba.check_digits                 bank_acct_check_digits,
- ieba.currency_code                bank_acct_currency,
- xxen_util.meaning(ieba.foreign_payment_use_flag,'YES_NO',0) bank_acct_allow_foreign_pay,
- ieba.iban                         bank_acct_iban,
- ieba.bank_account_name_alt        bank_acct_name_alt,
- ieba.account_suffix               bank_acct_suffix,
- xxen_util.meaning(ieba.bank_account_type,'BANK_ACCOUNT_TYPE',260)
-                                   bank_acct_type,
- ieba.secondary_account_reference  bank_acct_sec_reference,
- ieba.description                  bank_acct_description,
- ieba.contact_name                 bank_acct_contact,
- ieba.contact_phone                bank_acct_contact_phone,
- ieba.contact_fax                  bank_acct_contact_fax,
- ieba.contact_email                bank_acct_contact_email,
- ipiua.start_date                  bank_acct_assignmt_start_date,
- ipiua.end_date                    bank_acct_assignmt_end_date
- from
- iby_external_payees_all iepa,
- iby_pmt_instr_uses_all ipiua,
- iby_ext_bank_accounts ieba,
- ce_bank_branches_v cbbv
- where
- iepa.ext_payee_id = ipiua.ext_pmt_party_id and
- ipiua.instrument_id = ieba.ext_bank_account_id and
- ieba.branch_id = cbbv.branch_party_id and
- iepa.payment_function = 'PAYABLES_DISB' and
- ipiua.payment_function = 'PAYABLES_DISB' and
- ipiua.instrument_type = 'BANKACCOUNT'
-)
---
--- Main query starts here
---
 select
 x.*
 from
 (
-select /*+ push_pred(ba0) push_pred(ba1) */ distinct
+select distinct
 null action_,
 null status_,
 null message_,
@@ -92,7 +30,8 @@ to_char(null) site_bank_intsr_pay_use_row_id,
 -- Vendor
 -- ########
 aps.vendor_name supplier_name,
-aps.vendor_name_alt alt_supplier_name,
+hp.party_number,
+hp.organization_name_phonetic alt_supplier_name,
 hp.known_as alias,
 aps.segment1 supplier_number,
 aps.end_date_active inactive_date,
@@ -255,33 +194,37 @@ iepa0.settlement_priority settlement_priority,
 -- ########
 -- Vendor Bank Accounts
 -- ########
-ba0.bank_name                      vendor_bank_name,
-ba0.bank_number                    vendor_bank_number,
-ba0.bank_country                   vendor_bank_country,
-ba0.bank_branch_name               vendor_bank_branch_name,
-ba0.bank_branch_number             vendor_bank_branch_number,
-ba0.bank_branch_type               vendor_bank_branch_type,
-ba0.bank_branch_bic                vendor_bank_branch_bic,
-ba0.bank_acct_name                 vendor_bank_acct_name,
-ba0.bank_acct_num                  vendor_bank_acct_num,
-ba0.bank_acct_check_digits         vendor_bank_acct_check_digits,
-ba0.bank_acct_currency             vendor_bank_acct_currency,
-ba0.bank_acct_allow_foreign_pay    vendor_bank_acct_allow_foreign,
-ba0.bank_acct_iban                 vendor_bank_acct_iban,
-ba0.bank_acct_name_alt             vendor_bank_acct_name_alt,
-ba0.bank_acct_suffix               vendor_bank_acct_suffix,
-ba0.bank_acct_type                 vendor_bank_acct_type,
-ba0.bank_acct_sec_reference        vendor_bank_acct_sec_reference,
-ba0.bank_acct_description          vendor_bank_acct_description,
-ba0.bank_acct_contact              vendor_bank_acct_contact,
-ba0.bank_acct_contact_phone        vendor_bank_acct_contact_phone,
-ba0.bank_acct_contact_fax          vendor_bank_acct_contact_fax,
-ba0.bank_acct_contact_email        vendor_bank_acct_contact_email,
-ba0.bank_acct_assignmt_start_date  vendor_bank_acct_assign_start,
-ba0.bank_acct_assignmt_end_date    vendor_bank_acct_assign_end,
+cbbv0.bank_name vendor_bank_name,
+cbbv0.bank_number vendor_bank_number,
+(select ftv.territory_short_name
+ from   fnd_territories_vl ftv
+ where  ftv.territory_code = cbbv0.bank_home_country
+) vendor_bank_country,
+cbbv0.bank_branch_name vendor_bank_branch_name,
+cbbv0.branch_number vendor_bank_branch_number,
+cbbv0.bank_branch_type vendor_bank_branch_type,
+cbbv0.eft_swift_code vendor_bank_branch_bic,
+ieba0.bank_account_name vendor_bank_acct_name,
+ieba0.bank_account_num vendor_bank_acct_num,
+ieba0.check_digits vendor_bank_acct_check_digits,
+ieba0.currency_code vendor_bank_acct_currency,
+xxen_util.meaning(ieba0.foreign_payment_use_flag,'YES_NO',0) vendor_bank_acct_allow_foreign,
+ieba0.iban vendor_bank_acct_iban,
+ieba0.bank_account_name_alt vendor_bank_acct_name_alt,
+ieba0.account_suffix vendor_bank_acct_suffix,
+xxen_util.meaning(ieba0.bank_account_type,'BANK_ACCOUNT_TYPE',260) vendor_bank_acct_type,
+ieba0.secondary_account_reference vendor_bank_acct_sec_reference,
+ieba0.description vendor_bank_acct_description,
+ieba0.contact_name vendor_bank_acct_contact,
+ieba0.contact_phone vendor_bank_acct_contact_phone,
+ieba0.contact_fax vendor_bank_acct_contact_fax,
+ieba0.contact_email vendor_bank_acct_contact_email,
+ipiua0.start_date vendor_bank_acct_assign_start,
+ipiua0.end_date vendor_bank_acct_assign_end,
 -- ########
 -- Party Site/Address
 -- ########
+hps.party_site_number,
 hps.party_site_name address_name,
 (select territory_short_name from fnd_territories_vl ftv where ftv.territory_code = hl.country) country,
 hl.address1 address_line1,
@@ -453,31 +396,41 @@ iepa1.settlement_priority site_settlement_priority,
 -- ########
 -- Vendor Site Bank Accounts
 -- ########
-ba1.bank_assignment_level          site_bank_assignment_level,
-ba1.bank_name                      site_bank_name,
-ba1.bank_number                    site_bank_number,
-ba1.bank_country                   site_bank_country,
-ba1.bank_branch_name               site_bank_branch_name,
-ba1.bank_branch_number             site_bank_branch_number,
-ba1.bank_branch_type               site_bank_branch_type,
-ba1.bank_branch_bic                site_bank_branch_bic,
-ba1.bank_acct_name                 site_bank_acct_name,
-ba1.bank_acct_num                  site_bank_acct_num,
-ba1.bank_acct_check_digits         site_bank_acct_check_digits,
-ba1.bank_acct_currency             site_bank_acct_currency,
-ba1.bank_acct_allow_foreign_pay    site_bank_acct_allow_foreign,
-ba1.bank_acct_iban                 site_bank_acct_iban,
-ba1.bank_acct_name_alt             site_bank_acct_name_alt,
-ba1.bank_acct_suffix               site_bank_acct_suffix,
-ba1.bank_acct_type                 site_bank_acct_type,
-ba1.bank_acct_sec_reference        site_bank_acct_sec_reference,
-ba1.bank_acct_description          site_bank_acct_description,
-ba1.bank_acct_contact              site_bank_acct_contact,
-ba1.bank_acct_contact_phone        site_bank_acct_contact_phone,
-ba1.bank_acct_contact_fax          site_bank_acct_contact_fax,
-ba1.bank_acct_contact_email        site_bank_acct_contact_email,
-ba1.bank_acct_assignmt_start_date  site_bank_acct_assign_start,
-ba1.bank_acct_assignmt_end_date    site_bank_acct_assign_end,
+case when ipiua2.instrument_payment_use_id is not null and iepa2.supplier_site_id is not null
+then xxen_util.meaning('SITE','POS_SBD_BYR_USAGE_LIST',0)
+when ipiua2.instrument_payment_use_id is not null and iepa2.org_id is not null
+then xxen_util.meaning('ADDRESS_OU','POS_SBD_BYR_USAGE_LIST',0)
+when ipiua2.instrument_payment_use_id is not null and iepa2.party_site_id is not null
+then xxen_util.meaning('ADDRESS','POS_SBD_BYR_USAGE_LIST',0)
+else null
+end site_bank_assignment_level,
+cbbv2.bank_name site_bank_name,
+cbbv2.bank_number site_bank_number,
+(select ftv.territory_short_name
+ from   fnd_territories_vl ftv
+ where  ftv.territory_code = cbbv2.bank_home_country
+) site_bank_country,
+cbbv2.bank_branch_name site_bank_branch_name,
+cbbv2.branch_number site_bank_branch_number,
+cbbv2.bank_branch_type site_bank_branch_type,
+cbbv2.eft_swift_code site_bank_branch_bic,
+ieba2.bank_account_name site_bank_acct_name,
+ieba2.bank_account_num site_bank_acct_num,
+ieba2.check_digits site_bank_acct_check_digits,
+ieba2.currency_code site_bank_acct_currency,
+xxen_util.meaning(ieba2.foreign_payment_use_flag,'YES_NO',0) site_bank_acct_allow_foreign,
+ieba2.iban site_bank_acct_iban,
+ieba2.bank_account_name_alt site_bank_acct_name_alt,
+ieba2.account_suffix site_bank_acct_suffix,
+xxen_util.meaning(ieba2.bank_account_type,'BANK_ACCOUNT_TYPE',260) site_bank_acct_type,
+ieba2.secondary_account_reference site_bank_acct_sec_reference,
+ieba2.description site_bank_acct_description,
+ieba2.contact_name site_bank_acct_contact,
+ieba2.contact_phone site_bank_acct_contact_phone,
+ieba2.contact_fax site_bank_acct_contact_fax,
+ieba2.contact_email site_bank_acct_contact_email,
+ipiua2.start_date site_bank_acct_assign_start,
+ipiua2.end_date site_bank_acct_assign_end,
 -- ########
 -- Vendor Site Contacts
 -- ########
@@ -601,8 +554,8 @@ assa.vendor_site_id,
 assa.party_site_id,
 assa.org_id,
 asco.vendor_contact_id,
-ba0.instrument_payment_use_id supplier_bank_intsr_pay_use_id,
-ba1.instrument_payment_use_id site_bank_instr_pay_use_id,
+ipiua0.instrument_payment_use_id supplier_bank_intsr_pay_use_id,
+ipiua2.instrument_payment_use_id site_bank_instr_pay_use_id,
 -- defaults
 :p_default_tax_rounding_rule default_tax_rounding_rule,
 :p_default_inclusive_tax default_inclusive_tax_flag,
@@ -611,24 +564,33 @@ ba1.instrument_payment_use_id site_bank_instr_pay_use_id,
 :p_site_bank_assign_level default_site_bank_assign_lvl
 from
 ap_suppliers aps,
-hz_parties hp,
-zx_party_tax_profile zptp0,
-ap_suppliers aps1,
-iby_external_payees_all iepa0,  -- to get the supplier level payment distribution
-q_bank_accounts ba0,
---
 ap_supplier_sites_all assa,
+hr_all_organization_units_vl hou,
+ap_system_parameters_all aspa,
+gl_ledgers gl,
+hz_parties hp,
 hz_party_sites hps,
 hz_locations hl,
 fnd_languages fl,
-hr_operating_units hou,
-gl_ledgers gl,
+--
+ap_suppliers aps1,
+zx_party_tax_profile zptp0,
+iby_external_payees_all iepa0,  -- to get the supplier level payment distribution
+zx_party_tax_profile zptp1,
+iby_external_payees_all iepa1,  -- to get the site level payment distribution
+--
 hz_contact_points hcp1,
 hz_contact_points hcp2,
 hz_contact_points hcp3,
-zx_party_tax_profile zptp1,
-iby_external_payees_all iepa1,  -- to get the site level payment distribution
-q_bank_accounts ba1,
+-- vendor bank tables
+iby_pmt_instr_uses_all ipiua0,
+iby_ext_bank_accounts ieba0,
+ce_bank_branches_v cbbv0,
+-- vendor site bank tables
+iby_external_payees_all iepa2,
+iby_pmt_instr_uses_all ipiua2,
+iby_ext_bank_accounts ieba2,
+ce_bank_branches_v cbbv2,
 --
 ap_supplier_contacts asco,
 hz_parties hpc,
@@ -638,25 +600,32 @@ where
 :p_upload_mode like '%' || xxen_upload.action_update and
 1=1 and
 aps.employee_id is null and
-aps.parent_vendor_id = aps1.vendor_id(+) and
-aps.party_id = hp.party_id and
-aps.party_id = zptp0.party_id (+) and
-'THIRD_PARTY' = zptp0.party_type_code (+) and
---
-aps.party_id = iepa0.payee_party_id (+) and
-nvl(iepa0.party_site_id (+),0) = 0 and
-iepa0.payment_function (+) = 'PAYABLES_DISB' and
---
-decode(:p_show_vendor_banks,'Y',aps.party_id) = ba0.payee_party_id (+) and
-nvl(ba0.party_site_id (+),0) = 0 and
---
 decode(:p_show_vendor_sites,'Y',aps.vendor_id,-1) = assa.vendor_id (+) and
 (assa.org_id is null or mo_global.check_access(assa.org_id)='Y') and
+assa.org_id = hou.organization_id (+) and
+assa.org_id = aspa.org_id (+) and
+aspa.set_of_books_id = gl.ledger_id (+) and
+aps.party_id = hp.party_id and
 assa.party_site_id = hps.party_site_id (+) and
 hps.location_id = hl.location_id (+) and
 hl.language = fl.language_code (+) and
-assa.org_id = hou.organization_id (+) and
-hou.set_of_books_id = gl.ledger_id (+) and
+--
+aps.parent_vendor_id = aps1.vendor_id(+) and
+--
+aps.party_id = zptp0.party_id (+) and
+'THIRD_PARTY' = zptp0.party_type_code (+) and
+assa.party_site_id = zptp1.party_id (+) and
+'THIRD_PARTY_SITE' = zptp1.party_type_code (+) and
+--
+aps.party_id = iepa0.payee_party_id (+) and
+nvl(iepa0.party_site_id (+),0) = 0 and
+nvl(iepa0.supplier_site_id (+),0) = 0 and
+nvl(iepa0.org_id (+),0) = 0 and
+iepa0.payment_function (+) = 'PAYABLES_DISB' and
+aps.party_id = iepa1.payee_party_id (+) and
+assa.vendor_site_id = iepa1.supplier_site_id (+) and
+assa.party_site_id = iepa1.party_site_id (+) and
+iepa1.payment_function (+) = 'PAYABLES_DISB' and
 --
 hps.party_site_id = hcp1.owner_table_id (+) and
 hcp1.owner_table_name (+) = 'HZ_PARTY_SITES' and
@@ -675,16 +644,24 @@ hcp3.contact_point_type (+) = 'EMAIL' and
 hcp3.primary_flag (+) = 'Y' and
 hcp3.status (+) = 'A' and
 --
-assa.party_site_id = zptp1.party_id (+) and
-'THIRD_PARTY_SITE' = zptp1.party_type_code (+) and
+decode(:p_show_vendor_banks,'Y',iepa0.ext_payee_id) = ipiua0.ext_pmt_party_id (+) and
+ipiua0.payment_flow (+) = 'DISBURSEMENTS' and
+ipiua0.payment_function (+) = 'PAYABLES_DISB' and
+ipiua0.instrument_type (+) = 'BANKACCOUNT' and
+ipiua0.instrument_id = ieba0.ext_bank_account_id (+) and
+ieba0.branch_id = cbbv0.branch_party_id (+) and
 --
-assa.party_site_id = iepa1.party_site_id (+) and
-assa.vendor_site_id = iepa1.supplier_site_id (+) and
-iepa1.payment_function (+) = 'PAYABLES_DISB' and
---
-decode(:p_show_site_banks,'Y',assa.party_site_id) = ba1.party_site_id (+) and
-assa.org_id = nvl(ba1.org_id (+),assa.org_id) and
-assa.vendor_site_id = nvl(ba1.supplier_site_id (+),assa.vendor_site_id) and
+decode(:p_show_site_banks,'Y',aps.party_id) = iepa2.payee_party_id (+) and
+decode(:p_show_site_banks,'Y',assa.party_site_id) = iepa2.party_site_id (+) and
+assa.org_id = nvl(iepa2.org_id (+),assa.org_id) and
+assa.vendor_site_id = nvl(iepa2.supplier_site_id (+),assa.vendor_site_id) and
+iepa2.payment_function (+) = 'PAYABLES_DISB' and
+iepa2.ext_payee_id = ipiua2.ext_pmt_party_id (+) and
+ipiua2.payment_flow (+) = 'DISBURSEMENTS' and
+ipiua2.payment_function (+) = 'PAYABLES_DISB' and
+ipiua2.instrument_type (+) = 'BANKACCOUNT' and
+ipiua2.instrument_id = ieba2.ext_bank_account_id (+) and
+ieba2.branch_id = cbbv2.branch_party_id (+) and
 --
 decode(:p_show_site_contacts,'Y',assa.party_site_id,-99) = asco.org_party_site_id (+) and
 (asco.vendor_contact_id is null or

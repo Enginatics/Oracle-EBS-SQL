@@ -82,6 +82,24 @@ coalesce(aia.source,rbsa.name,gjsv.user_je_source_name) sl_source,
 decode(gjsv.user_je_source_name,'Assets',to_char(xte.source_id_int_3),'Payables',aba.batch_name,'Receivables',decode(xah.je_category_name,'Receipts',arba.name,rba.name)) sl_batch_no,
 --Assets
 fab.asset_number,
+(
+select distinct
+listagg(fdh.concatenated_segments,chr(10)) within group (order by fdh.concatenated_segments) over (partition by fdh.asset_id) expense_account
+from
+(
+select
+fdh.asset_id,
+gcck.concatenated_segments,
+sum(lengthb(gcck.concatenated_segments)+1) over (partition by fdh.asset_id order by gcck.concatenated_segments rows between unbounded preceding and current row) total_length
+from
+(select distinct fdh.asset_id, fdh.code_combination_id from fa_distribution_history fdh where fab.asset_id=fdh.asset_id and fdh.date_ineffective is null) fdh,
+gl_code_combinations_kfv gcck
+where
+fdh.code_combination_id=gcck.code_combination_id
+) fdh
+where
+fdh.total_length<=4000
+) expense_account,
 --AP
 nvl(aia.invoice_num,rcta.trx_number) invoice_number,
 nvl(aia.description,rcta.comments) description,
@@ -188,9 +206,8 @@ xte.source_id_int_1,
 gp.start_date period_date,
 gp.period_name period,
 gcck.chart_of_accounts_id,
-case when gjsv.user_je_source_name not in ('Property Manager','Global Intercompany','Payroll','Inflation Accting','Projects','Spreadsheet') then
-case when nvl(fnd_profile.value('XXEN_FSG_DRILLDOWN_TO_SAME_WORKBOOK'), 'N')='N' then '=dd' else '=dds' end
-||'("VT","'||gl.ledger_id||','||gjsv.user_je_source_name||','||xah.event_id||','||gjl.je_line_num||'")' end view_transaction
+case when nvl(fnd_profile.value('XXEN_FSG_DRILLDOWN_TO_SAME_WORKBOOK'), 'Y')='N' then '=dd' else '=dds' end
+||'("VT","'||gl.ledger_id||','||gjsv.user_je_source_name||','||xah.event_id||','||gjl.je_line_num||'")' view_transaction
 from
 gl_ledgers gl,
 gl_periods gp,
@@ -283,8 +300,8 @@ xah.application_id=xte.application_id(+) and
 &gl_flex_value_security
 gjl.code_combination_id=gcck.code_combination_id and
 gjl.tax_code_id=zrb.tax_rate_id(+) and
-case when xte.application_id=140 then case when xte.entity_code in ('DEPRECIATION','DEFERRED_DEPRECIATION') then xte.source_id_int_1 when xte.entity_code='TRANSACTIONS' then fth.asset_id end end=fab.asset_id(+) and
 case when xte.application_id=140 and xte.entity_code='TRANSACTIONS' then xte.source_id_int_1 end=fth.transaction_header_id(+) and
+case when xte.application_id=140 then case when xte.entity_code in ('DEPRECIATION','DEFERRED_DEPRECIATION') then xte.source_id_int_1 when xte.entity_code='TRANSACTIONS' then fth.asset_id end end=fab.asset_id(+) and
 coalesce(case when xte.application_id=200 then decode(xte.entity_code,'AP_INVOICES',xte.source_id_int_1,'AP_PAYMENTS',aca.max_aipa_invoice_id) end,aida.invoice_id)=aia.invoice_id(+) and 
 case when xte.application_id=200 and xte.entity_code='AP_PAYMENTS' then xte.source_id_int_1 end=aca.check_id(+) and
 aia.batch_id=aba.batch_id(+) and

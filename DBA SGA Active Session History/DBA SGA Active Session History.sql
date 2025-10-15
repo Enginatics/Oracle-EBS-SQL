@@ -29,14 +29,17 @@ To identify an object or segment of a hot block, for example causing wait events
 select
 xxen_util.client_time(gash.sample_time_) sample_time,
 gash.inst_id,
+count(*) over (partition by gash.sample_id) active_sessions,
+xxen_util.zero_to_null(count(decode(gash.session_state,'ON CPU',1)) over (partition by gash.sample_id)) active_cpu_sessions,
+xxen_util.zero_to_null(count(decode(gash.session_state,'WAITING',1)) over (partition by gash.sample_id)) active_waiting_sessions,
 gash.session_id||' - '||gash.session_serial# sid_serial#,
 xxen_util.user_name(gash.module,gash.action,gash.client_id) user_name,
 xxen_util.responsibility(gash.module,gash.action) responsibility,
 xxen_util.module_type(gash.module,gash.action) module_type,
 xxen_util.module_name(gash.module,gash.program) module_name,
 case when lower(gash.module) like '%frm%' then 'Forms' when lower(gash.module) like '%fwk%' then 'OAF' end ui_type,
-(select so.name from sys.obj$ so where gsa.program_id=so.obj#) code,
-case when gsa.program_line#>0 then gsa.program_line# end code_line#,
+xxen_util.instring(gash.code_and_line,'|',1) code,
+xxen_util.instring(gash.code_and_line,'|',2) code_line#,
 gash.sql_id,
 gash.sql_plan_hash_value plan_hash_value,
 &sql_text
@@ -101,12 +104,11 @@ gash.blocking_inst_id,
 nvl2(gash.blocking_session,gash.blocking_session||' - '||gash.blocking_session_serial#,null) blocking_sid_serial#,
 &blocking_columns
 gash.pga_allocated/1000000 pga_allocated,
-sum(gash.pga_allocated) over (partition by gash.sample_time)/1000000 pga_total,
-gash.pga_allocated/xxen_util.zero_to_null(sum(gash.pga_allocated) over (partition by gash.sample_time))*100 pga_percentage,
+sum(gash.pga_allocated) over (partition by gash.sample_id)/1000000 pga_total,
+gash.pga_allocated/xxen_util.zero_to_null(sum(gash.pga_allocated) over (partition by gash.sample_id))*100 pga_percentage,
 gash.temp_space_allocated/1000000 temp_space_allocated,
-sum(gash.temp_space_allocated) over (partition by gash.sample_time)/1000000 temp_space_total,
-gash.temp_space_allocated/xxen_util.zero_to_null(sum(gash.temp_space_allocated) over (partition by gash.sample_time))*100 temp_space_percentage,
-count(*) over (partition by gash.sample_time) active_sessions,
+sum(gash.temp_space_allocated) over (partition by gash.sample_id)/1000000 temp_space_total,
+gash.temp_space_allocated/xxen_util.zero_to_null(sum(gash.temp_space_allocated) over (partition by gash.sample_id))*100 temp_space_percentage,
 gash.machine,
 lower(gash.sql_opname) command_type,
 du.username schema,
@@ -120,56 +122,26 @@ gash.p2,
 gash.p3text,
 gash.p3
 from
-&request_id_table
-(select cast(gash.sample_time as date) sample_time_, max(gash.temp_space_allocated/1000000) over (partition by gash.inst_id,gash.session_id,gash.session_serial#) max_temp_space_allocated, gash.* from gv$active_session_history gash) gash,
 (
-select distinct
-gash.inst_id,
-gash.session_id,
-gash.session_serial#,
-max(gash.client_id) keep (dense_rank last order by gash.sample_id) over (partition by gash.inst_id,gash.session_id,gash.session_serial#) client_id,
-max(gash.action) keep (dense_rank last order by gash.sample_id) over (partition by gash.inst_id,gash.session_id,gash.session_serial#) action,
-max(gash.module) keep (dense_rank last order by gash.sample_id) over (partition by gash.inst_id,gash.session_id,gash.session_serial#) module,
-max(gash.program) keep (dense_rank last order by gash.sample_id) over (partition by gash.inst_id,gash.session_id,gash.session_serial#) program,
-max(gash.session_type) keep (dense_rank last order by gash.sample_id) over (partition by gash.inst_id,gash.session_id,gash.session_serial#) session_type,
-max(gash.machine) keep (dense_rank last order by gash.sample_id) over (partition by gash.inst_id,gash.session_id,gash.session_serial#) machine,
-max(decode(gash.p1text,'file#',gash.p1)) keep (dense_rank last order by gash.sample_id) over (partition by gash.inst_id,gash.session_id,gash.session_serial#) file_id,
-max(decode(gash.p2text,'block#',gash.p2)) keep (dense_rank last order by gash.sample_id) over (partition by gash.inst_id,gash.session_id,gash.session_serial#) block_id
+select
+(select so.name||'|'||case when gsa.program_line#>0 then gsa.program_line# end from gv$sqlarea gsa, sys.obj$ so where gash.sql_id=gsa.sql_id and gsa.program_id=so.obj#(+) and rownum=1) code_and_line,
+&sql_fulltext
+cast(gash.sample_time as date) sample_time_,
+gash.*
 from
 gv$active_session_history gash
 where
-'&show_blocking_session'='Y'
-) gash0,
-dba_procedures dp0,
-dba_procedures dp,
-(
-select distinct
-gsa.sql_id,
-min(gsa.inst_id) keep (dense_rank first order by gsa.inst_id, gsa.plan_hash_value) over (partition by gsa.sql_id) inst_id,
-min(gsa.plan_hash_value) keep (dense_rank first order by gsa.inst_id, gsa.plan_hash_value) over (partition by gsa.sql_id) plan_hash_value
-from
-gv$sqlarea gsa
+1=1
+) gash
+&dynamic_tables
+left join dba_procedures dp0 on gash.plsql_entry_object_id=dp0.object_id and gash.plsql_entry_subprogram_id=dp0.subprogram_id
+left join dba_procedures dp on gash.plsql_object_id=dp.object_id and gash.plsql_subprogram_id=dp.subprogram_id
+left join dba_users du on gash.user_id=du.user_id
 where
 2=2
-) gsa0,
-gv$sqlarea gsa,
-dba_users du
-where
-1=1 and
-gash.plsql_entry_object_id=dp0.object_id(+) and
-gash.plsql_entry_subprogram_id=dp0.subprogram_id(+) and
-gash.plsql_object_id=dp.object_id(+) and
-gash.plsql_subprogram_id=dp.subprogram_id(+) and
-gash.sql_id=gsa0.sql_id(+) and
-gsa0.sql_id=gsa.sql_id(+) and
-gsa0.inst_id=gsa.inst_id(+) and
-gsa0.plan_hash_value=gsa.plan_hash_value(+) and
-gash.user_id=du.user_id(+) and
-gash.blocking_inst_id=gash0.inst_id(+) and
-gash.blocking_session=gash0.session_id(+) and
-gash.blocking_session_serial#=gash0.session_serial#(+)
 order by
 sample_time,
+inst_id,
 sess_first_time desc,
 percentage desc,
 sql_first_time desc

@@ -11,11 +11,13 @@
 -- Run Report: https://demo.enginatics.com/
 
 select
-xrr.request_id,
+xrr.upload_request_id,
+xrr.request_id report_request_id,
 xrr.creation_date,
 xxen_util.user_name(xrr.created_by) user_name,
 frt.responsibility_name responsibility,
 xrv.report_name,
+xrr.upload_file_name file_name,
 'begin xxen_upload.g_run_id:='||xud.run_id||'; end;'||chr(10)||chr(10)||'select xu.* from '||xrv.upload_view||' xu' sql,
 &upload_columns
 from

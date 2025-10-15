@@ -13,10 +13,12 @@
 select
 x.owner,
 x.workbook,
+x.description,
 x.workbook_exists,
 x.sheet,
 x.access_count,
 x.last_accessed,
+x.last_accessed_by,
 x.object_use_key,
 x.last_updated_by,
 x.last_update_date,
@@ -35,10 +37,12 @@ xxen_util.meaning(nvl2(ed.doc_name,'Y',null),'YES_NO',0) workbook_exists,
 eqs.qs_doc_details sheet,
 eqs.access_count,
 eqs.last_accessed,
+xxen_util.dis_user_name(eqs.last_accessed_by) last_accessed_by,
 eqs.qs_object_use_key object_use_key,
 xxen_util.dis_user_name(ed.doc_updated_by) last_updated_by,
 ed.doc_updated_date last_update_date,
-ed.doc_id
+ed.doc_id,
+ed.doc_description description
 from
 &eul.eul5_documents ed
 &full join
@@ -49,6 +53,7 @@ eqs.qs_doc_owner_,
 eqs.qs_doc_details,
 count(*) access_count,
 max(eqs.qs_created_date) last_accessed,
+max(eqs.qs_created_by) keep (dense_rank first order by eqs.qs_created_date desc) last_accessed_by,
 eqs.qs_object_use_key
 from
 (select x.*

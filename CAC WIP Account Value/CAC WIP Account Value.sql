@@ -11,6 +11,7 @@ Parameters
 ==========
 Period Name:  the accounting period you wish to report (mandatory).
 Include Expense WIP:  enter Yes to include Expense WIP jobs.  Defaults to No.
+Job Status:  enter a specific job status (optional).
 Category Sets 1 - 3:  any item category you wish (optional).
 Item Number:  specific item you wish to report (optional)
 Organization Code:  specific inventory organization to report (optional)
@@ -51,6 +52,7 @@ Ledger:  specific ledger (optional)
 -- |  1.23    13 Mar 2022 Douglas Volz   Added WIP job description column.
 -- |  1.24    27 Feb 2025 Douglas Volz   Removed tabs, fixed OU and GL security profiles.
 -- |  1.25    17 Mar 2025 Douglas Volz   WIP performance improvements.
+-- |  1.26    31 Aug 2025 Douglas Volz  Added Job Status parameter.
 +=============================================================================+*/
 
 -- Excel Examle Output: https://www.enginatics.com/example/cac-wip-account-value/
@@ -244,7 +246,7 @@ wip_value as
          and    wac.organization_id           = wdj.organization_id
          and    msub.secondary_inventory_name (+) = wdj.completion_subinventory
          and    msub.organization_id (+)      = wdj.organization_id 
-         and 2=2                           -- p_period_name
+         and    2=2                           -- p_period_name, p_job_status
          and    inv_orgs.organization_id      = wdj.organization_id 
          -- ===========================================
          -- Inventory accounting period joins to limit

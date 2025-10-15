@@ -26,12 +26,13 @@ DB package: BOM_BOMRBOMS_XMLP_PKG
 with q_assemblies as
 (
  select
-  bom_bomrboms_xmlp_pkg.cf_org_nameformula(bbom.organization_id) assembly_organization,
-  msik.concatenated_segments assembly,
-  bom_bomrboms_xmlp_pkg.cf_item_descformula(msik.inventory_item_id, bbom.organization_id) assembly_description,
-  xxen_util.meaning(msik.bom_item_type,'BOM_ITEM_TYPE',700) bom_item_type,
+  (select haouv.name from hr_all_organization_units_vl haouv where bbom.organization_id=haouv.organization_id) assembly_organization,
+  msiv.concatenated_segments assembly,
+  msiv.description assembly_description,
+  msiv.long_description assembly_long_description,
+  xxen_util.meaning(msiv.bom_item_type,'BOM_ITEM_TYPE',700) bom_item_type,
   mlu.meaning engineering_bill,
-  msik.primary_uom_code assembly_uom,
+  msiv.primary_uom_code assembly_uom,
   bbom.alternate_bom_designator alt_bom_designator,
   bad.description alt_bom_designator_desc,
   rev.revision assembly_revision,
@@ -48,58 +49,56 @@ with q_assemblies as
    and mck.category_id = mic.category_id
   ) category,
   (select distinct
-    listagg(bdde.element_name || nvl2(bom_bomrboms_xmlp_pkg.get_ele_desc(msik.bom_item_type, bdde.element_name, msik.item_catalog_group_id),': ' || bom_bomrboms_xmlp_pkg.get_ele_desc(msik.bom_item_type, bdde.element_name, msik.item_catalog_group_id),null),', ') within group (order by bdde.element_name)
+    listagg(bdde.element_name || nvl2(bom_bomrboms_xmlp_pkg.get_ele_desc(msiv.bom_item_type, bdde.element_name, msiv.item_catalog_group_id),': ' || bom_bomrboms_xmlp_pkg.get_ele_desc(msiv.bom_item_type, bdde.element_name, msiv.item_catalog_group_id),null),', ') within group (order by bdde.element_name)
    from
     bom_dependent_desc_elements bdde
    where
     bdde.bill_sequence_id=bet.top_bill_sequence_id and
     rownum <= 40 -- cap to ensure listagg doesnt exceed 4K
   ) descriptive_elements,
-  --
   xxen_util.meaning(bet.loop_flag,'SYS_YES_NO',700) assembly_has_loop,
-  --
   to_char(bet.top_bill_sequence_id ) top_bill_sequence_id,
-  msik.inventory_item_id assembly_item_id,
+  msiv.inventory_item_id assembly_item_id,
   bbom.organization_id assembly_organization_id,
-  msik.item_catalog_group_id assembly_item_catalog_group_id,
+  msiv.item_catalog_group_id assembly_item_catalog_group_id,
   --
-  msik.attribute_category,
-  msik.attribute1,
-  msik.attribute2,
-  msik.attribute3,
-  msik.attribute4,
-  msik.attribute5,
-  msik.attribute6,
-  msik.attribute7,
-  msik.attribute8,
-  msik.attribute9,
-  msik.attribute10,
-  msik.attribute11,
-  msik.attribute12,
-  msik.attribute13,
-  msik.attribute14,
-  msik.attribute15,
-  msik.attribute16,
-  msik.attribute17,
-  msik.attribute18,
-  msik.attribute19,
-  msik.attribute20,
-  msik.attribute21,
-  msik.attribute22,
-  msik.attribute23,
-  msik.attribute24,
-  msik.attribute25,
-  msik.attribute26,
-  msik.attribute27,
-  msik.attribute28,
-  msik.attribute29,
-  msik.attribute30,
-  msik.row_id assembly_row_id
+  msiv.attribute_category,
+  msiv.attribute1,
+  msiv.attribute2,
+  msiv.attribute3,
+  msiv.attribute4,
+  msiv.attribute5,
+  msiv.attribute6,
+  msiv.attribute7,
+  msiv.attribute8,
+  msiv.attribute9,
+  msiv.attribute10,
+  msiv.attribute11,
+  msiv.attribute12,
+  msiv.attribute13,
+  msiv.attribute14,
+  msiv.attribute15,
+  msiv.attribute16,
+  msiv.attribute17,
+  msiv.attribute18,
+  msiv.attribute19,
+  msiv.attribute20,
+  msiv.attribute21,
+  msiv.attribute22,
+  msiv.attribute23,
+  msiv.attribute24,
+  msiv.attribute25,
+  msiv.attribute26,
+  msiv.attribute27,
+  msiv.attribute28,
+  msiv.attribute29,
+  msiv.attribute30,
+  msiv.row_id assembly_row_id
  from
   bom_explosion_temp bet,
   bom_bill_of_materials bbom,
   bom_lists blist,
-  mtl_system_items_kfv msik,
+  mtl_system_items_vl msiv,
   mtl_item_revisions_b rev,
   mfg_lookups mlu,
   bom_alternate_designators bad
@@ -109,8 +108,8 @@ with q_assemblies as
   and bet.top_bill_sequence_id = bbom.bill_sequence_id
   and blist.sequence_id = :p_sequence_id1
   and blist.organization_id = bbom.organization_id
-  and bbom.assembly_item_id = msik.inventory_item_id
-  and bbom.organization_id = msik.organization_id
+  and bbom.assembly_item_id = msiv.inventory_item_id
+  and bbom.organization_id = msiv.organization_id
   and ( (bbom.alternate_bom_designator is null and bad.organization_id = -1) or
         (bbom.alternate_bom_designator is not null and bbom.alternate_bom_designator = bad.alternate_designator_code and bad.organization_id = blist.organization_id)
       )
@@ -172,11 +171,12 @@ q_components as
   round(bev.minimum_quantity,:p_qty_precision) comp_minimum_quantity,
   round(bev.maximum_quantity,:p_qty_precision) comp_maximum_quantity,
   mck.concatenated_segments comp_category,
-  msib_c.inventory_item_status_code comp_item_status,
-  bom_bomrboms_xmlp_pkg.cf_comp_descformula(bev.component_item_id, bev.organization_id) comp_description,
+  msiv.inventory_item_status_code comp_item_status,
+  msiv.description comp_description,
+  msiv.long_description comp_long_description,
   bom_bomrboms_xmlp_pkg.get_rev(bev.organization_id, bev.component_item_id) comp_revision,
   bom_bomrboms_xmlp_pkg.cf_revision_descformula(bev.component_item_id, bom_bomrboms_xmlp_pkg.get_rev(bev.organization_id, bev.component_item_id)) comp_revision_desc,
-  bom_bomrboms_xmlp_pkg.supply_type_dispformula(decode ( bom.common_bill_sequence_id , bom.bill_sequence_id , bev.wip_supply_type , msib_a.wip_supply_type )) comp_supply_type,
+  bom_bomrboms_xmlp_pkg.supply_type_dispformula(decode (bom.common_bill_sequence_id , bom.bill_sequence_id , bev.wip_supply_type , msib_a.wip_supply_type)) comp_supply_type,
   bev.so_basis so_basis,
   bom_bomrboms_xmlp_pkg.eng_bill_dispformula(bev.eng_bill) eng_bill,
   bom_bomrboms_xmlp_pkg.optional_dispformula(bev.optional) optional,
@@ -185,18 +185,15 @@ q_components as
   bom_bomrboms_xmlp_pkg.required_to_ship_dispformula(bev.required_to_ship) required_to_ship,
   bom_bomrboms_xmlp_pkg.required_for_revenue_dispformu(bev.required_for_revenue) required_for_revenue,
   bom_bomrboms_xmlp_pkg.include_on_ship_docs_dispformu(bev.include_on_ship_docs) include_on_ship_docs,
-  --
   (select distinct
-    listagg(brd.component_reference_designator || nvl2(brd.ref_designator_comment,': ' || brd.ref_designator_comment,null),', ') within group (order by brd.component_reference_designator)
+    listagg(brd.component_reference_designator||nvl2(brd.ref_designator_comment,': '||brd.ref_designator_comment,null),', ') within group (order by brd.component_reference_designator)
    from
     bom_ref_designators_view brd
    where
     brd.component_sequence_id=bev.component_sequence_id and
     rownum <= 15 -- cap to ensure listagg doesnt exceed 4K
   ) reference_designators,
-  --
   xxen_util.meaning(bev.loop_flag,'SYS_YES_NO',700) component_has_loop,
-  --
   msib_a.organization_id assembly_organization_id,
   bev.parent_item_id assembly_item_id,
   bev.organization_id comp_org_id,
@@ -204,45 +201,44 @@ q_components as
   bev.component_sequence_id,
   bev.component_item_id,
   decode(bom.common_bill_sequence_id, bom.bill_sequence_id, bev.supply_locator_id, msib_a.wip_supply_locator_id) supply_locator_id,
-  --
-  msib_c.attribute_category,
-  msib_c.attribute1,
-  msib_c.attribute2,
-  msib_c.attribute3,
-  msib_c.attribute4,
-  msib_c.attribute5,
-  msib_c.attribute6,
-  msib_c.attribute7,
-  msib_c.attribute8,
-  msib_c.attribute9,
-  msib_c.attribute10,
-  msib_c.attribute11,
-  msib_c.attribute12,
-  msib_c.attribute13,
-  msib_c.attribute14,
-  msib_c.attribute15,
-  msib_c.attribute16,
-  msib_c.attribute17,
-  msib_c.attribute18,
-  msib_c.attribute19,
-  msib_c.attribute20,
-  msib_c.attribute21,
-  msib_c.attribute22,
-  msib_c.attribute23,
-  msib_c.attribute24,
-  msib_c.attribute25,
-  msib_c.attribute26,
-  msib_c.attribute27,
-  msib_c.attribute28,
-  msib_c.attribute29,
-  msib_c.attribute30,
-  msib_c.rowid component_row_id
+  msiv.attribute_category,
+  msiv.attribute1,
+  msiv.attribute2,
+  msiv.attribute3,
+  msiv.attribute4,
+  msiv.attribute5,
+  msiv.attribute6,
+  msiv.attribute7,
+  msiv.attribute8,
+  msiv.attribute9,
+  msiv.attribute10,
+  msiv.attribute11,
+  msiv.attribute12,
+  msiv.attribute13,
+  msiv.attribute14,
+  msiv.attribute15,
+  msiv.attribute16,
+  msiv.attribute17,
+  msiv.attribute18,
+  msiv.attribute19,
+  msiv.attribute20,
+  msiv.attribute21,
+  msiv.attribute22,
+  msiv.attribute23,
+  msiv.attribute24,
+  msiv.attribute25,
+  msiv.attribute26,
+  msiv.attribute27,
+  msiv.attribute28,
+  msiv.attribute29,
+  msiv.attribute30,
+  msiv.rowid component_row_id
  from
   bom_explosion_view bev,
   mtl_item_locations_kfv milk,
   bom_bill_of_materials bom,
   mtl_system_items_b msib_a,
-  mtl_system_items_b msib_c,
+  mtl_system_items_vl msiv,
   (select
    mic.*
    from
@@ -260,29 +256,29 @@ q_components as
   and milk.organization_id(+) = bev.organization_id
   and bev.parent_item_id = msib_a.inventory_item_id
   and bev.organization_id = msib_a.organization_id
-  and bev.component_item_id = msib_c.inventory_item_id
-  and bev.organization_id = msib_c.organization_id
-  and msib_c.inventory_item_id = mic.inventory_item_id (+)
-  and msib_c.organization_id = mic.organization_id (+)
+  and bev.component_item_id = msiv.inventory_item_id
+  and bev.organization_id = msiv.organization_id
+  and msiv.inventory_item_id = mic.inventory_item_id (+)
+  and msiv.organization_id = mic.organization_id (+)
   and mic.category_id = mck.category_id (+)
   and bom.bill_sequence_id = bev.bill_sequence_id
   and ( ( (:p_verify_flag is null) or (:p_verify_flag <> 1) ) or ( (:p_verify_flag = 1) and (bev.loop_flag = 1) ) )
 ),
 q_subst_comp as
-(select /*+ INLINE */
-  msik.concatenated_segments substitute_component,
-  bom_bomrboms_xmlp_pkg.cf_subcomp_descformula(msik.inventory_item_id, msik.organization_id) substitute_description,
+(select /*+ inline */
+  msiv.concatenated_segments substitute_component,
+  msiv.description substitute_description,
+  msiv.long_description substitute_long_description,
   bsc.substitute_item_quantity substitute_quantity,
-  msik.primary_uom_code substitute_uom,
-  --
+  msiv.primary_uom_code substitute_uom,
   bsc.component_sequence_id,
-  msik.organization_id organization_id,
-  msik.inventory_item_id item_id
+  msiv.organization_id organization_id,
+  msiv.inventory_item_id item_id
  from
   bom_sub_components_view bsc,
-  mtl_system_items_kfv msik
+  mtl_system_items_vl msiv
  where
-     msik.inventory_item_id = bsc.substitute_component_id
+     msiv.inventory_item_id = bsc.substitute_component_id
  and :p_print_option5_flag = 1
 )
 --
@@ -292,6 +288,7 @@ select
  qa.assembly_organization,
  qa.assembly,
  qa.assembly_description,
+ qa.assembly_long_description,
  qa.bom_item_type,
  qa.engineering_bill,
  qa.assembly_uom,
@@ -302,12 +299,12 @@ select
  qa.category,
  qa.descriptive_elements,
  &assb_dff_attributes
- --
  qc.plan_level "level",
  qc.comp_item_seq_num item_seq,
  qc.comp_operation_seq_num op_seq,
  qc.comp_number component,
  qc.comp_description component_description,
+ qc.comp_long_description component_long_description,
  qc.comp_revision revision,
  qc.comp_revision_desc revision_description,
  qc.comp_item_uom uom,
@@ -344,6 +341,7 @@ select
  &comp_dff_attributes
  qsc.substitute_component,
  qsc.substitute_description,
+ qsc.substitute_long_description,
  qsc.substitute_quantity,
  qsc.substitute_uom,
  qa.assembly_has_loop,

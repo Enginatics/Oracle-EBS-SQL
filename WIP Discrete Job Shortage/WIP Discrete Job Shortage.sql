@@ -141,8 +141,9 @@ with wip_detail as
           mtl_item_quantities_view    miqv
         , mtl_secondary_inventories   msi
         where
-            msi.organization_id            = miqv.organization_id
-        and msi.secondary_inventory_name   = miqv.subinventory_code
+        4=4 and
+        msi.organization_id=miqv.organization_id
+        and msi.secondary_inventory_name=miqv.subinventory_code
         and nvl(msi.disable_date,sysdate) >= sysdate
         group by
           miqv.organization_id
@@ -158,7 +159,8 @@ with wip_detail as
           mtl_item_quantities_view    miqv
         , mtl_secondary_inventories   msi
         where
-            msi.organization_id            = miqv.organization_id
+        4=4 and
+        msi.organization_id=miqv.organization_id
         and msi.secondary_inventory_name   = miqv.subinventory_code
         and nvl(msi.disable_date,sysdate) >= sysdate
         group by
@@ -318,10 +320,10 @@ select
 , wip_dtl.component_desc
 , wip_dtl.component_type
 , wip_dtl.make_or_buy
-, wip_dtl.preprocessing_lead_time component_preprocessing_lead_time
-, wip_dtl.processing_lead_time component_processing_lead_time
-, wip_dtl.postprocessing_lead_time component_postprocessing_lead_time
-, wip_dtl.cumulative_total_lead_time component_cumulative_total_lead_time
+, wip_dtl.preprocessing_lead_time comp_preprocessing_lead_time
+, wip_dtl.processing_lead_time comp_processing_lead_time
+, wip_dtl.postprocessing_lead_time comp_postprocessing_lead_time
+, wip_dtl.cumulative_total_lead_time comp_cumulative_tot_lead_time
 , wip_dtl.wip_supply_type
 , wip_dtl.mrp_net_flag
 , wip_dtl.planner component_planner

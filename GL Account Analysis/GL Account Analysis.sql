@@ -122,6 +122,24 @@ coalesce(aia.source,rbsa.name,gjsv.user_je_source_name) sl_source,
 decode(gjsv.user_je_source_name,'Assets',to_char(xte.source_id_int_3),'Payables',aba.batch_name,'Receivables',decode(xah.je_category_name,'Receipts',arba.name,rba.name)) sl_batch_no,
 --Assets
 fab.asset_number,
+(
+select distinct
+listagg(fdh.concatenated_segments,chr(10)) within group (order by fdh.concatenated_segments) over (partition by fdh.asset_id) expense_account
+from
+(
+select
+fdh.asset_id,
+gcck.concatenated_segments,
+sum(lengthb(gcck.concatenated_segments)+1) over (partition by fdh.asset_id order by gcck.concatenated_segments rows between unbounded preceding and current row) total_length
+from
+(select distinct fdh.asset_id, fdh.code_combination_id from fa_distribution_history fdh where fab.asset_id=fdh.asset_id and fdh.date_ineffective is null) fdh,
+gl_code_combinations_kfv gcck
+where
+fdh.code_combination_id=gcck.code_combination_id
+) fdh
+where
+fdh.total_length<=4000
+) expense_account,
 --AP
 nvl(aia.invoice_num,rcta.trx_number) invoice_number,
 nvl(aia.description,rcta.comments) description,
@@ -188,18 +206,18 @@ mmt.transaction_reference inv_transaction_reference,
 mtst.transaction_source_type_name inv_transaction_source_type,
 mtt.transaction_type_name inv_transaction_type,
 case
-when mmt.transaction_source_type_id=6 then (select mgd.segment1 from mtl_generic_dispositions mgd where mgd.disposition_id=mmt.transaction_source_id and mgd.organization_id=mmt.organization_id) --Account Alias
-when mmt.transaction_source_type_id in (2,8,12) then (select mso.segment1||'.'||mso.segment2||'.'||mso.segment3 from mtl_sales_orders mso where mso.sales_order_id=mmt.transaction_source_id)--Sales Order, Internal Order, RMA
-when mmt.transaction_source_type_id=11 then (select ccu.description from cst_cost_updates ccu where ccu.cost_update_id=mmt.transaction_source_id) --Cost Update
-when mmt.transaction_source_type_id=9 then (select mcch.cycle_count_header_name from mtl_cycle_count_headers mcch where mcch.cycle_count_header_id=mmt.transaction_source_id) --Cycle Count
-when mmt.transaction_source_type_id=3 then (select gcck.concatenated_segments from gl_code_combinations_kfv gcck where gcck.code_combination_id=mmt.transaction_source_id) --Account
+when mmt.transaction_source_type_id=6 then (select mgd.segment1 from mtl_generic_dispositions mgd where mmt.transaction_source_id=mgd.disposition_id and mmt.organization_id=mgd.organization_id) --Account Alias
+when mmt.transaction_source_type_id in (2,8,12) then (select mso.segment1||'.'||mso.segment2||'.'||mso.segment3 from mtl_sales_orders mso where mmt.transaction_source_id=mso.sales_order_id) --Sales Order, Internal Order, RMA
+when mmt.transaction_source_type_id=11 then (select ccu.description from cst_cost_updates ccu where mmt.transaction_source_id=ccu.cost_update_id) --Cost Update
+when mmt.transaction_source_type_id=9 then (select mcch.cycle_count_header_name from mtl_cycle_count_headers mcch where mmt.transaction_source_id=mcch.cycle_count_header_id) --Cycle Count
+when mmt.transaction_source_type_id=3 then (select gcck.concatenated_segments from gl_code_combinations_kfv gcck where mmt.transaction_source_id=gcck.code_combination_id) --Account
 when mmt.transaction_source_type_id=13 or mmt.transaction_source_type_id>100 then mmt.transaction_source_name --Inventory
-when mmt.transaction_source_type_id=10 then (select mpi.physical_inventory_name from mtl_physical_inventories mpi where mpi.physical_inventory_id=mmt.transaction_source_id and mpi.organization_id=mmt.organization_id) --Physical Inventory
+when mmt.transaction_source_type_id=10 then (select mpi.physical_inventory_name from mtl_physical_inventories mpi where mmt.transaction_source_id=mpi.physical_inventory_id and mmt.organization_id=mpi.organization_id) --Physical Inventory
 when mmt.transaction_source_type_id=1 then pha.segment1 --PO
 when mmt.transaction_source_type_id=16 then (select okhab.contract_number from okc_k_headers_all_b okhab where mmt.transaction_source_id=okhab.id) --Project Contracts
 when mmt.transaction_source_type_id=7 then prha.segment1 --Requisition
 when mmt.transaction_source_type_id=5 then we.wip_entity_name --WIP Job or Schedule
-when mmt.transaction_source_type_id=4 then (select mtrh.request_number from mtl_txn_request_headers mtrh where mtrh.header_id=mmt.transaction_source_id) --Move Order
+when mmt.transaction_source_type_id=4 then (select mtrh.request_number from mtl_txn_request_headers mtrh where mmt.transaction_source_id=mtrh.header_id) --Move Order
 end inv_transaction_source,
 mmt.transaction_id inv_transaction_id,
 cwo.comments write_off_comments,
@@ -228,10 +246,10 @@ gjb.org_id,
 cwo.operating_unit_id
 )=haouv.organization_id) operating_unit,
 --AP/AR MDM Party/Site Identifier
-nvl2(xal.party_type_code,xal.party_type_code||'-'||nvl(to_char(xal.party_id),'UNKNOWN')||'-' ||nvl(to_char(xal.party_site_id),'0'),null) mdm_party_id,
+nvl2(xal.party_type_code,xal.party_type_code||'-'||nvl(to_char(xal.party_id),'UNKNOWN')||'-'||nvl(to_char(xal.party_site_id),'0'),null) mdm_party_id,
 decode(xal.party_type_code,
-'C',xal.party_type_code||'-'||nvl(hp.party_name,'UNKNOWN')||'-' ||nvl(hcsua.location,'0'),
-'S',xal.party_type_code||'-'||nvl(aps.vendor_name,'UNKNOWN')|| '-'||nvl(assa.vendor_site_code,'0')
+'C',xal.party_type_code||'-'||nvl(hp.party_name,'UNKNOWN')||'-'||nvl(hcsua.location,'0'),
+'S',xal.party_type_code||'-'||nvl(aps.vendor_name,'UNKNOWN')||'-'||nvl(assa.vendor_site_code,'0')
 ) mdm_party_desc,
 --Record history and ID columns
 xxen_util.user_name(gjh.created_by) journal_created_by,
@@ -272,7 +290,7 @@ ffv.parent_flex_value_low is null and
 ffv.summary_flag='N' and
 7=7
 ) flex_value_set_id,
-xxen_fsg.view_transaction_(fnd_global.resp_appl_id,xxen_util.user_name(fnd_global.user_id),gl.ledger_id,fnd_global.resp_id,fnd_global.security_group_id,gjsv.user_je_source_name,xah.event_id) view_transaction
+xxen_fsg.view_transaction_(fnd_global.resp_appl_id,gl.ledger_id,fnd_global.resp_id,fnd_global.security_group_id,gjsv.user_je_source_name,xah.event_id) view_transaction
 from
 gl_ledgers gl,
 gl_periods gp,
@@ -372,8 +390,8 @@ gjl.code_combination_id=gcck.code_combination_id and
 coalesce(xal.currency_conversion_date,gjh.currency_conversion_date,trunc(xe.transaction_date))=gdr.conversion_date(+) and
 decode(nvl2(xal.gl_sl_link_id,xal.currency_code,gjh.currency_code),:revaluation_currency,null,nvl2(xal.gl_sl_link_id,xal.currency_code,gjh.currency_code))=gdr.from_currency(+) and
 gjl.tax_code_id=zrb.tax_rate_id(+) and
-case when xte.application_id=140 then case when xte.entity_code in ('DEPRECIATION','DEFERRED_DEPRECIATION') then xte.source_id_int_1 when xte.entity_code='TRANSACTIONS' then fth.asset_id end end=fab.asset_id(+) and
 case when xte.application_id=140 and xte.entity_code='TRANSACTIONS' then xte.source_id_int_1 end=fth.transaction_header_id(+) and
+case when xte.application_id=140 then case when xte.entity_code in ('DEPRECIATION','DEFERRED_DEPRECIATION') then xte.source_id_int_1 when xte.entity_code='TRANSACTIONS' then fth.asset_id end end=fab.asset_id(+) and
 coalesce(case when xte.application_id=200 then decode(xte.entity_code,'AP_INVOICES',xte.source_id_int_1,'AP_PAYMENTS',aca.max_aipa_invoice_id) end,aida.invoice_id)=aia.invoice_id(+) and 
 aia.invoice_id=aida0.invoice_id(+) and
 case when xte.application_id=200 and xte.entity_code='AP_PAYMENTS' then xte.source_id_int_1 end=aca.check_id(+) and
@@ -508,6 +526,7 @@ null sl_source,
 null sl_batch_no,
 --Assets
 null asset_number,
+null expense_account,
 --AP
 null invoice_number,
 null description,
@@ -722,6 +741,7 @@ null sl_source,
 null sl_batch_no,
 --Assets
 null asset_number,
+null expense_account,
 --AP
 null invoice_number,
 null description,

@@ -31,14 +31,16 @@ null status_,
 null message_,
 null request_id_,
 null modified_columns_,
-null row_id,
+chartorowid(null) row_id,
 to_number(null) group_id,
 'Vision Operations (USA)' ledger_name,
 'Operations' organization,
 'CORPORATE 2000' budget,
 'Spreadsheet' source,
 'Adjustment' category,
+'Yes' check_if_journal_balanced,
 'Dummy' batch_name,
+'Dummy' approval_status,
 'Dummy' batch_description,
 'Dummy' journal_name,
 'Dummy' journal_description,
@@ -82,7 +84,6 @@ null summary_flag,
 null post_to_suspense_flag,
 null submit_approval,
 null submit_posting,
---
 null line_dff_context,
 null gl_je_line_attribute1,
 null gl_je_line_attribute2,
@@ -94,15 +95,15 @@ null gl_je_line_attribute7,
 null gl_je_line_attribute8,
 null gl_je_line_attribute9,
 null gl_je_line_attribute10,
---
 null attachment_category_,
 null attachment_title_,
 null attachment_description_,
 null attachment_type_,
 null attachment_content_,
-null attachment_file_id_
-from 
-dual 
+null attachment_file_id_,
+0 upload_row
+from
+dual
 where
 1=1 and
 1=0 and
@@ -110,6 +111,3 @@ where
 nvl(:p_foreign_currency_flag,'No')=nvl(:p_foreign_currency_flag,'No') and
 :p_create_summary_jnl=:p_create_summary_jnl and
 :p_post_to_suspense_flag=:p_post_to_suspense_flag
-&not_use_first_block
-&report_table_select &report_table_name &report_table_where_clause &success_records
-&processed_run

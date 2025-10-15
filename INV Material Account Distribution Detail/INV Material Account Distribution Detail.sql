@@ -21,7 +21,8 @@ from
 select /*+ push_pred(x) push_pred(rctla) */
 gl.name ledger,
 haouv.name operating_unit,
-mta.organization_code,
+mta.organization_code "MTA Organization Code",
+ood.organization_code "Txn Organization Code(MMT)",
 mta.transaction_date,
 (select gp.period_name from gl_periods gp where mta.transaction_date>=gp.start_date and mta.transaction_date<gp.end_date+1 and gl.period_set_name=gp.period_set_name and gl.accounted_period_type=gp.period_type and gp.adjustment_period_flag='N') period,
 to_number(to_char(mta.transaction_date,'yyyy')) year,
@@ -53,7 +54,12 @@ fnd_flex_xml_publisher_apis.process_kff_combination_1('acc desc','SQLGL','GL#',g
 xxen_util.meaning(mta.accounting_line_type,'CST_ACCOUNTING_LINE_TYPE',700) accounting_type,
 msiv.concatenated_segments item,
 xxen_util.meaning(msiv.item_type,'ITEM_TYPE',3) user_item_type,
-mck.concatenated_segments category,
+xxen_util.meaning(msiv.planning_make_buy_code,'MTL_PLANNING_MAKE_BUY',700) make_or_buy,
+milk.concatenated_segments locator,
+xxen_util.concatenated_segments(msiv.expense_account)item_expense_account,
+xxen_util.concatenated_segments(msiv.cost_of_sales_account)item_cogs_account,
+xxen_util.concatenated_segments(msiv.sales_Account)item_sales_account,
+&category_columns
 decode(mta.transaction_source_type_id,11,mmt.quantity_adjusted, mta.primary_quantity) quantity,
 muomv.unit_of_measure_tl primary_uom,
 decode(mmt.transaction_action_id,30,
@@ -69,7 +75,17 @@ abs(round(nvl(mta.rate_or_amount,mta.base_transaction_value/decode(mta.primary_q
 ) unit_cost,
 nvl(mta.base_transaction_value,0)*nvl(:p_exchange_rate,1) transaction_value,
 (select mtr.reason_name from mtl_transaction_reasons mtr where mmt.reason_id=mtr.reason_id) transaction_reason,
-&lp_sla_columns
+&lp_sla_columns_1
+&lp_sla_columns_2
+xxen_util.meaning(mta.basis_type,'CST_BASIS',700) basis_type,
+decode(decode(mmt.costed_flag,null,1,'Y',1,'N',2,'E',3),
+               '1', 'Yes',
+               '2', 'No',
+               '3', 'Error',
+               '4', 'W',
+null)costed,
+cce.cost_element,
+mmt.transfer_organization_id transfer_org,
 case
 when mmt.transaction_source_type_id in (2,8,12,101) then rcta.trx_number
 when mmt.transaction_source_type_id=1 and mmt.source_code='RCV' then (select distinct max(aia.invoice_num) keep (dense_rank last order by aia.invoice_id) from ap_invoice_distributions_all aida, ap_invoices_all aia where rt.po_distribution_id=aida.po_distribution_id and aida.invoice_id=aia.invoice_id)
@@ -78,6 +94,8 @@ coalesce(aps.segment1,hca.account_number) vendor_or_customer_number,
 coalesce(aps.vendor_name,hp.party_name) vendor_or_customer_name,
 xxen_util.user_name(mta.created_by) created_by,
 xxen_util.client_time(mta.creation_date) creation_date,
+xxen_util.user_name(mmt.created_by) transaction_created_by,
+xxen_util.client_time(mmt.creation_date) transaction_creation_date,
 xxen_util.user_name(mta.last_updated_by) last_updated_by,
 xxen_util.client_time(mta.last_update_date) last_update_date,
 mta.transaction_id,
@@ -101,12 +119,12 @@ org_organization_definitions ood
 where
 mta.organization_id=ood.organization_id
 ) mta,
+cst_cost_elements cce,
 mtl_material_transactions mmt,
+mtl_item_locations_kfv milk,
+org_organization_definitions ood,
 mtl_system_items_vl msiv,
 mtl_units_of_measure_vl muomv,
-mtl_category_sets_v mcsv,
-mtl_item_categories mic,
-mtl_categories_kfv mck,
 mtl_txn_source_types mtst,
 mtl_transaction_types mtt,
 gl_code_combinations_kfv gcck,
@@ -140,15 +158,18 @@ ap_suppliers aps,
 select
 xdl.source_distribution_id_num_1,
 xal.ledger_id,
-gcck.concatenated_segments,
-xal.code_combination_id,
-gcck.chart_of_accounts_id,
+gcck.*,
 xah.gl_transfer_status_code,
+xal.accounted_dr,
+xal.accounted_cr,
+xal.accounting_class_code accounting_class,
 nvl(xal.entered_dr,0)-nvl(xal.entered_cr,0) entered_amount,
 nvl(xal.accounted_dr,0)-nvl(xal.accounted_cr,0) accounted_amount,
 xal.party_type_code,
 xal.party_id, 
-xal.party_site_id
+xal.party_site_id,
+xal.ae_header_id,
+xal.ae_line_num
 from
 (
 select distinct --subquery required as there are a few cases with more than one xdl records per source_distribution_id_num_1 and ledger
@@ -182,14 +203,14 @@ where
 nvl(:p_coa_id,-1)=nvl(:p_coa_id,-1) and
 mta.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
 mta.transaction_id=mmt.transaction_id and
+milk.inventory_location_id(+)=mmt.locator_id and
+milk.organization_id(+)=mmt.organization_id and
+milk.subinventory_code(+)=mmt.subinventory_code and
+mta.cost_element_id=cce.cost_element_id(+) and
+mmt.organization_id=ood.organization_id and
 mta.inventory_item_id=msiv.inventory_item_id and
 mta.organization_id=msiv.organization_id and
 msiv.primary_uom_code=muomv.uom_code(+) and
-mcsv.category_set_name=:category_set_name and
-mcsv.category_set_id=mic.category_set_id and
-mta.inventory_item_id=mic.inventory_item_id and
-mta.organization_id=mic.organization_id and
-mic.category_id=mck.category_id and
 mta.transaction_source_type_id=mtst.transaction_source_type_id and
 mmt.transaction_type_id=mtt.transaction_type_id and
 mta.reference_account=gcck.code_combination_id and
