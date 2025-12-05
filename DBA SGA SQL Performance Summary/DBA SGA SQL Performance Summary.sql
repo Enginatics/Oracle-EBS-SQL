@@ -61,7 +61,7 @@ gsa.is_bind_aware,
 gsa.parsing_schema_name schema,
 gsa.parse_calls,
 gsa.sorts,
-xxen_util.client_time(to_date(gsa.first_load_time,'YYYY-MM-DD/HH24:MI:SS')) first_load_time,
+xxen_util.client_time(gsa.first_load_time_) first_load_time,
 xxen_util.client_time(gsa.last_active_time) last_active_time,
 decode(gsa.command_type,1,'create table',2,'insert',3,'select',6,'update',7,'delete',9,'create index',11,'alter index',26,'lock table',42,'alter session',44,'commit',45,'rollback',46,'savepoint',47,'pl/sql block',48,'set transaction',50,'explain',62,'analyze table',90,'set constraints',170,'call',189,'merge','other') command_type,
 gsa.action
@@ -75,15 +75,15 @@ xxen_util.zero_to_null(gsa.executions) executions_,
 xxen_util.zero_to_null(gsa.rows_processed) rows_processed_,
 vp.value*gsa.buffer_gets/1000000 buffer_io,
 vp.value*gsa.disk_reads/1000000 disk_io,
-xxen_util.zero_to_null(sysdate-to_date(gsa.first_load_time,'YYYY-MM-DD/HH24:MI:SS'))*86400 seconds,
-nvl2(:time_basis_days,:time_basis_days/xxen_util.zero_to_null(sysdate-to_date(gsa.first_load_time,'YYYY-MM-DD/HH24:MI:SS')),1) time_factor,
+xxen_util.zero_to_null(sysdate-gsa.first_load_time_)*86400 seconds,
+nvl2(:time_basis_days,:time_basis_days/xxen_util.zero_to_null(sysdate-gsa.first_load_time_),1) time_factor,
 gsa.*,
 (select so.name from sys.obj$ so where gsa.program_id=so.obj#) code,
 count(distinct decode(gsa.force_matching_signature,0,null,gsa.sql_id)) over (partition by gsa.force_matching_signature) literals_dupl_count,
 row_number() over (partition by gsa.force_matching_signature order by gsa.inst_id,gsa.sql_id,gsa.plan_hash_value) literals_row_number
 from
 (select vp.value from v$parameter vp where vp.name like 'db_block_size') vp,
-gv$sqlarea gsa
+(select to_date(gsa.first_load_time,'YYYY-MM-DD/HH24:MI:SS') first_load_time_, gsa.* from gv$sqlarea gsa) gsa
 where
 1=1
 ) gsa,

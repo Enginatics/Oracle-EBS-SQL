@@ -85,7 +85,7 @@ select
  xxen_util.meaning(decode(pt.wbs_level,1,'Y'),'YES_NO',0) top_level_task,
  pa_paxbubss_xmlp_pkg.c_indented_task_numberformula(pt.wbs_level,pt.task_number) indented_task_number,
  pa_paxbubss_xmlp_pkg.c_indented_task_nameformula(pt.wbs_level,pt.task_name) indented_task_name,
- substr(sys_connect_by_path(pt.task_number, '/'),2) task_hierarchy,
+ substr(sys_connect_by_path(pt.task_number, '&lp_path_delimiter'),2) task_hierarchy,
  'Task' report_level
 from
  pa_tasks pt,

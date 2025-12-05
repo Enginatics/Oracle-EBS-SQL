@@ -25,6 +25,28 @@ Use this report to migrate Discoverer workbooks to Blitz Report through the foll
 'Blitz Reports' for Discoverer check for column 'required_parameters'
 'Blitz Report Parameter Default Values' for discoverer check for default value having partition
 'Blitz Report Templates' and search for Subtotals: Y in the description and train the users to switch compact pivot to tabular format
+
+
+In case you need to completely re-run the Discoverer import, for example with a different cut-off date parameter, you can use the following script to purge the previously imported data:
+
+declare
+l_eul varchar2(30):='eul_us';
+begin
+  --Delete staging tables
+  delete xxen_discoverer_workbook_xmls xdwx where xdwx.eul=l_eul;
+  delete from xxen_discoverer_fnd_user xdfu where xdfu.eul=l_eul;
+  delete from xxen_discoverer_pivot_fields xdpf where xdpf.eul=l_eul;
+  delete from xxen_discoverer_sheets xds where xds.eul=l_eul;
+  delete from xxen_discoverer_workbooks xdw where xdw.eul=l_eul;
+  --Delete all reports from category 'Discoverer' and their related LOVs
+  for c in (select xrca.report_id from xxen_report_categories_v xrcv, xxen_report_category_assigns xrca where xrcv.category='Discoverer' and xrcv.category_id=xrca.category_id) loop
+    xxen_api.delete_report(c.report_id,'Y');
+  end loop;
+  for c in (select xrplv.lov_id from xxen_report_parameter_lovs_v xrplv where xrplv.description=upper(xrplv.description) and xrplv.lov_id not in (select xrp.lov_id from xxen_report_parameters xrp where xrp.parameter_type='LOV' and xrp.lov_id is not null)) loop
+    xxen_api.delete_lov(c.lov_id);
+  end loop;
+  commit;
+end;
 -- Excel Examle Output: https://www.enginatics.com/example/dis-workbook-export-script/
 -- Library Link: https://www.enginatics.com/reports/dis-workbook-export-script/
 -- Run Report: https://demo.enginatics.com/

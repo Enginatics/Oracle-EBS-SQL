@@ -310,6 +310,7 @@ xah.event_id,
 xe.event_type_code,
 xe.event_date,
 &segments_with_desc
+&contra_account_segments
 &hierarchy_segment
 xal.accounting_class_code,
 xte.entity_code,
@@ -336,7 +337,8 @@ fifs.flex_value_set_id=ffv.flex_value_set_id and
 ffv.parent_flex_value_low is null and
 ffv.summary_flag='N' and
 7=7
-) flex_value_set_id
+) flex_value_set_id,
+xxen_fsg.view_transaction_(fnd_global.resp_appl_id,gl.ledger_id,fnd_global.resp_id,fnd_global.security_group_id,gjsv.user_je_source_name,xah.event_id) view_transaction
 from
 gl_ledgers gl,
 gl_periods gp,
@@ -415,6 +417,7 @@ mtl_transaction_types mtt,
 mtl_txn_source_types mtst,
 oe_order_lines_all oola,
 oe_order_headers_all ooha
+&contra_account_table
 where
 1=1 and
 3=3 and
@@ -671,6 +674,7 @@ null event_id,
 null event_type_code,
 null event_date,
 &segments_with_desc
+&contra_account_segments2
 &hierarchy_segment
 null accounting_class_code,
 null entity_code,
@@ -697,7 +701,8 @@ fifs.flex_value_set_id=ffv.flex_value_set_id and
 ffv.parent_flex_value_low is null and
 ffv.summary_flag='N' and
 7=7
-) flex_value_set_id
+) flex_value_set_id,
+null view_transaction
 from
 gl_ledgers gl,
 gl_periods gp,
@@ -892,6 +897,7 @@ null event_id,
 null event_type_code,
 null event_date,
 &segments_with_desc
+&contra_account_segments2
 &hierarchy_segment
 null accounting_class_code,
 null entity_code,
@@ -918,7 +924,8 @@ fifs.flex_value_set_id=ffv.flex_value_set_id and
 ffv.parent_flex_value_low is null and
 ffv.summary_flag='N' and
 7=7
-) flex_value_set_id
+) flex_value_set_id,
+null view_transaction
 from
 gl_ledgers gl,
 gl_periods gp,

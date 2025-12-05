@@ -5,11 +5,13 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Receiving Expense Value (Period-End)
--- Description: Report to show receiving value for expense locations and expense destination types.  You may run this report for open or closed accounting periods.  If run for a prior period the report automatically rolls back the quantities and values to the prior period's period end date.  If run for a current period, the report shows the real-time quantities and values.  This report displays both the receiving valuation account as well as the offset (expense or CapEx) account.
+-- Description: Report to show receiving value for expense locations and expense destination types, for expenses accrued at time of receipt.  You may run this report for open or closed accounting periods.  If run for a prior period the report automatically rolls back the quantities and values to the prior period's period end date.  if run for a current period, the report shows the real-time quantities and values.  This report displays both the receiving valuation account as well as the offset (expense or CapEx) account.
 
 Parameters:
 Period Name:  the accounting period you wish to report (mandatory).
-Category Sets 1 - 3:  any item category you wish (optional).
+Category Sets 1 - 3:  any item category you wish (optional)
+Supplier Name: enter a supplier name to report (optional)
+Item Number:  enter an item number to report (optional)
 Organization Code:  specific inventory organization to report (optional)
 Operating Unit:  specific operating unit (optional)
 Ledger:  specific ledger (optional)
@@ -45,24 +47,82 @@ Ledger:  specific ledger (optional)
 -- |                                     po_distribution_ids.  It only stores one of the PODs for
 -- |                                     expenses.
 -- |      1.6 06 Jan 2020 Douglas Volz   Added item categories, Org Code and Operating Unit parameters.
--- |      1.7 29 May 2025 Douglas Volz   Removed tabs, added Blitz G/L and OU security.
+-- |      1.7 29 May 2025 Douglas Volz   Removed tabs, added Blitz G/L and OU security..
+-- |      1.8 15 Oct 2025 Douglas Volz   Changed inventory periods to PO financial periods.
+-- |                                     Added non-recoverable tax amounts into PO prices.
+-- |                                     And changed Period Name parameter to use INV Periods
+-- |                                     which also include the master inventory org.
 -- +=============================================================================+*/
 -- Excel Examle Output: https://www.enginatics.com/example/cac-receiving-expense-value-period-end/
 -- Library Link: https://www.enginatics.com/reports/cac-receiving-expense-value-period-end/
 -- Run Report: https://demo.enginatics.com/
 
-select  nvl(gl.short_name, gl.name) Ledger,
+with orgs_and_period as
+-- Get the list of organizations, ledgers and operating units for Discrete and OPM organizations
+        (select nvl(gl.short_name, gl.name) ledger,
+                gl.ledger_id,
+                to_number(hoi.org_information2) legal_entity_id,
+                haou2.name operating_unit,
+                haou2.organization_id operating_unit_id,
+                gps.period_name,
+                gps.end_date,
+                haou.name organization_name,
+                mp.organization_code,
+                mp.organization_id,
+                nvl(mp.process_enabled_flag, 'N') process_enabled_flag,
+                haou.date_to disable_date,
+                gl.currency_code
+         from   mtl_parameters mp,
+                hr_organization_information hoi,
+                hr_all_organization_units_vl haou, -- inv_organization_id
+                hr_all_organization_units_vl haou2, -- operating unit
+                gl_ledgers gl,
+                gl_period_statuses gps
+         -- Avoid disabled inventory organizations
+         where  sysdate                        <  nvl(haou.date_to, sysdate +1)
+         and    hoi.org_information_context     = 'Accounting Information'
+         and    hoi.organization_id             = mp.organization_id
+         and    hoi.organization_id             = haou.organization_id   -- this gets the organization name
+         and    haou2.organization_id           = to_number(hoi.org_information3) -- this gets the operating unit id
+         and    gl.ledger_id                    = to_number(hoi.org_information1) -- get the ledger_id
+         and    gps.ledger_id                   = gl.ledger_id
+         and    gps.application_id              = 201 -- PO
+         and    mp.organization_code in (select oav.organization_code from org_access_view oav where  oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) 
+         and    1=1                             -- p_operating_unit, p_ledger
+         and    2=2                             -- p_period_name
+         and    3=3                             -- p_org_code
+         -- Revision for Operating Unit and Ledger Controls and Parameters
+         and    (nvl(fnd_profile.value('XXEN_REPORT_USE_LEDGER_SECURITY'),'N')='N' or gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+)))
+         and    (nvl(fnd_profile.value('XXEN_REPORT_USE_OPERATING_UNIT_SECURITY'),'N')='N' or haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11))
+         group by
+                nvl(gl.short_name, gl.name),
+                gl.ledger_id,
+                to_number(hoi.org_information2),
+                haou2.name, -- operating_unit
+                haou2.organization_id, -- operating_unit_id
+                gps.period_name,
+                gps.end_date,
+                haou.name,
+                mp.organization_code,
+                mp.organization_id,
+                nvl(mp.process_enabled_flag, 'N'), -- process_enabled_flag
+                haou.date_to,
+                gl.currency_code
+        ) -- orgs_and_period
+
+--------------- main sql starts here -----------------------
+
+select  op.ledger Ledger,
 -- ==================================================================
 -- This statement works using inline table queries with a union all
 -- on the inside inline queries wrapped by an "outside" inline query
 -- in order to produce a single row per item.
 -- ==================================================================
-        haou2.name Operating_Unit,
-        mp.organization_code Org_Code,
-        haou.name Organization_Name,
-        oap.period_name Period_Name,
-        gcc1.concatenated_segments Receiving_Account,
-        gcc2.concatenated_segments Offset_Account,
+        op.operating_unit Operating_Unit,
+        op.organization_code Org_Code,
+        op.organization_name Organization_Name,
+        op.period_name Period_name,
+        -- End revision for version 1.8
         &segment_columns
         pov.vendor_name Supplier,
         he.full_name Buyer,
@@ -75,21 +135,21 @@ select  nvl(gl.short_name, gl.name) Ledger,
         net_rcv.release_num PO_Release,
         pp.name Project_Number,
         (select max(prh.segment1)
-         from   po_requisition_headers_all prh,
-                po_requisition_lines_all prl
+         from   apps.po_requisition_headers_all prh,
+                apps.po_requisition_lines_all prl
          where  prh.requisition_header_id = prl.requisition_header_id
          and    prl.line_location_id      = net_rcv.po_line_location_id) Requisition_Number,
         (select max(he.full_name)
-         from   po_requisition_headers_all prh,
-                po_requisition_lines_all prl,
-                hr_employees he
+         from   apps.po_requisition_headers_all prh,
+                apps.po_requisition_lines_all prl,
+                apps.hr_employees he
          where  prh.requisition_header_id = prl.requisition_header_id
          and    prl.line_location_id      = net_rcv.po_line_location_id
          and    prh.preparer_id           = he.employee_id) Requestor,
         (select max(he.email_address)
-         from   po_requisition_headers_all prh,
-                po_requisition_lines_all prl,
-                hr_employees he
+         from   apps.po_requisition_headers_all prh,
+                apps.po_requisition_lines_all prl,
+                apps.hr_employees he
          where  prh.requisition_header_id = prl.requisition_header_id
          and    prl.line_location_id      = net_rcv.po_line_location_id
          and    prh.preparer_id           = he.employee_id) Requestor_Email,
@@ -110,48 +170,45 @@ select  nvl(gl.short_name, gl.name) Ledger,
 -- ==========================================================
         net_rcv.unit_of_measure Transaction_UOM,
         sum(net_rcv.quantity) Onhand_Quantity,
-        gl.currency_code Currency_Code,
+        -- Revision for version 1.8
+        op.currency_code Currency_Code,
         sum(net_rcv.amount) Onhand_Value
-from    mtl_parameters mp,
+from    -- Revision for version 1.8
+        orgs_and_period op,
         mtl_system_items_vl msiv,
         rcv_parameters rp,
         po_vendors pov,
         hr_employees he,
         pa_projects_all pp,
-        org_acct_periods oap,
         po_lookup_codes pl,
-        hr_organization_information hoi,
-        hr_all_organization_units haou,  -- inv_organization_id
-        hr_all_organization_units haou2, -- operating unit
         gl_code_combinations_kfv gcc1,
         gl_code_combinations_kfv gcc2,
-        gl_ledgers gl,
         -- ==================================
         -- Get receiving quantities and value
         -- ==================================
         -- ================================================
-        -- part 3 
+        -- part 3
         -- Condense the Union down to individual Org/Items
         -- ================================================
-        (select all_rcv.organization_id         organization_id,
-                all_rcv.inventory_item_id       inventory_item_id,
-                all_rcv.destination_type_code   destination_type_code,
-                all_rcv.item_description        item_description,
-                all_rcv.po_number               po_number,
-                all_rcv.po_line_num             po_line_num,
-                all_rcv.vendor_id               vendor_id,
-                all_rcv.agent_id                agent_id,
-                all_rcv.po_header_id            po_header_id,
-                all_rcv.po_line_id              po_line_id,
-                all_rcv.po_line_location_id     po_line_location_id,
-                all_rcv.release_num             release_num,
-                all_rcv.project_id              project_id,
-                all_rcv.receipt_num             receipt_num,
-                all_rcv.charge_account_id       charge_account_id,
+        (select all_rcv.organization_id,
+                all_rcv.inventory_item_id,
+                all_rcv.destination_type_code,
+                all_rcv.item_description,
+                all_rcv.po_number,
+                all_rcv.po_line_num,
+                all_rcv.vendor_id,
+                all_rcv.agent_id,
+                all_rcv.po_header_id,
+                all_rcv.po_line_id,
+                all_rcv.po_line_location_id,
+                all_rcv.release_num,
+                all_rcv.project_id,
+                all_rcv.receipt_num,
+                all_rcv.charge_account_id,
                 min(trunc(all_rcv.transaction_date)) transaction_date,
-                all_rcv.unit_of_measure         unit_of_measure,
-                sum(nvl(all_rcv.quantity,0))    quantity,
-                sum(nvl(all_rcv.amount,0))      amount
+                all_rcv.unit_of_measure,
+                sum(nvl(all_rcv.quantity,0)) quantity,
+                sum(nvl(all_rcv.amount,0)) amount
          from   (
                  -- ===================================
                      -- =============================================================
@@ -159,23 +216,23 @@ from    mtl_parameters mp,
                      -- get the onhand receiving quantities for Expense destinations
                      -- =============================================================
                  select 'Onhand Section', -- section
-                        rrvv.organization_id organization_id,
-                        rrvv.inventory_item_id inventory_item_id,
-                        rrvv.item_description item_description,
-                        rrvv.destination_type_code destination_type_code,
-                        rrvv.po_number po_number,
-                        rrvv.po_line_num po_line_num,
-                        rrvv.vendor_id vendor_id,
-                        rrvv.agent_id agent_id,
-                        rrvv.po_header_id po_header_id,
-                        rrvv.po_line_id po_line_id,
-                        rrvv.po_line_location_id po_line_location_id,
-                        rrvv.release_num release_num,
-                        rrvv.project_id project_id,
+                        rrvv.organization_id,
+                        rrvv.inventory_item_id,
+                        rrvv.item_description,
+                        rrvv.destination_type_code,
+                        rrvv.po_number,
+                        rrvv.po_line_num,
+                        rrvv.vendor_id,
+                        rrvv.agent_id,
+                        rrvv.po_header_id,
+                        rrvv.po_line_id,
+                        rrvv.po_line_location_id,
+                        rrvv.release_num,
+                        rrvv.project_id,
                         rrvv.po_distribution_id,
-                        rrvv.receipt_num receipt_num,
-                        rrvv.transaction_date transaction_date,
-                        rrvv.charge_account_id charge_account_id,
+                        rrvv.receipt_num,
+                        rrvv.transaction_date,
+                        rrvv.charge_account_id,
                         rrvv.unit_of_measure,
                         rrvv.source_document_code,
                         rrvv.deliver_to_location_id,
@@ -184,62 +241,63 @@ from    mtl_parameters mp,
                         rrvv.actual_price,
                         sum(rrvv.primary_quantity) quantity,
                         sum(round(rrvv.amount,2)) amount,
-                        rrvv.shipment_num shipment_num,
-                        rrvv.rcv_transaction_id rcv_transaction_id
+                        rrvv.shipment_num,
+                        rrvv.rcv_transaction_id
                  from   (select rs.to_organization_id organization_id,
                                 rs.item_id inventory_item_id,
-                                pl.item_description item_description, 
-                                rs.destination_type_code destination_type_code,
+                                pl.item_description, 
+                                rs.destination_type_code,
                                 ph.segment1 po_number,
                                 pl.line_num po_line_num,
-                                ph.vendor_id vendor_id, 
-                                ph.agent_id agent_id,
-                                rs.po_header_id po_header_id,
-                                rs.po_line_id po_line_id,
-                                rs.po_line_location_id po_line_location_id,
-                                pr.release_num release_num,
-                                pd.project_id project_id,
-                                pd.po_distribution_id po_distribution_id,
-                                 rsh.receipt_num receipt_num, 
-                                rt_receive.transaction_date transaction_date,
+                                ph.vendor_id, 
+                                ph.agent_id,
+                                rs.po_header_id,
+                                rs.po_line_id,
+                                rs.po_line_location_id,
+                                pr.release_num,
+                                pd.project_id,
+                                pd.po_distribution_id,
+                                rsh.receipt_num,
+                                rt.transaction_date,
                                 pd.code_combination_id charge_account_id,
-                                rs.unit_of_measure unit_of_measure, 
-                                rsl.source_document_code source_document_code, 
-                                decode(rsl.source_document_code, 'INV', rsl.deliver_to_location_id, 
-                                                                 'PO', pd.deliver_to_location_id,
-                                                                 'REQ', prl.deliver_to_location_id) deliver_to_location_id, 
-                                decode(rsl.source_document_code, 'INV', rsh.shipment_num, 
-                                                                 'PO', ph.segment1, 
-                                                                 'REQ', prh.segment1) source_document, 
-                                decode(rsl.source_document_code, 'INV', rsl.line_num, 
-                                                                 'PO', pl.line_num,
-                                                                 'REQ', prl.line_num) document_line_num, 
-                                decode(rsl.source_document_code, 'INV', 
-                                                (rsl.shipment_unit_price * nvl(ph.rate,1)) * (rt_receive.source_doc_quantity/rt_receive.primary_quantity), 
-                                                                 'PO', 
-                                                (pll.price_override *nvl(ph.rate,1)) * (rt_receive.source_doc_quantity/rt_receive.primary_quantity),
-                                                                 'REQ', prl.unit_price * (rt_receive.source_doc_quantity / rt_receive.primary_quantity)) actual_price, 
+                                rs.unit_of_measure,
+                                rsl.source_document_code,
+                                decode(rsl.source_document_code, 
+                                       'INV', rsl.deliver_to_location_id, 
+                                       'PO', pd.deliver_to_location_id,
+                                       'REQ', prl.deliver_to_location_id) deliver_to_location_id, 
+                                decode(rsl.source_document_code,
+                                       'INV', rsh.shipment_num, 
+                                       'PO', ph.segment1, 
+                                       'REQ', prh.segment1) source_document, 
+                                decode(rsl.source_document_code,
+                                       'INV', rsl.line_num, 
+                                       'PO', pl.line_num,
+                                       'REQ', prl.line_num) document_line_num, 
+                                decode(rsl.source_document_code,
+                                       'INV', (rsl.shipment_unit_price * nvl(ph.rate,1)) * (rt.source_doc_quantity/rt.primary_quantity),
+                                       -- Revision for version 1.8
+                                       -- 'PO', (pll.price_override *bnvl(ph.rate,1)) * (rt.source_doc_quantity/rt.primary_quantity),
+                                       'PO', ((pll.price_override * nvl(ph.rate,1))
+                                               + decode(nvl(pd.nonrecoverable_tax,0), 0, 0, pd.nonrecoverable_tax / pd.quantity_ordered * nvl(ph.rate,1)))
+                                             * (rt.source_doc_quantity/rt.primary_quantity),
+                                       -- End revision for version 1.8
+                                       -- Add in non recoverable tax amounts
+                                       'REQ', prl.unit_price * (rt.source_doc_quantity / rt.primary_quantity)) actual_price, 
                                 sum(rs.to_org_primary_quantity) primary_quantity,
-                                -- Revision for version 1.7, need to get the pll.price_override amount
-                                -- as the Oracle Receiving Value Report uses the latest PO price for current amounts.
-                                -- decode(rsl.source_document_code, 'INV', 
-                                --                 (rsl.shipment_unit_price * nvl(ph.rate,1)) * (rt.source_doc_quantity/rt.primary_quantity), 
-                                --                                  'PO', 
-                                --                 (pll.price_override *nvl(ph.rate,1)) * (rt.source_doc_quantity/rt.primary_quantity),
-                                --                                  'REQ', prl.unit_price * (rt.source_doc_quantity / rt.primary_quantity)) *
-                                --        sum(rs.to_org_primary_quantity) amount,
-                                -- Quantity X Price
-                                round(sum(rs.to_org_primary_quantity) *
-                                    round(sum(decode(rae.currency_conversion_rate,
-                                                         null, case when nvl2(rt_correct.po_unit_price,rt_correct.po_unit_price,nvl(rt_deliver.po_unit_price,0))<>nvl(rae.unit_price,0) then nvl(pll.price_override,nvl(rae.unit_price,0)) else nvl(rae.unit_price,0) end,
-                                                         case when nvl2(rt_correct.po_unit_price,rt_correct.po_unit_price,nvl(rt_deliver.po_unit_price,0))<>nvl(rae.unit_price,0) then nvl(pll.price_override,nvl(rae.unit_price,0)) else nvl(rae.unit_price,0) end * rae.currency_conversion_rate
-                                                    ) * (rae.source_doc_quantity/rae.primary_quantity) * rae.primary_quantity
-                                             )        / sum(rae.primary_quantity)
-                                       ,8)
-                                   ,2) amount,
-                                -- End revision for version 1.7
+                                decode(rsl.source_document_code,
+                                       'INV', (rsl.shipment_unit_price * nvl(ph.rate,1)) * (rt.source_doc_quantity/rt.primary_quantity),
+                                       -- Revision for version 1.8
+                                       -- Add in non recoverable tax amounts
+                                       -- 'PO', (pll.price_override * nvl(ph.rate,1)) * (rt.source_doc_quantity/rt.primary_quantity),
+                                       'PO', ((pll.price_override * nvl(ph.rate,1))
+                                               + decode(nvl(pd.nonrecoverable_tax,0), 0, 0, pd.nonrecoverable_tax / pd.quantity_ordered * nvl(ph.rate,1)))
+                                             * (rt.source_doc_quantity/rt.primary_quantity),
+                                       -- End revision for version 1.8
+                                       'REQ', prl.unit_price * (rt.source_doc_quantity / rt.primary_quantity))
+                                       * sum(rs.to_org_primary_quantity) amount,
                                 rsh.shipment_num shipment_num, 
-                                rs.rcv_transaction_id rcv_transaction_id
+                                rs.rcv_transaction_id
                          from   mtl_supply rs,
                                 rcv_shipment_headers rsh, 
                                 rcv_shipment_lines rsl, 
@@ -248,36 +306,11 @@ from    mtl_parameters mp,
                                 po_line_locations_all pll, 
                                 po_distributions_all pd, 
                                 po_requisition_headers_all prh, 
-                                po_requisition_lines_all prl, 
-                                --Revision for version 1.40
-                                rcv_transactions rt_receive,
-                                (select x.*
-                                 from   (select rt.transaction_id parent_transaction_id,
-                                                rt.organization_id,
-                                         connect_by_root rt.transaction_id child_transaction_id,
-                                         connect_by_isleaf
-                                         from   rcv_transactions rt
-                                         connect by prior rt.parent_transaction_id=rt.transaction_id
-                                         start with rt.transaction_id in
-                                                (select ms.rcv_transaction_id
-                                                 from   mtl_supply ms
-                                                 where  ms.supply_type_code       = 'RECEIVING'
-                                                 -- Only expense receipts
-                                                 and    ms.destination_type_code  = 'EXPENSE'
-                                                 and    5=5                       -- p_org_code
-                                                )
-                                         -- Transfer of ownership consigned entries do not hit receiving accounts
-                                         and    nvl(rt.consigned_flag,'N')        = 'N'
-                                         and    4=4                               -- p_org_code
-                                        ) x
-                                 where  x.connect_by_isleaf=1
-                                ) rt,
-                                po_system_parameters_all psp,
-                                rcv_accounting_events rae,
-                                rcv_transactions rt_deliver,
-                                rcv_transactions rt_correct,
-                                --End Revision for version 1.40
-                                po_releases_all pr 
+                                po_requisition_lines_all prl,
+                                rcv_transactions rt,
+                                po_releases_all pr,
+                                -- Revision for version 1.8
+                                orgs_and_period op
                          where  rsh.shipment_header_id        = rs.shipment_header_id
                          and    rsl.shipment_line_id          = rs.shipment_line_id
                          and    ph.po_header_id (+)           = rs.po_header_id
@@ -287,23 +320,12 @@ from    mtl_parameters mp,
                          and    prh.requisition_header_id (+) = rs.req_header_id
                          and    prl.requisition_line_id (+)   = rs.req_line_id
                          and    pr.po_release_id (+)          = rs.po_release_id
-                         and    rs.rcv_transaction_id         = rt_receive.transaction_id
+                         and    rs.rcv_transaction_id         = rt.transaction_id
                          and    rs.destination_type_code      = 'EXPENSE'
                          and    pd.destination_type_code      = 'EXPENSE'
                          and    rs.supply_type_code           = 'RECEIVING'
-                         --Revision for version 1.7
-                         and    rs.rcv_transaction_id         = rt.child_transaction_id
-                         and    rt.parent_transaction_id      = rae.rcv_transaction_id
-                         and    rt_deliver.parent_transaction_id(+) = rs.rcv_transaction_id 
-                         and    rt_deliver.transaction_type(+) = 'DELIVER'
-                         and    rt_correct.parent_transaction_id(+) = rt_deliver.transaction_id
-                         and    rt_correct.transaction_type(+) = 'CORRECT'
-                         and    rae.organization_id            = rt.organization_id
-                         and    rs.to_organization_id          = rt.organization_id
-                         and    psp.org_id                     = ph.org_id
-                         -- Only have expense receipts if accrual expenses at time of receipt
-                         and    psp.expense_accrual_code       = 'RECEIPT'
-                         -- End revision for version 1.7
+                         -- Revision for version 1.8
+                         and    rs.to_organization_id          = op.organization_id
                          group by
                                 rs.to_organization_id,
                                 rs.item_id, 
@@ -319,8 +341,8 @@ from    mtl_parameters mp,
                                 pr.release_num,
                                 pd.project_id,
                                 pd.po_distribution_id,
-                                  rsh.receipt_num, 
-                                rt_receive.transaction_date,
+                                rsh.receipt_num, 
+                                rt.transaction_date,
                                 pd.code_combination_id,
                                 rs.unit_of_measure, 
                                 rsh.shipment_num, 
@@ -334,11 +356,13 @@ from    mtl_parameters mp,
                                 decode(rsl.source_document_code, 'INV', rsl.line_num, 
                                                                  'PO', pl.line_num,
                                                                  'REQ', prl.line_num), 
-                                decode(rsl.source_document_code, 'INV', 
-                                                (rsl.shipment_unit_price * nvl(ph.rate,1)) * (rt_receive.source_doc_quantity/rt_receive.primary_quantity), 
-                                                                 'PO', 
-                                                (pll.price_override *nvl(ph.rate,1)) * (rt_receive.source_doc_quantity/rt_receive.primary_quantity),
-                                                                 'REQ', prl.unit_price * (rt_receive.source_doc_quantity / rt_receive.primary_quantity)), 
+                                decode(rsl.source_document_code, 'INV', (rsl.shipment_unit_price * nvl(ph.rate,1)) * (rt.source_doc_quantity/rt.primary_quantity), 
+                                                                 -- Revision for version 1.8
+                                                                 -- 'PO', (pll.price_override *nvl(ph.rate,1)) * (rt.source_doc_quantity/rt.primary_quantity),
+                                                                 'PO', ((pll.price_override * nvl(ph.rate,1)) + decode(nvl(pd.nonrecoverable_tax,0), 0, 0, pd.nonrecoverable_tax / pd.quantity_ordered * nvl(ph.rate,1)))
+                                                                 * (rt.source_doc_quantity/rt.primary_quantity),
+                                                                 -- End revision for version 1.8
+                                                                 'REQ', prl.unit_price * (rt.source_doc_quantity / rt.primary_quantity)), 
                                 rsh.shipment_num,  
                                 rs.rcv_transaction_id) rrvv
                  group by
@@ -370,48 +394,50 @@ from    mtl_parameters mp,
                         rrvv.rcv_transaction_id
                  union all
                       -- =============================================================            
-                     -- Part 1 
+                     -- Part 1
                      -- Sum up all the post close rcv'g transactions by item and org
                      -- The SIGN of the quantities and amounts have been reversed
                      -- =============================================================            
                  select 'Section 1.1 Post Close' section,
                         rt.organization_id,
                         rsl.item_id inventory_item_id, 
-                        pl.item_description item_description,
-                        pd.destination_type_code destination_type_code,
+                        pl.item_description,
+                        pd.destination_type_code,
                         ph.segment1 po_number,
                         pl.line_num po_line_num,
-                        ph.vendor_id vendor_id,               
-                        ph.agent_id agent_id,
-                        rt.po_header_id po_header_id,
-                        rt.po_line_id po_line_id,
-                        rt.po_line_location_id po_line_location_id,
-                        pr.release_num release_num,
-                        pd.project_id project_id,
-                        pd.po_distribution_id po_distribution_id,        
-                        rsh.receipt_num receipt_num,
-                        rt.transaction_date transaction_date,
+                        ph.vendor_id,               
+                        ph.agent_id,
+                        rt.po_header_id,
+                        rt.po_line_id,
+                        rt.po_line_location_id,
+                        pr.release_num,
+                        pd.project_id,
+                        pd.po_distribution_id,        
+                        rsh.receipt_num,
+                        rt.transaction_date,
                         pd.code_combination_id charge_account_id,
                         rt.unit_of_measure,
-                        rsl.source_document_code source_document_code, 
+                        rsl.source_document_code, 
                         decode(rsl.source_document_code, 'INV', rsl.deliver_to_location_id, 
                                                          'PO', pd.deliver_to_location_id) deliver_to_location_id, 
                         decode(rsl.source_document_code, 'INV', rsh.shipment_num, 
                                                          'PO', ph.segment1) source_document, 
                         decode(rsl.source_document_code, 'INV', rsl.line_num, 
-                                                          'PO', pl.line_num) document_line_num, 
-                        decode(rsl.source_document_code, 'INV', 
-                                (rsl.shipment_unit_price * nvl(ph.rate,1)) * (rt.source_doc_quantity/rt.primary_quantity), 
-                                                         'PO', 
-                                (pll.price_override *nvl(ph.rate,1)) * (rt.source_doc_quantity/rt.primary_quantity)) actual_price,
+                                                         'PO', pl.line_num) document_line_num, 
+                        decode(rsl.source_document_code, 'INV', (rsl.shipment_unit_price * nvl(ph.rate,1)) * (rt.source_doc_quantity/rt.primary_quantity),
+                                                         -- Revision for version 1.8
+                                                         -- 'PO', (pll.price_override *nvl(ph.rate,1)) * (rt.source_doc_quantity/rt.primary_quantity)) actual_price,
+                                                         'PO', ((pll.price_override *nvl(ph.rate,1)) + decode(nvl(pd.nonrecoverable_tax,0), 0, 0, pd.nonrecoverable_tax / pd.quantity_ordered * nvl(ph.rate,1)))
+                                                         * (rt.source_doc_quantity/rt.primary_quantity)) actual_price,
+                                                         -- End revision for version 1.8
                         -- Revert back to version 1.3, rrsl.source_doc_quantity not accurate on CORRECT transaction types
                         -- invert the SIGN as we will subtract away these quantities, based
                         -- upon the SIGN of the net amount of the accounting entry
-                        --sum(abs(nvl(rt.primary_quantity,0)) * decode(sign(nvl(rrsl.accounted_dr,0) - nvl(rrsl.accounted_cr,0)), -1, 1, -1)) quantity,
-                        --sum(round(-1*(nvl(rrsl.accounted_dr,0) - nvl(rrsl.accounted_cr,0)),2)) amount,
+                        -- sum(abs(nvl(rt.primary_quantity,0)) * decode(sign(nvl(rrsl.accounted_dr,0) - nvl(rrsl.accounted_cr,0)), -1, 1, -1)) quantity,
+                        -- sum(round(-1*(nvl(rrsl.accounted_dr,0) - nvl(rrsl.accounted_cr,0)),2)) amount,
                         abs(nvl(rt.primary_quantity,0)) * decode(sign(rrsl.amount), -1, 1, -1) quantity,
                         rrsl.amount * -1 amount,
-                        rsh.shipment_num shipment_num, 
+                        rsh.shipment_num, 
                         rt.transaction_id rcv_transaction_id
                  from   rcv_transactions rt,
                         po_headers_all ph,
@@ -423,7 +449,10 @@ from    mtl_parameters mp,
                         po_distributions_all pd,
                         rcv_parameters rp,
                         po_system_parameters_all psp,
-                        org_acct_periods oap,
+                        -- Revision for version 1.8
+                        -- org_acct_periods oap,
+                        orgs_and_period op,
+                        -- End revision for version 1.8
                         -- ==========================================================================
                         -- mtl_supply does not store split expense receipts by multiple PO_DISTRIBUTION_IDs
                         -- and will only store one of the PO distributions for a given receipt or receiving txn id.
@@ -440,16 +469,25 @@ from    mtl_parameters mp,
                                 sum(round((nvl(rrsl.accounted_dr,0) - nvl(rrsl.accounted_cr,0)),2)) amount
                          from   rcv_receiving_sub_ledger rrsl,
                                 rcv_transactions rt,
-                                org_acct_periods oap
+                                -- Revision for version 1.8
+                                -- org_acct_periods oap
+                                org_organization_definitions ood,
+                                gl_period_statuses gps
+                                -- End revision for version 1.8
                          where  rrsl.rcv_transaction_id       = rt.transaction_id
-                         and    trunc(rt.transaction_date)    > oap.schedule_close_date
-                         and    rt.organization_id            = oap.organization_id
-                         and    3=3                           -- p_period_name
-                         and    4=4                           -- p_org_code
+                         -- Revision for version 1.8
+                         -- and    trunc(rt.transaction_date)    > oap.schedule_close_date
+                         -- and    rt.organization_id            = oap.organization_id
+                         and    trunc(rt.transaction_date)    > gps.end_date
+                         and    rt.organization_id            = ood.organization_id
+                         and    gps.ledger_id                 = ood.set_of_books_id
+                         and    gps.application_id            = 201 -- PO
+                         and    2=2                           -- p_period_name
+                         and    6=6                           -- p_org_code
                          and    rrsl.accounting_line_type     = 'Receiving Inspection'
-                         group by 
+                         group by
                                 rrsl.rcv_transaction_id,
-                                rrsl.code_combination_id) rrsl        
+                                rrsl.code_combination_id) rrsl
                  where  rt.shipment_header_id        = rsh.shipment_header_id
                  and    rt.shipment_line_id          = rsl.shipment_line_id
                  and    rt.po_header_id              = ph.po_header_id
@@ -459,12 +497,15 @@ from    mtl_parameters mp,
                  and    pr.po_release_id (+)         = rsl.po_release_id  
                  and    rt.transaction_id            = rrsl.rcv_transaction_id
                  and    pd.po_distribution_id        = rrsl.po_distribution_id
-                 and    rt.po_line_location_id       = pd.line_location_id 
-                 and    oap.organization_id          = rt.organization_id
-                 and    3=3                          -- p_period_name
-                 -- The oap.schedule_close_date does not have a timestamp so we have to trunc to make the comparison
+                 and    rt.po_line_location_id       = pd.line_location_id
+                 -- Revision for version 1.8
+                 -- and    oap.organization_id         = rt.organization_id
+                 -- and    trunc(rt.transaction_date)  > oap.schedule_close_date
+                 -- The op.end_date does not have a timestamp so we have to trunc to make the comparison
                  -- Don't use rrsl.accounting date, really slow, use rt.transaction_date instead
-                 and    trunc(rt.transaction_date)   > oap.schedule_close_date
+                 and    trunc(rt.transaction_date)   > op.end_date
+                 and    rt.organization_id           = op.organization_id
+                 -- End revision for version 1.8
                  and    rp.receiving_account_id      = rrsl.code_combination_id
                  and    rp.organization_id           = rt.organization_id
                  and    pd.destination_type_code     = 'EXPENSE'
@@ -498,10 +539,12 @@ from    mtl_parameters mp,
                                                          'PO', ph.segment1), 
                         decode(rsl.source_document_code, 'INV', rsl.line_num, 
                                                          'PO', pl.line_num), 
-                        decode(rsl.source_document_code, 'INV', 
-                               (rsl.shipment_unit_price * nvl(ph.rate,1)) * (rt.source_doc_quantity/rt.primary_quantity), 
-                                                         'PO', 
-                               (pll.price_override *nvl(ph.rate,1)) * (rt.source_doc_quantity/rt.primary_quantity)), 
+                        decode(rsl.source_document_code, 'INV', (rsl.shipment_unit_price * nvl(ph.rate,1)) * (rt.source_doc_quantity/rt.primary_quantity), 
+                                                         -- Revision for version 1.8
+                                                         -- 'PO', (pll.price_override *nvl(ph.rate,1)) * (rt.source_doc_quantity/rt.primary_quantity)) actual_price,
+                                                         'PO', ((pll.price_override *nvl(ph.rate,1)) + decode(nvl(pd.nonrecoverable_tax,0), 0, 0, pd.nonrecoverable_tax / pd.quantity_ordered * nvl(ph.rate,1)))
+                                                         * (rt.source_doc_quantity/rt.primary_quantity)),
+                                                         -- End revision for version 1.8
                         abs(nvl(rt.primary_quantity,0)) * decode(sign(rrsl.amount), -1, 1, -1),
                         rrsl.amount * -1,
                         rsh.shipment_num, 
@@ -509,7 +552,7 @@ from    mtl_parameters mp,
                  union all
                  -- ==========================================================
                  -- 1.7 Get the change in unit prices between the RECEIVE and
-                 -- DELIVER transaction types.  When Retroactive Price adjust-
+                 -- DELIVER transaction types.  When retroactive price adjust-
                  -- ments are not in use, the Oracle Receiving accounting 
                  -- entries in rrsl are not recording these differences
                  -- and as a result, the sum of the receiving accounting
@@ -524,24 +567,24 @@ from    mtl_parameters mp,
                  -- ==========================================================
                  select 'Section 1.2 Post Close' section,
                         rae.organization_id,
-                        rae.inventory_item_id inventory_item_id,
-                        pl.item_description item_description,
-                        pd.destination_type_code destination_type_code,
+                        rae.inventory_item_id,
+                        pl.item_description,
+                        pd.destination_type_code,
                         ph.segment1 po_number,
                         pl.line_num po_line_num,
-                        ph.vendor_id vendor_id,               
-                        ph.agent_id agent_id,
-                        rae.po_header_id po_header_id,
-                        rae.po_line_id po_line_id,
-                        rae.po_line_location_id po_line_location_id,
-                        pr.release_num release_num,
-                        pd.project_id project_id,
-                        pd.po_distribution_id po_distribution_id,
-                        rsh.receipt_num receipt_num,
-                        rt.transaction_date transaction_date,
+                        ph.vendor_id,               
+                        ph.agent_id,
+                        rae.po_header_id,
+                        rae.po_line_id,
+                        rae.po_line_location_id,
+                        pr.release_num,
+                        pd.project_id,
+                        pd.po_distribution_id,
+                        rsh.receipt_num,
+                        rt.transaction_date,
                         pd.code_combination_id charge_account_id,
                         rt.unit_of_measure,
-                        rsl.source_document_code source_document_code, 
+                        rsl.source_document_code, 
                         decode(rsl.source_document_code, 'INV', rsl.deliver_to_location_id, 
                                                          'PO', pd.deliver_to_location_id) deliver_to_location_id, 
                         decode(rsl.source_document_code, 'INV', rsh.shipment_num, 
@@ -591,7 +634,7 @@ from    mtl_parameters mp,
                                         (rt.source_doc_quantity/rt.primary_quantity)
                                 ))
                            ,2) amount,
-                        rsh.shipment_num shipment_num,
+                        rsh.shipment_num,
                         rae.rcv_transaction_id
                  from   -- =====================================================================
                         -- Client has multiple PO distributions per Receipt Number for the same
@@ -606,27 +649,26 @@ from    mtl_parameters mp,
                         rcv_accounting_events rae,
                         rcv_receiving_sub_ledger rrsl,
                         rcv_parameters rp,
-                        po_system_parameters_all psp,
                         po_headers_all ph,
                         po_lines_all pl,
                         po_line_locations_all pll,
                         po_releases_all pr,
                         po_distributions_all pd,
-                        org_acct_periods oap
+                        -- Revision for version 1.8
+                        -- org_acct_periods oap
+                        orgs_and_period op
+                        -- End revision for version 1.8
                  where  rt.transaction_id            = rae.rcv_transaction_id
                  and    rt.parent_transaction_id     = parent_rt.transaction_id (+)
                  and    rt.organization_id           = parent_rt.organization_id (+)
                  and    rt.transaction_id            = rrsl.rcv_transaction_id
                  and    rrsl.accounting_line_type in ('Clearing', 'Receiving Inspection')
-                 and    rt.transaction_date         >= oap.schedule_close_date + 1
-                 and    rrsl.transaction_date       >= oap.schedule_close_date + 1
                  and    pd.po_distribution_id        = rrsl.reference3
                  and    ph.po_header_id              = rae.po_header_id         
                  and    pr.po_release_id (+)         = rsl.po_release_id
                  and    pl.po_line_id                = rae.po_line_id
                  and    pll.line_location_id         = rae.po_line_location_id
                  and    pd.destination_type_code     = 'EXPENSE'
-                 and    oap.organization_id          = rt.organization_id
                  and    rae.accounting_event_id      = rrsl.accounting_event_id
                  and    rt.shipment_header_id        = rsh.shipment_header_id
                  and    rt.shipment_line_id          = rsl.shipment_line_id
@@ -636,15 +678,19 @@ from    mtl_parameters mp,
                  and    deliver_rt.transaction_type  = 'DELIVER'  -- get the deliver transaction for the price difference
                  and    deliver_rt.parent_transaction_id = rt.transaction_id
                  and    deliver_rt.po_unit_price    <> rt.po_unit_price
-                 and    deliver_rt.transaction_date >= oap.schedule_close_date + 1
-                 and    rp.organization_id           = rt.organization_id
+                 -- Revision for version 1.8
+                 -- and    oap.organization_id          = rt.organization_id
+                 -- and    deliver_rt.transaction_date >= oap.schedule_close_date + 1
+                 -- and    rt.transaction_date         >= oap.schedule_close_date + 1
+                 -- and    rrsl.transaction_date       >= oap.schedule_close_date + 1
+                 and    op.organization_id           = rp.organization_id
+                 and    deliver_rt.transaction_date >= op.end_date + 1
+                 and    rt.transaction_date         >= op.end_date + 1
+                 and    rrsl.transaction_date       >= op.end_date + 1
+                 and    rae.organization_id          = rp.organization_id
+                 and    rp.organization_id           = rt.organization_id                 
                  -- Assume if Retroactive Price Adjustments in use, then Section 1.5 picks up these entries.
                  and    rp.retroprice_adj_account_id is null
-                 and    psp.org_id                   = ph.org_id
-                 -- Only have expense receipts if accrual expenses at time of receipt
-                 and    psp.expense_accrual_code     = 'RECEIPT'
-                 and    3=3                          -- p_period_name
-                 and    4=4                          -- p_org_code
                  group by
                         'Section 1.2 Post Close', -- section
                         rae.rcv_transaction_id,
@@ -747,9 +793,10 @@ from    mtl_parameters mp,
 where  msiv.inventory_item_id  (+) = net_rcv.inventory_item_id  -- outer join as the items may be missing
 and    msiv.organization_id    (+) = net_rcv.organization_id    -- outer join as the items may be missing
 and    net_rcv.project_id          = pp.project_id (+)
-and    mp.organization_id          = net_rcv.organization_id
-and    mp.organization_id          = oap.organization_id
-and    3=3                         -- p_period_name
+-- Revision for version 1.8
+-- and    mp.organization_id          = net_rcv.organization_id
+and    7=7                         -- p_item_number, p_supplier
+and    op.organization_id          = net_rcv.organization_id
 -- ===================================================================
 -- PO Header joins
 -- ===================================================================
@@ -765,36 +812,23 @@ and    he.employee_id              = net_rcv.agent_id
 -- Receiving accrual account to account number join and org joins
 -- ===================================================================
 and    rp.receiving_account_id     = gcc1.code_combination_id (+) -- receiving value account
-and    rp.organization_id          = mp.organization_id
+-- Revision for version 1.8
+-- and    rp.organization_id          = mp.organization_id
+and    rp.organization_id          = op.organization_id
 and    net_rcv.charge_account_id   = gcc2.code_combination_id (+) -- offset charge account for expenses
 -- ===================================================================
--- -- joins for the lookup codes
+-- Joins for the lookup codes
 -- ===================================================================
 and    pl.lookup_type              = 'DESTINATION TYPE'
 and    pl.lookup_code              = net_rcv.destination_type_code
--- ===================================================================
--- using the base tables to avoid the performance issues
--- with org_organization_definitions and hr_operating_units
--- ===================================================================
-and    hoi.org_information_context = 'Accounting Information'
-and    hoi.organization_id         = mp.organization_id
-and    hoi.organization_id         = haou.organization_id             -- this gets the organization name
--- avoid selecting disabled inventory organizations
-and    sysdate                    <  nvl(haou.date_to, sysdate +1)
-and    haou2.organization_id       = to_number(hoi.org_information3)  -- this gets the operating unit id
-and    gl.ledger_id                = to_number(hoi.org_information1)  -- get the ledger_id
-and    mp.organization_code in (select oav.organization_code from org_access_view oav where  oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) 
-and    1=1                         -- p_operating_unit, p_ledger
-and    2=2                         -- p_org_code
--- Revision for Operating Unit and Ledger Controls and Parameters
-and    (nvl(fnd_profile.value('XXEN_REPORT_USE_LEDGER_SECURITY'),'N')='N' or gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+)))
-and    (nvl(fnd_profile.value('XXEN_REPORT_USE_OPERATING_UNIT_SECURITY'),'N')='N' or haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11))
 group by
-        nvl(gl.short_name, gl.name),
-        haou2.name,
-        mp.organization_code,
-        haou.name,
-        oap.period_name,
+        -- Revision for version 1.8
+        op.ledger,
+        op.operating_unit,
+        op.organization_code,
+        op.organization_name,
+        op.period_name,
+        -- End revision for version 1.8
         gcc1.concatenated_segments, -- Receiving_Account
         gcc2.concatenated_segments, -- Offset_Account
         &segment_columns_grp
@@ -815,17 +849,21 @@ group by
         net_rcv.receipt_num,
         net_rcv.transaction_date,
         msiv.primary_uom_code,
-        gl.currency_code,
+        -- Revision for version 1.8
+        op.currency_code,
         net_rcv.unit_of_measure,
         -- added for inline column select
         net_rcv.po_line_location_id
 having sum(nvl(net_rcv.amount,0)) <> 0
 -- Order by Ledger, Operating Unit, Org Code, Valuation Accounts, Offset Accounts, PO Number, PO Line, PO Release, Receipt Number 
 order by
-        nvl(gl.short_name, gl.name), -- Ledger
-        haou2.name, --  Operating_Unit
-        mp.organization_code,
-        oap.period_name,
+       -- Revision for version 1.8
+        op.ledger,
+        op.operating_unit,
+        op.organization_code,
+        op.organization_name,
+        op.period_name,
+        -- End revision for version 1.8
         gcc1.concatenated_segments, -- Receiving_Account
         gcc2.concatenated_segments, -- Offset_Account
         pov.vendor_name, --   Supplier,

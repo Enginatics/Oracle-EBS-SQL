@@ -183,7 +183,7 @@ xucv.report_name,
 'Upload' report_type,
 xucv.category,
 'Upload Column Default Value' record_type,
-xucv.column_name name,
+lower(xucv.column_name) name,
 to_clob(xucv.default_value) text,
 xxen_util.user_name(xucv.created_by) created_by,
 xxen_util.client_time(xucv.creation_date) creation_date,
@@ -213,6 +213,24 @@ where
 4=4 and
 regexp_like(xucv.comments,&regexp_escape(:sql_text)&insensitive) and
 (:not_sql_text is null or not regexp_like(xucv.comments,&regexp_escape(:not_sql_text)&insensitive))
+union all
+select
+xusv.report_name,
+'Upload' report_type,
+xusv.category,
+'Upload Result SQL' record_type,
+xusv.sql_type||nvl2(xusv.anchor,': '||xusv.anchor,null) name,
+to_clob(xusv.sql_text) text,
+xxen_util.user_name(xusv.created_by) created_by,
+xxen_util.client_time(xusv.creation_date) creation_date,
+xxen_util.user_name(xusv.last_updated_by) last_updated_by,
+xxen_util.client_time(xusv.last_update_date) last_update_date
+from
+xxen_upload_sqls_v xusv
+where
+5=5 and
+regexp_like(xusv.sql_text,&regexp_escape(:sql_text)&insensitive) and
+(:not_sql_text is null or not regexp_like(xusv.sql_text,&regexp_escape(:not_sql_text)&insensitive))
 ) x
 where
 10=10

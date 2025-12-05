@@ -213,6 +213,8 @@ where
 faiv.asset_id=fb.asset_id and
 faiv.date_effective<=nvl2(:p_period,(select nvl(fdp2.period_close_date,sysdate) from fa_deprn_periods fdp2 where fb.book_type_code=fdp2.book_type_code and fdp2.period_name=:p_period),sysdate) and
 nvl(faiv.date_ineffective,sysdate+1)>nvl2(:p_period,(select nvl(fdp2.period_close_date,sysdate) from fa_deprn_periods fdp2 where fb.book_type_code=fdp2.book_type_code and fdp2.period_name=:p_period),sysdate) and
+fb.date_effective<=nvl2(:p_period,(select nvl(fdp2.period_close_date,sysdate) from fa_deprn_periods fdp2 where fb.book_type_code=fdp2.book_type_code and fdp2.period_name=:p_period),sysdate) and
+nvl(fb.date_ineffective,sysdate+1)>nvl2(:p_period,(select nvl(fdp2.period_close_date,sysdate) from fa_deprn_periods fdp2 where fb.book_type_code=fdp2.book_type_code and fdp2.period_name=:p_period),sysdate) and
 '&show_inv_src'='Y'
 )
 select --main SQL starts here

@@ -267,7 +267,7 @@ xe.event_date,
 xal.accounting_class_code,
 xte.entity_code,
 &segments_with_desc
-&lp_contra_acct_sel
+&contra_account_segments
 &hierarchy_segment
 xte.source_id_int_1,
 gp.start_date period_date,
@@ -361,7 +361,7 @@ po_distributions_all pda,
 ap_invoice_distributions_all aida,
 oe_order_lines_all oola,
 oe_order_headers_all ooha
-&lp_contra_acct_tbl
+&contra_account_table
 where
 1=1 and
 3=3 and
@@ -455,7 +455,6 @@ cwo.po_distribution_id=pda.po_distribution_id(+) and
 cwo.invoice_distribution_id=aida.invoice_distribution_id(+) and
 coalesce(decode(gxeh.txn_source,'OM',gxeh.source_line_id),case when mmt.transaction_source_type_id in (2,8,12) then mmt.trx_source_line_id end,rsl.oe_order_line_id,rt.oe_order_line_id)=oola.line_id(+) and
 coalesce(oola.header_id,rsl.oe_order_header_id,rt.oe_order_header_id)=ooha.header_id(+)
-&lp_contra_acct_join
 union all
 select --GL Opening Balance
 ' '||gp.period_name||' Open Bal' period_name,
@@ -609,7 +608,7 @@ null event_date,
 null accounting_class_code,
 null entity_code,
 &segments_with_desc
-&lp_contra_acct_sel2
+&contra_account_segments2
 &hierarchy_segment
 null source_id_int_1,
 gp.start_date-1 period_date,
@@ -824,7 +823,7 @@ null event_date,
 null accounting_class_code,
 null entity_code,
 &segments_with_desc
-&lp_contra_acct_sel2
+&contra_account_segments2
 &hierarchy_segment
 null source_id_int_1,
 gp.end_date period_date,

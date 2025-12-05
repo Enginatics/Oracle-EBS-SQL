@@ -47,6 +47,8 @@ null request_id_,
 null modified_columns_,
 to_char(null) row_id,
 --header--
+null group_code,
+prha.creation_date,
 prha.requisition_header_id,
 prha.segment1 requisition_number,
 papf3.full_name preparer,
@@ -240,10 +242,3 @@ prda.code_combination_id=gcc.code_combination_id(+) and
 prda.project_id=ppv.project_id(+) and
 prda.task_id=ptv.task_id(+) and
 prda.expenditure_organization_id=haouve.organization_id(+)
-&not_use_first_block
-&report_table_select &report_table_name &report_table_where_clause &success_records
-&processed_run
-order by
-7,   -- requisition number
-26, -- line number
-72 -- distribution line number

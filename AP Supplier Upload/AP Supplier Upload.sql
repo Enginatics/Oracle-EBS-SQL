@@ -10,10 +10,6 @@
 -- Library Link: https://www.enginatics.com/reports/ap-supplier-upload/
 -- Run Report: https://demo.enginatics.com/
 
-select
-x.*
-from
-(
 select distinct
 null action_,
 null status_,
@@ -29,6 +25,9 @@ to_char(null) site_bank_intsr_pay_use_row_id,
 -- ########
 -- Vendor
 -- ########
+(select pex.full_name from per_employees_x pex where pex.employee_id = aps.employee_id) employee_name,
+(select pex.employee_num from per_employees_x pex where pex.employee_id = aps.employee_id) employee_number,
+(select pbgp.name from per_employees_x pex,per_business_groups_perf pbgp where pex.business_group_id = pbgp.business_group_id and pex.employee_id = aps.employee_id) business_group,
 aps.vendor_name supplier_name,
 hp.party_number,
 hp.organization_name_phonetic alt_supplier_name,
@@ -263,6 +262,7 @@ assa.fax site_fax_number,
 assa.email_address site_email_address,
 decode(assa.purchasing_site_flag,'Y',xxen_util.meaning('Y','YES_NO',0),null) purchasing_site,
 decode(assa.pay_site_flag,'Y',xxen_util.meaning('Y','YES_NO',0),null) pay_site,
+decode(assa.primary_pay_site_flag,'Y',xxen_util.meaning('Y','YES_NO',0),null) primary_pay_site,
 decode(assa.rfq_only_site_flag,'Y',xxen_util.meaning('Y','YES_NO',0),null) rfq_only_site,
 decode(assa.tax_reporting_site_flag,'Y',xxen_util.meaning('Y','YES_NO',0),null) tax_reporting_site,
 zptp1.rep_registration_number site_tax_reg_number,
@@ -549,6 +549,7 @@ xxen_util.display_flexfield_value(200,'AP_SUPPLIER_CONTACTS',asco.attribute_cate
 -- IDs
 -- ########
 aps.vendor_id,
+aps.employee_id,
 hp.party_id,
 assa.vendor_site_id,
 assa.party_site_id,
@@ -599,7 +600,6 @@ hz_parties hpr
 where
 :p_upload_mode like '%' || xxen_upload.action_update and
 1=1 and
-aps.employee_id is null and
 decode(:p_show_vendor_sites,'Y',aps.vendor_id,-1) = assa.vendor_id (+) and
 (assa.org_id is null or mo_global.check_access(assa.org_id)='Y') and
 assa.org_id = hou.organization_id (+) and
@@ -652,9 +652,11 @@ ipiua0.instrument_id = ieba0.ext_bank_account_id (+) and
 ieba0.branch_id = cbbv0.branch_party_id (+) and
 --
 decode(:p_show_site_banks,'Y',aps.party_id) = iepa2.payee_party_id (+) and
-decode(:p_show_site_banks,'Y',assa.party_site_id) = iepa2.party_site_id (+) and
+decode(:p_show_site_banks,'Y',coalesce(assa.party_site_id,iepa2.org_id,iepa2.supplier_site_id),-1) is not null and
+nvl(assa.party_site_id,-1) = nvl(iepa2.party_site_id (+),nvl(assa.party_site_id,-1)) and
 assa.org_id = nvl(iepa2.org_id (+),assa.org_id) and
 assa.vendor_site_id = nvl(iepa2.supplier_site_id (+),assa.vendor_site_id) and
+--
 iepa2.payment_function (+) = 'PAYABLES_DISB' and
 iepa2.ext_payee_id = ipiua2.ext_pmt_party_id (+) and
 ipiua2.payment_flow (+) = 'DISBURSEMENTS' and
@@ -669,26 +671,3 @@ decode(:p_show_site_contacts,'Y',assa.party_site_id,-99) = asco.org_party_site_i
 ) and
 asco.per_party_id = hpc.party_id (+) and
 asco.rel_party_id = hpr.party_id (+)
---
-&not_use_first_block
-&report_table_select
-&report_table_name
-&report_table_where_clause
-&success_query1
-&success_query2
-&processed_run
-) x
-order by
-x.supplier_name,
-x.supplier_number,
-x.operating_unit,
-x.country,
-x.site_name,
-x.contact_last_name,
-x.contact_first_name,
-x.site_bank_name,
-x.site_bank_number,
-x.site_bank_branch_name,
-x.site_bank_branch_number,
-x.site_bank_acct_name,
-x.site_bank_acct_num

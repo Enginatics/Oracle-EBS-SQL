@@ -27,7 +27,7 @@ case when :purge_option is not null then xxen_upload.status_meaning(xxen_upload.
 case when :purge_option is not null then xxen_util.description('U_EXCEL_MSG_VALIDATION_PENDING','XXEN_REPORT_TRANSLATIONS',0) else null end message_,
 null request_id_,
 null modified_columns_,
-to_number(null) upload_seq_,
+to_number(null) upload_row,
 mpiv.physical_inventory_id,
 mp.organization_code,
 mpiv.physical_inventory_name,

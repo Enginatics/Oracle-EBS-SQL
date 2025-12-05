@@ -55,13 +55,6 @@ Limit No is required when entering limit details. The upload uses the combinatio
 -- Library Link: https://www.enginatics.com/reports/qp-modifier-upload/
 -- Run Report: https://demo.enginatics.com/
 
-with
-q_dual as (select * from dual) -- dummy to allow the lexicals to follow
-&success_with_query1
-&success_with_query2
---
--- Main Query Starts Here
---
 select
 null action_,
 null status_,
@@ -69,15 +62,15 @@ null message_,
 null request_id_,
 null modified_columns_,
 :p_upload_mode upload_mode_,
-to_number(null) upload_seq,
+to_number(null) upload_row,
 :p_modifier_numbering modifier_numbering,
-:p_disable_excel_validation no_excel_validation_,
 to_number(null) mod_list_row_id,
 to_number(null) mod_line_row_id,
 to_number(null) qualifier_group_row_id,
 to_number(null) qualifier_row_id,
 to_number(null) price_break_line_row_id,
 to_number(null) pricing_attribute_row_id,
+to_number(null) excluder_row_id,
 to_number(null) buy_line_row_id,
 to_number(null) get_line_row_id,
 to_number(null) limit_row_id,
@@ -253,6 +246,14 @@ null pricing_attribute_val_fr_desc,
 null pricing_attribute_value_to,
 null delete_pricing_attribute,
 --
+-- Excluder
+null excluder_orig_sys_ref,
+null excluder_flag,
+null excluder_product_attribute,
+null excluder_product_value,
+null excluder_product_description,
+null delete_excluder,
+--
 -- Qualifiers
 xxen_util.meaning('HEADER','ZX_ROUNDING_LEVEL',0) qualifier_assignment_level,
 xxen_qp_upload.get_orig_sys_ref('QUALIFIER',qqv.qualifier_id) qualifier_orig_sys_ref,
@@ -341,6 +342,7 @@ to_number(null) price_break_line_id,
 to_number(null) buy_line_id,
 to_number(null) get_line_id,
 to_number(null) pricing_attribute_id,
+to_number(null) excluder_id,
 qqv.qualifier_id qualifier_id,
 to_number(null) limit_id,
 to_number(null) limit_attribute_id,
@@ -557,6 +559,14 @@ null pricing_attribute_val_fr_desc,
 null pricing_attribute_value_to,
 null delete_pricing_attribute,
 --
+-- Excluder
+null excluder_orig_sys_ref,
+null excluder_flag,
+null excluder_product_attribute,
+null excluder_product_value,
+null excluder_product_description,
+null delete_excluder,
+--
 -- Qualifiers
 null qualifier_assignment_level,
 null qualifier_orig_sys_ref,
@@ -682,6 +692,7 @@ to_number(null) price_break_line_id,
 to_number(null) buy_line_id,
 to_number(null) get_line_id,
 to_number(null) pricing_attribute_id,
+to_number(null) excluder_id,
 to_number(null) qualifier_id,
 qlv.limit_id,
 qlav.limit_attribute_id,
@@ -903,6 +914,14 @@ null pricing_attribute_val_fr_desc,
 null pricing_attribute_value_to,
 null delete_pricing_attribute,
 --
+-- Excluder
+null excluder_orig_sys_ref,
+null excluder_flag,
+null excluder_product_attribute,
+null excluder_product_value,
+null excluder_product_description,
+null delete_excluder,
+--
 -- Qualifiers
 null qualifier_assignment_level,
 null qualifier_orig_sys_ref,
@@ -969,6 +988,7 @@ qpbv.list_line_id price_break_line_id,
 to_number(null) buy_line_id,
 to_number(null) get_line_id,
 to_number(null) pricing_attribute_id,
+to_number(null) excluder_id,
 to_number(null) qualifier_id,
 to_number(null) limit_id,
 to_number(null) limit_attribute_id,
@@ -1184,6 +1204,14 @@ null pricing_attribute_val_fr_desc,
 null pricing_attribute_value_to,
 null delete_pricing_attribute,
 --
+-- Excluder
+null excluder_orig_sys_ref,
+null excluder_flag,
+null excluder_product_attribute,
+null excluder_product_value,
+null excluder_product_description,
+null delete_excluder,
+--
 -- Qualifiers
 null qualifier_assignment_level,
 null qualifier_orig_sys_ref,
@@ -1250,6 +1278,7 @@ to_number(null) price_break_line_id,
 qpav.list_line_id buy_line_id,
 to_number(null) get_line_id,
 to_number(null) pricing_attribute_id,
+to_number(null) excluder_id,
 to_number(null) qualifier_id,
 to_number(null) limit_id,
 to_number(null) limit_attribute_id,
@@ -1465,6 +1494,14 @@ null pricing_attribute_val_fr_desc,
 null pricing_attribute_value_to,
 null delete_pricing_attribute,
 --
+-- Excluder
+null excluder_orig_sys_ref,
+null excluder_flag,
+null excluder_product_attribute,
+null excluder_product_value,
+null excluder_product_description,
+null delete_excluder,
+--
 -- Qualifiers
 null qualifier_assignment_level,
 null qualifier_orig_sys_ref,
@@ -1531,6 +1568,7 @@ to_number(null) price_break_line_id,
 to_number(null) buy_line_id,
 qpagv.list_line_id get_line_id,
 to_number(null) pricing_attribute_id,
+to_number(null) excluder_id,
 to_number(null) qualifier_id,
 to_number(null) limit_id,
 to_number(null) limit_attribute_id,
@@ -1639,7 +1677,13 @@ qmsv.proration_type line_proration_type,
 qmsv.estim_gl_value line_comparison_value,
 qmsv.product_attribute_type line_product_attribute,
 qmsv.product_attr_value line_product_value,
-xxen_qp_upload.get_product_description(qslhv.pte_code,qp_util.get_context('QP_ATTR_DEFNS_PRICING',qmsv.product_attribute_context),qp_qp_form_pricing_attr.get_attribute('QP_ATTR_DEFNS_PRICING',qmsv.product_attribute_context,qmsv.product_attr),qmsv.product_attr_val,qmsv.product_attr_value) line_product_description,
+xxen_qp_upload.get_product_description
+(qslhv.pte_code,
+ qp_util.get_context('QP_ATTR_DEFNS_PRICING',qmsv.product_attribute_context),
+ qp_qp_form_pricing_attr.get_attribute('QP_ATTR_DEFNS_PRICING',qmsv.product_attribute_context,qmsv.product_attr),
+ qmsv.product_attr_val,
+ qmsv.product_attr_value
+) line_product_description,
 qmsv.product_precedence line_precedence,
 qmsv.pricing_attribute line_volume_type,
 qmsv.price_break_type line_price_break_type,
@@ -1737,10 +1781,11 @@ to_number(null) get_value,
 null delete_get_item,
 --
 -- Pricing Attributes
-qpa.orig_sys_pricing_attr_ref pricing_attribute_orig_sys_ref,
-qp_util.get_context('QP_ATTR_DEFNS_PRICING',qpa.pricing_attribute_context) pricing_attribute_context,
-qp_qp_form_pricing_attr.get_attribute('QP_ATTR_DEFNS_PRICING',qpa.pricing_attribute_context, qpa.pricing_attribute) pricing_attribute,
-qpa.comparison_operator_code pricing_attribute_operator,
+decode(qpa.excluder_flag,'N',qpa.orig_sys_pricing_attr_ref) pricing_attribute_orig_sys_ref,
+decode(qpa.excluder_flag,'N',qp_util.get_context('QP_ATTR_DEFNS_PRICING',qpa.pricing_attribute_context)) pricing_attribute_context,
+decode(qpa.excluder_flag,'N',qp_qp_form_pricing_attr.get_attribute('QP_ATTR_DEFNS_PRICING',qpa.pricing_attribute_context, qpa.pricing_attribute)) pricing_attribute,
+decode(qpa.excluder_flag,'N',qpa.comparison_operator_code,null) pricing_attribute_operator,
+decode(qpa.excluder_flag,'N',
 rtrim(replace(
  qp_util.get_attribute_value
   ('QP_ATTR_DEFNS_PRICING',
@@ -1749,7 +1794,8 @@ rtrim(replace(
    qpa.pricing_attr_value_from,
    qpa.comparison_operator_code
   ),chr(0),null)
-) pricing_attribute_value_from,
+)) pricing_attribute_value_from,
+decode(qpa.excluder_flag,'N',
 rtrim(replace(
  qp_util.get_attribute_value_meaning
  ('QP_ATTR_DEFNS_PRICING',
@@ -1758,15 +1804,31 @@ rtrim(replace(
   qpa.pricing_attr_value_from,
   qpa.comparison_operator_code
  ),chr(0),null)
-) pricing_attribute_val_fr_desc,
+)) pricing_attribute_val_fr_desc,
+decode(qpa.excluder_flag,'N',
 qp_util.get_attribute_value
 ('QP_ATTR_DEFNS_PRICING',
  qpa.pricing_attribute_context,
  qp_qp_form_pricing_attr.get_segment_name('QP_ATTR_DEFNS_PRICING',qpa.pricing_attribute_context, qpa.pricing_attribute),
  qpa.pricing_attr_value_to,
  qpa.comparison_operator_code
-) pricing_attribute_value_to,
+)) pricing_attribute_value_to,
 null delete_pricing_attribute,
+--
+-- Excluder
+decode(qpa.excluder_flag,'Y',qpa.orig_sys_pricing_attr_ref) excluder_orig_sys_ref,
+decode(qpa.excluder_flag,'Y',xxen_util.yes(qpa.excluder_flag)) excluder_flag,
+decode(qpa.excluder_flag,'Y',qp_qp_form_pricing_attr.get_attribute('QP_ATTR_DEFNS_PRICING',qpa.product_attribute_context,qpa.product_attribute)) excluder_product_attribute,
+decode(qpa.excluder_flag,'Y',qp_price_list_line_util.get_product_value('QP_ATTR_DEFNS_PRICING',qpa.product_attribute_context,qpa.product_attribute,qpa.product_attr_value)) excluder_product_value,
+decode(qpa.excluder_flag,'Y',
+xxen_qp_upload.get_product_description
+(qslhv.pte_code,
+ qp_util.get_context('QP_ATTR_DEFNS_PRICING',qpa.product_attribute_context),
+ qp_qp_form_pricing_attr.get_attribute('QP_ATTR_DEFNS_PRICING',qpa.product_attribute_context,qpa.product_attribute),
+ qpa.product_attr_value,
+ qp_price_list_line_util.get_product_value('QP_ATTR_DEFNS_PRICING',qpa.product_attribute_context,qpa.product_attribute,qpa.product_attr_value)
+ )) excluder_product_description,
+null delete_excluder,
 --
 -- Qualifiers
 null qualifier_assignment_level,
@@ -1833,7 +1895,8 @@ qmsv.list_line_id modifier_line_id,
 to_number(null) price_break_line_id,
 to_number(null) buy_line_id,
 to_number(null) get_line_id,
-qpa.pricing_attribute_id pricing_attribute_id,
+decode(qpa.excluder_flag,'N',qpa.pricing_attribute_id) pricing_attribute_id,
+decode(qpa.excluder_flag,'Y',qpa.pricing_attribute_id) excluder_id,
 to_number(null) qualifier_id,
 to_number(null) limit_id,
 to_number(null) limit_attribute_id,
@@ -1869,7 +1932,7 @@ qslhv.list_header_id = qmsv.list_header_id and
 (qmsv.pricing_attribute_context is null or qmsv.pricing_attribute_context = 'VOLUME') and
 nvl(qmsv.excluder_flag,'N') = 'N' and
 (qmsv.list_line_type_code not in ('PBH','PRG','OID') or
- qpa.pricing_attribute is not null or
+ qpa.pricing_attribute_id is not null or
  (qmsv.list_line_type_code = 'PBH' and
   (nvl(:p_show_price_breaks,'N') != 'Y' or
    not exists (select null from qp_price_breaks_v qpbv where qpbv.parent_list_line_id = qmsv.list_line_id)
@@ -1884,11 +1947,19 @@ nvl(qmsv.excluder_flag,'N') = 'N' and
  )
 ) and
 -- pricing attributes
-nvl2(:p_show_pricing_attributes,qmsv.list_line_id,null) = qpa.list_line_id (+) and
-qpa.pricing_attribute (+) is not null and
-qpa.excluder_flag (+) = 'N' and
-nvl(qpa.pricing_attribute_context (+),'') != 'VOLUME' and
-qpa.product_attribute_context (+) = 'ITEM'
+nvl2(:p_show_pricing_attributes||:p_show_excluders,qmsv.list_line_id,null) = qpa.list_line_id (+) and
+qpa.product_attribute_context (+) = 'ITEM' and
+(qpa.list_line_id is null or
+ (:p_show_pricing_attributes = 'Y' and
+  qpa.excluder_flag = 'N' and
+  qpa.pricing_attribute is not null and
+  nvl(qpa.pricing_attribute_context,'') != 'VOLUME'
+ ) or
+ (:p_show_excluders = 'Y' and
+  qpa.excluder_flag = 'Y' and
+  qpa.pricing_attribute is null
+ )
+)
 --
 union
 --
@@ -2065,6 +2136,14 @@ null pricing_attribute_val_fr_desc,
 null pricing_attribute_value_to,
 null delete_pricing_attribute,
 --
+-- Excluder
+null excluder_orig_sys_ref,
+null excluder_flag,
+null excluder_product_attribute,
+null excluder_product_value,
+null excluder_product_description,
+null delete_excluder,
+--
 -- Qualifiers
 xxen_util.meaning('LINE','ZX_ROUNDING_LEVEL',0) qualifier_assignment_level,
 xxen_qp_upload.get_orig_sys_ref('QUALIFIER',qqv.qualifier_id) qualifier_orig_sys_ref,
@@ -2153,6 +2232,7 @@ to_number(null) price_break_line_id,
 to_number(null) buy_line_id,
 to_number(null) get_line_id,
 to_number(null) pricing_attribute_id,
+to_number(null) excluder_id,
 qqv.qualifier_id qualifier_id,
 to_number(null) limit_id,
 to_number(null) limit_attribute_id,
@@ -2368,6 +2448,14 @@ null pricing_attribute_val_fr_desc,
 null pricing_attribute_value_to,
 null delete_pricing_attribute,
 --
+-- Excluder
+null excluder_orig_sys_ref,
+null excluder_flag,
+null excluder_product_attribute,
+null excluder_product_value,
+null excluder_product_description,
+null delete_excluder,
+--
 -- Qualifiers
 null qualifier_assignment_level,
 null qualifier_orig_sys_ref,
@@ -2493,6 +2581,7 @@ to_number(null) price_break_line_id,
 to_number(null) buy_line_id,
 to_number(null) get_line_id,
 to_number(null) pricing_attribute_id,
+to_number(null) excluder_id,
 to_number(null) qualifier_id,
 qlv.limit_id,
 qlav.limit_attribute_id,

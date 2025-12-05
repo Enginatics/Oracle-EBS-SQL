@@ -34,7 +34,7 @@ select
  mp2.organization_code master_organization,
  mp.organization_code organization,
  mck.concatenated_segments category,
- mck.description category_description,
+ mcv.description category_description,
  --
  mcsv.structure_name cat_set_flex_structure,
  mcsv.control_level_disp cat_set_control_level,
@@ -64,12 +64,14 @@ from
  mtl_system_items_vl msiv,
  mtl_category_sets_v mcsv,
  mtl_categories_kfv mck,
- mtl_item_categories mic
+ mtl_item_categories mic,
+ mtl_categories_v mcv
 where
  1=1 and
  mic.organization_id = mp.organization_id and
  mp.master_organization_id = mp2.organization_id and
  mic.category_id = mck.category_id and
+ mic.category_id = mcv.category_id and
  mic.category_set_id = mcsv.category_set_id and
  msiv.organization_id = mic.organization_id and
  mic.inventory_item_id = msiv.inventory_item_id

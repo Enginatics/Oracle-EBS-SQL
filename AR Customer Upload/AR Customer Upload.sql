@@ -232,10 +232,6 @@ q_attachments as
 -- main query starts here
 --
 select
-y.*
-from
-(
-select
 null action_,
 null status_,
 null message_,
@@ -269,11 +265,49 @@ select /*+ push_pred(ctct) push_pred(ba) push_pred(attchmt) */
 --
 xxen_util.meaning(hp.party_type,'PARTY_TYPE',222) party_type,
 hp.party_name,
+--
+xxen_util.meaning(hpp.person_pre_name_adjunct,'CONTACT_TITLE',222) person_prefix,
+hpp.person_first_name,
+hpp.person_middle_name,
+hpp.person_last_name,
+hpp.person_name_suffix person_suffix,
+hpp.person_name_phonetic person_name_pronounciation,
+(select
+ hcp.email_address
+ from
+ hz_contact_points hcp
+ where
+ hcp.owner_table_id = hpp.party_id and
+ hcp.owner_table_name = 'HZ_PARTIES' and
+ hcp.contact_point_type = 'EMAIL' and
+ hcp.primary_flag = 'Y' and
+ hcp.status = 'A'
+) person_email,
+xxen_util.meaning(hpp.person_iden_type,'HZ_PERSON_IDEN_TYPE',222) person_identification_type,
+hpp.person_identifier person_identification_number,
+hpp.date_of_birth person_date_of_birth,
+hpp.place_of_birth person_place_of_birth,
+hpp.date_of_death person_date_of_death,
+xxen_util.yes(hpp.deceased_flag) person_deceased,
+xxen_util.meaning(hpp.gender,'HZ_GENDER',222) person_gender,
+hpp.declared_ethnicity person_declared_ethnicity,
+xxen_util.meaning(hpp.marital_status,'MARITAL_STATUS',222) person_marital_status,
+hpp.marital_status_effective_date person_marital_status_eff_date,
+hpp.personal_income person_personal_income,
+xxen_util.yes(hpp.head_of_household_flag) person_head_of_household,
+hpp.household_income person_household_income,
+hpp.household_size person_household_size,
+xxen_util.meaning(hpp.rent_own_ind,'OWN_RENT_IND',222) person_own_rent,
+--
 hp.party_number registry_id,
 hp.known_as alias,
 hp.organization_name_phonetic name_pronunciation,
 hp.duns_number,
-(select hop.jgzz_fiscal_code from hz_organization_profiles hop where hop.party_id = hp.party_id and hop.effective_end_date is null and rownum=1)  taxpayer_id,
+case hp.party_type
+when 'ORGANIZATION' 
+then (select hop.jgzz_fiscal_code from hz_organization_profiles hop where hop.party_id = hp.party_id and hop.effective_end_date is null and rownum=1)
+else hpp.jgzz_fiscal_code
+end  taxpayer_id,
 -- party dff
 xxen_util.display_flexfield_context(222,'HZ_PARTIES',hp.attribute_category) party_dff_context,
 xxen_util.display_flexfield_value(222,'HZ_PARTIES',hp.attribute_category,'ATTRIBUTE1',hp.rowid,hp.attribute1) hz_party_attribute1,
@@ -745,6 +779,7 @@ hca.account_number acct_num_hidden,
 hou.name ou_hidden
 from
 hz_parties hp,
+hz_person_profiles hpp,
 hz_cust_accounts hca,
 hz_cust_acct_sites_all hcasa,
 hz_cust_site_uses_all hcsua,
@@ -766,6 +801,8 @@ q_attachments attchmt
 where
 2=2 and
 nvl(:p_update_level,'ACCOUNT') = 'ACCOUNT' and
+decode(hp.party_type,'PERSON',hp.party_id) = hpp.party_id (+) and
+hpp.effective_end_date (+) is null and
 hp.party_id = hca.party_id and
 nvl2(hca.cust_account_id,-99,-99) = hcasa.cust_account_id (+) and -- dummy join to return null site level values
 hcasa.cust_acct_site_id = hcsua.cust_acct_site_id (+) and
@@ -848,11 +885,49 @@ select /*+ push_pred(ctct) push_pred(ba) push_pred(attchmt) */
 --
 xxen_util.meaning(hp.party_type,'PARTY_TYPE',222) party_type,
 hp.party_name,
+--
+xxen_util.meaning(hpp.person_pre_name_adjunct,'CONTACT_TITLE',222) person_prefix,
+hpp.person_first_name,
+hpp.person_middle_name,
+hpp.person_last_name,
+hpp.person_name_suffix person_suffix,
+hpp.person_name_phonetic person_name_pronounciation,
+(select
+ hcp.email_address
+ from
+ hz_contact_points hcp
+ where
+ hcp.owner_table_id = hpp.party_id and
+ hcp.owner_table_name = 'HZ_PARTIES' and
+ hcp.contact_point_type = 'EMAIL' and
+ hcp.primary_flag = 'Y' and
+ hcp.status = 'A'
+) person_email,
+xxen_util.meaning(hpp.person_iden_type,'HZ_PERSON_IDEN_TYPE',222) person_identification_type,
+hpp.person_identifier person_identification_number,
+hpp.date_of_birth person_date_of_birth,
+hpp.place_of_birth person_place_of_birth,
+hpp.date_of_death person_date_of_death,
+xxen_util.yes(hpp.deceased_flag) person_deceased,
+xxen_util.meaning(hpp.gender,'HZ_GENDER',222) person_geneder,
+hpp.declared_ethnicity person_declared_ethnicity,
+xxen_util.meaning(hpp.marital_status,'MARITAL_STATUS',222) person_marital_status,
+hpp.marital_status_effective_date person_marital_status_eff_date,
+hpp.personal_income person_personal_income,
+xxen_util.yes(hpp.head_of_household_flag) person_head_of_household,
+hpp.household_income person_household_income,
+hpp.household_size person_household_size,
+xxen_util.meaning(hpp.rent_own_ind,'OWN_RENT_IND',222) person_own_rent,
+--
 hp.party_number registry_id,
 hp.known_as alias,
 hp.organization_name_phonetic name_pronunciation,
 hp.duns_number,
-(select hop.jgzz_fiscal_code from hz_organization_profiles hop where hop.party_id = hp.party_id and hop.effective_end_date is null and rownum=1)  taxpayer_id,
+case hp.party_type
+when 'ORGANIZATION' 
+then (select hop.jgzz_fiscal_code from hz_organization_profiles hop where hop.party_id = hp.party_id and hop.effective_end_date is null and rownum=1)
+else hpp.jgzz_fiscal_code
+end  taxpayer_id,
 -- party dff
 xxen_util.display_flexfield_context(222,'HZ_PARTIES',hp.attribute_category) party_dff_context,
 xxen_util.display_flexfield_value(222,'HZ_PARTIES',hp.attribute_category,'ATTRIBUTE1',hp.rowid,hp.attribute1) hz_party_attribute1,
@@ -1322,6 +1397,7 @@ hca.account_number acct_num_hidden,
 hou.name ou_hidden
 from
 hz_parties hp,
+hz_person_profiles hpp,
 hz_cust_accounts hca,
 hz_cust_acct_sites_all hcasa,
 hz_cust_site_uses_all hcsua,
@@ -1344,6 +1420,8 @@ where
 1=1 and
 2=2 and
 nvl(:p_update_level,'SITE') = 'SITE' and
+decode(hp.party_type,'PERSON',hp.party_id) = hpp.party_id (+) and
+hpp.effective_end_date (+) is null and
 hp.party_id = hca.party_id and
 hca.cust_account_id = hcasa.cust_account_id and
 (hcasa.org_id is null or mo_global.check_access(hcasa.org_id)='Y') and
@@ -1397,35 +1475,3 @@ where
 :p_upload_mode like '%' || xxen_upload.action_update and
 nvl(:p_dflt_ou,'?') = nvl(:p_dflt_ou,'?') and
 nvl(:p_dflt_profile_class,'?') = nvl(:p_dflt_profile_class,'?')
---
-&not_use_first_block
-&report_table_select
-&report_table_name
-&report_table_where_clause
-&success_query1
-&success_query2
-&processed_run
-) y
-order by
-y.party_name,
-y.registry_id,
-y.acct_number,
-nvl2(y.operating_unit,2,1),
-y.operating_unit,
-y.country,
-y.address_line1,
-y.site_number,
-y.site_use_purpose,
-y.site_use_location,
-y.prof_amt_currency,
-y.tax_reg_regime_code,
-y.bank_name,
-y.bank_number,
-y.bank_branch_name,
-y.bank_branch_number,
-y.bank_acct_name,
-y.bank_acct_num,
-y.contact_last_name,
-y.contact_first_name,
-y.contact_prefix,
-y.attachment_seq_

@@ -51,10 +51,11 @@ This mode does not allow the creation of Forecast Entries against Forecasts not 
 Parameters that control the upload behaviour: 
 ======================================
 
-Replace Forecast
+Delete Existing Forecast
 -----------------------
-Select Yes if this upload will replace all existing entries in the forecast. In this case all existing forecast entries are deleted before the new forecast entries are loaded.
-Select No if this upload is creating new entries to add to the forecast and/or updating/deleting specific forecast entries. In this case the existing forecast entries are retained.
+Select ‘DELETE all existing forecast entries and replace’ if this upload will replace all existing entries in the forecast. In this case all existing forecast entries are deleted before the new forecast entries are loaded.
+Select ‘KEEP existing forecast entries and update’ if this upload is creating new entries to add to the forecast and/or updating/deleting specific forecast entries. In this case the existing forecast entries are retained.
+The option to delete the existing forecast is only available when the upload is run in the Create upload mode.
 
 Default Bucket Type
 ---------------------------
@@ -66,6 +67,8 @@ Default Workday Control
 This parameter determines the default behaviour for handling a non-workday forecast date or forecast end date. 
 The options are Reject the forecast entry, shift the date backwards to the previous working bucket date, or shift the date forward to the next working bucket date.   
 This can be overridden in the Upload spreadsheet for individual forecast entries.
+
+
 
 
 -- Excel Examle Output: https://www.enginatics.com/example/mrp-item-forecast-upload/
@@ -82,7 +85,7 @@ select
  to_char(null) request_id,
  :p_upload_mode upload_mode,
  to_char(null) source_code,
- to_char(null) replace_forecast,
+ :p_replace_forecast replace_forecast,
  --
  mp.organization_code,
  mfds.forecast_set,

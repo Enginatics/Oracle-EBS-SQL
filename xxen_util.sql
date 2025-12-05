@@ -257,7 +257,7 @@ function clob_replace(p_source in clob, p_search in clob, p_replacement in clob)
 /***********************************************************************************************/
 /*  instring for long multiple values as regexp_substr on clobs is too slow, especially on 19c */
 /***********************************************************************************************/
-function instring(p_text in clob, p_separator in varchar2, p_occurrence in pls_integer) return varchar2;
+function instring(p_text in clob, p_separator in varchar2, p_occurrence in pls_integer) return varchar2 deterministic;
 
 /***********************************************************************************************/
 /*  generate x number of rows for use in sql e.g. for regexp: table(xxen_util.rowgen(n)) rowgen*/
@@ -2241,7 +2241,7 @@ begin
 end clob_replace;
 
 
-function instring(p_text in clob, p_separator in varchar2, p_occurrence in pls_integer) return varchar2 is
+function instring(p_text in clob, p_separator in varchar2, p_occurrence in pls_integer) return varchar2 deterministic is
 l_start pls_integer:=case when p_occurrence=1 then 1 else instr(p_text,p_separator,1,p_occurrence-1)+length(p_separator) end;
 l_end pls_integer:=instr(p_text,p_separator,1,p_occurrence);
 begin
@@ -2668,12 +2668,11 @@ end user_name;
 
 
 function user_id(p_user_name in varchar2) return pls_integer result_cache is
-l_user_id pls_integer;
 begin
   for c in (select fu.user_id from fnd_user fu where fu.user_name=p_user_name) loop
-    l_user_id:=c.user_id;
+    return c.user_id;
   end loop;
-  return l_user_id;
+  return null;
 end user_id;
 
 
@@ -3974,6 +3973,7 @@ begin
   fdfcuv.enabled_flag='Y' and
   fdfcuv.display_flag='Y' and
   p_regional_localization is null
+  $if $$is_11i is null $then
   union all
   select
   substrb(xxen_util.init_cap(replace(p_column_name_prefix||fdfcuv.form_left_prompt,'"')),1,xxen_report.max_column_length) form_left_prompt_,
@@ -4003,6 +4003,7 @@ begin
   p_regional_localization='Y' and
   fdfcuv.enabled_flag='Y' and
   fdfcuv.display_flag='Y'
+  $end
   ) fdfcuv
   ) fdfcuv
   ) fdfcuv,
@@ -4049,7 +4050,7 @@ begin
   '(select min(mcb.'||lower(fifsv.application_column_name)||') keep (dense_rank first order by mic.category_id) from mtl_item_categories mic, mtl_categories_b mcb where mic.category_set_id='||mcsv.category_set_id||' and '||p_table_alias||'.'||p_org_id_column||'=mic.organization_id and '||p_table_alias||'.'||p_item_id_column||'=mic.inventory_item_id and mic.category_id=mcb.category_id) "'||substrb(fifsv.form_left_prompt_,1,xxen_report.max_column_length)||'",' sql_text
   from
   mtl_category_sets_vl mcsv,
-  (select xxen_util.init_cap(fifsv.form_left_prompt) form_left_prompt_, fifsv.* from fnd_id_flex_segments_vl fifsv) fifsv
+  (select xxen_util.init_cap(replace(fifsv.form_left_prompt,'"','''''')) form_left_prompt_, fifsv.* from fnd_id_flex_segments_vl fifsv) fifsv
   where
   mcsv.category_set_name=p_category_set_name and
   mcsv.structure_id=fifsv.id_flex_num and

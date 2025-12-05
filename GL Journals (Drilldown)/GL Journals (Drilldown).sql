@@ -15,8 +15,7 @@ Drill To Full Journal
 -- Library Link: https://www.enginatics.com/reports/gl-journals-drilldown/
 -- Run Report: https://demo.enginatics.com/
 
-with gcck as (select &materialoze_hint gcck.* from gl_code_combinations_kfv gcck where 2=2)
-select &leading_hint
+select
 --ledger
 gl.name ledger,
 xxen_util.meaning(gl.ledger_category_code,'GL_ASF_LEDGER_CATEGORY',101) ledger_category,
@@ -120,7 +119,7 @@ gl_je_batches gjb,
 gl_je_headers gjh,
 gl_je_lines gjl,
 gl_je_lines_recon gjlr,
-gcck,
+gl_code_combinations_kfv gcck,
 (select distinct fad.pk1_value,&fad_document_id count(*) over (partition by fad.pk1_value) count from fnd_attached_documents fad where '&show_attachments'='Y' and fad.entity_name='GL_JE_BATCHES') fad1,
 (select distinct fad.pk1_value,fad.pk2_value,&fad_document_id count(*) over (partition by fad.pk1_value,fad.pk2_value) count from fnd_attached_documents fad where '&show_attachments'='Y' and fad.entity_name='GL_JE_HEADERS') fad2,
 fnd_documents fd1,
@@ -141,6 +140,7 @@ where
 1=1 and
 gl.period_set_name=gp.period_set_name and
 gp.period_name=gjh.period_name and
+gp.period_name=gjl.period_name and
 gl.ledger_id=gjh.ledger_id and
 gjb.je_batch_id=gjh.je_batch_id and
 gjh.je_header_id=gjl.je_header_id(+) and

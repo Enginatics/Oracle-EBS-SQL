@@ -7,27 +7,21 @@
 -- Report Name: CAC WIP Accounts Setup
 -- Description: Report to show accounts used for WIP accounting classes.
 
+Parameters:
+
+Organization Code:  specific inventory organization to report (optional)
+Operating Unit:  specific operating unit (optional)
+Ledger:  specific ledger (optional)
+
 /* +=============================================================================+
--- |  Copyright 2009 - 2022 Douglas Volz Consulting, Inc.                        |
--- |  All rights reserved.                                                       |
--- |  Permission to use this code is granted provided the original author is     |
--- |  acknowledged.  No warranties, express or otherwise is included in this     |
--- |  permission.                                                                |
+-- |  Copyright 2009 - 2025 Douglas Volz Consulting, Inc.
+-- |  All rights reserved.
+-- |  Permission to use this code is granted provided the original author is
+-- |  acknowledged.  No warranties, express or otherwise is included in this
+-- |  permission.
 -- +=============================================================================+
 -- |
 -- |  Original Author: Douglas Volz (doug@volzconsulting.com)
--- |
--- |  Program Name:  xxx_wip_setup_accts_rept.sql
--- |
--- |  Parameters:
--- |  p_org_code         -- Specific inventory organization you wish to report (optional)
--- |  p_operating_unit   -- Operating Unit you wish to report, leave blank for all
--- |                        operating units (optional) 
--- |  p_ledger           -- general ledger you wish to report, leave blank for all
--- |                        ledgers (optional)
--- | 
--- |  Description:
--- |  Report to show accounts used for WIP accounting classes
 -- | 
 -- |  Version Modified on Modified  by   Description
 -- |  ======= =========== ============== =========================================
@@ -42,559 +36,681 @@
 -- |                                     Changed to multi-language views for the item
 -- |                                     master, inventory orgs and operating units.
 -- |  1.5     10 Jul 2022 Douglas Volz   Account Type column now uses a lookup code.
+-- |  1.6     05 Nov 2025 Douglas Volz   Added completion cost source, system option 
+-- |                                     and cost type for Average and FIFO Costing.
 -- +=============================================================================+*/
 -- Excel Examle Output: https://www.enginatics.com/example/cac-wip-accounts-setup/
 -- Library Link: https://www.enginatics.com/reports/cac-wip-accounts-setup/
 -- Run Report: https://demo.enginatics.com/
 
 select  nvl(gl.short_name, gl.name) Ledger,
- haou2.name Operating_Unit,
- mp.organization_code Org_Code,
- wac.class_code WIP_Class,
- ml1.meaning Class_Type,
- wac.disable_date Disable_Date,
- -- Revision for version 1.5
- -- 'Material Value' Account_Type,
- ml2.meaning Account_Type,
- &segment_columns
+        haou2.name Operating_Unit,
+        mp.organization_code Org_Code,
+        wac.class_code WIP_Class,
+        ml1.meaning Class_Type,
+        wac.disable_date Disable_Date,
+        -- Revision for version 1.5
+        -- 'Material Value' Account_Type,
+        ml2.meaning Account_Type,
+        &segment_columns
+        -- Revision for version 1.6
+        gcc.concatenated_segments Account_Number,
+        ml3.meaning Completion_Cost_Source,
+        ml4.meaning System_Resource_Option,
+        -- End revision for version 1.6
         -- Revision for version 1.4
- wac.creation_date Creation_Date,
- wac.last_update_date Last_Update_Date
-from  wip_accounting_classes wac,
- mtl_parameters mp,
- mfg_lookups ml1, -- Class Type
- -- Revision for version 1.5
- mfg_lookups ml2, -- Account Type
- gl_code_combinations gcc,  -- wip class accounts
- hr_organization_information hoi,
- hr_all_organization_units_vl haou,
- hr_all_organization_units_vl haou2,
- gl_ledgers gl
+        wac.creation_date Creation_Date,
+        wac.last_update_date Last_Update_Date
+from    wip_accounting_classes wac,
+        mtl_parameters mp,
+        mfg_lookups ml1, -- Class Type
+        -- Revision for version 1.5
+        mfg_lookups ml2, -- Account Type
+        -- Revision for version 1.6
+        mfg_lookups ml3, -- Cost Completion Type
+        mfg_lookups ml4, -- System Resource Option
+        -- End revision for version 1.6
+        gl_code_combinations_kfv gcc,  -- wip class accounts
+        hr_organization_information hoi,
+        hr_all_organization_units_vl haou,
+        hr_all_organization_units_vl haou2,
+        gl_ledgers gl
 -- ===========================================
--- WIP_Class Joins
+-- WIP Class Joins
 -- ===========================================
-where mp.organization_id          = wac.organization_id
+where   mp.organization_id          = wac.organization_id
 -- ===========================================
 -- Lookup Code joins
 -- ===========================================
-and ml1.lookup_type             = 'WIP_CLASS_TYPE'
-and ml1.lookup_code             = wac.class_type
+and     ml1.lookup_type             = 'WIP_CLASS_TYPE'
+and     ml1.lookup_code             = wac.class_type
 -- Revision for version 1.5
-and ml2.lookup_type             = 'WIP_ELEMENT_VAR_TYPE'
-and ml2.lookup_code             = 1 -- Material
+and     ml2.lookup_type             = 'WIP_ELEMENT_VAR_TYPE'
+and     ml2.lookup_code             = 1 -- Material
+-- Revision for version 1.6
+and     ml3.lookup_type (+)         = 'CST_COMPLETION_COST_SRC'
+and     ml3.lookup_code (+)         = wac.completion_cost_source
+and     ml4.lookup_type (+)         = 'CST_SYSTEM_COMPLETION_OPTIONS'
+and     ml4.lookup_code (+)         = wac.system_option_id
+-- End revision for version 1.6
 -- ===========================================
 -- Accounting code combination joins
 -- ===========================================
-and wac.material_account        = gcc.code_combination_id (+)
+and     wac.material_account        = gcc.code_combination_id (+)
 -- ===========================================
 -- Organization joins to the HR org model
 -- ===========================================
-and hoi.org_information_context = 'Accounting Information'
-and hoi.organization_id         = mp.organization_id
-and hoi.organization_id         = haou.organization_id   -- this gets the organization name
-and haou2.organization_id       = to_number(hoi.org_information3) -- this gets the operating unit id
-and gl.ledger_id                = to_number(hoi.org_information1) -- get the ledger_id
+and     hoi.org_information_context = 'Accounting Information'
+and     hoi.organization_id         = mp.organization_id
+and     hoi.organization_id         = haou.organization_id   -- this gets the organization name
+and     haou2.organization_id       = to_number(hoi.org_information3) -- this gets the operating unit id
+and     gl.ledger_id                = to_number(hoi.org_information1) -- get the ledger_id
 -- Avoid selecting disabled inventory organizations
-and sysdate                    < nvl(haou.date_to, sysdate +1)
-and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
-and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
-and 1=1                                                           -- p_org_code, p_operating_unit, p_ledger
+and     sysdate                    < nvl(haou.date_to, sysdate +1)
+and     1=1                         -- p_org_code, p_operating_unit, p_ledger
 -- End revision for version 1.3
 union all
 select  nvl(gl.short_name, gl.name) Ledger,
- haou2.name Operating_Unit,
- mp.organization_code Org_Code,
- wac.class_code WIP_Class,
- ml1.meaning Class_Type,
- wac.disable_date Disable_Date,
- -- Revision for version 1.5
- -- 'Material Overhead Value' Account_Type,
- ml2.meaning Account_Type,
- &segment_columns
+        haou2.name Operating_Unit,
+        mp.organization_code Org_Code,
+        wac.class_code WIP_Class,
+        ml1.meaning Class_Type,
+        wac.disable_date Disable_Date,
+        -- Revision for version 1.5
+        -- 'Material Overhead Value' Account_Type,
+        ml2.meaning Account_Type,
+        &segment_columns
+        -- Revision for version 1.6
+        gcc.concatenated_segments Account_Number,
+        ml3.meaning Completion_Cost_Source,
+        ml4.meaning System_Resource_Option,
+        -- End revision for version 1.6
         -- Revision for version 1.4
- wac.creation_date Creation_Date,
- wac.last_update_date Last_Update_Date
-from  wip_accounting_classes wac,
- mtl_parameters mp,
- mfg_lookups ml1, -- Class Type
- -- Revision for version 1.5
- mfg_lookups ml2, -- Account Type
- gl_code_combinations gcc,  -- wip class accounts
- hr_organization_information hoi,
- hr_all_organization_units_vl haou,
- hr_all_organization_units_vl haou2,
- gl_ledgers gl
+        wac.creation_date Creation_Date,
+        wac.last_update_date Last_Update_Date
+from    wip_accounting_classes wac,
+        mtl_parameters mp,
+        mfg_lookups ml1, -- Class Type
+        -- Revision for version 1.5
+        mfg_lookups ml2, -- Account Type
+        -- Revision for version 1.6
+        mfg_lookups ml3, -- Cost Completion Type
+        mfg_lookups ml4, -- System Resource Option
+        -- End revision for version 1.6
+        gl_code_combinations_kfv gcc,  -- wip class accounts
+        hr_organization_information hoi,
+        hr_all_organization_units_vl haou,
+        hr_all_organization_units_vl haou2,
+        gl_ledgers gl
 -- ===========================================
--- WIP_Class Joins
+-- WIP Class Joins
 -- ===========================================
-where mp.organization_id        = wac.organization_id
+where   mp.organization_id        = wac.organization_id
 -- ===========================================
 -- Lookup Code joins
 -- ===========================================
-and ml1.lookup_type             = 'WIP_CLASS_TYPE'
-and ml1.lookup_code             = wac.class_type
+and     ml1.lookup_type             = 'WIP_CLASS_TYPE'
+and     ml1.lookup_code             = wac.class_type
 -- Revision for version 1.5
-and ml2.lookup_type             = 'WIP_ELEMENT_VAR_TYPE'
-and ml2.lookup_code             = 2 -- Material Overhead
+and     ml2.lookup_type             = 'WIP_ELEMENT_VAR_TYPE'
+and     ml2.lookup_code             = 2 -- Material Overhead
+-- Revision for version 1.6
+and     ml3.lookup_type (+)         = 'CST_COMPLETION_COST_SRC'
+and     ml3.lookup_code (+)         = wac.completion_cost_source
+and     ml4.lookup_type (+)         = 'CST_SYSTEM_COMPLETION_OPTIONS'
+and     ml4.lookup_code (+)         = wac.system_option_id
+-- End revision for version 1.6
 -- ===========================================
 -- Accounting code combination joins
 -- ===========================================
-and wac.material_overhead_account = gcc.code_combination_id (+)
+and     wac.material_overhead_account = gcc.code_combination_id (+)
 -- ===========================================
 -- Organization joins to the HR org model
 -- ===========================================
-and hoi.org_information_context = 'Accounting Information'
-and hoi.organization_id         = mp.organization_id
-and hoi.organization_id         = haou.organization_id   -- this gets the organization name
-and haou2.organization_id       = to_number(hoi.org_information3) -- this gets the operating unit id
-and gl.ledger_id                = to_number(hoi.org_information1) -- get the ledger_id
+and     hoi.org_information_context = 'Accounting Information'
+and     hoi.organization_id         = mp.organization_id
+and     hoi.organization_id         = haou.organization_id   -- this gets the organization name
+and     haou2.organization_id       = to_number(hoi.org_information3) -- this gets the operating unit id
+and     gl.ledger_id                = to_number(hoi.org_information1) -- get the ledger_id
 -- Avoid selecting disabled inventory organizations
-and sysdate                     < nvl(haou.date_to, sysdate +1)
-and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
-and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
-and 1=1                                                           -- p_org_code, p_operating_unit, p_ledger
+and     sysdate                     < nvl(haou.date_to, sysdate +1)
+and     1=1                         -- p_org_code, p_operating_unit, p_ledger
 -- End revision for version 1.3
 union all
 select  nvl(gl.short_name, gl.name) Ledger,
- haou2.name Operating_Unit,
- mp.organization_code Org_Code,
- wac.class_code WIP_Class,
- ml1.meaning Class_Type,
- wac.disable_date Disable_Date,
- -- Revision for version 1.5
- -- 'Resource Value' Account_Type,
- ml2.meaning Account_Type,
- &segment_columns
+        haou2.name Operating_Unit,
+        mp.organization_code Org_Code,
+        wac.class_code WIP_Class,
+        ml1.meaning Class_Type,
+        wac.disable_date Disable_Date,
+        -- Revision for version 1.5
+        -- 'Resource Value' Account_Type,
+        ml2.meaning Account_Type,
+        &segment_columns
+        -- Revision for version 1.6
+        gcc.concatenated_segments Account_Number,
+        ml3.meaning Completion_Cost_Source,
+        ml4.meaning System_Resource_Option,
+        -- End revision for version 1.6
         -- Revision for version 1.4
- wac.creation_date Creation_Date,
- wac.last_update_date Last_Update_Date
-from  wip_accounting_classes wac,
- mtl_parameters mp,
- mfg_lookups ml1, -- Class Type
- -- Revision for version 1.5
- mfg_lookups ml2, -- Account Type
- gl_code_combinations gcc,  -- wip class accounts
- hr_organization_information hoi,
- hr_all_organization_units_vl haou,
- hr_all_organization_units_vl haou2,
- gl_ledgers gl
+        wac.creation_date Creation_Date,
+        wac.last_update_date Last_Update_Date
+from    wip_accounting_classes wac,
+        mtl_parameters mp,
+        mfg_lookups ml1, -- Class Type
+        -- Revision for version 1.5
+        mfg_lookups ml2, -- Account Type
+        -- Revision for version 1.6
+        mfg_lookups ml3, -- Cost Completion Type
+        mfg_lookups ml4, -- System Resource Option
+        -- End revision for version 1.6
+        gl_code_combinations_kfv gcc,  -- wip class accounts
+        hr_organization_information hoi,
+        hr_all_organization_units_vl haou,
+        hr_all_organization_units_vl haou2,
+        gl_ledgers gl
 -- ===========================================
--- WIP_Class Joins
+-- WIP Class Joins
 -- ===========================================
-where mp.organization_id          = wac.organization_id
+where   mp.organization_id          = wac.organization_id
 -- ===========================================
 -- Lookup Code joins
 -- ===========================================
-and ml1.lookup_type             = 'WIP_CLASS_TYPE'
-and ml1.lookup_code             = wac.class_type
+and     ml1.lookup_type             = 'WIP_CLASS_TYPE'
+and     ml1.lookup_code             = wac.class_type
 -- Revision for version 1.5
-and ml2.lookup_type             = 'WIP_ELEMENT_VAR_TYPE'
-and ml2.lookup_code             = 3 -- Resource
+and     ml2.lookup_type             = 'WIP_ELEMENT_VAR_TYPE'
+and     ml2.lookup_code             = 3 -- Resource
+-- Revision for version 1.6
+and     ml3.lookup_type (+)         = 'CST_COMPLETION_COST_SRC'
+and     ml3.lookup_code (+)         = wac.completion_cost_source
+and     ml4.lookup_type (+)         = 'CST_SYSTEM_COMPLETION_OPTIONS'
+and     ml4.lookup_code (+)         = wac.system_option_id
+-- End revision for version 1.6
 -- ===========================================
 -- Accounting code combination joins
 -- ===========================================
-and wac.resource_account        = gcc.code_combination_id (+)
+and     wac.resource_account        = gcc.code_combination_id (+)
 -- ===========================================
 -- Organization joins to the HR org model
 -- ===========================================
-and hoi.org_information_context = 'Accounting Information'
-and hoi.organization_id         = mp.organization_id
-and hoi.organization_id         = haou.organization_id   -- this gets the organization name
-and haou2.organization_id       = to_number(hoi.org_information3) -- this gets the operating unit id
-and gl.ledger_id                = to_number(hoi.org_information1) -- get the ledger_id
+and     hoi.org_information_context = 'Accounting Information'
+and     hoi.organization_id         = mp.organization_id
+and     hoi.organization_id         = haou.organization_id   -- this gets the organization name
+and     haou2.organization_id       = to_number(hoi.org_information3) -- this gets the operating unit id
+and     gl.ledger_id                = to_number(hoi.org_information1) -- get the ledger_id
 -- Avoid selecting disabled inventory organizations
-and sysdate                    < nvl(haou.date_to, sysdate +1)
-and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
-and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
-and 1=1                                                           -- p_org_code, p_operating_unit, p_ledger
+and     sysdate                    < nvl(haou.date_to, sysdate +1)
+and     1=1                         -- p_org_code, p_operating_unit, p_ledger
 -- End revision for version 1.3
 union all
 select  nvl(gl.short_name, gl.name) Ledger,
- haou2.name Operating_Unit,
- mp.organization_code Org_Code,
- wac.class_code WIP_Class,
- ml1.meaning Class_Type,
- wac.disable_date Disable_Date,
- -- Revision for version 1.5
- -- 'Outside Processing Value' Account_Type,
- ml2.meaning Account_Type,
- &segment_columns
+        haou2.name Operating_Unit,
+        mp.organization_code Org_Code,
+        wac.class_code WIP_Class,
+        ml1.meaning Class_Type,
+        wac.disable_date Disable_Date,
+        -- Revision for version 1.5
+        -- 'Outside Processing Value' Account_Type,
+        ml2.meaning Account_Type,
+        &segment_columns
+        -- Revision for version 1.6
+        gcc.concatenated_segments Account_Number,
+        ml3.meaning Completion_Cost_Source,
+        ml4.meaning System_Resource_Option,
+        -- End revision for version 1.6
         -- Revision for version 1.4
- wac.creation_date Creation_Date,
- wac.last_update_date Last_Update_Date
-from  wip_accounting_classes wac,
- mtl_parameters mp,
- mfg_lookups ml1, -- Class Type
- -- Revision for version 1.5
- mfg_lookups ml2, -- Account Type
- gl_code_combinations gcc,  -- wip class accounts
- hr_organization_information hoi,
- hr_all_organization_units_vl haou,
- hr_all_organization_units_vl haou2,
- gl_ledgers gl
+        wac.creation_date Creation_Date,
+        wac.last_update_date Last_Update_Date
+from    wip_accounting_classes wac,
+        mtl_parameters mp,
+        mfg_lookups ml1, -- Class Type
+        -- Revision for version 1.5
+        mfg_lookups ml2, -- Account Type
+        -- Revision for version 1.6
+        mfg_lookups ml3, -- Cost Completion Type
+        mfg_lookups ml4, -- System Resource Option
+        -- End revision for version 1.6
+        gl_code_combinations_kfv gcc,  -- wip class accounts
+        hr_organization_information hoi,
+        hr_all_organization_units_vl haou,
+        hr_all_organization_units_vl haou2,
+        gl_ledgers gl
 -- ===========================================
--- WIP_Class Joins
+-- WIP Class Joins
 -- ===========================================
-where mp.organization_id          = wac.organization_id
+where   mp.organization_id          = wac.organization_id
 -- ===========================================
 -- Lookup Code joins
 -- ===========================================
-and ml1.lookup_type             = 'WIP_CLASS_TYPE'
-and ml1.lookup_code             = wac.class_type
+and     ml1.lookup_type             = 'WIP_CLASS_TYPE'
+and     ml1.lookup_code             = wac.class_type
 -- Revision for version 1.5
-and ml2.lookup_type             = 'WIP_ELEMENT_VAR_TYPE'
-and ml2.lookup_code             = 4 -- Outside Processing
+and     ml2.lookup_type             = 'WIP_ELEMENT_VAR_TYPE'
+and     ml2.lookup_code             = 4 -- Outside Processing
+-- Revision for version 1.6
+and     ml3.lookup_type (+)         = 'CST_COMPLETION_COST_SRC'
+and     ml3.lookup_code (+)         = wac.completion_cost_source
+and     ml4.lookup_type (+)         = 'CST_SYSTEM_COMPLETION_OPTIONS'
+and     ml4.lookup_code (+)         = wac.system_option_id
+-- End revision for version 1.6
 -- ===========================================
 -- Accounting code combination joins
 -- ===========================================
-and wac.outside_processing_account = gcc.code_combination_id (+)
+and     wac.outside_processing_account = gcc.code_combination_id (+)
 -- ===========================================
 -- Organization joins to the HR org model
 -- ===========================================
-and hoi.org_information_context = 'Accounting Information'
-and hoi.organization_id         = mp.organization_id
-and hoi.organization_id         = haou.organization_id   -- this gets the organization name
-and haou2.organization_id       = to_number(hoi.org_information3) -- this gets the operating unit id
-and gl.ledger_id                = to_number(hoi.org_information1) -- get the ledger_id
+and     hoi.org_information_context = 'Accounting Information'
+and     hoi.organization_id         = mp.organization_id
+and     hoi.organization_id         = haou.organization_id   -- this gets the organization name
+and     haou2.organization_id       = to_number(hoi.org_information3) -- this gets the operating unit id
+and     gl.ledger_id                = to_number(hoi.org_information1) -- get the ledger_id
 -- Avoid selecting disabled inventory organizations
-and sysdate                    < nvl(haou.date_to, sysdate +1)
-and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
-and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
-and 1=1                                                           -- p_org_code, p_operating_unit, p_ledger
+and     sysdate                    < nvl(haou.date_to, sysdate +1)
+and     1=1                         -- p_org_code, p_operating_unit, p_ledger
 -- End revision for version 1.3
 union all
 select  nvl(gl.short_name, gl.name) Ledger,
- haou2.name Operating_Unit,
- mp.organization_code Org_Code,
- wac.class_code WIP_Class,
- ml1.meaning Class_Type,
- wac.disable_date Disable_Date,
- -- Revision for version 1.5
- -- 'Overhead Value' Account_Type,
- ml2.meaning Account_Type,
- &segment_columns
+        haou2.name Operating_Unit,
+        mp.organization_code Org_Code,
+        wac.class_code WIP_Class,
+        ml1.meaning Class_Type,
+        wac.disable_date Disable_Date,
+        -- Revision for version 1.5
+        -- 'Overhead Value' Account_Type,
+        ml2.meaning Account_Type,
+        &segment_columns
+        -- Revision for version 1.6
+        gcc.concatenated_segments Account_Number,
+        ml3.meaning Completion_Cost_Source,
+        ml4.meaning System_Resource_Option,
+        -- End revision for version 1.6
         -- Revision for version 1.4
- wac.creation_date Creation_Date,
- wac.last_update_date Last_Update_Date
-from  wip_accounting_classes wac,
- mtl_parameters mp,
- mfg_lookups ml1, -- Class Type
- -- Revision for version 1.5
- mfg_lookups ml2, -- Account Type
- gl_code_combinations gcc,  -- wip class accounts
- hr_organization_information hoi,
- hr_all_organization_units_vl haou,
- hr_all_organization_units_vl haou2,
- gl_ledgers gl
+        wac.creation_date Creation_Date,
+        wac.last_update_date Last_Update_Date
+from    wip_accounting_classes wac,
+        mtl_parameters mp,
+        mfg_lookups ml1, -- Class Type
+        -- Revision for version 1.5
+        mfg_lookups ml2, -- Account Type
+        -- Revision for version 1.6
+        mfg_lookups ml3, -- Cost Completion Type
+        mfg_lookups ml4, -- System Resource Option
+        -- End revision for version 1.6
+        gl_code_combinations_kfv gcc,  -- wip class accounts
+        hr_organization_information hoi,
+        hr_all_organization_units_vl haou,
+        hr_all_organization_units_vl haou2,
+        gl_ledgers gl
 -- ===========================================
--- WIP_Class Joins
+-- WIP Class Joins
 -- ===========================================
-where mp.organization_id          = wac.organization_id
+where   mp.organization_id          = wac.organization_id
 -- ===========================================
 -- Lookup Code joins
 -- ===========================================
-and ml1.lookup_type             = 'WIP_CLASS_TYPE'
-and ml1.lookup_code             = wac.class_type
+and     ml1.lookup_type             = 'WIP_CLASS_TYPE'
+and     ml1.lookup_code             = wac.class_type
 -- Revision for version 1.5
-and ml2.lookup_type             = 'WIP_ELEMENT_VAR_TYPE'
-and ml2.lookup_code             = 5 -- Overhead
+and     ml2.lookup_type             = 'WIP_ELEMENT_VAR_TYPE'
+and     ml2.lookup_code             = 5 -- Overhead
+-- Revision for version 1.6
+and     ml3.lookup_type (+)         = 'CST_COMPLETION_COST_SRC'
+and     ml3.lookup_code (+)         = wac.completion_cost_source
+and     ml4.lookup_type (+)         = 'CST_SYSTEM_COMPLETION_OPTIONS'
+and     ml4.lookup_code (+)         = wac.system_option_id
+-- End revision for version 1.6
 -- ===========================================
 -- Accounting code combination joins
 -- ===========================================
-and wac.overhead_account        = gcc.code_combination_id (+)
+and     wac.overhead_account        = gcc.code_combination_id (+)
 -- ===========================================
 -- Organization joins to the HR org model
 -- ===========================================
-and hoi.org_information_context = 'Accounting Information'
-and hoi.organization_id         = mp.organization_id
-and hoi.organization_id         = haou.organization_id   -- this gets the organization name
-and haou2.organization_id       = to_number(hoi.org_information3) -- this gets the operating unit id
-and gl.ledger_id                = to_number(hoi.org_information1) -- get the ledger_id
+and     hoi.org_information_context = 'Accounting Information'
+and     hoi.organization_id         = mp.organization_id
+and     hoi.organization_id         = haou.organization_id   -- this gets the organization name
+and     haou2.organization_id       = to_number(hoi.org_information3) -- this gets the operating unit id
+and     gl.ledger_id                = to_number(hoi.org_information1) -- get the ledger_id
 -- Avoid selecting disabled inventory organizations
-and sysdate                    < nvl(haou.date_to, sysdate +1)
-and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
-and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
-and 1=1                                                           -- p_org_code, p_operating_unit, p_ledger
+and     sysdate                    < nvl(haou.date_to, sysdate +1)
+and     1=1                         -- p_org_code, p_operating_unit, p_ledger
 -- End revision for version 1.3
 union all
 select  nvl(gl.short_name, gl.name) Ledger,
- haou2.name Operating_Unit,
- mp.organization_code Org_Code,
- wac.class_code WIP_Class,
- ml1.meaning Class_Type,
- wac.disable_date Disable_Date,
- -- Revision for version 1.5
- -- 'Material Variance' Account_Type,
- ml2.meaning Account_Type,
- &segment_columns
+        haou2.name Operating_Unit,
+        mp.organization_code Org_Code,
+        wac.class_code WIP_Class,
+        ml1.meaning Class_Type,
+        wac.disable_date Disable_Date,
+        -- Revision for version 1.5
+        -- 'Material Variance' Account_Type,
+        ml2.meaning Account_Type,
+        &segment_columns
+        -- Revision for version 1.6
+        gcc.concatenated_segments Account_Number,
+        ml3.meaning Completion_Cost_Source,
+        ml4.meaning System_Resource_Option,
+        -- End revision for version 1.6
         -- Revision for version 1.4
- wac.creation_date Creation_Date,
- wac.last_update_date Last_Update_Date
-from  wip_accounting_classes wac,
- mtl_parameters mp,
- mfg_lookups ml1, -- Class Type
- -- Revision for version 1.5
- mfg_lookups ml2, -- Account Type
- gl_code_combinations gcc,  -- wip class accounts
- hr_organization_information hoi,
- hr_all_organization_units_vl haou,
- hr_all_organization_units_vl haou2,
- gl_ledgers gl
+        wac.creation_date Creation_Date,
+        wac.last_update_date Last_Update_Date
+from    wip_accounting_classes wac,
+        mtl_parameters mp,
+        mfg_lookups ml1, -- Class Type
+        -- Revision for version 1.5
+        mfg_lookups ml2, -- Account Type
+        -- Revision for version 1.6
+        mfg_lookups ml3, -- Cost Completion Type
+        mfg_lookups ml4, -- System Resource Option
+        -- End revision for version 1.6
+        gl_code_combinations_kfv gcc,  -- wip class accounts
+        hr_organization_information hoi,
+        hr_all_organization_units_vl haou,
+        hr_all_organization_units_vl haou2,
+        gl_ledgers gl
 -- ===========================================
--- WIP_Class Joins
+-- WIP Class Joins
 -- ===========================================
-where mp.organization_id          = wac.organization_id
+where   mp.organization_id          = wac.organization_id
 -- ===========================================
 -- Lookup Code joins
 -- ===========================================
-and ml1.lookup_type             = 'WIP_CLASS_TYPE'
-and ml1.lookup_code             = wac.class_type
+and     ml1.lookup_type             = 'WIP_CLASS_TYPE'
+and     ml1.lookup_code             = wac.class_type
 -- Revision for version 1.5
-and ml2.lookup_type             = 'WIP_ELEMENT_VAR_TYPE'
-and ml2.lookup_code             = 6 -- Material Variance
+and     ml2.lookup_type             = 'WIP_ELEMENT_VAR_TYPE'
+and     ml2.lookup_code             = 6 -- Material Variance
+-- Revision for version 1.6
+and     ml3.lookup_type (+)         = 'CST_COMPLETION_COST_SRC'
+and     ml3.lookup_code (+)         = wac.completion_cost_source
+and     ml4.lookup_type (+)         = 'CST_SYSTEM_COMPLETION_OPTIONS'
+and     ml4.lookup_code (+)         = wac.system_option_id
+-- End revision for version 1.6
 -- ===========================================
 -- Accounting code combination joins
 -- ===========================================
-and wac.material_variance_account = gcc.code_combination_id (+)
+and     wac.material_variance_account = gcc.code_combination_id (+)
 -- ===========================================
 -- Organization joins to the HR org model
 -- ===========================================
-and hoi.org_information_context = 'Accounting Information'
-and hoi.organization_id         = mp.organization_id
-and hoi.organization_id         = haou.organization_id   -- this gets the organization name
-and haou2.organization_id       = to_number(hoi.org_information3) -- this gets the operating unit id
-and gl.ledger_id                = to_number(hoi.org_information1) -- get the ledger_id
+and     hoi.org_information_context = 'Accounting Information'
+and     hoi.organization_id         = mp.organization_id
+and     hoi.organization_id         = haou.organization_id   -- this gets the organization name
+and     haou2.organization_id       = to_number(hoi.org_information3) -- this gets the operating unit id
+and     gl.ledger_id                = to_number(hoi.org_information1) -- get the ledger_id
 -- Avoid selecting disabled inventory organizations
-and sysdate                    < nvl(haou.date_to, sysdate +1)
-and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
-and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
-and 1=1                                                           -- p_org_code, p_operating_unit, p_ledger
+and     sysdate                    < nvl(haou.date_to, sysdate +1)
+and     1=1                         -- p_org_code, p_operating_unit, p_ledger
 -- End revision for version 1.3
 union all
 select  nvl(gl.short_name, gl.name) Ledger,
- haou2.name Operating_Unit,
- mp.organization_code Org_Code,
- wac.class_code WIP_Class,
- ml1.meaning Class_Type,
- wac.disable_date Disable_Date,
- -- Revision for version 1.5
- -- 'Resource Variance' Account_Type,
- ml2.meaning Account_Type,
- &segment_columns
+        haou2.name Operating_Unit,
+        mp.organization_code Org_Code,
+        wac.class_code WIP_Class,
+        ml1.meaning Class_Type,
+        wac.disable_date Disable_Date,
+        -- Revision for version 1.5
+        -- 'Resource Variance' Account_Type,
+        ml2.meaning Account_Type,
+        &segment_columns
+        -- Revision for version 1.6
+        gcc.concatenated_segments Account_Number,
+        ml3.meaning Completion_Cost_Source,
+        ml4.meaning System_Resource_Option,
+        -- End revision for version 1.6
         -- Revision for version 1.4
- wac.creation_date Creation_Date,
- wac.last_update_date Last_Update_Date
-from  wip_accounting_classes wac,
- mtl_parameters mp,
- mfg_lookups ml1, -- Class Type
- -- Revision for version 1.5
- mfg_lookups ml2, -- Account Type
- gl_code_combinations gcc,  -- wip class accounts
- hr_organization_information hoi,
- hr_all_organization_units_vl haou,
- hr_all_organization_units_vl haou2,
- gl_ledgers gl
+        wac.creation_date Creation_Date,
+        wac.last_update_date Last_Update_Date
+from    wip_accounting_classes wac,
+        mtl_parameters mp,
+        mfg_lookups ml1, -- Class Type
+        -- Revision for version 1.5
+        mfg_lookups ml2, -- Account Type
+        -- Revision for version 1.6
+        mfg_lookups ml3, -- Cost Completion Type
+        mfg_lookups ml4, -- System Resource Option
+        -- End revision for version 1.6
+        gl_code_combinations_kfv gcc,  -- wip class accounts
+        hr_organization_information hoi,
+        hr_all_organization_units_vl haou,
+        hr_all_organization_units_vl haou2,
+        gl_ledgers gl
 -- ===========================================
--- WIP_Class Joins
+-- WIP Class Joins
 -- ===========================================
-where mp.organization_id          = wac.organization_id
+where   mp.organization_id          = wac.organization_id
 -- ===========================================
 -- Lookup Code joins
 -- ===========================================
-and ml1.lookup_type             = 'WIP_CLASS_TYPE'
-and ml1.lookup_code             = wac.class_type
+and     ml1.lookup_type             = 'WIP_CLASS_TYPE'
+and     ml1.lookup_code             = wac.class_type
 -- Revision for version 1.5
-and ml2.lookup_type             = 'WIP_ELEMENT_VAR_TYPE'
-and ml2.lookup_code             = 7 -- Resource Variance
+and     ml2.lookup_type             = 'WIP_ELEMENT_VAR_TYPE'
+and     ml2.lookup_code             = 7 -- Resource Variance
+-- Revision for version 1.6
+and     ml3.lookup_type (+)         = 'CST_COMPLETION_COST_SRC'
+and     ml3.lookup_code (+)         = wac.completion_cost_source
+and     ml4.lookup_type (+)         = 'CST_SYSTEM_COMPLETION_OPTIONS'
+and     ml4.lookup_code (+)         = wac.system_option_id
+-- End revision for version 1.6
 -- ===========================================
 -- Accounting code combination joins
 -- ===========================================
-and wac.resource_variance_account = gcc.code_combination_id (+)
+and     wac.resource_variance_account = gcc.code_combination_id (+)
 -- ===========================================
 -- Organization joins to the HR org model
 -- ===========================================
-and hoi.org_information_context = 'Accounting Information'
-and hoi.organization_id         = mp.organization_id
-and hoi.organization_id         = haou.organization_id   -- this gets the organization name
-and haou2.organization_id       = to_number(hoi.org_information3) -- this gets the operating unit id
-and gl.ledger_id                = to_number(hoi.org_information1) -- get the ledger_id
+and     hoi.org_information_context = 'Accounting Information'
+and     hoi.organization_id         = mp.organization_id
+and     hoi.organization_id         = haou.organization_id   -- this gets the organization name
+and     haou2.organization_id       = to_number(hoi.org_information3) -- this gets the operating unit id
+and     gl.ledger_id                = to_number(hoi.org_information1) -- get the ledger_id
 -- Avoid selecting disabled inventory organizations
-and sysdate                    < nvl(haou.date_to, sysdate +1)
-and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
-and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
-and 1=1                                                           -- p_org_code, p_operating_unit, p_ledger
+and     sysdate                    < nvl(haou.date_to, sysdate +1)
+and     1=1                         -- p_org_code, p_operating_unit, p_ledger
 -- End revision for version 1.3
 union all
 select  nvl(gl.short_name, gl.name) Ledger,
- haou2.name Operating_Unit,
- mp.organization_code Org_Code,
- wac.class_code WIP_Class,
- ml1.meaning Class_Type,
- wac.disable_date Disable_Date,
- -- Revision for version 1.5
- -- 'Outside Processing Variance' Account_Type,
- ml2.meaning Account_Type,
- &segment_columns
+        haou2.name Operating_Unit,
+        mp.organization_code Org_Code,
+        wac.class_code WIP_Class,
+        ml1.meaning Class_Type,
+        wac.disable_date Disable_Date,
+        -- Revision for version 1.5
+        -- 'Outside Processing Variance' Account_Type,
+        ml2.meaning Account_Type,
+        &segment_columns
+        -- Revision for version 1.6
+        gcc.concatenated_segments Account_Number,
+        ml3.meaning Completion_Cost_Source,
+        ml4.meaning System_Resource_Option,
+        -- End revision for version 1.6
         -- Revision for version 1.4
- wac.creation_date Creation_Date,
- wac.last_update_date Last_Update_Date
-from  wip_accounting_classes wac,
- mtl_parameters mp,
- mfg_lookups ml1, -- Class Type
- -- Revision for version 1.5
- mfg_lookups ml2, -- Account Type
- gl_code_combinations gcc,  -- wip class accounts
- hr_organization_information hoi,
- hr_all_organization_units_vl haou,
- hr_all_organization_units_vl haou2,
- gl_ledgers gl
+        wac.creation_date Creation_Date,
+        wac.last_update_date Last_Update_Date
+from    wip_accounting_classes wac,
+        mtl_parameters mp,
+        mfg_lookups ml1, -- Class Type
+        -- Revision for version 1.5
+        mfg_lookups ml2, -- Account Type
+        -- Revision for version 1.6
+        mfg_lookups ml3, -- Cost Completion Type
+        mfg_lookups ml4, -- System Resource Option
+        -- End revision for version 1.6
+        gl_code_combinations_kfv gcc,  -- wip class accounts
+        hr_organization_information hoi,
+        hr_all_organization_units_vl haou,
+        hr_all_organization_units_vl haou2,
+        gl_ledgers gl
 -- ===========================================
--- WIP_Class Joins
+-- WIP Class Joins
 -- ===========================================
-where mp.organization_id          = wac.organization_id
+where   mp.organization_id          = wac.organization_id
 -- ===========================================
 -- Lookup Code joins
 -- ===========================================
-and ml1.lookup_type             = 'WIP_CLASS_TYPE'
-and ml1.lookup_code             = wac.class_type
+and     ml1.lookup_type             = 'WIP_CLASS_TYPE'
+and     ml1.lookup_code             = wac.class_type
 -- Revision for version 1.5
-and ml2.lookup_type             = 'WIP_ELEMENT_VAR_TYPE'
-and ml2.lookup_code             = 8 -- Outside Processing Var
+and     ml2.lookup_type             = 'WIP_ELEMENT_VAR_TYPE'
+and     ml2.lookup_code             = 8 -- Outside Processing Var
+-- Revision for version 1.6
+and     ml3.lookup_type (+)         = 'CST_COMPLETION_COST_SRC'
+and     ml3.lookup_code (+)         = wac.completion_cost_source
+and     ml4.lookup_type (+)         = 'CST_SYSTEM_COMPLETION_OPTIONS'
+and     ml4.lookup_code (+)         = wac.system_option_id
+-- End revision for version 1.6
 -- ===========================================
 -- Accounting code combination joins
 -- ===========================================
-and wac.outside_proc_variance_account = gcc.code_combination_id (+)
+and     wac.outside_proc_variance_account = gcc.code_combination_id (+)
 -- ===========================================
 -- Organization joins to the HR org model
 -- ===========================================
-and hoi.org_information_context = 'Accounting Information'
-and hoi.organization_id         = mp.organization_id
-and hoi.organization_id         = haou.organization_id   -- this gets the organization name
-and haou2.organization_id       = to_number(hoi.org_information3) -- this gets the operating unit id
-and gl.ledger_id                = to_number(hoi.org_information1) -- get the ledger_id
+and     hoi.org_information_context = 'Accounting Information'
+and     hoi.organization_id         = mp.organization_id
+and     hoi.organization_id         = haou.organization_id   -- this gets the organization name
+and     haou2.organization_id       = to_number(hoi.org_information3) -- this gets the operating unit id
+and     gl.ledger_id                = to_number(hoi.org_information1) -- get the ledger_id
 -- Avoid selecting disabled inventory organizations
-and sysdate                    < nvl(haou.date_to, sysdate +1)
-and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
-and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
-and 1=1                                                           -- p_org_code, p_operating_unit, p_ledger
+and     sysdate                    < nvl(haou.date_to, sysdate +1)
+and     1=1                         -- p_org_code, p_operating_unit, p_ledger
 -- End revision for version 1.3
 union all
 select  nvl(gl.short_name, gl.name) Ledger,
- haou2.name Operating_Unit,
- mp.organization_code Org_Code,
- wac.class_code WIP_Class,
- ml1.meaning Class_Type,
- wac.disable_date Disable_Date,
- -- Revision for version 1.5
- -- 'Overhead Variance' Account_Type,
- ml2.meaning Account_Type,
- &segment_columns
+        haou2.name Operating_Unit,
+        mp.organization_code Org_Code,
+        wac.class_code WIP_Class,
+        ml1.meaning Class_Type,
+        wac.disable_date Disable_Date,
+        -- Revision for version 1.5
+        -- 'Overhead Variance' Account_Type,
+        ml2.meaning Account_Type,
+        &segment_columns
+        -- Revision for version 1.6
+        gcc.concatenated_segments Account_Number,
+        ml3.meaning Completion_Cost_Source,
+        ml4.meaning System_Resource_Option,
+        -- End revision for version 1.6
         -- Revision for version 1.4
- wac.creation_date Creation_Date,
- wac.last_update_date Last_Update_Date
-from  wip_accounting_classes wac,
- mtl_parameters mp,
- mfg_lookups ml1, -- Class Type
- -- Revision for version 1.5
- mfg_lookups ml2, -- Account Type
- gl_code_combinations gcc,  -- wip class accounts
- hr_organization_information hoi,
- hr_all_organization_units_vl haou,
- hr_all_organization_units_vl haou2,
- gl_ledgers gl
+        wac.creation_date Creation_Date,
+        wac.last_update_date Last_Update_Date
+from    wip_accounting_classes wac,
+        mtl_parameters mp,
+        mfg_lookups ml1, -- Class Type
+        -- Revision for version 1.5
+        mfg_lookups ml2, -- Account Type
+        -- Revision for version 1.6
+        mfg_lookups ml3, -- Cost Completion Type
+        mfg_lookups ml4, -- System Resource Option
+        -- End revision for version 1.6
+        gl_code_combinations_kfv gcc,  -- wip class accounts
+        hr_organization_information hoi,
+        hr_all_organization_units_vl haou,
+        hr_all_organization_units_vl haou2,
+        gl_ledgers gl
 -- ===========================================
--- WIP_Class Joins
+-- WIP Class Joins
 -- ===========================================
-where mp.organization_id          = wac.organization_id
+where   mp.organization_id          = wac.organization_id
 -- ===========================================
 -- Lookup Code joins
 -- ===========================================
-and ml1.lookup_type             = 'WIP_CLASS_TYPE'
-and ml1.lookup_code             = wac.class_type
+and     ml1.lookup_type             = 'WIP_CLASS_TYPE'
+and     ml1.lookup_code             = wac.class_type
 -- Revision for version 1.5
-and ml2.lookup_type             = 'WIP_ELEMENT_VAR_TYPE'
-and ml2.lookup_code             = 9 -- Overhead Variance
+and     ml2.lookup_type             = 'WIP_ELEMENT_VAR_TYPE'
+and     ml2.lookup_code             = 9 -- Overhead Variance
+-- Revision for version 1.6
+and     ml3.lookup_type (+)         = 'CST_COMPLETION_COST_SRC'
+and     ml3.lookup_code (+)         = wac.completion_cost_source
+and     ml4.lookup_type (+)         = 'CST_SYSTEM_COMPLETION_OPTIONS'
+and     ml4.lookup_code (+)         = wac.system_option_id
+-- End revision for version 1.6
 -- ===========================================
 -- Accounting code combination joins
 -- ===========================================
-and wac.overhead_variance_account = gcc.code_combination_id (+)
+and     wac.overhead_variance_account = gcc.code_combination_id (+)
 -- ===========================================
 -- Organization joins to the HR org model
 -- ===========================================
-and hoi.org_information_context = 'Accounting Information'
-and hoi.organization_id         = mp.organization_id
-and hoi.organization_id         = haou.organization_id   -- this gets the organization name
-and haou2.organization_id       = to_number(hoi.org_information3) -- this gets the operating unit id
-and gl.ledger_id                = to_number(hoi.org_information1) -- get the ledger_id
+and     hoi.org_information_context = 'Accounting Information'
+and     hoi.organization_id         = mp.organization_id
+and     hoi.organization_id         = haou.organization_id   -- this gets the organization name
+and     haou2.organization_id       = to_number(hoi.org_information3) -- this gets the operating unit id
+and     gl.ledger_id                = to_number(hoi.org_information1) -- get the ledger_id
 -- Avoid selecting disabled inventory organizations
-and sysdate                    < nvl(haou.date_to, sysdate +1)
-and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
-and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
-and 1=1                                                           -- p_org_code, p_operating_unit, p_ledger
+and     sysdate                    < nvl(haou.date_to, sysdate +1)
+and     1=1                         -- p_org_code, p_operating_unit, p_ledger
 -- End revision for version 1.3
 union all
 select  nvl(gl.short_name, gl.name) Ledger,
- haou2.name Operating_Unit,
- mp.organization_code Org_Code,
- wac.class_code WIP_Class,
- ml1.meaning Class_Type,
- wac.disable_date Disable_Date,
- -- Revision for version 1.5
- -- 'Standard Cost Adjustment' Account_Type,
- ml2.meaning Account_Type,
- &segment_columns
+        haou2.name Operating_Unit,
+        mp.organization_code Org_Code,
+        wac.class_code WIP_Class,
+        ml1.meaning Class_Type,
+        wac.disable_date Disable_Date,
+        -- Revision for version 1.5
+        -- 'Standard Cost Adjustment' Account_Type,
+        ml2.meaning Account_Type,
+        &segment_columns
+        -- Revision for version 1.6
+        gcc.concatenated_segments Account_Number,
+        ml3.meaning Completion_Cost_Source,
+        ml4.meaning System_Resource_Option,
+        -- End revision for version 1.6
         -- Revision for version 1.4
- wac.creation_date Creation_Date,
- wac.last_update_date Last_Update_Date
-from  wip_accounting_classes wac,
- mtl_parameters mp,
- mfg_lookups ml1, -- Class Type
- -- Revision for version 1.5
- mfg_lookups ml2, -- Account Type
- gl_code_combinations gcc,  -- wip class accounts
- hr_organization_information hoi,
- hr_all_organization_units_vl haou,
- hr_all_organization_units_vl haou2,
- gl_ledgers gl
+        wac.creation_date Creation_Date,
+        wac.last_update_date Last_Update_Date
+from    wip_accounting_classes wac,
+        mtl_parameters mp,
+        mfg_lookups ml1, -- Class Type
+        -- Revision for version 1.5
+        mfg_lookups ml2, -- Account Type
+        -- Revision for version 1.6
+        mfg_lookups ml3, -- Cost Completion Type
+        mfg_lookups ml4, -- System Resource Option
+        -- End revision for version 1.6
+        gl_code_combinations_kfv gcc,  -- wip class accounts
+        hr_organization_information hoi,
+        hr_all_organization_units_vl haou,
+        hr_all_organization_units_vl haou2,
+        gl_ledgers gl
 -- ===========================================
--- WIP_Class Joins
+-- WIP Class Joins
 -- ===========================================
-where mp.organization_id          = wac.organization_id
+where   mp.organization_id          = wac.organization_id
 -- ===========================================
 -- Lookup Code joins
 -- ===========================================
-and ml1.lookup_type             = 'WIP_CLASS_TYPE'
-and ml1.lookup_code             = wac.class_type
+and     ml1.lookup_type             = 'WIP_CLASS_TYPE'
+and     ml1.lookup_code             = wac.class_type
 -- Revision for version 1.5
-and ml2.lookup_type             = 'INV_RESERVATION_SOURCE_TYPES'
-and ml2.lookup_code             = 11 -- Standard Cost Update
+and     ml2.lookup_type             = 'INV_RESERVATION_SOURCE_TYPES'
+and     ml2.lookup_code             = 11 -- Standard Cost Update
+-- Revision for version 1.6
+and     ml3.lookup_type (+)         = 'CST_COMPLETION_COST_SRC'
+and     ml3.lookup_code (+)         = wac.completion_cost_source
+and     ml4.lookup_type (+)         = 'CST_SYSTEM_COMPLETION_OPTIONS'
+and     ml4.lookup_code (+)         = wac.system_option_id
+-- End revision for version 1.6
 -- ===========================================
 -- Accounting code combination joins
 -- ===========================================
-and wac.std_cost_adjustment_account = gcc.code_combination_id (+)
+and     wac.std_cost_adjustment_account = gcc.code_combination_id (+)
 -- ===========================================
 -- Organization joins to the HR org model
 -- ===========================================
-and hoi.org_information_context = 'Accounting Information'
-and hoi.organization_id         = mp.organization_id
-and hoi.organization_id         = haou.organization_id   -- this gets the organization name
-and haou2.organization_id       = to_number(hoi.org_information3) -- this gets the operating unit id
-and gl.ledger_id                = to_number(hoi.org_information1) -- get the ledger_id
+and     hoi.org_information_context = 'Accounting Information'
+and     hoi.organization_id         = mp.organization_id
+and     hoi.organization_id         = haou.organization_id   -- this gets the organization name
+and     haou2.organization_id       = to_number(hoi.org_information3) -- this gets the operating unit id
+and     gl.ledger_id                = to_number(hoi.org_information1) -- get the ledger_id
 -- Avoid selecting disabled inventory organizations
-and sysdate                    < nvl(haou.date_to, sysdate +1)
-and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
-and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
-and 1=1                                                           -- p_org_code, p_operating_unit, p_ledger
+and     sysdate                    < nvl(haou.date_to, sysdate +1)
+and     1=1                         -- p_org_code, p_operating_unit, p_ledger
 -- End revision for version 1.3
 -- Order by Ledger, Operating_Unit, Org_Code, WIP_Class, Account_Type
 order by 1,2,3,4,7

@@ -20,6 +20,9 @@ hp.known_as  trading_partner,
 xxen_util.meaning(aps.vendor_type_lookup_code,'VENDOR TYPE',201) type,
 aps.type_1099 income_tax_type,
 decode(aps.organization_type_lookup_code,'INDIVIDUAL',aps.individual_1099,aps.num_1099) taxpayer_id,
+(select territory_short_name from fnd_territories_vl ftv where ftv.territory_code = zptp0.country_code) dflt_rep_country_name,
+zptp0.rep_registration_number dflt_rep_registrn_number,
+zptp0.registration_type_code dflt_rep_registrn_type,
 aps.vat_registration_num tax_registration_number,
 aps.tax_reporting_name,
 xxen_util.yes(aps.federal_reportable_flag) federal_reportable,
@@ -39,6 +42,7 @@ aps.min_order_amount,
 aps.price_tolerance,
 assa.vendor_site_code site_code,
 hps.party_site_name address_name,
+assa.vendor_site_code_alt alternate_site_name,
 xxen_util.yes(assa.primary_pay_site_flag) primary_pay_site,
 xxen_util.yes(assa.purchasing_site_flag) purchasing_site,
 xxen_util.yes(assa.rfq_only_site_flag) rfq_only,
@@ -70,6 +74,9 @@ nvl(assa.terms_date_basis,aps.terms_date_basis) terms_date_basis,
 nvl(assa.pay_group_lookup_code,aps.pay_group_lookup_code) pay_group,
 xxen_util.meaning(nvl(assa.pay_date_basis_lookup_code,aps.pay_date_basis_lookup_code),'PAY DATE BASIS',201) pay_date_basis,
 atv0.name payment_terms,
+(select territory_short_name from fnd_territories_vl ftv where ftv.territory_code = zptp1.country_code) site_dflt_rep_country_name,
+zptp1.rep_registration_number site_dflt_rep_registrn_number,
+zptp1.registration_type_code site_dflt_rep_registrn_type,
 xxen_util.meaning(assa.auto_tax_calc_override,'YES_NO',0) auto_tax_calculation_override,
 xxen_util.meaning(assa.auto_tax_calc_flag,'YES_NO',0) auto_tax_calculation,
 xxen_util.meaning(assa.allow_awt_flag,'YES_NO',0) site_allow_withholding_tax,
@@ -103,8 +110,8 @@ fnd_territories_vl ftv,
 ap_suppliers aps0,
 ap_terms_vl atv0,
 ap_terms_vl atv1,
-(select iepa.* from iby_external_payees_all iepa where '&show_bank_accounts'='Y' and iepa.payment_function='PAYABLES_DISB' and iepa.party_site_id is null and iepa.supplier_site_id is null) iepa0,
-(select iepa.* from iby_external_payees_all iepa where '&show_bank_accounts'='Y' and iepa.payment_function='PAYABLES_DISB' and iepa.supplier_site_id is not null) iepa1,
+(select iepa.* from iby_external_payees_all iepa where '&show_bank_accounts'='Y' and iepa.payment_function='PAYABLES_DISB' and iepa.party_site_id is null and iepa.supplier_site_id is null and iepa.org_id is null) iepa0,
+(select iepa.* from iby_external_payees_all iepa where '&show_bank_accounts'='Y' and iepa.payment_function='PAYABLES_DISB' and iepa.party_site_id is not null) iepa1,
 (select ipiua.* from iby_pmt_instr_uses_all ipiua where 4=4 and ipiua.payment_function='PAYABLES_DISB') ipiua0,
 (select ipiua.* from iby_pmt_instr_uses_all ipiua where 4=4 and ipiua.payment_function='PAYABLES_DISB') ipiua1,
 iby_ext_bank_accounts ieba0,
@@ -112,7 +119,9 @@ iby_ext_bank_accounts ieba1,
 ce_bank_branches_v cbbv0,
 ce_bank_branches_v cbbv1,
 hz_parties hp,
-hz_party_sites hps
+hz_party_sites hps,
+zx_party_tax_profile zptp0,
+zx_party_tax_profile zptp1
 where
 1=1 and
 aps.vendor_id=assa.vendor_id(+) and
@@ -123,7 +132,9 @@ aps.parent_vendor_id=aps0.vendor_id(+) and
 aps.terms_id=atv0.term_id(+) and
 assa.terms_id=atv1.term_id(+) and
 aps.party_id=iepa0.payee_party_id(+) and
-assa.vendor_site_id=iepa1.supplier_site_id(+) and
+assa.party_site_id=iepa1.party_site_id(+) and
+assa.org_id=iepa1.org_id(+) and
+assa.vendor_site_id=iepa1.supplier_site_id(+) and 
 iepa0.ext_payee_id=ipiua0.ext_pmt_party_id(+) and
 iepa1.ext_payee_id=ipiua1.ext_pmt_party_id(+) and
 decode(ipiua0.instrument_type,'BANKACCOUNT',ipiua0.instrument_id)=ieba0.ext_bank_account_id(+) and
@@ -131,4 +142,12 @@ decode(ipiua1.instrument_type,'BANKACCOUNT',ipiua1.instrument_id)=ieba1.ext_bank
 ieba0.branch_id=cbbv0.branch_party_id(+) and
 ieba1.branch_id=cbbv1.branch_party_id(+) and 
 aps.party_id=hp.party_id(+) and
-assa.party_site_id=hps.party_site_id(+)
+assa.party_site_id=hps.party_site_id(+) and
+aps.party_id = zptp0.party_id (+) and
+'THIRD_PARTY' = zptp0.party_type_code (+) and
+assa.party_site_id = zptp1.party_id (+) and
+'THIRD_PARTY_SITE' = zptp1.party_type_code (+)
+order by
+haouv.name,
+aps.vendor_name,
+assa.vendor_site_code

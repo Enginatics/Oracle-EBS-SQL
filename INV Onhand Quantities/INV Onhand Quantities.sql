@@ -28,15 +28,15 @@ select listagg(mac.abc_class_name, ',') within group ( order by mac.abc_class_na
 from (
 select distinct mac.abc_class_name
 from 
-mtl_cycle_count_items mcci,
 mtl_abc_classes mac,
-mtl_cycle_count_entries mcce
+mtl_abc_assignments maa,
+mtl_abc_assignment_groups maag
 where 
-mcci.abc_class_id=mac.abc_class_id and
-mcci.cycle_count_header_id=mcce.cycle_count_header_id and
-mcci.inventory_item_id=mcce.inventory_item_id and
-mcce.organization_id=moqd.organization_id and
-mcce.inventory_item_id=moqd.inventory_item_id
+3=3 and
+maa.abc_class_id=mac.abc_class_id and
+maa.assignment_group_id=maag.assignment_group_id and
+maa.inventory_item_id=moqd.inventory_item_id and
+mac.organization_id=moqd.organization_id
 )mac
 ) abc_class_name,
 &category_columns

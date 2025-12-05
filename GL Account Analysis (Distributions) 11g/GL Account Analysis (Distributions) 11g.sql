@@ -106,12 +106,15 @@ aia.payment_currency_code,
 aia.payment_method_code,
 aia.invoice_amount,
 (select pha.segment1 from po_headers_all pha where coalesce(aia.quick_po_header_id,rt.po_header_id,wt.po_header_id)=pha.po_header_id) purchase_order,
+(select pha.comments from po_headers_all pha where coalesce(aia.quick_po_header_id,rt.po_header_id,wt.po_header_id)=pha.po_header_id) po_description,
+rsh.receipt_num goods_receipt_number,
 --AR
 case when xte.entity_code='TRANSACTIONS' and rcta.interface_header_context in ('ORDER ENTRY','INTERCOMPANY') then rcta.interface_header_attribute1 end sales_order,
 jrrev.resource_name salesperson,
 (select name from ra_rules rr where rcta.invoicing_rule_id=rule_id) invoice_rule,
 (select rr.name from ra_customer_trx_lines_all rctla, ra_rules rr where rcta.customer_trx_id=rctla.customer_trx_id and rctla.line_type='LINE' and rctla.accounting_rule_id=rr.rule_id and rownum=1) accounting_rule,
 rt.quantity po_quantity,
+acra.receipt_number cash_receipt_number,
 coalesce(
 (select aps.vendor_name from ap_suppliers aps where coalesce(decode(xal.party_type_code,'S',xal.party_id,null),aia.vendor_id,aca.vendor_id,rt.vendor_id)=aps.vendor_id),
 (select hp.party_name from hz_cust_accounts hca, hz_parties hp where coalesce(decode(xal.party_type_code,'C',xal.party_id,null),rcta.bill_to_customer_id,acra.pay_from_customer,paa.customer_id)=hca.cust_account_id and hca.party_id=hp.party_id)
@@ -252,6 +255,7 @@ pa_expenditures_all pea,
 pa_expenditure_types pet,
 (select papf.* from per_all_people_f papf where sysdate>=papf.effective_start_date and sysdate<papf.effective_end_date+1) papf,
 rcv_transactions rt,
+rcv_shipment_headers rsh,
 wip_transactions wt,
 wip_entities we,
 bom_departments bd,
@@ -308,6 +312,7 @@ peia.expenditure_type=pet.expenditure_type(+) and
 pea.incurred_by_person_id=papf.person_id(+) and
 case when xte.application_id=707 and xte.entity_code='RCV_ACCOUNTING_EVENTS' then xte.source_id_int_1 end=rt.transaction_id(+) and
 case when xte.application_id=707 and xte.entity_code='WIP_ACCOUNTING_EVENTS' then xte.source_id_int_1 end=wt.transaction_id(+) and
+rt.shipment_header_id=rsh.shipment_header_id(+) and
 wt.wip_entity_id=we.wip_entity_id(+) and
 wt.department_id=bd.department_id(+) and
 wt.resource_id=br.resource_id(+)

@@ -417,6 +417,7 @@ xxen_util.display_flexfield_value(401,'MTL_SYSTEM_ITEMS',msiv.attribute_category
 --
 msiv.organization_id,
 msiv.inventory_item_id,
+to_number(mic.category_set_id) category_set_id,
 decode(mp.organization_id,mp.master_organization_id,'Y',null) master_flag,
 0 upload_row
 from
@@ -426,6 +427,7 @@ mtl_system_items_vl msiv,
  mic.organization_id,
  mic.inventory_item_id,
  mcs.category_set_name,
+ mcs.category_set_id,
  mck.concatenated_segments category
  from
  mtl_item_categories mic,

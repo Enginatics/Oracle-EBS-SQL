@@ -173,10 +173,6 @@ dba_users du
 where
 2=2 and
 gash.blocking_session is not null and
-gash.sql_id=gsa0.sql_id(+) and
-gsa0.sql_id=gsa.sql_id(+) and
-gsa0.inst_id=gsa.inst_id(+) and
-gsa0.plan_hash_value=gsa.plan_hash_value(+) and
 gash.user_id=du.user_id(+) and
 gash.blocking_inst_id=gash0.inst_id(+) and
 gash.blocking_session=gash0.session_id(+) and

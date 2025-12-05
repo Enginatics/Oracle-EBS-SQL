@@ -28,7 +28,8 @@ xxen_util.meaning(bos.reference_flag,'SYS_YES_NO',700) referenced,
 bd.department_code,
 bd.description department_description,
 xxen_util.meaning(bos.operation_type,'BOM_OPERATION_TYPE',700) operation_type,
-bos.effectivity_date
+bos.effectivity_date,
+bos.disable_date
 from
 hr_all_organization_units_vl haouv,
 mtl_parameters mp,

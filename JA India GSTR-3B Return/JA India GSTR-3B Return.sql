@@ -384,12 +384,12 @@ jai_reporting_associations_v jrav,
 jai_tax_lines_v jtl,
 jai_tax_det_factors tax,
 jai_rgm_recovery_lines jrr
-WHERE
+where
 2=2 and
 to_char(trunc(tax.tax_invoice_date),'MONYYYY') = :p_period and
 jrav.entity_code='TAX_TYPE' and
 jrav.reporting_type_code='TAX_TYPES_CLASSIFICATION' and
-sysdate between nvl(jrav.EFFECTIVE_FROM,sysdate) and nvl(jrav.effective_to,'31-DEC-4017') and
+sysdate between nvl(jrav.effective_from,sysdate) and nvl(jrav.effective_to,'31-DEC-4017') and
 jtl.tax_type_id=jrav.entity_id and
 jtl.first_party_primary_reg_num=x.gstn and
 exists (select '1' from jai_tax_lines jtl1 where tax.trx_id=jtl1.trx_id and tax.trx_line_id=jtl1.trx_line_id and jtl1.applied_to_entity_code='BILL_OF_ENTRY') and
@@ -436,7 +436,7 @@ where
 to_char(trunc(tax.tax_invoice_date),'MONYYYY') = :p_period and
 jrav.entity_code='TAX_TYPE' and
 jrav.reporting_type_code='TAX_TYPES_CLASSIFICATION' and
-sysdate between nvl(jrav.EFFECTIVE_FROM,sysdate) and nvl(jrav.effective_to,'31-DEC-4017') and
+sysdate between nvl(jrav.effective_from,sysdate) and nvl(jrav.effective_to,'31-DEC-4017') and
 jtl.tax_type_id=jrav.entity_id and
 jtl.first_party_primary_reg_num=x.gstn and
 tax.ship_from_country<>'IN' and
@@ -483,7 +483,7 @@ where
 to_char(trunc(tax.tax_invoice_date),'MONYYYY') = :p_period and
 jrav.entity_code='TAX_TYPE' and
 jrav.reporting_type_code='TAX_TYPES_CLASSIFICATION' and
-sysdate between nvl(jrav.EFFECTIVE_FROM,sysdate) and nvl(jrav.effective_to,'31-DEC-4017') and
+sysdate between nvl(jrav.effective_from,sysdate) and nvl(jrav.effective_to,'31-DEC-4017') and
 jtl.tax_type_id=jrav.entity_id and
 jtl.first_party_primary_reg_num=x.gstn and
 tax.det_factor_id=jtl.det_factor_id and

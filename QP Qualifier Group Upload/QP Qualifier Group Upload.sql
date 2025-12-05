@@ -99,7 +99,7 @@ xxen_util.display_flexfield_value(661,'QP_QUALIFIERS',qqv.context,'ATTRIBUTE15',
 -- IDs
 qqr.qualifier_rule_id,
 qqv.qualifier_id,
-1 seq
+1 upload_row
 from
 qp_qualifier_rules qqr,
 qp_qualifiers_v qqv

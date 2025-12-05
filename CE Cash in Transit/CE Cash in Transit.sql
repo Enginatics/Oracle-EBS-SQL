@@ -23,28 +23,28 @@ DB package: CE_CEXCSHTR_XMLP_PKG (required to initialize security)
 -- Run Report: https://demo.enginatics.com/
 
 select
- x.bank_account_currency   bank_account_currency,
- x.bank_account_name       bank_account_name,
- x.bank_account_num        bank_account_number,
- x.bank_name               bank_name,
- x.bank_branch_name        branch_name,
- x.org_name                organization,
+ x.bank_account_currency,
+ x.bank_account_name,
+ x.bank_account_num bank_account_number,
+ x.bank_name,
+ x.bank_branch_name branch_name,
+ x.org_name organization,
  case x.type
  when 'PAYMENTS' then 'Payments in Transit'
  when 'RECEIPTS' then 'Receipts in Transit'
  when 'ROI_LINE' then 'Open-Interface Transactions in Transit'
  when 'PAYROLL'  then 'Payroll Payments in Transit'
  else x.type || ' in Transit'
- end                       in_transit_type,
- x.supplier_customer       "Supplier/Customer/Agent Name",
- x.payment_date            "Payment/Remit/Trx Date",
- x.maturity_date           maturity_date,
- x.payrcpt_num             "Payment/Receipt/Trx Number",
- x.payment_method          "Payment Method/Trx Type",
- x.c_currency_code         currency,
- x.amount                  "Payment/Receipt/Trx Amount",
- x.base_amount             bank_account_amount,
- x.cash_in_transit         net_cash_in_transit,
+ end in_transit_type,
+ x.supplier_customer "Supplier/Customer/Agent Name",
+ x.payment_date "Payment/Remit/Trx Date",
+ x.maturity_date,
+ x.payrcpt_num "Payment/Receipt/Trx Number",
+ x.payment_method "Payment Method/Trx Type",
+ x.c_currency_code currency,
+ x.amount "Payment/Receipt/Trx Amount",
+ x.base_amount bank_account_amount,
+ x.cash_in_transit net_cash_in_transit,
  x.check_number,
  -- pivot labels
  x.bank_name || ' - ' || x.bank_account_num || ' - ' || x.bank_account_name || ' (' || x.bank_account_currency || ')' bank_account_pivot_label,
@@ -113,9 +113,9 @@ and ou.name                   = nvl(ou.name,ou.name)
 union all
 --
 select
- 'RECEIPTS'    type,
+ 'RECEIPTS' type,
     hz.party_name    supplier_customer,
-    ba.bank_account_name    bank_account_name,
+    ba.bank_account_name,
     ba.masked_account_num    bank_account_num,
     ba.currency_code    bank_account_currency,
  bb.bank_name,
@@ -206,7 +206,7 @@ where
     ba.bank_branch_id                            = bb.branch_party_id
 and    ba.bank_account_id                           = roi.bank_account_id
 and ba.account_owner_org_id                   = sys.legal_entity_id
-and    ba.RECON_ENABLE_OI_FLAG                   = 'Y'
+and    ba.recon_enable_oi_flag                   = 'Y'
 and roi.status                                      = ba.recon_oi_float_status
 and    roi.trx_date                                <= nvl(:p_as_of_date, sysdate)
 and    roi.trx_date                                >= sys.cashbook_begin_date
@@ -237,7 +237,7 @@ select
     0 check_number,
     '40'    transaction_order,
     ou.name org_name
-FROM
+from
  ce_bank_branches_v               bb,
     ce_bank_accounts                 ba,
     gl_sets_of_books                    sob,
@@ -286,7 +286,7 @@ and not exists
        from   pay_action_interlocks pai
        where  pai.locked_action_id = paa.assignment_action_id
       )
-and    :p_type                          IN ( 'PAYROLLS','ALL')
+and    :p_type                          in ( 'PAYROLLS','ALL')
 and ou.name                           = nvl(:p_business_group,ou.name)
 --
 union all --  Voided Payroll Payments

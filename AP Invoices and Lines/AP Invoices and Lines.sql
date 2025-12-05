@@ -170,6 +170,7 @@ ap_inv.supplier_notif_method,
 ap_inv.email_address,
 ap_inv.remittance_email,
 &gcc_dist_segment_columns
+&l_ap_sla_sel
 &attachment_columns
 ap_inv.created_by,
 ap_inv.creation_date,
@@ -322,6 +323,9 @@ nvl(aida.base_amount,aida.amount) dist_amount_functional,
 aida.invoice_price_variance dist_invoice_price_variance,
 aida.base_invoice_price_variance dist_inv_price_variance_funct,
 aida.dist_code_combination_id,
+aida.invoice_distribution_id,
+aida.set_of_books_id dist_ledger_id,
+aida.accounting_event_id dist_accounting_event_id,
 xxen_util.concatenated_segments(aida.dist_code_combination_id) expense_account,
 xxen_util.concatenated_segments(aida.price_var_code_combination_id) price_variance_account,
 xxen_util.segments_description(aida.dist_code_combination_id) expense_account_descripton,
@@ -593,11 +597,13 @@ select distinct
  fdct.language = userenv('lang') and
  fd.datatype_id in (1,5,6)
 ) attchmt,
+&l_ap_sla_table
 gl_code_combinations_kfv gcck
 where
 ap_inv.invoice_id=ap_holds.invoice_id(+) and
 decode(:p_show_attachments,'Y','AP_INVOICES',null)=attchmt.entity_name(+) and
 decode(:p_show_attachments,'Y',to_char(ap_inv.invoice_id),null)=attchmt.entity_id(+) and
+&l_ap_sla_join
 ap_inv.dist_code_combination_id=gcck.code_combination_id(+)
 order by
 ap_inv.operating_unit,

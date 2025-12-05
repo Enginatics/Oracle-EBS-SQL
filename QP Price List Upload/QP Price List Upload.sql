@@ -234,7 +234,7 @@ to_number(null) price_list_line_id,
 to_number(null) price_break_line_id,
 to_number(null) pricing_attribute_id,
 'Qualifier' row_type,
-1 seq
+1 upload_row
 from
 qp_secu_list_headers_vl qslhv,
 qp_qualifiers_v qqv
@@ -418,7 +418,7 @@ to_number(null) price_list_line_id,
 to_number(null) price_break_line_id,
 to_number(null) pricing_attribute_id,
 'Secondary Price List' row_type,
-2 seq
+2 upload_row
 from
 qp_secu_list_headers_vl qslhv,
 qp_secondary_price_lists_v qsplv
@@ -621,7 +621,7 @@ qllv.list_line_id price_list_line_id,
 to_number(null) price_break_line_id,
 qpa.pricing_attribute_id pricing_attribute_id,
 'List Line' row_type,
-3 seq
+3 upload_row
 from
 qp_secu_list_headers_vl qslhv,
 qp_list_lines_v qllv,
@@ -804,7 +804,7 @@ qllv.list_line_id price_list_line_id,
 qpbv.list_line_id price_break_line_id,
 to_number(null) pricing_attribute_id,
 'Price Break' row_type,
-3 seq
+3 upload_row
 from
 qp_secu_list_headers_vl qslhv,
 qp_list_lines_v qllv,

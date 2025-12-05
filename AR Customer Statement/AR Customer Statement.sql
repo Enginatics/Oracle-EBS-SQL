@@ -13,20 +13,20 @@ DB package: AR_TP_STMT_PKG
 -- Library Link: https://www.enginatics.com/reports/ar-customer-statement/
 -- Run Report: https://demo.enginatics.com/
 
-with q_customer as (SELECT 
+with q_customer as (select 
    hca.cust_account_id customer_party_id,
    hcsu.site_use_id customer_party_site_id,
-   AR_TP_STMT_PKG.balance_brought_forward(hca.cust_account_id,hcsu.site_use_id,hcas.org_id) brought_forward_amount,
+   ar_tp_stmt_pkg.balance_brought_forward(hca.cust_account_id,hcsu.site_use_id,hcas.org_id) brought_forward_amount,
    hca.account_number customer_number,
    hpar.party_name customer_name,
    hps.party_site_number party_site_number,
    hps.party_site_name party_site_name,
    hpar.address1||' '|| hpar.address2||' '|| hpar.address3||' '|| hpar.address4||' '|| hpar.city ||' '|| hpar.postal_code customer_address,
    hpar.jgzz_fiscal_code customer_tax_payer_id,
-   NVL(zptp.rep_registration_number,hpar.tax_reference) customer_tax_ref_number,
+   nvl(zptp.rep_registration_number,hpar.tax_reference) customer_tax_ref_number,
    hou.name organization_name,
    hou.organization_id organization_id
-  FROM 
+  from 
    hz_cust_accounts hca,
    hz_parties hpar,
    hz_cust_site_uses_all hcsu,
@@ -34,27 +34,27 @@ with q_customer as (SELECT
    hz_party_sites hps,
    hr_operating_units hou,
    zx_party_tax_profile zptp
-  WHERE
+  where
    hca.party_id = hpar.party_id
-   AND hcsu.cust_acct_site_id = hcas.cust_acct_site_id
-   AND hcas.party_site_id = hps.party_site_id
-   AND hcsu.site_use_code = 'BILL_TO'
-   AND hpar.party_id = hps.party_id
-   AND hcas.org_id = hou.organization_id
-   AND hpar.party_id = zptp.party_id(+)
-   AND zptp.party_type_code(+) = 'THIRD_PARTY'
-   AND hcas.org_id = hou.organization_id 
+   and hcsu.cust_acct_site_id = hcas.cust_acct_site_id
+   and hcas.party_site_id = hps.party_site_id
+   and hcsu.site_use_code = 'BILL_TO'
+   and hpar.party_id = hps.party_id
+   and hcas.org_id = hou.organization_id
+   and hpar.party_id = zptp.party_id(+)
+   and zptp.party_type_code(+) = 'THIRD_PARTY'
+   and hcas.org_id = hou.organization_id 
    &gc_reporting_entity 
    &gc_customer_name 
    &gc_cust_category 
    &gc_cust_class 
    ),
-q_main as (SELECT 
+q_main as (select 
    'T' trx_type,
    rctt.name transaction_type,
-   NULL adjustment_number,
+   null adjustment_number,
    rct.trx_number transaction_number,
-   rctld.gl_date GL_Date,
+   rctld.gl_date gl_date,
    rct.trx_date transaction_date,
    apsa.due_date transaction_due_date,
    rct.invoice_currency_code transaction_currency,
@@ -68,45 +68,45 @@ q_main as (SELECT
    rct.status_trx trx_status,
    rct.bill_to_customer_id customer_party_id,
    rct.bill_to_site_use_id customer_party_site_id
-  FROM 
+  from 
    ra_customer_trx rct,
    ar_payment_schedules_all apsa,
    ra_cust_trx_types_all rctt,
    ra_cust_trx_line_gl_dist_all rctld,
    gl_periods gp,
    gl_ledgers gled
-  WHERE
+  where
    rct.customer_trx_id = apsa.customer_trx_id(+)
-   AND rct.customer_trx_id = rctld.customer_trx_id
-   AND rct.cust_trx_type_id = rctt.cust_trx_type_id
-   AND rct.org_id = rctt.org_id
-   AND gled.period_set_name = gp.period_set_name
-   AND gled.accounted_period_type = gp.period_type
-   AND gled.ledger_id = rct.set_of_books_id
-   AND rctld.gl_date BETWEEN gp.start_date AND gp.end_date
-   AND rctld.latest_rec_flag = 'Y'
-   AND rctld.account_class = 'REC'
-   AND rctt.post_to_gl = 'Y' -- Only Postable to GL are picked
-   AND rctt.type IN ('CB','INV','DM','CM','BR','DEP') -- Guarantees are not picked
-   AND rctld.gl_date BETWEEN :P_FROM_GL_DATE AND :P_TO_GL_DATE
-   AND gp.adjustment_period_flag = 'N'
-   AND 1=1 
+   and rct.customer_trx_id = rctld.customer_trx_id
+   and rct.cust_trx_type_id = rctt.cust_trx_type_id
+   and rct.org_id = rctt.org_id
+   and gled.period_set_name = gp.period_set_name
+   and gled.accounted_period_type = gp.period_type
+   and gled.ledger_id = rct.set_of_books_id
+   and rctld.gl_date between gp.start_date and gp.end_date
+   and rctld.latest_rec_flag = 'Y'
+   and rctld.account_class = 'REC'
+   and rctt.post_to_gl = 'Y' -- Only Postable to GL are picked
+   and rctt.type in ('CB','INV','DM','CM','BR','DEP') -- Guarantees are not picked
+   and rctld.gl_date between :p_from_gl_date and :p_to_gl_date
+   and gp.adjustment_period_flag = 'N'
+   and 1=1 
    &gc_org_id 
    &gc_currency 
    &gc_accounted 
    &gc_incomplete_trx 
-  UNION ALL 
-  SELECT 
+  union all 
+  select 
    'R' trx_type,
    arm.name transaction_type,
-   NULL adjustment_number,
+   null adjustment_number,
    acr.receipt_number transaction_number,
-   acrh.gl_date GL_Date,
+   acrh.gl_date gl_date,
    acr.receipt_date transaction_date,
    apsa.due_date transaction_due_date,
    acr.currency_code transaction_currency,
    acr.amount entered_amount,
-   acr.amount * NVL(acr.exchange_rate,1) accounted_amount,
+   acr.amount * nvl(acr.exchange_rate,1) accounted_amount,
    gp.period_name gp_period_name,
    gp.period_num gp_period_num,
    gp.start_date gp_start_date,
@@ -115,42 +115,42 @@ q_main as (SELECT
    acrh.status trx_status,
    acr.pay_from_customer customer_party_id,
    acr.customer_site_use_id customer_party_site_id
-  FROM 
+  from 
    ar_cash_receipts acr,
    ar_receipt_methods arm,
    ar_cash_receipt_history_all acrh,
    ar_payment_schedules_all apsa,
    gl_periods gp,
    gl_ledgers gled
-  WHERE
+  where
    acr.cash_receipt_id = apsa.cash_receipt_id(+)
-   AND acr.org_id = apsa.org_id(+)
-   AND acr.receipt_method_id = arm.receipt_method_id
-   AND acr.cash_receipt_id = acrh.cash_receipt_id
-   AND acr.org_id = acrh.org_id
-   AND gled.period_set_name = gp.period_set_name
-   AND gled.accounted_period_type = gp.period_type
-   AND acr.set_of_books_id = gled.ledger_id
-   AND acrh.gl_date BETWEEN gp.start_date AND gp.end_date
-   AND acrh.first_posted_record_flag = 'Y'
-   AND acrh.gl_date BETWEEN :P_FROM_GL_DATE AND :P_TO_GL_DATE
-   AND gp.adjustment_period_flag = 'N'
-   AND 2=2 
+   and acr.org_id = apsa.org_id(+)
+   and acr.receipt_method_id = arm.receipt_method_id
+   and acr.cash_receipt_id = acrh.cash_receipt_id
+   and acr.org_id = acrh.org_id
+   and gled.period_set_name = gp.period_set_name
+   and gled.accounted_period_type = gp.period_type
+   and acr.set_of_books_id = gled.ledger_id
+   and acrh.gl_date between gp.start_date and gp.end_date
+   and acrh.first_posted_record_flag = 'Y'
+   and acrh.gl_date between :p_from_gl_date and :p_to_gl_date
+   and gp.adjustment_period_flag = 'N'
+   and 2=2 
    &gc_rcpt_org_id 
    &gc_rcpt_currency 
    &gc_rcpt_accounted 
-  UNION ALL 
-  SELECT 
+  union all 
+  select 
    'R' trx_type,
    arm.name transaction_type,
-   NULL adjustment_number,
+   null adjustment_number,
    acr.receipt_number transaction_number,
-   acrh.gl_date GL_Date,
+   acrh.gl_date gl_date,
    acr.receipt_date transaction_date,
    apsa.due_date transaction_due_date,
    acr.currency_code transaction_currency,
    acr.amount entered_amount,
-   acr.amount * NVL(acr.exchange_rate,1) accounted_amount,
+   acr.amount * nvl(acr.exchange_rate,1) accounted_amount,
    gp.period_name gp_period_name,
    gp.period_num gp_period_num,
    gp.start_date gp_start_date,
@@ -159,40 +159,40 @@ q_main as (SELECT
    acrh.status trx_status,
    acr.pay_from_customer customer_party_id,
    acr.customer_site_use_id customer_party_site_id
-  FROM 
+  from 
    ar_cash_receipts acr,
    ar_receipt_methods arm,
    ar_cash_receipt_history_all acrh,
    ar_payment_schedules_all apsa,
    gl_periods gp,
    gl_ledgers gled
-  WHERE
+  where
    acr.cash_receipt_id = apsa.cash_receipt_id(+)
-   AND acr.org_id = apsa.org_id(+)
-   AND acr.receipt_method_id = arm.receipt_method_id
-   AND acr.cash_receipt_id = acrh.cash_receipt_id
-   AND acr.org_id = acrh.org_id
-   AND gled.period_set_name = gp.period_set_name
-   AND gled.accounted_period_type = gp.period_type
-   AND acr.set_of_books_id = gled.ledger_id
-   AND acrh.gl_date BETWEEN gp.start_date AND gp.end_date
-   AND acr.reversal_date IS NOT NULL
-   AND acrh.current_record_flag = 'Y'
-   AND acrh.status = 'REVERSED' 
-   AND acrh.gl_date BETWEEN :P_FROM_GL_DATE AND :P_TO_GL_DATE
+   and acr.org_id = apsa.org_id(+)
+   and acr.receipt_method_id = arm.receipt_method_id
+   and acr.cash_receipt_id = acrh.cash_receipt_id
+   and acr.org_id = acrh.org_id
+   and gled.period_set_name = gp.period_set_name
+   and gled.accounted_period_type = gp.period_type
+   and acr.set_of_books_id = gled.ledger_id
+   and acrh.gl_date between gp.start_date and gp.end_date
+   and acr.reversal_date is not null
+   and acrh.current_record_flag = 'Y'
+   and acrh.status = 'REVERSED' 
+   and acrh.gl_date between :p_from_gl_date and :p_to_gl_date
 -- To Consider the first status for Reversed Receipts
-   AND gp.adjustment_period_flag = 'N'
-   AND 3=3 
+   and gp.adjustment_period_flag = 'N'
+   and 3=3 
    &gc_rcpt_org_id 
    &gc_rcpt_currency 
    &gc_rcpt_accounted 
-  UNION ALL 
-  SELECT 
+  union all 
+  select 
    'A' trx_type,
    al.meaning transaction_type,
    aa.adjustment_number adjustment_number,
    rct.trx_number transaction_number,
-   aa.gl_date GL_Date,
+   aa.gl_date gl_date,
    aa.apply_date transaction_date,
    aa.apply_date transaction_due_date,
    rct.invoice_currency_code transaction_currency,
@@ -206,7 +206,7 @@ q_main as (SELECT
    aa.status trx_status,
    rct.bill_to_customer_id customer_party_id,
    rct.bill_to_site_use_id customer_party_site_id
-  FROM 
+  from 
    ar_adjustments aa,
    ar_lookups al,
    ra_customer_trx_all rct,
@@ -214,34 +214,34 @@ q_main as (SELECT
    ar_payment_schedules_all apsa,
    gl_periods gp,
    gl_ledgers gled
-  WHERE
+  where
    rct.customer_trx_id = apsa.customer_trx_id(+)
-   AND rct.org_id = apsa.org_id(+)
-   AND rct.cust_trx_type_id = rctt.cust_trx_type_id
-   AND rct.org_id = rctt.org_id
-   AND rct.customer_trx_id = aa.customer_trx_id
-   AND rct.org_id = aa.org_id
-   AND gled.period_set_name = gp.period_set_name
-   AND gled.accounted_period_type = gp.period_type
-   AND gled.ledger_id = aa.set_of_books_id
-   AND al.lookup_type = 'ADJUSTMENT_TYPE'
-   AND aa.status = 'A' -- For approved Adjustments
-   AND aa.type = al.lookup_code
-   AND aa.gl_date BETWEEN gp.start_date AND gp.end_date
-   AND aa.gl_date BETWEEN :P_FROM_GL_DATE AND :P_TO_GL_DATE
-   AND gp.adjustment_period_flag = 'N'
-   AND rctt.post_to_gl = 'Y' -- Only Postable to GL are picked
-   AND rctt.type IN ('CB','INV','DM','CM','BR','DEP') -- Guarantees are not picked
-   AND 4=4 
+   and rct.org_id = apsa.org_id(+)
+   and rct.cust_trx_type_id = rctt.cust_trx_type_id
+   and rct.org_id = rctt.org_id
+   and rct.customer_trx_id = aa.customer_trx_id
+   and rct.org_id = aa.org_id
+   and gled.period_set_name = gp.period_set_name
+   and gled.accounted_period_type = gp.period_type
+   and gled.ledger_id = aa.set_of_books_id
+   and al.lookup_type = 'ADJUSTMENT_TYPE'
+   and aa.status = 'A' -- For approved Adjustments
+   and aa.type = al.lookup_code
+   and aa.gl_date between gp.start_date and gp.end_date
+   and aa.gl_date between :p_from_gl_date and :p_to_gl_date
+   and gp.adjustment_period_flag = 'N'
+   and rctt.post_to_gl = 'Y' -- Only Postable to GL are picked
+   and rctt.type in ('CB','INV','DM','CM','BR','DEP') -- Guarantees are not picked
+   and 4=4 
    &gc_org_id 
    &gc_currency 
    &gc_adj_accounted 
    &gc_incomplete_trx 
-  UNION ALL 
-  SELECT 
+  union all 
+  select 
    'R' trx_type,
    art.name transaction_type,
-   NULL adjustment_number,
+   null adjustment_number,
    acr.receipt_number transaction_number,
    ara.gl_date gl_date,
    ara.apply_date transaction_date,
@@ -257,26 +257,26 @@ q_main as (SELECT
    art.status trx_status,
    acr.pay_from_customer customer_party_id,
    acr.customer_site_use_id customer_party_site_id
-  FROM 
+  from 
    ar_cash_receipts acr,
    ar_receivable_applications_all ara,
    ar_receivables_trx_all art,
    gl_periods gp,
    gl_ledgers gled
-  WHERE
+  where
    acr.cash_receipt_id = ara.cash_receipt_id
-   AND acr.org_id = ara.org_id
-   AND ara.receivables_trx_id = art.receivables_trx_id
-   AND ara.org_id = art.org_id
-   AND gled.period_set_name = gp.period_set_name
-   AND gled.accounted_period_type = gp.period_type
-   AND acr.set_of_books_id = gled.ledger_id
-   AND ara.gl_date BETWEEN gp.start_date AND gp.end_date
-   AND ara.gl_date BETWEEN :P_FROM_GL_DATE AND :P_TO_GL_DATE
-   AND art.type = 'WRITEOFF' 
+   and acr.org_id = ara.org_id
+   and ara.receivables_trx_id = art.receivables_trx_id
+   and ara.org_id = art.org_id
+   and gled.period_set_name = gp.period_set_name
+   and gled.accounted_period_type = gp.period_type
+   and acr.set_of_books_id = gled.ledger_id
+   and ara.gl_date between gp.start_date and gp.end_date
+   and ara.gl_date between :p_from_gl_date and :p_to_gl_date
+   and art.type = 'WRITEOFF' 
    --AND art.status                 = 'A' --Only Active Receipt WriteOffs
-   AND gp.adjustment_period_flag = 'N' 
-   AND 5=5
+   and gp.adjustment_period_flag = 'N' 
+   and 5=5
    &gc_rcpt_org_id 
    &gc_rcpt_currency 
    &gc_app_accounted 
@@ -294,7 +294,7 @@ select
  q.customer_address,
  &lp_operating_unit_column
  q.period_name,
- replace(q.Record_Type,'_',' ') record_type,
+ replace(q.record_type,'_',' ') record_type,
  q.balance_bought_forward_debit,
  q.balance_bought_forward_credit,
  q.net_debit,
@@ -309,7 +309,7 @@ from
  (select 
    z.*,
    case z.record_type
-    when 'Period Summary' then sum(nvl(z.Debit,0)) over (partition by z.customer_party_site_id order by z.seq rows between unbounded preceding and current row) + sum(nvl(z.bbf,0)) over (partition by z.customer_party_site_id) - sum(nvl(z.Debit,0)) over (partition by z.customer_party_site_id,z.period_name)
+    when 'Period Summary' then sum(nvl(z.debit,0)) over (partition by z.customer_party_site_id order by z.seq rows between unbounded preceding and current row) + sum(nvl(z.bbf,0)) over (partition by z.customer_party_site_id) - sum(nvl(z.debit,0)) over (partition by z.customer_party_site_id,z.period_name)
     when 'Customer Site Summary' then sum(nvl(z.bbf,0)) over (partition by z.customer_party_site_id)
     when 'Operating Unit Summary' then sum(nvl(z.bbf,0)) over (partition by z.customer_party_id,z.organization_id)
     when 'Customer Summary' then sum(nvl(z.bbf,0)) over (partition by z.customer_party_id)
@@ -317,7 +317,7 @@ from
     else null
    end balance_bought_forward_debit,
    case z.record_type
-    when 'Period Summary' then sum(nvl(z.Credit,0)) over (partition by z.customer_party_site_id order by z.seq rows between unbounded preceding and current row) - sum(nvl(z.Credit,0)) over (partition by z.customer_party_site_id,z.period_name)
+    when 'Period Summary' then sum(nvl(z.credit,0)) over (partition by z.customer_party_site_id order by z.seq rows between unbounded preceding and current row) - sum(nvl(z.credit,0)) over (partition by z.customer_party_site_id,z.period_name)
     when 'Customer Site Summary' then 0
     when 'Operating Unit Summary' then 0
     when 'Customer Summary' then 0
@@ -325,35 +325,35 @@ from
     else null
    end balance_bought_forward_credit,
    case z.record_type
-    when 'Period Summary' then sum(nvl(z.Debit,0)) over (partition by z.customer_party_site_id,z.period_name)
-    when 'Customer Site Summary' then sum(nvl(z.Debit,0)) over (partition by z.customer_party_site_id)
-    when 'Operating Unit Summary' then sum(nvl(z.Debit,0)) over (partition by z.customer_party_id,z.organization_id)
-    when 'Customer Summary' then sum(nvl(z.Debit,0)) over (partition by z.customer_party_id)
-    when '&reporting_entity_col_name Summary' then sum(nvl(z.Debit,0)) over ()
+    when 'Period Summary' then sum(nvl(z.debit,0)) over (partition by z.customer_party_site_id,z.period_name)
+    when 'Customer Site Summary' then sum(nvl(z.debit,0)) over (partition by z.customer_party_site_id)
+    when 'Operating Unit Summary' then sum(nvl(z.debit,0)) over (partition by z.customer_party_id,z.organization_id)
+    when 'Customer Summary' then sum(nvl(z.debit,0)) over (partition by z.customer_party_id)
+    when '&reporting_entity_col_name Summary' then sum(nvl(z.debit,0)) over ()
     else null
    end net_debit,
    case z.record_type
-    when 'Period Summary' then sum(nvl(z.Credit,0)) over (partition by z.customer_party_site_id,z.period_name)
-    when 'Customer Site Summary' then sum(nvl(z.Credit,0)) over (partition by z.customer_party_site_id)
-    when 'Operating Unit Summary' then sum(nvl(z.Credit,0)) over (partition by z.customer_party_id,z.organization_id)
-    when 'Customer Summary' then sum(nvl(z.Credit,0)) over (partition by z.customer_party_id)
-    when '&reporting_entity_col_name Summary' then sum(nvl(z.Credit,0)) over ()
+    when 'Period Summary' then sum(nvl(z.credit,0)) over (partition by z.customer_party_site_id,z.period_name)
+    when 'Customer Site Summary' then sum(nvl(z.credit,0)) over (partition by z.customer_party_site_id)
+    when 'Operating Unit Summary' then sum(nvl(z.credit,0)) over (partition by z.customer_party_id,z.organization_id)
+    when 'Customer Summary' then sum(nvl(z.credit,0)) over (partition by z.customer_party_id)
+    when '&reporting_entity_col_name Summary' then sum(nvl(z.credit,0)) over ()
     else null
    end net_credit,
    case z.record_type
-    when 'Period Summary' then sum(nvl(z.Debit,0)) over (partition by z.customer_party_site_id order by z.seq rows between unbounded preceding and current row) + sum(nvl(z.bbf,0)) over (partition by z.customer_party_site_id)
-    when 'Customer Site Summary' then sum(nvl(z.Debit,0)) over (partition by z.customer_party_site_id order by z.seq rows between unbounded preceding and current row) + sum(nvl(z.bbf,0)) over (partition by z.customer_party_site_id)
-    when 'Operating Unit Summary' then sum(nvl(z.Debit,0)) over (partition by z.customer_party_id,z.organization_id order by z.seq rows between unbounded preceding and current row) + sum(nvl(z.bbf,0)) over (partition by z.customer_party_id,z.organization_id)
-    when 'Customer Summary' then sum(nvl(z.Debit,0)) over (partition by z.customer_party_id order by z.seq rows between unbounded preceding and current row) + sum(nvl(z.bbf,0)) over (partition by z.customer_party_id)
-    when '&reporting_entity_col_name Summary' then sum(nvl(z.Debit,0)) over () + sum(nvl(z.bbf,0)) over ()
+    when 'Period Summary' then sum(nvl(z.debit,0)) over (partition by z.customer_party_site_id order by z.seq rows between unbounded preceding and current row) + sum(nvl(z.bbf,0)) over (partition by z.customer_party_site_id)
+    when 'Customer Site Summary' then sum(nvl(z.debit,0)) over (partition by z.customer_party_site_id order by z.seq rows between unbounded preceding and current row) + sum(nvl(z.bbf,0)) over (partition by z.customer_party_site_id)
+    when 'Operating Unit Summary' then sum(nvl(z.debit,0)) over (partition by z.customer_party_id,z.organization_id order by z.seq rows between unbounded preceding and current row) + sum(nvl(z.bbf,0)) over (partition by z.customer_party_id,z.organization_id)
+    when 'Customer Summary' then sum(nvl(z.debit,0)) over (partition by z.customer_party_id order by z.seq rows between unbounded preceding and current row) + sum(nvl(z.bbf,0)) over (partition by z.customer_party_id)
+    when '&reporting_entity_col_name Summary' then sum(nvl(z.debit,0)) over () + sum(nvl(z.bbf,0)) over ()
     else null
    end cumulative_debit,
    case z.record_type
-    when 'Period Summary' then sum(nvl(z.Credit,0)) over (partition by z.customer_party_site_id order by z.seq rows between unbounded preceding and current row)
-    when 'Customer Site Summary' then sum(nvl(z.Credit,0)) over (partition by z.customer_party_site_id order by z.seq rows between unbounded preceding and current row)
-    when 'Operating Unit Summary' then sum(nvl(z.Credit,0)) over (partition by z.customer_party_id,z.organization_id order by z.seq rows between unbounded preceding and current row)
-    when 'Customer Summary' then sum(nvl(z.Credit,0)) over (partition by z.customer_party_id order by z.seq rows between unbounded preceding and current row)
-    when '&reporting_entity_col_name Summary' then sum(nvl(z.Credit,0)) over ()
+    when 'Period Summary' then sum(nvl(z.credit,0)) over (partition by z.customer_party_site_id order by z.seq rows between unbounded preceding and current row)
+    when 'Customer Site Summary' then sum(nvl(z.credit,0)) over (partition by z.customer_party_site_id order by z.seq rows between unbounded preceding and current row)
+    when 'Operating Unit Summary' then sum(nvl(z.credit,0)) over (partition by z.customer_party_id,z.organization_id order by z.seq rows between unbounded preceding and current row)
+    when 'Customer Summary' then sum(nvl(z.credit,0)) over (partition by z.customer_party_id order by z.seq rows between unbounded preceding and current row)
+    when '&reporting_entity_col_name Summary' then sum(nvl(z.credit,0)) over ()
     else null
    end cumulative_credit
   from 
@@ -375,16 +375,16 @@ select distinct
          q_customer.party_site_number customer_site_number,
          q_customer.customer_address,
          q_main.gp_period_name period_name,
-         null Document_Type,
-         null Document_Number,
-         to_date(null) Document_Date,
-         to_date(null) Maturity_Date,
-         null Document_Status,
-         to_date(null) GL_Date,
-         to_number(null) Debit,
-         to_number(null) Credit,
-         to_number(null) Original_Amount,
-         null Currency_Code,
+         null document_type,
+         null document_number,
+         to_date(null) document_date,
+         to_date(null) maturity_date,
+         null document_status,
+         to_date(null) gl_date,
+         to_number(null) debit,
+         to_number(null) credit,
+         to_number(null) original_amount,
+         null currency_code,
          1 sort_order,
          q_main.gp_start_date period_start_date,
          q_main.gp_period_num period_num,
@@ -410,16 +410,16 @@ select distinct
          q_customer.party_site_number customer_site_number,
          q_customer.customer_address,
          null period_name,
-         null Document_Type,
-         null Document_Number,
-         to_date(null) Document_Date,
-         to_date(null) Maturity_Date,
-         null Document_Status,
-         to_date(null) GL_Date,
-         to_number(null) Debit,
-         to_number(null) Credit,
-         to_number(null) Original_Amount,
-         null Currency_Code,
+         null document_type,
+         null document_number,
+         to_date(null) document_date,
+         to_date(null) maturity_date,
+         null document_status,
+         to_date(null) gl_date,
+         to_number(null) debit,
+         to_number(null) credit,
+         to_number(null) original_amount,
+         null currency_code,
          2 sort_order,
          to_date(null) period_start_date,
          to_number(null) period_num,
@@ -432,7 +432,7 @@ select distinct
         union all 
         -- dummy operating unit summary record
         select distinct 
-         'Operating Unit Summary' Record_Type,
+         'Operating Unit Summary' record_type,
          q_customer.customer_name,
          q_customer.customer_number,
          q_customer.customer_tax_ref_number customer_tax_registration,
@@ -441,16 +441,16 @@ select distinct
          null customer_site_number,
          null customer_address,
          null period_name,
-         null Document_Type,
-         null Document_Number,
-         to_date(null) Document_Date,
-         to_date(null) Maturity_Date,
-         null Document_Status,
-         to_date(null) GL_Date,
-         to_number(null) Debit,
-         to_number(null) Credit,
-         to_number(null) Original_Amount,
-         null Currency_Code,
+         null document_type,
+         null document_number,
+         to_date(null) document_date,
+         to_date(null) maturity_date,
+         null document_status,
+         to_date(null) gl_date,
+         to_number(null) debit,
+         to_number(null) credit,
+         to_number(null) original_amount,
+         null currency_code,
          3 sort_order,
          to_date(null) period_start_date,
          to_number(null) period_num,
@@ -474,16 +474,16 @@ select distinct
          null customer_site_number,
          null customer_address,
          null period_name,
-         null Document_Type,
-         null Document_Number,
-         to_date(null) Document_Date,
-         to_date(null) Maturity_Date,
-         null Document_Status,
-         to_date(null) GL_Date,
-         to_number(null) Debit,
-         to_number(null) Credit,
-         to_number(null) Original_Amount,
-         null Currency_Code,
+         null document_type,
+         null document_number,
+         to_date(null) document_date,
+         to_date(null) maturity_date,
+         null document_status,
+         to_date(null) gl_date,
+         to_number(null) debit,
+         to_number(null) credit,
+         to_number(null) original_amount,
+         null currency_code,
          4 sort_order,
          to_date(null) period_start_date,
          to_number(null) period_num,
@@ -505,16 +505,16 @@ select distinct
          null customer_site_number,
          null customer_address,
          null period_name,
-         null Document_Type,
-         null Document_Number,
-         to_date(null) Document_Date,
-         to_date(null) Maturity_Date,
-         null Document_Status,
-         to_date(null) GL_Date,
-         to_number(null) Debit,
-         to_number(null) Credit,
-         to_number(null) Original_Amount,
-         null Currency_Code,
+         null document_type,
+         null document_number,
+         to_date(null) document_date,
+         to_date(null) maturity_date,
+         null document_status,
+         to_date(null) gl_date,
+         to_number(null) debit,
+         to_number(null) credit,
+         to_number(null) original_amount,
+         null currency_code,
          5 sort_order,
          to_date(null) period_start_date,
          to_number(null) period_num,
@@ -536,10 +536,10 @@ select distinct
          q_customer.party_site_number customer_site_number,
          q_customer.customer_address,
          q_main.gp_period_name period_name,
-         q_main.transaction_type Document_Type,
-         nvl(q_main.adjustment_number ,q_main.transaction_number) Document_Number,
-         q_main.transaction_date Document_Date,
-         q_main.transaction_due_date Maturity_Date,
+         q_main.transaction_type document_type,
+         nvl(q_main.adjustment_number ,q_main.transaction_number) document_number,
+         q_main.transaction_date document_date,
+         q_main.transaction_due_date maturity_date,
          case
           when q_main.due_remaining = 0 then
            case q_main.trx_type
@@ -563,12 +563,12 @@ select distinct
          end ||case q_main.trx_type
           when 'A' then 'Approved'
           else null
-         end Document_Status,
-         q_main.gl_date GL_Date,
+         end document_status,
+         q_main.gl_date gl_date,
          case q_main.trx_type
           when 'R' then to_number(null)
           else q_main.accounted_amount
-         end Debit,
+         end debit,
          case q_main.trx_type
           when 'R' then
            case q_main.trx_status
@@ -576,12 +576,12 @@ select distinct
             else q_main.accounted_amount
            end
           else to_number(null)
-         end Credit,
+         end credit,
          case q_main.trx_status
           when 'REVERSED' then -1 * q_main.entered_amount
           else q_main.entered_amount
-         end Original_Amount,
-         q_main.transaction_currency Currency_Code,
+         end original_amount,
+         q_main.transaction_currency currency_code,
          -1 sort_order,
          q_main.gp_start_date period_start_date,
          q_main.gp_period_num period_num,

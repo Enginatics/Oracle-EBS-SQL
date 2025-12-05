@@ -39,7 +39,7 @@ null request_id_,
 null modified_columns_,
 :p_replace_subinventories replace_subinventories,
 :p_freeze_physical_inventory freeze_physical_inventory,
-to_number(null) upload_seq_,
+to_number(null) upload_row,
 to_number(null) physical_inventory_row_id,
 -- Physical Inventory
 mp.organization_code,
@@ -52,10 +52,10 @@ mpiv.approval_tolerance_neg quantity_tolerance_minus,
 mpiv.cost_variance_pos value_tolerance_plus,
 mpiv.cost_variance_neg value_tolerance_minus,
 &lp_serial_control_cols
-xxen_util.meaning(decode(mpiv.dynamic_tag_entry_flag,1,1,null),'INV_YES_NO',3) allow_dynamic_tags,
+xxen_util.meaning(decode(mpiv.dynamic_tag_entry_flag,1,'Y',null),'YES_NO',0) allow_dynamic_tags,
 xxen_util.meaning(decode(mpiv.exclude_zero_balance,'Y','Y',null),'YES_NO',0) exclude_zero_balance,
 xxen_util.meaning(decode(mpiv.exclude_negative_balance,'Y','Y',null),'YES_NO',0) exclude_negative_balance,
-xxen_util.meaning(decode(mpiv.all_subinventories_flag,1,1,null),'INV_YES_NO',3) all_subinventories,
+xxen_util.meaning(decode(mpiv.all_subinventories_flag,1,'Y',null),'YES_NO',0) all_subinventories,
 -- DFF Attributes
 xxen_util.display_flexfield_context(401,'MTL_PHYSICAL_INVENTORIES',mpiv.attribute_category) attribute_category,
 xxen_util.display_flexfield_value(401,'MTL_PHYSICAL_INVENTORIES',mpiv.attribute_category,'ATTRIBUTE1',mpiv.row_id,mpiv.attribute1) phys_inv_attribute1,
@@ -77,7 +77,7 @@ xxen_util.display_flexfield_value(401,'MTL_PHYSICAL_INVENTORIES',mpiv.attribute_
 mps.subinventory,
 null delete_subinventory,
 --
-xxen_util.meaning(decode(mpiv.snapshot_complete,1,1,null),'INV_YES_NO',3) snapshot_complete,
+xxen_util.meaning(decode(mpiv.snapshot_complete,1,'Y',null),'YES_NO',0) snapshot_complete,
 mpiv.freeze_date,
 -- Ids
 mpiv.physical_inventory_id

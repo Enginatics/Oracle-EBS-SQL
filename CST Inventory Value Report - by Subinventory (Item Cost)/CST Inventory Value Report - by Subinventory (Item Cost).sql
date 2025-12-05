@@ -29,6 +29,7 @@ sec.description subinventory_desc,
 xxen_util.meaning(sec.asset_inventory,'SYS_YES_NO',700) asset_subinventory,
 decode(ciqt.subinventory_code,null,'Intransit','On-hand') type,
 ccg.cost_group,
+:p_as_of_date as_of_date,
 round(sum(nvl(ciqt.rollback_qty,0)),:p_qty_precision) qty,
 --
 round(  sum(nvl(ciqt.rollback_qty,0) * decode(nvl(sec.asset_inventory,1),1,nvl(cict.item_cost,0),0) * :p_exchange_rate)

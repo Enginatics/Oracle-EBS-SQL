@@ -11,8 +11,10 @@
 -- Run Report: https://demo.enginatics.com/
 
 select
-y.count,
 y.report_name,
+y.count,
+y.type_dsp type,
+y.category,
 xxen_util.time(avg_seconds) avg_time,
 xxen_util.time(max_seconds) max_time,
 xxen_util.time(sum_seconds) sum_time,
@@ -21,12 +23,10 @@ y.max_seconds,
 y.sum_seconds,
 y.users,
 y.most_frequent,
-y.category,
 y.created_by,
 xxen_util.client_time(y.creation_date) creation_date,
 y.last_updated_by,
 xxen_util.client_time(y.last_update_date) last_update_date,
-decode(y.type,'S','System','P','Protected') type,
 y.total_users
 from
 (
@@ -43,13 +43,13 @@ x.created_by,
 x.creation_date,
 x.last_updated_by,
 x.last_update_date,
-x.xrv_type type,
+x.type_dsp,
 count(distinct x.xrr_created_by) over () total_users
 from
 (
 select
 xrv.report_name,
-xrv.type xrv_type,
+xrv.type_dsp,
 xxen_util.user_name(xrv.created_by) created_by,
 xrv.creation_date,
 xxen_util.user_name(xrv.last_updated_by) last_updated_by,
