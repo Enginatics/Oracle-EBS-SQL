@@ -1,39 +1,46 @@
-# ALR Alerts - Case Study
+# ALR Alerts Report
 
 ## Executive Summary
-The **ALR Alerts** report provides a comprehensive inventory of all Oracle Alerts defined within the E-Business Suite system. Oracle Alerts is a powerful exception management tool that monitors database events and notifies users or executes actions when specific conditions are met. This report is essential for System Administrators and Business Process Owners to manage the proactive monitoring landscape, ensuring that critical business exceptions are detected and acted upon efficiently.
+The ALR Alerts report provides a comprehensive overview of all defined alerts in the Oracle Alert module. This report is an essential tool for system administrators and functional consultants to manage, review, and audit the alerts that have been configured in the system. It offers a centralized view of alert definitions, conditions, and actions, which is critical for maintaining a proactive and well-monitored Oracle E-Business Suite environment.
 
 ## Business Challenge
-As an Oracle EBS implementation matures, the number of configured alerts can grow significantly, leading to several management issues:
-*   **Documentation Gaps:** Knowledge about which alerts are active, what they check, and who receives the notifications often becomes fragmented or lost.
-*   **Performance Impact:** Poorly written periodic alerts can degrade system performance. Identifying these requires a clear view of all alert definitions and their frequencies.
-*   **Redundancy:** Duplicate or conflicting alerts may be created by different teams over time.
-*   **Maintenance:** When business processes change, updating the relevant alerts requires first identifying them.
+Oracle Alert is a powerful tool for monitoring business events and sending notifications, but managing a large number of alerts can be challenging. Without a clear and consolidated report, organizations may face:
+- **Lack of Visibility:** Difficulty in getting a complete picture of all the alerts that are active in the system, leading to a reactive approach to problem-solving.
+- **Inconsistent Alert Definitions:** A lack of standardization in alert definitions, making it difficult to maintain and troubleshoot alerts.
+- **Audit and Compliance Issues:** Difficulty in providing auditors with a clear record of the alerts that are in place to monitor critical business processes.
+- **Time-Consuming Manual Reviews:** Spending a significant amount of time manually reviewing alert definitions in the Oracle Forms interface, which is inefficient and prone to errors.
 
-## Solution
-The **ALR Alerts** report offers a centralized view of the alert configuration, enabling better governance and maintenance.
+## The Solution
+The ALR Alerts report provides a comprehensive and easy-to-read overview of all alert definitions in the system. This report helps to:
+- **Improve Visibility:** Get a complete and detailed view of all configured alerts in a single report.
+- **Standardize Alert Definitions:** Easily identify inconsistencies in alert definitions and take corrective action to ensure that all alerts are configured correctly.
+- **Simplify Audits:** Provide auditors with a clear and concise record of all the alerts that are in place to monitor critical business processes.
+- **Increase Efficiency:** Reduce the time it takes to review and manage alert definitions by providing a consolidated and easy-to-read report.
 
-**Key Features:**
-*   **Alert Inventory:** Lists all Event and Periodic alerts defined in the system.
-*   **Condition Logic:** Displays the SQL select statements used to detect exceptions, allowing for technical review and optimization.
-*   **Action Details:** Shows what actions are triggered (e.g., email notifications, concurrent requests, OS scripts) and the recipients of those actions.
-*   **Frequency Analysis:** For periodic alerts, the report details the schedule, helping to identify potential resource bottlenecks.
+## Technical Architecture (High Level)
+The report is based on a query of the core Oracle Alert tables. The primary tables used are:
+- **alr_alerts:** This table stores the main definition for each alert, including the alert name, condition, and frequency.
+- **fnd_application_vl:** This table is used to retrieve the name of the application that each alert is associated with.
+- **alr_actions_v:** This view provides information about the actions that are associated with each alert, such as sending an email or running a concurrent program.
 
-## Technical Architecture
-The report extracts data from the Oracle Alert (ALR) schema.
+The report joins these tables to provide a complete and detailed view of each alert definition.
 
-**Key Tables:**
-*   `ALR_ALERTS`: The main table defining the alert header and type (Event vs. Periodic).
-*   `ALR_ACTIONS`: Stores the details of actions (Message, Concurrent Request, etc.) associated with alerts.
-*   `ALR_ACTION_SETS`: Groups actions together for execution logic.
-*   `ALR_VALIDATIONS`: Contains the SQL logic used to check for the alert condition.
+## Parameters & Filtering
+The report includes several parameters that allow you to filter the results and focus on the information that is most important to you. The key parameters are:
+- **Alert Name like:** This parameter allows you to search for alerts with a specific name or a partial name.
+- **Condition Type:** This parameter allows you to filter the report by the type of condition that the alert is based on (e.g., SQL statement, event).
+- **Creation Date From:** This parameter allows you to filter the report to show only alerts that were created after a specific date.
+- **Show Action Columns:** This parameter allows you to include or exclude the columns that show the actions associated with each alert.
 
-## Frequently Asked Questions
-**Q: Can I see the actual email body text in this report?**
-A: Yes, the report typically includes details from the action definitions, which can show the message template used for email notifications.
+## Performance & Optimization
+The ALR Alerts report is designed to be efficient and fast. It uses direct table access to retrieve the data, which is much faster than relying on intermediate views or APIs. The report is also designed to minimize the use of complex joins and subqueries, which helps to ensure that it runs quickly and efficiently.
 
-**Q: Does this report show alerts that are currently disabled?**
-A: Yes, the report includes an "Enabled" flag, allowing you to filter for active or inactive alerts.
+## FAQ
+**Q: Can I use this report to see the SQL statement that is used in an alert?**
+A: Yes, the report includes the full SQL statement for each alert that is based on a SQL statement condition.
 
-**Q: How does this help with system upgrades?**
-A: During an upgrade (e.g., to R12.2), custom alerts need to be validated. This report provides a checklist of all custom logic that needs to be tested.
+**Q: Can I see the actions that are associated with each alert?**
+A: Yes, the "Show Action Columns" parameter allows you to include a detailed breakdown of the actions that are associated with each alert, such as the email recipients or the concurrent program that is run.
+
+**Q: Can I use this report to identify alerts that are not running correctly?**
+A: While this report does not provide real-time status information, it can help you to identify alerts that are not configured correctly. By reviewing the alert definitions, you can identify potential issues such as incorrect SQL statements or invalid email addresses.
