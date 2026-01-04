@@ -109,11 +109,14 @@ nvl(aia.invoice_currency_code,rcta.invoice_currency_code) invoice_currency,
 aia.payment_currency_code payment_currency,
 nvl(xxen_util.meaning(aia.payment_method_code,'PAYMENT METHOD',200),aia.payment_method_code) payment_method,
 pha.segment1 purchase_order,
+pha.comments po_description,
+rsh.receipt_num goods_receipt_number,
 pra.release_num release,
 rt.quantity po_quantity,
 prha.segment1 requisition,
 prla.line_num requisition_line,
 --AR
+acra.receipt_number cash_receipt_number,
 coalesce(
 ooha.order_number,
 case
@@ -258,6 +261,7 @@ per_all_people_f papf,
 pay_assignment_actions paa,
 per_all_assignments_f paaf,
 rcv_transactions rt,
+rcv_shipment_headers rsh,
 rcv_shipment_lines rsl,
 wip_transactions wt,
 wip_entities we,
@@ -345,6 +349,7 @@ when xte.application_id=707 and xte.entity_code='RCV_ACCOUNTING_EVENTS' then xte
 when xte.application_id=555 and gxeh.txn_source='PUR' then gxeh.source_line_id
 end=rt.transaction_id(+) and
 rt.shipment_line_id=rsl.shipment_line_id(+) and
+rt.shipment_header_id=rsh.shipment_header_id(+) and
 case when xte.application_id=707 and xte.entity_code='WIP_ACCOUNTING_EVENTS' then xte.source_id_int_1 end=wt.transaction_id(+) and
 coalesce(wt.wip_entity_id,decode(mmt.transaction_source_type_id,5,mmt.transaction_source_id))=we.wip_entity_id(+) and
 wt.department_id=bd.department_id(+) and

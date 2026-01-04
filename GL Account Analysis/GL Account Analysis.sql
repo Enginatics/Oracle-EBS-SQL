@@ -150,10 +150,12 @@ aia.payment_currency_code payment_currency,
 nvl(xxen_util.meaning(aia.payment_method_code,'PAYMENT METHOD',200),aia.payment_method_code) payment_method,
 coalesce(aia.invoice_amount,apsa.amount_due_original) invoice_amount,
 pha.segment1 purchase_order,
+pha.comments po_description,
 pra.release_num release,
 rt.quantity po_quantity,
 prha.segment1 requisition,
 prla.line_num requisition_line,
+rsh.receipt_num goods_receipt_number,
 --AR
 coalesce(
 ooha.order_number,
@@ -168,6 +170,7 @@ jrrev.resource_name salesperson,
 coalesce(aps.segment1,hca.account_number) vendor_or_customer_number,
 coalesce(aps.vendor_name,hp.party_name) vendor_or_customer_name,
 coalesce(assa.vendor_site_code,hcsua.location) vendor_or_customer_site,
+acra.receipt_number cash_receipt_number,
 --Projects
 coalesce(ppa.segment1,case when xte.application_id=222 and xte.entity_code='TRANSACTIONS' and rcta.interface_header_context='PROJECTS INVOICES' then rcta.interface_header_attribute1 end) project,
 pt.task_number task,
@@ -344,6 +347,7 @@ per_all_people_f papf,
 pay_assignment_actions paa,
 per_all_assignments_f paaf,
 rcv_transactions rt,
+rcv_shipment_headers rsh,
 rcv_shipment_lines rsl,
 wip_transactions wt,
 wip_entities we,
@@ -437,6 +441,7 @@ when xte.application_id=707 and xte.entity_code='RCV_ACCOUNTING_EVENTS' then xte
 when xte.application_id=555 and gxeh.txn_source='PUR' then gxeh.source_line_id
 end=rt.transaction_id(+) and
 rt.shipment_line_id=rsl.shipment_line_id(+) and
+rt.shipment_header_id=rsh.shipment_header_id(+) and
 case when xte.application_id=707 and xte.entity_code='WIP_ACCOUNTING_EVENTS' then xte.source_id_int_1 end=wt.transaction_id(+) and
 coalesce(wt.wip_entity_id,decode(mmt.transaction_source_type_id,5,mmt.transaction_source_id))=we.wip_entity_id(+) and
 wt.department_id=bd.department_id(+) and
@@ -536,10 +541,12 @@ null payment_currency_code,
 null payment_method_code,
 null invoice_amount,
 null purchase_order,
+null po_description,
 null release,
 null po_quantity,
 null requisition,
 null requisition_line,
+null goods_receipt_number,
 --AR
 null sales_order,
 null salesperson,
@@ -548,6 +555,7 @@ null accounting_rule,
 null vendor_or_customer_number,
 null vendor_or_customer_name,
 null vendor_or_customer_site,
+null cash_receipt_number,
 --Projects
 null project,
 null task,
@@ -751,10 +759,12 @@ null payment_currency_code,
 null payment_method_code,
 null invoice_amount,
 null purchase_order,
+null po_description,
 null release,
 null po_quantity,
 null requisition,
 null requisition_line,
+null goods_receipt_number,
 --AR
 null sales_order,
 null salesperson,
@@ -763,6 +773,7 @@ null accounting_rule,
 null vendor_or_customer_number,
 null vendor_or_customer_name,
 null vendor_or_customer_site,
+null cash_receipt_number,
 --Projects
 null project,
 null task,

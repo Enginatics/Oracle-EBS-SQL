@@ -38,6 +38,33 @@ hl.city,
 hl.state,
 hl.county,
 hl.country,
+nvl(msiv.preprocessing_lead_time,0) supp_preprocessing_lead_time,
+nvl(msiv.full_lead_time,0) supp_processing_lead_time,
+nvl(msiv.postprocessing_lead_time,0) supp_postprocessing_lead_time,
+nvl(msiv.fixed_lead_time,0) supp_fixed_lead_time,
+nvl(msiv.variable_lead_time,0) supp_variable_lead_time,
+nvl(msiv.cum_manufacturing_lead_time,0) supp_cum_mfg_lead_time,
+nvl(msiv.cumulative_total_lead_time,0) supp_cum_total_lead_time,
+nvl(msiv.lead_time_lot_size,0) supp_lead_time_lot_size,
+xxen_util.meaning(oola.shipping_method_code,'SHIP_METHOD',3) shipping_method_code,
+nvl(
+(
+select mism.intransit_time 
+from 
+mtl_interorg_ship_methods mism 
+where
+mism.from_organization_id=oola.ship_from_org_id and 
+mism.to_organization_id=prla.destination_organization_id and 
+mism.ship_method=oola.shipping_method_code
+),0) transit_lead_time,
+nvl(msiv_to.preprocessing_lead_time,0) cust_preprocessing_lead_time,
+nvl(msiv_to.full_lead_time,0) cust_processing_lead_time,
+nvl(msiv_to.postprocessing_lead_time,0) cust_postprocessing_lead_time,
+nvl(msiv_to.fixed_lead_time,0) cust_fixed_lead_time,
+nvl(msiv_to.variable_lead_time,0) cust_variable_lead_time,
+nvl(msiv_to.cum_manufacturing_lead_time,0) cust_cum_mfg_lead_time,
+nvl(msiv_to.cumulative_total_lead_time,0) cust_cum_total_lead_time,
+nvl(msiv_to.lead_time_lot_size,0) cust_lead_time_lot_size,
 xxen_util.client_time(prla.need_by_date) need_by_date,
 xxen_util.client_time(oola.request_date) request_date,
 xxen_util.client_time(oola.promise_date) promise_date,
@@ -57,8 +84,12 @@ else 'Over 180 days'
 end aging_date,
 oola.order_quantity_uom order_uom,
 oola.ordered_quantity,
+oola.shipped_quantity,
+decode(oola.cancelled_flag,'Y',oola.cancelled_quantity) cancelled_quantity,
 gl.currency_code,
 cic.item_cost unit_cost,
+xxen_util.meaning(nvl(oola.freight_terms_code,ooha.freight_terms_code),'FREIGHT_TERMS',660) freight_terms,
+xxen_util.meaning(nvl(oola.fob_point_code,ooha.fob_point_code),'FOB',222) fob,
 round(oola.ordered_quantity*cic.item_cost,2) cogs_amount,
 xxen_util.user_name(prha.created_by) ir_created_by,
 xxen_util.client_time(prha.creation_date) ir_creation_date,
@@ -88,7 +119,8 @@ hz_parties hp,
 hz_cust_site_uses_all hcsua,
 hz_cust_acct_sites_all hcasa,
 hz_party_sites hps,
-hz_locations hl
+hz_locations hl,
+mtl_system_items_vl msiv_to
 where
 1=1 and
 (
@@ -99,8 +131,9 @@ nvl(:organization_type,'Either')=nvl(:organization_type,'Either') and
 prla.requisition_header_id=prha.requisition_header_id and
 prla.destination_organization_id=mp2.organization_id and
 prla.requisition_line_id=oola.source_document_line_id and
-oola.line_category_code='ORDER' and
+oola.source_document_type_id=10 and --internal requisitions
 oola.order_source_id=10 and --internal requisitions
+oola.line_category_code='ORDER' and
 oola.header_id=ooha.header_id and
 oola.line_type_id=ottt.transaction_type_id and
 ottt.language=userenv('lang') and
@@ -121,7 +154,9 @@ hca.party_id=hp.party_id and
 oola.ship_to_org_id=hcsua.site_use_id and
 hcsua.cust_acct_site_id=hcasa.cust_acct_site_id and
 hcasa.party_site_id=hps.party_site_id and
-hps.location_id=hl.location_id
+hps.location_id=hl.location_id and
+prla.item_id=msiv_to.inventory_item_id(+) and
+prla.destination_organization_id=msiv_to.organization_id(+)
 order by
 nvl(gl.short_name,gl.name),
 operating_unit,

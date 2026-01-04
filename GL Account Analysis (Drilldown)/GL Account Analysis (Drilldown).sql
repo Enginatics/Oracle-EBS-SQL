@@ -83,7 +83,10 @@ fdh.total_length<=4000
 ) expense_account,
 aia.description description,
 (select pha.segment1 from po_headers_all pha where nvl(aia.quick_po_header_id,rt.po_header_id)=pha.po_header_id) purchase_order,
+(select pha.comments from po_headers_all pha where nvl(aia.quick_po_header_id,rt.po_header_id)=pha.po_header_id) po_description,
+rsh.receipt_num goods_receipt_number,
 rt.quantity po_quantity,
+acra.receipt_number cash_receipt_number,
 coalesce(
 (select aps.vendor_name from ap_suppliers aps where coalesce(decode(xal.party_type_code,'S',xal.party_id,null),aia.vendor_id,aca.vendor_id,rt.vendor_id)=aps.vendor_id),
 (select hp.party_name from hz_cust_accounts hca, hz_parties hp where decode(xal.party_type_code,'C',xal.party_id,null)=hca.cust_account_id and hca.party_id=hp.party_id)
@@ -150,7 +153,8 @@ pa_expenditure_items_all peia,
 pa_expenditures_all pea,
 pa_expenditure_types pet,
 (select papf.* from per_all_people_f papf where sysdate>=papf.effective_start_date and sysdate<papf.effective_end_date+1) papf,
-rcv_transactions rt
+rcv_transactions rt,
+rcv_shipment_headers rsh
 where
 1=1 and
 gl.period_set_name=gp.period_set_name and
@@ -189,7 +193,8 @@ case when xte.application_id=275 and xte.entity_code='EXPENDITURES' then xte.sou
 peia.expenditure_id=pea.expenditure_id(+) and
 peia.expenditure_type=pet.expenditure_type(+) and
 pea.incurred_by_person_id=papf.person_id(+) and
-case when xte.application_id=707 and xte.entity_code='RCV_ACCOUNTING_EVENTS' then xte.source_id_int_1 end=rt.transaction_id(+)
+case when xte.application_id=707 and xte.entity_code='RCV_ACCOUNTING_EVENTS' then xte.source_id_int_1 end=rt.transaction_id(+) and
+rt.shipment_header_id=rsh.shipment_header_id(+)
 ) x,
 ra_customer_trx_all rcta
 where

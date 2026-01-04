@@ -20,6 +20,7 @@ x.supplier_site,
 x.buyer,
 x.status,
 x.description,
+x.pay_on,
 x.release,
 x.release_revision,
 x.release_status,
@@ -149,6 +150,7 @@ assa.vendor_site_code supplier_site,
 ppx.full_name buyer,
 po_headers_sv3.get_po_status(pha.po_header_id) status,
 pha.comments description,
+xxen_util.meaning(pha.pay_on_code,'PAY ON CODE',201) pay_on,
 po_inq_sv.get_po_total(pha.type_lookup_code,pha.po_header_id,null) po_amount,
 (
 select
@@ -462,6 +464,7 @@ assa.vendor_site_code supplier_site,
 ppx.full_name buyer,
 po_headers_sv3.get_po_status(pha.po_header_id) status,
 pha.comments description,
+xxen_util.meaning(pha.pay_on_code,'PAY ON CODE',201) pay_on,
 po_inq_sv.get_po_total(pha.type_lookup_code,pha.po_header_id,null) po_amount,
 (
 select

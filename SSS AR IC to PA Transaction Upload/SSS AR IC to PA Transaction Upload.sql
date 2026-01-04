@@ -11,10 +11,6 @@
 -- Run Report: https://demo.enginatics.com/
 
 select
-x.*
-from
-(
-select
 xxen_upload.action_meaning(xxen_upload.action_create) action_,
 xxen_upload.status_meaning(xxen_upload.status_new) status_,
 xxen_util.description('U_EXCEL_MSG_VALIDATION_PENDING','XXEN_REPORT_TRANSLATIONS',0) message_,
@@ -40,6 +36,9 @@ ptia.raw_cost_rate,
 xxen_util.meaning(ptia.unmatched_negative_txn_flag,'YES_NO',0) negative_txn_flag,
 ptia.expenditure_comment,
 ptia.orig_user_expnd_trans_ref,
+ptia.orig_exp_txn_reference1,
+ptia.orig_exp_txn_reference2,
+ptia.vendor_number,
 --
 xxen_util.meaning(nvl(:p_submit_import,'Y'),'YES_NO',0) import_transactions
 from
@@ -77,6 +76,9 @@ e.quantity_billed quantity,
 e.unit_price raw_cost_rate,
 e.project_bill_amount denom_raw_cost,
 replace( ct.trx_number||'.'|| to_char(ctl.line_number, '000'), ' ', '') orig_transaction_reference,
+e.reference2 orig_exp_txn_reference1,
+'Inv Org.Item ID: '|| e.inventory_org_id ||'.'|| e.inventory_item_id orig_exp_txn_reference2,
+'2275' vendor_number,
 e.description expenditure_comment
 from
 apps.pa_tasks t,
@@ -173,6 +175,9 @@ ctl.quantity_invoiced quantity,
 ctl.unit_selling_price raw_cost_rate,
 ctl.extended_amount denom_raw_cost,
 replace( ct.trx_number||'.'|| to_char(ctl.line_number, '000'), ' ', '') orig_transaction_reference,
+'SO Ref: '||ct.interface_header_attribute1||'.'||interface_line_attribute10 orig_exp_txn_reference1,
+'Inv Org.Item ID: '||ct.interface_header_attribute10||'.'||ctl.inventory_item_id orig_exp_txn_reference2,
+'2042' vendor_number,
 (select distinct
  i.segment9
  from
@@ -223,17 +228,3 @@ where
 1=1 and
 ptia.org_id = haouv.organization_id and
 :p_upload_mode like '%' || xxen_upload.action_update
-&not_use_first_block
-&report_table_select
-&success_records1
-&success_records2
-&processed_run
-) x
-order by
-x.operating_unit,
-x.transaction_source,
-x.expnd_ending_date,
-x.batch_name,
-x.organization_name,
-x.expnd_item_date,
-x.original_trans_ref

@@ -14,10 +14,13 @@ select
 trunc(flm.timestamp,'month') month,
 xxen_util.user_name(flm.user_id) user_name,
 xxen_util.meaning(flm.log_level,'AFLOG_LEVELS',0) log_level_name,
+fltc.transaction_type,
 flm.*
 from
-fnd_log_messages flm
+fnd_log_messages flm,
+fnd_log_transaction_context fltc
 where
-1=1
+1=1 and
+flm.transaction_context_id=fltc.transaction_context_id(+)
 order by
 flm.log_sequence desc

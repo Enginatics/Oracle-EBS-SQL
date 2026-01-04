@@ -158,7 +158,6 @@ xxen_util.display_flexfield_value(201,'PO_REQ_DISTRIBUTIONS',prda.attribute_cate
 xxen_util.display_flexfield_value(201,'PO_REQ_DISTRIBUTIONS',prda.attribute_category,'ATTRIBUTE13',prda.rowid,prda.attribute13) dist_attribute13,
 xxen_util.display_flexfield_value(201,'PO_REQ_DISTRIBUTIONS',prda.attribute_category,'ATTRIBUTE14',prda.rowid,prda.attribute14) dist_attribute14,
 xxen_util.display_flexfield_value(201,'PO_REQ_DISTRIBUTIONS',prda.attribute_category,'ATTRIBUTE15',prda.rowid,prda.attribute15) dist_attribute15,
-
 -- defaults
 to_char(null) group_by,
 to_char(null) initiate_reqappr_after_imp,
@@ -166,12 +165,15 @@ to_char(null) interface_source_code,
 to_char(null) multi_distributions,
 to_char(null) allow_dynamic_ccid,
 to_char(null) authorization_status,
-to_char(null) attachment_type,
-to_char(null) attachment_category,
-to_char(null) attachment_title,
-to_char(null) attachment_description,
 to_char(null) preparer_id,
-prha.type_lookup_code requisition_type
+prha.type_lookup_code requisition_type,
+--attachments
+null attachment_category_,
+null attachment_title_,
+null attachment_description_,
+null attachment_type_,
+null attachment_content_,
+null attachment_file_id_
 from
 po_requisition_headers_all prha,
 po_requisition_lines_all prla,

@@ -29,6 +29,7 @@ q_contacts as
  case when hcar.status='A' AND hr.status='A' then 'A' else 'I' end status,
  xxen_util.meaning(case when hcar.status='A' AND hr.status='A' then 'A' else 'I' end,'HZ_CPUI_REGISTRY_STATUS',222) contact_status,
  hprel.email_address contact_email,
+ hprel.url contact_url,
  hprel.primary_phone_country_code contact_phone_country_code,
  hprel.primary_phone_area_code contact_phone_area_code,
  hprel.primary_phone_number contact_phone_number,
@@ -210,6 +211,9 @@ x.state,
 x.province,
 x.postal_code,
 x.addressee,
+x.site_phone_numbers,
+x.site_emails,
+x.site_urls,
 x.identifying_address_flag,
 x.edi_location,
 x.site_use,
@@ -393,6 +397,7 @@ ctct.contact_suffix,
 ctct.contact_title,
 ctct.contact_status,
 ctct.contact_email,
+ctct.contact_url,
 ctct.contact_phone_country_code,
 ctct.contact_phone_area_code,
 ctct.contact_phone_number,
@@ -511,6 +516,9 @@ hl.state,
 hl.province,
 hl.postal_code,
 hps.addressee,
+hcps.site_phone_numbers,
+hcps.site_emails,
+hcps.site_urls,
 xxen_util.yes(hps.identifying_address_flag) identifying_address_flag,
 hcasa.ece_tp_location_code edi_location,
 xxen_util.meaning(hcsua.site_use_code,'SITE_USE_CODE',222) site_use,
@@ -648,7 +656,38 @@ fnd_territories_tl ftt,
 hz_cust_profile_classes hcpc1,
 hz_cust_profile_classes hcpc2,
 hr_all_organization_units_vl haouv1,
-hr_all_organization_units_vl haouv2
+hr_all_organization_units_vl haouv2,
+(select 
+hcp.owner_table_id party_site_id,
+listagg(
+decode(hcp.contact_point_type, 'PHONE',
+nvl2(hcp.phone_country_code,'+'||hcp.phone_country_code||' ',null)||
+nvl2(hcp.phone_area_code,'('||hcp.phone_area_code||')',null)||
+hcp.phone_number||' '||
+'('||xxen_util.meaning(hcp.phone_line_type,'PHONE_LINE_TYPE',222)||')'
+,null)
+,', ') within group (order by hcp.primary_flag desc, hcp.creation_date desc) 
+ as site_phone_numbers,
+listagg(
+decode(hcp.contact_point_type, 'EMAIL',
+hcp.email_address
+,null)
+,', ') within group (order by hcp.primary_flag desc, hcp.creation_date desc)
+ as site_emails,
+listagg(
+decode(hcp.contact_point_type, 'WEB',
+hcp.url
+,null)
+,', ') within group (order by hcp.primary_flag desc, hcp.creation_date desc)
+ as site_urls
+from
+  hz_contact_points hcp
+where 
+hcp.owner_table_name = 'HZ_PARTY_SITES' and
+:detail_level in ('Site','Site Use') and
+:show_contacts='Y'
+group by hcp.owner_table_id
+) hcps
 where
 1=1 and
 (hcasa.org_id is null or hcasa.org_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)) and
@@ -667,7 +706,8 @@ hcsua.site_use_id=hcp2.site_use_id(+) and
 hcp1.profile_class_id=hcpc1.profile_class_id(+) and
 hcp2.profile_class_id=hcpc2.profile_class_id(+) and
 hca.warehouse_id=haouv1.organization_id(+) and
-hcsua.warehouse_id=haouv2.organization_id(+)
+hcsua.warehouse_id=haouv2.organization_id(+) and
+hps.party_site_id=nvl(hcps.party_site_id(+),hps.party_site_id)
 ) x,
 hz_cust_profile_amts hcpa,
 zx_party_tax_profile zptp1,

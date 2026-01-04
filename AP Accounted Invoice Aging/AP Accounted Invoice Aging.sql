@@ -54,6 +54,7 @@ xla_tb_definitions_vl xtdv,
 (
 select
 gl.ledger_id,
+gl.name ledger_name,
 :p_as_of_date as_of_date
 from
 gl_ledgers gl
@@ -79,12 +80,14 @@ gas.access_set_id=nvl(fnd_profile.value('XLA_GL_SECONDARY_ACCESS_SET_ID'),'-1')
 union
 select
 x.ledger_id,
+x.name ledger_name,
 x.end_date as_of_date
 from
 (
 select
 1-rank() over (partition by gl.name order by ((glp.period_year * 100000) + glp.period_num) desc) relative_period,
 gl.ledger_id,
+gl.name,
 glp.end_date
 from
 gl_ledgers gl,
@@ -123,6 +126,18 @@ where
 x.relative_period=to_number(:p_relative_period)
 ) dte
 where
+2=2 and
+xtdv.definition_code in 
+(
+select 
+xtd.definition_code
+from 
+xla_tb_defn_je_sources xtd,
+xla_subledgers xs
+where 
+xtd.je_source_name=xs.je_source_name and 
+xs.application_id=200
+)  and
 xtb.ledger_id=dte.ledger_id and
 xtb.definition_code=xtdv.definition_code and
 xtb.source_application_id=200 and
@@ -210,20 +225,20 @@ apsa.due_date,
 ceil(xtb.as_of_date-apsa.due_date) days_due,
 case
 when xtb.acctd_rounded_rem_amount=0 then 0
-when count(apsa.payment_num) over (partition by aia.invoice_id)=1 then xtb.acctd_rounded_rem_amount
+when count(apsa.payment_num) over (partition by aia.invoice_id,xtb.tb_code,xtb.code_combination_id)=1 then xtb.acctd_rounded_rem_amount
 -- multiple payment schedules, but invoice is cancelled or over paid, then allocate to the first payment schedule only
 when aia.invoice_amount=0 or sign(xtb.acctd_rounded_rem_amount)<>sign(aia.invoice_amount) then
-case when apsa.payment_num=first_value(apsa.payment_num) over (partition by aia.invoice_id order by apsa.payment_num) then xtb.acctd_rounded_rem_amount else 0 end
+case when apsa.payment_num=first_value(apsa.payment_num) over (partition by aia.invoice_id,xtb.tb_code,xtb.code_combination_id order by apsa.payment_num) then xtb.acctd_rounded_rem_amount else 0 end
 -- multiple paymement schedules. Consume amount remaining from latest payment schedule to first
-when nvl(sum(abs(round(apsa.gross_amount*xtb.conversion_rate,fcv.precision))) over (partition by aia.invoice_id order by apsa.payment_num desc rows between unbounded preceding and 1 preceding),
+when nvl(sum(abs(round(apsa.gross_amount*xtb.conversion_rate,fcv.precision))) over (partition by aia.invoice_id,xtb.tb_code,xtb.code_combination_id order by apsa.payment_num desc rows between unbounded preceding and 1 preceding),
 abs(xtb.acctd_rounded_rem_amount))<=abs(xtb.acctd_rounded_rem_amount)
 then case
-when apsa.payment_num=first_value(apsa.payment_num) over (partition by aia.invoice_id order by apsa.payment_num) -- 1st payment schedule - consume all remaining amount
-then sign(xtb.acctd_rounded_rem_amount) * (nvl(abs(xtb.acctd_rounded_rem_amount) - sum(abs(round(apsa.gross_amount*xtb.conversion_rate,fcv.precision))) over (partition by aia.invoice_id order by apsa.payment_num desc rows between unbounded preceding and 1 preceding),abs(xtb.acctd_rounded_rem_amount)))
-when nvl(abs(xtb.acctd_rounded_rem_amount) - sum(abs(round(apsa.gross_amount*xtb.conversion_rate,fcv.precision))) over (partition by aia.invoice_id order by apsa.payment_num desc rows between unbounded preceding and 1 preceding),
+when apsa.payment_num=first_value(apsa.payment_num) over (partition by aia.invoice_id,xtb.tb_code,xtb.code_combination_id order by apsa.payment_num) -- 1st payment schedule - consume all remaining amount
+then sign(xtb.acctd_rounded_rem_amount) * (nvl(abs(xtb.acctd_rounded_rem_amount) - sum(abs(round(apsa.gross_amount*xtb.conversion_rate,fcv.precision))) over (partition by aia.invoice_id,xtb.tb_code,xtb.code_combination_id order by apsa.payment_num desc rows between unbounded preceding and 1 preceding),abs(xtb.acctd_rounded_rem_amount)))
+when nvl(abs(xtb.acctd_rounded_rem_amount) - sum(abs(round(apsa.gross_amount*xtb.conversion_rate,fcv.precision))) over (partition by aia.invoice_id,xtb.tb_code,xtb.code_combination_id order by apsa.payment_num desc rows between unbounded preceding and 1 preceding),
 abs(xtb.acctd_rounded_rem_amount))>=abs(round(apsa.gross_amount*xtb.conversion_rate,fcv.precision))
 then sign(xtb.acctd_rounded_rem_amount) * abs(round(apsa.gross_amount*xtb.conversion_rate,fcv.precision))
-else sign(xtb.acctd_rounded_rem_amount) * (nvl(abs(xtb.acctd_rounded_rem_amount) - sum(abs(round(apsa.gross_amount*xtb.conversion_rate,fcv.precision))) over (partition by aia.invoice_id order by apsa.payment_num desc rows between unbounded preceding and 1 preceding),abs(xtb.acctd_rounded_rem_amount)))
+else sign(xtb.acctd_rounded_rem_amount) * (nvl(abs(xtb.acctd_rounded_rem_amount) - sum(abs(round(apsa.gross_amount*xtb.conversion_rate,fcv.precision))) over (partition by aia.invoice_id,xtb.tb_code,xtb.code_combination_id order by apsa.payment_num desc rows between unbounded preceding and 1 preceding),abs(xtb.acctd_rounded_rem_amount)))
 end
 else 0 -- all remaining amount already consumed
 end ps_amount_remaining,
@@ -233,7 +248,15 @@ cbbv.bank_number             remit_to_bank_number,
 cbbv.bank_branch_name        remit_to_branch_name,
 cbbv.branch_number           remit_to_branch_number,
 cbbv.country                 remit_to_branch_country,
-ieba.masked_bank_account_num remit_to_account_num
+ieba.masked_bank_account_num remit_to_account_num,
+xxen_util.meaning(ap_invoices_pkg.get_wfapproval_status(aia.invoice_id,aia.org_id),'AP_WFAPPROVAL_STATUS',200) approval_status,
+(select count(*)
+from
+ap_holds_all aha
+where
+aha.invoice_id=aia.invoice_id and
+aha.release_lookup_code is null
+) invoice_holds_count
 from
 xtb,
 xla_transaction_entities xte,
@@ -304,6 +327,8 @@ ap_inv.invoice_type,
 ap_inv.invoice_description,
 ap_inv.invoice_status,
 ap_inv.invoice_payment_status,
+ap_inv.approval_status,
+ap_inv.invoice_holds_count,
 ap_inv.pay_group,
 ap_inv.payment_method,
 ap_inv.dispute_reason,
@@ -312,10 +337,10 @@ ap_inv.invoice_currency,
 ap_inv.invoice_exchange_rate,
 ap_inv.invoice_exchange_rate_type,
 ap_inv.invoice_exchange_rate_date,
-case when ap_inv.payment_num=first_value(ap_inv.payment_num) over (partition by ap_inv.invoice_id order by ap_inv.payment_num) then ap_inv.invoice_amount end invoice_amount,
-case when ap_inv.payment_num=first_value(ap_inv.payment_num) over (partition by ap_inv.invoice_id order by ap_inv.payment_num) then ap_inv.invoice_amount_functional end invoice_amount_functional,
-case when ap_inv.payment_num=first_value(ap_inv.payment_num) over (partition by ap_inv.invoice_id order by ap_inv.payment_num) then ap_inv.acctd_rounded_orig_amount end transaction_original_amount,
-case when ap_inv.payment_num=first_value(ap_inv.payment_num) over (partition by ap_inv.invoice_id order by ap_inv.payment_num) then ap_inv.acctd_rounded_rem_amount end transaction_remaining_amount,
+case when ap_inv.payment_num=first_value(ap_inv.payment_num) over (partition by ap_inv.invoice_id,ap_inv.tb_code,ap_inv.code_combination_id order by ap_inv.payment_num) then ap_inv.invoice_amount end invoice_amount,
+case when ap_inv.payment_num=first_value(ap_inv.payment_num) over (partition by ap_inv.invoice_id,ap_inv.tb_code,ap_inv.code_combination_id order by ap_inv.payment_num) then ap_inv.invoice_amount_functional end invoice_amount_functional,
+case when ap_inv.payment_num=first_value(ap_inv.payment_num) over (partition by ap_inv.invoice_id,ap_inv.tb_code,ap_inv.code_combination_id order by ap_inv.payment_num) then ap_inv.acctd_rounded_orig_amount end transaction_original_amount,
+case when ap_inv.payment_num=first_value(ap_inv.payment_num) over (partition by ap_inv.invoice_id,ap_inv.tb_code,ap_inv.code_combination_id order by ap_inv.payment_num) then ap_inv.acctd_rounded_rem_amount end transaction_remaining_amount,
 ap_inv.payment_num,
 ap_inv.as_of_date,
 ap_inv.due_date,

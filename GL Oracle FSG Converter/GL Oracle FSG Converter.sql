@@ -37,7 +37,22 @@ from
 (
 select distinct
 &column_segments_
-x.*
+x.report_title,
+x.position,
+x.segment_override,
+x.column_header,
+x.sequence,
+x.sequence_,
+x.description,
+x.amount_type,
+x.period,
+x.calculation,
+x.segment_name,
+x.segment_override_value,
+x.calculation_precedence_flag,
+x.multiply,
+x.movement,
+x.cnt
 from
 (
 select distinct
@@ -55,15 +70,15 @@ when nvl(rrav.period_offset,0)<>0 then '''=br_period_offset(enter_period_name,"'
 when rrav.amount_type is not null then '''=enter_period_name'
 else '~^'
 end period,
-nvl((select distinct
-'''='||listagg(case when rrc.axis_seq_low=rrc.axis_seq_high then replace(rrc.operator||rrc.axis_seq_low,'ENTER') when rrc.axis_name_low=rrc.axis_name_high then replace(rrc.operator||rrc.axis_name_low,'ENTER')
+nvl(replace((select distinct
+'''='||listagg(case when rrc.axis_seq_low=rrc.axis_seq_high then replace(rrc.operator||rrc.axis_seq_low,'ENTER') when  rrc.axis_name_low=rrc.axis_name_high or (rrc.axis_name_low is not null and rrc.axis_name_high is null)  or (rrc.axis_name_low is null and rrc.axis_name_high is not null) then replace(rrc.operator||rrc.axis_name_low,'ENTER')
 else
-case when rrc.operator='+' then  case when rrc.constant is null then nvl(to_char(rrc.axis_seq_high),rrc.axis_name_high)||'+'||nvl(to_char(rrc.axis_seq_low),rrc.axis_name_low) else '+'||rrc.constant end
-when rrc.operator='-' then case when rrc.constant is null then nvl(to_char(rrc.axis_seq_high),rrc.axis_name_high)||'-'||nvl(to_char(rrc.axis_seq_low),rrc.axis_name_low) else '-'||rrc.constant end
-when rrc.operator='*' then case when rrc.constant is null then nvl(to_char(rrc.axis_seq_high),rrc.axis_name_high)||'*'||nvl(to_char(rrc.axis_seq_low),rrc.axis_name_low) else '*'||rrc.constant end
-when rrc.operator='/' then case when rrc.constant is null then nvl(to_char(rrc.axis_seq_high),rrc.axis_name_high)||'/'||nvl(to_char(rrc.axis_seq_low),rrc.axis_name_low) else '/'||rrc.constant end
+case when rrc.operator='+' then case when rrc.constant is null then  '+sum('||nvl(to_char(rrc.axis_seq_low),rrc.axis_name_low)||':'||nvl(to_char(rrc.axis_seq_high),rrc.axis_name_high)||')' else '+'||rrc.constant end
+when rrc.operator='-' then case when rrc.constant is null then  '-sum('||nvl(to_char(rrc.axis_seq_low),rrc.axis_name_low)||':'||nvl(to_char(rrc.axis_seq_high),rrc.axis_name_high)||')' else '-'||rrc.constant end
+when rrc.operator='*' then case when rrc.constant is null then  '*sum('||nvl(to_char(rrc.axis_seq_low),rrc.axis_name_low)||':'||nvl(to_char(rrc.axis_seq_high),rrc.axis_name_high)||')' else '*'||rrc.constant end
+when rrc.operator='/' then case when rrc.constant is null then  '/sum('||nvl(to_char(rrc.axis_seq_low),rrc.axis_name_low)||':'||nvl(to_char(rrc.axis_seq_high),rrc.axis_name_high)||')' else '/'||rrc.constant end
 when rrc.operator='ENTER' then  case
-when nvl(to_char(rrc.axis_seq_low),rrc.axis_name_low) is not null and nvl(to_char(rrc.axis_seq_high),rrc.axis_name_high) is not null then 'sum('||nvl(to_char(rrc.axis_seq_high),rrc.axis_name_high)||':'||nvl(to_char(rrc.axis_seq_low),rrc.axis_name_low)||')'
+when nvl(to_char(rrc.axis_seq_low),rrc.axis_name_low) is not null and nvl(to_char(rrc.axis_seq_high),rrc.axis_name_high) is not null then 'sum('||nvl(to_char(rrc.axis_seq_low),rrc.axis_name_low)||':'||nvl(to_char(rrc.axis_seq_high),rrc.axis_name_high)||')'
 when rrc.constant is null then '+'||nvl(nvl(to_char(rrc.axis_seq_high),rrc.axis_name_high),nvl(to_char(rrc.axis_seq_low),rrc.axis_name_low))
 else '+'||rrc.constant
 end
@@ -73,11 +88,11 @@ from
 rg_report_calculations rrc
 where
 rrav.axis_set_id=rrc.axis_set_id and
-rrav.sequence=rrc.axis_seq ),'~^') calculation,
+rrav.sequence=rrc.axis_seq ),'=+','='),'~^') calculation,
 rrasv.segment_name,
 rrav.segment_override_value,
 rrav.calculation_precedence_flag,
-case when rrac.sign = '+' then '1' when rrac.sign = '-' then '-1' end multiply,
+'1' multiply,
 case when rrac.dr_cr_net_code='N' then 'Net' when rrac.dr_cr_net_code='D' then 'Dr' when rrac.dr_cr_net_code='C' then 'Cr' end movement,
 &column_segments_base
 count(*) over (partition by rrav.sequence) cnt
@@ -125,22 +140,22 @@ select null multiply, null movement, null segment_display, &columnset_null_segme
 union all
 select distinct y.* from (
 select distinct
-case when x.sign = '+' then 1 when x.sign = '-' then -1 end multiply,
+case when x.sign = '+' then 1 when x.sign = '-' then 1 end multiply,
 case when x.dr_cr_net_code='N' then 'Net' when x.dr_cr_net_code='D' then 'Dr' when x.dr_cr_net_code='C' then 'Cr' end movement,
 case when x.row_type='R' then x.segment_display end segment_display,
 &rowset_segments_case
 x.description,
 x.sequence||':'||x.axis_name sequence,
 case when x.row_type='C' then
-(select distinct
-'''='||listagg(case when rrc.axis_seq_low=rrc.axis_seq_high then replace(rrc.operator||rrc.axis_seq_low,'ENTER') when rrc.axis_name_low=rrc.axis_name_high then replace(rrc.operator||rrc.axis_name_low,'ENTER')
+replace((select distinct
+'''='||listagg(case when rrc.axis_seq_low=rrc.axis_seq_high then replace(rrc.operator||rrc.axis_seq_low,'ENTER') when rrc.axis_name_low=rrc.axis_name_high or (rrc.axis_name_low is not null and rrc.axis_name_high is null)  or (rrc.axis_name_low is null and rrc.axis_name_high is not null) then replace(rrc.operator||rrc.axis_name_low,'ENTER')
 else
-case when rrc.operator='+' then  case when rrc.constant is null then nvl(to_char(rrc.axis_seq_high),rrc.axis_name_high)||'+'||nvl(to_char(rrc.axis_seq_low),rrc.axis_name_low) else '+'||rrc.constant end
-when rrc.operator='-' then case when rrc.constant is null then nvl(to_char(rrc.axis_seq_high),rrc.axis_name_high)||'-'||nvl(to_char(rrc.axis_seq_low),rrc.axis_name_low) else '-'||rrc.constant end
-when rrc.operator='*' then case when rrc.constant is null then nvl(to_char(rrc.axis_seq_high),rrc.axis_name_high)||'*'||nvl(to_char(rrc.axis_seq_low),rrc.axis_name_low) else '*'||rrc.constant end
-when rrc.operator='/' then case when rrc.constant is null then nvl(to_char(rrc.axis_seq_high),rrc.axis_name_high)||'/'||nvl(to_char(rrc.axis_seq_low),rrc.axis_name_low) else '/'||rrc.constant end
+case when rrc.operator='+' then  case when rrc.constant is null then '+sum('||nvl(to_char(rrc.axis_seq_low),rrc.axis_name_low)||':'||nvl(to_char(rrc.axis_seq_high),rrc.axis_name_high)||')' else '+'||rrc.constant end
+when rrc.operator='-' then case when rrc.constant is null then '-sum('||nvl(to_char(rrc.axis_seq_low),rrc.axis_name_low)||':'||nvl(to_char(rrc.axis_seq_high),rrc.axis_name_high)||')' else '-'||rrc.constant end
+when rrc.operator='*' then case when rrc.constant is null then '*sum('||nvl(to_char(rrc.axis_seq_low),rrc.axis_name_low)||':'||nvl(to_char(rrc.axis_seq_high),rrc.axis_name_high)||')' else '*'||rrc.constant end
+when rrc.operator='/' then case when rrc.constant is null then '/sum('||nvl(to_char(rrc.axis_seq_low),rrc.axis_name_low)||':'||nvl(to_char(rrc.axis_seq_high),rrc.axis_name_high)||')' else '/'||rrc.constant end
 when rrc.operator='ENTER' then  case
-when nvl(to_char(rrc.axis_seq_low),rrc.axis_name_low) is not null and nvl(to_char(rrc.axis_seq_high),rrc.axis_name_high) is not null then 'sum('||nvl(to_char(rrc.axis_seq_high),rrc.axis_name_high)||':'||nvl(to_char(rrc.axis_seq_low),rrc.axis_name_low)||')'
+when nvl(to_char(rrc.axis_seq_low),rrc.axis_name_low) is not null and nvl(to_char(rrc.axis_seq_high),rrc.axis_name_high) is not null then 'sum('||nvl(to_char(rrc.axis_seq_low),rrc.axis_name_low)||':'||nvl(to_char(rrc.axis_seq_high),rrc.axis_name_high)||')'
 when rrc.constant is null then '+'||nvl(nvl(to_char(rrc.axis_seq_high),rrc.axis_name_high),nvl(to_char(rrc.axis_seq_low),rrc.axis_name_low))
 else '+'||rrc.constant
 end
@@ -150,7 +165,7 @@ from
 rg_report_calculations rrc
 where
 rrc.axis_set_id=x.axis_set_id and
-rrc.axis_seq=x.sequence) end calculation,
+rrc.axis_seq=x.sequence),'=+','=') end calculation,
 x.line_format,
 null column_value
 from

@@ -15,56 +15,69 @@ DB package: JAI_GST_EXTRACT_PKG
 -- Library Link: https://www.enginatics.com/reports/ja-india-gstr-1-return/
 -- Run Report: https://demo.enginatics.com/
 
+with jai_party_reg as(
+select 
+jprv.party_reg_id,
+jprlv.registration_number,
+jprv.party_name,
+jprv.operating_unit
+from  
+jai_party_reg_lines_v jprlv,
+jai_party_regs_v jprv
+where 
+1=1 and
+jprlv.registration_number=:p_first_pty_reg_num and 
+jprlv.party_reg_id=jprv.party_reg_id and 
+jprv.party_type_code in ('IO','OU') and 
+rownum=1)
+-- main query
 select
-jprlv.registration_number gstn,
-jprv.party_name registered_person,
-jprv.operating_unit,
-jgrtdt.section_code,
+jpr.registration_number "GSTIN",
+jpr.party_name registered_person,
+jpr.operating_unit,
 jgrtdt.period_name,
-jgrtdt.rev_inv_num isnum,
-jgrtdt.flag flag,
-jgrtdt.supp_type sply_ty,
-trunc(jgrtdt.rev_inv_date) isdt,
-jgrtdt.inv_check_sum_val chksum,
-jgrtdt.third_party_reg_num ctin,
-jgrtdt.tax_invoice_number inum,
-jgrtdt.tax_invoice_date idt,
-jgrtdt.tax_invoice_value val,
-jgrtdt.rev_charge rchrg,
-jgrtdt.ecom_operator etin,
-jgrtdt.inv_type inv_typ,
-jgrtdt.tax_rate rt,
-jgrtdt.taxable_amt,
-jgrtdt.sgst samt,
-jgrtdt.cgst camt,
-jgrtdt.igst iamt,
-jgrtdt.cess csamt,
-jgrtdt.state pos
+jgrtdt.section_code,
+jgrtdt.rev_charge reverse_charge,
+jgrtdt.third_party_reg_num "GSTIN/UIN",
+jgrtdt.tax_invoice_number invoice_number,
+jgrtdt.tax_invoice_date invoice_date,
+jgrtdt.tax_invoice_value invoice_value,
+jgrtdt.tax_rate,
+jgrtdt.taxable_amt taxable_value,
+jgrtdt.igst,
+jgrtdt.cgst,
+jgrtdt.sgst,
+jgrtdt.cess cess_amount,
+jgrtdt.state,
+jgrtdt.shippable_bill_no "Shipping Bill/Bill of Export",
+jgrtdt.rev_inv_num,
+jgrtdt.flag,
+jgrtdt.supp_type supply_type,
+trunc(jgrtdt.rev_inv_date) rev_inv_date,
+jgrtdt.inv_check_sum_val,
+jgrtdt.ecom_operator,
+jgrtdt.inv_type,
 jgrtdt.trx_number,
 jgrtdt.trx_date,
-decode(jgrtdt.event_class_code,'CREDIT_MEMO','C','DEBIT_MEMO','D') ntty,
-jgrtdt.export_type typ,
-jgrtdt.nil_amount nil_amt,
-jgrtdt.expt_amount expt_amt,
-jgrtdt.ngsup_amount ngsup_amt,
-jgrtdt.adv_receipt_amt ad_amt,
-jgrtdt.hsn_code hsn_sc,
-jgrtdt.hsn_desc "desc",
-jgrtdt.uom uqc ,
-jgrtdt.qty qty,           
-jgrtdt.attribute1,
+decode(jgrtdt.event_class_code,'CREDIT_MEMO','C','DEBIT_MEMO','D') event_class_code,
+jgrtdt.export_type,
+jgrtdt.nil_amount nil_rated_supplies_amt,
+jgrtdt.expt_amount exempted_amt,
+jgrtdt.ngsup_amount non_gst_supplies_amt,
+jgrtdt.adv_receipt_amt "Gross Advance Received/Adjusted",
+jgrtdt.hsn_code,
+jgrtdt.hsn_desc,
+jgrtdt.uom,
+jgrtdt.qty quantity,           
+jgrtdt.attribute1 doc_issue,
 jgrtdt.attribute2 from_num,
 jgrtdt.attribute3 to_num,
-jgrtdt.attribute9 totnum,
-jgrtdt.attribute10 cancel_num,
-jgrtdt.attribute11 net_issue    
+jgrtdt.attribute9 total_num,
+jgrtdt.attribute10 cancelled_num,
+jgrtdt.attribute11 net_issued    
 from
-jai_party_reg_lines_v jprlv,
-jai_party_regs_v jprv,
+jai_party_reg jpr,
 jai_gst_rep_trx_detail_t jgrtdt
 where
 2=2 and
-jprlv.registration_number=:p_first_pty_reg_num and
-jprlv.party_reg_id=jprv.party_reg_id and
-jprv.party_type_code in ('IO','OU') and
-jprlv.registration_number=jgrtdt.first_party_primary_reg_num
+jpr.registration_number=jgrtdt.first_party_primary_reg_num
