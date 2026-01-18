@@ -72,7 +72,7 @@ If you would like to try one of these Oracle EBS SQLs without having Blitz Repor
 
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [CAC_Open_Purchase_Orders.xml](https://www.enginatics.com/xml/cac-open-purchase-orders/)
-```markdown
+
 # Case Study & Technical Analysis: CAC Open Purchase Orders
 
 ## Executive Summary
@@ -128,7 +128,7 @@ A: No, it focuses on *Open* orders (where `Closed Code` is not 'CLOSED' or 'FINA
 
 **Q: How does it handle OSP (Outside Processing)?**
 A: For OSP items, the report looks at the "Resource" linked to the item. It compares the PO Price (service charge) against the Standard Rate of that Resource.
-```
+
 # Oracle E-Business Suite [Reporting Library](https://www.enginatics.com/library/)
     
 We provide an open source Oracle EBS SQLs as a part of operational and project implementation support [toolkits](https://www.enginatics.com/blitz-report-toolkits/) for rapid Excel reports generation. 

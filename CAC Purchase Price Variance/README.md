@@ -62,7 +62,7 @@ If you would like to try one of these Oracle EBS SQLs without having Blitz Repor
 
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [CAC_Purchase_Price_Variance.xml](https://www.enginatics.com/xml/cac-purchase-price-variance/)
-```markdown
+
 # Case Study & Technical Analysis: CAC Purchase Price Variance
 
 ## Executive Summary
@@ -119,7 +119,7 @@ A: This is the portion of the variance caused by exchange rate changes.
 
 **Q: Does this report match the GL?**
 A: Yes, because it sources directly from `MTL_TRANSACTION_ACCOUNTS` and `WIP_TRANSACTION_ACCOUNTS` (or their SLA equivalents in newer versions), which are the source of truth for the GL journals.
-```
+
 # Oracle E-Business Suite [Reporting Library](https://www.enginatics.com/library/)
     
 We provide an open source Oracle EBS SQLs as a part of operational and project implementation support [toolkits](https://www.enginatics.com/blitz-report-toolkits/) for rapid Excel reports generation. 

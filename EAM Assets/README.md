@@ -26,7 +26,7 @@ If you would like to try one of these Oracle EBS SQLs without having Blitz Repor
 
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [EAM_Assets.xml](https://www.enginatics.com/xml/eam-assets/)
-```markdown
+
 # Case Study & Technical Analysis: EAM Assets
 
 ## Executive Summary
@@ -76,7 +76,7 @@ A: The "Asset Group" is the *type* of asset (e.g., "Ford F-150 Truck"). The "Ass
 
 **Q: Why do I see "HZ_LOCATIONS" in the raw data?**
 A: This is the internal code for the Trading Community Architecture (TCA) location model, used for external addresses. The report decodes this into a readable address string.
-```
+
 # Oracle E-Business Suite [Reporting Library](https://www.enginatics.com/library/)
     
 We provide an open source Oracle EBS SQLs as a part of operational and project implementation support [toolkits](https://www.enginatics.com/blitz-report-toolkits/) for rapid Excel reports generation. 

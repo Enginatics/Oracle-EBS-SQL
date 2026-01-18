@@ -1,4 +1,4 @@
-```markdown
+
 # Case Study & Technical Analysis: CAC Inventory Pending Cost Adjustment
 
 ## Executive Summary
@@ -56,4 +56,3 @@ A: Yes, while primarily for Standard Costing, the report can compare any two cos
 
 **Q: What if an item has no quantity?**
 A: You can choose to "Include Items With No Quantities". This is useful for verifying that the new standard cost is correctly loaded, even if there is no immediate financial impact.
-```

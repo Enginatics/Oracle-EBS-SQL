@@ -58,7 +58,7 @@ If you would like to try one of these Oracle EBS SQLs without having Blitz Repor
 
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [CAC_Material_Account_Summary.xml](https://www.enginatics.com/xml/cac-material-account-summary/)
-```markdown
+
 # Case Study & Technical Analysis: CAC Material Account Summary
 
 ## Executive Summary
@@ -111,7 +111,7 @@ A: Yes, if you enable `Show WIP`, you can see material issues and completions ti
 
 **Q: What is the "PII" logic mentioned in the header?**
 A: PII stands for "Profit in Inventory". It refers to the markup added when goods are sold between internal organizations. This report shares code with a PII-specific version but has those features disabled by default to focus on standard material accounting.
-```
+
 # Oracle E-Business Suite [Reporting Library](https://www.enginatics.com/library/)
     
 We provide an open source Oracle EBS SQLs as a part of operational and project implementation support [toolkits](https://www.enginatics.com/blitz-report-toolkits/) for rapid Excel reports generation. 

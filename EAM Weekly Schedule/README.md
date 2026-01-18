@@ -30,7 +30,7 @@ If you would like to try one of these Oracle EBS SQLs without having Blitz Repor
 
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [EAM_Weekly_Schedule.xml](https://www.enginatics.com/xml/eam-weekly-schedule/)
-```markdown
+
 # Case Study & Technical Analysis: EAM Weekly Schedule
 
 ## Executive Summary
@@ -82,7 +82,7 @@ A: A "Firm" work order is locked in the schedule. MRP or auto-scheduling tools w
 
 **Q: How does it handle multi-day jobs?**
 A: The `Duration` column shows the total hours. The package functions (`cp_1`...`cp_7`) likely distribute these hours across the days of the week, though the exact logic depends on the package code (which is wrapped in the database).
-```
+
 # Oracle E-Business Suite [Reporting Library](https://www.enginatics.com/library/)
     
 We provide an open source Oracle EBS SQLs as a part of operational and project implementation support [toolkits](https://www.enginatics.com/blitz-report-toolkits/) for rapid Excel reports generation. 

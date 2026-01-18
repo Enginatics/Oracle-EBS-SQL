@@ -1,4 +1,4 @@
-```markdown
+
 # Case Study & Technical Analysis: CAC WIP Account Summary
 
 ## Executive Summary
@@ -58,4 +58,3 @@ A: Look for the "WIP Variance" transaction type. When a job is closed, any remai
 
 **Q: Does this report show "Repetitive Schedules"?**
 A: The description notes that it covers Discrete, Flow, and Workorderless, but *not* Repetitive Schedules. Repetitive manufacturing uses a different accounting model in Oracle EBS.
-```

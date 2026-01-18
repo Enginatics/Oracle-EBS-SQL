@@ -1,4 +1,4 @@
-```markdown
+
 # Case Study & Technical Analysis: CAC Material Account Summary
 
 ## Executive Summary
@@ -51,4 +51,3 @@ A: Yes, if you enable `Show WIP`, you can see material issues and completions ti
 
 **Q: What is the "PII" logic mentioned in the header?**
 A: PII stands for "Profit in Inventory". It refers to the markup added when goods are sold between internal organizations. This report shares code with a PII-specific version but has those features disabled by default to focus on standard material accounting.
-```

@@ -37,7 +37,7 @@ If you would like to try one of these Oracle EBS SQLs without having Blitz Repor
 
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [CST_Supply_Chain_Indented_Bills_of_Material_Cost.xml](https://www.enginatics.com/xml/cst-supply-chain-indented-bills-of-material-cost/)
-```markdown
+
 # Case Study & Technical Analysis: CST Supply Chain Indented Bills of Material Cost
 
 ## Executive Summary
@@ -87,7 +87,7 @@ A: Yes, the report joins to `BOM_DEPARTMENTS` and `BOM_RESOURCES`, allowing you 
 
 **Q: What is "Phantom" logic?**
 A: A "Phantom" assembly is a non-stocked sub-assembly that is built transiently. The report respects the `Phantom Flag`, typically blowing through the phantom level to show the underlying components directly attached to the parent.
-```
+
 # Oracle E-Business Suite [Reporting Library](https://www.enginatics.com/library/)
     
 We provide an open source Oracle EBS SQLs as a part of operational and project implementation support [toolkits](https://www.enginatics.com/blitz-report-toolkits/) for rapid Excel reports generation. 

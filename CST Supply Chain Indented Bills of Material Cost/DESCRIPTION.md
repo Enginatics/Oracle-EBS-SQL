@@ -1,4 +1,4 @@
-```markdown
+
 # Case Study & Technical Analysis: CST Supply Chain Indented Bills of Material Cost
 
 ## Executive Summary
@@ -48,4 +48,3 @@ A: Yes, the report joins to `BOM_DEPARTMENTS` and `BOM_RESOURCES`, allowing you 
 
 **Q: What is "Phantom" logic?**
 A: A "Phantom" assembly is a non-stocked sub-assembly that is built transiently. The report respects the `Phantom Flag`, typically blowing through the phantom level to show the underlying components directly attached to the parent.
-```

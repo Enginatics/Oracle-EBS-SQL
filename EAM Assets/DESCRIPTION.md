@@ -1,4 +1,4 @@
-```markdown
+
 # Case Study & Technical Analysis: EAM Assets
 
 ## Executive Summary
@@ -48,4 +48,3 @@ A: The "Asset Group" is the *type* of asset (e.g., "Ford F-150 Truck"). The "Ass
 
 **Q: Why do I see "HZ_LOCATIONS" in the raw data?**
 A: This is the internal code for the Trading Community Architecture (TCA) location model, used for external addresses. The report decodes this into a readable address string.
-```

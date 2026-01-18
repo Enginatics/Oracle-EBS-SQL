@@ -68,7 +68,7 @@ If you would like to try one of these Oracle EBS SQLs without having Blitz Repor
 
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [CAC_Receiving_Account_Summary.xml](https://www.enginatics.com/xml/cac-receiving-account-summary/)
-```markdown
+
 # Case Study & Technical Analysis: CAC Receiving Account Summary
 
 ## Executive Summary
@@ -119,7 +119,7 @@ A: Yes. Filter for the Accrual Account and look at the net activity. However, th
 
 **Q: What does "Shop Floor" destination mean?**
 A: This refers to Outside Processing (OSP). When you receive an OSP item, you are receiving a *service* directly to a WIP Job, not a physical item into a warehouse. The accounting debits WIP Valuation, not Inventory.
-```
+
 # Oracle E-Business Suite [Reporting Library](https://www.enginatics.com/library/)
     
 We provide an open source Oracle EBS SQLs as a part of operational and project implementation support [toolkits](https://www.enginatics.com/blitz-report-toolkits/) for rapid Excel reports generation. 

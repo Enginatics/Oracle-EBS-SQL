@@ -1,4 +1,4 @@
-```markdown
+
 # Case Study & Technical Analysis: CAC Receiving Account Summary
 
 ## Executive Summary
@@ -49,4 +49,3 @@ A: Yes. Filter for the Accrual Account and look at the net activity. However, th
 
 **Q: What does "Shop Floor" destination mean?**
 A: This refers to Outside Processing (OSP). When you receive an OSP item, you are receiving a *service* directly to a WIP Job, not a physical item into a warehouse. The accounting debits WIP Valuation, not Inventory.
-```

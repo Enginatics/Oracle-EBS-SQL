@@ -68,7 +68,7 @@ If you would like to try one of these Oracle EBS SQLs without having Blitz Repor
 
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [CAC_WIP_Account_Summary.xml](https://www.enginatics.com/xml/cac-wip-account-summary/)
-```markdown
+
 # Case Study & Technical Analysis: CAC WIP Account Summary
 
 ## Executive Summary
@@ -128,7 +128,7 @@ A: Look for the "WIP Variance" transaction type. When a job is closed, any remai
 
 **Q: Does this report show "Repetitive Schedules"?**
 A: The description notes that it covers Discrete, Flow, and Workorderless, but *not* Repetitive Schedules. Repetitive manufacturing uses a different accounting model in Oracle EBS.
-```
+
 # Oracle E-Business Suite [Reporting Library](https://www.enginatics.com/library/)
     
 We provide an open source Oracle EBS SQLs as a part of operational and project implementation support [toolkits](https://www.enginatics.com/blitz-report-toolkits/) for rapid Excel reports generation. 

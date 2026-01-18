@@ -1,4 +1,4 @@
-```markdown
+
 # Case Study & Technical Analysis: CAC WIP Pending Cost Adjustment
 
 ## Executive Summary
@@ -55,4 +55,3 @@ A: No, it is purely a reporting tool. The actual update happens when you run the
 
 **Q: Why don't I see Overhead variances?**
 A: As noted in the description, this specific version of the report excludes overheads. This is often done because overheads are calculated as a percentage of resource/material, so their variance is a derivative of the base cost variance.
-```

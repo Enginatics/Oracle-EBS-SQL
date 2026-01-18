@@ -67,7 +67,7 @@ If you would like to try one of these Oracle EBS SQLs without having Blitz Repor
 
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [CAC_Material_Overhead_Setup.xml](https://www.enginatics.com/xml/cac-material-overhead-setup/)
-```markdown
+
 # Case Study & Technical Analysis: CAC Material Overhead Setup
 
 ## Executive Summary
@@ -118,7 +118,7 @@ A: You might have different default rules for different categories. For example,
 
 **Q: If I change the rate here, does it update existing inventory?**
 A: No. This report shows the *Setup* and *Defaults*. Changing a default only affects *future* item definitions or cost updates. To change the value of existing inventory, you must run a Standard Cost Update.
-```
+
 # Oracle E-Business Suite [Reporting Library](https://www.enginatics.com/library/)
     
 We provide an open source Oracle EBS SQLs as a part of operational and project implementation support [toolkits](https://www.enginatics.com/blitz-report-toolkits/) for rapid Excel reports generation. 

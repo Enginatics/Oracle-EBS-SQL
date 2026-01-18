@@ -1,4 +1,4 @@
-```markdown
+
 # Case Study & Technical Analysis: CAC Open Purchase Orders
 
 ## Executive Summary
@@ -54,4 +54,3 @@ A: No, it focuses on *Open* orders (where `Closed Code` is not 'CLOSED' or 'FINA
 
 **Q: How does it handle OSP (Outside Processing)?**
 A: For OSP items, the report looks at the "Resource" linked to the item. It compares the PO Price (service charge) against the Standard Rate of that Resource.
-```

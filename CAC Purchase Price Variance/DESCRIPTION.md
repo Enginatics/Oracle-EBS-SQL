@@ -1,4 +1,4 @@
-```markdown
+
 # Case Study & Technical Analysis: CAC Purchase Price Variance
 
 ## Executive Summary
@@ -55,4 +55,3 @@ A: This is the portion of the variance caused by exchange rate changes.
 
 **Q: Does this report match the GL?**
 A: Yes, because it sources directly from `MTL_TRANSACTION_ACCOUNTS` and `WIP_TRANSACTION_ACCOUNTS` (or their SLA equivalents in newer versions), which are the source of truth for the GL journals.
-```

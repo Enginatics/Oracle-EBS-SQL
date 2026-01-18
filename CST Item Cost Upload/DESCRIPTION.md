@@ -1,4 +1,4 @@
-```markdown
+
 # Case Study & Technical Analysis: CST Item Cost Upload
 
 ## Executive Summary
@@ -53,4 +53,3 @@ A: You are uploading the *This Level* cost (value added at that step). To see th
 
 **Q: Why are some columns "Display Only"?**
 A: Columns like "Item Cost" (Total) or "Net Yield" are calculated by the system. You upload the *inputs* (Element Unit Cost), and Oracle calculates the *outputs* (Total Cost) during the import/rollup process.
-```

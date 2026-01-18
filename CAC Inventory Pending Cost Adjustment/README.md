@@ -69,7 +69,7 @@ If you would like to try one of these Oracle EBS SQLs without having Blitz Repor
 
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [CAC_Inventory_Pending_Cost_Adjustment.xml](https://www.enginatics.com/xml/cac-inventory-pending-cost-adjustment/)
-```markdown
+
 # Case Study & Technical Analysis: CAC Inventory Pending Cost Adjustment
 
 ## Executive Summary
@@ -127,7 +127,7 @@ A: Yes, while primarily for Standard Costing, the report can compare any two cos
 
 **Q: What if an item has no quantity?**
 A: You can choose to "Include Items With No Quantities". This is useful for verifying that the new standard cost is correctly loaded, even if there is no immediate financial impact.
-```
+
 # Oracle E-Business Suite [Reporting Library](https://www.enginatics.com/library/)
     
 We provide an open source Oracle EBS SQLs as a part of operational and project implementation support [toolkits](https://www.enginatics.com/blitz-report-toolkits/) for rapid Excel reports generation. 

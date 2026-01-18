@@ -65,7 +65,7 @@ If you would like to try one of these Oracle EBS SQLs without having Blitz Repor
 
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [CAC_WIP_Pending_Cost_Adjustment.xml](https://www.enginatics.com/xml/cac-wip-pending-cost-adjustment/)
-```markdown
+
 # Case Study & Technical Analysis: CAC WIP Pending Cost Adjustment
 
 ## Executive Summary
@@ -122,7 +122,7 @@ A: No, it is purely a reporting tool. The actual update happens when you run the
 
 **Q: Why don't I see Overhead variances?**
 A: As noted in the description, this specific version of the report excludes overheads. This is often done because overheads are calculated as a percentage of resource/material, so their variance is a derivative of the base cost variance.
-```
+
 # Oracle E-Business Suite [Reporting Library](https://www.enginatics.com/library/)
     
 We provide an open source Oracle EBS SQLs as a part of operational and project implementation support [toolkits](https://www.enginatics.com/blitz-report-toolkits/) for rapid Excel reports generation. 

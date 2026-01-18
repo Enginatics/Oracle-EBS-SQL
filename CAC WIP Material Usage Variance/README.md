@@ -62,7 +62,7 @@ If you would like to try one of these Oracle EBS SQLs without having Blitz Repor
 
 # [Blitz Report™](https://www.enginatics.com/blitz-report/) import options
 [CAC_WIP_Material_Usage_Variance.xml](https://www.enginatics.com/xml/cac-wip-material-usage-variance/)
-```markdown
+
 # Case Study & Technical Analysis: CAC WIP Material Usage Variance
 
 ## Executive Summary
@@ -114,7 +114,7 @@ A: Bulk items (like grease or fasteners) are often expensed upon receipt and not
 
 **Q: Why is my "Standard Quantity" zero?**
 A: This usually happens if the component was added to the job ad-hoc (not in the BOM). In this case, the entire cost of the issued material is treated as a variance.
-```
+
 # Oracle E-Business Suite [Reporting Library](https://www.enginatics.com/library/)
     
 We provide an open source Oracle EBS SQLs as a part of operational and project implementation support [toolkits](https://www.enginatics.com/blitz-report-toolkits/) for rapid Excel reports generation. 

@@ -1,4 +1,3 @@
-```markdown
 # Case Study & Technical Analysis: EAM Weekly Schedule
 
 ## Executive Summary
@@ -50,4 +49,3 @@ A: A "Firm" work order is locked in the schedule. MRP or auto-scheduling tools w
 
 **Q: How does it handle multi-day jobs?**
 A: The `Duration` column shows the total hours. The package functions (`cp_1`...`cp_7`) likely distribute these hours across the days of the week, though the exact logic depends on the package code (which is wrapped in the database).
-```

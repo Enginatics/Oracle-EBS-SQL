@@ -1,4 +1,4 @@
-```markdown
+
 # Case Study & Technical Analysis: CAC WIP Material Usage Variance
 
 ## Executive Summary
@@ -50,4 +50,3 @@ A: Bulk items (like grease or fasteners) are often expensed upon receipt and not
 
 **Q: Why is my "Standard Quantity" zero?**
 A: This usually happens if the component was added to the job ad-hoc (not in the BOM). In this case, the entire cost of the issued material is treated as a variance.
-```

@@ -1,4 +1,4 @@
-```markdown
+
 # Case Study & Technical Analysis: CAC Material Overhead Setup
 
 ## Executive Summary
@@ -49,4 +49,3 @@ A: You might have different default rules for different categories. For example,
 
 **Q: If I change the rate here, does it update existing inventory?**
 A: No. This report shows the *Setup* and *Defaults*. Changing a default only affects *future* item definitions or cost updates. To change the value of existing inventory, you must run a Standard Cost Update.
-```
