@@ -29,6 +29,7 @@ do.editionable,
 do.oracle_maintained,
 do.object_id,
 do.data_object_id
+&ddl_column
 from
 dba_objects do
 where

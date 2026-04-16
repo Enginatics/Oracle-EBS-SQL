@@ -122,10 +122,6 @@ where
 --
 -- Main Query Starts Here
 --
-select
-x.*
-from
-(
 select /*+ push_pred(sr) */
  null action_,
  null status_,
@@ -136,6 +132,7 @@ select /*+ push_pred(sr) */
  null ro_row_id,
  null so_row_id,
  :p_upload_mode upload_mode,
+ :p_bypass_dff_validation bypass_dff_validation,
  -- sourcing rule
  sr.rule_name,
  sr.rule_description,
@@ -224,17 +221,3 @@ from
 where
  :p_include_global = :p_include_global and
  1=1
-&not_use_first_block
-&report_table_select
-&report_table_name &report_table_where_clause
-&processed_run
-) x
-order by
- x.rule_type,
- x.rule_name,
- nvl2(x.organization,2,1),
- x.organization,
- x.receipt_organization,
- x.rank,
- x.source_organization,
- x.supplier

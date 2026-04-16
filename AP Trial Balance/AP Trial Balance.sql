@@ -32,6 +32,7 @@ aptb_trx as
  xtb.ledger_name,
  xtb.ledger_short_name,
  xtb.ledger_currency_code currency,
+ xtb.source_trx_curr trx_entered_currency,
  xtb.account,
  xtb.code_combination_id,
  to_number(null) gl_balance,
@@ -43,13 +44,27 @@ aptb_trx as
  xtb.source_entity_id transaction_id,
  xtb.source_trx_type transaction_type,
  xtb.source_trx_number transaction_number,
+ aia.description invoice_description,
+ aia.exchange_rate invoice_exchange_rate,         
+ aia.exchange_rate_type invoice_exchange_rate_type, 
+ aia.exchange_date invoice_exchange_date,
  to_date(xtb.source_trx_gl_date,'YYYY-MM-DD') gl_date,
  xtb.user_trx_identifier_value_7 payment_status,
  xtb.user_trx_identifier_value_9 cancelled_date,
  xtb.src_acctd_rounded_orig_amt transaction_original_amount,
- xtb.src_acctd_rounded_rem_amt transaction_remaining_amount
+ xtb.src_acctd_rounded_rem_amt transaction_remaining_amount,
+ xtb.src_entered_rounded_orig_amt entered_currency_original_amt,
+ xtb.src_entered_rounded_rem_amt entered_currency_remaining_amt
  from 
- xtb),
+ xtb,
+ ap_invoices_all aia,
+ xla_transaction_entities xte
+ where
+  xte.application_id=200 and 
+  xte.entity_code='AP_INVOICES' and 
+  xte.source_id_int_1=aia.invoice_id and
+  xte.entity_id=xtb.source_entity_id
+),
 aptb_acc as 
 (select 
  'GL Account' record_type,
@@ -57,6 +72,7 @@ aptb_acc as
  xtb.ledger_name,
  xtb.ledger_short_name,
  xtb.ledger_currency_code currency,
+ null trx_entered_currency,
  xtb.account,
  xtb.code_combination_id,
  xtb.gl_balance,
@@ -68,11 +84,17 @@ aptb_acc as
  null transaction_id,
  null transaction_type,
  null transaction_number,
+ null invoice_description,
+ null invoice_exchange_rate,         
+ null invoice_exchange_rate_type, 
+ null invoice_exchange_date,
  to_date(null) gl_date,
  null payment_status,
  null cancelled_date,
  to_number(null) transaction_original_amount,
- to_number(null) transaction_remaining_amount
+ to_number(null) transaction_remaining_amount,
+ to_number(null) entered_currency_original_amt,
+ to_number(null) entered_currency_remaining_amt
  from 
  xtb
  group by 
@@ -99,11 +121,17 @@ aptb.gl_balance,
 aptb.other_sources_amount,
 aptb.subledger_manuals_amount,
 aptb.transaction_remaining_amount,
+aptb.entered_currency_remaining_amt,
 aptb.difference, 
 aptb.transaction_original_amount,
+aptb.entered_currency_original_amt,
 &reval_columns
 aptb.transaction_type,
 aptb.transaction_number,
+aptb.invoice_description,
+aptb.invoice_exchange_rate,         
+aptb.invoice_exchange_rate_type, 
+aptb.invoice_exchange_date,
 aptb.gl_date,
 aptb.payment_status,
 aptb.cancelled_date,

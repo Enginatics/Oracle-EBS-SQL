@@ -13,7 +13,6 @@
 select
 mp.organization_code,
 haouv.name organization_name,
-xxen_util.meaning(msiv.item_type,'ITEM_TYPE',3) user_item_type,
 msiv.concatenated_segments item,
 msiv.description,
 msiv.long_description,
@@ -22,8 +21,6 @@ msiv.long_description,
 (select micgbk.concatenated_segments from mtl_item_catalog_groups_b_kfv micgbk where msiv.item_catalog_group_id=micgbk.item_catalog_group_id) item_catalog,
 --
 -- Main
-msiv.description description,
-msiv.long_description long_description,
 xxen_util.meaning(msiv.item_type,'ITEM_TYPE',3) user_item_type,
 (select misv.inventory_item_status_code_tl from mtl_item_status_vl misv where msiv.inventory_item_status_code=misv.inventory_item_status_code) item_status,
 xxen_util.meaning(msiv.allowed_units_lookup_code,'MTL_CONVERSION_TYPE',700) conversions,

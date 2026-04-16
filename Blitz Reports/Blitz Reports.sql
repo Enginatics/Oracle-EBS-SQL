@@ -22,7 +22,7 @@ select distinct
 xr.report_id,
 dbms_lob.substr(regexp_substr(regexp_substr(xr.sql_text,'(\D|^)(\d+)=\2(\D|$)',1,x.column_value),'\d+=\d+')) anchor
 from
-(select xrv.report_id, regexp_replace(replace(xrv.sql_text_full,''''''),'''[^'']*''','''x''') sql_text from xxen_reports_v xrv where 3=3) xr,
+(select xrv.report_id, regexp_replace(replace(xrv.sql_text_full,''''''),'''[^'']*''','''x''') sql_text from xxen_reports_v xrv where 1=1) xr,
 table(xxen_util.rowgen(regexp_count(xr.sql_text,'(\D|^)(\d+)=\2(\D|$)'))) x
 where '&show_anchors_lexicals_binds'='Y'
 ) y),
@@ -36,7 +36,7 @@ select distinct
 xr.report_id,
 lower(dbms_lob.substr(regexp_substr(xr.sql_text,'&\w+',1,x.column_value))) lexical
 from
-(select xrv.report_id, xrv.sql_text_full sql_text from xxen_reports_v xrv where 3=3 and xrv.sql_text_full like '%&%') xr,
+(select xrv.report_id, xrv.sql_text_full sql_text from xxen_reports_v xrv where 1=1 and xrv.sql_text_full like '%&%') xr,
 table(xxen_util.rowgen(regexp_count(xr.sql_text,'&\w+'))) x
 where '&show_anchors_lexicals_binds'='Y'
 ) y),
@@ -50,7 +50,7 @@ select distinct
 xr.report_id,
 lower(dbms_lob.substr(regexp_substr(xr.sql_text,':\w+',1,x.column_value))) bind
 from
-(select xrv.report_id, regexp_replace(replace(xrv.sql_text_full,''''''),'''[^'']*''','''x''') sql_text from xxen_reports_v xrv where 3=3 and xrv.sql_text_full like '%:%') xr,
+(select xrv.report_id, regexp_replace(replace(xrv.sql_text_full,''''''),'''[^'']*''','''x''') sql_text from xxen_reports_v xrv where 1=1 and xrv.sql_text_full like '%:%') xr,
 table(xxen_util.rowgen(regexp_count(xr.sql_text,':\w+'))) x
 where '&show_anchors_lexicals_binds'='Y'
 ) y)
@@ -133,6 +133,8 @@ lexicals,
 binds
 where
 1=1 and
+4=4 and
+3=3 and
 xrv.copied_from_guid=xrv0.guid(+) and
 xrv.report_id=xrpv.report_id(+) and
 xrv.report_id=xrav.report_id(+) and

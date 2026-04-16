@@ -256,7 +256,8 @@ with ap_inv as -- ap invoice data
              , rcv_shipment_headers rsh
              where
                rsh.shipment_header_id = rt.shipment_header_id and
-               rt.po_line_location_id is not null
+               rt.po_line_location_id is not null and
+               rt.po_distribution_id is not null
             )
          )
        where

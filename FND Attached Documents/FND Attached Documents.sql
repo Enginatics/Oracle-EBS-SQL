@@ -102,6 +102,7 @@ decode(fd.datatype_id,5,&url_column,nvl(fl.file_name,fd.file_name)) name,
 &url_text
 fdn.short_name location,
 decode(fd.datatype_id,1,to_clob(fdst.short_text),2,fdlt.long_text) text,
+fl.file_id,
 length(fl.file_data) file_size,
 fl.file_content_type content_type,
 lower(fl.file_format) file_format,

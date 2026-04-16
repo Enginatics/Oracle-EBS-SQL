@@ -191,7 +191,97 @@ from
    mtl_system_items_vl msiv,
    mtl_item_categories mic,
    mtl_categories_kfv mck,
-   &p_view &lp_template_dummy_view v
+   (
+   select
+   moqd.subinventory_code subinv,
+   moqd.inventory_item_id item_id,
+   0 item_cost,
+   0 source_type1,0 source_type2,0 source_type3,0 source_type4,0 source_type5,0 other,
+   sum(moqd.primary_transaction_quantity) cur_qty_val,
+   sum(moqd.primary_transaction_quantity) cur_qty,
+   sum(moqd.primary_transaction_quantity) target_qty
+   from
+   mtl_onhand_quantities_detail moqd
+   where
+   :p_selection='1' and
+   moqd.organization_id=:p_org_id and
+   moqd.owning_tp_type=decode(:p_consigned,2,2,moqd.owning_tp_type)
+   group by
+   moqd.subinventory_code,moqd.inventory_item_id
+   union all
+   select
+   mmt.subinventory_code,
+   mmt.inventory_item_id,
+   0,
+   sum(decode(mtst.transaction_source_type_id,:p_stype1,mmt.primary_quantity)),
+   sum(decode(mtst.transaction_source_type_id,:p_stype2,mmt.primary_quantity)),
+   sum(decode(mtst.transaction_source_type_id,:p_stype3,mmt.primary_quantity)),
+   sum(decode(mtst.transaction_source_type_id,:p_stype4,mmt.primary_quantity)),
+   0,
+   sum(decode(mtst.transaction_source_type_id,:p_stype1,0,:p_stype2,0,:p_stype3,0,:p_stype4,0,mmt.primary_quantity)),
+   0,0,
+   -sum(mmt.primary_quantity)
+   from
+   mtl_material_transactions mmt,
+   mtl_txn_source_types mtst,
+   mtl_parameters mp
+   where
+   :p_selection='1' and
+   mmt.organization_id=:p_org_id and
+   mp.organization_id=:p_org_id and
+   mmt.transaction_date>=:p_hist_date+1 and
+   nvl(mmt.owning_tp_type,2)=decode(:p_consigned,2,2,nvl(mmt.owning_tp_type,2)) and
+   mmt.transaction_source_type_id=mtst.transaction_source_type_id and
+   nvl(mmt.logical_transaction,2)<>1
+   group by
+   mmt.subinventory_code,mmt.inventory_item_id,mp.primary_cost_method
+   union all
+   select
+   moqv.subinventory_code,
+   moqv.inventory_item_id,
+   round(moqv.item_cost,15),
+   0,0,0,0,0,0,
+   decode(:p_selection,1,sum(moqv.transaction_quantity),sum(moqv.transaction_quantity*nvl(moqv.item_cost,0))),
+   sum(moqv.transaction_quantity),
+   sum(moqv.transaction_quantity)
+   from
+   mtl_onhand_qty_cost_v moqv
+   where
+   :p_selection<>'1' and
+   moqv.organization_id=:p_org_id
+   group by
+   moqv.subinventory_code,moqv.inventory_item_id,moqv.item_cost
+   union all
+   select
+   mmt.subinventory_code,
+   mmt.inventory_item_id,
+   round(cst.item_cost,15),
+   sum(decode(mtst.transaction_source_type_id,:p_stype1,decode(:p_selection,1,mmt.primary_quantity,decode(mp.primary_cost_method,2,mmt.primary_quantity,decode(:p_stype1,11,mmt.quantity_adjusted*(mmt.new_cost-mmt.prior_cost),13,decode(mmt.transaction_action_id,24,mmt.quantity_adjusted*(mmt.new_cost-mmt.prior_cost),mmt.primary_quantity*mmt.actual_cost),mmt.primary_quantity*mmt.actual_cost))),0)),
+   sum(decode(mtst.transaction_source_type_id,:p_stype2,decode(:p_selection,1,mmt.primary_quantity,decode(mp.primary_cost_method,2,mmt.primary_quantity,decode(:p_stype2,11,mmt.quantity_adjusted*(mmt.new_cost-mmt.prior_cost),13,decode(mmt.transaction_action_id,24,mmt.quantity_adjusted*(mmt.new_cost-mmt.prior_cost),mmt.primary_quantity*mmt.actual_cost),mmt.primary_quantity*mmt.actual_cost))),0)),
+   sum(decode(mtst.transaction_source_type_id,:p_stype3,decode(:p_selection,1,mmt.primary_quantity,decode(mp.primary_cost_method,2,mmt.primary_quantity,decode(:p_stype3,11,mmt.quantity_adjusted*(mmt.new_cost-mmt.prior_cost),13,decode(mmt.transaction_action_id,24,mmt.quantity_adjusted*(mmt.new_cost-mmt.prior_cost),mmt.primary_quantity*mmt.actual_cost),mmt.primary_quantity*mmt.actual_cost))),0)),
+   sum(decode(mtst.transaction_source_type_id,:p_stype4,decode(:p_selection,1,mmt.primary_quantity,decode(mp.primary_cost_method,2,mmt.primary_quantity,decode(mp.primary_cost_method,2,mmt.primary_quantity,decode(:p_stype4,11,mmt.quantity_adjusted*(mmt.new_cost-mmt.prior_cost),13,decode(mmt.transaction_action_id,24,mmt.quantity_adjusted*(mmt.new_cost-mmt.prior_cost),mmt.primary_quantity*mmt.actual_cost),mmt.primary_quantity*mmt.actual_cost)))),0)),
+   0,
+   sum(decode(mtst.transaction_source_type_id,:p_stype1,0,:p_stype2,0,:p_stype3,0,:p_stype4,0,decode(:p_selection,1,mmt.primary_quantity,decode(mp.primary_cost_method,2,mmt.primary_quantity,decode(mtst.transaction_source_type_id,11,mmt.quantity_adjusted*(mmt.new_cost-mmt.prior_cost),13,decode(mmt.transaction_action_id,24,mmt.quantity_adjusted*(mmt.new_cost-mmt.prior_cost),mmt.primary_quantity*mmt.actual_cost),mmt.primary_quantity*mmt.actual_cost))))),
+   0,0,
+   -sum(mmt.primary_quantity)
+   from
+   mtl_material_transactions mmt,
+   mtl_txn_source_types mtst,
+   mtl_parameters mp,
+   cst_item_costs_for_gl_view cst
+   where
+   :p_selection<>'1' and
+   mmt.organization_id=:p_org_id and
+   mp.organization_id=:p_org_id and
+   cst.organization_id=:p_org_id and
+   cst.inventory_item_id=mmt.inventory_item_id and
+   mmt.transaction_date>=:p_hist_date+1 and
+   nvl(mmt.owning_tp_type,2)=2 and
+   mmt.transaction_source_type_id=mtst.transaction_source_type_id and
+   nvl(mmt.logical_transaction,2)<>1
+   group by
+   mmt.subinventory_code,mmt.inventory_item_id,cst.item_cost,mp.primary_cost_method
+   &lp_template_dummy_view) v
   where
    v.item_id=msiv.inventory_item_id and
    msub.organization_id=:p_org_id and

@@ -88,6 +88,21 @@ oola.shipped_quantity,
 decode(oola.cancelled_flag,'Y',oola.cancelled_quantity) cancelled_quantity,
 gl.currency_code,
 cic.item_cost unit_cost,
+(
+select listagg(x.receipt_num,', ')  
+within group(order by x.receipt_num) receipt_number
+from
+(select distinct rt.requisition_line_id,
+rsh.receipt_num
+from 
+rcv_transactions rt,
+rcv_shipment_headers rsh
+where 
+rt.shipment_header_id=rsh.shipment_header_id and
+rt.transaction_type in ('RECEIVE','DELIVER')) x
+where 
+x.requisition_line_id=prla.requisition_line_id
+) receipt_number,
 xxen_util.meaning(nvl(oola.freight_terms_code,ooha.freight_terms_code),'FREIGHT_TERMS',660) freight_terms,
 xxen_util.meaning(nvl(oola.fob_point_code,ooha.fob_point_code),'FOB',222) fob,
 round(oola.ordered_quantity*cic.item_cost,2) cogs_amount,

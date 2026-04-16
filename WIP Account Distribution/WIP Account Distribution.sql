@@ -55,6 +55,10 @@ mck.concatenated_segments item_category,
 nvl(ppx.npw_number,ppx.employee_number) employee_num,
 ppx.full_name employee,
 poh.segment1 po_number,
+ppa.segment1 project_number,
+ppa.name project_name,
+pt.task_number,
+pt.task_name,
 wta.gl_batch_id gl_batch,
 ogb.gl_batch_date,
 ogb.description gl_batch_description,
@@ -79,7 +83,9 @@ mtl_units_of_measure_tl muot,
 cst_activities ca,
 org_gl_batches ogb,
 per_people_x ppx,
-po_headers_all poh
+po_headers_all poh,
+pa_projects_all ppa,
+pa_tasks pt
 where
 1=1 and
 &account_where_clause
@@ -114,7 +120,9 @@ wta.activity_id=ca.activity_id(+) and
 wta.organization_id=ogb.organization_id(+) and
 wta.gl_batch_id=ogb.gl_batch_id(+) and
 wt.employee_id=ppx.person_id(+) and
-wt.po_header_id=poh.po_header_id(+)
+wt.po_header_id=poh.po_header_id(+) and
+wdj.project_id=ppa.project_id(+) and
+wdj.task_id=pt.task_id(+)
 order by
 ood.organization_code,
 ood.organization_name,

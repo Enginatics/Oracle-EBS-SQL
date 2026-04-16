@@ -51,7 +51,7 @@ select
 &hierarchy_levels2
 x.*,
 case when max(x.je_header_id) over (partition by x.ledger,x.concatenated_segments) is not null then 'Y' else 'N' end has_activity,
-case when sum(case when x.record_type='Balance' then abs(nvl(x.accounted_amount,0)) else 0 end) over (partition by x.ledger,x.concatenated_segments)=0 then 'Y' else 'N' end zero_balance
+case when sum(decode(x.record_type,'Balance',abs(x.accounted_amount))) over (partition by x.ledger,x.concatenated_segments)>0 then 'Y' end has_balance
 from
 (
 select &leading_hint
@@ -70,13 +70,13 @@ gjh.doc_sequence_value document_number,
 xxen_util.meaning(gjh.tax_status_code,'TAX_STATUS',101) tax_status_code,
 gjl.je_line_num line_number,
 gcck.concatenated_segments,
-case when 1=row_number() over (partition by gjl.rowid order by xal.gl_sl_link_id,xdl.temp_line_num) then gjl.entered_dr end line_entered_dr,
-case when 1=row_number() over (partition by gjl.rowid order by xal.gl_sl_link_id,xdl.temp_line_num) then gjl.entered_cr end line_entered_cr,
-case when 1=row_number() over (partition by gjl.rowid order by xal.gl_sl_link_id,xdl.temp_line_num) then nvl(gjl.entered_dr,0)-nvl(gjl.entered_cr,0) end line_entered_amount,
-case when 1=row_number() over (partition by gjl.rowid order by xal.gl_sl_link_id,xdl.temp_line_num) then gjl.accounted_dr end line_accounted_dr,
-case when 1=row_number() over (partition by gjl.rowid order by xal.gl_sl_link_id,xdl.temp_line_num) then gjl.accounted_cr end line_accounted_cr,
-case when 1=row_number() over (partition by gjl.rowid order by xal.gl_sl_link_id,xdl.temp_line_num) then nvl(gjl.accounted_dr,0)-nvl(gjl.accounted_cr,0) end line_accounted_amount,
-case when 1=row_number() over (partition by gjl.rowid order by xal.gl_sl_link_id,xdl.temp_line_num) then gjl.stat_amount end line_stat_amount,
+decode(row_number() over (partition by gjl.rowid order by 1),1,gjl.entered_dr) line_entered_dr,
+decode(row_number() over (partition by gjl.rowid order by 1),1,gjl.entered_cr) line_entered_cr,
+decode(row_number() over (partition by gjl.rowid order by 1),1,nvl(gjl.entered_dr,0)-nvl(gjl.entered_cr,0)) line_entered_amount,
+decode(row_number() over (partition by gjl.rowid order by 1),1,gjl.accounted_dr) line_accounted_dr,
+decode(row_number() over (partition by gjl.rowid order by 1),1,gjl.accounted_cr) line_accounted_cr,
+decode(row_number() over (partition by gjl.rowid order by 1),1,nvl(gjl.accounted_dr,0)-nvl(gjl.accounted_cr,0)) line_accounted_amount,
+decode(row_number() over (partition by gjl.rowid order by 1),1,gjl.stat_amount) line_stat_amount,
 gjl.description line_description,
 coalesce(
 zrb.tax_rate_code,
@@ -111,11 +111,11 @@ xxen_util.meaning(gcck.gl_account_type,'ACCOUNT_TYPE',0) account_type,
 &segment_columns
 nvl2(xal.gl_sl_link_id,xdl.unrounded_entered_dr,gjl.entered_dr) entered_dr,
 nvl2(xal.gl_sl_link_id,xdl.unrounded_entered_cr,gjl.entered_cr) entered_cr,
-nvl(nvl2(xal.gl_sl_link_id,xdl.unrounded_entered_dr,gjl.entered_dr),0)-nvl(nvl2(xal.gl_sl_link_id,xdl.unrounded_entered_cr,gjl.entered_cr),0) entered_amount,
+nvl2(xal.gl_sl_link_id,nvl(xdl.unrounded_entered_dr,0)-nvl(xdl.unrounded_entered_cr,0),nvl(gjl.entered_dr,0)-nvl(gjl.entered_cr,0)) entered_amount,
 nvl2(xal.gl_sl_link_id,xal.currency_code,gjh.currency_code) transaction_currency,
 nvl2(xal.gl_sl_link_id,xdl.unrounded_accounted_dr,gjl.accounted_dr) accounted_dr,
 nvl2(xal.gl_sl_link_id,xdl.unrounded_accounted_cr,gjl.accounted_cr) accounted_cr,
-nvl(nvl2(xal.gl_sl_link_id,xdl.unrounded_accounted_dr,gjl.accounted_dr),0)-nvl(nvl2(xal.gl_sl_link_id,xdl.unrounded_accounted_cr,gjl.accounted_cr),0) accounted_amount,
+nvl2(xal.gl_sl_link_id,nvl(xdl.unrounded_accounted_dr,0)-nvl(xdl.unrounded_accounted_cr,0),nvl(gjl.accounted_dr,0)-nvl(gjl.accounted_cr,0)) accounted_amount,
 gl.currency_code ledger_currency,
 &revaluation_columns
 nvl(gjh.doc_sequence_value,xah.doc_sequence_value) doc_sequence_value,
@@ -205,12 +205,12 @@ acra.receipt_number cash_receipt_number,
 coalesce(
 (select aps.vendor_name from ap_suppliers aps where coalesce(decode(xal.party_type_code,'S',xal.party_id,null),aia.vendor_id,aca.vendor_id,rt.vendor_id,pha.vendor_id)=aps.vendor_id),
 (select hp.party_name from hz_cust_accounts hca, hz_parties hp where coalesce(decode(xal.party_type_code,'C',xal.party_id,null),rcta.bill_to_customer_id,acra.pay_from_customer,paa.customer_id)=hca.cust_account_id and hca.party_id=hp.party_id),
-(select hp.party_name from hz_parties hp,hz_cust_accounts hca,oe_order_lines_all oola where hca.party_id=hp.party_id and hca.cust_account_id=oola.sold_to_org_id and oola.line_id=coalesce(gxeh.source_line_id,case when mmt.transaction_source_type_id in (2,8,12) then mmt.trx_source_line_id end))
+(select hp.party_name from hz_parties hp,hz_cust_accounts hca,oe_order_lines_all oola where hca.party_id=hp.party_id and hca.cust_account_id=oola.sold_to_org_id and oola.line_id=coalesce(decode(gxeh.txn_source,'OM',gxeh.source_line_id),case when mmt.transaction_source_type_id in (2,8,12) then mmt.trx_source_line_id end))
 ) vendor_or_customer,
 coalesce(
 (select aps.segment1 from ap_suppliers aps where coalesce(decode(xal.party_type_code,'S',xal.party_id,null),aia.vendor_id,aca.vendor_id,rt.vendor_id,pha.vendor_id)=aps.vendor_id),
 (select hca.account_number from hz_cust_accounts hca where coalesce(decode(xal.party_type_code,'C',xal.party_id,null),rcta.bill_to_customer_id,acra.pay_from_customer,paa.customer_id)=hca.cust_account_id),
-(select hca.account_number from hz_cust_accounts hca,oe_order_lines_all oola where hca.cust_account_id=oola.sold_to_org_id and oola.line_id=coalesce(gxeh.source_line_id,case when mmt.transaction_source_type_id in (2,8,12) then mmt.trx_source_line_id end))
+(select hca.account_number from hz_cust_accounts hca,oe_order_lines_all oola where hca.cust_account_id=oola.sold_to_org_id and oola.line_id=coalesce(decode(gxeh.txn_source,'OM',gxeh.source_line_id),case when mmt.transaction_source_type_id in (2,8,12) then mmt.trx_source_line_id end))
 ) vendor_or_customer_number,
 --Projects
 nvl(case when xte.entity_code='TRANSACTIONS' and rcta.interface_header_context='PROJECTS INVOICES' then rcta.interface_header_attribute1 end,ppa.segment1) project,
@@ -499,13 +499,13 @@ peia.expenditure_type=pet.expenditure_type(+) and
 pea.incurred_by_person_id=papf.person_id(+) and
 case when xdl.application_id=707 and xdl.source_distribution_type='RCV_RECEIVING_SUB_LEDGER' then xdl.source_distribution_id_num_1 end=rrsl.rcv_sub_ledger_id(+) and
 case when xah.application_id=555 then xah.event_id end=gxeh.event_id(+) and --OPM
-case
+coalesce(case
 when xte.application_id=707 and xte.entity_code='RCV_ACCOUNTING_EVENTS' then xte.source_id_int_1
 when xte.application_id=707 and xte.entity_code='WIP_ACCOUNTING_EVENTS' then wt.rcv_transaction_id
-when xte.application_id=555 and gxeh.txn_source='PUR' then gxeh.source_line_id --OPM
+when xte.application_id=555 and gxeh.event_class_code='RECEIVE' then gxeh.source_line_id
 when xdl.application_id=200 and xdl.source_distribution_type='AP_INV_DIST' then nvl(aida.rcv_transaction_id,aila.rcv_transaction_id)
 when xdl.application_id=200 and xdl.applied_to_distribution_type='AP_INV_DIST' then nvl(aida.rcv_transaction_id,aila.rcv_transaction_id)
-end=rt.transaction_id(+) and
+end,mmt.rcv_transaction_id)=rt.transaction_id(+) and
 rt.shipment_line_id=rsl.shipment_line_id(+) and
 rt.shipment_header_id=rsh.shipment_header_id(+) and
 case when xte.application_id=707 and xte.entity_code='WIP_ACCOUNTING_EVENTS' then xte.source_id_int_1 end=wt.transaction_id(+) and
@@ -514,10 +514,10 @@ wt.department_id=bd.department_id(+) and
 wt.resource_id=br.resource_id(+) and
 --inventory
 case when xte.application_id=707 and xte.entity_code='MTL_ACCOUNTING_EVENTS' then xte.source_id_int_1
-     when xah.application_id=555 then gxeh.transaction_id end=mmt.transaction_id(+) and
-coalesce(mmt.organization_id,rsl.to_organization_id,plla.ship_to_organization_id,we.organization_id,rctla.warehouse_id)=msiv.organization_id(+) and
-coalesce(mmt.inventory_item_id,rsl.item_id,pla.item_id,we.primary_item_id,rctla.inventory_item_id)=msiv.inventory_item_id(+) and
-coalesce(mmt.organization_id,rt.organization_id,rsl.to_organization_id,plla.ship_to_organization_id,we.organization_id,nvl2(rctla.inventory_item_id,rctla.warehouse_id,null))=mp.organization_id(+) and
+     when xah.application_id=555 and (xte.entity_code in ('INVENTORY','ORDERMANAGEMENT') or gxeh.event_class_code in ('BATCH_MATERIAL','DELIVER')) then gxeh.transaction_id end=mmt.transaction_id(+) and
+coalesce(mmt.organization_id,gxeh.organization_id,rsl.to_organization_id,plla.ship_to_organization_id,we.organization_id,rctla.warehouse_id)=msiv.organization_id(+) and
+coalesce(mmt.inventory_item_id,gxeh.inventory_item_id,rsl.item_id,pla.item_id,we.primary_item_id,rctla.inventory_item_id)=msiv.inventory_item_id(+) and
+coalesce(mmt.organization_id,gxeh.organization_id,rt.organization_id,rsl.to_organization_id,plla.ship_to_organization_id,we.organization_id,nvl2(rctla.inventory_item_id,rctla.warehouse_id,null))=mp.organization_id(+) and
 mmt.transaction_type_id=mtt.transaction_type_id(+) and
 mmt.transaction_source_type_id=mtst.transaction_source_type_id(+) and
 coalesce(decode(gxeh.txn_source,'OM',gxeh.source_line_id),case when mmt.transaction_source_type_id in (2,8,12) then mmt.trx_source_line_id end,rsl.oe_order_line_id,rt.oe_order_line_id)=oola.line_id(+) and
@@ -975,4 +975,8 @@ y.batch_name,
 y.journal_name,
 y.line_number,
 y.transaction_date,
-y.transaction_number
+y.transaction_number,
+y.invoice_line_number,
+y.purchase_order_line,
+y.task,
+y.accounted_amount

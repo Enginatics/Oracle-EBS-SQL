@@ -24,16 +24,20 @@ select
 ,x.c_vendor_name trading_partner
 ,x.c_vendor_site site
 ,x.c_invoice_num invoice_number
-,(select distinct poh.segment1
-   from  po_headers poh,
-           po_line_locations poll,
-           ap_holds ah
-   where  ah.release_lookup_code   is null
-   and       ah.line_location_id = poll.line_location_id
-   and       poll.po_header_id = poh.po_header_id
-   and    ah.invoice_id = x.c_invoice_id
-   and    rownum=1
- )  po_number
+,(select listagg(poh.segment1,', ') within group (order by poh.segment1)
+  from po_headers_all poh
+  where exists (
+    select null from ap_invoice_lines ail, po_line_locations_all plla
+    where ail.invoice_id=x.c_invoice_id and ail.po_line_location_id=plla.line_location_id and plla.po_header_id=poh.po_header_id
+  )
+ ) po_number
+,(select listagg(to_char(pol.line_num),', ') within group (order by pol.line_num)
+  from po_lines_all pol
+  where exists (
+    select null from ap_invoice_lines ail, po_line_locations_all plla
+    where ail.invoice_id=x.c_invoice_id and ail.po_line_location_id=plla.line_location_id and plla.po_line_id=pol.po_line_id
+  )
+ ) po_line_number
 ,to_char(x.c_invoice_date,'fmMonth YYYY') invoice_month
 ,x.c_invoice_date invoice_date
 ,x.c_original_amount "Original Amount (Func Curr)"

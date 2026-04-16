@@ -62,38 +62,10 @@ with q_assemblies as
   bbom.organization_id assembly_organization_id,
   msiv.item_catalog_group_id assembly_item_catalog_group_id,
   --
-  msiv.attribute_category,
-  msiv.attribute1,
-  msiv.attribute2,
-  msiv.attribute3,
-  msiv.attribute4,
-  msiv.attribute5,
-  msiv.attribute6,
-  msiv.attribute7,
-  msiv.attribute8,
-  msiv.attribute9,
-  msiv.attribute10,
-  msiv.attribute11,
-  msiv.attribute12,
-  msiv.attribute13,
-  msiv.attribute14,
-  msiv.attribute15,
-  msiv.attribute16,
-  msiv.attribute17,
-  msiv.attribute18,
-  msiv.attribute19,
-  msiv.attribute20,
-  msiv.attribute21,
-  msiv.attribute22,
-  msiv.attribute23,
-  msiv.attribute24,
-  msiv.attribute25,
-  msiv.attribute26,
-  msiv.attribute27,
-  msiv.attribute28,
-  msiv.attribute29,
-  msiv.attribute30,
-  msiv.row_id assembly_row_id
+  &assbly_dff_attributes1
+  &assbly_item_dff_attributes1
+  bbom.rowid  assembly_row_id,
+  msiv.row_id assembly_item_row_id
  from
   bom_explosion_temp bet,
   bom_bill_of_materials bbom,
@@ -201,42 +173,15 @@ q_components as
   bev.component_sequence_id,
   bev.component_item_id,
   decode(bom.common_bill_sequence_id, bom.bill_sequence_id, bev.supply_locator_id, msib_a.wip_supply_locator_id) supply_locator_id,
-  msiv.attribute_category,
-  msiv.attribute1,
-  msiv.attribute2,
-  msiv.attribute3,
-  msiv.attribute4,
-  msiv.attribute5,
-  msiv.attribute6,
-  msiv.attribute7,
-  msiv.attribute8,
-  msiv.attribute9,
-  msiv.attribute10,
-  msiv.attribute11,
-  msiv.attribute12,
-  msiv.attribute13,
-  msiv.attribute14,
-  msiv.attribute15,
-  msiv.attribute16,
-  msiv.attribute17,
-  msiv.attribute18,
-  msiv.attribute19,
-  msiv.attribute20,
-  msiv.attribute21,
-  msiv.attribute22,
-  msiv.attribute23,
-  msiv.attribute24,
-  msiv.attribute25,
-  msiv.attribute26,
-  msiv.attribute27,
-  msiv.attribute28,
-  msiv.attribute29,
-  msiv.attribute30,
-  msiv.rowid component_row_id
+  &comp_dff_attributes1
+  &comp_item_dff_attributes1
+  bcb.rowid  component_row_id,
+  msiv.rowid component_item_row_id
  from
   bom_explosion_view bev,
   mtl_item_locations_kfv milk,
   bom_bill_of_materials bom,
+  bom_components_b bcb,
   mtl_system_items_b msib_a,
   mtl_system_items_vl msiv,
   (select
@@ -262,6 +207,7 @@ q_components as
   and msiv.organization_id = mic.organization_id (+)
   and mic.category_id = mck.category_id (+)
   and bom.bill_sequence_id = bev.bill_sequence_id
+  and bcb.component_sequence_id = bev.component_sequence_id
   and ( ( (:p_verify_flag is null) or (:p_verify_flag <> 1) ) or ( (:p_verify_flag = 1) and (bev.loop_flag = 1) ) )
 ),
 q_subst_comp as
@@ -298,7 +244,8 @@ select
  qa.assembly_revision_date,
  qa.category,
  qa.descriptive_elements,
- &assb_dff_attributes
+ &assbly_dff_attributes2
+ &assbly_item_dff_attributes2
  qc.plan_level "level",
  qc.comp_item_seq_num item_seq,
  qc.comp_operation_seq_num op_seq,
@@ -338,7 +285,8 @@ select
  qc.comp_disable_time disable_date,
  qc.comp_change_notice change_notice,
  qc.reference_designators,
- &comp_dff_attributes
+ &comp_dff_attributes2
+ &comp_item_dff_attributes2
  qsc.substitute_component,
  qsc.substitute_description,
  qsc.substitute_long_description,

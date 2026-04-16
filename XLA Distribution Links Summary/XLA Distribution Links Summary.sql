@@ -7,18 +7,17 @@
 -- Report Name: XLA Distribution Links Summary
 -- Description: Summary of subledger distribution links for developers to understand which source_ids are populated for which subledger table sources.
 The link to subledger tables for different source_distribution_type values is described e.g. MOS Doc IDs for:
-AP 813968.1 <a href="https://support.oracle.com/CSP/main/article?cmd=show&type=NOT&id=813968.1" rel="nofollow" target="_blank">https://support.oracle.com/CSP/main/article?cmd=show&type=NOT&id=813968.1</a>
-FA 2002464.1 <a href="https://support.oracle.com/CSP/main/article?cmd=show&type=NOT&id=2002464.1" rel="nofollow" target="_blank">https://support.oracle.com/CSP/main/article?cmd=show&type=NOT&id=2002464.1</a>
-PA 1274575.1 <a href="https://support.oracle.com/CSP/main/article?cmd=show&type=NOT&id=1274575.1" rel="nofollow" target="_blank">https://support.oracle.com/CSP/main/article?cmd=show&type=NOT&id=1274575.1</a>
+AP KB202448 <a href="https://support.oracle.com/support/?kmContentId=813968" rel="nofollow" target="_blank">https://support.oracle.com/support/?kmContentId=813968</a>
+FA KB721213 <a href="https://support.oracle.com/support/?kmContentId=2002464" rel="nofollow" target="_blank">https://support.oracle.com/support/?kmContentId=2002464</a>
+PA KB160029 <a href="https://support.oracle.com/support/?kmContentId=1274575" rel="nofollow" target="_blank">https://support.oracle.com/support/?kmContentId=1274575</a>
 
 For GMF, there is
-AP and PO Accrual Reconciliation Report Debugging from OPM Financials 2114612.1 <a href="https://support.oracle.com/CSP/main/article?cmd=show&type=NOT&id=2114612.1" rel="nofollow" target="_blank">https://support.oracle.com/CSP/main/article?cmd=show&type=NOT&id=2114612.1</a>
-and Financials Troubleshooting Guide 1213193.1 <a href="https://support.oracle.com/CSP/main/article?cmd=show&type=NOT&id=1213193.1" rel="nofollow" target="_blank">https://support.oracle.com/CSP/main/article?cmd=show&type=NOT&id=1213193.1</a>
+AP and PO Accrual Reconciliation Report Debugging from OPM Financials KB775263 <a href="https://support.oracle.com/support/?kmContentId=2114612" rel="nofollow" target="_blank">https://support.oracle.com/support/?kmContentId=2114612</a>
+and Financials Troubleshooting Guide FAQ6726 <a href="https://support.oracle.com/support/?kmContentId=1213193" rel="nofollow" target="_blank">https://support.oracle.com/support/?kmContentId=1213193</a>
 
-How the gl_import_references tableis used in 11i vs R12 is described in notes 165327.1 and 130542.1
-<a href="https://support.oracle.com/CSP/main/article?cmd=show&type=NOT&id=165327.1" rel="nofollow" target="_blank">https://support.oracle.com/CSP/main/article?cmd=show&type=NOT&id=165327.1</a>
-<a href="https://support.oracle.com/CSP/main/article?cmd=show&type=NOT&id=130542.1" rel="nofollow" target="_blank">https://support.oracle.com/CSP/main/article?cmd=show&type=NOT&id=130542.1</a>
-
+How the gl_import_references tableis used in 11i vs R12 is described in notes KB626209 and KB625770
+<a href="https://support.oracle.com/support/?kmContentId=165327" rel="nofollow" target="_blank">https://support.oracle.com/support/?kmContentId=165327</a>
+<a href="https://support.oracle.com/support/?kmContentId=130542" rel="nofollow" target="_blank">https://support.oracle.com/support/?kmContentId=130542</a>
 -- Excel Examle Output: https://www.enginatics.com/example/xla-distribution-links-summary/
 -- Library Link: https://www.enginatics.com/reports/xla-distribution-links-summary/
 -- Run Report: https://demo.enginatics.com/

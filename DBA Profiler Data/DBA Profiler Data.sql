@@ -6,8 +6,8 @@
 /*************************************************************************/
 -- Report Name: DBA Profiler Data
 -- Description: Excel version of Oracle's dbms_profiler PLSQL performance analysis, see Oracle note:
-Using DBMS_PROFILER (Doc ID 97270.1)
-<a href="https://support.oracle.com/CSP/main/article?cmd=show&type=NOT&id=97270.1" rel="nofollow" target="_blank">https://support.oracle.com/CSP/main/article?cmd=show&type=NOT&id=97270.1</a>
+Using DBMS_PROFILER (KB85737)
+<a href="https://support.oracle.com/support/?kmContentId=97270" rel="nofollow" target="_blank">https://support.oracle.com/support/?kmContentId=97270</a>
 
 PL/SQL units that have been compiled in NATIVE mode cannot be profiled using the DBMS_PROFILER package.
 To gather information using DBMS_PROFILER, you must ensure that the PL/SQL code is INTERPRETED."

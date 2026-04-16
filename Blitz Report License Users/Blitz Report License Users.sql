@@ -11,6 +11,10 @@
 -- Run Report: https://demo.enginatics.com/
 
 select
+z.*
+from
+(
+select
 xxen_util.user_name(xrlu.user_id) user_name,
 fu.start_date user_start_date,
 xxen_util.client_time(y.first_run_date) first_run_date,
@@ -18,7 +22,8 @@ xxen_util.client_time(xrlu.last_run_date) last_run_date,
 y.run_count,
 y.distinct_reports,
 xrv.report_name most_popular,
-y.most_popular_count
+y.most_popular_count,
+count(*) over () user_count
 from
 xxen_report_license_users xrlu,
 fnd_user fu,
@@ -53,5 +58,8 @@ xrlu.user_id=fu.user_id and
 nvl(fu.end_date,sysdate)>=sysdate and
 xrlu.user_id=y.created_by(+) and
 y.most_popular=xrv.report_id(+)
+) z
+where
+1=1
 order by
-xrlu.last_run_date desc
+z.last_run_date desc

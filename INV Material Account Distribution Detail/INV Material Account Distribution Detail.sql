@@ -78,12 +78,7 @@ nvl(mta.base_transaction_value,0)*nvl(:p_exchange_rate,1) transaction_value,
 &lp_sla_columns_1
 &lp_sla_columns_2
 xxen_util.meaning(mta.basis_type,'CST_BASIS',700) basis_type,
-decode(decode(mmt.costed_flag,null,1,'Y',1,'N',2,'E',3),
-               '1', 'Yes',
-               '2', 'No',
-               '3', 'Error',
-               '4', 'W',
-null)costed,
+decode(nvl(mmt.costed_flag,'Y'),'Y','Yes','N','No','E','Error') costed,
 cce.cost_element,
 mmt.transfer_organization_id transfer_org,
 case
@@ -200,6 +195,8 @@ xal.code_combination_id=gcck.code_combination_id
 ) x
 where
 1=1 and
+&account_from_where
+&account_to_where
 nvl(:p_coa_id,-1)=nvl(:p_coa_id,-1) and
 mta.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
 mta.transaction_id=mmt.transaction_id and

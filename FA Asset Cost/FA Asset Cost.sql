@@ -16,6 +16,29 @@ DB package: XXEN_FA_FAS_XMLP
 -- Library Link: https://www.enginatics.com/reports/fa-asset-cost/
 -- Run Report: https://demo.enginatics.com/
 
+with 
+-- Not using fa_balances_reports_gt as it does not have enough columns
+-- to cater for running the reports across multiple book type codes and balance types (COST + RESERVE)
+fa_balances_report_q as
+(
+select
+  mfq.char1    book_type_code
+, mfq.char2    balance_type
+, mfq.number1  asset_id
+, mfq.number2  distribution_ccid
+, mfq.number3  adjustment_ccid
+, mfq.char3    category_books_account
+, mfq.char4    source_type_code
+, mfq.number4  amount
+, mfq.char5    cost_account
+, mfq.number5  cost_begin_balance
+, mfq.number6  group_asset_id
+, mfq.number7  set_of_books_id
+from
+msc_form_query mfq
+)
+--
+--
 select
   x.company_name,
   x.ledger,
@@ -50,7 +73,7 @@ from
   select /*+ push_pred(fah) */
     fsc.company_name,
     gl.name ledger,
-    :p_book book,
+    fbrg.book_type_code book,
     gl.currency_code currency,
     fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_bal_seg','SQLGL','GL#',nvl(gcc_dh.chart_of_accounts_id,gcc_dh.chart_of_accounts_id),null,nvl(gcc_dh.code_combination_id,gcc_dh.code_combination_id),'GL_BALANCING','Y','VALUE') balancing_segment,
     nvl2(gcc_aj.code_combination_id,
@@ -99,7 +122,7 @@ from
     fa_system_controls    fsc,
     gl_ledgers            gl,
     fnd_currencies        fc,
-    fa_balances_report_gt fbrg,
+    fa_balances_report_q  fbrg,
     (select
      fah.asset_id,
      fcb.book_type_code,
@@ -121,11 +144,11 @@ from
     gl_code_combinations  gcc_dh,
     gl_code_combinations  gcc_aj
   where
-    gl.ledger_id                  = :p_ca_set_of_books_id and
-    gl.currency_code              = fc.currency_code and
-    fbrg.asset_id                 > 0 and
+    fbrg.balance_type = 'COST' and
+    gl.ledger_id = fbrg.set_of_books_id and
+    gl.currency_code = fc.currency_code and
     decode(:p_show_reserve,'Y',fbrg.asset_id) = fah.asset_id (+) and
-    decode(:p_show_reserve,'Y',:p_book) = fah.book_type_code (+) and
+    decode(:p_show_reserve,'Y',fbrg.book_type_code) = fah.book_type_code (+) and
     nvl2(gcc_aj.code_combination_id,
          fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_acct_seg','SQLGL','GL#',gcc_aj.chart_of_accounts_id,null,gcc_aj.code_combination_id,'GL_ACCOUNT','Y','VALUE'),
          fbrg.category_books_account
@@ -138,7 +161,7 @@ from
   group by
     fsc.company_name,
     gl.name,
-    :p_book,
+    fbrg.book_type_code,
     gl.currency_code,
     fc.precision,
     fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_bal_seg','SQLGL','GL#',nvl(gcc_dh.chart_of_accounts_id,gcc_dh.chart_of_accounts_id),null,nvl(gcc_dh.code_combination_id,gcc_dh.code_combination_id),'GL_BALANCING','Y','VALUE'),
@@ -155,7 +178,7 @@ from
   select /*+ push_pred(fah) */
     fsc.company_name,
     gl.name ledger,
-    :p_book book,
+    fbrg.book_type_code book,
     gl.currency_code currency,
     fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_bal_seg','SQLGL','GL#',nvl(gcc_dh.chart_of_accounts_id,gcc_dh.chart_of_accounts_id),null,nvl(gcc_dh.code_combination_id,gcc_dh.code_combination_id),'GL_BALANCING','Y','VALUE') balancing_segment,
     fah.asset_cost_acct asset_account,
@@ -206,7 +229,7 @@ from
     fa_system_controls    fsc,
     gl_ledgers            gl,
     fnd_currencies        fc,
-    fa_balances_report_gt fbrg,
+    fa_balances_report_q  fbrg,
     (select
      fah.asset_id,
      fcb.book_type_code,
@@ -229,16 +252,16 @@ from
     gl_code_combinations  gcc_aj
   where
     :p_show_reserve = 'Y' and
-    gl.ledger_id = :p_ca_set_of_books_id and
+    fbrg.balance_type = 'RESERVE' and
+    gl.ledger_id = fbrg.set_of_books_id and
     gl.currency_code = fc.currency_code and
-    fbrg.asset_id < 0 and
-    -fbrg.asset_id = fah.asset_id (+) and
+    fbrg.asset_id = fah.asset_id (+) and
     nvl2(gcc_aj.code_combination_id,
          fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_acct_seg','SQLGL','GL#',gcc_aj.chart_of_accounts_id,null,gcc_aj.code_combination_id,'GL_ACCOUNT','Y','VALUE'),
          fbrg.category_books_account
         ) = fah.deprn_reserve_acct (+) and
-    :p_book = fah.book_type_code (+) and
-    -fbrg.asset_id = fa.asset_id and
+    fbrg.book_type_code = fah.book_type_code (+) and
+    fbrg.asset_id = fa.asset_id and
     fbrg.distribution_ccid = gcc_dh.code_combination_id (+) and
     fbrg.adjustment_ccid = gcc_aj.code_combination_id (+) and
     --
@@ -246,7 +269,7 @@ from
   group by
     fsc.company_name,
     gl.name,
-    :p_book,
+    fbrg.book_type_code,
     gl.currency_code,
     fc.precision,
     fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_bal_seg','SQLGL','GL#',nvl(gcc_dh.chart_of_accounts_id,gcc_dh.chart_of_accounts_id),null,nvl(gcc_dh.code_combination_id,gcc_dh.code_combination_id),'GL_BALANCING','Y','VALUE'),

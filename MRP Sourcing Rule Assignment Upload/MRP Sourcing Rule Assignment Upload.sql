@@ -29,6 +29,7 @@ select
  null set_row_id,
  null ass_row_id,
  :p_upload_mode upload_mode,
+ :p_bypass_dff_validation bypass_dff_validation,
  -- assignment set
  mas.assignment_set_name assignment_set,
  mas.description assignment_set_description,

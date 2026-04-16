@@ -26,6 +26,10 @@ Templates are provided that match the existing standard Oracle Reports of the sa
 - Elemental Inventory Value
 - Elemental Inventory Value by Subinventory
 - Elemental Inventory Value by Cost Group
+- Intransit Value Report
+
+New parameter added: Show Shipment Details
+If this parameter is set to Y, columns related to shipment details will be included, such as Shipment Number, Ship Date, FOB Point, etc.
 
 DB package: XXEN_INV_VALUE
 
@@ -79,6 +83,7 @@ select
  x.subinventory || ' - ' || x.subinventory_desc subinventory_label,
  ood.organization_code || ' - ' || ood.organization_name organization_label,
  sysdate report_run_date
+ &shipment_select_cols
 from
 (
  select
@@ -121,6 +126,7 @@ from
   sum(case when ciqt.qty_source in (6,7,8) then nvl(ciqt.rollback_qty,0) else null end * nvl(cict.item_cost,0) * :p_exchange_rate) intransit_cost,
   round(sum(case when ciqt.qty_source in (9,10) then nvl(ciqt.rollback_qty,0) else null end),:p_qty_precision) receiving_qty,
   sum(case when ciqt.qty_source in (9,10) then nvl(ciqt.rollback_qty,0) else null end * nvl(cict.item_cost,0) * :p_exchange_rate) receiving_cost
+ &shipment_cols
  from
   cst_inv_qty_temp ciqt,
   cst_inv_cost_temp cict,
@@ -128,6 +134,7 @@ from
   mtl_secondary_inventories sec,
   mtl_system_items_vl msi,
   mtl_categories_b_kfv mc
+ &shipment_tables
  where
   ciqt.organization_id in
    (select
@@ -174,6 +181,7 @@ from
      nvl(msi.costing_enabled_flag,'N') = 'N' 
    ) 
   )
+  &shipment_where
  group by
   mp.organization_id,
   mp.organization_code,
@@ -198,6 +206,7 @@ from
   sec.description,
   sec.asset_inventory,
   round(nvl(cict.item_cost,0) * :p_exchange_rate, :p_ext_precision)
+ &shipment_group_by
  having
   decode(:p_neg_qty,1,1,2) = decode(:p_neg_qty,1,decode(sign(sum(ciqt.rollback_qty)),'-1',1,2),2) and
   decode(:p_zero_qty,2,round(sum(nvl(ciqt.rollback_qty,0)),:p_qty_precision),1) <> 0

@@ -43,7 +43,6 @@ with q_customer as (select
    and hcas.org_id = hou.organization_id
    and hpar.party_id = zptp.party_id(+)
    and zptp.party_type_code(+) = 'THIRD_PARTY'
-   and hcas.org_id = hou.organization_id 
    &gc_reporting_entity 
    &gc_customer_name 
    &gc_cust_category 
@@ -295,15 +294,17 @@ select
  &lp_operating_unit_column
  q.period_name,
  replace(q.record_type,'_',' ') record_type,
- q.balance_bought_forward_debit,
- q.balance_bought_forward_credit,
+ q.balance_brought_forward_debit,
+ q.balance_brought_forward_credit,
  q.net_debit,
  q.net_credit,
  q.cumulative_debit,
  q.cumulative_credit,
- q.balance_bought_forward_credit - q.balance_bought_forward_debit balance_bought_forward_amount,
+ q.balance_brought_forward_credit - q.balance_brought_forward_debit balance_brought_forward_amount,
  q.net_credit - q.net_debit net_amount,
- q.cumulative_credit - q.cumulative_debit cumualtive_amount 
+ q.cumulative_credit - q.cumulative_debit cumulative_amount,
+ q.opening_balance,
+ q.closing_balance
  &document_columns
 from 
  (select 
@@ -315,7 +316,7 @@ from
     when 'Customer Summary' then sum(nvl(z.bbf,0)) over (partition by z.customer_party_id)
     when '&reporting_entity_col_name Summary' then sum(nvl(z.bbf,0)) over ()
     else null
-   end balance_bought_forward_debit,
+   end balance_brought_forward_debit,
    case z.record_type
     when 'Period Summary' then sum(nvl(z.credit,0)) over (partition by z.customer_party_site_id order by z.seq rows between unbounded preceding and current row) - sum(nvl(z.credit,0)) over (partition by z.customer_party_site_id,z.period_name)
     when 'Customer Site Summary' then 0
@@ -323,7 +324,7 @@ from
     when 'Customer Summary' then 0
     when '&reporting_entity_col_name Summary' then 0
     else null
-   end balance_bought_forward_credit,
+   end balance_brought_forward_credit,
    case z.record_type
     when 'Period Summary' then sum(nvl(z.debit,0)) over (partition by z.customer_party_site_id,z.period_name)
     when 'Customer Site Summary' then sum(nvl(z.debit,0)) over (partition by z.customer_party_site_id)
@@ -355,8 +356,43 @@ from
     when 'Customer Summary' then sum(nvl(z.credit,0)) over (partition by z.customer_party_id order by z.seq rows between unbounded preceding and current row)
     when '&reporting_entity_col_name Summary' then sum(nvl(z.credit,0)) over ()
     else null
-   end cumulative_credit
-  from 
+   end cumulative_credit,
+   case z.record_type
+    when 'Transaction' then
+     sum(nvl(z.bbf,0)) over (partition by z.customer_party_site_id) +
+     nvl(sum(nvl(z.debit,0)-nvl(z.credit,0)) over (partition by z.customer_party_site_id order by z.seq rows between unbounded preceding and 1 preceding),0)
+    when 'Period Summary' then
+     sum(nvl(z.bbf,0)) over (partition by z.customer_party_site_id) +
+     sum(nvl(z.debit,0)) over (partition by z.customer_party_site_id order by z.seq rows between unbounded preceding and current row) -
+     sum(nvl(z.debit,0)) over (partition by z.customer_party_site_id,z.period_name) -
+     sum(nvl(z.credit,0)) over (partition by z.customer_party_site_id order by z.seq rows between unbounded preceding and current row) +
+     sum(nvl(z.credit,0)) over (partition by z.customer_party_site_id,z.period_name)
+    when 'Customer Site Summary' then sum(nvl(z.bbf,0)) over (partition by z.customer_party_site_id)
+    when 'Operating Unit Summary' then sum(nvl(z.bbf,0)) over (partition by z.customer_party_id,z.organization_id)
+    when 'Customer Summary' then sum(nvl(z.bbf,0)) over (partition by z.customer_party_id)
+    when '&reporting_entity_col_name Summary' then sum(nvl(z.bbf,0)) over ()
+   end opening_balance,
+   case z.record_type
+    when 'Transaction' then
+     sum(nvl(z.bbf,0)) over (partition by z.customer_party_site_id) +
+     sum(nvl(z.debit,0)-nvl(z.credit,0)) over (partition by z.customer_party_site_id order by z.seq rows between unbounded preceding and current row)
+    when 'Period Summary' then
+     sum(nvl(z.bbf,0)) over (partition by z.customer_party_site_id) +
+     sum(nvl(z.debit,0)-nvl(z.credit,0)) over (partition by z.customer_party_site_id order by z.seq rows between unbounded preceding and current row)
+    when 'Customer Site Summary' then
+     sum(nvl(z.bbf,0)) over (partition by z.customer_party_site_id) +
+     sum(nvl(z.debit,0)-nvl(z.credit,0)) over (partition by z.customer_party_site_id)
+    when 'Operating Unit Summary' then
+     sum(nvl(z.bbf,0)) over (partition by z.customer_party_id,z.organization_id) +
+     sum(nvl(z.debit,0)-nvl(z.credit,0)) over (partition by z.customer_party_id,z.organization_id)
+    when 'Customer Summary' then
+     sum(nvl(z.bbf,0)) over (partition by z.customer_party_id) +
+     sum(nvl(z.debit,0)-nvl(z.credit,0)) over (partition by z.customer_party_id)
+    when '&reporting_entity_col_name Summary' then
+     sum(nvl(z.bbf,0)) over () +
+     sum(nvl(z.debit,0)-nvl(z.credit,0)) over ()
+   end closing_balance
+  from
    (select 
      rownum seq,
      y.*
@@ -399,8 +435,8 @@ select distinct
          q_main.customer_party_id = q_customer.customer_party_id
          and q_main.customer_party_site_id = q_customer.customer_party_site_id 
         union all 
-        -- dummy supplier site summary record
-        select distinct 
+        -- dummy customer site summary record
+        select distinct
          'Customer Site Summary' record_type,
          q_customer.customer_name,
          q_customer.customer_number,
@@ -463,8 +499,8 @@ select distinct
         where
          :p_reporting_level != '3000' -- don't show OU Summary when run by OU
         union all 
-        -- dummy supplier summary record
-        select distinct 
+        -- dummy customer summary record
+        select distinct
          'Customer Summary' record_type,
          q_customer.customer_name,
          q_customer.customer_number,
@@ -494,8 +530,8 @@ select distinct
         from 
          q_customer
         union all 
-        -- dummy supplier summary record
-        select distinct 
+        -- dummy reporting entity summary record
+        select distinct
          '&reporting_entity_col_name Summary' record_type,
          null customer_name,
          null customer_number,

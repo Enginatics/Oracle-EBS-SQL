@@ -182,6 +182,8 @@ left join dba_hist_sqltext dhst on dhash.dbid=dhst.dbid and dhash.sql_id=dhst.sq
 left join dba_procedures dp0 on dhash.plsql_entry_object_id=dp0.object_id and dhash.plsql_entry_subprogram_id=dp0.subprogram_id
 left join dba_procedures dp on dhash.plsql_object_id=dp.object_id and dhash.plsql_subprogram_id=dp.subprogram_id
 left join dba_users du on dhash.user_id=du.user_id
+where
+2=2
 ) x
 order by
 sample_time,

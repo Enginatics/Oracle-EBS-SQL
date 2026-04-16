@@ -17,9 +17,31 @@ DB package: XXEN_FA_FAS_XMLP
 -- Run Report: https://demo.enginatics.com/
 
 with
-&lp_impairment_start_bal_query
-&lp_impairment_end_bal_query
-&lp_impairment_amt_query
+-- Not using fa_balances_reports_gt as it does not have enough columns
+-- to cater for running the reports across multiple book type codes and balance types (COST + RESERVE)
+fa_balances_report_q as
+(
+select
+  mfq.char1    book_type_code
+, mfq.char2    balance_type
+, mfq.number1  asset_id
+, mfq.number2  distribution_ccid
+, mfq.number3  adjustment_ccid
+, mfq.char3    category_books_account
+, mfq.char4    source_type_code
+, mfq.number4  amount
+, mfq.char5    cost_account
+, mfq.number5  cost_begin_balance
+, mfq.number6  group_asset_id
+, mfq.number7  set_of_books_id
+, mfq.number8  impairment_amt
+, mfq.number9  impairment_beg_rsv
+, mfq.number10 impairment_end_rsv
+, mfq.char6    impairment_beg_rsv_acct
+, mfq.char7    impairment_end_rsv_acct
+from
+msc_form_query mfq
+)
 --
 -- Main Query
 --
@@ -80,7 +102,7 @@ from
   select
     fsc.company_name,
     gl.name ledger,
-    :p_book book,
+    fbrg.book_type_code book,
     gl.currency_code currency,
     fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_bal_seg','SQLGL','GL#',gcc_dh.chart_of_accounts_id,null,gcc_dh.code_combination_id,'GL_BALANCING','Y','VALUE') balancing_segment,
     nvl2(gcc_aj.code_combination_id,
@@ -121,42 +143,30 @@ from
     --
     -- Impairments
     --
-    nvl(round(sum(decode(fbrg.source_type_code,'BEGIN',nvl(qisb.impairment_reserve,0) , null)), fc.precision),0) begin_impairment,
-    nvl(round(sum(decode(fbrg.source_type_code,'DEPRECIATION',nvl(qi.impairment_amount,0) , null)), fc.precision),0) impairment,
-    nvl(round(sum(decode(fbrg.source_type_code,'END',nvl(qieb.impairment_reserve,0) , null)), fc.precision),0) end_impairment,
-    max(decode(fbrg.source_type_code,'BEGIN',qisb.impair_reserve_acct)) impair_reserve_acct_old,
-    max(decode(fbrg.source_type_code,'END',qieb.impair_reserve_acct)) impair_reserve_acct
+    nvl(round(sum(decode(fbrg.source_type_code,'BEGIN',nvl(fbrg.impairment_beg_rsv,0) , null)), fc.precision),0) begin_impairment,
+    nvl(round(sum(decode(fbrg.source_type_code,'DEPRECIATION',nvl(fbrg.impairment_amt,0) , null)), fc.precision),0) impairment,
+    nvl(round(sum(decode(fbrg.source_type_code,'END',nvl(fbrg.impairment_end_rsv,0) , null)), fc.precision),0) end_impairment,
+    max(decode(fbrg.source_type_code,'BEGIN',fbrg.impairment_beg_rsv_acct)) impair_reserve_acct_old,
+    max(decode(fbrg.source_type_code,'END',fbrg.impairment_end_rsv_acct)) impair_reserve_acct
   from
     fa_system_controls      fsc,
     gl_ledgers              gl,
     fnd_currencies          fc,
-    fa_balances_report_gt   fbrg,
+    fa_balances_report_q    fbrg,
     fa_additions            fa,
     gl_code_combinations    gcc_dh,
-    gl_code_combinations    gcc_aj,
-    q_impairment_start_bal  qisb,
-    q_impairment_end_bal    qieb,
-    q_impairment            qi
+    gl_code_combinations    gcc_aj
   where
-    gl.ledger_id                   = :p_ca_set_of_books_id and
+    gl.ledger_id                   = fbrg.set_of_books_id and
     fc.currency_code               = gl.currency_code and
     fa.asset_id                    = fbrg.asset_id and
     gcc_dh.code_combination_id     = fbrg.distribution_ccid and
     gcc_aj.code_combination_id (+) = fbrg.adjustment_ccid and
-    qisb.asset_id              (+) = nvl2(:p_show_impairments,decode(fbrg.source_type_code,'BEGIN',fbrg.asset_id,null),null) and
-    qisb.code_combination_id   (+) = nvl2(:p_show_impairments,decode(fbrg.source_type_code,'BEGIN',fbrg.distribution_ccid,null),null) and
-    qisb.deprn_reserve_acct    (+) = nvl2(:p_show_impairments,decode(fbrg.source_type_code,'BEGIN',fbrg.category_books_account,null),null) and
-    qieb.asset_id              (+) = nvl2(:p_show_impairments,decode(fbrg.source_type_code,'END',fbrg.asset_id,null),null) and
-    qieb.code_combination_id   (+) = nvl2(:p_show_impairments,decode(fbrg.source_type_code,'END',fbrg.distribution_ccid,null),null) and
-    qieb.deprn_reserve_acct    (+) = nvl2(:p_show_impairments,decode(fbrg.source_type_code,'END',fbrg.category_books_account,null),null) and
-    qi.asset_id                (+) = nvl2(:p_show_impairments,decode(fbrg.source_type_code,'DEPRECIATION',fbrg.asset_id,null),null) and
-    qi.code_combination_id     (+) = nvl2(:p_show_impairments,decode(fbrg.source_type_code,'DEPRECIATION',fbrg.distribution_ccid,null),null) and
-    qi.deprn_reserve_acct      (+) = nvl2(:p_show_impairments,decode(fbrg.source_type_code,'DEPRECIATION',fbrg.category_books_account,null),null) and
     1=1
   group by
     fsc.company_name,
     gl.name,
-    :p_book,
+    fbrg.book_type_code,
     gl.currency_code,
     fc.precision,
     fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_bal_seg','SQLGL','GL#',gcc_dh.chart_of_accounts_id,null,gcc_dh.code_combination_id,'GL_BALANCING','Y','VALUE'),

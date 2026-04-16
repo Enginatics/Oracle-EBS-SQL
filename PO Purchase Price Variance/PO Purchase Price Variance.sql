@@ -33,6 +33,67 @@ gl.currency_code=fc.currency_code and
 hou.set_of_books_id=fspa.set_of_books_id and
 hou.organization_id=fspa.org_id
 ),
+xp as (
+select
+x.ledger,
+x.operating_unit,
+x.precision,
+x.extended_precision,
+x.inventory_organization_id,
+rt.transaction_id,
+rt.organization_id,
+rt.transaction_date,
+rt.primary_unit_of_measure,
+rt.po_header_id,
+rt.po_line_id,
+rt.po_line_location_id,
+rt.po_distribution_id,
+rt.transaction_type,
+rt.currency_conversion_rate,
+rt.po_unit_price,
+rt.source_doc_quantity,
+rt.primary_quantity,
+rt.lcm_shipment_line_id,
+rsh.shipment_num,
+rsh.receipt_num,
+rt.destination_type_code rt_destination_type_code,
+pha.po_header_id,
+pha.org_id,
+pha.vendor_id,
+pha.agent_id,
+pha.type_lookup_code,
+pha.segment1,
+pha.currency_code,
+aps.vendor_name,
+pla.item_id,
+pla.category_id,
+pla.line_num,
+plla.line_location_id,
+plla.po_release_id,
+plla.lcm_flag,
+pda.po_distribution_id,
+pda.destination_type_code,
+pda.nonrecoverable_tax,
+pda.quantity_ordered
+from
+x,
+rcv_transactions rt,
+rcv_shipment_headers rsh,
+po_headers_all pha,
+ap_suppliers aps,
+po_lines_all pla,
+po_line_locations_all plla,
+po_distributions_all pda
+where
+1=1 and
+rt.shipment_header_id=rsh.shipment_header_id and
+x.organization_id=pha.org_id and
+rt.po_header_id=pha.po_header_id and
+pha.vendor_id=aps.vendor_id and
+rt.po_line_id=pla.po_line_id and
+rt.po_line_location_id=plla.line_location_id and
+rt.po_distribution_id=pda.po_distribution_id
+),
 papf as (
 select papf.person_id, papf.full_name from per_all_people_f papf where
 (papf.employee_number is not null or papf.npw_number is not null) and
@@ -42,41 +103,34 @@ decode(hr_general.get_xbg_profile,'Y', papf.business_group_id , hr_general.get_b
 )
 select
 'Receiving PPV' type,
-x.ledger,
-x.operating_unit,
+xp.ledger,
+xp.operating_unit,
 mp.organization_code,
 mcv.category_concat_segs category,
 msiv.concatenated_segments item,
 msiv.description item_description,
-aps.vendor_name vendor,
+xp.vendor_name vendor,
 papf.full_name buyer,
-decode(pha.type_lookup_code, 'BLANKET', pha.segment1||' - '||pra.release_num, 'PLANNED', pha.segment1||' - '||pra.release_num, pha.segment1) po_number,
-pha.currency_code currency,
-pla.line_num line,
-rsh.shipment_num shipment,
-rt.transaction_date receipt_date,
-rsh.receipt_num receipt_number,
+decode(xp.type_lookup_code, 'BLANKET', xp.segment1||' - '||pra.release_num, 'PLANNED', xp.segment1||' - '||pra.release_num, xp.segment1) po_number,
+xp.currency_code currency,
+xp.line_num line,
+xp.shipment_num shipment,
+xp.transaction_date receipt_date,
+xp.receipt_num receipt_number,
 round(mmt.primary_quantity,:p_qty_precision) quantity_received,
-rt.primary_unit_of_measure unit,
-round(nvl(mmt.transaction_cost,0)/nvl(mmt.currency_conversion_rate,1),x.extended_precision) po_unit_price,
-round(nvl(mmt.transaction_cost,0),x.extended_precision) po_functional_price,
-round(nvl(mmt.actual_cost,0),x.extended_precision) std_unit_cost,
-round(nvl(mcacd1.actual_cost,0),x.extended_precision) material_unit_cost,
-round(decode(mta.accounting_line_type,3,nvl(mcacd2.actual_cost,0),0),x.extended_precision) material_overhead_unit_cost,
-po_poxrcppv_xmlp_pkg.c_price_varianceformula(round(nvl(mmt.transaction_cost,0),x.extended_precision),round(nvl(mmt.actual_cost,0),x.extended_precision),round(decode(mta.accounting_line_type,3,nvl(mcacd2.actual_cost,0),0),x.extended_precision),round(mmt.primary_quantity,:p_qty_precision ),x.precision) purchase_price_variance,
+xp.primary_unit_of_measure unit,
+round(nvl(mmt.transaction_cost,0)/nvl(mmt.currency_conversion_rate,1),xp.extended_precision) po_unit_price,
+round(nvl(mmt.transaction_cost,0),xp.extended_precision) po_functional_price,
+round(nvl(mmt.actual_cost,0),xp.extended_precision) std_unit_cost,
+round(nvl(mcacd1.actual_cost,0),xp.extended_precision) material_unit_cost,
+round(decode(mta.accounting_line_type,3,nvl(mcacd2.actual_cost,0),0),xp.extended_precision) material_overhead_unit_cost,
+po_poxrcppv_xmlp_pkg.c_price_varianceformula(round(nvl(mmt.transaction_cost,0),xp.extended_precision),round(nvl(mmt.actual_cost,0),xp.extended_precision),round(decode(mta.accounting_line_type,3,nvl(mcacd2.actual_cost,0),0),xp.extended_precision),round(mmt.primary_quantity,:p_qty_precision ),xp.precision) purchase_price_variance,
 mp.process_enabled_flag,
-rt.transaction_id rcv_transaction_id,
-pla.item_id
+xp.transaction_id rcv_transaction_id,
+xp.item_id
 from
-x,
-rcv_transactions rt,
-rcv_shipment_headers rsh,
-po_headers_all pha,
-po_lines_all pla,
-po_line_locations_all plla,
-po_distributions_all pda,
+xp,
 po_releases_all pra,
-ap_suppliers aps,
 mtl_system_items_vl msiv,
 mtl_categories_v mcv,
 mtl_parameters mp,
@@ -87,23 +141,16 @@ mtl_cst_actual_cost_details mcacd1,
 mtl_cst_actual_cost_details mcacd2
 where
 3=3 and
-rt.shipment_header_id=rsh.shipment_header_id and
-x.organization_id=pha.org_id and
-rt.po_header_id=pha.po_header_id and
-rt.po_line_id=pla.po_line_id and
-rt.po_line_location_id=plla.line_location_id and
-rt.po_distribution_id=pda.po_distribution_id and
-pda.destination_type_code='INVENTORY' and
-plla.po_release_id=pra.po_release_id(+) and
-pha.vendor_id=aps.vendor_id and
-pla.item_id=msiv.inventory_item_id(+) and
-x.inventory_organization_id=msiv.organization_id(+) and
-rt.organization_id=mp.organization_id and
+xp.destination_type_code='INVENTORY' and
+xp.po_release_id=pra.po_release_id(+) and
+xp.item_id=msiv.inventory_item_id(+) and
+xp.inventory_organization_id=msiv.organization_id(+) and
+xp.organization_id=mp.organization_id and
 mp.process_enabled_flag='N' and
-pla.category_id=mcv.category_id(+) and
-pha.agent_id=papf.person_id and
-rt.transaction_id=mmt.rcv_transaction_id and
-rt.organization_id=mmt.organization_id and
+xp.category_id=mcv.category_id(+) and
+xp.agent_id=papf.person_id and
+xp.transaction_id=mmt.rcv_transaction_id and
+xp.organization_id=mmt.organization_id and
 exists (select null from mtl_transaction_accounts mta1 where mmt.transaction_id=mta1.transaction_id and mta1.accounting_line_type=6) and
 mmt.transaction_id=mta.transaction_id (+) and
 mta.accounting_line_type(+)=3 and
@@ -122,162 +169,127 @@ mmt.transaction_action_id=mcacd2.transaction_action_id(+)
 union
 select
 'Receiving PPV' type,
-x.ledger,
-x.operating_unit,
+xp.ledger,
+xp.operating_unit,
 mp.organization_code,
 mcv.category_concat_segs category,
 msiv.concatenated_segments item,
 msiv.description description,
-aps.vendor_name vendor,
+xp.vendor_name vendor,
 papf.full_name buyer,
-decode(pha.type_lookup_code, 'BLANKET', pha.segment1||' - '||pra.release_num, 'PLANNED', pha.segment1||' - '||pra.release_num, pha.segment1) po_number_release,
-pha.currency_code currency,
-pla.line_num line,
-rsh.shipment_num shipment,
-rt.transaction_date receipt_date,
-rsh.receipt_num receipt_number,
-round(decode(rt.transaction_type, 'RETURN TO RECEIVING', rt.primary_quantity * -1, rt.primary_quantity), :p_qty_precision) quantity_received,
-rt.primary_unit_of_measure unit,
-rt.po_unit_price*(rt.source_doc_quantity/rt.primary_quantity)+nvl(pda.nonrecoverable_tax,0)/decode(pda.quantity_ordered,0,1,pda.quantity_ordered)*(rt.source_doc_quantity/rt.primary_quantity) unit_price,
-round(nvl(rt.currency_conversion_rate,1)*nvl(rt.po_unit_price*(rt.source_doc_quantity/rt.primary_quantity),0)+( (nvl(pda.nonrecoverable_tax,0)*nvl(rt.currency_conversion_rate,1))/decode(pda.quantity_ordered,0,1,pda.quantity_ordered)*(rt.source_doc_quantity/rt.primary_quantity)),x.extended_precision) po_functional_price,
-round(&p_select_wip,x.extended_precision) std_unit_cost_f,
+decode(xp.type_lookup_code, 'BLANKET', xp.segment1||' - '||pra.release_num, 'PLANNED', xp.segment1||' - '||pra.release_num, xp.segment1) po_number_release,
+xp.currency_code currency,
+xp.line_num line,
+xp.shipment_num shipment,
+xp.transaction_date receipt_date,
+xp.receipt_num receipt_number,
+round(decode(xp.transaction_type, 'RETURN TO RECEIVING', xp.primary_quantity * -1, xp.primary_quantity), :p_qty_precision) quantity_received,
+xp.primary_unit_of_measure unit,
+xp.po_unit_price*(xp.source_doc_quantity/xp.primary_quantity)+nvl(xp.nonrecoverable_tax,0)/decode(xp.quantity_ordered,0,1,xp.quantity_ordered)*(xp.source_doc_quantity/xp.primary_quantity) unit_price,
+round(nvl(xp.currency_conversion_rate,1)*nvl(xp.po_unit_price*(xp.source_doc_quantity/xp.primary_quantity),0)+( (nvl(xp.nonrecoverable_tax,0)*nvl(xp.currency_conversion_rate,1))/decode(xp.quantity_ordered,0,1,xp.quantity_ordered)*(xp.source_doc_quantity/xp.primary_quantity)),xp.extended_precision) po_functional_price,
+round(&p_select_wip,xp.extended_precision) std_unit_cost_f,
 0 material_cost_f,
 0 moh_absorbed_per_unit,
-po_poxrcppv_xmlp_pkg.c_price_varianceformula(round(nvl(rt.currency_conversion_rate,1)*nvl(rt.po_unit_price*(rt.source_doc_quantity/rt.primary_quantity),0) + nvl(pda.nonrecoverable_tax,0)*nvl(rt.currency_conversion_rate,1)/decode(pda.quantity_ordered,0,1,pda.quantity_ordered)*(rt.source_doc_quantity/rt.primary_quantity),x.extended_precision),round(&p_select_wip,x.extended_precision ),0,round(decode(rt.transaction_type,'RETURN TO RECEIVING',rt.primary_quantity*-1,rt.primary_quantity),:p_qty_precision),x.precision) c_price_variance,
+po_poxrcppv_xmlp_pkg.c_price_varianceformula(round(nvl(xp.currency_conversion_rate,1)*nvl(xp.po_unit_price*(xp.source_doc_quantity/xp.primary_quantity),0) + nvl(xp.nonrecoverable_tax,0)*nvl(xp.currency_conversion_rate,1)/decode(xp.quantity_ordered,0,1,xp.quantity_ordered)*(xp.source_doc_quantity/xp.primary_quantity),xp.extended_precision),round(&p_select_wip,xp.extended_precision ),0,round(decode(xp.transaction_type,'RETURN TO RECEIVING',xp.primary_quantity*-1,xp.primary_quantity),:p_qty_precision),xp.precision) c_price_variance,
 mp.process_enabled_flag,
-rt.transaction_id rct_id,
-pla.item_id
+xp.transaction_id rct_id,
+xp.item_id
 from
-x,
-rcv_transactions rt,
-rcv_shipment_headers rsh,
-po_headers_all pha,
-po_lines_all pla,
-po_line_locations_all plla,
-po_distributions_all pda,
+xp,
 po_releases_all pra,
-ap_suppliers aps,
 mtl_system_items_vl msiv,
 mtl_categories_v mcv,
 mtl_parameters mp,
 papf &p_from_wip
 where
 3=3 and
-rt.shipment_header_id=rsh.shipment_header_id and
-x.organization_id=pha.org_id and
-rt.po_header_id=pha.po_header_id and
-rt.po_line_id=pla.po_line_id and
-rt.po_line_location_id=plla.line_location_id and
-rt.po_distribution_id=pda.po_distribution_id and
-pda.destination_type_code='SHOP FLOOR' and
-plla.po_release_id=pra.po_release_id(+) and
-pha.vendor_id=aps.vendor_id and
-pla.item_id=msiv.inventory_item_id(+) and
-x.inventory_organization_id=msiv.organization_id(+) and
-rt.organization_id=mp.organization_id and
+xp.destination_type_code='SHOP FLOOR' and
+xp.po_release_id=pra.po_release_id(+) and
+xp.item_id=msiv.inventory_item_id(+) and
+xp.inventory_organization_id=msiv.organization_id(+) and
+xp.organization_id=mp.organization_id and
 mp.process_enabled_flag='N' and
-pla.category_id=mcv.category_id(+) and
-pha.agent_id=papf.person_id &p_where_wip
+xp.category_id=mcv.category_id(+) and
+xp.agent_id=papf.person_id &p_where_wip
 union all
 select
 'Receiving PPV' type,
-x.ledger,
-x.operating_unit,
+xp.ledger,
+xp.operating_unit,
 mp.organization_code,
 mcv.category_concat_segs category,
 msiv.concatenated_segments item,
 msiv.description description,
-aps.vendor_name vendor,
+xp.vendor_name vendor,
 papf.full_name buyer,
-decode(pha.type_lookup_code, 'BLANKET', pha.segment1||' - '||pra.release_num, 'PLANNED', pha.segment1||' - '||pra.release_num, pha.segment1) po_number_release,
-pha.currency_code currency,
-pla.line_num line,
-rsh.shipment_num shipment,
-rt.transaction_date receipt_date,
-rsh.receipt_num receipt_number,
-round(decode(rt.transaction_type,'RETURN TO RECEIVING',rt.primary_quantity*-1,'RETURN TO  VENDOR',rt.primary_quantity*-1,rt.primary_quantity),:p_qty_precision) quantity_received,
-rt.primary_unit_of_measure unit,
-rt.po_unit_price*(rt.source_doc_quantity/rt.primary_quantity ) + (nvl(pda.nonrecoverable_tax,0)/decode(pda.quantity_ordered,0,1, pda.quantity_ordered)*(rt.source_doc_quantity/rt.primary_quantity)) unit_price,
-round(nvl(rt.currency_conversion_rate,1)*nvl(rt.po_unit_price* (rt.source_doc_quantity / rt.primary_quantity),0) + nvl(pda.nonrecoverable_tax,0)*nvl(rt.currency_conversion_rate,1)/decode(pda.quantity_ordered,0,1,pda.quantity_ordered)*(rt.source_doc_quantity/rt.primary_quantity),x.extended_precision) po_functional_price,
-po_poxrcppv_xmlp_pkg.std_unit_cost_fformula(pla.item_id,decode(mp.process_enabled_flag,'Y',rt.organization_id,x.inventory_organization_id),rt.transaction_date,mp.process_enabled_flag,0,x.extended_precision) std_unit_cost_f,
+decode(xp.type_lookup_code, 'BLANKET', xp.segment1||' - '||pra.release_num, 'PLANNED', xp.segment1||' - '||pra.release_num, xp.segment1) po_number_release,
+xp.currency_code currency,
+xp.line_num line,
+xp.shipment_num shipment,
+xp.transaction_date receipt_date,
+xp.receipt_num receipt_number,
+round(decode(xp.transaction_type,'RETURN TO RECEIVING',xp.primary_quantity*-1,'RETURN TO  VENDOR',xp.primary_quantity*-1,xp.primary_quantity),:p_qty_precision) quantity_received,
+xp.primary_unit_of_measure unit,
+xp.po_unit_price*(xp.source_doc_quantity/xp.primary_quantity ) + (nvl(xp.nonrecoverable_tax,0)/decode(xp.quantity_ordered,0,1, xp.quantity_ordered)*(xp.source_doc_quantity/xp.primary_quantity)) unit_price,
+round(nvl(xp.currency_conversion_rate,1)*nvl(xp.po_unit_price* (xp.source_doc_quantity / xp.primary_quantity),0) + nvl(xp.nonrecoverable_tax,0)*nvl(xp.currency_conversion_rate,1)/decode(xp.quantity_ordered,0,1,xp.quantity_ordered)*(xp.source_doc_quantity/xp.primary_quantity),xp.extended_precision) po_functional_price,
+po_poxrcppv_xmlp_pkg.std_unit_cost_fformula(xp.item_id,decode(mp.process_enabled_flag,'Y',xp.organization_id,xp.inventory_organization_id),xp.transaction_date,mp.process_enabled_flag,0,xp.extended_precision) std_unit_cost_f,
 0 material_cost_f,
 0 moh_absorbed_per_unit,
-po_poxrcppv_xmlp_pkg.c_price_varianceformula(round(nvl(rt.currency_conversion_rate,1)*nvl(rt.po_unit_price*(rt.source_doc_quantity/rt.primary_quantity),0) + nvl(pda.nonrecoverable_tax,0)*nvl(rt.currency_conversion_rate,1)/decode(pda.quantity_ordered,0,1,pda.quantity_ordered)*(rt.source_doc_quantity/rt.primary_quantity),x.extended_precision), po_poxrcppv_xmlp_pkg.std_unit_cost_fformula(pla.item_id, decode(mp.process_enabled_flag, 'Y', rt.organization_id, x.inventory_organization_id), rt.transaction_date, mp.process_enabled_flag, 0, x.extended_precision), 0, round(decode(rt.transaction_type,'RETURN TO RECEIVING', rt.primary_quantity * -1,rt.primary_quantity), :p_qty_precision), x.precision) c_price_variance,
+po_poxrcppv_xmlp_pkg.c_price_varianceformula(round(nvl(xp.currency_conversion_rate,1)*nvl(xp.po_unit_price*(xp.source_doc_quantity/xp.primary_quantity),0) + nvl(xp.nonrecoverable_tax,0)*nvl(xp.currency_conversion_rate,1)/decode(xp.quantity_ordered,0,1,xp.quantity_ordered)*(xp.source_doc_quantity/xp.primary_quantity),xp.extended_precision), po_poxrcppv_xmlp_pkg.std_unit_cost_fformula(xp.item_id, decode(mp.process_enabled_flag, 'Y', xp.organization_id, xp.inventory_organization_id), xp.transaction_date, mp.process_enabled_flag, 0, xp.extended_precision), 0, round(decode(xp.transaction_type,'RETURN TO RECEIVING', xp.primary_quantity * -1,xp.primary_quantity), :p_qty_precision), xp.precision) c_price_variance,
 mp.process_enabled_flag,
-rt.transaction_id rct_id,
-pla.item_id
+xp.transaction_id rct_id,
+xp.item_id
 from
-x,
-rcv_transactions rt,
-rcv_shipment_headers rsh,
-po_headers_all pha,
-po_lines_all pla,
-po_line_locations_all plla,
-po_distributions_all pda,
+xp,
 po_releases_all pra,
-ap_suppliers aps,
 mtl_system_items_vl msiv,
 mtl_categories_v mcv,
 mtl_parameters mp,
 papf
 where
 3=3 and
-rt.shipment_header_id=rsh.shipment_header_id and
-x.organization_id=pha.org_id and
-rt.po_header_id=pha.po_header_id and
-rt.po_line_id=pla.po_line_id and
-rt.po_line_location_id=plla.line_location_id and
-rt.po_distribution_id=pda.po_distribution_id and
-pda.destination_type_code in ('INVENTORY','SHOP FLOOR') and
-(nvl(plla.lcm_flag,'N')='N' or plla.lcm_flag='Y' and rt.lcm_shipment_line_id is null) and
-rt.destination_type_code<>'RECEIVING' and
-plla.po_release_id=pra.po_release_id(+) and
-pha.vendor_id=aps.vendor_id and
-pla.item_id=msiv.inventory_item_id(+) and
-x.inventory_organization_id=msiv.organization_id(+) and
-rt.organization_id=mp.organization_id and
+xp.destination_type_code in ('INVENTORY','SHOP FLOOR') and
+(nvl(xp.lcm_flag,'N')='N' or xp.lcm_flag='Y' and xp.lcm_shipment_line_id is null) and
+xp.rt_destination_type_code<>'RECEIVING' and
+xp.po_release_id=pra.po_release_id(+) and
+xp.item_id=msiv.inventory_item_id(+) and
+xp.inventory_organization_id=msiv.organization_id(+) and
+xp.organization_id=mp.organization_id and
 mp.process_enabled_flag='Y' and
-pla.category_id=mcv.category_id(+) and
-pha.agent_id=papf.person_id
+xp.category_id=mcv.category_id(+) and
+xp.agent_id=papf.person_id
 union all
 /* lcm-opm integration added below query  bug 8642337, pmarada */
 select distinct
 'Receiving PPV' type,
-x.ledger,
-x.operating_unit,
+xp.ledger,
+xp.operating_unit,
 mp.organization_code,
 mcv.category_concat_segs category,
 msiv.concatenated_segments item,
 msiv.description description,
-aps.vendor_name vendor,
+xp.vendor_name vendor,
 papf.full_name buyer,
-decode(pha.type_lookup_code, 'BLANKET', pha.segment1||' - '||pra.release_num, 'PLANNED', pha.segment1||' - '||pra.release_num, pha.segment1) po_number_release,
-pha.currency_code currency,
-pla.line_num line,
-rsh.shipment_num shipment,
+decode(xp.type_lookup_code, 'BLANKET', xp.segment1||' - '||pra.release_num, 'PLANNED', xp.segment1||' - '||pra.release_num, xp.segment1) po_number_release,
+xp.currency_code currency,
+xp.line_num line,
+xp.shipment_num shipment,
 glat.transaction_date receipt_date,
-rsh.receipt_num receipt_number,
+xp.receipt_num receipt_number,
 round(glat.primary_quantity,:p_qty_precision) quantity_received,
 glat.primary_uom_code unit,
-rt.po_unit_price*(rt.source_doc_quantity/rt.primary_quantity) + (nvl(pda.nonrecoverable_tax,0)/pda.quantity_ordered)*(rt.source_doc_quantity/rt.primary_quantity) unit_price,
-round(nvl(rt.currency_conversion_rate,1)*nvl(rt.po_unit_price*rt.source_doc_quantity/rt.primary_quantity,0) + nvl(pda.nonrecoverable_tax,0)*nvl(rt.currency_conversion_rate,1)/pda.quantity_ordered*(rt.source_doc_quantity/rt.primary_quantity),x.extended_precision) po_functional_price,
-po_poxrcppv_xmlp_pkg.std_unit_cost_fformula(pla.item_id, decode(mp.process_enabled_flag, 'Y', rt.organization_id, x.inventory_organization_id), rt.transaction_date, mp.process_enabled_flag, 0 , x.extended_precision) std_unit_cost_f,
+xp.po_unit_price*(xp.source_doc_quantity/xp.primary_quantity) + (nvl(xp.nonrecoverable_tax,0)/xp.quantity_ordered)*(xp.source_doc_quantity/xp.primary_quantity) unit_price,
+round(nvl(xp.currency_conversion_rate,1)*nvl(xp.po_unit_price*xp.source_doc_quantity/xp.primary_quantity,0) + nvl(xp.nonrecoverable_tax,0)*nvl(xp.currency_conversion_rate,1)/xp.quantity_ordered*(xp.source_doc_quantity/xp.primary_quantity),xp.extended_precision) po_functional_price,
+po_poxrcppv_xmlp_pkg.std_unit_cost_fformula(xp.item_id, decode(mp.process_enabled_flag, 'Y', xp.organization_id, xp.inventory_organization_id), xp.transaction_date, mp.process_enabled_flag, 0 , xp.extended_precision) std_unit_cost_f,
 0 material_cost_f,
 0 moh_absorbed_per_unit,
-po_poxrcppv_xmlp_pkg.c_price_varianceformula( round(nvl(rt.currency_conversion_rate,1) * nvl(rt.po_unit_price* (rt.source_doc_quantity / rt.primary_quantity),0) + (( (nvl(pda.nonrecoverable_tax,0) * nvl(rt.currency_conversion_rate,1))/decode (pda.quantity_ordered,0,1,pda.quantity_ordered)) *(rt.source_doc_quantity/rt.primary_quantity)), x.extended_precision), po_poxrcppv_xmlp_pkg.std_unit_cost_fformula(pla.item_id, decode(mp.process_enabled_flag, 'Y', rt.organization_id, x.inventory_organization_id), rt.transaction_date, mp.process_enabled_flag, 0, x.extended_precision), 0, round(decode(rt.transaction_type,'RETURN TO RECEIVING', rt.primary_quantity * -1,rt.primary_quantity), :p_qty_precision), x.precision) c_price_variance,
+po_poxrcppv_xmlp_pkg.c_price_varianceformula( round(nvl(xp.currency_conversion_rate,1) * nvl(xp.po_unit_price* (xp.source_doc_quantity / xp.primary_quantity),0) + (( (nvl(xp.nonrecoverable_tax,0) * nvl(xp.currency_conversion_rate,1))/decode (xp.quantity_ordered,0,1,xp.quantity_ordered)) *(xp.source_doc_quantity/xp.primary_quantity)), xp.extended_precision), po_poxrcppv_xmlp_pkg.std_unit_cost_fformula(xp.item_id, decode(mp.process_enabled_flag, 'Y', xp.organization_id, xp.inventory_organization_id), xp.transaction_date, mp.process_enabled_flag, 0, xp.extended_precision), 0, round(decode(xp.transaction_type,'RETURN TO RECEIVING', xp.primary_quantity * -1,xp.primary_quantity), :p_qty_precision), xp.precision) c_price_variance,
 mp.process_enabled_flag,
-rt.transaction_id rct_id,
-pla.item_id
+xp.transaction_id rct_id,
+xp.item_id
 from
-x,
-rcv_transactions rt,
-rcv_shipment_headers rsh,
-po_headers_all pha,
-po_lines_all pla,
-po_line_locations_all plla,
-po_distributions_all pda,
+xp,
 po_releases_all pra,
-ap_suppliers aps,
 mtl_system_items_vl msiv,
 mtl_categories_v mcv,
 mtl_parameters mp,
@@ -286,26 +298,18 @@ gmf_lc_adj_transactions glat
 where
 3=3 and
 4=4 and
-rt.shipment_header_id=rsh.shipment_header_id and
-x.organization_id=pha.org_id and
-rt.po_header_id=pha.po_header_id and
-rt.po_line_id=pla.po_line_id and
-rt.po_line_location_id=plla.line_location_id and
-rt.po_distribution_id=pda.po_distribution_id and
-pda.destination_type_code='INVENTORY' and
-plla.lcm_flag='Y' and
-rt.destination_type_code<>'RECEIVING' and
-rt.destination_type_code<>'RECEIVING' and
-plla.po_release_id=pra.po_release_id(+) and
-pha.vendor_id=aps.vendor_id and
-pla.item_id=msiv.inventory_item_id(+) and
-x.inventory_organization_id=msiv.organization_id(+) and
-rt.transaction_id=glat.rcv_transaction_id and
+xp.destination_type_code='INVENTORY' and
+xp.lcm_flag='Y' and
+xp.rt_destination_type_code<>'RECEIVING' and
+xp.po_release_id=pra.po_release_id(+) and
+xp.item_id=msiv.inventory_item_id(+) and
+xp.inventory_organization_id=msiv.organization_id(+) and
+xp.transaction_id=glat.rcv_transaction_id and
 glat.event_type in (16,17) and
 glat.organization_id=mp.organization_id and
 mp.process_enabled_flag='Y' and
-pla.category_id=mcv.category_id(+) and
-pha.agent_id=papf.person_id
+xp.category_id=mcv.category_id(+) and
+xp.agent_id=papf.person_id
 union all
 select
 'Ownership Transfer PPV' type,

@@ -26,8 +26,8 @@ from
 select /*+ push_pred(aida)*/
 case when count(distinct gp.period_num) over ()>1 then lpad(gp.period_num,2,'0')||' ' end||gjh.period_name period_name,
 gl.name ledger,
-(select gjsv.user_je_source_name from gl_je_sources_vl gjsv where gjh.je_source=gjsv.je_source_name) source_name,
-(select gjcv.user_je_category_name from gl_je_categories_vl gjcv where gjh.je_category=gjcv.je_category_name) category_name,
+gjsv.user_je_source_name source_name,
+gjcv.user_je_category_name category_name,
 gjb.name batch_name,
 xxen_util.meaning(gjb.status,'MJE_BATCH_STATUS',101) batch_status,
 gjh.posted_date,
@@ -124,7 +124,7 @@ xte.source_id_int_1,
 case when xte.application_id=222 then case when xte.entity_code in ('TRANSACTIONS','BILLS_RECEIVABLE') then xte.source_id_int_1 when xte.entity_code='ADJUSTMENTS' then aaa.customer_trx_id end end customer_trx_id,
 paa.customer_id paa_customer_id,
 acra.pay_from_customer acra_pay_from_customer,
-case when nvl(fnd_profile.value('XXEN_FSG_DRILLDOWN_TO_SAME_WORKBOOK'), 'Y')='N' then '=dd' else '=dds' end
+case when xxen_api.user_preference('XXEN_FSG_DD_TO_NEW_WORKBOOK')='Y' then '=dd' else '=dds' end
 ||'("VT","'||gl.ledger_id||','||gjsv.user_je_source_name||','||xah.event_id||','||gjl.je_line_num||'")' view_transaction
 from
 gl_ledgers gl,

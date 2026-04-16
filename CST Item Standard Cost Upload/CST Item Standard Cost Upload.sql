@@ -145,6 +145,7 @@ cic.inventory_item_id = cdcv.inventory_item_id (+) and
 cic.organization_id = mp.organization_id and
 cic.organization_id = msiv.organization_id and
 cic.inventory_item_id = msiv.inventory_item_id and
+(nvl(:p_exclude_rolled_up_items,'N')<>'Y' or cic.based_on_rollup_flag<>1) and
 (cdcv.cost_source_type =  xxen_util.meaning('1','CST_SOURCE_TYPE',700) or
  (nvl(:p_exclude_no_cost_iterms,'N') != 'Y' and
   not exists

@@ -37,7 +37,8 @@ ppa.project_number project,
 pt.task_number task,
 mfd.confidence_percentage,
 mfiv.alternate_bom_designator,
-wl.line_code
+wl.line_code,
+mfd.comments
 from
 org_organization_definitions ood,
 mrp_forecast_items_v mfiv,

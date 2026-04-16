@@ -10,13 +10,14 @@
 -- Library Link: https://www.enginatics.com/reports/ap-supplier-upload/
 -- Run Report: https://demo.enginatics.com/
 
-select distinct
+select /*+ push_pred(ipiua2) */ distinct
 null action_,
 null status_,
 null message_,
 null request_id_,
 null modified_columns_,
 :p_upload_mode upload_mode_,
+:p_disable_tca_events disable_tca_events,
 to_char(null) vend_row_id,
 to_char(null) site_row_id,
 to_char(null) site_contact_row_id,
@@ -265,7 +266,7 @@ decode(assa.pay_site_flag,'Y',xxen_util.meaning('Y','YES_NO',0),null) pay_site,
 decode(assa.primary_pay_site_flag,'Y',xxen_util.meaning('Y','YES_NO',0),null) primary_pay_site,
 decode(assa.rfq_only_site_flag,'Y',xxen_util.meaning('Y','YES_NO',0),null) rfq_only_site,
 decode(assa.tax_reporting_site_flag,'Y',xxen_util.meaning('Y','YES_NO',0),null) tax_reporting_site,
-zptp1.rep_registration_number site_tax_reg_number,
+nvl(assa.vat_registration_num,zptp1.rep_registration_number) site_tax_reg_number,
 zptp1.registration_type_code site_tax_reg_type,
 (select territory_short_name from fnd_territories_vl ftv where ftv.territory_code = zptp1.country_code) site_tax_reg_country,
 assa.customer_num site_customer_num,
@@ -353,11 +354,11 @@ xxen_util.meaning(assa.allow_awt_flag,'YES_NO',0) site_allow_withholding_tax,
 (select aag.name from ap_awt_groups aag where aag.group_id = assa.awt_group_id) site_inv_withholding_tax_group,
 (select aag.name from ap_awt_groups aag where aag.group_id = assa.pay_awt_group_id) site_pay_withholding_tax_group,
 xxen_util.meaning(nvl(zptp1.rounding_level_code,zptp0.rounding_level_code),'ZX_ROUNDING_LEVEL',0) site_tax_rounding_level,
-nvl(xxen_util.meaning(nvl(zptp1.rounding_rule_code,zptp0.rounding_rule_code),'ZX_ROUNDING_RULE',0),xxen_util.meaning(:p_default_tax_rounding_rule,'AP_TAX_ROUNDING_RULE',200)) site_tax_rounding_rule,
-xxen_util.meaning(nvl(zptp1.inclusive_tax_flag,nvl(zptp0.inclusive_tax_flag,:p_default_inclusive_tax)),'YES_NO',0) site_inclusive_tax,
-xxen_util.meaning(nvl(zptp1.process_for_applicability_flag,nvl(zptp0.process_for_applicability_flag,'Y')),'YES_NO',0) site_calculate_tax,
-xxen_util.meaning(nvl(zptp1.allow_offset_tax_flag,nvl(zptp0.allow_offset_tax_flag,:p_default_allow_offset_taxes)),'YES_NO',0) site_allow_offset_taxes,
-assa.vat_code site_tax_classification,
+xxen_util.meaning(coalesce(decode(assa.ap_tax_rounding_rule,'N','NEAREST','U','UP','D','DOWN'),zptp1.rounding_rule_code,zptp0.rounding_rule_code,decode(:p_default_tax_rounding_rule,'N','NEAREST','U','UP','D','DOWN')),'ZX_ROUNDING_RULE',0) site_tax_rounding_rule,
+xxen_util.meaning(coalesce(assa.amount_includes_tax_flag,zptp1.inclusive_tax_flag,zptp0.inclusive_tax_flag,:p_default_inclusive_tax),'YES_NO',0) site_inclusive_tax,
+xxen_util.meaning(coalesce(assa.auto_tax_calc_flag,zptp1.process_for_applicability_flag,zptp0.process_for_applicability_flag,'Y'),'YES_NO',0) site_calculate_tax,
+xxen_util.meaning(coalesce(assa.offset_tax_flag,zptp1.allow_offset_tax_flag,zptp0.allow_offset_tax_flag,:p_default_allow_offset_taxes),'YES_NO',0) site_allow_offset_taxes,
+nvl(assa.vat_code,zptp1.tax_classification_code) site_tax_classification,
 -- # Vendor Site Payment Details
 (select
  ipmv.payment_method_name
@@ -396,39 +397,29 @@ iepa1.settlement_priority site_settlement_priority,
 -- ########
 -- Vendor Site Bank Accounts
 -- ########
-case when ipiua2.instrument_payment_use_id is not null and iepa2.supplier_site_id is not null
-then xxen_util.meaning('SITE','POS_SBD_BYR_USAGE_LIST',0)
-when ipiua2.instrument_payment_use_id is not null and iepa2.org_id is not null
-then xxen_util.meaning('ADDRESS_OU','POS_SBD_BYR_USAGE_LIST',0)
-when ipiua2.instrument_payment_use_id is not null and iepa2.party_site_id is not null
-then xxen_util.meaning('ADDRESS','POS_SBD_BYR_USAGE_LIST',0)
-else null
-end site_bank_assignment_level,
-cbbv2.bank_name site_bank_name,
-cbbv2.bank_number site_bank_number,
-(select ftv.territory_short_name
- from   fnd_territories_vl ftv
- where  ftv.territory_code = cbbv2.bank_home_country
-) site_bank_country,
-cbbv2.bank_branch_name site_bank_branch_name,
-cbbv2.branch_number site_bank_branch_number,
-cbbv2.bank_branch_type site_bank_branch_type,
-cbbv2.eft_swift_code site_bank_branch_bic,
-ieba2.bank_account_name site_bank_acct_name,
-ieba2.bank_account_num site_bank_acct_num,
-ieba2.check_digits site_bank_acct_check_digits,
-ieba2.currency_code site_bank_acct_currency,
-xxen_util.meaning(ieba2.foreign_payment_use_flag,'YES_NO',0) site_bank_acct_allow_foreign,
-ieba2.iban site_bank_acct_iban,
-ieba2.bank_account_name_alt site_bank_acct_name_alt,
-ieba2.account_suffix site_bank_acct_suffix,
-xxen_util.meaning(ieba2.bank_account_type,'BANK_ACCOUNT_TYPE',260) site_bank_acct_type,
-ieba2.secondary_account_reference site_bank_acct_sec_reference,
-ieba2.description site_bank_acct_description,
-ieba2.contact_name site_bank_acct_contact,
-ieba2.contact_phone site_bank_acct_contact_phone,
-ieba2.contact_fax site_bank_acct_contact_fax,
-ieba2.contact_email site_bank_acct_contact_email,
+ipiua2.bank_assignment_level site_bank_assignment_level,
+ipiua2.bank_name site_bank_name,
+ipiua2.bank_number site_bank_number,
+ipiua2.territory_short_name site_bank_country,
+ipiua2.bank_branch_name site_bank_branch_name,
+ipiua2.branch_number site_bank_branch_number,
+ipiua2.bank_branch_type site_bank_branch_type,
+ipiua2.eft_swift_code site_bank_branch_bic,
+ipiua2.bank_account_name site_bank_acct_name,
+ipiua2.bank_account_num site_bank_acct_num,
+ipiua2.check_digits site_bank_acct_check_digits,
+ipiua2.currency_code site_bank_acct_currency,
+xxen_util.meaning(ipiua2.foreign_payment_use_flag,'yes_no',0) site_bank_acct_allow_foreign,
+ipiua2.iban site_bank_acct_iban,
+ipiua2.bank_account_name_alt site_bank_acct_name_alt,
+ipiua2.account_suffix site_bank_acct_suffix,
+xxen_util.meaning(ipiua2.bank_account_type,'bank_account_type',260) site_bank_acct_type,
+ipiua2.secondary_account_reference site_bank_acct_sec_reference,
+ipiua2.description site_bank_acct_description,
+ipiua2.contact_name site_bank_acct_contact,
+ipiua2.contact_phone site_bank_acct_contact_phone,
+ipiua2.contact_fax site_bank_acct_contact_fax,
+ipiua2.contact_email site_bank_acct_contact_email,
 ipiua2.start_date site_bank_acct_assign_start,
 ipiua2.end_date site_bank_acct_assign_end,
 -- ########
@@ -557,6 +548,7 @@ assa.org_id,
 asco.vendor_contact_id,
 ipiua0.instrument_payment_use_id supplier_bank_intsr_pay_use_id,
 ipiua2.instrument_payment_use_id site_bank_instr_pay_use_id,
+to_number(null) upload_row,
 -- defaults
 :p_default_tax_rounding_rule default_tax_rounding_rule,
 :p_default_inclusive_tax default_inclusive_tax_flag,
@@ -588,10 +580,62 @@ iby_pmt_instr_uses_all ipiua0,
 iby_ext_bank_accounts ieba0,
 ce_bank_branches_v cbbv0,
 -- vendor site bank tables
-iby_external_payees_all iepa2,
-iby_pmt_instr_uses_all ipiua2,
-iby_ext_bank_accounts ieba2,
-ce_bank_branches_v cbbv2,
+(select
+ iepa2.payee_party_id,
+ iepa2.party_site_id,
+ iepa2.org_id,
+ iepa2.supplier_site_id,
+ case when ipiua2.instrument_payment_use_id is not null and iepa2.supplier_site_id is not null
+ then xxen_util.meaning('SITE','POS_SBD_BYR_USAGE_LIST',0)
+ when ipiua2.instrument_payment_use_id is not null and iepa2.org_id is not null
+ then xxen_util.meaning('ADDRESS_OU','POS_SBD_BYR_USAGE_LIST',0)
+ when ipiua2.instrument_payment_use_id is not null and iepa2.party_site_id is not null
+ then xxen_util.meaning('ADDRESS','POS_SBD_BYR_USAGE_LIST',0)
+ else null
+ end bank_assignment_level,
+ cbbv2.bank_name,
+ cbbv2.bank_number,
+ ftv.territory_short_name,
+ cbbv2.bank_branch_name,
+ cbbv2.branch_number,
+ cbbv2.bank_branch_type,
+ cbbv2.eft_swift_code,
+ ieba2.bank_account_name,
+ ieba2.bank_account_num,
+ ieba2.check_digits,
+ ieba2.currency_code,
+ ieba2.foreign_payment_use_flag,
+ ieba2.iban,
+ ieba2.bank_account_name_alt,
+ ieba2.account_suffix,
+ ieba2.bank_account_type,
+ ieba2.secondary_account_reference,
+ ieba2.description,
+ ieba2.contact_name,
+ ieba2.contact_phone,
+ ieba2.contact_fax,
+ ieba2.contact_email,
+ ipiua2.start_date,
+ ipiua2.end_date,
+ ipiua2.instrument_payment_use_id
+ from
+ iby_external_payees_all iepa2,
+ iby_pmt_instr_uses_all ipiua2,
+ iby_ext_bank_accounts ieba2,
+ ce_bank_branches_v cbbv2,
+ fnd_territories_vl ftv
+ where
+ :p_show_site_banks = 'Y' and
+ coalesce(iepa2.party_site_id,iepa2.org_id,iepa2.supplier_site_id) is not null and
+ iepa2.payment_function = 'PAYABLES_DISB' and
+ iepa2.ext_payee_id = ipiua2.ext_pmt_party_id and
+ ipiua2.payment_flow = 'DISBURSEMENTS' and
+ ipiua2.payment_function = 'PAYABLES_DISB' and
+ ipiua2.instrument_type = 'BANKACCOUNT' and
+ ipiua2.instrument_id = ieba2.ext_bank_account_id and
+ ieba2.branch_id = cbbv2.branch_party_id and
+ cbbv2.bank_home_country = ftv.territory_code (+)
+) ipiua2,
 --
 ap_supplier_contacts asco,
 hz_parties hpc,
@@ -651,19 +695,10 @@ ipiua0.instrument_type (+) = 'BANKACCOUNT' and
 ipiua0.instrument_id = ieba0.ext_bank_account_id (+) and
 ieba0.branch_id = cbbv0.branch_party_id (+) and
 --
-decode(:p_show_site_banks,'Y',aps.party_id) = iepa2.payee_party_id (+) and
-decode(:p_show_site_banks,'Y',coalesce(assa.party_site_id,iepa2.org_id,iepa2.supplier_site_id),-1) is not null and
-nvl(assa.party_site_id,-1) = nvl(iepa2.party_site_id (+),nvl(assa.party_site_id,-1)) and
-assa.org_id = nvl(iepa2.org_id (+),assa.org_id) and
-assa.vendor_site_id = nvl(iepa2.supplier_site_id (+),assa.vendor_site_id) and
---
-iepa2.payment_function (+) = 'PAYABLES_DISB' and
-iepa2.ext_payee_id = ipiua2.ext_pmt_party_id (+) and
-ipiua2.payment_flow (+) = 'DISBURSEMENTS' and
-ipiua2.payment_function (+) = 'PAYABLES_DISB' and
-ipiua2.instrument_type (+) = 'BANKACCOUNT' and
-ipiua2.instrument_id = ieba2.ext_bank_account_id (+) and
-ieba2.branch_id = cbbv2.branch_party_id (+) and
+aps.party_id = ipiua2.payee_party_id (+) and
+nvl(assa.party_site_id,-1) = nvl(ipiua2.party_site_id (+),nvl(assa.party_site_id,-1)) and
+assa.org_id = nvl(ipiua2.org_id (+),assa.org_id) and
+assa.vendor_site_id = nvl(ipiua2.supplier_site_id (+),assa.vendor_site_id) and
 --
 decode(:p_show_site_contacts,'Y',assa.party_site_id,-99) = asco.org_party_site_id (+) and
 (asco.vendor_contact_id is null or

@@ -15,6 +15,8 @@ fpov.profile_option_name profile_name,
 fav.application_name application,
 fpov.user_profile_option_name user_profile_name,
 fpov.description,
+&display_value
+fnd_profile.value(fpov.profile_option_name) value,
 xxen_util.meaning(fpov.hierarchy_type,'PROFILE_OPTION_HIERARCHIES',0) hierarchy_type,
 xxen_util.yes(fpov.user_visible_flag) user_access_visible,
 xxen_util.yes(fpov.user_changeable_flag)  user_access_updatable,

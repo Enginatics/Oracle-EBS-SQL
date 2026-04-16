@@ -98,6 +98,7 @@ axclv0.gl_date receivables_account_gl_date,
 &distribution_columns
 &segment_columns
 &contracts_columns
+&dff_columns
 xxen_util.user_name(rcta.created_by) trx_created_by,
 xxen_util.client_time(rcta.creation_date) trx_creation_date,
 xxen_util.user_name(rcta.last_updated_by) trx_last_updated_by,

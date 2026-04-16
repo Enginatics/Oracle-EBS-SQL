@@ -11,9 +11,10 @@ The upload supports creation/update/deletion of the following entities within th
 
 - Price List Lines
 
+'End Date Matching List Lines?'
 When creating new Price List Lines, the upload can automatically end date any existing matching active price list line by setting the report parameter 'End Date Matching List Lines?' to Yes. 
-
-Set this parameter to Yes to automatically end date any active matching price list line on upload. This only applies when creating a new Price List Line.
+Set this parameter to Yes to automatically end date any active matching price list line on upload. 
+Any price list lines downloaded when this parameter is set to yes will have the Action field automatically set to ’Create’ to indicate a new Price List Line should be created instead off the existing price list line being updated. This allows the user to use the downloaded (current) price list lines as a basis for creating the new price list lines.  
 
 - Price Breaks
 
@@ -44,14 +45,15 @@ i.e. You can upload an excel row containing a header level qualifier, header lev
 
 
 
+
 -- Excel Examle Output: https://www.enginatics.com/example/qp-price-list-upload/
 -- Library Link: https://www.enginatics.com/reports/qp-price-list-upload/
 -- Run Report: https://demo.enginatics.com/
 
 select
-null action_,
-null status_,
-null message_,
+case when :p_override_list_line = 'Y' then xxen_upload.action_meaning(xxen_upload.action_create) else null end action_,
+case when :p_override_list_line = 'Y' then xxen_upload.status_meaning(xxen_upload.status_new) else null end status_,
+case when :p_override_list_line = 'Y' then xxen_util.description('U_EXCEL_MSG_VALIDATION_PENDING','XXEN_REPORT_TRANSLATIONS',0) else null end message_,
 null request_id_,
 null modified_columns_,
 :p_upload_mode upload_mode_,

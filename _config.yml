@@ -1,1 +1,5 @@
 theme: jekyll-theme-cayman
+title: Oracle EBS SQL Reports Library
+description: Open source Oracle E-Business Suite SQL reports library with 500+ ready-to-run SQL queries for AP, AR, GL, PO, INV, WIP, HR, FA and all Oracle EBS modules.
+url: https://oraclereporting.com
+author: Enginatics

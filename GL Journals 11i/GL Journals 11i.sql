@@ -98,15 +98,15 @@ gp.start_date period_start,
 gp.end_date period_end,
 to_char(gp.period_year) || '-' || ltrim(to_char(gp.period_num,'00')) period_year_num
 from
-xxen_xxen_gl_ledgers_v_v gl,
+xxen_gl_ledgers_v gl,
 gl_periods gp,
 gl_je_batches gjb,
 gl_je_headers gjh,
 gl_je_lines gjl,
 gl_je_lines_recon gjlr,
 gcck,
-(select distinct fad.pk1_value,&fad_document_id count(*) over (partition by fad.pk1_value) count from fnd_attached_documents fad where fad.entity_name='GL_JE_BATCHES') fad1,
-(select distinct fad.pk2_value,&fad_document_id count(*) over (partition by fad.pk2_value) count from fnd_attached_documents fad where fad.entity_name='GL_JE_HEADERS') fad2,
+(select distinct fad.pk1_value,&fad_document_id count(*) over (partition by fad.pk1_value) count from fnd_attached_documents fad where  '&show_attachments'='Y'  and fad.entity_name='GL_JE_BATCHES') fad1,
+(select distinct fad.pk1_value,fad.pk2_value,&fad_document_id count(*) over (partition by fad.pk1_value,fad.pk2_value) count from fnd_attached_documents fad where '&show_attachments'='Y' and fad.entity_name='GL_JE_HEADERS') fad2,
 fnd_documents fd1,
 fnd_documents fd2,
 fnd_documents_tl fdt1,
@@ -134,6 +134,7 @@ gjl.je_header_id=gjlr.je_header_id(+) and
 gjl.je_line_num=gjlr.je_line_num(+) and
 gjl.code_combination_id=gcck.code_combination_id(+) and
 to_char(gjb.je_batch_id)=fad1.pk1_value(+) and
+to_char(gjb.je_batch_id)=fad2.pk1_value(+) and
 to_char(gjh.je_header_id)=fad2.pk2_value(+) and
 fad1.document_id=fd1.document_id(+) and
 fad2.document_id=fd2.document_id(+) and

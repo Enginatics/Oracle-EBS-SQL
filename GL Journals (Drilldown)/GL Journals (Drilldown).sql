@@ -39,8 +39,8 @@ gjh.je_header_id,
 gjh.doc_sequence_value journal_document_number,
 gjh.description journal_description,
 gjh.external_reference,
-(select gjsv.user_je_source_name from gl_je_sources_vl gjsv where gjh.je_source=gjsv.je_source_name) source_name,
-(select gjcv.user_je_category_name from gl_je_categories_vl gjcv where gjh.je_category=gjcv.je_category_name) category_name,
+gjsv.user_je_source_name source_name,
+gjcv.user_je_category_name category_name,
 xxen_util.meaning(gjh.status,'BATCH_STATUS',101) journal_status,
 xxen_util.description(gjh.actual_flag,'BATCH_TYPE',101) balance_type,
 (select gbv.budget_name from gl_budget_versions gbv where gjh.budget_version_id=gbv.budget_version_id) budget_name,
@@ -106,17 +106,27 @@ xxen_util.client_time(gjl.last_update_date) line_last_update_date,
 -- period labels
 gp.start_date period_start,
 gp.end_date period_end,
-case when nvl(fnd_profile.value('XXEN_FSG_DRILLDOWN_TO_SAME_WORKBOOK'), 'Y')='N' then '=dd' else '=dds' end
+-- balance
+0 opening_balance,
+nvl(gjl.accounted_dr,0) period_dr,
+nvl(gjl.accounted_cr,0) period_cr,
+nvl(gjl.accounted_dr,0)-nvl(gjl.accounted_cr,0) net,
+nvl(gjl.accounted_dr,0)-nvl(gjl.accounted_cr,0) closing_balance,
+case when xxen_api.user_preference('XXEN_FSG_DD_TO_NEW_WORKBOOK')='Y' then '=dd' else '=dds' end
+||'("GJ","'||gl.ledger_id||','||gp.period_name||','||:amount_type||','||gjh.currency_code||','||gjh.actual_flag||','||(select gbv.budget_name from gl_budget_versions gbv where gjh.budget_version_id=gbv.budget_version_id)||','||(select get.encumbrance_type from gl_encumbrance_types get where gjh.encumbrance_type_id=get.encumbrance_type_id)||','||gjsv.user_je_source_name||','||gjcv.user_je_category_name||','||gcck.code_combination_id||'")' drill_to_journal,
+case when xxen_api.user_preference('XXEN_FSG_DD_TO_NEW_WORKBOOK')='Y' then '=dd' else '=dds' end
 ||'("SD","'||gl.ledger_id||','||gp.period_name||','||:amount_type||','||gjh.currency_code||',,,,," & "'||gjh.je_header_id||'|'||gjl.je_line_num||',,")' drill_to_subledger,
-case when nvl(fnd_profile.value('XXEN_FSG_DRILLDOWN_TO_SAME_WORKBOOK'), 'Y')='N' then '=dd' else '=dds' end
+case when xxen_api.user_preference('XXEN_FSG_DD_TO_NEW_WORKBOOK')='Y' then '=dd' else '=dds' end
 ||'("GJA","'||gl.ledger_id||','||gp.period_name||','||:amount_type||','||gjh.currency_code||','||gjh.actual_flag||','||(select gbv.budget_name from gl_budget_versions gbv where gjh.budget_version_id=gbv.budget_version_id)||','||(select get.encumbrance_type from gl_encumbrance_types get where gjh.encumbrance_type_id=get.encumbrance_type_id)||','||gcck.code_combination_id||'," & "'||gjh.je_header_id||'," & "'||gjb.je_batch_id||','||gjl.je_line_num||'")' drill_to_journal_attachment,
-case when nvl(fnd_profile.value('XXEN_FSG_DRILLDOWN_TO_SAME_WORKBOOK'), 'Y')='N' then '=dd' else '=dds' end
+case when xxen_api.user_preference('XXEN_FSG_DD_TO_NEW_WORKBOOK')='Y' then '=dd' else '=dds' end
 ||'("GFJ","'||gl.ledger_id||','||gp.period_name||','||:amount_type||','||gjh.currency_code||','||gjh.actual_flag||','||(select gbv.budget_name from gl_budget_versions gbv where gjh.budget_version_id=gbv.budget_version_id)||','||(select get.encumbrance_type from gl_encumbrance_types get where gjh.encumbrance_type_id=get.encumbrance_type_id)||',,'||gjh.je_header_id||'," & "'||gjb.je_batch_id||',")' drill_to_full_journal
 from
 gl_ledgers gl,
 gl_periods gp,
 gl_je_batches gjb,
 gl_je_headers gjh,
+gl_je_sources_vl gjsv,
+gl_je_categories_vl gjcv,
 gl_je_lines gjl,
 gl_je_lines_recon gjlr,
 gl_code_combinations_kfv gcck,
@@ -143,6 +153,8 @@ gp.period_name=gjh.period_name and
 gp.period_name=gjl.period_name and
 gl.ledger_id=gjh.ledger_id and
 gjb.je_batch_id=gjh.je_batch_id and
+gjh.je_source=gjsv.je_source_name and
+gjh.je_category=gjcv.je_category_name and
 gjh.je_header_id=gjl.je_header_id(+) and
 &gl_flex_value_security
 gjl.je_header_id=gjlr.je_header_id(+) and

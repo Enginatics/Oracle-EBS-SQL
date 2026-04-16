@@ -20,6 +20,7 @@ mpl.description planner,
 wsg.schedule_group_name schedule_group,
 msiv.concatenated_segments item,
 msiv.description item_description,
+&category_columns
 xxen_util.meaning(msiv.item_type,'ITEM_TYPE',3) user_item_type,
 xxen_util.meaning(msiv.mrp_planning_code,'MRP_PLANNING_CODE',700) planning_method,
 xxen_util.meaning(msiv.end_assembly_pegging_flag,'ASSEMBLY_PEGGING_CODE',0) pegging,

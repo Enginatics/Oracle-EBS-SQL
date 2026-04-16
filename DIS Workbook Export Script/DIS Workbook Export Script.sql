@@ -6,7 +6,8 @@
 /*************************************************************************/
 -- Report Name: DIS Workbook Export Script
 -- Description: <a href="https://youtu.be/17_Au_11IBE" rel="nofollow" target="_blank">https://youtu.be/17_Au_11IBE</a>
-Use this report to migrate Discoverer workbooks to Blitz Report through the following steps:
+Use this report to migrate Discoverer workbooks to Blitz Report.
+The migration process is described in the following link: <a href="https://www.enginatics.com/blog/discoverer-replacement-with-blitz-report/" rel="nofollow" target="_blank">https://www.enginatics.com/blog/discoverer-replacement-with-blitz-report/</a>
 
 1. Run this report 'DIS Workbook Export Script' to generate a list of commands to export xmls for all recently used Discoverer workbooks.
 2. Create a new folder on a windows machine having the Discoverer Admin executable dis51adm.exe installed (contact Enginatics, if you need help with the Discoverer Administrator installation).

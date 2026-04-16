@@ -56,12 +56,13 @@ Limit No is required when entering limit details. The upload uses the combinatio
 -- Run Report: https://demo.enginatics.com/
 
 select
-null action_,
-null status_,
-null message_,
+case when :p_override_list_line = 'Y' then xxen_upload.action_meaning(xxen_upload.action_create) else null end action_,
+case when :p_override_list_line = 'Y' then xxen_upload.status_meaning(xxen_upload.status_new) else null end status_,
+case when :p_override_list_line = 'Y' then xxen_util.description('U_EXCEL_MSG_VALIDATION_PENDING','XXEN_REPORT_TRANSLATIONS',0) else null end message_,
 null request_id_,
 null modified_columns_,
 :p_upload_mode upload_mode_,
+:p_override_list_line override_list_line_,
 to_number(null) upload_row,
 :p_modifier_numbering modifier_numbering,
 to_number(null) mod_list_row_id,
@@ -1781,11 +1782,10 @@ to_number(null) get_value,
 null delete_get_item,
 --
 -- Pricing Attributes
-decode(qpa.excluder_flag,'N',qpa.orig_sys_pricing_attr_ref) pricing_attribute_orig_sys_ref,
-decode(qpa.excluder_flag,'N',qp_util.get_context('QP_ATTR_DEFNS_PRICING',qpa.pricing_attribute_context)) pricing_attribute_context,
-decode(qpa.excluder_flag,'N',qp_qp_form_pricing_attr.get_attribute('QP_ATTR_DEFNS_PRICING',qpa.pricing_attribute_context, qpa.pricing_attribute)) pricing_attribute,
-decode(qpa.excluder_flag,'N',qpa.comparison_operator_code,null) pricing_attribute_operator,
-decode(qpa.excluder_flag,'N',
+qpa.orig_sys_pricing_attr_ref pricing_attribute_orig_sys_ref,
+qp_util.get_context('QP_ATTR_DEFNS_PRICING',qpa.pricing_attribute_context) pricing_attribute_context,
+qp_qp_form_pricing_attr.get_attribute('QP_ATTR_DEFNS_PRICING',qpa.pricing_attribute_context, qpa.pricing_attribute) pricing_attribute,
+qpa.comparison_operator_code pricing_attribute_operator,
 rtrim(replace(
  qp_util.get_attribute_value
   ('QP_ATTR_DEFNS_PRICING',
@@ -1794,8 +1794,7 @@ rtrim(replace(
    qpa.pricing_attr_value_from,
    qpa.comparison_operator_code
   ),chr(0),null)
-)) pricing_attribute_value_from,
-decode(qpa.excluder_flag,'N',
+) pricing_attribute_value_from,
 rtrim(replace(
  qp_util.get_attribute_value_meaning
  ('QP_ATTR_DEFNS_PRICING',
@@ -1804,30 +1803,28 @@ rtrim(replace(
   qpa.pricing_attr_value_from,
   qpa.comparison_operator_code
  ),chr(0),null)
-)) pricing_attribute_val_fr_desc,
-decode(qpa.excluder_flag,'N',
+) pricing_attribute_val_fr_desc,
 qp_util.get_attribute_value
 ('QP_ATTR_DEFNS_PRICING',
  qpa.pricing_attribute_context,
  qp_qp_form_pricing_attr.get_segment_name('QP_ATTR_DEFNS_PRICING',qpa.pricing_attribute_context, qpa.pricing_attribute),
  qpa.pricing_attr_value_to,
  qpa.comparison_operator_code
-)) pricing_attribute_value_to,
+) pricing_attribute_value_to,
 null delete_pricing_attribute,
 --
 -- Excluder
-decode(qpa.excluder_flag,'Y',qpa.orig_sys_pricing_attr_ref) excluder_orig_sys_ref,
-decode(qpa.excluder_flag,'Y',xxen_util.yes(qpa.excluder_flag)) excluder_flag,
-decode(qpa.excluder_flag,'Y',qp_qp_form_pricing_attr.get_attribute('QP_ATTR_DEFNS_PRICING',qpa.product_attribute_context,qpa.product_attribute)) excluder_product_attribute,
-decode(qpa.excluder_flag,'Y',qp_price_list_line_util.get_product_value('QP_ATTR_DEFNS_PRICING',qpa.product_attribute_context,qpa.product_attribute,qpa.product_attr_value)) excluder_product_value,
-decode(qpa.excluder_flag,'Y',
+qpa2.orig_sys_pricing_attr_ref excluder_orig_sys_ref,
+xxen_util.yes(qpa2.excluder_flag) excluder_flag,
+qp_qp_form_pricing_attr.get_attribute('QP_ATTR_DEFNS_PRICING',qpa2.product_attribute_context,qpa2.product_attribute) excluder_product_attribute,
+qp_price_list_line_util.get_product_value('QP_ATTR_DEFNS_PRICING',qpa2.product_attribute_context,qpa2.product_attribute,qpa2.product_attr_value) excluder_product_value,
 xxen_qp_upload.get_product_description
 (qslhv.pte_code,
- qp_util.get_context('QP_ATTR_DEFNS_PRICING',qpa.product_attribute_context),
- qp_qp_form_pricing_attr.get_attribute('QP_ATTR_DEFNS_PRICING',qpa.product_attribute_context,qpa.product_attribute),
- qpa.product_attr_value,
- qp_price_list_line_util.get_product_value('QP_ATTR_DEFNS_PRICING',qpa.product_attribute_context,qpa.product_attribute,qpa.product_attr_value)
- )) excluder_product_description,
+ qp_util.get_context('QP_ATTR_DEFNS_PRICING',qpa2.product_attribute_context),
+ qp_qp_form_pricing_attr.get_attribute('QP_ATTR_DEFNS_PRICING',qpa2.product_attribute_context,qpa2.product_attribute),
+ qpa2.product_attr_value,
+ qp_price_list_line_util.get_product_value('QP_ATTR_DEFNS_PRICING',qpa2.product_attribute_context,qpa2.product_attribute,qpa2.product_attr_value)
+ ) excluder_product_description,
 null delete_excluder,
 --
 -- Qualifiers
@@ -1895,8 +1892,8 @@ qmsv.list_line_id modifier_line_id,
 to_number(null) price_break_line_id,
 to_number(null) buy_line_id,
 to_number(null) get_line_id,
-decode(qpa.excluder_flag,'N',qpa.pricing_attribute_id) pricing_attribute_id,
-decode(qpa.excluder_flag,'Y',qpa.pricing_attribute_id) excluder_id,
+qpa.pricing_attribute_id pricing_attribute_id,
+qpa.pricing_attribute_id excluder_id,
 to_number(null) qualifier_id,
 to_number(null) limit_id,
 to_number(null) limit_attribute_id,
@@ -1905,7 +1902,8 @@ to_number(null) limit_attribute_id,
 from
 qp_secu_list_headers_vl qslhv,
 qp_modifier_summary_v qmsv,
-qp_pricing_attributes qpa
+qp_pricing_attributes qpa,
+qp_pricing_attributes qpa2
 where
 1=1 and
 2=2 and
@@ -1947,19 +1945,14 @@ nvl(qmsv.excluder_flag,'N') = 'N' and
  )
 ) and
 -- pricing attributes
-nvl2(:p_show_pricing_attributes||:p_show_excluders,qmsv.list_line_id,null) = qpa.list_line_id (+) and
+nvl2(:p_show_pricing_attributes,qmsv.list_line_id,null) = qpa.list_line_id (+) and
 qpa.product_attribute_context (+) = 'ITEM' and
-(qpa.list_line_id is null or
- (:p_show_pricing_attributes = 'Y' and
-  qpa.excluder_flag = 'N' and
-  qpa.pricing_attribute is not null and
-  nvl(qpa.pricing_attribute_context,'') != 'VOLUME'
- ) or
- (:p_show_excluders = 'Y' and
-  qpa.excluder_flag = 'Y' and
-  qpa.pricing_attribute is null
- )
-)
+qpa.pricing_attribute (+) is not null and
+nvl(qpa.pricing_attribute_context (+),'null') != 'VOLUME' and
+-- excluders
+nvl2(:p_show_excluders,qmsv.list_line_id,null) = qpa2.list_line_id (+) and
+qpa2.excluder_flag (+) = 'Y' and
+qpa2.pricing_attribute (+) is null
 --
 union
 --

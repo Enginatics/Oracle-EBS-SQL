@@ -46,11 +46,11 @@ oracle               hard    memlock (SGA GB x 512 + 5) * 2048
 <a href="https://www.carajandb.com/en/2016/09/22/7-easy-steps-to-configure-hugepages-for-your-oracle-database-server/" rel="nofollow" target="_blank">https://www.carajandb.com/en/2016/09/22/7-easy-steps-to-configure-hugepages-for-your-oracle-database-server/</a>
 
 Check if all database parameters are set according to Oracle's requirement:
-Database Initialization Parameters for Oracle E-Business Suite Release 12 (Note 396009.1)
-<a href="https://support.oracle.com/rs?type=doc&id=396009.1" rel="nofollow" target="_blank">https://support.oracle.com/rs?type=doc&id=396009.1</a>
+Database Initialization Parameters for Oracle E-Business Suite Release 12 (KA1002)
+<a href="https://support.oracle.com/support/?kmContentId=11158187" rel="nofollow" target="_blank">https://support.oracle.com/support/?kmContentId=11158187</a>
 
-To perform this check automatically, install and run Oracle's 'Database Performance and Statistics Analyzer' concurrent program (Doc ID 2126712.1)
-<a href="https://support.oracle.com/rs?type=doc&id=2126712.1" rel="nofollow" target="_blank">https://support.oracle.com/rs?type=doc&id=2126712.1</a>
+To perform this check automatically, install and run Oracle's 'Database Performance and Statistics Analyzer' concurrent program (KB627702)
+<a href="https://support.oracle.com/rs?type=doc&id=2126712" rel="nofollow" target="_blank">https://support.oracle.com/rs?type=doc&id=2126712</a>
 -- Excel Examle Output: https://www.enginatics.com/example/dba-sga-pga-memory-configuration/
 -- Library Link: https://www.enginatics.com/reports/dba-sga-pga-memory-configuration/
 -- Run Report: https://demo.enginatics.com/

@@ -15,699 +15,657 @@ DB package:
 -- Library Link: https://www.enginatics.com/reports/ja-india-gstr-3b-return/
 -- Run Report: https://demo.enginatics.com/
 
-with party as (
+with jai_party_reg as (
 select
-registration_number gstn,
-party_name registered_person,
-operating_unit
+jprlv.registration_number,
+jprv.party_name,
+jprv.operating_unit
 from
-jai_party_reg_lines_v a,
-jai_party_regs_v b
-where 
+jai_party_reg_lines_v jprlv,
+jai_party_regs_v jprv
+where
 1=1 and
-a.party_reg_id=b.party_reg_id and
-b.party_type_code in ('IO','OU')
-)
+jprlv.registration_number=:p_first_pty_reg_num and
+jprlv.party_reg_id=jprv.party_reg_id and
+jprv.party_type_code in ('IO','OU') and
+rownum=1)
+-- 31a
 select
-'31a' name,
-tax_dtls.gstn "GSTN",
-tax_dtls.registered_person,
+'31a' section_code,
+tax_dtls.registration_number gstin,
+tax_dtls.party_name registered_person,
 tax_dtls.operating_unit,
 null pos,
 null type,
-line_amt taxable_value,
-tax_dtls.cgst "CGST",
-tax_dtls.sgst "SGST",
-tax_dtls.igst "IGST",
-tax_dtls.cess "CESS"
-from 
-jai_tax_det_factors det_fact,
-(select distinct
-x.*,
-tax.det_factor_id,
-sum(decode(tax_assc.reporting_code, 'IGST', (tax_lines.rounded_tax_amt_fun_curr))) igst,
-sum(decode(tax_assc.reporting_code, 'CGST', (tax_lines.rounded_tax_amt_fun_curr))) cgst,
-sum(decode(tax_assc.reporting_code, 'SGST', (tax_lines.rounded_tax_amt_fun_curr))) sgst,
-sum(decode(tax_assc.reporting_code, 'CESS', (tax_lines.rounded_tax_amt_fun_curr))) cess
+tax_dtls.taxable_basis taxable_value,
+tax_dtls.cgst,
+tax_dtls.sgst,
+tax_dtls.igst,
+tax_dtls.cess_amount
 from
-party x,
-jai_tax_det_factors tax,
-jai_tax_lines_v tax_lines,
-jai_reporting_associations_v tax_assc,
-jai_rgm_recovery_lines tax_rec
-where
-2=2 and
-to_char(trunc(tax.tax_invoice_date),'MONYYYY') = :p_period and
-tax.det_factor_id=tax_lines.det_factor_id and
-tax_assc.entity_code='TAX_TYPE' and
-tax_assc.reporting_type_code='TAX_TYPES_CLASSIFICATION' and
-tax_lines.first_party_primary_reg_num=x.gstn and
-tax_rec.tax_line_id=tax_lines.tax_line_id and
-tax_lines.tax_type_id=tax_assc.entity_id and
-tax_lines.actual_tax_rate<>0 and
-tax_lines.actual_tax_rate is not null and
-tax_lines.exemption_type is null and
-tax.ship_to_country='IN' and
-tax_rec.liability_amount<>0 and
-tax_rec.status='CONFIRMED' and
-not exists(select 1
+(select
+jpr.registration_number,
+jpr.party_name,
+jpr.operating_unit,
+jtdf.det_factor_id,
+jtlv.organization_name,
+jtlv.location_code,
+jtlv.application_name,
+jtlv.entity_code,
+jtlv.event_class_code,
+jtlv.event_type_code,
+jtlv.tax_event_class_code,
+jtlv.tax_event_type_code,
+jtlv.trx_type,
+jtlv.trx_number,
+jtlv.trx_date,
+jtlv.trx_line_number,
+jtlv.item_id,
+jtlv.frozen_flag,
+jtlv.party_type,
+jtlv.party_number,
+jtlv.party_site_name,
+nvl(jtlv.line_amt,0) line_amt,
+nvl(jtlv.taxable_basis,0) taxable_basis,
+nvl(sum(decode(jrav.reporting_code,'IGST',jtlv.rounded_tax_amt_fun_curr)),0) igst,
+nvl(sum(decode(jrav.reporting_code,'CGST',jtlv.rounded_tax_amt_fun_curr)),0) cgst,
+nvl(sum(decode(jrav.reporting_code,'SGST',jtlv.rounded_tax_amt_fun_curr)),0) sgst,
+nvl(sum(decode(jrav.reporting_code,'CESS',jtlv.rounded_tax_amt_fun_curr)),0) cess_amount
 from
-jai_party_regs jpr,
-jai_reporting_associations_v jrav_party
+jai_tax_det_factors jtdf,
+jai_tax_lines_v jtlv,
+jai_reporting_associations_v jrav,
+jai_rgm_recovery_lines jrrl,
+jai_party_reg jpr
 where
-upper (jrav_party.reporting_code) in (upper ('Deemed Exports EOU'), upper ('SEZ'))
-and jrav_party.entity_code='THIRD_PARTY'
-and jrav_party.reporting_type_code='THIRD_PARTY_CLASSIFICATION'
-and jpr.party_reg_id=jrav_party.entity_id
-and jpr.party_id=tax.party_id
-)
+1=1 and
+to_char(trunc(jtdf.tax_invoice_date),'MONYYYY')=:p_period and
+jtdf.det_factor_id=jtlv.det_factor_id and
+jrav.entity_code='TAX_TYPE' and
+jrav.reporting_type_code='TAX_TYPES_CLASSIFICATION' and
+jtlv.first_party_primary_reg_num=jpr.registration_number and
+jrrl.tax_line_id=jtlv.tax_line_id and
+jtlv.tax_type_id=jrav.entity_id and
+jtlv.actual_tax_rate<>0 and
+jtlv.actual_tax_rate is not null and
+jtlv.exemption_type is null and
+jtdf.bill_to_country='IN' and
+jrrl.liability_amount<>0 and
+jrrl.status='CONFIRMED' and
+jtlv.self_assessed_flag<>'Y' and
+not exists (select null
+from
+jai_party_regs jpr2,
+jai_reporting_associations_v jrav2
+where
+upper(jrav2.reporting_code) in ('DEEMED EXPORTS EOU','SEZ') and
+jrav2.entity_code='THIRD_PARTY' and
+jrav2.reporting_type_code='THIRD_PARTY_CLASSIFICATION' and
+jpr2.party_reg_id=jrav2.entity_id and
+jpr2.party_id=jtdf.party_id)
 group by
-tax.det_factor_id,
-x.gstn,
-x.registered_person,
-x.operating_unit
-) tax_dtls
-where
-det_fact.det_factor_id=tax_dtls.det_factor_id
+jpr.registration_number,
+jpr.party_name,
+jpr.operating_unit,
+jtdf.det_factor_id,
+jtlv.organization_name,
+jtlv.location_code,
+jtlv.application_name,
+jtlv.entity_code,
+jtlv.event_class_code,
+jtlv.event_type_code,
+jtlv.tax_event_class_code,
+jtlv.tax_event_type_code,
+jtlv.trx_type,
+jtlv.trx_number,
+jtlv.trx_date,
+jtlv.trx_line_number,
+jtlv.item_id,
+jtlv.frozen_flag,
+jtlv.party_type,
+jtlv.party_number,
+jtlv.party_site_name,
+nvl(jtlv.line_amt,0),
+nvl(jtlv.taxable_basis,0)) tax_dtls
 union all
+-- 31b
 select
-'31b' name,
-tax_dtls.gstn "GSTN",
-tax_dtls.registered_person,
+'31b' section_code,
+tax_dtls.registration_number gstin,
+tax_dtls.party_name registered_person,
 tax_dtls.operating_unit,
 null pos,
 null type,
-line_amt taxable_value,
-null "CGST",
-null "SGST",
-tax_dtls.igst "IGST",
-tax_dtls.cess "CESS"
-from 
-jai_tax_det_factors det_fact,
-(select distinct
-x.*,
-tax.det_factor_id,
-sum(decode(tax_assc.reporting_code, 'IGST', (tax_lines.rounded_tax_amt_fun_curr))) igst,
-sum(decode(tax_assc.reporting_code, 'CESS', (tax_lines.rounded_tax_amt_fun_curr))) cess
+tax_dtls.line_amt taxable_value,
+null cgst,
+null sgst,
+tax_dtls.igst,
+tax_dtls.cess_amount
 from
-party x,
-jai_tax_det_factors tax,
-jai_tax_lines_v tax_lines,
-jai_reporting_associations_v tax_assc,
-jai_rgm_recovery_lines tax_rec
+(select
+jpr.registration_number,
+jpr.party_name,
+jpr.operating_unit,
+jtdf.det_factor_id,
+jtdf.line_amt,
+sum(decode(jrav.reporting_code,'IGST',jtlv.rounded_tax_amt_fun_curr)) igst,
+sum(decode(jrav.reporting_code,'CESS',jtlv.rounded_tax_amt_fun_curr)) cess_amount
+from
+jai_party_reg jpr,
+jai_tax_det_factors jtdf,
+jai_tax_lines_v jtlv,
+jai_reporting_associations_v jrav,
+jai_rgm_recovery_lines jrrl
 where
 2=2 and
-to_char(trunc(tax.tax_invoice_date),'MONYYYY') = :p_period and
-tax.det_factor_id=tax_lines.det_factor_id and
-tax_assc.entity_code='TAX_TYPE' and
-tax_assc.reporting_type_code='TAX_TYPES_CLASSIFICATION' and
-tax_lines.first_party_primary_reg_num=x.gstn and
-tax_rec.tax_line_id=tax_lines.tax_line_id and
-tax_lines.tax_type_id=tax_assc.entity_id and
-tax_rec.liability_amount<>0 and
-tax_rec.status='CONFIRMED' and
-(tax.ship_to_country<>'IN' or
-exists(select 1
+to_char(trunc(jtdf.tax_invoice_date),'MONYYYY')=:p_period and
+jtdf.det_factor_id=jtlv.det_factor_id and
+jrav.entity_code='TAX_TYPE' and
+jrav.reporting_type_code='TAX_TYPES_CLASSIFICATION' and
+jtlv.first_party_primary_reg_num=jpr.registration_number and
+jrrl.tax_line_id=jtlv.tax_line_id and
+jtlv.tax_type_id=jrav.entity_id and
+jrrl.liability_amount<>0 and
+jrrl.status='CONFIRMED' and
+(jtdf.ship_to_country<>'IN' or
+exists (select null
 from
-jai_party_regs jpr,
-jai_reporting_associations_v jrav_party
+jai_party_regs jpr2,
+jai_reporting_associations_v jrav2
 where
-upper (jrav_party.reporting_code) in (upper ('Deemed Exports EOU'), upper ('SEZ'))
-and jrav_party.entity_code='THIRD_PARTY'
-and jrav_party.reporting_type_code='THIRD_PARTY_CLASSIFICATION'
-and jpr.party_reg_id=jrav_party.entity_id
-and jpr.party_id=tax.party_id
-))
+upper(jrav2.reporting_code) in ('DEEMED EXPORTS EOU','SEZ') and
+jrav2.entity_code='THIRD_PARTY' and
+jrav2.reporting_type_code='THIRD_PARTY_CLASSIFICATION' and
+jpr2.party_reg_id=jrav2.entity_id and
+jpr2.party_id=jtdf.party_id))
 group by
-tax.det_factor_id,
-x.gstn,
-x.registered_person,
-x.operating_unit
-) tax_dtls
-where
-det_fact.det_factor_id=tax_dtls.det_factor_id
+jtdf.det_factor_id,
+jpr.registration_number,
+jpr.party_name,
+jpr.operating_unit,
+jtdf.line_amt) tax_dtls
 union all
+-- 31c
 select
-'31c' name,
-tax_dtls.gstn "GSTN",
-tax_dtls.registered_person,
+'31c' section_code,
+tax_dtls.registration_number gstin,
+tax_dtls.party_name registered_person,
 tax_dtls.operating_unit,
 null pos,
 null type,
-line_amt taxable_value,
-null "CGST",
-null "SGST",
-null "IGST",
-null "CESS"
-from 
-jai_tax_det_factors det_fact,
-(select distinct
-x.*,
-tax.det_factor_id
+tax_dtls.line_amt taxable_value,
+null cgst,
+null sgst,
+null igst,
+null cess_amount
 from
-party x,
-jai_tax_det_factors tax,
-jai_tax_lines_v tax_lines,
-jai_reporting_associations_v tax_assc,
-jai_rgm_recovery_lines tax_rec
+(select distinct
+jpr.registration_number,
+jpr.party_name,
+jpr.operating_unit,
+jtdf.det_factor_id,
+jtdf.line_amt
+from
+jai_party_reg jpr,
+jai_tax_det_factors jtdf,
+jai_tax_lines_v jtlv,
+jai_reporting_associations_v jrav,
+jai_rgm_recovery_lines jrrl
 where
 2=2 and
-to_char(trunc(tax.tax_invoice_date),'MONYYYY') = :p_period and
-tax.det_factor_id=tax_lines.det_factor_id and
-tax_assc.entity_code='TAX_TYPE' and
-tax_assc.reporting_type_code='TAX_TYPES_CLASSIFICATION' and
-tax_lines.first_party_primary_reg_num=x.gstn and
-tax_rec.tax_line_id=tax_lines.tax_line_id and
-tax_lines.tax_type_id=tax_assc.entity_id and
-tax_rec.status='CONFIRMED' and
-((tax_lines.tax_rate_percentage is null or tax_lines.tax_rate_percentage=0) or
- (tax_lines.tax_amt_before_exemption>0 and nvl(tax_lines.rounded_tax_amt_fun_curr,0)=0))
-) tax_dtls
-where
-det_fact.det_factor_id=tax_dtls.det_factor_id
+to_char(trunc(jtdf.tax_invoice_date),'MONYYYY')=:p_period and
+jtdf.det_factor_id=jtlv.det_factor_id and
+jrav.entity_code='TAX_TYPE' and
+jrav.reporting_type_code='TAX_TYPES_CLASSIFICATION' and
+jtlv.first_party_primary_reg_num=jpr.registration_number and
+jrrl.tax_line_id=jtlv.tax_line_id and
+jtlv.tax_type_id=jrav.entity_id and
+jrrl.status='CONFIRMED' and
+((jtlv.tax_rate_percentage is null or jtlv.tax_rate_percentage=0) or
+(jtlv.tax_amt_before_exemption>0 and nvl(jtlv.rounded_tax_amt_fun_curr,0)=0))) tax_dtls
 union all
+-- 31d
 select
-'31d' name,
-tax_dtls.gstn "GSTN",
-tax_dtls.registered_person,
+'31d' section_code,
+tax_dtls.registration_number gstin,
+tax_dtls.party_name registered_person,
 tax_dtls.operating_unit,
 null pos,
 null type,
-line_amt taxable_value,
-tax_dtls.cgst "CGST",
-tax_dtls.sgst "SGST",
-tax_dtls.igst "IGST",
-tax_dtls.cess "CESS"
-from 
-jai_tax_det_factors det_fact,
-(select distinct
-x.*,
-tax.det_factor_id,
-sum(decode(tax_assc.reporting_code, 'IGST', (tax_lines.rounded_tax_amt_fun_curr))) igst,
-sum(decode(tax_assc.reporting_code, 'CGST', (tax_lines.rounded_tax_amt_fun_curr))) cgst,
-sum(decode(tax_assc.reporting_code, 'SGST', (tax_lines.rounded_tax_amt_fun_curr))) sgst,
-sum(decode(tax_assc.reporting_code, 'CESS', (tax_lines.rounded_tax_amt_fun_curr))) cess
+tax_dtls.line_amt taxable_value,
+tax_dtls.cgst,
+tax_dtls.sgst,
+tax_dtls.igst,
+tax_dtls.cess_amount
 from
-party x,
-jai_tax_det_factors tax,
-jai_tax_lines_v tax_lines,
-jai_reporting_associations_v tax_assc,
-jai_rgm_recovery_lines tax_rec
+(select
+jpr.registration_number,
+jpr.party_name,
+jpr.operating_unit,
+jtdf.det_factor_id,
+jtdf.line_amt,
+sum(decode(jrav.reporting_code,'IGST',jtlv.rounded_tax_amt_fun_curr)) igst,
+sum(decode(jrav.reporting_code,'CGST',jtlv.rounded_tax_amt_fun_curr)) cgst,
+sum(decode(jrav.reporting_code,'SGST',jtlv.rounded_tax_amt_fun_curr)) sgst,
+sum(decode(jrav.reporting_code,'CESS',jtlv.rounded_tax_amt_fun_curr)) cess_amount
+from
+jai_party_reg jpr,
+jai_tax_det_factors jtdf,
+jai_tax_lines_v jtlv,
+jai_reporting_associations_v jrav,
+jai_rgm_recovery_lines jrrl
 where
 2=2 and
-to_char(trunc(tax.tax_invoice_date),'MONYYYY') = :p_period and
-tax.det_factor_id=tax_lines.det_factor_id and
-tax_assc.entity_code='TAX_TYPE' and
-tax_assc.reporting_type_code='TAX_TYPES_CLASSIFICATION' and
-tax_lines.first_party_primary_reg_num=x.gstn and
-tax_rec.tax_line_id=tax_lines.tax_line_id and
-tax_lines.tax_type_id=tax_assc.entity_id and
-tax_rec.liability_amount<>0 and
-tax_rec.status='CONFIRMED' and
-tax_lines.self_assessed_flag='Y'
+to_char(trunc(jtdf.tax_invoice_date),'MONYYYY')=:p_period and
+jtdf.det_factor_id=jtlv.det_factor_id and
+jrav.entity_code='TAX_TYPE' and
+jrav.reporting_type_code='TAX_TYPES_CLASSIFICATION' and
+jtlv.first_party_primary_reg_num=jpr.registration_number and
+jrrl.tax_line_id=jtlv.tax_line_id and
+jtlv.tax_type_id=jrav.entity_id and
+jrrl.liability_amount<>0 and
+jrrl.status='CONFIRMED' and
+jtlv.self_assessed_flag='Y'
 group by
-tax.det_factor_id,
-x.gstn,
-x.registered_person,
-x.operating_unit
-) tax_dtls
-where
-det_fact.det_factor_id=tax_dtls.det_factor_id
+jtdf.det_factor_id,
+jpr.registration_number,
+jpr.party_name,
+jpr.operating_unit,
+jtdf.line_amt) tax_dtls
 union all
+-- 31e
 select
-'31e' name,
-tax_dtls.gstn "GSTN",
-tax_dtls.registered_person,
+'31e' section_code,
+tax_dtls.registration_number gstin,
+tax_dtls.party_name registered_person,
 tax_dtls.operating_unit,
 null pos,
 null type,
-line_amt taxable_value,
-null "CGST",
-null "SGST",
-null "IGST",
-null "CESS"
-from 
-jai_tax_det_factors det_fact,
-(select distinct
-x.*,
-tax.det_factor_id
+tax_dtls.line_amt taxable_value,
+null cgst,
+null sgst,
+null igst,
+null cess_amount
 from
-party x,
-jai_tax_det_factors tax,
-jai_tax_lines_v tax_lines,
-jai_rgm_recovery_lines tax_rec
+(select distinct
+jpr.registration_number,
+jpr.party_name,
+jpr.operating_unit,
+jtdf.det_factor_id,
+jtdf.line_amt
+from
+jai_party_reg jpr,
+jai_tax_det_factors jtdf,
+jai_tax_lines_v jtlv,
+jai_rgm_recovery_lines jrrl
 where
 2=2 and
-to_char(trunc(tax.tax_invoice_date),'MONYYYY') = :p_period and
-tax.det_factor_id=tax_lines.det_factor_id and
-tax_lines.first_party_primary_reg_num=x.gstn and
-tax_rec.tax_line_id=tax_lines.tax_line_id and
-tax_rec.liability_amount<>0 and
-tax_rec.status='CONFIRMED' and
-not exists (select 1 
+to_char(trunc(jtdf.tax_invoice_date),'MONYYYY')=:p_period and
+jtdf.det_factor_id=jtlv.det_factor_id and
+jtlv.first_party_primary_reg_num=jpr.registration_number and
+jrrl.tax_line_id=jtlv.tax_line_id and
+jrrl.liability_amount<>0 and
+jrrl.status='CONFIRMED' and
+not exists (select null
 from
-jai_tax_types_v a,
-jai_reporting_associations_v b
-where 
-a.tax_type_id=tax_lines.tax_type_id and
-a.tax_type_id = b.entity_id and
-b.reporting_code in ('IGST','SGST','CGST','CESS'))
-) tax_dtls
+jai_tax_types_v jttv,
+jai_reporting_associations_v jrav
 where
-det_fact.det_factor_id=tax_dtls.det_factor_id
+jttv.tax_type_id=jtlv.tax_type_id and
+jttv.tax_type_id=jrav.entity_id and
+jrav.reporting_code in ('IGST','SGST','CGST','CESS'))) tax_dtls
 union all
-select 
-'32a' name,
-y.gstn "GSTN",
-y.registered_person,
+-- 32a
+select
+'32a' section_code,
+y.registration_number gstin,
+y.party_name registered_person,
 y.operating_unit,
 y.pos,
 null type,
 y.taxable_value,
-null "CGST",
-null "SGST",
-y.igst "IGST",
-null "CESS"
+null cgst,
+null sgst,
+y.igst,
+null cess_amount
 from
-(
-select
-x.gstn,
-x.registered_person,
-x.operating_unit,
-tax.bill_to_state pos,
-sum(tax.line_amt) taxable_value,
-sum(tax_lines.rounded_tax_amt_fun_curr) igst
+(select
+jpr.registration_number,
+jpr.party_name,
+jpr.operating_unit,
+jtdf.bill_to_state pos,
+sum(jtdf.line_amt) taxable_value,
+sum(jtlv.rounded_tax_amt_fun_curr) igst
 from
-party x,
-jai_tax_det_factors tax,
-jai_tax_lines_v tax_lines,
-jai_reporting_associations_v tax_assc,
-jai_rgm_recovery_lines tax_rec
+jai_party_reg jpr,
+jai_tax_det_factors jtdf,
+jai_tax_lines_v jtlv,
+jai_reporting_associations_v jrav,
+jai_rgm_recovery_lines jrrl
 where
 2=2 and
-to_char(trunc(tax.tax_invoice_date),'MONYYYY') = :p_period and
-tax_assc.reporting_type_code='TAX_TYPES_CLASSIFICATION' and
-tax_assc.reporting_code='IGST' and
-tax_assc.entity_id=tax_lines.tax_type_id and
-tax.det_factor_id=tax_lines.det_factor_id and
-tax_lines.first_party_primary_reg_num=x.gstn and
-tax_lines.third_party_primary_reg_num is null and
-tax_rec.tax_line_id=tax_lines.tax_line_id and
-tax_rec.liability_amount<>0 and
-tax_rec.status='CONFIRMED' and
-tax.ship_from_state<>tax.bill_to_state
+to_char(trunc(jtdf.tax_invoice_date),'MONYYYY')=:p_period and
+jrav.reporting_type_code='TAX_TYPES_CLASSIFICATION' and
+jrav.reporting_code='IGST' and
+jrav.entity_id=jtlv.tax_type_id and
+jtdf.det_factor_id=jtlv.det_factor_id and
+jtlv.first_party_primary_reg_num=jpr.registration_number and
+jtlv.third_party_primary_reg_num is null and
+jrrl.tax_line_id=jtlv.tax_line_id and
+jrrl.liability_amount<>0 and
+jrrl.status='CONFIRMED' and
+jtdf.ship_from_state<>jtdf.bill_to_state
 group by
-x.gstn,
-x.registered_person,
-x.operating_unit,
-tax.bill_to_state
-) y
+jpr.registration_number,
+jpr.party_name,
+jpr.operating_unit,
+jtdf.bill_to_state) y
 union all
+-- 4a1
 select
-'32b' name,
-x.gstn "GSTN",
-x.registered_person,
-x.operating_unit,
-null pos,
-null type,
-null taxable_value,
-null "CGST",
-null "SGST",
-null "IGST",
-null "CESS"
-from
-party x,
-dual
-union all
-select
-'32c' name,
-x.gstn "GSTN",
-x.registered_person,
-x.operating_unit,
-null pos,
-null type,
-null taxable_value,
-null "CGST",
-null "SGST",
-null "IGST",
-null "CESS"
-from
-party x,
-dual
-union all
-select 
-'4a1' name,
-y.gstn "GSTN",
-y.registered_person,
+'4a1' section_code,
+y.registration_number gstin,
+y.party_name registered_person,
 y.operating_unit,
 null pos,
 y.type,
 null taxable_value,
-y.cgst "CGST",
-y.sgst "SGST",
-y.igst "IGST",
-y.cess "CESS"
+y.cgst,
+y.sgst,
+y.igst,
+y.cess_amount
 from
-(
-select
+(select
 'IMPG' type,
-x.gstn,
-x.registered_person,
-x.operating_unit,
-sum(decode(jrav.reporting_code,'IGST',jtl.rounded_tax_amt_fun_curr)) igst,
-sum(decode(jrav.reporting_code,'CGST',jtl.rounded_tax_amt_fun_curr)) cgst,
-sum(decode(jrav.reporting_code,'SGST',jtl.rounded_tax_amt_fun_curr)) sgst,
-sum(decode(jrav.reporting_code,'CESS',jtl.rounded_tax_amt_fun_curr)) cess
+jpr.registration_number,
+jpr.party_name,
+jpr.operating_unit,
+sum(decode(jrav.reporting_code,'IGST',jtlv.rounded_tax_amt_fun_curr)) igst,
+sum(decode(jrav.reporting_code,'CGST',jtlv.rounded_tax_amt_fun_curr)) cgst,
+sum(decode(jrav.reporting_code,'SGST',jtlv.rounded_tax_amt_fun_curr)) sgst,
+sum(decode(jrav.reporting_code,'CESS',jtlv.rounded_tax_amt_fun_curr)) cess_amount
 from
-party x,
+jai_party_reg jpr,
 jai_reporting_associations_v jrav,
-jai_tax_lines_v jtl,
-jai_tax_det_factors tax,
-jai_rgm_recovery_lines jrr
+jai_tax_lines_v jtlv,
+jai_tax_det_factors jtdf,
+jai_rgm_recovery_lines jrrl
 where
 2=2 and
-to_char(trunc(tax.tax_invoice_date),'MONYYYY') = :p_period and
+to_char(trunc(jtdf.tax_invoice_date),'MONYYYY')=:p_period and
 jrav.entity_code='TAX_TYPE' and
 jrav.reporting_type_code='TAX_TYPES_CLASSIFICATION' and
 sysdate between nvl(jrav.effective_from,sysdate) and nvl(jrav.effective_to,'31-DEC-4017') and
-jtl.tax_type_id=jrav.entity_id and
-jtl.first_party_primary_reg_num=x.gstn and
-exists (select '1' from jai_tax_lines jtl1 where tax.trx_id=jtl1.trx_id and tax.trx_line_id=jtl1.trx_line_id and jtl1.applied_to_entity_code='BILL_OF_ENTRY') and
-tax.det_factor_id=jtl.det_factor_id and
-jrr.tax_line_id=jtl.tax_line_id and
-tax.hsn_code_id is not null
+jtlv.tax_type_id=jrav.entity_id and
+jtlv.first_party_primary_reg_num=jpr.registration_number and
+exists (select null from jai_tax_lines jtl where jtdf.trx_id=jtl.trx_id and jtdf.trx_line_id=jtl.trx_line_id and jtl.applied_to_entity_code='BILL_OF_ENTRY') and
+jtdf.det_factor_id=jtlv.det_factor_id and
+jrrl.tax_line_id=jtlv.tax_line_id and
+jtdf.hsn_code_id is not null
 group by
-x.gstn,
-x.registered_person,
-x.operating_unit
-) y
+jpr.registration_number,
+jpr.party_name,
+jpr.operating_unit) y
 union all
-select 
-'4a2' name,
-y.gstn "GSTN",
-y.registered_person,
+-- 4a2
+select
+'4a2' section_code,
+y.registration_number gstin,
+y.party_name registered_person,
 y.operating_unit,
 null pos,
 y.type,
 null taxable_value,
-y.cgst "CGST",
-y.sgst "SGST",
-y.igst "IGST",
-y.cess "CESS"
+y.cgst,
+y.sgst,
+y.igst,
+y.cess_amount
 from
-(
-select
+(select
 'IMPS' type,
-x.gstn,
-x.registered_person,
-x.operating_unit,
-sum(decode(jrav.reporting_code,'IGST',jtl.rounded_tax_amt_fun_curr)) igst,
-sum(decode(jrav.reporting_code,'CGST',jtl.rounded_tax_amt_fun_curr)) cgst,
-sum(decode(jrav.reporting_code,'SGST',jtl.rounded_tax_amt_fun_curr)) sgst,
-sum(decode(jrav.reporting_code,'CESS',jtl.rounded_tax_amt_fun_curr)) cess
+jpr.registration_number,
+jpr.party_name,
+jpr.operating_unit,
+sum(decode(jrav.reporting_code,'IGST',jtlv.rounded_tax_amt_fun_curr)) igst,
+sum(decode(jrav.reporting_code,'CGST',jtlv.rounded_tax_amt_fun_curr)) cgst,
+sum(decode(jrav.reporting_code,'SGST',jtlv.rounded_tax_amt_fun_curr)) sgst,
+sum(decode(jrav.reporting_code,'CESS',jtlv.rounded_tax_amt_fun_curr)) cess_amount
 from
-party x,
+jai_party_reg jpr,
 jai_reporting_associations_v jrav,
-jai_tax_lines_v jtl,
-jai_tax_det_factors tax,
-jai_rgm_recovery_lines jrr
+jai_tax_lines_v jtlv,
+jai_tax_det_factors jtdf,
+jai_rgm_recovery_lines jrrl
 where
 2=2 and
-to_char(trunc(tax.tax_invoice_date),'MONYYYY') = :p_period and
+to_char(trunc(jtdf.tax_invoice_date),'MONYYYY')=:p_period and
 jrav.entity_code='TAX_TYPE' and
 jrav.reporting_type_code='TAX_TYPES_CLASSIFICATION' and
 sysdate between nvl(jrav.effective_from,sysdate) and nvl(jrav.effective_to,'31-DEC-4017') and
-jtl.tax_type_id=jrav.entity_id and
-jtl.first_party_primary_reg_num=x.gstn and
-tax.ship_from_country<>'IN' and
-tax.det_factor_id = jtl.det_factor_id and
-jrr.tax_line_id = jtl.tax_line_id and
-tax.sac_code_id is not null
+jtlv.tax_type_id=jrav.entity_id and
+jtlv.first_party_primary_reg_num=jpr.registration_number and
+jtdf.ship_from_country<>'IN' and
+jtdf.det_factor_id=jtlv.det_factor_id and
+jrrl.tax_line_id=jtlv.tax_line_id and
+jtdf.sac_code_id is not null
 group by
-x.gstn,
-x.registered_person,
-x.operating_unit
-) y
+jpr.registration_number,
+jpr.party_name,
+jpr.operating_unit) y
 union all
-select 
-'4a3' name,
-y.gstn "GSTN",
-y.registered_person,
+-- 4a3
+select
+'4a3' section_code,
+y.registration_number gstin,
+y.party_name registered_person,
 y.operating_unit,
 null pos,
 y.type,
 null taxable_value,
-y.cgst "CGST",
-y.sgst "SGST",
-y.igst "IGST",
-y.cess "CESS"
+y.cgst,
+y.sgst,
+y.igst,
+y.cess_amount
 from
-(
-select
+(select
 'ISRC' type,
-x.gstn,
-x.registered_person,
-x.operating_unit,
-sum(decode(jrav.reporting_code,'IGST',jtl.rounded_tax_amt_fun_curr)) igst,
-sum(decode(jrav.reporting_code,'CGST',jtl.rounded_tax_amt_fun_curr)) cgst,
-sum(decode(jrav.reporting_code,'SGST',jtl.rounded_tax_amt_fun_curr)) sgst,
-sum(decode(jrav.reporting_code,'CESS',jtl.rounded_tax_amt_fun_curr)) cess
+jpr.registration_number,
+jpr.party_name,
+jpr.operating_unit,
+sum(decode(jrav.reporting_code,'IGST',jtlv.rounded_tax_amt_fun_curr)) igst,
+sum(decode(jrav.reporting_code,'CGST',jtlv.rounded_tax_amt_fun_curr)) cgst,
+sum(decode(jrav.reporting_code,'SGST',jtlv.rounded_tax_amt_fun_curr)) sgst,
+sum(decode(jrav.reporting_code,'CESS',jtlv.rounded_tax_amt_fun_curr)) cess_amount
 from
-party x,
+jai_party_reg jpr,
 jai_reporting_associations_v jrav,
-jai_tax_lines_v jtl,
-jai_tax_det_factors tax,
-jai_rgm_recovery_lines jrr
+jai_tax_lines_v jtlv,
+jai_tax_det_factors jtdf,
+jai_rgm_recovery_lines jrrl
 where
 2=2 and
-to_char(trunc(tax.tax_invoice_date),'MONYYYY') = :p_period and
+to_char(trunc(jtdf.tax_invoice_date),'MONYYYY')=:p_period and
 jrav.entity_code='TAX_TYPE' and
 jrav.reporting_type_code='TAX_TYPES_CLASSIFICATION' and
 sysdate between nvl(jrav.effective_from,sysdate) and nvl(jrav.effective_to,'31-DEC-4017') and
-jtl.tax_type_id=jrav.entity_id and
-jtl.first_party_primary_reg_num=x.gstn and
-tax.det_factor_id=jtl.det_factor_id and
-jrr.tax_line_id=jtl.tax_line_id and
-jtl.self_assessed_flag='Y' and
-jrr.status='RECOVERED' and
-jrr.recovered_amount<>0
+jtlv.tax_type_id=jrav.entity_id and
+jtlv.first_party_primary_reg_num=jpr.registration_number and
+jtdf.det_factor_id=jtlv.det_factor_id and
+jrrl.tax_line_id=jtlv.tax_line_id and
+jtlv.self_assessed_flag='Y' and
+jrrl.status='RECOVERED' and
+jrrl.recovered_amount<>0
 group by
-x.gstn,
-x.registered_person,
-x.operating_unit      
-) y
+jpr.registration_number,
+jpr.party_name,
+jpr.operating_unit) y
 union all
+-- 4a5
 select
-'4a4' name,
-x.gstn "GSTN",
-x.registered_person,
-x.operating_unit,
-null pos,
-'ISD' type,
-null taxable_value,
-null "CGST",
-null "SGST",
-null "IGST",
-null "CESS"
-from
-party x,
-dual
-union all
-select 
-'4a5' name,
-y.gstn "GSTN",
-y.registered_person,
+'4a5' section_code,
+y.registration_number gstin,
+y.party_name registered_person,
 y.operating_unit,
 null pos,
 y.type,
 null taxable_value,
-y.cgst "CGST",
-y.sgst "SGST",
-y.igst "IGST",
-y.cess "CESS"
+y.cgst,
+y.sgst,
+y.igst,
+y.cess_amount
 from
-(
-select
+(select
 'OTH' type,
-x.gstn,
-x.registered_person,
-x.operating_unit,
-sum(decode(jrav.reporting_code,'IGST',jtl.rounded_tax_amt_fun_curr)) igst,
-sum(decode(jrav.reporting_code,'CGST',jtl.rounded_tax_amt_fun_curr)) cgst,
-sum(decode(jrav.reporting_code,'SGST',jtl.rounded_tax_amt_fun_curr)) sgst,
-sum(decode(jrav.reporting_code,'CESS',jtl.rounded_tax_amt_fun_curr)) cess
+jpr.registration_number,
+jpr.party_name,
+jpr.operating_unit,
+sum(decode(jrav.reporting_code,'IGST',jtlv.rounded_tax_amt_fun_curr)) igst,
+sum(decode(jrav.reporting_code,'CGST',jtlv.rounded_tax_amt_fun_curr)) cgst,
+sum(decode(jrav.reporting_code,'SGST',jtlv.rounded_tax_amt_fun_curr)) sgst,
+sum(decode(jrav.reporting_code,'CESS',jtlv.rounded_tax_amt_fun_curr)) cess_amount
 from
-party x,
+jai_party_reg jpr,
 jai_reporting_associations_v jrav,
-jai_tax_lines_v jtl,
-jai_tax_det_factors tax,
-jai_rgm_recovery_lines jrr
+jai_tax_lines_v jtlv,
+jai_tax_det_factors jtdf,
+jai_rgm_recovery_lines jrrl
 where
 2=2 and
-to_char(trunc(tax.tax_invoice_date),'MONYYYY') = :p_period and
+to_char(trunc(jtdf.tax_invoice_date),'MONYYYY')=:p_period and
 jrav.entity_code='TAX_TYPE' and
 jrav.reporting_type_code='TAX_TYPES_CLASSIFICATION' and
 sysdate between nvl(jrav.effective_from,sysdate) and nvl(jrav.effective_to,'31-DEC-4017') and
-jtl.tax_type_id=jrav.entity_id and
-jtl.first_party_primary_reg_num=x.gstn and
-tax.det_factor_id=jtl.det_factor_id and
-jrr.tax_line_id=jtl.tax_line_id and
-(nvl(jtl.applied_to_entity_code,'X')<>'BILL_OF_ENTRY' and (tax.hsn_code_id is null or tax.sac_code_id is null)) and
-(jtl.self_assessed_flag<>'Y' and jrr.status='RECOVERED' and jrr.recovered_amount<>0)
+jtlv.tax_type_id=jrav.entity_id and
+jtlv.first_party_primary_reg_num=jpr.registration_number and
+jtdf.det_factor_id=jtlv.det_factor_id and
+jrrl.tax_line_id=jtlv.tax_line_id and
+(nvl(jtlv.applied_to_entity_code,'X')<>'BILL_OF_ENTRY' and (jtdf.hsn_code_id is null or jtdf.sac_code_id is null)) and
+(jtlv.self_assessed_flag<>'Y' and jrrl.status='RECOVERED' and jrrl.recovered_amount<>0)
 group by
-x.gstn,
-x.registered_person,
-x.operating_unit
-) y
+jpr.registration_number,
+jpr.party_name,
+jpr.operating_unit) y
 union all
-select 
-'4b1' name,
-y.gstn "GSTN",
-y.registered_person,
+-- 4b1
+select
+'4b1' section_code,
+y.registration_number gstin,
+y.party_name registered_person,
 y.operating_unit,
 null pos,
 y.type,
 null taxable_value,
-y.cgst "CGST",
-y.sgst "SGST",
-y.igst "IGST",
-y.cess "CESS"
+y.cgst,
+y.sgst,
+y.igst,
+y.cess_amount
 from
-(
-select
+(select
 'RUL' type,
-x.gstn,
-x.registered_person,
-x.operating_unit,
-sum(decode(jrav.reporting_code,'IGST',jtl.rounded_tax_amt_fun_curr)) igst,
-sum(decode(jrav.reporting_code,'CGST',jtl.rounded_tax_amt_fun_curr)) cgst,
-sum(decode(jrav.reporting_code,'SGST',jtl.rounded_tax_amt_fun_curr)) sgst,
-sum(decode(jrav.reporting_code,'CESS',jtl.rounded_tax_amt_fun_curr)) cess
+jpr.registration_number,
+jpr.party_name,
+jpr.operating_unit,
+sum(decode(jrav.reporting_code,'IGST',jtlv.rounded_tax_amt_fun_curr)) igst,
+sum(decode(jrav.reporting_code,'CGST',jtlv.rounded_tax_amt_fun_curr)) cgst,
+sum(decode(jrav.reporting_code,'SGST',jtlv.rounded_tax_amt_fun_curr)) sgst,
+sum(decode(jrav.reporting_code,'CESS',jtlv.rounded_tax_amt_fun_curr)) cess_amount
 from
-party x,
+jai_party_reg jpr,
 jai_reporting_associations_v jrav,
-jai_tax_lines_v jtl,
-jai_tax_det_factors tax,
-jai_rgm_recovery_lines jrr
+jai_tax_lines_v jtlv,
+jai_tax_det_factors jtdf,
+jai_rgm_recovery_lines jrrl
 where
 2=2 and
-to_char(trunc(tax.tax_invoice_date),'MONYYYY') = :p_period and
+to_char(trunc(jtdf.tax_invoice_date),'MONYYYY')=:p_period and
 jrav.entity_code='TAX_TYPE' and
 jrav.reporting_type_code='TAX_TYPES_CLASSIFICATION' and
 sysdate between nvl(jrav.effective_from,sysdate) and nvl(jrav.effective_to,'31-DEC-4017') and
-jtl.tax_type_id=jrav.entity_id and
-jtl.first_party_primary_reg_num=x.gstn and
-tax.det_factor_id=jtl.det_factor_id and
-jrr.tax_line_id=jtl.tax_line_id and
-jrr.status = 'REVERSED'
+jtlv.tax_type_id=jrav.entity_id and
+jtlv.first_party_primary_reg_num=jpr.registration_number and
+jtdf.det_factor_id=jtlv.det_factor_id and
+jrrl.tax_line_id=jtlv.tax_line_id and
+jrrl.status='REVERSED'
 group by
-x.gstn,
-x.registered_person,
-x.operating_unit
-) y
+jpr.registration_number,
+jpr.party_name,
+jpr.operating_unit) y
 union all
+-- 4d1
 select
-'4b2' name,
-x.gstn "GSTN",
-x.registered_person,
-x.operating_unit,
-null pos,
-'OTH' type,
-null taxable_value,
-null "CGST",
-null "SGST",
-null "IGST",
-null "CESS"
-from
-party x,
-dual
-union all
-select
-'4c' name,
-x.gstn "GSTN",
-x.registered_person,
-x.operating_unit,
-null pos,
-null type,
-null taxable_value,
-null "CGST",
-null "SGST",
-null "IGST",
-null "CESS"
-from
-party x,
-dual
-union all
-select 
-'4d1' name,
-y.gstn "GSTN",
-y.registered_person,
+'4d1' section_code,
+y.registration_number gstin,
+y.party_name registered_person,
 y.operating_unit,
 null pos,
 y.type,
 null taxable_value,
-y.cgst "CGST",
-y.sgst "SGST",
-y.igst "IGST",
-y.cess "CESS"
+y.cgst,
+y.sgst,
+y.igst,
+y.cess_amount
 from
-(
-select
+(select
 'RUL' type,
-x.gstn,
-x.registered_person,
-x.operating_unit,
-sum((select jtl2.rounded_tax_amt_fun_curr 
-from jai_tax_lines_v jtl2, jai_reporting_associations_v jrav2
+jpr.registration_number,
+jpr.party_name,
+jpr.operating_unit,
+sum((select jtlv2.rounded_tax_amt_fun_curr
+from jai_tax_lines_v jtlv2, jai_reporting_associations_v jrav2
 where
-jtl2.tax_line_id=jtl.tax_line_id and jrav.entity_id=jrav2.entity_id and jrav2.reporting_code='IGST')) igst,
-sum((select jtl2.rounded_tax_amt_fun_curr
-from jai_tax_lines_v jtl2, jai_reporting_associations_v jrav2
+jtlv2.tax_line_id=jtlv.tax_line_id and jrav.entity_id=jrav2.entity_id and jrav2.reporting_code='IGST')) igst,
+sum((select jtlv2.rounded_tax_amt_fun_curr
+from jai_tax_lines_v jtlv2, jai_reporting_associations_v jrav2
 where
-jtl2.tax_line_id=jtl.tax_line_id and jrav.entity_id=jrav2.entity_id and jrav2.reporting_code='CGST')) cgst,
-sum((select jtl2.rounded_tax_amt_fun_curr
-from jai_tax_lines_v jtl2, jai_reporting_associations_v jrav2
+jtlv2.tax_line_id=jtlv.tax_line_id and jrav.entity_id=jrav2.entity_id and jrav2.reporting_code='CGST')) cgst,
+sum((select jtlv2.rounded_tax_amt_fun_curr
+from jai_tax_lines_v jtlv2, jai_reporting_associations_v jrav2
 where
-jtl2.tax_line_id=jtl.tax_line_id and jrav.entity_id=jrav2.entity_id and jrav2.reporting_code='SGST')) sgst,
-sum((select jtl2.rounded_tax_amt_fun_curr
-from jai_tax_lines_v jtl2, jai_reporting_associations_v jrav2
+jtlv2.tax_line_id=jtlv.tax_line_id and jrav.entity_id=jrav2.entity_id and jrav2.reporting_code='SGST')) sgst,
+sum((select jtlv2.rounded_tax_amt_fun_curr
+from jai_tax_lines_v jtlv2, jai_reporting_associations_v jrav2
 where
-jtl2.tax_line_id=jtl.tax_line_id and jrav.entity_id=jrav2.entity_id and jrav2.reporting_code='CESS')) cess
+jtlv2.tax_line_id=jtlv.tax_line_id and jrav.entity_id=jrav2.entity_id and jrav2.reporting_code='CESS')) cess_amount
 from
-party x,
+jai_party_reg jpr,
 jai_reporting_associations_v jrav,
-jai_tax_lines_v jtl,
-jai_tax_det_factors tax,
-jai_rgm_recovery_lines jrr
+jai_tax_lines_v jtlv,
+jai_tax_det_factors jtdf,
+jai_rgm_recovery_lines jrrl
 where
 2=2 and
-to_char(trunc(tax.tax_invoice_date),'MONYYYY') = :p_period and
+to_char(trunc(jtdf.tax_invoice_date),'MONYYYY')=:p_period and
 jrav.entity_code='TAX_TYPE' and
 jrav.reporting_type_code='TAX_TYPES_CLASSIFICATION' and
 sysdate between nvl(jrav.effective_from,sysdate) and nvl(jrav.effective_to,'31-DEC-4017') and
-jtl.tax_type_id=jrav.entity_id and
-jtl.first_party_primary_reg_num=x.gstn and
-tax.det_factor_id=jtl.det_factor_id and
-jrr.tax_line_id=jtl.tax_line_id and
-jrr.status='INELIGIBLE'
+jtlv.tax_type_id=jrav.entity_id and
+jtlv.first_party_primary_reg_num=jpr.registration_number and
+jtdf.det_factor_id=jtlv.det_factor_id and
+jrrl.tax_line_id=jtlv.tax_line_id and
+jrrl.status='INELIGIBLE'
 group by
-x.gstn,
-x.registered_person,
-x.operating_unit
-) y
+jpr.registration_number,
+jpr.party_name,
+jpr.operating_unit) y
 union all
+-- placeholder sections
 select
-'4d2' name,
-x.gstn "GSTN",
-x.registered_person,
-x.operating_unit,
+y.section_code,
+jpr.registration_number gstin,
+jpr.party_name registered_person,
+jpr.operating_unit,
 null pos,
-'OTH' type,
+y.type,
 null taxable_value,
-null "CGST",
-null "SGST",
-null "IGST",
-null "CESS"
+null cgst,
+null sgst,
+null igst,
+null cess_amount
 from
-party x,
-dual
+jai_party_reg jpr,
+(select '32b' section_code, null type from dual union all
+select '32c', null from dual union all
+select '4a4', 'ISD' from dual union all
+select '4b2', 'OTH' from dual union all
+select '4c', null from dual union all
+select '4d2', 'OTH' from dual) y

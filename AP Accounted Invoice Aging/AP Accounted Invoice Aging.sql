@@ -242,6 +242,23 @@ else sign(xtb.acctd_rounded_rem_amount) * (nvl(abs(xtb.acctd_rounded_rem_amount)
 end
 else 0 -- all remaining amount already consumed
 end ps_amount_remaining,
+case
+when xtb.entered_rounded_rem_amount=0 then 0
+when count(apsa.payment_num) over (partition by aia.invoice_id,xtb.tb_code,xtb.code_combination_id)=1 then xtb.entered_rounded_rem_amount
+when aia.invoice_amount=0 or sign(xtb.entered_rounded_rem_amount)<>sign(aia.invoice_amount) then
+case when apsa.payment_num=first_value(apsa.payment_num) over (partition by aia.invoice_id,xtb.tb_code,xtb.code_combination_id order by apsa.payment_num) then xtb.entered_rounded_rem_amount else 0 end
+when nvl(sum(abs(apsa.gross_amount)) over (partition by aia.invoice_id,xtb.tb_code,xtb.code_combination_id order by apsa.payment_num desc rows between unbounded preceding and 1 preceding),
+abs(xtb.entered_rounded_rem_amount))<=abs(xtb.entered_rounded_rem_amount)
+then case
+when apsa.payment_num=first_value(apsa.payment_num) over (partition by aia.invoice_id,xtb.tb_code,xtb.code_combination_id order by apsa.payment_num)
+then sign(xtb.entered_rounded_rem_amount) * (nvl(abs(xtb.entered_rounded_rem_amount) - sum(abs(apsa.gross_amount)) over (partition by aia.invoice_id,xtb.tb_code,xtb.code_combination_id order by apsa.payment_num desc rows between unbounded preceding and 1 preceding),abs(xtb.entered_rounded_rem_amount)))
+when nvl(abs(xtb.entered_rounded_rem_amount) - sum(abs(apsa.gross_amount)) over (partition by aia.invoice_id,xtb.tb_code,xtb.code_combination_id order by apsa.payment_num desc rows between unbounded preceding and 1 preceding),
+abs(xtb.entered_rounded_rem_amount))>=abs(apsa.gross_amount)
+then sign(xtb.entered_rounded_rem_amount) * abs(apsa.gross_amount)
+else sign(xtb.entered_rounded_rem_amount) * (nvl(abs(xtb.entered_rounded_rem_amount) - sum(abs(apsa.gross_amount)) over (partition by aia.invoice_id,xtb.tb_code,xtb.code_combination_id order by apsa.payment_num desc rows between unbounded preceding and 1 preceding),abs(xtb.entered_rounded_rem_amount)))
+end
+else 0
+end ps_entered_amt_remaining,
 decode(gl.currency_code,:p_reval_currency,1,(select gdr.conversion_rate from gl_daily_conversion_types gdct, gl_daily_rates gdr where gl.currency_code=gdr.from_currency and gdr.to_currency=:p_reval_currency and :p_reval_conv_date=gdr.conversion_date and gdct.user_conversion_type=:p_reval_conv_type and gdct.conversion_type=gdr.conversion_type)) reval_conv_rate,
 cbbv.bank_name               remit_to_bank_name,
 cbbv.bank_number             remit_to_bank_number,
@@ -256,7 +273,14 @@ ap_holds_all aha
 where
 aha.invoice_id=aia.invoice_id and
 aha.release_lookup_code is null
-) invoice_holds_count
+) invoice_holds_count,
+(select count(*)
+from ap_payment_schedules_all apsa
+where apsa.invoice_id = aia.invoice_id
+and apsa.hold_flag = 'Y'
+) scheduled_payment_holds,
+xxen_util.yes(assa.hold_future_payments_flag) hold_future_payments,
+xxen_util.yes(assa.hold_all_payments_flag) hold_all_payments
 from
 xtb,
 xla_transaction_entities xte,
@@ -329,6 +353,9 @@ ap_inv.invoice_status,
 ap_inv.invoice_payment_status,
 ap_inv.approval_status,
 ap_inv.invoice_holds_count,
+ap_inv.scheduled_payment_holds,
+ap_inv.hold_future_payments,
+ap_inv.hold_all_payments,
 ap_inv.pay_group,
 ap_inv.payment_method,
 ap_inv.dispute_reason,
@@ -341,6 +368,7 @@ case when ap_inv.payment_num=first_value(ap_inv.payment_num) over (partition by 
 case when ap_inv.payment_num=first_value(ap_inv.payment_num) over (partition by ap_inv.invoice_id,ap_inv.tb_code,ap_inv.code_combination_id order by ap_inv.payment_num) then ap_inv.invoice_amount_functional end invoice_amount_functional,
 case when ap_inv.payment_num=first_value(ap_inv.payment_num) over (partition by ap_inv.invoice_id,ap_inv.tb_code,ap_inv.code_combination_id order by ap_inv.payment_num) then ap_inv.acctd_rounded_orig_amount end transaction_original_amount,
 case when ap_inv.payment_num=first_value(ap_inv.payment_num) over (partition by ap_inv.invoice_id,ap_inv.tb_code,ap_inv.code_combination_id order by ap_inv.payment_num) then ap_inv.acctd_rounded_rem_amount end transaction_remaining_amount,
+case when ap_inv.payment_num=first_value(ap_inv.payment_num) over (partition by ap_inv.invoice_id,ap_inv.tb_code,ap_inv.code_combination_id order by ap_inv.payment_num) then ap_inv.entered_rounded_rem_amount end inv_currency_remaining_amount,
 ap_inv.payment_num,
 ap_inv.as_of_date,
 ap_inv.due_date,

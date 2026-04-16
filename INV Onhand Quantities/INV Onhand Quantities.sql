@@ -24,20 +24,22 @@ to_char(msiv.creation_date,'DD-Mon-YYYY HH24:MI:SS') item_creation_date,
 xxen_util.meaning(msiv.item_type,'ITEM_TYPE',3) user_item_type,
 xxen_util.meaning(msiv.wip_supply_type,'WIP_SUPPLY',700) wip_supply_type,
 (
-select listagg(mac.abc_class_name, ',') within group ( order by mac.abc_class_name) 
-from (
-select distinct mac.abc_class_name
-from 
-mtl_abc_classes mac,
+select listagg(mac.abc_class_name, ',') within group (order by mac.abc_class_name)
+from
+mtl_abc_classes mac
+where
+mac.organization_id=moqd.organization_id and
+exists (
+select null
+from
 mtl_abc_assignments maa,
 mtl_abc_assignment_groups maag
-where 
+where
 3=3 and
 maa.abc_class_id=mac.abc_class_id and
 maa.assignment_group_id=maag.assignment_group_id and
-maa.inventory_item_id=moqd.inventory_item_id and
-mac.organization_id=moqd.organization_id
-)mac
+maa.inventory_item_id=moqd.inventory_item_id
+)
 ) abc_class_name,
 &category_columns
 xxen_util.meaning(msiv.planning_make_buy_code,'MTL_PLANNING_MAKE_BUY',700) make_buy,
@@ -68,7 +70,10 @@ decode(moqd.planning_tp_type,2,mp2.organization_code,1,assa2.vendor_site_code,mo
 nvl(xxen_util.meaning(msiv.serial_number_control_code,'CSP_INV_ITEM_SERIAL_CONTROL',0),xxen_util.meaning(msiv.serial_number_control_code,'MTL_SERIAL_NUMBER',700)) serial_control,
 xxen_util.meaning(msiv.lot_control_code,'MTL_LOT_CONTROL',700) lot_control,
 xxen_util.meaning(msi.availability_type,'MTL_AVAILABILITY',700) availability_type,
-max(moqd.date_received) over (partition by moqd.organization_id, moqd.inventory_item_id, moqd.revision, moqd.lot_number, moqd.cost_group_id, moqd.subinventory_code, moqd.locator_id, moqd.lpn_id, moqd.project_id, moqd.task_id, moqd.owning_tp_type, moqd.owning_organization_id, moqd.planning_tp_type, moqd.planning_organization_id) date_received,
+min(moqd.date_received) over (partition by moqd.organization_id, moqd.inventory_item_id, moqd.revision, moqd.lot_number, moqd.cost_group_id, moqd.subinventory_code, moqd.locator_id, moqd.lpn_id, moqd.project_id, moqd.task_id, moqd.owning_tp_type, moqd.owning_organization_id, moqd.planning_tp_type, moqd.planning_organization_id) date_received,
+trunc(sysdate)-trunc(min(moqd.date_received) over (partition by moqd.organization_id, moqd.inventory_item_id, moqd.revision, moqd.lot_number, moqd.cost_group_id, moqd.subinventory_code, moqd.locator_id, moqd.lpn_id, moqd.project_id, moqd.task_id, moqd.owning_tp_type, moqd.owning_organization_id, moqd.planning_tp_type, moqd.planning_organization_id)) aging_days,
+case when moqd.lpn_id is not null then min(moqd.date_received) over (partition by moqd.organization_id, moqd.subinventory_code, moqd.lpn_id) else null end lpn_subinventory_date,
+case when moqd.lpn_id is not null then trunc(sysdate)-trunc(min(moqd.date_received) over (partition by moqd.organization_id, moqd.subinventory_code, moqd.lpn_id)) else null end lpn_subinventory_aging_days,
 msiv.list_price_per_unit,
 msiv.min_minmax_quantity,
 msiv.max_minmax_quantity,

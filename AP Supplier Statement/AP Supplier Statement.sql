@@ -25,7 +25,6 @@ q_main as
    ass.address_line1 ||' '|| ass.address_line2 ||' '|| ass.address_line3 ||' '|| ass.city ||' '|| ass.state ||' '|| ass.zip vendor_site_address,
    ass.vat_registration_num,
    hro.name organization_name,
-   ap_tp_stmt_pkg.balance_brought_forward(ass.vendor_id,ass.vendor_site_id,ass.org_id) balance_brought_forward,
    alc.displayed_field lookup_value,
    ai.invoice_type_lookup_code lookup_code,
    ai.invoice_num doc_number,
@@ -95,7 +94,6 @@ q_main as
    ass.address_line1 ||' '|| ass.address_line2 ||' '|| ass.address_line3 ||' '|| ass.city ||' '|| ass.state ||' '|| ass.zip vendor_site_address,
    ass.vat_registration_num,
    hro.name organization_name,
-   ap_tp_stmt_pkg.balance_brought_forward(ass.vendor_id,ass.vendor_site_id,ass.org_id) balance_brought_forward,
    alc.displayed_field lookup_value,
    ac.payment_method_lookup_code lookup_code,
    to_char(ac.check_number)||'/'||ai.invoice_num doc_number,
@@ -230,8 +228,8 @@ select
 from
  (select
    z.*,
-   case when z.record_type like '%Summary' then 0 else null end balance_bought_forward_debit,
-   case when z.record_type like '%Summary' then sum(nvl(z.bbf,0)) over (partition by z.vendor_id,z.organization_id,z.vendor_site_id) else null end balance_bought_forward_credit,
+   case when z.record_type like '%Summary' then 0 else null end balance_brought_forward_debit,
+   case when z.record_type like '%Summary' then sum(nvl(z.bbf,0)) over (partition by z.vendor_id,z.organization_id,z.vendor_site_id) else null end balance_brought_forward_credit,
    case z.record_type
     when 'Supplier Site Summary' then sum(nvl(z.debit,0)) over (partition by z.vendor_id,z.organization_id,z.vendor_site_id)
     when 'Operating Unit Summary' then sum(nvl(z.debit,0)) over (partition by z.vendor_id,z.organization_id)
@@ -251,11 +249,55 @@ from
     else null
    end cumulative_debit,
    case z.record_type
-    when 'Supplier Site Summary' then sum(nvl(z.credit,0)) over (partition by z.vendor_id,z.organization_id,z.vendor_site_id order by z.seq rows between unbounded preceding and current row) + sum(nvl(z.bbf,0)) over (partition by z.vendor_site_id)
+    when 'Supplier Site Summary' then sum(nvl(z.credit,0)) over (partition by z.vendor_id,z.organization_id,z.vendor_site_id order by z.seq rows between unbounded preceding and current row) + sum(nvl(z.bbf,0)) over (partition by z.vendor_id,z.organization_id,z.vendor_site_id)
     when 'Operating Unit Summary' then sum(nvl(z.credit,0)) over (partition by z.vendor_id,z.organization_id order by z.seq rows between unbounded preceding and current row) + sum(nvl(z.bbf,0)) over (partition by z.vendor_id,z.organization_id)
     when 'Supplier Summary' then sum(nvl(z.credit,0)) over (partition by z.vendor_id order by z.seq rows between unbounded preceding and current row) + sum(nvl(z.bbf,0)) over (partition by z.vendor_id)
     else null
-   end cumulative_credit
+   end cumulative_credit,
+   case z.record_type
+    when 'Supplier Site Summary' then sum(nvl(z.currency_gain_loss,0)) over (partition by z.vendor_id,z.organization_id,z.vendor_site_id)
+    when 'Operating Unit Summary' then sum(nvl(z.currency_gain_loss,0)) over (partition by z.vendor_id,z.organization_id)
+    when 'Supplier Summary' then sum(nvl(z.currency_gain_loss,0)) over (partition by z.vendor_id)
+    else null
+   end net_currency_gain_loss,
+   case z.record_type
+    when 'Supplier Site Summary' then sum(nvl(z.discount_taken,0)) over (partition by z.vendor_id,z.organization_id,z.vendor_site_id)
+    when 'Operating Unit Summary' then sum(nvl(z.discount_taken,0)) over (partition by z.vendor_id,z.organization_id)
+    when 'Supplier Summary' then sum(nvl(z.discount_taken,0)) over (partition by z.vendor_id)
+    else null
+   end net_discount_taken,
+   case z.record_type
+    when 'Transaction' then
+     sum(nvl(z.bbf,0)) over (partition by z.vendor_id,
+      case when :p_summary_level in ('Supplier Site','Operating Unit') then z.organization_id end,
+      case when :p_summary_level='Supplier Site' then z.vendor_site_id end) +
+     nvl(sum(nvl(z.credit,0)-nvl(z.debit,0)) over (partition by z.vendor_id,
+      case when :p_summary_level in ('Supplier Site','Operating Unit') then z.organization_id end,
+      case when :p_summary_level='Supplier Site' then z.vendor_site_id end
+      order by z.seq rows between unbounded preceding and 1 preceding),0)
+    when 'Supplier Site Summary' then sum(nvl(z.bbf,0)) over (partition by z.vendor_id,z.organization_id,z.vendor_site_id)
+    when 'Operating Unit Summary' then sum(nvl(z.bbf,0)) over (partition by z.vendor_id,z.organization_id)
+    when 'Supplier Summary' then sum(nvl(z.bbf,0)) over (partition by z.vendor_id)
+   end opening_balance,
+   case z.record_type
+    when 'Transaction' then
+     sum(nvl(z.bbf,0)) over (partition by z.vendor_id,
+      case when :p_summary_level in ('Supplier Site','Operating Unit') then z.organization_id end,
+      case when :p_summary_level='Supplier Site' then z.vendor_site_id end) +
+     sum(nvl(z.credit,0)-nvl(z.debit,0)) over (partition by z.vendor_id,
+      case when :p_summary_level in ('Supplier Site','Operating Unit') then z.organization_id end,
+      case when :p_summary_level='Supplier Site' then z.vendor_site_id end
+      order by z.seq rows between unbounded preceding and current row)
+    when 'Supplier Site Summary' then
+     sum(nvl(z.bbf,0)) over (partition by z.vendor_id,z.organization_id,z.vendor_site_id) +
+     sum(nvl(z.credit,0)-nvl(z.debit,0)) over (partition by z.vendor_id,z.organization_id,z.vendor_site_id)
+    when 'Operating Unit Summary' then
+     sum(nvl(z.bbf,0)) over (partition by z.vendor_id,z.organization_id) +
+     sum(nvl(z.credit,0)-nvl(z.debit,0)) over (partition by z.vendor_id,z.organization_id)
+    when 'Supplier Summary' then
+     sum(nvl(z.bbf,0)) over (partition by z.vendor_id) +
+     sum(nvl(z.credit,0)-nvl(z.debit,0)) over (partition by z.vendor_id)
+   end closing_balance
   from
    (select
      rownum seq,

@@ -59,6 +59,7 @@ null modified_columns_,
 :p_upload_mode upload_mode_,
 null item_row_id,
 null item_cat_row_id,
+null mfg_part_row_id,
 null set_process_id,
 --
 to_number(null) number_of_import_workers,
@@ -382,8 +383,10 @@ msiv.process_yield_subinventory process_yield_subinventory,
 (select milk.concatenated_segments from mtl_item_locations_kfv milk where milk.inventory_location_id = msiv.process_yield_locator_id) process_yield_locator,
 xxen_util.meaning(msiv.hazardous_material_flag,'YES_NO',0) hazardous_material,
 msiv.cas_number cas_number,
+-- GST Columns
+&gst_hsn_select
 -- DFF Attributes
-xxen_util.display_flexfield_context(401,'MTL_SYSTEM_ITEMS',msiv.attribute_category) attribute_category,
+xxen_util.display_flexfield_context(401,'MTL_SYSTEM_ITEMS',msiv.attribute_category) item_attribute_category,
 xxen_util.display_flexfield_value(401,'MTL_SYSTEM_ITEMS',msiv.attribute_category,'ATTRIBUTE1',msiv.row_id,msiv.attribute1) inv_item_attribute1,
 xxen_util.display_flexfield_value(401,'MTL_SYSTEM_ITEMS',msiv.attribute_category,'ATTRIBUTE2',msiv.row_id,msiv.attribute2) inv_item_attribute2,
 xxen_util.display_flexfield_value(401,'MTL_SYSTEM_ITEMS',msiv.attribute_category,'ATTRIBUTE3',msiv.row_id,msiv.attribute3) inv_item_attribute3,
@@ -414,10 +417,31 @@ xxen_util.display_flexfield_value(401,'MTL_SYSTEM_ITEMS',msiv.attribute_category
 xxen_util.display_flexfield_value(401,'MTL_SYSTEM_ITEMS',msiv.attribute_category,'ATTRIBUTE28',msiv.row_id,msiv.attribute28) inv_item_attribute28,
 xxen_util.display_flexfield_value(401,'MTL_SYSTEM_ITEMS',msiv.attribute_category,'ATTRIBUTE29',msiv.row_id,msiv.attribute29) inv_item_attribute29,
 xxen_util.display_flexfield_value(401,'MTL_SYSTEM_ITEMS',msiv.attribute_category,'ATTRIBUTE30',msiv.row_id,msiv.attribute30) inv_item_attribute30,
+-- Manufacturer Part Numbers
+(select mm.manufacturer_name from mtl_manufacturers mm where mm.manufacturer_id = mmpn.manufacturer_id) manufacturer,
+mmpn.mfg_part_num,
+null delete_mfg_part,
+xxen_util.display_flexfield_context(401,'MTL_MFG_PART_NUMBERS',mmpn.attribute_category) mfg_part_attribute_category,
+xxen_util.display_flexfield_value(401,'MTL_MFG_PART_NUMBERS',mmpn.attribute_category,'ATTRIBUTE1',mmpn.rowid,mmpn.attribute1) mfg_part_attribute1,
+xxen_util.display_flexfield_value(401,'MTL_MFG_PART_NUMBERS',mmpn.attribute_category,'ATTRIBUTE2',mmpn.rowid,mmpn.attribute2) mfg_part_attribute2,
+xxen_util.display_flexfield_value(401,'MTL_MFG_PART_NUMBERS',mmpn.attribute_category,'ATTRIBUTE3',mmpn.rowid,mmpn.attribute3) mfg_part_attribute3,
+xxen_util.display_flexfield_value(401,'MTL_MFG_PART_NUMBERS',mmpn.attribute_category,'ATTRIBUTE4',mmpn.rowid,mmpn.attribute4) mfg_part_attribute4,
+xxen_util.display_flexfield_value(401,'MTL_MFG_PART_NUMBERS',mmpn.attribute_category,'ATTRIBUTE5',mmpn.rowid,mmpn.attribute5) mfg_part_attribute5,
+xxen_util.display_flexfield_value(401,'MTL_MFG_PART_NUMBERS',mmpn.attribute_category,'ATTRIBUTE6',mmpn.rowid,mmpn.attribute6) mfg_part_attribute6,
+xxen_util.display_flexfield_value(401,'MTL_MFG_PART_NUMBERS',mmpn.attribute_category,'ATTRIBUTE7',mmpn.rowid,mmpn.attribute7) mfg_part_attribute7,
+xxen_util.display_flexfield_value(401,'MTL_MFG_PART_NUMBERS',mmpn.attribute_category,'ATTRIBUTE8',mmpn.rowid,mmpn.attribute8) mfg_part_attribute8,
+xxen_util.display_flexfield_value(401,'MTL_MFG_PART_NUMBERS',mmpn.attribute_category,'ATTRIBUTE9',mmpn.rowid,mmpn.attribute9) mfg_part_attribute9,
+xxen_util.display_flexfield_value(401,'MTL_MFG_PART_NUMBERS',mmpn.attribute_category,'ATTRIBUTE10',mmpn.rowid,mmpn.attribute10) mfg_part_attribute10,
+xxen_util.display_flexfield_value(401,'MTL_MFG_PART_NUMBERS',mmpn.attribute_category,'ATTRIBUTE11',mmpn.rowid,mmpn.attribute11) mfg_part_attribute11,
+xxen_util.display_flexfield_value(401,'MTL_MFG_PART_NUMBERS',mmpn.attribute_category,'ATTRIBUTE12',mmpn.rowid,mmpn.attribute12) mfg_part_attribute12,
+xxen_util.display_flexfield_value(401,'MTL_MFG_PART_NUMBERS',mmpn.attribute_category,'ATTRIBUTE13',mmpn.rowid,mmpn.attribute13) mfg_part_attribute13,
+xxen_util.display_flexfield_value(401,'MTL_MFG_PART_NUMBERS',mmpn.attribute_category,'ATTRIBUTE14',mmpn.rowid,mmpn.attribute14) mfg_part_attribute14,
+xxen_util.display_flexfield_value(401,'MTL_MFG_PART_NUMBERS',mmpn.attribute_category,'ATTRIBUTE15',mmpn.rowid,mmpn.attribute15) mfg_part_attribute15,
 --
 msiv.organization_id,
 msiv.inventory_item_id,
 to_number(mic.category_set_id) category_set_id,
+rowidtochar(mmpn.rowid) mfg_part_rowid,
 decode(mp.organization_id,mp.master_organization_id,'Y',null) master_flag,
 0 upload_row
 from
@@ -438,15 +462,20 @@ mtl_system_items_vl msiv,
  mic.category_id = mck.category_id and
  '&lp_templ_includes_cat_cols' = 'Y' and
  2=2
-) mic
+) mic,
+mtl_mfg_part_numbers mmpn
+&gst_hsn_tables
 where
 :p_upload_mode like '%' || xxen_upload.action_update and
 nvl(:p_create_empty_file,'N')  != 'Y' and
 nvl(:p_coa_id,-1)=nvl(:p_coa_id,-1) and
 nvl(:p_num_import_workers,1) = nvl(:p_num_import_workers,1) and
 nvl(:p_purge_after_days,-1) = nvl(:p_purge_after_days,-1) and
+&gst_hsn_where
 1=1 and
 mp.organization_id in (select oav.organization_id from org_access_view oav where oav.responsibility_id = fnd_global.resp_id and oav.resp_application_id = fnd_global.resp_appl_id) and
 msiv.organization_id = mp.organization_id and
 msiv.organization_id = mic.organization_id (+) and
-msiv.inventory_item_id = mic.inventory_item_id (+)
+msiv.inventory_item_id = mic.inventory_item_id (+) and
+decode('&lp_templ_includes_mfg_part_num','Y',mp.master_organization_id) = mmpn.organization_id (+) and
+decode('&lp_templ_includes_mfg_part_num','Y',msiv.inventory_item_id) = mmpn.inventory_item_id (+)

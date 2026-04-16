@@ -5,7 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: ECC Admin - Concurrent Programs
--- Description: List of all concurrent programs required to synchronize Oracle EBS data to the Enterprise Command Centers (ECC) Weblogic server, based on Oracle note 2495053.1 <a href="https://support.oracle.com/CSP/main/article?cmd=show&type=NOT&id=2495053.1" rel="nofollow" target="_blank">https://support.oracle.com/CSP/main/article?cmd=show&type=NOT&id=2495053.1</a>
+-- Description: List of all concurrent programs required to synchronize Oracle EBS data to the Enterprise Command Centers (ECC) Weblogic server, based on Oracle note KA980 <a href="https://support.oracle.com/support/?kmContentId=11154162" rel="nofollow" target="_blank">https://support.oracle.com/support/?kmContentId=11154162</a>
 
 The report includes all currently scheduled request_ids and responsibilities for incremental and full loads, to check which ones are already scheduled.
 The short code can be used as multiple parameter value entry in other reports, e.g. <a href="https://www.enginatics.com/reports/fnd-access-control/" rel="nofollow" target="_blank">https://www.enginatics.com/reports/fnd-access-control/</a> to see which responsibilities or users have access to schedule them, or <a href="https://www.enginatics.com/reports/fnd-concurrent-requests/" rel="nofollow" target="_blank">https://www.enginatics.com/reports/fnd-concurrent-requests/</a> to look at past execution and schedule times.

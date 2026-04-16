@@ -25,6 +25,8 @@ select
  :p_ledger                ledger,
  :p_operating_unit        operating_unit,
  :p_period_name           period,
+ q.po_header_status,
+ q.po_line_status,
  q.po_number,
  q.po_release_number,
  q.line_num,
@@ -71,6 +73,8 @@ select
  q.age_in_days,
  q.charge_account,
  q.accrual_account,
+ q.item_expense_account,
+ &dff_columns2
  --
  q.pivot_sort_value,
  q.po_num_po_release_num  "PO (Release) Number"
@@ -91,56 +95,60 @@ from
    from
     (
       select
-       nvl( poh.clm_document_number,
-            poh.segment1)                        po_number,
-       porl.release_num                          po_release_number,
-       nvl( poh.clm_document_number, poh.segment1) || nvl2(porl.release_num,' (' || lpad(porl.release_num,6,' ') || ')',null) po_num_po_release_num,
-       poh.po_header_id                          po_header_id,
-       pol.po_line_id                            po_line_id,
-       cpea.shipment_id                          po_shipment_id,
-       cpea.distribution_id                      po_distribution_id,
+       nvl( pha.clm_document_number,
+            pha.segment1)                        po_number,
+       pra.release_num                          po_release_number,
+       nvl( pha.clm_document_number, pha.segment1) || nvl2(pra.release_num,' (' || lpad(pra.release_num,6,' ') || ')',null) po_num_po_release_num,
+       pha.po_header_id                          po_header_id,
+       pla.po_line_id                            po_line_id,
+       cpeat.shipment_id                          po_shipment_id,
+       cpeat.distribution_id                      po_distribution_id,
        plt.line_type                             line_type,
-       nvl( pol.line_num_display,
-            to_char(pol.line_num))               line_num,
-       msi.concatenated_segments                 item_name,
-       xxen_util.meaning(msi.item_type,'ITEM_TYPE',3) user_item_type,
-       mca.concatenated_segments                 category,
-       pol.item_description                      item_description,
-       pov.vendor_name                           vendor_name,
-       fnc2.currency_code                        accrual_currency_code,
-       poll.shipment_num                         shipment_num,
-       poll.unit_meas_lookup_code                uom_code,
-       pod.distribution_num                      distribution_num,
-       round( nvl(cpea.quantity_received, 0),
+       nvl( pla.line_num_display,
+            to_char(pla.line_num))               line_num,
+       msibk.concatenated_segments                 item_name,
+       xxen_util.meaning(msibk.item_type,'ITEM_TYPE',3) user_item_type,
+       mck.concatenated_segments                 category,
+       pla.item_description                      item_description,
+       pv.vendor_name                           vendor_name,
+       xxen_util.meaning(nvl(pha.closed_code,'OPEN'),'DOCUMENT STATE',201) po_header_status,
+       xxen_util.meaning(nvl(pla.closed_code,'OPEN'),'DOCUMENT STATE',201) po_line_status,
+       fc2.currency_code                        accrual_currency_code,
+       plla.shipment_num                         shipment_num,
+       plla.unit_meas_lookup_code                uom_code,
+       pda.distribution_num                      distribution_num,
+       round( nvl(cpeat.quantity_received, 0),
               :p_qty_precision)                  quantity_received,
-       round( nvl(cpea.quantity_billed, 0),
+       round( nvl(cpeat.quantity_billed, 0),
               :p_qty_precision)                  quantity_billed,
-       round( nvl(cpea.accrual_quantity, 0),
+       round( nvl(cpeat.accrual_quantity, 0),
               :p_qty_precision)                  quantity_accrued,
-       round( cpea.unit_price,
-              nvl(fnc2.extended_precision, 2))   po_unit_price,
-       cpea.currency_code                        po_currency_code,
-       round( decode( nvl(fnc1.minimum_accountable_unit, 0),
-                      0, cpea.unit_price * cpea.currency_conversion_rate,
-                         (cpea.unit_price / fnc1.minimum_accountable_unit) * cpea.currency_conversion_rate * fnc1.minimum_accountable_unit
+       round( cpeat.unit_price,
+              nvl(fc2.extended_precision, 2))   po_unit_price,
+       cpeat.currency_code                        po_currency_code,
+       round( decode( nvl(fc1.minimum_accountable_unit, 0),
+                      0, cpeat.unit_price * cpeat.currency_conversion_rate,
+                         (cpeat.unit_price / fc1.minimum_accountable_unit) * cpeat.currency_conversion_rate * fc1.minimum_accountable_unit
                    ),
-              nvl(fnc1.extended_precision, 2))   func_unit_price,
-       gcc1.concatenated_segments                charge_account,
-       gcc2.concatenated_segments                accrual_account,
-       cpea.accrual_amount                       accrual_amount,
-       round( decode( nvl(fnc1.minimum_accountable_unit, 0),
-                      0, cpea.accrual_amount * cpea.currency_conversion_rate,
-                         (cpea.accrual_amount / fnc1.minimum_accountable_unit) * cpea.currency_conversion_rate * fnc1.minimum_accountable_unit),
-              nvl(fnc2.precision, 2))            func_accrual_amount,
-       nvl(fnc2.extended_precision,2)            po_precision,
-       nvl(fnc1.extended_precision,2)            po_func_precision,
-       nvl(fnc2.precision,2)                     accr_precision,
+              nvl(fc1.extended_precision, 2))   func_unit_price,
+       gcck1.concatenated_segments                charge_account,
+       gcck2.concatenated_segments                accrual_account,
+       gcck3.concatenated_segments                item_expense_account,
+       &dff_columns
+       cpeat.accrual_amount                       accrual_amount,
+       round( decode( nvl(fc1.minimum_accountable_unit, 0),
+                      0, cpeat.accrual_amount * cpeat.currency_conversion_rate,
+                         (cpeat.accrual_amount / fc1.minimum_accountable_unit) * cpeat.currency_conversion_rate * fc1.minimum_accountable_unit),
+              nvl(fc2.precision, 2))            func_accrual_amount,
+       nvl(fc2.extended_precision,2)            po_precision,
+       nvl(fc1.extended_precision,2)            po_func_precision,
+       nvl(fc2.precision,2)                     accr_precision,
        ( select
            trunc(sysdate - max(rt.transaction_date))
          from
            rcv_transactions rt
          where
-           rt.po_line_location_id = cpea.shipment_id and
+           rt.po_line_location_id = cpeat.shipment_id and
            rt.transaction_type IN ('RECEIVE','MATCH') and
            rt.transaction_date <= :p_end_date
        ) age_in_days,
@@ -149,7 +157,7 @@ from
          from
            rcv_transactions rt
          where
-           rt.po_line_location_id = cpea.shipment_id and
+           rt.po_line_location_id = cpeat.shipment_id and
            rt.transaction_type IN ('RECEIVE','MATCH') and
            rt.transaction_date <= :p_end_date
        ) receipt_date,
@@ -169,7 +177,7 @@ from
               rsh.bill_of_lading is not null
           ) rsh
          where
-           rsh.po_line_location_id = poll.line_location_id
+           rsh.po_line_location_id = plla.line_location_id
        ) bill_of_lading,
        ( select
            listagg(rsh.receipt_num,',') within group (order by rsh.shipment_header_id)
@@ -188,42 +196,42 @@ from
               rsh.receipt_num is not null
           ) rsh
          where
-           rsh.po_line_location_id = poll.line_location_id
+           rsh.po_line_location_id = plla.line_location_id
        ) receipt_num
       from
-       cst_per_end_accruals_temp cpea,
-       po_headers_all            poh,
-       po_lines_all              pol,
-       po_line_locations_all     poll,
-       po_distributions_all      pod,
-       po_vendors                pov,
+       cst_per_end_accruals_temp cpeat,
+       po_headers_all            pha,
+       po_lines_all              pla,
+       po_line_locations_all     plla,
+       po_distributions_all      pda,
+       po_vendors                pv,
        po_line_types             plt,
-       po_releases_all           porl,
-       mtl_system_items_b_kfv      msi,
-       fnd_currencies            fnc1,
-       fnd_currencies            fnc2,
-       mtl_categories_kfv        mca,
-       gl_code_combinations_kfv  gcc1,
-       gl_code_combinations_kfv  gcc2,
-       gl_sets_of_books          sob
+       po_releases_all           pra,
+       mtl_system_items_b_kfv    msibk,
+       gl_sets_of_books          gsob,
+       fnd_currencies            fc1,
+       fnd_currencies            fc2,
+       mtl_categories_kfv        mck,
+       gl_code_combinations_kfv  gcck1,
+       gl_code_combinations_kfv  gcck2,
+       gl_code_combinations_kfv  gcck3
       where
-       pod.po_distribution_id    = cpea.distribution_id and
-       poh.po_header_id          = pol.po_header_id and
-       pol.po_line_id            = poll.po_line_id and
-       poll.line_location_id     = pod.line_location_id and
-       pol.line_type_id          = plt.line_type_id and
-       porl.po_release_id (+)    = poll.po_release_id and
-       poh.vendor_id             = pov.vendor_id and
-       msi.inventory_item_id (+) = pol.item_id and
-       ( msi.organization_id    is null or
-         (msi.organization_id    = poll.ship_to_organization_id and msi.organization_id is not null)
-       ) and
-       fnc1.currency_code        = cpea.currency_code and
-       fnc2.currency_code        = sob.currency_code and
-       cpea.category_id          = mca.category_id(+) and
-       gcc1.code_combination_id  = pod.code_combination_id and
-       gcc2.code_combination_id  = pod.accrual_account_id and
-       sob.set_of_books_id       = :p_ledger_id
+       cpeat.distribution_id=pda.po_distribution_id and
+       pha.po_header_id=pla.po_header_id and
+       pla.po_line_id=plla.po_line_id and
+       plla.line_location_id=pda.line_location_id and
+       pha.vendor_id=pv.vendor_id and
+       pla.line_type_id=plt.line_type_id and
+       plla.po_release_id=pra.po_release_id(+) and
+       pla.item_id=msibk.inventory_item_id(+) and
+       (msibk.organization_id is null or msibk.organization_id=plla.ship_to_organization_id) and
+       gsob.set_of_books_id=:p_ledger_id and
+       cpeat.currency_code=fc1.currency_code and
+       gsob.currency_code=fc2.currency_code and
+       cpeat.category_id=mck.category_id(+) and
+       pda.code_combination_id=gcck1.code_combination_id and
+       pda.accrual_account_id=gcck2.code_combination_id and
+       msibk.expense_account=gcck3.code_combination_id(+)
     ) x
  ) q
 order by

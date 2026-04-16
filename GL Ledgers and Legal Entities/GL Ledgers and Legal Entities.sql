@@ -24,6 +24,7 @@ glsnav.ledger_set_id=gl0.ledger_id
 gl.name ledger,
 xxen_util.meaning(gl.ledger_category_code,'GL_ASF_LEDGER_CATEGORY',101) ledger_category,
 gl.currency_code currency,
+gl.period_set_name calendar,
 ftv.territory_short_name country,
 xfi.town_or_city city,
 xfi.name legal_entity,

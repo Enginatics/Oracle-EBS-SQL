@@ -29,6 +29,9 @@ round(x.row_count/decode(x.seconds,0,0.25,x.seconds),2) rows_second,
 x.file_size,
 xxen_util.client_time(x.actual_completion_date) request_completion_date,
 (x.actual_completion_date-x.completion_date)*86400 file_writing_seconds,
+x.upload_request_id,
+x.upload_file_name,
+x.upload_errors,
 x.run_id,
 x.report_id
 from
@@ -59,6 +62,9 @@ xrr.file_size,
 fcr.actual_completion_date,
 xrv.category,
 xrr.type,
+xrr.upload_request_id,
+xrr.upload_file_name,
+xrr.upload_errors,
 xrr.run_id,
 xrr.report_id
 from

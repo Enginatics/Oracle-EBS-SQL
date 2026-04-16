@@ -77,29 +77,28 @@ q_contacts as
   from
   hz_contact_points hcp
   where
-  hcp.owner_table_name = 'HZ_PARTIES' and
-  hcp.contact_point_type = 'PHONE' and
-  hcp.status = 'A' and
-  nvl(hcp.primary_flag,'N') != 'Y'
+  hcp.owner_table_name='HZ_PARTIES' and
+  hcp.contact_point_type='PHONE' and
+  hcp.status='A' and
+  nvl(hcp.primary_flag,'N')<>'Y'
  ) hcp
  where
- hcar.role_type = 'CONTACT' and
- hcar.party_id = hr.party_id and
- hr.party_id = hprel.party_id and
- hr.subject_id = hpsub.party_id and
- hr.object_id = hpobj.party_id and
- hr.relationship_id = hoc.party_relationship_id and
- hcar.cust_account_id = hca.cust_account_id and
- hr.object_id = hca.party_id and
- hprel.party_id = hps.party_id(+) and
- nvl(hps.identifying_address_flag(+),'Y') = 'Y' and
- nvl(hps.status(+),'A') = 'A' and
- hps.location_id = hl.location_id (+) and
- hprel.party_id = hcp.party_id (+) and
- hcp.row_num (+) = 1 and
- ((hcar.status='A' AND hr.status='A') or
-  ((hcar.status ='I' OR hr.status='I') AND hpsub.status='A' and hpobj.status= 'A' AND hr.status <> 'M')
- )
+ :show_contacts='Y' and
+ hcar.role_type='CONTACT' and
+ hcar.party_id=hr.party_id and
+ hr.party_id=hprel.party_id and
+ hr.subject_id=hpsub.party_id and
+ hr.object_id=hpobj.party_id and
+ hr.relationship_id=hoc.party_relationship_id and
+ hcar.cust_account_id=hca.cust_account_id and
+ hr.object_id=hca.party_id and
+ hprel.party_id=hps.party_id(+) and
+ nvl(hps.identifying_address_flag(+),'Y')='Y' and
+ nvl(hps.status(+),'A')='A' and
+ hps.location_id=hl.location_id(+) and
+ hprel.party_id=hcp.party_id(+) and
+ hcp.row_num(+)=1 and
+ (hcar.status='A' and hr.status='A' or (hcar.status='I' or hr.status='I') and hpsub.status='A' and hpobj.status='A' and hr.status<>'M')
 ),
 q_bank_accounts as
 (select
@@ -113,7 +112,7 @@ q_bank_accounts as
  cbbv.bank_number                  bank_number,
  (select ftv.territory_short_name
   from   fnd_territories_vl ftv
-  where  ftv.territory_code = cbbv.bank_home_country
+  where  ftv.territory_code=cbbv.bank_home_country
  )                                 bank_country,
  cbbv.bank_branch_name             bank_branch_name,
  cbbv.branch_number                bank_branch_number,
@@ -143,12 +142,13 @@ q_bank_accounts as
  iby_ext_bank_accounts ieba,
  ce_bank_branches_v cbbv
  where
- iepa.ext_payer_id = ipiua.ext_pmt_party_id and
- ipiua.instrument_id = ieba.ext_bank_account_id and
- ieba.branch_id = cbbv.branch_party_id and
- iepa.payment_function = 'CUSTOMER_PAYMENT' and
- ipiua.payment_function = 'CUSTOMER_PAYMENT' and
- ipiua.instrument_type = 'BANKACCOUNT'
+ :show_bank_accts='Y' and
+ iepa.ext_payer_id=ipiua.ext_pmt_party_id and
+ ipiua.instrument_id=ieba.ext_bank_account_id and
+ ieba.branch_id=cbbv.branch_party_id and
+ iepa.payment_function='CUSTOMER_PAYMENT' and
+ ipiua.payment_function='CUSTOMER_PAYMENT' and
+ ipiua.instrument_type='BANKACCOUNT'
 ),
 q_zx_registrations as
 (
@@ -163,9 +163,10 @@ q_zx_registrations as
  hz_parties hp,
  hz_party_sites hps
  where
- decode(zptp.party_type_code,'THIRD_PARTY',zptp.party_id,null) = hp.party_id (+) and
- decode(zptp.party_type_code,'THIRD_PARTY_SITE',zptp.party_id,null) = hps.party_site_id (+) and
- zptp.party_tax_profile_id = zr.party_tax_profile_id
+ :show_tax_registrations='Y' and
+ decode(zptp.party_type_code,'THIRD_PARTY',zptp.party_id,null)=hp.party_id(+) and
+ decode(zptp.party_type_code,'THIRD_PARTY_SITE',zptp.party_id,null)=hps.party_site_id(+) and
+ zptp.party_tax_profile_id=zr.party_tax_profile_id
 )
 --
 -- Main query starts here
@@ -174,6 +175,7 @@ select /*+ push_pred(ctct) push_pred(ba) */
 x.operating_unit,
 x.party_type,
 x.party_name,
+x.alternate_name,
 x.party_number,
 x.party_tax_registration_number,
 x.taxpayer_id,
@@ -217,12 +219,13 @@ x.site_urls,
 x.identifying_address_flag,
 x.edi_location,
 x.site_use,
+x.site_usage,
+x.bill_location,
 x.site_tax_registration_number,
 x.primary_flag,
 x.ship_partial,
 &column_trx_count
-x.latest_trx_date,
-x.pay_sched_last_update_date,
+&column_latest_trx
 x.demand_class,
 x.ship_sets,
 x.party_status,
@@ -459,9 +462,10 @@ select
 hou.name operating_unit,
 initcap(hp.party_type) party_type,
 hp.party_name,
+hp.known_as alternate_name,
 hp.party_number,
 hp.url,
-hp.duns_number,
+hp.duns_number_c duns_number,
 decode(hp.party_type,'ORGANIZATION',hp.sic_code) sic_code,
 (select xxen_util.meaning(hcas.class_code,'CUSTOMER_CATEGORY',222) from hz_code_assignments hcas where hcas.owner_table_name='HZ_PARTIES' and hcas.class_category='CUSTOMER_CATEGORY' and hcas.primary_flag='Y' and hcas.owner_table_id = hp.party_id and rownum <= 1) category,
 hca.account_number,
@@ -522,6 +526,8 @@ hcps.site_urls,
 xxen_util.yes(hps.identifying_address_flag) identifying_address_flag,
 hcasa.ece_tp_location_code edi_location,
 xxen_util.meaning(hcsua.site_use_code,'SITE_USE_CODE',222) site_use,
+(select listagg(xxen_util.meaning(hcsua2.site_use_code,'SITE_USE_CODE',222),', ') within group (order by xxen_util.meaning(hcsua2.site_use_code,'SITE_USE_CODE',222)) from hz_cust_site_uses_all hcsua2 where hcsua2.cust_acct_site_id=hcasa.cust_acct_site_id and hcsua2.status='A') site_usage,
+(select hcsua2.location from hz_cust_site_uses_all hcsua2 where hcsua2.site_use_id=hcsua.bill_to_site_use_id) bill_location,
 xxen_util.meaning(hcsua.primary_flag,'YES_NO',0) primary_flag,
 xxen_util.meaning(hcsua.ship_partial,'YES_NO',0) ship_partial,
 hp.jgzz_fiscal_code taxpayer_id,
@@ -533,18 +539,6 @@ hca.tax_header_level_flag,
 hca.tax_rounding_rule,
 hcsua.tax_header_level_flag site_tax_header_level_flag,
 hcsua.tax_rounding_rule site_tax_rounding_rule,
-coalesce(
-(select max(rcta.trx_date) from ra_customer_trx_all rcta where rcta.bill_to_customer_id = hca.cust_account_id and rcta.bill_to_site_use_id = nvl(hcsua.site_use_id,rcta.bill_to_site_use_id) and :detail_level != 'Site'),
-(select max(rcta.trx_date) from ra_customer_trx_all rcta where rcta.ship_to_customer_id = hca.cust_account_id and rcta.ship_to_site_use_id = nvl(hcsua.site_use_id,rcta.ship_to_site_use_id) and :detail_level != 'Site'),
-(select max(rcta.trx_date) from ra_customer_trx_all rcta, hz_cust_site_uses_all hcsua2 where rcta.ship_to_customer_id = hca.cust_account_id and rcta.bill_to_site_use_id = hcsua2.site_use_id and hcsua2.cust_acct_site_id = hcasa.cust_acct_site_id and :detail_level = 'Site'),
-(select max(rcta.trx_date) from ra_customer_trx_all rcta, hz_cust_site_uses_all hcsua2 where rcta.ship_to_customer_id = hca.cust_account_id and rcta.ship_to_site_use_id = hcsua2.site_use_id and hcsua2.cust_acct_site_id = hcasa.cust_acct_site_id and :detail_level = 'Site')
-) latest_trx_date,
-coalesce(
-(select max(xxen_util.client_time(apsa.last_update_date)) from ar_payment_schedules_all apsa where apsa.customer_id = hca.cust_account_id and apsa.customer_site_use_id = nvl(hcsua.site_use_id,apsa.customer_site_use_id) and :detail_level != 'Site'),
-(select max(xxen_util.client_time(apsa.last_update_date)) from ar_payment_schedules_all apsa, ra_customer_trx_all rcta where apsa.customer_trx_id = rcta.customer_trx_id and rcta.ship_to_customer_id = hca.cust_account_id and rcta.ship_to_site_use_id = nvl(hcsua.site_use_id,rcta.ship_to_site_use_id) and :detail_level != 'Site'),
-(select max(xxen_util.client_time(apsa.last_update_date)) from ar_payment_schedules_all apsa, hz_cust_site_uses_all hcsua2 where apsa.customer_id = hca.cust_account_id and apsa.customer_site_use_id = hcsua2.site_use_id and hcsua2.cust_acct_site_id = hcasa.cust_acct_site_id and :detail_level = 'Site'),
-(select max(xxen_util.client_time(apsa.last_update_date)) from ar_payment_schedules_all apsa, ra_customer_trx_all rcta, hz_cust_site_uses_all hcsua2 where apsa.customer_trx_id = rcta.customer_trx_id and rcta.ship_to_customer_id = hca.cust_account_id and rcta.ship_to_site_use_id = hcsua2.site_use_id and hcsua2.cust_acct_site_id = hcasa.cust_acct_site_id and :detail_level = 'Site')
-) pay_sched_last_update_date,
 xxen_util.meaning(hcsua.demand_class_code,'DEMAND_CLASS',3) demand_class,
 xxen_util.meaning(hcsua.ship_sets_include_lines_flag,'YES_NO',0) ship_sets,
 decode(hp.status,'A','Active','I','Inactive','D','Deleted') party_status,
@@ -569,12 +563,12 @@ case when hcsua.site_use_code = 'BILL_TO' and hcsua.gl_id_clearing is not null t
 case when hcsua.site_use_code = 'BILL_TO' and hcsua.gl_id_unbilled is not null then xxen_util.concatenated_segments(hcsua.gl_id_unbilled) end unbilled_rec_account,
 case when hcsua.site_use_code = 'BILL_TO' and hcsua.gl_id_unearned is not null then xxen_util.concatenated_segments(hcsua.gl_id_unearned) end unearned_rec_account,
 case when hcsua.site_use_code = 'BILL_TO' and hcsua.gl_id_rec is not null then xxen_util.segments_description(hcsua.gl_id_rec,gsob.chart_of_accounts_id,101,'GL#') end receivables_account_desc,
-case when hcsua.site_use_code = 'BILL_TO' and hcsua.gl_id_rev is not null then xxen_util.segments_description(hcsua.gl_id_rec,gsob.chart_of_accounts_id,101,'GL#') end revenue_account_desc,
-case when hcsua.site_use_code = 'BILL_TO' and hcsua.gl_id_tax is not null then xxen_util.segments_description(hcsua.gl_id_rec,gsob.chart_of_accounts_id,101,'GL#') end tax_account_desc,
-case when hcsua.site_use_code = 'BILL_TO' and hcsua.gl_id_freight is not null then xxen_util.segments_description(hcsua.gl_id_rec,gsob.chart_of_accounts_id,101,'GL#') end freight_account_desc,
-case when hcsua.site_use_code = 'BILL_TO' and hcsua.gl_id_clearing is not null then xxen_util.segments_description(hcsua.gl_id_rec,gsob.chart_of_accounts_id,101,'GL#') end clearing_account_desc,
-case when hcsua.site_use_code = 'BILL_TO' and hcsua.gl_id_unbilled is not null then xxen_util.segments_description(hcsua.gl_id_rec,gsob.chart_of_accounts_id,101,'GL#') end unbilled_rec_account_desc,
-case when hcsua.site_use_code = 'BILL_TO' and hcsua.gl_id_unearned is not null then xxen_util.segments_description(hcsua.gl_id_rec,gsob.chart_of_accounts_id,101,'GL#') end unearned_rec_account_desc,
+case when hcsua.site_use_code = 'BILL_TO' and hcsua.gl_id_rev is not null then xxen_util.segments_description(hcsua.gl_id_rev,gsob.chart_of_accounts_id,101,'GL#') end revenue_account_desc,
+case when hcsua.site_use_code = 'BILL_TO' and hcsua.gl_id_tax is not null then xxen_util.segments_description(hcsua.gl_id_tax,gsob.chart_of_accounts_id,101,'GL#') end tax_account_desc,
+case when hcsua.site_use_code = 'BILL_TO' and hcsua.gl_id_freight is not null then xxen_util.segments_description(hcsua.gl_id_freight,gsob.chart_of_accounts_id,101,'GL#') end freight_account_desc,
+case when hcsua.site_use_code = 'BILL_TO' and hcsua.gl_id_clearing is not null then xxen_util.segments_description(hcsua.gl_id_clearing,gsob.chart_of_accounts_id,101,'GL#') end clearing_account_desc,
+case when hcsua.site_use_code = 'BILL_TO' and hcsua.gl_id_unbilled is not null then xxen_util.segments_description(hcsua.gl_id_unbilled,gsob.chart_of_accounts_id,101,'GL#') end unbilled_rec_account_desc,
+case when hcsua.site_use_code = 'BILL_TO' and hcsua.gl_id_unearned is not null then xxen_util.segments_description(hcsua.gl_id_unearned,gsob.chart_of_accounts_id,101,'GL#') end unearned_rec_account_desc,
 -- dff
 &dff_columns
 -- Profile Class
@@ -701,7 +695,7 @@ hl.country=ftt.territory_code(+) and
 ftt.language(+)=userenv('lang') and
 hcasa.cust_acct_site_id=hcsua.cust_acct_site_id(+) and
 hca.cust_account_id=hcp1.cust_account_id(+) and
-nvl(hcp1.site_use_id (+),0) = 0 and
+nvl(hcp1.site_use_id(+),0)=0 and
 hcsua.site_use_id=hcp2.site_use_id(+) and
 hcp1.profile_class_id=hcpc1.profile_class_id(+) and
 hcp2.profile_class_id=hcpc2.profile_class_id(+) and
@@ -723,42 +717,27 @@ x.party_id=zptp1.party_id(+) and
 zptp1.party_type_code(+)='THIRD_PARTY' and
 x.party_site_id=zptp2.party_id(+) and
 zptp2.party_type_code(+)='THIRD_PARTY_SITE' and
-nvl2(:show_tax_registrations,x.party_id,null) = zr.party_id (+) and
-nvl(x.party_site_id,-99) = nvl(zr.party_site_id (+),nvl(x.party_site_id,-99)) and
-(:show_tax_registrations = 'Y' or
- zr.party_tax_profile_id is null or
- trunc(sysdate) between nvl(zr.effective_from,trunc(sysdate)) and nvl(zr.effective_to,trunc(sysdate))
-) and
+nvl2(:show_tax_registrations,x.party_id,null)=zr.party_id(+) and
+nvl(x.party_site_id,-99)=nvl(zr.party_site_id(+),nvl(x.party_site_id,-99)) and
+(:show_tax_registrations='Y' or zr.party_tax_profile_id is null or trunc(sysdate) between nvl(zr.effective_from,trunc(sysdate)) and nvl(zr.effective_to,trunc(sysdate))) and
 --
-nvl2(:show_profile_amts,x.prof_amt_profile_id,null) = hcpa.cust_account_profile_id (+) and
+nvl2(:show_profile_amts,x.prof_amt_profile_id,null)=hcpa.cust_account_profile_id(+) and
 --
-nvl2(:show_receipt_methods,x.cust_account_id,0) = rcrm.customer_id (+) and
-nvl(x.site_use_id,-99) = nvl(rcrm.site_use_id (+),nvl(x.site_use_id,-99)) and
-rcrm.receipt_method_id = arm.receipt_method_id (+) and
-(:show_receipt_methods = 'Y' or
- rcrm.receipt_method_id is null or
- trunc(sysdate) between nvl(rcrm.start_date,trunc(sysdate)) and nvl(rcrm.end_date,trunc(sysdate))
-) and
+nvl2(:show_receipt_methods,x.cust_account_id,0)=rcrm.customer_id(+) and
+nvl(x.site_use_id,-99)=nvl(rcrm.site_use_id(+),nvl(x.site_use_id,-99)) and
+rcrm.receipt_method_id=arm.receipt_method_id(+) and
+(:show_receipt_methods='Y' or rcrm.receipt_method_id is null or trunc(sysdate) between nvl(rcrm.start_date,trunc(sysdate)) and nvl(rcrm.end_date,trunc(sysdate))) and
 --
-nvl2(:show_bank_accts,x.cust_account_id,null) = ba.cust_account_id (+) and
-nvl(x.site_use_id,-99) = nvl(ba.site_use_id (+),nvl(x.site_use_id,-99)) and
-(:show_bank_accts = 'Y' or
- ba.instrument_payment_use_id is null or
- trunc(sysdate) between nvl(ba.bank_acct_assignmt_start_date,trunc(sysdate)) and nvl(ba.bank_acct_assignmt_end_date,trunc(sysdate))
-) and
-nvl2(:show_debit_auth,ba.party_id,null) = ida.debtor_party_id (+) and
-nvl2(:show_debit_auth,ba.bank_account_id,null) = ida.external_bank_account_id (+) and
-(:show_debit_auth = 'Y' or
- ida.debit_authorization_id is null or
- (nvl(ida.debit_auth_end,sysdate+1) > sysdate and nvl(ida.auth_cancel_date,sysdate+1) > sysdate)
-) and
+nvl2(:show_bank_accts,x.cust_account_id,null)=ba.cust_account_id(+) and
+nvl(x.site_use_id,-99)=nvl(ba.site_use_id(+),nvl(x.site_use_id,-99)) and
+(:show_bank_accts='Y' or ba.instrument_payment_use_id is null or trunc(sysdate) between nvl(ba.bank_acct_assignmt_start_date,trunc(sysdate)) and nvl(ba.bank_acct_assignmt_end_date,trunc(sysdate))) and
+nvl2(:show_debit_auth,ba.party_id,null)=ida.debtor_party_id(+) and
+nvl2(:show_debit_auth,ba.bank_account_id,null)=ida.external_bank_account_id(+) and
+(:show_debit_auth='Y' or ida.debit_authorization_id is null or nvl(ida.debit_auth_end,sysdate+1)>sysdate and nvl(ida.auth_cancel_date,sysdate+1)>sysdate) and
 --
-nvl2(:show_contacts,x.cust_account_id,0) = ctct.cust_account_id (+) and
-nvl(x.cust_acct_site_id,-99) = nvl(ctct.cust_acct_site_id,nvl(x.cust_acct_site_id,-99)) and
-(:show_contacts = 'Y' or
- ctct.cust_account_role_id is null or
- ctct.status = 'A'
-) and
+nvl2(:show_contacts,x.cust_account_id,0)=ctct.cust_account_id(+) and
+nvl(x.cust_acct_site_id,-99)=nvl(ctct.cust_acct_site_id,nvl(x.cust_acct_site_id,-99)) and
+(:show_contacts='Y' or ctct.cust_account_role_id is null or ctct.status='A') and
 2=2
 order by
 x.party_name,

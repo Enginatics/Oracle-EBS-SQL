@@ -23,6 +23,7 @@ aps.vendor_name supplier_name,
 ppx.full_name buyer,
 po_headers_sv3.get_po_status(pha.po_header_id) status,
 pha.comments description,
+xxen_util.meaning(pha.pay_on_code,'PAY ON CODE',201) pay_on,
 &invoice_columns
 xxen_util.client_time(pha.creation_date) po_creation_date,
 xxen_util.user_name(pha.created_by) created_by,

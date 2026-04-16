@@ -21,6 +21,7 @@ u.currency_code,
 &lp_pivot_segment_name pivot_segment,
 &pivot_and_account_segment
 u.concatenated_segments account,
+&parent_acct_desc
 u.begin_balance_dr,
 u.begin_balance_cr,
 u.begin_balance,
@@ -39,7 +40,7 @@ select
 max(glr.target_ledger_name) ledger_name,
 gb.currency_code,
 max(gcck.gl_account_type) gl_account_type,
-max(gcck.concatenated_segments) concatenated_segments,
+&parent_acct_display max(gcck.concatenated_segments) concatenated_segments,
 &segment_columns
 decode(:p_type,'PTD', sum(decode(:p_currency_type,'T', nvl(begin_balance_dr,0),'S', nvl(begin_balance_dr,0),'E',decode(gb.translated_flag,'R', nvl(begin_balance_dr,0), nvl(begin_balance_dr_beq,0)),'C', nvl(begin_balance_dr_beq,0))),'PJTD', decode(:p_currency_type,'T', 0,'S', 0,'E', 0,'C',0),'YTD', decode(:p_currency_type,'T', sum(decode(gb.period_name,:p_first_period_name,(nvl(begin_balance_dr,0)),0)),'S', sum(decode(gb.period_name,:p_first_period_name,(nvl(begin_balance_dr,0)),0)),'E', sum(decode(gb.translated_flag,'R', decode(gb.period_name,:p_first_period_name, nvl(begin_balance_dr,0),0), decode(gb.period_name,:p_first_period_name, nvl(begin_balance_dr_beq,0),0))),'C', sum(decode(gb.period_name,:p_first_period_name,nvl(begin_balance_dr_beq,0),0)))) begin_balance_dr,
 decode(:p_type,'PTD', sum(decode(:p_currency_type,'T', nvl(begin_balance_cr,0),'S', nvl(begin_balance_cr,0),'E',decode(gb.translated_flag,'R', nvl(begin_balance_cr,0), nvl(begin_balance_cr_beq,0)),'C', nvl(begin_balance_cr_beq,0))),'PJTD', decode(:p_currency_type,'T', 0,'S', 0,'E', 0,'C',0),'YTD', decode(:p_currency_type,'T', sum(decode(gb.period_name,:p_first_period_name,(nvl(begin_balance_cr,0)),0)),'S', sum(decode(gb.period_name,:p_first_period_name,(nvl(begin_balance_cr,0)),0)),'E', sum(decode(gb.translated_flag,'R', decode(gb.period_name,:p_first_period_name, nvl(begin_balance_cr,0),0), decode(gb.period_name,:p_first_period_name, nvl(begin_balance_cr_beq,0),0))),'C', sum(decode(gb.period_name,:p_first_period_name,nvl(begin_balance_cr_beq,0),0)))) begin_balance_cr,
@@ -52,13 +53,14 @@ decode(:p_type,'PTD', sum(decode(:p_currency_type,'T', nvl(begin_balance_cr,0)+ 
 decode(:p_type,'PTD', sum(decode(:p_currency_type,'T', nvl(begin_balance_dr,0)+ nvl(period_net_dr,0)- nvl(begin_balance_cr,0) - nvl(period_net_cr,0),'S', nvl(begin_balance_dr,0)+ nvl(period_net_dr,0) - nvl(begin_balance_cr,0) - nvl(period_net_cr,0),'E', decode(gb.translated_flag,'R', nvl(begin_balance_dr,0) + nvl(period_net_dr,0)- nvl(begin_balance_cr,0) - nvl(period_net_cr,0),nvl(begin_balance_dr_beq,0) + nvl(period_net_dr_beq,0)- nvl(begin_balance_cr_beq,0) - nvl(period_net_cr_beq,0) ),'C', nvl(begin_balance_dr_beq,0)+ nvl(period_net_dr_beq,0)- nvl(begin_balance_cr_beq,0) - nvl(period_net_cr_beq,0))),'PJTD', sum(decode(:p_currency_type,'T', nvl(project_to_date_dr,0)+ nvl(period_net_dr,0) - nvl(project_to_date_cr,0) - nvl(period_net_cr,0),'S', nvl(project_to_date_dr,0) + nvl(period_net_dr,0) - nvl(project_to_date_cr,0) - nvl(period_net_cr,0),'E', decode(gb.translated_flag,'R', nvl(project_to_date_dr,0) + nvl(period_net_dr,0)- nvl(project_to_date_cr,0) - nvl(period_net_cr,0), nvl(project_to_date_dr_beq,0) + nvl(period_net_dr_beq,0) - nvl(project_to_date_cr_beq,0) - nvl(period_net_cr_beq,0) ),'C', nvl(project_to_date_dr_beq,0) + nvl(period_net_dr_beq,0) - nvl(project_to_date_cr_beq,0) - nvl(period_net_cr_beq,0)) ),'YTD', decode(:p_currency_type,'T', sum(decode(gb.period_name, :p_period_name, nvl(period_net_dr,0 ) - nvl(period_net_cr,0) + nvl(begin_balance_dr,0) - nvl(begin_balance_cr,0),0)),'S', sum(decode(gb.period_name, :p_period_name, nvl(period_net_dr,0)- nvl(period_net_cr,0) + nvl(begin_balance_dr,0)- nvl(begin_balance_cr,0),0)),'E', sum(decode(gb.translated_flag,'R', decode(gb.period_name, :p_period_name, nvl(period_net_dr,0)- nvl(period_net_cr,0)+ nvl(begin_balance_dr,0) - nvl(begin_balance_cr, 0 ), 0 ), decode(gb.period_name, :p_period_name, nvl(period_net_dr_beq, 0 ) - nvl(period_net_cr_beq,0)+ nvl(begin_balance_dr_beq,0)- nvl(begin_balance_cr_beq,0),0) ) ),'C', sum(decode(gb.period_name,:p_period_name, nvl(period_net_dr_beq,0) - nvl(period_net_cr_beq,0) + nvl(begin_balance_dr_beq,0) - nvl(begin_balance_cr_beq,0),0)))) end_balance,
 &dff_cols
 max(gcck.chart_of_accounts_id) chart_of_accounts_id,
-gcck.code_combination_id
+&parent_id_col gcck.code_combination_id
 from
 gl_ledgers gl,
 gl_ledger_set_assignments glsa,
 gl_ledger_relationships glr,
 gl_balances gb,
 gl_code_combinations_kfv gcck
+&parent_hierarchy_from
 where
 1=1 and
 gl.ledger_id=:p_ledger_id and
@@ -74,11 +76,13 @@ gb.actual_flag='A' and
 gcck.chart_of_accounts_id=:p_chart_of_accounts_id and
 gcck.summary_flag='N' and
 gcck.template_id is null
+&parent_hierarchy_where
 group by
 gb.ledger_id,
 gb.currency_code,
 &dff_cols_group
-gcck.code_combination_id
+&parent_pivot_group
+&parent_group_by gcck.code_combination_id
 ) u
 where
 nvl(u.begin_balance,0)!=0 or nvl(u.period_net,0)!=0 or nvl(u.end_balance,0)!=0

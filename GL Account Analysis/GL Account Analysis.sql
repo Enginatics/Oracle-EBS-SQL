@@ -49,8 +49,8 @@ from
 select
 &hierarchy_levels2
 x.*,
-case when max(x.je_header_id) over (partition by x.ledger,x.concatenated_segments) is not null then 'Y' else 'N' end has_activity,
-case when sum(case when x.record_type='Balance' then abs(nvl(x.accounted_amount,0)) else 0 end) over (partition by x.ledger,x.concatenated_segments)=0 then 'Y' else 'N' end zero_balance
+case when max(x.je_header_id) over (partition by x.ledger,x.concatenated_segments) is not null then 'Y' end has_activity,
+case when max(decode(x.record_type,'Balance',abs(x.accounted_amount))) over (partition by x.ledger,x.concatenated_segments)>0 then 'Y' end has_balance
 from
 (
 select &leading_hint
@@ -436,10 +436,10 @@ nvl(peia.expenditure_item_date,case when xte.application_id=801 and xte.entity_c
 case when xte.application_id=801 and xte.entity_code='ASSIGNMENTS' then xte.source_id_int_1 end=paa.assignment_action_id(+) and
 paa.assignment_id=paaf.assignment_id(+) and
 case when xte.application_id=801 and xte.entity_code='ASSIGNMENTS' then fnd_date.canonical_to_date(xte.source_id_char_1) end between paaf.effective_start_date(+) and paaf.effective_end_date(+) and
-case
+coalesce(case
 when xte.application_id=707 and xte.entity_code='RCV_ACCOUNTING_EVENTS' then xte.source_id_int_1
-when xte.application_id=555 and gxeh.txn_source='PUR' then gxeh.source_line_id
-end=rt.transaction_id(+) and
+when xte.application_id=555 and gxeh.event_class_code='RECEIVE' then gxeh.source_line_id
+end,mmt.rcv_transaction_id)=rt.transaction_id(+) and
 rt.shipment_line_id=rsl.shipment_line_id(+) and
 rt.shipment_header_id=rsh.shipment_header_id(+) and
 case when xte.application_id=707 and xte.entity_code='WIP_ACCOUNTING_EVENTS' then xte.source_id_int_1 end=wt.transaction_id(+) and
@@ -449,10 +449,10 @@ wt.resource_id=br.resource_id(+) and
 case when xah.application_id=555 then xah.event_id end=gxeh.event_id(+) and
 --Inventory
 coalesce(case when xte.application_id=707 and xte.entity_code='MTL_ACCOUNTING_EVENTS' then xte.source_id_int_1
-when xah.application_id=555 then gxeh.transaction_id end,cwo.inventory_transaction_id)=mmt.transaction_id(+) and
-coalesce(mmt.organization_id,rsl.to_organization_id,we.organization_id,cwo.organization_id)=msiv.organization_id(+) and
-coalesce(mmt.inventory_item_id,rsl.item_id,we.primary_item_id,cwo.inventory_item_id)=msiv.inventory_item_id(+) and
-coalesce(mmt.organization_id,rt.organization_id,rsl.to_organization_id,we.organization_id)=mp.organization_id(+) and
+when xah.application_id=555 and (xte.entity_code in ('INVENTORY','ORDERMANAGEMENT') or gxeh.event_class_code in ('BATCH_MATERIAL','DELIVER')) then gxeh.transaction_id end,cwo.inventory_transaction_id)=mmt.transaction_id(+) and
+coalesce(mmt.organization_id,gxeh.organization_id,rsl.to_organization_id,we.organization_id,cwo.organization_id)=msiv.organization_id(+) and
+coalesce(mmt.inventory_item_id,gxeh.inventory_item_id,rsl.item_id,we.primary_item_id,cwo.inventory_item_id)=msiv.inventory_item_id(+) and
+coalesce(mmt.organization_id,gxeh.organization_id,rt.organization_id,rsl.to_organization_id,we.organization_id)=mp.organization_id(+) and
 mmt.transaction_type_id=mtt.transaction_type_id(+) and
 mmt.transaction_source_type_id=mtst.transaction_source_type_id(+) and
 case when xte.application_id=707 and xte.entity_code='WO_ACCOUNTING_EVENTS' then xte.source_id_int_1 end=cwo.write_off_id(+) and

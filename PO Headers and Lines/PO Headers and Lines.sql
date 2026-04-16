@@ -128,6 +128,9 @@ x.accrual_account,
 x.item_expense_account,
 x.item_expense_account_desc,
 &dff_columns2
+-- po line attachment
+fad.count po_line_attachment_count,
+&attachment_columns
 x.po_created_by,
 xxen_util.client_time(x.po_creation_date) po_creation_date,
 x.release_created_by,
@@ -291,7 +294,7 @@ decode(:p_show_distributions,'Y',pda.quantity_billed,plla.quantity_billed) quant
 decode(:p_show_distributions,'Y',pda.quantity_delivered,0) quantity_delivered,
 rt.primary_quantity,
 rt.primary_unit_of_measure,
-rt.po_unit_price,
+coalesce(rt.po_unit_price,plla.price_override,pla.unit_price) po_unit_price,
 rsh.shipment_num receiving_shipment_number,
 rsh.shipped_date,
 rsl.quantity_shipped,
@@ -551,7 +554,7 @@ null quantity_due,
 null quantity_billed,
 null primary_quantity,
 null primary_unit_of_measure,
-null po_unit_price,
+nvl(plla.price_override,pla.unit_price) po_unit_price,
 null receiving_shipment_number,
 null shipped_date,
 null quantity_shipped,
@@ -673,12 +676,30 @@ cic3.cost_type_id(+)=3 and
 pha.agent_id=ppx.person_id(+)
 ) x,
 ap_invoice_lines_all aila,
-ap_invoices_all aia
+ap_invoices_all aia,
+(select distinct fad.pk1_value,&fad_document_id count(*) over (partition by fad.pk1_value) count from fnd_attached_documents fad where '&show_attachments'='Y' and fad.entity_name='PO_LINES') fad,
+fnd_documents fd,
+fnd_documents_tl fdt,
+fnd_document_datatypes fdd,
+fnd_document_categories_vl fdcv,
+fnd_lobs fl,
+fnd_documents_short_text fdst,
+fnd_documents_long_text fdlt
 where
 x.line_location_id=aila.po_line_location_id(+) and
 (x.rcv_transaction_id=aila.rcv_transaction_id or x.rcv_transaction_id is null or aila.rcv_transaction_id is null) and
 nvl(aila.discarded_flag(+),'N')='N' and
-aila.invoice_id=aia.invoice_id(+)
+aila.invoice_id=aia.invoice_id(+) and
+to_char(x.po_line_id)=fad.pk1_value(+) and
+fad.document_id=fd.document_id(+) and
+fd.document_id=fdt.document_id(+) and
+fdt.language(+)=userenv('lang') and
+fd.datatype_id=fdd.datatype_id(+) and
+fdd.language(+)=userenv('lang') and
+fd.category_id=fdcv.category_id(+) and
+fd.media_id=fl.file_id(+) and
+decode(fd.datatype_id,1,fd.media_id)=fdst.media_id(+) and
+decode(fd.datatype_id,2,fd.media_id)=fdlt.media_id(+)
 order by
 x.operating_unit,
 x.po_number,
@@ -688,4 +709,5 @@ x.release desc nulls last,
 x.shipment_number desc,
 x.distribution_num,
 x.item,
-xxen_util.client_time(x.po_creation_date) desc
+xxen_util.client_time(x.po_creation_date) desc,
+fad.seq_num

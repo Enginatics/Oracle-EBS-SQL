@@ -25,7 +25,7 @@ Example: To show all users having access to the user maintenance form, enter par
 User Name: %
 Form Name: FNDSCAUS
 
-Please note that the SQL currently doesn't consider menu exclusions yet, which means that it's not 100% accurate as excluded functions would still show up in the report.
+Menu exclusions (fnd_resp_functions) are considered: functions excluded directly (rule_type F) or through an excluded menu (rule_type M) are filtered out.
 -- Excel Examle Output: https://www.enginatics.com/example/fnd-responsibility-access/
 -- Library Link: https://www.enginatics.com/reports/fnd-responsibility-access/
 -- Run Report: https://demo.enginatics.com/
@@ -96,12 +96,14 @@ select /*+ materialize*/ distinct
 y.security_profile_id,
 y.security_profile,
 decode('&expand_operating_units','Y',y.operating_unit,listagg(y.operating_unit,chr(10)) within group (order by y.operating_unit) over (partition by y.security_profile_id)) operating_unit,
+decode('&expand_operating_units','Y',y.legal_entity,listagg(y.legal_entity,chr(10)) within group (order by y.operating_unit) over (partition by y.security_profile_id)) legal_entity,
 decode('&expand_operating_units','Y',to_char(y.organization_id),listagg(y.organization_id,chr(10)) within group (order by y.operating_unit) over (partition by y.security_profile_id)) operating_unit_id
 from
 (
 select
 decode('&expand_operating_units','Y',0,sum(lengthb(haouv.name)+1) over (partition by x.security_profile_id order by haouv.name rows between unbounded preceding and current row)) total_length,
 haouv.name operating_unit,
+(select xfi.name from hr_operating_units hou, xle_firstparty_information_v xfi where haouv.organization_id=hou.organization_id and hou.default_legal_context_id=xfi.legal_entity_id) legal_entity,
 x.*
 from
 (
@@ -164,6 +166,7 @@ z.gl_access_set "GL: Data Access Set",
 z.ledger,
 z.security_profile "MO: Security Profile",
 z.operating_unit,
+z.legal_entity,
 z.organization,
 z.responsibility_key,
 &col2
@@ -188,6 +191,7 @@ gl.ledger,
 gl.ledger_id,
 prof.security_profile,
 case when prof.security_profile_id is not null then prof.operating_unit else (select haouv.name from hr_all_organization_units_vl haouv where y.org_id=haouv.organization_id) end operating_unit,
+case when prof.security_profile_id is not null then prof.legal_entity else (select xfi.name from hr_operating_units hou, xle_firstparty_information_v xfi where y.org_id=hou.organization_id and hou.default_legal_context_id=xfi.legal_entity_id) end legal_entity,
 case when prof.security_profile_id is not null then prof.operating_unit_id else y.org_id end operating_unit_id,
 oav.organization,
 oav.organization_id
@@ -308,7 +312,9 @@ fcmf.function_id=nav.function_id(+) and
 fcmf.function_id=fffv.function_id(+) and
 fffv.application_id=ffv.application_id(+) and
 fffv.form_id=ffv.form_id(+) and
-fav.application_short_name=fmpi.application_short_name(+)
+fav.application_short_name=fmpi.application_short_name(+) and
+(fcmf.function_id is null or not exists (select null from fnd_resp_functions frf where frf.rule_type='F' and frf.application_id=frv.application_id and frf.responsibility_id=frv.responsibility_id and frf.action_id=fcmf.function_id)) and
+(fcmf.function_id is null or not exists (select null from fnd_resp_functions frf, fnd_compiled_menu_functions fcmf2 where frf.rule_type='M' and frf.application_id=frv.application_id and frf.responsibility_id=frv.responsibility_id and fcmf2.menu_id=frf.action_id and fcmf2.function_id=fcmf.function_id and nvl(fcmf2.grant_flag,'Y')='Y'))
 ) y,
 gl,
 prof,
