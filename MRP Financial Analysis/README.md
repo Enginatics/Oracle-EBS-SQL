@@ -2,7 +2,7 @@
 layout: default
 title: 'MRP Financial Analysis | Oracle EBS SQL Report'
 description: 'Imported from BI Publisher Description: Financial Analysis Report Application: Master Scheduling/MRP Source: Financial Analysis Report (XML) Short Name…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, MRP, Financial, Analysis, org_organization_definitions, mrp_form_query, mrp_plans'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, MRP, Financial, Analysis, org_organization_definitions, mrp_form_query, mrp_plans'
 permalink: /MRP%20Financial%20Analysis/
 ---
 
@@ -25,10 +25,10 @@ Organization Code, Plan Name, Periods, Weeks, Cost Type
 [org_organization_definitions](https://www.enginatics.com/library/?pg=1&find=org_organization_definitions), [mrp_form_query](https://www.enginatics.com/library/?pg=1&find=mrp_form_query), [mrp_plans](https://www.enginatics.com/library/?pg=1&find=mrp_plans), [mrp_schedule_designators](https://www.enginatics.com/library/?pg=1&find=mrp_schedule_designators), [mrp_plan_schedules_v](https://www.enginatics.com/library/?pg=1&find=mrp_plan_schedules_v), [mrp_plan_organizations_v](https://www.enginatics.com/library/?pg=1&find=mrp_plan_organizations_v)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related Reports
-[MSC Horizontal Plan](/MSC%20Horizontal%20Plan/ "MSC Horizontal Plan Oracle EBS SQL Report"), [MSC Pegging Hierarchy 11i](/MSC%20Pegging%20Hierarchy%2011i/ "MSC Pegging Hierarchy 11i Oracle EBS SQL Report"), [MSC Pegging Hierarchy](/MSC%20Pegging%20Hierarchy/ "MSC Pegging Hierarchy Oracle EBS SQL Report"), [MSC Plan Order Upload](/MSC%20Plan%20Order%20Upload/ "MSC Plan Order Upload Oracle EBS SQL Report"), [MRP Plan Orders](/MRP%20Plan%20Orders/ "MRP Plan Orders Oracle EBS SQL Report"), [MSC Plan Orders](/MSC%20Plan%20Orders/ "MSC Plan Orders Oracle EBS SQL Report")
+[MSC Horizontal Plan](/MSC%20Horizontal%20Plan/ "MSC Horizontal Plan Oracle EBS SQL Report"), [MSC Plan Order Upload](/MSC%20Plan%20Order%20Upload/ "MSC Plan Order Upload Oracle EBS SQL Report"), [MSC Pegging Hierarchy](/MSC%20Pegging%20Hierarchy/ "MSC Pegging Hierarchy Oracle EBS SQL Report"), [MRP Plan Orders](/MRP%20Plan%20Orders/ "MRP Plan Orders Oracle EBS SQL Report"), [MSC Plan Orders](/MSC%20Plan%20Orders/ "MSC Plan Orders Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.

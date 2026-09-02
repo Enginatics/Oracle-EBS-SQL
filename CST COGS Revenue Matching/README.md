@@ -2,7 +2,7 @@
 layout: default
 title: 'CST COGS Revenue Matching | Oracle EBS SQL Report'
 description: 'Imported from Concurrent Program Application: Bills of Material Source: COGS Revenue Matching Report Short Name: CSTRCMRX The COGS/Revenue Matching Report…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Nidec changes, R12 only, CST, COGS, Revenue, Matching, cst_revenue_cogs_match_lines, cst_cogs_events, oe_order_lines_all'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, CST, COGS, Revenue, Matching, cst_revenue_cogs_match_lines, cst_cogs_events, oe_order_lines_all'
 permalink: /CST%20COGS%20Revenue%20Matching/
 ---
 
@@ -57,7 +57,7 @@ Ledger, Operating Unit, Period, Order Number, Sales Order Issue Date From, Sales
 [cst_revenue_cogs_match_lines](https://www.enginatics.com/library/?pg=1&find=cst_revenue_cogs_match_lines), [cst_cogs_events](https://www.enginatics.com/library/?pg=1&find=cst_cogs_events), [oe_order_lines_all](https://www.enginatics.com/library/?pg=1&find=oe_order_lines_all), [oe_order_headers_all](https://www.enginatics.com/library/?pg=1&find=oe_order_headers_all), [mtl_transaction_accounts](https://www.enginatics.com/library/?pg=1&find=mtl_transaction_accounts), [gl_ledgers](https://www.enginatics.com/library/?pg=1&find=gl_ledgers), [hr_all_organization_units](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units), [perpetual_qry_1](https://www.enginatics.com/library/?pg=1&find=perpetual_qry_1), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters), [gl_code_combinations_kfv](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations_kfv), [ra_customer_trx_lines_all](https://www.enginatics.com/library/?pg=1&find=ra_customer_trx_lines_all), [hz_cust_accounts](https://www.enginatics.com/library/?pg=1&find=hz_cust_accounts), [hz_parties](https://www.enginatics.com/library/?pg=1&find=hz_parties), [perpetual_qry_2](https://www.enginatics.com/library/?pg=1&find=perpetual_qry_2), [ra_customer_trx_all](https://www.enginatics.com/library/?pg=1&find=ra_customer_trx_all), [perpetual_qry](https://www.enginatics.com/library/?pg=1&find=perpetual_qry)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Nidec changes](https://www.enginatics.com/library/?pg=1&category[]=Nidec%20changes), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 
 

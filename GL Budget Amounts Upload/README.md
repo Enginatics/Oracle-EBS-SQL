@@ -2,7 +2,7 @@
 layout: default
 title: 'GL Budget Amounts Upload | Oracle EBS SQL Report'
 description: 'GL Budget Amounts Upload =================== This can be used to upload GL Budget Amounts'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Upload, Budget, Amounts, gl_period_statuses, gl_bc_packets, gl_balances'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, Budget, Amounts, gl_period_statuses, gl_bc_packets, gl_balances'
 permalink: /GL%20Budget%20Amounts%20Upload/
 ---
 
@@ -22,7 +22,7 @@ Ledger, Upload Mode, Budget Organization, Budget, Currency, Fiscal Year, Account
 [gl_period_statuses](https://www.enginatics.com/library/?pg=1&find=gl_period_statuses), [gl_bc_packets](https://www.enginatics.com/library/?pg=1&find=gl_bc_packets), [gl_balances](https://www.enginatics.com/library/?pg=1&find=gl_balances)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only), [Upload](https://www.enginatics.com/library/?pg=1&category[]=Upload)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Upload](https://www.enginatics.com/library/?pg=1&category[]=Upload)
 
 
 
@@ -33,7 +33,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/gl-budget-amounts-upload/) |
+| Excel Example Output | [](https://www.enginatics.com/example/gl-budget-amounts-upload/) |
 | Blitz Report™ XML Import | [GL_Budget_Amounts_Upload.xml](https://www.enginatics.com/xml/gl-budget-amounts-upload/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/gl-budget-amounts-upload/](https://www.enginatics.com/reports/gl-budget-amounts-upload/) |
 

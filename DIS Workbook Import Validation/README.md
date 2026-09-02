@@ -1,8 +1,8 @@
 ---
 layout: default
 title: 'DIS Workbook Import Validation | Oracle EBS SQL Report'
-description: 'Discoverer workbook migraton validation report showing the workbooks, sheets, how ofthen they were accessed within the given number of days, columns for…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, DIS, Workbook, Import, Validation, eul5_documents, eul5_qpp_stats, xxen_discoverer_workbook_xmls'
+description: 'Discoverer workbook migration validation report showing every workbook and worksheet next to its conversion state: whether the workbook xml is uploaded…'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, DIS, Workbook, Import, Validation, eul5_documents, xxen_discoverer_workbook_xmls, xxen_discoverer_sheets'
 permalink: /DIS%20Workbook%20Import%20Validation/
 ---
 
@@ -11,19 +11,23 @@ permalink: /DIS%20Workbook%20Import%20Validation/
 **Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/dis-workbook-import-validation/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
 
 ## Overview
-Discoverer workbook migraton validation report showing the workbooks, sheets, how ofthen they were accessed within the given number of days, columns for the number of records in the different import process tables, and the created blitz report and template information.
+Discoverer workbook migration validation report showing every workbook and worksheet next to its conversion state: whether the workbook xml is uploaded, selected for conversion or converted, the object use key derived from the workbook xml, and the migrated Blitz report and template.
+
+Workbooks known only from the end user layer and workbooks whose xml was uploaded after deletion from Discoverer are both listed, so gaps in either direction are visible. The Not yet imported parameter restricts to worksheets without a migrated template.
+
+The Accessed after parameter restricts the output to workbooks with recorded usage since that date, the same scope the DIS Workbook Export Script lists for export; left blank, every workbook is shown including those never accessed. The usage statistics columns show access count, last accessed date and user within the same window.
 
 ## Report Parameters
-Workbook, Accessed after, Workbook Owner, Not yet imported, Include Inactive, End User Layer
+Workbook, Accessed after, Workbook Owner, Not yet imported, End User Layer
 
 ## Oracle EBS Tables Used
-[eul5_documents](https://www.enginatics.com/library/?pg=1&find=eul5_documents), [eul5_qpp_stats](https://www.enginatics.com/library/?pg=1&find=eul5_qpp_stats), [xxen_discoverer_workbook_xmls](https://www.enginatics.com/library/?pg=1&find=xxen_discoverer_workbook_xmls), [xxen_discoverer_workbooks](https://www.enginatics.com/library/?pg=1&find=xxen_discoverer_workbooks), [xxen_report_templates_v](https://www.enginatics.com/library/?pg=1&find=xxen_report_templates_v)
+[eul5_documents](https://www.enginatics.com/library/?pg=1&find=eul5_documents), [xxen_discoverer_workbook_xmls](https://www.enginatics.com/library/?pg=1&find=xxen_discoverer_workbook_xmls), [xxen_discoverer_sheets](https://www.enginatics.com/library/?pg=1&find=xxen_discoverer_sheets), [eul5_qpp_stats](https://www.enginatics.com/library/?pg=1&find=eul5_qpp_stats), [xxen_discoverer_workbooks](https://www.enginatics.com/library/?pg=1&find=xxen_discoverer_workbooks), [xxen_reports_v](https://www.enginatics.com/library/?pg=1&find=xxen_reports_v), [xxen_report_templates_v](https://www.enginatics.com/library/?pg=1&find=xxen_report_templates_v)
 
 ## Report Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related Reports
-[DIS End User Layers](/DIS%20End%20User%20Layers/ "DIS End User Layers Oracle EBS SQL Report"), [DIS Worksheet SQLs](/DIS%20Worksheet%20SQLs/ "DIS Worksheet SQLs Oracle EBS SQL Report"), [DIS Access Privileges](/DIS%20Access%20Privileges/ "DIS Access Privileges Oracle EBS SQL Report"), [DIS Discoverer and Blitz Report Users](/DIS%20Discoverer%20and%20Blitz%20Report%20Users/ "DIS Discoverer and Blitz Report Users Oracle EBS SQL Report"), [DIS Migration identify missing EulConditions](/DIS%20Migration%20identify%20missing%20EulConditions/ "DIS Migration identify missing EulConditions Oracle EBS SQL Report"), [DIS Workbooks, Folders, Items and LOVs](/DIS%20Workbooks-%20Folders-%20Items%20and%20LOVs/ "DIS Workbooks, Folders, Items and LOVs Oracle EBS SQL Report"), [DIS Workbook Export Script](/DIS%20Workbook%20Export%20Script/ "DIS Workbook Export Script Oracle EBS SQL Report"), [DIS Worksheet Execution History](/DIS%20Worksheet%20Execution%20History/ "DIS Worksheet Execution History Oracle EBS SQL Report"), [DIS Workbook Owner Export Script](/DIS%20Workbook%20Owner%20Export%20Script/ "DIS Workbook Owner Export Script Oracle EBS SQL Report")
+[DIS Converter Diagnostic Dump](/DIS%20Converter%20Diagnostic%20Dump/ "DIS Converter Diagnostic Dump Oracle EBS SQL Report"), [DIS Workbook Conversion Selection](/DIS%20Workbook%20Conversion%20Selection/ "DIS Workbook Conversion Selection Oracle EBS SQL Report"), [DIS End User Layers](/DIS%20End%20User%20Layers/ "DIS End User Layers Oracle EBS SQL Report"), [DIS Discoverer and Blitz Report Users](/DIS%20Discoverer%20and%20Blitz%20Report%20Users/ "DIS Discoverer and Blitz Report Users Oracle EBS SQL Report"), [DIS Worksheet SQLs](/DIS%20Worksheet%20SQLs/ "DIS Worksheet SQLs Oracle EBS SQL Report"), [DIS Migration identify missing EulConditions](/DIS%20Migration%20identify%20missing%20EulConditions/ "DIS Migration identify missing EulConditions Oracle EBS SQL Report"), [DIS Access Privileges](/DIS%20Access%20Privileges/ "DIS Access Privileges Oracle EBS SQL Report"), [DIS Workbooks, Folders, Items and LOVs](/DIS%20Workbooks-%20Folders-%20Items%20and%20LOVs/ "DIS Workbooks, Folders, Items and LOVs Oracle EBS SQL Report"), [DIS Workbook Owner Export Script](/DIS%20Workbook%20Owner%20Export%20Script/ "DIS Workbook Owner Export Script Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.

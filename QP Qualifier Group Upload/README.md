@@ -2,7 +2,7 @@
 layout: default
 title: 'QP Qualifier Group Upload | Oracle EBS SQL Report'
 description: 'This upload supports the creation and update of Qualifier Groups in Oracle Advanced Pricing.'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Upload, Qualifier, Group, qp_qualifier_rules, qp_qualifiers_v'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, Qualifier, Group, qp_qualifier_rules, qp_qualifiers_v'
 permalink: /QP%20Qualifier%20Group%20Upload/
 ---
 
@@ -21,10 +21,10 @@ Upload Mode, Qualifier Group, Qualifier Effective Date
 [qp_qualifier_rules](https://www.enginatics.com/library/?pg=1&find=qp_qualifier_rules), [qp_qualifiers_v](https://www.enginatics.com/library/?pg=1&find=qp_qualifiers_v)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only), [Upload](https://www.enginatics.com/library/?pg=1&category[]=Upload)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Upload](https://www.enginatics.com/library/?pg=1&category[]=Upload)
 
 ## Related Reports
-[QP Price List Upload](/QP%20Price%20List%20Upload/ "QP Price List Upload Oracle EBS SQL Report"), [QP Customer Pricing Engine Request](/QP%20Customer%20Pricing%20Engine%20Request/ "QP Customer Pricing Engine Request Oracle EBS SQL Report"), [QP Modifier Details](/QP%20Modifier%20Details/ "QP Modifier Details Oracle EBS SQL Report"), [QP Modifier Upload](/QP%20Modifier%20Upload/ "QP Modifier Upload Oracle EBS SQL Report"), [CAC Intercompany SO Price List vs. Item Cost Comparison](/CAC%20Intercompany%20SO%20Price%20List%20vs-%20Item%20Cost%20Comparison/ "CAC Intercompany SO Price List vs. Item Cost Comparison Oracle EBS SQL Report"), [AR Customer Upload](/AR%20Customer%20Upload/ "AR Customer Upload Oracle EBS SQL Report")
+[QP Price List Upload](/QP%20Price%20List%20Upload/ "QP Price List Upload Oracle EBS SQL Report"), [QP Customer Pricing Engine Request](/QP%20Customer%20Pricing%20Engine%20Request/ "QP Customer Pricing Engine Request Oracle EBS SQL Report"), [QP Modifier Details](/QP%20Modifier%20Details/ "QP Modifier Details Oracle EBS SQL Report"), [QP GSA Pricing Upload](/QP%20GSA%20Pricing%20Upload/ "QP GSA Pricing Upload Oracle EBS SQL Report"), [QP Modifier Upload](/QP%20Modifier%20Upload/ "QP Modifier Upload Oracle EBS SQL Report"), [CAC Intercompany SO Price List vs. Item Cost Comparison](/CAC%20Intercompany%20SO%20Price%20List%20vs-%20Item%20Cost%20Comparison/ "CAC Intercompany SO Price List vs. Item Cost Comparison Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
@@ -33,7 +33,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/qp-qualifier-group-upload/) |
+| Excel Example Output | [](https://www.enginatics.com/example/qp-qualifier-group-upload/) |
 | Blitz Report™ XML Import | [QP_Qualifier_Group_Upload.xml](https://www.enginatics.com/xml/qp-qualifier-group-upload/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/qp-qualifier-group-upload/](https://www.enginatics.com/reports/qp-qualifier-group-upload/) |
 

@@ -14,7 +14,7 @@ permalink: /Blitz%20Report%20Pivot%20Colums%20Validation/
 Checks if records in xxen_report_template_pivot have a corresponding record in xxen_report_template_columns
 
 ## Report Parameters
-Category, Show missing only
+Category, Report Name, Template Name, Show missing only
 
 ## Oracle EBS Tables Used
 [xxen_report_templates_v](https://www.enginatics.com/library/?pg=1&find=xxen_report_templates_v), [xxen_report_template_pivot](https://www.enginatics.com/library/?pg=1&find=xxen_report_template_pivot), [xxen_report_template_columns](https://www.enginatics.com/library/?pg=1&find=xxen_report_template_columns)
@@ -23,7 +23,7 @@ Category, Show missing only
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related Reports
-[Blitz Report Templates](/Blitz%20Report%20Templates/ "Blitz Report Templates Oracle EBS SQL Report"), [DIS Migration identify missing EulConditions](/DIS%20Migration%20identify%20missing%20EulConditions/ "DIS Migration identify missing EulConditions Oracle EBS SQL Report"), [Blitz Reports](/Blitz%20Reports/ "Blitz Reports Oracle EBS SQL Report"), [DBA ORDS Configuration Validation](/DBA%20ORDS%20Configuration%20Validation/ "DBA ORDS Configuration Validation Oracle EBS SQL Report"), [INV Transaction Historical Summary](/INV%20Transaction%20Historical%20Summary/ "INV Transaction Historical Summary Oracle EBS SQL Report"), [PO Requisition Template Upload](/PO%20Requisition%20Template%20Upload/ "PO Requisition Template Upload Oracle EBS SQL Report"), [Blitz Report Parameter Default Values](/Blitz%20Report%20Parameter%20Default%20Values/ "Blitz Report Parameter Default Values Oracle EBS SQL Report"), [DIS Workbook Import Validation](/DIS%20Workbook%20Import%20Validation/ "DIS Workbook Import Validation Oracle EBS SQL Report")
+[Blitz Report Templates](/Blitz%20Report%20Templates/ "Blitz Report Templates Oracle EBS SQL Report"), [Blitz Reports](/Blitz%20Reports/ "Blitz Reports Oracle EBS SQL Report"), [DBA ORDS Configuration Validation](/DBA%20ORDS%20Configuration%20Validation/ "DBA ORDS Configuration Validation Oracle EBS SQL Report"), [DIS Migration identify missing EulConditions](/DIS%20Migration%20identify%20missing%20EulConditions/ "DIS Migration identify missing EulConditions Oracle EBS SQL Report"), [Blitz Report Template Sharing Upload](/Blitz%20Report%20Template%20Sharing%20Upload/ "Blitz Report Template Sharing Upload Oracle EBS SQL Report"), [INV Transaction Historical Summary](/INV%20Transaction%20Historical%20Summary/ "INV Transaction Historical Summary Oracle EBS SQL Report"), [AP Posted Invoice Register](/AP%20Posted%20Invoice%20Register/ "AP Posted Invoice Register Oracle EBS SQL Report"), [Blitz Report Parameter Default Values](/Blitz%20Report%20Parameter%20Default%20Values/ "Blitz Report Parameter Default Values Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.

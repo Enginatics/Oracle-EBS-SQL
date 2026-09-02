@@ -2,7 +2,7 @@
 layout: default
 title: 'INV Physical Inventory Upload | Oracle EBS SQL Report'
 description: 'This upload supports the creation of new Physical Inventories and the update of existing Physical Inventories that have not yet been frozen. The upload…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Upload, INV, Physical, Inventory, mtl_physical_inventories_v, mtl_physical_subinventories, mtl_parameters'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, INV, Physical, Inventory, mtl_physical_inventories_v, mtl_physical_subinventories, mtl_parameters'
 permalink: /INV%20Physical%20Inventory%20Upload/
 ---
 
@@ -41,10 +41,10 @@ Upload Mode, Replace Existing Subinventories, Freeze Physical Inventory, Organiz
 [mtl_physical_inventories_v](https://www.enginatics.com/library/?pg=1&find=mtl_physical_inventories_v), [mtl_physical_subinventories](https://www.enginatics.com/library/?pg=1&find=mtl_physical_subinventories), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters), [org_access_view](https://www.enginatics.com/library/?pg=1&find=org_access_view)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only), [Upload](https://www.enginatics.com/library/?pg=1&category[]=Upload)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Upload](https://www.enginatics.com/library/?pg=1&category[]=Upload)
 
 ## Related Reports
-[INV Item Upload](/INV%20Item%20Upload/ "INV Item Upload Oracle EBS SQL Report"), [INV Items](/INV%20Items/ "INV Items Oracle EBS SQL Report"), [INV Physical Inventory Purge Upload](/INV%20Physical%20Inventory%20Purge%20Upload/ "INV Physical Inventory Purge Upload Oracle EBS SQL Report"), [CAC Recost Cost of Goods Sold](/CAC%20Recost%20Cost%20of%20Goods%20Sold/ "CAC Recost Cost of Goods Sold Oracle EBS SQL Report"), [CAC Deferred COGS Out-of-Balance](/CAC%20Deferred%20COGS%20Out-of-Balance/ "CAC Deferred COGS Out-of-Balance Oracle EBS SQL Report"), [INV Material Transactions](/INV%20Material%20Transactions/ "INV Material Transactions Oracle EBS SQL Report")
+[INV Items](/INV%20Items/ "INV Items Oracle EBS SQL Report"), [INV Item Upload](/INV%20Item%20Upload/ "INV Item Upload Oracle EBS SQL Report"), [INV Physical Inventory Purge Upload](/INV%20Physical%20Inventory%20Purge%20Upload/ "INV Physical Inventory Purge Upload Oracle EBS SQL Report"), [CAC Recost Cost of Goods Sold](/CAC%20Recost%20Cost%20of%20Goods%20Sold/ "CAC Recost Cost of Goods Sold Oracle EBS SQL Report"), [CAC Deferred COGS Out-of-Balance](/CAC%20Deferred%20COGS%20Out-of-Balance/ "CAC Deferred COGS Out-of-Balance Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
@@ -53,7 +53,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/inv-physical-inventory-upload/) |
+| Excel Example Output | [](https://www.enginatics.com/example/inv-physical-inventory-upload/) |
 | Blitz Report™ XML Import | [INV_Physical_Inventory_Upload.xml](https://www.enginatics.com/xml/inv-physical-inventory-upload/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/inv-physical-inventory-upload/](https://www.enginatics.com/reports/inv-physical-inventory-upload/) |
 

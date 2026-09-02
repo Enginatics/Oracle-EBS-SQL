@@ -2,7 +2,7 @@
 layout: default
 title: 'PER Payroll Element Entry Upload | Oracle EBS SQL Report'
 description: 'PER Payroll Element Entry Upload ================== Use this upload to upload new or update existing PER Payroll Element Entries, or to enter adjustment…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Upload, PER, Payroll, Element, Entry, pay_input_values_f_vl, pay_element_entry_values_f, per_all_people_f'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, PER, Payroll, Element, Entry, pay_input_values_f_vl, pay_element_entry_values_f, per_all_people_f'
 permalink: /PER%20Payroll%20Element%20Entry%20Upload/
 ---
 
@@ -22,7 +22,7 @@ Upload Mode, Business Group, Employee Name
 [pay_input_values_f_vl](https://www.enginatics.com/library/?pg=1&find=pay_input_values_f_vl), [pay_element_entry_values_f](https://www.enginatics.com/library/?pg=1&find=pay_element_entry_values_f), [per_all_people_f](https://www.enginatics.com/library/?pg=1&find=per_all_people_f), [per_all_assignments_f](https://www.enginatics.com/library/?pg=1&find=per_all_assignments_f), [pay_element_entries_f](https://www.enginatics.com/library/?pg=1&find=pay_element_entries_f), [per_business_groups](https://www.enginatics.com/library/?pg=1&find=per_business_groups), [pay_element_links_f](https://www.enginatics.com/library/?pg=1&find=pay_element_links_f), [pay_element_types_f_vl](https://www.enginatics.com/library/?pg=1&find=pay_element_types_f_vl), [per_assignment_status_types](https://www.enginatics.com/library/?pg=1&find=per_assignment_status_types), [hr_lookups](https://www.enginatics.com/library/?pg=1&find=hr_lookups), [input_values](https://www.enginatics.com/library/?pg=1&find=input_values), [per_periods_of_service](https://www.enginatics.com/library/?pg=1&find=per_periods_of_service)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only), [Upload](https://www.enginatics.com/library/?pg=1&category[]=Upload)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Upload](https://www.enginatics.com/library/?pg=1&category[]=Upload)
 
 ## Related Reports
 [PAY Gross to Net Summary](/PAY%20Gross%20to%20Net%20Summary/ "PAY Gross to Net Summary Oracle EBS SQL Report"), [PAY Employee Payroll History](/PAY%20Employee%20Payroll%20History/ "PAY Employee Payroll History Oracle EBS SQL Report")
@@ -34,7 +34,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/per-payroll-element-entry-upload/) |
+| Excel Example Output | [](https://www.enginatics.com/example/per-payroll-element-entry-upload/) |
 | Blitz Report™ XML Import | [PER_Payroll_Element_Entry_Upload.xml](https://www.enginatics.com/xml/per-payroll-element-entry-upload/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/per-payroll-element-entry-upload/](https://www.enginatics.com/reports/per-payroll-element-entry-upload/) |
 

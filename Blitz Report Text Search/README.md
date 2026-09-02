@@ -34,7 +34,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/blitz-report-text-search/) |
+| Excel Example Output | [](https://www.enginatics.com/example/blitz-report-text-search/) |
 | Blitz Report™ XML Import | [Blitz_Report_Text_Search.xml](https://www.enginatics.com/xml/blitz-report-text-search/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/blitz-report-text-search/](https://www.enginatics.com/reports/blitz-report-text-search/) |
 

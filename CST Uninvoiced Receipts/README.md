@@ -2,7 +2,7 @@
 layout: default
 title: 'CST Uninvoiced Receipts | Oracle EBS SQL Report'
 description: 'Application: Bills of Material Description: Uninvoiced Receipts Report Templates: Select a template to show Accruals summarized by - PO/Release…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, CST, Uninvoiced, Receipts, rcv_transactions, rcv_shipment_headers, cst_per_end_accruals_temp'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, CST, Uninvoiced, Receipts, po_vendor_sites_all, mtl_parameters, rcv_transactions'
 permalink: /CST%20Uninvoiced%20Receipts/
 ---
 
@@ -25,13 +25,13 @@ Short Name: CSTACREP
 DB Package: XXEN_CST
 
 ## Report Parameters
-Operating Unit, Accrued Receipts, Include Online Accruals, Include Closed POs, Categories From, Categories To, Minimum Accrual Amount, Period Name, Vendors From, Vendors To, Sort/Pivot By, Dynamic Precision Option, Show DFF Attributes
+Operating Unit, Accrued Receipts, Include Online Accruals, Include Closed POs, Categories From, Categories To, Minimum Accrual Amount, Period Name, Vendors From, Vendors To, Sort/Pivot By, Dynamic Precision Option, DFF Display
 
 ## Oracle EBS Tables Used
-[rcv_transactions](https://www.enginatics.com/library/?pg=1&find=rcv_transactions), [rcv_shipment_headers](https://www.enginatics.com/library/?pg=1&find=rcv_shipment_headers), [cst_per_end_accruals_temp](https://www.enginatics.com/library/?pg=1&find=cst_per_end_accruals_temp), [po_headers_all](https://www.enginatics.com/library/?pg=1&find=po_headers_all), [po_lines_all](https://www.enginatics.com/library/?pg=1&find=po_lines_all), [po_line_locations_all](https://www.enginatics.com/library/?pg=1&find=po_line_locations_all), [po_distributions_all](https://www.enginatics.com/library/?pg=1&find=po_distributions_all), [po_vendors](https://www.enginatics.com/library/?pg=1&find=po_vendors), [po_line_types](https://www.enginatics.com/library/?pg=1&find=po_line_types), [po_releases_all](https://www.enginatics.com/library/?pg=1&find=po_releases_all), [mtl_system_items_b_kfv](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_b_kfv), [gl_sets_of_books](https://www.enginatics.com/library/?pg=1&find=gl_sets_of_books), [fnd_currencies](https://www.enginatics.com/library/?pg=1&find=fnd_currencies), [mtl_categories_kfv](https://www.enginatics.com/library/?pg=1&find=mtl_categories_kfv), [gl_code_combinations_kfv](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations_kfv)
+[po_vendor_sites_all](https://www.enginatics.com/library/?pg=1&find=po_vendor_sites_all), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters), [rcv_transactions](https://www.enginatics.com/library/?pg=1&find=rcv_transactions), [rcv_shipment_headers](https://www.enginatics.com/library/?pg=1&find=rcv_shipment_headers), [cst_per_end_accruals_temp](https://www.enginatics.com/library/?pg=1&find=cst_per_end_accruals_temp), [po_headers_all](https://www.enginatics.com/library/?pg=1&find=po_headers_all), [po_lines_all](https://www.enginatics.com/library/?pg=1&find=po_lines_all), [po_line_locations_all](https://www.enginatics.com/library/?pg=1&find=po_line_locations_all), [po_distributions_all](https://www.enginatics.com/library/?pg=1&find=po_distributions_all), [po_vendors](https://www.enginatics.com/library/?pg=1&find=po_vendors), [po_line_types](https://www.enginatics.com/library/?pg=1&find=po_line_types), [po_releases_all](https://www.enginatics.com/library/?pg=1&find=po_releases_all), [mtl_system_items_b_kfv](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_b_kfv), [gl_sets_of_books](https://www.enginatics.com/library/?pg=1&find=gl_sets_of_books), [fnd_currencies](https://www.enginatics.com/library/?pg=1&find=fnd_currencies), [mtl_categories_kfv](https://www.enginatics.com/library/?pg=1&find=mtl_categories_kfv), [gl_code_combinations_kfv](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations_kfv)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 
 

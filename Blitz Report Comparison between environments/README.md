@@ -2,7 +2,7 @@
 layout: default
 title: 'Blitz Report Comparison between environments | Oracle EBS SQL Report'
 description: 'Shows Blitz Report differences between the local and a remote database server. Requires following view to be created on the remote environment to avoid…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Blitz, Report, Comparison, between, fnd_user, xxen_report_parameters, xxen_reports_v'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Blitz, Report, Comparison, between, fnd_user, xxen_report_parameters_v, xxen_reports_v'
 permalink: /Blitz%20Report%20Comparison%20between%20environments/
 ---
 
@@ -23,16 +23,16 @@ from
 xxen_reports_v xrv;
 
 ## Report Parameters
-Remote Database, Category, Report Name like, Show Differences only
+Remote Database, Category, Report Name like, Show Differences only, R12 only
 
 ## Oracle EBS Tables Used
-[fnd_user](https://www.enginatics.com/library/?pg=1&find=fnd_user), [xxen_report_parameters](https://www.enginatics.com/library/?pg=1&find=xxen_report_parameters), [xxen_reports_v](https://www.enginatics.com/library/?pg=1&find=xxen_reports_v), [xxen_reports_v_](https://www.enginatics.com/library/?pg=1&find=xxen_reports_v_)
+[fnd_user](https://www.enginatics.com/library/?pg=1&find=fnd_user), [xxen_report_parameters_v](https://www.enginatics.com/library/?pg=1&find=xxen_report_parameters_v), [xxen_reports_v](https://www.enginatics.com/library/?pg=1&find=xxen_reports_v), [xxen_reports_v_](https://www.enginatics.com/library/?pg=1&find=xxen_reports_v_)
 
 ## Report Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related Reports
-[Blitz Report LOV Comparison between environments](/Blitz%20Report%20LOV%20Comparison%20between%20environments/ "Blitz Report LOV Comparison between environments Oracle EBS SQL Report"), [Blitz Reports](/Blitz%20Reports/ "Blitz Reports Oracle EBS SQL Report"), [Blitz Report History](/Blitz%20Report%20History/ "Blitz Report History Oracle EBS SQL Report"), [CAC Inventory Organization Summary](/CAC%20Inventory%20Organization%20Summary/ "CAC Inventory Organization Summary Oracle EBS SQL Report"), [GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20%28Distributions%29/ "GL Account Analysis (Distributions) Oracle EBS SQL Report"), [CAC Interface Error Summary](/CAC%20Interface%20Error%20Summary/ "CAC Interface Error Summary Oracle EBS SQL Report"), [DIS End User Layers](/DIS%20End%20User%20Layers/ "DIS End User Layers Oracle EBS SQL Report"), [GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report"), [Blitz Upload Dependencies](/Blitz%20Upload%20Dependencies/ "Blitz Upload Dependencies Oracle EBS SQL Report")
+[Blitz Report LOV Comparison between environments](/Blitz%20Report%20LOV%20Comparison%20between%20environments/ "Blitz Report LOV Comparison between environments Oracle EBS SQL Report"), [Blitz Reports](/Blitz%20Reports/ "Blitz Reports Oracle EBS SQL Report"), [Blitz Report History](/Blitz%20Report%20History/ "Blitz Report History Oracle EBS SQL Report"), [CAC Inventory Organization Summary](/CAC%20Inventory%20Organization%20Summary/ "CAC Inventory Organization Summary Oracle EBS SQL Report"), [CAC Interface Error Summary](/CAC%20Interface%20Error%20Summary/ "CAC Interface Error Summary Oracle EBS SQL Report"), [DIS End User Layers](/DIS%20End%20User%20Layers/ "DIS End User Layers Oracle EBS SQL Report"), [GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report"), [Blitz Upload Dependencies](/Blitz%20Upload%20Dependencies/ "Blitz Upload Dependencies Oracle EBS SQL Report"), [Blitz Report Text Search](/Blitz%20Report%20Text%20Search/ "Blitz Report Text Search Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.

@@ -2,7 +2,7 @@
 layout: default
 title: 'FA Asset Retirements | Oracle EBS SQL Report'
 description: 'Imported from BI Publisher Description: Asset Retirements Report Application: Assets Source: Asset Retirements Report (XML) Short Name: FAS440XML DB…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Asset, Retirements, fa_deprn_periods, fa_lookups_vl, fa_system_controls'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Asset, Retirements, fa_deprn_periods, fa_lookups_vl, fa_system_controls'
 permalink: /FA%20Asset%20Retirements/
 ---
 
@@ -26,10 +26,10 @@ Book, Set of Books Currency, From Period, To Period
 [fa_deprn_periods](https://www.enginatics.com/library/?pg=1&find=fa_deprn_periods), [fa_lookups_vl](https://www.enginatics.com/library/?pg=1&find=fa_lookups_vl), [fa_system_controls](https://www.enginatics.com/library/?pg=1&find=fa_system_controls), [gl_sets_of_books](https://www.enginatics.com/library/?pg=1&find=gl_sets_of_books), [fa_transaction_headers](https://www.enginatics.com/library/?pg=1&find=fa_transaction_headers), [fa_additions](https://www.enginatics.com/library/?pg=1&find=fa_additions), [&lp_fa_books](https://www.enginatics.com/library/?pg=1&find=&lp_fa_books), [&lp_fa_retirements](https://www.enginatics.com/library/?pg=1&find=&lp_fa_retirements), [&lp_fa_adjustments](https://www.enginatics.com/library/?pg=1&find=&lp_fa_adjustments), [fa_distribution_history](https://www.enginatics.com/library/?pg=1&find=fa_distribution_history), [gl_code_combinations](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations), [fa_asset_history](https://www.enginatics.com/library/?pg=1&find=fa_asset_history), [fa_category_books](https://www.enginatics.com/library/?pg=1&find=fa_category_books), [fa_lookups](https://www.enginatics.com/library/?pg=1&find=fa_lookups), [fa_book_controls](https://www.enginatics.com/library/?pg=1&find=fa_book_controls)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related Reports
-[FA Asset Book Details](/FA%20Asset%20Book%20Details/ "FA Asset Book Details Oracle EBS SQL Report"), [FA Asset Impairments](/FA%20Asset%20Impairments/ "FA Asset Impairments Oracle EBS SQL Report"), [FA Asset Upload](/FA%20Asset%20Upload/ "FA Asset Upload Oracle EBS SQL Report"), [FA Asset Book Details 11i](/FA%20Asset%20Book%20Details%2011i/ "FA Asset Book Details 11i Oracle EBS SQL Report"), [FA Additions By Source](/FA%20Additions%20By%20Source/ "FA Additions By Source Oracle EBS SQL Report"), [FA Asset Additions](/FA%20Asset%20Additions/ "FA Asset Additions Oracle EBS SQL Report"), [FA Cost Adjustments](/FA%20Cost%20Adjustments/ "FA Cost Adjustments Oracle EBS SQL Report")
+[FA Asset Book Details](/FA%20Asset%20Book%20Details/ "FA Asset Book Details Oracle EBS SQL Report"), [FA Asset Impairments](/FA%20Asset%20Impairments/ "FA Asset Impairments Oracle EBS SQL Report"), [FA Asset Upload](/FA%20Asset%20Upload/ "FA Asset Upload Oracle EBS SQL Report"), [FA Additions By Source](/FA%20Additions%20By%20Source/ "FA Additions By Source Oracle EBS SQL Report"), [FA Cost Adjustments](/FA%20Cost%20Adjustments/ "FA Cost Adjustments Oracle EBS SQL Report"), [FA Asset Additions](/FA%20Asset%20Additions/ "FA Asset Additions Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.

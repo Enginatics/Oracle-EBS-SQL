@@ -2,7 +2,7 @@
 layout: default
 title: 'GL FSG Reports | Oracle EBS SQL Report'
 description: 'Financial Statement Generator reports – Oracle E-Business Suite SQL report'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, FSG, Reports, rg_reports_v, fnd_id_flex_structures_vl'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, FSG, Reports, rg_reports_v, fnd_id_flex_structures_vl'
 permalink: /GL%20FSG%20Reports/
 ---
 
@@ -20,7 +20,7 @@ Structure Name, Row Order
 [rg_reports_v](https://www.enginatics.com/library/?pg=1&find=rg_reports_v), [fnd_id_flex_structures_vl](https://www.enginatics.com/library/?pg=1&find=fnd_id_flex_structures_vl)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related Reports
 [GL FSG Row Orders](/GL%20FSG%20Row%20Orders/ "GL FSG Row Orders Oracle EBS SQL Report"), [CAC Inventory Organization Summary](/CAC%20Inventory%20Organization%20Summary/ "CAC Inventory Organization Summary Oracle EBS SQL Report"), [GL Ledgers and Legal Entities](/GL%20Ledgers%20and%20Legal%20Entities/ "GL Ledgers and Legal Entities Oracle EBS SQL Report"), [ZX Tax Accounts](/ZX%20Tax%20Accounts/ "ZX Tax Accounts Oracle EBS SQL Report")

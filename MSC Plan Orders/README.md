@@ -2,7 +2,7 @@
 layout: default
 title: 'MSC Plan Orders | Oracle EBS SQL Report'
 description: 'ASCP: Export Supply and Demand Orders from the Planners Workbench. – Oracle E-Business Suite SQL report'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, MSC, Plan, Orders, msc_safety_stocks&a2m_dblink, msc_trading_partner_sites&a2m_dblink, msc_trading_partners&a2m_dblink'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, MSC, Plan, Orders, msc_safety_stocks&a2m_dblink, msc_trading_partner_sites&a2m_dblink, msc_trading_partners&a2m_dblink'
 permalink: /MSC%20Plan%20Orders/
 ---
 
@@ -21,7 +21,7 @@ Planning Instance, Plan, Organization, Source Organiziation, Category Set, Categ
 [msc_safety_stocks&a2m_dblink](https://www.enginatics.com/library/?pg=1&find=msc_safety_stocks&a2m_dblink), [msc_trading_partner_sites&a2m_dblink](https://www.enginatics.com/library/?pg=1&find=msc_trading_partner_sites&a2m_dblink), [msc_trading_partners&a2m_dblink](https://www.enginatics.com/library/?pg=1&find=msc_trading_partners&a2m_dblink), [msc_location_associations&a2m_dblink](https://www.enginatics.com/library/?pg=1&find=msc_location_associations&a2m_dblink)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 
 
@@ -32,7 +32,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/msc-plan-orders/) |
+| Excel Example Output | [](https://www.enginatics.com/example/msc-plan-orders/) |
 | Blitz Report™ XML Import | [MSC_Plan_Orders.xml](https://www.enginatics.com/xml/msc-plan-orders/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/msc-plan-orders/](https://www.enginatics.com/reports/msc-plan-orders/) |
 

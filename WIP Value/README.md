@@ -2,7 +2,7 @@
 layout: default
 title: 'WIP Value | Oracle EBS SQL Report'
 description: 'Application: Work in Process Description: WIP Value Report This report will display Period To Date (PTD) and Cumulative To Date (CTD) WIP costs/variances…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, WIP, Value, wip_discrete_jobs, wip_period_balances, org_acct_periods'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, WIP, Value, wip_discrete_jobs, wip_period_balances, org_acct_periods'
 permalink: /WIP%20Value/
 ---
 
@@ -41,7 +41,7 @@ Organization Code, Period, Include Closed Jobs, Class Type, Classes From, Classe
 [wip_discrete_jobs](https://www.enginatics.com/library/?pg=1&find=wip_discrete_jobs), [wip_period_balances](https://www.enginatics.com/library/?pg=1&find=wip_period_balances), [org_acct_periods](https://www.enginatics.com/library/?pg=1&find=org_acct_periods), [mfg_lookups](https://www.enginatics.com/library/?pg=1&find=mfg_lookups), [wip_entities](https://www.enginatics.com/library/?pg=1&find=wip_entities), [mtl_system_items_b_kfv](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_b_kfv), [gl_code_combinations](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations), [wip_repetitive_schedules](https://www.enginatics.com/library/?pg=1&find=wip_repetitive_schedules), [wip_lines](https://www.enginatics.com/library/?pg=1&find=wip_lines), [wip_repetitive_items](https://www.enginatics.com/library/?pg=1&find=wip_repetitive_items), [wip_detail_q](https://www.enginatics.com/library/?pg=1&find=wip_detail_q)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 
 
@@ -52,7 +52,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/wip-value/) |
+| Excel Example Output | [](https://www.enginatics.com/example/wip-value/) |
 | Blitz Report™ XML Import | [WIP_Value.xml](https://www.enginatics.com/xml/wip-value/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/wip-value/](https://www.enginatics.com/reports/wip-value/) |
 

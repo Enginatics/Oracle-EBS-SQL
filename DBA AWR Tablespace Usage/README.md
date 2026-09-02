@@ -2,7 +2,7 @@
 layout: default
 title: 'DBA AWR Tablespace Usage | Oracle EBS SQL Report'
 description: 'Tablespace usage over time from the AWR – Oracle E-Business Suite SQL report'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Diagnostic Pack, Enginatics, DBA, AWR, Tablespace, Usage, v$parameter, v$database, dba_hist_tbspc_space_usage'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, DBA, AWR, Tablespace, Usage, v$parameter, v$database, dba_hist_tbspc_space_usage'
 permalink: /DBA%20AWR%20Tablespace%20Usage/
 ---
 
@@ -20,7 +20,7 @@ Date From, Diagnostic Pack enabled, Container Data
 [v$parameter](https://www.enginatics.com/library/?pg=1&find=v$parameter), [v$database](https://www.enginatics.com/library/?pg=1&find=v$database), [dba_hist_tbspc_space_usage](https://www.enginatics.com/library/?pg=1&find=dba_hist_tbspc_space_usage), [ts$](https://www.enginatics.com/library/?pg=1&find=ts$)
 
 ## Report Categories
-[Diagnostic Pack](https://www.enginatics.com/library/?pg=1&category[]=Diagnostic%20Pack), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related Reports
 [DBA SGA+PGA Memory Configuration](/DBA%20SGA-PGA%20Memory%20Configuration/ "DBA SGA+PGA Memory Configuration Oracle EBS SQL Report"), [DBA AWR System Metrics Summary](/DBA%20AWR%20System%20Metrics%20Summary/ "DBA AWR System Metrics Summary Oracle EBS SQL Report"), [DBA Tablespace Usage](/DBA%20Tablespace%20Usage/ "DBA Tablespace Usage Oracle EBS SQL Report"), [DBA AWR Active Session History](/DBA%20AWR%20Active%20Session%20History/ "DBA AWR Active Session History Oracle EBS SQL Report"), [DBA AWR Settings](/DBA%20AWR%20Settings/ "DBA AWR Settings Oracle EBS SQL Report"), [DBA Feature Usage Statistics](/DBA%20Feature%20Usage%20Statistics/ "DBA Feature Usage Statistics Oracle EBS SQL Report"), [DBA AWR SQL Execution Plan History](/DBA%20AWR%20SQL%20Execution%20Plan%20History/ "DBA AWR SQL Execution Plan History Oracle EBS SQL Report"), [DBA AWR SQL Performance Summary](/DBA%20AWR%20SQL%20Performance%20Summary/ "DBA AWR SQL Performance Summary Oracle EBS SQL Report"), [DBA SGA Active Session History](/DBA%20SGA%20Active%20Session%20History/ "DBA SGA Active Session History Oracle EBS SQL Report")

@@ -11,7 +11,7 @@ permalink: /ALR%20Alerts/
 **Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/alr-alerts/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
 
 ## Overview
-None
+
 
 ## Report Parameters
 Alert Name like, Condition Type, Creation Date From, Show Action Columns
@@ -23,7 +23,7 @@ Alert Name like, Condition Type, Creation Date From, Show Action Columns
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related Reports
-[DBA CPU Benchmark1](/DBA%20CPU%20Benchmark1/ "DBA CPU Benchmark1 Oracle EBS SQL Report"), [GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report"), [INV Items](/INV%20Items/ "INV Items Oracle EBS SQL Report"), [INV Item Upload](/INV%20Item%20Upload/ "INV Item Upload Oracle EBS SQL Report"), [MRP Plan Orders](/MRP%20Plan%20Orders/ "MRP Plan Orders Oracle EBS SQL Report")
+[QA Collection Plan Actions](/QA%20Collection%20Plan%20Actions/ "QA Collection Plan Actions Oracle EBS SQL Report"), [QA Collection Plan Upload](/QA%20Collection%20Plan%20Upload/ "QA Collection Plan Upload Oracle EBS SQL Report"), [DBA CPU Benchmark1](/DBA%20CPU%20Benchmark1/ "DBA CPU Benchmark1 Oracle EBS SQL Report"), [GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report"), [INV Item Upload](/INV%20Item%20Upload/ "INV Item Upload Oracle EBS SQL Report"), [MRP Plan Orders](/MRP%20Plan%20Orders/ "MRP Plan Orders Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.

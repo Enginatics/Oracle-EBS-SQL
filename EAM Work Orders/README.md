@@ -2,7 +2,7 @@
 layout: default
 title: 'EAM Work Orders | Oracle EBS SQL Report'
 description: 'Enterprise asset management work orders including asset and cost information – Oracle E-Business Suite SQL report'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, EAM, Work, Orders, mtl_system_items_b_kfv, eam_construction_estimates, mtl_parameters'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, EAM, Work, Orders, mtl_system_items_b_kfv, eam_construction_estimates, mtl_parameters'
 permalink: /EAM%20Work%20Orders/
 ---
 
@@ -20,7 +20,7 @@ Organization Code, Department, Asset Group, Asset Number, Scheduled Start Date F
 [mtl_system_items_b_kfv](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_b_kfv), [eam_construction_estimates](https://www.enginatics.com/library/?pg=1&find=eam_construction_estimates), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters), [wip_entities](https://www.enginatics.com/library/?pg=1&find=wip_entities), [wip_discrete_jobs](https://www.enginatics.com/library/?pg=1&find=wip_discrete_jobs), [org_access_view](https://www.enginatics.com/library/?pg=1&find=org_access_view), [bom_departments](https://www.enginatics.com/library/?pg=1&find=bom_departments), [pa_projects_all](https://www.enginatics.com/library/?pg=1&find=pa_projects_all), [pa_tasks](https://www.enginatics.com/library/?pg=1&find=pa_tasks), [eam_work_order_details](https://www.enginatics.com/library/?pg=1&find=eam_work_order_details), [eam_wo_statuses_v](https://www.enginatics.com/library/?pg=1&find=eam_wo_statuses_v), [eam_pm_schedulings](https://www.enginatics.com/library/?pg=1&find=eam_pm_schedulings), [eam_org_maint_defaults](https://www.enginatics.com/library/?pg=1&find=eam_org_maint_defaults), [mtl_eam_locations](https://www.enginatics.com/library/?pg=1&find=mtl_eam_locations), [csi_item_instances](https://www.enginatics.com/library/?pg=1&find=csi_item_instances), [mtl_categories_b_kfv](https://www.enginatics.com/library/?pg=1&find=mtl_categories_b_kfv), [eam_failureinfo_v](https://www.enginatics.com/library/?pg=1&find=eam_failureinfo_v), [wip_eam_period_balances](https://www.enginatics.com/library/?pg=1&find=wip_eam_period_balances), [org_acct_periods](https://www.enginatics.com/library/?pg=1&find=org_acct_periods), [gl_periods](https://www.enginatics.com/library/?pg=1&find=gl_periods), [wip_eam_cost_details_v](https://www.enginatics.com/library/?pg=1&find=wip_eam_cost_details_v)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 
 

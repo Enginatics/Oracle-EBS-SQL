@@ -2,7 +2,7 @@
 layout: default
 title: 'INV Movement Statistics | Oracle EBS SQL Report'
 description: 'Imported from BI Publisher Description: Movement Statistics Report (INTRASTAT Report) Application: Inventory Source: Movement Statistics Report (XML)…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, BI Publisher, Enginatics, R12 only, INV, Movement, Statistics, mtl_economic_zones_vl, fnd_lookup_values, fnd_lookups'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, INV, Movement, Statistics, mtl_economic_zones_vl, fnd_lookup_values, fnd_lookups'
 permalink: /INV%20Movement%20Statistics/
 ---
 
@@ -26,7 +26,7 @@ Legal Entity, Economic Zone, Usage Type, Statistical Type, Movement Type, Period
 [mtl_economic_zones_vl](https://www.enginatics.com/library/?pg=1&find=mtl_economic_zones_vl), [fnd_lookup_values](https://www.enginatics.com/library/?pg=1&find=fnd_lookup_values), [fnd_lookups](https://www.enginatics.com/library/?pg=1&find=fnd_lookups)
 
 ## Report Categories
-[BI Publisher](https://www.enginatics.com/library/?pg=1&category[]=BI%20Publisher), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 
 
@@ -37,7 +37,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/inv-movement-statistics/) |
+| Excel Example Output | [](https://www.enginatics.com/example/inv-movement-statistics/) |
 | Blitz Report™ XML Import | [INV_Movement_Statistics.xml](https://www.enginatics.com/xml/inv-movement-statistics/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/inv-movement-statistics/](https://www.enginatics.com/reports/inv-movement-statistics/) |
 

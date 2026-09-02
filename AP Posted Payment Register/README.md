@@ -2,7 +2,7 @@
 layout: default
 title: 'AP Posted Payment Register | Oracle EBS SQL Report'
 description: 'Application: Payables Description: Payables Posted Payment Register This report provides equivalent functionality to the Oracle standard Payables Posted…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Posted, Payment, Register, &lp_template_table'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Posted, Payment, Register, &lp_template_table'
 permalink: /AP%20Posted%20Payment%20Register/
 ---
 
@@ -44,10 +44,10 @@ Operating Unit, Ledger/Ledger Set, Period From, Period To, Journal Source, Inclu
 [&lp_template_table](https://www.enginatics.com/library/?pg=1&find=&lp_template_table)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related Reports
-[AP Posted Invoice Register](/AP%20Posted%20Invoice%20Register/ "AP Posted Invoice Register Oracle EBS SQL Report"), [INV Transaction Historical Summary](/INV%20Transaction%20Historical%20Summary/ "INV Transaction Historical Summary Oracle EBS SQL Report"), [AP Trial Balance](/AP%20Trial%20Balance/ "AP Trial Balance Oracle EBS SQL Report"), [PA Revenue, Cost, Budgets by Work Breakdown Structure](/PA%20Revenue-%20Cost-%20Budgets%20by%20Work%20Breakdown%20Structure/ "PA Revenue, Cost, Budgets by Work Breakdown Structure Oracle EBS SQL Report")
+[AP Posted Invoice Register](/AP%20Posted%20Invoice%20Register/ "AP Posted Invoice Register Oracle EBS SQL Report"), [INV Transaction Historical Summary](/INV%20Transaction%20Historical%20Summary/ "INV Transaction Historical Summary Oracle EBS SQL Report"), [GL Trial Balance - Detail](/GL%20Trial%20Balance%20-%20Detail/ "GL Trial Balance - Detail Oracle EBS SQL Report"), [AP Trial Balance](/AP%20Trial%20Balance/ "AP Trial Balance Oracle EBS SQL Report"), [PA Revenue, Cost, Budgets by Work Breakdown Structure](/PA%20Revenue-%20Cost-%20Budgets%20by%20Work%20Breakdown%20Structure/ "PA Revenue, Cost, Budgets by Work Breakdown Structure Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
@@ -56,7 +56,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/ap-posted-payment-register/) |
+| Excel Example Output | [](https://www.enginatics.com/example/ap-posted-payment-register/) |
 | Blitz Report™ XML Import | [AP_Posted_Payment_Register.xml](https://www.enginatics.com/xml/ap-posted-payment-register/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/ap-posted-payment-register/](https://www.enginatics.com/reports/ap-posted-payment-register/) |
 

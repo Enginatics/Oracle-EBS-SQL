@@ -53,7 +53,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/dba-cpu-benchmark1/) |
+| Excel Example Output | [](https://www.enginatics.com/example/dba-cpu-benchmark1/) |
 | Blitz Report™ XML Import | [DBA_CPU_Benchmark1.xml](https://www.enginatics.com/xml/dba-cpu-benchmark1/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/dba-cpu-benchmark1/](https://www.enginatics.com/reports/dba-cpu-benchmark1/) |
 

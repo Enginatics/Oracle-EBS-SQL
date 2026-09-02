@@ -29,13 +29,6 @@ Working Budgets can be uploaded against the Projects belonging to the Operating 
 -- Library Link: https://www.enginatics.com/reports/pa-budget-upload/
 -- Run Report: https://demo.enginatics.com/
 
-/*
-&report_table_name
-*/
-select
-x.*
-from
-(
 select
 decode(:p_upload_mode,xxen_upload.action_create,xxen_upload.action_meaning(xxen_upload.action_create),null) action_,
 decode(:p_upload_mode,xxen_upload.action_create,xxen_upload.status_meaning(xxen_upload.status_new),null)status_,
@@ -114,7 +107,8 @@ pbl.attribute13 line_attribute13,
 pbl.attribute14 line_attribute14,
 pbl.attribute15 line_attribute15,
 --
-null mark_as_original
+null mark_as_original,
+to_number(null) upload_row
 from
 hr_all_organization_units_vl haouv,
 pa_projects_all ppa,
@@ -129,7 +123,7 @@ pa_tasks pt,
 (select
   prlm.resource_list_id,
   prlm.resource_list_member_id,
-  prlm.alias alias,
+  prlm.alias,
   substr(sys_connect_by_path (prlm.alias,'|'),2) alias_path
  from
   pa_resource_list_members prlm
@@ -159,18 +153,3 @@ pbv.project_id = pra.project_id (+) and
 pra.resource_assignment_id = pbl.resource_assignment_id (+) and
 pra.task_id = pt.task_id (+) and
 pra.resource_list_member_id = prlm.resource_list_member_id (+)
-&not_use_first_block
-&processed_errors_query
-&processed_success_query
-&processed_run
-) x
-order by
-x.operating_unit,
-x.project_number,
-x.project_name,
-x.budget_type,
-x.version_name,
-&lp_sort_col1
-&lp_sort_col2
-&lp_sort_col3
-x.budget_line_id

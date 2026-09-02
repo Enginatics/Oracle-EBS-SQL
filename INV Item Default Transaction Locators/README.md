@@ -32,7 +32,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/inv-item-default-transaction-locators/) |
+| Excel Example Output | [](https://www.enginatics.com/example/inv-item-default-transaction-locators/) |
 | Blitz Report™ XML Import | [INV_Item_Default_Transaction_Locators.xml](https://www.enginatics.com/xml/inv-item-default-transaction-locators/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/inv-item-default-transaction-locators/](https://www.enginatics.com/reports/inv-item-default-transaction-locators/) |
 

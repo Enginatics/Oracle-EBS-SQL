@@ -41,10 +41,10 @@ xxen_util.client_time(wdj.scheduled_completion_date) scheduled_completion_date,
 xxen_util.client_time(wdj.date_released) released_date,
 xxen_util.client_time(wdj.date_completed) completed_date,
 xxen_util.client_time(wdj.date_closed) closed_date,
-wdj.start_quantity,
-decode(wdj.quantity_scrapped,0,null,wdj.quantity_scrapped) quantity_scrapped,
-decode(wdj.quantity_completed,0,null,wdj.quantity_completed) quantity_completed,
-decode(wdj.start_quantity-wdj.quantity_completed-wdj.quantity_scrapped,0,null,wdj.start_quantity-wdj.quantity_completed-wdj.quantity_scrapped) quantity_remaining,
+decode(row_number() over (partition by we.wip_entity_id order by wo.operation_seq_num),1,wdj.start_quantity) start_quantity,
+decode(row_number() over (partition by we.wip_entity_id order by wo.operation_seq_num),1,decode(wdj.quantity_scrapped,0,null,wdj.quantity_scrapped)) quantity_scrapped,
+decode(row_number() over (partition by we.wip_entity_id order by wo.operation_seq_num),1,decode(wdj.quantity_completed,0,null,wdj.quantity_completed)) quantity_completed,
+decode(row_number() over (partition by we.wip_entity_id order by wo.operation_seq_num),1,decode(wdj.start_quantity-wdj.quantity_completed-wdj.quantity_scrapped,0,null,wdj.start_quantity-wdj.quantity_completed-wdj.quantity_scrapped)) quantity_remaining,
 wdj.completion_subinventory,
 bd.department_code,
 wo.operation_seq_num operation_sequence,
@@ -80,28 +80,28 @@ select psm.project_id, psm.project_number from pjm_seiban_numbers psm
 ) ppa,
 pa_tasks pt,
 (
-select distinct
+select
 wo.wip_entity_id,
 wo.organization_id,
 wo.repetitive_schedule_id,
-min(wo.operation_seq_num) over (partition by wo.wip_entity_id, wo.organization_id, wo.repetitive_schedule_id) operation_seq_num,
-first_value(wo.department_id) over (partition by wo.wip_entity_id, wo.organization_id, wo.repetitive_schedule_id order by wo.operation_seq_num) department_id,
-first_value(wo.standard_operation_id) over (partition by wo.wip_entity_id, wo.organization_id, wo.repetitive_schedule_id order by wo.operation_seq_num) standard_operation_id,
-first_value(wo.description) over (partition by wo.wip_entity_id, wo.organization_id, wo.repetitive_schedule_id order by wo.operation_seq_num) description,
-first_value(wo.date_last_moved) over (partition by wo.wip_entity_id, wo.organization_id, wo.repetitive_schedule_id order by wo.operation_seq_num) date_last_moved,
-first_value(decode(wo.quantity_in_queue,0,null,wo.quantity_in_queue)) over (partition by wo.wip_entity_id, wo.organization_id, wo.repetitive_schedule_id order by wo.operation_seq_num) in_queue,
-first_value(decode(wo.quantity_running,0,null,wo.quantity_running)) over (partition by wo.wip_entity_id, wo.organization_id, wo.repetitive_schedule_id order by wo.operation_seq_num) running,
-first_value(decode(wo.quantity_waiting_to_move,0,null,wo.quantity_waiting_to_move)) over (partition by wo.wip_entity_id, wo.organization_id, wo.repetitive_schedule_id order by wo.operation_seq_num) to_move,
-first_value(decode(wo.quantity_rejected,0,null,wo.quantity_rejected)) over (partition by wo.wip_entity_id, wo.organization_id, wo.repetitive_schedule_id order by wo.operation_seq_num) rejected,
-first_value(decode(wo.quantity_scrapped,0,null,wo.quantity_scrapped)) over (partition by wo.wip_entity_id, wo.organization_id, wo.repetitive_schedule_id order by wo.operation_seq_num) scrapped,
-first_value(decode(wo.quantity_completed,0,null,wo.quantity_completed)) over (partition by wo.wip_entity_id, wo.organization_id, wo.repetitive_schedule_id order by wo.operation_seq_num) completed,
-first_value(wo.first_unit_start_date) over (partition by wo.wip_entity_id, wo.organization_id, wo.repetitive_schedule_id order by wo.operation_seq_num) first_unit_start_date,
-first_value(wo.last_unit_completion_date) over (partition by wo.wip_entity_id, wo.organization_id, wo.repetitive_schedule_id order by wo.operation_seq_num) last_unit_completion_date,
-first_value(wo.last_updated_by) over (partition by wo.wip_entity_id, wo.organization_id, wo.repetitive_schedule_id order by wo.operation_seq_num) last_updated_by
+wo.operation_seq_num,
+wo.department_id,
+wo.standard_operation_id,
+wo.description,
+wo.date_last_moved,
+decode(wo.quantity_in_queue,0,null,wo.quantity_in_queue) in_queue,
+decode(wo.quantity_running,0,null,wo.quantity_running) running,
+decode(wo.quantity_waiting_to_move,0,null,wo.quantity_waiting_to_move) to_move,
+decode(wo.quantity_rejected,0,null,wo.quantity_rejected) rejected,
+decode(wo.quantity_scrapped,0,null,wo.quantity_scrapped) scrapped,
+decode(wo.quantity_completed,0,null,wo.quantity_completed) completed,
+wo.first_unit_start_date,
+wo.last_unit_completion_date,
+wo.last_updated_by
 from
 wip_operations wo
 where
-wo.quantity_in_queue>0 or wo.quantity_running>0 or wo.quantity_waiting_to_move>0
+2=2
 ) wo,
 bom_departments bd,
 (select bso.* from bom_standard_operations bso where nvl(bso.operation_type,1)=1 and bso.line_id is null) bso,
@@ -143,4 +143,5 @@ wdj.source_line_id=oola.line_id(+) and
 oola.header_id=ooha.header_id(+) 
 order by
 mp.organization_code,
-we.creation_date desc
+we.creation_date desc,
+wo.operation_seq_num

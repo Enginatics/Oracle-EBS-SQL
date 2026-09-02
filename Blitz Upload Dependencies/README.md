@@ -11,7 +11,7 @@ permalink: /Blitz%20Upload%20Dependencies/
 **Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/blitz-upload-dependencies/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
 
 ## Overview
-None
+
 
 ## Report Parameters
 Report Name, Column Name
@@ -23,7 +23,7 @@ Report Name, Column Name
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related Reports
-[Blitz Report Text Search](/Blitz%20Report%20Text%20Search/ "Blitz Report Text Search Oracle EBS SQL Report"), [Blitz Reports](/Blitz%20Reports/ "Blitz Reports Oracle EBS SQL Report"), [Blitz Report History](/Blitz%20Report%20History/ "Blitz Report History Oracle EBS SQL Report"), [ONT Order Upload](/ONT%20Order%20Upload/ "ONT Order Upload Oracle EBS SQL Report"), [PA Event Upload](/PA%20Event%20Upload/ "PA Event Upload Oracle EBS SQL Report"), [BOM Common Bill of Materials Upload](/BOM%20Common%20Bill%20of%20Materials%20Upload/ "BOM Common Bill of Materials Upload Oracle EBS SQL Report"), [INV Physical Inventory Purge Upload](/INV%20Physical%20Inventory%20Purge%20Upload/ "INV Physical Inventory Purge Upload Oracle EBS SQL Report"), [Blitz Report Assignment Upload](/Blitz%20Report%20Assignment%20Upload/ "Blitz Report Assignment Upload Oracle EBS SQL Report"), [Blitz Upload Data](/Blitz%20Upload%20Data/ "Blitz Upload Data Oracle EBS SQL Report")
+[Blitz Report Text Search](/Blitz%20Report%20Text%20Search/ "Blitz Report Text Search Oracle EBS SQL Report"), [Blitz Reports](/Blitz%20Reports/ "Blitz Reports Oracle EBS SQL Report"), [Blitz Report History](/Blitz%20Report%20History/ "Blitz Report History Oracle EBS SQL Report"), [ONT Order Upload](/ONT%20Order%20Upload/ "ONT Order Upload Oracle EBS SQL Report"), [BOM Common Bill of Materials Upload](/BOM%20Common%20Bill%20of%20Materials%20Upload/ "BOM Common Bill of Materials Upload Oracle EBS SQL Report"), [INV Physical Inventory Purge Upload](/INV%20Physical%20Inventory%20Purge%20Upload/ "INV Physical Inventory Purge Upload Oracle EBS SQL Report"), [Blitz Report Assignment Upload](/Blitz%20Report%20Assignment%20Upload/ "Blitz Report Assignment Upload Oracle EBS SQL Report"), [Blitz Report Category Assignment Upload](/Blitz%20Report%20Category%20Assignment%20Upload/ "Blitz Report Category Assignment Upload Oracle EBS SQL Report"), [DIS Workbook Conversion Selection](/DIS%20Workbook%20Conversion%20Selection/ "DIS Workbook Conversion Selection Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.

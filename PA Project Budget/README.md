@@ -17,7 +17,7 @@ Note: Inclusion of actuals data requires Blitz Report Build Data later than 04-A
 
 
 ## Report Parameters
-Operating Unit, Project Number, Project Name, Budget Type, Budget Status, Latest Budget Version, Budget Version, Task Number, Task Name, Resource Alias, Period From, Period To, Budget Line Start Date, Budget Line End Date, Budget Line Active On Date, Show DFF Attributes, Show Actuals, Sort Precedence 1, Sort Precedence 2, Sort Precedence 3
+Operating Unit, Project Number, Project Name, Budget Type, Budget Status, Latest Budget Version, Budget Version, Task Number, Task Name, Resource Alias, Period From, Period To, Budget Line Start Date, Budget Line End Date, Budget Line Active On Date, DFF Display, Show Actuals, Sort Precedence 1, Sort Precedence 2, Sort Precedence 3
 
 ## Oracle EBS Tables Used
 [hr_all_organization_units_vl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_vl), [pa_projects_all](https://www.enginatics.com/library/?pg=1&find=pa_projects_all), [pa_budget_versions](https://www.enginatics.com/library/?pg=1&find=pa_budget_versions), [pa_budget_types](https://www.enginatics.com/library/?pg=1&find=pa_budget_types), [pa_budget_entry_methods](https://www.enginatics.com/library/?pg=1&find=pa_budget_entry_methods), [pa_resource_lists](https://www.enginatics.com/library/?pg=1&find=pa_resource_lists), [pa_resource_assignments](https://www.enginatics.com/library/?pg=1&find=pa_resource_assignments), [pa_budget_lines](https://www.enginatics.com/library/?pg=1&find=pa_budget_lines), [pa_tasks](https://www.enginatics.com/library/?pg=1&find=pa_tasks), [pa_resource_list_members](https://www.enginatics.com/library/?pg=1&find=pa_resource_list_members), [mo_glob_org_access_tmp](https://www.enginatics.com/library/?pg=1&find=mo_glob_org_access_tmp), [dual](https://www.enginatics.com/library/?pg=1&find=dual)
@@ -26,7 +26,7 @@ Operating Unit, Project Number, Project Name, Budget Type, Budget Status, Latest
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related Reports
-[PA Project Budget Upload](/PA%20Project%20Budget%20Upload/ "PA Project Budget Upload Oracle EBS SQL Report"), [PA Budget Upload](/PA%20Budget%20Upload/ "PA Budget Upload Oracle EBS SQL Report"), [GL Account Analysis (Drilldown) (with inventory and WIP)](/GL%20Account%20Analysis%20%28Drilldown%29%20%28with%20inventory%20and%20WIP%29/ "GL Account Analysis (Drilldown) (with inventory and WIP) Oracle EBS SQL Report"), [GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report"), [GL Account Analysis](/GL%20Account%20Analysis/ "GL Account Analysis Oracle EBS SQL Report")
+[PA Budget Upload](/PA%20Budget%20Upload/ "PA Budget Upload Oracle EBS SQL Report"), [GL Account Analysis (Drilldown) (with inventory and WIP)](/GL%20Account%20Analysis%20%28Drilldown%29%20%28with%20inventory%20and%20WIP%29/ "GL Account Analysis (Drilldown) (with inventory and WIP) Oracle EBS SQL Report"), [GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report"), [GL Account Analysis](/GL%20Account%20Analysis/ "GL Account Analysis Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.

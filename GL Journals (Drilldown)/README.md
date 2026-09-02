@@ -19,7 +19,7 @@ Drill To Journal Attachment
 Drill To Full Journal
 
 ## Report Parameters
-Ledger, Period, Ledger ID, Journal Source, Journal Category, Posting Status, Batch, Batch ID, Journal, Journal Header ID, Journal Line Num, Concatenated Segments, Code Combination ID, Restrict CCIDs through GTT, Restrict JHI through GTT, Currency, Show Attachment Details, Balance Type, Budget Name, Encumbrance Type, Amount Type, Creation Date From, Creation Date To, Created By, Posted Date From, Posted Date To, Funds Status, Reference
+Ledger, Period, Ledger ID, Journal Source, Journal Category, Posting Status, Batch, Batch ID, Journal, Journal Header ID, Journal Line Num, Concatenated Segments, Code Combination ID, Restrict CCIDs through GTT, Restrict JHI through GTT, Currency, Show Attachment Details, Balance Type, Exclude Reversed Journals, Budget Name, Encumbrance Type, Amount Type, Creation Date From, Creation Date To, Created By, Posted Date From, Posted Date To, Funds Status, Reference
 
 ## Oracle EBS Tables Used
 [per_people_f](https://www.enginatics.com/library/?pg=1&find=per_people_f), [gl_budget_versions](https://www.enginatics.com/library/?pg=1&find=gl_budget_versions), [gl_encumbrance_types](https://www.enginatics.com/library/?pg=1&find=gl_encumbrance_types), [gl_daily_conversion_types](https://www.enginatics.com/library/?pg=1&find=gl_daily_conversion_types), [gl_je_headers](https://www.enginatics.com/library/?pg=1&find=gl_je_headers), [gl_system_usages](https://www.enginatics.com/library/?pg=1&find=gl_system_usages), [zx_rates_b](https://www.enginatics.com/library/?pg=1&find=zx_rates_b), [gl_ledgers](https://www.enginatics.com/library/?pg=1&find=gl_ledgers), [gl_periods](https://www.enginatics.com/library/?pg=1&find=gl_periods), [gl_je_batches](https://www.enginatics.com/library/?pg=1&find=gl_je_batches), [gl_je_sources_vl](https://www.enginatics.com/library/?pg=1&find=gl_je_sources_vl), [gl_je_categories_vl](https://www.enginatics.com/library/?pg=1&find=gl_je_categories_vl), [gl_je_lines](https://www.enginatics.com/library/?pg=1&find=gl_je_lines), [gl_je_lines_recon](https://www.enginatics.com/library/?pg=1&find=gl_je_lines_recon), [gl_code_combinations_kfv](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations_kfv), [fnd_attached_documents](https://www.enginatics.com/library/?pg=1&find=fnd_attached_documents), [fnd_documents](https://www.enginatics.com/library/?pg=1&find=fnd_documents), [fnd_documents_tl](https://www.enginatics.com/library/?pg=1&find=fnd_documents_tl), [fnd_document_datatypes](https://www.enginatics.com/library/?pg=1&find=fnd_document_datatypes), [fnd_document_categories_vl](https://www.enginatics.com/library/?pg=1&find=fnd_document_categories_vl), [fnd_lobs](https://www.enginatics.com/library/?pg=1&find=fnd_lobs), [fnd_documents_short_text](https://www.enginatics.com/library/?pg=1&find=fnd_documents_short_text), [fnd_documents_long_text](https://www.enginatics.com/library/?pg=1&find=fnd_documents_long_text)
@@ -37,7 +37,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/gl-journals-drilldown/) |
+| Excel Example Output | [](https://www.enginatics.com/example/gl-journals-drilldown/) |
 | Blitz Report™ XML Import | [GL_Journals_Drilldown.xml](https://www.enginatics.com/xml/gl-journals-drilldown/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/gl-journals-drilldown/](https://www.enginatics.com/reports/gl-journals-drilldown/) |
 

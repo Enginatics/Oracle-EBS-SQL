@@ -57,6 +57,9 @@ with capr as
   capr.amount accounted_amount,
   capr.entered_amount entered_amount,
   capr.currency_code entered_currency,
+  poh.currency_code foreign_currency,
+  poh.rate,
+  (nvl(crs.po_balance,0) + nvl(crs.ap_balance,0) + nvl(crs.write_off_balance,0)) / nullif(nvl(poh.rate,1),0) balance_in_foreign_currency,
   trunc(sysdate - decode(fnd_profile.value('CST_ACCRUAL_AGE_IN_DAYS'), 1, nvl(crs.last_receipt_date,crs.last_invoice_dist_date), greatest(nvl(crs.last_receipt_date,crs.last_invoice_dist_date), nvl(crs.last_invoice_dist_date, crs.last_receipt_date)) ) ) age_in_days,
   nvl2(crs.inventory_item_id,
        (select msiv.concatenated_segments
@@ -166,6 +169,9 @@ select distinct
  capr.ap_balance,
  capr.wo_balance,
  capr.total_balance,
+ capr.foreign_currency,
+ capr.rate,
+ capr.balance_in_foreign_currency,
  capr.age_in_days,
  capr.destination,
  capr.item,
@@ -232,6 +238,9 @@ select
  to_number(null) ap_balance,
  to_number(null) wo_balance,
  to_number(null) total_balance,
+ null foreign_currency,
+ to_number(null) rate,
+ to_number(null) balance_in_foreign_currency,
  capr.age_in_days,
  capr.destination,
  capr.item,
@@ -271,6 +280,7 @@ select
 from
  capr
 where
+ 2=2 and
  1=1 and
  :p_show_transactions = 'Y'
 order by

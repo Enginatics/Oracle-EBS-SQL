@@ -33,7 +33,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/pay-employee-payroll-history/) |
+| Excel Example Output | [](https://www.enginatics.com/example/pay-employee-payroll-history/) |
 | Blitz Report™ XML Import | [PAY_Employee_Payroll_History.xml](https://www.enginatics.com/xml/pay-employee-payroll-history/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/pay-employee-payroll-history/](https://www.enginatics.com/reports/pay-employee-payroll-history/) |
 

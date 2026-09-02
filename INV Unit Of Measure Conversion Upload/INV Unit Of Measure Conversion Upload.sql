@@ -117,7 +117,7 @@ select
 --
 msiv.concatenated_segments   item,
 msiv.description             item_description,
-mlucc.lot_number             lot_number,
+mlucc.lot_number,
 --
 muomvf.unit_of_measure_tl    from_uom,
 mucvf.uom_class_tl           from_uom_class,
@@ -153,10 +153,6 @@ mp.organization_code    = :p_organization_code
 --
 -- Main Query Starts Here
 --
-select
-x.*
-from
-(
 select /*+ push_pred(uomc) */
 null action_,
 null status_,
@@ -182,22 +178,10 @@ null lot_update_type,
 null lot_update_reason,
 --
 uomc.conversion_text,
-uomc.conversion_type
+uomc.conversion_type,
+to_number(null) upload_row
 from
 uom_conv_qry uomc
 where
 nvl(:p_r122_api_exists,'N') = nvl(:p_r122_api_exists,'N') and
 1=1
-&not_use_first_block
-&report_table_select
-&report_table_name &report_table_where_clause
-&processed_run
-) x
-order by
-x.from_uom_class,
-x.from_uom,
-x.to_uom_class,
-x.to_uom,
-nvl2(x.item,2,1),
-x.item,
-x.lot_number

@@ -16,8 +16,8 @@ Use this report to migrate Discoverer workbooks to Blitz Report.
 The migration process is described in the following link: <a href="https://www.enginatics.com/blog/discoverer-replacement-with-blitz-report/" rel="nofollow" target="_blank">https://www.enginatics.com/blog/discoverer-replacement-with-blitz-report/</a>
 
 1. Run this report 'DIS Workbook Export Script' to generate a list of commands to export xmls for all recently used Discoverer workbooks.
-2. Create a new folder on a windows machine having the Discoverer Admin executable dis51adm.exe installed (contact Enginatics, if you need help with the Discoverer Administrator installation).
-3. Open a Command Prompt window, cd to the new folder, and execute (copy and paste) the commands generated in step 1. This will start individual processes to export the workbooks as .eex files. Depending on your client capacity, you can run between 100 and 200 export processes at the same time. In case of errors, delete all zero size .eex files and rerun the script.
+2. Create a new folder on a windows machine having the Discoverer Admin executable dis51adm.exe installed (contact Enginatics if you need help with the installation).
+3. Open a Command Prompt window, cd to the new folder, and execute (copy and paste) the commands generated in step 1. This will start individual processes to export the workbooks as .eex files. Depending on your client capacity, you can run 100-200 export processes at the same time. In case of errors, delete all zero size .eex files and rerun the script.
 4. Zip together all generated (non-zero size) workbook_*.eex files. Do not include the generated *.log files. Note that the .zip needs to be created with older Windows10 compression methods, as the latest Windows11 method cannot be processed by the Oracle 19c database yet.
 5. If you have more than one EUL, set the profile option 'Blitz Report Discoverer Default EUL' to the end user layer for which you run the migration
 6. Navigate to Setup>Tools>Import>XML Upload and upload the .zip file generated in step 4. You will see a message with the count of uploaded xml files.
@@ -32,6 +32,10 @@ The migration process is described in the following link: <a href="https://www.e
 'Blitz Reports' for Discoverer check for column 'required_parameters'
 'Blitz Report Parameter Default Values' for discoverer check for default value having partition
 'Blitz Report Templates' and search for Subtotals: Y in the description and train the users to switch compact pivot to tabular format
+
+
+Workbooks without EUL usage statistics are not listed by default. Set 'Ignore Access History' to Yes to export those as well, optionally restricted by 'Workbook' or 'Workbook Id'.
+'Blitz Report Discoverer Import' converts the workbooks selected in the 'DIS Workbook Conversion Selection' upload regardless of access history.
 
 
 In case you need to completely re-run the Discoverer import, for example with a different cut-off date parameter, you can use the following script to purge the previously imported data:
@@ -56,7 +60,7 @@ begin
 end;
 
 ## Report Parameters
-Accessed After, Workbook Owner, Workbook, End User Layer, End User Layer Password, Executable Path, DB Service Name, Not yet imported only
+Accessed After, Ignore Access History, Workbook Owner, Workbook, Workbook Id, End User Layer, End User Layer Password, Executable Path, DB Service Name, Not yet imported only
 
 ## Oracle EBS Tables Used
 [eul5_documents](https://www.enginatics.com/library/?pg=1&find=eul5_documents), [eul5_qpp_stats](https://www.enginatics.com/library/?pg=1&find=eul5_qpp_stats)
@@ -65,7 +69,7 @@ Accessed After, Workbook Owner, Workbook, End User Layer, End User Layer Passwor
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related Reports
-[DIS Access Privileges](/DIS%20Access%20Privileges/ "DIS Access Privileges Oracle EBS SQL Report"), [DIS Workbook Import Validation](/DIS%20Workbook%20Import%20Validation/ "DIS Workbook Import Validation Oracle EBS SQL Report"), [DIS Worksheet Execution History](/DIS%20Worksheet%20Execution%20History/ "DIS Worksheet Execution History Oracle EBS SQL Report"), [DIS Workbooks, Folders, Items and LOVs](/DIS%20Workbooks-%20Folders-%20Items%20and%20LOVs/ "DIS Workbooks, Folders, Items and LOVs Oracle EBS SQL Report"), [DIS Folders, Business Areas, Items and LOVs](/DIS%20Folders-%20Business%20Areas-%20Items%20and%20LOVs/ "DIS Folders, Business Areas, Items and LOVs Oracle EBS SQL Report"), [DIS Business Areas](/DIS%20Business%20Areas/ "DIS Business Areas Oracle EBS SQL Report"), [DIS Worksheet Execution Summary](/DIS%20Worksheet%20Execution%20Summary/ "DIS Worksheet Execution Summary Oracle EBS SQL Report"), [DIS Worksheet SQLs](/DIS%20Worksheet%20SQLs/ "DIS Worksheet SQLs Oracle EBS SQL Report"), [DIS Users](/DIS%20Users/ "DIS Users Oracle EBS SQL Report")
+[DIS Converter Diagnostic Dump](/DIS%20Converter%20Diagnostic%20Dump/ "DIS Converter Diagnostic Dump Oracle EBS SQL Report"), [DIS Workbook Conversion Selection](/DIS%20Workbook%20Conversion%20Selection/ "DIS Workbook Conversion Selection Oracle EBS SQL Report"), [DIS Workbooks, Folders, Items and LOVs](/DIS%20Workbooks-%20Folders-%20Items%20and%20LOVs/ "DIS Workbooks, Folders, Items and LOVs Oracle EBS SQL Report"), [DIS Access Privileges](/DIS%20Access%20Privileges/ "DIS Access Privileges Oracle EBS SQL Report"), [DIS Worksheet Execution History](/DIS%20Worksheet%20Execution%20History/ "DIS Worksheet Execution History Oracle EBS SQL Report"), [DIS Workbook Import Validation](/DIS%20Workbook%20Import%20Validation/ "DIS Workbook Import Validation Oracle EBS SQL Report"), [DIS Worksheet Execution Summary](/DIS%20Worksheet%20Execution%20Summary/ "DIS Worksheet Execution Summary Oracle EBS SQL Report"), [DIS Worksheet SQLs](/DIS%20Worksheet%20SQLs/ "DIS Worksheet SQLs Oracle EBS SQL Report"), [DIS Business Areas](/DIS%20Business%20Areas/ "DIS Business Areas Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.

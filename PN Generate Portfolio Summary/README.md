@@ -2,7 +2,7 @@
 layout: default
 title: 'PN Generate Portfolio Summary | Oracle EBS SQL Report'
 description: 'Application: Property Manager Source: Generate Portfolio Summary Report Short Name: PNGPSRXML DB package: XXENPN'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Generate, Portfolio, Summary, pn_lease_reports_data_gtt, pn_amendment_report_gtt, pn_leases_all'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Generate, Portfolio, Summary, pn_lease_reports_data_gtt, pn_amendment_report_gtt, pn_leases_all'
 permalink: /PN%20Generate%20Portfolio%20Summary/
 ---
 
@@ -23,7 +23,7 @@ Operating Unit, As Of Period, End Date, Representation
 [pn_lease_reports_data_gtt](https://www.enginatics.com/library/?pg=1&find=pn_lease_reports_data_gtt), [pn_amendment_report_gtt](https://www.enginatics.com/library/?pg=1&find=pn_amendment_report_gtt), [pn_leases_all](https://www.enginatics.com/library/?pg=1&find=pn_leases_all), [pn_lease_details_all](https://www.enginatics.com/library/?pg=1&find=pn_lease_details_all), [pn_eqp_leases_all](https://www.enginatics.com/library/?pg=1&find=pn_eqp_leases_all), [pn_eqp_lease_details_all](https://www.enginatics.com/library/?pg=1&find=pn_eqp_lease_details_all), [q_portfolio_summary](https://www.enginatics.com/library/?pg=1&find=q_portfolio_summary), [q_amendment_detail](https://www.enginatics.com/library/?pg=1&find=q_amendment_detail)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related Reports
 [PN Generate Portfolio Detail](/PN%20Generate%20Portfolio%20Detail/ "PN Generate Portfolio Detail Oracle EBS SQL Report"), [PN Generate Lease Details](/PN%20Generate%20Lease%20Details/ "PN Generate Lease Details Oracle EBS SQL Report"), [PN Generate Lease Analysis](/PN%20Generate%20Lease%20Analysis/ "PN Generate Lease Analysis Oracle EBS SQL Report"), [PN Schedule Approval Status Upload](/PN%20Schedule%20Approval%20Status%20Upload/ "PN Schedule Approval Status Upload Oracle EBS SQL Report"), [PN GL Reconciliation](/PN%20GL%20Reconciliation/ "PN GL Reconciliation Oracle EBS SQL Report"), [PN Billing/Payment Term Upload](/PN%20Billing-Payment%20Term%20Upload/ "PN Billing/Payment Term Upload Oracle EBS SQL Report"), [XLA Entity ID Mappings](/XLA%20Entity%20ID%20Mappings/ "XLA Entity ID Mappings Oracle EBS SQL Report")
@@ -35,7 +35,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/pn-generate-portfolio-summary/) |
+| Excel Example Output | [](https://www.enginatics.com/example/pn-generate-portfolio-summary/) |
 | Blitz Report™ XML Import | [PN_Generate_Portfolio_Summary.xml](https://www.enginatics.com/xml/pn-generate-portfolio-summary/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/pn-generate-portfolio-summary/](https://www.enginatics.com/reports/pn-generate-portfolio-summary/) |
 

@@ -5,7 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: INV Transaction Source Types
--- Description: None
+-- Description: 
 -- Excel Examle Output: https://www.enginatics.com/example/inv-transaction-source-types/
 -- Library Link: https://www.enginatics.com/reports/inv-transaction-source-types/
 -- Run Report: https://demo.enginatics.com/

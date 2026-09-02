@@ -2,7 +2,7 @@
 layout: default
 title: 'PO Headers and Lines | Oracle EBS SQL Report'
 description: 'PO headers, lines, receiving transactions and corresponding AP invoices – Oracle E-Business Suite SQL report'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Headers, Lines, po_line_locations_all, po_distributions_all, gl_daily_conversion_types'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Headers, Lines, po_line_locations_all, po_distributions_all, gl_daily_conversion_types'
 permalink: /PO%20Headers%20and%20Lines/
 ---
 
@@ -14,13 +14,13 @@ permalink: /PO%20Headers%20and%20Lines/
 PO headers, lines, receiving transactions and corresponding AP invoices
 
 ## Report Parameters
-Operating Unit, Receiving Organization, PO Number, Release, Buyer, Supplier, Supplier Site, Item, Item From, Item To, Item Type, Category Set 1, Category Set 2, Category Set 3, WIP Job, Project, Has Open Quantity, Promised, Overdue, Document Type, Document Closure Status, Document Creation Date From, Document Creation Date To, Document Created By, Exclude Cancelled, Open Lines/Shipments only, Promised Date From, Promised Date To, Need By Date From, Need By Date To, Receipt Date From, Receipt Date To, PO Unit Price From, PO Unit Price To, Show Distributions, Show DFF Attributes, Show Attachment Details
+Operating Unit, Receiving Organization, PO Number, Release, Buyer, Supplier, Supplier Site, Item, Item From, Item To, Item Type, Category Set 1, Category Set 2, Category Set 3, WIP Job, Project, Has Open Quantity, Promised, Overdue, Document Type, Document Closure Status, Document Creation Date From, Document Creation Date To, Document Created By, Exclude Cancelled, Open Lines/Shipments only, Promised Date From, Promised Date To, Need By Date From, Need By Date To, Receipt Date From, Receipt Date To, PO Unit Price From, PO Unit Price To, Show Distributions, DFF Display, Show Attachment Details
 
 ## Oracle EBS Tables Used
 [po_line_locations_all](https://www.enginatics.com/library/?pg=1&find=po_line_locations_all), [po_distributions_all](https://www.enginatics.com/library/?pg=1&find=po_distributions_all), [gl_daily_conversion_types](https://www.enginatics.com/library/?pg=1&find=gl_daily_conversion_types), [mrp_item_purchase_orders](https://www.enginatics.com/library/?pg=1&find=mrp_item_purchase_orders), [mrp_recommendations](https://www.enginatics.com/library/?pg=1&find=mrp_recommendations), [mrp_full_pegging](https://www.enginatics.com/library/?pg=1&find=mrp_full_pegging), [mrp_gross_requirements](https://www.enginatics.com/library/?pg=1&find=mrp_gross_requirements), [wip_entities](https://www.enginatics.com/library/?pg=1&find=wip_entities), [po_line_locations_archive_all](https://www.enginatics.com/library/?pg=1&find=po_line_locations_archive_all), [po_action_history](https://www.enginatics.com/library/?pg=1&find=po_action_history)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 
 

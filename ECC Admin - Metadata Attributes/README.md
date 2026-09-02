@@ -2,7 +2,7 @@
 layout: default
 title: 'ECC Admin - Metadata Attributes | Oracle EBS SQL Report'
 description: 'Enterprise Command Centers metadata attributes – Oracle E-Business Suite SQL report'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, ECC, Admin, Metadata, Attributes, ecc_app_ds_relationships, ecc_application_tl, ecc_dataset_b'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, ECC, Admin, Metadata, Attributes, ecc_app_ds_relationships, ecc_application_tl, ecc_dataset_b'
 permalink: /ECC%20Admin%20-%20Metadata%20Attributes/
 ---
 
@@ -20,7 +20,7 @@ Application, Data Set, Attribute Key
 [ecc_app_ds_relationships](https://www.enginatics.com/library/?pg=1&find=ecc_app_ds_relationships), [ecc_application_tl](https://www.enginatics.com/library/?pg=1&find=ecc_application_tl), [ecc_dataset_b](https://www.enginatics.com/library/?pg=1&find=ecc_dataset_b), [ecc_dataset_tl](https://www.enginatics.com/library/?pg=1&find=ecc_dataset_tl), [ecc_dataset_attrs_b](https://www.enginatics.com/library/?pg=1&find=ecc_dataset_attrs_b), [ecc_dataset_attrs_tl](https://www.enginatics.com/library/?pg=1&find=ecc_dataset_attrs_tl)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related Reports
 [ECC Admin - Data Sets](/ECC%20Admin%20-%20Data%20Sets/ "ECC Admin - Data Sets Oracle EBS SQL Report"), [ECC Admin - Data Load Tracking](/ECC%20Admin%20-%20Data%20Load%20Tracking/ "ECC Admin - Data Load Tracking Oracle EBS SQL Report")

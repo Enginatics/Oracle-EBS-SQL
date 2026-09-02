@@ -2,7 +2,7 @@
 layout: default
 title: 'AP Negative Supplier Balance | Oracle EBS SQL Report'
 description: 'Application: Payables Source: Accounts Payable Negative Supplier Balance Short Name: APXNVBAL DB package: XLATBAPREPORTPVT'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Negative, Supplier, Balance, &p_template_sql_statement'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Negative, Supplier, Balance, &p_template_sql_statement'
 permalink: /AP%20Negative%20Supplier%20Balance/
 ---
 
@@ -23,10 +23,10 @@ Operating Unit, Report Definition, As of Date, Third Party Name, Show Transactio
 [&p_template_sql_statement](https://www.enginatics.com/library/?pg=1&find=&p_template_sql_statement)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related Reports
-[XLA Subledger Period Close Exceptions](/XLA%20Subledger%20Period%20Close%20Exceptions/ "XLA Subledger Period Close Exceptions Oracle EBS SQL Report"), [AP Trial Balance](/AP%20Trial%20Balance/ "AP Trial Balance Oracle EBS SQL Report"), [CE General Ledger Reconciliation](/CE%20General%20Ledger%20Reconciliation/ "CE General Ledger Reconciliation Oracle EBS SQL Report"), [CAC Receiving Expense Value (Period-End)](/CAC%20Receiving%20Expense%20Value%20%28Period-End%29/ "CAC Receiving Expense Value (Period-End) Oracle EBS SQL Report"), [CAC WIP Pending Cost Adjustment](/CAC%20WIP%20Pending%20Cost%20Adjustment/ "CAC WIP Pending Cost Adjustment Oracle EBS SQL Report"), [CAC Manufacturing Variance](/CAC%20Manufacturing%20Variance/ "CAC Manufacturing Variance Oracle EBS SQL Report"), [CAC Material Account Summary](/CAC%20Material%20Account%20Summary/ "CAC Material Account Summary Oracle EBS SQL Report")
+[XLA Subledger Period Close Exceptions](/XLA%20Subledger%20Period%20Close%20Exceptions/ "XLA Subledger Period Close Exceptions Oracle EBS SQL Report"), [AP Trial Balance](/AP%20Trial%20Balance/ "AP Trial Balance Oracle EBS SQL Report"), [CE General Ledger Reconciliation](/CE%20General%20Ledger%20Reconciliation/ "CE General Ledger Reconciliation Oracle EBS SQL Report"), [CAC Receiving Expense Value (Period-End)](/CAC%20Receiving%20Expense%20Value%20%28Period-End%29/ "CAC Receiving Expense Value (Period-End) Oracle EBS SQL Report"), [CAC Manufacturing Variance](/CAC%20Manufacturing%20Variance/ "CAC Manufacturing Variance Oracle EBS SQL Report"), [CAC Material Account Summary](/CAC%20Material%20Account%20Summary/ "CAC Material Account Summary Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.

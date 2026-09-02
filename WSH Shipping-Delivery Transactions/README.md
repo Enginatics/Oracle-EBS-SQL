@@ -2,7 +2,7 @@
 layout: default
 title: 'WSH Shipping/Delivery Transactions | Oracle EBS SQL Report'
 description: 'This report provides details of Warehouse Shipping Transactions and Deliveries. To review details of deliveries only, set the Assigned to Delivery…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, WSH, Shipping/Delivery, Transactions'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, WSH, Shipping/Delivery, Transactions, wsh_delivery_legs, wsh_trip_stops, wsh_trips'
 permalink: /WSH%20Shipping-Delivery%20Transactions/
 ---
 
@@ -19,15 +19,16 @@ Set the parameter to null to review all shipping transations regardless of deliv
 
 
 ## Report Parameters
-Selling Operating Unit, Shipping Operating Unit, Organization Code, Assigned to Delivery, Delivery Status, Exclude Delivery Status, Release status, Exclude Release Status, Exception Exists, Customer Name, Customer Number, Delivery Note From, Delivery Note To, Item, Item From, Item To, Lot Number, Lot Number From, Lot Number To, Order Number From, Order Number To, Scheduled Date From, Scheduled Date To, Released Date From, Released Date To, Actual Shipment Date From, Actual Shipment Date To, Invoiced Date From, Invoiced Date To, Initial Pick Up Date From, Initial Pick Up Date To, Ultimate Drop Off Date From, Ultimate Drop Off Date To, Location Format
+Selling Operating Unit, Shipping Operating Unit, Organization Code, Assigned to Delivery, Delivery Status, Exclude Delivery Status, Release status, Exclude Release Status, Exception Exists, Customer Name, Customer Number, Delivery Note From, Delivery Note To, Item, Item From, Item To, Category Set 1, Category Set 2, Category Set 3, Lot Number, Lot Number From, Lot Number To, Order Number From, Order Number To, Scheduled Date From, Scheduled Date To, Released Date From, Released Date To, Actual Shipment Date From, Actual Shipment Date To, Invoiced Date From, Invoiced Date To, Initial Pick Up Date From, Initial Pick Up Date To, Ultimate Drop Off Date From, Ultimate Drop Off Date To, Location Format
 
 ## Oracle EBS Tables Used
-
+[wsh_delivery_legs](https://www.enginatics.com/library/?pg=1&find=wsh_delivery_legs), [wsh_trip_stops](https://www.enginatics.com/library/?pg=1&find=wsh_trip_stops), [wsh_trips](https://www.enginatics.com/library/?pg=1&find=wsh_trips)
 
 ## Report Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
-
+## Related Reports
+[CAC Interface Error Summary](/CAC%20Interface%20Error%20Summary/ "CAC Interface Error Summary Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
@@ -36,7 +37,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/wsh-shipping-delivery-transactions/) |
+| Excel Example Output | [WSH Shipping Delivery Transactions 29-Jun-2026 214203.xlsx](https://www.enginatics.com/example/wsh-shipping-delivery-transactions/) |
 | Blitz Report™ XML Import | [WSH_Shipping_Delivery_Transactions.xml](https://www.enginatics.com/xml/wsh-shipping-delivery-transactions/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/wsh-shipping-delivery-transactions/](https://www.enginatics.com/reports/wsh-shipping-delivery-transactions/) |
 

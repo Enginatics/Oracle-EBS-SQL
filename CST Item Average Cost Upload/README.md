@@ -2,7 +2,7 @@
 layout: default
 title: 'CST Item Average Cost Upload | Oracle EBS SQL Report'
 description: 'CST Item Average Cost Upload ============================ This upload supports the uploading of item average costs for organizations using the Average…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Upload, CST, Item, Average, Cost, mtl_parameters, mtl_system_items_vl, cst_quantity_layers'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, CST, Item, Average, Cost, mtl_parameters, mtl_system_items_vl, cst_quantity_layers'
 permalink: /CST%20Item%20Average%20Cost%20Upload/
 ---
 
@@ -62,7 +62,7 @@ Upload Mode, Upload Type, Transaction Type, Transaction Date, Transaction Source
 [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl), [cst_quantity_layers](https://www.enginatics.com/library/?pg=1&find=cst_quantity_layers), [cst_layer_cost_details_v](https://www.enginatics.com/library/?pg=1&find=cst_layer_cost_details_v), [cst_cost_groups](https://www.enginatics.com/library/?pg=1&find=cst_cost_groups), [org_access_view](https://www.enginatics.com/library/?pg=1&find=org_access_view), [cst_cost_group_accounts](https://www.enginatics.com/library/?pg=1&find=cst_cost_group_accounts), [cst_item_costs](https://www.enginatics.com/library/?pg=1&find=cst_item_costs), [cst_item_cost_details_v](https://www.enginatics.com/library/?pg=1&find=cst_item_cost_details_v)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only), [Upload](https://www.enginatics.com/library/?pg=1&category[]=Upload)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Upload](https://www.enginatics.com/library/?pg=1&category[]=Upload)
 
 ## Related Reports
 [CAC Inventory and Intransit Value (Period-End) - Discrete/OPM](/CAC%20Inventory%20and%20Intransit%20Value%20%28Period-End%29%20-%20Discrete-OPM/ "CAC Inventory and Intransit Value (Period-End) - Discrete/OPM Oracle EBS SQL Report"), [CAC Material Account Detail](/CAC%20Material%20Account%20Detail/ "CAC Material Account Detail Oracle EBS SQL Report"), [CAC ICP PII Material Account Detail](/CAC%20ICP%20PII%20Material%20Account%20Detail/ "CAC ICP PII Material Account Detail Oracle EBS SQL Report"), [CAC ICP PII Inventory Pending Cost Adjustment](/CAC%20ICP%20PII%20Inventory%20Pending%20Cost%20Adjustment/ "CAC ICP PII Inventory Pending Cost Adjustment Oracle EBS SQL Report"), [CAC ICP PII Inventory and Intransit Value (Period-End)](/CAC%20ICP%20PII%20Inventory%20and%20Intransit%20Value%20%28Period-End%29/ "CAC ICP PII Inventory and Intransit Value (Period-End) Oracle EBS SQL Report"), [CAC ICP PII WIP Material Usage Variance](/CAC%20ICP%20PII%20WIP%20Material%20Usage%20Variance/ "CAC ICP PII WIP Material Usage Variance Oracle EBS SQL Report"), [CAC ICP PII Material Account Summary](/CAC%20ICP%20PII%20Material%20Account%20Summary/ "CAC ICP PII Material Account Summary Oracle EBS SQL Report"), [CAC Internal Order Shipment Margin](/CAC%20Internal%20Order%20Shipment%20Margin/ "CAC Internal Order Shipment Margin Oracle EBS SQL Report"), [CAC WIP Resource Efficiency](/CAC%20WIP%20Resource%20Efficiency/ "CAC WIP Resource Efficiency Oracle EBS SQL Report")
@@ -74,7 +74,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/cst-item-average-cost-upload/) |
+| Excel Example Output | [](https://www.enginatics.com/example/cst-item-average-cost-upload/) |
 | Blitz Report™ XML Import | [CST_Item_Average_Cost_Upload.xml](https://www.enginatics.com/xml/cst-item-average-cost-upload/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/cst-item-average-cost-upload/](https://www.enginatics.com/reports/cst-item-average-cost-upload/) |
 

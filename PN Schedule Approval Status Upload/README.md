@@ -2,7 +2,7 @@
 layout: default
 title: 'PN Schedule Approval Status Upload | Oracle EBS SQL Report'
 description: 'Property Management - Schedule Approval Status Upload This upload allows users to Approve (Approved status), Un-Approve (Draft status), or place On Hold…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Upload, Schedule, Approval, Status, pn_payment_schedules_v, pn_leases_v, pn_lease_details'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, Schedule, Approval, Status, pn_payment_schedules_v, pn_leases_v, pn_lease_details'
 permalink: /PN%20Schedule%20Approval%20Status%20Upload/
 ---
 
@@ -38,10 +38,10 @@ Upload Mode, Operating Unit, Third Party Name, Lease Class, Lease Type, Lease Na
 [pn_payment_schedules_v](https://www.enginatics.com/library/?pg=1&find=pn_payment_schedules_v), [pn_leases_v](https://www.enginatics.com/library/?pg=1&find=pn_leases_v), [pn_lease_details](https://www.enginatics.com/library/?pg=1&find=pn_lease_details), [hr_all_organization_units_vl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_vl)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only), [Upload](https://www.enginatics.com/library/?pg=1&category[]=Upload)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Upload](https://www.enginatics.com/library/?pg=1&category[]=Upload)
 
 ## Related Reports
-[PN Billing/Payment Term Upload](/PN%20Billing-Payment%20Term%20Upload/ "PN Billing/Payment Term Upload Oracle EBS SQL Report"), [PN Generate Lease Details](/PN%20Generate%20Lease%20Details/ "PN Generate Lease Details Oracle EBS SQL Report"), [PO Headers and Lines](/PO%20Headers%20and%20Lines/ "PO Headers and Lines Oracle EBS SQL Report"), [PN Generate Portfolio Detail](/PN%20Generate%20Portfolio%20Detail/ "PN Generate Portfolio Detail Oracle EBS SQL Report"), [PN Generate Lease Analysis](/PN%20Generate%20Lease%20Analysis/ "PN Generate Lease Analysis Oracle EBS SQL Report"), [PN Generate Portfolio Summary](/PN%20Generate%20Portfolio%20Summary/ "PN Generate Portfolio Summary Oracle EBS SQL Report"), [PN GL Reconciliation](/PN%20GL%20Reconciliation/ "PN GL Reconciliation Oracle EBS SQL Report")
+[PN Billing/Payment Term Upload](/PN%20Billing-Payment%20Term%20Upload/ "PN Billing/Payment Term Upload Oracle EBS SQL Report"), [PN Generate Lease Details](/PN%20Generate%20Lease%20Details/ "PN Generate Lease Details Oracle EBS SQL Report"), [PN Generate Portfolio Detail](/PN%20Generate%20Portfolio%20Detail/ "PN Generate Portfolio Detail Oracle EBS SQL Report"), [PN Generate Lease Analysis](/PN%20Generate%20Lease%20Analysis/ "PN Generate Lease Analysis Oracle EBS SQL Report"), [PN Generate Portfolio Summary](/PN%20Generate%20Portfolio%20Summary/ "PN Generate Portfolio Summary Oracle EBS SQL Report"), [PN GL Reconciliation](/PN%20GL%20Reconciliation/ "PN GL Reconciliation Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.

@@ -167,6 +167,30 @@ q_zx_registrations as
  decode(zptp.party_type_code,'THIRD_PARTY',zptp.party_id,null)=hp.party_id(+) and
  decode(zptp.party_type_code,'THIRD_PARTY_SITE',zptp.party_id,null)=hps.party_site_id(+) and
  zptp.party_tax_profile_id=zr.party_tax_profile_id
+),
+q_fc_assignments as
+(
+ select
+ nvl(hps.party_id,hp.party_id) party_id,
+ hps.party_site_id,
+ hca.class_category,
+ hca.class_code,
+ xxen_util.meaning(hca.class_code,hca.class_category,222) class_name,
+ hca.start_date_active,
+ hca.end_date_active
+ from
+ hz_code_assignments hca,
+ zx_party_tax_profile zptp,
+ hz_parties hp,
+ hz_party_sites hps,
+ zx_fc_types_b zft
+ where
+ :show_fiscal_classifications='Y' and
+ hca.owner_table_name='ZX_PARTY_TAX_PROFILE' and
+ hca.owner_table_id=zptp.party_tax_profile_id and
+ hca.class_category=zft.classification_type_code and
+ decode(zptp.party_type_code,'THIRD_PARTY',zptp.party_id,null)=hp.party_id(+) and
+ decode(zptp.party_type_code,'THIRD_PARTY_SITE',zptp.party_id,null)=hps.party_site_id(+)
 )
 --
 -- Main query starts here
@@ -266,6 +290,10 @@ x.profile_class,
 x.site_profile_class,
 x.credit_classification,
 x.site_credit_classification,
+x.credit_check,
+x.site_credit_check,
+x.credit_hold,
+x.site_credit_hold,
 x.payment_term,
 x.site_payment_term,
 x.send_statement,
@@ -318,6 +346,7 @@ zptp2.rep_registration_number site_tax_reporting_reg_number,
  zocv.org_id in (x.org_id,-99) and
  rownum <= 1
 ) site_tax_classification,
+&show_fiscal_classification
 -- Tax Registrations
 zr.assign_level tax_reg_assign_level,
 zr.tax_regime_code tax_reg_regime_code,
@@ -577,6 +606,10 @@ hcpc1.name profile_class,
 hcpc2.name site_profile_class,
 xxen_util.meaning(hcpc1.credit_classification,'AR_CMGT_CREDIT_CLASSIFICATION',222) credit_classification,
 xxen_util.meaning(hcpc2.credit_classification,'AR_CMGT_CREDIT_CLASSIFICATION',222) site_credit_classification,
+xxen_util.meaning(hcp1.credit_checking,'YES_NO',0) credit_check,
+xxen_util.meaning(hcp2.credit_checking,'YES_NO',0) site_credit_check,
+xxen_util.meaning(hcp1.credit_hold,'YES_NO',0) credit_hold,
+xxen_util.meaning(hcp2.credit_hold,'YES_NO',0) site_credit_hold,
 (select rtt.name from ra_terms_tl rtt where nvl(hcp1.standard_terms,hca.payment_term_id)=rtt.term_id and rtt.language=userenv('lang')) payment_term,
 (select rtt.name from ra_terms_tl rtt where nvl(hcp2.standard_terms,hcsua.payment_term_id)=rtt.term_id and rtt.language=userenv('lang')) site_payment_term,
 xxen_util.meaning(hcp1.send_statements,'YES_NO',0) send_statement,
@@ -678,8 +711,7 @@ from
   hz_contact_points hcp
 where 
 hcp.owner_table_name = 'HZ_PARTY_SITES' and
-:detail_level in ('Site','Site Use') and
-:show_contacts='Y'
+:detail_level in ('Site','Site Use')
 group by hcp.owner_table_id
 ) hcps
 where
@@ -711,7 +743,8 @@ ra_cust_receipt_methods rcrm,
 ar_receipt_methods arm,
 q_bank_accounts ba,
 iby_debit_authorizations ida,
-q_contacts ctct
+q_contacts ctct,
+q_fc_assignments fca
 where
 x.party_id=zptp1.party_id(+) and
 zptp1.party_type_code(+)='THIRD_PARTY' and
@@ -720,6 +753,9 @@ zptp2.party_type_code(+)='THIRD_PARTY_SITE' and
 nvl2(:show_tax_registrations,x.party_id,null)=zr.party_id(+) and
 nvl(x.party_site_id,-99)=nvl(zr.party_site_id(+),nvl(x.party_site_id,-99)) and
 (:show_tax_registrations='Y' or zr.party_tax_profile_id is null or trunc(sysdate) between nvl(zr.effective_from,trunc(sysdate)) and nvl(zr.effective_to,trunc(sysdate))) and
+--
+nvl2(:show_fiscal_classifications,x.party_id,null)=fca.party_id(+) and
+nvl(x.party_site_id,-99)=nvl(fca.party_site_id(+),nvl(x.party_site_id,-99)) and
 --
 nvl2(:show_profile_amts,x.prof_amt_profile_id,null)=hcpa.cust_account_profile_id(+) and
 --

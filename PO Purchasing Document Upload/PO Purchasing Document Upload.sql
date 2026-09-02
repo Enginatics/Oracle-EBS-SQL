@@ -88,6 +88,9 @@ mp.organization_code ship_to_organization_code,
 hla.location_code ship_to_location_code,
 plla.need_by_date,
 plla.promised_date,
+rrh.routing_name receipt_routing,
+plla.tax_name tax_classification_code,
+case when plla.inspection_required_flag='Y' then '4-Way' when plla.receipt_required_flag='Y' then '3-Way' else '2-Way' end match_approval_level,
 plla.start_date price_break_start_date,
 plla.end_date price_break_end_date,
 xxen_util.display_flexfield_context(201,'PO_LINE_LOCATIONS',plla.attribute_category) line_location_dff_context,
@@ -109,10 +112,12 @@ xxen_util.display_flexfield_value(201,'PO_LINE_LOCATIONS',plla.attribute_categor
 from
 po_line_locations_all plla,
 mtl_parameters mp,
-hr_locations_all hla
+hr_locations_all hla,
+rcv_routing_headers rrh
 where
 plla.ship_to_location_id=hla.location_id(+) and
 plla.ship_to_organization_id=mp.organization_id(+) and
+plla.receiving_routing_id=rrh.routing_header_id(+) and
 plla.po_release_id is null
 )
 select
@@ -144,6 +149,7 @@ pv.vendor_name supplier_name,
 pvsa.vendor_site_code supplier_site,
 pha.blanket_total_amount amount_agreed,
 xxen_util.meaning(pha.global_agreement_flag,'YES_NO',0) global_agreement,
+xxen_util.meaning(pha.supply_agreement_flag,'YES_NO',0) supply_agreement,
 pha.quote_warning_delay,
 pha.note_to_vendor header_note_to_vendor,
 pha.note_to_receiver header_note_to_receiver,
@@ -165,6 +171,11 @@ xxen_util.display_flexfield_value(201,'PO_HEADERS',pha.attribute_category,'ATTRI
 xxen_util.display_flexfield_value(201,'PO_HEADERS',pha.attribute_category,'ATTRIBUTE15',pha.rowid,pha.attribute15) header_attribute15,
 hla2.location_code header_ship_to_location,
 hla1.location_code header_bill_to_location,
+case when pha.vendor_contact_id is not null then (select max(pvc.last_name||' '||pvc.first_name) from po_vendor_contacts pvc where pvc.vendor_contact_id=pha.vendor_contact_id) end supplier_contact,
+(select att.name from ap_terms_tl att where att.term_id=pha.terms_id and att.language=userenv('lang')) payment_terms,
+pha.freight_terms_lookup_code freight_terms,
+pha.fob_lookup_code fob,
+pha.ship_via_lookup_code carrier,
 to_number(null) interface_line_id,
 pl.po_line_id,
 pl.line_num,
@@ -176,7 +187,7 @@ pl.category,
 pl.description,
 pl.unit_of_measure,
 pl.unit_price price,
-pl.allow_price_override,
+xxen_util.meaning(pl.allow_price_override,'YES_NO',0) allow_price_override,
 pl.limit_price,
 pl.line_quantity,
 pl.supplier_item,
@@ -208,6 +219,9 @@ pll.ship_to_organization_code,
 pll.ship_to_location_code,
 pll.need_by_date,
 pll.promised_date,
+pll.receipt_routing,
+pll.tax_classification_code,
+pll.match_approval_level,
 pll.price_break_start_date,
 pll.price_break_end_date,
 pll.line_location_dff_context,
@@ -232,6 +246,11 @@ pda.distribution_num,
 pda.quantity_ordered,
 gcck.concatenated_segments charge_account,
 case when pda.deliver_to_person_id is not null then (select papf.full_name from per_all_people_f papf where papf.person_id=pda.deliver_to_person_id and trunc(sysdate) between papf.effective_start_date and papf.effective_end_date) end requestor,
+case when pda.destination_type_code is not null then (select plc.displayed_field from po_lookup_codes plc where plc.lookup_type='DESTINATION TYPE' and plc.lookup_code=pda.destination_type_code) end destination_type,
+case when pda.deliver_to_location_id is not null then (select hla.location_code from hr_locations_all hla where hla.location_id=pda.deliver_to_location_id) end deliver_to_location,
+case when pda.wip_entity_id is not null then (select we.wip_entity_name from wip_entities we where we.wip_entity_id=pda.wip_entity_id) end wip_job,
+pda.wip_operation_seq_num wip_operation_seq,
+pda.wip_resource_seq_num wip_resource_seq,
 case when pda.project_id is not null then (select ppev.project_number from pa_projects_expend_v ppev where ppev.project_id=pda.project_id) end project_number,
 case when pda.task_id is not null then (select ptaev.task_number from pa_tasks_all_expend_v ptaev where ptaev.task_id= pda.task_id and ptaev.expenditure_org_id=pda.org_id) end task_number,
 pda.expenditure_type,
@@ -292,6 +311,7 @@ pha.ship_to_location_id=hla2.location_id(+) and
 pha.po_header_id=pl.po_header_id(+) and
 pl.po_line_id=pll.po_line_id(+) and
 pll.line_location_id=pda.line_location_id(+) and
+(pll.price_break_end_date is null or pll.price_break_end_date >= trunc(sysdate) or :p_active_price_breaks_only is null) and
 pda.code_combination_id=gcck.code_combination_id(+) and
 nvl(pha.cancel_flag,'N')='N' and
 nvl(pha.closed_code,'OPEN')='OPEN' and

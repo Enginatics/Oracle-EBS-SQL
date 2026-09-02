@@ -7,8 +7,8 @@
 -- Report Name: FA Asset Upload
 -- Description: Upload to create, update, and retire fixed assets using FA Public APIs.
 New assets are created via fa_addition_pub.do_addition. Existing assets are updated via fa_asset_desc_pub.update_desc, fa_reclass_pub.do_reclass, and fa_adjustment_pub.do_adjustment.
-Asset retirements are processed via fa_retirement_pub.do_retirement.
-Use the Record Type column to select Addition or Retirement processing.
+Asset retirements are processed via fa_retirement_pub.do_retirement; after uploading retirements, run the Calculate Gains and Losses program to finalize them and post the gain/loss.
+Use the Record Type column to select Addition or Retirement processing. Fully retired assets are excluded from the list unless Include Retired Assets is set to Yes.
 -- Excel Examle Output: https://www.enginatics.com/example/fa-asset-upload/
 -- Library Link: https://www.enginatics.com/reports/fa-asset-upload/
 -- Run Report: https://demo.enginatics.com/
@@ -44,7 +44,7 @@ fav.investment_law,
 fb.book_type_code book,
 fb.cost,
 fb.original_cost,
-fds.ytd_deprn ytd_depreciation,
+case when (select fdp.fiscal_year from fa_deprn_periods fdp where fds.book_type_code=fdp.book_type_code and fds.period_counter=fdp.period_counter)=fbc.current_fiscal_year then fds.ytd_deprn else 0 end ytd_depreciation,
 fds.deprn_reserve depreciation_reserve,
 (select fl0.meaning from fa_lookups fl0 where fl0.lookup_type='SALVAGE_DEPRN_LIMIT_TYPE' and fl0.lookup_code=decode(fb.salvage_type,'AMT','AMOUNT','PCT','PERCENT',fb.salvage_type)) salvage_value_type,
 fb.percent_salvage_value,
@@ -78,6 +78,9 @@ flk.segment1 location_segment1,
 flk.segment2 location_segment2,
 flk.segment3 location_segment3,
 flk.segment4 location_segment4,
+flk.segment5 location_segment5,
+flk.segment6 location_segment6,
+flk.segment7 location_segment7,
 papf.full_name employee_name,
 papf.employee_number,
 fav.attribute_category_code attribute_category,
@@ -133,6 +136,7 @@ where
 nvl(:p_create_empty_file,'N')<>'Y' and
 fav.asset_id=fb.asset_id and
 fb.date_ineffective is null and
+(nvl(:p_include_retired_assets,'N')='Y' or fb.period_counter_fully_retired is null) and
 fb.transaction_header_id_in=fth.transaction_header_id and
 fb.book_type_code=fbc.book_type_code and
 fbc.set_of_books_id=gl.ledger_id and
@@ -141,10 +145,10 @@ fcbk.category_id=fcb.category_id and
 fb.book_type_code=fcb.book_type_code and
 fav.asset_id=fds.asset_id and
 fb.book_type_code=fds.book_type_code and
-fds.period_counter=(select max(fdp.period_counter) from fa_deprn_periods fdp where fdp.book_type_code=fb.book_type_code and fdp.period_close_date is not null) and
+fds.period_counter=(select max(fds2.period_counter) from fa_deprn_summary fds2 where fds.asset_id=fds2.asset_id and fds.book_type_code=fds2.book_type_code) and
 fav.asset_id=fdh.asset_id and
 fb.book_type_code=fdh.book_type_code and
-fdh.date_ineffective is null and
+(fdh.date_ineffective is null or fb.period_counter_fully_retired is not null and fdh.date_ineffective=(select max(fdh2.date_ineffective) from fa_distribution_history fdh2 where fdh.asset_id=fdh2.asset_id and fdh.book_type_code=fdh2.book_type_code)) and
 fdh.location_id=flk.location_id and
 fdh.code_combination_id=gcck.code_combination_id and
 fav.asset_key_ccid=fakk.code_combination_id(+) and
@@ -164,31 +168,31 @@ null message_,
 null modified_columns_,
 null request_id_,
 'Retirement' record_type,
-fab.asset_number,
-fat.description,
-fab.tag_number,
+fav.asset_number,
+fav.description,
+fav.tag_number,
 fcbk.concatenated_segments category,
-fab.serial_number,
+fav.serial_number,
 fakk.concatenated_segments asset_key,
-(select fl0.meaning from fa_lookups fl0 where fl0.lookup_type='ASSET TYPE' and fl0.lookup_code=fab.asset_type) asset_type,
-fab.current_units units,
+(select fl0.meaning from fa_lookups fl0 where fl0.lookup_type='ASSET TYPE' and fl0.lookup_code=fav.asset_type) asset_type,
+fav.current_units units,
 fab_p.asset_number parent_asset,
-fab.manufacturer_name manufacturer,
-fab.model_number model,
+fav.manufacturer_name manufacturer,
+fav.model_number model,
 null warranty_number,
 fl.lease_number,
-(select fl0.meaning from fa_lookups fl0 where fl0.lookup_type='YESNO' and fl0.lookup_code=fab.in_use_flag) in_use,
-(select fl0.meaning from fa_lookups fl0 where fl0.lookup_type='YESNO' and fl0.lookup_code=fab.inventorial) in_physical_inventory,
-(select fl0.meaning from fa_lookups fl0 where fl0.lookup_type='PROPERTY TYPE' and fl0.lookup_code=fab.property_type_code) property_type,
-(select fl0.meaning from fa_lookups fl0 where fl0.lookup_type='1245/1250 PROPERTY' and fl0.lookup_code=fab.property_1245_1250_code) property_class,
-(select fl0.meaning from fa_lookups fl0 where fl0.lookup_type='OWNLEASE' and fl0.lookup_code=fab.owned_leased) ownership,
-(select fl0.meaning from fa_lookups fl0 where fl0.lookup_type='NEWUSE' and fl0.lookup_code=fab.new_used) bought,
-fab.commitment,
-fab.investment_law,
+(select fl0.meaning from fa_lookups fl0 where fl0.lookup_type='YESNO' and fl0.lookup_code=fav.in_use_flag) in_use,
+(select fl0.meaning from fa_lookups fl0 where fl0.lookup_type='YESNO' and fl0.lookup_code=fav.inventorial) in_physical_inventory,
+(select fl0.meaning from fa_lookups fl0 where fl0.lookup_type='PROPERTY TYPE' and fl0.lookup_code=fav.property_type_code) property_type,
+(select fl0.meaning from fa_lookups fl0 where fl0.lookup_type='1245/1250 PROPERTY' and fl0.lookup_code=fav.property_1245_1250_code) property_class,
+(select fl0.meaning from fa_lookups fl0 where fl0.lookup_type='OWNLEASE' and fl0.lookup_code=fav.owned_leased) ownership,
+(select fl0.meaning from fa_lookups fl0 where fl0.lookup_type='NEWUSE' and fl0.lookup_code=fav.new_used) bought,
+fav.commitment,
+fav.investment_law,
 fb.book_type_code book,
 fb.cost,
 fb.original_cost,
-fds.ytd_deprn ytd_depreciation,
+case when (select fdp.fiscal_year from fa_deprn_periods fdp where fds.book_type_code=fdp.book_type_code and fds.period_counter=fdp.period_counter)=fbc.current_fiscal_year then fds.ytd_deprn else 0 end ytd_depreciation,
 fds.deprn_reserve depreciation_reserve,
 (select fl0.meaning from fa_lookups fl0 where fl0.lookup_type='SALVAGE_DEPRN_LIMIT_TYPE' and fl0.lookup_code=decode(fb.salvage_type,'AMT','AMOUNT','PCT','PERCENT',fb.salvage_type)) salvage_value_type,
 fb.percent_salvage_value,
@@ -222,24 +226,27 @@ flk.segment1 location_segment1,
 flk.segment2 location_segment2,
 flk.segment3 location_segment3,
 flk.segment4 location_segment4,
+flk.segment5 location_segment5,
+flk.segment6 location_segment6,
+flk.segment7 location_segment7,
 null employee_name,
 null employee_number,
-fab.attribute_category_code attribute_category,
-fab.attribute1,
-fab.attribute2,
-fab.attribute3,
-fab.attribute4,
-fab.attribute5,
-fab.attribute6,
-fab.attribute7,
-fab.attribute8,
-fab.attribute9,
-fab.attribute10,
-fab.attribute11,
-fab.attribute12,
-fab.attribute13,
-fab.attribute14,
-fab.attribute15,
+fav.attribute_category_code attribute_category,
+fav.attribute1,
+fav.attribute2,
+fav.attribute3,
+fav.attribute4,
+fav.attribute5,
+fav.attribute6,
+fav.attribute7,
+fav.attribute8,
+fav.attribute9,
+fav.attribute10,
+fav.attribute11,
+fav.attribute12,
+fav.attribute13,
+fav.attribute14,
+fav.attribute15,
 fr.date_retired,
 fr.cost_retired,
 fr.units units_retired,
@@ -253,11 +260,11 @@ fr.reference_num,
 fth.transaction_name,
 fr.status retire_status
 from
-fa_additions_b fab,
-fa_additions_tl fat,
+fa_additions_vl fav,
 fa_retirements fr,
 fa_books fb,
 fa_transaction_headers fth,
+fa_book_controls fbc,
 fa_categories_b_kfv fcbk,
 fa_category_books fcb,
 fa_deprn_summary fds,
@@ -272,26 +279,25 @@ where
 1=1 and
 :p_upload_mode like '%' || xxen_upload.action_update and
 nvl(:p_create_empty_file,'N')<>'Y' and
-fab.asset_id=fat.asset_id and
-fat.language=userenv('lang') and
-fab.asset_id=fr.asset_id and
+fav.asset_id=fr.asset_id and
 fr.book_type_code=fb.book_type_code and
 fb.transaction_header_id_out=fr.transaction_header_id_in and
 fth.transaction_header_id=fr.transaction_header_id_in and
-fab.asset_id=fb.asset_id and
+fav.asset_id=fb.asset_id and
+fb.book_type_code=fbc.book_type_code and
 fb.book_type_code=fcb.book_type_code and
-fab.asset_category_id=fcbk.category_id and
+fav.asset_category_id=fcbk.category_id and
 fcbk.category_id=fcb.category_id and
-fds.asset_id=fab.asset_id and
+fds.asset_id=fav.asset_id and
 fds.book_type_code=fb.book_type_code and
-fds.period_counter=(select max(fdp.period_counter) from fa_deprn_periods fdp where fdp.book_type_code=fb.book_type_code and fdp.period_close_date is not null) and
-fab.asset_id=fdh.asset_id and
+fds.period_counter=(select max(fds2.period_counter) from fa_deprn_summary fds2 where fds.asset_id=fds2.asset_id and fds.book_type_code=fds2.book_type_code) and
+fav.asset_id=fdh.asset_id and
 fdh.book_type_code=fb.book_type_code and
 fdh.date_effective<=fth.date_effective and
 nvl(fdh.date_ineffective,fth.date_effective+1)>=fth.date_effective and
 fdh.location_id=flk.location_id and
 fdh.code_combination_id=gcck.code_combination_id and
-fab.asset_key_ccid=fakk.code_combination_id(+) and
-fab.lease_id=fl.lease_id(+) and
-fab.parent_asset_id=fab_p.asset_id(+) and
+fav.asset_key_ccid=fakk.code_combination_id(+) and
+fav.lease_id=fl.lease_id(+) and
+fav.parent_asset_id=fab_p.asset_id(+) and
 fb.group_asset_id=fab_g.asset_id(+)

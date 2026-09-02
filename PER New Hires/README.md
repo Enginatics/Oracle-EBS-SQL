@@ -23,7 +23,7 @@ Business Group, Organization, Hire Date From, Hire Date To, Location
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related Reports
-[PER Employee Length of Service](/PER%20Employee%20Length%20of%20Service/ "PER Employee Length of Service Oracle EBS SQL Report"), [PER Employee Assignments](/PER%20Employee%20Assignments/ "PER Employee Assignments Oracle EBS SQL Report"), [GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report"), [PER Headcount by Organization](/PER%20Headcount%20by%20Organization/ "PER Headcount by Organization Oracle EBS SQL Report"), [PER Terminations and Separations](/PER%20Terminations%20and%20Separations/ "PER Terminations and Separations Oracle EBS SQL Report")
+[PER Employee Length of Service](/PER%20Employee%20Length%20of%20Service/ "PER Employee Length of Service Oracle EBS SQL Report"), [PER Employee Assignments](/PER%20Employee%20Assignments/ "PER Employee Assignments Oracle EBS SQL Report"), [GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report"), [PER Headcount by Organization](/PER%20Headcount%20by%20Organization/ "PER Headcount by Organization Oracle EBS SQL Report"), [PER Position Hierarchy](/PER%20Position%20Hierarchy/ "PER Position Hierarchy Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
@@ -32,7 +32,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/per-new-hires/) |
+| Excel Example Output | [](https://www.enginatics.com/example/per-new-hires/) |
 | Blitz Report™ XML Import | [PER_New_Hires.xml](https://www.enginatics.com/xml/per-new-hires/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/per-new-hires/](https://www.enginatics.com/reports/per-new-hires/) |
 

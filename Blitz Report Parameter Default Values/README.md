@@ -2,7 +2,7 @@
 layout: default
 title: 'Blitz Report Parameter Default Values | Oracle EBS SQL Report'
 description: 'Blitz Report''s user or template specific parameter default values – Oracle E-Business Suite SQL report'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Blitz, Report, Parameter, Default, xxen_report_parameters_v, xxen_report_param_default_vals, xxen_report_templates_v'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Blitz, Report, Parameter, Default, xxen_report_templates_v, xxen_report_parameters_v, xxen_report_param_default_vals'
 permalink: /Blitz%20Report%20Parameter%20Default%20Values/
 ---
 
@@ -17,13 +17,13 @@ Blitz Report's user or template specific parameter default values
 Category, Anchor, Report Name
 
 ## Oracle EBS Tables Used
-[xxen_report_parameters_v](https://www.enginatics.com/library/?pg=1&find=xxen_report_parameters_v), [xxen_report_param_default_vals](https://www.enginatics.com/library/?pg=1&find=xxen_report_param_default_vals), [xxen_report_templates_v](https://www.enginatics.com/library/?pg=1&find=xxen_report_templates_v)
+[xxen_report_templates_v](https://www.enginatics.com/library/?pg=1&find=xxen_report_templates_v), [xxen_report_parameters_v](https://www.enginatics.com/library/?pg=1&find=xxen_report_parameters_v), [xxen_report_param_default_vals](https://www.enginatics.com/library/?pg=1&find=xxen_report_param_default_vals)
 
 ## Report Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related Reports
-[DBA ORDS Configuration Validation](/DBA%20ORDS%20Configuration%20Validation/ "DBA ORDS Configuration Validation Oracle EBS SQL Report"), [DIS End User Layers](/DIS%20End%20User%20Layers/ "DIS End User Layers Oracle EBS SQL Report"), [Blitz Report Assignment Upload](/Blitz%20Report%20Assignment%20Upload/ "Blitz Report Assignment Upload Oracle EBS SQL Report"), [Blitz Report Assignments](/Blitz%20Report%20Assignments/ "Blitz Report Assignments Oracle EBS SQL Report"), [Blitz Report Default Templates](/Blitz%20Report%20Default%20Templates/ "Blitz Report Default Templates Oracle EBS SQL Report"), [Blitz Report Templates](/Blitz%20Report%20Templates/ "Blitz Report Templates Oracle EBS SQL Report"), [DBA Blitz Report ORDS Configuration](/DBA%20Blitz%20Report%20ORDS%20Configuration/ "DBA Blitz Report ORDS Configuration Oracle EBS SQL Report")
+[DBA ORDS Configuration Validation](/DBA%20ORDS%20Configuration%20Validation/ "DBA ORDS Configuration Validation Oracle EBS SQL Report"), [DIS End User Layers](/DIS%20End%20User%20Layers/ "DIS End User Layers Oracle EBS SQL Report"), [Blitz Report Assignment Upload](/Blitz%20Report%20Assignment%20Upload/ "Blitz Report Assignment Upload Oracle EBS SQL Report"), [Blitz Report Assignments](/Blitz%20Report%20Assignments/ "Blitz Report Assignments Oracle EBS SQL Report"), [Blitz Report Default Templates](/Blitz%20Report%20Default%20Templates/ "Blitz Report Default Templates Oracle EBS SQL Report"), [Blitz Report Templates](/Blitz%20Report%20Templates/ "Blitz Report Templates Oracle EBS SQL Report"), [AP Posted Invoice Register](/AP%20Posted%20Invoice%20Register/ "AP Posted Invoice Register Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.

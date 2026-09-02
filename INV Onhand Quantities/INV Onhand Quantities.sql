@@ -10,10 +10,38 @@
 -- Library Link: https://www.enginatics.com/reports/inv-onhand-quantities/
 -- Run Report: https://demo.enginatics.com/
 
+select
+x.*,
+case
+when x.aging_days<=30 then '1. 0-30 Days'
+when x.aging_days<=60 then '2. 31-60 Days'
+when x.aging_days<=90 then '3. 61-90 Days'
+when x.aging_days<=180 then '4. 91-180 Days'
+when x.aging_days<=365 then '5. 181-365 Days'
+when x.aging_days>365 then '6. Over 365 Days'
+end "Aging Band",
+case
+when :p_show_trx_hist is null then null
+when nvl(x.stock_out_3m,0)<>0 then '1. Under 3 Months'
+when nvl(x.stock_out_6m,0)<>0 then '2. 3-6 Months'
+when nvl(x.stock_out_12m,0)<>0 then '3. 6-12 Months'
+when nvl(x.stock_out_24m,0)<>0 then '4. 12-24 Months'
+when nvl(x.stock_out_36m,0)<>0 then '5. 24-36 Months'
+else '6. No Issues in 36 Months'
+end "Last Issue Band",
+case
+when nvl(x.min_minmax_quantity,0)=0 and nvl(x.max_minmax_quantity,0)=0 then '4. No Min-Max Defined'
+when x.on_hand_org_sum<x.min_minmax_quantity then '1. Below Min'
+when x.max_minmax_quantity>0 and x.on_hand_org_sum>x.max_minmax_quantity then '3. Above Max'
+else '2. Within Min-Max'
+end "Min Max Status"
+from
+(
 select distinct
 ood.organization_name,
 ood.organization_code,
 msi.secondary_inventory_name subinventory,
+msi.description subinventory_description,
 xxen_util.meaning(nvl(msi.subinventory_type, 1),'MTL_SUB_TYPES',700) subinventory_type,
 nvl(inv_project.get_locator(milk.inventory_location_id,milk.organization_id),milk.concatenated_segments) locator,
 xxen_util.meaning(milk.inventory_location_type,'MTL_LOCATOR_TYPES',700) locator_type,
@@ -42,6 +70,30 @@ maa.inventory_item_id=moqd.inventory_item_id
 )
 ) abc_class_name,
 &category_columns
+case when :category_set_1 is not null then
+(
+select min(mcbk.concatenated_segments) keep (dense_rank first order by mic.category_id)
+from
+mtl_item_categories mic,
+mtl_categories_b_kfv mcbk
+where
+mic.category_set_id=(select mcsv.category_set_id from mtl_category_sets_vl mcsv where mcsv.category_set_name=:category_set_1) and
+moqd.organization_id=mic.organization_id and
+moqd.inventory_item_id=mic.inventory_item_id and
+mic.category_id=mcbk.category_id
+) end "Category Set 1",
+case when :category_set_1 is not null then
+(
+select min(mcb.segment1) keep (dense_rank first order by mic.category_id)
+from
+mtl_item_categories mic,
+mtl_categories_b mcb
+where
+mic.category_set_id=(select mcsv.category_set_id from mtl_category_sets_vl mcsv where mcsv.category_set_name=:category_set_1) and
+moqd.organization_id=mic.organization_id and
+moqd.inventory_item_id=mic.inventory_item_id and
+mic.category_id=mcb.category_id
+) end "Category Set 1 Top Level",
 xxen_util.meaning(msiv.planning_make_buy_code,'MTL_PLANNING_MAKE_BUY',700) make_buy,
 moqd.revision,
 muomv.unit_of_measure_tl unit_of_measure,
@@ -81,6 +133,7 @@ msiv.max_minmax_quantity,
 moqd.inventory_item_id,
 moqd.organization_id,
 moqd.subinventory_code,
+sum(moqd.primary_transaction_quantity) over (partition by moqd.organization_id, moqd.inventory_item_id) on_hand_org_sum,
 sum(moqd.primary_transaction_quantity) over (partition by moqd.inventory_item_id) on_hand_sum,
 round(sum(moqd.primary_transaction_quantity * nvl(cic.item_cost,0)) over (partition by moqd.inventory_item_id),2) on_hand_value_sum,
 mmt.stock_out_3m,
@@ -103,11 +156,11 @@ mmt.stock_out_6m*nvl(cic.item_cost,0) value_out_6m,
 mmt.stock_out_12m*nvl(cic.item_cost,0) value_out_12m,
 mmt.stock_out_24m*nvl(cic.item_cost,0) value_out_24m,
 mmt.stock_out_36m*nvl(cic.item_cost,0) value_out_36m,
-mmt.stock_out_3m*nvl(cic.item_cost,0) value_in_3m,
-mmt.stock_out_6m*nvl(cic.item_cost,0) value_in_6m,
-mmt.stock_out_12m*nvl(cic.item_cost,0) value_in_12m,
-mmt.stock_out_24m*nvl(cic.item_cost,0) value_in_24m,
-mmt.stock_out_36m*nvl(cic.item_cost,0) value_in_36m,
+mmt.stock_in_3m*nvl(cic.item_cost,0) value_in_3m,
+mmt.stock_in_6m*nvl(cic.item_cost,0) value_in_6m,
+mmt.stock_in_12m*nvl(cic.item_cost,0) value_in_12m,
+mmt.stock_in_24m*nvl(cic.item_cost,0) value_in_24m,
+mmt.stock_in_36m*nvl(cic.item_cost,0) value_in_36m,
 mmt.stock_mvmt_3m*nvl(cic.item_cost,0) value_mvmt_3m,
 mmt.stock_mvmt_6m*nvl(cic.item_cost,0) value_mvmt_6m,
 mmt.stock_mvmt_12m*nvl(cic.item_cost,0) value_mvmt_12m,
@@ -266,8 +319,9 @@ nvl(moqd.planning_tp_type,-1)=nvl(mmt.planning_tp_type(+),-1) and
 nvl(moqd.planning_organization_id,-1)=nvl(mmt.planning_organization_id(+),-1) and
 moqd.organization_id=cic.organization_id(+)and
 moqd.inventory_item_id=cic.inventory_item_id(+)
+) x
 order by
-ood.organization_code,
-on_hand_sum desc,
-item,
-on_hand desc
+x.organization_code,
+x.on_hand_sum desc,
+x.item,
+x.on_hand desc

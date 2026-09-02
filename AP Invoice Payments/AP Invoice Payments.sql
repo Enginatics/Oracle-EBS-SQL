@@ -27,6 +27,7 @@ assa.zip,
 assa.county,
 nvl(ftv.territory_short_name,assa.country) country,
 aia.invoice_num invoice_number,
+aia.doc_sequence_value invoice_voucher_number,
 xxen_util.meaning(aia.invoice_type_lookup_code,'INVOICE TYPE',200) invoice_type,
 aia.description invoice_description,
 aia.invoice_date,
@@ -46,6 +47,7 @@ aisca.creation_date ppr_date,
 ipmv.payment_method_name payment_method,
 aca.currency_code payment_currency,
 aca.check_number document_number,
+aca.doc_sequence_value payment_voucher_number,
 trunc(aca.check_date) payment_date,
 aipa.accounting_date accounting_date,
 xxen_util.meaning(aca.status_lookup_code,'CHECK STATE',200) check_state,
@@ -83,6 +85,24 @@ gl_code_combinations_kfv gcck
 where
 aida.dist_code_combination_id=gcck.code_combination_id
 ) distribution_account,
+(
+select
+rtrim(xmlagg(xmlelement(e,pha.segment1||','||chr(10))).extract('//text()').getclobval(),','||chr(10)) po_number
+from
+(select distinct pda.po_header_id from ap_invoice_distributions_all aida, po_distributions_all pda where aipa.invoice_id=aida.invoice_id and aida.po_distribution_id=pda.po_distribution_id) x,
+po_headers_all pha
+where
+x.po_header_id=pha.po_header_id
+) po_number,
+(
+select
+rtrim(xmlagg(xmlelement(e,rsh.receipt_num||','||chr(10))).extract('//text()').getclobval(),','||chr(10)) receipt_number
+from
+(select distinct rt.shipment_header_id from ap_invoice_distributions_all aida, rcv_transactions rt where aipa.invoice_id=aida.invoice_id and aida.rcv_transaction_id=rt.transaction_id) x,
+rcv_shipment_headers rsh
+where
+x.shipment_header_id=rsh.shipment_header_id
+) receipt_number,
 xxen_util.user_name(aipa.created_by) created_by,
 xxen_util.client_time(aipa.creation_date) creation_date,
 xxen_util.user_name(aipa.last_updated_by) last_updated_by,

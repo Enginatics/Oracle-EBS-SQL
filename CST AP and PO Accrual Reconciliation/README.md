@@ -2,7 +2,7 @@
 layout: default
 title: 'CST AP and PO Accrual Reconciliation | Oracle EBS SQL Report'
 description: 'Imported from Concurrent Program Application: Bills of Material Source: AP and PO Accrual Reconciliation Report Short Name: CSTACRAP'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, CST, Accrual, Reconciliation, per_all_people_f, mtl_system_items_vl, cst_reconciliation_codes'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, CST, Accrual, Reconciliation, per_all_people_f, mtl_system_items_vl, cst_reconciliation_codes'
 permalink: /CST%20AP%20and%20PO%20Accrual%20Reconciliation/
 ---
 
@@ -18,16 +18,16 @@ Short Name: CSTACRAP
 
 
 ## Report Parameters
-Operating Unit, Show Transaction Details, Balancing Segment From, Balancing Segment To, Accrual Account, Aging Period Days, Minimum Age in Days, Maximum Age in Days, Minimum Outstanding Balance, Maximum Outstanding Balance, Item, Vendor, PO Number, PO Release, PO Line, PO Shipment, Destination Type, Sort By
+Operating Unit, Show Transaction Details, Transaction Date From, Transaction Date To, Balancing Segment From, Balancing Segment To, Accrual Account, Aging Period Days, Minimum Age in Days, Maximum Age in Days, Minimum Outstanding Balance, Maximum Outstanding Balance, Item, Vendor, PO Number, PO Release, PO Line, PO Shipment, Destination Type, Sort By
 
 ## Oracle EBS Tables Used
 [per_all_people_f](https://www.enginatics.com/library/?pg=1&find=per_all_people_f), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl), [cst_reconciliation_codes](https://www.enginatics.com/library/?pg=1&find=cst_reconciliation_codes), [cst_ap_po_reconciliation](https://www.enginatics.com/library/?pg=1&find=cst_ap_po_reconciliation), [ap_invoices_all](https://www.enginatics.com/library/?pg=1&find=ap_invoices_all), [ap_invoice_distributions_all](https://www.enginatics.com/library/?pg=1&find=ap_invoice_distributions_all), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters), [rcv_transactions](https://www.enginatics.com/library/?pg=1&find=rcv_transactions), [rcv_shipment_headers](https://www.enginatics.com/library/?pg=1&find=rcv_shipment_headers), [cst_reconciliation_summary](https://www.enginatics.com/library/?pg=1&find=cst_reconciliation_summary), [po_distributions_all](https://www.enginatics.com/library/?pg=1&find=po_distributions_all), [po_line_locations_all](https://www.enginatics.com/library/?pg=1&find=po_line_locations_all), [po_releases_all](https://www.enginatics.com/library/?pg=1&find=po_releases_all), [po_lines_all](https://www.enginatics.com/library/?pg=1&find=po_lines_all), [po_headers_all](https://www.enginatics.com/library/?pg=1&find=po_headers_all), [po_vendors](https://www.enginatics.com/library/?pg=1&find=po_vendors), [po_destination_types_all_v](https://www.enginatics.com/library/?pg=1&find=po_destination_types_all_v), [gl_code_combinations_kfv](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations_kfv), [cst_accrual_accounts](https://www.enginatics.com/library/?pg=1&find=cst_accrual_accounts), [hr_all_organization_units](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units), [hr_organization_information](https://www.enginatics.com/library/?pg=1&find=hr_organization_information), [gl_sets_of_books](https://www.enginatics.com/library/?pg=1&find=gl_sets_of_books), [capr](https://www.enginatics.com/library/?pg=1&find=capr)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related Reports
-[PO Purchase Price Variance](/PO%20Purchase%20Price%20Variance/ "PO Purchase Price Variance Oracle EBS SQL Report"), [PO Cancelled Purchase Orders](/PO%20Cancelled%20Purchase%20Orders/ "PO Cancelled Purchase Orders Oracle EBS SQL Report"), [GL Account Analysis (Drilldown) (with inventory and WIP)](/GL%20Account%20Analysis%20%28Drilldown%29%20%28with%20inventory%20and%20WIP%29/ "GL Account Analysis (Drilldown) (with inventory and WIP) Oracle EBS SQL Report"), [GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report"), [PO Vendor Service Performance Analysis](/PO%20Vendor%20Service%20Performance%20Analysis/ "PO Vendor Service Performance Analysis Oracle EBS SQL Report")
+[PA Missing Timecards](/PA%20Missing%20Timecards/ "PA Missing Timecards Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.

@@ -14,6 +14,7 @@ select
 sd.item,
 sd.item_description,
 sd.user_item_type,
+sd.planner,
 sd.organization_code,
 sd.organization_name,
 &category_set_columns
@@ -36,6 +37,7 @@ from
      msiv.concatenated_segments item,
      msiv.description item_description,
      xxen_util.meaning(msiv.item_type,'ITEM_TYPE',3) user_item_type,
+     msiv.planner_code planner,
      ood.organization_code,
      ood.organization_name,
      msdt.requirement_date,
@@ -126,6 +128,7 @@ from
      msdt.supply_demand_type desc,
      msdt.supply_demand_source_type,
      msdt.quantity,
-     decode(sign(msdt.quantity),-1,-1*msdt.on_hand_quantity,msdt.on_hand_quantity)
+     decode(sign(msdt.quantity),-1,-1*msdt.on_hand_quantity,msdt.on_hand_quantity),
+     identifier
    ) sd2
 ) sd

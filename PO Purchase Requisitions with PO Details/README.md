@@ -1,8 +1,8 @@
 ---
 layout: default
 title: 'PO Purchase Requisitions with PO Details | Oracle EBS SQL Report'
-description: 'Purchase Requisitions Status with PO Details Report – Oracle E-Business Suite SQL report'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Nidec changes, Purchase, Requisitions, Details, mtl_categories_kfv, mtl_item_status_vl, mtl_parameters'
+description: 'Purchase Requisitions Status with PO Details Report. Lists purchase requisition headers, lines and distributions together with the purchase order they…'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Purchase, Requisitions, Details, mtl_categories_kfv, mtl_item_status_vl, mtl_parameters'
 permalink: /PO%20Purchase%20Requisitions%20with%20PO%20Details/
 ---
 
@@ -11,19 +11,23 @@ permalink: /PO%20Purchase%20Requisitions%20with%20PO%20Details/
 **Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/po-purchase-requisitions-with-po-details/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
 
 ## Overview
-Purchase Requisitions Status with PO Details Report
+Purchase Requisitions Status with PO Details Report.
+
+Lists purchase requisition headers, lines and distributions together with the purchase order they were converted into, including requisition and PO approval dates, the Converted To PO indicator and the PO total amount.
+
+Set the Show Invoice and Payment Details parameter to Yes to additionally return the supplier invoices and payments matched to each purchase order shipment: invoice numbers, invoice date, invoiced amount, invoice amount paid, payment status, payment numbers, payment date and payment method. These columns are omitted by default because they add an Accounts Payable lookup to every row.
 
 ## Report Parameters
-Report Level, Ledger, Operating Unit, Requisition Number, Creation Date From, Creation Date To, Need By Date From, Need By Date To, Converted To PO Date From, Converted To PO Date To, Destination Organization, Deliver To Location, Requestor Name, Preparer Name, Created By, Exclude Fully Delivered, Show Cancelled, Category Set 1, Category Set 2, Category Set 3, Show Item DFF Attributes, Show Requisition DFF Attributes, Show PO DFF Attributes, GL_SEGMENT1, GL_SEGMENT1 From, GL_SEGMENT1 To, GL_SEGMENT2, GL_SEGMENT2 From, GL_SEGMENT2 To, GL_SEGMENT3, GL_SEGMENT3 From, GL_SEGMENT3 To, GL_SEGMENT4, GL_SEGMENT4 From, GL_SEGMENT4 To, GL_SEGMENT5, GL_SEGMENT5 From, GL_SEGMENT5 To, GL_SEGMENT6, GL_SEGMENT6 From, GL_SEGMENT6 To, GL_SEGMENT7, GL_SEGMENT7 From, GL_SEGMENT7 To, GL_SEGMENT8, GL_SEGMENT8 From, GL_SEGMENT8 To, GL_SEGMENT9, GL_SEGMENT9 From, GL_SEGMENT9 To, GL_SEGMENT10, GL_SEGMENT10 From, GL_SEGMENT10 To
+Report Level, Ledger, Operating Unit, Requisition Number, Purchase Order, Creation Date From, Creation Date To, Need By Date From, Need By Date To, Converted To PO Date From, Converted To PO Date To, Destination Organization, Deliver To Location, Requestor Name, Preparer Name, Created By, Exclude Fully Delivered, Show Cancelled, Category Set 1, Category Set 2, Category Set 3, Item DFF Display, Requisition DFF Display, PO DFF Display, Show Invoice and Payment Details, GL_SEGMENT1, GL_SEGMENT1 From, GL_SEGMENT1 To, GL_SEGMENT2, GL_SEGMENT2 From, GL_SEGMENT2 To, GL_SEGMENT3, GL_SEGMENT3 From, GL_SEGMENT3 To, GL_SEGMENT4, GL_SEGMENT4 From, GL_SEGMENT4 To, GL_SEGMENT5, GL_SEGMENT5 From, GL_SEGMENT5 To, GL_SEGMENT6, GL_SEGMENT6 From, GL_SEGMENT6 To, GL_SEGMENT7, GL_SEGMENT7 From, GL_SEGMENT7 To, GL_SEGMENT8, GL_SEGMENT8 From, GL_SEGMENT8 To, GL_SEGMENT9, GL_SEGMENT9 From, GL_SEGMENT9 To, GL_SEGMENT10, GL_SEGMENT10 From, GL_SEGMENT10 To
 
 ## Oracle EBS Tables Used
-[mtl_categories_kfv](https://www.enginatics.com/library/?pg=1&find=mtl_categories_kfv), [mtl_item_status_vl](https://www.enginatics.com/library/?pg=1&find=mtl_item_status_vl), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters), [po_requisition_headers_all](https://www.enginatics.com/library/?pg=1&find=po_requisition_headers_all), [po_requisition_lines_all](https://www.enginatics.com/library/?pg=1&find=po_requisition_lines_all), [&req_dist_tables](https://www.enginatics.com/library/?pg=1&find=&req_dist_tables), [gl_ledgers](https://www.enginatics.com/library/?pg=1&find=gl_ledgers), [hr_all_organization_units_vl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_vl), [per_people_x](https://www.enginatics.com/library/?pg=1&find=per_people_x), [hr_locations](https://www.enginatics.com/library/?pg=1&find=hr_locations), [hz_locations](https://www.enginatics.com/library/?pg=1&find=hz_locations), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl), [po_action_history](https://www.enginatics.com/library/?pg=1&find=po_action_history), [rcv_transactions](https://www.enginatics.com/library/?pg=1&find=rcv_transactions), [rcv_shipment_headers](https://www.enginatics.com/library/?pg=1&find=rcv_shipment_headers), [po_headers_all](https://www.enginatics.com/library/?pg=1&find=po_headers_all), [po_lines_all](https://www.enginatics.com/library/?pg=1&find=po_lines_all), [po_line_locations_all](https://www.enginatics.com/library/?pg=1&find=po_line_locations_all), [&po_dist_tables](https://www.enginatics.com/library/?pg=1&find=&po_dist_tables), [po_line_types_v](https://www.enginatics.com/library/?pg=1&find=po_line_types_v), [ap_suppliers](https://www.enginatics.com/library/?pg=1&find=ap_suppliers), [ap_supplier_sites_all](https://www.enginatics.com/library/?pg=1&find=ap_supplier_sites_all), [financials_system_params_all](https://www.enginatics.com/library/?pg=1&find=financials_system_params_all), [req](https://www.enginatics.com/library/?pg=1&find=req), [po](https://www.enginatics.com/library/?pg=1&find=po)
+[mtl_categories_kfv](https://www.enginatics.com/library/?pg=1&find=mtl_categories_kfv), [mtl_item_status_vl](https://www.enginatics.com/library/?pg=1&find=mtl_item_status_vl), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters), [po_requisition_headers_all](https://www.enginatics.com/library/?pg=1&find=po_requisition_headers_all), [po_requisition_lines_all](https://www.enginatics.com/library/?pg=1&find=po_requisition_lines_all), [&req_dist_tables](https://www.enginatics.com/library/?pg=1&find=&req_dist_tables), [gl_ledgers](https://www.enginatics.com/library/?pg=1&find=gl_ledgers), [hr_all_organization_units_vl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_vl), [per_people_x](https://www.enginatics.com/library/?pg=1&find=per_people_x), [hr_locations](https://www.enginatics.com/library/?pg=1&find=hr_locations), [hz_locations](https://www.enginatics.com/library/?pg=1&find=hz_locations), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl), [po_action_history](https://www.enginatics.com/library/?pg=1&find=po_action_history), [fnd_territories_vl](https://www.enginatics.com/library/?pg=1&find=fnd_territories_vl), [po_line_locations_all](https://www.enginatics.com/library/?pg=1&find=po_line_locations_all), [po_lines_all](https://www.enginatics.com/library/?pg=1&find=po_lines_all)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Nidec changes](https://www.enginatics.com/library/?pg=1&category[]=Nidec%20changes)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related Reports
-[GL Account Analysis](/GL%20Account%20Analysis/ "GL Account Analysis Oracle EBS SQL Report"), [CAC Last Standard Item Cost](/CAC%20Last%20Standard%20Item%20Cost/ "CAC Last Standard Item Cost Oracle EBS SQL Report"), [PO Headers and Lines](/PO%20Headers%20and%20Lines/ "PO Headers and Lines Oracle EBS SQL Report")
+[GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report"), [FND Attached Documents](/FND%20Attached%20Documents/ "FND Attached Documents Oracle EBS SQL Report"), [PO Requisition Upload](/PO%20Requisition%20Upload/ "PO Requisition Upload Oracle EBS SQL Report"), [GL Account Analysis (Drilldown) (with inventory and WIP)](/GL%20Account%20Analysis%20%28Drilldown%29%20%28with%20inventory%20and%20WIP%29/ "GL Account Analysis (Drilldown) (with inventory and WIP) Oracle EBS SQL Report"), [CAC Receiving Value (Period-End)](/CAC%20Receiving%20Value%20%28Period-End%29/ "CAC Receiving Value (Period-End) Oracle EBS SQL Report"), [GL Account Analysis](/GL%20Account%20Analysis/ "GL Account Analysis Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
@@ -32,7 +36,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [PO Purchase Requisitions with PO Details 23-Aug-2021 014326.xlsx](https://www.enginatics.com/example/po-purchase-requisitions-with-po-details/) |
+| Excel Example Output | [PO Purchase Requisitions with PO Details 28-Jul-2026 214840.xlsx](https://www.enginatics.com/example/po-purchase-requisitions-with-po-details/) |
 | Blitz Report™ XML Import | [PO_Purchase_Requisitions_with_PO_Details.xml](https://www.enginatics.com/xml/po-purchase-requisitions-with-po-details/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/po-purchase-requisitions-with-po-details/](https://www.enginatics.com/reports/po-purchase-requisitions-with-po-details/) |
 

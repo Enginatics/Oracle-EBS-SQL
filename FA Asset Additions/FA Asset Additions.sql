@@ -21,11 +21,14 @@ select
   x.book,
   x.currency,
   x.balancing_segment,
+  &segment_cols
+  x.location location_name,
   x.asset_type,
   x.asset_account,
   x.cost_center,
   x.reserve_account,
   x.asset_number,
+  x.asset_key,
   x.asset_description,
   x.asset_category,
   x.tag_number,
@@ -49,12 +52,15 @@ from
      gsob.name ledger,
      fbc.book_type_code book,
      gsob.currency_code currency,
+     gcc.code_combination_id,
      fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_bal_seg', 'SQLGL', 'GL#', gcc.chart_of_accounts_id, null, gcc.code_combination_id, 'GL_BALANCING', 'Y', 'VALUE') balancing_segment,
+     flk.concatenated_segments location,
      fl.meaning asset_type,
      decode(fah.asset_type, 'CIP', fcb.cip_cost_acct,fcb.asset_cost_acct) asset_account,
      fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_cost_seg', 'SQLGL', 'GL#', gcc.chart_of_accounts_id, null, gcc.code_combination_id, 'FA_COST_CTR', 'Y', 'VALUE') cost_center,
      decode(fah.asset_type, 'CIP', null,fcb.deprn_reserve_acct) reserve_account,
      fa.asset_number,
+     fakk.concatenated_segments asset_key,
      fa.description asset_description,
      fcbk.concatenated_segments asset_category,
      fa.tag_number,
@@ -78,11 +84,13 @@ from
      fa_system_controls      fsc,
      fa_lookups              fl,
      fa_additions            fa,
+     fa_asset_keywords_kfv   fakk,
      fa_asset_history        fah,
      fa_transaction_headers  fth,
      fa_category_books       fcb,
      fa_categories_b_kfv     fcbk,
      fa_distribution_history fdh,
+     fa_locations_kfv        flk,
      gl_code_combinations    gcc,
      &lp_fa_adjustments      fadj,
      &lp_fa_books            fb,
@@ -102,9 +110,11 @@ from
      ) and
      fdh.distribution_id = fadj.distribution_id and
      gcc.code_combination_id = fdh.code_combination_id and
+     fdh.location_id = flk.location_id(+) and
      fl.lookup_type = 'ASSET TYPE' and
      fah.asset_type =  fl.lookup_code and
      fa.asset_id = fth.asset_id and
+     fa.asset_key_ccid = fakk.code_combination_id (+) and
      fah.asset_id = fth.asset_id and
      fth.date_effective >= fah.date_effective and
      fth.date_effective < nvl(fah.date_ineffective, sysdate) and
@@ -126,13 +136,16 @@ from
      gsob.name,
      fbc.book_type_code,
      fbc.deprn_calendar,
+     gcc.code_combination_id,
      gsob.currency_code,
      fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_bal_seg', 'SQLGL', 'GL#', gcc.chart_of_accounts_id, null, gcc.code_combination_id, 'GL_BALANCING', 'Y', 'VALUE'),
+     flk.concatenated_segments,
      fl.meaning,
      decode(fah.asset_type, 'CIP', fcb.cip_cost_acct,fcb.asset_cost_acct),
      fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_cost_seg', 'SQLGL', 'GL#', gcc.chart_of_accounts_id, null, gcc.code_combination_id, 'FA_COST_CTR', 'Y', 'VALUE'),
      decode(fah.asset_type, 'CIP', null,fcb.deprn_reserve_acct),
      fa.asset_number,
+     fakk.concatenated_segments,
      fa.description,
      fcbk.concatenated_segments,
      fa.tag_number,
@@ -155,12 +168,15 @@ from
      gsob.name ledger,
      fbc.book_type_code book,
      gsob.currency_code currency,
+     gcc.code_combination_id,
      fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_bal_seg', 'SQLGL', 'GL#', gcc.chart_of_accounts_id, null, gcc.code_combination_id, 'GL_BALANCING', 'Y', 'VALUE') balancing_segment,
+     flk.concatenated_segments location,
      fl.meaning asset_type,
      decode(fah.asset_type, 'CIP', fcb.cip_cost_acct, fcb.asset_cost_acct) asset_account,
      fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_cost_seg', 'SQLGL', 'GL#', gcc.chart_of_accounts_id, null, gcc.code_combination_id, 'FA_COST_CTR', 'Y', 'VALUE') cost_center,
      decode(fah.asset_type, 'CIP', null, fcb.deprn_reserve_acct) reserve_account,
      fa.asset_number,
+     fakk.concatenated_segments asset_key,
      fa.description asset_description,
      fcbk.concatenated_segments asset_category,
      fa.tag_number,
@@ -184,11 +200,13 @@ from
      fa_system_controls      fsc,
      fa_lookups              fl,
      fa_additions            fa,
+     fa_asset_keywords_kfv   fakk,
      fa_asset_history        fah,
      fa_category_books       fcb,
      fa_categories_b_kfv     fcbk,
      gl_code_combinations    gcc,
      fa_distribution_history fdh,
+     fa_locations_kfv        flk,
      &lp_fa_books            fb,
      &lp_fa_deprn_summary    fds,
      fnd_currencies          fc,
@@ -207,7 +225,7 @@ from
         &lp_fa_deprn_periods   dp
       where
         2=2 and
-        fth.book_type_code = fbc.book_type_code and 
+        fth.book_type_code = fbc.book_type_code and
         fth.book_type_code in (select fbcs.book_type_code from fa_book_controls_sec fbcs) and
         fth.transaction_type_code in ('ADDITION', 'CIP ADDITION') and
         dp.book_type_code = fth.book_type_code and
@@ -219,9 +237,11 @@ from
      fth.date_effective >= fdh.date_effective and
      fth.date_effective < nvl(fdh.date_ineffective, sysdate) and
      gcc.code_combination_id = fdh.code_combination_id and
+     fdh.location_id = flk.location_id(+) and
      fl.lookup_type = 'ASSET TYPE' and
      fah.asset_type =  fl.lookup_code and
      fa.asset_id = fth.asset_id and
+     fa.asset_key_ccid = fakk.code_combination_id (+) and
      fah.asset_id = fth.asset_id and
      fth.date_effective >= fah.date_effective and
      fth.date_effective < nvl(fah.date_ineffective, sysdate)  and
@@ -236,16 +256,19 @@ from
      fds.book_type_code (+) = fth.book_type_code and
      fds.asset_id (+) = fth.asset_id and
      fds.period_counter (+) = fth.period_counter
-  ) x
-where
+  ) x,
+gl_code_combinations gcc
+where 
+1=1 and
 :p_ledger_name=:p_ledger_name and
-1=1
+x.code_combination_id=gcc.code_combination_id
 order by
   x.company_name,
   x.ledger,
   x.book,
   x.currency,
   x.balancing_segment,
+  x.location,
   x.asset_type,
   x.asset_account,
   x.cost_center,

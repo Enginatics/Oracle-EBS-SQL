@@ -5,7 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: FND SOA Runtime Error
--- Description: None
+-- Description: 
 -- Excel Examle Output: https://www.enginatics.com/example/fnd-soa-runtime-error/
 -- Library Link: https://www.enginatics.com/reports/fnd-soa-runtime-error/
 -- Run Report: https://demo.enginatics.com/

@@ -2,7 +2,7 @@
 layout: default
 title: 'FND Concurrent Requests | Oracle EBS SQL Report'
 description: 'Running, scheduled and historic concurrent requests including phase, status, parameters, schedule, timing, delivery and output option information. For…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, FND, Concurrent, Requests, fnd_profile_option_values'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, FND, Concurrent, Requests, fnd_profile_option_values'
 permalink: /FND%20Concurrent%20Requests/
 ---
 
@@ -23,7 +23,7 @@ Concurrent Program Name, Concurrent Progr. (all languages), Concurrent Program S
 [fnd_profile_option_values](https://www.enginatics.com/library/?pg=1&find=fnd_profile_option_values)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 
 

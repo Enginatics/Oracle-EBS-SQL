@@ -2,7 +2,7 @@
 layout: default
 title: 'PO Invoice Price Variance | Oracle EBS SQL Report'
 description: 'Imported Oracle standard Invoice Price Variance report Application: Purchasing Source: Invoice Price Variance Report Short Name: POXRCIPV'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Concurrent Program, Enginatics, R12 only, Invoice, Price, Variance, gl_periods, ap_invoice_price_var_v, po_distributions_all'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Invoice, Price, Variance, gl_periods, ap_invoice_price_var_v, po_distributions_all'
 permalink: /PO%20Invoice%20Price%20Variance/
 ---
 
@@ -23,10 +23,10 @@ Ledger, Operating Unit, Period From, Period To, Vendor Name
 [gl_periods](https://www.enginatics.com/library/?pg=1&find=gl_periods), [ap_invoice_price_var_v](https://www.enginatics.com/library/?pg=1&find=ap_invoice_price_var_v), [po_distributions_all](https://www.enginatics.com/library/?pg=1&find=po_distributions_all), [gl_code_combinations_kfv](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations_kfv), [po_line_locations_all](https://www.enginatics.com/library/?pg=1&find=po_line_locations_all), [financials_system_params_all](https://www.enginatics.com/library/?pg=1&find=financials_system_params_all), [po_lines_all](https://www.enginatics.com/library/?pg=1&find=po_lines_all), [hr_operating_units](https://www.enginatics.com/library/?pg=1&find=hr_operating_units), [gl_ledgers](https://www.enginatics.com/library/?pg=1&find=gl_ledgers), [fnd_currencies](https://www.enginatics.com/library/?pg=1&find=fnd_currencies), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl), [mtl_categories_kfv](https://www.enginatics.com/library/?pg=1&find=mtl_categories_kfv), [po_headers_all](https://www.enginatics.com/library/?pg=1&find=po_headers_all), [ap_suppliers](https://www.enginatics.com/library/?pg=1&find=ap_suppliers), [po_releases_all](https://www.enginatics.com/library/?pg=1&find=po_releases_all), [hr_locations_all_tl](https://www.enginatics.com/library/?pg=1&find=hr_locations_all_tl), [rcv_transactions](https://www.enginatics.com/library/?pg=1&find=rcv_transactions), [mo_glob_org_access_tmp](https://www.enginatics.com/library/?pg=1&find=mo_glob_org_access_tmp), [dual](https://www.enginatics.com/library/?pg=1&find=dual)
 
 ## Report Categories
-[Concurrent Program](https://www.enginatics.com/library/?pg=1&category[]=Concurrent%20Program), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related Reports
-[GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report"), [GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20%28Distributions%29/ "GL Account Analysis (Distributions) Oracle EBS SQL Report"), [AP Invoices and Lines](/AP%20Invoices%20and%20Lines/ "AP Invoices and Lines Oracle EBS SQL Report")
+[GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report"), [AP Invoices and Lines](/AP%20Invoices%20and%20Lines/ "AP Invoices and Lines Oracle EBS SQL Report"), [PO Purchase Price Variance](/PO%20Purchase%20Price%20Variance/ "PO Purchase Price Variance Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.

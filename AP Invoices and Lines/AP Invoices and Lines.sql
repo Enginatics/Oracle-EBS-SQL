@@ -32,9 +32,15 @@ ap_inv.ledger,
 ap_inv.operating_unit,
 ap_inv.supplier,
 ap_inv.supplier_number,
+ap_inv.supplier_type,
+ap_inv.employee_name,
 ap_inv.supplier_site,
 ap_inv.invoice_num,
 ap_inv.doc_sequence_value document_number,
+ap_inv.document_category,
+ap_inv.exchange_rate,
+ap_inv.exchange_date,
+ap_inv.exchange_rate_type,
 ap_inv.invoice_status,
 ap_inv.accounting_status,
 ap_inv.batch_name,
@@ -42,6 +48,7 @@ ap_inv.invoice_creation_date,
 ap_inv.invoice_received_date,
 ap_inv.invoice_date,
 ap_inv.validation_date,
+ap_inv.validated_by,
 ap_inv.invoice_gl_date,
 ap_inv.due_date,
 ap_inv.days_due,
@@ -49,31 +56,32 @@ ap_inv.invoice_type,
 ap_inv.invoice_source,
 ap_inv.invoice_description,
 ap_inv.has_attachment,
+ap_inv.invoice_po_matched,
 ap_inv.invoice_currency_code,
 ap_inv.payment_currency_code,
 decode(ap_inv.first_invoice,'Y',ap_inv.invoice_amount) invoice_amount,
-decode(ap_inv.first_invoice,'Y',ap_invoices_utility_pkg.get_item_total(ap_inv.invoice_id, ap_inv.org_id)) items_total,
-decode(ap_inv.first_invoice,'Y',ap_invoices_utility_pkg.get_retained_total(ap_inv.invoice_id, ap_inv.org_id)) retainage_total,
-decode(ap_inv.first_invoice,'Y',ap_invoices_utility_pkg.get_prepaid_amount(ap_inv.invoice_id)) prepayments_applied_total,
-decode(ap_inv.first_invoice,'Y',ap_invoices_utility_pkg.get_amount_withheld(ap_inv.invoice_id)) witholding_total,
+ap_inv.items_total_ items_total,
+ap_inv.retainage_total_ retainage_total,
+ap_inv.prepayments_applied_total_ prepayments_applied_total,
+ap_inv.witholding_total_ witholding_total,
 decode(ap_inv.first_invoice,'Y',
-nvl(ap_invoices_utility_pkg.get_item_total(ap_inv.invoice_id, ap_inv.org_id),0)
-+ nvl(ap_invoices_utility_pkg.get_retained_total(ap_inv.invoice_id, ap_inv.org_id),0)
-- nvl(abs(ap_invoices_utility_pkg.get_prepaid_amount(ap_inv.invoice_id)),0)
-- nvl(ap_invoices_utility_pkg.get_amount_withheld(ap_inv.invoice_id),0)
+nvl(ap_inv.items_total_,0)
++ nvl(ap_inv.retainage_total_,0)
+- nvl(abs(ap_inv.prepayments_applied_total_),0)
+- nvl(ap_inv.witholding_total_,0)
 ) invoice_subtotal,
 decode(ap_inv.first_invoice,'Y',ap_inv.total_tax_amount) tax_total,
 decode(ap_inv.first_invoice,'Y',ap_inv.self_assessed_tax_amount) self_assessed_tax_amount,
-decode(ap_inv.first_invoice,'Y',ap_invoices_utility_pkg.get_freight_total(ap_inv.invoice_id, ap_inv.org_id)) freight_total,
-decode(ap_inv.first_invoice,'Y',ap_invoices_utility_pkg.get_misc_total(ap_inv.invoice_id, ap_inv.org_id)) miscellaneous_total,
+ap_inv.freight_total_ freight_total,
+ap_inv.miscellaneous_total_ miscellaneous_total,
 decode(ap_inv.first_invoice,'Y',
-nvl(ap_invoices_utility_pkg.get_item_total(ap_inv.invoice_id, ap_inv.org_id),0)
-+ nvl(ap_invoices_utility_pkg.get_retained_total(ap_inv.invoice_id, ap_inv.org_id),0)
-- nvl(abs(ap_invoices_utility_pkg.get_prepaid_amount(ap_inv.invoice_id)),0)
-- nvl(ap_invoices_utility_pkg.get_amount_withheld(ap_inv.invoice_id),0)
+nvl(ap_inv.items_total_,0)
++ nvl(ap_inv.retainage_total_,0)
+- nvl(abs(ap_inv.prepayments_applied_total_),0)
+- nvl(ap_inv.witholding_total_,0)
 + nvl(ap_inv.total_tax_amount,0)
-+ nvl(ap_invoices_utility_pkg.get_freight_total(ap_inv.invoice_id, ap_inv.org_id),0)
-+ nvl(ap_invoices_utility_pkg.get_misc_total(ap_inv.invoice_id, ap_inv.org_id),0)
++ nvl(ap_inv.freight_total_,0)
++ nvl(ap_inv.miscellaneous_total_,0)
 ) invoice_total,
 decode(ap_inv.first_invoice,'Y',ap_inv.amount_applicable_to_discount) amount_applicable_to_discount,
 decode(ap_inv.first_invoice,'Y',ap_inv.discount_amount_taken) discount_amount_taken,
@@ -109,6 +117,8 @@ decode(ap_inv.first_psched,'Y',ap_inv.discount_amount_remaining) discount_amount
 decode(ap_inv.first_psched,'Y',ap_inv.inv_curr_gross_amount) inv_curr_gross_amount,
 ap_inv.bank_name,
 ap_inv.iban,
+ap_inv.bank_account_num,
+ap_inv.bank_branch_name,
 ap_inv.invoice_terms,
 ap_inv.terms_date,
 ap_inv.invoice_cancelled_date,
@@ -190,10 +200,22 @@ ap_inv.invoice_id
 from
 (
 select
+ap_inv.*,
+decode(ap_inv.first_invoice,'Y',(select ap_invoices_utility_pkg.get_item_total(ap_inv.invoice_id, ap_inv.org_id) from dual)) items_total_,
+decode(ap_inv.first_invoice,'Y',(select ap_invoices_utility_pkg.get_retained_total(ap_inv.invoice_id, ap_inv.org_id) from dual)) retainage_total_,
+decode(ap_inv.first_invoice,'Y',(select ap_invoices_utility_pkg.get_prepaid_amount(ap_inv.invoice_id) from dual)) prepayments_applied_total_,
+decode(ap_inv.first_invoice,'Y',(select ap_invoices_utility_pkg.get_amount_withheld(ap_inv.invoice_id) from dual)) witholding_total_,
+decode(ap_inv.first_invoice,'Y',(select ap_invoices_utility_pkg.get_freight_total(ap_inv.invoice_id, ap_inv.org_id) from dual)) freight_total_,
+decode(ap_inv.first_invoice,'Y',(select ap_invoices_utility_pkg.get_misc_total(ap_inv.invoice_id, ap_inv.org_id) from dual)) miscellaneous_total_
+from
+(
+select
 gl.name ledger,
 haouv.name operating_unit,
 nvl(aps.vendor_name,hp.party_name) supplier,
 nvl(aps.segment1,hp.party_number) supplier_number,
+xxen_util.meaning(aps.vendor_type_lookup_code,'VENDOR TYPE',201) supplier_type,
+(select papf.full_name from per_all_people_f papf where papf.person_id=aps.employee_id and rownum<=1) employee_name,
 nvl(assa.vendor_site_code,hps.party_site_number) supplier_site,
 aia.invoice_num,
 (select xxen_util.ap_invoice_status(aia.invoice_id,aia.invoice_amount,aia.payment_status_flag,aia.invoice_type_lookup_code,aia.validation_request_id) from dual) invoice_status,
@@ -210,7 +232,7 @@ from
 xla.xla_transaction_entities xte,
 xla_events xe
 where
-aia.invoice_id=xte.source_id_int_1 and
+aia.invoice_id=nvl(xte.source_id_int_1,-99) and
 aia.set_of_books_id=xte.ledger_id and
 xte.application_id=200 and
 xte.entity_code='AP_INVOICES' and
@@ -218,12 +240,28 @@ xte.application_id=xe.application_id and
 xte.entity_id=xe.entity_id and
 xe.event_type_code like '%VALIDATED%'
 ) validation_date,
+(
+select
+xxen_util.user_name(max(xe.created_by) keep (dense_rank first order by xe.creation_date))
+from
+xla.xla_transaction_entities xte,
+xla_events xe
+where
+aia.invoice_id=nvl(xte.source_id_int_1,-99) and
+aia.set_of_books_id=xte.ledger_id and
+xte.application_id=200 and
+xte.entity_code='AP_INVOICES' and
+xte.application_id=xe.application_id and
+xte.entity_id=xe.entity_id and
+xe.event_type_code like '%VALIDATED%'
+) validated_by,
 apsa.due_date,
 ceil(sysdate-apsa.due_date) days_due,
 xxen_util.meaning(aia.invoice_type_lookup_code,'INVOICE TYPE',200) invoice_type,
 aia.source invoice_source,
 aia.description invoice_description,
 (select xxen_util.meaning('Y','YES_NO',0) from fnd_attached_documents fad where to_char(aia.invoice_id)=fad.pk1_value and fad.entity_name='AP_INVOICES' and rownum=1) has_attachment,
+(select xxen_util.meaning('Y','YES_NO',0) from ap_invoice_lines_all aila2 where aia.invoice_id=aila2.invoice_id and aila2.po_header_id is not null and rownum=1) invoice_po_matched,
 aia.invoice_currency_code,
 aia.payment_currency_code,
 aia.invoice_amount,
@@ -243,6 +281,10 @@ aia.approved_amount*nvl(aia.exchange_rate,1) approved_amount_functional,
 aia.amount_paid/aia.payment_cross_rate*nvl(aia.exchange_rate,1) amount_paid_functional,
 aia.dispute_reason,
 aia.doc_sequence_value,
+(select fdsc.name from fnd_doc_sequence_categories fdsc where fdsc.code=aia.doc_category_code and rownum<=1) document_category,
+aia.exchange_rate,
+aia.exchange_date,
+(select gdct.user_conversion_type from gl_daily_conversion_types gdct where gdct.conversion_type=aia.exchange_rate_type) exchange_rate_type,
 apsa.payment_priority,
 apsa.payment_num,
 (
@@ -266,7 +308,7 @@ aia.payment_cross_rate_date,
 apsa.discount_date,
 apsa.future_pay_due_date,
 case when assa.hold_all_payments_flag='Y' and aia.cancelled_date is null and aia.payment_status_flag<>'Y' then xxen_util.meaning('Y','YES_NO',0) end supplier_site_payment_hold,
-decode(apsa.hold_flag,'Y',xxen_util.meaning(apsa.hold_flag,'YES_NO',0)) scheduled_payment_hold,
+xxen_util.yes(apsa.hold_flag) scheduled_payment_hold,
 decode(apsa.hold_flag,'Y',apsa.iby_hold_reason) scheduled_payment_hold_reason,
 nvl(xxen_util.meaning(apsa.payment_method_code,'PAYMENT METHOD',200),apsa.payment_method_code) payment_method,
 xxen_util.meaning(aia.payment_status_flag,'INVOICE PAYMENT STATUS',200) invoice_payment_status,
@@ -278,8 +320,10 @@ apsa.second_disc_amt_available,
 apsa.third_disc_amt_available,
 apsa.discount_amount_remaining,
 apsa.inv_curr_gross_amount,
-cbv.bank_name,
+(select cbv.bank_name from ce_banks_v cbv where ieba.bank_id=cbv.bank_party_id) bank_name,
 ieba.masked_iban iban,
+ieba.masked_bank_account_num bank_account_num,
+(select cbbv.bank_branch_name from ce_bank_branches_v cbbv where cbbv.branch_party_id=ieba.branch_id and rownum<=1) bank_branch_name,
 at.name invoice_terms,
 aia.terms_date,
 aia.cancelled_date invoice_cancelled_date,
@@ -288,14 +332,19 @@ xxen_util.user_name(aia.cancelled_by) invoice_cancelled_by,
 aia.temp_cancelled_amount invoice_temp_cancelled_amount,
 xxen_util.meaning(aia.auto_tax_calc_flag,'AP_TAX_CALCULATION_METHOD',200) auto_tax_calculation_method,
 aia.pay_group_lookup_code invoice_pay_group,
-xxen_util.meaning(aia.exclusive_payment_flag,'YES_NO',0) invoice_exclusive_payment_flag,
+xxen_util.yes(aia.exclusive_payment_flag) invoice_exclusive_payment_flag,
 xxen_util.concatenated_segments(aia.accts_pay_code_combination_id) accts_pay_account,
-xxen_util.segments_description(aia.accts_pay_code_combination_id) accts_pay_account_descripton,
+(select xxen_util.segments_description(aia.accts_pay_code_combination_id) from dual) accts_pay_account_descripton,
 aila.line_number,
 xxen_util.meaning(aila.line_type_lookup_code,'INVOICE LINE TYPE',200) line_type,
 xxen_util.meaning(aila.line_source,'LINE SOURCE',200) line_source,
 decode(aila.discarded_flag,'Y','Y') line_discarded,
 replace(aila.description,'~','-') line_description,
+(select msiv.concatenated_segments from mtl_system_items_vl msiv, po_line_locations_all plla where aila.po_line_location_id=plla.line_location_id and msiv.inventory_item_id=aila.inventory_item_id and msiv.organization_id=plla.ship_to_organization_id and rownum<=1) item_code,
+(select msiv.description from mtl_system_items_vl msiv, po_line_locations_all plla where aila.po_line_location_id=plla.line_location_id and msiv.inventory_item_id=aila.inventory_item_id and msiv.organization_id=plla.ship_to_organization_id and rownum<=1) item_description,
+aila.unit_meas_lookup_code line_uom,
+(select mp.organization_code from po_line_locations_all plla, mtl_parameters mp where aila.po_line_location_id=plla.line_location_id and plla.ship_to_organization_id=mp.organization_id and rownum<=1) inventory_organization,
+(select sum(rt.quantity) from rcv_transactions rt where rt.transaction_id=nvl(aida.rcv_transaction_id,aila.rcv_transaction_id) and rt.transaction_type='RECEIVE') received_quantity,
 aila.amount line_amount,
 nvl(aila.base_amount,aila.amount) line_amount_functional,
 aila.accounting_date line_accounting_date,
@@ -326,8 +375,8 @@ aida.set_of_books_id dist_ledger_id,
 aida.accounting_event_id dist_accounting_event_id,
 xxen_util.concatenated_segments(aida.dist_code_combination_id) expense_account,
 xxen_util.concatenated_segments(aida.price_var_code_combination_id) price_variance_account,
-xxen_util.segments_description(aida.dist_code_combination_id) expense_account_descripton,
-xxen_util.segments_description(aida.price_var_code_combination_id) price_variance_account_desc,
+(select xxen_util.segments_description(aida.dist_code_combination_id) from dual) expense_account_descripton,
+(select xxen_util.segments_description(aida.price_var_code_combination_id) from dual) price_variance_account_desc,
 xxen_util.meaning(aida.dist_match_type,'MATCH_STATUS',200) dist_match_type,
 decode(aida.match_status_flag,'A','Validated','T','Tested','S','Stopped','Never Validated') dist_match_status,
 (select pha.segment1 from po_headers_all pha where nvl((select pda.po_header_id from po_distributions_all pda where nvl(aida.po_distribution_id,aila.po_distribution_id)=pda.po_distribution_id),aia.quick_po_header_id)=pha.po_header_id) po_number,
@@ -370,27 +419,27 @@ pt.description task_description,
 pt.service_type_code,
 pt.start_date task_start_date,
 pt.completion_date task_completion_date,
-arpa.recurring_pay_num    recurring_pmt_number,
-arpa.rec_pay_period_type  recurring_pmt_period_type,
-arpa.num_of_periods       recurring_number_of_periods,
-arpa.description          recurring_pmt_description,
-aps.num_1099             supplier_taxpayer_id,
+arpa.recurring_pay_num recurring_pmt_number,
+arpa.rec_pay_period_type recurring_pmt_period_type,
+arpa.num_of_periods recurring_number_of_periods,
+arpa.description recurring_pmt_description,
+aps.num_1099 supplier_taxpayer_id,
 aps.vat_registration_num supplier_tax_registration,
-aps.end_date_active      supplier_inactive_on,
+aps.end_date_active supplier_inactive_on,
 aps.customer_num,
-xxen_util.meaning(aps.one_time_flag,'YES_NO',0) one_time_supplier,
+xxen_util.yes(aps.one_time_flag) one_time_supplier,
 aps.credit_status_lookup_code supplier_credit_status,
 aps.credit_limit,
 aps.withholding_status_lookup_code supplier_withholding_status,
 aps.withholding_start_date,
 aps.vat_code supplier_vat_code,
 assa.vendor_site_code_alt   supplier_site_alt,
-xxen_util.meaning(assa.purchasing_site_flag,'YES_NO',0)    purchasing_site,
-xxen_util.meaning(assa.rfq_only_site_flag,'YES_NO',0)      rfq_site,
-xxen_util.meaning(assa.pay_site_flag,'YES_NO',0)           pay_site,
-xxen_util.meaning(assa.tax_reporting_site_flag,'YES_NO',0) tax_reporting_site,
-xxen_util.meaning(assa.pcard_site_flag,'YES_NO',0)         p_card_site,
-xxen_util.meaning(assa.attention_ar_flag,'YES_NO',0)       attention_ar,
+xxen_util.yes(assa.purchasing_site_flag) purchasing_site,
+xxen_util.yes(assa.rfq_only_site_flag) rfq_site,
+xxen_util.yes(assa.pay_site_flag) pay_site,
+xxen_util.yes(assa.tax_reporting_site_flag) tax_reporting_site,
+xxen_util.yes(assa.pcard_site_flag) p_card_site,
+xxen_util.yes(assa.attention_ar_flag) attention_ar,
 nvl(assa.address_line1,hl.address1) address_line1,
 nvl(assa.address_line2,hl.address2) address_line2,
 nvl(assa.address_line3,hl.address3) address_line3,
@@ -436,7 +485,6 @@ ap_invoices_all aia,
 ap_batches_all aba,
 ap_payment_schedules_all apsa,
 iby_ext_bank_accounts ieba,
-ce_banks_v cbv,
 ap_suppliers aps,
 ap_supplier_sites_all assa,
 hz_parties hp,
@@ -459,7 +507,6 @@ aida.expenditure_organization_id=haouv3.organization_id(+) and
 aia.batch_id=aba.batch_id(+) and
 aia.invoice_id=apsa.invoice_id and
 apsa.external_bank_account_id=ieba.ext_bank_account_id(+) and
-ieba.bank_id=cbv.bank_party_id(+) and
 aia.vendor_id=aps.vendor_id(+) and
 aia.vendor_site_id=assa.vendor_site_id(+) and
 aia.party_id=hp.party_id(+) and
@@ -488,6 +535,7 @@ nvl(aida.distribution_line_number,aida2.distribution_line_number)=aida2.distribu
 aida2.dist_code_combination_id=gcc.code_combination_id
 )
 )
+) ap_inv
 ) ap_inv,
 (
 select distinct
@@ -598,6 +646,7 @@ select distinct
 &l_ap_sla_table
 gl_code_combinations_kfv gcck
 where
+3=3 and
 ap_inv.invoice_id=ap_holds.invoice_id(+) and
 decode(:p_show_attachments,'Y','AP_INVOICES',null)=attchmt.entity_name(+) and
 decode(:p_show_attachments,'Y',to_char(ap_inv.invoice_id),null)=attchmt.entity_id(+) and

@@ -2,7 +2,7 @@
 layout: default
 title: 'CAC Interface Error Summary | Oracle EBS SQL Report'
 description: 'Use this report to view your transactions that are pending or have errors in the Oracle interface tables. Across both Financial and Supply Chain…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Cost Accounting - Other, Enginatics, CAC, Interface, Error, Summary, gl_ledgers, hr_organization_information, hr_all_organization_units_vl'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, CAC, Interface, Error, Summary, gl_ledgers, hr_organization_information, hr_all_organization_units_vl'
 permalink: /CAC%20Interface%20Error%20Summary/
 ---
 
@@ -95,7 +95,7 @@ Functional Area, Period Year, Period Name, Organization Code, Operating Unit, Le
 [gl_ledgers](https://www.enginatics.com/library/?pg=1&find=gl_ledgers), [hr_organization_information](https://www.enginatics.com/library/?pg=1&find=hr_organization_information), [hr_all_organization_units_vl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_vl), [financials_system_params_all](https://www.enginatics.com/library/?pg=1&find=financials_system_params_all), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters), [mo_glob_org_access_tmp](https://www.enginatics.com/library/?pg=1&find=mo_glob_org_access_tmp), [dual](https://www.enginatics.com/library/?pg=1&find=dual), [gl_access_set_norm_assign](https://www.enginatics.com/library/?pg=1&find=gl_access_set_norm_assign), [gl_ledger_set_norm_assign_v](https://www.enginatics.com/library/?pg=1&find=gl_ledger_set_norm_assign_v), [ap_invoices_interface](https://www.enginatics.com/library/?pg=1&find=ap_invoices_interface), [gl_periods](https://www.enginatics.com/library/?pg=1&find=gl_periods), [fnd_application_vl](https://www.enginatics.com/library/?pg=1&find=fnd_application_vl), [fnd_product_installations](https://www.enginatics.com/library/?pg=1&find=fnd_product_installations), [gl_ou](https://www.enginatics.com/library/?pg=1&find=gl_ou), [po_vendors](https://www.enginatics.com/library/?pg=1&find=po_vendors), [fnd_lookups](https://www.enginatics.com/library/?pg=1&find=fnd_lookups), [mfg_lookups](https://www.enginatics.com/library/?pg=1&find=mfg_lookups), [ap_interface_rejections](https://www.enginatics.com/library/?pg=1&find=ap_interface_rejections), [ap_invoice_lines_interface](https://www.enginatics.com/library/?pg=1&find=ap_invoice_lines_interface), [ra_interface_lines_all](https://www.enginatics.com/library/?pg=1&find=ra_interface_lines_all), [ra_interface_errors_all](https://www.enginatics.com/library/?pg=1&find=ra_interface_errors_all), [hz_cust_accounts_all](https://www.enginatics.com/library/?pg=1&find=hz_cust_accounts_all), [hz_parties](https://www.enginatics.com/library/?pg=1&find=hz_parties)
 
 ## Report Categories
-[Cost Accounting - Other](https://www.enginatics.com/library/?pg=1&category[]=Cost%20Accounting%20-%20Other), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 
 

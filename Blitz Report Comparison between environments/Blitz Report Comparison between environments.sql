@@ -35,7 +35,8 @@ case when xrv.report_name<>xrv2.report_name then 'Y' end name_diff,
 case when xrv.guid<>xrv2.guid then 'Y' end guid_diff,
 case when xrv.sql_text_short<>xrv2.sql_text_short or xrv.sql_length<>xrv2.sql_length then 'Y' end sql_diff,
 case when xrv.description<>xrv2.description then 'Y' end descr_diff,
-case when xrv.report_name is not null and xrv2.report_name is not null and nvl(xrv.category,'x')<>nvl(xrv2.category,'x') then 'Y' end category_diff,
+case when xrv.report_name is not null and xrv2.report_name is not null and nvl(trim(replace(xrv.category,', R12 only')),'x')<>nvl(xrv2.category,'x') then 'Y' end category_diff,
+case when xrv.parameter_count<>xrv2.parameter_count then 'Y' end parameter_count_diff,
 xrv.type_dsp type,
 xrv.category,
 xrv2.type_dsp type_remote,
@@ -44,8 +45,8 @@ xrv.report_name,
 xrv2.report_name report_name_remote,
 xrv.description,
 xrv2.description description_remote,
-(select count(*) from xxen_report_parameters xrp where xrv.report_id=xrp.report_id) parameter_count,
-(select count(*) from xxen_report_parameters@&database_link xrp where xrv2.report_id=xrp.report_id) parameter_count_remote,
+xrv.parameter_count,
+xrv2.parameter_count parameter_count_remote,
 xxen_util.user_name(xrv.last_updated_by) last_updated_by,
 xrv.last_update_date,
 xxen_util.user_name@&database_link(xrv2.last_updated_by) last_updated_by_remote,
@@ -57,9 +58,9 @@ xrv2.creation_date creation_date_remote,
 xrv.sql_text_short sql_text,
 xrv2.sql_text_short sql_text_remote
 from
-(select xrv.*, dbms_lob.substr(xrv.sql_text,4000,1) sql_text_short from xxen_reports_v xrv where 1=1) xrv
+(select xrv.*, dbms_lob.substr(xrv.sql_text,4000,1) sql_text_short, (select count(*) from xxen_report_parameters_v xrpv where xrv.report_id=xrpv.report_id and xrpv.parameter_name not like 'GL_SEGMENT%') parameter_count from xxen_reports_v xrv where 1=1) xrv
 full join
-(select xrv.* from xxen_reports_v_@&database_link xrv where 1=1) xrv2
+(select xrv.*, (select count(*) from xxen_report_parameters_v@&database_link xrpv where xrv.report_id=xrpv.report_id and xrpv.parameter_name not like 'GL_SEGMENT%') parameter_count from xxen_reports_v_@&database_link xrv where 1=1) xrv2
 on
 xrv.guid=xrv2.guid or
 xrv.report_name=xrv2.report_name

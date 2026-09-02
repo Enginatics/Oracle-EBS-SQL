@@ -5,7 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: ALR Alerts
--- Description: None
+-- Description: 
 -- Excel Examle Output: https://www.enginatics.com/example/alr-alerts/
 -- Library Link: https://www.enginatics.com/reports/alr-alerts/
 -- Run Report: https://demo.enginatics.com/

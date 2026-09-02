@@ -68,7 +68,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/cac-opm-costed-formula/) |
+| Excel Example Output | [](https://www.enginatics.com/example/cac-opm-costed-formula/) |
 | Blitz Report™ XML Import | [CAC_OPM_Costed_Formula.xml](https://www.enginatics.com/xml/cac-opm-costed-formula/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/cac-opm-costed-formula/](https://www.enginatics.com/reports/cac-opm-costed-formula/) |
 

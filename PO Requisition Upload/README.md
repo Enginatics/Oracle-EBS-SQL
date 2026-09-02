@@ -2,7 +2,7 @@
 layout: default
 title: 'PO Requisition Upload | Oracle EBS SQL Report'
 description: 'Upload to create and update requisitions. In the generated Excel, the user can amend the following columns for an existing requisition. - Header…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Upload, Requisition, po_requisition_headers_all, po_requisition_lines_all, po_req_distributions_all'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, Requisition, po_requisition_headers_all, po_requisition_lines_all, po_req_distributions_all'
 permalink: /PO%20Requisition%20Upload/
 ---
 
@@ -48,7 +48,7 @@ Operating Unit, Upload Mode, Initiate Approval on Import, Requisition Type, Grou
 [po_requisition_headers_all](https://www.enginatics.com/library/?pg=1&find=po_requisition_headers_all), [po_requisition_lines_all](https://www.enginatics.com/library/?pg=1&find=po_requisition_lines_all), [po_req_distributions_all](https://www.enginatics.com/library/?pg=1&find=po_req_distributions_all), [mtl_categories_v](https://www.enginatics.com/library/?pg=1&find=mtl_categories_v), [gl_code_combinations](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations), [pa_projects_all](https://www.enginatics.com/library/?pg=1&find=pa_projects_all), [pa_tasks_v](https://www.enginatics.com/library/?pg=1&find=pa_tasks_v), [hr_all_organization_units_vl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_vl), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl), [per_all_people_f](https://www.enginatics.com/library/?pg=1&find=per_all_people_f), [po_lookup_codes](https://www.enginatics.com/library/?pg=1&find=po_lookup_codes), [hr_locations_all_tl](https://www.enginatics.com/library/?pg=1&find=hr_locations_all_tl), [po_line_types_tl](https://www.enginatics.com/library/?pg=1&find=po_line_types_tl), [po_document_types_all_tl](https://www.enginatics.com/library/?pg=1&find=po_document_types_all_tl), [po_document_types_all_b](https://www.enginatics.com/library/?pg=1&find=po_document_types_all_b), [po_distributions_all](https://www.enginatics.com/library/?pg=1&find=po_distributions_all)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only), [Upload](https://www.enginatics.com/library/?pg=1&category[]=Upload)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Upload](https://www.enginatics.com/library/?pg=1&category[]=Upload)
 
 
 

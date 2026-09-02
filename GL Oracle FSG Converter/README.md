@@ -2,7 +2,7 @@
 layout: default
 title: 'GL Oracle FSG Converter | Oracle EBS SQL Report'
 description: 'This report is used by the GL Financial Statement and Drilldown report, to migrate financial statement reports from Oracle FSG. The GL Oracle FSG…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Oracle, FSG, Converter, rg_report_calculations, rg_reports_v, rg_report_axes_v'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Oracle, FSG, Converter, with'
 permalink: /GL%20Oracle%20FSG%20Converter/
 ---
 
@@ -21,13 +21,13 @@ For a quick demonstration of GL Financial Statement and Drilldown (FSG), refer t
 <a href="https://youtu.be/dsRWXT2bem8?si=bA8cAxuXjfrMI-SI" rel="nofollow" target="_blank">https://youtu.be/dsRWXT2bem8?si=bA8cAxuXjfrMI-SI</a>
 
 ## Report Parameters
-Report Name, Ledger
+Ledger, Report Name
 
 ## Oracle EBS Tables Used
-[rg_report_calculations](https://www.enginatics.com/library/?pg=1&find=rg_report_calculations), [rg_reports_v](https://www.enginatics.com/library/?pg=1&find=rg_reports_v), [rg_report_axes_v](https://www.enginatics.com/library/?pg=1&find=rg_report_axes_v), [rg_report_axis_contents](https://www.enginatics.com/library/?pg=1&find=rg_report_axis_contents), [rg_report_axis_sets_v](https://www.enginatics.com/library/?pg=1&find=rg_report_axis_sets_v), [merged_data](https://www.enginatics.com/library/?pg=1&find=merged_data)
+[with](https://www.enginatics.com/library/?pg=1&find=with)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 
 

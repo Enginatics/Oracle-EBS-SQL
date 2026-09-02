@@ -19,6 +19,7 @@ x.*,
 case when x.entity_code='TRANSACTIONS' and rcta.interface_header_context in ('ORDER ENTRY','INTERCOMPANY') then rcta.interface_header_attribute1 end sales_order,
 (select name from ra_rules rr where rcta.invoicing_rule_id=rule_id) invoice_rule,
 (select rr.name from ra_customer_trx_lines_all rctla, ra_rules rr where rcta.customer_trx_id=rctla.customer_trx_id and rctla.line_type='LINE' and rctla.accounting_rule_id=rr.rule_id and rownum=1) accounting_rule,
+case when x.application_id=222 then (select rctla.translated_description from xla_distribution_links xdl, ra_cust_trx_line_gl_dist_all rctlgda, ra_customer_trx_lines_all rctla where xdl.application_id=222 and x.ae_header_id=xdl.ae_header_id and x.ae_line_num=xdl.ae_line_num and case when xdl.source_distribution_type='RA_CUST_TRX_LINE_GL_DIST_ALL' then xdl.source_distribution_id_num_1 when xdl.applied_to_distribution_type='RA_CUST_TRX_LINE_GL_DIST_ALL' then xdl.applied_to_dist_id_num_1 end=rctlgda.cust_trx_line_gl_dist_id and rctlgda.customer_trx_line_id=rctla.customer_trx_line_id and rownum=1) end translated_description,
 coalesce(x.project_,nvl(x.project_,case when x.entity_code='TRANSACTIONS' and rcta.interface_header_context='PROJECTS INVOICES' then rcta.interface_header_attribute1 end)) project_,
 coalesce(x.vendor_or_customer,(select hp.party_name from hz_cust_accounts hca, hz_parties hp where coalesce(rcta.bill_to_customer_id,x.acra_pay_from_customer,x.paa_customer_id)=hca.cust_account_id and hca.party_id=hp.party_id)) vendor_or_customer_
 from

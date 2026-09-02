@@ -2,7 +2,7 @@
 layout: default
 title: 'ONT Orders and Lines | Oracle EBS SQL Report'
 description: 'Detail Sales Order or Quote header report with line item details including status, cost, project and shipping information.'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Nidec changes, R12 only, ONT, Orders, Lines, dual, oe_order_sources, po_requisition_headers_all'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, ONT, Orders, Lines, dual, oe_order_sources, po_requisition_headers_all'
 permalink: /ONT%20Orders%20and%20Lines/
 ---
 
@@ -14,13 +14,13 @@ permalink: /ONT%20Orders%20and%20Lines/
 Detail Sales Order or Quote header report with line item details including status, cost, project and shipping information.
 
 ## Report Parameters
-Operating Unit, Order Number, Quote Number, Customer Name, Account Number, Type, Order Category, Line Category, Order Type, Line Type, Item Type, Open only, Exclude Cancelled, Order Status, Line Status, Item, Category Set 1, Category Set 2, Category Set 3, Shippable Flag, Order Fully/Partially Shipped, Project, Task, Schedule Ship Date From, Schedule Ship Date To, Ship To Country, Bill To Country, Ship From Warehouse, Request Date From, Request Date To, Creation Date From, Creation Date To, Line Creation Date From, Line Creation Date To, Cancelled Date From, Cancelled Date To, Invoice GL Date From, Invoice GL Date To, Intrastat Eligible Only, DIFOT Eligible Only, Show DFF Attributes
+Operating Unit, Order Number, Quote Number, Customer Name, Account Number, Type, Order Category, Line Category, Order Type, Line Type, Item Type, Open only, Exclude Cancelled, Order Status, Line Status, Exclude Line Status, Item, Category Set 1, Category Set 2, Category Set 3, Shippable Flag, Order Fully/Partially Shipped, Project, Task, Schedule Ship Date From, Schedule Ship Date To, Ship To Country, Bill To Country, Ship From Warehouse, Request Date From, Request Date To, Creation Date From, Creation Date To, Line Creation Date From, Line Creation Date To, Cancelled Date From, Cancelled Date To, Invoice GL Date From, Invoice GL Date To, Intrastat Eligible Only, DIFOT Eligible Only, DFF Display
 
 ## Oracle EBS Tables Used
 [dual](https://www.enginatics.com/library/?pg=1&find=dual), [oe_order_sources](https://www.enginatics.com/library/?pg=1&find=oe_order_sources), [po_requisition_headers_all](https://www.enginatics.com/library/?pg=1&find=po_requisition_headers_all), [oe_order_headers_all](https://www.enginatics.com/library/?pg=1&find=oe_order_headers_all), [aso_quote_headers_all](https://www.enginatics.com/library/?pg=1&find=aso_quote_headers_all), [cs_incidents_all_b](https://www.enginatics.com/library/?pg=1&find=cs_incidents_all_b), [qp_list_headers_vl](https://www.enginatics.com/library/?pg=1&find=qp_list_headers_vl), [oe_price_adjustments](https://www.enginatics.com/library/?pg=1&find=oe_price_adjustments), [ra_terms_vl](https://www.enginatics.com/library/?pg=1&find=ra_terms_vl), [ra_customer_trx_lines_all](https://www.enginatics.com/library/?pg=1&find=ra_customer_trx_lines_all), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Nidec changes](https://www.enginatics.com/library/?pg=1&category[]=Nidec%20changes), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 
 

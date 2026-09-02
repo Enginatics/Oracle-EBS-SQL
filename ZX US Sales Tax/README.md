@@ -2,7 +2,7 @@
 layout: default
 title: 'ZX US Sales Tax | Oracle EBS SQL Report'
 description: 'Imported from Concurrent Program Description: Sales Tax Report for use in U.S Application: E-Business Tax Source: U.S. Sales Tax Report Short Name: ZXXSTR'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Sales, Tax, ra_customer_trx_all, zx_lines_det_factors, ra_cust_trx_line_gl_dist_all'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Sales, Tax, ra_customer_trx_all, zx_lines_det_factors, ra_cust_trx_line_gl_dist_all'
 permalink: /ZX%20US%20Sales%20Tax/
 ---
 
@@ -24,7 +24,7 @@ Reporting Level, Reporting Context, Transaction Number, Transaction Date Low, Tr
 [ra_customer_trx_all](https://www.enginatics.com/library/?pg=1&find=ra_customer_trx_all), [zx_lines_det_factors](https://www.enginatics.com/library/?pg=1&find=zx_lines_det_factors), [ra_cust_trx_line_gl_dist_all](https://www.enginatics.com/library/?pg=1&find=ra_cust_trx_line_gl_dist_all), [ra_cust_trx_types_all](https://www.enginatics.com/library/?pg=1&find=ra_cust_trx_types_all), [hz_cust_site_uses_all](https://www.enginatics.com/library/?pg=1&find=hz_cust_site_uses_all), [hz_cust_acct_sites_all](https://www.enginatics.com/library/?pg=1&find=hz_cust_acct_sites_all), [hz_party_sites](https://www.enginatics.com/library/?pg=1&find=hz_party_sites), [hz_locations](https://www.enginatics.com/library/?pg=1&find=hz_locations), [hz_loc_assignments_obs](https://www.enginatics.com/library/?pg=1&find=hz_loc_assignments_obs), [fnd_currencies](https://www.enginatics.com/library/?pg=1&find=fnd_currencies), [hz_cust_accounts](https://www.enginatics.com/library/?pg=1&find=hz_cust_accounts), [hz_parties](https://www.enginatics.com/library/?pg=1&find=hz_parties), [zx_rates_vl](https://www.enginatics.com/library/?pg=1&find=zx_rates_vl), [&lp_table_parent_deposit_type](https://www.enginatics.com/library/?pg=1&find=&lp_table_parent_deposit_type), [ra_customer_trx_lines_all](https://www.enginatics.com/library/?pg=1&find=ra_customer_trx_lines_all), [gl_code_combinations_kfv](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations_kfv), [zx_taxes_b](https://www.enginatics.com/library/?pg=1&find=zx_taxes_b)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 
 
@@ -35,7 +35,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/zx-us-sales-tax/) |
+| Excel Example Output | [](https://www.enginatics.com/example/zx-us-sales-tax/) |
 | Blitz Report™ XML Import | [ZX_US_Sales_Tax.xml](https://www.enginatics.com/xml/zx-us-sales-tax/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/zx-us-sales-tax/](https://www.enginatics.com/reports/zx-us-sales-tax/) |
 

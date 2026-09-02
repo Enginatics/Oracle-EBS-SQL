@@ -63,7 +63,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/cac-manufacturing-variance/) |
+| Excel Example Output | [](https://www.enginatics.com/example/cac-manufacturing-variance/) |
 | Blitz Report™ XML Import | [CAC_Manufacturing_Variance.xml](https://www.enginatics.com/xml/cac-manufacturing-variance/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/cac-manufacturing-variance/](https://www.enginatics.com/reports/cac-manufacturing-variance/) |
 

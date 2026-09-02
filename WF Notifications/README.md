@@ -2,7 +2,7 @@
 layout: default
 title: 'WF Notifications | Oracle EBS SQL Report'
 description: ' – Oracle E-Business Suite SQL report'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Notifications, wf_notifications, wf_item_types_vl, wf_lookups'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Notifications, wf_notifications, wf_item_types_vl, wf_lookups'
 permalink: /WF%20Notifications/
 ---
 
@@ -11,7 +11,7 @@ permalink: /WF%20Notifications/
 **Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/wf-notifications/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
 
 ## Overview
-None
+
 
 ## Report Parameters
 Notification Status, Begin Date From, Begin Date To
@@ -20,7 +20,7 @@ Notification Status, Begin Date From, Begin Date To
 [wf_notifications](https://www.enginatics.com/library/?pg=1&find=wf_notifications), [wf_item_types_vl](https://www.enginatics.com/library/?pg=1&find=wf_item_types_vl), [wf_lookups](https://www.enginatics.com/library/?pg=1&find=wf_lookups), [wf_item_activity_statuses](https://www.enginatics.com/library/?pg=1&find=wf_item_activity_statuses)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related Reports
 [WF Activity Status Summary](/WF%20Activity%20Status%20Summary/ "WF Activity Status Summary Oracle EBS SQL Report"), [OKL Termination Quotes](/OKL%20Termination%20Quotes/ "OKL Termination Quotes Oracle EBS SQL Report"), [ONT Transaction Types and Line WF Processes](/ONT%20Transaction%20Types%20and%20Line%20WF%20Processes/ "ONT Transaction Types and Line WF Processes Oracle EBS SQL Report")
@@ -32,7 +32,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/wf-notifications/) |
+| Excel Example Output | [](https://www.enginatics.com/example/wf-notifications/) |
 | Blitz Report™ XML Import | [WF_Notifications.xml](https://www.enginatics.com/xml/wf-notifications/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/wf-notifications/](https://www.enginatics.com/reports/wf-notifications/) |
 

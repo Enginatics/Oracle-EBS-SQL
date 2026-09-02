@@ -2,7 +2,7 @@
 layout: default
 title: 'CSI Customer Products Summary | Oracle EBS SQL Report'
 description: 'Imported Oracle standard Installed Base Customer Products Summary report Source: CSI: Customer Products Summary Report (XML) Short Name: CSICPREPXML DB…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, BI Publisher, Enginatics, CSI, Customer, Products, Summary, csi_item_instances, csi_instance_statuses, mtl_system_items_vl'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, CSI, Customer, Products, Summary, csi_item_instances, csi_instance_statuses, mtl_system_items_vl'
 permalink: /CSI%20Customer%20Products%20Summary/
 ---
 
@@ -23,10 +23,10 @@ Account Number, Customer Name, Instance Number, Item, Status, City, Country, Cre
 [csi_item_instances](https://www.enginatics.com/library/?pg=1&find=csi_item_instances), [csi_instance_statuses](https://www.enginatics.com/library/?pg=1&find=csi_instance_statuses), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl), [hz_cust_accounts](https://www.enginatics.com/library/?pg=1&find=hz_cust_accounts), [hz_parties](https://www.enginatics.com/library/?pg=1&find=hz_parties), [hz_party_sites](https://www.enginatics.com/library/?pg=1&find=hz_party_sites), [hz_locations](https://www.enginatics.com/library/?pg=1&find=hz_locations), [fnd_territories_vl](https://www.enginatics.com/library/?pg=1&find=fnd_territories_vl), [csi_systems_v](https://www.enginatics.com/library/?pg=1&find=csi_systems_v), [oe_order_lines_all](https://www.enginatics.com/library/?pg=1&find=oe_order_lines_all), [oe_order_headers_all](https://www.enginatics.com/library/?pg=1&find=oe_order_headers_all)
 
 ## Report Categories
-[BI Publisher](https://www.enginatics.com/library/?pg=1&category[]=BI%20Publisher), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related Reports
-[OKL Termination Quotes](/OKL%20Termination%20Quotes/ "OKL Termination Quotes Oracle EBS SQL Report")
+[OKL Termination Quotes](/OKL%20Termination%20Quotes/ "OKL Termination Quotes Oracle EBS SQL Report"), [OKS Service Contract Line Upload](/OKS%20Service%20Contract%20Line%20Upload/ "OKS Service Contract Line Upload Oracle EBS SQL Report"), [CSI Installed Base Summary by Organization](/CSI%20Installed%20Base%20Summary%20by%20Organization/ "CSI Installed Base Summary by Organization Oracle EBS SQL Report"), [WSH Shipping/Delivery Transactions](/WSH%20Shipping-Delivery%20Transactions/ "WSH Shipping/Delivery Transactions Oracle EBS SQL Report"), [PPF_WP3_OM_DETAILS](/PPF_WP3_OM_DETAILS/ "PPF_WP3_OM_DETAILS Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.

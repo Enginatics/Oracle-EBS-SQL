@@ -11,10 +11,10 @@ permalink: /INV%20Transaction%20Types/
 **Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/inv-transaction-types/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
 
 ## Overview
-None
+
 
 ## Report Parameters
-Source, Transaction Source Type, Show DFF Attributes
+Source, Transaction Source Type, DFF Display
 
 ## Oracle EBS Tables Used
 [mtl_transaction_types](https://www.enginatics.com/library/?pg=1&find=mtl_transaction_types), [mtl_txn_source_types](https://www.enginatics.com/library/?pg=1&find=mtl_txn_source_types)

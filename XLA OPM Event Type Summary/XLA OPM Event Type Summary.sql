@@ -5,7 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: XLA OPM Event Type Summary
--- Description: None
+-- Description: 
 -- Excel Examle Output: https://www.enginatics.com/example/xla-opm-event-type-summary/
 -- Library Link: https://www.enginatics.com/reports/xla-opm-event-type-summary/
 -- Run Report: https://demo.enginatics.com/

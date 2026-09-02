@@ -2,7 +2,7 @@
 layout: default
 title: 'FA Asset Summary (Germany) | Oracle EBS SQL Report'
 description: 'Description: Asset Summary Report (Germany) Application: Assets This Blitz Report has been extended to allow it to be run across multiple Ledgers and/or…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Asset, Summary, (Germany), fa_deprn_periods, fa_asset_history, gl_code_combinations'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Asset, Summary, (Germany), fa_deprn_periods, fa_asset_history, gl_code_combinations'
 permalink: /FA%20Asset%20Summary%20%28Germany%29/
 ---
 
@@ -27,7 +27,7 @@ Ledger, Book Class, Book, From Period, To Period, From Category, To Category, Fr
 [fa_deprn_periods](https://www.enginatics.com/library/?pg=1&find=fa_deprn_periods), [fa_asset_history](https://www.enginatics.com/library/?pg=1&find=fa_asset_history), [gl_code_combinations](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations), [fa_categories_b](https://www.enginatics.com/library/?pg=1&find=fa_categories_b), [fa_category_books](https://www.enginatics.com/library/?pg=1&find=fa_category_books), [fa_additions](https://www.enginatics.com/library/?pg=1&find=fa_additions), [fa_asset_keywords_kfv](https://www.enginatics.com/library/?pg=1&find=fa_asset_keywords_kfv), [fa_book_controls_sec](https://www.enginatics.com/library/?pg=1&find=fa_book_controls_sec), [fa_books](https://www.enginatics.com/library/?pg=1&find=fa_books), [fa_system_controls](https://www.enginatics.com/library/?pg=1&find=fa_system_controls), [gl_sets_of_books](https://www.enginatics.com/library/?pg=1&find=gl_sets_of_books), [fa_lookups](https://www.enginatics.com/library/?pg=1&find=fa_lookups), [fa_summary](https://www.enginatics.com/library/?pg=1&find=fa_summary)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 
 

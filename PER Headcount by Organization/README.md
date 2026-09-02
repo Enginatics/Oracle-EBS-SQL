@@ -32,7 +32,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/per-headcount-by-organization/) |
+| Excel Example Output | [](https://www.enginatics.com/example/per-headcount-by-organization/) |
 | Blitz Report™ XML Import | [PER_Headcount_by_Organization.xml](https://www.enginatics.com/xml/per-headcount-by-organization/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/per-headcount-by-organization/](https://www.enginatics.com/reports/per-headcount-by-organization/) |
 

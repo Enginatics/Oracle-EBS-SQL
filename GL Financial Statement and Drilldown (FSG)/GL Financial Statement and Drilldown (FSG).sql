@@ -45,6 +45,7 @@ select
 :get_balance_function get_balance_function,
 :balance_drilldown_function balance_drilldown_function,
 :expand_segment_function expand_segment_function,
+:expand_segment_multi expand_segment_multi,
 :period_offset_function period_offset_function,
 :hierarchy_name,
 :custom_properties,
@@ -102,5 +103,3 @@ select
 :effective_date
 from
 dual
-where
-1=1

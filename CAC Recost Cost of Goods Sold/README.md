@@ -73,7 +73,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/cac-recost-cost-of-goods-sold/) |
+| Excel Example Output | [](https://www.enginatics.com/example/cac-recost-cost-of-goods-sold/) |
 | Blitz Report™ XML Import | [CAC_Recost_Cost_of_Goods_Sold.xml](https://www.enginatics.com/xml/cac-recost-cost-of-goods-sold/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/cac-recost-cost-of-goods-sold/](https://www.enginatics.com/reports/cac-recost-cost-of-goods-sold/) |
 

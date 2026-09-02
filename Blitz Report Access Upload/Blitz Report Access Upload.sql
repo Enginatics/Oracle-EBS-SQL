@@ -28,7 +28,8 @@ when fpov.profile_option_value='U' then 'User'
 when fpov.profile_option_value='A' then 'User Admin'
 when fpov.profile_option_value='D' then 'Developer'
 when fpov.profile_option_value='S' then 'System'
-end access_
+end access_,
+to_number(null) upload_row
 from
 fnd_profile_options_vl fpo,
 fnd_profile_option_values fpov,
@@ -46,10 +47,3 @@ fav.application_id=fpo.application_id and
 fpo.profile_option_id=fpov.profile_option_id and
 fpo.application_id=fpov.application_id and
 fpo.profile_option_name='XXEN_REPORT_ACCESS'
-&not_use_first_block
-&report_table_select 
-&report_table_name 
-&report_table_where_clause 
-&success_records
-&processed_run
-order by 5,6

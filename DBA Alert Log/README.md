@@ -24,7 +24,7 @@ Message Text includes, Message Type, Message Level, History Days, Date From, Exc
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related Reports
-[DBA Trace File Contents](/DBA%20Trace%20File%20Contents/ "DBA Trace File Contents Oracle EBS SQL Report"), [ALR Alerts](/ALR%20Alerts/ "ALR Alerts Oracle EBS SQL Report")
+[DBA Trace File Contents](/DBA%20Trace%20File%20Contents/ "DBA Trace File Contents Oracle EBS SQL Report"), [QA Collection Plan Upload](/QA%20Collection%20Plan%20Upload/ "QA Collection Plan Upload Oracle EBS SQL Report"), [DBA Database Parameter Validation](/DBA%20Database%20Parameter%20Validation/ "DBA Database Parameter Validation Oracle EBS SQL Report"), [ALR Alerts](/ALR%20Alerts/ "ALR Alerts Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.

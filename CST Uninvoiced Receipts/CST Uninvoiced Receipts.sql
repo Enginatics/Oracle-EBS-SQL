@@ -36,6 +36,7 @@ select
  q.category,
  q.item_description,
  q.vendor_name,
+ q.vendor_site_code,
  case
   when q.line_qty_accrued > 0 then round(q.line_accrual_amt / q.line_qty_accrued,q.po_precision)
   when q.line_qty_accrued = 0 then round(q.po_unit_price,q.po_precision)
@@ -61,6 +62,8 @@ select
  -- distribution
  q.distribution_num,
  q.uom_code,
+ q.receiving_org,
+ q.quantity_ordered,
  q.quantity_received,
  q.quantity_billed,
  q.quantity_accrued,
@@ -74,6 +77,8 @@ select
  q.charge_account,
  q.accrual_account,
  q.item_expense_account,
+ q.po_creation_date,
+ q.po_last_updated_by,
  &dff_columns2
  --
  q.pivot_sort_value,
@@ -134,6 +139,11 @@ from
        gcck1.concatenated_segments                charge_account,
        gcck2.concatenated_segments                accrual_account,
        gcck3.concatenated_segments                item_expense_account,
+       xxen_util.client_time(pha.creation_date)   po_creation_date,
+       (select pvsa.vendor_site_code from po_vendor_sites_all pvsa where pvsa.vendor_site_id=pha.vendor_site_id) vendor_site_code,
+       (select mp.organization_code from mtl_parameters mp where mp.organization_id=plla.ship_to_organization_id) receiving_org,
+       round(plla.quantity,:p_qty_precision) quantity_ordered,
+       xxen_util.user_name(pha.last_updated_by,'Y') po_last_updated_by,
        &dff_columns
        cpeat.accrual_amount                       accrual_amount,
        round( decode( nvl(fc1.minimum_accountable_unit, 0),

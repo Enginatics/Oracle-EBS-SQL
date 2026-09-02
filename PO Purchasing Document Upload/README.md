@@ -2,7 +2,7 @@
 layout: default
 title: 'PO Purchasing Document Upload | Oracle EBS SQL Report'
 description: 'Upload to create and update purchase documents – Oracle E-Business Suite SQL report'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Upload, Purchasing, Document, po_document_types_all_vl, hr_all_organization_units_vl, po_lines_all'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, Purchasing, Document, po_document_types_all_vl, hr_all_organization_units_vl, po_lines_all'
 permalink: /PO%20Purchasing%20Document%20Upload/
 ---
 
@@ -14,13 +14,13 @@ permalink: /PO%20Purchasing%20Document%20Upload/
 Upload to create and update purchase documents
 
 ## Report Parameters
-Operating Unit, Upload Mode, Create Empty File, Document Type, Document Status, Document Number, Document Number From, Document Number To, Creation Date From, Creation Date To, Need By Date From, Need By Date To, Agent Name, Created By
+Operating Unit, Upload Mode, Create Empty File, Document Type, Document Status, Active Price Breaks Only, Document Number, Document Number From, Document Number To, Supplier, Creation Date From, Creation Date To, Need By Date From, Need By Date To, Agent Name, Created By
 
 ## Oracle EBS Tables Used
-[po_document_types_all_vl](https://www.enginatics.com/library/?pg=1&find=po_document_types_all_vl), [hr_all_organization_units_vl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_vl), [po_lines_all](https://www.enginatics.com/library/?pg=1&find=po_lines_all), [po_line_types_tl](https://www.enginatics.com/library/?pg=1&find=po_line_types_tl), [mtl_categories_v](https://www.enginatics.com/library/?pg=1&find=mtl_categories_v), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl), [po_line_locations_all](https://www.enginatics.com/library/?pg=1&find=po_line_locations_all), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters), [hr_locations_all](https://www.enginatics.com/library/?pg=1&find=hr_locations_all), [per_all_people_f](https://www.enginatics.com/library/?pg=1&find=per_all_people_f), [pa_projects_expend_v](https://www.enginatics.com/library/?pg=1&find=pa_projects_expend_v), [pa_tasks_all_expend_v](https://www.enginatics.com/library/?pg=1&find=pa_tasks_all_expend_v), [pa_organizations_expend_v](https://www.enginatics.com/library/?pg=1&find=pa_organizations_expend_v), [po_headers_all](https://www.enginatics.com/library/?pg=1&find=po_headers_all), [gl_daily_conversion_types](https://www.enginatics.com/library/?pg=1&find=gl_daily_conversion_types), [po_vendors](https://www.enginatics.com/library/?pg=1&find=po_vendors), [po_vendor_sites_all](https://www.enginatics.com/library/?pg=1&find=po_vendor_sites_all), [po_distributions_all](https://www.enginatics.com/library/?pg=1&find=po_distributions_all), [gl_code_combinations_kfv](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations_kfv), [document_types_](https://www.enginatics.com/library/?pg=1&find=document_types_), [po_lines_](https://www.enginatics.com/library/?pg=1&find=po_lines_), [po_line_locations_](https://www.enginatics.com/library/?pg=1&find=po_line_locations_)
+[po_document_types_all_vl](https://www.enginatics.com/library/?pg=1&find=po_document_types_all_vl), [hr_all_organization_units_vl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_vl), [po_lines_all](https://www.enginatics.com/library/?pg=1&find=po_lines_all), [po_line_types_tl](https://www.enginatics.com/library/?pg=1&find=po_line_types_tl), [mtl_categories_v](https://www.enginatics.com/library/?pg=1&find=mtl_categories_v), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl), [po_line_locations_all](https://www.enginatics.com/library/?pg=1&find=po_line_locations_all), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters), [hr_locations_all](https://www.enginatics.com/library/?pg=1&find=hr_locations_all), [rcv_routing_headers](https://www.enginatics.com/library/?pg=1&find=rcv_routing_headers), [po_vendor_contacts](https://www.enginatics.com/library/?pg=1&find=po_vendor_contacts), [ap_terms_tl](https://www.enginatics.com/library/?pg=1&find=ap_terms_tl), [per_all_people_f](https://www.enginatics.com/library/?pg=1&find=per_all_people_f), [po_lookup_codes](https://www.enginatics.com/library/?pg=1&find=po_lookup_codes), [wip_entities](https://www.enginatics.com/library/?pg=1&find=wip_entities), [pa_projects_expend_v](https://www.enginatics.com/library/?pg=1&find=pa_projects_expend_v), [pa_tasks_all_expend_v](https://www.enginatics.com/library/?pg=1&find=pa_tasks_all_expend_v), [pa_organizations_expend_v](https://www.enginatics.com/library/?pg=1&find=pa_organizations_expend_v)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only), [Upload](https://www.enginatics.com/library/?pg=1&category[]=Upload)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Upload](https://www.enginatics.com/library/?pg=1&category[]=Upload)
 
 
 
@@ -31,7 +31,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/po-purchasing-document-upload/) |
+| Excel Example Output | [](https://www.enginatics.com/example/po-purchasing-document-upload/) |
 | Blitz Report™ XML Import | [PO_Purchasing_Document_Upload.xml](https://www.enginatics.com/xml/po-purchasing-document-upload/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/po-purchasing-document-upload/](https://www.enginatics.com/reports/po-purchasing-document-upload/) |
 

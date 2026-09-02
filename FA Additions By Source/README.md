@@ -2,7 +2,7 @@
 layout: default
 title: 'FA Additions By Source | Oracle EBS SQL Report'
 description: 'Application: Assets Source: Additions By Source Report Short Name: FASASSBS – Oracle E-Business Suite SQL report'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Additions, Source, fa_lookups_vl, fa_distribution_history, fa_asset_history'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Additions, Source, fa_lookups_vl, fa_distribution_history, fa_asset_history'
 permalink: /FA%20Additions%20By%20Source/
 ---
 
@@ -17,13 +17,13 @@ Short Name: FASASSBS
 
 
 ## Report Parameters
-Book, From Period, To Period
+Book, From Period, To Period, Asset Number, Asset Key
 
 ## Oracle EBS Tables Used
-[fa_lookups_vl](https://www.enginatics.com/library/?pg=1&find=fa_lookups_vl), [fa_distribution_history](https://www.enginatics.com/library/?pg=1&find=fa_distribution_history), [fa_asset_history](https://www.enginatics.com/library/?pg=1&find=fa_asset_history), [fa_category_books](https://www.enginatics.com/library/?pg=1&find=fa_category_books), [fa_lookups](https://www.enginatics.com/library/?pg=1&find=fa_lookups), [fa_additions](https://www.enginatics.com/library/?pg=1&find=fa_additions), [gl_code_combinations](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations), [fa_transaction_headers](https://www.enginatics.com/library/?pg=1&find=fa_transaction_headers), [fa_deprn_detail](https://www.enginatics.com/library/?pg=1&find=fa_deprn_detail), [fa_deprn_periods](https://www.enginatics.com/library/?pg=1&find=fa_deprn_periods), [fa_adjustments](https://www.enginatics.com/library/?pg=1&find=fa_adjustments), [fa_asset_invoices](https://www.enginatics.com/library/?pg=1&find=fa_asset_invoices), [fa_invoice_transactions](https://www.enginatics.com/library/?pg=1&find=fa_invoice_transactions), [po_vendors](https://www.enginatics.com/library/?pg=1&find=po_vendors)
+[fa_lookups_vl](https://www.enginatics.com/library/?pg=1&find=fa_lookups_vl), [fa_distribution_history](https://www.enginatics.com/library/?pg=1&find=fa_distribution_history), [fa_asset_history](https://www.enginatics.com/library/?pg=1&find=fa_asset_history), [fa_category_books](https://www.enginatics.com/library/?pg=1&find=fa_category_books), [fa_lookups](https://www.enginatics.com/library/?pg=1&find=fa_lookups), [fa_additions](https://www.enginatics.com/library/?pg=1&find=fa_additions), [gl_code_combinations](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations), [fa_transaction_headers](https://www.enginatics.com/library/?pg=1&find=fa_transaction_headers), [fa_deprn_detail](https://www.enginatics.com/library/?pg=1&find=fa_deprn_detail), [fa_deprn_periods](https://www.enginatics.com/library/?pg=1&find=fa_deprn_periods), [fa_locations_kfv](https://www.enginatics.com/library/?pg=1&find=fa_locations_kfv), [fa_asset_keywords_kfv](https://www.enginatics.com/library/?pg=1&find=fa_asset_keywords_kfv), [fa_adjustments](https://www.enginatics.com/library/?pg=1&find=fa_adjustments)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 
 

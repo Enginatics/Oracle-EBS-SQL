@@ -2,7 +2,7 @@
 layout: default
 title: 'CAC WIP Material Relief | Oracle EBS SQL Report'
 description: 'Report to show WIP material variances on closed jobs for discrete manufacturing, in summary by inventory organization, with WIP class, job status, name…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, CAC, WIP, Material, Relief, org_acct_periods, wip_entities, wip_discrete_jobs'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, CAC, WIP, Material, Relief, org_acct_periods, wip_entities, wip_discrete_jobs'
 permalink: /CAC%20WIP%20Material%20Relief/
 ---
 
@@ -69,7 +69,7 @@ Period Name, Cost Type, PII Cost Type, PII Sub-Element, Category Set 1, Category
 [org_acct_periods](https://www.enginatics.com/library/?pg=1&find=org_acct_periods), [wip_entities](https://www.enginatics.com/library/?pg=1&find=wip_entities), [wip_discrete_jobs](https://www.enginatics.com/library/?pg=1&find=wip_discrete_jobs), [wip_accounting_classes](https://www.enginatics.com/library/?pg=1&find=wip_accounting_classes), [wip_requirement_operations](https://www.enginatics.com/library/?pg=1&find=wip_requirement_operations), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl), [cst_item_costs](https://www.enginatics.com/library/?pg=1&find=cst_item_costs), [mtl_units_of_measure_vl](https://www.enginatics.com/library/?pg=1&find=mtl_units_of_measure_vl), [cst_cost_types](https://www.enginatics.com/library/?pg=1&find=cst_cost_types), [gl_code_combinations](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations), [hr_organization_information](https://www.enginatics.com/library/?pg=1&find=hr_organization_information), [hr_all_organization_units_vl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_vl), [gl_ledgers](https://www.enginatics.com/library/?pg=1&find=gl_ledgers), [cst_item_cost_details](https://www.enginatics.com/library/?pg=1&find=cst_item_cost_details), [bom_resources](https://www.enginatics.com/library/?pg=1&find=bom_resources), [org_access_view](https://www.enginatics.com/library/?pg=1&find=org_access_view)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 
 

@@ -2,7 +2,7 @@
 layout: default
 title: 'ZX Tax Regimes | Oracle EBS SQL Report'
 description: 'E-Business Tax tax regime and party subscription setup – Oracle E-Business Suite SQL report'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Tax, Regimes, gl_daily_conversion_types, zx_party_tax_profile, hz_parties'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Tax, Regimes, gl_daily_conversion_types, zx_party_tax_profile, hz_parties'
 permalink: /ZX%20Tax%20Regimes/
 ---
 
@@ -20,7 +20,7 @@ Tax Regime Code, Show Regime Subscriptions, Country
 [gl_daily_conversion_types](https://www.enginatics.com/library/?pg=1&find=gl_daily_conversion_types), [zx_party_tax_profile](https://www.enginatics.com/library/?pg=1&find=zx_party_tax_profile), [hz_parties](https://www.enginatics.com/library/?pg=1&find=hz_parties), [zx_regimes_vl](https://www.enginatics.com/library/?pg=1&find=zx_regimes_vl), [fnd_territories_vl](https://www.enginatics.com/library/?pg=1&find=fnd_territories_vl), [zx_regimes_usages](https://www.enginatics.com/library/?pg=1&find=zx_regimes_usages), [zx_first_party_orgs_all_v](https://www.enginatics.com/library/?pg=1&find=zx_first_party_orgs_all_v), [zx_subscription_options](https://www.enginatics.com/library/?pg=1&find=zx_subscription_options)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related Reports
 [ZX Tax Accounts](/ZX%20Tax%20Accounts/ "ZX Tax Accounts Oracle EBS SQL Report"), [AP Supplier Upload](/AP%20Supplier%20Upload/ "AP Supplier Upload Oracle EBS SQL Report"), [AR Transaction Upload](/AR%20Transaction%20Upload/ "AR Transaction Upload Oracle EBS SQL Report"), [AR Customer Upload](/AR%20Customer%20Upload/ "AR Customer Upload Oracle EBS SQL Report")

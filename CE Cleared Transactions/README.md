@@ -2,7 +2,7 @@
 layout: default
 title: 'CE Cleared Transactions | Oracle EBS SQL Report'
 description: 'Application: Cash Management Description: Transactions - Cleared Payment/Receipt Transactions Provides equivalent functionality to the following standard…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Cleared, Transactions, ap_checks_all, iby_payment_methods_vl, iby_payments_all'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Cleared, Transactions, ap_checks_all, iby_payment_methods_vl, iby_payments_all'
 permalink: /CE%20Cleared%20Transactions/
 ---
 
@@ -31,7 +31,7 @@ Bank Name, Bank Branch, Bank Account Name, Bank Account Number, Transaction Type
 [ap_checks_all](https://www.enginatics.com/library/?pg=1&find=ap_checks_all), [iby_payment_methods_vl](https://www.enginatics.com/library/?pg=1&find=iby_payment_methods_vl), [iby_payments_all](https://www.enginatics.com/library/?pg=1&find=iby_payments_all), [iby_pay_instructions_all](https://www.enginatics.com/library/?pg=1&find=iby_pay_instructions_all), [ce_bank_accts_gt_v](https://www.enginatics.com/library/?pg=1&find=ce_bank_accts_gt_v), [hz_parties](https://www.enginatics.com/library/?pg=1&find=hz_parties), [ce_bank_acct_uses_all](https://www.enginatics.com/library/?pg=1&find=ce_bank_acct_uses_all), [ce_security_profiles_gt](https://www.enginatics.com/library/?pg=1&find=ce_security_profiles_gt), [xle_entity_profiles](https://www.enginatics.com/library/?pg=1&find=xle_entity_profiles), [hr_all_organization_units](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units), [gl_code_combinations](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations), [ar_cash_receipts](https://www.enginatics.com/library/?pg=1&find=ar_cash_receipts), [ar_cash_receipt_history_all](https://www.enginatics.com/library/?pg=1&find=ar_cash_receipt_history_all), [ar_batches_all](https://www.enginatics.com/library/?pg=1&find=ar_batches_all), [ce_lookups](https://www.enginatics.com/library/?pg=1&find=ce_lookups), [hz_cust_accounts](https://www.enginatics.com/library/?pg=1&find=hz_cust_accounts), [ar_payment_schedules_all](https://www.enginatics.com/library/?pg=1&find=ar_payment_schedules_all), [ar_receipt_methods](https://www.enginatics.com/library/?pg=1&find=ar_receipt_methods), [ce_801_reconciled_v](https://www.enginatics.com/library/?pg=1&find=ce_801_reconciled_v), [pay_pre_payments](https://www.enginatics.com/library/?pg=1&find=pay_pre_payments), [pay_assignment_actions](https://www.enginatics.com/library/?pg=1&find=pay_assignment_actions), [pay_org_payment_methods_f](https://www.enginatics.com/library/?pg=1&find=pay_org_payment_methods_f), [ce_801_eft_reconciled_v](https://www.enginatics.com/library/?pg=1&find=ce_801_eft_reconciled_v), [ce_999_interface_v](https://www.enginatics.com/library/?pg=1&find=ce_999_interface_v), [ce_bank_branches_v](https://www.enginatics.com/library/?pg=1&find=ce_bank_branches_v)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related Reports
 [CE Cash in Transit](/CE%20Cash%20in%20Transit/ "CE Cash in Transit Oracle EBS SQL Report"), [CE Bank Statement and Reconciliation](/CE%20Bank%20Statement%20and%20Reconciliation/ "CE Bank Statement and Reconciliation Oracle EBS SQL Report"), [IBY Payment Process Request Details](/IBY%20Payment%20Process%20Request%20Details/ "IBY Payment Process Request Details Oracle EBS SQL Report"), [CE General Ledger Reconciliation](/CE%20General%20Ledger%20Reconciliation/ "CE General Ledger Reconciliation Oracle EBS SQL Report"), [AP Supplier Upload](/AP%20Supplier%20Upload/ "AP Supplier Upload Oracle EBS SQL Report"), [AR Customer Upload](/AR%20Customer%20Upload/ "AR Customer Upload Oracle EBS SQL Report")
@@ -43,7 +43,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/ce-cleared-transactions/) |
+| Excel Example Output | [](https://www.enginatics.com/example/ce-cleared-transactions/) |
 | Blitz Report™ XML Import | [CE_Cleared_Transactions.xml](https://www.enginatics.com/xml/ce-cleared-transactions/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/ce-cleared-transactions/](https://www.enginatics.com/reports/ce-cleared-transactions/) |
 

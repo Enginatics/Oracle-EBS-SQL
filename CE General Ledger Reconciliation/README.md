@@ -2,7 +2,7 @@
 layout: default
 title: 'CE General Ledger Reconciliation | Oracle EBS SQL Report'
 description: 'Application: Cash Management Description: Bank Statements - General Ledger Reconciliation Provides equivalent functionality to the following standard…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, General, Ledger, Reconciliation, gl_balances, gl_code_combinations, ce_bank_accounts'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, General, Ledger, Reconciliation, gl_balances, gl_code_combinations, ce_bank_accounts'
 permalink: /CE%20General%20Ledger%20Reconciliation/
 ---
 
@@ -30,7 +30,7 @@ Legal Entity, Bank Account Name, Bank Account Number, Period Name, Closing Balan
 [gl_balances](https://www.enginatics.com/library/?pg=1&find=gl_balances), [gl_code_combinations](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations), [ce_bank_accounts](https://www.enginatics.com/library/?pg=1&find=ce_bank_accounts), [ce_bank_acct_uses_all](https://www.enginatics.com/library/?pg=1&find=ce_bank_acct_uses_all), [ce_gl_accounts_ccid](https://www.enginatics.com/library/?pg=1&find=ce_gl_accounts_ccid), [dual](https://www.enginatics.com/library/?pg=1&find=dual), [ar_cash_receipts](https://www.enginatics.com/library/?pg=1&find=ar_cash_receipts), [ar_cash_receipt_history](https://www.enginatics.com/library/?pg=1&find=ar_cash_receipt_history), [hz_cust_accounts](https://www.enginatics.com/library/?pg=1&find=hz_cust_accounts), [hz_parties](https://www.enginatics.com/library/?pg=1&find=hz_parties), [ar_receipt_methods](https://www.enginatics.com/library/?pg=1&find=ar_receipt_methods), [ce_bank_acct_uses_ou_v](https://www.enginatics.com/library/?pg=1&find=ce_bank_acct_uses_ou_v), [ce_system_parameters](https://www.enginatics.com/library/?pg=1&find=ce_system_parameters), [ar_cash_receipt_history_all](https://www.enginatics.com/library/?pg=1&find=ar_cash_receipt_history_all), [ce_statement_recon_gt_v](https://www.enginatics.com/library/?pg=1&find=ce_statement_recon_gt_v), [ce_statement_lines](https://www.enginatics.com/library/?pg=1&find=ce_statement_lines), [ce_statement_headers](https://www.enginatics.com/library/?pg=1&find=ce_statement_headers), [ap_checks_all](https://www.enginatics.com/library/?pg=1&find=ap_checks_all), [ce_security_profiles_gt](https://www.enginatics.com/library/?pg=1&find=ce_security_profiles_gt), [xla_transaction_entities](https://www.enginatics.com/library/?pg=1&find=xla_transaction_entities), [xla_events](https://www.enginatics.com/library/?pg=1&find=xla_events), [ap_payment_history_all](https://www.enginatics.com/library/?pg=1&find=ap_payment_history_all), [xla_ae_headers](https://www.enginatics.com/library/?pg=1&find=xla_ae_headers), [xla_ae_lines](https://www.enginatics.com/library/?pg=1&find=xla_ae_lines), [ce_statement_reconcils_all](https://www.enginatics.com/library/?pg=1&find=ce_statement_reconcils_all)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 
 

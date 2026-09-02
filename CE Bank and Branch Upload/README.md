@@ -73,7 +73,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/ce-bank-and-branch-upload/) |
+| Excel Example Output | [](https://www.enginatics.com/example/ce-bank-and-branch-upload/) |
 | Blitz Report™ XML Import | [CE_Bank_and_Branch_Upload.xml](https://www.enginatics.com/xml/ce-bank-and-branch-upload/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/ce-bank-and-branch-upload/](https://www.enginatics.com/reports/ce-bank-and-branch-upload/) |
 

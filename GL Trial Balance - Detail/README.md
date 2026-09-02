@@ -2,7 +2,7 @@
 layout: default
 title: 'GL Trial Balance - Detail | Oracle EBS SQL Report'
 description: 'Imported from Concurrent Program Description: Detail Trial Balance (XML) Application: General Ledger Source: Trial Balance - Detail (XML) Short Name…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Trial, Balance, Detail'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Trial, Balance, Detail'
 permalink: /GL%20Trial%20Balance%20-%20Detail/
 ---
 
@@ -19,13 +19,13 @@ Short Name: GLTRBALD
 DB package:
 
 ## Report Parameters
-Ledger/Ledger Set, Ledger Currency, Currency Type, Entered Currency, Pivot Segment, Pivot Segment Low, Pivot Segment High, Period, Amount Type, Active Accounts Only, Show Parents, Show DFF Attributes
+Ledger/Ledger Set, Ledger Currency, Currency Type, Entered Currency, Pivot Segment, Pivot Segment Low, Pivot Segment High, Period, Amount Type, Active Accounts Only, Show Parents, DFF Display, Secondary COA Mapping
 
 ## Oracle EBS Tables Used
 
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 
 

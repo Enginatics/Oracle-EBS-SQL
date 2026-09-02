@@ -1,8 +1,8 @@
 ---
 layout: default
 title: 'AR Transaction Upload | Oracle EBS SQL Report'
-description: 'This upload can be used to create Invoices, On Account Credit Memos and Debit Memos. The ‘Upload Trx Identifier’ column is used to uniquely identify each…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Upload, Transaction, jtf_rs_salesreps, jtf_rs_resource_extns_vl, ra_terms_vl'
+description: 'This upload can be used to create Invoices, Debit Memos and Credit Memos. Credit memos can be created On Account, or created and applied directly to an…'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, Transaction, jtf_rs_salesreps, jtf_rs_resource_extns_vl, ra_terms_vl'
 permalink: /AR%20Transaction%20Upload/
 ---
 
@@ -11,9 +11,9 @@ permalink: /AR%20Transaction%20Upload/
 **Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/ar-transaction-upload/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
 
 ## Overview
-This upload can be used to create Invoices, On Account Credit Memos and Debit Memos.
+This upload can be used to create Invoices, Debit Memos and Credit Memos. Credit memos can be created On Account, or created and applied directly to an existing transaction (an applied credit memo).
 
-The ‘Upload Trx Identifier’ column is used to uniquely identify each individual transaction (invoice, credit memo, debit memo) to be uploaded. 
+The 'Upload Trx Identifier' column is used to uniquely identify each individual transaction (invoice, credit memo, debit memo) to be uploaded.
 If the selected batch source uses manual transaction numbering, the Upload Trx Identifier will be copied to the Transaction Number column (the Oracle Transaction Number), but this can be overridden in the upload excel.
 If the selected transaction type uses a Manual Document Sequence, the Upload Trx Identifier will be used as the Document Sequence Value in Oracle.
 
@@ -21,7 +21,7 @@ The upload supports the entry of
 - Standard Invoice Lines
 - Manual Tax Lines (if permitted)
 - Header Level Freight Lines (if permitted) – identified by leaving the Link to Line Number null
-- Line Level Freight Lines (if permitted) – identified by populating the Link to Line Number column 
+- Line Level Freight Lines (if permitted) – identified by populating the Link to Line Number column
 
 For Tax Lines, and Line level Freight Lines, use the Link to Line Number to identify the Invoice Line to which the Tax Line or Freight Line should be linked. Tax Lines must be linked to a standard invoice line.
 
@@ -31,17 +31,34 @@ Note. Tax Lines and Line level Freight Lines must occur after the row containing
 - You can specify a quantity and unit price for a freight line in which case the upload will calculate the line amount, or you enter the line amount directly. Only the amount is uploaded to Oracle.
 - For manual Tax Lines, you can enter the line amount directly. If left blank, the upload will calculate the amount based on the selected Tax Rate and the line amount from the linked standard invoice.
 
-For Manual Tax Lines you must specify the Tax Regime, Tax, Tax Jurisdiction, Tax Status, Tax Rate Name, and Tax Rate columns.  
+For Manual Tax Lines you must specify the Tax Regime, Tax, Tax Jurisdiction, Tax Status, Tax Rate Name, and Tax Rate columns.
 
+Applied Credit Memos
+To create a credit memo and apply it to an existing transaction in one step, populate the Credit Against Transaction column with the transaction to be credited.  A Credit Memo Reason is required for an applied credit memo.
+
+The Transaction Type and Transaction Date are derived automatically from the credited invoice and are informational on this flow. The Transaction Type list shows only the credit memo type linked to the credited invoice's transaction type, and the Transaction Date defaults to the later of today and the credited invoice's date.
+
+You can credit the invoice at header level or at line level.
+
+Header level – leave the Credit Against Line column blank.
+- Leave Credit Line Amount, Credit Tax Amount and Credit Freight Amount blank to credit the full outstanding balance of the invoice.
+- Or enter negative Credit Line, Credit Tax and/or Credit Freight Amounts to credit part of the invoice.
+
+Line level – populate the Credit Against Line column.
+- Enter one row per invoice line to be credited, identifying the line in the Credit Against Line column.
+- A negative Credit Line Amount is required for each credited line. It defaults to the full line amount; edit it for a partial line credit.
+- Credit Tax Amount and Credit Freight Amount are not used at line level. Credit tax and freight using a header level credit, or let the credit method spread the tax automatically.
+
+The report parameters Credit Method for Rules and Credit Method for Installments control how the credit is applied across accounting rule periods and payment schedules.
 
 ## Report Parameters
-Operating Unit, Source, Default Transaction Type, Default Transaction Currency, Exchange Rate Type, Default Transaction Date, Default GL Date, Use SalesPersons
+Operating Unit, Source, Default Transaction Type, Default Transaction Currency, Exchange Rate Type, Default Transaction Date, Default GL Date, Use SalesPersons, Derive Applied CM Batch Source, Credit Method for Rules, Credit Method for Installments, Historical Transaction Load?
 
 ## Oracle EBS Tables Used
-[jtf_rs_salesreps](https://www.enginatics.com/library/?pg=1&find=jtf_rs_salesreps), [jtf_rs_resource_extns_vl](https://www.enginatics.com/library/?pg=1&find=jtf_rs_resource_extns_vl), [ra_terms_vl](https://www.enginatics.com/library/?pg=1&find=ra_terms_vl), [ar_receipt_methods](https://www.enginatics.com/library/?pg=1&find=ar_receipt_methods), [iby_trxn_extensions_v](https://www.enginatics.com/library/?pg=1&find=iby_trxn_extensions_v), [gl_daily_conversion_types](https://www.enginatics.com/library/?pg=1&find=gl_daily_conversion_types), [ra_customer_trx_lines_all](https://www.enginatics.com/library/?pg=1&find=ra_customer_trx_lines_all), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl), [mtl_units_of_measure_vl](https://www.enginatics.com/library/?pg=1&find=mtl_units_of_measure_vl), [ra_rules](https://www.enginatics.com/library/?pg=1&find=ra_rules), [org_freight](https://www.enginatics.com/library/?pg=1&find=org_freight), [fnd_territories_vl](https://www.enginatics.com/library/?pg=1&find=fnd_territories_vl), [zx_output_classifications_v](https://www.enginatics.com/library/?pg=1&find=zx_output_classifications_v), [zx_fc_business_categories_v](https://www.enginatics.com/library/?pg=1&find=zx_fc_business_categories_v), [zx_fc_product_fiscal_v](https://www.enginatics.com/library/?pg=1&find=zx_fc_product_fiscal_v), [zx_fc_product_categories_v](https://www.enginatics.com/library/?pg=1&find=zx_fc_product_categories_v), [zx_product_types_v](https://www.enginatics.com/library/?pg=1&find=zx_product_types_v), [zx_fc_codes_vl](https://www.enginatics.com/library/?pg=1&find=zx_fc_codes_vl), [zx_fc_types_b](https://www.enginatics.com/library/?pg=1&find=zx_fc_types_b), [mtl_category_sets_b](https://www.enginatics.com/library/?pg=1&find=mtl_category_sets_b), [fnd_id_flex_structures_vl](https://www.enginatics.com/library/?pg=1&find=fnd_id_flex_structures_vl), [mtl_categories_b_kfv](https://www.enginatics.com/library/?pg=1&find=mtl_categories_b_kfv), [mtl_categories_tl](https://www.enginatics.com/library/?pg=1&find=mtl_categories_tl), [=](https://www.enginatics.com/library/?pg=1&find==)
+[jtf_rs_salesreps](https://www.enginatics.com/library/?pg=1&find=jtf_rs_salesreps), [jtf_rs_resource_extns_vl](https://www.enginatics.com/library/?pg=1&find=jtf_rs_resource_extns_vl), [ra_terms_vl](https://www.enginatics.com/library/?pg=1&find=ra_terms_vl), [ar_receipt_methods](https://www.enginatics.com/library/?pg=1&find=ar_receipt_methods), [iby_trxn_extensions_v](https://www.enginatics.com/library/?pg=1&find=iby_trxn_extensions_v), [gl_daily_conversion_types](https://www.enginatics.com/library/?pg=1&find=gl_daily_conversion_types), [ra_cust_trx_line_gl_dist_all](https://www.enginatics.com/library/?pg=1&find=ra_cust_trx_line_gl_dist_all), [gl_code_combinations_kfv](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations_kfv), [ra_customer_trx_lines_all](https://www.enginatics.com/library/?pg=1&find=ra_customer_trx_lines_all), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl), [ar_memo_lines_all_vl](https://www.enginatics.com/library/?pg=1&find=ar_memo_lines_all_vl), [mtl_units_of_measure_vl](https://www.enginatics.com/library/?pg=1&find=mtl_units_of_measure_vl), [ra_rules](https://www.enginatics.com/library/?pg=1&find=ra_rules), [org_freight](https://www.enginatics.com/library/?pg=1&find=org_freight), [fnd_territories_vl](https://www.enginatics.com/library/?pg=1&find=fnd_territories_vl), [zx_output_classifications_v](https://www.enginatics.com/library/?pg=1&find=zx_output_classifications_v), [zx_fc_business_categories_v](https://www.enginatics.com/library/?pg=1&find=zx_fc_business_categories_v), [zx_fc_product_fiscal_v](https://www.enginatics.com/library/?pg=1&find=zx_fc_product_fiscal_v), [zx_fc_product_categories_v](https://www.enginatics.com/library/?pg=1&find=zx_fc_product_categories_v), [zx_product_types_v](https://www.enginatics.com/library/?pg=1&find=zx_product_types_v), [zx_fc_codes_vl](https://www.enginatics.com/library/?pg=1&find=zx_fc_codes_vl), [zx_fc_types_b](https://www.enginatics.com/library/?pg=1&find=zx_fc_types_b), [mtl_category_sets_b](https://www.enginatics.com/library/?pg=1&find=mtl_category_sets_b), [fnd_id_flex_structures_vl](https://www.enginatics.com/library/?pg=1&find=fnd_id_flex_structures_vl), [mtl_categories_b_kfv](https://www.enginatics.com/library/?pg=1&find=mtl_categories_b_kfv), [mtl_categories_tl](https://www.enginatics.com/library/?pg=1&find=mtl_categories_tl), [=](https://www.enginatics.com/library/?pg=1&find==)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only), [Upload](https://www.enginatics.com/library/?pg=1&category[]=Upload)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Upload](https://www.enginatics.com/library/?pg=1&category[]=Upload)
 
 
 
@@ -52,7 +69,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/ar-transaction-upload/) |
+| Excel Example Output | [](https://www.enginatics.com/example/ar-transaction-upload/) |
 | Blitz Report™ XML Import | [AR_Transaction_Upload.xml](https://www.enginatics.com/xml/ar-transaction-upload/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/ar-transaction-upload/](https://www.enginatics.com/reports/ar-transaction-upload/) |
 

@@ -5,7 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: DBA Log Switches
--- Description: None
+-- Description: 
 -- Excel Examle Output: https://www.enginatics.com/example/dba-log-switches/
 -- Library Link: https://www.enginatics.com/reports/dba-log-switches/
 -- Run Report: https://demo.enginatics.com/

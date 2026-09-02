@@ -2,7 +2,7 @@
 layout: default
 title: 'XLE Legal Entities | Oracle EBS SQL Report'
 description: 'Legal entities, establishments, jurisdictions and registrations – Oracle E-Business Suite SQL report'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, XLE, Legal, Entities, xle_entity_profiles, xle_etb_profiles, hz_parties'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, XLE, Legal, Entities, xle_entity_profiles, xle_etb_profiles, hz_parties'
 permalink: /XLE%20Legal%20Entities/
 ---
 
@@ -20,7 +20,7 @@ Jurisdiction Country, Legal Entity Name
 [xle_entity_profiles](https://www.enginatics.com/library/?pg=1&find=xle_entity_profiles), [xle_etb_profiles](https://www.enginatics.com/library/?pg=1&find=xle_etb_profiles), [hz_parties](https://www.enginatics.com/library/?pg=1&find=hz_parties), [xle_registrations](https://www.enginatics.com/library/?pg=1&find=xle_registrations), [xle_jurisdictions_vl](https://www.enginatics.com/library/?pg=1&find=xle_jurisdictions_vl), [hz_geographies](https://www.enginatics.com/library/?pg=1&find=hz_geographies), [fnd_lookup_values_vl](https://www.enginatics.com/library/?pg=1&find=fnd_lookup_values_vl), [hr_locations_all](https://www.enginatics.com/library/?pg=1&find=hr_locations_all), [fnd_territories_vl](https://www.enginatics.com/library/?pg=1&find=fnd_territories_vl), [hz_party_sites](https://www.enginatics.com/library/?pg=1&find=hz_party_sites), [hz_locations](https://www.enginatics.com/library/?pg=1&find=hz_locations)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related Reports
 [ZX Party Tax Profiles](/ZX%20Party%20Tax%20Profiles/ "ZX Party Tax Profiles Oracle EBS SQL Report"), [AR European Sales Listing](/AR%20European%20Sales%20Listing/ "AR European Sales Listing Oracle EBS SQL Report"), [IBY Payment Process Request Details](/IBY%20Payment%20Process%20Request%20Details/ "IBY Payment Process Request Details Oracle EBS SQL Report"), [CE Cleared Transactions](/CE%20Cleared%20Transactions/ "CE Cleared Transactions Oracle EBS SQL Report"), [AR Customer Upload](/AR%20Customer%20Upload/ "AR Customer Upload Oracle EBS SQL Report")

@@ -31,7 +31,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/ppf_wp3_om_details/) |
+| Excel Example Output | [](https://www.enginatics.com/example/ppf_wp3_om_details/) |
 | Blitz Report™ XML Import | [PPF_WP3_OM_DETAILS.xml](https://www.enginatics.com/xml/ppf_wp3_om_details/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/ppf_wp3_om_details/](https://www.enginatics.com/reports/ppf_wp3_om_details/) |
 

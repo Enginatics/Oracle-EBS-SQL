@@ -49,7 +49,7 @@ vm.nr_hugepages = SGA GB x 512 + 5
 /etc/security/limits.conf
 oracle               soft    memlock (SGA GB x 512 + 5) * 2048
 oracle               hard    memlock (SGA GB x 512 + 5) * 2048
-<a href="https://www.carajandb.com/en/2016/09/22/7-easy-steps-to-configure-hugepages-for-your-oracle-database-server/" rel="nofollow" target="_blank">https://www.carajandb.com/en/2016/09/22/7-easy-steps-to-configure-hugepages-for-your-oracle-database-server/</a>
+<a href="https://www.enginatics.com/blog/how-to-configure-hugepages-for-oracle-ebs/" rel="nofollow" target="_blank">https://www.enginatics.com/blog/how-to-configure-hugepages-for-oracle-ebs/</a>
 
 Check if all database parameters are set according to Oracle's requirement:
 Database Initialization Parameters for Oracle E-Business Suite Release 12 (KA1002)

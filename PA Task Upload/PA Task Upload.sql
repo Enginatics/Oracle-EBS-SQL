@@ -141,12 +141,12 @@ decode(pt.cc_process_nl_flag,'Y',xxen_util.meaning('Y','YES_NO',0)) cross_charge
 pctsb1.name labor_transfer_price_schedule,
 pt.labor_tp_fixed_date labor_transfer_price_fixed_dt,
 pctsb2.name non_labor_transfer_price_sched,
-pt.nl_tp_fixed_date non_labor_trans_price_fxd_dt,
+pt.nl_tp_fixed_date non_labor_xfer_price_fxd_dt,
 -- intercompany
 pctsb3.name ic_labor_transfer_price_sched,
-pt.ic_labor_tp_fixed_date ic_labor_trans_price_fxd_dt,
-pctsb4.name ic_non_lab_trans_price_sched,
-pt.ic_nl_tp_fixed_date ic_non_lab_trans_price_fxd_dt,
+pt.ic_labor_tp_fixed_date ic_labor_transfer_price_fxd_dt,
+pctsb4.name ic_non_lab_xfer_price_sched,
+pt.ic_nl_tp_fixed_date ic_non_lab_xfer_price_fxd_dt,
 -- rate info
 gdct1.user_conversion_type project_rate_type,
 pt.project_rate_date,

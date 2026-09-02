@@ -2,7 +2,7 @@
 layout: default
 title: 'OPM Reconcilation | Oracle EBS SQL Report'
 description: 'OPM Reconciliation Report. Blitz Report implementation of the Oracle sql script: OPMRecon.sql Reference MOS Document: OPM Inventory Balance Reconciliation…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, OPM, Reconcilation, mtl_item_flexfields, mtl_parameters, gmf_period_balances'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, OPM, Reconcilation, mtl_item_flexfields, mtl_parameters, gmf_period_balances'
 permalink: /OPM%20Reconcilation/
 ---
 
@@ -22,7 +22,7 @@ Legal Entity, Period to Reconcile
 [mtl_item_flexfields](https://www.enginatics.com/library/?pg=1&find=mtl_item_flexfields), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters), [gmf_period_balances](https://www.enginatics.com/library/?pg=1&find=gmf_period_balances), [org_acct_periods](https://www.enginatics.com/library/?pg=1&find=org_acct_periods), [hr_all_organization_units](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units), [hr_organization_information](https://www.enginatics.com/library/?pg=1&find=hr_organization_information), [mtl_secondary_inventories](https://www.enginatics.com/library/?pg=1&find=mtl_secondary_inventories), [gmf_xla_extract_lines](https://www.enginatics.com/library/?pg=1&find=gmf_xla_extract_lines), [gmf_xla_extract_headers](https://www.enginatics.com/library/?pg=1&find=gmf_xla_extract_headers), [q_inv_val_cur](https://www.enginatics.com/library/?pg=1&find=q_inv_val_cur), [q_inv_val_pri](https://www.enginatics.com/library/?pg=1&find=q_inv_val_pri), [q_sl_val_cur](https://www.enginatics.com/library/?pg=1&find=q_sl_val_cur), [q_item_diff_val](https://www.enginatics.com/library/?pg=1&find=q_item_diff_val)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 
 

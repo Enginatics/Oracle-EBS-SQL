@@ -2,7 +2,7 @@
 layout: default
 title: 'PN Billing/Payment Term Upload | Oracle EBS SQL Report'
 description: 'Property Management - Billing and Payment Terms Upload – Oracle E-Business Suite SQL report'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Upload, Billing/Payment, Term, ap_suppliers, po_headers_all, ra_terms_vl'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, Billing/Payment, Term, ap_suppliers, po_headers_all, ra_terms_vl'
 permalink: /PN%20Billing-Payment%20Term%20Upload/
 ---
 
@@ -20,10 +20,10 @@ Upload Mode, Lease Class, Final Draft Status, Lease Status, Operating Unit, Thir
 [ap_suppliers](https://www.enginatics.com/library/?pg=1&find=ap_suppliers), [po_headers_all](https://www.enginatics.com/library/?pg=1&find=po_headers_all), [ra_terms_vl](https://www.enginatics.com/library/?pg=1&find=ra_terms_vl), [ap_terms_vl](https://www.enginatics.com/library/?pg=1&find=ap_terms_vl), [ar_receipt_methods](https://www.enginatics.com/library/?pg=1&find=ar_receipt_methods), [ra_cust_trx_types_all](https://www.enginatics.com/library/?pg=1&find=ra_cust_trx_types_all), [ra_salesreps_all](https://www.enginatics.com/library/?pg=1&find=ra_salesreps_all), [ra_rules](https://www.enginatics.com/library/?pg=1&find=ra_rules), [ap_distribution_sets_all](https://www.enginatics.com/library/?pg=1&find=ap_distribution_sets_all), [pa_projects_all](https://www.enginatics.com/library/?pg=1&find=pa_projects_all), [pa_tasks_expend_v](https://www.enginatics.com/library/?pg=1&find=pa_tasks_expend_v), [pa_organizations_expend_v](https://www.enginatics.com/library/?pg=1&find=pa_organizations_expend_v), [pn_distributions_v](https://www.enginatics.com/library/?pg=1&find=pn_distributions_v), [gl_code_combinations_kfv](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations_kfv), [pn_leases_v](https://www.enginatics.com/library/?pg=1&find=pn_leases_v), [pn_payment_terms_v](https://www.enginatics.com/library/?pg=1&find=pn_payment_terms_v), [pn_locations_all](https://www.enginatics.com/library/?pg=1&find=pn_locations_all), [hr_all_organization_units_vl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_vl)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only), [Upload](https://www.enginatics.com/library/?pg=1&category[]=Upload)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Upload](https://www.enginatics.com/library/?pg=1&category[]=Upload)
 
 ## Related Reports
-[AR Transactions and Lines 11i](/AR%20Transactions%20and%20Lines%2011i/ "AR Transactions and Lines 11i Oracle EBS SQL Report"), [AR Transactions and Payments 11i](/AR%20Transactions%20and%20Payments%2011i/ "AR Transactions and Payments 11i Oracle EBS SQL Report"), [AR Customer Upload](/AR%20Customer%20Upload/ "AR Customer Upload Oracle EBS SQL Report"), [GL Account Analysis (Drilldown) (with inventory and WIP)](/GL%20Account%20Analysis%20%28Drilldown%29%20%28with%20inventory%20and%20WIP%29/ "GL Account Analysis (Drilldown) (with inventory and WIP) Oracle EBS SQL Report"), [GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report"), [GL Account Analysis](/GL%20Account%20Analysis/ "GL Account Analysis Oracle EBS SQL Report")
+[AR Customer Upload](/AR%20Customer%20Upload/ "AR Customer Upload Oracle EBS SQL Report"), [GL Account Analysis (Drilldown) (with inventory and WIP)](/GL%20Account%20Analysis%20%28Drilldown%29%20%28with%20inventory%20and%20WIP%29/ "GL Account Analysis (Drilldown) (with inventory and WIP) Oracle EBS SQL Report"), [GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report"), [GL Account Analysis](/GL%20Account%20Analysis/ "GL Account Analysis Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
@@ -32,7 +32,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/pn-billing-payment-term-upload/) |
+| Excel Example Output | [](https://www.enginatics.com/example/pn-billing-payment-term-upload/) |
 | Blitz Report™ XML Import | [PN_Billing_Payment_Term_Upload.xml](https://www.enginatics.com/xml/pn-billing-payment-term-upload/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/pn-billing-payment-term-upload/](https://www.enginatics.com/reports/pn-billing-payment-term-upload/) |
 

@@ -204,7 +204,7 @@ with wip_detail as
     and miqv2.organization_id        (+) = wro.organization_id
     and miqv2.inventory_item_id      (+) = wro.inventory_item_id
     and miqv2.subinventory_code      (+) = nvl(wro.supply_subinventory,'@@@')
-    and nvl(miqv2.locator_id,-1)         = nvl(wro.supply_locator_id,-1)
+    and nvl(miqv2.locator_id(+),-1)      = nvl(wro.supply_locator_id,-1)
     --
     and milk.organization_id         (+) = wro.organization_id
     and milk.inventory_location_id   (+) = wro.supply_locator_id

@@ -2,7 +2,7 @@
 layout: default
 title: 'AP Supplier Upload | Oracle EBS SQL Report'
 description: 'This upload can be used to create and/or update Suppliers, Supplier Sites, Supplier Bank Accounts, and Supplier Contacts'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Upload, Supplier, per_employees_x, per_business_groups_perf, fnd_territories_vl'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, Supplier, per_employees_x, per_business_groups_perf, fnd_territories_vl'
 permalink: /AP%20Supplier%20Upload/
 ---
 
@@ -14,13 +14,13 @@ permalink: /AP%20Supplier%20Upload/
 This upload can be used to create and/or update Suppliers, Supplier Sites, Supplier Bank Accounts, and Supplier Contacts
 
 ## Report Parameters
-Upload Mode, Supplier Type, Exclude Employee Suppliers, Supplier Name, Supplier Name From, Supplier Name To, Supplier Number, Supplier Number From, Supplier Number To, Payment Method, Tax Registration Number, Supplier Site, Supplier/Site Status, Bank Account Status, Contact Status, Update Supplier Bank Accounts, Update Supplier Sites, Update Site Bank Accounts, Update Site Contacts, Default Site Bank Acct Assign Lvl, Default Tax Rounding Rule, Default Inclusive Tax, Default Allow Offset Taxes, Default Pay Each Document Alone
+Upload Mode, Allow Update on Create, Operating Unit, Supplier Type, Exclude Employee Suppliers, Supplier Name, Supplier Name From, Supplier Name To, Supplier Number, Supplier Number From, Supplier Number To, Payment Method, Tax Registration Number, Supplier Site, Supplier/Site Status, Bank Account Status, Contact Status, Update Supplier Bank Accounts, Update Supplier Sites, Update Site Bank Accounts, Update Site Contacts, Default Site Bank Acct Assign Lvl, Default Tax Rounding Rule, Default Inclusive Tax, Default Allow Offset Taxes, Default Pay Each Document Alone
 
 ## Oracle EBS Tables Used
 [per_employees_x](https://www.enginatics.com/library/?pg=1&find=per_employees_x), [per_business_groups_perf](https://www.enginatics.com/library/?pg=1&find=per_business_groups_perf), [fnd_territories_vl](https://www.enginatics.com/library/?pg=1&find=fnd_territories_vl), [rcv_routing_headers](https://www.enginatics.com/library/?pg=1&find=rcv_routing_headers), [ap_terms_vl](https://www.enginatics.com/library/?pg=1&find=ap_terms_vl), [ap_awt_groups](https://www.enginatics.com/library/?pg=1&find=ap_awt_groups), [iby_ext_party_pmt_mthds](https://www.enginatics.com/library/?pg=1&find=iby_ext_party_pmt_mthds), [iby_payment_methods_vl](https://www.enginatics.com/library/?pg=1&find=iby_payment_methods_vl), [iby_payment_reasons_vl](https://www.enginatics.com/library/?pg=1&find=iby_payment_reasons_vl), [iby_formats_vl](https://www.enginatics.com/library/?pg=1&find=iby_formats_vl), [iby_delivery_channels_vl](https://www.enginatics.com/library/?pg=1&find=iby_delivery_channels_vl), [iby_bank_instructions_vl](https://www.enginatics.com/library/?pg=1&find=iby_bank_instructions_vl)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only), [Upload](https://www.enginatics.com/library/?pg=1&category[]=Upload)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Upload](https://www.enginatics.com/library/?pg=1&category[]=Upload)
 
 
 
@@ -31,7 +31,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/ap-supplier-upload/) |
+| Excel Example Output | [](https://www.enginatics.com/example/ap-supplier-upload/) |
 | Blitz Report™ XML Import | [AP_Supplier_Upload.xml](https://www.enginatics.com/xml/ap-supplier-upload/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/ap-supplier-upload/](https://www.enginatics.com/reports/ap-supplier-upload/) |
 

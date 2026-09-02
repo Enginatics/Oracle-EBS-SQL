@@ -1,7 +1,7 @@
 ---
 layout: default
 title: 'Blitz Reports | Oracle EBS SQL Report'
-description: 'Blitz Reports with parameters and assignments. If you are using the free version of Blitz Report, you can use the parameter ''Sort by Free 30 Reports'' to…'
+description: 'All Enginatics report details can be seen here: https://www.enginatics.com/library/?pg=1&category[]=Enginatics Blitz Reports with parameters and…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Blitz, Reports, xxen_reports_v, table, xxen_reports_h'
 permalink: /Blitz%20Reports/
 ---
@@ -11,11 +11,14 @@ permalink: /Blitz%20Reports/
 **Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/blitz-reports/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
 
 ## Overview
+All Enginatics report details can be seen here:
+<a href="https://www.enginatics.com/library/?pg=1&category[]=Enginatics" rel="nofollow" target="_blank">https://www.enginatics.com/library/?pg=1&category[]=Enginatics</a>
+
 Blitz Reports with parameters and assignments.
 If you are using the free version of Blitz Report, you can use the parameter 'Sort by Free 30 Reports' to show your free reports in column 'Free 30 Reports'.
 
 ## Report Parameters
-Category, Not in Category, Type, Report Name, Report name <>, Report Name like, Parameter Name, Parameter Type, Show Parameters, Show Upload Parameters, Show Upload Columns, Show Assignments, Show executions within x days, Enabled, DB Package exists, Sort by Free 30 Reports, Include Anchors and Binds, Parameter SQL Text contains, Using LOV, Matching Value contains, Default Value contains, Modified Date From, Created By, Not Created By, Creation Date From, Last Update Date From, Last Updated By, Not Last Updated By, Updated By (Report or Param), Update Date From (Report or Param), SQL Last Update Date From, Non merged copied reports, Not assigned to level
+Category, Not in Category, Type, Report Name, Report name <>, Report Name like, Parameter Name, Parameter Type, Show Parameters, Show Upload Parameters, Show Upload Columns, Show Assignments, Show executions within x days, Disabled, DB Package exists, Sort by Free 30 Reports, Include Anchors and Binds, Parameter SQL Text contains, Using LOV, Matching Value contains, Default Value contains, Modified Date From, Created By, Not Created By, Creation Date From, Last Update Date From, Last Updated By, Not Last Updated By, Updated By (Report or Param), Update Date From (Report or Param), SQL Last Update Date From, Non merged copied reports, Not assigned to level
 
 ## Oracle EBS Tables Used
 [xxen_reports_v](https://www.enginatics.com/library/?pg=1&find=xxen_reports_v), [table](https://www.enginatics.com/library/?pg=1&find=table), [xxen_reports_h](https://www.enginatics.com/library/?pg=1&find=xxen_reports_h), [xxen_report_assignments](https://www.enginatics.com/library/?pg=1&find=xxen_report_assignments), [xxen_report_parameters](https://www.enginatics.com/library/?pg=1&find=xxen_report_parameters), [xxen_report_templates](https://www.enginatics.com/library/?pg=1&find=xxen_report_templates), [fnd_user](https://www.enginatics.com/library/?pg=1&find=fnd_user), [xxen_report_parameters_v](https://www.enginatics.com/library/?pg=1&find=xxen_report_parameters_v), [xxen_report_assignments_v](https://www.enginatics.com/library/?pg=1&find=xxen_report_assignments_v), [xxen_report_runs](https://www.enginatics.com/library/?pg=1&find=xxen_report_runs), [xxen_upload_parameters_v](https://www.enginatics.com/library/?pg=1&find=xxen_upload_parameters_v), [xxen_upload_columns_v](https://www.enginatics.com/library/?pg=1&find=xxen_upload_columns_v), [anchors](https://www.enginatics.com/library/?pg=1&find=anchors), [lexicals](https://www.enginatics.com/library/?pg=1&find=lexicals), [binds](https://www.enginatics.com/library/?pg=1&find=binds)
@@ -24,7 +27,7 @@ Category, Not in Category, Type, Report Name, Report name <>, Report Name like, 
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related Reports
-[GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report"), [GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20%28Distributions%29/ "GL Account Analysis (Distributions) Oracle EBS SQL Report"), [CAC Interface Error Summary](/CAC%20Interface%20Error%20Summary/ "CAC Interface Error Summary Oracle EBS SQL Report"), [ZX US Sales Tax](/ZX%20US%20Sales%20Tax/ "ZX US Sales Tax Oracle EBS SQL Report"), [Blitz Report History](/Blitz%20Report%20History/ "Blitz Report History Oracle EBS SQL Report"), [Blitz Report Assignment Upload](/Blitz%20Report%20Assignment%20Upload/ "Blitz Report Assignment Upload Oracle EBS SQL Report"), [Blitz Report Assignments](/Blitz%20Report%20Assignments/ "Blitz Report Assignments Oracle EBS SQL Report"), [DIS End User Layers](/DIS%20End%20User%20Layers/ "DIS End User Layers Oracle EBS SQL Report")
+[GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report"), [CAC Interface Error Summary](/CAC%20Interface%20Error%20Summary/ "CAC Interface Error Summary Oracle EBS SQL Report"), [ZX US Sales Tax](/ZX%20US%20Sales%20Tax/ "ZX US Sales Tax Oracle EBS SQL Report"), [Blitz Report History](/Blitz%20Report%20History/ "Blitz Report History Oracle EBS SQL Report"), [Blitz Report Assignment Upload](/Blitz%20Report%20Assignment%20Upload/ "Blitz Report Assignment Upload Oracle EBS SQL Report"), [DIS End User Layers](/DIS%20End%20User%20Layers/ "DIS End User Layers Oracle EBS SQL Report"), [Blitz Report Assignment Validation](/Blitz%20Report%20Assignment%20Validation/ "Blitz Report Assignment Validation Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.

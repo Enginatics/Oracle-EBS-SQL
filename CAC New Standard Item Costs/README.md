@@ -65,7 +65,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/cac-new-standard-item-costs/) |
+| Excel Example Output | [](https://www.enginatics.com/example/cac-new-standard-item-costs/) |
 | Blitz Report™ XML Import | [CAC_New_Standard_Item_Costs.xml](https://www.enginatics.com/xml/cac-new-standard-item-costs/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/cac-new-standard-item-costs/](https://www.enginatics.com/reports/cac-new-standard-item-costs/) |
 

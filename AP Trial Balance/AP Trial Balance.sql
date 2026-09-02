@@ -62,7 +62,7 @@ aptb_trx as
  where
   xte.application_id=200 and 
   xte.entity_code='AP_INVOICES' and 
-  xte.source_id_int_1=aia.invoice_id and
+  nvl(xte.source_id_int_1,-99)=aia.invoice_id and
   xte.entity_id=xtb.source_entity_id
 ),
 aptb_acc as 

@@ -2,7 +2,7 @@
 layout: default
 title: 'MRP Item Forecast Upload | Oracle EBS SQL Report'
 description: 'MRP Item Forecast Upload ================================ - Create New Item Forecast Entries. - Update Existing Item Forecast Entries. - Delete Existing…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Upload, MRP, Item, Forecast, pa_projects_all, pjm_seiban_numbers, pa_tasks'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, MRP, Item, Forecast, pa_projects_all, pjm_seiban_numbers, pa_tasks'
 permalink: /MRP%20Item%20Forecast%20Upload/
 ---
 
@@ -85,10 +85,10 @@ Upload Mode, Delete Existing Forecast, Default Bucket Type, Default Workday Cont
 [pa_projects_all](https://www.enginatics.com/library/?pg=1&find=pa_projects_all), [pjm_seiban_numbers](https://www.enginatics.com/library/?pg=1&find=pjm_seiban_numbers), [pa_tasks](https://www.enginatics.com/library/?pg=1&find=pa_tasks), [wip_lines](https://www.enginatics.com/library/?pg=1&find=wip_lines), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters), [mrp_forecast_designators](https://www.enginatics.com/library/?pg=1&find=mrp_forecast_designators), [mrp_forecast_items_v](https://www.enginatics.com/library/?pg=1&find=mrp_forecast_items_v), [mrp_forecast_dates](https://www.enginatics.com/library/?pg=1&find=mrp_forecast_dates), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only), [Upload](https://www.enginatics.com/library/?pg=1&category[]=Upload)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Upload](https://www.enginatics.com/library/?pg=1&category[]=Upload)
 
 ## Related Reports
-[MRP Item Forecast](/MRP%20Item%20Forecast/ "MRP Item Forecast Oracle EBS SQL Report"), [MRP Pegging](/MRP%20Pegging/ "MRP Pegging Oracle EBS SQL Report"), [WIP Entities](/WIP%20Entities/ "WIP Entities Oracle EBS SQL Report"), [INV Safety Stocks](/INV%20Safety%20Stocks/ "INV Safety Stocks Oracle EBS SQL Report")
+[MRP Item Forecast](/MRP%20Item%20Forecast/ "MRP Item Forecast Oracle EBS SQL Report"), [MRP Pegging](/MRP%20Pegging/ "MRP Pegging Oracle EBS SQL Report"), [WIP Entities](/WIP%20Entities/ "WIP Entities Oracle EBS SQL Report"), [INV Safety Stocks](/INV%20Safety%20Stocks/ "INV Safety Stocks Oracle EBS SQL Report"), [WIP Job Upload](/WIP%20Job%20Upload/ "WIP Job Upload Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.

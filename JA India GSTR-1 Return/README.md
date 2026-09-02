@@ -37,7 +37,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/ja-india-gstr-1-return/) |
+| Excel Example Output | [](https://www.enginatics.com/example/ja-india-gstr-1-return/) |
 | Blitz Report™ XML Import | [JA_India_GSTR_1_Return.xml](https://www.enginatics.com/xml/ja-india-gstr-1-return/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/ja-india-gstr-1-return/](https://www.enginatics.com/reports/ja-india-gstr-1-return/) |
 

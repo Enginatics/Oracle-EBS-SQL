@@ -2,7 +2,7 @@
 layout: default
 title: 'XLE Establishment and Legal Entity Associations | Oracle EBS SQL Report'
 description: 'Master data report showing the legal entity associations to other business entities such as: - Legal Entities - Operating Units - Inventory Organizations…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, XLE, Establishment, Legal, Entity, xle_associations_v, xle_entity_profiles'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, XLE, Establishment, Legal, Entity, xle_associations_v, xle_entity_profiles'
 permalink: /XLE%20Establishment%20and%20Legal%20Entity%20Associations/
 ---
 
@@ -27,7 +27,7 @@ Parent Legal Entity, Entity Type
 [xle_associations_v](https://www.enginatics.com/library/?pg=1&find=xle_associations_v), [xle_entity_profiles](https://www.enginatics.com/library/?pg=1&find=xle_entity_profiles)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related Reports
 [AP Invoice Approval Status](/AP%20Invoice%20Approval%20Status/ "AP Invoice Approval Status Oracle EBS SQL Report"), [CE General Ledger Cash Account Usage](/CE%20General%20Ledger%20Cash%20Account%20Usage/ "CE General Ledger Cash Account Usage Oracle EBS SQL Report"), [CE Cleared Transactions](/CE%20Cleared%20Transactions/ "CE Cleared Transactions Oracle EBS SQL Report"), [FND Responsibility Access](/FND%20Responsibility%20Access/ "FND Responsibility Access Oracle EBS SQL Report"), [CE Bank Statement and Reconciliation](/CE%20Bank%20Statement%20and%20Reconciliation/ "CE Bank Statement and Reconciliation Oracle EBS SQL Report"), [ZX Party Tax Profiles](/ZX%20Party%20Tax%20Profiles/ "ZX Party Tax Profiles Oracle EBS SQL Report"), [IBY Payment Process Request Details](/IBY%20Payment%20Process%20Request%20Details/ "IBY Payment Process Request Details Oracle EBS SQL Report")

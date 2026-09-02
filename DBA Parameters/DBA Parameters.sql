@@ -22,6 +22,15 @@ gp.*,
 count(distinct gp.value) over (partition by gp.name) dupl_count
 from
 gv$parameter gp
+union all
+select
+to_number(sys_context('userenv','instance')) inst_id,
+vp.*,
+1 dupl_count
+from
+v$parameter vp
+where
+vp.name not in (select gp.name from gv$parameter gp)
 ) x
 where
 1=1

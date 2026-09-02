@@ -2,7 +2,7 @@
 layout: default
 title: 'FND SOA Runtime Error | Oracle EBS SQL Report'
 description: ' – Oracle E-Business Suite SQL report'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, FND, SOA, Runtime, Error, fnd_soa_runtime_error'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, FND, SOA, Runtime, Error, fnd_soa_runtime_error'
 permalink: /FND%20SOA%20Runtime%20Error/
 ---
 
@@ -11,7 +11,7 @@ permalink: /FND%20SOA%20Runtime%20Error/
 **Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/fnd-soa-runtime-error/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
 
 ## Overview
-None
+
 
 ## Report Parameters
 Logged within x Days, Date From, Date To
@@ -20,10 +20,10 @@ Logged within x Days, Date From, Date To
 [fnd_soa_runtime_error](https://www.enginatics.com/library/?pg=1&find=fnd_soa_runtime_error)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related Reports
-[Blitz Report History](/Blitz%20Report%20History/ "Blitz Report History Oracle EBS SQL Report"), [CAC Interface Error Summary](/CAC%20Interface%20Error%20Summary/ "CAC Interface Error Summary Oracle EBS SQL Report"), [DBA ORDS Configuration Validation](/DBA%20ORDS%20Configuration%20Validation/ "DBA ORDS Configuration Validation Oracle EBS SQL Report"), [AR Unaccounted Transaction Sweep](/AR%20Unaccounted%20Transaction%20Sweep/ "AR Unaccounted Transaction Sweep Oracle EBS SQL Report"), [IBY Payment Process Request Details](/IBY%20Payment%20Process%20Request%20Details/ "IBY Payment Process Request Details Oracle EBS SQL Report")
+[Blitz Report History](/Blitz%20Report%20History/ "Blitz Report History Oracle EBS SQL Report"), [EAM PM Schedule Upload](/EAM%20PM%20Schedule%20Upload/ "EAM PM Schedule Upload Oracle EBS SQL Report"), [CAC Missing Material Accounting Transactions](/CAC%20Missing%20Material%20Accounting%20Transactions/ "CAC Missing Material Accounting Transactions Oracle EBS SQL Report"), [AR Unaccounted Transaction Sweep](/AR%20Unaccounted%20Transaction%20Sweep/ "AR Unaccounted Transaction Sweep Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.

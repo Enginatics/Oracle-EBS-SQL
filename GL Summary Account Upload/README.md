@@ -2,7 +2,7 @@
 layout: default
 title: 'GL Summary Account Upload | Oracle EBS SQL Report'
 description: 'This upload can be used to import Summary Account Templates. – Oracle E-Business Suite SQL report'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Upload, Summary, Account, gl_summary_templates, gl_summary_bc_options, fnd_lookup_values_vl'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, Summary, Account, gl_summary_templates, gl_summary_bc_options, fnd_lookup_values_vl'
 permalink: /GL%20Summary%20Account%20Upload/
 ---
 
@@ -20,10 +20,10 @@ Ledger
 [gl_summary_templates](https://www.enginatics.com/library/?pg=1&find=gl_summary_templates), [gl_summary_bc_options](https://www.enginatics.com/library/?pg=1&find=gl_summary_bc_options), [fnd_lookup_values_vl](https://www.enginatics.com/library/?pg=1&find=fnd_lookup_values_vl), [gl_budgets_require_journals_v](https://www.enginatics.com/library/?pg=1&find=gl_budgets_require_journals_v), [gl_ledgers](https://www.enginatics.com/library/?pg=1&find=gl_ledgers)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only), [Upload](https://www.enginatics.com/library/?pg=1&category[]=Upload)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Upload](https://www.enginatics.com/library/?pg=1&category[]=Upload)
 
 ## Related Reports
-[GL Budget Amounts Upload](/GL%20Budget%20Amounts%20Upload/ "GL Budget Amounts Upload Oracle EBS SQL Report"), [AP Supplier Upload](/AP%20Supplier%20Upload/ "AP Supplier Upload Oracle EBS SQL Report"), [CAC Interface Error Summary](/CAC%20Interface%20Error%20Summary/ "CAC Interface Error Summary Oracle EBS SQL Report"), [GL Balance by Account Hierarchy](/GL%20Balance%20by%20Account%20Hierarchy/ "GL Balance by Account Hierarchy Oracle EBS SQL Report"), [GL Account Analysis](/GL%20Account%20Analysis/ "GL Account Analysis Oracle EBS SQL Report")
+[GL Budget Amounts Upload](/GL%20Budget%20Amounts%20Upload/ "GL Budget Amounts Upload Oracle EBS SQL Report"), [GL Setup Upload](/GL%20Setup%20Upload/ "GL Setup Upload Oracle EBS SQL Report"), [AP Supplier Upload](/AP%20Supplier%20Upload/ "AP Supplier Upload Oracle EBS SQL Report"), [CAC Interface Error Summary](/CAC%20Interface%20Error%20Summary/ "CAC Interface Error Summary Oracle EBS SQL Report"), [GL Balance by Account Hierarchy](/GL%20Balance%20by%20Account%20Hierarchy/ "GL Balance by Account Hierarchy Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
@@ -32,7 +32,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/gl-summary-account-upload/) |
+| Excel Example Output | [](https://www.enginatics.com/example/gl-summary-account-upload/) |
 | Blitz Report™ XML Import | [GL_Summary_Account_Upload.xml](https://www.enginatics.com/xml/gl-summary-account-upload/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/gl-summary-account-upload/](https://www.enginatics.com/reports/gl-summary-account-upload/) |
 

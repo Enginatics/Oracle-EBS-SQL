@@ -2,7 +2,7 @@
 layout: default
 title: 'CAC WIP Material Usage Variance | Oracle EBS SQL Report'
 description: 'Report your material usage variances for your open and closed WIP jobs. This report replicates the Material Variance Section for the Oracle Discrete Job…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, CAC, WIP, Material, Usage, wip_discrete_jobs, org_acct_periods, mtl_parameters'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, CAC, WIP, Material, Usage, wip_discrete_jobs, org_acct_periods, mtl_parameters'
 permalink: /CAC%20WIP%20Material%20Usage%20Variance/
 ---
 
@@ -57,7 +57,7 @@ Report Option, Period Name, Cost Type, Include Scrap Quantities, Include Unrelea
 [wip_discrete_jobs](https://www.enginatics.com/library/?pg=1&find=wip_discrete_jobs), [org_acct_periods](https://www.enginatics.com/library/?pg=1&find=org_acct_periods), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters), [wip_accounting_classes](https://www.enginatics.com/library/?pg=1&find=wip_accounting_classes), [mtl_material_transactions](https://www.enginatics.com/library/?pg=1&find=mtl_material_transactions), [org_access_view](https://www.enginatics.com/library/?pg=1&find=org_access_view), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl), [wdj00](https://www.enginatics.com/library/?pg=1&find=wdj00), [wdj0](https://www.enginatics.com/library/?pg=1&find=wdj0), [wdj](https://www.enginatics.com/library/?pg=1&find=wdj), [cst_item_costs](https://www.enginatics.com/library/?pg=1&find=cst_item_costs), [cst_item_cost_details](https://www.enginatics.com/library/?pg=1&find=cst_item_cost_details), [cst_cost_types](https://www.enginatics.com/library/?pg=1&find=cst_cost_types), [wdj_assys](https://www.enginatics.com/library/?pg=1&find=wdj_assys), [dual](https://www.enginatics.com/library/?pg=1&find=dual), [mtl_cst_actual_cost_details](https://www.enginatics.com/library/?pg=1&find=mtl_cst_actual_cost_details)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 
 

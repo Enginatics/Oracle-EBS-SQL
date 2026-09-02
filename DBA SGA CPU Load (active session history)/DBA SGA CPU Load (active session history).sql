@@ -32,5 +32,5 @@ where
 where
 2=2
 order by
-sample_time,
+sample_time desc,
 inst_id

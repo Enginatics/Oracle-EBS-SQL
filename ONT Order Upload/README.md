@@ -32,7 +32,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/ont-order-upload/) |
+| Excel Example Output | [](https://www.enginatics.com/example/ont-order-upload/) |
 | Blitz Report™ XML Import | [ONT_Order_Upload.xml](https://www.enginatics.com/xml/ont-order-upload/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/ont-order-upload/](https://www.enginatics.com/reports/ont-order-upload/) |
 

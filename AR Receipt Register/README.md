@@ -2,7 +2,7 @@
 layout: default
 title: 'AR Receipt Register | Oracle EBS SQL Report'
 description: 'Application: Receivables Description: Receivables Receipt Register Provided Templates: Default: Detail - Detail Listing with no Pivot Summarization Pivot…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Receipt, Register, ar_receivable_apps_all_mrc_v, ar_receivable_applications_all, ar_payment_schedules_all'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Receipt, Register, ar_receivable_apps_all_mrc_v, ar_receivable_applications_all, ar_payment_schedules_all'
 permalink: /AR%20Receipt%20Register/
 ---
 
@@ -34,7 +34,7 @@ Reporting Level, Reporting Context, Balancing Segment Low, Balancing Segment Hig
 [ar_receivable_apps_all_mrc_v](https://www.enginatics.com/library/?pg=1&find=ar_receivable_apps_all_mrc_v), [ar_receivable_applications_all](https://www.enginatics.com/library/?pg=1&find=ar_receivable_applications_all), [ar_payment_schedules_all](https://www.enginatics.com/library/?pg=1&find=ar_payment_schedules_all), [ar_batches_all](https://www.enginatics.com/library/?pg=1&find=ar_batches_all), [ar_cash_receipts_all](https://www.enginatics.com/library/?pg=1&find=ar_cash_receipts_all), [ap_inv_selection_criteria_all](https://www.enginatics.com/library/?pg=1&find=ap_inv_selection_criteria_all), [ap_checks_all](https://www.enginatics.com/library/?pg=1&find=ap_checks_all), [ra_customer_trx_all](https://www.enginatics.com/library/?pg=1&find=ra_customer_trx_all)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 
 

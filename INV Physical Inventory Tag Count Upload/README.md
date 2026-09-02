@@ -2,7 +2,7 @@
 layout: default
 title: 'INV Physical Inventory Tag Count Upload | Oracle EBS SQL Report'
 description: 'INV Physical Inventory Tag Count Upload ================================= This upload enables the user to upload counts against the Physical Inventory…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Upload, INV, Physical, Inventory, Tag, mtl_physical_subinventories, gl_code_combinations_kfv, per_all_people_f'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, INV, Physical, Inventory, Tag, mtl_physical_subinventories, gl_code_combinations_kfv, per_all_people_f'
 permalink: /INV%20Physical%20Inventory%20Tag%20Count%20Upload/
 ---
 
@@ -18,14 +18,14 @@ This upload enables the user to upload counts against the Physical Inventory Tag
 The upload supports
 - the update of counts against existing Tags
 - the generation of new tags.
-  For clients on R12.2.14 or creation of manually entered tag numbers is supported 
+  For clients on R12.2.14 or later, creation of manually entered tag numbers is supported 
   For clients on earlier releases, to generate a new tag leave the tag number blank. The tag number will be automatically generated when the tag is created
 
 For clients on R12.2.3 or later
 - the upload also supports the voiding/unvoiding of existing tags as well
 
 Note:
-There is currently a bug in the R12.2.3+ API that will reject the creation/update of tags for items which do not require Locatiors in Subinvnetories wher the Location Control is set to 'Check Item Level'. The API is only checking the Locator control level at the subinventory level, and if is not set to 'Locators not required' will reject any tags for items where no locator is specified. For this reason, if the physical inventory being uploaded includes any subinventories with Locator Control set to 'Check Item Level', the upload will revert to using the older API.   
+There is currently a bug in the R12.2.3+ API that will reject the creation/update of tags for items which do not require Locators in Subinvnetories where the Locator Control is set to 'Check Item Level'. The API is only checking the Locator control level at the subinventory level, and if it is not set to 'Locators not required' will reject any tags for items where no locator is specified. For this reason, if the physical inventory being uploaded includes any subinventories with Locator Control set to 'Check Item Level', the upload will revert to using the older API.   
 
 
 ## Report Parameters
@@ -35,10 +35,10 @@ Upload Mode, Organization Code, Physical Inventory, Counted By, Subinventory, Ca
 [mtl_physical_subinventories](https://www.enginatics.com/library/?pg=1&find=mtl_physical_subinventories), [gl_code_combinations_kfv](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations_kfv), [per_all_people_f](https://www.enginatics.com/library/?pg=1&find=per_all_people_f), [mtl_physical_inventories_v](https://www.enginatics.com/library/?pg=1&find=mtl_physical_inventories_v), [mtl_physical_inventory_tags](https://www.enginatics.com/library/?pg=1&find=mtl_physical_inventory_tags), [mtl_physical_adjustments](https://www.enginatics.com/library/?pg=1&find=mtl_physical_adjustments), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters), [mtl_item_locations_kfv](https://www.enginatics.com/library/?pg=1&find=mtl_item_locations_kfv), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl), [mtl_item_categories](https://www.enginatics.com/library/?pg=1&find=mtl_item_categories), [mtl_categories_kfv](https://www.enginatics.com/library/?pg=1&find=mtl_categories_kfv), [mpit_qry](https://www.enginatics.com/library/?pg=1&find=mpit_qry)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only), [Upload](https://www.enginatics.com/library/?pg=1&category[]=Upload)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Upload](https://www.enginatics.com/library/?pg=1&category[]=Upload)
 
 ## Related Reports
-[GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report"), [GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20%28Distributions%29/ "GL Account Analysis (Distributions) Oracle EBS SQL Report"), [GL Account Analysis (Drilldown) (with inventory and WIP)](/GL%20Account%20Analysis%20%28Drilldown%29%20%28with%20inventory%20and%20WIP%29/ "GL Account Analysis (Drilldown) (with inventory and WIP) Oracle EBS SQL Report"), [GL Account Analysis](/GL%20Account%20Analysis/ "GL Account Analysis Oracle EBS SQL Report"), [INV Item Upload](/INV%20Item%20Upload/ "INV Item Upload Oracle EBS SQL Report"), [INV Items](/INV%20Items/ "INV Items Oracle EBS SQL Report")
+[GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report"), [GL Account Analysis (Drilldown) (with inventory and WIP)](/GL%20Account%20Analysis%20%28Drilldown%29%20%28with%20inventory%20and%20WIP%29/ "GL Account Analysis (Drilldown) (with inventory and WIP) Oracle EBS SQL Report"), [GL Account Analysis](/GL%20Account%20Analysis/ "GL Account Analysis Oracle EBS SQL Report"), [INV Item Upload](/INV%20Item%20Upload/ "INV Item Upload Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
@@ -47,7 +47,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/inv-physical-inventory-tag-count-upload/) |
+| Excel Example Output | [](https://www.enginatics.com/example/inv-physical-inventory-tag-count-upload/) |
 | Blitz Report™ XML Import | [INV_Physical_Inventory_Tag_Count_Upload.xml](https://www.enginatics.com/xml/inv-physical-inventory-tag-count-upload/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/inv-physical-inventory-tag-count-upload/](https://www.enginatics.com/reports/inv-physical-inventory-tag-count-upload/) |
 

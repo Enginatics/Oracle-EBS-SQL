@@ -11,7 +11,7 @@ This upload can be used to create and update Inventory Items.
 
 It supports creation of Inventory Items:
 - by manually entering the Item details.
-- from the same item in the Master Organization (equivalent to Assigning the item to a child organization)
+- from a master row, with optional semicolon-separated child organization assignments
 - from an item template (Copy from Template)
 - from an existing item in the same Organization (Copy from Item)
 
@@ -21,7 +21,12 @@ It supports update of existing Inventory Items either by:
 
 It also supports the item category assignment to multiple Inventory Category Sets
 -  to assign an item to another category set, repeat the Organization Code and Item Number on a separate row in the excel and add the details of the additional category set and item category to which the item is to be assigned.
-- for child organizations, only the category sets controlled at the organization level can be selected.   
+- for child organizations, only the category sets controlled at the organization level can be selected.
+- to remove an existing category assignment, download the item first, then set the Delete Category column to Yes on the row showing the Category Set and Item Category to be removed. Deletion is not permitted for mandatory category sets that require the item to remain assigned.
+
+Additionally
+- supports creation and update of item revisions
+- supports creation, update, and deletion of manufacturer part numbers
 
 Upload Mode parameter:
 Create - allows creation of new items only
@@ -32,6 +37,11 @@ Create Empty File parameter
 Setting the Create Empty File parameter to Yes will open an empty upload excel. 
 This parameter is only applicable to the 'Update' and 'Create, Update' upload modes and suppresses the download of existing item details. ‘Create’ upload mode always opens an empty upload excel regardless of the setting of this parameter.
 This is useful for users who want to paste the details of the items to be updated into an empty upload excel file from another source.
+
+Update on Create Null Handling
+In Create, Update mode the upload allows a Create action to update an existing item if it already exists. This parameter determines how null values are handled when a create action results in an update to an existing item.
+'Null means Clear' - the upload will clear the data from the corresponding column (set it to null).
+'Null means No Change' - the upload will leave the data in the corresponding column unchanged.
 
 Number of Import Workers parameter
 This parameter determines the number of Item Import worker concurrent requests that will be submitted in parallel to import the uploaded items into Oracle Inventory. The number of workers can be increased to improve the throughput of the process when uploading a larger number of item changes.
@@ -57,7 +67,9 @@ null message_,
 null request_id_,
 null modified_columns_,
 :p_upload_mode upload_mode_,
+:p_upd_on_cre_null_mode upd_on_cre_null_mode,
 null item_row_id,
+null revision_row_id,
 null item_cat_row_id,
 null mfg_part_row_id,
 null set_process_id,
@@ -72,15 +84,15 @@ null copy_from_item,
 mic.category_set_name category_set,
 mic.category item_category,
 -- Catalog Assignment
-(select micgbk.concatenated_segments from mtl_item_catalog_groups_b_kfv micgbk where micgbk.item_catalog_group_id = msiv.item_catalog_group_id) item_catalog,
+(select micgbk.concatenated_segments from mtl_item_catalog_groups_b_kfv micgbk where micgbk.item_catalog_group_id=msiv.item_catalog_group_id) item_catalog,
 -- Main
 msiv.description description,
 msiv.long_description long_description,
 xxen_util.meaning(msiv.item_type,'ITEM_TYPE',3) user_item_type,
-(select mis.inventory_item_status_code_tl from mtl_item_status mis where mis.inventory_item_status_code = msiv.inventory_item_status_code) item_status,
+(select mis.inventory_item_status_code_tl from mtl_item_status mis where mis.inventory_item_status_code=msiv.inventory_item_status_code) item_status,
 xxen_util.meaning(msiv.allowed_units_lookup_code,'MTL_CONVERSION_TYPE',700) conversions,
-(select muomt.unit_of_measure_tl from mtl_units_of_measure_tl muomt where muomt.uom_code = msiv.primary_uom_code and language = userenv('lang') and rownum <= 1) primary_unit_of_measure,
-(select muomt.unit_of_measure_tl from mtl_units_of_measure_tl muomt where muomt.uom_code = msiv.secondary_uom_code and language = userenv('lang') and rownum <= 1) secondary_unit_of_measure,
+(select muomt.unit_of_measure_tl from mtl_units_of_measure_tl muomt where muomt.uom_code=msiv.primary_uom_code and language=userenv('lang') and rownum <= 1) primary_unit_of_measure,
+(select muomt.unit_of_measure_tl from mtl_units_of_measure_tl muomt where muomt.uom_code=msiv.secondary_uom_code and language=userenv('lang') and rownum <= 1) secondary_unit_of_measure,
 xxen_util.meaning(msiv.tracking_quantity_ind,'INV_TRACKING_UOM_TYPE',0) tracking_uom_indicator,
 xxen_util.meaning(msiv.ont_pricing_qty_source,'INV_PRICING_UOM_TYPE',0) pricing_uom_indicator,
 xxen_util.meaning(msiv.secondary_default_ind,'INV_DEFAULTING_UOM_TYPE',0) defaulting_control,
@@ -109,19 +121,19 @@ xxen_util.meaning(msiv.shelf_life_code,'MTL_SHELF_LIFE',700) lot_expiration,
 msiv.shelf_life_days shelf_life_days,
 msiv.retest_interval retest_interval,
 msiv.expiration_action_interval expiration_action_interval,
-(select ma.description from mtl_actions ma where ma.action_code = msiv.expiration_action_code) expiration_action,
+(select ma.description from mtl_actions ma where ma.action_code=msiv.expiration_action_code) expiration_action,
 ----Cycle Count
 xxen_util.meaning(msiv.cycle_count_enabled_flag,'YES_NO',0) cycle_count_enabled,
 msiv.negative_measurement_error negative_measurement_error,
 msiv.positive_measurement_error positive_measurement_error,
 ----Grade Controlled
 xxen_util.meaning(msiv.grade_control_flag,'YES_NO',0) grade_controlled,
-(select mg.description from mtl_grades mg where mg.grade_code = msiv.default_grade) default_grade,
+(select mg.description from mtl_grades mg where mg.grade_code=msiv.default_grade) default_grade,
 ----Not Visible in Form
 xxen_util.meaning(msiv.lot_status_enabled,'YES_NO',0) lot_status_enabled,
-(select mms.status_code from mtl_material_statuses mms where mms.status_id = msiv.default_lot_status_id) default_lot_status,
+(select mms.status_code from mtl_material_statuses mms where mms.status_id=msiv.default_lot_status_id) default_lot_status,
 xxen_util.meaning(msiv.serial_status_enabled,'YES_NO',0) serial_status_enabled,
-(select mms.status_code from mtl_material_statuses mms where mms.status_id = msiv.default_serial_status_id) default_serial_status,
+(select mms.status_code from mtl_material_statuses mms where mms.status_id=msiv.default_serial_status_id) default_serial_status,
 xxen_util.meaning(msiv.lot_split_enabled,'YES_NO',0) lot_split_enabled,
 xxen_util.meaning(msiv.lot_merge_enabled,'YES_NO',0) lot_merge_enabled,
 xxen_util.meaning(msiv.lot_translate_enabled,'YES_NO',0) lot_translate_enabled,
@@ -140,7 +152,7 @@ xxen_util.meaning(msiv.copy_lot_attribute_flag,'YES_NO',0) copy_lot_attributes,
 --Bills of Material
 xxen_util.meaning(msiv.bom_enabled_flag,'YES_NO',0) bom_allowed,
 xxen_util.meaning(msiv.bom_item_type,'BOM_ITEM_TYPE',700) bom_item_type,
-(select msiv2.concatenated_segments from mtl_system_items_vl msiv2 where msiv2.organization_id = msiv.organization_id and msiv2.inventory_item_id = msiv.base_item_id) base_model,
+(select msiv2.concatenated_segments from mtl_system_items_vl msiv2 where msiv2.organization_id=msiv.organization_id and msiv2.inventory_item_id=msiv.base_item_id) base_model,
 xxen_util.meaning(msiv.auto_created_config_flag,'YES_NO',0) autocreated_configuration,
 xxen_util.meaning(msiv.effectivity_control,'BOM_EFFECTIVITY_CONTROL',700) effectivity_control,
 xxen_util.meaning(msiv.config_model_type,'CZ_CONFIG_MODEL_TYPE',708) configurator_model_type,
@@ -152,7 +164,7 @@ xxen_util.meaning(msiv.eng_item_flag,'YES_NO',0) engineering_item,
 xxen_util.meaning(msiv.costing_enabled_flag,'YES_NO',0) costing_enabled,
 xxen_util.meaning(msiv.inventory_asset_flag,'YES_NO',0) inventory_asset_value,
 xxen_util.meaning(msiv.default_include_in_rollup_flag,'YES_NO',0) include_in_rollup,
-(select gcck.concatenated_segments from gl_code_combinations_kfv gcck where gcck.code_combination_id = msiv.cost_of_sales_account) cost_of_goods_sold_account,
+(select gcck.concatenated_segments from gl_code_combinations_kfv gcck where gcck.code_combination_id=msiv.cost_of_sales_account) cost_of_goods_sold_account,
 msiv.std_lot_size standard_lot_size,
 -- Asset Management
 xxen_util.meaning(msiv.eam_item_type,'MTL_EAM_ITEM_TYPE',700) asset_item_type,
@@ -174,19 +186,19 @@ xxen_util.meaning(msiv.taxable_flag,'YES_NO',0) taxable,
 xxen_util.meaning(msiv.purchasing_tax_code,'ZX_INPUT_CLASSIFICATIONS',0) input_tax_classification_code,
 xxen_util.meaning(msiv.receipt_required_flag,'YES_NO',0) receipt_required,
 xxen_util.meaning(msiv.inspection_required_flag,'YES_NO',0) inspection_required,
-(select ppx.full_name from per_people_x ppx where ppx.person_id = msiv.buyer_id) default_buyer,
+(select ppx.full_name from per_people_x ppx where ppx.person_id=msiv.buyer_id) default_buyer,
 msiv.list_price_per_unit list_price,
 msiv.market_price market_price,
 msiv.price_tolerance_percent price_tolerance_pct,
 msiv.receive_close_tolerance receipt_close_tolerance,
 msiv.invoice_close_tolerance invoice_close_tolerance,
 msiv.rounding_factor rounding_factor,
-(select muomt.unit_of_measure_tl from mtl_units_of_measure_tl muomt where muomt.unit_of_measure = msiv.unit_of_issue and language = userenv('lang') and rownum <= 1) unit_of_issue,
-(select pun.un_number from po_un_numbers pun where pun.un_number_id = msiv.un_number_id) un_number,
-(select phc.hazard_class from po_hazard_classes phc where phc.hazard_class_id = msiv.hazard_class_id) hazard_class,
-(select gcck.concatenated_segments from gl_code_combinations_kfv gcck where gcck.code_combination_id = msiv.encumbrance_account) encumbrance_account,
-(select gcck.concatenated_segments from gl_code_combinations_kfv gcck where gcck.code_combination_id = msiv.expense_account) expense_account,
-(select fcbk.concatenated_segments from fa_categories_b_kfv fcbk where fcbk.category_id = msiv.asset_category_id) asset_category,
+(select muomt.unit_of_measure_tl from mtl_units_of_measure_tl muomt where muomt.unit_of_measure=msiv.unit_of_issue and language=userenv('lang') and rownum <= 1) unit_of_issue,
+(select pun.un_number from po_un_numbers pun where pun.un_number_id=msiv.un_number_id) un_number,
+(select phc.hazard_class from po_hazard_classes phc where phc.hazard_class_id=msiv.hazard_class_id) hazard_class,
+(select gcck.concatenated_segments from gl_code_combinations_kfv gcck where gcck.code_combination_id=msiv.encumbrance_account) encumbrance_account,
+(select gcck.concatenated_segments from gl_code_combinations_kfv gcck where gcck.code_combination_id=msiv.expense_account) expense_account,
+(select fcbk.concatenated_segments from fa_categories_b_kfv fcbk where fcbk.category_id=msiv.asset_category_id) asset_category,
 -- Receiving
 xxen_util.meaning(msiv.receipt_days_exception_code,'RECEIVING CONTROL LEVEL',201) receipt_date_action,
 msiv.days_early_receipt_allowed days_early_receipt_allowed,
@@ -196,14 +208,14 @@ xxen_util.meaning(msiv.allow_unordered_receipts_flag,'YES_NO',0) allow_unordered
 xxen_util.meaning(msiv.allow_express_delivery_flag,'YES_NO',0) allow_express_transactions,
 xxen_util.meaning(msiv.qty_rcv_exception_code,'RCV OPTION',201) over_receipt_qty_action,
 msiv.qty_rcv_tolerance over_receipt_qty_tolerance,
-(select rrh.routing_name from rcv_routing_headers rrh where rrh.routing_header_id = msiv.receiving_routing_id) receipt_routing,
+(select rrh.routing_name from rcv_routing_headers rrh where rrh.routing_header_id=msiv.receiving_routing_id) receipt_routing,
 xxen_util.meaning(msiv.enforce_ship_to_location_code,'RECEIVING CONTROL LEVEL',201) enforce_ship_to,
 -- Physical Attributes
-(select muomt.unit_of_measure_tl from mtl_units_of_measure_tl muomt where muomt.uom_code = msiv.weight_uom_code and language = userenv('lang') and rownum <= 1) weight_unit_of_measure,
+(select muomt.unit_of_measure_tl from mtl_units_of_measure_tl muomt where muomt.uom_code=msiv.weight_uom_code and language=userenv('lang') and rownum <= 1) weight_unit_of_measure,
 msiv.unit_weight unit_weight,
-(select muomt.unit_of_measure_tl from mtl_units_of_measure_tl muomt where muomt.uom_code = msiv.volume_uom_code and language = userenv('lang') and rownum <= 1) volume_unit_of_measure,
+(select muomt.unit_of_measure_tl from mtl_units_of_measure_tl muomt where muomt.uom_code=msiv.volume_uom_code and language=userenv('lang') and rownum <= 1) volume_unit_of_measure,
 msiv.unit_volume unit_volume,
-(select muomt.unit_of_measure_tl from mtl_units_of_measure_tl muomt where muomt.uom_code = msiv.dimension_uom_code and language = userenv('lang') and rownum <= 1) dimension_unit_of_measure,
+(select muomt.unit_of_measure_tl from mtl_units_of_measure_tl muomt where muomt.uom_code=msiv.dimension_uom_code and language=userenv('lang') and rownum <= 1) dimension_unit_of_measure,
 msiv.unit_length length,
 msiv.unit_width width,
 msiv.unit_height height,
@@ -231,7 +243,7 @@ msiv.maximum_order_quantity maximum_order_quantity,
 msiv.order_cost order_cost,
 msiv.carrying_cost carrying_cost_percent,
 xxen_util.meaning(msiv.source_type,'MTL_SOURCE_TYPES',700) source_type,
-(select mp2.organization_code from mtl_parameters mp2 where mp2.organization_id = msiv.source_organization_id) source_organization,
+(select mp2.organization_code from mtl_parameters mp2 where mp2.organization_id=msiv.source_organization_id) source_organization,
 msiv.source_subinventory source_subinventory,
 xxen_util.meaning(msiv.mrp_safety_stock_code,'MTL_SAFETY_STOCK_TYPE',700) safety_stock,
 msiv.safety_stock_bucket_days safety_stock_bucket_days,
@@ -308,7 +320,7 @@ msiv.lead_time_lot_size lead_time_lot_size,
 xxen_util.meaning(msiv.build_in_wip_flag,'YES_NO',0) build_in_wip,
 xxen_util.meaning(msiv.wip_supply_type,'WIP_SUPPLY',700) wip_supply_type,
 msiv.wip_supply_subinventory wip_supply_subinventory,
-(select milk.concatenated_segments from mtl_item_locations_kfv milk where milk.inventory_location_id = msiv.wip_supply_locator_id) wip_supply_locator,
+(select milk.concatenated_segments from mtl_item_locations_kfv milk where milk.inventory_location_id=msiv.wip_supply_locator_id) wip_supply_locator,
 xxen_util.meaning(msiv.overcompletion_tolerance_type,'WIP_TOLERANCE_TYPE',700) overcompletion_tolerance_type,
 msiv.overcompletion_tolerance_value overcompletion_tolerance_value,
 msiv.inventory_carry_penalty inventory_carry_penalty,
@@ -328,12 +340,12 @@ xxen_util.meaning(msiv.return_inspection_requirement,'MTL_RETURN_INSPECTION',700
 xxen_util.meaning(msiv.financing_allowed_flag,'YES_NO',0) financing_allowed,
 --
 xxen_util.meaning(msiv.atp_flag,'ATP_FLAG',3) check_atp,
-(select mar.rule_name from mtl_atp_rules mar where mar.rule_id = msiv.atp_rule_id) atp_rule,
+(select mar.rule_name from mtl_atp_rules mar where mar.rule_id=msiv.atp_rule_id) atp_rule,
 xxen_util.meaning(msiv.atp_components_flag,'ATP_FLAG',3) atp_components,
-(select wrv.name from wms_rules_vl wrv where wrv.rule_id = msiv.picking_rule_id) picking_rule,
-(select mp2.organization_code from mtl_parameters mp2 where mp2.organization_id = msiv.default_shipping_org) default_shipping_organization,
+(select wrv.name from wms_rules_vl wrv where wrv.rule_id=msiv.picking_rule_id) picking_rule,
+(select mp2.organization_code from mtl_parameters mp2 where mp2.organization_id=msiv.default_shipping_org) default_shipping_organization,
 xxen_util.meaning(msiv.default_so_source_type,'SOURCE_TYPE',660) default_so_source_type,
-(select fnd.UNIT_OF_MEASURE from MTL_UOM_CONVERSIONS fnd where fnd.UOM_CLASS = '(FND_PROFILE.VALUE(ONT_UOM_CLASS_CHARGE_PERIODICITY))' and fnd.UOM_CODE = msiv.charge_periodicity_code) charge_periodicity,
+(select fnd.UNIT_OF_MEASURE from MTL_UOM_CONVERSIONS fnd where fnd.UOM_CLASS='(FND_PROFILE.VALUE(ONT_UOM_CLASS_CHARGE_PERIODICITY))' and fnd.UOM_CODE=msiv.charge_periodicity_code) charge_periodicity,
 --
 msiv.over_shipment_tolerance over_shipment_tolerance,
 msiv.under_shipment_tolerance under_shipment_tolerance,
@@ -342,11 +354,11 @@ msiv.under_return_tolerance under_return_tolerance,
 -- Invoicing
 xxen_util.meaning(msiv.invoiceable_item_flag,'YES_NO',0) invoiceable_item,
 xxen_util.meaning(msiv.invoice_enabled_flag,'YES_NO',0) invoice_enabled,
-(select rr.name from ra_rules rr where rr.rule_id = msiv.accounting_rule_id) accounting_rule,
-(select rr.name from ra_rules rr where rr.rule_id = msiv.invoicing_rule_id) invoicing_rule,
+(select rr.name from ra_rules rr where rr.rule_id=msiv.accounting_rule_id) accounting_rule,
+(select rr.name from ra_rules rr where rr.rule_id=msiv.invoicing_rule_id) invoicing_rule,
 xxen_util.meaning(msiv.tax_code,'ZX_OUTPUT_CLASSIFICATIONS',0) output_tax_classification_code,
-(select gcck.concatenated_segments from gl_code_combinations_kfv gcck where gcck.code_combination_id = msiv.sales_account) sales_account,
-(select rtv.name from ra_terms_vl rtv where rtv.term_id = msiv.payment_terms_id) payment_terms,
+(select gcck.concatenated_segments from gl_code_combinations_kfv gcck where gcck.code_combination_id=msiv.sales_account) sales_account,
+(select rtv.name from ra_terms_vl rtv where rtv.term_id=msiv.payment_terms_id) payment_terms,
 -- Service
 xxen_util.meaning(msiv.serv_req_enabled_code,'CS_SR_SERV_REQ_ENABLED_TYPE',170) service_request,
 xxen_util.meaning(msiv.serviceable_product_flag,'YES_NO',0) enable_contract_coverage,
@@ -355,8 +367,8 @@ xxen_util.meaning(msiv.comms_activation_reqd_flag,'YES_NO',0) enable_provisionin
 --
 xxen_util.meaning(msiv.contract_item_type_code,'OKB_CONTRACT_ITEM_TYPE',0) contract_item_type,
 msiv.service_duration contract_duration,
-(select muomt.unit_of_measure_tl from mtl_units_of_measure_tl muomt where muomt.uom_code = msiv.service_duration_period_code and language = userenv('lang') and rownum <= 1) contract_duration_period,
-(select octv.name from oks_coverage_templts_v octv where octv.id = msiv.coverage_schedule_id) coverage_template,
+(select muomt.unit_of_measure_tl from mtl_units_of_measure_tl muomt where muomt.uom_code=msiv.service_duration_period_code and language=userenv('lang') and rownum <= 1) contract_duration_period,
+(select octv.name from oks_coverage_templts_v octv where octv.id=msiv.coverage_schedule_id) coverage_template,
 msiv.service_starting_delay starting_delay_days,
 --
 xxen_util.meaning(msiv.comms_nl_trackable_flag,'YES_NO',0) track_in_installed_base,
@@ -378,13 +390,11 @@ xxen_util.meaning(msiv.process_costing_enabled_flag,'YES_NO',0) process_costing_
 xxen_util.meaning(msiv.recipe_enabled_flag,'YES_NO',0) recipe_enabled,
 xxen_util.meaning(msiv.process_execution_enabled_flag,'YES_NO',0) process_execution_enabled,
 msiv.process_supply_subinventory process_supply_subinventory,
-(select milk.concatenated_segments from mtl_item_locations_kfv milk where milk.inventory_location_id = msiv.process_supply_locator_id) process_supply_locator,
+(select milk.concatenated_segments from mtl_item_locations_kfv milk where milk.inventory_location_id=msiv.process_supply_locator_id) process_supply_locator,
 msiv.process_yield_subinventory process_yield_subinventory,
-(select milk.concatenated_segments from mtl_item_locations_kfv milk where milk.inventory_location_id = msiv.process_yield_locator_id) process_yield_locator,
+(select milk.concatenated_segments from mtl_item_locations_kfv milk where milk.inventory_location_id=msiv.process_yield_locator_id) process_yield_locator,
 xxen_util.meaning(msiv.hazardous_material_flag,'YES_NO',0) hazardous_material,
 msiv.cas_number cas_number,
--- GST Columns
-&gst_hsn_select
 -- DFF Attributes
 xxen_util.display_flexfield_context(401,'MTL_SYSTEM_ITEMS',msiv.attribute_category) item_attribute_category,
 xxen_util.display_flexfield_value(401,'MTL_SYSTEM_ITEMS',msiv.attribute_category,'ATTRIBUTE1',msiv.row_id,msiv.attribute1) inv_item_attribute1,
@@ -417,8 +427,30 @@ xxen_util.display_flexfield_value(401,'MTL_SYSTEM_ITEMS',msiv.attribute_category
 xxen_util.display_flexfield_value(401,'MTL_SYSTEM_ITEMS',msiv.attribute_category,'ATTRIBUTE28',msiv.row_id,msiv.attribute28) inv_item_attribute28,
 xxen_util.display_flexfield_value(401,'MTL_SYSTEM_ITEMS',msiv.attribute_category,'ATTRIBUTE29',msiv.row_id,msiv.attribute29) inv_item_attribute29,
 xxen_util.display_flexfield_value(401,'MTL_SYSTEM_ITEMS',msiv.attribute_category,'ATTRIBUTE30',msiv.row_id,msiv.attribute30) inv_item_attribute30,
+-- Item Revisions
+mir.revision,
+mir.revision_label,
+mir.effectivity_date revision_effective_date,
+mir.description revision_description,
+xxen_util.meaning(mir.revision_reason,'EGO_ITEM_REVISION_REASON',0) revision_reason,
+xxen_util.display_flexfield_context(401,'MTL_ITEM_REVISIONS',mir.attribute_category) revision_attribute_category,
+xxen_util.display_flexfield_value(401,'MTL_ITEM_REVISIONS',mir.attribute_category,'ATTRIBUTE1',mir.row_id,mir.attribute1) revision_attribute1,
+xxen_util.display_flexfield_value(401,'MTL_ITEM_REVISIONS',mir.attribute_category,'ATTRIBUTE2',mir.row_id,mir.attribute2) revision_attribute2,
+xxen_util.display_flexfield_value(401,'MTL_ITEM_REVISIONS',mir.attribute_category,'ATTRIBUTE3',mir.row_id,mir.attribute3) revision_attribute3,
+xxen_util.display_flexfield_value(401,'MTL_ITEM_REVISIONS',mir.attribute_category,'ATTRIBUTE4',mir.row_id,mir.attribute4) revision_attribute4,
+xxen_util.display_flexfield_value(401,'MTL_ITEM_REVISIONS',mir.attribute_category,'ATTRIBUTE5',mir.row_id,mir.attribute5) revision_attribute5,
+xxen_util.display_flexfield_value(401,'MTL_ITEM_REVISIONS',mir.attribute_category,'ATTRIBUTE6',mir.row_id,mir.attribute6) revision_attribute6,
+xxen_util.display_flexfield_value(401,'MTL_ITEM_REVISIONS',mir.attribute_category,'ATTRIBUTE7',mir.row_id,mir.attribute7) revision_attribute7,
+xxen_util.display_flexfield_value(401,'MTL_ITEM_REVISIONS',mir.attribute_category,'ATTRIBUTE8',mir.row_id,mir.attribute8) revision_attribute8,
+xxen_util.display_flexfield_value(401,'MTL_ITEM_REVISIONS',mir.attribute_category,'ATTRIBUTE9',mir.row_id,mir.attribute9) revision_attribute9,
+xxen_util.display_flexfield_value(401,'MTL_ITEM_REVISIONS',mir.attribute_category,'ATTRIBUTE10',mir.row_id,mir.attribute10) revision_attribute10,
+xxen_util.display_flexfield_value(401,'MTL_ITEM_REVISIONS',mir.attribute_category,'ATTRIBUTE11',mir.row_id,mir.attribute11) revision_attribute11,
+xxen_util.display_flexfield_value(401,'MTL_ITEM_REVISIONS',mir.attribute_category,'ATTRIBUTE12',mir.row_id,mir.attribute12) revision_attribute12,
+xxen_util.display_flexfield_value(401,'MTL_ITEM_REVISIONS',mir.attribute_category,'ATTRIBUTE13',mir.row_id,mir.attribute13) revision_attribute13,
+xxen_util.display_flexfield_value(401,'MTL_ITEM_REVISIONS',mir.attribute_category,'ATTRIBUTE14',mir.row_id,mir.attribute14) revision_attribute14,
+xxen_util.display_flexfield_value(401,'MTL_ITEM_REVISIONS',mir.attribute_category,'ATTRIBUTE15',mir.row_id,mir.attribute15) revision_attribute15,
 -- Manufacturer Part Numbers
-(select mm.manufacturer_name from mtl_manufacturers mm where mm.manufacturer_id = mmpn.manufacturer_id) manufacturer,
+(select mm.manufacturer_name from mtl_manufacturers mm where mm.manufacturer_id=mmpn.manufacturer_id) manufacturer,
 mmpn.mfg_part_num,
 null delete_mfg_part,
 xxen_util.display_flexfield_context(401,'MTL_MFG_PART_NUMBERS',mmpn.attribute_category) mfg_part_attribute_category,
@@ -438,6 +470,8 @@ xxen_util.display_flexfield_value(401,'MTL_MFG_PART_NUMBERS',mmpn.attribute_cate
 xxen_util.display_flexfield_value(401,'MTL_MFG_PART_NUMBERS',mmpn.attribute_category,'ATTRIBUTE14',mmpn.rowid,mmpn.attribute14) mfg_part_attribute14,
 xxen_util.display_flexfield_value(401,'MTL_MFG_PART_NUMBERS',mmpn.attribute_category,'ATTRIBUTE15',mmpn.rowid,mmpn.attribute15) mfg_part_attribute15,
 --
+null delete_category,
+null assign_to_organizations,
 msiv.organization_id,
 msiv.inventory_item_id,
 to_number(mic.category_set_id) category_set_id,
@@ -447,35 +481,37 @@ decode(mp.organization_id,mp.master_organization_id,'Y',null) master_flag,
 from
 mtl_parameters mp,
 mtl_system_items_vl msiv,
-(select
- mic.organization_id,
- mic.inventory_item_id,
- mcs.category_set_name,
- mcs.category_set_id,
- mck.concatenated_segments category
- from
- mtl_item_categories mic,
- mtl_category_sets mcs,
- mtl_categories_kfv mck
- where
- mic.category_set_id = mcs.category_set_id and
- mic.category_id = mck.category_id and
- '&lp_templ_includes_cat_cols' = 'Y' and
- 2=2
-) mic,
-mtl_mfg_part_numbers mmpn
-&gst_hsn_tables
+(
+select
+mic.organization_id,
+mic.inventory_item_id,
+mcsv.category_set_name,
+mic.category_set_id,
+mck.concatenated_segments category
+from
+mtl_item_categories mic,
+mtl_category_sets_vl mcsv,
+mtl_categories_kfv mck
 where
-:p_upload_mode like '%' || xxen_upload.action_update and
-nvl(:p_create_empty_file,'N')  != 'Y' and
-nvl(:p_coa_id,-1)=nvl(:p_coa_id,-1) and
-nvl(:p_num_import_workers,1) = nvl(:p_num_import_workers,1) and
-nvl(:p_purge_after_days,-1) = nvl(:p_purge_after_days,-1) and
-&gst_hsn_where
+2=2 and
+'&lp_templ_includes_cat_cols'='Y' and
+mic.category_set_id=mcsv.category_set_id and
+mic.category_id=mck.category_id
+) mic,
+mtl_mfg_part_numbers mmpn,
+mtl_item_revisions_vl mir
+where
 1=1 and
-mp.organization_id in (select oav.organization_id from org_access_view oav where oav.responsibility_id = fnd_global.resp_id and oav.resp_application_id = fnd_global.resp_appl_id) and
-msiv.organization_id = mp.organization_id and
-msiv.organization_id = mic.organization_id (+) and
-msiv.inventory_item_id = mic.inventory_item_id (+) and
-decode('&lp_templ_includes_mfg_part_num','Y',mp.master_organization_id) = mmpn.organization_id (+) and
-decode('&lp_templ_includes_mfg_part_num','Y',msiv.inventory_item_id) = mmpn.inventory_item_id (+)
+:p_upload_mode like '%'||xxen_upload.action_update and
+nvl(:p_create_empty_file,'N')!='Y' and
+nvl(:p_coa_id,-1)=nvl(:p_coa_id,-1) and
+nvl(:p_num_import_workers,1)=nvl(:p_num_import_workers,1) and
+nvl(:p_purge_after_days,-1)=nvl(:p_purge_after_days,-1) and
+mp.organization_id in (select oav.organization_id from org_access_view oav where oav.responsibility_id=fnd_global.resp_id and oav.resp_application_id=fnd_global.resp_appl_id) and
+msiv.organization_id=mp.organization_id and
+msiv.organization_id=mic.organization_id(+) and
+msiv.inventory_item_id=mic.inventory_item_id(+) and
+decode('&lp_templ_includes_mfg_part_num','Y',mp.master_organization_id)=mmpn.organization_id(+) and
+decode('&lp_templ_includes_mfg_part_num','Y',msiv.inventory_item_id)=mmpn.inventory_item_id(+) and
+decode('&lp_templ_includes_revisions','Y',msiv.organization_id)=mir.organization_id(+) and
+decode('&lp_templ_includes_revisions','Y',msiv.inventory_item_id)=mir.inventory_item_id(+)

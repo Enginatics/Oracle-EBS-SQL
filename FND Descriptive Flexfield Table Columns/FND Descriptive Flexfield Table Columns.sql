@@ -29,7 +29,6 @@ fnd_descriptive_flexs_vl fdfv,
 fnd_tables ft,
 fnd_columns fc
 where
-fdfv.title='Enter Journals: Lines' and
 1=1 and
 fdfv.descriptive_flexfield_name not like '$SRS$.%' and
 fav.application_id=fdfv.application_id and

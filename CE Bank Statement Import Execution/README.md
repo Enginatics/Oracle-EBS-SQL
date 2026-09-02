@@ -2,7 +2,7 @@
 layout: default
 title: 'CE Bank Statement Import Execution | Oracle EBS SQL Report'
 description: 'Application: Cash Management Source: Bank Statement Import Execution Report Short Name: CEIMPERR DB package: CECEXINERRXMLPPKG'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, BI Publisher, Enginatics, R12 only, Bank, Statement, Import, Execution, ce_statement_headers_int, ce_lookups, ce_bank_accts_gt_v'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, BI Publisher, Enginatics, Bank, Statement, Import, Execution, ce_statement_headers_int, ce_lookups, ce_bank_accts_gt_v'
 permalink: /CE%20Bank%20Statement%20Import%20Execution/
 ---
 
@@ -23,7 +23,7 @@ Bank Name, Bank Branch Name, Bank Account Name, Bank Account Number, Statement N
 [ce_statement_headers_int](https://www.enginatics.com/library/?pg=1&find=ce_statement_headers_int), [ce_lookups](https://www.enginatics.com/library/?pg=1&find=ce_lookups), [ce_bank_accts_gt_v](https://www.enginatics.com/library/?pg=1&find=ce_bank_accts_gt_v), [ce_bank_branches_v](https://www.enginatics.com/library/?pg=1&find=ce_bank_branches_v), [ce_statement_headers](https://www.enginatics.com/library/?pg=1&find=ce_statement_headers), [ce_statement_lines](https://www.enginatics.com/library/?pg=1&find=ce_statement_lines), [ar_cash_receipts_all](https://www.enginatics.com/library/?pg=1&find=ar_cash_receipts_all), [ar_cash_receipt_history_all](https://www.enginatics.com/library/?pg=1&find=ar_cash_receipt_history_all), [ce_statement_reconcils_all](https://www.enginatics.com/library/?pg=1&find=ce_statement_reconcils_all), [ce_reconciliation_errors](https://www.enginatics.com/library/?pg=1&find=ce_reconciliation_errors), [ce_header_interface_errors](https://www.enginatics.com/library/?pg=1&find=ce_header_interface_errors)
 
 ## Report Categories
-[BI Publisher](https://www.enginatics.com/library/?pg=1&category[]=BI%20Publisher), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[BI Publisher](https://www.enginatics.com/library/?pg=1&category[]=BI%20Publisher), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 
 

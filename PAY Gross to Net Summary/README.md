@@ -32,7 +32,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/pay-gross-to-net-summary/) |
+| Excel Example Output | [](https://www.enginatics.com/example/pay-gross-to-net-summary/) |
 | Blitz Report™ XML Import | [PAY_Gross_to_Net_Summary.xml](https://www.enginatics.com/xml/pay-gross-to-net-summary/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/pay-gross-to-net-summary/](https://www.enginatics.com/reports/pay-gross-to-net-summary/) |
 

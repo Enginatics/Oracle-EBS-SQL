@@ -2,7 +2,7 @@
 layout: default
 title: 'MRP Sourcing Rule Upload | Oracle EBS SQL Report'
 description: 'MRP Sourcing Rule Upload ==================== - Upload new Sourcing Rules - Update Existing Sourcing Rules'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Upload, MRP, Sourcing, Rule, mrp_sourcing_rules, mtl_parameters, mrp_sr_receipt_org_v'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, MRP, Sourcing, Rule, mrp_sourcing_rules, mtl_parameters, mrp_sr_receipt_org_v'
 permalink: /MRP%20Sourcing%20Rule%20Upload/
 ---
 
@@ -23,7 +23,7 @@ Upload Mode, Sourcing Rule Type, Include Global Sourcing Rules, Sourcing Rule Or
 [mrp_sourcing_rules](https://www.enginatics.com/library/?pg=1&find=mrp_sourcing_rules), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters), [mrp_sr_receipt_org_v](https://www.enginatics.com/library/?pg=1&find=mrp_sr_receipt_org_v), [mrp_sr_source_org_v](https://www.enginatics.com/library/?pg=1&find=mrp_sr_source_org_v), [ap_suppliers](https://www.enginatics.com/library/?pg=1&find=ap_suppliers), [ap_supplier_sites_all](https://www.enginatics.com/library/?pg=1&find=ap_supplier_sites_all), [hr_all_organization_units_vl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_vl), [org_access_view](https://www.enginatics.com/library/?pg=1&find=org_access_view), [sr_query](https://www.enginatics.com/library/?pg=1&find=sr_query)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only), [Upload](https://www.enginatics.com/library/?pg=1&category[]=Upload)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Upload](https://www.enginatics.com/library/?pg=1&category[]=Upload)
 
 
 
@@ -34,7 +34,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/mrp-sourcing-rule-upload/) |
+| Excel Example Output | [](https://www.enginatics.com/example/mrp-sourcing-rule-upload/) |
 | Blitz Report™ XML Import | [MRP_Sourcing_Rule_Upload.xml](https://www.enginatics.com/xml/mrp-sourcing-rule-upload/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/mrp-sourcing-rule-upload/](https://www.enginatics.com/reports/mrp-sourcing-rule-upload/) |
 

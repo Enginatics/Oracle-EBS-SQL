@@ -23,7 +23,7 @@ Flex value sets with rollup groups
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related Reports
-[FND Rollup Groups](/FND%20Rollup%20Groups/ "FND Rollup Groups Oracle EBS SQL Report"), [FND Flex Value Hierarchy](/FND%20Flex%20Value%20Hierarchy/ "FND Flex Value Hierarchy Oracle EBS SQL Report"), [FND Flex Values](/FND%20Flex%20Values/ "FND Flex Values Oracle EBS SQL Report"), [FND Flex Value Upload](/FND%20Flex%20Value%20Upload/ "FND Flex Value Upload Oracle EBS SQL Report"), [PO Headers and Lines](/PO%20Headers%20and%20Lines/ "PO Headers and Lines Oracle EBS SQL Report"), [FA Asset Retirements](/FA%20Asset%20Retirements/ "FA Asset Retirements Oracle EBS SQL Report"), [AP Invoice Upload](/AP%20Invoice%20Upload/ "AP Invoice Upload Oracle EBS SQL Report"), [ONT System Parameters](/ONT%20System%20Parameters/ "ONT System Parameters Oracle EBS SQL Report")
+[FND Rollup Groups](/FND%20Rollup%20Groups/ "FND Rollup Groups Oracle EBS SQL Report"), [FND Flex Value Hierarchy](/FND%20Flex%20Value%20Hierarchy/ "FND Flex Value Hierarchy Oracle EBS SQL Report"), [FND Flex Values](/FND%20Flex%20Values/ "FND Flex Values Oracle EBS SQL Report"), [FND Flex Value Upload](/FND%20Flex%20Value%20Upload/ "FND Flex Value Upload Oracle EBS SQL Report"), [GL Chart of Accounts Mapping Rules](/GL%20Chart%20of%20Accounts%20Mapping%20Rules/ "GL Chart of Accounts Mapping Rules Oracle EBS SQL Report"), [AR Aging](/AR%20Aging/ "AR Aging Oracle EBS SQL Report"), [ONT System Parameters](/ONT%20System%20Parameters/ "ONT System Parameters Oracle EBS SQL Report"), [PO Headers and Lines](/PO%20Headers%20and%20Lines/ "PO Headers and Lines Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
@@ -32,7 +32,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/fnd-flex-hierarchies-rollup-groups/) |
+| Excel Example Output | [](https://www.enginatics.com/example/fnd-flex-hierarchies-rollup-groups/) |
 | Blitz Report™ XML Import | [FND_Flex_Hierarchies_Rollup_Groups.xml](https://www.enginatics.com/xml/fnd-flex-hierarchies-rollup-groups/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/fnd-flex-hierarchies-rollup-groups/](https://www.enginatics.com/reports/fnd-flex-hierarchies-rollup-groups/) |
 

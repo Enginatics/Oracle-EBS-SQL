@@ -5,7 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: Blitz Report Parameter Dependencies
--- Description: None
+-- Description: 
 -- Excel Examle Output: https://www.enginatics.com/example/blitz-report-parameter-dependencies/
 -- Library Link: https://www.enginatics.com/reports/blitz-report-parameter-dependencies/
 -- Run Report: https://demo.enginatics.com/

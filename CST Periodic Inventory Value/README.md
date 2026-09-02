@@ -2,7 +2,7 @@
 layout: default
 title: 'CST Periodic Inventory Value | Oracle EBS SQL Report'
 description: 'Imported from BI Publisher Description: Periodic Inventory Value Report Application: Bills of Material Source: Periodic Inventory Value Report (XML) Short…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, CST, Periodic, Inventory, Value, mtl_item_categories, mtl_categories_kfv, mtl_system_items_vl'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, CST, Periodic, Inventory, Value, mtl_item_categories, mtl_categories_kfv, mtl_system_items_vl'
 permalink: /CST%20Periodic%20Inventory%20Value/
 ---
 
@@ -25,7 +25,7 @@ Legal Entity, Cost Type, Period, Cost Group, Sort Option, Item From, Item To, Ca
 [mtl_item_categories](https://www.enginatics.com/library/?pg=1&find=mtl_item_categories), [mtl_categories_kfv](https://www.enginatics.com/library/?pg=1&find=mtl_categories_kfv), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl), [cst_pac_item_costs](https://www.enginatics.com/library/?pg=1&find=cst_pac_item_costs), [cst_cost_groups](https://www.enginatics.com/library/?pg=1&find=cst_cost_groups), [cst_pac_receiving_values_v](https://www.enginatics.com/library/?pg=1&find=cst_pac_receiving_values_v), [mtl_system_items](https://www.enginatics.com/library/?pg=1&find=mtl_system_items), [mtl_categories](https://www.enginatics.com/library/?pg=1&find=mtl_categories), [hr_locations](https://www.enginatics.com/library/?pg=1&find=hr_locations), [po_lookup_codes](https://www.enginatics.com/library/?pg=1&find=po_lookup_codes), [cst_pac_periods](https://www.enginatics.com/library/?pg=1&find=cst_pac_periods), [po_vendors](https://www.enginatics.com/library/?pg=1&find=po_vendors), [q_ic_main](https://www.enginatics.com/library/?pg=1&find=q_ic_main), [q_ic_rcv](https://www.enginatics.com/library/?pg=1&find=q_ic_rcv)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 
 

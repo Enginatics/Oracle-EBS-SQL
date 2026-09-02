@@ -2,7 +2,7 @@
 layout: default
 title: 'MSC Plan Order Upload | Oracle EBS SQL Report'
 description: 'Report: MSC Plan Orders Upload Description: Upload to action Plan Order recommendations. This upload can be used to either select for release or release…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Upload, MSC, Plan, Order, msc_system_items&a2m_dblink, msc_item_categories&a2m_dblink, msc_category_sets&a2m_dblink'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, MSC, Plan, Order, msc_system_items&a2m_dblink, msc_item_categories&a2m_dblink, msc_category_sets&a2m_dblink'
 permalink: /MSC%20Plan%20Order%20Upload/
 ---
 
@@ -49,10 +49,10 @@ Upload Mode, Auto Populate Release Status, Planning Instance, Plan, Organization
 [msc_system_items&a2m_dblink](https://www.enginatics.com/library/?pg=1&find=msc_system_items&a2m_dblink), [msc_item_categories&a2m_dblink](https://www.enginatics.com/library/?pg=1&find=msc_item_categories&a2m_dblink), [msc_category_sets&a2m_dblink](https://www.enginatics.com/library/?pg=1&find=msc_category_sets&a2m_dblink), [msc_boms&a2m_dblink](https://www.enginatics.com/library/?pg=1&find=msc_boms&a2m_dblink), [msc_bom_components&a2m_dblink](https://www.enginatics.com/library/?pg=1&find=msc_bom_components&a2m_dblink), [q_selected_items](https://www.enginatics.com/library/?pg=1&find=q_selected_items), [q_sub_components](https://www.enginatics.com/library/?pg=1&find=q_sub_components), [msc_safety_stocks&a2m_dblink](https://www.enginatics.com/library/?pg=1&find=msc_safety_stocks&a2m_dblink), [msc_supplies&a2m_dblink](https://www.enginatics.com/library/?pg=1&find=msc_supplies&a2m_dblink), [msc_apps_instances&a2m_dblink](https://www.enginatics.com/library/?pg=1&find=msc_apps_instances&a2m_dblink), [msc_plans&a2m_dblink](https://www.enginatics.com/library/?pg=1&find=msc_plans&a2m_dblink), [msc_plan_organizations&a2m_dblink](https://www.enginatics.com/library/?pg=1&find=msc_plan_organizations&a2m_dblink), [q_all_items](https://www.enginatics.com/library/?pg=1&find=q_all_items)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only), [Upload](https://www.enginatics.com/library/?pg=1&category[]=Upload)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Upload](https://www.enginatics.com/library/?pg=1&category[]=Upload)
 
 ## Related Reports
-[MSC Pegging Hierarchy](/MSC%20Pegging%20Hierarchy/ "MSC Pegging Hierarchy Oracle EBS SQL Report"), [MSC Pegging Hierarchy 11i](/MSC%20Pegging%20Hierarchy%2011i/ "MSC Pegging Hierarchy 11i Oracle EBS SQL Report"), [MSC Vertical Plan](/MSC%20Vertical%20Plan/ "MSC Vertical Plan Oracle EBS SQL Report"), [MSC Plan Orders](/MSC%20Plan%20Orders/ "MSC Plan Orders Oracle EBS SQL Report"), [MSC Horizontal Plan](/MSC%20Horizontal%20Plan/ "MSC Horizontal Plan Oracle EBS SQL Report"), [MSC Exceptions](/MSC%20Exceptions/ "MSC Exceptions Oracle EBS SQL Report"), [OPM Batch Lot Cost Details](/OPM%20Batch%20Lot%20Cost%20Details/ "OPM Batch Lot Cost Details Oracle EBS SQL Report"), [CAC ICP PII Inventory and Intransit Value (Period-End)](/CAC%20ICP%20PII%20Inventory%20and%20Intransit%20Value%20%28Period-End%29/ "CAC ICP PII Inventory and Intransit Value (Period-End) Oracle EBS SQL Report"), [CAC ICP PII Inventory Pending Cost Adjustment](/CAC%20ICP%20PII%20Inventory%20Pending%20Cost%20Adjustment/ "CAC ICP PII Inventory Pending Cost Adjustment Oracle EBS SQL Report")
+[MSC Pegging Hierarchy](/MSC%20Pegging%20Hierarchy/ "MSC Pegging Hierarchy Oracle EBS SQL Report"), [MSC Vertical Plan](/MSC%20Vertical%20Plan/ "MSC Vertical Plan Oracle EBS SQL Report"), [MSC Plan Orders](/MSC%20Plan%20Orders/ "MSC Plan Orders Oracle EBS SQL Report"), [MSC Horizontal Plan](/MSC%20Horizontal%20Plan/ "MSC Horizontal Plan Oracle EBS SQL Report"), [MSC Exceptions](/MSC%20Exceptions/ "MSC Exceptions Oracle EBS SQL Report"), [CAC ICP PII Inventory and Intransit Value (Period-End)](/CAC%20ICP%20PII%20Inventory%20and%20Intransit%20Value%20%28Period-End%29/ "CAC ICP PII Inventory and Intransit Value (Period-End) Oracle EBS SQL Report"), [CAC ICP PII Inventory Pending Cost Adjustment](/CAC%20ICP%20PII%20Inventory%20Pending%20Cost%20Adjustment/ "CAC ICP PII Inventory Pending Cost Adjustment Oracle EBS SQL Report"), [MRP Plan Orders](/MRP%20Plan%20Orders/ "MRP Plan Orders Oracle EBS SQL Report"), [CST Supply Chain Indented Bills of Material Cost](/CST%20Supply%20Chain%20Indented%20Bills%20of%20Material%20Cost/ "CST Supply Chain Indented Bills of Material Cost Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
@@ -61,7 +61,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/msc-plan-order-upload/) |
+| Excel Example Output | [](https://www.enginatics.com/example/msc-plan-order-upload/) |
 | Blitz Report™ XML Import | [MSC_Plan_Order_Upload.xml](https://www.enginatics.com/xml/msc-plan-order-upload/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/msc-plan-order-upload/](https://www.enginatics.com/reports/msc-plan-order-upload/) |
 

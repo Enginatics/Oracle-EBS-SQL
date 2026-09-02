@@ -74,8 +74,8 @@ to_date(null) transaction_date,
 to_char(null) locator,
 (select hla.location_code from hr_locations_all hla where hla.location_id=(select pda.deliver_to_location_id from po_distributions_all pda where pda.line_location_id=plla.line_location_id and rownum=1)) deliver_to_location,
 (select ft.territory_short_name from fnd_territories_vl ft where ft.territory_code=plla.country_of_origin_code) country_of_origin,
-to_char(null) vendor_lot_num,
-to_char(null) comments
+cast(null as varchar2(30)) vendor_lot_num,
+cast(null as varchar2(240)) comments
 from
 po_headers_all pha,
 ap_suppliers aps,

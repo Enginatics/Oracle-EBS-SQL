@@ -22,8 +22,7 @@ Event Name, Subscription Function
 ## Report Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
-## Related Reports
-[FND User Roles](/FND%20User%20Roles/ "FND User Roles Oracle EBS SQL Report")
+
 
 ## Running This SQL Without Blitz Report
 Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.

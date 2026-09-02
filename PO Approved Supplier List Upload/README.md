@@ -2,7 +2,7 @@
 layout: default
 title: 'PO Approved Supplier List Upload | Oracle EBS SQL Report'
 description: 'This upload supports the creation and update of Approved Supplier Lists (ASL) in Oracle Purchasing. The upload supports creation/update/deletion of the…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Upload, Approved, Supplier, List, mtl_categories_tl, po_approved_supplier_list, mtl_manufacturers'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, Approved, Supplier, List, mtl_categories_tl, po_approved_supplier_list, mtl_manufacturers'
 permalink: /PO%20Approved%20Supplier%20List%20Upload/
 ---
 
@@ -51,7 +51,7 @@ Upload Mode, Owning Organization Code, Type, Item, Item From, Item To, Commodity
 [mtl_categories_tl](https://www.enginatics.com/library/?pg=1&find=mtl_categories_tl), [po_approved_supplier_list](https://www.enginatics.com/library/?pg=1&find=po_approved_supplier_list), [mtl_manufacturers](https://www.enginatics.com/library/?pg=1&find=mtl_manufacturers), [po_asl_statuses](https://www.enginatics.com/library/?pg=1&find=po_asl_statuses), [per_people_x](https://www.enginatics.com/library/?pg=1&find=per_people_x), [chv_bucket_patterns](https://www.enginatics.com/library/?pg=1&find=chv_bucket_patterns), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl), [mtl_categories_b_kfv](https://www.enginatics.com/library/?pg=1&find=mtl_categories_b_kfv), [ap_suppliers](https://www.enginatics.com/library/?pg=1&find=ap_suppliers), [ap_supplier_sites](https://www.enginatics.com/library/?pg=1&find=ap_supplier_sites), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters), [hr_all_organization_units_tl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_tl), [po_asl_attributes](https://www.enginatics.com/library/?pg=1&find=po_asl_attributes), [po_asl_documents](https://www.enginatics.com/library/?pg=1&find=po_asl_documents), [po_headers_all](https://www.enginatics.com/library/?pg=1&find=po_headers_all), [po_lines_all](https://www.enginatics.com/library/?pg=1&find=po_lines_all), [org_access_view](https://www.enginatics.com/library/?pg=1&find=org_access_view)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only), [Upload](https://www.enginatics.com/library/?pg=1&category[]=Upload)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Upload](https://www.enginatics.com/library/?pg=1&category[]=Upload)
 
 
 
@@ -62,7 +62,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/po-approved-supplier-list-upload/) |
+| Excel Example Output | [](https://www.enginatics.com/example/po-approved-supplier-list-upload/) |
 | Blitz Report™ XML Import | [PO_Approved_Supplier_List_Upload.xml](https://www.enginatics.com/xml/po-approved-supplier-list-upload/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/po-approved-supplier-list-upload/](https://www.enginatics.com/reports/po-approved-supplier-list-upload/) |
 

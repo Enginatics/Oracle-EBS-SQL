@@ -2,7 +2,7 @@
 layout: default
 title: 'AR Disputed Invoice | Oracle EBS SQL Report'
 description: 'Imported Oracle standard disputed invoice report Source: Disputed Invoice Report (XML) Short Name: ARXDIRXML DB package: ARARXDIRXMLPPKG'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, BI Publisher, Enginatics, R12 only, Disputed, Invoice, gl_sets_of_books, fnd_currencies, hr_operating_units'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Disputed, Invoice, gl_sets_of_books, fnd_currencies, hr_operating_units'
 permalink: /AR%20Disputed%20Invoice/
 ---
 
@@ -23,10 +23,10 @@ Operating Unit, Order By, Customer Name Low, Customer Name High, Customer Number
 [gl_sets_of_books](https://www.enginatics.com/library/?pg=1&find=gl_sets_of_books), [fnd_currencies](https://www.enginatics.com/library/?pg=1&find=fnd_currencies), [hr_operating_units](https://www.enginatics.com/library/?pg=1&find=hr_operating_units), [ar_payment_schedules_all](https://www.enginatics.com/library/?pg=1&find=ar_payment_schedules_all), [ra_customer_trx_all](https://www.enginatics.com/library/?pg=1&find=ra_customer_trx_all), [ra_cust_trx_types_all](https://www.enginatics.com/library/?pg=1&find=ra_cust_trx_types_all), [hz_cust_accounts](https://www.enginatics.com/library/?pg=1&find=hz_cust_accounts), [hz_parties](https://www.enginatics.com/library/?pg=1&find=hz_parties), [hz_customer_profiles](https://www.enginatics.com/library/?pg=1&find=hz_customer_profiles), [&lp_table_show_bill_mo](https://www.enginatics.com/library/?pg=1&find=&lp_table_show_bill_mo), [ar_notes](https://www.enginatics.com/library/?pg=1&find=ar_notes)
 
 ## Report Categories
-[BI Publisher](https://www.enginatics.com/library/?pg=1&category[]=BI%20Publisher), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related Reports
-[AR Customer Credit Limits](/AR%20Customer%20Credit%20Limits/ "AR Customer Credit Limits Oracle EBS SQL Report"), [AR Aging](/AR%20Aging/ "AR Aging Oracle EBS SQL Report"), [AR Customers and Sites](/AR%20Customers%20and%20Sites/ "AR Customers and Sites Oracle EBS SQL Report"), [AR Customer Upload](/AR%20Customer%20Upload/ "AR Customer Upload Oracle EBS SQL Report")
+[AR Aging](/AR%20Aging/ "AR Aging Oracle EBS SQL Report"), [AR Customer Upload](/AR%20Customer%20Upload/ "AR Customer Upload Oracle EBS SQL Report"), [AR Customers and Sites](/AR%20Customers%20and%20Sites/ "AR Customers and Sites Oracle EBS SQL Report"), [AR Customer Credit Limits](/AR%20Customer%20Credit%20Limits/ "AR Customer Credit Limits Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.

@@ -2,7 +2,7 @@
 layout: default
 title: 'ONT Cancelled Orders | Oracle EBS SQL Report'
 description: 'Imported from BI Publisher Description: Cancelled Orders Report Application: Order Management Source: Cancelled Orders Report (XML) Short Name…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, ONT, Cancelled, Orders, oe_order_lines_all, oe_order_headers_all, mtl_system_items_vl'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, ONT, Cancelled, Orders, oe_order_lines_all, oe_order_headers_all, mtl_system_items_vl'
 permalink: /ONT%20Cancelled%20Orders/
 ---
 
@@ -25,10 +25,10 @@ Operating Unit, Sort By, Customer Name (From), Customer Name (To), Order Number 
 [oe_order_lines_all](https://www.enginatics.com/library/?pg=1&find=oe_order_lines_all), [oe_order_headers_all](https://www.enginatics.com/library/?pg=1&find=oe_order_headers_all), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl), [ra_salesreps_all](https://www.enginatics.com/library/?pg=1&find=ra_salesreps_all), [oe_sold_to_orgs_v](https://www.enginatics.com/library/?pg=1&find=oe_sold_to_orgs_v), [oe_order_lines_history](https://www.enginatics.com/library/?pg=1&find=oe_order_lines_history), [oe_reasons](https://www.enginatics.com/library/?pg=1&find=oe_reasons)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related Reports
-[ONT Orders and Lines](/ONT%20Orders%20and%20Lines/ "ONT Orders and Lines Oracle EBS SQL Report"), [PPF_WP3_OM_DETAILS](/PPF_WP3_OM_DETAILS/ "PPF_WP3_OM_DETAILS Oracle EBS SQL Report"), [GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report"), [GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20%28Distributions%29/ "GL Account Analysis (Distributions) Oracle EBS SQL Report")
+[PPF_WP3_OM_DETAILS](/PPF_WP3_OM_DETAILS/ "PPF_WP3_OM_DETAILS Oracle EBS SQL Report"), [ONT Orders and Lines](/ONT%20Orders%20and%20Lines/ "ONT Orders and Lines Oracle EBS SQL Report"), [GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report"), [GL Account Analysis](/GL%20Account%20Analysis/ "GL Account Analysis Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.

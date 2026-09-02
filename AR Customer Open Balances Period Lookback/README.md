@@ -2,7 +2,7 @@
 layout: default
 title: 'AR Customer Open Balances Period Lookback | Oracle EBS SQL Report'
 description: 'Report: AR Customer Open Balances Period Lookback Application: Receivables Description: Customer Open Balances summary showing - Open Balances as of the…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Customer, Open, Balances, Period, ar_receivable_applications_all, ar_adjustments_all, gl_daily_conversion_types'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Customer, Open, Balances, Period, ar_receivable_applications_all, ar_adjustments_all, gl_daily_conversion_types'
 permalink: /AR%20Customer%20Open%20Balances%20Period%20Lookback/
 ---
 
@@ -33,7 +33,7 @@ Ledger, Operating Unit, Currency, Customer, As of Date, Look Back <n> Periods, M
 [ar_receivable_applications_all](https://www.enginatics.com/library/?pg=1&find=ar_receivable_applications_all), [ar_adjustments_all](https://www.enginatics.com/library/?pg=1&find=ar_adjustments_all), [gl_daily_conversion_types](https://www.enginatics.com/library/?pg=1&find=gl_daily_conversion_types), [gl_daily_rates](https://www.enginatics.com/library/?pg=1&find=gl_daily_rates), [hr_operating_units](https://www.enginatics.com/library/?pg=1&find=hr_operating_units), [gl_ledgers](https://www.enginatics.com/library/?pg=1&find=gl_ledgers), [ra_customer_trx_all](https://www.enginatics.com/library/?pg=1&find=ra_customer_trx_all), [ar_payment_schedules_all](https://www.enginatics.com/library/?pg=1&find=ar_payment_schedules_all), [ra_cust_trx_types_all](https://www.enginatics.com/library/?pg=1&find=ra_cust_trx_types_all), [ra_cust_trx_line_gl_dist_all](https://www.enginatics.com/library/?pg=1&find=ra_cust_trx_line_gl_dist_all), [hz_cust_accounts](https://www.enginatics.com/library/?pg=1&find=hz_cust_accounts), [hz_parties](https://www.enginatics.com/library/?pg=1&find=hz_parties), [ar_system_parameters_all](https://www.enginatics.com/library/?pg=1&find=ar_system_parameters_all), [xle_entity_profiles](https://www.enginatics.com/library/?pg=1&find=xle_entity_profiles), [ar_lookups](https://www.enginatics.com/library/?pg=1&find=ar_lookups), [ar_cash_receipts_all](https://www.enginatics.com/library/?pg=1&find=ar_cash_receipts_all), [ar_cash_receipt_history_all](https://www.enginatics.com/library/?pg=1&find=ar_cash_receipt_history_all)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 
 
@@ -44,7 +44,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/ar-customer-open-balances-period-lookback/) |
+| Excel Example Output | [](https://www.enginatics.com/example/ar-customer-open-balances-period-lookback/) |
 | Blitz Report™ XML Import | [AR_Customer_Open_Balances_Period_Lookback.xml](https://www.enginatics.com/xml/ar-customer-open-balances-period-lookback/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/ar-customer-open-balances-period-lookback/](https://www.enginatics.com/reports/ar-customer-open-balances-period-lookback/) |
 

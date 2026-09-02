@@ -127,6 +127,7 @@ end
 jrrev.resource_name salesperson,
 (select name from ra_rules rr where rcta.invoicing_rule_id=rule_id) invoice_rule,
 (select rr.name from ra_customer_trx_lines_all rctla, ra_rules rr where rcta.customer_trx_id=rctla.customer_trx_id and rctla.line_type='LINE' and rctla.accounting_rule_id=rr.rule_id and rownum=1) accounting_rule,
+case when xal.application_id=222 then (select rctla.translated_description from xla_distribution_links xdl, ra_cust_trx_line_gl_dist_all rctlgda, ra_customer_trx_lines_all rctla where xdl.application_id=222 and xal.ae_header_id=xdl.ae_header_id and xal.ae_line_num=xdl.ae_line_num and case when xdl.source_distribution_type='RA_CUST_TRX_LINE_GL_DIST_ALL' then xdl.source_distribution_id_num_1 when xdl.applied_to_distribution_type='RA_CUST_TRX_LINE_GL_DIST_ALL' then xdl.applied_to_dist_id_num_1 end=rctlgda.cust_trx_line_gl_dist_id and rctlgda.customer_trx_line_id=rctla.customer_trx_line_id and rownum=1) end translated_description,
 coalesce(aps.segment1,hca.account_number) vendor_or_customer_number,
 coalesce(aps.vendor_name,hp.party_name) vendor_or_customer_name,
 coalesce(assa.vendor_site_code,hcsua.location) vendor_or_customer_site,

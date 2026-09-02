@@ -2,7 +2,7 @@
 layout: default
 title: 'EAM Weekly Schedule | Oracle EBS SQL Report'
 description: 'Based on Oracle standard''s EAM Weekly Schedule report Application: Enterprise Asset Management Source: EAM Weekly Schedule report (XML) Short Name…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, EAM, Weekly, Schedule, per_all_people_f, bom_resource_employees, bom_resources'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, EAM, Weekly, Schedule, per_all_people_f, bom_resource_employees, bom_resources'
 permalink: /EAM%20Weekly%20Schedule/
 ---
 
@@ -24,10 +24,10 @@ Organization Code, Owning Department, Assigned Department, Week Starting, Date f
 [per_all_people_f](https://www.enginatics.com/library/?pg=1&find=per_all_people_f), [bom_resource_employees](https://www.enginatics.com/library/?pg=1&find=bom_resource_employees), [bom_resources](https://www.enginatics.com/library/?pg=1&find=bom_resources), [mtl_system_items_b_kfv](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_b_kfv), [bom_resource_equipments](https://www.enginatics.com/library/?pg=1&find=bom_resource_equipments), [wip_entities](https://www.enginatics.com/library/?pg=1&find=wip_entities), [wip_discrete_jobs](https://www.enginatics.com/library/?pg=1&find=wip_discrete_jobs), [wip_operations](https://www.enginatics.com/library/?pg=1&find=wip_operations), [wip_operation_resources](https://www.enginatics.com/library/?pg=1&find=wip_operation_resources), [wip_op_resource_instances](https://www.enginatics.com/library/?pg=1&find=wip_op_resource_instances), [eam_work_order_details](https://www.enginatics.com/library/?pg=1&find=eam_work_order_details), [bom_departments](https://www.enginatics.com/library/?pg=1&find=bom_departments), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters), [csi_item_instances](https://www.enginatics.com/library/?pg=1&find=csi_item_instances), [eam_org_maint_defaults](https://www.enginatics.com/library/?pg=1&find=eam_org_maint_defaults), [mtl_eam_locations](https://www.enginatics.com/library/?pg=1&find=mtl_eam_locations), [org_access_view](https://www.enginatics.com/library/?pg=1&find=org_access_view)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related Reports
-[CAC Manufacturing Variance](/CAC%20Manufacturing%20Variance/ "CAC Manufacturing Variance Oracle EBS SQL Report"), [GL Account Analysis (Drilldown) (with inventory and WIP)](/GL%20Account%20Analysis%20%28Drilldown%29%20%28with%20inventory%20and%20WIP%29/ "GL Account Analysis (Drilldown) (with inventory and WIP) Oracle EBS SQL Report"), [GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report"), [GL Account Analysis](/GL%20Account%20Analysis/ "GL Account Analysis Oracle EBS SQL Report")
+[CAC Manufacturing Variance](/CAC%20Manufacturing%20Variance/ "CAC Manufacturing Variance Oracle EBS SQL Report"), [WIP Job Upload](/WIP%20Job%20Upload/ "WIP Job Upload Oracle EBS SQL Report"), [GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report"), [GL Account Analysis](/GL%20Account%20Analysis/ "GL Account Analysis Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.

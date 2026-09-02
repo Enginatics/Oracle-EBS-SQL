@@ -2,7 +2,7 @@
 layout: default
 title: 'PN Generate Lease Analysis | Oracle EBS SQL Report'
 description: 'Application: Property Manager Source: Generate Lease Analysis Report Short Name: PNLARXML DB package: XXENPN'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Generate, Lease, Analysis, pn_leases_all, pn_lease_details_all, pn_payment_terms_all'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Generate, Lease, Analysis, pn_leases_all, pn_lease_details_all, pn_payment_terms_all'
 permalink: /PN%20Generate%20Lease%20Analysis/
 ---
 
@@ -23,10 +23,10 @@ Operating Unit, As of Period, Representation, Lease Number, Lease Number From, L
 [pn_leases_all](https://www.enginatics.com/library/?pg=1&find=pn_leases_all), [pn_lease_details_all](https://www.enginatics.com/library/?pg=1&find=pn_lease_details_all), [pn_payment_terms_all](https://www.enginatics.com/library/?pg=1&find=pn_payment_terms_all), [pn_options_all](https://www.enginatics.com/library/?pg=1&find=pn_options_all), [pn_eqp_leases_all](https://www.enginatics.com/library/?pg=1&find=pn_eqp_leases_all), [pn_eqp_lease_details_all](https://www.enginatics.com/library/?pg=1&find=pn_eqp_lease_details_all), [pn_eqp_payment_terms_all](https://www.enginatics.com/library/?pg=1&find=pn_eqp_payment_terms_all), [pn_eqp_options_all](https://www.enginatics.com/library/?pg=1&find=pn_eqp_options_all), [q_lease_detail](https://www.enginatics.com/library/?pg=1&find=q_lease_detail)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related Reports
-[PN Generate Lease Details](/PN%20Generate%20Lease%20Details/ "PN Generate Lease Details Oracle EBS SQL Report"), [PN Generate Portfolio Summary](/PN%20Generate%20Portfolio%20Summary/ "PN Generate Portfolio Summary Oracle EBS SQL Report"), [PN Generate Portfolio Detail](/PN%20Generate%20Portfolio%20Detail/ "PN Generate Portfolio Detail Oracle EBS SQL Report"), [PN Billing/Payment Term Upload](/PN%20Billing-Payment%20Term%20Upload/ "PN Billing/Payment Term Upload Oracle EBS SQL Report"), [PN Schedule Approval Status Upload](/PN%20Schedule%20Approval%20Status%20Upload/ "PN Schedule Approval Status Upload Oracle EBS SQL Report"), [PN GL Reconciliation](/PN%20GL%20Reconciliation/ "PN GL Reconciliation Oracle EBS SQL Report")
+[PN Generate Lease Details](/PN%20Generate%20Lease%20Details/ "PN Generate Lease Details Oracle EBS SQL Report"), [PN Generate Portfolio Summary](/PN%20Generate%20Portfolio%20Summary/ "PN Generate Portfolio Summary Oracle EBS SQL Report"), [PN Generate Portfolio Detail](/PN%20Generate%20Portfolio%20Detail/ "PN Generate Portfolio Detail Oracle EBS SQL Report"), [PN Billing/Payment Term Upload](/PN%20Billing-Payment%20Term%20Upload/ "PN Billing/Payment Term Upload Oracle EBS SQL Report"), [PN Schedule Approval Status Upload](/PN%20Schedule%20Approval%20Status%20Upload/ "PN Schedule Approval Status Upload Oracle EBS SQL Report"), [EAM Asset Number Upload](/EAM%20Asset%20Number%20Upload/ "EAM Asset Number Upload Oracle EBS SQL Report"), [PN GL Reconciliation](/PN%20GL%20Reconciliation/ "PN GL Reconciliation Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
@@ -35,7 +35,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/pn-generate-lease-analysis/) |
+| Excel Example Output | [](https://www.enginatics.com/example/pn-generate-lease-analysis/) |
 | Blitz Report™ XML Import | [PN_Generate_Lease_Analysis.xml](https://www.enginatics.com/xml/pn-generate-lease-analysis/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/pn-generate-lease-analysis/](https://www.enginatics.com/reports/pn-generate-lease-analysis/) |
 

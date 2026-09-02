@@ -2,7 +2,7 @@
 layout: default
 title: 'OPM Batch Lot Cost Trends | Oracle EBS SQL Report'
 description: 'OPM Batch Lot Costing Trends Report This report shows the Batch Lot Costs for the specified Organization and Product over a specified date range. The…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, OPM, Batch, Lot, Cost, xmltable, fm_form_mst, gmd_formula_class'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, OPM, Batch, Lot, Cost, xmltable, fm_form_mst, gmd_formula_class'
 permalink: /OPM%20Batch%20Lot%20Cost%20Trends/
 ---
 
@@ -29,13 +29,13 @@ The report allows the user to pull in several additional data points to allow fu
 
 
 ## Report Parameters
-Organization Code, From Date, To Date, Product, Formula Class, Batch, Cost Type, Product Category Set, Product Item Catalog, Show Product Item DFF, Ingredient Category Set, Ingredient Item Catalog, Show Ingredient Item DFF, Include Intermediate Ingredients
+Organization Code, From Date, To Date, Product, Formula Class, Batch, Cost Type, Product Category Set, Product Item Catalog, Product Item DFF Display, Ingredient Category Set, Ingredient Item Catalog, Ingredient Item DFF Display, Include Intermediate Ingredients
 
 ## Oracle EBS Tables Used
 [xmltable](https://www.enginatics.com/library/?pg=1&find=xmltable), [fm_form_mst](https://www.enginatics.com/library/?pg=1&find=fm_form_mst), [gmd_formula_class](https://www.enginatics.com/library/?pg=1&find=gmd_formula_class), [gl_ledger_le_v](https://www.enginatics.com/library/?pg=1&find=gl_ledger_le_v), [opm_batch_lot_costs](https://www.enginatics.com/library/?pg=1&find=opm_batch_lot_costs), [gme_batch_header](https://www.enginatics.com/library/?pg=1&find=gme_batch_header), [gme_material_details](https://www.enginatics.com/library/?pg=1&find=gme_material_details), [org_organization_definitions](https://www.enginatics.com/library/?pg=1&find=org_organization_definitions), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related Reports
 [OPM Batch Lot Cost Details](/OPM%20Batch%20Lot%20Cost%20Details/ "OPM Batch Lot Cost Details Oracle EBS SQL Report"), [CAC OPM Batch Material Summary](/CAC%20OPM%20Batch%20Material%20Summary/ "CAC OPM Batch Material Summary Oracle EBS SQL Report"), [CAC OPM Costed Formula](/CAC%20OPM%20Costed%20Formula/ "CAC OPM Costed Formula Oracle EBS SQL Report")

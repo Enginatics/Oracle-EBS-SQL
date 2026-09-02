@@ -5,7 +5,11 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PO Purchase Requisitions with PO Details
--- Description: Purchase Requisitions Status with PO Details Report
+-- Description: Purchase Requisitions Status with PO Details Report.
+
+Lists purchase requisition headers, lines and distributions together with the purchase order they were converted into, including requisition and PO approval dates, the Converted To PO indicator and the PO total amount.
+
+Set the Show Invoice and Payment Details parameter to Yes to additionally return the supplier invoices and payments matched to each purchase order shipment: invoice numbers, invoice date, invoiced amount, invoice amount paid, payment status, payment numbers, payment date and payment method. These columns are omitted by default because they add an Accounts Payable lookup to every row.
 -- Excel Examle Output: https://www.enginatics.com/example/po-purchase-requisitions-with-po-details/
 -- Library Link: https://www.enginatics.com/reports/po-purchase-requisitions-with-po-details/
 -- Run Report: https://demo.enginatics.com/
@@ -20,6 +24,7 @@ xxen_util.user_name(prha.created_by) created_by_user,
 ppx.full_name preparer_name,
 prha.description description,
 nvl(xxen_util.meaning(prha.authorization_status,'AUTHORIZATION STATUS',201) ,prha.authorization_status) req_auth_status,
+trunc(prha.approved_date) req_approved_date,
 prha.note_to_authorizer,
 prha.agent_return_flag agent_return_flag,
 xxen_util.meaning(prha.closed_code,'DOCUMENT STATE',201) req_closure_status,
@@ -128,6 +133,7 @@ haouv.name po_operating_unit,
 asu.vendor_name po_vendor_name,
 asu.segment1 po_vendor_number,
 assa.vendor_site_code po_vendor_site,
+(select ftv.territory_short_name from fnd_territories_vl ftv where ftv.territory_code=assa.country) po_vendor_country,
 pha.segment1 po_number,
 pra.release_num po_release_num,
 xxen_util.meaning(pha.authorization_status , 'DOCUMENT STATE', 201) po_auth_status,
@@ -136,8 +142,19 @@ xxen_util.meaning(pha.closed_code,'DOCUMENT STATE',201) po_header_closure_status
 xxen_util.meaning(pla.closed_code,'DOCUMENT STATE',201) po_line_closure_status,
 xxen_util.meaning(plla.closed_code,'DOCUMENT STATE',201) po_shipment_closure_status,
 trunc(pha.creation_date) po_creation_date,
+trunc(pha.approved_date) po_approved_date,
 trunc(pra.release_date) po_release_date,
 pha.currency_code po_currency,
+(
+select
+sum(decode(plla2.quantity,null,plla2.amount-nvl(plla2.amount_cancelled,0),(plla2.quantity-nvl(plla2.quantity_cancelled,0))*nvl2(plla2.price_override,plla2.price_override,nvl(pla2.unit_price,0))))
+from
+po_line_locations_all plla2,
+po_lines_all pla2
+where
+pha.po_header_id=plla2.po_header_id and
+plla2.po_line_id=pla2.po_line_id
+) po_total_amount,
 pla.line_num po_line_number,
 pltv.line_type po_line_type,
 (select mck.concatenated_segments from mtl_categories_kfv mck where pla.category_id=mck.category_id) po_line_category,
@@ -167,8 +184,7 @@ xxen_util.user_name(plla.cancelled_by) po_shipment_cancelled_by,
 mp1.organization_code po_ship_to_organization,
 hl1.location_code po_ship_to_location,
 (
-select listagg(x.receipt_num,', ')  
-within group(order by x.receipt_num) receipt_number
+select rtrim(xmlagg(xmlelement(e,x.receipt_num||', ') order by x.receipt_num).extract('//text()').getclobval(),', ')
 from
 (select distinct rt.po_line_location_id,
 rsh.receipt_num
@@ -178,9 +194,10 @@ rcv_shipment_headers rsh
 where 
 rt.shipment_header_id=rsh.shipment_header_id and
 rt.transaction_type in ('RECEIVE','DELIVER')) x
-where 
+where
 x.po_line_location_id=plla.line_location_id
 ) receipt_number,
+&ap_cte_columns
 &po_dist_columns
 &po_dff_cols
 plla.po_header_id,
@@ -244,6 +261,7 @@ req.created_by_user,
 req.preparer_name,
 req.description,
 req.req_auth_status,
+req.req_approved_date,
 req.req_closure_status,
 req.cancelled_flag,
 req.cancelled_date,
@@ -285,9 +303,11 @@ req.on_rfq,
 req.parent_req_line_number,
 &req_dff_cols_disp
 &item_dff_cols_disp
+xxen_util.yes(nvl2(req.line_location_id,'Y',null)) converted_to_po,
 po.po_vendor_name,
 po.po_vendor_number,
 po.po_vendor_site,
+po.po_vendor_country,
 po.po_number,
 po.po_release_num,
 po.po_auth_status,
@@ -296,8 +316,10 @@ po.po_header_closure_status,
 po.po_line_closure_status,
 po.po_shipment_closure_status,
 po.po_creation_date,
+po.po_approved_date,
 po.po_release_date,
 po.po_currency,
+po.po_total_amount,
 po.po_line_number,
 po.po_line_type,
 po.po_line_category,
@@ -312,8 +334,9 @@ po.po_ship_to_organization,
 po.po_ship_to_location,
 po.po_unit_price,
 po.po_uom, 
-&po_line_columns_disp 
+&po_line_columns_disp
 &po_dist_columns_disp
+&ap_columns
 &po_dff_cols_disp
 po.po_shipment_creation_date,
 po.po_shipment_cancelled_flag,

@@ -2,7 +2,7 @@
 layout: default
 title: 'ZX Tax Accounts | Oracle EBS SQL Report'
 description: 'E-Business Tax account configuration for all ledgers and operating units, setup on either tax, jurisdiction or rate level'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Tax, Accounts, zx_status_vl, zx_first_party_orgs_moac_v, zx_party_tax_profile'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Tax, Accounts, zx_status_vl, zx_first_party_orgs_moac_v, zx_party_tax_profile'
 permalink: /ZX%20Tax%20Accounts/
 ---
 
@@ -20,7 +20,7 @@ Setup Level, Country, Ledger, Operating Unit
 [zx_status_vl](https://www.enginatics.com/library/?pg=1&find=zx_status_vl), [zx_first_party_orgs_moac_v](https://www.enginatics.com/library/?pg=1&find=zx_first_party_orgs_moac_v), [zx_party_tax_profile](https://www.enginatics.com/library/?pg=1&find=zx_party_tax_profile), [hz_parties](https://www.enginatics.com/library/?pg=1&find=hz_parties), [zx_accounts](https://www.enginatics.com/library/?pg=1&find=zx_accounts), [hr_operating_units](https://www.enginatics.com/library/?pg=1&find=hr_operating_units), [gl_ledgers](https://www.enginatics.com/library/?pg=1&find=gl_ledgers), [fnd_id_flex_structures_vl](https://www.enginatics.com/library/?pg=1&find=fnd_id_flex_structures_vl), [zx_taxes_vl](https://www.enginatics.com/library/?pg=1&find=zx_taxes_vl), [zx_rates_vl](https://www.enginatics.com/library/?pg=1&find=zx_rates_vl), [zx_jurisdictions_vl](https://www.enginatics.com/library/?pg=1&find=zx_jurisdictions_vl), [zx_regimes_vl](https://www.enginatics.com/library/?pg=1&find=zx_regimes_vl), [fnd_territories_vl](https://www.enginatics.com/library/?pg=1&find=fnd_territories_vl)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related Reports
 [AR Customer Upload](/AR%20Customer%20Upload/ "AR Customer Upload Oracle EBS SQL Report"), [AP Supplier Upload](/AP%20Supplier%20Upload/ "AP Supplier Upload Oracle EBS SQL Report"), [AR Customers and Sites](/AR%20Customers%20and%20Sites/ "AR Customers and Sites Oracle EBS SQL Report"), [GL Account Analysis](/GL%20Account%20Analysis/ "GL Account Analysis Oracle EBS SQL Report")

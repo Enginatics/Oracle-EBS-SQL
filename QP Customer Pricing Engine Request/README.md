@@ -2,7 +2,7 @@
 layout: default
 title: 'QP Customer Pricing Engine Request | Oracle EBS SQL Report'
 description: 'QP Customer Pricing Engine Request ============================== This report requests Item Selling Price information by Customer across Price Lists from…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Customer, Pricing, Engine, Request, xmltable, ra_terms_vl, qp_secu_list_headers_vl'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Customer, Pricing, Engine, Request, xmltable, ra_terms_vl, qp_secu_list_headers_vl'
 permalink: /QP%20Customer%20Pricing%20Engine%20Request/
 ---
 
@@ -72,7 +72,7 @@ Report Level, Operating Unit, Customer Name, Account Number, Customer Ship To Lo
 [xmltable](https://www.enginatics.com/library/?pg=1&find=xmltable), [ra_terms_vl](https://www.enginatics.com/library/?pg=1&find=ra_terms_vl), [qp_secu_list_headers_vl](https://www.enginatics.com/library/?pg=1&find=qp_secu_list_headers_vl), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters), [oe_transaction_types_tl](https://www.enginatics.com/library/?pg=1&find=oe_transaction_types_tl), [xxen_qp_preq_data](https://www.enginatics.com/library/?pg=1&find=xxen_qp_preq_data), [hz_cust_accounts](https://www.enginatics.com/library/?pg=1&find=hz_cust_accounts), [hz_parties](https://www.enginatics.com/library/?pg=1&find=hz_parties), [hz_customer_profiles](https://www.enginatics.com/library/?pg=1&find=hz_customer_profiles), [hz_cust_profile_classes](https://www.enginatics.com/library/?pg=1&find=hz_cust_profile_classes), [hz_cust_site_uses_all](https://www.enginatics.com/library/?pg=1&find=hz_cust_site_uses_all), [hz_cust_acct_sites_all](https://www.enginatics.com/library/?pg=1&find=hz_cust_acct_sites_all), [hz_party_sites](https://www.enginatics.com/library/?pg=1&find=hz_party_sites), [hz_locations](https://www.enginatics.com/library/?pg=1&find=hz_locations), [hr_all_organization_units_vl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_vl), [mtl_system_items_b_kfv](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_b_kfv), [qp_list_lines](https://www.enginatics.com/library/?pg=1&find=qp_list_lines), [qp_price_breaks_v](https://www.enginatics.com/library/?pg=1&find=qp_price_breaks_v), [mo_glob_org_access_tmp](https://www.enginatics.com/library/?pg=1&find=mo_glob_org_access_tmp), [dual](https://www.enginatics.com/library/?pg=1&find=dual)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related Reports
 [ONT Order Upload](/ONT%20Order%20Upload/ "ONT Order Upload Oracle EBS SQL Report"), [AR Customer Upload](/AR%20Customer%20Upload/ "AR Customer Upload Oracle EBS SQL Report"), [ONT Orders and Lines](/ONT%20Orders%20and%20Lines/ "ONT Orders and Lines Oracle EBS SQL Report"), [PPF_WP3_OM_DETAILS](/PPF_WP3_OM_DETAILS/ "PPF_WP3_OM_DETAILS Oracle EBS SQL Report"), [ONT Orders](/ONT%20Orders/ "ONT Orders Oracle EBS SQL Report")

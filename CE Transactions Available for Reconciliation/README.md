@@ -2,7 +2,7 @@
 layout: default
 title: 'CE Transactions Available for Reconciliation | Oracle EBS SQL Report'
 description: 'Application: Cash Management Description: Transactions - Transactions Available for Reconciliation Provides equivalent functionality to the following…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Transactions, Available, Reconciliation, ce_101_transactions_v, ce_185_transactions_v, ce_200_transactions_v'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Transactions, Available, Reconciliation, ce_101_transactions_v, ce_185_transactions_v, ce_200_transactions_v'
 permalink: /CE%20Transactions%20Available%20for%20Reconciliation/
 ---
 
@@ -29,7 +29,7 @@ Bank Name, Bank Branch, Bank Account Name, Bank Account Number, Transaction Type
 [ce_101_transactions_v](https://www.enginatics.com/library/?pg=1&find=ce_101_transactions_v), [ce_185_transactions_v](https://www.enginatics.com/library/?pg=1&find=ce_185_transactions_v), [ce_200_transactions_v](https://www.enginatics.com/library/?pg=1&find=ce_200_transactions_v), [ce_222_transactions_v](https://www.enginatics.com/library/?pg=1&find=ce_222_transactions_v), [ce_801_transactions_v](https://www.enginatics.com/library/?pg=1&find=ce_801_transactions_v), [ce_801_eft_transactions_v](https://www.enginatics.com/library/?pg=1&find=ce_801_eft_transactions_v), [ce_999_transactions_v](https://www.enginatics.com/library/?pg=1&find=ce_999_transactions_v), [ce_avail_trx_v](https://www.enginatics.com/library/?pg=1&find=ce_avail_trx_v), [ce_bank_accts_gt_v](https://www.enginatics.com/library/?pg=1&find=ce_bank_accts_gt_v), [ce_system_parameters](https://www.enginatics.com/library/?pg=1&find=ce_system_parameters), [xle_entity_profiles](https://www.enginatics.com/library/?pg=1&find=xle_entity_profiles), [gl_code_combinations](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations), [hr_all_organization_units](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 
 
@@ -40,7 +40,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/ce-transactions-available-for-reconciliation/) |
+| Excel Example Output | [](https://www.enginatics.com/example/ce-transactions-available-for-reconciliation/) |
 | Blitz Report™ XML Import | [CE_Transactions_Available_for_Reconciliation.xml](https://www.enginatics.com/xml/ce-transactions-available-for-reconciliation/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/ce-transactions-available-for-reconciliation/](https://www.enginatics.com/reports/ce-transactions-available-for-reconciliation/) |
 

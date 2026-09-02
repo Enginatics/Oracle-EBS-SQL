@@ -63,17 +63,18 @@ select /*+ push_pred(i) */
 ,x.accounted_cr
 ,x.statistical_amount
 -- source transaction data
-,x.user_trx_identifier_value_1  supplier_name
+,nvl(x.user_trx_identifier_value_1,(select asitv.party_name from ap_sla_invoices_transaction_v asitv where asitv.invoice_id=i.invoice_id))  supplier_name
 ,x.transaction_number           invoice_number
 ,trunc(to_date(x.transaction_date,'YYYY-MM-DD"T"hh:mi:ss')) invoice_date
-,x.user_trx_identifier_value_10 invoice_description
+,nvl(x.user_trx_identifier_value_10,i.description) invoice_description
 ,case when row_number() over (partition by i.invoice_id order by nvl2(x.event_id,x.line_number,null))=1 then
+ case when x.user_trx_identifier_value_4 is null then i.invoice_amount else
  case when trim(translate(x.user_trx_identifier_value_4, '0123456789-.',' ')) is null
  then to_number(x.user_trx_identifier_value_4) else to_number(null)
- end
+ end end
  end  invoice_amount
 -----------------------------------
-,case when row_number() over (partition by i.invoice_id order by nvl2(x.event_id,x.line_number,null))=1 then case when trim(translate(x.user_trx_identifier_value_4, '0123456789-.',' ')) is null then to_number(x.user_trx_identifier_value_4) else to_number(null) end - nvl(i.total_tax_amount,0) end total_line_amount 
+,case when row_number() over (partition by i.invoice_id order by nvl2(x.event_id,x.line_number,null))=1 then case when x.user_trx_identifier_value_4 is null then i.invoice_amount else case when trim(translate(x.user_trx_identifier_value_4, '0123456789-.',' ')) is null then to_number(x.user_trx_identifier_value_4) else to_number(null) end end - nvl(i.total_tax_amount,0) end total_line_amount 
 ,case when row_number() over (partition by i.invoice_id order by nvl2(x.event_id,x.line_number,null))=1 then i.total_tax_amount end total_tax_amount
 ,i.last_update_date invoice_last_updated
 ,xxen_util.user_name(i.last_updated_by,'Y') invoice_last_updated_by
@@ -261,8 +262,8 @@ from
  xte.entity_id=xah.entity_id and 
  xte.application_id=xah.application_id and
  xe.application_id=xah.application_id and 
- xe.event_id=xah.event_id and 
- aia.invoice_id=xte.source_id_int_1
+ xe.event_id=xah.event_id and
+ nvl(xte.source_id_int_1,-99)=aia.invoice_id
 ) i
 where
  x.event_id=i.i_event_id(+) and

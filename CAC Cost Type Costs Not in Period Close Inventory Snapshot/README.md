@@ -57,7 +57,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/cac-cost-type-costs-not-in-period-close-inventory-snapshot/) |
+| Excel Example Output | [](https://www.enginatics.com/example/cac-cost-type-costs-not-in-period-close-inventory-snapshot/) |
 | Blitz Report™ XML Import | [CAC_Cost_Type_Costs_Not_in_Period_Close_Inventory_Snapshot.xml](https://www.enginatics.com/xml/cac-cost-type-costs-not-in-period-close-inventory-snapshot/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/cac-cost-type-costs-not-in-period-close-inventory-snapshot/](https://www.enginatics.com/reports/cac-cost-type-costs-not-in-period-close-inventory-snapshot/) |
 

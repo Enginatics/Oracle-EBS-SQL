@@ -5,9 +5,9 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: AR Transaction Upload
--- Description: This upload can be used to create Invoices, On Account Credit Memos and Debit Memos.
+-- Description: This upload can be used to create Invoices, Debit Memos and Credit Memos. Credit memos can be created On Account, or created and applied directly to an existing transaction (an applied credit memo).
 
-The ‘Upload Trx Identifier’ column is used to uniquely identify each individual transaction (invoice, credit memo, debit memo) to be uploaded. 
+The 'Upload Trx Identifier' column is used to uniquely identify each individual transaction (invoice, credit memo, debit memo) to be uploaded.
 If the selected batch source uses manual transaction numbering, the Upload Trx Identifier will be copied to the Transaction Number column (the Oracle Transaction Number), but this can be overridden in the upload excel.
 If the selected transaction type uses a Manual Document Sequence, the Upload Trx Identifier will be used as the Document Sequence Value in Oracle.
 
@@ -15,7 +15,7 @@ The upload supports the entry of
 - Standard Invoice Lines
 - Manual Tax Lines (if permitted)
 - Header Level Freight Lines (if permitted) – identified by leaving the Link to Line Number null
-- Line Level Freight Lines (if permitted) – identified by populating the Link to Line Number column 
+- Line Level Freight Lines (if permitted) – identified by populating the Link to Line Number column
 
 For Tax Lines, and Line level Freight Lines, use the Link to Line Number to identify the Invoice Line to which the Tax Line or Freight Line should be linked. Tax Lines must be linked to a standard invoice line.
 
@@ -25,8 +25,25 @@ Note. Tax Lines and Line level Freight Lines must occur after the row containing
 - You can specify a quantity and unit price for a freight line in which case the upload will calculate the line amount, or you enter the line amount directly. Only the amount is uploaded to Oracle.
 - For manual Tax Lines, you can enter the line amount directly. If left blank, the upload will calculate the amount based on the selected Tax Rate and the line amount from the linked standard invoice.
 
-For Manual Tax Lines you must specify the Tax Regime, Tax, Tax Jurisdiction, Tax Status, Tax Rate Name, and Tax Rate columns.  
+For Manual Tax Lines you must specify the Tax Regime, Tax, Tax Jurisdiction, Tax Status, Tax Rate Name, and Tax Rate columns.
 
+Applied Credit Memos
+To create a credit memo and apply it to an existing transaction in one step, populate the Credit Against Transaction column with the transaction to be credited.  A Credit Memo Reason is required for an applied credit memo.
+
+The Transaction Type and Transaction Date are derived automatically from the credited invoice and are informational on this flow. The Transaction Type list shows only the credit memo type linked to the credited invoice's transaction type, and the Transaction Date defaults to the later of today and the credited invoice's date.
+
+You can credit the invoice at header level or at line level.
+
+Header level – leave the Credit Against Line column blank.
+- Leave Credit Line Amount, Credit Tax Amount and Credit Freight Amount blank to credit the full outstanding balance of the invoice.
+- Or enter negative Credit Line, Credit Tax and/or Credit Freight Amounts to credit part of the invoice.
+
+Line level – populate the Credit Against Line column.
+- Enter one row per invoice line to be credited, identifying the line in the Credit Against Line column.
+- A negative Credit Line Amount is required for each credited line. It defaults to the full line amount; edit it for a partial line credit.
+- Credit Tax Amount and Credit Freight Amount are not used at line level. Credit tax and freight using a header level credit, or let the credit method spread the tax automatically.
+
+The report parameters Credit Method for Rules and Credit Method for Installments control how the credit is applied across accounting rule periods and payment schedules.
 -- Excel Examle Output: https://www.enginatics.com/example/ar-transaction-upload/
 -- Library Link: https://www.enginatics.com/reports/ar-transaction-upload/
 -- Run Report: https://demo.enginatics.com/
@@ -38,7 +55,10 @@ null message_,
 null request_id_,
 null modified_columns_,
 to_number(null) upload_row,
-:p_use_salespersons use_salespersons, 
+null use_salespersons,
+null derive_applied_cm_batch_source,
+null credit_method_for_rules,
+null credit_method_for_installments,
 to_number(null) p_trx_idx,
 to_number(null) p_line_idx,
 to_number(null) p_dist_idx,
@@ -49,6 +69,7 @@ rbsa.name source,
 trunc(sysdate) default_gl_date,
 --
 null upload_trx_identifier,
+rcta.ct_reference reference,
 --
 hp_b.party_name bill_to_customer_name,
 hca_b.account_number bill_to_customer_number,
@@ -61,12 +82,23 @@ hcsua_s.location ship_to_site,
 hz_format_pub.format_address(hps_s.location_id,null,null,', ') ship_to_address,
 hp_sold.party_name sold_to_customer_name,
 --
+null credit_against_transaction,
+null credit_against_line,
+to_number(null) credit_line_amount,
+to_number(null) credit_tax_amount,
+to_number(null) credit_freight_amount,
+null credit_memo_reason,
+null applied_credit_batch_source,
+--
 rctta.name trx_type,
 rctta.type trx_class,
 rcta.trx_number,
 rcta.trx_date,
 apsa.gl_date,
 (select jrrev2.resource_name from jtf_rs_salesreps jrs2, jtf_rs_resource_extns_vl jrrev2 where rcta.primary_salesrep_id=jrs2.salesrep_id and jrs2.org_id=rcta.org_id and jrs2.resource_id=jrrev2.resource_id and rownum=1) salesperson,
+rcta.purchase_order,
+rcta.purchase_order_revision,
+rcta.purchase_order_date,
 (select
  rtv.name
  from
@@ -104,6 +136,17 @@ rcta.invoice_currency_code trx_currency,
 ) exchange_rate_type,
 rcta.exchange_date exchange_rate_date,
 rcta.exchange_rate,
+(select
+ gcck_rec.concatenated_segments
+ from
+ ra_cust_trx_line_gl_dist_all rctlgda_rec,
+ gl_code_combinations_kfv gcck_rec
+ where
+ rctlgda_rec.customer_trx_id=rcta.customer_trx_id and
+ rctlgda_rec.account_class='REC' and
+ rctlgda_rec.latest_rec_flag='Y' and
+ rctlgda_rec.code_combination_id=gcck_rec.code_combination_id
+) receivables_account,
 --
 rctla.line_number,
 initcap(rctla.line_type) line_type,
@@ -121,6 +164,13 @@ initcap(rctla.line_type) line_type,
  msiv.inventory_item_id=rctla.inventory_item_id and
  msiv.organization_id=to_number(oe_profile.value('SO_ORGANIZATION_ID', rctla.org_id))
 ) line_item,
+(select
+ aml.name
+ from
+ ar_memo_lines_all_vl aml
+ where
+ aml.memo_line_id=rctla.memo_line_id
+) line_standard_memo,
 rctla.description line_description,
 xxen_util.meaning(rctla.reason_code,case rctta.type when 'CM' then 'CREDIT_MEMO_REASON' else 'INVOICING_REASON' end,222) line_reason,
 (select
@@ -134,7 +184,7 @@ nvl(rctla.quantity_invoiced,
     rctla.quantity_credited
 ) quantity,
 rctla.unit_selling_price unit_price,
-rctla.extended_amount amount,
+rctla.extended_amount line_amount,
 --
 (select jrrev2.resource_name from jtf_rs_salesreps jrs2, jtf_rs_resource_extns_vl jrrev2 where rctlsa.salesrep_id=jrs2.salesrep_id and jrs2.org_id=rcta.org_id and jrs2.resource_id=jrrev2.resource_id) line_salesperson,
 rctlsa.revenue_percent_split line_salescredit_revenue_pct,
@@ -182,6 +232,8 @@ rctla.sales_order,
 rctla.sales_order_line,
 rctla.sales_order_date,
 --
+xxen_util.meaning(rctla.historical_flag,'YES_NO',0) historical,
+xxen_util.meaning(rctla.taxable_flag,'YES_NO',0) taxable,
 xxen_util.meaning(rctla.amount_includes_tax_flag,'YES_NO',0) amount_includes_tax,
 xxen_util.meaning(rctla.tax_exempt_flag,'ZX_EXEMPTION_CONTROL',0) tax_handling,
 rctla.tax_exempt_number,
@@ -376,7 +428,13 @@ xxen_util.display_flexfield_value(222,'RA_CUST_TRX_LINE_GL_DIST',rctlgda.attribu
 xxen_util.display_flexfield_value(222,'RA_CUST_TRX_LINE_GL_DIST',rctlgda.attribute_category,'ATTRIBUTE12', rctlgda.rowid,rctlgda.attribute12) ar_inv_dist_attribute12,
 xxen_util.display_flexfield_value(222,'RA_CUST_TRX_LINE_GL_DIST',rctlgda.attribute_category,'ATTRIBUTE13', rctlgda.rowid,rctlgda.attribute13) ar_inv_dist_attribute13,
 xxen_util.display_flexfield_value(222,'RA_CUST_TRX_LINE_GL_DIST',rctlgda.attribute_category,'ATTRIBUTE14', rctlgda.rowid,rctlgda.attribute14) ar_inv_dist_attribute14,
-xxen_util.display_flexfield_value(222,'RA_CUST_TRX_LINE_GL_DIST',rctlgda.attribute_category,'ATTRIBUTE15', rctlgda.rowid,rctlgda.attribute15) ar_inv_dist_attribute15
+xxen_util.display_flexfield_value(222,'RA_CUST_TRX_LINE_GL_DIST',rctlgda.attribute_category,'ATTRIBUTE15', rctlgda.rowid,rctlgda.attribute15) ar_inv_dist_attribute15,
+null attachment_category_,
+null attachment_title_,
+null attachment_description_,
+null attachment_type_,
+null attachment_content_,
+null attachment_file_id_
 from
 hr_all_organization_units_vl haouv,
 ra_customer_trx_all rcta,
@@ -448,4 +506,9 @@ nvl(:p_default_gl_date,sysdate)=nvl(:p_default_gl_date,sysdate) and
 nvl(:p_default_trx_date,sysdate)=nvl(:p_default_trx_date,sysdate) and
 nvl(:p_default_trx_curr,'?')=nvl(:p_default_trx_curr,'?') and
 nvl(:p_default_exch_rate_type,'?')=nvl(:p_default_exch_rate_type,'?') and
+nvl(:p_use_salespersons,'?')=nvl(:p_use_salespersons,'?') and
+nvl(:p_historical_load,'?')=nvl(:p_historical_load,'?') and
+nvl(:p_derive_batch_source_applied,'?')=nvl(:p_derive_batch_source_applied,'?') and
+nvl(:p_credit_method_rules,'?')=nvl(:p_credit_method_rules,'?') and
+nvl(:p_credit_method_installments,'?')=nvl(:p_credit_method_installments,'?') and
 1=0

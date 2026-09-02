@@ -43,10 +43,6 @@ The following optional parameters are only applicable in the 'Create and Update'
 -- Run Report: https://demo.enginatics.com/
 
 select
-x.*
-from
-(
-select
 null action_,
 null status_,
 null message_,
@@ -63,7 +59,7 @@ haouv.name operating_unit,
 prha.express_name template_name,
 prha.description template_description,
 podt.type_name type,
-prha.inactive_date inactive_date,
+prha.inactive_date,
 xxen_util.meaning(prha.reserve_po_number,'RESERVE PO NUM',201) reserve_po_number,
 -- lines
 prla.sequence_num line_number,
@@ -94,8 +90,9 @@ prla.last_update_date line_last_updated_on,
 xxen_util.user_name(prha.created_by) template_created_by,
 prha.creation_date template_created_on,
 xxen_util.user_name(prla.created_by) line_created_by,
-prla.creation_date line_created_on
+prla.creation_date line_created_on,
 --
+to_number(null) upload_row
 from
 po_reqexpress_headers_all prha,
 (select
@@ -150,12 +147,3 @@ not exists -- exclude templates copied from a Blanket PO
   prla2.express_name = prha.express_name and
   prla2.po_line_id is not null
 ) 
-&not_use_first_block
-&report_table_select
-&report_table_name &report_table_where_clause
-&processed_run
-) x
-order by
-operating_unit,
-template_name,
-line_number

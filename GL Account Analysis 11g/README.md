@@ -31,7 +31,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/gl-account-analysis-11g/) |
+| Excel Example Output | [](https://www.enginatics.com/example/gl-account-analysis-11g/) |
 | Blitz Report™ XML Import | [GL_Account_Analysis_11g.xml](https://www.enginatics.com/xml/gl-account-analysis-11g/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/gl-account-analysis-11g/](https://www.enginatics.com/reports/gl-account-analysis-11g/) |
 

@@ -14,7 +14,7 @@ permalink: /ONT%20Defaulting%20Rules/
 Shows the complete Order Management defaulting rules setup
 
 ## Report Parameters
-Application, Entity, Attribute, Condition, Enabled, Enabled Only, Seeded, Source Type
+Application, Entity, Attribute, Condition, Enabled, Seeded, Source Type
 
 ## Oracle EBS Tables Used
 [oe_def_condn_elems_v](https://www.enginatics.com/library/?pg=1&find=oe_def_condn_elems_v), [oe_def_ak_attr_ext_v](https://www.enginatics.com/library/?pg=1&find=oe_def_ak_attr_ext_v), [oe_def_ak_obj_ext_v](https://www.enginatics.com/library/?pg=1&find=oe_def_ak_obj_ext_v), [oe_def_attr_condns_v](https://www.enginatics.com/library/?pg=1&find=oe_def_attr_condns_v), [oe_def_attr_def_rules](https://www.enginatics.com/library/?pg=1&find=oe_def_attr_def_rules)
@@ -23,7 +23,7 @@ Application, Entity, Attribute, Condition, Enabled, Enabled Only, Seeded, Source
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related Reports
-[CST COGS Revenue Matching](/CST%20COGS%20Revenue%20Matching/ "CST COGS Revenue Matching Oracle EBS SQL Report"), [AP Invoices and Lines](/AP%20Invoices%20and%20Lines/ "AP Invoices and Lines Oracle EBS SQL Report"), [ONT System Parameters](/ONT%20System%20Parameters/ "ONT System Parameters Oracle EBS SQL Report")
+[CST COGS Revenue Matching](/CST%20COGS%20Revenue%20Matching/ "CST COGS Revenue Matching Oracle EBS SQL Report"), [ONT System Parameters](/ONT%20System%20Parameters/ "ONT System Parameters Oracle EBS SQL Report"), [CAC Intercompany SO Price List vs. Item Cost Comparison](/CAC%20Intercompany%20SO%20Price%20List%20vs-%20Item%20Cost%20Comparison/ "CAC Intercompany SO Price List vs. Item Cost Comparison Oracle EBS SQL Report"), [AP Invoices and Lines](/AP%20Invoices%20and%20Lines/ "AP Invoices and Lines Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.

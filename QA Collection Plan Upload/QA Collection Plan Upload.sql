@@ -14,8 +14,12 @@ This upload manages:
 - Plan Elements (collection element assignments, prompts, flags)
 - Element Values (value lookups per element)
 - Action Triggers (trigger sequences and conditions per element)
-- Actions (action assignments per trigger)
+- Actions (action assignments per trigger, including assign type, assigned element, alert action set and action, status code)
 - Action Outputs (output variable mappings per action)
+
+Multiple actions of the same action type can coexist under one action trigger (e.g. two Assign value actions with different formulas, or two Send email actions with different alert sets). Actions are identified by the natural key (action trigger, action name, assign type, assigned element, alert action set, alert action, status code, action message); changing any of these fields creates a new action rather than updating an existing one. Use Delete=Yes to remove an obsolete action.
+
+CAR (Corrective Action Request) actions are not yet supported.
 
 Upload Modes
 ============
@@ -85,6 +89,11 @@ to_char(null) action_operator,
 to_char(null) action_low_value,
 to_char(null) action_high_value,
 to_char(null) action_name,
+to_char(null) assign_type,
+to_char(null) assigned_element,
+to_char(null) alert_action_set,
+to_char(null) alert_action,
+to_char(null) status_code,
 to_char(null) action_message,
 to_char(null) output_variable,
 to_char(null) output_element,
@@ -137,6 +146,11 @@ to_char(null) action_operator,
 to_char(null) action_low_value,
 to_char(null) action_high_value,
 to_char(null) action_name,
+to_char(null) assign_type,
+to_char(null) assigned_element,
+to_char(null) alert_action_set,
+to_char(null) alert_action,
+to_char(null) status_code,
 to_char(null) action_message,
 to_char(null) output_variable,
 to_char(null) output_element,
@@ -193,6 +207,11 @@ to_char(null) action_operator,
 to_char(null) action_low_value,
 to_char(null) action_high_value,
 to_char(null) action_name,
+to_char(null) assign_type,
+to_char(null) assigned_element,
+to_char(null) alert_action_set,
+to_char(null) alert_action,
+to_char(null) status_code,
 to_char(null) action_message,
 to_char(null) output_variable,
 to_char(null) output_element,
@@ -254,6 +273,11 @@ to_char(null) action_operator,
 to_char(null) action_low_value,
 to_char(null) action_high_value,
 to_char(null) action_name,
+to_char(null) assign_type,
+to_char(null) assigned_element,
+to_char(null) alert_action_set,
+to_char(null) alert_action,
+to_char(null) status_code,
 to_char(null) action_message,
 to_char(null) output_variable,
 to_char(null) output_element,
@@ -310,6 +334,11 @@ to_char(null) action_operator,
 to_char(null) action_low_value,
 to_char(null) action_high_value,
 to_char(null) action_name,
+to_char(null) assign_type,
+to_char(null) assigned_element,
+to_char(null) alert_action_set,
+to_char(null) alert_action,
+to_char(null) status_code,
 to_char(null) action_message,
 to_char(null) output_variable,
 to_char(null) output_element,
@@ -369,6 +398,11 @@ xxen_util.meaning(qpcat.operator,'QA_OPERATOR',700) action_operator,
 qpcat.low_value_other action_low_value,
 qpcat.high_value_other action_high_value,
 to_char(null) action_name,
+to_char(null) assign_type,
+to_char(null) assigned_element,
+to_char(null) alert_action_set,
+to_char(null) alert_action,
+to_char(null) status_code,
 to_char(null) action_message,
 to_char(null) output_variable,
 to_char(null) output_element,
@@ -428,6 +462,11 @@ xxen_util.meaning(qpcat.operator,'QA_OPERATOR',700) action_operator,
 qpcat.low_value_other action_low_value,
 qpcat.high_value_other action_high_value,
 qa.description action_name,
+decode(qpca.assign_type,'F','Formula','S','SQL Statement') assign_type,
+qc_assigned.name assigned_element,
+alas.name alert_action_set,
+ala.name alert_action,
+qpca.status_code,
 qpca.message action_message,
 to_char(null) output_variable,
 to_char(null) output_element,
@@ -441,7 +480,10 @@ qa_plan_chars qpc,
 qa_chars qc,
 qa_plan_char_action_triggers qpcat,
 qa_plan_char_actions qpca,
-qa_actions qa
+qa_actions qa,
+qa_chars qc_assigned,
+alr_action_sets alas,
+alr_actions ala
 where
 qp.organization_id=mp.organization_id and
 qpc.plan_id=qp.plan_id and
@@ -450,6 +492,9 @@ qpcat.plan_id=qpc.plan_id and
 qpcat.char_id=qpc.char_id and
 qpca.plan_char_action_trigger_id=qpcat.plan_char_action_trigger_id and
 qpca.action_id=qa.action_id and
+qpca.assigned_char_id=qc_assigned.char_id(+) and
+qpca.alr_action_set_id=alas.action_set_id(+) and
+qpca.alr_action_id=ala.action_id(+) and
 1=1
 union all
 select
@@ -491,6 +536,11 @@ xxen_util.meaning(qpcat.operator,'QA_OPERATOR',700) action_operator,
 qpcat.low_value_other action_low_value,
 qpcat.high_value_other action_high_value,
 qa.description action_name,
+decode(qpca.assign_type,'F','Formula','S','SQL Statement') assign_type,
+qc_assigned.name assigned_element,
+alas.name alert_action_set,
+ala.name alert_action,
+qpca.status_code,
 qpca.message action_message,
 qpcao.token_name output_variable,
 qc2.name output_element,
@@ -506,7 +556,10 @@ qa_plan_char_action_triggers qpcat,
 qa_plan_char_actions qpca,
 qa_actions qa,
 qa_plan_char_action_outputs qpcao,
-qa_chars qc2
+qa_chars qc2,
+qa_chars qc_assigned,
+alr_action_sets alas,
+alr_actions ala
 where
 qp.organization_id=mp.organization_id and
 qpc.plan_id=qp.plan_id and
@@ -517,4 +570,7 @@ qpca.plan_char_action_trigger_id=qpcat.plan_char_action_trigger_id and
 qpca.action_id=qa.action_id and
 qpcao.plan_char_action_id=qpca.plan_char_action_id and
 qpcao.char_id=qc2.char_id and
+qpca.assigned_char_id=qc_assigned.char_id(+) and
+qpca.alr_action_set_id=alas.action_set_id(+) and
+qpca.alr_action_id=ala.action_id(+) and
 1=1

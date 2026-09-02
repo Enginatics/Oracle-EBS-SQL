@@ -16,10 +16,10 @@ permalink: /GL%20Account%20Analysis%20%28Drilldown%29%20%28with%20inventory%20an
 Detail GL transaction report with one line per transaction including all segments and subledger data, with amounts in both transaction currency and ledger currency. This also has inventory and WIP details.
 
 ## Report Parameters
-Ledger, Ledger ID, Period, Journal Source, Journal Category, Batch, Status, Batch ID, Journal, Journal Header ID, Journal Line Num, Concatenated Segments, Balance Type, Budget Name, Encumbrance Type, Show Segments with Descriptions, Restrict CCIDs through GTT, Restrict JHI through GTT, Show Journal Line DFF Attributes
+Ledger, Ledger ID, Period, Journal Source, Journal Category, Batch, Status, Batch ID, Journal, Journal Header ID, Journal Line Num, Concatenated Segments, Balance Type, Budget Name, Encumbrance Type, Show Segments with Descriptions, Restrict CCIDs through GTT, Restrict JHI through GTT, Journal Line DFF Display
 
 ## Oracle EBS Tables Used
-[gl_code_combinations_kfv](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations_kfv), [xla_event_types_tl](https://www.enginatics.com/library/?pg=1&find=xla_event_types_tl), [gl_daily_conversion_types](https://www.enginatics.com/library/?pg=1&find=gl_daily_conversion_types), [gl_budget_versions](https://www.enginatics.com/library/?pg=1&find=gl_budget_versions), [gl_encumbrance_types](https://www.enginatics.com/library/?pg=1&find=gl_encumbrance_types), [fnd_document_sequences](https://www.enginatics.com/library/?pg=1&find=fnd_document_sequences), [gl_je_lines_recon](https://www.enginatics.com/library/?pg=1&find=gl_je_lines_recon), [fa_distribution_history](https://www.enginatics.com/library/?pg=1&find=fa_distribution_history), [mtl_sales_orders](https://www.enginatics.com/library/?pg=1&find=mtl_sales_orders), [ra_rules](https://www.enginatics.com/library/?pg=1&find=ra_rules), [ra_customer_trx_lines_all](https://www.enginatics.com/library/?pg=1&find=ra_customer_trx_lines_all), [per_jobs_vl](https://www.enginatics.com/library/?pg=1&find=per_jobs_vl), [hr_all_positions_f_tl](https://www.enginatics.com/library/?pg=1&find=hr_all_positions_f_tl)
+[gl_code_combinations_kfv](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations_kfv), [xla_event_types_tl](https://www.enginatics.com/library/?pg=1&find=xla_event_types_tl), [gl_daily_conversion_types](https://www.enginatics.com/library/?pg=1&find=gl_daily_conversion_types), [gl_budget_versions](https://www.enginatics.com/library/?pg=1&find=gl_budget_versions), [gl_encumbrance_types](https://www.enginatics.com/library/?pg=1&find=gl_encumbrance_types), [fnd_document_sequences](https://www.enginatics.com/library/?pg=1&find=fnd_document_sequences), [gl_je_lines_recon](https://www.enginatics.com/library/?pg=1&find=gl_je_lines_recon), [fa_distribution_history](https://www.enginatics.com/library/?pg=1&find=fa_distribution_history), [mtl_sales_orders](https://www.enginatics.com/library/?pg=1&find=mtl_sales_orders), [ra_rules](https://www.enginatics.com/library/?pg=1&find=ra_rules), [ra_customer_trx_lines_all](https://www.enginatics.com/library/?pg=1&find=ra_customer_trx_lines_all), [xla_distribution_links](https://www.enginatics.com/library/?pg=1&find=xla_distribution_links), [ra_cust_trx_line_gl_dist_all](https://www.enginatics.com/library/?pg=1&find=ra_cust_trx_line_gl_dist_all)
 
 ## Report Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
@@ -33,7 +33,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/gl-account-analysis-drilldown-with-inventory-and-wip/) |
+| Excel Example Output | [](https://www.enginatics.com/example/gl-account-analysis-drilldown-with-inventory-and-wip/) |
 | Blitz Report™ XML Import | [GL_Account_Analysis_Drilldown_with_inventory_and_WIP.xml](https://www.enginatics.com/xml/gl-account-analysis-drilldown-with-inventory-and-wip/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/gl-account-analysis-drilldown-with-inventory-and-wip/](https://www.enginatics.com/reports/gl-account-analysis-drilldown-with-inventory-and-wip/) |
 

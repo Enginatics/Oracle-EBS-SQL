@@ -256,7 +256,7 @@ usr.user_id,
 fcmf.function_id,
 case when usr.user_id is not null then
 'begin fnd_global.apps_initialize('||usr.user_id||','||usr.responsibility_id||','||usr.responsibility_application_id||'); mo_global.init('''||decode(fmpi.status,'Y','M','S')||'''); '||
-nvl2(frv.default_mo_org,'fnd_profile.put(''MFG_ORGANIZATION_ID'','''||frv.default_mo_org||'''); ',null)||'gl_security_pkg.init; end;'
+nvl2(frv.default_mo_org,'fnd_profile.put(''MFG_ORGANIZATION_ID'','''||frv.default_mo_org||'''); ',null)||'end;'
 end sql_session_init
 from
 fnd_application_vl fav,

@@ -2,7 +2,7 @@
 layout: default
 title: 'AR Sales Journal By Customer | Oracle EBS SQL Report'
 description: 'Imported from BI Publisher Description: Sales Journal By Customer Application: Receivables Source: Sales Journal By Customer (XML) Short Name: RAXGLAXML…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Nidec changes, Sales, Journal, Customer, gl_sets_of_books, hr_all_organization_units_vl, hz_cust_accounts_all'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Sales, Journal, Customer, gl_sets_of_books, hr_all_organization_units_vl, hz_cust_accounts_all'
 permalink: /AR%20Sales%20Journal%20By%20Customer/
 ---
 
@@ -25,7 +25,7 @@ Reporting Level, Reporting Context, Report By Line, Company Segment Low, Company
 [gl_sets_of_books](https://www.enginatics.com/library/?pg=1&find=gl_sets_of_books), [hr_all_organization_units_vl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_vl), [hz_cust_accounts_all](https://www.enginatics.com/library/?pg=1&find=hz_cust_accounts_all), [hz_parties](https://www.enginatics.com/library/?pg=1&find=hz_parties), [ra_customer_trx_all](https://www.enginatics.com/library/?pg=1&find=ra_customer_trx_all), [ra_customer_trx_lines_all](https://www.enginatics.com/library/?pg=1&find=ra_customer_trx_lines_all), [ar_xla_ctlgd_lines_v](https://www.enginatics.com/library/?pg=1&find=ar_xla_ctlgd_lines_v)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Nidec changes](https://www.enginatics.com/library/?pg=1&category[]=Nidec%20changes)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related Reports
 [AR Open Items Revaluation](/AR%20Open%20Items%20Revaluation/ "AR Open Items Revaluation Oracle EBS SQL Report"), [AR Transactions and Lines](/AR%20Transactions%20and%20Lines/ "AR Transactions and Lines Oracle EBS SQL Report"), [CST COGS Revenue Matching](/CST%20COGS%20Revenue%20Matching/ "CST COGS Revenue Matching Oracle EBS SQL Report"), [AR Aging](/AR%20Aging/ "AR Aging Oracle EBS SQL Report"), [GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report")

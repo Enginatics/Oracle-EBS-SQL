@@ -46,8 +46,8 @@ null delete_element_entry,
 null datetrack_update_mode,
 peef.object_version_number,
 to_date(null) effective_date,
-peef.effective_start_date effective_start_date, 
-peef.effective_end_date effective_end_date,
+peef.effective_start_date, 
+peef.effective_end_date,
 input1_value_name,
 input1_entry_value,
 input2_value_name,
@@ -77,7 +77,8 @@ input13_entry_value,
 input14_value_name,
 input14_entry_value,
 input15_value_name,
-input15_entry_value
+input15_entry_value,
+to_number(null) upload_row
 from
 per_all_people_f papf,
 per_all_assignments_f paaf,
@@ -120,7 +121,3 @@ ppos.person_id=papf.person_id and
 ppos.period_of_service_id=(select max(period_of_service_id) from per_periods_of_service where person_id = papf.person_id) and
 ppos.actual_termination_date < trunc(sysdate)
 )
-&not_use_first_block
-&report_table_select &report_table_name &report_table_where_clause
-&processed_run
-order by 6,9

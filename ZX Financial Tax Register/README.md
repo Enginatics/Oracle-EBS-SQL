@@ -2,7 +2,7 @@
 layout: default
 title: 'ZX Financial Tax Register | Oracle EBS SQL Report'
 description: 'Imported from Concurrent Program Description: Rx-only: Financial Tax Register Application: E-Business Tax Source: RX-only: Financial Tax Register Report…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Financial, Tax, Register, zx_rep_extract_v'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Financial, Tax, Register, zx_rep_extract_v'
 permalink: /ZX%20Financial%20Tax%20Register/
 ---
 
@@ -24,7 +24,7 @@ Reporting Level, Reporting Context, Company Name, Set of Books Currency, Registe
 [zx_rep_extract_v](https://www.enginatics.com/library/?pg=1&find=zx_rep_extract_v)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 
 

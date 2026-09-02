@@ -2,7 +2,7 @@
 layout: default
 title: 'FA Journal Entry Reserve Ledger | Oracle EBS SQL Report'
 description: 'Imported Oracle standard journal entry reserve ledger report Source: Journal Entry Reserve Ledger Report (XML) Short Name: FAS400XML DB package…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Journal, Entry, Reserve, Ledger, fa_system_controls, gl_ledgers, fa_reserve_ledger_gt'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Journal, Entry, Reserve, Ledger, fa_system_controls, gl_ledgers, fa_reserve_ledger_gt'
 permalink: /FA%20Journal%20Entry%20Reserve%20Ledger/
 ---
 
@@ -23,7 +23,7 @@ Book, Set of Books Currency, Period
 [fa_system_controls](https://www.enginatics.com/library/?pg=1&find=fa_system_controls), [gl_ledgers](https://www.enginatics.com/library/?pg=1&find=gl_ledgers), [fa_reserve_ledger_gt](https://www.enginatics.com/library/?pg=1&find=fa_reserve_ledger_gt), [fa_additions](https://www.enginatics.com/library/?pg=1&find=fa_additions), [gl_code_combinations](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations), [&lp_fa_deprn_summary](https://www.enginatics.com/library/?pg=1&find=&lp_fa_deprn_summary)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related Reports
 [FA Asset Cost](/FA%20Asset%20Cost/ "FA Asset Cost Oracle EBS SQL Report"), [FA Asset Additions](/FA%20Asset%20Additions/ "FA Asset Additions Oracle EBS SQL Report"), [FA Tax Reserve Ledger](/FA%20Tax%20Reserve%20Ledger/ "FA Tax Reserve Ledger Oracle EBS SQL Report"), [FA Asset Book Details](/FA%20Asset%20Book%20Details/ "FA Asset Book Details Oracle EBS SQL Report"), [FA Asset Upload](/FA%20Asset%20Upload/ "FA Asset Upload Oracle EBS SQL Report"), [FA Asset Retirements](/FA%20Asset%20Retirements/ "FA Asset Retirements Oracle EBS SQL Report"), [FA Asset Summary (Germany)](/FA%20Asset%20Summary%20%28Germany%29/ "FA Asset Summary (Germany) Oracle EBS SQL Report"), [FA Depreciation Reserve](/FA%20Depreciation%20Reserve/ "FA Depreciation Reserve Oracle EBS SQL Report")

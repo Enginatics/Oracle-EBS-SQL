@@ -2,7 +2,7 @@
 layout: default
 title: 'INV Item Upload | Oracle EBS SQL Report'
 description: 'INV Inventory Item Upload ====================== This upload can be used to create and update Inventory Items. It supports creation of Inventory Items: -…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Upload, INV, Item, mtl_item_catalog_groups_b_kfv, mtl_item_status, mtl_units_of_measure_tl'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, INV, Item, mtl_item_catalog_groups_b_kfv, mtl_item_status, mtl_units_of_measure_tl'
 permalink: /INV%20Item%20Upload/
 ---
 
@@ -17,7 +17,7 @@ This upload can be used to create and update Inventory Items.
 
 It supports creation of Inventory Items:
 - by manually entering the Item details.
-- from the same item in the Master Organization (equivalent to Assigning the item to a child organization)
+- from a master row, with optional semicolon-separated child organization assignments
 - from an item template (Copy from Template)
 - from an existing item in the same Organization (Copy from Item)
 
@@ -27,7 +27,12 @@ It supports update of existing Inventory Items either by:
 
 It also supports the item category assignment to multiple Inventory Category Sets
 -  to assign an item to another category set, repeat the Organization Code and Item Number on a separate row in the excel and add the details of the additional category set and item category to which the item is to be assigned.
-- for child organizations, only the category sets controlled at the organization level can be selected.   
+- for child organizations, only the category sets controlled at the organization level can be selected.
+- to remove an existing category assignment, download the item first, then set the Delete Category column to Yes on the row showing the Category Set and Item Category to be removed. Deletion is not permitted for mandatory category sets that require the item to remain assigned.
+
+Additionally
+- supports creation and update of item revisions
+- supports creation, update, and deletion of manufacturer part numbers
 
 Upload Mode parameter:
 Create - allows creation of new items only
@@ -38,6 +43,11 @@ Create Empty File parameter
 Setting the Create Empty File parameter to Yes will open an empty upload excel. 
 This parameter is only applicable to the 'Update' and 'Create, Update' upload modes and suppresses the download of existing item details. ‘Create’ upload mode always opens an empty upload excel regardless of the setting of this parameter.
 This is useful for users who want to paste the details of the items to be updated into an empty upload excel file from another source.
+
+Update on Create Null Handling
+In Create, Update mode the upload allows a Create action to update an existing item if it already exists. This parameter determines how null values are handled when a create action results in an update to an existing item.
+'Null means Clear' - the upload will clear the data from the corresponding column (set it to null).
+'Null means No Change' - the upload will leave the data in the corresponding column unchanged.
 
 Number of Import Workers parameter
 This parameter determines the number of Item Import worker concurrent requests that will be submitted in parallel to import the uploaded items into Oracle Inventory. The number of workers can be increased to improve the throughput of the process when uploading a larger number of item changes.
@@ -54,13 +64,13 @@ Effectively this means, for creation/updates to items in child organizations, th
 
 
 ## Report Parameters
-Upload Mode, Create Empty File, Number of Item Import Workers, Organization Code, Category Set, Category, Item, Item Like, Item Description, Item Type, Item Status, BOM Item Type, Contract Item Type, Make or Buy, Buyer, Planner, Manufacturer, Inventory Planning Method, Last Update Date From, Last Update Date To, Last Updated By, Creation Date From, Creation Date To, Created By, Cross Reference Type, Cross Reference
+Upload Mode, Create Empty File, Update on Create Null Handling, Number of Item Import Workers, Organization Code, Category Set, Category, Category Set 2, Category 2, Item, Item Like, Item Description, Item Type, Item Status, BOM Item Type, Contract Item Type, Make or Buy, Buyer, Planner, Manufacturer, Inventory Planning Method, Cross Reference Type, Cross Reference, Revision Effective Date, Last Update Date From, Last Update Date To, Last Updated By, Creation Date From, Creation Date To, Created By
 
 ## Oracle EBS Tables Used
 [mtl_item_catalog_groups_b_kfv](https://www.enginatics.com/library/?pg=1&find=mtl_item_catalog_groups_b_kfv), [mtl_item_status](https://www.enginatics.com/library/?pg=1&find=mtl_item_status), [mtl_units_of_measure_tl](https://www.enginatics.com/library/?pg=1&find=mtl_units_of_measure_tl), [mtl_actions](https://www.enginatics.com/library/?pg=1&find=mtl_actions), [mtl_grades](https://www.enginatics.com/library/?pg=1&find=mtl_grades), [mtl_material_statuses](https://www.enginatics.com/library/?pg=1&find=mtl_material_statuses), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl), [gl_code_combinations_kfv](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations_kfv), [per_people_x](https://www.enginatics.com/library/?pg=1&find=per_people_x), [po_un_numbers](https://www.enginatics.com/library/?pg=1&find=po_un_numbers), [po_hazard_classes](https://www.enginatics.com/library/?pg=1&find=po_hazard_classes), [fa_categories_b_kfv](https://www.enginatics.com/library/?pg=1&find=fa_categories_b_kfv), [rcv_routing_headers](https://www.enginatics.com/library/?pg=1&find=rcv_routing_headers), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only), [Upload](https://www.enginatics.com/library/?pg=1&category[]=Upload)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Upload](https://www.enginatics.com/library/?pg=1&category[]=Upload)
 
 
 
@@ -71,7 +81,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/inv-item-upload/) |
+| Excel Example Output | [](https://www.enginatics.com/example/inv-item-upload/) |
 | Blitz Report™ XML Import | [INV_Item_Upload.xml](https://www.enginatics.com/xml/inv-item-upload/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/inv-item-upload/](https://www.enginatics.com/reports/inv-item-upload/) |
 

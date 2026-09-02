@@ -2,7 +2,7 @@
 layout: default
 title: 'INV Transaction Historical Summary | Oracle EBS SQL Report'
 description: 'Application: Inventory Description: Transaction Historical Summary Report This report provides equivalent functionality to the Oracle standard Transaction…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, INV, Transaction, Historical, Summary, mtl_secondary_inventories, mtl_system_items_vl, mtl_item_categories'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, INV, Transaction, Historical, Summary, mtl_secondary_inventories, mtl_system_items_vl, mtl_item_categories'
 permalink: /INV%20Transaction%20Historical%20Summary/
 ---
 
@@ -37,7 +37,7 @@ Organization Code, Selection Option, Sort By, Cost Groups From, Cost Groups To, 
 [mtl_secondary_inventories](https://www.enginatics.com/library/?pg=1&find=mtl_secondary_inventories), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl), [mtl_item_categories](https://www.enginatics.com/library/?pg=1&find=mtl_item_categories), [mtl_categories_kfv](https://www.enginatics.com/library/?pg=1&find=mtl_categories_kfv), [mtl_onhand_quantities_detail](https://www.enginatics.com/library/?pg=1&find=mtl_onhand_quantities_detail), [mtl_material_transactions](https://www.enginatics.com/library/?pg=1&find=mtl_material_transactions), [mtl_txn_source_types](https://www.enginatics.com/library/?pg=1&find=mtl_txn_source_types), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters), [mtl_onhand_qty_cost_v](https://www.enginatics.com/library/?pg=1&find=mtl_onhand_qty_cost_v), [cst_item_costs_for_gl_view](https://www.enginatics.com/library/?pg=1&find=cst_item_costs_for_gl_view), [cst_inv_qty_temp](https://www.enginatics.com/library/?pg=1&find=cst_inv_qty_temp), [cst_inv_cost_temp](https://www.enginatics.com/library/?pg=1&find=cst_inv_cost_temp), [cst_cost_groups](https://www.enginatics.com/library/?pg=1&find=cst_cost_groups)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 
 
@@ -48,7 +48,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/inv-transaction-historical-summary/) |
+| Excel Example Output | [](https://www.enginatics.com/example/inv-transaction-historical-summary/) |
 | Blitz Report™ XML Import | [INV_Transaction_Historical_Summary.xml](https://www.enginatics.com/xml/inv-transaction-historical-summary/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/inv-transaction-historical-summary/](https://www.enginatics.com/reports/inv-transaction-historical-summary/) |
 

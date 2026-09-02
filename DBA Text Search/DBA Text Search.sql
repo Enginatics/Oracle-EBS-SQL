@@ -19,7 +19,7 @@ ds.type,
 ds.name,
 ds.line,
 ds.text,
-&multi_line_text
+to_clob(null)||&multi_line_text
 null multi_line_text
 from
 dba_source ds

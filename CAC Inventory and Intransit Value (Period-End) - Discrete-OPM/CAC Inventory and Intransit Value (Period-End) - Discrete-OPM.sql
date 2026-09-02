@@ -318,7 +318,12 @@ valuation_accounts as
                 1 quantity_tracked,
                 mp.default_cost_group_id cost_group_id
          from   inv_organizations mp,
-                (select ic.intransit_inv_account,
+                -- Revision for version 1.36
+                -- The month-end snapshot only stores one intransit value per organization and item,
+                -- it cannot be split by intransit account.  Return only one intransit account per
+                -- organization to avoid duplicating the intransit value for organizations having
+                -- multiple intransit accounts across their shipping networks.
+                (select min(ic.intransit_inv_account) intransit_inv_account,
                         ic.organization_id
                  from   (select mip.intransit_inv_account,
                                 mip.to_organization_id organization_id
@@ -335,7 +340,6 @@ valuation_accounts as
                          and    mp.organization_id          = mip.from_organization_id
                         ) ic
                  group by
-                        ic.intransit_inv_account,
                         ic.organization_id
                 ) interco
          where  mp.organization_id = interco.organization_id

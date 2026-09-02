@@ -14,7 +14,7 @@ permalink: /AR%20Past%20Due%20Invoice/
 Detail past due AR invoice report with invoice number, days past due, amount past due and currency code
 
 ## Report Parameters
-Operating Unit, Order By, As of Date, Days Late Low, Days Late High, Balance Due Low, Balance Due High, Collector, Customer Name, Customer Name not in, Customer Number, Type Low, Salesperson/Agent Low
+Operating Unit, Order By, As of Date, Days Late Low, Days Late High, Balance Due Low, Balance Due High, Collector, Customer Name, Customer Number, Type Low, Salesperson/Agent Low
 
 ## Oracle EBS Tables Used
 [hr_all_organization_units_vl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_vl), [ar_payment_schedules_all](https://www.enginatics.com/library/?pg=1&find=ar_payment_schedules_all), [ra_customer_trx_all](https://www.enginatics.com/library/?pg=1&find=ra_customer_trx_all), [ra_cust_trx_types_all](https://www.enginatics.com/library/?pg=1&find=ra_cust_trx_types_all), [hz_cust_accounts](https://www.enginatics.com/library/?pg=1&find=hz_cust_accounts), [hz_parties](https://www.enginatics.com/library/?pg=1&find=hz_parties), [ra_salesreps](https://www.enginatics.com/library/?pg=1&find=ra_salesreps), [hz_customer_profiles](https://www.enginatics.com/library/?pg=1&find=hz_customer_profiles), [ar_collectors](https://www.enginatics.com/library/?pg=1&find=ar_collectors)

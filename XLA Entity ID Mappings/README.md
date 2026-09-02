@@ -2,7 +2,7 @@
 layout: default
 title: 'XLA Entity ID Mappings | Oracle EBS SQL Report'
 description: 'Shows the column link between table xlatransactionentities and subledger source tables such as and AP invoiceid or AR customertrxid, used when writing…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, XLA, Entity, Mappings, xla_entity_id_mappings, fnd_application_vl'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, XLA, Entity, Mappings, xla_entity_id_mappings, fnd_application_vl'
 permalink: /XLA%20Entity%20ID%20Mappings/
 ---
 
@@ -20,10 +20,10 @@ Shows the column link between table xla_transaction_entities and subledger sourc
 [xla_entity_id_mappings](https://www.enginatics.com/library/?pg=1&find=xla_entity_id_mappings), [fnd_application_vl](https://www.enginatics.com/library/?pg=1&find=fnd_application_vl)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related Reports
-[AP Invoices and Lines](/AP%20Invoices%20and%20Lines/ "AP Invoices and Lines Oracle EBS SQL Report"), [GL Account Analysis](/GL%20Account%20Analysis/ "GL Account Analysis Oracle EBS SQL Report"), [CAC OPM WIP Account Value](/CAC%20OPM%20WIP%20Account%20Value/ "CAC OPM WIP Account Value Oracle EBS SQL Report")
+[AP Invoices and Lines](/AP%20Invoices%20and%20Lines/ "AP Invoices and Lines Oracle EBS SQL Report"), [GL Account Analysis](/GL%20Account%20Analysis/ "GL Account Analysis Oracle EBS SQL Report"), [CAC OPM WIP Account Value](/CAC%20OPM%20WIP%20Account%20Value/ "CAC OPM WIP Account Value Oracle EBS SQL Report"), [AR Aging](/AR%20Aging/ "AR Aging Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.

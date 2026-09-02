@@ -80,7 +80,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/cac-ap-accrual-ir-iso-match-analysis/) |
+| Excel Example Output | [](https://www.enginatics.com/example/cac-ap-accrual-ir-iso-match-analysis/) |
 | Blitz Report™ XML Import | [CAC_AP_Accrual_IR_ISO_Match_Analysis.xml](https://www.enginatics.com/xml/cac-ap-accrual-ir-iso-match-analysis/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/cac-ap-accrual-ir-iso-match-analysis/](https://www.enginatics.com/reports/cac-ap-accrual-ir-iso-match-analysis/) |
 

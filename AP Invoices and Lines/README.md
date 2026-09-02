@@ -2,7 +2,7 @@
 layout: default
 title: 'AP Invoices and Lines | Oracle EBS SQL Report'
 description: 'Detail Invoice Aging report with line item details and amounts Parameter explanation: - Invoice on Hold (LOV: Yes/No) Default Value = Null (Hold Status…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Invoices, Lines, dual, xla_transaction_entities, xla_events'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Invoices, Lines, dual, per_all_people_f, xla_transaction_entities'
 permalink: /AP%20Invoices%20and%20Lines/
 ---
 
@@ -31,13 +31,13 @@ Hold column explanation:
 - Hold Receipt References  - Identifies the matching Receipts for Receipt Matching Holds in the format: Receipt Number(Line Number)
 
 ## Report Parameters
-Ledger, Operating Unit, Aging Bucket Name, Display Level, Supplier, Supplier Site, Invoice Number, Invoice Date Period, Invoice Date From, Invoice Date To, Invoice GL Date From, Invoice GL Date To, Accounting Period, Accounting Date From, Accounting Date To, Payment Period, Payment Date From, Payment Date To, Open only, Days Overdue, Invoice Type, Invoice Status, Payment Status, Expense Account From, Expense Account To, Exclude Cancelled, Invoice on Hold, Hold Name, Has Attachment, Creation Date From, Creation Date To, Show DFF Attributes, Show Attachments, Show SLA Accounting
+Ledger, Operating Unit, Aging Bucket Name, Display Level, Supplier, Supplier Site, Invoice Number, Invoice Date Period, Invoice Date From, Invoice Date To, Validation Date From, Validation Date To, Invoice GL Date From, Invoice GL Date To, Accounting Period, Accounting Date From, Accounting Date To, Payment Period, Payment Date From, Payment Date To, Open only, Days Overdue, Invoice Type, Invoice Status, Payment Status, Expense Account From, Expense Account To, Exclude Cancelled, Invoice PO Matched, Invoice on Hold, Hold Name, Has Attachment, Creation Date From, Creation Date To, DFF Display, Show Attachments, Show SLA Accounting
 
 ## Oracle EBS Tables Used
-[dual](https://www.enginatics.com/library/?pg=1&find=dual), [xla_transaction_entities](https://www.enginatics.com/library/?pg=1&find=xla_transaction_entities), [xla_events](https://www.enginatics.com/library/?pg=1&find=xla_events), [fnd_attached_documents](https://www.enginatics.com/library/?pg=1&find=fnd_attached_documents), [ap_invoice_payments_all](https://www.enginatics.com/library/?pg=1&find=ap_invoice_payments_all), [ap_checks_all](https://www.enginatics.com/library/?pg=1&find=ap_checks_all), [fa_book_controls](https://www.enginatics.com/library/?pg=1&find=fa_book_controls), [fa_categories_b_kfv](https://www.enginatics.com/library/?pg=1&find=fa_categories_b_kfv), [po_headers_all](https://www.enginatics.com/library/?pg=1&find=po_headers_all), [po_distributions_all](https://www.enginatics.com/library/?pg=1&find=po_distributions_all), [rcv_transactions](https://www.enginatics.com/library/?pg=1&find=rcv_transactions)
+[dual](https://www.enginatics.com/library/?pg=1&find=dual), [per_all_people_f](https://www.enginatics.com/library/?pg=1&find=per_all_people_f), [xla_transaction_entities](https://www.enginatics.com/library/?pg=1&find=xla_transaction_entities), [xla_events](https://www.enginatics.com/library/?pg=1&find=xla_events), [fnd_attached_documents](https://www.enginatics.com/library/?pg=1&find=fnd_attached_documents), [ap_invoice_lines_all](https://www.enginatics.com/library/?pg=1&find=ap_invoice_lines_all), [fnd_doc_sequence_categories](https://www.enginatics.com/library/?pg=1&find=fnd_doc_sequence_categories), [gl_daily_conversion_types](https://www.enginatics.com/library/?pg=1&find=gl_daily_conversion_types), [ap_invoice_payments_all](https://www.enginatics.com/library/?pg=1&find=ap_invoice_payments_all), [ap_checks_all](https://www.enginatics.com/library/?pg=1&find=ap_checks_all), [ce_banks_v](https://www.enginatics.com/library/?pg=1&find=ce_banks_v), [ce_bank_branches_v](https://www.enginatics.com/library/?pg=1&find=ce_bank_branches_v)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 
 

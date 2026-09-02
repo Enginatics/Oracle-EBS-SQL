@@ -11,10 +11,6 @@
 -- Run Report: https://demo.enginatics.com/
 
 select
-x.*
-from
-(
-select
 decode(:p_upload_mode,'Copy',xxen_upload.action_meaning(xxen_upload.action_create),null) action_,
 decode(:p_upload_mode,'Copy',xxen_upload.status_meaning(xxen_upload.status_new),null) status_,
 decode(:p_upload_mode,'Copy',xxen_util.description('U_EXCEL_MSG_VALIDATION_PENDING', 'XXEN_REPORT_TRANSLATIONS', 0),null) message_,
@@ -106,7 +102,7 @@ pptv.inv_group_name invoice_grouping_rule,
 --pptv.agreement_name,
 --pptv.agreement_number,
 pptv.expenditure_type,
-pptv.expenditure_item_date expenditure_item_date,
+pptv.expenditure_item_date,
 (select poev.name from pa_organizations_expend_v poev where poev.organization_id = pptv.organization_id) expenditure_organization,
 -- tax
 xxen_util.meaning(decode(pptv.tax_included,'A','Y',pptv.tax_included),'YES_NO',0) tax_included,
@@ -183,7 +179,8 @@ nvl(pptv.customer_id,pptv.vendor_id) third_party_id,
 nvl(pptv.customer_site_use_id,pptv.vendor_site_id) third_party_bill_to_site_id,
 pptv.cust_ship_site_id third_party_ship_to_site_id,
 to_number(to_char(pptv.start_date,'j')) start_date_j,
-to_number(to_char(pptv.end_date,'j')) end_date_j
+to_number(to_char(pptv.end_date,'j')) end_date_j,
+to_number(null) upload_row
 from
 pn_leases_v plv,
 pn_payment_terms_v pptv,
@@ -198,15 +195,3 @@ plv.org_id = haouv.organization_id and
 pptv.location_id = pla.location_id (+) and
 plv.status = nvl(xxen_util.lookup_code(:p_final_draft_status,'PN_LEASE_STATUS_TYPE',0),'F') and
 plv.lease_class = :p_lease_class
-&not_use_first_block
-&report_table_select &report_table_name &report_table_where_clause
-&success_records
-&processed_run
-) x
-order by
-x.operating_unit,
-x.lease_name,
-x.start_date_j,
-x.end_date_j,
-x.purpose,
-x.type

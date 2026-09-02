@@ -2,7 +2,7 @@
 layout: default
 title: 'CST Item Standard Cost Upload | Oracle EBS SQL Report'
 description: 'CST Item Standard Cost Upload ============================= This upload can be used to - Upload New Item Costs - Download the current Item Costs, Update…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Upload, CST, Item, Standard, Cost, mtl_item_status_vl, cst_cost_types, cst_item_costs'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, CST, Item, Standard, Cost, mtl_item_status_vl, cst_cost_elements, bom_resources'
 permalink: /CST%20Item%20Standard%20Cost%20Upload/
 ---
 
@@ -14,20 +14,19 @@ permalink: /CST%20Item%20Standard%20Cost%20Upload/
 CST Item Standard Cost Upload
 =============================
 
-This upload can be used to 
+This upload can be used to
 - Upload New Item Costs
 - Download the current Item Costs, Update, and Upload the amended item costs for a specified Cost Type
 - Download the current item Costs from one Source cost type, update, and upload the amended item costs to a different Target Cost Type
 
-NOTE: 
-You can only upload costs to cost types that are not flagged as frozen and are flagged as updateable. Typically, this upload is used for updating cost types using the standard costing method.   
+NOTE:
+You can only upload costs to cost types that are not flagged as frozen and are flagged as updateable. This upload is used for updating cost types using the standard costing method.
 
 Optionally, the upload can perform a Cost Rollup after the Item Costs have been imported. The Cost Rollup can be performed for
 - Specific Items - a cost rollup will be done for only those items for which costs have been uploaded
-- All Items - in this mode the upload will submit the 'Supply Chain Cost Rollup - Print Report' concurrent request to rollup all items within each organization costs are uploaded to
+- All Items - in this mode the upload will submit the 'Supply Chain Cost Rollup - Print Report' concurrent request to roll up all items within each organization costs are uploaded to
 
-NOTE: 
-The Item Cost Interface only support importing ‘This Level’ costs. As such, this upload does not support the direct upload of rolled up costs
+NOTE: The Item Cost Interface only supports importing 'This Level' costs. As such, this upload does not support the direct upload of rolled up costs
 
 Parameters
 ==========
@@ -39,50 +38,45 @@ The Item Cost Update Mode
 - Insert new Cost Information Only
 
 Auto Populate Upload Columns (Default: Yes) -
-Applies to downloaded Item Cost Entries only. If set to Yes, the downloaded records will be flagged ready for upload, even if though no changes have been made. 
-If left blank, the downloaded records will only be flagged for upload when the user amends any data against a record. 
-In this case, it is important to remember where an Item Cost has multiple cost elements, then all the cost element records for that item would need to be amended to flag them for update. Only records flagged for update are uploaded. If all cost elements for an item are to be uploaded, even if some do not require any amendment, then the user must trigger the record to be uploaded by making a change against the record.
+Applies to downloaded Item Cost Entries only. If set to Yes, the downloaded records are flagged ready for upload even if no changes have been made. If left blank, records are only flagged for upload when the user amends them. Where an Item Cost has multiple cost elements, all cost element records of that item must then be flagged for upload by amending them, as only flagged records are uploaded.
 
 Source Cost Type
 Optionally specify the source Cost Type from which to download the current Item Costs. For the scenarios where you want to amend the current items costs for a Cost Type or want to copy the current item costs for a Cost Type to a different Target Cost Type.
 
 Rollup Costs - set to Yes to do a cost rollup after the costs are uploaded
 Rollup Type - Rollup specific Items or All Items
-Rollup Option - Single level rollup or Full cost rollup 
-  
+Rollup Option - Single level rollup or Full cost rollup
+
+NOTE:
+In All Items mode the Supply Chain Cost Rollup requests are submitted asynchronously, and the upload does not wait for them, so the item summary costs in the upload result may not yet reflect the completed rollup.
+
 Organization Code - Optionally select the Organization(s) for which you want to download the Item Costs for
-Additional Parameters - The additional parameters are used to optionally restrict the items to be downloaded.
+Additional Parameters - optionally restrict the items to be downloaded.
+
+Inventory Asset? (Default: Yes)
+Costs can only be uploaded against items flagged as an inventory asset in the cost type, so others are excluded by default. Select No or clear it to download them, so the flag can be set to Yes and costs entered. On Release 12.1 and earlier the item must also be set as an inventory asset in the selected organization, or the import rejects it.
+
+Based on Rollup? and Zero Cost Items? further restrict the download. Zero cost items include those with no cost details yet, which download with Cost Element, Sub-Element and Usage Rate or Amount defaulted.
 
 Notes on the Upload
 ===================
-The generated upload Excel contains one record per elemental item cost.
+Mode Remove and replace rebuilds the whole item: the import deletes every cost detail the item holds in the cost type and re-creates it from the uploaded rows. All cost element rows of an item must therefore be uploaded together, which Auto Populate Upload Columns Yes ensures; clear it and amend one element only and the rest are deleted. Deleting a row removes that cost element.
 
-The following columns in the Excel are display only and are populated initially on download, and then refreshed in the results excel after the upload is performed as they calculated during the Item Cost Import
+Items whose costs default from the Default Cost Type have no cost details of their own, so they are not downloaded. Uploading costs against such an item gives it its own costs and it stops defaulting.
 
-- Basis Factor                  
-- Net Yield or Shrinkage Factor 
-- Element Unit Cost             
-- Item Material Cost - the summary Item Level Material Cost.
-- Item Material Overhead Cost - the summary Item Level Material Overhead Cost.
-- Item Resource Cost - the Summary Item Level Resource Cost.
-- Item Outside Processing Cost - the summary Item Level Outside Processing Cost.
-- Item Overhead Cost - the summary Item Level Overhead Cost.
-- Item Cost - the summary Item Level Item Cost.
-- Item Unburdened Cost - the summary Item Level Unburdened Cost.
-- Item Burden Cost - the summary Item Level Burden Cost.
 
 
 ## Report Parameters
-Target Cost Type, Mode, Auto Populate Upload Columns, Source Cost Type, Rollup Costs?, Rollup Type, Rollup Option, Organization Code, Category Set, Category, Item, Item Like, Item Description, Item Type, Excluded Item Statuses, Make or Buy, Buyer, Planner, Exclude Items with no Cost Details, Exclude Rolled Up Items
+Target Cost Type, Mode, Auto Populate Upload Columns, Source Cost Type, Rollup Costs?, Rollup Type, Rollup Option, Organization Code, Category Set, Category, Item, Item Like, Item Description, Item Type, Excluded Item Statuses, Make or Buy, Buyer, Planner, Inventory Asset?, Based on Rollup?, Zero Cost Items?
 
 ## Oracle EBS Tables Used
-[mtl_item_status_vl](https://www.enginatics.com/library/?pg=1&find=mtl_item_status_vl), [cst_cost_types](https://www.enginatics.com/library/?pg=1&find=cst_cost_types), [cst_item_costs](https://www.enginatics.com/library/?pg=1&find=cst_item_costs), [cst_detail_cost_view](https://www.enginatics.com/library/?pg=1&find=cst_detail_cost_view), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters), [org_access_view](https://www.enginatics.com/library/?pg=1&find=org_access_view)
+[mtl_item_status_vl](https://www.enginatics.com/library/?pg=1&find=mtl_item_status_vl), [cst_cost_elements](https://www.enginatics.com/library/?pg=1&find=cst_cost_elements), [bom_resources](https://www.enginatics.com/library/?pg=1&find=bom_resources), [cst_cost_types](https://www.enginatics.com/library/?pg=1&find=cst_cost_types), [cst_item_costs](https://www.enginatics.com/library/?pg=1&find=cst_item_costs), [cst_item_cost_details](https://www.enginatics.com/library/?pg=1&find=cst_item_cost_details), [cst_activities](https://www.enginatics.com/library/?pg=1&find=cst_activities), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters), [org_access_view](https://www.enginatics.com/library/?pg=1&find=org_access_view)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only), [Upload](https://www.enginatics.com/library/?pg=1&category[]=Upload)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Upload](https://www.enginatics.com/library/?pg=1&category[]=Upload)
 
 ## Related Reports
-[CAC Cost vs. Planning Item Controls](/CAC%20Cost%20vs-%20Planning%20Item%20Controls/ "CAC Cost vs. Planning Item Controls Oracle EBS SQL Report"), [CAC Where Used by Cost Type](/CAC%20Where%20Used%20by%20Cost%20Type/ "CAC Where Used by Cost Type Oracle EBS SQL Report"), [CAC Onhand Lot Value (Real-Time)](/CAC%20Onhand%20Lot%20Value%20%28Real-Time%29/ "CAC Onhand Lot Value (Real-Time) Oracle EBS SQL Report"), [CAC ICP PII Inventory Pending Cost Adjustment](/CAC%20ICP%20PII%20Inventory%20Pending%20Cost%20Adjustment/ "CAC ICP PII Inventory Pending Cost Adjustment Oracle EBS SQL Report"), [CAC Material Account Summary](/CAC%20Material%20Account%20Summary/ "CAC Material Account Summary Oracle EBS SQL Report"), [INV Material Movements](/INV%20Material%20Movements/ "INV Material Movements Oracle EBS SQL Report"), [CAC OPM Costed Formula](/CAC%20OPM%20Costed%20Formula/ "CAC OPM Costed Formula Oracle EBS SQL Report"), [CST Detailed Item Cost](/CST%20Detailed%20Item%20Cost/ "CST Detailed Item Cost Oracle EBS SQL Report"), [CAC User-Defined and Rolled Up Costs](/CAC%20User-Defined%20and%20Rolled%20Up%20Costs/ "CAC User-Defined and Rolled Up Costs Oracle EBS SQL Report")
+[CAC Item Cost & Routing](/CAC%20Item%20Cost%20-%20Routing/ "CAC Item Cost & Routing Oracle EBS SQL Report"), [CST Detailed Item Cost](/CST%20Detailed%20Item%20Cost/ "CST Detailed Item Cost Oracle EBS SQL Report"), [CAC Load More4Apps Buy Item Costs](/CAC%20Load%20More4Apps%20Buy%20Item%20Costs/ "CAC Load More4Apps Buy Item Costs Oracle EBS SQL Report"), [CAC Item Cost Break-Out by Activity](/CAC%20Item%20Cost%20Break-Out%20by%20Activity/ "CAC Item Cost Break-Out by Activity Oracle EBS SQL Report"), [CAC Material Account Detail](/CAC%20Material%20Account%20Detail/ "CAC Material Account Detail Oracle EBS SQL Report"), [CAC ICP PII Material Account Detail](/CAC%20ICP%20PII%20Material%20Account%20Detail/ "CAC ICP PII Material Account Detail Oracle EBS SQL Report"), [CAC Resource Costs](/CAC%20Resource%20Costs/ "CAC Resource Costs Oracle EBS SQL Report"), [CAC Last Standard Item Cost](/CAC%20Last%20Standard%20Item%20Cost/ "CAC Last Standard Item Cost Oracle EBS SQL Report"), [CAC Cost vs. Planning Item Controls](/CAC%20Cost%20vs-%20Planning%20Item%20Controls/ "CAC Cost vs. Planning Item Controls Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
@@ -91,7 +85,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/cst-item-standard-cost-upload/) |
+| Excel Example Output | [](https://www.enginatics.com/example/cst-item-standard-cost-upload/) |
 | Blitz Report™ XML Import | [CST_Item_Standard_Cost_Upload.xml](https://www.enginatics.com/xml/cst-item-standard-cost-upload/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/cst-item-standard-cost-upload/](https://www.enginatics.com/reports/cst-item-standard-cost-upload/) |
 

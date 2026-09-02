@@ -1,7 +1,7 @@
 ---
 layout: default
 title: 'Blitz Report Assignments and Responsibilities | Oracle EBS SQL Report'
-description: 'Lists all responsibilities, users, and the bitz reports that they can access, presumed they had their Blitz Report Access profile option set to ''User'''
+description: 'Lists all responsibilities, users, and the bitz reports that they can access, presumed they have their Blitz Report Access profile option set to ''User'''
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Blitz, Report, Assignments, Responsibilities, fnd_profile_option_values, fnd_profile_options, fnd_user_resp_groups'
 permalink: /Blitz%20Report%20Assignments%20and%20Responsibilities/
 ---
@@ -11,19 +11,19 @@ permalink: /Blitz%20Report%20Assignments%20and%20Responsibilities/
 **Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/blitz-report-assignments-and-responsibilities/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
 
 ## Overview
-Lists all responsibilities, users, and the bitz reports that they can access, presumed they had their Blitz Report Access profile option set to 'User'
+Lists all responsibilities, users, and the bitz reports that they can access, presumed they have their Blitz Report Access profile option set to 'User'
 
 ## Report Parameters
 Responsibility Name, Report Name, Category, User Name, Show Users
 
 ## Oracle EBS Tables Used
-[fnd_profile_option_values](https://www.enginatics.com/library/?pg=1&find=fnd_profile_option_values), [fnd_profile_options](https://www.enginatics.com/library/?pg=1&find=fnd_profile_options), [fnd_user_resp_groups](https://www.enginatics.com/library/?pg=1&find=fnd_user_resp_groups), [fnd_user](https://www.enginatics.com/library/?pg=1&find=fnd_user), [fnd_responsibility](https://www.enginatics.com/library/?pg=1&find=fnd_responsibility), [fnd_form_functions](https://www.enginatics.com/library/?pg=1&find=fnd_form_functions), [fnd_compiled_menu_functions](https://www.enginatics.com/library/?pg=1&find=fnd_compiled_menu_functions), [per_security_profiles](https://www.enginatics.com/library/?pg=1&find=per_security_profiles), [hr_operating_units](https://www.enginatics.com/library/?pg=1&find=hr_operating_units), [per_organization_list](https://www.enginatics.com/library/?pg=1&find=per_organization_list), [xroac](https://www.enginatics.com/library/?pg=1&find=xroac), [xxen_report_assignments](https://www.enginatics.com/library/?pg=1&find=xxen_report_assignments), [xxen_reports_v](https://www.enginatics.com/library/?pg=1&find=xxen_reports_v), [fnd_responsibility_vl](https://www.enginatics.com/library/?pg=1&find=fnd_responsibility_vl), [fnd_application_vl](https://www.enginatics.com/library/?pg=1&find=fnd_application_vl)
+[fnd_profile_option_values](https://www.enginatics.com/library/?pg=1&find=fnd_profile_option_values), [fnd_profile_options](https://www.enginatics.com/library/?pg=1&find=fnd_profile_options), [fnd_user_resp_groups](https://www.enginatics.com/library/?pg=1&find=fnd_user_resp_groups), [fnd_user](https://www.enginatics.com/library/?pg=1&find=fnd_user), [fnd_responsibility](https://www.enginatics.com/library/?pg=1&find=fnd_responsibility), [fnd_form_functions](https://www.enginatics.com/library/?pg=1&find=fnd_form_functions), [fnd_compiled_menu_functions](https://www.enginatics.com/library/?pg=1&find=fnd_compiled_menu_functions), [xroac](https://www.enginatics.com/library/?pg=1&find=xroac), [xxen_report_assignments](https://www.enginatics.com/library/?pg=1&find=xxen_report_assignments), [xxen_report_assignment_users](https://www.enginatics.com/library/?pg=1&find=xxen_report_assignment_users), [xxen_reports_v](https://www.enginatics.com/library/?pg=1&find=xxen_reports_v), [fnd_responsibility_vl](https://www.enginatics.com/library/?pg=1&find=fnd_responsibility_vl), [fnd_application_vl](https://www.enginatics.com/library/?pg=1&find=fnd_application_vl)
 
 ## Report Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related Reports
-[FND Responsibility Access](/FND%20Responsibility%20Access/ "FND Responsibility Access Oracle EBS SQL Report"), [FND Responsibility Access 11i](/FND%20Responsibility%20Access%2011i/ "FND Responsibility Access 11i Oracle EBS SQL Report"), [FND User Login History](/FND%20User%20Login%20History/ "FND User Login History Oracle EBS SQL Report"), [FND Responsibilities](/FND%20Responsibilities/ "FND Responsibilities Oracle EBS SQL Report"), [INV Items](/INV%20Items/ "INV Items Oracle EBS SQL Report"), [CAC Intercompany SO Price List vs. Item Cost Comparison](/CAC%20Intercompany%20SO%20Price%20List%20vs-%20Item%20Cost%20Comparison/ "CAC Intercompany SO Price List vs. Item Cost Comparison Oracle EBS SQL Report"), [INV Item Upload](/INV%20Item%20Upload/ "INV Item Upload Oracle EBS SQL Report"), [AR Customer Upload](/AR%20Customer%20Upload/ "AR Customer Upload Oracle EBS SQL Report")
+[FND Responsibility Access](/FND%20Responsibility%20Access/ "FND Responsibility Access Oracle EBS SQL Report"), [Blitz Report Template Sharing](/Blitz%20Report%20Template%20Sharing/ "Blitz Report Template Sharing Oracle EBS SQL Report"), [FND User Login History](/FND%20User%20Login%20History/ "FND User Login History Oracle EBS SQL Report"), [CAC Inventory Organization Summary](/CAC%20Inventory%20Organization%20Summary/ "CAC Inventory Organization Summary Oracle EBS SQL Report"), [FND Responsibilities](/FND%20Responsibilities/ "FND Responsibilities Oracle EBS SQL Report"), [FND Forms Personalizations](/FND%20Forms%20Personalizations/ "FND Forms Personalizations Oracle EBS SQL Report"), [FND Responsibility Upload](/FND%20Responsibility%20Upload/ "FND Responsibility Upload Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.

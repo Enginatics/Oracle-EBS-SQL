@@ -36,7 +36,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/per-employee-salary-change/) |
+| Excel Example Output | [](https://www.enginatics.com/example/per-employee-salary-change/) |
 | Blitz Report™ XML Import | [PER_Employee_Salary_Change.xml](https://www.enginatics.com/xml/per-employee-salary-change/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/per-employee-salary-change/](https://www.enginatics.com/reports/per-employee-salary-change/) |
 

@@ -10,6 +10,32 @@
 -- Library Link: https://www.enginatics.com/reports/iby-payment-process-request-details/
 -- Run Report: https://demo.enginatics.com/
 
+with dist_hierarchy as (
+select /*+ materialize */
+&dist_hierarchy_levels
+x.flex_value_set_id,
+x.child_flex_value_low,
+x.child_flex_value_high
+from
+(
+select
+substr(sys_connect_by_path(ffvnh.parent_flex_value,'|'),2) path,
+ffvnh.child_flex_value_low,
+ffvnh.child_flex_value_high,
+ffvnh.flex_value_set_id
+from
+(select ffvnh.* from fnd_flex_value_norm_hierarchy ffvnh where ffvnh.flex_value_set_id=:dist_flex_value_set_id) ffvnh
+where
+connect_by_isleaf=1 and
+ffvnh.range_attribute='C'
+connect by nocycle
+ffvnh.parent_flex_value between prior ffvnh.child_flex_value_low and prior ffvnh.child_flex_value_high and
+ffvnh.flex_value_set_id=prior ffvnh.flex_value_set_id and
+prior ffvnh.range_attribute='P'
+start with
+ffvnh.parent_flex_value=:dist_parent_flex_value
+) x
+)
 select
 xep.name legal_entity,
 hou.name operating_unit,
@@ -53,6 +79,8 @@ idpa.document_date,
 idpa.document_amount,
 idpa.document_currency_code document_currency,
 idpa.payment_amount amount_paid,
+idpa.payment_curr_discount_taken discount_taken,
+idpa.payment_amount+nvl(idpa.payment_curr_discount_taken,0) amount_paid_incl_discount,
 idpa.payment_currency_code document_payment_currency,
 idpa.payment_date document_payment_date,
 case when idpa.document_currency_code<>gl.currency_code then (select gdct.user_conversion_type from gl_daily_conversion_types gdct where aia.exchange_rate_type=gdct.conversion_type) end document_exch_rate_type,
@@ -60,6 +88,8 @@ case when idpa.document_currency_code<>gl.currency_code then aia.exchange_date e
 case when idpa.document_currency_code<>gl.currency_code then aia.exchange_rate end document_exch_rate,
 nvl(aia.base_amount,idpa.document_amount) document_func_curr_amount,
 &invoice_distribution_columns
+&dist_segment_columns
+&dist_hierarchy_levels4
 case
 when idpa.payment_currency_code<>gl.currency_code and aca.check_id is not null then (select gdct.user_conversion_type from gl_daily_conversion_types gdct where aca.exchange_rate_type=gdct.conversion_type)
 when idpa.payment_currency_code<>gl.currency_code and :p_pay_inv_exch_rate_type is not null then (select gdct.user_conversion_type from gl_daily_conversion_types gdct where gdct.conversion_type=:p_pay_inv_exch_rate_type)
@@ -77,6 +107,16 @@ when idpa.payment_currency_code=gl.currency_code then idpa.payment_amount
 when idpa.payment_currency_code<>gl.currency_code and aca.check_id is not null then round(idpa.payment_amount*aca.exchange_rate,2)
 when idpa.payment_currency_code<>gl.currency_code and :p_pay_inv_exch_rate_type is not null then round(idpa.payment_amount*gl_currency_api.get_rate(idpa.payment_currency_code,gl.currency_code,trunc(aisca.check_date),:p_pay_inv_exch_rate_type),2)
 end amount_paid_func_curr_amount,
+case
+when idpa.payment_currency_code=gl.currency_code then idpa.payment_curr_discount_taken
+when idpa.payment_currency_code<>gl.currency_code and aca.check_id is not null then round(idpa.payment_curr_discount_taken*aca.exchange_rate,2)
+when idpa.payment_currency_code<>gl.currency_code and :p_pay_inv_exch_rate_type is not null then round(idpa.payment_curr_discount_taken*gl_currency_api.get_rate(idpa.payment_currency_code,gl.currency_code,trunc(aisca.check_date),:p_pay_inv_exch_rate_type),2)
+end discount_taken_func_curr_amt,
+case
+when idpa.payment_currency_code=gl.currency_code then idpa.payment_amount+nvl(idpa.payment_curr_discount_taken,0)
+when idpa.payment_currency_code<>gl.currency_code and aca.check_id is not null then round((idpa.payment_amount+nvl(idpa.payment_curr_discount_taken,0))*aca.exchange_rate,2)
+when idpa.payment_currency_code<>gl.currency_code and :p_pay_inv_exch_rate_type is not null then round((idpa.payment_amount+nvl(idpa.payment_curr_discount_taken,0))*gl_currency_api.get_rate(idpa.payment_currency_code,gl.currency_code,trunc(aisca.check_date),:p_pay_inv_exch_rate_type),2)
+end amount_paid_incl_disc_func_amt,
 nvl(cba.currency_code,(select cba2.currency_code from ce_bank_accounts cba2 where ipsr.internal_bank_account_id=cba2.bank_account_id)) payment_currency,
 case when :p_pay_inv_exch_rate_type is not null and idpa.document_currency_code<>idpa.payment_currency_code then (select gdct.user_conversion_type from gl_daily_conversion_types gdct where gdct.conversion_type=:p_pay_inv_exch_rate_type) end pay_inv_curr_exch_rate_type,
 case when :p_pay_inv_exch_rate_type is not null and idpa.document_currency_code<>idpa.payment_currency_code then gl_currency_api.get_rate(idpa.payment_currency_code,idpa.document_currency_code,ipa.payment_date,:p_pay_inv_exch_rate_type) end payment_inv_curr_exch_rate,
@@ -132,7 +172,22 @@ iby_pay_service_requests ipsr,
 ap_inv_selection_criteria_all aisca,
 iby_docs_payable_all idpa,
 ap_invoices_all aia,
-(select aida.* from ap_invoice_distributions_all aida where '&show_invoice_distributions'='Y') aida,
+(
+select
+aida.*,
+gcck.chart_of_accounts_id,
+&dist_segment_cols2
+&dist_hierarchy_levels2
+gcck.code_combination_id ccid
+from
+ap_invoice_distributions_all aida,
+gl_code_combinations_kfv gcck,
+dist_hierarchy h
+where
+'&show_invoice_distributions'='Y' and
+aida.dist_code_combination_id=gcck.code_combination_id(+) and
+gcck.&dist_hierarchy_segment_column between nvl(h.child_flex_value_low(+),gcck.&dist_hierarchy_segment_column) and nvl(h.child_flex_value_high(+),gcck.&dist_hierarchy_segment_column)
+) aida,
 ap_checks_all aca,
 hz_parties hp1,
 hz_parties hp2,

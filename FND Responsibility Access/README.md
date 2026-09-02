@@ -2,7 +2,7 @@
 layout: default
 title: 'FND Responsibility Access | Oracle EBS SQL Report'
 description: 'Responsibilites and related data such as users, concurrent programs, menus, functions, forms, data access set and security profiles and associated ledgers…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, FND, Responsibility, Access, fnd_form_functions_vl, fnd_form_vl, fnd_menu_entries_vl'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, FND, Responsibility, Access, fnd_form_functions_vl, fnd_form_vl, fnd_menu_entries_vl'
 permalink: /FND%20Responsibility%20Access/
 ---
 
@@ -40,7 +40,7 @@ Responsibility Name like, User Name like, Application, Access to Inventory Org, 
 [fnd_form_functions_vl](https://www.enginatics.com/library/?pg=1&find=fnd_form_functions_vl), [fnd_form_vl](https://www.enginatics.com/library/?pg=1&find=fnd_form_vl), [fnd_menu_entries_vl](https://www.enginatics.com/library/?pg=1&find=fnd_menu_entries_vl), [fnd_menus_tl](https://www.enginatics.com/library/?pg=1&find=fnd_menus_tl), [gl_access_set_norm_assign](https://www.enginatics.com/library/?pg=1&find=gl_access_set_norm_assign), [gl_ledger_set_norm_assign_v](https://www.enginatics.com/library/?pg=1&find=gl_ledger_set_norm_assign_v), [gl_ledgers](https://www.enginatics.com/library/?pg=1&find=gl_ledgers), [hr_operating_units](https://www.enginatics.com/library/?pg=1&find=hr_operating_units), [xle_firstparty_information_v](https://www.enginatics.com/library/?pg=1&find=xle_firstparty_information_v), [per_security_profiles](https://www.enginatics.com/library/?pg=1&find=per_security_profiles), [per_organization_list](https://www.enginatics.com/library/?pg=1&find=per_organization_list), [hr_all_organization_units_vl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_vl), [fnd_user_resp_groups](https://www.enginatics.com/library/?pg=1&find=fnd_user_resp_groups), [fnd_user](https://www.enginatics.com/library/?pg=1&find=fnd_user), [per_all_people_f](https://www.enginatics.com/library/?pg=1&find=per_all_people_f), [gl_access_sets_v](https://www.enginatics.com/library/?pg=1&find=gl_access_sets_v), [fnd_profile_option_values](https://www.enginatics.com/library/?pg=1&find=fnd_profile_option_values), [fnd_profile_options](https://www.enginatics.com/library/?pg=1&find=fnd_profile_options), [fnd_application_vl](https://www.enginatics.com/library/?pg=1&find=fnd_application_vl)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 
 

@@ -62,7 +62,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/cac-items-without-this-level-material-overhead/) |
+| Excel Example Output | [](https://www.enginatics.com/example/cac-items-without-this-level-material-overhead/) |
 | Blitz Report™ XML Import | [CAC_Items_Without_This_Level_Material_Overhead.xml](https://www.enginatics.com/xml/cac-items-without-this-level-material-overhead/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/cac-items-without-this-level-material-overhead/](https://www.enginatics.com/reports/cac-items-without-this-level-material-overhead/) |
 

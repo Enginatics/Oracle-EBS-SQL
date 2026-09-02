@@ -2,7 +2,7 @@
 layout: default
 title: 'PO Purchase Price Variance | Oracle EBS SQL Report'
 description: 'Imported Oracle standard Purchase Price Variance report Source: Purchase Price Variance Report (XML) Short Name: POXRCPPVXML DB package: POPOXRCPPVXMLPPKG'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, BI Publisher, Enginatics, R12 only, Purchase, Price, Variance, hr_operating_units, gl_ledgers, fnd_currencies'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Purchase, Price, Variance, hr_operating_units, gl_ledgers, fnd_currencies'
 permalink: /PO%20Purchase%20Price%20Variance/
 ---
 
@@ -23,7 +23,7 @@ Ledger, Operating Unit, Organization Code, Category, Transaction Dates From, Tra
 [hr_operating_units](https://www.enginatics.com/library/?pg=1&find=hr_operating_units), [gl_ledgers](https://www.enginatics.com/library/?pg=1&find=gl_ledgers), [fnd_currencies](https://www.enginatics.com/library/?pg=1&find=fnd_currencies), [financials_system_params_all](https://www.enginatics.com/library/?pg=1&find=financials_system_params_all), [x](https://www.enginatics.com/library/?pg=1&find=x), [rcv_transactions](https://www.enginatics.com/library/?pg=1&find=rcv_transactions), [rcv_shipment_headers](https://www.enginatics.com/library/?pg=1&find=rcv_shipment_headers), [po_headers_all](https://www.enginatics.com/library/?pg=1&find=po_headers_all), [ap_suppliers](https://www.enginatics.com/library/?pg=1&find=ap_suppliers), [po_lines_all](https://www.enginatics.com/library/?pg=1&find=po_lines_all), [po_line_locations_all](https://www.enginatics.com/library/?pg=1&find=po_line_locations_all), [po_distributions_all](https://www.enginatics.com/library/?pg=1&find=po_distributions_all), [per_all_people_f](https://www.enginatics.com/library/?pg=1&find=per_all_people_f), [xp](https://www.enginatics.com/library/?pg=1&find=xp), [po_releases_all](https://www.enginatics.com/library/?pg=1&find=po_releases_all), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl), [mtl_categories_v](https://www.enginatics.com/library/?pg=1&find=mtl_categories_v), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters), [papf](https://www.enginatics.com/library/?pg=1&find=papf), [mtl_material_transactions](https://www.enginatics.com/library/?pg=1&find=mtl_material_transactions), [mtl_transaction_accounts](https://www.enginatics.com/library/?pg=1&find=mtl_transaction_accounts), [mtl_cst_actual_cost_details](https://www.enginatics.com/library/?pg=1&find=mtl_cst_actual_cost_details)
 
 ## Report Categories
-[BI Publisher](https://www.enginatics.com/library/?pg=1&category[]=BI%20Publisher), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 
 

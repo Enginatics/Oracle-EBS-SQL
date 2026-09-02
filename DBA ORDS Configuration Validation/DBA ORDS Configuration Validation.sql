@@ -5,7 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: DBA ORDS Configuration Validation
--- Description: Validates the Oracle REST Data Services (ORDS) configuration for Blitz Report webservices. Checks: ORDS schema enablement and URL mapping, REST module status, PL/SQL package validity, all 27 expected endpoint handlers and their ORDS template registrations, execute grants, the complete OAuth2 chain (role, privilege, privilege-role mapping, privilege-module mapping, OAuth client, client-role grant), ORDS URL profile configuration with token endpoint validation, OAuth2 client_id/secret availability, and ORDS connection pool sessions. Use this report to diagnose ORDS connectivity issues including OAuth token 404 errors.
+-- Description: Validates the Oracle REST Data Services (ORDS) configuration for Blitz Report webservices. Checks: ORDS schema enablement and URL mapping, REST module status, PL/SQL package validity, all 27 expected endpoint handlers and their ORDS template registrations, execute grants, URL-pattern privileges that intercept xxen_webservices calls and the OAuth client's role grants (catches HTTP 401 caused by pre-existing catch-all privileges), ORDS URL profile configuration with token endpoint validation, OAuth2 client_id/secret availability, and ORDS connection pool sessions. Use this report to diagnose ORDS connectivity issues including OAuth token 404 and 401 errors.
 -- Excel Examle Output: https://www.enginatics.com/example/dba-ords-configuration-validation/
 -- Library Link: https://www.enginatics.com/reports/dba-ords-configuration-validation/
 -- Run Report: https://demo.enginatics.com/
@@ -84,33 +84,42 @@ case when dp.procedure_name is not null then 'OK' else 'Error' end,
 3
 from
 (
-select 'copy_template' endpoint_name, 'COPY_TEMPLATE_ORDS' procedure_name from dual union all
-select 'delete_drilldown', 'DELETE_DRILLDOWN_ORDS' from dual union all
-select 'get_autofill_values', 'AUTOFILL_ORDS' from dual union all
-select 'get_drilldowns', 'GET_DRILLDOWNS_ORDS' from dual union all
-select 'get_function_records', 'FUNCTION_RECORDS_ORDS' from dual union all
-select 'get_lov_records', 'LOV_RECORDS_ORDS' from dual union all
-select 'get_records', 'RECORDS_ORDS' from dual union all
-select 'get_report_batch', 'REPORT_BATCH_ORDS' from dual union all
-select 'get_report_columns', 'GET_REPORT_COLUMNS_ORDS' from dual union all
-select 'get_report_list', 'REPORT_LIST_ORDS' from dual union all
-select 'get_report_metadata', 'REPORT_METADATA_ORDS' from dual union all
-select 'get_report_param_lov', 'REPORT_PARAM_LOV_ORDS' from dual union all
-select 'get_session', 'GET_SESSION_ORDS' from dual union all
-select 'get_template_columns', 'TEMPLATE_COLUMNS_ORDS' from dual union all
-select 'get_user_responsibilities', 'USER_RESPONSIBILITIES_ORDS' from dual union all
-select 'get_version_info', 'GET_VERSION_INFO_ORDS' from dual union all
-select 'login', 'LOGIN_ORDS' from dual union all
-select 'run_report', 'RUN_REPORT_ORDS' from dual union all
-select 'save_drilldown', 'SAVE_DRILLDOWN_ORDS' from dual union all
-select 'save_template', 'SAVE_TEMPLATE_ORDS' from dual union all
-select 'update_fsg_profile_values', 'UPDATE_FSG_PROFILES_ORDS' from dual union all
-select 'upload_default_value', 'UPLOAD_DEFAULT_VALUE_ORDS' from dual union all
-select 'upload_file', 'UPLOAD_FILE_ORDS' from dual union all
-select 'upload_lov_records', 'UPLOAD_LOV_RECORDS_ORDS' from dual union all
-select 'validate_required_params', 'VALIDATE_REQ_PARAMS_ORDS' from dual union all
-select 'validate_upload_records', 'VALIDATE_UPLOAD_RECS_ORDS' from dual union all
-select 'view_transaction', 'VIEW_TRANSACTION_ORDS' from dual
+select
+x.endpoint_name,
+upper(x.endpoint_name) procedure_name
+from
+(
+select 'autofill_values' endpoint_name from dual union all
+select 'cell_lov_records' from dual union all
+select 'copy_template' from dual union all
+select 'delete_drilldown' from dual union all
+select 'drilldowns' from dual union all
+select 'fsg_function_records' from dual union all
+select 'fsg_lov_records' from dual union all
+select 'fsg_records' from dual union all
+select 'installed_languages' from dual union all
+select 'login' from dual union all
+select 'lov_catalogue' from dual union all
+select 'report_batch' from dual union all
+select 'report_columns' from dual union all
+select 'report_list' from dual union all
+select 'report_metadata' from dual union all
+select 'report_param_lov' from dual union all
+select 'run_report' from dual union all
+select 'save_drilldown' from dual union all
+select 'save_template' from dual union all
+select 'session_cookie' from dual union all
+select 'template_columns' from dual union all
+select 'update_fsg_profile_values' from dual union all
+select 'upload_default_value' from dual union all
+select 'upload_file' from dual union all
+select 'upload_lov_records' from dual union all
+select 'user_responsibilities' from dual union all
+select 'validate_required_params' from dual union all
+select 'validate_upload_records' from dual union all
+select 'version_info' from dual union all
+select 'view_transaction' from dual
+) x
 ) e,
 (select dp.procedure_name from dba_procedures dp where dp.owner='APPS' and dp.object_name='XXEN_WEBSERVICES_ORDS') dp
 where
@@ -157,75 +166,49 @@ do.object_name='XXEN_WEBSERVICES_ORDS_AUTH' and
 do.object_type='PACKAGE' and
 do.owner not in ('APPS','PUBLIC','SYS','SYSTEM')
 union all
--- OAuth2 Chain: only relevant when connection type is ORDS
+-- 5. URL-pattern Privileges: detect ords privileges whose URL patterns intercept /xxen_webservices/ calls.
+-- ORDS enforces every matching privilege, so any catch-all privilege adds role requirements that the
+-- xxen_webservices OAuth client must hold or calls return HTTP 401. Older ORDS releases on EBS expose only
+-- ords_privilege_mappings (denormalised name+pattern) and ords_client_roles (denormalised client+role),
+-- not ords_privileges/ords_privilege_roles, so the privilege->required-role link is left to manual lookup
+-- via ords_admin (DBA_ORDS_PRIVILEGE_ROLES). The section also lists the xxen_webservices client's currently
+-- held roles so the DBA can compare against any flagged catch-all privilege.
 select
-'5. OAuth2 Chain',
-y.component,
-y.status,
-y.detail,
-case when nvl(fnd_profile.value('XXEN_WEBSERVICE_CONNECTION_TYPE'),'ORDS')<>'ORDS' then 'OK' else y.validation end,
-5
-from
-(
-select '1. Role: xxen_webservices' component,
-case when (select uor.name from user_ords_roles uor where uor.name='xxen_webservices' and rownum=1) is not null then 'Exists'
-when nvl(fnd_profile.value('XXEN_WEBSERVICE_CONNECTION_TYPE'),'ORDS')<>'ORDS' then 'N/A (not using ORDS)'
-else 'Missing' end status,
-case when (select uor.name from user_ords_roles uor where uor.name='xxen_webservices' and rownum=1) is not null then 'Role created successfully'
-when nvl(fnd_profile.value('XXEN_WEBSERVICE_CONNECTION_TYPE'),'ORDS')<>'ORDS' then 'OAuth2 not required for '||fnd_profile.value('XXEN_WEBSERVICE_CONNECTION_TYPE')||' transport'
-else 'Run configure_ords.sql to create role' end detail,
-case when (select uor.name from user_ords_roles uor where uor.name='xxen_webservices' and rownum=1) is not null then 'OK' else 'Error' end validation
-from dual
+'5. URL-pattern Privileges' section,
+case y.kind
+when 'catch-all-detected' then 'Catch-all Privilege: '||y.priv_name||' (pattern '||y.pattern||')'
+when 'catch-all-none'     then 'Catch-all Privileges'
+when 'client-role'        then 'OAuth Client Role: '||y.role_name
+end component,
+case y.kind
+when 'catch-all-detected' then 'Detected'
+when 'catch-all-none'     then 'None detected'
+when 'client-role'        then 'Granted'
+end status,
+case y.kind
+when 'catch-all-detected' then 'Privilege intercepts /xxen_webservices/ calls; xxen_webservices client must hold every role this privilege requires. Look up required roles via ords_admin: select role_name from ords_metadata.dba_ords_privilege_roles where privilege_id='||y.priv_id
+when 'catch-all-none'     then 'No URL-pattern privileges intercept /xxen_webservices/ calls. Patterns checked: /*, /**, /xxen%'
+when 'client-role'        then 'xxen_webservices OAuth client holds role '||y.role_name
+end detail,
+case y.kind when 'catch-all-detected' then 'Warning' else 'OK' end validation,
+5 sort
+from (
+select 'catch-all-detected' kind, opm.name priv_name, opm.pattern, to_char(opm.privilege_id) priv_id, cast(null as varchar2(60)) role_name
+from ords_metadata.ords_privilege_mappings opm, ords_metadata.ords_modules om, ords_metadata.ords_schemas os
+where om.name='xxen_webservices' and om.schema_id=os.id and opm.schema_id=os.id
+and (opm.pattern in ('/*','/**') or opm.pattern like '/xxen%')
 union all
-select '2. Privilege: xxen_webservices',
-case when (select uop.name from user_ords_privileges uop where uop.name='xxen_webservices' and rownum=1) is not null then 'Exists'
-when nvl(fnd_profile.value('XXEN_WEBSERVICE_CONNECTION_TYPE'),'ORDS')<>'ORDS' then 'N/A (not using ORDS)'
-else 'Missing' end,
-nvl((select 'Label: '||uop.label from user_ords_privileges uop where uop.name='xxen_webservices' and rownum=1),
-case when nvl(fnd_profile.value('XXEN_WEBSERVICE_CONNECTION_TYPE'),'ORDS')<>'ORDS' then 'OAuth2 not required for '||fnd_profile.value('XXEN_WEBSERVICE_CONNECTION_TYPE')||' transport'
-else 'Run configure_ords.sql to create privilege' end),
-case when (select uop.name from user_ords_privileges uop where uop.name='xxen_webservices' and rownum=1) is not null then 'OK' else 'Error' end
+select 'catch-all-none', null, null, null, null
 from dual
+where not exists (
+select null from ords_metadata.ords_privilege_mappings opm, ords_metadata.ords_modules om, ords_metadata.ords_schemas os
+where om.name='xxen_webservices' and om.schema_id=os.id and opm.schema_id=os.id
+and (opm.pattern in ('/*','/**') or opm.pattern like '/xxen%')
+)
 union all
-select '3. Privilege-Role Mapping',
-case when (select uopr.role_name from user_ords_privilege_roles uopr where uopr.privilege_name='xxen_webservices' and rownum=1) is not null then 'Linked'
-when nvl(fnd_profile.value('XXEN_WEBSERVICE_CONNECTION_TYPE'),'ORDS')<>'ORDS' then 'N/A (not using ORDS)'
-else 'Missing' end,
-nvl((select 'Privilege linked to role '||uopr.role_name from user_ords_privilege_roles uopr where uopr.privilege_name='xxen_webservices' and rownum=1),
-case when nvl(fnd_profile.value('XXEN_WEBSERVICE_CONNECTION_TYPE'),'ORDS')<>'ORDS' then 'OAuth2 not required for '||fnd_profile.value('XXEN_WEBSERVICE_CONNECTION_TYPE')||' transport'
-else 'Privilege not linked to role - OAuth token will fail' end),
-case when (select uopr.role_name from user_ords_privilege_roles uopr where uopr.privilege_name='xxen_webservices' and rownum=1) is not null then 'OK' else 'Error' end
-from dual
-union all
-select '4. Privilege-Module Mapping',
-case when (select uopm.module_name from user_ords_privilege_modules uopm where uopm.privilege_name='xxen_webservices' and rownum=1) is not null then 'Linked'
-when nvl(fnd_profile.value('XXEN_WEBSERVICE_CONNECTION_TYPE'),'ORDS')<>'ORDS' then 'N/A (not using ORDS)'
-else 'Missing' end,
-nvl((select 'Module '||uopm.module_name||' protected by privilege' from user_ords_privilege_modules uopm where uopm.privilege_name='xxen_webservices' and rownum=1),
-case when nvl(fnd_profile.value('XXEN_WEBSERVICE_CONNECTION_TYPE'),'ORDS')<>'ORDS' then 'OAuth2 not required for '||fnd_profile.value('XXEN_WEBSERVICE_CONNECTION_TYPE')||' transport'
-else 'Module not protected - endpoints are unprotected' end),
-case when (select uopm.module_name from user_ords_privilege_modules uopm where uopm.privilege_name='xxen_webservices' and rownum=1) is not null then 'OK' else 'Error' end
-from dual
-union all
-select '5. OAuth2 Client: xxen_webservices',
-case when (select uoc.name from user_ords_clients uoc where uoc.name='xxen_webservices' and rownum=1) is not null then 'Exists'
-when nvl(fnd_profile.value('XXEN_WEBSERVICE_CONNECTION_TYPE'),'ORDS')<>'ORDS' then 'N/A (not using ORDS)'
-else 'Missing' end,
-nvl((select 'Grant type: '||uoc.auth_flow||' | Schema: '||uoc.created_by from user_ords_clients uoc where uoc.name='xxen_webservices' and rownum=1),
-case when nvl(fnd_profile.value('XXEN_WEBSERVICE_CONNECTION_TYPE'),'ORDS')<>'ORDS' then 'OAuth2 not required for '||fnd_profile.value('XXEN_WEBSERVICE_CONNECTION_TYPE')||' transport'
-else 'Run configure_ords.sql to create OAuth client' end),
-case when (select uoc.name from user_ords_clients uoc where uoc.name='xxen_webservices' and rownum=1) is not null then 'OK' else 'Error' end
-from dual
-union all
-select '6. Client-Role Grant',
-case when (select uocr.role_name from user_ords_client_roles uocr where uocr.client_name='xxen_webservices' and rownum=1) is not null then 'Granted'
-when nvl(fnd_profile.value('XXEN_WEBSERVICE_CONNECTION_TYPE'),'ORDS')<>'ORDS' then 'N/A (not using ORDS)'
-else 'Missing' end,
-nvl((select 'Client granted role '||uocr.role_name from user_ords_client_roles uocr where uocr.client_name='xxen_webservices' and rownum=1),
-case when nvl(fnd_profile.value('XXEN_WEBSERVICE_CONNECTION_TYPE'),'ORDS')<>'ORDS' then 'OAuth2 not required for '||fnd_profile.value('XXEN_WEBSERVICE_CONNECTION_TYPE')||' transport'
-else 'Client not granted role - OAuth token request will be rejected' end),
-case when (select uocr.role_name from user_ords_client_roles uocr where uocr.client_name='xxen_webservices' and rownum=1) is not null then 'OK' else 'Error' end
-from dual
+select 'client-role', null, null, null, ocr.role_name
+from ords_metadata.ords_client_roles ocr
+where ocr.client_name='xxen_webservices'
 ) y
 union all
 select
@@ -254,17 +237,30 @@ else 'Not set - APEX not installed, ORDS URL derived from APPS_SERVLET_AGENT' en
 6
 from dual
 union all
--- Derived ORDS URL: shows what instance_url() auto-derives when XXEN_WEBSERVICE_ORDS_URL is not set
+-- Derived ORDS URL: shows what xxen_webservices.instance_url auto-derives.
+-- When XXEN_WEBSERVICE_ORDS_URL is set, instance_url returns that profile value (which is the override).
+-- When the profile is null, instance_url derives the URL as host/context/schema_alias/
+-- where alias comes from ords_metadata.ords_url_mappings (authoritative) and host comes from
+-- FND_APEX_URL when APEX is installed, otherwise APPS_SERVLET_AGENT host on :8443/ords/.
 select
 '6. Configuration',
 'Derived ORDS URL',
-coalesce(
-(select fnd_profile.value('FND_APEX_URL')||case when substr(fnd_profile.value('FND_APEX_URL'),-1)<>'/' then '/' end||oum.pattern||'/'
+case when fnd_profile.value('XXEN_WEBSERVICE_ORDS_URL') is not null
+then '(XXEN_WEBSERVICE_ORDS_URL profile is set; auto-derivation bypassed)'
+else nvl(
+(select case when fnd_profile.value('FND_APEX_URL') is not null
+then fnd_profile.value('FND_APEX_URL')||case when substr(fnd_profile.value('FND_APEX_URL'),-1)<>'/' then '/' end||oum.pattern||'/'
+else (select regexp_substr(fpov.profile_option_value,'https?://[^/:]+')||':8443/ords/'||oum.pattern||'/'
+from fnd_profile_option_values fpov
+where fpov.profile_option_id in (select fpo.profile_option_id from fnd_profile_options fpo where fpo.profile_option_name='APPS_SERVLET_AGENT')
+and fpov.level_id=10001 and rownum=1)
+end
 from ords_metadata.ords_schemas os, ords_metadata.ords_modules om, ords_metadata.ords_url_mappings oum
-where os.id=om.schema_id and om.name='xxen_webservices' and os.url_mapping_id=oum.id and fnd_profile.value('FND_APEX_URL') is not null and rownum=1),
+where os.id=om.schema_id and om.name='xxen_webservices' and os.url_mapping_id=oum.id and rownum=1),
 xxen_webservices.instance_url
-),
-'Auto-derived from '||case when fnd_profile.value('FND_APEX_URL') is not null then 'FND_APEX_URL + ORDS schema alias' else 'APPS_SERVLET_AGENT hostname' end||'. Set XXEN_WEBSERVICE_ORDS_URL to override.',
+)
+end,
+'Schema alias source: ords_metadata.ords_url_mappings | Host source: '||case when fnd_profile.value('FND_APEX_URL') is not null then 'FND_APEX_URL' else 'APPS_SERVLET_AGENT + :8443/ords/' end,
 'OK',
 6
 from dual
@@ -276,11 +272,57 @@ nvl(fnd_profile.value('XXEN_WEBSERVICE_ORDS_URL'),'(not set - auto-derived)'),
 'Effective URL: '||xxen_webservices.instance_url||' | Token endpoint: '||xxen_webservices.instance_url||'oauth/token',
 case
 when nvl(fnd_profile.value('XXEN_WEBSERVICE_CONNECTION_TYPE'),'ORDS')<>'ORDS' then 'OK'
-when fnd_profile.value('XXEN_WEBSERVICE_ORDS_URL') is not null then 'OK'
+when xxen_webservices.instance_url is not null then 'OK'
 else 'Warning'
 end,
 6
 from dual
+union all
+select
+'6. Configuration',
+'ORDS URL Protocol',
+case
+when u.connection_type<>'ORDS' then '(not applicable)'
+when u.ords_url is null then '(no URL)'
+when lower(u.ords_url) like 'https://%' then 'HTTPS'
+when lower(u.ords_url) like 'http://%' then 'HTTP - not encrypted'
+else '(unrecognized)'
+end,
+case
+when u.connection_type<>'ORDS' then 'Applies to the ORDS transport only. The connection type is '||u.connection_type
+when lower(u.ords_url) like 'https://%' then 'OAuth2 token requests are encrypted, as ORDS requires'
+else 'ORDS refuses OAuth2 requests received over HTTP and returns HTTP 403, so the add-in cannot obtain a bearer token and every later call fails with HTTP 401. Move ORDS to HTTPS, or set security.verifySSL to false on the ORDS host - development and test only, because the OAuth client id and secret then travel in clear text'
+end,
+case
+when u.connection_type<>'ORDS' then 'OK'
+when lower(u.ords_url) like 'https://%' then 'OK'
+when u.ords_url is null then 'Warning'
+else 'Error'
+end,
+6
+from
+(select xxen_webservices.instance_url ords_url, nvl(fnd_profile.value('XXEN_WEBSERVICE_CONNECTION_TYPE'),'ORDS') connection_type from dual) u
+union all
+select
+'6. Configuration',
+'ORDS security.verifySSL',
+case
+when u.connection_type<>'ORDS' then '(not applicable)'
+else '(not readable from the database)'
+end,
+case
+when u.connection_type<>'ORDS' then 'Applies to the ORDS transport only. The connection type is '||u.connection_type
+when lower(u.ords_url) like 'https://%' then 'The ORDS default of true is correct for an HTTPS URL - nothing to change'
+else 'With an HTTP URL this setting decides which failure occurs: true, the ORDS default, means no bearer token can be obtained at all (HTTP 403); false means OAuth2 over HTTP is permitted and the client id and secret are sent in clear text. It is an ORDS instance setting held in the ORDS configuration file, not in the database - read it on the ORDS host with the ORDS command line: ords config get security.verifySSL'
+end,
+case
+when u.connection_type<>'ORDS' then 'OK'
+when lower(u.ords_url) like 'https://%' then 'OK'
+else 'Warning'
+end,
+6
+from
+(select xxen_webservices.instance_url ords_url, nvl(fnd_profile.value('XXEN_WEBSERVICE_CONNECTION_TYPE'),'ORDS') connection_type from dual) u
 union all
 select
 '6. Configuration',

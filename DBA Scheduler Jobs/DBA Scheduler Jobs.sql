@@ -5,7 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: DBA Scheduler Jobs
--- Description: None
+-- Description: 
 -- Excel Examle Output: https://www.enginatics.com/example/dba-scheduler-jobs/
 -- Library Link: https://www.enginatics.com/reports/dba-scheduler-jobs/
 -- Run Report: https://demo.enginatics.com/

@@ -32,7 +32,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/fnd-lobs/) |
+| Excel Example Output | [](https://www.enginatics.com/example/fnd-lobs/) |
 | Blitz Report™ XML Import | [FND_Lobs.xml](https://www.enginatics.com/xml/fnd-lobs/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/fnd-lobs/](https://www.enginatics.com/reports/fnd-lobs/) |
 

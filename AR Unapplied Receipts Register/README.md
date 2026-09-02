@@ -2,7 +2,7 @@
 layout: default
 title: 'AR Unapplied Receipts Register | Oracle EBS SQL Report'
 description: 'Detail unapplied receipts report with receipt number, date and amount – Oracle E-Business Suite SQL report'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Unapplied, Receipts, Register, ar_receivable_applications_all, gl_daily_conversion_types, gl_daily_rates'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Unapplied, Receipts, Register, ar_receivable_applications_all, gl_daily_conversion_types, gl_daily_rates'
 permalink: /AR%20Unapplied%20Receipts%20Register/
 ---
 
@@ -14,13 +14,13 @@ permalink: /AR%20Unapplied%20Receipts%20Register/
 Detail unapplied receipts report with receipt number, date and amount
 
 ## Report Parameters
-Ledger, Operating Unit, As of GL Date, Receipt GL Date Low, Receipt GL Date High, Application GL Date Low, Application GL Date High, Receipt Last Updated From, Receipt Last Updated To, Entered Currency, Customer Name, Customer Number, Batch Name, Batch Source Name, Receipt Number Low, Receipt Number High, Revaluation Currency, Revaluation Rate Type, Revaluation Date, Show Receipt DFF Segments
+Ledger, Operating Unit, As of GL Date, Receipt GL Date Low, Receipt GL Date High, Application GL Date Low, Application GL Date High, Receipt Last Updated From, Receipt Last Updated To, Entered Currency, Customer Name, Customer Number, Batch Name, Batch Source Name, Receipt Number Low, Receipt Number High, Revaluation Currency, Revaluation Rate Type, Revaluation Date, Receipt DFF Display
 
 ## Oracle EBS Tables Used
 [ar_receivable_applications_all](https://www.enginatics.com/library/?pg=1&find=ar_receivable_applications_all), [gl_daily_conversion_types](https://www.enginatics.com/library/?pg=1&find=gl_daily_conversion_types), [gl_daily_rates](https://www.enginatics.com/library/?pg=1&find=gl_daily_rates), [gl_ledgers](https://www.enginatics.com/library/?pg=1&find=gl_ledgers), [hr_operating_units](https://www.enginatics.com/library/?pg=1&find=hr_operating_units), [ar_payment_schedules_all](https://www.enginatics.com/library/?pg=1&find=ar_payment_schedules_all), [hz_cust_accounts](https://www.enginatics.com/library/?pg=1&find=hz_cust_accounts), [hz_parties](https://www.enginatics.com/library/?pg=1&find=hz_parties), [hz_cust_site_uses_all](https://www.enginatics.com/library/?pg=1&find=hz_cust_site_uses_all), [hz_cust_acct_sites_all](https://www.enginatics.com/library/?pg=1&find=hz_cust_acct_sites_all), [hz_party_sites](https://www.enginatics.com/library/?pg=1&find=hz_party_sites), [hz_locations](https://www.enginatics.com/library/?pg=1&find=hz_locations), [fnd_territories_vl](https://www.enginatics.com/library/?pg=1&find=fnd_territories_vl), [hz_customer_profiles](https://www.enginatics.com/library/?pg=1&find=hz_customer_profiles), [ar_collectors](https://www.enginatics.com/library/?pg=1&find=ar_collectors), [ar_receipt_methods](https://www.enginatics.com/library/?pg=1&find=ar_receipt_methods), [gl_code_combinations](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations), [ar_cash_receipts_all](https://www.enginatics.com/library/?pg=1&find=ar_cash_receipts_all), [ar_cash_receipt_history_all](https://www.enginatics.com/library/?pg=1&find=ar_cash_receipt_history_all), [ar_batches_all](https://www.enginatics.com/library/?pg=1&find=ar_batches_all), [ar_batch_sources_all](https://www.enginatics.com/library/?pg=1&find=ar_batch_sources_all), [ce_bank_accounts](https://www.enginatics.com/library/?pg=1&find=ce_bank_accounts), [ce_bank_acct_uses_all](https://www.enginatics.com/library/?pg=1&find=ce_bank_acct_uses_all), [ce_bank_branches_v](https://www.enginatics.com/library/?pg=1&find=ce_bank_branches_v), [mo_glob_org_access_tmp](https://www.enginatics.com/library/?pg=1&find=mo_glob_org_access_tmp), [dual](https://www.enginatics.com/library/?pg=1&find=dual)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related Reports
 [AR Open Balances Revaluation](/AR%20Open%20Balances%20Revaluation/ "AR Open Balances Revaluation Oracle EBS SQL Report"), [AR Receipt Register](/AR%20Receipt%20Register/ "AR Receipt Register Oracle EBS SQL Report"), [AR Aging](/AR%20Aging/ "AR Aging Oracle EBS SQL Report")

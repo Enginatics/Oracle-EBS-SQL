@@ -2,7 +2,7 @@
 layout: default
 title: 'MSC Sourcing Rule Assignment Upload | Oracle EBS SQL Report'
 description: 'MSC Sourcing Rule Assignment Upload ============================= - Upload new Assignment Sets and Sourcing Rule Assignments - Update Existing Assignment…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Upload, MSC, Sourcing, Rule, Assignment, msc_assignment_sets, msc_sr_assignments_v, msc_sourcing_rules'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, MSC, Sourcing, Rule, Assignment, msc_assignment_sets, msc_sr_assignments_v, msc_sourcing_rules'
 permalink: /MSC%20Sourcing%20Rule%20Assignment%20Upload/
 ---
 
@@ -30,10 +30,10 @@ Planning Instance, Master Organization Code, Upload Mode, Assignment Set, Assign
 [msc_assignment_sets](https://www.enginatics.com/library/?pg=1&find=msc_assignment_sets), [msc_sr_assignments_v](https://www.enginatics.com/library/?pg=1&find=msc_sr_assignments_v), [msc_sourcing_rules](https://www.enginatics.com/library/?pg=1&find=msc_sourcing_rules), [msc_trading_partners](https://www.enginatics.com/library/?pg=1&find=msc_trading_partners), [msc_trading_partner_sites](https://www.enginatics.com/library/?pg=1&find=msc_trading_partner_sites), [msc_regions](https://www.enginatics.com/library/?pg=1&find=msc_regions), [sra_query](https://www.enginatics.com/library/?pg=1&find=sra_query)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only), [Upload](https://www.enginatics.com/library/?pg=1&category[]=Upload)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Upload](https://www.enginatics.com/library/?pg=1&category[]=Upload)
 
 ## Related Reports
-[MSC Plan Orders](/MSC%20Plan%20Orders/ "MSC Plan Orders Oracle EBS SQL Report"), [MSC Vertical Plan](/MSC%20Vertical%20Plan/ "MSC Vertical Plan Oracle EBS SQL Report"), [MSC Horizontal Plan](/MSC%20Horizontal%20Plan/ "MSC Horizontal Plan Oracle EBS SQL Report"), [CAC Inventory and Intransit Value (Period-End) - Discrete/OPM](/CAC%20Inventory%20and%20Intransit%20Value%20%28Period-End%29%20-%20Discrete-OPM/ "CAC Inventory and Intransit Value (Period-End) - Discrete/OPM Oracle EBS SQL Report"), [CAC Inventory Lot and Locator OPM Value (Period-End)](/CAC%20Inventory%20Lot%20and%20Locator%20OPM%20Value%20%28Period-End%29/ "CAC Inventory Lot and Locator OPM Value (Period-End) Oracle EBS SQL Report"), [MSC Plan Order Upload](/MSC%20Plan%20Order%20Upload/ "MSC Plan Order Upload Oracle EBS SQL Report"), [MSC Pegging Hierarchy 11i](/MSC%20Pegging%20Hierarchy%2011i/ "MSC Pegging Hierarchy 11i Oracle EBS SQL Report"), [MSC Pegging Hierarchy](/MSC%20Pegging%20Hierarchy/ "MSC Pegging Hierarchy Oracle EBS SQL Report")
+[MSC Plan Orders](/MSC%20Plan%20Orders/ "MSC Plan Orders Oracle EBS SQL Report"), [MSC Vertical Plan](/MSC%20Vertical%20Plan/ "MSC Vertical Plan Oracle EBS SQL Report"), [MSC Horizontal Plan](/MSC%20Horizontal%20Plan/ "MSC Horizontal Plan Oracle EBS SQL Report"), [MSC Pegging Hierarchy](/MSC%20Pegging%20Hierarchy/ "MSC Pegging Hierarchy Oracle EBS SQL Report"), [CAC Inventory and Intransit Value (Period-End) - Discrete/OPM](/CAC%20Inventory%20and%20Intransit%20Value%20%28Period-End%29%20-%20Discrete-OPM/ "CAC Inventory and Intransit Value (Period-End) - Discrete/OPM Oracle EBS SQL Report"), [CAC Inventory Lot and Locator OPM Value (Period-End)](/CAC%20Inventory%20Lot%20and%20Locator%20OPM%20Value%20%28Period-End%29/ "CAC Inventory Lot and Locator OPM Value (Period-End) Oracle EBS SQL Report"), [MSC Plan Order Upload](/MSC%20Plan%20Order%20Upload/ "MSC Plan Order Upload Oracle EBS SQL Report"), [MSC Exceptions](/MSC%20Exceptions/ "MSC Exceptions Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
@@ -42,7 +42,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/msc-sourcing-rule-assignment-upload/) |
+| Excel Example Output | [](https://www.enginatics.com/example/msc-sourcing-rule-assignment-upload/) |
 | Blitz Report™ XML Import | [MSC_Sourcing_Rule_Assignment_Upload.xml](https://www.enginatics.com/xml/msc-sourcing-rule-assignment-upload/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/msc-sourcing-rule-assignment-upload/](https://www.enginatics.com/reports/msc-sourcing-rule-assignment-upload/) |
 

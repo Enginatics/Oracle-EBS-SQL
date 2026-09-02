@@ -2,7 +2,7 @@
 layout: default
 title: 'ZX Party Tax Profiles | Oracle EBS SQL Report'
 description: 'E-Business Tax party tax profiles and tax registration details – Oracle E-Business Suite SQL report'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Party, Tax, Profiles, fnd_territories_vl, hz_parties, zx_party_tax_profile'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Party, Tax, Profiles, fnd_territories_vl, hz_parties, zx_party_tax_profile'
 permalink: /ZX%20Party%20Tax%20Profiles/
 ---
 
@@ -20,10 +20,10 @@ Party Type, Country
 [fnd_territories_vl](https://www.enginatics.com/library/?pg=1&find=fnd_territories_vl), [hz_parties](https://www.enginatics.com/library/?pg=1&find=hz_parties), [zx_party_tax_profile](https://www.enginatics.com/library/?pg=1&find=zx_party_tax_profile), [xle_entity_profiles](https://www.enginatics.com/library/?pg=1&find=xle_entity_profiles), [xle_registrations](https://www.enginatics.com/library/?pg=1&find=xle_registrations), [xle_jurisdictions_vl](https://www.enginatics.com/library/?pg=1&find=xle_jurisdictions_vl), [xle_etb_profiles](https://www.enginatics.com/library/?pg=1&find=xle_etb_profiles), [hr_all_organization_units_vl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_vl), [hz_party_sites](https://www.enginatics.com/library/?pg=1&find=hz_party_sites), [hz_locations](https://www.enginatics.com/library/?pg=1&find=hz_locations), [hr_locations_all](https://www.enginatics.com/library/?pg=1&find=hr_locations_all), [zx_registrations](https://www.enginatics.com/library/?pg=1&find=zx_registrations), [xle_firstparty_information_v](https://www.enginatics.com/library/?pg=1&find=xle_firstparty_information_v)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related Reports
-[AR European Sales Listing](/AR%20European%20Sales%20Listing/ "AR European Sales Listing Oracle EBS SQL Report"), [XLE Legal Entities](/XLE%20Legal%20Entities/ "XLE Legal Entities Oracle EBS SQL Report"), [AR Customer Upload](/AR%20Customer%20Upload/ "AR Customer Upload Oracle EBS SQL Report"), [IBY Payment Process Request Details](/IBY%20Payment%20Process%20Request%20Details/ "IBY Payment Process Request Details Oracle EBS SQL Report"), [AR Customers and Sites](/AR%20Customers%20and%20Sites/ "AR Customers and Sites Oracle EBS SQL Report")
+[AR European Sales Listing](/AR%20European%20Sales%20Listing/ "AR European Sales Listing Oracle EBS SQL Report"), [XLE Legal Entities](/XLE%20Legal%20Entities/ "XLE Legal Entities Oracle EBS SQL Report"), [AR Customer Upload](/AR%20Customer%20Upload/ "AR Customer Upload Oracle EBS SQL Report"), [IBY Payment Process Request Details](/IBY%20Payment%20Process%20Request%20Details/ "IBY Payment Process Request Details Oracle EBS SQL Report"), [AR Customers and Sites](/AR%20Customers%20and%20Sites/ "AR Customers and Sites Oracle EBS SQL Report"), [CE Cleared Transactions](/CE%20Cleared%20Transactions/ "CE Cleared Transactions Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.

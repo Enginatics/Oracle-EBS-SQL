@@ -2,7 +2,7 @@
 layout: default
 title: 'CAC ICP PII WIP Material Usage Variance | Oracle EBS SQL Report'
 description: 'For your open and closed WIP jobs use this report to calculate the amount of profit in inventory (PII) in WIP as well as the amount of PII in the WIP…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, CAC, ICP, PII, WIP, wip_discrete_jobs, org_acct_periods, mtl_parameters'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, CAC, ICP, PII, WIP, wip_discrete_jobs, org_acct_periods, mtl_parameters'
 permalink: /CAC%20ICP%20PII%20WIP%20Material%20Usage%20Variance/
 ---
 
@@ -59,7 +59,7 @@ Report Option, Period Name, Cost Type, PII Cost Type, PII Sub-Element, Include S
 [wip_discrete_jobs](https://www.enginatics.com/library/?pg=1&find=wip_discrete_jobs), [org_acct_periods](https://www.enginatics.com/library/?pg=1&find=org_acct_periods), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters), [wip_accounting_classes](https://www.enginatics.com/library/?pg=1&find=wip_accounting_classes), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl), [org_access_view](https://www.enginatics.com/library/?pg=1&find=org_access_view), [wdj0](https://www.enginatics.com/library/?pg=1&find=wdj0), [mtl_material_transactions](https://www.enginatics.com/library/?pg=1&find=mtl_material_transactions), [wdj](https://www.enginatics.com/library/?pg=1&find=wdj), [cst_item_costs](https://www.enginatics.com/library/?pg=1&find=cst_item_costs), [cst_item_cost_details](https://www.enginatics.com/library/?pg=1&find=cst_item_cost_details), [cst_cost_types](https://www.enginatics.com/library/?pg=1&find=cst_cost_types), [wdj_assys](https://www.enginatics.com/library/?pg=1&find=wdj_assys), [dual](https://www.enginatics.com/library/?pg=1&find=dual)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 
 

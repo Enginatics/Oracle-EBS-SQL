@@ -2,7 +2,7 @@
 layout: default
 title: 'FA Revaluation Reserve | Oracle EBS SQL Report'
 description: 'Revaluation Reserve Summary/Detail Report Equivalent to Oracle Standard Reports: Revaluation Reserve Summary Report Revaluation Reserve Detail Report DB…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Revaluation, Reserve, fa_system_controls, gl_ledgers, fnd_currencies'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Revaluation, Reserve, fa_system_controls, gl_ledgers, fnd_currencies'
 permalink: /FA%20Revaluation%20Reserve/
 ---
 
@@ -26,7 +26,7 @@ Book, Set of Books Currency, From Period, To Period
 [fa_system_controls](https://www.enginatics.com/library/?pg=1&find=fa_system_controls), [gl_ledgers](https://www.enginatics.com/library/?pg=1&find=gl_ledgers), [fnd_currencies](https://www.enginatics.com/library/?pg=1&find=fnd_currencies), [fa_balances_report_gt](https://www.enginatics.com/library/?pg=1&find=fa_balances_report_gt), [fa_additions](https://www.enginatics.com/library/?pg=1&find=fa_additions), [gl_code_combinations](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 
 

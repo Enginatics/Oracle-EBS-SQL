@@ -101,7 +101,7 @@ ppa.funding_exchange_rate,
 -- flags
 decode(ppa.baseline_funding_flag,'Y',xxen_util.meaning('Y','YES_NO',0)) baseline_funding,
 decode(ppa.multi_currency_billing_flag,'Y',xxen_util.meaning('Y','YES_NO',0)) multi_currency_billing,
-decode(ppa.inv_by_bill_trans_curr_flag,'Y',xxen_util.meaning('Y','YES_NO',0)) invoice_by_bill_trans_currency,
+decode(ppa.inv_by_bill_trans_curr_flag,'Y',xxen_util.meaning('Y','YES_NO',0)) invoice_by_bill_trx_currency,
 decode(ppa.assign_precedes_task,'Y',xxen_util.meaning('Y','YES_NO',0)) assign_precedes_task,
 decode(ppa.split_cost_from_workplan_flag,'Y',xxen_util.meaning('Y','YES_NO',0)) split_cost_from_workplan,
 decode(ppa.split_cost_from_bill_flag,'Y',xxen_util.meaning('Y','YES_NO',0)) split_cost_from_billing,
@@ -123,7 +123,7 @@ decode(ppa.cc_process_nl_flag,'Y',xxen_util.meaning('Y','YES_NO',0)) cross_charg
 pctsb1.name labor_transfer_price_schedule,
 ppa.labor_tp_fixed_date labor_transfer_price_fixed_dt,
 pctsb2.name non_labor_transfer_price_sched,
-ppa.nl_tp_fixed_date non_labor_trans_price_fxd_dt,
+ppa.nl_tp_fixed_date non_labor_xfer_price_fxd_dt,
 -- setup
 pwtv.name work_type,
 jtcv.calendar_name calendar,

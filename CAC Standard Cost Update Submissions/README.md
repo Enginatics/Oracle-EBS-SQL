@@ -58,7 +58,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/cac-standard-cost-update-submissions/) |
+| Excel Example Output | [](https://www.enginatics.com/example/cac-standard-cost-update-submissions/) |
 | Blitz Report™ XML Import | [CAC_Standard_Cost_Update_Submissions.xml](https://www.enginatics.com/xml/cac-standard-cost-update-submissions/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/cac-standard-cost-update-submissions/](https://www.enginatics.com/reports/cac-standard-cost-update-submissions/) |
 

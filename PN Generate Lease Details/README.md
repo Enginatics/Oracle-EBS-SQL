@@ -2,7 +2,7 @@
 layout: default
 title: 'PN Generate Lease Details | Oracle EBS SQL Report'
 description: 'Application: Property Manager Source: Generate Lease Details Report Short Name: PNGLDRXML DB package: XXENPN'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Generate, Lease, Details, pn_leases_all, pn_eqp_leases_all, pn_lease_details_all'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Generate, Lease, Details, pn_leases_all, pn_eqp_leases_all, pn_lease_details_all'
 permalink: /PN%20Generate%20Lease%20Details/
 ---
 
@@ -23,7 +23,7 @@ Operating Unit, As of Period, To Date, Lease Number, Lease Number From, Lease Nu
 [pn_leases_all](https://www.enginatics.com/library/?pg=1&find=pn_leases_all), [pn_eqp_leases_all](https://www.enginatics.com/library/?pg=1&find=pn_eqp_leases_all), [pn_lease_details_all](https://www.enginatics.com/library/?pg=1&find=pn_lease_details_all), [pn_pmt_item_pv_all](https://www.enginatics.com/library/?pg=1&find=pn_pmt_item_pv_all), [pn_payment_terms_all](https://www.enginatics.com/library/?pg=1&find=pn_payment_terms_all), [pn_options_all](https://www.enginatics.com/library/?pg=1&find=pn_options_all), [pn_leases_hist](https://www.enginatics.com/library/?pg=1&find=pn_leases_hist), [pn_lease_details_hist](https://www.enginatics.com/library/?pg=1&find=pn_lease_details_hist), [pn_eqp_lease_details_all](https://www.enginatics.com/library/?pg=1&find=pn_eqp_lease_details_all), [pn_system_setup_options](https://www.enginatics.com/library/?pg=1&find=pn_system_setup_options)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 
 
@@ -34,7 +34,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/pn-generate-lease-details/) |
+| Excel Example Output | [](https://www.enginatics.com/example/pn-generate-lease-details/) |
 | Blitz Report™ XML Import | [PN_Generate_Lease_Details.xml](https://www.enginatics.com/xml/pn-generate-lease-details/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/pn-generate-lease-details/](https://www.enginatics.com/reports/pn-generate-lease-details/) |
 

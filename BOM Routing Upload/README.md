@@ -37,7 +37,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/bom-routing-upload/) |
+| Excel Example Output | [](https://www.enginatics.com/example/bom-routing-upload/) |
 | Blitz Report™ XML Import | [BOM_Routing_Upload.xml](https://www.enginatics.com/xml/bom-routing-upload/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/bom-routing-upload/](https://www.enginatics.com/reports/bom-routing-upload/) |
 

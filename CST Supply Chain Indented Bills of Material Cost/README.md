@@ -2,7 +2,7 @@
 layout: default
 title: 'CST Supply Chain Indented Bills of Material Cost | Oracle EBS SQL Report'
 description: 'This report is based on the (static) Oracle Supply Chain Indented Bills of Material Cost Report and merely sums up the available information from the Cost…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, BI Publisher, Enginatics, R12 only, CST, Supply, Chain, Indented, cst_sc_bom_structures, mtl_system_items_vl, mtl_item_categories'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, BI Publisher, Enginatics, CST, Supply, Chain, Indented, cst_sc_bom_structures, mtl_system_items_vl, mtl_item_categories'
 permalink: /CST%20Supply%20Chain%20Indented%20Bills%20of%20Material%20Cost/
 ---
 
@@ -32,7 +32,7 @@ Cost Type, Organization, Assignment Set, Report Number of Levels, Exclude Level,
 [cst_sc_bom_structures](https://www.enginatics.com/library/?pg=1&find=cst_sc_bom_structures), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl), [mtl_item_categories](https://www.enginatics.com/library/?pg=1&find=mtl_item_categories), [mtl_categories_kfv](https://www.enginatics.com/library/?pg=1&find=mtl_categories_kfv), [org_organization_definitions](https://www.enginatics.com/library/?pg=1&find=org_organization_definitions), [gl_sets_of_books](https://www.enginatics.com/library/?pg=1&find=gl_sets_of_books), [fnd_currencies](https://www.enginatics.com/library/?pg=1&find=fnd_currencies), [bom_parameters](https://www.enginatics.com/library/?pg=1&find=bom_parameters), [bom_inventory_components](https://www.enginatics.com/library/?pg=1&find=bom_inventory_components), [hr_organization_information](https://www.enginatics.com/library/?pg=1&find=hr_organization_information), [cst_item_costs](https://www.enginatics.com/library/?pg=1&find=cst_item_costs), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters), [cst_item_cost_details](https://www.enginatics.com/library/?pg=1&find=cst_item_cost_details), [cst_cost_elements](https://www.enginatics.com/library/?pg=1&find=cst_cost_elements), [bom_resources](https://www.enginatics.com/library/?pg=1&find=bom_resources), [bom_departments](https://www.enginatics.com/library/?pg=1&find=bom_departments)
 
 ## Report Categories
-[BI Publisher](https://www.enginatics.com/library/?pg=1&category[]=BI%20Publisher), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[BI Publisher](https://www.enginatics.com/library/?pg=1&category[]=BI%20Publisher), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 
 

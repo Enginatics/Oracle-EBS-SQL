@@ -78,7 +78,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/cac-receiving-expense-value-period-end/) |
+| Excel Example Output | [](https://www.enginatics.com/example/cac-receiving-expense-value-period-end/) |
 | Blitz Report™ XML Import | [CAC_Receiving_Expense_Value_Period_End.xml](https://www.enginatics.com/xml/cac-receiving-expense-value-period-end/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/cac-receiving-expense-value-period-end/](https://www.enginatics.com/reports/cac-receiving-expense-value-period-end/) |
 

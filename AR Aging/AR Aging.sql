@@ -59,6 +59,8 @@ x1.sort_field1 salesperson,
 x1.cust_name customer,
 x1.cust_no customer_number,
 x1.cust_country customer_country,
+max(x1.bill_to_location) bill_to_location,
+max(x1.bill_to_address) bill_to_address,
 x1.cust_class customer_classification,
 x1.credit_limits,
 x1.order_credit_limits,
@@ -69,12 +71,9 @@ x1.revaluation_from_currency amounts_currency,
 nvl(sum(case when nvl(x1.rk,1)=1 then x1.amt_due_original else 0 end),0)     original_amount,
 nvl(sum(case when nvl(x1.rk,1)=1 then x1.amt_due_remaining else 0 end),0)    outstanding_amount,
 nvl(sum(
- case 
+ case
  when nvl(x1.rk,1)=1
- and  ( x1.days_past_due > 0
-       or  (:p_credit_option = 'DETAIL' and x1.class in ('PMT','CM','CLAIM'))
-       or  (:p_risk_option = 'DETAIL' and x1.invoice_type = :p_risk_meaning)
-      )
+ and  decode(:p_age_basis,'Due Date',x1.days_past_due,x1.days_past_trx)>0
  then x1.amt_due_remaining
  else 0
  end
@@ -106,6 +105,8 @@ hcpamv.order_credit_limits,
 x.cust_name,
 x.cust_no,
 x.cust_country,
+(select hcsua.location from hz_cust_site_uses_all hcsua where hcsua.site_use_id=x.site_use_id) bill_to_location,
+(select hl.address1||decode(hl.address2,null,null,', '||hl.address2)||decode(hl.city,null,null,', '||hl.city)||decode(hl.state,null,null,', '||hl.state)||decode(hl.postal_code,null,null,' '||hl.postal_code) from hz_cust_site_uses_all hcsua, hz_cust_acct_sites_all hcasa, hz_party_sites hps, hz_locations hl where hcsua.site_use_id=x.site_use_id and hcasa.cust_acct_site_id=hcsua.cust_acct_site_id and hps.party_site_id=hcasa.party_site_id and hl.location_id=hps.location_id) bill_to_address,
 x.cust_class,
 (select ac.name from ar_collectors ac where ac.collector_id=nvl(hcps.collector_id,hcpa.collector_id)) collector,
 x.class,
@@ -129,6 +130,7 @@ x.chart_of_accounts_id,
 x.invoice_type,
 x.comments,
 x.reference,
+x.purchase_order,
 --
 &lp_bucket_cols1
 --
@@ -222,6 +224,7 @@ ci.cons_billing_number  cons_billing_number,
 arpt_sql_func_util.get_org_trx_type_details(ps.cust_trx_type_id,ps.org_id) invoice_type,
 rct.comments,
 rct.ct_reference reference,
+rct.purchase_order,
 ps.invoice_currency_code,
 gsob.currency_code functional_currency,
 gsob.name ledger,
@@ -587,6 +590,7 @@ ci.cons_billing_number cons_billing_number,
 initcap(:p_payment_meaning) invoice_type,
 acr.comments,
 null reference,
+to_char(null) purchase_order,
 ps.invoice_currency_code,
 gsob.currency_code functional_currency,
 gsob.name ledger,
@@ -757,6 +761,7 @@ ci.cons_billing_number  cons_billing_number,
 initcap(:p_risk_meaning) invoice_type,
 cr.comments,
 null reference,
+to_char(null) purchase_order,
 ps.invoice_currency_code,
 gsob.currency_code functional_currency,
 gsob.name ledger,
@@ -876,6 +881,7 @@ ci.cons_billing_number cons_billing_number,
 arpt_sql_func_util.get_org_trx_type_details(ps.cust_trx_type_id,ps.org_id) invoice_type,
 ct.comments,
 ct.ct_reference reference,
+ct.purchase_order,
 ps.invoice_currency_code,
 gsob.currency_code functional_currency,
 gsob.name ledger,
@@ -1139,7 +1145,8 @@ x1.order_credit_limits,
 x1.collector,
 x1.revaluation_from_currency,
 x1.rec_code_combination_id,
-x1.reval_conv_rate
+x1.reval_conv_rate,
+x1.purchase_order
 &lp_invoice_cols_g
 order by
 fnd_flex_xml_publisher_apis.process_kff_combination_1('lp_acct_flex_bal_seg', 'SQLGL', 'GL#', x1.chart_of_accounts_id, null, x1.code_combination_id, 'GL_BALANCING', 'Y', 'VALUE'),

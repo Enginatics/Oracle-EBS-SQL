@@ -32,7 +32,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/per-employee-length-of-service/) |
+| Excel Example Output | [](https://www.enginatics.com/example/per-employee-length-of-service/) |
 | Blitz Report™ XML Import | [PER_Employee_Length_of_Service.xml](https://www.enginatics.com/xml/per-employee-length-of-service/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/per-employee-length-of-service/](https://www.enginatics.com/reports/per-employee-length-of-service/) |
 

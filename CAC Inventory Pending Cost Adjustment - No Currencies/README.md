@@ -72,7 +72,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/cac-inventory-pending-cost-adjustment-no-currencies/) |
+| Excel Example Output | [](https://www.enginatics.com/example/cac-inventory-pending-cost-adjustment-no-currencies/) |
 | Blitz Report™ XML Import | [CAC_Inventory_Pending_Cost_Adjustment_No_Currencies.xml](https://www.enginatics.com/xml/cac-inventory-pending-cost-adjustment-no-currencies/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/cac-inventory-pending-cost-adjustment-no-currencies/](https://www.enginatics.com/reports/cac-inventory-pending-cost-adjustment-no-currencies/) |
 

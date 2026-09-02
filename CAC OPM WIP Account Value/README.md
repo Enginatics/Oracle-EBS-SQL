@@ -66,7 +66,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/cac-opm-wip-account-value/) |
+| Excel Example Output | [](https://www.enginatics.com/example/cac-opm-wip-account-value/) |
 | Blitz Report™ XML Import | [CAC_OPM_WIP_Account_Value.xml](https://www.enginatics.com/xml/cac-opm-wip-account-value/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/cac-opm-wip-account-value/](https://www.enginatics.com/reports/cac-opm-wip-account-value/) |
 

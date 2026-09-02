@@ -103,7 +103,7 @@ xxen_util.display_flexfield_value(401,'MTL_RTG_ITEM_REVISIONS',mrir.attribute_ca
 -- operations
 --
 bos.operation_seq_num operation_seq,
-xxen_util.meaning(bos.operation_type,'BOM_OPERATION_TYPE',700) operation_type,
+xxen_util.meaning(nvl(bos.operation_type,1),'BOM_OPERATION_TYPE',700) operation_type,
 bos.effectivity_date operation_effectivity_date, -- discrete/flow event
 bos.implementation_date operation_implementation_date, -- discrete/flow event
 bos.disable_date operation_disable_date, -- discrete/flow event
@@ -305,14 +305,14 @@ bos1.standard_operation_id = bso1.standard_operation_id (+) and
 bos.line_op_seq_id = bos2.operation_sequence_id (+) and
 bos2.standard_operation_id = bso2.standard_operation_id (+) and
 --
-decode(:p_show_resources,'Y',decode(bos.operation_type,1,bos.operation_sequence_id)) = borsc.operation_sequence_id (+) and
+decode(:p_show_resources,'Y',decode(nvl(bos.operation_type,1),1,bos.operation_sequence_id)) = borsc.operation_sequence_id (+) and
 borsc.resource_id = br.resource_id (+) and
 -- to ensure the operation sequences are always displayed even if no subresources or networks exist for the operation sequence, but not duplicated
 ( br.resource_code is not null or
   (:p_show_sub_resources is null and :p_show_networks is null) or
   not exists
-  (select 'Y' from bom_sub_operation_resources bsor where :p_show_sub_resources = 'Y' and bsor.operation_sequence_id = decode(bos.operation_type,1,bos.operation_sequence_id) and rownum = 1 union
-   select 'Y' from bom_operation_networks bon where :p_show_networks = 'Y' and bon.from_op_seq_id = decode(bos.operation_type,1,bos.operation_sequence_id) and rownum = 1
+  (select 'Y' from bom_sub_operation_resources bsor where :p_show_sub_resources = 'Y' and bsor.operation_sequence_id = decode(nvl(bos.operation_type,1),1,bos.operation_sequence_id) and rownum = 1 union
+   select 'Y' from bom_operation_networks bon where :p_show_networks = 'Y' and bon.from_op_seq_id = decode(nvl(bos.operation_type,1),1,bos.operation_sequence_id) and rownum = 1
   )
 ) and
 ( :p_sub_resource_exists is null or
@@ -397,7 +397,7 @@ xxen_util.display_flexfield_value(401,'MTL_RTG_ITEM_REVISIONS',mrir.attribute_ca
 -- operations
 --
 bos.operation_seq_num operation_seq,
-xxen_util.meaning(bos.operation_type,'BOM_OPERATION_TYPE',700) operation_type,
+xxen_util.meaning(nvl(bos.operation_type,1),'BOM_OPERATION_TYPE',700) operation_type,
 bos.effectivity_date operation_effectivity_date, -- discrete/flow event
 bos.implementation_date operation_implementation_date, -- discrete/flow event
 bos.disable_date operation_disable_date, -- discrete/flow event
@@ -595,7 +595,7 @@ bos1.standard_operation_id = bso1.standard_operation_id (+) and
 bos.line_op_seq_id = bos2.operation_sequence_id (+) and
 bos2.standard_operation_id = bso2.standard_operation_id (+) and
 --
-decode(bos.operation_type,1,bos.operation_sequence_id) = bsor.operation_sequence_id and
+decode(nvl(bos.operation_type,1),1,bos.operation_sequence_id) = bsor.operation_sequence_id and
 bsor.resource_id = br.resource_id
 union all
 --
@@ -672,7 +672,7 @@ xxen_util.display_flexfield_value(401,'MTL_RTG_ITEM_REVISIONS',mrir.attribute_ca
 -- operations
 --
 bos.operation_seq_num operation_seq,
-xxen_util.meaning(bos.operation_type,'BOM_OPERATION_TYPE',700) operation_type,
+xxen_util.meaning(nvl(bos.operation_type,1),'BOM_OPERATION_TYPE',700) operation_type,
 bos.effectivity_date operation_effectivity_date, -- discrete/flow event
 bos.implementation_date operation_implementation_date, -- discrete/flow event
 bos.disable_date operation_disable_date, -- discrete/flow event
@@ -871,6 +871,6 @@ bos1.standard_operation_id = bso1.standard_operation_id (+) and
 bos.line_op_seq_id = bos2.operation_sequence_id (+) and
 bos2.standard_operation_id = bso2.standard_operation_id (+) and
 --
-case when (nvl(bor.cfm_routing_flag,2) = 3 and bos.operation_type = 1) or (nvl(bor.cfm_routing_flag,2) = 1 and bos.operation_type in (2,3)) then bos.operation_sequence_id end = bon.from_op_seq_id and
+case when (nvl(bor.cfm_routing_flag,2) = 3 and nvl(bos.operation_type,1) = 1) or (nvl(bor.cfm_routing_flag,2) = 1 and nvl(bos.operation_type,1) in (2,3)) then bos.operation_sequence_id end = bon.from_op_seq_id and
 bon.to_op_seq_id = bos3.operation_sequence_id
 ) rtg

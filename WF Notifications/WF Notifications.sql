@@ -5,7 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: WF Notifications
--- Description: None
+-- Description: 
 -- Excel Examle Output: https://www.enginatics.com/example/wf-notifications/
 -- Library Link: https://www.enginatics.com/reports/wf-notifications/
 -- Run Report: https://demo.enginatics.com/

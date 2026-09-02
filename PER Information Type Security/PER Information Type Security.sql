@@ -5,7 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PER Information Type Security
--- Description: None
+-- Description: 
 -- Excel Examle Output: https://www.enginatics.com/example/per-information-type-security/
 -- Library Link: https://www.enginatics.com/reports/per-information-type-security/
 -- Run Report: https://demo.enginatics.com/

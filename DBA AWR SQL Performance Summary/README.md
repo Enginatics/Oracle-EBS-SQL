@@ -2,7 +2,7 @@
 layout: default
 title: 'DBA AWR SQL Performance Summary | Oracle EBS SQL Report'
 description: 'Database SQL performance summary from the Automatic Workload Repository (AWR) tables to give an overview of top SQL load and performance issues. The…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Diagnostic Pack, Enginatics, DBA, AWR, SQL, Performance, obj$, dba_hist_snapshot, dba_hist_sqlstat'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, DBA, AWR, SQL, Performance, obj$, dba_hist_snapshot, dba_hist_sqlstat'
 permalink: /DBA%20AWR%20SQL%20Performance%20Summary/
 ---
 
@@ -52,13 +52,13 @@ Columns:
 -Is Bind Aware: 'adaptive cursor sharing' feature. A value of 'Y' means, the DB considers a differ
 
 ## Report Parameters
-SQL Text contains, Module Type, Module contains, SQL Id, Plan Hash Value, Show Bind Values, Schema, Package Name starts with, Date From, Date To, Request Id (Time Restriction), Daytime or Night hours, Day of Week, Level, Order By, Exclude PLSQL Code, Diagnostic Pack enabled, Container Data
+SQL Text contains, Module Type, Module contains, SQL Id, Plan Hash Value, Show Bind Values, Schema, Package Name starts with, Date From, Date To, Instance Id, Request Id (Time Restriction), Daytime or Night hours, Day of Week, Level, Order By, Exclude PLSQL Code, Diagnostic Pack enabled, Container Data
 
 ## Oracle EBS Tables Used
 [obj$](https://www.enginatics.com/library/?pg=1&find=obj$), [dba_hist_snapshot](https://www.enginatics.com/library/?pg=1&find=dba_hist_snapshot), [dba_hist_sqlstat](https://www.enginatics.com/library/?pg=1&find=dba_hist_sqlstat), [dba_hist_sqltext](https://www.enginatics.com/library/?pg=1&find=dba_hist_sqltext), [wrh$_sqlstat](https://www.enginatics.com/library/?pg=1&find=wrh$_sqlstat), [wrh$_sql_bind_metadata](https://www.enginatics.com/library/?pg=1&find=wrh$_sql_bind_metadata), [gv$sqlarea](https://www.enginatics.com/library/?pg=1&find=gv$sqlarea), [v$parameter](https://www.enginatics.com/library/?pg=1&find=v$parameter)
 
 ## Report Categories
-[Diagnostic Pack](https://www.enginatics.com/library/?pg=1&category[]=Diagnostic%20Pack), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 
 

@@ -2,7 +2,7 @@
 layout: default
 title: 'ECC Admin - Data Load Tracking | Oracle EBS SQL Report'
 description: 'Enterprise Command Center data load run history, including status, the load SQL and possible error messages in case of failures. For description of the…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, ECC, Admin, Data, Load, ecc_application_tl, ecc_dataset_b, ecc_audit_request'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, ECC, Admin, Data, Load, ecc_application_tl, ecc_dataset_b, ecc_audit_request'
 permalink: /ECC%20Admin%20-%20Data%20Load%20Tracking/
 ---
 
@@ -21,7 +21,7 @@ Run Id, Application, Data Set, Load Type, Status, Running within past x Days, St
 [ecc_application_tl](https://www.enginatics.com/library/?pg=1&find=ecc_application_tl), [ecc_dataset_b](https://www.enginatics.com/library/?pg=1&find=ecc_dataset_b), [ecc_audit_request](https://www.enginatics.com/library/?pg=1&find=ecc_audit_request), [ecc_audit_dataset](https://www.enginatics.com/library/?pg=1&find=ecc_audit_dataset), [ecc_dataset_tl](https://www.enginatics.com/library/?pg=1&find=ecc_dataset_tl), [ecc_audit_load_rule](https://www.enginatics.com/library/?pg=1&find=ecc_audit_load_rule), [ecc_audit_load_details](https://www.enginatics.com/library/?pg=1&find=ecc_audit_load_details)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related Reports
 [ECC Admin - Data Sets](/ECC%20Admin%20-%20Data%20Sets/ "ECC Admin - Data Sets Oracle EBS SQL Report"), [ECC Admin - Metadata Attributes](/ECC%20Admin%20-%20Metadata%20Attributes/ "ECC Admin - Metadata Attributes Oracle EBS SQL Report")

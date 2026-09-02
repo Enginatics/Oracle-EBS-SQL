@@ -24,7 +24,7 @@ Name
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Upload](https://www.enginatics.com/library/?pg=1&category[]=Upload)
 
 ## Related Reports
-[Blitz Upload Example (API with no parameters)](/Blitz%20Upload%20Example%20%28API%20with%20no%20parameters%29/ "Blitz Upload Example (API with no parameters) Oracle EBS SQL Report"), [Blitz Upload Example (API)](/Blitz%20Upload%20Example%20%28API%29/ "Blitz Upload Example (API) Oracle EBS SQL Report"), [Blitz Upload Example (Interface Table)](/Blitz%20Upload%20Example%20%28Interface%20Table%29/ "Blitz Upload Example (Interface Table) Oracle EBS SQL Report"), [Blitz Report Text Search](/Blitz%20Report%20Text%20Search/ "Blitz Report Text Search Oracle EBS SQL Report")
+[Blitz Upload Example (API with no parameters)](/Blitz%20Upload%20Example%20%28API%20with%20no%20parameters%29/ "Blitz Upload Example (API with no parameters) Oracle EBS SQL Report"), [Blitz Upload Example (API)](/Blitz%20Upload%20Example%20%28API%29/ "Blitz Upload Example (API) Oracle EBS SQL Report"), [Blitz Upload Example (Interface Table)](/Blitz%20Upload%20Example%20%28Interface%20Table%29/ "Blitz Upload Example (Interface Table) Oracle EBS SQL Report"), [Enginatics Blitz Reports and Uploads](/Enginatics%20Blitz%20Reports%20and%20Uploads/ "Enginatics Blitz Reports and Uploads Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
@@ -33,7 +33,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/blitz-upload-example-api-without-parameters/) |
+| Excel Example Output | [](https://www.enginatics.com/example/blitz-upload-example-api-without-parameters/) |
 | Blitz Report™ XML Import | [Blitz_Upload_Example_API_without_parameters.xml](https://www.enginatics.com/xml/blitz-upload-example-api-without-parameters/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/blitz-upload-example-api-without-parameters/](https://www.enginatics.com/reports/blitz-upload-example-api-without-parameters/) |
 

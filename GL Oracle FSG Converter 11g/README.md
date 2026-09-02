@@ -38,7 +38,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/gl-oracle-fsg-converter-11g/) |
+| Excel Example Output | [](https://www.enginatics.com/example/gl-oracle-fsg-converter-11g/) |
 | Blitz Report™ XML Import | [GL_Oracle_FSG_Converter_11g.xml](https://www.enginatics.com/xml/gl-oracle-fsg-converter-11g/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/gl-oracle-fsg-converter-11g/](https://www.enginatics.com/reports/gl-oracle-fsg-converter-11g/) |
 

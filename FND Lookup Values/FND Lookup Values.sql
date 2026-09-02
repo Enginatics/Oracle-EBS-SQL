@@ -23,6 +23,7 @@ flv.tag,
 xxen_util.meaning(flv.enabled_flag,'YES_NO',0) enabled_flag,
 flv.start_date_active,
 flv.end_date_active,
+&dff_columns
 xxen_util.user_name(flv.created_by) created_by,
 xxen_util.client_time(flv.creation_date) creation_date,
 xxen_util.user_name(flv.last_updated_by) last_updated_by,

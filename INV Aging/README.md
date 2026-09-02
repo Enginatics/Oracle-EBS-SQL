@@ -2,7 +2,7 @@
 layout: default
 title: 'INV Aging | Oracle EBS SQL Report'
 description: 'The Inventory Aging Report indicates how long an inventory item has been in a FIFO warehouse. You can define bucket days to identify the period from when…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, INV, Aging, ar_aging_buckets, ar_aging_bucket_lines_b, ar_aging_bucket_lines_tl'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, INV, Aging, ar_aging_buckets, ar_aging_bucket_lines_b, ar_aging_bucket_lines_tl'
 permalink: /INV%20Aging/
 ---
 
@@ -36,7 +36,7 @@ Organization Code, Category Set, Category From, Category To, Item From, Item To,
 [ar_aging_buckets](https://www.enginatics.com/library/?pg=1&find=ar_aging_buckets), [ar_aging_bucket_lines_b](https://www.enginatics.com/library/?pg=1&find=ar_aging_bucket_lines_b), [ar_aging_bucket_lines_tl](https://www.enginatics.com/library/?pg=1&find=ar_aging_bucket_lines_tl), [po_vendors](https://www.enginatics.com/library/?pg=1&find=po_vendors), [po_vendor_sites_all](https://www.enginatics.com/library/?pg=1&find=po_vendor_sites_all), [hr_organization_information](https://www.enginatics.com/library/?pg=1&find=hr_organization_information), [hr_all_organization_units_tl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_tl), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters), [aab](https://www.enginatics.com/library/?pg=1&find=aab), [mtl_onhand_quantities_detail](https://www.enginatics.com/library/?pg=1&find=mtl_onhand_quantities_detail), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl), [mtl_secondary_inventories_fk_v](https://www.enginatics.com/library/?pg=1&find=mtl_secondary_inventories_fk_v), [mtl_item_categories_v](https://www.enginatics.com/library/?pg=1&find=mtl_item_categories_v), [mtl_item_locations_kfv](https://www.enginatics.com/library/?pg=1&find=mtl_item_locations_kfv), [cst_cost_groups](https://www.enginatics.com/library/?pg=1&find=cst_cost_groups), [moqd](https://www.enginatics.com/library/?pg=1&find=moqd), [org_organization_definitions](https://www.enginatics.com/library/?pg=1&find=org_organization_definitions)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 
 

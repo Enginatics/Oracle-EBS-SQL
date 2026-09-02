@@ -51,7 +51,8 @@ fmv2.user_menu_name sub_menu,
 fffv.user_function_name function_name,
 fmet.description entry_description,
 xxen_util.meaning(fme.grant_flag,'YES_NO',0) grant_flag,
-to_char(null) delete_record
+to_char(null) delete_record,
+row_number() over (order by fmv.menu_name, fme.entry_sequence) upload_row
 from
 fnd_menus_vl fmv,
 fnd_menu_entries fme,

@@ -2,7 +2,7 @@
 layout: default
 title: 'AD Applied Patches | Oracle EBS SQL Report'
 description: 'AD applied patches, patch runs, included bugs, filenames and actions – Oracle E-Business Suite SQL report'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Applied, Patches, ad_comprising_patches, ad_bugs, ad_appl_tops'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Applied, Patches, ad_comprising_patches, ad_bugs, ad_appl_tops'
 permalink: /AD%20Applied%20Patches/
 ---
 
@@ -20,10 +20,10 @@ Display Level, Application Name, Application Short Name, Filename, Patch, Bug Nu
 [ad_comprising_patches](https://www.enginatics.com/library/?pg=1&find=ad_comprising_patches), [ad_bugs](https://www.enginatics.com/library/?pg=1&find=ad_bugs), [ad_appl_tops](https://www.enginatics.com/library/?pg=1&find=ad_appl_tops), [ad_applied_patches](https://www.enginatics.com/library/?pg=1&find=ad_applied_patches), [ad_patch_drivers](https://www.enginatics.com/library/?pg=1&find=ad_patch_drivers), [ad_patch_runs](https://www.enginatics.com/library/?pg=1&find=ad_patch_runs), [ad_patch_run_bugs](https://www.enginatics.com/library/?pg=1&find=ad_patch_run_bugs), [ad_patch_run_bug_actions](https://www.enginatics.com/library/?pg=1&find=ad_patch_run_bug_actions), [ad_patch_common_actions](https://www.enginatics.com/library/?pg=1&find=ad_patch_common_actions), [ad_files](https://www.enginatics.com/library/?pg=1&find=ad_files), [ad_file_versions](https://www.enginatics.com/library/?pg=1&find=ad_file_versions), [fnd_application_vl](https://www.enginatics.com/library/?pg=1&find=fnd_application_vl)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related Reports
-[AD Applied Patches 11i](/AD%20Applied%20Patches%2011i/ "AD Applied Patches 11i Oracle EBS SQL Report"), [AD Applied Patches R12.2](/AD%20Applied%20Patches%20R12-2/ "AD Applied Patches R12.2 Oracle EBS SQL Report"), [FA Additions By Source](/FA%20Additions%20By%20Source/ "FA Additions By Source Oracle EBS SQL Report")
+[AD Applied Patches R12.2](/AD%20Applied%20Patches%20R12-2/ "AD Applied Patches R12.2 Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.

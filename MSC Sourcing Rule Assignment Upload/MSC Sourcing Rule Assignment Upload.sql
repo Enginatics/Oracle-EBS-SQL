@@ -39,7 +39,7 @@ select
  when 9 then 'Item-Instance-Region'
  end assignment_type,
  decode(msav.assignment_type,3,null,msc_get_name.org_code(msav.organization_id, msav.sr_instance_id)) organization,
- msav.organization_code organization_code,
+ msav.organization_code,
  case when msav.assignment_type in (3,6,9)
  then msav.entity_name
  else null
@@ -48,7 +48,7 @@ select
  then msav.entity_name
  else null
  end category,
- msav.description description,
+ msav.description,
  msav.customer_name,
  hca.partner_number customer_number,
  hcsua.location customer_site,
@@ -149,10 +149,6 @@ where
 --
 -- Main Query Starts Here
 --
-select
-x.*
-from
-(
 select /*+ push_pred(sra) */
  null action_,
  null status_,
@@ -234,28 +230,10 @@ select /*+ push_pred(sra) */
  sra.assignment_id,
  sra.sourcing_rule_id,
  sra.assignment_type_id,
- :p_master_org_id master_organization_id
+ :p_master_org_id master_organization_id,
+to_number(null) upload_row
 from
  sra_query sra
 where
  :p_master_org_code is not null and
  1=1
-&not_use_first_block
-&report_table_select
-&report_table_name &report_table_where_clause
-&processed_run
-) x
-order by
- x.assignment_set,
- x.assignment_type_id,
- x.organization,
- nvl(x.item,x.category),
- x.customer_name,
- x.customer_site,
- x.zone,
- x.region_country,
- x.region_state,
- x.region_city,
- x.region_postal_code_from,
- x.region_postal_code_to,
- x.sourcing_rule_name

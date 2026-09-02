@@ -26,10 +26,13 @@ DB package: BOM_BOMRBOMS_XMLP_PKG
 with q_assemblies as
 (
  select
+  (select mp.organization_code from mtl_parameters mp where bbom.organization_id=mp.organization_id) assembly_organization_code,
   (select haouv.name from hr_all_organization_units_vl haouv where bbom.organization_id=haouv.organization_id) assembly_organization,
   msiv.concatenated_segments assembly,
   msiv.description assembly_description,
   msiv.long_description assembly_long_description,
+  msiv.inventory_item_status_code assembly_item_status,
+  xxen_util.meaning(msiv.item_type,'ITEM_TYPE',3) assembly_item_type,
   xxen_util.meaning(msiv.bom_item_type,'BOM_ITEM_TYPE',700) bom_item_type,
   mlu.meaning engineering_bill,
   msiv.primary_uom_code assembly_uom,
@@ -37,17 +40,6 @@ with q_assemblies as
   bad.description alt_bom_designator_desc,
   rev.revision assembly_revision,
   fnd_date.date_to_displaydt(:lp_revision_date) assembly_revision_date,
-  (select distinct
-    listagg(mck.concatenated_segments,', ') within group (order by mck.concatenated_segments)
-   from
-    mtl_item_categories mic,
-    mtl_categories_b_kfv mck
-   where
-       mic.category_set_id = :p_category_set_id
-   and mic.organization_id = bbom.organization_id
-   and mic.inventory_item_id = bbom.assembly_item_id
-   and mck.category_id = mic.category_id
-  ) category,
   (select distinct
     listagg(bdde.element_name || nvl2(bom_bomrboms_xmlp_pkg.get_ele_desc(msiv.bom_item_type, bdde.element_name, msiv.item_catalog_group_id),': ' || bom_bomrboms_xmlp_pkg.get_ele_desc(msiv.bom_item_type, bdde.element_name, msiv.item_catalog_group_id),null),', ') within group (order by bdde.element_name)
    from
@@ -114,7 +106,7 @@ with q_assemblies as
 ),
 q_components as
 (
- select /*+ push_pred(mic) */
+ select
   bev.sort_order comp_sort_order,
   lpad(to_char(bev.plan_level), least(9,bev.plan_level),'.') plan_level,
   bev.item_num comp_item_seq_num,
@@ -133,8 +125,12 @@ q_components as
   xxen_util.meaning(bev.item_type,'ITEM_TYPE',3) comp_item_type,
   bev.planning_factor comp_planning_factor,
   round(bev.component_yield_factor,:p_qty_precision) comp_yield_factor,
-  decode(bom.common_bill_sequence_id, bom.bill_sequence_id, bev.supply_subinventory, msib_a.wip_supply_subinventory) comp_supply_subinventory,
+  bev.supply_subinventory comp_supply_subinventory,
   milk.concatenated_segments comp_locator,
+  xxen_util.meaning(msiv.wip_supply_type,'WIP_SUPPLY',700) comp_item_supply_type,
+  msiv.wip_supply_subinventory comp_item_supply_subinventory,
+  (select milk2.concatenated_segments from mtl_item_locations_kfv milk2 where msiv.wip_supply_locator_id=milk2.inventory_location_id and msiv.organization_id=milk2.organization_id) comp_item_supply_locator,
+  xxen_util.yes(case when decode(bev.wip_supply_type,msiv.wip_supply_type,0,1)+decode(bev.supply_subinventory,msiv.wip_supply_subinventory,0,1)+decode(bev.supply_locator_id,msiv.wip_supply_locator_id,0,1)>0 then 'Y' end) comp_supply_attributes_differ,
   round(bev.manufacturing_lead_time,:p_qty_precision) mfg_lead_time,
   bev.operation_lead_time_percent operation_lead_time_percent,
   round((1-(bev.operation_lead_time_percent/100))*msib_a.full_lead_time,:p_qty_precision) operation_offset,
@@ -142,13 +138,12 @@ q_components as
   round(bev.cumulative_total_lead_time,:p_qty_precision) cumulative_total_lead_time,
   round(bev.minimum_quantity,:p_qty_precision) comp_minimum_quantity,
   round(bev.maximum_quantity,:p_qty_precision) comp_maximum_quantity,
-  mck.concatenated_segments comp_category,
   msiv.inventory_item_status_code comp_item_status,
   msiv.description comp_description,
   msiv.long_description comp_long_description,
   bom_bomrboms_xmlp_pkg.get_rev(bev.organization_id, bev.component_item_id) comp_revision,
   bom_bomrboms_xmlp_pkg.cf_revision_descformula(bev.component_item_id, bom_bomrboms_xmlp_pkg.get_rev(bev.organization_id, bev.component_item_id)) comp_revision_desc,
-  bom_bomrboms_xmlp_pkg.supply_type_dispformula(decode (bom.common_bill_sequence_id , bom.bill_sequence_id , bev.wip_supply_type , msib_a.wip_supply_type)) comp_supply_type,
+  bom_bomrboms_xmlp_pkg.supply_type_dispformula(bev.wip_supply_type) comp_supply_type,
   bev.so_basis so_basis,
   bom_bomrboms_xmlp_pkg.eng_bill_dispformula(bev.eng_bill) eng_bill,
   bom_bomrboms_xmlp_pkg.optional_dispformula(bev.optional) optional,
@@ -172,7 +167,6 @@ q_components as
   bev.top_bill_sequence_id top_bill_sequence_id,
   bev.component_sequence_id,
   bev.component_item_id,
-  decode(bom.common_bill_sequence_id, bom.bill_sequence_id, bev.supply_locator_id, msib_a.wip_supply_locator_id) supply_locator_id,
   &comp_dff_attributes1
   &comp_item_dff_attributes1
   bcb.rowid  component_row_id,
@@ -183,17 +177,7 @@ q_components as
   bom_bill_of_materials bom,
   bom_components_b bcb,
   mtl_system_items_b msib_a,
-  mtl_system_items_vl msiv,
-  (select
-   mic.*
-   from
-   mtl_default_category_sets mdcs,
-   mtl_item_categories mic
-   where
-   mdcs.functional_area_id = 1 and
-   mdcs.category_set_id = mic.category_set_id
-  ) mic,
-  mtl_categories_b_kfv mck
+  mtl_system_items_vl msiv
  where
       bev.group_id = :p_group_id
   and bev.plan_level > 0
@@ -203,9 +187,6 @@ q_components as
   and bev.organization_id = msib_a.organization_id
   and bev.component_item_id = msiv.inventory_item_id
   and bev.organization_id = msiv.organization_id
-  and msiv.inventory_item_id = mic.inventory_item_id (+)
-  and msiv.organization_id = mic.organization_id (+)
-  and mic.category_id = mck.category_id (+)
   and bom.bill_sequence_id = bev.bill_sequence_id
   and bcb.component_sequence_id = bev.component_sequence_id
   and ( ( (:p_verify_flag is null) or (:p_verify_flag <> 1) ) or ( (:p_verify_flag = 1) and (bev.loop_flag = 1) ) )
@@ -231,10 +212,13 @@ q_subst_comp as
 -- Main Query Starts Here
 --
 select
+ qa.assembly_organization_code,
  qa.assembly_organization,
  qa.assembly,
  qa.assembly_description,
  qa.assembly_long_description,
+ qa.assembly_item_status,
+ qa.assembly_item_type,
  qa.bom_item_type,
  qa.engineering_bill,
  qa.assembly_uom,
@@ -242,7 +226,7 @@ select
  qa.alt_bom_designator_desc,
  qa.assembly_revision,
  qa.assembly_revision_date,
- qa.category,
+ &assembly_category_columns
  qa.descriptive_elements,
  &assbly_dff_attributes2
  &assbly_item_dff_attributes2
@@ -258,7 +242,7 @@ select
  qc.comp_quantity quantity,
  qc.comp_extended_quantity extended_quantity,
  qc.comp_item_status item_status,
- qc.comp_category item_category,
+ &component_category_columns
  qc.comp_eng_item_flag engineering_item,
  qc.comp_alternate alternate,
  qc.comp_planning_factor planning_percent,
@@ -266,6 +250,10 @@ select
  qc.comp_supply_type supply_type,
  qc.comp_supply_subinventory supply_subinventory,
  qc.comp_locator supply_locator,
+ qc.comp_item_supply_type org_item_supply_type,
+ qc.comp_item_supply_subinventory org_item_supply_subinventory,
+ qc.comp_item_supply_locator org_item_supply_locator,
+ qc.comp_supply_attributes_differ supply_attributes_differ,
  qc.mfg_lead_time,
  qc.operation_offset,
  qc.operation_lead_time_percent,

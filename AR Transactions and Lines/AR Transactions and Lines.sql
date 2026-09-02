@@ -48,12 +48,15 @@ hcsua5.location paying_location,
 hp1.party_name bill_to_customer,
 hca1.account_number bill_to_customer_number,
 hcsua1.location bill_to_location,
+hl1.city bill_to_city,
+hl1.state bill_to_state,
 hz_format_pub.format_address(hps1.location_id,null,null,' , ') bill_to_address,
 ftv1.territory_short_name bill_to_country,
 coalesce(hcsua1.tax_reference,hp1.tax_reference,hp1.jgzz_fiscal_code) bill_to_tax_reference,
 hp3.party_name ship_to_customer,
 hca3.account_number ship_to_customer_number,
 nvl(hcsua2.location,hcsua3.location) ship_to_location,
+nvl(hl2.city,hl3.city) ship_to_city,
 hz_format_pub.format_address(nvl(hps2.location_id,hps3.location_id),null,null,' , ') ship_to_address,
 nvl(ftv2.territory_short_name,ftv3.territory_short_name) ship_to_country,
 coalesce(hcsua2.tax_reference,hcsua3.tax_reference,hp2.tax_reference,hp3.tax_reference,hp2.jgzz_fiscal_code,hp3.jgzz_fiscal_code) ship_to_tax_reference,
@@ -218,9 +221,9 @@ haouv.organization_id=rcta.org_id and
 rcta.customer_trx_id=apsa.customer_trx_id and
 decode(apsa.terms_sequence_number,1,apsa.customer_trx_id)=rctla.customer_trx_id(+) and
 rctla.customer_trx_line_id=rctla2.link_to_cust_trx_line_id(+) and
-rcta.customer_trx_id=axclv0.customer_trx_id and
-axclv0.account_class='REC' and
-axclv0.latest_rec_flag='Y' and
+rcta.customer_trx_id=axclv0.customer_trx_id(+) and
+axclv0.account_class(+)='REC' and
+axclv0.latest_rec_flag(+)='Y' and
 rctla.customer_trx_line_id=rctlgda.link_to_cust_trx_line_id(+) and
 rctla.inventory_item_id=msiv.inventory_item_id(+) and
 rctla.organization_id=msiv.organization_id(+) and

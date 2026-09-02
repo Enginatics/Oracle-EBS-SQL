@@ -39,7 +39,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/blitz-report-lov-comparison-between-environments/) |
+| Excel Example Output | [](https://www.enginatics.com/example/blitz-report-lov-comparison-between-environments/) |
 | Blitz Report™ XML Import | [Blitz_Report_LOV_Comparison_between_environments.xml](https://www.enginatics.com/xml/blitz-report-lov-comparison-between-environments/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/blitz-report-lov-comparison-between-environments/](https://www.enginatics.com/reports/blitz-report-lov-comparison-between-environments/) |
 

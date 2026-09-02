@@ -2,7 +2,7 @@
 layout: default
 title: 'QP Modifier Details | Oracle EBS SQL Report'
 description: 'Imported from BI Publisher Description: Modifier Details Report for QP Application: Advanced Pricing Source: Modifier Details (XML) Short Name…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Modifier, Details, fnd_application_vl, qp_secu_list_headers_vl, qp_segments_b'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Modifier, Details, fnd_application_vl, qp_secu_list_headers_vl, qp_segments_b'
 permalink: /QP%20Modifier%20Details/
 ---
 
@@ -41,7 +41,7 @@ Modifier Number From, Modifier Number To, Modifier Name From, Modifier Name To, 
 [fnd_application_vl](https://www.enginatics.com/library/?pg=1&find=fnd_application_vl), [qp_secu_list_headers_vl](https://www.enginatics.com/library/?pg=1&find=qp_secu_list_headers_vl), [qp_segments_b](https://www.enginatics.com/library/?pg=1&find=qp_segments_b), [qp_prc_contexts_b](https://www.enginatics.com/library/?pg=1&find=qp_prc_contexts_b), [qp_qualifiers_v](https://www.enginatics.com/library/?pg=1&find=qp_qualifiers_v), [qp_lookups](https://www.enginatics.com/library/?pg=1&find=qp_lookups), [qp_list_lines](https://www.enginatics.com/library/?pg=1&find=qp_list_lines), [qp_rltd_modifiers](https://www.enginatics.com/library/?pg=1&find=qp_rltd_modifiers), [qp_modifier_summary_v](https://www.enginatics.com/library/?pg=1&find=qp_modifier_summary_v), [qp_price_breaks_v](https://www.enginatics.com/library/?pg=1&find=qp_price_breaks_v), [qp_pricing_attr_v](https://www.enginatics.com/library/?pg=1&find=qp_pricing_attr_v), [qp_pricing_attr_get_v](https://www.enginatics.com/library/?pg=1&find=qp_pricing_attr_get_v), [q1](https://www.enginatics.com/library/?pg=1&find=q1), [q2](https://www.enginatics.com/library/?pg=1&find=q2), [q3](https://www.enginatics.com/library/?pg=1&find=q3), [q4](https://www.enginatics.com/library/?pg=1&find=q4), [q5](https://www.enginatics.com/library/?pg=1&find=q5), [q6](https://www.enginatics.com/library/?pg=1&find=q6)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 
 

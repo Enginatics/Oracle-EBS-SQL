@@ -2,7 +2,7 @@
 layout: default
 title: 'AR Open Items Revaluation | Oracle EBS SQL Report'
 description: 'Imported from BI Publisher Description: Open Items Revaluation Report Application: Receivables Source: Open Items Revaluation Report (XML) Short Name…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, BI Publisher, Enginatics, R12 only, Open, Items, Revaluation, gl_translation_rates, ar_receivable_applications, ar_cash_receipt_history'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, BI Publisher, Enginatics, Open, Items, Revaluation, gl_translation_rates, ar_receivable_applications, ar_cash_receipt_history'
 permalink: /AR%20Open%20Items%20Revaluation/
 ---
 
@@ -26,7 +26,7 @@ Ledger, Operating Unit, Report Format, Revaluation Period, Include Up To Due Dat
 [gl_translation_rates](https://www.enginatics.com/library/?pg=1&find=gl_translation_rates), [ar_receivable_applications](https://www.enginatics.com/library/?pg=1&find=ar_receivable_applications), [ar_cash_receipt_history](https://www.enginatics.com/library/?pg=1&find=ar_cash_receipt_history), [ar_adjustments](https://www.enginatics.com/library/?pg=1&find=ar_adjustments), [ra_cust_trx_types](https://www.enginatics.com/library/?pg=1&find=ra_cust_trx_types), [hz_cust_accounts](https://www.enginatics.com/library/?pg=1&find=hz_cust_accounts), [hz_parties](https://www.enginatics.com/library/?pg=1&find=hz_parties), [hz_locations](https://www.enginatics.com/library/?pg=1&find=hz_locations), [hz_cust_acct_sites](https://www.enginatics.com/library/?pg=1&find=hz_cust_acct_sites), [hz_party_sites](https://www.enginatics.com/library/?pg=1&find=hz_party_sites), [hz_cust_site_uses](https://www.enginatics.com/library/?pg=1&find=hz_cust_site_uses), [gl_code_combinations](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations), [gl_sets_of_books](https://www.enginatics.com/library/?pg=1&find=gl_sets_of_books), [fnd_currencies](https://www.enginatics.com/library/?pg=1&find=fnd_currencies), [hr_all_organization_units_vl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_vl), [ra_customer_trx](https://www.enginatics.com/library/?pg=1&find=ra_customer_trx), [ar_xla_ctlgd_lines_v](https://www.enginatics.com/library/?pg=1&find=ar_xla_ctlgd_lines_v), [ar_payment_schedules](https://www.enginatics.com/library/?pg=1&find=ar_payment_schedules), [gl_period_statuses](https://www.enginatics.com/library/?pg=1&find=gl_period_statuses)
 
 ## Report Categories
-[BI Publisher](https://www.enginatics.com/library/?pg=1&category[]=BI%20Publisher), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[BI Publisher](https://www.enginatics.com/library/?pg=1&category[]=BI%20Publisher), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 
 

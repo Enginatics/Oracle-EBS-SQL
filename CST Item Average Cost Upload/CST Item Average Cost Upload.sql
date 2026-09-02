@@ -96,7 +96,7 @@ null overhead_adj_account,
 :p_default_adj_account default_adj_account,
 --
 null reason,
-null reference,
+cast(null as varchar2(240)) reference,
 --
 clcdv.cost_element_id,
 clcdv.level_type,
@@ -167,7 +167,7 @@ null overhead_adj_account,
 null default_adj_account,
 --
 null reason,
-null reference,
+cast(null as varchar2(240)) reference,
 --
 cicdv.cost_element_id,
 cicdv.level_type,

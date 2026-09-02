@@ -2,7 +2,7 @@
 layout: default
 title: 'FA Cost Adjustments | Oracle EBS SQL Report'
 description: 'Imported from BI Publisher Description: Cost Adjustments Report Application: Assets Source: Cost Adjustments Report (XML) Short Name: FAS840XML DB…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Cost, Adjustments, fa_system_controls, gl_ledgers, fnd_currencies'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Cost, Adjustments, fa_system_controls, gl_ledgers, fnd_currencies'
 permalink: /FA%20Cost%20Adjustments/
 ---
 
@@ -25,7 +25,7 @@ Book, Set of Books Currency, From Period, To Period, Show Source Invoice Details
 [fa_system_controls](https://www.enginatics.com/library/?pg=1&find=fa_system_controls), [gl_ledgers](https://www.enginatics.com/library/?pg=1&find=gl_ledgers), [fnd_currencies](https://www.enginatics.com/library/?pg=1&find=fnd_currencies), [fa_asset_history](https://www.enginatics.com/library/?pg=1&find=fa_asset_history), [fa_additions](https://www.enginatics.com/library/?pg=1&find=fa_additions), [fa_categories](https://www.enginatics.com/library/?pg=1&find=fa_categories), [fa_category_books](https://www.enginatics.com/library/?pg=1&find=fa_category_books), [&lp_fa_books](https://www.enginatics.com/library/?pg=1&find=&lp_fa_books), [fa_lookups](https://www.enginatics.com/library/?pg=1&find=fa_lookups), [&lp_fa_deprn_periods](https://www.enginatics.com/library/?pg=1&find=&lp_fa_deprn_periods), [fa_distribution_history](https://www.enginatics.com/library/?pg=1&find=fa_distribution_history), [gl_code_combinations](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations), [fa_transaction_headers](https://www.enginatics.com/library/?pg=1&find=fa_transaction_headers), [fa_trx](https://www.enginatics.com/library/?pg=1&find=fa_trx), [fa_asset_invoices](https://www.enginatics.com/library/?pg=1&find=fa_asset_invoices), [ap_suppliers](https://www.enginatics.com/library/?pg=1&find=ap_suppliers)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related Reports
 [FA Asset Additions](/FA%20Asset%20Additions/ "FA Asset Additions Oracle EBS SQL Report"), [FA Asset Cost](/FA%20Asset%20Cost/ "FA Asset Cost Oracle EBS SQL Report"), [FA Asset Retirements](/FA%20Asset%20Retirements/ "FA Asset Retirements Oracle EBS SQL Report"), [FA Asset Summary (Germany)](/FA%20Asset%20Summary%20%28Germany%29/ "FA Asset Summary (Germany) Oracle EBS SQL Report"), [FA Asset Book Details](/FA%20Asset%20Book%20Details/ "FA Asset Book Details Oracle EBS SQL Report"), [FA Asset Upload](/FA%20Asset%20Upload/ "FA Asset Upload Oracle EBS SQL Report")

@@ -2,7 +2,7 @@
 layout: default
 title: 'DBA Trace File Contents | Oracle EBS SQL Report'
 description: 'V$DIAGTRACEFILECONTENTS contains trace data that is present in the trace files that are part of the current Automatic Diagnostic Repository (ADR)…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, DBA, Trace, File, Contents, v$diag_trace_file_contents'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, DBA, Trace, File, Contents, v$diag_trace_file_contents'
 permalink: /DBA%20Trace%20File%20Contents/
 ---
 
@@ -21,10 +21,10 @@ Trace Filename
 [v$diag_trace_file_contents](https://www.enginatics.com/library/?pg=1&find=v$diag_trace_file_contents)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related Reports
-[DBA Alert Log](/DBA%20Alert%20Log/ "DBA Alert Log Oracle EBS SQL Report"), [DBA Tablespace Usage](/DBA%20Tablespace%20Usage/ "DBA Tablespace Usage Oracle EBS SQL Report"), [ECC Admin - Concurrent Programs](/ECC%20Admin%20-%20Concurrent%20Programs/ "ECC Admin - Concurrent Programs Oracle EBS SQL Report"), [ECC Admin - Data Load Tracking](/ECC%20Admin%20-%20Data%20Load%20Tracking/ "ECC Admin - Data Load Tracking Oracle EBS SQL Report"), [GL Oracle FSG Converter](/GL%20Oracle%20FSG%20Converter/ "GL Oracle FSG Converter Oracle EBS SQL Report"), [GL Oracle FSG Converter 11g](/GL%20Oracle%20FSG%20Converter%2011g/ "GL Oracle FSG Converter 11g Oracle EBS SQL Report"), [DBA AWR Tablespace Usage](/DBA%20AWR%20Tablespace%20Usage/ "DBA AWR Tablespace Usage Oracle EBS SQL Report"), [WIP Required Components](/WIP%20Required%20Components/ "WIP Required Components Oracle EBS SQL Report")
+[DBA Alert Log](/DBA%20Alert%20Log/ "DBA Alert Log Oracle EBS SQL Report"), [DBA Database Parameter Validation](/DBA%20Database%20Parameter%20Validation/ "DBA Database Parameter Validation Oracle EBS SQL Report"), [DBA Tablespace Usage](/DBA%20Tablespace%20Usage/ "DBA Tablespace Usage Oracle EBS SQL Report"), [ECC Admin - Concurrent Programs](/ECC%20Admin%20-%20Concurrent%20Programs/ "ECC Admin - Concurrent Programs Oracle EBS SQL Report"), [ECC Admin - Data Load Tracking](/ECC%20Admin%20-%20Data%20Load%20Tracking/ "ECC Admin - Data Load Tracking Oracle EBS SQL Report"), [GL Oracle FSG Converter](/GL%20Oracle%20FSG%20Converter/ "GL Oracle FSG Converter Oracle EBS SQL Report"), [GL Oracle FSG Converter 11g](/GL%20Oracle%20FSG%20Converter%2011g/ "GL Oracle FSG Converter 11g Oracle EBS SQL Report"), [DBA AWR Tablespace Usage](/DBA%20AWR%20Tablespace%20Usage/ "DBA AWR Tablespace Usage Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.

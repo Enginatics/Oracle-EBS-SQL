@@ -2,7 +2,7 @@
 layout: default
 title: 'WIP Value Summary | Oracle EBS SQL Report'
 description: 'Report to get the WIP and Material accounting distributions, by WIP job,period, Org . It displays detailed information from both sources WIP and Material…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Nidec changes, WIP, Value, Summary, gl_ledgers, org_organization_definitions, wip_transaction_accounts'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, WIP, Value, Summary, gl_ledgers, org_organization_definitions, wip_transaction_accounts'
 permalink: /WIP%20Value%20Summary/
 ---
 
@@ -34,7 +34,7 @@ Period Name, Organization Code, Source, Category Set 1, Category Set 2, Category
 [gl_ledgers](https://www.enginatics.com/library/?pg=1&find=gl_ledgers), [org_organization_definitions](https://www.enginatics.com/library/?pg=1&find=org_organization_definitions), [wip_transaction_accounts](https://www.enginatics.com/library/?pg=1&find=wip_transaction_accounts), [wip_transactions](https://www.enginatics.com/library/?pg=1&find=wip_transactions), [wip_entities](https://www.enginatics.com/library/?pg=1&find=wip_entities), [wip_discrete_jobs](https://www.enginatics.com/library/?pg=1&find=wip_discrete_jobs), [gl_code_combinations_kfv](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations_kfv), [xla_transaction_entities_upg](https://www.enginatics.com/library/?pg=1&find=xla_transaction_entities_upg), [org_acct_periods](https://www.enginatics.com/library/?pg=1&find=org_acct_periods), [xla_events](https://www.enginatics.com/library/?pg=1&find=xla_events), [xla_ae_headers](https://www.enginatics.com/library/?pg=1&find=xla_ae_headers), [xla_ae_lines](https://www.enginatics.com/library/?pg=1&find=xla_ae_lines), [xla_distribution_links](https://www.enginatics.com/library/?pg=1&find=xla_distribution_links), [hr_operating_units](https://www.enginatics.com/library/?pg=1&find=hr_operating_units), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl), [wip_repetitive_items](https://www.enginatics.com/library/?pg=1&find=wip_repetitive_items), [bom_departments](https://www.enginatics.com/library/?pg=1&find=bom_departments), [bom_resources](https://www.enginatics.com/library/?pg=1&find=bom_resources), [mtl_material_transactions](https://www.enginatics.com/library/?pg=1&find=mtl_material_transactions), [mtl_transaction_accounts](https://www.enginatics.com/library/?pg=1&find=mtl_transaction_accounts), [mtl_item_locations_kfv](https://www.enginatics.com/library/?pg=1&find=mtl_item_locations_kfv), [mtl_transaction_types](https://www.enginatics.com/library/?pg=1&find=mtl_transaction_types), [cst_cost_elements](https://www.enginatics.com/library/?pg=1&find=cst_cost_elements)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Nidec changes](https://www.enginatics.com/library/?pg=1&category[]=Nidec%20changes)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related Reports
 [CAC Receiving Activity Summary](/CAC%20Receiving%20Activity%20Summary/ "CAC Receiving Activity Summary Oracle EBS SQL Report"), [GL Account Analysis (Drilldown) (with inventory and WIP)](/GL%20Account%20Analysis%20%28Drilldown%29%20%28with%20inventory%20and%20WIP%29/ "GL Account Analysis (Drilldown) (with inventory and WIP) Oracle EBS SQL Report"), [GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report"), [GL Account Analysis](/GL%20Account%20Analysis/ "GL Account Analysis Oracle EBS SQL Report")
@@ -46,7 +46,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/wip-value-summary/) |
+| Excel Example Output | [](https://www.enginatics.com/example/wip-value-summary/) |
 | Blitz Report™ XML Import | [WIP_Value_Summary.xml](https://www.enginatics.com/xml/wip-value-summary/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/wip-value-summary/](https://www.enginatics.com/reports/wip-value-summary/) |
 

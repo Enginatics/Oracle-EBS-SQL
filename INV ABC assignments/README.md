@@ -2,7 +2,7 @@
 layout: default
 title: 'INV ABC assignments | Oracle EBS SQL Report'
 description: 'Imported from BI Publisher Description: ABC assignments report Application: Inventory Source: ABC assignments report (XML) Short Name: INVARAASXML DB…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, BI Publisher, Enginatics, R12 only, INV, ABC, assignments, org_organization_definitions, hr_operating_units, gl_sets_of_books'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, INV, ABC, assignments, org_organization_definitions, hr_operating_units, gl_sets_of_books'
 permalink: /INV%20ABC%20assignments/
 ---
 
@@ -19,16 +19,16 @@ Short Name: INVARAAS_XML
 DB package: INV_INVARAAS_XMLP_PKG
 
 ## Report Parameters
-Operating Unit, Organization Code, ABC Group, Sort Option
+Operating Unit, Organization Code, ABC Group
 
 ## Oracle EBS Tables Used
 [org_organization_definitions](https://www.enginatics.com/library/?pg=1&find=org_organization_definitions), [hr_operating_units](https://www.enginatics.com/library/?pg=1&find=hr_operating_units), [gl_sets_of_books](https://www.enginatics.com/library/?pg=1&find=gl_sets_of_books), [mtl_abc_assignment_groups](https://www.enginatics.com/library/?pg=1&find=mtl_abc_assignment_groups), [fnd_currencies](https://www.enginatics.com/library/?pg=1&find=fnd_currencies), [mtl_item_flexfields](https://www.enginatics.com/library/?pg=1&find=mtl_item_flexfields), [mtl_abc_assignments](https://www.enginatics.com/library/?pg=1&find=mtl_abc_assignments), [mtl_abc_classes](https://www.enginatics.com/library/?pg=1&find=mtl_abc_classes), [mtl_abc_compiles](https://www.enginatics.com/library/?pg=1&find=mtl_abc_compiles), [org_group](https://www.enginatics.com/library/?pg=1&find=org_group)
 
 ## Report Categories
-[BI Publisher](https://www.enginatics.com/library/?pg=1&category[]=BI%20Publisher), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related Reports
-[INV Cycle count open requests listing](/INV%20Cycle%20count%20open%20requests%20listing/ "INV Cycle count open requests listing Oracle EBS SQL Report"), [INV Cycle counts pending approval](/INV%20Cycle%20counts%20pending%20approval/ "INV Cycle counts pending approval Oracle EBS SQL Report"), [INV Onhand Quantities](/INV%20Onhand%20Quantities/ "INV Onhand Quantities Oracle EBS SQL Report"), [INV Cycle count entries and adjustments](/INV%20Cycle%20count%20entries%20and%20adjustments/ "INV Cycle count entries and adjustments Oracle EBS SQL Report"), [INV Cycle count listing](/INV%20Cycle%20count%20listing/ "INV Cycle count listing Oracle EBS SQL Report"), [INV Cycle count unscheduled items](/INV%20Cycle%20count%20unscheduled%20items/ "INV Cycle count unscheduled items Oracle EBS SQL Report"), [INV Cycle count hit/miss analysis](/INV%20Cycle%20count%20hit-miss%20analysis/ "INV Cycle count hit/miss analysis Oracle EBS SQL Report"), [CAC Calculate ICP PII Item Costs](/CAC%20Calculate%20ICP%20PII%20Item%20Costs/ "CAC Calculate ICP PII Item Costs Oracle EBS SQL Report")
+[INV Onhand Quantities](/INV%20Onhand%20Quantities/ "INV Onhand Quantities Oracle EBS SQL Report"), [INV Cycle count open requests listing](/INV%20Cycle%20count%20open%20requests%20listing/ "INV Cycle count open requests listing Oracle EBS SQL Report"), [INV Cycle counts pending approval](/INV%20Cycle%20counts%20pending%20approval/ "INV Cycle counts pending approval Oracle EBS SQL Report"), [INV Cycle count entries and adjustments](/INV%20Cycle%20count%20entries%20and%20adjustments/ "INV Cycle count entries and adjustments Oracle EBS SQL Report"), [INV Cycle count listing](/INV%20Cycle%20count%20listing/ "INV Cycle count listing Oracle EBS SQL Report"), [INV Cycle count unscheduled items](/INV%20Cycle%20count%20unscheduled%20items/ "INV Cycle count unscheduled items Oracle EBS SQL Report"), [INV Cycle count hit/miss analysis](/INV%20Cycle%20count%20hit-miss%20analysis/ "INV Cycle count hit/miss analysis Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.

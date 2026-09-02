@@ -5,7 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PA Transaction Sources
--- Description: None
+-- Description: 
 -- Excel Examle Output: https://www.enginatics.com/example/pa-transaction-sources/
 -- Library Link: https://www.enginatics.com/reports/pa-transaction-sources/
 -- Run Report: https://demo.enginatics.com/

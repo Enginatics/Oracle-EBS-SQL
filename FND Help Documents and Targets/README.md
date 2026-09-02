@@ -11,7 +11,7 @@ permalink: /FND%20Help%20Documents%20and%20Targets/
 **Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/fnd-help-documents-and-targets/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
 
 ## Overview
-None
+
 
 ## Report Parameters
 Application Name, Application Short Name, Show Targets, Show File Data, Cutomization Level from, Language Code

@@ -2,7 +2,7 @@
 layout: default
 title: 'PO Requisition Template Upload | Oracle EBS SQL Report'
 description: 'PO Requisition Template Upload ================================ The purpose of the PO Requisition Template Upload is to allow for: - the creation of new…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Upload, Requisition, Template, po_reqexpress_headers_all, po_reqexpress_lines_all, financials_system_params_all'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, Requisition, Template, po_reqexpress_headers_all, po_reqexpress_lines_all, financials_system_params_all'
 permalink: /PO%20Requisition%20Template%20Upload/
 ---
 
@@ -52,10 +52,10 @@ Upload Mode, Operating Unit, Template Type, Template Name, Template Name Contain
 [po_reqexpress_headers_all](https://www.enginatics.com/library/?pg=1&find=po_reqexpress_headers_all), [po_reqexpress_lines_all](https://www.enginatics.com/library/?pg=1&find=po_reqexpress_lines_all), [financials_system_params_all](https://www.enginatics.com/library/?pg=1&find=financials_system_params_all), [hr_all_organization_units_vl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_vl), [po_line_types](https://www.enginatics.com/library/?pg=1&find=po_line_types), [po_document_types_all_tl](https://www.enginatics.com/library/?pg=1&find=po_document_types_all_tl), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl), [mtl_categories_kfv](https://www.enginatics.com/library/?pg=1&find=mtl_categories_kfv), [mtl_units_of_measure_vl](https://www.enginatics.com/library/?pg=1&find=mtl_units_of_measure_vl), [org_organization_definitions](https://www.enginatics.com/library/?pg=1&find=org_organization_definitions), [ap_suppliers](https://www.enginatics.com/library/?pg=1&find=ap_suppliers), [ap_supplier_sites_all](https://www.enginatics.com/library/?pg=1&find=ap_supplier_sites_all), [ap_supplier_contacts](https://www.enginatics.com/library/?pg=1&find=ap_supplier_contacts), [mo_glob_org_access_tmp](https://www.enginatics.com/library/?pg=1&find=mo_glob_org_access_tmp)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only), [Upload](https://www.enginatics.com/library/?pg=1&category[]=Upload)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Upload](https://www.enginatics.com/library/?pg=1&category[]=Upload)
 
 ## Related Reports
-[GL Account Analysis (Drilldown) (with inventory and WIP)](/GL%20Account%20Analysis%20%28Drilldown%29%20%28with%20inventory%20and%20WIP%29/ "GL Account Analysis (Drilldown) (with inventory and WIP) Oracle EBS SQL Report"), [GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report"), [GL Account Analysis](/GL%20Account%20Analysis/ "GL Account Analysis Oracle EBS SQL Report"), [PO Headers and Lines](/PO%20Headers%20and%20Lines/ "PO Headers and Lines Oracle EBS SQL Report")
+[GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report"), [GL Account Analysis](/GL%20Account%20Analysis/ "GL Account Analysis Oracle EBS SQL Report"), [PO Headers and Lines](/PO%20Headers%20and%20Lines/ "PO Headers and Lines Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
@@ -64,7 +64,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/po-requisition-template-upload/) |
+| Excel Example Output | [](https://www.enginatics.com/example/po-requisition-template-upload/) |
 | Blitz Report™ XML Import | [PO_Requisition_Template_Upload.xml](https://www.enginatics.com/xml/po-requisition-template-upload/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/po-requisition-template-upload/](https://www.enginatics.com/reports/po-requisition-template-upload/) |
 

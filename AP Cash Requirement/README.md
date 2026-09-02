@@ -2,7 +2,7 @@
 layout: default
 title: 'AP Cash Requirement | Oracle EBS SQL Report'
 description: 'Detail cash requirement report showing all unpaid or partially paid amounts, where the invoice is neither on hold nor cancelled, including invoice…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Cash, Requirement, gl_ledgers, hr_operating_units, ap_system_parameters_all'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Cash, Requirement, gl_ledgers, hr_operating_units, ap_system_parameters_all'
 permalink: /AP%20Cash%20Requirement/
 ---
 
@@ -20,10 +20,10 @@ Operating Unit, Include Unvalidated Invoices, Include Unapproved Invoices, Pay T
 [gl_ledgers](https://www.enginatics.com/library/?pg=1&find=gl_ledgers), [hr_operating_units](https://www.enginatics.com/library/?pg=1&find=hr_operating_units), [ap_system_parameters_all](https://www.enginatics.com/library/?pg=1&find=ap_system_parameters_all), [ap_payment_schedules_all](https://www.enginatics.com/library/?pg=1&find=ap_payment_schedules_all), [ap_holds_all](https://www.enginatics.com/library/?pg=1&find=ap_holds_all), [ap_invoices_all](https://www.enginatics.com/library/?pg=1&find=ap_invoices_all), [fnd_currencies](https://www.enginatics.com/library/?pg=1&find=fnd_currencies), [hz_parties](https://www.enginatics.com/library/?pg=1&find=hz_parties), [ap_suppliers](https://www.enginatics.com/library/?pg=1&find=ap_suppliers), [ap_supplier_sites_all](https://www.enginatics.com/library/?pg=1&find=ap_supplier_sites_all)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related Reports
-[AP Accounted Invoice Aging](/AP%20Accounted%20Invoice%20Aging/ "AP Accounted Invoice Aging Oracle EBS SQL Report"), [AP Invoices and Lines](/AP%20Invoices%20and%20Lines/ "AP Invoices and Lines Oracle EBS SQL Report")
+[AP Invoices and Lines](/AP%20Invoices%20and%20Lines/ "AP Invoices and Lines Oracle EBS SQL Report"), [AP Accounted Invoice Aging](/AP%20Accounted%20Invoice%20Aging/ "AP Accounted Invoice Aging Oracle EBS SQL Report"), [AP Invoice on Hold](/AP%20Invoice%20on%20Hold/ "AP Invoice on Hold Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.

@@ -23,6 +23,10 @@ select
  ad.serial_number,
  fnd_flex_xml_publisher_apis.process_kff_combination_1('cat_flex_all_seg', 'OFA', 'CAT#', :p_cat_flex_id, NULL, cat.category_id, 'ALL', 'Y', 'VALUE') asset_category,
  cat.description category_desc,
+ (select fakk.concatenated_segments from fa_asset_keywords_kfv fakk where fakk.code_combination_id=ad.asset_key_ccid) asset_key,
+ fnd_flex_xml_publisher_apis.process_kff_combination_1('cat_flex_all_seg', 'OFA', 'CAT#', :p_cat_flex_id, NULL, cat.category_id, '1', 'Y', 'VALUE') asset_category_segment1,
+ fnd_flex_xml_publisher_apis.process_kff_combination_1('cat_flex_all_seg', 'OFA', 'CAT#', :p_cat_flex_id, NULL, cat.category_id, '2', 'Y', 'VALUE') asset_category_segment2,
+ &fa_dff_cols
  ad.manufacturer_name,
  ad.model_number,
  lookups_pt.meaning property_type,
@@ -31,6 +35,7 @@ select
  lookups_iu.meaning in_use_flag,
  lookups_ol.meaning owned_leased,
  lookups_at.meaning asset_type,
+ (select max(fth.transaction_type_code) keep (dense_rank last order by fth.transaction_header_id) from fa_transaction_headers fth where fth.asset_id=ad.asset_id and fth.book_type_code=bk.book_type_code) asset_status,
  p_ad.asset_number  parent_asset_number,
  p_ad2.description  parent_asset_desc,
  ad.current_units total_units,
@@ -257,7 +262,8 @@ select
  ai.description invoice_descripton,
  po.segment1 vendor_number,
  po.vendor_name,
- ai.po_number
+ ai.po_number,
+ (select aia.invoice_date from ap_invoices_all aia where aia.invoice_id=ai.invoice_id) invoice_date
 from
  fa_asset_invoices ai,
  po_vendors po
@@ -282,6 +288,10 @@ from
  assets.serial_number,
  assets.asset_category,
  assets.category_desc,
+ assets.asset_key,
+ assets.asset_category_segment1,
+ assets.asset_category_segment2,
+ &fa_dff_cols_branch
  assets.manufacturer_name,
  assets.model_number,
  assets.property_type,
@@ -290,6 +300,7 @@ from
  assets.in_use_flag,
  assets.owned_leased,
  assets.asset_type,
+ assets.asset_status,
  assets.parent_asset_number,
  assets.parent_asset_desc,
  assets.total_units,
@@ -342,6 +353,7 @@ from
  to_number(null) assigned_units,
  -- Invoices
  null invoice_number,
+ null invoice_date,
  null invoice_line_number,
  null invoice_descripton,
  null vendor_number,
@@ -364,6 +376,10 @@ from
  assets.serial_number,
  assets.asset_category,
  assets.category_desc,
+ assets.asset_key,
+ assets.asset_category_segment1,
+ assets.asset_category_segment2,
+ &fa_dff_cols_branch
  assets.manufacturer_name,
  assets.model_number,
  assets.property_type,
@@ -372,6 +388,7 @@ from
  assets.in_use_flag,
  assets.owned_leased,
  assets.asset_type,
+ assets.asset_status,
  assets.parent_asset_number,
  assets.parent_asset_desc,
  assets.total_units,
@@ -424,6 +441,7 @@ from
  dist.assigned_units,
  -- Invoices
  null invoice_number,
+ null invoice_date,
  null invoice_line_number,
  null invoice_descripton,
  null vendor_number,
@@ -447,6 +465,10 @@ from
  assets.serial_number,
  assets.asset_category,
  assets.category_desc,
+ assets.asset_key,
+ assets.asset_category_segment1,
+ assets.asset_category_segment2,
+ &fa_dff_cols_branch
  assets.manufacturer_name,
  assets.model_number,
  assets.property_type,
@@ -455,6 +477,7 @@ from
  assets.in_use_flag,
  assets.owned_leased,
  assets.asset_type,
+ assets.asset_status,
  assets.parent_asset_number,
  assets.parent_asset_desc,
  assets.total_units,
@@ -507,6 +530,7 @@ from
  to_number(null) assigned_units,
  -- Invoice
  inv.invoice_number,
+ inv.invoice_date,
  inv.invoice_line_number,
  inv.invoice_descripton,
  inv.vendor_number,

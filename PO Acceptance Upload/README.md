@@ -2,7 +2,7 @@
 layout: default
 title: 'PO Acceptance Upload | Oracle EBS SQL Report'
 description: 'This upload allows users to create new PO Acceptances (Acknowledgments) – Oracle E-Business Suite SQL report'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Upload, Acceptance, po_acceptances_v, po_headers_all, po_releases_all'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, Acceptance, po_acceptances_v, po_headers_all, po_releases_all'
 permalink: /PO%20Acceptance%20Upload/
 ---
 
@@ -20,7 +20,7 @@ Operating Unit, Default Action, Default Action Date
 [po_acceptances_v](https://www.enginatics.com/library/?pg=1&find=po_acceptances_v), [po_headers_all](https://www.enginatics.com/library/?pg=1&find=po_headers_all), [po_releases_all](https://www.enginatics.com/library/?pg=1&find=po_releases_all), [ap_suppliers](https://www.enginatics.com/library/?pg=1&find=ap_suppliers), [ap_supplier_sites_all](https://www.enginatics.com/library/?pg=1&find=ap_supplier_sites_all), [hr_operating_units](https://www.enginatics.com/library/?pg=1&find=hr_operating_units)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only), [Upload](https://www.enginatics.com/library/?pg=1&category[]=Upload)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Upload](https://www.enginatics.com/library/?pg=1&category[]=Upload)
 
 ## Related Reports
 [GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report"), [PO Purchase Requisitions with PO Details](/PO%20Purchase%20Requisitions%20with%20PO%20Details/ "PO Purchase Requisitions with PO Details Oracle EBS SQL Report"), [AP Invoices and Lines](/AP%20Invoices%20and%20Lines/ "AP Invoices and Lines Oracle EBS SQL Report"), [AP Invoice Upload](/AP%20Invoice%20Upload/ "AP Invoice Upload Oracle EBS SQL Report"), [PO Headers and Lines](/PO%20Headers%20and%20Lines/ "PO Headers and Lines Oracle EBS SQL Report")
@@ -32,7 +32,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/po-acceptance-upload/) |
+| Excel Example Output | [](https://www.enginatics.com/example/po-acceptance-upload/) |
 | Blitz Report™ XML Import | [PO_Acceptance_Upload.xml](https://www.enginatics.com/xml/po-acceptance-upload/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/po-acceptance-upload/](https://www.enginatics.com/reports/po-acceptance-upload/) |
 

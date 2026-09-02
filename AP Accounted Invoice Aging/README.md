@@ -2,7 +2,7 @@
 layout: default
 title: 'AP Accounted Invoice Aging | Oracle EBS SQL Report'
 description: 'Application: Payables Report: Accounts Payable Accounted Invoice Aging Report Pre-requisite: XLATRIALBALANCES should be populated before running this…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Accounted, Invoice, Aging, xla_trial_balances, xla_tb_definitions_vl, gl_ledgers'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Accounted, Invoice, Aging, xla_trial_balances, xla_tb_definitions_vl, gl_ledgers'
 permalink: /AP%20Accounted%20Invoice%20Aging/
 ---
 
@@ -27,12 +27,13 @@ For scheduling the report to run periodically, use the 'as of relative period cl
 Ledger, Operating Unit, Report Definition, As of Date, Aging Bucket Name, Third Party Name, Payables Account From, Payables Account To, Exclude Fully Paid, Exclude Cancelled, Revaluation Currency, Revaluation Rate Type, Revaluation Date, As of Relative Period Close
 
 ## Oracle EBS Tables Used
-[xla_trial_balances](https://www.enginatics.com/library/?pg=1&find=xla_trial_balances), [xla_tb_definitions_vl](https://www.enginatics.com/library/?pg=1&find=xla_tb_definitions_vl), [gl_ledgers](https://www.enginatics.com/library/?pg=1&find=gl_ledgers), [gl_access_sets](https://www.enginatics.com/library/?pg=1&find=gl_access_sets), [gl_access_set_assignments](https://www.enginatics.com/library/?pg=1&find=gl_access_set_assignments), [gl_periods](https://www.enginatics.com/library/?pg=1&find=gl_periods), [xla_tb_defn_je_sources](https://www.enginatics.com/library/?pg=1&find=xla_tb_defn_je_sources), [xla_subledgers](https://www.enginatics.com/library/?pg=1&find=xla_subledgers), [iby_payment_methods_vl](https://www.enginatics.com/library/?pg=1&find=iby_payment_methods_vl), [gl_daily_conversion_types](https://www.enginatics.com/library/?pg=1&find=gl_daily_conversion_types)
+[xla_trial_balances](https://www.enginatics.com/library/?pg=1&find=xla_trial_balances), [xla_tb_definitions_vl](https://www.enginatics.com/library/?pg=1&find=xla_tb_definitions_vl), [gl_ledgers](https://www.enginatics.com/library/?pg=1&find=gl_ledgers), [gl_access_sets](https://www.enginatics.com/library/?pg=1&find=gl_access_sets), [gl_access_set_assignments](https://www.enginatics.com/library/?pg=1&find=gl_access_set_assignments), [gl_periods](https://www.enginatics.com/library/?pg=1&find=gl_periods), [xla_tb_defn_je_sources](https://www.enginatics.com/library/?pg=1&find=xla_tb_defn_je_sources), [xla_subledgers](https://www.enginatics.com/library/?pg=1&find=xla_subledgers), [iby_payment_methods_vl](https://www.enginatics.com/library/?pg=1&find=iby_payment_methods_vl), [ap_terms_vl](https://www.enginatics.com/library/?pg=1&find=ap_terms_vl), [ap_invoice_lines_all](https://www.enginatics.com/library/?pg=1&find=ap_invoice_lines_all)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
-
+## Related Reports
+[AP Trial Balance Report Definitions](/AP%20Trial%20Balance%20Report%20Definitions/ "AP Trial Balance Report Definitions Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.

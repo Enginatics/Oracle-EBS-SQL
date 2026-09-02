@@ -2,7 +2,7 @@
 layout: default
 title: 'AR Applied Receipts | Oracle EBS SQL Report'
 description: 'Application: Receivables Description: Receivables Applied Receipts Register Provided Templates: Default: Detail - Detail Listing with no Pivot…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Applied, Receipts, ar_receivable_apps_all_mrc_v, ar_receivable_applications_all, &lp_table_list'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Applied, Receipts, ar_receivable_apps_all_mrc_v, ar_receivable_applications_all, &lp_table_list'
 permalink: /AR%20Applied%20Receipts/
 ---
 
@@ -26,13 +26,13 @@ Source: Applied Receipts Register
 Short Name: RXARARRG
 
 ## Report Parameters
-Reporting Level, Reporting Context, Balancing Segment Low, Balancing Segment High, Accounting Period, Applied GL Date From, Applied GL Date To, Entered Currency, Customer Name, Customer Name Low, Customer Name High, Customer Account Number, Customer Account Num Low, Customer Account Num High, Receipt Method, Receipt Status, Batch Name Low, Batch Name High, Receipt Date From, Receipt Date To, Deposit Date From, Deposit Date To, Apply Date From, Apply Date To, Receipt Last Updated From, Receipt Last Updated To, Receipt Number Low, Receipt Number High, Document Sequence Name, Document Number Low, Document Number High, Transaction Number Low, Transaction Number High, Transaction Type Low, Transaction Type High
+Reporting Level, Reporting Context, Balancing Segment Low, Balancing Segment High, Accounting Period, Applied GL Date From, Applied GL Date To, Entered Currency, Customer Name, Customer Name Low, Customer Name High, Customer Account Number, Customer Account Num Low, Customer Account Num High, Receipt Method, Receipt Status, Batch Name Low, Batch Name High, Receipt Date From, Receipt Date To, Deposit Date From, Deposit Date To, Apply Date From, Apply Date To, Receipt Last Updated From, Receipt Last Updated To, Receipt Number Low, Receipt Number High, Document Sequence Name, Document Number Low, Document Number High, Transaction Number Low, Transaction Number High, Transaction Type Low, Transaction Type High, Transaction Date From, Transaction Date To
 
 ## Oracle EBS Tables Used
 [ar_receivable_apps_all_mrc_v](https://www.enginatics.com/library/?pg=1&find=ar_receivable_apps_all_mrc_v), [ar_receivable_applications_all](https://www.enginatics.com/library/?pg=1&find=ar_receivable_applications_all), [&lp_table_list](https://www.enginatics.com/library/?pg=1&find=&lp_table_list), [mo_glob_org_access_tmp](https://www.enginatics.com/library/?pg=1&find=mo_glob_org_access_tmp), [dual](https://www.enginatics.com/library/?pg=1&find=dual)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related Reports
 [AR Receipt Register](/AR%20Receipt%20Register/ "AR Receipt Register Oracle EBS SQL Report")

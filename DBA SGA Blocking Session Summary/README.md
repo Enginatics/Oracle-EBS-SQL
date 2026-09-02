@@ -2,7 +2,7 @@
 layout: default
 title: 'DBA SGA Blocking Session Summary | Oracle EBS SQL Report'
 description: 'Summary of blocked and blocking sessions based on the active session history from the SGA. The link to blocking sessions is deliberately nonunique without…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Diagnostic Pack, Enginatics, DBA, SGA, Blocking, Session, v$waitstat, dual, dba_objects'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, DBA, SGA, Blocking, Session, v$waitstat, dual, dba_objects'
 permalink: /DBA%20SGA%20Blocking%20Session%20Summary/
 ---
 
@@ -24,7 +24,7 @@ User Name, Module Type, Module contains, From Time, To Time, Wait Event, SID - S
 [v$waitstat](https://www.enginatics.com/library/?pg=1&find=v$waitstat), [dual](https://www.enginatics.com/library/?pg=1&find=dual), [dba_objects](https://www.enginatics.com/library/?pg=1&find=dba_objects), [gv$sqlarea](https://www.enginatics.com/library/?pg=1&find=gv$sqlarea), [obj$](https://www.enginatics.com/library/?pg=1&find=obj$), [gv$active_session_history](https://www.enginatics.com/library/?pg=1&find=gv$active_session_history), [dba_users](https://www.enginatics.com/library/?pg=1&find=dba_users), [y](https://www.enginatics.com/library/?pg=1&find=y)
 
 ## Report Categories
-[Diagnostic Pack](https://www.enginatics.com/library/?pg=1&category[]=Diagnostic%20Pack), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related Reports
 [DBA SGA Active Session History](/DBA%20SGA%20Active%20Session%20History/ "DBA SGA Active Session History Oracle EBS SQL Report"), [DBA AWR Blocking Session Summary](/DBA%20AWR%20Blocking%20Session%20Summary/ "DBA AWR Blocking Session Summary Oracle EBS SQL Report"), [DBA AWR Active Session History](/DBA%20AWR%20Active%20Session%20History/ "DBA AWR Active Session History Oracle EBS SQL Report"), [CAC Inventory Accounts Setup](/CAC%20Inventory%20Accounts%20Setup/ "CAC Inventory Accounts Setup Oracle EBS SQL Report")

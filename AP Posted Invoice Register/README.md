@@ -2,7 +2,7 @@
 layout: default
 title: 'AP Posted Invoice Register | Oracle EBS SQL Report'
 description: 'Application: Payables Description: Payables Posted Invoice Register This report provides equivalent functionality to the Oracle standard Payables Posted…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Posted, Invoice, Register, ap_holds_all, &lp_template_table, xla_ae_headers'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Posted, Invoice, Register, ap_sla_invoices_transaction_v, ap_holds_all, &lp_template_table'
 permalink: /AP%20Posted%20Invoice%20Register/
 ---
 
@@ -40,13 +40,13 @@ Also requires custom package XXEN_XLA package to be installed to initialize the 
 Operating Unit, Ledger/Ledger Set, Period From, Period To, Journal Source, Include Zero Amount Lines, Account Flexfield From, Account Flexfield To, GL Batch Name, Include Manual Entries from GL, Relative Period From, Relative Period To
 
 ## Oracle EBS Tables Used
-[ap_holds_all](https://www.enginatics.com/library/?pg=1&find=ap_holds_all), [&lp_template_table](https://www.enginatics.com/library/?pg=1&find=&lp_template_table), [xla_ae_headers](https://www.enginatics.com/library/?pg=1&find=xla_ae_headers), [xla_transaction_entities](https://www.enginatics.com/library/?pg=1&find=xla_transaction_entities), [xla_events](https://www.enginatics.com/library/?pg=1&find=xla_events), [ap_invoices_all](https://www.enginatics.com/library/?pg=1&find=ap_invoices_all)
+[ap_sla_invoices_transaction_v](https://www.enginatics.com/library/?pg=1&find=ap_sla_invoices_transaction_v), [ap_holds_all](https://www.enginatics.com/library/?pg=1&find=ap_holds_all), [&lp_template_table](https://www.enginatics.com/library/?pg=1&find=&lp_template_table), [xla_ae_headers](https://www.enginatics.com/library/?pg=1&find=xla_ae_headers), [xla_transaction_entities](https://www.enginatics.com/library/?pg=1&find=xla_transaction_entities), [xla_events](https://www.enginatics.com/library/?pg=1&find=xla_events), [ap_invoices_all](https://www.enginatics.com/library/?pg=1&find=ap_invoices_all)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related Reports
-[AP Invoice on Hold 11i](/AP%20Invoice%20on%20Hold%2011i/ "AP Invoice on Hold 11i Oracle EBS SQL Report"), [AP Invoice on Hold](/AP%20Invoice%20on%20Hold/ "AP Invoice on Hold Oracle EBS SQL Report"), [AP Invoices and Lines](/AP%20Invoices%20and%20Lines/ "AP Invoices and Lines Oracle EBS SQL Report")
+[AP Invoices and Lines](/AP%20Invoices%20and%20Lines/ "AP Invoices and Lines Oracle EBS SQL Report"), [CAC Invoice Price Variance](/CAC%20Invoice%20Price%20Variance/ "CAC Invoice Price Variance Oracle EBS SQL Report"), [AP Accounted Invoice Aging](/AP%20Accounted%20Invoice%20Aging/ "AP Accounted Invoice Aging Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
@@ -55,7 +55,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/ap-posted-invoice-register/) |
+| Excel Example Output | [](https://www.enginatics.com/example/ap-posted-invoice-register/) |
 | Blitz Report™ XML Import | [AP_Posted_Invoice_Register.xml](https://www.enginatics.com/xml/ap-posted-invoice-register/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/ap-posted-invoice-register/](https://www.enginatics.com/reports/ap-posted-invoice-register/) |
 

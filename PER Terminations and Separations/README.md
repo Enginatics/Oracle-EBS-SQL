@@ -32,7 +32,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/per-terminations-and-separations/) |
+| Excel Example Output | [](https://www.enginatics.com/example/per-terminations-and-separations/) |
 | Blitz Report™ XML Import | [PER_Terminations_and_Separations.xml](https://www.enginatics.com/xml/per-terminations-and-separations/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/per-terminations-and-separations/](https://www.enginatics.com/reports/per-terminations-and-separations/) |
 

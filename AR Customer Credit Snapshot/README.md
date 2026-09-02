@@ -2,7 +2,7 @@
 layout: default
 title: 'AR Customer Credit Snapshot | Oracle EBS SQL Report'
 description: 'Application: Receivables Source: Customer Credit Snapshot (XML) Short Name: ARXCCSXML DB package: ARARXCCSXMLPPKG'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Customer, Credit, Snapshot, ar_system_parameters_all, gl_sets_of_books, hr_all_organization_units_vl'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Customer, Credit, Snapshot, ar_system_parameters_all, gl_sets_of_books, hr_all_organization_units_vl'
 permalink: /AR%20Customer%20Credit%20Snapshot/
 ---
 
@@ -23,7 +23,7 @@ Reporting Level, Reporting Context, Collector Name, Collector Name Low, Collecto
 [ar_system_parameters_all](https://www.enginatics.com/library/?pg=1&find=ar_system_parameters_all), [gl_sets_of_books](https://www.enginatics.com/library/?pg=1&find=gl_sets_of_books), [hr_all_organization_units_vl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_vl), [fnd_currencies](https://www.enginatics.com/library/?pg=1&find=fnd_currencies), [hz_cust_accounts](https://www.enginatics.com/library/?pg=1&find=hz_cust_accounts), [hz_parties](https://www.enginatics.com/library/?pg=1&find=hz_parties), [hz_cust_acct_sites](https://www.enginatics.com/library/?pg=1&find=hz_cust_acct_sites), [hz_party_sites](https://www.enginatics.com/library/?pg=1&find=hz_party_sites), [hz_locations](https://www.enginatics.com/library/?pg=1&find=hz_locations), [hz_cust_site_uses](https://www.enginatics.com/library/?pg=1&find=hz_cust_site_uses), [fnd_territories_vl](https://www.enginatics.com/library/?pg=1&find=fnd_territories_vl), [ar_collectors](https://www.enginatics.com/library/?pg=1&find=ar_collectors), [hz_customer_profiles](https://www.enginatics.com/library/?pg=1&find=hz_customer_profiles), [hz_cust_profile_classes](https://www.enginatics.com/library/?pg=1&find=hz_cust_profile_classes), [hz_cust_acct_sites_all](https://www.enginatics.com/library/?pg=1&find=hz_cust_acct_sites_all), [hz_cust_site_uses_all](https://www.enginatics.com/library/?pg=1&find=hz_cust_site_uses_all), [hz_cust_profile_amts](https://www.enginatics.com/library/?pg=1&find=hz_cust_profile_amts), [ar_payment_schedules_all](https://www.enginatics.com/library/?pg=1&find=ar_payment_schedules_all)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 
 

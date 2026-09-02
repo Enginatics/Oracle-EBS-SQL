@@ -68,6 +68,9 @@ aia.payment_reason_comments,
 (select aag.name from ap_awt_groups aag where aag.group_id = aia.awt_group_id) payment_awt_group,
 --aia.ussgl_transaction_code, -- not imported by the Payables Import process
 aia.tax_invoice_recording_date internal_recording_date,
+aia.supplier_tax_invoice_number,
+aia.supplier_tax_invoice_date,
+aia.supplier_tax_exchange_rate,
 --
 aila.line_number,
 xxen_util.meaning(aila.line_type_lookup_code,'INVOICE LINE TYPE',200) line_type,
@@ -106,6 +109,8 @@ gcck.concatenated_segments distribution_account,
 (select rsh.receipt_num from rcv_shipment_headers rsh, rcv_shipment_lines rsl where rsh.shipment_header_id = rsl.shipment_header_id and rsl.shipment_line_id = aila.rcv_shipment_line_id) po_receipt_num,
 (select rsl.line_num from rcv_shipment_lines rsl where rsl.shipment_line_id = aila.rcv_shipment_line_id) po_receipt_line_num,
 --
+(select msiv.concatenated_segments from mtl_system_items_vl msiv where msiv.inventory_item_id = aila.inventory_item_id and msiv.organization_id = fsp.inventory_organization_id) inventory_item,
+aila.item_description,
 aila.manufacturer,
 aila.model_number,
 aila.serial_number,
@@ -310,11 +315,13 @@ null attachment_description_,
 null attachment_type_,
 null attachment_content_,
 null attachment_file_id_
+&il_columns
 from
 ap_invoices_all aia,
 ap_payment_schedules_all apsa,
 ap_invoice_lines_all aila,
 ap_invoice_distributions_all aida,
+financials_system_parameters fsp,
 hr_all_organization_units_vl haouv,
 ap_suppliers asu,
 ap_supplier_sites_all assa,
@@ -328,6 +335,7 @@ aila.line_number = aida.invoice_line_number (+) and
 aia.vendor_id = asu.vendor_id and
 aia.vendor_site_id = assa.vendor_site_id and
 aia.org_id = haouv.organization_id and
+aia.org_id = fsp.org_id and
 aila.default_dist_ccid = gcck.code_combination_id (+) and
 alc.lookup_type = 'SOURCE' and
 alc.lookup_code = aia.source and

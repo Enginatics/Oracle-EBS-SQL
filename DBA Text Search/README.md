@@ -16,7 +16,7 @@ The search can also be done using regular expressions.
 To retrieve incorrect custom code such as a frequent performance issue calling the fnd_concurrent\.wait_for_request\s function with a zero interval time, for example, use parameter 'Multi Line Regex search' with the following value: fnd_concurrent\.wait_for_request\s*\(\s*request_id\s*=>\s*\w+\s*,\s*interval\s*=>\s*0\s*,
 
 ## Report Parameters
-Code Text contains, Multi Line Regex search, Cote Text Regexp search, Multi Line window size, Object Name starts with, FND Message Text, Object Type, Schema, Line Number From, Line Number To
+Code Text contains, Multi Line Regex search, Multi Line window size, Object Name starts with, FND Message Text, Object Type, Schema, Line Number From, Line Number To
 
 ## Oracle EBS Tables Used
 [dba_source](https://www.enginatics.com/library/?pg=1&find=dba_source)
@@ -25,7 +25,7 @@ Code Text contains, Multi Line Regex search, Cote Text Regexp search, Multi Line
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related Reports
-[XLA Distribution Links Summary](/XLA%20Distribution%20Links%20Summary/ "XLA Distribution Links Summary Oracle EBS SQL Report"), [DBA Object Access Privileges](/DBA%20Object%20Access%20Privileges/ "DBA Object Access Privileges Oracle EBS SQL Report"), [DBA Profiler Data](/DBA%20Profiler%20Data/ "DBA Profiler Data Oracle EBS SQL Report"), [DBA Hierarchical Profiler Data](/DBA%20Hierarchical%20Profiler%20Data/ "DBA Hierarchical Profiler Data Oracle EBS SQL Report"), [DBA SGA+PGA Memory Configuration](/DBA%20SGA-PGA%20Memory%20Configuration/ "DBA SGA+PGA Memory Configuration Oracle EBS SQL Report"), [DBA AWR Active Session History](/DBA%20AWR%20Active%20Session%20History/ "DBA AWR Active Session History Oracle EBS SQL Report"), [DBA Tablespace Usage](/DBA%20Tablespace%20Usage/ "DBA Tablespace Usage Oracle EBS SQL Report"), [DBA AWR Blocking Session Summary](/DBA%20AWR%20Blocking%20Session%20Summary/ "DBA AWR Blocking Session Summary Oracle EBS SQL Report")
+[XLA Distribution Links Summary](/XLA%20Distribution%20Links%20Summary/ "XLA Distribution Links Summary Oracle EBS SQL Report"), [DBA Object Access Privileges](/DBA%20Object%20Access%20Privileges/ "DBA Object Access Privileges Oracle EBS SQL Report"), [DBA ORDS Configuration Validation](/DBA%20ORDS%20Configuration%20Validation/ "DBA ORDS Configuration Validation Oracle EBS SQL Report"), [Blitz Report Custom Reports Converter](/Blitz%20Report%20Custom%20Reports%20Converter/ "Blitz Report Custom Reports Converter Oracle EBS SQL Report"), [DBA Profiler Data](/DBA%20Profiler%20Data/ "DBA Profiler Data Oracle EBS SQL Report"), [DBA Hierarchical Profiler Data](/DBA%20Hierarchical%20Profiler%20Data/ "DBA Hierarchical Profiler Data Oracle EBS SQL Report"), [DBA SGA+PGA Memory Configuration](/DBA%20SGA-PGA%20Memory%20Configuration/ "DBA SGA+PGA Memory Configuration Oracle EBS SQL Report"), [DBA AWR Active Session History](/DBA%20AWR%20Active%20Session%20History/ "DBA AWR Active Session History Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.

@@ -2,7 +2,7 @@
 layout: default
 title: 'AP Suppliers | Oracle EBS SQL Report'
 description: 'AP suppliers (po vendors) including supplier sites, contact and bank account information on vendor and site level'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Suppliers, fnd_territories_vl, ap_awt_groups, ap_invoices_all'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Suppliers, per_all_people_f, fnd_territories_vl, ap_awt_groups'
 permalink: /AP%20Suppliers/
 ---
 
@@ -14,16 +14,16 @@ permalink: /AP%20Suppliers/
 AP suppliers (po vendors) including supplier sites, contact and bank account information on vendor and site level
 
 ## Report Parameters
-Operating Unit, Supplier, Supplier Number, Supplier starts with, Creation Date From, Creation Date To, Supplier Site, Supplier Type, Country, Show Contacts, Show Bank Accounts, Active Suppliers Only, Active Sites Only, Active Contacts Only, Active Bank Accounts Only, Show DFF Attributes
+Operating Unit, Supplier, Supplier Number, Supplier starts with, Creation Date From, Creation Date To, Supplier Site, Supplier Type, Country, Show Contacts, Show Bank Accounts, Active Suppliers Only, Active Sites Only, Active Contacts Only, Active Bank Accounts Only, DFF Display
 
 ## Oracle EBS Tables Used
-[fnd_territories_vl](https://www.enginatics.com/library/?pg=1&find=fnd_territories_vl), [ap_awt_groups](https://www.enginatics.com/library/?pg=1&find=ap_awt_groups), [ap_invoices_all](https://www.enginatics.com/library/?pg=1&find=ap_invoices_all), [iby_ext_party_pmt_mthds](https://www.enginatics.com/library/?pg=1&find=iby_ext_party_pmt_mthds), [gl_code_combinations_kfv](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations_kfv), [hr_all_organization_units_vl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_vl), [ap_suppliers](https://www.enginatics.com/library/?pg=1&find=ap_suppliers), [ap_supplier_sites_all](https://www.enginatics.com/library/?pg=1&find=ap_supplier_sites_all), [po_vendor_contacts](https://www.enginatics.com/library/?pg=1&find=po_vendor_contacts), [ap_terms_vl](https://www.enginatics.com/library/?pg=1&find=ap_terms_vl), [iby_external_payees_all](https://www.enginatics.com/library/?pg=1&find=iby_external_payees_all), [iby_pmt_instr_uses_all](https://www.enginatics.com/library/?pg=1&find=iby_pmt_instr_uses_all), [iby_ext_bank_accounts](https://www.enginatics.com/library/?pg=1&find=iby_ext_bank_accounts), [ce_bank_branches_v](https://www.enginatics.com/library/?pg=1&find=ce_bank_branches_v), [hz_parties](https://www.enginatics.com/library/?pg=1&find=hz_parties), [hz_party_sites](https://www.enginatics.com/library/?pg=1&find=hz_party_sites), [zx_party_tax_profile](https://www.enginatics.com/library/?pg=1&find=zx_party_tax_profile)
+[per_all_people_f](https://www.enginatics.com/library/?pg=1&find=per_all_people_f), [fnd_territories_vl](https://www.enginatics.com/library/?pg=1&find=fnd_territories_vl), [ap_awt_groups](https://www.enginatics.com/library/?pg=1&find=ap_awt_groups), [ap_invoices_all](https://www.enginatics.com/library/?pg=1&find=ap_invoices_all), [zx_input_classifications_v](https://www.enginatics.com/library/?pg=1&find=zx_input_classifications_v), [iby_ext_party_pmt_mthds](https://www.enginatics.com/library/?pg=1&find=iby_ext_party_pmt_mthds), [gl_code_combinations_kfv](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations_kfv), [hr_all_organization_units_vl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_vl), [ap_suppliers](https://www.enginatics.com/library/?pg=1&find=ap_suppliers), [ap_supplier_sites_all](https://www.enginatics.com/library/?pg=1&find=ap_supplier_sites_all), [po_vendor_contacts](https://www.enginatics.com/library/?pg=1&find=po_vendor_contacts), [ap_terms_vl](https://www.enginatics.com/library/?pg=1&find=ap_terms_vl), [iby_external_payees_all](https://www.enginatics.com/library/?pg=1&find=iby_external_payees_all), [iby_pmt_instr_uses_all](https://www.enginatics.com/library/?pg=1&find=iby_pmt_instr_uses_all), [iby_ext_bank_accounts](https://www.enginatics.com/library/?pg=1&find=iby_ext_bank_accounts), [ce_bank_branches_v](https://www.enginatics.com/library/?pg=1&find=ce_bank_branches_v), [hz_parties](https://www.enginatics.com/library/?pg=1&find=hz_parties), [hz_party_sites](https://www.enginatics.com/library/?pg=1&find=hz_party_sites), [zx_party_tax_profile](https://www.enginatics.com/library/?pg=1&find=zx_party_tax_profile)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related Reports
-[AP Supplier Upload](/AP%20Supplier%20Upload/ "AP Supplier Upload Oracle EBS SQL Report"), [AP Invoice Upload](/AP%20Invoice%20Upload/ "AP Invoice Upload Oracle EBS SQL Report"), [AP Invoices and Lines](/AP%20Invoices%20and%20Lines/ "AP Invoices and Lines Oracle EBS SQL Report")
+[AP Invoice Upload](/AP%20Invoice%20Upload/ "AP Invoice Upload Oracle EBS SQL Report"), [AP Supplier Upload](/AP%20Supplier%20Upload/ "AP Supplier Upload Oracle EBS SQL Report"), [INV Item Upload](/INV%20Item%20Upload/ "INV Item Upload Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.

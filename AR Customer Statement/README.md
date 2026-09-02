@@ -2,7 +2,7 @@
 layout: default
 title: 'AR Customer Statement | Oracle EBS SQL Report'
 description: 'Application: Receivables Source: Customer Statement Short Name: ARSTMTRPT DB package: ARTPSTMTPKG'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Customer, Statement, hz_cust_accounts, hz_parties, hz_cust_site_uses_all'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Customer, Statement, hz_cust_accounts, hz_parties, hz_cust_site_uses_all'
 permalink: /AR%20Customer%20Statement/
 ---
 
@@ -23,7 +23,7 @@ Reporting Level, Reporting Context, GL Date From, GL Date To, Document Date From
 [hz_cust_accounts](https://www.enginatics.com/library/?pg=1&find=hz_cust_accounts), [hz_parties](https://www.enginatics.com/library/?pg=1&find=hz_parties), [hz_cust_site_uses_all](https://www.enginatics.com/library/?pg=1&find=hz_cust_site_uses_all), [hz_cust_acct_sites_all](https://www.enginatics.com/library/?pg=1&find=hz_cust_acct_sites_all), [hz_party_sites](https://www.enginatics.com/library/?pg=1&find=hz_party_sites), [hr_operating_units](https://www.enginatics.com/library/?pg=1&find=hr_operating_units), [zx_party_tax_profile](https://www.enginatics.com/library/?pg=1&find=zx_party_tax_profile), [ra_customer_trx](https://www.enginatics.com/library/?pg=1&find=ra_customer_trx), [ar_payment_schedules_all](https://www.enginatics.com/library/?pg=1&find=ar_payment_schedules_all), [ra_cust_trx_types_all](https://www.enginatics.com/library/?pg=1&find=ra_cust_trx_types_all), [ra_cust_trx_line_gl_dist_all](https://www.enginatics.com/library/?pg=1&find=ra_cust_trx_line_gl_dist_all), [gl_periods](https://www.enginatics.com/library/?pg=1&find=gl_periods), [gl_ledgers](https://www.enginatics.com/library/?pg=1&find=gl_ledgers), [ar_cash_receipts](https://www.enginatics.com/library/?pg=1&find=ar_cash_receipts), [ar_receipt_methods](https://www.enginatics.com/library/?pg=1&find=ar_receipt_methods), [ar_cash_receipt_history_all](https://www.enginatics.com/library/?pg=1&find=ar_cash_receipt_history_all), [ar_adjustments](https://www.enginatics.com/library/?pg=1&find=ar_adjustments), [ar_lookups](https://www.enginatics.com/library/?pg=1&find=ar_lookups), [ra_customer_trx_all](https://www.enginatics.com/library/?pg=1&find=ra_customer_trx_all), [ar_receivable_applications_all](https://www.enginatics.com/library/?pg=1&find=ar_receivable_applications_all), [ar_receivables_trx_all](https://www.enginatics.com/library/?pg=1&find=ar_receivables_trx_all)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 
 
@@ -34,7 +34,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/ar-customer-statement/) |
+| Excel Example Output | [](https://www.enginatics.com/example/ar-customer-statement/) |
 | Blitz Report™ XML Import | [AR_Customer_Statement.xml](https://www.enginatics.com/xml/ar-customer-statement/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/ar-customer-statement/](https://www.enginatics.com/reports/ar-customer-statement/) |
 

@@ -2,7 +2,7 @@
 layout: default
 title: 'PA Revenue, Cost, Budgets by Resources | Oracle EBS SQL Report'
 description: 'This Blitz Report is the implements the following standard oracle reports. - MGT: Task - Revenue, Cost, Budgets by Resources - MGT: Revenue, Cost, Budgets…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Revenue,, Cost,, Budgets, Resources, pa_proj_info_view, pa_projects, pa_project_types'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Revenue,, Cost,, Budgets, Resources, pa_proj_info_view, pa_projects, pa_project_types'
 permalink: /PA%20Revenue-%20Cost-%20Budgets%20by%20Resources/
 ---
 
@@ -36,7 +36,7 @@ Operating Unit, Project Organization, Project Manager, Project Number, Project N
 [pa_proj_info_view](https://www.enginatics.com/library/?pg=1&find=pa_proj_info_view), [pa_projects](https://www.enginatics.com/library/?pg=1&find=pa_projects), [pa_project_types](https://www.enginatics.com/library/?pg=1&find=pa_project_types), [pa_proj_invoice_summary_view](https://www.enginatics.com/library/?pg=1&find=pa_proj_invoice_summary_view), [hr_all_organization_units_vl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_vl), [mo_glob_org_access_tmp](https://www.enginatics.com/library/?pg=1&find=mo_glob_org_access_tmp), [dual](https://www.enginatics.com/library/?pg=1&find=dual), [pa_project_status_controls](https://www.enginatics.com/library/?pg=1&find=pa_project_status_controls), [pa_tasks](https://www.enginatics.com/library/?pg=1&find=pa_tasks), [per_people_x](https://www.enginatics.com/library/?pg=1&find=per_people_x), [hr_all_organization_units_tl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_tl), [pa_project_accum_headers](https://www.enginatics.com/library/?pg=1&find=pa_project_accum_headers), [pa_resource_list_assignments](https://www.enginatics.com/library/?pg=1&find=pa_resource_list_assignments), [pa_resource_list_uses](https://www.enginatics.com/library/?pg=1&find=pa_resource_list_uses), [pa_budget_types](https://www.enginatics.com/library/?pg=1&find=pa_budget_types), [pa_resource_list_members](https://www.enginatics.com/library/?pg=1&find=pa_resource_list_members), [pa_accum_rsrc_act_v](https://www.enginatics.com/library/?pg=1&find=pa_accum_rsrc_act_v), [pa_accum_rsrc_cmt_v](https://www.enginatics.com/library/?pg=1&find=pa_accum_rsrc_cmt_v), [pa_accum_rsrc_cost_bgt_v](https://www.enginatics.com/library/?pg=1&find=pa_accum_rsrc_cost_bgt_v), [pa_accum_rsrc_rev_bgt_v](https://www.enginatics.com/library/?pg=1&find=pa_accum_rsrc_rev_bgt_v), [projects](https://www.enginatics.com/library/?pg=1&find=projects), [tasks](https://www.enginatics.com/library/?pg=1&find=tasks), [resource_list](https://www.enginatics.com/library/?pg=1&find=resource_list), [actuals](https://www.enginatics.com/library/?pg=1&find=actuals), [commitments](https://www.enginatics.com/library/?pg=1&find=commitments), [budget_revenues](https://www.enginatics.com/library/?pg=1&find=budget_revenues), [budget_costs](https://www.enginatics.com/library/?pg=1&find=budget_costs)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 
 
@@ -47,7 +47,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/pa-revenue-cost-budgets-by-resources/) |
+| Excel Example Output | [](https://www.enginatics.com/example/pa-revenue-cost-budgets-by-resources/) |
 | Blitz Report™ XML Import | [PA_Revenue_Cost_Budgets_by_Resources.xml](https://www.enginatics.com/xml/pa-revenue-cost-budgets-by-resources/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/pa-revenue-cost-budgets-by-resources/](https://www.enginatics.com/reports/pa-revenue-cost-budgets-by-resources/) |
 

@@ -53,7 +53,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/ja-india-third-party-registration-upload/) |
+| Excel Example Output | [](https://www.enginatics.com/example/ja-india-third-party-registration-upload/) |
 | Blitz Report™ XML Import | [JA_India_Third_Party_Registration_Upload.xml](https://www.enginatics.com/xml/ja-india-third-party-registration-upload/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/ja-india-third-party-registration-upload/](https://www.enginatics.com/reports/ja-india-third-party-registration-upload/) |
 

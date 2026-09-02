@@ -2,7 +2,7 @@
 layout: default
 title: 'CE General Ledger Cash Account Usage | Oracle EBS SQL Report'
 description: 'Application: Cash Management Description: Cash Account Usage This report details the General Ledger Cash Accounts assigned to Bank Accounts, and their…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, General, Ledger, Cash, Account, ce_bank_accounts, xle_entity_profiles, gl_ledgers'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, General, Ledger, Cash, Account, ce_bank_accounts, xle_entity_profiles, gl_ledgers'
 permalink: /CE%20General%20Ledger%20Cash%20Account%20Usage/
 ---
 
@@ -28,10 +28,10 @@ Legal Entity, Bank Name, Bank Branch, Bank Account Name, Bank Account Number, Ba
 [ce_bank_accounts](https://www.enginatics.com/library/?pg=1&find=ce_bank_accounts), [xle_entity_profiles](https://www.enginatics.com/library/?pg=1&find=xle_entity_profiles), [gl_ledgers](https://www.enginatics.com/library/?pg=1&find=gl_ledgers), [hz_parties](https://www.enginatics.com/library/?pg=1&find=hz_parties), [gl_code_combinations_kfv](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations_kfv), [ce_bank_acct_uses_all](https://www.enginatics.com/library/?pg=1&find=ce_bank_acct_uses_all), [ce_security_profiles_v](https://www.enginatics.com/library/?pg=1&find=ce_security_profiles_v), [ce_gl_accounts_ccid](https://www.enginatics.com/library/?pg=1&find=ce_gl_accounts_ccid), [dual](https://www.enginatics.com/library/?pg=1&find=dual)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related Reports
-[CE General Ledger Reconciliation](/CE%20General%20Ledger%20Reconciliation/ "CE General Ledger Reconciliation Oracle EBS SQL Report"), [CE Cleared Transactions](/CE%20Cleared%20Transactions/ "CE Cleared Transactions Oracle EBS SQL Report"), [AR Customer Upload](/AR%20Customer%20Upload/ "AR Customer Upload Oracle EBS SQL Report"), [CE Bank Account Balances](/CE%20Bank%20Account%20Balances/ "CE Bank Account Balances Oracle EBS SQL Report"), [IBY Payment Process Request Details](/IBY%20Payment%20Process%20Request%20Details/ "IBY Payment Process Request Details Oracle EBS SQL Report"), [AR Miscellaneous Receipts](/AR%20Miscellaneous%20Receipts/ "AR Miscellaneous Receipts Oracle EBS SQL Report"), [AR Unapplied Receipts Register](/AR%20Unapplied%20Receipts%20Register/ "AR Unapplied Receipts Register Oracle EBS SQL Report"), [AR Transactions and Payments](/AR%20Transactions%20and%20Payments/ "AR Transactions and Payments Oracle EBS SQL Report")
+[IBY Payment Process Request Details](/IBY%20Payment%20Process%20Request%20Details/ "IBY Payment Process Request Details Oracle EBS SQL Report"), [CE General Ledger Reconciliation](/CE%20General%20Ledger%20Reconciliation/ "CE General Ledger Reconciliation Oracle EBS SQL Report"), [CE Cleared Transactions](/CE%20Cleared%20Transactions/ "CE Cleared Transactions Oracle EBS SQL Report"), [AR Customer Upload](/AR%20Customer%20Upload/ "AR Customer Upload Oracle EBS SQL Report"), [AR Transactions and Payments](/AR%20Transactions%20and%20Payments/ "AR Transactions and Payments Oracle EBS SQL Report"), [AR Unapplied Receipts Register](/AR%20Unapplied%20Receipts%20Register/ "AR Unapplied Receipts Register Oracle EBS SQL Report"), [CE Bank Account Balances](/CE%20Bank%20Account%20Balances/ "CE Bank Account Balances Oracle EBS SQL Report"), [AR Miscellaneous Receipts](/AR%20Miscellaneous%20Receipts/ "AR Miscellaneous Receipts Oracle EBS SQL Report"), [GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.

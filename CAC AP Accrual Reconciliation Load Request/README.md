@@ -55,7 +55,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/cac-ap-accrual-reconciliation-load-request/) |
+| Excel Example Output | [](https://www.enginatics.com/example/cac-ap-accrual-reconciliation-load-request/) |
 | Blitz Report™ XML Import | [CAC_AP_Accrual_Reconciliation_Load_Request.xml](https://www.enginatics.com/xml/cac-ap-accrual-reconciliation-load-request/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/cac-ap-accrual-reconciliation-load-request/](https://www.enginatics.com/reports/cac-ap-accrual-reconciliation-load-request/) |
 

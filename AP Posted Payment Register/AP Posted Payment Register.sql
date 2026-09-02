@@ -64,14 +64,14 @@ select
 ,x.accounted_cr
 ,x.statistical_amount
 -- source transaction data
-,x.user_trx_identifier_value_10 supplier_name
+,nvl(x.user_trx_identifier_value_10,x.supplier_name_sla) supplier_name
 ,x.transaction_number           payment_number
 ,x.transaction_date             payment_date
-,to_number(x.user_trx_identifier_value_9)  payment_amount
+,nvl(to_number(x.user_trx_identifier_value_9),x.payment_amount_sla)  payment_amount
 ,nvl(x.bank_account_num,x.user_trx_identifier_value_3)
                                 bank_account_num
 ,x.bank_account_name
-,x.user_trx_identifier_value_5  payment_document
+,nvl(x.user_trx_identifier_value_5,x.payment_document_sla)  payment_document
 -- other gl specific data
 ,x.gl_default_effective_date
 ,x.gl_batch_status

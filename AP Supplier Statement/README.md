@@ -2,7 +2,7 @@
 layout: default
 title: 'AP Supplier Statement | Oracle EBS SQL Report'
 description: 'Application: Payables Source: Supplier Statement Short Name: APTPSTMT DB package: APTPSTMTPKG'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Supplier, Statement, gl_code_combinations_kfv, ap_invoices, ap_suppliers'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Supplier, Statement, gl_code_combinations_kfv, ap_invoices, ap_suppliers'
 permalink: /AP%20Supplier%20Statement/
 ---
 
@@ -23,7 +23,7 @@ Reporting Level, Reporting Context, GL Date From, GL Date To, Document Date From
 [gl_code_combinations_kfv](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations_kfv), [ap_invoices](https://www.enginatics.com/library/?pg=1&find=ap_invoices), [ap_suppliers](https://www.enginatics.com/library/?pg=1&find=ap_suppliers), [ap_supplier_sites_all](https://www.enginatics.com/library/?pg=1&find=ap_supplier_sites_all), [hr_operating_units](https://www.enginatics.com/library/?pg=1&find=hr_operating_units), [gl_periods](https://www.enginatics.com/library/?pg=1&find=gl_periods), [gl_ledgers](https://www.enginatics.com/library/?pg=1&find=gl_ledgers), [ap_lookup_codes](https://www.enginatics.com/library/?pg=1&find=ap_lookup_codes), [ap_invoice_payments](https://www.enginatics.com/library/?pg=1&find=ap_invoice_payments), [ap_checks](https://www.enginatics.com/library/?pg=1&find=ap_checks)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 
 

@@ -73,14 +73,14 @@ end period,
 nvl(replace((select distinct
 '''='||listagg(case when rrc.axis_seq_low=rrc.axis_seq_high then replace(rrc.operator||rrc.axis_seq_low,'ENTER') when  rrc.axis_name_low=rrc.axis_name_high or (rrc.axis_name_low is not null and rrc.axis_name_high is null)  or (rrc.axis_name_low is null and rrc.axis_name_high is not null) then replace(rrc.operator||rrc.axis_name_low,'ENTER')
 else
-case when rrc.operator='+' then case when rrc.constant is null then  '+sum('||nvl(to_char(rrc.axis_seq_low),rrc.axis_name_low)||':'||nvl(to_char(rrc.axis_seq_high),rrc.axis_name_high)||')' else '+'||rrc.constant end
-when rrc.operator='-' then case when rrc.constant is null then  '-sum('||nvl(to_char(rrc.axis_seq_low),rrc.axis_name_low)||':'||nvl(to_char(rrc.axis_seq_high),rrc.axis_name_high)||')' else '-'||rrc.constant end
-when rrc.operator='*' then case when rrc.constant is null then  '*sum('||nvl(to_char(rrc.axis_seq_low),rrc.axis_name_low)||':'||nvl(to_char(rrc.axis_seq_high),rrc.axis_name_high)||')' else '*'||rrc.constant end
-when rrc.operator='/' then case when rrc.constant is null then  '/sum('||nvl(to_char(rrc.axis_seq_low),rrc.axis_name_low)||':'||nvl(to_char(rrc.axis_seq_high),rrc.axis_name_high)||')' else '/'||rrc.constant end
+case when rrc.operator='+' then case when rrc.constant is null then  '+sum('||nvl(to_char(rrc.axis_seq_low),rrc.axis_name_low)||':'||nvl(to_char(rrc.axis_seq_high),rrc.axis_name_high)||')' else '+#'||rrc.constant end
+when rrc.operator='-' then case when rrc.constant is null then  '-sum('||nvl(to_char(rrc.axis_seq_low),rrc.axis_name_low)||':'||nvl(to_char(rrc.axis_seq_high),rrc.axis_name_high)||')' else '-#'||rrc.constant end
+when rrc.operator='*' then case when rrc.constant is null then  '*sum('||nvl(to_char(rrc.axis_seq_low),rrc.axis_name_low)||':'||nvl(to_char(rrc.axis_seq_high),rrc.axis_name_high)||')' else '*#'||rrc.constant end
+when rrc.operator='/' then case when rrc.constant is null then  '/sum('||nvl(to_char(rrc.axis_seq_low),rrc.axis_name_low)||':'||nvl(to_char(rrc.axis_seq_high),rrc.axis_name_high)||')' else '/#'||rrc.constant end
 when rrc.operator='ENTER' then  case
 when nvl(to_char(rrc.axis_seq_low),rrc.axis_name_low) is not null and nvl(to_char(rrc.axis_seq_high),rrc.axis_name_high) is not null then 'sum('||nvl(to_char(rrc.axis_seq_low),rrc.axis_name_low)||':'||nvl(to_char(rrc.axis_seq_high),rrc.axis_name_high)||')'
 when rrc.constant is null then '+'||nvl(nvl(to_char(rrc.axis_seq_high),rrc.axis_name_high),nvl(to_char(rrc.axis_seq_low),rrc.axis_name_low))
-else '+'||rrc.constant
+else '+#'||rrc.constant
 end
 else nvl(to_char(rrc.axis_seq_high),rrc.axis_name_high)||'%'||nvl(to_char(rrc.axis_seq_low),rrc.axis_name_low) end
 end,'') within group (order by rrc.calculation_seq) over (partition by rrc.axis_seq)
@@ -112,36 +112,37 @@ rrav.position
 ) x
 ) y
 )
-select null multiply, null movement, null segment_display, &columnset_null_segments 'Ledger:' description, null sequence, null calculation, null line_format, :ledger column_value from merged_data
+select null multiply, null movement, null change_sign, null segment_display, &columnset_null_segments 'Ledger:' description, null sequence, null calculation, null line_format, :ledger column_value from merged_data
 union all
-select null multiply, null movement, null segment_display, &columnset_null_segments 'Report Title:' description, null sequence, null calculation, null line_format, report_title column_value from merged_data
+select null multiply, null movement, null change_sign, null segment_display, &columnset_null_segments 'Report Title:' description, null sequence, null calculation, null line_format, report_title column_value from merged_data
 union all
-select null multiply, null movement, null segment_display, &columnset_null_segments 'Current Period:' description, null sequence, null calculation, null line_format, xxen_util.latest_open_period(:ledger) column_value from merged_data
+select null multiply, null movement, null change_sign, null segment_display, &columnset_null_segments 'Current Period:' description, null sequence, null calculation, null line_format, xxen_util.latest_open_period(:ledger) column_value from merged_data
 union all
-select null multiply, null movement, null segment_display, &columnset_null_segments 'Override Segment Name' description, null sequence, null calculation, null line_format, override_segment_name column_value from merged_data
+select null multiply, null movement, null change_sign, null segment_display, &columnset_null_segments 'Override Segment Name' description, null sequence, null calculation, null line_format, override_segment_name column_value from merged_data
 union all
-select null multiply, null movement, null segment_display, &columnset_null_segments 'Calculation Precedence' description, null sequence, null calculation, null line_format, calculation_precedence_flag column_value from merged_data
+select null multiply, null movement, null change_sign, null segment_display, &columnset_null_segments 'Calculation Precedence' description, null sequence, null calculation, null line_format, calculation_precedence_flag column_value from merged_data
 union all
-select null multiply, null movement, null segment_display, &columnset_null_segments 'Sequence' description, null sequence, null calculation, null line_format, sequence column_value from merged_data
+select null multiply, null movement, null change_sign, null segment_display, &columnset_null_segments 'Sequence' description, null sequence, null calculation, null line_format, sequence column_value from merged_data
 union all
-select null multiply, null movement, null segment_display, &columnset_null_segments 'Column Calculations' description, null sequence, null calculation, null line_format, calculation column_value from merged_data
+select null multiply, null movement, null change_sign, null segment_display, &columnset_null_segments 'Column Calculations' description, null sequence, null calculation, null line_format, calculation column_value from merged_data
 union all
-select null multiply, null movement, null segment_display, &columnset_null_segments 'Column Header' description, null sequence, null calculation, null line_format, column_header column_value from merged_data
+select null multiply, null movement, null change_sign, null segment_display, &columnset_null_segments 'Column Header' description, null sequence, null calculation, null line_format, column_header column_value from merged_data
 union all
-select null multiply, null movement, null segment_display, &columnset_null_segments 'Amount Type' description, null sequence, null calculation, null line_format, amount_type column_value from merged_data
+select null multiply, null movement, null change_sign, null segment_display, &columnset_null_segments 'Amount Type' description, null sequence, null calculation, null line_format, amount_type column_value from merged_data
 union all
-select null multiply, null movement, null segment_display, &columnset_null_segments 'Periods' description, null sequence, null calculation, null line_format, period column_value from merged_data
-union all select null multiply, null movement, null segment_display, &columnset_null_segments 'Multiply' description, null sequence, null calculation, null line_format, multiply column_value from merged_data
-union all select null multiply, null movement, null segment_display, &columnset_null_segments 'Movement' description, null sequence, null calculation, null line_format, movement column_value from merged_data
+select null multiply, null movement, null change_sign, null segment_display, &columnset_null_segments 'Periods' description, null sequence, null calculation, null line_format, period column_value from merged_data
+union all select null multiply, null movement, null change_sign, null segment_display, &columnset_null_segments 'Multiply' description, null sequence, null calculation, null line_format, multiply column_value from merged_data
+union all select null multiply, null movement, null change_sign, null segment_display, &columnset_null_segments 'Movement' description, null sequence, null calculation, null line_format, movement column_value from merged_data
 union all
-select null multiply, null movement, null segment_display, &columnset_null_segments 'Override Segment Value' description, null sequence, null calculation, null line_format, override_segment_value column_value from merged_data
+select null multiply, null movement, null change_sign, null segment_display, &columnset_null_segments 'Override Segment Value' description, null sequence, null calculation, null line_format, override_segment_value column_value from merged_data
 &column_segments_union
 ) x
 union all
-select distinct y.* from (
-select distinct
-case when x.sign = '+' then 1 when x.sign = '-' then 1 end multiply,
+select y.* from (
+select
+case when x.row_type='R' then decode(x.sign,'-',-1,1) end multiply,
 case when x.dr_cr_net_code='N' then 'Net' when x.dr_cr_net_code='D' then 'Dr' when x.dr_cr_net_code='C' then 'Cr' end movement,
+x.change_sign_flag change_sign,
 case when x.row_type='R' then x.segment_display end segment_display,
 &rowset_segments_case
 x.description,
@@ -150,14 +151,14 @@ case when x.row_type='C' then
 replace((select distinct
 '''='||listagg(case when rrc.axis_seq_low=rrc.axis_seq_high then replace(rrc.operator||rrc.axis_seq_low,'ENTER') when rrc.axis_name_low=rrc.axis_name_high or (rrc.axis_name_low is not null and rrc.axis_name_high is null)  or (rrc.axis_name_low is null and rrc.axis_name_high is not null) then replace(rrc.operator||rrc.axis_name_low,'ENTER')
 else
-case when rrc.operator='+' then  case when rrc.constant is null then '+sum('||nvl(to_char(rrc.axis_seq_low),rrc.axis_name_low)||':'||nvl(to_char(rrc.axis_seq_high),rrc.axis_name_high)||')' else '+'||rrc.constant end
-when rrc.operator='-' then case when rrc.constant is null then '-sum('||nvl(to_char(rrc.axis_seq_low),rrc.axis_name_low)||':'||nvl(to_char(rrc.axis_seq_high),rrc.axis_name_high)||')' else '-'||rrc.constant end
-when rrc.operator='*' then case when rrc.constant is null then '*sum('||nvl(to_char(rrc.axis_seq_low),rrc.axis_name_low)||':'||nvl(to_char(rrc.axis_seq_high),rrc.axis_name_high)||')' else '*'||rrc.constant end
-when rrc.operator='/' then case when rrc.constant is null then '/sum('||nvl(to_char(rrc.axis_seq_low),rrc.axis_name_low)||':'||nvl(to_char(rrc.axis_seq_high),rrc.axis_name_high)||')' else '/'||rrc.constant end
+case when rrc.operator='+' then  case when rrc.constant is null then '+sum('||nvl(to_char(rrc.axis_seq_low),rrc.axis_name_low)||':'||nvl(to_char(rrc.axis_seq_high),rrc.axis_name_high)||')' else '+#'||rrc.constant end
+when rrc.operator='-' then case when rrc.constant is null then '-sum('||nvl(to_char(rrc.axis_seq_low),rrc.axis_name_low)||':'||nvl(to_char(rrc.axis_seq_high),rrc.axis_name_high)||')' else '-#'||rrc.constant end
+when rrc.operator='*' then case when rrc.constant is null then '*sum('||nvl(to_char(rrc.axis_seq_low),rrc.axis_name_low)||':'||nvl(to_char(rrc.axis_seq_high),rrc.axis_name_high)||')' else '*#'||rrc.constant end
+when rrc.operator='/' then case when rrc.constant is null then '/sum('||nvl(to_char(rrc.axis_seq_low),rrc.axis_name_low)||':'||nvl(to_char(rrc.axis_seq_high),rrc.axis_name_high)||')' else '/#'||rrc.constant end
 when rrc.operator='ENTER' then  case
 when nvl(to_char(rrc.axis_seq_low),rrc.axis_name_low) is not null and nvl(to_char(rrc.axis_seq_high),rrc.axis_name_high) is not null then 'sum('||nvl(to_char(rrc.axis_seq_low),rrc.axis_name_low)||':'||nvl(to_char(rrc.axis_seq_high),rrc.axis_name_high)||')'
 when rrc.constant is null then '+'||nvl(nvl(to_char(rrc.axis_seq_high),rrc.axis_name_high),nvl(to_char(rrc.axis_seq_low),rrc.axis_name_low))
-else '+'||rrc.constant
+else '+#'||rrc.constant
 end
 else nvl(to_char(rrc.axis_seq_high),rrc.axis_name_high)||'%'||nvl(to_char(rrc.axis_seq_low),rrc.axis_name_low) end
 end,'') within group (order by rrc.calculation_seq) over (partition by rrc.axis_seq)
@@ -172,39 +173,42 @@ from
 (
 select
 rrav.sequence,
-count(*) over (partition by rrav.sequence) cnt,
 rrac.range_mode,
 rrac.sign,
 rrac.dr_cr_net_code,
+rrav.change_sign_flag,
 &rowset_segment_display
 &rowset_segments
 rrav.description,
-case when rrc.calculation_seq is not null then 'C' when rrac.axis_set_id is not null then 'R' else 'T' end row_type,
+case when exists (select null from rg_report_calculations rrc where rrc.axis_set_id=rrav.axis_set_id and rrc.axis_seq=rrav.sequence) then 'C' when rrac.axis_set_id is not null then 'R' else 'T' end row_type,
 rrav.before_axis_string||':'||rrav.after_axis_string||':'||rrav.number_lines_skipped_before||':'||rrav.number_lines_skipped_after line_format,
 rrav.axis_set_id,
-rrav.name axis_name
+rrav.name axis_name,
+row_number() over (partition by rrav.sequence order by rrac.segment1_low, rrac.segment2_low, rrac.segment3_low, rrac.segment4_low, rrac.segment5_low, rrac.segment6_low, rrac.segment7_low, rrac.segment8_low, rrac.segment9_low, rrac.segment10_low, rrac.rowid) range_seq
 from
 rg_reports_v rrv,
 rg_report_axes_v rrav,
-rg_report_axis_contents rrac,
-rg_report_calculations rrc
+rg_report_axis_contents rrac
 where
 1=1 and
 rrav.axis_set_id=rrv.row_set_id and
 rrav.display_flag='Y' and
 rrav.axis_set_id=rrac.axis_set_id(+) and
-rrav.sequence=rrac.axis_seq(+) and
-rrav.axis_set_id=rrc.axis_set_id(+) and
-rrav.sequence=rrc.axis_seq(+)
+rrav.sequence=rrac.axis_seq(+)
+&rowset_summary_filter
 ) x
+where
+x.row_type='R' or x.range_seq=1
 order by
-to_number(substr(sequence,1,instr(sequence,':')-1))
+to_number(substr(sequence,1,instr(sequence,':')-1)),
+x.range_seq
 ) y
 union all
 select y.* from(
 select
 null mutliply,
 null movement,
+null change_sign,
 null segment_display, 
 &contentset_select_segments
 'Content Set' description,

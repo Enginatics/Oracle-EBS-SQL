@@ -2,7 +2,7 @@
 layout: default
 title: 'AP Trial Balance Report Definitions | Oracle EBS SQL Report'
 description: 'Accounts Payable Trial Balance Report Definitions – Oracle E-Business Suite SQL report'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Trial, Balance, Report, Definitions, fnd_id_flex_segments_vl, xla_tb_definitions_vl, xla_tb_defn_je_sources'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Trial, Balance, Report, Definitions, fnd_id_flex_segments_vl, xla_tb_definitions_vl, xla_tb_defn_je_sources'
 permalink: /AP%20Trial%20Balance%20Report%20Definitions/
 ---
 
@@ -20,10 +20,10 @@ Report Definition
 [fnd_id_flex_segments_vl](https://www.enginatics.com/library/?pg=1&find=fnd_id_flex_segments_vl), [xla_tb_definitions_vl](https://www.enginatics.com/library/?pg=1&find=xla_tb_definitions_vl), [xla_tb_defn_je_sources](https://www.enginatics.com/library/?pg=1&find=xla_tb_defn_je_sources), [gl_ledgers](https://www.enginatics.com/library/?pg=1&find=gl_ledgers), [xla_tb_defn_details](https://www.enginatics.com/library/?pg=1&find=xla_tb_defn_details), [fnd_id_flex_structures_vl](https://www.enginatics.com/library/?pg=1&find=fnd_id_flex_structures_vl), [gl_code_combinations_kfv](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations_kfv)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related Reports
-[AP Accounted Invoice Aging](/AP%20Accounted%20Invoice%20Aging/ "AP Accounted Invoice Aging Oracle EBS SQL Report"), [GL Account Analysis](/GL%20Account%20Analysis/ "GL Account Analysis Oracle EBS SQL Report")
+[AP Accounted Invoice Aging](/AP%20Accounted%20Invoice%20Aging/ "AP Accounted Invoice Aging Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.

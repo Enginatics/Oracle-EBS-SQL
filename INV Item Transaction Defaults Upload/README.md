@@ -2,7 +2,7 @@
 layout: default
 title: 'INV Item Transaction Defaults Upload | Oracle EBS SQL Report'
 description: 'This upload can be used to create and update Item transaction default subinventories and locators'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Upload, INV, Item, Transaction, Defaults, mtl_item_sub_defaults, hr_all_organization_units_vl, mtl_system_items_vl'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, INV, Item, Transaction, Defaults, mtl_item_sub_defaults, hr_all_organization_units_vl, mtl_system_items_vl'
 permalink: /INV%20Item%20Transaction%20Defaults%20Upload/
 ---
 
@@ -20,10 +20,10 @@ Organization, Upload Mode, Default Type
 [mtl_item_sub_defaults](https://www.enginatics.com/library/?pg=1&find=mtl_item_sub_defaults), [hr_all_organization_units_vl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_vl), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl), [mtl_item_loc_defaults](https://www.enginatics.com/library/?pg=1&find=mtl_item_loc_defaults), [mtl_item_locations_kfv](https://www.enginatics.com/library/?pg=1&find=mtl_item_locations_kfv)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only), [Upload](https://www.enginatics.com/library/?pg=1&category[]=Upload)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Upload](https://www.enginatics.com/library/?pg=1&category[]=Upload)
 
 ## Related Reports
-[INV Item Default Transaction Locators](/INV%20Item%20Default%20Transaction%20Locators/ "INV Item Default Transaction Locators Oracle EBS SQL Report"), [EAM Assets](/EAM%20Assets/ "EAM Assets Oracle EBS SQL Report"), [INV Item Default Transaction Subinventories](/INV%20Item%20Default%20Transaction%20Subinventories/ "INV Item Default Transaction Subinventories Oracle EBS SQL Report"), [PO Requisition Upload](/PO%20Requisition%20Upload/ "PO Requisition Upload Oracle EBS SQL Report"), [CAC Calculate Average Item Costs](/CAC%20Calculate%20Average%20Item%20Costs/ "CAC Calculate Average Item Costs Oracle EBS SQL Report"), [WSH Shipping/Delivery Transactions](/WSH%20Shipping-Delivery%20Transactions/ "WSH Shipping/Delivery Transactions Oracle EBS SQL Report"), [INV Physical Inventory Tags](/INV%20Physical%20Inventory%20Tags/ "INV Physical Inventory Tags Oracle EBS SQL Report")
+[INV Item Default Transaction Locators](/INV%20Item%20Default%20Transaction%20Locators/ "INV Item Default Transaction Locators Oracle EBS SQL Report"), [EAM Assets](/EAM%20Assets/ "EAM Assets Oracle EBS SQL Report"), [INV Item Default Transaction Subinventories](/INV%20Item%20Default%20Transaction%20Subinventories/ "INV Item Default Transaction Subinventories Oracle EBS SQL Report"), [PO Requisition Upload](/PO%20Requisition%20Upload/ "PO Requisition Upload Oracle EBS SQL Report"), [CAC Calculate Average Item Costs](/CAC%20Calculate%20Average%20Item%20Costs/ "CAC Calculate Average Item Costs Oracle EBS SQL Report"), [PO Headers and Lines](/PO%20Headers%20and%20Lines/ "PO Headers and Lines Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
@@ -32,7 +32,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/inv-item-transaction-defaults-upload/) |
+| Excel Example Output | [](https://www.enginatics.com/example/inv-item-transaction-defaults-upload/) |
 | Blitz Report™ XML Import | [INV_Item_Transaction_Defaults_Upload.xml](https://www.enginatics.com/xml/inv-item-transaction-defaults-upload/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/inv-item-transaction-defaults-upload/](https://www.enginatics.com/reports/inv-item-transaction-defaults-upload/) |
 

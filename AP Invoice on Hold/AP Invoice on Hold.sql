@@ -19,25 +19,26 @@ select
 ,x.c_nls_hold_code hold_name
 ,x.c_hold_code hold_code
 ,x.c_nls_hold_desc "Hold Description"
+,x.c_hold_reason hold_reason
+,x.c_hold_date hold_date
+,decode(x.c_held_by,5,(select alc5.displayed_field from ap_lookup_codes alc5 where alc5.lookup_type(+)='NLS TRANSLATION' and alc5.lookup_code(+)='SYSTEM'),xxen_util.user_name(x.c_held_by)) held_by
 ,x.c_postable "Accounting Allowed"
 ,x.c_batch_name batch_name
 ,x.c_vendor_name trading_partner
 ,x.c_vendor_site site
 ,x.c_invoice_num invoice_number
-,(select listagg(poh.segment1,', ') within group (order by poh.segment1)
-  from po_headers_all poh
-  where exists (
-    select null from ap_invoice_lines ail, po_line_locations_all plla
-    where ail.invoice_id=x.c_invoice_id and ail.po_line_location_id=plla.line_location_id and plla.po_header_id=poh.po_header_id
-  )
+,(select poh.segment1
+  from po_line_locations_all plla, po_headers_all poh
+  where plla.line_location_id=x.c_hold_line_location_id and plla.po_header_id=poh.po_header_id
  ) po_number
-,(select listagg(to_char(pol.line_num),', ') within group (order by pol.line_num)
-  from po_lines_all pol
-  where exists (
-    select null from ap_invoice_lines ail, po_line_locations_all plla
-    where ail.invoice_id=x.c_invoice_id and ail.po_line_location_id=plla.line_location_id and plla.po_line_id=pol.po_line_id
-  )
+,(select pol.line_num
+  from po_line_locations_all plla, po_lines_all pol
+  where plla.line_location_id=x.c_hold_line_location_id and plla.po_line_id=pol.po_line_id
  ) po_line_number
+,(select listagg(ail.line_number,', ') within group (order by ail.line_number)
+  from ap_invoice_lines ail
+  where ail.invoice_id=x.c_invoice_id and ail.po_line_location_id=x.c_hold_line_location_id
+ ) invoice_line_number
 ,to_char(x.c_invoice_date,'fmMonth YYYY') invoice_month
 ,x.c_invoice_date invoice_date
 ,x.c_original_amount "Original Amount (Func Curr)"
@@ -102,6 +103,10 @@ select -- invoices on hold
   b.batch_name c_batch_name,
   inv1.invoice_id c_invoice_id,
   inv1.invoice_num c_invoice_num,
+  h.line_location_id c_hold_line_location_id,
+  h.hold_reason c_hold_reason,
+  h.hold_date c_hold_date,
+  h.held_by c_held_by,
   decode(inv1.invoice_currency_code, gsob.currency_code, inv1.invoice_amount, inv1.base_amount) c_original_amount,
   decode(inv1.invoice_currency_code,
                  gsob.currency_code, inv1.invoice_amount,
@@ -191,6 +196,10 @@ group by
   inv1.invoice_id,
   b.batch_name,
   inv1.invoice_num,
+  h.line_location_id,
+  h.hold_reason,
+  h.hold_date,
+  h.held_by,
   decode(inv1.invoice_currency_code, gsob.currency_code, inv1.invoice_amount, inv1.base_amount),
   decode(inv1.invoice_currency_code,
                  gsob.currency_code, inv1.invoice_amount,
@@ -241,6 +250,10 @@ select -- payments on hold
   b.batch_name c_batch_name,
   inv1.invoice_id c_nr_invoice_id,
   inv1.invoice_num c_invoice_num,
+  to_number(null) c_hold_line_location_id,
+  to_char(null) c_hold_reason,
+  cast(null as date) c_hold_date,
+  to_number(null) c_held_by,
   decode(inv1.invoice_currency_code, gsob.currency_code, inv1.invoice_amount, inv1.base_amount) c_original_amount,
   decode(inv1.invoice_currency_code, gsob.currency_code, inv1.invoice_amount,inv1.base_amount) -
     decode(inv1.payment_currency_code,
@@ -364,6 +377,10 @@ select -- vendor sites on hold
   b.batch_name c_batch_name,
   inv1.invoice_id c_invoice_id,
   inv1.invoice_num c_invoice_num,
+  to_number(null) c_hold_line_location_id,
+  to_char(null) c_hold_reason,
+  cast(null as date) c_hold_date,
+  to_number(null) c_held_by,
   decode(inv1.invoice_currency_code, gsob.currency_code, inv1.invoice_amount, inv1.base_amount) c_original_amount,
   decode(inv1.invoice_currency_code,gsob.currency_code, inv1.invoice_amount,inv1.base_amount) -
     decode(inv1.payment_currency_code,
@@ -477,7 +494,7 @@ group by
   inv1.dispute_reason
 ) x
 where
- 1=1
+1=1
 order by
  decode(:p_order_by, 'Hold Name',c_nls_hold_code,x.c_vendor_name)
 ,x.c_vendor_name

@@ -14,7 +14,7 @@ permalink: /Blitz%20Report%20History/
 History of Blitz Report executions
 
 ## Report Parameters
-Report Name, Category, Type, Report Name starts with, Submitted by User, Started within Days, Start Date From, Start Date To, Show Parameters, Running or Errored, Request Id, Run Id, Exclude System Reports, Exclude Submissions from User, License Exceeded, Incremental Alert Mode
+Report Name, Category, Type, Report Name starts with, Submitted by User, Started within Days, Start Date From, Start Date To, Show Parameters, Running or Errored, Running longer than x Minutes, Request Id, Run Id, Exclude System Reports, Exclude Submissions from User, License Exceeded, Incremental Alert Mode
 
 ## Oracle EBS Tables Used
 [xxen_reports_h](https://www.enginatics.com/library/?pg=1&find=xxen_reports_h), [fnd_concurrent_requests](https://www.enginatics.com/library/?pg=1&find=fnd_concurrent_requests), [xxen_report_runs](https://www.enginatics.com/library/?pg=1&find=xxen_report_runs), [xxen_reports_v](https://www.enginatics.com/library/?pg=1&find=xxen_reports_v), [fnd_responsibility_tl](https://www.enginatics.com/library/?pg=1&find=fnd_responsibility_tl), [gv$session](https://www.enginatics.com/library/?pg=1&find=gv$session), [fnd_lookup_values](https://www.enginatics.com/library/?pg=1&find=fnd_lookup_values), [xxen_report_run_param_values](https://www.enginatics.com/library/?pg=1&find=xxen_report_run_param_values)
@@ -23,7 +23,7 @@ Report Name, Category, Type, Report Name starts with, Submitted by User, Started
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related Reports
-[FND Concurrent Requests 11i](/FND%20Concurrent%20Requests%2011i/ "FND Concurrent Requests 11i Oracle EBS SQL Report"), [Blitz Upload History](/Blitz%20Upload%20History/ "Blitz Upload History Oracle EBS SQL Report"), [FND Concurrent Requests](/FND%20Concurrent%20Requests/ "FND Concurrent Requests Oracle EBS SQL Report"), [GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report"), [GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20%28Distributions%29/ "GL Account Analysis (Distributions) Oracle EBS SQL Report"), [CAC Interface Error Summary](/CAC%20Interface%20Error%20Summary/ "CAC Interface Error Summary Oracle EBS SQL Report"), [DBA ORDS Configuration Validation](/DBA%20ORDS%20Configuration%20Validation/ "DBA ORDS Configuration Validation Oracle EBS SQL Report")
+[Blitz Upload History](/Blitz%20Upload%20History/ "Blitz Upload History Oracle EBS SQL Report"), [DBA ORDS Configuration Validation](/DBA%20ORDS%20Configuration%20Validation/ "DBA ORDS Configuration Validation Oracle EBS SQL Report"), [FND Concurrent Requests](/FND%20Concurrent%20Requests/ "FND Concurrent Requests Oracle EBS SQL Report"), [GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report"), [CAC Interface Error Summary](/CAC%20Interface%20Error%20Summary/ "CAC Interface Error Summary Oracle EBS SQL Report"), [Blitz Upload Data](/Blitz%20Upload%20Data/ "Blitz Upload Data Oracle EBS SQL Report"), [CAC Inventory Organization Summary](/CAC%20Inventory%20Organization%20Summary/ "CAC Inventory Organization Summary Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
@@ -32,7 +32,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/blitz-report-history/) |
+| Excel Example Output | [](https://www.enginatics.com/example/blitz-report-history/) |
 | Blitz Report™ XML Import | [Blitz_Report_History.xml](https://www.enginatics.com/xml/blitz-report-history/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/blitz-report-history/](https://www.enginatics.com/reports/blitz-report-history/) |
 

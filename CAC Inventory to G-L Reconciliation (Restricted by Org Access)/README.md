@@ -2,7 +2,7 @@
 layout: default
 title: 'CAC Inventory to G/L Reconciliation (Restricted by Org Access) | Oracle EBS SQL Report'
 description: 'For Discrete Costing, this report compares the General Ledger inventory balances with the perpetual inventory values (based on the stored month-end…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, CAC, Inventory, G/L, Reconciliation, mtl_secondary_inventories, mtl_parameters, pjm_org_parameters'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, CAC, Inventory, G/L, Reconciliation, mtl_secondary_inventories, mtl_parameters, pjm_org_parameters'
 permalink: /CAC%20Inventory%20to%20G-L%20Reconciliation%20%28Restricted%20by%20Org%20Access%29/
 ---
 
@@ -60,7 +60,7 @@ Period Name (Closed), Ledger, Minimum Value Difference
 [mtl_secondary_inventories](https://www.enginatics.com/library/?pg=1&find=mtl_secondary_inventories), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters), [pjm_org_parameters](https://www.enginatics.com/library/?pg=1&find=pjm_org_parameters), [org_organization_definitions](https://www.enginatics.com/library/?pg=1&find=org_organization_definitions), [gl_access_set_norm_assign](https://www.enginatics.com/library/?pg=1&find=gl_access_set_norm_assign), [gl_ledger_set_norm_assign_v](https://www.enginatics.com/library/?pg=1&find=gl_ledger_set_norm_assign_v), [mtl_interorg_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_interorg_parameters), [rcv_parameters](https://www.enginatics.com/library/?pg=1&find=rcv_parameters), [wip_accounting_classes](https://www.enginatics.com/library/?pg=1&find=wip_accounting_classes), [cst_cost_group_accounts](https://www.enginatics.com/library/?pg=1&find=cst_cost_group_accounts), [cst_cg_wip_acct_classes](https://www.enginatics.com/library/?pg=1&find=cst_cg_wip_acct_classes), [gl_code_combinations](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations), [gl_ledgers](https://www.enginatics.com/library/?pg=1&find=gl_ledgers), [gl_balances](https://www.enginatics.com/library/?pg=1&find=gl_balances), [gl_je_headers](https://www.enginatics.com/library/?pg=1&find=gl_je_headers), [gl_je_lines](https://www.enginatics.com/library/?pg=1&find=gl_je_lines), [y](https://www.enginatics.com/library/?pg=1&find=y), [hr_organization_information](https://www.enginatics.com/library/?pg=1&find=hr_organization_information), [hr_all_organization_units](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 
 

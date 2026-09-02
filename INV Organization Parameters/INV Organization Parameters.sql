@@ -5,7 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: INV Organization Parameters
--- Description: None
+-- Description: 
 -- Excel Examle Output: https://www.enginatics.com/example/inv-organization-parameters/
 -- Library Link: https://www.enginatics.com/reports/inv-organization-parameters/
 -- Run Report: https://demo.enginatics.com/

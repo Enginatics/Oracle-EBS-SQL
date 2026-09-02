@@ -2,7 +2,7 @@
 layout: default
 title: 'GL FSG Row Orders | Oracle EBS SQL Report'
 description: 'Financial Statement Generator row order listing – Oracle E-Business Suite SQL report'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, FSG, Row, Orders, rg_row_orders, fnd_id_flex_structures_vl, rg_row_segment_sequences_v'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, FSG, Row, Orders, rg_row_orders, fnd_id_flex_structures_vl, rg_row_segment_sequences_v'
 permalink: /GL%20FSG%20Row%20Orders/
 ---
 
@@ -20,10 +20,10 @@ Structure Name
 [rg_row_orders](https://www.enginatics.com/library/?pg=1&find=rg_row_orders), [fnd_id_flex_structures_vl](https://www.enginatics.com/library/?pg=1&find=fnd_id_flex_structures_vl), [rg_row_segment_sequences_v](https://www.enginatics.com/library/?pg=1&find=rg_row_segment_sequences_v)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related Reports
-[GL FSG Reports](/GL%20FSG%20Reports/ "GL FSG Reports Oracle EBS SQL Report"), [GL Account Analysis](/GL%20Account%20Analysis/ "GL Account Analysis Oracle EBS SQL Report")
+[GL FSG Reports](/GL%20FSG%20Reports/ "GL FSG Reports Oracle EBS SQL Report"), [CAC Manufacturing Variance](/CAC%20Manufacturing%20Variance/ "CAC Manufacturing Variance Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.

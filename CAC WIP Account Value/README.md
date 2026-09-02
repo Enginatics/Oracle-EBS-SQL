@@ -2,7 +2,7 @@
 layout: default
 title: 'CAC WIP Account Value | Oracle EBS SQL Report'
 description: 'Report to show WIP values and all accounts for discrete manufacturing, in summary by inventory, organization, with WIP class, job status, name and other…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Cost Accounting - Inventory Value, Enginatics, CAC, WIP, Account, Value, wip_period_balances, wip_discrete_jobs, wip_entities'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, CAC, WIP, Account, Value, wip_period_balances, wip_discrete_jobs, wip_entities'
 permalink: /CAC%20WIP%20Account%20Value/
 ---
 
@@ -69,7 +69,7 @@ Period Name, Include Expense WIP, Job Status, Category Set 1, Category Set 2, Ca
 [wip_period_balances](https://www.enginatics.com/library/?pg=1&find=wip_period_balances), [wip_discrete_jobs](https://www.enginatics.com/library/?pg=1&find=wip_discrete_jobs), [wip_entities](https://www.enginatics.com/library/?pg=1&find=wip_entities), [wip_accounting_classes](https://www.enginatics.com/library/?pg=1&find=wip_accounting_classes), [mtl_secondary_inventories](https://www.enginatics.com/library/?pg=1&find=mtl_secondary_inventories), [org_acct_periods](https://www.enginatics.com/library/?pg=1&find=org_acct_periods), [inv_organizations](https://www.enginatics.com/library/?pg=1&find=inv_organizations), [mfg_lookups](https://www.enginatics.com/library/?pg=1&find=mfg_lookups), [gl_code_combinations_kfv](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations_kfv), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl), [mtl_units_of_measure_vl](https://www.enginatics.com/library/?pg=1&find=mtl_units_of_measure_vl), [pa_projects_all](https://www.enginatics.com/library/?pg=1&find=pa_projects_all), [wip_value](https://www.enginatics.com/library/?pg=1&find=wip_value)
 
 ## Report Categories
-[Cost Accounting - Inventory Value](https://www.enginatics.com/library/?pg=1&category[]=Cost%20Accounting%20-%20Inventory%20Value), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 
 

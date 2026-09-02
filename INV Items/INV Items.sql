@@ -275,6 +275,7 @@ xxen_util.meaning(msiv.financing_allowed_flag,'YES_NO',0) financing_allowed,
 --
 xxen_util.meaning(msiv.atp_flag,'ATP_FLAG',3) check_atp,
 (select mar.rule_name from mtl_atp_rules mar where mar.rule_id = msiv.atp_rule_id) atp_rule,
+(select mar.infinite_supply_time_fence from mtl_atp_rules mar where mar.rule_id = msiv.atp_rule_id) atp_time_fence_days,
 xxen_util.meaning(msiv.atp_components_flag,'ATP_FLAG',3) atp_components,
 (select wrv.name from wms_rules_vl wrv where wrv.rule_id = msiv.picking_rule_id) picking_rule,
 (select mp2.organization_code from mtl_parameters mp2 where mp2.organization_id = msiv.default_shipping_org) default_shipping_organization,

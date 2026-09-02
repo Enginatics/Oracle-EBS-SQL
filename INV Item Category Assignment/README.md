@@ -2,7 +2,7 @@
 layout: default
 title: 'INV Item Category Assignment | Oracle EBS SQL Report'
 description: 'Imported from BI Publisher Description: Item categories report Application: Inventory Source: Item categories report (XML) Short Name: INVIRCATXML DB…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, BI Publisher, Enginatics, INV, Item, Category, Assignment, mtl_categories_kfv, mtl_category_set_valid_cats, mtl_categories_b'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, INV, Item, Category, Assignment, mtl_categories_kfv, mtl_category_set_valid_cats, mtl_categories_b'
 permalink: /INV%20Item%20Category%20Assignment/
 ---
 
@@ -25,10 +25,10 @@ Category Set, Organization Code, Category From, Category To, Item From, Item To,
 [mtl_categories_kfv](https://www.enginatics.com/library/?pg=1&find=mtl_categories_kfv), [mtl_category_set_valid_cats](https://www.enginatics.com/library/?pg=1&find=mtl_category_set_valid_cats), [mtl_categories_b](https://www.enginatics.com/library/?pg=1&find=mtl_categories_b), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters), [mtl_item_categories](https://www.enginatics.com/library/?pg=1&find=mtl_item_categories), [mtl_system_items_b](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_b), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl), [mtl_category_sets_v](https://www.enginatics.com/library/?pg=1&find=mtl_category_sets_v), [mtl_categories_v](https://www.enginatics.com/library/?pg=1&find=mtl_categories_v)
 
 ## Report Categories
-[BI Publisher](https://www.enginatics.com/library/?pg=1&category[]=BI%20Publisher), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related Reports
-[CAC Last Standard Item Cost](/CAC%20Last%20Standard%20Item%20Cost/ "CAC Last Standard Item Cost Oracle EBS SQL Report"), [INV Item Upload](/INV%20Item%20Upload/ "INV Item Upload Oracle EBS SQL Report"), [MRP Sourcing Rules and Bills of Distribution](/MRP%20Sourcing%20Rules%20and%20Bills%20of%20Distribution/ "MRP Sourcing Rules and Bills of Distribution Oracle EBS SQL Report"), [CAC New Standard Item Costs](/CAC%20New%20Standard%20Item%20Costs/ "CAC New Standard Item Costs Oracle EBS SQL Report")
+[AP Invoice Upload](/AP%20Invoice%20Upload/ "AP Invoice Upload Oracle EBS SQL Report"), [MRP Sourcing Rules and Bills of Distribution](/MRP%20Sourcing%20Rules%20and%20Bills%20of%20Distribution/ "MRP Sourcing Rules and Bills of Distribution Oracle EBS SQL Report"), [CAC New Standard Item Costs](/CAC%20New%20Standard%20Item%20Costs/ "CAC New Standard Item Costs Oracle EBS SQL Report"), [CAC Last Standard Item Cost](/CAC%20Last%20Standard%20Item%20Cost/ "CAC Last Standard Item Cost Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
@@ -37,7 +37,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/inv-item-category-assignment/) |
+| Excel Example Output | [](https://www.enginatics.com/example/inv-item-category-assignment/) |
 | Blitz Report™ XML Import | [INV_Item_Category_Assignment.xml](https://www.enginatics.com/xml/inv-item-category-assignment/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/inv-item-category-assignment/](https://www.enginatics.com/reports/inv-item-category-assignment/) |
 

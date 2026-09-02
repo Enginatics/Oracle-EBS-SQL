@@ -46,7 +46,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/fnd-lookup-upload/) |
+| Excel Example Output | [](https://www.enginatics.com/example/fnd-lookup-upload/) |
 | Blitz Report™ XML Import | [FND_Lookup_Upload.xml](https://www.enginatics.com/xml/fnd-lookup-upload/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/fnd-lookup-upload/](https://www.enginatics.com/reports/fnd-lookup-upload/) |
 

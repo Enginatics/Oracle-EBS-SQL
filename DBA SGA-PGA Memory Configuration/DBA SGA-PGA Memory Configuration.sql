@@ -43,7 +43,7 @@ vm.nr_hugepages = SGA GB x 512 + 5
 /etc/security/limits.conf
 oracle               soft    memlock (SGA GB x 512 + 5) * 2048
 oracle               hard    memlock (SGA GB x 512 + 5) * 2048
-<a href="https://www.carajandb.com/en/2016/09/22/7-easy-steps-to-configure-hugepages-for-your-oracle-database-server/" rel="nofollow" target="_blank">https://www.carajandb.com/en/2016/09/22/7-easy-steps-to-configure-hugepages-for-your-oracle-database-server/</a>
+<a href="https://www.enginatics.com/blog/how-to-configure-hugepages-for-oracle-ebs/" rel="nofollow" target="_blank">https://www.enginatics.com/blog/how-to-configure-hugepages-for-oracle-ebs/</a>
 
 Check if all database parameters are set according to Oracle's requirement:
 Database Initialization Parameters for Oracle E-Business Suite Release 12 (KA1002)
@@ -151,9 +151,9 @@ from sys.aux_stats$ ass
 where
 ass.pname in ('DSTART','CPUSPEEDNW','IOSEEKTIM','IOTFRSPEED','MBRC')
 union all
-select to_number(null) inst_id, 'Use large pages: '||vp.value name, null value from v$parameter vp where vp.name='use_large_pages' union all
-select to_number(null) inst_id, 'Pack License: '||vp.value name, null value from v$parameter vp where vp.name='control_management_pack_access' union all
-select to_number(null) inst_id, 'AWR pdb autoflush enabled: '||vp.value name, null value from v$parameter vp where vp.name='awr_pdb_autoflush_enabled' union all
+select to_number(null) inst_id, 'use_large_pages: '||vp.value name, null value from v$parameter vp where vp.name='use_large_pages' union all
+select to_number(null) inst_id, 'control_management_pack_access: '||vp.value name, null value from v$parameter vp where vp.name='control_management_pack_access' union all
+select to_number(null) inst_id, 'awr_pdb_autoflush_enabled: '||vp.value name, null value from v$parameter vp where vp.name='awr_pdb_autoflush_enabled' union all
 select distinct to_number(null) inst_id, 'AWR Report last usage date: '||max(dfus.last_usage_date) over () name, null value from dba_feature_usage_statistics dfus where dfus.name='AWR Report' and dfus.dbid in (select vd.dbid from v$database vd) union all
 select distinct to_number(null) inst_id, 'AWR Report usages' name, sum(dfus.detected_usages) over () value from dba_feature_usage_statistics dfus where dfus.name='AWR Report' and dfus.dbid in (select vd.dbid from v$database vd) union all
 select to_number(null) inst_id, 'Database Editions: ' name, count(*) value from dba_editions de union all

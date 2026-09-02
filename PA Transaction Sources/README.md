@@ -11,10 +11,10 @@ permalink: /PA%20Transaction%20Sources/
 **Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/pa-transaction-sources/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
 
 ## Overview
-None
+
 
 ## Report Parameters
-Show DFF Attributes
+DFF Display
 
 ## Oracle EBS Tables Used
 [pa_system_linkages](https://www.enginatics.com/library/?pg=1&find=pa_system_linkages), [pa_transaction_sources](https://www.enginatics.com/library/?pg=1&find=pa_transaction_sources)

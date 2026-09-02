@@ -2,7 +2,7 @@
 layout: default
 title: 'MRP Horizontal Plan | Oracle EBS SQL Report'
 description: 'MRP: Horizontal Plan from the Planners Workbench. - The report can be run for multiple organizations and items within a selected plan - The report can be…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, MRP, Horizontal, Plan, mrp_material_plans, mrp_workbench_bucket_dates, table'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, MRP, Horizontal, Plan, mrp_material_plans, mrp_workbench_bucket_dates, table'
 permalink: /MRP%20Horizontal%20Plan/
 ---
 
@@ -26,7 +26,7 @@ Plan, Current or Snapshot Data, Buckets, Organization Code, Category Set, Catego
 [mrp_material_plans](https://www.enginatics.com/library/?pg=1&find=mrp_material_plans), [mrp_workbench_bucket_dates](https://www.enginatics.com/library/?pg=1&find=mrp_workbench_bucket_dates), [table](https://www.enginatics.com/library/?pg=1&find=table), [mrp_system_items](https://www.enginatics.com/library/?pg=1&find=mrp_system_items), [ap_suppliers](https://www.enginatics.com/library/?pg=1&find=ap_suppliers), [per_people_x](https://www.enginatics.com/library/?pg=1&find=per_people_x), [mmp](https://www.enginatics.com/library/?pg=1&find=mmp), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl), [mtl_item_categories](https://www.enginatics.com/library/?pg=1&find=mtl_item_categories), [mtl_categories_kfv](https://www.enginatics.com/library/?pg=1&find=mtl_categories_kfv), [mtl_planners](https://www.enginatics.com/library/?pg=1&find=mtl_planners), [bom_small_expl_temp](https://www.enginatics.com/library/?pg=1&find=bom_small_expl_temp), [mrp_end_assemblies](https://www.enginatics.com/library/?pg=1&find=mrp_end_assemblies)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related Reports
 [MRP Plan Orders](/MRP%20Plan%20Orders/ "MRP Plan Orders Oracle EBS SQL Report"), [MSC Horizontal Plan](/MSC%20Horizontal%20Plan/ "MSC Horizontal Plan Oracle EBS SQL Report"), [MSC Plan Order Upload](/MSC%20Plan%20Order%20Upload/ "MSC Plan Order Upload Oracle EBS SQL Report"), [MRP Pegging](/MRP%20Pegging/ "MRP Pegging Oracle EBS SQL Report"), [MRP Item Forecast Upload](/MRP%20Item%20Forecast%20Upload/ "MRP Item Forecast Upload Oracle EBS SQL Report"), [MRP Item Forecast](/MRP%20Item%20Forecast/ "MRP Item Forecast Oracle EBS SQL Report"), [MSC Plan Orders](/MSC%20Plan%20Orders/ "MSC Plan Orders Oracle EBS SQL Report")

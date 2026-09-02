@@ -2,7 +2,7 @@
 layout: default
 title: 'QP Price List Upload | Oracle EBS SQL Report'
 description: 'This upload supports the creation and update of Standard Price Lists in Oracle Advanced Pricing. The upload supports creation/update/deletion of the…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Upload, Price, List, qp_currency_lists_vl, ra_terms_tl, qp_secu_list_headers_vl'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, Price, List, qp_currency_lists_vl, ra_terms_tl, qp_secu_list_headers_vl'
 permalink: /QP%20Price%20List%20Upload/
 ---
 
@@ -60,7 +60,7 @@ Upload Mode, End Date Matching List Lines?, Price List, Price List Like, Product
 [qp_currency_lists_vl](https://www.enginatics.com/library/?pg=1&find=qp_currency_lists_vl), [ra_terms_tl](https://www.enginatics.com/library/?pg=1&find=ra_terms_tl), [qp_secu_list_headers_vl](https://www.enginatics.com/library/?pg=1&find=qp_secu_list_headers_vl), [qp_qualifiers_v](https://www.enginatics.com/library/?pg=1&find=qp_qualifiers_v), [qp_list_lines_v](https://www.enginatics.com/library/?pg=1&find=qp_list_lines_v), [mtl_system_items](https://www.enginatics.com/library/?pg=1&find=mtl_system_items)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only), [Upload](https://www.enginatics.com/library/?pg=1&category[]=Upload)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Upload](https://www.enginatics.com/library/?pg=1&category[]=Upload)
 
 
 
@@ -71,7 +71,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/qp-price-list-upload/) |
+| Excel Example Output | [](https://www.enginatics.com/example/qp-price-list-upload/) |
 | Blitz Report™ XML Import | [QP_Price_List_Upload.xml](https://www.enginatics.com/xml/qp-price-list-upload/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/qp-price-list-upload/](https://www.enginatics.com/reports/qp-price-list-upload/) |
 

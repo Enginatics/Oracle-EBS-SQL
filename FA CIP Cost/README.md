@@ -2,7 +2,7 @@
 layout: default
 title: 'FA CIP Cost | Oracle EBS SQL Report'
 description: 'CIP Costs Summary/Detail Report Equivalent to Oracle Standard Reports: CIP Summary Report CIP Detail Report DB package: XXENFAFASXMLP'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, CIP, Cost, fa_system_controls, gl_ledgers, fnd_currencies'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, CIP, Cost, fa_system_controls, gl_ledgers, fnd_currencies'
 permalink: /FA%20CIP%20Cost/
 ---
 
@@ -26,7 +26,7 @@ Book, Set of Books Currency, From Period, To Period
 [fa_system_controls](https://www.enginatics.com/library/?pg=1&find=fa_system_controls), [gl_ledgers](https://www.enginatics.com/library/?pg=1&find=gl_ledgers), [fnd_currencies](https://www.enginatics.com/library/?pg=1&find=fnd_currencies), [fa_balances_report_gt](https://www.enginatics.com/library/?pg=1&find=fa_balances_report_gt), [fa_additions](https://www.enginatics.com/library/?pg=1&find=fa_additions), [gl_code_combinations](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related Reports
 [FA Asset Cost](/FA%20Asset%20Cost/ "FA Asset Cost Oracle EBS SQL Report"), [FA Revaluation Reserve](/FA%20Revaluation%20Reserve/ "FA Revaluation Reserve Oracle EBS SQL Report"), [FA Depreciation Reserve](/FA%20Depreciation%20Reserve/ "FA Depreciation Reserve Oracle EBS SQL Report"), [FA Tax Reserve Ledger](/FA%20Tax%20Reserve%20Ledger/ "FA Tax Reserve Ledger Oracle EBS SQL Report"), [FA Journal Entry Reserve Ledger](/FA%20Journal%20Entry%20Reserve%20Ledger/ "FA Journal Entry Reserve Ledger Oracle EBS SQL Report"), [FA Cost Adjustments](/FA%20Cost%20Adjustments/ "FA Cost Adjustments Oracle EBS SQL Report")

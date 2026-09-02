@@ -2,7 +2,7 @@
 layout: default
 title: 'INV Material Movements | Oracle EBS SQL Report'
 description: 'Detailed report of On Hand Quantity with stock movements by Item , Org Code . Material Movements involve cumulative buckets for stock/in/mvmt and month…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Nidec changes, INV, Material, Movements, org_organization_definitions, mtl_onhand_quantities_detail, mtl_item_status_vl'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, INV, Material, Movements, org_organization_definitions, mtl_onhand_quantities_detail, mtl_item_status_vl'
 permalink: /INV%20Material%20Movements/
 ---
 
@@ -22,7 +22,7 @@ Organization Code, Item, Category Set 1, Category Set 2, Category Set 3, Show Mo
 [org_organization_definitions](https://www.enginatics.com/library/?pg=1&find=org_organization_definitions), [mtl_onhand_quantities_detail](https://www.enginatics.com/library/?pg=1&find=mtl_onhand_quantities_detail), [mtl_item_status_vl](https://www.enginatics.com/library/?pg=1&find=mtl_item_status_vl), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl), [mtl_units_of_measure_vl](https://www.enginatics.com/library/?pg=1&find=mtl_units_of_measure_vl)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Nidec changes](https://www.enginatics.com/library/?pg=1&category[]=Nidec%20changes)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 
 

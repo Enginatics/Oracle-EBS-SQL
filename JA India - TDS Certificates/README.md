@@ -27,7 +27,8 @@ TAN Number, Organization, Financial Year, Vendor, Certificate Nos. From, Certifi
 ## Report Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
-
+## Related Reports
+[Blitz Report Security](/Blitz%20Report%20Security/ "Blitz Report Security Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
@@ -36,7 +37,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/ja-india-tds-certificates/) |
+| Excel Example Output | [](https://www.enginatics.com/example/ja-india-tds-certificates/) |
 | Blitz Report™ XML Import | [JA_India_TDS_Certificates.xml](https://www.enginatics.com/xml/ja-india-tds-certificates/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/ja-india-tds-certificates/](https://www.enginatics.com/reports/ja-india-tds-certificates/) |
 

@@ -14,7 +14,7 @@ permalink: /FND%20Lookup%20Values/
 Lookup types and values, for example to find a lookup type for a particular lookup code value or meaning.
 
 ## Report Parameters
-Type, View Application, Code contains, Meaning contains, Description contains, Creation Date From, Creation Date To, Created By, Language Code, Missing Translation to Lang Code
+Type, View Application, Code contains, Meaning contains, Description contains, Creation Date From, Creation Date To, Created By, Language Code, Missing Translation to Lang Code, DFF Display
 
 ## Oracle EBS Tables Used
 [fnd_application_vl](https://www.enginatics.com/library/?pg=1&find=fnd_application_vl), [fnd_lookup_types_vl](https://www.enginatics.com/library/?pg=1&find=fnd_lookup_types_vl), [fnd_lookup_values](https://www.enginatics.com/library/?pg=1&find=fnd_lookup_values), [fnd_languages](https://www.enginatics.com/library/?pg=1&find=fnd_languages)

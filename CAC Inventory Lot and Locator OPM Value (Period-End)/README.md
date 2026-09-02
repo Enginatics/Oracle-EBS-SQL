@@ -66,7 +66,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/cac-inventory-lot-and-locator-opm-value-period-end/) |
+| Excel Example Output | [](https://www.enginatics.com/example/cac-inventory-lot-and-locator-opm-value-period-end/) |
 | Blitz Report™ XML Import | [CAC_Inventory_Lot_and_Locator_OPM_Value_Period_End.xml](https://www.enginatics.com/xml/cac-inventory-lot-and-locator-opm-value-period-end/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/cac-inventory-lot-and-locator-opm-value-period-end/](https://www.enginatics.com/reports/cac-inventory-lot-and-locator-opm-value-period-end/) |
 

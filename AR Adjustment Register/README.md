@@ -2,7 +2,7 @@
 layout: default
 title: 'AR Adjustment Register | Oracle EBS SQL Report'
 description: 'Application: Receivables Source: Adjustment Register Short Name: ARRXARPB The report has now been enhanced to allow multiple accessible Ledgers or…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Adjustment, Register, ar_adjustments_rep_itf'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Adjustment, Register, ar_adjustments_rep_itf'
 permalink: /AR%20Adjustment%20Register/
 ---
 
@@ -24,10 +24,10 @@ Reporting Level, Reporting Context, Company Segment Low, Company Segment High, G
 [ar_adjustments_rep_itf](https://www.enginatics.com/library/?pg=1&find=ar_adjustments_rep_itf)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related Reports
-[AR Transaction Register](/AR%20Transaction%20Register/ "AR Transaction Register Oracle EBS SQL Report")
+[AR Transaction Register](/AR%20Transaction%20Register/ "AR Transaction Register Oracle EBS SQL Report"), [AR Customer Statement](/AR%20Customer%20Statement/ "AR Customer Statement Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.

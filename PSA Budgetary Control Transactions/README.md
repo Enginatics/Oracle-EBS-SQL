@@ -2,7 +2,7 @@
 layout: default
 title: 'PSA Budgetary Control Transactions | Oracle EBS SQL Report'
 description: 'Imported from Concurrent Program Description: Budgetary Control Results Report Program Application: Public Sector Financials Source: Budgetary Control…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, PSA, Budgetary, Control, Transactions, &lp_expand_tables, gl_ledgers, gl_code_combinations_kfv'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, PSA, Budgetary, Control, Transactions, &lp_expand_tables, gl_ledgers, gl_code_combinations_kfv'
 permalink: /PSA%20Budgetary%20Control%20Transactions/
 ---
 
@@ -40,10 +40,10 @@ Ledger Name, Period From, Period To, JE Batch Name, Account From, Account To, Fu
 [&lp_expand_tables](https://www.enginatics.com/library/?pg=1&find=&lp_expand_tables), [gl_ledgers](https://www.enginatics.com/library/?pg=1&find=gl_ledgers), [gl_code_combinations_kfv](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations_kfv)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related Reports
-[INV Item Upload](/INV%20Item%20Upload/ "INV Item Upload Oracle EBS SQL Report"), [CAC AP Accrual IR ISO Match Analysis](/CAC%20AP%20Accrual%20IR%20ISO%20Match%20Analysis/ "CAC AP Accrual IR ISO Match Analysis Oracle EBS SQL Report"), [CAC New Standard Item Costs](/CAC%20New%20Standard%20Item%20Costs/ "CAC New Standard Item Costs Oracle EBS SQL Report"), [CAC Standard Cost Update Submissions](/CAC%20Standard%20Cost%20Update%20Submissions/ "CAC Standard Cost Update Submissions Oracle EBS SQL Report"), [AP Expenses](/AP%20Expenses/ "AP Expenses Oracle EBS SQL Report"), [CAC Last Standard Item Cost](/CAC%20Last%20Standard%20Item%20Cost/ "CAC Last Standard Item Cost Oracle EBS SQL Report"), [AP Supplier Upload](/AP%20Supplier%20Upload/ "AP Supplier Upload Oracle EBS SQL Report")
+[CAC Intransit Value (Real-Time)](/CAC%20Intransit%20Value%20%28Real-Time%29/ "CAC Intransit Value (Real-Time) Oracle EBS SQL Report"), [CAC AP Accrual IR ISO Match Analysis](/CAC%20AP%20Accrual%20IR%20ISO%20Match%20Analysis/ "CAC AP Accrual IR ISO Match Analysis Oracle EBS SQL Report"), [CAC Inventory Lot and Locator OPM Value (Period-End)](/CAC%20Inventory%20Lot%20and%20Locator%20OPM%20Value%20%28Period-End%29/ "CAC Inventory Lot and Locator OPM Value (Period-End) Oracle EBS SQL Report"), [CAC New Standard Item Costs](/CAC%20New%20Standard%20Item%20Costs/ "CAC New Standard Item Costs Oracle EBS SQL Report"), [CAC Standard Cost Update Submissions](/CAC%20Standard%20Cost%20Update%20Submissions/ "CAC Standard Cost Update Submissions Oracle EBS SQL Report"), [AP Expenses](/AP%20Expenses/ "AP Expenses Oracle EBS SQL Report"), [CAC Last Standard Item Cost](/CAC%20Last%20Standard%20Item%20Cost/ "CAC Last Standard Item Cost Oracle EBS SQL Report"), [AP Supplier Upload](/AP%20Supplier%20Upload/ "AP Supplier Upload Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
@@ -52,7 +52,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/psa-budgetary-control-transactions/) |
+| Excel Example Output | [](https://www.enginatics.com/example/psa-budgetary-control-transactions/) |
 | Blitz Report™ XML Import | [PSA_Budgetary_Control_Transactions.xml](https://www.enginatics.com/xml/psa-budgetary-control-transactions/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/psa-budgetary-control-transactions/](https://www.enginatics.com/reports/psa-budgetary-control-transactions/) |
 

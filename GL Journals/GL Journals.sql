@@ -10,7 +10,17 @@
 -- Library Link: https://www.enginatics.com/reports/gl-journals/
 -- Run Report: https://demo.enginatics.com/
 
-with gcck as (select &materialoze_hint gcck.* from gl_code_combinations_kfv gcck where 2=2)
+with gcck as (select &materialize_hint gcck.* from gl_code_combinations_kfv gcck where 2=2)
+select
+y.*
+from
+(
+select
+x.*,
+--flags lines where equal and opposite accounted amounts on the same account combination and batch fully cancel to zero
+xxen_util.yes(case when x.currency<>'STAT' and x.accounted_amount<>0 and count(distinct case when x.currency<>'STAT' and x.accounted_amount>0 then x.je_header_id||'.'||x.line_number end) over (partition by x.ledger, x.je_batch_id, x.concatenated_segments, abs(x.accounted_amount))=count(distinct case when x.currency<>'STAT' and x.accounted_amount<0 then x.je_header_id||'.'||x.line_number end) over (partition by x.ledger, x.je_batch_id, x.concatenated_segments, abs(x.accounted_amount)) then 'Y' end) knocked_off
+from
+(
 select &leading_hint
 --ledger
 gl.name ledger,
@@ -161,12 +171,13 @@ decode(fd1.datatype_id,1,fd1.media_id)=fdst1.media_id(+) and
 decode(fd2.datatype_id,1,fd2.media_id)=fdst2.media_id(+) and
 decode(fd1.datatype_id,2,fd1.media_id)=fdlt1.media_id(+) and
 decode(fd2.datatype_id,2,fd2.media_id)=fdlt2.media_id(+)
+) x
+) y
+where
+3=3
 order by
-gp.period_year desc,
-gp.period_num desc,
-gjh.default_effective_date,
-gjb.name,
-gjh.name,
-gjl.je_line_num,
-fad1.seq_num,
-fad2.seq_num
+y.period_year_num desc,
+y.effective_date,
+y.batch_name,
+y.journal_name,
+y.line_number&attachment_order_by

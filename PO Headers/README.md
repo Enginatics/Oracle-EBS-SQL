@@ -2,7 +2,7 @@
 layout: default
 title: 'PO Headers | Oracle EBS SQL Report'
 description: 'PO headers or releases with corresponding invoices and their payment status. Example: To show all POs or releases which have an invoice but no receiving…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Headers, rcv_transactions, hr_all_organization_units_vl, po_headers_all'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Headers, rcv_transactions, hr_all_organization_units_vl, po_headers_all'
 permalink: /PO%20Headers/
 ---
 
@@ -23,10 +23,10 @@ Operating Unit, Supplier, Supplier Site, PO Number, Type, Payment Status, Show I
 [rcv_transactions](https://www.enginatics.com/library/?pg=1&find=rcv_transactions), [hr_all_organization_units_vl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_vl), [po_headers_all](https://www.enginatics.com/library/?pg=1&find=po_headers_all), [po_releases_all](https://www.enginatics.com/library/?pg=1&find=po_releases_all), [per_people_x](https://www.enginatics.com/library/?pg=1&find=per_people_x), [ap_suppliers](https://www.enginatics.com/library/?pg=1&find=ap_suppliers), [ap_supplier_sites_all](https://www.enginatics.com/library/?pg=1&find=ap_supplier_sites_all), [po_vendor_contacts](https://www.enginatics.com/library/?pg=1&find=po_vendor_contacts), [po_document_types_all_vl](https://www.enginatics.com/library/?pg=1&find=po_document_types_all_vl), [ap_terms](https://www.enginatics.com/library/?pg=1&find=ap_terms), [hr_locations_all_vl](https://www.enginatics.com/library/?pg=1&find=hr_locations_all_vl), [ap_invoice_lines_all](https://www.enginatics.com/library/?pg=1&find=ap_invoice_lines_all), [ap_invoices_all](https://www.enginatics.com/library/?pg=1&find=ap_invoices_all)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related Reports
-[PO Headers 11i](/PO%20Headers%2011i/ "PO Headers 11i Oracle EBS SQL Report"), [PO Headers and Lines](/PO%20Headers%20and%20Lines/ "PO Headers and Lines Oracle EBS SQL Report"), [PO Headers and Lines 11i](/PO%20Headers%20and%20Lines%2011i/ "PO Headers and Lines 11i Oracle EBS SQL Report"), [GL Account Analysis](/GL%20Account%20Analysis/ "GL Account Analysis Oracle EBS SQL Report"), [PO Purchase Requisitions with PO Details](/PO%20Purchase%20Requisitions%20with%20PO%20Details/ "PO Purchase Requisitions with PO Details Oracle EBS SQL Report")
+[PO Headers and Lines](/PO%20Headers%20and%20Lines/ "PO Headers and Lines Oracle EBS SQL Report"), [AP Invoices and Lines](/AP%20Invoices%20and%20Lines/ "AP Invoices and Lines Oracle EBS SQL Report"), [GL Account Analysis](/GL%20Account%20Analysis/ "GL Account Analysis Oracle EBS SQL Report"), [PO Purchase Requisitions with PO Details](/PO%20Purchase%20Requisitions%20with%20PO%20Details/ "PO Purchase Requisitions with PO Details Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.

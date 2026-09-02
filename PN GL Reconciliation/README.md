@@ -2,7 +2,7 @@
 layout: default
 title: 'PN GL Reconciliation | Oracle EBS SQL Report'
 description: 'Application: Property Manager Report: PN GL Reconciliation – Oracle E-Business Suite SQL report'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Reconciliation, xmltable, xla_entity_types_vl, xla_event_types_vl'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Reconciliation, xmltable, xla_entity_types_vl, xla_event_types_vl'
 permalink: /PN%20GL%20Reconciliation/
 ---
 
@@ -22,7 +22,7 @@ Ledger, Operating Unit, Period, Representation, Regime, Lease Number, Lease Numb
 [xmltable](https://www.enginatics.com/library/?pg=1&find=xmltable), [xla_entity_types_vl](https://www.enginatics.com/library/?pg=1&find=xla_entity_types_vl), [xla_event_types_vl](https://www.enginatics.com/library/?pg=1&find=xla_event_types_vl), [q_trx](https://www.enginatics.com/library/?pg=1&find=q_trx), [q_trx_amt](https://www.enginatics.com/library/?pg=1&find=q_trx_amt)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related Reports
 [ZX US Sales Tax](/ZX%20US%20Sales%20Tax/ "ZX US Sales Tax Oracle EBS SQL Report")
@@ -34,7 +34,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/pn-gl-reconciliation/) |
+| Excel Example Output | [](https://www.enginatics.com/example/pn-gl-reconciliation/) |
 | Blitz Report™ XML Import | [PN_GL_Reconciliation.xml](https://www.enginatics.com/xml/pn-gl-reconciliation/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/pn-gl-reconciliation/](https://www.enginatics.com/reports/pn-gl-reconciliation/) |
 

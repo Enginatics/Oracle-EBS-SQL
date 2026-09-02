@@ -60,7 +60,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/cac-inactive-items-set-to-roll-up/) |
+| Excel Example Output | [](https://www.enginatics.com/example/cac-inactive-items-set-to-roll-up/) |
 | Blitz Report™ XML Import | [CAC_Inactive_Items_Set_to_Roll_Up.xml](https://www.enginatics.com/xml/cac-inactive-items-set-to-roll-up/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/cac-inactive-items-set-to-roll-up/](https://www.enginatics.com/reports/cac-inactive-items-set-to-roll-up/) |
 

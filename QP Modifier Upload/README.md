@@ -2,7 +2,7 @@
 layout: default
 title: 'QP Modifier Upload | Oracle EBS SQL Report'
 description: 'This upload supports the creation and update of Modifiers in Oracle Advanced Pricing. The upload supports creation/update/deletion of the following…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Upload, Modifier, qp_secu_list_headers_vl, qp_qualifiers_v'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, Modifier, qp_secu_list_headers_vl, qp_qualifiers_v'
 permalink: /QP%20Modifier%20Upload/
 ---
 
@@ -65,7 +65,7 @@ Upload Mode, End Date Matching Modifiers?, Modifier Numbering, List Type, List N
 [qp_secu_list_headers_vl](https://www.enginatics.com/library/?pg=1&find=qp_secu_list_headers_vl), [qp_qualifiers_v](https://www.enginatics.com/library/?pg=1&find=qp_qualifiers_v)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only), [Upload](https://www.enginatics.com/library/?pg=1&category[]=Upload)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Upload](https://www.enginatics.com/library/?pg=1&category[]=Upload)
 
 
 
@@ -76,7 +76,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/qp-modifier-upload/) |
+| Excel Example Output | [](https://www.enginatics.com/example/qp-modifier-upload/) |
 | Blitz Report™ XML Import | [QP_Modifier_Upload.xml](https://www.enginatics.com/xml/qp-modifier-upload/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/qp-modifier-upload/](https://www.enginatics.com/reports/qp-modifier-upload/) |
 

@@ -218,8 +218,10 @@ select  nvl(gl.short_name, gl.name) Ledger,
 &category_segments1
 &category_segments2
 &category_segments3
+        gmd.original_qty * mucv.conversion_rate Primary_Original_Quantity,
         gmd.plan_qty * mucv.conversion_rate Primary_Planned_Quantity,
         msiv.primary_uom_code Primary_UOM_Code,
+        gmd.original_qty Original_Transacted_Quantity,
         gmd.plan_qty Planned_Transacted_Quantity,
         gmd.dtl_um Planned_Transacted_UOM,
         gmd.actual_qty Actual_Transacted_Quantity,

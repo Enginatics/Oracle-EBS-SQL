@@ -2,7 +2,7 @@
 layout: default
 title: 'INV Material Status Change History | Oracle EBS SQL Report'
 description: 'Imported from BI Publisher Description: Material Status Change History Report Application: Inventory Source: Material Status Change History Report (XML)…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, BI Publisher, Enginatics, R12 only, INV, Material, Status, Change, hr_operating_units, org_organization_definitions, mtl_secondary_inventories'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, INV, Material, Status, Change, hr_operating_units, org_organization_definitions, mtl_secondary_inventories'
 permalink: /INV%20Material%20Status%20Change%20History/
 ---
 
@@ -25,10 +25,10 @@ Operating Unit, Organization Code, Subinventory Code, Locators From, Locators To
 [hr_operating_units](https://www.enginatics.com/library/?pg=1&find=hr_operating_units), [org_organization_definitions](https://www.enginatics.com/library/?pg=1&find=org_organization_definitions), [mtl_secondary_inventories](https://www.enginatics.com/library/?pg=1&find=mtl_secondary_inventories), [mtl_material_status_history](https://www.enginatics.com/library/?pg=1&find=mtl_material_status_history), [mfg_lookups](https://www.enginatics.com/library/?pg=1&find=mfg_lookups), [mtl_transaction_reasons](https://www.enginatics.com/library/?pg=1&find=mtl_transaction_reasons), [mtl_material_statuses_vl](https://www.enginatics.com/library/?pg=1&find=mtl_material_statuses_vl), [per_all_people_f](https://www.enginatics.com/library/?pg=1&find=per_all_people_f), [fnd_user](https://www.enginatics.com/library/?pg=1&find=fnd_user), [operating_unit](https://www.enginatics.com/library/?pg=1&find=operating_unit), [mtl_item_locations_kfv](https://www.enginatics.com/library/?pg=1&find=mtl_item_locations_kfv), [mtl_lot_numbers](https://www.enginatics.com/library/?pg=1&find=mtl_lot_numbers), [mtl_system_items_kfv](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_kfv), [mtl_serial_numbers](https://www.enginatics.com/library/?pg=1&find=mtl_serial_numbers)
 
 ## Report Categories
-[BI Publisher](https://www.enginatics.com/library/?pg=1&category[]=BI%20Publisher), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related Reports
-[CAC ICP PII Material Account Detail](/CAC%20ICP%20PII%20Material%20Account%20Detail/ "CAC ICP PII Material Account Detail Oracle EBS SQL Report"), [CAC Material Account Detail](/CAC%20Material%20Account%20Detail/ "CAC Material Account Detail Oracle EBS SQL Report"), [GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20%28Distributions%29/ "GL Account Analysis (Distributions) Oracle EBS SQL Report"), [GL Account Analysis (Drilldown) (with inventory and WIP)](/GL%20Account%20Analysis%20%28Drilldown%29%20%28with%20inventory%20and%20WIP%29/ "GL Account Analysis (Drilldown) (with inventory and WIP) Oracle EBS SQL Report"), [GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report"), [GL Account Analysis](/GL%20Account%20Analysis/ "GL Account Analysis Oracle EBS SQL Report")
+[CAC ICP PII Material Account Detail](/CAC%20ICP%20PII%20Material%20Account%20Detail/ "CAC ICP PII Material Account Detail Oracle EBS SQL Report"), [CAC Material Account Detail](/CAC%20Material%20Account%20Detail/ "CAC Material Account Detail Oracle EBS SQL Report"), [CAC Inventory and Intransit Value (Period-End) - Discrete/OPM](/CAC%20Inventory%20and%20Intransit%20Value%20%28Period-End%29%20-%20Discrete-OPM/ "CAC Inventory and Intransit Value (Period-End) - Discrete/OPM Oracle EBS SQL Report"), [GL Account Analysis (Drilldown) (with inventory and WIP)](/GL%20Account%20Analysis%20%28Drilldown%29%20%28with%20inventory%20and%20WIP%29/ "GL Account Analysis (Drilldown) (with inventory and WIP) Oracle EBS SQL Report"), [GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report"), [GL Account Analysis](/GL%20Account%20Analysis/ "GL Account Analysis Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
@@ -37,7 +37,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/inv-material-status-change-history/) |
+| Excel Example Output | [](https://www.enginatics.com/example/inv-material-status-change-history/) |
 | Blitz Report™ XML Import | [INV_Material_Status_Change_History.xml](https://www.enginatics.com/xml/inv-material-status-change-history/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/inv-material-status-change-history/](https://www.enginatics.com/reports/inv-material-status-change-history/) |
 

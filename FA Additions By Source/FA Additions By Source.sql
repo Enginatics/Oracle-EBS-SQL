@@ -20,12 +20,23 @@ select
  fas.asset_type,
  fas.account,
  fas.account_desc,
+ &segment_cols
+ fas.location,
  fas.cost_center,
  fas.cost_center_desc,
+ fas.asset_key,
+ fas.tag_number,
  fas.asset_number,
  fas.asset_description,
+ fas.reference_number,
+ (select flv.meaning from fa_lookups_vl flv where flv.lookup_type = 'FAXOLTRX' and flv.lookup_code = fas.transaction_type_code) transaction_type,
+ fas.transaction_effective_period,
+ fas.transaction_creation_date,
  fas.vendor_number,
+ fas.vendor_name,
+ fas.po_number,
  fas.invoice_number,
+ fas.invoice_date,
  fas.invoice_line,
  fas.invoice_description,
  fas.original_invoice_cost,
@@ -58,13 +69,24 @@ select
  falu.meaning asset_type,
  decode(ah.asset_type, 'CIP', cb.cip_cost_acct, cb.asset_cost_acct) account,
  gl_flexfields_pkg.get_description(dhcc.chart_of_accounts_id,'GL_ACCOUNT',decode(ah.asset_type, 'CIP', cb.cip_cost_acct, cb.asset_cost_acct)) account_desc,
+ dhcc.code_combination_id,
+ flk.concatenated_segments location,
  fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_cost_seg', 'SQLGL', 'GL#', dhcc.chart_of_accounts_id, null, dhcc.code_combination_id, 'FA_COST_CTR', 'Y', 'VALUE') cost_center,
  fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_cost_seg', 'SQLGL', 'GL#', dhcc.chart_of_accounts_id, null, dhcc.code_combination_id, 'FA_COST_CTR', 'Y', 'DESCRIPTION') cost_center_desc,
+ fak.concatenated_segments asset_key,
+ ad.tag_number,
  --
  ad.asset_number,
  ad.description asset_description,
+ th.transaction_name reference_number,
+ th.transaction_type_code transaction_type_code,
+ dp.period_name transaction_effective_period,
+ th.transaction_date_entered transaction_creation_date,
  null vendor_number,
+ null vendor_name,
+ null po_number,
  null invoice_number,
+ to_date(null) invoice_date,
  to_number(null) invoice_line,
  null invoice_description,
  to_number(null) original_invoice_cost,
@@ -81,7 +103,9 @@ from
  gl_code_combinations dhcc,
  fa_transaction_headers th,
  fa_deprn_detail dd,
- fa_deprn_periods dp
+ fa_deprn_periods dp,
+ fa_locations_kfv flk,
+ fa_asset_keywords_kfv fak
 where
  dp.book_type_code =:p_book
  and dp.period_counter >=:period1_pc
@@ -115,6 +139,9 @@ where
  and nvl(ah.date_ineffective,sysdate+1) > nvl(dp.period_close_date, sysdate)
  and ah.asset_type = falu.lookup_code
  and falu.lookup_type = 'ASSET TYPE'
+ and dh.location_id = flk.location_id(+)
+ and ad.asset_key_ccid = fak.code_combination_id(+)
+ and 1=1
 group by
  decode(th.mass_reference_id,null,'Manual','Mass Additions'),
  fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_bal_seg', 'SQLGL', 'GL#', dhcc.chart_of_accounts_id, NULL, dhcc.code_combination_id, 'GL_BALANCING', 'Y', 'VALUE'),
@@ -123,10 +150,18 @@ group by
  falu.meaning,
  decode(ah.asset_type, 'CIP', cb.cip_cost_acct, cb.asset_cost_acct),
  gl_flexfields_pkg.get_description(dhcc.chart_of_accounts_id,'GL_ACCOUNT',decode(ah.asset_type, 'CIP', cb.cip_cost_acct, cb.asset_cost_acct)),
+ dhcc.code_combination_id,
+ flk.concatenated_segments,
  fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_cost_seg', 'SQLGL', 'GL#', dhcc.chart_of_accounts_id, null, dhcc.code_combination_id, 'FA_COST_CTR', 'Y', 'VALUE'),
  fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_cost_seg', 'SQLGL', 'GL#', dhcc.chart_of_accounts_id, null, dhcc.code_combination_id, 'FA_COST_CTR', 'Y', 'DESCRIPTION'),
+ fak.concatenated_segments,
+ ad.tag_number,
  ad.asset_number,
- ad.description
+ ad.description,
+ th.transaction_name,
+ th.transaction_type_code,
+ dp.period_name,
+ th.transaction_date_entered
 union all
 select
  decode(th.mass_reference_id,null,'Manual','Mass Additions') source,
@@ -136,13 +171,24 @@ select
  falu.meaning asset_type,
  decode(ah.asset_type, 'CIP', cb.cip_cost_acct, cb.asset_cost_acct) account,
  gl_flexfields_pkg.get_description(dhcc.chart_of_accounts_id,'GL_ACCOUNT',decode(ah.asset_type, 'CIP', cb.cip_cost_acct, cb.asset_cost_acct)) account_desc,
+ dhcc.code_combination_id,
+ flk.concatenated_segments location,
  fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_cost_seg', 'SQLGL', 'GL#', dhcc.chart_of_accounts_id, null, dhcc.code_combination_id, 'FA_COST_CTR', 'Y', 'VALUE') cost_center,
  fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_cost_seg', 'SQLGL', 'GL#', dhcc.chart_of_accounts_id, null, dhcc.code_combination_id, 'FA_COST_CTR', 'Y', 'DESCRIPTION') cost_center_desc,
+ fak.concatenated_segments asset_key,
+ ad.tag_number,
  --
  ad.asset_number,
- ad.description asset_descripton,
+ ad.description asset_description,
+ th.transaction_name reference_number,
+ th.transaction_type_code transaction_type_code,
+ dp.period_name transaction_effective_period,
+ th.transaction_date_entered transaction_creation_date,
  null vendor_number,
+ null vendor_name,
+ null po_number,
  null invoice_number,
+ to_date(null) invoice_date,
  to_number(null) invoice_line,
  null invoice_description,
  to_number(null) original_invoice_cost,
@@ -161,7 +207,9 @@ from
  gl_code_combinations ajcc,
  fa_lookups falu,
  fa_adjustments adj,
- fa_deprn_periods dp
+ fa_deprn_periods dp,
+ fa_locations_kfv flk,
+ fa_asset_keywords_kfv fak
 where
  dp.book_type_code = :p_book
  and dp.period_counter >= :period1_pc
@@ -192,6 +240,9 @@ where
  and nvl(ah.date_ineffective,sysdate+1) > th.date_effective
  and ah.asset_type = falu.lookup_code
  and falu.lookup_type = 'ASSET TYPE'
+ and dh.location_id = flk.location_id(+)
+ and ad.asset_key_ccid = fak.code_combination_id(+)
+ and 2=2
 group by
  decode(th.mass_reference_id,null,'Manual','Mass Additions'),
  fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_bal_seg', 'SQLGL', 'GL#', dhcc.chart_of_accounts_id, NULL, dhcc.code_combination_id, 'GL_BALANCING', 'Y', 'VALUE'),
@@ -200,10 +251,18 @@ group by
  falu.meaning,
  decode(ah.asset_type, 'CIP', cb.cip_cost_acct, cb.asset_cost_acct),
  gl_flexfields_pkg.get_description(dhcc.chart_of_accounts_id,'GL_ACCOUNT',decode(ah.asset_type, 'CIP', cb.cip_cost_acct, cb.asset_cost_acct)),
+ dhcc.code_combination_id,
+ flk.concatenated_segments,
  fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_cost_seg', 'SQLGL', 'GL#', dhcc.chart_of_accounts_id, null, dhcc.code_combination_id, 'FA_COST_CTR', 'Y', 'VALUE'),
  fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_cost_seg', 'SQLGL', 'GL#', dhcc.chart_of_accounts_id, null, dhcc.code_combination_id, 'FA_COST_CTR', 'Y', 'DESCRIPTION'),
+ fak.concatenated_segments,
+ ad.tag_number,
  ad.asset_number,
- ad.description
+ ad.description,
+ th.transaction_name,
+ th.transaction_type_code,
+ dp.period_name,
+ th.transaction_date_entered
 union all
 select
  decode(th.mass_reference_id,null,'Manual','Mass Additions') source,
@@ -213,13 +272,24 @@ select
  falu.meaning asset_type,
  decode(ah.asset_type, 'CIP', cb.cip_cost_acct, cb.asset_cost_acct) account,
  gl_flexfields_pkg.get_description(dhcc.chart_of_accounts_id,'GL_ACCOUNT',decode(ah.asset_type, 'CIP', cb.cip_cost_acct, cb.asset_cost_acct)) account_desc,
+ dhcc.code_combination_id,
+ flk.concatenated_segments location,
  fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_cost_seg', 'SQLGL', 'GL#', dhcc.chart_of_accounts_id, null, dhcc.code_combination_id, 'FA_COST_CTR', 'Y', 'VALUE') cost_center,
  fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_cost_seg', 'SQLGL', 'GL#', dhcc.chart_of_accounts_id, null, dhcc.code_combination_id, 'FA_COST_CTR', 'Y', 'DESCRIPTION') cost_center_desc,
+ fak.concatenated_segments asset_key,
+ ad.tag_number,
  --
  ad.asset_number,
  ad.description asset_description,
+ th.transaction_name reference_number,
+ th.transaction_type_code transaction_type_code,
+ dp.period_name transaction_effective_period,
+ th.transaction_date_entered transaction_creation_date,
  po_vend.segment1 vendor_number,
+ po_vend.vendor_name,
+ ai_in.po_number,
  ai_in.invoice_number invoice_number,
+ ai_in.invoice_date,
  ai_in.invoice_line_number||' - '||ai_in.ap_distribution_line_number invoice_line,
  ai_in.description invoice_description,
  ai_in.payables_cost original_invoice_cost,
@@ -240,7 +310,9 @@ from
  fa_additions ad,
  gl_code_combinations dhcc,
  fa_deprn_detail dd,
- fa_deprn_periods dp
+ fa_deprn_periods dp,
+ fa_locations_kfv flk,
+ fa_asset_keywords_kfv fak
 where
  dp.book_type_code = :p_book
  and dp.period_counter >= :period1_pc
@@ -280,6 +352,9 @@ where
  and nvl(ai_in.date_ineffective, sysdate+1) > nvl(dp.period_close_date, sysdate)
  and ai_in.deleted_flag = 'NO'
  and po_vend.vendor_id(+) = ai_in.po_vendor_id
+ and dh.location_id = flk.location_id(+)
+ and ad.asset_key_ccid = fak.code_combination_id(+)
+ and 3=3
 group by
  decode(th.mass_reference_id,null,'Manual','Mass Additions'),
  fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_bal_seg', 'SQLGL', 'GL#', dhcc.chart_of_accounts_id, NULL, dhcc.code_combination_id, 'GL_BALANCING', 'Y', 'VALUE'),
@@ -288,12 +363,23 @@ group by
  falu.meaning,
  decode(ah.asset_type, 'CIP', cb.cip_cost_acct, cb.asset_cost_acct),
  gl_flexfields_pkg.get_description(dhcc.chart_of_accounts_id,'GL_ACCOUNT',decode(ah.asset_type, 'CIP', cb.cip_cost_acct, cb.asset_cost_acct)),
+ dhcc.code_combination_id,
+ flk.concatenated_segments,
  fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_cost_seg', 'SQLGL', 'GL#', dhcc.chart_of_accounts_id, null, dhcc.code_combination_id, 'FA_COST_CTR', 'Y', 'VALUE'),
  fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_cost_seg', 'SQLGL', 'GL#', dhcc.chart_of_accounts_id, null, dhcc.code_combination_id, 'FA_COST_CTR', 'Y', 'DESCRIPTION'),
+ fak.concatenated_segments,
+ ad.tag_number,
  ad.asset_number,
  ad.description,
+ th.transaction_name,
+ th.transaction_type_code,
+ dp.period_name,
+ th.transaction_date_entered,
  po_vend.segment1,
+ po_vend.vendor_name,
+ ai_in.po_number,
  ai_in.invoice_number,
+ ai_in.invoice_date,
  ai_in.invoice_line_number||' - '||ai_in.ap_distribution_line_number,
  ai_in.description,
  ai_in.payables_cost,
@@ -308,13 +394,24 @@ select
  falu.meaning asset_type,
  decode(ah.asset_type, 'CIP', cb.cip_cost_acct, cb.asset_cost_acct) account,
  gl_flexfields_pkg.get_description(dhcc.chart_of_accounts_id,'GL_ACCOUNT',decode(ah.asset_type, 'CIP', cb.cip_cost_acct, cb.asset_cost_acct)) account_desc,
+ dhcc.code_combination_id,
+ flk.concatenated_segments location,
  fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_cost_seg', 'SQLGL', 'GL#', dhcc.chart_of_accounts_id, null, dhcc.code_combination_id, 'FA_COST_CTR', 'Y', 'VALUE') cost_center,
  fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_cost_seg', 'SQLGL', 'GL#', dhcc.chart_of_accounts_id, null, dhcc.code_combination_id, 'FA_COST_CTR', 'Y', 'DESCRIPTION') cost_center_desc,
+ fak.concatenated_segments asset_key,
+ ad.tag_number,
  --
  ad.asset_number,
  ad.description asset_description,
+ th.transaction_name reference_number,
+ th.transaction_type_code transaction_type_code,
+ dp.period_name transaction_effective_period,
+ th.transaction_date_entered transaction_creation_date,
  po_vend.segment1 vendor_number,
+ po_vend.vendor_name,
+ ai_in.po_number,
  ai_in.invoice_number invoice_number,
+ ai_in.invoice_date,
  ai_in.invoice_line_number||' - '||ai_in.ap_distribution_line_number invoice_line,
  ai_in.description invoice_description,
  ai_in.payables_cost original_invoice_cost,
@@ -335,7 +432,9 @@ from
  fa_additions ad,
  gl_code_combinations dhcc,
  fa_transaction_headers th,
- fa_deprn_periods dp
+ fa_deprn_periods dp,
+ fa_locations_kfv flk,
+ fa_asset_keywords_kfv fak
 where
  dp.book_type_code = :p_book
  and dp.period_counter >=:period1_pc
@@ -367,6 +466,9 @@ where
  and nvl(ai_in.date_ineffective, sysdate+1) > nvl(dp.period_close_date, sysdate)
  and ai_in.deleted_flag = 'NO'
  and po_vend.vendor_id(+) = ai_in.po_vendor_id
+ and dh.location_id = flk.location_id(+)
+ and ad.asset_key_ccid = fak.code_combination_id(+)
+ and 4=4
 group by
  decode(th.mass_reference_id,null,'Manual','Mass Additions'),
  fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_bal_seg', 'SQLGL', 'GL#', dhcc.chart_of_accounts_id, NULL, dhcc.code_combination_id, 'GL_BALANCING', 'Y', 'VALUE'),
@@ -375,18 +477,32 @@ group by
  falu.meaning,
  decode(ah.asset_type, 'CIP', cb.cip_cost_acct, cb.asset_cost_acct),
  gl_flexfields_pkg.get_description(dhcc.chart_of_accounts_id,'GL_ACCOUNT',decode(ah.asset_type, 'CIP', cb.cip_cost_acct, cb.asset_cost_acct)),
+ dhcc.code_combination_id,
+ flk.concatenated_segments,
  fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_cost_seg', 'SQLGL', 'GL#', dhcc.chart_of_accounts_id, null, dhcc.code_combination_id, 'FA_COST_CTR', 'Y', 'VALUE'),
  fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_cost_seg', 'SQLGL', 'GL#', dhcc.chart_of_accounts_id, null, dhcc.code_combination_id, 'FA_COST_CTR', 'Y', 'DESCRIPTION'),
+ fak.concatenated_segments,
+ ad.tag_number,
  ad.asset_number,
  ad.description,
+ th.transaction_name,
+ th.transaction_type_code,
+ dp.period_name,
+ th.transaction_date_entered,
  po_vend.segment1,
+ po_vend.vendor_name,
+ ai_in.po_number,
  ai_in.invoice_number,
+ ai_in.invoice_date,
  ai_in.invoice_line_number||' - '||ai_in.ap_distribution_line_number,
  ai_in.description,
  ai_in.payables_cost,
  case when it.transaction_type in ('INVOICE ADDITION', 'INVOICE ADJUSTMENT', 'INVOICE TRANSFER','INVOICE REINSTATE')
  then it.transaction_type else null end
-) fas
+) fas,
+gl_code_combinations gcc
+where
+fas.code_combination_id=gcc.code_combination_id
 order by
  fas.source,
  fas.company,

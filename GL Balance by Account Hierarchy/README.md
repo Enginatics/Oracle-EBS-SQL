@@ -2,7 +2,7 @@
 layout: default
 title: 'GL Balance by Account Hierarchy | Oracle EBS SQL Report'
 description: 'Summary GL report including one line per GL account. This report has multiple collapsible/expandable summary levels based on the GL account hierarchy…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Balance, Account, Hierarchy, gl_daily_conversion_types, gl_daily_rates, gl_ledgers'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Balance, Account, Hierarchy, gl_daily_conversion_types, gl_daily_rates, gl_ledgers'
 permalink: /GL%20Balance%20by%20Account%20Hierarchy/
 ---
 
@@ -21,7 +21,7 @@ Ledger, Ledger Category, Period, Show Full Year, Hierarchy Segment, Additional S
 [gl_daily_conversion_types](https://www.enginatics.com/library/?pg=1&find=gl_daily_conversion_types), [gl_daily_rates](https://www.enginatics.com/library/?pg=1&find=gl_daily_rates), [gl_ledgers](https://www.enginatics.com/library/?pg=1&find=gl_ledgers), [gl_period_statuses](https://www.enginatics.com/library/?pg=1&find=gl_period_statuses), [gl_balances](https://www.enginatics.com/library/?pg=1&find=gl_balances), [fnd_id_flex_segments](https://www.enginatics.com/library/?pg=1&find=fnd_id_flex_segments), [gl_code_combinations](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations), [fnd_flex_values](https://www.enginatics.com/library/?pg=1&find=fnd_flex_values), [fnd_flex_value_norm_hierarchy](https://www.enginatics.com/library/?pg=1&find=fnd_flex_value_norm_hierarchy), [table](https://www.enginatics.com/library/?pg=1&find=table), [fnd_segment_attribute_values](https://www.enginatics.com/library/?pg=1&find=fnd_segment_attribute_values), [gl_summary_templates](https://www.enginatics.com/library/?pg=1&find=gl_summary_templates), [fnd_lookup_values_vl](https://www.enginatics.com/library/?pg=1&find=fnd_lookup_values_vl)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 
 

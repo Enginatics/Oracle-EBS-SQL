@@ -2,7 +2,7 @@
 layout: default
 title: 'EAM Assets | Oracle EBS SQL Report'
 description: 'Enterprise asset management asset details such as location, department etc. – Oracle E-Business Suite SQL report'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, EAM, Assets, hz_party_sites, ap_supplier_sites_all, mtl_parameters'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, EAM, Assets, hz_party_sites, ap_supplier_sites_all, mtl_parameters'
 permalink: /EAM%20Assets/
 ---
 
@@ -20,10 +20,10 @@ Organization Code, Department, Asset Group, Asset Number
 [hz_party_sites](https://www.enginatics.com/library/?pg=1&find=hz_party_sites), [ap_supplier_sites_all](https://www.enginatics.com/library/?pg=1&find=ap_supplier_sites_all), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters), [csi_item_instances](https://www.enginatics.com/library/?pg=1&find=csi_item_instances), [org_access_view](https://www.enginatics.com/library/?pg=1&find=org_access_view), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl), [mtl_item_locations_kfv](https://www.enginatics.com/library/?pg=1&find=mtl_item_locations_kfv), [eam_org_maint_defaults](https://www.enginatics.com/library/?pg=1&find=eam_org_maint_defaults), [bom_departments](https://www.enginatics.com/library/?pg=1&find=bom_departments), [mtl_eam_locations](https://www.enginatics.com/library/?pg=1&find=mtl_eam_locations), [mtl_categories_b_kfv](https://www.enginatics.com/library/?pg=1&find=mtl_categories_b_kfv), [csi_i_assets](https://www.enginatics.com/library/?pg=1&find=csi_i_assets), [fa_additions_b](https://www.enginatics.com/library/?pg=1&find=fa_additions_b), [pn_locations_all](https://www.enginatics.com/library/?pg=1&find=pn_locations_all), [mtl_serial_numbers](https://www.enginatics.com/library/?pg=1&find=mtl_serial_numbers), [mtl_object_genealogy](https://www.enginatics.com/library/?pg=1&find=mtl_object_genealogy), [mtl_system_items_b_kfv](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_b_kfv), [eam_failure_set_associations](https://www.enginatics.com/library/?pg=1&find=eam_failure_set_associations), [eam_failure_sets](https://www.enginatics.com/library/?pg=1&find=eam_failure_sets), [hz_locations](https://www.enginatics.com/library/?pg=1&find=hz_locations), [hr_locations_all](https://www.enginatics.com/library/?pg=1&find=hr_locations_all)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related Reports
-[EAM Weekly Schedule](/EAM%20Weekly%20Schedule/ "EAM Weekly Schedule Oracle EBS SQL Report"), [EAM Work Orders](/EAM%20Work%20Orders/ "EAM Work Orders Oracle EBS SQL Report"), [INV Items](/INV%20Items/ "INV Items Oracle EBS SQL Report"), [GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report"), [GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20%28Distributions%29/ "GL Account Analysis (Distributions) Oracle EBS SQL Report"), [INV Item Upload](/INV%20Item%20Upload/ "INV Item Upload Oracle EBS SQL Report"), [GL Account Analysis](/GL%20Account%20Analysis/ "GL Account Analysis Oracle EBS SQL Report")
+[EAM Weekly Schedule](/EAM%20Weekly%20Schedule/ "EAM Weekly Schedule Oracle EBS SQL Report"), [EAM Work Orders](/EAM%20Work%20Orders/ "EAM Work Orders Oracle EBS SQL Report"), [INV Items](/INV%20Items/ "INV Items Oracle EBS SQL Report"), [GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report"), [INV Item Upload](/INV%20Item%20Upload/ "INV Item Upload Oracle EBS SQL Report"), [GL Account Analysis](/GL%20Account%20Analysis/ "GL Account Analysis Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.

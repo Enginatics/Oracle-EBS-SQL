@@ -22,9 +22,9 @@ Create, Update – In this mode the existing customer information is first downl
 Update Level
 ===========
 This parameter determines if you want to download the Customer Profiles, Bank Accounts, and Contacts at the Customer Level, Customer Site Level or Both  
-Customer – only Customer Level information is downloaded to excel.
+Account – only Customer Level information is downloaded to excel.
 Site – only Customer Site level information is downloaded to the excel
-Blank – Customer and Customer Site level information is downloaded to the Excel.
+Account & Site – Customer and Customer Site level information is downloaded to the Excel.
 In the excel you can create/update the customer profiles, bank accounts, and/or contacts at the customer level by leaving the Site Level columns null.
 
 Update Profile Amounts
@@ -59,6 +59,168 @@ These parameters allow you to create the customer account and customer site in a
 -- Run Report: https://demo.enginatics.com/
 
 with
+q_party_contact_points as
+(
+select  /*+ inline */
+hp.party_id,
+hcp1.contact_point_id phone_contact_point_id,
+hcp1.phone_country_code,
+hcp1.phone_area_code,
+hcp1.phone_number,
+hcp1.phone_extension,
+hcp1.primary_flag phone_primary_flag,
+hcp1.status phone_status,
+hcp1.phone_line_type,
+hcp2.contact_point_id email_contact_point_id,
+hcp2.email_address,
+hcp2.email_format,
+hcp2.contact_point_purpose email_purpose,
+hcp2.primary_flag email_primary_flag,
+hcp2.status email_status,
+hcp3.contact_point_id url_contact_point_id,
+hcp3.url,
+hcp3.contact_point_purpose url_purpose,
+hcp3.primary_flag url_primary_flag,
+hcp3.status url_status,
+coalesce(hcp1.contact_point_type,hcp2.contact_point_type,hcp3.contact_point_type) contact_point_type,
+xxen_util.meaning('PARTY','REQUESTED_BY',222) assignment_level,
+1 seq
+from
+hz_parties hp,
+hz_contact_points hcp1,
+hz_contact_points hcp2,
+hz_contact_points hcp3
+where
+hp.party_id = hcp1.owner_table_id (+) and
+hcp1.owner_table_name (+) = 'HZ_PARTIES' and
+hcp1.contact_point_type (+) = 'PHONE' and
+hcp1.primary_flag (+) = 'Y' and
+hcp1.status (+) = 'A' and
+hp.party_id = hcp2.owner_table_id (+) and
+hcp2.owner_table_name (+) = 'HZ_PARTIES' and
+hcp2.contact_point_type (+) = 'EMAIL' and
+hcp2.primary_flag (+) = 'Y' and
+hcp2.status (+) = 'A' and
+hp.party_id = hcp3.owner_table_id (+) and
+hcp3.owner_table_name (+) = 'HZ_PARTIES' and
+hcp3.contact_point_type (+) = 'WEB' and
+hcp3.primary_flag (+) = 'Y' and
+hcp3.status (+) = 'A' and
+coalesce(hcp1.contact_point_id,hcp2.contact_point_id,hcp3.contact_point_id) is not null
+union
+select
+hcp.owner_table_id,
+decode(hcp.contact_point_type,'PHONE',hcp.contact_point_id),
+decode(hcp.contact_point_type,'PHONE',hcp.phone_country_code),
+decode(hcp.contact_point_type,'PHONE',hcp.phone_area_code),
+decode(hcp.contact_point_type,'PHONE',hcp.phone_number),
+decode(hcp.contact_point_type,'PHONE',hcp.phone_extension),
+decode(hcp.contact_point_type,'PHONE',hcp.primary_flag),
+decode(hcp.contact_point_type,'PHONE',hcp.status),
+decode(hcp.contact_point_type,'PHONE',hcp.phone_line_type),
+decode(hcp.contact_point_type,'EMAIL',hcp.contact_point_id),
+decode(hcp.contact_point_type,'EMAIL',hcp.email_address),
+decode(hcp.contact_point_type,'EMAIL',hcp.email_format),
+decode(hcp.contact_point_type,'EMAIL',hcp.contact_point_purpose),
+decode(hcp.contact_point_type,'EMAIL',hcp.primary_flag),
+decode(hcp.contact_point_type,'EMAIL',hcp.status),
+decode(hcp.contact_point_type,'WEB',hcp.contact_point_id),
+decode(hcp.contact_point_type,'WEB',hcp.url),
+decode(hcp.contact_point_type,'WEB',hcp.contact_point_purpose),
+decode(hcp.contact_point_type,'WEB',hcp.primary_flag),
+decode(hcp.contact_point_type,'WEB',hcp.status),
+hcp.contact_point_type,
+xxen_util.meaning('PARTY','REQUESTED_BY',222) assignment_level,
+2 seq
+from
+hz_contact_points hcp
+where
+:p_update_contact_points = 'Y' and
+hcp.owner_table_name = 'HZ_PARTIES' and
+hcp.status in ('A','I') and
+(hcp.primary_flag != 'Y' or hcp.status != 'A')
+),
+q_party_site_contact_points as
+(
+select /*+ inline */
+hps.party_site_id,
+hcp1.contact_point_id phone_contact_point_id,
+hcp1.phone_country_code,
+hcp1.phone_area_code,
+hcp1.phone_number,
+hcp1.phone_extension,
+hcp1.primary_flag phone_primary_flag,
+hcp1.status phone_status,
+hcp1.phone_line_type,
+hcp2.contact_point_id email_contact_point_id,
+hcp2.email_address,
+hcp2.email_format,
+hcp2.contact_point_purpose email_purpose,
+hcp2.primary_flag email_primary_flag,
+hcp2.status email_status,
+hcp3.contact_point_id url_contact_point_id,
+hcp3.url,
+hcp3.contact_point_purpose url_purpose,
+hcp3.primary_flag url_primary_flag,
+hcp3.status url_status,
+coalesce(hcp1.contact_point_type,hcp2.contact_point_type,hcp3.contact_point_type) contact_point_type,
+xxen_util.meaning('SITE','HZ_CONS_BILL_LEVEL',222) assignment_level, 
+1 seq
+from
+hz_party_sites hps,
+hz_contact_points hcp1,
+hz_contact_points hcp2,
+hz_contact_points hcp3
+where
+hps.party_site_id = hcp1.owner_table_id (+) and
+hcp1.owner_table_name (+) = 'HZ_PARTY_SITES' and
+hcp1.contact_point_type (+) = 'PHONE' and
+hcp1.primary_flag (+) = 'Y' and
+hcp1.status (+) = 'A' and
+hps.party_site_id = hcp2.owner_table_id (+) and
+hcp2.owner_table_name (+) = 'HZ_PARTY_SITES' and
+hcp2.contact_point_type (+) = 'EMAIL' and
+hcp2.primary_flag (+) = 'Y' and
+hcp2.status (+) = 'A' and
+hps.party_site_id = hcp3.owner_table_id (+) and
+hcp3.owner_table_name (+) = 'HZ_PARTY_SITES' and
+hcp3.contact_point_type (+) = 'WEB' and
+hcp3.primary_flag (+) = 'Y' and
+hcp3.status (+) = 'A' and
+coalesce(hcp1.contact_point_id,hcp2.contact_point_id,hcp3.contact_point_id) is not null
+union
+select
+hcp.owner_table_id,
+decode(hcp.contact_point_type,'PHONE',hcp.contact_point_id),
+decode(hcp.contact_point_type,'PHONE',hcp.phone_country_code),
+decode(hcp.contact_point_type,'PHONE',hcp.phone_area_code),
+decode(hcp.contact_point_type,'PHONE',hcp.phone_number),
+decode(hcp.contact_point_type,'PHONE',hcp.phone_extension),
+decode(hcp.contact_point_type,'PHONE',hcp.primary_flag),
+decode(hcp.contact_point_type,'PHONE',hcp.status),
+decode(hcp.contact_point_type,'PHONE',hcp.phone_line_type),
+decode(hcp.contact_point_type,'EMAIL',hcp.contact_point_id),
+decode(hcp.contact_point_type,'EMAIL',hcp.email_address),
+decode(hcp.contact_point_type,'EMAIL',hcp.email_format),
+decode(hcp.contact_point_type,'EMAIL',hcp.contact_point_purpose),
+decode(hcp.contact_point_type,'EMAIL',hcp.primary_flag),
+decode(hcp.contact_point_type,'EMAIL',hcp.status),
+decode(hcp.contact_point_type,'WEB',hcp.contact_point_id),
+decode(hcp.contact_point_type,'WEB',hcp.url),
+decode(hcp.contact_point_type,'WEB',hcp.contact_point_purpose),
+decode(hcp.contact_point_type,'WEB',hcp.primary_flag),
+decode(hcp.contact_point_type,'WEB',hcp.status),
+hcp.contact_point_type,
+xxen_util.meaning('SITE','HZ_CONS_BILL_LEVEL',222) assignment_level, 
+2 seq
+from
+hz_contact_points hcp
+where
+:p_update_contact_points = 'Y' and
+hcp.owner_table_name = 'HZ_PARTY_SITES' and
+hcp.status in ('A','I') and
+(hcp.primary_flag != 'Y' or hcp.status != 'A')
+),
 q_contacts as
 (select /*+ inline */
  hcar.cust_account_role_id,
@@ -81,11 +243,11 @@ q_contacts as
  hprel.primary_phone_number contact_phone_number,
  hprel.primary_phone_extension contact_phone_extension,
  xxen_util.meaning(hprel.primary_phone_line_type,'PHONE_LINE_TYPE',222) contact_phone_type,
- hcp.phone_country_code secondary_phone_country_code,
- hcp.phone_area_code secondary_phone_area_code,
- hcp.phone_number secondary_phone_number,
- hcp.phone_extension secondary_phone_extension,
- xxen_util.meaning(hcp.phone_line_type,'PHONE_LINE_TYPE',222) secondary_phone_type,
+ hcp.phone_country_code contact_sec_phone_country_code,
+ hcp.phone_area_code contact_sec_phone_area_code,
+ hcp.phone_number contact_sec_phone_number,
+ hcp.phone_extension contact_sec_phone_extension,
+ xxen_util.meaning(hcp.phone_line_type,'PHONE_LINE_TYPE',222) contact_sec_phone_type,
  xxen_util.meaning(hoc.job_title_code,'RESPONSIBILITY',222) contact_job_title_code,
  hoc.job_title contact_job_title,
  (select xxen_util.meaning(hrr.responsibility_type,'SITE_USE_CODE',222) from hz_role_responsibility hrr where hrr.cust_account_role_id=hcar.cust_account_role_id and hrr.primary_flag='Y' and rownum=1) contact_primary_role,
@@ -102,6 +264,7 @@ q_contacts as
  hl.city contact_city,
  hl.county contact_county,
  hl.state contact_state,
+ hl.province contact_province,
  hl.postal_code contact_postal_code,
  hl.sales_tax_geocode contact_geography_override,
  hps.mailstop contact_mailstop
@@ -159,12 +322,14 @@ q_bank_accounts as
  iepa.ext_payer_id,
  ieba.ext_bank_account_id          bank_account_id,
  cbbv.bank_name                    bank_name,
+ cbbv.bank_name_alt                bank_name_alt,
  cbbv.bank_number                  bank_number,
  (select ftv.territory_short_name
   from   fnd_territories_vl ftv
   where  ftv.territory_code = cbbv.bank_home_country
  )                                 bank_country,
  cbbv.bank_branch_name             bank_branch_name,
+ cbbv.bank_branch_name_alt         bank_branch_name_alt,
  cbbv.branch_number                bank_branch_number,
  cbbv.bank_branch_type             bank_branch_type,
  cbbv.eft_swift_code               bank_branch_bic,
@@ -199,6 +364,60 @@ q_bank_accounts as
  ipiua.payment_function = 'CUSTOMER_PAYMENT' and
  ipiua.instrument_type = 'BANKACCOUNT'
  -- and sysdate between ipiua.start_date and nvl(ipiua.end_date,sysdate)
+),
+q_party_relationships as
+(select /*+ inline */
+ hr.relationship_id,
+ hr.object_type,
+ hr.object_id,
+ hp.party_type,
+ hp.party_name,
+ hp.party_number,
+ hrt.role,
+ hr.start_date,
+ hr.end_date,
+ hr.status,
+ hr.comments
+ from
+ hz_relationships hr,
+ hz_relationship_types hrt,
+ hz_parties hp
+ where
+ hr.object_table_name = 'HZ_PARTIES' and
+ hr.subject_table_name = 'HZ_PARTIES' and
+ hr.status in ('A','I') and
+ hr.relationship_type = hrt.relationship_type and
+ hr.relationship_code = hrt.forward_rel_code and
+ hr.subject_type = hrt.subject_type and
+ hr.object_type = hrt.object_type and
+ hrt.relationship_type != 'CONTACT' and
+ hr.subject_type = hp.party_type and
+ hr.subject_id = hp.party_id
+),
+q_account_relationships as
+(select /*+ inline */
+ hcara.cust_acct_relate_id,
+ hcara.cust_account_id,
+ hp.party_name,
+ hca.account_number,
+ haouv.name operating_unit,
+ hcara.bill_to_flag,
+ hcara.ship_to_flag,
+ hcara.customer_reciprocal_flag,
+ hcara.status,
+ hcara.relationship_type,
+ hcara.comments
+ from
+ hz_cust_acct_relate_all hcara,
+ hz_cust_accounts hca,
+ hz_parties hp,
+ hr_all_organization_units_vl haouv
+ where
+ hcara.related_cust_account_id = hca.cust_account_id and
+ hca.party_id = hp.party_id and
+ hcara.org_id = haouv.organization_id and
+ hcara.status in ('A','I') and
+ mo_global.check_access(hcara.org_id)='Y'
 ),
 q_attachments as
 (select /*+ inline */
@@ -243,6 +462,7 @@ null message_,
 null request_id_,
 null modified_columns_,
 :p_upload_mode upload_mode_,
+:p_allow_update_on_create allow_update_on_create,
 :p_validate_address validate_address,
 :p_disable_tca_events disable_tca_events,
 to_number(null) cust_account_row_id,
@@ -250,14 +470,22 @@ to_number(null) cust_acct_site_row_id,
 to_number(null) cust_site_use_row_id,
 to_number(null) cust_profile_row_id,
 to_number(null) cust_profile_amt_row_id,
+to_number(null) cust_receipt_method_row_id,
+to_number(null) phone_contact_point_row_id,
+to_number(null) email_contact_point_row_id,
+to_number(null) url_contact_point_row_id,
 to_number(null) cust_account_role_row_id,
 to_number(null) bank_intsr_pay_use_row_id,
 to_number(null) tax_registration_row_id,
+to_number(null) party_relationship_row_id,
+to_number(null) cust_acct_relate_row_id,
 to_number(null) attachment_row_id,
 :p_created_by_module created_by_module,
 :p_dflt_prof_assign_lvl dflt_profile_assign_lvl,
+:p_dflt_rct_mthd_assign_lvl dflt_rct_mthd_assign_lvl,
 :p_dflt_tax_reg_assign_lvl dflt_tax_reg_assign_lvl,
 :p_dflt_bank_acct_assign_lvl dflt_bank_acct_assign_lvl,
+:p_dflt_ctct_point_assign_lvl dflt_ctct_point_assign_lvl,
 :p_dflt_ctct_assign_lvl dflt_ctct_assign_lvl,
 :p_dflt_attchmt_assign_lvl dflt_attchmt_assign_lvl,
 x.*,
@@ -267,7 +495,7 @@ from
 --
 -- Q1 Account Level Profile or Account with no sites
 --
-select /*+ push_pred(ctct) push_pred(ba) push_pred(attchmt) */
+select /*+ push_pred(ctctpt) push_pred(ctct) push_pred(ba) push_pred(hr) push_pred(hcara) push_pred(attchmt) */
 --
 -- party
 --
@@ -308,6 +536,7 @@ hpp.household_size person_household_size,
 xxen_util.meaning(hpp.rent_own_ind,'OWN_RENT_IND',222) person_own_rent,
 --
 hp.party_number registry_id,
+xxen_util.meaning(hp.category_code,'CUSTOMER_CATEGORY',222) customer_category,
 hp.known_as alias,
 hp.organization_name_phonetic name_pronunciation,
 hp.duns_number_c duns_number,
@@ -343,6 +572,7 @@ xxen_util.display_flexfield_value(222,'HZ_PARTIES',hp.attribute_category,'ATTRIB
 xxen_util.display_flexfield_value(222,'HZ_PARTIES',hp.attribute_category,'ATTRIBUTE23',hp.rowid,hp.attribute23) hz_party_attribute23,
 xxen_util.display_flexfield_value(222,'HZ_PARTIES',hp.attribute_category,'ATTRIBUTE24',hp.rowid,hp.attribute24) hz_party_attribute24,
 --
+--
 -- cust account
 --
 hca.account_number acct_number,
@@ -372,19 +602,6 @@ hca.under_return_tolerance acct_under_return_tolerance,
 xxen_util.meaning(hca.sched_date_push_flag,'YES_NO',0) acct_push_group_schedule_date,
 xxen_util.meaning(hca.arrivalsets_include_lines_flag,'YES_NO',0) acct_lines_in_arrival_sets,
 xxen_util.meaning(hca.ship_sets_include_lines_flag,'YES_NO',0) acct_lines_in_ship_sets,
-(select
- rm.name receipt_method
- from
- ra_cust_receipt_methods rcrm,
- ar_receipt_methods rm
- where
- rcrm.receipt_method_id = rm.receipt_method_id and
- rcrm.primary_flag = 'Y' and
- trunc(sysdate) between nvl(rcrm.start_date,trunc(sysdate)) and nvl(rcrm.end_date,trunc(sysdate)) and
- rcrm.customer_id = hca.cust_account_id and
- rcrm.site_use_id is null and
- rownum <= 1
-) acct_primary_receipt_method,
 -- tax
 xxen_util.meaning(zptp0.process_for_applicability_flag,'YES_NO',0) acct_allow_tax_applicability,
 xxen_util.meaning(zptp0.allow_offset_tax_flag,'YES_NO',0) acct_allow_offset_taxes,
@@ -433,19 +650,11 @@ null address_line4,
 null city,
 null county,
 null state,
+null province,
 null postal_code,
 null geography_code_override,
+null language,
 null site_address,
-null site_phone_country_code,
-null site_phone_area_code,
-null site_phone_number,
-null site_phone_extension,
-null site_phone_type,
-null site_email_address,
-null site_email_format,
-null site_email_purpose,
-null site_url,
-null site_url_purpose,
 null site_dff_context,
 null hz_party_site_attribute1,
 null hz_party_site_attribute2,
@@ -467,6 +676,26 @@ null hz_party_site_attribute17,
 null hz_party_site_attribute18,
 null hz_party_site_attribute19,
 null hz_party_site_attribute20,
+--
+-- Party/Party Site Contact Points
+--
+ctctpt.assignment_level point_of_contact_assign_level,
+ctctpt.phone_country_code poc_phone_country_code,
+ctctpt.phone_area_code poc_phone_area_code,
+ctctpt.phone_number poc_phone_number,
+ctctpt.phone_extension poc_phone_extension,
+xxen_util.meaning(ctctpt.phone_line_type,'PHONE_LINE_TYPE',222) poc_phone_type,
+xxen_util.meaning(decode(ctctpt.phone_primary_flag,'Y','Y'),'YES_NO',0) poc_phone_primary_flag,
+xxen_util.meaning(ctctpt.phone_status,'REGISTRY_STATUS',222) poc_phone_status,
+ctctpt.email_address poc_email_address,
+xxen_util.meaning(ctctpt.email_format,'EMAIL_FORMAT',222) poc_email_format,
+xxen_util.meaning(ctctpt.email_purpose,'CONTACT_POINT_PURPOSE',222) poc_email_purpose,
+xxen_util.meaning(decode(ctctpt.email_primary_flag,'Y','Y'),'YES_NO',0) poc_email_primary_flag,
+xxen_util.meaning(ctctpt.email_status,'REGISTRY_STATUS',222) poc_email_status,
+ctctpt.url poc_url,
+xxen_util.meaning(ctctpt.url_purpose,'CONTACT_POINT_PURPOSE_WEB',222) poc_url_purpose,
+xxen_util.meaning(decode(ctctpt.url_primary_flag,'Y','Y'),'YES_NO',0) poc_url_primary_flag,
+xxen_util.meaning(ctctpt.url_status,'REGISTRY_STATUS',222) poc_url_status,
 --
 -- cust account site
 --
@@ -538,7 +767,6 @@ null site_lines_in_ship_sets,
 null site_demand_class,
 null site_internal_location,
 null site_internal_organization,
-null site_primary_receipt_method,
 null site_allow_tax_applicability,
 null site_allow_offset_taxes,
 null site_self_assessment,
@@ -640,6 +868,14 @@ hcpa.min_statement_amount,
 hcpa.min_dunning_amount,
 hcpa.min_dunning_invoice_amount,
 --
+-- receipt methods
+--
+nvl2(rcrm.cust_receipt_method_id,xxen_util.meaning('ACCOUNT','HZ_CONS_BILL_LEVEL',222),null) receipt_method_assignmt_level,
+rm.name receipt_method,
+xxen_util.meaning(decode(rcrm.primary_flag,'Y','Y'),'YES_NO',0) receipt_method_primary_flag,
+rcrm.start_date receipt_method_start_date,
+rcrm.end_date receipt_method_end_date,
+--
 -- Tax Registrations
 --
 nvl2(zr.registration_id,xxen_util.meaning('ACCOUNT','HZ_CONS_BILL_LEVEL',222),null) tax_reg_assignment_level,
@@ -665,9 +901,11 @@ xxen_util.meaning(zr.self_assess_flag,'YES_NO',0) tax_reg_self_assessment,
 --
 nvl2(ba.instrument_payment_use_id,xxen_util.meaning('ACCOUNT','HZ_CONS_BILL_LEVEL',222),null) bank_account_assignment_level,
 ba.bank_name,
+ba.bank_name_alt,
 ba.bank_number,
 ba.bank_country,
 ba.bank_branch_name,
+ba.bank_branch_name_alt,
 ba.bank_branch_number,
 ba.bank_branch_type,
 ba.bank_branch_bic,
@@ -704,11 +942,11 @@ ctct.contact_phone_area_code,
 ctct.contact_phone_number,
 ctct.contact_phone_extension,
 ctct.contact_phone_type,
-ctct.secondary_phone_country_code,
-ctct.secondary_phone_area_code,
-ctct.secondary_phone_number,
-ctct.secondary_phone_extension,
-ctct.secondary_phone_type,
+ctct.contact_sec_phone_country_code,
+ctct.contact_sec_phone_area_code,
+ctct.contact_sec_phone_number,
+ctct.contact_sec_phone_extension,
+ctct.contact_sec_phone_type,
 ctct.contact_job_title_code,
 ctct.contact_job_title,
 ctct.contact_primary_role,
@@ -725,9 +963,33 @@ ctct.contact_address_line4,
 ctct.contact_city,
 ctct.contact_county,
 ctct.contact_state,
+ctct.contact_province,
 ctct.contact_postal_code,
 ctct.contact_geography_override,
 ctct.contact_mailstop,
+--
+-- party relationships
+--
+xxen_util.meaning(hr.party_type,'PARTY_TYPE',222) related_party_type,
+hr.party_name related_party_name,
+hr.party_number related_party_number,
+xxen_util.description(hr.role,'HZ_RELATIONSHIP_ROLE',222) party_relationship_role,
+hr.start_date party_relationship_start_date,
+decode(to_char(hr.end_date,'j'),3442447,to_date(null),hr.end_date) party_relationship_end_date,
+xxen_util.meaning(hr.status,'REGISTRY_STATUS',222) party_relationship_status,
+hr.comments party_relationship_comments,
+--
+-- Account relationships
+--
+hcara.party_name related_account_name,
+hcara.account_number related_account_number,
+hcara.operating_unit acct_relationship_ou,
+xxen_util.meaning(decode(hcara.bill_to_flag,'Y','Y'),'YES_NO',0) acct_relationship_bill_to,
+xxen_util.meaning(decode(hcara.ship_to_flag,'Y','Y'),'YES_NO',0) acct_relationship_ship_to,
+xxen_util.meaning(decode(hcara.customer_reciprocal_flag,'Y','Y'),'YES_NO',0) acct_relationship_reciprocal,
+xxen_util.meaning(hcara.status,'REGISTRY_STATUS',222) acct_relationship_status,
+xxen_util.meaning(hcara.relationship_type,'RELATIONSHIP_TYPE',222) acct_relationship_type,
+hcara.comments acct_relationship_comments,
 --
 -- Attachments
 --
@@ -750,11 +1012,17 @@ to_number(null) cust_acct_site_id,
 to_number(null) site_use_id,
 hcp.cust_account_profile_id,
 hcpa.cust_acct_profile_amt_id,
+rcrm.cust_receipt_method_id,
+ctctpt.phone_contact_point_id,
+ctctpt.email_contact_point_id,
+ctctpt.url_contact_point_id,
 ctct.cust_account_role_id,
-ctct.pri_phone_contact_point_id,
-ctct.sec_phone_contact_point_id,
+ctct.pri_phone_contact_point_id ctct_pri_ph_contact_point_id,
+ctct.sec_phone_contact_point_id ctct_sec_ph_contact_point_id,
 ba.instrument_payment_use_id,
 zr.registration_id,
+hr.relationship_id party_relationship_id,
+hcara.cust_acct_relate_id,
 attchmt.attachment_id,
 to_number(null) org_id,
 to_number(null) chart_of_accounts_id,
@@ -766,20 +1034,38 @@ hz_person_profiles hpp,
 hz_cust_accounts hca,
 hz_customer_profiles hcp,
 hz_cust_profile_amts hcpa,
+(select  /*+ inline */
+ rcrm.cust_receipt_method_id,
+ rcrm.customer_id,
+ rcrm.site_use_id,
+ rcrm.receipt_method_id,
+ rcrm.primary_flag,
+ rcrm.start_date,
+ rcrm.end_date
+ from 
+ ra_cust_receipt_methods rcrm
+ where
+ rcrm.primary_flag = decode(:p_update_receipt_methods,'Y',rcrm.primary_flag,'Y')
+) rcrm,
+ar_receipt_methods rm,
 zx_party_tax_profile zptp0,
 zx_registrations zr,
+q_party_contact_points ctctpt,
 q_contacts ctct,
+q_party_relationships hr,
+q_account_relationships hcara,
 q_bank_accounts ba,
 q_attachments attchmt
 where
 1=1 and
 3=3 and
-nvl(:p_update_level,'ACCOUNT') = 'ACCOUNT' and
+nvl(:p_update_level,'ACCOUNT') like '%ACCOUNT%' and
 decode(hp.party_type,'PERSON',hp.party_id) = hpp.party_id (+) and
 hpp.effective_end_date (+) is null and
+--
 hp.party_id = hca.party_id and
 --
-hca.party_id = hcp.party_id (+) and
+decode(:p_update_profiles,'Y',hca.party_id,0) = hcp.party_id (+) and
 nvl(hcp.site_use_id (+),0) = 0 and
 (hcp.cust_account_profile_id is null or
  hcp.cust_account_id = hca.cust_account_id or
@@ -787,18 +1073,26 @@ nvl(hcp.site_use_id (+),0) = 0 and
 ) and
 decode(:p_update_profile_amts,'Y',hcp.cust_account_profile_id,0) = hcpa.cust_account_profile_id (+) and
 --
+hca.cust_account_id = rcrm.customer_id (+) and
+nvl(rcrm.site_use_id (+),0) = 0 and
+rcrm.receipt_method_id = rm.receipt_method_id (+) and
+--
 hp.party_id = zptp0.party_id (+) and
 zptp0.party_type_code (+) = 'THIRD_PARTY' and
 decode(:p_update_tax_registrations,'Y',zptp0.party_tax_profile_id,null) = zr.party_tax_profile_id (+) and
-&lp_tax_reg_status_clause
+--
+hp.party_id = ctctpt.party_id (+) and
 --
 decode(:p_update_contacts,'Y',hca.cust_account_id,0) = ctct.cust_account_id (+) and
 nvl(ctct.cust_acct_site_id (+),0) = 0 and
-&lp_contact_status_clause
+--
+decode(:p_update_party_relations,'Y',hp.party_type) = hr.object_type (+) and
+decode(:p_update_party_relations,'Y',hp.party_id) = hr.object_id (+) and
+--
+decode(:p_update_account_relations,'Y',hca.cust_account_id) = hcara.cust_account_id (+) and
 --
 decode(:p_update_bank_accts,'Y',hca.cust_account_id,0) = ba.cust_account_id (+) and
 nvl(ba.site_use_id (+),0) = 0 and
-&lp_bank_acct_status_clause
 --
 decode(:p_update_attachments,'Y','AR_CUSTOMERS',null) = attchmt.entity_name (+) and
 decode(:p_update_attachments,'Y',hca.cust_account_id,null) = attchmt.entity_id (+)
@@ -809,7 +1103,7 @@ union all
 --
 -- Q2 Site Level
 --
-select /*+ push_pred(ctct) push_pred(ba) push_pred(attchmt) */
+select  /*+ push_pred(ctctpt) push_pred(ctct) push_pred(ba) push_pred(hr) push_pred(hcara) push_pred(attchmt) */
 --
 -- party
 --
@@ -850,6 +1144,7 @@ hpp.household_size person_household_size,
 xxen_util.meaning(hpp.rent_own_ind,'OWN_RENT_IND',222) person_own_rent,
 --
 hp.party_number registry_id,
+xxen_util.meaning(hp.category_code,'CUSTOMER_CATEGORY',222) customer_category,
 hp.known_as alias,
 hp.organization_name_phonetic name_pronunciation,
 hp.duns_number_c duns_number,
@@ -914,18 +1209,6 @@ hca.under_return_tolerance acct_under_return_tolerance,
 xxen_util.meaning(hca.sched_date_push_flag,'YES_NO',0) acct_push_group_schedule_date,
 xxen_util.meaning(hca.arrivalsets_include_lines_flag,'YES_NO',0) acct_lines_in_arrival_sets,
 xxen_util.meaning(hca.ship_sets_include_lines_flag,'YES_NO',0) acct_lines_in_ship_sets,
-(select
- rm.name receipt_method
- from
- ra_cust_receipt_methods rcrm,
- ar_receipt_methods rm
- where
- rcrm.receipt_method_id = rm.receipt_method_id and
- rcrm.primary_flag = 'Y' and
- trunc(sysdate) between nvl(rcrm.start_date,trunc(sysdate)) and nvl(rcrm.end_date,trunc(sysdate)) and
- rcrm.customer_id = hca.cust_account_id and
- rcrm.site_use_id is null
-) acct_primary_receipt_method,
 -- tax
 xxen_util.meaning(zptp0.process_for_applicability_flag,'YES_NO',0) acct_allow_tax_applicability,
 xxen_util.meaning(zptp0.allow_offset_tax_flag,'YES_NO',0) acct_allow_offset_taxes,
@@ -974,22 +1257,12 @@ hl.address4 address_line4,
 hl.city,
 hl.county,
 hl.state,
+hl.province,
 hl.postal_code,
---hl.province,
 --xxen_util.meaning(hl.address_style,'ADDRESS_STYLE',0) address_style,
 hl.sales_tax_geocode geography_code_override,
+(select fl.description from fnd_languages_vl fl where fl.language_code=hl.language) language,
 hz_format_pub.format_address(hl.location_id,null,null,', ') site_address,
---
-hcp1.phone_country_code site_phone_country_code,
-hcp1.phone_area_code site_phone_area_code,
-hcp1.phone_number site_phone_number,
-hcp1.phone_extension site_phone_extension,
-xxen_util.meaning(hcp1.phone_line_type,'PHONE_LINE_TYPE',222) site_phone_type,
-hcp2.email_address site_email_address,
-xxen_util.meaning(hcp2.email_format,'EMAIL_FORMAT',222) site_email_format,
-xxen_util.meaning(hcp2.contact_point_purpose,'CONTACT_POINT_PURPOSE',222) site_email_purpose,
-hcp3.url site_url,
-xxen_util.meaning(hcp3.contact_point_purpose,'CONTACT_POINT_PURPOSE_WEB',222) site_url_purpose,
 -- party site dff
 xxen_util.display_flexfield_context(222,'HZ_PARTY_SITES',hps.attribute_category) site_dff_context,
 xxen_util.display_flexfield_value(222,'HZ_PARTY_SITES',hps.attribute_category,'ATTRIBUTE1',hps.rowid,hps.attribute1) hz_party_site_attribute1,
@@ -1012,6 +1285,27 @@ xxen_util.display_flexfield_value(222,'HZ_PARTY_SITES',hps.attribute_category,'A
 xxen_util.display_flexfield_value(222,'HZ_PARTY_SITES',hps.attribute_category,'ATTRIBUTE18',hps.rowid,hps.attribute18) hz_party_site_attribute18,
 xxen_util.display_flexfield_value(222,'HZ_PARTY_SITES',hps.attribute_category,'ATTRIBUTE19',hps.rowid,hps.attribute19) hz_party_site_attribute19,
 xxen_util.display_flexfield_value(222,'HZ_PARTY_SITES',hps.attribute_category,'ATTRIBUTE20',hps.rowid,hps.attribute20) hz_party_site_attribute20,
+--
+-- Party/Party Site Contact Points
+--
+ctctpt.assignment_level point_of_contact_assign_level,
+ctctpt.phone_country_code poc_phone_country_code,
+ctctpt.phone_area_code poc_phone_area_code,
+ctctpt.phone_number poc_phone_number,
+ctctpt.phone_extension poc_phone_extension,
+xxen_util.meaning(ctctpt.phone_line_type,'PHONE_LINE_TYPE',222) poc_phone_type,
+xxen_util.meaning(decode(ctctpt.phone_primary_flag,'Y','Y'),'YES_NO',0) poc_phone_primary_flag,
+xxen_util.meaning(ctctpt.phone_status,'REGISTRY_STATUS',222) poc_phone_status,
+ctctpt.email_address poc_email_address,
+xxen_util.meaning(ctctpt.email_format,'EMAIL_FORMAT',222) poc_email_format,
+xxen_util.meaning(ctctpt.email_purpose,'CONTACT_POINT_PURPOSE',222) poc_email_purpose,
+xxen_util.meaning(decode(ctctpt.email_primary_flag,'Y','Y'),'YES_NO',0) poc_email_primary_flag,
+xxen_util.meaning(ctctpt.email_status,'REGISTRY_STATUS',222) poc_email_status,
+ctctpt.url poc_url,
+xxen_util.meaning(ctctpt.url_purpose,'CONTACT_POINT_PURPOSE_WEB',222) poc_url_purpose,
+xxen_util.meaning(decode(ctctpt.url_primary_flag,'Y','Y'),'YES_NO',0) poc_url_primary_flag,
+xxen_util.meaning(ctctpt.url_status,'REGISTRY_STATUS',222) poc_url_status,
+--
 --
 -- cust account site
 --
@@ -1088,18 +1382,6 @@ xxen_util.meaning(hcsua.ship_sets_include_lines_flag,'YES_NO',0) site_lines_in_s
 xxen_util.meaning(hcsua.demand_class_code,'DEMAND_CLASS',3) site_demand_class,
 case when hcsua.site_use_code = 'SHIP_TO' then (select hl.location_code from po_location_associations_all poaa, hr_locations hl where poaa.site_use_id = hcsua.site_use_id and poaa.org_id = hcsua.org_id and poaa.location_id = hl.location_id and rownum = 1) else null end site_internal_location,
 case when hcsua.site_use_code = 'SHIP_TO' then (select ood.organization_name from po_location_associations_all poaa, org_organization_definitions ood where poaa.site_use_id = hcsua.site_use_id and poaa.org_id = hcsua.org_id and poaa.organization_id = ood.organization_id and rownum = 1) else null end site_internal_organization,
-(select
- rm.name receipt_method
- from
- ra_cust_receipt_methods rcrm,
- ar_receipt_methods rm
- where
- rcrm.receipt_method_id = rm.receipt_method_id and
- rcrm.primary_flag = 'Y' and
- trunc(sysdate) between nvl(rcrm.start_date,trunc(sysdate)) and nvl(rcrm.end_date,trunc(sysdate)) and
- rcrm.customer_id = hca.cust_account_id and
- rcrm.site_use_id = hcsua.site_use_id
-) site_primary_receipt_method,
 -- tax
 xxen_util.meaning(zptp1.process_for_applicability_flag,'YES_NO',0) site_allow_tax_applicability,
 xxen_util.meaning(zptp1.allow_offset_tax_flag,'YES_NO',0) site_allow_offset_taxes,
@@ -1213,6 +1495,14 @@ hcpa.min_statement_amount,
 hcpa.min_dunning_amount,
 hcpa.min_dunning_invoice_amount,
 --
+-- receipt methods
+--
+nvl2(rcrm.cust_receipt_method_id,xxen_util.meaning('SITE','HZ_CONS_BILL_LEVEL',222),null) receipt_method_assignmt_level,
+rm.name receipt_method,
+xxen_util.meaning(decode(rcrm.primary_flag,'Y','Y'),'YES_NO',0) receipt_method_primary_flag,
+rcrm.start_date receipt_method_start_date,
+rcrm.end_date receipt_method_end_date,
+--
 -- Tax Registrations
 --
 nvl2(zr.registration_id,xxen_util.meaning('SITE','HZ_CONS_BILL_LEVEL',222),null) tax_reg_assignment_level,
@@ -1238,9 +1528,11 @@ xxen_util.meaning(zr.self_assess_flag,'YES_NO',0) tax_reg_self_assessment,
 --
 nvl2(ba.instrument_payment_use_id,xxen_util.meaning('SITE','HZ_CONS_BILL_LEVEL',222),null) bank_account_assignment_level,
 ba.bank_name,
+ba.bank_name_alt,
 ba.bank_number,
 ba.bank_country,
 ba.bank_branch_name,
+ba.bank_branch_name_alt,
 ba.bank_branch_number,
 ba.bank_branch_type,
 ba.bank_branch_bic,
@@ -1277,11 +1569,11 @@ ctct.contact_phone_area_code,
 ctct.contact_phone_number,
 ctct.contact_phone_extension,
 ctct.contact_phone_type,
-ctct.secondary_phone_country_code,
-ctct.secondary_phone_area_code,
-ctct.secondary_phone_number,
-ctct.secondary_phone_extension,
-ctct.secondary_phone_type,
+ctct.contact_sec_phone_country_code,
+ctct.contact_sec_phone_area_code,
+ctct.contact_sec_phone_number,
+ctct.contact_sec_phone_extension,
+ctct.contact_sec_phone_type,
 ctct.contact_job_title_code,
 ctct.contact_job_title,
 ctct.contact_primary_role,
@@ -1298,9 +1590,33 @@ ctct.contact_address_line4,
 ctct.contact_city,
 ctct.contact_county,
 ctct.contact_state,
+ctct.contact_province,
 ctct.contact_postal_code,
 ctct.contact_geography_override,
 ctct.contact_mailstop,
+--
+-- party relationships
+--
+null related_party_type,
+null related_party_name,
+null related_party_number,
+null party_relationship_role,
+to_date(null) party_relationship_start_date,
+to_date(null) party_relationship_end_date,
+null party_relationship_status,
+null party_relationship_comments,
+--
+-- Account relationships
+--
+null related_account_name,
+null related_account_number,
+null acct_relationship_ou,
+null acct_relationship_bill_to,
+null acct_relationship_ship_to,
+null acct_relationship_reciprocal,
+null acct_relationship_status,
+null acct_relationship_type,
+null acct_relationship_comments,
 --
 -- Attachments
 --
@@ -1323,11 +1639,17 @@ hcasa.cust_acct_site_id,
 hcsua.site_use_id,
 hcp.cust_account_profile_id,
 hcpa.cust_acct_profile_amt_id,
+rcrm.cust_receipt_method_id,
+ctctpt.phone_contact_point_id,
+ctctpt.email_contact_point_id,
+ctctpt.url_contact_point_id,
 ctct.cust_account_role_id,
-ctct.pri_phone_contact_point_id,
-ctct.sec_phone_contact_point_id,
+ctct.pri_phone_contact_point_id ctct_pri_ph_contact_point_id,
+ctct.sec_phone_contact_point_id ctct_sec_ph_contact_point_id,
 ba.instrument_payment_use_id,
 zr.registration_id,
+to_number(null) party_relationship_id,
+to_number(null) cust_acct_relate_id,
 attchmt.attachment_id,
 hcasa.org_id,
 gl.chart_of_accounts_id,
@@ -1343,14 +1665,26 @@ hz_party_sites hps,
 hz_locations hl,
 hz_customer_profiles hcp,
 hz_cust_profile_amts hcpa,
+(select /*+ inline */
+ rcrm.cust_receipt_method_id,
+ rcrm.customer_id,
+ rcrm.site_use_id,
+ rcrm.receipt_method_id,
+ rcrm.primary_flag,
+ rcrm.start_date,
+ rcrm.end_date
+ from 
+ ra_cust_receipt_methods rcrm
+ where
+ rcrm.primary_flag = decode(:p_update_receipt_methods,'Y',rcrm.primary_flag,'Y')
+) rcrm,
+ar_receipt_methods rm,
 hr_operating_units hou,
 gl_ledgers gl,
-hz_contact_points hcp1,
-hz_contact_points hcp2,
-hz_contact_points hcp3,
 zx_party_tax_profile zptp0,
 zx_party_tax_profile zptp1,
 zx_registrations zr,
+q_party_site_contact_points ctctpt,
 q_contacts ctct,
 q_bank_accounts ba,
 q_attachments attchmt
@@ -1358,9 +1692,10 @@ where
 1=1 and
 2=2 and
 4=4 and
-nvl(:p_update_level,'SITE') = 'SITE' and
+nvl(:p_update_level,'SITE') like '%SITE%' and
 decode(hp.party_type,'PERSON',hp.party_id) = hpp.party_id (+) and
 hpp.effective_end_date (+) is null and
+--
 hp.party_id = hca.party_id and
 hca.cust_account_id = hcasa.cust_account_id and
 (hcasa.org_id is null or mo_global.check_access(hcasa.org_id)='Y') and
@@ -1372,39 +1707,26 @@ decode(:p_update_site_uses,'Y',hcasa.cust_acct_site_id,null) = hcsua.cust_acct_s
 decode(:p_update_site_uses,'Y',hcasa.org_id,null) = hcsua.org_id (+) and
 hps.location_id = hl.location_id (+) and
 --
-case when hcsua.site_use_code in ('BILL_TO','DUN','STMTS') and hcsua.status = 'A' then hcsua.site_use_id else null end = hcp.site_use_id (+) and
+case when :p_update_profiles = 'Y' and hcsua.site_use_code in ('BILL_TO','DUN','STMTS') and hcsua.status = 'A' then hcsua.site_use_id else null end = hcp.site_use_id (+) and
 nvl(hcp.status,'A') = 'A' and
 decode(:p_update_profile_amts,'Y',hcp.cust_account_profile_id,0) = hcpa.cust_account_profile_id (+) and
 --
-hps.party_site_id = hcp1.owner_table_id (+) and
-hcp1.owner_table_name (+) = 'HZ_PARTY_SITES' and
-hcp1.contact_point_type (+) = 'PHONE' and
-hcp1.primary_flag (+) = 'Y' and
-hcp1.status (+) = 'A' and
-hps.party_site_id = hcp2.owner_table_id (+) and
-hcp2.owner_table_name (+) = 'HZ_PARTY_SITES' and
-hcp2.contact_point_type (+) = 'EMAIL' and
-hcp2.primary_flag (+) = 'Y' and
-hcp2.status (+) = 'A' and
-hps.party_site_id = hcp3.owner_table_id (+) and
-hcp3.owner_table_name (+) = 'HZ_PARTY_SITES' and
-hcp3.contact_point_type (+) = 'WEB' and
-hcp3.primary_flag (+) = 'Y' and
-hcp3.status (+) = 'A' and
+hca.cust_account_id = rcrm.customer_id (+) and
+hcsua.site_use_id = rcrm.site_use_id (+) and
+rcrm.receipt_method_id = rm.receipt_method_id (+) and
 --
 hp.party_id = zptp0.party_id (+) and
 zptp0.party_type_code (+) = 'THIRD_PARTY' and
 hps.party_site_id = zptp1.party_id (+) and
 zptp1.party_type_code (+) = 'THIRD_PARTY_SITE' and
 decode(:p_update_tax_registrations,'Y',zptp1.party_tax_profile_id,null) = zr.party_tax_profile_id (+) and
-&lp_tax_reg_status_clause
+--
+hps.party_site_id = ctctpt.party_site_id (+) and
 --
 decode(:p_update_contacts,'Y',hcasa.cust_account_id,0) = ctct.cust_account_id (+) and
 decode(:p_update_contacts,'Y',hcasa.cust_acct_site_id,0) = ctct.cust_acct_site_id (+) and
-&lp_contact_status_clause
 --
-decode(:p_update_bank_accts,'Y',hcsua.site_use_id,0) = ba.site_use_id (+) and
-&lp_bank_acct_status_clause
+decode(:p_update_bank_accts,'Y',decode(hcsua.site_use_code,'BILL_TO',hcsua.site_use_id,0),0) = ba.site_use_id (+) and
 --
 decode(:p_update_attachments,'Y','PER_ADDRESSES',null) = attchmt.entity_name (+) and
 decode(:p_update_attachments,'Y',hcasa.cust_acct_site_id,null) = attchmt.entity_id (+)

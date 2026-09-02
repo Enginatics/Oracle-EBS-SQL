@@ -5,7 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: DBA Result Cache Objects and Dependencies
--- Description: Shows result cache objects with the current number cached results and their dependency on objects causing the most frequent invalidations.
+-- Description: Shows result cache objects with the current number of cached results, the number of times these results were found and reused (scan count) and their dependency on objects causing the most frequent invalidations.
 
 Warning !!!
 Don't run this on a prod system during business hours as prior to DB version 12.2, selecting from v$result_cache_objects apparently blocks all result cache objects (see note 2143739.1, section 4.).
@@ -15,12 +15,23 @@ You may end up with all server sessions waiting on 'latch free' for 'Result Cach
 -- Run Report: https://demo.enginatics.com/
 
 select distinct
-count(*) over (partition by grco.cache_id) results_count,
+grco.results_count,
 grco.name result_name,
+grco.total_scan_count scan_count,
 &object_columns
 grco.cache_id
 from
-gv$result_cache_objects grco,
+(
+select
+count(*) over (partition by grco.cache_id) results_count,
+sum(grco.scan_count) over (partition by grco.cache_id) total_scan_count,
+grco.*
+from
+gv$result_cache_objects grco
+where
+grco.status='Published' and
+grco.type='Result'
+) grco,
 (
 select
 grcd.inst_id,
@@ -41,8 +52,7 @@ grcd.inst_id=grco2.inst_id(+) and
 grcd.depend_id=grco2.id(+)
 ) x
 where
-grco.status='Published' and
-grco.type='Result' and
+2=2 and
 grco.inst_id=x.inst_id(+) and
 grco.id=x.result_id(+)
 order by

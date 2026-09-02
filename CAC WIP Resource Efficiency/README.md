@@ -2,7 +2,7 @@
 layout: default
 title: 'CAC WIP Resource Efficiency | Oracle EBS SQL Report'
 description: 'Report your resource efficiency variances for your open and closed WIP jobs. Resource efficiency measures the WIP routing requirements against the actual…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, CAC, WIP, Resource, Efficiency, wip_discrete_jobs, org_acct_periods, mtl_parameters'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, CAC, WIP, Resource, Efficiency, wip_discrete_jobs, org_acct_periods, mtl_parameters'
 permalink: /CAC%20WIP%20Resource%20Efficiency/
 ---
 
@@ -54,7 +54,7 @@ Report Option, Period Name, Cost Type, Include Scrap Quantities, Include Unrelea
 [wip_discrete_jobs](https://www.enginatics.com/library/?pg=1&find=wip_discrete_jobs), [org_acct_periods](https://www.enginatics.com/library/?pg=1&find=org_acct_periods), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters), [wip_accounting_classes](https://www.enginatics.com/library/?pg=1&find=wip_accounting_classes), [wip_transactions](https://www.enginatics.com/library/?pg=1&find=wip_transactions), [org_access_view](https://www.enginatics.com/library/?pg=1&find=org_access_view), [wdj00](https://www.enginatics.com/library/?pg=1&find=wdj00), [wdj0](https://www.enginatics.com/library/?pg=1&find=wdj0), [mtl_material_transactions](https://www.enginatics.com/library/?pg=1&find=mtl_material_transactions), [wdj](https://www.enginatics.com/library/?pg=1&find=wdj), [pa_projects_all](https://www.enginatics.com/library/?pg=1&find=pa_projects_all), [po_headers_all](https://www.enginatics.com/library/?pg=1&find=po_headers_all), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl), [mtl_units_of_measure_vl](https://www.enginatics.com/library/?pg=1&find=mtl_units_of_measure_vl), [mtl_item_status_vl](https://www.enginatics.com/library/?pg=1&find=mtl_item_status_vl), [bom_departments](https://www.enginatics.com/library/?pg=1&find=bom_departments), [wip_entities](https://www.enginatics.com/library/?pg=1&find=wip_entities), [mfg_lookups](https://www.enginatics.com/library/?pg=1&find=mfg_lookups), [fnd_lookups](https://www.enginatics.com/library/?pg=1&find=fnd_lookups), [fnd_common_lookups](https://www.enginatics.com/library/?pg=1&find=fnd_common_lookups), [gl_code_combinations](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations), [hr_organization_information](https://www.enginatics.com/library/?pg=1&find=hr_organization_information), [hr_all_organization_units](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units), [gl_ledgers](https://www.enginatics.com/library/?pg=1&find=gl_ledgers), [cst_item_costs](https://www.enginatics.com/library/?pg=1&find=cst_item_costs), [cst_item_cost_details](https://www.enginatics.com/library/?pg=1&find=cst_item_cost_details), [cst_cost_types](https://www.enginatics.com/library/?pg=1&find=cst_cost_types), [wdj_assys](https://www.enginatics.com/library/?pg=1&find=wdj_assys), [dual](https://www.enginatics.com/library/?pg=1&find=dual)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 
 

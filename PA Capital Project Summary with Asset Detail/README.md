@@ -2,7 +2,7 @@
 layout: default
 title: 'PA Capital Project Summary with Asset Detail | Oracle EBS SQL Report'
 description: 'Detail project report that shows the project asset details, and combined project level costs breakdown, along with the project assets details from the…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Capital, Project, Summary, Asset, pa_projects_all, pa_project_statuses, pa_project_classes'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Capital, Project, Summary, Asset, pa_projects_all, pa_project_statuses, pa_project_classes'
 permalink: /PA%20Capital%20Project%20Summary%20with%20Asset%20Detail/
 ---
 
@@ -20,10 +20,10 @@ Project Type, Project Number, Operating Unit, Project Organization, Class Catego
 [pa_projects_all](https://www.enginatics.com/library/?pg=1&find=pa_projects_all), [pa_project_statuses](https://www.enginatics.com/library/?pg=1&find=pa_project_statuses), [pa_project_classes](https://www.enginatics.com/library/?pg=1&find=pa_project_classes), [hr_all_organization_units_vl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_vl), [fa_locations_kfv](https://www.enginatics.com/library/?pg=1&find=fa_locations_kfv), [pa_project_assets_v](https://www.enginatics.com/library/?pg=1&find=pa_project_assets_v), [pa_capital_projects_v](https://www.enginatics.com/library/?pg=1&find=pa_capital_projects_v), [pa_retirement_costs_v](https://www.enginatics.com/library/?pg=1&find=pa_retirement_costs_v), [fa_transaction_headers](https://www.enginatics.com/library/?pg=1&find=fa_transaction_headers), [fa_deprn_periods](https://www.enginatics.com/library/?pg=1&find=fa_deprn_periods), [pa_project_asset_lines_v](https://www.enginatics.com/library/?pg=1&find=pa_project_asset_lines_v), [pa_asset_line_details_v](https://www.enginatics.com/library/?pg=1&find=pa_asset_line_details_v)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related Reports
-[GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report"), [GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20%28Distributions%29/ "GL Account Analysis (Distributions) Oracle EBS SQL Report"), [AP Invoices and Lines](/AP%20Invoices%20and%20Lines/ "AP Invoices and Lines Oracle EBS SQL Report"), [AP Invoice Upload](/AP%20Invoice%20Upload/ "AP Invoice Upload Oracle EBS SQL Report"), [GL Account Analysis](/GL%20Account%20Analysis/ "GL Account Analysis Oracle EBS SQL Report")
+[GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report"), [AP Invoices and Lines](/AP%20Invoices%20and%20Lines/ "AP Invoices and Lines Oracle EBS SQL Report"), [AP Invoice Upload](/AP%20Invoice%20Upload/ "AP Invoice Upload Oracle EBS SQL Report"), [PA Project Asset Upload](/PA%20Project%20Asset%20Upload/ "PA Project Asset Upload Oracle EBS SQL Report"), [CAC Manufacturing Variance](/CAC%20Manufacturing%20Variance/ "CAC Manufacturing Variance Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.

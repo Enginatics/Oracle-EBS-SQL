@@ -5,7 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: DBA Index Columns
--- Description: None
+-- Description: 
 -- Excel Examle Output: https://www.enginatics.com/example/dba-index-columns/
 -- Library Link: https://www.enginatics.com/reports/dba-index-columns/
 -- Run Report: https://demo.enginatics.com/

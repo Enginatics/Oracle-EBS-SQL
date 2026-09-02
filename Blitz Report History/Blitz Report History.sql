@@ -100,5 +100,7 @@ frt.language(+)=userenv('lang') and
 xrr.run_id=gs.run_id(+) and
 xrr.run_id=xrrpv0.run_id(+)
 ) x
+where
+2=2
 order by
 x.run_id desc

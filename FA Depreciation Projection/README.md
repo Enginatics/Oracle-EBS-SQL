@@ -2,7 +2,7 @@
 layout: default
 title: 'FA Depreciation Projection | Oracle EBS SQL Report'
 description: 'Based on Oracle''s ''Depreciation Projection Report'' FASPRJ Uses custom DB package call XXENFAFASXMLP to launch Oracle standard Depreciation Projection…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Depreciation, Projection, gl_ledgers, fa_book_controls, fa_proj_interim_v'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Depreciation, Projection, gl_ledgers, fa_book_controls, fa_proj_interim_v'
 permalink: /FA%20Depreciation%20Projection/
 ---
 
@@ -24,10 +24,10 @@ Ledger, Calendar, Number of Periods, Starting Period, Currency, Book1, Book2, Bo
 [gl_ledgers](https://www.enginatics.com/library/?pg=1&find=gl_ledgers), [fa_book_controls](https://www.enginatics.com/library/?pg=1&find=fa_book_controls), [fa_proj_interim_v](https://www.enginatics.com/library/?pg=1&find=fa_proj_interim_v), [fa_additions_vl](https://www.enginatics.com/library/?pg=1&find=fa_additions_vl), [fa_categories_b_kfv](https://www.enginatics.com/library/?pg=1&find=fa_categories_b_kfv), [fa_asset_keywords_kfv](https://www.enginatics.com/library/?pg=1&find=fa_asset_keywords_kfv), [gl_code_combinations](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related Reports
-[FA Asset Upload](/FA%20Asset%20Upload/ "FA Asset Upload Oracle EBS SQL Report"), [FA Asset Book Details](/FA%20Asset%20Book%20Details/ "FA Asset Book Details Oracle EBS SQL Report"), [FA Asset Summary (Germany)](/FA%20Asset%20Summary%20%28Germany%29/ "FA Asset Summary (Germany) Oracle EBS SQL Report"), [AP Invoices and Lines](/AP%20Invoices%20and%20Lines/ "AP Invoices and Lines Oracle EBS SQL Report"), [FA CIP Assets and Invoices](/FA%20CIP%20Assets%20and%20Invoices/ "FA CIP Assets and Invoices Oracle EBS SQL Report"), [FA Asset Book Details 11i](/FA%20Asset%20Book%20Details%2011i/ "FA Asset Book Details 11i Oracle EBS SQL Report"), [AP Invoice Upload](/AP%20Invoice%20Upload/ "AP Invoice Upload Oracle EBS SQL Report")
+[FA Asset Upload](/FA%20Asset%20Upload/ "FA Asset Upload Oracle EBS SQL Report"), [FA Asset Book Details](/FA%20Asset%20Book%20Details/ "FA Asset Book Details Oracle EBS SQL Report"), [FA CIP Assets and Invoices](/FA%20CIP%20Assets%20and%20Invoices/ "FA CIP Assets and Invoices Oracle EBS SQL Report"), [PA Project Asset Upload](/PA%20Project%20Asset%20Upload/ "PA Project Asset Upload Oracle EBS SQL Report"), [FA Asset Register](/FA%20Asset%20Register/ "FA Asset Register Oracle EBS SQL Report"), [FA Asset Additions](/FA%20Asset%20Additions/ "FA Asset Additions Oracle EBS SQL Report"), [FA Asset Summary (Germany)](/FA%20Asset%20Summary%20%28Germany%29/ "FA Asset Summary (Germany) Oracle EBS SQL Report"), [AP Invoices and Lines](/AP%20Invoices%20and%20Lines/ "AP Invoices and Lines Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.

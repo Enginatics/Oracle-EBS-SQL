@@ -23,7 +23,7 @@ Business Group, Employee Name, Relationship Type, Organization
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related Reports
-[PER Employee Assignments](/PER%20Employee%20Assignments/ "PER Employee Assignments Oracle EBS SQL Report"), [AP Supplier Upload](/AP%20Supplier%20Upload/ "AP Supplier Upload Oracle EBS SQL Report"), [AR Customer Upload](/AR%20Customer%20Upload/ "AR Customer Upload Oracle EBS SQL Report")
+[PER Employee Assignments](/PER%20Employee%20Assignments/ "PER Employee Assignments Oracle EBS SQL Report"), [AP Supplier Upload](/AP%20Supplier%20Upload/ "AP Supplier Upload Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
@@ -32,7 +32,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/per-employee-contacts-and-dependents/) |
+| Excel Example Output | [](https://www.enginatics.com/example/per-employee-contacts-and-dependents/) |
 | Blitz Report™ XML Import | [PER_Employee_Contacts_and_Dependents.xml](https://www.enginatics.com/xml/per-employee-contacts-and-dependents/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/per-employee-contacts-and-dependents/](https://www.enginatics.com/reports/per-employee-contacts-and-dependents/) |
 

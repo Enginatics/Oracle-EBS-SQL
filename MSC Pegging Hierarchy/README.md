@@ -2,7 +2,7 @@
 layout: default
 title: 'MSC Pegging Hierarchy | Oracle EBS SQL Report'
 description: 'ASCP Pegging Hierarchy. This reports shows the pegging hierarchy from the Top Level Demand.'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, MSC, Pegging, Hierarchy, msc_full_pegging&a2m_dblink, msc_system_items&a2m_dblink, msc_boms&a2m_dblink'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, MSC, Pegging, Hierarchy, msc_full_pegging&a2m_dblink, msc_system_items&a2m_dblink, msc_boms&a2m_dblink'
 permalink: /MSC%20Pegging%20Hierarchy/
 ---
 
@@ -20,7 +20,7 @@ Planning Instance, Plan, Organization, Show Source Org. Pegging, Category Set, C
 [msc_full_pegging&a2m_dblink](https://www.enginatics.com/library/?pg=1&find=msc_full_pegging&a2m_dblink), [msc_system_items&a2m_dblink](https://www.enginatics.com/library/?pg=1&find=msc_system_items&a2m_dblink), [msc_boms&a2m_dblink](https://www.enginatics.com/library/?pg=1&find=msc_boms&a2m_dblink), [msc_safety_stocks&a2m_dblink](https://www.enginatics.com/library/?pg=1&find=msc_safety_stocks&a2m_dblink)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 
 

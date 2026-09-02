@@ -23,6 +23,7 @@ x.class,
 x.type,
 x.reference,
 x.credited_or_paid_invoice,
+x.applied_receipt_number,
 x.account_number,
 x.party_name,
 x.currency,
@@ -128,6 +129,18 @@ rcta0.customer_trx_id=acita0.customer_trx_id(+) and
 acita0.cons_inv_id=acia0.cons_inv_id(+)
 )
 ) credited_or_paid_invoice,
+case when apsa.class in ('INV','DM','CB') then
+(select listagg(acra0.receipt_number,', ') within group (order by acra0.receipt_number)
+from ar_cash_receipts_all acra0
+where exists (
+  select null from ar_receivable_applications_all araa0
+  where araa0.applied_payment_schedule_id=apsa.payment_schedule_id and
+  araa0.cash_receipt_id=acra0.cash_receipt_id and
+  araa0.status='APP' and
+  araa0.display='Y' and
+  araa0.reversal_gl_date is null
+)
+) end applied_receipt_number,
 hca.account_number,
 hp.party_name,
 hcsua.location bill_to_location,

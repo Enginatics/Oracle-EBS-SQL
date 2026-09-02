@@ -2,7 +2,7 @@
 layout: default
 title: 'AP Open Items Revaluation | Oracle EBS SQL Report'
 description: 'Imported from BI Publisher Description: Open Items Revaluation Report Application: Payables Source: Open Items Revaluation Report (XML) Short Name…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, BI Publisher, Enginatics, R12 only, Open, Items, Revaluation, gl_ledgers, hr_all_organization_units, ap_open_items_reval_gt'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Open, Items, Revaluation, gl_ledgers, hr_all_organization_units, ap_open_items_reval_gt'
 permalink: /AP%20Open%20Items%20Revaluation/
 ---
 
@@ -25,7 +25,7 @@ Operating Unit, Report Format, Revaluation Period, Include Up to Due Date, Rate 
 [gl_ledgers](https://www.enginatics.com/library/?pg=1&find=gl_ledgers), [hr_all_organization_units](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units), [ap_open_items_reval_gt](https://www.enginatics.com/library/?pg=1&find=ap_open_items_reval_gt), [ap_invoice_payments_all](https://www.enginatics.com/library/?pg=1&find=ap_invoice_payments_all), [ap_checks_all](https://www.enginatics.com/library/?pg=1&find=ap_checks_all), [xla_transaction_entities](https://www.enginatics.com/library/?pg=1&find=xla_transaction_entities), [xla_ae_headers](https://www.enginatics.com/library/?pg=1&find=xla_ae_headers), [xla_ae_lines](https://www.enginatics.com/library/?pg=1&find=xla_ae_lines), [ap_invoice_distributions_all](https://www.enginatics.com/library/?pg=1&find=ap_invoice_distributions_all), [xla_distribution_links](https://www.enginatics.com/library/?pg=1&find=xla_distribution_links)
 
 ## Report Categories
-[BI Publisher](https://www.enginatics.com/library/?pg=1&category[]=BI%20Publisher), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 
 

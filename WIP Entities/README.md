@@ -14,7 +14,7 @@ permalink: /WIP%20Entities/
 Detail WIP report that lists job, type, status, planner, item, item description, planning method, pegging type, entity, job Description, WIP resource transaction account distributions, project number, task, source code, source line item,Sales Order,Sales Order Line, WIP type, class code, scheduling dates, quantities, department, resource and organization.
 
 ## Report Parameters
-Organization Code, Scheduled Start Date From, Scheduled Start Date To, Planner Code, Schedule Group, Item, Job, Job Status, Project, Open only, Category Set 1, Category Set 2, Category Set 3, Category Set, Category
+Organization Code, Scheduled Start Date From, Scheduled Start Date To, Planner Code, Schedule Group, Item, Job, Job Status, Project, Open only, Op. with Qty in Progress only, Category Set 1, Category Set 2, Category Set 3, Category Set, Category
 
 ## Oracle EBS Tables Used
 [hr_all_organization_units_vl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_vl), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters), [wip_entities](https://www.enginatics.com/library/?pg=1&find=wip_entities), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl), [mtl_planners](https://www.enginatics.com/library/?pg=1&find=mtl_planners), [wip_discrete_jobs](https://www.enginatics.com/library/?pg=1&find=wip_discrete_jobs), [wip_schedule_groups](https://www.enginatics.com/library/?pg=1&find=wip_schedule_groups), [pa_projects_all](https://www.enginatics.com/library/?pg=1&find=pa_projects_all), [pjm_seiban_numbers](https://www.enginatics.com/library/?pg=1&find=pjm_seiban_numbers), [pa_tasks](https://www.enginatics.com/library/?pg=1&find=pa_tasks), [wip_operations](https://www.enginatics.com/library/?pg=1&find=wip_operations), [bom_departments](https://www.enginatics.com/library/?pg=1&find=bom_departments), [bom_standard_operations](https://www.enginatics.com/library/?pg=1&find=bom_standard_operations), [wip_operation_resources](https://www.enginatics.com/library/?pg=1&find=wip_operation_resources), [bom_resources](https://www.enginatics.com/library/?pg=1&find=bom_resources), [oe_order_headers_all](https://www.enginatics.com/library/?pg=1&find=oe_order_headers_all), [oe_order_lines_all](https://www.enginatics.com/library/?pg=1&find=oe_order_lines_all), [org_access_view](https://www.enginatics.com/library/?pg=1&find=org_access_view)
@@ -23,7 +23,7 @@ Organization Code, Scheduled Start Date From, Scheduled Start Date To, Planner C
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related Reports
-[INV Onhand Quantities](/INV%20Onhand%20Quantities/ "INV Onhand Quantities Oracle EBS SQL Report"), [WIP Required Components](/WIP%20Required%20Components/ "WIP Required Components Oracle EBS SQL Report")
+[WIP Job Upload](/WIP%20Job%20Upload/ "WIP Job Upload Oracle EBS SQL Report"), [INV Onhand Quantities](/INV%20Onhand%20Quantities/ "INV Onhand Quantities Oracle EBS SQL Report"), [WIP Required Components](/WIP%20Required%20Components/ "WIP Required Components Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.

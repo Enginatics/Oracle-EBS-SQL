@@ -5,7 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: Blitz Report Default Templates
--- Description: None
+-- Description: 
 -- Excel Examle Output: https://www.enginatics.com/example/blitz-report-default-templates/
 -- Library Link: https://www.enginatics.com/reports/blitz-report-default-templates/
 -- Run Report: https://demo.enginatics.com/

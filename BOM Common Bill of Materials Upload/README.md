@@ -2,7 +2,7 @@
 layout: default
 title: 'BOM Common Bill of Materials Upload | Oracle EBS SQL Report'
 description: 'BOM Common Bill of Materials Upload ============================================ The upload can be used to create Common BOM from the BOMS defined in the…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Upload, BOM, Common, Bill, Materials, bom_bill_of_materials, bom_inventory_components, mtl_parameters'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, BOM, Common, Bill, Materials, bom_bill_of_materials, bom_inventory_components, mtl_parameters'
 permalink: /BOM%20Common%20Bill%20of%20Materials%20Upload/
 ---
 
@@ -59,7 +59,7 @@ Source Organization Code, Common BOM Scope, Target Hierarchy, Target Organizatio
 [bom_bill_of_materials](https://www.enginatics.com/library/?pg=1&find=bom_bill_of_materials), [bom_inventory_components](https://www.enginatics.com/library/?pg=1&find=bom_inventory_components), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters), [mtl_system_items_kfv](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_kfv), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl), [bom_tree](https://www.enginatics.com/library/?pg=1&find=bom_tree), [bom_substitute_components](https://www.enginatics.com/library/?pg=1&find=bom_substitute_components), [bom](https://www.enginatics.com/library/?pg=1&find=bom), [org_access_view](https://www.enginatics.com/library/?pg=1&find=org_access_view), [bom_subst](https://www.enginatics.com/library/?pg=1&find=bom_subst)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only), [Upload](https://www.enginatics.com/library/?pg=1&category[]=Upload)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Upload](https://www.enginatics.com/library/?pg=1&category[]=Upload)
 
 ## Related Reports
 [BOM Bill of Materials Upload](/BOM%20Bill%20of%20Materials%20Upload/ "BOM Bill of Materials Upload Oracle EBS SQL Report"), [BOM Bill of Material Structure](/BOM%20Bill%20of%20Material%20Structure/ "BOM Bill of Material Structure Oracle EBS SQL Report"), [FND Attached Documents](/FND%20Attached%20Documents/ "FND Attached Documents Oracle EBS SQL Report"), [CST Supply Chain Indented Bills of Material Cost](/CST%20Supply%20Chain%20Indented%20Bills%20of%20Material%20Cost/ "CST Supply Chain Indented Bills of Material Cost Oracle EBS SQL Report")
@@ -71,7 +71,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/bom-common-bill-of-materials-upload/) |
+| Excel Example Output | [](https://www.enginatics.com/example/bom-common-bill-of-materials-upload/) |
 | Blitz Report™ XML Import | [BOM_Common_Bill_of_Materials_Upload.xml](https://www.enginatics.com/xml/bom-common-bill-of-materials-upload/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/bom-common-bill-of-materials-upload/](https://www.enginatics.com/reports/bom-common-bill-of-materials-upload/) |
 

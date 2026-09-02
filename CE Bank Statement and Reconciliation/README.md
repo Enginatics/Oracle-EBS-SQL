@@ -2,7 +2,7 @@
 layout: default
 title: 'CE Bank Statement and Reconciliation | Oracle EBS SQL Report'
 description: 'Application: Cash Management Description: Bank Statements - Bank Statement Details and Reconciliation Provides equivalent functionality to the following…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Bank, Statement, Reconciliation, gl_daily_conversion_types, gl_je_lines, ap_checks_all'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Bank, Statement, Reconciliation, gl_daily_conversion_types, gl_je_lines, ap_checks_all'
 permalink: /CE%20Bank%20Statement%20and%20Reconciliation/
 ---
 
@@ -45,7 +45,7 @@ Bank Name, Bank Branch, Bank Account Name, Bank Account Number, Check Digits, St
 [gl_daily_conversion_types](https://www.enginatics.com/library/?pg=1&find=gl_daily_conversion_types), [gl_je_lines](https://www.enginatics.com/library/?pg=1&find=gl_je_lines), [ap_checks_all](https://www.enginatics.com/library/?pg=1&find=ap_checks_all), [ar_cash_receipt_history_all](https://www.enginatics.com/library/?pg=1&find=ar_cash_receipt_history_all), [ce_cashflows](https://www.enginatics.com/library/?pg=1&find=ce_cashflows), [fnd_currencies](https://www.enginatics.com/library/?pg=1&find=fnd_currencies), [ce_statement_lines](https://www.enginatics.com/library/?pg=1&find=ce_statement_lines), [pay_assignment_actions](https://www.enginatics.com/library/?pg=1&find=pay_assignment_actions), [pay_pre_payments](https://www.enginatics.com/library/?pg=1&find=pay_pre_payments), [pay_action_interlocks](https://www.enginatics.com/library/?pg=1&find=pay_action_interlocks), [ce_999_interface_v](https://www.enginatics.com/library/?pg=1&find=ce_999_interface_v), [xtr_settlement_summary](https://www.enginatics.com/library/?pg=1&find=xtr_settlement_summary), [ce_reconciled_transactions_v](https://www.enginatics.com/library/?pg=1&find=ce_reconciled_transactions_v)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 
 

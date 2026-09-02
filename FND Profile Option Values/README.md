@@ -15,7 +15,7 @@ Profile option values on all setup levels.
 Unlike Oracle's SQL script from note 201945.1, this report also shows the user visible profile option value in addition to the internal system profile option value.
 
 ## Report Parameters
-User Profile Name starts with, User Profile Name any lang, Setup Level, Setup Level Value, Application Name, Application Short Name, System Profile Name starts with, Last Update Date From, Last Update Date To, Last Updated By, Profile System Value like, Redundant
+User Profile Name starts with, User Profile Name any lang, Setup Level, Setup Level Value, Application Name, Application Short Name, System Profile Name starts with, Last Update Date From, Last Update Date To, Last Updated By, Profile System Value like, Profile Option Value is null, Redundant
 
 ## Oracle EBS Tables Used
 [fnd_application_vl](https://www.enginatics.com/library/?pg=1&find=fnd_application_vl), [fnd_profile_options_vl](https://www.enginatics.com/library/?pg=1&find=fnd_profile_options_vl), [fnd_profile_option_values](https://www.enginatics.com/library/?pg=1&find=fnd_profile_option_values), [fnd_responsibility_vl](https://www.enginatics.com/library/?pg=1&find=fnd_responsibility_vl), [fnd_user](https://www.enginatics.com/library/?pg=1&find=fnd_user), [hr_all_organization_units_vl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_vl), [fnd_nodes](https://www.enginatics.com/library/?pg=1&find=fnd_nodes)
@@ -24,7 +24,7 @@ User Profile Name starts with, User Profile Name any lang, Setup Level, Setup Le
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related Reports
-[FND User Login History](/FND%20User%20Login%20History/ "FND User Login History Oracle EBS SQL Report"), [FND Responsibilities](/FND%20Responsibilities/ "FND Responsibilities Oracle EBS SQL Report"), [FND Concurrent Requests](/FND%20Concurrent%20Requests/ "FND Concurrent Requests Oracle EBS SQL Report"), [FND Responsibility Access](/FND%20Responsibility%20Access/ "FND Responsibility Access Oracle EBS SQL Report"), [Blitz Report Assignments and Responsibilities](/Blitz%20Report%20Assignments%20and%20Responsibilities/ "Blitz Report Assignments and Responsibilities Oracle EBS SQL Report"), [FND Concurrent Requests 11i](/FND%20Concurrent%20Requests%2011i/ "FND Concurrent Requests 11i Oracle EBS SQL Report"), [FND Responsibility Access 11i](/FND%20Responsibility%20Access%2011i/ "FND Responsibility Access 11i Oracle EBS SQL Report")
+[FND User Login History](/FND%20User%20Login%20History/ "FND User Login History Oracle EBS SQL Report"), [FND Responsibilities](/FND%20Responsibilities/ "FND Responsibilities Oracle EBS SQL Report"), [FND Concurrent Requests](/FND%20Concurrent%20Requests/ "FND Concurrent Requests Oracle EBS SQL Report"), [FND Responsibility Access](/FND%20Responsibility%20Access/ "FND Responsibility Access Oracle EBS SQL Report"), [CAC Inventory Organization Summary](/CAC%20Inventory%20Organization%20Summary/ "CAC Inventory Organization Summary Oracle EBS SQL Report"), [CAC Inventory Accounts Setup](/CAC%20Inventory%20Accounts%20Setup/ "CAC Inventory Accounts Setup Oracle EBS SQL Report"), [Blitz Report Access Upload](/Blitz%20Report%20Access%20Upload/ "Blitz Report Access Upload Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.

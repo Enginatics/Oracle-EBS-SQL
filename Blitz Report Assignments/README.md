@@ -11,10 +11,10 @@ permalink: /Blitz%20Report%20Assignments/
 **Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/blitz-report-assignments/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
 
 ## Overview
-None
+
 
 ## Report Parameters
-Type, Category, Assignment Level, Level Value, Show Form Parameter Defaults
+Report Type, Category, Assignment Level, Level Value, Show Form Parameter Defaults
 
 ## Oracle EBS Tables Used
 [xxen_reports_v](https://www.enginatics.com/library/?pg=1&find=xxen_reports_v), [xxen_report_assignments_v](https://www.enginatics.com/library/?pg=1&find=xxen_report_assignments_v), [xxen_report_zoom_param_vals_v](https://www.enginatics.com/library/?pg=1&find=xxen_report_zoom_param_vals_v)

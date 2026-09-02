@@ -11,7 +11,7 @@ permalink: /FND%20Messages/
 **Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/fnd-messages/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
 
 ## Overview
-None
+
 
 ## Report Parameters
 Message Text contains, Message Name like, Application, Language Code

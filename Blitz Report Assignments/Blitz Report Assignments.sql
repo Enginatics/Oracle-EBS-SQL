@@ -5,7 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: Blitz Report Assignments
--- Description: None
+-- Description: 
 -- Excel Examle Output: https://www.enginatics.com/example/blitz-report-assignments/
 -- Library Link: https://www.enginatics.com/reports/blitz-report-assignments/
 -- Run Report: https://demo.enginatics.com/
@@ -14,11 +14,12 @@ select distinct
 xrav.report_name,
 xrv.type_dsp type,
 xrv.category,
-xxen_util.meaning(xrv.enabled,'YES_NO',0) enabled,
+xxen_util.yes(xrv.disabled) disabled,
 xxen_util.meaning(xrav.include_exclude,'INCLUDE_EXCLUDE',0) include_exclude,
-xrav.assignment_level_desc level_name,
+xrav.assignment_level level_name,
 xrav.level_value value,
 xrav.description,
+xrav.assigned_users,
 xrav.block_name form_block,
 &columns
 xxen_util.user_name(xrav.created_by) created_by,
@@ -38,7 +39,7 @@ xrv.report_id=xrav.report_id and
 xrav.assignment_id=xrzpvv.assignment_id(+)
 order by
 xrav.report_name,
-xrav.assignment_level_desc,
+xrav.assignment_level,
 xrav.level_value,
 xrav.block_name
 &order_by

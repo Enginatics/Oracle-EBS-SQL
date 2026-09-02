@@ -2,7 +2,7 @@
 layout: default
 title: 'FA Asset Inventory | Oracle EBS SQL Report'
 description: 'Imported Oracle standard asset inventory report Source: Asset Inventory Report (XML) Short Name: FAS410XML DB package: FAFAS410XMLPPKG'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Asset, Inventory, fa_system_controls, fa_deprn_detail, per_people_f'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Asset, Inventory, fa_system_controls, fa_deprn_detail, per_people_f'
 permalink: /FA%20Asset%20Inventory/
 ---
 
@@ -23,7 +23,7 @@ Book, From Cost Center, To Cost Center, From Date Placed in Service, To Date Pla
 [fa_system_controls](https://www.enginatics.com/library/?pg=1&find=fa_system_controls), [fa_deprn_detail](https://www.enginatics.com/library/?pg=1&find=fa_deprn_detail), [per_people_f](https://www.enginatics.com/library/?pg=1&find=per_people_f), [fa_additions](https://www.enginatics.com/library/?pg=1&find=fa_additions), [fa_locations](https://www.enginatics.com/library/?pg=1&find=fa_locations), [gl_code_combinations](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations), [fa_books](https://www.enginatics.com/library/?pg=1&find=fa_books), [fa_distribution_history](https://www.enginatics.com/library/?pg=1&find=fa_distribution_history), [fa_adjustments](https://www.enginatics.com/library/?pg=1&find=fa_adjustments), [fa_lookups](https://www.enginatics.com/library/?pg=1&find=fa_lookups)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 
 

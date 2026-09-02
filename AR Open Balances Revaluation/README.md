@@ -2,7 +2,7 @@
 layout: default
 title: 'AR Open Balances Revaluation | Oracle EBS SQL Report'
 description: 'Report: AR Open Balances Revaluation Report Application: Receivables Source: AR Open Balances Revaluation Report Short Name: AROBRR'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Open, Balances, Revaluation, ar_receivable_applications, ar_adjustments, hr_operating_units'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Open, Balances, Revaluation, ar_receivable_applications, ar_adjustments, hr_operating_units'
 permalink: /AR%20Open%20Balances%20Revaluation/
 ---
 
@@ -24,7 +24,7 @@ Ledger, Operating Unit, As of Date, Exchange Rate Type, Currency, User Rate Type
 [ar_receivable_applications](https://www.enginatics.com/library/?pg=1&find=ar_receivable_applications), [ar_adjustments](https://www.enginatics.com/library/?pg=1&find=ar_adjustments), [hr_operating_units](https://www.enginatics.com/library/?pg=1&find=hr_operating_units), [gl_ledgers](https://www.enginatics.com/library/?pg=1&find=gl_ledgers), [ra_customer_trx](https://www.enginatics.com/library/?pg=1&find=ra_customer_trx), [ar_payment_schedules](https://www.enginatics.com/library/?pg=1&find=ar_payment_schedules), [ra_cust_trx_types](https://www.enginatics.com/library/?pg=1&find=ra_cust_trx_types), [ra_cust_trx_line_gl_dist](https://www.enginatics.com/library/?pg=1&find=ra_cust_trx_line_gl_dist), [gl_code_combinations](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations), [xla_distribution_links](https://www.enginatics.com/library/?pg=1&find=xla_distribution_links), [xla_ae_lines](https://www.enginatics.com/library/?pg=1&find=xla_ae_lines), [hz_cust_accounts](https://www.enginatics.com/library/?pg=1&find=hz_cust_accounts), [hz_parties](https://www.enginatics.com/library/?pg=1&find=hz_parties), [ar_system_parameters](https://www.enginatics.com/library/?pg=1&find=ar_system_parameters), [gl_import_references](https://www.enginatics.com/library/?pg=1&find=gl_import_references), [gl_je_headers](https://www.enginatics.com/library/?pg=1&find=gl_je_headers), [ar_lookups](https://www.enginatics.com/library/?pg=1&find=ar_lookups), [ar_cash_receipts](https://www.enginatics.com/library/?pg=1&find=ar_cash_receipts), [ar_cash_receipt_history](https://www.enginatics.com/library/?pg=1&find=ar_cash_receipt_history), [ar_distributions](https://www.enginatics.com/library/?pg=1&find=ar_distributions)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 
 

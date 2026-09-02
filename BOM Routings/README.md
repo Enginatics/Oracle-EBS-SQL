@@ -1,8 +1,8 @@
 ---
 layout: default
 title: 'BOM Routings | Oracle EBS SQL Report'
-description: 'Master data report showing bill of material routings with item codes and sequences.'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, BOM, Routings, mtl_item_status_vl, hr_all_organization_units_vl, mtl_parameters'
+description: 'Master data report showing bill of material routings with item codes and sequences. The report optionally shows the full routing detail matching the BOM…'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, BOM, Routings, mtl_item_status_vl, mtl_item_locations_kfv, mtl_system_items_vl'
 permalink: /BOM%20Routings/
 ---
 
@@ -13,17 +13,20 @@ permalink: /BOM%20Routings/
 ## Overview
 Master data report showing bill of material routings with item codes and sequences.
 
+The report optionally shows the full routing detail matching the BOM Routing Upload: routing header attributes and revision, operation scheduling details, operation resources, substitute resources and flow routing operation networks. The detail levels are controlled by the Show Operations, Show Resources, Show Substitute Resources and Show Networks parameters, and the Record Type column identifies each row.
+
+Descriptive flexfield attributes of the routing, routing revision and operation are shown as dynamic columns via the Show BOM DFF Attributes parameter.
+
 ## Report Parameters
-Organization Code, Item, Item Description, Excluded Item Statuses
+Organization Code, Item, Item Description, Excluded Item Statuses, Assembly Type, Routing Type, Alternate, Display, Effective Date, Implemented Only, Common Routing Assignments, Show Operations, Show Resources, Show Substitute Resources, Routings with Substitutes Only, Show Networks, Routings with Networks Only, Show BOM DFF Attributes
 
 ## Oracle EBS Tables Used
-[mtl_item_status_vl](https://www.enginatics.com/library/?pg=1&find=mtl_item_status_vl), [hr_all_organization_units_vl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_vl), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters), [bom_operational_routings](https://www.enginatics.com/library/?pg=1&find=bom_operational_routings), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl), [wip_lines](https://www.enginatics.com/library/?pg=1&find=wip_lines), [bom_operation_sequences](https://www.enginatics.com/library/?pg=1&find=bom_operation_sequences), [bom_standard_operations](https://www.enginatics.com/library/?pg=1&find=bom_standard_operations), [bom_departments](https://www.enginatics.com/library/?pg=1&find=bom_departments)
+[mtl_item_status_vl](https://www.enginatics.com/library/?pg=1&find=mtl_item_status_vl), [mtl_item_locations_kfv](https://www.enginatics.com/library/?pg=1&find=mtl_item_locations_kfv), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl), [bom_department_resources](https://www.enginatics.com/library/?pg=1&find=bom_department_resources), [bom_setup_types](https://www.enginatics.com/library/?pg=1&find=bom_setup_types), [cst_activities_val_v](https://www.enginatics.com/library/?pg=1&find=cst_activities_val_v), [hr_all_organization_units_vl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_vl), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters), [bom_operational_routings](https://www.enginatics.com/library/?pg=1&find=bom_operational_routings), [mtl_rtg_item_revisions](https://www.enginatics.com/library/?pg=1&find=mtl_rtg_item_revisions), [wip_lines](https://www.enginatics.com/library/?pg=1&find=wip_lines), [bom_operation_sequences](https://www.enginatics.com/library/?pg=1&find=bom_operation_sequences), [bom_departments](https://www.enginatics.com/library/?pg=1&find=bom_departments), [bom_standard_operations](https://www.enginatics.com/library/?pg=1&find=bom_standard_operations), [bom_operation_resources](https://www.enginatics.com/library/?pg=1&find=bom_operation_resources), [bom_resources](https://www.enginatics.com/library/?pg=1&find=bom_resources), [bom_sub_operation_resources](https://www.enginatics.com/library/?pg=1&find=bom_sub_operation_resources), [bom_operation_networks](https://www.enginatics.com/library/?pg=1&find=bom_operation_networks)
 
 ## Report Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
-## Related Reports
-[CAC Manufacturing Variance](/CAC%20Manufacturing%20Variance/ "CAC Manufacturing Variance Oracle EBS SQL Report"), [BOM Routing Upload](/BOM%20Routing%20Upload/ "BOM Routing Upload Oracle EBS SQL Report"), [FND Attached Documents](/FND%20Attached%20Documents/ "FND Attached Documents Oracle EBS SQL Report"), [CAC Item Cost & Routing](/CAC%20Item%20Cost%20-%20Routing/ "CAC Item Cost & Routing Oracle EBS SQL Report"), [WIP Entities](/WIP%20Entities/ "WIP Entities Oracle EBS SQL Report"), [CAC WIP Resource Efficiency](/CAC%20WIP%20Resource%20Efficiency/ "CAC WIP Resource Efficiency Oracle EBS SQL Report"), [MRP Pegging](/MRP%20Pegging/ "MRP Pegging Oracle EBS SQL Report")
+
 
 ## Running This SQL Without Blitz Report
 Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.

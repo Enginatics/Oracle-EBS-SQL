@@ -327,6 +327,7 @@ select  nvl(gl.short_name, gl.name) Ledger,
         fmd.qty Quantity,
         -- Revision for version 1.1
         fmd.qty * mucv.conversion_rate Primary_Quantity,
+        fmd.cost_alloc Cost_Allocation,
     nvl((select max(line_cost.cost_type) from line_cost
          where  line_cost.inventory_item_id = msiv.inventory_item_id
          and    line_cost.organization_id   = msiv.organization_id),'') Cost_Type,
@@ -683,7 +684,8 @@ group by
         -- End revision for version 1.4
         fmd.qty,
         -- Revision for version 1.1
-        fmd.qty * mucv.conversion_rate -- Primary_Quantity
+        fmd.qty * mucv.conversion_rate, -- Primary_Quantity
+        fmd.cost_alloc -- Cost_Allocation
 order by
         nvl(gl.short_name, gl.name),
         haou2.name,

@@ -2,7 +2,7 @@
 layout: default
 title: 'AR Customer Upload | Oracle EBS SQL Report'
 description: 'AR Customer Upload This upload can be used to create and/or update Customer Accounts, Customer Sites and/or Customer Site Uses. Additionally, the upload…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Upload, Customer, hz_role_responsibility, fnd_territories_vl, hz_cust_account_roles'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, Customer, hz_parties, hz_contact_points, hz_party_sites'
 permalink: /AR%20Customer%20Upload/
 ---
 
@@ -28,9 +28,9 @@ Create, Update – In this mode the existing customer information is first downl
 Update Level
 ===========
 This parameter determines if you want to download the Customer Profiles, Bank Accounts, and Contacts at the Customer Level, Customer Site Level or Both  
-Customer – only Customer Level information is downloaded to excel.
+Account – only Customer Level information is downloaded to excel.
 Site – only Customer Site level information is downloaded to the excel
-Blank – Customer and Customer Site level information is downloaded to the Excel.
+Account & Site – Customer and Customer Site level information is downloaded to the Excel.
 In the excel you can create/update the customer profiles, bank accounts, and/or contacts at the customer level by leaving the Site Level columns null.
 
 Update Profile Amounts
@@ -62,13 +62,13 @@ These parameters allow you to create the customer account and customer site in a
 
 
 ## Report Parameters
-Upload Mode, Update Level, Party Type, Operating Unit, Customer Name, Customer Name From, Customer Name To, Registry ID, Registry ID From, Registry ID To, Account Number, Account Number From, Account Number To, Customer Type, Customer Classification, Customer Sales Channel, Customer Created From, Customer Created To, Primary Salesperson, Country, Site Use Purpose, Site Use Location, Account Status, Site Status, Profile Class, Collector, Credit Analyst, Update Site Uses, Update Profile Amounts, Update Tax Registrations, Tax Registration Status, Update Bank Accounts, Bank Account Status, Update Contacts, Contact Status, Update Attachments, Default Profile Assign. Level, Default Tax Reg. Assign. Level, Default Bank Acct Assign. Level, Default Contact Assign. Level, Default Attachment Assign. Level
+Upload Mode, Update Level, Allow Update on Create, Party Type, Operating Unit, Customer Name, Customer Name From, Customer Name To, Registry ID, Registry ID From, Registry ID To, Account Number, Account Number From, Account Number To, Customer Type, Customer Classification, Customer Sales Channel, Customer Created From, Customer Created To, Primary Salesperson, Country, Party Site Number, Party Site Name, Site Use Purpose, Site Use Location, Account Status, Site Status, Profile Class, Collector, Credit Analyst, Update Child Data must exist?, Update Site Uses, Update Profiles, Update Profile Amounts, Update Receipt Methods, Receipt Method Status, Update Tax Registrations, Tax Registration Status, Update Bank Accounts, Bank Account Status, Update Contact Points, Contact Point Status, Update Contacts, Contact Status, Update Party Relationships, Party Relationship Party Type, Party Relationship Status, Update Account Relationships, Account Relationship Status, Update Attachments, Default Profile Assign. Level, Default Receipt Mthd Assign. Level, Default Tax Reg. Assign. Level, Default Bank Acct Assign. Level, Default Contact Point Assign. Level, Default Contact Assign. Level, Default Attachment Assign. Level
 
 ## Oracle EBS Tables Used
-[hz_role_responsibility](https://www.enginatics.com/library/?pg=1&find=hz_role_responsibility), [fnd_territories_vl](https://www.enginatics.com/library/?pg=1&find=fnd_territories_vl), [hz_cust_account_roles](https://www.enginatics.com/library/?pg=1&find=hz_cust_account_roles), [hz_relationships](https://www.enginatics.com/library/?pg=1&find=hz_relationships), [hz_parties](https://www.enginatics.com/library/?pg=1&find=hz_parties), [hz_org_contacts](https://www.enginatics.com/library/?pg=1&find=hz_org_contacts), [hz_cust_accounts](https://www.enginatics.com/library/?pg=1&find=hz_cust_accounts), [hz_party_sites](https://www.enginatics.com/library/?pg=1&find=hz_party_sites), [hz_locations](https://www.enginatics.com/library/?pg=1&find=hz_locations), [hz_contact_points](https://www.enginatics.com/library/?pg=1&find=hz_contact_points), [iby_external_payers_all](https://www.enginatics.com/library/?pg=1&find=iby_external_payers_all), [iby_pmt_instr_uses_all](https://www.enginatics.com/library/?pg=1&find=iby_pmt_instr_uses_all), [iby_ext_bank_accounts](https://www.enginatics.com/library/?pg=1&find=iby_ext_bank_accounts), [ce_bank_branches_v](https://www.enginatics.com/library/?pg=1&find=ce_bank_branches_v), [fnd_documents_short_text](https://www.enginatics.com/library/?pg=1&find=fnd_documents_short_text), [fnd_lobs](https://www.enginatics.com/library/?pg=1&find=fnd_lobs), [fnd_attached_documents](https://www.enginatics.com/library/?pg=1&find=fnd_attached_documents), [fnd_documents](https://www.enginatics.com/library/?pg=1&find=fnd_documents), [fnd_documents_tl](https://www.enginatics.com/library/?pg=1&find=fnd_documents_tl), [fnd_document_datatypes](https://www.enginatics.com/library/?pg=1&find=fnd_document_datatypes), [fnd_document_categories_tl](https://www.enginatics.com/library/?pg=1&find=fnd_document_categories_tl), [hz_organization_profiles](https://www.enginatics.com/library/?pg=1&find=hz_organization_profiles)
+[hz_parties](https://www.enginatics.com/library/?pg=1&find=hz_parties), [hz_contact_points](https://www.enginatics.com/library/?pg=1&find=hz_contact_points), [hz_party_sites](https://www.enginatics.com/library/?pg=1&find=hz_party_sites), [hz_role_responsibility](https://www.enginatics.com/library/?pg=1&find=hz_role_responsibility), [fnd_territories_vl](https://www.enginatics.com/library/?pg=1&find=fnd_territories_vl), [hz_cust_account_roles](https://www.enginatics.com/library/?pg=1&find=hz_cust_account_roles), [hz_relationships](https://www.enginatics.com/library/?pg=1&find=hz_relationships), [hz_org_contacts](https://www.enginatics.com/library/?pg=1&find=hz_org_contacts), [hz_cust_accounts](https://www.enginatics.com/library/?pg=1&find=hz_cust_accounts), [hz_locations](https://www.enginatics.com/library/?pg=1&find=hz_locations), [iby_external_payers_all](https://www.enginatics.com/library/?pg=1&find=iby_external_payers_all), [iby_pmt_instr_uses_all](https://www.enginatics.com/library/?pg=1&find=iby_pmt_instr_uses_all), [iby_ext_bank_accounts](https://www.enginatics.com/library/?pg=1&find=iby_ext_bank_accounts), [ce_bank_branches_v](https://www.enginatics.com/library/?pg=1&find=ce_bank_branches_v), [hz_relationship_types](https://www.enginatics.com/library/?pg=1&find=hz_relationship_types), [hz_cust_acct_relate_all](https://www.enginatics.com/library/?pg=1&find=hz_cust_acct_relate_all), [hr_all_organization_units_vl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_vl)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only), [Upload](https://www.enginatics.com/library/?pg=1&category[]=Upload)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Upload](https://www.enginatics.com/library/?pg=1&category[]=Upload)
 
 
 
@@ -79,7 +79,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/ar-customer-upload/) |
+| Excel Example Output | [](https://www.enginatics.com/example/ar-customer-upload/) |
 | Blitz Report™ XML Import | [AR_Customer_Upload.xml](https://www.enginatics.com/xml/ar-customer-upload/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/ar-customer-upload/](https://www.enginatics.com/reports/ar-customer-upload/) |
 

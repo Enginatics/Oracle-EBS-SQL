@@ -2,7 +2,7 @@
 layout: default
 title: 'ONT Transaction Types Listing | Oracle EBS SQL Report'
 description: 'Imported Oracle standard Order Management transaction types listing, enhanced to show the setup across all operating units Description: Transaction Types…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, BI Publisher, Enginatics, ONT, Transaction, Types, Listing, hr_all_organization_units_vl, oe_transaction_types_all, oe_transaction_types_tl'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, ONT, Transaction, Types, Listing, hr_all_organization_units_vl, oe_transaction_types_all, oe_transaction_types_tl'
 permalink: /ONT%20Transaction%20Types%20Listing/
 ---
 
@@ -25,10 +25,10 @@ Operating Unit, Transaction Type Code, Order Category Code
 [hr_all_organization_units_vl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_vl), [oe_transaction_types_all](https://www.enginatics.com/library/?pg=1&find=oe_transaction_types_all), [oe_transaction_types_tl](https://www.enginatics.com/library/?pg=1&find=oe_transaction_types_tl), [oe_price_lists_v](https://www.enginatics.com/library/?pg=1&find=oe_price_lists_v), [oe_credit_check_rules](https://www.enginatics.com/library/?pg=1&find=oe_credit_check_rules), [org_organization_definitions](https://www.enginatics.com/library/?pg=1&find=org_organization_definitions), [org_freight](https://www.enginatics.com/library/?pg=1&find=org_freight), [ra_rules](https://www.enginatics.com/library/?pg=1&find=ra_rules), [ra_batch_sources](https://www.enginatics.com/library/?pg=1&find=ra_batch_sources), [ra_cust_trx_types](https://www.enginatics.com/library/?pg=1&find=ra_cust_trx_types), [fnd_currencies_vl](https://www.enginatics.com/library/?pg=1&find=fnd_currencies_vl), [gl_daily_conversion_types](https://www.enginatics.com/library/?pg=1&find=gl_daily_conversion_types), [gl_code_combinations_kfv](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations_kfv), [mo_glob_org_access_tmp](https://www.enginatics.com/library/?pg=1&find=mo_glob_org_access_tmp), [dual](https://www.enginatics.com/library/?pg=1&find=dual)
 
 ## Report Categories
-[BI Publisher](https://www.enginatics.com/library/?pg=1&category[]=BI%20Publisher), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 ## Related Reports
-[AR Customer Upload](/AR%20Customer%20Upload/ "AR Customer Upload Oracle EBS SQL Report"), [ONT Transaction Types and Line WF Processes](/ONT%20Transaction%20Types%20and%20Line%20WF%20Processes/ "ONT Transaction Types and Line WF Processes Oracle EBS SQL Report"), [GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report"), [GL Account Analysis (Distributions)](/GL%20Account%20Analysis%20%28Distributions%29/ "GL Account Analysis (Distributions) Oracle EBS SQL Report"), [AR Transaction Upload](/AR%20Transaction%20Upload/ "AR Transaction Upload Oracle EBS SQL Report"), [ONT Order Upload](/ONT%20Order%20Upload/ "ONT Order Upload Oracle EBS SQL Report"), [AR Transactions and Lines 11i](/AR%20Transactions%20and%20Lines%2011i/ "AR Transactions and Lines 11i Oracle EBS SQL Report")
+[AR Customer Upload](/AR%20Customer%20Upload/ "AR Customer Upload Oracle EBS SQL Report"), [AR Transaction Upload](/AR%20Transaction%20Upload/ "AR Transaction Upload Oracle EBS SQL Report"), [ONT Transaction Types and Line WF Processes](/ONT%20Transaction%20Types%20and%20Line%20WF%20Processes/ "ONT Transaction Types and Line WF Processes Oracle EBS SQL Report"), [GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report"), [ONT Order Upload](/ONT%20Order%20Upload/ "ONT Order Upload Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.

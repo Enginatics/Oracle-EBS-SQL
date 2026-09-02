@@ -5,7 +5,10 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: Blitz Reports
--- Description: Blitz Reports with parameters and assignments.
+-- Description: All Enginatics report details can be seen here:
+<a href="https://www.enginatics.com/library/?pg=1&category[]=Enginatics" rel="nofollow" target="_blank">https://www.enginatics.com/library/?pg=1&category[]=Enginatics</a>
+
+Blitz Reports with parameters and assignments.
 If you are using the free version of Blitz Report, you can use the parameter 'Sort by Free 30 Reports' to show your free reports in column 'Free 30 Reports'.
 -- Excel Examle Output: https://www.enginatics.com/example/blitz-reports/
 -- Library Link: https://www.enginatics.com/reports/blitz-reports/
@@ -75,10 +78,9 @@ xrv.output_format,
 xrv.row_limit,
 xrv.time_limit,
 xrv.custom_postprocess,
-xrv.output_filename,
-xrv.additional_out_dir_apps,
-xrv.additional_out_dir_db,
-xrv.additional_out_fname,
+xrv.output_file_name,
+xrv.server_output_directory,
+xrv.server_file_name,
 xrv.request_type,
 xrv.target_database,
 decode(xrv.upload_type,'I','Interface Table','A','API') upload_type,
@@ -90,13 +92,13 @@ xxen_util.user_name(xrv.created_by) created_by,
 xxen_util.client_time(xrv.creation_date) creation_date,
 xxen_util.user_name(xrv.last_updated_by) last_updated_by,
 xxen_util.client_time(xrv.last_update_date) last_update_date,
-xxen_util.meaning(xrv.enabled,'YES_NO',0) enabled,
+xxen_util.yes(xrv.disabled) disabled,
 decode(xrv.parameter_count,0,to_number(null),xrv.parameter_count) parameter_count,
 decode(xrv.template_count,0,to_number(null),xrv.template_count) template_count,
 (select count(distinct xra.id1||','||xra.id2) from xxen_report_assignments xra where xrv.report_id=xra.report_id and xra.include_exclude='I') assignments_count,
-(select count(distinct xra.id1||','||xra.id2) from xxen_report_assignments xra where xrv.report_id=xra.report_id and xra.assignment_level='A' and xra.include_exclude='I') application_assignments,
-(select count(distinct xra.id1||','||xra.id2) from xxen_report_assignments xra where xrv.report_id=xra.report_id and xra.assignment_level='G' and xra.include_exclude='I') request_group_assignments,
-(select count(distinct xra.id1||','||xra.id2) from xxen_report_assignments xra where xrv.report_id=xra.report_id and xra.assignment_level='F' and xra.include_exclude='I') forms_assignments,
+(select count(distinct xra.id1||','||xra.id2) from xxen_report_assignments xra where xrv.report_id=xra.report_id and xra.assignment_level='Application' and xra.include_exclude='I') application_assignments,
+(select count(distinct xra.id1||','||xra.id2) from xxen_report_assignments xra where xrv.report_id=xra.report_id and xra.assignment_level='Request Group' and xra.include_exclude='I') request_group_assignments,
+(select count(distinct xra.id1||','||xra.id2) from xxen_report_assignments xra where xrv.report_id=xra.report_id and xra.assignment_level='Form' and xra.include_exclude='I') forms_assignments,
 &anchors_lexicals_binds
 xrv.required_parameters,
 xrv.required_parameters_message,
@@ -125,7 +127,7 @@ xxen_reports_v xrv
 xxen_reports_v xrv0,
 (select xrpv.* from xxen_report_parameters_v xrpv where '&show_parameters'='Y') xrpv,
 (select xrav.* from xxen_report_assignments_v xrav where '&show_assignments'='Y') xrav,
-(select count(*) execution_count, xrr.report_id from xxen_report_runs xrr where 2=2 and '&show_exec_count'='Y' group by xrr.report_id) y,
+(select count(*) execution_count, xrr.report_id from xxen_report_runs xrr where 3=3 and '&show_exec_count'='Y' group by xrr.report_id) y,
 (select xupv.* from xxen_upload_parameters_v xupv where '&show_upload_parameters'='Y') xupv,
 (select xucv.* from xxen_upload_columns_v xucv where '&show_upload_columns'='Y') xucv,
 anchors,
@@ -133,8 +135,7 @@ lexicals,
 binds
 where
 1=1 and
-4=4 and
-3=3 and
+2=2 and
 xrv.copied_from_guid=xrv0.guid(+) and
 xrv.report_id=xrpv.report_id(+) and
 xrv.report_id=xrav.report_id(+) and
@@ -152,7 +153,7 @@ xrpv.sort_order,
 xupv.display_sequence,
 xucv.column_number,
 xrav.include_exclude desc,
-decode(xrav.assignment_level_desc,
+decode(xrav.assignment_level,
 'Site',1,
 'Application',2,
 'Organization',3,

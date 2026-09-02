@@ -20,8 +20,12 @@ This upload manages:
 - Plan Elements (collection element assignments, prompts, flags)
 - Element Values (value lookups per element)
 - Action Triggers (trigger sequences and conditions per element)
-- Actions (action assignments per trigger)
+- Actions (action assignments per trigger, including assign type, assigned element, alert action set and action, status code)
 - Action Outputs (output variable mappings per action)
+
+Multiple actions of the same action type can coexist under one action trigger (e.g. two Assign value actions with different formulas, or two Send email actions with different alert sets). Actions are identified by the natural key (action trigger, action name, assign type, assigned element, alert action set, alert action, status code, action message); changing any of these fields creates a new action rather than updating an existing one. Use Delete=Yes to remove an obsolete action.
+
+CAR (Corrective Action Request) actions are not yet supported.
 
 Upload Modes
 ============
@@ -50,10 +54,10 @@ The upload uses a hierarchical structure with 8 row types:
 Each child row inherits its parent context from the plan_name column.
 
 ## Report Parameters
-Upload Mode, Organization, Plan Type, Collection Plan From, Collection Plan To
+Upload Mode, Organization, Plan Type, Collection Plan, Collection Plan From, Collection Plan To
 
 ## Oracle EBS Tables Used
-[qa_plans](https://www.enginatics.com/library/?pg=1&find=qa_plans), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters), [qa_plan_transactions](https://www.enginatics.com/library/?pg=1&find=qa_plan_transactions), [qa_plan_transactions_v](https://www.enginatics.com/library/?pg=1&find=qa_plan_transactions_v), [qa_plan_collection_triggers](https://www.enginatics.com/library/?pg=1&find=qa_plan_collection_triggers), [qa_txn_collection_triggers_v](https://www.enginatics.com/library/?pg=1&find=qa_txn_collection_triggers_v), [qa_plan_chars](https://www.enginatics.com/library/?pg=1&find=qa_plan_chars), [qa_chars](https://www.enginatics.com/library/?pg=1&find=qa_chars), [qa_plan_char_value_lookups](https://www.enginatics.com/library/?pg=1&find=qa_plan_char_value_lookups), [qa_plan_char_action_triggers](https://www.enginatics.com/library/?pg=1&find=qa_plan_char_action_triggers)
+[qa_plans](https://www.enginatics.com/library/?pg=1&find=qa_plans), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters), [qa_plan_transactions](https://www.enginatics.com/library/?pg=1&find=qa_plan_transactions), [qa_plan_transactions_v](https://www.enginatics.com/library/?pg=1&find=qa_plan_transactions_v), [qa_plan_collection_triggers](https://www.enginatics.com/library/?pg=1&find=qa_plan_collection_triggers), [qa_txn_collection_triggers_v](https://www.enginatics.com/library/?pg=1&find=qa_txn_collection_triggers_v), [qa_plan_chars](https://www.enginatics.com/library/?pg=1&find=qa_plan_chars), [qa_chars](https://www.enginatics.com/library/?pg=1&find=qa_chars), [qa_plan_char_value_lookups](https://www.enginatics.com/library/?pg=1&find=qa_plan_char_value_lookups)
 
 ## Report Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Upload](https://www.enginatics.com/library/?pg=1&category[]=Upload)
@@ -67,7 +71,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/qa-collection-plan-upload/) |
+| Excel Example Output | [](https://www.enginatics.com/example/qa-collection-plan-upload/) |
 | Blitz Report™ XML Import | [QA_Collection_Plan_Upload.xml](https://www.enginatics.com/xml/qa-collection-plan-upload/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/qa-collection-plan-upload/](https://www.enginatics.com/reports/qa-collection-plan-upload/) |
 

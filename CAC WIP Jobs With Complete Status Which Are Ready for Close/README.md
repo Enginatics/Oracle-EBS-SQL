@@ -2,7 +2,7 @@
 layout: default
 title: 'CAC WIP Jobs With Complete Status Which Are Ready for Close | Oracle EBS SQL Report'
 description: 'Report WIP jobs which have a status of "Complete", do not exceed variance tolerances, have completed or exceeded the WIP start quantity, with no open…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, CAC, WIP, Jobs, Complete, fnd_lookups, mfg_lookups, wip_requirement_operations'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, CAC, WIP, Jobs, Complete, fnd_lookups, mfg_lookups, wip_requirement_operations'
 permalink: /CAC%20WIP%20Jobs%20With%20Complete%20Status%20Which%20Are%20Ready%20for%20Close/
 ---
 
@@ -75,7 +75,7 @@ Variance Amount Threshold, Variance Percent Threshold, Include Scrap Quantities,
 [fnd_lookups](https://www.enginatics.com/library/?pg=1&find=fnd_lookups), [mfg_lookups](https://www.enginatics.com/library/?pg=1&find=mfg_lookups), [wip_requirement_operations](https://www.enginatics.com/library/?pg=1&find=wip_requirement_operations), [mtl_system_items_b](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_b), [wip_parameters](https://www.enginatics.com/library/?pg=1&find=wip_parameters), [wip_operation_resources](https://www.enginatics.com/library/?pg=1&find=wip_operation_resources), [mtl_material_transactions_temp](https://www.enginatics.com/library/?pg=1&find=mtl_material_transactions_temp), [mtl_material_transactions](https://www.enginatics.com/library/?pg=1&find=mtl_material_transactions), [wip_cost_txn_interface](https://www.enginatics.com/library/?pg=1&find=wip_cost_txn_interface), [rcv_transactions_interface](https://www.enginatics.com/library/?pg=1&find=rcv_transactions_interface), [po_requisitions_interface](https://www.enginatics.com/library/?pg=1&find=po_requisitions_interface), [mtl_transactions_interface](https://www.enginatics.com/library/?pg=1&find=mtl_transactions_interface), [wip_move_txn_interface](https://www.enginatics.com/library/?pg=1&find=wip_move_txn_interface), [wsm_split_merge_transactions](https://www.enginatics.com/library/?pg=1&find=wsm_split_merge_transactions), [wsm_sm_starting_jobs](https://www.enginatics.com/library/?pg=1&find=wsm_sm_starting_jobs), [wsm_sm_resulting_jobs](https://www.enginatics.com/library/?pg=1&find=wsm_sm_resulting_jobs), [wsm_split_merge_txn_interface](https://www.enginatics.com/library/?pg=1&find=wsm_split_merge_txn_interface), [wsm_starting_jobs_interface](https://www.enginatics.com/library/?pg=1&find=wsm_starting_jobs_interface), [wsm_resulting_jobs_interface](https://www.enginatics.com/library/?pg=1&find=wsm_resulting_jobs_interface), [wsm_resulting_lots_interface](https://www.enginatics.com/library/?pg=1&find=wsm_resulting_lots_interface), [wsm_lot_split_merges_interface](https://www.enginatics.com/library/?pg=1&find=wsm_lot_split_merges_interface)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 
 

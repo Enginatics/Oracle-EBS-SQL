@@ -63,7 +63,7 @@ Some Oracle EBS SQL reports in this library require functions from the utility p
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/cac-wip-period-balances-to-accounting-activity-reconciliation/) |
+| Excel Example Output | [](https://www.enginatics.com/example/cac-wip-period-balances-to-accounting-activity-reconciliation/) |
 | Blitz Report™ XML Import | [CAC_WIP_Period_Balances_to_Accounting_Activity_Reconciliation.xml](https://www.enginatics.com/xml/cac-wip-period-balances-to-accounting-activity-reconciliation/) |
 | Full SQL on Enginatics | [www.enginatics.com/reports/cac-wip-period-balances-to-accounting-activity-reconciliation/](https://www.enginatics.com/reports/cac-wip-period-balances-to-accounting-activity-reconciliation/) |
 

@@ -2,7 +2,7 @@
 layout: default
 title: 'CE Bank Account Balances | Oracle EBS SQL Report'
 description: 'Application: Cash Management Description: Bank Accounts - Balances Report Provides equivalent functionality to the following standard Oracle Forms/Reports…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Bank, Account, Balances, ce_bank_acct_balances, ce_projected_balances, ce_bank_acct_bal_qry1'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Bank, Account, Balances, ce_bank_acct_balances, ce_projected_balances, ce_bank_acct_bal_qry1'
 permalink: /CE%20Bank%20Account%20Balances/
 ---
 
@@ -56,7 +56,7 @@ Legal Entity, Bank Name, Bank Branch, Bank Account Name, Bank Account Number, Ba
 [ce_bank_acct_balances](https://www.enginatics.com/library/?pg=1&find=ce_bank_acct_balances), [ce_projected_balances](https://www.enginatics.com/library/?pg=1&find=ce_projected_balances), [ce_bank_acct_bal_qry1](https://www.enginatics.com/library/?pg=1&find=ce_bank_acct_bal_qry1), [ce_bank_accts_calc_v](https://www.enginatics.com/library/?pg=1&find=ce_bank_accts_calc_v), [ce_bank_accts_gt_v](https://www.enginatics.com/library/?pg=1&find=ce_bank_accts_gt_v), [gl_code_combinations](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations), [hz_parties](https://www.enginatics.com/library/?pg=1&find=hz_parties), [xle_entity_profiles](https://www.enginatics.com/library/?pg=1&find=xle_entity_profiles), [ce_cashpools](https://www.enginatics.com/library/?pg=1&find=ce_cashpools), [ce_cashpool_sub_accts](https://www.enginatics.com/library/?pg=1&find=ce_cashpool_sub_accts)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 
 

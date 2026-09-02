@@ -24,7 +24,11 @@ decode(misd.default_type,1,'Shipping',2,'Receiving',3,'Move Order Receipt') defa
 haouv.name organization,
 msiv.concatenated_segments item,
 misd.subinventory_code subinventory,
-null locator
+null locator,
+null delete_entry,
+misd.subinventory_code old_subinventory,
+null old_locator,
+to_number(null) upload_row
 from
 mtl_item_sub_defaults misd,
 hr_all_organization_units_vl  haouv,
@@ -45,7 +49,11 @@ decode(mild.default_type,1,'Shipping',2,'Receiving',3,'Move Order Receipt') defa
 haouv.name organization,
 msiv.concatenated_segments item,
 mild.subinventory_code subinventory,
-milk.concatenated_segments locator
+milk.concatenated_segments locator,
+null delete_entry,
+mild.subinventory_code old_subinventory,
+milk.concatenated_segments old_locator,
+to_number(null) upload_row
 from
 mtl_item_loc_defaults mild,
 hr_all_organization_units_vl  haouv,

@@ -2,7 +2,7 @@
 layout: default
 title: 'MSC Horizontal Plan | Oracle EBS SQL Report'
 description: 'ASCP: Horizontal Plan from the Planners Workbench. Note: The number of Items included in the HP is restricted by the parameter ‘Item Restriction Limit’…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, MSC, Horizontal, Plan, msc_apps_instances&a2m_dblink, msc_plans&a2m_dblink, mfg_lookups&a2m_dblink'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, MSC, Horizontal, Plan, msc_apps_instances&a2m_dblink, msc_plans&a2m_dblink, mfg_lookups&a2m_dblink'
 permalink: /MSC%20Horizontal%20Plan/
 ---
 
@@ -24,7 +24,7 @@ Report Type, Planning Instance, Plan, Operating Unit, Organization, Planner, Buy
 [msc_apps_instances&a2m_dblink](https://www.enginatics.com/library/?pg=1&find=msc_apps_instances&a2m_dblink), [msc_plans&a2m_dblink](https://www.enginatics.com/library/?pg=1&find=msc_plans&a2m_dblink), [mfg_lookups&a2m_dblink](https://www.enginatics.com/library/?pg=1&find=mfg_lookups&a2m_dblink), [dual&a2m_dblink](https://www.enginatics.com/library/?pg=1&find=dual&a2m_dblink)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [R12 only](https://www.enginatics.com/library/?pg=1&category[]=R12%20only)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
 
 
 
