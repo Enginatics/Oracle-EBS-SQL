@@ -1,53 +1,50 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Inventory Organization Summary
 -- Description: Report to show inventory org names, summary org controls, org hierarchy, operating unit and Ledger, and whether or not the Org should be rolled up for costing, based on the existence of BOMs, routings or org-level sourcing rules.
-Note:  this report automatically looks for hierarchies which might be used with the Open Period Control and the Close Period Control Oracle programs.  Looking for the translated values of "Close", "Open" and "Period" in the Hierarchy Name.
-
-Parameters:
-==========
-Assignment Set:  choose the Assignment Set to report for sourcing rules.  You may leave this value null and the report still works (optional).
-Hierarchy Name:  select the organization hierarchy used to open and close your inventory organizations (optional).  If you leave this field blank the report automatically looks for hierarchies which might be used with the Open Period Control and the Close Period Control Oracle programs.  Looking for the translated values of "Close", "Open" and "Period" in the Hierarchy Name.
-Organization Code:  enter the specific inventory organization(s) you wish to report (optional).
-Operating Unit:  enter the specific operating unit(s) you wish to report (optional).
-Ledger:  enter the specific ledger(s) you wish to report (optional).
-
-/* +=============================================================================+
--- | Copyright 2010-2025 Douglas Volz Consulting, Inc.
--- | All rights reserved.
--- | Permission to use this code is granted provided the original author is
--- | acknowledged. No warranties, express or otherwise is included in this permission.
--- +=============================================================================+
--- |
--- | Version Modified on Modified by Description
--- | ======= =========== ============== =========================================
--- | 1.0     14 Apr 2010 Douglas Volz Initial Coding
--- | 1.19    09 Jul 2019 Douglas Volz Changed Org Hierarchy logic to look only for Hierarchy 
--- |                                  Names with "Open" or "Close" or "Period" in it.
--- |                                  For the 2nd union all, added an Outer Join to OU:
--- |                                  and haou2.organization_id (+) = to_number(hoi.org_information3)
--- |                                  ... found an inventory org in Vision with no OU
--- | 1.20    16 Jan 2020 Douglas Volz Added Ledger, Operating Unit and Org Code parameters.
--- | 1.21    02 Feb 2020 Douglas Volz Added max material and WIP transaction dates and removed
--- |                                  flv.source_lang joins, not needed.
--- | 1.22    08 Mar 2020 Douglas Volz Checking for a routing for the parent org
--- | 1.23    07 Apr 2020 Douglas Volz Consolidated two (union all) statements into one.
--- | 1.24    27 Apr 2020 Douglas Volz Changed to multi-language views for the
--- |                                  inventory orgs and operating units.
--- | 1.25    29 Jun 2022 Douglas Volz Fixed indicator for category accounts.
--- | 1.26    09 Sep 2022 Douglas Volz Added indicator for PAC Enabled.
--- | 1.27    13 Jul 2023 Douglas Volz Added condition to avoid SQL error, single-row subquery
--- |                                  returns more than one row. 
--- | 1.28    01 Nov 2024 Douglas Volz Added BOM Parameters, Use Phantom Routing column.
--- | 1.29    01 Jan 2025 Douglas Volz Added WIP Parameters, Record Scrap column.
--- | 1.30    15 Feb 2025 Douglas Volz Added Oracle Release Number.
-+=============================================================================+*/
-
--- Excel Examle Output: https://www.enginatics.com/example/cac-inventory-organization-summary/
+-- Note: this report automatically looks for hierarchies which might be used with the Open Period Control and the Close Period Control Oracle programs. Looking for the translated values of "Close", "Open" and "Period" in the Hierarchy Name.
+-- Parameters:
+-- ==========
+-- Assignment Set: choose the Assignment Set to report for sourcing rules. You may leave this value null and the report still works (optional).
+-- Hierarchy Name: select the organization hierarchy used to open and close your inventory organizations (optional). If you leave this field blank the report automatically looks for hierarchies which might be used with the Open Period Control and the Close Period Control Oracle programs. Looking for the translated values of "Close", "Open" and "Period" in the Hierarchy Name.
+-- Organization Code: enter the specific inventory organization(s) you wish to report (optional).
+-- Operating Unit: enter the specific operating unit(s) you wish to report (optional).
+-- Ledger: enter the specific ledger(s) you wish to report (optional).
+-- / +=============================================================================+
+-- -- | Copyright 2010-2025 Douglas Volz Consulting, Inc.
+-- -- | All rights reserved.
+-- -- | Permission to use this code is granted provided the original author is
+-- -- | acknowledged. No warranties, express or otherwise is included in this permission.
+-- -- +=============================================================================+
+-- -- |
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== ============== =========================================
+-- -- | 1.0 14 Apr 2010 Douglas Volz Initial Coding
+-- -- | 1.19 09 Jul 2019 Douglas Volz Changed Org Hierarchy logic to look only for Hierarchy
+-- -- | Names with "Open" or "Close" or "Period" in it.
+-- -- | For the 2nd union all, added an Outer Join to OU:
+-- -- | and haou2.organizationid (+) = tonumber(hoi.orginformation3)
+-- -- | ... found an inventory org in Vision with no OU
+-- -- | 1.20 16 Jan 2020 Douglas Volz Added Ledger, Operating Unit and Org Code parameters.
+-- -- | 1.21 02 Feb 2020 Douglas Volz Added max material and WIP transaction dates and removed
+-- -- | flv.sourcelang joins, not needed.
+-- -- | 1.22 08 Mar 2020 Douglas Volz Checking for a routing for the parent org
+-- -- | 1.23 07 Apr 2020 Douglas Volz Consolidated two (union all) statements into one.
+-- -- | 1.24 27 Apr 2020 Douglas Volz Changed to multi-language views for the
+-- -- | inventory orgs and operating units.
+-- -- | 1.25 29 Jun 2022 Douglas Volz Fixed indicator for category accounts.
+-- -- | 1.26 09 Sep 2022 Douglas Volz Added indicator for PAC Enabled.
+-- -- | 1.27 13 Jul 2023 Douglas Volz Added condition to avoid SQL error, single-row subquery
+-- -- | returns more than one row.
+-- -- | 1.28 01 Nov 2024 Douglas Volz Added BOM Parameters, Use Phantom Routing column.
+-- -- | 1.29 01 Jan 2025 Douglas Volz Added WIP Parameters, Record Scrap column.
+-- -- | 1.30 15 Feb 2025 Douglas Volz Added Oracle Release Number.
+-- +=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-inventory-organization-summary/
 -- Library Link: https://www.enginatics.com/reports/cac-inventory-organization-summary/
 -- Run Report: https://demo.enginatics.com/
 

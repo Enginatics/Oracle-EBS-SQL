@@ -1,23 +1,21 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CST Uninvoiced Receipts
 -- Description: Application: Bills of Material
-Description: Uninvoiced Receipts Report
-Templates: Select a template to show Accruals summarized by 
-- PO/Release Distributions (Default)
-- PO/Release Shipments
-- PO/Release Lines
-
-Each template includes a Pivot summarizing the accruals by Accrual Account and the Pivot/Sort Parameter Value (Vendor, Category, PO/Release Number)
-
-Source: Uninvoiced Receipts Report
-Short Name: CSTACREP
-DB Package: XXEN_CST
--- Excel Examle Output: https://www.enginatics.com/example/cst-uninvoiced-receipts/
+-- Description: Uninvoiced Receipts Report
+-- Templates: Select a template to show Accruals summarized by
+-- - PO/Release Distributions (Default)
+-- - PO/Release Shipments
+-- - PO/Release Lines
+-- Each template includes a Pivot summarizing the accruals by Accrual Account and the Pivot/Sort Parameter Value (Vendor, Category, PO/Release Number)
+-- Source: Uninvoiced Receipts Report
+-- Short Name: CSTACREP
+-- DB Package: XXENCST
+-- Excel Example Output: https://www.enginatics.com/example/cst-uninvoiced-receipts/
 -- Library Link: https://www.enginatics.com/reports/cst-uninvoiced-receipts/
 -- Run Report: https://demo.enginatics.com/
 

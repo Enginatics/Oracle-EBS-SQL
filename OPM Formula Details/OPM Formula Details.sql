@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: OPM Formula Details
 -- Description: Oracle Process Manufacturing (OPM) Product Development formula details: the ingredient, product and by-product lines of each formula with quantities, UOM, scrap factor, scaling type, planned product percentage and yield contribution. Supports formulation review and data quality checks.
--- Excel Examle Output: https://www.enginatics.com/example/opm-formula-details/
+-- Excel Example Output: https://www.enginatics.com/example/opm-formula-details/
 -- Library Link: https://www.enginatics.com/reports/opm-formula-details/
 -- Run Report: https://demo.enginatics.com/
 

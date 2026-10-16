@@ -1,16 +1,16 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: ZX Financial Tax Register
 -- Description: Imported from Concurrent Program
-Description: Rx-only: Financial Tax Register
-Application: E-Business Tax
-Source: RX-only: Financial Tax Register Report
-Short Name: RXZXPTEX
--- Excel Examle Output: https://www.enginatics.com/example/zx-financial-tax-register/
+-- Description: Rx-only: Financial Tax Register
+-- Application: E-Business Tax
+-- Source: RX-only: Financial Tax Register Report
+-- Short Name: RXZXPTEX
+-- Excel Example Output: https://www.enginatics.com/example/zx-financial-tax-register/
 -- Library Link: https://www.enginatics.com/reports/zx-financial-tax-register/
 -- Run Report: https://demo.enginatics.com/
 
@@ -49,7 +49,7 @@ zrev.taxable_amt_funcl_curr             taxable_accounted_amount,
 zrev.total_entered_amount               total_entered_amount,
 zrev.total_accounted_amount             total_accounted_amount,
 zrev.taxable_disc_amt                   taxable_discount_amount,
-zrev.taxable_disc_amt_funcl_curr        taxable_discount_accounted_amount,
+zrev.taxable_disc_amt_funcl_curr        taxable_discount_acctd_amount,
 zrev.tax_disc_amt                       tax_discount_amount,
 zrev.tax_disc_amt_funcl_curr            tax_discount_accounted_amount,
 zrev.trx_line_number                    trx_line_number,

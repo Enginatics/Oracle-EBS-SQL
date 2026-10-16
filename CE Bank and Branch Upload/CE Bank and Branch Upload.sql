@@ -1,53 +1,46 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CE Bank and Branch Upload
 -- Description: CE Bank and Branch Upload
-==========================
-Creates or updates banks and bank branches in Oracle Cash Management (CE) using the ce_bank_pub API (TCA-based).
-
-Each row represents one bank branch. If the bank does not exist it is created automatically. The branch is then created or updated within that bank.
-
-Upload Mode
-===========
-
-Create
-------
-Opens an empty spreadsheet to enter new banks and branches.
-
-Create, Update
---------------
-Returns existing bank branches. Edit fields and re-upload to update.
-
-Required Fields
-===============
-- Country: Country of the bank (e.g. United States, Australia).
-- Bank Name: Name of the bank. Used together with Country to identify an existing bank.
-- Branch Name: Name of the branch. Used together with Bank Name and Country to identify an existing branch.
-
-Optional Fields
-===============
-- Bank Number: Routing or institution number for the bank.
-- Short Bank Name: Abbreviated bank name.
-- Alternate Bank Name: Phonetic or alternate-language bank name.
-- Branch Number: Branch routing or BSB number.
-- Branch Type: Routing/clearing type. Options: ABA, CHIPS, SWIFT, Other. Leave blank if not applicable.
-- BIC / SWIFT Code: Bank Identifier Code (ISO 9362).
-- EFT Number: Electronic Funds Transfer user number.
-- Alternate Branch Name: Phonetic or alternate-language branch name.
-- Description: Free text description of the branch.
-- DFF Columns (Attribute Category, Attribute 1-24): Descriptive Flexfield segments on the branch party (HZ_PARTIES).
-
-Notes
-=====
-- Bank is matched by Country + Bank Name (+ Bank Number if provided). If no match is found, a new bank is created.
-- Branch is matched by Bank + Branch Name. If no match is found, a new branch is created within the bank.
-- Bank fields (Short Bank Name, Alternate Bank Name) are only applied on bank creation, not on update.
-- Country-specific routing number format validation is bypassed to allow loading data across all countries.
--- Excel Examle Output: https://www.enginatics.com/example/ce-bank-and-branch-upload/
+-- ==========================
+-- Creates or updates banks and bank branches in Oracle Cash Management (CE) using the cebankpub API (TCA-based).
+-- Each row represents one bank branch. If the bank does not exist it is created automatically. The branch is then created or updated within that bank.
+-- Upload Mode
+-- ===========
+-- Create
+-- ------
+-- Opens an empty spreadsheet to enter new banks and branches.
+-- Create, Update
+-- --------------
+-- Returns existing bank branches. Edit fields and re-upload to update.
+-- Required Fields
+-- ===============
+-- - Country: Country of the bank (e.g. United States, Australia).
+-- - Bank Name: Name of the bank. Used together with Country to identify an existing bank.
+-- - Branch Name: Name of the branch. Used together with Bank Name and Country to identify an existing branch.
+-- Optional Fields
+-- ===============
+-- - Bank Number: Routing or institution number for the bank.
+-- - Short Bank Name: Abbreviated bank name.
+-- - Alternate Bank Name: Phonetic or alternate-language bank name.
+-- - Branch Number: Branch routing or BSB number.
+-- - Branch Type: Routing/clearing type. Options: ABA, CHIPS, SWIFT, Other. Leave blank if not applicable.
+-- - BIC / SWIFT Code: Bank Identifier Code (ISO 9362).
+-- - EFT Number: Electronic Funds Transfer user number.
+-- - Alternate Branch Name: Phonetic or alternate-language branch name.
+-- - Description: Free text description of the branch.
+-- - DFF Columns (Attribute Category, Attribute 1-24): Descriptive Flexfield segments on the branch party (HZPARTIES).
+-- Notes
+-- =====
+-- - Bank is matched by Country + Bank Name (+ Bank Number if provided). If no match is found, a new bank is created.
+-- - Branch is matched by Bank + Branch Name. If no match is found, a new branch is created within the bank.
+-- - Bank fields (Short Bank Name, Alternate Bank Name) are only applied on bank creation, not on update.
+-- - Country-specific routing number format validation is bypassed to allow loading data across all countries.
+-- Excel Example Output: https://www.enginatics.com/example/ce-bank-and-branch-upload/
 -- Library Link: https://www.enginatics.com/reports/ce-bank-and-branch-upload/
 -- Run Report: https://demo.enginatics.com/
 

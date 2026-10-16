@@ -1,40 +1,49 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'DBA Blocking Sessions | Oracle EBS SQL Report'
-description: 'Chain of currently blocking and blocked database sessions from v$waitchains – Oracle E-Business Suite SQL report'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, DBA, Blocking, Sessions, dba_objects, v$wait_chains, gv$session'
+description: 'Chain of currently blocking and blocked database sessions from v$waitchains – Oracle EBS Database Administration SQL report: free SQL, parameters and…'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Database Administration, Enginatics, DBA, Blocking, Sessions, dba_objects, dba_data_files, v$wait_chains'
 permalink: /DBA%20Blocking%20Sessions/
+report_name: 'DBA Blocking Sessions'
+report_web_name: dba-blocking-sessions
+module: 'Database Administration'
+module_url: /modules/database-administration/
 ---
 
 # DBA Blocking Sessions – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/dba-blocking-sessions/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/dba-blocking-sessions/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-blocking-sessions) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-blocking-sessions).
+**Oracle EBS module:** [Database Administration](/modules/database-administration/ "Oracle EBS Database Administration reports") · [all Database Administration reports](/modules/database-administration/)  
 
 ## Overview
 Chain of currently blocking and blocked database sessions from v$wait_chains
 
-## Report Parameters
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-blocking-sessions) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 
+## Report Parameters
+None
 
 ## Oracle EBS Tables Used
-[dba_objects](https://www.enginatics.com/library/?pg=1&find=dba_objects), [v$wait_chains](https://www.enginatics.com/library/?pg=1&find=v$wait_chains), [gv$session](https://www.enginatics.com/library/?pg=1&find=gv$session), [gv$process](https://www.enginatics.com/library/?pg=1&find=gv$process), [gv$sqlarea](https://www.enginatics.com/library/?pg=1&find=gv$sqlarea)
+[dba_objects](https://www.enginatics.com/library/?pg=1&find=dba_objects&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-blocking-sessions), [dba_data_files](https://www.enginatics.com/library/?pg=1&find=dba_data_files&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-blocking-sessions), [v$wait_chains](https://www.enginatics.com/library/?pg=1&find=v%24wait_chains&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-blocking-sessions), [gv$session](https://www.enginatics.com/library/?pg=1&find=gv%24session&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-blocking-sessions), [gv$process](https://www.enginatics.com/library/?pg=1&find=gv%24process&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-blocking-sessions), [gv$sqlarea](https://www.enginatics.com/library/?pg=1&find=gv%24sqlarea&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-blocking-sessions)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-blocking-sessions)
 
 ## Related Reports
-[DBA SGA Active Session History](/DBA%20SGA%20Active%20Session%20History/ "DBA SGA Active Session History Oracle EBS SQL Report"), [DBA SGA Blocking Session Summary](/DBA%20SGA%20Blocking%20Session%20Summary/ "DBA SGA Blocking Session Summary Oracle EBS SQL Report"), [DBA AWR Blocking Session Summary](/DBA%20AWR%20Blocking%20Session%20Summary/ "DBA AWR Blocking Session Summary Oracle EBS SQL Report"), [DBA AWR Active Session History](/DBA%20AWR%20Active%20Session%20History/ "DBA AWR Active Session History Oracle EBS SQL Report"), [DBA AWR SQL Performance Summary](/DBA%20AWR%20SQL%20Performance%20Summary/ "DBA AWR SQL Performance Summary Oracle EBS SQL Report"), [DBA SGA SQL Performance Summary](/DBA%20SGA%20SQL%20Performance%20Summary/ "DBA SGA SQL Performance Summary Oracle EBS SQL Report"), [DBA ORDS Configuration Validation](/DBA%20ORDS%20Configuration%20Validation/ "DBA ORDS Configuration Validation Oracle EBS SQL Report"), [FND Concurrent Requests](/FND%20Concurrent%20Requests/ "FND Concurrent Requests Oracle EBS SQL Report"), [DBA AWR System Metrics Summary](/DBA%20AWR%20System%20Metrics%20Summary/ "DBA AWR System Metrics Summary Oracle EBS SQL Report")
+[DBA SGA Active Session History](/DBA%20SGA%20Active%20Session%20History/ "DBA SGA Active Session History Oracle EBS SQL Report"), [DBA SGA Blocking Session Summary](/DBA%20SGA%20Blocking%20Session%20Summary/ "DBA SGA Blocking Session Summary Oracle EBS SQL Report"), [DBA AWR Blocking Session Summary](/DBA%20AWR%20Blocking%20Session%20Summary/ "DBA AWR Blocking Session Summary Oracle EBS SQL Report"), [DBA AWR Active Session History](/DBA%20AWR%20Active%20Session%20History/ "DBA AWR Active Session History Oracle EBS SQL Report"), [DBA AWR SQL Performance Summary](/DBA%20AWR%20SQL%20Performance%20Summary/ "DBA AWR SQL Performance Summary Oracle EBS SQL Report"), [DBA Sessions](/DBA%20Sessions/ "DBA Sessions Oracle EBS SQL Report"), [DBA ORDS Configuration Validation](/DBA%20ORDS%20Configuration%20Validation/ "DBA ORDS Configuration Validation Oracle EBS SQL Report"), [DBA SGA Buffer Cache Object Usage](/DBA%20SGA%20Buffer%20Cache%20Object%20Usage/ "DBA SGA Buffer Cache Object Usage Oracle EBS SQL Report"), [DBA SGA SQL Performance Summary](/DBA%20SGA%20SQL%20Performance%20Summary/ "DBA SGA SQL Performance Summary Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/DBA%20Blocking%20Sessions/DBA%20Blocking%20Sessions.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-blocking-sessions) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [DBA Blocking Sessions 06-May-2020 103312.xlsx](https://www.enginatics.com/example/dba-blocking-sessions/) |
-| Blitz Report™ XML Import | [DBA_Blocking_Sessions.xml](https://www.enginatics.com/xml/dba-blocking-sessions/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/dba-blocking-sessions/](https://www.enginatics.com/reports/dba-blocking-sessions/) |
+| Excel Example Output | [DBA Blocking Sessions 06-May-2020 103312.xlsx](https://www.enginatics.com/example/dba-blocking-sessions/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-blocking-sessions) |
+| Blitz Report™ XML Import | [DBA_Blocking_Sessions.xml](https://www.enginatics.com/xml/dba-blocking-sessions/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-blocking-sessions) |
+| SQL Source | [DBA Blocking Sessions.sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/DBA%20Blocking%20Sessions/DBA%20Blocking%20Sessions.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/dba-blocking-sessions/](https://www.enginatics.com/reports/dba-blocking-sessions/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-blocking-sessions) |
 
 ## DBA Blocking Sessions - Case Study
 
@@ -85,18 +94,17 @@ A: First, analyze the "blocker." Is it a valid long-running job? If so, you may 
 **Q: Can this report handle RAC (Real Application Clusters) environments?**
 A: Yes, the use of `gv$` (Global) views and `v$wait_chains` ensures that blocking chains across different RAC nodes are detected.
 
-
 ---
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-blocking-sessions)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-blocking-sessions)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-blocking-sessions)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-blocking-sessions)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-blocking-sessions)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-blocking-sessions)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-blocking-sessions)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

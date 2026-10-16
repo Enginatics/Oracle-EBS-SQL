@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: Blitz Report Record History SQL Text Creation
 -- Description: Creates a string for the record history columns, based on a table alias.
--- Excel Examle Output: https://www.enginatics.com/example/blitz-report-record-history-sql-text-creation/
+-- Excel Example Output: https://www.enginatics.com/example/blitz-report-record-history-sql-text-creation/
 -- Library Link: https://www.enginatics.com/reports/blitz-report-record-history-sql-text-creation/
 -- Run Report: https://demo.enginatics.com/
 

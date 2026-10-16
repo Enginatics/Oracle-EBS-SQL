@@ -1,37 +1,30 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: INV Safety Stock Upload
 -- Description: INV Safety Stock Upload
-================================
-- Upload New Safety Stock Entries.
-- Update Existing Safety Stock Entries.
-- Delete Existing Saffety Stock Entries (Delete by setting the 'Delete This Entry' = Yes).
-
-Upload Modes
-============
-
-Create
-------
-Opens an empty spreadsheet where the user can enter new Safety Stock Quantities
-
-Create or Update
------------------
-Create new Safety Stock entries and/or modify existing Safety Stock entries.
-
-Allows the user to 
-- download existing Safety Stock entiries based on the selection criteria specified in the report parameters.
-- modify (update/delete) the downloaded Safety Stock entries
-- create new Safety Stock entries
-
-Note:
-The greyed out columns are display only and included to provide additional information. These cannot be altered and are ignored by the upload.
-
-
--- Excel Examle Output: https://www.enginatics.com/example/inv-safety-stock-upload/
+-- ================================
+-- - Upload New Safety Stock Entries.
+-- - Update Existing Safety Stock Entries.
+-- - Delete Existing Saffety Stock Entries (Delete by setting the 'Delete This Entry' = Yes).
+-- Upload Modes
+-- ============
+-- Create
+-- ------
+-- Opens an empty spreadsheet where the user can enter new Safety Stock Quantities
+-- Create or Update
+-- -----------------
+-- Create new Safety Stock entries and/or modify existing Safety Stock entries.
+-- Allows the user to
+-- - download existing Safety Stock entiries based on the selection criteria specified in the report parameters.
+-- - modify (update/delete) the downloaded Safety Stock entries
+-- - create new Safety Stock entries
+-- Note:
+-- The greyed out columns are display only and included to provide additional information. These cannot be altered and are ignored by the upload.
+-- Excel Example Output: https://www.enginatics.com/example/inv-safety-stock-upload/
 -- Library Link: https://www.enginatics.com/reports/inv-safety-stock-upload/
 -- Run Report: https://demo.enginatics.com/
 

@@ -1,15 +1,16 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: AR Disputed Invoice
 -- Description: Imported Oracle standard disputed invoice report
-Source: Disputed Invoice Report (XML)
-Short Name: ARXDIR_XML
-DB package: AR_ARXDIR_XMLP_PKG
--- Excel Examle Output: https://www.enginatics.com/example/ar-disputed-invoice/
+-- Source: Disputed Invoice Report (XML)
+-- Short Name: ARXDIRXML
+-- DB package: ARARXDIRXMLPPKG
+-- When India Localization is installed, the following GST columns are also included: GST Registration No, GST PAN No, CGST Amount, SGST Amount, IGST Amount, CESS Amount, CGST Rate, SGST Rate, IGST Rate, CESS Rate, CGST Recoverable, CGST Non-Recoverable, SGST Recoverable, SGST Non-Recoverable, IGST Recoverable, IGST Non-Recoverable, Reverse Charge Flag, Place of Supply, Ship From State, Taxable Value, HSN SAC Code.
+-- Excel Example Output: https://www.enginatics.com/example/ar-disputed-invoice/
 -- Library Link: https://www.enginatics.com/reports/ar-disputed-invoice/
 -- Run Report: https://demo.enginatics.com/
 
@@ -26,6 +27,7 @@ select
 ,x.balance_due
 ,x.dispute_amount
 ,x.notes
+&il_cols_outer
 from
 (
 select
@@ -53,6 +55,11 @@ select
   ar_arxdir_xmlp_pkg.c_cust_summary_labelformula(decode ( upper ( :p_order_by ) , 'CUSTOMER' , substrb ( party.party_name , 1 , 50 ) , null )) c_cust_summary_label,
   ar_arxdir_xmlp_pkg.cons_numberformula(ar_payment_schedules.trx_number, &lp_query_show_bill_mo) cons_number,
   notes.text notes
+&il_reg_columns
+&il_cols_amt
+&il_cols_rate
+&il_cols_rec
+&il_cols_tp
 from
   (select sob.name  company_name,
           sob.set_of_books_id,
@@ -93,6 +100,7 @@ from
       where
         y.lengthb <= 4000
     )    notes
+&il_from
 where
       cust.party_id = party.party_id
   and ar_payment_schedules.customer_trx_id = ra_customer_trx_all.customer_trx_id
@@ -120,5 +128,6 @@ where
   &lp_collector_low
   &lp_collector_high
   &lp_where_show_bill_mo
+&il_where
   &lp_order_by
 ) x

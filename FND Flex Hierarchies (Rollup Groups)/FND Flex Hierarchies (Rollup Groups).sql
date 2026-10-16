@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: FND Flex Hierarchies (Rollup Groups)
 -- Description: Flex value sets with rollup groups
--- Excel Examle Output: https://www.enginatics.com/example/fnd-flex-hierarchies-rollup-groups/
+-- Excel Example Output: https://www.enginatics.com/example/fnd-flex-hierarchies-rollup-groups/
 -- Library Link: https://www.enginatics.com/reports/fnd-flex-hierarchies-rollup-groups/
 -- Run Report: https://demo.enginatics.com/
 

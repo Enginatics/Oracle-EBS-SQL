@@ -1,39 +1,47 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'QP Pricing Agreements | Oracle EBS SQL Report'
-description: 'Report detailing QP Pricing Agreements – Oracle E-Business Suite SQL report'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Pricing, Agreements, qp_currency_lists_tl, oe_pricing_contracts_v, oe_agreements_b'
+description: 'Report detailing QP Pricing Agreements – Oracle EBS Advanced Pricing SQL report: free SQL, parameters and tables used.'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Advanced Pricing, Enginatics, Pricing, Agreements, qp_currency_lists_tl, oe_pricing_contracts_v, oe_agreements_b'
 permalink: /QP%20Pricing%20Agreements/
+report_name: 'QP Pricing Agreements'
+report_web_name: qp-pricing-agreements
+module: 'Advanced Pricing'
+module_url: /modules/advanced-pricing/
 ---
 
 # QP Pricing Agreements – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/qp-pricing-agreements/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/qp-pricing-agreements/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-pricing-agreements) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-pricing-agreements).
+**Oracle EBS module:** [Advanced Pricing](/modules/advanced-pricing/ "Oracle EBS Advanced Pricing reports") · [all Advanced Pricing reports](/modules/advanced-pricing/)  
 
 ## Overview
 Report detailing QP Pricing Agreements
+
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-pricing-agreements) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 
 ## Report Parameters
 Agreement Name, Agreement Number, Revision, Agreement Type, Price List, Invoice To, Invoice Contact, Customer, Customer Number, Contact, Salesperson, Item, Valid on Date, Display Price Breaks, Display Pricing Attributes
 
 ## Oracle EBS Tables Used
-[qp_currency_lists_tl](https://www.enginatics.com/library/?pg=1&find=qp_currency_lists_tl), [oe_pricing_contracts_v](https://www.enginatics.com/library/?pg=1&find=oe_pricing_contracts_v), [oe_agreements_b](https://www.enginatics.com/library/?pg=1&find=oe_agreements_b), [qp_secu_list_headers_v](https://www.enginatics.com/library/?pg=1&find=qp_secu_list_headers_v), [qp_list_lines_v](https://www.enginatics.com/library/?pg=1&find=qp_list_lines_v), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl), [qp_price_formulas_vl](https://www.enginatics.com/library/?pg=1&find=qp_price_formulas_vl), [mtl_customer_items_all_v](https://www.enginatics.com/library/?pg=1&find=mtl_customer_items_all_v), [qp_price_breaks_v](https://www.enginatics.com/library/?pg=1&find=qp_price_breaks_v), [qp_pricing_attributes](https://www.enginatics.com/library/?pg=1&find=qp_pricing_attributes), [qpa](https://www.enginatics.com/library/?pg=1&find=qpa), [qll](https://www.enginatics.com/library/?pg=1&find=qll), [qpb](https://www.enginatics.com/library/?pg=1&find=qpb), [qpat](https://www.enginatics.com/library/?pg=1&find=qpat)
+[qp_currency_lists_tl](https://www.enginatics.com/library/?pg=1&find=qp_currency_lists_tl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-pricing-agreements), [oe_pricing_contracts_v](https://www.enginatics.com/library/?pg=1&find=oe_pricing_contracts_v&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-pricing-agreements), [oe_agreements_b](https://www.enginatics.com/library/?pg=1&find=oe_agreements_b&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-pricing-agreements), [qp_secu_list_headers_v](https://www.enginatics.com/library/?pg=1&find=qp_secu_list_headers_v&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-pricing-agreements), [qp_list_lines_v](https://www.enginatics.com/library/?pg=1&find=qp_list_lines_v&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-pricing-agreements), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-pricing-agreements), [qp_price_formulas_vl](https://www.enginatics.com/library/?pg=1&find=qp_price_formulas_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-pricing-agreements), [mtl_customer_items_all_v](https://www.enginatics.com/library/?pg=1&find=mtl_customer_items_all_v&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-pricing-agreements), [qp_price_breaks_v](https://www.enginatics.com/library/?pg=1&find=qp_price_breaks_v&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-pricing-agreements), [qp_pricing_attributes](https://www.enginatics.com/library/?pg=1&find=qp_pricing_attributes&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-pricing-agreements)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
-
+[Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-pricing-agreements)
 
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/QP%20Pricing%20Agreements/QP%20Pricing%20Agreements.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-pricing-agreements) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [QP Pricing Agreements 01-Sep-2024 225031.xlsx](https://www.enginatics.com/example/qp-pricing-agreements/) |
-| Blitz Report™ XML Import | [QP_Pricing_Agreements.xml](https://www.enginatics.com/xml/qp-pricing-agreements/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/qp-pricing-agreements/](https://www.enginatics.com/reports/qp-pricing-agreements/) |
+| Excel Example Output | [QP Pricing Agreements 01-Sep-2024 225031.xlsx](https://www.enginatics.com/example/qp-pricing-agreements/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-pricing-agreements) |
+| Blitz Report™ XML Import | [QP_Pricing_Agreements.xml](https://www.enginatics.com/xml/qp-pricing-agreements/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-pricing-agreements) |
+| SQL Source | [QP Pricing Agreements.sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/QP%20Pricing%20Agreements/QP%20Pricing%20Agreements.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/qp-pricing-agreements/](https://www.enginatics.com/reports/qp-pricing-agreements/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-pricing-agreements) |
 
 ## Case Study & Technical Analysis: QP Pricing Agreements Report
 
@@ -103,18 +111,17 @@ As a configuration and master data report dealing with date-effective tables, it
 **3. Can this report help troubleshoot why a customer is not getting their agreed-upon price?**
    Yes. By running the report for the specific `Customer`, `Agreement Name`, and `Item` (with the relevant `Valid on Date`), you can verify if the item is included in the agreement, which price list is linked, and if there are any `Price Breaks` or `Pricing Attributes` that might be affecting the final price compared to what was expected.
 
-
 ---
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-pricing-agreements)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-pricing-agreements)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-pricing-agreements)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-pricing-agreements)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-pricing-agreements)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-pricing-agreements)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-pricing-agreements)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

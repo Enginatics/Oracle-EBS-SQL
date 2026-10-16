@@ -1,16 +1,14 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: AR Credit Memo Application Upload
--- Description: Applies open on account credit memos to invoices and debit memos, and unapplies existing credit memo applications - the Applications action of the Transactions workbench (ar_cm_api_pub).
-
-The download lists the operating unit's open credit memos (Apply To Invoice empty) and their existing active applications (one row per application). To apply, enter Apply To Invoice on an open credit memo row. To unapply, set Unapply to Yes on an application row.
-
-An existing application cannot be changed in place: unapply it, then enter the new application on the credit memo's open row.
--- Excel Examle Output: https://www.enginatics.com/example/ar-credit-memo-application-upload/
+-- Description: Applies open on account credit memos to invoices and debit memos, and unapplies existing credit memo applications - the Applications action of the Transactions workbench (arcmapipub).
+-- The download lists the operating unit's open credit memos (Apply To Invoice empty) and their existing active applications (one row per application). To apply, enter Apply To Invoice on an open credit memo row. To unapply, set Unapply to Yes on an application row.
+-- An existing application cannot be changed in place: unapply it, then enter the new application on the credit memo's open row.
+-- Excel Example Output: https://www.enginatics.com/example/ar-credit-memo-application-upload/
 -- Library Link: https://www.enginatics.com/reports/ar-credit-memo-application-upload/
 -- Run Report: https://demo.enginatics.com/
 

@@ -1,42 +1,40 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Items Without This Level Material Overhead
--- Description: Report to show item costs which do not have this level material overhead, for any cost type.  For one or more inventory organizations.
-
-Parameters:
-===========
-Cost Type:  enter the cost type(s) you wish to report (mandatory).
-Make or Buy:  enter Buy, Make or leave blank to get all items (optional).
-Based on Rollup:  enter Yes to get the rolled up items, No to get the non-rolled-up items (optional).
-Basis Type:  enter the basis type you wish to report, such as Item, Lot, Res Units, Res Value, or Ttl Value (optional).
-Item Status to Exclude:  enter the item status you wish to exclude, defaulted to Inactive (optional).
-Category Set 1:  the first item category set to report, typically the Cost or Product Line Category Set (optional).
-Category Set 2:  the second item category set to report, typically the Inventory Category Set (optional).
-Category Set 3:  the third item category set to report (optional).
-Item Number:  enter the item numbers you wish to report (optional).
-Organization Code:  enter the specific inventory organization(s) you wish to report (optional).
-Operating Unit:  enter the specific operating unit(s) you wish to report (optional).
-Ledger:  enter the specific ledger(s) you wish to report (optional).
-
-/* +=============================================================================+
--- | Copyright 2024 Douglas Volz Consulting, Inc.
--- | All rights reserved.
--- | Permission to use this code is granted provided the original author is
--- | acknowledged. No warranties, express or otherwise is included in this permission.
--- +=============================================================================+
--- |
--- | Original Author: Douglas Volz (doug@volzconsulting.com)
--- | 
--- | Version Modified on Modified by Description
--- | ======= =========== ============== =========================================
--- |  1.0    15 Nov 2024 Douglas Volz  Initial Coding based on the Item Cost Summary Report.
--- |  1.1    08 Dec 2024 Douglas Volz  Added Ledger and Operating Unit security profiles.
--- +=============================================================================+*/
--- Excel Examle Output: https://www.enginatics.com/example/cac-items-without-this-level-material-overhead/
+-- Description: Report to show item costs which do not have this level material overhead, for any cost type. For one or more inventory organizations.
+-- Parameters:
+-- ===========
+-- Cost Type: enter the cost type(s) you wish to report (mandatory).
+-- Make or Buy: enter Buy, Make or leave blank to get all items (optional).
+-- Based on Rollup: enter Yes to get the rolled up items, No to get the non-rolled-up items (optional).
+-- Basis Type: enter the basis type you wish to report, such as Item, Lot, Res Units, Res Value, or Ttl Value (optional).
+-- Item Status to Exclude: enter the item status you wish to exclude, defaulted to Inactive (optional).
+-- Category Set 1: the first item category set to report, typically the Cost or Product Line Category Set (optional).
+-- Category Set 2: the second item category set to report, typically the Inventory Category Set (optional).
+-- Category Set 3: the third item category set to report (optional).
+-- Item Number: enter the item numbers you wish to report (optional).
+-- Organization Code: enter the specific inventory organization(s) you wish to report (optional).
+-- Operating Unit: enter the specific operating unit(s) you wish to report (optional).
+-- Ledger: enter the specific ledger(s) you wish to report (optional).
+-- / +=============================================================================+
+-- -- | Copyright 2024 Douglas Volz Consulting, Inc.
+-- -- | All rights reserved.
+-- -- | Permission to use this code is granted provided the original author is
+-- -- | acknowledged. No warranties, express or otherwise is included in this permission.
+-- -- +=============================================================================+
+-- -- |
+-- -- | Original Author: Douglas Volz (doug@volzconsulting.com)
+-- -- |
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== ============== =========================================
+-- -- | 1.0 15 Nov 2024 Douglas Volz Initial Coding based on the Item Cost Summary Report.
+-- -- | 1.1 08 Dec 2024 Douglas Volz Added Ledger and Operating Unit security profiles.
+-- -- +=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-items-without-this-level-material-overhead/
 -- Library Link: https://www.enginatics.com/reports/cac-items-without-this-level-material-overhead/
 -- Run Report: https://demo.enginatics.com/
 

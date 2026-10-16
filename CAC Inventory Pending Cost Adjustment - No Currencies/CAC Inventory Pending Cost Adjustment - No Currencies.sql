@@ -1,53 +1,48 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Inventory Pending Cost Adjustment - No Currencies
--- Description: Report showing the potential standard cost changes for onhand and intransit inventory value which you own.  If you enter a period name this report uses the quantities from the month-end snapshot; if you leave the period name blank it uses the real-time quantities.  The Cost Type (Old) defaults to your Costing Method Cost Type (Average, Standard, etc.); and the To Currency Code and the Organization Code default from the organization code set for this session.  Unlike the CAC Inventory Pending Cost Adjustment report, this version does not display any cost differences due to changes in foreign currency rates (FX).  If you want to see the impact of FX changes, please use the CAC Inventory Pending Cost Adjustment report.
-
-If using this report for reporting after the standard cost update has run this report requires both the before and after cost types available for reporting purposes.  Using the item cost copy please save your Frozen costs before running the standard cost update.
-
-Parameters:
-===========
-Period Name (Closed):  to use the month-end quantities, choose a closed inventory accounting period (optional).
-Cost Type (New):  enter the Cost Type that has the revised or new item costs (mandatory).
-Cost Type (Old):  enter the Cost Type that has the existing or current item costs, defaults to the Frozen Cost Type (mandatory).
-Category Set 1:  the first item category set to report, typically the Cost or Product Line Category Set (optional).
-Category Set 2:  The second item category set to report, typically the Inventory Category Set (optional).
-Only Items in New Cost Type:  enter Yes to only report the items in the New Cost Type.  Specify No if you want to use this report to reconcile overall inventory value (mandatory).
-Include Items With No Quantities:  enter Yes to report items that do not have onhand quantities (mandatory).
-Include Zero Item Cost Differences:  enter Yes to include items with a zero item cost difference (mandatory).
-Item Number:  specific buy or make item you wish to report (optional).
-Organization Code:  enter the inventory organization(s) you wish to report, defaults to your session's inventory organization (optional).
-Operating Unit:  enter the specific operating unit(s) you wish to report (optional).
-Ledger:  enter the specific ledger(s) you wish to report (optional).
-
-/* +=============================================================================+
--- |  Copyright 2008-2023 Douglas Volz Consulting, Inc
--- |  All rights reserved
--- |  Permission to use this code is granted provided the original author is
--- |  acknowledged.  No warranties, express or otherwise is included in this permission.
--- |
--- |  Original Author: Douglas Volz (doug@volzconsulting.com)
--- |
--- |  Program Name:  xxx_std_cost_pending_adj_rept.sql
--- | 
--- |  Version Modified on  Modified  by   Description
--- |  ======= =========== ============== =========================================
--- |      1.0 21 Nov 2010 Douglas Volz   Created initial Report for prior client
--- |     1.11 05 Jun 2022 Douglas Volz   Fix for category accounts (valuation accounts) and
--- |                                     added subinventory description.
--- |     1.12 23 Sep 2023 Douglas Volz   Add parameter to not include zero item cost differences,
--- |                                     removed tabs and added org access controls.
--- |     1.13 09 Nov 2023 Douglas Volz   Add item master and costing lot sizes, use default controls, 
--- |                                     based on rollup and shrinkage rate columns
--- |     1.14 04 Dec 2023 Douglas Volz   Added G/L and Operating Unit security restrictions.
--- +=============================================================================+*/
-
-
--- Excel Examle Output: https://www.enginatics.com/example/cac-inventory-pending-cost-adjustment-no-currencies/
+-- Description: Report showing the potential standard cost changes for onhand and intransit inventory value which you own. If you enter a period name this report uses the quantities from the month-end snapshot; if you leave the period name blank it uses the real-time quantities. The Cost Type (Old) defaults to your Costing Method Cost Type (Average, Standard, etc.); and the To Currency Code and the Organization Code default from the organization code set for this session. Unlike the CAC Inventory Pending Cost Adjustment report, this version does not display any cost differences due to changes in foreign currency rates (FX). If you want to see the impact of FX changes, please use the CAC Inventory Pending Cost Adjustment report.
+-- If using this report for reporting after the standard cost update has run this report requires both the before and after cost types available for reporting purposes. Using the item cost copy please save your Frozen costs before running the standard cost update.
+-- Parameters:
+-- ===========
+-- Period Name (Closed): to use the month-end quantities, choose a closed inventory accounting period (optional).
+-- Cost Type (New): enter the Cost Type that has the revised or new item costs (mandatory).
+-- Cost Type (Old): enter the Cost Type that has the existing or current item costs, defaults to the Frozen Cost Type (mandatory).
+-- Category Set 1: the first item category set to report, typically the Cost or Product Line Category Set (optional).
+-- Category Set 2: The second item category set to report, typically the Inventory Category Set (optional).
+-- Only Items in New Cost Type: enter Yes to only report the items in the New Cost Type. Specify No if you want to use this report to reconcile overall inventory value (mandatory).
+-- Include Items With No Quantities: enter Yes to report items that do not have onhand quantities (mandatory).
+-- Include Zero Item Cost Differences: enter Yes to include items with a zero item cost difference (mandatory).
+-- Item Number: specific buy or make item you wish to report (optional).
+-- Organization Code: enter the inventory organization(s) you wish to report, defaults to your session's inventory organization (optional).
+-- Operating Unit: enter the specific operating unit(s) you wish to report (optional).
+-- Ledger: enter the specific ledger(s) you wish to report (optional).
+-- / +=============================================================================+
+-- -- | Copyright 2008-2023 Douglas Volz Consulting, Inc
+-- -- | All rights reserved
+-- -- | Permission to use this code is granted provided the original author is
+-- -- | acknowledged. No warranties, express or otherwise is included in this permission.
+-- -- |
+-- -- | Original Author: Douglas Volz (doug@volzconsulting.com)
+-- -- |
+-- -- | Program Name: xxxstdcostpendingadjrept.sql
+-- -- |
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== ============== =========================================
+-- -- | 1.0 21 Nov 2010 Douglas Volz Created initial Report for prior client
+-- -- | 1.11 05 Jun 2022 Douglas Volz Fix for category accounts (valuation accounts) and
+-- -- | added subinventory description.
+-- -- | 1.12 23 Sep 2023 Douglas Volz Add parameter to not include zero item cost differences,
+-- -- | removed tabs and added org access controls.
+-- -- | 1.13 09 Nov 2023 Douglas Volz Add item master and costing lot sizes, use default controls,
+-- -- | based on rollup and shrinkage rate columns
+-- -- | 1.14 04 Dec 2023 Douglas Volz Added G/L and Operating Unit security restrictions.
+-- -- +=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-inventory-pending-cost-adjustment-no-currencies/
 -- Library Link: https://www.enginatics.com/reports/cac-inventory-pending-cost-adjustment-no-currencies/
 -- Run Report: https://demo.enginatics.com/
 
@@ -322,7 +317,6 @@ select  mp.ledger                                                        Ledger,
         case
           when round((nvl(cic1.material_cost,0) - nvl(cic2.material_cost,0)),5) = 0 then 0
           when round((nvl(cic1.material_cost,0) - nvl(cic2.material_cost,0)),5) = round(nvl(cic1.material_cost,0),5) then  100
-          when round((nvl(cic1.material_cost,0) - nvl(cic2.material_cost,0)),5) = round(nvl(cic2.material_cost,0),5) then -100
           else round((nvl(cic1.material_cost,0) - nvl(cic2.material_cost,0)) / nvl(cic2.material_cost,0) * 100,1)
         end                                                              Material_Percent_Diff,
         round(nvl(cic1.material_overhead_cost,0),5)                      New_Material_Overhead_Cost,
@@ -331,7 +325,6 @@ select  mp.ledger                                                        Ledger,
         case
           when round((nvl(cic1.material_overhead_cost,0) - nvl(cic2.material_overhead_cost,0)),5) = 0 then 0
           when round((nvl(cic1.material_overhead_cost,0) - nvl(cic2.material_overhead_cost,0)),5) = round(nvl(cic1.material_overhead_cost,0),5) then  100
-          when round((nvl(cic1.material_overhead_cost,0) - nvl(cic2.material_overhead_cost,0)),5) = round(nvl(cic2.material_overhead_cost,0),5) then -100
           else round((nvl(cic1.material_overhead_cost,0) - nvl(cic2.material_overhead_cost,0)) / nvl(cic2.material_overhead_cost,0) * 100,1)
         end                                                              Material_Ovhd_Percent_Diff,
         round(nvl(cic1.resource_cost,0),5)                               New_Resource_Cost,
@@ -340,7 +333,6 @@ select  mp.ledger                                                        Ledger,
         case
           when round((nvl(cic1.resource_cost,0) - nvl(cic2.resource_cost,0)),5) = 0 then 0
           when round((nvl(cic1.resource_cost,0) - nvl(cic2.resource_cost,0)),5) = round(nvl(cic1.resource_cost,0),5) then  100
-          when round((nvl(cic1.resource_cost,0) - nvl(cic2.resource_cost,0)),5) = round(nvl(cic2.resource_cost,0),5) then -100
           else round((nvl(cic1.resource_cost,0) - nvl(cic2.resource_cost,0)) / nvl(cic2.resource_cost,0) * 100,1)
         end                                                              Resource_Percent_Diff,
         round(nvl(cic1.outside_processing_cost,0),5)                     New_Outside_Processing_Cost,
@@ -349,7 +341,6 @@ select  mp.ledger                                                        Ledger,
         case
           when round((nvl(cic1.outside_processing_cost,0) - nvl(cic2.outside_processing_cost,0)),5) = 0 then 0
           when round((nvl(cic1.outside_processing_cost,0) - nvl(cic2.outside_processing_cost,0)),5) = round(nvl(cic1.outside_processing_cost,0),5) then  100
-          when round((nvl(cic1.outside_processing_cost,0) - nvl(cic2.outside_processing_cost,0)),5) = round(nvl(cic2.outside_processing_cost,0),5) then -100
           else round((nvl(cic1.outside_processing_cost,0) - nvl(cic2.outside_processing_cost,0)) / nvl(cic2.outside_processing_cost,0) * 100,1)
         end                                                              OSP_Percent_Diff,
         round(nvl(cic1.overhead_cost,0),5)                               New_Overhead_Cost,
@@ -358,7 +349,6 @@ select  mp.ledger                                                        Ledger,
         case
           when round((nvl(cic1.overhead_cost,0) - nvl(cic2.overhead_cost,0)),5) = 0 then 0
           when round((nvl(cic1.overhead_cost,0) - nvl(cic2.overhead_cost,0)),5) = round(nvl(cic1.overhead_cost,0),5) then  100
-          when round((nvl(cic1.overhead_cost,0) - nvl(cic2.overhead_cost,0)),5) = round(nvl(cic2.overhead_cost,0),5) then -100
           else round((nvl(cic1.overhead_cost,0) - nvl(cic2.overhead_cost,0)) / nvl(cic2.overhead_cost,0) * 100,1)
         end                                                              Overhead_Percent_Diff,
         round(nvl(cic1.item_cost,0),5)                                   New_Item_Cost,
@@ -374,7 +364,6 @@ select  mp.ledger                                                        Ledger,
         case
           when round((nvl(cic1.item_cost,0) - nvl(cic2.item_cost,0)),5) = 0 then 0
           when round((nvl(cic1.item_cost,0) - nvl(cic2.item_cost,0)),5) = round(nvl(cic1.item_cost,0),5) then  100
-          when round((nvl(cic1.item_cost,0) - nvl(cic2.item_cost,0)),5) = round(nvl(cic2.item_cost,0),5) then -100
           else round((nvl(cic1.item_cost,0) - nvl(cic2.item_cost,0)) / nvl(cic2.item_cost,0) * 100,1)
         end                                                              Percent_Difference,
         -- End revision for version 1.9

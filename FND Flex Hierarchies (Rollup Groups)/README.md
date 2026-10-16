@@ -1,40 +1,49 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'FND Flex Hierarchies (Rollup Groups) | Oracle EBS SQL Report'
-description: 'Flex value sets with rollup groups – Oracle E-Business Suite SQL report'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, FND, Flex, Hierarchies, (Rollup, fnd_flex_value_sets, fnd_flex_hierarchies_vl'
+description: 'Flex value sets with rollup groups – Oracle EBS Application Object Library SQL report: free SQL, parameters and tables used.'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Application Object Library, Enginatics, FND, Flex, Hierarchies, (Rollup, fnd_flex_value_sets, fnd_flex_hierarchies_vl'
 permalink: /FND%20Flex%20Hierarchies%20%28Rollup%20Groups%29/
+report_name: 'FND Flex Hierarchies (Rollup Groups)'
+report_web_name: fnd-flex-hierarchies-rollup-groups
+module: 'Application Object Library'
+module_url: /modules/application-object-library/
 ---
 
 # FND Flex Hierarchies (Rollup Groups) – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/fnd-flex-hierarchies-rollup-groups/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/fnd-flex-hierarchies-rollup-groups/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fnd-flex-hierarchies-rollup-groups) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fnd-flex-hierarchies-rollup-groups).
+**Oracle EBS module:** [Application Object Library](/modules/application-object-library/ "Oracle EBS Application Object Library reports") · [all Application Object Library reports](/modules/application-object-library/)  
 
 ## Overview
 Flex value sets with rollup groups
 
-## Report Parameters
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fnd-flex-hierarchies-rollup-groups) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 
+## Report Parameters
+None
 
 ## Oracle EBS Tables Used
-[fnd_flex_value_sets](https://www.enginatics.com/library/?pg=1&find=fnd_flex_value_sets), [fnd_flex_hierarchies_vl](https://www.enginatics.com/library/?pg=1&find=fnd_flex_hierarchies_vl)
+[fnd_flex_value_sets](https://www.enginatics.com/library/?pg=1&find=fnd_flex_value_sets&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fnd-flex-hierarchies-rollup-groups), [fnd_flex_hierarchies_vl](https://www.enginatics.com/library/?pg=1&find=fnd_flex_hierarchies_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fnd-flex-hierarchies-rollup-groups)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fnd-flex-hierarchies-rollup-groups)
 
 ## Related Reports
 [FND Rollup Groups](/FND%20Rollup%20Groups/ "FND Rollup Groups Oracle EBS SQL Report"), [FND Flex Value Hierarchy](/FND%20Flex%20Value%20Hierarchy/ "FND Flex Value Hierarchy Oracle EBS SQL Report"), [FND Flex Values](/FND%20Flex%20Values/ "FND Flex Values Oracle EBS SQL Report"), [FND Flex Value Upload](/FND%20Flex%20Value%20Upload/ "FND Flex Value Upload Oracle EBS SQL Report"), [GL Chart of Accounts Mapping Rules](/GL%20Chart%20of%20Accounts%20Mapping%20Rules/ "GL Chart of Accounts Mapping Rules Oracle EBS SQL Report"), [AR Aging](/AR%20Aging/ "AR Aging Oracle EBS SQL Report"), [ONT System Parameters](/ONT%20System%20Parameters/ "ONT System Parameters Oracle EBS SQL Report"), [PO Headers and Lines](/PO%20Headers%20and%20Lines/ "PO Headers and Lines Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/FND%20Flex%20Hierarchies%20%28Rollup%20Groups%29/FND%20Flex%20Hierarchies%20%28Rollup%20Groups%29.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fnd-flex-hierarchies-rollup-groups) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [](https://www.enginatics.com/example/fnd-flex-hierarchies-rollup-groups/) |
-| Blitz Report™ XML Import | [FND_Flex_Hierarchies_Rollup_Groups.xml](https://www.enginatics.com/xml/fnd-flex-hierarchies-rollup-groups/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/fnd-flex-hierarchies-rollup-groups/](https://www.enginatics.com/reports/fnd-flex-hierarchies-rollup-groups/) |
+| Excel Example Output | [Example](https://www.enginatics.com/example/fnd-flex-hierarchies-rollup-groups/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fnd-flex-hierarchies-rollup-groups) |
+| Blitz Report™ XML Import | [FND_Flex_Hierarchies_Rollup_Groups.xml](https://www.enginatics.com/xml/fnd-flex-hierarchies-rollup-groups/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fnd-flex-hierarchies-rollup-groups) |
+| SQL Source | [FND Flex Hierarchies (Rollup Groups).sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/FND%20Flex%20Hierarchies%20%28Rollup%20Groups%29/FND%20Flex%20Hierarchies%20%28Rollup%20Groups%29.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/fnd-flex-hierarchies-rollup-groups/](https://www.enginatics.com/reports/fnd-flex-hierarchies-rollup-groups/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fnd-flex-hierarchies-rollup-groups) |
 
 ## Executive Summary
 The **FND Flex Hierarchies (Rollup Groups)** report documents the Rollup Groups defined for value sets. Rollup Groups are used to create summary accounts in General Ledger or to group values for reporting purposes.
@@ -62,18 +71,17 @@ The report queries `FND_FLEX_HIERARCHIES_VL` and `FND_FLEX_VALUE_SETS`.
 *   **Q: How do I assign values to these groups?**
     *   A: You assign a Rollup Group to a specific Parent Value in the "Segment Values" form. Use the "FND Flex Values" report to see which values are assigned to which group.
 
-
 ---
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fnd-flex-hierarchies-rollup-groups)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fnd-flex-hierarchies-rollup-groups)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fnd-flex-hierarchies-rollup-groups)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fnd-flex-hierarchies-rollup-groups)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fnd-flex-hierarchies-rollup-groups)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fnd-flex-hierarchies-rollup-groups)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fnd-flex-hierarchies-rollup-groups)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

@@ -1,48 +1,47 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Inventory Accounts Setup
 -- Description: Report to show Valuation, Receiving, Profit and Loss and Inter-Org accounts as setup in the inventory organization parameters.
-
-/* +=============================================================================+
--- |  Copyright 2009 - 2020 Douglas Volz Consulting, Inc.                        |
--- |  All rights reserved.                                                       |
--- | Permission to use this code is granted provided the original author is      |
--- | acknowledged. No warranties, express or otherwise is included in this       |
--- | permission.                                                                 |
--- +=============================================================================+
--- |
--- |  Original Author: Douglas Volz (doug@volzconsulting.com)
--- |
--- |  Program Name:  xxx_inv_accts_setup_rept.sql
--- |
--- |  Parameters:
--- |  p_account_group    -- The group of inventory organization parameter accounts
--- |                        you wish to report
--- |  p_org_code         -- Specific inventory organization you wish to report (optional)
--- |  p_operating_unit   -- Operating Unit you wish to report, leave blank for all
--- |                        operating units (optional) 
--- |  p_ledger           -- general ledger you wish to report, leave blank for all
--- |                        ledgers (optional)
--- |  Description:
--- |  Report to show Valuation, Receiving, Profit and Loss and Inter-Org accounts
--- |  as setup in the inventory organization parameters
--- | 
--- |  Version Modified on Modified  by   Description
--- |  ======= =========== ============== =========================================
--- |  1.11    06 Mar 2019 Douglas Volz   Added Cost Variance Account, used with Average, FIFO, LIFO
--- |  1.12    14 Mar 2019 Douglas Volz   Added Expense A/P Accrual Account, Retroactive Price
--- |                                     Adjustment Account, Receiving Clearing Account.
--- |  1.13    12 Jan 2020 Douglas Volz   Added Org Code and Operating Unit parameters,
--- |                                     an outer join to gcc in case of invalid accounts
--- |                                     and change to gl.short_name.
--- |  1.14    28 Feb 2020 Douglas Volz   Changed to multi-language views for the item
--- |                                     master, inventory orgs and operating units.
--- +=============================================================================+*/
--- Excel Examle Output: https://www.enginatics.com/example/cac-inventory-accounts-setup/
+-- / +=============================================================================+
+-- -- | Copyright 2009 - 2020 Douglas Volz Consulting, Inc. |
+-- -- | All rights reserved. |
+-- -- | Permission to use this code is granted provided the original author is |
+-- -- | acknowledged. No warranties, express or otherwise is included in this |
+-- -- | permission. |
+-- -- +=============================================================================+
+-- -- |
+-- -- | Original Author: Douglas Volz (doug@volzconsulting.com)
+-- -- |
+-- -- | Program Name: xxxinvacctssetuprept.sql
+-- -- |
+-- -- | Parameters:
+-- -- | paccountgroup -- The group of inventory organization parameter accounts
+-- -- | you wish to report
+-- -- | porgcode -- Specific inventory organization you wish to report (optional)
+-- -- | poperatingunit -- Operating Unit you wish to report, leave blank for all
+-- -- | operating units (optional)
+-- -- | pledger -- general ledger you wish to report, leave blank for all
+-- -- | ledgers (optional)
+-- -- | Description:
+-- -- | Report to show Valuation, Receiving, Profit and Loss and Inter-Org accounts
+-- -- | as setup in the inventory organization parameters
+-- -- |
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== ============== =========================================
+-- -- | 1.11 06 Mar 2019 Douglas Volz Added Cost Variance Account, used with Average, FIFO, LIFO
+-- -- | 1.12 14 Mar 2019 Douglas Volz Added Expense A/P Accrual Account, Retroactive Price
+-- -- | Adjustment Account, Receiving Clearing Account.
+-- -- | 1.13 12 Jan 2020 Douglas Volz Added Org Code and Operating Unit parameters,
+-- -- | an outer join to gcc in case of invalid accounts
+-- -- | and change to gl.shortname.
+-- -- | 1.14 28 Feb 2020 Douglas Volz Changed to multi-language views for the item
+-- -- | master, inventory orgs and operating units.
+-- -- +=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-inventory-accounts-setup/
 -- Library Link: https://www.enginatics.com/reports/cac-inventory-accounts-setup/
 -- Run Report: https://demo.enginatics.com/
 

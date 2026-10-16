@@ -1,12 +1,13 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: AR Incomplete Transactions
 -- Description: Detail incomplete transaction report
--- Excel Examle Output: https://www.enginatics.com/example/ar-incomplete-transactions/
+-- When India Localization is installed, the following GST columns are also included: GST Registration No, GST PAN No, CGST Amount, SGST Amount, IGST Amount, CESS Amount, Custom Amount, Unclassified Tax Amount, Taxable Value, HSN SAC Code, HSN Length Warning, CGST Rate, SGST Rate, IGST Rate, CESS Rate, CGST Recoverable, CGST Non-Recoverable, SGST Recoverable, SGST Non-Recoverable, IGST Recoverable, IGST Non-Recoverable, Reverse Charge Flag, Place of Supply, Ship From State.
+-- Excel Example Output: https://www.enginatics.com/example/ar-incomplete-transactions/
 -- Library Link: https://www.enginatics.com/reports/ar-incomplete-transactions/
 -- Run Report: https://demo.enginatics.com/
 
@@ -53,6 +54,11 @@ xxen_util.client_time(rcta.creation_date) creation_date,
 xxen_util.user_name(rcta.last_updated_by) last_updated_by,
 xxen_util.client_time(rcta.last_update_date) last_update_date,
 arm.name receipt_method
+&il_reg_columns
+&il_columns_amt
+&il_columns_rate
+&il_columns_rec
+&il_columns_tp
 &payment_method_column
 from
 hr_all_organization_units_vl haouv,
@@ -70,6 +76,7 @@ jtf_rs_salesreps jrs,
 jtf_rs_resource_extns_tl jrret,
 ar_receipt_methods arm
 &payment_method_table
+&il_from
 where
 1=1 and
 rcta.complete_flag='N' and
@@ -92,6 +99,7 @@ jrs.resource_id=jrret.resource_id(+) and
 jrret.language(+)=userenv('lang') and
 rcta.receipt_method_id=arm.receipt_method_id(+)
 &payment_method_join
+&il_where
 order by
 haouv.name,
 rcta.trx_date desc,

@@ -1,20 +1,16 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: QA Collection Plan Element Values
 -- Description: Lists the allowed values behind every list-validated Oracle Quality collection element - the entries an operator can pick when entering quality results, and the collection element master values each plan was seeded from.
-
-Oracle Quality holds these values in two independent places. A collection plan carries its own value list, and the collection element carries a master list. A plan is seeded from the master but is not tied to it afterwards: it can carry codes that were never in the master, override a master value's description, and leave master values out. The Value Level column says which is which. Plan means the value is offered on this collection plan, and is what quality results entry or a quality results upload must validate against. Element means the value is defined on the collection element master but was not carried into this plan, so it is not offered here.
-
-On a Plan row, Element Master Description shows the master's own wording for the same short code, In Element Master flags whether the code exists in the master at all, and Description Overridden flags the rows where the plan's wording differs from the master's.
-
-Result Column is the qa_results column this element's value is stored in, so a short code can be traced to the column that will hold it. Collection results are stored generically, so this mapping is what turns a stored value back into a business meaning.
-
-Leave the parameters blank for the full picture, or narrow with Organization, Collection Plan, Plan Type and Collection Element. Enabled Elements Only restricts to elements still enabled on the plan. Value Level isolates one of the two levels, and Short Code finds a particular value across plans.
--- Excel Examle Output: https://www.enginatics.com/example/qa-collection-plan-element-values/
+-- Oracle Quality holds these values in two independent places. A collection plan carries its own value list, and the collection element carries a master list. A plan is seeded from the master but is not tied to it afterwards: it can carry codes that were never in the master, override a master value's description, and leave master values out. The Value Level column says which is which. Plan means the value is offered on this collection plan, and is what quality results entry or a quality results upload must validate against. Element means the value is defined on the collection element master but was not carried into this plan, so it is not offered here.
+-- On a Plan row, Element Master Description shows the master's own wording for the same short code, In Element Master flags whether the code exists in the master at all, and Description Overridden flags the rows where the plan's wording differs from the master's.
+-- Result Column is the qaresults column this element's value is stored in, so a short code can be traced to the column that will hold it. Collection results are stored generically, so this mapping is what turns a stored value back into a business meaning.
+-- Leave the parameters blank for the full picture, or narrow with Organization, Collection Plan, Plan Type and Collection Element. Enabled Elements Only restricts to elements still enabled on the plan. Value Level isolates one of the two levels, and Short Code finds a particular value across plans.
+-- Excel Example Output: https://www.enginatics.com/example/qa-collection-plan-element-values/
 -- Library Link: https://www.enginatics.com/reports/qa-collection-plan-element-values/
 -- Run Report: https://demo.enginatics.com/
 

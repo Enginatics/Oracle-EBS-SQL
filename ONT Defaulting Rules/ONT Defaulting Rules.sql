@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: ONT Defaulting Rules
 -- Description: Shows the complete Order Management defaulting rules setup
--- Excel Examle Output: https://www.enginatics.com/example/ont-defaulting-rules/
+-- Excel Example Output: https://www.enginatics.com/example/ont-defaulting-rules/
 -- Library Link: https://www.enginatics.com/reports/ont-defaulting-rules/
 -- Run Report: https://demo.enginatics.com/
 

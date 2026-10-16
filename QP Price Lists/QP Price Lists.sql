@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: QP Price Lists
 -- Description: Master data report showing the setup of price lists including item prices, calculation methods, terms and dates.
--- Excel Examle Output: https://www.enginatics.com/example/qp-price-lists/
+-- Excel Example Output: https://www.enginatics.com/example/qp-price-lists/
 -- Library Link: https://www.enginatics.com/reports/qp-price-lists/
 -- Run Report: https://demo.enginatics.com/
 

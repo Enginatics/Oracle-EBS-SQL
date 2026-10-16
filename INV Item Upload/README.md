@@ -1,14 +1,17 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'INV Item Upload | Oracle EBS SQL Report'
-description: 'INV Inventory Item Upload ====================== This upload can be used to create and update Inventory Items. It supports creation of Inventory Items: -…'
+description: 'INV Inventory Item Upload ====================== This upload can be used to create and update Inventory Items. It supports creation of Inventory Items: …'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, INV, Item, mtl_item_catalog_groups_b_kfv, mtl_item_status, mtl_units_of_measure_tl'
 permalink: /INV%20Item%20Upload/
+report_name: 'INV Item Upload'
+report_web_name: inv-item-upload
 ---
 
 # INV Item Upload – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/inv-item-upload/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/inv-item-upload/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-item-upload) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-item-upload).
 
 ## Overview
 INV Inventory Item Upload
@@ -62,28 +65,31 @@ When creating new child items, the master-controlled item attributes are not pas
 When updating existing child items, the master-controlled item attributes are copied directly from the Master Org, in case there is any pre-existing inconsistency between the Child Org and Master Org values. 
 Effectively this means, for creation/updates to items in child organizations, the uploaded values for Master Controlled Item attributes are not considered by upload.
 
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-item-upload) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 
 ## Report Parameters
 Upload Mode, Create Empty File, Update on Create Null Handling, Number of Item Import Workers, Organization Code, Category Set, Category, Category Set 2, Category 2, Item, Item Like, Item Description, Item Type, Item Status, BOM Item Type, Contract Item Type, Make or Buy, Buyer, Planner, Manufacturer, Inventory Planning Method, Cross Reference Type, Cross Reference, Revision Effective Date, Last Update Date From, Last Update Date To, Last Updated By, Creation Date From, Creation Date To, Created By
 
 ## Oracle EBS Tables Used
-[mtl_item_catalog_groups_b_kfv](https://www.enginatics.com/library/?pg=1&find=mtl_item_catalog_groups_b_kfv), [mtl_item_status](https://www.enginatics.com/library/?pg=1&find=mtl_item_status), [mtl_units_of_measure_tl](https://www.enginatics.com/library/?pg=1&find=mtl_units_of_measure_tl), [mtl_actions](https://www.enginatics.com/library/?pg=1&find=mtl_actions), [mtl_grades](https://www.enginatics.com/library/?pg=1&find=mtl_grades), [mtl_material_statuses](https://www.enginatics.com/library/?pg=1&find=mtl_material_statuses), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl), [gl_code_combinations_kfv](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations_kfv), [per_people_x](https://www.enginatics.com/library/?pg=1&find=per_people_x), [po_un_numbers](https://www.enginatics.com/library/?pg=1&find=po_un_numbers), [po_hazard_classes](https://www.enginatics.com/library/?pg=1&find=po_hazard_classes), [fa_categories_b_kfv](https://www.enginatics.com/library/?pg=1&find=fa_categories_b_kfv), [rcv_routing_headers](https://www.enginatics.com/library/?pg=1&find=rcv_routing_headers), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters)
+[mtl_item_catalog_groups_b_kfv](https://www.enginatics.com/library/?pg=1&find=mtl_item_catalog_groups_b_kfv&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-item-upload), [mtl_item_status](https://www.enginatics.com/library/?pg=1&find=mtl_item_status&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-item-upload), [mtl_units_of_measure_tl](https://www.enginatics.com/library/?pg=1&find=mtl_units_of_measure_tl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-item-upload), [mtl_actions](https://www.enginatics.com/library/?pg=1&find=mtl_actions&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-item-upload), [mtl_grades](https://www.enginatics.com/library/?pg=1&find=mtl_grades&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-item-upload), [mtl_material_statuses](https://www.enginatics.com/library/?pg=1&find=mtl_material_statuses&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-item-upload), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-item-upload), [gl_code_combinations_kfv](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations_kfv&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-item-upload), [per_people_x](https://www.enginatics.com/library/?pg=1&find=per_people_x&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-item-upload), [po_un_numbers](https://www.enginatics.com/library/?pg=1&find=po_un_numbers&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-item-upload), [po_hazard_classes](https://www.enginatics.com/library/?pg=1&find=po_hazard_classes&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-item-upload), [fa_categories_b_kfv](https://www.enginatics.com/library/?pg=1&find=fa_categories_b_kfv&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-item-upload), [rcv_routing_headers](https://www.enginatics.com/library/?pg=1&find=rcv_routing_headers&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-item-upload), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-item-upload), [mtl_item_locations_kfv](https://www.enginatics.com/library/?pg=1&find=mtl_item_locations_kfv&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-item-upload), [mtl_atp_rules](https://www.enginatics.com/library/?pg=1&find=mtl_atp_rules&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-item-upload), [wms_rules_vl](https://www.enginatics.com/library/?pg=1&find=wms_rules_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-item-upload), [MTL_UOM_CONVERSIONS](https://www.enginatics.com/library/?pg=1&find=MTL_UOM_CONVERSIONS&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-item-upload), [ra_rules](https://www.enginatics.com/library/?pg=1&find=ra_rules&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-item-upload), [ra_terms_vl](https://www.enginatics.com/library/?pg=1&find=ra_terms_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-item-upload), [oks_coverage_templts_v](https://www.enginatics.com/library/?pg=1&find=oks_coverage_templts_v&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-item-upload), [mtl_manufacturers](https://www.enginatics.com/library/?pg=1&find=mtl_manufacturers&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-item-upload), [mtl_mfg_part_numbers](https://www.enginatics.com/library/?pg=1&find=mtl_mfg_part_numbers&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-item-upload), [mtl_item_categories](https://www.enginatics.com/library/?pg=1&find=mtl_item_categories&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-item-upload), [mtl_category_sets_vl](https://www.enginatics.com/library/?pg=1&find=mtl_category_sets_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-item-upload), [mtl_categories_kfv](https://www.enginatics.com/library/?pg=1&find=mtl_categories_kfv&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-item-upload), [mtl_item_revisions_vl](https://www.enginatics.com/library/?pg=1&find=mtl_item_revisions_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-item-upload), [org_access_view](https://www.enginatics.com/library/?pg=1&find=org_access_view&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-item-upload)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Upload](https://www.enginatics.com/library/?pg=1&category[]=Upload)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-item-upload), [Upload](https://www.enginatics.com/library/?pg=1&category%5B%5D=Upload&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-item-upload)
 
-
+## Related Reports
+[INV Items](/INV%20Items/ "INV Items Oracle EBS SQL Report"), [INV Item Upload 11i](/INV%20Item%20Upload%2011i/ "INV Item Upload 11i Oracle EBS SQL Report"), [INV Default Category Sets](/INV%20Default%20Category%20Sets/ "INV Default Category Sets Oracle EBS SQL Report"), [GL Account Analysis](/GL%20Account%20Analysis/ "GL Account Analysis Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/INV%20Item%20Upload/INV%20Item%20Upload.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-item-upload) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [](https://www.enginatics.com/example/inv-item-upload/) |
-| Blitz Report™ XML Import | [INV_Item_Upload.xml](https://www.enginatics.com/xml/inv-item-upload/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/inv-item-upload/](https://www.enginatics.com/reports/inv-item-upload/) |
+| Excel Example Output | [Example](https://www.enginatics.com/example/inv-item-upload/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-item-upload) |
+| Blitz Report™ XML Import | [INV_Item_Upload.xml](https://www.enginatics.com/xml/inv-item-upload/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-item-upload) |
+| SQL Source | [INV Item Upload.sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/INV%20Item%20Upload/INV%20Item%20Upload.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/inv-item-upload/](https://www.enginatics.com/reports/inv-item-upload/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-item-upload) |
 
 ## Case Study & Technical Analysis: INV Item Upload
 
@@ -145,18 +151,17 @@ The design of this tool incorporates key features for high-performance data load
 **3. Can I use this upload to add a new revision to an existing item?**
    Yes, the underlying Item Import process supports the creation of new item revisions. By providing the item number and the new revision number in the upload template, you can mass-create new revisions for multiple items at once.
 
-
 ---
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-item-upload)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-item-upload)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-item-upload)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-item-upload)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-item-upload)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-item-upload)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-item-upload)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

@@ -1,40 +1,49 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'Blitz Report Parameter Comparison between reports | Oracle EBS SQL Report'
-description: 'Compares the paramaters of two reports for differences – Oracle E-Business Suite SQL report'
+description: 'Compares the paramaters of two reports for differences – Oracle EBS Blitz Report SQL report: free SQL, parameters and tables used.'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Blitz, Report, Parameter, Comparison, xxen_report_parameters_v'
 permalink: /Blitz%20Report%20Parameter%20Comparison%20between%20reports/
+report_name: 'Blitz Report Parameter Comparison between reports'
+report_web_name: blitz-report-parameter-comparison-between-reports
+module: 'Blitz Report'
+module_url: /modules/blitz-report/
 ---
 
 # Blitz Report Parameter Comparison between reports – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/blitz-report-parameter-comparison-between-reports/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/blitz-report-parameter-comparison-between-reports/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-report-parameter-comparison-between-reports) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-report-parameter-comparison-between-reports).
+**Oracle EBS module:** [Blitz Report](/modules/blitz-report/ "Oracle EBS Blitz Report reports") · [all Blitz Report reports](/modules/blitz-report/)  
 
 ## Overview
 Compares the paramaters of two reports for differences
+
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-report-parameter-comparison-between-reports) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 
 ## Report Parameters
 Report Name1, Report Name2, Show Differences only
 
 ## Oracle EBS Tables Used
-[xxen_report_parameters_v](https://www.enginatics.com/library/?pg=1&find=xxen_report_parameters_v)
+[xxen_report_parameters_v](https://www.enginatics.com/library/?pg=1&find=xxen_report_parameters_v&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-report-parameter-comparison-between-reports)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-report-parameter-comparison-between-reports)
 
 ## Related Reports
-[INV Transaction Historical Summary](/INV%20Transaction%20Historical%20Summary/ "INV Transaction Historical Summary Oracle EBS SQL Report"), [CAC WIP Resource Efficiency](/CAC%20WIP%20Resource%20Efficiency/ "CAC WIP Resource Efficiency Oracle EBS SQL Report"), [Blitz Report Parameter Link Validation](/Blitz%20Report%20Parameter%20Link%20Validation/ "Blitz Report Parameter Link Validation Oracle EBS SQL Report"), [CAC Inventory Organization Summary](/CAC%20Inventory%20Organization%20Summary/ "CAC Inventory Organization Summary Oracle EBS SQL Report"), [INV Physical Inventory Purge Upload](/INV%20Physical%20Inventory%20Purge%20Upload/ "INV Physical Inventory Purge Upload Oracle EBS SQL Report"), [Blitz Report LOV SQL Validation](/Blitz%20Report%20LOV%20SQL%20Validation/ "Blitz Report LOV SQL Validation Oracle EBS SQL Report"), [Blitz Report Text Search](/Blitz%20Report%20Text%20Search/ "Blitz Report Text Search Oracle EBS SQL Report"), [CAC WIP Account Value](/CAC%20WIP%20Account%20Value/ "CAC WIP Account Value Oracle EBS SQL Report"), [CAC AP Accrual IR ISO Match Analysis](/CAC%20AP%20Accrual%20IR%20ISO%20Match%20Analysis/ "CAC AP Accrual IR ISO Match Analysis Oracle EBS SQL Report")
+[Blitz Report Parameter Link Validation](/Blitz%20Report%20Parameter%20Link%20Validation/ "Blitz Report Parameter Link Validation Oracle EBS SQL Report"), [GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report"), [Blitz Report Comparison between environments](/Blitz%20Report%20Comparison%20between%20environments/ "Blitz Report Comparison between environments Oracle EBS SQL Report"), [Blitz Report LOV Comparison between environments](/Blitz%20Report%20LOV%20Comparison%20between%20environments/ "Blitz Report LOV Comparison between environments Oracle EBS SQL Report"), [CAC Cost vs. Planning Item Controls](/CAC%20Cost%20vs-%20Planning%20Item%20Controls/ "CAC Cost vs. Planning Item Controls Oracle EBS SQL Report"), [AP Invoices and Lines](/AP%20Invoices%20and%20Lines/ "AP Invoices and Lines Oracle EBS SQL Report"), [Blitz Upload Dependencies](/Blitz%20Upload%20Dependencies/ "Blitz Upload Dependencies Oracle EBS SQL Report"), [CAC AP Accrual IR ISO Match Analysis](/CAC%20AP%20Accrual%20IR%20ISO%20Match%20Analysis/ "CAC AP Accrual IR ISO Match Analysis Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/Blitz%20Report%20Parameter%20Comparison%20between%20reports/Blitz%20Report%20Parameter%20Comparison%20between%20reports.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-report-parameter-comparison-between-reports) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [](https://www.enginatics.com/example/blitz-report-parameter-comparison-between-reports/) |
-| Blitz Report™ XML Import | [Blitz_Report_Parameter_Comparison_between_reports.xml](https://www.enginatics.com/xml/blitz-report-parameter-comparison-between-reports/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/blitz-report-parameter-comparison-between-reports/](https://www.enginatics.com/reports/blitz-report-parameter-comparison-between-reports/) |
+| Excel Example Output | [Example](https://www.enginatics.com/example/blitz-report-parameter-comparison-between-reports/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-report-parameter-comparison-between-reports) |
+| Blitz Report™ XML Import | [Blitz_Report_Parameter_Comparison_between_reports.xml](https://www.enginatics.com/xml/blitz-report-parameter-comparison-between-reports/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-report-parameter-comparison-between-reports) |
+| SQL Source | [Blitz Report Parameter Comparison between reports.sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/Blitz%20Report%20Parameter%20Comparison%20between%20reports/Blitz%20Report%20Parameter%20Comparison%20between%20reports.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/blitz-report-parameter-comparison-between-reports/](https://www.enginatics.com/reports/blitz-report-parameter-comparison-between-reports/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-report-parameter-comparison-between-reports) |
 
 ## Case Study: Blitz Report Parameter Comparison between reports
 
@@ -74,18 +83,17 @@ A: No, this tool is designed to compare two Blitz Reports.
 **Q: Does it compare the main report SQL as well?**
 A: This specific report focuses on **Parameters**. For comparing the main report SQL or columns, other tools in the "Blitz Report" category (like "Blitz Report SQL Validation" or "Blitz Report Comparison") may be more appropriate.
 
-
 ---
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-report-parameter-comparison-between-reports)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-report-parameter-comparison-between-reports)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-report-parameter-comparison-between-reports)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-report-parameter-comparison-between-reports)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-report-parameter-comparison-between-reports)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-report-parameter-comparison-between-reports)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-report-parameter-comparison-between-reports)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

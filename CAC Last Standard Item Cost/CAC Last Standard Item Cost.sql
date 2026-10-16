@@ -1,45 +1,42 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Last Standard Item Cost
--- Description: Report to show the last standard item cost as of a specified cost update date; expecially useful if you have not saved off your Frozen costs at year-end, before updating to your new standard costs for the following year.  Including various item controls, last cost update submission, last standard item cost and current (Frozen) item cost.  And whether or not BOMs, routings or (inventory organization) sourcing rules exist for the item as of the specified cost update date.  And as allowed with no onhand or intransit quantities, if an item cost has been directly entered into the Frozen Cost Type, the Cost Update Request Id, Cost Update Description, Cost Update Status and related cost update submission columns will be blank or empty.
-
-This report complements the CAC New Standard Item Cost report.  The CAC New Standard Item Cost report shows you the cost update history over a range of  Standard Cost Revision Dates, useful to track standard cost changes on a weekly basis.  The CAC Last Standard Item Cost report shows you how each item got its last Standard Item Cost as of a given Standard Cost Revision Date.  Useful to assess when the current standard costs were created and by whom.
-
-Parameters:
-==========
-Cost Update Date To: ending cost update revision date, based on standard cost submission history (required).
-Category Set 1:  any item category you wish, typically the Cost or Product Line category set (optional).
-Category Set 2:  any item category you wish, typically the Inventory category set (optional).
-Item Status to Exclude:  enter the item status to exclude from this report, defaults to Inactive (optional).
-Item Number:  enter the specific item number(s) you wish to report (optional).
-Organization Code:  enter the specific inventory organization(s) you wish to report (optional).
-Operating Unit:  enter the specific operating unit(s) you wish to report (optional).
-Ledger:  enter the specific ledger(s) you wish to report (optional).
-
-/* +=============================================================================+
--- | Copyright 2024 Douglas Volz Consulting, Inc.
--- | All rights reserved.
--- | Permission to use this code is granted provided the original author is
--- | acknowledged. No warranties, express or otherwise is included in this permission.                                                                 |
--- +=============================================================================+
--- |
--- | Original Author: Douglas Volz (doug@volzconsulting.com)
--- |
--- | Program Name: xxx_last_standard_item_cost_rept.sql
--- |
--- | Description:
--- | Report to show the last standard cost for all items in an inventory organization,
--- | up to the entered Cost Update Date parameter.
--- | 
--- | Version Modified on Modified by    Description
--- | ======= =========== ============== =========================================
--- |  1.0    15 Jan 2024 Douglas Volz   Initial coding based on the New Standard Item Cost report.
--- +=============================================================================+*/
--- Excel Examle Output: https://www.enginatics.com/example/cac-last-standard-item-cost/
+-- Description: Report to show the last standard item cost as of a specified cost update date; expecially useful if you have not saved off your Frozen costs at year-end, before updating to your new standard costs for the following year. Including various item controls, last cost update submission, last standard item cost and current (Frozen) item cost. And whether or not BOMs, routings or (inventory organization) sourcing rules exist for the item as of the specified cost update date. And as allowed with no onhand or intransit quantities, if an item cost has been directly entered into the Frozen Cost Type, the Cost Update Request Id, Cost Update Description, Cost Update Status and related cost update submission columns will be blank or empty.
+-- This report complements the CAC New Standard Item Cost report. The CAC New Standard Item Cost report shows you the cost update history over a range of Standard Cost Revision Dates, useful to track standard cost changes on a weekly basis. The CAC Last Standard Item Cost report shows you how each item got its last Standard Item Cost as of a given Standard Cost Revision Date. Useful to assess when the current standard costs were created and by whom.
+-- Parameters:
+-- ==========
+-- Cost Update Date To: ending cost update revision date, based on standard cost submission history (required).
+-- Category Set 1: any item category you wish, typically the Cost or Product Line category set (optional).
+-- Category Set 2: any item category you wish, typically the Inventory category set (optional).
+-- Item Status to Exclude: enter the item status to exclude from this report, defaults to Inactive (optional).
+-- Item Number: enter the specific item number(s) you wish to report (optional).
+-- Organization Code: enter the specific inventory organization(s) you wish to report (optional).
+-- Operating Unit: enter the specific operating unit(s) you wish to report (optional).
+-- Ledger: enter the specific ledger(s) you wish to report (optional).
+-- / +=============================================================================+
+-- -- | Copyright 2024 Douglas Volz Consulting, Inc.
+-- -- | All rights reserved.
+-- -- | Permission to use this code is granted provided the original author is
+-- -- | acknowledged. No warranties, express or otherwise is included in this permission. |
+-- -- +=============================================================================+
+-- -- |
+-- -- | Original Author: Douglas Volz (doug@volzconsulting.com)
+-- -- |
+-- -- | Program Name: xxxlaststandarditemcostrept.sql
+-- -- |
+-- -- | Description:
+-- -- | Report to show the last standard cost for all items in an inventory organization,
+-- -- | up to the entered Cost Update Date parameter.
+-- -- |
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== ============== =========================================
+-- -- | 1.0 15 Jan 2024 Douglas Volz Initial coding based on the New Standard Item Cost report.
+-- -- +=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-last-standard-item-cost/
 -- Library Link: https://www.enginatics.com/reports/cac-last-standard-item-cost/
 -- Run Report: https://demo.enginatics.com/
 

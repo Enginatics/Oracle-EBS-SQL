@@ -1,16 +1,15 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: BOM Routings
 -- Description: Master data report showing bill of material routings with item codes and sequences.
-
-The report optionally shows the full routing detail matching the BOM Routing Upload: routing header attributes and revision, operation scheduling details, operation resources, substitute resources and flow routing operation networks. The detail levels are controlled by the Show Operations, Show Resources, Show Substitute Resources and Show Networks parameters, and the Record Type column identifies each row.
-
-Descriptive flexfield attributes of the routing, routing revision and operation are shown as dynamic columns via the Show BOM DFF Attributes parameter.
--- Excel Examle Output: https://www.enginatics.com/example/bom-routings/
+-- The report optionally shows the full routing detail matching the BOM Routing Upload: routing header attributes and revision, operation scheduling details, operation resources, substitute resources and flow routing operation networks. The detail levels are controlled by the Show Operations, Show Resources, Show Substitute Resources and Show Networks parameters, and the Record Type column identifies each row.
+-- Descriptive flexfield attributes of the routing, routing revision and operation are shown as dynamic columns via the Show BOM DFF Attributes parameter.
+-- Selecting a Resource, without an item, lists where that resource is used across all routings of the organization.
+-- Excel Example Output: https://www.enginatics.com/example/bom-routings/
 -- Library Link: https://www.enginatics.com/reports/bom-routings/
 -- Run Report: https://demo.enginatics.com/
 
@@ -148,6 +147,7 @@ bom_operation_resources borsc,
 bom_resources br
 where
 1=1 and
+2=2 and
 haouv.organization_id=bor.organization_id and
 mp.organization_id=bor.organization_id and
 bor.assembly_item_id=msiv.inventory_item_id and
@@ -325,6 +325,7 @@ bom_sub_operation_resources bsor,
 bom_resources br
 where
 1=1 and
+2=2 and
 :p_show_sub_resources='Y' and
 haouv.organization_id=bor.organization_id and
 mp.organization_id=bor.organization_id and
@@ -487,6 +488,7 @@ bom_operation_networks bon,
 bom_operation_sequences bos3
 where
 1=1 and
+3=3 and
 :p_show_networks='Y' and
 haouv.organization_id=bor.organization_id and
 mp.organization_id=bor.organization_id and

@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: FND Responsibility Menu Exclusions
 -- Description: Responsibility menu exclusions
--- Excel Examle Output: https://www.enginatics.com/example/fnd-responsibility-menu-exclusions/
+-- Excel Example Output: https://www.enginatics.com/example/fnd-responsibility-menu-exclusions/
 -- Library Link: https://www.enginatics.com/reports/fnd-responsibility-menu-exclusions/
 -- Run Report: https://demo.enginatics.com/
 

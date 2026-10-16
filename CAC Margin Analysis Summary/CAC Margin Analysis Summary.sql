@@ -1,61 +1,57 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Margin Analysis Summary
--- Description: Report for the margin from the customer invoices and shipments, based on the standard Oracle Margin table, cst_margin_summary.  (If you want to show the COGS and Sales Accounts use report CAC Margin Analysis Account Summary.)  
-
-Note:  in order to run this report, you first need to run the Margin Analysis Load Run request (to populate the standard Oracle Margin table).
-
-Parameters:
-===========
-Transaction Date From:  enter the starting transaction date (mandatory).
-Transaction Date To:  enter the ending transaction date (mandatory).
-Category Set 1:  any item category you wish, typically the Cost or Product Line category set (optional).
-Category Set 2:  any item category you wish, typically the Inventory category set (optional).
-Customer Name:  enter the specific customer name you wish to report (optional).
-Item Number:  enter the specific item number(s) you wish to report (optional).
-Organization Code:  enter the specific inventory organization(s) you wish to report (optional).
-Operating Unit:  enter the specific operating unit(s) you wish to report (optional).
-Ledger:  enter the specific ledger(s) you wish to report (optional).
-
-/* +=============================================================================+
--- |  Copyright 2006 - 2024 Douglas Volz Consulting, Inc.
--- |  All rights reserved.
--- |  Permission to use this code is granted provided the original author is 
--- |  acknowledged.  No warranties, express or otherwise is included in this
--- |  permission.
--- +=============================================================================+
--- |
--- |  Original Author: Douglas Volz (doug@volzconsulting.com)
--- | 
--- |  Version Modified on Modified  by   Description
--- |  ======= =========== ============== =========================================
--- |  1.0     18 APR 2006 Douglas Volz   Initial Coding
--- |  1.1     15 MAY 2006 Douglas Volz   Working version
--- |  1.2     17 MAY 2006 Douglas Volz   Added order line and date information
--- |  1.3     14 Dec 2012 Douglas Volz   Modified for Garlock, changed category set
--- |  1.4     19 Dec 2012 Douglas Volz   Bug fix for category set name
--- |  1.5     29 Jan 2013 Douglas Volz   Fixed date parameters to have same format
--- |          as other reports; had to remove sales and COGS accounts as these are 
--- |          on different rows and would need to rewrite the code to include this.
--- |          Also added a join for mic and mcs for category_set_id to avoid duplicate rows.
--- |          And added a having clause to screen out zero rows.
--- |  1.6     25 Feb 2013 Douglas Volz   Added apps.mtl_default_category_sets mdcs table
--- |                                     to make the script more generic
--- |  1.7     27 Feb 2017 Douglas Volz   Modified for Item Category and customer
--- |                                     information.  
--- |  1.8     28 Feb 2017 Douglas Volz   Removed sales rep information,
--- |                                     was causing cross-joining.
--- |  1.9     22 May 2017 Douglas Volz   Adding Inventory item category
--- |  1.10    23 May 2020 Douglas Volz   Use multi-language table for UOM Code, item 
--- |                                     master, OE transaction types and hr organization names. 
--- |  1.11    14 Jun 2024 Douglas Volz   Remove tabs, reinstall parameters and org access controls.
--- +=============================================================================+*/
-
--- Excel Examle Output: https://www.enginatics.com/example/cac-margin-analysis-summary/
+-- Description: Report for the margin from the customer invoices and shipments, based on the standard Oracle Margin table, cstmarginsummary. (If you want to show the COGS and Sales Accounts use report CAC Margin Analysis Account Summary.)
+-- Note: in order to run this report, you first need to run the Margin Analysis Load Run request (to populate the standard Oracle Margin table).
+-- Parameters:
+-- ===========
+-- Transaction Date From: enter the starting transaction date (mandatory).
+-- Transaction Date To: enter the ending transaction date (mandatory).
+-- Category Set 1: any item category you wish, typically the Cost or Product Line category set (optional).
+-- Category Set 2: any item category you wish, typically the Inventory category set (optional).
+-- Customer Name: enter the specific customer name you wish to report (optional).
+-- Item Number: enter the specific item number(s) you wish to report (optional).
+-- Organization Code: enter the specific inventory organization(s) you wish to report (optional).
+-- Operating Unit: enter the specific operating unit(s) you wish to report (optional).
+-- Ledger: enter the specific ledger(s) you wish to report (optional).
+-- / +=============================================================================+
+-- -- | Copyright 2006 - 2024 Douglas Volz Consulting, Inc.
+-- -- | All rights reserved.
+-- -- | Permission to use this code is granted provided the original author is
+-- -- | acknowledged. No warranties, express or otherwise is included in this
+-- -- | permission.
+-- -- +=============================================================================+
+-- -- |
+-- -- | Original Author: Douglas Volz (doug@volzconsulting.com)
+-- -- |
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== ============== =========================================
+-- -- | 1.0 18 APR 2006 Douglas Volz Initial Coding
+-- -- | 1.1 15 MAY 2006 Douglas Volz Working version
+-- -- | 1.2 17 MAY 2006 Douglas Volz Added order line and date information
+-- -- | 1.3 14 Dec 2012 Douglas Volz Modified for Garlock, changed category set
+-- -- | 1.4 19 Dec 2012 Douglas Volz Bug fix for category set name
+-- -- | 1.5 29 Jan 2013 Douglas Volz Fixed date parameters to have same format
+-- -- | as other reports; had to remove sales and COGS accounts as these are
+-- -- | on different rows and would need to rewrite the code to include this.
+-- -- | Also added a join for mic and mcs for categorysetid to avoid duplicate rows.
+-- -- | And added a having clause to screen out zero rows.
+-- -- | 1.6 25 Feb 2013 Douglas Volz Added apps.mtldefaultcategorysets mdcs table
+-- -- | to make the script more generic
+-- -- | 1.7 27 Feb 2017 Douglas Volz Modified for Item Category and customer
+-- -- | information.
+-- -- | 1.8 28 Feb 2017 Douglas Volz Removed sales rep information,
+-- -- | was causing cross-joining.
+-- -- | 1.9 22 May 2017 Douglas Volz Adding Inventory item category
+-- -- | 1.10 23 May 2020 Douglas Volz Use multi-language table for UOM Code, item
+-- -- | master, OE transaction types and hr organization names.
+-- -- | 1.11 14 Jun 2024 Douglas Volz Remove tabs, reinstall parameters and org access controls.
+-- -- +=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-margin-analysis-summary/
 -- Library Link: https://www.enginatics.com/reports/cac-margin-analysis-summary/
 -- Run Report: https://demo.enginatics.com/
 

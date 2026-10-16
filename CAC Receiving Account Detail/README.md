@@ -1,38 +1,27 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'CAC Receiving Account Detail | Oracle EBS SQL Report'
-description: 'Report to get the receiving accounting distributions, in detail, by item, purchase order, purchase order line, release, project number, transaction date…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, CAC, Receiving, Account, Detail, po_releases_all, mtl_units_of_measure_vl, org_acct_periods'
+description: 'Receiving accounting distributions in detail by item, purchase order, release, transaction date, creation date, created by and transaction id. Show SLA…'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Cost Accounting, Enginatics, CAC, Receiving, Account, Detail, po_releases_all, mtl_parameters, org_access_view'
 permalink: /CAC%20Receiving%20Account%20Detail/
+report_name: 'CAC Receiving Account Detail'
+report_web_name: cac-receiving-account-detail
+module: 'Cost Accounting'
+module_url: /modules/cost-accounting/
 ---
 
 # CAC Receiving Account Detail – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/cac-receiving-account-detail/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/cac-receiving-account-detail/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cac-receiving-account-detail) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cac-receiving-account-detail).
+**Oracle EBS module:** [Cost Accounting](/modules/cost-accounting/ "Oracle EBS Cost Accounting reports") · [all Cost Accounting reports](/modules/cost-accounting/)  
 
 ## Overview
-Report to get the receiving accounting distributions, in detail, by item, purchase order, purchase order line, release, project number, transaction date, creation date, created by and transaction identifier.  With the Show SLA Accounting parameter you can choose to use the Release 12 Subledger Accounting (Create Accounting) account setups by selecting Yes.  And if you have not modified your SLA accounting rules, select No to allow this report to run a bit faster.  With Show WIP Outside Processing parameter to display or not display WIP outside processing information (WIP job and OSP resource code) and Show Project Information to display or not display the project, project name and task.  And if you accrue expense receipts at time of receipt, for expense destinations when there is no item number, this report will get the expense category information and put it into the columns for the first category.
-
-(Note: this report has not been tested with encumbrance entries.)
-
-Parameters:
-===========
-Transaction Date From:  enter the starting transaction date (mandatory).
-Transaction Date To:  enter the ending transaction date (mandatory).
-Show SLA Accounting:  enter Yes to use the Subledger Accounting rules for your accounting information.  If you choose No the report uses the pre-Create Accounting entries.
-Show Projects:  display the project, project name and task.  Enter Yes or No, use to limit the reported columns (mandatory).
-Show WIP Outside Processing:  display the WIP job and outside processing resource.  Enter Yes or No, use to limit the reported columns (mandatory).
-Category Set 1:  any item category you wish, typically the Cost or Product Line category set (optional).
-Category Set 2:  any item category you wish, typically the Inventory category set (optional).
-Transaction Type:  enter the transaction type to report (optional).
-Minimum Absolute Amount:  enter the minimum debit or credit to report (optional).  To see all accounting entries, enter zero (0) and leave the other parameters blank.
-Supplier Name:  enter the specific supplier you wish to report (optional).
-PO Number:  enter the specific purchase order number you wish to report (optional).
-Destination Code:  enter the purchase order destination type you wish to report (optional).  You can choose Inventory, Expense or Shop Floor (WIP outside processing).
-Item Number:  enter the specific item number(s) you wish to report (optional).
-Organization Code:  enter the specific inventory organization(s) you wish to report (optional).
-Operating Unit:  enter the specific operating unit(s) you wish to report (optional).
-Ledger:  enter the specific ledger(s) you wish to report (optional).
+Receiving accounting distributions in detail by item, purchase order, release, transaction date, creation date, created by and transaction id.
+Show SLA Accounting = Yes reports the Subledger Accounting (Create Accounting) account, and only distributions accounted in Subledger Accounting. No reports the receiving subledger account.
+Show Project Information and Show WIP Outside Processing add the project and task, and the WIP job and outside processing resource columns.
+Purchasing Category is the purchase order line category, which also categorizes expense receipts without an item.
+On instances with India Localization, GST columns (GST/PAN/TAN, tax, HSN/SAC, NR Tax) are also included.
 
 /* +=============================================================================+
 -- |  Copyright 2010 - 2022 Douglas Volz Consulting, Inc.
@@ -54,32 +43,31 @@ Ledger:  enter the specific ledger(s) you wish to report (optional).
 -- |  1.20   08 Oct 2022 Douglas Volz    Add project task information.
 -- +=============================================================================+*/
 
-
-
-
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cac-receiving-account-detail) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 
 ## Report Parameters
 Transaction Date From, Transaction Date To, Show SLA Accounting, Show Project Information, Show WIP Outside Processing, Category Set 1, Category Set 2, Category Set 3, Transaction Type, Minimum Absolute Amount, Supplier Name, PO Number, Destination Code, Item Number, Organization Code, Operating Unit, Ledger
 
 ## Oracle EBS Tables Used
-[po_releases_all](https://www.enginatics.com/library/?pg=1&find=po_releases_all), [mtl_units_of_measure_vl](https://www.enginatics.com/library/?pg=1&find=mtl_units_of_measure_vl), [org_acct_periods](https://www.enginatics.com/library/?pg=1&find=org_acct_periods), [gl_code_combinations](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations), [fnd_lookup_values](https://www.enginatics.com/library/?pg=1&find=fnd_lookup_values), [hr_organization_information](https://www.enginatics.com/library/?pg=1&find=hr_organization_information), [hr_all_organization_units_vl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_vl), [gl_ledgers](https://www.enginatics.com/library/?pg=1&find=gl_ledgers), [po_lookup_codes](https://www.enginatics.com/library/?pg=1&find=po_lookup_codes), [fnd_user](https://www.enginatics.com/library/?pg=1&find=fnd_user), [&project_tables](https://www.enginatics.com/library/?pg=1&find=&project_tables), [gl_access_set_norm_assign](https://www.enginatics.com/library/?pg=1&find=gl_access_set_norm_assign), [gl_ledger_set_norm_assign_v](https://www.enginatics.com/library/?pg=1&find=gl_ledger_set_norm_assign_v), [mo_glob_org_access_tmp](https://www.enginatics.com/library/?pg=1&find=mo_glob_org_access_tmp), [dual](https://www.enginatics.com/library/?pg=1&find=dual)
+[po_releases_all](https://www.enginatics.com/library/?pg=1&find=po_releases_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cac-receiving-account-detail), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cac-receiving-account-detail), [org_access_view](https://www.enginatics.com/library/?pg=1&find=org_access_view&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cac-receiving-account-detail), [mo_glob_org_access_tmp](https://www.enginatics.com/library/?pg=1&find=mo_glob_org_access_tmp&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cac-receiving-account-detail), [dual](https://www.enginatics.com/library/?pg=1&find=dual&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cac-receiving-account-detail), [gl_access_set_norm_assign](https://www.enginatics.com/library/?pg=1&find=gl_access_set_norm_assign&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cac-receiving-account-detail)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cac-receiving-account-detail)
 
 ## Related Reports
-[CAC Receiving Expense Value (Period-End)](/CAC%20Receiving%20Expense%20Value%20%28Period-End%29/ "CAC Receiving Expense Value (Period-End) Oracle EBS SQL Report"), [CAC Receiving Value (Period-End)](/CAC%20Receiving%20Value%20%28Period-End%29/ "CAC Receiving Value (Period-End) Oracle EBS SQL Report"), [CAC Manufacturing Variance](/CAC%20Manufacturing%20Variance/ "CAC Manufacturing Variance Oracle EBS SQL Report"), [CAC WIP Resource Efficiency](/CAC%20WIP%20Resource%20Efficiency/ "CAC WIP Resource Efficiency Oracle EBS SQL Report"), [CAC Invoice Price Variance](/CAC%20Invoice%20Price%20Variance/ "CAC Invoice Price Variance Oracle EBS SQL Report"), [GL Account Analysis](/GL%20Account%20Analysis/ "GL Account Analysis Oracle EBS SQL Report"), [CAC Receiving Account Summary](/CAC%20Receiving%20Account%20Summary/ "CAC Receiving Account Summary Oracle EBS SQL Report"), [GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report"), [CAC WIP Account Detail](/CAC%20WIP%20Account%20Detail/ "CAC WIP Account Detail Oracle EBS SQL Report")
+[CAC Receiving Value (Period-End)](/CAC%20Receiving%20Value%20%28Period-End%29/ "CAC Receiving Value (Period-End) Oracle EBS SQL Report"), [CAC WIP Resource Efficiency](/CAC%20WIP%20Resource%20Efficiency/ "CAC WIP Resource Efficiency Oracle EBS SQL Report"), [CAC Open Purchase Orders](/CAC%20Open%20Purchase%20Orders/ "CAC Open Purchase Orders Oracle EBS SQL Report"), [CAC PO Receipt History for Item Costing](/CAC%20PO%20Receipt%20History%20for%20Item%20Costing/ "CAC PO Receipt History for Item Costing Oracle EBS SQL Report"), [CAC Receiving Expense Value (Period-End)](/CAC%20Receiving%20Expense%20Value%20%28Period-End%29/ "CAC Receiving Expense Value (Period-End) Oracle EBS SQL Report"), [CAC Item Cost Summary](/CAC%20Item%20Cost%20Summary/ "CAC Item Cost Summary Oracle EBS SQL Report"), [CAC Interface Error Summary](/CAC%20Interface%20Error%20Summary/ "CAC Interface Error Summary Oracle EBS SQL Report"), [CAC Missing Receiving Accounting Transactions](/CAC%20Missing%20Receiving%20Accounting%20Transactions/ "CAC Missing Receiving Accounting Transactions Oracle EBS SQL Report"), [CAC Missing Material Accounting Transactions](/CAC%20Missing%20Material%20Accounting%20Transactions/ "CAC Missing Material Accounting Transactions Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/CAC%20Receiving%20Account%20Detail/CAC%20Receiving%20Account%20Detail.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cac-receiving-account-detail) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [CAC Receiving Account Detail 03-Sep-2022 132129.xlsx](https://www.enginatics.com/example/cac-receiving-account-detail/) |
-| Blitz Report™ XML Import | [CAC_Receiving_Account_Detail.xml](https://www.enginatics.com/xml/cac-receiving-account-detail/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/cac-receiving-account-detail/](https://www.enginatics.com/reports/cac-receiving-account-detail/) |
+| Excel Example Output | [CAC Receiving Account Detail 03-Sep-2022 132129.xlsx](https://www.enginatics.com/example/cac-receiving-account-detail/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cac-receiving-account-detail) |
+| Blitz Report™ XML Import | [CAC_Receiving_Account_Detail.xml](https://www.enginatics.com/xml/cac-receiving-account-detail/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cac-receiving-account-detail) |
+| SQL Source | [CAC Receiving Account Detail.sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/CAC%20Receiving%20Account%20Detail/CAC%20Receiving%20Account%20Detail.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/cac-receiving-account-detail/](https://www.enginatics.com/reports/cac-receiving-account-detail/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cac-receiving-account-detail) |
 
 ## Case Study & Technical Analysis: CAC Receiving Account Detail
 
@@ -115,18 +103,17 @@ A: A standard receipt generates a Debit to Receiving Inspection and a Credit to 
 **Q: Does this show "Deliver" transactions?**
 A: Yes, it shows the full flow: Receive (Dr Insp / Cr Accrual) -> Deliver (Dr Inv / Cr Insp).
 
-
 ---
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cac-receiving-account-detail)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cac-receiving-account-detail)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cac-receiving-account-detail)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cac-receiving-account-detail)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cac-receiving-account-detail)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cac-receiving-account-detail)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cac-receiving-account-detail)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

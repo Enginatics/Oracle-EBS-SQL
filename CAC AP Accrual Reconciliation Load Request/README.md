@@ -1,14 +1,20 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'CAC AP Accrual Reconciliation Load Request | Oracle EBS SQL Report'
 description: 'Report to show when the A/P Accrual Reconciliation Load program was run and by whom, including the Ledger, Operating Unit, Build Id, Request Id, Creation…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, CAC, Accrual, Reconciliation, Load, cst_reconciliation_build, hr_organization_information, hr_all_organization_units_vl'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Cost Accounting, Enginatics, R12 only, CAC, Accrual, Reconciliation, Load, cst_reconciliation_build, hr_organization_information, hr_all_organization_units_vl'
 permalink: /CAC%20AP%20Accrual%20Reconciliation%20Load%20Request/
+report_name: 'CAC AP Accrual Reconciliation Load Request'
+report_web_name: cac-ap-accrual-reconciliation-load-request
+module: 'Cost Accounting'
+module_url: /modules/cost-accounting/
 ---
 
 # CAC AP Accrual Reconciliation Load Request – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/cac-ap-accrual-reconciliation-load-request/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/cac-ap-accrual-reconciliation-load-request/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cac-ap-accrual-reconciliation-load-request) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cac-ap-accrual-reconciliation-load-request).
+**Oracle EBS module:** [Cost Accounting](/modules/cost-accounting/ "Oracle EBS Cost Accounting reports") · [all Cost Accounting reports](/modules/cost-accounting/)  
 
 ## Overview
 Report to show when the A/P Accrual Reconciliation Load program was run and by whom, including the Ledger, Operating Unit, Build Id, Request Id, Creation Date and Last Updated By.
@@ -36,28 +42,31 @@ Ledger:  enter the specific ledger(s) you wish to report (optional).
 -- |                                     Profile Controls and parameters.
 -- +=============================================================================+*/
 
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cac-ap-accrual-reconciliation-load-request) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
+
 ## Report Parameters
 Beginning Creation Date, Operating Unit, Ledger
 
 ## Oracle EBS Tables Used
-[cst_reconciliation_build](https://www.enginatics.com/library/?pg=1&find=cst_reconciliation_build), [hr_organization_information](https://www.enginatics.com/library/?pg=1&find=hr_organization_information), [hr_all_organization_units_vl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_vl), [gl_ledgers](https://www.enginatics.com/library/?pg=1&find=gl_ledgers), [fnd_user](https://www.enginatics.com/library/?pg=1&find=fnd_user), [gl_access_set_norm_assign](https://www.enginatics.com/library/?pg=1&find=gl_access_set_norm_assign), [gl_ledger_set_norm_assign_v](https://www.enginatics.com/library/?pg=1&find=gl_ledger_set_norm_assign_v), [mo_glob_org_access_tmp](https://www.enginatics.com/library/?pg=1&find=mo_glob_org_access_tmp), [dual](https://www.enginatics.com/library/?pg=1&find=dual)
+[cst_reconciliation_build](https://www.enginatics.com/library/?pg=1&find=cst_reconciliation_build&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cac-ap-accrual-reconciliation-load-request), [hr_organization_information](https://www.enginatics.com/library/?pg=1&find=hr_organization_information&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cac-ap-accrual-reconciliation-load-request), [hr_all_organization_units_vl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cac-ap-accrual-reconciliation-load-request), [gl_ledgers](https://www.enginatics.com/library/?pg=1&find=gl_ledgers&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cac-ap-accrual-reconciliation-load-request), [fnd_user](https://www.enginatics.com/library/?pg=1&find=fnd_user&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cac-ap-accrual-reconciliation-load-request), [gl_access_set_norm_assign](https://www.enginatics.com/library/?pg=1&find=gl_access_set_norm_assign&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cac-ap-accrual-reconciliation-load-request), [gl_ledger_set_norm_assign_v](https://www.enginatics.com/library/?pg=1&find=gl_ledger_set_norm_assign_v&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cac-ap-accrual-reconciliation-load-request), [mo_glob_org_access_tmp](https://www.enginatics.com/library/?pg=1&find=mo_glob_org_access_tmp&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cac-ap-accrual-reconciliation-load-request), [dual](https://www.enginatics.com/library/?pg=1&find=dual&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cac-ap-accrual-reconciliation-load-request)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cac-ap-accrual-reconciliation-load-request), [R12 only](https://www.enginatics.com/library/?pg=1&category%5B%5D=R12%20only&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cac-ap-accrual-reconciliation-load-request)
 
 ## Related Reports
 [CAC Inventory Organization Summary](/CAC%20Inventory%20Organization%20Summary/ "CAC Inventory Organization Summary Oracle EBS SQL Report"), [CAC AP Accrual IR ISO Match Analysis](/CAC%20AP%20Accrual%20IR%20ISO%20Match%20Analysis/ "CAC AP Accrual IR ISO Match Analysis Oracle EBS SQL Report"), [CAC AP Accrual Reconciliation Summary by Match Type](/CAC%20AP%20Accrual%20Reconciliation%20Summary%20by%20Match%20Type/ "CAC AP Accrual Reconciliation Summary by Match Type Oracle EBS SQL Report"), [CAC Missing WIP Accounting Transactions](/CAC%20Missing%20WIP%20Accounting%20Transactions/ "CAC Missing WIP Accounting Transactions Oracle EBS SQL Report"), [CAC AP Accrual Accounts Setup](/CAC%20AP%20Accrual%20Accounts%20Setup/ "CAC AP Accrual Accounts Setup Oracle EBS SQL Report"), [CAC Material Account Alias with Lot Numbers](/CAC%20Material%20Account%20Alias%20with%20Lot%20Numbers/ "CAC Material Account Alias with Lot Numbers Oracle EBS SQL Report"), [CAC Interface Error Summary](/CAC%20Interface%20Error%20Summary/ "CAC Interface Error Summary Oracle EBS SQL Report"), [CAC New Standard Item Costs](/CAC%20New%20Standard%20Item%20Costs/ "CAC New Standard Item Costs Oracle EBS SQL Report"), [CAC Standard Cost Update Submissions](/CAC%20Standard%20Cost%20Update%20Submissions/ "CAC Standard Cost Update Submissions Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/CAC%20AP%20Accrual%20Reconciliation%20Load%20Request/CAC%20AP%20Accrual%20Reconciliation%20Load%20Request.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cac-ap-accrual-reconciliation-load-request) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [](https://www.enginatics.com/example/cac-ap-accrual-reconciliation-load-request/) |
-| Blitz Report™ XML Import | [CAC_AP_Accrual_Reconciliation_Load_Request.xml](https://www.enginatics.com/xml/cac-ap-accrual-reconciliation-load-request/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/cac-ap-accrual-reconciliation-load-request/](https://www.enginatics.com/reports/cac-ap-accrual-reconciliation-load-request/) |
+| Excel Example Output | [Example](https://www.enginatics.com/example/cac-ap-accrual-reconciliation-load-request/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cac-ap-accrual-reconciliation-load-request) |
+| Blitz Report™ XML Import | [CAC_AP_Accrual_Reconciliation_Load_Request.xml](https://www.enginatics.com/xml/cac-ap-accrual-reconciliation-load-request/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cac-ap-accrual-reconciliation-load-request) |
+| SQL Source | [CAC AP Accrual Reconciliation Load Request.sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/CAC%20AP%20Accrual%20Reconciliation%20Load%20Request/CAC%20AP%20Accrual%20Reconciliation%20Load%20Request.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/cac-ap-accrual-reconciliation-load-request/](https://www.enginatics.com/reports/cac-ap-accrual-reconciliation-load-request/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cac-ap-accrual-reconciliation-load-request) |
 
 ## Case Study & Technical Analysis: CAC AP Accrual Reconciliation Load Request
 
@@ -104,18 +113,17 @@ A: The "Run To Date" indicates the cutoff date for transactions included in that
 **Q: Does this report show the actual accrual balance?**
 A: No, this is a metadata report about the *process* of loading data. To see the actual balances and transactions, you would use reports like "CST AP and PO Accrual Reconciliation".
 
-
 ---
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cac-ap-accrual-reconciliation-load-request)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cac-ap-accrual-reconciliation-load-request)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cac-ap-accrual-reconciliation-load-request)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cac-ap-accrual-reconciliation-load-request)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cac-ap-accrual-reconciliation-load-request)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cac-ap-accrual-reconciliation-load-request)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cac-ap-accrual-reconciliation-load-request)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

@@ -1,14 +1,17 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'BOM Common Bill of Materials Upload | Oracle EBS SQL Report'
 description: 'BOM Common Bill of Materials Upload ============================================ The upload can be used to create Common BOM from the BOMS defined in the…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, BOM, Common, Bill, Materials, bom_bill_of_materials, bom_inventory_components, mtl_parameters'
 permalink: /BOM%20Common%20Bill%20of%20Materials%20Upload/
+report_name: 'BOM Common Bill of Materials Upload'
+report_web_name: bom-common-bill-of-materials-upload
 ---
 
 # BOM Common Bill of Materials Upload – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/bom-common-bill-of-materials-upload/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/bom-common-bill-of-materials-upload/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=bom-common-bill-of-materials-upload) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=bom-common-bill-of-materials-upload).
 
 ## Overview
 BOM Common Bill of Materials Upload
@@ -49,31 +52,33 @@ Common BOM Upload Template
 In this template, the user must review and manually select the BOM/Target Organization combinations to be made Common. Setting the ‘Create Common Bom’ flag against a BOM/Target Organization combination will trigger the row for update and processing during upload.
 
 Automatic Common BOM Upload Template
-In this template, the excel is generated with the ‘Create Common Bom’ flag set against all BOM/Target Organization combinations and the rows already flagged for update and processing. In this template the user can opt out of creating a common BOM for specific BOM/Target Organization combinations by either de-selecting (clearing) the ‘Create Common Bom’ flag column or by deleting the row from the spreadsheet. 
+In this template, the excel is generated with the ‘Create Common Bom’ flag set against all BOM/Target Organization combinations and the rows already flagged for update and processing. In this template the user can opt out of creating a common BOM for specific BOM/Target Organization combinations by either de-selecting (clearing) the ‘Create Common Bom’ flag column or by deleting the row from the spreadsheet.
 
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=bom-common-bill-of-materials-upload) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 
 ## Report Parameters
 Source Organization Code, Common BOM Scope, Target Hierarchy, Target Organization, Enable Attributes Update, Assembly, Alternate BOM, Show Sub-Assemblies, Show Missing BOMS only, Auto Populate Upload Columns, Implemented Only, Display, Effective Date
 
 ## Oracle EBS Tables Used
-[bom_bill_of_materials](https://www.enginatics.com/library/?pg=1&find=bom_bill_of_materials), [bom_inventory_components](https://www.enginatics.com/library/?pg=1&find=bom_inventory_components), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters), [mtl_system_items_kfv](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_kfv), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl), [bom_tree](https://www.enginatics.com/library/?pg=1&find=bom_tree), [bom_substitute_components](https://www.enginatics.com/library/?pg=1&find=bom_substitute_components), [bom](https://www.enginatics.com/library/?pg=1&find=bom), [org_access_view](https://www.enginatics.com/library/?pg=1&find=org_access_view), [bom_subst](https://www.enginatics.com/library/?pg=1&find=bom_subst)
+[bom_bill_of_materials](https://www.enginatics.com/library/?pg=1&find=bom_bill_of_materials&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=bom-common-bill-of-materials-upload), [bom_inventory_components](https://www.enginatics.com/library/?pg=1&find=bom_inventory_components&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=bom-common-bill-of-materials-upload), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=bom-common-bill-of-materials-upload), [mtl_system_items_kfv](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_kfv&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=bom-common-bill-of-materials-upload), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=bom-common-bill-of-materials-upload), [bom_substitute_components](https://www.enginatics.com/library/?pg=1&find=bom_substitute_components&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=bom-common-bill-of-materials-upload), [org_access_view](https://www.enginatics.com/library/?pg=1&find=org_access_view&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=bom-common-bill-of-materials-upload)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Upload](https://www.enginatics.com/library/?pg=1&category[]=Upload)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=bom-common-bill-of-materials-upload), [Upload](https://www.enginatics.com/library/?pg=1&category%5B%5D=Upload&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=bom-common-bill-of-materials-upload)
 
 ## Related Reports
-[BOM Bill of Materials Upload](/BOM%20Bill%20of%20Materials%20Upload/ "BOM Bill of Materials Upload Oracle EBS SQL Report"), [BOM Bill of Material Structure](/BOM%20Bill%20of%20Material%20Structure/ "BOM Bill of Material Structure Oracle EBS SQL Report"), [FND Attached Documents](/FND%20Attached%20Documents/ "FND Attached Documents Oracle EBS SQL Report"), [CST Supply Chain Indented Bills of Material Cost](/CST%20Supply%20Chain%20Indented%20Bills%20of%20Material%20Cost/ "CST Supply Chain Indented Bills of Material Cost Oracle EBS SQL Report")
+[BOM Bill of Material Structure](/BOM%20Bill%20of%20Material%20Structure/ "BOM Bill of Material Structure Oracle EBS SQL Report"), [BOM Bill of Materials Upload](/BOM%20Bill%20of%20Materials%20Upload/ "BOM Bill of Materials Upload Oracle EBS SQL Report"), [INV Items](/INV%20Items/ "INV Items Oracle EBS SQL Report"), [INV Item Upload](/INV%20Item%20Upload/ "INV Item Upload Oracle EBS SQL Report"), [INV Item Upload 11i](/INV%20Item%20Upload%2011i/ "INV Item Upload 11i Oracle EBS SQL Report"), [CAC Cost vs. Planning Item Controls](/CAC%20Cost%20vs-%20Planning%20Item%20Controls/ "CAC Cost vs. Planning Item Controls Oracle EBS SQL Report"), [CAC Where Used by Cost Type](/CAC%20Where%20Used%20by%20Cost%20Type/ "CAC Where Used by Cost Type Oracle EBS SQL Report"), [WIP Job Upload](/WIP%20Job%20Upload/ "WIP Job Upload Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/BOM%20Common%20Bill%20of%20Materials%20Upload/BOM%20Common%20Bill%20of%20Materials%20Upload.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=bom-common-bill-of-materials-upload) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [](https://www.enginatics.com/example/bom-common-bill-of-materials-upload/) |
-| Blitz Report™ XML Import | [BOM_Common_Bill_of_Materials_Upload.xml](https://www.enginatics.com/xml/bom-common-bill-of-materials-upload/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/bom-common-bill-of-materials-upload/](https://www.enginatics.com/reports/bom-common-bill-of-materials-upload/) |
+| Excel Example Output | [Example](https://www.enginatics.com/example/bom-common-bill-of-materials-upload/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=bom-common-bill-of-materials-upload) |
+| Blitz Report™ XML Import | [BOM_Common_Bill_of_Materials_Upload.xml](https://www.enginatics.com/xml/bom-common-bill-of-materials-upload/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=bom-common-bill-of-materials-upload) |
+| SQL Source | [BOM Common Bill of Materials Upload.sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/BOM%20Common%20Bill%20of%20Materials%20Upload/BOM%20Common%20Bill%20of%20Materials%20Upload.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/bom-common-bill-of-materials-upload/](https://www.enginatics.com/reports/bom-common-bill-of-materials-upload/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=bom-common-bill-of-materials-upload) |
 
 ## BOM Common Bill of Materials Upload
 
@@ -125,18 +130,17 @@ bom_bill_of_materials, bom_inventory_components, mtl_parameters, mtl_system_item
 ### Categories
 Enginatics, Upload
 
-
 ---
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=bom-common-bill-of-materials-upload)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=bom-common-bill-of-materials-upload)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=bom-common-bill-of-materials-upload)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=bom-common-bill-of-materials-upload)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=bom-common-bill-of-materials-upload)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=bom-common-bill-of-materials-upload)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=bom-common-bill-of-materials-upload)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

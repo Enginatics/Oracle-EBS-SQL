@@ -1,39 +1,47 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'WF Business Events and Subscriptions | Oracle EBS SQL Report'
-description: 'Workflow business event and subscription details – Oracle E-Business Suite SQL report'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Business, Events, Subscriptions, wf_events_vl, wf_event_subscriptions, wf_systems'
+description: 'Workflow business event and subscription details – Oracle EBS Workflow SQL report: free SQL, parameters and tables used.'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Workflow, Enginatics, Business, Events, Subscriptions, wf_events_vl, wf_event_subscriptions, wf_systems'
 permalink: /WF%20Business%20Events%20and%20Subscriptions/
+report_name: 'WF Business Events and Subscriptions'
+report_web_name: wf-business-events-and-subscriptions
+module: 'Workflow'
+module_url: /modules/workflow/
 ---
 
 # WF Business Events and Subscriptions – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/wf-business-events-and-subscriptions/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/wf-business-events-and-subscriptions/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wf-business-events-and-subscriptions) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wf-business-events-and-subscriptions).
+**Oracle EBS module:** [Workflow](/modules/workflow/ "Oracle EBS Workflow reports") · [all Workflow reports](/modules/workflow/)  
 
 ## Overview
 Workflow business event and subscription details
+
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wf-business-events-and-subscriptions) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 
 ## Report Parameters
 Event Name, Subscription Function
 
 ## Oracle EBS Tables Used
-[wf_events_vl](https://www.enginatics.com/library/?pg=1&find=wf_events_vl), [wf_event_subscriptions](https://www.enginatics.com/library/?pg=1&find=wf_event_subscriptions), [wf_systems](https://www.enginatics.com/library/?pg=1&find=wf_systems), [wf_agents](https://www.enginatics.com/library/?pg=1&find=wf_agents)
+[wf_events_vl](https://www.enginatics.com/library/?pg=1&find=wf_events_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wf-business-events-and-subscriptions), [wf_event_subscriptions](https://www.enginatics.com/library/?pg=1&find=wf_event_subscriptions&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wf-business-events-and-subscriptions), [wf_systems](https://www.enginatics.com/library/?pg=1&find=wf_systems&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wf-business-events-and-subscriptions), [wf_agents](https://www.enginatics.com/library/?pg=1&find=wf_agents&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wf-business-events-and-subscriptions)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
-
+[Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wf-business-events-and-subscriptions)
 
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/WF%20Business%20Events%20and%20Subscriptions/WF%20Business%20Events%20and%20Subscriptions.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wf-business-events-and-subscriptions) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [WF Business Events and Subscriptions 18-Jan-2018 224755.xlsx](https://www.enginatics.com/example/wf-business-events-and-subscriptions/) |
-| Blitz Report™ XML Import | [WF_Business_Events_and_Subscriptions.xml](https://www.enginatics.com/xml/wf-business-events-and-subscriptions/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/wf-business-events-and-subscriptions/](https://www.enginatics.com/reports/wf-business-events-and-subscriptions/) |
+| Excel Example Output | [WF Business Events and Subscriptions 18-Jan-2018 224755.xlsx](https://www.enginatics.com/example/wf-business-events-and-subscriptions/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wf-business-events-and-subscriptions) |
+| Blitz Report™ XML Import | [WF_Business_Events_and_Subscriptions.xml](https://www.enginatics.com/xml/wf-business-events-and-subscriptions/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wf-business-events-and-subscriptions) |
+| SQL Source | [WF Business Events and Subscriptions.sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/WF%20Business%20Events%20and%20Subscriptions/WF%20Business%20Events%20and%20Subscriptions.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/wf-business-events-and-subscriptions/](https://www.enginatics.com/reports/wf-business-events-and-subscriptions/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wf-business-events-and-subscriptions) |
 
 ## Case Study & Technical Analysis: WF Business Events and Subscriptions Report
 
@@ -94,18 +102,17 @@ As a configuration report, it is optimized for efficient retrieval of setup data
 **3. Can this report help debug why a custom workflow is not being triggered by an event?**
    Yes. By filtering for the relevant `Event Name`, you can examine all associated subscriptions. You would look for the subscription that is supposed to trigger your custom workflow and verify its status (`Enabled`), the `Subscription Function`, and any `Filter Criteria` that might be preventing it from activating correctly.
 
-
 ---
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wf-business-events-and-subscriptions)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wf-business-events-and-subscriptions)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wf-business-events-and-subscriptions)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wf-business-events-and-subscriptions)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wf-business-events-and-subscriptions)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wf-business-events-and-subscriptions)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wf-business-events-and-subscriptions)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

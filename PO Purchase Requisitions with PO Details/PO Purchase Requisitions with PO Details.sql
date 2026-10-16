@@ -1,16 +1,14 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PO Purchase Requisitions with PO Details
 -- Description: Purchase Requisitions Status with PO Details Report.
-
-Lists purchase requisition headers, lines and distributions together with the purchase order they were converted into, including requisition and PO approval dates, the Converted To PO indicator and the PO total amount.
-
-Set the Show Invoice and Payment Details parameter to Yes to additionally return the supplier invoices and payments matched to each purchase order shipment: invoice numbers, invoice date, invoiced amount, invoice amount paid, payment status, payment numbers, payment date and payment method. These columns are omitted by default because they add an Accounts Payable lookup to every row.
--- Excel Examle Output: https://www.enginatics.com/example/po-purchase-requisitions-with-po-details/
+-- Lists purchase requisition headers, lines and distributions together with the purchase order they were converted into, including requisition and PO approval dates, the Converted To PO indicator and the PO total amount.
+-- Set the Show Invoice and Payment Details parameter to Yes to additionally return the supplier invoices and payments matched to each purchase order shipment: invoice numbers, invoice date, invoiced amount, invoice amount paid, payment status, payment numbers, payment date and payment method. These columns are omitted by default because they add an Accounts Payable lookup to every row.
+-- Excel Example Output: https://www.enginatics.com/example/po-purchase-requisitions-with-po-details/
 -- Library Link: https://www.enginatics.com/reports/po-purchase-requisitions-with-po-details/
 -- Run Report: https://demo.enginatics.com/
 

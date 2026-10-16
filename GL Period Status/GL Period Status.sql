@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: GL Period Status
 -- Description: Accounting period status of all application modules for all or a selected list of ledgers, operating units and inventory organizations. To see if an accounting period should be opened, use the CAC Accounting Period Status report, as it has more reporting options and features.
--- Excel Examle Output: https://www.enginatics.com/example/gl-period-status/
+-- Excel Example Output: https://www.enginatics.com/example/gl-period-status/
 -- Library Link: https://www.enginatics.com/reports/gl-period-status/
 -- Run Report: https://demo.enginatics.com/
 

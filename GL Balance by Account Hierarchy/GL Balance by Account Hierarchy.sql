@@ -1,13 +1,13 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: GL Balance by Account Hierarchy
 -- Description: Summary GL report including one line per GL account. This report has multiple collapsible/expandable summary levels based on the GL account hierarchy, with starting balance, total amount per month, ending total and YTD balance.
-Parameter 'Additional Segment' can be used to include additional segments e.g. cost center or balancing segment.
--- Excel Examle Output: https://www.enginatics.com/example/gl-balance-by-account-hierarchy/
+-- Parameter 'Additional Segment' can be used to include additional segments e.g. cost center or balancing segment.
+-- Excel Example Output: https://www.enginatics.com/example/gl-balance-by-account-hierarchy/
 -- Library Link: https://www.enginatics.com/reports/gl-balance-by-account-hierarchy/
 -- Run Report: https://demo.enginatics.com/
 

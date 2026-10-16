@@ -1,37 +1,35 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Cost Type Costs Not in Period Close Inventory Snapshot
--- Description: Report comparing the month-end items, balances and costs against any entered Cost Type, showing which item numbers in your month-end inventory which are not in your Cost Type.  You automatically save off your month-end quantities and values when you close the inventory accounting period.
-
-Parameters:
-==========
-Period Name (Closed):  the closed inventory accounting period you wish to report (mandatory).
-Cost Type:  enter a Cost Type to compare against the stored month-end items, quantities and values (mandatory).
-Item Number:  enter the specific item number(s) you wish to report (optional).
-Organization Code:  any inventory organization, defaults to your session's inventory organization (optional).
-Operating Unit:  specific operating unit (optional)
-Ledger:  specific ledger (optional)
-
-/* +=============================================================================+
--- | Copyright 2024 - 2025 Douglas Volz Consulting, Inc.
--- | All rights reserved.
--- | Permission to use this code is granted provided the original author is
--- | acknowledged. No warranties, express or otherwise is included in this permission.
--- +=============================================================================+
--- |
--- |  Original Author: Douglas Volz (doug@volzconsulting.com)
--- | ===================================================================
--- | Version Modified on Modified by Description
--- | ======= =========== ============== =========================================
--- | 1.0     15 Jan 2024 Douglas Volz Initial Coding
--- | 1.1     04 Mar 2025 Douglas Volz Removed tabs, add ledger and operating unit
--- |                                  columns and security access profiles.
--- +=============================================================================+*/
--- Excel Examle Output: https://www.enginatics.com/example/cac-cost-type-costs-not-in-period-close-inventory-snapshot/
+-- Description: Report comparing the month-end items, balances and costs against any entered Cost Type, showing which item numbers in your month-end inventory which are not in your Cost Type. You automatically save off your month-end quantities and values when you close the inventory accounting period.
+-- Parameters:
+-- ==========
+-- Period Name (Closed): the closed inventory accounting period you wish to report (mandatory).
+-- Cost Type: enter a Cost Type to compare against the stored month-end items, quantities and values (mandatory).
+-- Item Number: enter the specific item number(s) you wish to report (optional).
+-- Organization Code: any inventory organization, defaults to your session's inventory organization (optional).
+-- Operating Unit: specific operating unit (optional)
+-- Ledger: specific ledger (optional)
+-- / +=============================================================================+
+-- -- | Copyright 2024 - 2025 Douglas Volz Consulting, Inc.
+-- -- | All rights reserved.
+-- -- | Permission to use this code is granted provided the original author is
+-- -- | acknowledged. No warranties, express or otherwise is included in this permission.
+-- -- +=============================================================================+
+-- -- |
+-- -- | Original Author: Douglas Volz (doug@volzconsulting.com)
+-- -- | ===================================================================
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== ============== =========================================
+-- -- | 1.0 15 Jan 2024 Douglas Volz Initial Coding
+-- -- | 1.1 04 Mar 2025 Douglas Volz Removed tabs, add ledger and operating unit
+-- -- | columns and security access profiles.
+-- -- +=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-cost-type-costs-not-in-period-close-inventory-snapshot/
 -- Library Link: https://www.enginatics.com/reports/cac-cost-type-costs-not-in-period-close-inventory-snapshot/
 -- Run Report: https://demo.enginatics.com/
 

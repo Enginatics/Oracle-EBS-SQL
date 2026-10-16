@@ -1,16 +1,16 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PO Vendor Service Performance Analysis
 -- Description: Imported from BI Publisher
-Application: Purchasing
-Source: Vendor Service Performance Analysis Report (XML)
-Short Name: POXSERPR_XML
-DB package: PO_POXSERPR_XMLP_PKG
--- Excel Examle Output: https://www.enginatics.com/example/po-vendor-service-performance-analysis/
+-- Application: Purchasing
+-- Source: Vendor Service Performance Analysis Report (XML)
+-- Short Name: POXSERPRXML
+-- DB package: POPOXSERPRXMLPPKG
+-- Excel Example Output: https://www.enginatics.com/example/po-vendor-service-performance-analysis/
 -- Library Link: https://www.enginatics.com/reports/po-vendor-service-performance-analysis/
 -- Run Report: https://demo.enginatics.com/
 

@@ -1,32 +1,27 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: FND Responsibility Access
 -- Description: Responsibilites and related data such as users, concurrent programs, menus, functions, forms, data access set and security profiles and associated ledgers and operating units.
-This report basically answers all system access related questions. It shows which users or responsibilities have acess to which functions, forms, concurrent programs, ledgers, operating units or inventory organizations.
-
-Depending on parameter selection, this report shows for example:
-
-- responsibilities and related menus and request groups
-- responsibilities, menus, included forms, functions and their full menu navigation path
-- users and their assigned active responsibilities
-- users, assigned responsibilities and the concurrent programs they have access to
-- concurrent programs and the responsibilities that they can be run from
-- forms or functions and the responsibilities and users that can access them
-- responsibilities and navigation paths to access a certain form or function from a given user
-- operating units that a particular responsibility or user has access to through MOAC security profiles or profile option 'MO: Operating Unit'
-
-The parameters 'User', 'Form', 'Function' and 'Concurrent Program' are optional and can either be populated to filter records for a particular value only or entered with % to show all values or left blank to not show data related to that parameter. If the user parameter is left blank for example, then the report does not show any user names and shows information related to responsibility level only.
-
-Example: To show all users having access to the user maintenance form, enter parameters as follows:
-User Name: %
-Form Name: FNDSCAUS
-
-Menu exclusions (fnd_resp_functions) are considered: functions excluded directly (rule_type F) or through an excluded menu (rule_type M) are filtered out.
--- Excel Examle Output: https://www.enginatics.com/example/fnd-responsibility-access/
+-- This report basically answers all system access related questions. It shows which users or responsibilities have acess to which functions, forms, concurrent programs, ledgers, operating units or inventory organizations.
+-- Depending on parameter selection, this report shows for example:
+-- - responsibilities and related menus and request groups
+-- - responsibilities, menus, included forms, functions and their full menu navigation path
+-- - users and their assigned active responsibilities
+-- - users, assigned responsibilities and the concurrent programs they have access to
+-- - concurrent programs and the responsibilities that they can be run from
+-- - forms or functions and the responsibilities and users that can access them
+-- - responsibilities and navigation paths to access a certain form or function from a given user
+-- - operating units that a particular responsibility or user has access to through MOAC security profiles or profile option 'MO: Operating Unit'
+-- The parameters 'User', 'Form', 'Function' and 'Concurrent Program' are optional and can either be populated to filter records for a particular value only or entered with % to show all values or left blank to not show data related to that parameter. If the user parameter is left blank for example, then the report does not show any user names and shows information related to responsibility level only.
+-- Example: To show all users having access to the user maintenance form, enter parameters as follows:
+-- User Name: %
+-- Form Name: FNDSCAUS
+-- Menu exclusions (fndrespfunctions) are considered: functions excluded directly (ruletype F) or through an excluded menu (ruletype M) are filtered out.
+-- Excel Example Output: https://www.enginatics.com/example/fnd-responsibility-access/
 -- Library Link: https://www.enginatics.com/reports/fnd-responsibility-access/
 -- Run Report: https://demo.enginatics.com/
 
@@ -234,10 +229,10 @@ coalesce(
 (select fpov.profile_option_value from fnd_profile_option_values fpov where fpov.application_id=0 and fpov.profile_option_id=1991 and fpov.level_id=10003 and frv.responsibility_id=fpov.level_value and frv.application_id=fpov.level_value_application_id),
 (select fpov.profile_option_value from fnd_profile_option_values fpov where fpov.application_id=0 and fpov.profile_option_id=1991 and fpov.level_id=10001 and fpov.level_value=0)
 ) org_id,
-coalesce(
-(select to_number(fpov.profile_option_value) from fnd_profile_option_values fpov where fpov.application_id=101 and fpov.profile_option_id=(select fpo.profile_option_id from fnd_profile_options fpo where fpo.profile_option_name='GL_ACCESS_SET_ID') and fpov.level_id=10004 and usr.user_id=fpov.level_value),
-(select to_number(fpov.profile_option_value) from fnd_profile_option_values fpov where fpov.application_id=101 and fpov.profile_option_id=(select fpo.profile_option_id from fnd_profile_options fpo where fpo.profile_option_name='GL_ACCESS_SET_ID') and fpov.level_id=10003 and frv.responsibility_id=fpov.level_value and frv.application_id=fpov.level_value_application_id),
-(select to_number(fpov.profile_option_value) from fnd_profile_option_values fpov where fpov.application_id=101 and fpov.profile_option_id=(select fpo.profile_option_id from fnd_profile_options fpo where fpo.profile_option_name='GL_ACCESS_SET_ID') and fpov.level_id=10001 and fpov.level_value=0)
+coalesce( /*profile_option_value is free text: skip a non-numeric value instead of converting it*/
+(select to_number(fpov.profile_option_value) from fnd_profile_option_values fpov where fpov.application_id=101 and fpov.profile_option_id=(select fpo.profile_option_id from fnd_profile_options fpo where fpo.profile_option_name='GL_ACCESS_SET_ID') and fpov.level_id=10004 and usr.user_id=fpov.level_value and translate(fpov.profile_option_value,'x0123456789','x') is null),
+(select to_number(fpov.profile_option_value) from fnd_profile_option_values fpov where fpov.application_id=101 and fpov.profile_option_id=(select fpo.profile_option_id from fnd_profile_options fpo where fpo.profile_option_name='GL_ACCESS_SET_ID') and fpov.level_id=10003 and frv.responsibility_id=fpov.level_value and frv.application_id=fpov.level_value_application_id and translate(fpov.profile_option_value,'x0123456789','x') is null),
+(select to_number(fpov.profile_option_value) from fnd_profile_option_values fpov where fpov.application_id=101 and fpov.profile_option_id=(select fpo.profile_option_id from fnd_profile_options fpo where fpo.profile_option_name='GL_ACCESS_SET_ID') and fpov.level_id=10001 and fpov.level_value=0 and translate(fpov.profile_option_value,'x0123456789','x') is null)
 ) gl_access_set_id,
 fffv.type fffv_type,
 xxen_util.reverse(nav.entry_sequence_,'>') entry_sequence,

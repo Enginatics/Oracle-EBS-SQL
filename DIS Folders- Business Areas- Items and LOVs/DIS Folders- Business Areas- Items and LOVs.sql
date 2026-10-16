@@ -1,14 +1,14 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: DIS Folders, Business Areas, Items and LOVs
 -- Description: Discoverer folders, business areas and items.
-Columns 'Access Count' and 'Last Accessed' shows how many times a folder was accessed by a worksheet within the past x days.
-Parameter 'Show Active Only' restricts to folders which have been accessed by worksheet executions within the past x days.
--- Excel Examle Output: https://www.enginatics.com/example/dis-folders-business-areas-items-and-lovs/
+-- Columns 'Access Count' and 'Last Accessed' shows how many times a folder was accessed by a worksheet within the past x days.
+-- Parameter 'Show Active Only' restricts to folders which have been accessed by worksheet executions within the past x days.
+-- Excel Example Output: https://www.enginatics.com/example/dis-folders-business-areas-items-and-lovs/
 -- Library Link: https://www.enginatics.com/reports/dis-folders-business-areas-items-and-lovs/
 -- Run Report: https://demo.enginatics.com/
 

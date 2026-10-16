@@ -1,15 +1,15 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: FA Journal Entry Reserve Ledger
--- Description: Imported Oracle standard journal entry reserve ledger report
-Source: Journal Entry Reserve Ledger Report (XML)
-Short Name: FAS400_XML
-DB package: XXEN_FA_FAS_XMLP
--- Excel Examle Output: https://www.enginatics.com/example/fa-journal-entry-reserve-ledger/
+-- Description: Imported Oracle standard journal entry reserve ledger report. The Asset Account column and the template 'Pivot: Account Reconciliation Reserve Ledger' cover the Account Reconciliation Reserve Ledger Report (FAS403), which shows the same reserve ledger grouped by asset account instead of depreciation expense account.
+-- Source: Journal Entry Reserve Ledger Report (XML)
+-- Short Name: FAS400XML
+-- DB package: XXENFAFASXMLP
+-- Excel Example Output: https://www.enginatics.com/example/fa-journal-entry-reserve-ledger/
 -- Library Link: https://www.enginatics.com/reports/fa-journal-entry-reserve-ledger/
 -- Run Report: https://demo.enginatics.com/
 
@@ -20,6 +20,7 @@ select
   x.currency          currency,
   x.period            period,
   x.bal_segment       balancing_segment,
+  x.asset_account,
   x.exp_account       expense_account,
   x.rsv_account       reserve_account,
   x.cost_center,
@@ -45,6 +46,7 @@ select
   gl.currency_code currency,
   :p_period1 period,
   fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_bal_seg', 'SQLGL', 'GL#', gcc.chart_of_accounts_id, null, gcc.code_combination_id, 'GL_BALANCING', 'Y', 'VALUE') bal_segment,
+  frlg.asset_cost_acct asset_account,
   decode(transaction_type,'B',frlg.reserve_acct, fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_acct_seg', 'SQLGL', 'GL#', gcc.chart_of_accounts_id, null, gcc.code_combination_id, 'GL_ACCOUNT', 'Y', 'VALUE') ) exp_account,
   frlg.deprn_reserve_acct rsv_account,
   fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_cost_seg', 'SQLGL', 'GL#', gcc.chart_of_accounts_id, null, gcc.code_combination_id, 'FA_COST_CTR', 'Y', 'VALUE') cost_center,
@@ -95,6 +97,7 @@ group by
   gl.currency_code,
   :p_period1,
   fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_bal_seg', 'SQLGL', 'GL#', gcc.chart_of_accounts_id, null, gcc.code_combination_id, 'GL_BALANCING', 'Y', 'VALUE'),
+  frlg.asset_cost_acct,
   decode(transaction_type,'B', frlg.reserve_acct,fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_acct_seg', 'SQLGL', 'GL#', gcc.chart_of_accounts_id, null, gcc.code_combination_id, 'GL_ACCOUNT', 'Y', 'VALUE')),
   frlg.deprn_reserve_acct,
   fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_cost_seg', 'SQLGL', 'GL#', gcc.chart_of_accounts_id, null, gcc.code_combination_id, 'FA_COST_CTR', 'Y', 'VALUE'),
@@ -116,6 +119,7 @@ order by
   x.currency,
   x.period,
   x.bal_segment,
+  x.asset_account,
   x.exp_account,
   x.rsv_account,
   x.cost_center,

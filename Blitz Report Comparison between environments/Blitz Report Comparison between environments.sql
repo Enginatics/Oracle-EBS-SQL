@@ -1,21 +1,19 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: Blitz Report Comparison between environments
 -- Description: Shows Blitz Report differences between the local and a remote database server.
-
-Requires following view to be created on the remote environment to avoid ORA-64202: remote temporary or abstract LOB locator is encountered
-
-create or replace view xxen_reports_v_ as
-select
-xrv.*,
-dbms_lob.substr(xxen_util.clob_substrb(xrv.sql_text_full,4000,1)) sql_text_short
-from
-xxen_reports_v xrv;
--- Excel Examle Output: https://www.enginatics.com/example/blitz-report-comparison-between-environments/
+-- Requires following view to be created on the remote environment to avoid ORA-64202: remote temporary or abstract LOB locator is encountered
+-- create or replace view xxenreportsv as
+-- select
+-- xrv.,
+-- dbmslob.substr(xxenutil.clobsubstrb(xrv.sqltextfull,4000,1)) sqltextshort
+-- from
+-- xxenreportsv xrv;
+-- Excel Example Output: https://www.enginatics.com/example/blitz-report-comparison-between-environments/
 -- Library Link: https://www.enginatics.com/reports/blitz-report-comparison-between-environments/
 -- Run Report: https://demo.enginatics.com/
 

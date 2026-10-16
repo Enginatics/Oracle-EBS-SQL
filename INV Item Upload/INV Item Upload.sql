@@ -1,62 +1,51 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: INV Item Upload
 -- Description: INV Inventory Item Upload
-======================
-This upload can be used to create and update Inventory Items.
-
-It supports creation of Inventory Items:
-- by manually entering the Item details.
-- from a master row, with optional semicolon-separated child organization assignments
-- from an item template (Copy from Template)
-- from an existing item in the same Organization (Copy from Item)
-
-It supports update of existing Inventory Items either by:
-- update the details of an existing inventory items by downloading the items to be updated. Use the report parameters to select and download the items to be updated.
-- pasting the details of the items to be updated into an empty upload excel.
-
-It also supports the item category assignment to multiple Inventory Category Sets
--  to assign an item to another category set, repeat the Organization Code and Item Number on a separate row in the excel and add the details of the additional category set and item category to which the item is to be assigned.
-- for child organizations, only the category sets controlled at the organization level can be selected.
-- to remove an existing category assignment, download the item first, then set the Delete Category column to Yes on the row showing the Category Set and Item Category to be removed. Deletion is not permitted for mandatory category sets that require the item to remain assigned.
-
-Additionally
-- supports creation and update of item revisions
-- supports creation, update, and deletion of manufacturer part numbers
-
-Upload Mode parameter:
-Create - allows creation of new items only
-Update - allows updates to existing items only
-Create, Update – allows the creation of new items and the updating of existing items
-
-Create Empty File parameter
-Setting the Create Empty File parameter to Yes will open an empty upload excel. 
-This parameter is only applicable to the 'Update' and 'Create, Update' upload modes and suppresses the download of existing item details. ‘Create’ upload mode always opens an empty upload excel regardless of the setting of this parameter.
-This is useful for users who want to paste the details of the items to be updated into an empty upload excel file from another source.
-
-Update on Create Null Handling
-In Create, Update mode the upload allows a Create action to update an existing item if it already exists. This parameter determines how null values are handled when a create action results in an update to an existing item.
-'Null means Clear' - the upload will clear the data from the corresponding column (set it to null).
-'Null means No Change' - the upload will leave the data in the corresponding column unchanged.
-
-Number of Import Workers parameter
-This parameter determines the number of Item Import worker concurrent requests that will be submitted in parallel to import the uploaded items into Oracle Inventory. The number of workers can be increased to improve the throughput of the process when uploading a larger number of item changes.
-Remaining parameters
-The remaining parameters are used to restrict the items to be downloaded for update in ‘Update’ or ‘Create, Update’ mode, and only when the ‘Create Empty File’ parameter is not set to Yes.  
- 
-Available Templates
-Use the pre-defined templates to restrict the Item Attributes to be displayed and updated in the report. Alternatively, users can define their own custom template containing the Item Attributes of interest.
-
-NOTE:
-When creating new child items, the master-controlled item attributes are not passed to the Import API so they are defaulted from the Master Org. 
-When updating existing child items, the master-controlled item attributes are copied directly from the Master Org, in case there is any pre-existing inconsistency between the Child Org and Master Org values. 
-Effectively this means, for creation/updates to items in child organizations, the uploaded values for Master Controlled Item attributes are not considered by upload.
-
--- Excel Examle Output: https://www.enginatics.com/example/inv-item-upload/
+-- ======================
+-- This upload can be used to create and update Inventory Items.
+-- It supports creation of Inventory Items:
+-- - by manually entering the Item details.
+-- - from a master row, with optional semicolon-separated child organization assignments
+-- - from an item template (Copy from Template)
+-- - from an existing item in the same Organization (Copy from Item)
+-- It supports update of existing Inventory Items either by:
+-- - update the details of an existing inventory items by downloading the items to be updated. Use the report parameters to select and download the items to be updated.
+-- - pasting the details of the items to be updated into an empty upload excel.
+-- It also supports the item category assignment to multiple Inventory Category Sets
+-- - to assign an item to another category set, repeat the Organization Code and Item Number on a separate row in the excel and add the details of the additional category set and item category to which the item is to be assigned.
+-- - for child organizations, only the category sets controlled at the organization level can be selected.
+-- - to remove an existing category assignment, download the item first, then set the Delete Category column to Yes on the row showing the Category Set and Item Category to be removed. Deletion is not permitted for mandatory category sets that require the item to remain assigned.
+-- Additionally
+-- - supports creation and update of item revisions
+-- - supports creation, update, and deletion of manufacturer part numbers
+-- Upload Mode parameter:
+-- Create - allows creation of new items only
+-- Update - allows updates to existing items only
+-- Create, Update – allows the creation of new items and the updating of existing items
+-- Create Empty File parameter
+-- Setting the Create Empty File parameter to Yes will open an empty upload excel.
+-- This parameter is only applicable to the 'Update' and 'Create, Update' upload modes and suppresses the download of existing item details. ‘Create’ upload mode always opens an empty upload excel regardless of the setting of this parameter.
+-- This is useful for users who want to paste the details of the items to be updated into an empty upload excel file from another source.
+-- Update on Create Null Handling
+-- In Create, Update mode the upload allows a Create action to update an existing item if it already exists. This parameter determines how null values are handled when a create action results in an update to an existing item.
+-- 'Null means Clear' - the upload will clear the data from the corresponding column (set it to null).
+-- 'Null means No Change' - the upload will leave the data in the corresponding column unchanged.
+-- Number of Import Workers parameter
+-- This parameter determines the number of Item Import worker concurrent requests that will be submitted in parallel to import the uploaded items into Oracle Inventory. The number of workers can be increased to improve the throughput of the process when uploading a larger number of item changes.
+-- Remaining parameters
+-- The remaining parameters are used to restrict the items to be downloaded for update in ‘Update’ or ‘Create, Update’ mode, and only when the ‘Create Empty File’ parameter is not set to Yes.
+-- Available Templates
+-- Use the pre-defined templates to restrict the Item Attributes to be displayed and updated in the report. Alternatively, users can define their own custom template containing the Item Attributes of interest.
+-- NOTE:
+-- When creating new child items, the master-controlled item attributes are not passed to the Import API so they are defaulted from the Master Org.
+-- When updating existing child items, the master-controlled item attributes are copied directly from the Master Org, in case there is any pre-existing inconsistency between the Child Org and Master Org values.
+-- Effectively this means, for creation/updates to items in child organizations, the uploaded values for Master Controlled Item attributes are not considered by upload.
+-- Excel Example Output: https://www.enginatics.com/example/inv-item-upload/
 -- Library Link: https://www.enginatics.com/reports/inv-item-upload/
 -- Run Report: https://demo.enginatics.com/
 
@@ -86,8 +75,8 @@ mic.category item_category,
 -- Catalog Assignment
 (select micgbk.concatenated_segments from mtl_item_catalog_groups_b_kfv micgbk where micgbk.item_catalog_group_id=msiv.item_catalog_group_id) item_catalog,
 -- Main
-msiv.description description,
-msiv.long_description long_description,
+msiv.description,
+msiv.long_description,
 xxen_util.meaning(msiv.item_type,'ITEM_TYPE',3) user_item_type,
 (select mis.inventory_item_status_code_tl from mtl_item_status mis where mis.inventory_item_status_code=msiv.inventory_item_status_code) item_status,
 xxen_util.meaning(msiv.allowed_units_lookup_code,'MTL_CONVERSION_TYPE',700) conversions,
@@ -118,14 +107,14 @@ msiv.start_auto_lot_number starting_lot_number,
 msiv.auto_lot_alpha_prefix starting_lot_prefix,
 ----Lot Expiration
 xxen_util.meaning(msiv.shelf_life_code,'MTL_SHELF_LIFE',700) lot_expiration,
-msiv.shelf_life_days shelf_life_days,
-msiv.retest_interval retest_interval,
-msiv.expiration_action_interval expiration_action_interval,
+msiv.shelf_life_days,
+msiv.retest_interval,
+msiv.expiration_action_interval,
 (select ma.description from mtl_actions ma where ma.action_code=msiv.expiration_action_code) expiration_action,
 ----Cycle Count
 xxen_util.meaning(msiv.cycle_count_enabled_flag,'YES_NO',0) cycle_count_enabled,
-msiv.negative_measurement_error negative_measurement_error,
-msiv.positive_measurement_error positive_measurement_error,
+msiv.negative_measurement_error,
+msiv.positive_measurement_error,
 ----Grade Controlled
 xxen_util.meaning(msiv.grade_control_flag,'YES_NO',0) grade_controlled,
 (select mg.description from mtl_grades mg where mg.grade_code=msiv.default_grade) default_grade,
@@ -142,11 +131,11 @@ xxen_util.meaning(msiv.bulk_picked_flag,'YES_NO',0) bulk_picked,
 xxen_util.meaning(msiv.lot_divisible_flag,'YES_NO',0) lot_divisible,
 xxen_util.meaning(msiv.child_lot_flag,'YES_NO',0) child_lot_enabled,
 xxen_util.meaning(msiv.parent_child_generation_flag,'INV_PARENT_CHILD_GENERATION',0) child_lot_generation,
-msiv.child_lot_prefix child_lot_prefix,
-msiv.child_lot_starting_number child_lot_starting_number,
+msiv.child_lot_prefix,
+msiv.child_lot_starting_number,
 xxen_util.meaning(msiv.child_lot_validation_flag,'YES_NO',0) child_lot_format_validation,
-msiv.maturity_days maturity_days,
-msiv.hold_days hold_days,
+msiv.maturity_days,
+msiv.hold_days,
 xxen_util.meaning(msiv.copy_lot_attribute_flag,'YES_NO',0) copy_lot_attributes,
 --msiv.mcc_classification_type material_classification_type,
 --Bills of Material
@@ -188,11 +177,11 @@ xxen_util.meaning(msiv.receipt_required_flag,'YES_NO',0) receipt_required,
 xxen_util.meaning(msiv.inspection_required_flag,'YES_NO',0) inspection_required,
 (select ppx.full_name from per_people_x ppx where ppx.person_id=msiv.buyer_id) default_buyer,
 msiv.list_price_per_unit list_price,
-msiv.market_price market_price,
+msiv.market_price,
 msiv.price_tolerance_percent price_tolerance_pct,
 msiv.receive_close_tolerance receipt_close_tolerance,
-msiv.invoice_close_tolerance invoice_close_tolerance,
-msiv.rounding_factor rounding_factor,
+msiv.invoice_close_tolerance,
+msiv.rounding_factor,
 (select muomt.unit_of_measure_tl from mtl_units_of_measure_tl muomt where muomt.unit_of_measure=msiv.unit_of_issue and language=userenv('lang') and rownum <= 1) unit_of_issue,
 (select pun.un_number from po_un_numbers pun where pun.un_number_id=msiv.un_number_id) un_number,
 (select phc.hazard_class from po_hazard_classes phc where phc.hazard_class_id=msiv.hazard_class_id) hazard_class,
@@ -201,8 +190,8 @@ msiv.rounding_factor rounding_factor,
 (select fcbk.concatenated_segments from fa_categories_b_kfv fcbk where fcbk.category_id=msiv.asset_category_id) asset_category,
 -- Receiving
 xxen_util.meaning(msiv.receipt_days_exception_code,'RECEIVING CONTROL LEVEL',201) receipt_date_action,
-msiv.days_early_receipt_allowed days_early_receipt_allowed,
-msiv.days_late_receipt_allowed days_late_receipt_allowed,
+msiv.days_early_receipt_allowed,
+msiv.days_late_receipt_allowed,
 xxen_util.meaning(msiv.allow_substitute_receipts_flag,'YES_NO',0) allow_substitute_receipts,
 xxen_util.meaning(msiv.allow_unordered_receipts_flag,'YES_NO',0) allow_unordered_receipts,
 xxen_util.meaning(msiv.allow_express_delivery_flag,'YES_NO',0) allow_express_transactions,
@@ -212,9 +201,9 @@ msiv.qty_rcv_tolerance over_receipt_qty_tolerance,
 xxen_util.meaning(msiv.enforce_ship_to_location_code,'RECEIVING CONTROL LEVEL',201) enforce_ship_to,
 -- Physical Attributes
 (select muomt.unit_of_measure_tl from mtl_units_of_measure_tl muomt where muomt.uom_code=msiv.weight_uom_code and language=userenv('lang') and rownum <= 1) weight_unit_of_measure,
-msiv.unit_weight unit_weight,
+msiv.unit_weight,
 (select muomt.unit_of_measure_tl from mtl_units_of_measure_tl muomt where muomt.uom_code=msiv.volume_uom_code and language=userenv('lang') and rownum <= 1) volume_unit_of_measure,
-msiv.unit_volume unit_volume,
+msiv.unit_volume,
 (select muomt.unit_of_measure_tl from mtl_units_of_measure_tl muomt where muomt.uom_code=msiv.dimension_uom_code and language=userenv('lang') and rownum <= 1) dimension_unit_of_measure,
 msiv.unit_length length,
 msiv.unit_width width,
@@ -222,8 +211,8 @@ msiv.unit_height height,
 xxen_util.meaning(msiv.container_item_flag,'YES_NO',0) container,
 xxen_util.meaning(msiv.vehicle_item_flag,'YES_NO',0) vehicle,
 xxen_util.meaning(msiv.container_type_code,'CONTAINER_TYPE',3) container_type,
-msiv.internal_volume internal_volume,
-msiv.maximum_load_weight maximum_load_weight,
+msiv.internal_volume,
+msiv.maximum_load_weight,
 msiv.minimum_fill_percent minimum_fill_percentage,
 xxen_util.meaning(msiv.collateral_flag,'YES_NO',0) collateral_item,
 xxen_util.meaning(msiv.event_flag,'YES_NO',0) event,
@@ -238,18 +227,18 @@ xxen_util.meaning(msiv.subcontracting_component,'INV_SUBCONTRACTING_COMPONENT',7
 xxen_util.meaning(msiv.planning_make_buy_code,'MTL_PLANNING_MAKE_BUY',700) make_or_buy,
 msiv.min_minmax_quantity min_max_minimum_quantity,
 msiv.max_minmax_quantity min_max_maximum_quantity,
-msiv.minimum_order_quantity minimum_order_quantity,
-msiv.maximum_order_quantity maximum_order_quantity,
-msiv.order_cost order_cost,
+msiv.minimum_order_quantity,
+msiv.maximum_order_quantity,
+msiv.order_cost,
 msiv.carrying_cost carrying_cost_percent,
 xxen_util.meaning(msiv.source_type,'MTL_SOURCE_TYPES',700) source_type,
 (select mp2.organization_code from mtl_parameters mp2 where mp2.organization_id=msiv.source_organization_id) source_organization,
-msiv.source_subinventory source_subinventory,
+msiv.source_subinventory,
 xxen_util.meaning(msiv.mrp_safety_stock_code,'MTL_SAFETY_STOCK_TYPE',700) safety_stock,
-msiv.safety_stock_bucket_days safety_stock_bucket_days,
+msiv.safety_stock_bucket_days,
 msiv.mrp_safety_stock_percent safety_stock_percent,
-msiv.fixed_order_quantity fixed_order_quantity,
-msiv.fixed_days_supply fixed_days_supply,
+msiv.fixed_order_quantity,
+msiv.fixed_days_supply,
 msiv.fixed_lot_multiplier fixed_lot_size_multiplier,
 --
 msiv.vmi_minimum_units vmi_minimum_quantity,
@@ -266,9 +255,9 @@ msiv.forecast_horizon vmi_forecaset_window_days,
 xxen_util.meaning(msiv.mrp_planning_code,'MRP_PLANNING_CODE',700) mrp_planning_method,
 xxen_util.meaning(msiv.ato_forecast_control,'MRP_ATO_FORECAST_CONTROL',700) forecast_control,
 xxen_util.meaning(msiv.end_assembly_pegging_flag,'ASSEMBLY_PEGGING_CODE',0) end_assembly_pegging,
-msiv.planning_exception_set planning_exception_set,
-msiv.shrinkage_rate shrinkage_rate,
-msiv.acceptable_early_days acceptable_early_days,
+msiv.planning_exception_set,
+msiv.shrinkage_rate,
+msiv.acceptable_early_days,
 --
 xxen_util.meaning(msiv.rounding_control_type,'MTL_ROUNDING',700) round_order_quantities,
 xxen_util.meaning(msiv.planned_inv_point_flag,'YES_NO',0) planned_inventory_point,
@@ -280,18 +269,18 @@ xxen_util.meaning(msiv.mrp_calculate_atp_flag,'YES_NO',0) calculate_atp,
 xxen_util.meaning(msiv.auto_reduce_mps,'MRP_AUTO_REDUCE_MPS',700) reduce_mps,
 --
 xxen_util.meaning(msiv.repetitive_planning_flag,'YES_NO',0) repetitive_planning,
-msiv.overrun_percentage overrun_percentage,
+msiv.overrun_percentage,
 msiv.acceptable_rate_decrease acceptable_rate_minus,
 msiv.acceptable_rate_increase acceptable_rate_plus,
 --
 xxen_util.meaning(msiv.planning_time_fence_code,'MTL_TIME_FENCE',700) planning_time_fence,
-msiv.planning_time_fence_days planning_time_fence_days,
+msiv.planning_time_fence_days,
 xxen_util.meaning(msiv.demand_time_fence_code,'MTL_TIME_FENCE',700) demand_time_fence,
-msiv.demand_time_fence_days demand_time_fence_days,
+msiv.demand_time_fence_days,
 xxen_util.meaning(msiv.release_time_fence_code,'MTL_RELEASE_TIME_FENCE',700) release_time_fence,
-msiv.release_time_fence_days release_time_fence_days,
+msiv.release_time_fence_days,
 xxen_util.meaning(msiv.substitution_window_code, 'MTL_TIME_FENCE',700) substitution_window,
-msiv.substitution_window_days substitution_window_days,
+msiv.substitution_window_days,
 --
 xxen_util.meaning(msiv.continous_transfer,'MTL_MSI_MRP_INT_ORG',700) continuous_inter_org_transfers,
 xxen_util.meaning(msiv.convergence,'MTL_MSI_MRP_CONV_SUPP',700) convergence_pattern,
@@ -305,26 +294,26 @@ msiv.days_tgt_inv_window drp_target_inv_window,
 --
 xxen_util.meaning(msiv.repair_program,'INV_REPAIR_PROGRAM',700) repair_program,
 msiv.repair_leadtime repair_lead_time,
-msiv.repair_yield repair_yield,
+msiv.repair_yield,
 xxen_util.meaning(msiv.preposition_point,'YES_NO',0) repair_preposition_point,
 -- Lead Times
-msiv.preprocessing_lead_time preprocessing_lead_time,
+msiv.preprocessing_lead_time,
 msiv.full_lead_time processing_lead_time,
-msiv.postprocessing_lead_time postprocessing_lead_time,
-msiv.fixed_lead_time fixed_lead_time,
-msiv.variable_lead_time variable_lead_time,
-msiv.cum_manufacturing_lead_time cum_manufacturing_lead_time,
-msiv.cumulative_total_lead_time cumulative_total_lead_time,
-msiv.lead_time_lot_size lead_time_lot_size,
+msiv.postprocessing_lead_time,
+msiv.fixed_lead_time,
+msiv.variable_lead_time,
+msiv.cum_manufacturing_lead_time,
+msiv.cumulative_total_lead_time,
+msiv.lead_time_lot_size,
 -- Work In Process
 xxen_util.meaning(msiv.build_in_wip_flag,'YES_NO',0) build_in_wip,
 xxen_util.meaning(msiv.wip_supply_type,'WIP_SUPPLY',700) wip_supply_type,
-msiv.wip_supply_subinventory wip_supply_subinventory,
+msiv.wip_supply_subinventory,
 (select milk.concatenated_segments from mtl_item_locations_kfv milk where milk.inventory_location_id=msiv.wip_supply_locator_id) wip_supply_locator,
 xxen_util.meaning(msiv.overcompletion_tolerance_type,'WIP_TOLERANCE_TYPE',700) overcompletion_tolerance_type,
-msiv.overcompletion_tolerance_value overcompletion_tolerance_value,
-msiv.inventory_carry_penalty inventory_carry_penalty,
-msiv.operation_slack_penalty operation_slack_penalty,
+msiv.overcompletion_tolerance_value,
+msiv.inventory_carry_penalty,
+msiv.operation_slack_penalty,
 -- Order Management
 xxen_util.meaning(msiv.customer_order_flag,'YES_NO',0) customer_ordered,
 xxen_util.meaning(msiv.customer_order_enabled_flag,'YES_NO',0) customer_orders_enabled,
@@ -347,10 +336,10 @@ xxen_util.meaning(msiv.atp_components_flag,'ATP_FLAG',3) atp_components,
 xxen_util.meaning(msiv.default_so_source_type,'SOURCE_TYPE',660) default_so_source_type,
 (select fnd.UNIT_OF_MEASURE from MTL_UOM_CONVERSIONS fnd where fnd.UOM_CLASS='(FND_PROFILE.VALUE(ONT_UOM_CLASS_CHARGE_PERIODICITY))' and fnd.UOM_CODE=msiv.charge_periodicity_code) charge_periodicity,
 --
-msiv.over_shipment_tolerance over_shipment_tolerance,
-msiv.under_shipment_tolerance under_shipment_tolerance,
-msiv.over_return_tolerance over_return_tolerance,
-msiv.under_return_tolerance under_return_tolerance,
+msiv.over_shipment_tolerance,
+msiv.under_shipment_tolerance,
+msiv.over_return_tolerance,
+msiv.under_return_tolerance,
 -- Invoicing
 xxen_util.meaning(msiv.invoiceable_item_flag,'YES_NO',0) invoiceable_item,
 xxen_util.meaning(msiv.invoice_enabled_flag,'YES_NO',0) invoice_enabled,
@@ -383,18 +372,18 @@ xxen_util.meaning(msiv.material_billable_flag,'MTL_SERVICE_BILLABLE_FLAG',170) b
 xxen_util.meaning(msiv.web_status,'IBE_ITEM_STATUS',0) web_status,
 xxen_util.meaning(msiv.orderable_on_web_flag,'YES_NO',0) orderable_on_the_web,
 xxen_util.meaning(msiv.back_orderable_flag,'YES_NO',0) back_orderable,
-msiv.minimum_license_quantity minimum_license_quantity,
+msiv.minimum_license_quantity,
 -- Process Manufacturing
 xxen_util.meaning(msiv.process_quality_enabled_flag,'YES_NO',0) process_quality_enabled,
 xxen_util.meaning(msiv.process_costing_enabled_flag,'YES_NO',0) process_costing_enabled,
 xxen_util.meaning(msiv.recipe_enabled_flag,'YES_NO',0) recipe_enabled,
 xxen_util.meaning(msiv.process_execution_enabled_flag,'YES_NO',0) process_execution_enabled,
-msiv.process_supply_subinventory process_supply_subinventory,
+msiv.process_supply_subinventory,
 (select milk.concatenated_segments from mtl_item_locations_kfv milk where milk.inventory_location_id=msiv.process_supply_locator_id) process_supply_locator,
-msiv.process_yield_subinventory process_yield_subinventory,
+msiv.process_yield_subinventory,
 (select milk.concatenated_segments from mtl_item_locations_kfv milk where milk.inventory_location_id=msiv.process_yield_locator_id) process_yield_locator,
 xxen_util.meaning(msiv.hazardous_material_flag,'YES_NO',0) hazardous_material,
-msiv.cas_number cas_number,
+msiv.cas_number,
 -- DFF Attributes
 xxen_util.display_flexfield_context(401,'MTL_SYSTEM_ITEMS',msiv.attribute_category) item_attribute_category,
 xxen_util.display_flexfield_value(401,'MTL_SYSTEM_ITEMS',msiv.attribute_category,'ATTRIBUTE1',msiv.row_id,msiv.attribute1) inv_item_attribute1,
@@ -477,7 +466,10 @@ msiv.inventory_item_id,
 to_number(mic.category_set_id) category_set_id,
 rowidtochar(mmpn.rowid) mfg_part_rowid,
 decode(mp.organization_id,mp.master_organization_id,'Y',null) master_flag,
-0 upload_row
+mir.change_notice revision_change_notice,
+mir.implementation_date revision_implementation_date,
+0 upload_row,
+msiv.concatenated_segments upload_item_identifier
 from
 mtl_parameters mp,
 mtl_system_items_vl msiv,
@@ -506,7 +498,6 @@ where
 nvl(:p_create_empty_file,'N')!='Y' and
 nvl(:p_coa_id,-1)=nvl(:p_coa_id,-1) and
 nvl(:p_num_import_workers,1)=nvl(:p_num_import_workers,1) and
-nvl(:p_purge_after_days,-1)=nvl(:p_purge_after_days,-1) and
 mp.organization_id in (select oav.organization_id from org_access_view oav where oav.responsibility_id=fnd_global.resp_id and oav.resp_application_id=fnd_global.resp_appl_id) and
 msiv.organization_id=mp.organization_id and
 msiv.organization_id=mic.organization_id(+) and

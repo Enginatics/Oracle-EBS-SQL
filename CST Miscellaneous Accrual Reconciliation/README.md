@@ -1,14 +1,20 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'CST Miscellaneous Accrual Reconciliation | Oracle EBS SQL Report'
 description: 'Imported from Concurrent Program Application: Bills of Material Source: Miscellaneous Accrual Reconciliation Report Short Name: CSTACRMI DB package:'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, CST, Miscellaneous, Accrual, Reconciliation, mtl_transaction_types, cst_reconciliation_codes, rcv_shipment_headers'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Cost Management, Enginatics, R12 only, CST, Miscellaneous, Accrual, Reconciliation, mtl_transaction_types, cst_reconciliation_codes, rcv_shipment_headers'
 permalink: /CST%20Miscellaneous%20Accrual%20Reconciliation/
+report_name: 'CST Miscellaneous Accrual Reconciliation'
+report_web_name: cst-miscellaneous-accrual-reconciliation
+module: 'Cost Management'
+module_url: /modules/cost-management/
 ---
 
 # CST Miscellaneous Accrual Reconciliation – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/cst-miscellaneous-accrual-reconciliation/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/cst-miscellaneous-accrual-reconciliation/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-miscellaneous-accrual-reconciliation) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-miscellaneous-accrual-reconciliation).
+**Oracle EBS module:** [Cost Management](/modules/cost-management/ "Oracle EBS Cost Management reports") · [all Cost Management reports](/modules/cost-management/)  
 
 ## Overview
 Imported from Concurrent Program
@@ -17,28 +23,31 @@ Source: Miscellaneous Accrual Reconciliation Report
 Short Name: CSTACRMI
 DB package:
 
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-miscellaneous-accrual-reconciliation) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
+
 ## Report Parameters
 Operating Unit, Balancing Segment From, Balancing Segment To, Accrual Account, Date From, Date To, Minimum Amount, Maximum Amount, Item From, Item To, Invoice Number, Invoice Line, PO Number, PO Release, PO Line, PO Shipment, Transaction Type, Inventory Transaction Id, Sort By
 
 ## Oracle EBS Tables Used
-[mtl_transaction_types](https://www.enginatics.com/library/?pg=1&find=mtl_transaction_types), [cst_reconciliation_codes](https://www.enginatics.com/library/?pg=1&find=cst_reconciliation_codes), [rcv_shipment_headers](https://www.enginatics.com/library/?pg=1&find=rcv_shipment_headers), [rcv_transactions](https://www.enginatics.com/library/?pg=1&find=rcv_transactions), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl), [cst_misc_reconciliation](https://www.enginatics.com/library/?pg=1&find=cst_misc_reconciliation), [ap_invoices_all](https://www.enginatics.com/library/?pg=1&find=ap_invoices_all), [ap_invoice_distributions_all](https://www.enginatics.com/library/?pg=1&find=ap_invoice_distributions_all), [po_vendors](https://www.enginatics.com/library/?pg=1&find=po_vendors), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters), [gl_code_combinations_kfv](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations_kfv), [po_distributions_all](https://www.enginatics.com/library/?pg=1&find=po_distributions_all), [po_line_locations_all](https://www.enginatics.com/library/?pg=1&find=po_line_locations_all), [po_releases_all](https://www.enginatics.com/library/?pg=1&find=po_releases_all), [po_lines_all](https://www.enginatics.com/library/?pg=1&find=po_lines_all), [po_headers_all](https://www.enginatics.com/library/?pg=1&find=po_headers_all), [mtl_material_transactions](https://www.enginatics.com/library/?pg=1&find=mtl_material_transactions), [cst_accrual_accounts](https://www.enginatics.com/library/?pg=1&find=cst_accrual_accounts), [hr_all_organization_units](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units), [hr_organization_information](https://www.enginatics.com/library/?pg=1&find=hr_organization_information), [gl_sets_of_books](https://www.enginatics.com/library/?pg=1&find=gl_sets_of_books), [cmr](https://www.enginatics.com/library/?pg=1&find=cmr)
+[mtl_transaction_types](https://www.enginatics.com/library/?pg=1&find=mtl_transaction_types&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-miscellaneous-accrual-reconciliation), [cst_reconciliation_codes](https://www.enginatics.com/library/?pg=1&find=cst_reconciliation_codes&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-miscellaneous-accrual-reconciliation), [rcv_shipment_headers](https://www.enginatics.com/library/?pg=1&find=rcv_shipment_headers&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-miscellaneous-accrual-reconciliation), [rcv_transactions](https://www.enginatics.com/library/?pg=1&find=rcv_transactions&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-miscellaneous-accrual-reconciliation), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-miscellaneous-accrual-reconciliation), [cst_misc_reconciliation](https://www.enginatics.com/library/?pg=1&find=cst_misc_reconciliation&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-miscellaneous-accrual-reconciliation), [ap_invoices_all](https://www.enginatics.com/library/?pg=1&find=ap_invoices_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-miscellaneous-accrual-reconciliation), [ap_invoice_distributions_all](https://www.enginatics.com/library/?pg=1&find=ap_invoice_distributions_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-miscellaneous-accrual-reconciliation), [po_vendors](https://www.enginatics.com/library/?pg=1&find=po_vendors&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-miscellaneous-accrual-reconciliation), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-miscellaneous-accrual-reconciliation), [gl_code_combinations_kfv](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations_kfv&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-miscellaneous-accrual-reconciliation), [po_distributions_all](https://www.enginatics.com/library/?pg=1&find=po_distributions_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-miscellaneous-accrual-reconciliation), [po_line_locations_all](https://www.enginatics.com/library/?pg=1&find=po_line_locations_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-miscellaneous-accrual-reconciliation), [po_releases_all](https://www.enginatics.com/library/?pg=1&find=po_releases_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-miscellaneous-accrual-reconciliation), [po_lines_all](https://www.enginatics.com/library/?pg=1&find=po_lines_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-miscellaneous-accrual-reconciliation), [po_headers_all](https://www.enginatics.com/library/?pg=1&find=po_headers_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-miscellaneous-accrual-reconciliation), [mtl_material_transactions](https://www.enginatics.com/library/?pg=1&find=mtl_material_transactions&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-miscellaneous-accrual-reconciliation), [cst_accrual_accounts](https://www.enginatics.com/library/?pg=1&find=cst_accrual_accounts&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-miscellaneous-accrual-reconciliation), [hr_all_organization_units](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-miscellaneous-accrual-reconciliation), [hr_organization_information](https://www.enginatics.com/library/?pg=1&find=hr_organization_information&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-miscellaneous-accrual-reconciliation), [gl_sets_of_books](https://www.enginatics.com/library/?pg=1&find=gl_sets_of_books&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-miscellaneous-accrual-reconciliation)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-miscellaneous-accrual-reconciliation), [R12 only](https://www.enginatics.com/library/?pg=1&category%5B%5D=R12%20only&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-miscellaneous-accrual-reconciliation)
 
 ## Related Reports
 [CST AP and PO Accrual Reconciliation](/CST%20AP%20and%20PO%20Accrual%20Reconciliation/ "CST AP and PO Accrual Reconciliation Oracle EBS SQL Report"), [CAC AP Accrual IR ISO Match Analysis](/CAC%20AP%20Accrual%20IR%20ISO%20Match%20Analysis/ "CAC AP Accrual IR ISO Match Analysis Oracle EBS SQL Report"), [GL Account Analysis (Drilldown) (with inventory and WIP)](/GL%20Account%20Analysis%20%28Drilldown%29%20%28with%20inventory%20and%20WIP%29/ "GL Account Analysis (Drilldown) (with inventory and WIP) Oracle EBS SQL Report"), [GL Account Analysis](/GL%20Account%20Analysis/ "GL Account Analysis Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/CST%20Miscellaneous%20Accrual%20Reconciliation/CST%20Miscellaneous%20Accrual%20Reconciliation.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-miscellaneous-accrual-reconciliation) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [CST Miscellaneous Accrual Reconciliation 14-Jul-2021 041456.xlsx](https://www.enginatics.com/example/cst-miscellaneous-accrual-reconciliation/) |
-| Blitz Report™ XML Import | [CST_Miscellaneous_Accrual_Reconciliation.xml](https://www.enginatics.com/xml/cst-miscellaneous-accrual-reconciliation/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/cst-miscellaneous-accrual-reconciliation/](https://www.enginatics.com/reports/cst-miscellaneous-accrual-reconciliation/) |
+| Excel Example Output | [CST Miscellaneous Accrual Reconciliation 14-Jul-2021 041456.xlsx](https://www.enginatics.com/example/cst-miscellaneous-accrual-reconciliation/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-miscellaneous-accrual-reconciliation) |
+| Blitz Report™ XML Import | [CST_Miscellaneous_Accrual_Reconciliation.xml](https://www.enginatics.com/xml/cst-miscellaneous-accrual-reconciliation/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-miscellaneous-accrual-reconciliation) |
+| SQL Source | [CST Miscellaneous Accrual Reconciliation.sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/CST%20Miscellaneous%20Accrual%20Reconciliation/CST%20Miscellaneous%20Accrual%20Reconciliation.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/cst-miscellaneous-accrual-reconciliation/](https://www.enginatics.com/reports/cst-miscellaneous-accrual-reconciliation/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-miscellaneous-accrual-reconciliation) |
 
 ## Case Study & Technical Analysis: CST Miscellaneous Accrual Reconciliation
 
@@ -118,18 +127,17 @@ The query uses a Common Table Expression (CTE) named `cmr` to prepare the data.
 
 This structure provides a unified view of disparate transaction types that share the common characteristic of hitting the Accrual Account outside the standard PO flow.
 
-
 ---
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-miscellaneous-accrual-reconciliation)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-miscellaneous-accrual-reconciliation)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-miscellaneous-accrual-reconciliation)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-miscellaneous-accrual-reconciliation)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-miscellaneous-accrual-reconciliation)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-miscellaneous-accrual-reconciliation)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-miscellaneous-accrual-reconciliation)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

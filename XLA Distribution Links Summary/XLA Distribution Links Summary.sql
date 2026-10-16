@@ -1,24 +1,22 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: XLA Distribution Links Summary
--- Description: Summary of subledger distribution links for developers to understand which source_ids are populated for which subledger table sources.
-The link to subledger tables for different source_distribution_type values is described e.g. MOS Doc IDs for:
-AP KB202448 <a href="https://support.oracle.com/support/?kmContentId=813968" rel="nofollow" target="_blank">https://support.oracle.com/support/?kmContentId=813968</a>
-FA KB721213 <a href="https://support.oracle.com/support/?kmContentId=2002464" rel="nofollow" target="_blank">https://support.oracle.com/support/?kmContentId=2002464</a>
-PA KB160029 <a href="https://support.oracle.com/support/?kmContentId=1274575" rel="nofollow" target="_blank">https://support.oracle.com/support/?kmContentId=1274575</a>
-
-For GMF, there is
-AP and PO Accrual Reconciliation Report Debugging from OPM Financials KB775263 <a href="https://support.oracle.com/support/?kmContentId=2114612" rel="nofollow" target="_blank">https://support.oracle.com/support/?kmContentId=2114612</a>
-and Financials Troubleshooting Guide FAQ6726 <a href="https://support.oracle.com/support/?kmContentId=1213193" rel="nofollow" target="_blank">https://support.oracle.com/support/?kmContentId=1213193</a>
-
-How the gl_import_references tableis used in 11i vs R12 is described in notes KB626209 and KB625770
-<a href="https://support.oracle.com/support/?kmContentId=165327" rel="nofollow" target="_blank">https://support.oracle.com/support/?kmContentId=165327</a>
-<a href="https://support.oracle.com/support/?kmContentId=130542" rel="nofollow" target="_blank">https://support.oracle.com/support/?kmContentId=130542</a>
--- Excel Examle Output: https://www.enginatics.com/example/xla-distribution-links-summary/
+-- Description: Summary of subledger distribution links for developers to understand which sourceids are populated for which subledger table sources.
+-- The link to subledger tables for different sourcedistributiontype values is described e.g. MOS Doc IDs for:
+-- AP KB202448 https://support.oracle.com/support/?kmContentId=813968
+-- FA KB721213 https://support.oracle.com/support/?kmContentId=2002464
+-- PA KB160029 https://support.oracle.com/support/?kmContentId=1274575
+-- For GMF, there is
+-- AP and PO Accrual Reconciliation Report Debugging from OPM Financials KB775263 https://support.oracle.com/support/?kmContentId=2114612
+-- and Financials Troubleshooting Guide FAQ6726 https://support.oracle.com/support/?kmContentId=1213193
+-- How the glimportreferences tableis used in 11i vs R12 is described in notes KB626209 and KB625770
+-- https://support.oracle.com/support/?kmContentId=165327
+-- https://support.oracle.com/support/?kmContentId=130542
+-- Excel Example Output: https://www.enginatics.com/example/xla-distribution-links-summary/
 -- Library Link: https://www.enginatics.com/reports/xla-distribution-links-summary/
 -- Run Report: https://demo.enginatics.com/
 

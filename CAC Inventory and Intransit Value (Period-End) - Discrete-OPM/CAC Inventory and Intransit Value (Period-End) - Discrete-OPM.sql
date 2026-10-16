@@ -1,47 +1,44 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Inventory and Intransit Value (Period-End) - Discrete/OPM
--- Description: Report showing amount of inventory at the end of the month for both Discrete and Process Manufacturing (OPM) inventory organizations.  If you enter a cost type this report uses the item costs from the cost type; if you leave the cost type blank it uses the item costs from the month-end snapshot.  In either case this report uses the month-end quantities, based on the entered period name, OPM calendar code and OPM period code.  And as these quantities come from the month-end snapshot (created when you close the inventory accounting period or run the GMF Period Close Process) and this snapshot is only by inventory organization, subinventory and item and not split out by cost element, this report only shows the Material Account, based upon your Costing Method.
-
-Notes:  
-1)  OPM intransit balances based upon last two years of Intransit Shipments.  As of Release 12.2.13, OPM does not have a month-end snapshot for intransit quantities or balances.
-2)  This report assumes you use both OPM and Discrete Manufacturing.  If you only use Discrete Manufacturing, use the CAC Inventory and Intransit Value (Period-End) report instead.
-
-Discrete and OPM Parameters:
-============================
-Period Name (Closed):  the closed inventory accounting period you wish to report (mandatory).
-Cost Type:  enter a Cost Type to value the quantities using the Cost Type item costs; or, if Cost Type is not entered the report will use the stored month-end snapshot values (optional).
-OPM Calendar Code:  Choose the OPM Calendar Code which corresponds to the inventory accounting period you wish to report (mandatory).
-OPM Period Code:  enter the OPM Period Code related to the inventory accounting period and OPM Calendar Code you wish to report (mandatory).
-Category Set 1:  the first item category set to report, typically the Cost or Product Line Category Set (optional).
-Category Set 2:  The second item category set to report, typically the Inventory Category Set (optional).
-Item Number:  specific buy or make item you wish to report (optional).
-Subinventory:  specific area within the warehouse or inventory area you wish to report (optional).
-Organization Code:  any inventory organization, defaults to your session's inventory organization (optional).
-Operating Unit:  specific operating unit (optional).
-Ledger:  specific ledger (optional).
-
-/* +=============================================================================+
--- | Copyright 2009 - 2024 Douglas Volz Consulting, Inc.
--- |  All rights reserved.
--- |  Permission to use this code is granted provided the original author is
--- |  acknowledged.  No warranties, express or otherwise is included in this permission.                                                                           
--- +=============================================================================+
--- | 1.0     27 Sep 2009 Douglas Volz Initial Coding
--- | 1.29    04 Jun 2024 Douglas Volz Fix SQL error for Intransit code section, due to duplicate transactions in GXEH
--- |                                  (ORA-01427: single-row subquery returns more than one row).
--- | 1.30    09 Jun 2024 Douglas Volz Fix Intransit joins for UOMs, organizations and for duplicate Intransit quantities.
--- | 1.31    25 Jun 2024 Douglas Volz Add Period Code join for Intransit, to avoid cross-joining.
--- | 1.32    27 Jun 2024 Douglas Volz Get intransit account based on the Shipping Network, to avoid duplicate quantities.
--- | 1.33    28 Jun 2024 Douglas Volz Base Intransit SQL logic on two years of Intransit Shipments, not on mtl_supply.
--- | 1.34    30 Jun 2024 Douglas Volz Get default intransit account in case the Shipping Network has been deleted or changed.
--- | 1.35    08 Aug 2024 Douglas Volz Add OPM Cost Organizations to get correct item costs and qtys.
--- +=============================================================================+*/
--- Excel Examle Output: https://www.enginatics.com/example/cac-inventory-and-intransit-value-period-end-discrete-opm/
+-- Description: Report showing amount of inventory at the end of the month for both Discrete and Process Manufacturing (OPM) inventory organizations. If you enter a cost type this report uses the item costs from the cost type; if you leave the cost type blank it uses the item costs from the month-end snapshot. In either case this report uses the month-end quantities, based on the entered period name, OPM calendar code and OPM period code. And as these quantities come from the month-end snapshot (created when you close the inventory accounting period or run the GMF Period Close Process) and this snapshot is only by inventory organization, subinventory and item and not split out by cost element, this report only shows the Material Account, based upon your Costing Method.
+-- Notes:
+-- 1) OPM intransit balances based upon last two years of Intransit Shipments. As of Release 12.2.13, OPM does not have a month-end snapshot for intransit quantities or balances.
+-- 2) This report assumes you use both OPM and Discrete Manufacturing. If you only use Discrete Manufacturing, use the CAC Inventory and Intransit Value (Period-End) report instead.
+-- Discrete and OPM Parameters:
+-- ============================
+-- Period Name (Closed): the closed inventory accounting period you wish to report (mandatory).
+-- Cost Type: enter a Cost Type to value the quantities using the Cost Type item costs; or, if Cost Type is not entered the report will use the stored month-end snapshot values (optional).
+-- OPM Calendar Code: Choose the OPM Calendar Code which corresponds to the inventory accounting period you wish to report (mandatory).
+-- OPM Period Code: enter the OPM Period Code related to the inventory accounting period and OPM Calendar Code you wish to report (mandatory).
+-- Category Set 1: the first item category set to report, typically the Cost or Product Line Category Set (optional).
+-- Category Set 2: The second item category set to report, typically the Inventory Category Set (optional).
+-- Item Number: specific buy or make item you wish to report (optional).
+-- Subinventory: specific area within the warehouse or inventory area you wish to report (optional).
+-- Organization Code: any inventory organization, defaults to your session's inventory organization (optional).
+-- Operating Unit: specific operating unit (optional).
+-- Ledger: specific ledger (optional).
+-- / +=============================================================================+
+-- -- | Copyright 2009 - 2024 Douglas Volz Consulting, Inc.
+-- -- | All rights reserved.
+-- -- | Permission to use this code is granted provided the original author is
+-- -- | acknowledged. No warranties, express or otherwise is included in this permission.
+-- -- +=============================================================================+
+-- -- | 1.0 27 Sep 2009 Douglas Volz Initial Coding
+-- -- | 1.29 04 Jun 2024 Douglas Volz Fix SQL error for Intransit code section, due to duplicate transactions in GXEH
+-- -- | (ORA-01427: single-row subquery returns more than one row).
+-- -- | 1.30 09 Jun 2024 Douglas Volz Fix Intransit joins for UOMs, organizations and for duplicate Intransit quantities.
+-- -- | 1.31 25 Jun 2024 Douglas Volz Add Period Code join for Intransit, to avoid cross-joining.
+-- -- | 1.32 27 Jun 2024 Douglas Volz Get intransit account based on the Shipping Network, to avoid duplicate quantities.
+-- -- | 1.33 28 Jun 2024 Douglas Volz Base Intransit SQL logic on two years of Intransit Shipments, not on mtlsupply.
+-- -- | 1.34 30 Jun 2024 Douglas Volz Get default intransit account in case the Shipping Network has been deleted or changed.
+-- -- | 1.35 08 Aug 2024 Douglas Volz Add OPM Cost Organizations to get correct item costs and qtys.
+-- -- +=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-inventory-and-intransit-value-period-end-discrete-opm/
 -- Library Link: https://www.enginatics.com/reports/cac-inventory-and-intransit-value-period-end-discrete-opm/
 -- Run Report: https://demo.enginatics.com/
 

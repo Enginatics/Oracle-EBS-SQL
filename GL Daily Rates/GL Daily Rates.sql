@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: GL Daily Rates
 -- Description: Daily currency conversion rates
--- Excel Examle Output: https://www.enginatics.com/example/gl-daily-rates/
+-- Excel Example Output: https://www.enginatics.com/example/gl-daily-rates/
 -- Library Link: https://www.enginatics.com/reports/gl-daily-rates/
 -- Run Report: https://demo.enginatics.com/
 

@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PA Capital Project Summary with Asset Detail
 -- Description: Detail project report that shows the project asset details, and combined project level costs breakdown, along with the project assets details from the Capital Summary
--- Excel Examle Output: https://www.enginatics.com/example/pa-capital-project-summary-with-asset-detail/
+-- Excel Example Output: https://www.enginatics.com/example/pa-capital-project-summary-with-asset-detail/
 -- Library Link: https://www.enginatics.com/reports/pa-capital-project-summary-with-asset-detail/
 -- Run Report: https://demo.enginatics.com/
 

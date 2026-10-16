@@ -1,17 +1,15 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PA Event Upload
 -- Description: PA Event Upload
-===================
-This upload can be used to create new Project Billing and Revenue Events against the Projects belonging to the Operating Units accessible to the current responsibility.
-
-If the Operating Unit parameter is specified, then the upload will be restricted to Projects within the specified Operating Unit only.
-
--- Excel Examle Output: https://www.enginatics.com/example/pa-event-upload/
+-- ===================
+-- This upload can be used to create new Project Billing and Revenue Events against the Projects belonging to the Operating Units accessible to the current responsibility.
+-- If the Operating Unit parameter is specified, then the upload will be restricted to Projects within the specified Operating Unit only.
+-- Excel Example Output: https://www.enginatics.com/example/pa-event-upload/
 -- Library Link: https://www.enginatics.com/reports/pa-event-upload/
 -- Run Report: https://demo.enginatics.com/
 

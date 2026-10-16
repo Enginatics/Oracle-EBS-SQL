@@ -1,14 +1,17 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'INV Physical Inventory Purge Upload | Oracle EBS SQL Report'
 description: 'This upload supports the purging of existing Physical Inventories. For each Physical Inventory to be purged the user can select to purge the tags only, or…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, INV, Physical, Inventory, Purge, mtl_physical_inventories_v, mtl_parameters, org_access_view'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Upload, INV, Physical, Inventory, Purge, mtl_physical_inventories_v, mtl_parameters, org_access_view'
 permalink: /INV%20Physical%20Inventory%20Purge%20Upload/
+report_name: 'INV Physical Inventory Purge Upload'
+report_web_name: inv-physical-inventory-purge-upload
 ---
 
 # INV Physical Inventory Purge Upload – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/inv-physical-inventory-purge-upload/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/inv-physical-inventory-purge-upload/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-physical-inventory-purge-upload) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-physical-inventory-purge-upload).
 
 ## Overview
 This upload supports the purging of existing Physical Inventories. 
@@ -21,31 +24,33 @@ To improve performance of the upload process, the upload does not wait for compl
 
 The ‘Create, Update’ upload mode can be used to first download the Physical Inventories to be purged for initial review and selection.
 
-Alternatively, the ‘Create’ upload mode can be used to generate an empty upload excel into which the details of the Physical Inventories to be purged can be pasted. In this mode the only columns that need to be populated in the excel are the Organization Code, Physical Inventory Name, and the Purge Option. 
+Alternatively, the ‘Create’ upload mode can be used to generate an empty upload excel into which the details of the Physical Inventories to be purged can be pasted. In this mode the only columns that need to be populated in the excel are the Organization Code, Physical Inventory Name, and the Purge Option.
 
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-physical-inventory-purge-upload) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 
 ## Report Parameters
 Upload Mode, Default Purge Option, Organization Code, Physical Inventory, Physical Inventory Like, Physical Inventory Date From, Physical Inventory Date To, Phys. Inv. Date Older Than (Mths), Snapshot Complete
 
 ## Oracle EBS Tables Used
-[mtl_physical_inventories_v](https://www.enginatics.com/library/?pg=1&find=mtl_physical_inventories_v), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters), [org_access_view](https://www.enginatics.com/library/?pg=1&find=org_access_view)
+[mtl_physical_inventories_v](https://www.enginatics.com/library/?pg=1&find=mtl_physical_inventories_v&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-physical-inventory-purge-upload), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-physical-inventory-purge-upload), [org_access_view](https://www.enginatics.com/library/?pg=1&find=org_access_view&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-physical-inventory-purge-upload)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Upload](https://www.enginatics.com/library/?pg=1&category[]=Upload)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-physical-inventory-purge-upload), [R12 only](https://www.enginatics.com/library/?pg=1&category%5B%5D=R12%20only&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-physical-inventory-purge-upload), [Upload](https://www.enginatics.com/library/?pg=1&category%5B%5D=Upload&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-physical-inventory-purge-upload)
 
 ## Related Reports
-[CAC Recost Cost of Goods Sold](/CAC%20Recost%20Cost%20of%20Goods%20Sold/ "CAC Recost Cost of Goods Sold Oracle EBS SQL Report"), [CAC Deferred COGS Out-of-Balance](/CAC%20Deferred%20COGS%20Out-of-Balance/ "CAC Deferred COGS Out-of-Balance Oracle EBS SQL Report"), [INV Physical Inventory Upload](/INV%20Physical%20Inventory%20Upload/ "INV Physical Inventory Upload Oracle EBS SQL Report"), [INV Material Transactions](/INV%20Material%20Transactions/ "INV Material Transactions Oracle EBS SQL Report"), [INV Physical inventory accuracy analysis](/INV%20Physical%20inventory%20accuracy%20analysis/ "INV Physical inventory accuracy analysis Oracle EBS SQL Report")
+[CAC Recost Cost of Goods Sold](/CAC%20Recost%20Cost%20of%20Goods%20Sold/ "CAC Recost Cost of Goods Sold Oracle EBS SQL Report"), [CAC Deferred COGS Out-of-Balance](/CAC%20Deferred%20COGS%20Out-of-Balance/ "CAC Deferred COGS Out-of-Balance Oracle EBS SQL Report"), [INV Physical Inventory Upload](/INV%20Physical%20Inventory%20Upload/ "INV Physical Inventory Upload Oracle EBS SQL Report"), [INV Material Transactions](/INV%20Material%20Transactions/ "INV Material Transactions Oracle EBS SQL Report"), [INV Physical Inventory Locator Count Sheet](/INV%20Physical%20Inventory%20Locator%20Count%20Sheet/ "INV Physical Inventory Locator Count Sheet Oracle EBS SQL Report"), [INV Physical inventory accuracy analysis](/INV%20Physical%20inventory%20accuracy%20analysis/ "INV Physical inventory accuracy analysis Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/INV%20Physical%20Inventory%20Purge%20Upload/INV%20Physical%20Inventory%20Purge%20Upload.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-physical-inventory-purge-upload) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [](https://www.enginatics.com/example/inv-physical-inventory-purge-upload/) |
-| Blitz Report™ XML Import | [INV_Physical_Inventory_Purge_Upload.xml](https://www.enginatics.com/xml/inv-physical-inventory-purge-upload/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/inv-physical-inventory-purge-upload/](https://www.enginatics.com/reports/inv-physical-inventory-purge-upload/) |
+| Excel Example Output | [Example](https://www.enginatics.com/example/inv-physical-inventory-purge-upload/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-physical-inventory-purge-upload) |
+| Blitz Report™ XML Import | [INV_Physical_Inventory_Purge_Upload.xml](https://www.enginatics.com/xml/inv-physical-inventory-purge-upload/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-physical-inventory-purge-upload) |
+| SQL Source | [INV Physical Inventory Purge Upload.sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/INV%20Physical%20Inventory%20Purge%20Upload/INV%20Physical%20Inventory%20Purge%20Upload.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/inv-physical-inventory-purge-upload/](https://www.enginatics.com/reports/inv-physical-inventory-purge-upload/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-physical-inventory-purge-upload) |
 
 ## INV Physical Inventory Purge Upload - Case Study & Technical Analysis
 
@@ -83,18 +88,17 @@ This is a WebADI or Blitz Report Upload style tool that interfaces with the stan
 -   **Performance:** Improves the speed of future physical inventory setups.
 -   **Efficiency:** Reduces the administrative burden of database maintenance.
 
-
 ---
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-physical-inventory-purge-upload)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-physical-inventory-purge-upload)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-physical-inventory-purge-upload)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-physical-inventory-purge-upload)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-physical-inventory-purge-upload)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-physical-inventory-purge-upload)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-physical-inventory-purge-upload)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

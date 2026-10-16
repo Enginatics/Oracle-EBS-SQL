@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: OPM Recipe Details
 -- Description: OPM (Process Manufacturing) recipe details combining recipe status, validity rules, preferences, formula product quantity and routing step / resource quantities. Supports data cleaning before cost roll up. Optionally shows an item category code via the Category Set parameter.
--- Excel Examle Output: https://www.enginatics.com/example/opm-recipe-details/
+-- Excel Example Output: https://www.enginatics.com/example/opm-recipe-details/
 -- Library Link: https://www.enginatics.com/reports/opm-recipe-details/
 -- Run Report: https://demo.enginatics.com/
 
@@ -27,6 +27,8 @@ grvr.start_date validity_rule_from_date,
 gsv_v.meaning validity_rule_status,
 grvr.std_qty validity_rule_qty,
 grvr.detail_uom validity_rule_uom,
+ff.product_line_no,
+ff.product_item,
 ff.product_qty,
 ff.product_uom,
 aa.step_no,
@@ -62,16 +64,17 @@ mcsv.category_set_name=:p_category_set
 (
 select
 fmd.formula_id,
+fmd.line_no product_line_no,
+msiv_prod.concatenated_segments product_item,
 fmd.qty product_qty,
 fmd.detail_uom product_uom
 from
-fm_matl_dtl fmd
+fm_matl_dtl fmd,
+mtl_system_items_vl msiv_prod
 where
-fmd.line_type=1
-group by
-fmd.formula_id,
-fmd.qty,
-fmd.detail_uom
+fmd.line_type=1 and
+fmd.inventory_item_id=msiv_prod.inventory_item_id and
+fmd.organization_id=msiv_prod.organization_id
 ) ff,
 (
 select

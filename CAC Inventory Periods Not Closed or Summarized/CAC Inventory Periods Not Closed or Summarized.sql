@@ -1,56 +1,54 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Inventory Periods Not Closed or Summarized
--- Description: Report to find all inventory accounting periods which are either still open or closed but not summarized.  When you close the inventory accounting period, the Period Close Reconciliation Report creates a very useful month-end summary of your inventory quantities and balances, by item, subinventory or intransit, cost group and inventory organization.  You can use this information to create a efficient month-end inventory value report.
-Note:  this report automatically looks for hierarchies which might be used with the Open Period Control and the Close Period Control Oracle programs.  Looking for the translated values of "Close", "Open" and "Period" in the Hierarchy Name.
-
-/* +=============================================================================+
--- | Copyright 2018 - 2020 Douglas Volz Consulting, Inc.                         |
--- | All rights reserved.                                                        |
--- | Permission to use this code is granted provided the original author is      |
--- | acknowledged. No warranties, express or otherwise is included in this       |
--- | permission.                                                                 |
--- +=============================================================================+
--- |
--- |  Original Author: Douglas Volz (doug@volzconsulting.com)
--- |
--- |  Program Name:  xxx_inv_periods_not_closed_rept.sql
--- |
--- |  Parameters:
--- |  p_org_hierarchy_name   -- select the organization hierarchy used to open and
--- |                            close your inventory organizations (optional)
--- |  p_org_code         -- Specific inventory organization you wish to report (optional)
--- |  p_operating_unit   -- Operating Unit you wish to report, leave blank for all
--- |                        operating units (optional) 
--- |  p_ledger           -- general ledger you wish to report, leave blank for all
--- |                        ledgers (optional)
--- |
--- |  Description:
--- |  Report to find all inventory accounting periods which are either still open,
--- |  or closed but not summarized.  When you close the inventory accounting period,
--- |  the Period Close Reconciliation Report creates a very useful month-end
--- |  summary of your inventory quantities and balances, by item, subinventory or
--- |  intransit, cost group and inventory organization.  You can use this 
--- |  information to create a efficient month-end inventory value report.
--- | 
--- |  History for xxx_inv_periods_not_closed_rept.sql
--- |
--- |  Version Modified on Modified  by    Description
--- |  ======= =========== =============== =========================================
--- |  1.0     06 Dec 2018 Douglas Volz    Report created based on Period Status Report
--- |  1.1     09 Feb 2020 Douglas Volz    Added Org, Ledger and Operating Unit parameters
--- |  1.2     08 Mar 2020 Douglas Volz    Improvements to finding the Hierarchy Name,
--- |                                      looking for the words Open, Close or Period.
--- |  1.3     27 Apr 2020 Douglas Volz    Changed to multi-language views for the
--- |                                      inventory orgs and operating units.
--- |  1.4     16 Aug 2020 Douglas Volz    Fix for revision 1.2 for Organization Hierarchy.
--- +=============================================================================+*/
-
--- Excel Examle Output: https://www.enginatics.com/example/cac-inventory-periods-not-closed-or-summarized/
+-- Description: Report to find all inventory accounting periods which are either still open or closed but not summarized. When you close the inventory accounting period, the Period Close Reconciliation Report creates a very useful month-end summary of your inventory quantities and balances, by item, subinventory or intransit, cost group and inventory organization. You can use this information to create a efficient month-end inventory value report.
+-- Note: this report automatically looks for hierarchies which might be used with the Open Period Control and the Close Period Control Oracle programs. Looking for the translated values of "Close", "Open" and "Period" in the Hierarchy Name.
+-- / +=============================================================================+
+-- -- | Copyright 2018 - 2020 Douglas Volz Consulting, Inc. |
+-- -- | All rights reserved. |
+-- -- | Permission to use this code is granted provided the original author is |
+-- -- | acknowledged. No warranties, express or otherwise is included in this |
+-- -- | permission. |
+-- -- +=============================================================================+
+-- -- |
+-- -- | Original Author: Douglas Volz (doug@volzconsulting.com)
+-- -- |
+-- -- | Program Name: xxxinvperiodsnotclosedrept.sql
+-- -- |
+-- -- | Parameters:
+-- -- | porghierarchyname -- select the organization hierarchy used to open and
+-- -- | close your inventory organizations (optional)
+-- -- | porgcode -- Specific inventory organization you wish to report (optional)
+-- -- | poperatingunit -- Operating Unit you wish to report, leave blank for all
+-- -- | operating units (optional)
+-- -- | pledger -- general ledger you wish to report, leave blank for all
+-- -- | ledgers (optional)
+-- -- |
+-- -- | Description:
+-- -- | Report to find all inventory accounting periods which are either still open,
+-- -- | or closed but not summarized. When you close the inventory accounting period,
+-- -- | the Period Close Reconciliation Report creates a very useful month-end
+-- -- | summary of your inventory quantities and balances, by item, subinventory or
+-- -- | intransit, cost group and inventory organization. You can use this
+-- -- | information to create a efficient month-end inventory value report.
+-- -- |
+-- -- | History for xxxinvperiodsnotclosedrept.sql
+-- -- |
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== =============== =========================================
+-- -- | 1.0 06 Dec 2018 Douglas Volz Report created based on Period Status Report
+-- -- | 1.1 09 Feb 2020 Douglas Volz Added Org, Ledger and Operating Unit parameters
+-- -- | 1.2 08 Mar 2020 Douglas Volz Improvements to finding the Hierarchy Name,
+-- -- | looking for the words Open, Close or Period.
+-- -- | 1.3 27 Apr 2020 Douglas Volz Changed to multi-language views for the
+-- -- | inventory orgs and operating units.
+-- -- | 1.4 16 Aug 2020 Douglas Volz Fix for revision 1.2 for Organization Hierarchy.
+-- -- +=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-inventory-periods-not-closed-or-summarized/
 -- Library Link: https://www.enginatics.com/reports/cac-inventory-periods-not-closed-or-summarized/
 -- Run Report: https://demo.enginatics.com/
 

@@ -1,12 +1,13 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: GL Account Analysis
 -- Description: Detail GL transaction report with one line per transaction including all segments and subledger data, with amounts in both transaction currency and ledger currency.
--- Excel Examle Output: https://www.enginatics.com/example/gl-account-analysis/
+-- Show Open/Close Balances adds a ledger currency opening balance row for the first selected period and a closing balance row for the last selected period per account combination, marked as Balance in the Record Type column. Balance rows follow the ledger, period and account filters, not journal level filters such as Source or Category. The chosen value controls whether balance rows appear only for accounts with journal activity in the range, also for accounts with a nonzero balance, or for every account with a balance record, while All Accounts Grouped shows a single opening and closing balance row summed over the selected accounts.
+-- Excel Example Output: https://www.enginatics.com/example/gl-account-analysis/
 -- Library Link: https://www.enginatics.com/reports/gl-account-analysis/
 -- Run Report: https://demo.enginatics.com/
 
@@ -313,7 +314,7 @@ zx_rates_b zrb,
 fa_transaction_headers fth,
 fa_additions_b fab,
 ap_invoices_all aia,
-(select distinct aida.invoice_id, min(aida.task_id) keep (dense_rank first order by aida.invoice_distribution_id) over (partition by aida.invoice_id) task_id from ap_invoice_distributions_all aida where aida.task_id is not null) aida0,
+(select aia.invoice_id, (select /*+ no_unnest*/ min(aida.task_id) keep (dense_rank first order by aida.invoice_distribution_id) from ap_invoice_distributions_all aida where aia.invoice_id=aida.invoice_id and aida.task_id is not null) task_id from ap_invoices_all aia) aida0,
 (select (select distinct max(aipa.invoice_id) keep (dense_rank last order by aipa.invoice_payment_id) over () invoice_id from ap_invoice_payments_all aipa where aca.check_id=aipa.check_id) max_aipa_invoice_id, aca.* from ap_checks_all aca) aca,
 ap_batches_all aba,
 po_headers_all pha,
@@ -653,6 +654,7 @@ where
 1=1 and
 4=4 and
 :show_balances is not null and
+:show_balances<>'All Accounts Grouped' and
 gp.period_name=nvl(:period_name,:period_name_from) and
 gl.period_set_name=gp.period_set_name and
 gl.chart_of_accounts_id=gcck.chart_of_accounts_id and
@@ -868,6 +870,7 @@ where
 1=1 and
 4=4 and
 :show_balances is not null and
+:show_balances<>'All Accounts Grouped' and
 gp.period_name=nvl(:period_name,:period_name_to) and
 gl.period_set_name=gp.period_set_name and
 gl.chart_of_accounts_id=gcck.chart_of_accounts_id and
@@ -877,6 +880,454 @@ gl.ledger_id=gb.ledger_id and
 gl.currency_code=gb.currency_code and
 gp.period_name=gb.period_name and
 gb.template_id is null and
+gp.end_date=gdr.conversion_date(+) and
+decode(gb.currency_code,:revaluation_currency,null,gb.currency_code)=gdr.from_currency(+)
+union all
+select --GL Opening Balance grouped
+' '||gp.period_name||' Open Bal' period_name,
+'00 '||gp.period_name||' Open Bal' period_name_label,
+gl.name ledger,
+null source_name,
+null reference,
+null category_name,
+null batch_name,
+null batch_status,
+null posted_date,
+null journal_name,
+null journal_description,
+null tax_status_code,
+null line_number,
+gcck.concatenated_segments,
+fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_seg', 'SQLGL', 'GL#', gcck.chart_of_accounts_id, null, gcck.code_combination_id, 'ALL', 'Y', 'DESCRIPTION') concatenated_segments_desc,
+null line_entered_dr,
+null line_entered_cr,
+null line_entered_amount,
+gb.begin_balance_dr line_accounted_dr,
+gb.begin_balance_cr line_accounted_cr,
+nvl(gb.begin_balance_dr,0)-nvl(gb.begin_balance_cr,0) line_accounted_amount,
+null line_description,
+null tax_rate_code,
+null tax_line,
+null taxable_line,
+null amount_includes_tax,
+null accounting_class,
+xxen_util.meaning(gcck.gl_account_type,'ACCOUNT_TYPE',0) account_type,
+&segment_columns
+null entered_dr,
+null entered_cr,
+null entered_amount,
+null transaction_currency,
+gb.begin_balance_dr accounted_dr,
+gb.begin_balance_cr accounted_cr,
+nvl(gb.begin_balance_dr,0)-nvl(gb.begin_balance_cr,0) accounted_amount,
+gl.currency_code ledger_currency,
+&revaluation_columns_balo
+null event_type,
+null currency_conversion_date,
+null currency_conversion_type,
+null currency_conversion_rate,
+xxen_util.description(gb.actual_flag,'BATCH_TYPE',101) balance_type,
+(select gbv.budget_name from gl_budget_versions gbv where gb.budget_version_id=gbv.budget_version_id) budget_name,
+(select get.encumbrance_type from gl_encumbrance_types get where get.encumbrance_type_id = gb.encumbrance_type_id) encumbrance_type,
+null conversion_date,
+null conversion_type,
+null conversion_rate,
+null accounting_event_description,
+null accounting_date,
+null transaction_date,
+null transaction_number,
+-- Document Sequences
+null document_seq_id,      
+null document_seq_name,       
+null document_seq_value,
+null sub_doc_seq_id, 
+null sub_doc_seq_name,
+null sub_doc_seq_val,
+null gl_close_acct_seq_val,
+null sl_close_acct_seq_val,
+null reporting_seq,
+null reconciliation_reference,
+&dff_cols_null
+null sl_source,
+null sl_batch_no,
+--Assets
+null asset_number,
+null expense_account,
+--AP
+null invoice_number,
+null description,
+null invoice_date,
+null gl_date,
+null invoice_currency_code,
+null payment_currency_code,
+null payment_method_code,
+null invoice_amount,
+null purchase_order,
+null po_description,
+null release,
+null po_quantity,
+null requisition,
+null requisition_line,
+null goods_receipt_number,
+--AR
+null sales_order,
+null salesperson,
+null invoice_rule,
+null accounting_rule,
+null vendor_or_customer_number,
+null vendor_or_customer_name,
+null vendor_or_customer_site,
+null cash_receipt_number,
+--Projects
+null project,
+null task,
+null expenditure_group,
+null expenditure_class_code,
+null expenditure_status_code,
+null expenditure_category,
+null expenditure_type,
+null expenditure_type_description,
+null expenditure_item_date,
+null expenditure_item_quantity,
+null expenditure_unit_of_measure,
+null employee_name,
+null employee_number,
+--Payroll
+null job,
+null position,
+null assignment_organization,
+--WIP
+null department_code,
+null resource_code,
+null wip_job,
+null operation_seq_num,
+null transaction_quantity,
+null transaction_uom,
+null primary_quantity,
+--Inventory
+null inv_transaction_date,
+null inv_organization,
+null inv_subinventory,
+null inv_item,
+null inv_item_description,
+null inv_transaction_unit_cost,
+null inv_actual_unit_cost,
+null inv_transaction_reference,
+null inv_transaction_source_type,
+null inv_transaction_type,
+null inv_transaction_source,
+null inv_transaction_id,
+null write_off_comments,
+null operating_unit,
+--AP/AR MDM Party/Site Identifier
+null mdm_party_value,
+null mdm_party_desc,
+--Record history and ID columns
+null journal_created_by,
+null journal_creation_date,
+null application,
+null je_batch_id,
+null je_header_id,
+null dff_context,
+null application_id,
+null ae_header_id,
+null ae_line_num,
+null event_id,
+null event_type_code,
+null event_date,
+null accounting_class_code,
+null entity_code,
+&segments_with_desc
+&contra_account_segments2
+&hierarchy_segment
+null source_id_int_1,
+gp.start_date-1 period_date,
+gp.period_name period,
+'Balance' record_type,
+gcck.chart_of_accounts_id,
+(
+select distinct
+fifs.flex_value_set_id
+from
+fnd_id_flex_segments fifs,
+fnd_flex_values ffv
+where
+gcck.chart_of_accounts_id=fifs.id_flex_num and
+fifs.application_id=101 and
+fifs.id_flex_code='GL#' and
+fifs.application_column_name='&hierarchy_segment_column' and
+fifs.flex_value_set_id=ffv.flex_value_set_id and
+ffv.parent_flex_value_low is null and
+ffv.summary_flag='N' and
+7=7
+) flex_value_set_id,
+null view_transaction
+from
+gl_ledgers gl,
+gl_periods gp,
+gcck,
+(
+select
+gb.ledger_id,
+gb.currency_code,
+gb.actual_flag,
+gb.budget_version_id,
+gb.encumbrance_type_id,
+to_number(null) template_id,
+sum(gb.begin_balance_dr) begin_balance_dr,
+sum(gb.begin_balance_cr) begin_balance_cr,
+sum(gb.period_net_dr) period_net_dr,
+sum(gb.period_net_cr) period_net_cr
+from
+gcck,
+gl_balances gb
+where
+4=4 and
+&gl_flex_value_security
+(:account_type is null or gcck.gl_account_type=xxen_util.lookup_code(:account_type,'ACCOUNT_TYPE',0)) and
+gcck.code_combination_id=gb.code_combination_id and
+gb.period_name=nvl(:period_name,:period_name_from) and
+gb.template_id is null
+group by
+gb.ledger_id,
+gb.currency_code,
+gb.actual_flag,
+gb.budget_version_id,
+gb.encumbrance_type_id
+) gb,
+(select gdr.* from gl_daily_rates gdr where gdr.to_currency=:revaluation_currency and gdr.conversion_type=(select gdct.conversion_type from gl_daily_conversion_types gdct where gdct.user_conversion_type=:revaluation_conversion_type)) gdr
+where
+:show_balances='All Accounts Grouped' and
+(:ledger is null or gl.name=:ledger) and
+gp.period_name=nvl(:period_name,:period_name_from) and
+gl.period_set_name=gp.period_set_name and
+gb.template_id=gcck.code_combination_id(+) and --template_id is always null, so the account alias null extends and its select list columns render empty
+gl.ledger_id=gb.ledger_id and
+gl.currency_code=gb.currency_code and
+gp.start_date=gdr.conversion_date(+) and
+decode(gb.currency_code,:revaluation_currency,null,gb.currency_code)=gdr.from_currency(+)
+union all
+select -- GL Closing Balance grouped
+'ο'||gp.period_name||' Close Bal' period_name,
+'99 '||gp.period_name||' Close Bal' period_name_label,
+gl.name ledger,
+null source_name,
+null reference,
+null category_name,
+null batch_name,
+null batch_status,
+null posted_date,
+null journal_name,
+null journal_description,
+null tax_status_code,
+null line_number,
+gcck.concatenated_segments,
+fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_seg', 'SQLGL', 'GL#', gcck.chart_of_accounts_id, null, gcck.code_combination_id, 'ALL', 'Y', 'DESCRIPTION') concatenated_segments_desc,
+null line_entered_dr,
+null line_entered_cr,
+null line_entered_amount,
+nvl(gb.begin_balance_dr,0)+nvl(gb.period_net_dr,0) line_accounted_dr,
+nvl(gb.begin_balance_cr,0)+nvl(gb.period_net_cr,0) line_accounted_cr,
+nvl(gb.begin_balance_dr,0)-nvl(gb.begin_balance_cr,0)+nvl(gb.period_net_dr,0)-nvl(gb.period_net_cr,0) line_accounted_amount,
+null line_description,
+null tax_rate_code,
+null tax_line,
+null taxable_line,
+null amount_includes_tax,
+null accounting_class,
+xxen_util.meaning(gcck.gl_account_type,'ACCOUNT_TYPE',0) account_type,
+&segment_columns
+null entered_dr,
+null entered_cr,
+null entered_amount,
+null transaction_currency,
+nvl(gb.begin_balance_dr,0)+nvl(gb.period_net_dr,0) accounted_dr,
+nvl(gb.begin_balance_cr,0)+nvl(gb.period_net_cr,0) accounted_cr,
+nvl(gb.begin_balance_dr,0)-nvl(gb.begin_balance_cr,0)+nvl(gb.period_net_dr,0)-nvl(gb.period_net_cr,0) accounted_amount,
+gl.currency_code ledger_currency,
+&revaluation_columns_balc
+null event_type,
+null currency_conversion_date,
+null currency_conversion_type,
+null currency_conversion_rate,
+xxen_util.description(gb.actual_flag,'BATCH_TYPE',101) balance_type,
+(select gbv.budget_name from gl_budget_versions gbv where gb.budget_version_id=gbv.budget_version_id) budget_name,
+(select get.encumbrance_type from gl_encumbrance_types get where get.encumbrance_type_id = gb.encumbrance_type_id) encumbrance_type,
+null conversion_date,
+null conversion_type,
+null conversion_rate,
+null accounting_event_description,
+null accounting_date,
+null transaction_date,
+null transaction_number,
+-- Document Sequences
+null document_seq_id,      
+null document_seq_name,       
+null document_seq_value,
+null sub_doc_seq_id, 
+null sub_doc_seq_name,
+null sub_doc_seq_val,
+null gl_close_acct_seq_val,
+null sl_close_acct_seq_val,
+null reporting_seq,
+null reconciliation_reference,
+&dff_cols_null
+null sl_source,
+null sl_batch_no,
+--Assets
+null asset_number,
+null expense_account,
+--AP
+null invoice_number,
+null description,
+null invoice_date,
+null gl_date,
+null invoice_currency_code,
+null payment_currency_code,
+null payment_method_code,
+null invoice_amount,
+null purchase_order,
+null po_description,
+null release,
+null po_quantity,
+null requisition,
+null requisition_line,
+null goods_receipt_number,
+--AR
+null sales_order,
+null salesperson,
+null invoice_rule,
+null accounting_rule,
+null vendor_or_customer_number,
+null vendor_or_customer_name,
+null vendor_or_customer_site,
+null cash_receipt_number,
+--Projects
+null project,
+null task,
+null expenditure_group,
+null expenditure_class_code,
+null expenditure_status_code,
+null expenditure_category,
+null expenditure_type,
+null expenditure_type_description,
+null expenditure_item_date,
+null expenditure_item_quantity,
+null expenditure_unit_of_measure,
+null employee_name,
+null employee_number,
+--Payroll
+null job,
+null position,
+null assignment_organization,
+--WIP
+null department_code,
+null resource_code,
+null wip_job,
+null operation_seq_num,
+null transaction_quantity,
+null transaction_uom,
+null primary_quantity,
+--Inventory
+null inv_transaction_date,
+null inv_organization,
+null inv_subinventory,
+null inv_item,
+null inv_item_description,
+null inv_transaction_unit_cost,
+null inv_actual_unit_cost,
+null inv_transaction_reference,
+null inv_transaction_source_type,
+null inv_transaction_type,
+null inv_transaction_source,
+null inv_transaction_id,
+null write_off_comments,
+null operating_unit,
+--AP/AR MDM Party/Site Identifier
+null mdm_party_value,
+null mdm_party_desc,
+--Record history and ID columns
+null journal_created_by,
+null journal_creation_date,
+null application,
+null je_batch_id,
+null je_header_id,
+null dff_context,
+null application_id,
+null ae_header_id,
+null ae_line_num,
+null event_id,
+null event_type_code,
+null event_date,
+null accounting_class_code,
+null entity_code,
+&segments_with_desc
+&contra_account_segments2
+&hierarchy_segment
+null source_id_int_1,
+gp.end_date period_date,
+gp.period_name period,
+'Balance' record_type,
+gcck.chart_of_accounts_id,
+(
+select distinct
+fifs.flex_value_set_id
+from
+fnd_id_flex_segments fifs,
+fnd_flex_values ffv
+where
+gcck.chart_of_accounts_id=fifs.id_flex_num and
+fifs.application_id=101 and
+fifs.id_flex_code='GL#' and
+fifs.application_column_name='&hierarchy_segment_column' and
+fifs.flex_value_set_id=ffv.flex_value_set_id and
+ffv.parent_flex_value_low is null and
+ffv.summary_flag='N' and
+7=7
+) flex_value_set_id,
+null view_transaction
+from
+gl_ledgers gl,
+gl_periods gp,
+gcck,
+(
+select
+gb.ledger_id,
+gb.currency_code,
+gb.actual_flag,
+gb.budget_version_id,
+gb.encumbrance_type_id,
+to_number(null) template_id,
+sum(gb.begin_balance_dr) begin_balance_dr,
+sum(gb.begin_balance_cr) begin_balance_cr,
+sum(gb.period_net_dr) period_net_dr,
+sum(gb.period_net_cr) period_net_cr
+from
+gcck,
+gl_balances gb
+where
+4=4 and
+&gl_flex_value_security
+(:account_type is null or gcck.gl_account_type=xxen_util.lookup_code(:account_type,'ACCOUNT_TYPE',0)) and
+gcck.code_combination_id=gb.code_combination_id and
+gb.period_name=nvl(:period_name,:period_name_to) and
+gb.template_id is null
+group by
+gb.ledger_id,
+gb.currency_code,
+gb.actual_flag,
+gb.budget_version_id,
+gb.encumbrance_type_id
+) gb,
+(select gdr.* from gl_daily_rates gdr where gdr.to_currency=:revaluation_currency and gdr.conversion_type=(select gdct.conversion_type from gl_daily_conversion_types gdct where gdct.user_conversion_type=:revaluation_conversion_type)) gdr
+where
+:show_balances='All Accounts Grouped' and
+(:ledger is null or gl.name=:ledger) and
+gp.period_name=nvl(:period_name,:period_name_to) and
+gl.period_set_name=gp.period_set_name and
+gb.template_id=gcck.code_combination_id(+) and --template_id is always null, so the account alias null extends and its select list columns render empty
+gl.ledger_id=gb.ledger_id and
+gl.currency_code=gb.currency_code and
 gp.end_date=gdr.conversion_date(+) and
 decode(gb.currency_code,:revaluation_currency,null,gb.currency_code)=gdr.from_currency(+)
 ) x,

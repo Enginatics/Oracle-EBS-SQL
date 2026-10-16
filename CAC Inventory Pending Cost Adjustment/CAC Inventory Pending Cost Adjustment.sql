@@ -1,56 +1,51 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Inventory Pending Cost Adjustment
--- Description: Report showing the potential standard cost changes for onhand and intransit inventory value which you own.  If you enter a period name this report uses the quantities from the month-end snapshot; if you leave the period name blank it uses the real-time quantities.  The Cost Type (Old) defaults to your Costing Method Cost Type (Average, Standard, etc.); the Currency Conversion Dates default to the latest open or closed accounting period; and the To Currency Code and the Organization Code default from the organization code set for this session.
-
-If using this report for reporting after the standard cost update has run this report requires both the before and after cost types available for reporting purposes.  Using the item cost copy please save your Frozen costs before running the standard cost update.
-
-Parameters:
-===========
-Period Name (Closed):  to use the month-end quantities, choose a closed inventory accounting period (optional).
-Cost Type (New):  enter the Cost Type that has the revised or new item costs (mandatory).
-Cost Type (Old):  enter the Cost Type that has the existing or current item costs, defaults to the Frozen Cost Type (mandatory).
-Currency Conversion Date (New):  enter the currency conversion date to use for the new item costs (mandatory).
-Currency Conversion Type (New):  enter the currency conversion type to use for the new item costs, defaults to Corporate (mandatory).
-Currency Conversion Date (Old):  enter the currency conversion date to use for the existing item costs (mandatory).
-Currency Conversion Type (Old):  enter the currency conversion type to use for the existing item costs, defaults to Corporate (mandatory).
-To Currency Code:  enter the currency code used to translate the item costs and inventory values into.
-Category Set 1:  the first item category set to report, typically the Cost or Product Line Category Set (optional).
-Category Set 2:  The second item category set to report, typically the Inventory Category Set (optional).
-Only Items in New Cost Type:  enter Yes to only report the items in the New Cost Type.  Specify No if you want to use this report to reconcile overall inventory value (mandatory).
-Include Items With No Quantities:  enter Yes to report items that do not have onhand quantities (mandatory).
-Include Zero Item Cost Differences:  enter Yes to include items with a zero item cost difference, defaults to a value of No (mandatory).
-Item Number:  specific buy or make item you wish to report (optional).
-Organization Code:  enter the inventory organization(s) you wish to report, defaults to your session's inventory organization (optional).
-Operating Unit:  enter the specific operating unit(s) you wish to report (optional).
-Ledger:  enter the specific ledger(s) you wish to report (optional).
-
-/* +=============================================================================+
--- |  Copyright 2008-2024 Douglas Volz Consulting, Inc
--- |  All rights reserved
--- |  Permission to use this code is granted provided the original author is
--- |  acknowledged.  No warranties, express or otherwise is included in this permission.
--- |
--- |  Original Author: Douglas Volz (doug@volzconsulting.com)
--- |
--- |  Program Name:  xxx_std_cost_pending_adj_rept.sql
--- | 
--- |  Version Modified on  Modified  by   Description
--- |  ======= =========== ============== =========================================
--- |      1.0 21 Nov 2010 Douglas Volz   Created initial Report for prior client
--- |     1.12 23 Sep 2023 Douglas Volz   Add parameter to not include zero item cost differences,
--- |                                     removed tabs and added org access controls.
--- |     1.13 22 Oct 2023 Andy Haack     Fix for G/L Daily Currency Rates
--- |     1.14 07 Feb 2024 Douglas Volz   Add item master and costing lot sizes, use default controls, 
--- |                                     based on rollup and shrinkage rate columns
--- +=============================================================================+*/
-
-
--- Excel Examle Output: https://www.enginatics.com/example/cac-inventory-pending-cost-adjustment/
+-- Description: Report showing the potential standard cost changes for onhand and intransit inventory value which you own. If you enter a period name this report uses the quantities from the month-end snapshot; if you leave the period name blank it uses the real-time quantities. The Cost Type (Old) defaults to your Costing Method Cost Type (Average, Standard, etc.); the Currency Conversion Dates default to the latest open or closed accounting period; and the To Currency Code and the Organization Code default from the organization code set for this session.
+-- If using this report for reporting after the standard cost update has run this report requires both the before and after cost types available for reporting purposes. Using the item cost copy please save your Frozen costs before running the standard cost update.
+-- Parameters:
+-- ===========
+-- Period Name (Closed): to use the month-end quantities, choose a closed inventory accounting period (optional).
+-- Cost Type (New): enter the Cost Type that has the revised or new item costs (mandatory).
+-- Cost Type (Old): enter the Cost Type that has the existing or current item costs, defaults to the Frozen Cost Type (mandatory).
+-- Currency Conversion Date (New): enter the currency conversion date to use for the new item costs (mandatory).
+-- Currency Conversion Type (New): enter the currency conversion type to use for the new item costs, defaults to Corporate (mandatory).
+-- Currency Conversion Date (Old): enter the currency conversion date to use for the existing item costs (mandatory).
+-- Currency Conversion Type (Old): enter the currency conversion type to use for the existing item costs, defaults to Corporate (mandatory).
+-- To Currency Code: enter the currency code used to translate the item costs and inventory values into.
+-- Category Set 1: the first item category set to report, typically the Cost or Product Line Category Set (optional).
+-- Category Set 2: The second item category set to report, typically the Inventory Category Set (optional).
+-- Only Items in New Cost Type: enter Yes to only report the items in the New Cost Type. Specify No if you want to use this report to reconcile overall inventory value (mandatory).
+-- Include Items With No Quantities: enter Yes to report items that do not have onhand quantities (mandatory).
+-- Include Zero Item Cost Differences: enter Yes to include items with a zero item cost difference, defaults to a value of No (mandatory).
+-- Item Number: specific buy or make item you wish to report (optional).
+-- Organization Code: enter the inventory organization(s) you wish to report, defaults to your session's inventory organization (optional).
+-- Operating Unit: enter the specific operating unit(s) you wish to report (optional).
+-- Ledger: enter the specific ledger(s) you wish to report (optional).
+-- / +=============================================================================+
+-- -- | Copyright 2008-2024 Douglas Volz Consulting, Inc
+-- -- | All rights reserved
+-- -- | Permission to use this code is granted provided the original author is
+-- -- | acknowledged. No warranties, express or otherwise is included in this permission.
+-- -- |
+-- -- | Original Author: Douglas Volz (doug@volzconsulting.com)
+-- -- |
+-- -- | Program Name: xxxstdcostpendingadjrept.sql
+-- -- |
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== ============== =========================================
+-- -- | 1.0 21 Nov 2010 Douglas Volz Created initial Report for prior client
+-- -- | 1.12 23 Sep 2023 Douglas Volz Add parameter to not include zero item cost differences,
+-- -- | removed tabs and added org access controls.
+-- -- | 1.13 22 Oct 2023 Andy Haack Fix for G/L Daily Currency Rates
+-- -- | 1.14 07 Feb 2024 Douglas Volz Add item master and costing lot sizes, use default controls,
+-- -- | based on rollup and shrinkage rate columns
+-- -- +=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-inventory-pending-cost-adjustment/
 -- Library Link: https://www.enginatics.com/reports/cac-inventory-pending-cost-adjustment/
 -- Run Report: https://demo.enginatics.com/
 
@@ -338,7 +333,6 @@ select  mp.ledger                                                        Ledger,
         case
           when round((nvl(cic1.item_cost,0) - nvl(cic2.item_cost,0)),5) = 0 then 0
           when round((nvl(cic1.item_cost,0) - nvl(cic2.item_cost,0)),5) = round(nvl(cic1.item_cost,0),5) then  100
-          when round((nvl(cic1.item_cost,0) - nvl(cic2.item_cost,0)),5) = round(nvl(cic2.item_cost,0),5) then -100
           else round((nvl(cic1.item_cost,0) - nvl(cic2.item_cost,0)) / nvl(cic2.item_cost,0) * 100,1)
         end                                                              Percent_Difference,
         -- End revision for version 1.9

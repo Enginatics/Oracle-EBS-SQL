@@ -1,15 +1,15 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PO Cancelled Requisitions
 -- Description: Application: Purchasing
-Source: Cancelled Requisition Report (XML)
-Short Name: POXRQCRQ_XML
-DB package: PO_POXRQCRQ_XMLP_PKG
--- Excel Examle Output: https://www.enginatics.com/example/po-cancelled-requisitions/
+-- Source: Cancelled Requisition Report (XML)
+-- Short Name: POXRQCRQXML
+-- DB package: POPOXRQCRQXMLPPKG
+-- Excel Example Output: https://www.enginatics.com/example/po-cancelled-requisitions/
 -- Library Link: https://www.enginatics.com/reports/po-cancelled-requisitions/
 -- Run Report: https://demo.enginatics.com/
 

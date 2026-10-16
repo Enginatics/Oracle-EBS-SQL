@@ -1,16 +1,14 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: OKS Contract Termination Upload
--- Description: Terminates service contracts (full termination), terminates individual contract lines and sublines (partial termination), and deletes lines from Entered contracts - the Terminate action of the Service Contracts Authoring form (okc_terminate_pub / okc_contract_pub).
-
-Set Terminate Contract to Yes on any row of the contract for a full termination, Terminate Line to Yes to terminate that row's line or subline, or Delete Line to Yes to delete the line (Entered contracts only). Termination Date and Termination Reason are required for terminations.
-
-A termination cannot be undone by this upload - statuses, credits, billing schedules and history are produced by the Oracle termination engine exactly as from the form.
--- Excel Examle Output: https://www.enginatics.com/example/oks-contract-termination-upload/
+-- Description: Terminates service contracts (full termination), terminates individual contract lines and sublines (partial termination), and deletes lines from Entered contracts - the Terminate action of the Service Contracts Authoring form (okcterminatepub / okccontractpub).
+-- Set Terminate Contract to Yes on any row of the contract for a full termination, Terminate Line to Yes to terminate that row's line or subline, or Delete Line to Yes to delete the line (Entered contracts only). Termination Date and Termination Reason are required for terminations.
+-- A termination cannot be undone by this upload - statuses, credits, billing schedules and history are produced by the Oracle termination engine exactly as from the form.
+-- Excel Example Output: https://www.enginatics.com/example/oks-contract-termination-upload/
 -- Library Link: https://www.enginatics.com/reports/oks-contract-termination-upload/
 -- Run Report: https://demo.enginatics.com/
 

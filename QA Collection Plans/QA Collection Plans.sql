@@ -1,18 +1,15 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: QA Collection Plans
 -- Description: One row per Oracle Quality collection plan, with the plan type, effective dates, instructions, specification assignment type, electronic signature mode and the template plan it was copied from, together with the names of the plan's generated results view and import view and counts of the elements, element values, transactions, transaction triggers, action rules, actions, child plans and parent plans that hang off it.
-
-Oracle Quality stores every collection result generically in qa_results, and each plan gets its own dynamically generated results view and import view that map that plan's elements onto the qa_results character columns. This report shows both view names next to a flag stating whether the view actually exists in the database, which is the quickest way to find a plan whose generated view was never built or has since been dropped, because such a plan cannot be queried or imported through it. The counts turn the report into a one page map of a Quality setup: which plans carry elements but collect nothing, which plans fire actions on data entry, and which plans are nested into a parent child structure.
-
-Active is derived from the effective dates and is Yes while the plan is in effect today, a plan with no effective dates always being active. Specification Type states which specification the plan matches its results against at collection time, taken from the item, the supplier or the customer, or none at all. Enabled Elements counts only the elements that are enabled on the plan, so a difference against Elements identifies a plan carrying elements the operator never sees.
-
-Filter with the optional Organization, Collection Plan, Plan Type and Collection Element parameters, Collection Element restricting the report to the plans that use that element, or set Active Plans Only or Template Plans Only to Yes. Leaving Organization blank returns every collection plan the responsibility has inventory organization access to, plus the seeded template plans, which are not owned by an inventory organization and therefore show a blank Organization Code; Template Plans Only returns exactly those seeded plans.
--- Excel Examle Output: https://www.enginatics.com/example/qa-collection-plans/
+-- Oracle Quality stores every collection result generically in qaresults, and each plan gets its own dynamically generated results view and import view that map that plan's elements onto the qaresults character columns. This report shows both view names next to a flag stating whether the view actually exists in the database, which is the quickest way to find a plan whose generated view was never built or has since been dropped, because such a plan cannot be queried or imported through it. The counts turn the report into a one page map of a Quality setup: which plans carry elements but collect nothing, which plans fire actions on data entry, and which plans are nested into a parent child structure.
+-- Active is derived from the effective dates and is Yes while the plan is in effect today, a plan with no effective dates always being active. Specification Type states which specification the plan matches its results against at collection time, taken from the item, the supplier or the customer, or none at all. Enabled Elements counts only the elements that are enabled on the plan, so a difference against Elements identifies a plan carrying elements the operator never sees.
+-- Filter with the optional Organization, Collection Plan, Plan Type and Collection Element parameters, Collection Element restricting the report to the plans that use that element, or set Active Plans Only or Template Plans Only to Yes. Leaving Organization blank returns every collection plan the responsibility has inventory organization access to, plus the seeded template plans, which are not owned by an inventory organization and therefore show a blank Organization Code; Template Plans Only returns exactly those seeded plans.
+-- Excel Example Output: https://www.enginatics.com/example/qa-collection-plans/
 -- Library Link: https://www.enginatics.com/reports/qa-collection-plans/
 -- Run Report: https://demo.enginatics.com/
 

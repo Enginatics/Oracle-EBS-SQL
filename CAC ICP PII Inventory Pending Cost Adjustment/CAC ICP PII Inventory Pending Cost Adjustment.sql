@@ -1,54 +1,48 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC ICP PII Inventory Pending Cost Adjustment
--- Description: Report showing potential standard cost changes for onhand and intransit inventory value which you own, for gross, profit in inventory and net inventory values.  If you enter a period name this report uses quantities from the month-end snapshot; if you leave the period name blank it uses the real-time quantities.  The Cost Type (Old) defaults to your Costing Method Cost Type (Average, Standard, etc.), the Currency Conversion Dates default to the current accounting period, and the To Currency Code and the Organization Code default from the organization code set for this session.  And to use the quantities from the month-end snapshot, you can only choose closed accounting periods as the month-end snapshot is created when you close the inventory accounting period.
-
-Note:  If using this report for reporting after the standard cost update this report requires both the before and after cost types available after the standard cost update is run.
-           Please save your frozen costs to another Cost Type before running the standard cost update, using the item cost copy.
-
-Hidden Parameters:
-Sign PII:  hidden parameter to set the sign of the profit in inventory amounts.  This parameter determines if PII is normally entered as a positive or negative amount.
-Default value for this report assumes PII costs are entered as positive amounts.
-
-Displayed Parameters:
-Cost Type (New):  the new cost type to be reported, mandatory
-Cost Type (Old):  the old cost type to be reported, mandatory
-PII Cost Type (New):  the new PII Cost Type you wish to report, such as PII or ICP, mandatory
-PII Cost Type (Old):  the prior or old PII Cost Type you wish to report, such as PII or ICP, mandatory
-PII Sub-Element:  the sub-element or resource for profit in inventory, such as PII or ICP, mandatory
-Currency Conversion Date(New):  the new currency conversion date, mandatory
-Currency Conversion Date (Old):  the old currency conversion date, mandatory
-Currency Conversion Type (New):  the desired currency conversion type to use for cost type 1, mandatory
-Currency Conversion Type (Old):  the desired currency conversion type to use for cost type 2, mandatory
-To Currency Code:  the currency you are converting into
-Period Name:  enter a Period Name to use the month-end snapshot; if no  period name is entered will use the real-time quantities
-Category Set1:  the first item category set to report, typically the  Cost or Product Line Category Set
-Category Set2:  the second item category set to report, typically the Inventory Category Set
-Include Zero Quantities:  include items with no onhand or no intransit quantities
-Only Items in Cost Type:  only report items in the New Cost Type
-Item Number:  specific item number to report, leave blank for all operating units, optional
-Organization Code:  specific inventory organization you wish to report, optional
-Operating Unit:  Operating Unit you wish to report, leave blank for all operating units, optional
-Ledger:  general ledger you wish to report, leave blank for all ledgers, optional
-
--- |  Copyright 2008-2024 Douglas Volz Consulting, Inc.
--- |  All rights reserved.
--- |  Permission to use this code is granted provided the original author is
--- |  acknowledged.  No warranties, express or otherwise is included in this permission.
-
--- |  Version Modified on  Modified  by   Desc
--- |  ======= =========== ============== =========================================
--- |      1.0 21 Nov 2010 Douglas Volz   Created initial Report for prior client based on BBCI_INV_VALUE_STD_ADJ_FX_REPT1.7.sql
--- |     1.14 07 Feb 2024 Douglas Volz   Add item master and costing lot sizes, use default controls,
--- |                                     based on rollup and shrinkage rate columns.  Added in GL and OU security restrictions.
--- |     1.15 25 Jun 2024 Douglas Volz   Reinstalled missing parameter, To Currency Code.  Commented out GL and OU security restrictions.
--- +=============================================================================
-
--- Excel Examle Output: https://www.enginatics.com/example/cac-icp-pii-inventory-pending-cost-adjustment/
+-- Description: Report showing potential standard cost changes for onhand and intransit inventory value which you own, for gross, profit in inventory and net inventory values. If you enter a period name this report uses quantities from the month-end snapshot; if you leave the period name blank it uses the real-time quantities. The Cost Type (Old) defaults to your Costing Method Cost Type (Average, Standard, etc.), the Currency Conversion Dates default to the current accounting period, and the To Currency Code and the Organization Code default from the organization code set for this session. And to use the quantities from the month-end snapshot, you can only choose closed accounting periods as the month-end snapshot is created when you close the inventory accounting period.
+-- Note: If using this report for reporting after the standard cost update this report requires both the before and after cost types available after the standard cost update is run.
+-- Please save your frozen costs to another Cost Type before running the standard cost update, using the item cost copy.
+-- Hidden Parameters:
+-- Sign PII: hidden parameter to set the sign of the profit in inventory amounts. This parameter determines if PII is normally entered as a positive or negative amount.
+-- Default value for this report assumes PII costs are entered as positive amounts.
+-- Displayed Parameters:
+-- Cost Type (New): the new cost type to be reported, mandatory
+-- Cost Type (Old): the old cost type to be reported, mandatory
+-- PII Cost Type (New): the new PII Cost Type you wish to report, such as PII or ICP, mandatory
+-- PII Cost Type (Old): the prior or old PII Cost Type you wish to report, such as PII or ICP, mandatory
+-- PII Sub-Element: the sub-element or resource for profit in inventory, such as PII or ICP, mandatory
+-- Currency Conversion Date(New): the new currency conversion date, mandatory
+-- Currency Conversion Date (Old): the old currency conversion date, mandatory
+-- Currency Conversion Type (New): the desired currency conversion type to use for cost type 1, mandatory
+-- Currency Conversion Type (Old): the desired currency conversion type to use for cost type 2, mandatory
+-- To Currency Code: the currency you are converting into
+-- Period Name: enter a Period Name to use the month-end snapshot; if no period name is entered will use the real-time quantities
+-- Category Set1: the first item category set to report, typically the Cost or Product Line Category Set
+-- Category Set2: the second item category set to report, typically the Inventory Category Set
+-- Include Zero Quantities: include items with no onhand or no intransit quantities
+-- Only Items in Cost Type: only report items in the New Cost Type
+-- Item Number: specific item number to report, leave blank for all operating units, optional
+-- Organization Code: specific inventory organization you wish to report, optional
+-- Operating Unit: Operating Unit you wish to report, leave blank for all operating units, optional
+-- Ledger: general ledger you wish to report, leave blank for all ledgers, optional
+-- -- | Copyright 2008-2024 Douglas Volz Consulting, Inc.
+-- -- | All rights reserved.
+-- -- | Permission to use this code is granted provided the original author is
+-- -- | acknowledged. No warranties, express or otherwise is included in this permission.
+-- -- | Version Modified on Modified by Desc
+-- -- | ======= =========== ============== =========================================
+-- -- | 1.0 21 Nov 2010 Douglas Volz Created initial Report for prior client based on BBCIINVVALUESTDADJFXREPT1.7.sql
+-- -- | 1.14 07 Feb 2024 Douglas Volz Add item master and costing lot sizes, use default controls,
+-- -- | based on rollup and shrinkage rate columns. Added in GL and OU security restrictions.
+-- -- | 1.15 25 Jun 2024 Douglas Volz Reinstalled missing parameter, To Currency Code. Commented out GL and OU security restrictions.
+-- -- +=============================================================================
+-- Excel Example Output: https://www.enginatics.com/example/cac-icp-pii-inventory-pending-cost-adjustment/
 -- Library Link: https://www.enginatics.com/reports/cac-icp-pii-inventory-pending-cost-adjustment/
 -- Run Report: https://demo.enginatics.com/
 
@@ -353,7 +347,6 @@ select  mp.ledger                                                        Ledger,
         case
            when round((nvl(cic1.item_cost,0) - nvl(cic2.item_cost,0)),5) = 0 then 0
            when round((nvl(cic1.item_cost,0) - nvl(cic2.item_cost,0)),5) = round(nvl(cic1.item_cost,0),5) then  100
-           when round((nvl(cic1.item_cost,0) - nvl(cic2.item_cost,0)),5) = round(nvl(cic2.item_cost,0),5) then -100
           else round((nvl(cic1.item_cost,0) - nvl(cic2.item_cost,0)) / nvl(cic2.item_cost,0) * 100,1)
         end                                                             Gross_Percent_Difference,
 -- Revision for version 1.11 for PII
@@ -364,7 +357,6 @@ select  mp.ledger                                                        Ledger,
         case
            when round((nvl(pii1.item_cost,0) - nvl(pii2.item_cost,0)),5) = 0 then 0
            when round((nvl(pii1.item_cost,0) - nvl(pii2.item_cost,0)),5) = round(nvl(pii1.item_cost,0),5) then  100
-           when round((nvl(pii1.item_cost,0) - nvl(pii2.item_cost,0)),5) = round(nvl(pii2.item_cost,0),5) then -100
           else round((nvl(pii1.item_cost,0) - nvl(pii2.item_cost,0)) / nvl(pii2.item_cost,0) * 100,1)
         end                                                             PII_Percent_Difference,
 -- ========================================================

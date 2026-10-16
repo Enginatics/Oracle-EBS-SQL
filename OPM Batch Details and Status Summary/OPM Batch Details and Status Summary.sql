@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: OPM Batch Details and Status Summary
 -- Description: Oracle Process Manufacturing (OPM) batch details and status summary: one row per production batch showing batch status and type, recipe, primary product and planned/actual output quantity, planned versus actual start and completion dates, and whether the batch completed on time. Set a pending/released status with plan-date filters for a planned-production view.
--- Excel Examle Output: https://www.enginatics.com/example/opm-batch-details-and-status-summary/
+-- Excel Example Output: https://www.enginatics.com/example/opm-batch-details-and-status-summary/
 -- Library Link: https://www.enginatics.com/reports/opm-batch-details-and-status-summary/
 -- Run Report: https://demo.enginatics.com/
 

@@ -1,24 +1,23 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: AR Applied Receipts
 -- Description: Application: Receivables
-Description: Receivables Applied Receipts Register
-
-Provided Templates:
-Default: Detail - Detail Listing with no Pivot Summarization
-Pivot: Summary by Apply Date - Summary by Balancing Segment, Receipt Currency, Apply Date
-Pivot: Summary by Batch - Summary by Balancing Segment, Receipt Currency, Batch
-Pivot: Summary by Customer Name - Summary by Balancing Segment, Receipt Currency, Customer with drilldown to details
-Pivot: Summary by Debit Account - Summary by Balancing Segment, Account Segment, Debit Account, Receipt Currency
-Pivot: Summary by GL Date - Summary by Balancing Segment, Receipt Currency, GL Date
-
-Source: Applied Receipts Register
-Short Name: RXARARRG
--- Excel Examle Output: https://www.enginatics.com/example/ar-applied-receipts/
+-- Description: Receivables Applied Receipts Register
+-- Provided Templates:
+-- Default: Detail - Detail Listing with no Pivot Summarization
+-- Pivot: Summary by Apply Date - Summary by Balancing Segment, Receipt Currency, Apply Date
+-- Pivot: Summary by Batch - Summary by Balancing Segment, Receipt Currency, Batch
+-- Pivot: Summary by Customer Name - Summary by Balancing Segment, Receipt Currency, Customer with drilldown to details
+-- Pivot: Summary by Debit Account - Summary by Balancing Segment, Account Segment, Debit Account, Receipt Currency
+-- Pivot: Summary by GL Date - Summary by Balancing Segment, Receipt Currency, GL Date
+-- Source: Applied Receipts Register
+-- Short Name: RXARARRG
+-- When India Localization is installed, the following GST columns are also included: GST Registration No, GST PAN No, CESS Amount, CESS Rate, CGST Amount, CGST Non-Recoverable, CGST Recoverable, CGST Rate, Custom Amount, IGST Amount, IGST Non-Recoverable, IGST Recoverable, IGST Rate, Reverse Charge Flag, SGST Amount, SGST Non-Recoverable, SGST Recoverable, SGST Rate, Unclassified Tax Amount, Taxable Value, HSN SAC Code.
+-- Excel Example Output: https://www.enginatics.com/example/ar-applied-receipts/
 -- Library Link: https://www.enginatics.com/reports/ar-applied-receipts/
 -- Run Report: https://demo.enginatics.com/
 
@@ -150,8 +149,11 @@ select
  hp.party_name || ' - ' || hca.account_number cust_name_pivot_label,
  hca.account_number || ' - ' || hp.party_name cust_number_pivot_label,
  decode(:reporting_level,1000,gl.name,3000,haou.name,null) reporting_entity
+&il_reg_columns
+&il_columns_amt
 from
 &lp_table_list
+&il_from
 where
  acra.org_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11) and
  acra.org_id = haou.organization_id and
@@ -210,6 +212,7 @@ where
  nvl(:p_gl_date_low_h,sysdate) = nvl(:p_gl_date_low_h,sysdate) and
  nvl(:p_gl_date_high_h,sysdate) = nvl(:p_gl_date_high_h,sysdate) and
  1=1
+&il_where
 ) x
 where
  2=2

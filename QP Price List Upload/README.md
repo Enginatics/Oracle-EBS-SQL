@@ -1,14 +1,17 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'QP Price List Upload | Oracle EBS SQL Report'
 description: 'This upload supports the creation and update of Standard Price Lists in Oracle Advanced Pricing. The upload supports creation/update/deletion of the…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, Price, List, qp_currency_lists_vl, ra_terms_tl, qp_secu_list_headers_vl'
 permalink: /QP%20Price%20List%20Upload/
+report_name: 'QP Price List Upload'
+report_web_name: qp-price-list-upload
 ---
 
 # QP Price List Upload – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/qp-price-list-upload/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/qp-price-list-upload/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-price-list-upload) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-price-list-upload).
 
 ## Overview
 This upload supports the creation and update of Standard Price Lists in Oracle Advanced Pricing.
@@ -47,33 +50,33 @@ When downloading existing Price List data into the upload excel:
   - Line level Price Breaks and Pricing Attributes will be downloaded into separate rows in the excel
 
 This is to minimize the duplication of data in the excel. However, when entering data for upload Qualifiers, Secondary Price Lists, Price Breaks, and Pricing Attributes can be added in the same excel row.
-i.e. You can upload an excel row containing a header level qualifier, header level secondary price list, price list line details with associated price break and pricing attribute. 
+i.e. You can upload an excel row containing a header level qualifier, header level secondary price list, price list line details with associated price break and pricing attribute.
 
-
-
-
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-price-list-upload) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 
 ## Report Parameters
 Upload Mode, End Date Matching List Lines?, Price List, Price List Like, Product Attribute, Product Value (Item/Item Cat), Product Value (Other), Item Category Set, Item Category, Effective Date, Effective Date From, Effective Date To, Download Price List Lines, Line Type, Download Pricing Attributes, Download Qualifiers, Download Secondary Price Lists
 
 ## Oracle EBS Tables Used
-[qp_currency_lists_vl](https://www.enginatics.com/library/?pg=1&find=qp_currency_lists_vl), [ra_terms_tl](https://www.enginatics.com/library/?pg=1&find=ra_terms_tl), [qp_secu_list_headers_vl](https://www.enginatics.com/library/?pg=1&find=qp_secu_list_headers_vl), [qp_qualifiers_v](https://www.enginatics.com/library/?pg=1&find=qp_qualifiers_v), [qp_list_lines_v](https://www.enginatics.com/library/?pg=1&find=qp_list_lines_v), [mtl_system_items](https://www.enginatics.com/library/?pg=1&find=mtl_system_items)
+[qp_currency_lists_vl](https://www.enginatics.com/library/?pg=1&find=qp_currency_lists_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-price-list-upload), [ra_terms_tl](https://www.enginatics.com/library/?pg=1&find=ra_terms_tl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-price-list-upload), [qp_secu_list_headers_vl](https://www.enginatics.com/library/?pg=1&find=qp_secu_list_headers_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-price-list-upload), [qp_qualifiers_v](https://www.enginatics.com/library/?pg=1&find=qp_qualifiers_v&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-price-list-upload), [qp_list_lines_v](https://www.enginatics.com/library/?pg=1&find=qp_list_lines_v&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-price-list-upload), [mtl_system_items](https://www.enginatics.com/library/?pg=1&find=mtl_system_items&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-price-list-upload), [qp_secondary_price_lists_v](https://www.enginatics.com/library/?pg=1&find=qp_secondary_price_lists_v&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-price-list-upload), [qp_pricing_attributes](https://www.enginatics.com/library/?pg=1&find=qp_pricing_attributes&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-price-list-upload), [qp_price_breaks_v](https://www.enginatics.com/library/?pg=1&find=qp_price_breaks_v&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-price-list-upload)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Upload](https://www.enginatics.com/library/?pg=1&category[]=Upload)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-price-list-upload), [Upload](https://www.enginatics.com/library/?pg=1&category%5B%5D=Upload&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-price-list-upload)
 
-
+## Related Reports
+[QP Pricing Agreements](/QP%20Pricing%20Agreements/ "QP Pricing Agreements Oracle EBS SQL Report"), [QP Customer Pricing Engine Request](/QP%20Customer%20Pricing%20Engine%20Request/ "QP Customer Pricing Engine Request Oracle EBS SQL Report"), [QP Modifier Upload](/QP%20Modifier%20Upload/ "QP Modifier Upload Oracle EBS SQL Report"), [ONT Order Upload](/ONT%20Order%20Upload/ "ONT Order Upload Oracle EBS SQL Report"), [QP Modifier Details](/QP%20Modifier%20Details/ "QP Modifier Details Oracle EBS SQL Report"), [QP Price Lists](/QP%20Price%20Lists/ "QP Price Lists Oracle EBS SQL Report"), [CAC Intercompany SO Price List vs. Item Cost Comparison](/CAC%20Intercompany%20SO%20Price%20List%20vs-%20Item%20Cost%20Comparison/ "CAC Intercompany SO Price List vs. Item Cost Comparison Oracle EBS SQL Report"), [AR Customer Upload](/AR%20Customer%20Upload/ "AR Customer Upload Oracle EBS SQL Report"), [ONT Orders and Lines 11i](/ONT%20Orders%20and%20Lines%2011i/ "ONT Orders and Lines 11i Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/QP%20Price%20List%20Upload/QP%20Price%20List%20Upload.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-price-list-upload) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [](https://www.enginatics.com/example/qp-price-list-upload/) |
-| Blitz Report™ XML Import | [QP_Price_List_Upload.xml](https://www.enginatics.com/xml/qp-price-list-upload/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/qp-price-list-upload/](https://www.enginatics.com/reports/qp-price-list-upload/) |
+| Excel Example Output | [Example](https://www.enginatics.com/example/qp-price-list-upload/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-price-list-upload) |
+| Blitz Report™ XML Import | [QP_Price_List_Upload.xml](https://www.enginatics.com/xml/qp-price-list-upload/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-price-list-upload) |
+| SQL Source | [QP Price List Upload.sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/QP%20Price%20List%20Upload/QP%20Price%20List%20Upload.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/qp-price-list-upload/](https://www.enginatics.com/reports/qp-price-list-upload/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-price-list-upload) |
 
 ## Case Study & Technical Analysis: QP Price List Upload Report
 
@@ -143,18 +146,17 @@ Using an API-based upload for complex pricing list data is inherently more effic
 **3. Can this tool be used to manage promotional pricing (e.g., discounts, surcharges)?**
    This specific tool focuses on standard price lists. While price lists are foundational for pricing, promotional pricing (discounts, surcharges, buy/get offers) is typically managed through 'Modifiers' in Oracle Advanced Pricing. A separate upload tool (like the `QP Modifier Upload` report) would be used for those specific configurations.
 
-
 ---
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-price-list-upload)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-price-list-upload)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-price-list-upload)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-price-list-upload)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-price-list-upload)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-price-list-upload)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-price-list-upload)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

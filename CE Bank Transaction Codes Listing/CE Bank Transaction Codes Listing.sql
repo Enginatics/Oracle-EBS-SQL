@@ -1,17 +1,17 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CE Bank Transaction Codes Listing
 -- Description: Imported from BI Publisher
-Description: Bank Transaction Codes
-Application: Cash Management
-Source: Bank Transaction Codes Listing 
-Short Name: CEXTRXCD
-DB package: CE_CEXTRXCD_XMLP_PKG
--- Excel Examle Output: https://www.enginatics.com/example/ce-bank-transaction-codes-listing/
+-- Description: Bank Transaction Codes
+-- Application: Cash Management
+-- Source: Bank Transaction Codes Listing
+-- Short Name: CEXTRXCD
+-- DB package: CECEXTRXCDXMLPPKG
+-- Excel Example Output: https://www.enginatics.com/example/ce-bank-transaction-codes-listing/
 -- Library Link: https://www.enginatics.com/reports/ce-bank-transaction-codes-listing/
 -- Run Report: https://demo.enginatics.com/
 

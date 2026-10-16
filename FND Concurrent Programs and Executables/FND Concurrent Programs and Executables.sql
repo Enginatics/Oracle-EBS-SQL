@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: FND Concurrent Programs and Executables
 -- Description: Concurrent programs, executables and program parameters
--- Excel Examle Output: https://www.enginatics.com/example/fnd-concurrent-programs-and-executables/
+-- Excel Example Output: https://www.enginatics.com/example/fnd-concurrent-programs-and-executables/
 -- Library Link: https://www.enginatics.com/reports/fnd-concurrent-programs-and-executables/
 -- Run Report: https://demo.enginatics.com/
 

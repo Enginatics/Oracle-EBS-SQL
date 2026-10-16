@@ -1,24 +1,22 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CST Supply Chain Indented Bills of Material Cost
--- Description: This report is based on the (static) Oracle Supply Chain Indented Bills of Material Cost Report and merely sums up the available information from the Cost Type.  It does not do a Cost Rollup and as a result, the "Extended Cost" column might not add up to the total item cost for the assembly especially  if changes have been made to the bills of material, routing or item costs, since the last cost rollup.  If this is the case, run a Supply Chain Cost Rollup in Pending or some other cost type (such as Current) for reporting purposes, to synchronize the cost information and then use this report, using the same cost type, to correctly report your item costs.
-
-Imported from BI Publisher
-Description: Supply Chain Indented Bills of Material Cost Report
-Application: Bills of Material
-Source: Supply Chain Indented Bills of Material Cost Report (XML)
-Short Name: CSTRSCCRI_XML
-DB package: BOM_CSTRSCCR_XMLP_PKG
-
--- |  Version   Modified on       Modified  by              Description
--- |  ======= ===========   ==============  =========================================
--- |  1.0            04-APR-2023    Eric Clegg               Initial Conversion
---|   1.1            24-DEC-2023   Eric Clegg               Added Multi-Select Item Parameter
--- Excel Examle Output: https://www.enginatics.com/example/cst-supply-chain-indented-bills-of-material-cost/
+-- Description: This report is based on the (static) Oracle Supply Chain Indented Bills of Material Cost Report and merely sums up the available information from the Cost Type. It does not do a Cost Rollup and as a result, the "Extended Cost" column might not add up to the total item cost for the assembly especially if changes have been made to the bills of material, routing or item costs, since the last cost rollup. If this is the case, run a Supply Chain Cost Rollup in Pending or some other cost type (such as Current) for reporting purposes, to synchronize the cost information and then use this report, using the same cost type, to correctly report your item costs.
+-- Imported from BI Publisher
+-- Description: Supply Chain Indented Bills of Material Cost Report
+-- Application: Bills of Material
+-- Source: Supply Chain Indented Bills of Material Cost Report (XML)
+-- Short Name: CSTRSCCRIXML
+-- DB package: BOMCSTRSCCRXMLPPKG
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== ============== =========================================
+-- -- | 1.0 04-APR-2023 Eric Clegg Initial Conversion
+-- --| 1.1 24-DEC-2023 Eric Clegg Added Multi-Select Item Parameter
+-- Excel Example Output: https://www.enginatics.com/example/cst-supply-chain-indented-bills-of-material-cost/
 -- Library Link: https://www.enginatics.com/reports/cst-supply-chain-indented-bills-of-material-cost/
 -- Run Report: https://demo.enginatics.com/
 

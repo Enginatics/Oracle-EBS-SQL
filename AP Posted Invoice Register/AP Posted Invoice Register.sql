@@ -1,38 +1,42 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: AP Posted Invoice Register
 -- Description: Application: Payables
-Description: Payables Posted Invoice Register
-
-This report provides equivalent functionality to the Oracle standard Payables Posted Invoice Register report.
-
-For scheduling the report to run periodically, use the relative period from/to offset parameters. These are the relative period offsets to the current period, so when the current period changes, the included periods will also automatically be updated when the report is re-run.
-
-Templates
-- Pivot: Summary by Account, Invoice Currency
-  Equivalent to standard report in Summarize Report = Yes Mode 
-- Pivot: Summary by Account, Batch, Invoice Currency
-  Equivalent to standard report in Summarize=No Order By=Journal Entry Batch
-- Pivot: Summary by Account, Invoice Currency, Batch
-  Equivalent to standard report in Summarize=No Order By=Entered Currency
-- Detail
-  Provides detail listing of the posted invoices
-
-Additional data fields are available. Run the report without a template to see full list available fields
-
-Source: Payables Posted Invoice Register
-Short Name: APXPOINV
-DB package: XLA_JELINES_RPT_PKG
-
-Also requires custom package XXEN_XLA package to be installed to initialize the hidden parameters removed from the report to simplify scheduling of the report.
--- Excel Examle Output: https://www.enginatics.com/example/ap-posted-invoice-register/
+-- Description: Payables Posted Invoice Register
+-- This report provides equivalent functionality to the Oracle standard Payables Posted Invoice Register report.
+-- For scheduling the report to run periodically, use the relative period from/to offset parameters. These are the relative period offsets to the current period, so when the current period changes, the included periods will also automatically be updated when the report is re-run.
+-- Templates
+-- - Pivot: Summary by Account, Invoice Currency
+-- Equivalent to standard report in Summarize Report = Yes Mode
+-- - Pivot: Summary by Account, Batch, Invoice Currency
+-- Equivalent to standard report in Summarize=No Order By=Journal Entry Batch
+-- - Pivot: Summary by Account, Invoice Currency, Batch
+-- Equivalent to standard report in Summarize=No Order By=Entered Currency
+-- - Detail
+-- Provides detail listing of the posted invoices
+-- Additional data fields are available. Run the report without a template to see full list available fields
+-- Source: Payables Posted Invoice Register
+-- Short Name: APXPOINV
+-- DB package: XLAJELINESRPTPKG
+-- Also requires custom package XXENXLA package to be installed to initialize the hidden parameters removed from the report to simplify scheduling of the report.
+-- When India Localization is installed, the following GST columns are also included: GST Registration No, GST PAN No, GST TAN No, CGST Amount, SGST Amount, IGST Amount, CESS Amount, Custom Amount, Unclassified Tax Amount, Non-Recoverable GST, Taxable Value, HSN SAC Code, CGST Rate, SGST Rate, IGST Rate, CESS Rate, CGST Recoverable, CGST Non-Recoverable, SGST Recoverable, SGST Non-Recoverable, IGST Recoverable, IGST Non-Recoverable, Reverse Charge Flag, Place of Supply, Ship From State.
+-- Excel Example Output: https://www.enginatics.com/example/ap-posted-invoice-register/
 -- Library Link: https://www.enginatics.com/reports/ap-posted-invoice-register/
 -- Run Report: https://demo.enginatics.com/
 
+select
+y.*
+&il_reg_columns
+&il_columns_amt
+&il_columns_rate
+&il_columns_rec
+&il_columns_tp
+from
+(
 select /*+ push_pred(i) */
  x.application_name
 ,x.ledger_short_name
@@ -63,18 +67,17 @@ select /*+ push_pred(i) */
 ,x.accounted_cr
 ,x.statistical_amount
 -- source transaction data
-,nvl(x.user_trx_identifier_value_1,(select asitv.party_name from ap_sla_invoices_transaction_v asitv where asitv.invoice_id=i.invoice_id))  supplier_name
+,x.user_trx_identifier_value_1  supplier_name
 ,x.transaction_number           invoice_number
 ,trunc(to_date(x.transaction_date,'YYYY-MM-DD"T"hh:mi:ss')) invoice_date
-,nvl(x.user_trx_identifier_value_10,i.description) invoice_description
+,x.user_trx_identifier_value_10 invoice_description
 ,case when row_number() over (partition by i.invoice_id order by nvl2(x.event_id,x.line_number,null))=1 then
- case when x.user_trx_identifier_value_4 is null then i.invoice_amount else
  case when trim(translate(x.user_trx_identifier_value_4, '0123456789-.',' ')) is null
  then to_number(x.user_trx_identifier_value_4) else to_number(null)
- end end
+ end
  end  invoice_amount
 -----------------------------------
-,case when row_number() over (partition by i.invoice_id order by nvl2(x.event_id,x.line_number,null))=1 then case when x.user_trx_identifier_value_4 is null then i.invoice_amount else case when trim(translate(x.user_trx_identifier_value_4, '0123456789-.',' ')) is null then to_number(x.user_trx_identifier_value_4) else to_number(null) end end - nvl(i.total_tax_amount,0) end total_line_amount 
+,case when row_number() over (partition by i.invoice_id order by nvl2(x.event_id,x.line_number,null))=1 then case when trim(translate(x.user_trx_identifier_value_4, '0123456789-.',' ')) is null then to_number(x.user_trx_identifier_value_4) else to_number(null) end - nvl(i.total_tax_amount,0) end total_line_amount 
 ,case when row_number() over (partition by i.invoice_id order by nvl2(x.event_id,x.line_number,null))=1 then i.total_tax_amount end total_tax_amount
 ,i.last_update_date invoice_last_updated
 ,xxen_util.user_name(i.last_updated_by,'Y') invoice_last_updated_by
@@ -184,6 +187,7 @@ select /*+ push_pred(i) */
 ,x.user_trx_identifier_value_9
 ,x.user_trx_identifier_name_10
 ,x.user_trx_identifier_value_10
+&il_pass_through
 -- sla or gl audit colummns
 ,x.created_by
 ,trunc(to_date(x.creation_date ,'YYYY-MM-DD"T"hh:mi:ss')) creation_date
@@ -270,3 +274,6 @@ where
  x.s_header_id=i.i_ae_header_id(+) and
  x.ledger_id=i.i_ledger_id(+) and
  x.application_id=i.i_application_id(+)
+) y
+&il_from
+&il_where

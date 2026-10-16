@@ -1,14 +1,20 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'WIP Discrete Job Shortage | Oracle EBS SQL Report'
 description: 'WIP report that lists discrete job Open Requirements and/or Shortages. Report Modes ========== The report can be run in the following modes: 1. Open…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, WIP, Discrete, Job, Shortage, mtl_default_category_sets, mtl_item_categories, mtl_categories_kfv'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Work in Process, Enginatics, WIP, Discrete, Job, Shortage, mtl_default_category_sets, mtl_item_categories, mtl_categories_kfv'
 permalink: /WIP%20Discrete%20Job%20Shortage/
+report_name: 'WIP Discrete Job Shortage'
+report_web_name: wip-discrete-job-shortage
+module: 'Work in Process'
+module_url: /modules/work-in-process/
 ---
 
 # WIP Discrete Job Shortage – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/wip-discrete-job-shortage/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/wip-discrete-job-shortage/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wip-discrete-job-shortage) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wip-discrete-job-shortage).
+**Oracle EBS module:** [Work in Process](/modules/work-in-process/ "Oracle EBS Work in Process reports") · [all Work in Process reports](/modules/work-in-process/)  
 
 ## Overview
 WIP report that lists discrete job Open Requirements and/or Shortages.
@@ -38,30 +44,33 @@ The following templates are available to restrict the report to showing Total Qu
 3. Subinventory/Locator Match QOH - Displays Subinventory/Locator Matched Onhand Quantities only
 4. Subinventory/Locator Match QOH with Pegged Supply - Displays Subinventory/Locator Matched Onhand Quantities and any Pegged Supply
 5. Total QOH - Displays Total (Nettable and Non-Nettable) Onhand Quantities only 
-6. Total QOH with Pegged Supply - Displays Total (Nettable and Non-Nettable) Onhand Quantities only and any Pegged Supply  
+6. Total QOH with Pegged Supply - Displays Total (Nettable and Non-Nettable) Onhand Quantities only and any Pegged Supply
 
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wip-discrete-job-shortage) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 
 ## Report Parameters
 Organization Code, Report Mode, Include Bulk, Include Supplier, Exclude Subinventory, Job From, Job To, Assembly From, Assembly To, Component From, Component To, Date Required From, Date Required To, Department From, Department To, Planner From, Planner To, Buyer From, Buyer To, Make or Buy, Schedule Group, Project, Requirement End Date, MRP Plan for Pegged Supply
 
 ## Oracle EBS Tables Used
-[mtl_default_category_sets](https://www.enginatics.com/library/?pg=1&find=mtl_default_category_sets), [mtl_item_categories](https://www.enginatics.com/library/?pg=1&find=mtl_item_categories), [mtl_categories_kfv](https://www.enginatics.com/library/?pg=1&find=mtl_categories_kfv), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters), [wip_discrete_jobs](https://www.enginatics.com/library/?pg=1&find=wip_discrete_jobs), [wip_entities](https://www.enginatics.com/library/?pg=1&find=wip_entities), [wip_lines](https://www.enginatics.com/library/?pg=1&find=wip_lines), [wip_requirement_operations](https://www.enginatics.com/library/?pg=1&find=wip_requirement_operations), [wip_schedule_groups](https://www.enginatics.com/library/?pg=1&find=wip_schedule_groups), [bom_departments](https://www.enginatics.com/library/?pg=1&find=bom_departments), [bom_components_b](https://www.enginatics.com/library/?pg=1&find=bom_components_b), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl), [mtl_item_quantities_view](https://www.enginatics.com/library/?pg=1&find=mtl_item_quantities_view), [mtl_secondary_inventories](https://www.enginatics.com/library/?pg=1&find=mtl_secondary_inventories), [mtl_item_locations_kfv](https://www.enginatics.com/library/?pg=1&find=mtl_item_locations_kfv), [mtl_reservations](https://www.enginatics.com/library/?pg=1&find=mtl_reservations), [mtl_sales_orders](https://www.enginatics.com/library/?pg=1&find=mtl_sales_orders), [per_people_x](https://www.enginatics.com/library/?pg=1&find=per_people_x), [pa_projects_all](https://www.enginatics.com/library/?pg=1&find=pa_projects_all), [wip_repetitive_schedules](https://www.enginatics.com/library/?pg=1&find=wip_repetitive_schedules), [mrp_gross_requirements](https://www.enginatics.com/library/?pg=1&find=mrp_gross_requirements), [mrp_full_pegging](https://www.enginatics.com/library/?pg=1&find=mrp_full_pegging), [mrp_orders_sc_v](https://www.enginatics.com/library/?pg=1&find=mrp_orders_sc_v), [wip_total](https://www.enginatics.com/library/?pg=1&find=wip_total), [wip_detail](https://www.enginatics.com/library/?pg=1&find=wip_detail), [mrp_supply](https://www.enginatics.com/library/?pg=1&find=mrp_supply)
+[mtl_default_category_sets](https://www.enginatics.com/library/?pg=1&find=mtl_default_category_sets&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wip-discrete-job-shortage), [mtl_item_categories](https://www.enginatics.com/library/?pg=1&find=mtl_item_categories&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wip-discrete-job-shortage), [mtl_categories_kfv](https://www.enginatics.com/library/?pg=1&find=mtl_categories_kfv&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wip-discrete-job-shortage), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wip-discrete-job-shortage), [wip_discrete_jobs](https://www.enginatics.com/library/?pg=1&find=wip_discrete_jobs&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wip-discrete-job-shortage), [wip_entities](https://www.enginatics.com/library/?pg=1&find=wip_entities&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wip-discrete-job-shortage), [wip_lines](https://www.enginatics.com/library/?pg=1&find=wip_lines&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wip-discrete-job-shortage), [wip_requirement_operations](https://www.enginatics.com/library/?pg=1&find=wip_requirement_operations&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wip-discrete-job-shortage), [wip_schedule_groups](https://www.enginatics.com/library/?pg=1&find=wip_schedule_groups&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wip-discrete-job-shortage), [bom_departments](https://www.enginatics.com/library/?pg=1&find=bom_departments&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wip-discrete-job-shortage), [bom_components_b](https://www.enginatics.com/library/?pg=1&find=bom_components_b&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wip-discrete-job-shortage), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wip-discrete-job-shortage), [mtl_item_quantities_view](https://www.enginatics.com/library/?pg=1&find=mtl_item_quantities_view&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wip-discrete-job-shortage), [mtl_secondary_inventories](https://www.enginatics.com/library/?pg=1&find=mtl_secondary_inventories&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wip-discrete-job-shortage), [mtl_item_locations_kfv](https://www.enginatics.com/library/?pg=1&find=mtl_item_locations_kfv&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wip-discrete-job-shortage), [mtl_reservations](https://www.enginatics.com/library/?pg=1&find=mtl_reservations&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wip-discrete-job-shortage), [mtl_sales_orders](https://www.enginatics.com/library/?pg=1&find=mtl_sales_orders&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wip-discrete-job-shortage), [per_people_x](https://www.enginatics.com/library/?pg=1&find=per_people_x&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wip-discrete-job-shortage), [pa_projects_all](https://www.enginatics.com/library/?pg=1&find=pa_projects_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wip-discrete-job-shortage), [wip_repetitive_schedules](https://www.enginatics.com/library/?pg=1&find=wip_repetitive_schedules&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wip-discrete-job-shortage), [mrp_gross_requirements](https://www.enginatics.com/library/?pg=1&find=mrp_gross_requirements&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wip-discrete-job-shortage), [mrp_full_pegging](https://www.enginatics.com/library/?pg=1&find=mrp_full_pegging&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wip-discrete-job-shortage), [mrp_orders_sc_v](https://www.enginatics.com/library/?pg=1&find=mrp_orders_sc_v&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wip-discrete-job-shortage)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wip-discrete-job-shortage)
 
-
+## Related Reports
+[WIP Job Upload](/WIP%20Job%20Upload/ "WIP Job Upload Oracle EBS SQL Report"), [CRP Resource Plan](/CRP%20Resource%20Plan/ "CRP Resource Plan Oracle EBS SQL Report"), [WIP Required Components](/WIP%20Required%20Components/ "WIP Required Components Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/WIP%20Discrete%20Job%20Shortage/WIP%20Discrete%20Job%20Shortage.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wip-discrete-job-shortage) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [WIP Discrete Job Shortage 02-Aug-2021 054401.xlsx](https://www.enginatics.com/example/wip-discrete-job-shortage/) |
-| Blitz Report™ XML Import | [WIP_Discrete_Job_Shortage.xml](https://www.enginatics.com/xml/wip-discrete-job-shortage/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/wip-discrete-job-shortage/](https://www.enginatics.com/reports/wip-discrete-job-shortage/) |
+| Excel Example Output | [WIP Discrete Job Shortage 02-Aug-2021 054401.xlsx](https://www.enginatics.com/example/wip-discrete-job-shortage/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wip-discrete-job-shortage) |
+| Blitz Report™ XML Import | [WIP_Discrete_Job_Shortage.xml](https://www.enginatics.com/xml/wip-discrete-job-shortage/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wip-discrete-job-shortage) |
+| SQL Source | [WIP Discrete Job Shortage.sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/WIP%20Discrete%20Job%20Shortage/WIP%20Discrete%20Job%20Shortage.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/wip-discrete-job-shortage/](https://www.enginatics.com/reports/wip-discrete-job-shortage/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wip-discrete-job-shortage) |
 
 ## Case Study: Proactive Material Shortage Management
 
@@ -113,18 +122,17 @@ A: Phantom assemblies are typically blown through to their components. This repo
 **Q: Can I see which specific job is causing the shortage?**
 A: Yes, the report lists the specific Job and Operation where the component is required.
 
-
 ---
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wip-discrete-job-shortage)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wip-discrete-job-shortage)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wip-discrete-job-shortage)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wip-discrete-job-shortage)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wip-discrete-job-shortage)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wip-discrete-job-shortage)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wip-discrete-job-shortage)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

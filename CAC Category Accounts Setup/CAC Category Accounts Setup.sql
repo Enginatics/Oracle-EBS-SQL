@@ -1,39 +1,38 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Category Accounts Setup
--- Description: Report to show the category accounts in use.  If category accounts have been set up with your Subledger Accounting Rules, the Inventory Cost Processor can use them and bypass the organization accounts (Average, LIFO, FIFO Costing) or the subinventory accounts (Standard Costing).
-
-/* +=============================================================================+
--- |  Copyright 2021 Douglas Volz Consulting, Inc.                               |
--- |  All rights reserved.                                                       |
--- |  Permission to use this code is granted provided the original author is     |
--- |  acknowledged.  No warranties, express or otherwise is included in this     |
--- |  permission.                                                                |
--- +=============================================================================+
--- |
--- |  Original Author: Douglas Volz (doug@volzconsulting.com)
--- |
--- |  Program Name:  xxx_category_setup_accts_rept.sql
--- |
--- |  Parameters:
--- |  p_org_code         -- Specific inventory organization you wish to report (optional)
--- |  p_operating_unit   -- Operating_Unit you wish to report, leave blank for all
--- |                        operating units (optional) 
--- |  p_ledger           -- general ledger you wish to report, leave blank for all
--- |                        ledgers (optional)
--- | 
--- |  Description:
--- |  Report to show accounts used for the subinventories
--- | 
--- |  Version Modified on Modified  by   Description
--- |  ======= =========== ============== =========================================
--- |  1.0     16 Aug 2021 Douglas Volz   Initial Coding
--- +=============================================================================+*/
--- Excel Examle Output: https://www.enginatics.com/example/cac-category-accounts-setup/
+-- Description: Report to show the category accounts in use. If category accounts have been set up with your Subledger Accounting Rules, the Inventory Cost Processor can use them and bypass the organization accounts (Average, LIFO, FIFO Costing) or the subinventory accounts (Standard Costing).
+-- / +=============================================================================+
+-- -- | Copyright 2021 Douglas Volz Consulting, Inc. |
+-- -- | All rights reserved. |
+-- -- | Permission to use this code is granted provided the original author is |
+-- -- | acknowledged. No warranties, express or otherwise is included in this |
+-- -- | permission. |
+-- -- +=============================================================================+
+-- -- |
+-- -- | Original Author: Douglas Volz (doug@volzconsulting.com)
+-- -- |
+-- -- | Program Name: xxxcategorysetupacctsrept.sql
+-- -- |
+-- -- | Parameters:
+-- -- | porgcode -- Specific inventory organization you wish to report (optional)
+-- -- | poperatingunit -- OperatingUnit you wish to report, leave blank for all
+-- -- | operating units (optional)
+-- -- | pledger -- general ledger you wish to report, leave blank for all
+-- -- | ledgers (optional)
+-- -- |
+-- -- | Description:
+-- -- | Report to show accounts used for the subinventories
+-- -- |
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== ============== =========================================
+-- -- | 1.0 16 Aug 2021 Douglas Volz Initial Coding
+-- -- +=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-category-accounts-setup/
 -- Library Link: https://www.enginatics.com/reports/cac-category-accounts-setup/
 -- Run Report: https://demo.enginatics.com/
 

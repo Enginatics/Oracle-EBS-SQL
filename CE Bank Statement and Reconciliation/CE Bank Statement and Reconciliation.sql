@@ -1,37 +1,33 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CE Bank Statement and Reconciliation
 -- Description: Application: Cash Management
-Description: Bank Statements - Bank Statement Details and Reconciliation
-
-Provides equivalent functionality to the following standard Oracle Forms/Reports
-- Bank Statements and Reconciliation Form
-  Applicable Templates:
-  Pivot: Bank Statement by Transaction Type
-  Bank Statement Detail
-  Bank Statement Detail with Reconciled Trxs
-- Bank Statement Summary Report
-   Applicable Templates:
-   Pivot: Bank Statement by Transaction Type
-   Bank Statement Summary
-- Bank Statement Detail Report
-   Applicable Templates:
-  Pivot: Bank Statement by Transaction Type
-  Bank Statement Detail
-  Bank Statement Detail with Reconciled Trxs
-
-This Blitz Report offers an extended set of parameters over and above the standard form/reports to search for specific reconciled transactions.
-
-Sources: 
-Bank Statement Detail Report (CEXSTMRR)
-Bank Statement Summary Report (CEXSTMSR)
-DB package:  CE_CEXSTMRR_XMLP_PKG (required to initialize security)
-
--- Excel Examle Output: https://www.enginatics.com/example/ce-bank-statement-and-reconciliation/
+-- Description: Bank Statements - Bank Statement Details and Reconciliation
+-- Provides equivalent functionality to the following standard Oracle Forms/Reports
+-- - Bank Statements and Reconciliation Form
+-- Applicable Templates:
+-- Pivot: Bank Statement by Transaction Type
+-- Bank Statement Detail
+-- Bank Statement Detail with Reconciled Trxs
+-- - Bank Statement Summary Report
+-- Applicable Templates:
+-- Pivot: Bank Statement by Transaction Type
+-- Bank Statement Summary
+-- - Bank Statement Detail Report
+-- Applicable Templates:
+-- Pivot: Bank Statement by Transaction Type
+-- Bank Statement Detail
+-- Bank Statement Detail with Reconciled Trxs
+-- This Blitz Report offers an extended set of parameters over and above the standard form/reports to search for specific reconciled transactions.
+-- Sources:
+-- Bank Statement Detail Report (CEXSTMRR)
+-- Bank Statement Summary Report (CEXSTMSR)
+-- DB package: CECEXSTMRRXMLPPKG (required to initialize security)
+-- Excel Example Output: https://www.enginatics.com/example/ce-bank-statement-and-reconciliation/
 -- Library Link: https://www.enginatics.com/reports/ce-bank-statement-and-reconciliation/
 -- Run Report: https://demo.enginatics.com/
 

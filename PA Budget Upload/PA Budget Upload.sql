@@ -1,31 +1,21 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PA Budget Upload
--- Description: The PA Budget Upload supports the creation/update of standard project budgets. 
-
-At this stage it does not support the creation/update of Financial Plan Budgets.
-
-The PA Budget Upload allows users to:
-
-- Create new working budgets.
-
-When creating a new working budget, any existing working budget for the specified Project and Budget Type will be overwritten.
-
-The upload allows the user to create a working budget either by entering the data directly into an empty upload excel file, or by copying a prior version of the budget and modifying this in the upload excel file.
-
-- Update existing working budgets.
-
-This option allows for the update of an existing working budget. In this mode the existing budget is retained, and the update mode allows for individual budget lines to be added, updated, and/or deleted from the existing working budget.
-
-- Additionally, the upload allows users to Baseline a Working Budget.
-
-Working Budgets can be uploaded against the Projects belonging to the Operating Units accessible to the responsibility in which the PA Budget Upload process is run.
-
--- Excel Examle Output: https://www.enginatics.com/example/pa-budget-upload/
+-- Description: The PA Budget Upload supports the creation/update of standard project budgets.
+-- At this stage it does not support the creation/update of Financial Plan Budgets.
+-- The PA Budget Upload allows users to:
+-- - Create new working budgets.
+-- When creating a new working budget, any existing working budget for the specified Project and Budget Type will be overwritten.
+-- The upload allows the user to create a working budget either by entering the data directly into an empty upload excel file, or by copying a prior version of the budget and modifying this in the upload excel file.
+-- - Update existing working budgets.
+-- This option allows for the update of an existing working budget. In this mode the existing budget is retained, and the update mode allows for individual budget lines to be added, updated, and/or deleted from the existing working budget.
+-- - Additionally, the upload allows users to Baseline a Working Budget.
+-- Working Budgets can be uploaded against the Projects belonging to the Operating Units accessible to the responsibility in which the PA Budget Upload process is run.
+-- Excel Example Output: https://www.enginatics.com/example/pa-budget-upload/
 -- Library Link: https://www.enginatics.com/reports/pa-budget-upload/
 -- Run Report: https://demo.enginatics.com/
 

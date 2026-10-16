@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: AP Trial Balance Report Definitions
 -- Description: Accounts Payable Trial Balance Report Definitions
--- Excel Examle Output: https://www.enginatics.com/example/ap-trial-balance-report-definitions/
+-- Excel Example Output: https://www.enginatics.com/example/ap-trial-balance-report-definitions/
 -- Library Link: https://www.enginatics.com/reports/ap-trial-balance-report-definitions/
 -- Run Report: https://demo.enginatics.com/
 

@@ -1,16 +1,19 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: ZX US Sales Tax
 -- Description: Imported from Concurrent Program
-Description: Sales Tax Report for use in U.S
-Application: E-Business Tax
-Source: U.S. Sales Tax Report
-Short Name: ZXXSTR
--- Excel Examle Output: https://www.enginatics.com/example/zx-us-sales-tax/
+-- Description: Sales Tax Report for use in U.S
+-- Application: E-Business Tax
+-- Source: U.S. Sales Tax Report
+-- Short Name: ZXXSTR
+-- The State, County and City columns are the tax jurisdiction the tax was determined for, which is the transaction ship to site falling back to the bill to site. The State Low and State High parameters filter on that same jurisdiction. The Ship To and Bill To address columns are the transaction sites themselves, so they can differ from those three.
+-- Invoice Freight Amount follows Invoice Lines Amount and Invoice Tax Amount: on an invoice or credit memo it is the total of that transaction's Freight lines, on an adjustment it is the freight the adjustment applied. It is shown on the first row of each transaction only, so summing the column does not multiply it by the line and tax line count.
+-- The Intermediate Ship To columns come from the sales order line the invoice line was created from. Set DFF Display to also report the invoice line and sales order line descriptive flexfields, which is where an intermediate ship to address entered outside Order Management is usually held.
+-- Excel Example Output: https://www.enginatics.com/example/zx-us-sales-tax/
 -- Library Link: https://www.enginatics.com/reports/zx-us-sales-tax/
 -- Run Report: https://demo.enginatics.com/
 
@@ -943,6 +946,7 @@ t3.c_county county,
 t3.c_city city,
 -- G_INVOICE
 t3.c_inv_number invoice_number,
+trx2.ct_reference reference,
 xxen_util.meaning(t3.c_inv_type,'ZX_TRL_TAXABLE_TRX_TYPE',0) invoice_type,
 -- G_TRANSACTIONS
 t3.c_adj_number adjustment_number,
@@ -959,6 +963,16 @@ case when t3.trx_rownum = 1
 then t3.c_sum_tax_line_amt
 else null
 end invoice_tax_amount,
+case when t3.trx_rownum = 1
+then
+ case when t3.c_adjustment_id = -1
+ then
+  (select sum(rctl3.extended_amount) from ra_customer_trx_lines_all rctl3
+   where rctl3.customer_trx_id = t3.c_cust_trx_id and rctl3.line_type = 'FREIGHT')
+ else t3.c_adj_freight_amount
+ end
+else null
+end invoice_freight_amount,
 t3.c_footnote footnote,
 -- G_ITEM_LINES
 t3.c_line_number line_number,
@@ -1053,6 +1067,47 @@ t3.c_city_tax_amt city_authority_tax_amount,
 t3.c_county_tax_amt county_authority_tax_amount,
 t3.c_state_tax_amt state_authority_tax_amount,
 t3.c_other_tax_amt other_authority_tax_amount,
+-- ship to customer and address
+ship_party.party_name ship_to_customer,
+ship_ca.account_number ship_to_customer_number,
+ship_su.location ship_to_location,
+ship_loc.address1 ship_to_address1,
+ship_loc.address2 ship_to_address2,
+ship_loc.address3 ship_to_address3,
+ship_loc.address4 ship_to_address4,
+ship_loc.city ship_to_city,
+ship_loc.county ship_to_county,
+ship_loc.state ship_to_state,
+ship_loc.postal_code ship_to_postal_code,
+ship_ftv.territory_short_name ship_to_country,
+-- bill to customer and address
+bill_party.party_name bill_to_customer,
+bill_ca.account_number bill_to_customer_number,
+bill_su.location bill_to_location,
+bill_loc.address1 bill_to_address1,
+bill_loc.address2 bill_to_address2,
+bill_loc.address3 bill_to_address3,
+bill_loc.address4 bill_to_address4,
+bill_loc.city bill_to_city,
+bill_loc.county bill_to_county,
+bill_loc.state bill_to_state,
+bill_loc.postal_code bill_to_postal_code,
+bill_ftv.territory_short_name bill_to_country,
+-- intermediate ship to, from the sales order line the invoice line was created from
+ooha.order_number sales_order,
+oola.line_number sales_order_line,
+intmed_party.party_name intermediate_ship_to_customer,
+intmed_su.location intermediate_ship_to_location,
+intmed_loc.address1 intermediate_ship_to_address1,
+intmed_loc.address2 intermediate_ship_to_address2,
+intmed_loc.address3 intermediate_ship_to_address3,
+intmed_loc.address4 intermediate_ship_to_address4,
+intmed_loc.city intermediate_ship_to_city,
+intmed_loc.county intermediate_ship_to_county,
+intmed_loc.state intermediate_ship_to_state,
+intmed_loc.postal_code intermediate_ship_to_post_code,
+intmed_ftv.territory_short_name intermediate_ship_to_country,
+&dff_columns
 --
 &lp_debug_columns
 --
@@ -1402,8 +1457,58 @@ from
  qtl.c_org_id = haouv.organization_id (+)
 ) t1
 ) t2
-) t3
+) t3,
+ra_customer_trx_all trx2,
+hz_cust_site_uses_all ship_su,
+hz_cust_acct_sites_all ship_cas,
+hz_party_sites ship_ps,
+hz_locations ship_loc,
+fnd_territories_vl ship_ftv,
+hz_cust_accounts ship_ca,
+hz_parties ship_party,
+hz_cust_site_uses_all bill_su,
+hz_cust_acct_sites_all bill_cas,
+hz_party_sites bill_ps,
+hz_locations bill_loc,
+fnd_territories_vl bill_ftv,
+hz_cust_accounts bill_ca,
+hz_parties bill_party,
+ra_customer_trx_lines_all rctl2,
+oe_order_lines_all oola,
+oe_order_headers_all ooha,
+hz_cust_site_uses_all intmed_su,
+hz_cust_acct_sites_all intmed_cas,
+hz_party_sites intmed_ps,
+hz_locations intmed_loc,
+fnd_territories_vl intmed_ftv,
+hz_cust_accounts intmed_ca,
+hz_parties intmed_party
 where
+t3.c_cust_trx_id = trx2.customer_trx_id (+) and
+trx2.ship_to_site_use_id = ship_su.site_use_id (+) and
+ship_su.cust_acct_site_id = ship_cas.cust_acct_site_id (+) and
+ship_cas.party_site_id = ship_ps.party_site_id (+) and
+ship_ps.location_id = ship_loc.location_id (+) and
+ship_loc.country = ship_ftv.territory_code (+) and
+trx2.ship_to_customer_id = ship_ca.cust_account_id (+) and
+ship_ca.party_id = ship_party.party_id (+) and
+trx2.bill_to_site_use_id = bill_su.site_use_id (+) and
+bill_su.cust_acct_site_id = bill_cas.cust_acct_site_id (+) and
+bill_cas.party_site_id = bill_ps.party_site_id (+) and
+bill_ps.location_id = bill_loc.location_id (+) and
+bill_loc.country = bill_ftv.territory_code (+) and
+trx2.bill_to_customer_id = bill_ca.cust_account_id (+) and
+bill_ca.party_id = bill_party.party_id (+) and
+t3.c_trx_line_id = rctl2.customer_trx_line_id (+) and
+case when rctl2.interface_line_context in ('INTERCOMPANY','ORDER ENTRY') then rctl2.interface_line_attribute6 end = oola.line_id (+) and
+oola.header_id = ooha.header_id (+) and
+oola.intmed_ship_to_org_id = intmed_su.site_use_id (+) and
+intmed_su.cust_acct_site_id = intmed_cas.cust_acct_site_id (+) and
+intmed_cas.party_site_id = intmed_ps.party_site_id (+) and
+intmed_ps.location_id = intmed_loc.location_id (+) and
+intmed_loc.country = intmed_ftv.territory_code (+) and
+intmed_cas.cust_account_id = intmed_ca.cust_account_id (+) and
+intmed_ca.party_id = intmed_party.party_id (+) and
 nvl(:p_trx_date_low,sysdate) = nvl(:p_trx_date_low,sysdate) and
 nvl(:p_trx_date_high,sysdate) = nvl(:p_trx_date_high,sysdate) and
 nvl(:p_gl_date_low,sysdate) = nvl(:p_gl_date_low,sysdate) and

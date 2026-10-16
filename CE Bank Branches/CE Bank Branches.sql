@@ -1,16 +1,15 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CE Bank Branches
 -- Description: This Report is the repository of all bank branches covering both internal and external bank accounts and will list the bank branches along with an indication of usage:
--Internal
--Supplier
--Customer
-
--- Excel Examle Output: https://www.enginatics.com/example/ce-bank-branches/
+-- -Internal
+-- -Supplier
+-- -Customer
+-- Excel Example Output: https://www.enginatics.com/example/ce-bank-branches/
 -- Library Link: https://www.enginatics.com/reports/ce-bank-branches/
 -- Run Report: https://demo.enginatics.com/
 

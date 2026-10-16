@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: FND User Login Page Favorites
--- Description: User's HTML favourites from table icx_custom_menu_entries
--- Excel Examle Output: https://www.enginatics.com/example/fnd-user-login-page-favorites/
+-- Description: User's HTML favourites from table icxcustommenuentries
+-- Excel Example Output: https://www.enginatics.com/example/fnd-user-login-page-favorites/
 -- Library Link: https://www.enginatics.com/reports/fnd-user-login-page-favorites/
 -- Run Report: https://demo.enginatics.com/
 

@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: FND Lookup Values
 -- Description: Lookup types and values, for example to find a lookup type for a particular lookup code value or meaning.
--- Excel Examle Output: https://www.enginatics.com/example/fnd-lookup-values/
+-- Excel Example Output: https://www.enginatics.com/example/fnd-lookup-values/
 -- Library Link: https://www.enginatics.com/reports/fnd-lookup-values/
 -- Run Report: https://demo.enginatics.com/
 

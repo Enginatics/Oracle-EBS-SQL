@@ -1,13 +1,13 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: DIS Import Performance
 -- Description: Query to review Discoverer to Blitz Report import performance, after running the 'Blitz Report Discoverer Import' concurrent program or mass migration script.
-<a href="https://www.enginatics.com/user-guide/#Discoverer_Worksheet" rel="nofollow" target="_blank">https://www.enginatics.com/user-guide/#Discoverer_Worksheet</a>
--- Excel Examle Output: https://www.enginatics.com/example/dis-import-performance/
+-- https://www.enginatics.com/user-guide/DiscovererWorksheet
+-- Excel Example Output: https://www.enginatics.com/example/dis-import-performance/
 -- Library Link: https://www.enginatics.com/reports/dis-import-performance/
 -- Run Report: https://demo.enginatics.com/
 

@@ -1,35 +1,30 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: OPM Routing Upload
 -- Description: OPM Routing Upload
-==================
-Create or update Oracle Process Manufacturing (OPM / GMD) Routings via the public API GMD_ROUTINGS_PUB / GMD_ROUTING_STEPS_PUB.
-
-Row model
-=========
-One spreadsheet row per routing STEP. The header columns (Organization Code, Routing, Routing Version, Description, Class, UOM, dates, owner, header attributes) repeat on every step of the same routing. Each step carries its Step No, Operation (No + Version), Step Quantity, Release Type, and step attributes. Rows of the same routing (Organization Code + Routing + Routing Version) must be contiguous. Every routing must have at least one step.
-
-Step dependencies (optional)
-============================
-To make a step depend on a predecessor step, fill Depends On Step No (and optionally Standard / Minimum / Maximum Delay, Transfer Percent, Rework Code, Chargeable) on that step's row. For a step with more than one predecessor, add extra rows that repeat the Step No, leave Operation blank, and give a different Depends On Step No. Dependency Type is always Finish-to-Start.
-
-Operations must already exist
-=============================
-Operations are referenced, not created - the Operation (No + Version) must already exist in the routing's organization, effective for the routing's dates.
-
-Upload modes
-============
-Create - empty template for new routings.
-Create, Update - downloads existing routings in the chosen organization for review/edit and allows adding new ones.
-
-Update limitations (public API)
-===============================
-On update, the OPM public API only allows changing a routing's Status, Routing Class, Routing UOM, Fixed Process Loss UOM, Owner and Organization at the header level; Description, Quantity, Process Loss, effective dates and the step-dependency flags are set at create time only. Steps can be added and their quantity / release type / yield updated.
--- Excel Examle Output: https://www.enginatics.com/example/opm-routing-upload/
+-- ==================
+-- Create or update Oracle Process Manufacturing (OPM / GMD) Routings via the public API GMDROUTINGSPUB / GMDROUTINGSTEPSPUB.
+-- Row model
+-- =========
+-- One spreadsheet row per routing STEP. The header columns (Organization Code, Routing, Routing Version, Description, Class, UOM, dates, owner, header attributes) repeat on every step of the same routing. Each step carries its Step No, Operation (No + Version), Step Quantity, Release Type, and step attributes. Rows of the same routing (Organization Code + Routing + Routing Version) must be contiguous. Every routing must have at least one step.
+-- Step dependencies (optional)
+-- ============================
+-- To make a step depend on a predecessor step, fill Depends On Step No (and optionally Standard / Minimum / Maximum Delay, Transfer Percent, Rework Code, Chargeable) on that step's row. For a step with more than one predecessor, add extra rows that repeat the Step No, leave Operation blank, and give a different Depends On Step No. Dependency Type is always Finish-to-Start.
+-- Operations must already exist
+-- =============================
+-- Operations are referenced, not created - the Operation (No + Version) must already exist in the routing's organization, effective for the routing's dates.
+-- Upload modes
+-- ============
+-- Create - empty template for new routings.
+-- Create, Update - downloads existing routings in the chosen organization for review/edit and allows adding new ones.
+-- Update limitations (public API)
+-- ===============================
+-- On update, the OPM public API only allows changing a routing's Status, Routing Class, Routing UOM, Fixed Process Loss UOM, Owner and Organization at the header level; Description, Quantity, Process Loss, effective dates and the step-dependency flags are set at create time only. Steps can be added and their quantity / release type / yield updated.
+-- Excel Example Output: https://www.enginatics.com/example/opm-routing-upload/
 -- Library Link: https://www.enginatics.com/reports/opm-routing-upload/
 -- Run Report: https://demo.enginatics.com/
 

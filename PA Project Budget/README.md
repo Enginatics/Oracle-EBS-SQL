@@ -1,43 +1,51 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'PA Project Budget | Oracle EBS SQL Report'
 description: 'Report of Standard Project Budgets. This report does not include Financial Plan Budgets. In addition to the budget details, the report will also display…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Project, Budget, hr_all_organization_units_vl, pa_projects_all, pa_budget_versions'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Projects, Enginatics, Project, Budget, hr_all_organization_units_vl, pa_projects_all, pa_budget_versions'
 permalink: /PA%20Project%20Budget/
+report_name: 'PA Project Budget'
+report_web_name: pa-project-budget
+module: 'Projects'
+module_url: /modules/projects/
 ---
 
 # PA Project Budget – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/pa-project-budget/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/pa-project-budget/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-project-budget) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-project-budget).
+**Oracle EBS module:** [Projects](/modules/projects/ "Oracle EBS Projects reports") · [all Projects reports](/modules/projects/)  
 
 ## Overview
 Report of Standard Project Budgets. This report does not include Financial Plan Budgets.
 In addition to the budget details, the report will also display the actuals matching the budget line datapoints.
 Note: Inclusion of actuals data requires Blitz Report Build Data later than 04-APR-2025 03:21:50
 
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-project-budget) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 
 ## Report Parameters
 Operating Unit, Project Number, Project Name, Budget Type, Budget Status, Latest Budget Version, Budget Version, Task Number, Task Name, Resource Alias, Period From, Period To, Budget Line Start Date, Budget Line End Date, Budget Line Active On Date, DFF Display, Show Actuals, Sort Precedence 1, Sort Precedence 2, Sort Precedence 3
 
 ## Oracle EBS Tables Used
-[hr_all_organization_units_vl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_vl), [pa_projects_all](https://www.enginatics.com/library/?pg=1&find=pa_projects_all), [pa_budget_versions](https://www.enginatics.com/library/?pg=1&find=pa_budget_versions), [pa_budget_types](https://www.enginatics.com/library/?pg=1&find=pa_budget_types), [pa_budget_entry_methods](https://www.enginatics.com/library/?pg=1&find=pa_budget_entry_methods), [pa_resource_lists](https://www.enginatics.com/library/?pg=1&find=pa_resource_lists), [pa_resource_assignments](https://www.enginatics.com/library/?pg=1&find=pa_resource_assignments), [pa_budget_lines](https://www.enginatics.com/library/?pg=1&find=pa_budget_lines), [pa_tasks](https://www.enginatics.com/library/?pg=1&find=pa_tasks), [pa_resource_list_members](https://www.enginatics.com/library/?pg=1&find=pa_resource_list_members), [mo_glob_org_access_tmp](https://www.enginatics.com/library/?pg=1&find=mo_glob_org_access_tmp), [dual](https://www.enginatics.com/library/?pg=1&find=dual)
+[hr_all_organization_units_vl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-project-budget), [pa_projects_all](https://www.enginatics.com/library/?pg=1&find=pa_projects_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-project-budget), [pa_budget_versions](https://www.enginatics.com/library/?pg=1&find=pa_budget_versions&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-project-budget), [pa_budget_types](https://www.enginatics.com/library/?pg=1&find=pa_budget_types&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-project-budget), [pa_budget_entry_methods](https://www.enginatics.com/library/?pg=1&find=pa_budget_entry_methods&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-project-budget), [pa_resource_lists](https://www.enginatics.com/library/?pg=1&find=pa_resource_lists&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-project-budget), [pa_resource_assignments](https://www.enginatics.com/library/?pg=1&find=pa_resource_assignments&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-project-budget), [pa_budget_lines](https://www.enginatics.com/library/?pg=1&find=pa_budget_lines&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-project-budget), [pa_tasks](https://www.enginatics.com/library/?pg=1&find=pa_tasks&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-project-budget), [pa_resource_list_members](https://www.enginatics.com/library/?pg=1&find=pa_resource_list_members&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-project-budget), [mo_glob_org_access_tmp](https://www.enginatics.com/library/?pg=1&find=mo_glob_org_access_tmp&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-project-budget), [dual](https://www.enginatics.com/library/?pg=1&find=dual&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-project-budget)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-project-budget)
 
 ## Related Reports
-[PA Budget Upload](/PA%20Budget%20Upload/ "PA Budget Upload Oracle EBS SQL Report"), [GL Account Analysis (Drilldown) (with inventory and WIP)](/GL%20Account%20Analysis%20%28Drilldown%29%20%28with%20inventory%20and%20WIP%29/ "GL Account Analysis (Drilldown) (with inventory and WIP) Oracle EBS SQL Report"), [GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report"), [GL Account Analysis](/GL%20Account%20Analysis/ "GL Account Analysis Oracle EBS SQL Report")
+[PA Budget Upload](/PA%20Budget%20Upload/ "PA Budget Upload Oracle EBS SQL Report"), [GL Account Analysis](/GL%20Account%20Analysis/ "GL Account Analysis Oracle EBS SQL Report"), [GL Account Analysis (Drilldown) (with inventory and WIP)](/GL%20Account%20Analysis%20%28Drilldown%29%20%28with%20inventory%20and%20WIP%29/ "GL Account Analysis (Drilldown) (with inventory and WIP) Oracle EBS SQL Report"), [GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/PA%20Project%20Budget/PA%20Project%20Budget.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-project-budget) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [PA Project Budget 04-Apr-2026 023352.xlsx](https://www.enginatics.com/example/pa-project-budget/) |
-| Blitz Report™ XML Import | [PA_Project_Budget.xml](https://www.enginatics.com/xml/pa-project-budget/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/pa-project-budget/](https://www.enginatics.com/reports/pa-project-budget/) |
+| Excel Example Output | [PA Project Budget 04-Apr-2026 023352.xlsx](https://www.enginatics.com/example/pa-project-budget/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-project-budget) |
+| Blitz Report™ XML Import | [PA_Project_Budget.xml](https://www.enginatics.com/xml/pa-project-budget/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-project-budget) |
+| SQL Source | [PA Project Budget.sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/PA%20Project%20Budget/PA%20Project%20Budget.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/pa-project-budget/](https://www.enginatics.com/reports/pa-project-budget/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-project-budget) |
 
 ## PA Project Budget - Case Study & Technical Analysis
 
@@ -90,18 +98,17 @@ A: The report includes logic to fetch actuals matching the budget line datapoint
 **Q: Does it support multi-currency budgets?**
 A: Yes, the underlying tables (`PA_BUDGET_LINES`) store amounts in transaction, project, and project functional currencies.
 
-
 ---
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-project-budget)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-project-budget)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-project-budget)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-project-budget)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-project-budget)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-project-budget)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-project-budget)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

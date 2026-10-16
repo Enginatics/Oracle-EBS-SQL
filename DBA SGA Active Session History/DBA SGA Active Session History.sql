@@ -1,28 +1,24 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: DBA SGA Active Session History
 -- Description: Active session history from the SGA.
-
-Parameter 'Blocked Sessions only' allows a blocking scenario root cause analysis, e.g. by doing a pivot in Excel (see example in the online library).
-The link to blocking sessions is deliberately nonunique without jointing to sample_id to increase the chance to fetch the blocking session's additional information such as module, action and client_id.
-In some cases, such as row lock scenarios, the blocking session is idle and does not show up in the ASH then.
-For scenarios where the blocking sessions are active and part of the ASH, Tanel Poder has a treewalk ash_wait_chains.sql, showing the whole chain of ASH records linked by a unique join, including the sample_id:
-<a href="https://blog.tanelpoder.com/2013/11/06/diagnosing-buffer-busy-waits-with-the-ash_wait_chains-sql-script-v0-2/" rel="nofollow" target="_blank">https://blog.tanelpoder.com/2013/11/06/diagnosing-buffer-busy-waits-with-the-ash_wait_chains-sql-script-v0-2/</a>
-
-We recommend doing ASH performance analysis with a pivot in Excel rather than by SQL, as Excel's drag- and drop is a lot faster than typing commands manually.
-A typical use case is to analyze which EBS application user waited for how many seconds in which forms UI and to drill down further into the SQL or wait event root causes.
-
-Column 'Module Name' shows either the translated EBS module display name or, e.g. for background sessions, the process name (from the program column) to enable pivoting by this column only.
-Oracle's background process names are listed here:
-<a href="https://docs.oracle.com/database/121/REFRN/GUID-86184690-5531-405F-AA05-BB935F57B76D.htm#REFRN104" rel="nofollow" target="_blank">https://docs.oracle.com/database/121/REFRN/GUID-86184690-5531-405F-AA05-BB935F57B76D.htm#REFRN104</a>
-
-To identify an object or segment of a hot block, for example causing wait events, Oracle's dba_extents view is unusable due to performance bugs in 19c+, and Franck Pachot published a workaround here:
-<a href="https://www.dbi-services.com/blog/efficiently-query-dba_extents-for-file_id-block_id/" rel="nofollow" target="_blank">https://www.dbi-services.com/blog/efficiently-query-dba_extents-for-file_id-block_id/</a>
--- Excel Examle Output: https://www.enginatics.com/example/dba-sga-active-session-history/
+-- Parameter 'Blocked Sessions only' allows a blocking scenario root cause analysis, e.g. by doing a pivot in Excel (see example in the online library).
+-- The link to blocking sessions is deliberately nonunique without jointing to sampleid to increase the chance to fetch the blocking session's additional information such as module, action and clientid.
+-- In some cases, such as row lock scenarios, the blocking session is idle and does not show up in the ASH then.
+-- For scenarios where the blocking sessions are active and part of the ASH, Tanel Poder has a treewalk ashwaitchains.sql, showing the whole chain of ASH records linked by a unique join, including the sampleid:
+-- https://blog.tanelpoder.com/2013/11/06/diagnosing-buffer-busy-waits-with-the-ashwaitchains-sql-script-v0-2/
+-- We recommend doing ASH performance analysis with a pivot in Excel rather than by SQL, as Excel's drag- and drop is a lot faster than typing commands manually.
+-- A typical use case is to analyze which EBS application user waited for how many seconds in which forms UI and to drill down further into the SQL or wait event root causes.
+-- Column 'Module Name' shows either the translated EBS module display name or, e.g. for background sessions, the process name (from the program column) to enable pivoting by this column only.
+-- Oracle's background process names are listed here:
+-- https://docs.oracle.com/database/121/REFRN/GUID-86184690-5531-405F-AA05-BB935F57B76D.htmREFRN104
+-- To identify an object or segment of a hot block, for example causing wait events, Oracle's dbaextents view is unusable due to performance bugs in 19c+, and Franck Pachot published a workaround here:
+-- https://www.dbi-services.com/blog/efficiently-query-dbaextents-for-fileid-blockid/
+-- Excel Example Output: https://www.enginatics.com/example/dba-sga-active-session-history/
 -- Library Link: https://www.enginatics.com/reports/dba-sga-active-session-history/
 -- Run Report: https://demo.enginatics.com/
 

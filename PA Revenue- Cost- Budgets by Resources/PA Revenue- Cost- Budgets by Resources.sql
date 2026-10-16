@@ -1,28 +1,23 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PA Revenue, Cost, Budgets by Resources
 -- Description: This Blitz Report is the implements the following standard oracle reports.
-
-- MGT: Task - Revenue, Cost, Budgets by Resources
-- MGT: Revenue, Cost, Budgets by Resources (Project Level)
-
-The 'Report Level' parameter determines if the report is run at the Project Level or Task Level
-
-Report Level Parameter:
-Project - equivalent to running the MGT: Revenue, Cost, Budgets by Resources (Project Level) report
-Task - equivalent to running the MGT: Task - Revenue, Cost, Budgets by Resources report
-
-The report has been extended to pull in additional datapoints as displayed in the Project Status Inquiry Form.
-
-Application: Projects
-Source: MGT: Task - Revenue, Cost, Budgets by Resources (XML)
-Short Name: PAXMGTSD_XML
-DB package: PA_PAXMGTSD_XMLP_PKG
--- Excel Examle Output: https://www.enginatics.com/example/pa-revenue-cost-budgets-by-resources/
+-- - MGT: Task - Revenue, Cost, Budgets by Resources
+-- - MGT: Revenue, Cost, Budgets by Resources (Project Level)
+-- The 'Report Level' parameter determines if the report is run at the Project Level or Task Level
+-- Report Level Parameter:
+-- Project - equivalent to running the MGT: Revenue, Cost, Budgets by Resources (Project Level) report
+-- Task - equivalent to running the MGT: Task - Revenue, Cost, Budgets by Resources report
+-- The report has been extended to pull in additional datapoints as displayed in the Project Status Inquiry Form.
+-- Application: Projects
+-- Source: MGT: Task - Revenue, Cost, Budgets by Resources (XML)
+-- Short Name: PAXMGTSDXML
+-- DB package: PAPAXMGTSDXMLPPKG
+-- Excel Example Output: https://www.enginatics.com/example/pa-revenue-cost-budgets-by-resources/
 -- Library Link: https://www.enginatics.com/reports/pa-revenue-cost-budgets-by-resources/
 -- Run Report: https://demo.enginatics.com/
 

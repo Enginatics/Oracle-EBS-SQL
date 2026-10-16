@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: ONT Recurring Billing Plan
 -- Description: Profile report showing the Sales order recurring billing plan for header and line details including status, frequency, billing period, billing amounts and dates.
--- Excel Examle Output: https://www.enginatics.com/example/ont-recurring-billing-plan/
+-- Excel Example Output: https://www.enginatics.com/example/ont-recurring-billing-plan/
 -- Library Link: https://www.enginatics.com/reports/ont-recurring-billing-plan/
 -- Run Report: https://demo.enginatics.com/
 

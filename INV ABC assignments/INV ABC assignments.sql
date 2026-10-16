@@ -1,17 +1,17 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: INV ABC assignments
 -- Description: Imported from BI Publisher
-Description: ABC assignments report
-Application: Inventory
-Source: ABC assignments report (XML)
-Short Name: INVARAAS_XML
-DB package: INV_INVARAAS_XMLP_PKG
--- Excel Examle Output: https://www.enginatics.com/example/inv-abc-assignments/
+-- Description: ABC assignments report
+-- Application: Inventory
+-- Source: ABC assignments report (XML)
+-- Short Name: INVARAASXML
+-- DB package: INVINVARAASXMLPPKG
+-- Excel Example Output: https://www.enginatics.com/example/inv-abc-assignments/
 -- Library Link: https://www.enginatics.com/reports/inv-abc-assignments/
 -- Run Report: https://demo.enginatics.com/
 

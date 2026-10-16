@@ -1,13 +1,13 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: FND Concurrent Managers
 -- Description: Concurrent managers' setup and current status, e.g. processes and requests running, pending etc.
-Shows the same information as Concurrent->Manager->Administer and Concurrent->Manager->Define
--- Excel Examle Output: https://www.enginatics.com/example/fnd-concurrent-managers/
+-- Shows the same information as Concurrent->Manager->Administer and Concurrent->Manager->Define
+-- Excel Example Output: https://www.enginatics.com/example/fnd-concurrent-managers/
 -- Library Link: https://www.enginatics.com/reports/fnd-concurrent-managers/
 -- Run Report: https://demo.enginatics.com/
 

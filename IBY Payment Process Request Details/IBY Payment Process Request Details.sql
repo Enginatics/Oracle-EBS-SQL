@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: IBY Payment Process Request Details
 -- Description: Payment manager process request details including statuses, paid or rejected documents, amounts and rejection eror messages
--- Excel Examle Output: https://www.enginatics.com/example/iby-payment-process-request-details/
+-- Excel Example Output: https://www.enginatics.com/example/iby-payment-process-request-details/
 -- Library Link: https://www.enginatics.com/reports/iby-payment-process-request-details/
 -- Run Report: https://demo.enginatics.com/
 

@@ -1,31 +1,27 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: OPM Formula Upload
 -- Description: OPM Formula Upload
-==================
-Create or update Oracle Process Manufacturing (OPM / GMD) Formulas via the public API GMD_FORMULA_PUB / GMD_FORMULA_DETAIL_PUB.
-
-Row model
-=========
-One spreadsheet row per formula LINE. The header columns (Organization Code, Formula, Formula Version, Description, Class, Owner, Header Scale Type, Status, header attributes) repeat on every line of the same formula. Each line carries its Line Type (Ingredient / Product / By-Product) plus its item, quantity, UOM, scale, and line attributes. Rows of the same formula (Organization Code + Formula + Formula Version) must be contiguous.
-
-Every formula must have at least one Ingredient AND at least one Product (OPM requirement) - a header-only formula is rejected.
-
-Upload modes
-============
-Create - empty template for new formulas.
-Create, Update - downloads existing formulas in the chosen organization for review/edit and allows adding new ones. Existing formulas are matched on Organization Code + Formula + Formula Version.
-
-Notes
-=====
-- Items must be recipe-enabled in the owner organization. Detail UOM must be convertible from the item's primary UOM.
-- New formulas are created in status New (100); status changes are a workflow operation and are not driven by this upload.
-- On update, header description/class/owner and line quantities/attributes are updated; new lines are added. The owner organization and version are the key and cannot be changed.
--- Excel Examle Output: https://www.enginatics.com/example/opm-formula-upload/
+-- ==================
+-- Create or update Oracle Process Manufacturing (OPM / GMD) Formulas via the public API GMDFORMULAPUB / GMDFORMULADETAILPUB.
+-- Row model
+-- =========
+-- One spreadsheet row per formula LINE. The header columns (Organization Code, Formula, Formula Version, Description, Class, Owner, Header Scale Type, Status, header attributes) repeat on every line of the same formula. Each line carries its Line Type (Ingredient / Product / By-Product) plus its item, quantity, UOM, scale, and line attributes. Rows of the same formula (Organization Code + Formula + Formula Version) must be contiguous.
+-- Every formula must have at least one Ingredient AND at least one Product (OPM requirement) - a header-only formula is rejected.
+-- Upload modes
+-- ============
+-- Create - empty template for new formulas.
+-- Create, Update - downloads existing formulas in the chosen organization for review/edit and allows adding new ones. Existing formulas are matched on Organization Code + Formula + Formula Version.
+-- Notes
+-- =====
+-- - Items must be recipe-enabled in the owner organization. Detail UOM must be convertible from the item's primary UOM.
+-- - New formulas are created in status New (100); status changes are a workflow operation and are not driven by this upload.
+-- - On update, header description/class/owner and line quantities/attributes are updated; new lines are added. The owner organization and version are the key and cannot be changed.
+-- Excel Example Output: https://www.enginatics.com/example/opm-formula-upload/
 -- Library Link: https://www.enginatics.com/reports/opm-formula-upload/
 -- Run Report: https://demo.enginatics.com/
 

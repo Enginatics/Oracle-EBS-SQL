@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: WIP Account Distribution
 -- Description: Detail WIP report that lists resource transaction account distributions.
--- Excel Examle Output: https://www.enginatics.com/example/wip-account-distribution/
+-- Excel Example Output: https://www.enginatics.com/example/wip-account-distribution/
 -- Library Link: https://www.enginatics.com/reports/wip-account-distribution/
 -- Run Report: https://demo.enginatics.com/
 

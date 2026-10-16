@@ -1,16 +1,15 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: GL Account Analysis (Drilldown)
--- Description: ** This report is used by the GL Financial Statement and Drilldown report, to show Subledger details. **
-
-Detail GL transaction report with one line per transaction including all segments and subledger data, with amounts in both transaction currency and ledger currency.
-For drilldown to the transaction screen please ensure the column View Transaction is present in the Displayed Columns
-View Transaction
--- Excel Examle Output: https://www.enginatics.com/example/gl-account-analysis-drilldown/
+-- Description: This report is used by the GL Financial Statement and Drilldown report, to show Subledger details.
+-- Detail GL transaction report with one line per transaction including all segments and subledger data, with amounts in both transaction currency and ledger currency.
+-- For drilldown to the transaction screen please ensure the column View Transaction is present in the Displayed Columns
+-- View Transaction
+-- Excel Example Output: https://www.enginatics.com/example/gl-account-analysis-drilldown/
 -- Library Link: https://www.enginatics.com/reports/gl-account-analysis-drilldown/
 -- Run Report: https://demo.enginatics.com/
 

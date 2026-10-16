@@ -1,41 +1,39 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC AP Accrual Reconciliation Summary by Match Type
--- Description: Use this report to summarize the A/P Accrual entries from the Accrual Reconcilation Report tables, by operating unit, accrual match type and inventory organization.  Use this report for summary reconciliation purposes, to justify the "at time of receipt" accrual balances for your inventory and expense A/P accrual accounts.
-
-Parameters:
-===========
-Transaction Date From:  enter the accrual starting transaction date you wish to report.  Defaults to the earliest date found (mandatory).
-Transaction Date To:  enter the accrual ending transaction date you wish to report.  Defaults to the latest date found (mandatory).
-Operating Unit:  operating unit you wish to report (optional).
-Ledger:  general ledger you wish to report (optional).
-
-/* +=============================================================================+
--- |  Copyright 2011-2025 Douglas Volz Consulting, Inc.
--- |  All rights reserved.
--- |  Permission to use this code is granted provided the original author is
--- |  acknowledged.
--- +=============================================================================+
--- |
--- |  Original Author: Douglas Volz (doug@volzconsulting.com)
--- | 
--- |  Version Modified on Modified  by   Description
--- |  ======= =========== ============== =========================================
--- |  1.0     11 Nov 2011 Douglas Volz   Initial Coding based on xxx_ap_accrual_summary_rept.sql
--- |                                     Retrofitted to R12 A/P Accrual tables
--- |  1.1     07 May 2019 Douglas Volz   Modified for upgrade client
--- |  1.2     06 Feb 2020 Douglas Volz   Added Ledger parameter.
--- |  1.3     09 Apr 2020 Douglas Volz   Commented out capr.inventory_transaction_id column
--- |                                     Was added by Oracle for consignment transactions in
--- |                                     Release 12.1.6.
--- |  1.4     15 Apr 2020 Douglas Volz   Undid modifications for upgrade client
--- |  1.5     17 Feb 2025 Douglas Volz   Formatted for Blitz Report.
--- +=============================================================================+*/
--- Excel Examle Output: https://www.enginatics.com/example/cac-ap-accrual-reconciliation-summary-by-match-type/
+-- Description: Use this report to summarize the A/P Accrual entries from the Accrual Reconcilation Report tables, by operating unit, accrual match type and inventory organization. Use this report for summary reconciliation purposes, to justify the "at time of receipt" accrual balances for your inventory and expense A/P accrual accounts.
+-- Parameters:
+-- ===========
+-- Transaction Date From: enter the accrual starting transaction date you wish to report. Defaults to the earliest date found (mandatory).
+-- Transaction Date To: enter the accrual ending transaction date you wish to report. Defaults to the latest date found (mandatory).
+-- Operating Unit: operating unit you wish to report (optional).
+-- Ledger: general ledger you wish to report (optional).
+-- / +=============================================================================+
+-- -- | Copyright 2011-2025 Douglas Volz Consulting, Inc.
+-- -- | All rights reserved.
+-- -- | Permission to use this code is granted provided the original author is
+-- -- | acknowledged.
+-- -- +=============================================================================+
+-- -- |
+-- -- | Original Author: Douglas Volz (doug@volzconsulting.com)
+-- -- |
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== ============== =========================================
+-- -- | 1.0 11 Nov 2011 Douglas Volz Initial Coding based on xxxapaccrualsummaryrept.sql
+-- -- | Retrofitted to R12 A/P Accrual tables
+-- -- | 1.1 07 May 2019 Douglas Volz Modified for upgrade client
+-- -- | 1.2 06 Feb 2020 Douglas Volz Added Ledger parameter.
+-- -- | 1.3 09 Apr 2020 Douglas Volz Commented out capr.inventorytransactionid column
+-- -- | Was added by Oracle for consignment transactions in
+-- -- | Release 12.1.6.
+-- -- | 1.4 15 Apr 2020 Douglas Volz Undid modifications for upgrade client
+-- -- | 1.5 17 Feb 2025 Douglas Volz Formatted for Blitz Report.
+-- -- +=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-ap-accrual-reconciliation-summary-by-match-type/
 -- Library Link: https://www.enginatics.com/reports/cac-ap-accrual-reconciliation-summary-by-match-type/
 -- Run Report: https://demo.enginatics.com/
 

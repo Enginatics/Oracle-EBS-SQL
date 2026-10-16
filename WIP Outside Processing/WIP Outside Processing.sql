@@ -1,17 +1,17 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: WIP Outside Processing
 -- Description: Imported from BI Publisher
-Description: WIP Outside Processing Report
-Application: Work in Process
-Source: WIP Outside Processing Report (XML)
-Short Name: WIPLBOSP_XML
-DB package: WIP_WIPLBOSP_XMLP_PKG
--- Excel Examle Output: https://www.enginatics.com/example/wip-outside-processing/
+-- Description: WIP Outside Processing Report
+-- Application: Work in Process
+-- Source: WIP Outside Processing Report (XML)
+-- Short Name: WIPLBOSPXML
+-- DB package: WIPWIPLBOSPXMLPPKG
+-- Excel Example Output: https://www.enginatics.com/example/wip-outside-processing/
 -- Library Link: https://www.enginatics.com/reports/wip-outside-processing/
 -- Run Report: https://demo.enginatics.com/
 

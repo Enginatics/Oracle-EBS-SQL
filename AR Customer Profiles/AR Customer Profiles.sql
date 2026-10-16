@@ -1,16 +1,16 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: AR Customer Profiles
 -- Description: Customer account and site level profile details such as profile class, payment terms, statement, dunning, collector and credit settings, including the profile amount limits per currency.
-Application: Receivables
-Source: Customer Profiles Report (XML)
-Short Name: ARXCCP_XML
-DB package: AR_ARXCCP_XMLP_PKG
--- Excel Examle Output: https://www.enginatics.com/example/ar-customer-profiles/
+-- Application: Receivables
+-- Source: Customer Profiles Report (XML)
+-- Short Name: ARXCCPXML
+-- DB package: ARARXCCPXMLPPKG
+-- Excel Example Output: https://www.enginatics.com/example/ar-customer-profiles/
 -- Library Link: https://www.enginatics.com/reports/ar-customer-profiles/
 -- Run Report: https://demo.enginatics.com/
 

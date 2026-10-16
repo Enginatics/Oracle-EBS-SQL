@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: DBA Segments
 -- Description: Database segments such as tables, indexes, lob segments by size and total database size summary
--- Excel Examle Output: https://www.enginatics.com/example/dba-segments/
+-- Excel Example Output: https://www.enginatics.com/example/dba-segments/
 -- Library Link: https://www.enginatics.com/reports/dba-segments/
 -- Run Report: https://demo.enginatics.com/
 

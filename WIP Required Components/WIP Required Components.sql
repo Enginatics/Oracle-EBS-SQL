@@ -1,14 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: WIP Required Components
--- Description: Detailed project WIP report that lists discrete jobs and required components. The parameter 'Show Shortage List' can be used to show a shortage list of existing discrete jobs (similar to Oracle's 'Discrete Job Shortage Report'. 
- 
-
--- Excel Examle Output: https://www.enginatics.com/example/wip-required-components/
+-- Description: Detailed project WIP report that lists discrete jobs and required components. The parameter 'Show Shortage List' can be used to show a shortage list of existing discrete jobs (similar to Oracle's 'Discrete Job Shortage Report'.
+-- Excel Example Output: https://www.enginatics.com/example/wip-required-components/
 -- Library Link: https://www.enginatics.com/reports/wip-required-components/
 -- Run Report: https://demo.enginatics.com/
 
@@ -18,6 +16,7 @@ mso.segment1 sales_order,
 ppa.segment1 project,
 we.wip_entity_name job,
 xxen_util.meaning(wdj.status_type,'WIP_JOB_STATUS',700) wip_status,
+nvl(cii.instance_number,wdj.asset_number) asset_number,
 wl.line_code,
 msiv0.concatenated_segments assembly,
 msiv0.description assembly_description,
@@ -83,6 +82,7 @@ wip_entities we,
 mtl_reservations mr,
 mtl_sales_orders mso,
 wip_discrete_jobs wdj,
+csi_item_instances cii,
 wip_lines wl,
 mtl_system_items_vl msiv0,
 bom_departments bd,
@@ -122,6 +122,7 @@ wro.operation_seq_num=mr.demand_source_line_id(+) and
 wro.inventory_item_id=mr.inventory_item_id(+) and
 mr.demand_source_header_id=mso.sales_order_id(+) and
 we.wip_entity_id=wdj.wip_entity_id and
+decode(wdj.maintenance_object_type,3,wdj.maintenance_object_id)=cii.instance_id(+) and
 wdj.line_id=wl.line_id(+) and
 wdj.primary_item_id=msiv0.inventory_item_id(+) and
 wdj.organization_id=msiv0.organization_id(+) and

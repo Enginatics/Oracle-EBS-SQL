@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: DBA Dependencies (uses)
 -- Description: Hierarchical report showing all dependent database objects that a specified object, e.g. a view or package name uses or depends on (top to bottom)
--- Excel Examle Output: https://www.enginatics.com/example/dba-dependencies-uses/
+-- Excel Example Output: https://www.enginatics.com/example/dba-dependencies-uses/
 -- Library Link: https://www.enginatics.com/reports/dba-dependencies-uses/
 -- Run Report: https://demo.enginatics.com/
 

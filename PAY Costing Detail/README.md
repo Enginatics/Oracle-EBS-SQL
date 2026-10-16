@@ -1,14 +1,20 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'PAY Costing Detail | Oracle EBS SQL Report'
 description: 'Imported from Concurrent Program Application: Payroll Source: Costing Detail Report Short Name: PAYRPCDR'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, PAY, Costing, Detail, pay_element_classifications, hr_lookups, per_all_assignments_f'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Payroll, Enginatics, PAY, Costing, Detail, pay_element_classifications, hr_lookups, per_all_assignments_f'
 permalink: /PAY%20Costing%20Detail/
+report_name: 'PAY Costing Detail'
+report_web_name: pay-costing-detail
+module: 'Payroll'
+module_url: /modules/payroll/
 ---
 
 # PAY Costing Detail – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/pay-costing-detail/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/pay-costing-detail/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pay-costing-detail) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pay-costing-detail).
+**Oracle EBS module:** [Payroll](/modules/payroll/ "Oracle EBS Payroll reports") · [all Payroll reports](/modules/payroll/)  
 
 ## Overview
 Imported from Concurrent Program
@@ -16,28 +22,31 @@ Application: Payroll
 Source: Costing Detail Report
 Short Name: PAYRPCDR
 
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pay-costing-detail) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
+
 ## Report Parameters
 Costing Effective Date Begin, Costing Effective Date End, Costing Process, Selection Criterion, Element Set, Element Classification, Element, Payroll, Consolidation Set, Government Reporting Entity, Organization, Location, Employee, Assignment Set, Include Accruals, Employment Category
 
 ## Oracle EBS Tables Used
-[pay_element_classifications](https://www.enginatics.com/library/?pg=1&find=pay_element_classifications), [hr_lookups](https://www.enginatics.com/library/?pg=1&find=hr_lookups), [per_all_assignments_f](https://www.enginatics.com/library/?pg=1&find=per_all_assignments_f), [pay_costing_details_v](https://www.enginatics.com/library/?pg=1&find=pay_costing_details_v)
+[pay_element_classifications](https://www.enginatics.com/library/?pg=1&find=pay_element_classifications&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pay-costing-detail), [hr_lookups](https://www.enginatics.com/library/?pg=1&find=hr_lookups&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pay-costing-detail), [per_all_assignments_f](https://www.enginatics.com/library/?pg=1&find=per_all_assignments_f&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pay-costing-detail), [pay_costing_details_v](https://www.enginatics.com/library/?pg=1&find=pay_costing_details_v&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pay-costing-detail)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pay-costing-detail)
 
 ## Related Reports
-[PAY Gross to Net Summary](/PAY%20Gross%20to%20Net%20Summary/ "PAY Gross to Net Summary Oracle EBS SQL Report"), [PAY Employee Payroll History](/PAY%20Employee%20Payroll%20History/ "PAY Employee Payroll History Oracle EBS SQL Report"), [CAC Inventory and Intransit Value (Period-End) - Discrete/OPM](/CAC%20Inventory%20and%20Intransit%20Value%20%28Period-End%29%20-%20Discrete-OPM/ "CAC Inventory and Intransit Value (Period-End) - Discrete/OPM Oracle EBS SQL Report")
+[PAY Element Entries](/PAY%20Element%20Entries/ "PAY Element Entries Oracle EBS SQL Report"), [PAY Gross to Net Summary](/PAY%20Gross%20to%20Net%20Summary/ "PAY Gross to Net Summary Oracle EBS SQL Report"), [PAY Employee Payroll History](/PAY%20Employee%20Payroll%20History/ "PAY Employee Payroll History Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/PAY%20Costing%20Detail/PAY%20Costing%20Detail.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pay-costing-detail) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [PAY Costing Detail 16-Oct-2023 001613.xlsx](https://www.enginatics.com/example/pay-costing-detail/) |
-| Blitz Report™ XML Import | [PAY_Costing_Detail.xml](https://www.enginatics.com/xml/pay-costing-detail/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/pay-costing-detail/](https://www.enginatics.com/reports/pay-costing-detail/) |
+| Excel Example Output | [PAY Costing Detail 16-Oct-2023 001613.xlsx](https://www.enginatics.com/example/pay-costing-detail/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pay-costing-detail) |
+| Blitz Report™ XML Import | [PAY_Costing_Detail.xml](https://www.enginatics.com/xml/pay-costing-detail/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pay-costing-detail) |
+| SQL Source | [PAY Costing Detail.sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/PAY%20Costing%20Detail/PAY%20Costing%20Detail.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/pay-costing-detail/](https://www.enginatics.com/reports/pay-costing-detail/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pay-costing-detail) |
 
 ## Case Study & Technical Analysis: PAY Costing Detail Report
 
@@ -103,18 +112,17 @@ As a detailed transactional report, it is optimized through its robust filtering
 **3. What is the significance of "Element Classification" in this report?**
    Element Classification groups similar payroll elements (e.g., "Earnings," "Pre-Tax Deductions," "Voluntary Deductions"). This parameter allows users to focus on specific categories of payroll costs, which is useful for analyzing certain types of expenses or for audit purposes.
 
-
 ---
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pay-costing-detail)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pay-costing-detail)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pay-costing-detail)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pay-costing-detail)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pay-costing-detail)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pay-costing-detail)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pay-costing-detail)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

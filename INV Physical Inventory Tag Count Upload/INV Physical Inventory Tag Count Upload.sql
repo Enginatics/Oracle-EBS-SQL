@@ -1,27 +1,23 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: INV Physical Inventory Tag Count Upload
 -- Description: INV Physical Inventory Tag Count Upload
-=================================
-This upload enables the user to upload counts against the Physical Inventory Tags defined against the specified Physical Inventory.
-
-The upload supports
-- the update of counts against existing Tags
-- the generation of new tags.
-  For clients on R12.2.14 or later, creation of manually entered tag numbers is supported 
-  For clients on earlier releases, to generate a new tag leave the tag number blank. The tag number will be automatically generated when the tag is created
-
-For clients on R12.2.3 or later
-- the upload also supports the voiding/unvoiding of existing tags as well
-
-Note:
-There is currently a bug in the R12.2.3+ API that will reject the creation/update of tags for items which do not require Locators in Subinvnetories where the Locator Control is set to 'Check Item Level'. The API is only checking the Locator control level at the subinventory level, and if it is not set to 'Locators not required' will reject any tags for items where no locator is specified. For this reason, if the physical inventory being uploaded includes any subinventories with Locator Control set to 'Check Item Level', the upload will revert to using the older API.   
-
--- Excel Examle Output: https://www.enginatics.com/example/inv-physical-inventory-tag-count-upload/
+-- =================================
+-- This upload enables the user to upload counts against the Physical Inventory Tags defined against the specified Physical Inventory.
+-- The upload supports
+-- - the update of counts against existing Tags
+-- - the generation of new tags.
+-- For clients on R12.2.14 or later, creation of manually entered tag numbers is supported
+-- For clients on earlier releases, to generate a new tag leave the tag number blank. The tag number will be automatically generated when the tag is created
+-- For clients on R12.2.3 or later
+-- - the upload also supports the voiding/unvoiding of existing tags as well
+-- Note:
+-- There is currently a bug in the R12.2.3+ API that will reject the creation/update of tags for items which do not require Locators in Subinvnetories where the Locator Control is set to 'Check Item Level'. The API is only checking the Locator control level at the subinventory level, and if it is not set to 'Locators not required' will reject any tags for items where no locator is specified. For this reason, if the physical inventory being uploaded includes any subinventories with Locator Control set to 'Check Item Level', the upload will revert to using the older API.
+-- Excel Example Output: https://www.enginatics.com/example/inv-physical-inventory-tag-count-upload/
 -- Library Link: https://www.enginatics.com/reports/inv-physical-inventory-tag-count-upload/
 -- Run Report: https://demo.enginatics.com/
 

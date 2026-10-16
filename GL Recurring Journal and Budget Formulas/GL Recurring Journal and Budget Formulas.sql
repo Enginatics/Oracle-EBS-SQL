@@ -1,18 +1,15 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: GL Recurring Journal and Budget Formulas
 -- Description: Lists Oracle General Ledger recurring journal and budget formula definitions - batches, journal entries, lines and each line's formula steps - with the account code combinations exploded into one column per Accounting Flexfield segment.
-
-Each row is one formula step. The line account, which is the account the generated journal posts to, and the formula account, which is the account a step reads a balance from, are both shown segment by segment. Company, Department, Account, Sub-Account and the remaining segments of your chart of accounts therefore become individual columns that can be sorted and filtered in Excel.
-
-Replaces the Oracle standard report 'Other - Recurring Formula Listing' (GLXRLRFL), which prints concatenated code combinations in a fixed page layout. Definition access set security on recurring batches is applied exactly as in the standard report.
-
-Use the Ledger, Batch Name, Journal Entry Name and Category parameters to focus on a subset, for example intercompany or intracompany batches, and the per segment like, From and To parameters to restrict the accounts.
--- Excel Examle Output: https://www.enginatics.com/example/gl-recurring-journal-and-budget-formulas/
+-- Each row is one formula step. The line account, which is the account the generated journal posts to, and the formula account, which is the account a step reads a balance from, are both shown segment by segment. Company, Department, Account, Sub-Account and the remaining segments of your chart of accounts therefore become individual columns that can be sorted and filtered in Excel.
+-- Replaces the Oracle standard report 'Other - Recurring Formula Listing' (GLXRLRFL), which prints concatenated code combinations in a fixed page layout. Definition access set security on recurring batches is applied exactly as in the standard report.
+-- Use the Ledger, Batch Name, Journal Entry Name and Category parameters to focus on a subset, for example intercompany or intracompany batches, and the per segment like, From and To parameters to restrict the accounts.
+-- Excel Example Output: https://www.enginatics.com/example/gl-recurring-journal-and-budget-formulas/
 -- Library Link: https://www.enginatics.com/reports/gl-recurring-journal-and-budget-formulas/
 -- Run Report: https://demo.enginatics.com/
 

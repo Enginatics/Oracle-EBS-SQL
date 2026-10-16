@@ -1,18 +1,16 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: BOM Routing Upload
 -- Description: Report: BOM Routing Upload
-
-This upload can be used to create and/or update existing manufacturing BOM Routings.
-- Create new Standard, Flow, and Lot Based (Network) Routings
-- Update or Delete existing Standard, Flow, and Lot Based (Network) Routings
-- Upload new Common Routing Assignments
-
--- Excel Examle Output: https://www.enginatics.com/example/bom-routing-upload/
+-- This upload can be used to create and/or update existing manufacturing BOM Routings.
+-- - Create new Standard, Flow, and Lot Based (Network) Routings
+-- - Update or Delete existing Standard, Flow, and Lot Based (Network) Routings
+-- - Upload new Common Routing Assignments
+-- Excel Example Output: https://www.enginatics.com/example/bom-routing-upload/
 -- Library Link: https://www.enginatics.com/reports/bom-routing-upload/
 -- Run Report: https://demo.enginatics.com/
 

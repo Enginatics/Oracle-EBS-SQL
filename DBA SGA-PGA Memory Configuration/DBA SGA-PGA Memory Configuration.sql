@@ -1,57 +1,47 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: DBA SGA+PGA Memory Configuration
 -- Description: Current SGA and PGA memory configuration in gigabytes.
-
-A frequent configuration problem is not making full use of the available hardware resources, especially the physical RAM of the database server.
-This report shows the servers SGA, PGA and CPU configuration in comparison to the available hardware.
-For maximum performance, configure the SGA+PGA to use the full available memory of your server minus a few gig for OS level caching, e.g. for writing and reading of PLSQL output files on the DB node and for process memory (an estimated 4MB per process, see below).
-
-Oracle's performance tuning guide:
-<a href="https://docs.oracle.com/en/database/oracle/oracle-database/12.2/tgdba/database-memory-allocation.html" rel="nofollow" target="_blank">https://docs.oracle.com/en/database/oracle/oracle-database/12.2/tgdba/database-memory-allocation.html</a>
-
-Oracle's exadata best practices whitepaper:
-SUM of databases (SGA_TARGET + PGA_AGGREGATE_TARGET) + 4 MB * (Maximum PROCESSES) < Physical Memory per Database Node
-
-Tom Kyte's recommendation:
-"... if you want it all automatic, give ALL FREE MEMORY on your machine to the SGA and be done with it. No more monitoring, no more thinking about how it could be, should be, would be used.
-Set the PGA aggregate target and the SGA target to be a tad less than physical memory on the machine and you are done."
-<a href="https://asktom.oracle.com/pls/asktom/f?p=100:11:0::::P11_QUESTION_ID:30011178429375" rel="nofollow" target="_blank">https://asktom.oracle.com/pls/asktom/f?p=100:11:0::::P11_QUESTION_ID:30011178429375</a>
-
-The report also shows the status of system statistics.
-select * from sys.aux_stats$
-
-If CPUSPEEDNW still shows the default of 4096, it either means that the stats have never been gathered or it could also mean that your storage is too fast to gather them with the standard NOWORKLOAD method and you should set reasonable values manually then.
-exec dbms_stats.gather_system_stats();
-exec dbms_stats.set_system_stats('IOSEEKTIM',1);
-exec dbms_stats.set_system_stats('IOTFRSPEED',85782);
-
-There is also an Exadata mode, considering the faster storage correctly and updating the MBRC too
-exec dbms_stats.gather_system_stats(‘EXADATA');
-
-The following command checks if hugepages are configured and how many are in use:
-grep Huge /proc/meminfo
-<a href="https://access.redhat.com/solutions/320303" rel="nofollow" target="_blank">https://access.redhat.com/solutions/320303</a>
-
-To configure hugepages, set the vm.nr_hugepages in the /etc/sysctl.conf file and hard and soft memlock in /etc/security/limits.conf for the oracle user.
-/etc/sysctl.conf
-vm.nr_hugepages = SGA GB x 512 + 5
-/etc/security/limits.conf
-oracle               soft    memlock (SGA GB x 512 + 5) * 2048
-oracle               hard    memlock (SGA GB x 512 + 5) * 2048
-<a href="https://www.enginatics.com/blog/how-to-configure-hugepages-for-oracle-ebs/" rel="nofollow" target="_blank">https://www.enginatics.com/blog/how-to-configure-hugepages-for-oracle-ebs/</a>
-
-Check if all database parameters are set according to Oracle's requirement:
-Database Initialization Parameters for Oracle E-Business Suite Release 12 (KA1002)
-<a href="https://support.oracle.com/support/?kmContentId=11158187" rel="nofollow" target="_blank">https://support.oracle.com/support/?kmContentId=11158187</a>
-
-To perform this check automatically, install and run Oracle's 'Database Performance and Statistics Analyzer' concurrent program (KB627702)
-<a href="https://support.oracle.com/rs?type=doc&id=2126712" rel="nofollow" target="_blank">https://support.oracle.com/rs?type=doc&id=2126712</a>
--- Excel Examle Output: https://www.enginatics.com/example/dba-sga-pga-memory-configuration/
+-- A frequent configuration problem is not making full use of the available hardware resources, especially the physical RAM of the database server.
+-- This report shows the servers SGA, PGA and CPU configuration in comparison to the available hardware.
+-- For maximum performance, configure the SGA+PGA to use the full available memory of your server minus a few gig for OS level caching, e.g. for writing and reading of PLSQL output files on the DB node and for process memory (an estimated 4MB per process, see below).
+-- Oracle's performance tuning guide:
+-- https://docs.oracle.com/en/database/oracle/oracle-database/12.2/tgdba/database-memory-allocation.html
+-- Oracle's exadata best practices whitepaper:
+-- SUM of databases (SGATARGET + PGAAGGREGATETARGET) + 4 MB (Maximum PROCESSES) < Physical Memory per Database Node
+-- Tom Kyte's recommendation:
+-- "... if you want it all automatic, give ALL FREE MEMORY on your machine to the SGA and be done with it. No more monitoring, no more thinking about how it could be, should be, would be used.
+-- Set the PGA aggregate target and the SGA target to be a tad less than physical memory on the machine and you are done."
+-- https://asktom.oracle.com/pls/asktom/f?p=100:11:0::::P11QUESTIONID:30011178429375
+-- Database created or cloned is the date of the last clone: the controlfile creation date, which Rapid Clone and RMAN DUPLICATE reset, or the PDB creation date on a multitenant database if that is later.
+-- The report also shows the status of system statistics.
+-- select from sys.auxstats$
+-- If CPUSPEEDNW still shows the default of 4096, it either means that the stats have never been gathered or it could also mean that your storage is too fast to gather them with the standard NOWORKLOAD method and you should set reasonable values manually then.
+-- exec dbmsstats.gathersystemstats();
+-- exec dbmsstats.setsystemstats('IOSEEKTIM',1);
+-- exec dbmsstats.setsystemstats('IOTFRSPEED',85782);
+-- There is also an Exadata mode, considering the faster storage correctly and updating the MBRC too
+-- exec dbmsstats.gathersystemstats(‘EXADATA');
+-- The following command checks if hugepages are configured and how many are in use:
+-- grep Huge /proc/meminfo
+-- https://access.redhat.com/solutions/320303
+-- To configure hugepages, set the vm.nrhugepages in the /etc/sysctl.conf file and hard and soft memlock in /etc/security/limits.conf for the oracle user.
+-- /etc/sysctl.conf
+-- vm.nrhugepages = SGA GB x 512 + 5
+-- /etc/security/limits.conf
+-- oracle soft memlock (SGA GB x 512 + 5) 2048
+-- oracle hard memlock (SGA GB x 512 + 5) 2048
+-- https://www.enginatics.com/blog/how-to-configure-hugepages-for-oracle-ebs/
+-- Check if all database parameters are set according to Oracle's requirement:
+-- Database Initialization Parameters for Oracle E-Business Suite Release 12 (KA1002)
+-- https://support.oracle.com/support/?kmContentId=11158187
+-- To perform this check automatically, install and run Oracle's 'Database Performance and Statistics Analyzer' concurrent program (KB627702)
+-- https://support.oracle.com/rs?type=doc&id=2126712
+-- Excel Example Output: https://www.enginatics.com/example/dba-sga-pga-memory-configuration/
 -- Library Link: https://www.enginatics.com/reports/dba-sga-pga-memory-configuration/
 -- Run Report: https://demo.enginatics.com/
 
@@ -156,5 +146,6 @@ select to_number(null) inst_id, 'control_management_pack_access: '||vp.value nam
 select to_number(null) inst_id, 'awr_pdb_autoflush_enabled: '||vp.value name, null value from v$parameter vp where vp.name='awr_pdb_autoflush_enabled' union all
 select distinct to_number(null) inst_id, 'AWR Report last usage date: '||max(dfus.last_usage_date) over () name, null value from dba_feature_usage_statistics dfus where dfus.name='AWR Report' and dfus.dbid in (select vd.dbid from v$database vd) union all
 select distinct to_number(null) inst_id, 'AWR Report usages' name, sum(dfus.detected_usages) over () value from dba_feature_usage_statistics dfus where dfus.name='AWR Report' and dfus.dbid in (select vd.dbid from v$database vd) union all
+select to_number(null) inst_id, 'Database created or cloned: '||greatest(vd.created&pdb_creation_time) name, null value from v$database vd union all
 select to_number(null) inst_id, 'Database Editions: ' name, count(*) value from dba_editions de union all
 select to_number(null) inst_id, 'Database size' name, sum((select vp.value from v$parameter vp where vp.name like 'db_block_size')*dtum.used_space)/1024/1024/1024 value from dba_tablespace_usage_metrics dtum

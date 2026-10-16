@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: WF Notifications
 -- Description: 
--- Excel Examle Output: https://www.enginatics.com/example/wf-notifications/
+-- Excel Example Output: https://www.enginatics.com/example/wf-notifications/
 -- Library Link: https://www.enginatics.com/reports/wf-notifications/
 -- Run Report: https://demo.enginatics.com/
 

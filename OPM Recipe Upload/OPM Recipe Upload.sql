@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: OPM Recipe Upload
 -- Description: 
--- Excel Examle Output: https://www.enginatics.com/example/opm-recipe-upload/
+-- Excel Example Output: https://www.enginatics.com/example/opm-recipe-upload/
 -- Library Link: https://www.enginatics.com/reports/opm-recipe-upload/
 -- Run Report: https://demo.enginatics.com/
 

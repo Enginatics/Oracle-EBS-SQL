@@ -1,14 +1,20 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'QP Modifier Details | Oracle EBS SQL Report'
 description: 'Imported from BI Publisher Description: Modifier Details Report for QP Application: Advanced Pricing Source: Modifier Details (XML) Short Name…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Modifier, Details, fnd_application_vl, qp_secu_list_headers_vl, qp_segments_b'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Advanced Pricing, Enginatics, R12 only, Modifier, Details, fnd_application_vl, qp_secu_list_headers_vl, qp_segments_b'
 permalink: /QP%20Modifier%20Details/
+report_name: 'QP Modifier Details'
+report_web_name: qp-modifier-details
+module: 'Advanced Pricing'
+module_url: /modules/advanced-pricing/
 ---
 
 # QP Modifier Details – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/qp-modifier-details/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/qp-modifier-details/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-modifier-details) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-modifier-details).
+**Oracle EBS module:** [Advanced Pricing](/modules/advanced-pricing/ "Oracle EBS Advanced Pricing reports") · [all Advanced Pricing reports](/modules/advanced-pricing/)  
 
 ## Overview
 Imported from BI Publisher
@@ -33,28 +39,31 @@ For each Modifier List the row sequence is:
 
 You can filter on the Record Type column to restrict the data based on what you want to review (e.g just the Modifier Qualifiers, or just the Modifier Lines, or just the Line Level Qualifiers etc).
 
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-modifier-details) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 
 ## Report Parameters
 Modifier Number From, Modifier Number To, Modifier Name From, Modifier Name To, Modifier Version From, Modifier Version To, Start Date Active, End Date Active, Active Modifier Only, Active Modifier Lines Only, Item Name, Item Category, Customer Name, Customer Class, Price List
 
 ## Oracle EBS Tables Used
-[fnd_application_vl](https://www.enginatics.com/library/?pg=1&find=fnd_application_vl), [qp_secu_list_headers_vl](https://www.enginatics.com/library/?pg=1&find=qp_secu_list_headers_vl), [qp_segments_b](https://www.enginatics.com/library/?pg=1&find=qp_segments_b), [qp_prc_contexts_b](https://www.enginatics.com/library/?pg=1&find=qp_prc_contexts_b), [qp_qualifiers_v](https://www.enginatics.com/library/?pg=1&find=qp_qualifiers_v), [qp_lookups](https://www.enginatics.com/library/?pg=1&find=qp_lookups), [qp_list_lines](https://www.enginatics.com/library/?pg=1&find=qp_list_lines), [qp_rltd_modifiers](https://www.enginatics.com/library/?pg=1&find=qp_rltd_modifiers), [qp_modifier_summary_v](https://www.enginatics.com/library/?pg=1&find=qp_modifier_summary_v), [qp_price_breaks_v](https://www.enginatics.com/library/?pg=1&find=qp_price_breaks_v), [qp_pricing_attr_v](https://www.enginatics.com/library/?pg=1&find=qp_pricing_attr_v), [qp_pricing_attr_get_v](https://www.enginatics.com/library/?pg=1&find=qp_pricing_attr_get_v), [q1](https://www.enginatics.com/library/?pg=1&find=q1), [q2](https://www.enginatics.com/library/?pg=1&find=q2), [q3](https://www.enginatics.com/library/?pg=1&find=q3), [q4](https://www.enginatics.com/library/?pg=1&find=q4), [q5](https://www.enginatics.com/library/?pg=1&find=q5), [q6](https://www.enginatics.com/library/?pg=1&find=q6)
+[fnd_application_vl](https://www.enginatics.com/library/?pg=1&find=fnd_application_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-modifier-details), [qp_secu_list_headers_vl](https://www.enginatics.com/library/?pg=1&find=qp_secu_list_headers_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-modifier-details), [qp_segments_b](https://www.enginatics.com/library/?pg=1&find=qp_segments_b&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-modifier-details), [qp_prc_contexts_b](https://www.enginatics.com/library/?pg=1&find=qp_prc_contexts_b&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-modifier-details), [qp_qualifiers_v](https://www.enginatics.com/library/?pg=1&find=qp_qualifiers_v&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-modifier-details), [qp_lookups](https://www.enginatics.com/library/?pg=1&find=qp_lookups&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-modifier-details), [qp_list_lines](https://www.enginatics.com/library/?pg=1&find=qp_list_lines&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-modifier-details), [qp_rltd_modifiers](https://www.enginatics.com/library/?pg=1&find=qp_rltd_modifiers&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-modifier-details), [qp_modifier_summary_v](https://www.enginatics.com/library/?pg=1&find=qp_modifier_summary_v&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-modifier-details), [qp_price_breaks_v](https://www.enginatics.com/library/?pg=1&find=qp_price_breaks_v&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-modifier-details), [qp_pricing_attr_v](https://www.enginatics.com/library/?pg=1&find=qp_pricing_attr_v&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-modifier-details), [qp_pricing_attr_get_v](https://www.enginatics.com/library/?pg=1&find=qp_pricing_attr_get_v&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-modifier-details)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-modifier-details), [R12 only](https://www.enginatics.com/library/?pg=1&category%5B%5D=R12%20only&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-modifier-details)
 
-
+## Related Reports
+[QP Modifier Upload](/QP%20Modifier%20Upload/ "QP Modifier Upload Oracle EBS SQL Report"), [QP Customer Pricing Engine Request](/QP%20Customer%20Pricing%20Engine%20Request/ "QP Customer Pricing Engine Request Oracle EBS SQL Report"), [INV Physical Inventory Purge Upload](/INV%20Physical%20Inventory%20Purge%20Upload/ "INV Physical Inventory Purge Upload Oracle EBS SQL Report"), [QP GSA Pricing Upload](/QP%20GSA%20Pricing%20Upload/ "QP GSA Pricing Upload Oracle EBS SQL Report"), [CAC Intercompany SO Price List vs. Item Cost Comparison](/CAC%20Intercompany%20SO%20Price%20List%20vs-%20Item%20Cost%20Comparison/ "CAC Intercompany SO Price List vs. Item Cost Comparison Oracle EBS SQL Report"), [QP Pricing Agreements](/QP%20Pricing%20Agreements/ "QP Pricing Agreements Oracle EBS SQL Report"), [QP Price List Upload](/QP%20Price%20List%20Upload/ "QP Price List Upload Oracle EBS SQL Report"), [ONT Order Upload](/ONT%20Order%20Upload/ "ONT Order Upload Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/QP%20Modifier%20Details/QP%20Modifier%20Details.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-modifier-details) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [QP Modifier Details - Default 24-Feb-2024 004246.xlsx](https://www.enginatics.com/example/qp-modifier-details/) |
-| Blitz Report™ XML Import | [QP_Modifier_Details.xml](https://www.enginatics.com/xml/qp-modifier-details/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/qp-modifier-details/](https://www.enginatics.com/reports/qp-modifier-details/) |
+| Excel Example Output | [QP Modifier Details - Default 24-Feb-2024 004246.xlsx](https://www.enginatics.com/example/qp-modifier-details/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-modifier-details) |
+| Blitz Report™ XML Import | [QP_Modifier_Details.xml](https://www.enginatics.com/xml/qp-modifier-details/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-modifier-details) |
+| SQL Source | [QP Modifier Details.sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/QP%20Modifier%20Details/QP%20Modifier%20Details.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/qp-modifier-details/](https://www.enginatics.com/reports/qp-modifier-details/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-modifier-details) |
 
 ## Case Study & Technical Analysis: QP Modifier Details Report
 
@@ -121,18 +130,17 @@ As a detailed configuration report with hierarchical data, it is optimized by st
 **3. Can this report help troubleshoot why a specific discount is not appearing on a sales order?**
    Yes. By using the filtering parameters to find the expected modifier and then examining its `List Line - Qualifiers` and `List Line - Pricing Attributes` sections, you can verify if the order (customer, item, quantity, etc.) meets all the conditions defined for that modifier to be applied by the pricing engine.
 
-
 ---
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-modifier-details)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-modifier-details)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-modifier-details)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-modifier-details)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-modifier-details)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-modifier-details)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-modifier-details)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

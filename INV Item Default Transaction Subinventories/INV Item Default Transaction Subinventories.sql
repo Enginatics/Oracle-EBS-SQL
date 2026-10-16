@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: INV Item Default Transaction Subinventories
 -- Description: Master data report of inventory item relationships including the type of relationship between the item and the subinventory.
--- Excel Examle Output: https://www.enginatics.com/example/inv-item-default-transaction-subinventories/
+-- Excel Example Output: https://www.enginatics.com/example/inv-item-default-transaction-subinventories/
 -- Library Link: https://www.enginatics.com/reports/inv-item-default-transaction-subinventories/
 -- Run Report: https://demo.enginatics.com/
 

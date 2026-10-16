@@ -1,20 +1,43 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: AP Matched and Modified Receipts
 -- Description: Imported from BI Publisher
-Description: Matched and Modified Receipts Report
-Application: Payables
-Source: Matched and Modified Receipts Report (XML) - Not Supported: Reserved For Future Use
-Short Name: APXMTMRR_XML
-DB package: AP_APXMTMRR_XMLP_PKG
--- Excel Examle Output: https://www.enginatics.com/example/ap-matched-and-modified-receipts/
+-- Description: Matched and Modified Receipts Report
+-- Application: Payables
+-- Source: Matched and Modified Receipts Report (XML) - Not Supported: Reserved For Future Use
+-- Short Name: APXMTMRRXML
+-- DB package: APAPXMTMRRXMLPPKG
+-- When India Localization is installed, the following GST columns are also included: GST Registration No, GST PAN No, GST TAN No, CGST Amount, SGST Amount, IGST Amount, CGST Rate, SGST Rate, IGST Rate, Custom Amount, Unclassified Tax Amount, Taxable Value, HSN SAC Code.
+-- Excel Example Output: https://www.enginatics.com/example/ap-matched-and-modified-receipts/
 -- Library Link: https://www.enginatics.com/reports/ap-matched-and-modified-receipts/
 -- Run Report: https://demo.enginatics.com/
 
+select
+x.receipt_number,
+x.receipt_creation_date,
+x.receipt_last_modified,
+x.supplier,
+x.supplier_site,
+x.receipt_line_num,
+x.received_qty,
+x.adjustment_qty,
+x.adjustment_date,
+x.po_number,
+x.invoice_number,
+x.invoice_status,
+x.invoice_line_number,
+x.billed_qty,
+x.invoice_line_creation_date,
+x.operating_unit,
+x.adjutment_transaction_id
+&il_reg_columns
+&il_columns
+from
+(
 select
  rsh.receipt_num receipt_number,
  trunc(rsh.creation_date) receipt_creation_date,
@@ -33,6 +56,9 @@ select
  trunc(ail.creation_date) invoice_line_creation_date,
  haouv.name operating_unit,
  rct1.transaction_id adjutment_transaction_id
+&il_columns_inner_amt
+&il_columns_inner_rate
+&il_columns_inner_tp
 from
  ap_invoices_all ai,
  ap_invoice_lines_all ail,
@@ -45,6 +71,7 @@ from
  rcv_transactions rct1,
  ap_lookup_codes alc,
  hr_all_organization_units_vl haouv
+&il_from
 where
  1=1 and
  ai.org_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11) and
@@ -66,11 +93,13 @@ where
   (upper(:p_approval_status)  = 'PAID' and ai.payment_status_flag in ('Y','P')) or
   (upper(:p_approval_status) != 'PAID' and ap_invoices_pkg.get_approval_status(ai.invoice_id,ai.invoice_amount,ai.payment_status_flag,ai.invoice_type_lookup_code) = :p_approval_status)
  )
+&il_where
+) x
 order by
- pv.vendor_name,
- pvs.vendor_site_code,
- rsh.receipt_num,
- rsl.line_num,
- rct1.transaction_id,
- ai.invoice_num,
- ail.line_number
+x.supplier,
+x.supplier_site,
+x.receipt_number,
+x.receipt_line_num,
+x.adjutment_transaction_id,
+x.invoice_number,
+x.invoice_line_number

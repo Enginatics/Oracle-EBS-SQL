@@ -1,44 +1,40 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Manufacturing Variance
--- Description: Report your summary or detail manufacturing variances for open and closed WIP jobs.  If the job is open the Report Type column displays "Valuation", as this WIP job and potential variances are still in your WIP inventory balances.  If the job has been closed during the reporting period, the Report Type column displays "Variance", as this WIP job was written off on a WIP Job Close Variance transaction.  You can report prior periods and the report will automatically adjust the assembly completion, assembly scrap, component issue and resource quantities to reflect the reported accounting period, as well as report only jobs which were open or closed during that prior period.
-
-Closed, Pending Close, Cancelled, Complete and Complete No Charges WIP job statuses use the completion quantities.  All other WIP jobs use the parameter "Use Completion Quantities".  And if you use Standard Costing, for standard discrete jobs this report also shows your configuration and method variances; the difference between your WIP BOM/routing and your standard BOM/routing.  Non-standard jobs usually do not have configuration variances, as they are "non-standard" without standard BOM or routing requirements.
-
-Parameters:
-==========
-Report Option:  Open jobs, Closed jobs or All jobs.  Use this to limit the size of the report.  (mandatory)
-Period Name:  the accounting period you wish to report.  (mandatory)
-Cost Type:  defaults to your Costing Method; if the cost type is missing component costs the report will find any missing item costs from your Costing Method cost type.
-Include Scrap Quantities:  for calculating your completion quantities and component quantity requirements, include or exclude any scrapped assembly quantities.  (mandatory)
-Include Unreleased Jobs:  include jobs which have not been released and are not started.  (mandatory)
-Include Bulk Supply Items:  include Bulk items to match the results from the Oracle Discrete Job Value Report; exclude knowing that Bulk items are usually not issued to the WIP job.  (mandatory)
-Use Completion Qtys:  for jobs in a released status, use the completion quantities for the material usage and configuration variance calculations.  Useful if you backflush your materials based on your completion quantities.  Complete, Complete - No Charges, Cancelled, Closed, Pending Close or Failed Close alway use the completion quantities in the variance calculations.  (mandatory)
-Config/Lot Variances for Non-Std:  calculate configuration and lot variances for non-standard jobs.
-Include Unimplemented ECOs:  include future BOM changes.
-Alternate BOM Designator:  if you save your BOMs during your Cost Rollups (based on your Cost Type setups), use this parameter to get the correct BOMs for the configuration variance calculations.  If you leave this field blank the report uses the latest BOM component effectivity date up to the period close date.  (optional)
-Category Set 1, 2, 3:  any item category to report (optional).
-Class Code:  specific type of WIP class to report (optional).
-Job Status:  specific WIP job status (optional).
-WIP Job:  specific WIP job (optional).
-Assembly Number:  specific assembly number to report (optional)
-Component Number:   specific component item to report (optional)
-Outside Processing Item:  Specific outside processing component to report (optional).
-Resource Code:  Specific resource code to report (optional).
-Organization Code:  any inventory organization, defaults to your session's inventory org (optional).
-
--- |  Copyright 2011-25 Douglas Volz Consulting, Inc. 
--- |  Version Modified on Modified  by   Description
--- |  ======= =========== =============== =========================================
--- |  1.36    21 Dec 2024 Douglas Volz   Fixes for Configuration and Method Variances.
--- |  1.37    02 Jan 2025 Douglas Volz    Add Scrap Variance column, to avoid double-counting assy scrap.
--- |  1.38    04 Feb 2025 Douglas Volz   Consolidate Summary and Detail reports into one report.
-
--- Excel Examle Output: https://www.enginatics.com/example/cac-manufacturing-variance/
+-- Description: Report your summary or detail manufacturing variances for open and closed WIP jobs. If the job is open the Report Type column displays "Valuation", as this WIP job and potential variances are still in your WIP inventory balances. If the job has been closed during the reporting period, the Report Type column displays "Variance", as this WIP job was written off on a WIP Job Close Variance transaction. You can report prior periods and the report will automatically adjust the assembly completion, assembly scrap, component issue and resource quantities to reflect the reported accounting period, as well as report only jobs which were open or closed during that prior period.
+-- Closed, Pending Close, Cancelled, Complete and Complete No Charges WIP job statuses use the completion quantities. All other WIP jobs use the parameter "Use Completion Quantities". And if you use Standard Costing, for standard discrete jobs this report also shows your configuration and method variances; the difference between your WIP BOM/routing and your standard BOM/routing. Non-standard jobs usually do not have configuration variances, as they are "non-standard" without standard BOM or routing requirements.
+-- Parameters:
+-- ==========
+-- Report Option: Open jobs, Closed jobs or All jobs. Use this to limit the size of the report. (mandatory)
+-- Period Name: the accounting period you wish to report. (mandatory)
+-- Cost Type: defaults to your Costing Method; if the cost type is missing component costs the report will find any missing item costs from your Costing Method cost type.
+-- Include Scrap Quantities: for calculating your completion quantities and component quantity requirements, include or exclude any scrapped assembly quantities. (mandatory)
+-- Include Unreleased Jobs: include jobs which have not been released and are not started. (mandatory)
+-- Include Bulk Supply Items: include Bulk items to match the results from the Oracle Discrete Job Value Report; exclude knowing that Bulk items are usually not issued to the WIP job. (mandatory)
+-- Use Completion Qtys: for jobs in a released status, use the completion quantities for the material usage and configuration variance calculations. Useful if you backflush your materials based on your completion quantities. Complete, Complete - No Charges, Cancelled, Closed, Pending Close or Failed Close alway use the completion quantities in the variance calculations. (mandatory)
+-- Config/Lot Variances for Non-Std: calculate configuration and lot variances for non-standard jobs.
+-- Include Unimplemented ECOs: include future BOM changes.
+-- Alternate BOM Designator: if you save your BOMs during your Cost Rollups (based on your Cost Type setups), use this parameter to get the correct BOMs for the configuration variance calculations. If you leave this field blank the report uses the latest BOM component effectivity date up to the period close date. (optional)
+-- Category Set 1, 2, 3: any item category to report (optional).
+-- Class Code: specific type of WIP class to report (optional).
+-- Job Status: specific WIP job status (optional).
+-- WIP Job: specific WIP job (optional).
+-- Assembly Number: specific assembly number to report (optional)
+-- Component Number: specific component item to report (optional)
+-- Outside Processing Item: Specific outside processing component to report (optional).
+-- Resource Code: Specific resource code to report (optional).
+-- Organization Code: any inventory organization, defaults to your session's inventory org (optional).
+-- -- | Copyright 2011-25 Douglas Volz Consulting, Inc.
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== =============== =========================================
+-- -- | 1.36 21 Dec 2024 Douglas Volz Fixes for Configuration and Method Variances.
+-- -- | 1.37 02 Jan 2025 Douglas Volz Add Scrap Variance column, to avoid double-counting assy scrap.
+-- -- | 1.38 04 Feb 2025 Douglas Volz Consolidate Summary and Detail reports into one report.
+-- Excel Example Output: https://www.enginatics.com/example/cac-manufacturing-variance/
 -- Library Link: https://www.enginatics.com/reports/cac-manufacturing-variance/
 -- Run Report: https://demo.enginatics.com/
 

@@ -1,13 +1,13 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: DBA Alert Log
--- Description: V$DIAG_ALERT_EXT shows the contents of the XML-based alert log in the Automatic Diagnostic Repository (ADR) for the current container (PDB).
-You could schedule it, for example, in incremental mode to send an email with errors that occured since the last scheduled report run.
--- Excel Examle Output: https://www.enginatics.com/example/dba-alert-log/
+-- Description: V$DIAGALERTEXT shows the contents of the XML-based alert log in the Automatic Diagnostic Repository (ADR) for the current container (PDB).
+-- You could schedule it, for example, in incremental mode to send an email with errors that occured since the last scheduled report run.
+-- Excel Example Output: https://www.enginatics.com/example/dba-alert-log/
 -- Library Link: https://www.enginatics.com/reports/dba-alert-log/
 -- Run Report: https://demo.enginatics.com/
 

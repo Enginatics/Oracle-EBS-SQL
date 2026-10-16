@@ -1,43 +1,42 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Resources by Department Setup
--- Description: Report to show which resources are assigned to which departments.  With the respective resource rates as well.
-
-/* +=============================================================================+
--- |  Copyright 2016 - 2022 Douglas Volz Consulting, Inc.                        |
--- |  All rights reserved.                                                       |
--- |  Permission to use this code is granted provided the original author is     |
--- |  acknowledged.  No warranties, express or otherwise is included in this     |
--- |  permission.                                                                |
--- +=============================================================================+
--- |
--- |  Original Author: Douglas Volz (doug@volzconsulting.com)
--- |
--- |  Program Name:  xxx_resources_by_dept.sql
--- |
--- |  Parameters:
--- |  p_org_code         -- Specific inventory organization you wish to report (optional)
--- |  p_operating_unit   -- Operating Unit you wish to report, leave blank for all
--- |                        operating units (optional) 
--- |  p_ledger           -- general ledger you wish to report, leave blank for all
--- |                        ledgers (optional)
--- |  p_cost_type        -- Enter Pending or Frozen or AvgRates for the Cost Type.  
--- |                        Optional, defaults to your AvgRates or Frozen Cost Type,
--- |                        depending on your Costing Method.
--- |  Description:
--- |  Report to show which resources are assigned to which departments.
--- | 
--- |  Version Modified on Modified  by   Description
--- |  ======= =========== ============== =========================================
--- |  1.0     21 Jan 2017 Douglas Volz   Initial Coding
--- |  1.1     20 Jan 2020 Douglas Volz   Add operating unit and org code parameters.
--- |  1.2     20 Apr 2020 Douglas Volz   Make Cost Type default work for all cost methods
--- +=============================================================================+*/
--- Excel Examle Output: https://www.enginatics.com/example/cac-resources-by-department-setup/
+-- Description: Report to show which resources are assigned to which departments. With the respective resource rates as well.
+-- / +=============================================================================+
+-- -- | Copyright 2016 - 2022 Douglas Volz Consulting, Inc. |
+-- -- | All rights reserved. |
+-- -- | Permission to use this code is granted provided the original author is |
+-- -- | acknowledged. No warranties, express or otherwise is included in this |
+-- -- | permission. |
+-- -- +=============================================================================+
+-- -- |
+-- -- | Original Author: Douglas Volz (doug@volzconsulting.com)
+-- -- |
+-- -- | Program Name: xxxresourcesbydept.sql
+-- -- |
+-- -- | Parameters:
+-- -- | porgcode -- Specific inventory organization you wish to report (optional)
+-- -- | poperatingunit -- Operating Unit you wish to report, leave blank for all
+-- -- | operating units (optional)
+-- -- | pledger -- general ledger you wish to report, leave blank for all
+-- -- | ledgers (optional)
+-- -- | pcosttype -- Enter Pending or Frozen or AvgRates for the Cost Type.
+-- -- | Optional, defaults to your AvgRates or Frozen Cost Type,
+-- -- | depending on your Costing Method.
+-- -- | Description:
+-- -- | Report to show which resources are assigned to which departments.
+-- -- |
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== ============== =========================================
+-- -- | 1.0 21 Jan 2017 Douglas Volz Initial Coding
+-- -- | 1.1 20 Jan 2020 Douglas Volz Add operating unit and org code parameters.
+-- -- | 1.2 20 Apr 2020 Douglas Volz Make Cost Type default work for all cost methods
+-- -- +=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-resources-by-department-setup/
 -- Library Link: https://www.enginatics.com/reports/cac-resources-by-department-setup/
 -- Run Report: https://demo.enginatics.com/
 

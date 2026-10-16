@@ -1,37 +1,33 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC AP Accrual Accounts Setup
--- Description: Report to show the valid A/P Accrual Accounts which have been set up in the Select Accrual Accounts Form.  Showing the Ledger, Operating Unit, Accrual Accounts, Creation Date, Created By and Last Updated By.  The A/P Accrual Load Program uses these accounts to find the Payables, Receiving and Inventory accounting accrual entries for the A/P Accrual Load results.
-
-Parameters:
-===========
-Operating Unit:  enter the specific operating unit(s) you wish to report (optional).
-Ledger:  enter the specific ledger(s) you wish to report (optional).
-
-/* +=============================================================================+
--- |  Copyright 2008 - 2025 Douglas Volz Consulting, Inc.
--- |  All rights reserved.
--- |  Permission to use this code is granted provided the original author is
--- |  acknowledged. No warranties, express or otherwise is included in this
--- |  permission.
--- +=============================================================================+
--- |
--- |  Original Author: Douglas Volz (doug@volzconsulting.com)
--- | 
--- |  Version Modified on Modified  by   Description
--- |  ======= =========== ============== =========================================
--- |  1.0     10 Nov 2008 Douglas Volz   Initial Coding
--- |  1.1     08 Nov 2011 Douglas Volz   Modified for Release 12
--- |  1.2     15 Feb 2025 Douglas Volz   Added Ledger and Operating Unit parameters,
--- |					                 and added G/L and Operating Unit Security Controls.
--- +=============================================================================+*/
-
-
--- Excel Examle Output: https://www.enginatics.com/example/cac-ap-accrual-accounts-setup/
+-- Description: Report to show the valid A/P Accrual Accounts which have been set up in the Select Accrual Accounts Form. Showing the Ledger, Operating Unit, Accrual Accounts, Creation Date, Created By and Last Updated By. The A/P Accrual Load Program uses these accounts to find the Payables, Receiving and Inventory accounting accrual entries for the A/P Accrual Load results.
+-- Parameters:
+-- ===========
+-- Operating Unit: enter the specific operating unit(s) you wish to report (optional).
+-- Ledger: enter the specific ledger(s) you wish to report (optional).
+-- / +=============================================================================+
+-- -- | Copyright 2008 - 2025 Douglas Volz Consulting, Inc.
+-- -- | All rights reserved.
+-- -- | Permission to use this code is granted provided the original author is
+-- -- | acknowledged. No warranties, express or otherwise is included in this
+-- -- | permission.
+-- -- +=============================================================================+
+-- -- |
+-- -- | Original Author: Douglas Volz (doug@volzconsulting.com)
+-- -- |
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== ============== =========================================
+-- -- | 1.0 10 Nov 2008 Douglas Volz Initial Coding
+-- -- | 1.1 08 Nov 2011 Douglas Volz Modified for Release 12
+-- -- | 1.2 15 Feb 2025 Douglas Volz Added Ledger and Operating Unit parameters,
+-- -- | and added G/L and Operating Unit Security Controls.
+-- -- +=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-ap-accrual-accounts-setup/
 -- Library Link: https://www.enginatics.com/reports/cac-ap-accrual-accounts-setup/
 -- Run Report: https://demo.enginatics.com/
 

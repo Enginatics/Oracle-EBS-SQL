@@ -1,14 +1,20 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'ONT Transaction Types Listing | Oracle EBS SQL Report'
 description: 'Imported Oracle standard Order Management transaction types listing, enhanced to show the setup across all operating units Description: Transaction Types…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, ONT, Transaction, Types, Listing, hr_all_organization_units_vl, oe_transaction_types_all, oe_transaction_types_tl'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Order Management, Enginatics, ONT, Transaction, Types, Listing, hr_all_organization_units_vl, oe_transaction_types_all, oe_transaction_types_tl'
 permalink: /ONT%20Transaction%20Types%20Listing/
+report_name: 'ONT Transaction Types Listing'
+report_web_name: ont-transaction-types-listing
+module: 'Order Management'
+module_url: /modules/order-management/
 ---
 
 # ONT Transaction Types Listing – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/ont-transaction-types-listing/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/ont-transaction-types-listing/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ont-transaction-types-listing) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ont-transaction-types-listing).
+**Oracle EBS module:** [Order Management](/modules/order-management/ "Oracle EBS Order Management reports") · [all Order Management reports](/modules/order-management/)  
 
 ## Overview
 Imported Oracle standard Order Management transaction types listing, enhanced to show the setup across all operating units
@@ -18,28 +24,31 @@ Source: Transaction Types Listing Report (XML)
 Short Name: OEXORDTP_XML
 DB package: ONT_OEXORDTP_XMLP_PKG
 
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ont-transaction-types-listing) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
+
 ## Report Parameters
 Operating Unit, Transaction Type Code, Order Category Code
 
 ## Oracle EBS Tables Used
-[hr_all_organization_units_vl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_vl), [oe_transaction_types_all](https://www.enginatics.com/library/?pg=1&find=oe_transaction_types_all), [oe_transaction_types_tl](https://www.enginatics.com/library/?pg=1&find=oe_transaction_types_tl), [oe_price_lists_v](https://www.enginatics.com/library/?pg=1&find=oe_price_lists_v), [oe_credit_check_rules](https://www.enginatics.com/library/?pg=1&find=oe_credit_check_rules), [org_organization_definitions](https://www.enginatics.com/library/?pg=1&find=org_organization_definitions), [org_freight](https://www.enginatics.com/library/?pg=1&find=org_freight), [ra_rules](https://www.enginatics.com/library/?pg=1&find=ra_rules), [ra_batch_sources](https://www.enginatics.com/library/?pg=1&find=ra_batch_sources), [ra_cust_trx_types](https://www.enginatics.com/library/?pg=1&find=ra_cust_trx_types), [fnd_currencies_vl](https://www.enginatics.com/library/?pg=1&find=fnd_currencies_vl), [gl_daily_conversion_types](https://www.enginatics.com/library/?pg=1&find=gl_daily_conversion_types), [gl_code_combinations_kfv](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations_kfv), [mo_glob_org_access_tmp](https://www.enginatics.com/library/?pg=1&find=mo_glob_org_access_tmp), [dual](https://www.enginatics.com/library/?pg=1&find=dual)
+[hr_all_organization_units_vl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ont-transaction-types-listing), [oe_transaction_types_all](https://www.enginatics.com/library/?pg=1&find=oe_transaction_types_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ont-transaction-types-listing), [oe_transaction_types_tl](https://www.enginatics.com/library/?pg=1&find=oe_transaction_types_tl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ont-transaction-types-listing), [oe_price_lists_v](https://www.enginatics.com/library/?pg=1&find=oe_price_lists_v&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ont-transaction-types-listing), [oe_credit_check_rules](https://www.enginatics.com/library/?pg=1&find=oe_credit_check_rules&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ont-transaction-types-listing), [org_organization_definitions](https://www.enginatics.com/library/?pg=1&find=org_organization_definitions&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ont-transaction-types-listing), [org_freight](https://www.enginatics.com/library/?pg=1&find=org_freight&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ont-transaction-types-listing), [ra_rules](https://www.enginatics.com/library/?pg=1&find=ra_rules&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ont-transaction-types-listing), [ra_batch_sources](https://www.enginatics.com/library/?pg=1&find=ra_batch_sources&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ont-transaction-types-listing), [ra_cust_trx_types](https://www.enginatics.com/library/?pg=1&find=ra_cust_trx_types&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ont-transaction-types-listing), [fnd_currencies_vl](https://www.enginatics.com/library/?pg=1&find=fnd_currencies_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ont-transaction-types-listing), [gl_daily_conversion_types](https://www.enginatics.com/library/?pg=1&find=gl_daily_conversion_types&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ont-transaction-types-listing), [gl_code_combinations_kfv](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations_kfv&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ont-transaction-types-listing), [mo_glob_org_access_tmp](https://www.enginatics.com/library/?pg=1&find=mo_glob_org_access_tmp&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ont-transaction-types-listing), [dual](https://www.enginatics.com/library/?pg=1&find=dual&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ont-transaction-types-listing)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ont-transaction-types-listing)
 
 ## Related Reports
-[AR Customer Upload](/AR%20Customer%20Upload/ "AR Customer Upload Oracle EBS SQL Report"), [AR Transaction Upload](/AR%20Transaction%20Upload/ "AR Transaction Upload Oracle EBS SQL Report"), [ONT Transaction Types and Line WF Processes](/ONT%20Transaction%20Types%20and%20Line%20WF%20Processes/ "ONT Transaction Types and Line WF Processes Oracle EBS SQL Report"), [GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report"), [ONT Order Upload](/ONT%20Order%20Upload/ "ONT Order Upload Oracle EBS SQL Report")
+[AR Customer Upload](/AR%20Customer%20Upload/ "AR Customer Upload Oracle EBS SQL Report"), [AR Transaction Upload](/AR%20Transaction%20Upload/ "AR Transaction Upload Oracle EBS SQL Report"), [ONT Transaction Types and Line WF Processes](/ONT%20Transaction%20Types%20and%20Line%20WF%20Processes/ "ONT Transaction Types and Line WF Processes Oracle EBS SQL Report"), [GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report"), [ONT Order Upload](/ONT%20Order%20Upload/ "ONT Order Upload Oracle EBS SQL Report"), [AR Transactions and Lines 11i](/AR%20Transactions%20and%20Lines%2011i/ "AR Transactions and Lines 11i Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/ONT%20Transaction%20Types%20Listing/ONT%20Transaction%20Types%20Listing.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ont-transaction-types-listing) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [ONT Transaction Types Listing 11-Jul-2021 230055.xlsx](https://www.enginatics.com/example/ont-transaction-types-listing/) |
-| Blitz Report™ XML Import | [ONT_Transaction_Types_Listing.xml](https://www.enginatics.com/xml/ont-transaction-types-listing/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/ont-transaction-types-listing/](https://www.enginatics.com/reports/ont-transaction-types-listing/) |
+| Excel Example Output | [ONT Transaction Types Listing 11-Jul-2021 230055.xlsx](https://www.enginatics.com/example/ont-transaction-types-listing/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ont-transaction-types-listing) |
+| Blitz Report™ XML Import | [ONT_Transaction_Types_Listing.xml](https://www.enginatics.com/xml/ont-transaction-types-listing/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ont-transaction-types-listing) |
+| SQL Source | [ONT Transaction Types Listing.sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/ONT%20Transaction%20Types%20Listing/ONT%20Transaction%20Types%20Listing.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/ont-transaction-types-listing/](https://www.enginatics.com/reports/ont-transaction-types-listing/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ont-transaction-types-listing) |
 
 ## Case Study & Technical Analysis: ONT Transaction Types Listing Report
 
@@ -103,18 +112,17 @@ The report is designed for rapid execution.
 **3. How can I see if a transaction type is restricted to a specific operating unit?**
    The `oe_transaction_types_all` table contains the `org_id` column. This report will show a row for every operating unit (org_id) a transaction type is defined for. If a type is defined with a specific `org_id`, it is restricted to that OU. If it is defined without an `org_id`, it is typically available globally.
 
-
 ---
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ont-transaction-types-listing)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ont-transaction-types-listing)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ont-transaction-types-listing)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ont-transaction-types-listing)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ont-transaction-types-listing)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ont-transaction-types-listing)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ont-transaction-types-listing)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

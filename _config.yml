@@ -1,5 +1,20 @@
+# Managed by oracle-ebs-sql-updater (blitz_agents repo, site/_config.yml) - edits here are overwritten.
 theme: jekyll-theme-cayman
 title: Oracle EBS SQL Reports Library
-description: Open source Oracle E-Business Suite SQL reports library with 500+ ready-to-run SQL queries for AP, AR, GL, PO, INV, WIP, HR, FA and all Oracle EBS modules.
+description: Free Oracle E-Business Suite SQL reports library with 800+ ready-to-run SQL queries for AP, AR, GL, PO, INV, WIP, HR, FA and all Oracle EBS modules.
 url: https://oraclereporting.com
+repository: Enginatics/Oracle-EBS-SQL
+lang: en-US
 author: Enginatics
+logo: https://www.enginatics.com/wp-content/uploads/2019/07/logo_smart_2-1.png
+social:
+  name: Enginatics
+  links:
+    - https://www.enginatics.com/
+    - https://www.linkedin.com/company/enginatics
+    - https://github.com/Enginatics
+defaults:
+  - scope:
+      path: ""
+    values:
+      image: https://www.enginatics.com/wp-content/uploads/Oracle-EBS-data-delivered-directly-in-Excel-2-1-1.png

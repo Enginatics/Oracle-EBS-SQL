@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: DBA AWR Active Session History
 -- Description: Active session history from the automatic workload repository
--- Excel Examle Output: https://www.enginatics.com/example/dba-awr-active-session-history/
+-- Excel Example Output: https://www.enginatics.com/example/dba-awr-active-session-history/
 -- Library Link: https://www.enginatics.com/reports/dba-awr-active-session-history/
 -- Run Report: https://demo.enginatics.com/
 

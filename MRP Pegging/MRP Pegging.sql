@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: MRP Pegging
 -- Description: Detail report for MRP planning pegging showing the hierarchy from demand, including forecast, sales orders, work order to supply (WIP jobs, purchase orders and on hand stock)
--- Excel Examle Output: https://www.enginatics.com/example/mrp-pegging/
+-- Excel Example Output: https://www.enginatics.com/example/mrp-pegging/
 -- Library Link: https://www.enginatics.com/reports/mrp-pegging/
 -- Run Report: https://demo.enginatics.com/
 
@@ -470,12 +470,12 @@ max(wo.department_id) keep (dense_rank first order by wo.operation_seq_num) over
 max(wo.standard_operation_id) keep (dense_rank first order by wo.operation_seq_num) over (partition by wo.wip_entity_id, wo.organization_id, wo.repetitive_schedule_id) standard_operation_id,
 max(wo.description) keep (dense_rank first order by wo.operation_seq_num) over (partition by wo.wip_entity_id, wo.organization_id, wo.repetitive_schedule_id) description,
 max(wo.date_last_moved) keep (dense_rank first order by wo.operation_seq_num) over (partition by wo.wip_entity_id, wo.organization_id, wo.repetitive_schedule_id) date_last_moved,
-max(decode(wo.quantity_in_queue,0,null,wo.quantity_in_queue)) keep (dense_rank first order by wo.operation_seq_num) over (partition by wo.wip_entity_id, wo.organization_id, wo.repetitive_schedule_id) in_queue,
-max(decode(wo.quantity_running,0,null,wo.quantity_running)) keep (dense_rank first order by wo.operation_seq_num) over (partition by wo.wip_entity_id, wo.organization_id, wo.repetitive_schedule_id) running,
-max(decode(wo.quantity_waiting_to_move,0,null,wo.quantity_waiting_to_move)) keep (dense_rank first order by wo.operation_seq_num) over (partition by wo.wip_entity_id, wo.organization_id, wo.repetitive_schedule_id) to_move,
-max(decode(wo.quantity_rejected,0,null,wo.quantity_rejected)) keep (dense_rank first order by wo.operation_seq_num) over (partition by wo.wip_entity_id, wo.organization_id, wo.repetitive_schedule_id) rejected,
-max(decode(wo.quantity_scrapped,0,null,wo.quantity_scrapped)) keep (dense_rank first order by wo.operation_seq_num) over (partition by wo.wip_entity_id, wo.organization_id, wo.repetitive_schedule_id) scrapped,
-max(decode(wo.quantity_completed,0,null,wo.quantity_completed)) keep (dense_rank first order by wo.operation_seq_num) over (partition by wo.wip_entity_id, wo.organization_id, wo.repetitive_schedule_id) completed
+max(nullif(wo.quantity_in_queue,0)) keep (dense_rank first order by wo.operation_seq_num) over (partition by wo.wip_entity_id, wo.organization_id, wo.repetitive_schedule_id) in_queue,
+max(nullif(wo.quantity_running,0)) keep (dense_rank first order by wo.operation_seq_num) over (partition by wo.wip_entity_id, wo.organization_id, wo.repetitive_schedule_id) running,
+max(nullif(wo.quantity_waiting_to_move,0)) keep (dense_rank first order by wo.operation_seq_num) over (partition by wo.wip_entity_id, wo.organization_id, wo.repetitive_schedule_id) to_move,
+max(nullif(wo.quantity_rejected,0)) keep (dense_rank first order by wo.operation_seq_num) over (partition by wo.wip_entity_id, wo.organization_id, wo.repetitive_schedule_id) rejected,
+max(nullif(wo.quantity_scrapped,0)) keep (dense_rank first order by wo.operation_seq_num) over (partition by wo.wip_entity_id, wo.organization_id, wo.repetitive_schedule_id) scrapped,
+max(nullif(wo.quantity_completed,0)) keep (dense_rank first order by wo.operation_seq_num) over (partition by wo.wip_entity_id, wo.organization_id, wo.repetitive_schedule_id) completed
 from
 wip_operations wo
 where

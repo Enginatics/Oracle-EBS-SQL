@@ -1,20 +1,18 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: DBA AWR System Metrics Summary
 -- Description: Historic system statistics from the automated workload repository showing CPU load, wait time percentage, logical (buffer/RAM) and physical read and write IO figures, summarized in snapshot time intervals. All IO figures are measured in MB/s.
-
--CPU%: Total CPU usage percentage. If this is low, the hardware is underused and performance could potentially get improved by using it better e.g. by resolving IO bottlenecks (bigger RAM, faster storage) or parallelization of SQLs and user processes.
--WAIT%: Percentage of time that the DB process spends waiting rather than processing. If the wait% is high and most of the wait time is spend e.g. waiting for IO, then the storage is too slow compared to CPU speed.
--BUFF_READ: Logical IO read from the buffer cache (RAM) in MB/s
--PHYS_READ: Physical IO read from the storage in MB/s
--PHYS_WRITE:  Physical IO written to the storage in MB/s
-
-Note: The UOM calculation from LIOs to MB uses the database default block size and doesn't support different block sizes for different tablespaces.
--- Excel Examle Output: https://www.enginatics.com/example/dba-awr-system-metrics-summary/
+-- -CPU%: Total CPU usage percentage. If this is low, the hardware is underused and performance could potentially get improved by using it better e.g. by resolving IO bottlenecks (bigger RAM, faster storage) or parallelization of SQLs and user processes.
+-- -WAIT%: Percentage of time that the DB process spends waiting rather than processing. If the wait% is high and most of the wait time is spend e.g. waiting for IO, then the storage is too slow compared to CPU speed.
+-- -BUFFREAD: Logical IO read from the buffer cache (RAM) in MB/s
+-- -PHYSREAD: Physical IO read from the storage in MB/s
+-- -PHYSWRITE: Physical IO written to the storage in MB/s
+-- Note: The UOM calculation from LIOs to MB uses the database default block size and doesn't support different block sizes for different tablespaces.
+-- Excel Example Output: https://www.enginatics.com/example/dba-awr-system-metrics-summary/
 -- Library Link: https://www.enginatics.com/reports/dba-awr-system-metrics-summary/
 -- Run Report: https://demo.enginatics.com/
 

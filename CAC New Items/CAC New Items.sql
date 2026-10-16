@@ -1,57 +1,55 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC New Items
 -- Description: Report to show items which have been recently created, including various item controls, item costs (per your Costing Method), item master accounts, last transaction and onhand stock, based on the item master creation date.
-
-Parameters:
-===========
-Creation Date From:  starting item master creation date (required).
-Creation Date To: ending item master creation date (required).
-Include Uncosted Items:  enter Yes to display items which are set to not be costed in your Costing Method Cost Type, defaulted as Yes (mandatory).
-Category Set 1:  any item category you wish, typically the Cost or Product Line category set (optional).
-Category Set 2:  any item category you wish, typically the Inventory category set (optional).S
-Organization Code:  enter the specific inventory organization(s) you wish to report (optional).
-Operating Unit:  enter the specific operating unit(s) you wish to report (optional).
-Ledger:  enter the specific ledger(s) you wish to report (optional).
-
-/* +=============================================================================+
--- | Copyright 2010 - 2023 Douglas Volz Consulting, Inc.                         |
--- | All rights reserved.                                                        |
--- | Permission to use this code is granted provided the original author is      |
--- | acknowledged. No warranties, express or otherwise is included in this       |
--- | permission.                                                                 |
--- +=============================================================================+
--- |
--- | Original Author: Douglas Volz (doug@volzconsulting.com)
--- |
--- | Program Name: xxx_new_items_rept.sql
--- |
--- |
--- | Description:
--- | Report to show zero item costs in the "costing method" cost type, 
--- | the creation date and any onhand stock.
--- | 
--- | version modified on modified by description
--- | ======= =========== ============== =========================================
--- |  1.0    14 jun 2017 Douglas Volz   Initial coding based on the zero item cost
--- |                                    report, xxx_zero_item_cost_report.sql, version 1.3
--- |  1.1    20 Jan 2020 Douglas Volz   Added Org Code and Operating Unit parameters.
--- |  1.2    07 Jul 2022 Douglas Volz   Changed to multi-language views for the item
--- |                                    master and inventory orgs.  Added item master
--- |                                    accounts and costs by cost element.
--- |  1.3    09 Jul 2023 Douglas Volz   Remove tabs and restrict to only orgs you have
--- |                                    access to, using the org access view.
--- |  1.4    08 Aug 2023 Douglas Volz   Fix item status code to use translated values.
--- |  1.5    22 Nov 2023 Douglas Volz   Add BOM/Routing/Sourcing Rule columns, item master
--- |                                    created by and std lot size and costing created by,
--- |                                    costing lot size and defaulted flag. 
--- |  1.6    05 Dec 2023 Douglas Volz   Added G/L and Operating Unit security restrictions. 
--- +=============================================================================+*/
--- Excel Examle Output: https://www.enginatics.com/example/cac-new-items/
+-- Parameters:
+-- ===========
+-- Creation Date From: starting item master creation date (required).
+-- Creation Date To: ending item master creation date (required).
+-- Include Uncosted Items: enter Yes to display items which are set to not be costed in your Costing Method Cost Type, defaulted as Yes (mandatory).
+-- Category Set 1: any item category you wish, typically the Cost or Product Line category set (optional).
+-- Category Set 2: any item category you wish, typically the Inventory category set (optional).S
+-- Organization Code: enter the specific inventory organization(s) you wish to report (optional).
+-- Operating Unit: enter the specific operating unit(s) you wish to report (optional).
+-- Ledger: enter the specific ledger(s) you wish to report (optional).
+-- / +=============================================================================+
+-- -- | Copyright 2010 - 2023 Douglas Volz Consulting, Inc. |
+-- -- | All rights reserved. |
+-- -- | Permission to use this code is granted provided the original author is |
+-- -- | acknowledged. No warranties, express or otherwise is included in this |
+-- -- | permission. |
+-- -- +=============================================================================+
+-- -- |
+-- -- | Original Author: Douglas Volz (doug@volzconsulting.com)
+-- -- |
+-- -- | Program Name: xxxnewitemsrept.sql
+-- -- |
+-- -- |
+-- -- | Description:
+-- -- | Report to show zero item costs in the "costing method" cost type,
+-- -- | the creation date and any onhand stock.
+-- -- |
+-- -- | version modified on modified by description
+-- -- | ======= =========== ============== =========================================
+-- -- | 1.0 14 jun 2017 Douglas Volz Initial coding based on the zero item cost
+-- -- | report, xxxzeroitemcostreport.sql, version 1.3
+-- -- | 1.1 20 Jan 2020 Douglas Volz Added Org Code and Operating Unit parameters.
+-- -- | 1.2 07 Jul 2022 Douglas Volz Changed to multi-language views for the item
+-- -- | master and inventory orgs. Added item master
+-- -- | accounts and costs by cost element.
+-- -- | 1.3 09 Jul 2023 Douglas Volz Remove tabs and restrict to only orgs you have
+-- -- | access to, using the org access view.
+-- -- | 1.4 08 Aug 2023 Douglas Volz Fix item status code to use translated values.
+-- -- | 1.5 22 Nov 2023 Douglas Volz Add BOM/Routing/Sourcing Rule columns, item master
+-- -- | created by and std lot size and costing created by,
+-- -- | costing lot size and defaulted flag.
+-- -- | 1.6 05 Dec 2023 Douglas Volz Added G/L and Operating Unit security restrictions.
+-- -- +=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-new-items/
 -- Library Link: https://www.enginatics.com/reports/cac-new-items/
 -- Run Report: https://demo.enginatics.com/
 

@@ -1,14 +1,20 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'ZX US Sales Tax | Oracle EBS SQL Report'
-description: 'Imported from Concurrent Program Description: Sales Tax Report for use in U.S Application: E-Business Tax Source: U.S. Sales Tax Report Short Name: ZXXSTR'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Sales, Tax, ra_customer_trx_all, zx_lines_det_factors, ra_cust_trx_line_gl_dist_all'
+description: 'Imported from Concurrent Program Description: Sales Tax Report for use in U.S Application: E-Business Tax Source: U.S. Sales Tax Report Short Name: ZXXSTR…'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, E-Business Tax, Enginatics, R12 only, Sales, Tax, ra_customer_trx_all, zx_lines_det_factors, ra_cust_trx_line_gl_dist_all'
 permalink: /ZX%20US%20Sales%20Tax/
+report_name: 'ZX US Sales Tax'
+report_web_name: zx-us-sales-tax
+module: 'E-Business Tax'
+module_url: /modules/e-business-tax/
 ---
 
 # ZX US Sales Tax – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/zx-us-sales-tax/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/zx-us-sales-tax/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-us-sales-tax) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-us-sales-tax).
+**Oracle EBS module:** [E-Business Tax](/modules/e-business-tax/ "Oracle EBS E-Business Tax reports") · [all E-Business Tax reports](/modules/e-business-tax/)  
 
 ## Overview
 Imported from Concurrent Program
@@ -17,27 +23,37 @@ Application: E-Business Tax
 Source: U.S. Sales Tax Report
 Short Name: ZXXSTR
 
+The State, County and City columns are the tax jurisdiction the tax was determined for, which is the transaction ship to site falling back to the bill to site. The State Low and State High parameters filter on that same jurisdiction. The Ship To and Bill To address columns are the transaction sites themselves, so they can differ from those three.
+
+Invoice Freight Amount follows Invoice Lines Amount and Invoice Tax Amount: on an invoice or credit memo it is the total of that transaction's Freight lines, on an adjustment it is the freight the adjustment applied. It is shown on the first row of each transaction only, so summing the column does not multiply it by the line and tax line count.
+
+The Intermediate Ship To columns come from the sales order line the invoice line was created from. Set DFF Display to also report the invoice line and sales order line descriptive flexfields, which is where an intermediate ship to address entered outside Order Management is usually held.
+
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-us-sales-tax) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
+
 ## Report Parameters
-Reporting Level, Reporting Context, Transaction Number, Transaction Date Low, Transaction Date High, GL Date Low, GL Date High, State Low, State High, Currency Low, Currency High, Exemption Status, Sales Tax Liability Account From, Sales Tax Liability Account To, Transfer to GL, Show all Adjustments & Credits, Include Non Tax Transactions, Debug Mode
+Reporting Level, Reporting Context, Transaction Number, Transaction Date Low, Transaction Date High, GL Date Low, GL Date High, State Low, State High, Currency Low, Currency High, Exemption Status, Sales Tax Liability Account From, Sales Tax Liability Account To, Transfer to GL, Show all Adjustments & Credits, Include Non Tax Transactions, Debug Mode, DFF Display
 
 ## Oracle EBS Tables Used
-[ra_customer_trx_all](https://www.enginatics.com/library/?pg=1&find=ra_customer_trx_all), [zx_lines_det_factors](https://www.enginatics.com/library/?pg=1&find=zx_lines_det_factors), [ra_cust_trx_line_gl_dist_all](https://www.enginatics.com/library/?pg=1&find=ra_cust_trx_line_gl_dist_all), [ra_cust_trx_types_all](https://www.enginatics.com/library/?pg=1&find=ra_cust_trx_types_all), [hz_cust_site_uses_all](https://www.enginatics.com/library/?pg=1&find=hz_cust_site_uses_all), [hz_cust_acct_sites_all](https://www.enginatics.com/library/?pg=1&find=hz_cust_acct_sites_all), [hz_party_sites](https://www.enginatics.com/library/?pg=1&find=hz_party_sites), [hz_locations](https://www.enginatics.com/library/?pg=1&find=hz_locations), [hz_loc_assignments_obs](https://www.enginatics.com/library/?pg=1&find=hz_loc_assignments_obs), [fnd_currencies](https://www.enginatics.com/library/?pg=1&find=fnd_currencies), [hz_cust_accounts](https://www.enginatics.com/library/?pg=1&find=hz_cust_accounts), [hz_parties](https://www.enginatics.com/library/?pg=1&find=hz_parties), [zx_rates_vl](https://www.enginatics.com/library/?pg=1&find=zx_rates_vl), [&lp_table_parent_deposit_type](https://www.enginatics.com/library/?pg=1&find=&lp_table_parent_deposit_type), [ra_customer_trx_lines_all](https://www.enginatics.com/library/?pg=1&find=ra_customer_trx_lines_all), [gl_code_combinations_kfv](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations_kfv), [zx_taxes_b](https://www.enginatics.com/library/?pg=1&find=zx_taxes_b)
+[ra_customer_trx_all](https://www.enginatics.com/library/?pg=1&find=ra_customer_trx_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-us-sales-tax), [zx_lines_det_factors](https://www.enginatics.com/library/?pg=1&find=zx_lines_det_factors&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-us-sales-tax), [ra_cust_trx_line_gl_dist_all](https://www.enginatics.com/library/?pg=1&find=ra_cust_trx_line_gl_dist_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-us-sales-tax), [ra_cust_trx_types_all](https://www.enginatics.com/library/?pg=1&find=ra_cust_trx_types_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-us-sales-tax), [hz_cust_site_uses_all](https://www.enginatics.com/library/?pg=1&find=hz_cust_site_uses_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-us-sales-tax), [hz_cust_acct_sites_all](https://www.enginatics.com/library/?pg=1&find=hz_cust_acct_sites_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-us-sales-tax), [hz_party_sites](https://www.enginatics.com/library/?pg=1&find=hz_party_sites&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-us-sales-tax), [hz_locations](https://www.enginatics.com/library/?pg=1&find=hz_locations&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-us-sales-tax), [hz_loc_assignments_obs](https://www.enginatics.com/library/?pg=1&find=hz_loc_assignments_obs&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-us-sales-tax), [fnd_currencies](https://www.enginatics.com/library/?pg=1&find=fnd_currencies&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-us-sales-tax), [hz_cust_accounts](https://www.enginatics.com/library/?pg=1&find=hz_cust_accounts&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-us-sales-tax), [hz_parties](https://www.enginatics.com/library/?pg=1&find=hz_parties&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-us-sales-tax), [zx_rates_vl](https://www.enginatics.com/library/?pg=1&find=zx_rates_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-us-sales-tax), [zx_exemptions](https://www.enginatics.com/library/?pg=1&find=zx_exemptions&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-us-sales-tax), [ra_customer_trx_lines_all](https://www.enginatics.com/library/?pg=1&find=ra_customer_trx_lines_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-us-sales-tax), [gl_code_combinations_kfv](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations_kfv&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-us-sales-tax), [zx_taxes_b](https://www.enginatics.com/library/?pg=1&find=zx_taxes_b&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-us-sales-tax), [ar_adjustments_all](https://www.enginatics.com/library/?pg=1&find=ar_adjustments_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-us-sales-tax), [zx_lines](https://www.enginatics.com/library/?pg=1&find=zx_lines&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-us-sales-tax), [hr_all_organization_units_vl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-us-sales-tax), [fnd_territories_vl](https://www.enginatics.com/library/?pg=1&find=fnd_territories_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-us-sales-tax), [oe_order_lines_all](https://www.enginatics.com/library/?pg=1&find=oe_order_lines_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-us-sales-tax), [oe_order_headers_all](https://www.enginatics.com/library/?pg=1&find=oe_order_headers_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-us-sales-tax)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-us-sales-tax), [R12 only](https://www.enginatics.com/library/?pg=1&category%5B%5D=R12%20only&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-us-sales-tax)
 
-
+## Related Reports
+[AR Transaction Upload](/AR%20Transaction%20Upload/ "AR Transaction Upload Oracle EBS SQL Report"), [GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report"), [AR Open Items Revaluation](/AR%20Open%20Items%20Revaluation/ "AR Open Items Revaluation Oracle EBS SQL Report"), [GL Account Analysis (Drilldown) (with inventory and WIP)](/GL%20Account%20Analysis%20%28Drilldown%29%20%28with%20inventory%20and%20WIP%29/ "GL Account Analysis (Drilldown) (with inventory and WIP) Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/ZX%20US%20Sales%20Tax/ZX%20US%20Sales%20Tax.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-us-sales-tax) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [](https://www.enginatics.com/example/zx-us-sales-tax/) |
-| Blitz Report™ XML Import | [ZX_US_Sales_Tax.xml](https://www.enginatics.com/xml/zx-us-sales-tax/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/zx-us-sales-tax/](https://www.enginatics.com/reports/zx-us-sales-tax/) |
+| Excel Example Output | [Example](https://www.enginatics.com/example/zx-us-sales-tax/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-us-sales-tax) |
+| Blitz Report™ XML Import | [ZX_US_Sales_Tax.xml](https://www.enginatics.com/xml/zx-us-sales-tax/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-us-sales-tax) |
+| SQL Source | [ZX US Sales Tax.sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/ZX%20US%20Sales%20Tax/ZX%20US%20Sales%20Tax.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/zx-us-sales-tax/](https://www.enginatics.com/reports/zx-us-sales-tax/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-us-sales-tax) |
 
 ## Case Study & Technical Analysis: ZX US Sales Tax Report
 
@@ -108,18 +124,17 @@ As a detailed transactional report integrating data across multiple modules (AR,
 **3. Can this report help identify transactions where a sales tax exemption was incorrectly applied or missed?**
    Yes. By using the `Exemption Status` parameter, you can filter for both exempt and taxable transactions. Reviewing exempt transactions (and their supporting `Exemption Certificate` details, if included in the report) ensures proper application. Conversely, reviewing taxable transactions for which an exemption *should* have applied can highlight potential missed exemptions, leading to over-collection or incorrect billing.
 
-
 ---
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-us-sales-tax)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-us-sales-tax)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-us-sales-tax)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-us-sales-tax)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-us-sales-tax)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-us-sales-tax)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-us-sales-tax)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

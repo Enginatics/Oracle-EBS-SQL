@@ -1,56 +1,55 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Deferred COGS Out-of-Balance
--- Description: Report to find the out-of-balance deferred COGS entries by organization, item and sales order number.  You do not need to run Create Accounting as this report uses the pre-Create Accounting material accounting entries.
-
-/* +=============================================================================+
--- |  Copyright 2019 - 2020 Douglas Volz Consulting, Inc.                        |
--- |  All rights reserved.                                                       |
--- |  Permission to use this code is granted provided the original author is     |
--- |  acknowledged                                                               |
--- +=============================================================================+
--- |
--- |  Original Author: Douglas Volz (doug@volzconsulting.com)
--- |
--- |  Program Name:  xxx_mtl_dist_xla_oob_dcogs_rept.sql
--- |
--- |  Parameters:
--- |  p_trx_date_from    -- Starting accounting date for the transaction lines
--- |  p_trx_date_to      -- Ending accounting date for the transaction lines
--- |  p_category_set1    -- The first item category set to report, typically the
--- |                        Cost or Product Line Category Set
--- |  p_category_set2    -- The second item category set to report, typically the
--- |                        Inventory Category Set
--- |  p_org_code         -- Specific inventory organization you wish to report (optional)
--- |  p_operating_unit   -- Operating Unit you wish to report, leave blank for all
--- |                        operating units (optional) 
--- |  p_ledger           -- general ledger you wish to report, leave blank for all
--- |                        ledgers (optional)
--- |
--- |  Description:
--- |  Report to find the out-of-balance deferred COGS entries.  
--- | 
--- |  Version Modified on Modified  by   Description
--- |  ======= =========== ============== =========================================
--- |  1.0     07 Jun 2019 Douglas Volz   Initial Coding, based on version 1.25 for
--- |                                     the xxx_mtl_dist_xla_detail_rept.sql.
--- |  1.1     06 Feb 2020 Douglas Volz   Adding Operating Unit and Org Code parameters. 
--- |  1.2     20 Apr 2020 Douglas Volz   Changed to multi-lang views for the item
--- |                                     master, item category sets and operating units.   
--- |  1.3     26 Jul 2020 Douglas Volz   Removed Ledger, Operating Unit, subinventory,
--- |                                     Item Type, Subledger Accounting tables and joins. 
--- |                                     Removed Create Accounting from this report;
--- |                                     get the quantities from mmt, when the item
--- |                                     cost is zero the DCOGS entries are not
--- |                                     recorded on the COGS Recognition Txn Type.
--- |  1.4     29 Jun 2022 Douglas Volz   Added back Ledger, Operating Unit, item type, plus
--- |                                     added language tables for item status and UOM.   
--- +=============================================================================+*/
--- Excel Examle Output: https://www.enginatics.com/example/cac-deferred-cogs-out-of-balance/
+-- Description: Report to find the out-of-balance deferred COGS entries by organization, item and sales order number. You do not need to run Create Accounting as this report uses the pre-Create Accounting material accounting entries.
+-- / +=============================================================================+
+-- -- | Copyright 2019 - 2020 Douglas Volz Consulting, Inc. |
+-- -- | All rights reserved. |
+-- -- | Permission to use this code is granted provided the original author is |
+-- -- | acknowledged |
+-- -- +=============================================================================+
+-- -- |
+-- -- | Original Author: Douglas Volz (doug@volzconsulting.com)
+-- -- |
+-- -- | Program Name: xxxmtldistxlaoobdcogsrept.sql
+-- -- |
+-- -- | Parameters:
+-- -- | ptrxdatefrom -- Starting accounting date for the transaction lines
+-- -- | ptrxdateto -- Ending accounting date for the transaction lines
+-- -- | pcategoryset1 -- The first item category set to report, typically the
+-- -- | Cost or Product Line Category Set
+-- -- | pcategoryset2 -- The second item category set to report, typically the
+-- -- | Inventory Category Set
+-- -- | porgcode -- Specific inventory organization you wish to report (optional)
+-- -- | poperatingunit -- Operating Unit you wish to report, leave blank for all
+-- -- | operating units (optional)
+-- -- | pledger -- general ledger you wish to report, leave blank for all
+-- -- | ledgers (optional)
+-- -- |
+-- -- | Description:
+-- -- | Report to find the out-of-balance deferred COGS entries.
+-- -- |
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== ============== =========================================
+-- -- | 1.0 07 Jun 2019 Douglas Volz Initial Coding, based on version 1.25 for
+-- -- | the xxxmtldistxladetailrept.sql.
+-- -- | 1.1 06 Feb 2020 Douglas Volz Adding Operating Unit and Org Code parameters.
+-- -- | 1.2 20 Apr 2020 Douglas Volz Changed to multi-lang views for the item
+-- -- | master, item category sets and operating units.
+-- -- | 1.3 26 Jul 2020 Douglas Volz Removed Ledger, Operating Unit, subinventory,
+-- -- | Item Type, Subledger Accounting tables and joins.
+-- -- | Removed Create Accounting from this report;
+-- -- | get the quantities from mmt, when the item
+-- -- | cost is zero the DCOGS entries are not
+-- -- | recorded on the COGS Recognition Txn Type.
+-- -- | 1.4 29 Jun 2022 Douglas Volz Added back Ledger, Operating Unit, item type, plus
+-- -- | added language tables for item status and UOM.
+-- -- +=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-deferred-cogs-out-of-balance/
 -- Library Link: https://www.enginatics.com/reports/cac-deferred-cogs-out-of-balance/
 -- Run Report: https://demo.enginatics.com/
 

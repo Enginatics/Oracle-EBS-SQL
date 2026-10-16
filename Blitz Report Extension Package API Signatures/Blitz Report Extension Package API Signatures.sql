@@ -1,18 +1,15 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: Blitz Report Extension Package API Signatures
 -- Description: Shows this instance's signatures of the Oracle EBS APIs that Blitz Report's extension packages call: every argument of every procedure, with its position, data type, in/out mode, whether it is defaulted, and the fields of any record argument.
-
-Its purpose is comparison. An extension package that calls an EBS API by named parameters fails to compile where a patch level does not have that parameter (PLS-00306) or that record field (PLS-00302), the installer then drops the package, and its reports and uploads fail with PLS-00201 at runtime. Running this report here and on a working instance and comparing the two shows exactly which argument or field is absent.
-
-Left empty, it reports every EBS API called by the extension packages installed here, and Referenced By names the calling package. That list is derived from the installed package source, so an extension package that failed to compile is not in it - name its API in the API Package Name parameter instead, which reports that package's full signature whether or not anything here calls it.
-
-Types and constants declared in a package specification are not arguments and so do not appear here. Use the DBA Text Search report on the specification for those.
--- Excel Examle Output: https://www.enginatics.com/example/blitz-report-extension-package-api-signatures/
+-- Its purpose is comparison. An extension package that calls an EBS API by named parameters fails to compile where a patch level does not have that parameter (PLS-00306) or that record field (PLS-00302), the installer then drops the package, and its reports and uploads fail with PLS-00201 at runtime. Running this report here and on a working instance and comparing the two shows exactly which argument or field is absent.
+-- Left empty, it reports every EBS API called by the extension packages installed here, and Referenced By names the calling package. That list is derived from the installed package source, so an extension package that failed to compile is not in it - name its API in the API Package Name parameter instead, which reports that package's full signature whether or not anything here calls it.
+-- Types and constants declared in a package specification are not arguments and so do not appear here. Use the DBA Text Search report on the specification for those.
+-- Excel Example Output: https://www.enginatics.com/example/blitz-report-extension-package-api-signatures/
 -- Library Link: https://www.enginatics.com/reports/blitz-report-extension-package-api-signatures/
 -- Run Report: https://demo.enginatics.com/
 

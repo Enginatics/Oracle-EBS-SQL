@@ -1,47 +1,46 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Item vs. Component Include in Rollup Controls
--- Description: Use this report to find items where the item master default setting for include in rollup does not match the BOM component include in rollup setting.  This report includes items which are available for costing, where the inventory costing enabled flag is Yes.  And excludes inactive items.  (This report was removed from the Cost vs. Planning Item Control Report, for performance reasons.)
-
-/* +=============================================================================+
--- |  Copyright 2021 Douglas Volz Consulting, Inc.                               |
--- |  All rights reserved.                                                       |
--- |  Permission to use this code is granted provided the original author is     |
--- |  acknowledged. No warranties, express or otherwise is included in this      |
--- |  permission.                                                                |
--- +=============================================================================+
--- |
--- |  Original Author: Douglas Volz (doug@volzconsulting.com)
--- |
--- |  Program Name:  xxx_item_include_in_bom_ctrls_repts.sql
--- |
--- |  Parameters:
--- |
--- |  p_cost_type	-- Desired cost type, mandatory
--- |  p_assignment_set	-- The assignment set you wish to report (optional)
--- |  p_item_number	-- Specific item number, to get all values enter a
--- |			   null value or blank value
--- |  p_org_code        -- Specific inventory organization you wish to report (optional)
--- |  p_operating_unit  -- Operating_Unit you wish to report, leave blank for all
--- |                       operating units (optional) 
--- |  p_ledger          -- general ledger you wish to report, leave blank for all
--- |                       ledgers (optional)
--- |
--- |  Description:
--- |  Use the below SQL scripts to find items where the item default include in
--- |  rollup does not match the BOM component include in rollup.  (Removed from
--- |  the Cost vs. Planning Item Control Report, for performance reasons.)
--- |
--- |  Version Modified on Modified  by   Description
--- |  ======= =========== ============== =========================================
--- |  1.0     07 May 2021 Douglas Volz   Initial Coding, based on the Cost vs.
--- |                                     Planning Item Control Report, version 33.
--- +=============================================================================+*/
--- Excel Examle Output: https://www.enginatics.com/example/cac-item-vs-component-include-in-rollup-controls/
+-- Description: Use this report to find items where the item master default setting for include in rollup does not match the BOM component include in rollup setting. This report includes items which are available for costing, where the inventory costing enabled flag is Yes. And excludes inactive items. (This report was removed from the Cost vs. Planning Item Control Report, for performance reasons.)
+-- / +=============================================================================+
+-- -- | Copyright 2021 Douglas Volz Consulting, Inc. |
+-- -- | All rights reserved. |
+-- -- | Permission to use this code is granted provided the original author is |
+-- -- | acknowledged. No warranties, express or otherwise is included in this |
+-- -- | permission. |
+-- -- +=============================================================================+
+-- -- |
+-- -- | Original Author: Douglas Volz (doug@volzconsulting.com)
+-- -- |
+-- -- | Program Name: xxxitemincludeinbomctrlsrepts.sql
+-- -- |
+-- -- | Parameters:
+-- -- |
+-- -- | pcosttype -- Desired cost type, mandatory
+-- -- | passignmentset -- The assignment set you wish to report (optional)
+-- -- | pitemnumber -- Specific item number, to get all values enter a
+-- -- | null value or blank value
+-- -- | porgcode -- Specific inventory organization you wish to report (optional)
+-- -- | poperatingunit -- OperatingUnit you wish to report, leave blank for all
+-- -- | operating units (optional)
+-- -- | pledger -- general ledger you wish to report, leave blank for all
+-- -- | ledgers (optional)
+-- -- |
+-- -- | Description:
+-- -- | Use the below SQL scripts to find items where the item default include in
+-- -- | rollup does not match the BOM component include in rollup. (Removed from
+-- -- | the Cost vs. Planning Item Control Report, for performance reasons.)
+-- -- |
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== ============== =========================================
+-- -- | 1.0 07 May 2021 Douglas Volz Initial Coding, based on the Cost vs.
+-- -- | Planning Item Control Report, version 33.
+-- -- +=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-item-vs-component-include-in-rollup-controls/
 -- Library Link: https://www.enginatics.com/reports/cac-item-vs-component-include-in-rollup-controls/
 -- Run Report: https://demo.enginatics.com/
 

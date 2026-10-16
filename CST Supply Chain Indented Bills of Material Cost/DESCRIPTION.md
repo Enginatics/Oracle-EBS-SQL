@@ -1,4 +1,3 @@
-
 # Case Study & Technical Analysis: CST Supply Chain Indented Bills of Material Cost
 
 ## Executive Summary

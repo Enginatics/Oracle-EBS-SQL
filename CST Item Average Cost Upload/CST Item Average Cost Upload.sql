@@ -1,54 +1,42 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CST Item Average Cost Upload
 -- Description: CST Item Average Cost Upload
-============================
-
-This upload supports the uploading of item average costs for organizations using the Average Costing Method.
-
-The upload delivers equivalent functionality to the Average Cost Update form in Oracle EBS 
-(At this time the upload does not support value change quantity adjustments). 
-
-Upload Mode:
-Use the “Create” upload mode to generate an empty excel into which you can paste the average cost updates to be uploaded.
-Use the “Create, Update” upload mode if you wish to download the current average costs for a specified set of items into the excel for updating. Additional entries (rows) can also be created in the generated excel.  
-
-Upload Type:
-The upload supports updating average costs at the (summary) item level or at the (detailed) elemental cost level. This is determined by the Upload Type report parameter.
-
-If updating the average cost at the item level, any change made to the item average cost is spread to all cost elements and levels in the same proportion as existed prior to the update.
-
-If updating the average cost at the elemental cost level, you only need to adjust and upload the specific cost elements/levels that require a change. It is not necessary to upload the average costs for all cost elements/levels for the item. The upload will only adjust the costs for the cost elements/levels uploaded and leave the others unchanged. The total item average cost will be updated based on the total of the item’s elemental costs.
-
-For uploads at the item cost level, the Cost Element Level Type (This, Previous) and the Cost Element columns must be left blank.
-For uploads at the elemental cost level, the Cost Element Level Type (This, Previous) and the Cost Element columns must be populated in the upload excel.
-
-To adjust the average price for an item or cost element you must enter one and one only of either of the following columns 
-- New Average Cost: the average cost of the item or cost element will be set to this value. It must be a positive value
-- Percentage Change: the average cost of the item or cost element will be changed by this +/- percentage
-- Value Change: the +/- amount by which the onhand inventory value should be changed. The average cost will be calculated based on the dividing the new inventory value by the quantity onhand. You can only perform a value change for items with onhand quantity.
-
-Default Adjustment Account
-The default adjustment account is used for the inventory revaluations. You can override the default adjustment account for each cost element within the upload excel if required. Otherwise leave the adjustment accounts in the upload excel blank, or you can remove them from the report template so they do not show. 
-
-Informational Columns.
-The upload excel by default contains some information columns. If you do not require these columns they can be removed from the template being used so they do not show.
-
-The following columns are informational only
-- Description: the item description
-- Item Average Cost: the item’s current average cost
-- Valued Quantity: the quantity on hand 
-- Old Average Cost: the item or cost element/level current average cost
-- Old Valuation: the current valuation of inventory onhand for the item or cost element/level
-- Adjusted Average Cost: the item or cost element/level new average cost based
-- Adjusted Valuation: the new valuation of inventory onhand for the item or cost element/level
-- Valuation Change: the change in inventory valuation for the item or cost element/level
-
--- Excel Examle Output: https://www.enginatics.com/example/cst-item-average-cost-upload/
+-- ============================
+-- This upload supports the uploading of item average costs for organizations using the Average Costing Method.
+-- The upload delivers equivalent functionality to the Average Cost Update form in Oracle EBS
+-- (At this time the upload does not support value change quantity adjustments).
+-- Upload Mode:
+-- Use the “Create” upload mode to generate an empty excel into which you can paste the average cost updates to be uploaded.
+-- Use the “Create, Update” upload mode if you wish to download the current average costs for a specified set of items into the excel for updating. Additional entries (rows) can also be created in the generated excel.
+-- Upload Type:
+-- The upload supports updating average costs at the (summary) item level or at the (detailed) elemental cost level. This is determined by the Upload Type report parameter.
+-- If updating the average cost at the item level, any change made to the item average cost is spread to all cost elements and levels in the same proportion as existed prior to the update.
+-- If updating the average cost at the elemental cost level, you only need to adjust and upload the specific cost elements/levels that require a change. It is not necessary to upload the average costs for all cost elements/levels for the item. The upload will only adjust the costs for the cost elements/levels uploaded and leave the others unchanged. The total item average cost will be updated based on the total of the item’s elemental costs.
+-- For uploads at the item cost level, the Cost Element Level Type (This, Previous) and the Cost Element columns must be left blank.
+-- For uploads at the elemental cost level, the Cost Element Level Type (This, Previous) and the Cost Element columns must be populated in the upload excel.
+-- To adjust the average price for an item or cost element you must enter one and one only of either of the following columns
+-- - New Average Cost: the average cost of the item or cost element will be set to this value. It must be a positive value
+-- - Percentage Change: the average cost of the item or cost element will be changed by this +/- percentage
+-- - Value Change: the +/- amount by which the onhand inventory value should be changed. The average cost will be calculated based on the dividing the new inventory value by the quantity onhand. You can only perform a value change for items with onhand quantity.
+-- Default Adjustment Account
+-- The default adjustment account is used for the inventory revaluations. You can override the default adjustment account for each cost element within the upload excel if required. Otherwise leave the adjustment accounts in the upload excel blank, or you can remove them from the report template so they do not show.
+-- Informational Columns.
+-- The upload excel by default contains some information columns. If you do not require these columns they can be removed from the template being used so they do not show.
+-- The following columns are informational only
+-- - Description: the item description
+-- - Item Average Cost: the item’s current average cost
+-- - Valued Quantity: the quantity on hand
+-- - Old Average Cost: the item or cost element/level current average cost
+-- - Old Valuation: the current valuation of inventory onhand for the item or cost element/level
+-- - Adjusted Average Cost: the item or cost element/level new average cost based
+-- - Adjusted Valuation: the new valuation of inventory onhand for the item or cost element/level
+-- - Valuation Change: the change in inventory valuation for the item or cost element/level
+-- Excel Example Output: https://www.enginatics.com/example/cst-item-average-cost-upload/
 -- Library Link: https://www.enginatics.com/reports/cst-item-average-cost-upload/
 -- Run Report: https://demo.enginatics.com/
 

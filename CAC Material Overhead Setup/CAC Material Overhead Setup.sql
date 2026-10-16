@@ -1,53 +1,52 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Material Overhead Setup
 -- Description: Report to show the material overhead sub-element definition and the default material overheads, if any.
-
-/* +=============================================================================+
--- |  Copyright 2011 - 2020 Douglas Volz Consulting, Inc.                        |
--- |  All rights reserved.                                                       |
--- |  Permission to use this code is granted provided the original author is     |
--- |  acknowledged.  No warranties, express or otherwise is included in this     |
--- |  permission.                                                                |
--- +=============================================================================+
--- |
--- |  Original Author: Douglas Volz (doug@volzconsulting.com)
--- |
--- |  Program Name:  xxx_mtl_ovhd_setup_rept.sql
--- |
--- |  Parameters:
--- |  p_org_code         -- Specific inventory organization you wish to report (optional)
--- |  p_operating_unit   -- Operating Unit you wish to report, leave blank for all
--- |                        operating units (optional) 
--- |  p_ledger           -- general ledger you wish to report, leave blank for all
--- |                        ledgers (optional)
--- |  p_only_active      -- include only active material overhead codes.  Enter
--- |                        Yes (Yes) to return only active (non-disabled) material 
--- |                        overhead codes.  Enter No (No) to get all material 
--- |                        overhead codes.
--- |
--- |  Description:
--- |  Report to show the material overhead sub-element definition and the default
--- |  material overheads, if any.
--- |
--- |  Version Modified on Modified  by   Description
--- |  ======= =========== ============== =========================================
--- |  1.0     05 Apr 2011 Douglas Volz   Initial Coding 
--- |  1.1     21 Feb 2016 Douglas Volz   Modified Chart of Accounts to match client's COA
--- |  1.2     17 Jul 2018 Douglas Volz   Modified Chart of Accounts to match client's COA
--- |  1.3     16 Jan 2020 Douglas Volz   Add inventory org and operating unit parameters.
--- |  1.4      8 Apr 2020 Douglas Volz   Fix for p_only_active parameter conditions and
--- |                                     changed from fnd_lookup_values to mfg_lookups
--- |                                     sys_yes_no for the Functional Currency column.
--- |                                     Was duplicating rows.
--- |  1.5     28 Apr 2020 Douglas Volz   Changed to multi-language views for the
--- |                                     inventory orgs and operating units.
--- +=============================================================================+*/
--- Excel Examle Output: https://www.enginatics.com/example/cac-material-overhead-setup/
+-- / +=============================================================================+
+-- -- | Copyright 2011 - 2020 Douglas Volz Consulting, Inc. |
+-- -- | All rights reserved. |
+-- -- | Permission to use this code is granted provided the original author is |
+-- -- | acknowledged. No warranties, express or otherwise is included in this |
+-- -- | permission. |
+-- -- +=============================================================================+
+-- -- |
+-- -- | Original Author: Douglas Volz (doug@volzconsulting.com)
+-- -- |
+-- -- | Program Name: xxxmtlovhdsetuprept.sql
+-- -- |
+-- -- | Parameters:
+-- -- | porgcode -- Specific inventory organization you wish to report (optional)
+-- -- | poperatingunit -- Operating Unit you wish to report, leave blank for all
+-- -- | operating units (optional)
+-- -- | pledger -- general ledger you wish to report, leave blank for all
+-- -- | ledgers (optional)
+-- -- | ponlyactive -- include only active material overhead codes. Enter
+-- -- | Yes (Yes) to return only active (non-disabled) material
+-- -- | overhead codes. Enter No (No) to get all material
+-- -- | overhead codes.
+-- -- |
+-- -- | Description:
+-- -- | Report to show the material overhead sub-element definition and the default
+-- -- | material overheads, if any.
+-- -- |
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== ============== =========================================
+-- -- | 1.0 05 Apr 2011 Douglas Volz Initial Coding
+-- -- | 1.1 21 Feb 2016 Douglas Volz Modified Chart of Accounts to match client's COA
+-- -- | 1.2 17 Jul 2018 Douglas Volz Modified Chart of Accounts to match client's COA
+-- -- | 1.3 16 Jan 2020 Douglas Volz Add inventory org and operating unit parameters.
+-- -- | 1.4 8 Apr 2020 Douglas Volz Fix for ponlyactive parameter conditions and
+-- -- | changed from fndlookupvalues to mfglookups
+-- -- | sysyesno for the Functional Currency column.
+-- -- | Was duplicating rows.
+-- -- | 1.5 28 Apr 2020 Douglas Volz Changed to multi-language views for the
+-- -- | inventory orgs and operating units.
+-- -- +=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-material-overhead-setup/
 -- Library Link: https://www.enginatics.com/reports/cac-material-overhead-setup/
 -- Run Report: https://demo.enginatics.com/
 

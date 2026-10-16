@@ -1,54 +1,50 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Receiving Account Summary
--- Description: Report to get the receiving accounting distributions, in summary, by item, purchase order, purchase order line, release and project number.  With the Show SLA Accounting parameter you can choose to use the Release 12 Subledger Accounting (Create Accounting) account setups by selecting Yes.  And if you have not modified your SLA accounting rules, select No to allow this report to run a bit faster.  With parameters to limit the report size, to display or not display purchase information (purchase order, line, release) and WIP outside processing information (WIP job and OSP resource code).  And if you accrue expense receipts at time of receipt, for expense destinations when there is no item number, this report will get the expense category information and put it into the columns for the first category set.
-
-(Note: this report has not been tested with encumbrance entries.)
-
-Parameters:
-===========
-Transaction Date From:  enter the starting transaction date (mandatory).
-Transaction Date To:  enter the ending transaction date (mandatory).
-Show SLA Accounting:  enter Yes to use the Subledger Accounting rules for your accounting information (mandatory).  If you choose No the report uses the pre-Create Accounting entries.
-Show Purchase Orders:  display the purchase order, line and release information.  Enter Yes or No, use to limit the report size (mandatory).
-Show Projects:  display the project number and name.  Enter Yes or No, use to limit the report size (mandatory).
-Show WIP Outside Processing:  display the WIP job and outside processing resource.  Enter Yes or No, use to limit the report size (mandatory).
-Category Set 1:  any item category you wish, typically the Cost or Product Line category set (optional).
-Category Set 2:  any item category you wish, typically the Inventory category set (optional).
-Supplier Name:  enter the specific supplier you wish to report (optional).
-PO Number:  enter the specific purchase order number you wish to report (optional).
-Destination Code:  enter the purchase order destination type you wish to report (optional).  You can choose Inventory, Expense or Shop Floor (WIP outside processing).
-Item Number:  enter the specific item number(s) you wish to report (optional).
-Organization Code:  enter the specific inventory organization(s) you wish to report (optional).
-Operating Unit:  enter the specific operating unit(s) you wish to report (optional).
-Ledger:  enter the specific ledger(s) you wish to report (optional).
-
-/* +=============================================================================+
--- |  Copyright 2009- 2022 Douglas Volz Consulting, Inc.
--- |  All rights reserved.
--- |  Permission to use this code is granted provided the original author is
--- |  acknowledged.  No warranties, express or otherwise is included in this
--- |  permission. 
--- +=============================================================================+
--- | 
--- |  Version Modified on Modified  by   Description
--- |  ======= =========== ============== =========================================
--- |  1.0     06 Nov 2009 Douglas Volz   Initial Coding
--- |  1.15    17 Sep 2021 Douglas Volz   Parameter changes, adding item number, PO number.
--- |  1.16    08 Jul 2022 Douglas Volz   Subledger Accounting performance improvements
--- |                                     and parameter to show or not show PO information.
--- |  1.17    14 Aug 2022 Douglas Volz   Revision for expense/no item receipts.
--- |                                     Combine SLA and Non-SLA Receiving Acct Reports.  Make
--- |                                     Show SLA, Show PO and Show WIP OSP dynamic SQL parameters.
--- |  1.18    21 Aug 2022 Douglas Volz   Streamline dynamic SQL code.
--- |  1.19    03 Sep 2022 Douglas Volz   Language translations for Accounting Line Types.
--- +=============================================================================+*/
-
--- Excel Examle Output: https://www.enginatics.com/example/cac-receiving-account-summary/
+-- Description: Report to get the receiving accounting distributions, in summary, by item, purchase order, purchase order line, release and project number. With the Show SLA Accounting parameter you can choose to use the Release 12 Subledger Accounting (Create Accounting) account setups by selecting Yes. And if you have not modified your SLA accounting rules, select No to allow this report to run a bit faster. With parameters to limit the report size, to display or not display purchase information (purchase order, line, release) and WIP outside processing information (WIP job and OSP resource code). And if you accrue expense receipts at time of receipt, for expense destinations when there is no item number, this report will get the expense category information and put it into the columns for the first category set.
+-- (Note: this report has not been tested with encumbrance entries.)
+-- Parameters:
+-- ===========
+-- Transaction Date From: enter the starting transaction date (mandatory).
+-- Transaction Date To: enter the ending transaction date (mandatory).
+-- Show SLA Accounting: enter Yes to use the Subledger Accounting rules for your accounting information (mandatory). If you choose No the report uses the pre-Create Accounting entries.
+-- Show Purchase Orders: display the purchase order, line and release information. Enter Yes or No, use to limit the report size (mandatory).
+-- Show Projects: display the project number and name. Enter Yes or No, use to limit the report size (mandatory).
+-- Show WIP Outside Processing: display the WIP job and outside processing resource. Enter Yes or No, use to limit the report size (mandatory).
+-- Category Set 1: any item category you wish, typically the Cost or Product Line category set (optional).
+-- Category Set 2: any item category you wish, typically the Inventory category set (optional).
+-- Supplier Name: enter the specific supplier you wish to report (optional).
+-- PO Number: enter the specific purchase order number you wish to report (optional).
+-- Destination Code: enter the purchase order destination type you wish to report (optional). You can choose Inventory, Expense or Shop Floor (WIP outside processing).
+-- Item Number: enter the specific item number(s) you wish to report (optional).
+-- Organization Code: enter the specific inventory organization(s) you wish to report (optional).
+-- Operating Unit: enter the specific operating unit(s) you wish to report (optional).
+-- Ledger: enter the specific ledger(s) you wish to report (optional).
+-- / +=============================================================================+
+-- -- | Copyright 2009- 2022 Douglas Volz Consulting, Inc.
+-- -- | All rights reserved.
+-- -- | Permission to use this code is granted provided the original author is
+-- -- | acknowledged. No warranties, express or otherwise is included in this
+-- -- | permission.
+-- -- +=============================================================================+
+-- -- |
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== ============== =========================================
+-- -- | 1.0 06 Nov 2009 Douglas Volz Initial Coding
+-- -- | 1.15 17 Sep 2021 Douglas Volz Parameter changes, adding item number, PO number.
+-- -- | 1.16 08 Jul 2022 Douglas Volz Subledger Accounting performance improvements
+-- -- | and parameter to show or not show PO information.
+-- -- | 1.17 14 Aug 2022 Douglas Volz Revision for expense/no item receipts.
+-- -- | Combine SLA and Non-SLA Receiving Acct Reports. Make
+-- -- | Show SLA, Show PO and Show WIP OSP dynamic SQL parameters.
+-- -- | 1.18 21 Aug 2022 Douglas Volz Streamline dynamic SQL code.
+-- -- | 1.19 03 Sep 2022 Douglas Volz Language translations for Accounting Line Types.
+-- -- +=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-receiving-account-summary/
 -- Library Link: https://www.enginatics.com/reports/cac-receiving-account-summary/
 -- Run Report: https://demo.enginatics.com/
 

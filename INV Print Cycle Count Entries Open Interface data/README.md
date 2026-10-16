@@ -1,14 +1,20 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'INV Print Cycle Count Entries Open Interface data | Oracle EBS SQL Report'
 description: 'Imported Oracle standard Print Cycle Count Entries Open Interface data report Source :Print Cycle Count Entries Open Interface data (XML) Short Name…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, INV, Print, Cycle, Count, mtl_cc_entries_interface_v, mtl_system_items_vl, mtl_item_locations_kfv'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Inventory, Enginatics, INV, Print, Cycle, Count, mtl_cc_entries_interface_v, mtl_system_items_vl, mtl_item_locations_kfv'
 permalink: /INV%20Print%20Cycle%20Count%20Entries%20Open%20Interface%20data/
+report_name: 'INV Print Cycle Count Entries Open Interface data'
+report_web_name: inv-print-cycle-count-entries-open-interface-data
+module: 'Inventory'
+module_url: /modules/inventory/
 ---
 
 # INV Print Cycle Count Entries Open Interface data – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/inv-print-cycle-count-entries-open-interface-data/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/inv-print-cycle-count-entries-open-interface-data/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-print-cycle-count-entries-open-interface-data) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-print-cycle-count-entries-open-interface-data).
+**Oracle EBS module:** [Inventory](/modules/inventory/ "Oracle EBS Inventory reports") · [all Inventory reports](/modules/inventory/)  
 
 ## Overview
 Imported Oracle standard Print Cycle Count Entries Open Interface data report
@@ -16,28 +22,31 @@ Source :Print Cycle Count Entries Open Interface data (XML)
 Short Name: INVCCIER_XML
 DB package: INV_INVCCIER_XMLP_PKG
 
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-print-cycle-count-entries-open-interface-data) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
+
 ## Report Parameters
 Organization Code, Cycle Count Name, Request Id, Action Code, Count Date From, Count Date To
 
 ## Oracle EBS Tables Used
-[mtl_cc_entries_interface_v](https://www.enginatics.com/library/?pg=1&find=mtl_cc_entries_interface_v), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl), [mtl_item_locations_kfv](https://www.enginatics.com/library/?pg=1&find=mtl_item_locations_kfv), [mfg_lookups](https://www.enginatics.com/library/?pg=1&find=mfg_lookups), [cst_cost_groups](https://www.enginatics.com/library/?pg=1&find=cst_cost_groups), [mtl_cc_interface_errors](https://www.enginatics.com/library/?pg=1&find=mtl_cc_interface_errors), [org_organization_definitions](https://www.enginatics.com/library/?pg=1&find=org_organization_definitions), [org_access_view](https://www.enginatics.com/library/?pg=1&find=org_access_view)
+[mtl_cc_entries_interface_v](https://www.enginatics.com/library/?pg=1&find=mtl_cc_entries_interface_v&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-print-cycle-count-entries-open-interface-data), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-print-cycle-count-entries-open-interface-data), [mtl_item_locations_kfv](https://www.enginatics.com/library/?pg=1&find=mtl_item_locations_kfv&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-print-cycle-count-entries-open-interface-data), [mfg_lookups](https://www.enginatics.com/library/?pg=1&find=mfg_lookups&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-print-cycle-count-entries-open-interface-data), [cst_cost_groups](https://www.enginatics.com/library/?pg=1&find=cst_cost_groups&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-print-cycle-count-entries-open-interface-data), [mtl_cc_interface_errors](https://www.enginatics.com/library/?pg=1&find=mtl_cc_interface_errors&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-print-cycle-count-entries-open-interface-data), [org_organization_definitions](https://www.enginatics.com/library/?pg=1&find=org_organization_definitions&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-print-cycle-count-entries-open-interface-data), [org_access_view](https://www.enginatics.com/library/?pg=1&find=org_access_view&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-print-cycle-count-entries-open-interface-data)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-print-cycle-count-entries-open-interface-data)
 
 ## Related Reports
 [CAC Receiving Value (Period-End)](/CAC%20Receiving%20Value%20%28Period-End%29/ "CAC Receiving Value (Period-End) Oracle EBS SQL Report"), [INV Cycle count open requests listing](/INV%20Cycle%20count%20open%20requests%20listing/ "INV Cycle count open requests listing Oracle EBS SQL Report"), [INV Cycle count listing](/INV%20Cycle%20count%20listing/ "INV Cycle count listing Oracle EBS SQL Report"), [CAC Interface Error Summary](/CAC%20Interface%20Error%20Summary/ "CAC Interface Error Summary Oracle EBS SQL Report"), [INV Cycle count entries and adjustments](/INV%20Cycle%20count%20entries%20and%20adjustments/ "INV Cycle count entries and adjustments Oracle EBS SQL Report"), [INV Cycle counts pending approval](/INV%20Cycle%20counts%20pending%20approval/ "INV Cycle counts pending approval Oracle EBS SQL Report"), [CAC Inventory to G/L Reconciliation (Restricted by Org Access)](/CAC%20Inventory%20to%20G-L%20Reconciliation%20%28Restricted%20by%20Org%20Access%29/ "CAC Inventory to G/L Reconciliation (Restricted by Org Access) Oracle EBS SQL Report"), [CAC Invoice Price Variance](/CAC%20Invoice%20Price%20Variance/ "CAC Invoice Price Variance Oracle EBS SQL Report"), [CAC Deferred COGS Out-of-Balance](/CAC%20Deferred%20COGS%20Out-of-Balance/ "CAC Deferred COGS Out-of-Balance Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/INV%20Print%20Cycle%20Count%20Entries%20Open%20Interface%20data/INV%20Print%20Cycle%20Count%20Entries%20Open%20Interface%20data.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-print-cycle-count-entries-open-interface-data) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [](https://www.enginatics.com/example/inv-print-cycle-count-entries-open-interface-data/) |
-| Blitz Report™ XML Import | [INV_Print_Cycle_Count_Entries_Open_Interface_data.xml](https://www.enginatics.com/xml/inv-print-cycle-count-entries-open-interface-data/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/inv-print-cycle-count-entries-open-interface-data/](https://www.enginatics.com/reports/inv-print-cycle-count-entries-open-interface-data/) |
+| Excel Example Output | [Example](https://www.enginatics.com/example/inv-print-cycle-count-entries-open-interface-data/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-print-cycle-count-entries-open-interface-data) |
+| Blitz Report™ XML Import | [INV_Print_Cycle_Count_Entries_Open_Interface_data.xml](https://www.enginatics.com/xml/inv-print-cycle-count-entries-open-interface-data/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-print-cycle-count-entries-open-interface-data) |
+| SQL Source | [INV Print Cycle Count Entries Open Interface data.sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/INV%20Print%20Cycle%20Count%20Entries%20Open%20Interface%20data/INV%20Print%20Cycle%20Count%20Entries%20Open%20Interface%20data.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/inv-print-cycle-count-entries-open-interface-data/](https://www.enginatics.com/reports/inv-print-cycle-count-entries-open-interface-data/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-print-cycle-count-entries-open-interface-data) |
 
 ## INV Print Cycle Count Entries Open Interface data - Case Study & Technical Analysis
 
@@ -76,18 +85,17 @@ The report queries the interface table used by the "Import Cycle Count Entries" 
 -   **Data Integrity:** Ensures that all counts captured by scanners actually make it into the system of record.
 -   **Vendor Management:** Helps prove if the issue is with the Oracle setup or the 3rd party scanning software.
 
-
 ---
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-print-cycle-count-entries-open-interface-data)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-print-cycle-count-entries-open-interface-data)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-print-cycle-count-entries-open-interface-data)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-print-cycle-count-entries-open-interface-data)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-print-cycle-count-entries-open-interface-data)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-print-cycle-count-entries-open-interface-data)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-print-cycle-count-entries-open-interface-data)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

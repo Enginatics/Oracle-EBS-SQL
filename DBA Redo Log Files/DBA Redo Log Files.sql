@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: DBA Redo Log Files
 -- Description: 
--- Excel Examle Output: https://www.enginatics.com/example/dba-redo-log-files/
+-- Excel Example Output: https://www.enginatics.com/example/dba-redo-log-files/
 -- Library Link: https://www.enginatics.com/reports/dba-redo-log-files/
 -- Run Report: https://demo.enginatics.com/
 

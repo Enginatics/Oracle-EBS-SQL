@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: XLE Legal Entities
 -- Description: Legal entities, establishments, jurisdictions and registrations
--- Excel Examle Output: https://www.enginatics.com/example/xle-legal-entities/
+-- Excel Example Output: https://www.enginatics.com/example/xle-legal-entities/
 -- Library Link: https://www.enginatics.com/reports/xle-legal-entities/
 -- Run Report: https://demo.enginatics.com/
 

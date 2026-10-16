@@ -1,13 +1,14 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: AP Invoice Payments
 -- Description: Supplier invoice payment details.
-There can be multiple payments per invoice and one document/check can be used to pay different payments and invoices. To allow reconciling payment with invoices and checks, invoice and check level amounts are shown on the last payment record only and are blank for multiple/duplicate records.
--- Excel Examle Output: https://www.enginatics.com/example/ap-invoice-payments/
+-- There can be multiple payments per invoice and one document/check can be used to pay different payments and invoices. To allow reconciling payment with invoices and checks, invoice and check level amounts are shown on the last payment record only and are blank for multiple/duplicate records.
+-- When India Localization is installed, the following GST columns are also included: GST Registration No, GST PAN No, GST TAN No, CGST Amount, SGST Amount, IGST Amount, CESS Amount, Custom Amount, Unclassified Tax Amount, Taxable Value, HSN SAC Code, CGST Rate, SGST Rate, IGST Rate, CESS Rate, CGST Recoverable, CGST Non-Recoverable, SGST Recoverable, SGST Non-Recoverable, IGST Recoverable, IGST Non-Recoverable, Reverse Charge Flag, Place of Supply, Ship From State.
+-- Excel Example Output: https://www.enginatics.com/example/ap-invoice-payments/
 -- Library Link: https://www.enginatics.com/reports/ap-invoice-payments/
 -- Run Report: https://demo.enginatics.com/
 
@@ -103,6 +104,11 @@ rcv_shipment_headers rsh
 where
 x.shipment_header_id=rsh.shipment_header_id
 ) receipt_number,
+&il_reg_columns
+&il_columns_amt
+&il_columns_rate
+&il_columns_rec
+&il_columns_tp
 xxen_util.user_name(aipa.created_by) created_by,
 xxen_util.client_time(aipa.creation_date) creation_date,
 xxen_util.user_name(aipa.last_updated_by) last_updated_by,
@@ -129,6 +135,7 @@ iby_payment_methods_vl ipmv,
 gl_code_combinations_kfv gcck,
 ap_payment_schedules_all apsa,
 ap_inv_selection_criteria_all aisca
+&il_from
 where
 1=1 and
 gl.ledger_id=aipa.set_of_books_id and
@@ -151,6 +158,7 @@ aipa.asset_code_combination_id=gcck.code_combination_id(+) and
 aipa.invoice_id=apsa.invoice_id and
 aipa.payment_num=apsa.payment_num and
 aca.checkrun_id=aisca.checkrun_id (+)
+&il_where
 order by
 aipa.invoice_id desc,
 aipa.invoice_payment_id desc

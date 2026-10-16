@@ -1,14 +1,20 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'BOM Bill of Material Structure | Oracle EBS SQL Report'
 description: 'Description: Bill of Material Structure Report Provides equivalent functionality to the the following standard reports: - Bill of Material Structure…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, BOM, Bill, Material, Structure, mtl_parameters, hr_all_organization_units_vl, bom_dependent_desc_elements'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Bills of Material, Enginatics, BOM, Bill, Material, Structure, mtl_parameters, hr_all_organization_units_vl, bom_dependent_desc_elements'
 permalink: /BOM%20Bill%20of%20Material%20Structure/
+report_name: 'BOM Bill of Material Structure'
+report_web_name: bom-bill-of-material-structure
+module: 'Bills of Material'
+module_url: /modules/bills-of-material/
 ---
 
 # BOM Bill of Material Structure – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/bom-bill-of-material-structure/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/bom-bill-of-material-structure/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=bom-bill-of-material-structure) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=bom-bill-of-material-structure).
+**Oracle EBS module:** [Bills of Material](/modules/bills-of-material/ "Oracle EBS Bills of Material reports") · [all Bills of Material reports](/modules/bills-of-material/)  
 
 ## Overview
 Description: Bill of Material Structure Report
@@ -26,28 +32,31 @@ Source: Bill of Material Structure Report GUI (XML)
 Short Name: BOMRBOMSG_XML
 DB package: BOM_BOMRBOMS_XMLP_PKG
 
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=bom-bill-of-material-structure) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
+
 ## Report Parameters
-All Organizations, Organization Hierarchy, Assembly Item, Assembly Item From, Assembly Item To, Alternate Selection, Alternate, Revision, Date, Category Set 1, Category Set 2, Category Set 3, Categories From, Categories To, Levels to Explode, Implemented Only, Display Option, Explosion Quantity, Show Substitute Components, Use Planning Percent, Bills with Loop Errors Only, Supply Attributes Differ, Assembly DFF Display, Assembly Item DFF Display, Component DFF Display, Component Item DFF Display
+All Organizations, Organization Hierarchy, Assembly Item, Assembly Item From, Assembly Item To, Alternate Selection, Alternate, Revision, Date, Category Set 1, Category Set 2, Category Set 3, Categories From, Categories To, Levels to Explode, Implemented Only, Display Option, Explosion Quantity, Show Substitute Components, Use Planning Percent, Bills with Loop Errors Only, Supply Attributes Differ, Assembly DFF Display, Assembly Item DFF Display, Component DFF Display, Component Item DFF Display, Dynamic Precision Option
 
 ## Oracle EBS Tables Used
-[mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters), [hr_all_organization_units_vl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_vl), [bom_dependent_desc_elements](https://www.enginatics.com/library/?pg=1&find=bom_dependent_desc_elements), [bom_explosion_temp](https://www.enginatics.com/library/?pg=1&find=bom_explosion_temp), [bom_bill_of_materials](https://www.enginatics.com/library/?pg=1&find=bom_bill_of_materials), [bom_lists](https://www.enginatics.com/library/?pg=1&find=bom_lists), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl), [mtl_item_revisions_b](https://www.enginatics.com/library/?pg=1&find=mtl_item_revisions_b), [mfg_lookups](https://www.enginatics.com/library/?pg=1&find=mfg_lookups), [bom_alternate_designators](https://www.enginatics.com/library/?pg=1&find=bom_alternate_designators), [mtl_item_locations_kfv](https://www.enginatics.com/library/?pg=1&find=mtl_item_locations_kfv), [bom_ref_designators_view](https://www.enginatics.com/library/?pg=1&find=bom_ref_designators_view), [bom_explosion_view](https://www.enginatics.com/library/?pg=1&find=bom_explosion_view), [bom_components_b](https://www.enginatics.com/library/?pg=1&find=bom_components_b), [mtl_system_items_b](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_b), [bom_sub_components_view](https://www.enginatics.com/library/?pg=1&find=bom_sub_components_view), [q_assemblies](https://www.enginatics.com/library/?pg=1&find=q_assemblies), [q_components](https://www.enginatics.com/library/?pg=1&find=q_components), [q_subst_comp](https://www.enginatics.com/library/?pg=1&find=q_subst_comp)
+[mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=bom-bill-of-material-structure), [hr_all_organization_units_vl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=bom-bill-of-material-structure), [bom_dependent_desc_elements](https://www.enginatics.com/library/?pg=1&find=bom_dependent_desc_elements&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=bom-bill-of-material-structure), [bom_explosion_temp](https://www.enginatics.com/library/?pg=1&find=bom_explosion_temp&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=bom-bill-of-material-structure), [bom_bill_of_materials](https://www.enginatics.com/library/?pg=1&find=bom_bill_of_materials&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=bom-bill-of-material-structure), [bom_lists](https://www.enginatics.com/library/?pg=1&find=bom_lists&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=bom-bill-of-material-structure), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=bom-bill-of-material-structure), [mtl_item_revisions_b](https://www.enginatics.com/library/?pg=1&find=mtl_item_revisions_b&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=bom-bill-of-material-structure), [mfg_lookups](https://www.enginatics.com/library/?pg=1&find=mfg_lookups&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=bom-bill-of-material-structure), [bom_alternate_designators](https://www.enginatics.com/library/?pg=1&find=bom_alternate_designators&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=bom-bill-of-material-structure), [mtl_item_locations_kfv](https://www.enginatics.com/library/?pg=1&find=mtl_item_locations_kfv&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=bom-bill-of-material-structure), [bom_ref_designators_view](https://www.enginatics.com/library/?pg=1&find=bom_ref_designators_view&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=bom-bill-of-material-structure), [bom_explosion_view](https://www.enginatics.com/library/?pg=1&find=bom_explosion_view&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=bom-bill-of-material-structure), [bom_components_b](https://www.enginatics.com/library/?pg=1&find=bom_components_b&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=bom-bill-of-material-structure), [mtl_system_items_b](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_b&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=bom-bill-of-material-structure), [bom_sub_components_view](https://www.enginatics.com/library/?pg=1&find=bom_sub_components_view&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=bom-bill-of-material-structure)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=bom-bill-of-material-structure)
 
 ## Related Reports
 [CAC Manufacturing Variance](/CAC%20Manufacturing%20Variance/ "CAC Manufacturing Variance Oracle EBS SQL Report"), [CAC Where Used by Cost Type](/CAC%20Where%20Used%20by%20Cost%20Type/ "CAC Where Used by Cost Type Oracle EBS SQL Report"), [CAC Calculate ICP PII Item Costs by Where Used](/CAC%20Calculate%20ICP%20PII%20Item%20Costs%20by%20Where%20Used/ "CAC Calculate ICP PII Item Costs by Where Used Oracle EBS SQL Report"), [FND Attached Documents](/FND%20Attached%20Documents/ "FND Attached Documents Oracle EBS SQL Report"), [CAC Cost vs. Planning Item Controls](/CAC%20Cost%20vs-%20Planning%20Item%20Controls/ "CAC Cost vs. Planning Item Controls Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/BOM%20Bill%20of%20Material%20Structure/BOM%20Bill%20of%20Material%20Structure.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=bom-bill-of-material-structure) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [BOM Bill of Material Structure - Bill of Material Structure Report 10-Oct-2025 143544.xlsx](https://www.enginatics.com/example/bom-bill-of-material-structure/) |
-| Blitz Report™ XML Import | [BOM_Bill_of_Material_Structure.xml](https://www.enginatics.com/xml/bom-bill-of-material-structure/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/bom-bill-of-material-structure/](https://www.enginatics.com/reports/bom-bill-of-material-structure/) |
+| Excel Example Output | [BOM Bill of Material Structure - Bill of Material Structure Report 10-Oct-2025 143544.xlsx](https://www.enginatics.com/example/bom-bill-of-material-structure/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=bom-bill-of-material-structure) |
+| Blitz Report™ XML Import | [BOM_Bill_of_Material_Structure.xml](https://www.enginatics.com/xml/bom-bill-of-material-structure/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=bom-bill-of-material-structure) |
+| SQL Source | [BOM Bill of Material Structure.sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/BOM%20Bill%20of%20Material%20Structure/BOM%20Bill%20of%20Material%20Structure.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/bom-bill-of-material-structure/](https://www.enginatics.com/reports/bom-bill-of-material-structure/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=bom-bill-of-material-structure) |
 
 ## BOM Bill of Material Structure - Case Study & Technical Analysis
 
@@ -99,18 +108,17 @@ A: The `Levels to Explode` parameter allows you to control the depth, from a sin
 **Q: Does it show component substitutes?**
 A: Yes, there is a parameter `Show Substitute Components` to include valid substitutes defined for the BOM components.
 
-
 ---
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=bom-bill-of-material-structure)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=bom-bill-of-material-structure)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=bom-bill-of-material-structure)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=bom-bill-of-material-structure)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=bom-bill-of-material-structure)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=bom-bill-of-material-structure)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=bom-bill-of-material-structure)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

@@ -1,4 +1,3 @@
-
 # Case Study & Technical Analysis: CAC WIP Material Usage Variance
 
 ## Executive Summary

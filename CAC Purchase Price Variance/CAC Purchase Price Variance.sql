@@ -1,49 +1,47 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Purchase Price Variance
--- Description: Report for Purchase Price Variance accounting entries for external inventory purchases, external outside processing purchases, (internal) intransit shipments, (internal) direct organization transfers and transfer to regular (consignment) transactions.  The FOB point indicates when title passes to the receiving organization and it also determines which internal transfer transaction gets the PPV.  With FOB Shipment, PPV happens on the Intransit Shipment transaction.  With FOB Receipt, PPV happens on the Intransit Receipt transaction.  And if you enter PO receipts by lot numbers this report splits out the PPV variances by lot number.  The PPV Cost Amount column indicates PPV due to only cost differences; the PPV FX Amount column indicates PPV due to differences between the original PO currency exchange rate and the material transaction's daily exchange rate.
-
-Parameters:
-===========
-Transaction Date From:  enter the starting transaction date (mandatory).
-Transaction Date To:  enter the ending transaction date (mandatory).
-Currency Conversion Type:  enter the currency conversion type to use for converting foreign currency purchases into the currency of hhe general ledger (mandatory).
-Category Sets 1-3:  any item category you wish, typically the Cost, Product Line or Inventory category sets (optional).
-Item Number:  enter the specific item number(s) you wish to report (optional).
-Organization Code:  enter the specific inventory organization(s) you wish to report (optional).
-Operating Unit:  enter the specific operating unit(s) you wish to report (optional).
-Ledger:  enter the specific ledger(s) you wish to report (optional).
-
-/* +=============================================================================+
--- | Copyright 2010-25 Douglas Volz Consulting, Inc.
--- | All rights reserved.
--- | Permission to use this code is granted provided the original author is
--- | acknowledged. No warranties, express or otherwise is included in this permission.
--- +=============================================================================+
--- |
--- |  Original Author: Douglas Volz (doug@volzconsulting.com)
--- |  ======= =========== ============== =========================================
--- |  1.0     26 Jan 2010 Douglas Volz   Initial Coding
--- |  1.17    01 Jan 2021 Douglas Volz   Added Section 5 PPV for Transfer to Regular transactions.
--- |  1.18    08 Jan 2021 Douglas Volz   Removed redundant joins and tables to improve performance.
--- |  1.19    14 Dec 2021 Douglas Volz   Bug fix, Section I and V were both picking up
--- |                                     Transfer to Regular PPV transactions
--- |  1.20    21 Jun 2022 Douglas Volz   Add PO Line and PO Shipment Line Creation Date.
--- |  1.21    04 Apr 2022 Andy Haack     Added organization security restriction by org_access_view oav.
--- |  1.22    10 May 2023 Douglas Volz   Fix PPV calculations for RTV and Receipt Adjustment transactions.
--- |  1.23    13 Jan 2024 Douglas Volz   Rewrite report code for single material and WIP transaction pass,
--- |                                     add Transaction Exchange Rate, PPV Cost Amount and PPV FX columns,
--- |                                     improve performance and fix PPV amount and percent calculations.
--- |  1.24    24 Jan 2024 Douglas Volz   Rename column Standard Unit Cost to Standard Purchase Unit Cost.
--- |  1.25    30 May 2025 Douglas Volz   Bug fix for PO Unit Price, added in Clearing Accounting Line Type.
--- |  1.26    16 Jun 2025 Douglas Volz   Bug fix for Intransit Shipment and Internal Order Intransit
--- |                                     Shipment transaction types.
-+=============================================================================+*/
--- Excel Examle Output: https://www.enginatics.com/example/cac-purchase-price-variance/
+-- Description: Report for Purchase Price Variance accounting entries for external inventory purchases, external outside processing purchases, (internal) intransit shipments, (internal) direct organization transfers and transfer to regular (consignment) transactions. The FOB point indicates when title passes to the receiving organization and it also determines which internal transfer transaction gets the PPV. With FOB Shipment, PPV happens on the Intransit Shipment transaction. With FOB Receipt, PPV happens on the Intransit Receipt transaction. And if you enter PO receipts by lot numbers this report splits out the PPV variances by lot number. The PPV Cost Amount column indicates PPV due to only cost differences; the PPV FX Amount column indicates PPV due to differences between the original PO currency exchange rate and the material transaction's daily exchange rate.
+-- Parameters:
+-- ===========
+-- Transaction Date From: enter the starting transaction date (mandatory).
+-- Transaction Date To: enter the ending transaction date (mandatory).
+-- Currency Conversion Type: enter the currency conversion type to use for converting foreign currency purchases into the currency of hhe general ledger (mandatory).
+-- Category Sets 1-3: any item category you wish, typically the Cost, Product Line or Inventory category sets (optional).
+-- Item Number: enter the specific item number(s) you wish to report (optional).
+-- Organization Code: enter the specific inventory organization(s) you wish to report (optional).
+-- Operating Unit: enter the specific operating unit(s) you wish to report (optional).
+-- Ledger: enter the specific ledger(s) you wish to report (optional).
+-- / +=============================================================================+
+-- -- | Copyright 2010-25 Douglas Volz Consulting, Inc.
+-- -- | All rights reserved.
+-- -- | Permission to use this code is granted provided the original author is
+-- -- | acknowledged. No warranties, express or otherwise is included in this permission.
+-- -- +=============================================================================+
+-- -- |
+-- -- | Original Author: Douglas Volz (doug@volzconsulting.com)
+-- -- | ======= =========== ============== =========================================
+-- -- | 1.0 26 Jan 2010 Douglas Volz Initial Coding
+-- -- | 1.17 01 Jan 2021 Douglas Volz Added Section 5 PPV for Transfer to Regular transactions.
+-- -- | 1.18 08 Jan 2021 Douglas Volz Removed redundant joins and tables to improve performance.
+-- -- | 1.19 14 Dec 2021 Douglas Volz Bug fix, Section I and V were both picking up
+-- -- | Transfer to Regular PPV transactions
+-- -- | 1.20 21 Jun 2022 Douglas Volz Add PO Line and PO Shipment Line Creation Date.
+-- -- | 1.21 04 Apr 2022 Andy Haack Added organization security restriction by orgaccessview oav.
+-- -- | 1.22 10 May 2023 Douglas Volz Fix PPV calculations for RTV and Receipt Adjustment transactions.
+-- -- | 1.23 13 Jan 2024 Douglas Volz Rewrite report code for single material and WIP transaction pass,
+-- -- | add Transaction Exchange Rate, PPV Cost Amount and PPV FX columns,
+-- -- | improve performance and fix PPV amount and percent calculations.
+-- -- | 1.24 24 Jan 2024 Douglas Volz Rename column Standard Unit Cost to Standard Purchase Unit Cost.
+-- -- | 1.25 30 May 2025 Douglas Volz Bug fix for PO Unit Price, added in Clearing Accounting Line Type.
+-- -- | 1.26 16 Jun 2025 Douglas Volz Bug fix for Intransit Shipment and Internal Order Intransit
+-- -- | Shipment transaction types.
+-- +=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-purchase-price-variance/
 -- Library Link: https://www.enginatics.com/reports/cac-purchase-price-variance/
 -- Run Report: https://demo.enginatics.com/
 

@@ -1,15 +1,15 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: FA Asset Register
 -- Description: Application: Assets
-Source: Asset Register Report (XML)
-Short Name: FAS600_XML
-DB package: FA_FAS600_XMLP_PKG
--- Excel Examle Output: https://www.enginatics.com/example/fa-asset-register/
+-- Source: Asset Register Report (XML)
+-- Short Name: FAS600XML
+-- DB package: FAFAS600XMLPPKG
+-- Excel Example Output: https://www.enginatics.com/example/fa-asset-register/
 -- Library Link: https://www.enginatics.com/reports/fa-asset-register/
 -- Run Report: https://demo.enginatics.com/
 

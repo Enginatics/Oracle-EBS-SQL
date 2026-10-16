@@ -1,37 +1,34 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: OTL Timecard Upload
 -- Description: OTL Timecard Upload
-===================
-Create, update and delete Oracle Time and Labor (OTL / HXC) timecards via the public TimeStore deposit API hxc_timestore_deposit, as an Excel-based alternative to self-service time entry.
-
-Row model
-=========
-One spreadsheet row per timecard line and day: Employee, Date, classification and Hours. Rows are grouped into timecards by employee and the OTL timecard period (e.g. the weekly period from the employee's OTL preferences) containing the Date. Rows of the same employee and period must be contiguous and are deposited together as one timecard. The Period Starting column fills automatically once Employee and Date are entered.
-
-Classification
-==============
-Each line is classified either for Projects (Project, Task and Expenditure Type - straight time) or for Payroll (Hours Type = payroll element). The deposit derives the employee's application set, approval style and security context from the OTL preferences, exactly like self-service time entry.
-
-Run the upload under a responsibility whose operating unit context matches the projects being charged (e.g. the OTL or Projects responsibility the employees use) - the deposit validates the project, task, expenditure type and expenditure organization under the session's operating unit, exactly like self-service time entry.
-
-Save and submit
-===============
-Leave Submit blank to save the timecard in Working status. Set Submit to Yes on any row of a timecard to submit it for approval (the OTL approval workflow starts, e.g. HR supervisor approval). Updating a timecard that is already Submitted or Approved re-submits it for approval automatically.
-
-Updates and deletes
-===================
-Downloaded lines carry hidden building block ids and are updated through the OTL deposit API, which creates a new timecard version and re-routes approval. Set Delete Line to Yes to remove a line; deleting all lines of a timecard deletes the whole timecard. Timecards already transferred to a recipient application (Projects, Payroll/BEE or Purchasing) are protected and cannot be modified by the upload.
-
-Upload modes
-============
-Create - empty template for new timecards.
-Create, Update - downloads existing timecards (project and payroll element lines) for review, correction, resubmission or deletion.
--- Excel Examle Output: https://www.enginatics.com/example/otl-timecard-upload/
+-- ===================
+-- Create, update and delete Oracle Time and Labor (OTL / HXC) timecards via the public TimeStore deposit API hxctimestoredeposit, as an Excel-based alternative to self-service time entry.
+-- Row model
+-- =========
+-- One spreadsheet row per timecard line and day: Employee, Date, classification and Hours. Rows are grouped into timecards by employee and the OTL timecard period (e.g. the weekly period from the employee's OTL preferences) containing the Date. Rows of the same employee and period must be contiguous and are deposited together as one timecard. The Period Starting column fills automatically once Employee and Date are entered.
+-- Classification
+-- ==============
+-- Each line is classified either for Projects (Project, Task and Expenditure Type - straight time) or for Payroll (Hours Type = payroll element). The deposit derives the employee's application set, approval style and security context from the OTL preferences, exactly like self-service time entry.
+-- Run the upload under a responsibility whose operating unit context matches the projects being charged (e.g. the OTL or Projects responsibility the employees use) - the deposit validates the project, task, expenditure type and expenditure organization under the session's operating unit, exactly like self-service time entry.
+-- Save and submit
+-- ===============
+-- Leave Submit blank to save the timecard in Working status. Set Submit to Yes on any row of a timecard to submit it for approval (the OTL approval workflow starts, e.g. HR supervisor approval). Updating a timecard that is already Submitted or Approved re-submits it for approval automatically.
+-- Updates and deletes
+-- ===================
+-- Downloaded lines carry hidden building block ids and are updated through the OTL deposit API, which creates a new timecard version and re-routes approval. Set Delete Line to Yes to remove a line; deleting all lines of a timecard deletes the whole timecard. Timecards already transferred to a recipient application (Projects, Payroll/BEE or Purchasing) are protected and cannot be modified by the upload.
+-- Download
+-- ========
+-- Submission Date is the date the timecard was last submitted for approval. Organization restricts the download to employees whose primary assignment belongs to the organization at the start of the timecard period.
+-- Upload modes
+-- ============
+-- Create - empty template for new timecards.
+-- Create, Update - downloads existing timecards (project and payroll element lines) for review, correction, resubmission or deletion.
+-- Excel Example Output: https://www.enginatics.com/example/otl-timecard-upload/
 -- Library Link: https://www.enginatics.com/reports/otl-timecard-upload/
 -- Run Report: https://demo.enginatics.com/
 
@@ -45,6 +42,7 @@ x.employee,
 x.employee_number,
 x.approval_status,
 x.transferred,
+x.submission_date,
 x.period_starting,
 x.date_worked,
 x.project,
@@ -64,6 +62,7 @@ papf.full_name employee,
 papf.employee_number,
 xxen_util.meaning(hts.approval_status,'HXC_APPROVAL_STATUS',3) approval_status,
 xxen_util.yes(case when exists (select null from hxc_transaction_details htd, hxc_transactions ht where htd.time_building_block_id=htbb_det.time_building_block_id and htd.time_building_block_ovn=htbb_det.object_version_number and htd.status='SUCCESS' and htd.transaction_id=ht.transaction_id and ht.type='RETRIEVAL' and ht.status='SUCCESS') then 'Y' end) transferred,
+hts.submission_date,
 trunc(hts.start_time) period_starting,
 trunc(htbb_day.start_time) date_worked,
 ppa.segment1 project,
@@ -75,7 +74,8 @@ htbb_det.comment_text line_comment,
 null submit_timecard,
 null delete_line,
 hts.timecard_id timecard_bb_id,
-htbb_det.time_building_block_id detail_bb_id
+htbb_det.time_building_block_id detail_bb_id,
+papf.person_id
 from
 hxc_timecard_summary hts,
 hxc_time_building_blocks htbb_day,

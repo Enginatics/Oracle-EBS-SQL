@@ -1,16 +1,14 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: DIS Workbook Import Validation
 -- Description: Discoverer workbook migration validation report showing every workbook and worksheet next to its conversion state: whether the workbook xml is uploaded, selected for conversion or converted, the object use key derived from the workbook xml, and the migrated Blitz report and template.
-
-Workbooks known only from the end user layer and workbooks whose xml was uploaded after deletion from Discoverer are both listed, so gaps in either direction are visible. The Not yet imported parameter restricts to worksheets without a migrated template.
-
-The Accessed after parameter restricts the output to workbooks with recorded usage since that date, the same scope the DIS Workbook Export Script lists for export; left blank, every workbook is shown including those never accessed. The usage statistics columns show access count, last accessed date and user within the same window.
--- Excel Examle Output: https://www.enginatics.com/example/dis-workbook-import-validation/
+-- Workbooks known only from the end user layer and workbooks whose xml was uploaded after deletion from Discoverer are both listed, so gaps in either direction are visible. The Not yet imported parameter restricts to worksheets without a migrated template.
+-- The Accessed after parameter restricts the output to workbooks with recorded usage since that date, the same scope the DIS Workbook Export Script lists for export; left blank, every workbook is shown including those never accessed. The usage statistics columns show access count, last accessed date and user within the same window.
+-- Excel Example Output: https://www.enginatics.com/example/dis-workbook-import-validation/
 -- Library Link: https://www.enginatics.com/reports/dis-workbook-import-validation/
 -- Run Report: https://demo.enginatics.com/
 

@@ -1,12 +1,13 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: AR Transactions and Payments
 -- Description: Detail AR customer billing history including payments / cash receipts, excluding any entered or incomplete transactions.
--- Excel Examle Output: https://www.enginatics.com/example/ar-transactions-and-payments/
+-- When India Localization is installed, the following GST columns are also included: GST Registration No, GST PAN No, CGST Amount, SGST Amount, IGST Amount, CESS Amount, CGST Rate, SGST Rate, IGST Rate, CESS Rate, CGST Recoverable, CGST Non-Recoverable, SGST Recoverable, SGST Non-Recoverable, IGST Recoverable, IGST Non-Recoverable, Reverse Charge Flag, Custom Amount, Unclassified Tax Amount, Taxable Value, HSN SAC Code.
+-- Excel Example Output: https://www.enginatics.com/example/ar-transactions-and-payments/
 -- Library Link: https://www.enginatics.com/reports/ar-transactions-and-payments/
 -- Run Report: https://demo.enginatics.com/
 
@@ -67,6 +68,78 @@ xxen_util.user_name(x.created_by) created_by,
 xxen_util.client_time(x.creation_date) creation_date,
 xxen_util.user_name(x.last_updated_by) last_updated_by,
 xxen_util.client_time(x.last_update_date) last_update_date
+&il_reg_columns
+&il_columns
+from
+(
+select
+x.legal_entity,
+x.legal_entity_identifier,
+x.ledger,
+x.operating_unit,
+x.invoice_number,
+x.transaction_number,
+x.transaction_date,
+&period_name_2
+x.class,
+x.type,
+x.reference,
+x.credited_or_paid_invoice,
+x.applied_receipt_number,
+x.account_number,
+x.party_name,
+x.currency,
+x.due_original,
+x.payment_applied,
+x.adjustment,
+x.credit,
+x.due_remaining,
+x.dispute_amount,
+x.ledger_currency,
+x.reval_conv_rate,
+x.acctd_due_original,
+x.acctd_payment_applied,
+x.acctd_adjustment,
+x.acctd_credit,
+x.acctd_amount_due_remaining,
+x.acctd_dispute_amount,
+x.state,
+x.status,
+x.last_date_cash_applied,
+x.actual_date_closed,
+x.payment_sched_gl_date,
+x.payment_sched_gl_date_closed,
+x.payment_term,
+x.invoicing_rule,
+x.due_date,
+x.overdue_days,
+x.ship_date,
+arm.name receipt_method,
+ifpct.payment_channel_name payment_method,
+decode(ipiua.instrument_type,'BANKACCOUNT',ieba.masked_bank_account_num,'CREDITCARD',ic.masked_cc_number) instrument_number,
+nvl(ifte.payment_system_order_number,nvl2(ifte.trxn_extension_id,substr(iby_fndcpt_trxn_pub.get_tangible_id(fa.application_short_name,ifte.order_id,ifte.trxn_ref_number1,ifte.trxn_ref_number2),1,80),null)) pson,
+hp2.party_name bank_name,
+hp3.party_name bank_branch,
+x.remit_bank_name,
+x.remit_bank_branch,
+x.remit_bank_account,
+x.print_option,
+x.first_printed_date,
+x.customer_reference,
+x.comments,
+x.bill_to_location,
+x.bill_to_address,
+x.taxpayer_id,
+x.sales_rep,
+x.category,
+x.created_by,
+x.creation_date,
+x.last_updated_by,
+x.last_update_date
+&il_reg_columns
+&il_columns
+,x.payment_trxn_extension_id,
+x.receipt_method_id
 from
 (
 select
@@ -130,16 +203,28 @@ acita0.cons_inv_id=acia0.cons_inv_id(+)
 )
 ) credited_or_paid_invoice,
 case when apsa.class in ('INV','DM','CB') then
-(select listagg(acra0.receipt_number,', ') within group (order by acra0.receipt_number)
-from ar_cash_receipts_all acra0
-where exists (
-  select null from ar_receivable_applications_all araa0
-  where araa0.applied_payment_schedule_id=apsa.payment_schedule_id and
-  araa0.cash_receipt_id=acra0.cash_receipt_id and
-  araa0.status='APP' and
-  araa0.display='Y' and
-  araa0.reversal_gl_date is null
-)
+(
+select listagg(y.receipt_number,', ') within group (order by y.receipt_number)
+from
+(
+select
+araa0.applied_payment_schedule_id,
+acra0.receipt_number
+from
+ar_receivable_applications_all araa0,
+ar_cash_receipts_all acra0
+where
+araa0.cash_receipt_id=acra0.cash_receipt_id and
+araa0.status='APP' and
+araa0.display='Y' and
+araa0.reversal_gl_date is null
+group by
+araa0.applied_payment_schedule_id,
+acra0.cash_receipt_id,
+acra0.receipt_number
+) y
+where
+apsa.payment_schedule_id=y.applied_payment_schedule_id
 ) end applied_receipt_number,
 hca.account_number,
 hp.party_name,
@@ -199,7 +284,12 @@ apsa.amount_applied * nvl(apsa.exchange_rate,1) acctd_payment_applied,
 apsa.amount_adjusted * nvl(apsa.exchange_rate,1) acctd_adjustment,
 apsa.amount_credited * nvl(apsa.exchange_rate,1) acctd_credit,
 apsa.acctd_amount_due_remaining,
-case when rctta.accounting_affect_flag='Y' and apsa.amount_in_dispute<>0 then apsa.amount_in_dispute * nvl(apsa.exchange_rate,1) end acctd_dispute_amount
+case when rctta.accounting_affect_flag='Y' and apsa.amount_in_dispute<>0 then apsa.amount_in_dispute * nvl(apsa.exchange_rate,1) end acctd_dispute_amount,
+&il_columns_inner_amt
+&il_columns_inner_rate
+&il_columns_inner_rec
+&il_columns_inner_tp
+rcta.customer_trx_id
 from
 gl_ledgers gl,
 hr_operating_units hou,
@@ -227,6 +317,7 @@ hz_relationships hr,
 &gl_period_statuses
 xle_entity_profiles xep1,
 xle_entity_profiles xep2
+&il_from
 where
 1=1 and
 apsa.payment_schedule_id>0 and
@@ -268,6 +359,28 @@ hr.object_type(+)='ORGANIZATION' and
 hr.object_id=hop.party_id(+) and
 xep1.legal_entity_id(+)=rcta.legal_entity_id and
 xep2.legal_entity_id(+)=acra.legal_entity_id
+&il_where
+) x,
+ar_receipt_methods arm,
+iby_fndcpt_pmt_chnnls_tl ifpct,
+iby_fndcpt_tx_extensions ifte,
+fnd_application fa,
+iby_pmt_instr_uses_all ipiua,
+iby_ext_bank_accounts ieba,
+hz_parties hp2,
+hz_parties hp3,
+iby_creditcard ic
+where
+x.receipt_method_id=arm.receipt_method_id(+) and
+arm.payment_channel_code=ifpct.payment_channel_code(+) and
+ifpct.language(+)=userenv('lang') and
+x.payment_trxn_extension_id=ifte.trxn_extension_id(+) and
+ifte.origin_application_id=fa.application_id(+) and
+ifte.instr_assignment_id=ipiua.instrument_payment_use_id(+) and
+decode(ipiua.instrument_type,'BANKACCOUNT',ipiua.instrument_id)=ieba.ext_bank_account_id(+) and
+ieba.bank_id=hp2.party_id(+) and
+ieba.branch_id=hp3.party_id(+) and
+decode(ipiua.instrument_type,'CREDITCARD',ipiua.instrument_id)=ic.instrid(+)
 ) x,
 ar_receipt_methods arm,
 iby_fndcpt_pmt_chnnls_tl ifpct,

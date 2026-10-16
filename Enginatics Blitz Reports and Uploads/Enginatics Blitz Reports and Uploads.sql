@@ -1,15 +1,14 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: Enginatics Blitz Reports and Uploads
 -- Description: Catalog of standard Enginatics uploads and reports.
-
-All Enginatics report details can be seen here:
-<a href="https://www.enginatics.com/library/?pg=1&category[]=Enginatics" rel="nofollow" target="_blank">https://www.enginatics.com/library/?pg=1&category[]=Enginatics</a>
--- Excel Examle Output: https://www.enginatics.com/example/enginatics-blitz-reports-and-uploads/
+-- All Enginatics report details can be seen here:
+-- https://www.enginatics.com/library/?pg=1&category[]=Enginatics
+-- Excel Example Output: https://www.enginatics.com/example/enginatics-blitz-reports-and-uploads/
 -- Library Link: https://www.enginatics.com/reports/enginatics-blitz-reports-and-uploads/
 -- Run Report: https://demo.enginatics.com/
 

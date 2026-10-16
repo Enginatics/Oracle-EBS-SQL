@@ -1,14 +1,13 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: GL Account Analysis (Drilldown) (with inventory and WIP)
--- Description: ** This report is used by the GL Financial Statement and Drilldown report, to show Subledger details. **
-
-Detail GL transaction report with one line per transaction including all segments and subledger data, with amounts in both transaction currency and ledger currency. This also has inventory and WIP details.
--- Excel Examle Output: https://www.enginatics.com/example/gl-account-analysis-drilldown-with-inventory-and-wip/
+-- Description: This report is used by the GL Financial Statement and Drilldown report, to show Subledger details.
+-- Detail GL transaction report with one line per transaction including all segments and subledger data, with amounts in both transaction currency and ledger currency. This also has inventory and WIP details.
+-- Excel Example Output: https://www.enginatics.com/example/gl-account-analysis-drilldown-with-inventory-and-wip/
 -- Library Link: https://www.enginatics.com/reports/gl-account-analysis-drilldown-with-inventory-and-wip/
 -- Run Report: https://demo.enginatics.com/
 

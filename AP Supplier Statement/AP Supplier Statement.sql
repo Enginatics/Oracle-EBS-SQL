@@ -1,15 +1,16 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: AP Supplier Statement
 -- Description: Application: Payables
-Source: Supplier Statement
-Short Name: APTPSTMT
-DB package: AP_TP_STMT_PKG
--- Excel Examle Output: https://www.enginatics.com/example/ap-supplier-statement/
+-- Source: Supplier Statement
+-- Short Name: APTPSTMT
+-- DB package: APTPSTMTPKG
+-- When India Localization is installed, the following GST columns are also included: GST Registration No, GST PAN No, GST TAN No, CESS Amount, CESS Rate, CGST Amount, CGST Non-Recoverable, CGST Recoverable, CGST Rate, Custom Amount, IGST Amount, IGST Non-Recoverable, IGST Recoverable, IGST Rate, Reverse Charge Flag, SGST Amount, SGST Non-Recoverable, SGST Recoverable, SGST Rate, Unclassified Tax Amount, Taxable Value, HSN SAC Code.
+-- Excel Example Output: https://www.enginatics.com/example/ap-supplier-statement/
 -- Library Link: https://www.enginatics.com/reports/ap-supplier-statement/
 -- Run Report: https://demo.enginatics.com/
 
@@ -52,7 +53,8 @@ q_main as
    ai.vendor_id,
    ai.vendor_site_id,
    hro.organization_id,
-   'I' || ai.invoice_id id
+   'I' || ai.invoice_id id,
+ai.invoice_id gst_trx_id
   from
    ap_invoices ai,
    ap_suppliers asup,
@@ -147,7 +149,8 @@ q_main as
    ac.vendor_id,
    ac.vendor_site_id,
    hro.organization_id,
-   'P' || aip.invoice_payment_id id
+   'P' || aip.invoice_payment_id id,
+ai.invoice_id gst_trx_id
   from
    ap_invoices ai,
    ap_invoice_payments aip,
@@ -225,6 +228,8 @@ select
  q.period_name,
  replace(q.record_type,'_',' ') record_type
  &lp_report_level_columns
+&il_reg_columns
+&il_tax_outer
 from
  (select
    z.*,
@@ -342,7 +347,8 @@ from
          q_supplier.vendor_id,
          case when nvl(:p_summary_level,'Supplier') = 'Supplier Site' then q_supplier.vendor_site_id else null end vendor_site_id,
          case when nvl(:p_summary_level,'Supplier') in ('Supplier Site','Operating Unit') then q_supplier.organization_id else null end organization_id,
-         sum(q_supplier.balance_brought_forward) bbf
+         sum(q_supplier.balance_brought_forward) bbf,
+to_number(null) gst_trx_id
         from
          q_supplier
         where
@@ -419,7 +425,8 @@ from
          q_main.vendor_id,
          q_main.vendor_site_id,
          q_main.organization_id,
-         to_number(null) bbf
+         to_number(null) bbf,
+q_main.gst_trx_id
         from
          q_main
        ) x
@@ -441,10 +448,12 @@ from
   order by
    z.seq
  ) q
+&il_from
 where
  (   (:p_report_level = 'BOTH')
   or (:p_report_level = 'TRANSACTION' and q.record_type = 'Transaction')
   or (:p_report_level = 'SUMMARY' and q.record_type like '%Summary')
  )
+&il_where
 order by
  q.seq

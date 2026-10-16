@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: OPM Formula Where-Used
 -- Description: Oracle Process Manufacturing (OPM) formula where-used: lists which formulas consume a given ingredient item, with the ingredient quantity and UOM, the using formula and its status, the formula's primary product, and how many recipes use that formula. Supports ingredient impact analysis for substitution, supplier change and allergen / regulatory recall.
--- Excel Examle Output: https://www.enginatics.com/example/opm-formula-where-used/
+-- Excel Example Output: https://www.enginatics.com/example/opm-formula-where-used/
 -- Library Link: https://www.enginatics.com/reports/opm-formula-where-used/
 -- Run Report: https://demo.enginatics.com/
 

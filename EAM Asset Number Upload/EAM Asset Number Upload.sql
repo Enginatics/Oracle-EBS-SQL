@@ -1,12 +1,13 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: EAM Asset Number Upload
--- Description: Create and update Oracle Enterprise Asset Management asset numbers (maintenance assets).
--- Excel Examle Output: https://www.enginatics.com/example/eam-asset-number-upload/
+-- Description: Create and update Oracle Enterprise Asset Management asset numbers (maintenance assets). Parent Asset Number places the asset in the asset hierarchy; clearing it on an existing asset removes the parent. Parent Asset Serial Number and Parent Asset Id follow the parent asset number and are read only.
+-- An existing asset is identified by its Asset Id, so its Asset Number can be changed. Current Location Address lists the addresses of the TCA locations, as the Update Asset page does; an address that exists more than once carries the location id in brackets.
+-- Excel Example Output: https://www.enginatics.com/example/eam-asset-number-upload/
 -- Library Link: https://www.enginatics.com/reports/eam-asset-number-upload/
 -- Run Report: https://demo.enginatics.com/
 

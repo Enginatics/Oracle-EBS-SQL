@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: FND Applications
 -- Description: Shows all applications, their installation status, correponding database schema, application top name and audit status
--- Excel Examle Output: https://www.enginatics.com/example/fnd-applications/
+-- Excel Example Output: https://www.enginatics.com/example/fnd-applications/
 -- Library Link: https://www.enginatics.com/reports/fnd-applications/
 -- Run Report: https://demo.enginatics.com/
 

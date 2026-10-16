@@ -1,49 +1,40 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: AR Cash Receipt Upload
 -- Description: Upload to create AR cash receipts and optionally apply them to open invoices.
-
-Each row creates one receipt (if it does not already exist) and optionally applies it to one invoice.
-To apply one receipt to multiple invoices, enter multiple rows with the same Receipt Number - the receipt is created only once on the first row, and each subsequent row generates one application against the existing receipt.
-
-Receipt Application options:
-- Leave Invoice Number blank: receipt is created as Unapplied
-- Enter Invoice Number: receipt is applied to that invoice
-- Set Apply on Account = Yes: receipt amount is applied On Account (no specific invoice)
-
-Remittance Bank Account:
-- Defaults to the Primary bank account assigned to the Receipt Method (matching the form behaviour).
-- To use a non-primary bank account, pick it from the Remittance Bank Account LOV. The Override flag is auto-defaulted to Yes when a non-primary account is chosen.
-- For multi-row uploads against the same Receipt Number, only the bank account on the first row is used; subsequent rows simply apply to the receipt that already exists.
-
-Apply-only against an existing receipt:
-- Enter the Receipt Number of an existing receipt and the application columns (Invoice Number, Amount Applied, etc.). Receipt Method, Receipt Amount, Receipt Date and Currency may be left blank - they are required only when creating a new receipt.
-
-Receipt Information (Descriptive Flexfield):
-- Pick an Attribute Category (your configured DFF context) to expose its segments in the Attribute1..15 columns. Each segment shows only values valid for the chosen context.
-- Column headers rename dynamically to your configured segment labels (via the "AR Cash Receipt DFF Attributes" translation rule).
-- DFF values are written to the receipt header on create. They cannot be modified on an existing receipt via this upload - use the form, or reverse-and-recreate, for header DFF maintenance.
-
-Receipt Type - Standard vs Miscellaneous:
-- Receipt Type defaults to Standard (a customer cash receipt applied to invoices, as described above).
-- Set Receipt Type to Miscellaneous to record non-customer income such as bank interest or refunds. A Miscellaneous receipt requires a Receivables Activity, which supplies the GL accounting automatically - there is no customer and no invoice application.
-- Misc Payment Source is an optional free-text note for Miscellaneous receipts.
-- On a Miscellaneous row the customer and application columns (Customer Name/Number/Site, Invoice Number, Amount Applied, Apply on Account, etc.) must be left blank.
-
-Customer Bank Account:
-- The customer's own bank account that funds the receipt - used by automatic receipt methods such as Direct Debit and EFT. Pick from the bank accounts registered for the customer. Leave blank for ordinary manually entered cash receipts.
-
-Notes Receivable / Bills of Exchange:
-- Issuer Name, Issue Date and Issuer Bank Branch capture the details of a note or bill of exchange. Populate them only for Notes Receivable receipts; leave blank for ordinary cash receipts.
-
-The upload supports the following modes:
-- Create: opens an empty template for entering new receipts
-- Create, Update: downloads existing receipts (with applications) for review or to add further applications
--- Excel Examle Output: https://www.enginatics.com/example/ar-cash-receipt-upload/
+-- Each row creates one receipt (if it does not already exist) and optionally applies it to one invoice.
+-- To apply one receipt to multiple invoices, enter multiple rows with the same Receipt Number - the receipt is created only once on the first row, and each subsequent row generates one application against the existing receipt.
+-- Receipt Application options:
+-- - Leave Invoice Number blank: receipt is created as Unapplied
+-- - Enter Invoice Number: receipt is applied to that invoice
+-- - Set Apply on Account = Yes: receipt amount is applied On Account (no specific invoice)
+-- Remittance Bank Account:
+-- - Defaults to the Primary bank account assigned to the Receipt Method (matching the form behaviour).
+-- - To use a non-primary bank account, pick it from the Remittance Bank Account LOV. The Override flag is auto-defaulted to Yes when a non-primary account is chosen.
+-- - For multi-row uploads against the same Receipt Number, only the bank account on the first row is used; subsequent rows simply apply to the receipt that already exists.
+-- Apply-only against an existing receipt:
+-- - Enter the Receipt Number of an existing receipt and the application columns (Invoice Number, Amount Applied, etc.). Receipt Method, Receipt Amount, Receipt Date and Currency may be left blank - they are required only when creating a new receipt.
+-- Receipt Information (Descriptive Flexfield):
+-- - Pick an Attribute Category (your configured DFF context) to expose its segments in the Attribute1..15 columns. Each segment shows only values valid for the chosen context.
+-- - Column headers rename dynamically to your configured segment labels (via the "AR Cash Receipt DFF Attributes" translation rule).
+-- - DFF values are written to the receipt header on create. They cannot be modified on an existing receipt via this upload - use the form, or reverse-and-recreate, for header DFF maintenance.
+-- Receipt Type - Standard vs Miscellaneous:
+-- - Receipt Type defaults to Standard (a customer cash receipt applied to invoices, as described above).
+-- - Set Receipt Type to Miscellaneous to record non-customer income such as bank interest or refunds. A Miscellaneous receipt requires a Receivables Activity, which supplies the GL accounting automatically - there is no customer and no invoice application.
+-- - Misc Payment Source is an optional free-text note for Miscellaneous receipts.
+-- - On a Miscellaneous row the customer and application columns (Customer Name/Number/Site, Invoice Number, Amount Applied, Apply on Account, etc.) must be left blank.
+-- Customer Bank Account:
+-- - The customer's own bank account that funds the receipt - used by automatic receipt methods such as Direct Debit and EFT. Pick from the bank accounts registered for the customer. Leave blank for ordinary manually entered cash receipts.
+-- Notes Receivable / Bills of Exchange:
+-- - Issuer Name, Issue Date and Issuer Bank Branch capture the details of a note or bill of exchange. Populate them only for Notes Receivable receipts; leave blank for ordinary cash receipts.
+-- The upload supports the following modes:
+-- - Create: opens an empty template for entering new receipts
+-- - Create, Update: downloads existing receipts (with applications) for review or to add further applications
+-- Excel Example Output: https://www.enginatics.com/example/ar-cash-receipt-upload/
 -- Library Link: https://www.enginatics.com/reports/ar-cash-receipt-upload/
 -- Run Report: https://demo.enginatics.com/
 

@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CST Period Close Subinventory Value
 -- Description: Summary report that lists selected operating units with corresponding sub inventory code and Inventory value on a historic basis.
--- Excel Examle Output: https://www.enginatics.com/example/cst-period-close-subinventory-value/
+-- Excel Example Output: https://www.enginatics.com/example/cst-period-close-subinventory-value/
 -- Library Link: https://www.enginatics.com/reports/cst-period-close-subinventory-value/
 -- Run Report: https://demo.enginatics.com/
 

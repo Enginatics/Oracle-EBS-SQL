@@ -1,26 +1,25 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: Blitz Report Custom Reports Converter
 -- Description: Lists Oracle EBS concurrent programs that are candidates for conversion to Blitz Report - RDF reports, BI Publisher reports, and other data-extract concurrent programs - with usage statistics. Select the programs to convert with the Convert Program column, then upload the file. The upload submits a host concurrent program that gathers each selected program's source artifacts (.rdf, .ldt, data definition, template, related packages and custom dependencies) into a single zip file for analysis by Enginatics.
-
-With Include Custom Views set to Yes, the list additionally shows custom database views whose name starts with the Custom Object Prefix. Selecting a view gathers its definition and its custom dependency closure into the same zip - use this to extract the views that Discoverer-migrated or other custom reports are based on.
-
-On instances running NoetixViews, the NOETIX_SYS query views are listed as program type Noetix View. Selecting one gathers the complete view definition closure - the view, its NOETIX_SYS helper views and packages, and the security wrapper views - into a noetix subfolder of the zip, as input for migrating Noetix based reporting to Blitz Report. Excel4apps Reports Wand programs show as program type Excel4apps and gather their report SQL.
--- Excel Examle Output: https://www.enginatics.com/example/blitz-report-custom-reports-converter/
+-- With Select All Programs set to Yes, every listed row is downloaded with Convert Program set to Yes and already flagged for upload, so after filtering the list you only need to set Convert Program to No on the programs you do not want and upload the file.
+-- With Include Custom Views set to Yes, the list additionally shows custom database views whose name starts with the Custom Object Prefix. Selecting a view gathers its definition and its custom dependency closure into the same zip - use this to extract the views that Discoverer-migrated or other custom reports are based on.
+-- With Include Noetix Views set to Yes on an instance running NoetixViews, the NOETIXSYS query views are listed as program type Noetix View. Selecting one gathers the complete view definition closure - the view, its NOETIXSYS helper views and packages, and the security wrapper views - into a noetix subfolder of the zip, as input for migrating Noetix based reporting to Blitz Report. Excel4apps Reports Wand programs show as program type Excel4apps and gather their report SQL.
+-- Excel Example Output: https://www.enginatics.com/example/blitz-report-custom-reports-converter/
 -- Library Link: https://www.enginatics.com/reports/blitz-report-custom-reports-converter/
 -- Run Report: https://demo.enginatics.com/
 
 select
-null action_,
-null status_,
-null message_,
+case when :select_all_programs='Y' then xxen_upload.action_meaning(xxen_upload.action_update) end action_,
+case when :select_all_programs='Y' then xxen_upload.status_meaning(xxen_upload.status_new) end status_,
+case when :select_all_programs='Y' then xxen_util.description('U_EXCEL_MSG_VALIDATION_PENDING','XXEN_REPORT_TRANSLATIONS',0) end message_,
 cast(null as varchar2(240)) gather_status,
 null modified_columns_,
-cast(null as varchar2(10)) convert_program,
+xxen_util.yes(:select_all_programs) convert_program,
 x.application,
 x.program,
 x.short_name,
@@ -140,6 +139,7 @@ from
 dba_views dv,
 dba_objects do
 where
+:include_noetix_views='Y' and
 dv.owner='NOETIX_SYS' and
 dv.view_name not like 'XXK%' and
 dv.view_name not like '%#' and

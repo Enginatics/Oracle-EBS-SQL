@@ -1,19 +1,16 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: GL Oracle FSG Converter 11g
--- Description: ** This report is used by the GL Financial Statement and Drilldown report, to migrate financial statement reports from Oracle FSG. **
-
-The GL Oracle FSG Converter is used for migration of financial statement reports from Oracle Financial Statement Generator (FSG) into the GL Financial Statement and Drilldown (FSG) report. This converter simplifies the process of transferring the existing Oracle FSG reports, allowing users to leverage advanced reporting and drilldown capabilities with minimal setup.
-
-This version supports DB versions 11g and 12c. To apply the converter, the profile 'Blitz FSG Oracle to Blitz Report Converter' must be updated with the relevant report name based on the db version.
-
-For a quick demonstration of GL Financial Statement and Drilldown (FSG), refer to our YouTube video.
-<a href="https://youtu.be/dsRWXT2bem8?si=bA8cAxuXjfrMI-SI" rel="nofollow" target="_blank">https://youtu.be/dsRWXT2bem8?si=bA8cAxuXjfrMI-SI</a>
--- Excel Examle Output: https://www.enginatics.com/example/gl-oracle-fsg-converter-11g/
+-- Description: This report is used by the GL Financial Statement and Drilldown report, to migrate financial statement reports from Oracle FSG.
+-- The GL Oracle FSG Converter is used for migration of financial statement reports from Oracle Financial Statement Generator (FSG) into the GL Financial Statement and Drilldown (FSG) report. This converter simplifies the process of transferring the existing Oracle FSG reports, allowing users to leverage advanced reporting and drilldown capabilities with minimal setup.
+-- This version supports DB versions 11g and 12c. To apply the converter, the profile 'Blitz FSG Oracle to Blitz Report Converter' must be updated with the relevant report name based on the db version.
+-- For a quick demonstration of GL Financial Statement and Drilldown (FSG), refer to our YouTube video.
+-- https://youtu.be/dsRWXT2bem8?si=bA8cAxuXjfrMI-SI
+-- Excel Example Output: https://www.enginatics.com/example/gl-oracle-fsg-converter-11g/
 -- Library Link: https://www.enginatics.com/reports/gl-oracle-fsg-converter-11g/
 -- Run Report: https://demo.enginatics.com/
 

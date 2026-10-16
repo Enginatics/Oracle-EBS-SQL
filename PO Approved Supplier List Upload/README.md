@@ -1,14 +1,17 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'PO Approved Supplier List Upload | Oracle EBS SQL Report'
 description: 'This upload supports the creation and update of Approved Supplier Lists (ASL) in Oracle Purchasing. The upload supports creation/update/deletion of the…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, Approved, Supplier, List, mtl_categories_tl, po_approved_supplier_list, mtl_manufacturers'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Upload, Approved, Supplier, List, mtl_categories_tl, po_approved_supplier_list, mtl_manufacturers'
 permalink: /PO%20Approved%20Supplier%20List%20Upload/
+report_name: 'PO Approved Supplier List Upload'
+report_web_name: po-approved-supplier-list-upload
 ---
 
 # PO Approved Supplier List Upload – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/po-approved-supplier-list-upload/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/po-approved-supplier-list-upload/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-approved-supplier-list-upload) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-approved-supplier-list-upload).
 
 ## Overview
 This upload supports the creation and update of Approved Supplier Lists (ASL) in Oracle Purchasing.
@@ -44,27 +47,31 @@ i.e. You can upload an excel row containing a Source Document, Authorization, Ca
   Download Capacities
   Download Tolerances
 
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-approved-supplier-list-upload) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
+
 ## Report Parameters
 Upload Mode, Owning Organization Code, Type, Item, Item From, Item To, Commodity, Commodity From, Commodity To, Global ASL, Using Organization Code, Missing Release Method, Business Type, Operating Unit, Supplier, Supplier Number, Supplier Site, Manufacturer, ASL Status, ASL Disabled, Source Document, Download Authorizations, Download Capacities, Download Tolerances
 
 ## Oracle EBS Tables Used
-[mtl_categories_tl](https://www.enginatics.com/library/?pg=1&find=mtl_categories_tl), [po_approved_supplier_list](https://www.enginatics.com/library/?pg=1&find=po_approved_supplier_list), [mtl_manufacturers](https://www.enginatics.com/library/?pg=1&find=mtl_manufacturers), [po_asl_statuses](https://www.enginatics.com/library/?pg=1&find=po_asl_statuses), [per_people_x](https://www.enginatics.com/library/?pg=1&find=per_people_x), [chv_bucket_patterns](https://www.enginatics.com/library/?pg=1&find=chv_bucket_patterns), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl), [mtl_categories_b_kfv](https://www.enginatics.com/library/?pg=1&find=mtl_categories_b_kfv), [ap_suppliers](https://www.enginatics.com/library/?pg=1&find=ap_suppliers), [ap_supplier_sites](https://www.enginatics.com/library/?pg=1&find=ap_supplier_sites), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters), [hr_all_organization_units_tl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_tl), [po_asl_attributes](https://www.enginatics.com/library/?pg=1&find=po_asl_attributes), [po_asl_documents](https://www.enginatics.com/library/?pg=1&find=po_asl_documents), [po_headers_all](https://www.enginatics.com/library/?pg=1&find=po_headers_all), [po_lines_all](https://www.enginatics.com/library/?pg=1&find=po_lines_all), [org_access_view](https://www.enginatics.com/library/?pg=1&find=org_access_view)
+[mtl_categories_tl](https://www.enginatics.com/library/?pg=1&find=mtl_categories_tl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-approved-supplier-list-upload), [po_approved_supplier_list](https://www.enginatics.com/library/?pg=1&find=po_approved_supplier_list&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-approved-supplier-list-upload), [mtl_manufacturers](https://www.enginatics.com/library/?pg=1&find=mtl_manufacturers&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-approved-supplier-list-upload), [po_asl_statuses](https://www.enginatics.com/library/?pg=1&find=po_asl_statuses&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-approved-supplier-list-upload), [per_people_x](https://www.enginatics.com/library/?pg=1&find=per_people_x&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-approved-supplier-list-upload), [chv_bucket_patterns](https://www.enginatics.com/library/?pg=1&find=chv_bucket_patterns&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-approved-supplier-list-upload), [po_asl_attributes](https://www.enginatics.com/library/?pg=1&find=po_asl_attributes&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-approved-supplier-list-upload), [po_asl_documents](https://www.enginatics.com/library/?pg=1&find=po_asl_documents&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-approved-supplier-list-upload), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-approved-supplier-list-upload), [mtl_categories_b_kfv](https://www.enginatics.com/library/?pg=1&find=mtl_categories_b_kfv&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-approved-supplier-list-upload), [ap_suppliers](https://www.enginatics.com/library/?pg=1&find=ap_suppliers&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-approved-supplier-list-upload), [ap_supplier_sites](https://www.enginatics.com/library/?pg=1&find=ap_supplier_sites&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-approved-supplier-list-upload), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-approved-supplier-list-upload), [hr_all_organization_units_tl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_tl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-approved-supplier-list-upload), [po_headers_all](https://www.enginatics.com/library/?pg=1&find=po_headers_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-approved-supplier-list-upload), [po_lines_all](https://www.enginatics.com/library/?pg=1&find=po_lines_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-approved-supplier-list-upload), [org_access_view](https://www.enginatics.com/library/?pg=1&find=org_access_view&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-approved-supplier-list-upload), [chv_authorizations](https://www.enginatics.com/library/?pg=1&find=chv_authorizations&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-approved-supplier-list-upload), [po_supplier_item_capacity](https://www.enginatics.com/library/?pg=1&find=po_supplier_item_capacity&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-approved-supplier-list-upload), [po_supplier_item_tolerance](https://www.enginatics.com/library/?pg=1&find=po_supplier_item_tolerance&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-approved-supplier-list-upload)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Upload](https://www.enginatics.com/library/?pg=1&category[]=Upload)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-approved-supplier-list-upload), [R12 only](https://www.enginatics.com/library/?pg=1&category%5B%5D=R12%20only&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-approved-supplier-list-upload), [Upload](https://www.enginatics.com/library/?pg=1&category%5B%5D=Upload&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-approved-supplier-list-upload)
 
-
+## Related Reports
+[PO Approved Supplier List](/PO%20Approved%20Supplier%20List/ "PO Approved Supplier List Oracle EBS SQL Report"), [INV Items](/INV%20Items/ "INV Items Oracle EBS SQL Report"), [INV Item Upload](/INV%20Item%20Upload/ "INV Item Upload Oracle EBS SQL Report"), [INV Item Upload 11i](/INV%20Item%20Upload%2011i/ "INV Item Upload 11i Oracle EBS SQL Report"), [PO Printed Planning Schedule](/PO%20Printed%20Planning%20Schedule/ "PO Printed Planning Schedule Oracle EBS SQL Report"), [INV Default Category Sets](/INV%20Default%20Category%20Sets/ "INV Default Category Sets Oracle EBS SQL Report"), [AP Invoices and Lines](/AP%20Invoices%20and%20Lines/ "AP Invoices and Lines Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/PO%20Approved%20Supplier%20List%20Upload/PO%20Approved%20Supplier%20List%20Upload.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-approved-supplier-list-upload) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [](https://www.enginatics.com/example/po-approved-supplier-list-upload/) |
-| Blitz Report™ XML Import | [PO_Approved_Supplier_List_Upload.xml](https://www.enginatics.com/xml/po-approved-supplier-list-upload/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/po-approved-supplier-list-upload/](https://www.enginatics.com/reports/po-approved-supplier-list-upload/) |
+| Excel Example Output | [Example](https://www.enginatics.com/example/po-approved-supplier-list-upload/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-approved-supplier-list-upload) |
+| Blitz Report™ XML Import | [PO_Approved_Supplier_List_Upload.xml](https://www.enginatics.com/xml/po-approved-supplier-list-upload/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-approved-supplier-list-upload) |
+| SQL Source | [PO Approved Supplier List Upload.sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/PO%20Approved%20Supplier%20List%20Upload/PO%20Approved%20Supplier%20List%20Upload.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/po-approved-supplier-list-upload/](https://www.enginatics.com/reports/po-approved-supplier-list-upload/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-approved-supplier-list-upload) |
 
 ## Case Study & Technical Analysis: PO Approved Supplier List Upload Report
 
@@ -131,18 +138,17 @@ Using an API-based upload for complex ASL data is significantly more efficient t
 **3. How does the system handle the update of supplier capacity entries for past dates?**
    As per the `README.md`, capacity entries with a `capacity from/to date` in the past cannot be *updated* by this upload due to standard Oracle API validations. However, it is possible to *delete* a past capacity entry if its `capacity to date` is null or in the future. This highlights the importance of real-time data maintenance.
 
-
 ---
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-approved-supplier-list-upload)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-approved-supplier-list-upload)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-approved-supplier-list-upload)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-approved-supplier-list-upload)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-approved-supplier-list-upload)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-approved-supplier-list-upload)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-approved-supplier-list-upload)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

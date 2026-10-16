@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: MRP Exceptions
 -- Description: Detail report for MRP Exception messages, including item, make or buy, default buyer, planner and exception message to use.
--- Excel Examle Output: https://www.enginatics.com/example/mrp-exceptions/
+-- Excel Example Output: https://www.enginatics.com/example/mrp-exceptions/
 -- Library Link: https://www.enginatics.com/reports/mrp-exceptions/
 -- Run Report: https://demo.enginatics.com/
 

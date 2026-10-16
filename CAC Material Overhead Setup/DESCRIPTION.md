@@ -1,4 +1,3 @@
-
 # Case Study & Technical Analysis: CAC Material Overhead Setup
 
 ## Executive Summary

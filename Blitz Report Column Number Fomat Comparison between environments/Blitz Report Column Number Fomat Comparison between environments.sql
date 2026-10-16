@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: Blitz Report Column Number Fomat Comparison between environments
 -- Description: Shows differences in Blitz Report column translations between the local and a remote database server
--- Excel Examle Output: https://www.enginatics.com/example/blitz-report-column-number-fomat-comparison-between-environments/
+-- Excel Example Output: https://www.enginatics.com/example/blitz-report-column-number-fomat-comparison-between-environments/
 -- Library Link: https://www.enginatics.com/reports/blitz-report-column-number-fomat-comparison-between-environments/
 -- Run Report: https://demo.enginatics.com/
 

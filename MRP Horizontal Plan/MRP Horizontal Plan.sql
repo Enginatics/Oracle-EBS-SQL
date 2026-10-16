@@ -1,18 +1,17 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: MRP Horizontal Plan
 -- Description: MRP: Horizontal Plan from the Planners Workbench.
-- The report can be run for multiple organizations and items within a selected plan
-- The report can be used to explode BOMS and display the HP for all components 
-  within the BOM
-- Select a template to choose to either display the HP by individual components, or by 
-  End Assemblies, Components.
-
--- Excel Examle Output: https://www.enginatics.com/example/mrp-horizontal-plan/
+-- - The report can be run for multiple organizations and items within a selected plan
+-- - The report can be used to explode BOMS and display the HP for all components
+-- within the BOM
+-- - Select a template to choose to either display the HP by individual components, or by
+-- End Assemblies, Components.
+-- Excel Example Output: https://www.enginatics.com/example/mrp-horizontal-plan/
 -- Library Link: https://www.enginatics.com/reports/mrp-horizontal-plan/
 -- Run Report: https://demo.enginatics.com/
 

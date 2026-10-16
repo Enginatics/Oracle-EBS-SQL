@@ -1,14 +1,14 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PER Payroll Element Entry Upload
 -- Description: PER Payroll Element Entry Upload
-==================
-Use this upload to upload new or update existing PER Payroll Element Entries, or to enter adjustment entries.
--- Excel Examle Output: https://www.enginatics.com/example/per-payroll-element-entry-upload/
+-- ==================
+-- Use this upload to upload new or update existing PER Payroll Element Entries, or to enter adjustment entries.
+-- Excel Example Output: https://www.enginatics.com/example/per-payroll-element-entry-upload/
 -- Library Link: https://www.enginatics.com/reports/per-payroll-element-entry-upload/
 -- Run Report: https://demo.enginatics.com/
 

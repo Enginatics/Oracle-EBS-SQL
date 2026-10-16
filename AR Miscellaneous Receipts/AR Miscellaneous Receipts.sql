@@ -1,16 +1,16 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: AR Miscellaneous Receipts
 -- Description: Receivables Miscellaneous Receipts
-Imported from Concurrent Program
-Application: Receivables
-Source: Miscellaneous Receipts Register
-Short Name: ARRXMTRG
--- Excel Examle Output: https://www.enginatics.com/example/ar-miscellaneous-receipts/
+-- Imported from Concurrent Program
+-- Application: Receivables
+-- Source: Miscellaneous Receipts Register
+-- Short Name: ARRXMTRG
+-- Excel Example Output: https://www.enginatics.com/example/ar-miscellaneous-receipts/
 -- Library Link: https://www.enginatics.com/reports/ar-miscellaneous-receipts/
 -- Run Report: https://demo.enginatics.com/
 

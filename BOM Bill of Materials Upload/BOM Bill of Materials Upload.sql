@@ -1,20 +1,19 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: BOM Bill of Materials Upload
 -- Description: Report: BOM Bill of Materials Upload
-Description: 
-This upload can be used to create and/or update existing standard BOMs, including
-- BOM Header
-- BOM Components
-- BOM Component Substitutes
-
-The functionality supports the creation and update of Alternate Bills. 
-The functionality does not support the creation and update of Common Bills.
--- Excel Examle Output: https://www.enginatics.com/example/bom-bill-of-materials-upload/
+-- Description:
+-- This upload can be used to create and/or update existing standard BOMs, including
+-- - BOM Header
+-- - BOM Components
+-- - BOM Component Substitutes
+-- The functionality supports the creation and update of Alternate Bills.
+-- The functionality does not support the creation and update of Common Bills.
+-- Excel Example Output: https://www.enginatics.com/example/bom-bill-of-materials-upload/
 -- Library Link: https://www.enginatics.com/reports/bom-bill-of-materials-upload/
 -- Run Report: https://demo.enginatics.com/
 

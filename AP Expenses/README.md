@@ -1,40 +1,51 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'AP Expenses | Oracle EBS SQL Report'
 description: 'Detail AP expense report listing corresponding AP invoices with status, line details, expense type and expense justification. Including projects task…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Expenses, per_people_x, ap_invoice_payments_all, ap_checks_all'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Payables, Enginatics, R12 only, Expenses, per_people_x, ap_invoice_payments_all, ap_checks_all'
 permalink: /AP%20Expenses/
+report_name: 'AP Expenses'
+report_web_name: ap-expenses
+module: 'Payables'
+module_url: /modules/payables/
 ---
 
 # AP Expenses – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/ap-expenses/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/ap-expenses/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-expenses) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-expenses).
+**Oracle EBS module:** [Payables](/modules/payables/ "Oracle EBS Payables reports") · [all Payables reports](/modules/payables/)  
 
 ## Overview
 Detail AP expense report listing corresponding AP invoices with status, line details, expense type and expense justification. Including projects task related expenses.
+
+When India Localization is installed, the following GST columns are also included: CGST Amount, SGST Amount, IGST Amount, Custom Amount, Unclassified Tax Amount, Taxable Value, HSN SAC Code, CGST Rate, SGST Rate, IGST Rate, GST Supplier Registration No, GST Registration No, GST PAN No, GST TAN No.
+
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-expenses) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 
 ## Report Parameters
 Ledger, Operating Unit, Expense Status, Report Submitted Date From, Report Submitted Date To, Employee Name, Expense Report Number, Auditor Name, Audit Reason, Audit Type, Source, Prompt, Show Lines, Show per diem details, DFF Display
 
 ## Oracle EBS Tables Used
-[per_people_x](https://www.enginatics.com/library/?pg=1&find=per_people_x), [ap_invoice_payments_all](https://www.enginatics.com/library/?pg=1&find=ap_invoice_payments_all), [ap_checks_all](https://www.enginatics.com/library/?pg=1&find=ap_checks_all), [gl_ledgers](https://www.enginatics.com/library/?pg=1&find=gl_ledgers), [hr_operating_units](https://www.enginatics.com/library/?pg=1&find=hr_operating_units), [ap_expense_report_headers_all](https://www.enginatics.com/library/?pg=1&find=ap_expense_report_headers_all), [gl_code_combinations_kfv](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations_kfv), [ap_aud_queues](https://www.enginatics.com/library/?pg=1&find=ap_aud_queues), [ap_suppliers](https://www.enginatics.com/library/?pg=1&find=ap_suppliers), [ap_invoices_all](https://www.enginatics.com/library/?pg=1&find=ap_invoices_all), [ap_expense_report_lines_all](https://www.enginatics.com/library/?pg=1&find=ap_expense_report_lines_all), [ap_expense_report_params_all](https://www.enginatics.com/library/?pg=1&find=ap_expense_report_params_all), [&per_diem_table](https://www.enginatics.com/library/?pg=1&find=&per_diem_table), [gms_awards_all](https://www.enginatics.com/library/?pg=1&find=gms_awards_all)
+[per_people_x](https://www.enginatics.com/library/?pg=1&find=per_people_x&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-expenses), [ap_invoice_payments_all](https://www.enginatics.com/library/?pg=1&find=ap_invoice_payments_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-expenses), [ap_checks_all](https://www.enginatics.com/library/?pg=1&find=ap_checks_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-expenses), [gl_ledgers](https://www.enginatics.com/library/?pg=1&find=gl_ledgers&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-expenses), [hr_operating_units](https://www.enginatics.com/library/?pg=1&find=hr_operating_units&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-expenses), [ap_expense_report_headers_all](https://www.enginatics.com/library/?pg=1&find=ap_expense_report_headers_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-expenses), [gl_code_combinations_kfv](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations_kfv&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-expenses), [ap_aud_queues](https://www.enginatics.com/library/?pg=1&find=ap_aud_queues&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-expenses), [ap_suppliers](https://www.enginatics.com/library/?pg=1&find=ap_suppliers&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-expenses), [ap_invoices_all](https://www.enginatics.com/library/?pg=1&find=ap_invoices_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-expenses), [ap_expense_report_lines_all](https://www.enginatics.com/library/?pg=1&find=ap_expense_report_lines_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-expenses), [ap_expense_report_params_all](https://www.enginatics.com/library/?pg=1&find=ap_expense_report_params_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-expenses), [ap_exp_report_dists_all](https://www.enginatics.com/library/?pg=1&find=ap_exp_report_dists_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-expenses), [gms_awards_all](https://www.enginatics.com/library/?pg=1&find=gms_awards_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-expenses)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-expenses), [R12 only](https://www.enginatics.com/library/?pg=1&category%5B%5D=R12%20only&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-expenses)
 
 ## Related Reports
 [GL Account Analysis](/GL%20Account%20Analysis/ "GL Account Analysis Oracle EBS SQL Report"), [GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report"), [AP Invoices and Lines](/AP%20Invoices%20and%20Lines/ "AP Invoices and Lines Oracle EBS SQL Report"), [GL Account Analysis (Drilldown) (with inventory and WIP)](/GL%20Account%20Analysis%20%28Drilldown%29%20%28with%20inventory%20and%20WIP%29/ "GL Account Analysis (Drilldown) (with inventory and WIP) Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/AP%20Expenses/AP%20Expenses.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-expenses) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [AP Expenses 12-Sep-2025 212747.xlsx](https://www.enginatics.com/example/ap-expenses/) |
-| Blitz Report™ XML Import | [AP_Expenses.xml](https://www.enginatics.com/xml/ap-expenses/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/ap-expenses/](https://www.enginatics.com/reports/ap-expenses/) |
+| Excel Example Output | [AP Expenses 12-Sep-2025 212747.xlsx](https://www.enginatics.com/example/ap-expenses/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-expenses) |
+| Blitz Report™ XML Import | [AP_Expenses.xml](https://www.enginatics.com/xml/ap-expenses/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-expenses) |
+| SQL Source | [AP Expenses.sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/AP%20Expenses/AP%20Expenses.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/ap-expenses/](https://www.enginatics.com/reports/ap-expenses/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-expenses) |
 
 ## Case Study & Technical Analysis: AP Expenses Report
 
@@ -96,18 +107,17 @@ A: Yes, if the credit card transactions are imported into Oracle Internet Expens
 **Q: How do I see the project task associated with an expense?**
 A: The report includes columns for Project and Task. Ensure the "Show Lines" parameter is enabled to see these details at the line level.
 
-
 ---
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-expenses)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-expenses)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-expenses)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-expenses)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-expenses)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-expenses)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-expenses)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

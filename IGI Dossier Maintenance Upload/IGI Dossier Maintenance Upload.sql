@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: IGI Dossier Maintenance Upload
 -- Description: Upload to create and maintain dossier transactions (budget transfers) for Oracle Public Sector Financials International (IGI). Supports header creation with source and destination budget lines using the seeded IGI Dossier Maintenance APIs.
--- Excel Examle Output: https://www.enginatics.com/example/igi-dossier-maintenance-upload/
+-- Excel Example Output: https://www.enginatics.com/example/igi-dossier-maintenance-upload/
 -- Library Link: https://www.enginatics.com/reports/igi-dossier-maintenance-upload/
 -- Run Report: https://demo.enginatics.com/
 

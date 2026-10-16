@@ -1,26 +1,19 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: INV Subinventory Upload
 -- Description: Create and update Subinventories across accessible inventory organizations.
-
-Accounts and Default Cost Group are tightly linked; the behavior depends on the organization's configuration:
-
-- WMS=No + Standard cost method (with no on-hand or transaction history): the accounts drive the Cost Group. Enter any valid GL detail accounts and the upload auto-resolves the Cost Group — switching to an existing Cost Group whose 7 accounts match, or creating a new one when none matches. The Cost Group action taken is reported in the success message.
-
-- WMS=Yes (any cost method): the Cost Group drives the accounts. Selecting a Cost Group sets all 7 accounts (Material, Outside Processing, Material Overhead, Overhead, Resource, Expense, Encumbrance) to its assigned values. Changing the Cost Group on an existing Subinventory automatically switches all 7 accounts, including clearing accounts that are NULL on the new Cost Group.
-
-- WMS=No + (non-Standard cost method OR the subinventory has on-hand/transaction history): the Cost Group is fixed (existing value on Update, organization default on Create) and the accounts follow it.
-
-All account LOVs restrict to enabled detail (non-summary) GL accounts in the organization's chart of accounts. The Cost Group LOV likewise restricts to selectable Cost Groups per the rules above.
-
-Material Status changes require Oracle's electronic signature workflow when ERES is enabled — those changes must be made via the Subinventories form to preserve the e-signature audit trail.
-
-There is no Delete option — Subinventories can only be inactivated (set Inactive On to a past date).
--- Excel Examle Output: https://www.enginatics.com/example/inv-subinventory-upload/
+-- Accounts and Default Cost Group are tightly linked; the behavior depends on the organization's configuration:
+-- - WMS=No + Standard cost method (with no on-hand or transaction history): the accounts drive the Cost Group. Enter any valid GL detail accounts and the upload auto-resolves the Cost Group — switching to an existing Cost Group whose 7 accounts match, or creating a new one when none matches. The Cost Group action taken is reported in the success message.
+-- - WMS=Yes (any cost method): the Cost Group drives the accounts. Selecting a Cost Group sets all 7 accounts (Material, Outside Processing, Material Overhead, Overhead, Resource, Expense, Encumbrance) to its assigned values. Changing the Cost Group on an existing Subinventory automatically switches all 7 accounts, including clearing accounts that are NULL on the new Cost Group.
+-- - WMS=No + (non-Standard cost method OR the subinventory has on-hand/transaction history): the Cost Group is fixed (existing value on Update, organization default on Create) and the accounts follow it.
+-- All account LOVs restrict to enabled detail (non-summary) GL accounts in the organization's chart of accounts. The Cost Group LOV likewise restricts to selectable Cost Groups per the rules above.
+-- Material Status changes require Oracle's electronic signature workflow when ERES is enabled — those changes must be made via the Subinventories form to preserve the e-signature audit trail.
+-- There is no Delete option — Subinventories can only be inactivated (set Inactive On to a past date).
+-- Excel Example Output: https://www.enginatics.com/example/inv-subinventory-upload/
 -- Library Link: https://www.enginatics.com/reports/inv-subinventory-upload/
 -- Run Report: https://demo.enginatics.com/
 

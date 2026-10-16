@@ -1,33 +1,28 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: QP Modifier Details
 -- Description: Imported from BI Publisher
-Description: Modifier Details Report for QP
-Application: Advanced Pricing
-Source: Modifier Details (XML)
-Short Name: QPXPRMLS_XML
-DB package: QP_QPXPRMLS_XMLP_PKG
-
-he Modifier Details (columns) are repeated across all rows pertaining to the Modifier
-The List Line Details (columns) are repeated across all rows pertaining to the List Line
-
-For a given modifier the row sequence is:
--  Modifier Level Qualifiers (sorted by qualifier group, qualifier grouping number)
-- Modifier List Lines (sorted by list line number)
-
-For each Modifier List the row sequence is:
-- List Line record type
-- List Line - Qualifiers (sorted by qualifier group, qualifier grouping number)
-- List Line - Price Breaks
-- List Line - Pricing Attributes 
-
-You can filter on the Record Type column to restrict the data based on what you want to review (e.g just the Modifier Qualifiers, or just the Modifier Lines, or just the Line Level Qualifiers etc).
-
--- Excel Examle Output: https://www.enginatics.com/example/qp-modifier-details/
+-- Description: Modifier Details Report for QP
+-- Application: Advanced Pricing
+-- Source: Modifier Details (XML)
+-- Short Name: QPXPRMLSXML
+-- DB package: QPQPXPRMLSXMLPPKG
+-- he Modifier Details (columns) are repeated across all rows pertaining to the Modifier
+-- The List Line Details (columns) are repeated across all rows pertaining to the List Line
+-- For a given modifier the row sequence is:
+-- - Modifier Level Qualifiers (sorted by qualifier group, qualifier grouping number)
+-- - Modifier List Lines (sorted by list line number)
+-- For each Modifier List the row sequence is:
+-- - List Line record type
+-- - List Line - Qualifiers (sorted by qualifier group, qualifier grouping number)
+-- - List Line - Price Breaks
+-- - List Line - Pricing Attributes
+-- You can filter on the Record Type column to restrict the data based on what you want to review (e.g just the Modifier Qualifiers, or just the Modifier Lines, or just the Line Level Qualifiers etc).
+-- Excel Example Output: https://www.enginatics.com/example/qp-modifier-details/
 -- Library Link: https://www.enginatics.com/reports/qp-modifier-details/
 -- Run Report: https://demo.enginatics.com/
 

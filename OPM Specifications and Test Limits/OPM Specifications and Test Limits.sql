@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: OPM Specifications and Test Limits
 -- Description: Oracle Process Manufacturing (OPM) Quality specifications and test limits: every GMD specification with its version and status, the item and grade it applies to, and each specification test's minimum, target and maximum limits, UOM, certificate-of-analysis print flag and report precision. The master reference for an organization's quality standards.
--- Excel Examle Output: https://www.enginatics.com/example/opm-specifications-and-test-limits/
+-- Excel Example Output: https://www.enginatics.com/example/opm-specifications-and-test-limits/
 -- Library Link: https://www.enginatics.com/reports/opm-specifications-and-test-limits/
 -- Run Report: https://demo.enginatics.com/
 

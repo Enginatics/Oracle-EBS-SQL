@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: Blitz Report Parameter DFF Table Validation
--- Description: Shows any parameters using the xxen_util.dff_columns function, which reference an incorrect DFF table name.
--- Excel Examle Output: https://www.enginatics.com/example/blitz-report-parameter-dff-table-validation/
+-- Description: Shows any parameters using the xxenutil.dffcolumns function, which reference an incorrect DFF table name.
+-- Excel Example Output: https://www.enginatics.com/example/blitz-report-parameter-dff-table-validation/
 -- Library Link: https://www.enginatics.com/reports/blitz-report-parameter-dff-table-validation/
 -- Run Report: https://demo.enginatics.com/
 

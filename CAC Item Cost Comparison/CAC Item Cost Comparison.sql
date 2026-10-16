@@ -1,65 +1,62 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Item Cost Comparison
--- Description: Report to compare the item costs from two cost types in any two inventory orgs, converting the Org Code 1 (Source Org) into the currency of Org Code 2 (To Org).  Put the smallest cost type into Cost Type 1, as the values for cost type 1 are always reported even if not in cost type 2.  Note that the Source Org and the Compared To Org default from the inventory organization as set for your session.
-
-/* +=============================================================================+
--- |  Copyright 2006 - 2020 Douglas Volz Consulting, Inc.                        |
--- |  All rights reserved.                                                       | 
--- +=============================================================================+
--- |
--- |  Original Author: Douglas Volz (doug@volzconsulting.com)
--- |
--- |  Parameters:
--- |  p_org_code1            -- The inventory organization that is the source
--- |  p_org_code2            -- The inventory organization that is the target 
--- |  p_cost_type1           -- The source comparison cost type
--- |  p_cost_type2           -- The target comparison cost type
--- |  p_curr_conv_type       -- Conversion conversion type, to convert the Source
--- |                            org, org_code1, into the currency of the To_Org,
--- |                            org_code2
--- |  p_curr_conv_date       -- The currency conversion date, typically a month-end
--- |                            date
--- |  p_min_cost_diff        -- Minimum material cost diff. to show on the report
--- |  p_category_set1        -- The first item category set to report, typically the
--- |                            Cost or Product Line Category Set
--- |  p_category_set2        -- The second item category set to report, typically the
--- |                            Inventory Category Set
--- |
--- |  Description:
--- |  Report to compare the item costs from two cost types in any two inventory orgs,
--- |  converting the Org_Code 1 (Source_Org) into the currency of Org_Code 2 (To_Org).
--- |
--- |  Version Modified on Modified  by   Description
--- |  ======= =========== ============== =========================================
--- |  1.0     02 APR 2006 Douglas Volz   Initial Coding
--- |  1.1     14 Apr 2006 Douglas Volz   Final Coding for client
--- |  1.4     13 JUN 2006 Douglas Volz   Added nvl to all material costs columns
--- |  1.5     02 NOV 2009 Douglas Volz   Changed to compare the item costs for two orgs
--- |                                     across different currencies
--- |  1.6     21 Nov 2016 Douglas Volz   Take out currencies, allow comparison within
--- |                                     the same inventory org but using different
--- |                                     cost types
--- |  1.7     18 Dec 2018 Douglas Volz   Add currencies back in
--- |  1.8     30 Aug 2019 Douglas Volz   Add cost and inventory item categories,
--- |                                     item type and item status.
--- |  1.9     01 Sep 2020 Douglas Volz   Added costs by cost element.
--- |  1.10    11 Sep 2020 Douglas Volz   Added ability to report cost type1 even when
--- |                                     the item is not in cost type1. Made cic2 a
--- |                                     table select to avoid sql outer join errors.
--- |  1.11    24 Oct 2020 Douglas Volz   Fix bug to convert into any currency, not just USD.
--- |  1.12    02 Nov 2020 Douglas Volz   Again, fix to report cost type 1 even when the
--- |                                     item is not in cost type 2.
--- |  1.13    05 Jan 2022 Douglas Volz   Add lot size, shrinkage rate, based on rollup
--- |                                     flags.  Change calc. for percent difference.
-+=============================================================================+*/
-
-
--- Excel Examle Output: https://www.enginatics.com/example/cac-item-cost-comparison/
+-- Description: Report to compare the item costs from two cost types in any two inventory orgs, converting the Org Code 1 (Source Org) into the currency of Org Code 2 (To Org). Put the smallest cost type into Cost Type 1, as the values for cost type 1 are always reported even if not in cost type 2. Note that the Source Org and the Compared To Org default from the inventory organization as set for your session.
+-- / +=============================================================================+
+-- -- | Copyright 2006 - 2020 Douglas Volz Consulting, Inc. |
+-- -- | All rights reserved. |
+-- -- +=============================================================================+
+-- -- |
+-- -- | Original Author: Douglas Volz (doug@volzconsulting.com)
+-- -- |
+-- -- | Parameters:
+-- -- | porgcode1 -- The inventory organization that is the source
+-- -- | porgcode2 -- The inventory organization that is the target
+-- -- | pcosttype1 -- The source comparison cost type
+-- -- | pcosttype2 -- The target comparison cost type
+-- -- | pcurrconvtype -- Conversion conversion type, to convert the Source
+-- -- | org, orgcode1, into the currency of the ToOrg,
+-- -- | orgcode2
+-- -- | pcurrconvdate -- The currency conversion date, typically a month-end
+-- -- | date
+-- -- | pmincostdiff -- Minimum material cost diff. to show on the report
+-- -- | pcategoryset1 -- The first item category set to report, typically the
+-- -- | Cost or Product Line Category Set
+-- -- | pcategoryset2 -- The second item category set to report, typically the
+-- -- | Inventory Category Set
+-- -- |
+-- -- | Description:
+-- -- | Report to compare the item costs from two cost types in any two inventory orgs,
+-- -- | converting the OrgCode 1 (SourceOrg) into the currency of OrgCode 2 (ToOrg).
+-- -- |
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== ============== =========================================
+-- -- | 1.0 02 APR 2006 Douglas Volz Initial Coding
+-- -- | 1.1 14 Apr 2006 Douglas Volz Final Coding for client
+-- -- | 1.4 13 JUN 2006 Douglas Volz Added nvl to all material costs columns
+-- -- | 1.5 02 NOV 2009 Douglas Volz Changed to compare the item costs for two orgs
+-- -- | across different currencies
+-- -- | 1.6 21 Nov 2016 Douglas Volz Take out currencies, allow comparison within
+-- -- | the same inventory org but using different
+-- -- | cost types
+-- -- | 1.7 18 Dec 2018 Douglas Volz Add currencies back in
+-- -- | 1.8 30 Aug 2019 Douglas Volz Add cost and inventory item categories,
+-- -- | item type and item status.
+-- -- | 1.9 01 Sep 2020 Douglas Volz Added costs by cost element.
+-- -- | 1.10 11 Sep 2020 Douglas Volz Added ability to report cost type1 even when
+-- -- | the item is not in cost type1. Made cic2 a
+-- -- | table select to avoid sql outer join errors.
+-- -- | 1.11 24 Oct 2020 Douglas Volz Fix bug to convert into any currency, not just USD.
+-- -- | 1.12 02 Nov 2020 Douglas Volz Again, fix to report cost type 1 even when the
+-- -- | item is not in cost type 2.
+-- -- | 1.13 05 Jan 2022 Douglas Volz Add lot size, shrinkage rate, based on rollup
+-- -- | flags. Change calc. for percent difference.
+-- +=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-item-cost-comparison/
 -- Library Link: https://www.enginatics.com/reports/cac-item-cost-comparison/
 -- Run Report: https://demo.enginatics.com/
 
@@ -134,15 +131,15 @@ select
  -- / decode((nvl(cic1.item_cost,0) * cic1.conversion_rate),0,1, (nvl(cic1.item_cost,0) * cic1.conversion_rate)) * 100,1) Percent
  --  Case
  --  when difference = 0 then 0
- --  when difference = org2 then 100%
- --  when difference = org1 then -100%
- --  else org2 - org1 / org1
+ --  when difference = org1 then 100%
+ --  when org1 = 0 then -100%
+ --  else difference / org1
  case
     when round((nvl(cic1.item_cost,0) * cic1.conversion_rate) - nvl(cic2.item_cost,0),5) = 0 then 0
     when round((nvl(cic1.item_cost,0) * cic1.conversion_rate) - nvl(cic2.item_cost,0),5) = round(nvl(cic1.item_cost,0) * cic1.conversion_rate,5) then 100
-    when round((nvl(cic1.item_cost,0) * cic1.conversion_rate) - nvl(cic2.item_cost,0),5) = round(nvl(cic2.item_cost,0),5) then -100
+    when round(nvl(cic1.item_cost,0) * cic1.conversion_rate,5) = 0 then -100
     else round(round((nvl(cic1.item_cost,0) * cic1.conversion_rate) - nvl(cic2.item_cost,0),5)
-  / decode((nvl(cic1.item_cost,0) * cic1.conversion_rate),0,1, (nvl(cic1.item_cost,0) * cic1.conversion_rate)) * 100,1)
+  / (nvl(cic1.item_cost,0) * cic1.conversion_rate) * 100,1)
  end Percent
  -- End revision for version 1.13
 from

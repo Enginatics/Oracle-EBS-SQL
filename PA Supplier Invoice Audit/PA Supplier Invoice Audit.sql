@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PA Supplier Invoice Audit
 -- Description: AP invoices charged to projects showing vendor, invoice, cost distribution, and GL transfer details for supplier expenditure audit.
--- Excel Examle Output: https://www.enginatics.com/example/pa-supplier-invoice-audit/
+-- Excel Example Output: https://www.enginatics.com/example/pa-supplier-invoice-audit/
 -- Library Link: https://www.enginatics.com/reports/pa-supplier-invoice-audit/
 -- Run Report: https://demo.enginatics.com/
 

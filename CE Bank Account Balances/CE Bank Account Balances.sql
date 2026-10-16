@@ -1,48 +1,42 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CE Bank Account Balances
 -- Description: Application: Cash Management
-Description: Bank Accounts - Balances Report
-
-Provides equivalent functionality to the following standard Oracle Forms/Reports
-- Bank Account Balances OAF Page
-- Bank Account Balance Range Day Report
-- Bank Account Balance Single Date Report
-- Bank Account Balance Actual vs Projected Report
-
-Single (As Of) Date Report
-- Specify the required Date in the As Of Date parameter
-- Specify Yes in the 'Bring Forward Prior Balances' if you want to roll the most recent prior balance entries forward if a balance does not exist on the specified As Of Date
-- Specify No in the  'Bring Forward Prior Balances' if you only want to see the balances that have been entered on the specified As Of Date.
-- Applicable Templates:
-  Pivot: As of Date Summary by Currency and Account
-  Detail As of Date/Range Date Report  
-
-Range Day Report
-- Specify the required date range in the Balance Date From/To Parameters
-- When run in this mode the report shows the balances entered for every date within the date range.
-- Balances are not rolled forward in this mode.
-- Applicable Templates:
-  Detail As of Date/Range Date Report  
-
-Actual vs Projected Report
-- The report includes actual and projected balances in both As Of Date and Date Range Modes
-- Optionally specify the actual balance type to be compared to the projected balance in the  'Actual vs Projected Balance Type' parameter. When specified, the variance between the actual balance and projected balance will be displayed in the report.
-- Applicable Templates:
-  Pivot: As of Date Summary by Currency and Account
-  Detail As of Date/Range Date Report  
-
-Sources: 
-Bank Account Balance Single Date Report (CEBABSGR)
-Bank Account Balance Range Day Report (CEBABRGR)
-Bank Account Balance Actual vs Projected Report (CEBABAPR)
-DB package:  CE_CEXSTMRR_XMLP_PKG (required to initialize security)
-
--- Excel Examle Output: https://www.enginatics.com/example/ce-bank-account-balances/
+-- Description: Bank Accounts - Balances Report
+-- Provides equivalent functionality to the following standard Oracle Forms/Reports
+-- - Bank Account Balances OAF Page
+-- - Bank Account Balance Range Day Report
+-- - Bank Account Balance Single Date Report
+-- - Bank Account Balance Actual vs Projected Report
+-- Single (As Of) Date Report
+-- - Specify the required Date in the As Of Date parameter
+-- - Specify Yes in the 'Bring Forward Prior Balances' if you want to roll the most recent prior balance entries forward if a balance does not exist on the specified As Of Date
+-- - Specify No in the 'Bring Forward Prior Balances' if you only want to see the balances that have been entered on the specified As Of Date.
+-- - Applicable Templates:
+-- Pivot: As of Date Summary by Currency and Account
+-- Detail As of Date/Range Date Report
+-- Range Day Report
+-- - Specify the required date range in the Balance Date From/To Parameters
+-- - When run in this mode the report shows the balances entered for every date within the date range.
+-- - Balances are not rolled forward in this mode.
+-- - Applicable Templates:
+-- Detail As of Date/Range Date Report
+-- Actual vs Projected Report
+-- - The report includes actual and projected balances in both As Of Date and Date Range Modes
+-- - Optionally specify the actual balance type to be compared to the projected balance in the 'Actual vs Projected Balance Type' parameter. When specified, the variance between the actual balance and projected balance will be displayed in the report.
+-- - Applicable Templates:
+-- Pivot: As of Date Summary by Currency and Account
+-- Detail As of Date/Range Date Report
+-- Sources:
+-- Bank Account Balance Single Date Report (CEBABSGR)
+-- Bank Account Balance Range Day Report (CEBABRGR)
+-- Bank Account Balance Actual vs Projected Report (CEBABAPR)
+-- DB package: CECEXSTMRRXMLPPKG (required to initialize security)
+-- Excel Example Output: https://www.enginatics.com/example/ce-bank-account-balances/
 -- Library Link: https://www.enginatics.com/reports/ce-bank-account-balances/
 -- Run Report: https://demo.enginatics.com/
 

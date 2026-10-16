@@ -1,15 +1,15 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CE Bank Statement Import Execution
 -- Description: Application: Cash Management
-Source: Bank Statement Import Execution Report
-Short Name: CEIMPERR
-DB package: CE_CEXINERR_XMLP_PKG
--- Excel Examle Output: https://www.enginatics.com/example/ce-bank-statement-import-execution/
+-- Source: Bank Statement Import Execution Report
+-- Short Name: CEIMPERR
+-- DB package: CECEXINERRXMLPPKG
+-- Excel Example Output: https://www.enginatics.com/example/ce-bank-statement-import-execution/
 -- Library Link: https://www.enginatics.com/reports/ce-bank-statement-import-execution/
 -- Run Report: https://demo.enginatics.com/
 

@@ -1,13 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: MRP Plan Orders
 -- Description: MRP: Export Supply and Demand Orders from the Planners Workbench.
-
--- Excel Examle Output: https://www.enginatics.com/example/mrp-plan-orders/
+-- Excel Example Output: https://www.enginatics.com/example/mrp-plan-orders/
 -- Library Link: https://www.enginatics.com/reports/mrp-plan-orders/
 -- Run Report: https://demo.enginatics.com/
 

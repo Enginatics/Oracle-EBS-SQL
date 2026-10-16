@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: DIS Migration identify missing EulConditions
 -- Description: This report identifies the missing EUL conditions defined at the folder level.
--- Excel Examle Output: https://www.enginatics.com/example/dis-migration-identify-missing-eulconditions/
+-- Excel Example Output: https://www.enginatics.com/example/dis-migration-identify-missing-eulconditions/
 -- Library Link: https://www.enginatics.com/reports/dis-migration-identify-missing-eulconditions/
 -- Run Report: https://demo.enginatics.com/
 

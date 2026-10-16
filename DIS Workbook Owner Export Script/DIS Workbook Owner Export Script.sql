@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: DIS Workbook Owner Export Script
 -- Description: This export of workbook owners is required to remotely export workbook XMLs on the Enginatics environments for customers requiring support when migrating from Discoverer to Blitz Report.
--- Excel Examle Output: https://www.enginatics.com/example/dis-workbook-owner-export-script/
+-- Excel Example Output: https://www.enginatics.com/example/dis-workbook-owner-export-script/
 -- Library Link: https://www.enginatics.com/reports/dis-workbook-owner-export-script/
 -- Run Report: https://demo.enginatics.com/
 

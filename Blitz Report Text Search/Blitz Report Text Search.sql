@@ -1,14 +1,13 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: Blitz Report Text Search
 -- Description: This report can be used to understand which reports, parameters or LOVs contain a certain SQL Text string, or which reports currently use a specific LOV.
-
-It is used to preview all records that would be changed through the Blitz Report mass change functionality in Setup Window>Tools>Mass Change
--- Excel Examle Output: https://www.enginatics.com/example/blitz-report-text-search/
+-- It is used to preview all records that would be changed through the Blitz Report mass change functionality in Setup Window>Tools>Mass Change
+-- Excel Example Output: https://www.enginatics.com/example/blitz-report-text-search/
 -- Library Link: https://www.enginatics.com/reports/blitz-report-text-search/
 -- Run Report: https://demo.enginatics.com/
 
@@ -51,6 +50,42 @@ where
 1=1 and
 regexp_like(xrv.upload_excel_validation,&regexp_escape(:sql_text)&insensitive) and
 (:not_sql_text is null or not regexp_like(xrv.upload_excel_validation,&regexp_escape(:not_sql_text)&insensitive))
+union all
+select
+xrv.report_name,
+xrv.type_dsp report_type,
+xrv.category,
+'Upload API' record_type,
+xrv.report_name name,
+to_clob(xrv.upload_object) text,
+xxen_util.user_name(xrv.created_by) created_by,
+xxen_util.client_time(xrv.creation_date) creation_date,
+xxen_util.user_name(xrv.last_updated_by) last_updated_by,
+xxen_util.client_time(xrv.last_update_date) last_update_date
+from
+xxen_reports_v xrv
+where
+1=1 and
+regexp_like(xrv.upload_object,&regexp_escape(:sql_text)&insensitive) and
+(:not_sql_text is null or not regexp_like(xrv.upload_object,&regexp_escape(:not_sql_text)&insensitive))
+union all
+select
+xrv.report_name,
+xrv.type_dsp report_type,
+xrv.category,
+'Upload Post Procedure' record_type,
+xrv.report_name name,
+to_clob(xrv.upload_post_procedure) text,
+xxen_util.user_name(xrv.created_by) created_by,
+xxen_util.client_time(xrv.creation_date) creation_date,
+xxen_util.user_name(xrv.last_updated_by) last_updated_by,
+xxen_util.client_time(xrv.last_update_date) last_update_date
+from
+xxen_reports_v xrv
+where
+1=1 and
+regexp_like(xrv.upload_post_procedure,&regexp_escape(:sql_text)&insensitive) and
+(:not_sql_text is null or not regexp_like(xrv.upload_post_procedure,&regexp_escape(:not_sql_text)&insensitive))
 union all
 select
 xrpv.report_name,

@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: FND Help Documents and Targets
 -- Description: 
--- Excel Examle Output: https://www.enginatics.com/example/fnd-help-documents-and-targets/
+-- Excel Example Output: https://www.enginatics.com/example/fnd-help-documents-and-targets/
 -- Library Link: https://www.enginatics.com/reports/fnd-help-documents-and-targets/
 -- Run Report: https://demo.enginatics.com/
 

@@ -1,17 +1,16 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: GL Journals (Drilldown)
--- Description: ** This report is used by the GL Financial Statement and Drilldown report, to show Journal details. **
-
-GL batches and journals report, including amounts and attachments.To enable next level drilldown below columns should be present in Display columns of the custom templates
-Drill To Subledger
-Drill To Journal Attachment
-Drill To Full Journal
--- Excel Examle Output: https://www.enginatics.com/example/gl-journals-drilldown/
+-- Description: This report is used by the GL Financial Statement and Drilldown report, to show Journal details.
+-- GL batches and journals report, including amounts and attachments.To enable next level drilldown below columns should be present in Display columns of the custom templates
+-- Drill To Subledger
+-- Drill To Journal Attachment
+-- Drill To Full Journal
+-- Excel Example Output: https://www.enginatics.com/example/gl-journals-drilldown/
 -- Library Link: https://www.enginatics.com/reports/gl-journals-drilldown/
 -- Run Report: https://demo.enginatics.com/
 

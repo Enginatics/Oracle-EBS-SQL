@@ -1,61 +1,59 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC AP Accrual IR ISO Match Analysis
--- Description: Use this report to match the A/P Accrual entries for internal order inventory receipts with the internal order payables invoices, by the internal sale order and line number.  If run in Detail Mode, shows inventory receipts and payables invoices on separate lines with detailed information, if run in Summary Mode, the sales order line is summarized into one row.
-
-Parameters:
-===========
-Report Mode:  you can get a summary by sales order and line or a detailed report, enter Detail or Summary (mandatory).
-Transaction Date from:  enter the IR/ISO beginning transaction date you wish to report (optional).
-Transaction Date to:  enter the IR/ISO ending transaction date you wish to report (optional).
-Transaction Type:  enter the transaction type you wish to report (optional).
-Category Set 1:  the first item category set to report, typically the Cost or Product Line Category Set (optional).
-Category Set 2:  the second item category set to report, typically the Inventory Category Set (optional).
-Category Set 3:  the third item category set to report (optional).
-Item Number:  enter the item numbers you wish to report (optional).
-Organization Code:  enter the specific inventory organization(s) you wish to report (optional).
-Operating Unit:  enter the specific operating unit(s) you wish to report (optional).
-Ledger:  enter the specific ledger(s) you wish to report (optional).
-
-/* +=============================================================================+
--- |  Copyright 2016 - 2025 Douglas Volz Consulting, Inc.
--- |  All rights reserved.
--- |  Permission to use this code is granted provided the original author is
--- |  acknowledged.09o warranties, express or otherwise is included in this permission.
--- +=============================================================================+
--- |
--- |  Original Author: Douglas Volz (doug@volzconsulting.com)
--- |
--- |  Version Modified on Modified  by   Description
--- |  ======= =========== ============== =========================================
--- |  1.0     23 Nov 2016 Douglas Volz   Initial Coding 
--- |  1.1     15 Dec 2016 Douglas Volz   Added Customer Name for A/P Invoice
--- |  1.2     20 Dec 2016 Douglas Volz   Fixed calculation bug for Net Amount
--- |  1.3     10 Jan 2017 Douglas Volz   Added Transaction Type Code 61 and Transaction
--- |                                     Source Type 7 in order to report internal 
--- |                                     order receipts for txn type Int Req Intr Rcpt
--- |                                     and corrected SIGN of net quantity.
--- |  1.4     17 Jan 2017 Douglas Volz   Added Int Req Intr Rcpt to the Inventory Queries
--- |                                     corrected the transaction type code for material
--- |                                     transactions, truncated the transaction date 
--- |                                     and corrected the report sort by order number and
--- |                                     transaction type (receipts first).
--- |  1.5     18 Jan 2017 Douglas Volz   Added Vendor Name and Transaction Source.
--- |  1.6     19 Jan 2017 Douglas Volz   Commented out the customer type indicator, was
--- |                                     preventing A/P invoices from being reported.
--- |  1.7     09 Jun 2017 Douglas Volz   Added new section to report Intransit Shipments
--- |                                     for FOB Shipment with the order booked in one
--- |                                     OU but shipped from another OU
--- |  1.8     11 Jun 2017 Douglas Volz   Added Transaction Date and Operating Unit
--- |                                     Parameters.  Added new section 5 for Payables
--- |                                     invoices which are unmatched to POs or for IR/ISOs.
--- |  1.9     26 Feb 2025 Douglas Volz   Removed tabs, cleaned up for Blitz Report.
--- +=============================================================================+*/
--- Excel Examle Output: https://www.enginatics.com/example/cac-ap-accrual-ir-iso-match-analysis/
+-- Description: Use this report to match the A/P Accrual entries for internal order inventory receipts with the internal order payables invoices, by the internal sale order and line number. If run in Detail Mode, shows inventory receipts and payables invoices on separate lines with detailed information, if run in Summary Mode, the sales order line is summarized into one row.
+-- Parameters:
+-- ===========
+-- Report Mode: you can get a summary by sales order and line or a detailed report, enter Detail or Summary (mandatory).
+-- Transaction Date from: enter the IR/ISO beginning transaction date you wish to report (optional).
+-- Transaction Date to: enter the IR/ISO ending transaction date you wish to report (optional).
+-- Transaction Type: enter the transaction type you wish to report (optional).
+-- Category Set 1: the first item category set to report, typically the Cost or Product Line Category Set (optional).
+-- Category Set 2: the second item category set to report, typically the Inventory Category Set (optional).
+-- Category Set 3: the third item category set to report (optional).
+-- Item Number: enter the item numbers you wish to report (optional).
+-- Organization Code: enter the specific inventory organization(s) you wish to report (optional).
+-- Operating Unit: enter the specific operating unit(s) you wish to report (optional).
+-- Ledger: enter the specific ledger(s) you wish to report (optional).
+-- / +=============================================================================+
+-- -- | Copyright 2016 - 2025 Douglas Volz Consulting, Inc.
+-- -- | All rights reserved.
+-- -- | Permission to use this code is granted provided the original author is
+-- -- | acknowledged.09o warranties, express or otherwise is included in this permission.
+-- -- +=============================================================================+
+-- -- |
+-- -- | Original Author: Douglas Volz (doug@volzconsulting.com)
+-- -- |
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== ============== =========================================
+-- -- | 1.0 23 Nov 2016 Douglas Volz Initial Coding
+-- -- | 1.1 15 Dec 2016 Douglas Volz Added Customer Name for A/P Invoice
+-- -- | 1.2 20 Dec 2016 Douglas Volz Fixed calculation bug for Net Amount
+-- -- | 1.3 10 Jan 2017 Douglas Volz Added Transaction Type Code 61 and Transaction
+-- -- | Source Type 7 in order to report internal
+-- -- | order receipts for txn type Int Req Intr Rcpt
+-- -- | and corrected SIGN of net quantity.
+-- -- | 1.4 17 Jan 2017 Douglas Volz Added Int Req Intr Rcpt to the Inventory Queries
+-- -- | corrected the transaction type code for material
+-- -- | transactions, truncated the transaction date
+-- -- | and corrected the report sort by order number and
+-- -- | transaction type (receipts first).
+-- -- | 1.5 18 Jan 2017 Douglas Volz Added Vendor Name and Transaction Source.
+-- -- | 1.6 19 Jan 2017 Douglas Volz Commented out the customer type indicator, was
+-- -- | preventing A/P invoices from being reported.
+-- -- | 1.7 09 Jun 2017 Douglas Volz Added new section to report Intransit Shipments
+-- -- | for FOB Shipment with the order booked in one
+-- -- | OU but shipped from another OU
+-- -- | 1.8 11 Jun 2017 Douglas Volz Added Transaction Date and Operating Unit
+-- -- | Parameters. Added new section 5 for Payables
+-- -- | invoices which are unmatched to POs or for IR/ISOs.
+-- -- | 1.9 26 Feb 2025 Douglas Volz Removed tabs, cleaned up for Blitz Report.
+-- -- +=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-ap-accrual-ir-iso-match-analysis/
 -- Library Link: https://www.enginatics.com/reports/cac-ap-accrual-ir-iso-match-analysis/
 -- Run Report: https://demo.enginatics.com/
 

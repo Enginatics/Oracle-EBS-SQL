@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: INV Items
 -- Description: Master data report that lists item master attributes such as item type, UOM, status, serial control, account numbers and various other attributes
--- Excel Examle Output: https://www.enginatics.com/example/inv-items/
+-- Excel Example Output: https://www.enginatics.com/example/inv-items/
 -- Library Link: https://www.enginatics.com/reports/inv-items/
 -- Run Report: https://demo.enginatics.com/
 

@@ -1,14 +1,20 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'GL Financial Statement and Drilldown (FSG) | Oracle EBS SQL Report'
 description: 'The GL Financial Statement and Drilldown (FSG) Report empowers users to generate comprehensive reports on financial balances while providing detailed…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Financial, Statement, Drilldown, (FSG), dual'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, General Ledger, Enginatics, Financial, Statement, Drilldown, (FSG), dual'
 permalink: /GL%20Financial%20Statement%20and%20Drilldown%20%28FSG%29/
+report_name: 'GL Financial Statement and Drilldown (FSG)'
+report_web_name: gl-financial-statement-and-drilldown-fsg
+module: 'General Ledger'
+module_url: /modules/general-ledger/
 ---
 
 # GL Financial Statement and Drilldown (FSG) – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/gl-financial-statement-and-drilldown-fsg/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/gl-financial-statement-and-drilldown-fsg/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=gl-financial-statement-and-drilldown-fsg) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=gl-financial-statement-and-drilldown-fsg).
+**Oracle EBS module:** [General Ledger](/modules/general-ledger/ "Oracle EBS General Ledger reports") · [all General Ledger reports](/modules/general-ledger/)  
 
 ## Overview
 The GL Financial Statement and Drilldown (FSG) Report empowers users to generate comprehensive reports on financial balances while providing detailed insights through drilldown capabilities. This tool allows users to link Excel cells directly to Oracle data via built-in functions, ensuring that data can be refreshed as needed to reflect the most up-to-date information.
@@ -23,28 +29,31 @@ For a quick demonstration, refer to our YouTube video.
 
 Important: Please do not delete the "Financial Statement Generator" sheet or modify the Advanced Custom Properties in the Excel output, as these are essential for the proper functioning of the report.
 
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=gl-financial-statement-and-drilldown-fsg) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
+
 ## Report Parameters
 Ledger
 
 ## Oracle EBS Tables Used
-[dual](https://www.enginatics.com/library/?pg=1&find=dual)
+[dual](https://www.enginatics.com/library/?pg=1&find=dual&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=gl-financial-statement-and-drilldown-fsg)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=gl-financial-statement-and-drilldown-fsg)
 
 ## Related Reports
 [ECC Admin - Concurrent Programs](/ECC%20Admin%20-%20Concurrent%20Programs/ "ECC Admin - Concurrent Programs Oracle EBS SQL Report"), [INV Item Attribute Master/Child Conflicts](/INV%20Item%20Attribute%20Master-Child%20Conflicts/ "INV Item Attribute Master/Child Conflicts Oracle EBS SQL Report"), [DBA ORDS Configuration Validation](/DBA%20ORDS%20Configuration%20Validation/ "DBA ORDS Configuration Validation Oracle EBS SQL Report"), [CAC Inventory Accounts Setup](/CAC%20Inventory%20Accounts%20Setup/ "CAC Inventory Accounts Setup Oracle EBS SQL Report"), [DBA Database Parameter Validation](/DBA%20Database%20Parameter%20Validation/ "DBA Database Parameter Validation Oracle EBS SQL Report"), [CAC Cost Group Accounts Setup](/CAC%20Cost%20Group%20Accounts%20Setup/ "CAC Cost Group Accounts Setup Oracle EBS SQL Report"), [OPM Reconcilation](/OPM%20Reconcilation/ "OPM Reconcilation Oracle EBS SQL Report"), [CAC Manufacturing Variance](/CAC%20Manufacturing%20Variance/ "CAC Manufacturing Variance Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/GL%20Financial%20Statement%20and%20Drilldown%20%28FSG%29/GL%20Financial%20Statement%20and%20Drilldown%20%28FSG%29.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=gl-financial-statement-and-drilldown-fsg) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [GL Financial Statement and Drilldown (FSG) - Income Summary Statement 04-Apr-2026 124502.xlsm](https://www.enginatics.com/example/gl-financial-statement-and-drilldown-fsg/) |
-| Blitz Report™ XML Import | [GL_Financial_Statement_and_Drilldown_FSG.xml](https://www.enginatics.com/xml/gl-financial-statement-and-drilldown-fsg/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/gl-financial-statement-and-drilldown-fsg/](https://www.enginatics.com/reports/gl-financial-statement-and-drilldown-fsg/) |
+| Excel Example Output | [GL Financial Statement and Drilldown (FSG) - Income Summary Statement 04-Apr-2026 124502.xlsm](https://www.enginatics.com/example/gl-financial-statement-and-drilldown-fsg/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=gl-financial-statement-and-drilldown-fsg) |
+| Blitz Report™ XML Import | [GL_Financial_Statement_and_Drilldown_FSG.xml](https://www.enginatics.com/xml/gl-financial-statement-and-drilldown-fsg/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=gl-financial-statement-and-drilldown-fsg) |
+| SQL Source | [GL Financial Statement and Drilldown (FSG).sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/GL%20Financial%20Statement%20and%20Drilldown%20%28FSG%29/GL%20Financial%20Statement%20and%20Drilldown%20%28FSG%29.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/gl-financial-statement-and-drilldown-fsg/](https://www.enginatics.com/reports/gl-financial-statement-and-drilldown-fsg/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=gl-financial-statement-and-drilldown-fsg) |
 
 ## GL Financial Statement and Drilldown (FSG) - Case Study & Technical Analysis
 
@@ -78,18 +87,17 @@ The **GL Financial Statement and Drilldown (FSG)** report is a powerful financia
 *   **Currency**: The currency view (Entered, Accounted, or Translated).
 *   **Content Set**: (Optional) Used to override segment values or expand the report across segment ranges.
 
-
 ---
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=gl-financial-statement-and-drilldown-fsg)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=gl-financial-statement-and-drilldown-fsg)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=gl-financial-statement-and-drilldown-fsg)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=gl-financial-statement-and-drilldown-fsg)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=gl-financial-statement-and-drilldown-fsg)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=gl-financial-statement-and-drilldown-fsg)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=gl-financial-statement-and-drilldown-fsg)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

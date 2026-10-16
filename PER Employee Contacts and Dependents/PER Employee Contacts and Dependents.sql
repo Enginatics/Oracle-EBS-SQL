@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PER Employee Contacts and Dependents
 -- Description: Employee contact relationships including dependents, beneficiaries, and emergency contacts. Shows contact person details (name, phone, email, address), relationship type, and flags for dependent, beneficiary, emergency contact, and third party payment. Useful for benefits administration, emergency preparedness, and employee records management.
--- Excel Examle Output: https://www.enginatics.com/example/per-employee-contacts-and-dependents/
+-- Excel Example Output: https://www.enginatics.com/example/per-employee-contacts-and-dependents/
 -- Library Link: https://www.enginatics.com/reports/per-employee-contacts-and-dependents/
 -- Run Report: https://demo.enginatics.com/
 

@@ -1,14 +1,20 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'FA Asset Additions | Oracle EBS SQL Report'
 description: 'Imported from BI Publisher Description: Asset Additions Report Application: Assets Source: Asset Additions Report (XML) Short Name: FAS420XML DB package…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Asset, Additions, fa_calendar_periods, fa_deprn_periods, fa_system_controls'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Assets, Enginatics, Asset, Additions, fbc, fb, fds'
 permalink: /FA%20Asset%20Additions/
+report_name: 'FA Asset Additions'
+report_web_name: fa-asset-additions
+module: 'Assets'
+module_url: /modules/assets/
 ---
 
 # FA Asset Additions – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/fa-asset-additions/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/fa-asset-additions/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fa-asset-additions) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fa-asset-additions).
+**Oracle EBS module:** [Assets](/modules/assets/ "Oracle EBS Assets reports") · [all Assets reports](/modules/assets/)  
 
 ## Overview
 Imported from BI Publisher
@@ -18,28 +24,31 @@ Source: Asset Additions Report (XML)
 Short Name: FAS420_XML
 DB package: FA_FAS420_XMLP_PKG
 
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fa-asset-additions) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
+
 ## Report Parameters
 Ledger, Book, From Period Entered, To Period Entered, From Period Effective, To Period Effective, Category From, Category To, Asset Number, Asset Key
 
 ## Oracle EBS Tables Used
-[fa_calendar_periods](https://www.enginatics.com/library/?pg=1&find=fa_calendar_periods), [fa_deprn_periods](https://www.enginatics.com/library/?pg=1&find=fa_deprn_periods), [fa_system_controls](https://www.enginatics.com/library/?pg=1&find=fa_system_controls), [fa_lookups](https://www.enginatics.com/library/?pg=1&find=fa_lookups), [fa_additions](https://www.enginatics.com/library/?pg=1&find=fa_additions), [fa_asset_keywords_kfv](https://www.enginatics.com/library/?pg=1&find=fa_asset_keywords_kfv), [fa_asset_history](https://www.enginatics.com/library/?pg=1&find=fa_asset_history), [fa_transaction_headers](https://www.enginatics.com/library/?pg=1&find=fa_transaction_headers), [fa_category_books](https://www.enginatics.com/library/?pg=1&find=fa_category_books), [fa_categories_b_kfv](https://www.enginatics.com/library/?pg=1&find=fa_categories_b_kfv), [fa_distribution_history](https://www.enginatics.com/library/?pg=1&find=fa_distribution_history), [fa_locations_kfv](https://www.enginatics.com/library/?pg=1&find=fa_locations_kfv), [gl_code_combinations](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations), [&lp_fa_adjustments](https://www.enginatics.com/library/?pg=1&find=&lp_fa_adjustments), [&lp_fa_books](https://www.enginatics.com/library/?pg=1&find=&lp_fa_books), [&lp_fa_deprn_summary](https://www.enginatics.com/library/?pg=1&find=&lp_fa_deprn_summary), [&lp_fa_deprn_detail](https://www.enginatics.com/library/?pg=1&find=&lp_fa_deprn_detail), [fnd_currencies](https://www.enginatics.com/library/?pg=1&find=fnd_currencies), [&lp_fa_book_controls](https://www.enginatics.com/library/?pg=1&find=&lp_fa_book_controls), [gl_sets_of_books](https://www.enginatics.com/library/?pg=1&find=gl_sets_of_books), [fa_book_controls_sec](https://www.enginatics.com/library/?pg=1&find=fa_book_controls_sec), [&lp_fa_deprn_periods](https://www.enginatics.com/library/?pg=1&find=&lp_fa_deprn_periods)
+[fbc](https://www.enginatics.com/library/?pg=1&find=fbc&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fa-asset-additions), [fb](https://www.enginatics.com/library/?pg=1&find=fb&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fa-asset-additions), [fds](https://www.enginatics.com/library/?pg=1&find=fds&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fa-asset-additions), [fadj](https://www.enginatics.com/library/?pg=1&find=fadj&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fa-asset-additions), [fdd](https://www.enginatics.com/library/?pg=1&find=fdd&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fa-asset-additions), [fa_calendar_periods](https://www.enginatics.com/library/?pg=1&find=fa_calendar_periods&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fa-asset-additions), [fa_deprn_periods](https://www.enginatics.com/library/?pg=1&find=fa_deprn_periods&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fa-asset-additions), [fa_system_controls](https://www.enginatics.com/library/?pg=1&find=fa_system_controls&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fa-asset-additions), [fa_lookups](https://www.enginatics.com/library/?pg=1&find=fa_lookups&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fa-asset-additions), [fa_additions](https://www.enginatics.com/library/?pg=1&find=fa_additions&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fa-asset-additions), [fa_asset_keywords_kfv](https://www.enginatics.com/library/?pg=1&find=fa_asset_keywords_kfv&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fa-asset-additions), [fa_asset_history](https://www.enginatics.com/library/?pg=1&find=fa_asset_history&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fa-asset-additions), [fa_transaction_headers](https://www.enginatics.com/library/?pg=1&find=fa_transaction_headers&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fa-asset-additions), [fa_category_books](https://www.enginatics.com/library/?pg=1&find=fa_category_books&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fa-asset-additions), [fa_categories_b_kfv](https://www.enginatics.com/library/?pg=1&find=fa_categories_b_kfv&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fa-asset-additions), [fa_distribution_history](https://www.enginatics.com/library/?pg=1&find=fa_distribution_history&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fa-asset-additions), [fa_locations_kfv](https://www.enginatics.com/library/?pg=1&find=fa_locations_kfv&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fa-asset-additions), [gl_code_combinations](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fa-asset-additions), [fnd_currencies](https://www.enginatics.com/library/?pg=1&find=fnd_currencies&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fa-asset-additions), [gl_sets_of_books](https://www.enginatics.com/library/?pg=1&find=gl_sets_of_books&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fa-asset-additions), [fa_book_controls_sec](https://www.enginatics.com/library/?pg=1&find=fa_book_controls_sec&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fa-asset-additions), [dp](https://www.enginatics.com/library/?pg=1&find=dp&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fa-asset-additions)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fa-asset-additions)
 
 ## Related Reports
-[FA Asset Register](/FA%20Asset%20Register/ "FA Asset Register Oracle EBS SQL Report"), [FA Asset Book Details](/FA%20Asset%20Book%20Details/ "FA Asset Book Details Oracle EBS SQL Report"), [FA Asset Summary (Germany)](/FA%20Asset%20Summary%20%28Germany%29/ "FA Asset Summary (Germany) Oracle EBS SQL Report"), [FA Asset Upload](/FA%20Asset%20Upload/ "FA Asset Upload Oracle EBS SQL Report"), [FA Additions By Source](/FA%20Additions%20By%20Source/ "FA Additions By Source Oracle EBS SQL Report"), [GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report"), [FA Asset Reclassification](/FA%20Asset%20Reclassification/ "FA Asset Reclassification Oracle EBS SQL Report"), [FA Asset Retirements](/FA%20Asset%20Retirements/ "FA Asset Retirements Oracle EBS SQL Report"), [FA Cost Adjustments](/FA%20Cost%20Adjustments/ "FA Cost Adjustments Oracle EBS SQL Report")
+[FA Asset Retirements](/FA%20Asset%20Retirements/ "FA Asset Retirements Oracle EBS SQL Report"), [FA Asset Book Details](/FA%20Asset%20Book%20Details/ "FA Asset Book Details Oracle EBS SQL Report"), [FA Fixed Assets Book](/FA%20Fixed%20Assets%20Book/ "FA Fixed Assets Book Oracle EBS SQL Report"), [FA Asset Upload](/FA%20Asset%20Upload/ "FA Asset Upload Oracle EBS SQL Report"), [FA Asset Inventory 11i](/FA%20Asset%20Inventory%2011i/ "FA Asset Inventory 11i Oracle EBS SQL Report"), [FA Asset Summary (Germany)](/FA%20Asset%20Summary%20%28Germany%29/ "FA Asset Summary (Germany) Oracle EBS SQL Report"), [FA Asset Transfers](/FA%20Asset%20Transfers/ "FA Asset Transfers Oracle EBS SQL Report"), [FA Asset Reclassification](/FA%20Asset%20Reclassification/ "FA Asset Reclassification Oracle EBS SQL Report"), [FA Cost Adjustments](/FA%20Cost%20Adjustments/ "FA Cost Adjustments Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/FA%20Asset%20Additions/FA%20Asset%20Additions.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fa-asset-additions) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [FA Asset Additions 30-Aug-2021 051352.xlsx](https://www.enginatics.com/example/fa-asset-additions/) |
-| Blitz Report™ XML Import | [FA_Asset_Additions.xml](https://www.enginatics.com/xml/fa-asset-additions/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/fa-asset-additions/](https://www.enginatics.com/reports/fa-asset-additions/) |
+| Excel Example Output | [FA Asset Additions 30-Aug-2021 051352.xlsx](https://www.enginatics.com/example/fa-asset-additions/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fa-asset-additions) |
+| Blitz Report™ XML Import | [FA_Asset_Additions.xml](https://www.enginatics.com/xml/fa-asset-additions/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fa-asset-additions) |
+| SQL Source | [FA Asset Additions.sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/FA%20Asset%20Additions/FA%20Asset%20Additions.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/fa-asset-additions/](https://www.enginatics.com/reports/fa-asset-additions/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fa-asset-additions) |
 
 ## Case Study: Automating Fixed Asset Capitalization Reporting in Oracle EBS
 
@@ -94,18 +103,17 @@ A: Yes, the report joins to `FA_DISTRIBUTION_HISTORY` and `GL_CODE_COMBINATIONS`
 **Q: How does this compare to the standard FAS420 report?**
 A: This SQL-based approach allows for easier export to Excel for pivot table analysis, whereas the standard XML/PDF output is static and harder to manipulate for large datasets.
 
-
 ---
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fa-asset-additions)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fa-asset-additions)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fa-asset-additions)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fa-asset-additions)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fa-asset-additions)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fa-asset-additions)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fa-asset-additions)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

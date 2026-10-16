@@ -1,41 +1,50 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'PAY Payroll Element Details | Oracle EBS SQL Report'
 description: 'Master data report showing HR payroll element details. Elements are the units used to build all the earnings, deductions and benefits that companies can…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, PAY, Payroll, Element, Details, pay_element_types_f_vl, pay_element_classifications'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Payroll, Enginatics, PAY, Element, Details, pay_element_types_f_vl, pay_element_classifications'
 permalink: /PAY%20Payroll%20Element%20Details/
+report_name: 'PAY Payroll Element Details'
+report_web_name: pay-payroll-element-details
+module: 'Payroll'
+module_url: /modules/payroll/
 ---
 
 # PAY Payroll Element Details – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/pay-payroll-element-details/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/pay-payroll-element-details/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pay-payroll-element-details) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pay-payroll-element-details).
+**Oracle EBS module:** [Payroll](/modules/payroll/ "Oracle EBS Payroll reports") · [all Payroll reports](/modules/payroll/)  
 
 ## Overview
 Master data report showing HR payroll element details.
 Elements are the units used to build all the earnings, deductions and benefits that companies can give to employees.
 
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pay-payroll-element-details) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
+
 ## Report Parameters
 Effective Date
 
 ## Oracle EBS Tables Used
-[pay_element_types_f_vl](https://www.enginatics.com/library/?pg=1&find=pay_element_types_f_vl), [pay_element_classifications](https://www.enginatics.com/library/?pg=1&find=pay_element_classifications)
+[pay_element_types_f_vl](https://www.enginatics.com/library/?pg=1&find=pay_element_types_f_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pay-payroll-element-details), [pay_element_classifications](https://www.enginatics.com/library/?pg=1&find=pay_element_classifications&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pay-payroll-element-details)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pay-payroll-element-details)
 
 ## Related Reports
-[PAY Gross to Net Summary](/PAY%20Gross%20to%20Net%20Summary/ "PAY Gross to Net Summary Oracle EBS SQL Report"), [PAY Employee Payroll History](/PAY%20Employee%20Payroll%20History/ "PAY Employee Payroll History Oracle EBS SQL Report")
+[PAY Gross to Net Summary](/PAY%20Gross%20to%20Net%20Summary/ "PAY Gross to Net Summary Oracle EBS SQL Report"), [PAY Element Entries](/PAY%20Element%20Entries/ "PAY Element Entries Oracle EBS SQL Report"), [PAY Employee Payroll History](/PAY%20Employee%20Payroll%20History/ "PAY Employee Payroll History Oracle EBS SQL Report"), [CAC Receiving Account Summary](/CAC%20Receiving%20Account%20Summary/ "CAC Receiving Account Summary Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/PAY%20Payroll%20Element%20Details/PAY%20Payroll%20Element%20Details.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pay-payroll-element-details) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [PAY Payroll Element Details 04-Apr-2026 123137.xlsx](https://www.enginatics.com/example/pay-payroll-element-details/) |
-| Blitz Report™ XML Import | [PAY_Payroll_Element_Details.xml](https://www.enginatics.com/xml/pay-payroll-element-details/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/pay-payroll-element-details/](https://www.enginatics.com/reports/pay-payroll-element-details/) |
+| Excel Example Output | [PAY Payroll Element Details 04-Apr-2026 123137.xlsx](https://www.enginatics.com/example/pay-payroll-element-details/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pay-payroll-element-details) |
+| Blitz Report™ XML Import | [PAY_Payroll_Element_Details.xml](https://www.enginatics.com/xml/pay-payroll-element-details/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pay-payroll-element-details) |
+| SQL Source | [PAY Payroll Element Details.sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/PAY%20Payroll%20Element%20Details/PAY%20Payroll%20Element%20Details.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/pay-payroll-element-details/](https://www.enginatics.com/reports/pay-payroll-element-details/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pay-payroll-element-details) |
 
 ## Case Study & Technical Analysis: PAY Payroll Element Details Report
 
@@ -94,18 +103,17 @@ As a report focused on setup data, it is designed for rapid performance.
 **3. Can this report be used to identify all elements associated with a specific input value (e.g., 'Rate')?**
    While this report shows the element's core details, a more advanced query joining to `pay_input_values_f` would be required to filter for elements based on their specific input values. This report focuses on the high-level attributes of the element itself.
 
-
 ---
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pay-payroll-element-details)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pay-payroll-element-details)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pay-payroll-element-details)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pay-payroll-element-details)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pay-payroll-element-details)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pay-payroll-element-details)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pay-payroll-element-details)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

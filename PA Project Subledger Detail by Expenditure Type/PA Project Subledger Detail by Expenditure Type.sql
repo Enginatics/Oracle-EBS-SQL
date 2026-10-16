@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PA Project Subledger Detail by Expenditure Type
 -- Description: Cost distribution lines summarized by project, task, expenditure type, and GL account showing raw cost, burden cost, and total cost for transferred and accepted lines.
--- Excel Examle Output: https://www.enginatics.com/example/pa-project-subledger-detail-by-expenditure-type(1)/
+-- Excel Example Output: https://www.enginatics.com/example/pa-project-subledger-detail-by-expenditure-type(1)/
 -- Library Link: https://www.enginatics.com/reports/pa-project-subledger-detail-by-expenditure-type(1)/
 -- Run Report: https://demo.enginatics.com/
 

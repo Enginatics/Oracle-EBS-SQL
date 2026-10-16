@@ -1,42 +1,41 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Department Overhead Rates
 -- Description: Report to show departmental overheads and rates
-
-/* +=============================================================================+
--- |  Copyright 2016 - 2020 Douglas Volz Consulting, Inc.                        |
--- |  All rights reserved.                                                       |
--- |  Permission to use this code is granted provided the original author is     |
--- |  acknowledged. No warranties, express or otherwise is included in this      |
--- |  permission.                                                                |
--- +=============================================================================+
--- |
--- |  Original Author: Douglas Volz (doug@volzconsulting.com)
--- |
--- |  Program Name:  xxx_dept_ovhd_rates.sql
--- |
--- |  Parameters:
--- |  p_ledger	    -- Ledger you wish to report, enter a null or blank for all
--- |                   ledgers.
--- |  p_cost_type   -- Cost Type you wish to report, enter a null or blank for all
--- |                   cost types.
--- | 
--- |  Description:
--- |  Report to show departmental overheads and rates.
--- | 
--- |  Version Modified on Modified  by   Description
--- |  ======= =========== ============== =========================================
--- |  1.0     17 Sep 2013 Douglas Volz   Initial Coding
--- |  1.1     18 Oct 2016 Douglas Volz   Added organization information
--- |  1.2      6 Sep 2019 Douglas Volz   Added last update date
--- |  1.3     27 Jan 2020 Douglas Volz   Added Operating Unit parameter
--- |  1.4     26 Apr 2020 Douglas Volz   Changed to multi-language views for 
--- |                                     operating units.+=============================================================================+*/
--- Excel Examle Output: https://www.enginatics.com/example/cac-department-overhead-rates/
+-- / +=============================================================================+
+-- -- | Copyright 2016 - 2020 Douglas Volz Consulting, Inc. |
+-- -- | All rights reserved. |
+-- -- | Permission to use this code is granted provided the original author is |
+-- -- | acknowledged. No warranties, express or otherwise is included in this |
+-- -- | permission. |
+-- -- +=============================================================================+
+-- -- |
+-- -- | Original Author: Douglas Volz (doug@volzconsulting.com)
+-- -- |
+-- -- | Program Name: xxxdeptovhdrates.sql
+-- -- |
+-- -- | Parameters:
+-- -- | pledger -- Ledger you wish to report, enter a null or blank for all
+-- -- | ledgers.
+-- -- | pcosttype -- Cost Type you wish to report, enter a null or blank for all
+-- -- | cost types.
+-- -- |
+-- -- | Description:
+-- -- | Report to show departmental overheads and rates.
+-- -- |
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== ============== =========================================
+-- -- | 1.0 17 Sep 2013 Douglas Volz Initial Coding
+-- -- | 1.1 18 Oct 2016 Douglas Volz Added organization information
+-- -- | 1.2 6 Sep 2019 Douglas Volz Added last update date
+-- -- | 1.3 27 Jan 2020 Douglas Volz Added Operating Unit parameter
+-- -- | 1.4 26 Apr 2020 Douglas Volz Changed to multi-language views for
+-- -- | operating units.+=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-department-overhead-rates/
 -- Library Link: https://www.enginatics.com/reports/cac-department-overhead-rates/
 -- Run Report: https://demo.enginatics.com/
 

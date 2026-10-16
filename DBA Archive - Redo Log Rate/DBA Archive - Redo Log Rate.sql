@@ -1,16 +1,15 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: DBA Archive / Redo Log Rate
 -- Description: If the database is running in ARCHIVELOG mode, the amount of generated archive log is shown.
-For databases on NOARCHIVELOG, the approximate amount of generated redo is calculated by the number of log switches per hour and log file size. Note that this log rate is just an approximated maximum as switches could also occur without the log files being full.
-
-Redo log files are located here:
-select * from sys.v_$logfile
--- Excel Examle Output: https://www.enginatics.com/example/dba-archive-redo-log-rate/
+-- For databases on NOARCHIVELOG, the approximate amount of generated redo is calculated by the number of log switches per hour and log file size. Note that this log rate is just an approximated maximum as switches could also occur without the log files being full.
+-- Redo log files are located here:
+-- select from sys.v$logfile
+-- Excel Example Output: https://www.enginatics.com/example/dba-archive-redo-log-rate/
 -- Library Link: https://www.enginatics.com/reports/dba-archive-redo-log-rate/
 -- Run Report: https://demo.enginatics.com/
 

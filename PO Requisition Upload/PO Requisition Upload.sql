@@ -1,40 +1,38 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PO Requisition Upload
 -- Description: Upload to create and update requisitions.
-
-In the generated Excel, the user can amend the following columns for an existing requisition.
--	Header Description
--	Quantity
--	Unit Price
--	Need By Date
--	Reference Number
--	Supplier Item
--	Buyer
--	Note To Buyer
--	Currency
--	Conversion Type
--	Conversion Rate
--	Conversion Date
-
-Additionally, the user can create a requisition by entering the below required fields.
--	Line Type
--        Source Type
--        Item
--	Item Description
--	Category
--	Unit of Measure
--	Quantity
--	Need By Date
--	Destination Type
--	Deliver To Requestor
--	Destination Organization
--	Deliver To Location
--- Excel Examle Output: https://www.enginatics.com/example/po-requisition-upload/
+-- In the generated Excel, the user can amend the following columns for an existing requisition.
+-- - Header Description
+-- - Quantity
+-- - Unit Price
+-- - Need By Date
+-- - Reference Number
+-- - Supplier Item
+-- - Buyer
+-- - Note To Buyer
+-- - Currency
+-- - Conversion Type
+-- - Conversion Rate
+-- - Conversion Date
+-- Additionally, the user can create a requisition by entering the below required fields.
+-- - Line Type
+-- - Source Type
+-- - Item
+-- - Item Description
+-- - Category
+-- - Unit of Measure
+-- - Quantity
+-- - Need By Date
+-- - Destination Type
+-- - Deliver To Requestor
+-- - Destination Organization
+-- - Deliver To Location
+-- Excel Example Output: https://www.enginatics.com/example/po-requisition-upload/
 -- Library Link: https://www.enginatics.com/reports/po-requisition-upload/
 -- Run Report: https://demo.enginatics.com/
 

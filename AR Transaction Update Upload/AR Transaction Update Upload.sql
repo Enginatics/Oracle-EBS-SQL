@@ -1,18 +1,15 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: AR Transaction Update Upload
 -- Description: Updates the post completion header fields of Receivables transactions in the same way as the Transactions workbench: comments, special instructions, print option, purchase order details, salesperson, remit to address, late charges exemption, ship via, FOB, waybill, cross reference and the transaction descriptive flexfield.
-
-The transaction is identified by Operating Unit and Transaction Number. A hidden transaction id links downloaded rows exactly; pasted rows resolve by number, and a number existing under more than one transaction source is rejected with a request to download the transaction instead.
-
-Updates are applied through the Transactions workbench header handler, so the same validations apply as in the form. Completion status, transaction status, amounts, dates, customers and accounting are not changed by this upload. Commitments (deposits and guarantees) are excluded.
-
-The upload only processes changed cells. A row without changes reports No change.
--- Excel Examle Output: https://www.enginatics.com/example/ar-transaction-update-upload/
+-- The transaction is identified by Operating Unit and Transaction Number. A hidden transaction id links downloaded rows exactly; pasted rows resolve by number, and a number existing under more than one transaction source is rejected with a request to download the transaction instead.
+-- Updates are applied through the Transactions workbench header handler, so the same validations apply as in the form. Completion status, transaction status, amounts, dates, customers and accounting are not changed by this upload. Commitments (deposits and guarantees) are excluded.
+-- The upload only processes changed cells. A row without changes reports No change.
+-- Excel Example Output: https://www.enginatics.com/example/ar-transaction-update-upload/
 -- Library Link: https://www.enginatics.com/reports/ar-transaction-update-upload/
 -- Run Report: https://demo.enginatics.com/
 

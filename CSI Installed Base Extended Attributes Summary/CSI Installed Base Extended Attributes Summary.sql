@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CSI Installed Base Extended Attributes Summary
 -- Description: Master data report of extended Installed Base attribute levels and names
--- Excel Examle Output: https://www.enginatics.com/example/csi-installed-base-extended-attributes-summary/
+-- Excel Example Output: https://www.enginatics.com/example/csi-installed-base-extended-attributes-summary/
 -- Library Link: https://www.enginatics.com/reports/csi-installed-base-extended-attributes-summary/
 -- Run Report: https://demo.enginatics.com/
 

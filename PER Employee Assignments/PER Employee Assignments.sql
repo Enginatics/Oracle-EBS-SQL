@@ -1,12 +1,14 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PER Employee Assignments
 -- Description: Master data report showing the employee demographic information including name, gender SSN, birthdate, age, nationality, effective start date, and additional profile information.
--- Excel Examle Output: https://www.enginatics.com/example/per-employee-assignments/
+-- Detail Level Costing adds one row per assignment cost allocation valid at the Effective Date, with the proportion, the total proportion of the assignment and the cost allocation flexfield. The individual cost segment columns are shown when a Business Group is selected. Assignments without assignment-level costing show blank costing columns.
+-- Detail Level Extra Information lists one row per assignment extra information record. Select an Information Type to show its segments as columns.
+-- Excel Example Output: https://www.enginatics.com/example/per-employee-assignments/
 -- Library Link: https://www.enginatics.com/reports/per-employee-assignments/
 -- Run Report: https://demo.enginatics.com/
 
@@ -26,7 +28,7 @@ trunc(months_between(sysdate,papf.date_of_birth)/12) age,
 xxen_util.meaning(papf.marital_status,'MAR_STATUS',3) marital_status,
 xxen_util.meaning(papf.nationality,'NATIONALITY',3) nationality,
 papf.effective_start_date start_date,
-decode(papf.effective_end_date,to_date('31.12.4712','DD.MM.YYYY'),null,papf.effective_end_date) end_date,
+nullif(papf.effective_end_date,to_date('31.12.4712','DD.MM.YYYY')) end_date,
 papf.original_date_of_hire hire_date,
 trunc(months_between(sysdate,papf.start_date)/12) service_yrs,
 round(mod(months_between(sysdate,papf.start_date),12)) service_months,
@@ -60,7 +62,7 @@ decode(paaf.assignment_type,
 paaf.assignment_type
 ) assignment_type,
 paaf.effective_start_date assignment_start_date,
-decode(paaf.effective_end_date,to_date('31.12.4712','DD.MM.YYYY'),null,paaf.effective_end_date) assignment_end_date,
+nullif(paaf.effective_end_date,to_date('31.12.4712','DD.MM.YYYY')) assignment_end_date,
 paaf.normal_hours,
 xxen_util.meaning(paaf.frequency,'FREQUENCY',3) Frequency,
 paaf.time_normal_start,
@@ -91,6 +93,7 @@ xxen_util.meaning(paaf.notice_period_uom,'QUALIFYING_UNITS',3) notice_period_uom
 paaf.internal_address_line,
 xxen_util.meaning(paaf.change_reason,'EMP_ASSIGN_REASON',3) assignment_change_reason,
 &flexfield_columns
+&detail_columns
 xxen_util.meaning(pa.address_type,'ADDRESS_TYPE',3) address_type,
 pa.address_line1,
 pa.address_line2,
@@ -136,6 +139,7 @@ gl_ledgers gl,
 (select pa.* from per_addresses pa where pa.primary_flag='Y' and :effective_date between pa.date_from and nvl(pa.date_to,:effective_date)) pa,
 fnd_territories_vl ftv,
 (select paypf.* from pay_all_payrolls_f paypf where :effective_date between paypf.effective_start_date and paypf.effective_end_date) paypf
+&detail_from
 where
 1=1 and
 papf.person_type_id=pptv.person_type_id and
@@ -155,6 +159,7 @@ papf.business_group_id=pa.business_group_id(+) and
 papf.person_id=pa.person_id(+) and
 pa.country=ftv.territory_code(+) and
 paaf.payroll_id=paypf.payroll_id(+)
+&detail_where
 order by
 haouv.name,
 papf.last_name,

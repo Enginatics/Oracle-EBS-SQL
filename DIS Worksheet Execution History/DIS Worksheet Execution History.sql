@@ -1,13 +1,13 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: DIS Worksheet Execution History
--- Description: Discoverer worksheet access statistics from table eul5_qpp_stats, including folder objects used.
-Parameter 'Show Folder Details' switches between aggregate and list view of used folder objects.
--- Excel Examle Output: https://www.enginatics.com/example/dis-worksheet-execution-history/
+-- Description: Discoverer worksheet access statistics from table eul5qppstats, including folder objects used.
+-- Parameter 'Show Folder Details' switches between aggregate and list view of used folder objects.
+-- Excel Example Output: https://www.enginatics.com/example/dis-worksheet-execution-history/
 -- Library Link: https://www.enginatics.com/reports/dis-worksheet-execution-history/
 -- Run Report: https://demo.enginatics.com/
 

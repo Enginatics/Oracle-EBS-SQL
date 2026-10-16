@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PER Terminations and Separations
 -- Description: Terminated employees within a specified date range, showing termination date, leaving reason, length of service, last organization, job, position, grade, and supervisor. Useful for turnover analysis and exit tracking.
--- Excel Examle Output: https://www.enginatics.com/example/per-terminations-and-separations/
+-- Excel Example Output: https://www.enginatics.com/example/per-terminations-and-separations/
 -- Library Link: https://www.enginatics.com/reports/per-terminations-and-separations/
 -- Run Report: https://demo.enginatics.com/
 

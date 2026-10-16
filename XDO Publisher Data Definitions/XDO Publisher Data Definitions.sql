@@ -1,17 +1,15 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: XDO Publisher Data Definitions
 -- Description: XML Publisher data definitions or sources, associated concurrent programs, executables and templates.
-To include complete template information, enter a template name or wildcard % in the template name parameter field.
-
-This report also includes the source data SQL statement extracted from the publisher data template XML file which is quite useful to quickly access and review the SQL from Oracle standard XML reports and use them as templates for new blitz report creations.
-
-Parameter 'Data Definition Search Text' performs a full text search through the data template file so that you could for example enter a particular table name to list all XML publisher reports and their SQLs selecting from that table.
--- Excel Examle Output: https://www.enginatics.com/example/xdo-publisher-data-definitions/
+-- To include complete template information, enter a template name or wildcard % in the template name parameter field.
+-- This report also includes the source data SQL statement extracted from the publisher data template XML file which is quite useful to quickly access and review the SQL from Oracle standard XML reports and use them as templates for new blitz report creations.
+-- Parameter 'Data Definition Search Text' performs a full text search through the data template file so that you could for example enter a particular table name to list all XML publisher reports and their SQLs selecting from that table.
+-- Excel Example Output: https://www.enginatics.com/example/xdo-publisher-data-definitions/
 -- Library Link: https://www.enginatics.com/reports/xdo-publisher-data-definitions/
 -- Run Report: https://demo.enginatics.com/
 

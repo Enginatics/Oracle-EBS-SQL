@@ -1,14 +1,17 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'MSC Sourcing Rule Assignment Upload | Oracle EBS SQL Report'
 description: 'MSC Sourcing Rule Assignment Upload ============================= - Upload new Assignment Sets and Sourcing Rule Assignments - Update Existing Assignment…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, MSC, Sourcing, Rule, Assignment, msc_assignment_sets, msc_sr_assignments_v, msc_sourcing_rules'
 permalink: /MSC%20Sourcing%20Rule%20Assignment%20Upload/
+report_name: 'MSC Sourcing Rule Assignment Upload'
+report_web_name: msc-sourcing-rule-assignment-upload
 ---
 
 # MSC Sourcing Rule Assignment Upload – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/msc-sourcing-rule-assignment-upload/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/msc-sourcing-rule-assignment-upload/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=msc-sourcing-rule-assignment-upload) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=msc-sourcing-rule-assignment-upload).
 
 ## Overview
 MSC Sourcing Rule Assignment Upload
@@ -22,29 +25,31 @@ If an Assignment Organization is not specified, then the Master Organization det
 The selectable Assignment Organizations is not restricted by the Master Organization. 
 This is the same logic as used in the Sourcing Assignments form
 
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=msc-sourcing-rule-assignment-upload) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 
 ## Report Parameters
 Planning Instance, Master Organization Code, Upload Mode, Assignment Set, Assignment Type, Sourcing Rule Type, Sourcing Rule Name, Organization Code, Category, Item, Customer, Customer Number, Customer Operating Unit, Region/Zone, Condition, Include Collected Data
 
 ## Oracle EBS Tables Used
-[msc_assignment_sets](https://www.enginatics.com/library/?pg=1&find=msc_assignment_sets), [msc_sr_assignments_v](https://www.enginatics.com/library/?pg=1&find=msc_sr_assignments_v), [msc_sourcing_rules](https://www.enginatics.com/library/?pg=1&find=msc_sourcing_rules), [msc_trading_partners](https://www.enginatics.com/library/?pg=1&find=msc_trading_partners), [msc_trading_partner_sites](https://www.enginatics.com/library/?pg=1&find=msc_trading_partner_sites), [msc_regions](https://www.enginatics.com/library/?pg=1&find=msc_regions), [sra_query](https://www.enginatics.com/library/?pg=1&find=sra_query)
+[msc_assignment_sets](https://www.enginatics.com/library/?pg=1&find=msc_assignment_sets&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=msc-sourcing-rule-assignment-upload), [msc_sr_assignments_v](https://www.enginatics.com/library/?pg=1&find=msc_sr_assignments_v&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=msc-sourcing-rule-assignment-upload), [msc_sourcing_rules](https://www.enginatics.com/library/?pg=1&find=msc_sourcing_rules&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=msc-sourcing-rule-assignment-upload), [msc_trading_partners](https://www.enginatics.com/library/?pg=1&find=msc_trading_partners&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=msc-sourcing-rule-assignment-upload), [msc_trading_partner_sites](https://www.enginatics.com/library/?pg=1&find=msc_trading_partner_sites&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=msc-sourcing-rule-assignment-upload), [msc_regions](https://www.enginatics.com/library/?pg=1&find=msc_regions&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=msc-sourcing-rule-assignment-upload)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Upload](https://www.enginatics.com/library/?pg=1&category[]=Upload)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=msc-sourcing-rule-assignment-upload), [Upload](https://www.enginatics.com/library/?pg=1&category%5B%5D=Upload&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=msc-sourcing-rule-assignment-upload)
 
 ## Related Reports
-[MSC Plan Orders](/MSC%20Plan%20Orders/ "MSC Plan Orders Oracle EBS SQL Report"), [MSC Vertical Plan](/MSC%20Vertical%20Plan/ "MSC Vertical Plan Oracle EBS SQL Report"), [MSC Horizontal Plan](/MSC%20Horizontal%20Plan/ "MSC Horizontal Plan Oracle EBS SQL Report"), [MSC Pegging Hierarchy](/MSC%20Pegging%20Hierarchy/ "MSC Pegging Hierarchy Oracle EBS SQL Report"), [CAC Inventory and Intransit Value (Period-End) - Discrete/OPM](/CAC%20Inventory%20and%20Intransit%20Value%20%28Period-End%29%20-%20Discrete-OPM/ "CAC Inventory and Intransit Value (Period-End) - Discrete/OPM Oracle EBS SQL Report"), [CAC Inventory Lot and Locator OPM Value (Period-End)](/CAC%20Inventory%20Lot%20and%20Locator%20OPM%20Value%20%28Period-End%29/ "CAC Inventory Lot and Locator OPM Value (Period-End) Oracle EBS SQL Report"), [MSC Plan Order Upload](/MSC%20Plan%20Order%20Upload/ "MSC Plan Order Upload Oracle EBS SQL Report"), [MSC Exceptions](/MSC%20Exceptions/ "MSC Exceptions Oracle EBS SQL Report")
+[MSC Plan Orders](/MSC%20Plan%20Orders/ "MSC Plan Orders Oracle EBS SQL Report"), [MSC Vertical Plan](/MSC%20Vertical%20Plan/ "MSC Vertical Plan Oracle EBS SQL Report"), [MSC Horizontal Plan](/MSC%20Horizontal%20Plan/ "MSC Horizontal Plan Oracle EBS SQL Report"), [CAC Inventory and Intransit Value (Period-End) - Discrete/OPM](/CAC%20Inventory%20and%20Intransit%20Value%20%28Period-End%29%20-%20Discrete-OPM/ "CAC Inventory and Intransit Value (Period-End) - Discrete/OPM Oracle EBS SQL Report"), [MSC Exceptions](/MSC%20Exceptions/ "MSC Exceptions Oracle EBS SQL Report"), [MSC Pegging Hierarchy](/MSC%20Pegging%20Hierarchy/ "MSC Pegging Hierarchy Oracle EBS SQL Report"), [MSC Plan Order Upload](/MSC%20Plan%20Order%20Upload/ "MSC Plan Order Upload Oracle EBS SQL Report"), [CAC Inventory Lot and Locator OPM Value (Period-End)](/CAC%20Inventory%20Lot%20and%20Locator%20OPM%20Value%20%28Period-End%29/ "CAC Inventory Lot and Locator OPM Value (Period-End) Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/MSC%20Sourcing%20Rule%20Assignment%20Upload/MSC%20Sourcing%20Rule%20Assignment%20Upload.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=msc-sourcing-rule-assignment-upload) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [](https://www.enginatics.com/example/msc-sourcing-rule-assignment-upload/) |
-| Blitz Report™ XML Import | [MSC_Sourcing_Rule_Assignment_Upload.xml](https://www.enginatics.com/xml/msc-sourcing-rule-assignment-upload/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/msc-sourcing-rule-assignment-upload/](https://www.enginatics.com/reports/msc-sourcing-rule-assignment-upload/) |
+| Excel Example Output | [Example](https://www.enginatics.com/example/msc-sourcing-rule-assignment-upload/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=msc-sourcing-rule-assignment-upload) |
+| Blitz Report™ XML Import | [MSC_Sourcing_Rule_Assignment_Upload.xml](https://www.enginatics.com/xml/msc-sourcing-rule-assignment-upload/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=msc-sourcing-rule-assignment-upload) |
+| SQL Source | [MSC Sourcing Rule Assignment Upload.sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/MSC%20Sourcing%20Rule%20Assignment%20Upload/MSC%20Sourcing%20Rule%20Assignment%20Upload.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/msc-sourcing-rule-assignment-upload/](https://www.enginatics.com/reports/msc-sourcing-rule-assignment-upload/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=msc-sourcing-rule-assignment-upload) |
 
 ## MSC Sourcing Rule Assignment Upload - Case Study & Technical Analysis
 
@@ -81,18 +86,17 @@ The tool interfaces with the MSC assignment tables.
 -   **Simulation Capability:** Enables powerful "what-if" analysis by allowing planners to rapidly change sourcing logic in a test plan.
 -   **Efficiency:** Drastically reduces the time required to set up or modify large supply chain networks.
 
-
 ---
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=msc-sourcing-rule-assignment-upload)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=msc-sourcing-rule-assignment-upload)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=msc-sourcing-rule-assignment-upload)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=msc-sourcing-rule-assignment-upload)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=msc-sourcing-rule-assignment-upload)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=msc-sourcing-rule-assignment-upload)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=msc-sourcing-rule-assignment-upload)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

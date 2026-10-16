@@ -1,13 +1,13 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: FND Profile Option Values
 -- Description: Profile option values on all setup levels.
-Unlike Oracle's SQL script from note 201945.1, this report also shows the user visible profile option value in addition to the internal system profile option value.
--- Excel Examle Output: https://www.enginatics.com/example/fnd-profile-option-values/
+-- Unlike Oracle's SQL script from note 201945.1, this report also shows the user visible profile option value in addition to the internal system profile option value.
+-- Excel Example Output: https://www.enginatics.com/example/fnd-profile-option-values/
 -- Library Link: https://www.enginatics.com/reports/fnd-profile-option-values/
 -- Run Report: https://demo.enginatics.com/
 

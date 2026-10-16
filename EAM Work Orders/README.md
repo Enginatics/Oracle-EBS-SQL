@@ -1,39 +1,49 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'EAM Work Orders | Oracle EBS SQL Report'
-description: 'Enterprise asset management work orders including asset and cost information – Oracle E-Business Suite SQL report'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, EAM, Work, Orders, mtl_system_items_b_kfv, eam_construction_estimates, mtl_parameters'
+description: 'Enterprise asset management work orders including asset and cost information – Oracle EBS Enterprise Asset Management SQL report: free SQL, parameters and…'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enterprise Asset Management, Enginatics, R12 only, EAM, Work, Orders, mtl_system_items_b_kfv, eam_construction_estimates, mtl_parameters'
 permalink: /EAM%20Work%20Orders/
+report_name: 'EAM Work Orders'
+report_web_name: eam-work-orders
+module: 'Enterprise Asset Management'
+module_url: /modules/enterprise-asset-management/
 ---
 
 # EAM Work Orders – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/eam-work-orders/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/eam-work-orders/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=eam-work-orders) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=eam-work-orders).
+**Oracle EBS module:** [Enterprise Asset Management](/modules/enterprise-asset-management/ "Oracle EBS Enterprise Asset Management reports") · [all Enterprise Asset Management reports](/modules/enterprise-asset-management/)  
 
 ## Overview
 Enterprise asset management work orders including asset and cost information
+
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=eam-work-orders) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 
 ## Report Parameters
 Organization Code, Department, Asset Group, Asset Number, Scheduled Start Date From, Scheduled Start Date To, Work Order Creation Date From, Work Order Creation Date To, Work Order Status, Planner, Work Order Created By, Cost Period from Date, Cost Period to Date, Cost Detail Level
 
 ## Oracle EBS Tables Used
-[mtl_system_items_b_kfv](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_b_kfv), [eam_construction_estimates](https://www.enginatics.com/library/?pg=1&find=eam_construction_estimates), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters), [wip_entities](https://www.enginatics.com/library/?pg=1&find=wip_entities), [wip_discrete_jobs](https://www.enginatics.com/library/?pg=1&find=wip_discrete_jobs), [org_access_view](https://www.enginatics.com/library/?pg=1&find=org_access_view), [bom_departments](https://www.enginatics.com/library/?pg=1&find=bom_departments), [pa_projects_all](https://www.enginatics.com/library/?pg=1&find=pa_projects_all), [pa_tasks](https://www.enginatics.com/library/?pg=1&find=pa_tasks), [eam_work_order_details](https://www.enginatics.com/library/?pg=1&find=eam_work_order_details), [eam_wo_statuses_v](https://www.enginatics.com/library/?pg=1&find=eam_wo_statuses_v), [eam_pm_schedulings](https://www.enginatics.com/library/?pg=1&find=eam_pm_schedulings), [eam_org_maint_defaults](https://www.enginatics.com/library/?pg=1&find=eam_org_maint_defaults), [mtl_eam_locations](https://www.enginatics.com/library/?pg=1&find=mtl_eam_locations), [csi_item_instances](https://www.enginatics.com/library/?pg=1&find=csi_item_instances), [mtl_categories_b_kfv](https://www.enginatics.com/library/?pg=1&find=mtl_categories_b_kfv), [eam_failureinfo_v](https://www.enginatics.com/library/?pg=1&find=eam_failureinfo_v), [wip_eam_period_balances](https://www.enginatics.com/library/?pg=1&find=wip_eam_period_balances), [org_acct_periods](https://www.enginatics.com/library/?pg=1&find=org_acct_periods), [gl_periods](https://www.enginatics.com/library/?pg=1&find=gl_periods), [wip_eam_cost_details_v](https://www.enginatics.com/library/?pg=1&find=wip_eam_cost_details_v)
+[mtl_system_items_b_kfv](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_b_kfv&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=eam-work-orders), [eam_construction_estimates](https://www.enginatics.com/library/?pg=1&find=eam_construction_estimates&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=eam-work-orders), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=eam-work-orders), [wip_entities](https://www.enginatics.com/library/?pg=1&find=wip_entities&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=eam-work-orders), [wip_discrete_jobs](https://www.enginatics.com/library/?pg=1&find=wip_discrete_jobs&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=eam-work-orders), [org_access_view](https://www.enginatics.com/library/?pg=1&find=org_access_view&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=eam-work-orders), [bom_departments](https://www.enginatics.com/library/?pg=1&find=bom_departments&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=eam-work-orders), [pa_projects_all](https://www.enginatics.com/library/?pg=1&find=pa_projects_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=eam-work-orders), [pa_tasks](https://www.enginatics.com/library/?pg=1&find=pa_tasks&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=eam-work-orders), [eam_work_order_details](https://www.enginatics.com/library/?pg=1&find=eam_work_order_details&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=eam-work-orders), [eam_wo_statuses_v](https://www.enginatics.com/library/?pg=1&find=eam_wo_statuses_v&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=eam-work-orders), [eam_pm_schedulings](https://www.enginatics.com/library/?pg=1&find=eam_pm_schedulings&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=eam-work-orders), [eam_org_maint_defaults](https://www.enginatics.com/library/?pg=1&find=eam_org_maint_defaults&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=eam-work-orders), [mtl_eam_locations](https://www.enginatics.com/library/?pg=1&find=mtl_eam_locations&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=eam-work-orders), [csi_item_instances](https://www.enginatics.com/library/?pg=1&find=csi_item_instances&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=eam-work-orders), [mtl_categories_b_kfv](https://www.enginatics.com/library/?pg=1&find=mtl_categories_b_kfv&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=eam-work-orders), [eam_failureinfo_v](https://www.enginatics.com/library/?pg=1&find=eam_failureinfo_v&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=eam-work-orders), [wip_eam_period_balances](https://www.enginatics.com/library/?pg=1&find=wip_eam_period_balances&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=eam-work-orders), [org_acct_periods](https://www.enginatics.com/library/?pg=1&find=org_acct_periods&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=eam-work-orders), [gl_periods](https://www.enginatics.com/library/?pg=1&find=gl_periods&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=eam-work-orders), [wip_eam_cost_details_v](https://www.enginatics.com/library/?pg=1&find=wip_eam_cost_details_v&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=eam-work-orders)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=eam-work-orders), [R12 only](https://www.enginatics.com/library/?pg=1&category%5B%5D=R12%20only&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=eam-work-orders)
 
-
+## Related Reports
+[EAM Work Orders 11i](/EAM%20Work%20Orders%2011i/ "EAM Work Orders 11i Oracle EBS SQL Report"), [EAM Weekly Schedule](/EAM%20Weekly%20Schedule/ "EAM Weekly Schedule Oracle EBS SQL Report"), [CAC WIP Resource Efficiency](/CAC%20WIP%20Resource%20Efficiency/ "CAC WIP Resource Efficiency Oracle EBS SQL Report"), [FND Attached Documents](/FND%20Attached%20Documents/ "FND Attached Documents Oracle EBS SQL Report"), [WIP Job Upload](/WIP%20Job%20Upload/ "WIP Job Upload Oracle EBS SQL Report"), [WIP Account Distribution](/WIP%20Account%20Distribution/ "WIP Account Distribution Oracle EBS SQL Report"), [EAM Work Requests](/EAM%20Work%20Requests/ "EAM Work Requests Oracle EBS SQL Report"), [CAC ICP PII WIP Material Usage Variance](/CAC%20ICP%20PII%20WIP%20Material%20Usage%20Variance/ "CAC ICP PII WIP Material Usage Variance Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/EAM%20Work%20Orders/EAM%20Work%20Orders.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=eam-work-orders) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [EAM Work Orders 18-Jan-2018 152946.xlsx](https://www.enginatics.com/example/eam-work-orders/) |
-| Blitz Report™ XML Import | [EAM_Work_Orders.xml](https://www.enginatics.com/xml/eam-work-orders/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/eam-work-orders/](https://www.enginatics.com/reports/eam-work-orders/) |
+| Excel Example Output | [EAM Work Orders 18-Jan-2018 152946.xlsx](https://www.enginatics.com/example/eam-work-orders/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=eam-work-orders) |
+| Blitz Report™ XML Import | [EAM_Work_Orders.xml](https://www.enginatics.com/xml/eam-work-orders/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=eam-work-orders) |
+| SQL Source | [EAM Work Orders.sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/EAM%20Work%20Orders/EAM%20Work%20Orders.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/eam-work-orders/](https://www.enginatics.com/reports/eam-work-orders/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=eam-work-orders) |
 
 ## EAM Work Orders - Case Study & Technical Analysis
 
@@ -104,18 +114,17 @@ A: Yes, the report includes columns for `Failure Code`, `Failure Description`, a
 **Q: Why do some work orders show no asset number?**
 A: Rebuildable work orders or work orders created for general maintenance activities not linked to a specific serialized asset instance might not have an asset number.
 
-
 ---
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=eam-work-orders)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=eam-work-orders)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=eam-work-orders)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=eam-work-orders)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=eam-work-orders)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=eam-work-orders)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=eam-work-orders)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

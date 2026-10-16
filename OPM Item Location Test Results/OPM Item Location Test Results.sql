@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: OPM Item Location Test Results
 -- Description: Oracle Process Manufacturing (OPM) Quality item/location test results: the QC test results recorded against inventory item, lot and subinventory samples, with the result value, the applicable specification minimum/target/maximum limits, an in-specification indicator and the sample disposition. The governing specification is resolved from the inventory spec validity rule effective for each sample's item, organization and lot. Answers what the lab results were for a given item or lot and whether they were in specification.
--- Excel Examle Output: https://www.enginatics.com/example/opm-item-location-test-results/
+-- Excel Example Output: https://www.enginatics.com/example/opm-item-location-test-results/
 -- Library Link: https://www.enginatics.com/reports/opm-item-location-test-results/
 -- Run Report: https://demo.enginatics.com/
 

@@ -1,57 +1,55 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC PO Price vs. Costing Method Comparison
--- Description: Report to compare the open purchase order lines and unit prices with the costing method item cost in Oracle (Average, Standard, FIFO or LIFO).  Used by the buyers and cost accounting to check the accuracy of the recently created purchase orders and run using a range of purchase order line creation dates.  Foreign currency purchase orders convert to the inventory organization's currency by either using the original purchase order exchange rate, if the Invoice Match Option is "Purchase Order" or by using the latest exchange rate date if the Invoice Match Option is "Receipt".
-
-Parameters:
-===========
-Creation Date From:  purchase order starting creation date (mandatory).
-Creation Date To: purchase order ending creation date (mandatory).
-Cost Type:  enter the cost type you wish to report (mandatory).  Defaults to your Costing Method.
-Minimum Value Difference:  the absolute smallest difference you want to report (mandatory).
-Minimum Cost Difference:  the absolute smallest difference you want to report (mandatory).
-Currency Conversion Type:  enter the currency conversion type for translating PO unit prices, used if the Invoice Match Option is "Receipt", defaults to Corporate (mandatory).
-Currency Conversion Date:  enter the currency conversion date for translating PO unit prices, used if the Invoice Match Option is "Receipt" (mandatory).
-Category Set 1:  the first item category set to report, typically the Cost or Product Line Category Set (optional).
-Category Set 2:  the second item category set to report, typically the Inventory Category Set (optional).
-Item Number:  enter the item numbers you wish to report (optional).
-Organization Code:  enter the specific inventory organization(s) you wish to report (optional).
-Operating Unit:  enter the specific operating unit(s) you wish to report (optional).
-Ledger:  enter the specific ledger(s) you wish to report (optional).
-
-/* +=============================================================================+
--- |  Copyright 2006-2024 Douglas Volz Consulting, Inc.
--- |  All rights reserved.
--- |  Permission to use this code is granted provided the original author is
--- |  acknowledged. No warranties, express or otherwise is included in this
--- |  permission.
--- +=============================================================================+
--- |
--- |  Original Author: Douglas Volz (doug@volzconsulting.com
--- | 
--- |  Version Modified on Modified  by   Description
--- |  ======= =========== ============== =========================================
--- |  1.0     02 APR 2006 Douglas Volz   Initial Coding
--- |  1.17    13 Jun 2017 Douglas Volz   Added OSP Resource Code
--- |  1.18    19 Aug 2019 Douglas Volz   Removed non-generic item categories
--- |  1.19    27 Jan 2020 Douglas Volz   Changed to multi-language views for the item
--- |                                     master, inventory orgs and operating units.
--- |                                     Added project number to report.
--- |  1.20    19 Dec 2020 Douglas Volz   Add these columns: PO Need By Date, PO Promise Date,
--- |                                     PO Expected Receipt Date, Target Price (PO List Price),
--- |                                     Customer Name (description for category set 1).  
--- |                                     And added Minimum Cost Difference parameter.
--- |  1.21    22 Dec 2020 Douglas Volz   Changed the item cost "union all" to just "union", 
--- |                                     which eliminated a full table scan on cst_item_costs.
--- |  1.22    02 Nov 2023 Douglas Volz   Add Cost Type as a parameter, remove tabs and
--- |                                     add org access controls.
--- |  1.23    18 Jul 2024 Douglas Volz   Fix for Percent Difference calculation.
--- +=============================================================================+*/
--- Excel Examle Output: https://www.enginatics.com/example/cac-po-price-vs-costing-method-comparison/
+-- Description: Report to compare the open purchase order lines and unit prices with the costing method item cost in Oracle (Average, Standard, FIFO or LIFO). Used by the buyers and cost accounting to check the accuracy of the recently created purchase orders and run using a range of purchase order line creation dates. Foreign currency purchase orders convert to the inventory organization's currency by either using the original purchase order exchange rate, if the Invoice Match Option is "Purchase Order" or by using the latest exchange rate date if the Invoice Match Option is "Receipt".
+-- Parameters:
+-- ===========
+-- Creation Date From: purchase order starting creation date (mandatory).
+-- Creation Date To: purchase order ending creation date (mandatory).
+-- Cost Type: enter the cost type you wish to report (mandatory). Defaults to your Costing Method.
+-- Minimum Value Difference: the absolute smallest difference you want to report (mandatory).
+-- Minimum Cost Difference: the absolute smallest difference you want to report (mandatory).
+-- Currency Conversion Type: enter the currency conversion type for translating PO unit prices, used if the Invoice Match Option is "Receipt", defaults to Corporate (mandatory).
+-- Currency Conversion Date: enter the currency conversion date for translating PO unit prices, used if the Invoice Match Option is "Receipt" (mandatory).
+-- Category Set 1: the first item category set to report, typically the Cost or Product Line Category Set (optional).
+-- Category Set 2: the second item category set to report, typically the Inventory Category Set (optional).
+-- Item Number: enter the item numbers you wish to report (optional).
+-- Organization Code: enter the specific inventory organization(s) you wish to report (optional).
+-- Operating Unit: enter the specific operating unit(s) you wish to report (optional).
+-- Ledger: enter the specific ledger(s) you wish to report (optional).
+-- / +=============================================================================+
+-- -- | Copyright 2006-2024 Douglas Volz Consulting, Inc.
+-- -- | All rights reserved.
+-- -- | Permission to use this code is granted provided the original author is
+-- -- | acknowledged. No warranties, express or otherwise is included in this
+-- -- | permission.
+-- -- +=============================================================================+
+-- -- |
+-- -- | Original Author: Douglas Volz (doug@volzconsulting.com
+-- -- |
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== ============== =========================================
+-- -- | 1.0 02 APR 2006 Douglas Volz Initial Coding
+-- -- | 1.17 13 Jun 2017 Douglas Volz Added OSP Resource Code
+-- -- | 1.18 19 Aug 2019 Douglas Volz Removed non-generic item categories
+-- -- | 1.19 27 Jan 2020 Douglas Volz Changed to multi-language views for the item
+-- -- | master, inventory orgs and operating units.
+-- -- | Added project number to report.
+-- -- | 1.20 19 Dec 2020 Douglas Volz Add these columns: PO Need By Date, PO Promise Date,
+-- -- | PO Expected Receipt Date, Target Price (PO List Price),
+-- -- | Customer Name (description for category set 1).
+-- -- | And added Minimum Cost Difference parameter.
+-- -- | 1.21 22 Dec 2020 Douglas Volz Changed the item cost "union all" to just "union",
+-- -- | which eliminated a full table scan on cstitemcosts.
+-- -- | 1.22 02 Nov 2023 Douglas Volz Add Cost Type as a parameter, remove tabs and
+-- -- | add org access controls.
+-- -- | 1.23 18 Jul 2024 Douglas Volz Fix for Percent Difference calculation.
+-- -- +=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-po-price-vs-costing-method-comparison/
 -- Library Link: https://www.enginatics.com/reports/cac-po-price-vs-costing-method-comparison/
 -- Run Report: https://demo.enginatics.com/
 

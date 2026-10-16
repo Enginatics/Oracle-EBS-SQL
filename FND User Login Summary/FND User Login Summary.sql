@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: FND User Login Summary
 -- Description: Active application user count per month
--- Excel Examle Output: https://www.enginatics.com/example/fnd-user-login-summary/
+-- Excel Example Output: https://www.enginatics.com/example/fnd-user-login-summary/
 -- Library Link: https://www.enginatics.com/reports/fnd-user-login-summary/
 -- Run Report: https://demo.enginatics.com/
 

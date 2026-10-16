@@ -1,16 +1,15 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: INV Material Account Distribution Detail
 -- Description: Description: Material account distribution detail
-Application: Inventory
-
-Source: Material account distribution detail (XML)
-Short Name: INVTRDST_XML
--- Excel Examle Output: https://www.enginatics.com/example/inv-material-account-distribution-detail/
+-- Application: Inventory
+-- Source: Material account distribution detail (XML)
+-- Short Name: INVTRDSTXML
+-- Excel Example Output: https://www.enginatics.com/example/inv-material-account-distribution-detail/
 -- Library Link: https://www.enginatics.com/reports/inv-material-account-distribution-detail/
 -- Run Report: https://demo.enginatics.com/
 

@@ -1,40 +1,53 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'AP Suppliers 11i | Oracle EBS SQL Report'
-description: 'AP suppliers (po vendors) including supplier sites and contact information – Oracle E-Business Suite SQL report'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Suppliers, 11i, hr_all_organization_units_vl, po_vendors, po_vendor_sites_all'
+description: 'AP suppliers (po vendors) including supplier sites and contact information Duplicate Match restricts the output to suppliers sharing a match key with at…'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Payables, Enginatics, Suppliers, 11i, hr_all_organization_units_vl, po_vendors, po_vendor_sites_all'
 permalink: /AP%20Suppliers%2011i/
+report_name: 'AP Suppliers 11i'
+report_web_name: ap-suppliers-11i
+module: 'Payables'
+module_url: /modules/payables/
 ---
 
 # AP Suppliers 11i – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/ap-suppliers-11i/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/ap-suppliers-11i/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-suppliers-11i) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-suppliers-11i).
+**Oracle EBS module:** [Payables](/modules/payables/ "Oracle EBS Payables reports") · [all Payables reports](/modules/payables/)  
 
 ## Overview
 AP suppliers (po vendors) including supplier sites and contact information
 
+Duplicate Match restricts the output to suppliers sharing a match key with at least one other supplier and lists the shared keys. Names are compared in upper case without punctuation, spaces and legal form suffixes (Inc, Ltd, GmbH, SA and similar), the other keys without punctuation and spaces. Bank accounts are shown masked.
+
+Spend Last 12 Months is the total of the supplier's invoices dated in the last twelve months, excluding cancelled invoices, in each operating unit's functional currency.
+
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-suppliers-11i) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
+
 ## Report Parameters
-Operating Unit, Supplier, Supplier Number, Supplier Type, Country, Show Contacts
+Operating Unit, Supplier, Supplier Number, Supplier Type, Country, Show Contacts, Duplicate Match, Name Data Quality Issues Only
 
 ## Oracle EBS Tables Used
-[hr_all_organization_units_vl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_vl), [po_vendors](https://www.enginatics.com/library/?pg=1&find=po_vendors), [po_vendor_sites_all](https://www.enginatics.com/library/?pg=1&find=po_vendor_sites_all), [fnd_territories_vl](https://www.enginatics.com/library/?pg=1&find=fnd_territories_vl), [po_vendor_contacts](https://www.enginatics.com/library/?pg=1&find=po_vendor_contacts), [ap_terms_tl](https://www.enginatics.com/library/?pg=1&find=ap_terms_tl)
+[hr_all_organization_units_vl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-suppliers-11i), [po_vendors](https://www.enginatics.com/library/?pg=1&find=po_vendors&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-suppliers-11i), [po_vendor_sites_all](https://www.enginatics.com/library/?pg=1&find=po_vendor_sites_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-suppliers-11i), [fnd_territories_vl](https://www.enginatics.com/library/?pg=1&find=fnd_territories_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-suppliers-11i), [po_vendor_contacts](https://www.enginatics.com/library/?pg=1&find=po_vendor_contacts&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-suppliers-11i), [ap_terms_tl](https://www.enginatics.com/library/?pg=1&find=ap_terms_tl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-suppliers-11i)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-suppliers-11i)
 
 ## Related Reports
-[AP Supplier Upload](/AP%20Supplier%20Upload/ "AP Supplier Upload Oracle EBS SQL Report"), [PO Headers and Lines 11i](/PO%20Headers%20and%20Lines%2011i/ "PO Headers and Lines 11i Oracle EBS SQL Report"), [AP Suppliers Revenue Summary 11i](/AP%20Suppliers%20Revenue%20Summary%2011i/ "AP Suppliers Revenue Summary 11i Oracle EBS SQL Report"), [AP Suppliers](/AP%20Suppliers/ "AP Suppliers Oracle EBS SQL Report")
+[AP Supplier Upload](/AP%20Supplier%20Upload/ "AP Supplier Upload Oracle EBS SQL Report"), [AP Suppliers](/AP%20Suppliers/ "AP Suppliers Oracle EBS SQL Report"), [PO Purchasing Document Upload](/PO%20Purchasing%20Document%20Upload/ "PO Purchasing Document Upload Oracle EBS SQL Report"), [PO Headers and Lines](/PO%20Headers%20and%20Lines/ "PO Headers and Lines Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/AP%20Suppliers%2011i/AP%20Suppliers%2011i.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-suppliers-11i) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [None](https://www.enginatics.com/example/ap-suppliers-11i/) |
-| Blitz Report™ XML Import | [AP_Suppliers_11i.xml](https://www.enginatics.com/xml/ap-suppliers-11i/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/ap-suppliers-11i/](https://www.enginatics.com/reports/ap-suppliers-11i/) |
+| Excel Example Output | [Example](https://www.enginatics.com/example/ap-suppliers-11i/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-suppliers-11i) |
+| Blitz Report™ XML Import | [AP_Suppliers_11i.xml](https://www.enginatics.com/xml/ap-suppliers-11i/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-suppliers-11i) |
+| SQL Source | [AP Suppliers 11i.sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/AP%20Suppliers%2011i/AP%20Suppliers%2011i.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/ap-suppliers-11i/](https://www.enginatics.com/reports/ap-suppliers-11i/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-suppliers-11i) |
 
 ## Case Study & Technical Analysis: AP Suppliers
 
@@ -107,18 +120,17 @@ The SQL is structured to handle the complex relationships between Suppliers, Sit
 *   **Inactive Cleanup:** Use the "Last Update Date" and "Inactive Date" fields to identify and deactivate dormant suppliers.
 *   **Duplicate Check:** Export to Excel and use fuzzy matching on "Supplier Name" and "Address" to find potential duplicates.
 
-
 ---
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-suppliers-11i)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-suppliers-11i)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-suppliers-11i)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-suppliers-11i)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-suppliers-11i)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-suppliers-11i)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-suppliers-11i)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

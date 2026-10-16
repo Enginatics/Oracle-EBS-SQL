@@ -1,20 +1,16 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: Blitz Report Template Sharing
 -- Description: Lists the sharing records for Blitz Report templates - who each template is shared with at Site, Responsibility or User level. The Owner column shows the user who owns each template.
-
-For a Responsibility-level share the Shared With column shows the responsibility name and the Application column shows its owning application; for a User-level share it shows the user name; a Site-level share is available to everyone.
-
-For Responsibility-level shares the Menu Name column shows the responsibility's menu and Blitz Report Menu Entries counts the Blitz Report menu functions already on that menu (blank when none). A blank Blitz Report Menu Entries with a shared template flags a responsibility whose menu is still missing the Blitz Report function - run the Update Menu Entries program to add it.
-
-Set the Assigned to EBS User parameter to a user to answer "which templates can this user actually use, and how". The report then shows one row per access path - a Site share (available to everyone), each Responsibility share on a responsibility the user holds, a direct User share, or ownership - but ONLY for reports the user is allowed to run: it applies the same report-access reach as the run screen (Site, Application, Request Group, Responsibility and User assignments), so a template shared with the user whose report is not assigned to the user is not listed (the user could not run it). The Assigned To User Via column names the level for that row (for example "Responsibility (AP Manager)" or "Owner"); the per-share administrative columns are blank in this mode.
-
-Use the Report Name, Category, Template Name, Template Owner and Sharing Level parameters to narrow the list - for example set Category to Discoverer to pull the templates of all Discoverer reports, or Template Owner to list one user's templates. The Template Name list is filtered to the selected Report Name when one is chosen.
--- Excel Examle Output: https://www.enginatics.com/example/blitz-report-template-sharing/
+-- For a Responsibility-level share the Shared With column shows the responsibility name and the Application column shows its owning application; for a User-level share it shows the user name; a Site-level share is available to everyone.
+-- For Responsibility-level shares the Menu Name column shows the responsibility's menu and Blitz Report Menu Entries counts the Blitz Report menu functions already on that menu (blank when none). A blank Blitz Report Menu Entries with a shared template flags a responsibility whose menu is still missing the Blitz Report function - run the Update Menu Entries program to add it.
+-- Set the Assigned to EBS User parameter to a user to answer "which templates can this user actually use, and how". The report then shows one row per access path - a Site share (available to everyone), each Responsibility share on a responsibility the user holds, a direct User share, or ownership - but ONLY for reports the user is allowed to run: it applies the same report-access reach as the run screen (Site, Application, Request Group, Responsibility and User assignments), so a template shared with the user whose report is not assigned to the user is not listed (the user could not run it). The Assigned To User Via column names the level for that row (for example "Responsibility (AP Manager)" or "Owner"); the per-share administrative columns are blank in this mode.
+-- Use the Report Name, Category, Template Name, Template Owner and Sharing Level parameters to narrow the list - for example set Category to Discoverer to pull the templates of all Discoverer reports, or Template Owner to list one user's templates. The Template Name list is filtered to the selected Report Name when one is chosen.
+-- Excel Example Output: https://www.enginatics.com/example/blitz-report-template-sharing/
 -- Library Link: https://www.enginatics.com/reports/blitz-report-template-sharing/
 -- Run Report: https://demo.enginatics.com/
 

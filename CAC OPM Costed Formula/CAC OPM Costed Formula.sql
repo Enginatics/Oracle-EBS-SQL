@@ -1,49 +1,45 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC OPM Costed Formula
--- Description: eport showing OPM formulas and item costs, by OPM Cost Component Class.   The report automatically displays the first thirty Cost Components, sorted by Usage Indicator (1-Material, 2-Overhead, 3-Resource, 4-Expense Alloc), then by the Cost Component Class.  With the "Other Costs" column summing up any other non-displayed Cost Component Classes.  For a different selection of Cost Component Classes, you may override any of the defaulted Cost Component Classes.  If you have fewer than thirty Cost Components the report automatically displays "Not Available", for the succeeding Cost Component columns.  And if you enter a cost type this report uses the item costs from the cost type; if you leave the cost type blank it uses the item costs from the month-end item costs.
-
-Note:  The Label Approval column is from a user-defined Formula field, attribute4.  Your use of these descriptive flexfields, may be different and may require you to customize this report.
-
-General Parameters:
-===================
-Cost Type:  enter a Cost Type to value the quantities using the Cost Type item costs; or, if Cost Type is not entered the report will use the stored month-end snapshot values (optional).
-OPM Calendar Code:  choose the OPM Calendar Code which corresponds to the inventory accounting period you wish to report (mandatory).
-OPM Period Code:  enter the OPM Period Code related to the inventory accounting period and OPM Calendar Code you wish to report (mandatory).
-Only Show Latest Version:  enter Yes to report the latest formula and recipe version.  Enter No to see all versions (mandatory).
-Show More Details:  enter Yes to display Ingredient Scale Type, Contribute to Yield, Standard Lot Size and End Date (from the validity rule).  Mandatory.
-Effective Date:  for material line items and validity rules, enter the last ending date to report.  Defaults to today's date (mandatory).
-Status to Include:  to minimize the report size, specify the formula, recipe and validity rule statuses you wish to report (optional).
-Product Category Set:  the Product category set you wish to report (optional).
-Line Category Set 1:  for the formula line item numbers, the first item category set to report (optional).
-Line Category Set 2:  for the formula line item numbers, the second item category set to report (optional)
-Item Number:  specific Product, By-Product or Ingredient you wish to report (optional).
-Organization Code:  any inventory organization, defaults to your session's inventory organization (optional).
-Operating Unit:  specific operating unit (optional).
-Ledger:  specific ledger (optional).
-Cost Component 1 - 30:  the defaulted Cost Component Classes.  You may override these defaulted values.
-
--- | Version Modified on Modified by Description
--- | ======= =========== ==============
--- | 1.0     02 Jun 2024 Douglas Volz Initial Coding based on client's sample report.
--- | 1.1     03 Jun 2024 Douglas Volz UOM conversions for formula line quantities
--- | 1.2     08 Jun 2024 Douglas Volz Replaced Cost Component rownum sort logic.
--- | 1.3     12 Jun 2024 Douglas Volz Cleaned-up naming for Cost Component parameters, fixed item number parameter.
--- | 1.4     03 Aug 2024 Douglas Volz Add OPM Cost Organizations to get correct item costs.
--- | 1.5     05 Aug 2024 Douglas Volz Add inventory organization access control security.
--- | 1.6     07 Aug 2024 Douglas Volz Not all formulas are assigned to classes, needs outer join.
--- | 1.7     08 Aug 2024 Douglas Volz Add item status and Make/Buy columns.
--- | 1.8     09 Aug 2024 Douglas Volz Add parameter "Show More Details" for Scale Type, Contribute to Yield, Std Lot Size and End Date.
--- | 1.9     17 Aug 2024 Douglas Volz Add parameters "Only Show Latest Version" and "Effective Date".
--- | 1.10    18 Aug 2024 Douglas Volz Restructured code.
--- | 1.11    07 Sep 2024 Douglas Volz Fixed Cost Component parameters, from lexicals to bind variables.
--- | 1.12    10 Sep 2024 Douglas Volz Add Std Lot Size UOM column.
-
--- Excel Examle Output: https://www.enginatics.com/example/cac-opm-costed-formula/
+-- Description: eport showing OPM formulas and item costs, by OPM Cost Component Class. The report automatically displays the first thirty Cost Components, sorted by Usage Indicator (1-Material, 2-Overhead, 3-Resource, 4-Expense Alloc), then by the Cost Component Class. With the "Other Costs" column summing up any other non-displayed Cost Component Classes. For a different selection of Cost Component Classes, you may override any of the defaulted Cost Component Classes. If you have fewer than thirty Cost Components the report automatically displays "Not Available", for the succeeding Cost Component columns. And if you enter a cost type this report uses the item costs from the cost type; if you leave the cost type blank it uses the item costs from the month-end item costs.
+-- Note: The Label Approval column is from a user-defined Formula field, attribute4. Your use of these descriptive flexfields, may be different and may require you to customize this report.
+-- General Parameters:
+-- ===================
+-- Cost Type: enter a Cost Type to value the quantities using the Cost Type item costs; or, if Cost Type is not entered the report will use the stored month-end snapshot values (optional).
+-- OPM Calendar Code: choose the OPM Calendar Code which corresponds to the inventory accounting period you wish to report (mandatory).
+-- OPM Period Code: enter the OPM Period Code related to the inventory accounting period and OPM Calendar Code you wish to report (mandatory).
+-- Only Show Latest Version: enter Yes to report the latest formula and recipe version. Enter No to see all versions (mandatory).
+-- Show More Details: enter Yes to display Ingredient Scale Type, Contribute to Yield, Standard Lot Size and End Date (from the validity rule). Mandatory.
+-- Effective Date: for material line items and validity rules, enter the last ending date to report. Defaults to today's date (mandatory).
+-- Status to Include: to minimize the report size, specify the formula, recipe and validity rule statuses you wish to report (optional).
+-- Product Category Set: the Product category set you wish to report (optional).
+-- Line Category Set 1: for the formula line item numbers, the first item category set to report (optional).
+-- Line Category Set 2: for the formula line item numbers, the second item category set to report (optional)
+-- Item Number: specific Product, By-Product or Ingredient you wish to report (optional).
+-- Organization Code: any inventory organization, defaults to your session's inventory organization (optional).
+-- Operating Unit: specific operating unit (optional).
+-- Ledger: specific ledger (optional).
+-- Cost Component 1 - 30: the defaulted Cost Component Classes. You may override these defaulted values.
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== ==============
+-- -- | 1.0 02 Jun 2024 Douglas Volz Initial Coding based on client's sample report.
+-- -- | 1.1 03 Jun 2024 Douglas Volz UOM conversions for formula line quantities
+-- -- | 1.2 08 Jun 2024 Douglas Volz Replaced Cost Component rownum sort logic.
+-- -- | 1.3 12 Jun 2024 Douglas Volz Cleaned-up naming for Cost Component parameters, fixed item number parameter.
+-- -- | 1.4 03 Aug 2024 Douglas Volz Add OPM Cost Organizations to get correct item costs.
+-- -- | 1.5 05 Aug 2024 Douglas Volz Add inventory organization access control security.
+-- -- | 1.6 07 Aug 2024 Douglas Volz Not all formulas are assigned to classes, needs outer join.
+-- -- | 1.7 08 Aug 2024 Douglas Volz Add item status and Make/Buy columns.
+-- -- | 1.8 09 Aug 2024 Douglas Volz Add parameter "Show More Details" for Scale Type, Contribute to Yield, Std Lot Size and End Date.
+-- -- | 1.9 17 Aug 2024 Douglas Volz Add parameters "Only Show Latest Version" and "Effective Date".
+-- -- | 1.10 18 Aug 2024 Douglas Volz Restructured code.
+-- -- | 1.11 07 Sep 2024 Douglas Volz Fixed Cost Component parameters, from lexicals to bind variables.
+-- -- | 1.12 10 Sep 2024 Douglas Volz Add Std Lot Size UOM column.
+-- Excel Example Output: https://www.enginatics.com/example/cac-opm-costed-formula/
 -- Library Link: https://www.enginatics.com/reports/cac-opm-costed-formula/
 -- Run Report: https://demo.enginatics.com/
 

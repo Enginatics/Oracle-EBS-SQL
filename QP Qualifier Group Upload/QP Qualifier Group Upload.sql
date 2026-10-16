@@ -1,13 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: QP Qualifier Group Upload
 -- Description: This upload supports the creation and update of Qualifier Groups in Oracle Advanced Pricing.
-
--- Excel Examle Output: https://www.enginatics.com/example/qp-qualifier-group-upload/
+-- Excel Example Output: https://www.enginatics.com/example/qp-qualifier-group-upload/
 -- Library Link: https://www.enginatics.com/reports/qp-qualifier-group-upload/
 -- Run Report: https://demo.enginatics.com/
 

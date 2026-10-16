@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: FSG Drilldown Diagnostic
--- Description: Troubleshooting report for FSG journal drilldown issues. Checks gl_balances, posted/unposted journals, period status, account properties, and flex value security for a given account and period. Use the GL segment parameters to filter to the specific account combination that is not drilling down.
--- Excel Examle Output: https://www.enginatics.com/example/fsg-drilldown-diagnostic/
+-- Description: Troubleshooting report for FSG journal drilldown issues. Checks glbalances, posted/unposted journals, period status, account properties, and flex value security for a given account and period. Use the GL segment parameters to filter to the specific account combination that is not drilling down.
+-- Excel Example Output: https://www.enginatics.com/example/fsg-drilldown-diagnostic/
 -- Library Link: https://www.enginatics.com/reports/fsg-drilldown-diagnostic/
 -- Run Report: https://demo.enginatics.com/
 

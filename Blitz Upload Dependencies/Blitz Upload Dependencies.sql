@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: Blitz Upload Dependencies
 -- Description: 
--- Excel Examle Output: https://www.enginatics.com/example/blitz-upload-dependencies/
+-- Excel Example Output: https://www.enginatics.com/example/blitz-upload-dependencies/
 -- Library Link: https://www.enginatics.com/reports/blitz-upload-dependencies/
 -- Run Report: https://demo.enginatics.com/
 

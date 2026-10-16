@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PER Position Hierarchy
 -- Description: Position hierarchy showing the reporting structure of positions with hierarchy level, organization, job, grade, location, budgeted vs actual headcount, vacancy count, and current incumbent names. Useful for position control, staffing analysis, and org chart construction.
--- Excel Examle Output: https://www.enginatics.com/example/per-position-hierarchy/
+-- Excel Example Output: https://www.enginatics.com/example/per-position-hierarchy/
 -- Library Link: https://www.enginatics.com/reports/per-position-hierarchy/
 -- Run Report: https://demo.enginatics.com/
 

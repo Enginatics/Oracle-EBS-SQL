@@ -1,25 +1,19 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: OPM Batch Lot Cost Details
 -- Description: OPM Batch Lot Cost Details Report
-
-This report shows the Batch Lot Costs details for completed batches in the specified from/to Date Range and for the specified Organization, Product, Formula Class (optional) and Batch (optional).
-
-For each selected batch included in the report, the report details the lot cost details for that batch and for all child production batches consumed by that batch.
-
-The quantities shown in the child batches are the actual quantities for that batch and it’s ingredients. This report does not apportion the child batch quantities based on the actual quantity consumed by the parent batches. 
-
-The report allows the user to pull in several additional data points to allow further analysis of data based on the customer specific configuration. Specifically, for the both the batch product (same for all lines in the batch) and for the batch ingredients (are specific to each line in the batch), the following additional data can be pulled into the report.
-
-- Item Catalog Descriptive Elements for a specific Item Catalog Group
-- Item Category Segments for a specific Item Category Set
-- Item Descriptive Flexfield Attributes   
-
--- Excel Examle Output: https://www.enginatics.com/example/opm-batch-lot-cost-details/
+-- This report shows the Batch Lot Costs details for completed batches in the specified from/to Date Range and for the specified Organization, Product, Formula Class (optional) and Batch (optional).
+-- For each selected batch included in the report, the report details the lot cost details for that batch and for all child production batches consumed by that batch.
+-- The quantities shown in the child batches are the actual quantities for that batch and it’s ingredients. This report does not apportion the child batch quantities based on the actual quantity consumed by the parent batches.
+-- The report allows the user to pull in several additional data points to allow further analysis of data based on the customer specific configuration. Specifically, for the both the batch product (same for all lines in the batch) and for the batch ingredients (are specific to each line in the batch), the following additional data can be pulled into the report.
+-- - Item Catalog Descriptive Elements for a specific Item Catalog Group
+-- - Item Category Segments for a specific Item Category Set
+-- - Item Descriptive Flexfield Attributes
+-- Excel Example Output: https://www.enginatics.com/example/opm-batch-lot-cost-details/
 -- Library Link: https://www.enginatics.com/reports/opm-batch-lot-cost-details/
 -- Run Report: https://demo.enginatics.com/
 

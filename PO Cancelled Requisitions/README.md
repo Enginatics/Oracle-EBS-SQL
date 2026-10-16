@@ -1,14 +1,20 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'PO Cancelled Requisitions | Oracle EBS SQL Report'
 description: 'Application: Purchasing Source: Cancelled Requisition Report (XML) Short Name: POXRQCRQXML DB package: POPOXRQCRQXMLPPKG'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Cancelled, Requisitions, po_requisition_headers_all, fnd_user, per_all_people_f'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Purchasing, Enginatics, Cancelled, Requisitions, po_requisition_headers_all, fnd_user, per_all_people_f'
 permalink: /PO%20Cancelled%20Requisitions/
+report_name: 'PO Cancelled Requisitions'
+report_web_name: po-cancelled-requisitions
+module: 'Purchasing'
+module_url: /modules/purchasing/
 ---
 
 # PO Cancelled Requisitions – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/po-cancelled-requisitions/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/po-cancelled-requisitions/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-cancelled-requisitions) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-cancelled-requisitions).
+**Oracle EBS module:** [Purchasing](/modules/purchasing/ "Oracle EBS Purchasing reports") · [all Purchasing reports](/modules/purchasing/)  
 
 ## Overview
 Application: Purchasing
@@ -16,28 +22,31 @@ Source: Cancelled Requisition Report (XML)
 Short Name: POXRQCRQ_XML
 DB package: PO_POXRQCRQ_XMLP_PKG
 
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-cancelled-requisitions) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
+
 ## Report Parameters
 Show Requisition Lines, Operating Unit, Preparer From, Preparer To, Requestor From, Requestor To, Cancelled Date From, Cancelled Date To, Creation Date From, Creation Date To
 
 ## Oracle EBS Tables Used
-[po_requisition_headers_all](https://www.enginatics.com/library/?pg=1&find=po_requisition_headers_all), [fnd_user](https://www.enginatics.com/library/?pg=1&find=fnd_user), [per_all_people_f](https://www.enginatics.com/library/?pg=1&find=per_all_people_f), [po_action_history](https://www.enginatics.com/library/?pg=1&find=po_action_history), [po_document_types_all_tl](https://www.enginatics.com/library/?pg=1&find=po_document_types_all_tl), [po_document_types_all_b](https://www.enginatics.com/library/?pg=1&find=po_document_types_all_b), [po_system_parameters_all](https://www.enginatics.com/library/?pg=1&find=po_system_parameters_all), [mo_glob_org_access_tmp](https://www.enginatics.com/library/?pg=1&find=mo_glob_org_access_tmp), [financials_system_params_all](https://www.enginatics.com/library/?pg=1&find=financials_system_params_all), [po_requisition_lines_all](https://www.enginatics.com/library/?pg=1&find=po_requisition_lines_all), [mtl_categories_kfv](https://www.enginatics.com/library/?pg=1&find=mtl_categories_kfv), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl)
+[po_requisition_headers_all](https://www.enginatics.com/library/?pg=1&find=po_requisition_headers_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-cancelled-requisitions), [fnd_user](https://www.enginatics.com/library/?pg=1&find=fnd_user&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-cancelled-requisitions), [per_all_people_f](https://www.enginatics.com/library/?pg=1&find=per_all_people_f&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-cancelled-requisitions), [po_action_history](https://www.enginatics.com/library/?pg=1&find=po_action_history&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-cancelled-requisitions), [po_document_types_all_tl](https://www.enginatics.com/library/?pg=1&find=po_document_types_all_tl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-cancelled-requisitions), [po_document_types_all_b](https://www.enginatics.com/library/?pg=1&find=po_document_types_all_b&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-cancelled-requisitions), [po_system_parameters_all](https://www.enginatics.com/library/?pg=1&find=po_system_parameters_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-cancelled-requisitions), [mo_glob_org_access_tmp](https://www.enginatics.com/library/?pg=1&find=mo_glob_org_access_tmp&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-cancelled-requisitions), [financials_system_params_all](https://www.enginatics.com/library/?pg=1&find=financials_system_params_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-cancelled-requisitions), [po_requisition_lines_all](https://www.enginatics.com/library/?pg=1&find=po_requisition_lines_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-cancelled-requisitions), [mtl_categories_kfv](https://www.enginatics.com/library/?pg=1&find=mtl_categories_kfv&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-cancelled-requisitions), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-cancelled-requisitions)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-cancelled-requisitions)
 
 ## Related Reports
 [GL Account Analysis (Drilldown) (with inventory and WIP)](/GL%20Account%20Analysis%20%28Drilldown%29%20%28with%20inventory%20and%20WIP%29/ "GL Account Analysis (Drilldown) (with inventory and WIP) Oracle EBS SQL Report"), [GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report"), [GL Account Analysis](/GL%20Account%20Analysis/ "GL Account Analysis Oracle EBS SQL Report"), [PO Cancelled Purchase Orders](/PO%20Cancelled%20Purchase%20Orders/ "PO Cancelled Purchase Orders Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/PO%20Cancelled%20Requisitions/PO%20Cancelled%20Requisitions.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-cancelled-requisitions) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [PO Cancelled Requisitions 03-Mar-2023 001840.xlsx](https://www.enginatics.com/example/po-cancelled-requisitions/) |
-| Blitz Report™ XML Import | [PO_Cancelled_Requisitions.xml](https://www.enginatics.com/xml/po-cancelled-requisitions/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/po-cancelled-requisitions/](https://www.enginatics.com/reports/po-cancelled-requisitions/) |
+| Excel Example Output | [PO Cancelled Requisitions 03-Mar-2023 001840.xlsx](https://www.enginatics.com/example/po-cancelled-requisitions/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-cancelled-requisitions) |
+| Blitz Report™ XML Import | [PO_Cancelled_Requisitions.xml](https://www.enginatics.com/xml/po-cancelled-requisitions/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-cancelled-requisitions) |
+| SQL Source | [PO Cancelled Requisitions.sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/PO%20Cancelled%20Requisitions/PO%20Cancelled%20Requisitions.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/po-cancelled-requisitions/](https://www.enginatics.com/reports/po-cancelled-requisitions/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-cancelled-requisitions) |
 
 ## Case Study & Technical Analysis: PO Cancelled Requisitions Report
 
@@ -103,18 +112,17 @@ As a transactional report, it is optimized by its ability to filter on key dates
 **3. Can I use this report to see if a cancelled requisition was ever converted into a Purchase Order?**
    This report specifically focuses on *cancelled requisitions*. If a requisition was converted into a PO *before* being cancelled, that PO would appear in a different set of reports (e.g., `PO Cancelled Purchase Orders`). The act of cancellation typically prevents further processing of the requisition itself.
 
-
 ---
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-cancelled-requisitions)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-cancelled-requisitions)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-cancelled-requisitions)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-cancelled-requisitions)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-cancelled-requisitions)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-cancelled-requisitions)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-cancelled-requisitions)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

@@ -1,12 +1,14 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: AR Transactions and Lines 11i
 -- Description: Detail AR transaction report with line level details and special columns for service contracts (OKS) and lease contracts (OKL) data
--- Excel Examle Output: https://www.enginatics.com/example/ar-transactions-and-lines-11i/
+-- Show Sales Credits lists each line once per salesperson credit, with the revenue and non-revenue split. Transaction and line amounts are shown on the first row of a transaction or line only, so they can be summed.
+-- Revenue As Of Date adds the accounting rule and the deferred revenue position of each line: Revenue Recognized is the sum of the revenue distributions with a GL date up to that date, and Unearned Balance is the line amount less that, for lines with an accounting rule or with revenue deferred by Revenue Management.
+-- Excel Example Output: https://www.enginatics.com/example/ar-transactions-and-lines-11i/
 -- Library Link: https://www.enginatics.com/reports/ar-transactions-and-lines-11i/
 -- Run Report: https://demo.enginatics.com/
 
@@ -24,12 +26,12 @@ x.credited_invoice_line,
 x.account_number,
 x.party_name,
 x.currency,
-decode(x.first_line,'Y',x.total_due_original) total_due_original,
-decode(x.first_line,'Y',x.total_payment_applied) total_payment_applied,
-decode(x.first_line,'Y',x.total_adjustment) total_adjustment,
-decode(x.first_line,'Y',x.total_credit) total_credit,
-decode(x.first_line,'Y',x.total_due_remaining) total_due_remaining,
-decode(x.first_line,'Y',x.dispute_amount) dispute_amount,
+decode(x.first_line&rctlsa_nfl,'Y',x.total_due_original) total_due_original,
+decode(x.first_line&rctlsa_nfl,'Y',x.total_payment_applied) total_payment_applied,
+decode(x.first_line&rctlsa_nfl,'Y',x.total_adjustment) total_adjustment,
+decode(x.first_line&rctlsa_nfl,'Y',x.total_credit) total_credit,
+decode(x.first_line&rctlsa_nfl,'Y',x.total_due_remaining) total_due_remaining,
+decode(x.first_line&rctlsa_nfl,'Y',x.dispute_amount) dispute_amount,
 x.status,
 x.payment_term,
 x.invoicing_rule,
@@ -59,14 +61,16 @@ x.description,
 x.uom_code,
 x.quantity,
 x.unit_price,
-x.amount,
+decode(null&rctlsa_nfl,null,x.amount) amount,
 x.tax_rate,
-x.tax_amount,
-x.amount+nvl(x.tax_amount,0) amount_incl_tax,
+decode(null&rctlsa_nfl,null,x.tax_amount) tax_amount,
+decode(null&rctlsa_nfl,null,x.amount+nvl(x.tax_amount,0)) amount_incl_tax,
 x.category,
 x.sales_order,
 x.sales_order_line,
 x.sales_order_date,
+&revenue_columns
+&salescredit_columns
 gcck.concatenated_segments revenue_account,
 &account_columns
 ----------oks contracts----------
@@ -165,6 +169,7 @@ rctla.sales_order_date,
 (select rctlgda.code_combination_id from ra_cust_trx_line_gl_dist_all rctlgda where rctla.customer_trx_line_id=rctlgda.customer_trx_line_id and rctlgda.account_class='REV' and rctlgda.account_set_flag='N' and rctlgda.gl_date is not null and rctlgda.amount is not null and rctlgda.acctd_amount is not null and nvl(rctlgda.ccid_change_flag,'Y')='Y' and rownum=1) revenue_account_id,
 xxen_util.user_name(rctla.created_by) created_by,
 rctla.creation_date,
+&revenue_view_columns
 rctla.customer_trx_id,
 rctla.customer_trx_line_id,
 decode(rctla.customer_trx_line_id,min(rctla.customer_trx_line_id) keep (dense_rank first order by decode(rctla.line_type,'FREIGHT',null,rctla.line_number)) over (partition by apsa.payment_schedule_id),'Y') first_line,
@@ -326,6 +331,7 @@ okc_line_styles_b olsb,
 csi_item_instances cii,
 okc_k_headers_b okhab,
 okc_k_lines_tl oklt1
+&salescredit_from
 where
 x.revenue_account_id=gcck.code_combination_id(+) and
 x.lse_id=olsb.id(+) and
@@ -333,6 +339,7 @@ x.instance_id=cii.instance_id(+) and
 x.dnz_chr_id=okhab.id(+) and
 x.oklb1_id=oklt1.id(+) and
 oklt1.language(+)=userenv('lang')
+&salescredit_where
 order by
 x.operating_unit,
 x.party_name,
@@ -342,3 +349,4 @@ x.invoice_number desc,
 x.trx_number desc,
 x.line,
 x.item
+&order_by_salescredit

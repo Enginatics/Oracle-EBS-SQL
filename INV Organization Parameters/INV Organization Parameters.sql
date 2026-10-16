@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: INV Organization Parameters
 -- Description: 
--- Excel Examle Output: https://www.enginatics.com/example/inv-organization-parameters/
+-- Excel Example Output: https://www.enginatics.com/example/inv-organization-parameters/
 -- Library Link: https://www.enginatics.com/reports/inv-organization-parameters/
 -- Run Report: https://demo.enginatics.com/
 
@@ -40,7 +40,7 @@ xxen_util.yes(mpv.eam_enabled_flag) eam_enabled,
 xxen_util.yes(mpv.wms_enabled_flag) wms_enabled,
 xxen_util.yes(mpv.wcs_enabled) wcs_enabled,
 xxen_util.yes(mpv.lcm_enabled_flag) lcm_enabled,
-xxen_util.meaning(decode(mpv.enable_ekanban,1,1),'SYS_YES_NO',700) ekanban_enabled,
+&lp_enable_ekanban
 xxen_util.yes(mpv.process_enabled_flag) process_manufacturing_enabled,
 mpv.process_orgn_code,
 ood2.organization_code eam_organization_code,
@@ -86,7 +86,7 @@ mpv.child_lot_number_length child_lot_length,
 xxen_util.yes(mpv.child_lot_validation_flag) child_lot_format_validation,
 xxen_util.yes(mpv.copy_lot_attribute_flag) copy_child_lot_attributes,
 decode(mpv.create_lot_uom_conversion,1,'Yes',2,'No',3,'User confirmation') auto_create_lot_uom_conversion,
-decode(mpv.allow_different_status,1,'Yes',2,'No',3,'With exception') allow_different_material_status,
+decode(mpv.allow_different_status,1,'Yes',2,'No',3,'With exception') allow_diff_material_status,
 decode(mpv.serial_number_type,1,'Within inventory model and items',2,'Within organization',3,'Across organizations',4,'Within inventory items') serial_control_uniqueness,
 xxen_util.meaning(mpv.serial_number_generation,'MTL_LOT_GENERATION',700) serial_control_generation,
 mpv.auto_serial_alpha_prefix prefix,

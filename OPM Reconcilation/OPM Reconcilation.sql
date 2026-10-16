@@ -1,14 +1,14 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: OPM Reconcilation
 -- Description: OPM Reconciliation Report.
-Blitz Report implementation of the Oracle sql script: OPMRecon.sql 
-Reference MOS Document: OPM Inventory Balance Reconciliation (Doc ID 1510357.1)
--- Excel Examle Output: https://www.enginatics.com/example/opm-reconcilation/
+-- Blitz Report implementation of the Oracle sql script: OPMRecon.sql
+-- Reference MOS Document: OPM Inventory Balance Reconciliation (Doc ID 1510357.1)
+-- Excel Example Output: https://www.enginatics.com/example/opm-reconcilation/
 -- Library Link: https://www.enginatics.com/reports/opm-reconcilation/
 -- Run Report: https://demo.enginatics.com/
 

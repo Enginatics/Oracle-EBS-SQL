@@ -1,40 +1,49 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'AD Applied Patches | Oracle EBS SQL Report'
-description: 'AD applied patches, patch runs, included bugs, filenames and actions – Oracle E-Business Suite SQL report'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Applied, Patches, ad_comprising_patches, ad_bugs, ad_appl_tops'
+description: 'AD applied patches, patch runs, included bugs, filenames and actions – Oracle EBS Applications DBA SQL report: free SQL, parameters and tables used.'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Applications DBA, Enginatics, Applied, Patches, ad_comprising_patches, ad_bugs, ad_appl_tops'
 permalink: /AD%20Applied%20Patches/
+report_name: 'AD Applied Patches'
+report_web_name: ad-applied-patches
+module: 'Applications DBA'
+module_url: /modules/applications-dba/
 ---
 
 # AD Applied Patches – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/ad-applied-patches/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/ad-applied-patches/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ad-applied-patches) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ad-applied-patches).
+**Oracle EBS module:** [Applications DBA](/modules/applications-dba/ "Oracle EBS Applications DBA reports") · [all Applications DBA reports](/modules/applications-dba/)  
 
 ## Overview
 AD applied patches, patch runs, included bugs, filenames and actions
+
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ad-applied-patches) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 
 ## Report Parameters
 Display Level, Application Name, Application Short Name, Filename, Patch, Bug Number, Applied within Days, Applied Date from, Applied Date to, Show Executed Actions only, Show Successfuly Applied only
 
 ## Oracle EBS Tables Used
-[ad_comprising_patches](https://www.enginatics.com/library/?pg=1&find=ad_comprising_patches), [ad_bugs](https://www.enginatics.com/library/?pg=1&find=ad_bugs), [ad_appl_tops](https://www.enginatics.com/library/?pg=1&find=ad_appl_tops), [ad_applied_patches](https://www.enginatics.com/library/?pg=1&find=ad_applied_patches), [ad_patch_drivers](https://www.enginatics.com/library/?pg=1&find=ad_patch_drivers), [ad_patch_runs](https://www.enginatics.com/library/?pg=1&find=ad_patch_runs), [ad_patch_run_bugs](https://www.enginatics.com/library/?pg=1&find=ad_patch_run_bugs), [ad_patch_run_bug_actions](https://www.enginatics.com/library/?pg=1&find=ad_patch_run_bug_actions), [ad_patch_common_actions](https://www.enginatics.com/library/?pg=1&find=ad_patch_common_actions), [ad_files](https://www.enginatics.com/library/?pg=1&find=ad_files), [ad_file_versions](https://www.enginatics.com/library/?pg=1&find=ad_file_versions), [fnd_application_vl](https://www.enginatics.com/library/?pg=1&find=fnd_application_vl)
+[ad_comprising_patches](https://www.enginatics.com/library/?pg=1&find=ad_comprising_patches&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ad-applied-patches), [ad_bugs](https://www.enginatics.com/library/?pg=1&find=ad_bugs&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ad-applied-patches), [ad_appl_tops](https://www.enginatics.com/library/?pg=1&find=ad_appl_tops&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ad-applied-patches), [ad_applied_patches](https://www.enginatics.com/library/?pg=1&find=ad_applied_patches&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ad-applied-patches), [ad_patch_drivers](https://www.enginatics.com/library/?pg=1&find=ad_patch_drivers&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ad-applied-patches), [ad_patch_runs](https://www.enginatics.com/library/?pg=1&find=ad_patch_runs&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ad-applied-patches), [ad_patch_run_bugs](https://www.enginatics.com/library/?pg=1&find=ad_patch_run_bugs&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ad-applied-patches), [ad_patch_run_bug_actions](https://www.enginatics.com/library/?pg=1&find=ad_patch_run_bug_actions&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ad-applied-patches), [ad_patch_common_actions](https://www.enginatics.com/library/?pg=1&find=ad_patch_common_actions&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ad-applied-patches), [ad_files](https://www.enginatics.com/library/?pg=1&find=ad_files&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ad-applied-patches), [ad_file_versions](https://www.enginatics.com/library/?pg=1&find=ad_file_versions&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ad-applied-patches), [fnd_application_vl](https://www.enginatics.com/library/?pg=1&find=fnd_application_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ad-applied-patches)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ad-applied-patches)
 
 ## Related Reports
-[AD Applied Patches R12.2](/AD%20Applied%20Patches%20R12-2/ "AD Applied Patches R12.2 Oracle EBS SQL Report")
+[AD Patch Task Timing](/AD%20Patch%20Task%20Timing/ "AD Patch Task Timing Oracle EBS SQL Report"), [AD Applied Patches R12.2](/AD%20Applied%20Patches%20R12-2/ "AD Applied Patches R12.2 Oracle EBS SQL Report"), [AD ADOP Sessions](/AD%20ADOP%20Sessions/ "AD ADOP Sessions Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/AD%20Applied%20Patches/AD%20Applied%20Patches.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ad-applied-patches) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [AD Applied Patches 11-Apr-2020 004347.xlsx](https://www.enginatics.com/example/ad-applied-patches/) |
-| Blitz Report™ XML Import | [AD_Applied_Patches.xml](https://www.enginatics.com/xml/ad-applied-patches/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/ad-applied-patches/](https://www.enginatics.com/reports/ad-applied-patches/) |
+| Excel Example Output | [AD Applied Patches 11-Apr-2020 004347.xlsx](https://www.enginatics.com/example/ad-applied-patches/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ad-applied-patches) |
+| Blitz Report™ XML Import | [AD_Applied_Patches.xml](https://www.enginatics.com/xml/ad-applied-patches/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ad-applied-patches) |
+| SQL Source | [AD Applied Patches.sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/AD%20Applied%20Patches/AD%20Applied%20Patches.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/ad-applied-patches/](https://www.enginatics.com/reports/ad-applied-patches/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ad-applied-patches) |
 
 ## AD Applied Patches Report
 
@@ -91,13 +100,13 @@ A: If you are experiencing a system issue, you can use the "Applied Date Range" 
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ad-applied-patches)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ad-applied-patches)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ad-applied-patches)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ad-applied-patches)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ad-applied-patches)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ad-applied-patches)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ad-applied-patches)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

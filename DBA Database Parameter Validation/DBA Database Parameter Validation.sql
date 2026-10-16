@@ -1,28 +1,23 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: DBA Database Parameter Validation
 -- Description: Replicates the database initialization-parameter validation performed by Oracle's EBS Database Performance and Statistics Analyzer (My Oracle Support Doc 2126712.1 / KB627702), so DBAs no longer need to download, install and run that analyzer to check EBS parameter compliance.
-
-Reference: <a href="https://support.oracle.com/rs?type=doc&id=2126712.1" rel="nofollow" target="_blank">https://support.oracle.com/rs?type=doc&id=2126712.1</a>
-
-It compares the current instance settings in v$system_parameter2 against Oracle's required values for the running RDBMS version (11.1 / 11.2 / 12.1 / 19c) and EBS release, per My Oracle Support Doc 396009.1 / KA1002 ("Database Initialization Parameters for Oracle E-Business Suite").
-<a href="https://support.oracle.com/support/?kmContentId=11158187" rel="nofollow" target="_blank">https://support.oracle.com/support/?kmContentId=11158187</a>
-
-Three sections:
-1. Mandatory Database Parameters - current vs required value, with a Check of OK / NOT FOUND:OK / ERROR.
-2. Database Parameters to be Removed - parameters (and events) that are explicitly set but should be removed for the running RDBMS version.
-3. Database Additional Parameters - other non-default parameters set on the instance, flagging hidden (underscore) parameters that should not be set.
-
-By default the "Only show errors" parameter is Yes, so only actionable rows are shown (Check = ERROR, parameters to be removed, and hidden parameters that should not be set). Clear the parameter to list every checked parameter. Memory sizes are shown in M / G (e.g. 600M, 2G).
-
-Prerequisite: APPS requires SELECT on v$system_parameter2 (v_$system_parameter2). On most EBS instances this grant already exists; if not, as SYSDBA run:
-create or replace public synonym V$SYSTEM_PARAMETER2 for SYS.V_$SYSTEM_PARAMETER2;
-grant select on sys.V_$SYSTEM_PARAMETER2 to apps;
--- Excel Examle Output: https://www.enginatics.com/example/dba-database-parameter-validation/
+-- Reference: https://support.oracle.com/rs?type=doc&id=2126712.1
+-- It compares the current instance settings in v$systemparameter2 against Oracle's required values for the running RDBMS version (11.1 / 11.2 / 12.1 / 19c) and EBS release, per My Oracle Support Doc 396009.1 / KA1002 ("Database Initialization Parameters for Oracle E-Business Suite").
+-- https://support.oracle.com/support/?kmContentId=11158187
+-- Three sections:
+-- 1. Mandatory Database Parameters - current vs required value, with a Check of OK / NOT FOUND:OK / ERROR.
+-- 2. Database Parameters to be Removed - parameters (and events) that are explicitly set but should be removed for the running RDBMS version.
+-- 3. Database Additional Parameters - other non-default parameters set on the instance, flagging hidden (underscore) parameters that should not be set.
+-- By default the "Only show errors" parameter is Yes, so only actionable rows are shown (Check = ERROR, parameters to be removed, and hidden parameters that should not be set). Clear the parameter to list every checked parameter. Memory sizes are shown in M / G (e.g. 600M, 2G).
+-- Prerequisite: APPS requires SELECT on v$systemparameter2 (v$systemparameter2). On most EBS instances this grant already exists; if not, as SYSDBA run:
+-- create or replace public synonym V$SYSTEMPARAMETER2 for SYS.V$SYSTEMPARAMETER2;
+-- grant select on sys.V$SYSTEMPARAMETER2 to apps;
+-- Excel Example Output: https://www.enginatics.com/example/dba-database-parameter-validation/
 -- Library Link: https://www.enginatics.com/reports/dba-database-parameter-validation/
 -- Run Report: https://demo.enginatics.com/
 

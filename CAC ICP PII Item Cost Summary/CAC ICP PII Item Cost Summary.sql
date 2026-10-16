@@ -1,59 +1,58 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC ICP PII Item Cost Summary
--- Description: Report to show item costs in any cost type, including the profit in inventory costs (also known as ICP or PII).  For one or more inventory organizations.
-
-/* +=============================================================================+
--- | Copyright 2009-2022 Douglas Volz Consulting, Inc.                           |
--- | All rights reserved.                                                        |
--- | Permission to use this code is granted provided the original author is      |
--- | acknowledged. No warranties, express or otherwise is included in this       |
--- | permission.                                                                 |
--- +=============================================================================+
--- |
--- | Original Author: Douglas Volz (doug@volzconsulting.com)
--- |
--- | Program Name: xxx_item_cost_rept.sql
--- |
--- |  Parameters:
--- |  p_cost_type              -- The cost type you wish to report
--- |  p_pii_cost_type          -- The new PII Cost Type you wish to report
--- |  p_pii_sub_element        -- The sub-element or resource for profit in inventory,
--- |                              such as PII or ICP (mandatory)
--- |  p_ledger                 -- general ledger you wish to report, works with
--- |                              null or valid ledger names
--- |  p_item_number            -- Enter the specific item number you wish to report
--- |  p_org_code               -- specific organization code, works with
--- |                              null or valid organization codes
--- |  p_include_uncosted_items -- Yes/No flag to include or not include non-costed resources
--- |  p_category_set1          -- The first item category set to report, typically the
--- |                              Cost or Product Line Category Set
--- |  p_category_set2          -- The second item category set to report, typically the
--- |                              Inventory Category Set
--- |
--- | Description:
--- | Report to show item costs in any cost type
--- | 
--- | Version Modified on Modified by Description
--- | ======= =========== ============== =========================================
--- |  1.0     06 Oct 2009 Douglas Volz  Initial Coding
--- |  1.1     16 Mar 2010 Douglas Volz  Updated with Make/Buy flags
--- |  1.2     08 Nov 2010 Douglas Volz  Updated with additional columns and parameters
--- |  1.3     07 Feb 2011 Douglas Volz  Added COGS and Revenue default accounts
--- |  1.4     15 Nov 2016 Douglas Volz  Added category information
--- |  1.5     27 Jan 2020 Douglas Volz  Added Org Code and Operating Unit parameters
--- |  1.6     27 Apr 2020 Douglas Volz  Changed to multi-language views for the item
--- |                                    master, inventory orgs and operating units.
--- |  1.7     21 Jun 2020 Douglas Volz  Changed to multi-language views for item 
--- |                                    status and UOM.
--- |  1.8     24 Sep 2020 Douglas Volz  Added List Price to report
--- |  1.9     29 Jan 2021 Douglas Volz  Added item master dates and Inactive Items parameter
-+=============================================================================+*/
--- Excel Examle Output: https://www.enginatics.com/example/cac-icp-pii-item-cost-summary/
+-- Description: Report to show item costs in any cost type, including the profit in inventory costs (also known as ICP or PII). For one or more inventory organizations.
+-- / +=============================================================================+
+-- -- | Copyright 2009-2022 Douglas Volz Consulting, Inc. |
+-- -- | All rights reserved. |
+-- -- | Permission to use this code is granted provided the original author is |
+-- -- | acknowledged. No warranties, express or otherwise is included in this |
+-- -- | permission. |
+-- -- +=============================================================================+
+-- -- |
+-- -- | Original Author: Douglas Volz (doug@volzconsulting.com)
+-- -- |
+-- -- | Program Name: xxxitemcostrept.sql
+-- -- |
+-- -- | Parameters:
+-- -- | pcosttype -- The cost type you wish to report
+-- -- | ppiicosttype -- The new PII Cost Type you wish to report
+-- -- | ppiisubelement -- The sub-element or resource for profit in inventory,
+-- -- | such as PII or ICP (mandatory)
+-- -- | pledger -- general ledger you wish to report, works with
+-- -- | null or valid ledger names
+-- -- | pitemnumber -- Enter the specific item number you wish to report
+-- -- | porgcode -- specific organization code, works with
+-- -- | null or valid organization codes
+-- -- | pincludeuncosteditems -- Yes/No flag to include or not include non-costed resources
+-- -- | pcategoryset1 -- The first item category set to report, typically the
+-- -- | Cost or Product Line Category Set
+-- -- | pcategoryset2 -- The second item category set to report, typically the
+-- -- | Inventory Category Set
+-- -- |
+-- -- | Description:
+-- -- | Report to show item costs in any cost type
+-- -- |
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== ============== =========================================
+-- -- | 1.0 06 Oct 2009 Douglas Volz Initial Coding
+-- -- | 1.1 16 Mar 2010 Douglas Volz Updated with Make/Buy flags
+-- -- | 1.2 08 Nov 2010 Douglas Volz Updated with additional columns and parameters
+-- -- | 1.3 07 Feb 2011 Douglas Volz Added COGS and Revenue default accounts
+-- -- | 1.4 15 Nov 2016 Douglas Volz Added category information
+-- -- | 1.5 27 Jan 2020 Douglas Volz Added Org Code and Operating Unit parameters
+-- -- | 1.6 27 Apr 2020 Douglas Volz Changed to multi-language views for the item
+-- -- | master, inventory orgs and operating units.
+-- -- | 1.7 21 Jun 2020 Douglas Volz Changed to multi-language views for item
+-- -- | status and UOM.
+-- -- | 1.8 24 Sep 2020 Douglas Volz Added List Price to report
+-- -- | 1.9 29 Jan 2021 Douglas Volz Added item master dates and Inactive Items parameter
+-- +=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-icp-pii-item-cost-summary/
 -- Library Link: https://www.enginatics.com/reports/cac-icp-pii-item-cost-summary/
 -- Run Report: https://demo.enginatics.com/
 

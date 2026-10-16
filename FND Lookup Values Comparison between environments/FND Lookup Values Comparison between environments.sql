@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: FND Lookup Values Comparison between environments
 -- Description: Compares lookup values between the local and a remote database environment
--- Excel Examle Output: https://www.enginatics.com/example/fnd-lookup-values-comparison-between-environments/
+-- Excel Example Output: https://www.enginatics.com/example/fnd-lookup-values-comparison-between-environments/
 -- Library Link: https://www.enginatics.com/reports/fnd-lookup-values-comparison-between-environments/
 -- Run Report: https://demo.enginatics.com/
 

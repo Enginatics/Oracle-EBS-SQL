@@ -1,24 +1,20 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CE Cash in Transit
 -- Description: Application: Cash Management
-Description: Cash in Transit
-
-Provides equivalent functionality to the following standard Oracle Forms/Reports
-- Cash in Transit
-
-Applicable Templates:
-- Pivot: Cash in Transit - Pivot: Bank Account Currency, Bank Account, In Transit Type, Operating Unit, Third Party (Supplier/Customer) with drill down to details
-- Cash In Transit Detail - Detail Extract
-
-Source: Cash in Transit (CEXCSHTR)
-DB package: CE_CEXCSHTR_XMLP_PKG (required to initialize security)
-
--- Excel Examle Output: https://www.enginatics.com/example/ce-cash-in-transit/
+-- Description: Cash in Transit
+-- Provides equivalent functionality to the following standard Oracle Forms/Reports
+-- - Cash in Transit
+-- Applicable Templates:
+-- - Pivot: Cash in Transit - Pivot: Bank Account Currency, Bank Account, In Transit Type, Operating Unit, Third Party (Supplier/Customer) with drill down to details
+-- - Cash In Transit Detail - Detail Extract
+-- Source: Cash in Transit (CEXCSHTR)
+-- DB package: CECEXCSHTRXMLPPKG (required to initialize security)
+-- Excel Example Output: https://www.enginatics.com/example/ce-cash-in-transit/
 -- Library Link: https://www.enginatics.com/reports/ce-cash-in-transit/
 -- Run Report: https://demo.enginatics.com/
 

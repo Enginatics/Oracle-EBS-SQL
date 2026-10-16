@@ -1,18 +1,18 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: FA Asset Retirements
 -- Description: Imported from BI Publisher
-Description: Asset Retirements Report
-Application: Assets
-Source: Asset Retirements Report (XML)
-Short Name: FAS440_XML
-DB package: FA_FAS440_XMLP_PKG
-
--- Excel Examle Output: https://www.enginatics.com/example/fa-asset-retirements/
+-- Description: Asset Retirements Report
+-- Application: Assets
+-- Source: Asset Retirements Report (XML)
+-- Short Name: FAS440XML
+-- DB package: FAFAS440XMLPPKG
+-- Note: as in the Oracle report, a retirement is listed only once its gain and loss accounting entries exist.
+-- Excel Example Output: https://www.enginatics.com/example/fa-asset-retirements/
 -- Library Link: https://www.enginatics.com/reports/fa-asset-retirements/
 -- Run Report: https://demo.enginatics.com/
 

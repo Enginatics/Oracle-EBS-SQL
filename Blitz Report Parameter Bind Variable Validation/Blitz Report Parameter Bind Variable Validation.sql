@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: Blitz Report Parameter Bind Variable Validation
 -- Description: This report can be used to check which :bind variables were assigned to which Blitz Report parameter, in case there are more than one :binds in the parameter sql text, or in case the same :bind variable name is incorrectly used in different parameters.
--- Excel Examle Output: https://www.enginatics.com/example/blitz-report-parameter-bind-variable-validation/
+-- Excel Example Output: https://www.enginatics.com/example/blitz-report-parameter-bind-variable-validation/
 -- Library Link: https://www.enginatics.com/reports/blitz-report-parameter-bind-variable-validation/
 -- Run Report: https://demo.enginatics.com/
 

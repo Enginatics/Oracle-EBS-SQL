@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PER Information Type Security
 -- Description: 
--- Excel Examle Output: https://www.enginatics.com/example/per-information-type-security/
+-- Excel Example Output: https://www.enginatics.com/example/per-information-type-security/
 -- Library Link: https://www.enginatics.com/reports/per-information-type-security/
 -- Run Report: https://demo.enginatics.com/
 

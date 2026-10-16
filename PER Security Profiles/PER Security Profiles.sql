@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PER Security Profiles
 -- Description: Security profiles and operating units that they give access to.
--- Excel Examle Output: https://www.enginatics.com/example/per-security-profiles/
+-- Excel Example Output: https://www.enginatics.com/example/per-security-profiles/
 -- Library Link: https://www.enginatics.com/reports/per-security-profiles/
 -- Run Report: https://demo.enginatics.com/
 

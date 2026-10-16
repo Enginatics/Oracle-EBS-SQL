@@ -1,17 +1,17 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: INV Physical Inventory Tags
 -- Description: Imported from BI Publisher
-Description: Physical Inventory Tags
-Application: Inventory
-Source: Physical Inventory Tags (XML)
-Short Name: INVARPTP_XML
-DB package: INV_INVARPTP_XMLP_PKG
--- Excel Examle Output: https://www.enginatics.com/example/inv-physical-inventory-tags/
+-- Description: Physical Inventory Tags
+-- Application: Inventory
+-- Source: Physical Inventory Tags (XML)
+-- Short Name: INVARPTPXML
+-- DB package: INVINVARPTPXMLPPKG
+-- Excel Example Output: https://www.enginatics.com/example/inv-physical-inventory-tags/
 -- Library Link: https://www.enginatics.com/reports/inv-physical-inventory-tags/
 -- Run Report: https://demo.enginatics.com/
 

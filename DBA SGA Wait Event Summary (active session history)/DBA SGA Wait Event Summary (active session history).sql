@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: DBA SGA Wait Event Summary (active session history)
 -- Description: Wait event and CPU usage summary from the SGA active session history.
--- Excel Examle Output: https://www.enginatics.com/example/dba-sga-wait-event-summary-active-session-history/
+-- Excel Example Output: https://www.enginatics.com/example/dba-sga-wait-event-summary-active-session-history/
 -- Library Link: https://www.enginatics.com/reports/dba-sga-wait-event-summary-active-session-history/
 -- Run Report: https://demo.enginatics.com/
 

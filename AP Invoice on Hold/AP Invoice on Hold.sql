@@ -1,14 +1,15 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: AP Invoice on Hold
 -- Description: Based on Oracle standard Invoice on Hold report
-Source: Invoice on Hold Report (XML)
-Short Name: APXINROH_XML
--- Excel Examle Output: https://www.enginatics.com/example/ap-invoice-on-hold/
+-- Source: Invoice on Hold Report (XML)
+-- Short Name: APXINROHXML
+-- When India Localization is installed, the following GST columns are also included: GST Registration No, Supplier GSTIN (Invoice Date), GST PAN No, GST TAN No, CGST Amount, SGST Amount, IGST Amount, CESS Amount, CGST Rate, SGST Rate, IGST Rate, CESS Rate, Custom Amount, Unclassified Tax Amount, Taxable Value, HSN SAC Code, Days Since Invoice, Amount Settled, Amount Unpaid, ITC Reversal Due, ITC Reversal Exposure.
+-- Excel Example Output: https://www.enginatics.com/example/ap-invoice-on-hold/
 -- Library Link: https://www.enginatics.com/reports/ap-invoice-on-hold/
 -- Run Report: https://demo.enginatics.com/
 
@@ -86,6 +87,7 @@ select
   and d.hold_lookup_code  = x.c_hold_code
  ) invalid_account,
  to_char(x.c_invoice_date,'YYYY/MM') || ' - ' || to_char(x.c_invoice_date,'fmMonth YYYY') invoice_month_label
+&il_columns
 from
 (
 select -- invoices on hold
@@ -94,6 +96,7 @@ select -- invoices on hold
   hp.party_name c_vendor_name,
   inv1.party_id c_party_id,
   inv1.vendor_id c_vendor_id,
+vs.vendor_site_id c_vendor_site_id,
   vs.vendor_site_code c_vendor_site,
   decode(h.hold_lookup_code, null,:c_nls_na, h.hold_lookup_code)  c_hold_code,
   decode(h.hold_lookup_code, null,:c_nls_na, alc.displayed_field) c_nls_hold_code,
@@ -191,6 +194,7 @@ group by
   hp.party_name,
   inv1.party_id,
   inv1.vendor_id,
+  vs.vendor_site_id,
   vs.vendor_site_code,
   inv1.invoice_date,
   inv1.invoice_id,
@@ -241,6 +245,7 @@ select -- payments on hold
   hp.party_name c_vendor_name,
   inv1.party_id c_party_id,
   inv1.vendor_id c_vendor_id,
+vs.vendor_site_id c_vendor_site_id,
   vs.vendor_site_code c_vendor_site,
   :c_nls_na        c_hold_code,
   'Scheduled Payment Hold' c_nls_hold_code,
@@ -325,7 +330,7 @@ group by
   inv1.party_id,
   inv1.vendor_id,
   vs.vendor_site_code,
-  vs.vendor_site_code,
+  vs.vendor_site_id,
   inv1.invoice_date,
   inv1.invoice_id,
   b.batch_name,
@@ -368,6 +373,7 @@ select -- vendor sites on hold
   hp.party_name c_vendor_name,
   inv1.party_id c_party_id,
   v.vendor_id c_vendor_id,
+vs.vendor_site_id c_vendor_site_id,
   vs.vendor_site_code c_vendor_site,
   :c_nls_na        c_hold_code,
   'Supplier Site Hold' c_nls_hold_code,
@@ -455,6 +461,7 @@ group by
   hp.party_name,
   inv1.party_id,
   v.vendor_id,
+  vs.vendor_site_id,
   vs.vendor_site_code,
   b.batch_name,
   inv1.invoice_date,
@@ -493,8 +500,10 @@ group by
   inv1.pay_group_lookup_code,
   inv1.dispute_reason
 ) x
+&il_from
 where
 1=1
+&il_where
 order by
  decode(:p_order_by, 'Hold Name',c_nls_hold_code,x.c_vendor_name)
 ,x.c_vendor_name

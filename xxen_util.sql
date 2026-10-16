@@ -103,6 +103,17 @@ function contains(p_parameter_value in varchar2, p_column_value in varchar2) ret
 function init_cap(p_text in varchar2) return varchar2;
 
 /***********************************************************************************************/
+/*  select statement with the columns profile_option_value and visible_option_value, parsed    */
+/*  from a profile option's sql validation. p_translated_only='Y' returns null when the        */
+/*  validation does not translate the stored value into a different visible value              */
+/***********************************************************************************************/
+function profile_option_value_sql(
+p_application_id in number,
+p_profile_option_id in number,
+p_translated_only in varchar2 default null
+) return varchar2 result_cache;
+
+/***********************************************************************************************/
 /*  translate a fnd profile option value into the user visible profile option value            */
 /***********************************************************************************************/
 function display_profile_option_value(
@@ -110,6 +121,16 @@ p_application_id in number,
 p_profile_option_id in number,
 p_profile_option_value in varchar2
 ) return varchar2;
+
+/***********************************************************************************************/
+/*  pipelined lov function for profile option values, from the profile option's sql validation */
+/*  each row is returned as stored value and visible value, separated by p_lov_delimter         */
+/***********************************************************************************************/
+function profile_option_value_lov(
+p_application_id in number,
+p_profile_option_id in number,
+p_lov_delimter in varchar2 default '~'
+) return fnd_table_of_varchar2_4000 pipelined;
 
 /***********************************************************************************************/
 /*  translate a descriptive flexfield context code into the user visible context name          */
@@ -134,6 +155,47 @@ p_business_group_id in number default null,
 p_organization_id in number default null,
 p_org_information_id in number default null,
 p_display_mode in varchar2 default null
+) return varchar2;
+
+/***********************************************************************************************/
+/*  translate the display value of a descriptive flexfield attribute into its stored id        */
+/***********************************************************************************************/
+function dff_attribute_value_to_id(
+p_application_id in number,
+p_descriptive_flexfield_name in varchar2,
+p_context_code in varchar2,
+p_column_name in varchar2,
+p_attribute1 in varchar2 default null,
+p_attribute2 in varchar2 default null,
+p_attribute3 in varchar2 default null,
+p_attribute4 in varchar2 default null,
+p_attribute5 in varchar2 default null,
+p_attribute6 in varchar2 default null,
+p_attribute7 in varchar2 default null,
+p_attribute8 in varchar2 default null,
+p_attribute9 in varchar2 default null,
+p_attribute10 in varchar2 default null,
+p_attribute11 in varchar2 default null,
+p_attribute12 in varchar2 default null,
+p_attribute13 in varchar2 default null,
+p_attribute14 in varchar2 default null,
+p_attribute15 in varchar2 default null,
+p_attribute16 in varchar2 default null,
+p_attribute17 in varchar2 default null,
+p_attribute18 in varchar2 default null,
+p_attribute19 in varchar2 default null,
+p_attribute20 in varchar2 default null,
+p_attribute21 in varchar2 default null,
+p_attribute22 in varchar2 default null,
+p_attribute23 in varchar2 default null,
+p_attribute24 in varchar2 default null,
+p_attribute25 in varchar2 default null,
+p_attribute26 in varchar2 default null,
+p_attribute27 in varchar2 default null,
+p_attribute28 in varchar2 default null,
+p_attribute29 in varchar2 default null,
+p_attribute30 in varchar2 default null,
+p_recursion_path in varchar2 default null
 ) return varchar2;
 
 /***********************************************************************************************/
@@ -550,11 +612,6 @@ function dis_lov_query(p_exp_id in pls_integer, p_eul in varchar2) return clob;
 function dis_worksheet_sql(p_workbook_owner_name in varchar2, p_workbook_name in varchar2, p_worksheet_name in varchar2) return clob;
 
 /***********************************************************************************************/
-/*  checks if discoverer EUL contains any data in ams_discoverer_sql to be imported            */
-/***********************************************************************************************/
-function dis_worksheet_exists(p_eul in varchar2) return varchar2;
-
-/***********************************************************************************************/
 /*  checks if discoverer EUL contains any data in eul5_qpp_stats to be imported as folders     */
 /***********************************************************************************************/
 function dis_folder_exists(p_eul in varchar2) return varchar2;
@@ -695,16 +752,16 @@ function coa_id(p_ledger_name in varchar2) return number result_cache;
 function has_flex_value_security return varchar2;
 
 /***********************************************************************************************/
-/*  Flexfield value security - returns 'Y' (accessible) or null, applying the responsibility's  */
-/*  security rules the same way the AOL flexfield engine (FND_FLEX_SERVER1) does. Version-       */
-/*  uniform (11i and r12). Pass the responsibility explicitly so result_cache is correct.       */
+/*  Flexfield value security - returns 'Y' (accessible) or null, applying the responsibility's */
+/*  security rules the same way the AOL flexfield engine does, hierarchical security included. */
+/*  Version-uniform (11i and r12). Call it only for segments with Security Enabled.            */
 /***********************************************************************************************/
-function flex_value_accessible(p_resp_appl_id in number, p_resp_id in number, p_flex_value_set_id in number, p_flex_value in varchar2) return varchar2 result_cache;
+function flex_value_accessible(p_resp_appl_id in number, p_resp_id in number, p_flex_value_set_id in number, p_flex_value in varchar2) return varchar2;
 
 /***********************************************************************************************/
 /*  Flexfield value security for a whole code combination - returns 'Y' (accessible) or null.   */
 /***********************************************************************************************/
-function flex_ccid_accessible(p_resp_appl_id in number, p_resp_id in number, p_code_combination_id in number) return varchar2 result_cache;
+function flex_ccid_accessible(p_resp_appl_id in number, p_resp_id in number, p_code_combination_id in number) return varchar2;
 
 /***********************************************************************************************/
 /*  Escapes characters that may break XML structure                                            */
@@ -812,6 +869,19 @@ create or replace package body apps.xxen_util is
 
 type g_dff_bind_rec_type is record (flex varchar2(100), bind varchar2(100), column_name varchar2(30), data_type varchar2(1));
 type g_dff_bind_tbl_type is table of g_dff_bind_rec_type index by pls_integer;
+type g_flag_tbl_type is table of varchar2(1) index by varchar2(4011);
+g_security_resp varchar2(33):='-'; --responsibility the flex value security caches belong to
+g_value_set_security g_flag_tbl_type;
+g_value_access g_flag_tbl_type;
+g_ccid_access g_flag_tbl_type;
+c_security_cache_size constant pls_integer:=200000; --about 22 MB of session memory per cache, which then stops adding entries
+--control characters that json requires as \u00XX escapes, apart from the ones with a short escape
+c_json_controls constant varchar2(26):=chr(1)||chr(2)||chr(3)||chr(4)||chr(5)||chr(6)||chr(7)||chr(11)||chr(14)||chr(15)||chr(16)||chr(17)||chr(18)||chr(19)||chr(20)||chr(21)||chr(22)||chr(23)||chr(24)||chr(25)||chr(26)||chr(27)||chr(28)||chr(29)||chr(30)||chr(31);
+--every character json_escape changes, behind an x that utl_raw.translate keeps while it removes the others
+c_json_escaped constant raw(35):=utl_raw.cast_to_raw('x'||chr(0)||'\"'||chr(8)||chr(9)||chr(10)||chr(12)||chr(13)||c_json_controls);
+c_json_kept constant raw(1):=utl_raw.cast_to_raw('x');
+
+function value_set_security(p_resp_appl_id in number, p_resp_id in number, p_flex_value_set_id in number) return varchar2;
 
 
 function base_language return varchar2 deterministic is
@@ -998,32 +1068,53 @@ begin
 end json_translate;
 
 
+--the characters to escape are a byte each in every database character set, so the bytes utl_raw.translate removes count them (a character set whose multibyte
+--characters can contain such a byte counts more, which only takes the full path), and as each short escape adds a byte, a smaller growth comes from chr(0) and the control characters
 function json_escape(p_text in varchar2) return varchar2 is
+l_count pls_integer;
 l_result varchar2(32767);
+l_character varchar2(1);
 begin
   if p_text is null then
     return null;
   end if;
-  l_result:=replace(p_text,chr(0),'');
-  l_result:=replace(replace(replace(replace(replace(replace(replace(
-    l_result,
-    '\','\\'),
-    '"','\"'),
-    chr(8),'\b'),
-    chr(9),'\t'),
-    chr(10),'\n'),
-    chr(12),'\f'),
-    chr(13),'\r');
+  l_count:=lengthb(p_text)-nvl(utl_raw.length(utl_raw.translate(utl_raw.cast_to_raw(p_text),c_json_escaped,c_json_kept)),0);
+  if l_count=0 then
+    return p_text;
+  end if;
+  l_result:=replace(replace(replace(replace(replace(replace(replace(p_text,'\','\\'),'"','\"'),chr(8),'\b'),chr(9),'\t'),chr(10),'\n'),chr(12),'\f'),chr(13),'\r');
+  if lengthb(l_result)-lengthb(p_text)<l_count then
+    l_result:=replace(l_result,chr(0));
+    for i in 1..length(c_json_controls) loop
+      l_character:=substr(c_json_controls,i,1);
+      if instrb(l_result,l_character)>0 then
+        l_result:=replace(l_result,l_character,'\u00'||to_char(ascii(l_character),'fm0X'));
+      end if;
+    end loop;
+  end if;
   return l_result;
 end json_escape;
 
+
 function json_escape(p_clob in clob) return clob is
+--a piece of 10000 characters fits a varchar2, and escaped too unless it holds many control characters, which take six bytes each
+c_piece_size constant pls_integer:=10000;
 l_result clob;
-l_chunk_size constant pls_integer:=16000;
 l_offset pls_integer:=1;
 l_length pls_integer;
-l_chunk varchar2(32767);
-l_escaped varchar2(32767);
+l_amount pls_integer;
+l_piece varchar2(32767);
+l_units pls_integer;
+l_single_byte boolean;
+
+--a piece of single byte characters has as many characters as bytes, so its escaped text needs no count
+procedure append(p_text in varchar2) is
+begin
+  if p_text is not null then
+    dbms_lob.writeappend(l_result,case when l_single_byte then lengthb(p_text) else length2(p_text) end,p_text);
+  end if;
+end append;
+
 begin
   if p_clob is null then
     return null;
@@ -1034,12 +1125,18 @@ begin
   end if;
   dbms_lob.createtemporary(l_result,true);
   while l_offset<=l_length loop
-    l_chunk:=dbms_lob.substr(p_clob,least(l_chunk_size,l_length-l_offset+1),l_offset);
-    l_escaped:=json_escape(l_chunk);
-    if l_escaped is not null and length(l_escaped)>0 then
-      dbms_lob.writeappend(l_result,length(l_escaped),l_escaped);
-    end if;
-    l_offset:=l_offset+l_chunk_size;
+    l_amount:=least(c_piece_size,l_length-l_offset+1);
+    l_piece:=dbms_lob.substr(p_clob,l_amount,l_offset);
+    l_units:=nvl(length2(l_piece),l_amount);
+    l_single_byte:=lengthb(l_piece)=l_units;
+    begin
+      append(json_escape(l_piece));
+    exception
+      when value_error then
+        append(json_escape(substr(l_piece,1,5000)));
+        append(json_escape(substr(l_piece,5001)));
+    end;
+    l_offset:=l_offset+l_units; --clob positions count a supplementary character twice, and a piece is cut before one that does not fit completely
   end loop;
   return l_result;
 end json_escape;
@@ -1067,17 +1164,18 @@ begin
 end init_cap;
 
 
-function display_profile_option_value(
+function profile_option_value_sql(
 p_application_id in number,
 p_profile_option_id in number,
-p_profile_option_value in varchar2
-) return varchar2 is
-l_display_option_value varchar2(4000);
+p_translated_only in varchar2 default null
+) return varchar2 result_cache is
 begin
   for c in (
-  select /*+ result_cache*/
-  'select x.visible_option_value from ('||w.sql_text___||') x where x.profile_option_value=:profile_option_value' sql_text____,
-  w.*
+  select
+  case
+  when w.visible_value_column_0<>w.value_column_0 then 'select x.profile_option_value, x.visible_option_value from ('||w.sql_text___||') x'
+  when p_translated_only is null then 'select x.profile_option_value, x.profile_option_value visible_option_value from ('||w.sql_text__||') x'
+  end sql_text
   from
   (
   select
@@ -1143,7 +1241,8 @@ begin
   from
   (
   select
-  replace(regexp_replace(replace(trim(trim('"' from regexp_substr(regexp_replace(fpo.sql_validation,'\\"[^\]*\\"'),'"[^"]+"'))),'\''',''''),'\s*\|\|\s*','||'),':$PROFILES$.','fnd_global.') sql_text,
+  regexp_replace(regexp_replace(regexp_replace(replace(trim(trim('"' from regexp_substr(regexp_replace(fpo.sql_validation,'\\"[^\]*\\"'),'"[^"]+"'))),'\''',''''),'\s*\|\|\s*','||'),
+  ':\$PROFILES\$\.(USER_ID|ORG_ID|RESP_APPL_ID|RESP_ID|PER_BUSINESS_GROUP_ID|PER_SECURITY_PROFILE_ID)(:null)?','fnd_global.\1',1,0,'i'),':\$PROFILES\$\.(\w+)(:null)?','fnd_profile.value(''\1'')',1,0,'i') sql_text,
   fpo.sql_validation,
   fpo.profile_option_name
   from
@@ -1157,18 +1256,63 @@ begin
   ) y
   ) z
   ) u
-  where
-  u.value_column_0<>u.visible_value_column_0
   ) v
   ) w
+  where
+  w.value_column_0 is not null and
+  not regexp_like(w.sql_text_,':(visible|profile)_option_value','i') --format checks of an entered value, not a list
   ) loop
-    execute immediate c.sql_text____ into l_display_option_value using p_profile_option_value;
+    return c.sql_text;
   end loop;
+  return null;
+end profile_option_value_sql;
+
+
+function display_profile_option_value(
+p_application_id in number,
+p_profile_option_id in number,
+p_profile_option_value in varchar2
+) return varchar2 is
+l_sql_text varchar2(4000):=profile_option_value_sql(p_application_id,p_profile_option_id,'Y');
+l_display_option_value varchar2(4000);
+begin
+  if l_sql_text is not null then
+    execute immediate 'select x.visible_option_value from ('||l_sql_text||') x where x.profile_option_value=:profile_option_value' into l_display_option_value using p_profile_option_value;
+  end if;
   return nvl(l_display_option_value,p_profile_option_value);
 exception
   when others then
     return p_profile_option_value;
 end display_profile_option_value;
+
+
+function profile_option_value_lov(
+p_application_id in number,
+p_profile_option_id in number,
+p_lov_delimter in varchar2 default '~'
+) return fnd_table_of_varchar2_4000 pipelined is
+l_sql_text varchar2(4000):=profile_option_value_sql(p_application_id,p_profile_option_id);
+l_cursor sys_refcursor;
+l_profile_option_value varchar2(4000);
+l_visible_option_value varchar2(4000);
+begin
+  if l_sql_text is not null then
+    open l_cursor for 'select distinct x.profile_option_value, x.visible_option_value from ('||l_sql_text||') x where x.profile_option_value is not null order by x.visible_option_value';
+    loop
+      fetch l_cursor into l_profile_option_value, l_visible_option_value;
+      exit when l_cursor%notfound;
+      pipe row(substrb(l_profile_option_value||p_lov_delimter||nvl(l_visible_option_value,l_profile_option_value),1,4000));
+    end loop;
+    close l_cursor;
+  end if;
+  return;
+exception
+  when others then --a validation that does not execute outside the profile form's context offers no list
+    if l_cursor%isopen then
+      close l_cursor;
+    end if;
+    return;
+end profile_option_value_lov;
 
 
 procedure value_set_lov_sql(
@@ -1513,9 +1657,7 @@ begin
   end loop;
 end application_table_name;
 begin
-  if p_application_id is null
-  or p_descriptive_flexfield_name is null
-  or p_column_name is null then
+  if p_application_id is null or p_descriptive_flexfield_name is null or p_column_name is null then
     return p_value;
   end if;
   l_icx_date_format:=coalesce(fnd_profile.value('XXEN_REPORT_XLSX_DATE_FORMAT'),fnd_profile.value('ICX_DATE_FORMAT_MASK'),'DD-MON-RRRR');
@@ -1709,6 +1851,10 @@ begin
     -- recursive loop -- we've already called this api for column name in this recursive check
     return null;
   end if;
+  if regexp_replace(p_get_column_name,'\d+$')<>regexp_replace(p_column_name,'\d+$') then
+    --a segment of another column family, e.g. segment4 next to attribute4, has no value in the attribute slots
+    return null;
+  end if;
   l_recursion_path:=nvl(l_recursion_path,':')||p_column_name||':';
   l_attribute_id_value:=
   dff_attribute_value_to_id(
@@ -1789,9 +1935,7 @@ begin
   l_id_value:=l_display_value;
   fnd_log.string(log_level=>fnd_log.level_statement,module=>l_module,message=>'l_display_value='||l_display_value);
 
-  if p_application_id is null
-  or p_descriptive_flexfield_name is null
-  or p_column_name is null then
+  if p_application_id is null or p_descriptive_flexfield_name is null or p_column_name is null then
     fnd_log.string(log_level=>fnd_log.level_statement,module=>l_module,message=>'- dff_attribute_value_to_id: null dff details passed');
     return l_id_value;
   end if;
@@ -1964,6 +2108,10 @@ l_context_code fnd_descr_flex_contexts_vl.descriptive_flex_context_name%type; --
 function get_bind_attribute_val(p_context_code in varchar2, p_get_column_name in varchar2) return varchar2 is
 l_attribute_id_value varchar2(4000);
 begin
+  if regexp_replace(p_get_column_name,'\d+$')<>regexp_replace(p_column_name,'\d+$') then
+    --a segment of another column family, e.g. segment4 next to attribute4, has no value in the attribute slots
+    return null;
+  end if;
   l_attribute_id_value:=
   dff_attribute_value_to_id(
   p_application_id,
@@ -2007,10 +2155,7 @@ end get_bind_attribute_val;
 begin
   fnd_log.string(log_level=>fnd_log.level_statement,module=>l_module,message=>'+ dff_attribute_lov');
 
-  if p_application_id is null
-  or p_descriptive_flexfield_name is null
-  or p_column_name is null
-  then
+  if p_application_id is null or p_descriptive_flexfield_name is null or p_column_name is null then
     fnd_log.string(log_level=>fnd_log.level_statement,module=>l_module,message=>'- dff_attribute_lov: null dff details passed');
     return;
   end if;
@@ -2201,7 +2346,9 @@ exception
     if dbms_sql.is_open(l_cursor) then
       dbms_sql.close_cursor(l_cursor);
     end if;
-    fnd_log.string(log_level=>fnd_log.level_unexpected,module=>l_module,message=>'Unexpected Error: '||sqlerrm);
+    if sqlcode<>-6548 then --no_data_needed: the caller stopped fetching
+      fnd_log.string(log_level=>fnd_log.level_unexpected,module=>l_module,message=>'Unexpected Error: '||sqlerrm);
+    end if;
     raise;
 end dff_attribute_lov;
 
@@ -2254,6 +2401,9 @@ l_id varchar2(4000);
 l_value varchar2(4000);
 l_description varchar2(4000);
 l_security varchar2(1):=has_flex_value_security;
+l_resp_appl_id number:=fnd_global.resp_appl_id;
+l_resp_id number:=fnd_global.resp_id;
+l_secured boolean;
 l_flex g_dff_bind_tbl_type;
 l_prev_bind_name varchar2(100):='-99';
 
@@ -2331,6 +2481,7 @@ begin
   for c in (
   select /*+ result_cache*/
   fifs.flex_value_set_id,
+  fifs.security_enabled_flag,
   ffvs.parent_flex_value_set_id,
   (
   select
@@ -2344,7 +2495,8 @@ begin
   ffvs.parent_flex_value_set_id=fifs2.flex_value_set_id and
   fifs2.enabled_flag='Y'
   ) parent_column_name,
-  ffvs.format_type
+  ffvs.format_type,
+  ffvs.validation_type
   from
   fnd_id_flex_segments fifs,
   fnd_flex_value_sets ffvs
@@ -2374,13 +2526,13 @@ begin
       end if;
     else
       fnd_log.string(log_level=>fnd_log.level_statement,module=>l_module,message=>'l_sql_text: not null');
-      l_sql_text:='select x.id, x.value, x.description from ('||l_sql_text||') x';
+      --rows are not sorted, so the caller's single row check stops early; only dependent and table validated value sets can repeat a value
+      l_sql_text:='select '||case when c.validation_type in ('D','Y','F') then 'distinct ' end||'x.id, x.value, x.description from ('||l_sql_text||') x';
       if l_entered_value is null then
         l_sql_text:=l_sql_text||' where replace(x.value,chr(0),null) is not null';
       else
         l_sql_text:=l_sql_text||' where (x.value like :pv1||''%'' or x.value like :pv2||''%'' or x.value like :pv3||''%'' or x.value like :pv4||''%'')';
       end if;
-      l_sql_text:=l_sql_text||' order by x.value';
       fnd_log.string(log_level=>fnd_log.level_statement,module=>l_module,message=>'l_sql_text='||l_sql_text);
 
       -- ensure the current session ID is in fnd_sessions for value sets using fnd_sessions
@@ -2425,6 +2577,8 @@ begin
       dbms_sql.define_column(l_cursor, 2, l_value, 4000);
       dbms_sql.define_column(l_cursor, 3, l_description, 4000);
 
+      l_secured:=l_security is not null and c.security_enabled_flag='Y' and value_set_security(l_resp_appl_id,l_resp_id,c.flex_value_set_id) is not null;
+
       --execute and fetch
       l_row_count:=dbms_sql.execute(l_cursor);
       loop
@@ -2439,7 +2593,7 @@ begin
           then l_value:=fnd_date.date_to_displayDT(l_value);
           end if;
           --flex value security is evaluated against the stored value, which is the id column for table validated value sets
-          if l_security is null or flex_value_accessible(fnd_global.resp_appl_id,fnd_global.resp_id,c.flex_value_set_id,l_id)='Y' then
+          if not l_secured or flex_value_accessible(l_resp_appl_id,l_resp_id,c.flex_value_set_id,l_id)='Y' then
             pipe row(substrb(l_id||p_lov_delimter||l_value||p_lov_delimter||l_description,1,4000));
           end if;
         else
@@ -2456,7 +2610,9 @@ exception
     if dbms_sql.is_open(l_cursor) then
       dbms_sql.close_cursor(l_cursor);
     end if;
-    fnd_log.string(log_level=>fnd_log.level_unexpected,module=>l_module,message=>'Unexpected Error: '||sqlerrm);
+    if sqlcode<>-6548 then --no_data_needed: the caller stopped fetching
+      fnd_log.string(log_level=>fnd_log.level_unexpected,module=>l_module,message=>'Unexpected Error: '||sqlerrm);
+    end if;
     raise;
 end kff_segment_lov;
 
@@ -2479,7 +2635,6 @@ p_parent_segment_value in varchar2 default null,
 p_application_id in pls_integer default 101,
 p_id_flex_code in varchar2 default 'GL#'
 ) return varchar2 is
-
 function segment_description(
 p_column_name in varchar2,
 p_id_flex_num in pls_integer,
@@ -3104,7 +3259,7 @@ begin
   end;
   if l_module_type is null then
     for c in (
-      select null from fnd_concurrent_programs fcp where fcp.concurrent_program_name=p_module and rownum=1
+    select null from fnd_concurrent_programs fcp where fcp.concurrent_program_name=p_module and rownum=1
     ) loop
       l_module_type:='Concurrent Request';
     end loop;
@@ -3114,7 +3269,6 @@ end module_type;
 
 
 function module_name(p_module in varchar2, p_program in varchar2 default null) return varchar2 is
-
 function module_name(p_module in varchar2, p_userenv_lang in varchar2, p_program in varchar2 default null) return varchar2 result_cache is
 l_apps_module varchar2(260);
 l_module sys.v_$session.module%type;
@@ -3229,7 +3383,6 @@ end module_name;
 
 
 function responsibility(p_module in varchar2, p_action in varchar2) return varchar2 is
-
 function responsibility(p_action in varchar2, p_userenv_lang in varchar2) return varchar2 result_cache is
 l_responsibility fnd_responsibility_tl.responsibility_name%type;
 l_action sys.v_$session.action%type:=substr(p_action,instr(p_action,'|')+1);
@@ -3283,7 +3436,6 @@ end responsibility;
 
 
 function user_name(p_user_name in varchar2) return varchar2 is
-
 function user_name(p_user_name in varchar2, p_sysdate in date, p_show_description in varchar2) return varchar2 result_cache is
 l_user_name varchar2(342):=p_user_name;
 begin
@@ -3323,7 +3475,6 @@ end user_name;
 
 
 function user_name(p_user_id in pls_integer, p_show_description in varchar2 default null) return varchar2 is
-
 function user_name(p_user_id in pls_integer, p_sysdate in date, p_show_description in varchar2) return varchar2 result_cache is
 l_user_name varchar2(342);
 begin
@@ -3728,7 +3879,6 @@ end dis_user;
 
 
 function dis_user_name(p_username in varchar2, p_show_description in varchar2 default null, p_eul in varchar2 default null) return varchar2 is
-
 function dis_user_name_(p_username in varchar2, p_userenv_lang in varchar2, p_show_description in varchar2, p_eul in varchar2) return varchar2 result_cache is
 l_user_name varchar2(342);
 l_use_fnd_user boolean:=true;
@@ -3920,33 +4070,6 @@ begin
   end loop;
   return replace(l_sql_text,chr(13)||chr(10),chr(10));
 end dis_worksheet_sql;
-
-
-function dis_worksheet_exists(p_eul in varchar2) return varchar2 is
-l_result varchar2(1);
-type cur_type is ref cursor;
-c_cur cur_type;
-begin
-  open c_cur for '
-  select
-  ''Y''
-  from
-  ams_discoverer_sql ads,
-  '||p_eul||'.eul5_documents ed
-  where
-  ads.workbook_name=ed.doc_name and
-  rownum=1';
-  loop
-    fetch c_cur into l_result;
-    exit when c_cur%notfound;
-  end loop;
-  close c_cur;
-  return l_result;
-exception
-  when others then
-    close c_cur;
-    return null;
-end dis_worksheet_exists;
 
 
 function dis_folder_exists(p_eul varchar2) return varchar2 is
@@ -4654,7 +4777,7 @@ begin
   (
   select
   row_number() over (partition by fdfcuv.application_id,fdfcuv.descriptive_flexfield_name,fdfcuv.descriptive_flex_context_code,fdfcuv.form_left_prompt_ order by fdfcuv.column_seq_num) row_number,
-      count(*) over (partition by fdfcuv.application_id,fdfcuv.descriptive_flexfield_name,fdfcuv.descriptive_flex_context_code,fdfcuv.form_left_prompt_) row_count,
+  count(*) over (partition by fdfcuv.application_id,fdfcuv.descriptive_flexfield_name,fdfcuv.descriptive_flex_context_code,fdfcuv.form_left_prompt_) row_count,
   fdfcuv.*
   from
   (
@@ -4915,62 +5038,200 @@ begin
 end has_flex_value_security;
 
 
-function flex_value_accessible(p_resp_appl_id in number, p_resp_id in number, p_flex_value_set_id in number, p_flex_value in varchar2) return varchar2 result_cache is
+procedure set_security_resp(p_resp_appl_id in number, p_resp_id in number) is
 begin
-  --replicates the AOL flexfield engine's value security (FND_FLEX_SERVER1.check_security): the value is denied only when it violates a security rule assigned to the responsibility on this value set - not covered by any Include line, or covered by an Exclude line - and multiple rules intersect. reads the same FND rule tables the engine uses, so it behaves identically on 11i and r12 without gl_security_pkg/init. keyed on the responsibility explicitly (never read fnd_global in a result_cache function). returns 'Y' when accessible, null when not
-  for c in (
-  select
-  null
-  from
-  fnd_flex_value_rule_usages ffvru,
-  fnd_flex_value_sets ffvs
-  where
-  ffvru.application_id=p_resp_appl_id and
-  ffvru.responsibility_id=p_resp_id and
-  ffvru.flex_value_set_id=p_flex_value_set_id and
-  ffvs.flex_value_set_id=ffvru.flex_value_set_id and
-  ffvs.security_enabled_flag='Y' and
-  (
-  not exists (select null from fnd_flex_value_rule_lines ffvrl where ffvrl.flex_value_rule_id=ffvru.flex_value_rule_id and ffvrl.include_exclude_indicator='I' and p_flex_value between ffvrl.flex_value_low and ffvrl.flex_value_high) or
-  exists (select null from fnd_flex_value_rule_lines ffvrl where ffvrl.flex_value_rule_id=ffvru.flex_value_rule_id and ffvrl.include_exclude_indicator<>'I' and p_flex_value between ffvrl.flex_value_low and ffvrl.flex_value_high)
-  ) and
-  rownum=1
-  ) loop
+  --the security caches hold one responsibility's results, and forms and pooled webservice sessions switch responsibility
+  if g_security_resp<>p_resp_appl_id||'.'||p_resp_id then
+    g_value_set_security.delete;
+    g_value_access.delete;
+    g_ccid_access.delete;
+    g_security_resp:=p_resp_appl_id||'.'||p_resp_id;
+  end if;
+end set_security_resp;
+
+
+function value_set_security(p_resp_appl_id in number, p_resp_id in number, p_flex_value_set_id in number) return varchar2 is
+l_security_type varchar2(1):='N';
+begin
+  --how the responsibility's rules secure the value set: H also through the value hierarchy, Y directly, null not at all. the AOL flexfield engine secures independent, dependent and table validated value sets, a dependent one without hierarchy
+  if p_flex_value_set_id is null then
     return null;
-  end loop;
-  return 'Y';
+  end if;
+  set_security_resp(p_resp_appl_id,p_resp_id);
+  if g_value_set_security.exists(p_flex_value_set_id) then
+    l_security_type:=g_value_set_security(p_flex_value_set_id);
+  else
+    for c in (
+    select
+    decode(ffvs.validation_type,'D','Y',ffvs.security_enabled_flag) security_type
+    from
+    fnd_flex_value_sets ffvs
+    where
+    ffvs.flex_value_set_id=p_flex_value_set_id and
+    ffvs.security_enabled_flag in ('Y','H') and
+    ffvs.validation_type in ('I','D','F') and
+    ffvs.flex_value_set_id in (select ffvru.flex_value_set_id from fnd_flex_value_rule_usages ffvru where ffvru.application_id=p_resp_appl_id and ffvru.responsibility_id=p_resp_id)
+    ) loop
+      l_security_type:=c.security_type;
+    end loop;
+    g_value_set_security(p_flex_value_set_id):=l_security_type;
+  end if;
+  return nullif(l_security_type,'N');
+end value_set_security;
+
+
+function flex_value_accessible(p_resp_appl_id in number, p_resp_id in number, p_flex_value_set_id in number, p_flex_value in varchar2) return varchar2 is
+l_security varchar2(1):=value_set_security(p_resp_appl_id,p_resp_id,p_flex_value_set_id);
+l_key varchar2(4011):=p_flex_value_set_id||'|'||p_flex_value;
+l_access varchar2(1):='Y';
+begin
+  --value security as fnd_flex_server.check_value_security applies it for the AOL flexfield engine: denied when a rule of the responsibility excludes the value, or a rule does not include it, directly or with hierarchical security through a parent value. rules of a dependent value set apply regardless of their parent value. returns 'Y' when accessible, null when not
+  --cached per session: a result_cache would hold every value of a large secured value set per responsibility
+  if l_security is null or p_flex_value is null then
+    return 'Y';
+  end if;
+  if g_value_access.exists(l_key) then
+    l_access:=g_value_access(l_key);
+  else
+    for c in (
+    select
+    null
+    from
+    dual
+    where
+    exists (
+    select
+    null
+    from
+    fnd_flex_value_rule_usages ffvru,
+    fnd_flex_value_rule_lines ffvrl
+    where
+    ffvru.application_id=p_resp_appl_id and
+    ffvru.responsibility_id=p_resp_id and
+    ffvru.flex_value_set_id=p_flex_value_set_id and
+    ffvru.flex_value_rule_id=ffvrl.flex_value_rule_id and
+    ffvrl.include_exclude_indicator='E' and
+    p_flex_value between nvl(ffvrl.flex_value_low,p_flex_value) and nvl(ffvrl.flex_value_high,p_flex_value)
+    ) or
+    l_security='H' and
+    exists (
+    select
+    null
+    from
+    fnd_flex_value_rule_usages ffvru,
+    fnd_flex_value_rule_lines ffvrl,
+    fnd_flex_value_hier_all ffvha
+    where
+    ffvru.application_id=p_resp_appl_id and
+    ffvru.responsibility_id=p_resp_id and
+    ffvru.flex_value_set_id=p_flex_value_set_id and
+    ffvru.flex_value_rule_id=ffvrl.flex_value_rule_id and
+    ffvrl.include_exclude_indicator='E' and
+    ffvha.flex_value_set_id=p_flex_value_set_id and
+    p_flex_value between ffvha.child_flex_value_low and ffvha.child_flex_value_high and
+    ffvha.parent_flex_value between nvl(ffvrl.flex_value_low,ffvha.parent_flex_value) and nvl(ffvrl.flex_value_high,ffvha.parent_flex_value)
+    ) or
+    exists (
+    select
+    null
+    from
+    fnd_flex_value_rule_usages ffvru
+    where
+    ffvru.application_id=p_resp_appl_id and
+    ffvru.responsibility_id=p_resp_id and
+    ffvru.flex_value_set_id=p_flex_value_set_id and
+    ffvru.flex_value_rule_id not in (
+    select
+    ffvrl.flex_value_rule_id
+    from
+    fnd_flex_value_rule_lines ffvrl
+    where
+    ffvrl.flex_value_set_id=p_flex_value_set_id and
+    ffvrl.include_exclude_indicator='I' and
+    p_flex_value between nvl(ffvrl.flex_value_low,p_flex_value) and nvl(ffvrl.flex_value_high,p_flex_value)
+    )
+    ) and
+    (
+    l_security='Y' or
+    exists (
+    select
+    null
+    from
+    fnd_flex_value_rule_usages ffvru
+    where
+    ffvru.application_id=p_resp_appl_id and
+    ffvru.responsibility_id=p_resp_id and
+    ffvru.flex_value_set_id=p_flex_value_set_id and
+    ffvru.flex_value_rule_id not in (
+    select
+    ffvrl.flex_value_rule_id
+    from
+    fnd_flex_value_rule_lines ffvrl,
+    fnd_flex_value_hier_all ffvha
+    where
+    ffvrl.flex_value_set_id=p_flex_value_set_id and
+    ffvrl.include_exclude_indicator='I' and
+    ffvha.flex_value_set_id=p_flex_value_set_id and
+    p_flex_value between ffvha.child_flex_value_low and ffvha.child_flex_value_high and
+    ffvha.parent_flex_value between nvl(ffvrl.flex_value_low,ffvha.parent_flex_value) and nvl(ffvrl.flex_value_high,ffvha.parent_flex_value)
+    )
+    )
+    )
+    ) loop
+      l_access:='N';
+    end loop;
+    if g_value_access.count<c_security_cache_size then
+      g_value_access(l_key):=l_access;
+    end if;
+  end if;
+  return nullif(l_access,'N');
 end flex_value_accessible;
 
 
-function flex_ccid_accessible(p_resp_appl_id in number, p_resp_id in number, p_code_combination_id in number) return varchar2 result_cache is
+function flex_ccid_accessible(p_resp_appl_id in number, p_resp_id in number, p_code_combination_id in number) return varchar2 is
+l_key varchar2(15):=p_code_combination_id;
+l_access varchar2(1):='Y';
 begin
-  --whole code-combination value security (replaces gl_security_pkg.validate_access): denied when any security-enabled segment value of the combination is not accessible. keyed on responsibility+ccid; returns 'Y' or null
-  for c in (
-  select
-  fifs.flex_value_set_id,
-  decode(fifs.application_column_name,
-  'SEGMENT1',gcc.segment1,'SEGMENT2',gcc.segment2,'SEGMENT3',gcc.segment3,'SEGMENT4',gcc.segment4,'SEGMENT5',gcc.segment5,
-  'SEGMENT6',gcc.segment6,'SEGMENT7',gcc.segment7,'SEGMENT8',gcc.segment8,'SEGMENT9',gcc.segment9,'SEGMENT10',gcc.segment10,
-  'SEGMENT11',gcc.segment11,'SEGMENT12',gcc.segment12,'SEGMENT13',gcc.segment13,'SEGMENT14',gcc.segment14,'SEGMENT15',gcc.segment15,
-  'SEGMENT16',gcc.segment16,'SEGMENT17',gcc.segment17,'SEGMENT18',gcc.segment18,'SEGMENT19',gcc.segment19,'SEGMENT20',gcc.segment20,
-  'SEGMENT21',gcc.segment21,'SEGMENT22',gcc.segment22,'SEGMENT23',gcc.segment23,'SEGMENT24',gcc.segment24,'SEGMENT25',gcc.segment25,
-  'SEGMENT26',gcc.segment26,'SEGMENT27',gcc.segment27,'SEGMENT28',gcc.segment28,'SEGMENT29',gcc.segment29,'SEGMENT30',gcc.segment30) flex_value
-  from
-  gl_code_combinations gcc,
-  fnd_id_flex_segments fifs
-  where
-  gcc.code_combination_id=p_code_combination_id and
-  fifs.application_id=101 and
-  fifs.id_flex_code='GL#' and
-  fifs.id_flex_num=gcc.chart_of_accounts_id and
-  fifs.enabled_flag='Y' and
-  fifs.security_enabled_flag='Y'
-  ) loop
-    if flex_value_accessible(p_resp_appl_id,p_resp_id,c.flex_value_set_id,c.flex_value) is null then
-      return null;
+  --whole code-combination value security (replaces gl_security_pkg.validate_access): denied when any security-enabled segment value of the combination is not accessible. returns 'Y' or null
+  --cached per session: a result_cache would hold every combination per responsibility and be invalidated by each new combination
+  if p_code_combination_id is null then
+    return 'Y';
+  end if;
+  set_security_resp(p_resp_appl_id,p_resp_id);
+  if g_ccid_access.exists(l_key) then
+    l_access:=g_ccid_access(l_key);
+  else
+    for c in (
+    select
+    fifs.flex_value_set_id,
+    decode(fifs.application_column_name,
+    'SEGMENT1',gcc.segment1,'SEGMENT2',gcc.segment2,'SEGMENT3',gcc.segment3,'SEGMENT4',gcc.segment4,'SEGMENT5',gcc.segment5,
+    'SEGMENT6',gcc.segment6,'SEGMENT7',gcc.segment7,'SEGMENT8',gcc.segment8,'SEGMENT9',gcc.segment9,'SEGMENT10',gcc.segment10,
+    'SEGMENT11',gcc.segment11,'SEGMENT12',gcc.segment12,'SEGMENT13',gcc.segment13,'SEGMENT14',gcc.segment14,'SEGMENT15',gcc.segment15,
+    'SEGMENT16',gcc.segment16,'SEGMENT17',gcc.segment17,'SEGMENT18',gcc.segment18,'SEGMENT19',gcc.segment19,'SEGMENT20',gcc.segment20,
+    'SEGMENT21',gcc.segment21,'SEGMENT22',gcc.segment22,'SEGMENT23',gcc.segment23,'SEGMENT24',gcc.segment24,'SEGMENT25',gcc.segment25,
+    'SEGMENT26',gcc.segment26,'SEGMENT27',gcc.segment27,'SEGMENT28',gcc.segment28,'SEGMENT29',gcc.segment29,'SEGMENT30',gcc.segment30) flex_value
+    from
+    gl_code_combinations gcc,
+    fnd_id_flex_segments fifs
+    where
+    gcc.code_combination_id=p_code_combination_id and
+    fifs.application_id=101 and
+    fifs.id_flex_code='GL#' and
+    fifs.id_flex_num=gcc.chart_of_accounts_id and
+    fifs.enabled_flag='Y' and
+    fifs.security_enabled_flag='Y'
+    ) loop
+      if flex_value_accessible(p_resp_appl_id,p_resp_id,c.flex_value_set_id,c.flex_value) is null then
+        l_access:='N';
+        exit;
+      end if;
+    end loop;
+    if g_ccid_access.count<c_security_cache_size then
+      g_ccid_access(l_key):=l_access;
     end if;
-  end loop;
-  return 'Y';
+  end if;
+  return nullif(l_access,'N');
 end flex_ccid_accessible;
 
 
@@ -5076,8 +5337,8 @@ begin
       ao.object_name='JAI_PARTY_REGS_PKG' and
       ao.object_type='PACKAGE BODY' and
       ao.status='VALID' and
-      exists (select null from all_arguments aa where aa.package_name='JAI_PARTY_REGS_PKG' and aa.object_name='INSERT_ROW' and aa.argument_name='X_RECORD_TYPE_CODE') and
-      exists (select null from all_arguments aa where aa.package_name='JAI_PARTY_REG_LINES_PKG' and aa.object_name='INSERT_ROW' and aa.argument_name='X_RECORD_TYPE_CODE')
+      exists (select null from all_arguments aa where aa.object_id in (select ao_regs.object_id from all_objects ao_regs where ao_regs.object_name='JAI_PARTY_REGS_PKG' and ao_regs.object_type='PACKAGE') and aa.object_name='INSERT_ROW' and aa.argument_name='X_RECORD_TYPE_CODE') and
+      exists (select null from all_arguments aa where aa.object_id in (select ao_lines.object_id from all_objects ao_lines where ao_lines.object_name='JAI_PARTY_REG_LINES_PKG' and ao_lines.object_type='PACKAGE') and aa.object_name='INSERT_ROW' and aa.argument_name='X_RECORD_TYPE_CODE')
       ) loop
         l_result:='Y';
       end loop;
@@ -6205,18 +6466,46 @@ elsif p_object_type='VIEW' then
 elsif p_object_type='TABLE' then
   dbms_lob.createtemporary(l_ddl,true);
   for c in (
-  select dt.temporary,dt.duration,trim(dt.cache) cache,dt.result_cache,dt.tablespace_name,dt.pct_free,dt.ini_trans,dt.max_trans,
-  dt.logging,dt.compression,dt.monitoring,dt.degree
-  from dba_tables dt where dt.owner=p_owner and dt.table_name=p_object_name
+  select
+  dt.temporary,
+  dt.duration,
+  trim(dt.cache) cache,
+  dt.result_cache,
+  dt.tablespace_name,
+  dt.pct_free,
+  dt.ini_trans,
+  dt.max_trans,
+  dt.logging,
+  dt.compression,
+  dt.monitoring,
+  dt.degree
+  from
+  dba_tables dt
+  where
+  dt.owner=p_owner and
+  dt.table_name=p_object_name
   ) loop
     wl('create'||case when c.temporary='Y' then ' global temporary' end||' table '||p_owner||'.'||p_object_name);
     wl('(');
     for cc in (
-    select dtc.column_name,dtc.data_type,dtc.data_length,dtc.data_precision,dtc.data_scale,dtc.nullable,dtc.data_default,dtc.char_length,dtc.char_used,
+    select
+    dtc.column_name,
+    dtc.data_type,
+    dtc.data_length,
+    dtc.data_precision,
+    dtc.data_scale,
+    dtc.nullable,
+    dtc.data_default,
+    dtc.char_length,
+    dtc.char_used,
     row_number() over (order by dtc.column_id) rn
-    from dba_tab_columns dtc
-    where dtc.owner=p_owner and dtc.table_name=p_object_name
-    order by dtc.column_id
+    from
+    dba_tab_columns dtc
+    where
+    dtc.owner=p_owner and
+    dtc.table_name=p_object_name
+    order by
+    dtc.column_id
     ) loop
       l_line:='  '||case when cc.rn>1 then ', ' end||cc.column_name||' '||
         case
@@ -6262,13 +6551,20 @@ elsif p_object_type='TABLE' then
   end loop;
   -- append constraints
   for c in (
-  select dc.constraint_name,dc.constraint_type,
+  select
+  dc.constraint_name,
+  dc.constraint_type,
   case when dc.constraint_type='P' then 'primary key' when dc.constraint_type='U' then 'unique' end constraint_keyword,
   (select listagg(dcc.column_name,', ') within group (order by dcc.position) from dba_cons_columns dcc where dcc.owner=dc.owner and dcc.constraint_name=dc.constraint_name) col_list,
   (select drc.owner||'.'||drc.table_name||' ('||(select listagg(drcc.column_name,', ') within group (order by drcc.position) from dba_cons_columns drcc where drcc.owner=drc.owner and drcc.constraint_name=drc.constraint_name)||')' from dba_constraints drc where drc.owner=dc.r_owner and drc.constraint_name=dc.r_constraint_name) ref_table
-  from dba_constraints dc
-  where dc.owner=p_owner and dc.table_name=p_object_name and dc.constraint_type in ('P','U','R')
-  order by decode(dc.constraint_type,'P',1,'U',2,'R',3)
+  from
+  dba_constraints dc
+  where
+  dc.owner=p_owner and
+  dc.table_name=p_object_name and
+  dc.constraint_type in ('P','U','R')
+  order by
+  decode(dc.constraint_type,'P',1,'U',2,'R',3)
   ) loop
     wl(chr(10)||'alter table '||p_owner||'.'||p_object_name||' add constraint '||c.constraint_name||
       case c.constraint_type
@@ -6278,12 +6574,20 @@ elsif p_object_type='TABLE' then
   end loop;
   -- append indexes
   for c in (
-  select di.owner idx_owner,di.index_name,di.uniqueness,di.tablespace_name
-  from dba_indexes di
-  where di.table_owner=p_owner and di.table_name=p_object_name
-  and di.index_type<>'LOB'
-  and not exists (select null from dba_constraints dc where dc.owner=di.table_owner and dc.table_name=di.table_name and dc.constraint_name=di.index_name and dc.constraint_type in ('P','U'))
-  order by di.index_name
+  select
+  di.owner idx_owner,
+  di.index_name,
+  di.uniqueness,
+  di.tablespace_name
+  from
+  dba_indexes di
+  where
+  di.table_owner=p_owner and
+  di.table_name=p_object_name and
+  di.index_type<>'LOB' and
+  not exists (select null from dba_constraints dc where dc.owner=di.table_owner and dc.table_name=di.table_name and dc.constraint_name=di.index_name and dc.constraint_type in ('P','U'))
+  order by
+  di.index_name
   ) loop
     wl(chr(10)||index_ddl(c.idx_owner,c.index_name,p_owner,p_object_name,c.uniqueness,c.tablespace_name));
   end loop;
@@ -6293,8 +6597,18 @@ elsif p_object_type='TABLE' then
   end loop;
 elsif p_object_type='SEQUENCE' then
   for c in (
-  select ds.min_value,ds.max_value,ds.increment_by,ds.cache_size,ds.order_flag,ds.cycle_flag
-  from dba_sequences ds where ds.sequence_owner=p_owner and ds.sequence_name=p_object_name
+  select
+  ds.min_value,
+  ds.max_value,
+  ds.increment_by,
+  ds.cache_size,
+  ds.order_flag,
+  ds.cycle_flag
+  from
+  dba_sequences ds
+  where
+  ds.sequence_owner=p_owner and
+  ds.sequence_name=p_object_name
   ) loop
     l_ddl:='create sequence '||p_owner||'.'||p_object_name||
       ' minvalue '||c.min_value||' maxvalue '||c.max_value||
@@ -6309,8 +6623,16 @@ elsif p_object_type='SYNONYM' then
   end loop;
 elsif p_object_type='INDEX' then
   for c in (
-  select di.uniqueness,di.table_owner,di.table_name,di.tablespace_name
-  from dba_indexes di where di.owner=p_owner and di.index_name=p_object_name
+  select
+  di.uniqueness,
+  di.table_owner,
+  di.table_name,
+  di.tablespace_name
+  from
+  dba_indexes di
+  where
+  di.owner=p_owner and
+  di.index_name=p_object_name
   ) loop
     l_ddl:=index_ddl(p_owner,p_object_name,c.table_owner,c.table_name,c.uniqueness,c.tablespace_name);
   end loop;

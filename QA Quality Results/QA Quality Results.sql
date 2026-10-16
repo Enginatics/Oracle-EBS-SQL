@@ -1,18 +1,15 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: QA Quality Results
--- Description: One row per collection result and characteristic, so results from any number of collection plans stack in a single extract instead of one column per characteristic. Use Collection Plan like to pull a whole family of plans in one run, for example INC_MRC%.
-
-Oracle Quality stores every element value as a string in a generic column of qa_results, and the plan's element definition decides which column holds which characteristic. Result is therefore text. Result Number carries the numeric conversion for Number elements so the values can be charted or averaged, and Date elements arrive as YYYY/MM/DD.
-
-Only the elements an operator fills in are listed as characteristic rows. The context elements a plan collects, being item, revision, lot, serial, subinventory, quantity, job, purchase order, supplier and customer, are columns on every row instead, so they can be filtered and pivoted without appearing as results.
-
-Result Date is when the result was recorded. Exclude Empty Results defaults to Yes, so clear it to also list elements that are enabled on the plan but were left blank.
--- Excel Examle Output: https://www.enginatics.com/example/qa-quality-results/
+-- Description: One row per collection result and characteristic, so results from any number of collection plans stack in a single extract instead of one column per characteristic. Use Collection Plan like to pull a whole family of plans in one run, for example INCMRC%.
+-- Oracle Quality stores every element value as a string in a generic column of qaresults, and the plan's element definition decides which column holds which characteristic. Result is therefore text. Result Number carries the numeric conversion for Number elements so the values can be charted or averaged, and Date elements arrive as YYYY/MM/DD.
+-- Only the elements an operator fills in are listed as characteristic rows. The context elements a plan collects, being item, revision, lot, serial, subinventory, quantity, job, purchase order, supplier and customer, are columns on every row instead, so they can be filtered and pivoted without appearing as results.
+-- Result Date is when the result was recorded. Exclude Empty Results defaults to Yes, so clear it to also list elements that are enabled on the plan but were left blank.
+-- Excel Example Output: https://www.enginatics.com/example/qa-quality-results/
 -- Library Link: https://www.enginatics.com/reports/qa-quality-results/
 -- Run Report: https://demo.enginatics.com/
 

@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: FND Concurrent Requests Summary
 -- Description: Concurrent programs sorted by the sum of their historic execution times
--- Excel Examle Output: https://www.enginatics.com/example/fnd-concurrent-requests-summary/
+-- Excel Example Output: https://www.enginatics.com/example/fnd-concurrent-requests-summary/
 -- Library Link: https://www.enginatics.com/reports/fnd-concurrent-requests-summary/
 -- Run Report: https://demo.enginatics.com/
 

@@ -1,16 +1,15 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: GL Balances (Drilldown)
--- Description: ** This report is used by the GL Financial Statement and Drilldown report, to show Balance details per code combination. **
-
-Shows GL balance amounts (Opening Balance, Debit, Credit, Net, Closing Balance) grouped by code combination, with drill-to-journal capability.
-Supports all balance types: PTD, YTD, QTD, PJTD, FYS, FYE, CTD.
-The Drill To Journal column allows further drilldown into journal details.
--- Excel Examle Output: https://www.enginatics.com/example/gl-balances-drilldown/
+-- Description: This report is used by the GL Financial Statement and Drilldown report, to show Balance details per code combination.
+-- Shows GL balance amounts (Opening Balance, Debit, Credit, Net, Closing Balance) grouped by code combination, with drill-to-journal capability.
+-- Supports all balance types: PTD, YTD, QTD, PJTD, FYS, FYE, CTD.
+-- The Drill To Journal column allows further drilldown into journal details.
+-- Excel Example Output: https://www.enginatics.com/example/gl-balances-drilldown/
 -- Library Link: https://www.enginatics.com/reports/gl-balances-drilldown/
 -- Run Report: https://demo.enginatics.com/
 

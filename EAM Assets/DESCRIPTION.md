@@ -1,4 +1,3 @@
-
 # Case Study & Technical Analysis: EAM Assets
 
 ## Executive Summary

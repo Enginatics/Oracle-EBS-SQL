@@ -1,29 +1,20 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PER Location Upload
 -- Description: Upload to create, update, and delete HR Locations.
-
-Supports all country-specific address styles with address field validation.
-
-Includes site flags (Ship-To, Bill-To, Receiving, Office, Internal) with autocorrection for Ship-To and Receiving flags based on the Ship-To Location relationship.
-
-Includes the Descriptive Flexfield attributes with validation.
-
-Business group security restricts downloaded locations to the user's current business group plus global locations. New locations can optionally be made local by assigning the location to the user's current business group. If not assigned to a business group, the location is a global location. 
-
-Legal Address locations are protected from inactivation and deletion. The upload cannot set or change the Legal Address Flag. This is for information only.
-
-By default, new locations are created with themselves as the ship to location (self-referencing)
-
-The upload will automatically set the ship to site flag based on the ship to location. When the ship to site is self-referencing, the ship to flag and receiving flag are always set to Yes. If the ship to location references a different location, the ship to site flag will be set to No. 
-
-If the ship to site flag is set to Yes, the receiving site flag is also set to Yes. Otherwise, the receiving site flag will be set as specified in the upload excel. 
-
--- Excel Examle Output: https://www.enginatics.com/example/per-location-upload/
+-- Supports all country-specific address styles with address field validation.
+-- Includes site flags (Ship-To, Bill-To, Receiving, Office, Internal) with autocorrection for Ship-To and Receiving flags based on the Ship-To Location relationship.
+-- Includes the Descriptive Flexfield attributes with validation.
+-- Business group security restricts downloaded locations to the user's current business group plus global locations. New locations can optionally be made local by assigning the location to the user's current business group. If not assigned to a business group, the location is a global location.
+-- Legal Address locations are protected from inactivation and deletion. The upload cannot set or change the Legal Address Flag. This is for information only.
+-- By default, new locations are created with themselves as the ship to location (self-referencing)
+-- The upload will automatically set the ship to site flag based on the ship to location. When the ship to site is self-referencing, the ship to flag and receiving flag are always set to Yes. If the ship to location references a different location, the ship to site flag will be set to No.
+-- If the ship to site flag is set to Yes, the receiving site flag is also set to Yes. Otherwise, the receiving site flag will be set as specified in the upload excel.
+-- Excel Example Output: https://www.enginatics.com/example/per-location-upload/
 -- Library Link: https://www.enginatics.com/reports/per-location-upload/
 -- Run Report: https://demo.enginatics.com/
 

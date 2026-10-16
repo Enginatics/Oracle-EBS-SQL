@@ -1,62 +1,48 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CST Resource Rate Upload
 -- Description: CST Resource Rate Upload
-========================
-
-This upload can be used to
-- Upload new Resource Rates
-- Download the current Resource Rates for a Cost Type, update, and upload the amended rates
-- Download the current Resource Rates from a Source Cost Type and upload them to a different Target Cost Type
-- Delete existing Resource Rates
-
-Resource Rates apply to rate based Resource and Outside Processing sub-elements (sub-elements whose charge basis is not currency based). The rates are imported via the Oracle Cost Import Process.
-
-NOTE:
-You can only upload rates to cost types that are not flagged as frozen and are flagged as updateable. This includes the rates cost types used by average costing organizations (e.g. AvgRates).
-
-NOTE:
-The Cost Import Process cannot delete a Resource Rate, so a row flagged for deletion is not sent to it. Set the Delete Resource Rate column to Yes and the rate is removed directly when the row is processed, in the same way as the Resources form removes it.
-Deletion is not allowed for frozen standard cost types or for cost types which do not allow updates.
-Deleted rates are not covered by the Cost Rollup. Run a rollup separately if the removal should be reflected in item costs.
-
-Optionally, the upload can perform a Cost Rollup after the rates have been imported. The Cost Rollup can be performed for
-- Specific item - a cost rollup is done only for rolled up items whose cost details in the Target Cost Type reference the uploaded resources
-- All items - the 'Supply Chain Cost Rollup - Print Report' concurrent request is submitted to rollup all items within each organization rates are uploaded to
-
-NOTE:
-In 'All items' mode the Supply Chain Cost Rollup requests are submitted asynchronously and the upload does not wait for them.
-In 'Specific item' mode, the items to roll up are derived from the existing cost details in the Target Cost Type. Items that have never been rolled up in the Target Cost Type are therefore not found, even if their routings use an uploaded resource - use 'All items' mode for those.
-
-Parameters
-==========
-Target Cost Type (Required) - The Cost Type to which the Resource Rates are to be uploaded.
-
-Mode (Required, Default: Remove and replace cost information) -
-- Remove and replace cost information: an existing rate for the same resource is replaced
-- Insert new Cost Information Only: uploading a rate for a resource that already has one raises an error
-
-Auto Populate Upload Columns (Default: Yes) -
-Applies to downloaded rates only. If set to Yes, the downloaded records are flagged ready for upload even if no changes have been made. If left blank, records are only flagged for upload when the user amends them.
-
-Source Cost Type - Optionally specify the Cost Type from which to download the current Resource Rates, to amend them or to copy them to a different Target Cost Type.
-
-Include Resources without a Rate - Set to Yes to also download rate eligible resources that do not yet have a rate in the Source Cost Type, with a blank rate ready to be entered. To rate new resources for a cost type, select that cost type as both Source and Target Cost Type.
-
-Rollup Costs - set to Yes to do a cost rollup after the rates are imported
-Rollup Type - All items or Specific item
-Rollup Option - Single level rollup or Full cost rollup
-
-Organization Code / Resource / Resource Like - Optionally restrict the resources to be downloaded.
-
-Notes on the Upload
-===================
-The upload supports the Resource Cost Information descriptive flexfield. The attribute columns are named according to the descriptive flexfield segments setup.
--- Excel Examle Output: https://www.enginatics.com/example/cst-resource-rate-upload/
+-- ========================
+-- This upload can be used to
+-- - Upload new Resource Rates
+-- - Download the current Resource Rates for a Cost Type, update, and upload the amended rates
+-- - Download the current Resource Rates from a Source Cost Type and upload them to a different Target Cost Type
+-- - Delete existing Resource Rates
+-- Resource Rates apply to rate based Resource and Outside Processing sub-elements (sub-elements whose charge basis is not currency based). The rates are imported via the Oracle Cost Import Process.
+-- NOTE:
+-- You can only upload rates to cost types that are not flagged as frozen and are flagged as updateable. This includes the rates cost types used by average costing organizations (e.g. AvgRates).
+-- NOTE:
+-- The Cost Import Process cannot delete a Resource Rate, so a row flagged for deletion is not sent to it. Set the Delete Resource Rate column to Yes and the rate is removed directly when the row is processed, in the same way as the Resources form removes it.
+-- Deletion is not allowed for frozen standard cost types or for cost types which do not allow updates.
+-- Deleted rates are not covered by the Cost Rollup. Run a rollup separately if the removal should be reflected in item costs.
+-- Optionally, the upload can perform a Cost Rollup after the rates have been imported. The Cost Rollup can be performed for
+-- - Specific item - a cost rollup is done only for rolled up items whose cost details in the Target Cost Type reference the uploaded resources
+-- - All items - the 'Supply Chain Cost Rollup - Print Report' concurrent request is submitted to rollup all items within each organization rates are uploaded to
+-- NOTE:
+-- In 'All items' mode the Supply Chain Cost Rollup requests are submitted asynchronously and the upload does not wait for them.
+-- In 'Specific item' mode, the items to roll up are derived from the existing cost details in the Target Cost Type. Items that have never been rolled up in the Target Cost Type are therefore not found, even if their routings use an uploaded resource - use 'All items' mode for those.
+-- Parameters
+-- ==========
+-- Target Cost Type (Required) - The Cost Type to which the Resource Rates are to be uploaded.
+-- Mode (Required, Default: Remove and replace cost information) -
+-- - Remove and replace cost information: an existing rate for the same resource is replaced
+-- - Insert new Cost Information Only: uploading a rate for a resource that already has one raises an error
+-- Auto Populate Upload Columns (Default: Yes) -
+-- Applies to downloaded rates only. If set to Yes, the downloaded records are flagged ready for upload even if no changes have been made. If left blank, records are only flagged for upload when the user amends them.
+-- Source Cost Type - Optionally specify the Cost Type from which to download the current Resource Rates, to amend them or to copy them to a different Target Cost Type.
+-- Include Resources without a Rate - Set to Yes to also download rate eligible resources that do not yet have a rate in the Source Cost Type, with a blank rate ready to be entered. To rate new resources for a cost type, select that cost type as both Source and Target Cost Type.
+-- Rollup Costs - set to Yes to do a cost rollup after the rates are imported
+-- Rollup Type - All items or Specific item
+-- Rollup Option - Single level rollup or Full cost rollup
+-- Organization Code / Resource / Resource Like - Optionally restrict the resources to be downloaded.
+-- Notes on the Upload
+-- ===================
+-- The upload supports the Resource Cost Information descriptive flexfield. The attribute columns are named according to the descriptive flexfield segments setup.
+-- Excel Example Output: https://www.enginatics.com/example/cst-resource-rate-upload/
 -- Library Link: https://www.enginatics.com/reports/cst-resource-rate-upload/
 -- Run Report: https://demo.enginatics.com/
 

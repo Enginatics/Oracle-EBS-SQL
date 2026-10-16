@@ -1,4 +1,3 @@
-
 # Case Study & Technical Analysis: CAC Open Purchase Orders
 
 ## Executive Summary

@@ -1,69 +1,61 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PA Task Upload
 -- Description: PA Task Upload
-======================
-Create new tasks or update existing task attributes within Oracle Projects using APIs pa_project_pub.add_task and pa_project_pub.update_task.
-
-This upload does not create projects — it operates on tasks within existing projects.
-
-Supported Actions:
-- Create: Add new top-level tasks, child tasks under existing parents, or entire parent-child hierarchies
-- Update: Modify attributes of existing tasks (organization, manager, work type, flags, schedules, etc.)
-
-Report Parameters:
-- Upload Mode: 'Create' for new tasks only, or 'Create, Update' for both
-- Operating Unit: Filter download to a specific operating unit
-- Project Number: Filter download to a specific project
-- Project Name: Filter download to a specific project by name
-- Project Type: Filter download to a specific project type
-- Project Status: Filter download to a specific project status
-
-Uploadable Columns:
-- Task Identity: Task Number, Task Name, Long Task Name, Task Description
-- Hierarchy: Parent Task Number (to create child tasks or reparent)
-- Dates: Task Start Date, Task Completion Date
-- Organization: Carrying Out Organization, Task Manager
-- Classification: Service Type, Work Type
-- Flags: Chargeable, Billable, Receive Project Invoice, Ready to Bill, Ready to Distribute, Limit to Txn Controls, Allow Cross Charge, Retirement Cost, Capital Interest (CINT) Eligible
-- Labor Billing: Labor Schedule Type, Labor Std Bill Rate Schedule, Labor Schedule Fixed Date, Labor Schedule Discount, Employee Bill Rate Schedule, Labor Cost Multiplier
-- Non-Labor Billing: NL Schedule Type, NL Bill Rate Org, NL Std Bill Rate Schedule, NL Schedule Fixed Date, NL Schedule Discount, Job Bill Rate Schedule, Non-Labor Std Bill Rate Schedule
-- Burden Schedules: Cost/Revenue/Invoice Burden Schedule and Fixed Dates
-- Transfer Pricing: Labor/NL TP Schedule and Fixed Dates, Intercompany Labor/NL TP Schedule and Fixed Dates, CC Process Labor/NL Flags
-- Rate Info: Project Rate Type/Date, Task Functional Cost Rate Type/Date
-- Revenue/Invoice: Invoice Method, Customer Name, Gen ETC Source Code, CINT Stop Date
-- Address: Task Address
-- DFF: Attribute Category, Attributes 1-10
-- Publish Structure: Set to 'Yes' on the last task row of a project to publish the working structure version after upload
-
-Structure Version Handling:
-- For projects without workplan versioning: tasks are added/updated directly — no special handling needed
-- For versioned projects with a WORKING structure version: the upload uses the WORKING version automatically
-- For versioned projects with only a PUBLISHED version (no WORKING version): task add/update is NOT supported and records will be errored
-
-Unsupported Project Configurations:
-- Projects with workplan versioning enabled (Workplan Attributes > Enable Versioning = Yes) that have no WORKING structure version will fail with: "The structure version cannot be updated"
-- This typically affects projects where:
-  a) All structure versions have been published and none are in working/draft status
-  b) Auto-publish is enabled and no manual working version has been created
-
-Workaround for Unsupported Projects:
-1. Navigate to Projects > Project Super User > Projects
-2. Query the project and go to the Workplan tab
-3. Click "Update Workplan" to create a new WORKING structure version
-4. Re-run the upload — it will now pick up the WORKING version and succeed
-5. After the upload completes, publish the working version from the Workplan tab if needed
-
-Notes:
-- To modify tasks on projects owned by other users, the profile option 'PA: Cross Project User -- Update' must be enabled at the responsibility level
-- Tasks with existing expenditure items cannot have new subtasks created below them
-- When updating tasks, the task number itself is not modified — only other attributes are updated
-- The PM Product Code must be a valid value registered in the PA_LOOKUPS lookup type PM_PRODUCT_CODE (e.g., MSPROJECT, PRIMAVERA)
--- Excel Examle Output: https://www.enginatics.com/example/pa-task-upload/
+-- ======================
+-- Create new tasks or update existing task attributes within Oracle Projects using APIs paprojectpub.addtask and paprojectpub.updatetask.
+-- This upload does not create projects — it operates on tasks within existing projects.
+-- Supported Actions:
+-- - Create: Add new top-level tasks, child tasks under existing parents, or entire parent-child hierarchies
+-- - Update: Modify attributes of existing tasks (organization, manager, work type, flags, schedules, etc.)
+-- Report Parameters:
+-- - Upload Mode: 'Create' for new tasks only, or 'Create, Update' for both
+-- - Operating Unit: Filter download to a specific operating unit
+-- - Project Number: Filter download to a specific project
+-- - Project Name: Filter download to a specific project by name
+-- - Project Type: Filter download to a specific project type
+-- - Project Status: Filter download to a specific project status
+-- Uploadable Columns:
+-- - Task Identity: Task Number, Task Name, Long Task Name, Task Description
+-- - Hierarchy: Parent Task Number (to create child tasks or reparent)
+-- - Dates: Task Start Date, Task Completion Date
+-- - Organization: Carrying Out Organization, Task Manager
+-- - Classification: Service Type, Work Type
+-- - Flags: Chargeable, Billable, Receive Project Invoice, Ready to Bill, Ready to Distribute, Limit to Txn Controls, Allow Cross Charge, Retirement Cost, Capital Interest (CINT) Eligible
+-- - Labor Billing: Labor Schedule Type, Labor Std Bill Rate Schedule, Labor Schedule Fixed Date, Labor Schedule Discount, Employee Bill Rate Schedule, Labor Cost Multiplier
+-- - Non-Labor Billing: NL Schedule Type, NL Bill Rate Org, NL Std Bill Rate Schedule, NL Schedule Fixed Date, NL Schedule Discount, Job Bill Rate Schedule, Non-Labor Std Bill Rate Schedule
+-- - Burden Schedules: Cost/Revenue/Invoice Burden Schedule and Fixed Dates
+-- - Transfer Pricing: Labor/NL TP Schedule and Fixed Dates, Intercompany Labor/NL TP Schedule and Fixed Dates, CC Process Labor/NL Flags
+-- - Rate Info: Project Rate Type/Date, Task Functional Cost Rate Type/Date
+-- - Revenue/Invoice: Invoice Method, Customer Name, Gen ETC Source Code, CINT Stop Date
+-- - Address: Task Address
+-- - DFF: Attribute Category, Attributes 1-10
+-- - Publish Structure: Set to 'Yes' on the last task row of a project to publish the working structure version after upload
+-- Structure Version Handling:
+-- - For projects without workplan versioning: tasks are added/updated directly — no special handling needed
+-- - For versioned projects with a WORKING structure version: the upload uses the WORKING version automatically
+-- - For versioned projects with only a PUBLISHED version (no WORKING version): task add/update is NOT supported and records will be errored
+-- Unsupported Project Configurations:
+-- - Projects with workplan versioning enabled (Workplan Attributes > Enable Versioning = Yes) that have no WORKING structure version will fail with: "The structure version cannot be updated"
+-- - This typically affects projects where:
+-- a) All structure versions have been published and none are in working/draft status
+-- b) Auto-publish is enabled and no manual working version has been created
+-- Workaround for Unsupported Projects:
+-- 1. Navigate to Projects > Project Super User > Projects
+-- 2. Query the project and go to the Workplan tab
+-- 3. Click "Update Workplan" to create a new WORKING structure version
+-- 4. Re-run the upload — it will now pick up the WORKING version and succeed
+-- 5. After the upload completes, publish the working version from the Workplan tab if needed
+-- Notes:
+-- - To modify tasks on projects owned by other users, the profile option 'PA: Cross Project User -- Update' must be enabled at the responsibility level
+-- - Tasks with existing expenditure items cannot have new subtasks created below them
+-- - When updating tasks, the task number itself is not modified — only other attributes are updated
+-- - The PM Product Code must be a valid value registered in the PALOOKUPS lookup type PMPRODUCTCODE (e.g., MSPROJECT, PRIMAVERA)
+-- Excel Example Output: https://www.enginatics.com/example/pa-task-upload/
 -- Library Link: https://www.enginatics.com/reports/pa-task-upload/
 -- Run Report: https://demo.enginatics.com/
 

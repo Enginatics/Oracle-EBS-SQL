@@ -1,24 +1,19 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PA Transaction Upload
 -- Description: PA Transaction Upload
-===================
-This upload can be used to upload transactions from external cost collection systems into Oracle Projects. 
-Transaction Import creates pre-approved expenditure items from transaction data entered in external cost collection systems.
-
-If the 'Operating Unit' and/or 'Transaction Source' parameters are specified, then the upload excel will be restricted to the specified Operating Unit and/or Transaction Source.
-
-If the 'Batch Name' parameter is specified, this will default as the Batch Name in the upload Excel.
-
-If the 'All Negative Expend Unmatched' parameter is set to Yes, then all negative transations then the 'Unmatched Negative Txn Flag' column will automatically default to Yes against any negative transactions entered into upload Excel.
-
-If the 'Reverse in Future Period' parameter is set to Yes, then the 'Accrual Flag' column will default to Yes against every transaction entered in the upload Excel  
-
--- Excel Examle Output: https://www.enginatics.com/example/pa-transaction-upload/
+-- ===================
+-- This upload can be used to upload transactions from external cost collection systems into Oracle Projects.
+-- Transaction Import creates pre-approved expenditure items from transaction data entered in external cost collection systems.
+-- If the 'Operating Unit' and/or 'Transaction Source' parameters are specified, then the upload excel will be restricted to the specified Operating Unit and/or Transaction Source.
+-- If the 'Batch Name' parameter is specified, this will default as the Batch Name in the upload Excel.
+-- If the 'All Negative Expend Unmatched' parameter is set to Yes, then all negative transations then the 'Unmatched Negative Txn Flag' column will automatically default to Yes against any negative transactions entered into upload Excel.
+-- If the 'Reverse in Future Period' parameter is set to Yes, then the 'Accrual Flag' column will default to Yes against every transaction entered in the upload Excel
+-- Excel Example Output: https://www.enginatics.com/example/pa-transaction-upload/
 -- Library Link: https://www.enginatics.com/reports/pa-transaction-upload/
 -- Run Report: https://demo.enginatics.com/
 

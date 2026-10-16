@@ -1,14 +1,20 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'DBA CPU Benchmark1 | Oracle EBS SQL Report'
 description: 'Benchmark report to measure a database server''s CPU speed, mainly for PLSQL processing. This report generates an output file of 500000 out of a total of…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, DBA, CPU, Benchmark1, fnd_languages, fnd_currencies, fnd_application'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Database Administration, Enginatics, DBA, CPU, Benchmark1, fnd_languages, fnd_currencies, fnd_application'
 permalink: /DBA%20CPU%20Benchmark1/
+report_name: 'DBA CPU Benchmark1'
+report_web_name: dba-cpu-benchmark1
+module: 'Database Administration'
+module_url: /modules/database-administration/
 ---
 
 # DBA CPU Benchmark1 – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/dba-cpu-benchmark1/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/dba-cpu-benchmark1/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-cpu-benchmark1) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-cpu-benchmark1).
+**Oracle EBS module:** [Database Administration](/modules/database-administration/ "Oracle EBS Database Administration reports") · [all Database Administration reports](/modules/database-administration/)  
 
 ## Overview
 Benchmark report to measure a database server's CPU speed, mainly for PLSQL processing.
@@ -34,28 +40,31 @@ seconds	rows/s	CPU
 Oracle Ace Johannes Michler from Promatis has written a blog about this topic:
 <a href="https://promatis.com/de/benchmarking-cpus-for-oracle-e-business-suite-database/" rel="nofollow" target="_blank">https://promatis.com/de/benchmarking-cpus-for-oracle-e-business-suite-database/</a>
 
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-cpu-benchmark1) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
+
 ## Report Parameters
 Row Number
 
 ## Oracle EBS Tables Used
-[fnd_languages](https://www.enginatics.com/library/?pg=1&find=fnd_languages), [fnd_currencies](https://www.enginatics.com/library/?pg=1&find=fnd_currencies), [fnd_application](https://www.enginatics.com/library/?pg=1&find=fnd_application)
+[fnd_languages](https://www.enginatics.com/library/?pg=1&find=fnd_languages&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-cpu-benchmark1), [fnd_currencies](https://www.enginatics.com/library/?pg=1&find=fnd_currencies&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-cpu-benchmark1), [fnd_application](https://www.enginatics.com/library/?pg=1&find=fnd_application&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-cpu-benchmark1)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-cpu-benchmark1)
 
 ## Related Reports
 [FND Forms Personalizations](/FND%20Forms%20Personalizations/ "FND Forms Personalizations Oracle EBS SQL Report"), [FND Lookup Values](/FND%20Lookup%20Values/ "FND Lookup Values Oracle EBS SQL Report"), [CST Detailed Item Cost](/CST%20Detailed%20Item%20Cost/ "CST Detailed Item Cost Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/DBA%20CPU%20Benchmark1/DBA%20CPU%20Benchmark1.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-cpu-benchmark1) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [](https://www.enginatics.com/example/dba-cpu-benchmark1/) |
-| Blitz Report™ XML Import | [DBA_CPU_Benchmark1.xml](https://www.enginatics.com/xml/dba-cpu-benchmark1/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/dba-cpu-benchmark1/](https://www.enginatics.com/reports/dba-cpu-benchmark1/) |
+| Excel Example Output | [Example](https://www.enginatics.com/example/dba-cpu-benchmark1/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-cpu-benchmark1) |
+| Blitz Report™ XML Import | [DBA_CPU_Benchmark1.xml](https://www.enginatics.com/xml/dba-cpu-benchmark1/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-cpu-benchmark1) |
+| SQL Source | [DBA CPU Benchmark1.sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/DBA%20CPU%20Benchmark1/DBA%20CPU%20Benchmark1.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/dba-cpu-benchmark1/](https://www.enginatics.com/reports/dba-cpu-benchmark1/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-cpu-benchmark1) |
 
 ## Executive Summary
 The **DBA CPU Benchmark1** report is a synthetic benchmark designed to measure the single-threaded CPU performance of the database server. It generates a large dataset (500,000 rows) by creating a Cartesian product of standard Oracle EBS tables (`FND_LANGUAGES`, `FND_CURRENCIES`, `FND_APPLICATION`). The execution time is dominated by the PL/SQL engine's ability to process these rows and generate the output, making it a good proxy for PL/SQL performance.
@@ -84,18 +93,17 @@ The report queries `FND_LANGUAGES`, `FND_CURRENCIES`, and `FND_APPLICATION`.
 *   **Sizing Decisions**: Helps determine the correct CPU SKU for a new deployment.
 *   **Performance Troubleshooting**: Rules out (or confirms) "slow CPU" as a cause of general system sluggishness.
 
-
 ---
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-cpu-benchmark1)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-cpu-benchmark1)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-cpu-benchmark1)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-cpu-benchmark1)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-cpu-benchmark1)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-cpu-benchmark1)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-cpu-benchmark1)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

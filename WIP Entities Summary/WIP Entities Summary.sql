@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: WIP Entities Summary
 -- Description: Overview of WIP entities of different types and their various statuses.
--- Excel Examle Output: https://www.enginatics.com/example/wip-entities-summary/
+-- Excel Example Output: https://www.enginatics.com/example/wip-entities-summary/
 -- Library Link: https://www.enginatics.com/reports/wip-entities-summary/
 -- Run Report: https://demo.enginatics.com/
 

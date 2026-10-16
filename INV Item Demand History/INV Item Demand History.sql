@@ -1,17 +1,17 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: INV Item Demand History
 -- Description: Imported from BI Publisher
-Description: Item demand history report
-Application: Inventory
-Source: Item demand history report (XML)
-Short Name: INVPRFDH_XML
-DB package: INV_INVPRFDH_XMLP_PKG
--- Excel Examle Output: https://www.enginatics.com/example/inv-item-demand-history/
+-- Description: Item demand history report
+-- Application: Inventory
+-- Source: Item demand history report (XML)
+-- Short Name: INVPRFDHXML
+-- DB package: INVINVPRFDHXMLPPKG
+-- Excel Example Output: https://www.enginatics.com/example/inv-item-demand-history/
 -- Library Link: https://www.enginatics.com/reports/inv-item-demand-history/
 -- Run Report: https://demo.enginatics.com/
 

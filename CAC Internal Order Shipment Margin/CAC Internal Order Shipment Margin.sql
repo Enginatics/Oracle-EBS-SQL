@@ -1,67 +1,60 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Internal Order Shipment Margin
--- Description: Report to display the internal sales orders/requisition shipments with COGS, margin, inter-company profit and other useful information.  This report separately gets the COGS and revenue entries for the entered date range. If the COGS information is not reported the sales order line was not shipped in the entered date range.  If the revenue nformation is not reported the sales order line was not billed in the entered date range.
-
-/* +=============================================================================+
--- |  Copyright 2010 - 2020 Douglas Volz Consulting, Inc.                        |
--- |  All rights reserved.                                                       |
--- |  Permission to use this code is granted provided the original author is     |
--- |  acknowledged.  No warranties, express or otherwise is included in this     |
--- |  permission.                                                                |
--- +=============================================================================+
--- |
--- |  Original Author: Douglas Volz (doug@volzconsulting.com)
--- |
--- |  Parameters:
--- |  p_from_org_ledger         -- general ledger you wish to report, for the From Organization, optional
--- |  p_to_org_ledger           -- general ledger you wish to report, for the To Organization, optional
--- |  p_from_org_code           -- the source or from inventory organization you wish to report, optional
--- |  p_trx_date_from           -- starting transaction date for internal shipment transactions, mandatory
--- |  p_trx_date_to             -- ending transaction date for internal shipment transactions, mandatory
--- |  p_pii_cost_type           -- the profit in inventory costs you wish to report
--- |  p_pii_resource_code       -- the sub-element or resource for profit in inventory,
--- |                               such as PII or ICP 
--- |  p_curr_conv_date          -- currency conversion date
--- |  p_std_cost_curr_conv_type -- currency conversion type used to set your standard costs and
--- |                               transfer prices
--- | 
--- |  Version Modified on  Modified  by   Description
--- |  ======= =========== =========================================
--- |  Version Modified on Modified  by   Description
--- |  ======= =========== ============== =========================================
--- |  1.0     12 Nov 2009 Douglas Volz   Initial Coding based on XXX_IRO_COGS.sql
--- |  1.27     25 May 2020 Douglas Volz  Changed to multi-language views for organizations, operating units,
--- |                                     categories and units of measure.  Remove RA Batches code logic.
--- |                                     Remove sections for custom IR/ISO transactions.
--- +=============================================================================+*/
--- ======================================================== 
--- Program Outline
--- ======================================================== 
--- Section I:   Output the Report Columns for the Internal Shipment Entries
--- Section II:  Get the currency conversion rates, based on the currency conversion
---              type and currency conversion date parameters
--- Section III: Condense the 2 union all statements into one line
---              for each Transaction Id.  Also get the PII item costs.
--- Section IV:  Get the material, payables and revenue transactions
---              which represent the Internal Order activity.
---              Assume IR/ISO shipments may or may not use custom billing
---              Section IV has 2 union all reports as follows:
---	 Report 1:  Get IR/ISO COGS and Sales for Intransit Shipments
---	            where title passes upon shipment (FOB = 1, Shipment)
---	 Report 2:  Get IR/ISO COGS and Sales for IR/ISO Intransit Receipts
---	            where title passes upon receipt (FOB_Point = 2, Receipt)
-
-
-
-
-
-
--- Excel Examle Output: https://www.enginatics.com/example/cac-internal-order-shipment-margin/
+-- Description: Report to display the internal sales orders/requisition shipments with COGS, margin, inter-company profit and other useful information. This report separately gets the COGS and revenue entries for the entered date range. If the COGS information is not reported the sales order line was not shipped in the entered date range. If the revenue nformation is not reported the sales order line was not billed in the entered date range.
+-- / +=============================================================================+
+-- -- | Copyright 2010 - 2020 Douglas Volz Consulting, Inc. |
+-- -- | All rights reserved. |
+-- -- | Permission to use this code is granted provided the original author is |
+-- -- | acknowledged. No warranties, express or otherwise is included in this |
+-- -- | permission. |
+-- -- +=============================================================================+
+-- -- |
+-- -- | Original Author: Douglas Volz (doug@volzconsulting.com)
+-- -- |
+-- -- | Parameters:
+-- -- | pfromorgledger -- general ledger you wish to report, for the From Organization, optional
+-- -- | ptoorgledger -- general ledger you wish to report, for the To Organization, optional
+-- -- | pfromorgcode -- the source or from inventory organization you wish to report, optional
+-- -- | ptrxdatefrom -- starting transaction date for internal shipment transactions, mandatory
+-- -- | ptrxdateto -- ending transaction date for internal shipment transactions, mandatory
+-- -- | ppiicosttype -- the profit in inventory costs you wish to report
+-- -- | ppiiresourcecode -- the sub-element or resource for profit in inventory,
+-- -- | such as PII or ICP
+-- -- | pcurrconvdate -- currency conversion date
+-- -- | pstdcostcurrconvtype -- currency conversion type used to set your standard costs and
+-- -- | transfer prices
+-- -- |
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== =========================================
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== ============== =========================================
+-- -- | 1.0 12 Nov 2009 Douglas Volz Initial Coding based on XXXIROCOGS.sql
+-- -- | 1.27 25 May 2020 Douglas Volz Changed to multi-language views for organizations, operating units,
+-- -- | categories and units of measure. Remove RA Batches code logic.
+-- -- | Remove sections for custom IR/ISO transactions.
+-- -- +=============================================================================+/
+-- -- ========================================================
+-- -- Program Outline
+-- -- ========================================================
+-- -- Section I: Output the Report Columns for the Internal Shipment Entries
+-- -- Section II: Get the currency conversion rates, based on the currency conversion
+-- -- type and currency conversion date parameters
+-- -- Section III: Condense the 2 union all statements into one line
+-- -- for each Transaction Id. Also get the PII item costs.
+-- -- Section IV: Get the material, payables and revenue transactions
+-- -- which represent the Internal Order activity.
+-- -- Assume IR/ISO shipments may or may not use custom billing
+-- -- Section IV has 2 union all reports as follows:
+-- -- Report 1: Get IR/ISO COGS and Sales for Intransit Shipments
+-- -- where title passes upon shipment (FOB = 1, Shipment)
+-- -- Report 2: Get IR/ISO COGS and Sales for IR/ISO Intransit Receipts
+-- -- where title passes upon receipt (FOBPoint = 2, Receipt)
+-- Excel Example Output: https://www.enginatics.com/example/cac-internal-order-shipment-margin/
 -- Library Link: https://www.enginatics.com/reports/cac-internal-order-shipment-margin/
 -- Run Report: https://demo.enginatics.com/
 

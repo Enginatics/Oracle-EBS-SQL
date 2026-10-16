@@ -1,38 +1,35 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: GL Oracle FSG Converter
--- Description: ** This report is used by the GL Financial Statement and Drilldown report, to migrate financial statement reports from Oracle FSG. **
-
-The GL Oracle FSG Converter is used for migration of financial statement reports from Oracle Financial Statement Generator (FSG) into the GL Financial Statement and Drilldown (FSG) report. This converter simplifies the process of transferring the existing Oracle FSG reports, allowing users to leverage advanced reporting and drilldown capabilities with minimal setup.
-
-This version supports DB versions above 12c. To apply the converter, the profile 'Blitz FSG Oracle to Blitz Report Converter' must be updated with the relevant report name based on the db version.
-
-For a quick demonstration of GL Financial Statement and Drilldown (FSG), refer to our YouTube video.
-<a href="https://youtu.be/dsRWXT2bem8?si=bA8cAxuXjfrMI-SI" rel="nofollow" target="_blank">https://youtu.be/dsRWXT2bem8?si=bA8cAxuXjfrMI-SI</a>
--- Excel Examle Output: https://www.enginatics.com/example/gl-oracle-fsg-converter/
+-- Description: This report is used by the GL Financial Statement and Drilldown report, to migrate financial statement reports from Oracle FSG.
+-- The GL Oracle FSG Converter is used for migration of financial statement reports from Oracle Financial Statement Generator (FSG) into the GL Financial Statement and Drilldown (FSG) report. This converter simplifies the process of transferring the existing Oracle FSG reports, allowing users to leverage advanced reporting and drilldown capabilities with minimal setup.
+-- This version supports DB versions above 12c. To apply the converter, the profile 'Blitz FSG Oracle to Blitz Report Converter' must be updated with the relevant report name based on the db version.
+-- For a quick demonstration of GL Financial Statement and Drilldown (FSG), refer to our YouTube video.
+-- https://youtu.be/dsRWXT2bem8?si=bA8cAxuXjfrMI-SI
+-- Excel Example Output: https://www.enginatics.com/example/gl-oracle-fsg-converter/
 -- Library Link: https://www.enginatics.com/reports/gl-oracle-fsg-converter/
 -- Run Report: https://demo.enginatics.com/
 
 select x.* from (
 with merged_data as (
-select distinct
-listagg(y.column_header,'|')within group (order by y.sequence_) over (partition by 1) column_header,
-listagg(y.sequence,'|')within group (order by y.sequence_) over (partition by 1) sequence,
-listagg(y.description,'|')within group (order by y.sequence_) over (partition by 1) description,
-replace(listagg(y.amount_type,'|')within group (order by y.sequence_) over (partition by 1),'~^') amount_type,
-replace(listagg(y.period,'|')within group (order by y.sequence_) over (partition by 1),'~^') period,
-replace(listagg(nvl(y.calculation,'~^'),'|')within group (order by y.sequence_) over (partition by 1),'~^') calculation,
+select
+listagg(y.column_header,'|') within group (order by y.sequence_) column_header,
+listagg(y.sequence,'|') within group (order by y.sequence_) sequence,
+listagg(y.description,'|') within group (order by y.sequence_) description,
+replace(listagg(y.amount_type,'|') within group (order by y.sequence_),'~^') amount_type,
+replace(listagg(y.period,'|') within group (order by y.sequence_),'~^') period,
+replace(listagg(nvl(y.calculation,'~^'),'|') within group (order by y.sequence_),'~^') calculation,
 y.report_title,
 &column_segments
 y.segment_name override_segment_name,
-replace(listagg(nvl(y.segment_override_value,'~^'),'|')within group (order by y.sequence_) over (partition by 1),'~^') override_segment_value,
-replace(listagg(nvl(y.calculation_precedence_flag,'~^'),'|')within group (order by y.sequence_) over (partition by 1),'~^') calculation_precedence_flag,
-replace(listagg(nvl(y.multiply,'~^'),'|')within group (order by y.sequence_) over (partition by 1),'~^') multiply,
-replace(listagg(nvl(y.movement,'~^'),'|')within group (order by y.sequence_) over (partition by 1),'~^') movement
+replace(listagg(nvl(y.segment_override_value,'~^'),'|') within group (order by y.sequence_),'~^') override_segment_value,
+replace(listagg(nvl(y.calculation_precedence_flag,'~^'),'|') within group (order by y.sequence_),'~^') calculation_precedence_flag,
+replace(listagg(nvl(y.multiply,'~^'),'|') within group (order by y.sequence_),'~^') multiply,
+replace(listagg(nvl(y.movement,'~^'),'|') within group (order by y.sequence_),'~^') movement
 from
 (
 select distinct
@@ -111,30 +108,33 @@ order by
 rrav.position
 ) x
 ) y
+group by
+y.report_title,
+y.segment_name
 )
-select null multiply, null movement, null change_sign, null segment_display, &columnset_null_segments 'Ledger:' description, null sequence, null calculation, null line_format, :ledger column_value from merged_data
+select null multiply, null movement, null change_sign, null display, null segment_display, &columnset_null_segments 'Ledger:' description, null sequence, null calculation, null line_format, :ledger column_value from merged_data
 union all
-select null multiply, null movement, null change_sign, null segment_display, &columnset_null_segments 'Report Title:' description, null sequence, null calculation, null line_format, report_title column_value from merged_data
+select null multiply, null movement, null change_sign, null display, null segment_display, &columnset_null_segments 'Report Title:' description, null sequence, null calculation, null line_format, report_title column_value from merged_data
 union all
-select null multiply, null movement, null change_sign, null segment_display, &columnset_null_segments 'Current Period:' description, null sequence, null calculation, null line_format, xxen_util.latest_open_period(:ledger) column_value from merged_data
+select null multiply, null movement, null change_sign, null display, null segment_display, &columnset_null_segments 'Current Period:' description, null sequence, null calculation, null line_format, xxen_util.latest_open_period(:ledger) column_value from merged_data
 union all
-select null multiply, null movement, null change_sign, null segment_display, &columnset_null_segments 'Override Segment Name' description, null sequence, null calculation, null line_format, override_segment_name column_value from merged_data
+select null multiply, null movement, null change_sign, null display, null segment_display, &columnset_null_segments 'Override Segment Name' description, null sequence, null calculation, null line_format, override_segment_name column_value from merged_data
 union all
-select null multiply, null movement, null change_sign, null segment_display, &columnset_null_segments 'Calculation Precedence' description, null sequence, null calculation, null line_format, calculation_precedence_flag column_value from merged_data
+select null multiply, null movement, null change_sign, null display, null segment_display, &columnset_null_segments 'Calculation Precedence' description, null sequence, null calculation, null line_format, calculation_precedence_flag column_value from merged_data
 union all
-select null multiply, null movement, null change_sign, null segment_display, &columnset_null_segments 'Sequence' description, null sequence, null calculation, null line_format, sequence column_value from merged_data
+select null multiply, null movement, null change_sign, null display, null segment_display, &columnset_null_segments 'Sequence' description, null sequence, null calculation, null line_format, sequence column_value from merged_data
 union all
-select null multiply, null movement, null change_sign, null segment_display, &columnset_null_segments 'Column Calculations' description, null sequence, null calculation, null line_format, calculation column_value from merged_data
+select null multiply, null movement, null change_sign, null display, null segment_display, &columnset_null_segments 'Column Calculations' description, null sequence, null calculation, null line_format, calculation column_value from merged_data
 union all
-select null multiply, null movement, null change_sign, null segment_display, &columnset_null_segments 'Column Header' description, null sequence, null calculation, null line_format, column_header column_value from merged_data
+select null multiply, null movement, null change_sign, null display, null segment_display, &columnset_null_segments 'Column Header' description, null sequence, null calculation, null line_format, column_header column_value from merged_data
 union all
-select null multiply, null movement, null change_sign, null segment_display, &columnset_null_segments 'Amount Type' description, null sequence, null calculation, null line_format, amount_type column_value from merged_data
+select null multiply, null movement, null change_sign, null display, null segment_display, &columnset_null_segments 'Amount Type' description, null sequence, null calculation, null line_format, amount_type column_value from merged_data
 union all
-select null multiply, null movement, null change_sign, null segment_display, &columnset_null_segments 'Periods' description, null sequence, null calculation, null line_format, period column_value from merged_data
-union all select null multiply, null movement, null change_sign, null segment_display, &columnset_null_segments 'Multiply' description, null sequence, null calculation, null line_format, multiply column_value from merged_data
-union all select null multiply, null movement, null change_sign, null segment_display, &columnset_null_segments 'Movement' description, null sequence, null calculation, null line_format, movement column_value from merged_data
+select null multiply, null movement, null change_sign, null display, null segment_display, &columnset_null_segments 'Periods' description, null sequence, null calculation, null line_format, period column_value from merged_data
+union all select null multiply, null movement, null change_sign, null display, null segment_display, &columnset_null_segments 'Multiply' description, null sequence, null calculation, null line_format, multiply column_value from merged_data
+union all select null multiply, null movement, null change_sign, null display, null segment_display, &columnset_null_segments 'Movement' description, null sequence, null calculation, null line_format, movement column_value from merged_data
 union all
-select null multiply, null movement, null change_sign, null segment_display, &columnset_null_segments 'Override Segment Value' description, null sequence, null calculation, null line_format, override_segment_value column_value from merged_data
+select null multiply, null movement, null change_sign, null display, null segment_display, &columnset_null_segments 'Override Segment Value' description, null sequence, null calculation, null line_format, override_segment_value column_value from merged_data
 &column_segments_union
 ) x
 union all
@@ -143,6 +143,7 @@ select
 case when x.row_type='R' then decode(x.sign,'-',-1,1) end multiply,
 case when x.dr_cr_net_code='N' then 'Net' when x.dr_cr_net_code='D' then 'Dr' when x.dr_cr_net_code='C' then 'Cr' end movement,
 x.change_sign_flag change_sign,
+x.display_flag display,
 case when x.row_type='R' then x.segment_display end segment_display,
 &rowset_segments_case
 x.description,
@@ -177,6 +178,7 @@ rrac.range_mode,
 rrac.sign,
 rrac.dr_cr_net_code,
 rrav.change_sign_flag,
+rrav.display_flag,
 &rowset_segment_display
 &rowset_segments
 rrav.description,
@@ -192,7 +194,6 @@ rg_report_axis_contents rrac
 where
 1=1 and
 rrav.axis_set_id=rrv.row_set_id and
-rrav.display_flag='Y' and
 rrav.axis_set_id=rrac.axis_set_id(+) and
 rrav.sequence=rrac.axis_seq(+)
 &rowset_summary_filter
@@ -206,10 +207,11 @@ x.range_seq
 union all
 select y.* from(
 select
-null mutliply,
+null multiply,
 null movement,
 null change_sign,
-null segment_display, 
+null display,
+null segment_display,
 &contentset_select_segments
 'Content Set' description,
 null sequence,

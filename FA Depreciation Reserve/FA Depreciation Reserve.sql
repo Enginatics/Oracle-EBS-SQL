@@ -1,18 +1,16 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: FA Depreciation Reserve
 -- Description: Depreciation Reserve Summary/Detail Report
-
-Equivalent to Oracle Standard Reports:
-Reserve Summary Report
-Reserve Detail Report
-
-DB package: XXEN_FA_FAS_XMLP
--- Excel Examle Output: https://www.enginatics.com/example/fa-depreciation-reserve/
+-- Equivalent to Oracle Standard Reports:
+-- Reserve Summary Report
+-- Reserve Detail Report
+-- DB package: XXENFAFASXMLP
+-- Excel Example Output: https://www.enginatics.com/example/fa-depreciation-reserve/
 -- Library Link: https://www.enginatics.com/reports/fa-depreciation-reserve/
 -- Run Report: https://demo.enginatics.com/
 

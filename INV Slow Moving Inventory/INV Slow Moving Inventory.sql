@@ -1,20 +1,16 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: INV Slow Moving Inventory
 -- Description: Slow moving, excess and obsolete inventory. Lists items still holding stock as of a chosen date that have had no material movement over a chosen period, with their value, usage rate and months of supply, for obsolescence provisioning.
-
-On Hand is the quantity as of the As of Date, not the current quantity. It is rolled back like Oracle's Transaction Historical Summary report, by reversing every material transaction posted after that date. Values use the item cost of the organization's primary cost method.
-
-The no activity test is made per item, so an item is dropped as a whole as soon as any of its subinventories moved. Ignore Adjustment Transactions excludes cycle count adjustments, physical inventory adjustments and cost updates from that test and from Last Transaction Date. Logical transactions never count as activity.
-
-Usage Quantity is the quantity issued out of stock over the Usage Months preceding the As of Date. Months of Supply stays empty where there was no usage at all, which identifies the items that have not moved once in the whole window.
-
-Rows are per subinventory; Item On Hand and Item On Hand Value are the item totals across subinventories.
--- Excel Examle Output: https://www.enginatics.com/example/inv-slow-moving-inventory/
+-- On Hand is the quantity as of the As of Date, not the current quantity. It is rolled back like Oracle's Transaction Historical Summary report, by reversing every material transaction posted after that date. Values use the item cost of the organization's primary cost method.
+-- The no activity test is made per item, so an item is dropped as a whole as soon as any of its subinventories moved. Ignore Adjustment Transactions excludes cycle count adjustments, physical inventory adjustments and cost updates from that test and from Last Transaction Date. Logical transactions never count as activity.
+-- Usage Quantity is the quantity issued out of stock over the Usage Months preceding the As of Date. Months of Supply stays empty where there was no usage at all, which identifies the items that have not moved once in the whole window.
+-- Rows are per subinventory; Item On Hand and Item On Hand Value are the item totals across subinventories.
+-- Excel Example Output: https://www.enginatics.com/example/inv-slow-moving-inventory/
 -- Library Link: https://www.enginatics.com/reports/inv-slow-moving-inventory/
 -- Run Report: https://demo.enginatics.com/
 

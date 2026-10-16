@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PA Project Billing Status
 -- Description: Project billing overview showing revenue, billed and unbilled amounts, funding totals, and available funding for each project.
--- Excel Examle Output: https://www.enginatics.com/example/pa-project-billing-status/
+-- Excel Example Output: https://www.enginatics.com/example/pa-project-billing-status/
 -- Library Link: https://www.enginatics.com/reports/pa-project-billing-status/
 -- Run Report: https://demo.enginatics.com/
 

@@ -1,40 +1,46 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'PN Billing/Payment Term Upload | Oracle EBS SQL Report'
-description: 'Property Management - Billing and Payment Terms Upload – Oracle E-Business Suite SQL report'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, Billing/Payment, Term, ap_suppliers, po_headers_all, ra_terms_vl'
+description: 'Property Management - Billing and Payment Terms Upload – Oracle E-Business Suite SQL report: free SQL, parameters and tables used.'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Upload, Billing/Payment, Term, ap_suppliers, po_headers_all, ra_terms_vl'
 permalink: /PN%20Billing-Payment%20Term%20Upload/
+report_name: 'PN Billing/Payment Term Upload'
+report_web_name: pn-billing-payment-term-upload
 ---
 
 # PN Billing/Payment Term Upload – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/pn-billing-payment-term-upload/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/pn-billing-payment-term-upload/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pn-billing-payment-term-upload) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pn-billing-payment-term-upload).
 
 ## Overview
 Property Management - Billing and Payment Terms Upload
+
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pn-billing-payment-term-upload) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 
 ## Report Parameters
 Upload Mode, Lease Class, Final Draft Status, Lease Status, Operating Unit, Third Party Name, Lease Type, Lease Name, Lease Name From, Lease Name To, Lease Number, Lease Number From, Lease Number To, Location, Purpose, Type, Frequency, Payment Start Date From, Payment Start Date To, Copy: Date Increment Type, Copy: Date Increment Units
 
 ## Oracle EBS Tables Used
-[ap_suppliers](https://www.enginatics.com/library/?pg=1&find=ap_suppliers), [po_headers_all](https://www.enginatics.com/library/?pg=1&find=po_headers_all), [ra_terms_vl](https://www.enginatics.com/library/?pg=1&find=ra_terms_vl), [ap_terms_vl](https://www.enginatics.com/library/?pg=1&find=ap_terms_vl), [ar_receipt_methods](https://www.enginatics.com/library/?pg=1&find=ar_receipt_methods), [ra_cust_trx_types_all](https://www.enginatics.com/library/?pg=1&find=ra_cust_trx_types_all), [ra_salesreps_all](https://www.enginatics.com/library/?pg=1&find=ra_salesreps_all), [ra_rules](https://www.enginatics.com/library/?pg=1&find=ra_rules), [ap_distribution_sets_all](https://www.enginatics.com/library/?pg=1&find=ap_distribution_sets_all), [pa_projects_all](https://www.enginatics.com/library/?pg=1&find=pa_projects_all), [pa_tasks_expend_v](https://www.enginatics.com/library/?pg=1&find=pa_tasks_expend_v), [pa_organizations_expend_v](https://www.enginatics.com/library/?pg=1&find=pa_organizations_expend_v), [pn_distributions_v](https://www.enginatics.com/library/?pg=1&find=pn_distributions_v), [gl_code_combinations_kfv](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations_kfv), [pn_leases_v](https://www.enginatics.com/library/?pg=1&find=pn_leases_v), [pn_payment_terms_v](https://www.enginatics.com/library/?pg=1&find=pn_payment_terms_v), [pn_locations_all](https://www.enginatics.com/library/?pg=1&find=pn_locations_all), [hr_all_organization_units_vl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_vl)
+[ap_suppliers](https://www.enginatics.com/library/?pg=1&find=ap_suppliers&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pn-billing-payment-term-upload), [po_headers_all](https://www.enginatics.com/library/?pg=1&find=po_headers_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pn-billing-payment-term-upload), [ra_terms_vl](https://www.enginatics.com/library/?pg=1&find=ra_terms_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pn-billing-payment-term-upload), [ap_terms_vl](https://www.enginatics.com/library/?pg=1&find=ap_terms_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pn-billing-payment-term-upload), [ar_receipt_methods](https://www.enginatics.com/library/?pg=1&find=ar_receipt_methods&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pn-billing-payment-term-upload), [ra_cust_trx_types_all](https://www.enginatics.com/library/?pg=1&find=ra_cust_trx_types_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pn-billing-payment-term-upload), [ra_salesreps_all](https://www.enginatics.com/library/?pg=1&find=ra_salesreps_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pn-billing-payment-term-upload), [ra_rules](https://www.enginatics.com/library/?pg=1&find=ra_rules&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pn-billing-payment-term-upload), [ap_distribution_sets_all](https://www.enginatics.com/library/?pg=1&find=ap_distribution_sets_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pn-billing-payment-term-upload), [pa_projects_all](https://www.enginatics.com/library/?pg=1&find=pa_projects_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pn-billing-payment-term-upload), [pa_tasks](https://www.enginatics.com/library/?pg=1&find=pa_tasks&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pn-billing-payment-term-upload), [hr_all_organization_units_vl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pn-billing-payment-term-upload), [pn_distributions_v](https://www.enginatics.com/library/?pg=1&find=pn_distributions_v&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pn-billing-payment-term-upload), [gl_code_combinations_kfv](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations_kfv&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pn-billing-payment-term-upload), [pn_leases_v](https://www.enginatics.com/library/?pg=1&find=pn_leases_v&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pn-billing-payment-term-upload), [pn_payment_terms_v](https://www.enginatics.com/library/?pg=1&find=pn_payment_terms_v&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pn-billing-payment-term-upload), [pn_locations_all](https://www.enginatics.com/library/?pg=1&find=pn_locations_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pn-billing-payment-term-upload)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Upload](https://www.enginatics.com/library/?pg=1&category[]=Upload)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pn-billing-payment-term-upload), [R12 only](https://www.enginatics.com/library/?pg=1&category%5B%5D=R12%20only&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pn-billing-payment-term-upload), [Upload](https://www.enginatics.com/library/?pg=1&category%5B%5D=Upload&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pn-billing-payment-term-upload)
 
 ## Related Reports
-[AR Customer Upload](/AR%20Customer%20Upload/ "AR Customer Upload Oracle EBS SQL Report"), [GL Account Analysis (Drilldown) (with inventory and WIP)](/GL%20Account%20Analysis%20%28Drilldown%29%20%28with%20inventory%20and%20WIP%29/ "GL Account Analysis (Drilldown) (with inventory and WIP) Oracle EBS SQL Report"), [GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report"), [GL Account Analysis](/GL%20Account%20Analysis/ "GL Account Analysis Oracle EBS SQL Report")
+[GL Account Analysis (Drilldown) (with inventory and WIP)](/GL%20Account%20Analysis%20%28Drilldown%29%20%28with%20inventory%20and%20WIP%29/ "GL Account Analysis (Drilldown) (with inventory and WIP) Oracle EBS SQL Report"), [GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report"), [GL Account Analysis](/GL%20Account%20Analysis/ "GL Account Analysis Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/PN%20Billing-Payment%20Term%20Upload/PN%20Billing-Payment%20Term%20Upload.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pn-billing-payment-term-upload) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [](https://www.enginatics.com/example/pn-billing-payment-term-upload/) |
-| Blitz Report™ XML Import | [PN_Billing_Payment_Term_Upload.xml](https://www.enginatics.com/xml/pn-billing-payment-term-upload/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/pn-billing-payment-term-upload/](https://www.enginatics.com/reports/pn-billing-payment-term-upload/) |
+| Excel Example Output | [Example](https://www.enginatics.com/example/pn-billing-payment-term-upload/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pn-billing-payment-term-upload) |
+| Blitz Report™ XML Import | [PN_Billing_Payment_Term_Upload.xml](https://www.enginatics.com/xml/pn-billing-payment-term-upload/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pn-billing-payment-term-upload) |
+| SQL Source | [PN Billing-Payment Term Upload.sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/PN%20Billing-Payment%20Term%20Upload/PN%20Billing-Payment%20Term%20Upload.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/pn-billing-payment-term-upload/](https://www.enginatics.com/reports/pn-billing-payment-term-upload/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pn-billing-payment-term-upload) |
 
 ## Case Study & Technical Analysis: PN Billing/Payment Term Upload Report
 
@@ -101,18 +107,17 @@ Using an API-based upload for bulk lease data is inherently more efficient than 
 **3. What happens if I upload terms with conflicting dates for the same lease?**
    The Oracle Property Management APIs will typically perform validation to prevent conflicting terms. Depending on the exact nature of the conflict (e.g., overlapping dates for the same term type), the upload process will either reject the conflicting line or, in some cases, overwrite the existing term based on the `Upload Mode` and system configuration. The output log will detail any rejections.
 
-
 ---
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pn-billing-payment-term-upload)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pn-billing-payment-term-upload)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pn-billing-payment-term-upload)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pn-billing-payment-term-upload)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pn-billing-payment-term-upload)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pn-billing-payment-term-upload)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pn-billing-payment-term-upload)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

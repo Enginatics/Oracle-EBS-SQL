@@ -1,17 +1,17 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: INV Physical Inventory Adjustments
 -- Description: Imported from BI Publisher
-Description: Physical inventory adjustments report
-Application: Inventory
-Source: Physical inventory adjustments report (XML)
-Short Name: INVARPAR_XML
-DB package: INV_INVARPAR_XMLP_PKG
--- Excel Examle Output: https://www.enginatics.com/example/inv-physical-inventory-adjustments/
+-- Description: Physical inventory adjustments report
+-- Application: Inventory
+-- Source: Physical inventory adjustments report (XML)
+-- Short Name: INVARPARXML
+-- DB package: INVINVARPARXMLPPKG
+-- Excel Example Output: https://www.enginatics.com/example/inv-physical-inventory-adjustments/
 -- Library Link: https://www.enginatics.com/reports/inv-physical-inventory-adjustments/
 -- Run Report: https://demo.enginatics.com/
 

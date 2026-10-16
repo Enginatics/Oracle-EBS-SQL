@@ -1,15 +1,15 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: INV Cycle count open requests listing
 -- Description: Imported Oracle standard Cycle count open requests listing report
-Source: Cycle count open requests listing (XML)
-Short Name: INVARORE_XML
-DB package: INV_INVARORE_XMLP_PKG
--- Excel Examle Output: https://www.enginatics.com/example/inv-cycle-count-open-requests-listing/
+-- Source: Cycle count open requests listing (XML)
+-- Short Name: INVAROREXML
+-- DB package: INVINVAROREXMLPPKG
+-- Excel Example Output: https://www.enginatics.com/example/inv-cycle-count-open-requests-listing/
 -- Library Link: https://www.enginatics.com/reports/inv-cycle-count-open-requests-listing/
 -- Run Report: https://demo.enginatics.com/
 

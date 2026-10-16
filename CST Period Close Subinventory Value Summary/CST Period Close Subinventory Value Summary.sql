@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CST Period Close Subinventory Value Summary
 -- Description: Summary report that lists selected ledgers and operating units with corresponding sub inventory code and Inventory value.With Ledger export capability.
--- Excel Examle Output: https://www.enginatics.com/example/cst-period-close-subinventory-value-summary/
+-- Excel Example Output: https://www.enginatics.com/example/cst-period-close-subinventory-value-summary/
 -- Library Link: https://www.enginatics.com/reports/cst-period-close-subinventory-value-summary/
 -- Run Report: https://demo.enginatics.com/
 

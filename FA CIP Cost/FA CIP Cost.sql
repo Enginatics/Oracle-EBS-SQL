@@ -1,21 +1,42 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: FA CIP Cost
 -- Description: CIP Costs Summary/Detail Report
-
-Equivalent to Oracle Standard Reports:
-CIP Summary Report
-CIP Detail Report
-
-DB package: XXEN_FA_FAS_XMLP
--- Excel Examle Output: https://www.enginatics.com/example/fa-cip-cost/
+-- Equivalent to Oracle Standard Reports:
+-- CIP Summary Report
+-- CIP Detail Report
+-- DB package: XXENFAFASXMLP
+-- Excel Example Output: https://www.enginatics.com/example/fa-cip-cost/
 -- Library Link: https://www.enginatics.com/reports/fa-cip-cost/
 -- Run Report: https://demo.enginatics.com/
 
+with 
+-- Not using fa_balances_reports_gt as it does not have enough columns
+-- to cater for running the reports across multiple book type codes and balance types (COST + RESERVE)
+fa_balances_report_q as
+(
+select
+  mfq.char1    book_type_code
+, mfq.char2    balance_type
+, mfq.number1  asset_id
+, mfq.number2  distribution_ccid
+, mfq.number3  adjustment_ccid
+, mfq.char3    category_books_account
+, mfq.char4    source_type_code
+, mfq.number4  amount
+, mfq.char5    cost_account
+, mfq.number5  cost_begin_balance
+, mfq.number6  group_asset_id
+, mfq.number7  set_of_books_id
+from
+msc_form_query mfq
+)
+--
+--
 select
   x.company_name          company_name,
   x.ledger                ledger,
@@ -31,6 +52,7 @@ select
   x.adjustment_amount     adjustments,
   x.retirement_amount     retirements,
   x.capitalization_amount capitalized,
+  x.revaluation_amount    revaluations,
   x.reclass_amount        reclassifications,
   x.transfer_amount       transfers,
   x.end_amount            ending_balance,
@@ -81,7 +103,7 @@ from
     fa_system_controls    fsc,
     gl_ledgers            gl,
     fnd_currencies        fc,
-    fa_balances_report_gt fbrg,
+    fa_balances_report_q  fbrg,
     fa_additions          fa,
     gl_code_combinations  gcc_dh,
     gl_code_combinations  gcc_aj

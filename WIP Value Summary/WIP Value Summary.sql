@@ -1,26 +1,25 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: WIP Value Summary
--- Description: Report to get the WIP and Material  accounting distributions,  by WIP job,period, Org .
-It displays detailed information from both sources WIP and Material Transactions
-Parameters:
-===========
-Period:  To pull the transactions based on specific inventory period ( transaction_date).(mandatory)
-Source:  enter the source "WIP","Material" or "Both" you wish to report (mandatory).
-Category Set 1:  any item category you wish, typically the Cost or Product Line category set (optional).
-Category Set 2:  any item category you wish, typically the Inventory category set (optional).
-Category Set 3:  any item category you wish, typically the Inventory category set (optional).
-Replace Colon with Dot:  This is to give flexibility to replace concatenated segments '-' with '.' . If Yes, it wil always replace (optional).
-WIP Job or Flow Schedule:  enter the WIP Job or the Flow Schedule to report (optional).
-Organization Code:  enter the inventory organization(s) you wish to report (mandatory).
-Operating Unit:  enter the operating unit(s) you wish to report (optional).
-Ledger:  enter the ledger(s) you wish to report (optional).
-
--- Excel Examle Output: https://www.enginatics.com/example/wip-value-summary/
+-- Description: Report to get the WIP and Material accounting distributions, by WIP job,period, Org .
+-- It displays detailed information from both sources WIP and Material Transactions
+-- Parameters:
+-- ===========
+-- Period: To pull the transactions based on specific inventory period ( transactiondate).(mandatory)
+-- Source: enter the source "WIP","Material" or "Both" you wish to report (mandatory).
+-- Category Set 1: any item category you wish, typically the Cost or Product Line category set (optional).
+-- Category Set 2: any item category you wish, typically the Inventory category set (optional).
+-- Category Set 3: any item category you wish, typically the Inventory category set (optional).
+-- Replace Colon with Dot: This is to give flexibility to replace concatenated segments '-' with '.' . If Yes, it wil always replace (optional).
+-- WIP Job or Flow Schedule: enter the WIP Job or the Flow Schedule to report (optional).
+-- Organization Code: enter the inventory organization(s) you wish to report (mandatory).
+-- Operating Unit: enter the operating unit(s) you wish to report (optional).
+-- Ledger: enter the ledger(s) you wish to report (optional).
+-- Excel Example Output: https://www.enginatics.com/example/wip-value-summary/
 -- Library Link: https://www.enginatics.com/reports/wip-value-summary/
 -- Run Report: https://demo.enginatics.com/
 

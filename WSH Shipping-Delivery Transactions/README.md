@@ -1,14 +1,20 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'WSH Shipping/Delivery Transactions | Oracle EBS SQL Report'
 description: 'This report provides details of Warehouse Shipping Transactions and Deliveries. To review details of deliveries only, set the Assigned to Delivery…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, WSH, Shipping/Delivery, Transactions, wsh_delivery_legs, wsh_trip_stops, wsh_trips'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Shipping Execution, Enginatics, WSH, Shipping/Delivery, Transactions, wsh_delivery_legs, wsh_trip_stops, wsh_trips'
 permalink: /WSH%20Shipping-Delivery%20Transactions/
+report_name: 'WSH Shipping/Delivery Transactions'
+report_web_name: wsh-shipping-delivery-transactions
+module: 'Shipping Execution'
+module_url: /modules/shipping-execution/
 ---
 
 # WSH Shipping/Delivery Transactions – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/wsh-shipping-delivery-transactions/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/wsh-shipping-delivery-transactions/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wsh-shipping-delivery-transactions) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wsh-shipping-delivery-transactions).
+**Oracle EBS module:** [Shipping Execution](/modules/shipping-execution/ "Oracle EBS Shipping Execution reports") · [all Shipping Execution reports](/modules/shipping-execution/)  
 
 ## Overview
 This report provides details of Warehouse Shipping Transactions and Deliveries.
@@ -18,28 +24,33 @@ To review details of shipping transaction not yet assigned to a delivery, set th
 Set the parameter to null to review all shipping transations regardless of delivery assignment status.
 
 
+When India Localization is installed, the following GST columns are also included: GST Registration No, GST PAN No, CGST Amount, SGST Amount, IGST Amount, CESS Amount, Custom Amount, Unclassified Tax Amount, Taxable Value, HSN Length Warning, CGST Rate, SGST Rate, IGST Rate, CESS Rate, CGST Recoverable, CGST Non-Recoverable, SGST Recoverable, SGST Non-Recoverable, IGST Recoverable, IGST Non-Recoverable, Reverse Charge Flag, Place of Supply, Ship From State, HSN SAC Code.
+
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wsh-shipping-delivery-transactions) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
+
 ## Report Parameters
 Selling Operating Unit, Shipping Operating Unit, Organization Code, Assigned to Delivery, Delivery Status, Exclude Delivery Status, Release status, Exclude Release Status, Exception Exists, Customer Name, Customer Number, Delivery Note From, Delivery Note To, Item, Item From, Item To, Category Set 1, Category Set 2, Category Set 3, Lot Number, Lot Number From, Lot Number To, Order Number From, Order Number To, Scheduled Date From, Scheduled Date To, Released Date From, Released Date To, Actual Shipment Date From, Actual Shipment Date To, Invoiced Date From, Invoiced Date To, Initial Pick Up Date From, Initial Pick Up Date To, Ultimate Drop Off Date From, Ultimate Drop Off Date To, Location Format
 
 ## Oracle EBS Tables Used
-[wsh_delivery_legs](https://www.enginatics.com/library/?pg=1&find=wsh_delivery_legs), [wsh_trip_stops](https://www.enginatics.com/library/?pg=1&find=wsh_trip_stops), [wsh_trips](https://www.enginatics.com/library/?pg=1&find=wsh_trips)
+[wsh_delivery_legs](https://www.enginatics.com/library/?pg=1&find=wsh_delivery_legs&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wsh-shipping-delivery-transactions), [wsh_trip_stops](https://www.enginatics.com/library/?pg=1&find=wsh_trip_stops&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wsh-shipping-delivery-transactions), [wsh_trips](https://www.enginatics.com/library/?pg=1&find=wsh_trips&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wsh-shipping-delivery-transactions), [wsh_exceptions_v](https://www.enginatics.com/library/?pg=1&find=wsh_exceptions_v&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wsh-shipping-delivery-transactions), [mtl_material_transactions](https://www.enginatics.com/library/?pg=1&find=mtl_material_transactions&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wsh-shipping-delivery-transactions), [mtl_txn_request_lines](https://www.enginatics.com/library/?pg=1&find=mtl_txn_request_lines&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wsh-shipping-delivery-transactions), [mtl_material_transactions_temp](https://www.enginatics.com/library/?pg=1&find=mtl_material_transactions_temp&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wsh-shipping-delivery-transactions), [mtl_txn_request_headers](https://www.enginatics.com/library/?pg=1&find=mtl_txn_request_headers&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wsh-shipping-delivery-transactions), [wsh_delivery_details](https://www.enginatics.com/library/?pg=1&find=wsh_delivery_details&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wsh-shipping-delivery-transactions), [wsh_delivery_assignments](https://www.enginatics.com/library/?pg=1&find=wsh_delivery_assignments&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wsh-shipping-delivery-transactions), [wsh_new_deliveries](https://www.enginatics.com/library/?pg=1&find=wsh_new_deliveries&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wsh-shipping-delivery-transactions), [wsh_picking_batches](https://www.enginatics.com/library/?pg=1&find=wsh_picking_batches&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wsh-shipping-delivery-transactions), [wsh_document_instances](https://www.enginatics.com/library/?pg=1&find=wsh_document_instances&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wsh-shipping-delivery-transactions), [wsh_carriers](https://www.enginatics.com/library/?pg=1&find=wsh_carriers&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wsh-shipping-delivery-transactions), [wsh_freight_costs](https://www.enginatics.com/library/?pg=1&find=wsh_freight_costs&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wsh-shipping-delivery-transactions), [wsh_freight_cost_types](https://www.enginatics.com/library/?pg=1&find=wsh_freight_cost_types&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wsh-shipping-delivery-transactions), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wsh-shipping-delivery-transactions), [mtl_transaction_lot_numbers](https://www.enginatics.com/library/?pg=1&find=mtl_transaction_lot_numbers&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wsh-shipping-delivery-transactions), [oe_order_headers_all](https://www.enginatics.com/library/?pg=1&find=oe_order_headers_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wsh-shipping-delivery-transactions), [oe_order_lines_all](https://www.enginatics.com/library/?pg=1&find=oe_order_lines_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wsh-shipping-delivery-transactions), [oe_order_holds_all](https://www.enginatics.com/library/?pg=1&find=oe_order_holds_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wsh-shipping-delivery-transactions), [ra_salesreps_all](https://www.enginatics.com/library/?pg=1&find=ra_salesreps_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wsh-shipping-delivery-transactions), [ra_customer_trx_lines_all](https://www.enginatics.com/library/?pg=1&find=ra_customer_trx_lines_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wsh-shipping-delivery-transactions), [ra_customer_trx_all](https://www.enginatics.com/library/?pg=1&find=ra_customer_trx_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wsh-shipping-delivery-transactions), [org_organization_definitions](https://www.enginatics.com/library/?pg=1&find=org_organization_definitions&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wsh-shipping-delivery-transactions), [hr_all_organization_units](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wsh-shipping-delivery-transactions), [hz_cust_accounts](https://www.enginatics.com/library/?pg=1&find=hz_cust_accounts&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wsh-shipping-delivery-transactions), [hz_parties](https://www.enginatics.com/library/?pg=1&find=hz_parties&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wsh-shipping-delivery-transactions), [hz_cust_site_uses_all](https://www.enginatics.com/library/?pg=1&find=hz_cust_site_uses_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wsh-shipping-delivery-transactions), [hz_cust_acct_sites_all](https://www.enginatics.com/library/?pg=1&find=hz_cust_acct_sites_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wsh-shipping-delivery-transactions), [hz_party_sites](https://www.enginatics.com/library/?pg=1&find=hz_party_sites&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wsh-shipping-delivery-transactions), [hz_locations](https://www.enginatics.com/library/?pg=1&find=hz_locations&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wsh-shipping-delivery-transactions), [org_access_view](https://www.enginatics.com/library/?pg=1&find=org_access_view&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wsh-shipping-delivery-transactions), [mo_glob_org_access_tmp](https://www.enginatics.com/library/?pg=1&find=mo_glob_org_access_tmp&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wsh-shipping-delivery-transactions), [dual](https://www.enginatics.com/library/?pg=1&find=dual&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wsh-shipping-delivery-transactions)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wsh-shipping-delivery-transactions)
 
 ## Related Reports
-[CAC Interface Error Summary](/CAC%20Interface%20Error%20Summary/ "CAC Interface Error Summary Oracle EBS SQL Report")
+[WSH Pick Confirm Upload](/WSH%20Pick%20Confirm%20Upload/ "WSH Pick Confirm Upload Oracle EBS SQL Report"), [CAC Interface Error Summary](/CAC%20Interface%20Error%20Summary/ "CAC Interface Error Summary Oracle EBS SQL Report"), [INV Period Close Pending Transactions](/INV%20Period%20Close%20Pending%20Transactions/ "INV Period Close Pending Transactions Oracle EBS SQL Report"), [INV Move Orders](/INV%20Move%20Orders/ "INV Move Orders Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/WSH%20Shipping-Delivery%20Transactions/WSH%20Shipping-Delivery%20Transactions.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wsh-shipping-delivery-transactions) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [WSH Shipping Delivery Transactions 29-Jun-2026 214203.xlsx](https://www.enginatics.com/example/wsh-shipping-delivery-transactions/) |
-| Blitz Report™ XML Import | [WSH_Shipping_Delivery_Transactions.xml](https://www.enginatics.com/xml/wsh-shipping-delivery-transactions/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/wsh-shipping-delivery-transactions/](https://www.enginatics.com/reports/wsh-shipping-delivery-transactions/) |
+| Excel Example Output | [WSH Shipping Delivery Transactions 29-Jun-2026 214203.xlsx](https://www.enginatics.com/example/wsh-shipping-delivery-transactions/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wsh-shipping-delivery-transactions) |
+| Blitz Report™ XML Import | [WSH_Shipping_Delivery_Transactions.xml](https://www.enginatics.com/xml/wsh-shipping-delivery-transactions/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wsh-shipping-delivery-transactions) |
+| SQL Source | [WSH Shipping-Delivery Transactions.sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/WSH%20Shipping-Delivery%20Transactions/WSH%20Shipping-Delivery%20Transactions.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/wsh-shipping-delivery-transactions/](https://www.enginatics.com/reports/wsh-shipping-delivery-transactions/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wsh-shipping-delivery-transactions) |
 
 ## Case Study & Technical Analysis: WSH Shipping/Delivery Transactions Report
 
@@ -109,18 +120,17 @@ As a detailed transactional report integrating data across multiple modules (Shi
 **3. Can this report help identify reasons for delayed shipments?**
    Yes. By filtering for shipments with a `Delivery Status` indicating delay or exception, and then comparing the `Scheduled Date` to the `Actual Shipment Date`, logistics managers can pinpoint delayed shipments. Further investigation into associated exceptions (`Exception Exists`) can help determine the root cause (e.g., inventory shortage, carrier issue, documentation hold).
 
-
 ---
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wsh-shipping-delivery-transactions)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wsh-shipping-delivery-transactions)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wsh-shipping-delivery-transactions)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wsh-shipping-delivery-transactions)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wsh-shipping-delivery-transactions)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wsh-shipping-delivery-transactions)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wsh-shipping-delivery-transactions)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

@@ -1,50 +1,46 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Department Overhead Setup Errors
--- Description: This report displays two types of department overhead setup errors.  First, show overheads which are not assigned to departments, but, have been assigned to resources and those resources have been assigned to these departments as well.  This error is called "Overhead Rates Not In Department".  The second error is when resources which have been assigned to departments but these resources have not been assigned to the overheads which also have been assigned to these departments.  This error is "Overheads Not Set Up with Resources".  When either error you will not earn these overheads when you roll up or charge these resources.
-
-To fix the "Overhead Rates Not In Department" error, go to the Overhead Define Form, click on the Rates button and enter a department overhead rate for that overhead.  To fix the  "Overheads Not Set Up with Resources" error, again go to the Overhead Define Form, click on the Resources button and enter the missing resource for that overhead.  
-
-Parameters:
-===========
-Cost Type:  enter Pending or Frozen or other cost type name. 
-Exclude Outside Processing:  enter Yes to exclude outside processing resources from this report.  Enter No to include outside processing resources.  Defaults to Yes (mandatory). 
-Organization Code:  any inventory organization, defaults to your session's inventory organization (optional).
-Operating Unit:  specific operating unit (optional).
-Ledger:  specific ledger (optional).
-
-/* +=============================================================================+
--- | Copyright 2016 - 2023 Douglas Volz Consulting, Inc.
--- | All rights reserved.
--- | Permission to use this code is granted provided the original author is
--- | acknowledged. No warranties, express or otherwise is included in this permission.
--- +=============================================================================+
--- |
--- |  Original Author: Douglas Volz (doug@volzconsulting.com)
--- |
--- |  Program Name:  xxx_ovhd_dept_errors.sql
--- | 
--- |  Description:
--- |  Report to show department overheads setup errors.
--- | 
--- |  Version Modified on Modified  by   Description
--- |  ======= =========== ============== =========================================
--- |  1.0     07 Nov 2016 Douglas Volz   Initial Coding
--- |  1.1     08 Nov 2016 Douglas Volz   Added Cost Element
--- |  1.2     12 Jan 2020 Douglas Volz   Added Org Code and Operating Unit parameters
--- |                                     and change to gl.short_name.
--- |  1.3     27 Apr 2020 Douglas Volz   Changed to multi-language views for the 
--- |                                     inventory orgs and operating units.
--- |  1.4     09 Sep 2023 Douglas Volz   Added new report for missing resource/overhead
--- |                                     associations.  Removed tabs and restrict to only
--- |                                     orgs you have access to, using the org access view.
--- +=============================================================================+*/
-
--- Excel Examle Output: https://www.enginatics.com/example/cac-department-overhead-setup-errors/
+-- Description: This report displays two types of department overhead setup errors. First, show overheads which are not assigned to departments, but, have been assigned to resources and those resources have been assigned to these departments as well. This error is called "Overhead Rates Not In Department". The second error is when resources which have been assigned to departments but these resources have not been assigned to the overheads which also have been assigned to these departments. This error is "Overheads Not Set Up with Resources". When either error you will not earn these overheads when you roll up or charge these resources.
+-- To fix the "Overhead Rates Not In Department" error, go to the Overhead Define Form, click on the Rates button and enter a department overhead rate for that overhead. To fix the "Overheads Not Set Up with Resources" error, again go to the Overhead Define Form, click on the Resources button and enter the missing resource for that overhead.
+-- Parameters:
+-- ===========
+-- Cost Type: enter Pending or Frozen or other cost type name.
+-- Exclude Outside Processing: enter Yes to exclude outside processing resources from this report. Enter No to include outside processing resources. Defaults to Yes (mandatory).
+-- Organization Code: any inventory organization, defaults to your session's inventory organization (optional).
+-- Operating Unit: specific operating unit (optional).
+-- Ledger: specific ledger (optional).
+-- / +=============================================================================+
+-- -- | Copyright 2016 - 2023 Douglas Volz Consulting, Inc.
+-- -- | All rights reserved.
+-- -- | Permission to use this code is granted provided the original author is
+-- -- | acknowledged. No warranties, express or otherwise is included in this permission.
+-- -- +=============================================================================+
+-- -- |
+-- -- | Original Author: Douglas Volz (doug@volzconsulting.com)
+-- -- |
+-- -- | Program Name: xxxovhddepterrors.sql
+-- -- |
+-- -- | Description:
+-- -- | Report to show department overheads setup errors.
+-- -- |
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== ============== =========================================
+-- -- | 1.0 07 Nov 2016 Douglas Volz Initial Coding
+-- -- | 1.1 08 Nov 2016 Douglas Volz Added Cost Element
+-- -- | 1.2 12 Jan 2020 Douglas Volz Added Org Code and Operating Unit parameters
+-- -- | and change to gl.shortname.
+-- -- | 1.3 27 Apr 2020 Douglas Volz Changed to multi-language views for the
+-- -- | inventory orgs and operating units.
+-- -- | 1.4 09 Sep 2023 Douglas Volz Added new report for missing resource/overhead
+-- -- | associations. Removed tabs and restrict to only
+-- -- | orgs you have access to, using the org access view.
+-- -- +=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-department-overhead-setup-errors/
 -- Library Link: https://www.enginatics.com/reports/cac-department-overhead-setup-errors/
 -- Run Report: https://demo.enginatics.com/
 

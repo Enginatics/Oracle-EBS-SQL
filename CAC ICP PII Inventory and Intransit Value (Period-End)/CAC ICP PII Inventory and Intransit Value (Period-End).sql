@@ -1,58 +1,56 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC ICP PII Inventory and Intransit Value (Period-End)
--- Description: Report showing amount of profit in inventory at the end of the month.  If you enter a cost type this report uses the item costs from the cost type; if you leave the cost type blank it uses the item costs from the month-end snapshot.  In either case this report uses the month-end quantities, based on the entered period name.  And as these quantities come from the month-end snapshot (created when you close the inventory accounting period) and this snapshot is only by inventory organization, subinventory and item and not split out by cost element, this report only shows the Material Account, based upon your Costing Method.
-
-Notes:
-1)  Profit in inventory is abbreviated as PII or sometimes as ICP - InterCompany Profit.
-2)  There is a hidden parameter, Numeric Sign for PII, which allows you to set the sign of the profit in inventory amounts.  You can specify positive or negative values based on how you enter PII amounts into your PII Cost Type.  Defaulted as positive (+1).
-
-/* +=============================================================================+
--- | Copyright 2009 - 2022 Douglas Volz Consulting, Inc.
--- |  All rights reserved.
--- |  Permission to use this code is granted provided the original author is  acknowledged.  No warranties, express or otherwise is included in this  permission.
--- +=============================================================================+
--- |
--- | Original Author: Douglas Volz (doug@volzconsulting.com)
--- |
--- |  Hidden Parameters:
--- |  p_sign_pii          -- Hidden parameter to set the sign of the profit in
--- |                         inventory amounts.  This parameter determines if PII
--- |                         is normally entered as a positive or negative amount.
--- |  Displayed Parameters:
--- |  4 p_period_name     -- Accounting period you wish to report for
--- |  5 p_cost_type       -- Enter a Cost Type to value the quantities
--- |                         using the Cost Type Item Costs; or, if 
--- |                         Cost Type is blank or null the report will 
--- |                         use the stored month-end snapshot values
--- |  6 p_pii_cost_type   -- The PII Cost Type you wish to report (mandatory)
--- |  6 p_pii_sub_element -- The sub-element or resource for profit in inventory,
--- |                         such as PII or ICP (mandatory)
--- |  p_category_set1     -- The first item category set to report, typically the
--- |                         Cost or Product Line Category Set
--- |  p_category_set2     -- The second item category set to report, typically the
--- |                         Inventory Category Set
--- |  4 p_item_number     -- Enter the specific item number you wish to report (optional)
--- |  3 p_subinventory    -- Enter the specific subinventory you wish to report (optional)
--- |  2 p_org_code        -- Specific inventory organization you wish to report (optional)
--- |  1 p_operating_unit  -- Operating Unit you wish to report, leave blank for all
--- |                         operating units (optional) 
--- |  1 p_ledger          -- general ledger you wish to report, leave blank for all
--- |                         ledgers (optional) 
--- | ===================================================================
--- | Version Modified on Modified by Description
--- | ======= =========== ============== =========================================
--- | 1.0     27 Sep 2009 Douglas Volz Initial Coding
--- | 1.19    20 Mar 2022 Douglas Volz Fix for category accounts (valuation accounts) and
--- |                                  added subinventory description.
--- | 1.20    19 Oct 2022 Douglas Volz Fix for valuation accounts, causing duplicate rows.
--- | 1.21    21 Oct 2022 Douglas Volz Fix for detecting Cost Group Accounting.
--- +=============================================================================+*/
--- Excel Examle Output: https://www.enginatics.com/example/cac-icp-pii-inventory-and-intransit-value-period-end/
+-- Description: Report showing amount of profit in inventory at the end of the month. If you enter a cost type this report uses the item costs from the cost type; if you leave the cost type blank it uses the item costs from the month-end snapshot. In either case this report uses the month-end quantities, based on the entered period name. And as these quantities come from the month-end snapshot (created when you close the inventory accounting period) and this snapshot is only by inventory organization, subinventory and item and not split out by cost element, this report only shows the Material Account, based upon your Costing Method.
+-- Notes:
+-- 1) Profit in inventory is abbreviated as PII or sometimes as ICP - InterCompany Profit.
+-- 2) There is a hidden parameter, Numeric Sign for PII, which allows you to set the sign of the profit in inventory amounts. You can specify positive or negative values based on how you enter PII amounts into your PII Cost Type. Defaulted as positive (+1).
+-- / +=============================================================================+
+-- -- | Copyright 2009 - 2022 Douglas Volz Consulting, Inc.
+-- -- | All rights reserved.
+-- -- | Permission to use this code is granted provided the original author is acknowledged. No warranties, express or otherwise is included in this permission.
+-- -- +=============================================================================+
+-- -- |
+-- -- | Original Author: Douglas Volz (doug@volzconsulting.com)
+-- -- |
+-- -- | Hidden Parameters:
+-- -- | psignpii -- Hidden parameter to set the sign of the profit in
+-- -- | inventory amounts. This parameter determines if PII
+-- -- | is normally entered as a positive or negative amount.
+-- -- | Displayed Parameters:
+-- -- | 4 pperiodname -- Accounting period you wish to report for
+-- -- | 5 pcosttype -- Enter a Cost Type to value the quantities
+-- -- | using the Cost Type Item Costs; or, if
+-- -- | Cost Type is blank or null the report will
+-- -- | use the stored month-end snapshot values
+-- -- | 6 ppiicosttype -- The PII Cost Type you wish to report (mandatory)
+-- -- | 6 ppiisubelement -- The sub-element or resource for profit in inventory,
+-- -- | such as PII or ICP (mandatory)
+-- -- | pcategoryset1 -- The first item category set to report, typically the
+-- -- | Cost or Product Line Category Set
+-- -- | pcategoryset2 -- The second item category set to report, typically the
+-- -- | Inventory Category Set
+-- -- | 4 pitemnumber -- Enter the specific item number you wish to report (optional)
+-- -- | 3 psubinventory -- Enter the specific subinventory you wish to report (optional)
+-- -- | 2 porgcode -- Specific inventory organization you wish to report (optional)
+-- -- | 1 poperatingunit -- Operating Unit you wish to report, leave blank for all
+-- -- | operating units (optional)
+-- -- | 1 pledger -- general ledger you wish to report, leave blank for all
+-- -- | ledgers (optional)
+-- -- | ===================================================================
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== ============== =========================================
+-- -- | 1.0 27 Sep 2009 Douglas Volz Initial Coding
+-- -- | 1.19 20 Mar 2022 Douglas Volz Fix for category accounts (valuation accounts) and
+-- -- | added subinventory description.
+-- -- | 1.20 19 Oct 2022 Douglas Volz Fix for valuation accounts, causing duplicate rows.
+-- -- | 1.21 21 Oct 2022 Douglas Volz Fix for detecting Cost Group Accounting.
+-- -- +=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-icp-pii-inventory-and-intransit-value-period-end/
 -- Library Link: https://www.enginatics.com/reports/cac-icp-pii-inventory-and-intransit-value-period-end/
 -- Run Report: https://demo.enginatics.com/
 

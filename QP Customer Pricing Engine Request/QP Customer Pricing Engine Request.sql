@@ -1,64 +1,50 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: QP Customer Pricing Engine Request
 -- Description: QP Customer Pricing Engine Request
-==============================
-This report requests Item Selling Price information by Customer across Price Lists from the Pricing Engine.
-
-The report also displays the Items Costs for the specified Organization and based on the Unit Selling Price and Item Cost, displays a Margin Analysis.
-
-The report can be run in Summary or Detail Mode.
-
-In Summary Mode, the report will display a summary of Applied Price Lists, List Price, Adjustment Amount, Final Unit Selling Price, Accrual Amount, Charge Amount, Item Cost, and Margin per Customer, requested Price List and Item. Summary Records can be identified in the report with Record Type=Summary
-
-In Detail Mode, in additional to the summary information, the report will include the following record types:
-- Detail Record Type which provides a breakdown of the Price List and Modifier Lines the pricing engine has applied in the calculation of the final unit selling price
-- Pricing Attribute Record Type provides details of the Pricing Attributes considered by the Pricing Engine in selecting a specified Price List or Modifier
-- Qualifier Attribute Record Type provides details of any Qualifier Attributes considered by the Pricing Engine in selecting a specific Price List or Modifier
-
-Detail Record Types follow the Summary Record Type they apply to
-Pricing Attribute and Qualifier Attribute Record Types follow the Detail Record Type they apply to.
-
-Additionally, the report supports the following options:
-
-- Use Secondary Price Lists (Yes/No)
-  When No, the report will restrict to displaying Prices on the requested Price Lists only
-  When Yes, then the report will check for the price on any secondary price lists defined for the requested Price List 
-
-- Expand Price Breaks (Yes/No)
-  When No, the report will display the pricing based on the requested Pricing Only
-  When Yes, the report will display one line per Price Break to provide an indication of the unit selling price will vary across the Price Breaks and the impact that may have on margins
-
-- Display Promotional Goods (Buy One Get One free type Promotions))
-  When No, the report will not display any Promotional Goods the Customer maybe eligible to receive
-  When Yes, the report will display any Promotional Goods the Customer maybe eligible to receive
-
-- Display Site Pricing Differences
-  When No, the report will only check the Pricing Based on the specified Customer Accounts
-  When Yes, the report will also check the Pricing based on the specified Ship To/Bill To Locations. 
-
-  If the pricing at the Customer Site is the same as at the Customer Level, only the Customer Level pricing is displayed in the report.
-  If the pricing at the Customer Site differs to the pricing at the Customer Level, then both the Customer Pricing and Site Pricing is included in the report.
-  If a Ship To or Bill To location is not specified, and the Display Site Pricing Differences is set to Yes, the report will check all active ship to sites for the Customer within the specified Operating Units.
-
-It is also possible to specify some additional Order Qualifiers to be considered by the Pricing Engine. These are: 
-- Organization - this is used as the Shipping Warehouse, It also determines from which Items can be selected and also determines the Organization from which the Item Costs are derived.
-- Sales Agreement
-- Order Source
-- Order Type
-
-Lastly the user can specify
-- Pricing Request Date
-- Pricing Request Quantity
-- Currency Code
-
-Unit Selling Price, Item Costs, and extended amounts are all displayed in the specified currency. The user can only select a currency that is supported by the selected Price Lists.
-
--- Excel Examle Output: https://www.enginatics.com/example/qp-customer-pricing-engine-request/
+-- ==============================
+-- This report requests Item Selling Price information by Customer across Price Lists from the Pricing Engine.
+-- The report also displays the Items Costs for the specified Organization and based on the Unit Selling Price and Item Cost, displays a Margin Analysis.
+-- The report can be run in Summary or Detail Mode.
+-- In Summary Mode, the report will display a summary of Applied Price Lists, List Price, Adjustment Amount, Final Unit Selling Price, Accrual Amount, Charge Amount, Item Cost, and Margin per Customer, requested Price List and Item. Summary Records can be identified in the report with Record Type=Summary
+-- In Detail Mode, in additional to the summary information, the report will include the following record types:
+-- - Detail Record Type which provides a breakdown of the Price List and Modifier Lines the pricing engine has applied in the calculation of the final unit selling price
+-- - Pricing Attribute Record Type provides details of the Pricing Attributes considered by the Pricing Engine in selecting a specified Price List or Modifier
+-- - Qualifier Attribute Record Type provides details of any Qualifier Attributes considered by the Pricing Engine in selecting a specific Price List or Modifier
+-- Detail Record Types follow the Summary Record Type they apply to
+-- Pricing Attribute and Qualifier Attribute Record Types follow the Detail Record Type they apply to.
+-- Additionally, the report supports the following options:
+-- - Use Secondary Price Lists (Yes/No)
+-- When No, the report will restrict to displaying Prices on the requested Price Lists only
+-- When Yes, then the report will check for the price on any secondary price lists defined for the requested Price List
+-- - Expand Price Breaks (Yes/No)
+-- When No, the report will display the pricing based on the requested Pricing Only
+-- When Yes, the report will display one line per Price Break to provide an indication of the unit selling price will vary across the Price Breaks and the impact that may have on margins
+-- - Display Promotional Goods (Buy One Get One free type Promotions))
+-- When No, the report will not display any Promotional Goods the Customer maybe eligible to receive
+-- When Yes, the report will display any Promotional Goods the Customer maybe eligible to receive
+-- - Display Site Pricing Differences
+-- When No, the report will only check the Pricing Based on the specified Customer Accounts
+-- When Yes, the report will also check the Pricing based on the specified Ship To/Bill To Locations.
+-- If the pricing at the Customer Site is the same as at the Customer Level, only the Customer Level pricing is displayed in the report.
+-- If the pricing at the Customer Site differs to the pricing at the Customer Level, then both the Customer Pricing and Site Pricing is included in the report.
+-- If a Ship To or Bill To location is not specified, and the Display Site Pricing Differences is set to Yes, the report will check all active ship to sites for the Customer within the specified Operating Units.
+-- It is also possible to specify some additional Order Qualifiers to be considered by the Pricing Engine. These are:
+-- - Organization - this is used as the Shipping Warehouse, It also determines from which Items can be selected and also determines the Organization from which the Item Costs are derived.
+-- - Sales Agreement
+-- - Order Source
+-- - Order Type
+-- Lastly the user can specify
+-- - Pricing Request Date
+-- - Pricing Request Quantity
+-- - Currency Code
+-- Unit Selling Price, Item Costs, and extended amounts are all displayed in the specified currency. The user can only select a currency that is supported by the selected Price Lists.
+-- Each payment term column reports a single source: Customer Payment Term from the account profile, Ship To and Bill To from the site use Order Management terms, Price List from the price list, and Pricing from the request itself.
+-- Excel Example Output: https://www.enginatics.com/example/qp-customer-pricing-engine-request/
 -- Library Link: https://www.enginatics.com/reports/qp-customer-pricing-engine-request/
 -- Run Report: https://demo.enginatics.com/
 
@@ -154,10 +140,10 @@ select
   nvl(xxen_util.meaning(hca.customer_class_code,'CUSTOMER CLASS',222),hca.customer_class_code) customer_class,
   nvl(xxen_util.meaning(hca.sales_channel_code,'SALES_CHANNEL',660),hca.sales_channel_code) sales_channel,
   hcpc.name customer_profile,
-  nvl(hcp.discount_terms,'N') customer_allow_discount,
+  xxen_util.yes(hcp.discount_terms) customer_allow_discount,
   (select rtv.name
    from   ra_terms_vl rtv
-   where  rtv.term_id = nvl(hca.payment_term_id,hcp.standard_terms)
+   where  rtv.term_id = hcp.standard_terms
   ) customer_payment_term,
   (select qslhv.name
    from   qp_secu_list_headers_vl qslhv
@@ -168,7 +154,7 @@ select
 -- ship_to site
   hcsua1.location ship_to_location_code,
   hcsua1.location || ' ' || hl1.address1 || ' ' || hl1.address2 || ' ' || hl1.address3 ship_to_location,
-  hcsua1.primary_flag ship_to_primary_flag,
+  xxen_util.yes(hcsua1.primary_flag) ship_to_primary_flag,
   hcpc1.name ship_to_profile,
   (select mp.organization_code
    from mtl_parameters mp
@@ -190,7 +176,7 @@ select
 -- bill_to site
   hcsua2.location bill_to_location_code,
   hcsua2.location || ' ' || hl2.address1 || ' ' || hl2.address2 || ' ' || hl2.address3 bill_to_location,
-  hcsua2.primary_flag bill_to_primary_flag,
+  xxen_util.yes(hcsua2.primary_flag) bill_to_primary_flag,
   hcpc2.name bill_to_profile,
   (select mp.organization_code
    from mtl_parameters mp
@@ -223,7 +209,7 @@ select
   qslhv1.description price_list_description,
   xxen_util.meaning(qslhv1.list_type_code,'LIST_TYPE_CODE',661) price_list_type,
   qslhv1.currency_code price_list_currency,
-  nvl(qslhv1.global_flag,'N') price_list_global_flag,
+  xxen_util.yes(qslhv1.global_flag) price_list_global_flag,
   haouv3.name price_list_operating_unit,
   (select rtv.name
    from   ra_terms_vl rtv
@@ -231,13 +217,21 @@ select
   ) price_list_payment_term,
 -- pricing request
 -- item
-  msik.concatenated_segments pricing_item_code,
-  msik.description pricing_item_description,
-  msik.concatenated_segments || ' - ' || msik.description pricing_item_code_and_descr,
+  msiv.concatenated_segments pricing_item_code,
+  msiv.description pricing_item_description,
+  msiv.concatenated_segments || ' - ' || msiv.description pricing_item_code_and_descr,
+  (select min(mck.concatenated_segments) keep (dense_rank first order by mic.category_id)
+   from   mtl_item_categories mic,
+          mtl_categories_kfv mck
+   where  mic.category_set_id = xxen_qp_preq.get_category_set_id
+   and    msiv.organization_id = mic.organization_id
+   and    msiv.inventory_item_id = mic.inventory_item_id
+   and    mic.category_id = mck.category_id
+  ) pricing_category_segments,
   xxen_qp_preq.get_pricing_date pricing_date,
   xxqpd.pricing_qty,
   xxqpd.pricing_qty_uom_code,
-  decode(qll1.list_line_type_code,'PBH','Y') price_break_flag,
+  xxen_util.yes(decode(qll1.list_line_type_code,'PBH','Y')) price_break_flag,
   xxen_qp_preq.get_pricing_currency pricing_currency_code,
 -- order qualifiers
   xxen_qp_preq.get_agreement pricing_agreement_name,
@@ -259,16 +253,24 @@ select
 -- Pricing Engine Results
 --
   qslhv2.name applied_price_list,
-  xxqpd.secondary_price_list_flag,
-  xxqpd.promotional_goods_flag,
-  msik2.concatenated_segments  priced_item,
-  msik2.description priced_item_descscription,
-  nvl2(xxqpd.promotional_goods_flag,msik.concatenated_segments || ' (P) ','') || msik2.concatenated_segments || ' - ' || msik2.description priced_item_code_and_descr,
-  msik2.primary_uom_code priced_item_primary_uom_code,
-  xxen_util.meaning(msik.bom_item_type,'BOM_ITEM_TYPE',700) bom_item_type,
+  xxen_util.yes(xxqpd.secondary_price_list_flag) secondary_price_list_flag,
+  xxen_util.yes(xxqpd.promotional_goods_flag) promotional_goods_flag,
+  msiv2.concatenated_segments  priced_item,
+  msiv2.description priced_item_description,
+  nvl2(xxqpd.promotional_goods_flag,msiv.concatenated_segments || ' (P) ','') || msiv2.concatenated_segments || ' - ' || msiv2.description priced_item_code_and_descr,
+  msiv2.primary_uom_code priced_item_primary_uom_code,
+  xxen_util.meaning(msiv.bom_item_type,'BOM_ITEM_TYPE',700) bom_item_type,
   xxen_qp_preq.get_category_set_name category_set,
+  (select min(mck.concatenated_segments) keep (dense_rank first order by mic.category_id)
+   from   mtl_item_categories mic,
+          mtl_categories_kfv mck
+   where  mic.category_set_id = xxen_qp_preq.get_category_set_id
+   and    msiv2.organization_id = mic.organization_id
+   and    msiv2.inventory_item_id = mic.inventory_item_id
+   and    mic.category_id = mck.category_id
+  ) category_segments,
   &category_set_columns
-  cst_cost_api.get_item_cost(1,msik2.inventory_item_id,xxen_qp_preq.get_cost_organization_id,null,xxen_qp_preq.get_cost_type_id) priced_item_cost,
+  cst_cost_api.get_item_cost(1,msiv2.inventory_item_id,xxen_qp_preq.get_cost_organization_id,null,xxen_qp_preq.get_cost_type_id) priced_item_cost,
   xxen_qp_preq.get_cost_organization_code item_cost_organization,
   case xxqpd.record_type
   when 'S'  then 'Summary'
@@ -322,13 +324,13 @@ select
   xxqpd.price_formula,
   xxqpd.currency,
   xxqpd.base_currency,
-  xxqpd.multi_currency_flag,
+  xxen_util.yes(xxqpd.multi_currency_flag) multi_currency_flag,
   xxqpd.exchange_rate_type,
   xxqpd.exchange_rate,
   xxqpd.product_precedence,
-  xxqpd.automatic_flag,
-  xxqpd.override_flag,
-  xxqpd.accrual_flag,
+  xxen_util.yes(xxqpd.automatic_flag) automatic_flag,
+  xxen_util.yes(xxqpd.override_flag) override_flag,
+  xxen_util.yes(xxqpd.accrual_flag) accrual_flag,
   xxqpd.attribute_level,
   xxqpd.attribute_grouping_num,
   xxqpd.attribute_context,
@@ -364,8 +366,8 @@ from
   hz_customer_profiles         hcp2,
   hz_cust_profile_classes      hcpc2,
   -- items
-  mtl_system_items_b_kfv         msik,
-  mtl_system_items_b_kfv         msik2,
+  mtl_system_items_vl            msiv,
+  mtl_system_items_vl            msiv2,
   -- requested price list
   qp_secu_list_headers_vl      qslhv1,
   hr_all_organization_units_vl haouv3,
@@ -381,7 +383,7 @@ where
     hca.cust_account_id           = xxqpd.cust_account_id
 and hp.party_id                   = hca.party_id
 and hcp.cust_account_id       (+) = hca.cust_account_id
-and nvl(hcp.site_use_id,-1)       = -1
+and nvl(hcp.site_use_id(+),-1)    = -1
 and hcpc.profile_class_id     (+) = hcp.profile_class_id
 -- ship to site
 and hcsua1.site_use_id        (+) = xxqpd.ship_to_site_use_id
@@ -399,11 +401,11 @@ and hl2.location_id           (+) = hps2.location_id
 and haouv2.organization_id    (+) = hcsua2.org_id
 and hcp2.site_use_id          (+) = hcsua2.site_use_id
 and hcpc2.profile_class_id    (+) = hcp2.profile_class_id
--- item msik = requested item, msik2 = priced item
-and msik.inventory_item_id        = xxqpd.item_id
-and msik.organization_id          = xxen_qp_preq.get_item_organization_id
-and msik2.inventory_item_id       = nvl(xxqpd.promotional_goods_item_id,xxqpd.item_id)
-and msik2.organization_id         = xxen_qp_preq.get_item_organization_id
+-- item msiv = requested item, msiv2 = priced item
+and msiv.inventory_item_id        = xxqpd.item_id
+and msiv.organization_id          = xxen_qp_preq.get_item_organization_id
+and msiv2.inventory_item_id       = nvl(xxqpd.promotional_goods_item_id,xxqpd.item_id)
+and msiv2.organization_id         = xxen_qp_preq.get_item_organization_id
 -- requested price list
 and qslhv1.list_header_id         = xxqpd.price_list_id
 and haouv3.organization_id    (+) = qslhv1.orig_org_id

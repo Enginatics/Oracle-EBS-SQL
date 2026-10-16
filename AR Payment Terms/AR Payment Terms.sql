@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: AR Payment Terms
 -- Description: Master data report showing the payment terms codes with their respective profile options.
--- Excel Examle Output: https://www.enginatics.com/example/ar-payment-terms/
+-- Excel Example Output: https://www.enginatics.com/example/ar-payment-terms/
 -- Library Link: https://www.enginatics.com/reports/ar-payment-terms/
 -- Run Report: https://demo.enginatics.com/
 

@@ -1,12 +1,18 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: AP Supplier Upload
 -- Description: This upload can be used to create and/or update Suppliers, Supplier Sites, Supplier Bank Accounts, and Supplier Contacts
--- Excel Examle Output: https://www.enginatics.com/example/ap-supplier-upload/
+-- Upload Mode Update only allows changes to existing Suppliers, Sites, Contacts and Bank Accounts. A row that would create any of them is rejected, including a bank or bank branch.
+-- Add Existing Bank Acct assigns a bank account the supplier already owns to another level, as the Add button on the supplier Banking Details page does. The account is assigned exactly as it stands, so the bank, branch and bank account columns are left blank on that row.
+-- The bank and branch columns are enterable. On a row that already has a bank account assignment they move the account to the bank and branch named, creating them if they do not exist; they no longer rename the bank or branch, which would have changed it for every supplier using it. Bank and branch names are maintained in the CE Bank and Branch Upload.
+-- Bank Acct Name and Bank Acct Currency are no longer mandatory, matching Oracle, which allows a bank account without them.
+-- Set Update Unpaid Invoices to Yes on a bank account row whose assignment end date has been reached to move the supplier's unpaid invoices to the next bank account that applies to them, ordered by assignment level and priority. This is what the Supplier page offers when a bank account assignment is end dated.
+-- Invoices already selected for payment keep the end dated bank account. An invoice for which no other bank account applies is left without one, and its remit-to bank account has to be entered manually.
+-- Excel Example Output: https://www.enginatics.com/example/ap-supplier-upload/
 -- Library Link: https://www.enginatics.com/reports/ap-supplier-upload/
 -- Run Report: https://demo.enginatics.com/
 
@@ -414,11 +420,11 @@ ipiua2.bank_account_name site_bank_acct_name,
 ipiua2.bank_account_num site_bank_acct_num,
 ipiua2.check_digits site_bank_acct_check_digits,
 ipiua2.currency_code site_bank_acct_currency,
-xxen_util.meaning(ipiua2.foreign_payment_use_flag,'yes_no',0) site_bank_acct_allow_foreign,
+xxen_util.meaning(ipiua2.foreign_payment_use_flag,'YES_NO',0) site_bank_acct_allow_foreign,
 ipiua2.iban site_bank_acct_iban,
 ipiua2.bank_account_name_alt site_bank_acct_name_alt,
 ipiua2.account_suffix site_bank_acct_suffix,
-xxen_util.meaning(ipiua2.bank_account_type,'bank_account_type',260) site_bank_acct_type,
+xxen_util.meaning(ipiua2.bank_account_type,'BANK_ACCOUNT_TYPE',260) site_bank_acct_type,
 ipiua2.secondary_account_reference site_bank_acct_sec_reference,
 ipiua2.description site_bank_acct_description,
 ipiua2.contact_name site_bank_acct_contact,
@@ -559,7 +565,16 @@ to_number(null) upload_row,
 :p_default_inclusive_tax default_inclusive_tax_flag,
 :p_default_allow_offset_taxes default_allow_offset_tax_flag,
 :p_default_pay_document_alone default_pay_alone_flag,
-:p_site_bank_assign_level default_site_bank_assign_lvl
+:p_site_bank_assign_level default_site_bank_assign_lvl,
+-- assign an existing bank account: entry only, blank on download and in the result
+to_char(null) vendor_add_existing_bank_acct,
+to_char(null) site_add_existing_bank_acct,
+-- what to do when the bank or branch of an existing assignment is changed
+to_char(null) vendor_bank_branch_change,
+to_char(null) site_bank_branch_change,
+-- update the unpaid invoices of an end dated bank account assignment: entry only, blank on download
+to_char(null) vendor_update_unpaid_invoices,
+to_char(null) site_update_unpaid_invoices
 from
 ap_suppliers aps,
 ap_supplier_sites_all assa,
@@ -585,7 +600,7 @@ iby_pmt_instr_uses_all ipiua0,
 iby_ext_bank_accounts ieba0,
 ce_bank_branches_v cbbv0,
 -- vendor site bank tables
-(select
+(select /*+ leading(iepa2 ipiua2 ieba2) */
  iepa2.payee_party_id,
  iepa2.party_site_id,
  iepa2.org_id,

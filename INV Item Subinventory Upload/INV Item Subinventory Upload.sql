@@ -1,30 +1,21 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: INV Item Subinventory Upload
 -- Description: Create, update and delete item-to-subinventory assignments (plus their optional item-subinventory-locator ties) across accessible inventory organizations.
-
-Each row is one (Organization, Item, Subinventory, Locator?) combination. When the Locator column is blank, only the item-subinventory header is processed. When the Locator column is populated, the item-subinventory header (if not already processed in this run) AND the locator tie are processed. When multiple rows share the same Organization/Item/Subinventory triple, the header is processed only on the first row of the triple (siblings contribute only their locator portion); header cells on subsequent rows are silently ignored. Order data by Organization, Item, Subinventory, Locator to make sibling grouping deterministic.
-
-Subinventory selection is restricted to Storage subinventories (Receiving subinventories cannot hold item assignments).
-
-Download Locator Assignments controls whether the template pulls in existing locator ties. Choose Yes (the default) to see the current locator ties alongside each item-subinventory assignment. Leave blank to suppress them — useful when you only want to update item-subinventory header data without duplicated rows for each existing locator.
-
-Min-Max Planning is a Yes/No flag matching the form's Min-Max checkbox: Yes enables Min-Max planning (and makes Min Qty / Max Qty required); blank means Not Planned. This choice is independent of the subinventory's own planning level.
-
-PAR Level is only meaningful when the parent Subinventory has PAR Level planning enabled. If the Subinventory is not PAR-enabled, any PAR Level value supplied on the row is silently ignored on create, and any legacy stored value is cleared on update.
-
-Source Type drives the conditional requirement on Source Organization and Source Subinventory. Inventory and Subinventory source types require Source Organization; Subinventory source type additionally restricts Source Organization to the row's own organization (same-org self-sourcing only). Supplier and blank source types must leave both source fields blank.
-
-Delete Option lets you specify what to delete. Choose Subinventory to delete the item-subinventory assignment (cascades to all locator ties for that item-subinventory). Choose Locator to delete just the locator assignment on this row (only offered when Locator is populated). Once a row deletes an item-subinventory, any subsequent rows for the same Organization/Item/Subinventory triple are rejected with a clear error to prevent orphaned inserts on the deleted parent.
-
-Organization, Item, Subinventory and Locator are read-only on existing rows — to change a key column, delete the row and create a new one.
-
-Stock locators referenced here must already exist in the chosen Subinventory (use the INV Stock Locator Upload to create them).
--- Excel Examle Output: https://www.enginatics.com/example/inv-item-subinventory-upload/
+-- Each row is one (Organization, Item, Subinventory, Locator?) combination. When the Locator column is blank, only the item-subinventory header is processed. When the Locator column is populated, the item-subinventory header (if not already processed in this run) AND the locator tie are processed. When multiple rows share the same Organization/Item/Subinventory triple, the header is processed only on the first row of the triple (siblings contribute only their locator portion); header cells on subsequent rows are silently ignored. Order data by Organization, Item, Subinventory, Locator to make sibling grouping deterministic.
+-- Subinventory selection is restricted to Storage subinventories (Receiving subinventories cannot hold item assignments).
+-- Download Locator Assignments controls whether the template pulls in existing locator ties. Choose Yes (the default) to see the current locator ties alongside each item-subinventory assignment. Leave blank to suppress them — useful when you only want to update item-subinventory header data without duplicated rows for each existing locator.
+-- Min-Max Planning is a Yes/No flag matching the form's Min-Max checkbox: Yes enables Min-Max planning (and makes Min Qty / Max Qty required); blank means Not Planned. This choice is independent of the subinventory's own planning level.
+-- PAR Level is only meaningful when the parent Subinventory has PAR Level planning enabled. If the Subinventory is not PAR-enabled, any PAR Level value supplied on the row is silently ignored on create, and any legacy stored value is cleared on update.
+-- Source Type drives the conditional requirement on Source Organization and Source Subinventory. Inventory and Subinventory source types require Source Organization; Subinventory source type additionally restricts Source Organization to the row's own organization (same-org self-sourcing only). Supplier and blank source types must leave both source fields blank.
+-- Delete Option lets you specify what to delete. Choose Subinventory to delete the item-subinventory assignment (cascades to all locator ties for that item-subinventory). Choose Locator to delete just the locator assignment on this row (only offered when Locator is populated). Once a row deletes an item-subinventory, any subsequent rows for the same Organization/Item/Subinventory triple are rejected with a clear error to prevent orphaned inserts on the deleted parent.
+-- Organization, Item, Subinventory and Locator are read-only on existing rows — to change a key column, delete the row and create a new one.
+-- Stock locators referenced here must already exist in the chosen Subinventory (use the INV Stock Locator Upload to create them).
+-- Excel Example Output: https://www.enginatics.com/example/inv-item-subinventory-upload/
 -- Library Link: https://www.enginatics.com/reports/inv-item-subinventory-upload/
 -- Run Report: https://demo.enginatics.com/
 
@@ -71,6 +62,7 @@ milk.concatenated_segments locator,
 milk.description locator_description,
 msl.maximum_quantity par_level,
 to_char(null) delete_option,
+(select sum(moqd.primary_transaction_quantity) from mtl_onhand_quantities_detail moqd where misi.organization_id=moqd.organization_id and misi.inventory_item_id=moqd.inventory_item_id and misi.secondary_inventory=moqd.subinventory_code) onhand_quantity,
 to_number(null) upload_row
 from
 mtl_item_sub_inventories misi,

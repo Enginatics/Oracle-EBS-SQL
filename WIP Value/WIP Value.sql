@@ -1,33 +1,27 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: WIP Value
 -- Description: Application: Work in Process
-Description: WIP Value Report
-
-This report will display Period To Date (PTD) and Cumulative To Date (CTD) WIP costs/variances for the selected period. 
-
-The raw data (without template) provides a breakdown of these values by WIP Cost Type, Class, Discrete Job/Repetitive Schedule, Assembly, Element/Variance GL Account, and Period in which the cost is incurred/relieved.
-
-Templates are provided to detail or summarize the costs as followed:
-
-Applicable Templates:
-Pivot: WIP Value by Cost Type, Class - WIP Value Summary by Cost Type, Class with Drill Down to WIP Job Details
-Pivot: WIP Value by Cost Type, Class, Element/Variance GL Account - WIP Value by Cost Type, Class, Element/Variance GL Account
-Pivot: WIP Value by Element/Variance GL Account - WIP Value Account Summary by Element/Variance GL Account with Drill Down to WIP Job Details
-Detail: WIP value detail by WIP Job/Repetitive Schedule - Detail: WIP value detail by WIP Job/Repetitive Schedule
-Detail: WIP value detail by Element/Variance GL Account - WIP value detail breakdown at the  Element/Variance GL Account level
-
-Provides equivalent functionality to the following standard Oracle Forms/Reports
-- WIP Value Report
-
-Source: WIP Value Report (XML)
-Short Name: WIPUTVAL_XML
-DB package: WIP_WIPUTVAL_XMLP_PKG
--- Excel Examle Output: https://www.enginatics.com/example/wip-value/
+-- Description: WIP Value Report
+-- This report will display Period To Date (PTD) and Cumulative To Date (CTD) WIP costs/variances for the selected period.
+-- The raw data (without template) provides a breakdown of these values by WIP Cost Type, Class, Discrete Job/Repetitive Schedule, Assembly, Element/Variance GL Account, and Period in which the cost is incurred/relieved.
+-- Templates are provided to detail or summarize the costs as followed:
+-- Applicable Templates:
+-- Pivot: WIP Value by Cost Type, Class - WIP Value Summary by Cost Type, Class with Drill Down to WIP Job Details
+-- Pivot: WIP Value by Cost Type, Class, Element/Variance GL Account - WIP Value by Cost Type, Class, Element/Variance GL Account
+-- Pivot: WIP Value by Element/Variance GL Account - WIP Value Account Summary by Element/Variance GL Account with Drill Down to WIP Job Details
+-- Detail: WIP value detail by WIP Job/Repetitive Schedule - Detail: WIP value detail by WIP Job/Repetitive Schedule
+-- Detail: WIP value detail by Element/Variance GL Account - WIP value detail breakdown at the Element/Variance GL Account level
+-- Provides equivalent functionality to the following standard Oracle Forms/Reports
+-- - WIP Value Report
+-- Source: WIP Value Report (XML)
+-- Short Name: WIPUTVALXML
+-- DB package: WIPWIPUTVALXMLPPKG
+-- Excel Example Output: https://www.enginatics.com/example/wip-value/
 -- Library Link: https://www.enginatics.com/reports/wip-value/
 -- Run Report: https://demo.enginatics.com/
 

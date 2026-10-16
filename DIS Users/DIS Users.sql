@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: DIS Users
 -- Description: Discoverer end user layer users of different types (application user, responsibility, database user)
--- Excel Examle Output: https://www.enginatics.com/example/dis-users/
+-- Excel Example Output: https://www.enginatics.com/example/dis-users/
 -- Library Link: https://www.enginatics.com/reports/dis-users/
 -- Run Report: https://demo.enginatics.com/
 

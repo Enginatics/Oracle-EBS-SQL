@@ -1,47 +1,43 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC ICP PII Material Account Summary
--- Description: Use this report to eliminate your internal profit in inventory (PII) at month-end.  This report to sums up the material accounting entries for each item, organization, subinventory with the original amount, profit in inventory and net amounts.  With the Show SLA Accounting parameter you can choose to use the Release 12 Subledger Accounting (Create Accounting) account setups by selecting Yes.  And if you have not modified your SLA accounting rules, select No to allow this report to run a bit faster.  Use Show Subinventories to display or not display the subinventory information. Use Show Projects to display or not display the project number and name and use Show WIP Job to display or not display the WIP job information (WIP class, class type, WIP job, description, assembly number and assembly description).  For Discrete, Flow and Workorderless WIP (but not Repetitive Schedules).  Both Flow and Workorderless show up as the WIP Type "Flow schedule".  And for WIP Completions and WIP Completion Returns, this report also has a column "PII Zero Component Quantity" indicating if the underlying components, which have PII, were not issued to the job.  If not, the PII amount for WIP completions, for WIP jobs that were open, may be overstated as the PII is actually still sitting in the onhand inventory.
-
-Note:  there is a hidden parameter, Numeric Sign for PII, which allows you to set the sign of the profit in inventory amounts.  You can specify positive or negative values based on how you enter PII amounts into your PII Cost Type.  Defaulted as positive (+1).
-
-Note:  The SQL logic and code for this report is identical to the CAC Material Account Summary report.
-
-Parameters:
-===========
-PII Cost Type:  the profit in inventory cost type you wish to report (mandatory).
-PII Sub-Element:  the sub-element or resource for profit in inventory, such as PII or ICP (mandatory).
-Transaction Date From:  enter the starting transaction date (mandatory).
-Transaction Date To:  enter the ending transaction date (mandatory).
-Show SLA Accounting:  enter Yes to use the Subledger Accounting rules for your accounting information (mandatory).  If you choose No the report uses the pre-Create Accounting entries.
-Show Projects:  display the project number and name.  Enter Yes or No, use to limit the report size (mandatory).
-Show WIP:  display the WIP job or flow schedule information (WIP class, class type, WIP job, description, assembly number and assembly description).  Enter Yes or No, use to limit the report size (mandatory).
-Category Set 1:  any item category you wish, typically the Cost or Product Line category set (optional).
-Category Set 2:  any item category you wish, typically the Inventory category set (optional).
-Item Number:  enter the specific item number(s) you wish to report (optional).
-Organization Code:  enter the specific inventory organization(s) you wish to report (optional).
-Operating Unit:  enter the specific operating unit(s) you wish to report (optional).
-Ledger:  enter the specific ledger(s) you wish to report (optional).
-
-/* +=============================================================================+
--- |  Copyright 2009- 2022 Douglas Volz Consulting, Inc.
--- |  All rights reserved.
--- |  Permission to use this code is granted provided the original author is
--- |  acknowledged.  No warranties, express or otherwise is included in this
--- |  permission. 
--- +=============================================================================+
--- | 
--- |  Version Modified on Modified  by   Description
--- |  ======= =========== ============== =========================================
--- |  1.0     06 Nov 2009 Douglas Volz   Initial Coding
--- | 1.27    07 Oct 2022 Douglas Volz    Correction for period name joins for interorg transactions.
--- | 1.28    16 Oct 2022 Douglas Volz    Correction for quantity calculations and PII logic.
--- +=============================================================================+*/
--- Excel Examle Output: https://www.enginatics.com/example/cac-icp-pii-material-account-summary/
+-- Description: Use this report to eliminate your internal profit in inventory (PII) at month-end. This report to sums up the material accounting entries for each item, organization, subinventory with the original amount, profit in inventory and net amounts. With the Show SLA Accounting parameter you can choose to use the Release 12 Subledger Accounting (Create Accounting) account setups by selecting Yes. And if you have not modified your SLA accounting rules, select No to allow this report to run a bit faster. Use Show Subinventories to display or not display the subinventory information. Use Show Projects to display or not display the project number and name and use Show WIP Job to display or not display the WIP job information (WIP class, class type, WIP job, description, assembly number and assembly description). For Discrete, Flow and Workorderless WIP (but not Repetitive Schedules). Both Flow and Workorderless show up as the WIP Type "Flow schedule". And for WIP Completions and WIP Completion Returns, this report also has a column "PII Zero Component Quantity" indicating if the underlying components, which have PII, were not issued to the job. If not, the PII amount for WIP completions, for WIP jobs that were open, may be overstated as the PII is actually still sitting in the onhand inventory.
+-- Note: there is a hidden parameter, Numeric Sign for PII, which allows you to set the sign of the profit in inventory amounts. You can specify positive or negative values based on how you enter PII amounts into your PII Cost Type. Defaulted as positive (+1).
+-- Note: The SQL logic and code for this report is identical to the CAC Material Account Summary report.
+-- Parameters:
+-- ===========
+-- PII Cost Type: the profit in inventory cost type you wish to report (mandatory).
+-- PII Sub-Element: the sub-element or resource for profit in inventory, such as PII or ICP (mandatory).
+-- Transaction Date From: enter the starting transaction date (mandatory).
+-- Transaction Date To: enter the ending transaction date (mandatory).
+-- Show SLA Accounting: enter Yes to use the Subledger Accounting rules for your accounting information (mandatory). If you choose No the report uses the pre-Create Accounting entries.
+-- Show Projects: display the project number and name. Enter Yes or No, use to limit the report size (mandatory).
+-- Show WIP: display the WIP job or flow schedule information (WIP class, class type, WIP job, description, assembly number and assembly description). Enter Yes or No, use to limit the report size (mandatory).
+-- Category Set 1: any item category you wish, typically the Cost or Product Line category set (optional).
+-- Category Set 2: any item category you wish, typically the Inventory category set (optional).
+-- Item Number: enter the specific item number(s) you wish to report (optional).
+-- Organization Code: enter the specific inventory organization(s) you wish to report (optional).
+-- Operating Unit: enter the specific operating unit(s) you wish to report (optional).
+-- Ledger: enter the specific ledger(s) you wish to report (optional).
+-- / +=============================================================================+
+-- -- | Copyright 2009- 2022 Douglas Volz Consulting, Inc.
+-- -- | All rights reserved.
+-- -- | Permission to use this code is granted provided the original author is
+-- -- | acknowledged. No warranties, express or otherwise is included in this
+-- -- | permission.
+-- -- +=============================================================================+
+-- -- |
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== ============== =========================================
+-- -- | 1.0 06 Nov 2009 Douglas Volz Initial Coding
+-- -- | 1.27 07 Oct 2022 Douglas Volz Correction for period name joins for interorg transactions.
+-- -- | 1.28 16 Oct 2022 Douglas Volz Correction for quantity calculations and PII logic.
+-- -- +=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-icp-pii-material-account-summary/
 -- Library Link: https://www.enginatics.com/reports/cac-icp-pii-material-account-summary/
 -- Run Report: https://demo.enginatics.com/
 

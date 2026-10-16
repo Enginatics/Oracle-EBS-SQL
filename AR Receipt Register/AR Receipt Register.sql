@@ -1,26 +1,23 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: AR Receipt Register
 -- Description: Application: Receivables
-Description: Receivables Receipt Register
-
-Provided Templates:
-Default: Detail - Detail Listing with no Pivot Summarization
-Pivot: Summary by Receipt Date - Summary by Balancing Segment, Receipt Currency, Receipt Date
-Pivot: Summary by Receipt Status - Summary by Balancing Segment, Receipt Status
-Pivot: Summary by Batch - Summary by Balancing Segment, Receipt Currency, Batch
-Pivot: Summary by Customer Name - Summary by Balancing Segment, Receipt Currency, Customer
-Pivot: Summary by Debit Account - Summary by Balancing Segment, Account Segment, Debit Account, Receipt Currency
-Pivot: Summary by GL Date - Summary by Balancing Segment, Receipt Currency, GL Date
-
-Source: Receipt Register
-Short Name: ARRXRCRG/RXARRCRG
-
--- Excel Examle Output: https://www.enginatics.com/example/ar-receipt-register/
+-- Description: Receivables Receipt Register
+-- Provided Templates:
+-- Default: Detail - Detail Listing with no Pivot Summarization
+-- Pivot: Summary by Receipt Date - Summary by Balancing Segment, Receipt Currency, Receipt Date
+-- Pivot: Summary by Receipt Status - Summary by Balancing Segment, Receipt Status
+-- Pivot: Summary by Batch - Summary by Balancing Segment, Receipt Currency, Batch
+-- Pivot: Summary by Customer Name - Summary by Balancing Segment, Receipt Currency, Customer
+-- Pivot: Summary by Debit Account - Summary by Balancing Segment, Account Segment, Debit Account, Receipt Currency
+-- Pivot: Summary by GL Date - Summary by Balancing Segment, Receipt Currency, GL Date
+-- Source: Receipt Register
+-- Short Name: ARRXRCRG/RXARRCRG
+-- Excel Example Output: https://www.enginatics.com/example/ar-receipt-register/
 -- Library Link: https://www.enginatics.com/reports/ar-receipt-register/
 -- Run Report: https://demo.enginatics.com/
 

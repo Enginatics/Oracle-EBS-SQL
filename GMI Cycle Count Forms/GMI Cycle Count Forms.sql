@@ -1,15 +1,15 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: GMI Cycle Count Forms
 -- Description: Imported Oracle standard Cycle Count Forms Report of Oracle OPM PI report
-Source: Cycle Count Forms (XML)
-Short Name: PIR05_XML
-DB package: GMI_PIR05_XMLP_PKG
--- Excel Examle Output: https://www.enginatics.com/example/gmi-cycle-count-forms/
+-- Source: Cycle Count Forms (XML)
+-- Short Name: PIR05XML
+-- DB package: GMIPIR05XMLPPKG
+-- Excel Example Output: https://www.enginatics.com/example/gmi-cycle-count-forms/
 -- Library Link: https://www.enginatics.com/reports/gmi-cycle-count-forms/
 -- Run Report: https://demo.enginatics.com/
 

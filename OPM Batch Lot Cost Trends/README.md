@@ -1,14 +1,20 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'OPM Batch Lot Cost Trends | Oracle EBS SQL Report'
 description: 'OPM Batch Lot Costing Trends Report This report shows the Batch Lot Costs for the specified Organization and Product over a specified date range. The…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, OPM, Batch, Lot, Cost, xmltable, fm_form_mst, gmd_formula_class'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Process Manufacturing, Enginatics, R12 only, OPM, Batch, Lot, Cost, fm_form_mst, gmd_formula_class, gl_ledger_le_v'
 permalink: /OPM%20Batch%20Lot%20Cost%20Trends/
+report_name: 'OPM Batch Lot Cost Trends'
+report_web_name: opm-batch-lot-cost-trends
+module: 'Process Manufacturing'
+module_url: /modules/process-manufacturing/
 ---
 
 # OPM Batch Lot Cost Trends – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/opm-batch-lot-cost-trends/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/opm-batch-lot-cost-trends/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=opm-batch-lot-cost-trends) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=opm-batch-lot-cost-trends).
+**Oracle EBS module:** [Process Manufacturing](/modules/process-manufacturing/ "Oracle EBS Process Manufacturing reports") · [all Process Manufacturing reports](/modules/process-manufacturing/)  
 
 ## Overview
 OPM Batch Lot Costing Trends Report
@@ -27,29 +33,31 @@ The report allows the user to pull in several additional data points to allow fu
 - Item Category Segments for a specific Item Category Set
 - Item Descriptive Flexfield Attributes
 
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=opm-batch-lot-cost-trends) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 
 ## Report Parameters
 Organization Code, From Date, To Date, Product, Formula Class, Batch, Cost Type, Product Category Set, Product Item Catalog, Product Item DFF Display, Ingredient Category Set, Ingredient Item Catalog, Ingredient Item DFF Display, Include Intermediate Ingredients
 
 ## Oracle EBS Tables Used
-[xmltable](https://www.enginatics.com/library/?pg=1&find=xmltable), [fm_form_mst](https://www.enginatics.com/library/?pg=1&find=fm_form_mst), [gmd_formula_class](https://www.enginatics.com/library/?pg=1&find=gmd_formula_class), [gl_ledger_le_v](https://www.enginatics.com/library/?pg=1&find=gl_ledger_le_v), [opm_batch_lot_costs](https://www.enginatics.com/library/?pg=1&find=opm_batch_lot_costs), [gme_batch_header](https://www.enginatics.com/library/?pg=1&find=gme_batch_header), [gme_material_details](https://www.enginatics.com/library/?pg=1&find=gme_material_details), [org_organization_definitions](https://www.enginatics.com/library/?pg=1&find=org_organization_definitions), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl)
+[fm_form_mst](https://www.enginatics.com/library/?pg=1&find=fm_form_mst&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=opm-batch-lot-cost-trends), [gmd_formula_class](https://www.enginatics.com/library/?pg=1&find=gmd_formula_class&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=opm-batch-lot-cost-trends), [gl_ledger_le_v](https://www.enginatics.com/library/?pg=1&find=gl_ledger_le_v&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=opm-batch-lot-cost-trends), [gme_batch_header](https://www.enginatics.com/library/?pg=1&find=gme_batch_header&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=opm-batch-lot-cost-trends), [gme_material_details](https://www.enginatics.com/library/?pg=1&find=gme_material_details&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=opm-batch-lot-cost-trends), [org_organization_definitions](https://www.enginatics.com/library/?pg=1&find=org_organization_definitions&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=opm-batch-lot-cost-trends), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=opm-batch-lot-cost-trends)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=opm-batch-lot-cost-trends), [R12 only](https://www.enginatics.com/library/?pg=1&category%5B%5D=R12%20only&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=opm-batch-lot-cost-trends)
 
 ## Related Reports
-[OPM Batch Lot Cost Details](/OPM%20Batch%20Lot%20Cost%20Details/ "OPM Batch Lot Cost Details Oracle EBS SQL Report"), [CAC OPM Batch Material Summary](/CAC%20OPM%20Batch%20Material%20Summary/ "CAC OPM Batch Material Summary Oracle EBS SQL Report"), [CAC OPM Costed Formula](/CAC%20OPM%20Costed%20Formula/ "CAC OPM Costed Formula Oracle EBS SQL Report")
+[OPM Batch Lot Cost Details](/OPM%20Batch%20Lot%20Cost%20Details/ "OPM Batch Lot Cost Details Oracle EBS SQL Report"), [CAC OPM Costed Formula](/CAC%20OPM%20Costed%20Formula/ "CAC OPM Costed Formula Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/OPM%20Batch%20Lot%20Cost%20Trends/OPM%20Batch%20Lot%20Cost%20Trends.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=opm-batch-lot-cost-trends) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [OPM Batch Lot Cost Trends - Detail Pivot 01-Aug-2025 091821.xlsx](https://www.enginatics.com/example/opm-batch-lot-cost-trends/) |
-| Blitz Report™ XML Import | [OPM_Batch_Lot_Cost_Trends.xml](https://www.enginatics.com/xml/opm-batch-lot-cost-trends/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/opm-batch-lot-cost-trends/](https://www.enginatics.com/reports/opm-batch-lot-cost-trends/) |
+| Excel Example Output | [OPM Batch Lot Cost Trends - Detail Pivot 01-Aug-2025 091821.xlsx](https://www.enginatics.com/example/opm-batch-lot-cost-trends/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=opm-batch-lot-cost-trends) |
+| Blitz Report™ XML Import | [OPM_Batch_Lot_Cost_Trends.xml](https://www.enginatics.com/xml/opm-batch-lot-cost-trends/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=opm-batch-lot-cost-trends) |
+| SQL Source | [OPM Batch Lot Cost Trends.sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/OPM%20Batch%20Lot%20Cost%20Trends/OPM%20Batch%20Lot%20Cost%20Trends.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/opm-batch-lot-cost-trends/](https://www.enginatics.com/reports/opm-batch-lot-cost-trends/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=opm-batch-lot-cost-trends) |
 
 ## Case Study & Technical Analysis: OPM Batch Lot Cost Trends Report
 
@@ -111,18 +119,17 @@ The report's complex, multi-level query is optimized by requiring strong driving
 **3. How does this report help with analyzing product margins?**
    By providing the actual historical cost of goods sold (COGS) for a product, you can compare this data directly against the historical sales price data from Order Management. This allows for a precise, data-driven analysis of how the product's gross margin has trended over time.
 
-
 ---
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=opm-batch-lot-cost-trends)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=opm-batch-lot-cost-trends)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=opm-batch-lot-cost-trends)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=opm-batch-lot-cost-trends)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=opm-batch-lot-cost-trends)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=opm-batch-lot-cost-trends)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=opm-batch-lot-cost-trends)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

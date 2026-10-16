@@ -1,25 +1,23 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: FND Flex Value Upload
 -- Description: Upload to create or update flex values for Independent, Dependent, Translatable Independent, and Translatable Dependent value sets.
-
-Supports:
-- Value creation and update (auto-detects via fnd_flex_values_pkg.load_row upsert)
-- Enabled flag, start/end dates
-- Summary flag (parent/child designation)
-- Rollup group assignment for parent values
-- Compiled value attributes (qualifier values for KFF segments, e.g. GL Account Type, Allow Posting)
-- Hierarchy level
-- Attribute sort order
-- DFF attributes (ATTRIBUTE1..50)
-- Translatable value meaning and description (for Translatable Independent/Dependent value sets)
-
-Note: After uploading parent values with hierarchy changes, run the 'Compile Value Hierarchy' concurrent program from the Value Sets form to update the compiled hierarchy.
--- Excel Examle Output: https://www.enginatics.com/example/fnd-flex-value-upload/
+-- Supports:
+-- - Value creation and update (auto-detects via fndflexvaluespkg.loadrow upsert)
+-- - Enabled flag, start/end dates
+-- - Summary flag (parent/child designation)
+-- - Rollup group assignment for parent values
+-- - Compiled value attributes (qualifier values for KFF segments, e.g. GL Account Type, Allow Posting)
+-- - Hierarchy level
+-- - Attribute sort order
+-- - DFF attributes (ATTRIBUTE1..50)
+-- - Translatable value meaning and description (for Translatable Independent/Dependent value sets)
+-- Note: After uploading parent values with hierarchy changes, run the 'Compile Value Hierarchy' concurrent program from the Value Sets form to update the compiled hierarchy.
+-- Excel Example Output: https://www.enginatics.com/example/fnd-flex-value-upload/
 -- Library Link: https://www.enginatics.com/reports/fnd-flex-value-upload/
 -- Run Report: https://demo.enginatics.com/
 

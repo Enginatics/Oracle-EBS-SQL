@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PN Billing/Payment Term Upload
 -- Description: Property Management - Billing and Payment Terms Upload
--- Excel Examle Output: https://www.enginatics.com/example/pn-billing-payment-term-upload/
+-- Excel Example Output: https://www.enginatics.com/example/pn-billing-payment-term-upload/
 -- Library Link: https://www.enginatics.com/reports/pn-billing-payment-term-upload/
 -- Run Report: https://demo.enginatics.com/
 
@@ -98,12 +98,12 @@ end payment_terms,
 pptv.inv_group_name invoice_grouping_rule,
 (select distribution_set_name from ap_distribution_sets_all adsa where adsa.distribution_set_id = pptv.distribution_set_id) distribution_set,
 (select ppa.name from pa_projects_all ppa where ppa.project_id = pptv.project_id and ppa.org_id = pptv.org_id) project,
-(select ptev.task_name from pa_tasks_expend_v ptev where ptev.task_id = pptv.task_id) task,
+(select pt.task_name from pa_tasks pt where pptv.task_id=pt.task_id) task,
 --pptv.agreement_name,
 --pptv.agreement_number,
 pptv.expenditure_type,
 pptv.expenditure_item_date,
-(select poev.name from pa_organizations_expend_v poev where poev.organization_id = pptv.organization_id) expenditure_organization,
+(select haouv_exp.name from hr_all_organization_units_vl haouv_exp where pptv.organization_id=haouv_exp.organization_id) expenditure_organization,
 -- tax
 xxen_util.meaning(decode(pptv.tax_included,'A','Y',pptv.tax_included),'YES_NO',0) tax_included,
 pptv.tax_classification_code,

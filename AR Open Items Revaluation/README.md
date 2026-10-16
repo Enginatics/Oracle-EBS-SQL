@@ -1,14 +1,20 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'AR Open Items Revaluation | Oracle EBS SQL Report'
 description: 'Imported from BI Publisher Description: Open Items Revaluation Report Application: Receivables Source: Open Items Revaluation Report (XML) Short Name…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, BI Publisher, Enginatics, Open, Items, Revaluation, gl_translation_rates, ar_receivable_applications, ar_cash_receipt_history'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Receivables, BI Publisher, Enginatics, R12 only, Open, Items, Revaluation, gl_translation_rates, ar_receivable_applications, ar_cash_receipt_history'
 permalink: /AR%20Open%20Items%20Revaluation/
+report_name: 'AR Open Items Revaluation'
+report_web_name: ar-open-items-revaluation
+module: 'Receivables'
+module_url: /modules/receivables/
 ---
 
 # AR Open Items Revaluation – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/ar-open-items-revaluation/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/ar-open-items-revaluation/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-open-items-revaluation) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-open-items-revaluation).
+**Oracle EBS module:** [Receivables](/modules/receivables/ "Oracle EBS Receivables reports") · [all Receivables reports](/modules/receivables/)  
 
 ## Overview
 Imported from BI Publisher
@@ -18,28 +24,31 @@ Source: Open Items Revaluation Report (XML)
 Short Name: ARXINREV_XML
 DB package: AR_ARXINREV_XMLP_PKG
 
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-open-items-revaluation) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 
 ## Report Parameters
 Ledger, Operating Unit, Report Format, Revaluation Period, Include Up To Due Date, Rate Type, Daily Rate Type, Daily Rate Date, Balancing Segment Low, Balancing Segment High, Transferred To GL only, Cleared only
 
 ## Oracle EBS Tables Used
-[gl_translation_rates](https://www.enginatics.com/library/?pg=1&find=gl_translation_rates), [ar_receivable_applications](https://www.enginatics.com/library/?pg=1&find=ar_receivable_applications), [ar_cash_receipt_history](https://www.enginatics.com/library/?pg=1&find=ar_cash_receipt_history), [ar_adjustments](https://www.enginatics.com/library/?pg=1&find=ar_adjustments), [ra_cust_trx_types](https://www.enginatics.com/library/?pg=1&find=ra_cust_trx_types), [hz_cust_accounts](https://www.enginatics.com/library/?pg=1&find=hz_cust_accounts), [hz_parties](https://www.enginatics.com/library/?pg=1&find=hz_parties), [hz_locations](https://www.enginatics.com/library/?pg=1&find=hz_locations), [hz_cust_acct_sites](https://www.enginatics.com/library/?pg=1&find=hz_cust_acct_sites), [hz_party_sites](https://www.enginatics.com/library/?pg=1&find=hz_party_sites), [hz_cust_site_uses](https://www.enginatics.com/library/?pg=1&find=hz_cust_site_uses), [gl_code_combinations](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations), [gl_sets_of_books](https://www.enginatics.com/library/?pg=1&find=gl_sets_of_books), [fnd_currencies](https://www.enginatics.com/library/?pg=1&find=fnd_currencies), [hr_all_organization_units_vl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_vl), [ra_customer_trx](https://www.enginatics.com/library/?pg=1&find=ra_customer_trx), [ar_xla_ctlgd_lines_v](https://www.enginatics.com/library/?pg=1&find=ar_xla_ctlgd_lines_v), [ar_payment_schedules](https://www.enginatics.com/library/?pg=1&find=ar_payment_schedules), [gl_period_statuses](https://www.enginatics.com/library/?pg=1&find=gl_period_statuses)
+[gl_translation_rates](https://www.enginatics.com/library/?pg=1&find=gl_translation_rates&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-open-items-revaluation), [ar_receivable_applications](https://www.enginatics.com/library/?pg=1&find=ar_receivable_applications&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-open-items-revaluation), [ar_cash_receipt_history](https://www.enginatics.com/library/?pg=1&find=ar_cash_receipt_history&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-open-items-revaluation), [ar_adjustments](https://www.enginatics.com/library/?pg=1&find=ar_adjustments&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-open-items-revaluation), [ra_cust_trx_types](https://www.enginatics.com/library/?pg=1&find=ra_cust_trx_types&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-open-items-revaluation), [hz_cust_accounts](https://www.enginatics.com/library/?pg=1&find=hz_cust_accounts&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-open-items-revaluation), [hz_parties](https://www.enginatics.com/library/?pg=1&find=hz_parties&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-open-items-revaluation), [hz_locations](https://www.enginatics.com/library/?pg=1&find=hz_locations&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-open-items-revaluation), [hz_cust_acct_sites](https://www.enginatics.com/library/?pg=1&find=hz_cust_acct_sites&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-open-items-revaluation), [hz_party_sites](https://www.enginatics.com/library/?pg=1&find=hz_party_sites&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-open-items-revaluation), [hz_cust_site_uses](https://www.enginatics.com/library/?pg=1&find=hz_cust_site_uses&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-open-items-revaluation), [gl_code_combinations](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-open-items-revaluation), [gl_sets_of_books](https://www.enginatics.com/library/?pg=1&find=gl_sets_of_books&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-open-items-revaluation), [fnd_currencies](https://www.enginatics.com/library/?pg=1&find=fnd_currencies&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-open-items-revaluation), [hr_all_organization_units_vl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-open-items-revaluation), [ra_customer_trx](https://www.enginatics.com/library/?pg=1&find=ra_customer_trx&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-open-items-revaluation), [ar_xla_ctlgd_lines_v](https://www.enginatics.com/library/?pg=1&find=ar_xla_ctlgd_lines_v&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-open-items-revaluation), [ar_payment_schedules](https://www.enginatics.com/library/?pg=1&find=ar_payment_schedules&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-open-items-revaluation), [gl_period_statuses](https://www.enginatics.com/library/?pg=1&find=gl_period_statuses&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-open-items-revaluation)
 
 ## Report Categories
-[BI Publisher](https://www.enginatics.com/library/?pg=1&category[]=BI%20Publisher), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[BI Publisher](https://www.enginatics.com/library/?pg=1&category%5B%5D=BI%20Publisher&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-open-items-revaluation), [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-open-items-revaluation), [R12 only](https://www.enginatics.com/library/?pg=1&category%5B%5D=R12%20only&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-open-items-revaluation)
 
-
+## Related Reports
+[AR Aging](/AR%20Aging/ "AR Aging Oracle EBS SQL Report"), [GL Account Analysis](/GL%20Account%20Analysis/ "GL Account Analysis Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/AR%20Open%20Items%20Revaluation/AR%20Open%20Items%20Revaluation.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-open-items-revaluation) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [AR Open Items Revaluation - Default 11-Oct-2023 030916.xlsx](https://www.enginatics.com/example/ar-open-items-revaluation/) |
-| Blitz Report™ XML Import | [AR_Open_Items_Revaluation.xml](https://www.enginatics.com/xml/ar-open-items-revaluation/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/ar-open-items-revaluation/](https://www.enginatics.com/reports/ar-open-items-revaluation/) |
+| Excel Example Output | [AR Open Items Revaluation - Default 11-Oct-2023 030916.xlsx](https://www.enginatics.com/example/ar-open-items-revaluation/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-open-items-revaluation) |
+| Blitz Report™ XML Import | [AR_Open_Items_Revaluation.xml](https://www.enginatics.com/xml/ar-open-items-revaluation/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-open-items-revaluation) |
+| SQL Source | [AR Open Items Revaluation.sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/AR%20Open%20Items%20Revaluation/AR%20Open%20Items%20Revaluation.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/ar-open-items-revaluation/](https://www.enginatics.com/reports/ar-open-items-revaluation/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-open-items-revaluation) |
 
 ## AR Open Items Revaluation - Case Study & Technical Analysis
 
@@ -100,18 +109,17 @@ A: This happens if the revaluation rate is identical to the original rate, or if
 **Q: Does this report automatically create the journal entry?**
 A: No, this report calculates and displays the figures. The actual journal creation is done by the "Revaluation" process in the General Ledger or the "Receivables Revaluation" program, depending on your setup.
 
-
 ---
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-open-items-revaluation)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-open-items-revaluation)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-open-items-revaluation)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-open-items-revaluation)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-open-items-revaluation)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-open-items-revaluation)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-open-items-revaluation)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

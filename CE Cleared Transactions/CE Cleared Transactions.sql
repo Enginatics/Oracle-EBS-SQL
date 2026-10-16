@@ -1,23 +1,20 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CE Cleared Transactions
 -- Description: Application: Cash Management
-Description: Transactions - Cleared Payment/Receipt Transactions
-
-Provides equivalent functionality to the following standard Oracle Forms/Reports
-- Cleared Transactions Report
-  Applicable Templates:
-  Pivot: Cleared Transactions Summary
-  Pivot: Cleared Batches Summary
-
-Source: Cleared Transactions Report (CEXCLEAR)
-DB package: CE_CEXCLEAR_XMLP_PKG (required to initialize security)
-
--- Excel Examle Output: https://www.enginatics.com/example/ce-cleared-transactions/
+-- Description: Transactions - Cleared Payment/Receipt Transactions
+-- Provides equivalent functionality to the following standard Oracle Forms/Reports
+-- - Cleared Transactions Report
+-- Applicable Templates:
+-- Pivot: Cleared Transactions Summary
+-- Pivot: Cleared Batches Summary
+-- Source: Cleared Transactions Report (CEXCLEAR)
+-- DB package: CECEXCLEARXMLPPKG (required to initialize security)
+-- Excel Example Output: https://www.enginatics.com/example/ce-cleared-transactions/
 -- Library Link: https://www.enginatics.com/reports/ce-cleared-transactions/
 -- Run Report: https://demo.enginatics.com/
 

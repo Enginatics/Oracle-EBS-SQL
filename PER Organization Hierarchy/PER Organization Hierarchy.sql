@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PER Organization Hierarchy
 -- Description: Master data report showing hierarchical list of human resource organization structures including subordinate orgs.
--- Excel Examle Output: https://www.enginatics.com/example/per-organization-hierarchy/
+-- Excel Example Output: https://www.enginatics.com/example/per-organization-hierarchy/
 -- Library Link: https://www.enginatics.com/reports/per-organization-hierarchy/
 -- Run Report: https://demo.enginatics.com/
 
@@ -52,7 +52,7 @@ connect_by_root haouv1.name top_level_org,
 lpad(' ',2*level)||level level_,
 lpad(' ',4*(level-1))||haouv2.name org_path,
 haouv2.name child_org,
-decode(haouv2.head_count,0,null,haouv2.head_count) head_count,
+nullif(haouv2.head_count,0) head_count,
 pose.organization_id_child child_org_id
 from
 hr_all_organization_units_vl haouv1,

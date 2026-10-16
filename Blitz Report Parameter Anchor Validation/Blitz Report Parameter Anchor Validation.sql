@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: Blitz Report Parameter Anchor Validation
--- Description: Checks if all parameter anchors exist in the xxen_report_parameter_anchors table.
--- Excel Examle Output: https://www.enginatics.com/example/blitz-report-parameter-anchor-validation/
+-- Description: Checks if all parameter anchors exist in the xxenreportparameteranchors table.
+-- Excel Example Output: https://www.enginatics.com/example/blitz-report-parameter-anchor-validation/
 -- Library Link: https://www.enginatics.com/reports/blitz-report-parameter-anchor-validation/
 -- Run Report: https://demo.enginatics.com/
 

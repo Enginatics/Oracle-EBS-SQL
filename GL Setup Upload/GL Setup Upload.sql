@@ -1,45 +1,28 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: GL Setup Upload
 -- Description: Create and update the General Ledger setup entities that the GL Setup menu maintains, replicating the Calendars (GLXSTCAL), Period Types (GLXSTPTY), Journal Sources (GLXSTSRC), Journal Categories (GLXSTCAT), Encumbrance Types (GLXSTENC), Statistical Units of Measure (GLXSTUOM), Ledger Sets (GLXSTLST), Data Access Sets (GLXSTACC), Journal Reversal Criteria (GLXSTARV) and AutoPost Criteria (GLXSTAPO) forms, plus ledger options.
-
-Each row is one of fifteen entity types, chosen in the Row Type column. Only the columns belonging to that entity are read; all other columns are ignored. A template is supplied for every entity, which shows only that entity's columns and sets the Row Type automatically.
-
-- Period Type: creates or updates a period type. Periods Per Year and Year Type In Name are required to create one and cannot be changed afterwards.
-
-- Calendar Period: creates or updates one period of a calendar. The calendar itself is created together with its first period, so a new calendar name can be entered. Enter either a Period Name or a Period Prefix; a prefix is expanded to prefix-YY. Periods that have already been used can only have their description and flexfield changed. Set Delete Period to Yes to remove an unused period.
-
-- Journal Source: creates or updates a journal source, including Import Journal References, Require Journal Approval, Import Using Key, Freeze Journals and the Effective Date Rule.
-
-- Journal Category: creates or updates a journal category. Creating one also seeds its document sequence category and its autoreverse options for every ledger.
-
-- Encumbrance Type: creates or updates an encumbrance type and its Enabled flag.
-
-- Statistical Unit of Measure: assigns a unit of measure to a natural account segment value of a chart of accounts. Set Delete Stat UOM to Yes to remove the assignment.
-
-- Ledger: updates the options of an existing ledger. Ledgers cannot be created, because only the Accounting Setup Manager can create the accounting setup around one.
-
-- Ledger Set and Data Access Set: creates or updates the set. The chart of accounts, calendar, period type and short name are fixed once the set exists. Neither can be deleted by the upload.
-
-- Ledger Set Assignment and Data Access Set Assignment: adds a member ledger, or removes one with Delete Assignment. Assignments are staged, so the General Ledger Accounting Setup Program is submitted automatically, once per chart of accounts, and its request id is reported in the row message.
-
-- AutoReverse Criteria Set: creates a reversal criteria set. An existing set cannot be updated or deleted; change its options instead.
-
-- AutoReverse Option: creates or updates the reversal option of one journal category within a criteria set.
-
-- AutoPost Set: creates or updates an AutoPost criteria set. Its chart of accounts, calendar and period type are fixed once it exists.
-
-- AutoPost Option: creates or updates a priority within an AutoPost set. Set Delete Option to Yes to remove one.
-
-An entity is created when it does not yet exist and updated otherwise; the Upload Mode parameter only decides whether existing records are downloaded for review. Rows that change nothing report No change and are not written.
-
-After a Calendar Period upload the calendar is checked for gaps and overlaps between its periods, which are reported as a warning. Run the Calendar Validation Report for full details.
-
--- Excel Examle Output: https://www.enginatics.com/example/gl-setup-upload/
+-- Each row is one of fifteen entity types, chosen in the Row Type column. Only the columns belonging to that entity are read; all other columns are ignored. A template is supplied for every entity, which shows only that entity's columns and sets the Row Type automatically.
+-- - Period Type: creates or updates a period type. Periods Per Year and Year Type In Name are required to create one and cannot be changed afterwards.
+-- - Calendar Period: creates or updates one period of a calendar. The calendar itself is created together with its first period, so a new calendar name can be entered. Enter either a Period Name or a Period Prefix; a prefix is expanded to prefix-YY. Periods that have already been used can only have their description and flexfield changed. Set Delete Period to Yes to remove an unused period.
+-- - Journal Source: creates or updates a journal source, including Import Journal References, Require Journal Approval, Import Using Key, Freeze Journals and the Effective Date Rule.
+-- - Journal Category: creates or updates a journal category. Creating one also seeds its document sequence category and its autoreverse options for every ledger.
+-- - Encumbrance Type: creates or updates an encumbrance type and its Enabled flag.
+-- - Statistical Unit of Measure: assigns a unit of measure to a natural account segment value of a chart of accounts. Set Delete Stat UOM to Yes to remove the assignment.
+-- - Ledger: updates the options of an existing ledger. Ledgers cannot be created, because only the Accounting Setup Manager can create the accounting setup around one.
+-- - Ledger Set and Data Access Set: creates or updates the set. The chart of accounts, calendar, period type and short name are fixed once the set exists. Neither can be deleted by the upload.
+-- - Ledger Set Assignment and Data Access Set Assignment: adds a member ledger, or removes one with Delete Assignment. Assignments are staged, so the General Ledger Accounting Setup Program is submitted automatically, once per chart of accounts, and its request id is reported in the row message.
+-- - AutoReverse Criteria Set: creates a reversal criteria set. An existing set cannot be updated or deleted; change its options instead.
+-- - AutoReverse Option: creates or updates the reversal option of one journal category within a criteria set.
+-- - AutoPost Set: creates or updates an AutoPost criteria set. Its chart of accounts, calendar and period type are fixed once it exists.
+-- - AutoPost Option: creates or updates a priority within an AutoPost set. Set Delete Option to Yes to remove one.
+-- An entity is created when it does not yet exist and updated otherwise; the Upload Mode parameter only decides whether existing records are downloaded for review. Rows that change nothing report No change and are not written.
+-- After a Calendar Period upload the calendar is checked for gaps and overlaps between its periods, which are reported as a warning. Run the Calendar Validation Report for full details.
+-- Excel Example Output: https://www.enginatics.com/example/gl-setup-upload/
 -- Library Link: https://www.enginatics.com/reports/gl-setup-upload/
 -- Run Report: https://demo.enginatics.com/
 

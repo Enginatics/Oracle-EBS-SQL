@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: MSC Exceptions
 -- Description: ASCP: Export Planning Exceptions from the Planners Workbench.
--- Excel Examle Output: https://www.enginatics.com/example/msc-exceptions/
+-- Excel Example Output: https://www.enginatics.com/example/msc-exceptions/
 -- Library Link: https://www.enginatics.com/reports/msc-exceptions/
 -- Run Report: https://demo.enginatics.com/
 

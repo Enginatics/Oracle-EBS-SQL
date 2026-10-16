@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: GL Chart of Accounts Mapping Rules
--- Description: Lists the segment mapping rules and code combination mappings defined for a Global Consolidation System (GCS) chart of accounts mapping. Converted from the Oracle BI Publisher report 'Chart of Accounts - Mapping Rules (XML)' (GLXCOCRR_XML).
--- Excel Examle Output: https://www.enginatics.com/example/gl-chart-of-accounts-mapping-rules(1)/
+-- Description: Lists the segment mapping rules and code combination mappings defined for a Global Consolidation System (GCS) chart of accounts mapping. Converted from the Oracle BI Publisher report 'Chart of Accounts - Mapping Rules (XML)' (GLXCOCRRXML).
+-- Excel Example Output: https://www.enginatics.com/example/gl-chart-of-accounts-mapping-rules(1)/
 -- Library Link: https://www.enginatics.com/reports/gl-chart-of-accounts-mapping-rules(1)/
 -- Run Report: https://demo.enginatics.com/
 

@@ -1,36 +1,29 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CE Bank Statement Upload
 -- Description: CE Bank Statement Upload
-========================
-Loads bank statements (header and lines) into Oracle Cash Management through the bank statement open interface and runs Oracle's Bank Statement Import automatically after upload.
-
-Optionally, AutoReconciliation runs in the same step to match the imported statement lines against AR receipts, AP payments and GL journal lines according to the bank account's transaction codes and matching rules, in the same way as the standard 'Bank Statement Import & AutoReconciliation' concurrent program.
-
-Each row represents one statement line. Statement header information (Account Number, Statement Number, Statement Date, Currency, Control Balances) repeats on every row and the statement header is created once per statement number. Line numbers are assigned automatically per statement when left blank.
-
-Credit and debit control totals are computed automatically from the entered lines and their transaction code types.
-
-Upload Mode
-===========
-
-Create
-------
-Opens an empty spreadsheet to enter new bank statements, for example pasted from a bank portal export.
-
-Create, Update
---------------
-Additionally returns statement lines that are still sitting in the bank statement open interface and did not import. Correct them and re-upload; corrected lines replace the previously staged interface records and are imported again.
-
-Notes
-=====
-- Statements that are already imported into Cash Management cannot be loaded again under the same statement number.
-- Rows failing the import show the Cash Management interface error messages in the result file. The standard Bank Statement Import Execution Report provides the same details.
--- Excel Examle Output: https://www.enginatics.com/example/ce-bank-statement-upload/
+-- ========================
+-- Loads bank statements (header and lines) into Oracle Cash Management through the bank statement open interface and runs Oracle's Bank Statement Import automatically after upload.
+-- Optionally, AutoReconciliation runs in the same step to match the imported statement lines against AR receipts, AP payments and GL journal lines according to the bank account's transaction codes and matching rules, in the same way as the standard 'Bank Statement Import & AutoReconciliation' concurrent program.
+-- Each row represents one statement line. Statement header information (Account Number, Statement Number, Statement Date, Currency, Control Balances) repeats on every row and the statement header is created once per statement number. Line numbers are assigned automatically per statement when left blank.
+-- Credit and debit control totals are computed automatically from the entered lines and their transaction code types.
+-- Upload Mode
+-- ===========
+-- Create
+-- ------
+-- Opens an empty spreadsheet to enter new bank statements, for example pasted from a bank portal export.
+-- Create, Update
+-- --------------
+-- Additionally returns statement lines that are still sitting in the bank statement open interface and did not import. Correct them and re-upload; corrected lines replace the previously staged interface records and are imported again.
+-- Notes
+-- =====
+-- - Statements that are already imported into Cash Management cannot be loaded again under the same statement number.
+-- - Rows failing the import show the Cash Management interface error messages in the result file. The standard Bank Statement Import Execution Report provides the same details.
+-- Excel Example Output: https://www.enginatics.com/example/ce-bank-statement-upload/
 -- Library Link: https://www.enginatics.com/reports/ce-bank-statement-upload/
 -- Run Report: https://demo.enginatics.com/
 

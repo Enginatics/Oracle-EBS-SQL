@@ -1,44 +1,41 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Material Account Summary
--- Description: Report to get the Material accounting distributions, in summary, for each item, organization and subinventory.  Including Ship From and Ship To information for inter-org transfers.  With the Show SLA Accounting parameter you can choose to use the Release 12 Subledger Accounting (Create Accounting) account setups by selecting Yes.  And if you have not modified your SLA accounting rules, select No to allow this report to run a bit faster.  With parameters to also limit the report size.  Use Show Subinventories to display or not display the subinventory information. Use Show Projects to display or not display the project number and name and use Show WIP Job to display or not display the WIP job information (WIP class, class type, WIP job, description, assembly number and assembly description).  For Discrete, Flow and Workorderless WIP (but not Repetitive Schedules).  Both Flow and Workorderless show up as the WIP Type "Flow schedule".   Also note this report version shows the latest item status and make buy codes, even if you run the report for prior accounting periods.
-
-Note:  this report has identical code and logic as the CAC ICP PII Material Account Summary report, however, with the use of hidden parameters, the PII (profit in inventory) features have been turned off.
-
-Parameters:
-===========
-Transaction Date From:  enter the starting transaction date (mandatory).
-Transaction Date To:  enter the ending transaction date (mandatory).
-Show SLA Accounting:  enter Yes to use the Subledger Accounting rules for your accounting information (mandatory).  If you choose No the report uses the pre-Create Accounting entries.
-Show Projects:  display the project number and name.  Enter Yes or No, use to limit the report size (mandatory).
-Show Subinventories:  display the subinventory code and description.  Enter Yes or No, use to limit the report size (mandatory).
-Show WIP:  display the WIP job or flow schedule information (WIP class, class type, WIP job, description, assembly number and assembly description).  Enter Yes or No, use to limit the report size (mandatory).
-Category Set 1:  any item category you wish, typically the Cost or Product Line category set (optional).
-Category Set 2:  any item category you wish, typically the Inventory category set (optional).
-Item Number:  enter the specific item number(s) you wish to report (optional).
-Organization Code:  enter the specific inventory organization(s) you wish to report (optional).
-Operating Unit:  enter the specific operating unit(s) you wish to report (optional).
-Ledger:  enter the specific ledger(s) you wish to report (optional).
-
-/* +=============================================================================+
--- |  Copyright 2009- 2024 Douglas Volz Consulting, Inc.
--- |  All rights reserved.
--- |  Permission to use this code is granted provided the original author is
--- |  acknowledged.  No warranties, express or otherwise is included in this permission. 
--- +=============================================================================+
--- | 
--- |  Version Modified on Modified  by   Description
--- |  ======= =========== ============== =========================================
--- |  1.0     06 Nov 2009 Douglas Volz   Initial Coding
--- | 1.27    07 Oct 2022 Douglas Volz    Correction for period name joins for interorg transactions.
--- | 1.28    16 Oct 2022 Douglas Volz    Correction for quantity calculations and PII logic.
--- | 1.30    13 Jun 2024 Douglas Volz    Removed tabs, reinstalled parameters, including org access restrictions.
--- +=============================================================================+*/
--- Excel Examle Output: https://www.enginatics.com/example/cac-material-account-summary/
+-- Description: Report to get the Material accounting distributions, in summary, for each item, organization and subinventory. Including Ship From and Ship To information for inter-org transfers. With the Show SLA Accounting parameter you can choose to use the Release 12 Subledger Accounting (Create Accounting) account setups by selecting Yes. And if you have not modified your SLA accounting rules, select No to allow this report to run a bit faster. With parameters to also limit the report size. Use Show Subinventories to display or not display the subinventory information. Use Show Projects to display or not display the project number and name and use Show WIP Job to display or not display the WIP job information (WIP class, class type, WIP job, description, assembly number and assembly description). For Discrete, Flow and Workorderless WIP (but not Repetitive Schedules). Both Flow and Workorderless show up as the WIP Type "Flow schedule". Also note this report version shows the latest item status and make buy codes, even if you run the report for prior accounting periods.
+-- Note: this report has identical code and logic as the CAC ICP PII Material Account Summary report, however, with the use of hidden parameters, the PII (profit in inventory) features have been turned off.
+-- Parameters:
+-- ===========
+-- Transaction Date From: enter the starting transaction date (mandatory).
+-- Transaction Date To: enter the ending transaction date (mandatory).
+-- Show SLA Accounting: enter Yes to use the Subledger Accounting rules for your accounting information (mandatory). If you choose No the report uses the pre-Create Accounting entries.
+-- Show Projects: display the project number and name. Enter Yes or No, use to limit the report size (mandatory).
+-- Show Subinventories: display the subinventory code and description. Enter Yes or No, use to limit the report size (mandatory).
+-- Show WIP: display the WIP job or flow schedule information (WIP class, class type, WIP job, description, assembly number and assembly description). Enter Yes or No, use to limit the report size (mandatory).
+-- Category Set 1: any item category you wish, typically the Cost or Product Line category set (optional).
+-- Category Set 2: any item category you wish, typically the Inventory category set (optional).
+-- Item Number: enter the specific item number(s) you wish to report (optional).
+-- Organization Code: enter the specific inventory organization(s) you wish to report (optional).
+-- Operating Unit: enter the specific operating unit(s) you wish to report (optional).
+-- Ledger: enter the specific ledger(s) you wish to report (optional).
+-- / +=============================================================================+
+-- -- | Copyright 2009- 2024 Douglas Volz Consulting, Inc.
+-- -- | All rights reserved.
+-- -- | Permission to use this code is granted provided the original author is
+-- -- | acknowledged. No warranties, express or otherwise is included in this permission.
+-- -- +=============================================================================+
+-- -- |
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== ============== =========================================
+-- -- | 1.0 06 Nov 2009 Douglas Volz Initial Coding
+-- -- | 1.27 07 Oct 2022 Douglas Volz Correction for period name joins for interorg transactions.
+-- -- | 1.28 16 Oct 2022 Douglas Volz Correction for quantity calculations and PII logic.
+-- -- | 1.30 13 Jun 2024 Douglas Volz Removed tabs, reinstalled parameters, including org access restrictions.
+-- -- +=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-material-account-summary/
 -- Library Link: https://www.enginatics.com/reports/cac-material-account-summary/
 -- Run Report: https://demo.enginatics.com/
 

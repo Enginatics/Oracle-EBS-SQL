@@ -1,77 +1,58 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: MRP Item Forecast Upload
 -- Description: MRP Item Forecast Upload
-================================
-- Create New Item Forecast Entries.
-- Update Existing Item Forecast Entries.
-- Delete Existing Item Forecast Entries (Delete by setting the Forecast Quantity = 0).
-
-Prerequisites/Restrictions
-==========================
-
-- Forecast Designators must be defined.
-- Item Forecasts can only be uploaded to a Forecast, not a Forecast Set.
-
-Upload Modes
-============
-
-Create
-------
-Opens an empty spreadsheet where the user can enter new Forecast Entries against any accessible Forecast. 
-
-Use the Organization Code, Forecast Set, Forecast Name parameters to restrict the Organizations, Forecast Sets, and Forecasts LOVs in the spreadsheet.
-
-Create and Update
------------------
-Create new Forecast Entries and/or Modify Existing Forecast Entries.
-
-Allows the user to 
-- download existing Forecast Entries for the Forecasts meeting the entered selection criteria.
-- modify (add/update/delete) the Forecast Entries within the downloaded Forecasts.
-- create new Forecast Entries in any accessible Forecast.
-
-This mode allows the creation of Forecast Entries against Forecasts not included in the download.
-This mode can be used for downloading Forecast Entries from an existing Forecast and copying them to a different Forecast.
-
-Update
-------
-Modify (Add/Update/Delete) Forecast Entries against the downloaded Forecasts only.
-
-Allows the user to 
-- download existing Forecast Entries for the Forecasts meeting the entered selection criteria.
-- modify (add/update/delete) the Forecast Entries within the downloaded Forecasts only.
-
-This mode does not allow the creation of Forecast Entries against Forecasts not included in the download.
-
-Parameters that control the upload behaviour: 
-======================================
-
-Delete Existing Forecast
------------------------
-Select ‘DELETE all existing forecast entries and replace’ if this upload will replace all existing entries in the forecast. In this case all existing forecast entries are deleted before the new forecast entries are loaded.
-Select ‘KEEP existing forecast entries and update’ if this upload is creating new entries to add to the forecast and/or updating/deleting specific forecast entries. In this case the existing forecast entries are retained.
-The option to delete the existing forecast is only available when the upload is run in the Create upload mode.
-
-Default Bucket Type
----------------------------
-This is the default bucket type used for the forecast entries if not specified in the upload spreadsheet. It will default from the selected forecast name, selected forecast set or will default to Days if a Forecast Set or Forecast Name is not specified.
-This can be overridden in the Upload spreadsheet for individual forecast entries.
-
-Default Workday Control
----------------------------------
-This parameter determines the default behaviour for handling a non-workday forecast date or forecast end date. 
-The options are Reject the forecast entry, shift the date backwards to the previous working bucket date, or shift the date forward to the next working bucket date.   
-This can be overridden in the Upload spreadsheet for individual forecast entries.
-
-
-
-
--- Excel Examle Output: https://www.enginatics.com/example/mrp-item-forecast-upload/
+-- ================================
+-- - Create New Item Forecast Entries.
+-- - Update Existing Item Forecast Entries.
+-- - Delete Existing Item Forecast Entries (Delete by setting the Forecast Quantity = 0).
+-- Prerequisites/Restrictions
+-- ==========================
+-- - Forecast Designators must be defined.
+-- - Item Forecasts can only be uploaded to a Forecast, not a Forecast Set.
+-- Upload Modes
+-- ============
+-- Create
+-- ------
+-- Opens an empty spreadsheet where the user can enter new Forecast Entries against any accessible Forecast.
+-- Use the Organization Code, Forecast Set, Forecast Name parameters to restrict the Organizations, Forecast Sets, and Forecasts LOVs in the spreadsheet.
+-- Create and Update
+-- -----------------
+-- Create new Forecast Entries and/or Modify Existing Forecast Entries.
+-- Allows the user to
+-- - download existing Forecast Entries for the Forecasts meeting the entered selection criteria.
+-- - modify (add/update/delete) the Forecast Entries within the downloaded Forecasts.
+-- - create new Forecast Entries in any accessible Forecast.
+-- This mode allows the creation of Forecast Entries against Forecasts not included in the download.
+-- This mode can be used for downloading Forecast Entries from an existing Forecast and copying them to a different Forecast.
+-- Update
+-- ------
+-- Modify (Add/Update/Delete) Forecast Entries against the downloaded Forecasts only.
+-- Allows the user to
+-- - download existing Forecast Entries for the Forecasts meeting the entered selection criteria.
+-- - modify (add/update/delete) the Forecast Entries within the downloaded Forecasts only.
+-- This mode does not allow the creation of Forecast Entries against Forecasts not included in the download.
+-- Parameters that control the upload behaviour:
+-- ======================================
+-- Delete Existing Forecast
+-- -----------------------
+-- Select ‘DELETE all existing forecast entries and replace’ if this upload will replace all existing entries in the forecast. In this case all existing forecast entries are deleted before the new forecast entries are loaded.
+-- Select ‘KEEP existing forecast entries and update’ if this upload is creating new entries to add to the forecast and/or updating/deleting specific forecast entries. In this case the existing forecast entries are retained.
+-- The option to delete the existing forecast is only available when the upload is run in the Create upload mode.
+-- Default Bucket Type
+-- ---------------------------
+-- This is the default bucket type used for the forecast entries if not specified in the upload spreadsheet. It will default from the selected forecast name, selected forecast set or will default to Days if a Forecast Set or Forecast Name is not specified.
+-- This can be overridden in the Upload spreadsheet for individual forecast entries.
+-- Default Workday Control
+-- ---------------------------------
+-- This parameter determines the default behaviour for handling a non-workday forecast date or forecast end date.
+-- The options are Reject the forecast entry, shift the date backwards to the previous working bucket date, or shift the date forward to the next working bucket date.
+-- This can be overridden in the Upload spreadsheet for individual forecast entries.
+-- Excel Example Output: https://www.enginatics.com/example/mrp-item-forecast-upload/
 -- Library Link: https://www.enginatics.com/reports/mrp-item-forecast-upload/
 -- Run Report: https://demo.enginatics.com/
 

@@ -1,36 +1,32 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: IEX Collection Note Upload
--- Description: Creates and updates Collection Notes in Oracle Collections (IEX)  - the same notes shown in the Collections work area.
-
-Each note is attached at a single Note Level: Customer (party), Account, Bill To, or Collections Transaction.
-
-The Note column is limited to 2,000 characters. The upload will reject the row if the note exceeds this.
-The Note Detail column is limited to 4,000 characters. Note details exceeding this will be truncated.
-
-Party Level Notes:
-Pary Name is required
-Party Number is required only when the Party Name is not unique.
-
-Account Level Notes:
-Party Name and Account Number are required.
-
-Bill To Level Notes:
-Party Name, Account Number and Bill To Location are required .
-Operating Unit is optional unless the same Bill To Location (code) is used across accessible Operating Units.
-Bill to Address is informational only.
-
-Transaction Level Notes:
-Party Name, Account Number, Transaction Number are required.
-Bill To Site and Operating Unit are only required if the same transaction number exists across different accessible Bill To Sites/Operating Units.
-Installment is optional unless the Transaction has muliple Installments, in which case it must be specified.
-
-Only the Note Type, Note Status and descriptive flexfield attributes can be changed on an existing note; the note text and its target are read only. Download notes in Create, Update mode to reclassify them.
--- Excel Examle Output: https://www.enginatics.com/example/iex-collection-note-upload/
+-- Description: Creates and updates Collection Notes in Oracle Collections (IEX) - the same notes shown in the Collections work area.
+-- Each note is attached at a single Note Level: Customer (party), Account, Bill To, or Collections Transaction.
+-- The Note column is limited to 2,000 characters. The upload will reject the row if the note exceeds this.
+-- The Note Detail column is limited to 4,000 characters. Note details exceeding this will be truncated.
+-- Party Level Notes:
+-- Pary Name is required
+-- Party Number is required only when the Party Name is not unique.
+-- Account Level Notes:
+-- Party Name and Account Number are required.
+-- Bill To Level Notes:
+-- Party Name, Account Number and Bill To Location are required .
+-- Operating Unit is optional unless the same Bill To Location (code) is used across accessible Operating Units.
+-- Bill to Address is informational only.
+-- Transaction Level Notes:
+-- Party Name, Account Number, Transaction Number are required.
+-- Bill To Site and Operating Unit are only required if the same transaction number exists across different accessible Bill To Sites/Operating Units.
+-- Installment is optional unless the Transaction has muliple Installments, in which case it must be specified.
+-- Unpaid Reason applies to Transaction level notes only. Oracle Collections holds it on the transaction's delinquency rather than on the note, so it applies to every note on that transaction.
+-- Delinquency Status shows whether the transaction is already delinquent. When it is blank, set Create Delinquency to Yes to create a delinquency with status Current, as the Collections form asks.
+-- Unpaid Reason and Create Delinquency can only be set when the note is created.
+-- Only the Note Type, Note Status and descriptive flexfield attributes can be changed on an existing note; the note text and its target are read only. Download notes in Create, Update mode to reclassify them.
+-- Excel Example Output: https://www.enginatics.com/example/iex-collection-note-upload/
 -- Library Link: https://www.enginatics.com/reports/iex-collection-note-upload/
 -- Run Report: https://demo.enginatics.com/
 
@@ -49,6 +45,9 @@ hz_format_pub.format_address(hps.location_id,null,null,', ') bill_to_address,
 rcta.trx_number transaction_number,
 to_char(aps.terms_sequence_number) installment,
 jov.name note_level,
+xxen_util.meaning(ida.status,'IEX_DELINQUENCY_STATUS',695) delinquency_status,
+to_char(null) create_delinquency,
+xxen_util.meaning(ida.unpaid_reason_code,'IEX_UNPAID_REASON',695) unpaid_reason,
 x.entered_date,
 xxen_util.meaning(x.note_type,'JTF_NOTE_TYPE',0) note_type,
 xxen_util.meaning(x.note_status,'JTF_NOTE_STATUS',0) note_status,
@@ -135,7 +134,8 @@ hz_party_sites hps,
 ar_payment_schedules_all aps,
 ra_customer_trx_all rcta,
 hr_all_organization_units_vl haouv,
-jtf_objects_vl jov
+jtf_objects_vl jov,
+iex_delinquencies_all ida
 where
 hp.party_id(+)=x.party_id and
 hca.cust_account_id(+)=x.cust_account_id and
@@ -147,5 +147,6 @@ rcta.customer_trx_id(+)=aps.customer_trx_id and
 haouv.organization_id(+)=x.org_id and
 jov.object_code(+)=x.source_object_code and
 jov.application_id(+)=decode(x.source_object_code,'PARTY',690,695) and
+ida.payment_schedule_id(+)=x.payment_schedule_id and
 (x.org_id is null or x.org_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)) and
 1=1

@@ -1,12 +1,13 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PO Purchasing Document Upload
 -- Description: Upload to create and update purchase documents
--- Excel Examle Output: https://www.enginatics.com/example/po-purchasing-document-upload/
+-- The buyer of an existing standard purchase order can be changed. An approved order then requires reapproval, which the upload submits with the new buyer as preparer.
+-- Excel Example Output: https://www.enginatics.com/example/po-purchasing-document-upload/
 -- Library Link: https://www.enginatics.com/reports/po-purchasing-document-upload/
 -- Run Report: https://demo.enginatics.com/
 
@@ -251,11 +252,11 @@ case when pda.deliver_to_location_id is not null then (select hla.location_code 
 case when pda.wip_entity_id is not null then (select we.wip_entity_name from wip_entities we where we.wip_entity_id=pda.wip_entity_id) end wip_job,
 pda.wip_operation_seq_num wip_operation_seq,
 pda.wip_resource_seq_num wip_resource_seq,
-case when pda.project_id is not null then (select ppev.project_number from pa_projects_expend_v ppev where ppev.project_id=pda.project_id) end project_number,
+case when pda.project_id is not null then (select ppa.segment1 from pa_projects_all ppa where pda.project_id=ppa.project_id) end project_number,
 case when pda.task_id is not null then (select ptaev.task_number from pa_tasks_all_expend_v ptaev where ptaev.task_id= pda.task_id and ptaev.expenditure_org_id=pda.org_id) end task_number,
 pda.expenditure_type,
 pda.expenditure_item_date expenditure_date,
-case when pda.expenditure_organization_id is not null then  (select poev.name from pa_organizations_expend_v poev where poev.organization_id= pda.expenditure_organization_id) end expenditure_org,
+case when pda.expenditure_organization_id is not null then  (select haouv_exp.name from hr_all_organization_units_vl haouv_exp where pda.expenditure_organization_id=haouv_exp.organization_id) end expenditure_org,
 xxen_util.display_flexfield_context(201,'PO_DISTRIBUTIONS',pda.attribute_category) distribution_dff_context,
 xxen_util.display_flexfield_value(201,'PO_DISTRIBUTIONS',pda.attribute_category,'ATTRIBUTE1',pda.rowid,pda.attribute1) distribution_attribute1,
 xxen_util.display_flexfield_value(201,'PO_DISTRIBUTIONS',pda.attribute_category,'ATTRIBUTE2',pda.rowid,pda.attribute2) distribution_attribute2,

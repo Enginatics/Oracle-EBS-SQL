@@ -1,14 +1,20 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'PA Revenue, Cost, Budgets by Work Breakdown Structure | Oracle EBS SQL Report'
 description: 'This Blitz report implements the standard Oracle report: MGT: Revenue, Cost, Budgets by Work Breakdown Structure (XML) The ''Report Level'' parameter…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Revenue,, Cost,, Budgets, Work, pa_proj_info_view, pa_projects, pa_project_types'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Projects, Enginatics, R12 only, Revenue,, Cost,, Budgets, Work, pa_proj_info_view, pa_projects, pa_project_types'
 permalink: /PA%20Revenue-%20Cost-%20Budgets%20by%20Work%20Breakdown%20Structure/
+report_name: 'PA Revenue, Cost, Budgets by Work Breakdown Structure'
+report_web_name: pa-revenue-cost-budgets-by-work-breakdown-structure
+module: 'Projects'
+module_url: /modules/projects/
 ---
 
 # PA Revenue, Cost, Budgets by Work Breakdown Structure – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/pa-revenue-cost-budgets-by-work-breakdown-structure/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/pa-revenue-cost-budgets-by-work-breakdown-structure/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-revenue-cost-budgets-by-work-breakdown-structure) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-revenue-cost-budgets-by-work-breakdown-structure).
+**Oracle EBS module:** [Projects](/modules/projects/ "Oracle EBS Projects reports") · [all Projects reports](/modules/projects/)  
 
 ## Overview
 This Blitz report implements the standard Oracle report: MGT: Revenue, Cost, Budgets by Work Breakdown Structure (XML)
@@ -26,27 +32,31 @@ Source: MGT: Revenue, Cost, Budgets by Work Breakdown Structure (XML)
 Short Name: PAXBUBSS_XML
 DB package: PA_PAXBUBSS_XMLP_PKG
 
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-revenue-cost-budgets-by-work-breakdown-structure) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
+
 ## Report Parameters
 Operating Unit, Project Organization, Project Manager, Project Number, Project Name, Project Type, Top Task, Report Level, Explode Subtasks, Cost Budget Type, Revenue Budget Type
 
 ## Oracle EBS Tables Used
-[pa_proj_info_view](https://www.enginatics.com/library/?pg=1&find=pa_proj_info_view), [pa_projects](https://www.enginatics.com/library/?pg=1&find=pa_projects), [pa_project_types](https://www.enginatics.com/library/?pg=1&find=pa_project_types), [pa_proj_invoice_summary_view](https://www.enginatics.com/library/?pg=1&find=pa_proj_invoice_summary_view), [hr_all_organization_units_vl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_vl), [mo_glob_org_access_tmp](https://www.enginatics.com/library/?pg=1&find=mo_glob_org_access_tmp), [dual](https://www.enginatics.com/library/?pg=1&find=dual), [pa_project_status_controls](https://www.enginatics.com/library/?pg=1&find=pa_project_status_controls), [pa_tasks](https://www.enginatics.com/library/?pg=1&find=pa_tasks), [per_people_x](https://www.enginatics.com/library/?pg=1&find=per_people_x), [hr_all_organization_units_tl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_tl), [pa_project_accum_headers](https://www.enginatics.com/library/?pg=1&find=pa_project_accum_headers), [pa_project_accum_actuals](https://www.enginatics.com/library/?pg=1&find=pa_project_accum_actuals), [pa_project_accum_commitments](https://www.enginatics.com/library/?pg=1&find=pa_project_accum_commitments), [pa_project_accum_budgets](https://www.enginatics.com/library/?pg=1&find=pa_project_accum_budgets), [pa_budget_types](https://www.enginatics.com/library/?pg=1&find=pa_budget_types), [projects](https://www.enginatics.com/library/?pg=1&find=projects), [tasks](https://www.enginatics.com/library/?pg=1&find=tasks), [actuals](https://www.enginatics.com/library/?pg=1&find=actuals), [commitments](https://www.enginatics.com/library/?pg=1&find=commitments), [budget_costs](https://www.enginatics.com/library/?pg=1&find=budget_costs), [budget_revenues](https://www.enginatics.com/library/?pg=1&find=budget_revenues)
+[pa_proj_info_view](https://www.enginatics.com/library/?pg=1&find=pa_proj_info_view&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-revenue-cost-budgets-by-work-breakdown-structure), [pa_projects](https://www.enginatics.com/library/?pg=1&find=pa_projects&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-revenue-cost-budgets-by-work-breakdown-structure), [pa_project_types](https://www.enginatics.com/library/?pg=1&find=pa_project_types&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-revenue-cost-budgets-by-work-breakdown-structure), [pa_proj_invoice_summary_view](https://www.enginatics.com/library/?pg=1&find=pa_proj_invoice_summary_view&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-revenue-cost-budgets-by-work-breakdown-structure), [hr_all_organization_units_vl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-revenue-cost-budgets-by-work-breakdown-structure), [mo_glob_org_access_tmp](https://www.enginatics.com/library/?pg=1&find=mo_glob_org_access_tmp&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-revenue-cost-budgets-by-work-breakdown-structure), [dual](https://www.enginatics.com/library/?pg=1&find=dual&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-revenue-cost-budgets-by-work-breakdown-structure), [pa_project_status_controls](https://www.enginatics.com/library/?pg=1&find=pa_project_status_controls&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-revenue-cost-budgets-by-work-breakdown-structure), [pa_tasks](https://www.enginatics.com/library/?pg=1&find=pa_tasks&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-revenue-cost-budgets-by-work-breakdown-structure), [per_people_x](https://www.enginatics.com/library/?pg=1&find=per_people_x&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-revenue-cost-budgets-by-work-breakdown-structure), [hr_all_organization_units_tl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_tl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-revenue-cost-budgets-by-work-breakdown-structure), [pa_project_accum_headers](https://www.enginatics.com/library/?pg=1&find=pa_project_accum_headers&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-revenue-cost-budgets-by-work-breakdown-structure), [pa_project_accum_actuals](https://www.enginatics.com/library/?pg=1&find=pa_project_accum_actuals&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-revenue-cost-budgets-by-work-breakdown-structure), [pa_project_accum_commitments](https://www.enginatics.com/library/?pg=1&find=pa_project_accum_commitments&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-revenue-cost-budgets-by-work-breakdown-structure), [pa_project_accum_budgets](https://www.enginatics.com/library/?pg=1&find=pa_project_accum_budgets&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-revenue-cost-budgets-by-work-breakdown-structure), [pa_budget_types](https://www.enginatics.com/library/?pg=1&find=pa_budget_types&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-revenue-cost-budgets-by-work-breakdown-structure)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-revenue-cost-budgets-by-work-breakdown-structure), [R12 only](https://www.enginatics.com/library/?pg=1&category%5B%5D=R12%20only&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-revenue-cost-budgets-by-work-breakdown-structure)
 
-
+## Related Reports
+[PA Revenue, Cost, Budgets by Resources](/PA%20Revenue-%20Cost-%20Budgets%20by%20Resources/ "PA Revenue, Cost, Budgets by Resources Oracle EBS SQL Report"), [CAC Interface Error Summary](/CAC%20Interface%20Error%20Summary/ "CAC Interface Error Summary Oracle EBS SQL Report"), [CAC Receiving Value (Period-End)](/CAC%20Receiving%20Value%20%28Period-End%29/ "CAC Receiving Value (Period-End) Oracle EBS SQL Report"), [CAC ICP PII WIP Material Usage Variance](/CAC%20ICP%20PII%20WIP%20Material%20Usage%20Variance/ "CAC ICP PII WIP Material Usage Variance Oracle EBS SQL Report"), [PA Project Billing Status](/PA%20Project%20Billing%20Status/ "PA Project Billing Status Oracle EBS SQL Report"), [CAC WIP Resource Efficiency](/CAC%20WIP%20Resource%20Efficiency/ "CAC WIP Resource Efficiency Oracle EBS SQL Report"), [CAC Receiving Expense Value (Period-End)](/CAC%20Receiving%20Expense%20Value%20%28Period-End%29/ "CAC Receiving Expense Value (Period-End) Oracle EBS SQL Report"), [WIP Account Distribution](/WIP%20Account%20Distribution/ "WIP Account Distribution Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/PA%20Revenue-%20Cost-%20Budgets%20by%20Work%20Breakdown%20Structure/PA%20Revenue-%20Cost-%20Budgets%20by%20Work%20Breakdown%20Structure.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-revenue-cost-budgets-by-work-breakdown-structure) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [](https://www.enginatics.com/example/pa-revenue-cost-budgets-by-work-breakdown-structure/) |
-| Blitz Report™ XML Import | [PA_Revenue_Cost_Budgets_by_Work_Breakdown_Structure.xml](https://www.enginatics.com/xml/pa-revenue-cost-budgets-by-work-breakdown-structure/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/pa-revenue-cost-budgets-by-work-breakdown-structure/](https://www.enginatics.com/reports/pa-revenue-cost-budgets-by-work-breakdown-structure/) |
+| Excel Example Output | [Example](https://www.enginatics.com/example/pa-revenue-cost-budgets-by-work-breakdown-structure/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-revenue-cost-budgets-by-work-breakdown-structure) |
+| Blitz Report™ XML Import | [PA_Revenue_Cost_Budgets_by_Work_Breakdown_Structure.xml](https://www.enginatics.com/xml/pa-revenue-cost-budgets-by-work-breakdown-structure/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-revenue-cost-budgets-by-work-breakdown-structure) |
+| SQL Source | [PA Revenue- Cost- Budgets by Work Breakdown Structure.sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/PA%20Revenue-%20Cost-%20Budgets%20by%20Work%20Breakdown%20Structure/PA%20Revenue-%20Cost-%20Budgets%20by%20Work%20Breakdown%20Structure.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/pa-revenue-cost-budgets-by-work-breakdown-structure/](https://www.enginatics.com/reports/pa-revenue-cost-budgets-by-work-breakdown-structure/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-revenue-cost-budgets-by-work-breakdown-structure) |
 
 ## Case Study & Technical Analysis: PA Revenue, Cost, Budgets by Work Breakdown Structure Report
 
@@ -112,18 +122,17 @@ This report is designed for efficient processing of complex, hierarchical financ
 **3. What is the difference in data between this report and the "Revenue, Cost, Budgets by Resources" report?**
    The primary difference is the grouping of the data. This report (`by Work Breakdown Structure`) aggregates and presents financial information according to the project's task hierarchy (WBS). The `by Resources` report, in contrast, aggregates and presents the same financial information by the specific resources used (e.g., specific labor categories, types of materials, or equipment), regardless of where they fall in the WBS.
 
-
 ---
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-revenue-cost-budgets-by-work-breakdown-structure)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-revenue-cost-budgets-by-work-breakdown-structure)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-revenue-cost-budgets-by-work-breakdown-structure)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-revenue-cost-budgets-by-work-breakdown-structure)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-revenue-cost-budgets-by-work-breakdown-structure)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-revenue-cost-budgets-by-work-breakdown-structure)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-revenue-cost-budgets-by-work-breakdown-structure)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

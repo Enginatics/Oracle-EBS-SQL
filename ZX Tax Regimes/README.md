@@ -1,40 +1,49 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'ZX Tax Regimes | Oracle EBS SQL Report'
-description: 'E-Business Tax tax regime and party subscription setup – Oracle E-Business Suite SQL report'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Tax, Regimes, gl_daily_conversion_types, zx_party_tax_profile, hz_parties'
+description: 'E-Business Tax tax regime and party subscription setup – Oracle EBS E-Business Tax SQL report: free SQL, parameters and tables used.'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, E-Business Tax, Enginatics, R12 only, Tax, Regimes, gl_daily_conversion_types, zx_party_tax_profile, hz_parties'
 permalink: /ZX%20Tax%20Regimes/
+report_name: 'ZX Tax Regimes'
+report_web_name: zx-tax-regimes
+module: 'E-Business Tax'
+module_url: /modules/e-business-tax/
 ---
 
 # ZX Tax Regimes – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/zx-tax-regimes/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/zx-tax-regimes/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-tax-regimes) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-tax-regimes).
+**Oracle EBS module:** [E-Business Tax](/modules/e-business-tax/ "Oracle EBS E-Business Tax reports") · [all E-Business Tax reports](/modules/e-business-tax/)  
 
 ## Overview
 E-Business Tax tax regime and party subscription setup
+
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-tax-regimes) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 
 ## Report Parameters
 Tax Regime Code, Show Regime Subscriptions, Country
 
 ## Oracle EBS Tables Used
-[gl_daily_conversion_types](https://www.enginatics.com/library/?pg=1&find=gl_daily_conversion_types), [zx_party_tax_profile](https://www.enginatics.com/library/?pg=1&find=zx_party_tax_profile), [hz_parties](https://www.enginatics.com/library/?pg=1&find=hz_parties), [zx_regimes_vl](https://www.enginatics.com/library/?pg=1&find=zx_regimes_vl), [fnd_territories_vl](https://www.enginatics.com/library/?pg=1&find=fnd_territories_vl), [zx_regimes_usages](https://www.enginatics.com/library/?pg=1&find=zx_regimes_usages), [zx_first_party_orgs_all_v](https://www.enginatics.com/library/?pg=1&find=zx_first_party_orgs_all_v), [zx_subscription_options](https://www.enginatics.com/library/?pg=1&find=zx_subscription_options)
+[gl_daily_conversion_types](https://www.enginatics.com/library/?pg=1&find=gl_daily_conversion_types&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-tax-regimes), [zx_party_tax_profile](https://www.enginatics.com/library/?pg=1&find=zx_party_tax_profile&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-tax-regimes), [hz_parties](https://www.enginatics.com/library/?pg=1&find=hz_parties&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-tax-regimes), [zx_regimes_vl](https://www.enginatics.com/library/?pg=1&find=zx_regimes_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-tax-regimes), [fnd_territories_vl](https://www.enginatics.com/library/?pg=1&find=fnd_territories_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-tax-regimes), [zx_regimes_usages](https://www.enginatics.com/library/?pg=1&find=zx_regimes_usages&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-tax-regimes), [zx_first_party_orgs_all_v](https://www.enginatics.com/library/?pg=1&find=zx_first_party_orgs_all_v&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-tax-regimes), [zx_subscription_options](https://www.enginatics.com/library/?pg=1&find=zx_subscription_options&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-tax-regimes)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-tax-regimes), [R12 only](https://www.enginatics.com/library/?pg=1&category%5B%5D=R12%20only&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-tax-regimes)
 
 ## Related Reports
 [ZX Tax Accounts](/ZX%20Tax%20Accounts/ "ZX Tax Accounts Oracle EBS SQL Report"), [AP Supplier Upload](/AP%20Supplier%20Upload/ "AP Supplier Upload Oracle EBS SQL Report"), [AR Transaction Upload](/AR%20Transaction%20Upload/ "AR Transaction Upload Oracle EBS SQL Report"), [AR Customer Upload](/AR%20Customer%20Upload/ "AR Customer Upload Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/ZX%20Tax%20Regimes/ZX%20Tax%20Regimes.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-tax-regimes) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [ZX Tax Regimes 27-May-2021 194742.xlsx](https://www.enginatics.com/example/zx-tax-regimes/) |
-| Blitz Report™ XML Import | [ZX_Tax_Regimes.xml](https://www.enginatics.com/xml/zx-tax-regimes/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/zx-tax-regimes/](https://www.enginatics.com/reports/zx-tax-regimes/) |
+| Excel Example Output | [ZX Tax Regimes 27-May-2021 194742.xlsx](https://www.enginatics.com/example/zx-tax-regimes/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-tax-regimes) |
+| Blitz Report™ XML Import | [ZX_Tax_Regimes.xml](https://www.enginatics.com/xml/zx-tax-regimes/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-tax-regimes) |
+| SQL Source | [ZX Tax Regimes.sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/ZX%20Tax%20Regimes/ZX%20Tax%20Regimes.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/zx-tax-regimes/](https://www.enginatics.com/reports/zx-tax-regimes/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-tax-regimes) |
 
 ## Case Study & Technical Analysis: ZX Tax Regimes Report
 
@@ -100,18 +109,17 @@ As a configuration report integrating data across multiple modules, it is optimi
 **3. Can this report help identify legal entities that are *not* subscribed to a required tax regime?**
    Yes. By using the `Show Regime Subscriptions` parameter and reviewing the output for a specific `Tax Regime Code`, tax administrators can identify if any expected legal entities or operating units are missing from the subscription list. This flags potential compliance gaps where an entity might be conducting business in a jurisdiction but is not properly configured for its tax obligations.
 
-
 ---
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-tax-regimes)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-tax-regimes)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-tax-regimes)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-tax-regimes)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-tax-regimes)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-tax-regimes)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-tax-regimes)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

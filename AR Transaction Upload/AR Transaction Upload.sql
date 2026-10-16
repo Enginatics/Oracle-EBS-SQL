@@ -1,50 +1,39 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: AR Transaction Upload
 -- Description: This upload can be used to create Invoices, Debit Memos and Credit Memos. Credit memos can be created On Account, or created and applied directly to an existing transaction (an applied credit memo).
-
-The 'Upload Trx Identifier' column is used to uniquely identify each individual transaction (invoice, credit memo, debit memo) to be uploaded.
-If the selected batch source uses manual transaction numbering, the Upload Trx Identifier will be copied to the Transaction Number column (the Oracle Transaction Number), but this can be overridden in the upload excel.
-If the selected transaction type uses a Manual Document Sequence, the Upload Trx Identifier will be used as the Document Sequence Value in Oracle.
-
-The upload supports the entry of
-- Standard Invoice Lines
-- Manual Tax Lines (if permitted)
-- Header Level Freight Lines (if permitted) – identified by leaving the Link to Line Number null
-- Line Level Freight Lines (if permitted) – identified by populating the Link to Line Number column
-
-For Tax Lines, and Line level Freight Lines, use the Link to Line Number to identify the Invoice Line to which the Tax Line or Freight Line should be linked. Tax Lines must be linked to a standard invoice line.
-
-Note. Tax Lines and Line level Freight Lines must occur after the row containing the invoice line to which they will be linked, although it does not need to be immediately following.
-
-- A Quantity and Unit Price must be specified for standard invoice lines. The upload will calculate the line amount.
-- You can specify a quantity and unit price for a freight line in which case the upload will calculate the line amount, or you enter the line amount directly. Only the amount is uploaded to Oracle.
-- For manual Tax Lines, you can enter the line amount directly. If left blank, the upload will calculate the amount based on the selected Tax Rate and the line amount from the linked standard invoice.
-
-For Manual Tax Lines you must specify the Tax Regime, Tax, Tax Jurisdiction, Tax Status, Tax Rate Name, and Tax Rate columns.
-
-Applied Credit Memos
-To create a credit memo and apply it to an existing transaction in one step, populate the Credit Against Transaction column with the transaction to be credited.  A Credit Memo Reason is required for an applied credit memo.
-
-The Transaction Type and Transaction Date are derived automatically from the credited invoice and are informational on this flow. The Transaction Type list shows only the credit memo type linked to the credited invoice's transaction type, and the Transaction Date defaults to the later of today and the credited invoice's date.
-
-You can credit the invoice at header level or at line level.
-
-Header level – leave the Credit Against Line column blank.
-- Leave Credit Line Amount, Credit Tax Amount and Credit Freight Amount blank to credit the full outstanding balance of the invoice.
-- Or enter negative Credit Line, Credit Tax and/or Credit Freight Amounts to credit part of the invoice.
-
-Line level – populate the Credit Against Line column.
-- Enter one row per invoice line to be credited, identifying the line in the Credit Against Line column.
-- A negative Credit Line Amount is required for each credited line. It defaults to the full line amount; edit it for a partial line credit.
-- Credit Tax Amount and Credit Freight Amount are not used at line level. Credit tax and freight using a header level credit, or let the credit method spread the tax automatically.
-
-The report parameters Credit Method for Rules and Credit Method for Installments control how the credit is applied across accounting rule periods and payment schedules.
--- Excel Examle Output: https://www.enginatics.com/example/ar-transaction-upload/
+-- The 'Upload Trx Identifier' column is used to uniquely identify each individual transaction (invoice, credit memo, debit memo) to be uploaded.
+-- If the selected batch source uses manual transaction numbering, the Upload Trx Identifier will be copied to the Transaction Number column (the Oracle Transaction Number), but this can be overridden in the upload excel.
+-- If the selected transaction type uses a Manual Document Sequence, the Upload Trx Identifier will be used as the Document Sequence Value in Oracle.
+-- The upload supports the entry of
+-- - Standard Invoice Lines
+-- - Manual Tax Lines (if permitted)
+-- - Header Level Freight Lines (if permitted) – identified by leaving the Link to Line Number null
+-- - Line Level Freight Lines (if permitted) – identified by populating the Link to Line Number column
+-- For Tax Lines, and Line level Freight Lines, use the Link to Line Number to identify the Invoice Line to which the Tax Line or Freight Line should be linked. Tax Lines must be linked to a standard invoice line.
+-- Note. Tax Lines and Line level Freight Lines must occur after the row containing the invoice line to which they will be linked, although it does not need to be immediately following.
+-- - A Quantity and Unit Price must be specified for standard invoice lines. The upload will calculate the line amount.
+-- - You can specify a quantity and unit price for a freight line in which case the upload will calculate the line amount, or you enter the line amount directly. Only the amount is uploaded to Oracle.
+-- - For manual Tax Lines, you can enter the line amount directly. If left blank, the upload will calculate the amount based on the selected Tax Rate and the line amount from the linked standard invoice.
+-- For Manual Tax Lines you must specify the Tax Regime, Tax, Tax Jurisdiction, Tax Status, Tax Rate Name, and Tax Rate columns.
+-- Applied Credit Memos
+-- To create a credit memo and apply it to an existing transaction in one step, populate the Credit Against Transaction column with the transaction to be credited. A Credit Memo Reason is required for an applied credit memo.
+-- The Transaction Type and Transaction Date are derived automatically from the credited invoice and are informational on this flow. The Transaction Type list shows only the credit memo type linked to the credited invoice's transaction type, and the Transaction Date defaults to the later of today and the credited invoice's date.
+-- You can credit the invoice at header level or at line level.
+-- Header level – leave the Credit Against Line column blank.
+-- - Leave Credit Line Amount, Credit Tax Amount and Credit Freight Amount blank to credit the full outstanding balance of the invoice.
+-- - Or enter negative Credit Line, Credit Tax and/or Credit Freight Amounts to credit part of the invoice.
+-- Line level – populate the Credit Against Line column.
+-- - Enter one row per invoice line to be credited, identifying the line in the Credit Against Line column.
+-- - A negative Credit Line Amount is required for each credited line. It defaults to the full line amount; edit it for a partial line credit.
+-- - Credit Tax Amount and Credit Freight Amount are not used at line level. Credit tax and freight using a header level credit, or let the credit method spread the tax automatically.
+-- The report parameters Credit Method for Rules and Credit Method for Installments control how the credit is applied across accounting rule periods and payment schedules.
+-- On a line with an invoicing rule, enter one distribution row per accounting class - Revenue plus Unearned Revenue or Unbilled Receivable - each allocating the whole line.
+-- Excel Example Output: https://www.enginatics.com/example/ar-transaction-upload/
 -- Library Link: https://www.enginatics.com/reports/ar-transaction-upload/
 -- Run Report: https://demo.enginatics.com/
 
@@ -87,7 +76,7 @@ null credit_against_line,
 to_number(null) credit_line_amount,
 to_number(null) credit_tax_amount,
 to_number(null) credit_freight_amount,
-null credit_memo_reason,
+xxen_util.meaning(rcta.reason_code,'CREDIT_MEMO_REASON',222) credit_memo_reason,
 null applied_credit_batch_source,
 --
 rctta.name trx_type,
@@ -467,7 +456,7 @@ rcta.customer_trx_id=apsa.customer_trx_id and
 rcta.customer_trx_id=rctla.customer_trx_id and
 rctla.line_type in ('LINE','FREIGHT','TAX') and
 rctla.customer_trx_line_id=rctlgda.customer_trx_line_id and
-rctlgda.account_class in ('REV','FREIGHT','TAX') and
+rctlgda.account_class in ('REV','UNEARN','UNBILL','FREIGHT','TAX') and
 rctlgda.code_combination_id=gcck.code_combination_id and
 rctla.customer_trx_id = rctlsa.customer_trx_id and
 rctla.customer_trx_line_id = rctlsa.customer_trx_line_id and

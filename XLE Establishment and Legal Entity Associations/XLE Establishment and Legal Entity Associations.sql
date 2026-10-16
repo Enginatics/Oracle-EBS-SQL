@@ -1,19 +1,19 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: XLE Establishment and Legal Entity Associations
 -- Description: Master data report showing the legal entity associations to other business entities such as:
-- Legal Entities
-- Operating Units
-- Inventory Organizations
-- Inventory Locations
-- Bill To Locations
-- Ship To Locations
-- Balancing Segment Values
--- Excel Examle Output: https://www.enginatics.com/example/xle-establishment-and-legal-entity-associations/
+-- - Legal Entities
+-- - Operating Units
+-- - Inventory Organizations
+-- - Inventory Locations
+-- - Bill To Locations
+-- - Ship To Locations
+-- - Balancing Segment Values
+-- Excel Example Output: https://www.enginatics.com/example/xle-establishment-and-legal-entity-associations/
 -- Library Link: https://www.enginatics.com/reports/xle-establishment-and-legal-entity-associations/
 -- Run Report: https://demo.enginatics.com/
 

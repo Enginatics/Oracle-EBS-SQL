@@ -1,48 +1,47 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Item List Price vs. Item Cost
--- Description: Compare item master list price against any cost type (Cost Type 1) and also list the Standard Price (Market Price), Last PO Price, Converted Last PO Price and a secondary cost type (Cost Type 2).  All item costs and prices are in the primary UOM, using the To Currency Code.
-
--- | Program Name: xxx_item_target_cost_review_rept.sql
--- |
--- |  Parameters:
--- |  p_cost_type1             -- The first comparison cost type you wish to report
--- |  p_cost_type2             -- The second comparison cost type you wish to report
--- |  p_item_number            -- Enter the specific item number you wish to report
--- |  p_org_code               -- specific organization code, works with
--- |                              null or valid organization codes
--- |  p_operating_unit         -- Operating Unit you wish to report, leave blank for all
--- |                              operating units (optional) 
--- |  p_ledger                 -- general ledger you wish to report, leave blank for all
--- |                              ledgers (optional)
--- |  p_include_uncosted_items -- Yes/No flag to include or not include non-costed items
--- |  p_category_set1          -- The first item category set to report, typically the
--- |                              Cost or Product Line Category Set
--- |  p_category_set2          -- The second item category set to report, typically the
--- |                              Inventory Category Set
--- |
--- | Description:
--- | Report to show item costs in any cost type
--- | 
--- | Version Modified on Modified by Description
--- | ======= =========== ============== =========================================
--- |  1.0    29 Sep 2020 Douglas Volz   Initial Coding based on Item Cost Summary Report
--- |  1.1    22 Oct 2020 Douglas Volz   Added the Master Target Price
--- |  1.2    26 Oct 2020 Douglas Volz   Changed as List Price is always in a common, global
--- |                                    currency, translate to this "to_currency" currency
--- |  1.3    28 Oct 2020 Douglas Volz   Fixes for the last PO, need to exclude Cancelled
--- |                                    PO Lines.  
--- |  1.4    30 Oct 2020 Douglas Volz   Add To Currency Code as a visible parameter and
--- |                                    show all item costs in that currency
--- |  1.5    04 Dec 2020 Douglas Volz   Outer join fix for PO joins to item master and
--- |                                    currency exchange rates.
--- |  1.6    06 Dec 2020 Douglas Volz   Added Target Price Percent Difference column.
-+=============================================================================+*/
--- Excel Examle Output: https://www.enginatics.com/example/cac-item-list-price-vs-item-cost/
+-- Description: Compare item master list price against any cost type (Cost Type 1) and also list the Standard Price (Market Price), Last PO Price, Converted Last PO Price and a secondary cost type (Cost Type 2). All item costs and prices are in the primary UOM, using the To Currency Code.
+-- -- | Program Name: xxxitemtargetcostreviewrept.sql
+-- -- |
+-- -- | Parameters:
+-- -- | pcosttype1 -- The first comparison cost type you wish to report
+-- -- | pcosttype2 -- The second comparison cost type you wish to report
+-- -- | pitemnumber -- Enter the specific item number you wish to report
+-- -- | porgcode -- specific organization code, works with
+-- -- | null or valid organization codes
+-- -- | poperatingunit -- Operating Unit you wish to report, leave blank for all
+-- -- | operating units (optional)
+-- -- | pledger -- general ledger you wish to report, leave blank for all
+-- -- | ledgers (optional)
+-- -- | pincludeuncosteditems -- Yes/No flag to include or not include non-costed items
+-- -- | pcategoryset1 -- The first item category set to report, typically the
+-- -- | Cost or Product Line Category Set
+-- -- | pcategoryset2 -- The second item category set to report, typically the
+-- -- | Inventory Category Set
+-- -- |
+-- -- | Description:
+-- -- | Report to show item costs in any cost type
+-- -- |
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== ============== =========================================
+-- -- | 1.0 29 Sep 2020 Douglas Volz Initial Coding based on Item Cost Summary Report
+-- -- | 1.1 22 Oct 2020 Douglas Volz Added the Master Target Price
+-- -- | 1.2 26 Oct 2020 Douglas Volz Changed as List Price is always in a common, global
+-- -- | currency, translate to this "tocurrency" currency
+-- -- | 1.3 28 Oct 2020 Douglas Volz Fixes for the last PO, need to exclude Cancelled
+-- -- | PO Lines.
+-- -- | 1.4 30 Oct 2020 Douglas Volz Add To Currency Code as a visible parameter and
+-- -- | show all item costs in that currency
+-- -- | 1.5 04 Dec 2020 Douglas Volz Outer join fix for PO joins to item master and
+-- -- | currency exchange rates.
+-- -- | 1.6 06 Dec 2020 Douglas Volz Added Target Price Percent Difference column.
+-- +=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-item-list-price-vs-item-cost/
 -- Library Link: https://www.enginatics.com/reports/cac-item-list-price-vs-item-cost/
 -- Run Report: https://demo.enginatics.com/
 
@@ -83,7 +82,6 @@ select nvl(gl.short_name, gl.name) Ledger,
  case
    when round((nvl(msiv.list_price_per_unit,0) - nvl(cic1.unburdened_cost,0)),5) = 0 then 0
    when round((nvl(msiv.list_price_per_unit,0) - nvl(cic1.unburdened_cost,0)),5) = round(nvl(msiv.list_price_per_unit,0),5) then 100
-   when round((nvl(msiv.list_price_per_unit,0) - nvl(cic1.unburdened_cost,0)),5) = round(nvl(cic1.unburdened_cost,0),5) then -100
    else round((nvl(msiv.list_price_per_unit,0) - nvl(cic1.unburdened_cost,0)) / nvl(cic1.unburdened_cost,0) * 100,1)
  end Percent_Difference,
  -- End revision for version 1.6

@@ -1,15 +1,14 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: AP Invoice Payments 11g
 -- Description: 11g-compatible version of AP Invoice Payments.
-
-Supplier invoice payment details.
-There can be multiple payments per invoice and one document/check can be used to pay different payments and invoices. To allow reconciling payment with invoices and checks, invoice and check level amounts are shown on the last payment record only and are blank for multiple/duplicate records.
--- Excel Examle Output: https://www.enginatics.com/example/ap-invoice-payments-11g/
+-- Supplier invoice payment details.
+-- There can be multiple payments per invoice and one document/check can be used to pay different payments and invoices. To allow reconciling payment with invoices and checks, invoice and check level amounts are shown on the last payment record only and are blank for multiple/duplicate records.
+-- Excel Example Output: https://www.enginatics.com/example/ap-invoice-payments-11g/
 -- Library Link: https://www.enginatics.com/reports/ap-invoice-payments-11g/
 -- Run Report: https://demo.enginatics.com/
 

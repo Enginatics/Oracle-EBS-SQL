@@ -1,15 +1,15 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PN Generate Lease Details
 -- Description: Application: Property Manager
-Source: Generate Lease Details Report
-Short Name: PNGLDR_XML
-DB package: XXEN_PN
--- Excel Examle Output: https://www.enginatics.com/example/pn-generate-lease-details/
+-- Source: Generate Lease Details Report
+-- Short Name: PNGLDRXML
+-- DB package: XXENPN
+-- Excel Example Output: https://www.enginatics.com/example/pn-generate-lease-details/
 -- Library Link: https://www.enginatics.com/reports/pn-generate-lease-details/
 -- Run Report: https://demo.enginatics.com/
 

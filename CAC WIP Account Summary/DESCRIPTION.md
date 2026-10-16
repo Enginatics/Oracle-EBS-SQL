@@ -1,4 +1,3 @@
-
 # Case Study & Technical Analysis: CAC WIP Account Summary
 
 ## Executive Summary

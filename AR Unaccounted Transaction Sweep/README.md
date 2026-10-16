@@ -1,14 +1,20 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'AR Unaccounted Transaction Sweep | Oracle EBS SQL Report'
 description: 'Imported from BI Publisher Application: Receivables Source: Unaccounted Transaction Sweep Short Name: ARTRXSWP DB package: arunaccountedtrxsweep'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, BI Publisher, Enginatics, Unaccounted, Transaction, Sweep, ar_period_close_excps_gt, hz_cust_accounts, hz_parties'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Receivables, BI Publisher, Enginatics, R12 only, Unaccounted, Transaction, Sweep, ar_period_close_excps_gt, hz_cust_accounts, hz_parties'
 permalink: /AR%20Unaccounted%20Transaction%20Sweep/
+report_name: 'AR Unaccounted Transaction Sweep'
+report_web_name: ar-unaccounted-transaction-sweep
+module: 'Receivables'
+module_url: /modules/receivables/
 ---
 
 # AR Unaccounted Transaction Sweep – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/ar-unaccounted-transaction-sweep/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/ar-unaccounted-transaction-sweep/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-unaccounted-transaction-sweep) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-unaccounted-transaction-sweep).
+**Oracle EBS module:** [Receivables](/modules/receivables/ "Oracle EBS Receivables reports") · [all Receivables reports](/modules/receivables/)  
 
 ## Overview
 Imported from BI Publisher
@@ -17,28 +23,31 @@ Source: Unaccounted Transaction Sweep
 Short Name: ARTRXSWP
 DB package: ar_unaccounted_trx_sweep
 
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-unaccounted-transaction-sweep) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
+
 ## Report Parameters
 Reporting Level, Reporting Context, Period Name, Sweep Now, Sweep To Period Name, Debug Flag
 
 ## Oracle EBS Tables Used
-[ar_period_close_excps_gt](https://www.enginatics.com/library/?pg=1&find=ar_period_close_excps_gt), [hz_cust_accounts](https://www.enginatics.com/library/?pg=1&find=hz_cust_accounts), [hz_parties](https://www.enginatics.com/library/?pg=1&find=hz_parties), [ar_payment_schedules_all](https://www.enginatics.com/library/?pg=1&find=ar_payment_schedules_all), [hr_operating_units](https://www.enginatics.com/library/?pg=1&find=hr_operating_units), [xla_accounting_errors](https://www.enginatics.com/library/?pg=1&find=xla_accounting_errors), [ra_cust_trx_line_gl_dist_all](https://www.enginatics.com/library/?pg=1&find=ra_cust_trx_line_gl_dist_all), [gl_code_combinations_kfv](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations_kfv), [ar_distributions_all](https://www.enginatics.com/library/?pg=1&find=ar_distributions_all), [ar_adjustments_all](https://www.enginatics.com/library/?pg=1&find=ar_adjustments_all), [ra_customer_trx_all](https://www.enginatics.com/library/?pg=1&find=ra_customer_trx_all)
+[ar_period_close_excps_gt](https://www.enginatics.com/library/?pg=1&find=ar_period_close_excps_gt&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-unaccounted-transaction-sweep), [hz_cust_accounts](https://www.enginatics.com/library/?pg=1&find=hz_cust_accounts&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-unaccounted-transaction-sweep), [hz_parties](https://www.enginatics.com/library/?pg=1&find=hz_parties&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-unaccounted-transaction-sweep), [ar_payment_schedules_all](https://www.enginatics.com/library/?pg=1&find=ar_payment_schedules_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-unaccounted-transaction-sweep), [hr_operating_units](https://www.enginatics.com/library/?pg=1&find=hr_operating_units&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-unaccounted-transaction-sweep), [xla_accounting_errors](https://www.enginatics.com/library/?pg=1&find=xla_accounting_errors&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-unaccounted-transaction-sweep), [ra_cust_trx_line_gl_dist_all](https://www.enginatics.com/library/?pg=1&find=ra_cust_trx_line_gl_dist_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-unaccounted-transaction-sweep), [gl_code_combinations_kfv](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations_kfv&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-unaccounted-transaction-sweep), [ar_distributions_all](https://www.enginatics.com/library/?pg=1&find=ar_distributions_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-unaccounted-transaction-sweep), [ar_adjustments_all](https://www.enginatics.com/library/?pg=1&find=ar_adjustments_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-unaccounted-transaction-sweep), [ra_customer_trx_all](https://www.enginatics.com/library/?pg=1&find=ra_customer_trx_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-unaccounted-transaction-sweep)
 
 ## Report Categories
-[BI Publisher](https://www.enginatics.com/library/?pg=1&category[]=BI%20Publisher), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[BI Publisher](https://www.enginatics.com/library/?pg=1&category%5B%5D=BI%20Publisher&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-unaccounted-transaction-sweep), [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-unaccounted-transaction-sweep), [R12 only](https://www.enginatics.com/library/?pg=1&category%5B%5D=R12%20only&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-unaccounted-transaction-sweep)
 
 ## Related Reports
-[GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report"), [GL Account Analysis](/GL%20Account%20Analysis/ "GL Account Analysis Oracle EBS SQL Report"), [GL Account Analysis (Drilldown) (with inventory and WIP)](/GL%20Account%20Analysis%20%28Drilldown%29%20%28with%20inventory%20and%20WIP%29/ "GL Account Analysis (Drilldown) (with inventory and WIP) Oracle EBS SQL Report"), [AR Aging](/AR%20Aging/ "AR Aging Oracle EBS SQL Report")
+[GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report"), [GL Account Analysis](/GL%20Account%20Analysis/ "GL Account Analysis Oracle EBS SQL Report"), [GL Account Analysis (Drilldown) (with inventory and WIP)](/GL%20Account%20Analysis%20%28Drilldown%29%20%28with%20inventory%20and%20WIP%29/ "GL Account Analysis (Drilldown) (with inventory and WIP) Oracle EBS SQL Report"), [AR Open Items Revaluation](/AR%20Open%20Items%20Revaluation/ "AR Open Items Revaluation Oracle EBS SQL Report"), [AR Aging](/AR%20Aging/ "AR Aging Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/AR%20Unaccounted%20Transaction%20Sweep/AR%20Unaccounted%20Transaction%20Sweep.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-unaccounted-transaction-sweep) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [](https://www.enginatics.com/example/ar-unaccounted-transaction-sweep/) |
-| Blitz Report™ XML Import | [AR_Unaccounted_Transaction_Sweep.xml](https://www.enginatics.com/xml/ar-unaccounted-transaction-sweep/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/ar-unaccounted-transaction-sweep/](https://www.enginatics.com/reports/ar-unaccounted-transaction-sweep/) |
+| Excel Example Output | [Example](https://www.enginatics.com/example/ar-unaccounted-transaction-sweep/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-unaccounted-transaction-sweep) |
+| Blitz Report™ XML Import | [AR_Unaccounted_Transaction_Sweep.xml](https://www.enginatics.com/xml/ar-unaccounted-transaction-sweep/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-unaccounted-transaction-sweep) |
+| SQL Source | [AR Unaccounted Transaction Sweep.sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/AR%20Unaccounted%20Transaction%20Sweep/AR%20Unaccounted%20Transaction%20Sweep.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/ar-unaccounted-transaction-sweep/](https://www.enginatics.com/reports/ar-unaccounted-transaction-sweep/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-unaccounted-transaction-sweep) |
 
 ## AR Unaccounted Transaction Sweep - Case Study & Technical Analysis
 
@@ -98,18 +107,17 @@ A: Generally, no. If part of a transaction (e.g., the Revenue line) is already p
 **Q: What happens if I don't sweep?**
 A: You simply cannot close the AR period until the transactions are either fixed (and accounted) or deleted.
 
-
 ---
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-unaccounted-transaction-sweep)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-unaccounted-transaction-sweep)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-unaccounted-transaction-sweep)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-unaccounted-transaction-sweep)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-unaccounted-transaction-sweep)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-unaccounted-transaction-sweep)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-unaccounted-transaction-sweep)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

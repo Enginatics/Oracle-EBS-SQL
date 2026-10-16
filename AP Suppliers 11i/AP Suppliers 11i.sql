@@ -1,12 +1,14 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: AP Suppliers 11i
 -- Description: AP suppliers (po vendors) including supplier sites and contact information
--- Excel Examle Output: https://www.enginatics.com/example/ap-suppliers-11i/
+-- Duplicate Match restricts the output to suppliers sharing a match key with at least one other supplier and lists the shared keys. Names are compared in upper case without punctuation, spaces and legal form suffixes (Inc, Ltd, GmbH, SA and similar), the other keys without punctuation and spaces. Bank accounts are shown masked.
+-- Spend Last 12 Months is the total of the supplier's invoices dated in the last twelve months, excluding cancelled invoices, in each operating unit's functional currency.
+-- Excel Example Output: https://www.enginatics.com/example/ap-suppliers-11i/
 -- Library Link: https://www.enginatics.com/reports/ap-suppliers-11i/
 -- Run Report: https://demo.enginatics.com/
 
@@ -14,6 +16,7 @@ select
 haouv.name operating_unit,
 pv.vendor_name supplier,
 pv.segment1 supplier_number,
+&dup_columns
 xxen_util.meaning(pv.vendor_type_lookup_code,'VENDOR TYPE',201) type,
 pv.type_1099 income_tax_type,
 pv.num_1099 taxpayer_id,
@@ -66,6 +69,7 @@ fnd_territories_vl ftv,
 po_vendors pv0,
 ap_terms_tl att0,
 ap_terms_tl att1
+&dup_from
 where
 1=1 and
 pv.vendor_id=pvsa.vendor_id(+) and

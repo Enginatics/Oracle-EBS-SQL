@@ -1,14 +1,20 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'CE General Ledger Cash Account Usage | Oracle EBS SQL Report'
 description: 'Application: Cash Management Description: Cash Account Usage This report details the General Ledger Cash Accounts assigned to Bank Accounts, and their…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, General, Ledger, Cash, Account, ce_bank_accounts, xle_entity_profiles, gl_ledgers'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Cash Management, Enginatics, R12 only, General, Ledger, Cash, Account, ce_bank_accounts, xle_entity_profiles, gl_ledgers'
 permalink: /CE%20General%20Ledger%20Cash%20Account%20Usage/
+report_name: 'CE General Ledger Cash Account Usage'
+report_web_name: ce-general-ledger-cash-account-usage
+module: 'Cash Management'
+module_url: /modules/cash-management/
 ---
 
 # CE General Ledger Cash Account Usage – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/ce-general-ledger-cash-account-usage/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/ce-general-ledger-cash-account-usage/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ce-general-ledger-cash-account-usage) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ce-general-ledger-cash-account-usage).
+**Oracle EBS module:** [Cash Management](/modules/cash-management/ "Oracle EBS Cash Management reports") · [all Cash Management reports](/modules/cash-management/)  
 
 ## Overview
 Application: Cash Management
@@ -18,31 +24,33 @@ This report details the General Ledger Cash Accounts assigned to Bank Accounts, 
 
 The following templates are available:
 Pivot: Bank Accounts, Assigned Cash Accounts - Pivot by Bank Account, Cash Account showing cash account usage within each bank account.
-Pivot: Cash Account, Assigned Bank Accounts - Pivot by Cash Account, Bank Account, showing cash account usage within each bank account. 
+Pivot: Cash Account, Assigned Bank Accounts - Pivot by Cash Account, Bank Account, showing cash account usage within each bank account.
 
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ce-general-ledger-cash-account-usage) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 
 ## Report Parameters
 Legal Entity, Bank Name, Bank Branch, Bank Account Name, Bank Account Number, Bank Account Currency, Cash Account
 
 ## Oracle EBS Tables Used
-[ce_bank_accounts](https://www.enginatics.com/library/?pg=1&find=ce_bank_accounts), [xle_entity_profiles](https://www.enginatics.com/library/?pg=1&find=xle_entity_profiles), [gl_ledgers](https://www.enginatics.com/library/?pg=1&find=gl_ledgers), [hz_parties](https://www.enginatics.com/library/?pg=1&find=hz_parties), [gl_code_combinations_kfv](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations_kfv), [ce_bank_acct_uses_all](https://www.enginatics.com/library/?pg=1&find=ce_bank_acct_uses_all), [ce_security_profiles_v](https://www.enginatics.com/library/?pg=1&find=ce_security_profiles_v), [ce_gl_accounts_ccid](https://www.enginatics.com/library/?pg=1&find=ce_gl_accounts_ccid), [dual](https://www.enginatics.com/library/?pg=1&find=dual)
+[ce_bank_accounts](https://www.enginatics.com/library/?pg=1&find=ce_bank_accounts&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ce-general-ledger-cash-account-usage), [xle_entity_profiles](https://www.enginatics.com/library/?pg=1&find=xle_entity_profiles&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ce-general-ledger-cash-account-usage), [gl_ledgers](https://www.enginatics.com/library/?pg=1&find=gl_ledgers&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ce-general-ledger-cash-account-usage), [hz_parties](https://www.enginatics.com/library/?pg=1&find=hz_parties&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ce-general-ledger-cash-account-usage), [gl_code_combinations_kfv](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations_kfv&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ce-general-ledger-cash-account-usage), [ce_bank_acct_uses_all](https://www.enginatics.com/library/?pg=1&find=ce_bank_acct_uses_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ce-general-ledger-cash-account-usage), [ce_security_profiles_v](https://www.enginatics.com/library/?pg=1&find=ce_security_profiles_v&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ce-general-ledger-cash-account-usage), [ce_gl_accounts_ccid](https://www.enginatics.com/library/?pg=1&find=ce_gl_accounts_ccid&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ce-general-ledger-cash-account-usage), [dual](https://www.enginatics.com/library/?pg=1&find=dual&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ce-general-ledger-cash-account-usage)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ce-general-ledger-cash-account-usage), [R12 only](https://www.enginatics.com/library/?pg=1&category%5B%5D=R12%20only&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ce-general-ledger-cash-account-usage)
 
 ## Related Reports
-[IBY Payment Process Request Details](/IBY%20Payment%20Process%20Request%20Details/ "IBY Payment Process Request Details Oracle EBS SQL Report"), [CE General Ledger Reconciliation](/CE%20General%20Ledger%20Reconciliation/ "CE General Ledger Reconciliation Oracle EBS SQL Report"), [CE Cleared Transactions](/CE%20Cleared%20Transactions/ "CE Cleared Transactions Oracle EBS SQL Report"), [AR Customer Upload](/AR%20Customer%20Upload/ "AR Customer Upload Oracle EBS SQL Report"), [AR Transactions and Payments](/AR%20Transactions%20and%20Payments/ "AR Transactions and Payments Oracle EBS SQL Report"), [AR Unapplied Receipts Register](/AR%20Unapplied%20Receipts%20Register/ "AR Unapplied Receipts Register Oracle EBS SQL Report"), [CE Bank Account Balances](/CE%20Bank%20Account%20Balances/ "CE Bank Account Balances Oracle EBS SQL Report"), [AR Miscellaneous Receipts](/AR%20Miscellaneous%20Receipts/ "AR Miscellaneous Receipts Oracle EBS SQL Report"), [GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report")
+[CE General Ledger Reconciliation](/CE%20General%20Ledger%20Reconciliation/ "CE General Ledger Reconciliation Oracle EBS SQL Report"), [IBY Payment Process Request Details](/IBY%20Payment%20Process%20Request%20Details/ "IBY Payment Process Request Details Oracle EBS SQL Report"), [CE Cleared Transactions](/CE%20Cleared%20Transactions/ "CE Cleared Transactions Oracle EBS SQL Report"), [AR Customer Upload](/AR%20Customer%20Upload/ "AR Customer Upload Oracle EBS SQL Report"), [CE Bank Account Balances](/CE%20Bank%20Account%20Balances/ "CE Bank Account Balances Oracle EBS SQL Report"), [AR Miscellaneous Receipts](/AR%20Miscellaneous%20Receipts/ "AR Miscellaneous Receipts Oracle EBS SQL Report"), [AR Unapplied Receipts Register](/AR%20Unapplied%20Receipts%20Register/ "AR Unapplied Receipts Register Oracle EBS SQL Report"), [AR Transactions and Payments](/AR%20Transactions%20and%20Payments/ "AR Transactions and Payments Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/CE%20General%20Ledger%20Cash%20Account%20Usage/CE%20General%20Ledger%20Cash%20Account%20Usage.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ce-general-ledger-cash-account-usage) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [CE General Ledger Cash Account Usage 04-Apr-2026 123137.xlsx](https://www.enginatics.com/example/ce-general-ledger-cash-account-usage/) |
-| Blitz Report™ XML Import | [CE_General_Ledger_Cash_Account_Usage.xml](https://www.enginatics.com/xml/ce-general-ledger-cash-account-usage/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/ce-general-ledger-cash-account-usage/](https://www.enginatics.com/reports/ce-general-ledger-cash-account-usage/) |
+| Excel Example Output | [CE General Ledger Cash Account Usage 04-Apr-2026 123137.xlsx](https://www.enginatics.com/example/ce-general-ledger-cash-account-usage/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ce-general-ledger-cash-account-usage) |
+| Blitz Report™ XML Import | [CE_General_Ledger_Cash_Account_Usage.xml](https://www.enginatics.com/xml/ce-general-ledger-cash-account-usage/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ce-general-ledger-cash-account-usage) |
+| SQL Source | [CE General Ledger Cash Account Usage.sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/CE%20General%20Ledger%20Cash%20Account%20Usage/CE%20General%20Ledger%20Cash%20Account%20Usage.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/ce-general-ledger-cash-account-usage/](https://www.enginatics.com/reports/ce-general-ledger-cash-account-usage/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ce-general-ledger-cash-account-usage) |
 
 ## Executive Summary
 The **CE General Ledger Cash Account Usage** report is a configuration audit tool that maps Bank Accounts to their corresponding General Ledger (GL) Cash Accounts. In Oracle, a single bank account can be linked to multiple GL accounts (e.g., for different currencies or operating units), and conversely, a GL account might be shared. This report visualizes these relationships to ensure that cash activity is being booked to the correct ledger accounts.
@@ -74,18 +82,17 @@ The report queries `CE_BANK_ACCOUNTS` and joins to `CE_GL_ACCOUNTS_CCID` (or `CE
 *   **Reconciliation Readiness**: Ensures that the "GL Balance" used in reconciliation reports is pulling from the correct combination of accounts.
 *   **System Cleanup**: Helps identify unused or incorrectly mapped GL accounts.
 
-
 ---
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ce-general-ledger-cash-account-usage)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ce-general-ledger-cash-account-usage)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ce-general-ledger-cash-account-usage)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ce-general-ledger-cash-account-usage)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ce-general-ledger-cash-account-usage)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ce-general-ledger-cash-account-usage)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ce-general-ledger-cash-account-usage)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

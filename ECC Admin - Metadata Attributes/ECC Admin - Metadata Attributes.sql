@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: ECC Admin - Metadata Attributes
 -- Description: Enterprise Command Centers metadata attributes
--- Excel Examle Output: https://www.enginatics.com/example/ecc-admin-metadata-attributes/
+-- Excel Example Output: https://www.enginatics.com/example/ecc-admin-metadata-attributes/
 -- Library Link: https://www.enginatics.com/reports/ecc-admin-metadata-attributes/
 -- Run Report: https://demo.enginatics.com/
 

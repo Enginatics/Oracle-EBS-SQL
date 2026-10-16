@@ -1,18 +1,17 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: AR Open Items Revaluation
 -- Description: Imported from BI Publisher
-Description: Open Items Revaluation Report
-Application: Receivables
-Source: Open Items Revaluation Report (XML)
-Short Name: ARXINREV_XML
-DB package: AR_ARXINREV_XMLP_PKG
-
--- Excel Examle Output: https://www.enginatics.com/example/ar-open-items-revaluation/
+-- Description: Open Items Revaluation Report
+-- Application: Receivables
+-- Source: Open Items Revaluation Report (XML)
+-- Short Name: ARXINREVXML
+-- DB package: ARARXINREVXMLPPKG
+-- Excel Example Output: https://www.enginatics.com/example/ar-open-items-revaluation/
 -- Library Link: https://www.enginatics.com/reports/ar-open-items-revaluation/
 -- Run Report: https://demo.enginatics.com/
 

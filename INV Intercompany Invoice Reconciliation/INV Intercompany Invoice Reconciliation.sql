@@ -1,13 +1,13 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: INV Intercompany Invoice Reconciliation
 -- Description: Intercompany invoice reconciliation for inventory transactions, including shipping and receiving organizations, ordered, transacted and invoiced quantities, amounts and possible discrepancies.
-It also includes all intercompany Receivables (AR) and Payables (AP) invoice details. Optionally includes the Inventory and Intercompany AP SLA Accounting
--- Excel Examle Output: https://www.enginatics.com/example/inv-intercompany-invoice-reconciliation/
+-- It also includes all intercompany Receivables (AR) and Payables (AP) invoice details. Optionally includes the Inventory and Intercompany AP SLA Accounting
+-- Excel Example Output: https://www.enginatics.com/example/inv-intercompany-invoice-reconciliation/
 -- Library Link: https://www.enginatics.com/reports/inv-intercompany-invoice-reconciliation/
 -- Run Report: https://demo.enginatics.com/
 

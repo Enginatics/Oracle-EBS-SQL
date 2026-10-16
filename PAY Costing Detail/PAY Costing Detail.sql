@@ -1,15 +1,15 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PAY Costing Detail
 -- Description: Imported from Concurrent Program
-Application: Payroll
-Source: Costing Detail Report
-Short Name: PAYRPCDR
--- Excel Examle Output: https://www.enginatics.com/example/pay-costing-detail/
+-- Application: Payroll
+-- Source: Costing Detail Report
+-- Short Name: PAYRPCDR
+-- Excel Example Output: https://www.enginatics.com/example/pay-costing-detail/
 -- Library Link: https://www.enginatics.com/reports/pay-costing-detail/
 -- Run Report: https://demo.enginatics.com/
 

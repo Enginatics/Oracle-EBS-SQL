@@ -1,19 +1,15 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: INV Item Attribute Master/Child Conflicts
 -- Description: Identifies existing Item Attribute Master/Child attribute value conflicts for Item Attributes controlled at the Master Organization Level.
-
-These errors show as a "Master - Child Conflict in one of these Attributes: ... [MASTER_CHILD_nn]" error during Item Upload
-
-Item Attributes with Master/Child conflicts are identified in the report by having a value in the report displayed as M:[master Org Value] C:[Child Org Value]
-
-Item Attributes with no Master/Child conflicts will have a null value in the report. 
-
--- Excel Examle Output: https://www.enginatics.com/example/inv-item-attribute-master-child-conflicts/
+-- These errors show as a "Master - Child Conflict in one of these Attributes: ... [MASTERCHILDnn]" error during Item Upload
+-- Item Attributes with Master/Child conflicts are identified in the report by having a value in the report displayed as M:[master Org Value] C:[Child Org Value]
+-- Item Attributes with no Master/Child conflicts will have a null value in the report.
+-- Excel Example Output: https://www.enginatics.com/example/inv-item-attribute-master-child-conflicts/
 -- Library Link: https://www.enginatics.com/reports/inv-item-attribute-master-child-conflicts/
 -- Run Report: https://demo.enginatics.com/
 
@@ -369,7 +365,797 @@ inv_attribute_control_pvt.get_attribute_control('WEB_STATUS') web_status,
 '.' eol
 from
 dual
+),
+sentinel_support as
+(
+select /*+ materialize */
+max(case when y.column_name='ACCOUNTING_RULE_ID' then 1 else 0 end) accounting_rule_id,
+max(case when y.column_name='BUYER_ID' then 1 else 0 end) buyer_id,
+max(case when y.column_name='INVOICING_RULE_ID' then 1 else 0 end) invoicing_rule_id,
+max(case when y.column_name='CATALOG_STATUS_FLAG' then 1 else 0 end) catalog_status_flag,
+max(case when y.column_name='DEFAULT_SHIPPING_ORG' then 1 else 0 end) default_shipping_org,
+max(case when y.column_name='INSPECTION_REQUIRED_FLAG' then 1 else 0 end) inspection_required_flag,
+max(case when y.column_name='MARKET_PRICE' then 1 else 0 end) market_price,
+max(case when y.column_name='PURCHASING_TAX_CODE' then 1 else 0 end) purchasing_tax_code,
+max(case when y.column_name='QTY_RCV_EXCEPTION_CODE' then 1 else 0 end) qty_rcv_exception_code,
+max(case when y.column_name='RECEIPT_REQUIRED_FLAG' then 1 else 0 end) receipt_required_flag,
+max(case when y.column_name='TAXABLE_FLAG' then 1 else 0 end) taxable_flag,
+max(case when y.column_name='ASSET_CATEGORY_ID' then 1 else 0 end) asset_category_id,
+max(case when y.column_name='ENFORCE_SHIP_TO_LOCATION_CODE' then 1 else 0 end) enforce_ship_to_location_code,
+max(case when y.column_name='HAZARD_CLASS_ID' then 1 else 0 end) hazard_class_id,
+max(case when y.column_name='LIST_PRICE_PER_UNIT' then 1 else 0 end) list_price_per_unit,
+max(case when y.column_name='PRICE_TOLERANCE_PERCENT' then 1 else 0 end) price_tolerance_percent,
+max(case when y.column_name='QTY_RCV_TOLERANCE' then 1 else 0 end) qty_rcv_tolerance,
+max(case when y.column_name='ROUNDING_FACTOR' then 1 else 0 end) rounding_factor,
+max(case when y.column_name='UN_NUMBER_ID' then 1 else 0 end) un_number_id,
+max(case when y.column_name='UNIT_OF_ISSUE' then 1 else 0 end) unit_of_issue,
+max(case when y.column_name='ALLOW_EXPRESS_DELIVERY_FLAG' then 1 else 0 end) allow_express_delivery_flag,
+max(case when y.column_name='ALLOW_SUBSTITUTE_RECEIPTS_FLAG' then 1 else 0 end) allow_substitute_receipts_flag,
+max(case when y.column_name='ALLOW_UNORDERED_RECEIPTS_FLAG' then 1 else 0 end) allow_unordered_receipts_flag,
+max(case when y.column_name='DAYS_EARLY_RECEIPT_ALLOWED' then 1 else 0 end) days_early_receipt_allowed,
+max(case when y.column_name='DAYS_LATE_RECEIPT_ALLOWED' then 1 else 0 end) days_late_receipt_allowed,
+max(case when y.column_name='AUTO_LOT_ALPHA_PREFIX' then 1 else 0 end) auto_lot_alpha_prefix,
+max(case when y.column_name='DESCRIPTION' then 1 else 0 end) description,
+max(case when y.column_name='INVOICE_CLOSE_TOLERANCE' then 1 else 0 end) invoice_close_tolerance,
+max(case when y.column_name='LONG_DESCRIPTION' then 1 else 0 end) long_description,
+max(case when y.column_name='RECEIPT_DAYS_EXCEPTION_CODE' then 1 else 0 end) receipt_days_exception_code,
+max(case when y.column_name='RECEIVE_CLOSE_TOLERANCE' then 1 else 0 end) receive_close_tolerance,
+max(case when y.column_name='RECEIVING_ROUTING_ID' then 1 else 0 end) receiving_routing_id,
+max(case when y.column_name='OVER_SHIPMENT_TOLERANCE' then 1 else 0 end) over_shipment_tolerance,
+max(case when y.column_name='OVERCOMPLETION_TOLERANCE_TYPE' then 1 else 0 end) overcompletion_tolerance_type,
+max(case when y.column_name='OVERCOMPLETION_TOLERANCE_VALUE' then 1 else 0 end) overcompletion_tolerance_value,
+max(case when y.column_name='UNDER_SHIPMENT_TOLERANCE' then 1 else 0 end) under_shipment_tolerance,
+max(case when y.column_name='DEFECT_TRACKING_ON_FLAG' then 1 else 0 end) defect_tracking_on_flag,
+max(case when y.column_name='OVER_RETURN_TOLERANCE' then 1 else 0 end) over_return_tolerance,
+max(case when y.column_name='RECOVERED_PART_DISP_CODE' then 1 else 0 end) recovered_part_disp_code,
+max(case when y.column_name='UNDER_RETURN_TOLERANCE' then 1 else 0 end) under_return_tolerance,
+max(case when y.column_name='ASSET_CREATION_CODE' then 1 else 0 end) asset_creation_code,
+max(case when y.column_name='BACK_ORDERABLE_FLAG' then 1 else 0 end) back_orderable_flag,
+max(case when y.column_name='COMMS_ACTIVATION_REQD_FLAG' then 1 else 0 end) comms_activation_reqd_flag,
+max(case when y.column_name='ORDERABLE_ON_WEB_FLAG' then 1 else 0 end) orderable_on_web_flag,
+max(case when y.column_name='DEFAULT_LOT_STATUS_ID' then 1 else 0 end) default_lot_status_id,
+max(case when y.column_name='DIMENSION_UOM_CODE' then 1 else 0 end) dimension_uom_code,
+max(case when y.column_name='UNIT_HEIGHT' then 1 else 0 end) unit_height,
+max(case when y.column_name='UNIT_LENGTH' then 1 else 0 end) unit_length,
+max(case when y.column_name='UNIT_WIDTH' then 1 else 0 end) unit_width,
+max(case when y.column_name='DEFAULT_MATERIAL_STATUS_ID' then 1 else 0 end) default_material_status_id,
+max(case when y.column_name='DEFAULT_SERIAL_STATUS_ID' then 1 else 0 end) default_serial_status_id,
+max(case when y.column_name='FINANCING_ALLOWED_FLAG' then 1 else 0 end) financing_allowed_flag,
+max(case when y.column_name='INVENTORY_CARRY_PENALTY' then 1 else 0 end) inventory_carry_penalty,
+max(case when y.column_name='OPERATION_SLACK_PENALTY' then 1 else 0 end) operation_slack_penalty,
+max(case when y.column_name='CONTRACT_ITEM_TYPE_CODE' then 1 else 0 end) contract_item_type_code,
+max(case when y.column_name='EAM_ACT_NOTIFICATION_FLAG' then 1 else 0 end) eam_act_notification_flag,
+max(case when y.column_name='EAM_ACT_SHUTDOWN_STATUS' then 1 else 0 end) eam_act_shutdown_status,
+max(case when y.column_name='EAM_ACTIVITY_CAUSE_CODE' then 1 else 0 end) eam_activity_cause_code,
+max(case when y.column_name='EAM_ACTIVITY_TYPE_CODE' then 1 else 0 end) eam_activity_type_code,
+max(case when y.column_name='EAM_ITEM_TYPE' then 1 else 0 end) eam_item_type,
+max(case when y.column_name='CREATE_SUPPLY_FLAG' then 1 else 0 end) create_supply_flag,
+max(case when y.column_name='DEFAULT_SO_SOURCE_TYPE' then 1 else 0 end) default_so_source_type,
+max(case when y.column_name='LOT_TRANSLATE_ENABLED' then 1 else 0 end) lot_translate_enabled,
+max(case when y.column_name='PLANNED_INV_POINT_FLAG' then 1 else 0 end) planned_inv_point_flag,
+max(case when y.column_name='SERV_BILLING_ENABLED_FLAG' then 1 else 0 end) serv_billing_enabled_flag,
+max(case when y.column_name='SERV_REQ_ENABLED_CODE' then 1 else 0 end) serv_req_enabled_code,
+max(case when y.column_name='SUBSTITUTION_WINDOW_CODE' then 1 else 0 end) substitution_window_code,
+max(case when y.column_name='SUBSTITUTION_WINDOW_DAYS' then 1 else 0 end) substitution_window_days,
+max(case when y.column_name='AUTO_SERIAL_ALPHA_PREFIX' then 1 else 0 end) auto_serial_alpha_prefix,
+max(case when y.column_name='SHELF_LIFE_DAYS' then 1 else 0 end) shelf_life_days,
+max(case when y.column_name='START_AUTO_LOT_NUMBER' then 1 else 0 end) start_auto_lot_number,
+max(case when y.column_name='START_AUTO_SERIAL_NUMBER' then 1 else 0 end) start_auto_serial_number,
+max(case when y.column_name='ENCUMBRANCE_ACCOUNT' then 1 else 0 end) encumbrance_account,
+max(case when y.column_name='EXPENSE_ACCOUNT' then 1 else 0 end) expense_account,
+max(case when y.column_name='SOURCE_ORGANIZATION_ID' then 1 else 0 end) source_organization_id,
+max(case when y.column_name='SOURCE_SUBINVENTORY' then 1 else 0 end) source_subinventory,
+max(case when y.column_name='SOURCE_TYPE' then 1 else 0 end) source_type,
+max(case when y.column_name='UNIT_WEIGHT' then 1 else 0 end) unit_weight,
+max(case when y.column_name='WEIGHT_UOM_CODE' then 1 else 0 end) weight_uom_code,
+max(case when y.column_name='ACCEPTABLE_EARLY_DAYS' then 1 else 0 end) acceptable_early_days,
+max(case when y.column_name='SHRINKAGE_RATE' then 1 else 0 end) shrinkage_rate,
+max(case when y.column_name='UNIT_VOLUME' then 1 else 0 end) unit_volume,
+max(case when y.column_name='VOLUME_UOM_CODE' then 1 else 0 end) volume_uom_code,
+max(case when y.column_name='ACCEPTABLE_RATE_DECREASE' then 1 else 0 end) acceptable_rate_decrease,
+max(case when y.column_name='ACCEPTABLE_RATE_INCREASE' then 1 else 0 end) acceptable_rate_increase,
+max(case when y.column_name='CUM_MANUFACTURING_LEAD_TIME' then 1 else 0 end) cum_manufacturing_lead_time,
+max(case when y.column_name='DEMAND_TIME_FENCE_CODE' then 1 else 0 end) demand_time_fence_code,
+max(case when y.column_name='LEAD_TIME_LOT_SIZE' then 1 else 0 end) lead_time_lot_size,
+max(case when y.column_name='OVERRUN_PERCENTAGE' then 1 else 0 end) overrun_percentage,
+max(case when y.column_name='STD_LOT_SIZE' then 1 else 0 end) std_lot_size,
+max(case when y.column_name='CUMULATIVE_TOTAL_LEAD_TIME' then 1 else 0 end) cumulative_total_lead_time,
+max(case when y.column_name='DEMAND_TIME_FENCE_DAYS' then 1 else 0 end) demand_time_fence_days,
+max(case when y.column_name='END_ASSEMBLY_PEGGING_FLAG' then 1 else 0 end) end_assembly_pegging_flag,
+max(case when y.column_name='PLANNING_EXCEPTION_SET' then 1 else 0 end) planning_exception_set,
+max(case when y.column_name='PLANNING_TIME_FENCE_DAYS' then 1 else 0 end) planning_time_fence_days,
+max(case when y.column_name='BASE_ITEM_ID' then 1 else 0 end) base_item_id,
+max(case when y.column_name='FIXED_LEAD_TIME' then 1 else 0 end) fixed_lead_time,
+max(case when y.column_name='VARIABLE_LEAD_TIME' then 1 else 0 end) variable_lead_time,
+max(case when y.column_name='WIP_SUPPLY_LOCATOR_ID' then 1 else 0 end) wip_supply_locator_id,
+max(case when y.column_name='WIP_SUPPLY_SUBINVENTORY' then 1 else 0 end) wip_supply_subinventory,
+max(case when y.column_name='CARRYING_COST' then 1 else 0 end) carrying_cost,
+max(case when y.column_name='FIXED_LOT_MULTIPLIER' then 1 else 0 end) fixed_lot_multiplier,
+max(case when y.column_name='PLANNER_CODE' then 1 else 0 end) planner_code,
+max(case when y.column_name='FULL_LEAD_TIME' then 1 else 0 end) full_lead_time,
+max(case when y.column_name='MIN_MINMAX_QUANTITY' then 1 else 0 end) min_minmax_quantity,
+max(case when y.column_name='MRP_SAFETY_STOCK_PERCENT' then 1 else 0 end) mrp_safety_stock_percent,
+max(case when y.column_name='ORDER_COST' then 1 else 0 end) order_cost,
+max(case when y.column_name='POSTPROCESSING_LEAD_TIME' then 1 else 0 end) postprocessing_lead_time,
+max(case when y.column_name='PREPROCESSING_LEAD_TIME' then 1 else 0 end) preprocessing_lead_time,
+max(case when y.column_name='ATP_RULE_ID' then 1 else 0 end) atp_rule_id,
+max(case when y.column_name='FIXED_ORDER_QUANTITY' then 1 else 0 end) fixed_order_quantity,
+max(case when y.column_name='MAX_MINMAX_QUANTITY' then 1 else 0 end) max_minmax_quantity,
+max(case when y.column_name='MAXIMUM_ORDER_QUANTITY' then 1 else 0 end) maximum_order_quantity,
+max(case when y.column_name='MINIMUM_ORDER_QUANTITY' then 1 else 0 end) minimum_order_quantity,
+max(case when y.column_name='PICKING_RULE_ID' then 1 else 0 end) picking_rule_id,
+max(case when y.column_name='AUTO_REDUCE_MPS' then 1 else 0 end) auto_reduce_mps,
+max(case when y.column_name='OUTSIDE_OPERATION_UOM_TYPE' then 1 else 0 end) outside_operation_uom_type,
+max(case when y.column_name='POSITIVE_MEASUREMENT_ERROR' then 1 else 0 end) positive_measurement_error,
+max(case when y.column_name='SAFETY_STOCK_BUCKET_DAYS' then 1 else 0 end) safety_stock_bucket_days,
+max(case when y.column_name='ATO_FORECAST_CONTROL' then 1 else 0 end) ato_forecast_control,
+max(case when y.column_name='ITEM_TYPE' then 1 else 0 end) item_type,
+max(case when y.column_name='CONFIG_MODEL_TYPE' then 1 else 0 end) config_model_type,
+max(case when y.column_name='EAM_ACTIVITY_SOURCE_CODE' then 1 else 0 end) eam_activity_source_code,
+max(case when y.column_name='IB_ITEM_INSTANCE_CLASS' then 1 else 0 end) ib_item_instance_class,
+max(case when y.column_name='LOT_SUBSTITUTION_ENABLED' then 1 else 0 end) lot_substitution_enabled,
+max(case when y.column_name='MINIMUM_LICENSE_QUANTITY' then 1 else 0 end) minimum_license_quantity,
+max(case when y.column_name='CHARGE_PERIODICITY_CODE' then 1 else 0 end) charge_periodicity_code,
+max(case when y.column_name='OUTSOURCED_ASSEMBLY' then 1 else 0 end) outsourced_assembly,
+max(case when y.column_name='SUBCONTRACTING_COMPONENT' then 1 else 0 end) subcontracting_component,
+max(case when y.column_name='PREPOSITION_POINT' then 1 else 0 end) preposition_point,
+max(case when y.column_name='REPAIR_LEADTIME' then 1 else 0 end) repair_leadtime,
+max(case when y.column_name='REPAIR_PROGRAM' then 1 else 0 end) repair_program,
+max(case when y.column_name='REPAIR_YIELD' then 1 else 0 end) repair_yield,
+max(case when y.column_name='NEGATIVE_MEASUREMENT_ERROR' then 1 else 0 end) negative_measurement_error,
+max(case when y.column_name='SERVICE_STARTING_DELAY' then 1 else 0 end) service_starting_delay,
+max(case when y.column_name='PAYMENT_TERMS_ID' then 1 else 0 end) payment_terms_id,
+max(case when y.column_name='COVERAGE_SCHEDULE_ID' then 1 else 0 end) coverage_schedule_id,
+max(case when y.column_name='MATERIAL_BILLABLE_FLAG' then 1 else 0 end) material_billable_flag,
+max(case when y.column_name='SERVICE_DURATION' then 1 else 0 end) service_duration,
+max(case when y.column_name='SERVICE_DURATION_PERIOD_CODE' then 1 else 0 end) service_duration_period_code,
+max(case when y.column_name='TAX_CODE' then 1 else 0 end) tax_code,
+max(case when y.column_name='CONTAINER_TYPE_CODE' then 1 else 0 end) container_type_code,
+max(case when y.column_name='INTERNAL_VOLUME' then 1 else 0 end) internal_volume,
+max(case when y.column_name='MAXIMUM_LOAD_WEIGHT' then 1 else 0 end) maximum_load_weight,
+max(case when y.column_name='MINIMUM_FILL_PERCENT' then 1 else 0 end) minimum_fill_percent,
+max(case when y.column_name='RELEASE_TIME_FENCE_CODE' then 1 else 0 end) release_time_fence_code,
+max(case when y.column_name='RELEASE_TIME_FENCE_DAYS' then 1 else 0 end) release_time_fence_days,
+max(case when y.column_name='CONFIG_MATCH' then 1 else 0 end) config_match,
+max(case when y.column_name='CONFIG_ORGS' then 1 else 0 end) config_orgs,
+max(case when y.column_name='ASN_AUTOEXPIRE_FLAG' then 1 else 0 end) asn_autoexpire_flag,
+max(case when y.column_name='CONSIGNED_FLAG' then 1 else 0 end) consigned_flag,
+max(case when y.column_name='CONTINOUS_TRANSFER' then 1 else 0 end) continous_transfer,
+max(case when y.column_name='CONVERGENCE' then 1 else 0 end) convergence,
+max(case when y.column_name='CRITICAL_COMPONENT_FLAG' then 1 else 0 end) critical_component_flag,
+max(case when y.column_name='DAYS_MAX_INV_SUPPLY' then 1 else 0 end) days_max_inv_supply,
+max(case when y.column_name='DAYS_MAX_INV_WINDOW' then 1 else 0 end) days_max_inv_window,
+max(case when y.column_name='DAYS_TGT_INV_SUPPLY' then 1 else 0 end) days_tgt_inv_supply,
+max(case when y.column_name='DAYS_TGT_INV_WINDOW' then 1 else 0 end) days_tgt_inv_window,
+max(case when y.column_name='DIVERGENCE' then 1 else 0 end) divergence,
+max(case when y.column_name='DRP_PLANNED_FLAG' then 1 else 0 end) drp_planned_flag,
+max(case when y.column_name='EXCLUDE_FROM_BUDGET_FLAG' then 1 else 0 end) exclude_from_budget_flag,
+max(case when y.column_name='FORECAST_HORIZON' then 1 else 0 end) forecast_horizon,
+max(case when y.column_name='SO_AUTHORIZATION_FLAG' then 1 else 0 end) so_authorization_flag,
+max(case when y.column_name='VMI_FIXED_ORDER_QUANTITY' then 1 else 0 end) vmi_fixed_order_quantity,
+max(case when y.column_name='VMI_FORECAST_TYPE' then 1 else 0 end) vmi_forecast_type,
+max(case when y.column_name='VMI_MAXIMUM_DAYS' then 1 else 0 end) vmi_maximum_days,
+max(case when y.column_name='VMI_MAXIMUM_UNITS' then 1 else 0 end) vmi_maximum_units,
+max(case when y.column_name='VMI_MINIMUM_DAYS' then 1 else 0 end) vmi_minimum_days,
+max(case when y.column_name='VMI_MINIMUM_UNITS' then 1 else 0 end) vmi_minimum_units,
+max(case when y.column_name='CHILD_LOT_PREFIX' then 1 else 0 end) child_lot_prefix,
+max(case when y.column_name='CHILD_LOT_STARTING_NUMBER' then 1 else 0 end) child_lot_starting_number,
+max(case when y.column_name='DEFAULT_GRADE' then 1 else 0 end) default_grade,
+max(case when y.column_name='PARENT_CHILD_GENERATION_FLAG' then 1 else 0 end) parent_child_generation_flag,
+max(case when y.column_name='CAS_NUMBER' then 1 else 0 end) cas_number,
+max(case when y.column_name='EXPIRATION_ACTION_CODE' then 1 else 0 end) expiration_action_code,
+max(case when y.column_name='EXPIRATION_ACTION_INTERVAL' then 1 else 0 end) expiration_action_interval,
+max(case when y.column_name='HOLD_DAYS' then 1 else 0 end) hold_days,
+max(case when y.column_name='MATURITY_DAYS' then 1 else 0 end) maturity_days,
+max(case when y.column_name='RETEST_INTERVAL' then 1 else 0 end) retest_interval,
+max(case when y.column_name='FIXED_DAYS_SUPPLY' then 1 else 0 end) fixed_days_supply,
+max(case when y.column_name='PROCESS_SUPPLY_LOCATOR_ID' then 1 else 0 end) process_supply_locator_id,
+max(case when y.column_name='PROCESS_SUPPLY_SUBINVENTORY' then 1 else 0 end) process_supply_subinventory,
+max(case when y.column_name='PROCESS_YIELD_LOCATOR_ID' then 1 else 0 end) process_yield_locator_id,
+max(case when y.column_name='PROCESS_YIELD_SUBINVENTORY' then 1 else 0 end) process_yield_subinventory
+from
+(
+select distinct upper(coalesce(
+regexp_substr(us.text,'msii_temp_data\.\s*([A-Za-z0-9_]+)\s*:=\s*NULL',1,1,'i',1),
+case when instr(upper(us.text),'G_UPD_NULL')>0 then regexp_substr(us.text,'([A-Za-z0-9_]+)\s*=\s*DECODE\(\s*[A-Za-z0-9_]+\s*,\s*NULL\s*,\s*msi_record_temp',1,1,'i',1) end
+)) column_name
+from
+user_source us
+where
+us.name='INVUPD1B' and
+us.type='PACKAGE BODY'
+) y
+where
+y.column_name is not null
 )
+select
+x.*,
+case when x.accounting_rule_id is not null and (x.accounting_rule_id not like 'M:[]%' or ss.accounting_rule_id=1) then 1 else 0 end+
+case when x.buyer_id is not null and (x.buyer_id not like 'M:[]%' or ss.buyer_id=1) then 1 else 0 end+
+case when x.customer_order_flag is not null and x.customer_order_flag not like 'M:[]%' then 1 else 0 end+
+case when x.internal_order_flag is not null and x.internal_order_flag not like 'M:[]%' then 1 else 0 end+
+case when x.inventory_item_flag is not null and x.inventory_item_flag not like 'M:[]%' then 1 else 0 end+
+case when x.invoicing_rule_id is not null and (x.invoicing_rule_id not like 'M:[]%' or ss.invoicing_rule_id=1) then 1 else 0 end+
+case when x.purchasing_item_flag is not null and x.purchasing_item_flag not like 'M:[]%' then 1 else 0 end+
+case when x.shippable_item_flag is not null and x.shippable_item_flag not like 'M:[]%' then 1 else 0 end+
+case when x.bom_enabled_flag is not null and x.bom_enabled_flag not like 'M:[]%' then 1 else 0 end+
+case when x.build_in_wip_flag is not null and x.build_in_wip_flag not like 'M:[]%' then 1 else 0 end+
+case when x.check_shortages_flag is not null and x.check_shortages_flag not like 'M:[]%' then 1 else 0 end+
+case when x.item_catalog_group_id is not null and x.item_catalog_group_id not like 'M:[]%' then 1 else 0 end+
+case when x.revision_qty_control_code is not null and x.revision_qty_control_code not like 'M:[]%' then 1 else 0 end+
+case when x.stock_enabled_flag is not null and x.stock_enabled_flag not like 'M:[]%' then 1 else 0 end+
+case when x.customer_order_enabled_flag is not null and x.customer_order_enabled_flag not like 'M:[]%' then 1 else 0 end+
+case when x.internal_order_enabled_flag is not null and x.internal_order_enabled_flag not like 'M:[]%' then 1 else 0 end+
+case when x.mtl_transactions_enabled_flag is not null and x.mtl_transactions_enabled_flag not like 'M:[]%' then 1 else 0 end+
+case when x.purchasing_enabled_flag is not null and x.purchasing_enabled_flag not like 'M:[]%' then 1 else 0 end+
+case when x.so_transactions_flag is not null and x.so_transactions_flag not like 'M:[]%' then 1 else 0 end+
+case when x.allow_item_desc_update_flag is not null and x.allow_item_desc_update_flag not like 'M:[]%' then 1 else 0 end+
+case when x.catalog_status_flag is not null and (x.catalog_status_flag not like 'M:[]%' or ss.catalog_status_flag=1) then 1 else 0 end+
+case when x.collateral_flag is not null and x.collateral_flag not like 'M:[]%' then 1 else 0 end+
+case when x.default_shipping_org is not null and (x.default_shipping_org not like 'M:[]%' or ss.default_shipping_org=1) then 1 else 0 end+
+case when x.inspection_required_flag is not null and (x.inspection_required_flag not like 'M:[]%' or ss.inspection_required_flag=1) then 1 else 0 end+
+case when x.market_price is not null and (x.market_price not like 'M:[]%' or ss.market_price=1) then 1 else 0 end+
+case when x.purchasing_tax_code is not null and (x.purchasing_tax_code not like 'M:[]%' or ss.purchasing_tax_code=1) then 1 else 0 end+
+case when x.qty_rcv_exception_code is not null and (x.qty_rcv_exception_code not like 'M:[]%' or ss.qty_rcv_exception_code=1) then 1 else 0 end+
+case when x.receipt_required_flag is not null and (x.receipt_required_flag not like 'M:[]%' or ss.receipt_required_flag=1) then 1 else 0 end+
+case when x.returnable_flag is not null and x.returnable_flag not like 'M:[]%' then 1 else 0 end+
+case when x.taxable_flag is not null and (x.taxable_flag not like 'M:[]%' or ss.taxable_flag=1) then 1 else 0 end+
+case when x.asset_category_id is not null and (x.asset_category_id not like 'M:[]%' or ss.asset_category_id=1) then 1 else 0 end+
+case when x.enforce_ship_to_location_code is not null and (x.enforce_ship_to_location_code not like 'M:[]%' or ss.enforce_ship_to_location_code=1) then 1 else 0 end+
+case when x.hazard_class_id is not null and (x.hazard_class_id not like 'M:[]%' or ss.hazard_class_id=1) then 1 else 0 end+
+case when x.list_price_per_unit is not null and (x.list_price_per_unit not like 'M:[]%' or ss.list_price_per_unit=1) then 1 else 0 end+
+case when x.price_tolerance_percent is not null and (x.price_tolerance_percent not like 'M:[]%' or ss.price_tolerance_percent=1) then 1 else 0 end+
+case when x.qty_rcv_tolerance is not null and (x.qty_rcv_tolerance not like 'M:[]%' or ss.qty_rcv_tolerance=1) then 1 else 0 end+
+case when x.rfq_required_flag is not null and x.rfq_required_flag not like 'M:[]%' then 1 else 0 end+
+case when x.rounding_factor is not null and (x.rounding_factor not like 'M:[]%' or ss.rounding_factor=1) then 1 else 0 end+
+case when x.un_number_id is not null and (x.un_number_id not like 'M:[]%' or ss.un_number_id=1) then 1 else 0 end+
+case when x.unit_of_issue is not null and (x.unit_of_issue not like 'M:[]%' or ss.unit_of_issue=1) then 1 else 0 end+
+case when x.allow_express_delivery_flag is not null and (x.allow_express_delivery_flag not like 'M:[]%' or ss.allow_express_delivery_flag=1) then 1 else 0 end+
+case when x.allow_substitute_receipts_flag is not null and (x.allow_substitute_receipts_flag not like 'M:[]%' or ss.allow_substitute_receipts_flag=1) then 1 else 0 end+
+case when x.allow_unordered_receipts_flag is not null and (x.allow_unordered_receipts_flag not like 'M:[]%' or ss.allow_unordered_receipts_flag=1) then 1 else 0 end+
+case when x.days_early_receipt_allowed is not null and (x.days_early_receipt_allowed not like 'M:[]%' or ss.days_early_receipt_allowed=1) then 1 else 0 end+
+case when x.days_late_receipt_allowed is not null and (x.days_late_receipt_allowed not like 'M:[]%' or ss.days_late_receipt_allowed=1) then 1 else 0 end+
+case when x.auto_lot_alpha_prefix is not null and (x.auto_lot_alpha_prefix not like 'M:[]%' or ss.auto_lot_alpha_prefix=1) then 1 else 0 end+
+case when x.description is not null and (x.description not like 'M:[]%' or ss.description=1) then 1 else 0 end+
+case when x.invoice_close_tolerance is not null and (x.invoice_close_tolerance not like 'M:[]%' or ss.invoice_close_tolerance=1) then 1 else 0 end+
+case when x.long_description is not null and (x.long_description not like 'M:[]%' or ss.long_description=1) then 1 else 0 end+
+case when x.receipt_days_exception_code is not null and (x.receipt_days_exception_code not like 'M:[]%' or ss.receipt_days_exception_code=1) then 1 else 0 end+
+case when x.receive_close_tolerance is not null and (x.receive_close_tolerance not like 'M:[]%' or ss.receive_close_tolerance=1) then 1 else 0 end+
+case when x.receiving_routing_id is not null and (x.receiving_routing_id not like 'M:[]%' or ss.receiving_routing_id=1) then 1 else 0 end+
+case when x.over_shipment_tolerance is not null and (x.over_shipment_tolerance not like 'M:[]%' or ss.over_shipment_tolerance=1) then 1 else 0 end+
+case when x.overcompletion_tolerance_type is not null and (x.overcompletion_tolerance_type not like 'M:[]%' or ss.overcompletion_tolerance_type=1) then 1 else 0 end+
+case when x.overcompletion_tolerance_value is not null and (x.overcompletion_tolerance_value not like 'M:[]%' or ss.overcompletion_tolerance_value=1) then 1 else 0 end+
+case when x.under_shipment_tolerance is not null and (x.under_shipment_tolerance not like 'M:[]%' or ss.under_shipment_tolerance=1) then 1 else 0 end+
+case when x.defect_tracking_on_flag is not null and (x.defect_tracking_on_flag not like 'M:[]%' or ss.defect_tracking_on_flag=1) then 1 else 0 end+
+case when x.equipment_type is not null and x.equipment_type not like 'M:[]%' then 1 else 0 end+
+case when x.over_return_tolerance is not null and (x.over_return_tolerance not like 'M:[]%' or ss.over_return_tolerance=1) then 1 else 0 end+
+case when x.recovered_part_disp_code is not null and (x.recovered_part_disp_code not like 'M:[]%' or ss.recovered_part_disp_code=1) then 1 else 0 end+
+case when x.under_return_tolerance is not null and (x.under_return_tolerance not like 'M:[]%' or ss.under_return_tolerance=1) then 1 else 0 end+
+case when x.coupon_exempt_flag is not null and x.coupon_exempt_flag not like 'M:[]%' then 1 else 0 end+
+case when x.downloadable_flag is not null and x.downloadable_flag not like 'M:[]%' then 1 else 0 end+
+case when x.electronic_flag is not null and x.electronic_flag not like 'M:[]%' then 1 else 0 end+
+case when x.event_flag is not null and x.event_flag not like 'M:[]%' then 1 else 0 end+
+case when x.vol_discount_exempt_flag is not null and x.vol_discount_exempt_flag not like 'M:[]%' then 1 else 0 end+
+case when x.asset_creation_code is not null and (x.asset_creation_code not like 'M:[]%' or ss.asset_creation_code=1) then 1 else 0 end+
+case when x.back_orderable_flag is not null and (x.back_orderable_flag not like 'M:[]%' or ss.back_orderable_flag=1) then 1 else 0 end+
+case when x.comms_activation_reqd_flag is not null and (x.comms_activation_reqd_flag not like 'M:[]%' or ss.comms_activation_reqd_flag=1) then 1 else 0 end+
+case when x.comms_nl_trackable_flag is not null and x.comms_nl_trackable_flag not like 'M:[]%' then 1 else 0 end+
+case when x.orderable_on_web_flag is not null and (x.orderable_on_web_flag not like 'M:[]%' or ss.orderable_on_web_flag=1) then 1 else 0 end+
+case when x.bulk_picked_flag is not null and x.bulk_picked_flag not like 'M:[]%' then 1 else 0 end+
+case when x.default_lot_status_id is not null and (x.default_lot_status_id not like 'M:[]%' or ss.default_lot_status_id=1) then 1 else 0 end+
+case when x.dimension_uom_code is not null and (x.dimension_uom_code not like 'M:[]%' or ss.dimension_uom_code=1) then 1 else 0 end+
+case when x.lot_status_enabled is not null and x.lot_status_enabled not like 'M:[]%' then 1 else 0 end+
+case when x.unit_height is not null and (x.unit_height not like 'M:[]%' or ss.unit_height=1) then 1 else 0 end+
+case when x.unit_length is not null and (x.unit_length not like 'M:[]%' or ss.unit_length=1) then 1 else 0 end+
+case when x.unit_width is not null and (x.unit_width not like 'M:[]%' or ss.unit_width=1) then 1 else 0 end+
+case when x.default_material_status_id is not null and (x.default_material_status_id not like 'M:[]%' or ss.default_material_status_id=1) then 1 else 0 end+
+case when x.default_serial_status_id is not null and (x.default_serial_status_id not like 'M:[]%' or ss.default_serial_status_id=1) then 1 else 0 end+
+case when x.lot_merge_enabled is not null and x.lot_merge_enabled not like 'M:[]%' then 1 else 0 end+
+case when x.lot_split_enabled is not null and x.lot_split_enabled not like 'M:[]%' then 1 else 0 end+
+case when x.serial_status_enabled is not null and x.serial_status_enabled not like 'M:[]%' then 1 else 0 end+
+case when x.financing_allowed_flag is not null and (x.financing_allowed_flag not like 'M:[]%' or ss.financing_allowed_flag=1) then 1 else 0 end+
+case when x.inventory_carry_penalty is not null and (x.inventory_carry_penalty not like 'M:[]%' or ss.inventory_carry_penalty=1) then 1 else 0 end+
+case when x.operation_slack_penalty is not null and (x.operation_slack_penalty not like 'M:[]%' or ss.operation_slack_penalty=1) then 1 else 0 end+
+case when x.contract_item_type_code is not null and (x.contract_item_type_code not like 'M:[]%' or ss.contract_item_type_code=1) then 1 else 0 end+
+case when x.eam_act_notification_flag is not null and (x.eam_act_notification_flag not like 'M:[]%' or ss.eam_act_notification_flag=1) then 1 else 0 end+
+case when x.eam_act_shutdown_status is not null and (x.eam_act_shutdown_status not like 'M:[]%' or ss.eam_act_shutdown_status=1) then 1 else 0 end+
+case when x.eam_activity_cause_code is not null and (x.eam_activity_cause_code not like 'M:[]%' or ss.eam_activity_cause_code=1) then 1 else 0 end+
+case when x.eam_activity_type_code is not null and (x.eam_activity_type_code not like 'M:[]%' or ss.eam_activity_type_code=1) then 1 else 0 end+
+case when x.eam_item_type is not null and (x.eam_item_type not like 'M:[]%' or ss.eam_item_type=1) then 1 else 0 end+
+case when x.create_supply_flag is not null and (x.create_supply_flag not like 'M:[]%' or ss.create_supply_flag=1) then 1 else 0 end+
+case when x.default_so_source_type is not null and (x.default_so_source_type not like 'M:[]%' or ss.default_so_source_type=1) then 1 else 0 end+
+case when x.lot_translate_enabled is not null and (x.lot_translate_enabled not like 'M:[]%' or ss.lot_translate_enabled=1) then 1 else 0 end+
+case when x.planned_inv_point_flag is not null and (x.planned_inv_point_flag not like 'M:[]%' or ss.planned_inv_point_flag=1) then 1 else 0 end+
+case when x.serv_billing_enabled_flag is not null and (x.serv_billing_enabled_flag not like 'M:[]%' or ss.serv_billing_enabled_flag=1) then 1 else 0 end+
+case when x.serv_req_enabled_code is not null and (x.serv_req_enabled_code not like 'M:[]%' or ss.serv_req_enabled_code=1) then 1 else 0 end+
+case when x.substitution_window_code is not null and (x.substitution_window_code not like 'M:[]%' or ss.substitution_window_code=1) then 1 else 0 end+
+case when x.substitution_window_days is not null and (x.substitution_window_days not like 'M:[]%' or ss.substitution_window_days=1) then 1 else 0 end+
+case when x.auto_serial_alpha_prefix is not null and (x.auto_serial_alpha_prefix not like 'M:[]%' or ss.auto_serial_alpha_prefix=1) then 1 else 0 end+
+case when x.lot_control_code is not null and x.lot_control_code not like 'M:[]%' then 1 else 0 end+
+case when x.serial_number_control_code is not null and x.serial_number_control_code not like 'M:[]%' then 1 else 0 end+
+case when x.shelf_life_code is not null and x.shelf_life_code not like 'M:[]%' then 1 else 0 end+
+case when x.shelf_life_days is not null and (x.shelf_life_days not like 'M:[]%' or ss.shelf_life_days=1) then 1 else 0 end+
+case when x.start_auto_lot_number is not null and (x.start_auto_lot_number not like 'M:[]%' or ss.start_auto_lot_number=1) then 1 else 0 end+
+case when x.start_auto_serial_number is not null and (x.start_auto_serial_number not like 'M:[]%' or ss.start_auto_serial_number=1) then 1 else 0 end+
+case when x.encumbrance_account is not null and (x.encumbrance_account not like 'M:[]%' or ss.encumbrance_account=1) then 1 else 0 end+
+case when x.expense_account is not null and (x.expense_account not like 'M:[]%' or ss.expense_account=1) then 1 else 0 end+
+case when x.restrict_subinventories_code is not null and x.restrict_subinventories_code not like 'M:[]%' then 1 else 0 end+
+case when x.source_organization_id is not null and (x.source_organization_id not like 'M:[]%' or ss.source_organization_id=1) then 1 else 0 end+
+case when x.source_subinventory is not null and (x.source_subinventory not like 'M:[]%' or ss.source_subinventory=1) then 1 else 0 end+
+case when x.source_type is not null and (x.source_type not like 'M:[]%' or ss.source_type=1) then 1 else 0 end+
+case when x.unit_weight is not null and (x.unit_weight not like 'M:[]%' or ss.unit_weight=1) then 1 else 0 end+
+case when x.weight_uom_code is not null and (x.weight_uom_code not like 'M:[]%' or ss.weight_uom_code=1) then 1 else 0 end+
+case when x.acceptable_early_days is not null and (x.acceptable_early_days not like 'M:[]%' or ss.acceptable_early_days=1) then 1 else 0 end+
+case when x.location_control_code is not null and x.location_control_code not like 'M:[]%' then 1 else 0 end+
+case when x.planning_time_fence_code is not null and x.planning_time_fence_code not like 'M:[]%' then 1 else 0 end+
+case when x.restrict_locators_code is not null and x.restrict_locators_code not like 'M:[]%' then 1 else 0 end+
+case when x.shrinkage_rate is not null and (x.shrinkage_rate not like 'M:[]%' or ss.shrinkage_rate=1) then 1 else 0 end+
+case when x.unit_volume is not null and (x.unit_volume not like 'M:[]%' or ss.unit_volume=1) then 1 else 0 end+
+case when x.volume_uom_code is not null and (x.volume_uom_code not like 'M:[]%' or ss.volume_uom_code=1) then 1 else 0 end+
+case when x.acceptable_rate_decrease is not null and (x.acceptable_rate_decrease not like 'M:[]%' or ss.acceptable_rate_decrease=1) then 1 else 0 end+
+case when x.acceptable_rate_increase is not null and (x.acceptable_rate_increase not like 'M:[]%' or ss.acceptable_rate_increase=1) then 1 else 0 end+
+case when x.cum_manufacturing_lead_time is not null and (x.cum_manufacturing_lead_time not like 'M:[]%' or ss.cum_manufacturing_lead_time=1) then 1 else 0 end+
+case when x.demand_time_fence_code is not null and (x.demand_time_fence_code not like 'M:[]%' or ss.demand_time_fence_code=1) then 1 else 0 end+
+case when x.lead_time_lot_size is not null and (x.lead_time_lot_size not like 'M:[]%' or ss.lead_time_lot_size=1) then 1 else 0 end+
+case when x.mrp_calculate_atp_flag is not null and x.mrp_calculate_atp_flag not like 'M:[]%' then 1 else 0 end+
+case when x.overrun_percentage is not null and (x.overrun_percentage not like 'M:[]%' or ss.overrun_percentage=1) then 1 else 0 end+
+case when x.std_lot_size is not null and (x.std_lot_size not like 'M:[]%' or ss.std_lot_size=1) then 1 else 0 end+
+case when x.bom_item_type is not null and x.bom_item_type not like 'M:[]%' then 1 else 0 end+
+case when x.cumulative_total_lead_time is not null and (x.cumulative_total_lead_time not like 'M:[]%' or ss.cumulative_total_lead_time=1) then 1 else 0 end+
+case when x.demand_time_fence_days is not null and (x.demand_time_fence_days not like 'M:[]%' or ss.demand_time_fence_days=1) then 1 else 0 end+
+case when x.end_assembly_pegging_flag is not null and (x.end_assembly_pegging_flag not like 'M:[]%' or ss.end_assembly_pegging_flag=1) then 1 else 0 end+
+case when x.planning_exception_set is not null and (x.planning_exception_set not like 'M:[]%' or ss.planning_exception_set=1) then 1 else 0 end+
+case when x.planning_time_fence_days is not null and (x.planning_time_fence_days not like 'M:[]%' or ss.planning_time_fence_days=1) then 1 else 0 end+
+case when x.repetitive_planning_flag is not null and x.repetitive_planning_flag not like 'M:[]%' then 1 else 0 end+
+case when x.atp_components_flag is not null and x.atp_components_flag not like 'M:[]%' then 1 else 0 end+
+case when x.atp_flag is not null and x.atp_flag not like 'M:[]%' then 1 else 0 end+
+case when x.base_item_id is not null and (x.base_item_id not like 'M:[]%' or ss.base_item_id=1) then 1 else 0 end+
+case when x.fixed_lead_time is not null and (x.fixed_lead_time not like 'M:[]%' or ss.fixed_lead_time=1) then 1 else 0 end+
+case when x.pick_components_flag is not null and x.pick_components_flag not like 'M:[]%' then 1 else 0 end+
+case when x.replenish_to_order_flag is not null and x.replenish_to_order_flag not like 'M:[]%' then 1 else 0 end+
+case when x.variable_lead_time is not null and (x.variable_lead_time not like 'M:[]%' or ss.variable_lead_time=1) then 1 else 0 end+
+case when x.wip_supply_locator_id is not null and (x.wip_supply_locator_id not like 'M:[]%' or ss.wip_supply_locator_id=1) then 1 else 0 end+
+case when x.allowed_units_lookup_code is not null and x.allowed_units_lookup_code not like 'M:[]%' then 1 else 0 end+
+case when x.cost_of_sales_account is not null and x.cost_of_sales_account not like 'M:[]%' then 1 else 0 end+
+case when x.sales_account is not null and x.sales_account not like 'M:[]%' then 1 else 0 end+
+case when x.wip_supply_subinventory is not null and (x.wip_supply_subinventory not like 'M:[]%' or ss.wip_supply_subinventory=1) then 1 else 0 end+
+case when x.wip_supply_type is not null and x.wip_supply_type not like 'M:[]%' then 1 else 0 end+
+case when x.carrying_cost is not null and (x.carrying_cost not like 'M:[]%' or ss.carrying_cost=1) then 1 else 0 end+
+case when x.default_include_in_rollup_flag is not null and x.default_include_in_rollup_flag not like 'M:[]%' then 1 else 0 end+
+case when x.fixed_lot_multiplier is not null and (x.fixed_lot_multiplier not like 'M:[]%' or ss.fixed_lot_multiplier=1) then 1 else 0 end+
+case when x.inventory_item_status_code is not null and x.inventory_item_status_code not like 'M:[]%' then 1 else 0 end+
+case when x.inventory_planning_code is not null and x.inventory_planning_code not like 'M:[]%' then 1 else 0 end+
+case when x.planner_code is not null and (x.planner_code not like 'M:[]%' or ss.planner_code=1) then 1 else 0 end+
+case when x.planning_make_buy_code is not null and x.planning_make_buy_code not like 'M:[]%' then 1 else 0 end+
+case when x.rounding_control_type is not null and x.rounding_control_type not like 'M:[]%' then 1 else 0 end+
+case when x.full_lead_time is not null and (x.full_lead_time not like 'M:[]%' or ss.full_lead_time=1) then 1 else 0 end+
+case when x.min_minmax_quantity is not null and (x.min_minmax_quantity not like 'M:[]%' or ss.min_minmax_quantity=1) then 1 else 0 end+
+case when x.mrp_safety_stock_code is not null and x.mrp_safety_stock_code not like 'M:[]%' then 1 else 0 end+
+case when x.mrp_safety_stock_percent is not null and (x.mrp_safety_stock_percent not like 'M:[]%' or ss.mrp_safety_stock_percent=1) then 1 else 0 end+
+case when x.order_cost is not null and (x.order_cost not like 'M:[]%' or ss.order_cost=1) then 1 else 0 end+
+case when x.postprocessing_lead_time is not null and (x.postprocessing_lead_time not like 'M:[]%' or ss.postprocessing_lead_time=1) then 1 else 0 end+
+case when x.preprocessing_lead_time is not null and (x.preprocessing_lead_time not like 'M:[]%' or ss.preprocessing_lead_time=1) then 1 else 0 end+
+case when x.atp_rule_id is not null and (x.atp_rule_id not like 'M:[]%' or ss.atp_rule_id=1) then 1 else 0 end+
+case when x.fixed_order_quantity is not null and (x.fixed_order_quantity not like 'M:[]%' or ss.fixed_order_quantity=1) then 1 else 0 end+
+case when x.max_minmax_quantity is not null and (x.max_minmax_quantity not like 'M:[]%' or ss.max_minmax_quantity=1) then 1 else 0 end+
+case when x.maximum_order_quantity is not null and (x.maximum_order_quantity not like 'M:[]%' or ss.maximum_order_quantity=1) then 1 else 0 end+
+case when x.minimum_order_quantity is not null and (x.minimum_order_quantity not like 'M:[]%' or ss.minimum_order_quantity=1) then 1 else 0 end+
+case when x.picking_rule_id is not null and (x.picking_rule_id not like 'M:[]%' or ss.picking_rule_id=1) then 1 else 0 end+
+case when x.auto_reduce_mps is not null and (x.auto_reduce_mps not like 'M:[]%' or ss.auto_reduce_mps=1) then 1 else 0 end+
+case when x.costing_enabled_flag is not null and x.costing_enabled_flag not like 'M:[]%' then 1 else 0 end+
+case when x.outside_operation_flag is not null and x.outside_operation_flag not like 'M:[]%' then 1 else 0 end+
+case when x.outside_operation_uom_type is not null and (x.outside_operation_uom_type not like 'M:[]%' or ss.outside_operation_uom_type=1) then 1 else 0 end+
+case when x.positive_measurement_error is not null and (x.positive_measurement_error not like 'M:[]%' or ss.positive_measurement_error=1) then 1 else 0 end+
+case when x.reservable_type is not null and x.reservable_type not like 'M:[]%' then 1 else 0 end+
+case when x.safety_stock_bucket_days is not null and (x.safety_stock_bucket_days not like 'M:[]%' or ss.safety_stock_bucket_days=1) then 1 else 0 end+
+case when x.ato_forecast_control is not null and (x.ato_forecast_control not like 'M:[]%' or ss.ato_forecast_control=1) then 1 else 0 end+
+case when x.auto_created_config_flag is not null and x.auto_created_config_flag not like 'M:[]%' then 1 else 0 end+
+case when x.cycle_count_enabled_flag is not null and x.cycle_count_enabled_flag not like 'M:[]%' then 1 else 0 end+
+case when x.item_type is not null and (x.item_type not like 'M:[]%' or ss.item_type=1) then 1 else 0 end+
+case when x.mrp_planning_code is not null and x.mrp_planning_code not like 'M:[]%' then 1 else 0 end+
+case when x.return_inspection_requirement is not null and x.return_inspection_requirement not like 'M:[]%' then 1 else 0 end+
+case when x.ship_model_complete_flag is not null and x.ship_model_complete_flag not like 'M:[]%' then 1 else 0 end+
+case when x.config_model_type is not null and (x.config_model_type not like 'M:[]%' or ss.config_model_type=1) then 1 else 0 end+
+case when x.eam_activity_source_code is not null and (x.eam_activity_source_code not like 'M:[]%' or ss.eam_activity_source_code=1) then 1 else 0 end+
+case when x.ib_item_instance_class is not null and (x.ib_item_instance_class not like 'M:[]%' or ss.ib_item_instance_class=1) then 1 else 0 end+
+case when x.lot_substitution_enabled is not null and (x.lot_substitution_enabled not like 'M:[]%' or ss.lot_substitution_enabled=1) then 1 else 0 end+
+case when x.minimum_license_quantity is not null and (x.minimum_license_quantity not like 'M:[]%' or ss.minimum_license_quantity=1) then 1 else 0 end+
+case when x.charge_periodicity_code is not null and (x.charge_periodicity_code not like 'M:[]%' or ss.charge_periodicity_code=1) then 1 else 0 end+
+case when x.outsourced_assembly is not null and (x.outsourced_assembly not like 'M:[]%' or ss.outsourced_assembly=1) then 1 else 0 end+
+case when x.subcontracting_component is not null and (x.subcontracting_component not like 'M:[]%' or ss.subcontracting_component=1) then 1 else 0 end+
+case when x.preposition_point is not null and (x.preposition_point not like 'M:[]%' or ss.preposition_point=1) then 1 else 0 end+
+case when x.repair_leadtime is not null and (x.repair_leadtime not like 'M:[]%' or ss.repair_leadtime=1) then 1 else 0 end+
+case when x.repair_program is not null and (x.repair_program not like 'M:[]%' or ss.repair_program=1) then 1 else 0 end+
+case when x.repair_yield is not null and (x.repair_yield not like 'M:[]%' or ss.repair_yield=1) then 1 else 0 end+
+case when x.engineering_date is not null and x.engineering_date not like 'M:[]%' then 1 else 0 end+
+case when x.engineering_ecn_code is not null and x.engineering_ecn_code not like 'M:[]%' then 1 else 0 end+
+case when x.engineering_item_id is not null and x.engineering_item_id not like 'M:[]%' then 1 else 0 end+
+case when x.negative_measurement_error is not null and (x.negative_measurement_error not like 'M:[]%' or ss.negative_measurement_error=1) then 1 else 0 end+
+case when x.service_starting_delay is not null and (x.service_starting_delay not like 'M:[]%' or ss.service_starting_delay=1) then 1 else 0 end+
+case when x.serviceable_component_flag is not null and x.serviceable_component_flag not like 'M:[]%' then 1 else 0 end+
+case when x.base_warranty_service_id is not null and x.base_warranty_service_id not like 'M:[]%' then 1 else 0 end+
+case when x.payment_terms_id is not null and (x.payment_terms_id not like 'M:[]%' or ss.payment_terms_id=1) then 1 else 0 end+
+case when x.preventive_maintenance_flag is not null and x.preventive_maintenance_flag not like 'M:[]%' then 1 else 0 end+
+case when x.primary_specialist_id is not null and x.primary_specialist_id not like 'M:[]%' then 1 else 0 end+
+case when x.secondary_specialist_id is not null and x.secondary_specialist_id not like 'M:[]%' then 1 else 0 end+
+case when x.serviceable_item_class_id is not null and x.serviceable_item_class_id not like 'M:[]%' then 1 else 0 end+
+case when x.serviceable_product_flag is not null and x.serviceable_product_flag not like 'M:[]%' then 1 else 0 end+
+case when x.coverage_schedule_id is not null and (x.coverage_schedule_id not like 'M:[]%' or ss.coverage_schedule_id=1) then 1 else 0 end+
+case when x.material_billable_flag is not null and (x.material_billable_flag not like 'M:[]%' or ss.material_billable_flag=1) then 1 else 0 end+
+case when x.prorate_service_flag is not null and x.prorate_service_flag not like 'M:[]%' then 1 else 0 end+
+case when x.service_duration is not null and (x.service_duration not like 'M:[]%' or ss.service_duration=1) then 1 else 0 end+
+case when x.service_duration_period_code is not null and (x.service_duration_period_code not like 'M:[]%' or ss.service_duration_period_code=1) then 1 else 0 end+
+case when x.warranty_vendor_id is not null and x.warranty_vendor_id not like 'M:[]%' then 1 else 0 end+
+case when x.invoice_enabled_flag is not null and x.invoice_enabled_flag not like 'M:[]%' then 1 else 0 end+
+case when x.invoiceable_item_flag is not null and x.invoiceable_item_flag not like 'M:[]%' then 1 else 0 end+
+case when x.max_warranty_amount is not null and x.max_warranty_amount not like 'M:[]%' then 1 else 0 end+
+case when x.must_use_approved_vendor_flag is not null and x.must_use_approved_vendor_flag not like 'M:[]%' then 1 else 0 end+
+case when x.new_revision_code is not null and x.new_revision_code not like 'M:[]%' then 1 else 0 end+
+case when x.response_time_period_code is not null and x.response_time_period_code not like 'M:[]%' then 1 else 0 end+
+case when x.response_time_value is not null and x.response_time_value not like 'M:[]%' then 1 else 0 end+
+case when x.tax_code is not null and (x.tax_code not like 'M:[]%' or ss.tax_code=1) then 1 else 0 end+
+case when x.container_item_flag is not null and x.container_item_flag not like 'M:[]%' then 1 else 0 end+
+case when x.container_type_code is not null and (x.container_type_code not like 'M:[]%' or ss.container_type_code=1) then 1 else 0 end+
+case when x.internal_volume is not null and (x.internal_volume not like 'M:[]%' or ss.internal_volume=1) then 1 else 0 end+
+case when x.maximum_load_weight is not null and (x.maximum_load_weight not like 'M:[]%' or ss.maximum_load_weight=1) then 1 else 0 end+
+case when x.minimum_fill_percent is not null and (x.minimum_fill_percent not like 'M:[]%' or ss.minimum_fill_percent=1) then 1 else 0 end+
+case when x.release_time_fence_code is not null and (x.release_time_fence_code not like 'M:[]%' or ss.release_time_fence_code=1) then 1 else 0 end+
+case when x.release_time_fence_days is not null and (x.release_time_fence_days not like 'M:[]%' or ss.release_time_fence_days=1) then 1 else 0 end+
+case when x.vehicle_item_flag is not null and x.vehicle_item_flag not like 'M:[]%' then 1 else 0 end+
+case when x.config_match is not null and (x.config_match not like 'M:[]%' or ss.config_match=1) then 1 else 0 end+
+case when x.config_orgs is not null and (x.config_orgs not like 'M:[]%' or ss.config_orgs=1) then 1 else 0 end+
+case when x.asn_autoexpire_flag is not null and (x.asn_autoexpire_flag not like 'M:[]%' or ss.asn_autoexpire_flag=1) then 1 else 0 end+
+case when x.consigned_flag is not null and (x.consigned_flag not like 'M:[]%' or ss.consigned_flag=1) then 1 else 0 end+
+case when x.continous_transfer is not null and (x.continous_transfer not like 'M:[]%' or ss.continous_transfer=1) then 1 else 0 end+
+case when x.convergence is not null and (x.convergence not like 'M:[]%' or ss.convergence=1) then 1 else 0 end+
+case when x.critical_component_flag is not null and (x.critical_component_flag not like 'M:[]%' or ss.critical_component_flag=1) then 1 else 0 end+
+case when x.days_max_inv_supply is not null and (x.days_max_inv_supply not like 'M:[]%' or ss.days_max_inv_supply=1) then 1 else 0 end+
+case when x.days_max_inv_window is not null and (x.days_max_inv_window not like 'M:[]%' or ss.days_max_inv_window=1) then 1 else 0 end+
+case when x.days_tgt_inv_supply is not null and (x.days_tgt_inv_supply not like 'M:[]%' or ss.days_tgt_inv_supply=1) then 1 else 0 end+
+case when x.days_tgt_inv_window is not null and (x.days_tgt_inv_window not like 'M:[]%' or ss.days_tgt_inv_window=1) then 1 else 0 end+
+case when x.divergence is not null and (x.divergence not like 'M:[]%' or ss.divergence=1) then 1 else 0 end+
+case when x.drp_planned_flag is not null and (x.drp_planned_flag not like 'M:[]%' or ss.drp_planned_flag=1) then 1 else 0 end+
+case when x.exclude_from_budget_flag is not null and (x.exclude_from_budget_flag not like 'M:[]%' or ss.exclude_from_budget_flag=1) then 1 else 0 end+
+case when x.forecast_horizon is not null and (x.forecast_horizon not like 'M:[]%' or ss.forecast_horizon=1) then 1 else 0 end+
+case when x.so_authorization_flag is not null and (x.so_authorization_flag not like 'M:[]%' or ss.so_authorization_flag=1) then 1 else 0 end+
+case when x.vmi_fixed_order_quantity is not null and (x.vmi_fixed_order_quantity not like 'M:[]%' or ss.vmi_fixed_order_quantity=1) then 1 else 0 end+
+case when x.vmi_forecast_type is not null and (x.vmi_forecast_type not like 'M:[]%' or ss.vmi_forecast_type=1) then 1 else 0 end+
+case when x.vmi_maximum_days is not null and (x.vmi_maximum_days not like 'M:[]%' or ss.vmi_maximum_days=1) then 1 else 0 end+
+case when x.vmi_maximum_units is not null and (x.vmi_maximum_units not like 'M:[]%' or ss.vmi_maximum_units=1) then 1 else 0 end+
+case when x.vmi_minimum_days is not null and (x.vmi_minimum_days not like 'M:[]%' or ss.vmi_minimum_days=1) then 1 else 0 end+
+case when x.vmi_minimum_units is not null and (x.vmi_minimum_units not like 'M:[]%' or ss.vmi_minimum_units=1) then 1 else 0 end+
+case when x.child_lot_flag is not null and x.child_lot_flag not like 'M:[]%' then 1 else 0 end+
+case when x.child_lot_prefix is not null and (x.child_lot_prefix not like 'M:[]%' or ss.child_lot_prefix=1) then 1 else 0 end+
+case when x.child_lot_starting_number is not null and (x.child_lot_starting_number not like 'M:[]%' or ss.child_lot_starting_number=1) then 1 else 0 end+
+case when x.child_lot_validation_flag is not null and x.child_lot_validation_flag not like 'M:[]%' then 1 else 0 end+
+case when x.copy_lot_attribute_flag is not null and x.copy_lot_attribute_flag not like 'M:[]%' then 1 else 0 end+
+case when x.default_grade is not null and (x.default_grade not like 'M:[]%' or ss.default_grade=1) then 1 else 0 end+
+case when x.grade_control_flag is not null and x.grade_control_flag not like 'M:[]%' then 1 else 0 end+
+case when x.lot_divisible_flag is not null and x.lot_divisible_flag not like 'M:[]%' then 1 else 0 end+
+case when x.parent_child_generation_flag is not null and (x.parent_child_generation_flag not like 'M:[]%' or ss.parent_child_generation_flag=1) then 1 else 0 end+
+case when x.process_execution_enabled_flag is not null and x.process_execution_enabled_flag not like 'M:[]%' then 1 else 0 end+
+case when x.process_quality_enabled_flag is not null and x.process_quality_enabled_flag not like 'M:[]%' then 1 else 0 end+
+case when x.recipe_enabled_flag is not null and x.recipe_enabled_flag not like 'M:[]%' then 1 else 0 end+
+case when x.cas_number is not null and (x.cas_number not like 'M:[]%' or ss.cas_number=1) then 1 else 0 end+
+case when x.expiration_action_code is not null and (x.expiration_action_code not like 'M:[]%' or ss.expiration_action_code=1) then 1 else 0 end+
+case when x.expiration_action_interval is not null and (x.expiration_action_interval not like 'M:[]%' or ss.expiration_action_interval=1) then 1 else 0 end+
+case when x.hazardous_material_flag is not null and x.hazardous_material_flag not like 'M:[]%' then 1 else 0 end+
+case when x.hold_days is not null and (x.hold_days not like 'M:[]%' or ss.hold_days=1) then 1 else 0 end+
+case when x.maturity_days is not null and (x.maturity_days not like 'M:[]%' or ss.maturity_days=1) then 1 else 0 end+
+case when x.process_costing_enabled_flag is not null and x.process_costing_enabled_flag not like 'M:[]%' then 1 else 0 end+
+case when x.retest_interval is not null and (x.retest_interval not like 'M:[]%' or ss.retest_interval=1) then 1 else 0 end+
+case when x.dual_uom_control is not null and x.dual_uom_control not like 'M:[]%' then 1 else 0 end+
+case when x.effectivity_control is not null and x.effectivity_control not like 'M:[]%' then 1 else 0 end+
+case when x.fixed_days_supply is not null and (x.fixed_days_supply not like 'M:[]%' or ss.fixed_days_supply=1) then 1 else 0 end+
+case when x.indivisible_flag is not null and x.indivisible_flag not like 'M:[]%' then 1 else 0 end+
+case when x.inventory_asset_flag is not null and x.inventory_asset_flag not like 'M:[]%' then 1 else 0 end+
+case when x.process_supply_locator_id is not null and (x.process_supply_locator_id not like 'M:[]%' or ss.process_supply_locator_id=1) then 1 else 0 end+
+case when x.process_supply_subinventory is not null and (x.process_supply_subinventory not like 'M:[]%' or ss.process_supply_subinventory=1) then 1 else 0 end+
+case when x.process_yield_locator_id is not null and (x.process_yield_locator_id not like 'M:[]%' or ss.process_yield_locator_id=1) then 1 else 0 end+
+case when x.process_yield_subinventory is not null and (x.process_yield_subinventory not like 'M:[]%' or ss.process_yield_subinventory=1) then 1 else 0 end+
+case when x.web_status is not null and x.web_status not like 'M:[]%' then 1 else 0 end corrected_by_item_upload,
+ltrim(
+case when x.accounting_rule_id like 'M:[]%' and ss.accounting_rule_id<>1 then ', Accounting Rule Id' end||
+case when x.buyer_id like 'M:[]%' and ss.buyer_id<>1 then ', Buyer Id' end||
+case when x.customer_order_flag like 'M:[]%' then ', Customer Order Flag' end||
+case when x.internal_order_flag like 'M:[]%' then ', Internal Order Flag' end||
+case when x.inventory_item_flag like 'M:[]%' then ', Inventory Item Flag' end||
+case when x.invoicing_rule_id like 'M:[]%' and ss.invoicing_rule_id<>1 then ', Invoicing Rule Id' end||
+case when x.purchasing_item_flag like 'M:[]%' then ', Purchasing Item Flag' end||
+case when x.shippable_item_flag like 'M:[]%' then ', Shippable Item Flag' end||
+case when x.bom_enabled_flag like 'M:[]%' then ', Bom Enabled Flag' end||
+case when x.build_in_wip_flag like 'M:[]%' then ', Build In Wip Flag' end||
+case when x.check_shortages_flag like 'M:[]%' then ', Check Shortages Flag' end||
+case when x.item_catalog_group_id like 'M:[]%' then ', Item Catalog Group Id' end||
+case when x.revision_qty_control_code like 'M:[]%' then ', Revision Qty Control Code' end||
+case when x.stock_enabled_flag like 'M:[]%' then ', Stock Enabled Flag' end||
+case when x.customer_order_enabled_flag like 'M:[]%' then ', Customer Order Enabled Flag' end||
+case when x.internal_order_enabled_flag like 'M:[]%' then ', Internal Order Enabled Flag' end||
+case when x.mtl_transactions_enabled_flag like 'M:[]%' then ', Mtl Transactions Enabled Flag' end||
+case when x.purchasing_enabled_flag like 'M:[]%' then ', Purchasing Enabled Flag' end||
+case when x.so_transactions_flag like 'M:[]%' then ', So Transactions Flag' end||
+case when x.allow_item_desc_update_flag like 'M:[]%' then ', Allow Item Desc Update Flag' end||
+case when x.catalog_status_flag like 'M:[]%' and ss.catalog_status_flag<>1 then ', Catalog Status Flag' end||
+case when x.collateral_flag like 'M:[]%' then ', Collateral Flag' end||
+case when x.default_shipping_org like 'M:[]%' and ss.default_shipping_org<>1 then ', Default Shipping Org' end||
+case when x.inspection_required_flag like 'M:[]%' and ss.inspection_required_flag<>1 then ', Inspection Required Flag' end||
+case when x.market_price like 'M:[]%' and ss.market_price<>1 then ', Market Price' end||
+case when x.purchasing_tax_code like 'M:[]%' and ss.purchasing_tax_code<>1 then ', Purchasing Tax Code' end||
+case when x.qty_rcv_exception_code like 'M:[]%' and ss.qty_rcv_exception_code<>1 then ', Qty Rcv Exception Code' end||
+case when x.receipt_required_flag like 'M:[]%' and ss.receipt_required_flag<>1 then ', Receipt Required Flag' end||
+case when x.returnable_flag like 'M:[]%' then ', Returnable Flag' end||
+case when x.taxable_flag like 'M:[]%' and ss.taxable_flag<>1 then ', Taxable Flag' end||
+case when x.asset_category_id like 'M:[]%' and ss.asset_category_id<>1 then ', Asset Category Id' end||
+case when x.enforce_ship_to_location_code like 'M:[]%' and ss.enforce_ship_to_location_code<>1 then ', Enforce Ship To Location Code' end||
+case when x.hazard_class_id like 'M:[]%' and ss.hazard_class_id<>1 then ', Hazard Class Id' end||
+case when x.list_price_per_unit like 'M:[]%' and ss.list_price_per_unit<>1 then ', List Price Per Unit' end||
+case when x.price_tolerance_percent like 'M:[]%' and ss.price_tolerance_percent<>1 then ', Price Tolerance Percent' end||
+case when x.qty_rcv_tolerance like 'M:[]%' and ss.qty_rcv_tolerance<>1 then ', Qty Rcv Tolerance' end||
+case when x.rfq_required_flag like 'M:[]%' then ', Rfq Required Flag' end||
+case when x.rounding_factor like 'M:[]%' and ss.rounding_factor<>1 then ', Rounding Factor' end||
+case when x.un_number_id like 'M:[]%' and ss.un_number_id<>1 then ', Un Number Id' end||
+case when x.unit_of_issue like 'M:[]%' and ss.unit_of_issue<>1 then ', Unit Of Issue' end||
+case when x.allow_express_delivery_flag like 'M:[]%' and ss.allow_express_delivery_flag<>1 then ', Allow Express Delivery Flag' end||
+case when x.allow_substitute_receipts_flag like 'M:[]%' and ss.allow_substitute_receipts_flag<>1 then ', Allow Substitute Receipts Flag' end||
+case when x.allow_unordered_receipts_flag like 'M:[]%' and ss.allow_unordered_receipts_flag<>1 then ', Allow Unordered Receipts Flag' end||
+case when x.days_early_receipt_allowed like 'M:[]%' and ss.days_early_receipt_allowed<>1 then ', Days Early Receipt Allowed' end||
+case when x.days_late_receipt_allowed like 'M:[]%' and ss.days_late_receipt_allowed<>1 then ', Days Late Receipt Allowed' end||
+case when x.auto_lot_alpha_prefix like 'M:[]%' and ss.auto_lot_alpha_prefix<>1 then ', Auto Lot Alpha Prefix' end||
+case when x.description like 'M:[]%' and ss.description<>1 then ', Description' end||
+case when x.invoice_close_tolerance like 'M:[]%' and ss.invoice_close_tolerance<>1 then ', Invoice Close Tolerance' end||
+case when x.long_description like 'M:[]%' and ss.long_description<>1 then ', Long Description' end||
+case when x.receipt_days_exception_code like 'M:[]%' and ss.receipt_days_exception_code<>1 then ', Receipt Days Exception Code' end||
+case when x.receive_close_tolerance like 'M:[]%' and ss.receive_close_tolerance<>1 then ', Receive Close Tolerance' end||
+case when x.receiving_routing_id like 'M:[]%' and ss.receiving_routing_id<>1 then ', Receiving Routing Id' end||
+case when x.over_shipment_tolerance like 'M:[]%' and ss.over_shipment_tolerance<>1 then ', Over Shipment Tolerance' end||
+case when x.overcompletion_tolerance_type like 'M:[]%' and ss.overcompletion_tolerance_type<>1 then ', Overcompletion Tolerance Type' end||
+case when x.overcompletion_tolerance_value like 'M:[]%' and ss.overcompletion_tolerance_value<>1 then ', Overcompletion Tolerance Value' end||
+case when x.under_shipment_tolerance like 'M:[]%' and ss.under_shipment_tolerance<>1 then ', Under Shipment Tolerance' end||
+case when x.defect_tracking_on_flag like 'M:[]%' and ss.defect_tracking_on_flag<>1 then ', Defect Tracking On Flag' end||
+case when x.equipment_type like 'M:[]%' then ', Equipment Type' end||
+case when x.over_return_tolerance like 'M:[]%' and ss.over_return_tolerance<>1 then ', Over Return Tolerance' end||
+case when x.recovered_part_disp_code like 'M:[]%' and ss.recovered_part_disp_code<>1 then ', Recovered Part Disp Code' end||
+case when x.under_return_tolerance like 'M:[]%' and ss.under_return_tolerance<>1 then ', Under Return Tolerance' end||
+case when x.coupon_exempt_flag like 'M:[]%' then ', Coupon Exempt Flag' end||
+case when x.downloadable_flag like 'M:[]%' then ', Downloadable Flag' end||
+case when x.electronic_flag like 'M:[]%' then ', Electronic Flag' end||
+case when x.event_flag like 'M:[]%' then ', Event Flag' end||
+case when x.vol_discount_exempt_flag like 'M:[]%' then ', Vol Discount Exempt Flag' end||
+case when x.asset_creation_code like 'M:[]%' and ss.asset_creation_code<>1 then ', Asset Creation Code' end||
+case when x.back_orderable_flag like 'M:[]%' and ss.back_orderable_flag<>1 then ', Back Orderable Flag' end||
+case when x.comms_activation_reqd_flag like 'M:[]%' and ss.comms_activation_reqd_flag<>1 then ', Comms Activation Reqd Flag' end||
+case when x.comms_nl_trackable_flag like 'M:[]%' then ', Comms Nl Trackable Flag' end||
+case when x.orderable_on_web_flag like 'M:[]%' and ss.orderable_on_web_flag<>1 then ', Orderable On Web Flag' end||
+case when x.bulk_picked_flag like 'M:[]%' then ', Bulk Picked Flag' end||
+case when x.default_lot_status_id like 'M:[]%' and ss.default_lot_status_id<>1 then ', Default Lot Status Id' end||
+case when x.dimension_uom_code like 'M:[]%' and ss.dimension_uom_code<>1 then ', Dimension Uom Code' end||
+case when x.lot_status_enabled like 'M:[]%' then ', Lot Status Enabled' end||
+case when x.unit_height like 'M:[]%' and ss.unit_height<>1 then ', Unit Height' end||
+case when x.unit_length like 'M:[]%' and ss.unit_length<>1 then ', Unit Length' end||
+case when x.unit_width like 'M:[]%' and ss.unit_width<>1 then ', Unit Width' end||
+case when x.default_material_status_id like 'M:[]%' and ss.default_material_status_id<>1 then ', Default Material Status Id' end||
+case when x.default_serial_status_id like 'M:[]%' and ss.default_serial_status_id<>1 then ', Default Serial Status Id' end||
+case when x.lot_merge_enabled like 'M:[]%' then ', Lot Merge Enabled' end||
+case when x.lot_split_enabled like 'M:[]%' then ', Lot Split Enabled' end||
+case when x.serial_status_enabled like 'M:[]%' then ', Serial Status Enabled' end||
+case when x.financing_allowed_flag like 'M:[]%' and ss.financing_allowed_flag<>1 then ', Financing Allowed Flag' end||
+case when x.inventory_carry_penalty like 'M:[]%' and ss.inventory_carry_penalty<>1 then ', Inventory Carry Penalty' end||
+case when x.operation_slack_penalty like 'M:[]%' and ss.operation_slack_penalty<>1 then ', Operation Slack Penalty' end||
+case when x.contract_item_type_code like 'M:[]%' and ss.contract_item_type_code<>1 then ', Contract Item Type Code' end||
+case when x.dual_uom_deviation_high is not null then ', Dual Uom Deviation High' end||
+case when x.dual_uom_deviation_low is not null then ', Dual Uom Deviation Low' end||
+case when x.eam_act_notification_flag like 'M:[]%' and ss.eam_act_notification_flag<>1 then ', Eam Act Notification Flag' end||
+case when x.eam_act_shutdown_status like 'M:[]%' and ss.eam_act_shutdown_status<>1 then ', Eam Act Shutdown Status' end||
+case when x.eam_activity_cause_code like 'M:[]%' and ss.eam_activity_cause_code<>1 then ', Eam Activity Cause Code' end||
+case when x.eam_activity_type_code like 'M:[]%' and ss.eam_activity_type_code<>1 then ', Eam Activity Type Code' end||
+case when x.eam_item_type like 'M:[]%' and ss.eam_item_type<>1 then ', Eam Item Type' end||
+case when x.secondary_uom_code is not null then ', Secondary Uom Code' end||
+case when x.create_supply_flag like 'M:[]%' and ss.create_supply_flag<>1 then ', Create Supply Flag' end||
+case when x.default_so_source_type like 'M:[]%' and ss.default_so_source_type<>1 then ', Default So Source Type' end||
+case when x.lot_translate_enabled like 'M:[]%' and ss.lot_translate_enabled<>1 then ', Lot Translate Enabled' end||
+case when x.planned_inv_point_flag like 'M:[]%' and ss.planned_inv_point_flag<>1 then ', Planned Inv Point Flag' end||
+case when x.serv_billing_enabled_flag like 'M:[]%' and ss.serv_billing_enabled_flag<>1 then ', Serv Billing Enabled Flag' end||
+case when x.serv_req_enabled_code like 'M:[]%' and ss.serv_req_enabled_code<>1 then ', Serv Req Enabled Code' end||
+case when x.substitution_window_code like 'M:[]%' and ss.substitution_window_code<>1 then ', Substitution Window Code' end||
+case when x.substitution_window_days like 'M:[]%' and ss.substitution_window_days<>1 then ', Substitution Window Days' end||
+case when x.auto_serial_alpha_prefix like 'M:[]%' and ss.auto_serial_alpha_prefix<>1 then ', Auto Serial Alpha Prefix' end||
+case when x.lot_control_code like 'M:[]%' then ', Lot Control Code' end||
+case when x.serial_number_control_code like 'M:[]%' then ', Serial Number Control Code' end||
+case when x.shelf_life_code like 'M:[]%' then ', Shelf Life Code' end||
+case when x.shelf_life_days like 'M:[]%' and ss.shelf_life_days<>1 then ', Shelf Life Days' end||
+case when x.start_auto_lot_number like 'M:[]%' and ss.start_auto_lot_number<>1 then ', Start Auto Lot Number' end||
+case when x.start_auto_serial_number like 'M:[]%' and ss.start_auto_serial_number<>1 then ', Start Auto Serial Number' end||
+case when x.encumbrance_account like 'M:[]%' and ss.encumbrance_account<>1 then ', Encumbrance Account' end||
+case when x.expense_account like 'M:[]%' and ss.expense_account<>1 then ', Expense Account' end||
+case when x.restrict_subinventories_code like 'M:[]%' then ', Restrict Subinventories Code' end||
+case when x.source_organization_id like 'M:[]%' and ss.source_organization_id<>1 then ', Source Organization Id' end||
+case when x.source_subinventory like 'M:[]%' and ss.source_subinventory<>1 then ', Source Subinventory' end||
+case when x.source_type like 'M:[]%' and ss.source_type<>1 then ', Source Type' end||
+case when x.unit_weight like 'M:[]%' and ss.unit_weight<>1 then ', Unit Weight' end||
+case when x.weight_uom_code like 'M:[]%' and ss.weight_uom_code<>1 then ', Weight Uom Code' end||
+case when x.acceptable_early_days like 'M:[]%' and ss.acceptable_early_days<>1 then ', Acceptable Early Days' end||
+case when x.location_control_code like 'M:[]%' then ', Location Control Code' end||
+case when x.planning_time_fence_code like 'M:[]%' then ', Planning Time Fence Code' end||
+case when x.restrict_locators_code like 'M:[]%' then ', Restrict Locators Code' end||
+case when x.shrinkage_rate like 'M:[]%' and ss.shrinkage_rate<>1 then ', Shrinkage Rate' end||
+case when x.unit_volume like 'M:[]%' and ss.unit_volume<>1 then ', Unit Volume' end||
+case when x.volume_uom_code like 'M:[]%' and ss.volume_uom_code<>1 then ', Volume Uom Code' end||
+case when x.acceptable_rate_decrease like 'M:[]%' and ss.acceptable_rate_decrease<>1 then ', Acceptable Rate Decrease' end||
+case when x.acceptable_rate_increase like 'M:[]%' and ss.acceptable_rate_increase<>1 then ', Acceptable Rate Increase' end||
+case when x.cum_manufacturing_lead_time like 'M:[]%' and ss.cum_manufacturing_lead_time<>1 then ', Cum Manufacturing Lead Time' end||
+case when x.demand_time_fence_code like 'M:[]%' and ss.demand_time_fence_code<>1 then ', Demand Time Fence Code' end||
+case when x.lead_time_lot_size like 'M:[]%' and ss.lead_time_lot_size<>1 then ', Lead Time Lot Size' end||
+case when x.mrp_calculate_atp_flag like 'M:[]%' then ', Mrp Calculate Atp Flag' end||
+case when x.overrun_percentage like 'M:[]%' and ss.overrun_percentage<>1 then ', Overrun Percentage' end||
+case when x.std_lot_size like 'M:[]%' and ss.std_lot_size<>1 then ', Std Lot Size' end||
+case when x.bom_item_type like 'M:[]%' then ', Bom Item Type' end||
+case when x.cumulative_total_lead_time like 'M:[]%' and ss.cumulative_total_lead_time<>1 then ', Cumulative Total Lead Time' end||
+case when x.demand_time_fence_days like 'M:[]%' and ss.demand_time_fence_days<>1 then ', Demand Time Fence Days' end||
+case when x.end_assembly_pegging_flag like 'M:[]%' and ss.end_assembly_pegging_flag<>1 then ', End Assembly Pegging Flag' end||
+case when x.planning_exception_set like 'M:[]%' and ss.planning_exception_set<>1 then ', Planning Exception Set' end||
+case when x.planning_time_fence_days like 'M:[]%' and ss.planning_time_fence_days<>1 then ', Planning Time Fence Days' end||
+case when x.repetitive_planning_flag like 'M:[]%' then ', Repetitive Planning Flag' end||
+case when x.atp_components_flag like 'M:[]%' then ', Atp Components Flag' end||
+case when x.atp_flag like 'M:[]%' then ', Atp Flag' end||
+case when x.base_item_id like 'M:[]%' and ss.base_item_id<>1 then ', Base Item Id' end||
+case when x.fixed_lead_time like 'M:[]%' and ss.fixed_lead_time<>1 then ', Fixed Lead Time' end||
+case when x.pick_components_flag like 'M:[]%' then ', Pick Components Flag' end||
+case when x.replenish_to_order_flag like 'M:[]%' then ', Replenish To Order Flag' end||
+case when x.variable_lead_time like 'M:[]%' and ss.variable_lead_time<>1 then ', Variable Lead Time' end||
+case when x.wip_supply_locator_id like 'M:[]%' and ss.wip_supply_locator_id<>1 then ', Wip Supply Locator Id' end||
+case when x.allowed_units_lookup_code like 'M:[]%' then ', Allowed Units Lookup Code' end||
+case when x.cost_of_sales_account like 'M:[]%' then ', Cost Of Sales Account' end||
+case when x.primary_uom_code is not null then ', Primary Uom Code' end||
+case when x.sales_account like 'M:[]%' then ', Sales Account' end||
+case when x.wip_supply_subinventory like 'M:[]%' and ss.wip_supply_subinventory<>1 then ', Wip Supply Subinventory' end||
+case when x.wip_supply_type like 'M:[]%' then ', Wip Supply Type' end||
+case when x.carrying_cost like 'M:[]%' and ss.carrying_cost<>1 then ', Carrying Cost' end||
+case when x.default_include_in_rollup_flag like 'M:[]%' then ', Default Include In Rollup Flag' end||
+case when x.fixed_lot_multiplier like 'M:[]%' and ss.fixed_lot_multiplier<>1 then ', Fixed Lot Multiplier' end||
+case when x.inventory_item_status_code like 'M:[]%' then ', Inventory Item Status Code' end||
+case when x.inventory_planning_code like 'M:[]%' then ', Inventory Planning Code' end||
+case when x.planner_code like 'M:[]%' and ss.planner_code<>1 then ', Planner Code' end||
+case when x.planning_make_buy_code like 'M:[]%' then ', Planning Make Buy Code' end||
+case when x.rounding_control_type like 'M:[]%' then ', Rounding Control Type' end||
+case when x.full_lead_time like 'M:[]%' and ss.full_lead_time<>1 then ', Full Lead Time' end||
+case when x.min_minmax_quantity like 'M:[]%' and ss.min_minmax_quantity<>1 then ', Min Minmax Quantity' end||
+case when x.mrp_safety_stock_code like 'M:[]%' then ', Mrp Safety Stock Code' end||
+case when x.mrp_safety_stock_percent like 'M:[]%' and ss.mrp_safety_stock_percent<>1 then ', Mrp Safety Stock Percent' end||
+case when x.order_cost like 'M:[]%' and ss.order_cost<>1 then ', Order Cost' end||
+case when x.postprocessing_lead_time like 'M:[]%' and ss.postprocessing_lead_time<>1 then ', Postprocessing Lead Time' end||
+case when x.preprocessing_lead_time like 'M:[]%' and ss.preprocessing_lead_time<>1 then ', Preprocessing Lead Time' end||
+case when x.atp_rule_id like 'M:[]%' and ss.atp_rule_id<>1 then ', Atp Rule Id' end||
+case when x.fixed_order_quantity like 'M:[]%' and ss.fixed_order_quantity<>1 then ', Fixed Order Quantity' end||
+case when x.max_minmax_quantity like 'M:[]%' and ss.max_minmax_quantity<>1 then ', Max Minmax Quantity' end||
+case when x.maximum_order_quantity like 'M:[]%' and ss.maximum_order_quantity<>1 then ', Maximum Order Quantity' end||
+case when x.minimum_order_quantity like 'M:[]%' and ss.minimum_order_quantity<>1 then ', Minimum Order Quantity' end||
+case when x.picking_rule_id like 'M:[]%' and ss.picking_rule_id<>1 then ', Picking Rule Id' end||
+case when x.auto_reduce_mps like 'M:[]%' and ss.auto_reduce_mps<>1 then ', Auto Reduce Mps' end||
+case when x.costing_enabled_flag like 'M:[]%' then ', Costing Enabled Flag' end||
+case when x.outside_operation_flag like 'M:[]%' then ', Outside Operation Flag' end||
+case when x.outside_operation_uom_type like 'M:[]%' and ss.outside_operation_uom_type<>1 then ', Outside Operation Uom Type' end||
+case when x.positive_measurement_error like 'M:[]%' and ss.positive_measurement_error<>1 then ', Positive Measurement Error' end||
+case when x.reservable_type like 'M:[]%' then ', Reservable Type' end||
+case when x.safety_stock_bucket_days like 'M:[]%' and ss.safety_stock_bucket_days<>1 then ', Safety Stock Bucket Days' end||
+case when x.ato_forecast_control like 'M:[]%' and ss.ato_forecast_control<>1 then ', Ato Forecast Control' end||
+case when x.auto_created_config_flag like 'M:[]%' then ', Auto Created Config Flag' end||
+case when x.cycle_count_enabled_flag like 'M:[]%' then ', Cycle Count Enabled Flag' end||
+case when x.item_type like 'M:[]%' and ss.item_type<>1 then ', Item Type' end||
+case when x.model_config_clause_name is not null then ', Model Config Clause Name' end||
+case when x.mrp_planning_code like 'M:[]%' then ', Mrp Planning Code' end||
+case when x.return_inspection_requirement like 'M:[]%' then ', Return Inspection Requirement' end||
+case when x.ship_model_complete_flag like 'M:[]%' then ', Ship Model Complete Flag' end||
+case when x.config_model_type like 'M:[]%' and ss.config_model_type<>1 then ', Config Model Type' end||
+case when x.eam_activity_source_code like 'M:[]%' and ss.eam_activity_source_code<>1 then ', Eam Activity Source Code' end||
+case when x.ib_item_instance_class like 'M:[]%' and ss.ib_item_instance_class<>1 then ', Ib Item Instance Class' end||
+case when x.lot_substitution_enabled like 'M:[]%' and ss.lot_substitution_enabled<>1 then ', Lot Substitution Enabled' end||
+case when x.minimum_license_quantity like 'M:[]%' and ss.minimum_license_quantity<>1 then ', Minimum License Quantity' end||
+case when x.charge_periodicity_code like 'M:[]%' and ss.charge_periodicity_code<>1 then ', Charge Periodicity Code' end||
+case when x.outsourced_assembly like 'M:[]%' and ss.outsourced_assembly<>1 then ', Outsourced Assembly' end||
+case when x.subcontracting_component like 'M:[]%' and ss.subcontracting_component<>1 then ', Subcontracting Component' end||
+case when x.preposition_point like 'M:[]%' and ss.preposition_point<>1 then ', Preposition Point' end||
+case when x.repair_leadtime like 'M:[]%' and ss.repair_leadtime<>1 then ', Repair Leadtime' end||
+case when x.repair_program like 'M:[]%' and ss.repair_program<>1 then ', Repair Program' end||
+case when x.repair_yield like 'M:[]%' and ss.repair_yield<>1 then ', Repair Yield' end||
+case when x.engineering_date like 'M:[]%' then ', Engineering Date' end||
+case when x.engineering_ecn_code like 'M:[]%' then ', Engineering Ecn Code' end||
+case when x.engineering_item_id like 'M:[]%' then ', Engineering Item Id' end||
+case when x.negative_measurement_error like 'M:[]%' and ss.negative_measurement_error<>1 then ', Negative Measurement Error' end||
+case when x.service_starting_delay like 'M:[]%' and ss.service_starting_delay<>1 then ', Service Starting Delay' end||
+case when x.serviceable_component_flag like 'M:[]%' then ', Serviceable Component Flag' end||
+case when x.base_warranty_service_id like 'M:[]%' then ', Base Warranty Service Id' end||
+case when x.payment_terms_id like 'M:[]%' and ss.payment_terms_id<>1 then ', Payment Terms Id' end||
+case when x.preventive_maintenance_flag like 'M:[]%' then ', Preventive Maintenance Flag' end||
+case when x.primary_specialist_id like 'M:[]%' then ', Primary Specialist Id' end||
+case when x.secondary_specialist_id like 'M:[]%' then ', Secondary Specialist Id' end||
+case when x.serviceable_item_class_id like 'M:[]%' then ', Serviceable Item Class Id' end||
+case when x.serviceable_product_flag like 'M:[]%' then ', Serviceable Product Flag' end||
+case when x.coverage_schedule_id like 'M:[]%' and ss.coverage_schedule_id<>1 then ', Coverage Schedule Id' end||
+case when x.material_billable_flag like 'M:[]%' and ss.material_billable_flag<>1 then ', Material Billable Flag' end||
+case when x.prorate_service_flag like 'M:[]%' then ', Prorate Service Flag' end||
+case when x.service_duration like 'M:[]%' and ss.service_duration<>1 then ', Service Duration' end||
+case when x.service_duration_period_code like 'M:[]%' and ss.service_duration_period_code<>1 then ', Service Duration Period Code' end||
+case when x.warranty_vendor_id like 'M:[]%' then ', Warranty Vendor Id' end||
+case when x.invoice_enabled_flag like 'M:[]%' then ', Invoice Enabled Flag' end||
+case when x.invoiceable_item_flag like 'M:[]%' then ', Invoiceable Item Flag' end||
+case when x.max_warranty_amount like 'M:[]%' then ', Max Warranty Amount' end||
+case when x.must_use_approved_vendor_flag like 'M:[]%' then ', Must Use Approved Vendor Flag' end||
+case when x.new_revision_code like 'M:[]%' then ', New Revision Code' end||
+case when x.response_time_period_code like 'M:[]%' then ', Response Time Period Code' end||
+case when x.response_time_value like 'M:[]%' then ', Response Time Value' end||
+case when x.tax_code like 'M:[]%' and ss.tax_code<>1 then ', Tax Code' end||
+case when x.container_item_flag like 'M:[]%' then ', Container Item Flag' end||
+case when x.container_type_code like 'M:[]%' and ss.container_type_code<>1 then ', Container Type Code' end||
+case when x.internal_volume like 'M:[]%' and ss.internal_volume<>1 then ', Internal Volume' end||
+case when x.maximum_load_weight like 'M:[]%' and ss.maximum_load_weight<>1 then ', Maximum Load Weight' end||
+case when x.minimum_fill_percent like 'M:[]%' and ss.minimum_fill_percent<>1 then ', Minimum Fill Percent' end||
+case when x.release_time_fence_code like 'M:[]%' and ss.release_time_fence_code<>1 then ', Release Time Fence Code' end||
+case when x.release_time_fence_days like 'M:[]%' and ss.release_time_fence_days<>1 then ', Release Time Fence Days' end||
+case when x.vehicle_item_flag like 'M:[]%' then ', Vehicle Item Flag' end||
+case when x.ont_pricing_qty_source is not null then ', Ont Pricing Qty Source' end||
+case when x.secondary_default_ind is not null then ', Secondary Default Ind' end||
+case when x.tracking_quantity_ind is not null then ', Tracking Quantity Ind' end||
+case when x.config_match like 'M:[]%' and ss.config_match<>1 then ', Config Match' end||
+case when x.config_orgs like 'M:[]%' and ss.config_orgs<>1 then ', Config Orgs' end||
+case when x.asn_autoexpire_flag like 'M:[]%' and ss.asn_autoexpire_flag<>1 then ', Asn Autoexpire Flag' end||
+case when x.consigned_flag like 'M:[]%' and ss.consigned_flag<>1 then ', Consigned Flag' end||
+case when x.continous_transfer like 'M:[]%' and ss.continous_transfer<>1 then ', Continous Transfer' end||
+case when x.convergence like 'M:[]%' and ss.convergence<>1 then ', Convergence' end||
+case when x.critical_component_flag like 'M:[]%' and ss.critical_component_flag<>1 then ', Critical Component Flag' end||
+case when x.days_max_inv_supply like 'M:[]%' and ss.days_max_inv_supply<>1 then ', Days Max Inv Supply' end||
+case when x.days_max_inv_window like 'M:[]%' and ss.days_max_inv_window<>1 then ', Days Max Inv Window' end||
+case when x.days_tgt_inv_supply like 'M:[]%' and ss.days_tgt_inv_supply<>1 then ', Days Tgt Inv Supply' end||
+case when x.days_tgt_inv_window like 'M:[]%' and ss.days_tgt_inv_window<>1 then ', Days Tgt Inv Window' end||
+case when x.divergence like 'M:[]%' and ss.divergence<>1 then ', Divergence' end||
+case when x.drp_planned_flag like 'M:[]%' and ss.drp_planned_flag<>1 then ', Drp Planned Flag' end||
+case when x.exclude_from_budget_flag like 'M:[]%' and ss.exclude_from_budget_flag<>1 then ', Exclude From Budget Flag' end||
+case when x.forecast_horizon like 'M:[]%' and ss.forecast_horizon<>1 then ', Forecast Horizon' end||
+case when x.so_authorization_flag like 'M:[]%' and ss.so_authorization_flag<>1 then ', So Authorization Flag' end||
+case when x.vmi_fixed_order_quantity like 'M:[]%' and ss.vmi_fixed_order_quantity<>1 then ', Vmi Fixed Order Quantity' end||
+case when x.vmi_forecast_type like 'M:[]%' and ss.vmi_forecast_type<>1 then ', Vmi Forecast Type' end||
+case when x.vmi_maximum_days like 'M:[]%' and ss.vmi_maximum_days<>1 then ', Vmi Maximum Days' end||
+case when x.vmi_maximum_units like 'M:[]%' and ss.vmi_maximum_units<>1 then ', Vmi Maximum Units' end||
+case when x.vmi_minimum_days like 'M:[]%' and ss.vmi_minimum_days<>1 then ', Vmi Minimum Days' end||
+case when x.vmi_minimum_units like 'M:[]%' and ss.vmi_minimum_units<>1 then ', Vmi Minimum Units' end||
+case when x.child_lot_flag like 'M:[]%' then ', Child Lot Flag' end||
+case when x.child_lot_prefix like 'M:[]%' and ss.child_lot_prefix<>1 then ', Child Lot Prefix' end||
+case when x.child_lot_starting_number like 'M:[]%' and ss.child_lot_starting_number<>1 then ', Child Lot Starting Number' end||
+case when x.child_lot_validation_flag like 'M:[]%' then ', Child Lot Validation Flag' end||
+case when x.copy_lot_attribute_flag like 'M:[]%' then ', Copy Lot Attribute Flag' end||
+case when x.default_grade like 'M:[]%' and ss.default_grade<>1 then ', Default Grade' end||
+case when x.grade_control_flag like 'M:[]%' then ', Grade Control Flag' end||
+case when x.lot_divisible_flag like 'M:[]%' then ', Lot Divisible Flag' end||
+case when x.parent_child_generation_flag like 'M:[]%' and ss.parent_child_generation_flag<>1 then ', Parent Child Generation Flag' end||
+case when x.process_execution_enabled_flag like 'M:[]%' then ', Process Execution Enabled Flag' end||
+case when x.process_quality_enabled_flag like 'M:[]%' then ', Process Quality Enabled Flag' end||
+case when x.recipe_enabled_flag like 'M:[]%' then ', Recipe Enabled Flag' end||
+case when x.cas_number like 'M:[]%' and ss.cas_number<>1 then ', Cas Number' end||
+case when x.expiration_action_code like 'M:[]%' and ss.expiration_action_code<>1 then ', Expiration Action Code' end||
+case when x.expiration_action_interval like 'M:[]%' and ss.expiration_action_interval<>1 then ', Expiration Action Interval' end||
+case when x.hazardous_material_flag like 'M:[]%' then ', Hazardous Material Flag' end||
+case when x.hold_days like 'M:[]%' and ss.hold_days<>1 then ', Hold Days' end||
+case when x.maturity_days like 'M:[]%' and ss.maturity_days<>1 then ', Maturity Days' end||
+case when x.process_costing_enabled_flag like 'M:[]%' then ', Process Costing Enabled Flag' end||
+case when x.retest_interval like 'M:[]%' and ss.retest_interval<>1 then ', Retest Interval' end||
+case when x.dual_uom_control like 'M:[]%' then ', Dual Uom Control' end||
+case when x.effectivity_control like 'M:[]%' then ', Effectivity Control' end||
+case when x.eng_item_flag is not null then ', Eng Item Flag' end||
+case when x.fixed_days_supply like 'M:[]%' and ss.fixed_days_supply<>1 then ', Fixed Days Supply' end||
+case when x.indivisible_flag like 'M:[]%' then ', Indivisible Flag' end||
+case when x.inventory_asset_flag like 'M:[]%' then ', Inventory Asset Flag' end||
+case when x.primary_unit_of_measure is not null then ', Primary Unit Of Measure' end||
+case when x.process_supply_locator_id like 'M:[]%' and ss.process_supply_locator_id<>1 then ', Process Supply Locator Id' end||
+case when x.process_supply_subinventory like 'M:[]%' and ss.process_supply_subinventory<>1 then ', Process Supply Subinventory' end||
+case when x.process_yield_locator_id like 'M:[]%' and ss.process_yield_locator_id<>1 then ', Process Yield Locator Id' end||
+case when x.process_yield_subinventory like 'M:[]%' and ss.process_yield_subinventory<>1 then ', Process Yield Subinventory' end||
+case when x.serial_tagging_flag is not null then ', Serial Tagging Flag' end||
+case when x.service_item_flag is not null then ', Service Item Flag' end||
+case when x.usage_item_flag is not null then ', Usage Item Flag' end||
+case when x.vendor_warranty_flag is not null then ', Vendor Warranty Flag' end||
+case when x.web_status like 'M:[]%' then ', Web Status' end
+,', ') correct_in_master_organization
+from
+(
 select
 msi.concatenated_segments item,
 mpm.organization_code master_organization_code,
@@ -1130,3 +1916,5 @@ not ( -- other item attributes which do not specifically raise an INV_IOI_MASTER
 --
 --
 )
+) x,
+sentinel_support ss

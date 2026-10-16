@@ -1,42 +1,48 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'PER Payroll Element Entry Upload | Oracle EBS SQL Report'
 description: 'PER Payroll Element Entry Upload ================== Use this upload to upload new or update existing PER Payroll Element Entries, or to enter adjustment…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, PER, Payroll, Element, Entry, pay_input_values_f_vl, pay_element_entry_values_f, per_all_people_f'
 permalink: /PER%20Payroll%20Element%20Entry%20Upload/
+report_name: 'PER Payroll Element Entry Upload'
+report_web_name: per-payroll-element-entry-upload
 ---
 
 # PER Payroll Element Entry Upload – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/per-payroll-element-entry-upload/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/per-payroll-element-entry-upload/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-payroll-element-entry-upload) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-payroll-element-entry-upload).
 
 ## Overview
 PER Payroll Element Entry Upload
 ==================
 Use this upload to upload new or update existing PER Payroll Element Entries, or to enter adjustment entries.
 
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-payroll-element-entry-upload) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
+
 ## Report Parameters
 Upload Mode, Business Group, Employee Name
 
 ## Oracle EBS Tables Used
-[pay_input_values_f_vl](https://www.enginatics.com/library/?pg=1&find=pay_input_values_f_vl), [pay_element_entry_values_f](https://www.enginatics.com/library/?pg=1&find=pay_element_entry_values_f), [per_all_people_f](https://www.enginatics.com/library/?pg=1&find=per_all_people_f), [per_all_assignments_f](https://www.enginatics.com/library/?pg=1&find=per_all_assignments_f), [pay_element_entries_f](https://www.enginatics.com/library/?pg=1&find=pay_element_entries_f), [per_business_groups](https://www.enginatics.com/library/?pg=1&find=per_business_groups), [pay_element_links_f](https://www.enginatics.com/library/?pg=1&find=pay_element_links_f), [pay_element_types_f_vl](https://www.enginatics.com/library/?pg=1&find=pay_element_types_f_vl), [per_assignment_status_types](https://www.enginatics.com/library/?pg=1&find=per_assignment_status_types), [hr_lookups](https://www.enginatics.com/library/?pg=1&find=hr_lookups), [input_values](https://www.enginatics.com/library/?pg=1&find=input_values), [per_periods_of_service](https://www.enginatics.com/library/?pg=1&find=per_periods_of_service)
+[pay_input_values_f_vl](https://www.enginatics.com/library/?pg=1&find=pay_input_values_f_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-payroll-element-entry-upload), [pay_element_entry_values_f](https://www.enginatics.com/library/?pg=1&find=pay_element_entry_values_f&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-payroll-element-entry-upload), [per_all_people_f](https://www.enginatics.com/library/?pg=1&find=per_all_people_f&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-payroll-element-entry-upload), [per_all_assignments_f](https://www.enginatics.com/library/?pg=1&find=per_all_assignments_f&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-payroll-element-entry-upload), [pay_element_entries_f](https://www.enginatics.com/library/?pg=1&find=pay_element_entries_f&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-payroll-element-entry-upload), [per_business_groups](https://www.enginatics.com/library/?pg=1&find=per_business_groups&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-payroll-element-entry-upload), [pay_element_links_f](https://www.enginatics.com/library/?pg=1&find=pay_element_links_f&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-payroll-element-entry-upload), [pay_element_types_f_vl](https://www.enginatics.com/library/?pg=1&find=pay_element_types_f_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-payroll-element-entry-upload), [per_assignment_status_types](https://www.enginatics.com/library/?pg=1&find=per_assignment_status_types&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-payroll-element-entry-upload), [hr_lookups](https://www.enginatics.com/library/?pg=1&find=hr_lookups&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-payroll-element-entry-upload), [per_periods_of_service](https://www.enginatics.com/library/?pg=1&find=per_periods_of_service&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-payroll-element-entry-upload)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Upload](https://www.enginatics.com/library/?pg=1&category[]=Upload)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-payroll-element-entry-upload), [Upload](https://www.enginatics.com/library/?pg=1&category%5B%5D=Upload&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-payroll-element-entry-upload)
 
 ## Related Reports
-[PAY Gross to Net Summary](/PAY%20Gross%20to%20Net%20Summary/ "PAY Gross to Net Summary Oracle EBS SQL Report"), [PAY Employee Payroll History](/PAY%20Employee%20Payroll%20History/ "PAY Employee Payroll History Oracle EBS SQL Report")
+[PAY Element Entries](/PAY%20Element%20Entries/ "PAY Element Entries Oracle EBS SQL Report"), [PAY Batch Element Entry](/PAY%20Batch%20Element%20Entry/ "PAY Batch Element Entry Oracle EBS SQL Report"), [PAY Gross to Net Summary](/PAY%20Gross%20to%20Net%20Summary/ "PAY Gross to Net Summary Oracle EBS SQL Report"), [PAY Employee Payroll History](/PAY%20Employee%20Payroll%20History/ "PAY Employee Payroll History Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/PER%20Payroll%20Element%20Entry%20Upload/PER%20Payroll%20Element%20Entry%20Upload.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-payroll-element-entry-upload) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [](https://www.enginatics.com/example/per-payroll-element-entry-upload/) |
-| Blitz Report™ XML Import | [PER_Payroll_Element_Entry_Upload.xml](https://www.enginatics.com/xml/per-payroll-element-entry-upload/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/per-payroll-element-entry-upload/](https://www.enginatics.com/reports/per-payroll-element-entry-upload/) |
+| Excel Example Output | [Example](https://www.enginatics.com/example/per-payroll-element-entry-upload/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-payroll-element-entry-upload) |
+| Blitz Report™ XML Import | [PER_Payroll_Element_Entry_Upload.xml](https://www.enginatics.com/xml/per-payroll-element-entry-upload/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-payroll-element-entry-upload) |
+| SQL Source | [PER Payroll Element Entry Upload.sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/PER%20Payroll%20Element%20Entry%20Upload/PER%20Payroll%20Element%20Entry%20Upload.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/per-payroll-element-entry-upload/](https://www.enginatics.com/reports/per-payroll-element-entry-upload/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-payroll-element-entry-upload) |
 
 ## Case Study & Technical Analysis: PER Payroll Element Entry Upload
 
@@ -100,18 +106,17 @@ Using an API-based upload for bulk payroll data is inherently more efficient tha
 **3. Can this tool be used to end-date an element entry (i.e., stop it from being processed)?**
    Yes, the 'Update' mode of the upload tool can typically be used to end-date an existing element entry. By providing the element entry ID and a new effective end date, you can ensure that the element will no longer be processed for the employee from that date onwards.
 
-
 ---
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-payroll-element-entry-upload)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-payroll-element-entry-upload)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-payroll-element-entry-upload)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-payroll-element-entry-upload)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-payroll-element-entry-upload)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-payroll-element-entry-upload)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-payroll-element-entry-upload)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: GL Ledger Sets
 -- Description: Master data report showing GL ledger sets and included ledgers.
--- Excel Examle Output: https://www.enginatics.com/example/gl-ledger-sets/
+-- Excel Example Output: https://www.enginatics.com/example/gl-ledger-sets/
 -- Library Link: https://www.enginatics.com/reports/gl-ledger-sets/
 -- Run Report: https://demo.enginatics.com/
 

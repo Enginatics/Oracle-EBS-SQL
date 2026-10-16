@@ -1,29 +1,28 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: AP 1099 Payments
 -- Description: 1099 Payments report showing payments made to 1099 reportable suppliers.
-This is the Blitz Report equivalent of the Oracle standard 1099 Payments Report (APXTRRVT).
-
-The report lists suppliers from the 1099 tape data (vendors processed for 1099 reporting) along with their payment totals within the specified date range.
-
-Key features:
-- Uses ap_1099_tape_data to filter vendors processed for 1099 reporting
-- Validates against Tax Reporting Entity and balancing segments
-- Calculates payment amounts using Oracle AP_UTILITIES_PKG.Net_Invoice_Amount
-- Determines tax reporting site (site with tax_reporting_site_flag=Y or first alphabetical site)
-- Handles void checks by excluding payments voided within the date range
-- Supports Summary (totals by supplier/type) and Detail (individual checks/invoices) modes
-- MISC4 (Backup Withholding) amounts tracked separately as Withheld Amount
-- Distribution Total shows gross amounts before withholding adjustments
-- Payment Amount shows net reportable amounts (with MISC4 as negative)
-- Query Driver parameter controls balancing segment matching (INV=invoice distribution, PAY=bank cash account)
-- Employee vendors use national_identifier from per_all_people_f for tax ID
-- Tax ID cleanup removes dashes, spaces, and treats 000000000 as blank
--- Excel Examle Output: https://www.enginatics.com/example/ap-1099-payments/
+-- This is the Blitz Report equivalent of the Oracle standard 1099 Payments Report (APXTRRVT).
+-- The report lists suppliers from the 1099 tape data (vendors processed for 1099 reporting) along with their payment totals within the specified date range.
+-- Key features:
+-- - Uses ap1099tapedata to filter vendors processed for 1099 reporting
+-- - Validates against Tax Reporting Entity and balancing segments
+-- - Calculates payment amounts using Oracle APUTILITIESPKG.NetInvoiceAmount
+-- - Determines tax reporting site (site with taxreportingsiteflag=Y or first alphabetical site)
+-- - Handles void checks by excluding payments voided within the date range
+-- - Supports Summary (totals by supplier/type) and Detail (individual checks/invoices) modes
+-- - MISC4 (Backup Withholding) amounts tracked separately as Withheld Amount
+-- - Distribution Total shows gross amounts before withholding adjustments
+-- - Payment Amount shows net reportable amounts (with MISC4 as negative)
+-- - Query Driver parameter controls balancing segment matching (INV=invoice distribution, PAY=bank cash account)
+-- - Employee vendors use nationalidentifier from perallpeoplef for tax ID
+-- - Tax ID cleanup removes dashes, spaces, and treats 000000000 as blank
+-- When India Localization is installed, the following GST columns are also included: GST Registration No, GST PAN No, GST TAN No, CGST Amount, SGST Amount, IGST Amount, CGST Rate, SGST Rate, IGST Rate, GST Supplier Registration No, Custom Amount, Unclassified Tax Amount, Taxable Value, HSN SAC Code.
+-- Excel Example Output: https://www.enginatics.com/example/ap-1099-payments/
 -- Library Link: https://www.enginatics.com/reports/ap-1099-payments/
 -- Run Report: https://demo.enginatics.com/
 
@@ -39,6 +38,8 @@ x.income_tax_region,
 round(sum(x.distribution_amount),2) distribution_total,
 round(sum(x.withheld_amount),2) withheld_amount,
 round(sum(x.payment_amount),2) payment_amount
+&il_reg_columns
+&il_tax_columns
 from
 (
 select
@@ -86,6 +87,9 @@ decode(ap_utilities_pkg.net_invoice_amount(aia.invoice_id),0,1,ap_utilities_pkg.
 *
 decode(aipa.amount,0,decode((select count(*) from ap_invoice_payments_all aipa2 where aipa2.invoice_id=aia.invoice_id),null,1,0),aipa.amount)
 payment_amount
+&il_tax_columns_inner_amt
+&il_tax_columns_inner_rate
+&il_tax_columns_inner_tp
 from
 ap_reporting_entities_all area,
 ap_reporting_entity_lines_all arela,
@@ -101,6 +105,7 @@ ap_invoice_payments_all aipa,
 ap_checks_all aca,
 ce_bank_acct_uses_all cbaua,
 ce_bank_accounts cba
+&il_from
 where
 1=1 and
 aps.vendor_id=assa.vendor_id(+) and
@@ -126,6 +131,7 @@ aca.org_id=area.org_id and
 aipa.accounting_date>=:p_from_date and
 aipa.accounting_date<:p_to_date+1 and
 (:p_federal_reportable='N' or aps.federal_reportable_flag='Y')
+&il_where
 ) x
 group by
 x.supplier_name,

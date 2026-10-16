@@ -1,60 +1,47 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CST Resource Overhead Association Upload
 -- Description: CST Resource Overhead Association Upload
-========================================
-
-This upload can be used to
-- Upload new Resource Overhead Associations
-- Download the current Resource Overhead Associations for a Cost Type and upload them to a different Target Cost Type
-- Update the descriptive flexfield attributes of existing associations by re-uploading them in 'Remove and replace' mode
-- Delete existing Resource Overhead Associations
-
-Resource Overhead Associations link Resource or Outside Processing sub-elements to the Overhead or Material Overhead sub-elements they absorb. The associations are imported via the Oracle Cost Import Process.
-
-NOTE:
-You can only upload associations to cost types that are not flagged as frozen and are flagged as updateable.
-
-NOTE:
-The Cost Import Process cannot delete a Resource Overhead Association, so a row flagged for deletion is not sent to it. Set the Delete Association column to Yes and the association is removed directly when the row is processed, in the same way as the Overheads and Resources forms remove it.
-Deletion is not allowed for frozen standard cost types or for cost types which do not allow updates.
-Deleted associations are not covered by the Cost Rollup. Run a rollup separately if the removal should be reflected in item costs.
-
-Optionally, the upload can perform a Cost Rollup after the associations have been imported. The Cost Rollup can be performed for
-- Specific item - a cost rollup is done only for rolled up items whose cost details in the Target Cost Type use the associated resources
-- All items - the 'Supply Chain Cost Rollup - Print Report' concurrent request is submitted to rollup all items within each organization associations are uploaded to
-
-NOTE:
-In 'All items' mode the Supply Chain Cost Rollup requests are submitted asynchronously and the upload does not wait for them.
-In 'Specific item' mode, the items to roll up are derived from the existing cost details in the Target Cost Type. Items that have never been rolled up in the Target Cost Type are therefore not found, even if their routings use an associated resource - use 'All items' mode for those.
-
-Parameters
-==========
-Target Cost Type (Required) - The Cost Type to which the Resource Overhead Associations are to be uploaded.
-
-Mode (Required, Default: Remove and replace cost information) -
-- Remove and replace cost information: an existing association for the same resource, overhead, and cost type is replaced
-- Insert new Cost Information Only: uploading an association that already exists raises an error
-
-Auto Populate Upload Columns (Default: Yes) -
-Applies to downloaded associations only. If set to Yes, the downloaded records are flagged ready for upload even if no changes have been made. If left blank, records are only flagged for upload when the user amends them.
-
-Source Cost Type - Optionally specify the Cost Type from which to download the current Resource Overhead Associations, to copy them to a different Target Cost Type. New associations can be entered as additional rows in the generated Excel.
-
-Rollup Costs - set to Yes to do a cost rollup after the associations are imported
-Rollup Type - All items or Specific item
-Rollup Option - Single level rollup or Full cost rollup
-
-Organization Code / Resource / Overhead - Optionally restrict the associations to be downloaded.
-
-Notes on the Upload
-===================
-The upload supports the Resource Overhead Information descriptive flexfield. The attribute columns are named according to the descriptive flexfield segments setup.
--- Excel Examle Output: https://www.enginatics.com/example/cst-resource-overhead-association-upload/
+-- ========================================
+-- This upload can be used to
+-- - Upload new Resource Overhead Associations
+-- - Download the current Resource Overhead Associations for a Cost Type and upload them to a different Target Cost Type
+-- - Update the descriptive flexfield attributes of existing associations by re-uploading them in 'Remove and replace' mode
+-- - Delete existing Resource Overhead Associations
+-- Resource Overhead Associations link Resource or Outside Processing sub-elements to the Overhead or Material Overhead sub-elements they absorb. The associations are imported via the Oracle Cost Import Process.
+-- NOTE:
+-- You can only upload associations to cost types that are not flagged as frozen and are flagged as updateable.
+-- NOTE:
+-- The Cost Import Process cannot delete a Resource Overhead Association, so a row flagged for deletion is not sent to it. Set the Delete Association column to Yes and the association is removed directly when the row is processed, in the same way as the Overheads and Resources forms remove it.
+-- Deletion is not allowed for frozen standard cost types or for cost types which do not allow updates.
+-- Deleted associations are not covered by the Cost Rollup. Run a rollup separately if the removal should be reflected in item costs.
+-- Optionally, the upload can perform a Cost Rollup after the associations have been imported. The Cost Rollup can be performed for
+-- - Specific item - a cost rollup is done only for rolled up items whose cost details in the Target Cost Type use the associated resources
+-- - All items - the 'Supply Chain Cost Rollup - Print Report' concurrent request is submitted to rollup all items within each organization associations are uploaded to
+-- NOTE:
+-- In 'All items' mode the Supply Chain Cost Rollup requests are submitted asynchronously and the upload does not wait for them.
+-- In 'Specific item' mode, the items to roll up are derived from the existing cost details in the Target Cost Type. Items that have never been rolled up in the Target Cost Type are therefore not found, even if their routings use an associated resource - use 'All items' mode for those.
+-- Parameters
+-- ==========
+-- Target Cost Type (Required) - The Cost Type to which the Resource Overhead Associations are to be uploaded.
+-- Mode (Required, Default: Remove and replace cost information) -
+-- - Remove and replace cost information: an existing association for the same resource, overhead, and cost type is replaced
+-- - Insert new Cost Information Only: uploading an association that already exists raises an error
+-- Auto Populate Upload Columns (Default: Yes) -
+-- Applies to downloaded associations only. If set to Yes, the downloaded records are flagged ready for upload even if no changes have been made. If left blank, records are only flagged for upload when the user amends them.
+-- Source Cost Type - Optionally specify the Cost Type from which to download the current Resource Overhead Associations, to copy them to a different Target Cost Type. New associations can be entered as additional rows in the generated Excel.
+-- Rollup Costs - set to Yes to do a cost rollup after the associations are imported
+-- Rollup Type - All items or Specific item
+-- Rollup Option - Single level rollup or Full cost rollup
+-- Organization Code / Resource / Overhead - Optionally restrict the associations to be downloaded.
+-- Notes on the Upload
+-- ===================
+-- The upload supports the Resource Overhead Information descriptive flexfield. The attribute columns are named according to the descriptive flexfield segments setup.
+-- Excel Example Output: https://www.enginatics.com/example/cst-resource-overhead-association-upload/
 -- Library Link: https://www.enginatics.com/reports/cst-resource-overhead-association-upload/
 -- Run Report: https://demo.enginatics.com/
 

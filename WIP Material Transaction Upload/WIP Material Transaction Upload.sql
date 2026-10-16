@@ -1,20 +1,16 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: WIP Material Transaction Upload
 -- Description: Issues components to, and returns components from, WIP work orders.
-
-The download returns one row per component requirement of the selected work orders, with the operation, department, supply subinventory and locator already filled in, and the required, issued and still open quantities shown. Enter a Transaction Type and a Quantity on the rows you want to transact and leave the rest blank.
-
-Quantity is always entered as a positive number; the Transaction Type decides the direction.
-
-Discrete jobs, lot based jobs and maintenance work orders are supported. Repetitive schedules are not.
-
-Rows are staged in the inventory transaction interface and processed by the inventory transaction manager, so the resulting transactions are identical to those the WIP Material Transactions form creates and relieve the work order requirement in the same way.
--- Excel Examle Output: https://www.enginatics.com/example/wip-material-transaction-upload/
+-- The download returns one row per component requirement of the selected work orders, with the operation, department, supply subinventory and locator already filled in, and the required, issued and still open quantities shown. Enter a Transaction Type and a Quantity on the rows you want to transact and leave the rest blank.
+-- Quantity is always entered as a positive number; the Transaction Type decides the direction.
+-- Discrete jobs, lot based jobs and maintenance work orders are supported. Repetitive schedules are not.
+-- Rows are staged in the inventory transaction interface and processed by the inventory transaction manager, so the resulting transactions are identical to those the WIP Material Transactions form creates and relieve the work order requirement in the same way.
+-- Excel Example Output: https://www.enginatics.com/example/wip-material-transaction-upload/
 -- Library Link: https://www.enginatics.com/reports/wip-material-transaction-upload/
 -- Run Report: https://demo.enginatics.com/
 

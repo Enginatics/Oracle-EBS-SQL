@@ -1,46 +1,42 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: EAM PM Schedule Upload
 -- Description: EAM Preventive Maintenance Schedule Upload
-=========================================
-Create or update Oracle EAM Preventive Maintenance schedule definitions, including:
-  - PM Schedule header (asset or asset group, activity, schedule name, set name, type, rescheduling point, etc.)
-  - Activity group (for Rule Based schedules: list of activities with interval multiples)
-  - Scheduling rules: Day Interval, Runtime / Meter, and List Date rules
-  - Optional Last Service info (per meter)
-
-Row Model
-=========
-Each spreadsheet row can contain PM header values plus any populated child-object columns. The upload infers the object levels from populated column groups:
-  - Header columns identify and define the PM schedule.
-  - Act Activity columns add PM activity-group entries. If no Act Activity is entered for a new Rule Based schedule, the header Activity is used as the first activity entry.
-  - Rule columns add Day Interval, Runtime Meter, or List Date scheduling rules.
-  - LSI columns add optional last-service readings.
-
-Rows belonging to the same PM must repeat the same Organization Code + Schedule Name + Asset + Activity and remain contiguous. The header is processed once per PM; repeated rows are used for additional activities, rules, and last-service readings.
-
-Upload Modes
-============
-Create - empty spreadsheet for new PM schedules.
-Create, Update - downloads existing PM schedules for review/edit and allows adding new ones.
-
-IMPORTANT on Update
--------------------
-In Create, Update mode, use Update Activities / Update Rules / Update Last Service to include those child details in the downloaded template. Update Activities defaults to Yes; the other child sections are optional.
-
-PM Set Name
-===========
-- Reference an existing Set Name, or
-- Enter a new Set Name together with Set Name Description / End Date / Local Flag; the upload will auto-create it via EAM_SetName_PUB.
-
-After Upload
-============
-Schedule and run the "XMLSG - Create Preventive Maintenance Work Order" concurrent program - uploading a PM schedule alone does not generate work orders.
--- Excel Examle Output: https://www.enginatics.com/example/eam-pm-schedule-upload/
+-- =========================================
+-- Create or update Oracle EAM Preventive Maintenance schedule definitions, including:
+-- - PM Schedule header (asset or asset group, activity, schedule name, set name, type, rescheduling point, etc.)
+-- - Activity group (for Rule Based schedules: list of activities with interval multiples)
+-- - Scheduling rules: Day Interval, Runtime / Meter, and List Date rules
+-- - Optional Last Service info (per meter)
+-- Row Model
+-- =========
+-- Each spreadsheet row can contain PM header values plus any populated child-object columns. The upload infers the object levels from populated column groups:
+-- - Header columns identify and define the PM schedule.
+-- - Act Activity columns add PM activity-group entries. If no Act Activity is entered for a new Rule Based schedule, the header Activity is used as the first activity entry.
+-- - Rule columns add Day Interval, Runtime Meter, or List Date scheduling rules.
+-- - LSI columns add optional last-service readings.
+-- Act Last Svc Start and Act Last Svc End show the last service dates that work order completion records on the activity association. They are read-only and not uploaded.
+-- The upload saves schedules, activities and rules as the Preventive Maintenance form does: a changed rule is updated in place, Delete Rule removes it, and a rule row without a rule id is added. Rule Last Service Reading is derived from the last service information on save and is read-only.
+-- Rows belonging to the same PM must repeat the same Organization Code + Schedule Name + Asset + Activity and remain contiguous. The header is processed once per PM; repeated rows are used for additional activities, rules, and last-service readings.
+-- Upload Modes
+-- ============
+-- Create - empty spreadsheet for new PM schedules.
+-- Create, Update - downloads existing PM schedules for review/edit and allows adding new ones.
+-- IMPORTANT on Update
+-- -------------------
+-- In Create, Update mode, use Update Activities / Update Rules / Update Last Service to include those child details in the downloaded template. Update Activities defaults to Yes; the other child sections are optional.
+-- PM Set Name
+-- ===========
+-- - Reference an existing Set Name, or
+-- - Enter a new Set Name together with Set Name Description / End Date / Local Flag; the upload will auto-create it via EAMSetNamePUB.
+-- After Upload
+-- ============
+-- Schedule and run the "XMLSG - Create Preventive Maintenance Work Order" concurrent program - uploading a PM schedule alone does not generate work orders.
+-- Excel Example Output: https://www.enginatics.com/example/eam-pm-schedule-upload/
 -- Library Link: https://www.enginatics.com/reports/eam-pm-schedule-upload/
 -- Run Report: https://demo.enginatics.com/
 
@@ -55,7 +51,7 @@ case when eps.maintenance_object_type=3 then cii.instance_number end asset_numbe
 nvl(msibk_asset.concatenated_segments,msibk_group.concatenated_segments) asset_group,
 nvl(msibk_asset.inventory_item_id,msibk_group.inventory_item_id) asset_group_id,
 msibk_act.concatenated_segments activity,
-eps.activity_association_id activity_id,
+eps.pm_activity_association_id activity_id,
 epsn.set_name,
 to_char(null) set_name_description,
 to_date(null) set_name_end_date,
@@ -88,9 +84,15 @@ eps.default_implement,
 xxen_util.meaning(eps.auto_instantiation_flag,'YES_NO',0) automatic_instantiation,
 eps.auto_instantiation_flag auto_instantiation
 from
+(
+select
+eps.*,
+nvl(eps.activity_association_id,(select min(epa.activity_association_id) from eam_pm_activities epa where eps.pm_schedule_id=epa.pm_schedule_id)) pm_activity_association_id
+from
 eam_pm_schedulings eps
+) eps
 left join csi_item_instances cii on eps.maintenance_object_type=3 and eps.maintenance_object_id=cii.instance_id and sysdate between nvl(cii.active_start_date,sysdate) and nvl(cii.active_end_date,sysdate)
-left join mtl_eam_asset_activities mea on eps.activity_association_id=mea.activity_association_id
+left join mtl_eam_asset_activities mea on eps.pm_activity_association_id=mea.activity_association_id
 left join mtl_system_items_b_kfv msibk_act on mea.asset_activity_id=msibk_act.inventory_item_id and mea.organization_id=msibk_act.organization_id
 left join mtl_system_items_b_kfv msibk_asset on cii.inventory_item_id=msibk_asset.inventory_item_id and cii.last_vld_organization_id=msibk_asset.organization_id
 left join mtl_system_items_b_kfv msibk_group on eps.maintenance_object_type=2 and eps.maintenance_object_id=msibk_group.inventory_item_id and mea.organization_id=msibk_group.organization_id
@@ -155,6 +157,8 @@ x.act_allow_repeat,
 x.act_day_tolerance,
 x.act_next_svc_start,
 x.act_next_svc_end,
+x.act_last_svc_start,
+x.act_last_svc_end,
 x.rule_type_dsp,
 x.rule_type,
 x.rule_day_interval,
@@ -169,6 +173,8 @@ x.rule_effective_date_to,
 x.rule_list_date,
 x.rule_list_date_desc,
 x.rule_base_date,
+x.delete_rule,
+x.rule_id,
 x.lsi_meter,
 x.lsi_meter_id,
 x.lsi_last_service_reading,
@@ -186,6 +192,8 @@ to_char(null) act_allow_repeat,
 to_number(null) act_day_tolerance,
 to_date(null) act_next_svc_start,
 to_date(null) act_next_svc_end,
+to_date(null) act_last_svc_start,
+to_date(null) act_last_svc_end,
 to_char(null) rule_type_dsp,
 to_number(null) rule_type,
 to_number(null) rule_day_interval,
@@ -200,6 +208,8 @@ to_date(null) rule_effective_date_to,
 to_date(null) rule_list_date,
 to_char(null) rule_list_date_desc,
 to_date(null) rule_base_date,
+to_char(null) delete_rule,
+to_number(null) rule_id,
 to_char(null) lsi_meter,
 to_number(null) lsi_meter_id,
 to_number(null) lsi_last_service_reading,
@@ -220,6 +230,8 @@ xxen_util.meaning(epa.allow_repeat_in_cycle,'YES_NO',0) act_allow_repeat,
 epa.day_tolerance act_day_tolerance,
 epa.next_service_start_date act_next_svc_start,
 epa.next_service_end_date act_next_svc_end,
+mea.last_service_start_date act_last_svc_start,
+mea.last_service_end_date act_last_svc_end,
 to_char(null) rule_type_dsp,
 to_number(null) rule_type,
 to_number(null) rule_day_interval,
@@ -234,6 +246,8 @@ to_date(null) rule_effective_date_to,
 to_date(null) rule_list_date,
 to_char(null) rule_list_date_desc,
 to_date(null) rule_base_date,
+to_char(null) delete_rule,
+to_number(null) rule_id,
 to_char(null) lsi_meter,
 to_number(null) lsi_meter_id,
 to_number(null) lsi_last_service_reading,
@@ -263,6 +277,8 @@ to_char(null) act_allow_repeat,
 to_number(null) act_day_tolerance,
 to_date(null) act_next_svc_start,
 to_date(null) act_next_svc_end,
+to_date(null) act_last_svc_start,
+to_date(null) act_last_svc_end,
 decode(epsr.rule_type,1,'Day Interval',2,'Runtime Meter',3,'List Date') rule_type_dsp,
 epsr.rule_type,
 epsr.day_interval rule_day_interval,
@@ -277,6 +293,8 @@ epsr.effective_date_to rule_effective_date_to,
 epsr.list_date rule_list_date,
 epsr.list_date_desc rule_list_date_desc,
 epsr.base_date rule_base_date,
+to_char(null) delete_rule,
+epsr.rule_id,
 to_char(null) lsi_meter,
 to_number(null) lsi_meter_id,
 to_number(null) lsi_last_service_reading,
@@ -303,6 +321,8 @@ to_char(null) act_allow_repeat,
 to_number(null) act_day_tolerance,
 to_date(null) act_next_svc_start,
 to_date(null) act_next_svc_end,
+to_date(null) act_last_svc_start,
+to_date(null) act_last_svc_end,
 to_char(null) rule_type_dsp,
 to_number(null) rule_type,
 to_number(null) rule_day_interval,
@@ -317,6 +337,8 @@ to_date(null) rule_effective_date_to,
 to_date(null) rule_list_date,
 to_char(null) rule_list_date_desc,
 to_date(null) rule_base_date,
+to_char(null) delete_rule,
+to_number(null) rule_id,
 ccv.name lsi_meter,
 epls.meter_id lsi_meter_id,
 epls.last_service_reading lsi_last_service_reading,

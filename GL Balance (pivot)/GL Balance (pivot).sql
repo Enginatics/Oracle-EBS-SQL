@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: GL Balance (pivot)
 -- Description: Summary GL report including one line per account segment level, including product code, with opening balance, total transaction amount per month for each period selected, and closing balance (trial balance).
--- Excel Examle Output: https://www.enginatics.com/example/gl-balance-pivot/
+-- Excel Example Output: https://www.enginatics.com/example/gl-balance-pivot/
 -- Library Link: https://www.enginatics.com/reports/gl-balance-pivot/
 -- Run Report: https://demo.enginatics.com/
 

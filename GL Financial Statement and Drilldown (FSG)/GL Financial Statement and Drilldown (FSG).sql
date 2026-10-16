@@ -1,22 +1,20 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: GL Financial Statement and Drilldown (FSG)
 -- Description: The GL Financial Statement and Drilldown (FSG) Report empowers users to generate comprehensive reports on financial balances while providing detailed insights through drilldown capabilities. This tool allows users to link Excel cells directly to Oracle data via built-in functions, ensuring that data can be refreshed as needed to reflect the most up-to-date information.
-Key features include:
-1. Balance and Detail Reporting: Generate high-level balance reports and drill down into the details, including journal entries and subledger transactions.
-2. Oracle Data Integration: Seamlessly link Excel cells to Oracle data, with the ability to refresh the data for real-time updates.
-3. Drilldown Functionality: Access detailed information at various levels, including balances, journal entries, and subledger details.
-4. Migration Tools: Converters are available to migrate reports from Oracle FSG, GL Wand, and Spreadsheet Server to this solution.
-
-For a quick demonstration, refer to our YouTube video.
-<a href="https://youtu.be/dsRWXT2bem8" rel="nofollow" target="_blank">https://youtu.be/dsRWXT2bem8</a>
-
-Important: Please do not delete the "Financial Statement Generator" sheet or modify the Advanced Custom Properties in the Excel output, as these are essential for the proper functioning of the report.
--- Excel Examle Output: https://www.enginatics.com/example/gl-financial-statement-and-drilldown-fsg/
+-- Key features include:
+-- 1. Balance and Detail Reporting: Generate high-level balance reports and drill down into the details, including journal entries and subledger transactions.
+-- 2. Oracle Data Integration: Seamlessly link Excel cells to Oracle data, with the ability to refresh the data for real-time updates.
+-- 3. Drilldown Functionality: Access detailed information at various levels, including balances, journal entries, and subledger details.
+-- 4. Migration Tools: Converters are available to migrate reports from Oracle FSG, GL Wand, and Spreadsheet Server to this solution.
+-- For a quick demonstration, refer to our YouTube video.
+-- https://youtu.be/dsRWXT2bem8
+-- Important: Please do not delete the "Financial Statement Generator" sheet or modify the Advanced Custom Properties in the Excel output, as these are essential for the proper functioning of the report.
+-- Excel Example Output: https://www.enginatics.com/example/gl-financial-statement-and-drilldown-fsg/
 -- Library Link: https://www.enginatics.com/reports/gl-financial-statement-and-drilldown-fsg/
 -- Run Report: https://demo.enginatics.com/
 

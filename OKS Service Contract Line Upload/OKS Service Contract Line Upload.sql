@@ -1,20 +1,16 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: OKS Service Contract Line Upload
 -- Description: This upload maintains the lines of existing Oracle Service Contracts through the standard Service Contracts public APIs: it updates header and line level values, adds new service and usage lines, and adds covered product or counter sublines.
-
-Each row is one contract line or subline. Rows identified by the Line Number column update that line; sublines use the parent.child format, for example 1.2 for the second covered product of service line 1. Rows without a Line Number create a new line: leave Parent Line Number empty and enter Line Type, Item and the line dates for a top line, or enter a Parent Line Number, the Covered Product and the covered dates for a subline. A subline can reference a top line created by an earlier row of the same file. Header level values repeat on every row of a contract and are applied once.
-
-Usage lines need a Usage Type, and a Usage Period for all types except Negotiated per Period. Actual per Period and Actual by Quantity lines are invoiced in arrears, which the upload sets automatically, and their sublines need a Default Quantity and a Base Reading.
-
-Prices are written as entered. Changing the negotiated amount or unit price does not reprice the line through the price list and does not regenerate an existing billing schedule, and lines cannot be removed by this upload.
-
-Updates are validated by the Service Contracts APIs, so changes not allowed for the current contract or line status are rejected with the corresponding API message.
--- Excel Examle Output: https://www.enginatics.com/example/oks-service-contract-line-upload/
+-- Each row is one contract line or subline. Rows identified by the Line Number column update that line; sublines use the parent.child format, for example 1.2 for the second covered product of service line 1. Rows without a Line Number create a new line: leave Parent Line Number empty and enter Line Type, Item and the line dates for a top line, or enter a Parent Line Number, the Covered Product and the covered dates for a subline. A subline can reference a top line created by an earlier row of the same file. Header level values repeat on every row of a contract and are applied once.
+-- Usage lines need a Usage Type, and a Usage Period for all types except Negotiated per Period. Actual per Period and Actual by Quantity lines are invoiced in arrears, which the upload sets automatically, and their sublines need a Default Quantity and a Base Reading.
+-- Prices are written as entered. Changing the negotiated amount or unit price does not reprice the line through the price list and does not regenerate an existing billing schedule, and lines cannot be removed by this upload.
+-- Updates are validated by the Service Contracts APIs, so changes not allowed for the current contract or line status are rejected with the corresponding API message.
+-- Excel Example Output: https://www.enginatics.com/example/oks-service-contract-line-upload/
 -- Library Link: https://www.enginatics.com/reports/oks-service-contract-line-upload/
 -- Run Report: https://demo.enginatics.com/
 

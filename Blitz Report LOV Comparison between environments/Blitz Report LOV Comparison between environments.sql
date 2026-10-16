@@ -1,19 +1,18 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: Blitz Report LOV Comparison between environments
 -- Description: Requires following view to be created on the remote environment to avoid ORA-64202: remote temporary or abstract LOB locator is encountered
-
-create or replace view xxen_report_parameter_lovs_v_ as
-select
-xrplv.*,
-dbms_lob.substr(xxen_util.clob_substrb(xrplv.lov_query,4000,1)) lov_query_short
-from
-xxen_report_parameter_lovs_v xrplv;
--- Excel Examle Output: https://www.enginatics.com/example/blitz-report-lov-comparison-between-environments/
+-- create or replace view xxenreportparameterlovsv as
+-- select
+-- xrplv.,
+-- dbmslob.substr(xxenutil.clobsubstrb(xrplv.lovquery,4000,1)) lovqueryshort
+-- from
+-- xxenreportparameterlovsv xrplv;
+-- Excel Example Output: https://www.enginatics.com/example/blitz-report-lov-comparison-between-environments/
 -- Library Link: https://www.enginatics.com/reports/blitz-report-lov-comparison-between-environments/
 -- Run Report: https://demo.enginatics.com/
 

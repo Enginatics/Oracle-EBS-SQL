@@ -1,41 +1,31 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: MSC Plan Order Upload
 -- Description: Report: MSC Plan Orders Upload
-Description: Upload to action Plan Order recommendations.
-
-This upload can be used to either select for release or release Plan Order Recommendations from ASCP planning instances.
-
-Currently supported recommendations that can be actioned by this upload are:
-- Planned Order Releases
-- Reschedule In/Out recommendations
-
- Additionally, it allows the user to amend the recommended Implement Date and/or Quantity.
-
-In the generated Excel the user can amend the following columns:
-- Implement Date
-- Implement Quantity
-- Update Release Status
-
-Update Release Status can be either
-- Select for Release
-- Release the Order
-
-This is determined by the Report Parameter: Upload Mode
-
-For plan orders not yet selected for release, to amend the implement date and/or implement quantity, the Update Release Status column must also be specified as 'Select for Release' or 'Release the Order' against the Plan Order. 
-If a plan order is already selected for release, then the user can amend the implement date and/or quantity in the generated excel without specifying a value in the Update Release Status column.
-
-The report parameter Upload mode determines the allowable action to be taken against the plan order recommendations in the upload ('Select for Release' or 'Release the Order') 
-
-The report parameter Auto Populate Release Status  if set to Yes, will automatically populate the 'Update Release Status' column and set the status to pending validation against all downloaded plan order recommendations in the generated excel. 
-In this scenario, the generated excel can be saved and uploaded without the user needing to manually review and select the specific plan orders to be updated in the generated excel
-
--- Excel Examle Output: https://www.enginatics.com/example/msc-plan-order-upload/
+-- Description: Upload to action Plan Order recommendations.
+-- This upload can be used to either select for release or release Plan Order Recommendations from ASCP planning instances.
+-- Currently supported recommendations that can be actioned by this upload are:
+-- - Planned Order Releases
+-- - Reschedule In/Out recommendations
+-- Additionally, it allows the user to amend the recommended Implement Date and/or Quantity.
+-- In the generated Excel the user can amend the following columns:
+-- - Implement Date
+-- - Implement Quantity
+-- - Update Release Status
+-- Update Release Status can be either
+-- - Select for Release
+-- - Release the Order
+-- This is determined by the Report Parameter: Upload Mode
+-- For plan orders not yet selected for release, to amend the implement date and/or implement quantity, the Update Release Status column must also be specified as 'Select for Release' or 'Release the Order' against the Plan Order.
+-- If a plan order is already selected for release, then the user can amend the implement date and/or quantity in the generated excel without specifying a value in the Update Release Status column.
+-- The report parameter Upload mode determines the allowable action to be taken against the plan order recommendations in the upload ('Select for Release' or 'Release the Order')
+-- The report parameter Auto Populate Release Status if set to Yes, will automatically populate the 'Update Release Status' column and set the status to pending validation against all downloaded plan order recommendations in the generated excel.
+-- In this scenario, the generated excel can be saved and uploaded without the user needing to manually review and select the specific plan orders to be updated in the generated excel
+-- Excel Example Output: https://www.enginatics.com/example/msc-plan-order-upload/
 -- Library Link: https://www.enginatics.com/reports/msc-plan-order-upload/
 -- Run Report: https://demo.enginatics.com/
 
@@ -53,7 +43,7 @@ q_selected_items as
      msi.sr_instance_id      = mic.sr_instance_id
  and msi.organization_id     = mic.organization_id
  and msi.inventory_item_id   = mic.inventory_item_id
- and mic.category_set_id     = nvl(xxen_msc.get_category_set_id&a2m_dblink(:p_instance_code,:p_category_set_name),(select mcs.category_set_id from msc_category_sets&a2m_dblink mcs where mcs.sr_instance_id = msi.sr_instance_id and mcs.default_flag = 1))
+ and mic.category_set_id     = nvl(xxen_msc.get_category_set_id&a2m_dblink(:p_instance_code,:p_category_set_name),(select mcs.category_set_id from msc_category_sets&a2m_dblink mcs where mcs.default_flag = 1 and rownum=1))
  and 1=1
 ),
 q_sub_components as
@@ -134,7 +124,7 @@ msi.buyer_name                                  buyer_name,
 msc_get_name.lookup_meaning&a2m_dblink('MTL_PLANNING_MAKE_BUY',msi.planning_make_buy_code) make_buy,
 msi.item_name item,
 msi.description item_description,
-nvl(:p_category_set_name,(select mcs.category_set_name from msc_category_sets&a2m_dblink mcs where mcs.sr_instance_id = mov.sr_instance_id and mcs.default_flag = 1)) category_set,
+nvl(:p_category_set_name,(select mcs.category_set_name from msc_category_sets&a2m_dblink mcs where mcs.default_flag = 1 and rownum=1)) category_set,
 mic.category_name category,
 (select distinct
    max(mss.safety_stock_quantity) keep (dense_rank last order by mss.period_start_date) over (partition by mss.organization_id,mss.inventory_item_id) safety_stock
@@ -289,7 +279,7 @@ and mov.inventory_item_id           = msi.inventory_item_id
 and mov.sr_instance_id              = mic.sr_instance_id
 and mov.inventory_item_id           = mic.inventory_item_id
 and mov.organization_id             = mic.organization_id
-and mic.category_set_id             = nvl(xxen_msc.get_category_set_id&a2m_dblink(:p_instance_code,:p_category_set_name),(select mcs.category_set_id from msc_category_sets&a2m_dblink mcs where sr_instance_id = mov.sr_instance_id and mcs.default_flag = 1))
+and mic.category_set_id             = nvl(xxen_msc.get_category_set_id&a2m_dblink(:p_instance_code,:p_category_set_name),(select mcs.category_set_id from msc_category_sets&a2m_dblink mcs where mcs.default_flag = 1 and rownum=1))
 and (mov.sr_instance_id,mov.plan_id,mov.organization_id,mov.inventory_item_id) in
     (select
      qai.sr_instance_id,

@@ -1,67 +1,66 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Item Cost Break-Out by Activity
--- Description: Report to show item costs by cost element, by activity.  Using up to five entered activities.  In order for this report to show your activity costs you must first define your activities and then associate your sub-elements by activity.
-
-/* +=============================================================================+
--- |  Copyright 2009-2022 Douglas Volz Consulting, Inc.                          |
--- |  All rights reserved.                                                       |
--- |  Permission to use this code is granted provided the original author is     |
--- |  acknowledged. No warranties, express or otherwise is included in this      |
--- |  permission.                                                                |
--- +=============================================================================+
--- |
--- |  Original Author: Douglas Volz (doug@volzconsulting.com)
--- |
--- |  Program Name: xxx_item_cost_break_out_by_activity_rept.sql
--- |
--- |  Parameters:
-- |  p_cost_type            -- The cost type you wish to report
--- |  p_org_code             -- Specific inventory organization you wish to report (optional)
--- |  p_operating_unit       -- Operating Unit you wish to report, leave blank for all
--- |                            operating units (optional) 
--- |  p_ledger               -- general ledger you wish to report, leave blank for all
--- |                            ledgers (optional)
--- |  p_item_number          -- Enter the specific item number you wish to report
--- |  p_activity1            -- First activity to report
--- |  p_activity2            -- Second activity to report
--- |  p_activity3            -- Third activity to report
--- |  p_activity4            -- Fourth activity to report
--- |  p_activity5            -- Fifth activity to report
--- |  p_category_set1        -- The first item category set to report, typically the
--- |                            Cost or Product Line Category Set
--- |  p_category_set2        -- The second item category set to report, typically the
--- |                            Inventory Category Set 
--- |
--- |  Description:
--- |  Report to show Frozen costs in the Frozen cost type, by activity.  Using
--- |  up to six parameters activities.
--- |  
--- |  Version Modified on Modified by Description
--- |  ======  =========== ============== =========================================
--- |  1.0     08 Nov 2016 Douglas Volz  Initial Coding based on XXX_ITEM_COST_REPT.sql\
--- |                                    Hard-coded for activities starting with S (Sort),
--- |                                    A (Assembly), T (Test), BE (Back-End) or UNASSIGNED.
--- |  1.1     09 Nov 2016 Douglas Volz  Added PL item costs with no sub-element (resource_id)
--- |  1.2     10 Nov 2016 Douglas Volz  Added Business Code, Product Family and 
--- |                                    Product Type item categories
--- |  1.3     18 Nov 2016 Douglas Volz  Modified to use the Resource Activity assignments
--- |  1.4     21 Jan 2017 Douglas Volz  Changed the report to assume that all
--- |                                    resources have been assigned to an activity
--- |  1.5     07 Sep 2019 Douglas Volz  Reported activities are now parameters.
--- |                                    Up to five activity parameters.
--- |  1.6     09 Sep 2019 Douglas Volz  Added a max(mc.segment1) for the category
--- |                                    column select statements due to having
--- |                                    multiple category values for the same org,
--- |                                    item and category set id (Inventory). 
--- |  1.7     27 Jan 2020 Douglas Volz  Added Operating Unit and Org Code parameters.
--- |  1.8     02 Jul 2022 Douglas Volz  Change for multi-language and lookup types.
--- +=============================================================================+*/
--- Excel Examle Output: https://www.enginatics.com/example/cac-item-cost-break-out-by-activity/
+-- Description: Report to show item costs by cost element, by activity. Using up to five entered activities. In order for this report to show your activity costs you must first define your activities and then associate your sub-elements by activity.
+-- / +=============================================================================+
+-- -- | Copyright 2009-2022 Douglas Volz Consulting, Inc. |
+-- -- | All rights reserved. |
+-- -- | Permission to use this code is granted provided the original author is |
+-- -- | acknowledged. No warranties, express or otherwise is included in this |
+-- -- | permission. |
+-- -- +=============================================================================+
+-- -- |
+-- -- | Original Author: Douglas Volz (doug@volzconsulting.com)
+-- -- |
+-- -- | Program Name: xxxitemcostbreakoutbyactivityrept.sql
+-- -- |
+-- -- | Parameters:
+-- - | pcosttype -- The cost type you wish to report
+-- -- | porgcode -- Specific inventory organization you wish to report (optional)
+-- -- | poperatingunit -- Operating Unit you wish to report, leave blank for all
+-- -- | operating units (optional)
+-- -- | pledger -- general ledger you wish to report, leave blank for all
+-- -- | ledgers (optional)
+-- -- | pitemnumber -- Enter the specific item number you wish to report
+-- -- | pactivity1 -- First activity to report
+-- -- | pactivity2 -- Second activity to report
+-- -- | pactivity3 -- Third activity to report
+-- -- | pactivity4 -- Fourth activity to report
+-- -- | pactivity5 -- Fifth activity to report
+-- -- | pcategoryset1 -- The first item category set to report, typically the
+-- -- | Cost or Product Line Category Set
+-- -- | pcategoryset2 -- The second item category set to report, typically the
+-- -- | Inventory Category Set
+-- -- |
+-- -- | Description:
+-- -- | Report to show Frozen costs in the Frozen cost type, by activity. Using
+-- -- | up to six parameters activities.
+-- -- |
+-- -- | Version Modified on Modified by Description
+-- -- | ====== =========== ============== =========================================
+-- -- | 1.0 08 Nov 2016 Douglas Volz Initial Coding based on XXXITEMCOSTREPT.sql\
+-- -- | Hard-coded for activities starting with S (Sort),
+-- -- | A (Assembly), T (Test), BE (Back-End) or UNASSIGNED.
+-- -- | 1.1 09 Nov 2016 Douglas Volz Added PL item costs with no sub-element (resourceid)
+-- -- | 1.2 10 Nov 2016 Douglas Volz Added Business Code, Product Family and
+-- -- | Product Type item categories
+-- -- | 1.3 18 Nov 2016 Douglas Volz Modified to use the Resource Activity assignments
+-- -- | 1.4 21 Jan 2017 Douglas Volz Changed the report to assume that all
+-- -- | resources have been assigned to an activity
+-- -- | 1.5 07 Sep 2019 Douglas Volz Reported activities are now parameters.
+-- -- | Up to five activity parameters.
+-- -- | 1.6 09 Sep 2019 Douglas Volz Added a max(mc.segment1) for the category
+-- -- | column select statements due to having
+-- -- | multiple category values for the same org,
+-- -- | item and category set id (Inventory).
+-- -- | 1.7 27 Jan 2020 Douglas Volz Added Operating Unit and Org Code parameters.
+-- -- | 1.8 02 Jul 2022 Douglas Volz Change for multi-language and lookup types.
+-- -- +=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-item-cost-break-out-by-activity/
 -- Library Link: https://www.enginatics.com/reports/cac-item-cost-break-out-by-activity/
 -- Run Report: https://demo.enginatics.com/
 

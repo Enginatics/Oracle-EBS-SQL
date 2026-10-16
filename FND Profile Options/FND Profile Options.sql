@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: FND Profile Options
 -- Description: FND profile option definition
--- Excel Examle Output: https://www.enginatics.com/example/fnd-profile-options/
+-- Excel Example Output: https://www.enginatics.com/example/fnd-profile-options/
 -- Library Link: https://www.enginatics.com/reports/fnd-profile-options/
 -- Run Report: https://demo.enginatics.com/
 

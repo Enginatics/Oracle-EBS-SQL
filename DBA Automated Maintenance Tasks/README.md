@@ -1,14 +1,20 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'DBA Automated Maintenance Tasks | Oracle EBS SQL Report'
 description: 'There are several automated jobs and ''advisors'' running by default in an Oracle database that are often not required or should not run in Oracle EBS…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, DBA, Automated, Maintenance, Tasks, dba_autotask_window_clients'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Database Administration, Enginatics, DBA, Automated, Maintenance, Tasks, dba_autotask_window_clients'
 permalink: /DBA%20Automated%20Maintenance%20Tasks/
+report_name: 'DBA Automated Maintenance Tasks'
+report_web_name: dba-automated-maintenance-tasks
+module: 'Database Administration'
+module_url: /modules/database-administration/
 ---
 
 # DBA Automated Maintenance Tasks – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/dba-automated-maintenance-tasks/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/dba-automated-maintenance-tasks/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-automated-maintenance-tasks) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-automated-maintenance-tasks).
+**Oracle EBS module:** [Database Administration](/modules/database-administration/ "Oracle EBS Database Administration reports") · [all Database Administration reports](/modules/database-administration/)  
 
 ## Overview
 There are several automated jobs and 'advisors' running by default in an Oracle database that are often not required or should not run in Oracle EBS environments. Their status and history can be queried by the following SQLs:
@@ -37,28 +43,31 @@ To deactivate all automated tasks completely, execute the following commands:
 exec dbms_auto_task_admin.disable;
 alter system set "_addm_auto_enable"=false;
 
-## Report Parameters
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-automated-maintenance-tasks) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 
+## Report Parameters
+None
 
 ## Oracle EBS Tables Used
-[dba_autotask_window_clients](https://www.enginatics.com/library/?pg=1&find=dba_autotask_window_clients)
+[dba_autotask_window_clients](https://www.enginatics.com/library/?pg=1&find=dba_autotask_window_clients&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-automated-maintenance-tasks)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-automated-maintenance-tasks)
 
 ## Related Reports
-[DBA ORDS Configuration Validation](/DBA%20ORDS%20Configuration%20Validation/ "DBA ORDS Configuration Validation Oracle EBS SQL Report"), [DBA AWR Wait Event Summary (active session history)](/DBA%20AWR%20Wait%20Event%20Summary%20%28active%20session%20history%29/ "DBA AWR Wait Event Summary (active session history) Oracle EBS SQL Report"), [CAC Intercompany SO Price List vs. Item Cost Comparison](/CAC%20Intercompany%20SO%20Price%20List%20vs-%20Item%20Cost%20Comparison/ "CAC Intercompany SO Price List vs. Item Cost Comparison Oracle EBS SQL Report"), [INV Item Upload](/INV%20Item%20Upload/ "INV Item Upload Oracle EBS SQL Report"), [INV Items](/INV%20Items/ "INV Items Oracle EBS SQL Report"), [INV Item Attribute Master/Child Conflicts](/INV%20Item%20Attribute%20Master-Child%20Conflicts/ "INV Item Attribute Master/Child Conflicts Oracle EBS SQL Report"), [DBA SGA Wait Event Summary (active session history)](/DBA%20SGA%20Wait%20Event%20Summary%20%28active%20session%20history%29/ "DBA SGA Wait Event Summary (active session history) Oracle EBS SQL Report")
+[DBA ORDS Configuration Validation](/DBA%20ORDS%20Configuration%20Validation/ "DBA ORDS Configuration Validation Oracle EBS SQL Report"), [DBA AWR Wait Event Summary (active session history)](/DBA%20AWR%20Wait%20Event%20Summary%20%28active%20session%20history%29/ "DBA AWR Wait Event Summary (active session history) Oracle EBS SQL Report"), [CAC Intercompany SO Price List vs. Item Cost Comparison](/CAC%20Intercompany%20SO%20Price%20List%20vs-%20Item%20Cost%20Comparison/ "CAC Intercompany SO Price List vs. Item Cost Comparison Oracle EBS SQL Report"), [INV Items](/INV%20Items/ "INV Items Oracle EBS SQL Report"), [INV Item Attribute Master/Child Conflicts](/INV%20Item%20Attribute%20Master-Child%20Conflicts/ "INV Item Attribute Master/Child Conflicts Oracle EBS SQL Report"), [INV Item Upload 11i](/INV%20Item%20Upload%2011i/ "INV Item Upload 11i Oracle EBS SQL Report"), [INV Item Upload](/INV%20Item%20Upload/ "INV Item Upload Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/DBA%20Automated%20Maintenance%20Tasks/DBA%20Automated%20Maintenance%20Tasks.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-automated-maintenance-tasks) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [](https://www.enginatics.com/example/dba-automated-maintenance-tasks/) |
-| Blitz Report™ XML Import | [DBA_Automated_Maintenance_Tasks.xml](https://www.enginatics.com/xml/dba-automated-maintenance-tasks/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/dba-automated-maintenance-tasks/](https://www.enginatics.com/reports/dba-automated-maintenance-tasks/) |
+| Excel Example Output | [Example](https://www.enginatics.com/example/dba-automated-maintenance-tasks/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-automated-maintenance-tasks) |
+| Blitz Report™ XML Import | [DBA_Automated_Maintenance_Tasks.xml](https://www.enginatics.com/xml/dba-automated-maintenance-tasks/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-automated-maintenance-tasks) |
+| SQL Source | [DBA Automated Maintenance Tasks.sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/DBA%20Automated%20Maintenance%20Tasks/DBA%20Automated%20Maintenance%20Tasks.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/dba-automated-maintenance-tasks/](https://www.enginatics.com/reports/dba-automated-maintenance-tasks/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-automated-maintenance-tasks) |
 
 ## Executive Summary
 The **DBA Automated Maintenance Tasks** report audits the status of the Oracle Database's built-in automated maintenance jobs. In an Oracle E-Business Suite (EBS) environment, many of these default tasks (like the Automatic Optimizer Statistics Collection) conflict with EBS-specific best practices and must be disabled or carefully managed to prevent performance degradation.
@@ -88,18 +97,17 @@ The report queries the Scheduler and Autotask views.
 *   **Best Practice Adherence**: Verifies the system is configured according to Oracle Support Note 396009.1.
 *   **Resource Optimization**: Reclaims system resources by disabling unnecessary background tasks.
 
-
 ---
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-automated-maintenance-tasks)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-automated-maintenance-tasks)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-automated-maintenance-tasks)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-automated-maintenance-tasks)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-automated-maintenance-tasks)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-automated-maintenance-tasks)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-automated-maintenance-tasks)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

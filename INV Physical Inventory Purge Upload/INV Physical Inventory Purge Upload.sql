@@ -1,23 +1,17 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: INV Physical Inventory Purge Upload
--- Description: This upload supports the purging of existing Physical Inventories. 
-
-For each Physical Inventory to be purged the user can select to purge the tags only, or to purge the full Physical Inventory.
-
-On upload, the upload process will submit the standard 'Purge physical inventory information' concurrent program for each Physical Inventory to be purged.
-
-To improve performance of the upload process, the upload does not wait for completion of the purge concurrent requests before completing.
-
-The ‘Create, Update’ upload mode can be used to first download the Physical Inventories to be purged for initial review and selection.
-
-Alternatively, the ‘Create’ upload mode can be used to generate an empty upload excel into which the details of the Physical Inventories to be purged can be pasted. In this mode the only columns that need to be populated in the excel are the Organization Code, Physical Inventory Name, and the Purge Option. 
-
--- Excel Examle Output: https://www.enginatics.com/example/inv-physical-inventory-purge-upload/
+-- Description: This upload supports the purging of existing Physical Inventories.
+-- For each Physical Inventory to be purged the user can select to purge the tags only, or to purge the full Physical Inventory.
+-- On upload, the upload process will submit the standard 'Purge physical inventory information' concurrent program for each Physical Inventory to be purged.
+-- To improve performance of the upload process, the upload does not wait for completion of the purge concurrent requests before completing.
+-- The ‘Create, Update’ upload mode can be used to first download the Physical Inventories to be purged for initial review and selection.
+-- Alternatively, the ‘Create’ upload mode can be used to generate an empty upload excel into which the details of the Physical Inventories to be purged can be pasted. In this mode the only columns that need to be populated in the excel are the Organization Code, Physical Inventory Name, and the Purge Option.
+-- Excel Example Output: https://www.enginatics.com/example/inv-physical-inventory-purge-upload/
 -- Library Link: https://www.enginatics.com/reports/inv-physical-inventory-purge-upload/
 -- Run Report: https://demo.enginatics.com/
 

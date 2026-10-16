@@ -1,49 +1,45 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC WIP Material Usage Variance
--- Description: Report your material usage variances for your open and closed WIP jobs.  This report replicates the Material Variance Section for the Oracle Discrete Job Value - Standard Costing report.
-
-If the job is open the Report Type column displays "Valuation", as this WIP job and potential material usage variance is still in your WIP inventory balances.  If the job has been closed during the reporting period, the Report Type column displays "Variance", as this WIP job was written off on a WIP Job Close Variance transaction.  You can report prior periods and this report will automatically adjust the assembly completion quantities and component issue quantities to reflect the quantities for the specified accounting period, as well as report only jobs which were open or closed during that prior period.
-
-Closed, Pending Close, Cancelled, Complete and Complete No Charges WIP job statuses use the completion quantities.  All other WIP jobs use the parameter "Use Completion Quantities".  
-
-Parameters:
-==========
-Report Option:  Open jobs, Closed jobs or All jobs.  Use this to limit the size of the report.  (mandatory)
-Period Name:  the accounting period you wish to report.  (mandatory)
-Cost Type:  defaults to your Costing Method; if the cost type is missing component costs the report will find any missing item costs from your Costing Method cost type. (optional)
-Include Scrap Quantities:  for calculating your completion quantities and component quantity requirements, include or exclude any scrapped assembly quantities.  (mandatory)
-Include Unreleased Jobs:  include jobs which have not been released and are not started.  (mandatory)
-Include Bulk Supply Items:  include Bulk items to match the results from the Oracle Discrete Job Value Report; exclude knowing that Bulk items are usually not issued to the WIP job.  (mandatory)
-Use Completion Qtys:  for jobs in a released status, use the completion quantities for the material usage and configuration variance calculations.  Useful if you backflush your materials based on your completion quantities.  Complete, Complete - No Charges, Cancelled, Closed, Pending Close or Failed Close alway use the completion quantities for the variance calculations.  (mandatory)
-Category Set 1:  any item category you wish (optional).
-Category Set 2:  any item category you wish (optional).
-Class Code:  specific type of WIP class to report (optional).
-Job Status:  specific WIP job status (optional).
-WIP Job:  specific WIP job (optional).
-Assembly Number:  specific assembly number you wish to report (optional)
-Component Number:   specific component item you wish to report (optional)
-Organization Code:  any inventory organization, defaults to your session's inventory organization (optional).
-Operating Unit:  specific operating unit (optional)
-Ledger:  specific ledger (optional)
-
-/* +=============================================================================+
--- |  Copyright 2009 - 2024 Douglas Volz Consulting, Inc.
--- |  All rights reserved.
--- |  Permission to use this code is granted provided the original author is acknowledged.
--- +=============================================================================+
--- |  Version Modified on Modified  by   Description
--- |  ======= =========== =============== =========================================
--- |  1.0     12 Oct 2020 Douglas Volz    Initial Coding Based on ICP WIP Component 
--- |                                      Variances and ICP WIP Component Valuation
--- |  1.24     02 Feb 2022 Douglas Volz   Fix for non-standard jobs, there are no rows in wip_operations if there is no routing.
--- |  1.25     20 Jun 2024 Douglas Volz   Remove tabs, reinstall parameters and inventory org access controls.
--- |  ======= =========== =============== =========================================
--- Excel Examle Output: https://www.enginatics.com/example/cac-wip-material-usage-variance/
+-- Description: Report your material usage variances for your open and closed WIP jobs. This report replicates the Material Variance Section for the Oracle Discrete Job Value - Standard Costing report.
+-- If the job is open the Report Type column displays "Valuation", as this WIP job and potential material usage variance is still in your WIP inventory balances. If the job has been closed during the reporting period, the Report Type column displays "Variance", as this WIP job was written off on a WIP Job Close Variance transaction. You can report prior periods and this report will automatically adjust the assembly completion quantities and component issue quantities to reflect the quantities for the specified accounting period, as well as report only jobs which were open or closed during that prior period.
+-- Closed, Pending Close, Cancelled, Complete and Complete No Charges WIP job statuses use the completion quantities. All other WIP jobs use the parameter "Use Completion Quantities".
+-- Parameters:
+-- ==========
+-- Report Option: Open jobs, Closed jobs or All jobs. Use this to limit the size of the report. (mandatory)
+-- Period Name: the accounting period you wish to report. (mandatory)
+-- Cost Type: defaults to your Costing Method; if the cost type is missing component costs the report will find any missing item costs from your Costing Method cost type. (optional)
+-- Include Scrap Quantities: for calculating your completion quantities and component quantity requirements, include or exclude any scrapped assembly quantities. (mandatory)
+-- Include Unreleased Jobs: include jobs which have not been released and are not started. (mandatory)
+-- Include Bulk Supply Items: include Bulk items to match the results from the Oracle Discrete Job Value Report; exclude knowing that Bulk items are usually not issued to the WIP job. (mandatory)
+-- Use Completion Qtys: for jobs in a released status, use the completion quantities for the material usage and configuration variance calculations. Useful if you backflush your materials based on your completion quantities. Complete, Complete - No Charges, Cancelled, Closed, Pending Close or Failed Close alway use the completion quantities for the variance calculations. (mandatory)
+-- Category Set 1: any item category you wish (optional).
+-- Category Set 2: any item category you wish (optional).
+-- Class Code: specific type of WIP class to report (optional).
+-- Job Status: specific WIP job status (optional).
+-- WIP Job: specific WIP job (optional).
+-- Assembly Number: specific assembly number you wish to report (optional)
+-- Component Number: specific component item you wish to report (optional)
+-- Organization Code: any inventory organization, defaults to your session's inventory organization (optional).
+-- Operating Unit: specific operating unit (optional)
+-- Ledger: specific ledger (optional)
+-- / +=============================================================================+
+-- -- | Copyright 2009 - 2024 Douglas Volz Consulting, Inc.
+-- -- | All rights reserved.
+-- -- | Permission to use this code is granted provided the original author is acknowledged.
+-- -- +=============================================================================+
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== =============== =========================================
+-- -- | 1.0 12 Oct 2020 Douglas Volz Initial Coding Based on ICP WIP Component
+-- -- | Variances and ICP WIP Component Valuation
+-- -- | 1.24 02 Feb 2022 Douglas Volz Fix for non-standard jobs, there are no rows in wipoperations if there is no routing.
+-- -- | 1.25 20 Jun 2024 Douglas Volz Remove tabs, reinstall parameters and inventory org access controls.
+-- -- | ======= =========== =============== =========================================
+-- Excel Example Output: https://www.enginatics.com/example/cac-wip-material-usage-variance/
 -- Library Link: https://www.enginatics.com/reports/cac-wip-material-usage-variance/
 -- Run Report: https://demo.enginatics.com/
 

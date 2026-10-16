@@ -1,14 +1,20 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'PO Internal Requisitions/Deliveries Discrepancy | Oracle EBS SQL Report'
 description: 'Application: Purchasing Description: Internal Requisitions/Deliveries Discrepancy Report Source: Internal Requisitions/Deliveries Discrepancy Report (XML)…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Internal, Requisitions/Deliveries, Discrepancy, po_requisition_headers, po_requisition_lines, mtl_system_items_vl'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Purchasing, Enginatics, Internal, Requisitions/Deliveries, Discrepancy, po_requisition_headers, po_requisition_lines, mtl_system_items_vl'
 permalink: /PO%20Internal%20Requisitions-Deliveries%20Discrepancy/
+report_name: 'PO Internal Requisitions/Deliveries Discrepancy'
+report_web_name: po-internal-requisitions-deliveries-discrepancy
+module: 'Purchasing'
+module_url: /modules/purchasing/
 ---
 
 # PO Internal Requisitions/Deliveries Discrepancy – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/po-internal-requisitions-deliveries-discrepancy/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/po-internal-requisitions-deliveries-discrepancy/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-internal-requisitions-deliveries-discrepancy) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-internal-requisitions-deliveries-discrepancy).
+**Oracle EBS module:** [Purchasing](/modules/purchasing/ "Oracle EBS Purchasing reports") · [all Purchasing reports](/modules/purchasing/)  
 
 ## Overview
 Application: Purchasing
@@ -16,28 +22,31 @@ Description: Internal Requisitions/Deliveries Discrepancy Report
 Source: Internal Requisitions/Deliveries Discrepancy Report (XML)
 Short Name: POXRQSDD_XML
 
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-internal-requisitions-deliveries-discrepancy) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
+
 ## Report Parameters
 Operating Unit, Requisition Number From, Requisition Number To, Requester, Requisition Date From, Requisition Date To, Destination Organization, Sort By
 
 ## Oracle EBS Tables Used
-[po_requisition_headers](https://www.enginatics.com/library/?pg=1&find=po_requisition_headers), [po_requisition_lines](https://www.enginatics.com/library/?pg=1&find=po_requisition_lines), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl), [per_all_people_f](https://www.enginatics.com/library/?pg=1&find=per_all_people_f), [org_organization_definitions](https://www.enginatics.com/library/?pg=1&find=org_organization_definitions), [po_system_parameters](https://www.enginatics.com/library/?pg=1&find=po_system_parameters), [hr_operating_units](https://www.enginatics.com/library/?pg=1&find=hr_operating_units), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters), [oe_order_lines_all](https://www.enginatics.com/library/?pg=1&find=oe_order_lines_all), [oe_order_headers_all](https://www.enginatics.com/library/?pg=1&find=oe_order_headers_all)
+[po_requisition_headers](https://www.enginatics.com/library/?pg=1&find=po_requisition_headers&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-internal-requisitions-deliveries-discrepancy), [po_requisition_lines](https://www.enginatics.com/library/?pg=1&find=po_requisition_lines&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-internal-requisitions-deliveries-discrepancy), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-internal-requisitions-deliveries-discrepancy), [per_all_people_f](https://www.enginatics.com/library/?pg=1&find=per_all_people_f&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-internal-requisitions-deliveries-discrepancy), [org_organization_definitions](https://www.enginatics.com/library/?pg=1&find=org_organization_definitions&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-internal-requisitions-deliveries-discrepancy), [po_system_parameters](https://www.enginatics.com/library/?pg=1&find=po_system_parameters&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-internal-requisitions-deliveries-discrepancy), [hr_operating_units](https://www.enginatics.com/library/?pg=1&find=hr_operating_units&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-internal-requisitions-deliveries-discrepancy), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-internal-requisitions-deliveries-discrepancy), [oe_order_lines_all](https://www.enginatics.com/library/?pg=1&find=oe_order_lines_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-internal-requisitions-deliveries-discrepancy), [oe_order_headers_all](https://www.enginatics.com/library/?pg=1&find=oe_order_headers_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-internal-requisitions-deliveries-discrepancy)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-internal-requisitions-deliveries-discrepancy)
 
 ## Related Reports
-[GL Account Analysis (Drilldown) (with inventory and WIP)](/GL%20Account%20Analysis%20%28Drilldown%29%20%28with%20inventory%20and%20WIP%29/ "GL Account Analysis (Drilldown) (with inventory and WIP) Oracle EBS SQL Report"), [GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report"), [GL Account Analysis](/GL%20Account%20Analysis/ "GL Account Analysis Oracle EBS SQL Report")
+[GL Account Analysis (Drilldown) (with inventory and WIP)](/GL%20Account%20Analysis%20%28Drilldown%29%20%28with%20inventory%20and%20WIP%29/ "GL Account Analysis (Drilldown) (with inventory and WIP) Oracle EBS SQL Report"), [PO Receiving Transactions](/PO%20Receiving%20Transactions/ "PO Receiving Transactions Oracle EBS SQL Report"), [GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report"), [GL Account Analysis](/GL%20Account%20Analysis/ "GL Account Analysis Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/PO%20Internal%20Requisitions-Deliveries%20Discrepancy/PO%20Internal%20Requisitions-Deliveries%20Discrepancy.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-internal-requisitions-deliveries-discrepancy) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [PO Internal Requisitions Deliveries Discrepancy 09-Apr-2018 101808.xlsx](https://www.enginatics.com/example/po-internal-requisitions-deliveries-discrepancy/) |
-| Blitz Report™ XML Import | [PO_Internal_Requisitions_Deliveries_Discrepancy.xml](https://www.enginatics.com/xml/po-internal-requisitions-deliveries-discrepancy/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/po-internal-requisitions-deliveries-discrepancy/](https://www.enginatics.com/reports/po-internal-requisitions-deliveries-discrepancy/) |
+| Excel Example Output | [PO Internal Requisitions Deliveries Discrepancy 09-Apr-2018 101808.xlsx](https://www.enginatics.com/example/po-internal-requisitions-deliveries-discrepancy/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-internal-requisitions-deliveries-discrepancy) |
+| Blitz Report™ XML Import | [PO_Internal_Requisitions_Deliveries_Discrepancy.xml](https://www.enginatics.com/xml/po-internal-requisitions-deliveries-discrepancy/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-internal-requisitions-deliveries-discrepancy) |
+| SQL Source | [PO Internal Requisitions-Deliveries Discrepancy.sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/PO%20Internal%20Requisitions-Deliveries%20Discrepancy/PO%20Internal%20Requisitions-Deliveries%20Discrepancy.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/po-internal-requisitions-deliveries-discrepancy/](https://www.enginatics.com/reports/po-internal-requisitions-deliveries-discrepancy/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-internal-requisitions-deliveries-discrepancy) |
 
 ## Case Study & Technical Analysis: PO Internal Requisitions-Deliveries Discrepancy Report
 
@@ -104,18 +113,17 @@ As a transactional reconciliation report integrating data across multiple module
 **3. Can this report also show pricing discrepancies between the requisition and the sales order?**
    While the report focuses on quantities and items, it could potentially be extended to compare pricing (e.g., internal transfer price vs. requisition estimated price) if the relevant pricing attributes are stored and can be joined from the `oe_order_lines_all` and `po_requisition_lines_all` tables.
 
-
 ---
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-internal-requisitions-deliveries-discrepancy)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-internal-requisitions-deliveries-discrepancy)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-internal-requisitions-deliveries-discrepancy)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-internal-requisitions-deliveries-discrepancy)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-internal-requisitions-deliveries-discrepancy)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-internal-requisitions-deliveries-discrepancy)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-internal-requisitions-deliveries-discrepancy)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

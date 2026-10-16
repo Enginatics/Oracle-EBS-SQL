@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PA Invoice Review
 -- Description: Project draft invoices with line details showing invoice amounts, approval and release status, customer, GL date, and expenditure type breakdown.
--- Excel Examle Output: https://www.enginatics.com/example/pa-invoice-review/
+-- Excel Example Output: https://www.enginatics.com/example/pa-invoice-review/
 -- Library Link: https://www.enginatics.com/reports/pa-invoice-review/
 -- Run Report: https://demo.enginatics.com/
 

@@ -1,56 +1,54 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Invoice Price Variance
--- Description: Report to display the Invoice Price Variances (IPV), Exchange Rate Variances (ERV) and A/P Accrual Write-Off Variances for an entered date range.  IPV is the difference between the PO unit price and the invoice unit cost times the quantity invoiced.  ERV is the difference between the purchase order exchange rate and the exchange rate used by the A/P invoice.  For a given invoice line, both the IPV and ERV amounts will be shown on the same row, in separate columns.  These entries have the Type "IPV-ERV".  The A/P Accrual Write-Off Variances appear as separate rows with the Type "INV WO" for invoice write-off amounts.  The A/P Accrual Write-Off Variances typically use the IPV account so for completeness, are also displayed on this report.  
-
-/* +=============================================================================+
--- |  Copyright 2006-2021 Douglas Volz Consulting, Inc.                          |
--- |  All rights reserved.                                                       |
--- +=============================================================================+
--- |
--- |  Original Author: Douglas Volz (doug@volzconsulting.com)
--- |
--- |  Program Name:  xxx_ipv_rept.sql
--- |
--- |  Parameters:
--- |  p_trx_date_from        -- starting accounting date for the payables invoices
--- |  p_trx_date_to          -- ending accounting date for the payables invoices
--- |  p_category_set1        -- The first item category set to report, typically the
--- |                            Cost or Product Line Category Set
--- |  p_category_set2        -- The second item category set to report, typically the
--- |                            Inventory Category Set 
--- |  p_vendor_name          -- Vendor you want to report (optional)
--- |  p_operating_unit       -- Operating Unit you wish to report, leave blank for all
--- |                            operating units (optional) 
--- |  p_ledger               -- general ledger you wish to report, leave blank for all
--- |                            ledgers (optional)
--- |
--- |  Description:
--- |  Report to display the invoice price variances for an entered date range.
--- |  IPV is the difference between the PO unit price and the invoice unit
--- |  cost times the quantity invoiced.
--- | 
--- |  Version Modified on Modified  by   Description
--- |  ======= =========== ============== =========================================
--- |  1.0     01 Jun 2006 Douglas Volz   Initial Coding based on XXX_IPV_REPT.sql
--- |  1.1     17 Apr 2010 Douglas Volz   Modified for Release 12 for Client, the IPV
--- |                                     columns are now null as a new line type
--- |                                     exists for IPV in AID, and the amount columns
--- |                                     only have the PO amounts, not the total invoice
--- |                                     amount.
--- |  1.11    22 May 2017 Douglas Volz   Added product type, business code, product family and
--- |                                     and product line inventory categories
--- |  1.12    20 Jul 2019 Douglas Volz   Removed all item categories except COSTING.
--- |  1.13    18 Feb 2021 Douglas Volz   Changed to multi-org views for items, categories
--- |                                     and HR organizations.
--- |  1.14    12 Apr 2021 Douglas Volz   Removed redundant joins and tables to improve performance.
--- +=============================================================================+*/
-
--- Excel Examle Output: https://www.enginatics.com/example/cac-invoice-price-variance/
+-- Description: Report to display the Invoice Price Variances (IPV), Exchange Rate Variances (ERV) and A/P Accrual Write-Off Variances for an entered date range. IPV is the difference between the PO unit price and the invoice unit cost times the quantity invoiced. ERV is the difference between the purchase order exchange rate and the exchange rate used by the A/P invoice. For a given invoice line, both the IPV and ERV amounts will be shown on the same row, in separate columns. These entries have the Type "IPV-ERV". The A/P Accrual Write-Off Variances appear as separate rows with the Type "INV WO" for invoice write-off amounts. The A/P Accrual Write-Off Variances typically use the IPV account so for completeness, are also displayed on this report.
+-- / +=============================================================================+
+-- -- | Copyright 2006-2021 Douglas Volz Consulting, Inc. |
+-- -- | All rights reserved. |
+-- -- +=============================================================================+
+-- -- |
+-- -- | Original Author: Douglas Volz (doug@volzconsulting.com)
+-- -- |
+-- -- | Program Name: xxxipvrept.sql
+-- -- |
+-- -- | Parameters:
+-- -- | ptrxdatefrom -- starting accounting date for the payables invoices
+-- -- | ptrxdateto -- ending accounting date for the payables invoices
+-- -- | pcategoryset1 -- The first item category set to report, typically the
+-- -- | Cost or Product Line Category Set
+-- -- | pcategoryset2 -- The second item category set to report, typically the
+-- -- | Inventory Category Set
+-- -- | pvendorname -- Vendor you want to report (optional)
+-- -- | poperatingunit -- Operating Unit you wish to report, leave blank for all
+-- -- | operating units (optional)
+-- -- | pledger -- general ledger you wish to report, leave blank for all
+-- -- | ledgers (optional)
+-- -- |
+-- -- | Description:
+-- -- | Report to display the invoice price variances for an entered date range.
+-- -- | IPV is the difference between the PO unit price and the invoice unit
+-- -- | cost times the quantity invoiced.
+-- -- |
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== ============== =========================================
+-- -- | 1.0 01 Jun 2006 Douglas Volz Initial Coding based on XXXIPVREPT.sql
+-- -- | 1.1 17 Apr 2010 Douglas Volz Modified for Release 12 for Client, the IPV
+-- -- | columns are now null as a new line type
+-- -- | exists for IPV in AID, and the amount columns
+-- -- | only have the PO amounts, not the total invoice
+-- -- | amount.
+-- -- | 1.11 22 May 2017 Douglas Volz Added product type, business code, product family and
+-- -- | and product line inventory categories
+-- -- | 1.12 20 Jul 2019 Douglas Volz Removed all item categories except COSTING.
+-- -- | 1.13 18 Feb 2021 Douglas Volz Changed to multi-org views for items, categories
+-- -- | and HR organizations.
+-- -- | 1.14 12 Apr 2021 Douglas Volz Removed redundant joins and tables to improve performance.
+-- -- +=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-invoice-price-variance/
 -- Library Link: https://www.enginatics.com/reports/cac-invoice-price-variance/
 -- Run Report: https://demo.enginatics.com/
 

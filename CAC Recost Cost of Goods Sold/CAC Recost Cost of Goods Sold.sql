@@ -1,54 +1,51 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Recost Cost of Goods Sold
--- Description: Report to compare the "as transacted" cost of goods sold (COGS) transactions in Oracle Inventory with the "what if" costs from a simulation cost type.  Use this report when you need to make manual journal entry corrections to your COGS entries, due to incorrect item costs.  In addition to reporting the normal COGS entries for the COGS Recognition, Sales Order Issue, RMA Receipt and RMA Return transactions, you can also report user-defined material transactions such as Account Issues/Receipts, Miscellaneous Issues/Receipts and Account Alias transactions which could represent COGS entries from other ERP Systems.  To report additional user-defined transactions enter these along with the defaulted values for the COGS Transaction Type parameter:  COGS Recognition, Sales Order Issue, RMA Receipt and RMA Return.
-
-Note:  in order for COGS entries to be reported you must first run Create Accounting.
-
-Parameters:
-===========
-Transaction Date From:  enter the starting transaction date for COGS transactions (mandatory).
-Transaction Date To:  enter the ending transaction date for PO COGS transactions (mandatory).
-COGS Transaction Types:  enter the COGS related transaction types you wish to report (mandatory).
-Recost Cost Type:  enter the cost type you wish to use to recost your COGS transactions (mandatory).
-Minimum Value Difference:  the absolute smallest COGS difference you want to report (mandatory).
-Category Set 1:  any item category you wish, typically the Cost or Product Line category set (optional).
-Category Set 2:  any item category you wish, typically the Inventory category set (optional).
-Item Number:  enter the specific item number(s) you wish to report (optional).
-Organization Code:  enter the specific inventory organization(s) you wish to report (optional).
-Operating Unit:  enter the specific operating unit(s) you wish to report (optional).
-Ledger:  enter the specific ledger(s) you wish to report (optional).
-
-/* +=============================================================================+
--- |  Copyright 2006- 2023 Douglas Volz Consulting, Inc.
--- |  All rights reserved.
--- |  Permission to use this code is granted provided the original author is
--- |  acknowledged.  No warranties, express or otherwise is included in this
--- |  permission.
--- +=============================================================================+
--- |
--- |  Original Author: Douglas Volz (doug@volzconsulting.com)
--- |
--- |  Program Name:  xxx_recost_cogs_detail_rept.sql
--- |
--- |  Version Modified on Modified  by   Description
--- |  ======= =========== ============== =========================================
--- |  1.0     02 Apr 2006 Douglas Volz   Initial Coding
--- |  1.1     28 Apr 2006 Douglas Volz   Final Coding
--- |  1.2     02 May 2017 Douglas Volz   Modified for Client's use, added inline table
--- |                                     to get one row for COGS accounting entries, to
--- |                                     to get the mmt correct qty and avoid cross-joining.
--- |  1.3     13 Nov 2023 Douglas Volz   Modified for organization access, removed tabs and
--- |                                     added subledger accounting ccids.
--- |  1.4     16 Nov 2023 Douglas Volz   Remove org_acct_periods, use period name from xla_ae_headers.
--- |  1.5     05 Dec 2023 Douglas Volz   Added G/L and Operating Unit security restrictions.
--- |  1.6     12 Mar 2024 Douglas Volz   Add cost elements for COGS per client request.
--- +=============================================================================+*/
--- Excel Examle Output: https://www.enginatics.com/example/cac-recost-cost-of-goods-sold/
+-- Description: Report to compare the "as transacted" cost of goods sold (COGS) transactions in Oracle Inventory with the "what if" costs from a simulation cost type. Use this report when you need to make manual journal entry corrections to your COGS entries, due to incorrect item costs. In addition to reporting the normal COGS entries for the COGS Recognition, Sales Order Issue, RMA Receipt and RMA Return transactions, you can also report user-defined material transactions such as Account Issues/Receipts, Miscellaneous Issues/Receipts and Account Alias transactions which could represent COGS entries from other ERP Systems. To report additional user-defined transactions enter these along with the defaulted values for the COGS Transaction Type parameter: COGS Recognition, Sales Order Issue, RMA Receipt and RMA Return.
+-- Note: in order for COGS entries to be reported you must first run Create Accounting.
+-- Parameters:
+-- ===========
+-- Transaction Date From: enter the starting transaction date for COGS transactions (mandatory).
+-- Transaction Date To: enter the ending transaction date for PO COGS transactions (mandatory).
+-- COGS Transaction Types: enter the COGS related transaction types you wish to report (mandatory).
+-- Recost Cost Type: enter the cost type you wish to use to recost your COGS transactions (mandatory).
+-- Minimum Value Difference: the absolute smallest COGS difference you want to report (mandatory).
+-- Category Set 1: any item category you wish, typically the Cost or Product Line category set (optional).
+-- Category Set 2: any item category you wish, typically the Inventory category set (optional).
+-- Item Number: enter the specific item number(s) you wish to report (optional).
+-- Organization Code: enter the specific inventory organization(s) you wish to report (optional).
+-- Operating Unit: enter the specific operating unit(s) you wish to report (optional).
+-- Ledger: enter the specific ledger(s) you wish to report (optional).
+-- / +=============================================================================+
+-- -- | Copyright 2006- 2023 Douglas Volz Consulting, Inc.
+-- -- | All rights reserved.
+-- -- | Permission to use this code is granted provided the original author is
+-- -- | acknowledged. No warranties, express or otherwise is included in this
+-- -- | permission.
+-- -- +=============================================================================+
+-- -- |
+-- -- | Original Author: Douglas Volz (doug@volzconsulting.com)
+-- -- |
+-- -- | Program Name: xxxrecostcogsdetailrept.sql
+-- -- |
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== ============== =========================================
+-- -- | 1.0 02 Apr 2006 Douglas Volz Initial Coding
+-- -- | 1.1 28 Apr 2006 Douglas Volz Final Coding
+-- -- | 1.2 02 May 2017 Douglas Volz Modified for Client's use, added inline table
+-- -- | to get one row for COGS accounting entries, to
+-- -- | to get the mmt correct qty and avoid cross-joining.
+-- -- | 1.3 13 Nov 2023 Douglas Volz Modified for organization access, removed tabs and
+-- -- | added subledger accounting ccids.
+-- -- | 1.4 16 Nov 2023 Douglas Volz Remove orgacctperiods, use period name from xlaaeheaders.
+-- -- | 1.5 05 Dec 2023 Douglas Volz Added G/L and Operating Unit security restrictions.
+-- -- | 1.6 12 Mar 2024 Douglas Volz Add cost elements for COGS per client request.
+-- -- +=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-recost-cost-of-goods-sold/
 -- Library Link: https://www.enginatics.com/reports/cac-recost-cost-of-goods-sold/
 -- Run Report: https://demo.enginatics.com/
 

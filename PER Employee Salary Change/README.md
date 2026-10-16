@@ -1,14 +1,20 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'PER Employee Salary Change | Oracle EBS SQL Report'
 description: 'Query to get the last Salary change details for employees. Can add: whether to look at just the recent salary change? or salary change history.... If yes…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, PER, Employee, Salary, Change, per_all_people_f, per_business_groups, per_all_assignments_f'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Human Resources, Enginatics, PER, Employee, Salary, Change, per_all_people_f, per_business_groups, per_all_assignments_f'
 permalink: /PER%20Employee%20Salary%20Change/
+report_name: 'PER Employee Salary Change'
+report_web_name: per-employee-salary-change
+module: 'Human Resources'
+module_url: /modules/human-resources/
 ---
 
 # PER Employee Salary Change – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/per-employee-salary-change/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/per-employee-salary-change/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-employee-salary-change) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-employee-salary-change).
+**Oracle EBS module:** [Human Resources](/modules/human-resources/ "Oracle EBS Human Resources reports") · [all Human Resources reports](/modules/human-resources/)  
 
 ## Overview
 Query to get the last Salary change details for employees.
@@ -17,28 +23,31 @@ Can add:
 whether to look at just the recent salary change?
 or salary change history.... If yes, then the last condition in where clause to be dynamically added/removed
 
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-employee-salary-change) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
+
 ## Report Parameters
 Business Group, Effective Date
 
 ## Oracle EBS Tables Used
-[per_all_people_f](https://www.enginatics.com/library/?pg=1&find=per_all_people_f), [per_business_groups](https://www.enginatics.com/library/?pg=1&find=per_business_groups), [per_all_assignments_f](https://www.enginatics.com/library/?pg=1&find=per_all_assignments_f), [per_jobs](https://www.enginatics.com/library/?pg=1&find=per_jobs), [per_grades](https://www.enginatics.com/library/?pg=1&find=per_grades), [per_all_positions](https://www.enginatics.com/library/?pg=1&find=per_all_positions), [fnd_currencies_tl](https://www.enginatics.com/library/?pg=1&find=fnd_currencies_tl), [per_pay_proposals](https://www.enginatics.com/library/?pg=1&find=per_pay_proposals)
+[per_all_people_f](https://www.enginatics.com/library/?pg=1&find=per_all_people_f&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-employee-salary-change), [per_business_groups](https://www.enginatics.com/library/?pg=1&find=per_business_groups&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-employee-salary-change), [per_all_assignments_f](https://www.enginatics.com/library/?pg=1&find=per_all_assignments_f&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-employee-salary-change), [per_jobs](https://www.enginatics.com/library/?pg=1&find=per_jobs&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-employee-salary-change), [per_grades](https://www.enginatics.com/library/?pg=1&find=per_grades&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-employee-salary-change), [per_all_positions](https://www.enginatics.com/library/?pg=1&find=per_all_positions&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-employee-salary-change), [fnd_currencies_tl](https://www.enginatics.com/library/?pg=1&find=fnd_currencies_tl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-employee-salary-change), [per_pay_proposals](https://www.enginatics.com/library/?pg=1&find=per_pay_proposals&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-employee-salary-change)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-employee-salary-change)
 
 ## Related Reports
-[PER Employee Assignments](/PER%20Employee%20Assignments/ "PER Employee Assignments Oracle EBS SQL Report"), [PER Terminations and Separations](/PER%20Terminations%20and%20Separations/ "PER Terminations and Separations Oracle EBS SQL Report"), [PER New Hires](/PER%20New%20Hires/ "PER New Hires Oracle EBS SQL Report"), [PER Employee Grade Changes](/PER%20Employee%20Grade%20Changes/ "PER Employee Grade Changes Oracle EBS SQL Report")
+[PER Employee Assignments](/PER%20Employee%20Assignments/ "PER Employee Assignments Oracle EBS SQL Report"), [PER Person Assignment Upload](/PER%20Person%20Assignment%20Upload/ "PER Person Assignment Upload Oracle EBS SQL Report"), [PER Terminations and Separations](/PER%20Terminations%20and%20Separations/ "PER Terminations and Separations Oracle EBS SQL Report"), [PER New Hires](/PER%20New%20Hires/ "PER New Hires Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/PER%20Employee%20Salary%20Change/PER%20Employee%20Salary%20Change.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-employee-salary-change) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [](https://www.enginatics.com/example/per-employee-salary-change/) |
-| Blitz Report™ XML Import | [PER_Employee_Salary_Change.xml](https://www.enginatics.com/xml/per-employee-salary-change/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/per-employee-salary-change/](https://www.enginatics.com/reports/per-employee-salary-change/) |
+| Excel Example Output | [Example](https://www.enginatics.com/example/per-employee-salary-change/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-employee-salary-change) |
+| Blitz Report™ XML Import | [PER_Employee_Salary_Change.xml](https://www.enginatics.com/xml/per-employee-salary-change/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-employee-salary-change) |
+| SQL Source | [PER Employee Salary Change.sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/PER%20Employee%20Salary%20Change/PER%20Employee%20Salary%20Change.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/per-employee-salary-change/](https://www.enginatics.com/reports/per-employee-salary-change/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-employee-salary-change) |
 
 ## Case Study & Technical Analysis: PER Employee Salary Change Report
 
@@ -102,18 +111,17 @@ As a master data report dealing with date-effective tables, it is optimized for 
 **3. How is this report different from the 'PER Employee Grade Changes' report?**
    This report focuses specifically on changes to an employee's *monetary compensation* (salary). The 'PER Employee Grade Changes' report, while often related, tracks changes to an employee's *grade*, which is a classification of their job level. While a promotion (grade change) often triggers a salary change, these are distinct pieces of information tracked separately within Oracle HR.
 
-
 ---
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-employee-salary-change)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-employee-salary-change)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-employee-salary-change)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-employee-salary-change)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-employee-salary-change)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-employee-salary-change)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-employee-salary-change)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

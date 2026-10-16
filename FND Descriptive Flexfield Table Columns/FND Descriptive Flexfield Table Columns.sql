@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: FND Descriptive Flexfield Table Columns
 -- Description: Shows all active descriptive flexfield table columns.
--- Excel Examle Output: https://www.enginatics.com/example/fnd-descriptive-flexfield-table-columns/
+-- Excel Example Output: https://www.enginatics.com/example/fnd-descriptive-flexfield-table-columns/
 -- Library Link: https://www.enginatics.com/reports/fnd-descriptive-flexfield-table-columns/
 -- Run Report: https://demo.enginatics.com/
 

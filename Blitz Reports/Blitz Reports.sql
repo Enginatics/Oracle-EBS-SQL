@@ -1,16 +1,16 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: Blitz Reports
 -- Description: All Enginatics report details can be seen here:
-<a href="https://www.enginatics.com/library/?pg=1&category[]=Enginatics" rel="nofollow" target="_blank">https://www.enginatics.com/library/?pg=1&category[]=Enginatics</a>
-
-Blitz Reports with parameters and assignments.
-If you are using the free version of Blitz Report, you can use the parameter 'Sort by Free 30 Reports' to show your free reports in column 'Free 30 Reports'.
--- Excel Examle Output: https://www.enginatics.com/example/blitz-reports/
+-- https://www.enginatics.com/library/?pg=1&category[]=Enginatics
+-- Blitz Reports with parameters and assignments.
+-- Show Parameters, Show Upload Parameters, Show Upload Columns and Show Assignments list different detail rows and can be used only one at a time: each is greyed out while another one is set, and Parameter Name or Parameter Type count as Show Parameters. Show Upload Parameters includes the setup of the upload column each parameter maps to.
+-- If you are using the free version of Blitz Report, you can use the parameter 'Sort by Free 30 Reports' to show your free reports in column 'Free 30 Reports'.
+-- Excel Example Output: https://www.enginatics.com/example/blitz-reports/
 -- Library Link: https://www.enginatics.com/reports/blitz-reports/
 -- Run Report: https://demo.enginatics.com/
 
@@ -150,6 +150,7 @@ order by
 y.execution_count desc nulls last,
 xrv.report_name,
 xrpv.sort_order,
+decode(xupv.source,'U',1,2),
 xupv.display_sequence,
 xucv.column_number,
 xrav.include_exclude desc,

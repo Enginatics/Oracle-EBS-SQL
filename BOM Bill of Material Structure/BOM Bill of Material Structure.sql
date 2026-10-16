@@ -1,25 +1,23 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: BOM Bill of Material Structure
 -- Description: Description: Bill of Material Structure Report
-
-Provides equivalent functionality to the the following standard reports:
-- Bill of Material Structure Report
-  (Template 'Bill of Material Structure Report' with parameter 'Bills with Loop Errors Only' = No)
-- Bill of Material Loop Report
-  (Template Bill of Material Structure Report with parameter 'Bills with Loop Errors Only' = Yes)
-- Consolidated Bills of Material Report
-  (Template 'Consolidated Bill of Material Report')
-
-Application: Bills of Material
-Source: Bill of Material Structure Report GUI (XML)
-Short Name: BOMRBOMSG_XML
-DB package: BOM_BOMRBOMS_XMLP_PKG
--- Excel Examle Output: https://www.enginatics.com/example/bom-bill-of-material-structure/
+-- Provides equivalent functionality to the the following standard reports:
+-- - Bill of Material Structure Report
+-- (Template 'Bill of Material Structure Report' with parameter 'Bills with Loop Errors Only' = No)
+-- - Bill of Material Loop Report
+-- (Template Bill of Material Structure Report with parameter 'Bills with Loop Errors Only' = Yes)
+-- - Consolidated Bills of Material Report
+-- (Template 'Consolidated Bill of Material Report')
+-- Application: Bills of Material
+-- Source: Bill of Material Structure Report GUI (XML)
+-- Short Name: BOMRBOMSGXML
+-- DB package: BOMBOMRBOMSXMLPPKG
+-- Excel Example Output: https://www.enginatics.com/example/bom-bill-of-material-structure/
 -- Library Link: https://www.enginatics.com/reports/bom-bill-of-material-structure/
 -- Run Report: https://demo.enginatics.com/
 

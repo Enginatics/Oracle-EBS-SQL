@@ -1,16 +1,16 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: AR Transaction Register
 -- Description: Application: Receivables
-Source: Transaction Register
-Short Name: ARRXINVR
-
-The report has now been enhanced to allow multiple accessible Ledgers or Operating Units to be selected in the Reporting Context parameter. Additionally, the Reporting Context parameter has been made optional. Leaving it null will allow the report to be run across all accessible Ledgers or Operating Units.
--- Excel Examle Output: https://www.enginatics.com/example/ar-transaction-register/
+-- Source: Transaction Register
+-- Short Name: ARRXINVR
+-- The report has now been enhanced to allow multiple accessible Ledgers or Operating Units to be selected in the Reporting Context parameter. Additionally, the Reporting Context parameter has been made optional. Leaving it null will allow the report to be run across all accessible Ledgers or Operating Units.
+-- When India Localization is installed, the following GST columns are also included: IGST Amount, IGST Recoverable, IGST Non-Recoverable, CGST Amount, CGST Recoverable, CGST Non-Recoverable, SGST Amount, SGST Recoverable, SGST Non-Recoverable, CESS Amount, CESS Rate, Custom Amount, Unclassified Tax Amount, Unclassified Tax Rate Codes, Taxable Value, HSN SAC Code, HSN Length Warning, GST State Tax Mismatch, GST Registration No, GST PAN No, Reverse Charge Flag, Place of Supply, Ship From State.
+-- Excel Example Output: https://www.enginatics.com/example/ar-transaction-register/
 -- Library Link: https://www.enginatics.com/reports/ar-transaction-register/
 -- Run Report: https://demo.enginatics.com/
 
@@ -34,6 +34,7 @@ select
   rx.trx_acctd_amount                    functional_amount,
   rx.trx_amount-arpt_sql_func_util.get_sum_of_trx_lines(rx.customer_trx_id,'TAX') total_line_amount,
   arpt_sql_func_util.get_sum_of_trx_lines(rx.customer_trx_id,'TAX') total_tax_amount,
+&il_tax_columns
   rx.rec_natacct                         receivables_account,
   rx.rec_natacct_desc                    receivables_account_desc,
   rx.rec_account                         receivables_account_full,
@@ -53,6 +54,7 @@ select
   substrb(ship_to_party.party_name,1,50) ship_to_customer_name,
   ship_to.account_number                 ship_to_customer_number,
   ship_to_site.location                  ship_to_customer_site
+&il_reg_columns
 from
   ar_transactions_rep_itf rx,
   ra_terms terms,
@@ -68,6 +70,7 @@ from
   ra_batches_all ba,
   ra_batch_sources_all bas,
   hr_all_organization_units_vl haouv
+&il_from
 where
   1=1
   and rx.ship_to_customer_id = ship_to.cust_account_id(+)
@@ -86,6 +89,7 @@ where
   and nvl(rx.org_id, -99) = nvl(bas.org_id, -99)
   and rx.request_id = fnd_global.conc_request_id
   and rx.org_id = haouv.organization_id (+)
+&il_where
 order by
   rx.organization_name,
   rx.rec_balance,

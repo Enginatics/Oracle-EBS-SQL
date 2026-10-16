@@ -1,18 +1,15 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: DIS Converter Diagnostic Dump
--- Description: Diagnostic dump of all metadata and flattened staging data needed to reproduce the xxen_xdo Discoverer-to-Blitz conversion logic offline.
-
-Outputs a single result set with rows discriminated by the data_type column. Each row populates only the columns relevant to its data_type; all others are null. The dump is used by a Python parser to investigate why workbook or worksheets in discoverer eex files are not converted into Blitz templates or reports
-
-Data types emitted: OBJECT_USE_KEY (one per object_use_key in scope, with link to existing Blitz report if imported), WORKBOOK_LINK (object_use_key to doc_id/sheet_name/qs_id link), EUL_OBJ (eul5_objs metadata per folder, with dis_folder_sql2 for COBJ/CUO), QPP_STAT (eul5_qpp_stats per qs_id with join key_ids), KEY_CONS (eul5_key_cons rows for referenced keys), EXPRESSION (eul5_expressions rows with formula1 CLOB), STAGING_WORKBOOK (xxen_discoverer_workbooks rows), STAGING_SHEET (xxen_discoverer_sheets rows), STAGING_PIVOT (xxen_discoverer_pivot_fields rows), ITEM_SQL (per-item SQL via dis_formula_sql / xml_expression_to_sql), JOIN_PREDICATE (per-join SQL via dis_formula_sql), FROM_FRAGMENT (per-folder FROM-clause entry).
-
-Filter parameters: End User Layer (required), Object Use Key (optional, restrict to specific OUKs), Include Imported (default Yes - include OUKs already converted to Blitz reports).
--- Excel Examle Output: https://www.enginatics.com/example/dis-converter-diagnostic-dump/
+-- Description: Diagnostic dump of all metadata and flattened staging data needed to reproduce the xxenxdo Discoverer-to-Blitz conversion logic offline.
+-- Outputs a single result set with rows discriminated by the datatype column. Each row populates only the columns relevant to its datatype; all others are null. The dump is used by a Python parser to investigate why workbook or worksheets in discoverer eex files are not converted into Blitz templates or reports
+-- Data types emitted: OBJECTUSEKEY (one per objectusekey in scope, with link to existing Blitz report if imported), WORKBOOKLINK (objectusekey to docid/sheetname/qsid link), EULOBJ (eul5objs metadata per folder, with disfoldersql2 for COBJ/CUO), QPPSTAT (eul5qppstats per qsid with join keyids), KEYCONS (eul5keycons rows for referenced keys), EXPRESSION (eul5expressions rows with formula1 CLOB), STAGINGWORKBOOK (xxendiscovererworkbooks rows), STAGINGSHEET (xxendiscoverersheets rows), STAGINGPIVOT (xxendiscovererpivotfields rows), ITEMSQL (per-item SQL via disformulasql / xmlexpressiontosql), JOINPREDICATE (per-join SQL via disformulasql), FROMFRAGMENT (per-folder FROM-clause entry).
+-- Filter parameters: End User Layer (required), Object Use Key (optional, restrict to specific OUKs), Include Imported (default Yes - include OUKs already converted to Blitz reports).
+-- Excel Example Output: https://www.enginatics.com/example/dis-converter-diagnostic-dump/
 -- Library Link: https://www.enginatics.com/reports/dis-converter-diagnostic-dump/
 -- Run Report: https://demo.enginatics.com/
 

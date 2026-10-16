@@ -1,14 +1,20 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'DBA Result Cache Objects and Dependencies | Oracle EBS SQL Report'
 description: 'Shows result cache objects with the current number of cached results, the number of times these results were found and reused (scan count) and their…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, DBA, Result, Cache, Objects, gv$result_cache_objects, gv$result_cache_dependency, dba_objects'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Database Administration, Enginatics, DBA, Result, Cache, Objects, gv$result_cache_objects, gv$result_cache_dependency, dba_objects'
 permalink: /DBA%20Result%20Cache%20Objects%20and%20Dependencies/
+report_name: 'DBA Result Cache Objects and Dependencies'
+report_web_name: dba-result-cache-objects-and-dependencies
+module: 'Database Administration'
+module_url: /modules/database-administration/
 ---
 
 # DBA Result Cache Objects and Dependencies – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/dba-result-cache-objects-and-dependencies/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/dba-result-cache-objects-and-dependencies/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-result-cache-objects-and-dependencies) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-result-cache-objects-and-dependencies).
+**Oracle EBS module:** [Database Administration](/modules/database-administration/ "Oracle EBS Database Administration reports") · [all Database Administration reports](/modules/database-administration/)  
 
 ## Overview
 Shows result cache objects with the current number of cached results, the number of times these results were found and reused (scan count) and their dependency on objects causing the most frequent invalidations.
@@ -17,28 +23,31 @@ Warning !!!
 Don't run this on a prod system during business hours as prior to DB version 12.2, selecting from v$result_cache_objects apparently blocks all result cache objects (see note 2143739.1, section 4.).
 You may end up with all server sessions waiting on 'latch free' for 'Result Cache: RC Latch' while the report is running.
 
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-result-cache-objects-and-dependencies) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
+
 ## Report Parameters
 Result Name contains, Show Dependencies, I have read the warning
 
 ## Oracle EBS Tables Used
-[gv$result_cache_objects](https://www.enginatics.com/library/?pg=1&find=gv$result_cache_objects), [gv$result_cache_dependency](https://www.enginatics.com/library/?pg=1&find=gv$result_cache_dependency), [dba_objects](https://www.enginatics.com/library/?pg=1&find=dba_objects)
+[gv$result_cache_objects](https://www.enginatics.com/library/?pg=1&find=gv%24result_cache_objects&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-result-cache-objects-and-dependencies), [gv$result_cache_dependency](https://www.enginatics.com/library/?pg=1&find=gv%24result_cache_dependency&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-result-cache-objects-and-dependencies), [dba_objects](https://www.enginatics.com/library/?pg=1&find=dba_objects&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-result-cache-objects-and-dependencies)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-result-cache-objects-and-dependencies)
 
 ## Related Reports
-[DBA SGA+PGA Memory Configuration](/DBA%20SGA-PGA%20Memory%20Configuration/ "DBA SGA+PGA Memory Configuration Oracle EBS SQL Report"), [DBA Result Cache Statistics](/DBA%20Result%20Cache%20Statistics/ "DBA Result Cache Statistics Oracle EBS SQL Report"), [DBA Blocking Sessions](/DBA%20Blocking%20Sessions/ "DBA Blocking Sessions Oracle EBS SQL Report"), [DBA SGA Blocking Session Summary](/DBA%20SGA%20Blocking%20Session%20Summary/ "DBA SGA Blocking Session Summary Oracle EBS SQL Report"), [DBA AWR Blocking Session Summary](/DBA%20AWR%20Blocking%20Session%20Summary/ "DBA AWR Blocking Session Summary Oracle EBS SQL Report"), [DBA AWR Active Session History](/DBA%20AWR%20Active%20Session%20History/ "DBA AWR Active Session History Oracle EBS SQL Report"), [DBA SGA Buffer Cache Object Usage](/DBA%20SGA%20Buffer%20Cache%20Object%20Usage/ "DBA SGA Buffer Cache Object Usage Oracle EBS SQL Report"), [DBA SGA Active Session History](/DBA%20SGA%20Active%20Session%20History/ "DBA SGA Active Session History Oracle EBS SQL Report"), [DBA ORDS Configuration Validation](/DBA%20ORDS%20Configuration%20Validation/ "DBA ORDS Configuration Validation Oracle EBS SQL Report")
+[DBA SGA+PGA Memory Configuration](/DBA%20SGA-PGA%20Memory%20Configuration/ "DBA SGA+PGA Memory Configuration Oracle EBS SQL Report"), [DBA ORDS Configuration Validation](/DBA%20ORDS%20Configuration%20Validation/ "DBA ORDS Configuration Validation Oracle EBS SQL Report"), [DBA Result Cache Statistics](/DBA%20Result%20Cache%20Statistics/ "DBA Result Cache Statistics Oracle EBS SQL Report"), [DBA Blocking Sessions](/DBA%20Blocking%20Sessions/ "DBA Blocking Sessions Oracle EBS SQL Report"), [DBA SGA Blocking Session Summary](/DBA%20SGA%20Blocking%20Session%20Summary/ "DBA SGA Blocking Session Summary Oracle EBS SQL Report"), [DBA AWR Blocking Session Summary](/DBA%20AWR%20Blocking%20Session%20Summary/ "DBA AWR Blocking Session Summary Oracle EBS SQL Report"), [DBA AWR Active Session History](/DBA%20AWR%20Active%20Session%20History/ "DBA AWR Active Session History Oracle EBS SQL Report"), [DBA SGA Buffer Cache Object Usage](/DBA%20SGA%20Buffer%20Cache%20Object%20Usage/ "DBA SGA Buffer Cache Object Usage Oracle EBS SQL Report"), [DBA SGA Active Session History](/DBA%20SGA%20Active%20Session%20History/ "DBA SGA Active Session History Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/DBA%20Result%20Cache%20Objects%20and%20Dependencies/DBA%20Result%20Cache%20Objects%20and%20Dependencies.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-result-cache-objects-and-dependencies) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [DBA Result Cache Objects and Dependencies 23-Dec-2024 112646.xlsx](https://www.enginatics.com/example/dba-result-cache-objects-and-dependencies/) |
-| Blitz Report™ XML Import | [DBA_Result_Cache_Objects_and_Dependencies.xml](https://www.enginatics.com/xml/dba-result-cache-objects-and-dependencies/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/dba-result-cache-objects-and-dependencies/](https://www.enginatics.com/reports/dba-result-cache-objects-and-dependencies/) |
+| Excel Example Output | [DBA Result Cache Objects and Dependencies 23-Dec-2024 112646.xlsx](https://www.enginatics.com/example/dba-result-cache-objects-and-dependencies/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-result-cache-objects-and-dependencies) |
+| Blitz Report™ XML Import | [DBA_Result_Cache_Objects_and_Dependencies.xml](https://www.enginatics.com/xml/dba-result-cache-objects-and-dependencies/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-result-cache-objects-and-dependencies) |
+| SQL Source | [DBA Result Cache Objects and Dependencies.sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/DBA%20Result%20Cache%20Objects%20and%20Dependencies/DBA%20Result%20Cache%20Objects%20and%20Dependencies.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/dba-result-cache-objects-and-dependencies/](https://www.enginatics.com/reports/dba-result-cache-objects-and-dependencies/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-result-cache-objects-and-dependencies) |
 
 ## Case Study & Technical Analysis
 
@@ -66,18 +75,17 @@ The **DBA Result Cache Objects and Dependencies** report provides a deep dive in
 *   **Invalidation Analysis**: Determining if a specific table is too volatile to be part of a result cached query.
 *   **Application Debugging**: Verifying that expected results are actually being cached by the application logic.
 
-
 ---
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-result-cache-objects-and-dependencies)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-result-cache-objects-and-dependencies)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-result-cache-objects-and-dependencies)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-result-cache-objects-and-dependencies)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-result-cache-objects-and-dependencies)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-result-cache-objects-and-dependencies)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-result-cache-objects-and-dependencies)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: OPM Detailed Subledger
 -- Description: OPM Financials Detailed Subledger Report showing transaction headers, extract lines with debit/credit amounts, and GL account distributions. Based on Oracle standard report GMFDSUR (Detailed Subledger Report).
--- Excel Examle Output: https://www.enginatics.com/example/opm-detailed-subledger/
+-- Excel Example Output: https://www.enginatics.com/example/opm-detailed-subledger/
 -- Library Link: https://www.enginatics.com/reports/opm-detailed-subledger/
 -- Run Report: https://demo.enginatics.com/
 

@@ -1,14 +1,14 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: FA Asset Impairments
 -- Description: Source: Asset Impairment Report
-Short Name: FAXRASIM
-DB package:
--- Excel Examle Output: https://www.enginatics.com/example/fa-asset-impairments/
+-- Short Name: FAXRASIM
+-- DB package:
+-- Excel Example Output: https://www.enginatics.com/example/fa-asset-impairments/
 -- Library Link: https://www.enginatics.com/reports/fa-asset-impairments/
 -- Run Report: https://demo.enginatics.com/
 

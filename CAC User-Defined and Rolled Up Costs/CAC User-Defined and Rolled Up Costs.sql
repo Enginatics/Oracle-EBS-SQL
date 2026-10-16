@@ -1,51 +1,49 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC User-Defined and Rolled Up Costs
--- Description: Use this report to find items with both user-defined (manually entered) and rolled up costs, for material and other cost elements.  Useful to find rolled up assemblies where the item costs have been accidentally doubled-up.
-
-Parameters:
-===========
-Cost Type: enter the cost type to report (mandatory).
-Category Set 1:  any item category you wish, typically the Cost or Product Line category set (optional).
-Category Set 2:  any item category you wish, typically the Inventory category set (optional).
-Assignment Set:  enter the sourcing rule assignment set, used when transferring items between inventory organizations on internal requisitions.
-Item Number:  enter the specific item number(s) you wish to report (optional).
-Organization Code:  enter the specific inventory organization(s) you wish to report (optional).
-Operating Unit:  enter the specific operating unit(s) you wish to report (optional).
-Ledger:  enter the specific ledger(s) you wish to report (optional).
-
-/* +=============================================================================+
--- |  Copyright 2010-2023 Douglas Volz Consulting, Inc.
--- |  All rights reserved.
--- |  Permission to use this code is granted provided the original author is
--- |  acknowledged.  No warranties, express or otherwise is included in this
--- |  permission.
--- +=============================================================================+
--- |
--- |  Original Author: Douglas Volz (doug@volzconsulting.com)
--- |
--- |  Program Name:  xxx_user_defined_rolled_up_cost_rept.sql
--- | 
--- |  Version Modified on Modified  by   Description
--- |  ======= =========== ============== =========================================
--- |  1.0     29 Dec 2010 Douglas Volz   Create new report to find items with
--- |                                     both manually entered and rolled up material costs
--- |  1.1     24 May 2011 Douglas Volz   Bug fix for the resource code column
--- |  1.2     19 Oct 2019 Douglas Volz   Add columns for non-material costs
--- |  1.3     27 Jan 2020 Douglas Volz   Added Operating_Unit parameter and outer
--- |                                     join for Item_Type.
--- |  1.4     05 May 2021 Douglas Volz   Modify for multi-language tables.
--- |  1.5     12 Jan 2023 Douglas Volz   Correction for definition of manually entered 
--- |                                     material costs.
--- |  1.6     20 Nov 2023 Douglas Volz   Fix for Manual Other Costs and Rolled Up Other Costs columns.
--- |  1.7     05 Dec 2023 Douglas Volz   Added G/L and Operating Unit security restrictions.
--- |  1.8     07 Jan 2024 Douglas Volz   Add onhand quantities, to help find valuation issues.  Remove tabs.
--- +=============================================================================+*/
--- Excel Examle Output: https://www.enginatics.com/example/cac-user-defined-and-rolled-up-costs/
+-- Description: Use this report to find items with both user-defined (manually entered) and rolled up costs, for material and other cost elements. Useful to find rolled up assemblies where the item costs have been accidentally doubled-up.
+-- Parameters:
+-- ===========
+-- Cost Type: enter the cost type to report (mandatory).
+-- Category Set 1: any item category you wish, typically the Cost or Product Line category set (optional).
+-- Category Set 2: any item category you wish, typically the Inventory category set (optional).
+-- Assignment Set: enter the sourcing rule assignment set, used when transferring items between inventory organizations on internal requisitions.
+-- Item Number: enter the specific item number(s) you wish to report (optional).
+-- Organization Code: enter the specific inventory organization(s) you wish to report (optional).
+-- Operating Unit: enter the specific operating unit(s) you wish to report (optional).
+-- Ledger: enter the specific ledger(s) you wish to report (optional).
+-- / +=============================================================================+
+-- -- | Copyright 2010-2023 Douglas Volz Consulting, Inc.
+-- -- | All rights reserved.
+-- -- | Permission to use this code is granted provided the original author is
+-- -- | acknowledged. No warranties, express or otherwise is included in this
+-- -- | permission.
+-- -- +=============================================================================+
+-- -- |
+-- -- | Original Author: Douglas Volz (doug@volzconsulting.com)
+-- -- |
+-- -- | Program Name: xxxuserdefinedrolledupcostrept.sql
+-- -- |
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== ============== =========================================
+-- -- | 1.0 29 Dec 2010 Douglas Volz Create new report to find items with
+-- -- | both manually entered and rolled up material costs
+-- -- | 1.1 24 May 2011 Douglas Volz Bug fix for the resource code column
+-- -- | 1.2 19 Oct 2019 Douglas Volz Add columns for non-material costs
+-- -- | 1.3 27 Jan 2020 Douglas Volz Added OperatingUnit parameter and outer
+-- -- | join for ItemType.
+-- -- | 1.4 05 May 2021 Douglas Volz Modify for multi-language tables.
+-- -- | 1.5 12 Jan 2023 Douglas Volz Correction for definition of manually entered
+-- -- | material costs.
+-- -- | 1.6 20 Nov 2023 Douglas Volz Fix for Manual Other Costs and Rolled Up Other Costs columns.
+-- -- | 1.7 05 Dec 2023 Douglas Volz Added G/L and Operating Unit security restrictions.
+-- -- | 1.8 07 Jan 2024 Douglas Volz Add onhand quantities, to help find valuation issues. Remove tabs.
+-- -- +=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-user-defined-and-rolled-up-costs/
 -- Library Link: https://www.enginatics.com/reports/cac-user-defined-and-rolled-up-costs/
 -- Run Report: https://demo.enginatics.com/
 

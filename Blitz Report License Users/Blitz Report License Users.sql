@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: Blitz Report License Users
 -- Description: Currently active Blitz Report users (running reports within the past 60 days) and their most frequently executeds reports.
--- Excel Examle Output: https://www.enginatics.com/example/blitz-report-license-users/
+-- Excel Example Output: https://www.enginatics.com/example/blitz-report-license-users/
 -- Library Link: https://www.enginatics.com/reports/blitz-report-license-users/
 -- Run Report: https://demo.enginatics.com/
 

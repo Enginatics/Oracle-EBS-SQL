@@ -1,40 +1,49 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'WF Notifications | Oracle EBS SQL Report'
-description: ' – Oracle E-Business Suite SQL report'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Notifications, wf_notifications, wf_item_types_vl, wf_lookups'
+description: 'Oracle EBS Workflow SQL report: free SQL, parameters and tables used.'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Workflow, Enginatics, R12 only, Notifications, wf_notifications, wf_item_types_vl, wf_lookups'
 permalink: /WF%20Notifications/
+report_name: 'WF Notifications'
+report_web_name: wf-notifications
+module: 'Workflow'
+module_url: /modules/workflow/
 ---
 
 # WF Notifications – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/wf-notifications/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/wf-notifications/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wf-notifications) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wf-notifications).
+**Oracle EBS module:** [Workflow](/modules/workflow/ "Oracle EBS Workflow reports") · [all Workflow reports](/modules/workflow/)  
 
 ## Overview
 
+
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wf-notifications) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 
 ## Report Parameters
 Notification Status, Begin Date From, Begin Date To
 
 ## Oracle EBS Tables Used
-[wf_notifications](https://www.enginatics.com/library/?pg=1&find=wf_notifications), [wf_item_types_vl](https://www.enginatics.com/library/?pg=1&find=wf_item_types_vl), [wf_lookups](https://www.enginatics.com/library/?pg=1&find=wf_lookups), [wf_item_activity_statuses](https://www.enginatics.com/library/?pg=1&find=wf_item_activity_statuses)
+[wf_notifications](https://www.enginatics.com/library/?pg=1&find=wf_notifications&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wf-notifications), [wf_item_types_vl](https://www.enginatics.com/library/?pg=1&find=wf_item_types_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wf-notifications), [wf_lookups](https://www.enginatics.com/library/?pg=1&find=wf_lookups&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wf-notifications), [wf_item_activity_statuses](https://www.enginatics.com/library/?pg=1&find=wf_item_activity_statuses&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wf-notifications)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wf-notifications), [R12 only](https://www.enginatics.com/library/?pg=1&category%5B%5D=R12%20only&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wf-notifications)
 
 ## Related Reports
 [WF Activity Status Summary](/WF%20Activity%20Status%20Summary/ "WF Activity Status Summary Oracle EBS SQL Report"), [OKL Termination Quotes](/OKL%20Termination%20Quotes/ "OKL Termination Quotes Oracle EBS SQL Report"), [ONT Transaction Types and Line WF Processes](/ONT%20Transaction%20Types%20and%20Line%20WF%20Processes/ "ONT Transaction Types and Line WF Processes Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/WF%20Notifications/WF%20Notifications.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wf-notifications) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [](https://www.enginatics.com/example/wf-notifications/) |
-| Blitz Report™ XML Import | [WF_Notifications.xml](https://www.enginatics.com/xml/wf-notifications/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/wf-notifications/](https://www.enginatics.com/reports/wf-notifications/) |
+| Excel Example Output | [Example](https://www.enginatics.com/example/wf-notifications/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wf-notifications) |
+| Blitz Report™ XML Import | [WF_Notifications.xml](https://www.enginatics.com/xml/wf-notifications/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wf-notifications) |
+| SQL Source | [WF Notifications.sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/WF%20Notifications/WF%20Notifications.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/wf-notifications/](https://www.enginatics.com/reports/wf-notifications/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wf-notifications) |
 
 ## Case Study & Technical Analysis: WF Notifications Report
 
@@ -97,18 +106,17 @@ As a transactional report querying potentially large volumes of workflow notific
 **3. Is it possible to see the content or details of the notification message from this report?**
    While this report shows the notification `Subject` and basic status, the full content of the notification message (which can include dynamic data and actionable links) is typically stored in separate CLOB columns within `wf_notifications` or related tables. While possible to include, it would require custom configuration to extract and display the full message body.
 
-
 ---
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wf-notifications)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wf-notifications)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wf-notifications)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wf-notifications)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wf-notifications)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wf-notifications)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wf-notifications)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

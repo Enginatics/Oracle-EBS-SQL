@@ -1,16 +1,14 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CST Historical WIP Standard Cost Adjustment
 -- Description: WIP standard cost adjustment details recorded by a completed standard cost update, based on Oracle's Historical WIP Standard Cost Adjustment Report (CSTCUSJA).
-
-The report shows one line per WIP discrete job, transaction type, item or resource operation and cost element, with the old and new unit costs, adjustment quantity and adjustment value, and the WIP job's valuation and standard cost adjustment accounts.
-
-The Cost Update parameter offers the completed standard cost updates of the selected organization that saved their adjustment details, matching Oracle's View Cost Update History form. Oracle's Delete Snapshot option is deliberately not included, so the stored adjustment details are never removed by this report.
--- Excel Examle Output: https://www.enginatics.com/example/cst-historical-wip-standard-cost-adjustment/
+-- The report shows one line per WIP discrete job, transaction type, item or resource operation and cost element, with the old and new unit costs, adjustment quantity and adjustment value, and the WIP job's valuation and standard cost adjustment accounts.
+-- The Cost Update parameter offers the completed standard cost updates of the selected organization that saved their adjustment details, matching Oracle's View Cost Update History form. Oracle's Delete Snapshot option is deliberately not included, so the stored adjustment details are never removed by this report.
+-- Excel Example Output: https://www.enginatics.com/example/cst-historical-wip-standard-cost-adjustment/
 -- Library Link: https://www.enginatics.com/reports/cst-historical-wip-standard-cost-adjustment/
 -- Run Report: https://demo.enginatics.com/
 

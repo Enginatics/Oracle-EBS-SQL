@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: AR European Sales Listing
 -- Description: Summary report listing sales by country and currency code, with transaction amount / currency and accounted amount/ currency
--- Excel Examle Output: https://www.enginatics.com/example/ar-european-sales-listing/
+-- Excel Example Output: https://www.enginatics.com/example/ar-european-sales-listing/
 -- Library Link: https://www.enginatics.com/reports/ar-european-sales-listing/
 -- Run Report: https://demo.enginatics.com/
 

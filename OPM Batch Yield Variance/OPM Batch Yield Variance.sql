@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: OPM Batch Yield Variance
 -- Description: Oracle Process Manufacturing (OPM) batch yield variance: compares planned versus actual product and by-product output quantities against total batch input, reporting quantity variance, variance percentage and planned/actual yield percentage - the key production yield KPI for completed batches.
--- Excel Examle Output: https://www.enginatics.com/example/opm-batch-yield-variance/
+-- Excel Example Output: https://www.enginatics.com/example/opm-batch-yield-variance/
 -- Library Link: https://www.enginatics.com/reports/opm-batch-yield-variance/
 -- Run Report: https://demo.enginatics.com/
 

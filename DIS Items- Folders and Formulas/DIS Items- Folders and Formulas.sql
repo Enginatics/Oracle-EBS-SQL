@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: DIS Items, Folders and Formulas
 -- Description: Discoverer items (expressions) and folders (objects), including join conditions and formulas (calculated items)
--- Excel Examle Output: https://www.enginatics.com/example/dis-items-folders-and-formulas/
+-- Excel Example Output: https://www.enginatics.com/example/dis-items-folders-and-formulas/
 -- Library Link: https://www.enginatics.com/reports/dis-items-folders-and-formulas/
 -- Run Report: https://demo.enginatics.com/
 

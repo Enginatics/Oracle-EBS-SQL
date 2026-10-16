@@ -1,15 +1,15 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: INV Cycle count entries and adjustments
 -- Description: Imported Oracle standard Cycle count entries and adjustments report
-Source: Cycle count entries and adjustments report (XML)
-Short Name: INVARCTA_XML
-DB package: INV_INVARCTA_XMLP_PKG
--- Excel Examle Output: https://www.enginatics.com/example/inv-cycle-count-entries-and-adjustments/
+-- Source: Cycle count entries and adjustments report (XML)
+-- Short Name: INVARCTAXML
+-- DB package: INVINVARCTAXMLPPKG
+-- Excel Example Output: https://www.enginatics.com/example/inv-cycle-count-entries-and-adjustments/
 -- Library Link: https://www.enginatics.com/reports/inv-cycle-count-entries-and-adjustments/
 -- Run Report: https://demo.enginatics.com/
 

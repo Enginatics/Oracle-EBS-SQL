@@ -1,40 +1,49 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'Blitz Report Pivot Colums Validation | Oracle EBS SQL Report'
 description: 'Checks if records in xxenreporttemplatepivot have a corresponding record in xxenreporttemplatecolumns'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Blitz, Report, Pivot, Colums, xxen_report_templates_v, xxen_report_template_pivot, xxen_report_template_columns'
 permalink: /Blitz%20Report%20Pivot%20Colums%20Validation/
+report_name: 'Blitz Report Pivot Colums Validation'
+report_web_name: blitz-report-pivot-colums-validation
+module: 'Blitz Report'
+module_url: /modules/blitz-report/
 ---
 
 # Blitz Report Pivot Colums Validation – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/blitz-report-pivot-colums-validation/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/blitz-report-pivot-colums-validation/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-report-pivot-colums-validation) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-report-pivot-colums-validation).
+**Oracle EBS module:** [Blitz Report](/modules/blitz-report/ "Oracle EBS Blitz Report reports") · [all Blitz Report reports](/modules/blitz-report/)  
 
 ## Overview
 Checks if records in xxen_report_template_pivot have a corresponding record in xxen_report_template_columns
+
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-report-pivot-colums-validation) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 
 ## Report Parameters
 Category, Report Name, Template Name, Show missing only
 
 ## Oracle EBS Tables Used
-[xxen_report_templates_v](https://www.enginatics.com/library/?pg=1&find=xxen_report_templates_v), [xxen_report_template_pivot](https://www.enginatics.com/library/?pg=1&find=xxen_report_template_pivot), [xxen_report_template_columns](https://www.enginatics.com/library/?pg=1&find=xxen_report_template_columns)
+[xxen_report_templates_v](https://www.enginatics.com/library/?pg=1&find=xxen_report_templates_v&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-report-pivot-colums-validation), [xxen_report_template_pivot](https://www.enginatics.com/library/?pg=1&find=xxen_report_template_pivot&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-report-pivot-colums-validation), [xxen_report_template_columns](https://www.enginatics.com/library/?pg=1&find=xxen_report_template_columns&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-report-pivot-colums-validation)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-report-pivot-colums-validation)
 
 ## Related Reports
-[Blitz Report Templates](/Blitz%20Report%20Templates/ "Blitz Report Templates Oracle EBS SQL Report"), [Blitz Reports](/Blitz%20Reports/ "Blitz Reports Oracle EBS SQL Report"), [DBA ORDS Configuration Validation](/DBA%20ORDS%20Configuration%20Validation/ "DBA ORDS Configuration Validation Oracle EBS SQL Report"), [DIS Migration identify missing EulConditions](/DIS%20Migration%20identify%20missing%20EulConditions/ "DIS Migration identify missing EulConditions Oracle EBS SQL Report"), [Blitz Report Template Sharing Upload](/Blitz%20Report%20Template%20Sharing%20Upload/ "Blitz Report Template Sharing Upload Oracle EBS SQL Report"), [INV Transaction Historical Summary](/INV%20Transaction%20Historical%20Summary/ "INV Transaction Historical Summary Oracle EBS SQL Report"), [AP Posted Invoice Register](/AP%20Posted%20Invoice%20Register/ "AP Posted Invoice Register Oracle EBS SQL Report"), [Blitz Report Parameter Default Values](/Blitz%20Report%20Parameter%20Default%20Values/ "Blitz Report Parameter Default Values Oracle EBS SQL Report")
+[Blitz Report Templates](/Blitz%20Report%20Templates/ "Blitz Report Templates Oracle EBS SQL Report"), [DIS Migration identify missing EulConditions](/DIS%20Migration%20identify%20missing%20EulConditions/ "DIS Migration identify missing EulConditions Oracle EBS SQL Report"), [Blitz Reports](/Blitz%20Reports/ "Blitz Reports Oracle EBS SQL Report"), [DBA ORDS Configuration Validation](/DBA%20ORDS%20Configuration%20Validation/ "DBA ORDS Configuration Validation Oracle EBS SQL Report"), [Blitz Report Template Sharing Upload](/Blitz%20Report%20Template%20Sharing%20Upload/ "Blitz Report Template Sharing Upload Oracle EBS SQL Report"), [INV Transaction Historical Summary](/INV%20Transaction%20Historical%20Summary/ "INV Transaction Historical Summary Oracle EBS SQL Report"), [Blitz Report Default Templates](/Blitz%20Report%20Default%20Templates/ "Blitz Report Default Templates Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/Blitz%20Report%20Pivot%20Colums%20Validation/Blitz%20Report%20Pivot%20Colums%20Validation.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-report-pivot-colums-validation) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [Blitz Report Pivot Colums Validation 04-Apr-2026 123137.xlsx](https://www.enginatics.com/example/blitz-report-pivot-colums-validation/) |
-| Blitz Report™ XML Import | [Blitz_Report_Pivot_Colums_Validation.xml](https://www.enginatics.com/xml/blitz-report-pivot-colums-validation/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/blitz-report-pivot-colums-validation/](https://www.enginatics.com/reports/blitz-report-pivot-colums-validation/) |
+| Excel Example Output | [Blitz Report Pivot Colums Validation 04-Apr-2026 123137.xlsx](https://www.enginatics.com/example/blitz-report-pivot-colums-validation/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-report-pivot-colums-validation) |
+| Blitz Report™ XML Import | [Blitz_Report_Pivot_Colums_Validation.xml](https://www.enginatics.com/xml/blitz-report-pivot-colums-validation/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-report-pivot-colums-validation) |
+| SQL Source | [Blitz Report Pivot Colums Validation.sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/Blitz%20Report%20Pivot%20Colums%20Validation/Blitz%20Report%20Pivot%20Colums%20Validation.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/blitz-report-pivot-colums-validation/](https://www.enginatics.com/reports/blitz-report-pivot-colums-validation/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-report-pivot-colums-validation) |
 
 ## Case Study: Blitz Report Pivot Colums Validation
 
@@ -55,18 +64,17 @@ This validation report compares the records in `xxen_report_template_pivot` agai
 - **Data Accuracy**: Guarantees that the columns displayed in pivot tables match the underlying data structure.
 - **Efficient Maintenance**: Provides a direct list of invalid templates, saving time on manual troubleshooting.
 
-
 ---
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-report-pivot-colums-validation)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-report-pivot-colums-validation)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-report-pivot-colums-validation)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-report-pivot-colums-validation)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-report-pivot-colums-validation)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-report-pivot-colums-validation)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-report-pivot-colums-validation)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

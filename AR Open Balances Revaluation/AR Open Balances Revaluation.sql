@@ -1,16 +1,15 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: AR Open Balances Revaluation
 -- Description: Report: AR Open Balances Revaluation Report
-Application: Receivables
-Source: AR Open Balances Revaluation Report
-Short Name: AROBRR
-
--- Excel Examle Output: https://www.enginatics.com/example/ar-open-balances-revaluation/
+-- Application: Receivables
+-- Source: AR Open Balances Revaluation Report
+-- Short Name: AROBRR
+-- Excel Example Output: https://www.enginatics.com/example/ar-open-balances-revaluation/
 -- Library Link: https://www.enginatics.com/reports/ar-open-balances-revaluation/
 -- Run Report: https://demo.enginatics.com/
 

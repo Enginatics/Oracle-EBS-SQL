@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PO Acceptance Upload
 -- Description: This upload allows users to create new PO Acceptances (Acknowledgments)
--- Excel Examle Output: https://www.enginatics.com/example/po-acceptance-upload/
+-- Excel Example Output: https://www.enginatics.com/example/po-acceptance-upload/
 -- Library Link: https://www.enginatics.com/reports/po-acceptance-upload/
 -- Run Report: https://demo.enginatics.com/
 

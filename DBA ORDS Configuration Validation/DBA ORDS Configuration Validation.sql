@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: DBA ORDS Configuration Validation
--- Description: Validates the Oracle REST Data Services (ORDS) configuration for Blitz Report webservices. Checks: ORDS schema enablement and URL mapping, REST module status, PL/SQL package validity, all 27 expected endpoint handlers and their ORDS template registrations, execute grants, URL-pattern privileges that intercept xxen_webservices calls and the OAuth client's role grants (catches HTTP 401 caused by pre-existing catch-all privileges), ORDS URL profile configuration with token endpoint validation, OAuth2 client_id/secret availability, and ORDS connection pool sessions. Use this report to diagnose ORDS connectivity issues including OAuth token 404 and 401 errors.
--- Excel Examle Output: https://www.enginatics.com/example/dba-ords-configuration-validation/
+-- Description: Validates the Oracle REST Data Services (ORDS) configuration for Blitz Report webservices. Checks: ORDS schema enablement and URL mapping, REST module status, PL/SQL package validity, all 27 expected endpoint handlers and their ORDS template registrations, execute grants, URL-pattern privileges that intercept xxenwebservices calls and the OAuth client's role grants (catches HTTP 401 caused by pre-existing catch-all privileges), ORDS URL profile configuration with token endpoint validation, OAuth2 clientid/secret availability, and ORDS connection pool sessions. Use this report to diagnose ORDS connectivity issues including OAuth token 404 and 401 errors.
+-- Excel Example Output: https://www.enginatics.com/example/dba-ords-configuration-validation/
 -- Library Link: https://www.enginatics.com/reports/dba-ords-configuration-validation/
 -- Run Report: https://demo.enginatics.com/
 
@@ -91,9 +91,12 @@ from
 (
 select 'autofill_values' endpoint_name from dual union all
 select 'cell_lov_records' from dual union all
+select 'clear_param_defaults' from dual union all
 select 'copy_template' from dual union all
 select 'delete_drilldown' from dual union all
 select 'drilldowns' from dual union all
+select 'email_report' from dual union all
+select 'email_upload_result' from dual union all
 select 'fsg_function_records' from dual union all
 select 'fsg_lov_records' from dual union all
 select 'fsg_records' from dual union all
@@ -107,8 +110,10 @@ select 'report_metadata' from dual union all
 select 'report_param_lov' from dual union all
 select 'run_report' from dual union all
 select 'save_drilldown' from dual union all
+select 'save_param_defaults' from dual union all
 select 'save_template' from dual union all
 select 'session_cookie' from dual union all
+select 'stage_upload_rows' from dual union all
 select 'template_columns' from dual union all
 select 'update_fsg_profile_values' from dual union all
 select 'upload_default_value' from dual union all
@@ -216,7 +221,7 @@ select
 'XXEN_WEBSERVICE_CONNECTION_TYPE',
 nvl(fnd_profile.value('XXEN_WEBSERVICE_CONNECTION_TYPE'),'(not set - defaults to ORDS)'),
 'Controls webservice transport: ORDS, ISG, or MOD_PLSQL',
-case nvl(fnd_profile.value('XXEN_WEBSERVICE_CONNECTION_TYPE'),'ORDS')
+case xxen_webservices.connection_type
 when 'ORDS' then 'OK'
 when 'ISG' then 'OK'
 when 'MOD_PLSQL' then 'OK'
@@ -237,9 +242,9 @@ else 'Not set - APEX not installed, ORDS URL derived from APPS_SERVLET_AGENT' en
 6
 from dual
 union all
--- Derived ORDS URL: shows what xxen_webservices.instance_url auto-derives.
--- When XXEN_WEBSERVICE_ORDS_URL is set, instance_url returns that profile value (which is the override).
--- When the profile is null, instance_url derives the URL as host/context/schema_alias/
+-- Derived ORDS URL: shows what xxen_webservices.webservice_url auto-derives.
+-- When XXEN_WEBSERVICE_ORDS_URL is set, webservice_url returns that profile value (which is the override).
+-- When the profile is null, webservice_url derives the URL as host/context/schema_alias/
 -- where alias comes from ords_metadata.ords_url_mappings (authoritative) and host comes from
 -- FND_APEX_URL when APEX is installed, otherwise APPS_SERVLET_AGENT host on :8443/ords/.
 select
@@ -257,7 +262,7 @@ and fpov.level_id=10001 and rownum=1)
 end
 from ords_metadata.ords_schemas os, ords_metadata.ords_modules om, ords_metadata.ords_url_mappings oum
 where os.id=om.schema_id and om.name='xxen_webservices' and os.url_mapping_id=oum.id and rownum=1),
-xxen_webservices.instance_url
+xxen_webservices.webservice_url
 )
 end,
 'Schema alias source: ords_metadata.ords_url_mappings | Host source: '||case when fnd_profile.value('FND_APEX_URL') is not null then 'FND_APEX_URL' else 'APPS_SERVLET_AGENT + :8443/ords/' end,
@@ -269,10 +274,10 @@ select
 '6. Configuration',
 'XXEN_WEBSERVICE_ORDS_URL',
 nvl(fnd_profile.value('XXEN_WEBSERVICE_ORDS_URL'),'(not set - auto-derived)'),
-'Effective URL: '||xxen_webservices.instance_url||' | Token endpoint: '||xxen_webservices.instance_url||'oauth/token',
+'Effective URL: '||xxen_webservices.webservice_url||' | Token endpoint: '||xxen_webservices.webservice_url||'oauth/token',
 case
-when nvl(fnd_profile.value('XXEN_WEBSERVICE_CONNECTION_TYPE'),'ORDS')<>'ORDS' then 'OK'
-when xxen_webservices.instance_url is not null then 'OK'
+when xxen_webservices.connection_type<>'ORDS' then 'OK'
+when xxen_webservices.webservice_url is not null then 'OK'
 else 'Warning'
 end,
 6
@@ -301,7 +306,7 @@ else 'Error'
 end,
 6
 from
-(select xxen_webservices.instance_url ords_url, nvl(fnd_profile.value('XXEN_WEBSERVICE_CONNECTION_TYPE'),'ORDS') connection_type from dual) u
+(select xxen_webservices.webservice_url ords_url, xxen_webservices.connection_type from dual) u
 union all
 select
 '6. Configuration',
@@ -322,7 +327,7 @@ else 'Warning'
 end,
 6
 from
-(select xxen_webservices.instance_url ords_url, nvl(fnd_profile.value('XXEN_WEBSERVICE_CONNECTION_TYPE'),'ORDS') connection_type from dual) u
+(select xxen_webservices.webservice_url ords_url, xxen_webservices.connection_type from dual) u
 union all
 select
 '6. Configuration',
@@ -330,7 +335,7 @@ select
 case when xxen_webservices.ords_client_id is not null then 'Available' else 'Not Found' end,
 case when xxen_webservices.ords_client_id is not null then 'Client ID retrieved successfully' else 'Cannot retrieve client_id from user_ords_clients' end,
 case
-when nvl(fnd_profile.value('XXEN_WEBSERVICE_CONNECTION_TYPE'),'ORDS')<>'ORDS' then 'OK'
+when xxen_webservices.connection_type<>'ORDS' then 'OK'
 when xxen_webservices.ords_client_id is not null then 'OK'
 else 'Error' end,
 6
@@ -342,7 +347,7 @@ select
 case when xxen_webservices.ords_client_secret is not null then 'Available' else 'Not Found' end,
 case when xxen_webservices.ords_client_secret is not null then 'Client secret retrieved successfully' else 'Cannot retrieve client_secret from user_ords_clients' end,
 case
-when nvl(fnd_profile.value('XXEN_WEBSERVICE_CONNECTION_TYPE'),'ORDS')<>'ORDS' then 'OK'
+when xxen_webservices.connection_type<>'ORDS' then 'OK'
 when xxen_webservices.ords_client_secret is not null then 'OK'
 else 'Error' end,
 6
@@ -354,7 +359,7 @@ select
 case when y.session_count>0 then 'Active ('||y.session_count||' sessions)' else 'Not Connected' end,
 'ORDS_PUBLIC_USER sessions in gv$session',
 case when y.session_count>0 then 'OK'
-when nvl(fnd_profile.value('XXEN_WEBSERVICE_CONNECTION_TYPE'),'ORDS')<>'ORDS' then 'OK'
+when xxen_webservices.connection_type<>'ORDS' then 'OK'
 else 'Error' end,
 7
 from

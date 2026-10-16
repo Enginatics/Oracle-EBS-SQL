@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PPF_WP3_OM_DETAILS
 -- Description: Detail Sales Order or Quote header report with line item details including status, cost, project and shipping information.
--- Excel Examle Output: https://www.enginatics.com/example/ppf_wp3_om_details/
+-- Excel Example Output: https://www.enginatics.com/example/ppf_wp3_om_details/
 -- Library Link: https://www.enginatics.com/reports/ppf_wp3_om_details/
 -- Run Report: https://demo.enginatics.com/
 

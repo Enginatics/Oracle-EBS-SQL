@@ -1,16 +1,16 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CST Miscellaneous Accrual Reconciliation
 -- Description: Imported from Concurrent Program
-Application: Bills of Material
-Source: Miscellaneous Accrual Reconciliation Report
-Short Name: CSTACRMI
-DB package:
--- Excel Examle Output: https://www.enginatics.com/example/cst-miscellaneous-accrual-reconciliation/
+-- Application: Bills of Material
+-- Source: Miscellaneous Accrual Reconciliation Report
+-- Short Name: CSTACRMI
+-- DB package:
+-- Excel Example Output: https://www.enginatics.com/example/cst-miscellaneous-accrual-reconciliation/
 -- Library Link: https://www.enginatics.com/reports/cst-miscellaneous-accrual-reconciliation/
 -- Run Report: https://demo.enginatics.com/
 

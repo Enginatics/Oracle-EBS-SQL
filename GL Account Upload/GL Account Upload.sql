@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: GL Account Upload
 -- Description: This upload allows creation of new GL code combinations and update of existing ones. For creation of new code combinations, the upload requires the setup to allow dynamic inserts for code combinations.
--- Excel Examle Output: https://www.enginatics.com/example/gl-account-upload/
+-- Excel Example Output: https://www.enginatics.com/example/gl-account-upload/
 -- Library Link: https://www.enginatics.com/reports/gl-account-upload/
 -- Run Report: https://demo.enginatics.com/
 

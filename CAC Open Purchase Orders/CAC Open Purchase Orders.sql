@@ -1,58 +1,56 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Open Purchase Orders
--- Description: Report to show open purchase orders and related information.  This report will convert any foreign currency purchases into the currency of the general ledger (defaulted from the inventory organization for this session).  Use the To and From Transaction Date parameters to create an average receipt cost and use the Comparison Cost Type parameter to show a comparison 
-amounts from another cost type.
-
-Parameters:
-===========
-Comparison Cost Type: enter the cost type for a comparison against the purchase order prices (optional).  Defaulted from your Costing Method.
-Transaction Date From:  starting transaction date for averaging the purchase order receipts (mandatory).  Use these averages for comparing to the PO unit prices.
-Transaction Date To:  ending transaction date for averaging the purchase order receipts (mandatory).  Use these averages for comparing to the PO unit prices.
-Currency Conversion Date:  enter the currency conversion date to use for converting foreign currency purchases into the currency of the general ledger (mandatory).
-Currency Conversion Type:  enter the currency conversion type to use for converting foreign currency purchases into the currency of hhe general ledger (mandatory).
-Supplier Name:  specific vendor or supplier you wish to report (optional).
-Category Set 1:  any item category you wish, typically the Cost or Product Line category set (optional).
-Category Set 2:  any item category you wish, typically the Inventory category set (optional).
-Item Number:  enter the specific item number(s) you wish to report (optional).
-Organization Code:  enter the specific inventory organization(s) you wish to report (optional).
-Operating Unit:  enter the specific operating unit(s) you wish to report (optional).
-Ledger:  enter the specific ledger(s) you wish to report (optional).
-
-/* +=============================================================================+
--- | Copyright 2020 - 2023 Douglas Volz Consulting, Inc. 
--- | All rights reserved. 
--- | Permission to use this code is granted provided the original author is
--- | acknowledged. No warranties, express or otherwise is included in this
--- | permission.
--- +=============================================================================+
--- |        
--- |  Original Author: Douglas Volz (doug@volzconsulting.com)
--- |
--- |  Program Name:  open_po_rept.sql
--- |
--- |  Version Modified on Modified  by   Description
--- |  ======= =========== ============== =========================================
--- |  1.0     09 Sep 2020 Douglas Volz   Initial Coding based on Purchase Price 
--- |                                     variance report, xxx_ppv_lot_rept.sql
--- |  1.1     10 Sep 2020 Douglas Volz   Added inspection flag.
--- |  1.2     01 Dec 2020 Douglas Volz   Added variance and charge accounts
--- |  1.3     20 Dec 2020 Douglas Volz   Added promise date, Need By Date, project,
--- |                                     Expected Receipt Date, Target Price (PO List Price),
--- |                                     Customer Name and difference columns.
--- |                                     And added Minimum Cost Difference parameter.
--- |  1.4     03 Feb 2021 Douglas Volz   Merged OSP with stock purchase orders.
--- |  1.5     05 Feb 2021 Douglas Volz   Added PO averages and item cost information.
--- |  1.6     07 Jul 2022 Douglas Volz   Add multi-language item status.
--- |  1.7     28 Nov 2023 Andy Haack     Remove tabs, add org access controls, fix for G/L Daily Rates, outer joins. 
--- |  1.8     15 Dec 2023 Douglas Volz   Setting the comparison cost type as mandatory, to
--- |                                     prevent a multiple rows error for the comparison cost type.  
--- +=============================================================================+*/
--- Excel Examle Output: https://www.enginatics.com/example/cac-open-purchase-orders/
+-- Description: Report to show open purchase orders and related information. This report will convert any foreign currency purchases into the currency of the general ledger (defaulted from the inventory organization for this session). Use the To and From Transaction Date parameters to create an average receipt cost and use the Comparison Cost Type parameter to show a comparison
+-- amounts from another cost type.
+-- Parameters:
+-- ===========
+-- Comparison Cost Type: enter the cost type for a comparison against the purchase order prices (optional). Defaulted from your Costing Method.
+-- Transaction Date From: starting transaction date for averaging the purchase order receipts (mandatory). Use these averages for comparing to the PO unit prices.
+-- Transaction Date To: ending transaction date for averaging the purchase order receipts (mandatory). Use these averages for comparing to the PO unit prices.
+-- Currency Conversion Date: enter the currency conversion date to use for converting foreign currency purchases into the currency of the general ledger (mandatory).
+-- Currency Conversion Type: enter the currency conversion type to use for converting foreign currency purchases into the currency of hhe general ledger (mandatory).
+-- Supplier Name: specific vendor or supplier you wish to report (optional).
+-- Category Set 1: any item category you wish, typically the Cost or Product Line category set (optional).
+-- Category Set 2: any item category you wish, typically the Inventory category set (optional).
+-- Item Number: enter the specific item number(s) you wish to report (optional).
+-- Organization Code: enter the specific inventory organization(s) you wish to report (optional).
+-- Operating Unit: enter the specific operating unit(s) you wish to report (optional).
+-- Ledger: enter the specific ledger(s) you wish to report (optional).
+-- / +=============================================================================+
+-- -- | Copyright 2020 - 2023 Douglas Volz Consulting, Inc.
+-- -- | All rights reserved.
+-- -- | Permission to use this code is granted provided the original author is
+-- -- | acknowledged. No warranties, express or otherwise is included in this
+-- -- | permission.
+-- -- +=============================================================================+
+-- -- |
+-- -- | Original Author: Douglas Volz (doug@volzconsulting.com)
+-- -- |
+-- -- | Program Name: openporept.sql
+-- -- |
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== ============== =========================================
+-- -- | 1.0 09 Sep 2020 Douglas Volz Initial Coding based on Purchase Price
+-- -- | variance report, xxxppvlotrept.sql
+-- -- | 1.1 10 Sep 2020 Douglas Volz Added inspection flag.
+-- -- | 1.2 01 Dec 2020 Douglas Volz Added variance and charge accounts
+-- -- | 1.3 20 Dec 2020 Douglas Volz Added promise date, Need By Date, project,
+-- -- | Expected Receipt Date, Target Price (PO List Price),
+-- -- | Customer Name and difference columns.
+-- -- | And added Minimum Cost Difference parameter.
+-- -- | 1.4 03 Feb 2021 Douglas Volz Merged OSP with stock purchase orders.
+-- -- | 1.5 05 Feb 2021 Douglas Volz Added PO averages and item cost information.
+-- -- | 1.6 07 Jul 2022 Douglas Volz Add multi-language item status.
+-- -- | 1.7 28 Nov 2023 Andy Haack Remove tabs, add org access controls, fix for G/L Daily Rates, outer joins.
+-- -- | 1.8 15 Dec 2023 Douglas Volz Setting the comparison cost type as mandatory, to
+-- -- | prevent a multiple rows error for the comparison cost type.
+-- -- +=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-open-purchase-orders/
 -- Library Link: https://www.enginatics.com/reports/cac-open-purchase-orders/
 -- Run Report: https://demo.enginatics.com/
 

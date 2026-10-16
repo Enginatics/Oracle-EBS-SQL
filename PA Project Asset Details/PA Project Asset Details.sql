@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PA Project Asset Details
 -- Description: Capital project asset information showing CIP costs, capitalized amounts, FA asset numbers, estimated and actual in-service dates, and asset line transfer status.
--- Excel Examle Output: https://www.enginatics.com/example/pa-project-asset-details/
+-- Excel Example Output: https://www.enginatics.com/example/pa-project-asset-details/
 -- Library Link: https://www.enginatics.com/reports/pa-project-asset-details/
 -- Run Report: https://demo.enginatics.com/
 

@@ -1,87 +1,69 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Interface Error Summary
--- Description: Use this report to view your transactions that are pending or have errors in the Oracle interface tables.  Across both Financial and Supply Chain Applications.  This includes interfaces that would prevent closing the inventory accounting period, as suggested by the report titles, Resolution Required and Resolution Recommended.  Similar to the Inventory Account Periods Close form (checking open receipts, pending shipments, failed inventory, WIP, etc.).
-
-Notes:
-1)  Supply Chain queries check for the period close timezone of the legal entity, just like the Inventory Account Periods Close form and the Blitz INV Period Close Pending Transactions report.  Period count queries sourced from procedure CST_AccountingPeriod_PUB.Get_PendingTcount (CSTPAPEB.pls 120.18.12020000.8)
-2)  The Financial interfaces all show a priority of "Resolution Recommended", as having entries in these interface tables do not prevent you from closing your books.  However, just like Supply Chain, best practice would be to process all unprocessed and/or erred out entries in these interfaces, before closing the accounting period.
-
-Specific Functional Areas and Interface Reports include:
-
-Accounts Payables
-   AP_Invoices_Interface
-   AP_Invoice_Lines_Interface
-
-Accounts Receivables
-   RA_Interface_Lines_All
-   RA_Interface_Errors_All
-
-Cash Management
-   CE_Header_Interface_Errors
-
-Cost Management
-   Uncosted Material - MTL_Material_Transactions
-   Uncosted - WSM_Split_Merge_Transactions
-   Pending WIP Costing - WIP_Cost_Txn_Interface Report
-
-General Ledger
-   GL_Interface
-
-Inventory
-   Unprocessed Material - MTL_Material_Transactions_Temp
-   Unprocessed Locked Material - MTL_Material_Transactions_Temp
-   Pending Material - MTL_Transactions_Interface
-
-Oracle Landed Cost Management
-   Pending Landed Cost Management (INL) Interface - CST_Lc_Adj_Interface Interface
-
-Project
-   PA_Transaction_Interface_All
-
-Purchasing
-   PO_Requisitions_Interface_All
-
-Purchasing (showing Receiving as the reported Functional Area)
-   Pending Expense Receiving - RCV_Transactions_Interface
-   Pending Inventory and OSP Receiving - RCV_Transactions_Interface
-   Pending Intransit Receiving - RCV_Transactions_Interface
-   Pending RMA Receiving - RCV_Transactions_Interface
-
-Shipping
-   Shipping - WSH_Delivery_Details
-
-Warehouse Management System (WSM)
-   Pending WSM Interface Transactions - WSM_Split_Merge_Txn_Interface
-   Pending WSM Lot Interface Transactions - WSM_Lot_Split_Merges_Interface
-
-Work in Process (Manufacturing)
-   Pending Shop Floor Move Transactions - WIP_Move_Txn_Interface
-
-Parameters
-==========
-Functional Area:  Cash Management, Cost Management, General Ledger, Inventory, Payables, Work in Process (Manufacturing), Oracle Landed Cost Management, Projects, Purchasing, Receivables, Shipping, Warehouse Management System (WSM) (optional).
-Period Name:  Enter the desired period(s) to report (optional)
-Organization Code:  specific inventory organization to report (optional)
-Operating Unit:  specific operating unit (optional)
-Ledger:  specific ledger (optional)
-
-Note:  To avoid excessive run times., one of the above parameters must be entered in order to run this report.
-
--- |  Version Modified  Modified  by   Description
--- | ======== ========= =============== ================================================
--- |     1.0  1995      Initial Design  Originally based on sql from a project in 1995.
--- |     1.1  31-Jan-08 Douglas Volz    Added Operating Unit column to summary queries.
--- |     1.42 15-Jul-25 Douglas Volz    For Uncosted Transactions, checked for Process MFG
--- |                                    and added Ledger Security Controls for GL_Interface.
--- |     1.43 19-Jul-25 Douglas Volz    Changed LCM query to use the LCM short name 'INL' instead of 'CST'.
--- |     1.44 24-Aug-25 Douglas Volz    Changed Pending Material from Resolution Required to Recommended.
--- +=============================================================================+*/
--- Excel Examle Output: https://www.enginatics.com/example/cac-interface-error-summary/
+-- Description: Use this report to view your transactions that are pending or have errors in the Oracle interface tables. Across both Financial and Supply Chain Applications. This includes interfaces that would prevent closing the inventory accounting period, as suggested by the report titles, Resolution Required and Resolution Recommended. Similar to the Inventory Account Periods Close form (checking open receipts, pending shipments, failed inventory, WIP, etc.).
+-- Notes:
+-- 1) Supply Chain queries check for the period close timezone of the legal entity, just like the Inventory Account Periods Close form and the Blitz INV Period Close Pending Transactions report. Period count queries sourced from procedure CSTAccountingPeriodPUB.GetPendingTcount (CSTPAPEB.pls 120.18.12020000.8)
+-- 2) The Financial interfaces all show a priority of "Resolution Recommended", as having entries in these interface tables do not prevent you from closing your books. However, just like Supply Chain, best practice would be to process all unprocessed and/or erred out entries in these interfaces, before closing the accounting period.
+-- Specific Functional Areas and Interface Reports include:
+-- Accounts Payables
+-- APInvoicesInterface
+-- APInvoiceLinesInterface
+-- Accounts Receivables
+-- RAInterfaceLinesAll
+-- RAInterfaceErrorsAll
+-- Cash Management
+-- CEHeaderInterfaceErrors
+-- Cost Management
+-- Uncosted Material - MTLMaterialTransactions
+-- Uncosted - WSMSplitMergeTransactions
+-- Pending WIP Costing - WIPCostTxnInterface Report
+-- General Ledger
+-- GLInterface
+-- Inventory
+-- Unprocessed Material - MTLMaterialTransactionsTemp
+-- Unprocessed Locked Material - MTLMaterialTransactionsTemp
+-- Pending Material - MTLTransactionsInterface
+-- Oracle Landed Cost Management
+-- Pending Landed Cost Management (INL) Interface - CSTLcAdjInterface Interface
+-- Project
+-- PATransactionInterfaceAll
+-- Purchasing
+-- PORequisitionsInterfaceAll
+-- Purchasing (showing Receiving as the reported Functional Area)
+-- Pending Expense Receiving - RCVTransactionsInterface
+-- Pending Inventory and OSP Receiving - RCVTransactionsInterface
+-- Pending Intransit Receiving - RCVTransactionsInterface
+-- Pending RMA Receiving - RCVTransactionsInterface
+-- Shipping
+-- Shipping - WSHDeliveryDetails
+-- Warehouse Management System (WSM)
+-- Pending WSM Interface Transactions - WSMSplitMergeTxnInterface
+-- Pending WSM Lot Interface Transactions - WSMLotSplitMergesInterface
+-- Work in Process (Manufacturing)
+-- Pending Shop Floor Move Transactions - WIPMoveTxnInterface
+-- Parameters
+-- ==========
+-- Functional Area: Cash Management, Cost Management, General Ledger, Inventory, Payables, Work in Process (Manufacturing), Oracle Landed Cost Management, Projects, Purchasing, Receivables, Shipping, Warehouse Management System (WSM) (optional).
+-- Period Name: Enter the desired period(s) to report (optional)
+-- Organization Code: specific inventory organization to report (optional)
+-- Operating Unit: specific operating unit (optional)
+-- Ledger: specific ledger (optional)
+-- Note: To avoid excessive run times., one of the above parameters must be entered in order to run this report.
+-- -- | Version Modified Modified by Description
+-- -- | ======== ========= =============== ================================================
+-- -- | 1.0 1995 Initial Design Originally based on sql from a project in 1995.
+-- -- | 1.1 31-Jan-08 Douglas Volz Added Operating Unit column to summary queries.
+-- -- | 1.42 15-Jul-25 Douglas Volz For Uncosted Transactions, checked for Process MFG
+-- -- | and added Ledger Security Controls for GLInterface.
+-- -- | 1.43 19-Jul-25 Douglas Volz Changed LCM query to use the LCM short name 'INL' instead of 'CST'.
+-- -- | 1.44 24-Aug-25 Douglas Volz Changed Pending Material from Resolution Required to Recommended.
+-- -- +=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-interface-error-summary/
 -- Library Link: https://www.enginatics.com/reports/cac-interface-error-summary/
 -- Run Report: https://demo.enginatics.com/
 

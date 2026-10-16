@@ -1,12 +1,14 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: MRP Item Forecast
 -- Description: Detail report for item planning forecast, including forecast description, planner, item, bucket type, forecast start and end dates, current quantity, original qty, project related data, and confidence projection.
--- Excel Examle Output: https://www.enginatics.com/example/mrp-item-forecast/
+-- Show Consumption adds one row per sales order consumption of each forecast entry from the forecast consumption history: sales order, line, customer, ship-to, schedule date, order quantity, consumed quantity and the date the consumption was recorded. A negative consumed quantity reverses an earlier consumption, for example after an order line was cancelled or reduced.
+-- With Show Consumption, the current and original forecast quantity are shown on the first row of each forecast entry only, so that they sum correctly. Original minus current quantity equals the consumed quantity of the entry, unless the forecast quantity was changed manually.
+-- Excel Example Output: https://www.enginatics.com/example/mrp-item-forecast/
 -- Library Link: https://www.enginatics.com/reports/mrp-item-forecast/
 -- Run Report: https://demo.enginatics.com/
 
@@ -30,9 +32,11 @@ mfiv.mrp_planning_code_desc mrp_planning_method,
 xxen_util.meaning(mfd.origination_type,'MRP_FORECAST_ORIG',700) origination_type,
 xxen_util.meaning(mfd.bucket_type,'MRP_BUCKET_TYPE',700) bucket_type,
 mfd.forecast_date,
+to_char(mfd.forecast_date,'YYYY-MM') forecast_month,
 mfd.rate_end_date end_date,
-mfd.current_forecast_quantity current_quantity,
-mfd.original_forecast_quantity original_quantity,
+mfd.current_forecast_quantity&first_consumption current_quantity,
+mfd.original_forecast_quantity&first_consumption original_quantity,
+&consumption_columns
 ppa.project_number project,
 pt.task_number task,
 mfd.confidence_percentage,
@@ -46,6 +50,7 @@ mrp_forecast_dates mfd,
 mrp_forecast_designators mfds,
 mrp_forecast_designators mfds0,
 mtl_system_items_vl msiv,
+&consumption_tables
 (
 select ppa.project_id, ppa.segment1 project_number from pa_projects_all ppa union
 select psm.project_id, psm.project_number from pjm_seiban_numbers psm
@@ -69,10 +74,11 @@ mfiv.inventory_item_id=msiv.inventory_item_id and
 mfd.project_id=ppa.project_id(+) and
 mfd.task_id=pt.task_id(+) and
 mfd.line_id=wl.line_id(+) and
+&consumption_joins
 msiv.planner_code=mpl.planner_code(+) and
 msiv.organization_id=mpl.organization_id(+)
 order by
 forecast_set,
 forecast,
 msiv.concatenated_segments,
-mfd.forecast_date desc
+mfd.forecast_date desc&consumption_order

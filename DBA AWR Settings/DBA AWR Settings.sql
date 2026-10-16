@@ -1,97 +1,88 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: DBA AWR Settings
--- Description: Automatic workload repository settings such as retention period, snapshot interval and number of top SQLs to capture (from table underlying the view dba_hist_wr_control).
-Note that for executing Blitz Report queries on AWR data, you require a Diagnostic pack license as explained in Oracle's note KB136730:
-<a href="https://support.oracle.com/support/?kmContentId=1490798" rel="nofollow" target="_blank">https://support.oracle.com/support/?kmContentId=1490798</a>
-
-topnsql=DEFAULT means the database captures the top 30 SQLs from 5 different categories (Elapsed Time, CPU Time, Parse Calls, Shareable Memory, Version Count) for each snapshot interval.
-So the default setting would capture a maximum of 150 different SQLs per snapshot, depending on system load.
-
-Settings are modified by package dbms_workload_repository where interval parameters passed are specified in minutes.
-Example: A 35 days retention with snapshot intervals of 30 minutes and 50 top SQLs captured is set as follows:
-
-exec dbms_workload_repository.modify_snapshot_settings (retention=>35*1440, interval=>30, topnsql=>50);
-
-A common problem is that AWR records are not getting purged, see Oracle note 1292724.1.
-If column 'Orphan Sess History Count' is bigger than zero, then orphan records not belonging to the current DB's snapshots should get purged either 'manually' table by table:
-
-delete /*+ parallel(x 4) */ from wrh$_active_session_history wash where (wash.dbid, wash.instance_number, wash.snap_id) not in (select ws.dbid, ws.instance_number, ws.snap_id from wrm$_snapshot ws)
-alter table wrh$_active_session_history shrink space cascade;
-
-or by a generic script:
-
-begin
-for c in (
-select x.* from (
-select distinct
-dt.num_rows,
-dt.row_movement,
-dtc.table_name,
-listagg(dtc.column_name,', ') within group (order by dtc.column_name) over (partition by dtc.table_name) table_columns,
-count(*) over (partition by dtc.table_name) column_count
-from
-dba_tables dt,
-dba_tab_columns dtc
-where
-dt.owner=dtc.owner and
-dt.table_name=dtc.table_name and
-dtc.owner='SYS' and
-dtc.table_name like 'WRH$\_%' escape '\' and
-dtc.column_name in ('DBID','INSTANCE_NUMBER','SNAP_ID')
-) x
-where
-x.table_columns in ('DBID, INSTANCE_NUMBER, SNAP_ID','DBID, SNAP_ID')
-order by
-x.num_rows desc
-) loop
-  if c.table_columns='DBID, INSTANCE_NUMBER, SNAP_ID' then
-    execute immediate '
-    delete /*+ parallel(x 4) */
-    '||c.table_name||' x
-    where
-    x.dbid is not null and
-    x.instance_number is not null and
-    x.snap_id is not null and
-    (x.dbid, x.instance_number, x.snap_id) not in (select ws.dbid, ws.instance_number, ws.snap_id from wrm$_snapshot ws)';
-    dbms_output.put_line(sql%rowcount||' records deleted from '||c.table_name);
-  elsif c.table_columns='DBID, SNAP_ID' then
-    execute immediate '
-    delete /*+ parallel(x 4) */
-    '||c.table_name||' x
-    where
-    x.dbid is not null and
-    x.snap_id is not null and
-    (x.dbid, x.snap_id) not in (select ws.dbid, ws.snap_id from wrm$_snapshot ws)';
-    dbms_output.put_line(sql%rowcount||' records deleted from '||c.table_name);
-  end if;
-  if c.row_movement='ENABLED' then
-    execute immediate 'alter table '||c.table_name||' shrink space cascade';
-    dbms_output.put_line(c.table_name||' shrinked');
-  end if;
-  commit;
-end loop;
-end;
-
-To purge obsolete data from old DBIDs:
-<a href="http://www.strategicdbs.com/p/removing-old-dbid-data.html" rel="nofollow" target="_blank">http://www.strategicdbs.com/p/removing-old-dbid-data.html</a>
-
-begin
-for c in (select distinct dfus.dbid from dba_feature_usage_statistics dfus where dfus.dbid not in (select vd.dbid from v$database vd)) loop
- dbms_swrf_internal.unregister_database(c.dbid);
-end loop;
-delete wri$_dbu_usage_sample wdus where wdus.dbid not in (select vd.dbid from v$database vd);
-delete wri$_dbu_feature_usage wdfu where wdfu.dbid not in (select vd.dbid from v$database vd);
-delete wri$_dbu_high_water_mark wdhwm where wdhwm.dbid not in (select vd.dbid from v$database vd);
-delete wri$_dbu_cpu_usage wdcu where wdcu.dbid not in (select vd.dbid from v$database vd);
-delete wri$_dbu_cpu_usage_sample wdcus where wdcus.dbid not in (select vd.dbid from v$database vd);
-commit;
-end;
--- Excel Examle Output: https://www.enginatics.com/example/dba-awr-settings/
+-- Description: Automatic workload repository settings such as retention period, snapshot interval and number of top SQLs to capture (from table underlying the view dbahistwrcontrol).
+-- Note that for executing Blitz Report queries on AWR data, you require a Diagnostic pack license as explained in Oracle's note KB136730:
+-- https://support.oracle.com/support/?kmContentId=1490798
+-- topnsql=DEFAULT means the database captures the top 30 SQLs from 5 different categories (Elapsed Time, CPU Time, Parse Calls, Shareable Memory, Version Count) for each snapshot interval.
+-- So the default setting would capture a maximum of 150 different SQLs per snapshot, depending on system load.
+-- Settings are modified by package dbmsworkloadrepository where interval parameters passed are specified in minutes.
+-- Example: A 35 days retention with snapshot intervals of 30 minutes and 50 top SQLs captured is set as follows:
+-- exec dbmsworkloadrepository.modifysnapshotsettings (retention=>351440, interval=>30, topnsql=>50);
+-- A common problem is that AWR records are not getting purged, see Oracle note 1292724.1.
+-- If column 'Orphan Sess History Count' is bigger than zero, then orphan records not belonging to the current DB's snapshots should get purged either 'manually' table by table:
+-- delete /+ parallel(x 4) / from wrh$activesessionhistory wash where (wash.dbid, wash.instancenumber, wash.snapid) not in (select ws.dbid, ws.instancenumber, ws.snapid from wrm$snapshot ws)
+-- alter table wrh$activesessionhistory shrink space cascade;
+-- or by a generic script:
+-- begin
+-- for c in (
+-- select x. from (
+-- select distinct
+-- dt.numrows,
+-- dt.rowmovement,
+-- dtc.tablename,
+-- listagg(dtc.columnname,', ') within group (order by dtc.columnname) over (partition by dtc.tablename) tablecolumns,
+-- count() over (partition by dtc.tablename) columncount
+-- from
+-- dbatables dt,
+-- dbatabcolumns dtc
+-- where
+-- dt.owner=dtc.owner and
+-- dt.tablename=dtc.tablename and
+-- dtc.owner='SYS' and
+-- dtc.tablename like 'WRH$\%' escape '\' and
+-- dtc.columnname in ('DBID','INSTANCENUMBER','SNAPID')
+-- ) x
+-- where
+-- x.tablecolumns in ('DBID, INSTANCENUMBER, SNAPID','DBID, SNAPID')
+-- order by
+-- x.numrows desc
+-- ) loop
+-- if c.tablecolumns='DBID, INSTANCENUMBER, SNAPID' then
+-- execute immediate '
+-- delete /+ parallel(x 4) /
+-- '||c.tablename||' x
+-- where
+-- x.dbid is not null and
+-- x.instancenumber is not null and
+-- x.snapid is not null and
+-- (x.dbid, x.instancenumber, x.snapid) not in (select ws.dbid, ws.instancenumber, ws.snapid from wrm$snapshot ws)';
+-- dbmsoutput.putline(sql%rowcount||' records deleted from '||c.tablename);
+-- elsif c.tablecolumns='DBID, SNAPID' then
+-- execute immediate '
+-- delete /+ parallel(x 4) /
+-- '||c.tablename||' x
+-- where
+-- x.dbid is not null and
+-- x.snapid is not null and
+-- (x.dbid, x.snapid) not in (select ws.dbid, ws.snapid from wrm$snapshot ws)';
+-- dbmsoutput.putline(sql%rowcount||' records deleted from '||c.tablename);
+-- end if;
+-- if c.rowmovement='ENABLED' then
+-- execute immediate 'alter table '||c.tablename||' shrink space cascade';
+-- dbmsoutput.putline(c.tablename||' shrinked');
+-- end if;
+-- commit;
+-- end loop;
+-- end;
+-- To purge obsolete data from old DBIDs:
+-- http://www.strategicdbs.com/p/removing-old-dbid-data.html
+-- begin
+-- for c in (select distinct dfus.dbid from dbafeatureusagestatistics dfus where dfus.dbid not in (select vd.dbid from v$database vd)) loop
+-- dbmsswrfinternal.unregisterdatabase(c.dbid);
+-- end loop;
+-- delete wri$dbuusagesample wdus where wdus.dbid not in (select vd.dbid from v$database vd);
+-- delete wri$dbufeatureusage wdfu where wdfu.dbid not in (select vd.dbid from v$database vd);
+-- delete wri$dbuhighwatermark wdhwm where wdhwm.dbid not in (select vd.dbid from v$database vd);
+-- delete wri$dbucpuusage wdcu where wdcu.dbid not in (select vd.dbid from v$database vd);
+-- delete wri$dbucpuusagesample wdcus where wdcus.dbid not in (select vd.dbid from v$database vd);
+-- commit;
+-- end;
+-- Excel Example Output: https://www.enginatics.com/example/dba-awr-settings/
 -- Library Link: https://www.enginatics.com/reports/dba-awr-settings/
 -- Run Report: https://demo.enginatics.com/
 

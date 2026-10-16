@@ -1,41 +1,53 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'PAY Employee Payroll History | Oracle EBS SQL Report'
-description: 'Master data report with one line per employee including employee number, name, payroll period and earnings.'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, PAY, Employee, Payroll, History, hr_all_organization_units_vl, per_all_people_f, per_all_assignments_f'
+description: 'Payroll results per employee and payroll run date: run result Pay Values summed by element classification. Net Pay is Earnings plus Supplemental Earnings…'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Payroll, Enginatics, PAY, Employee, History, hr_all_organization_units_vl, per_all_people_f, per_all_assignments_f'
 permalink: /PAY%20Employee%20Payroll%20History/
+report_name: 'PAY Employee Payroll History'
+report_web_name: pay-employee-payroll-history
+module: 'Payroll'
+module_url: /modules/payroll/
 ---
 
 # PAY Employee Payroll History – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/pay-employee-payroll-history/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/pay-employee-payroll-history/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pay-employee-payroll-history) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pay-employee-payroll-history).
+**Oracle EBS module:** [Payroll](/modules/payroll/ "Oracle EBS Payroll reports") · [all Payroll reports](/modules/payroll/)  
 
 ## Overview
-Master data report with one line per employee including employee number, name, payroll period and earnings.
+Payroll results per employee and payroll run date: run result Pay Values summed by element classification.
 
+Net Pay is Earnings plus Supplemental Earnings minus Pre-Tax, Tax, Voluntary and Involuntary Deductions, which equals the prepayment amount of the US payroll. Imputed Earnings and Information elements do not count towards it.
+
+Previous Net Pay is the employee's net pay of the preceding payroll run date within the selected run date range, so the first run date of an employee has no variance. Use Variance % Over to list only changes above a percentage.
+
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pay-employee-payroll-history) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 
 ## Report Parameters
-Last Name starts with, Full name, Business Group, Payroll Run Date From, Payroll Run Date To, Effective Date
+Last Name starts with, Full name, Business Group, Payroll Run Date From, Payroll Run Date To, Effective Date, Variance % Over
 
 ## Oracle EBS Tables Used
-[hr_all_organization_units_vl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_vl), [per_all_people_f](https://www.enginatics.com/library/?pg=1&find=per_all_people_f), [per_all_assignments_f](https://www.enginatics.com/library/?pg=1&find=per_all_assignments_f), [pay_assignment_actions](https://www.enginatics.com/library/?pg=1&find=pay_assignment_actions), [pay_payroll_actions](https://www.enginatics.com/library/?pg=1&find=pay_payroll_actions), [pay_run_results](https://www.enginatics.com/library/?pg=1&find=pay_run_results), [pay_run_result_values](https://www.enginatics.com/library/?pg=1&find=pay_run_result_values), [pay_element_types_f](https://www.enginatics.com/library/?pg=1&find=pay_element_types_f), [pay_input_values_f](https://www.enginatics.com/library/?pg=1&find=pay_input_values_f), [per_time_periods](https://www.enginatics.com/library/?pg=1&find=per_time_periods), [pay_element_classifications_vl](https://www.enginatics.com/library/?pg=1&find=pay_element_classifications_vl)
+[hr_all_organization_units_vl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pay-employee-payroll-history), [per_all_people_f](https://www.enginatics.com/library/?pg=1&find=per_all_people_f&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pay-employee-payroll-history), [per_all_assignments_f](https://www.enginatics.com/library/?pg=1&find=per_all_assignments_f&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pay-employee-payroll-history), [pay_assignment_actions](https://www.enginatics.com/library/?pg=1&find=pay_assignment_actions&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pay-employee-payroll-history), [pay_payroll_actions](https://www.enginatics.com/library/?pg=1&find=pay_payroll_actions&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pay-employee-payroll-history), [pay_run_results](https://www.enginatics.com/library/?pg=1&find=pay_run_results&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pay-employee-payroll-history), [pay_run_result_values](https://www.enginatics.com/library/?pg=1&find=pay_run_result_values&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pay-employee-payroll-history), [pay_element_types_f](https://www.enginatics.com/library/?pg=1&find=pay_element_types_f&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pay-employee-payroll-history), [pay_input_values_f](https://www.enginatics.com/library/?pg=1&find=pay_input_values_f&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pay-employee-payroll-history), [per_time_periods](https://www.enginatics.com/library/?pg=1&find=per_time_periods&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pay-employee-payroll-history), [pay_element_classifications_vl](https://www.enginatics.com/library/?pg=1&find=pay_element_classifications_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pay-employee-payroll-history)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pay-employee-payroll-history)
 
 ## Related Reports
 [PAY Gross to Net Summary](/PAY%20Gross%20to%20Net%20Summary/ "PAY Gross to Net Summary Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/PAY%20Employee%20Payroll%20History/PAY%20Employee%20Payroll%20History.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pay-employee-payroll-history) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [](https://www.enginatics.com/example/pay-employee-payroll-history/) |
-| Blitz Report™ XML Import | [PAY_Employee_Payroll_History.xml](https://www.enginatics.com/xml/pay-employee-payroll-history/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/pay-employee-payroll-history/](https://www.enginatics.com/reports/pay-employee-payroll-history/) |
+| Excel Example Output | [Example](https://www.enginatics.com/example/pay-employee-payroll-history/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pay-employee-payroll-history) |
+| Blitz Report™ XML Import | [PAY_Employee_Payroll_History.xml](https://www.enginatics.com/xml/pay-employee-payroll-history/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pay-employee-payroll-history) |
+| SQL Source | [PAY Employee Payroll History.sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/PAY%20Employee%20Payroll%20History/PAY%20Employee%20Payroll%20History.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/pay-employee-payroll-history/](https://www.enginatics.com/reports/pay-employee-payroll-history/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pay-employee-payroll-history) |
 
 ## Case Study & Technical Analysis: PAY Employee Payroll History Report
 
@@ -101,18 +113,17 @@ As a report dealing with potentially large volumes of historical payroll data, i
 **3. Is this report suitable for generating year-to-date (YTD) earnings statements?**
    While this report provides historical detail, its primary purpose is usually for analysis and auditing rather than generating official YTD statements. For official statements, standard Oracle statutory reports or customized pay slips are generally used, as they often include specific formatting and aggregated YTD totals.
 
-
 ---
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pay-employee-payroll-history)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pay-employee-payroll-history)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pay-employee-payroll-history)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pay-employee-payroll-history)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pay-employee-payroll-history)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pay-employee-payroll-history)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pay-employee-payroll-history)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

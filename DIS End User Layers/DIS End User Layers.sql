@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: DIS End User Layers
 -- Description: Discoverer end user layers
--- Excel Examle Output: https://www.enginatics.com/example/dis-end-user-layers/
+-- Excel Example Output: https://www.enginatics.com/example/dis-end-user-layers/
 -- Library Link: https://www.enginatics.com/reports/dis-end-user-layers/
 -- Run Report: https://demo.enginatics.com/
 

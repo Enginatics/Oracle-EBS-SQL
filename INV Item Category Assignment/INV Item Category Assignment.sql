@@ -1,17 +1,17 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: INV Item Category Assignment
 -- Description: Imported from BI Publisher
-Description: Item categories report
-Application: Inventory
-Source: Item categories report (XML)
-Short Name: INVIRCAT_XML
-DB package: INV_INVIRCAT_XMLP_PKG
--- Excel Examle Output: https://www.enginatics.com/example/inv-item-category-assignment/
+-- Description: Item categories report
+-- Application: Inventory
+-- Source: Item categories report (XML)
+-- Short Name: INVIRCATXML
+-- DB package: INVINVIRCATXMLPPKG
+-- Excel Example Output: https://www.enginatics.com/example/inv-item-category-assignment/
 -- Library Link: https://www.enginatics.com/reports/inv-item-category-assignment/
 -- Run Report: https://demo.enginatics.com/
 

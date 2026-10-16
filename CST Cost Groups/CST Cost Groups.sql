@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CST Cost Groups
 -- Description: Master data report that lists all item cost groups along with their corresponding GL posting codes and descriptions.
--- Excel Examle Output: https://www.enginatics.com/example/cst-cost-groups/
+-- Excel Example Output: https://www.enginatics.com/example/cst-cost-groups/
 -- Library Link: https://www.enginatics.com/reports/cst-cost-groups/
 -- Run Report: https://demo.enginatics.com/
 

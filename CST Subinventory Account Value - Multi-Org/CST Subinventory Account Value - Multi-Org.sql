@@ -1,31 +1,24 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CST Subinventory Account Value - Multi-Org
 -- Description: Report: CST Subinventory Account Value - Multi-Org
-
-Description:
-Shows onhand inventory value broken down by GL account and cost element across multiple organizations.
-
-For each subinventory, the report unpivots inventory value into separate rows per cost element (Material, Material Overhead, Resource, Outside Processing, Overhead), each showing the GL account where that cost element is recorded.
-
-Asset subinventories show 5 rows per item (one per cost element).
-Expense subinventories show 1 row per item with total cost under the expense account.
-
-Account determination follows Oracle standard costing rules:
-- Standard costing: accounts from subinventory setup (mtl_secondary_inventories)
-- Average/FIFO/LIFO costing: accounts from organization defaults (mtl_parameters)
-- Cost group accounting: accounts from cost group accounts (cst_cost_group_accounts)
-
-Corresponds to Oracle standard report: Subinventory Account Value Report (CSTRSAVR)
-
-The report can be run across multiple Inventory Organizations.
-
-DB package: XXEN_INV_VALUE
--- Excel Examle Output: https://www.enginatics.com/example/cst-subinventory-account-value-multi-org/
+-- Description:
+-- Shows onhand inventory value broken down by GL account and cost element across multiple organizations.
+-- For each subinventory, the report unpivots inventory value into separate rows per cost element (Material, Material Overhead, Resource, Outside Processing, Overhead), each showing the GL account where that cost element is recorded.
+-- Asset subinventories show 5 rows per item (one per cost element).
+-- Expense subinventories show 1 row per item with total cost under the expense account.
+-- Account determination follows Oracle standard costing rules:
+-- - Standard costing: accounts from subinventory setup (mtlsecondaryinventories)
+-- - Average/FIFO/LIFO costing: accounts from organization defaults (mtlparameters)
+-- - Cost group accounting: accounts from cost group accounts (cstcostgroupaccounts)
+-- Corresponds to Oracle standard report: Subinventory Account Value Report (CSTRSAVR)
+-- The report can be run across multiple Inventory Organizations.
+-- DB package: XXENINVVALUE
+-- Excel Example Output: https://www.enginatics.com/example/cst-subinventory-account-value-multi-org/
 -- Library Link: https://www.enginatics.com/reports/cst-subinventory-account-value-multi-org/
 -- Run Report: https://demo.enginatics.com/
 

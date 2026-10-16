@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PER New Hires
 -- Description: Employees hired within a specified date range, showing hire date, organization, job, position, grade, location, supervisor, employment category, and probation details. Useful for onboarding tracking and new hire analysis.
--- Excel Examle Output: https://www.enginatics.com/example/per-new-hires/
+-- Excel Example Output: https://www.enginatics.com/example/per-new-hires/
 -- Library Link: https://www.enginatics.com/reports/per-new-hires/
 -- Run Report: https://demo.enginatics.com/
 

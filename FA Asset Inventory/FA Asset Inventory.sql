@@ -1,15 +1,15 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: FA Asset Inventory
 -- Description: Imported Oracle standard asset inventory report
-Source: Asset Inventory Report (XML)
-Short Name: FAS410_XML
-DB package: FA_FAS410_XMLP_PKG
--- Excel Examle Output: https://www.enginatics.com/example/fa-asset-inventory/
+-- Source: Asset Inventory Report (XML)
+-- Short Name: FAS410XML
+-- DB package: FAFAS410XMLPPKG
+-- Excel Example Output: https://www.enginatics.com/example/fa-asset-inventory/
 -- Library Link: https://www.enginatics.com/reports/fa-asset-inventory/
 -- Run Report: https://demo.enginatics.com/
 
@@ -48,7 +48,7 @@ select
  decode(ad.asset_type,'CIP', 'C', 'EXPENSED','E','')        asset_type,
  fnd_flex_xml_publisher_apis.process_kff_combination_1('d_comp_code', 'SQLGL', 'GL#', cc.chart_of_accounts_id, null, cc.code_combination_id, 'GL_BALANCING', 'Y', 'VALUE') d_comp_code1,
  fnd_flex_xml_publisher_apis.process_kff_combination_1('d_cost_ctr', 'SQLGL', 'GL#', cc.chart_of_accounts_id, null, cc.code_combination_id, 'FA_COST_CTR', 'Y', 'VALUE') d_cost_ctr1,
- fnd_flex_xml_publisher_apis.process_kff_combination_1('d_location', 'OFA', 'LOC#', 101, null, loc.location_id, 'ALL', 'Y', 'VALUE') d_location1
+ fnd_flex_xml_publisher_apis.process_kff_combination_1('d_location', 'OFA', 'LOC#', fsc.location_flex_structure, null, loc.location_id, 'ALL', 'Y', 'VALUE') d_location1
 from
     (
      select
@@ -107,7 +107,7 @@ group by
    fnd_flex_xml_publisher_apis.process_kff_combination_1('d_comp_code', 'SQLGL', 'GL#', cc.chart_of_accounts_id, null, cc.code_combination_id, 'GL_BALANCING', 'Y', 'VALUE'),
    fnd_flex_xml_publisher_apis.process_kff_combination_1('d_cost_ctr', 'SQLGL', 'GL#', cc.chart_of_accounts_id, null, cc.code_combination_id, 'FA_COST_CTR', 'Y', 'VALUE'),
    emp.full_name,
-   fnd_flex_xml_publisher_apis.process_kff_combination_1('d_location', 'OFA', 'LOC#', 101, null, loc.location_id, 'ALL', 'Y', 'VALUE'),
+   fnd_flex_xml_publisher_apis.process_kff_combination_1('d_location', 'OFA', 'LOC#', fsc.location_flex_structure, null, loc.location_id, 'ALL', 'Y', 'VALUE'),
    ad.asset_number || ' - ' || ad.description,
    dh.units_assigned,
    ad.serial_number,
@@ -150,7 +150,7 @@ select
  decode(ad.asset_type,'CIP', 'C', 'EXPENSED','E','')        asset_type,
  fnd_flex_xml_publisher_apis.process_kff_combination_1('d_comp_code', 'SQLGL', 'GL#', cc.chart_of_accounts_id, null, cc.code_combination_id, 'GL_BALANCING', 'Y', 'VALUE') d_comp_code1,
  fnd_flex_xml_publisher_apis.process_kff_combination_1('d_cost_ctr', 'SQLGL', 'GL#', cc.chart_of_accounts_id, null, cc.code_combination_id, 'FA_COST_CTR', 'Y', 'VALUE') d_cost_ctr1,
- fnd_flex_xml_publisher_apis.process_kff_combination_1('d_location', 'OFA', 'LOC#', 101, null, loc.location_id, 'ALL', 'Y', 'VALUE') d_location1
+ fnd_flex_xml_publisher_apis.process_kff_combination_1('d_location', 'OFA', 'LOC#', fsc.location_flex_structure, null, loc.location_id, 'ALL', 'Y', 'VALUE') d_location1
 from
     (
      select
@@ -211,7 +211,7 @@ where
      fnd_flex_xml_publisher_apis.process_kff_combination_1('d_comp_code', 'SQLGL', 'GL#', cc.chart_of_accounts_id, null, cc.code_combination_id, 'GL_BALANCING', 'Y', 'VALUE'),
      fnd_flex_xml_publisher_apis.process_kff_combination_1('d_cost_ctr', 'SQLGL', 'GL#', cc.chart_of_accounts_id, null, cc.code_combination_id, 'FA_COST_CTR', 'Y', 'VALUE'),
      emp.full_name,
-     fnd_flex_xml_publisher_apis.process_kff_combination_1('d_location', 'OFA', 'LOC#', 101, null, loc.location_id, 'ALL', 'Y', 'VALUE'),
+     fnd_flex_xml_publisher_apis.process_kff_combination_1('d_location', 'OFA', 'LOC#', fsc.location_flex_structure, null, loc.location_id, 'ALL', 'Y', 'VALUE'),
    ad.asset_number || ' - ' || ad.description,
      decode(lu.lookup_code,'ADDITION COST',decode(adj.source_type_code
                                                  ,'TRANSFER',decode(adj.debit_credit_flag,'DR',1,-1)*dh.units_assigned

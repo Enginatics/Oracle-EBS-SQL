@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CSI Installed Base Summary by Organization
 -- Description: Count of installed base products by hierarchy type (parent / child), instance usage and related organizations, such as sold from and owner operating unit, last validation and master inventory organization
--- Excel Examle Output: https://www.enginatics.com/example/csi-installed-base-summary-by-organization/
+-- Excel Example Output: https://www.enginatics.com/example/csi-installed-base-summary-by-organization/
 -- Library Link: https://www.enginatics.com/reports/csi-installed-base-summary-by-organization/
 -- Run Report: https://demo.enginatics.com/
 

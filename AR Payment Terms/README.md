@@ -1,40 +1,49 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'AR Payment Terms | Oracle EBS SQL Report'
 description: 'Master data report showing the payment terms codes with their respective profile options.'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Payment, Terms, ra_terms_lines_discounts, ra_terms_b, ra_terms_tl'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Receivables, Enginatics, Payment, Terms, ra_terms_lines_discounts, ra_terms_b, ra_terms_tl'
 permalink: /AR%20Payment%20Terms/
+report_name: 'AR Payment Terms'
+report_web_name: ar-payment-terms
+module: 'Receivables'
+module_url: /modules/receivables/
 ---
 
 # AR Payment Terms – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/ar-payment-terms/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/ar-payment-terms/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-payment-terms) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-payment-terms).
+**Oracle EBS module:** [Receivables](/modules/receivables/ "Oracle EBS Receivables reports") · [all Receivables reports](/modules/receivables/)  
 
 ## Overview
 Master data report showing the payment terms codes with their respective profile options.
 
-## Report Parameters
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-payment-terms) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 
+## Report Parameters
+None
 
 ## Oracle EBS Tables Used
-[ra_terms_lines_discounts](https://www.enginatics.com/library/?pg=1&find=ra_terms_lines_discounts), [ra_terms_b](https://www.enginatics.com/library/?pg=1&find=ra_terms_b), [ra_terms_tl](https://www.enginatics.com/library/?pg=1&find=ra_terms_tl), [&billing_cycle_table](https://www.enginatics.com/library/?pg=1&find=&billing_cycle_table)
+[ra_terms_lines_discounts](https://www.enginatics.com/library/?pg=1&find=ra_terms_lines_discounts&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-payment-terms), [ra_terms_b](https://www.enginatics.com/library/?pg=1&find=ra_terms_b&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-payment-terms), [ra_terms_tl](https://www.enginatics.com/library/?pg=1&find=ra_terms_tl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-payment-terms), [ra_terms_lines](https://www.enginatics.com/library/?pg=1&find=ra_terms_lines&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-payment-terms)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-payment-terms)
 
 ## Related Reports
-[AR Customer Upload](/AR%20Customer%20Upload/ "AR Customer Upload Oracle EBS SQL Report"), [AR Customers and Sites](/AR%20Customers%20and%20Sites/ "AR Customers and Sites Oracle EBS SQL Report"), [INV Items](/INV%20Items/ "INV Items Oracle EBS SQL Report"), [INV Item Upload](/INV%20Item%20Upload/ "INV Item Upload Oracle EBS SQL Report"), [AR Incomplete Transactions](/AR%20Incomplete%20Transactions/ "AR Incomplete Transactions Oracle EBS SQL Report")
+[AR Customers and Sites](/AR%20Customers%20and%20Sites/ "AR Customers and Sites Oracle EBS SQL Report"), [PPF_WP3_OM_DETAILS](/PPF_WP3_OM_DETAILS/ "PPF_WP3_OM_DETAILS Oracle EBS SQL Report"), [AR Transactions and Lines 11i](/AR%20Transactions%20and%20Lines%2011i/ "AR Transactions and Lines 11i Oracle EBS SQL Report"), [ONT Orders and Lines 11i](/ONT%20Orders%20and%20Lines%2011i/ "ONT Orders and Lines 11i Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/AR%20Payment%20Terms/AR%20Payment%20Terms.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-payment-terms) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [AR Payment Terms 24-Jul-2017 144054.xlsx](https://www.enginatics.com/example/ar-payment-terms/) |
-| Blitz Report™ XML Import | [AR_Payment_Terms.xml](https://www.enginatics.com/xml/ar-payment-terms/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/ar-payment-terms/](https://www.enginatics.com/reports/ar-payment-terms/) |
+| Excel Example Output | [AR Payment Terms 24-Jul-2017 144054.xlsx](https://www.enginatics.com/example/ar-payment-terms/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-payment-terms) |
+| Blitz Report™ XML Import | [AR_Payment_Terms.xml](https://www.enginatics.com/xml/ar-payment-terms/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-payment-terms) |
+| SQL Source | [AR Payment Terms.sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/AR%20Payment%20Terms/AR%20Payment%20Terms.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/ar-payment-terms/](https://www.enginatics.com/reports/ar-payment-terms/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-payment-terms) |
 
 ## AR Payment Terms - Case Study & Technical Analysis
 
@@ -91,18 +100,17 @@ A: You can change the description, but changing the schedule (lines) of a term t
 **Q: How do "Split Terms" work?**
 A: The report will show multiple rows for a single term name, each representing a portion of the payment (e.g., Sequence 1: 50%, Sequence 2: 50%).
 
-
 ---
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-payment-terms)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-payment-terms)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-payment-terms)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-payment-terms)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-payment-terms)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-payment-terms)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-payment-terms)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

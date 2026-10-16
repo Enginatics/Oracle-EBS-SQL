@@ -1,14 +1,13 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: INV Stock Locator Upload
 -- Description: Create, update and delete Stock Locators.
-
-Note on entering a locator as a concatenated segment value: if a segment value contains the KFF delimiter character or a backslash (\), each such character must be preceded with a backslash. For example, with delimiter '.', the segment value '1\4\4.' must be written as '1\\4\\4\.'
--- Excel Examle Output: https://www.enginatics.com/example/inv-stock-locator-upload/
+-- Note on entering a locator as a concatenated segment value: if a segment value contains the KFF delimiter character or a backslash (\), each such character must be preceded with a backslash. For example, with delimiter '.', the segment value '1\4\4.' must be written as '1\\4\\4\.'
+-- Excel Example Output: https://www.enginatics.com/example/inv-stock-locator-upload/
 -- Library Link: https://www.enginatics.com/reports/inv-stock-locator-upload/
 -- Run Report: https://demo.enginatics.com/
 

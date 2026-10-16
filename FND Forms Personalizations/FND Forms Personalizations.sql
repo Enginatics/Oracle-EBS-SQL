@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: FND Forms Personalizations
 -- Description: Forms personalizations and actions
--- Excel Examle Output: https://www.enginatics.com/example/fnd-forms-personalizations/
+-- Excel Example Output: https://www.enginatics.com/example/fnd-forms-personalizations/
 -- Library Link: https://www.enginatics.com/reports/fnd-forms-personalizations/
 -- Run Report: https://demo.enginatics.com/
 

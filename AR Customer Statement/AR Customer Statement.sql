@@ -1,15 +1,16 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: AR Customer Statement
 -- Description: Application: Receivables
-Source: Customer Statement
-Short Name: ARSTMTRPT
-DB package: AR_TP_STMT_PKG
--- Excel Examle Output: https://www.enginatics.com/example/ar-customer-statement/
+-- Source: Customer Statement
+-- Short Name: ARSTMTRPT
+-- DB package: ARTPSTMTPKG
+-- When India Localization is installed, the following GST columns are also included: GST Registration No, GST PAN No, CGST Amount, SGST Amount, IGST Amount, CESS Amount, CGST Rate, SGST Rate, IGST Rate, CESS Rate, CGST Recoverable, CGST Non-Recoverable, SGST Recoverable, SGST Non-Recoverable, IGST Recoverable, IGST Non-Recoverable, Reverse Charge Flag, Custom Amount, Unclassified Tax Amount, Taxable Value, HSN SAC Code.
+-- Excel Example Output: https://www.enginatics.com/example/ar-customer-statement/
 -- Library Link: https://www.enginatics.com/reports/ar-customer-statement/
 -- Run Report: https://demo.enginatics.com/
 
@@ -66,7 +67,8 @@ q_main as (select
    apsa.amount_due_remaining due_remaining,
    rct.status_trx trx_status,
    rct.bill_to_customer_id customer_party_id,
-   rct.bill_to_site_use_id customer_party_site_id
+   rct.bill_to_site_use_id customer_party_site_id,
+   rct.customer_trx_id gst_trx_id
   from 
    ra_customer_trx rct,
    ar_payment_schedules_all apsa,
@@ -113,7 +115,8 @@ q_main as (select
    apsa.amount_due_remaining due_remaining,
    acrh.status trx_status,
    acr.pay_from_customer customer_party_id,
-   acr.customer_site_use_id customer_party_site_id
+   acr.customer_site_use_id customer_party_site_id,
+   to_number(null) gst_trx_id
   from 
    ar_cash_receipts acr,
    ar_receipt_methods arm,
@@ -157,7 +160,8 @@ q_main as (select
    apsa.amount_due_remaining due_remaining,
    acrh.status trx_status,
    acr.pay_from_customer customer_party_id,
-   acr.customer_site_use_id customer_party_site_id
+   acr.customer_site_use_id customer_party_site_id,
+   to_number(null) gst_trx_id
   from 
    ar_cash_receipts acr,
    ar_receipt_methods arm,
@@ -204,7 +208,8 @@ q_main as (select
    apsa.amount_due_remaining due_remaining,
    aa.status trx_status,
    rct.bill_to_customer_id customer_party_id,
-   rct.bill_to_site_use_id customer_party_site_id
+   rct.bill_to_site_use_id customer_party_site_id,
+   rct.customer_trx_id gst_trx_id
   from 
    ar_adjustments aa,
    ar_lookups al,
@@ -255,7 +260,8 @@ q_main as (select
    0 due_remaining,
    art.status trx_status,
    acr.pay_from_customer customer_party_id,
-   acr.customer_site_use_id customer_party_site_id
+   acr.customer_site_use_id customer_party_site_id,
+   to_number(null) gst_trx_id
   from 
    ar_cash_receipts acr,
    ar_receivable_applications_all ara,
@@ -305,6 +311,8 @@ select
  q.cumulative_credit - q.cumulative_debit cumulative_amount,
  q.opening_balance,
  q.closing_balance
+&il_reg_columns
+&il_columns
  &document_columns
 from 
  (select 
@@ -427,7 +435,8 @@ select distinct
          q_customer.customer_party_id,
          q_customer.customer_party_site_id,
          q_customer.organization_id,
-         to_number(null) bbf
+         to_number(null) bbf,
+         to_number(null) gst_trx_id
         from 
          q_customer,
          q_main
@@ -462,7 +471,8 @@ select distinct
          q_customer.customer_party_id,
          q_customer.customer_party_site_id,
          q_customer.organization_id,
-         q_customer.brought_forward_amount bbf
+         q_customer.brought_forward_amount bbf,
+         to_number(null) gst_trx_id
         from 
          q_customer
         union all 
@@ -493,7 +503,8 @@ select distinct
          q_customer.customer_party_id,
          to_number(null) customer_party_site_id,
          q_customer.organization_id,
-         to_number(null) bbf
+         to_number(null) bbf,
+         to_number(null) gst_trx_id
         from 
          q_customer
         where
@@ -526,7 +537,8 @@ select distinct
          q_customer.customer_party_id,
          to_number(null) customer_party_site_id,
          to_number(null) organization_id,
-         to_number(null) bbf
+         to_number(null) bbf,
+         to_number(null) gst_trx_id
         from 
          q_customer
         union all 
@@ -557,7 +569,8 @@ select distinct
          to_number(null) customer_party_id,
          to_number(null) customer_party_site_id,
          to_number(null) organization_id,
-         to_number(null) bbf
+         to_number(null) bbf,
+         to_number(null) gst_trx_id
         from 
          dual
         union all 
@@ -624,7 +637,8 @@ select distinct
          q_customer.customer_party_id,
          q_customer.customer_party_site_id,
          q_customer.organization_id,
-         to_number(null) bbf
+         to_number(null) bbf,
+         q_main.gst_trx_id
         from 
          q_customer,
          q_main
@@ -646,6 +660,7 @@ select distinct
        x.document_date) y) z
   order by 
    z.seq) q
+&il_from
 where
  (     (:p_summary_only = 'N' and q.record_type = 'Transaction') 
   or (:p_summary_level = 'Period' and q.record_type not in ('Transaction')) 
@@ -655,5 +670,6 @@ where
   or (:p_reporting_level = '3000' and q.record_type = 'Operating_Unit Summary') 
   or (:p_reporting_level = '1000' and q.record_type = 'Ledger Summary') 
 ) 
+&il_where
 order by 
  q.seq

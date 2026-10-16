@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: Blitz Report RDF Import Validation
 -- Description: Validates the import of RDF concurrent programs
--- Excel Examle Output: https://www.enginatics.com/example/blitz-report-rdf-import-validation/
+-- Excel Example Output: https://www.enginatics.com/example/blitz-report-rdf-import-validation/
 -- Library Link: https://www.enginatics.com/reports/blitz-report-rdf-import-validation/
 -- Run Report: https://demo.enginatics.com/
 

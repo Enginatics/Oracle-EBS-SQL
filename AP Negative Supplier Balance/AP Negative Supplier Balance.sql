@@ -1,15 +1,15 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: AP Negative Supplier Balance
 -- Description: Application: Payables
-Source: Accounts Payable Negative Supplier Balance
-Short Name: APXNVBAL
-DB package: XLA_TB_AP_REPORT_PVT
--- Excel Examle Output: https://www.enginatics.com/example/ap-negative-supplier-balance/
+-- Source: Accounts Payable Negative Supplier Balance
+-- Short Name: APXNVBAL
+-- DB package: XLATBAPREPORTPVT
+-- Excel Example Output: https://www.enginatics.com/example/ap-negative-supplier-balance/
 -- Library Link: https://www.enginatics.com/reports/ap-negative-supplier-balance/
 -- Run Report: https://demo.enginatics.com/
 

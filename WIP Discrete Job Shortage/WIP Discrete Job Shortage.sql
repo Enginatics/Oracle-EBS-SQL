@@ -1,40 +1,34 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: WIP Discrete Job Shortage
 -- Description: WIP report that lists discrete job Open Requirements and/or Shortages.
-
-Report Modes 
-==========
-The report can be run in the following modes:
-1. Open Requirements - Reports all Open Requirements
-2. Shortage based on Net QOH - Reports requirements with shortages against Nettable Quantity Onhand
-3. Shortage based on QOH - Reports requirements with shortages against Total Quantity Onhand
-4. Shortage based on Supply Sub/Loc - Reports requirements with Shortages against Onhand Quantity in the same supply Subinventory/Locator as specified in the job requirement.
-
-Shortages
-=======
-The report displays the Total Open Requirements, Onhand Supply, and Shortage by Component.Additionally the report includes the cumulative shortage by date required for each component. 
-
-Display Pegged Supply
-=================
-If the MRP Plan parameter is specified, the report will show any supply that is pegged to the job components by the MRP Plan.
-
-Report Templates
-=============
-The following templates are available to restrict the report to showing Total Quantity Onhand, Nettable Quantity Onhand, or Subinventory/Locator matched Quantity Onhand.
-
-1. Nettable QOH - Displays Nettable Onhand Quantities only
-2. Nettable QOH with Pegged Supply - Displays Nettable Onhand Quantities only and Pegged Supply 
-3. Subinventory/Locator Match QOH - Displays Subinventory/Locator Matched Onhand Quantities only
-4. Subinventory/Locator Match QOH with Pegged Supply - Displays Subinventory/Locator Matched Onhand Quantities and any Pegged Supply
-5. Total QOH - Displays Total (Nettable and Non-Nettable) Onhand Quantities only 
-6. Total QOH with Pegged Supply - Displays Total (Nettable and Non-Nettable) Onhand Quantities only and any Pegged Supply  
-
--- Excel Examle Output: https://www.enginatics.com/example/wip-discrete-job-shortage/
+-- Report Modes
+-- ==========
+-- The report can be run in the following modes:
+-- 1. Open Requirements - Reports all Open Requirements
+-- 2. Shortage based on Net QOH - Reports requirements with shortages against Nettable Quantity Onhand
+-- 3. Shortage based on QOH - Reports requirements with shortages against Total Quantity Onhand
+-- 4. Shortage based on Supply Sub/Loc - Reports requirements with Shortages against Onhand Quantity in the same supply Subinventory/Locator as specified in the job requirement.
+-- Shortages
+-- =======
+-- The report displays the Total Open Requirements, Onhand Supply, and Shortage by Component.Additionally the report includes the cumulative shortage by date required for each component.
+-- Display Pegged Supply
+-- =================
+-- If the MRP Plan parameter is specified, the report will show any supply that is pegged to the job components by the MRP Plan.
+-- Report Templates
+-- =============
+-- The following templates are available to restrict the report to showing Total Quantity Onhand, Nettable Quantity Onhand, or Subinventory/Locator matched Quantity Onhand.
+-- 1. Nettable QOH - Displays Nettable Onhand Quantities only
+-- 2. Nettable QOH with Pegged Supply - Displays Nettable Onhand Quantities only and Pegged Supply
+-- 3. Subinventory/Locator Match QOH - Displays Subinventory/Locator Matched Onhand Quantities only
+-- 4. Subinventory/Locator Match QOH with Pegged Supply - Displays Subinventory/Locator Matched Onhand Quantities and any Pegged Supply
+-- 5. Total QOH - Displays Total (Nettable and Non-Nettable) Onhand Quantities only
+-- 6. Total QOH with Pegged Supply - Displays Total (Nettable and Non-Nettable) Onhand Quantities only and any Pegged Supply
+-- Excel Example Output: https://www.enginatics.com/example/wip-discrete-job-shortage/
 -- Library Link: https://www.enginatics.com/reports/wip-discrete-job-shortage/
 -- Run Report: https://demo.enginatics.com/
 

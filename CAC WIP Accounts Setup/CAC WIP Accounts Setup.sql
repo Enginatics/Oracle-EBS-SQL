@@ -1,45 +1,42 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC WIP Accounts Setup
 -- Description: Report to show accounts used for WIP accounting classes.
-
-Parameters:
-
-Organization Code:  specific inventory organization to report (optional)
-Operating Unit:  specific operating unit (optional)
-Ledger:  specific ledger (optional)
-
-/* +=============================================================================+
--- |  Copyright 2009 - 2025 Douglas Volz Consulting, Inc.
--- |  All rights reserved.
--- |  Permission to use this code is granted provided the original author is
--- |  acknowledged.  No warranties, express or otherwise is included in this
--- |  permission.
--- +=============================================================================+
--- |
--- |  Original Author: Douglas Volz (doug@volzconsulting.com)
--- | 
--- |  Version Modified on Modified  by   Description
--- |  ======= =========== ============== =========================================
--- |  1.0     24 Nov 2009 Douglas Volz   Initial Coding
--- |  1.1     28 Mar 2011 Douglas Volz   Added ledger parameter
--- |  1.2     18 Nov 2012 Douglas Volz   Removed client-specific COA segments and
--- |                                     organization conditions
--- |  1.3     02 Feb 2020 Douglas Volz   Outer join for accounts join, short name
--- |                                     for Ledger, Operating Unit and Org Code
--- |                                     parameters.
--- |  1.4     20 Apr 2020 Douglas Volz   Added Creation Date, Last Update Date
--- |                                     Changed to multi-language views for the item
--- |                                     master, inventory orgs and operating units.
--- |  1.5     10 Jul 2022 Douglas Volz   Account Type column now uses a lookup code.
--- |  1.6     05 Nov 2025 Douglas Volz   Added completion cost source, system option 
--- |                                     and cost type for Average and FIFO Costing.
--- +=============================================================================+*/
--- Excel Examle Output: https://www.enginatics.com/example/cac-wip-accounts-setup/
+-- Parameters:
+-- Organization Code: specific inventory organization to report (optional)
+-- Operating Unit: specific operating unit (optional)
+-- Ledger: specific ledger (optional)
+-- / +=============================================================================+
+-- -- | Copyright 2009 - 2025 Douglas Volz Consulting, Inc.
+-- -- | All rights reserved.
+-- -- | Permission to use this code is granted provided the original author is
+-- -- | acknowledged. No warranties, express or otherwise is included in this
+-- -- | permission.
+-- -- +=============================================================================+
+-- -- |
+-- -- | Original Author: Douglas Volz (doug@volzconsulting.com)
+-- -- |
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== ============== =========================================
+-- -- | 1.0 24 Nov 2009 Douglas Volz Initial Coding
+-- -- | 1.1 28 Mar 2011 Douglas Volz Added ledger parameter
+-- -- | 1.2 18 Nov 2012 Douglas Volz Removed client-specific COA segments and
+-- -- | organization conditions
+-- -- | 1.3 02 Feb 2020 Douglas Volz Outer join for accounts join, short name
+-- -- | for Ledger, Operating Unit and Org Code
+-- -- | parameters.
+-- -- | 1.4 20 Apr 2020 Douglas Volz Added Creation Date, Last Update Date
+-- -- | Changed to multi-language views for the item
+-- -- | master, inventory orgs and operating units.
+-- -- | 1.5 10 Jul 2022 Douglas Volz Account Type column now uses a lookup code.
+-- -- | 1.6 05 Nov 2025 Douglas Volz Added completion cost source, system option
+-- -- | and cost type for Average and FIFO Costing.
+-- -- +=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-wip-accounts-setup/
 -- Library Link: https://www.enginatics.com/reports/cac-wip-accounts-setup/
 -- Run Report: https://demo.enginatics.com/
 

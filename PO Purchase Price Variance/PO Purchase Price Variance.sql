@@ -1,15 +1,15 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PO Purchase Price Variance
 -- Description: Imported Oracle standard Purchase Price Variance report
-Source: Purchase Price Variance Report (XML)
-Short Name: POXRCPPV_XML
-DB package: PO_POXRCPPV_XMLP_PKG
--- Excel Examle Output: https://www.enginatics.com/example/po-purchase-price-variance/
+-- Source: Purchase Price Variance Report (XML)
+-- Short Name: POXRCPPVXML
+-- DB package: POPOXRCPPVXMLPPKG
+-- Excel Example Output: https://www.enginatics.com/example/po-purchase-price-variance/
 -- Library Link: https://www.enginatics.com/reports/po-purchase-price-variance/
 -- Run Report: https://demo.enginatics.com/
 

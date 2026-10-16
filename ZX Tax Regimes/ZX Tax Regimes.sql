@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: ZX Tax Regimes
 -- Description: E-Business Tax tax regime and party subscription setup
--- Excel Examle Output: https://www.enginatics.com/example/zx-tax-regimes/
+-- Excel Example Output: https://www.enginatics.com/example/zx-tax-regimes/
 -- Library Link: https://www.enginatics.com/reports/zx-tax-regimes/
 -- Run Report: https://demo.enginatics.com/
 

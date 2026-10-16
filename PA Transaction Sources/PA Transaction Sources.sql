@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PA Transaction Sources
 -- Description: 
--- Excel Examle Output: https://www.enginatics.com/example/pa-transaction-sources/
+-- Excel Example Output: https://www.enginatics.com/example/pa-transaction-sources/
 -- Library Link: https://www.enginatics.com/reports/pa-transaction-sources/
 -- Run Report: https://demo.enginatics.com/
 

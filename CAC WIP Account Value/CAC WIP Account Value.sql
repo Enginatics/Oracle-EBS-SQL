@@ -1,61 +1,58 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC WIP Account Value
--- Description: Report to show WIP values and all accounts for discrete manufacturing, in summary by inventory, organization, with WIP class, job status, name and other details.  This report uses the valuation accounts from each discrete job and reports both jobs which were open during the accounting period as well as jobs closed during the accounting period.  You can also run this report for earlier accounting periods and still get the correct amounts and the jobs that were open at that time.
-
-Parameters
-==========
-Period Name:  the accounting period you wish to report (mandatory).
-Include Expense WIP:  enter Yes to include Expense WIP jobs.  Defaults to No.
-Job Status:  enter a specific job status (optional).
-Category Sets 1 - 3:  any item category you wish (optional).
-Item Number:  specific item you wish to report (optional)
-Organization Code:  specific inventory organization to report (optional)
-Operating Unit:  specific operating unit (optional)
-Ledger:  specific ledger (optional)
-
-/* +=============================================================================+
--- |  Copyright 2009 - 2025 Douglas Volz Consulting, Inc.
--- |  All rights reserved.
--- |  Permission to use this code is granted provided the original author is
--- |  acknowledged. No warranties, express or otherwise is included in this permission. 
--- +=============================================================================+
--- |
--- |  Original Author: Douglas Volz (doug@volzconsulting.com)
--- | 
--- |  Version Modified on Modified  by   Description
--- |  ======= =========== ============== =========================================
--- |  1.0     29 Oct 2009 Douglas Volz   Based on XXX_WIP_VALUE_REPT.sql
--- |  1.13    22 May 2017 Douglas Volz   Added cost item category
--- |  1.14    10 Jul 2017 Douglas Volz   Added column to indicate a WIP job was converted
--- |                                     from the Legacy Systems
--- |  1.15    26 Jul 2018 Douglas Volz   Modified for chart of accounts and for categories
--- |  1.16    04 Dec 2018 Douglas Volz   Modified for chart of accounts and removed converted 
--- |                                     job column. Fixed outer join for completion subinventories
--- |  1.17    19 Jun 2019 Douglas Volz   Changed to G/L short name, for brevity, added
--- |                                     inventory category.  Added Date Released column.
--- |  1.17    19 Jun 2019 Douglas Volz   Changed to G/L short name, for brevity, added
--- |                                     inventory category.  Added Date Released column.
--- |  1.18    24 Oct 2019 Douglas Volz   Added aging dates, creation date and date released columns
--- |  1.19    06 Jan 2020 Douglas Volz   Added Org Code and Operating Unit parameters.
--- |  1.20    24 Apr 2020 Douglas Volz   Changed to multi-language views for the item
--- |                                     master, item categories and operating units.
--- |                                     And put the WIP Costs In, WIP Costs Out, WIP
--- |                                     Relief and WIP Value as the last report columns.
--- |                                     Add Project Number and Project Name columns.
--- |  1.21    17 Aug 2020 Douglas Volz   Change categories to use category_concat_segs not segment1
--- |  1.22    09 Oct 2020 Douglas Volz   Added unit of measure column
--- |  1.23    13 Mar 2022 Douglas Volz   Added WIP job description column.
--- |  1.24    27 Feb 2025 Douglas Volz   Removed tabs, fixed OU and GL security profiles.
--- |  1.25    17 Mar 2025 Douglas Volz   WIP performance improvements.
--- |  1.26    31 Aug 2025 Douglas Volz  Added Job Status parameter.
-+=============================================================================+*/
-
--- Excel Examle Output: https://www.enginatics.com/example/cac-wip-account-value/
+-- Description: Report to show WIP values and all accounts for discrete manufacturing, in summary by inventory, organization, with WIP class, job status, name and other details. This report uses the valuation accounts from each discrete job and reports both jobs which were open during the accounting period as well as jobs closed during the accounting period. You can also run this report for earlier accounting periods and still get the correct amounts and the jobs that were open at that time.
+-- Parameters
+-- ==========
+-- Period Name: the accounting period you wish to report (mandatory).
+-- Include Expense WIP: enter Yes to include Expense WIP jobs. Defaults to No.
+-- Job Status: enter a specific job status (optional).
+-- Category Sets 1 - 3: any item category you wish (optional).
+-- Item Number: specific item you wish to report (optional)
+-- Organization Code: specific inventory organization to report (optional)
+-- Operating Unit: specific operating unit (optional)
+-- Ledger: specific ledger (optional)
+-- / +=============================================================================+
+-- -- | Copyright 2009 - 2025 Douglas Volz Consulting, Inc.
+-- -- | All rights reserved.
+-- -- | Permission to use this code is granted provided the original author is
+-- -- | acknowledged. No warranties, express or otherwise is included in this permission.
+-- -- +=============================================================================+
+-- -- |
+-- -- | Original Author: Douglas Volz (doug@volzconsulting.com)
+-- -- |
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== ============== =========================================
+-- -- | 1.0 29 Oct 2009 Douglas Volz Based on XXXWIPVALUEREPT.sql
+-- -- | 1.13 22 May 2017 Douglas Volz Added cost item category
+-- -- | 1.14 10 Jul 2017 Douglas Volz Added column to indicate a WIP job was converted
+-- -- | from the Legacy Systems
+-- -- | 1.15 26 Jul 2018 Douglas Volz Modified for chart of accounts and for categories
+-- -- | 1.16 04 Dec 2018 Douglas Volz Modified for chart of accounts and removed converted
+-- -- | job column. Fixed outer join for completion subinventories
+-- -- | 1.17 19 Jun 2019 Douglas Volz Changed to G/L short name, for brevity, added
+-- -- | inventory category. Added Date Released column.
+-- -- | 1.17 19 Jun 2019 Douglas Volz Changed to G/L short name, for brevity, added
+-- -- | inventory category. Added Date Released column.
+-- -- | 1.18 24 Oct 2019 Douglas Volz Added aging dates, creation date and date released columns
+-- -- | 1.19 06 Jan 2020 Douglas Volz Added Org Code and Operating Unit parameters.
+-- -- | 1.20 24 Apr 2020 Douglas Volz Changed to multi-language views for the item
+-- -- | master, item categories and operating units.
+-- -- | And put the WIP Costs In, WIP Costs Out, WIP
+-- -- | Relief and WIP Value as the last report columns.
+-- -- | Add Project Number and Project Name columns.
+-- -- | 1.21 17 Aug 2020 Douglas Volz Change categories to use categoryconcatsegs not segment1
+-- -- | 1.22 09 Oct 2020 Douglas Volz Added unit of measure column
+-- -- | 1.23 13 Mar 2022 Douglas Volz Added WIP job description column.
+-- -- | 1.24 27 Feb 2025 Douglas Volz Removed tabs, fixed OU and GL security profiles.
+-- -- | 1.25 17 Mar 2025 Douglas Volz WIP performance improvements.
+-- -- | 1.26 31 Aug 2025 Douglas Volz Added Job Status parameter.
+-- +=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-wip-account-value/
 -- Library Link: https://www.enginatics.com/reports/cac-wip-account-value/
 -- Run Report: https://demo.enginatics.com/
 

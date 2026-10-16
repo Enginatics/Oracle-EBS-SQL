@@ -1,14 +1,14 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: GL Budget Amounts Upload
 -- Description: GL Budget Amounts Upload
-===================
-This can be used to upload GL Budget Amounts
--- Excel Examle Output: https://www.enginatics.com/example/gl-budget-amounts-upload/
+-- ===================
+-- This can be used to upload GL Budget Amounts
+-- Excel Example Output: https://www.enginatics.com/example/gl-budget-amounts-upload/
 -- Library Link: https://www.enginatics.com/reports/gl-budget-amounts-upload/
 -- Run Report: https://demo.enginatics.com/
 

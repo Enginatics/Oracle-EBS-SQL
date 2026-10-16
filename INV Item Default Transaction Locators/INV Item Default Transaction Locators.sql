@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: INV Item Default Transaction Locators
 -- Description: Master data report of Inventory Items and the default locators for shipping, receiving or move order receipt transactions
--- Excel Examle Output: https://www.enginatics.com/example/inv-item-default-transaction-locators/
+-- Excel Example Output: https://www.enginatics.com/example/inv-item-default-transaction-locators/
 -- Library Link: https://www.enginatics.com/reports/inv-item-default-transaction-locators/
 -- Run Report: https://demo.enginatics.com/
 

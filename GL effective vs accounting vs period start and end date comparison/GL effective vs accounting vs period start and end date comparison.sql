@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: GL effective vs accounting vs period start and end date comparison
 -- Description: For developers to understand the GL data: Shows the relationship between effective, accounting and period start and end dates by counting how many records exist where the effective date is before or after the accounting date.
--- Excel Examle Output: https://www.enginatics.com/example/gl-effective-vs-accounting-vs-period-start-and-end-date-comparison/
+-- Excel Example Output: https://www.enginatics.com/example/gl-effective-vs-accounting-vs-period-start-and-end-date-comparison/
 -- Library Link: https://www.enginatics.com/reports/gl-effective-vs-accounting-vs-period-start-and-end-date-comparison/
 -- Run Report: https://demo.enginatics.com/
 
@@ -21,7 +21,7 @@ case
 when gjh.default_effective_date>=gp.start_date and gjh.default_effective_date<gp.end_date+1 then 'within period'
 when gjh.default_effective_date<gp.start_date then 'before'
 else 'after'
-end gjh_default_effective_date_check,
+end gjh_dflt_effective_date_check,
 case
 when gjl.effective_date>=gp.start_date and gjl.effective_date<gp.end_date+1 then 'within period'
 when gjl.effective_date<gp.start_date then 'before'

@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: Blitz Report Templates
 -- Description: Blitz Report column or pivot aggregation layout templates
--- Excel Examle Output: https://www.enginatics.com/example/blitz-report-templates/
+-- Excel Example Output: https://www.enginatics.com/example/blitz-report-templates/
 -- Library Link: https://www.enginatics.com/reports/blitz-report-templates/
 -- Run Report: https://demo.enginatics.com/
 

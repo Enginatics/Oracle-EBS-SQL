@@ -1,19 +1,17 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: AP Trial Balance
 -- Description: Application: Payables
-Source: Accounts Payable Trial Balance
-Short Name: APTBRPT
-DB package: XLA_TB_AP_REPORT_PVT
-
-For scheduling the report to run periodically, use the 'as of relative period close' offset parameter. This is the relative period offset to the current period, so when the current period changes, the period close as of date will also be automatically updated when the report is re-run.
-
-Requires custom package XXEN_XLA package to be installed to initialize the hidden parameters removed from the report to simplify scheduling of the report.
--- Excel Examle Output: https://www.enginatics.com/example/ap-trial-balance/
+-- Source: Accounts Payable Trial Balance
+-- Short Name: APTBRPT
+-- DB package: XLATBAPREPORTPVT
+-- For scheduling the report to run periodically, use the 'as of relative period close' offset parameter. This is the relative period offset to the current period, so when the current period changes, the period close as of date will also be automatically updated when the report is re-run.
+-- Requires custom package XXENXLA package to be installed to initialize the hidden parameters removed from the report to simplify scheduling of the report.
+-- Excel Example Output: https://www.enginatics.com/example/ap-trial-balance/
 -- Library Link: https://www.enginatics.com/reports/ap-trial-balance/
 -- Run Report: https://demo.enginatics.com/
 
@@ -48,7 +46,7 @@ aptb_trx as
  aia.exchange_rate invoice_exchange_rate,         
  aia.exchange_rate_type invoice_exchange_rate_type, 
  aia.exchange_date invoice_exchange_date,
- to_date(xtb.source_trx_gl_date,'YYYY-MM-DD') gl_date,
+ aia.gl_date,
  xtb.user_trx_identifier_value_7 payment_status,
  xtb.user_trx_identifier_value_9 cancelled_date,
  xtb.src_acctd_rounded_orig_amt transaction_original_amount,

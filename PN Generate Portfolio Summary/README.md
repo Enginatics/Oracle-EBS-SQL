@@ -1,14 +1,20 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'PN Generate Portfolio Summary | Oracle EBS SQL Report'
 description: 'Application: Property Manager Source: Generate Portfolio Summary Report Short Name: PNGPSRXML DB package: XXENPN'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Generate, Portfolio, Summary, pn_lease_reports_data_gtt, pn_amendment_report_gtt, pn_leases_all'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Property Manager, Enginatics, R12 only, Generate, Portfolio, Summary, pn_lease_reports_data_gtt, pn_amendment_report_gtt, pn_leases_all'
 permalink: /PN%20Generate%20Portfolio%20Summary/
+report_name: 'PN Generate Portfolio Summary'
+report_web_name: pn-generate-portfolio-summary
+module: 'Property Manager'
+module_url: /modules/property-manager/
 ---
 
 # PN Generate Portfolio Summary – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/pn-generate-portfolio-summary/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/pn-generate-portfolio-summary/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pn-generate-portfolio-summary) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pn-generate-portfolio-summary).
+**Oracle EBS module:** [Property Manager](/modules/property-manager/ "Oracle EBS Property Manager reports") · [all Property Manager reports](/modules/property-manager/)  
 
 ## Overview
 Application: Property Manager
@@ -16,28 +22,31 @@ Source: Generate Portfolio Summary Report
 Short Name: PNGPSR_XML
 DB package: XXEN_PN
 
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pn-generate-portfolio-summary) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
+
 ## Report Parameters
 Operating Unit, As Of Period, End Date, Representation
 
 ## Oracle EBS Tables Used
-[pn_lease_reports_data_gtt](https://www.enginatics.com/library/?pg=1&find=pn_lease_reports_data_gtt), [pn_amendment_report_gtt](https://www.enginatics.com/library/?pg=1&find=pn_amendment_report_gtt), [pn_leases_all](https://www.enginatics.com/library/?pg=1&find=pn_leases_all), [pn_lease_details_all](https://www.enginatics.com/library/?pg=1&find=pn_lease_details_all), [pn_eqp_leases_all](https://www.enginatics.com/library/?pg=1&find=pn_eqp_leases_all), [pn_eqp_lease_details_all](https://www.enginatics.com/library/?pg=1&find=pn_eqp_lease_details_all), [q_portfolio_summary](https://www.enginatics.com/library/?pg=1&find=q_portfolio_summary), [q_amendment_detail](https://www.enginatics.com/library/?pg=1&find=q_amendment_detail)
+[pn_lease_reports_data_gtt](https://www.enginatics.com/library/?pg=1&find=pn_lease_reports_data_gtt&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pn-generate-portfolio-summary), [pn_amendment_report_gtt](https://www.enginatics.com/library/?pg=1&find=pn_amendment_report_gtt&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pn-generate-portfolio-summary), [pn_leases_all](https://www.enginatics.com/library/?pg=1&find=pn_leases_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pn-generate-portfolio-summary), [pn_lease_details_all](https://www.enginatics.com/library/?pg=1&find=pn_lease_details_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pn-generate-portfolio-summary), [pn_eqp_leases_all](https://www.enginatics.com/library/?pg=1&find=pn_eqp_leases_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pn-generate-portfolio-summary), [pn_eqp_lease_details_all](https://www.enginatics.com/library/?pg=1&find=pn_eqp_lease_details_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pn-generate-portfolio-summary)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pn-generate-portfolio-summary), [R12 only](https://www.enginatics.com/library/?pg=1&category%5B%5D=R12%20only&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pn-generate-portfolio-summary)
 
 ## Related Reports
-[PN Generate Portfolio Detail](/PN%20Generate%20Portfolio%20Detail/ "PN Generate Portfolio Detail Oracle EBS SQL Report"), [PN Generate Lease Details](/PN%20Generate%20Lease%20Details/ "PN Generate Lease Details Oracle EBS SQL Report"), [PN Generate Lease Analysis](/PN%20Generate%20Lease%20Analysis/ "PN Generate Lease Analysis Oracle EBS SQL Report"), [PN Schedule Approval Status Upload](/PN%20Schedule%20Approval%20Status%20Upload/ "PN Schedule Approval Status Upload Oracle EBS SQL Report"), [PN GL Reconciliation](/PN%20GL%20Reconciliation/ "PN GL Reconciliation Oracle EBS SQL Report"), [PN Billing/Payment Term Upload](/PN%20Billing-Payment%20Term%20Upload/ "PN Billing/Payment Term Upload Oracle EBS SQL Report"), [XLA Entity ID Mappings](/XLA%20Entity%20ID%20Mappings/ "XLA Entity ID Mappings Oracle EBS SQL Report")
+[PN Generate Portfolio Detail](/PN%20Generate%20Portfolio%20Detail/ "PN Generate Portfolio Detail Oracle EBS SQL Report"), [PN Generate Lease Details](/PN%20Generate%20Lease%20Details/ "PN Generate Lease Details Oracle EBS SQL Report"), [PN Generate Lease Analysis](/PN%20Generate%20Lease%20Analysis/ "PN Generate Lease Analysis Oracle EBS SQL Report"), [PN Schedule Approval Status Upload](/PN%20Schedule%20Approval%20Status%20Upload/ "PN Schedule Approval Status Upload Oracle EBS SQL Report"), [PN Billing/Payment Term Upload](/PN%20Billing-Payment%20Term%20Upload/ "PN Billing/Payment Term Upload Oracle EBS SQL Report"), [PN GL Reconciliation](/PN%20GL%20Reconciliation/ "PN GL Reconciliation Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/PN%20Generate%20Portfolio%20Summary/PN%20Generate%20Portfolio%20Summary.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pn-generate-portfolio-summary) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [](https://www.enginatics.com/example/pn-generate-portfolio-summary/) |
-| Blitz Report™ XML Import | [PN_Generate_Portfolio_Summary.xml](https://www.enginatics.com/xml/pn-generate-portfolio-summary/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/pn-generate-portfolio-summary/](https://www.enginatics.com/reports/pn-generate-portfolio-summary/) |
+| Excel Example Output | [Example](https://www.enginatics.com/example/pn-generate-portfolio-summary/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pn-generate-portfolio-summary) |
+| Blitz Report™ XML Import | [PN_Generate_Portfolio_Summary.xml](https://www.enginatics.com/xml/pn-generate-portfolio-summary/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pn-generate-portfolio-summary) |
+| SQL Source | [PN Generate Portfolio Summary.sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/PN%20Generate%20Portfolio%20Summary/PN%20Generate%20Portfolio%20Summary.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/pn-generate-portfolio-summary/](https://www.enginatics.com/reports/pn-generate-portfolio-summary/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pn-generate-portfolio-summary) |
 
 ## Case Study & Technical Analysis: PN Generate Portfolio Summary Report
 
@@ -102,18 +111,17 @@ As an aggregated report designed for large portfolios, it utilizes specific opti
 **3. Does this report include both revenue and expense aspects of the portfolio?**
    Typically, a comprehensive portfolio summary like this would include both revenue-generating leases (e.g., tenant rents) and expense-incurring leases (e.g., landlord obligations for master leases or equipment). The report provides an overall financial health check of the entire lease portfolio.
 
-
 ---
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pn-generate-portfolio-summary)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pn-generate-portfolio-summary)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pn-generate-portfolio-summary)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pn-generate-portfolio-summary)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pn-generate-portfolio-summary)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pn-generate-portfolio-summary)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pn-generate-portfolio-summary)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

@@ -1,17 +1,17 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: JA India GSTR-2 Return
 -- Description: Imported from BI Publisher
-Description: India GSTR-2 Return Report with XML Format
-Application: Asia/Pacific Localizations
-Source: India GSTR-2 Return Report(XML)
-Short Name: JAIGSTR2_XML
-DB package: JAI_GSTR2_EXTRACT_PKG
--- Excel Examle Output: https://www.enginatics.com/example/ja-india-gstr-2-return/
+-- Description: India GSTR-2 Return Report with XML Format
+-- Application: Asia/Pacific Localizations
+-- Source: India GSTR-2 Return Report(XML)
+-- Short Name: JAIGSTR2XML
+-- DB package: JAIGSTR2EXTRACTPKG
+-- Excel Example Output: https://www.enginatics.com/example/ja-india-gstr-2-return/
 -- Library Link: https://www.enginatics.com/reports/ja-india-gstr-2-return/
 -- Run Report: https://demo.enginatics.com/
 

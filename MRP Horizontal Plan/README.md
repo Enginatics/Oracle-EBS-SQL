@@ -1,14 +1,20 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'MRP Horizontal Plan | Oracle EBS SQL Report'
 description: 'MRP: Horizontal Plan from the Planners Workbench. - The report can be run for multiple organizations and items within a selected plan - The report can be…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, MRP, Horizontal, Plan, mrp_material_plans, mrp_workbench_bucket_dates, table'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Master Scheduling/MRP, Enginatics, MRP, Horizontal, Plan, mrp_material_plans, mrp_workbench_bucket_dates, mrp_system_items'
 permalink: /MRP%20Horizontal%20Plan/
+report_name: 'MRP Horizontal Plan'
+report_web_name: mrp-horizontal-plan
+module: 'Master Scheduling/MRP'
+module_url: /modules/master-scheduling-mrp/
 ---
 
 # MRP Horizontal Plan – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/mrp-horizontal-plan/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/mrp-horizontal-plan/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-horizontal-plan) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-horizontal-plan).
+**Oracle EBS module:** [Master Scheduling/MRP](/modules/master-scheduling-mrp/ "Oracle EBS Master Scheduling/MRP reports") · [all Master Scheduling/MRP reports](/modules/master-scheduling-mrp/)  
 
 ## Overview
 MRP: Horizontal Plan from the Planners Workbench.
@@ -18,29 +24,31 @@ MRP: Horizontal Plan from the Planners Workbench.
 - Select a template to choose to either display the HP by individual components, or by 
   End Assemblies, Components.
 
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-horizontal-plan) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 
 ## Report Parameters
 Plan, Current or Snapshot Data, Buckets, Organization Code, Category Set, Category, Item Type, Exclude Item Type, Item, Item From, Item To, Item Contains, Explode BOMs, Exclude Items with No Activity, Make or Buy, Planner, Buyer, Supply/Demand Source
 
 ## Oracle EBS Tables Used
-[mrp_material_plans](https://www.enginatics.com/library/?pg=1&find=mrp_material_plans), [mrp_workbench_bucket_dates](https://www.enginatics.com/library/?pg=1&find=mrp_workbench_bucket_dates), [table](https://www.enginatics.com/library/?pg=1&find=table), [mrp_system_items](https://www.enginatics.com/library/?pg=1&find=mrp_system_items), [ap_suppliers](https://www.enginatics.com/library/?pg=1&find=ap_suppliers), [per_people_x](https://www.enginatics.com/library/?pg=1&find=per_people_x), [mmp](https://www.enginatics.com/library/?pg=1&find=mmp), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl), [mtl_item_categories](https://www.enginatics.com/library/?pg=1&find=mtl_item_categories), [mtl_categories_kfv](https://www.enginatics.com/library/?pg=1&find=mtl_categories_kfv), [mtl_planners](https://www.enginatics.com/library/?pg=1&find=mtl_planners), [bom_small_expl_temp](https://www.enginatics.com/library/?pg=1&find=bom_small_expl_temp), [mrp_end_assemblies](https://www.enginatics.com/library/?pg=1&find=mrp_end_assemblies)
+[mrp_material_plans](https://www.enginatics.com/library/?pg=1&find=mrp_material_plans&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-horizontal-plan), [mrp_workbench_bucket_dates](https://www.enginatics.com/library/?pg=1&find=mrp_workbench_bucket_dates&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-horizontal-plan), [mrp_system_items](https://www.enginatics.com/library/?pg=1&find=mrp_system_items&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-horizontal-plan), [ap_suppliers](https://www.enginatics.com/library/?pg=1&find=ap_suppliers&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-horizontal-plan), [per_people_x](https://www.enginatics.com/library/?pg=1&find=per_people_x&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-horizontal-plan), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-horizontal-plan), [mtl_item_categories](https://www.enginatics.com/library/?pg=1&find=mtl_item_categories&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-horizontal-plan), [mtl_categories_kfv](https://www.enginatics.com/library/?pg=1&find=mtl_categories_kfv&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-horizontal-plan), [mtl_planners](https://www.enginatics.com/library/?pg=1&find=mtl_planners&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-horizontal-plan), [bom_small_expl_temp](https://www.enginatics.com/library/?pg=1&find=bom_small_expl_temp&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-horizontal-plan), [mrp_end_assemblies](https://www.enginatics.com/library/?pg=1&find=mrp_end_assemblies&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-horizontal-plan)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-horizontal-plan)
 
 ## Related Reports
-[MRP Plan Orders](/MRP%20Plan%20Orders/ "MRP Plan Orders Oracle EBS SQL Report"), [MSC Horizontal Plan](/MSC%20Horizontal%20Plan/ "MSC Horizontal Plan Oracle EBS SQL Report"), [MSC Plan Order Upload](/MSC%20Plan%20Order%20Upload/ "MSC Plan Order Upload Oracle EBS SQL Report"), [MRP Pegging](/MRP%20Pegging/ "MRP Pegging Oracle EBS SQL Report"), [MRP Item Forecast Upload](/MRP%20Item%20Forecast%20Upload/ "MRP Item Forecast Upload Oracle EBS SQL Report"), [MRP Item Forecast](/MRP%20Item%20Forecast/ "MRP Item Forecast Oracle EBS SQL Report"), [MSC Plan Orders](/MSC%20Plan%20Orders/ "MSC Plan Orders Oracle EBS SQL Report")
+[MRP Pegging](/MRP%20Pegging/ "MRP Pegging Oracle EBS SQL Report"), [INV Items](/INV%20Items/ "INV Items Oracle EBS SQL Report"), [INV Item Upload](/INV%20Item%20Upload/ "INV Item Upload Oracle EBS SQL Report"), [INV Item Upload 11i](/INV%20Item%20Upload%2011i/ "INV Item Upload 11i Oracle EBS SQL Report"), [MRP Plan Orders](/MRP%20Plan%20Orders/ "MRP Plan Orders Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/MRP%20Horizontal%20Plan/MRP%20Horizontal%20Plan.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-horizontal-plan) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [MRP Horizontal Plan 26-Jul-2021 041459.xlsx](https://www.enginatics.com/example/mrp-horizontal-plan/) |
-| Blitz Report™ XML Import | [MRP_Horizontal_Plan.xml](https://www.enginatics.com/xml/mrp-horizontal-plan/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/mrp-horizontal-plan/](https://www.enginatics.com/reports/mrp-horizontal-plan/) |
+| Excel Example Output | [MRP Horizontal Plan 26-Jul-2021 041459.xlsx](https://www.enginatics.com/example/mrp-horizontal-plan/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-horizontal-plan) |
+| Blitz Report™ XML Import | [MRP_Horizontal_Plan.xml](https://www.enginatics.com/xml/mrp-horizontal-plan/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-horizontal-plan) |
+| SQL Source | [MRP Horizontal Plan.sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/MRP%20Horizontal%20Plan/MRP%20Horizontal%20Plan.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/mrp-horizontal-plan/](https://www.enginatics.com/reports/mrp-horizontal-plan/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-horizontal-plan) |
 
 ## MRP Horizontal Plan - Case Study & Technical Analysis
 
@@ -79,18 +87,17 @@ The report mimics the "Horizontal Plan" form in the Planner's Workbench.
 -   **Communication:** Provides a clear, standard format for discussing inventory plans with suppliers or production managers.
 -   **Stability:** Helps planners smooth out production by visualizing peaks and valleys in demand.
 
-
 ---
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-horizontal-plan)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-horizontal-plan)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-horizontal-plan)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-horizontal-plan)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-horizontal-plan)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-horizontal-plan)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-horizontal-plan)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

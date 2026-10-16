@@ -1,16 +1,14 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: INV Manufacturer Upload
 -- Description: INV Manufacturer Upload
-======================
-This upload can be used to create, update and delete Manufacturers.
-
-
--- Excel Examle Output: https://www.enginatics.com/example/inv-manufacturer-upload/
+-- ======================
+-- This upload can be used to create, update and delete Manufacturers.
+-- Excel Example Output: https://www.enginatics.com/example/inv-manufacturer-upload/
 -- Library Link: https://www.enginatics.com/reports/inv-manufacturer-upload/
 -- Run Report: https://demo.enginatics.com/
 

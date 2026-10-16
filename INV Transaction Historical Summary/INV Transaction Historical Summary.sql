@@ -1,29 +1,23 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: INV Transaction Historical Summary
 -- Description: Application: Inventory
-Description: Transaction Historical Summary Report
-
-This report provides equivalent functionality to the Oracle standard Transaction historical summary (XML) report.
-
-Templates
-Quantity/Value Template – for use with the Quantity and Value Selection Option
-Balance Template – for use with the Balance Selection Option
-
-The templates provide a summary pivot based on the selected sort option parameter with drill down to the detail data.
-
-Sort Option Category: Pivot by Category, Subinventory/Cost Group
-All Others: Pivot by Subinventory/Cost Group, Category
-
-Source: Transaction historical summary (XML)
-Short Name: INVTRHAN_XML
-DB package: INV_INVTRHAN_XMLP_PKG
-
--- Excel Examle Output: https://www.enginatics.com/example/inv-transaction-historical-summary/
+-- Description: Transaction Historical Summary Report
+-- This report provides equivalent functionality to the Oracle standard Transaction historical summary (XML) report.
+-- Templates
+-- Quantity/Value Template – for use with the Quantity and Value Selection Option
+-- Balance Template – for use with the Balance Selection Option
+-- The templates provide a summary pivot based on the selected sort option parameter with drill down to the detail data.
+-- Sort Option Category: Pivot by Category, Subinventory/Cost Group
+-- All Others: Pivot by Subinventory/Cost Group, Category
+-- Source: Transaction historical summary (XML)
+-- Short Name: INVTRHANXML
+-- DB package: INVINVTRHANXMLPPKG
+-- Excel Example Output: https://www.enginatics.com/example/inv-transaction-historical-summary/
 -- Library Link: https://www.enginatics.com/reports/inv-transaction-historical-summary/
 -- Run Report: https://demo.enginatics.com/
 

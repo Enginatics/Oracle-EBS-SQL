@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: FND Request Groups
 -- Description: FND request groups and their assigned units, such as concurrent programs, request sets or applications
--- Excel Examle Output: https://www.enginatics.com/example/fnd-request-groups/
+-- Excel Example Output: https://www.enginatics.com/example/fnd-request-groups/
 -- Library Link: https://www.enginatics.com/reports/fnd-request-groups/
 -- Run Report: https://demo.enginatics.com/
 

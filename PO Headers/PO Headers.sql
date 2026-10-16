@@ -1,15 +1,15 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PO Headers
 -- Description: PO headers or releases with corresponding invoices and their payment status.
-Example: To show all POs or releases which have an invoice but no receiving TRX yet, set following parameters:
-Invoice exists=Yes
-Receiving TRX exists=No
--- Excel Examle Output: https://www.enginatics.com/example/po-headers/
+-- Example: To show all POs or releases which have an invoice but no receiving TRX yet, set following parameters:
+-- Invoice exists=Yes
+-- Receiving TRX exists=No
+-- Excel Example Output: https://www.enginatics.com/example/po-headers/
 -- Library Link: https://www.enginatics.com/reports/po-headers/
 -- Run Report: https://demo.enginatics.com/
 

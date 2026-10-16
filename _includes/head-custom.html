@@ -1,0 +1,34 @@
+<!-- Managed by oracle-ebs-sql-updater (site/_includes/head-custom.html). Included by the Cayman layout. -->
+<link rel="icon" type="image/x-icon" href="{{ '/favicon.ico' | relative_url }}">
+{% if site.ga4_id and site.ga4_id != '' %}
+<script async src="https://www.googletagmanager.com/gtag/js?id={{ site.ga4_id }}"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','{{ site.ga4_id }}');</script>
+{% endif %}
+{% if page.report_web_name %}
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+{"@type":"SoftwareSourceCode","name":{{ page.report_name | jsonify }},"description":{{ page.description | jsonify }},
+"programmingLanguage":"SQL","runtimePlatform":"Oracle E-Business Suite",
+"url":{{ page.url | absolute_url | jsonify }},"codeRepository":"https://github.com/{{ site.repository }}",
+{% if page.last_modified_at %}"dateModified":"{{ page.last_modified_at }}",{% endif %}
+{% if page.module %}"applicationCategory":{{ page.module | jsonify }},{% endif %}
+"sameAs":"https://www.enginatics.com/reports/{{ page.report_web_name }}/",
+"author":{"@type":"Organization","name":"Enginatics","url":"https://www.enginatics.com/"}},
+{"@type":"BreadcrumbList","itemListElement":[
+{"@type":"ListItem","position":1,"name":"Oracle EBS SQL Reports","item":{{ '/' | absolute_url | jsonify }}},
+{% if page.module_url %}{"@type":"ListItem","position":2,"name":{{ page.module | append: ' reports' | jsonify }},"item":{{ page.module_url | absolute_url | jsonify }}},
+{"@type":"ListItem","position":3{% else %}{"@type":"ListItem","position":2{% endif %},"name":{{ page.report_name | jsonify }},"item":{{ page.url | absolute_url | jsonify }}}]}
+]}
+</script>
+{% elsif page.module_page %}
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+{"@type":"CollectionPage","name":{{ page.title | jsonify }},"description":{{ page.description | jsonify }},
+"url":{{ page.url | absolute_url | jsonify }},{% if page.last_modified_at %}"dateModified":"{{ page.last_modified_at }}",{% endif %}
+"publisher":{"@type":"Organization","name":"Enginatics","url":"https://www.enginatics.com/"}},
+{"@type":"BreadcrumbList","itemListElement":[
+{"@type":"ListItem","position":1,"name":"Oracle EBS SQL Reports","item":{{ '/' | absolute_url | jsonify }}},
+{"@type":"ListItem","position":2,"name":{{ page.module | append: ' reports' | jsonify }},"item":{{ page.url | absolute_url | jsonify }}}]}
+]}
+</script>
+{% endif %}

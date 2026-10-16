@@ -1,27 +1,19 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: WIP Job Upload
 -- Description: Upload to create and update WIP Discrete Jobs (Standard and Non-Standard) including operations, resources, and material requirements (components). Multiple inventory organizations can be combined in one upload file; the upload submits a separate WIP Mass Load run per organization.
-
-Job headers support all standard fields including assembly, class code, status, quantities, dates, scheduling, BOM/routing references (non-standard jobs), completion subinventory/locator, schedule group, line, project/task, and descriptive flexfield attributes.
-
-Operations, resources, and material requirements (components) can be added on new and existing jobs and modified on existing jobs. A single upload row can carry header, operation/resource, and component fields simultaneously, so compact entry does not require separate row types.
-
-Explode Bom and Routing. By default, Bom and Routing are automatically exploded only for new jobs (create) where the job does not have detail entries (operations/resources/components) included in the upload. This is to preserve the manually entered details on upload. If uploading Job Details for a new job, then all the detail entries for the Job should be included in the upload. The Bom and Routing are not automatically re-exploded when updating an existing job. There is a hidden ‘Explode Bom and Routing’ column in the upload that can be used to override this default behaviour.
-
-Scheduled Start and Completion Dates. For jobs with a routing (the assembly’s own routing for Standard jobs, or a Routing Reference for Non-Standard jobs), supply one of Scheduled Start Date or Scheduled Completion Date — providing the start forward-schedules, providing the completion backward-schedules. The system computes the other end from the routing lead times. If both are supplied, forward-scheduling from the start is used. For jobs without a routing, both dates are required and are stored verbatim. The same rules apply on update: changing only the start triggers a forward reschedule, changing only the completion triggers a backward reschedule.
-
-Job creation supports both automatic job name generation (via the WIP Job Prefix profile and sequence) and manual job naming. The Upload Job Identifier column uniquely identifies a job in the upload and provides traceability between uploaded rows and the eventual job name when automatic naming is used. It must be unique per logical job within a single upload. For manual job naming, the Upload Job Identifier will also be used as the Job Name if a Job Name is not specifically entered in the upload.
-
-Non-standard jobs without an assembly or routing reference cannot be updated through WIP Mass Load; such jobs must be edited in the Discrete Jobs form directly. The upload reports a clear error if attempted.
-
-Processing uses the WIP Mass Load interface (wip_job_schedule_interface and wip_job_dtls_interface) with the WICMLP concurrent program. Validation errors are detected per job and cascaded to all rows of the affected job so the job is either processed in its entirety or not at all.
-
--- Excel Examle Output: https://www.enginatics.com/example/wip-job-upload/
+-- Job headers support all standard fields including assembly, class code, status, quantities, dates, scheduling, BOM/routing references (non-standard jobs), completion subinventory/locator, schedule group, line, project/task, and descriptive flexfield attributes.
+-- Operations, resources, and material requirements (components) can be added on new and existing jobs and modified on existing jobs. A single upload row can carry header, operation/resource, and component fields simultaneously, so compact entry does not require separate row types.
+-- Explode Bom and Routing. By default, Bom and Routing are automatically exploded only for new jobs (create) where the job does not have detail entries (operations/resources/components) included in the upload. This is to preserve the manually entered details on upload. If uploading Job Details for a new job, then all the detail entries for the Job should be included in the upload. The Bom and Routing are not automatically re-exploded when updating an existing job. There is a hidden ‘Explode Bom and Routing’ column in the upload that can be used to override this default behaviour.
+-- Scheduled Start and Completion Dates. For jobs with a routing (the assembly’s own routing for Standard jobs, or a Routing Reference for Non-Standard jobs), supply one of Scheduled Start Date or Scheduled Completion Date — providing the start forward-schedules, providing the completion backward-schedules. The system computes the other end from the routing lead times. If both are supplied, forward-scheduling from the start is used. For jobs without a routing, both dates are required and are stored verbatim. The same rules apply on update: changing only the start triggers a forward reschedule, changing only the completion triggers a backward reschedule.
+-- Job creation supports both automatic job name generation (via the WIP Job Prefix profile and sequence) and manual job naming. The Upload Job Identifier column uniquely identifies a job in the upload and provides traceability between uploaded rows and the eventual job name when automatic naming is used. It must be unique per logical job within a single upload. For manual job naming, the Upload Job Identifier will also be used as the Job Name if a Job Name is not specifically entered in the upload.
+-- Non-standard jobs without an assembly or routing reference cannot be updated through WIP Mass Load; such jobs must be edited in the Discrete Jobs form directly. The upload reports a clear error if attempted.
+-- Processing uses the WIP Mass Load interface (wipjobscheduleinterface and wipjobdtlsinterface) with the WICMLP concurrent program. Validation errors are detected per job and cascaded to all rows of the affected job so the job is either processed in its entirety or not at all.
+-- Excel Example Output: https://www.enginatics.com/example/wip-job-upload/
 -- Library Link: https://www.enginatics.com/reports/wip-job-upload/
 -- Run Report: https://demo.enginatics.com/
 

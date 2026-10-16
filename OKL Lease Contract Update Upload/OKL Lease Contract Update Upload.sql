@@ -1,18 +1,15 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: OKL Lease Contract Update Upload
--- Description: Changes the bill to customer account and bill to site of Lease Management contracts through the Oracle public API okl_contract_pub.update_contract_header - the Bill To of the Lease Contract header.
-
-One row per contract. Enter the Bill To Customer Account, the Bill To Site, or both; everything else on the row is context and is read only. A site that does not belong to the Bill To Customer Account on the row is rejected, so change both together when the account changes too.
-
-A bill to change does not require a rebook: it was verified against Booked, Evergreen, Passed and Incomplete contracts. Rebook remains necessary for the financial terms this upload does not touch.
-
-Run it under a Lease Management responsibility. Under an unrelated responsibility Oracle refuses the update with its own privilege message.
--- Excel Examle Output: https://www.enginatics.com/example/okl-lease-contract-update-upload/
+-- Description: Changes the bill to customer account and bill to site of Lease Management contracts through the Oracle public API oklcontractpub.updatecontractheader - the Bill To of the Lease Contract header.
+-- One row per contract. Enter the Bill To Customer Account, the Bill To Site, or both; everything else on the row is context and is read only. A site that does not belong to the Bill To Customer Account on the row is rejected, so change both together when the account changes too.
+-- A bill to change does not require a rebook: it was verified against Booked, Evergreen, Passed and Incomplete contracts. Rebook remains necessary for the financial terms this upload does not touch.
+-- Run it under a Lease Management responsibility. Under an unrelated responsibility Oracle refuses the update with its own privilege message.
+-- Excel Example Output: https://www.enginatics.com/example/okl-lease-contract-update-upload/
 -- Library Link: https://www.enginatics.com/reports/okl-lease-contract-update-upload/
 -- Run Report: https://demo.enginatics.com/
 

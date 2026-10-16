@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: INV Organization Access
--- Description: Inventory organization access for all responsibilities, either through hr security profile or individual org_access assignment.
--- Excel Examle Output: https://www.enginatics.com/example/inv-organization-access/
+-- Description: Inventory organization access for all responsibilities, either through hr security profile or individual orgaccess assignment.
+-- Excel Example Output: https://www.enginatics.com/example/inv-organization-access/
 -- Library Link: https://www.enginatics.com/reports/inv-organization-access/
 -- Run Report: https://demo.enginatics.com/
 

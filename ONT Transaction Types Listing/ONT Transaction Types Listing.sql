@@ -1,17 +1,17 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: ONT Transaction Types Listing
 -- Description: Imported Oracle standard Order Management transaction types listing, enhanced to show the setup across all operating units
-Description: Transaction Types Listing Report
-Application: Order Management
-Source: Transaction Types Listing Report (XML)
-Short Name: OEXORDTP_XML
-DB package: ONT_OEXORDTP_XMLP_PKG
--- Excel Examle Output: https://www.enginatics.com/example/ont-transaction-types-listing/
+-- Description: Transaction Types Listing Report
+-- Application: Order Management
+-- Source: Transaction Types Listing Report (XML)
+-- Short Name: OEXORDTPXML
+-- DB package: ONTOEXORDTPXMLPPKG
+-- Excel Example Output: https://www.enginatics.com/example/ont-transaction-types-listing/
 -- Library Link: https://www.enginatics.com/reports/ont-transaction-types-listing/
 -- Run Report: https://demo.enginatics.com/
 

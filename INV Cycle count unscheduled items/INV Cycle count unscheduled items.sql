@@ -1,15 +1,15 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: INV Cycle count unscheduled items
 -- Description: Imported Oracle standard Cycle count unscheduled items report
-Source: Cycle count unscheduled items report (XML)
-Short Name: INVARUIR_XML
-DB package: INV_INVARUIR_XMLP_PKG
--- Excel Examle Output: https://www.enginatics.com/example/inv-cycle-count-unscheduled-items/
+-- Source: Cycle count unscheduled items report (XML)
+-- Short Name: INVARUIRXML
+-- DB package: INVINVARUIRXMLPPKG
+-- Excel Example Output: https://www.enginatics.com/example/inv-cycle-count-unscheduled-items/
 -- Library Link: https://www.enginatics.com/reports/inv-cycle-count-unscheduled-items/
 -- Run Report: https://demo.enginatics.com/
 

@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: FND Roles
 -- Description: Report of all User Management (UMX) roles, including number of active users for each role to help managing role-based access control (RBAC)
--- Excel Examle Output: https://www.enginatics.com/example/fnd-roles/
+-- Excel Example Output: https://www.enginatics.com/example/fnd-roles/
 -- Library Link: https://www.enginatics.com/reports/fnd-roles/
 -- Run Report: https://demo.enginatics.com/
 

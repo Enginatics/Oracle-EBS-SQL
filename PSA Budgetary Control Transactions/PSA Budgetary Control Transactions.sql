@@ -1,32 +1,27 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PSA Budgetary Control Transactions
 -- Description: Imported from Concurrent Program
-Description: Budgetary Control Results Report Program
-Application: Public Sector Financials
-Source: Budgetary Control Results Report
-Short Name: PSABCRRP
-DB package: XXEN_PSA
-
-The Expand Amounts Yes/No Parameter determines whether or not the Budget, Encumbrances, Expenditures, and Funds Available Amounts are displayed on the same excel row (Expand=No) or are split into separate excel rows (Expand=Yes) in the generated excel.
-
-The following templates are provided with this report:
-
-Budgetary Control Transactions Pivot
-===========================
-Corresponds to the standard Oracle Budgetary Control Status Report.
-Budget, Encumbrances, Expenditures, and Funds Available Amounts are displayed on separate rows in the generated Excel
-
-Budgetary Control Transactions Extract
-============================
-Flat File one row per transaction extract.
-Budget, Encumbrances, Expenditures, and Funds Available Amounts are included as separate columns on the same excel row
-
--- Excel Examle Output: https://www.enginatics.com/example/psa-budgetary-control-transactions/
+-- Description: Budgetary Control Results Report Program
+-- Application: Public Sector Financials
+-- Source: Budgetary Control Results Report
+-- Short Name: PSABCRRP
+-- DB package: XXENPSA
+-- The Expand Amounts Yes/No Parameter determines whether or not the Budget, Encumbrances, Expenditures, and Funds Available Amounts are displayed on the same excel row (Expand=No) or are split into separate excel rows (Expand=Yes) in the generated excel.
+-- The following templates are provided with this report:
+-- Budgetary Control Transactions Pivot
+-- ===========================
+-- Corresponds to the standard Oracle Budgetary Control Status Report.
+-- Budget, Encumbrances, Expenditures, and Funds Available Amounts are displayed on separate rows in the generated Excel
+-- Budgetary Control Transactions Extract
+-- ============================
+-- Flat File one row per transaction extract.
+-- Budget, Encumbrances, Expenditures, and Funds Available Amounts are included as separate columns on the same excel row
+-- Excel Example Output: https://www.enginatics.com/example/psa-budgetary-control-transactions/
 -- Library Link: https://www.enginatics.com/reports/psa-budgetary-control-transactions/
 -- Run Report: https://demo.enginatics.com/
 

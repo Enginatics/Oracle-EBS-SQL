@@ -1,55 +1,53 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Onhand Lot Value (Real-Time)
--- Description: Report for onhand inventory at the time you run the report (real-time).  By organization, Lot and Subinventory.  If you leave the Cost Type blank the report will value the inventory using the inventory organization's Costing Method (Standard, Average, FIFO, LIFO).  If you enter a Cost Type the report will use these item costs, plus, if any item costs are missing from the entered Cost Type, get the remaining item costs from the Costing Method Cost Type.  Note that consigned quantities are reported but not valued.  And if you choose to report expense subinventories, they are not valued either.
-
-
-/* +=============================================================================+
--- | Copyright 2009 - 2020 Douglas Volz Consulting, Inc.                         |
--- |  All rights reserved.                                                       |
--- |  Permission to use this code is granted provided the original author is     |
--- |  acknowledged.  No warranties, express or otherwise is included in this     |
--- |  permission.                                                                |
--- +=============================================================================+
--- |
--- | Original Author: Douglas Volz (doug@volzconsulting.com)
--- |
--- | Program Name: xxx_inventory_val_rept.sql
--- |
--- |  Parameters:
--- |  p_period_name         -- Accounting period you wish to report for
--- |  p_org_code            -- Specific inventory organization you wish to report (optional)
--- |  p_operating_unit      -- Operating Unit you wish to report, leave blank for all
--- |                           operating units (optional) 
--- |  p_ledger              -- general ledger you wish to report, leave blank for all
--- |                           ledgers (optional)
--- |  p_cost_type           -- Enter a Cost Type to value the quantities
--- |                           using the Cost Type Item Costs; or, if 
--- |                           Cost Type is blank or null the report will 
--- |                           use the stored month-end snapshot values
--- |  p_category_set1       -- The first item category set to report, typically the
--- |                           Cost or Product Line Category Set
--- |  p_category_set2       -- The second item category set to report, typically the
--- |                           Inventory Category Set 
--- |
--- | ===================================================================
--- | Note:  if you enter a cost type this script uses the item costs 
--- |        from the cost type; if you leave the cost type 
--- |        blank it uses the item costs from the month-end snapshot.
--- | ===================================================================
--- | Version Modified on Modified by Description
--- | ======= =========== ============== =========================================
--- | 1.0     27 Sep 2009 Douglas Volz Initial Coding
--- | 1.1     28 Sep 2009 Douglas Volz Added a sum for the ICP costs from cicd
--- | 1.16    23 Apr 2020 Douglas Volz Changed to multi-language views for the item
--- |                                  master, item categories and operating units.
--- |                                  Used mfg_lookups for "Intransit".
--- +=============================================================================+*/
--- Excel Examle Output: https://www.enginatics.com/example/cac-onhand-lot-value-real-time/
+-- Description: Report for onhand inventory at the time you run the report (real-time). By organization, Lot and Subinventory. If you leave the Cost Type blank the report will value the inventory using the inventory organization's Costing Method (Standard, Average, FIFO, LIFO). If you enter a Cost Type the report will use these item costs, plus, if any item costs are missing from the entered Cost Type, get the remaining item costs from the Costing Method Cost Type. Note that consigned quantities are reported but not valued. And if you choose to report expense subinventories, they are not valued either.
+-- / +=============================================================================+
+-- -- | Copyright 2009 - 2020 Douglas Volz Consulting, Inc. |
+-- -- | All rights reserved. |
+-- -- | Permission to use this code is granted provided the original author is |
+-- -- | acknowledged. No warranties, express or otherwise is included in this |
+-- -- | permission. |
+-- -- +=============================================================================+
+-- -- |
+-- -- | Original Author: Douglas Volz (doug@volzconsulting.com)
+-- -- |
+-- -- | Program Name: xxxinventoryvalrept.sql
+-- -- |
+-- -- | Parameters:
+-- -- | pperiodname -- Accounting period you wish to report for
+-- -- | porgcode -- Specific inventory organization you wish to report (optional)
+-- -- | poperatingunit -- Operating Unit you wish to report, leave blank for all
+-- -- | operating units (optional)
+-- -- | pledger -- general ledger you wish to report, leave blank for all
+-- -- | ledgers (optional)
+-- -- | pcosttype -- Enter a Cost Type to value the quantities
+-- -- | using the Cost Type Item Costs; or, if
+-- -- | Cost Type is blank or null the report will
+-- -- | use the stored month-end snapshot values
+-- -- | pcategoryset1 -- The first item category set to report, typically the
+-- -- | Cost or Product Line Category Set
+-- -- | pcategoryset2 -- The second item category set to report, typically the
+-- -- | Inventory Category Set
+-- -- |
+-- -- | ===================================================================
+-- -- | Note: if you enter a cost type this script uses the item costs
+-- -- | from the cost type; if you leave the cost type
+-- -- | blank it uses the item costs from the month-end snapshot.
+-- -- | ===================================================================
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== ============== =========================================
+-- -- | 1.0 27 Sep 2009 Douglas Volz Initial Coding
+-- -- | 1.1 28 Sep 2009 Douglas Volz Added a sum for the ICP costs from cicd
+-- -- | 1.16 23 Apr 2020 Douglas Volz Changed to multi-language views for the item
+-- -- | master, item categories and operating units.
+-- -- | Used mfglookups for "Intransit".
+-- -- +=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-onhand-lot-value-real-time/
 -- Library Link: https://www.enginatics.com/reports/cac-onhand-lot-value-real-time/
 -- Run Report: https://demo.enginatics.com/
 

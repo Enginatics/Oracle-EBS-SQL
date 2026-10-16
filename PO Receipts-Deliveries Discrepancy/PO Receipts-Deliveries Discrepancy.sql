@@ -1,20 +1,16 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PO Receipts/Deliveries Discrepancy
 -- Description: PO Receipts/Deliveries Discrepancy highlights, at purchase order line and release level, differences between the quantities and amounts received into receiving (transaction type RECEIVE) and delivered to their final destination (DELIVER), including the impact of any CORRECT transactions applied to either side.
-
-Quantity Received and Quantity Delivered show the original transaction quantities, Quantity Corrected Receipt and Quantity Corrected Delivery the net correction impact, and Total Quantity Received and Total Quantity Delivered the corrected totals. Quantity Variance and Cost Variance compare the corrected totals, with amounts valued at the purchase price of each receiving transaction.
-
-Return to Vendor and Return to Receiving quantities (net of their corrections) are shown for reference but are not netted into the variance columns.
-
-Provide a Last Receipt Date range (required): the report shows purchase order lines that had a receipt within that range, and for each it nets ALL of the line's receiving transactions to date, so the variance reflects the current outstanding received-vs-delivered position, not just activity in the window. Narrow the range (and/or add a PO, Supplier or Item filter) to keep large organizations fast.
-
-By default the report shows discrepancy rows only (quantity or cost variance different from zero). Set parameter Discrepancies Only to No to list all purchase order receiving activity for the selected lines.
--- Excel Examle Output: https://www.enginatics.com/example/po-receipts-deliveries-discrepancy/
+-- Quantity Received and Quantity Delivered show the original transaction quantities, Quantity Corrected Receipt and Quantity Corrected Delivery the net correction impact, and Total Quantity Received and Total Quantity Delivered the corrected totals. Quantity Variance and Cost Variance compare the corrected totals, with amounts valued at the purchase price of each receiving transaction.
+-- Return to Vendor and Return to Receiving quantities (net of their corrections) are shown for reference but are not netted into the variance columns.
+-- Provide a Last Receipt Date range (required): the report shows purchase order lines that had a receipt within that range, and for each it nets ALL of the line's receiving transactions to date, so the variance reflects the current outstanding received-vs-delivered position, not just activity in the window. Narrow the range (and/or add a PO, Supplier or Item filter) to keep large organizations fast.
+-- By default the report shows discrepancy rows only (quantity or cost variance different from zero). Set parameter Discrepancies Only to No to list all purchase order receiving activity for the selected lines.
+-- Excel Example Output: https://www.enginatics.com/example/po-receipts-deliveries-discrepancy/
 -- Library Link: https://www.enginatics.com/reports/po-receipts-deliveries-discrepancy/
 -- Run Report: https://demo.enginatics.com/
 

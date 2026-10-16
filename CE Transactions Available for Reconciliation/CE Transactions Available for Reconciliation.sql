@@ -1,21 +1,19 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CE Transactions Available for Reconciliation
 -- Description: Application: Cash Management
-Description: Transactions - Transactions Available for Reconciliation
-
-Provides equivalent functionality to the following standard Oracle Forms/Reports
-- Transactions Available for Reconciliation Report
-  Applicable Templates:
-  Pivot: Transactions Available by Bank Account, Source and Type
-
-Source: Transactions Available for Reconciliation Report (CEXAVTRX)
-DB package: CE_CEXSTMRR_XMLP_PKG (required to initialize security)
--- Excel Examle Output: https://www.enginatics.com/example/ce-transactions-available-for-reconciliation/
+-- Description: Transactions - Transactions Available for Reconciliation
+-- Provides equivalent functionality to the following standard Oracle Forms/Reports
+-- - Transactions Available for Reconciliation Report
+-- Applicable Templates:
+-- Pivot: Transactions Available by Bank Account, Source and Type
+-- Source: Transactions Available for Reconciliation Report (CEXAVTRX)
+-- DB package: CECEXSTMRRXMLPPKG (required to initialize security)
+-- Excel Example Output: https://www.enginatics.com/example/ce-transactions-available-for-reconciliation/
 -- Library Link: https://www.enginatics.com/reports/ce-transactions-available-for-reconciliation/
 -- Run Report: https://demo.enginatics.com/
 

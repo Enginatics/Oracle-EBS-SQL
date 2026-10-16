@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: FND Languages
 -- Description: 
--- Excel Examle Output: https://www.enginatics.com/example/fnd-languages/
+-- Excel Example Output: https://www.enginatics.com/example/fnd-languages/
 -- Library Link: https://www.enginatics.com/reports/fnd-languages/
 -- Run Report: https://demo.enginatics.com/
 

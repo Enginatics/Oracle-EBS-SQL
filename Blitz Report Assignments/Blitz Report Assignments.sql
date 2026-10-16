@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: Blitz Report Assignments
 -- Description: 
--- Excel Examle Output: https://www.enginatics.com/example/blitz-report-assignments/
+-- Excel Example Output: https://www.enginatics.com/example/blitz-report-assignments/
 -- Library Link: https://www.enginatics.com/reports/blitz-report-assignments/
 -- Run Report: https://demo.enginatics.com/
 

@@ -1,18 +1,18 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: INV Movement Statistics
 -- Description: Imported from BI Publisher
-Description: Movement Statistics Report (INTRASTAT Report)
-Application: Inventory
-Source: Movement Statistics Report (XML)
-Short Name: INVSTMVT_XML
-DB package: INV_INVSTMVT_XMLP_PKG
-Reports movement statistics for EU Intrastat compliance including arrivals, dispatches, and adjustments with detailed commodity, territory, and trader information.
--- Excel Examle Output: https://www.enginatics.com/example/inv-movement-statistics/
+-- Description: Movement Statistics Report (INTRASTAT Report)
+-- Application: Inventory
+-- Source: Movement Statistics Report (XML)
+-- Short Name: INVSTMVTXML
+-- DB package: INVINVSTMVTXMLPPKG
+-- Reports movement statistics for EU Intrastat compliance including arrivals, dispatches, and adjustments with detailed commodity, territory, and trader information.
+-- Excel Example Output: https://www.enginatics.com/example/inv-movement-statistics/
 -- Library Link: https://www.enginatics.com/reports/inv-movement-statistics/
 -- Run Report: https://demo.enginatics.com/
 

@@ -1,13 +1,13 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: GL Account Distribution Analysis
 -- Description: Detailed GL transaction report with one line per distribution including all segments and subledger data, with amounts in both transaction currency and ledger currency.
-The report includes VAT tax codes and rates for AR and AP transactions.
--- Excel Examle Output: https://www.enginatics.com/example/gl-account-distribution-analysis/
+-- The report includes VAT tax codes and rates for AR and AP transactions.
+-- Excel Example Output: https://www.enginatics.com/example/gl-account-distribution-analysis/
 -- Library Link: https://www.enginatics.com/reports/gl-account-distribution-analysis/
 -- Run Report: https://demo.enginatics.com/
 
@@ -199,6 +199,7 @@ when xte.entity_code='TRANSACTIONS' and rcta.interface_header_context in ('ORDER
 when mmt.transaction_source_type_id in (2,8,12) then (select to_number(mso.segment1) from mtl_sales_orders mso where mmt.transaction_source_id=mso.sales_order_id)
 end
 ) sales_order,
+coalesce(rcta.purchase_order,oola.cust_po_number,ooha.cust_po_number) customer_po_number,
 jrrev.resource_name salesperson,
 (select name from ra_rules rr where rcta.invoicing_rule_id=rr.rule_id) invoice_rule,
 (select rr.name from ra_customer_trx_lines_all rctla, ra_rules rr where rcta.customer_trx_id=rctla.customer_trx_id and rctla.line_type='LINE' and rctla.accounting_rule_id=rr.rule_id and rownum=1) accounting_rule,
@@ -647,6 +648,7 @@ null po_currency,
 null goods_receipt_number,
 --AR
 null sales_order,
+null customer_po_number,
 null salesperson,
 null invoice_rule,
 null accounting_rule,
@@ -880,6 +882,7 @@ null po_currency,
 null goods_receipt_number,
 --AR
 null sales_order,
+null customer_po_number,
 null salesperson,
 null invoice_rule,
 null accounting_rule,

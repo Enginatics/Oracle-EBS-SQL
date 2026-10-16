@@ -1,16 +1,15 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: AR Adjustment Register
 -- Description: Application: Receivables
-Source: Adjustment Register
-Short Name: ARRXARPB
-
-The report has now been enhanced to allow multiple accessible Ledgers or Operating Units to be selected in the Reporting Context parameter. Additionally, the Reporting Context parameter has been made optional. Leaving it null will allow the report to be run across all accessible Ledgers or Operating Units.
--- Excel Examle Output: https://www.enginatics.com/example/ar-adjustment-register/
+-- Source: Adjustment Register
+-- Short Name: ARRXARPB
+-- The report has now been enhanced to allow multiple accessible Ledgers or Operating Units to be selected in the Reporting Context parameter. Additionally, the Reporting Context parameter has been made optional. Leaving it null will allow the report to be run across all accessible Ledgers or Operating Units.
+-- Excel Example Output: https://www.enginatics.com/example/ar-adjustment-register/
 -- Library Link: https://www.enginatics.com/reports/ar-adjustment-register/
 -- Run Report: https://demo.enginatics.com/
 

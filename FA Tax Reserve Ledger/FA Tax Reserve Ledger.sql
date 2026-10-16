@@ -1,16 +1,16 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: FA Tax Reserve Ledger
 -- Description: Imported Oracle standard tax reserve ledger report
-Source: Tax Reserve Ledger Report (XML)
-Short Name: FAS480_XML
-DB package: FA_FAS480_XMLP_PKG
-Custom Package: XXEN_FA_FAS_XMLP
--- Excel Examle Output: https://www.enginatics.com/example/fa-tax-reserve-ledger/
+-- Source: Tax Reserve Ledger Report (XML)
+-- Short Name: FAS480XML
+-- DB package: FAFAS480XMLPPKG
+-- Custom Package: XXENFAFASXMLP
+-- Excel Example Output: https://www.enginatics.com/example/fa-tax-reserve-ledger/
 -- Library Link: https://www.enginatics.com/reports/fa-tax-reserve-ledger/
 -- Run Report: https://demo.enginatics.com/
 

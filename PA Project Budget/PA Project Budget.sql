@@ -1,15 +1,14 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PA Project Budget
 -- Description: Report of Standard Project Budgets. This report does not include Financial Plan Budgets.
-In addition to the budget details, the report will also display the actuals matching the budget line datapoints.
-Note: Inclusion of actuals data requires Blitz Report Build Data later than 04-APR-2025 03:21:50
-
--- Excel Examle Output: https://www.enginatics.com/example/pa-project-budget/
+-- In addition to the budget details, the report will also display the actuals matching the budget line datapoints.
+-- Note: Inclusion of actuals data requires Blitz Report Build Data later than 04-APR-2025 03:21:50
+-- Excel Example Output: https://www.enginatics.com/example/pa-project-budget/
 -- Library Link: https://www.enginatics.com/reports/pa-project-budget/
 -- Run Report: https://demo.enginatics.com/
 

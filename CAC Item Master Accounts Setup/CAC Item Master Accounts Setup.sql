@@ -1,57 +1,56 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Item Master Accounts Setup
 -- Description: Report to show item master accounts and related information by item.
-
-/* +=============================================================================+
--- |  Copyright 2011 - 2022 Douglas Volz Consulting, Inc.                        |
--- |  All rights reserved.                                                       |
--- |  Permission to use this code is granted provided the original author is     |
--- |  acknowledged.  No warranties, express or otherwise is included in this     |
--- |  permission.                                                                |
--- +=============================================================================+
--- |
--- | Original Author: Douglas Volz (doug@volzconsulting.com)
--- |
--- | Program Name: xxx_item_master_accts_rept.sql
--- |
--- |  Parameters:
--- |  p_include_non_costed_items -- Yes/No flag to include or not include non-costed items
--- |  p_item_number      -- Enter the specific inventory organization code
--- |  p_org_code         -- Specific inventory organization you wish to report (optional)
--- |  p_operating_unit   -- Operating Unit you wish to report, leave blank for all
--- |                        operating units (optional) 
--- |  p_ledger           -- general ledger you wish to report, leave blank for all
--- |                        ledgers (optional)
--- |  p_category_set1    -- The first item category set to report, typically the
--- |                        Cost or Product Line Category Set
--- |  p_category_set2    -- The second item category set to report, typically the
--- |                        Inventory Category Set
--- |
--- | Description:
--- | Report to show item master accounts and related information
--- | 
--- | Version Modified on Modified by Description
--- | ======= =========== ============== =========================================
--- |  1.0    30 Mar 2011 Douglas Volz  Initial Coding
--- |  1.1    18 Nov 2012 Douglas Volz  Removed client-specific org conditions
--- |  1.2    12 Feb 2013 Douglas Volz  Changed inventory category to be more generic
--- |  1.3    16 Nov 2015 Douglas Volz  Modified for client's chart of accounts
--- |  1.4    21 Feb 2017 Douglas Volz  Modified for client's chart of accounts and
--- |                                   added parameters to this report
--- |  1.5    17 Jul 2018 Douglas Volz  Modified for client's chart of accounts and
--- |                                   modified to use the default category for Inventory
--- |  1.6    12 Jan 2019 Douglas Volz  Use gl short_name, modify for any two categories,
--- |                                   and add operating unit parameter.
--- |  1.7    28 Apr 2020 Douglas Volz  Changed to multi-language views for the
--- |                                   inventory orgs and operating units.
--- |  1.8    29 Apr 2022 Douglas Volz  Modify summary report into the detailed report.
--- +=============================================================================+*/
--- Excel Examle Output: https://www.enginatics.com/example/cac-item-master-accounts-setup/
+-- / +=============================================================================+
+-- -- | Copyright 2011 - 2022 Douglas Volz Consulting, Inc. |
+-- -- | All rights reserved. |
+-- -- | Permission to use this code is granted provided the original author is |
+-- -- | acknowledged. No warranties, express or otherwise is included in this |
+-- -- | permission. |
+-- -- +=============================================================================+
+-- -- |
+-- -- | Original Author: Douglas Volz (doug@volzconsulting.com)
+-- -- |
+-- -- | Program Name: xxxitemmasteracctsrept.sql
+-- -- |
+-- -- | Parameters:
+-- -- | pincludenoncosteditems -- Yes/No flag to include or not include non-costed items
+-- -- | pitemnumber -- Enter the specific inventory organization code
+-- -- | porgcode -- Specific inventory organization you wish to report (optional)
+-- -- | poperatingunit -- Operating Unit you wish to report, leave blank for all
+-- -- | operating units (optional)
+-- -- | pledger -- general ledger you wish to report, leave blank for all
+-- -- | ledgers (optional)
+-- -- | pcategoryset1 -- The first item category set to report, typically the
+-- -- | Cost or Product Line Category Set
+-- -- | pcategoryset2 -- The second item category set to report, typically the
+-- -- | Inventory Category Set
+-- -- |
+-- -- | Description:
+-- -- | Report to show item master accounts and related information
+-- -- |
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== ============== =========================================
+-- -- | 1.0 30 Mar 2011 Douglas Volz Initial Coding
+-- -- | 1.1 18 Nov 2012 Douglas Volz Removed client-specific org conditions
+-- -- | 1.2 12 Feb 2013 Douglas Volz Changed inventory category to be more generic
+-- -- | 1.3 16 Nov 2015 Douglas Volz Modified for client's chart of accounts
+-- -- | 1.4 21 Feb 2017 Douglas Volz Modified for client's chart of accounts and
+-- -- | added parameters to this report
+-- -- | 1.5 17 Jul 2018 Douglas Volz Modified for client's chart of accounts and
+-- -- | modified to use the default category for Inventory
+-- -- | 1.6 12 Jan 2019 Douglas Volz Use gl shortname, modify for any two categories,
+-- -- | and add operating unit parameter.
+-- -- | 1.7 28 Apr 2020 Douglas Volz Changed to multi-language views for the
+-- -- | inventory orgs and operating units.
+-- -- | 1.8 29 Apr 2022 Douglas Volz Modify summary report into the detailed report.
+-- -- +=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-item-master-accounts-setup/
 -- Library Link: https://www.enginatics.com/reports/cac-item-master-accounts-setup/
 -- Run Report: https://demo.enginatics.com/
 

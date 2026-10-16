@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: DBA Blocking Sessions
--- Description: Chain of currently blocking and blocked database sessions from v$wait_chains
--- Excel Examle Output: https://www.enginatics.com/example/dba-blocking-sessions/
+-- Description: Chain of currently blocking and blocked database sessions from v$waitchains
+-- Excel Example Output: https://www.enginatics.com/example/dba-blocking-sessions/
 -- Library Link: https://www.enginatics.com/reports/dba-blocking-sessions/
 -- Run Report: https://demo.enginatics.com/
 

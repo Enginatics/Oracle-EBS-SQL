@@ -1,30 +1,24 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PN Schedule Approval Status Upload
 -- Description: Property Management - Schedule Approval Status Upload
-
-This upload allows users to Approve (Approved status), Un-Approve (Draft status), or place On Hold Payment and Billing Schedules in Property Management. This upload offers the same functionality as the Oracle Authorize Payments and the Authorize Billings forms.
-
-Upload Mode
-=================
-When run in “Create, Update” mode, the Payment/Billing Schedules matching the criteria specified in the report parameters will be downloaded into Excel where the user can review and amend the Payment/Billing Approval Status and, for approved schedules, the Approver and the Period.
-
-When run in “Create” mode, an empty excel will be generated. This mode allows the user to paste Payment/Billing schedule data from another source. In this mode the upload will find the matching Payment/Billing Schedule based on the data in each excel row and apply the approval change. The upload will return an error message if the upload cannot find a matching schedule, or if it finds multiple matching schedules.
-
-Approved Schedules
-=================
-- if the Approver is not specified in the upload excel, then the username of the user executing the upload is used.
-- if the Period is not specified in the upload excel, then this will be derived during the upload based on the Schedule Date
-
-Notes
-=================
-You cannot create new Payment/Billing schedules using this upload. It can only be used for updating the approval status of existing Payment/Billing Schedules.
-
--- Excel Examle Output: https://www.enginatics.com/example/pn-schedule-approval-status-upload/
+-- This upload allows users to Approve (Approved status), Un-Approve (Draft status), or place On Hold Payment and Billing Schedules in Property Management. This upload offers the same functionality as the Oracle Authorize Payments and the Authorize Billings forms.
+-- Upload Mode
+-- =================
+-- When run in “Create, Update” mode, the Payment/Billing Schedules matching the criteria specified in the report parameters will be downloaded into Excel where the user can review and amend the Payment/Billing Approval Status and, for approved schedules, the Approver and the Period.
+-- When run in “Create” mode, an empty excel will be generated. This mode allows the user to paste Payment/Billing schedule data from another source. In this mode the upload will find the matching Payment/Billing Schedule based on the data in each excel row and apply the approval change. The upload will return an error message if the upload cannot find a matching schedule, or if it finds multiple matching schedules.
+-- Approved Schedules
+-- =================
+-- - if the Approver is not specified in the upload excel, then the username of the user executing the upload is used.
+-- - if the Period is not specified in the upload excel, then this will be derived during the upload based on the Schedule Date
+-- Notes
+-- =================
+-- You cannot create new Payment/Billing schedules using this upload. It can only be used for updating the approval status of existing Payment/Billing Schedules.
+-- Excel Example Output: https://www.enginatics.com/example/pn-schedule-approval-status-upload/
 -- Library Link: https://www.enginatics.com/reports/pn-schedule-approval-status-upload/
 -- Run Report: https://demo.enginatics.com/
 

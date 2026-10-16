@@ -1,22 +1,21 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: AP Accounted Invoice Aging
 -- Description: Application: Payables
-Report: Accounts Payable Accounted Invoice Aging Report
-Pre-requisite: XLA_TRIAL_BALANCES should be populated before running this report.
-
-Description.
-Report details Aging of outstanding amounts at a specified point in time for Accounted Invoices and relies mainly on the data in XLA_TRIAL_BALANCES table for the accounting information.
-XLA_TRIAL_BALANCES data is inserted by the Open Account Balances Data Manager.
-The Open Account Balances Data Manager maintains reportable information for all enabled open account balance listing definitions. This program is submitted automatically after a successful transfer to General Ledger for the same ledger or
-manually by running the Open Account Balances Data Manager program. When changes are applied to a Open Account Balances Listing Definition, the Open Account Balances Data Manager program is automatically submitted for the changed definition.
-
-For scheduling the report to run periodically, use the 'as of relative period close' offset parameter. This is the relative period offset to the current period, so when the current period changes, the period close as of date will also be automatically updated when the report is re-run.
--- Excel Examle Output: https://www.enginatics.com/example/ap-accounted-invoice-aging/
+-- Report: Accounts Payable Accounted Invoice Aging Report
+-- Pre-requisite: XLATRIALBALANCES should be populated before running this report.
+-- Description.
+-- Report details Aging of outstanding amounts at a specified point in time for Accounted Invoices and relies mainly on the data in XLATRIALBALANCES table for the accounting information.
+-- XLATRIALBALANCES data is inserted by the Open Account Balances Data Manager.
+-- The Open Account Balances Data Manager maintains reportable information for all enabled open account balance listing definitions. This program is submitted automatically after a successful transfer to General Ledger for the same ledger or
+-- manually by running the Open Account Balances Data Manager program. When changes are applied to a Open Account Balances Listing Definition, the Open Account Balances Data Manager program is automatically submitted for the changed definition.
+-- For scheduling the report to run periodically, use the 'as of relative period close' offset parameter. This is the relative period offset to the current period, so when the current period changes, the period close as of date will also be automatically updated when the report is re-run.
+-- When India Localization is installed, the following GST columns are also included: GST Registration No, GST PAN No, GST TAN No, CESS Amount, CGST Amount, Custom Amount, IGST Amount, SGST Amount, Unclassified Tax Amount, Taxable Value, HSN SAC Code, CESS Rate, CGST Rate, IGST Rate, SGST Rate, CGST Non-Recoverable, CGST Recoverable, IGST Non-Recoverable, IGST Recoverable, SGST Non-Recoverable, SGST Recoverable, Reverse Charge Flag.
+-- Excel Example Output: https://www.enginatics.com/example/ap-accounted-invoice-aging/
 -- Library Link: https://www.enginatics.com/reports/ap-accounted-invoice-aging/
 -- Run Report: https://demo.enginatics.com/
 
@@ -219,12 +218,14 @@ aia.invoice_amount,
 nvl(aia.base_amount,aia.invoice_amount) invoice_amount_functional,
 (select atv.name from ap_terms_vl atv where aia.terms_id=atv.term_id) payment_terms,
 (select sum(ail.amount) from ap_invoice_lines_all ail where ail.invoice_id=aia.invoice_id and ail.line_type_lookup_code='TAX') invoice_tax_amount,
-(select listagg(distinct ail.tax_classification_code,', ') within group (order by ail.tax_classification_code) from ap_invoice_lines_all ail where ail.invoice_id=aia.invoice_id and ail.tax_classification_code is not null) tax_classification_code,
-(select rtrim(xmlagg(xmlelement(e,pha.segment1||','||chr(10))).extract('//text()').getclobval(),','||chr(10)) from (select distinct ail.po_header_id from ap_invoice_lines_all ail where ail.invoice_id=aia.invoice_id and ail.po_header_id is not null) x, po_headers_all pha where x.po_header_id=pha.po_header_id) po_number,
+(select listagg(x.tax_classification_code,', ') within group (order by x.tax_classification_code) from (select distinct ail.invoice_id, ail.tax_classification_code from ap_invoice_lines_all ail where ail.tax_classification_code is not null) x where x.invoice_id=aia.invoice_id) tax_classification_code,
+(select rtrim(xmlagg(xmlelement(e,pha.segment1||','||chr(10)) order by pha.segment1).extract('//text()').getclobval(),','||chr(10)) from (select distinct ail.invoice_id, ail.po_header_id from ap_invoice_lines_all ail where ail.po_header_id is not null) x, po_headers_all pha where x.invoice_id=aia.invoice_id and x.po_header_id=pha.po_header_id) po_number,
 case when aia.invoice_currency_code<>gl.currency_code then aia.exchange_rate end invoice_exchange_rate,
 case when aia.invoice_currency_code<>gl.currency_code then (select gdct.user_conversion_type from gl_daily_conversion_types gdct where gdct.conversion_type=aia.exchange_rate_type) end invoice_exchange_rate_type,
 case when aia.invoice_currency_code<>gl.currency_code then aia.exchange_date end invoice_exchange_rate_date,
 aia.invoice_id,
+aia.vendor_id,
+aia.vendor_site_id,
 apsa.payment_num,
 apsa.due_date,
 ceil(xtb.as_of_date-apsa.due_date) days_due,
@@ -401,14 +402,21 @@ ap_inv.remit_to_branch_country,
 ap_inv.remit_to_account_num,
 ap_inv.remit_to_iban,
 ap_inv.remit_to_bic,
+&il_reg_columns
+&il_columns_amt
+&il_columns_rate
+&il_columns_rec
+&il_columns_tp
 ap_inv.invoice_id
 from
 ap_inv,
 gl_code_combinations_kfv gcck
+&il_from
 where
 1=1 and
 ap_inv.code_combination_id=gcck.code_combination_id(+) and
 ap_inv.ps_amount_remaining<>0
+&il_where
 order by
 ap_inv.ledger_name,
 ap_inv.tb_name,

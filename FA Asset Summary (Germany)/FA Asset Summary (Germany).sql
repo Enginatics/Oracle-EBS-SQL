@@ -1,19 +1,17 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: FA Asset Summary (Germany)
 -- Description: Description: Asset Summary Report (Germany)
-Application: Assets
-
-This Blitz Report has been extended to allow it to be run across multiple Ledgers and/or Asset Books.
-
-Source: Asset Summary Report (Germany)
-Short Name: FASSUMRPT
-DB package: XXEN_FA_FAS_XMLP
--- Excel Examle Output: https://www.enginatics.com/example/fa-asset-summary-germany/
+-- Application: Assets
+-- This Blitz Report has been extended to allow it to be run across multiple Ledgers and/or Asset Books.
+-- Source: Asset Summary Report (Germany)
+-- Short Name: FASSUMRPT
+-- DB package: XXENFAFASXMLP
+-- Excel Example Output: https://www.enginatics.com/example/fa-asset-summary-germany/
 -- Library Link: https://www.enginatics.com/reports/fa-asset-summary-germany/
 -- Run Report: https://demo.enginatics.com/
 

@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: DBA Object Access Privileges
 -- Description: Database object privileges for a specific user, including privileges inherited through role grants. Useful for DB access security audits to understand exactly what objects a user can access and how the access was granted (directly or through which role chain).
--- Excel Examle Output: https://www.enginatics.com/example/dba-object-access-privileges/
+-- Excel Example Output: https://www.enginatics.com/example/dba-object-access-privileges/
 -- Library Link: https://www.enginatics.com/reports/dba-object-access-privileges/
 -- Run Report: https://demo.enginatics.com/
 

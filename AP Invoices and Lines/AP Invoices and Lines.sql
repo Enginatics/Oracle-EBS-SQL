@@ -1,29 +1,29 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: AP Invoices and Lines
 -- Description: Detail Invoice Aging report with line item details and amounts
-
-Parameter explanation:
-- Invoice on Hold (LOV: Yes/No)
-  Default Value = Null (Hold Status not considered as per current behaviour)
-  Yes - Only Invoices that currently have an unreleased hold will be retrieved
-  No - Only Invoices that do not currently have an unreleased hold will be retrieved
-
-- Hold Name (LOV: AP Hold Names)
-  Default Value Null
-  If specified - only Invoices that currently have an unreleased hold of the specified name will be retrieved
-
-Hold column explanation:
-- Holds  - a list of the current unreleased holds against the invoice
-- Hold Dates - the Hold Date
-- Holds Held By - the name of user who applied the holds
-- Hold PO References - Identifies the matching POs for PO Matching Holds in the format: PO Number(Release number)(Line Number)(Shipment Number)
-- Hold Receipt References  - Identifies the matching Receipts for Receipt Matching Holds in the format: Receipt Number(Line Number)
--- Excel Examle Output: https://www.enginatics.com/example/ap-invoices-and-lines/
+-- Parameter explanation:
+-- - Invoice on Hold (LOV: Yes/No)
+-- Default Value = Null (Hold Status not considered as per current behaviour)
+-- Yes - Only Invoices that currently have an unreleased hold will be retrieved
+-- No - Only Invoices that do not currently have an unreleased hold will be retrieved
+-- - Hold Name (LOV: AP Hold Names)
+-- Default Value Null
+-- If specified - only Invoices that currently have an unreleased hold of the specified name will be retrieved
+-- Hold column explanation:
+-- - Holds - a list of the current unreleased holds against the invoice
+-- - Hold Dates - the Hold Date
+-- - Holds Held By - the name of user who applied the holds
+-- - Hold PO References - Identifies the matching POs for PO Matching Holds in the format: PO Number(Release number)(Line Number)(Shipment Number)
+-- - Hold Receipt References - Identifies the matching Receipts for Receipt Matching Holds in the format: Receipt Number(Line Number)
+-- When India Localization is installed, the following GST columns are also included: GST Supplier Registration No, GST PAN No, GST TAN No, Supplier GSTIN (Invoice Date), CGST Amount, SGST Amount, IGST Amount, CESS Amount, CGST Rate, SGST Rate, IGST Rate, CESS Rate, CGST Recoverable, CGST Non-Recoverable, SGST Recoverable, SGST Non-Recoverable, IGST Recoverable, IGST Non-Recoverable, Reverse Charge Flag, Place of Supply, Ship From State, Custom Amount, Unclassified Tax Amount, Unclassified Tax Rate Codes, Receipt Tax Not On Invoice, Taxable Value, HSN SAC Code.
+-- The Approval Status column and parameter show and filter the status of the invoice in the Invoice Approval Workflow.
+-- On withholding tax distributions, the withholding columns show the withholding tax and rate, the tax authority supplier and site of the tax, the gross amount subject to withholding, the payment that created the withholding when it was calculated at payment, and the invoice raised to the tax authority.
+-- Excel Example Output: https://www.enginatics.com/example/ap-invoices-and-lines/
 -- Library Link: https://www.enginatics.com/reports/ap-invoices-and-lines/
 -- Run Report: https://demo.enginatics.com/
 
@@ -42,6 +42,7 @@ ap_inv.exchange_rate,
 ap_inv.exchange_date,
 ap_inv.exchange_rate_type,
 ap_inv.invoice_status,
+ap_inv.approval_status,
 ap_inv.accounting_status,
 ap_inv.batch_name,
 ap_inv.invoice_creation_date,
@@ -59,72 +60,7 @@ ap_inv.has_attachment,
 ap_inv.invoice_po_matched,
 ap_inv.invoice_currency_code,
 ap_inv.payment_currency_code,
-decode(ap_inv.first_invoice,'Y',ap_inv.invoice_amount) invoice_amount,
-ap_inv.items_total_ items_total,
-ap_inv.retainage_total_ retainage_total,
-ap_inv.prepayments_applied_total_ prepayments_applied_total,
-ap_inv.witholding_total_ witholding_total,
-decode(ap_inv.first_invoice,'Y',
-nvl(ap_inv.items_total_,0)
-+ nvl(ap_inv.retainage_total_,0)
-- nvl(abs(ap_inv.prepayments_applied_total_),0)
-- nvl(ap_inv.witholding_total_,0)
-) invoice_subtotal,
-decode(ap_inv.first_invoice,'Y',ap_inv.total_tax_amount) tax_total,
-decode(ap_inv.first_invoice,'Y',ap_inv.self_assessed_tax_amount) self_assessed_tax_amount,
-ap_inv.freight_total_ freight_total,
-ap_inv.miscellaneous_total_ miscellaneous_total,
-decode(ap_inv.first_invoice,'Y',
-nvl(ap_inv.items_total_,0)
-+ nvl(ap_inv.retainage_total_,0)
-- nvl(abs(ap_inv.prepayments_applied_total_),0)
-- nvl(ap_inv.witholding_total_,0)
-+ nvl(ap_inv.total_tax_amount,0)
-+ nvl(ap_inv.freight_total_,0)
-+ nvl(ap_inv.miscellaneous_total_,0)
-) invoice_total,
-decode(ap_inv.first_invoice,'Y',ap_inv.amount_applicable_to_discount) amount_applicable_to_discount,
-decode(ap_inv.first_invoice,'Y',ap_inv.discount_amount_taken) discount_amount_taken,
-decode(ap_inv.first_invoice,'Y',ap_inv.approved_amount) approved_amount,
-decode(ap_inv.first_invoice,'Y',ap_inv.pay_curr_invoice_amount) payment_curr_invoice_amount,
-decode(ap_inv.first_invoice,'Y',ap_inv.amount_paid) amount_paid,
-ap_inv.functional_currency,
-decode(ap_inv.first_invoice,'Y',ap_inv.invoice_amount_functional) invoice_amount_functional,
-decode(ap_inv.first_invoice,'Y',ap_inv.tax_amount_functional) tax_amount_functional,
-decode(ap_inv.first_invoice,'Y',ap_inv.amt_applicable_to_disc_funct) amt_applicable_to_disc_funct,
-decode(ap_inv.first_invoice,'Y',ap_inv.discount_amount_taken_funct) discount_amount_taken_funct,
-decode(ap_inv.first_invoice,'Y',ap_inv.approved_amount_functional) approved_amount_functional,
-decode(ap_inv.first_invoice,'Y',ap_inv.amount_paid_functional) amount_paid_functional,
-ap_inv.payment_num,
-ap_inv.payment_date,
-decode(ap_inv.first_psched,'Y',ap_inv.gross_amount) payment_num_gross_amount,
-decode(ap_inv.first_psched,'Y',ap_inv.amount_remaining) payment_num_amount_remaining,
-&aging_bucket_cols2
-ap_inv.payment_cross_rate,
-ap_inv.payment_cross_rate_date,
-ap_inv.discount_date,
-ap_inv.future_pay_due_date,
-ap_inv.payment_method,
-ap_inv.payment_priority,
-ap_inv.invoice_payment_status,
-ap_inv.schedule_payment_status,
-ap_inv.second_discount_date,
-ap_inv.third_discount_date,
-decode(ap_inv.first_psched,'Y',ap_inv.discount_amount_available) discount_amount_available,
-decode(ap_inv.first_psched,'Y',ap_inv.second_disc_amt_available) second_disc_amt_available,
-decode(ap_inv.first_psched,'Y',ap_inv.third_disc_amt_available) third_disc_amt_available,
-decode(ap_inv.first_psched,'Y',ap_inv.discount_amount_remaining) discount_amount_remaining,
-decode(ap_inv.first_psched,'Y',ap_inv.inv_curr_gross_amount) inv_curr_gross_amount,
-ap_inv.bank_name,
-ap_inv.iban,
-ap_inv.bank_account_num,
-ap_inv.bank_branch_name,
-ap_inv.invoice_terms,
-ap_inv.terms_date,
-ap_inv.invoice_cancelled_date,
-ap_inv.invoice_cancelled_by,
-decode(ap_inv.first_invoice,'Y',ap_inv.invoice_cancelled_amount) invoice_cancelled_amount,
-decode(ap_inv.first_invoice,'Y',ap_inv.invoice_temp_cancelled_amount) invoice_temp_cancelled_amount,
+&attachment_amount_columns
 ap_inv.auto_tax_calculation_method,
 ap_inv.invoice_pay_group,
 ap_inv.invoice_exclusive_payment_flag,
@@ -182,7 +118,7 @@ ap_inv.supplier_notif_method,
 ap_inv.email_address,
 ap_inv.remittance_email,
 &gcc_dist_segment_columns
-&l_ap_sla_sel
+&l_ap_sla_sel2
 &attachment_columns
 ap_inv.created_by,
 ap_inv.creation_date,
@@ -196,6 +132,195 @@ ap_inv.dist_created_by,
 ap_inv.dist_creation_date,
 ap_inv.dist_last_updated_by,
 ap_inv.dist_last_update_date,
+ap_inv.invoice_id
+from
+(
+select
+ap_inv.ledger,
+ap_inv.operating_unit,
+ap_inv.supplier,
+ap_inv.supplier_number,
+ap_inv.supplier_type,
+ap_inv.employee_name,
+ap_inv.supplier_site,
+ap_inv.invoice_num,
+ap_inv.doc_sequence_value document_number,
+ap_inv.document_category,
+ap_inv.exchange_rate,
+ap_inv.exchange_date,
+ap_inv.exchange_rate_type,
+ap_inv.invoice_status,
+ap_inv.approval_status,
+ap_inv.accounting_status,
+ap_inv.batch_name,
+ap_inv.invoice_creation_date,
+ap_inv.invoice_received_date,
+ap_inv.invoice_date,
+ap_inv.validation_date,
+ap_inv.validated_by,
+ap_inv.invoice_gl_date,
+ap_inv.due_date,
+ap_inv.days_due,
+ap_inv.invoice_type,
+ap_inv.invoice_source,
+ap_inv.invoice_description,
+ap_inv.has_attachment,
+ap_inv.invoice_po_matched,
+ap_inv.invoice_currency_code,
+ap_inv.payment_currency_code,
+decode(ap_inv.first_invoice,'Y',ap_inv.invoice_amount) invoice_amount,
+ap_inv.items_total_ items_total,
+ap_inv.retainage_total_ retainage_total,
+ap_inv.prepayments_applied_total_ prepayments_applied_total,
+ap_inv.witholding_total_ witholding_total,
+decode(ap_inv.first_invoice,'Y',
+nvl(ap_inv.items_total_,0)
++ nvl(ap_inv.retainage_total_,0)
+- nvl(abs(ap_inv.prepayments_applied_total_),0)
+- nvl(ap_inv.witholding_total_,0)
+) invoice_subtotal,
+decode(ap_inv.first_invoice,'Y',ap_inv.total_tax_amount) tax_total,
+decode(ap_inv.first_invoice,'Y',ap_inv.self_assessed_tax_amount) self_assessed_tax_amount,
+ap_inv.freight_total_ freight_total,
+ap_inv.miscellaneous_total_ miscellaneous_total,
+decode(ap_inv.first_invoice,'Y',
+nvl(ap_inv.items_total_,0)
++ nvl(ap_inv.retainage_total_,0)
+- nvl(abs(ap_inv.prepayments_applied_total_),0)
+- nvl(ap_inv.witholding_total_,0)
++ nvl(ap_inv.total_tax_amount,0)
++ nvl(ap_inv.freight_total_,0)
++ nvl(ap_inv.miscellaneous_total_,0)
+) invoice_total,
+decode(ap_inv.first_invoice,'Y',ap_inv.amount_applicable_to_discount) amount_applicable_to_discount,
+decode(ap_inv.first_invoice,'Y',ap_inv.discount_amount_taken) discount_amount_taken,
+decode(ap_inv.first_invoice,'Y',ap_inv.approved_amount) approved_amount,
+decode(ap_inv.first_invoice,'Y',ap_inv.pay_curr_invoice_amount) payment_curr_invoice_amount,
+decode(ap_inv.first_invoice,'Y',ap_inv.amount_paid) amount_paid,
+ap_inv.functional_currency,
+decode(ap_inv.first_invoice,'Y',ap_inv.invoice_amount_functional) invoice_amount_functional,
+decode(ap_inv.first_invoice,'Y',ap_inv.tax_amount_functional) tax_amount_functional,
+decode(ap_inv.first_invoice,'Y',ap_inv.amt_applicable_to_disc_funct) amt_applicable_to_disc_funct,
+decode(ap_inv.first_invoice,'Y',ap_inv.discount_amount_taken_funct) discount_amount_taken_funct,
+decode(ap_inv.first_invoice,'Y',ap_inv.approved_amount_functional) approved_amount_functional,
+decode(ap_inv.first_invoice,'Y',ap_inv.amount_paid_functional) amount_paid_functional,
+ap_inv.payment_num,
+ap_inv.payment_date,
+decode(ap_inv.first_psched,'Y',ap_inv.gross_amount) payment_num_gross_amount,
+decode(ap_inv.first_psched,'Y',ap_inv.amount_remaining) payment_num_amount_remaining,
+&il_pass_through
+&aging_bucket_cols2
+&aging_bucket_cols3
+ap_inv.payment_cross_rate,
+ap_inv.payment_cross_rate_date,
+ap_inv.discount_date,
+ap_inv.future_pay_due_date,
+ap_inv.payment_method,
+ap_inv.payment_priority,
+ap_inv.invoice_payment_status,
+ap_inv.schedule_payment_status,
+ap_inv.second_discount_date,
+ap_inv.third_discount_date,
+decode(ap_inv.first_psched,'Y',ap_inv.discount_amount_available) discount_amount_available,
+decode(ap_inv.first_psched,'Y',ap_inv.second_disc_amt_available) second_disc_amt_available,
+decode(ap_inv.first_psched,'Y',ap_inv.third_disc_amt_available) third_disc_amt_available,
+decode(ap_inv.first_psched,'Y',ap_inv.discount_amount_remaining) discount_amount_remaining,
+decode(ap_inv.first_psched,'Y',ap_inv.inv_curr_gross_amount) inv_curr_gross_amount,
+ap_inv.bank_name,
+ap_inv.iban,
+ap_inv.bank_account_num,
+ap_inv.bank_branch_name,
+ap_inv.invoice_terms,
+ap_inv.terms_date,
+ap_inv.invoice_cancelled_date,
+ap_inv.invoice_cancelled_by,
+decode(ap_inv.first_invoice,'Y',ap_inv.invoice_cancelled_amount) invoice_cancelled_amount,
+decode(ap_inv.first_invoice,'Y',ap_inv.invoice_temp_cancelled_amount) invoice_temp_cancelled_amount,
+ap_inv.auto_tax_calculation_method,
+ap_inv.invoice_pay_group,
+ap_inv.invoice_exclusive_payment_flag,
+ap_inv.dispute_reason,
+ap_inv.supplier_site_payment_hold,
+ap_inv.scheduled_payment_hold,
+ap_inv.scheduled_payment_hold_reason,
+ap_inv.asset_book_type,
+ap_inv.asset_category,
+&invoice_detail_columns
+&dff_columns2
+ap_inv.accts_pay_account,
+ap_inv.accts_pay_account_descripton,
+ap_inv.recurring_pmt_number,
+ap_inv.recurring_pmt_period_type,
+ap_inv.recurring_number_of_periods,
+ap_inv.recurring_pmt_description,
+ap_inv.supplier_taxpayer_id,
+ap_inv.supplier_tax_registration,
+ap_inv.supplier_inactive_on,
+ap_inv.customer_num,
+ap_inv.one_time_supplier,
+ap_inv.supplier_credit_status,
+ap_inv.credit_limit,
+ap_inv.supplier_withholding_status,
+ap_inv.withholding_start_date,
+ap_inv.supplier_vat_code,
+ap_inv.supplier_site_alt,
+ap_inv.purchasing_site,
+ap_inv.rfq_site,
+ap_inv.pay_site,
+ap_inv.tax_reporting_site,
+ap_inv.p_card_site,
+ap_inv.attention_ar,
+ap_inv.address_line1,
+ap_inv.address_line2,
+ap_inv.address_line3,
+ap_inv.address_line4,
+ap_inv.city,
+ap_inv.state,
+ap_inv.zip,
+ap_inv.county,
+ap_inv.province,
+ap_inv.country,
+ap_inv.area_code,
+ap_inv.phone,
+ap_inv.fax_area_code,
+ap_inv.fax,
+ap_inv.supplier_notif_method,
+ap_inv.email_address,
+ap_inv.remittance_email,
+&gcc_dist_segment_columns
+&l_ap_sla_sel
+ap_inv.created_by,
+ap_inv.creation_date,
+ap_inv.last_updated_by,
+ap_inv.last_update_date,
+ap_inv.line_created_by,
+ap_inv.line_creation_date,
+ap_inv.line_last_updated_by,
+ap_inv.line_last_update_date,
+ap_inv.dist_created_by,
+ap_inv.dist_creation_date,
+ap_inv.dist_last_updated_by,
+ap_inv.dist_last_update_date,
+ap_inv.line_number line_number_key,
+ap_inv.dist_accounting_date dist_accounting_date_key,
+ap_inv.dist_line_number dist_line_number_key,
+ap_inv.dist_code_combination_id,
+ap_inv.doc_sequence_value,
+ap_inv.total_tax_amount,
+ap_inv.pay_curr_invoice_amount,
+ap_inv.gross_amount,
+ap_inv.amount_remaining,
+ap_inv.org_id,
+ap_inv.first_invoice,
+ap_inv.first_psched,
+ap_inv.first_line,
+ap_inv.functional_currency base_currency,
+ap_inv.invoice_amount_functional invoice_amount_base,
+ap_inv.tax_amount_functional tax_amount_base,
+ap_inv.amt_applicable_to_disc_funct amt_applicable_to_disc_base,
+ap_inv.discount_amount_taken_funct discount_amount_taken_base,
+ap_inv.approved_amount_functional approved_amount_base,
+ap_inv.amount_paid_functional amount_paid_base,
 ap_inv.invoice_id
 from
 (
@@ -219,6 +344,7 @@ xxen_util.meaning(aps.vendor_type_lookup_code,'VENDOR TYPE',201) supplier_type,
 nvl(assa.vendor_site_code,hps.party_site_number) supplier_site,
 aia.invoice_num,
 (select xxen_util.ap_invoice_status(aia.invoice_id,aia.invoice_amount,aia.payment_status_flag,aia.invoice_type_lookup_code,aia.validation_request_id) from dual) invoice_status,
+xxen_util.meaning(aia.wfapproval_status,'AP_WFAPPROVAL_STATUS',200) approval_status,
 (select decode(ap_invoices_pkg.get_posting_status(aia.invoice_id),'N',xxen_util.meaning('N','YES_NO',0),'D',xxen_util.meaning('N','YES_NO',0),'Y',xxen_util.yes('Y'),'P',xxen_util.meaning('P','POSTING STATUS',200),'S',xxen_util.meaning('S','POSTING STATUS',200)) from dual) accounting_status,
 aba.batch_name,
 xxen_util.client_time(aia.creation_date) invoice_creation_date,
@@ -303,6 +429,7 @@ aca.stopped_date is null
 apsa.gross_amount,
 apsa.amount_remaining/aia.payment_cross_rate*nvl(aia.exchange_rate,1) amount_remaining,
 &aging_bucket_cols1
+&il_select
 aia.payment_cross_rate,
 aia.payment_cross_rate_date,
 apsa.discount_date,
@@ -401,6 +528,14 @@ from
 xxen_util.meaning(aida.assets_tracking_flag,'YES_NO',0) dist_asset_tracking_flag,
 aida.assets_addition_flag dist_assets_addition_flag,
 replace(aida.description,'~','-') dist_description,
+(select atca.name from ap_tax_codes_all atca where aida.withholding_tax_code_id=atca.tax_id) withholding_tax,
+(select aatra.tax_rate from ap_awt_tax_rates_all aatra where aida.awt_tax_rate_id=aatra.tax_rate_id) withholding_tax_rate,
+(select aps_awt.vendor_name from ap_tax_codes_all atca, ap_suppliers aps_awt where aida.withholding_tax_code_id=atca.tax_id and atca.awt_vendor_id=aps_awt.vendor_id) tax_authority,
+(select assa_awt.vendor_site_code from ap_tax_codes_all atca, ap_supplier_sites_all assa_awt where aida.withholding_tax_code_id=atca.tax_id and atca.awt_vendor_site_id=assa_awt.vendor_site_id) tax_authority_site,
+aida.awt_gross_amount withholding_gross_amount,
+(select aca.check_number from ap_invoice_payments_all aipa, ap_checks_all aca where aida.awt_invoice_payment_id=aipa.invoice_payment_id and aipa.check_id=aca.check_id) withholding_payment_document,
+(select aca.check_date from ap_invoice_payments_all aipa, ap_checks_all aca where aida.awt_invoice_payment_id=aipa.invoice_payment_id and aipa.check_id=aca.check_id) withholding_payment_date,
+(select aia_awt.invoice_num from ap_invoices_all aia_awt where aida.awt_invoice_id=aia_awt.invoice_id) tax_authority_invoice,
 aida.expenditure_item_date pa_expenditure_item_date,
 aida.expenditure_type pa_expenditure_type,
 coalesce(haouv1.name,haouv3.name,haouv2.name) expenditure_organization,
@@ -497,6 +632,7 @@ ap_recurring_payments_all arpa,
 ap_terms at,
 pa_projects_all ppa,
 pa_tasks pt
+&il_from
 where
 1=1 and
 aia.set_of_books_id=gl.ledger_id and
@@ -535,7 +671,14 @@ nvl(aida.distribution_line_number,aida2.distribution_line_number)=aida2.distribu
 aida2.dist_code_combination_id=gcc.code_combination_id
 )
 )
+&il_where
 ) ap_inv
+) ap_inv,
+&l_ap_sla_table
+gl_code_combinations_kfv gcck
+where
+&l_ap_sla_join
+ap_inv.dist_code_combination_id=gcck.code_combination_id(+)
 ) ap_inv,
 (
 select distinct
@@ -643,14 +786,12 @@ select distinct
  fdct.language = userenv('lang') and
  fd.datatype_id in (1,5,6)
 ) attchmt,
-&l_ap_sla_table
 gl_code_combinations_kfv gcck
 where
 3=3 and
 ap_inv.invoice_id=ap_holds.invoice_id(+) and
 decode(:p_show_attachments,'Y','AP_INVOICES',null)=attchmt.entity_name(+) and
 decode(:p_show_attachments,'Y',to_char(ap_inv.invoice_id),null)=attchmt.entity_id(+) and
-&l_ap_sla_join
 ap_inv.dist_code_combination_id=gcck.code_combination_id(+)
 order by
 ap_inv.operating_unit,
@@ -660,7 +801,7 @@ ap_inv.invoice_date,
 ap_inv.invoice_gl_date,
 ap_inv.invoice_num,
 ap_inv.payment_num,
-ap_inv.line_number,
-ap_inv.dist_accounting_date,
-ap_inv.dist_line_number,
+ap_inv.line_number_key,
+ap_inv.dist_accounting_date_key,
+ap_inv.dist_line_number_key,
 attchmt.seq_num

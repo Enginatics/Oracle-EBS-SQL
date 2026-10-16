@@ -1,13 +1,13 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: Blitz Report SQL Validation
 -- Description: Validates Blitz Reports for valid SQL syntax.
-This can be useful after mass migrating reports from other tools such as Discoverer, Excl4apps, splashBI or Polaris Reporting Workbench into Blitz Report.
--- Excel Examle Output: https://www.enginatics.com/example/blitz-report-sql-validation/
+-- This can be useful after mass migrating reports from other tools such as Discoverer, Excl4apps, splashBI or Polaris Reporting Workbench into Blitz Report.
+-- Excel Example Output: https://www.enginatics.com/example/blitz-report-sql-validation/
 -- Library Link: https://www.enginatics.com/reports/blitz-report-sql-validation/
 -- Run Report: https://demo.enginatics.com/
 

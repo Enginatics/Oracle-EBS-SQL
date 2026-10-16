@@ -1,15 +1,16 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: AP Invoice Approval Status
 -- Description: Imported from Concurrent Program
-Application: Payables
-Source: Invoice Approval Status
-Short Name: APXAPRST
--- Excel Examle Output: https://www.enginatics.com/example/ap-invoice-approval-status/
+-- Application: Payables
+-- Source: Invoice Approval Status
+-- Short Name: APXAPRST
+-- When India Localization is installed, the following GST columns are also included: GST Registration No, GST PAN No, GST TAN No, CGST Amount, SGST Amount, IGST Amount, CESS Amount, Custom Amount, Unclassified Tax Amount, Taxable Value, HSN SAC Code, CGST Rate, SGST Rate, IGST Rate, CESS Rate, CGST Recoverable, CGST Non-Recoverable, SGST Recoverable, SGST Non-Recoverable, IGST Recoverable, IGST Non-Recoverable, Reverse Charge Flag, Place of Supply, Ship From State.
+-- Excel Example Output: https://www.enginatics.com/example/ap-invoice-approval-status/
 -- Library Link: https://www.enginatics.com/reports/ap-invoice-approval-status/
 -- Run Report: https://demo.enginatics.com/
 
@@ -31,6 +32,56 @@ x.action,
 x.approver_name approver,
 x.applicable_amount,
 x.amount_approved reviewed_amount,
+case
+when :p_sort_by='T' and 1=row_number() over (partition by x.invoice_id order by x.approval_history_id desc nulls last,x.action_date desc) then case when x.wfapproval_status in ('INITIATED','SENT','NEEDS WFREAPPROVAL') then x.invoice_amount else 0 end
+when :p_sort_by='A' then case when x.action_code in ('SENT') then x.amount_approved else 0 end
+end pending_amount,
+case
+when :p_sort_by='T' and 1=row_number() over (partition by x.invoice_id order by x.approval_history_id desc nulls last,x.action_date desc) then case when x.wfapproval_status in ('REJECTED','REJECT','STOPPED') then x.invoice_amount else 0 end
+when :p_sort_by='A' then case when x.action_code in ('REJECT','REJECTED','STOPPED') then x.amount_approved else 0 end
+end rejected_amount,
+case
+when :p_sort_by='T' and 1=row_number() over (partition by x.invoice_id order by x.approval_history_id desc nulls last,x.action_date desc) then case when x.wfapproval_status in ('WFAPPROVED','MANUALLY APPROVED') then x.invoice_amount else 0 end
+when :p_sort_by='A' then case when x.action_code in ('APPROVED','MANUALLY APPROVED') then x.amount_approved else 0 end
+end approved_amount,
+&il_reg_columns
+&il_columns_amt
+&il_columns_rate
+&il_columns_rec
+&il_columns_tp
+x.approval_history_id
+from
+(
+select
+x.legal_entity,
+x.operating_unit,
+x.party_name supplier,
+x.supplier_number,
+x.vendor_site_code supplier_site,
+x.invoice_num invoice_number,
+x.invoice_status,
+x.invoice_date,
+x.invoice_currency_code currency,
+x.approval_context,
+x.line_number,
+x.approval_status,
+x.action_date,
+x.action,
+x.approver_name approver,
+x.applicable_amount,
+x.amount_approved reviewed_amount,
+x.party_name,
+x.vendor_id,
+x.vendor_site_id,
+x.vendor_site_code,
+x.wfapproval_status,
+x.invoice_currency_code,
+x.invoice_num,
+x.amount_approved,
+x.approver_name,
+x.invoice_id,
+x.invoice_amount,
+x.action_code,
 case
 when :p_sort_by='T' and 1=row_number() over (partition by x.invoice_id order by x.approval_history_id desc nulls last,x.action_date desc) then case when x.wfapproval_status in ('INITIATED','SENT','NEEDS WFREAPPROVAL') then x.invoice_amount else 0 end
 when :p_sort_by='A' then case when x.action_code in ('SENT') then x.amount_approved else 0 end
@@ -292,6 +343,11 @@ xxen_util.meaning(awh.approval_context,'AP_WFAPPROVAL_CONTEXT',200),
 awh.response,
 xxen_util.ap_invoice_status(aia.invoice_id,aia.invoice_amount,aia.payment_status_flag,aia.invoice_type_lookup_code,aia.validation_request_id)
 ) x
+) x
+&il_from
+where
+:p_reporting_level=:p_reporting_level
+&il_where
 order by
 x.legal_entity,
 x.operating_unit,

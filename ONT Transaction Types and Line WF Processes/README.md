@@ -1,40 +1,49 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'ONT Transaction Types and Line WF Processes | Oracle EBS SQL Report'
 description: 'Master data report showing the setup of order management transaction types and associated line types and workflow processes.'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, ONT, Transaction, Types, Line, hr_all_organization_units_vl, oe_transaction_types_all, org_organization_definitions'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Order Management, Enginatics, ONT, Transaction, Types, Line, hr_all_organization_units_vl, oe_transaction_types_all, org_organization_definitions'
 permalink: /ONT%20Transaction%20Types%20and%20Line%20WF%20Processes/
+report_name: 'ONT Transaction Types and Line WF Processes'
+report_web_name: ont-transaction-types-and-line-wf-processes
+module: 'Order Management'
+module_url: /modules/order-management/
 ---
 
 # ONT Transaction Types and Line WF Processes – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/ont-transaction-types-and-line-wf-processes/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/ont-transaction-types-and-line-wf-processes/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ont-transaction-types-and-line-wf-processes) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ont-transaction-types-and-line-wf-processes).
+**Oracle EBS module:** [Order Management](/modules/order-management/ "Oracle EBS Order Management reports") · [all Order Management reports](/modules/order-management/)  
 
 ## Overview
 Master data report showing the setup of order management transaction types and associated line types and workflow processes.
+
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ont-transaction-types-and-line-wf-processes) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 
 ## Report Parameters
 Show assigned Line Flows, Operating Unit
 
 ## Oracle EBS Tables Used
-[hr_all_organization_units_vl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_vl), [oe_transaction_types_all](https://www.enginatics.com/library/?pg=1&find=oe_transaction_types_all), [org_organization_definitions](https://www.enginatics.com/library/?pg=1&find=org_organization_definitions), [qp_list_headers_tl](https://www.enginatics.com/library/?pg=1&find=qp_list_headers_tl), [oe_credit_check_rules](https://www.enginatics.com/library/?pg=1&find=oe_credit_check_rules), [ra_rules](https://www.enginatics.com/library/?pg=1&find=ra_rules), [ra_cust_trx_types_all](https://www.enginatics.com/library/?pg=1&find=ra_cust_trx_types_all), [gl_code_combinations_kfv](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations_kfv), [oe_workflow_assignments](https://www.enginatics.com/library/?pg=1&find=oe_workflow_assignments), [wf_activities_vl](https://www.enginatics.com/library/?pg=1&find=wf_activities_vl), [oe_transaction_types_tl](https://www.enginatics.com/library/?pg=1&find=oe_transaction_types_tl), [xdo_templates_vl](https://www.enginatics.com/library/?pg=1&find=xdo_templates_vl), [okc_terms_templates_all](https://www.enginatics.com/library/?pg=1&find=okc_terms_templates_all)
+[hr_all_organization_units_vl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ont-transaction-types-and-line-wf-processes), [oe_transaction_types_all](https://www.enginatics.com/library/?pg=1&find=oe_transaction_types_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ont-transaction-types-and-line-wf-processes), [org_organization_definitions](https://www.enginatics.com/library/?pg=1&find=org_organization_definitions&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ont-transaction-types-and-line-wf-processes), [qp_list_headers_tl](https://www.enginatics.com/library/?pg=1&find=qp_list_headers_tl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ont-transaction-types-and-line-wf-processes), [oe_credit_check_rules](https://www.enginatics.com/library/?pg=1&find=oe_credit_check_rules&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ont-transaction-types-and-line-wf-processes), [ra_rules](https://www.enginatics.com/library/?pg=1&find=ra_rules&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ont-transaction-types-and-line-wf-processes), [ra_cust_trx_types_all](https://www.enginatics.com/library/?pg=1&find=ra_cust_trx_types_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ont-transaction-types-and-line-wf-processes), [gl_code_combinations_kfv](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations_kfv&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ont-transaction-types-and-line-wf-processes), [oe_workflow_assignments](https://www.enginatics.com/library/?pg=1&find=oe_workflow_assignments&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ont-transaction-types-and-line-wf-processes), [wf_activities_vl](https://www.enginatics.com/library/?pg=1&find=wf_activities_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ont-transaction-types-and-line-wf-processes), [oe_transaction_types_tl](https://www.enginatics.com/library/?pg=1&find=oe_transaction_types_tl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ont-transaction-types-and-line-wf-processes), [xdo_templates_vl](https://www.enginatics.com/library/?pg=1&find=xdo_templates_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ont-transaction-types-and-line-wf-processes), [okc_terms_templates_all](https://www.enginatics.com/library/?pg=1&find=okc_terms_templates_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ont-transaction-types-and-line-wf-processes)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ont-transaction-types-and-line-wf-processes)
 
 ## Related Reports
-[AR Customer Upload](/AR%20Customer%20Upload/ "AR Customer Upload Oracle EBS SQL Report"), [ONT Transaction Types Listing](/ONT%20Transaction%20Types%20Listing/ "ONT Transaction Types Listing Oracle EBS SQL Report"), [GL Account Analysis (Drilldown) (with inventory and WIP)](/GL%20Account%20Analysis%20%28Drilldown%29%20%28with%20inventory%20and%20WIP%29/ "GL Account Analysis (Drilldown) (with inventory and WIP) Oracle EBS SQL Report"), [GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report"), [GL Account Analysis](/GL%20Account%20Analysis/ "GL Account Analysis Oracle EBS SQL Report")
+[AR Customer Upload](/AR%20Customer%20Upload/ "AR Customer Upload Oracle EBS SQL Report"), [ONT Transaction Types Listing](/ONT%20Transaction%20Types%20Listing/ "ONT Transaction Types Listing Oracle EBS SQL Report"), [GL Account Analysis](/GL%20Account%20Analysis/ "GL Account Analysis Oracle EBS SQL Report"), [GL Account Analysis (Drilldown) (with inventory and WIP)](/GL%20Account%20Analysis%20%28Drilldown%29%20%28with%20inventory%20and%20WIP%29/ "GL Account Analysis (Drilldown) (with inventory and WIP) Oracle EBS SQL Report"), [GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/ONT%20Transaction%20Types%20and%20Line%20WF%20Processes/ONT%20Transaction%20Types%20and%20Line%20WF%20Processes.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ont-transaction-types-and-line-wf-processes) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [ONT Transaction Types and Line WF Processes 24-Jul-2017 150548.xlsx](https://www.enginatics.com/example/ont-transaction-types-and-line-wf-processes/) |
-| Blitz Report™ XML Import | [ONT_Transaction_Types_and_Line_WF_Processes.xml](https://www.enginatics.com/xml/ont-transaction-types-and-line-wf-processes/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/ont-transaction-types-and-line-wf-processes/](https://www.enginatics.com/reports/ont-transaction-types-and-line-wf-processes/) |
+| Excel Example Output | [ONT Transaction Types and Line WF Processes 24-Jul-2017 150548.xlsx](https://www.enginatics.com/example/ont-transaction-types-and-line-wf-processes/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ont-transaction-types-and-line-wf-processes) |
+| Blitz Report™ XML Import | [ONT_Transaction_Types_and_Line_WF_Processes.xml](https://www.enginatics.com/xml/ont-transaction-types-and-line-wf-processes/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ont-transaction-types-and-line-wf-processes) |
+| SQL Source | [ONT Transaction Types and Line WF Processes.sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/ONT%20Transaction%20Types%20and%20Line%20WF%20Processes/ONT%20Transaction%20Types%20and%20Line%20WF%20Processes.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/ont-transaction-types-and-line-wf-processes/](https://www.enginatics.com/reports/ont-transaction-types-and-line-wf-processes/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ont-transaction-types-and-line-wf-processes) |
 
 ## Case Study & Technical Analysis: ONT Transaction Types and Line WF Processes Report
 
@@ -95,18 +104,17 @@ As a report on setup data, it is designed to run very quickly.
 **3. Can I use this report to see if a transaction type is currently active?**
    Yes, the `oe_transaction_types_all` table contains start and end date fields. These can be included in the report to show whether a transaction type is currently active and usable for new orders.
 
-
 ---
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ont-transaction-types-and-line-wf-processes)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ont-transaction-types-and-line-wf-processes)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ont-transaction-types-and-line-wf-processes)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ont-transaction-types-and-line-wf-processes)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ont-transaction-types-and-line-wf-processes)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ont-transaction-types-and-line-wf-processes)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ont-transaction-types-and-line-wf-processes)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

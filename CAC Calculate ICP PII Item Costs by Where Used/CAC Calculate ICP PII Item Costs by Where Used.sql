@@ -1,45 +1,41 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Calculate ICP PII Item Costs by Where Used
--- Description: Report to identify the intercompany "To Org" profit in inventory (also known as PII or ICP) for each inventory organization and item.  Gets the PII item costs by joining the sourcing rule information from the first "hop" from the sourcing rule information to the second "hop".  In addition, if an item has a source org in the item master, but the sourcing rule does not exist, this item relationship will still be reported.  This report also assumes that the first hop may have profit in inventory from another source organization and will not include any profit in inventory from the source org for the "To Org" profit in inventory calculations.  Likewise for the "To Org", any this level material overheads, resources, outside processing or overhead costs are ignored for the profit in inventory calculations.  In addition, inactive items and disabled organizations are ignored.  And while calculating the profit in inventory item costs, this report also shows where these components are being used on the To Org bills of material.
-
-Parameters:
-Assignment Set:  the set of sourcing rules to use with calculating the PII item costs (mandatory).
-From (Source) Organization:  the source organization where the goods come from (optional).
-To Organization:  the organization where the goods are being shipped to (optional).
-Cost Type:  the cost type to use for the item costs, such as Frozen or Pending (mandatory).
-PII Cost Type:  the profit in inventory cost type you wish to report (mandatory).
-PII Sub-Element:  the sub-element or resource for profit in inventory, such as PII or ICP (mandatory).
-Currency Conversion Date:  the exchange rate conversion date that was used to set the standard costs (mandatory).
-Currency Conversion Type:  the exchange rate conversion type that was used to set the standard costs (mandatory).
-Period Name:   the accounting period you wish to report for; this value does not change any PII or item costs, it is merely a reference value for reporting purposes (mandatory).
-Include Transfers to Same OU:  allows you to include or exclude transfers within the same Operating Unit (OU).  Defaulted to not include these internal transfers.
-Include Expense Items:  enter Yes or No to indicate if you want to include expense items on the bills of material (mandatory).  Defaulted to No.
-Include Uncosted Items:  enter Yes or No to indicate if you want to include uncosted items on the bills of material (mandatory).  Defaulted to No. 
-Category Set 1:  any item category you wish, typically the Cost or Product Line category set (optional).
-Category Set 2:  any item category you wish, typically the Inventory category set (optional).
-Component Number:  enter the specific component(s) you wish to report (optional).
-Assembly Number:  enter the specific assembly or assemblies you wish to report (optional).
-Include Unimplemented ECOs:  enter Yes or No to indicate if you want to include engineering changes which have not been implemented (mandatory).
-Operating Unit:  enter the specific operating unit(s) you wish to report (optional).
-Ledger:  enter the specific ledger(s) you wish to report (optional).
-
-Hidden Parameters:
-Numeric Sign for PII:  to set the sign of the profit in inventory amounts.  This parameter determines if PII is normally entered as a positive or negative amount (mandatory).
-
--- |  Copyright 2018 - 2024 Douglas Volz Consulting, Inc., all rights reserved.
--- |  Permission to use this code is granted provided the original author is  acknowledged. No warranties, express or otherwise is included in this permission. 
--- |  
--- |  Version Modified on Modified  by   Description
--- |  ======= =========== ============== =========================================
--- |  1.6     29 Jan 2024 Doug Volz      Remove tabs, add org access controls, fix for G/L Daily Rates,
--- |                                     Make three parameters non-hidden:  Include Transfers to Same OU, Include Expense Items and Include Uncosted Items.
-
--- Excel Examle Output: https://www.enginatics.com/example/cac-calculate-icp-pii-item-costs-by-where-used/
+-- Description: Report to identify the intercompany "To Org" profit in inventory (also known as PII or ICP) for each inventory organization and item. Gets the PII item costs by joining the sourcing rule information from the first "hop" from the sourcing rule information to the second "hop". In addition, if an item has a source org in the item master, but the sourcing rule does not exist, this item relationship will still be reported. This report also assumes that the first hop may have profit in inventory from another source organization and will not include any profit in inventory from the source org for the "To Org" profit in inventory calculations. Likewise for the "To Org", any this level material overheads, resources, outside processing or overhead costs are ignored for the profit in inventory calculations. In addition, inactive items and disabled organizations are ignored. And while calculating the profit in inventory item costs, this report also shows where these components are being used on the To Org bills of material.
+-- Parameters:
+-- Assignment Set: the set of sourcing rules to use with calculating the PII item costs (mandatory).
+-- From (Source) Organization: the source organization where the goods come from (optional).
+-- To Organization: the organization where the goods are being shipped to (optional).
+-- Cost Type: the cost type to use for the item costs, such as Frozen or Pending (mandatory).
+-- PII Cost Type: the profit in inventory cost type you wish to report (mandatory).
+-- PII Sub-Element: the sub-element or resource for profit in inventory, such as PII or ICP (mandatory).
+-- Currency Conversion Date: the exchange rate conversion date that was used to set the standard costs (mandatory).
+-- Currency Conversion Type: the exchange rate conversion type that was used to set the standard costs (mandatory).
+-- Period Name: the accounting period you wish to report for; this value does not change any PII or item costs, it is merely a reference value for reporting purposes (mandatory).
+-- Include Transfers to Same OU: allows you to include or exclude transfers within the same Operating Unit (OU). Defaulted to not include these internal transfers.
+-- Include Expense Items: enter Yes or No to indicate if you want to include expense items on the bills of material (mandatory). Defaulted to No.
+-- Include Uncosted Items: enter Yes or No to indicate if you want to include uncosted items on the bills of material (mandatory). Defaulted to No.
+-- Category Set 1: any item category you wish, typically the Cost or Product Line category set (optional).
+-- Category Set 2: any item category you wish, typically the Inventory category set (optional).
+-- Component Number: enter the specific component(s) you wish to report (optional).
+-- Assembly Number: enter the specific assembly or assemblies you wish to report (optional).
+-- Include Unimplemented ECOs: enter Yes or No to indicate if you want to include engineering changes which have not been implemented (mandatory).
+-- Operating Unit: enter the specific operating unit(s) you wish to report (optional).
+-- Ledger: enter the specific ledger(s) you wish to report (optional).
+-- Hidden Parameters:
+-- Numeric Sign for PII: to set the sign of the profit in inventory amounts. This parameter determines if PII is normally entered as a positive or negative amount (mandatory).
+-- -- | Copyright 2018 - 2024 Douglas Volz Consulting, Inc., all rights reserved.
+-- -- | Permission to use this code is granted provided the original author is acknowledged. No warranties, express or otherwise is included in this permission.
+-- -- |
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== ============== =========================================
+-- -- | 1.6 29 Jan 2024 Doug Volz Remove tabs, add org access controls, fix for G/L Daily Rates,
+-- -- | Make three parameters non-hidden: Include Transfers to Same OU, Include Expense Items and Include Uncosted Items.
+-- Excel Example Output: https://www.enginatics.com/example/cac-calculate-icp-pii-item-costs-by-where-used/
 -- Library Link: https://www.enginatics.com/reports/cac-calculate-icp-pii-item-costs-by-where-used/
 -- Run Report: https://demo.enginatics.com/
 

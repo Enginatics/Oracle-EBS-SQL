@@ -1,22 +1,20 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PER Person Extra Information Upload
 -- Description: Upload to create and update Person Extra Information Types (EITs) within Oracle HRMS - the People form > Others > Extra Information > Extra Person Information window.
-
-Scope:
-- Generic upload covering all person extra information types. The Information Type parameter/column lists every enabled context of the Extra Person Info DDF flexfield (titled Extra Person Information), which holds the registered EIT types.
-- The segment values are loaded as raw Information 1..30 columns (pei_information1..30), matching the order of the information type's flexfield segments.
-- Create new person extra information records and update existing ones (auto-detected by the hidden Person Extra Information ID downloaded in Create, Update mode).
-
-Notes:
-- A person can hold multiple records of the same information type (e.g. one per year), so existing rows are matched by the hidden Person Extra Information ID, not by person and type.
-- The information type must be eligible for the person; ineligible types are rejected by the API.
-- For information type segments validated against a value set, enter the stored value the segment expects.
--- Excel Examle Output: https://www.enginatics.com/example/per-person-extra-information-upload/
+-- Scope:
+-- - Generic upload covering all person extra information types. The Information Type parameter/column lists every enabled context of the Extra Person Info DDF flexfield (titled Extra Person Information), which holds the registered EIT types.
+-- - The segment values are loaded as raw Information 1..30 columns (peiinformation1..30), matching the order of the information type's flexfield segments.
+-- - Create new person extra information records and update existing ones (auto-detected by the hidden Person Extra Information ID downloaded in Create, Update mode).
+-- Notes:
+-- - A person can hold multiple records of the same information type (e.g. one per year), so existing rows are matched by the hidden Person Extra Information ID, not by person and type.
+-- - The information type must be eligible for the person; ineligible types are rejected by the API.
+-- - For information type segments validated against a value set, enter the stored value the segment expects.
+-- Excel Example Output: https://www.enginatics.com/example/per-person-extra-information-upload/
 -- Library Link: https://www.enginatics.com/reports/per-person-extra-information-upload/
 -- Run Report: https://demo.enginatics.com/
 

@@ -1,55 +1,52 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Missing Material Accounting Transactions
--- Description: Report to find material accounting entries where the material transaction's costed flag says that the transaction has been costed but the material accounting entries do not exist.  If you enter Yes for "Only Costed Items" the report ignores material transactions where the transaction item cost does not exist (null value) or where the item's inventory asset setting in the item master is set to No.  If you enter No for "Only Costed Items" the report includes material transactions where the item cost does not exist or where the item's inventory asset setting is set to No.  To get all transactions which are missing the material accounting entries, even for transactions where the transaction amounts are too small, set the "Only Costed Items" to No and the Minimum Transaction Amount to zero (0).  
-
-Notes:
-1)  For PO Receipts the Transaction Cost column displays the purchase order unit price.
-2)  For Cost Updates the Transaction Cost column displays the item cost differences between the old and new costs.
-3)  The Item Cost column shows average or standard costs at the time and date of the transaction.
-4)  For Pick Transactions, Move Order Transfers, Subinventory Transfers and Direct Transfers, the Transfer Transaction Id column indicates the second half of the transfer, for the receipt back into the receiving subinventory (which never has any material accounting entries).
-
-Parameters:
-Transaction Date From:  Starting transaction date, mandatory
-Transaction Date:  Ending transaction date, mandatory
-Minimum Transaction Amount:  The absolute smallest transaction amount to be reported
-Only Costed Items:  Only include items where the item master asset flag is set to Yes and where the material transaction has a non-null item cost
-Category Set 1:  The first item category set to report, typically the Cost or Product Line Category Set
-Category Set 2:  The second item category set to report, typically the Inventory Category Set
-Item Number:  Specific item number you wish to report (optional)
-Organization Code:  Specific inventory organization you wish to report (optional)
-Operating Unit:  Operating Unit you wish to report, leave blank for all operating units (optional) 
-Ledger:  general ledger you wish to report, leave blank for all ledgers (optional)
-
-/* +=============================================================================+
--- |  Copyright 2009 - 2023 Douglas Volz Consulting, Inc. 
--- |  All rights reserved.
--- |  Permission to use this code is granted provided the original author is
--- |  acknowledged.  No warranties, express or otherwise is included in this  permission. 
--- +=============================================================================+
--- |
--- |  Original Author: Douglas Volz (doug@volzconsulting.com)
--- | 
--- |  Version Modified on Modified  by   Description
--- |  ======= =========== ============== =========================================
--- |  1.0     06 Nov 2009 Douglas Volz   Initial Coding
--- |  1.1     11 Nov 2009 Douglas Volz   Added Org Code and transaction ID
--- |  1.2     12 Nov 2009 Douglas Volz   Added item and description
--- |  1.3     06 Jan 2010 Douglas Volz   Made dates a parameter
--- |  1.4     12 Jan 2010 Douglas Volz   Added quantity and unit cost columns
--- |  1.5     14 Jul 2022 Douglas Volz   Added comparison to WIP material accounting
--- |  1.6     19 Jul 2022 Douglas Volz   Modify to be run for all material transactions
--- |  1.7     20 Jul 2022 Douglas Volz   Add parameter for only costed items and transactions.
--- |  1.8     21 Jul 2022 Douglas Volz   Added transaction cost, WIP job and job status
--- |  1.9     23 Jul 2022 Douglas Volz   Added Ledger and Operating Unit columns.
--- |  1.10    25 Jul 2022 Douglas Volz   Added transfer transaction id column
--- |  1.11    11 Jul 2023 Douglas Volz   Fix for expense subinventories, remove tabs and restrict to only orgs you have access to. 
--- +=============================================================================+*/
--- Excel Examle Output: https://www.enginatics.com/example/cac-missing-material-accounting-transactions/
+-- Description: Report to find material accounting entries where the material transaction's costed flag says that the transaction has been costed but the material accounting entries do not exist. If you enter Yes for "Only Costed Items" the report ignores material transactions where the transaction item cost does not exist (null value) or where the item's inventory asset setting in the item master is set to No. If you enter No for "Only Costed Items" the report includes material transactions where the item cost does not exist or where the item's inventory asset setting is set to No. To get all transactions which are missing the material accounting entries, even for transactions where the transaction amounts are too small, set the "Only Costed Items" to No and the Minimum Transaction Amount to zero (0).
+-- Notes:
+-- 1) For PO Receipts the Transaction Cost column displays the purchase order unit price.
+-- 2) For Cost Updates the Transaction Cost column displays the item cost differences between the old and new costs.
+-- 3) The Item Cost column shows average or standard costs at the time and date of the transaction.
+-- 4) For Pick Transactions, Move Order Transfers, Subinventory Transfers and Direct Transfers, the Transfer Transaction Id column indicates the second half of the transfer, for the receipt back into the receiving subinventory (which never has any material accounting entries).
+-- Parameters:
+-- Transaction Date From: Starting transaction date, mandatory
+-- Transaction Date: Ending transaction date, mandatory
+-- Minimum Transaction Amount: The absolute smallest transaction amount to be reported
+-- Only Costed Items: Only include items where the item master asset flag is set to Yes and where the material transaction has a non-null item cost
+-- Category Set 1: The first item category set to report, typically the Cost or Product Line Category Set
+-- Category Set 2: The second item category set to report, typically the Inventory Category Set
+-- Item Number: Specific item number you wish to report (optional)
+-- Organization Code: Specific inventory organization you wish to report (optional)
+-- Operating Unit: Operating Unit you wish to report, leave blank for all operating units (optional)
+-- Ledger: general ledger you wish to report, leave blank for all ledgers (optional)
+-- / +=============================================================================+
+-- -- | Copyright 2009 - 2023 Douglas Volz Consulting, Inc.
+-- -- | All rights reserved.
+-- -- | Permission to use this code is granted provided the original author is
+-- -- | acknowledged. No warranties, express or otherwise is included in this permission.
+-- -- +=============================================================================+
+-- -- |
+-- -- | Original Author: Douglas Volz (doug@volzconsulting.com)
+-- -- |
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== ============== =========================================
+-- -- | 1.0 06 Nov 2009 Douglas Volz Initial Coding
+-- -- | 1.1 11 Nov 2009 Douglas Volz Added Org Code and transaction ID
+-- -- | 1.2 12 Nov 2009 Douglas Volz Added item and description
+-- -- | 1.3 06 Jan 2010 Douglas Volz Made dates a parameter
+-- -- | 1.4 12 Jan 2010 Douglas Volz Added quantity and unit cost columns
+-- -- | 1.5 14 Jul 2022 Douglas Volz Added comparison to WIP material accounting
+-- -- | 1.6 19 Jul 2022 Douglas Volz Modify to be run for all material transactions
+-- -- | 1.7 20 Jul 2022 Douglas Volz Add parameter for only costed items and transactions.
+-- -- | 1.8 21 Jul 2022 Douglas Volz Added transaction cost, WIP job and job status
+-- -- | 1.9 23 Jul 2022 Douglas Volz Added Ledger and Operating Unit columns.
+-- -- | 1.10 25 Jul 2022 Douglas Volz Added transfer transaction id column
+-- -- | 1.11 11 Jul 2023 Douglas Volz Fix for expense subinventories, remove tabs and restrict to only orgs you have access to.
+-- -- +=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-missing-material-accounting-transactions/
 -- Library Link: https://www.enginatics.com/reports/cac-missing-material-accounting-transactions/
 -- Run Report: https://demo.enginatics.com/
 

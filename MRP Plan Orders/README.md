@@ -1,41 +1,49 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'MRP Plan Orders | Oracle EBS SQL Report'
-description: 'MRP: Export Supply and Demand Orders from the Planners Workbench. – Oracle E-Business Suite SQL report'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, MRP, Plan, Orders, mtl_categories_kfv, hr_locations, mtl_system_items_vl'
+description: 'MRP: Export Supply and Demand Orders from the Planners Workbench. – Oracle EBS Master Scheduling/MRP SQL report: free SQL, parameters and tables used.'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Master Scheduling/MRP, Enginatics, MRP, Plan, Orders, mtl_categories_kfv, hr_locations, mtl_system_items_vl'
 permalink: /MRP%20Plan%20Orders/
+report_name: 'MRP Plan Orders'
+report_web_name: mrp-plan-orders
+module: 'Master Scheduling/MRP'
+module_url: /modules/master-scheduling-mrp/
 ---
 
 # MRP Plan Orders – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/mrp-plan-orders/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/mrp-plan-orders/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-plan-orders) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-plan-orders).
+**Oracle EBS module:** [Master Scheduling/MRP](/modules/master-scheduling-mrp/ "Oracle EBS Master Scheduling/MRP reports") · [all Master Scheduling/MRP reports](/modules/master-scheduling-mrp/)  
 
 ## Overview
 MRP: Export Supply and Demand Orders from the Planners Workbench.
 
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-plan-orders) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 
 ## Report Parameters
 Organization Code, Plan, Source Organiziation Code, Category Set, Category, Item, Supply/Demand, Planner, Buyer, Make/Buy, Order Type, Exclude Onhand Supply, Suggested Due Date From, Suggested Due Date To, Suggested Start Date From, Suggested Start Date To
 
 ## Oracle EBS Tables Used
-[mtl_categories_kfv](https://www.enginatics.com/library/?pg=1&find=mtl_categories_kfv), [hr_locations](https://www.enginatics.com/library/?pg=1&find=hr_locations), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl), [mrp_orders_sc_v](https://www.enginatics.com/library/?pg=1&find=mrp_orders_sc_v), [dual](https://www.enginatics.com/library/?pg=1&find=dual), [mrp_workbench_display_options](https://www.enginatics.com/library/?pg=1&find=mrp_workbench_display_options), [mrp_plans_sc_v](https://www.enginatics.com/library/?pg=1&find=mrp_plans_sc_v), [org_access_view](https://www.enginatics.com/library/?pg=1&find=org_access_view)
+[mtl_categories_kfv](https://www.enginatics.com/library/?pg=1&find=mtl_categories_kfv&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-plan-orders), [hr_locations](https://www.enginatics.com/library/?pg=1&find=hr_locations&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-plan-orders), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-plan-orders), [mrp_orders_sc_v](https://www.enginatics.com/library/?pg=1&find=mrp_orders_sc_v&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-plan-orders), [dual](https://www.enginatics.com/library/?pg=1&find=dual&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-plan-orders), [mrp_workbench_display_options](https://www.enginatics.com/library/?pg=1&find=mrp_workbench_display_options&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-plan-orders), [mrp_plans_sc_v](https://www.enginatics.com/library/?pg=1&find=mrp_plans_sc_v&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-plan-orders), [org_access_view](https://www.enginatics.com/library/?pg=1&find=org_access_view&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-plan-orders)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-plan-orders)
 
 ## Related Reports
-[INV Item Upload](/INV%20Item%20Upload/ "INV Item Upload Oracle EBS SQL Report"), [INV Items](/INV%20Items/ "INV Items Oracle EBS SQL Report"), [WIP Discrete Job Shortage](/WIP%20Discrete%20Job%20Shortage/ "WIP Discrete Job Shortage Oracle EBS SQL Report"), [MRP Pegging](/MRP%20Pegging/ "MRP Pegging Oracle EBS SQL Report"), [CAC New Standard Item Costs](/CAC%20New%20Standard%20Item%20Costs/ "CAC New Standard Item Costs Oracle EBS SQL Report")
+[INV Item Upload](/INV%20Item%20Upload/ "INV Item Upload Oracle EBS SQL Report"), [INV Item Upload 11i](/INV%20Item%20Upload%2011i/ "INV Item Upload 11i Oracle EBS SQL Report"), [INV Items](/INV%20Items/ "INV Items Oracle EBS SQL Report"), [WIP Discrete Job Shortage](/WIP%20Discrete%20Job%20Shortage/ "WIP Discrete Job Shortage Oracle EBS SQL Report"), [MRP Pegging](/MRP%20Pegging/ "MRP Pegging Oracle EBS SQL Report"), [CAC New Standard Item Costs](/CAC%20New%20Standard%20Item%20Costs/ "CAC New Standard Item Costs Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/MRP%20Plan%20Orders/MRP%20Plan%20Orders.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-plan-orders) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [MRP Plan Orders 02-Aug-2025 075019.xlsx](https://www.enginatics.com/example/mrp-plan-orders/) |
-| Blitz Report™ XML Import | [MRP_Plan_Orders.xml](https://www.enginatics.com/xml/mrp-plan-orders/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/mrp-plan-orders/](https://www.enginatics.com/reports/mrp-plan-orders/) |
+| Excel Example Output | [MRP Plan Orders 02-Aug-2025 075019.xlsx](https://www.enginatics.com/example/mrp-plan-orders/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-plan-orders) |
+| Blitz Report™ XML Import | [MRP_Plan_Orders.xml](https://www.enginatics.com/xml/mrp-plan-orders/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-plan-orders) |
+| SQL Source | [MRP Plan Orders.sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/MRP%20Plan%20Orders/MRP%20Plan%20Orders.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/mrp-plan-orders/](https://www.enginatics.com/reports/mrp-plan-orders/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-plan-orders) |
 
 ## MRP Plan Orders - Case Study & Technical Analysis
 
@@ -74,18 +82,17 @@ The report replicates the query behind the Planner's Workbench Supply/Demand vie
 -   **Supplier Management:** Provides a clean, formatted list of future requirements to share with vendors.
 -   **Data Validation:** Serves as a primary tool for debugging why the plan generated specific results.
 
-
 ---
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-plan-orders)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-plan-orders)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-plan-orders)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-plan-orders)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-plan-orders)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-plan-orders)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-plan-orders)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

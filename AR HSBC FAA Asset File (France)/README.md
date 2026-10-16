@@ -1,14 +1,20 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'AR HSBC FAA Asset File (France) | Oracle EBS SQL Report'
 description: 'Extracts completed Receivables invoices and credit memos in the HSBC FACTORING FRANCE FAA file format, for invoice discounting. One 532 character record…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, HSBC, FAA, Asset, File, zx_lines, ra_customer_trx_lines_all, ra_customer_trx_all'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Receivables, Enginatics, R12 only, HSBC, FAA, Asset, File, zx_lines, ra_customer_trx_lines_all, ra_customer_trx_all'
 permalink: /AR%20HSBC%20FAA%20Asset%20File%20%28France%29/
+report_name: 'AR HSBC FAA Asset File (France)'
+report_web_name: ar-hsbc-faa-asset-file-france
+module: 'Receivables'
+module_url: /modules/receivables/
 ---
 
 # AR HSBC FAA Asset File (France) – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/ar-hsbc-faa-asset-file-france/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/ar-hsbc-faa-asset-file-france/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-hsbc-faa-asset-file-france) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-hsbc-faa-asset-file-france).
+**Oracle EBS module:** [Receivables](/modules/receivables/ "Oracle EBS Receivables reports") · [all Receivables reports](/modules/receivables/)  
 
 ## Overview
 Extracts completed Receivables invoices and credit memos in the HSBC FACTORING FRANCE FAA file format, for invoice discounting. One 532 character record per document.
@@ -25,41 +31,101 @@ HSBC require a .txt extension, CR LF line endings and ANSI encoding. The report 
 
 The Seller account number is allocated by HSBC and differs by currency for the same seller, so a file must cover a single currency. Currency is therefore a required parameter, defaulted to the functional currency of the selected operating unit. Where invoices are raised in more than one currency, run the report once per currency with the matching Seller account number.
 
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-hsbc-faa-asset-file-france) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
+
 ## Report Parameters
 Operating Unit, Seller Account Number, Currency, Invoice Date From, Invoice Date To
 
 ## Oracle EBS Tables Used
-[zx_lines](https://www.enginatics.com/library/?pg=1&find=zx_lines), [ra_customer_trx_lines_all](https://www.enginatics.com/library/?pg=1&find=ra_customer_trx_lines_all), [ra_customer_trx_all](https://www.enginatics.com/library/?pg=1&find=ra_customer_trx_all), [ar_payment_schedules_all](https://www.enginatics.com/library/?pg=1&find=ar_payment_schedules_all), [hr_operating_units](https://www.enginatics.com/library/?pg=1&find=hr_operating_units), [ar_receivable_applications_all](https://www.enginatics.com/library/?pg=1&find=ar_receivable_applications_all), [hz_cust_accounts](https://www.enginatics.com/library/?pg=1&find=hz_cust_accounts), [hz_parties](https://www.enginatics.com/library/?pg=1&find=hz_parties), [hz_cust_site_uses_all](https://www.enginatics.com/library/?pg=1&find=hz_cust_site_uses_all), [hz_cust_acct_sites_all](https://www.enginatics.com/library/?pg=1&find=hz_cust_acct_sites_all), [hz_party_sites](https://www.enginatics.com/library/?pg=1&find=hz_party_sites), [hz_locations](https://www.enginatics.com/library/?pg=1&find=hz_locations), [fnd_currencies](https://www.enginatics.com/library/?pg=1&find=fnd_currencies)
+[zx_lines](https://www.enginatics.com/library/?pg=1&find=zx_lines&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-hsbc-faa-asset-file-france), [ra_customer_trx_lines_all](https://www.enginatics.com/library/?pg=1&find=ra_customer_trx_lines_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-hsbc-faa-asset-file-france), [ra_customer_trx_all](https://www.enginatics.com/library/?pg=1&find=ra_customer_trx_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-hsbc-faa-asset-file-france), [ar_payment_schedules_all](https://www.enginatics.com/library/?pg=1&find=ar_payment_schedules_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-hsbc-faa-asset-file-france), [hr_operating_units](https://www.enginatics.com/library/?pg=1&find=hr_operating_units&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-hsbc-faa-asset-file-france), [ar_receivable_applications_all](https://www.enginatics.com/library/?pg=1&find=ar_receivable_applications_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-hsbc-faa-asset-file-france), [hz_cust_accounts](https://www.enginatics.com/library/?pg=1&find=hz_cust_accounts&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-hsbc-faa-asset-file-france), [hz_parties](https://www.enginatics.com/library/?pg=1&find=hz_parties&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-hsbc-faa-asset-file-france), [hz_cust_site_uses_all](https://www.enginatics.com/library/?pg=1&find=hz_cust_site_uses_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-hsbc-faa-asset-file-france), [hz_cust_acct_sites_all](https://www.enginatics.com/library/?pg=1&find=hz_cust_acct_sites_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-hsbc-faa-asset-file-france), [hz_party_sites](https://www.enginatics.com/library/?pg=1&find=hz_party_sites&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-hsbc-faa-asset-file-france), [hz_locations](https://www.enginatics.com/library/?pg=1&find=hz_locations&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-hsbc-faa-asset-file-france), [fnd_currencies](https://www.enginatics.com/library/?pg=1&find=fnd_currencies&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-hsbc-faa-asset-file-france)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-hsbc-faa-asset-file-france), [R12 only](https://www.enginatics.com/library/?pg=1&category%5B%5D=R12%20only&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-hsbc-faa-asset-file-france)
 
-
+## Related Reports
+[GL Account Analysis](/GL%20Account%20Analysis/ "GL Account Analysis Oracle EBS SQL Report"), [GL Account Analysis (Drilldown) (with inventory and WIP)](/GL%20Account%20Analysis%20%28Drilldown%29%20%28with%20inventory%20and%20WIP%29/ "GL Account Analysis (Drilldown) (with inventory and WIP) Oracle EBS SQL Report"), [GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report"), [AR Aging](/AR%20Aging/ "AR Aging Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/AR%20HSBC%20FAA%20Asset%20File%20%28France%29/AR%20HSBC%20FAA%20Asset%20File%20%28France%29.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-hsbc-faa-asset-file-france) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [](https://www.enginatics.com/example/ar-hsbc-faa-asset-file-france/) |
-| Blitz Report™ XML Import | [AR_HSBC_FAA_Asset_File_France.xml](https://www.enginatics.com/xml/ar-hsbc-faa-asset-file-france/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/ar-hsbc-faa-asset-file-france/](https://www.enginatics.com/reports/ar-hsbc-faa-asset-file-france/) |
+| Excel Example Output | [Example](https://www.enginatics.com/example/ar-hsbc-faa-asset-file-france/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-hsbc-faa-asset-file-france) |
+| Blitz Report™ XML Import | [AR_HSBC_FAA_Asset_File_France.xml](https://www.enginatics.com/xml/ar-hsbc-faa-asset-file-france/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-hsbc-faa-asset-file-france) |
+| SQL Source | [AR HSBC FAA Asset File (France).sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/AR%20HSBC%20FAA%20Asset%20File%20%28France%29/AR%20HSBC%20FAA%20Asset%20File%20%28France%29.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/ar-hsbc-faa-asset-file-france/](https://www.enginatics.com/reports/ar-hsbc-faa-asset-file-france/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-hsbc-faa-asset-file-france) |
 
+## Case Study & Technical Analysis: AR HSBC FAA Asset File (France)
 
+### Executive Summary
+This report extracts completed Receivables invoices and credit memos in the HSBC Factoring France FAA file format used for invoice discounting, producing one 532-character record per document. French sellers that assign receivables to HSBC use it to build each submission's asset file. The output is a delimited text file that is run through Blitz Report™ with Output Format set to TSV and written to the server output directory.
+
+### Business Challenge
+*   **Fixed-format submission:** HSBC requires a fixed-length asset file with 31 zones in a set order, and a manual build of that layout is error-prone.
+*   **Debtor identification:** Each debtor must be identified with its French fiscal identifier, activity code, legal name, trade name and full bill-to address.
+*   **Amount conventions:** Amounts must be positive, expressed in the smallest unit of the invoice currency and zero-filled to the left, with no decimal separator.
+*   **Credit memo linkage:** A credit memo must carry the number of the invoice it reduces so that HSBC can reconcile the file.
+
+### The Solution
+*   Assembles each record in the exact zone order of the HSBC specification, padding or truncating each zone to its defined length and terminating each zone with a semicolon.
+*   Converts amounts with the currency precision from `FND_CURRENCIES`, and derives the VAT rate as the highest tax rate on the document.
+*   Populates the credited invoice number from the largest credit memo application, and sets the document type to F for an invoice and A for a credit note.
+*   Removes semicolons, tabs and line breaks from text zones so that no record can be split, and applies the HSBC invoice status of RGL or LIT1 from amounts in dispute.
+
+### Technical Architecture (High Level)
+#### Primary Tables
+*   `RA_CUSTOMER_TRX_ALL`: the completed invoice and credit memo headers, including trx number, date, currency, purchase order and bill-to customer.
+*   `RA_CUSTOMER_TRX_LINES_ALL`: the TAX lines whose extended amount gives the tax total of each document.
+*   `AR_PAYMENT_SCHEDULES_ALL`: the INV and CM installments, supplying the amount including tax, due date and amount in dispute.
+*   `AR_RECEIVABLE_APPLICATIONS_ALL`: the applications that link a credit memo to the invoice it reduces.
+*   `ZX_LINES`: the tax rate of each transaction line, used for the VAT rate zone.
+*   `HZ_CUST_ACCOUNTS`, `HZ_PARTIES`, `HZ_CUST_SITE_USES_ALL`, `HZ_CUST_ACCT_SITES_ALL`, `HZ_PARTY_SITES` and `HZ_LOCATIONS`: the debtor account, legal name, bill-to site and address.
+*   `HR_OPERATING_UNITS`: the operating unit that restricts the transactions.
+*   `FND_CURRENCIES`: the precision of the invoice currency.
+
+#### Logical Relationships
+1.  Completed transactions (`COMPLETE_FLAG` = Y) in the selected operating unit are joined to their INV and CM payment schedules and grouped per transaction.
+2.  The tax total comes from the TAX lines of `RA_CUSTOMER_TRX_LINES_ALL`, and the amount excluding tax is the total less that tax.
+3.  The due date is the earliest installment due date, and the invoice status is LIT1 when any installment has an amount in dispute.
+4.  The credited invoice is found in `AR_RECEIVABLE_APPLICATIONS_ALL` for applications of type CM with status APP, choosing the application with the largest amount.
+5.  The bill-to customer account is joined to its party, then to the bill-to site use, account site, party site and location, supplying the debtor address.
+6.  Records are built per document and ordered by debtor identifier and document number.
+
+### Parameters & Filtering
+*   **Operating Unit:** selects the transactions of one operating unit.
+*   **Seller Account Number:** the account number allocated by HSBC; only its digits are kept, truncated to five characters and zero-filled.
+*   **Currency:** a required parameter that defaults to the functional currency of the operating unit, and restricts each file to one currency.
+*   **Invoice Date From** and **Invoice Date To:** bound the documents included in the file.
+
+### Performance & Optimization
+*   The transaction header is aggregated in an inline view before the debtor joins, so each document is processed once rather than once per installment.
+*   The file creation timestamp uses an analytic MAX over the result, so no second pass is needed.
+*   The VAT rate is a correlated subquery on `ZX_LINES` restricted to the transactions application and entity code, which keeps the lookup to one entity per document.
+*   Text zones are cleaned with TRANSLATE and padded with RPAD to their fixed lengths.
+
+### FAQ
+**Q: What format does the HSBC France FAA asset file use?**
+A: Each record is 532 characters long, contains 31 zones separated by semicolons, and is written as a text file with CR LF line endings and ANSI encoding by the custom post-process script.
+
+**Q: How are amounts written in the FAA file?**
+A: Amounts are always positive, expressed in the smallest unit of the invoice currency with no decimal separator, and zero-filled to the left.
+
+**Q: Why must the report be run once for each currency?**
+A: HSBC allocates a different seller account number for each currency, so a single file can only cover one currency and one seller account.
 
 ---
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-hsbc-faa-asset-file-france)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-hsbc-faa-asset-file-france)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-hsbc-faa-asset-file-france)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-hsbc-faa-asset-file-france)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-hsbc-faa-asset-file-france)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-hsbc-faa-asset-file-france)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-hsbc-faa-asset-file-france)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

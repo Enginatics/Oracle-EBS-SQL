@@ -1,40 +1,49 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'PER Organization Hierarchy | Oracle EBS SQL Report'
 description: 'Master data report showing hierarchical list of human resource organization structures including subordinate orgs.'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, PER, Organization, Hierarchy, hr_organization_information, per_organization_structures, per_org_structure_versions'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Human Resources, Enginatics, PER, Organization, Hierarchy, hr_organization_information, per_organization_structures, per_org_structure_versions'
 permalink: /PER%20Organization%20Hierarchy/
+report_name: 'PER Organization Hierarchy'
+report_web_name: per-organization-hierarchy
+module: 'Human Resources'
+module_url: /modules/human-resources/
 ---
 
 # PER Organization Hierarchy – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/per-organization-hierarchy/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/per-organization-hierarchy/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-organization-hierarchy) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-organization-hierarchy).
+**Oracle EBS module:** [Human Resources](/modules/human-resources/ "Oracle EBS Human Resources reports") · [all Human Resources reports](/modules/human-resources/)  
 
 ## Overview
 Master data report showing hierarchical list of human resource organization structures including subordinate orgs.
+
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-organization-hierarchy) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 
 ## Report Parameters
 Business Group, Hierarchy Name, Top Level Organization
 
 ## Oracle EBS Tables Used
-[hr_organization_information](https://www.enginatics.com/library/?pg=1&find=hr_organization_information), [per_organization_structures](https://www.enginatics.com/library/?pg=1&find=per_organization_structures), [per_org_structure_versions](https://www.enginatics.com/library/?pg=1&find=per_org_structure_versions), [hr_all_organization_units_vl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_vl), [per_org_structure_elements](https://www.enginatics.com/library/?pg=1&find=per_org_structure_elements), [per_all_assignments_f](https://www.enginatics.com/library/?pg=1&find=per_all_assignments_f), [per_business_groups](https://www.enginatics.com/library/?pg=1&find=per_business_groups)
+[hr_organization_information](https://www.enginatics.com/library/?pg=1&find=hr_organization_information&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-organization-hierarchy), [per_organization_structures](https://www.enginatics.com/library/?pg=1&find=per_organization_structures&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-organization-hierarchy), [per_org_structure_versions](https://www.enginatics.com/library/?pg=1&find=per_org_structure_versions&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-organization-hierarchy), [hr_all_organization_units_vl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-organization-hierarchy), [per_org_structure_elements](https://www.enginatics.com/library/?pg=1&find=per_org_structure_elements&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-organization-hierarchy), [per_all_assignments_f](https://www.enginatics.com/library/?pg=1&find=per_all_assignments_f&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-organization-hierarchy), [per_business_groups](https://www.enginatics.com/library/?pg=1&find=per_business_groups&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-organization-hierarchy)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-organization-hierarchy)
 
 ## Related Reports
-[PER Position Hierarchy](/PER%20Position%20Hierarchy/ "PER Position Hierarchy Oracle EBS SQL Report"), [FA Asset Book Details](/FA%20Asset%20Book%20Details/ "FA Asset Book Details Oracle EBS SQL Report"), [CAC Manufacturing Variance](/CAC%20Manufacturing%20Variance/ "CAC Manufacturing Variance Oracle EBS SQL Report")
+[PER Position Hierarchy](/PER%20Position%20Hierarchy/ "PER Position Hierarchy Oracle EBS SQL Report"), [FA Asset Book Details](/FA%20Asset%20Book%20Details/ "FA Asset Book Details Oracle EBS SQL Report"), [CAC Manufacturing Variance](/CAC%20Manufacturing%20Variance/ "CAC Manufacturing Variance Oracle EBS SQL Report"), [PO Approval History](/PO%20Approval%20History/ "PO Approval History Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/PER%20Organization%20Hierarchy/PER%20Organization%20Hierarchy.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-organization-hierarchy) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [PER Organization Hierarchy 29-Jan-2020 051446.xlsx](https://www.enginatics.com/example/per-organization-hierarchy/) |
-| Blitz Report™ XML Import | [PER_Organization_Hierarchy.xml](https://www.enginatics.com/xml/per-organization-hierarchy/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/per-organization-hierarchy/](https://www.enginatics.com/reports/per-organization-hierarchy/) |
+| Excel Example Output | [PER Organization Hierarchy 29-Jan-2020 051446.xlsx](https://www.enginatics.com/example/per-organization-hierarchy/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-organization-hierarchy) |
+| Blitz Report™ XML Import | [PER_Organization_Hierarchy.xml](https://www.enginatics.com/xml/per-organization-hierarchy/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-organization-hierarchy) |
+| SQL Source | [PER Organization Hierarchy.sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/PER%20Organization%20Hierarchy/PER%20Organization%20Hierarchy.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/per-organization-hierarchy/](https://www.enginatics.com/reports/per-organization-hierarchy/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-organization-hierarchy) |
 
 ## Case Study & Technical Analysis: PER Organization Hierarchy Report
 
@@ -98,18 +107,17 @@ As a master data report dealing with hierarchical structures, it is optimized by
 **3. Why would an organization have multiple hierarchies?**
    Organizations may have multiple hierarchies for different purposes. For example, a company might have a 'Line Management Hierarchy' for reporting lines, a 'Legal Entity Hierarchy' for financial consolidation, and a 'Cost Center Hierarchy' for expense allocation. This report allows you to view any of these defined structures.
 
-
 ---
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-organization-hierarchy)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-organization-hierarchy)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-organization-hierarchy)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-organization-hierarchy)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-organization-hierarchy)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-organization-hierarchy)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-organization-hierarchy)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: FND Users
 -- Description: Listing of all EBS users, their status, responsibility count, and if they were using blitz reports
--- Excel Examle Output: https://www.enginatics.com/example/fnd-users/
+-- Excel Example Output: https://www.enginatics.com/example/fnd-users/
 -- Library Link: https://www.enginatics.com/reports/fnd-users/
 -- Run Report: https://demo.enginatics.com/
 

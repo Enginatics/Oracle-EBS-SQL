@@ -1,44 +1,42 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Intercompany SO Shipping Transaction vs. Invoice Price
--- Description: Report to compare the transaction item cost from the selling internal org to the invoice sales price the selling internal organization is charging the internal receiving organization. 
-
-/* +=============================================================================+
--- |  Copyright 2017 - 2022 Douglas Volz Consulting, Inc.                        |
--- |  All rights reserved.                                                       |
--- |  Permission to use this code is granted provided the original author is     |
--- |  acknowledged.  No warranties, express or otherwise is included in this     |
--- |  permission.                                                                |
--- +=============================================================================+
--- |
--- |  Original Author: Douglas Volz (doug@volzconsulting.com)
--- |
--- |  Program Name:  xxx_verify_so_price_vs_cost_txn.sql
--- |
--- |  Parameters:
--- |  p_trx_date_from           -- starting shipping transaction date, mandatory
--- |  p_trx_date_to             -- ending shipping transaction date, mandatory
--- |
--- |  Description:
--- |  Report to compare the transaction item cost from the selling internal org
--- |  to the invoice sales price the selling internal organization is charging the
--- |  receiving organization. 
--- | 
--- |  Version Modified on Modified  by   Description
--- |  ======= =========== ============== =========================================
--- |  1.0     01 May 2017 Douglas Volz   Initial Coding
--- |  1.1     03 Sep 2019 Douglas Volz   Add Ledger, Operating Unit, Item Type, Status
--- |                                     and item categories for cost and inventory.
--- |  1.2     27 Jan 2020 Douglas Volz   Added Ledger, Operating Unit and Org Code 
--- |                                     parameters.
--- |  1.3     09 Jul 2022 Douglas Volz   Changes for multi-language lookup values.
--- +=============================================================================+*/
-
--- Excel Examle Output: https://www.enginatics.com/example/cac-intercompany-so-shipping-transaction-vs-invoice-price/
+-- Description: Report to compare the transaction item cost from the selling internal org to the invoice sales price the selling internal organization is charging the internal receiving organization.
+-- / +=============================================================================+
+-- -- | Copyright 2017 - 2022 Douglas Volz Consulting, Inc. |
+-- -- | All rights reserved. |
+-- -- | Permission to use this code is granted provided the original author is |
+-- -- | acknowledged. No warranties, express or otherwise is included in this |
+-- -- | permission. |
+-- -- +=============================================================================+
+-- -- |
+-- -- | Original Author: Douglas Volz (doug@volzconsulting.com)
+-- -- |
+-- -- | Program Name: xxxverifysopricevscosttxn.sql
+-- -- |
+-- -- | Parameters:
+-- -- | ptrxdatefrom -- starting shipping transaction date, mandatory
+-- -- | ptrxdateto -- ending shipping transaction date, mandatory
+-- -- |
+-- -- | Description:
+-- -- | Report to compare the transaction item cost from the selling internal org
+-- -- | to the invoice sales price the selling internal organization is charging the
+-- -- | receiving organization.
+-- -- |
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== ============== =========================================
+-- -- | 1.0 01 May 2017 Douglas Volz Initial Coding
+-- -- | 1.1 03 Sep 2019 Douglas Volz Add Ledger, Operating Unit, Item Type, Status
+-- -- | and item categories for cost and inventory.
+-- -- | 1.2 27 Jan 2020 Douglas Volz Added Ledger, Operating Unit and Org Code
+-- -- | parameters.
+-- -- | 1.3 09 Jul 2022 Douglas Volz Changes for multi-language lookup values.
+-- -- +=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-intercompany-so-shipping-transaction-vs-invoice-price/
 -- Library Link: https://www.enginatics.com/reports/cac-intercompany-so-shipping-transaction-vs-invoice-price/
 -- Run Report: https://demo.enginatics.com/
 

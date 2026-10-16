@@ -1,55 +1,52 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Zero Item Costs
 -- Description: Report to show zero item costs in the Costing Method cost type, the creation date, the last transaction id, last transaction date and any onhand stock, based on the item master creation date.
-
-Parameters:
-Creation Date From:  starting item master creation date (required).
-Creation Date To: ending item master creation date (required).
-Category Set 1:  any item category you wish, typically the Cost or Product Line category set (optional).
-Category Set 2:  any item category you wish, typically the Inventory category set (optional).S
-Item Number:  enter the specific item number(s) you wish to report (optional).
-Organization Code:  enter the specific inventory organization(s) you wish to report (optional).
-Operating Unit:  enter the specific operating unit(s) you wish to report (optional).
-Ledger:  enter the specific ledger(s) you wish to report (optional).
-
-/* +=============================================================================+
--- | Copyright 2010 - 2023 Douglas Volz Consulting, Inc.                         |
--- | All rights reserved.                                                        |
--- | Permission to use this code is granted provided the original author is      |
--- | acknowledged.  No warranties, express or otherwise is included in this      |
--- | permission.                                                                 |
--- +=============================================================================+
--- |
--- | Original Author: Douglas Volz (doug@volzconsulting.com)
--- |
--- | Program Name: xxx_zero_item_cost_rept.sql
--- | 
--- | Version Modified on Modified by Description
--- | ======= =========== ============== =========================================
--- |  1.0    11 Mar 2010 Douglas Volz   Initial Coding
--- |  1.1    29 Mar 2010 Douglas Volz   Added item status and item type to the 
--- |                                    report and removed 9xx inventory orgs
--- |  1.2    05 Oct 2010 Douglas Volz   Added Ledger parameter, updated column headings,
--- |                                    added UOM_Code column, added union all to
--- |                                    select items with no costs at all
--- |  1.3    10 Feb 2017 Douglas Volz   Removed client-specific org restrictions
--- |  1.4    22 May 2017 Douglas Volz   Added product type, business code, product family,
--- |                                    product line and package code item categories
--- |  1.5    17 Jul 2018 Douglas Volz   Revised to report any two item categories.
--- |  1.6    27 Jan 2020 Douglas Volz   Added Org_Code and Operating_Unit parameters.
--- |  1.7    27 Apr 2020 Douglas Volz   Changed to multi-language views for the item
--- |                                    master, inventory orgs and operating units
--- |  1.8    07 Nov 2020 Douglas Volz   Changed to multi-language for status and UOM
--- |  1.9    09 Jul 2023 Douglas Volz   Remove tabs and restrict to only orgs you have
--- |                                    access to, using the org access view.
--- +=============================================================================+*/
-
--- Excel Examle Output: https://www.enginatics.com/example/cac-zero-item-costs/
+-- Parameters:
+-- Creation Date From: starting item master creation date (required).
+-- Creation Date To: ending item master creation date (required).
+-- Category Set 1: any item category you wish, typically the Cost or Product Line category set (optional).
+-- Category Set 2: any item category you wish, typically the Inventory category set (optional).S
+-- Item Number: enter the specific item number(s) you wish to report (optional).
+-- Organization Code: enter the specific inventory organization(s) you wish to report (optional).
+-- Operating Unit: enter the specific operating unit(s) you wish to report (optional).
+-- Ledger: enter the specific ledger(s) you wish to report (optional).
+-- / +=============================================================================+
+-- -- | Copyright 2010 - 2023 Douglas Volz Consulting, Inc. |
+-- -- | All rights reserved. |
+-- -- | Permission to use this code is granted provided the original author is |
+-- -- | acknowledged. No warranties, express or otherwise is included in this |
+-- -- | permission. |
+-- -- +=============================================================================+
+-- -- |
+-- -- | Original Author: Douglas Volz (doug@volzconsulting.com)
+-- -- |
+-- -- | Program Name: xxxzeroitemcostrept.sql
+-- -- |
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== ============== =========================================
+-- -- | 1.0 11 Mar 2010 Douglas Volz Initial Coding
+-- -- | 1.1 29 Mar 2010 Douglas Volz Added item status and item type to the
+-- -- | report and removed 9xx inventory orgs
+-- -- | 1.2 05 Oct 2010 Douglas Volz Added Ledger parameter, updated column headings,
+-- -- | added UOMCode column, added union all to
+-- -- | select items with no costs at all
+-- -- | 1.3 10 Feb 2017 Douglas Volz Removed client-specific org restrictions
+-- -- | 1.4 22 May 2017 Douglas Volz Added product type, business code, product family,
+-- -- | product line and package code item categories
+-- -- | 1.5 17 Jul 2018 Douglas Volz Revised to report any two item categories.
+-- -- | 1.6 27 Jan 2020 Douglas Volz Added OrgCode and OperatingUnit parameters.
+-- -- | 1.7 27 Apr 2020 Douglas Volz Changed to multi-language views for the item
+-- -- | master, inventory orgs and operating units
+-- -- | 1.8 07 Nov 2020 Douglas Volz Changed to multi-language for status and UOM
+-- -- | 1.9 09 Jul 2023 Douglas Volz Remove tabs and restrict to only orgs you have
+-- -- | access to, using the org access view.
+-- -- +=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-zero-item-costs/
 -- Library Link: https://www.enginatics.com/reports/cac-zero-item-costs/
 -- Run Report: https://demo.enginatics.com/
 

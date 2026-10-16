@@ -1,27 +1,20 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: OPM Batch Lot Cost Trends
 -- Description: OPM Batch Lot Costing Trends Report
-
-This report shows the Batch Lot Costs for the specified Organization and Product over a specified date range.
-
-The report shows the Lot Cost for the batch product and explodes the batch to display all the lowest level ingredient lot costs involved in producing the batch.
-
-Where an ingredient is sourced from another (child) batch, the (child) batch ingredient quantities are apportioned based on the actual usage of the ingredient in the batch consuming that ingredient.   
-
-By default, intermediate ingredients are not displayed in the report, so as not to overstate the ingredient lot costs. To override this default behaviour set the ‘Show Intermediate Ingredients’ report parameter to Yes
-
-The report allows the user to pull in several additional data points to allow further analysis of data based on the customer specific configuration. Specifically, for the both the batch product (same for all lines in the batch) and for the batch ingredients (are specific to each line in the batch), the following additional data can be pulled into the report.
-
-- Item Catalog Descriptive Elements for a specific Item Catalog Group
-- Item Category Segments for a specific Item Category Set
-- Item Descriptive Flexfield Attributes
-
--- Excel Examle Output: https://www.enginatics.com/example/opm-batch-lot-cost-trends/
+-- This report shows the Batch Lot Costs for the specified Organization and Product over a specified date range.
+-- The report shows the Lot Cost for the batch product and explodes the batch to display all the lowest level ingredient lot costs involved in producing the batch.
+-- Where an ingredient is sourced from another (child) batch, the (child) batch ingredient quantities are apportioned based on the actual usage of the ingredient in the batch consuming that ingredient.
+-- By default, intermediate ingredients are not displayed in the report, so as not to overstate the ingredient lot costs. To override this default behaviour set the ‘Show Intermediate Ingredients’ report parameter to Yes
+-- The report allows the user to pull in several additional data points to allow further analysis of data based on the customer specific configuration. Specifically, for the both the batch product (same for all lines in the batch) and for the batch ingredients (are specific to each line in the batch), the following additional data can be pulled into the report.
+-- - Item Catalog Descriptive Elements for a specific Item Catalog Group
+-- - Item Category Segments for a specific Item Category Set
+-- - Item Descriptive Flexfield Attributes
+-- Excel Example Output: https://www.enginatics.com/example/opm-batch-lot-cost-trends/
 -- Library Link: https://www.enginatics.com/reports/opm-batch-lot-cost-trends/
 -- Run Report: https://demo.enginatics.com/
 

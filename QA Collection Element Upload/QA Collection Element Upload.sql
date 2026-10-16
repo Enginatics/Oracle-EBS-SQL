@@ -1,21 +1,19 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: QA Collection Element Upload
--- Description: Upload to create, update, or delete Quality Collection Elements (QA_CHARS).
-
-This upload manages user-defined collection elements including:
-- Element name, type, datatype, prompt, display length
-- Mandatory/Enabled flags
-- UOM, default value, data entry hint, SQL validation string
-- Sequence configuration (for Sequence datatype elements)
-
-Note: Specification limits, values, and actions are not managed by this upload.
-Datatype cannot be changed after initial creation.
--- Excel Examle Output: https://www.enginatics.com/example/qa-collection-element-upload/
+-- Description: Upload to create, update, or delete Quality Collection Elements (QACHARS).
+-- This upload manages user-defined collection elements including:
+-- - Element name, type, datatype, prompt, display length
+-- - Mandatory/Enabled flags
+-- - UOM, default value, data entry hint, SQL validation string
+-- - Sequence configuration (for Sequence datatype elements)
+-- Note: Specification limits, values, and actions are not managed by this upload.
+-- Datatype cannot be changed after initial creation.
+-- Excel Example Output: https://www.enginatics.com/example/qa-collection-element-upload/
 -- Library Link: https://www.enginatics.com/reports/qa-collection-element-upload/
 -- Run Report: https://demo.enginatics.com/
 

@@ -1,26 +1,23 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: INV Unit Of Measure Conversion Upload
 -- Description: INV Unit Of Measure Conversion Upload
-=============================
-In R12.2 and later:
-This upload enables the user to 
-- upload new unit of measure conversions
-- update existing unit of measure conversions. 
-
-The upload supports the following unit of measure conversion types:
-- Standard, Intra-Class and Inter-Class, Lot Specific Inter-class
-
-In R12.1:
-The functionality is restricted to creating new Item specific Intra-Class and Inter-Class conversions only.
-Update of existing unit of measure conversions is not supported in R12.1
-Creation of Standard and Lot specific unit of measure conversions is not supported in R12.1
-
--- Excel Examle Output: https://www.enginatics.com/example/inv-unit-of-measure-conversion-upload/
+-- =============================
+-- In R12.2 and later:
+-- This upload enables the user to
+-- - upload new unit of measure conversions
+-- - update existing unit of measure conversions.
+-- The upload supports the following unit of measure conversion types:
+-- - Standard, Intra-Class and Inter-Class, Lot Specific Inter-class
+-- In R12.1:
+-- The functionality is restricted to creating new Item specific Intra-Class and Inter-Class conversions only.
+-- Update of existing unit of measure conversions is not supported in R12.1
+-- Creation of Standard and Lot specific unit of measure conversions is not supported in R12.1
+-- Excel Example Output: https://www.enginatics.com/example/inv-unit-of-measure-conversion-upload/
 -- Library Link: https://www.enginatics.com/reports/inv-unit-of-measure-conversion-upload/
 -- Run Report: https://demo.enginatics.com/
 

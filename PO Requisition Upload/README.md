@@ -1,14 +1,17 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'PO Requisition Upload | Oracle EBS SQL Report'
 description: 'Upload to create and update requisitions. In the generated Excel, the user can amend the following columns for an existing requisition. - Header…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, Requisition, po_requisition_headers_all, po_requisition_lines_all, po_req_distributions_all'
 permalink: /PO%20Requisition%20Upload/
+report_name: 'PO Requisition Upload'
+report_web_name: po-requisition-upload
 ---
 
 # PO Requisition Upload – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/po-requisition-upload/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/po-requisition-upload/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-requisition-upload) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-requisition-upload).
 
 ## Overview
 Upload to create and update requisitions.
@@ -41,27 +44,31 @@ Additionally, the user can create a requisition by entering the below required f
 -	Destination Organization
 -	Deliver To Location
 
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-requisition-upload) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
+
 ## Report Parameters
 Operating Unit, Upload Mode, Initiate Approval on Import, Requisition Type, Group By, Requisition Number From, Requisition Number To, Creation Date From, Creation Date To, Need By Date From, Need By Date To, Requestor Name, Buyer Name, Created By, Authorization Status
 
 ## Oracle EBS Tables Used
-[po_requisition_headers_all](https://www.enginatics.com/library/?pg=1&find=po_requisition_headers_all), [po_requisition_lines_all](https://www.enginatics.com/library/?pg=1&find=po_requisition_lines_all), [po_req_distributions_all](https://www.enginatics.com/library/?pg=1&find=po_req_distributions_all), [mtl_categories_v](https://www.enginatics.com/library/?pg=1&find=mtl_categories_v), [gl_code_combinations](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations), [pa_projects_all](https://www.enginatics.com/library/?pg=1&find=pa_projects_all), [pa_tasks_v](https://www.enginatics.com/library/?pg=1&find=pa_tasks_v), [hr_all_organization_units_vl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_vl), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl), [per_all_people_f](https://www.enginatics.com/library/?pg=1&find=per_all_people_f), [po_lookup_codes](https://www.enginatics.com/library/?pg=1&find=po_lookup_codes), [hr_locations_all_tl](https://www.enginatics.com/library/?pg=1&find=hr_locations_all_tl), [po_line_types_tl](https://www.enginatics.com/library/?pg=1&find=po_line_types_tl), [po_document_types_all_tl](https://www.enginatics.com/library/?pg=1&find=po_document_types_all_tl), [po_document_types_all_b](https://www.enginatics.com/library/?pg=1&find=po_document_types_all_b), [po_distributions_all](https://www.enginatics.com/library/?pg=1&find=po_distributions_all)
+[po_requisition_headers_all](https://www.enginatics.com/library/?pg=1&find=po_requisition_headers_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-requisition-upload), [po_requisition_lines_all](https://www.enginatics.com/library/?pg=1&find=po_requisition_lines_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-requisition-upload), [po_req_distributions_all](https://www.enginatics.com/library/?pg=1&find=po_req_distributions_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-requisition-upload), [mtl_categories_v](https://www.enginatics.com/library/?pg=1&find=mtl_categories_v&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-requisition-upload), [gl_code_combinations](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-requisition-upload), [pa_projects_all](https://www.enginatics.com/library/?pg=1&find=pa_projects_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-requisition-upload), [pa_tasks_v](https://www.enginatics.com/library/?pg=1&find=pa_tasks_v&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-requisition-upload), [hr_all_organization_units_vl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-requisition-upload), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-requisition-upload), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-requisition-upload), [per_all_people_f](https://www.enginatics.com/library/?pg=1&find=per_all_people_f&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-requisition-upload), [po_lookup_codes](https://www.enginatics.com/library/?pg=1&find=po_lookup_codes&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-requisition-upload), [hr_locations_all_tl](https://www.enginatics.com/library/?pg=1&find=hr_locations_all_tl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-requisition-upload), [po_line_types_tl](https://www.enginatics.com/library/?pg=1&find=po_line_types_tl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-requisition-upload), [po_document_types_all_tl](https://www.enginatics.com/library/?pg=1&find=po_document_types_all_tl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-requisition-upload), [po_document_types_all_b](https://www.enginatics.com/library/?pg=1&find=po_document_types_all_b&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-requisition-upload), [po_distributions_all](https://www.enginatics.com/library/?pg=1&find=po_distributions_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-requisition-upload)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Upload](https://www.enginatics.com/library/?pg=1&category[]=Upload)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-requisition-upload), [Upload](https://www.enginatics.com/library/?pg=1&category%5B%5D=Upload&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-requisition-upload)
 
-
+## Related Reports
+[PO Requisition Upload 11i](/PO%20Requisition%20Upload%2011i/ "PO Requisition Upload 11i Oracle EBS SQL Report"), [GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report"), [CAC Receiving Expense Value (Period-End)](/CAC%20Receiving%20Expense%20Value%20%28Period-End%29/ "CAC Receiving Expense Value (Period-End) Oracle EBS SQL Report"), [CAC Receiving Value (Period-End)](/CAC%20Receiving%20Value%20%28Period-End%29/ "CAC Receiving Value (Period-End) Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/PO%20Requisition%20Upload/PO%20Requisition%20Upload.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-requisition-upload) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [PO Requisition Upload - Template without DFF columns 11-Mar-2024 143621 (1).xlsm](https://www.enginatics.com/example/po-requisition-upload/) |
-| Blitz Report™ XML Import | [PO_Requisition_Upload.xml](https://www.enginatics.com/xml/po-requisition-upload/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/po-requisition-upload/](https://www.enginatics.com/reports/po-requisition-upload/) |
+| Excel Example Output | [PO Requisition Upload - Template without DFF columns 11-Mar-2024 143621 (1).xlsm](https://www.enginatics.com/example/po-requisition-upload/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-requisition-upload) |
+| Blitz Report™ XML Import | [PO_Requisition_Upload.xml](https://www.enginatics.com/xml/po-requisition-upload/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-requisition-upload) |
+| SQL Source | [PO Requisition Upload.sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/PO%20Requisition%20Upload/PO%20Requisition%20Upload.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/po-requisition-upload/](https://www.enginatics.com/reports/po-requisition-upload/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-requisition-upload) |
 
 ## Case Study & Technical Analysis: PO Requisition Upload Report
 
@@ -130,18 +137,17 @@ Using an API-based upload for bulk requisition management is inherently more eff
 **3. What happens if an uploaded requisition fails validation?**
    If a requisition or a specific line/distribution fails validation (e.g., invalid item, incorrect GL account, missing required field), the Oracle API will typically reject that specific record, and the upload process will provide an error report detailing the reason for failure. You can then correct the data in your Excel file and re-upload the corrected records.
 
-
 ---
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-requisition-upload)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-requisition-upload)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-requisition-upload)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-requisition-upload)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-requisition-upload)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-requisition-upload)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=po-requisition-upload)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

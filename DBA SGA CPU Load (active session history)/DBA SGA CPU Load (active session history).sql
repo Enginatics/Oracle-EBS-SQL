@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: DBA SGA CPU Load (active session history)
 -- Description: Aggregates active sessions by snapshot time to identify times with high CPU load over a specific 'CPU Sessions From' threshold value.
--- Excel Examle Output: https://www.enginatics.com/example/dba-sga-cpu-load-active-session-history/
+-- Excel Example Output: https://www.enginatics.com/example/dba-sga-cpu-load-active-session-history/
 -- Library Link: https://www.enginatics.com/reports/dba-sga-cpu-load-active-session-history/
 -- Run Report: https://demo.enginatics.com/
 

@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: OPM Batch Steps and Resource Usage
 -- Description: Oracle Process Manufacturing (OPM) batch steps and resource usage: each production batch routing step with its status, planned versus actual step quantity and dates, and the planned versus actual usage, usage variance, count and UOM of each resource (machine / labor) on the step. Supports batch execution review and resource-efficiency analysis.
--- Excel Examle Output: https://www.enginatics.com/example/opm-batch-steps-and-resource-usage/
+-- Excel Example Output: https://www.enginatics.com/example/opm-batch-steps-and-resource-usage/
 -- Library Link: https://www.enginatics.com/reports/opm-batch-steps-and-resource-usage/
 -- Run Report: https://demo.enginatics.com/
 

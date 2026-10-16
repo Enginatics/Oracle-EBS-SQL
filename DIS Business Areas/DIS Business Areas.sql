@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: DIS Business Areas
 -- Description: Summary report showing Discoverer business areas, with an access account showing how many times a business area's folder was used within the past x number of days.
--- Excel Examle Output: https://www.enginatics.com/example/dis-business-areas/
+-- Excel Example Output: https://www.enginatics.com/example/dis-business-areas/
 -- Library Link: https://www.enginatics.com/reports/dis-business-areas/
 -- Run Report: https://demo.enginatics.com/
 

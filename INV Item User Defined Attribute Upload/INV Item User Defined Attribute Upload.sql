@@ -1,20 +1,16 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: INV Item User Defined Attribute Upload
 -- Description: Item user-defined attribute (UDA) values upload for Oracle Product Information Management (PIM / Advanced Product Catalog).
-
-Creates, updates and deletes item user-defined attribute values (attribute groups defined in the item catalog) at the item, item organization and item revision data levels through the Oracle EGO user attributes API. Each upload row carries one attribute value; the rows of one attribute group row instance (same item, data level, attribute group and row number) are processed together.
-
-For multi-row attribute groups, enter a Row Number to group the attribute values belonging to one row and include the group's unique key attributes on every row. Set Delete Row to Yes to delete a complete attribute group row.
-
-Enter date attribute values in format DD-MON-YYYY, and enter a UOM for numeric attributes that have a unit of measure class. Users need PIM edit privileges on the items (for example through an item owner role); the upload enforces the same item and attribute group security as the PIM pages.
-
-Only attribute groups associated to item catalog categories are included. The seeded Detailed Description and Images item features are not user-defined attribute groups and are excluded, and supplier association data levels (item supplier, item supplier site, item supplier site organization) are not supported.
--- Excel Examle Output: https://www.enginatics.com/example/inv-item-user-defined-attribute-upload/
+-- Creates, updates and deletes item user-defined attribute values (attribute groups defined in the item catalog) at the item, item organization and item revision data levels through the Oracle EGO user attributes API. Each upload row carries one attribute value; the rows of one attribute group row instance (same item, data level, attribute group and row number) are processed together.
+-- For multi-row attribute groups, enter a Row Number to group the attribute values belonging to one row and include the group's unique key attributes on every row. Set Delete Row to Yes to delete a complete attribute group row.
+-- Enter date attribute values in format DD-MON-YYYY, and enter a UOM for numeric attributes that have a unit of measure class. Users need PIM edit privileges on the items (for example through an item owner role); the upload enforces the same item and attribute group security as the PIM pages.
+-- Only attribute groups associated to item catalog categories are included. The seeded Detailed Description and Images item features are not user-defined attribute groups and are excluded, and supplier association data levels (item supplier, item supplier site, item supplier site organization) are not supported.
+-- Excel Example Output: https://www.enginatics.com/example/inv-item-user-defined-attribute-upload/
 -- Library Link: https://www.enginatics.com/reports/inv-item-user-defined-attribute-upload/
 -- Run Report: https://demo.enginatics.com/
 

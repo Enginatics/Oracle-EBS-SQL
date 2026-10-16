@@ -1,48 +1,46 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC WIP Account Detail
--- Description: Report to get the WIP accounting distributions, in summary, by WIP job, resource, overhead and WIP cost update.  With the Show SLA Accounting parameter you can choose to use the Release 12 Subledger Accounting (Create Accounting) account setups by selecting Yes.  And if you have not modified your SLA accounting rules, select No to allow this report to run a bit faster.  With parameters to limit the number of report columns, Show Project to display or not display the project number and name, Show WIP Job to display or not display the WIP job (WIP job, description and resource codes), Show WIP Outside Processing to display or not display the outside processing information (WIP OSP item number, supplier, purchase order, purchase order line and release) and Show Overheads to display or not display the overhead codes.  For Discrete, Flow and Workorderless WIP (but not Repetitive Schedules).  Note that both Flow and Workorderless show up as the WIP Type "Flow schedule".  And WIP Standard Cost Update descriptions show up in the Transaction Reference column.
-
-Parameters:
-===========
-Transaction Date From:  enter the starting transaction date (mandatory).
-Transaction Date To:  enter the ending transaction date (mandatory).
-Show SLA Accounting:  enter Yes to use the Subledger Accounting rules for your accounting information (mandatory).  If you choose No the report uses the pre-Create Accounting entries.
-Show Projects:  display the project number and name.  Enter Yes or No, use to control the reported columns. (mandatory).
-Show WIP Outside Processing:  display the WIP OSP item number, supplier, purchase order, purchase order line and release.  Enter Yes or No, use to control the reported columns (mandatory).
-Show WIP Overheads:  display the earned WIP production overheads, including the Overhead Code and Resource Basis Amount.  Enter Yes or No, use to control the reported columns (mandatory).
-Category Set 1:  any item category you wish, typically the Cost or Product Line category set (optional).
-Category Set 2:  any item category you wish, typically the Inventory category set (optional).
-Accounting Line Type:  enter the accounting purpose or line type to report (optional).
-WIP Transaction Type:  enter the transaction type to report (optional).
-Minimum Absolute Amount:  enter the minimum debit or credit to report (optional).  To see all accounting entries, enter zero (0) and leave the other parameters blank.
-Resource Code:  enter the resource codes to report (optional).
-Department:  enter the routing department to report (optional).
-Class Code:  enter the WIP class code to report (optional).
-WIP Job or Flow Schedule:  enter the WIP Job or the Flow Schedule to report (optional).
-Organization Code:  enter the inventory organization(s) you wish to report (optional).
-Assembly Number:  enter the assembly number(s) you wish to report (optional).
-Operating Unit:  enter the operating unit(s) you wish to report (optional).
-Ledger:  enter the ledger(s) you wish to report (optional).
-
-/* +=============================================================================+
--- |  Copyright 2009- 2024 Douglas Volz Consulting, Inc.
--- |  All rights reserved.
--- |  Permission to use this code is granted provided the original author is
--- |  acknowledged.  No warranties, express or otherwise is included in this permission. 
--- +=============================================================================+
--- | 
--- |  Version Modified on Modified  by   Description
--- |  ======= =========== ============== =========================================
--- |  1.0     06 Nov 2009 Douglas Volz   Initial Coding
--- |  1.21   25 Jan 2024 Douglas Volz    Added Std Cost Update Description to Transaction Reference column.
--- |                     Andy Haack      Added organization security restriction by org_access_view oav.
--- +=============================================================================+*/
--- Excel Examle Output: https://www.enginatics.com/example/cac-wip-account-detail/
+-- Description: Report to get the WIP accounting distributions, in summary, by WIP job, resource, overhead and WIP cost update. With the Show SLA Accounting parameter you can choose to use the Release 12 Subledger Accounting (Create Accounting) account setups by selecting Yes. And if you have not modified your SLA accounting rules, select No to allow this report to run a bit faster. With parameters to limit the number of report columns, Show Project to display or not display the project number and name, Show WIP Job to display or not display the WIP job (WIP job, description and resource codes), Show WIP Outside Processing to display or not display the outside processing information (WIP OSP item number, supplier, purchase order, purchase order line and release) and Show Overheads to display or not display the overhead codes. For Discrete, Flow and Workorderless WIP (but not Repetitive Schedules). Note that both Flow and Workorderless show up as the WIP Type "Flow schedule". And WIP Standard Cost Update descriptions show up in the Transaction Reference column.
+-- Parameters:
+-- ===========
+-- Transaction Date From: enter the starting transaction date (mandatory).
+-- Transaction Date To: enter the ending transaction date (mandatory).
+-- Show SLA Accounting: enter Yes to use the Subledger Accounting rules for your accounting information (mandatory). If you choose No the report uses the pre-Create Accounting entries.
+-- Show Projects: display the project number and name. Enter Yes or No, use to control the reported columns. (mandatory).
+-- Show WIP Outside Processing: display the WIP OSP item number, supplier, purchase order, purchase order line and release. Enter Yes or No, use to control the reported columns (mandatory).
+-- Show WIP Overheads: display the earned WIP production overheads, including the Overhead Code and Resource Basis Amount. Enter Yes or No, use to control the reported columns (mandatory).
+-- Category Set 1: any item category you wish, typically the Cost or Product Line category set (optional).
+-- Category Set 2: any item category you wish, typically the Inventory category set (optional).
+-- Accounting Line Type: enter the accounting purpose or line type to report (optional).
+-- WIP Transaction Type: enter the transaction type to report (optional).
+-- Minimum Absolute Amount: enter the minimum debit or credit to report (optional). To see all accounting entries, enter zero (0) and leave the other parameters blank.
+-- Resource Code: enter the resource codes to report (optional).
+-- Department: enter the routing department to report (optional).
+-- Class Code: enter the WIP class code to report (optional).
+-- WIP Job or Flow Schedule: enter the WIP Job or the Flow Schedule to report (optional).
+-- Organization Code: enter the inventory organization(s) you wish to report (optional).
+-- Assembly Number: enter the assembly number(s) you wish to report (optional).
+-- Operating Unit: enter the operating unit(s) you wish to report (optional).
+-- Ledger: enter the ledger(s) you wish to report (optional).
+-- / +=============================================================================+
+-- -- | Copyright 2009- 2024 Douglas Volz Consulting, Inc.
+-- -- | All rights reserved.
+-- -- | Permission to use this code is granted provided the original author is
+-- -- | acknowledged. No warranties, express or otherwise is included in this permission.
+-- -- +=============================================================================+
+-- -- |
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== ============== =========================================
+-- -- | 1.0 06 Nov 2009 Douglas Volz Initial Coding
+-- -- | 1.21 25 Jan 2024 Douglas Volz Added Std Cost Update Description to Transaction Reference column.
+-- -- | Andy Haack Added organization security restriction by orgaccessview oav.
+-- -- +=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-wip-account-detail/
 -- Library Link: https://www.enginatics.com/reports/cac-wip-account-detail/
 -- Run Report: https://demo.enginatics.com/
 

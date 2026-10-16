@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: DBA AWR SQL Execution Plan History
 -- Description: Execution plan history for a particular SQL id from the automatic workload repository
--- Excel Examle Output: https://www.enginatics.com/example/dba-awr-sql-execution-plan-history/
+-- Excel Example Output: https://www.enginatics.com/example/dba-awr-sql-execution-plan-history/
 -- Library Link: https://www.enginatics.com/reports/dba-awr-sql-execution-plan-history/
 -- Run Report: https://demo.enginatics.com/
 

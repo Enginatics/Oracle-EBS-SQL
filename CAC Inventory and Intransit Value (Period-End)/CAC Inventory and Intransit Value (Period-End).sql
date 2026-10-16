@@ -1,52 +1,50 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Inventory and Intransit Value (Period-End)
--- Description: Report showing amount of inventory at the end of the month.  If you enter a cost type this report uses the item costs from the cost type; if you leave the cost type blank it uses the item costs from the month-end snapshot.  In either case this report uses the month-end quantities, based on the entered period name.  And as these quantities come from the month-end snapshot (created when you close the inventory accounting period) and this snapshot is only by inventory organization, subinventory and item and not split out by cost element, this report only shows the Material Account, based upon your Costing Method.
-
-Note:  if you enter a cost type this report uses the item costs from the cost type; if you leave the cost type blank it uses the item costs from the month-end snapshot.
-
-/* +=============================================================================+
--- | Copyright 2009 - 2022 Douglas Volz Consulting, Inc.                         |
--- |  All rights reserved.                                                       |
--- |  Permission to use this code is granted provided the original author is     |
--- |  acknowledged.  No warranties, express or otherwise is included in this     |
--- |  permission.                                                                |
--- +=============================================================================+
--- |
--- | Original Author: Douglas Volz (doug@volzconsulting.com)
--- |
--- |  Parameters:
--- |  p_period_name         -- Accounting period you wish to report for
--- |  p_org_code            -- Specific inventory organization you wish to report (optional)
--- |  p_operating_unit      -- Operating Unit you wish to report, leave blank for all operating units (optional) 
--- |  p_ledger              -- general ledger you wish to report, leave blank for all ledgers (optional)
--- |  p_cost_type           -- Enter a Cost Type to value the quantities using the Cost Type Item Costs; or, if 
--- |                           Cost Type is blank or null the report will use the stored month-end snapshot values
--- |  p_category_set1       -- The first item category set to report, typically the Cost or Product Line Category Set
--- |  p_category_set2       -- The second item category set to report, typically the Inventory Category Set 
--- |  p_item_number         -- The part or item number you wish to report (optional)
--- |  p_subinventory        -- The specific subinventory you wish to report (optional)
--- |
--- | ===================================================================
--- | Version Modified on Modified by Description
--- | ======= =========== ============== =========================================
--- | 1.0     27 Sep 2009 Douglas Volz Initial Coding
--- | 1.1     28 Sep 2009 Douglas Volz Added a sum for the ICP costs from cicd
--- | 1.16    23 Apr 2020 Douglas Volz Changed to multi-language views for the item master,
--- |                                  item categories and operating units.  Used mfg_lookups for "Intransit".
--- | 1.17    05 Mar 2022 Douglas Volz Use With statement for category, subinventory and intransit valuation accounts.
--- |                                  And changed from four union all statements to only two.
--- | 1.18    11 Mar 2022 Douglas Volz Performance improvements for category accounting
--- | 1.19    20 Mar 2022 Douglas Volz Fix for category accounts (valuation accounts) and
--- |                                  added subinventory description.
--- | 1.20    19 Oct 2022 Douglas Volz Fix for valuation accounts, causing duplicate rows.
--- | 1.21    21 Oct 2022 Douglas Volz Fix for detecting Cost Group Accounting.
--- +=============================================================================+*/
--- Excel Examle Output: https://www.enginatics.com/example/cac-inventory-and-intransit-value-period-end/
+-- Description: Report showing amount of inventory at the end of the month. If you enter a cost type this report uses the item costs from the cost type; if you leave the cost type blank it uses the item costs from the month-end snapshot. In either case this report uses the month-end quantities, based on the entered period name. And as these quantities come from the month-end snapshot (created when you close the inventory accounting period) and this snapshot is only by inventory organization, subinventory and item and not split out by cost element, this report only shows the Material Account, based upon your Costing Method.
+-- Note: if you enter a cost type this report uses the item costs from the cost type; if you leave the cost type blank it uses the item costs from the month-end snapshot.
+-- / +=============================================================================+
+-- -- | Copyright 2009 - 2022 Douglas Volz Consulting, Inc. |
+-- -- | All rights reserved. |
+-- -- | Permission to use this code is granted provided the original author is |
+-- -- | acknowledged. No warranties, express or otherwise is included in this |
+-- -- | permission. |
+-- -- +=============================================================================+
+-- -- |
+-- -- | Original Author: Douglas Volz (doug@volzconsulting.com)
+-- -- |
+-- -- | Parameters:
+-- -- | pperiodname -- Accounting period you wish to report for
+-- -- | porgcode -- Specific inventory organization you wish to report (optional)
+-- -- | poperatingunit -- Operating Unit you wish to report, leave blank for all operating units (optional)
+-- -- | pledger -- general ledger you wish to report, leave blank for all ledgers (optional)
+-- -- | pcosttype -- Enter a Cost Type to value the quantities using the Cost Type Item Costs; or, if
+-- -- | Cost Type is blank or null the report will use the stored month-end snapshot values
+-- -- | pcategoryset1 -- The first item category set to report, typically the Cost or Product Line Category Set
+-- -- | pcategoryset2 -- The second item category set to report, typically the Inventory Category Set
+-- -- | pitemnumber -- The part or item number you wish to report (optional)
+-- -- | psubinventory -- The specific subinventory you wish to report (optional)
+-- -- |
+-- -- | ===================================================================
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== ============== =========================================
+-- -- | 1.0 27 Sep 2009 Douglas Volz Initial Coding
+-- -- | 1.1 28 Sep 2009 Douglas Volz Added a sum for the ICP costs from cicd
+-- -- | 1.16 23 Apr 2020 Douglas Volz Changed to multi-language views for the item master,
+-- -- | item categories and operating units. Used mfglookups for "Intransit".
+-- -- | 1.17 05 Mar 2022 Douglas Volz Use With statement for category, subinventory and intransit valuation accounts.
+-- -- | And changed from four union all statements to only two.
+-- -- | 1.18 11 Mar 2022 Douglas Volz Performance improvements for category accounting
+-- -- | 1.19 20 Mar 2022 Douglas Volz Fix for category accounts (valuation accounts) and
+-- -- | added subinventory description.
+-- -- | 1.20 19 Oct 2022 Douglas Volz Fix for valuation accounts, causing duplicate rows.
+-- -- | 1.21 21 Oct 2022 Douglas Volz Fix for detecting Cost Group Accounting.
+-- -- +=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-inventory-and-intransit-value-period-end/
 -- Library Link: https://www.enginatics.com/reports/cac-inventory-and-intransit-value-period-end/
 -- Run Report: https://demo.enginatics.com/
 

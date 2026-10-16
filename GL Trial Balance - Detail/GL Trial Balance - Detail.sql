@@ -1,17 +1,17 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: GL Trial Balance - Detail
 -- Description: Imported from Concurrent Program
-Description: Detail Trial Balance (XML)
-Application: General Ledger
-Source: Trial Balance - Detail (XML)
-Short Name: GLTRBALD
-DB package:
--- Excel Examle Output: https://www.enginatics.com/example/gl-trial-balance-detail/
+-- Description: Detail Trial Balance (XML)
+-- Application: General Ledger
+-- Source: Trial Balance - Detail (XML)
+-- Short Name: GLTRBALD
+-- DB package:
+-- Excel Example Output: https://www.enginatics.com/example/gl-trial-balance-detail/
 -- Library Link: https://www.enginatics.com/reports/gl-trial-balance-detail/
 -- Run Report: https://demo.enginatics.com/
 

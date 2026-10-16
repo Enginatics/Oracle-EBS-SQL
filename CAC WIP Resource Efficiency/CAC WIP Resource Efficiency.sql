@@ -1,46 +1,43 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC WIP Resource Efficiency
--- Description: Report your resource efficiency variances for your open and closed WIP jobs.  Resource efficiency measures the WIP routing requirements against the actual applied resources.  This report replicates the Resource Section for the Oracle Discrete Job Value Report - Standard Costing.
-
-If you leave the Cost Type parameter blank the report uses either your Costing Method Cost Type (Standard) or your Costing Method "Avg Rates" Cost Type (Average, FIFO, LIFO) for your resource rates.  If the WIP job is open the Report Type column displays "Valuation", as this WIP job and potential material usage variance is still in your WIP inventory balances.  If the job has been closed during the reporting period, the Report Type column displays "Variance", as this WIP job was written off on a WIP Job Close Variance transaction during the reporting period.  Closed, Pending Close, Cancelled, Complete and Complete No Charges WIP job statuses use the completion quantities.  All other WIP jobs use the parameter "Use Completion Quantities" to determine if completion or planned quantities are used for requirements.  If you choose Yes for including scrap, this report will automatically include the scrapped quantities as part of the resource quantity requirements.  And this report automatically includes WIP jobs which were either open during the reported accounting period or if closed, were closed doing the reporting period.
-
-Parameters:
-=========
-Report Option:  You can choose to limit the report size with this parameter.  The choices are:  Open jobs, All jobs or Closed jobs. (mandatory)
-Period Name:  Enter the Period_Name you wish to report for WIP Jobs (mandatory)
-Cost Type:  Enter the resource rates cost type.  If left blank, the report uses the Costing Method rates cost type. (optional)
-Include Scrap Quantities:  Include scrap for quantity requirements.  (mandatory)
-Include Unreleased Jobs:  Include jobs which have not been released and are not started.  (mandatory)
-Use Completion Quantities:  For Released jobs, use the completion quantities for resource variance calculations else use the planned start quantities (mandatory).
-Category Set 1:  Choose any item category to report.  Does not limit what is reported.
-Category Set 2:  Choose any item category to report.  Does not limit what is reported.
-Class Code:  Specific WIP class code to report (optional).
-Job Status:  Specific WIP job status to report (optional).
-WIP Job:  Specific WIP job number to report (optional).
-Resource Code:  Specific resource code to report (optional).
-Outside Processing Item:  Specific outside processing component to report (optional).
-Assembly Number:  Specific assembly to report (optional).
-Organization Code:  Specific inventory organization you wish to report (optional)
-Operating Unit:  Specific operating unit you wish to report (optional)
-Ledger:  Specific ledger you wish to report (optional)
-
-/* +=============================================================================+
--- |  Copyright 2009 - 2021 Douglas Volz Consulting, Inc.                        |
--- |  All rights reserved.                                                       |
--- |  Permission to use this code is granted provided the original author is     |
--- |  acknowledged                                                               |
--- +=============================================================================+
--- |  Version Modified on Modified  by   Description
--- |  ======= =========== ============== =========================================
--- |  1.0     28 Jan 2010 Douglas Volz   Initial Coding
--- |  1.25    12 Dec 2021 Douglas Volz   Added auto-charge, std rate and PO Currency Code columns.
--- +=============================================================================+*/
--- Excel Examle Output: https://www.enginatics.com/example/cac-wip-resource-efficiency/
+-- Description: Report your resource efficiency variances for your open and closed WIP jobs. Resource efficiency measures the WIP routing requirements against the actual applied resources. This report replicates the Resource Section for the Oracle Discrete Job Value Report - Standard Costing.
+-- If you leave the Cost Type parameter blank the report uses either your Costing Method Cost Type (Standard) or your Costing Method "Avg Rates" Cost Type (Average, FIFO, LIFO) for your resource rates. If the WIP job is open the Report Type column displays "Valuation", as this WIP job and potential material usage variance is still in your WIP inventory balances. If the job has been closed during the reporting period, the Report Type column displays "Variance", as this WIP job was written off on a WIP Job Close Variance transaction during the reporting period. Closed, Pending Close, Cancelled, Complete and Complete No Charges WIP job statuses use the completion quantities. All other WIP jobs use the parameter "Use Completion Quantities" to determine if completion or planned quantities are used for requirements. If you choose Yes for including scrap, this report will automatically include the scrapped quantities as part of the resource quantity requirements. And this report automatically includes WIP jobs which were either open during the reported accounting period or if closed, were closed doing the reporting period.
+-- Parameters:
+-- =========
+-- Report Option: You can choose to limit the report size with this parameter. The choices are: Open jobs, All jobs or Closed jobs. (mandatory)
+-- Period Name: Enter the PeriodName you wish to report for WIP Jobs (mandatory)
+-- Cost Type: Enter the resource rates cost type. If left blank, the report uses the Costing Method rates cost type. (optional)
+-- Include Scrap Quantities: Include scrap for quantity requirements. (mandatory)
+-- Include Unreleased Jobs: Include jobs which have not been released and are not started. (mandatory)
+-- Use Completion Quantities: For Released jobs, use the completion quantities for resource variance calculations else use the planned start quantities (mandatory).
+-- Category Set 1: Choose any item category to report. Does not limit what is reported.
+-- Category Set 2: Choose any item category to report. Does not limit what is reported.
+-- Class Code: Specific WIP class code to report (optional).
+-- Job Status: Specific WIP job status to report (optional).
+-- WIP Job: Specific WIP job number to report (optional).
+-- Resource Code: Specific resource code to report (optional).
+-- Outside Processing Item: Specific outside processing component to report (optional).
+-- Assembly Number: Specific assembly to report (optional).
+-- Organization Code: Specific inventory organization you wish to report (optional)
+-- Operating Unit: Specific operating unit you wish to report (optional)
+-- Ledger: Specific ledger you wish to report (optional)
+-- / +=============================================================================+
+-- -- | Copyright 2009 - 2021 Douglas Volz Consulting, Inc. |
+-- -- | All rights reserved. |
+-- -- | Permission to use this code is granted provided the original author is |
+-- -- | acknowledged |
+-- -- +=============================================================================+
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== ============== =========================================
+-- -- | 1.0 28 Jan 2010 Douglas Volz Initial Coding
+-- -- | 1.25 12 Dec 2021 Douglas Volz Added auto-charge, std rate and PO Currency Code columns.
+-- -- +=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-wip-resource-efficiency/
 -- Library Link: https://www.enginatics.com/reports/cac-wip-resource-efficiency/
 -- Run Report: https://demo.enginatics.com/
 

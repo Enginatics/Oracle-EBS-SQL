@@ -1,40 +1,39 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Inventory Account Alias Setup
 -- Description: Report to show accounts assigned for inventory account aliases
-
-/* +=============================================================================+
--- |  Copyright 2011 - 2020 Douglas Volz Consulting, Inc.                        |
--- |  All rights reserved.                                                       |
--- |  Permission to use this code is granted provided the original author is     |
--- |  acknowledged. No warranties, express or otherwise is included in this      |
--- |  permission.                                                                |
--- +=============================================================================+
--- |
--- |  Original Author: Douglas Volz (doug@volzconsulting.com)
--- |
--- |  Program Name:  xxx_acct_alias_setup_rept.sql
--- |
--- |  Parameters:
--- |  p_ledger		-- Ledger you wish to report, enter a null for all
--- |                       ledgers. (optional)
--- | 
--- |  Description:
--- |  Report to show accounts used for account aliases
--- | 
--- |  Version Modified on Modified  by   Description
--- |  ======= =========== ============== =========================================
--- |  1.0     03 Feb 2011 Douglas Volz   Initial Coding
--- |  1.1     28 Mar 2011 Douglas Volz   Added Ledger parameter, effective date
--- |					 and disable date
--- |  1.2     07 Oct 2015 Douglas Volz   Removed prior client's org restrictions.
--- |  1.3     27 Apr 2020 Douglas Volz   Changed to multi-language views for the 
--- |                                     inventory orgs and operating units.
--- Excel Examle Output: https://www.enginatics.com/example/cac-inventory-account-alias-setup/
+-- / +=============================================================================+
+-- -- | Copyright 2011 - 2020 Douglas Volz Consulting, Inc. |
+-- -- | All rights reserved. |
+-- -- | Permission to use this code is granted provided the original author is |
+-- -- | acknowledged. No warranties, express or otherwise is included in this |
+-- -- | permission. |
+-- -- +=============================================================================+
+-- -- |
+-- -- | Original Author: Douglas Volz (doug@volzconsulting.com)
+-- -- |
+-- -- | Program Name: xxxacctaliassetuprept.sql
+-- -- |
+-- -- | Parameters:
+-- -- | pledger -- Ledger you wish to report, enter a null for all
+-- -- | ledgers. (optional)
+-- -- |
+-- -- | Description:
+-- -- | Report to show accounts used for account aliases
+-- -- |
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== ============== =========================================
+-- -- | 1.0 03 Feb 2011 Douglas Volz Initial Coding
+-- -- | 1.1 28 Mar 2011 Douglas Volz Added Ledger parameter, effective date
+-- -- | and disable date
+-- -- | 1.2 07 Oct 2015 Douglas Volz Removed prior client's org restrictions.
+-- -- | 1.3 27 Apr 2020 Douglas Volz Changed to multi-language views for the
+-- -- | inventory orgs and operating units.
+-- Excel Example Output: https://www.enginatics.com/example/cac-inventory-account-alias-setup/
 -- Library Link: https://www.enginatics.com/reports/cac-inventory-account-alias-setup/
 -- Run Report: https://demo.enginatics.com/
 

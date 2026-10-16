@@ -1,61 +1,59 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC WIP Material Relief
--- Description: Report to show WIP material variances on closed jobs for discrete manufacturing, in summary by inventory organization, with WIP class, job status, name and other details.  Including any profit in inventory or PII amounts.  But unlike the more recent CAC WIP Manufacturing Variance and CAC WIP Material Usage Variance reports, this report uses the latest material issue quantities as stored on the WIP job definition, even if you run it for a prior period.  It does not rollback the component issue quantities for a prior accounting period.
-
-Parameters:
-==========
-Period Name:  the accounting period you wish to report (mandatory).
-Cost Type:  defaults to your Costing Method.  If blank the report uses your Costing Method Cost Type (mandatory).
-PII Cost Type:  enter the cost type for your profit in inventory item costs to report (optional).
-PII Sub-Element:  the sub-element or resource for profit in inventory, such as PII or ICP (optional).
-Category Set 1:  any item category you wish (optional).
-Category Set 2:  any item category you wish (optional).
-Class Code:  specific type of WIP class to report (optional).
-Job Status:  specific WIP job status (optional).
-WIP Job:  specific WIP job (optional).
-Assembly Number:  specific assembly number you wish to report (optional)
-Component Number:   specific component item you wish to report (optional)
-Show Phantom Components: show the material usage variances for phantom components (optional).
-Organization Code:  any inventory organization, defaults to your session's inventory organization (optional).
-Operating Unit:  specific operating unit (optional).
-Ledger:  specific ledger (optional).
-
-/* +=============================================================================+
--- |  Copyright 2009-24 Douglas Volz Consulting, Inc.
--- |  All rights reserved.
--- |  Permission to use this code is granted provided the original author is acknowledged.
--- +=============================================================================+
--- |
--- |  Original Author: Douglas Volz (doug@volzconsulting.com)
--- |
--- |  Program Name:  xxx_wip_relief_rept.sql
--- | 
--- |  Version Modified on Modified  by   Description
--- |  ======= =========== ============== =========================================
--- |  1.0     11 Jan 2010 Douglas Volz   Initial Coding based on XXX_ICP_WIP_COMPONENT_VAL_REPT.sql,
--- |                                     with this report analyzing the WIP variances on
--- |                                     closed jobs.  Added org_acct_periods to limit to
--- |                                     jobs closed within the accounting period.
--- |  1.9     26 Sep 2010 Douglas Volz   Added Component Item Number to report sort.
--- |  1.10    09 Feb 2012 Douglas Volz   Included component yield in required quantities;
--- |                                     decided to not exclude WIP expense jobs as they
--- |                                     could have components with ICP issued to the job
--- |                                     and the cost accountants would need the visibility.
--- |  1.11    23 Feb 2012 Douglas Volz   Added component UOM code, to be consistent with
--- |                                     other reports.
--- |  1.12    07 Oct 2020 Andy Haack     Modify for Blitz Report with Blitz lookup functions
--- |                                     (xxen_util) and re-format sql code.
--- |  1.13    11 Jul 2022 Douglas Volz   Multi-language changes; added back PII parameters.  Changed
--- |                                     wro.component_yield_factor to nvl(wro.component_yield_factor,1).
--- |  1.14    23 Jun 2024 Douglas Volz   Remove tabs, reinstall parameters and inventory org access controls.
--- |                                     Added category set parameters.
--- +=============================================================================+*/
--- Excel Examle Output: https://www.enginatics.com/example/cac-wip-material-relief/
+-- Description: Report to show WIP material variances on closed jobs for discrete manufacturing, in summary by inventory organization, with WIP class, job status, name and other details. Including any profit in inventory or PII amounts. But unlike the more recent CAC WIP Manufacturing Variance and CAC WIP Material Usage Variance reports, this report uses the latest material issue quantities as stored on the WIP job definition, even if you run it for a prior period. It does not rollback the component issue quantities for a prior accounting period.
+-- Parameters:
+-- ==========
+-- Period Name: the accounting period you wish to report (mandatory).
+-- Cost Type: defaults to your Costing Method. If blank the report uses your Costing Method Cost Type (mandatory).
+-- PII Cost Type: enter the cost type for your profit in inventory item costs to report (optional).
+-- PII Sub-Element: the sub-element or resource for profit in inventory, such as PII or ICP (optional).
+-- Category Set 1: any item category you wish (optional).
+-- Category Set 2: any item category you wish (optional).
+-- Class Code: specific type of WIP class to report (optional).
+-- Job Status: specific WIP job status (optional).
+-- WIP Job: specific WIP job (optional).
+-- Assembly Number: specific assembly number you wish to report (optional)
+-- Component Number: specific component item you wish to report (optional)
+-- Show Phantom Components: show the material usage variances for phantom components (optional).
+-- Organization Code: any inventory organization, defaults to your session's inventory organization (optional).
+-- Operating Unit: specific operating unit (optional).
+-- Ledger: specific ledger (optional).
+-- / +=============================================================================+
+-- -- | Copyright 2009-24 Douglas Volz Consulting, Inc.
+-- -- | All rights reserved.
+-- -- | Permission to use this code is granted provided the original author is acknowledged.
+-- -- +=============================================================================+
+-- -- |
+-- -- | Original Author: Douglas Volz (doug@volzconsulting.com)
+-- -- |
+-- -- | Program Name: xxxwipreliefrept.sql
+-- -- |
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== ============== =========================================
+-- -- | 1.0 11 Jan 2010 Douglas Volz Initial Coding based on XXXICPWIPCOMPONENTVALREPT.sql,
+-- -- | with this report analyzing the WIP variances on
+-- -- | closed jobs. Added orgacctperiods to limit to
+-- -- | jobs closed within the accounting period.
+-- -- | 1.9 26 Sep 2010 Douglas Volz Added Component Item Number to report sort.
+-- -- | 1.10 09 Feb 2012 Douglas Volz Included component yield in required quantities;
+-- -- | decided to not exclude WIP expense jobs as they
+-- -- | could have components with ICP issued to the job
+-- -- | and the cost accountants would need the visibility.
+-- -- | 1.11 23 Feb 2012 Douglas Volz Added component UOM code, to be consistent with
+-- -- | other reports.
+-- -- | 1.12 07 Oct 2020 Andy Haack Modify for Blitz Report with Blitz lookup functions
+-- -- | (xxenutil) and re-format sql code.
+-- -- | 1.13 11 Jul 2022 Douglas Volz Multi-language changes; added back PII parameters. Changed
+-- -- | wro.componentyieldfactor to nvl(wro.componentyieldfactor,1).
+-- -- | 1.14 23 Jun 2024 Douglas Volz Remove tabs, reinstall parameters and inventory org access controls.
+-- -- | Added category set parameters.
+-- -- +=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-wip-material-relief/
 -- Library Link: https://www.enginatics.com/reports/cac-wip-material-relief/
 -- Run Report: https://demo.enginatics.com/
 

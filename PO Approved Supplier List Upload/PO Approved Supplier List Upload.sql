@@ -1,43 +1,35 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PO Approved Supplier List Upload
 -- Description: This upload supports the creation and update of Approved Supplier Lists (ASL) in Oracle Purchasing.
-
-The upload supports creation/update/deletion of the following Approved Supplier List entities:
-- Approved Supplier Lists (Global and Local)
-- Approved Supplier List Attributes. Including Local (Using Organization specific) attributes against a global ASL.
-- Source Documents
-- Authorizations
-- Supplier Capacities
-- Supplier Tolerances
-
-Notes:
-- You cannot delete Manufacturer ASLs using this upload. There is a restriction in the standard Oracle API used by this upload that prevents this.
-
-- When the ASL attributes for the same Item/Commodity, Supplier, Supplier Site, and Using Organization are repeated in the upload excel, then first row flagged for upload will be used to apply the attribute updates. The attributes on subsequent rows are ignored. 
-
-- The following points are only significant if you define Local Attributes for a Using Organization against a Global ASL:
-  Source Documents are associated with the Using Organization of the ASL Attributes 
-  Authorizations, Supplier Capacities and Supplier Tolerances are always associated with the Using Organization of the ASL
-  
-  If you delete a Local ASL defined for a specific using organization against a Global ASL, only the local using organization attributes will be deleted.
-  The Global ASL will not be deleted. 
-
-- When downloading existing ASL data into the upload excel, Source Documents, Authorizations, Capacities, and Tolerances are downloaded into separate rows in the excel.
-This is to minimize the duplication of data in the excel. However, when entering data for upload Source Documents, Authorizations, Capacities, and Tolerances can be added in the same excel row.
-i.e. You can upload an excel row containing a Source Document, Authorization, Capacity, and Tolerance.
-
-- Capacity Entries with a capacity from/to date in the past cannot be updated by this upload due to validations applied in the standard Oracle API used by the upload. It is possible to delete a capacity entry with a capacity from date in the past, but only if the capacity to date is either null or later than the current date.
-
-- By default, Authorizations, Supplier Capacities, and Supplier Tolerances are not included in the downloaded data. The following report parameters may be Yes in order to include these in the download:
-  Download Authorizations
-  Download Capacities
-  Download Tolerances
--- Excel Examle Output: https://www.enginatics.com/example/po-approved-supplier-list-upload/
+-- The upload supports creation/update/deletion of the following Approved Supplier List entities:
+-- - Approved Supplier Lists (Global and Local)
+-- - Approved Supplier List Attributes. Including Local (Using Organization specific) attributes against a global ASL.
+-- - Source Documents
+-- - Authorizations
+-- - Supplier Capacities
+-- - Supplier Tolerances
+-- Notes:
+-- - You cannot delete Manufacturer ASLs using this upload. There is a restriction in the standard Oracle API used by this upload that prevents this.
+-- - When the ASL attributes for the same Item/Commodity, Supplier, Supplier Site, and Using Organization are repeated in the upload excel, then first row flagged for upload will be used to apply the attribute updates. The attributes on subsequent rows are ignored.
+-- - The following points are only significant if you define Local Attributes for a Using Organization against a Global ASL:
+-- Source Documents are associated with the Using Organization of the ASL Attributes
+-- Authorizations, Supplier Capacities and Supplier Tolerances are always associated with the Using Organization of the ASL
+-- If you delete a Local ASL defined for a specific using organization against a Global ASL, only the local using organization attributes will be deleted.
+-- The Global ASL will not be deleted.
+-- - When downloading existing ASL data into the upload excel, Source Documents, Authorizations, Capacities, and Tolerances are downloaded into separate rows in the excel.
+-- This is to minimize the duplication of data in the excel. However, when entering data for upload Source Documents, Authorizations, Capacities, and Tolerances can be added in the same excel row.
+-- i.e. You can upload an excel row containing a Source Document, Authorization, Capacity, and Tolerance.
+-- - Capacity Entries with a capacity from/to date in the past cannot be updated by this upload due to validations applied in the standard Oracle API used by the upload. It is possible to delete a capacity entry with a capacity from date in the past, but only if the capacity to date is either null or later than the current date.
+-- - By default, Authorizations, Supplier Capacities, and Supplier Tolerances are not included in the downloaded data. The following report parameters may be Yes in order to include these in the download:
+-- Download Authorizations
+-- Download Capacities
+-- Download Tolerances
+-- Excel Example Output: https://www.enginatics.com/example/po-approved-supplier-list-upload/
 -- Library Link: https://www.enginatics.com/reports/po-approved-supplier-list-upload/
 -- Run Report: https://demo.enginatics.com/
 

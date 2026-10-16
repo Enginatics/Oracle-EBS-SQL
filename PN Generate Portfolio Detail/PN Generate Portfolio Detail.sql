@@ -1,15 +1,15 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PN Generate Portfolio Detail
 -- Description: Application: Property Manager
-Source: Generate Portfolio Detail Report
-Short Name: PNGPDR_XML
-DB package: XXEN_PN
--- Excel Examle Output: https://www.enginatics.com/example/pn-generate-portfolio-detail/
+-- Source: Generate Portfolio Detail Report
+-- Short Name: PNGPDRXML
+-- DB package: XXENPN
+-- Excel Example Output: https://www.enginatics.com/example/pn-generate-portfolio-detail/
 -- Library Link: https://www.enginatics.com/reports/pn-generate-portfolio-detail/
 -- Run Report: https://demo.enginatics.com/
 

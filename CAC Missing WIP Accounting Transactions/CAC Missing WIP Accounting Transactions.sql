@@ -1,46 +1,44 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Missing WIP Accounting Transactions
--- Description: Report to find work in process (WIP) accounting entries where the WIP transaction has been created but the WIP accounting entries do not exist.  If you enter Yes for "Only Costed Resources" the report ignores WIP transactions where the resource code is defined as not allowing costs (not costed).  If you enter No for "Only Costed Resources" the report includes WIP transactions where the resource code does not allow costs as well as costed resources.  And to get all transactions which are missing the WIP accounting entries, even for transactions where the resources are not costed, set the "Only Costed Resources" to No and the Minimum Transaction Amount to zero (0).
-
-/* +=============================================================================+
--- |  Copyright 2022 Douglas Volz Consulting, Inc.                               |
--- |  All rights reserved.                                                       |
--- |  Permission to use this code is granted provided the original author is     |
--- |  acknowledged.  No warranties, express or otherwise is included in this     |
--- |  permission.                                                                |
--- +=============================================================================+
--- |
--- |  Original Author: Douglas Volz (doug@volzconsulting.com)
--- |
--- |  Program Name:  missing_wip_accounting_transactions.sql
--- |
--- |  Parameters:
--- |  p_trx_date_from         -- Starting transaction date, mandatory
--- |  p_trx_date_to           -- Ending transaction date, mandatory
--- |  p_minimum_amount        -- The absolute smallest transaction amount to be reported
--- |  p_only_costed_resources -- Only include transactions where the resource code is costed. 
--- |  p_org_code              -- Specific inventory organization you wish to report (optional)
--- |  p_operating_unit        -- Operating Unit you wish to report, leave blank for all
--- |                             operating units (optional) 
--- |  p_ledger                -- general ledger you wish to report, leave blank for all
--- |                             ledgers (optional)
--- |
--- |  Description:
--- |  Report to find WIP accounting entries where the WIP accounting entries do not
--- |  exist.
--- | 
--- |  Version Modified on Modified  by   Description
--- |  ======= =========== ============== =========================================
--- |  1.0     21 Jul 2022 Douglas Volz   Initial Coding based on missing_material_accounting_transactions.sql
--- |  1.1     23 Jul 2022 Douglas Volz   Added Ledger and Operating Unit columns. 
--- +=============================================================================+*/
-
--- Excel Examle Output: https://www.enginatics.com/example/cac-missing-wip-accounting-transactions/
+-- Description: Report to find work in process (WIP) accounting entries where the WIP transaction has been created but the WIP accounting entries do not exist. If you enter Yes for "Only Costed Resources" the report ignores WIP transactions where the resource code is defined as not allowing costs (not costed). If you enter No for "Only Costed Resources" the report includes WIP transactions where the resource code does not allow costs as well as costed resources. And to get all transactions which are missing the WIP accounting entries, even for transactions where the resources are not costed, set the "Only Costed Resources" to No and the Minimum Transaction Amount to zero (0).
+-- / +=============================================================================+
+-- -- | Copyright 2022 Douglas Volz Consulting, Inc. |
+-- -- | All rights reserved. |
+-- -- | Permission to use this code is granted provided the original author is |
+-- -- | acknowledged. No warranties, express or otherwise is included in this |
+-- -- | permission. |
+-- -- +=============================================================================+
+-- -- |
+-- -- | Original Author: Douglas Volz (doug@volzconsulting.com)
+-- -- |
+-- -- | Program Name: missingwipaccountingtransactions.sql
+-- -- |
+-- -- | Parameters:
+-- -- | ptrxdatefrom -- Starting transaction date, mandatory
+-- -- | ptrxdateto -- Ending transaction date, mandatory
+-- -- | pminimumamount -- The absolute smallest transaction amount to be reported
+-- -- | ponlycostedresources -- Only include transactions where the resource code is costed.
+-- -- | porgcode -- Specific inventory organization you wish to report (optional)
+-- -- | poperatingunit -- Operating Unit you wish to report, leave blank for all
+-- -- | operating units (optional)
+-- -- | pledger -- general ledger you wish to report, leave blank for all
+-- -- | ledgers (optional)
+-- -- |
+-- -- | Description:
+-- -- | Report to find WIP accounting entries where the WIP accounting entries do not
+-- -- | exist.
+-- -- |
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== ============== =========================================
+-- -- | 1.0 21 Jul 2022 Douglas Volz Initial Coding based on missingmaterialaccountingtransactions.sql
+-- -- | 1.1 23 Jul 2022 Douglas Volz Added Ledger and Operating Unit columns.
+-- -- +=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-missing-wip-accounting-transactions/
 -- Library Link: https://www.enginatics.com/reports/cac-missing-wip-accounting-transactions/
 -- Run Report: https://demo.enginatics.com/
 

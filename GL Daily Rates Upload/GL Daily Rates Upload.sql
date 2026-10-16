@@ -1,16 +1,16 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: GL Daily Rates Upload
 -- Description: GL Daily Rates Upload
-==================
-Use this upload to upload new or update existing GL Daily Exchange Rate Conversions.
-If exchange rates do not already exist for the entered data, they will be created.
-If exchange rates do already exist for the entered data, they will be updated.
--- Excel Examle Output: https://www.enginatics.com/example/gl-daily-rates-upload/
+-- ==================
+-- Use this upload to upload new or update existing GL Daily Exchange Rate Conversions.
+-- If exchange rates do not already exist for the entered data, they will be created.
+-- If exchange rates do already exist for the entered data, they will be updated.
+-- Excel Example Output: https://www.enginatics.com/example/gl-daily-rates-upload/
 -- Library Link: https://www.enginatics.com/reports/gl-daily-rates-upload/
 -- Run Report: https://demo.enginatics.com/
 

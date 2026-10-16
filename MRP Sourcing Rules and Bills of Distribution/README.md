@@ -1,40 +1,47 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'MRP Sourcing Rules and Bills of Distribution | Oracle EBS SQL Report'
 description: 'Sourcing rules for all or a selected assignment set, along with with the item''s make / buy flag and based on rollup flag for costing. You can either…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, MRP, Sourcing, Rules, Bills, mrp_sourcing_rules, mtl_parameters, mrp_sr_receipt_org_v'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Master Scheduling/MRP, Enginatics, MRP, Sourcing, Rules, Bills, mrp_sourcing_rules, mtl_parameters, mrp_sr_receipt_org_v'
 permalink: /MRP%20Sourcing%20Rules%20and%20Bills%20of%20Distribution/
+report_name: 'MRP Sourcing Rules and Bills of Distribution'
+report_web_name: mrp-sourcing-rules-and-bills-of-distribution
+module: 'Master Scheduling/MRP'
+module_url: /modules/master-scheduling-mrp/
 ---
 
 # MRP Sourcing Rules and Bills of Distribution – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/mrp-sourcing-rules-and-bills-of-distribution/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/mrp-sourcing-rules-and-bills-of-distribution/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-sourcing-rules-and-bills-of-distribution) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-sourcing-rules-and-bills-of-distribution).
+**Oracle EBS module:** [Master Scheduling/MRP](/modules/master-scheduling-mrp/ "Oracle EBS Master Scheduling/MRP reports") · [all Master Scheduling/MRP reports](/modules/master-scheduling-mrp/)  
 
 ## Overview
 Sourcing rules for all or a selected assignment set, along with with the item's make / buy flag and based on rollup flag for costing. You can either choose Organization or Vendor (Supplier) sourcing rules or get all sourcing rules by not selecting a sourcing rule type.
+
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-sourcing-rules-and-bills-of-distribution) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 
 ## Report Parameters
 Assignment Set, Assignment Type, Assignment Organization, Assignment Customer, Assignment Item Number, Assignment Category, Sourcing Rule Type, Sourcing Rule Name, Global Sourcing Rules, Sourcing Rule Organization, Receipt Organization, Active Receipt Orgs Only, Source Type, Source Organization, Source Supplier, Source Supplier Site, Category Set 1, Category Set 2
 
 ## Oracle EBS Tables Used
-[mrp_sourcing_rules](https://www.enginatics.com/library/?pg=1&find=mrp_sourcing_rules), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters), [mrp_sr_receipt_org_v](https://www.enginatics.com/library/?pg=1&find=mrp_sr_receipt_org_v), [mrp_sr_source_org_v](https://www.enginatics.com/library/?pg=1&find=mrp_sr_source_org_v), [org_access_view](https://www.enginatics.com/library/?pg=1&find=org_access_view), [mrp_sr_assignments_v](https://www.enginatics.com/library/?pg=1&find=mrp_sr_assignments_v), [mtl_system_items_b](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_b), [mrp_assignment_sets](https://www.enginatics.com/library/?pg=1&find=mrp_assignment_sets), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl), [mtl_units_of_measure_vl](https://www.enginatics.com/library/?pg=1&find=mtl_units_of_measure_vl), [mtl_item_status_vl](https://www.enginatics.com/library/?pg=1&find=mtl_item_status_vl), [cst_item_costs](https://www.enginatics.com/library/?pg=1&find=cst_item_costs), [mtl_categories_kfv](https://www.enginatics.com/library/?pg=1&find=mtl_categories_kfv)
+[mrp_sourcing_rules](https://www.enginatics.com/library/?pg=1&find=mrp_sourcing_rules&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-sourcing-rules-and-bills-of-distribution), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-sourcing-rules-and-bills-of-distribution), [mrp_sr_receipt_org_v](https://www.enginatics.com/library/?pg=1&find=mrp_sr_receipt_org_v&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-sourcing-rules-and-bills-of-distribution), [mrp_sr_source_org_v](https://www.enginatics.com/library/?pg=1&find=mrp_sr_source_org_v&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-sourcing-rules-and-bills-of-distribution), [org_access_view](https://www.enginatics.com/library/?pg=1&find=org_access_view&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-sourcing-rules-and-bills-of-distribution), [mrp_sr_assignments_v](https://www.enginatics.com/library/?pg=1&find=mrp_sr_assignments_v&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-sourcing-rules-and-bills-of-distribution), [mtl_system_items_b](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_b&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-sourcing-rules-and-bills-of-distribution), [mrp_assignment_sets](https://www.enginatics.com/library/?pg=1&find=mrp_assignment_sets&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-sourcing-rules-and-bills-of-distribution), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-sourcing-rules-and-bills-of-distribution), [mtl_units_of_measure_vl](https://www.enginatics.com/library/?pg=1&find=mtl_units_of_measure_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-sourcing-rules-and-bills-of-distribution), [mtl_item_status_vl](https://www.enginatics.com/library/?pg=1&find=mtl_item_status_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-sourcing-rules-and-bills-of-distribution), [cst_item_costs](https://www.enginatics.com/library/?pg=1&find=cst_item_costs&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-sourcing-rules-and-bills-of-distribution), [mtl_categories_kfv](https://www.enginatics.com/library/?pg=1&find=mtl_categories_kfv&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-sourcing-rules-and-bills-of-distribution)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-sourcing-rules-and-bills-of-distribution)
 
-## Related Reports
-[CAC Last Standard Item Cost](/CAC%20Last%20Standard%20Item%20Cost/ "CAC Last Standard Item Cost Oracle EBS SQL Report"), [CAC New Items](/CAC%20New%20Items/ "CAC New Items Oracle EBS SQL Report"), [CAC Calculate ICP PII Item Costs](/CAC%20Calculate%20ICP%20PII%20Item%20Costs/ "CAC Calculate ICP PII Item Costs Oracle EBS SQL Report"), [CAC Item vs. Component Include in Rollup Controls](/CAC%20Item%20vs-%20Component%20Include%20in%20Rollup%20Controls/ "CAC Item vs. Component Include in Rollup Controls Oracle EBS SQL Report"), [CAC New Standard Item Costs](/CAC%20New%20Standard%20Item%20Costs/ "CAC New Standard Item Costs Oracle EBS SQL Report"), [CAC User-Defined and Rolled Up Costs](/CAC%20User-Defined%20and%20Rolled%20Up%20Costs/ "CAC User-Defined and Rolled Up Costs Oracle EBS SQL Report"), [CAC Cost vs. Planning Item Controls](/CAC%20Cost%20vs-%20Planning%20Item%20Controls/ "CAC Cost vs. Planning Item Controls Oracle EBS SQL Report"), [CAC Intercompany SO Price List vs. Item Cost Comparison](/CAC%20Intercompany%20SO%20Price%20List%20vs-%20Item%20Cost%20Comparison/ "CAC Intercompany SO Price List vs. Item Cost Comparison Oracle EBS SQL Report"), [CAC Calculate ICP PII Item Costs by Where Used](/CAC%20Calculate%20ICP%20PII%20Item%20Costs%20by%20Where%20Used/ "CAC Calculate ICP PII Item Costs by Where Used Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/MRP%20Sourcing%20Rules%20and%20Bills%20of%20Distribution/MRP%20Sourcing%20Rules%20and%20Bills%20of%20Distribution.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-sourcing-rules-and-bills-of-distribution) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [MRP Sourcing Rules and Bills of Distribution 10-Jun-2024 034927.xlsx](https://www.enginatics.com/example/mrp-sourcing-rules-and-bills-of-distribution/) |
-| Blitz Report™ XML Import | [MRP_Sourcing_Rules_and_Bills_of_Distribution.xml](https://www.enginatics.com/xml/mrp-sourcing-rules-and-bills-of-distribution/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/mrp-sourcing-rules-and-bills-of-distribution/](https://www.enginatics.com/reports/mrp-sourcing-rules-and-bills-of-distribution/) |
+| Excel Example Output | [MRP Sourcing Rules and Bills of Distribution 10-Jun-2024 034927.xlsx](https://www.enginatics.com/example/mrp-sourcing-rules-and-bills-of-distribution/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-sourcing-rules-and-bills-of-distribution) |
+| Blitz Report™ XML Import | [MRP_Sourcing_Rules_and_Bills_of_Distribution.xml](https://www.enginatics.com/xml/mrp-sourcing-rules-and-bills-of-distribution/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-sourcing-rules-and-bills-of-distribution) |
+| SQL Source | [MRP Sourcing Rules and Bills of Distribution.sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/MRP%20Sourcing%20Rules%20and%20Bills%20of%20Distribution/MRP%20Sourcing%20Rules%20and%20Bills%20of%20Distribution.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/mrp-sourcing-rules-and-bills-of-distribution/](https://www.enginatics.com/reports/mrp-sourcing-rules-and-bills-of-distribution/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-sourcing-rules-and-bills-of-distribution) |
 
 ## MRP Sourcing Rules and Bills of Distribution - Case Study & Technical Analysis
 
@@ -74,18 +81,17 @@ The report queries the sourcing rule definition tables.
 -   **Risk Management:** Helps identify single points of failure (single-sourced items).
 -   **Compliance:** Ensures that sourcing strategies are being implemented as designed in the system.
 
-
 ---
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-sourcing-rules-and-bills-of-distribution)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-sourcing-rules-and-bills-of-distribution)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-sourcing-rules-and-bills-of-distribution)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-sourcing-rules-and-bills-of-distribution)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-sourcing-rules-and-bills-of-distribution)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-sourcing-rules-and-bills-of-distribution)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-sourcing-rules-and-bills-of-distribution)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

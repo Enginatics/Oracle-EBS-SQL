@@ -1,13 +1,13 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: Blitz Report Deletion History
 -- Description: Shows deleted Blitz Reports and can be used to recover accidentally deleted reports.
-The history of deleted reports can be purged completely by running concurrent 'Blitz Report Monitor' with parameter 'Purge delete reports SQL history' set to Yes
--- Excel Examle Output: https://www.enginatics.com/example/blitz-report-deletion-history/
+-- The history of deleted reports can be purged completely by running concurrent 'Blitz Report Monitor' with parameter 'Purge delete reports SQL history' set to Yes
+-- Excel Example Output: https://www.enginatics.com/example/blitz-report-deletion-history/
 -- Library Link: https://www.enginatics.com/reports/blitz-report-deletion-history/
 -- Run Report: https://demo.enginatics.com/
 

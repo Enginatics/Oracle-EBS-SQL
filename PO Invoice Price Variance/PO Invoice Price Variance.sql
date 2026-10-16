@@ -1,15 +1,15 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PO Invoice Price Variance
 -- Description: Imported Oracle standard Invoice Price Variance report
-Application: Purchasing
-Source: Invoice Price Variance Report
-Short Name: POXRCIPV
--- Excel Examle Output: https://www.enginatics.com/example/po-invoice-price-variance/
+-- Application: Purchasing
+-- Source: Invoice Price Variance Report
+-- Short Name: POXRCIPV
+-- Excel Example Output: https://www.enginatics.com/example/po-invoice-price-variance/
 -- Library Link: https://www.enginatics.com/reports/po-invoice-price-variance/
 -- Run Report: https://demo.enginatics.com/
 

@@ -1,24 +1,22 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: FND Flex Values
 -- Description: Report for all flex values and the hierarchies they are included in.
-Column 'Hierarchy Position' can be used to validate your account hierarchy setup and check which account segment values are not included in any (or a specific) hierarchy yet.
-
-In EBS R12.2., there is new flexfield value security in place, which would require the UMX|FND_FLEX_VSET_ALL_PRIVS_ROLE role to maintain flexfield values.
-If you do not have this role but apps DB access, you can add it from the backend:
-
-begin
-  wf_local_synch.propagateuserrole(
-  p_user_name=>'ANDY.HAACK',
-  p_role_name=>'UMX|FND_FLEX_VSET_ALL_PRIVS_ROLE'
-  );
-  commit;
-end;
--- Excel Examle Output: https://www.enginatics.com/example/fnd-flex-values/
+-- Column 'Hierarchy Position' can be used to validate your account hierarchy setup and check which account segment values are not included in any (or a specific) hierarchy yet.
+-- In EBS R12.2., there is new flexfield value security in place, which would require the UMX|FNDFLEXVSETALLPRIVSROLE role to maintain flexfield values.
+-- If you do not have this role but apps DB access, you can add it from the backend:
+-- begin
+-- wflocalsynch.propagateuserrole(
+-- pusername=>'ANDY.HAACK',
+-- prolename=>'UMX|FNDFLEXVSETALLPRIVSROLE'
+-- );
+-- commit;
+-- end;
+-- Excel Example Output: https://www.enginatics.com/example/fnd-flex-values/
 -- Library Link: https://www.enginatics.com/reports/fnd-flex-values/
 -- Run Report: https://demo.enginatics.com/
 

@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: DBA External Table Creation
 -- Description: 
--- Excel Examle Output: https://www.enginatics.com/example/dba-external-table-creation/
+-- Excel Example Output: https://www.enginatics.com/example/dba-external-table-creation/
 -- Library Link: https://www.enginatics.com/reports/dba-external-table-creation/
 -- Run Report: https://demo.enginatics.com/
 

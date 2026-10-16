@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: FND User Upload
 -- Description: Listing and updating all EBS users and their responsiblities
--- Excel Examle Output: https://www.enginatics.com/example/fnd-user-upload/
+-- Excel Example Output: https://www.enginatics.com/example/fnd-user-upload/
 -- Library Link: https://www.enginatics.com/reports/fnd-user-upload/
 -- Run Report: https://demo.enginatics.com/
 

@@ -1,18 +1,16 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: DBA AWR Interconnect Traffic
 -- Description: Displays information about the usage of an interconnect device by instance in a RAC configuration.
-
-ipq - Parallel query communications
-dlm - Database lock management
-cache - Global cache communications
-
-All other values are internal to Oracle and are not expected to have high usage.
--- Excel Examle Output: https://www.enginatics.com/example/dba-awr-interconnect-traffic/
+-- ipq - Parallel query communications
+-- dlm - Database lock management
+-- cache - Global cache communications
+-- All other values are internal to Oracle and are not expected to have high usage.
+-- Excel Example Output: https://www.enginatics.com/example/dba-awr-interconnect-traffic/
 -- Library Link: https://www.enginatics.com/reports/dba-awr-interconnect-traffic/
 -- Run Report: https://demo.enginatics.com/
 

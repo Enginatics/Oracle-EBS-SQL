@@ -1,25 +1,21 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PA Revenue, Cost, Budgets by Work Breakdown Structure
 -- Description: This Blitz report implements the standard Oracle report: MGT: Revenue, Cost, Budgets by Work Breakdown Structure (XML)
-
-The 'Report Level' parameter determines if the report is run at the Project Level or Task Level
-
-Report Level Parameter:
-Project - will pull back revenue, costs and budgets accumulated at the project level
-Task - will pull back revenue, costs and budgets accumulated at the task level
-
-The report has been extended to pull in additional datapoints as displayed in the Project Status Inquiry Form.
-
-Application: Projects
-Source: MGT: Revenue, Cost, Budgets by Work Breakdown Structure (XML)
-Short Name: PAXBUBSS_XML
-DB package: PA_PAXBUBSS_XMLP_PKG
--- Excel Examle Output: https://www.enginatics.com/example/pa-revenue-cost-budgets-by-work-breakdown-structure/
+-- The 'Report Level' parameter determines if the report is run at the Project Level or Task Level
+-- Report Level Parameter:
+-- Project - will pull back revenue, costs and budgets accumulated at the project level
+-- Task - will pull back revenue, costs and budgets accumulated at the task level
+-- The report has been extended to pull in additional datapoints as displayed in the Project Status Inquiry Form.
+-- Application: Projects
+-- Source: MGT: Revenue, Cost, Budgets by Work Breakdown Structure (XML)
+-- Short Name: PAXBUBSSXML
+-- DB package: PAPAXBUBSSXMLPPKG
+-- Excel Example Output: https://www.enginatics.com/example/pa-revenue-cost-budgets-by-work-breakdown-structure/
 -- Library Link: https://www.enginatics.com/reports/pa-revenue-cost-budgets-by-work-breakdown-structure/
 -- Run Report: https://demo.enginatics.com/
 

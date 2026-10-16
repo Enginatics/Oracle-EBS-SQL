@@ -1,40 +1,46 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'Blitz Upload Example (API) | Oracle EBS SQL Report'
 description: 'Example upload, which can be used as a template by copying (Tools>Copy Report) to create new uploads using an API.'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, Blitz, Example, (API), xxen_upload_example'
 permalink: /Blitz%20Upload%20Example%20%28API%29/
+report_name: 'Blitz Upload Example (API)'
+report_web_name: blitz-upload-example-api
 ---
 
 # Blitz Upload Example (API) – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/blitz-upload-example-api/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/blitz-upload-example-api/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-upload-example-api) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-upload-example-api).
 
 ## Overview
 Example upload, which can be used as a template by copying (Tools>Copy Report) to create new uploads using an API.
+
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-upload-example-api) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 
 ## Report Parameters
 Name
 
 ## Oracle EBS Tables Used
-[xxen_upload_example](https://www.enginatics.com/library/?pg=1&find=xxen_upload_example)
+[xxen_upload_example](https://www.enginatics.com/library/?pg=1&find=xxen_upload_example&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-upload-example-api)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Upload](https://www.enginatics.com/library/?pg=1&category[]=Upload)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-upload-example-api), [Upload](https://www.enginatics.com/library/?pg=1&category%5B%5D=Upload&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-upload-example-api)
 
 ## Related Reports
 [Blitz Upload Example (API with no parameters)](/Blitz%20Upload%20Example%20%28API%20with%20no%20parameters%29/ "Blitz Upload Example (API with no parameters) Oracle EBS SQL Report"), [Blitz Upload Example (API without parameters)](/Blitz%20Upload%20Example%20%28API%20without%20parameters%29/ "Blitz Upload Example (API without parameters) Oracle EBS SQL Report"), [Blitz Upload Example (Interface Table)](/Blitz%20Upload%20Example%20%28Interface%20Table%29/ "Blitz Upload Example (Interface Table) Oracle EBS SQL Report"), [Enginatics Blitz Reports and Uploads](/Enginatics%20Blitz%20Reports%20and%20Uploads/ "Enginatics Blitz Reports and Uploads Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/Blitz%20Upload%20Example%20%28API%29/Blitz%20Upload%20Example%20%28API%29.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-upload-example-api) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [](https://www.enginatics.com/example/blitz-upload-example-api/) |
-| Blitz Report™ XML Import | [Blitz_Upload_Example_API.xml](https://www.enginatics.com/xml/blitz-upload-example-api/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/blitz-upload-example-api/](https://www.enginatics.com/reports/blitz-upload-example-api/) |
+| Excel Example Output | [Example](https://www.enginatics.com/example/blitz-upload-example-api/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-upload-example-api) |
+| Blitz Report™ XML Import | [Blitz_Upload_Example_API.xml](https://www.enginatics.com/xml/blitz-upload-example-api/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-upload-example-api) |
+| SQL Source | [Blitz Upload Example (API).sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/Blitz%20Upload%20Example%20%28API%29/Blitz%20Upload%20Example%20%28API%29.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/blitz-upload-example-api/](https://www.enginatics.com/reports/blitz-upload-example-api/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-upload-example-api) |
 
 ## Executive Summary
 This report serves as a template and example for creating Blitz Report uploads that utilize a custom API. It demonstrates the configuration required to invoke a PL/SQL API for processing uploaded data, providing a starting point for developers building complex data import solutions.
@@ -53,18 +59,17 @@ The "Blitz Upload Example (API)" provides a clear, reusable template for API-bas
 ## Technical Details
 The example uses the `xxen_upload_example` table and demonstrates the standard pattern for API-based uploads within the Blitz Report framework. It serves as a foundational component for developers creating sophisticated data import tools.
 
-
 ---
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-upload-example-api)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-upload-example-api)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-upload-example-api)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-upload-example-api)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-upload-example-api)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-upload-example-api)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-upload-example-api)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

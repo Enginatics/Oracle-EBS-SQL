@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: GL Balance Drilldown
--- Description: Shows GL balance details by code combination. Uses gl_balances for standard queries, gl_je_lines when filtering by journal source/category or using JED balance types.
--- Excel Examle Output: https://www.enginatics.com/example/gl-balance-drilldown/
+-- Description: Shows GL balance details by code combination. Uses glbalances for standard queries, gljelines when filtering by journal source/category or using JED balance types.
+-- Excel Example Output: https://www.enginatics.com/example/gl-balance-drilldown/
 -- Library Link: https://www.enginatics.com/reports/gl-balance-drilldown/
 -- Run Report: https://demo.enginatics.com/
 

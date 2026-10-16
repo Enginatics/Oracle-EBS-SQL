@@ -1,13 +1,13 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: Blitz Report Columns
 -- Description: Report showing all SQL columns of selected Blitz Reports by parsing their SQL on the fly.
-Use the Category or Report Name parameters to scope the results. Running without filters will parse all enabled reports, which may take several minutes.
--- Excel Examle Output: https://www.enginatics.com/example/blitz-report-columns/
+-- Use the Category or Report Name parameters to scope the results. Running without filters will parse all enabled reports, which may take several minutes.
+-- Excel Example Output: https://www.enginatics.com/example/blitz-report-columns/
 -- Library Link: https://www.enginatics.com/reports/blitz-report-columns/
 -- Run Report: https://demo.enginatics.com/
 

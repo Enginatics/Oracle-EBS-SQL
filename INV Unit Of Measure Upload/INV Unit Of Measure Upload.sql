@@ -1,16 +1,15 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: INV Unit Of Measure Upload
 -- Description: INV Unit Of Measure Upload
-======================
-Note: This upload can only be used in R12.2 or later.
-
-This upload can be used to create and update Unit of Measure Classes and Units of Measures
--- Excel Examle Output: https://www.enginatics.com/example/inv-unit-of-measure-upload/
+-- ======================
+-- Note: This upload can only be used in R12.2 or later.
+-- This upload can be used to create and update Unit of Measure Classes and Units of Measures
+-- Excel Example Output: https://www.enginatics.com/example/inv-unit-of-measure-upload/
 -- Library Link: https://www.enginatics.com/reports/inv-unit-of-measure-upload/
 -- Run Report: https://demo.enginatics.com/
 

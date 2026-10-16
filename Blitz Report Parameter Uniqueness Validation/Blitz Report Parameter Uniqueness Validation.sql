@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: Blitz Report Parameter Uniqueness Validation
 -- Description: Validates if there are any duplicate blitz report parameters
--- Excel Examle Output: https://www.enginatics.com/example/blitz-report-parameter-uniqueness-validation/
+-- Excel Example Output: https://www.enginatics.com/example/blitz-report-parameter-uniqueness-validation/
 -- Library Link: https://www.enginatics.com/reports/blitz-report-parameter-uniqueness-validation/
 -- Run Report: https://demo.enginatics.com/
 

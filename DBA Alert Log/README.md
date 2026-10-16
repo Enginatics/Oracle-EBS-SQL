@@ -1,41 +1,50 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'DBA Alert Log | Oracle EBS SQL Report'
 description: 'V$DIAGALERTEXT shows the contents of the XML-based alert log in the Automatic Diagnostic Repository (ADR) for the current container (PDB). You could…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, DBA, Alert, Log, v$diag_alert_ext'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Database Administration, Enginatics, DBA, Alert, Log, v$diag_alert_ext'
 permalink: /DBA%20Alert%20Log/
+report_name: 'DBA Alert Log'
+report_web_name: dba-alert-log
+module: 'Database Administration'
+module_url: /modules/database-administration/
 ---
 
 # DBA Alert Log – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/dba-alert-log/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/dba-alert-log/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-alert-log) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-alert-log).
+**Oracle EBS module:** [Database Administration](/modules/database-administration/ "Oracle EBS Database Administration reports") · [all Database Administration reports](/modules/database-administration/)  
 
 ## Overview
 V$DIAG_ALERT_EXT shows the contents of the XML-based alert log in the Automatic Diagnostic Repository (ADR) for the current container (PDB).
 You could schedule it, for example, in incremental mode to send an email with errors that occured since the last scheduled report run.
 
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-alert-log) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
+
 ## Report Parameters
 Message Text includes, Message Type, Message Level, History Days, Date From, Exceptions and ORA-% only, Incremental Mode
 
 ## Oracle EBS Tables Used
-[v$diag_alert_ext](https://www.enginatics.com/library/?pg=1&find=v$diag_alert_ext)
+[v$diag_alert_ext](https://www.enginatics.com/library/?pg=1&find=v%24diag_alert_ext&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-alert-log)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-alert-log)
 
 ## Related Reports
 [DBA Trace File Contents](/DBA%20Trace%20File%20Contents/ "DBA Trace File Contents Oracle EBS SQL Report"), [QA Collection Plan Upload](/QA%20Collection%20Plan%20Upload/ "QA Collection Plan Upload Oracle EBS SQL Report"), [DBA Database Parameter Validation](/DBA%20Database%20Parameter%20Validation/ "DBA Database Parameter Validation Oracle EBS SQL Report"), [ALR Alerts](/ALR%20Alerts/ "ALR Alerts Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/DBA%20Alert%20Log/DBA%20Alert%20Log.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-alert-log) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [DBA Alert Log - Default 08-Mar-2024 094258.xlsx](https://www.enginatics.com/example/dba-alert-log/) |
-| Blitz Report™ XML Import | [DBA_Alert_Log.xml](https://www.enginatics.com/xml/dba-alert-log/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/dba-alert-log/](https://www.enginatics.com/reports/dba-alert-log/) |
+| Excel Example Output | [DBA Alert Log - Default 08-Mar-2024 094258.xlsx](https://www.enginatics.com/example/dba-alert-log/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-alert-log) |
+| Blitz Report™ XML Import | [DBA_Alert_Log.xml](https://www.enginatics.com/xml/dba-alert-log/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-alert-log) |
+| SQL Source | [DBA Alert Log.sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/DBA%20Alert%20Log/DBA%20Alert%20Log.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/dba-alert-log/](https://www.enginatics.com/reports/dba-alert-log/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-alert-log) |
 
 ## Executive Summary
 The **DBA Alert Log** report provides a direct interface to the Oracle Database's XML-based Alert Log, located within the Automatic Diagnostic Repository (ADR). The Alert Log is the primary chronological record of messages and errors for the database. This report allows DBAs to query, filter, and export these critical system messages without needing to log in to the database server OS.
@@ -64,18 +73,17 @@ The report leverages the ADR infrastructure introduced in Oracle 11g.
 *   **Security**: Provides read-only access to logs without granting OS privileges.
 *   **Efficiency**: Automates the daily check of the alert log via scheduled email delivery.
 
-
 ---
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-alert-log)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-alert-log)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-alert-log)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-alert-log)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-alert-log)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-alert-log)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-alert-log)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: AR Customer Credit Limits
 -- Description: Master data report for customer setup audit of credit amount limits and GL accounts for customer credit management and dunning notices.
--- Excel Examle Output: https://www.enginatics.com/example/ar-customer-credit-limits/
+-- Excel Example Output: https://www.enginatics.com/example/ar-customer-credit-limits/
 -- Library Link: https://www.enginatics.com/reports/ar-customer-credit-limits/
 -- Run Report: https://demo.enginatics.com/
 

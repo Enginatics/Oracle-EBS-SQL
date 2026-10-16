@@ -1,46 +1,43 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Inventory Out-of-Balance
--- Description: Report to show any differences in the period end snapshot that is created when you close the inventory periods.  This represents any differences between the cumulative inventory accounting entries and the onhand valuation of the subinventories and intransit stock locations.
-
-Parameters:
-===========
-Period Name (Closed):  the closed inventory accounting period you wish to report (mandatory).
-Minimum Value Difference:  the minimum difference to report, defaulted to a value of one.  To see all differences enter a value of zero (mandatory).
-Category Set 1:  any item category you wish, typically the Cost or Product Line category set (optional).
-Category Set 2:  any item category you wish, typically the Inventory category set (optional).
-Item Number:  enter the specific item number(s) you wish to report (optional).
-Organization Code:  enter the specific inventory organization(s) you wish to report (optional).
-Operating Unit:  enter the specific operating unit(s) you wish to report (optional).
-Ledger:  enter the specific ledger(s) you wish to report (optional).
-
-//* +=============================================================================+
--- |  Copyright 2006-2024 Douglas Volz Consulting, Inc.
--- |  Permission to use this code is granted provided the original author is
--- |  acknowledged.  No warranties, express or otherwise is included in this permission.
--- +=============================================================================+
--- |
--- |  Original Author: Douglas Volz (doug@volzconsulting.com)
--- |
--- |  Program Name:  xxx_inv_snapshot_diff_rept.sql
--- |
--- |  Version Modified on Modified  by   Description
--- |  ======= =========== ============== =========================================
--- |  1.0     02 APR 2006 Douglas Volz   Initial Coding
--- |  1.14    19 Nov 2015 Douglas Volz   Commented out the Cost Group information.  Not Consistent.
--- |  1.15    17 Jul 2018 Douglas Volz   Now report G/L short name.
--- |  1.16    06 Jan 2020 Douglas Volz   Added Org Code and Operating Unit parameters.
--- |  1.17    30 Apr 2020 Douglas Volz   Changed to multi-language views for the item
--- |                                     master, inventory orgs and operating units.
--- |  1.18    18 May 2020 Douglas Volz   Added language for item status.
--- |  1.19    14 Jun 2024 Douglas Volz   Remove tabs, reinstall parameters and org access controls.
--- +=============================================================================+*/
-
--- Excel Examle Output: https://www.enginatics.com/example/cac-inventory-out-of-balance/
+-- Description: Report to show any differences in the period end snapshot that is created when you close the inventory periods. This represents any differences between the cumulative inventory accounting entries and the onhand valuation of the subinventories and intransit stock locations.
+-- Parameters:
+-- ===========
+-- Period Name (Closed): the closed inventory accounting period you wish to report (mandatory).
+-- Minimum Value Difference: the minimum difference to report, defaulted to a value of one. To see all differences enter a value of zero (mandatory).
+-- Category Set 1: any item category you wish, typically the Cost or Product Line category set (optional).
+-- Category Set 2: any item category you wish, typically the Inventory category set (optional).
+-- Item Number: enter the specific item number(s) you wish to report (optional).
+-- Organization Code: enter the specific inventory organization(s) you wish to report (optional).
+-- Operating Unit: enter the specific operating unit(s) you wish to report (optional).
+-- Ledger: enter the specific ledger(s) you wish to report (optional).
+-- // +=============================================================================+
+-- -- | Copyright 2006-2024 Douglas Volz Consulting, Inc.
+-- -- | Permission to use this code is granted provided the original author is
+-- -- | acknowledged. No warranties, express or otherwise is included in this permission.
+-- -- +=============================================================================+
+-- -- |
+-- -- | Original Author: Douglas Volz (doug@volzconsulting.com)
+-- -- |
+-- -- | Program Name: xxxinvsnapshotdiffrept.sql
+-- -- |
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== ============== =========================================
+-- -- | 1.0 02 APR 2006 Douglas Volz Initial Coding
+-- -- | 1.14 19 Nov 2015 Douglas Volz Commented out the Cost Group information. Not Consistent.
+-- -- | 1.15 17 Jul 2018 Douglas Volz Now report G/L short name.
+-- -- | 1.16 06 Jan 2020 Douglas Volz Added Org Code and Operating Unit parameters.
+-- -- | 1.17 30 Apr 2020 Douglas Volz Changed to multi-language views for the item
+-- -- | master, inventory orgs and operating units.
+-- -- | 1.18 18 May 2020 Douglas Volz Added language for item status.
+-- -- | 1.19 14 Jun 2024 Douglas Volz Remove tabs, reinstall parameters and org access controls.
+-- -- +=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-inventory-out-of-balance/
 -- Library Link: https://www.enginatics.com/reports/cac-inventory-out-of-balance/
 -- Run Report: https://demo.enginatics.com/
 

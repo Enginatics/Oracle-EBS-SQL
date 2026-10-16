@@ -1,15 +1,19 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: AP Expenses
 -- Description: Detail AP expense report listing corresponding AP invoices with status, line details, expense type and expense justification. Including projects task related expenses.
--- Excel Examle Output: https://www.enginatics.com/example/ap-expenses/
+-- When India Localization is installed, the following GST columns are also included: CGST Amount, SGST Amount, IGST Amount, Custom Amount, Unclassified Tax Amount, Taxable Value, HSN SAC Code, CGST Rate, SGST Rate, IGST Rate, GST Supplier Registration No, GST Registration No, GST PAN No, GST TAN No.
+-- Excel Example Output: https://www.enginatics.com/example/ap-expenses/
 -- Library Link: https://www.enginatics.com/reports/ap-expenses/
 -- Run Report: https://demo.enginatics.com/
 
+select x.*
+from
+(
 select
 gl.name ledger,
 hou.name operating_unit,
@@ -61,6 +65,9 @@ aca.stopped_date is null
 &dff_columns
 &lines_columns
 &per_diem_columns
+&il_tax_columns_inner_amt
+&il_tax_columns_inner_rate
+&il_tax_columns_inner_tp
 aerha.expense_report_id
 from
 gl_ledgers gl,
@@ -78,6 +85,7 @@ ap_expense_report_params_all aerpa,
 gl_code_combinations_kfv gcck2,
 gms_awards_all gaa
 &proj_tasks_tables
+&il_from
 where
 1=1 and
 aerha.set_of_books_id=gl.ledger_id and
@@ -94,7 +102,9 @@ aerla.report_line_id=aerda.report_line_id(+) and
 aerda.code_combination_id=gcck2.code_combination_id(+) and
 aerda.award_id=gaa.award_id(+)
 &proj_tasks_joins
+&il_where
+) x
 order by
-report_submitted_date desc,
-aerha.invoice_num
+x.report_submitted_date desc,
+x.expense_report_number
 &order_by

@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: FND Responsibilities
 -- Description: Active responsibilites with active user count and related setup information such as menus, data access sets, security profiles and associated ledgers and operating units.
--- Excel Examle Output: https://www.enginatics.com/example/fnd-responsibilities/
+-- Excel Example Output: https://www.enginatics.com/example/fnd-responsibilities/
 -- Library Link: https://www.enginatics.com/reports/fnd-responsibilities/
 -- Run Report: https://demo.enginatics.com/
 
@@ -80,6 +80,49 @@ x.organization_id=haouv.organization_id(+)
 where
 y.total_length<=4000
 ),
+--every responsibility sees the organizations without org_access rows: list those once (null responsibility), and evaluate org_access_view per responsibility only where it has org_access rows
+oav as (
+select distinct
+listagg(oav.organization_code,chr(10)) within group (order by oav.organization_code) over (partition by oav.resp_application_id, oav.responsibility_id) organization,
+listagg(oav.organization_id,chr(10)) within group (order by oav.organization_code) over (partition by oav.resp_application_id, oav.responsibility_id) organization_id,
+oav.resp_application_id,
+oav.responsibility_id
+from
+(
+select
+greatest(
+sum(lengthb(oav.organization_code)+1) over (partition by oav.resp_application_id, oav.responsibility_id order by oav.organization_code rows between unbounded preceding and current row),
+sum(lengthb(oav.organization_id)+1) over (partition by oav.resp_application_id, oav.responsibility_id order by oav.organization_code rows between unbounded preceding and current row)
+) total_length,
+oav.*
+from
+(
+select
+oav.organization_id,
+oav.organization_code,
+oav.resp_application_id,
+oav.responsibility_id
+from
+org_access_view oav
+where
+(oav.resp_application_id,oav.responsibility_id) in (select oa.resp_application_id, oa.responsibility_id from org_access oa)
+union all
+select
+oav.organization_id,
+oav.organization_code,
+null resp_application_id,
+null responsibility_id
+from
+org_access_view oav
+where
+oav.resp_application_id=fnd_global.resp_appl_id and
+oav.responsibility_id=fnd_global.resp_id and
+oav.organization_id not in (select oa.organization_id from org_access oa where nvl(oa.disable_date,sysdate+1)>=sysdate)
+) oav
+) oav
+where
+oav.total_length<=4000
+),
 z as (
 select /*+ materialize dynamic_sampling(3) */
 y.*,
@@ -89,8 +132,8 @@ gl.ledger_id,
 prof.security_profile,
 case when prof.security_profile_id is not null then prof.operating_unit else (select haouv.name from hr_all_organization_units_vl haouv where y.org_id=haouv.organization_id) end operating_unit,
 case when prof.security_profile_id is not null then prof.operating_unit_id else y.org_id end operating_unit_id,
-oav.organization,
-oav.organization_id
+coalesce(oav.organization,(select oav_u.organization from oav oav_u where oav_u.responsibility_id is null)) organization,
+coalesce(oav.organization_id,(select oav_u.organization_id from oav oav_u where oav_u.responsibility_id is null)) organization_id
 from
 (
 select
@@ -112,9 +155,9 @@ coalesce(
 (select fpov.profile_option_value from fnd_profile_option_values fpov where fpov.application_id=0 and fpov.profile_option_id=1991 and fpov.level_id=10003 and frv.responsibility_id=fpov.level_value and frv.application_id=fpov.level_value_application_id),
 (select fpov.profile_option_value from fnd_profile_option_values fpov where fpov.application_id=0 and fpov.profile_option_id=1991 and fpov.level_id=10001 and fpov.level_value=0)
 ) org_id,
-coalesce(
-(select to_number(fpov.profile_option_value) from fnd_profile_option_values fpov where fpov.application_id=101 and fpov.profile_option_id=(select fpo.profile_option_id from fnd_profile_options fpo where fpo.profile_option_name='GL_ACCESS_SET_ID') and fpov.level_id=10003 and frv.responsibility_id=fpov.level_value and frv.application_id=fpov.level_value_application_id),
-(select to_number(fpov.profile_option_value) from fnd_profile_option_values fpov where fpov.application_id=101 and fpov.profile_option_id=(select fpo.profile_option_id from fnd_profile_options fpo where fpo.profile_option_name='GL_ACCESS_SET_ID') and fpov.level_id=10001 and fpov.level_value=0)
+coalesce( /*profile_option_value is free text: skip a non-numeric value instead of converting it*/
+(select to_number(fpov.profile_option_value) from fnd_profile_option_values fpov where fpov.application_id=101 and fpov.profile_option_id=(select fpo.profile_option_id from fnd_profile_options fpo where fpo.profile_option_name='GL_ACCESS_SET_ID') and fpov.level_id=10003 and frv.responsibility_id=fpov.level_value and frv.application_id=fpov.level_value_application_id and translate(fpov.profile_option_value,'x0123456789','x') is null),
+(select to_number(fpov.profile_option_value) from fnd_profile_option_values fpov where fpov.application_id=101 and fpov.profile_option_id=(select fpo.profile_option_id from fnd_profile_options fpo where fpo.profile_option_name='GL_ACCESS_SET_ID') and fpov.level_id=10001 and fpov.level_value=0 and translate(fpov.profile_option_value,'x0123456789','x') is null)
 ) gl_access_set_id,
 xxen_util.user_name(frv.created_by) responsibility_created_by,
 xxen_util.client_time(frv.creation_date) responsibility_creation_date,
@@ -152,26 +195,7 @@ frv.menu_id=fmv.menu_id(+) and
 fav.application_short_name=fmpi.application_short_name(+)
 ) y,
 prof,
-(
-select distinct
-listagg(oav.organization_code,chr(10)) within group (order by oav.organization_code) over (partition by oav.resp_application_id, oav.responsibility_id) organization,
-listagg(oav.organization_id,chr(10)) within group (order by oav.organization_code) over (partition by oav.resp_application_id, oav.responsibility_id) organization_id,
-oav.resp_application_id,
-oav.responsibility_id
-from
-(
-select
-greatest(
-sum(lengthb(oav.organization_code)+1) over (partition by oav.resp_application_id, oav.responsibility_id order by oav.organization_code rows between unbounded preceding and current row),
-sum(lengthb(oav.organization_id)+1) over (partition by oav.resp_application_id, oav.responsibility_id order by oav.organization_code rows between unbounded preceding and current row)
-) total_length,
-oav.*
-from
-org_access_view oav
-) oav
-where
-oav.total_length<=4000
-) oav,
+oav,
 gl
 where
 y.gl_access_set_id=gl.access_set_id(+) and

@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: DBA Table Modifications
--- Description: If table monitoring is activated, dba_tab_modifications shows the number of rows modified since the last time a table was analyzed.
--- Excel Examle Output: https://www.enginatics.com/example/dba-table-modifications/
+-- Description: If table monitoring is activated, dbatabmodifications shows the number of rows modified since the last time a table was analyzed.
+-- Excel Example Output: https://www.enginatics.com/example/dba-table-modifications/
 -- Library Link: https://www.enginatics.com/reports/dba-table-modifications/
 -- Run Report: https://demo.enginatics.com/
 

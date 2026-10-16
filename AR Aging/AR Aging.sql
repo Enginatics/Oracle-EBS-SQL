@@ -1,51 +1,38 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: AR Aging
 -- Description: The AR Aging report allows users to review information about their open receivables items at a specified point in time (the As of Date). The report will show the aging of the open receivables items based on the selected aging bucket.
-
-- The report includes detailed (Transaction Level) or summary (Customer Level) information about customers current and past due invoices, debit memos, and chargebacks.
-- Optionally the report can include details of credit memos, on-account credits, unidentified payments, on-account and unapplied cash amounts, and receipts at risk.
-- Optionally the report allows the open receivables items to be revalued to a different currency on a specified revaluation date using a specified revaluation currency rate type.
-- All amounts in the report are shown in functional currency, except where the report is run for a specified entered currency, in which case the amounts are shown in the specified entered currency.
-
-Report Parameters:
-
-Reporting Level: The report can be run by Ledger or by Operating Unit. 
-
-Reporting Context: The Ledgers or Operating Units the report is to be run for. Only Ledgers or Operating Units accessible to the current responsibility maybe selected. The report supports the multiple selection of Ledgers or Operating Units allowing to be run for more than one Ledger or Operating Unit. If the Reporting Context is left null, then the report will be run for all Operating Units accessible to the current responsibility. 
-
-Report Summary: The report is summarized at either the Customer Level (Customer Summary) or at Transaction Level (Invoice Summary). The Customer Summary report includes open receivables totals at the customer level only and does not include transaction level details. The Invoice Summary report includes details and the outstanding amounts of the open receivables transactions.
-
-As of Date: The report can be run to provide an aging snapshot at a specified point in time in the past. By default, the As of Date will be the current date. 
-
-Aging Bucket Name:  The Aging Bucket Name determine the Aging Buckets to be used for aging the open receivables items. The aging amount columns in the report are dynamically determined based on the selected Aging Buket. 
-
-Aging Basis: Transactions can be aged based on their Due Date (default) or on their Transaction (Invoice) Date.
-
-Show On Account: The report can optionally include the details and/or amounts for credit memos, on-account credits, unidentified payments, on-account and unapplied cash amounts.
-The options for displaying these are:
-Do Not Show – they are not included in the report.
-Summarize – the amounts are shown as separate columns in the report and are not included in the Aging Amount report columns.
-Age – the amounts are included in the Aging Amount report columns.
-
-Show Receipts At Risk: The report can optionally include the details and/or amounts for receipts at risk.
-Do Not Show – they are not included in the report.
-Summarize – the amounts are shown as separate a column in the report and are not included in the Aging Amount report columns.
-Age – the amounts are included in the Aging Amount report columns.
-
-Entered Currency: Restrict the report to open receivables items entered in the specified currency. By default, all amounts in the report are shown in functional currency, except in the case the report is run in for a specified Entered Currency. In this case the amounts are shown in the specified entered currency. 
-
-Revaluation Date, Revaluation Currency, Revaluation Rate Type: 
-If a revaluation date, currency, and rate type are specified, the report will include additional columns showing the open receivables amounts and aging in the specified revaluation currency.
-
-Additionally, there are several additional parameters which can be used to restrict the data returned by the report.
-
-Show SLA Accounting: Set to Yes to fetch SLA receivable accounting details for each transaction.
--- Excel Examle Output: https://www.enginatics.com/example/ar-aging/
+-- - The report includes detailed (Transaction Level) or summary (Customer Level) information about customers current and past due invoices, debit memos, and chargebacks.
+-- - Optionally the report can include details of credit memos, on-account credits, unidentified payments, on-account and unapplied cash amounts, and receipts at risk.
+-- - Optionally the report allows the open receivables items to be revalued to a different currency on a specified revaluation date using a specified revaluation currency rate type.
+-- - All amounts in the report are shown in functional currency, except where the report is run for a specified entered currency, in which case the amounts are shown in the specified entered currency.
+-- Report Parameters:
+-- Reporting Level: The report can be run by Ledger or by Operating Unit.
+-- Reporting Context: The Ledgers or Operating Units the report is to be run for. Only Ledgers or Operating Units accessible to the current responsibility maybe selected. The report supports the multiple selection of Ledgers or Operating Units allowing to be run for more than one Ledger or Operating Unit. If the Reporting Context is left null, then the report will be run for all Operating Units accessible to the current responsibility.
+-- Report Summary: The report is summarized at either the Customer Level (Customer Summary) or at Transaction Level (Invoice Summary). The Customer Summary report includes open receivables totals at the customer level only and does not include transaction level details. The Invoice Summary report includes details and the outstanding amounts of the open receivables transactions.
+-- As of Date: The report can be run to provide an aging snapshot at a specified point in time in the past. By default, the As of Date will be the current date.
+-- Aging Bucket Name: The Aging Bucket Name determine the Aging Buckets to be used for aging the open receivables items. The aging amount columns in the report are dynamically determined based on the selected Aging Buket.
+-- Aging Basis: Transactions can be aged based on their Due Date (default) or on their Transaction (Invoice) Date.
+-- Show On Account: The report can optionally include the details and/or amounts for credit memos, on-account credits, unidentified payments, on-account and unapplied cash amounts.
+-- The options for displaying these are:
+-- Do Not Show – they are not included in the report.
+-- Summarize – the amounts are shown as separate columns in the report and are not included in the Aging Amount report columns.
+-- Age – the amounts are included in the Aging Amount report columns.
+-- Show Receipts At Risk: The report can optionally include the details and/or amounts for receipts at risk.
+-- Do Not Show – they are not included in the report.
+-- Summarize – the amounts are shown as separate a column in the report and are not included in the Aging Amount report columns.
+-- Age – the amounts are included in the Aging Amount report columns.
+-- Entered Currency: Restrict the report to open receivables items entered in the specified currency.
+-- Revaluation Date, Revaluation Currency, Revaluation Rate Type:
+-- If a revaluation date, currency, and rate type are specified, the report will include additional columns showing the open receivables amounts and aging in the specified revaluation currency.
+-- Additionally, there are several additional parameters which can be used to restrict the data returned by the report.
+-- Show SLA Accounting: Set to Yes to fetch SLA receivable accounting details for each transaction.
+-- Exclude Unaccounted: Set to Yes to exclude transactions and receipts for which accounting has not been created, matching the Oracle Aging - 7 Buckets - By Account Report.
+-- Excel Example Output: https://www.enginatics.com/example/ar-aging/
 -- Library Link: https://www.enginatics.com/reports/ar-aging/
 -- Run Report: https://demo.enginatics.com/
 
@@ -69,10 +56,10 @@ x1.collector collector,
 x1.revaluation_from_currency amounts_currency,
 --
 nvl(sum(case when nvl(x1.rk,1)=1 then x1.amt_due_original else 0 end),0)     original_amount,
-nvl(sum(case when nvl(x1.rk,1)=1 then x1.amt_due_remaining else 0 end),0)    outstanding_amount,
+nvl(sum(case when x1.row_rk=1 then x1.amt_due_remaining else 0 end),0)    outstanding_amount,
 nvl(sum(
  case
- when nvl(x1.rk,1)=1
+ when x1.row_rk=1
  and  decode(:p_age_basis,'Due Date',x1.days_past_due,x1.days_past_trx)>0
  then x1.amt_due_remaining
  else 0
@@ -169,7 +156,8 @@ nvl(round(sla.accounted_dr*x.installment_ratio, 2), case when x.rec_acctd_amount
 nvl(round(sla.accounted_cr * x.installment_ratio, 2), case when x.rec_acctd_amount < 0 then abs(x.rec_acctd_amount) else 0 end) accounted_cr,
 nvl(round(case x.sla_entity_code when 'RECEIPTS' then sla.accounted_dr else sla_net.net_accounted_dr end*x.installment_ratio,2), case when x.rec_acctd_amount >= 0 then x.rec_acctd_amount else 0 end) net_accounted_dr,
 nvl(round(case x.sla_entity_code when 'RECEIPTS' then sla.accounted_cr else sla_net.net_accounted_cr end*x.installment_ratio,2), case when x.rec_acctd_amount < 0 then abs(x.rec_acctd_amount) else 0 end) net_accounted_cr,
-row_number() over (partition by x.payment_sched_id order by nvl(sla.code_combination_id, x.code_combination_id)) rk,
+row_number() over (partition by x.payment_sched_id order by x.invoice_type, x.class, x.code_combination_id, x.status_group, sla.code_combination_id) rk,
+row_number() over (partition by x.payment_sched_id, x.invoice_type, x.class, x.code_combination_id, x.status_group order by sla.code_combination_id) row_rk,
 x.sla_entity_code
 from
 (-- x start
@@ -234,11 +222,12 @@ gld.acctd_amount rec_acctd_amount,
 ps.customer_trx_id,
 'TRANSACTIONS' sla_entity_code,
 ps.customer_trx_id sla_source_id,
-ps.amount_due_original/nvl(
+ps.amount_due_original/xxen_util.zero_to_null(
 (select sum(ps2.amount_due_original) 
 from ar_payment_schedules ps2 
 where ps2.customer_trx_id=ps.customer_trx_id and
-ps2.class<>'PMT'), 0) installment_ratio
+ps2.class<>'PMT')) installment_ratio,
+to_char(null) status_group
 from
 hz_cust_accounts hca,
 hz_parties hp,
@@ -431,7 +420,7 @@ ps.customer_site_use_id ,
 ps.customer_trx_id,
 ps.payment_schedule_id,
 ps.class class,
-nvl(ct.primary_salesrep_id,-3) primary_salesrep_id,
+nvl((select distinct ct.primary_salesrep_id from ar_adjustments adj, ra_customer_trx ct where ps.customer_trx_id=adj.chargeback_customer_trx_id and ps.org_id=adj.org_id and adj.customer_trx_id=ct.customer_trx_id and adj.org_id=ct.org_id),-3) primary_salesrep_id, --a reversed chargeback adjustment carries the same chargeback_customer_trx_id
 ps.term_id,
 ps.trx_date,
 ps.due_date,
@@ -449,18 +438,12 @@ ps.invoice_currency_code,
 nvl(ps.exchange_rate, 1) exchange_rate,
 ps.cons_inv_id
 from
-ar_payment_schedules ps,
-ra_customer_trx ct,
-ar_adjustments adj
+ar_payment_schedules ps
 where
 ps.gl_date <= :p_in_as_of_date_low
 and ps.gl_date_closed  > :p_in_as_of_date_low
 and decode(upper(:p_in_currency),null, ps.invoice_currency_code, upper(:p_in_currency))=ps.invoice_currency_code
 and ps.class='CB'
-and ps.customer_trx_id=adj.chargeback_customer_trx_id (+)
-and ps.org_id=adj.org_id (+)
-and adj.customer_trx_id=ct.customer_trx_id (+)
-and adj.org_id=ct.org_id (+)
 and xxen_ar_arxagrw_pkg.include_org_id(ps.org_id)='Y'
 ) a
 group by
@@ -485,7 +468,11 @@ a.invoice_currency_code,
 a.exchange_rate
 ) ps,
 ar_cons_inv ci,
-ra_salesreps_all sales,
+(
+select rsa.salesrep_id, rsa.org_id, rsa.name, rsa.resource_id from ra_salesreps_all rsa where rsa.org_id is not null
+union all
+select rsa.salesrep_id, hou.organization_id, rsa.name, rsa.resource_id from ra_salesreps_all rsa, hr_operating_units hou where rsa.org_id is null and (rsa.salesrep_id,hou.organization_id) not in (select rsa2.salesrep_id, rsa2.org_id from ra_salesreps_all rsa2 where rsa2.org_id is not null)
+) sales,
 jtf_rs_resource_extns_vl jrrev,
 hz_cust_site_uses site,
 hz_cust_acct_sites acct_site,
@@ -530,9 +517,10 @@ and gsob.set_of_books_id=rct.set_of_books_id
 &lp_bal_seg_high
 &lp_acc_seg_low
 &lp_acc_seg_high
+&lp_accounted_trx
 and ps.cons_inv_id=ci.cons_inv_id(+)
 and nvl(ps.primary_salesrep_id,-3)=sales.salesrep_id
-and sales.org_id=ps.org_id
+and nvl(sales.org_id,ps.org_id)=ps.org_id
 and jrrev.resource_id=sales.resource_id
 and xxen_ar_arxagrw_pkg.include_org_id(ps.org_id)='Y'
 and gld.org_id=ps.org_id
@@ -601,13 +589,18 @@ decode(nvl2(:p_in_currency,'N','Y'), 'Y', nvl(-SUM(app.acctd_amount), 0), nvl(-S
 ps.customer_trx_id,
 'RECEIPTS' sla_entity_code,
 ps.cash_receipt_id sla_source_id,
-1 installment_ratio
+1 installment_ratio,
+decode( app.status, 'UNID', 'UNID','OTHER ACC','OTHER ACC','UNAPP') status_group
 from
 hz_cust_accounts hca,
 hz_parties hp,
 ar_payment_schedules ps,
 ar_cons_inv ci,
-ra_salesreps_all sales,
+(
+select rsa.salesrep_id, rsa.org_id, rsa.name, rsa.resource_id from ra_salesreps_all rsa where rsa.org_id is not null
+union all
+select rsa.salesrep_id, hou.organization_id, rsa.name, rsa.resource_id from ra_salesreps_all rsa, hr_operating_units hou where rsa.org_id is null and (rsa.salesrep_id,hou.organization_id) not in (select rsa2.salesrep_id, rsa2.org_id from ra_salesreps_all rsa2 where rsa2.org_id is not null)
+) sales,
 jtf_rs_resource_extns_vl jrrev,
 hz_cust_site_uses site,
 hz_cust_acct_sites acct_site,
@@ -648,6 +641,7 @@ and nvl( ps.receipt_confirmed_flag, 'Y' )='Y'
 &lp_bal_seg_high
 &lp_acc_seg_low
 &lp_acc_seg_high
+&lp_accounted_app
 and app.org_id=ps.org_id
 ) app
 where
@@ -662,7 +656,7 @@ and acr.cash_receipt_id=ps.cash_receipt_id
 and gsob.set_of_books_id=acr.set_of_books_id
 and ps.cons_inv_id=ci.cons_inv_id(+)
 and sales.salesrep_id=-3
-and sales.org_id =ps.org_id
+and nvl(sales.org_id,ps.org_id)=ps.org_id
 and jrrev.resource_id=sales.resource_id
 and site.org_id (+)=ps.org_id
 and 2=2
@@ -772,7 +766,8 @@ decode(nvl2(:p_in_currency,'N','Y'), 'Y', crh.acctd_amount, crh.amount) rec_acct
 ps.customer_trx_id,
 'RECEIPTS' sla_entity_code,
 cr.cash_receipt_id sla_source_id,
-1 installment_ratio
+1 installment_ratio,
+to_char(null) status_group
 from
 hz_cust_accounts hca,
 hz_parties hp,
@@ -785,7 +780,11 @@ hz_locations loc,
 ar_cash_receipts cr,
 ar_cash_receipt_history crh,
 gl_code_combinations c,
-ra_salesreps_all sales,
+(
+select rsa.salesrep_id, rsa.org_id, rsa.name, rsa.resource_id from ra_salesreps_all rsa where rsa.org_id is not null
+union all
+select rsa.salesrep_id, hou.organization_id, rsa.name, rsa.resource_id from ra_salesreps_all rsa, hr_operating_units hou where rsa.org_id is null and (rsa.salesrep_id,hou.organization_id) not in (select rsa2.salesrep_id, rsa2.org_id from ra_salesreps_all rsa2 where rsa2.org_id is not null)
+) sales,
 jtf_rs_resource_extns_vl jrrev,
 gl_sets_of_books gsob
 where
@@ -821,9 +820,10 @@ and gsob.set_of_books_id=cr.set_of_books_id
 &lp_bal_seg_high
 &lp_acc_seg_low
 &lp_acc_seg_high
+&lp_accounted_risk
 and ps.cons_inv_id=ci.cons_inv_id(+)
 and sales.salesrep_id=-3
-and sales.org_id=ps.org_id
+and nvl(sales.org_id,ps.org_id)=ps.org_id
 and jrrev.resource_id=sales.resource_id
 and crh.org_id=ps.org_id
 and cr.org_id=ps.org_id
@@ -891,17 +891,22 @@ to_number(null) rec_acctd_amount,
 ps.customer_trx_id,
 'TRANSACTIONS' sla_entity_code,
 ps.customer_trx_id sla_source_id,
-ps.amount_due_original/nvl(
+ps.amount_due_original/xxen_util.zero_to_null(
 (select sum(ps2.amount_due_original) 
 from ar_payment_schedules ps2 
 where ps2.customer_trx_id=ps.customer_trx_id 
-and ps2.class<>'PMT'), 0) installment_ratio
+and ps2.class<>'PMT')) installment_ratio,
+to_char(null) status_group
 from
 hz_cust_accounts hca,
 hz_parties hp,
 ar_payment_schedules ps,
 ar_cons_inv ci,
-ra_salesreps_all sales,
+(
+select rsa.salesrep_id, rsa.org_id, rsa.name, rsa.resource_id from ra_salesreps_all rsa where rsa.org_id is not null
+union all
+select rsa.salesrep_id, hou.organization_id, rsa.name, rsa.resource_id from ra_salesreps_all rsa, hr_operating_units hou where rsa.org_id is null and (rsa.salesrep_id,hou.organization_id) not in (select rsa2.salesrep_id, rsa2.org_id from ra_salesreps_all rsa2 where rsa2.org_id is not null)
+) sales,
 jtf_rs_resource_extns_vl jrrev,
 hz_cust_site_uses site,
 hz_cust_acct_sites acct_site,
@@ -946,12 +951,13 @@ and gsob.set_of_books_id=ct.set_of_books_id
 &lp_bal_seg_high
 &lp_acc_seg_low
 &lp_acc_seg_high
+&lp_accounted_br
 and ps.cons_inv_id=ci.cons_inv_id(+)
 and ps.customer_id=hca.cust_account_id
 and ps.customer_trx_id=ct.customer_trx_id
 and ct.customer_trx_id=th.customer_trx_id
 and nvl(ct.primary_salesrep_id,-3)=sales.salesrep_id
-and sales.org_id=ct.org_id
+and nvl(sales.org_id,ct.org_id)=ct.org_id
 and jrrev.resource_id=sales.resource_id
 and ct.org_id=ps.org_id
 and site.org_id=ps.org_id
@@ -1145,8 +1151,7 @@ x1.order_credit_limits,
 x1.collector,
 x1.revaluation_from_currency,
 x1.rec_code_combination_id,
-x1.reval_conv_rate,
-x1.purchase_order
+x1.reval_conv_rate
 &lp_invoice_cols_g
 order by
 fnd_flex_xml_publisher_apis.process_kff_combination_1('lp_acct_flex_bal_seg', 'SQLGL', 'GL#', x1.chart_of_accounts_id, null, x1.code_combination_id, 'GL_BALANCING', 'Y', 'VALUE'),

@@ -1,40 +1,49 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'CSI Installed Base Summary by Organization | Oracle EBS SQL Report'
 description: 'Count of installed base products by hierarchy type (parent / child), instance usage and related organizations, such as sold from and owner operating unit…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, CSI, Installed, Base, Summary, hz_cust_accounts, hz_cust_acct_sites_all, hz_cust_site_uses_all'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Installed Base, Enginatics, CSI, Installed, Base, Summary, hz_cust_accounts, hz_cust_acct_sites_all, hz_cust_site_uses_all'
 permalink: /CSI%20Installed%20Base%20Summary%20by%20Organization/
+report_name: 'CSI Installed Base Summary by Organization'
+report_web_name: csi-installed-base-summary-by-organization
+module: 'Installed Base'
+module_url: /modules/installed-base/
 ---
 
 # CSI Installed Base Summary by Organization – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/csi-installed-base-summary-by-organization/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/csi-installed-base-summary-by-organization/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=csi-installed-base-summary-by-organization) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=csi-installed-base-summary-by-organization).
+**Oracle EBS module:** [Installed Base](/modules/installed-base/ "Oracle EBS Installed Base reports") · [all Installed Base reports](/modules/installed-base/)  
 
 ## Overview
 Count of installed base products by hierarchy type (parent / child), instance usage and related organizations, such as sold from and owner operating unit, last validation and master inventory organization
+
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=csi-installed-base-summary-by-organization) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 
 ## Report Parameters
 Show Status
 
 ## Oracle EBS Tables Used
-[hz_cust_accounts](https://www.enginatics.com/library/?pg=1&find=hz_cust_accounts), [hz_cust_acct_sites_all](https://www.enginatics.com/library/?pg=1&find=hz_cust_acct_sites_all), [hz_cust_site_uses_all](https://www.enginatics.com/library/?pg=1&find=hz_cust_site_uses_all), [hr_all_organization_units_vl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_vl), [csi_item_instances](https://www.enginatics.com/library/?pg=1&find=csi_item_instances), [csi_ii_relationships](https://www.enginatics.com/library/?pg=1&find=csi_ii_relationships), [hz_parties](https://www.enginatics.com/library/?pg=1&find=hz_parties), [csi_i_org_assignments](https://www.enginatics.com/library/?pg=1&find=csi_i_org_assignments), [fnd_user](https://www.enginatics.com/library/?pg=1&find=fnd_user), [csi_instance_statuses](https://www.enginatics.com/library/?pg=1&find=csi_instance_statuses)
+[hz_cust_accounts](https://www.enginatics.com/library/?pg=1&find=hz_cust_accounts&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=csi-installed-base-summary-by-organization), [hz_cust_acct_sites_all](https://www.enginatics.com/library/?pg=1&find=hz_cust_acct_sites_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=csi-installed-base-summary-by-organization), [hz_cust_site_uses_all](https://www.enginatics.com/library/?pg=1&find=hz_cust_site_uses_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=csi-installed-base-summary-by-organization), [hr_all_organization_units_vl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=csi-installed-base-summary-by-organization), [csi_item_instances](https://www.enginatics.com/library/?pg=1&find=csi_item_instances&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=csi-installed-base-summary-by-organization), [csi_ii_relationships](https://www.enginatics.com/library/?pg=1&find=csi_ii_relationships&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=csi-installed-base-summary-by-organization), [hz_parties](https://www.enginatics.com/library/?pg=1&find=hz_parties&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=csi-installed-base-summary-by-organization), [csi_i_org_assignments](https://www.enginatics.com/library/?pg=1&find=csi_i_org_assignments&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=csi-installed-base-summary-by-organization), [fnd_user](https://www.enginatics.com/library/?pg=1&find=fnd_user&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=csi-installed-base-summary-by-organization), [csi_instance_statuses](https://www.enginatics.com/library/?pg=1&find=csi_instance_statuses&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=csi-installed-base-summary-by-organization)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=csi-installed-base-summary-by-organization)
 
 ## Related Reports
-[OKL Termination Quotes](/OKL%20Termination%20Quotes/ "OKL Termination Quotes Oracle EBS SQL Report"), [OKS Service Contract Line Upload](/OKS%20Service%20Contract%20Line%20Upload/ "OKS Service Contract Line Upload Oracle EBS SQL Report"), [CSI Customer Products Summary](/CSI%20Customer%20Products%20Summary/ "CSI Customer Products Summary Oracle EBS SQL Report"), [WSH Shipping/Delivery Transactions](/WSH%20Shipping-Delivery%20Transactions/ "WSH Shipping/Delivery Transactions Oracle EBS SQL Report"), [CAC Intercompany SO Price List vs. Item Cost Comparison](/CAC%20Intercompany%20SO%20Price%20List%20vs-%20Item%20Cost%20Comparison/ "CAC Intercompany SO Price List vs. Item Cost Comparison Oracle EBS SQL Report"), [AR Customers and Sites](/AR%20Customers%20and%20Sites/ "AR Customers and Sites Oracle EBS SQL Report")
+[CSI Customer Products Summary](/CSI%20Customer%20Products%20Summary/ "CSI Customer Products Summary Oracle EBS SQL Report"), [OKL Termination Quotes](/OKL%20Termination%20Quotes/ "OKL Termination Quotes Oracle EBS SQL Report"), [OKS Service Contract Line Upload](/OKS%20Service%20Contract%20Line%20Upload/ "OKS Service Contract Line Upload Oracle EBS SQL Report"), [AR Transactions and Lines 11i](/AR%20Transactions%20and%20Lines%2011i/ "AR Transactions and Lines 11i Oracle EBS SQL Report"), [CS Service Requests](/CS%20Service%20Requests/ "CS Service Requests Oracle EBS SQL Report"), [CAC Intercompany SO Price List vs. Item Cost Comparison](/CAC%20Intercompany%20SO%20Price%20List%20vs-%20Item%20Cost%20Comparison/ "CAC Intercompany SO Price List vs. Item Cost Comparison Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/CSI%20Installed%20Base%20Summary%20by%20Organization/CSI%20Installed%20Base%20Summary%20by%20Organization.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=csi-installed-base-summary-by-organization) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [CSI Installed Base Summary by Organization 04-Apr-2026 123137.xlsx](https://www.enginatics.com/example/csi-installed-base-summary-by-organization/) |
-| Blitz Report™ XML Import | [CSI_Installed_Base_Summary_by_Organization.xml](https://www.enginatics.com/xml/csi-installed-base-summary-by-organization/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/csi-installed-base-summary-by-organization/](https://www.enginatics.com/reports/csi-installed-base-summary-by-organization/) |
+| Excel Example Output | [CSI Installed Base Summary by Organization 04-Apr-2026 123137.xlsx](https://www.enginatics.com/example/csi-installed-base-summary-by-organization/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=csi-installed-base-summary-by-organization) |
+| Blitz Report™ XML Import | [CSI_Installed_Base_Summary_by_Organization.xml](https://www.enginatics.com/xml/csi-installed-base-summary-by-organization/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=csi-installed-base-summary-by-organization) |
+| SQL Source | [CSI Installed Base Summary by Organization.sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/CSI%20Installed%20Base%20Summary%20by%20Organization/CSI%20Installed%20Base%20Summary%20by%20Organization.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/csi-installed-base-summary-by-organization/](https://www.enginatics.com/reports/csi-installed-base-summary-by-organization/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=csi-installed-base-summary-by-organization) |
 
 ## Executive Summary
 The **CSI Installed Base Summary by Organization** report provides a statistical overview of the Installed Base, aggregated by organization and hierarchy. It counts the number of item instances based on their usage (e.g., "Sold To," "Ship To") and their relationship within the system (Parent/Child). This high-level view is useful for operational reporting and validating data migration or synchronization processes.
@@ -67,18 +76,17 @@ The report aggregates data from `CSI_ITEM_INSTANCES` and `CSI_II_RELATIONSHIPS`.
 *   **Data Quality**: Helps identify "orphan" records or instances with invalid organizational assignments.
 *   **Strategic Planning**: Provides the volume data needed to plan for storage or service capacity.
 
-
 ---
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=csi-installed-base-summary-by-organization)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=csi-installed-base-summary-by-organization)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=csi-installed-base-summary-by-organization)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=csi-installed-base-summary-by-organization)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=csi-installed-base-summary-by-organization)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=csi-installed-base-summary-by-organization)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=csi-installed-base-summary-by-organization)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

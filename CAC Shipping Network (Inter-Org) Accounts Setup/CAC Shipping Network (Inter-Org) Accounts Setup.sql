@@ -1,59 +1,58 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Shipping Network (Inter-Org) Accounts Setup
--- Description: Report to show accounts used for the inter-org shipping network.  If the accounts are missing or invalid the account segments are shown as blank entries.
-
-/* +=============================================================================+
--- |  Copyright 2009 - 2020 Douglas Volz Consulting, Inc.                        |
--- |  All rights reserved.                                                       |
--- |  Permission to use this code is granted provided the original author is     |
--- |  acknowledged.  No warranties, express or otherwise is included in this     |
--- |  permission.                                                                |
--- +=============================================================================+
--- |
--- |  Original Author: Douglas Volz (doug@volzconsulting.com)
--- |
--- |  Program Name:  xxx_interorg_setup_accts_rept.sql
--- |
--- |  Parameters:
--- |  p_from_org_code       -- Specific from inventory organization you wish to report (optional)
--- |  p_from_operating_unit -- From operating Unit you wish to report, leave blank for all
--- |                           operating units (optional) 
--- |  p_ledger              -- general ledger you wish to report, leave blank for all
--- |                           ledgers (optional) 
--- |  Description:
--- |  Report to show accounts used for the inter-org shipping network.  If the
--- |  accounts are missing or invalid the account segments are shown as blank entries.
--- | 
--- |  Version Modified on Modified  by   Description
--- |  ======= =========== ============== =========================================
--- |  1.0     24 Nov 2009 Douglas Volz   Initial Coding
--- |  1.1     28 Oct 2010 Douglas Volz   Added ledger parameter
--- |  1.2     25 Sep 2014 Douglas Volz   Removed mfg_lookup for FOB point, was 
--- |                                     skipping direct transfers
--- |  1.3     07 Jan 2015 Douglas Volz   Minor bug fixes
--- |  1.4     08 Oct 2015 Douglas Volz   Modify for latest client's COA
--- |  1.5     06 Oct 2016 Douglas Volz   Modified for latest client's COA
--- |  1.6     16 Jan 2017 Douglas Volz   Added Internal Order Flag Required,
--- |                                     Elemental Visibility Enabled and
--- |                                     Profit in Inventory Account
--- |  1.7     21 Jan 2017 Douglas Volz   Added Manual Receipt required for expenses flag
--- |  1.8     17 Jul 2018 Douglas Volz   Modified chart of accounts for client
--- |  1.9     16 Oct 2018 Douglas Volz   Retrofitted to Release 11i and added To-Org
--- |                                     Operating Unit
--- |  1.10    18 Oct 2018 Douglas Volz   Added InterOrg Transfer Code and Percentage
--- |  1.11    11 Jul 2019 Douglas Volz   Changed to G/L short name, chg to Release 12
--- |  1.12    17 Jan 2020 Douglas Volz   Add Org Code and Operating Unit parameters.
--- |  1.13    20 Apr 2020 Douglas Volz   Add outer join for gl code combinations, for
--- |                                     invalid or missing accounts (CCIDs).
--- |  1.14    27 Apr 2020 Douglas Volz   Changed to multi-language views for the 
--- |                                     inventory orgs and operating units.
--- +=============================================================================+*/
--- Excel Examle Output: https://www.enginatics.com/example/cac-shipping-network-inter-org-accounts-setup/
+-- Description: Report to show accounts used for the inter-org shipping network. If the accounts are missing or invalid the account segments are shown as blank entries.
+-- / +=============================================================================+
+-- -- | Copyright 2009 - 2020 Douglas Volz Consulting, Inc. |
+-- -- | All rights reserved. |
+-- -- | Permission to use this code is granted provided the original author is |
+-- -- | acknowledged. No warranties, express or otherwise is included in this |
+-- -- | permission. |
+-- -- +=============================================================================+
+-- -- |
+-- -- | Original Author: Douglas Volz (doug@volzconsulting.com)
+-- -- |
+-- -- | Program Name: xxxinterorgsetupacctsrept.sql
+-- -- |
+-- -- | Parameters:
+-- -- | pfromorgcode -- Specific from inventory organization you wish to report (optional)
+-- -- | pfromoperatingunit -- From operating Unit you wish to report, leave blank for all
+-- -- | operating units (optional)
+-- -- | pledger -- general ledger you wish to report, leave blank for all
+-- -- | ledgers (optional)
+-- -- | Description:
+-- -- | Report to show accounts used for the inter-org shipping network. If the
+-- -- | accounts are missing or invalid the account segments are shown as blank entries.
+-- -- |
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== ============== =========================================
+-- -- | 1.0 24 Nov 2009 Douglas Volz Initial Coding
+-- -- | 1.1 28 Oct 2010 Douglas Volz Added ledger parameter
+-- -- | 1.2 25 Sep 2014 Douglas Volz Removed mfglookup for FOB point, was
+-- -- | skipping direct transfers
+-- -- | 1.3 07 Jan 2015 Douglas Volz Minor bug fixes
+-- -- | 1.4 08 Oct 2015 Douglas Volz Modify for latest client's COA
+-- -- | 1.5 06 Oct 2016 Douglas Volz Modified for latest client's COA
+-- -- | 1.6 16 Jan 2017 Douglas Volz Added Internal Order Flag Required,
+-- -- | Elemental Visibility Enabled and
+-- -- | Profit in Inventory Account
+-- -- | 1.7 21 Jan 2017 Douglas Volz Added Manual Receipt required for expenses flag
+-- -- | 1.8 17 Jul 2018 Douglas Volz Modified chart of accounts for client
+-- -- | 1.9 16 Oct 2018 Douglas Volz Retrofitted to Release 11i and added To-Org
+-- -- | Operating Unit
+-- -- | 1.10 18 Oct 2018 Douglas Volz Added InterOrg Transfer Code and Percentage
+-- -- | 1.11 11 Jul 2019 Douglas Volz Changed to G/L short name, chg to Release 12
+-- -- | 1.12 17 Jan 2020 Douglas Volz Add Org Code and Operating Unit parameters.
+-- -- | 1.13 20 Apr 2020 Douglas Volz Add outer join for gl code combinations, for
+-- -- | invalid or missing accounts (CCIDs).
+-- -- | 1.14 27 Apr 2020 Douglas Volz Changed to multi-language views for the
+-- -- | inventory orgs and operating units.
+-- -- +=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-shipping-network-inter-org-accounts-setup/
 -- Library Link: https://www.enginatics.com/reports/cac-shipping-network-inter-org-accounts-setup/
 -- Run Report: https://demo.enginatics.com/
 

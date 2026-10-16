@@ -1,13 +1,13 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: FA Asset Inventory Report
 -- Description: Application: Assets
-Source: Asset Inventory Report (Enginatics)
--- Excel Examle Output: https://www.enginatics.com/example/fa-asset-inventory-report/
+-- Source: Asset Inventory Report (Enginatics)
+-- Excel Example Output: https://www.enginatics.com/example/fa-asset-inventory-report/
 -- Library Link: https://www.enginatics.com/reports/fa-asset-inventory-report/
 -- Run Report: https://demo.enginatics.com/
 

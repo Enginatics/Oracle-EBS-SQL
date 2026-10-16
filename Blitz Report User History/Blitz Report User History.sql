@@ -1,13 +1,13 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: Blitz Report User History
 -- Description: Lists all active EBS users with their active responsibilities and blitz report execution counts.
-The report can be used to analyze blitz report usage within the EBS user community e.g. to find the most active users or to spot the ones not using blitz report to it's full potential yet.
--- Excel Examle Output: https://www.enginatics.com/example/blitz-report-user-history/
+-- The report can be used to analyze blitz report usage within the EBS user community e.g. to find the most active users or to spot the ones not using blitz report to it's full potential yet.
+-- Excel Example Output: https://www.enginatics.com/example/blitz-report-user-history/
 -- Library Link: https://www.enginatics.com/reports/blitz-report-user-history/
 -- Run Report: https://demo.enginatics.com/
 

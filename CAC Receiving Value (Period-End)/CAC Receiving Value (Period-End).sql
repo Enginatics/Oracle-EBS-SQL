@@ -1,53 +1,49 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Receiving Value (Period-End)
--- Description: Report to show receiving value for all locations, as of the end of an accounting period.  You may run this report for open or closed accounting periods.  With parameters to display or not display WIP outside processing information (WIP job, status, close date and OSP resource code).  If run for a prior period the report automatically rolls back the quantities and values to the prior period's period end date.  In addition, for any receipt with an item number, this report displays Inventory, Shop Floor (Outside Processing) and Expense destination types.
-
-Note:  The Adjustment Amount column show differences between the PO unit price for the Receipt and Deliver transactions, which currently is not included in the receiving accounting entries. 
-
-Reconciliation Notes to Oracle Reports:
-The Oracle All Inventory Values Report does not display Shop Floor (Outside Processing) or Expense destination types.  
-If the PO line is closed, the Oracle Receiving Value Report does not display Expense destination types, even if the receipt is still in receiving and has not been delivered.
-
-Parameters:
-Period Name:  the accounting period you wish to report (mandatory).
-Show WIP Outside Processing:  display WIP job details for outside processing, enter Yes or No (mandatory).
-Category Set 1:  any item category you wish (optional).
-Category Set 2:  any item category you wish (optional).
-Item Number:  specific item you wish to report (optional)
-Organization Code:  specific inventory organization to report (optional)
-Operating Unit:  specific operating unit (optional)
-Ledger:  specific ledger (optional)
-Product Line Accounting:  use this parameter to tell the report if you have set up product line accounting information in your item master accounts.  Enter Yes or No.
-Product Line Segment:  use this parameter to tell the report which segment to use to find the product line information.  If the Product Line Accounting parameter is set to No this parameter is grayed out and not required.
-Item Master Account Type:  use this parameter to determine if you store your product line information in your item master Expense, Cost of Sales or Sales Accounts.  If the Product Line Accounting parameter is set to No this parameter is grayed out and not required.
-
-/* +=============================================================================+
--- |  Copyright 2009 - 2025 Douglas Volz Consulting, Inc. and Enginatics GmbH
--- |  All rights reserved. 
--- |  Version Modified on Modified  by   Description
--- |  ======= =========== ============== =========================================
--- |     1.0  25 Nov 2009 Douglas Volz   Created initial Report for client
--- |                                     based on xxx_inv_value.sql
--- |     1.36 10 Aug 2022 Douglas Volz   Performance improvements for main query.  Allow expense
--- |                                     receipts with items, add PO line status column.
--- |     1.37 12 Aug 2022 Douglas Volz   Add parameter to Show WIP OSP columns and remove extra
--- |                                     join to the item master table.
--- |     1.38 16 Aug 2022 Douglas Volz   Fixes for quantities for Correction transactions and
--- |                                     for when the PO unit price is zero.
--- |     1.39 02 Jun 2025 Douglas Volz   Removed tabs.
--- |     1.40 05 Jun 2025 Douglas Volz   Added section 1.6 for PO unit price differences between
--- |                 Piyush Khandelwal   the PO Receipt and the PO Deliver transactions.  Put
--- |                                     this into an "Adjustment Amount" column, as this is
--- |                                     included in the Oracle Receiving Value Report but is
--- |                                     not recorded on any Receiving Accounting entry.
--- |                                     Also added in inventory org access, XXEN G/L and OU security profiles.
--- +=============================================================================+*/
--- Excel Examle Output: https://www.enginatics.com/example/cac-receiving-value-period-end/
+-- Description: Report to show receiving value for all locations, as of the end of an accounting period. You may run this report for open or closed accounting periods. With parameters to display or not display WIP outside processing information (WIP job, status, close date and OSP resource code). If run for a prior period the report automatically rolls back the quantities and values to the prior period's period end date. In addition, for any receipt with an item number, this report displays Inventory, Shop Floor (Outside Processing) and Expense destination types.
+-- Note: The Adjustment Amount column show differences between the PO unit price for the Receipt and Deliver transactions, which currently is not included in the receiving accounting entries.
+-- Reconciliation Notes to Oracle Reports:
+-- The Oracle All Inventory Values Report does not display Shop Floor (Outside Processing) or Expense destination types.
+-- If the PO line is closed, the Oracle Receiving Value Report does not display Expense destination types, even if the receipt is still in receiving and has not been delivered.
+-- Parameters:
+-- Period Name: the accounting period you wish to report (mandatory).
+-- Show WIP Outside Processing: display WIP job details for outside processing, enter Yes or No (mandatory).
+-- Category Set 1: any item category you wish (optional).
+-- Category Set 2: any item category you wish (optional).
+-- Item Number: specific item you wish to report (optional)
+-- Organization Code: specific inventory organization to report (optional)
+-- Operating Unit: specific operating unit (optional)
+-- Ledger: specific ledger (optional)
+-- Product Line Accounting: use this parameter to tell the report if you have set up product line accounting information in your item master accounts. Enter Yes or No.
+-- Product Line Segment: use this parameter to tell the report which segment to use to find the product line information. If the Product Line Accounting parameter is set to No this parameter is grayed out and not required.
+-- Item Master Account Type: use this parameter to determine if you store your product line information in your item master Expense, Cost of Sales or Sales Accounts. If the Product Line Accounting parameter is set to No this parameter is grayed out and not required.
+-- / +=============================================================================+
+-- -- | Copyright 2009 - 2025 Douglas Volz Consulting, Inc. and Enginatics GmbH
+-- -- | All rights reserved.
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== ============== =========================================
+-- -- | 1.0 25 Nov 2009 Douglas Volz Created initial Report for client
+-- -- | based on xxxinvvalue.sql
+-- -- | 1.36 10 Aug 2022 Douglas Volz Performance improvements for main query. Allow expense
+-- -- | receipts with items, add PO line status column.
+-- -- | 1.37 12 Aug 2022 Douglas Volz Add parameter to Show WIP OSP columns and remove extra
+-- -- | join to the item master table.
+-- -- | 1.38 16 Aug 2022 Douglas Volz Fixes for quantities for Correction transactions and
+-- -- | for when the PO unit price is zero.
+-- -- | 1.39 02 Jun 2025 Douglas Volz Removed tabs.
+-- -- | 1.40 05 Jun 2025 Douglas Volz Added section 1.6 for PO unit price differences between
+-- -- | Piyush Khandelwal the PO Receipt and the PO Deliver transactions. Put
+-- -- | this into an "Adjustment Amount" column, as this is
+-- -- | included in the Oracle Receiving Value Report but is
+-- -- | not recorded on any Receiving Accounting entry.
+-- -- | Also added in inventory org access, XXEN G/L and OU security profiles.
+-- -- +=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-receiving-value-period-end/
 -- Library Link: https://www.enginatics.com/reports/cac-receiving-value-period-end/
 -- Run Report: https://demo.enginatics.com/
 

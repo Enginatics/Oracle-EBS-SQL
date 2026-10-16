@@ -1,40 +1,49 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'WF Activity Status Summary | Oracle EBS SQL Report'
 description: 'Summary counts of stuck and errored workflow activities to monitor required housekeeping activities'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Activity, Status, Summary, wf_item_activity_statuses, wf_process_activities, wf_item_types_vl'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Workflow, Enginatics, Activity, Status, Summary, wf_item_activity_statuses, wf_process_activities, wf_item_types_vl'
 permalink: /WF%20Activity%20Status%20Summary/
+report_name: 'WF Activity Status Summary'
+report_web_name: wf-activity-status-summary
+module: 'Workflow'
+module_url: /modules/workflow/
 ---
 
 # WF Activity Status Summary – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/wf-activity-status-summary/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/wf-activity-status-summary/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wf-activity-status-summary) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wf-activity-status-summary).
+**Oracle EBS module:** [Workflow](/modules/workflow/ "Oracle EBS Workflow reports") · [all Workflow reports](/modules/workflow/)  
 
 ## Overview
 Summary counts of stuck and errored workflow activities to monitor required housekeeping activities
+
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wf-activity-status-summary) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 
 ## Report Parameters
 Activity Status, Show all active or errored
 
 ## Oracle EBS Tables Used
-[wf_item_activity_statuses](https://www.enginatics.com/library/?pg=1&find=wf_item_activity_statuses), [wf_process_activities](https://www.enginatics.com/library/?pg=1&find=wf_process_activities), [wf_item_types_vl](https://www.enginatics.com/library/?pg=1&find=wf_item_types_vl)
+[wf_item_activity_statuses](https://www.enginatics.com/library/?pg=1&find=wf_item_activity_statuses&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wf-activity-status-summary), [wf_process_activities](https://www.enginatics.com/library/?pg=1&find=wf_process_activities&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wf-activity-status-summary), [wf_item_types_vl](https://www.enginatics.com/library/?pg=1&find=wf_item_types_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wf-activity-status-summary)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wf-activity-status-summary)
 
 ## Related Reports
 [OKL Termination Quotes](/OKL%20Termination%20Quotes/ "OKL Termination Quotes Oracle EBS SQL Report"), [WF Notifications](/WF%20Notifications/ "WF Notifications Oracle EBS SQL Report"), [ONT Transaction Types and Line WF Processes](/ONT%20Transaction%20Types%20and%20Line%20WF%20Processes/ "ONT Transaction Types and Line WF Processes Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/WF%20Activity%20Status%20Summary/WF%20Activity%20Status%20Summary.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wf-activity-status-summary) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [WF Activity Status Summary 18-Jan-2018 221505.xlsx](https://www.enginatics.com/example/wf-activity-status-summary/) |
-| Blitz Report™ XML Import | [WF_Activity_Status_Summary.xml](https://www.enginatics.com/xml/wf-activity-status-summary/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/wf-activity-status-summary/](https://www.enginatics.com/reports/wf-activity-status-summary/) |
+| Excel Example Output | [WF Activity Status Summary 18-Jan-2018 221505.xlsx](https://www.enginatics.com/example/wf-activity-status-summary/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wf-activity-status-summary) |
+| Blitz Report™ XML Import | [WF_Activity_Status_Summary.xml](https://www.enginatics.com/xml/wf-activity-status-summary/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wf-activity-status-summary) |
+| SQL Source | [WF Activity Status Summary.sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/WF%20Activity%20Status%20Summary/WF%20Activity%20Status%20Summary.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/wf-activity-status-summary/](https://www.enginatics.com/reports/wf-activity-status-summary/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wf-activity-status-summary) |
 
 ## Case Study & Technical Analysis: WF Activity Status Summary Report
 
@@ -95,18 +104,17 @@ As a summary report querying potentially large transactional tables (workflow ac
 **3. What steps typically follow after identifying an errored workflow activity using this report?**
    After identifying an errored activity, the next steps typically involve: 1) using Oracle Workflow Administrator screens to view the specific error details and the full workflow path, 2) diagnosing the root cause (e.g., data error, setup issue, custom code bug), and 3) attempting to correct the issue and 'Retry' or 'Force Rerun' the errored activity to allow the workflow to continue.
 
-
 ---
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wf-activity-status-summary)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wf-activity-status-summary)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wf-activity-status-summary)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wf-activity-status-summary)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wf-activity-status-summary)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wf-activity-status-summary)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wf-activity-status-summary)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

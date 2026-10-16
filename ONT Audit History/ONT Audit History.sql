@@ -1,13 +1,13 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: ONT Audit History
 -- Description: Order Management audit history report showing changes to order headers, lines, sales credits, and price adjustments with old/new values, change reasons, and the user who made the change.
-Based on Oracle standard report OEXAUDHR_XML (Audit History Report).
--- Excel Examle Output: https://www.enginatics.com/example/ont-audit-history/
+-- Based on Oracle standard report OEXAUDHRXML (Audit History Report).
+-- Excel Example Output: https://www.enginatics.com/example/ont-audit-history/
 -- Library Link: https://www.enginatics.com/reports/ont-audit-history/
 -- Run Report: https://demo.enginatics.com/
 

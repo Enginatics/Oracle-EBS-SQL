@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: Blitz Report Dynamic Column Rules
 -- Description: 
--- Excel Examle Output: https://www.enginatics.com/example/blitz-report-dynamic-column-rules/
+-- Excel Example Output: https://www.enginatics.com/example/blitz-report-dynamic-column-rules/
 -- Library Link: https://www.enginatics.com/reports/blitz-report-dynamic-column-rules/
 -- Run Report: https://demo.enginatics.com/
 

@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: GL Balance
 -- Description: Summary GL report including one line per accounting period for each account segment level, including product code, with amounts for opening balance, debits, credits, change amount, ending balance.
--- Excel Examle Output: https://www.enginatics.com/example/gl-balance/
+-- Excel Example Output: https://www.enginatics.com/example/gl-balance/
 -- Library Link: https://www.enginatics.com/reports/gl-balance/
 -- Run Report: https://demo.enginatics.com/
 

@@ -1,20 +1,18 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: BOM Item Where Used GUI
 -- Description: Description: Item Where Used GUI Report
-
-Provides equivalent functionality to the the following standard reports:
-- Item Where Used Report GUI
-
-Application: Bills of Material
-Source: Item Where Used Report GUI (XML)
-Short Name: BOMRWUITG_XML
-DB package: BOM_BOMRWUIT_XMLP_PKG
--- Excel Examle Output: https://www.enginatics.com/example/bom-item-where-used-gui/
+-- Provides equivalent functionality to the the following standard reports:
+-- - Item Where Used Report GUI
+-- Application: Bills of Material
+-- Source: Item Where Used Report GUI (XML)
+-- Short Name: BOMRWUITGXML
+-- DB package: BOMBOMRWUITXMLPPKG
+-- Excel Example Output: https://www.enginatics.com/example/bom-item-where-used-gui/
 -- Library Link: https://www.enginatics.com/reports/bom-item-where-used-gui/
 -- Run Report: https://demo.enginatics.com/
 

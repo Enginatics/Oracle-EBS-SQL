@@ -1,40 +1,39 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Intercompany Relationship Setup
 -- Description: Report to show accounts used for the intercompany parameters and relationships across operating units.
-
-/* +=============================================================================+
--- |  Copyright 2018 - 2020 Douglas Volz Consulting, Inc.                        |
--- |  All rights reserved.                                                       |
--- | Permission to use this code is granted provided the original author is      |
--- | acknowledged. No warranties, express or otherwise is included in this       |
--- | permission.                                                                 |
--- +=============================================================================+
--- |
--- |  Original Author: Douglas Volz (doug@volzconsulting.com)
--- |
--- |  Program Name:  xxx_interco_parameters_rept.sql
--- |
--- |  Parameters:
--- |  none
--- |
--- |  Description:
--- |  Report to show accounts used for the intercompany parameters and relationships
--- |  across operating units.
--- |
--- |  Version Modified on Modified  by   Description
--- |  ======= =========== ============== =========================================
--- |  1.0     16 Oct 2018 Douglas Volz   Initial Coding, based on mtl_intercompany_parameters_v
--- |  1.1      7 Mar 2020 Douglas Volz   Add Advanced Accounting Option based on view
--- |                                     mtl_transaction_flows_v.
--- |  1.2     27 Apr 2020 Douglas Volz   Changed to multi-language views for the
--- |                                     inventory orgs and operating units.
--- +=============================================================================+*/
--- Excel Examle Output: https://www.enginatics.com/example/cac-intercompany-relationship-setup/
+-- / +=============================================================================+
+-- -- | Copyright 2018 - 2020 Douglas Volz Consulting, Inc. |
+-- -- | All rights reserved. |
+-- -- | Permission to use this code is granted provided the original author is |
+-- -- | acknowledged. No warranties, express or otherwise is included in this |
+-- -- | permission. |
+-- -- +=============================================================================+
+-- -- |
+-- -- | Original Author: Douglas Volz (doug@volzconsulting.com)
+-- -- |
+-- -- | Program Name: xxxintercoparametersrept.sql
+-- -- |
+-- -- | Parameters:
+-- -- | none
+-- -- |
+-- -- | Description:
+-- -- | Report to show accounts used for the intercompany parameters and relationships
+-- -- | across operating units.
+-- -- |
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== ============== =========================================
+-- -- | 1.0 16 Oct 2018 Douglas Volz Initial Coding, based on mtlintercompanyparametersv
+-- -- | 1.1 7 Mar 2020 Douglas Volz Add Advanced Accounting Option based on view
+-- -- | mtltransactionflowsv.
+-- -- | 1.2 27 Apr 2020 Douglas Volz Changed to multi-language views for the
+-- -- | inventory orgs and operating units.
+-- -- +=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-intercompany-relationship-setup/
 -- Library Link: https://www.enginatics.com/reports/cac-intercompany-relationship-setup/
 -- Run Report: https://demo.enginatics.com/
 

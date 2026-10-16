@@ -1,40 +1,49 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'AP Trial Balance Report Definitions | Oracle EBS SQL Report'
-description: 'Accounts Payable Trial Balance Report Definitions – Oracle E-Business Suite SQL report'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Trial, Balance, Report, Definitions, fnd_id_flex_segments_vl, xla_tb_definitions_vl, xla_tb_defn_je_sources'
+description: 'Accounts Payable Trial Balance Report Definitions – Oracle EBS Payables SQL report: free SQL, parameters and tables used.'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Payables, Enginatics, R12 only, Trial, Balance, Report, Definitions, fnd_id_flex_segments_vl, xla_tb_definitions_vl, xla_tb_defn_je_sources'
 permalink: /AP%20Trial%20Balance%20Report%20Definitions/
+report_name: 'AP Trial Balance Report Definitions'
+report_web_name: ap-trial-balance-report-definitions
+module: 'Payables'
+module_url: /modules/payables/
 ---
 
 # AP Trial Balance Report Definitions – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/ap-trial-balance-report-definitions/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/ap-trial-balance-report-definitions/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-trial-balance-report-definitions) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-trial-balance-report-definitions).
+**Oracle EBS module:** [Payables](/modules/payables/ "Oracle EBS Payables reports") · [all Payables reports](/modules/payables/)  
 
 ## Overview
 Accounts Payable Trial Balance Report Definitions
+
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-trial-balance-report-definitions) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 
 ## Report Parameters
 Report Definition
 
 ## Oracle EBS Tables Used
-[fnd_id_flex_segments_vl](https://www.enginatics.com/library/?pg=1&find=fnd_id_flex_segments_vl), [xla_tb_definitions_vl](https://www.enginatics.com/library/?pg=1&find=xla_tb_definitions_vl), [xla_tb_defn_je_sources](https://www.enginatics.com/library/?pg=1&find=xla_tb_defn_je_sources), [gl_ledgers](https://www.enginatics.com/library/?pg=1&find=gl_ledgers), [xla_tb_defn_details](https://www.enginatics.com/library/?pg=1&find=xla_tb_defn_details), [fnd_id_flex_structures_vl](https://www.enginatics.com/library/?pg=1&find=fnd_id_flex_structures_vl), [gl_code_combinations_kfv](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations_kfv)
+[fnd_id_flex_segments_vl](https://www.enginatics.com/library/?pg=1&find=fnd_id_flex_segments_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-trial-balance-report-definitions), [xla_tb_definitions_vl](https://www.enginatics.com/library/?pg=1&find=xla_tb_definitions_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-trial-balance-report-definitions), [xla_tb_defn_je_sources](https://www.enginatics.com/library/?pg=1&find=xla_tb_defn_je_sources&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-trial-balance-report-definitions), [gl_ledgers](https://www.enginatics.com/library/?pg=1&find=gl_ledgers&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-trial-balance-report-definitions), [xla_tb_defn_details](https://www.enginatics.com/library/?pg=1&find=xla_tb_defn_details&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-trial-balance-report-definitions), [fnd_id_flex_structures_vl](https://www.enginatics.com/library/?pg=1&find=fnd_id_flex_structures_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-trial-balance-report-definitions), [gl_code_combinations_kfv](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations_kfv&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-trial-balance-report-definitions)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-trial-balance-report-definitions), [R12 only](https://www.enginatics.com/library/?pg=1&category%5B%5D=R12%20only&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-trial-balance-report-definitions)
 
 ## Related Reports
 [AP Accounted Invoice Aging](/AP%20Accounted%20Invoice%20Aging/ "AP Accounted Invoice Aging Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/AP%20Trial%20Balance%20Report%20Definitions/AP%20Trial%20Balance%20Report%20Definitions.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-trial-balance-report-definitions) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [AP Trial Balance Report Definitions 27-May-2021 170951.xlsx](https://www.enginatics.com/example/ap-trial-balance-report-definitions/) |
-| Blitz Report™ XML Import | [AP_Trial_Balance_Report_Definitions.xml](https://www.enginatics.com/xml/ap-trial-balance-report-definitions/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/ap-trial-balance-report-definitions/](https://www.enginatics.com/reports/ap-trial-balance-report-definitions/) |
+| Excel Example Output | [AP Trial Balance Report Definitions 27-May-2021 170951.xlsx](https://www.enginatics.com/example/ap-trial-balance-report-definitions/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-trial-balance-report-definitions) |
+| Blitz Report™ XML Import | [AP_Trial_Balance_Report_Definitions.xml](https://www.enginatics.com/xml/ap-trial-balance-report-definitions/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-trial-balance-report-definitions) |
+| SQL Source | [AP Trial Balance Report Definitions.sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/AP%20Trial%20Balance%20Report%20Definitions/AP%20Trial%20Balance%20Report%20Definitions.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/ap-trial-balance-report-definitions/](https://www.enginatics.com/reports/ap-trial-balance-report-definitions/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-trial-balance-report-definitions) |
 
 ## AP Trial Balance Report Definitions Report
 
@@ -85,13 +94,13 @@ A: Yes, you can run the report for different ledgers and then compare the output
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-trial-balance-report-definitions)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-trial-balance-report-definitions)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-trial-balance-report-definitions)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-trial-balance-report-definitions)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-trial-balance-report-definitions)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-trial-balance-report-definitions)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-trial-balance-report-definitions)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

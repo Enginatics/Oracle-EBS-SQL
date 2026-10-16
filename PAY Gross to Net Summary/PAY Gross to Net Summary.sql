@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PAY Gross to Net Summary
 -- Description: Payroll gross-to-net summary per employee and pay period, showing gross pay (earnings), pre-tax deductions, involuntary deductions (tax), voluntary deductions, employer charges, and calculated net pay. Based on completed payroll run results. Useful for payroll reconciliation and compensation analysis.
--- Excel Examle Output: https://www.enginatics.com/example/pay-gross-to-net-summary/
+-- Excel Example Output: https://www.enginatics.com/example/pay-gross-to-net-summary/
 -- Library Link: https://www.enginatics.com/reports/pay-gross-to-net-summary/
 -- Run Report: https://demo.enginatics.com/
 

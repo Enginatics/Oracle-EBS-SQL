@@ -1,0 +1,4422 @@
+{
+ "pages": {
+  "/": {
+   "hash": "9e177d7418cabc41",
+   "lastmod": "2026-10-16"
+  },
+  "AD ADOP Sessions": {
+   "hash": "a6038639983246e6",
+   "lastmod": "2026-10-16",
+   "web_name": "ad-adop-sessions"
+  },
+  "AD Applied Patches": {
+   "hash": "3abda52fb086443a",
+   "lastmod": "2026-10-16",
+   "web_name": "ad-applied-patches"
+  },
+  "AD Applied Patches R12-2": {
+   "hash": "7b74bd69a62c5479",
+   "lastmod": "2026-10-16",
+   "web_name": "ad-applied-patches-r12-2"
+  },
+  "AD Code Levels": {
+   "hash": "93e8e1fa8d5ec5d8",
+   "lastmod": "2026-10-16",
+   "web_name": "ad-code-levels"
+  },
+  "AD Patch Task Timing": {
+   "hash": "94e9bd1d25ce0c05",
+   "lastmod": "2026-10-16",
+   "web_name": "ad-patch-task-timing"
+  },
+  "ALR Alerts": {
+   "hash": "1815d6aba25bd522",
+   "lastmod": "2026-10-16",
+   "web_name": "alr-alerts"
+  },
+  "AP 1099 Payments": {
+   "hash": "52de1d0e07062ea1",
+   "lastmod": "2026-10-16",
+   "web_name": "ap-1099-payments"
+  },
+  "AP Accounted Invoice Aging": {
+   "hash": "3cfabb9c43d7ad70",
+   "lastmod": "2026-10-16",
+   "web_name": "ap-accounted-invoice-aging"
+  },
+  "AP Cash Requirement": {
+   "hash": "6e3f9d4dd52a9aa2",
+   "lastmod": "2026-10-16",
+   "web_name": "ap-cash-requirement"
+  },
+  "AP Distribution Set Listing": {
+   "hash": "3038b09e09c806ce",
+   "lastmod": "2026-10-16",
+   "web_name": "ap-distribution-set-listing"
+  },
+  "AP Distribution Set Upload": {
+   "hash": "6543d30f7b2c1e7d",
+   "lastmod": "2026-10-16",
+   "web_name": "ap-distribution-set-upload"
+  },
+  "AP Expense Policy Violations": {
+   "hash": "662f588d73f8c763",
+   "lastmod": "2026-10-16",
+   "web_name": "ap-expense-policy-violations"
+  },
+  "AP Expenses": {
+   "hash": "26abbc2bbd8498c9",
+   "lastmod": "2026-10-16",
+   "web_name": "ap-expenses"
+  },
+  "AP Intercompany Invoice Details": {
+   "hash": "547220476eea3a84",
+   "lastmod": "2026-10-16",
+   "web_name": "ap-intercompany-invoice-details"
+  },
+  "AP Invoice Approval Status": {
+   "hash": "2edacc2ebc86fba0",
+   "lastmod": "2026-10-16",
+   "web_name": "ap-invoice-approval-status"
+  },
+  "AP Invoice Audit Listing": {
+   "hash": "4a21293b873eb3af",
+   "lastmod": "2026-10-16",
+   "web_name": "ap-invoice-audit-listing"
+  },
+  "AP Invoice Hold Upload": {
+   "hash": "911237c76fbb7ed2",
+   "lastmod": "2026-10-16",
+   "web_name": "ap-invoice-hold-upload"
+  },
+  "AP Invoice Payment Upload": {
+   "hash": "7d6eb34e3f8bb90e",
+   "lastmod": "2026-10-16",
+   "web_name": "ap-invoice-payment-upload"
+  },
+  "AP Invoice Payments": {
+   "hash": "e13ac24c45218e6f",
+   "lastmod": "2026-10-16",
+   "web_name": "ap-invoice-payments"
+  },
+  "AP Invoice Payments 11g": {
+   "hash": "bfd9f7cc3b53ad68",
+   "lastmod": "2026-10-16",
+   "web_name": "ap-invoice-payments-11g"
+  },
+  "AP Invoice Upload": {
+   "hash": "d52f1b460f126f6d",
+   "lastmod": "2026-10-16",
+   "web_name": "ap-invoice-upload"
+  },
+  "AP Invoice and Payment Audit by Voucher Number": {
+   "hash": "3dceb037f5297b1a",
+   "lastmod": "2026-10-16",
+   "web_name": "ap-invoice-and-payment-audit-by-voucher-number"
+  },
+  "AP Invoice on Hold": {
+   "hash": "45181b167f1dfd5e",
+   "lastmod": "2026-10-16",
+   "web_name": "ap-invoice-on-hold"
+  },
+  "AP Invoices and Lines": {
+   "hash": "e41a5b5d93bf8156",
+   "lastmod": "2026-10-16",
+   "web_name": "ap-invoices-and-lines"
+  },
+  "AP Invoices and Lines 11i": {
+   "hash": "b6378e4791064bae",
+   "lastmod": "2026-10-16",
+   "web_name": "ap-invoices-and-lines-11i"
+  },
+  "AP Invoices with PO- Intercompany and SLA Details": {
+   "hash": "c216db91b043b736",
+   "lastmod": "2026-10-16",
+   "web_name": "ap-invoices-with-po-intercompany-and-sla-details"
+  },
+  "AP Matched and Modified Receipts": {
+   "hash": "b369d361173a599d",
+   "lastmod": "2026-10-16",
+   "web_name": "ap-matched-and-modified-receipts"
+  },
+  "AP Negative Supplier Balance": {
+   "hash": "76c04a3d4ac6c4df",
+   "lastmod": "2026-10-16",
+   "web_name": "ap-negative-supplier-balance"
+  },
+  "AP Open Balances Revaluation": {
+   "hash": "a82ef24efa8befb7",
+   "lastmod": "2026-10-16",
+   "web_name": "ap-open-balances-revaluation"
+  },
+  "AP Open Items Revaluation": {
+   "hash": "700eb02048ddf4c8",
+   "lastmod": "2026-10-16",
+   "web_name": "ap-open-items-revaluation"
+  },
+  "AP Period Close Exceptions": {
+   "hash": "828d6185d504e920",
+   "lastmod": "2026-10-16",
+   "web_name": "ap-period-close-exceptions"
+  },
+  "AP Posted Invoice Register": {
+   "hash": "579d1e7536344c46",
+   "lastmod": "2026-10-16",
+   "web_name": "ap-posted-invoice-register"
+  },
+  "AP Posted Payment Register": {
+   "hash": "09fd5c4a13834475",
+   "lastmod": "2026-10-16",
+   "web_name": "ap-posted-payment-register"
+  },
+  "AP Prepayments Status": {
+   "hash": "1807af886a9d6207",
+   "lastmod": "2026-10-16",
+   "web_name": "ap-prepayments-status"
+  },
+  "AP Supplier Statement": {
+   "hash": "807cdd7aad5dfa8a",
+   "lastmod": "2026-10-16",
+   "web_name": "ap-supplier-statement"
+  },
+  "AP Supplier Upload": {
+   "hash": "487a01372410eda4",
+   "lastmod": "2026-10-16",
+   "web_name": "ap-supplier-upload"
+  },
+  "AP Suppliers": {
+   "hash": "a96dc249883f394a",
+   "lastmod": "2026-10-16",
+   "web_name": "ap-suppliers"
+  },
+  "AP Suppliers 11i": {
+   "hash": "aecdf29b78703400",
+   "lastmod": "2026-10-16",
+   "web_name": "ap-suppliers-11i"
+  },
+  "AP Suppliers Revenue Summary": {
+   "hash": "ac5b4ba3ff1ff46d",
+   "lastmod": "2026-10-16",
+   "web_name": "ap-suppliers-revenue-summary"
+  },
+  "AP Suppliers Revenue by Period": {
+   "hash": "6577131260441fd2",
+   "lastmod": "2026-10-16",
+   "web_name": "ap-suppliers-revenue-by-period"
+  },
+  "AP Trial Balance": {
+   "hash": "2fd913b7261a6d7b",
+   "lastmod": "2026-10-16",
+   "web_name": "ap-trial-balance"
+  },
+  "AP Trial Balance Report Definitions": {
+   "hash": "3360cd048ac9d215",
+   "lastmod": "2026-10-16",
+   "web_name": "ap-trial-balance-report-definitions"
+  },
+  "AR Adjustment Register": {
+   "hash": "15d18d1c535b1344",
+   "lastmod": "2026-10-16",
+   "web_name": "ar-adjustment-register"
+  },
+  "AR Aging": {
+   "hash": "6abc9abd87ccc505",
+   "lastmod": "2026-10-16",
+   "web_name": "ar-aging"
+  },
+  "AR Aging Buckets and Interest Tiers Setup": {
+   "hash": "d24b9b0826cb2a1d",
+   "lastmod": "2026-10-16",
+   "web_name": "ar-aging-buckets-and-interest-tiers-setup"
+  },
+  "AR Applied Receipts": {
+   "hash": "49f9b1221816fc96",
+   "lastmod": "2026-10-16",
+   "web_name": "ar-applied-receipts"
+  },
+  "AR AutoAccounting Upload": {
+   "hash": "c3aba36c2ccfe802",
+   "lastmod": "2026-10-16",
+   "web_name": "ar-autoaccounting-upload"
+  },
+  "AR Autoinvoice Interface": {
+   "hash": "cf25f978424b0c85",
+   "lastmod": "2026-10-16",
+   "web_name": "ar-autoinvoice-interface"
+  },
+  "AR Cash Receipt Upload": {
+   "hash": "90328b6a7ffea826",
+   "lastmod": "2026-10-16",
+   "web_name": "ar-cash-receipt-upload"
+  },
+  "AR Credit Memo Application Upload": {
+   "hash": "ac86e58bb04c34af",
+   "lastmod": "2026-10-16",
+   "web_name": "ar-credit-memo-application-upload"
+  },
+  "AR Customer Credit Limits": {
+   "hash": "b66a26dfd29b3268",
+   "lastmod": "2026-10-16",
+   "web_name": "ar-customer-credit-limits"
+  },
+  "AR Customer Credit Snapshot": {
+   "hash": "23034fc5759cb08f",
+   "lastmod": "2026-10-16",
+   "web_name": "ar-customer-credit-snapshot"
+  },
+  "AR Customer Open Balances Period Lookback": {
+   "hash": "67520ef7998a394b",
+   "lastmod": "2026-10-16",
+   "web_name": "ar-customer-open-balances-period-lookback"
+  },
+  "AR Customer Profiles": {
+   "hash": "635c7560075b5b70",
+   "lastmod": "2026-10-16",
+   "web_name": "ar-customer-profiles"
+  },
+  "AR Customer Statement": {
+   "hash": "7f257f996e8d2ccf",
+   "lastmod": "2026-10-16",
+   "web_name": "ar-customer-statement"
+  },
+  "AR Customer Upload": {
+   "hash": "1de970000f81f793",
+   "lastmod": "2026-10-16",
+   "web_name": "ar-customer-upload"
+  },
+  "AR Customers and Sites": {
+   "hash": "bd66ed7a946656bc",
+   "lastmod": "2026-10-16",
+   "web_name": "ar-customers-and-sites"
+  },
+  "AR Disputed Invoice": {
+   "hash": "3ae73fa28a39c302",
+   "lastmod": "2026-10-16",
+   "web_name": "ar-disputed-invoice"
+  },
+  "AR European Sales Listing": {
+   "hash": "8e93fdb419753671",
+   "lastmod": "2026-10-16",
+   "web_name": "ar-european-sales-listing"
+  },
+  "AR HSBC FAA Asset File (France)": {
+   "hash": "bb24044fa7db06a0",
+   "lastmod": "2026-10-16",
+   "web_name": "ar-hsbc-faa-asset-file-france"
+  },
+  "AR Incomplete Transactions": {
+   "hash": "4acf57e0498abc63",
+   "lastmod": "2026-10-16",
+   "web_name": "ar-incomplete-transactions"
+  },
+  "AR Miscellaneous Receipts": {
+   "hash": "a7904b7040523553",
+   "lastmod": "2026-10-16",
+   "web_name": "ar-miscellaneous-receipts"
+  },
+  "AR Open Balances Revaluation": {
+   "hash": "12519b807c9e067e",
+   "lastmod": "2026-10-16",
+   "web_name": "ar-open-balances-revaluation"
+  },
+  "AR Open Items Revaluation": {
+   "hash": "582c35ccad1770e5",
+   "lastmod": "2026-10-16",
+   "web_name": "ar-open-items-revaluation"
+  },
+  "AR Past Due Invoice": {
+   "hash": "fc7e21e86b4babde",
+   "lastmod": "2026-10-16",
+   "web_name": "ar-past-due-invoice"
+  },
+  "AR Payment Terms": {
+   "hash": "75bf9c23b6366b1a",
+   "lastmod": "2026-10-16",
+   "web_name": "ar-payment-terms"
+  },
+  "AR Receipt Register": {
+   "hash": "6122148062eb6741",
+   "lastmod": "2026-10-16",
+   "web_name": "ar-receipt-register"
+  },
+  "AR Refund Upload": {
+   "hash": "7aaf1f4b4752d627",
+   "lastmod": "2026-10-16",
+   "web_name": "ar-refund-upload"
+  },
+  "AR Sales Journal By Customer": {
+   "hash": "a7730aa8f69a86c6",
+   "lastmod": "2026-10-16",
+   "web_name": "ar-sales-journal-by-customer"
+  },
+  "AR Transaction Register": {
+   "hash": "a53c640c61507792",
+   "lastmod": "2026-10-16",
+   "web_name": "ar-transaction-register"
+  },
+  "AR Transaction Types": {
+   "hash": "0adcfe447999c716",
+   "lastmod": "2026-10-16",
+   "web_name": "ar-transaction-types"
+  },
+  "AR Transaction Update Upload": {
+   "hash": "d1aeaa2e66788f76",
+   "lastmod": "2026-10-16",
+   "web_name": "ar-transaction-update-upload"
+  },
+  "AR Transaction Upload": {
+   "hash": "83d0902802305a33",
+   "lastmod": "2026-10-16",
+   "web_name": "ar-transaction-upload"
+  },
+  "AR Transactions and Lines": {
+   "hash": "6535dbd53444c46d",
+   "lastmod": "2026-10-16",
+   "web_name": "ar-transactions-and-lines"
+  },
+  "AR Transactions and Lines 11i": {
+   "hash": "a6226183694ad95d",
+   "lastmod": "2026-10-16",
+   "web_name": "ar-transactions-and-lines-11i"
+  },
+  "AR Transactions and Payments": {
+   "hash": "a089f898c8b1160e",
+   "lastmod": "2026-10-16",
+   "web_name": "ar-transactions-and-payments"
+  },
+  "AR Unaccounted Transaction Sweep": {
+   "hash": "a3b2c248d31abed5",
+   "lastmod": "2026-10-16",
+   "web_name": "ar-unaccounted-transaction-sweep"
+  },
+  "AR Unapplied Receipts Register": {
+   "hash": "0ab05a280ffa25cc",
+   "lastmod": "2026-10-16",
+   "web_name": "ar-unapplied-receipts-register"
+  },
+  "AR to GL Reconciliation": {
+   "hash": "1d60c597534e0339",
+   "lastmod": "2026-10-16",
+   "web_name": "ar-to-gl-reconciliation"
+  },
+  "BOM Bill of Material Structure": {
+   "hash": "4f6a98c9355c3dbb",
+   "lastmod": "2026-10-16",
+   "web_name": "bom-bill-of-material-structure"
+  },
+  "BOM Bill of Materials Upload": {
+   "hash": "fc5ede62077287df",
+   "lastmod": "2026-10-16",
+   "web_name": "bom-bill-of-materials-upload"
+  },
+  "BOM Calendar Exceptions": {
+   "hash": "929a028db311c17f",
+   "lastmod": "2026-10-16",
+   "web_name": "bom-calendar-exceptions"
+  },
+  "BOM Calendars": {
+   "hash": "b2fdb5dba26c16f2",
+   "lastmod": "2026-10-16",
+   "web_name": "bom-calendars"
+  },
+  "BOM Common Bill of Materials Upload": {
+   "hash": "6eb8374e53d5e448",
+   "lastmod": "2026-10-16",
+   "web_name": "bom-common-bill-of-materials-upload"
+  },
+  "BOM Item Where Used GUI": {
+   "hash": "6bd19cac0b33842f",
+   "lastmod": "2026-10-16",
+   "web_name": "bom-item-where-used-gui"
+  },
+  "BOM Routing Upload": {
+   "hash": "f2e9e6fba1bb0e76",
+   "lastmod": "2026-10-16",
+   "web_name": "bom-routing-upload"
+  },
+  "BOM Routings": {
+   "hash": "2b4c05976733efd2",
+   "lastmod": "2026-10-16",
+   "web_name": "bom-routings"
+  },
+  "BOM Standard Operations Upload": {
+   "hash": "88c8d577566f337c",
+   "lastmod": "2026-10-16",
+   "web_name": "bom-standard-operations-upload"
+  },
+  "Blitz Report Access Upload": {
+   "hash": "06e690dae291d3cd",
+   "lastmod": "2026-10-16",
+   "web_name": "blitz-report-access-upload"
+  },
+  "Blitz Report Add-in Environment Setup": {
+   "hash": "47edad85d35aedb2",
+   "lastmod": "2026-10-16",
+   "web_name": "blitz-report-add-in-environment-setup"
+  },
+  "Blitz Report Application Categories": {
+   "hash": "77d6ab3311a75a7d",
+   "lastmod": "2026-10-16",
+   "web_name": "blitz-report-application-categories"
+  },
+  "Blitz Report Assignment Upload": {
+   "hash": "f7e2fcd7d614f850",
+   "lastmod": "2026-10-16",
+   "web_name": "blitz-report-assignment-upload"
+  },
+  "Blitz Report Assignment Validation": {
+   "hash": "f7ecb56e06530921",
+   "lastmod": "2026-10-16",
+   "web_name": "blitz-report-assignment-validation"
+  },
+  "Blitz Report Assignments": {
+   "hash": "2ca24daa5bccf8f3",
+   "lastmod": "2026-10-16",
+   "web_name": "blitz-report-assignments"
+  },
+  "Blitz Report Assignments and Responsibilities": {
+   "hash": "65e8e33b3a1d2741",
+   "lastmod": "2026-10-16",
+   "web_name": "blitz-report-assignments-and-responsibilities"
+  },
+  "Blitz Report Category Assignment Upload": {
+   "hash": "bd00f3bd2d52096a",
+   "lastmod": "2026-10-16",
+   "web_name": "blitz-report-category-assignment-upload"
+  },
+  "Blitz Report Category Assignments": {
+   "hash": "7b058a2e8e947b91",
+   "lastmod": "2026-10-16",
+   "web_name": "blitz-report-category-assignments"
+  },
+  "Blitz Report Column Number Fomat Comparison between environments": {
+   "hash": "a708f9f4cce429c6",
+   "lastmod": "2026-10-16",
+   "web_name": "blitz-report-column-number-fomat-comparison-between-environments"
+  },
+  "Blitz Report Column Translation Comparison between environments": {
+   "hash": "6d5cd99230ab49c9",
+   "lastmod": "2026-10-16",
+   "web_name": "blitz-report-column-translation-comparison-between-environments"
+  },
+  "Blitz Report Column Translation Upload": {
+   "hash": "bff22659b44e52c4",
+   "lastmod": "2026-10-16",
+   "web_name": "blitz-report-column-translation-upload"
+  },
+  "Blitz Report Column Translations": {
+   "hash": "5ae200f1ebebff20",
+   "lastmod": "2026-10-16",
+   "web_name": "blitz-report-column-translations"
+  },
+  "Blitz Report Columns": {
+   "hash": "a8ccb506f6d316f8",
+   "lastmod": "2026-10-16",
+   "web_name": "blitz-report-columns"
+  },
+  "Blitz Report Comparison between environments": {
+   "hash": "6dc3562a0da278fb",
+   "lastmod": "2026-10-16",
+   "web_name": "blitz-report-comparison-between-environments"
+  },
+  "Blitz Report Custom Reports Converter": {
+   "hash": "48c9de64ba7c95fa",
+   "lastmod": "2026-10-16",
+   "web_name": "blitz-report-custom-reports-converter"
+  },
+  "Blitz Report Default Templates": {
+   "hash": "a20a0ddea37e6d70",
+   "lastmod": "2026-10-16",
+   "web_name": "blitz-report-default-templates"
+  },
+  "Blitz Report Deletion History": {
+   "hash": "8220bcae7332e967",
+   "lastmod": "2026-10-16",
+   "web_name": "blitz-report-deletion-history"
+  },
+  "Blitz Report Dynamic Column Rules": {
+   "hash": "2d162805311196ac",
+   "lastmod": "2026-10-16",
+   "web_name": "blitz-report-dynamic-column-rules"
+  },
+  "Blitz Report Execution Summary": {
+   "hash": "c3fe5492c3dcf1ed",
+   "lastmod": "2026-10-16",
+   "web_name": "blitz-report-execution-summary"
+  },
+  "Blitz Report Extension Package API Signatures": {
+   "hash": "d3e8cdf66e706bef",
+   "lastmod": "2026-10-16",
+   "web_name": "blitz-report-extension-package-api-signatures"
+  },
+  "Blitz Report History": {
+   "hash": "211d38e133c70949",
+   "lastmod": "2026-10-16",
+   "web_name": "blitz-report-history"
+  },
+  "Blitz Report History Summary": {
+   "hash": "a94a58fac8b10cfa",
+   "lastmod": "2026-10-16",
+   "web_name": "blitz-report-history-summary"
+  },
+  "Blitz Report LOV Comparison between environments": {
+   "hash": "ae1d0825e9cb8b91",
+   "lastmod": "2026-10-16",
+   "web_name": "blitz-report-lov-comparison-between-environments"
+  },
+  "Blitz Report LOV SQL Validation": {
+   "hash": "41370bfa592eaa8f",
+   "lastmod": "2026-10-16",
+   "web_name": "blitz-report-lov-sql-validation"
+  },
+  "Blitz Report LOVs": {
+   "hash": "34e094ca280fef36",
+   "lastmod": "2026-10-16",
+   "web_name": "blitz-report-lovs"
+  },
+  "Blitz Report License User History": {
+   "hash": "26c853f50fd34a9f",
+   "lastmod": "2026-10-16",
+   "web_name": "blitz-report-license-user-history"
+  },
+  "Blitz Report License Users": {
+   "hash": "c9de03c3418411c4",
+   "lastmod": "2026-10-16",
+   "web_name": "blitz-report-license-users"
+  },
+  "Blitz Report Parameter Anchor Validation": {
+   "hash": "4fcbf91a5234f160",
+   "lastmod": "2026-10-16",
+   "web_name": "blitz-report-parameter-anchor-validation"
+  },
+  "Blitz Report Parameter Bind Variable Validation": {
+   "hash": "4bf44c6b96bcfa0b",
+   "lastmod": "2026-10-16",
+   "web_name": "blitz-report-parameter-bind-variable-validation"
+  },
+  "Blitz Report Parameter Comparison between environments": {
+   "hash": "a648dc2f7096aae7",
+   "lastmod": "2026-10-16",
+   "web_name": "blitz-report-parameter-comparison-between-environments"
+  },
+  "Blitz Report Parameter Comparison between reports": {
+   "hash": "9c00fdb63800f842",
+   "lastmod": "2026-10-16",
+   "web_name": "blitz-report-parameter-comparison-between-reports"
+  },
+  "Blitz Report Parameter Custom LOV Duplication Validation": {
+   "hash": "33365c73dc995f3a",
+   "lastmod": "2026-10-16",
+   "web_name": "blitz-report-parameter-custom-lov-duplication-validation"
+  },
+  "Blitz Report Parameter DFF Table Validation": {
+   "hash": "74f7b3c2354f45b4",
+   "lastmod": "2026-10-16",
+   "web_name": "blitz-report-parameter-dff-table-validation"
+  },
+  "Blitz Report Parameter Default Value Validation": {
+   "hash": "ecf58d0349300b3d",
+   "lastmod": "2026-10-16",
+   "web_name": "blitz-report-parameter-default-value-validation"
+  },
+  "Blitz Report Parameter Default Values": {
+   "hash": "c34478d6940b273e",
+   "lastmod": "2026-10-16",
+   "web_name": "blitz-report-parameter-default-values"
+  },
+  "Blitz Report Parameter Dependencies": {
+   "hash": "ced8f5d65cdd067b",
+   "lastmod": "2026-10-16",
+   "web_name": "blitz-report-parameter-dependencies"
+  },
+  "Blitz Report Parameter Link Validation": {
+   "hash": "3a73873bce3fb05d",
+   "lastmod": "2026-10-16",
+   "web_name": "blitz-report-parameter-link-validation"
+  },
+  "Blitz Report Parameter Table Alias Validation": {
+   "hash": "c6f76504bf4ad052",
+   "lastmod": "2026-10-16",
+   "web_name": "blitz-report-parameter-table-alias-validation"
+  },
+  "Blitz Report Parameter Uniqueness Validation": {
+   "hash": "42c86b9bd103ed27",
+   "lastmod": "2026-10-16",
+   "web_name": "blitz-report-parameter-uniqueness-validation"
+  },
+  "Blitz Report Pivot Colums Validation": {
+   "hash": "e29a948412f69e59",
+   "lastmod": "2026-10-16",
+   "web_name": "blitz-report-pivot-colums-validation"
+  },
+  "Blitz Report RDF Import Validation": {
+   "hash": "7b7c3f781d69638e",
+   "lastmod": "2026-10-16",
+   "web_name": "blitz-report-rdf-import-validation"
+  },
+  "Blitz Report Record History SQL Text Creation": {
+   "hash": "74ce50122d665a93",
+   "lastmod": "2026-10-16",
+   "web_name": "blitz-report-record-history-sql-text-creation"
+  },
+  "Blitz Report SQL Validation": {
+   "hash": "61ae9f380c695ac7",
+   "lastmod": "2026-10-16",
+   "web_name": "blitz-report-sql-validation"
+  },
+  "Blitz Report Security": {
+   "hash": "5abd6df140f8f487",
+   "lastmod": "2026-10-16",
+   "web_name": "blitz-report-security"
+  },
+  "Blitz Report Template Sharing": {
+   "hash": "3d5605775782c1d6",
+   "lastmod": "2026-10-16",
+   "web_name": "blitz-report-template-sharing"
+  },
+  "Blitz Report Template Sharing Upload": {
+   "hash": "a5acb3eb82b2d5f9",
+   "lastmod": "2026-10-16",
+   "web_name": "blitz-report-template-sharing-upload"
+  },
+  "Blitz Report Templates": {
+   "hash": "fd6f940217db2a90",
+   "lastmod": "2026-10-16",
+   "web_name": "blitz-report-templates"
+  },
+  "Blitz Report Text Search": {
+   "hash": "fe70c2c3153c30bf",
+   "lastmod": "2026-10-16",
+   "web_name": "blitz-report-text-search"
+  },
+  "Blitz Report Translations": {
+   "hash": "4c97e8e084f22cd7",
+   "lastmod": "2026-10-16",
+   "web_name": "blitz-report-translations"
+  },
+  "Blitz Report User History": {
+   "hash": "7f140e4c8bf76724",
+   "lastmod": "2026-10-16",
+   "web_name": "blitz-report-user-history"
+  },
+  "Blitz Report VPD Policy Setup": {
+   "hash": "a1470f13bfebad7c",
+   "lastmod": "2026-10-16",
+   "web_name": "blitz-report-vpd-policy-setup"
+  },
+  "Blitz Report Web Service Sessions": {
+   "hash": "232a190e4d2771aa",
+   "lastmod": "2026-10-16",
+   "web_name": "blitz-report-web-service-sessions"
+  },
+  "Blitz Reports": {
+   "hash": "3ea3030347237172",
+   "lastmod": "2026-10-16",
+   "web_name": "blitz-reports"
+  },
+  "Blitz Upload Data": {
+   "hash": "d7ea53ab53325f15",
+   "lastmod": "2026-10-16",
+   "web_name": "blitz-upload-data"
+  },
+  "Blitz Upload Dependencies": {
+   "hash": "8589d869c9b7a5ef",
+   "lastmod": "2026-10-16",
+   "web_name": "blitz-upload-dependencies"
+  },
+  "Blitz Upload Example (API with no parameters)": {
+   "hash": "c89e4e469d9e1d71",
+   "lastmod": "2026-10-16",
+   "web_name": "blitz-upload-example-api-with-no-parameters"
+  },
+  "Blitz Upload Example (API without parameters)": {
+   "hash": "19562f0105f03e9d",
+   "lastmod": "2026-10-16",
+   "web_name": "blitz-upload-example-api-without-parameters"
+  },
+  "Blitz Upload Example (API)": {
+   "hash": "54f5dae80178561e",
+   "lastmod": "2026-10-16",
+   "web_name": "blitz-upload-example-api"
+  },
+  "Blitz Upload Example (Interface Table)": {
+   "hash": "8272b1a0a29434de",
+   "lastmod": "2026-10-16",
+   "web_name": "blitz-upload-example-interface-table"
+  },
+  "Blitz Upload History": {
+   "hash": "0ba7db0955ca4cdf",
+   "lastmod": "2026-10-16",
+   "web_name": "blitz-upload-history"
+  },
+  "CAC AP Accrual Accounts Setup": {
+   "hash": "3e95a4705e03a496",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-ap-accrual-accounts-setup"
+  },
+  "CAC AP Accrual IR ISO Match Analysis": {
+   "hash": "28e31de7c2c05272",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-ap-accrual-ir-iso-match-analysis"
+  },
+  "CAC AP Accrual Reconciliation Load Request": {
+   "hash": "2440f656d69bb9ea",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-ap-accrual-reconciliation-load-request"
+  },
+  "CAC AP Accrual Reconciliation Summary by Match Type": {
+   "hash": "88d76c39fdbaee09",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-ap-accrual-reconciliation-summary-by-match-type"
+  },
+  "CAC Accounting Period Status": {
+   "hash": "b889b5a69cd06d5f",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-accounting-period-status"
+  },
+  "CAC Calculate Average Item Costs": {
+   "hash": "2a168bd177295ba5",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-calculate-average-item-costs"
+  },
+  "CAC Calculate ICP PII Item Costs": {
+   "hash": "02049f3eb9406505",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-calculate-icp-pii-item-costs"
+  },
+  "CAC Calculate ICP PII Item Costs Multi-Hop": {
+   "hash": "bb2eeaecf4abdd7a",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-calculate-icp-pii-item-costs-multi-hop"
+  },
+  "CAC Calculate ICP PII Item Costs by Where Used": {
+   "hash": "012b9bd9b473920d",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-calculate-icp-pii-item-costs-by-where-used"
+  },
+  "CAC Category Accounts Setup": {
+   "hash": "2a3085ada43e7d21",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-category-accounts-setup"
+  },
+  "CAC Cost Group Accounts Setup": {
+   "hash": "b11078c3b24ae36a",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-cost-group-accounts-setup"
+  },
+  "CAC Cost Type Costs Not in Period Close Inventory Snapshot": {
+   "hash": "ed2f899719a6dc88",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-cost-type-costs-not-in-period-close-inventory-snapshot"
+  },
+  "CAC Cost vs- Planning Item Controls": {
+   "hash": "ced8ad92e32d498c",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-cost-vs-planning-item-controls"
+  },
+  "CAC Deferred COGS Out-of-Balance": {
+   "hash": "d5bc723fca0bce46",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-deferred-cogs-out-of-balance"
+  },
+  "CAC Department Overhead Rates": {
+   "hash": "2bd2703d0688c229",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-department-overhead-rates"
+  },
+  "CAC Department Overhead Setup": {
+   "hash": "5c4f1ece9b320e70",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-department-overhead-setup"
+  },
+  "CAC Department Overhead Setup Errors": {
+   "hash": "ae067a77deeee7b8",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-department-overhead-setup-errors"
+  },
+  "CAC ICP PII Inventory Pending Cost Adjustment": {
+   "hash": "edbeb7690511da2d",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-icp-pii-inventory-pending-cost-adjustment"
+  },
+  "CAC ICP PII Inventory and Intransit Value (Period-End)": {
+   "hash": "babbf4b820713f5f",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-icp-pii-inventory-and-intransit-value-period-end"
+  },
+  "CAC ICP PII Item Cost Summary": {
+   "hash": "c8f14862c0906048",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-icp-pii-item-cost-summary"
+  },
+  "CAC ICP PII Material Account Detail": {
+   "hash": "360fc387819ad6fb",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-icp-pii-material-account-detail"
+  },
+  "CAC ICP PII Material Account Summary": {
+   "hash": "31084bd4f8726a8d",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-icp-pii-material-account-summary"
+  },
+  "CAC ICP PII WIP Material Usage Variance": {
+   "hash": "857c7bb89017f573",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-icp-pii-wip-material-usage-variance"
+  },
+  "CAC ICP PII WIP Pending Cost Adjustment": {
+   "hash": "91bc9140841cfb7b",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-icp-pii-wip-pending-cost-adjustment"
+  },
+  "CAC ICP PII vs- Item Costs": {
+   "hash": "d7dc429f06eb8dc8",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-icp-pii-vs-item-costs"
+  },
+  "CAC Inactive Items Set to Roll Up": {
+   "hash": "8fe160eb16935bba",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-inactive-items-set-to-roll-up"
+  },
+  "CAC Intercompany Relationship Setup": {
+   "hash": "de4ae6d9a47d1544",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-intercompany-relationship-setup"
+  },
+  "CAC Intercompany SO Price List": {
+   "hash": "14bc56ac5985aa09",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-intercompany-so-price-list"
+  },
+  "CAC Intercompany SO Price List vs- Item Cost Comparison": {
+   "hash": "b306642638c1143c",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-intercompany-so-price-list-vs-item-cost-comparison"
+  },
+  "CAC Intercompany SO Shipping Transaction vs- Invoice Price": {
+   "hash": "6a8b6a0a5a786143",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-intercompany-so-shipping-transaction-vs-invoice-price"
+  },
+  "CAC Interface Error Summary": {
+   "hash": "00c890defd38bc6c",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-interface-error-summary"
+  },
+  "CAC Internal Order Shipment Margin": {
+   "hash": "a6237e2b6d7e48fc",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-internal-order-shipment-margin"
+  },
+  "CAC Intransit Value (Real-Time)": {
+   "hash": "3677b93f0d13cc69",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-intransit-value-real-time"
+  },
+  "CAC Inventory Account Alias Setup": {
+   "hash": "a9dca4c44f769c8a",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-inventory-account-alias-setup"
+  },
+  "CAC Inventory Accounts Setup": {
+   "hash": "d722addedf94dd00",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-inventory-accounts-setup"
+  },
+  "CAC Inventory Lot and Locator OPM Value (Period-End)": {
+   "hash": "de026919d394b97d",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-inventory-lot-and-locator-opm-value-period-end"
+  },
+  "CAC Inventory Organization Summary": {
+   "hash": "170447afffcd51a5",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-inventory-organization-summary"
+  },
+  "CAC Inventory Out-of-Balance": {
+   "hash": "439fedc05fd8bf88",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-inventory-out-of-balance"
+  },
+  "CAC Inventory Pending Cost Adjustment": {
+   "hash": "5f9634c2df1ef9b7",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-inventory-pending-cost-adjustment"
+  },
+  "CAC Inventory Pending Cost Adjustment - No Currencies": {
+   "hash": "ad4d5953da981823",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-inventory-pending-cost-adjustment-no-currencies"
+  },
+  "CAC Inventory Periods Not Closed or Summarized": {
+   "hash": "05f8ec6587ce2584",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-inventory-periods-not-closed-or-summarized"
+  },
+  "CAC Inventory and Intransit Value (Period-End)": {
+   "hash": "b1f508e2e3cde1ed",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-inventory-and-intransit-value-period-end"
+  },
+  "CAC Inventory and Intransit Value (Period-End) - Discrete-OPM": {
+   "hash": "619d4ed6a6ac66e2",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-inventory-and-intransit-value-period-end-discrete-opm"
+  },
+  "CAC Inventory to G-L Reconciliation (Restricted by Org Access)": {
+   "hash": "8d50d33b6cc2da10",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-inventory-to-g-l-reconciliation-restricted-by-org-access"
+  },
+  "CAC Inventory to G-L Reconciliation (Unrestricted by Org Access)": {
+   "hash": "b8cadbc0680385c4",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-inventory-to-g-l-reconciliation-unrestricted-by-org-access"
+  },
+  "CAC Invoice Price Variance": {
+   "hash": "33053c2456e04024",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-invoice-price-variance"
+  },
+  "CAC Item Cost - Routing": {
+   "hash": "49d9b57000965290",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-item-cost-routing"
+  },
+  "CAC Item Cost Break-Out by Activity": {
+   "hash": "e2baf0de41d2865d",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-item-cost-break-out-by-activity"
+  },
+  "CAC Item Cost Comparison": {
+   "hash": "6902763c050390eb",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-item-cost-comparison"
+  },
+  "CAC Item Cost Out-of-Balance": {
+   "hash": "071462bb1f06f8f5",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-item-cost-out-of-balance"
+  },
+  "CAC Item Cost Summary": {
+   "hash": "9dcbcf2a6705a6cf",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-item-cost-summary"
+  },
+  "CAC Item List Price vs- Item Cost": {
+   "hash": "1291ad5f055389f0",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-item-list-price-vs-item-cost"
+  },
+  "CAC Item Master Accounts Setup": {
+   "hash": "a724aac3f8c885ae",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-item-master-accounts-setup"
+  },
+  "CAC Item vs- Component Include in Rollup Controls": {
+   "hash": "98e3ace245e663b9",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-item-vs-component-include-in-rollup-controls"
+  },
+  "CAC Items Without This Level Material Overhead": {
+   "hash": "e1e2ce80fc6d8d89",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-items-without-this-level-material-overhead"
+  },
+  "CAC Last Standard Item Cost": {
+   "hash": "8a5dabe4ae982373",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-last-standard-item-cost"
+  },
+  "CAC Load More4Apps Buy Item Costs": {
+   "hash": "b166cd13ca552161",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-load-more4apps-buy-item-costs"
+  },
+  "CAC Manufacturing Variance": {
+   "hash": "cbbec4bdf1d2ce27",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-manufacturing-variance"
+  },
+  "CAC Margin Analysis Account Summary": {
+   "hash": "2ccf84da13129b2e",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-margin-analysis-account-summary"
+  },
+  "CAC Margin Analysis Summary": {
+   "hash": "ab3c4f5568f3d4bc",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-margin-analysis-summary"
+  },
+  "CAC Material Account Alias with Lot Numbers": {
+   "hash": "26a856add2189313",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-material-account-alias-with-lot-numbers"
+  },
+  "CAC Material Account Detail": {
+   "hash": "c19391d8921f119e",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-material-account-detail"
+  },
+  "CAC Material Account Summary": {
+   "hash": "8687453cfd3281ff",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-material-account-summary"
+  },
+  "CAC Material Overhead Setup": {
+   "hash": "92ab4710e655510c",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-material-overhead-setup"
+  },
+  "CAC Missing Material Accounting Transactions": {
+   "hash": "41d0a4190e093f2d",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-missing-material-accounting-transactions"
+  },
+  "CAC Missing Receiving Accounting Transactions": {
+   "hash": "10798d6a99f3449a",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-missing-receiving-accounting-transactions"
+  },
+  "CAC Missing WIP Accounting Transactions": {
+   "hash": "5e693c73ea00207c",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-missing-wip-accounting-transactions"
+  },
+  "CAC New Items": {
+   "hash": "aba5521a115fed3c",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-new-items"
+  },
+  "CAC New Standard Item Costs": {
+   "hash": "e5b1852df527cfdf",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-new-standard-item-costs"
+  },
+  "CAC Number of Item Costs by Cost Type": {
+   "hash": "a2aca5bd7b6befcd",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-number-of-item-costs-by-cost-type"
+  },
+  "CAC OPM Batch Material Summary": {
+   "hash": "8db7bf6f636ee8b6",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-opm-batch-material-summary"
+  },
+  "CAC OPM Costed Formula": {
+   "hash": "17feaa4790586c18",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-opm-costed-formula"
+  },
+  "CAC OPM Item Cost Detail": {
+   "hash": "f3f2b2d50eb9bc68",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-opm-item-cost-detail"
+  },
+  "CAC OPM WIP Account Value": {
+   "hash": "e93197d9b17f19ac",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-opm-wip-account-value"
+  },
+  "CAC Onhand Lot Value (Real-Time)": {
+   "hash": "354b443267ee32f8",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-onhand-lot-value-real-time"
+  },
+  "CAC Open Purchase Orders": {
+   "hash": "4f5ad0fe1a858fba",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-open-purchase-orders"
+  },
+  "CAC Order Type Setup": {
+   "hash": "040d5db5bcbb2ee6",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-order-type-setup"
+  },
+  "CAC PO Price vs- Costing Method Comparison": {
+   "hash": "01911e2c7faf21df",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-po-price-vs-costing-method-comparison"
+  },
+  "CAC PO Receipt History for Actual Costing": {
+   "hash": "d24d9db3bfbf4d01",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-po-receipt-history-for-actual-costing"
+  },
+  "CAC PO Receipt History for Item Costing": {
+   "hash": "a5ce54a9dc198f95",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-po-receipt-history-for-item-costing"
+  },
+  "CAC Purchase Price Variance": {
+   "hash": "403f63194bffc737",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-purchase-price-variance"
+  },
+  "CAC Receiving Account Detail": {
+   "hash": "e4cbee7fa238c005",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-receiving-account-detail"
+  },
+  "CAC Receiving Account Summary": {
+   "hash": "7634cb0c69e5854d",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-receiving-account-summary"
+  },
+  "CAC Receiving Activity Summary": {
+   "hash": "0d55ea6625e7f6e3",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-receiving-activity-summary"
+  },
+  "CAC Receiving Expense Value (Period-End)": {
+   "hash": "ddbdfecdf9202f92",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-receiving-expense-value-period-end"
+  },
+  "CAC Receiving Value (Period-End)": {
+   "hash": "823ea9ff3a1b05ee",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-receiving-value-period-end"
+  },
+  "CAC Recost Cost of Goods Sold": {
+   "hash": "5c90e5a8a54477d1",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-recost-cost-of-goods-sold"
+  },
+  "CAC Resource Costs": {
+   "hash": "8e4fce4b103626b3",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-resource-costs"
+  },
+  "CAC Resources Associated with Overheads Setup": {
+   "hash": "8c8631c73ed89543",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-resources-associated-with-overheads-setup"
+  },
+  "CAC Resources by Department Setup": {
+   "hash": "8134df29d443335b",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-resources-by-department-setup"
+  },
+  "CAC Shipping Network (Inter-Org) Accounts Setup": {
+   "hash": "a67ecf95806c482c",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-shipping-network-inter-org-accounts-setup"
+  },
+  "CAC Shipping Networks Missing Interco OU Relationships": {
+   "hash": "0f0b1013388eba50",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-shipping-networks-missing-interco-ou-relationships"
+  },
+  "CAC Standard Cost Update Submissions": {
+   "hash": "ae231a2eb97b2921",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-standard-cost-update-submissions"
+  },
+  "CAC Subinventory Accounts Setup": {
+   "hash": "b917bab53298e12d",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-subinventory-accounts-setup"
+  },
+  "CAC User-Defined and Rolled Up Costs": {
+   "hash": "bd90369fdc72884b",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-user-defined-and-rolled-up-costs"
+  },
+  "CAC WIP Account Detail": {
+   "hash": "3f9b3332eca9d638",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-wip-account-detail"
+  },
+  "CAC WIP Account Summary": {
+   "hash": "6208143131861ea5",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-wip-account-summary"
+  },
+  "CAC WIP Account Value": {
+   "hash": "e2947e612148aa1e",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-wip-account-value"
+  },
+  "CAC WIP Accounts Setup": {
+   "hash": "36e144180987f9c6",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-wip-accounts-setup"
+  },
+  "CAC WIP Jobs With Complete Status But Not Ready for Close": {
+   "hash": "6063c18b15b0309b",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-wip-jobs-with-complete-status-but-not-ready-for-close"
+  },
+  "CAC WIP Jobs With Complete Status Which Are Ready for Close": {
+   "hash": "cb4ac9cd81ee0007",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-wip-jobs-with-complete-status-which-are-ready-for-close"
+  },
+  "CAC WIP Material Relief": {
+   "hash": "6abb3675ae913081",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-wip-material-relief"
+  },
+  "CAC WIP Material Usage Variance": {
+   "hash": "d9df0669721fe699",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-wip-material-usage-variance"
+  },
+  "CAC WIP Pending Cost Adjustment": {
+   "hash": "ddf951ccadaf0e81",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-wip-pending-cost-adjustment"
+  },
+  "CAC WIP Period Balances to Accounting Activity Reconciliation": {
+   "hash": "1b81ac0126e10cc3",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-wip-period-balances-to-accounting-activity-reconciliation"
+  },
+  "CAC WIP Resource Efficiency": {
+   "hash": "231239a399e1d442",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-wip-resource-efficiency"
+  },
+  "CAC Where Used by Cost Type": {
+   "hash": "0348fc95d588bf95",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-where-used-by-cost-type"
+  },
+  "CAC Zero Item Costs": {
+   "hash": "080b6decc3c834f6",
+   "lastmod": "2026-10-16",
+   "web_name": "cac-zero-item-costs"
+  },
+  "CE Bank Account Balances": {
+   "hash": "a8c6a16d4f9506bb",
+   "lastmod": "2026-10-16",
+   "web_name": "ce-bank-account-balances"
+  },
+  "CE Bank Branches": {
+   "hash": "6e4ee5bbef442cc8",
+   "lastmod": "2026-10-16",
+   "web_name": "ce-bank-branches"
+  },
+  "CE Bank Statement Import Execution": {
+   "hash": "f7e0b9f566cddd5f",
+   "lastmod": "2026-10-16",
+   "web_name": "ce-bank-statement-import-execution"
+  },
+  "CE Bank Statement Upload": {
+   "hash": "48aabd2d5cdc3044",
+   "lastmod": "2026-10-16",
+   "web_name": "ce-bank-statement-upload"
+  },
+  "CE Bank Statement and Reconciliation": {
+   "hash": "0851e41ffa68e354",
+   "lastmod": "2026-10-16",
+   "web_name": "ce-bank-statement-and-reconciliation"
+  },
+  "CE Bank Transaction Codes Listing": {
+   "hash": "3fa02ce68af0c41d",
+   "lastmod": "2026-10-16",
+   "web_name": "ce-bank-transaction-codes-listing"
+  },
+  "CE Bank and Branch Upload": {
+   "hash": "c3213c4595678c13",
+   "lastmod": "2026-10-16",
+   "web_name": "ce-bank-and-branch-upload"
+  },
+  "CE Cash in Transit": {
+   "hash": "fdf13f09489d7acf",
+   "lastmod": "2026-10-16",
+   "web_name": "ce-cash-in-transit"
+  },
+  "CE Cleared Transactions": {
+   "hash": "27352c473d93c9fd",
+   "lastmod": "2026-10-16",
+   "web_name": "ce-cleared-transactions"
+  },
+  "CE General Ledger Cash Account Usage": {
+   "hash": "b301516ce7cb00a6",
+   "lastmod": "2026-10-16",
+   "web_name": "ce-general-ledger-cash-account-usage"
+  },
+  "CE General Ledger Reconciliation": {
+   "hash": "d5d203bd0d3f182e",
+   "lastmod": "2026-10-16",
+   "web_name": "ce-general-ledger-reconciliation"
+  },
+  "CE Transactions Available for Reconciliation": {
+   "hash": "541478fbe6b6de3c",
+   "lastmod": "2026-10-16",
+   "web_name": "ce-transactions-available-for-reconciliation"
+  },
+  "CRP Available Resources": {
+   "hash": "91439ef678f07a24",
+   "lastmod": "2026-10-16",
+   "web_name": "crp-available-resources"
+  },
+  "CRP Resource Plan": {
+   "hash": "913e2f61812ae530",
+   "lastmod": "2026-10-16",
+   "web_name": "crp-resource-plan"
+  },
+  "CS Service Requests": {
+   "hash": "8bfce5178f15d698",
+   "lastmod": "2026-10-16",
+   "web_name": "cs-service-requests"
+  },
+  "CSI Counter Readings": {
+   "hash": "ee87e9c40ddd7e1b",
+   "lastmod": "2026-10-16",
+   "web_name": "csi-counter-readings"
+  },
+  "CSI Customer Products Summary": {
+   "hash": "5f30e822e3db9f74",
+   "lastmod": "2026-10-16",
+   "web_name": "csi-customer-products-summary"
+  },
+  "CSI Installed Base Extended Attributes Summary": {
+   "hash": "2dbd9c1484c375c4",
+   "lastmod": "2026-10-16",
+   "web_name": "csi-installed-base-extended-attributes-summary"
+  },
+  "CSI Installed Base Summary by Organization": {
+   "hash": "684195d0fa282a57",
+   "lastmod": "2026-10-16",
+   "web_name": "csi-installed-base-summary-by-organization"
+  },
+  "CST AP and PO Accrual Reconciliation": {
+   "hash": "7d33a5b12cb592a2",
+   "lastmod": "2026-10-16",
+   "web_name": "cst-ap-and-po-accrual-reconciliation"
+  },
+  "CST COGS Revenue Matching": {
+   "hash": "428dffca2da6bf4f",
+   "lastmod": "2026-10-16",
+   "web_name": "cst-cogs-revenue-matching"
+  },
+  "CST Cost Groups": {
+   "hash": "2e488d7a86b0c8e4",
+   "lastmod": "2026-10-16",
+   "web_name": "cst-cost-groups"
+  },
+  "CST Department Overhead Rate Upload": {
+   "hash": "74d3d6f239ee0bde",
+   "lastmod": "2026-10-16",
+   "web_name": "cst-department-overhead-rate-upload"
+  },
+  "CST Detailed Item Cost": {
+   "hash": "b3fdabf81160445f",
+   "lastmod": "2026-10-16",
+   "web_name": "cst-detailed-item-cost"
+  },
+  "CST Historical WIP Standard Cost Adjustment": {
+   "hash": "02ee2d9ac1b404c1",
+   "lastmod": "2026-10-16",
+   "web_name": "cst-historical-wip-standard-cost-adjustment"
+  },
+  "CST Inventory Value - Multi-Organization (Item Costs)": {
+   "hash": "da3973952ab53364",
+   "lastmod": "2026-10-16",
+   "web_name": "cst-inventory-value-multi-organization-item-costs"
+  },
+  "CST Inventory Value Report - by Subinventory (Item Cost)": {
+   "hash": "eded49cf66460db9",
+   "lastmod": "2026-10-16",
+   "web_name": "cst-inventory-value-report-by-subinventory-item-cost"
+  },
+  "CST Item Average Cost Upload": {
+   "hash": "f8307c87b568d529",
+   "lastmod": "2026-10-16",
+   "web_name": "cst-item-average-cost-upload"
+  },
+  "CST Item Cost Reports": {
+   "hash": "b124b7d00b35a897",
+   "lastmod": "2026-10-16",
+   "web_name": "cst-item-cost-reports"
+  },
+  "CST Item Standard Cost Upload": {
+   "hash": "74fcdd5e38ec0452",
+   "lastmod": "2026-10-16",
+   "web_name": "cst-item-standard-cost-upload"
+  },
+  "CST Miscellaneous Accrual Reconciliation": {
+   "hash": "f1f37581c9690936",
+   "lastmod": "2026-10-16",
+   "web_name": "cst-miscellaneous-accrual-reconciliation"
+  },
+  "CST Period Close Subinventory Value": {
+   "hash": "4bd44f61044728ca",
+   "lastmod": "2026-10-16",
+   "web_name": "cst-period-close-subinventory-value"
+  },
+  "CST Period Close Subinventory Value Summary": {
+   "hash": "1e28121ec7e9ca09",
+   "lastmod": "2026-10-16",
+   "web_name": "cst-period-close-subinventory-value-summary"
+  },
+  "CST Periodic Inventory Value": {
+   "hash": "6db5da8022b7f5b4",
+   "lastmod": "2026-10-16",
+   "web_name": "cst-periodic-inventory-value"
+  },
+  "CST Resource Overhead Association Upload": {
+   "hash": "03be7a94c0f37e3d",
+   "lastmod": "2026-10-16",
+   "web_name": "cst-resource-overhead-association-upload"
+  },
+  "CST Resource Rate Upload": {
+   "hash": "943d092bd28f5a2a",
+   "lastmod": "2026-10-16",
+   "web_name": "cst-resource-rate-upload"
+  },
+  "CST Subinventory Account Value - Multi-Org": {
+   "hash": "1ec1decac231131c",
+   "lastmod": "2026-10-16",
+   "web_name": "cst-subinventory-account-value-multi-org"
+  },
+  "CST Supply Chain Indented Bills of Material Cost": {
+   "hash": "5ee2a7cdc7a7f980",
+   "lastmod": "2026-10-16",
+   "web_name": "cst-supply-chain-indented-bills-of-material-cost"
+  },
+  "CST Uninvoiced Receipts": {
+   "hash": "7d0b21c7edbd7d66",
+   "lastmod": "2026-10-16",
+   "web_name": "cst-uninvoiced-receipts"
+  },
+  "DBA ASM Disk Groups": {
+   "hash": "c8c61452a55d6895",
+   "lastmod": "2026-10-16",
+   "web_name": "dba-asm-disk-groups"
+  },
+  "DBA AWR Active Session History": {
+   "hash": "678e9efd816bf585",
+   "lastmod": "2026-10-16",
+   "web_name": "dba-awr-active-session-history"
+  },
+  "DBA AWR Blocking Session Summary": {
+   "hash": "b733eb26e7f2c0ba",
+   "lastmod": "2026-10-16",
+   "web_name": "dba-awr-blocking-session-summary"
+  },
+  "DBA AWR CPU Load (active session history)": {
+   "hash": "a78e8005e2c18ed3",
+   "lastmod": "2026-10-16",
+   "web_name": "dba-awr-cpu-load-active-session-history"
+  },
+  "DBA AWR CPU vs Wait Time Summary": {
+   "hash": "8b274faadd70d966",
+   "lastmod": "2026-10-16",
+   "web_name": "dba-awr-cpu-vs-wait-time-summary"
+  },
+  "DBA AWR Interconnect Traffic": {
+   "hash": "f12329d717b764e2",
+   "lastmod": "2026-10-16",
+   "web_name": "dba-awr-interconnect-traffic"
+  },
+  "DBA AWR Latch Summary": {
+   "hash": "b68d8c8a90362361",
+   "lastmod": "2026-10-16",
+   "web_name": "dba-awr-latch-summary"
+  },
+  "DBA AWR Latch by Time": {
+   "hash": "dc887a664d6ac89a",
+   "lastmod": "2026-10-16",
+   "web_name": "dba-awr-latch-by-time"
+  },
+  "DBA AWR PGA History": {
+   "hash": "ee340e2f7f765b2f",
+   "lastmod": "2026-10-16",
+   "web_name": "dba-awr-pga-history"
+  },
+  "DBA AWR SQL Execution Plan History": {
+   "hash": "bf54548858d826f1",
+   "lastmod": "2026-10-16",
+   "web_name": "dba-awr-sql-execution-plan-history"
+  },
+  "DBA AWR SQL Performance Summary": {
+   "hash": "2805caa696845c25",
+   "lastmod": "2026-10-16",
+   "web_name": "dba-awr-sql-performance-summary"
+  },
+  "DBA AWR Settings": {
+   "hash": "847d38db10eaa4cb",
+   "lastmod": "2026-10-16",
+   "web_name": "dba-awr-settings"
+  },
+  "DBA AWR System Metrics Summary": {
+   "hash": "a44facb4c7c11ec0",
+   "lastmod": "2026-10-16",
+   "web_name": "dba-awr-system-metrics-summary"
+  },
+  "DBA AWR System Time Percentages": {
+   "hash": "c539c533d9a6540a",
+   "lastmod": "2026-10-16",
+   "web_name": "dba-awr-system-time-percentages"
+  },
+  "DBA AWR System Time Summary": {
+   "hash": "d413728cddb4cc71",
+   "lastmod": "2026-10-16",
+   "web_name": "dba-awr-system-time-summary"
+  },
+  "DBA AWR Tablespace Usage": {
+   "hash": "34f5bc00b91d2c7a",
+   "lastmod": "2026-10-16",
+   "web_name": "dba-awr-tablespace-usage"
+  },
+  "DBA AWR Wait Class by Time": {
+   "hash": "4821154410496d3f",
+   "lastmod": "2026-10-16",
+   "web_name": "dba-awr-wait-class-by-time"
+  },
+  "DBA AWR Wait Event Summary": {
+   "hash": "fedcd3686082a869",
+   "lastmod": "2026-10-16",
+   "web_name": "dba-awr-wait-event-summary"
+  },
+  "DBA AWR Wait Event Summary (active session history)": {
+   "hash": "59c45821aa1f97a1",
+   "lastmod": "2026-10-16",
+   "web_name": "dba-awr-wait-event-summary-active-session-history"
+  },
+  "DBA Alert Log": {
+   "hash": "90eab71d49af78d2",
+   "lastmod": "2026-10-16",
+   "web_name": "dba-alert-log"
+  },
+  "DBA Archive - Redo Log Rate": {
+   "hash": "8b817911f54b42c2",
+   "lastmod": "2026-10-16",
+   "web_name": "dba-archive-redo-log-rate"
+  },
+  "DBA Automated Maintenance Tasks": {
+   "hash": "93c05e24097e077f",
+   "lastmod": "2026-10-16",
+   "web_name": "dba-automated-maintenance-tasks"
+  },
+  "DBA Blocking Sessions": {
+   "hash": "56cae7c80ba810ee",
+   "lastmod": "2026-10-16",
+   "web_name": "dba-blocking-sessions"
+  },
+  "DBA CPU Benchmark1": {
+   "hash": "810ad58aa658a6d7",
+   "lastmod": "2026-10-16",
+   "web_name": "dba-cpu-benchmark1"
+  },
+  "DBA CPU Benchmark2": {
+   "hash": "e5fcf3bf0643510c",
+   "lastmod": "2026-10-16",
+   "web_name": "dba-cpu-benchmark2"
+  },
+  "DBA CPU Benchmark3": {
+   "hash": "8d034945f37fef9e",
+   "lastmod": "2026-10-16",
+   "web_name": "dba-cpu-benchmark3"
+  },
+  "DBA Data Files": {
+   "hash": "6dc39f6d53be16f9",
+   "lastmod": "2026-10-16",
+   "web_name": "dba-data-files"
+  },
+  "DBA Database Links": {
+   "hash": "b0e23d9934124f98",
+   "lastmod": "2026-10-16",
+   "web_name": "dba-database-links"
+  },
+  "DBA Database Parameter Validation": {
+   "hash": "b48047209202351d",
+   "lastmod": "2026-10-16",
+   "web_name": "dba-database-parameter-validation"
+  },
+  "DBA Dependencies (used by)": {
+   "hash": "bc8b908f3c50fa74",
+   "lastmod": "2026-10-16",
+   "web_name": "dba-dependencies-used-by"
+  },
+  "DBA Dependencies (uses)": {
+   "hash": "256e7bc9cdf51617",
+   "lastmod": "2026-10-16",
+   "web_name": "dba-dependencies-uses"
+  },
+  "DBA Directories": {
+   "hash": "05cd43c05b990863",
+   "lastmod": "2026-10-16",
+   "web_name": "dba-directories"
+  },
+  "DBA Editioned Object Summary": {
+   "hash": "dfffdcdd5a8fe809",
+   "lastmod": "2026-10-16",
+   "web_name": "dba-editioned-object-summary"
+  },
+  "DBA Editions": {
+   "hash": "7486e70323627c4a",
+   "lastmod": "2026-10-16",
+   "web_name": "dba-editions"
+  },
+  "DBA External Table Creation": {
+   "hash": "dba4ea07baeb08a2",
+   "lastmod": "2026-10-16",
+   "web_name": "dba-external-table-creation"
+  },
+  "DBA Feature Usage Statistics": {
+   "hash": "732894c46a07e17b",
+   "lastmod": "2026-10-16",
+   "web_name": "dba-feature-usage-statistics"
+  },
+  "DBA Hierarchical Profiler Data": {
+   "hash": "62a4f43dff180600",
+   "lastmod": "2026-10-16",
+   "web_name": "dba-hierarchical-profiler-data"
+  },
+  "DBA Index Columns": {
+   "hash": "1f325f50a95b400f",
+   "lastmod": "2026-10-16",
+   "web_name": "dba-index-columns"
+  },
+  "DBA Jobs": {
+   "hash": "d5b40bac5d5e496b",
+   "lastmod": "2026-10-16",
+   "web_name": "dba-jobs"
+  },
+  "DBA Log Switches": {
+   "hash": "735ae58675c9653c",
+   "lastmod": "2026-10-16",
+   "web_name": "dba-log-switches"
+  },
+  "DBA ORDS Configuration Validation": {
+   "hash": "dfa4c6f79ebf363a",
+   "lastmod": "2026-10-16",
+   "web_name": "dba-ords-configuration-validation"
+  },
+  "DBA Object Access Privileges": {
+   "hash": "4e0b1314fb1f5d32",
+   "lastmod": "2026-10-16",
+   "web_name": "dba-object-access-privileges"
+  },
+  "DBA Objects": {
+   "hash": "bcef2023cc3bf2c5",
+   "lastmod": "2026-10-16",
+   "web_name": "dba-objects"
+  },
+  "DBA Parameters": {
+   "hash": "0d98baa060c1313c",
+   "lastmod": "2026-10-16",
+   "web_name": "dba-parameters"
+  },
+  "DBA Profiler Data": {
+   "hash": "233e7d7f663fe861",
+   "lastmod": "2026-10-16",
+   "web_name": "dba-profiler-data"
+  },
+  "DBA Redo Log Files": {
+   "hash": "d236b346be1b1369",
+   "lastmod": "2026-10-16",
+   "web_name": "dba-redo-log-files"
+  },
+  "DBA Registry": {
+   "hash": "8b2bf6b34cd97ab1",
+   "lastmod": "2026-10-16",
+   "web_name": "dba-registry"
+  },
+  "DBA Registry SQL Patch": {
+   "hash": "3cd824a1d7c1f4a7",
+   "lastmod": "2026-10-16",
+   "web_name": "dba-registry-sql-patch"
+  },
+  "DBA Resource Limits": {
+   "hash": "a888d9395e724e66",
+   "lastmod": "2026-10-16",
+   "web_name": "dba-resource-limits"
+  },
+  "DBA Result Cache Objects and Dependencies": {
+   "hash": "5d2f8d688a6f66f3",
+   "lastmod": "2026-10-16",
+   "web_name": "dba-result-cache-objects-and-dependencies"
+  },
+  "DBA Result Cache Statistics": {
+   "hash": "6fa53bc55c3f70bd",
+   "lastmod": "2026-10-16",
+   "web_name": "dba-result-cache-statistics"
+  },
+  "DBA SGA Active Session History": {
+   "hash": "e52b37f9b7c8fd39",
+   "lastmod": "2026-10-16",
+   "web_name": "dba-sga-active-session-history"
+  },
+  "DBA SGA Blocking Session Summary": {
+   "hash": "5a31f94676c353c3",
+   "lastmod": "2026-10-16",
+   "web_name": "dba-sga-blocking-session-summary"
+  },
+  "DBA SGA Buffer Cache Object Usage": {
+   "hash": "126eef5e89f80921",
+   "lastmod": "2026-10-16",
+   "web_name": "dba-sga-buffer-cache-object-usage"
+  },
+  "DBA SGA CPU Load (active session history)": {
+   "hash": "a1023042cb6f339f",
+   "lastmod": "2026-10-16",
+   "web_name": "dba-sga-cpu-load-active-session-history"
+  },
+  "DBA SGA Memory Allocation": {
+   "hash": "f0f34229c4b80a8f",
+   "lastmod": "2026-10-16",
+   "web_name": "dba-sga-memory-allocation"
+  },
+  "DBA SGA SQL Execution Plan History": {
+   "hash": "b7d04b59b66ee0f6",
+   "lastmod": "2026-10-16",
+   "web_name": "dba-sga-sql-execution-plan-history"
+  },
+  "DBA SGA SQL Performance Summary": {
+   "hash": "8709fc1484f382a4",
+   "lastmod": "2026-10-16",
+   "web_name": "dba-sga-sql-performance-summary"
+  },
+  "DBA SGA Target Advice": {
+   "hash": "e5b995874dae36ac",
+   "lastmod": "2026-10-16",
+   "web_name": "dba-sga-target-advice"
+  },
+  "DBA SGA Wait Event Summary (active session history)": {
+   "hash": "829e2f197b5392e9",
+   "lastmod": "2026-10-16",
+   "web_name": "dba-sga-wait-event-summary-active-session-history"
+  },
+  "DBA SGA-PGA Memory Configuration": {
+   "hash": "a9ae5517f8ada95c",
+   "lastmod": "2026-10-16",
+   "web_name": "dba-sga-pga-memory-configuration"
+  },
+  "DBA SYSAUX Occupants": {
+   "hash": "85d1673c8a2566b5",
+   "lastmod": "2026-10-16",
+   "web_name": "dba-sysaux-occupants"
+  },
+  "DBA Scheduler Jobs": {
+   "hash": "e64b84bd23726e78",
+   "lastmod": "2026-10-16",
+   "web_name": "dba-scheduler-jobs"
+  },
+  "DBA Segments": {
+   "hash": "1b8a883363214e75",
+   "lastmod": "2026-10-16",
+   "web_name": "dba-segments"
+  },
+  "DBA Session Longops": {
+   "hash": "47b14afc1c25adff",
+   "lastmod": "2026-10-16",
+   "web_name": "dba-session-longops"
+  },
+  "DBA Sessions": {
+   "hash": "36bab5a8f0881ee1",
+   "lastmod": "2026-10-16",
+   "web_name": "dba-sessions"
+  },
+  "DBA Table Columns": {
+   "hash": "bfc1f2af35fd86d4",
+   "lastmod": "2026-10-16",
+   "web_name": "dba-table-columns"
+  },
+  "DBA Table Modifications": {
+   "hash": "c2f86123acafd0e2",
+   "lastmod": "2026-10-16",
+   "web_name": "dba-table-modifications"
+  },
+  "DBA Tablespace Usage": {
+   "hash": "c28842c5a9d98287",
+   "lastmod": "2026-10-16",
+   "web_name": "dba-tablespace-usage"
+  },
+  "DBA Text Search": {
+   "hash": "f844165f6ee8c60f",
+   "lastmod": "2026-10-16",
+   "web_name": "dba-text-search"
+  },
+  "DBA Trace File Contents": {
+   "hash": "b1b890578864aee1",
+   "lastmod": "2026-10-16",
+   "web_name": "dba-trace-file-contents"
+  },
+  "DBA Undo Statistics": {
+   "hash": "4ee1f4a6e283f7e5",
+   "lastmod": "2026-10-16",
+   "web_name": "dba-undo-statistics"
+  },
+  "DBA Users": {
+   "hash": "25990f3103572e68",
+   "lastmod": "2026-10-16",
+   "web_name": "dba-users"
+  },
+  "DIS Access Privileges": {
+   "hash": "80bdc119c052d28c",
+   "lastmod": "2026-10-16",
+   "web_name": "dis-access-privileges"
+  },
+  "DIS Business Areas": {
+   "hash": "2151bea441fc45e6",
+   "lastmod": "2026-10-16",
+   "web_name": "dis-business-areas"
+  },
+  "DIS Converter Diagnostic Dump": {
+   "hash": "7e1c25e20715ac49",
+   "lastmod": "2026-10-16",
+   "web_name": "dis-converter-diagnostic-dump"
+  },
+  "DIS Discoverer and Blitz Report Users": {
+   "hash": "e4c85272622a55a2",
+   "lastmod": "2026-10-16",
+   "web_name": "dis-discoverer-and-blitz-report-users"
+  },
+  "DIS End User Layers": {
+   "hash": "d0a12aa0c39e9bc9",
+   "lastmod": "2026-10-16",
+   "web_name": "dis-end-user-layers"
+  },
+  "DIS Folders- Business Areas- Items and LOVs": {
+   "hash": "39da3bdd1bd4da1a",
+   "lastmod": "2026-10-16",
+   "web_name": "dis-folders-business-areas-items-and-lovs"
+  },
+  "DIS Import Performance": {
+   "hash": "e7db52b96c35bea3",
+   "lastmod": "2026-10-16",
+   "web_name": "dis-import-performance"
+  },
+  "DIS Items- Folders and Formulas": {
+   "hash": "699ca19541376ed3",
+   "lastmod": "2026-10-16",
+   "web_name": "dis-items-folders-and-formulas"
+  },
+  "DIS Migration identify missing EulConditions": {
+   "hash": "649b6da6d31549c9",
+   "lastmod": "2026-10-16",
+   "web_name": "dis-migration-identify-missing-eulconditions"
+  },
+  "DIS Users": {
+   "hash": "e34fc61ead501cf2",
+   "lastmod": "2026-10-16",
+   "web_name": "dis-users"
+  },
+  "DIS Workbook Conversion Selection": {
+   "hash": "a0a1d40d2827b7a7",
+   "lastmod": "2026-10-16",
+   "web_name": "dis-workbook-conversion-selection"
+  },
+  "DIS Workbook Export Script": {
+   "hash": "d58b6be4af1d6aee",
+   "lastmod": "2026-10-16",
+   "web_name": "dis-workbook-export-script"
+  },
+  "DIS Workbook Import Validation": {
+   "hash": "3936bbe0f44dfcf1",
+   "lastmod": "2026-10-16",
+   "web_name": "dis-workbook-import-validation"
+  },
+  "DIS Workbook Owner Export Script": {
+   "hash": "f7127c011af1077b",
+   "lastmod": "2026-10-16",
+   "web_name": "dis-workbook-owner-export-script"
+  },
+  "DIS Workbooks- Folders- Items and LOVs": {
+   "hash": "fa0ca4f48cf64bae",
+   "lastmod": "2026-10-16",
+   "web_name": "dis-workbooks-folders-items-and-lovs"
+  },
+  "DIS Worksheet Execution History": {
+   "hash": "7a8df4430a8fe797",
+   "lastmod": "2026-10-16",
+   "web_name": "dis-worksheet-execution-history"
+  },
+  "DIS Worksheet Execution Summary": {
+   "hash": "9c0b395d43491416",
+   "lastmod": "2026-10-16",
+   "web_name": "dis-worksheet-execution-summary"
+  },
+  "DIS Worksheet SQLs": {
+   "hash": "4a6e96bfb050e6ba",
+   "lastmod": "2026-10-16",
+   "web_name": "dis-worksheet-sqls"
+  },
+  "EAM Asset Activity Association Upload": {
+   "hash": "4a75b91c53c49f0c",
+   "lastmod": "2026-10-16",
+   "web_name": "eam-asset-activity-association-upload"
+  },
+  "EAM Asset Attribute Upload": {
+   "hash": "331e166ed8af0636",
+   "lastmod": "2026-10-16",
+   "web_name": "eam-asset-attribute-upload"
+  },
+  "EAM Asset Number Upload": {
+   "hash": "51e085d442ca1950",
+   "lastmod": "2026-10-16",
+   "web_name": "eam-asset-number-upload"
+  },
+  "EAM Assets": {
+   "hash": "af02b340594e2274",
+   "lastmod": "2026-10-16",
+   "web_name": "eam-assets"
+  },
+  "EAM Failure Codes Upload": {
+   "hash": "3e9764798f71600a",
+   "lastmod": "2026-10-16",
+   "web_name": "eam-failure-codes-upload"
+  },
+  "EAM Failure Sets Upload": {
+   "hash": "4de0de0584b2a921",
+   "lastmod": "2026-10-16",
+   "web_name": "eam-failure-sets-upload"
+  },
+  "EAM PM Schedule Upload": {
+   "hash": "17a10fddf11a64dd",
+   "lastmod": "2026-10-16",
+   "web_name": "eam-pm-schedule-upload"
+  },
+  "EAM PM Schedule Upload 11i": {
+   "hash": "d419931826e8894a",
+   "lastmod": "2026-10-16",
+   "web_name": "eam-pm-schedule-upload-11i"
+  },
+  "EAM Weekly Schedule": {
+   "hash": "62f1f0778176bc5d",
+   "lastmod": "2026-10-16",
+   "web_name": "eam-weekly-schedule"
+  },
+  "EAM Work Orders": {
+   "hash": "9e4466ea7e498097",
+   "lastmod": "2026-10-16",
+   "web_name": "eam-work-orders"
+  },
+  "EAM Work Orders 11i": {
+   "hash": "41ba6f110849ce28",
+   "lastmod": "2026-10-16",
+   "web_name": "eam-work-orders-11i"
+  },
+  "EAM Work Requests": {
+   "hash": "90a634870014732d",
+   "lastmod": "2026-10-16",
+   "web_name": "eam-work-requests"
+  },
+  "ECC Admin - Concurrent Programs": {
+   "hash": "4e05e75db543349e",
+   "lastmod": "2026-10-16",
+   "web_name": "ecc-admin-concurrent-programs"
+  },
+  "ECC Admin - Data Load Tracking": {
+   "hash": "938cc77699284b88",
+   "lastmod": "2026-10-16",
+   "web_name": "ecc-admin-data-load-tracking"
+  },
+  "ECC Admin - Data Sets": {
+   "hash": "1bf1e2880b465634",
+   "lastmod": "2026-10-16",
+   "web_name": "ecc-admin-data-sets"
+  },
+  "ECC Admin - Metadata Attributes": {
+   "hash": "b71c529359879377",
+   "lastmod": "2026-10-16",
+   "web_name": "ecc-admin-metadata-attributes"
+  },
+  "ENG Engineering Change Orders": {
+   "hash": "bd6bbac52307c99a",
+   "lastmod": "2026-10-16",
+   "web_name": "eng-engineering-change-orders"
+  },
+  "Enginatics Blitz Reports and Uploads": {
+   "hash": "54d500c1e15b07e8",
+   "lastmod": "2026-10-16",
+   "web_name": "enginatics-blitz-reports-and-uploads"
+  },
+  "FA Additions By Source": {
+   "hash": "ed712ca984d05679",
+   "lastmod": "2026-10-16",
+   "web_name": "fa-additions-by-source"
+  },
+  "FA Asset Additions": {
+   "hash": "a84acf11982f2395",
+   "lastmod": "2026-10-16",
+   "web_name": "fa-asset-additions"
+  },
+  "FA Asset Book Details": {
+   "hash": "d1843ea19dbeffbd",
+   "lastmod": "2026-10-16",
+   "web_name": "fa-asset-book-details"
+  },
+  "FA Asset Cost": {
+   "hash": "5ec2d4f1ccc070e4",
+   "lastmod": "2026-10-16",
+   "web_name": "fa-asset-cost"
+  },
+  "FA Asset Impairments": {
+   "hash": "eea4212a2e005630",
+   "lastmod": "2026-10-16",
+   "web_name": "fa-asset-impairments"
+  },
+  "FA Asset Inventory": {
+   "hash": "ad8384ed5a465289",
+   "lastmod": "2026-10-16",
+   "web_name": "fa-asset-inventory"
+  },
+  "FA Asset Inventory 11i": {
+   "hash": "6e6411abedbab7f7",
+   "lastmod": "2026-10-16",
+   "web_name": "fa-asset-inventory-11i"
+  },
+  "FA Asset Inventory Report": {
+   "hash": "22d6fb87f9eca82d",
+   "lastmod": "2026-10-16",
+   "web_name": "fa-asset-inventory-report"
+  },
+  "FA Asset Reclassification": {
+   "hash": "c1f3096b19a83183",
+   "lastmod": "2026-10-16",
+   "web_name": "fa-asset-reclassification"
+  },
+  "FA Asset Register": {
+   "hash": "30a6d28ec2f4be20",
+   "lastmod": "2026-10-16",
+   "web_name": "fa-asset-register"
+  },
+  "FA Asset Retirements": {
+   "hash": "4846121525f6eed8",
+   "lastmod": "2026-10-16",
+   "web_name": "fa-asset-retirements"
+  },
+  "FA Asset Summary (Germany)": {
+   "hash": "a6c17e6ce6b562ff",
+   "lastmod": "2026-10-16",
+   "web_name": "fa-asset-summary-germany"
+  },
+  "FA Asset Transfers": {
+   "hash": "d37315539ea09d08",
+   "lastmod": "2026-10-16",
+   "web_name": "fa-asset-transfers"
+  },
+  "FA Asset Upload": {
+   "hash": "013bf37c2359d2d1",
+   "lastmod": "2026-10-16",
+   "web_name": "fa-asset-upload"
+  },
+  "FA CIP Assets and Invoices": {
+   "hash": "da5c4b2aa008b169",
+   "lastmod": "2026-10-16",
+   "web_name": "fa-cip-assets-and-invoices"
+  },
+  "FA CIP Cost": {
+   "hash": "09ebb7933be6b9fc",
+   "lastmod": "2026-10-16",
+   "web_name": "fa-cip-cost"
+  },
+  "FA Cost Adjustments": {
+   "hash": "ae79f31ea526d7bf",
+   "lastmod": "2026-10-16",
+   "web_name": "fa-cost-adjustments"
+  },
+  "FA Depreciation Projection": {
+   "hash": "446f593e2a2c6cd3",
+   "lastmod": "2026-10-16",
+   "web_name": "fa-depreciation-projection"
+  },
+  "FA Depreciation Reserve": {
+   "hash": "78f499be3e7c35df",
+   "lastmod": "2026-10-16",
+   "web_name": "fa-depreciation-reserve"
+  },
+  "FA Fixed Assets Book": {
+   "hash": "bbd9ad7cb6eddf0d",
+   "lastmod": "2026-10-16",
+   "web_name": "fa-fixed-assets-book"
+  },
+  "FA Journal Entry Reserve Ledger": {
+   "hash": "1d49863d93dbac32",
+   "lastmod": "2026-10-16",
+   "web_name": "fa-journal-entry-reserve-ledger"
+  },
+  "FA Mass Additions Upload": {
+   "hash": "9c26bce831b68cba",
+   "lastmod": "2026-10-16",
+   "web_name": "fa-mass-additions-upload"
+  },
+  "FA Mass Additions Upload 11i": {
+   "hash": "9efbc628aaf5bf3a",
+   "lastmod": "2026-10-16",
+   "web_name": "fa-mass-additions-upload-11i"
+  },
+  "FA Revaluation Reserve": {
+   "hash": "90748b1a925a79ef",
+   "lastmod": "2026-10-16",
+   "web_name": "fa-revaluation-reserve"
+  },
+  "FA Tax Reserve Ledger": {
+   "hash": "250303e74211837e",
+   "lastmod": "2026-10-16",
+   "web_name": "fa-tax-reserve-ledger"
+  },
+  "FND Application Context File": {
+   "hash": "0dd04d0fb82aaaa4",
+   "lastmod": "2026-10-16",
+   "web_name": "fnd-application-context-file"
+  },
+  "FND Applications": {
+   "hash": "db3f33b717b7dc0c",
+   "lastmod": "2026-10-16",
+   "web_name": "fnd-applications"
+  },
+  "FND Attached Documents": {
+   "hash": "4493a1bab92cc88c",
+   "lastmod": "2026-10-16",
+   "web_name": "fnd-attached-documents"
+  },
+  "FND Attached Documents (Operating Unit Secured)": {
+   "hash": "370f587eeba02f54",
+   "lastmod": "2026-10-16",
+   "web_name": "fnd-attached-documents-operating-unit-secured"
+  },
+  "FND Attachment Functions": {
+   "hash": "a5ecab013b0c1f2d",
+   "lastmod": "2026-10-16",
+   "web_name": "fnd-attachment-functions"
+  },
+  "FND Audit Setup": {
+   "hash": "e7a5917cfe3a13f6",
+   "lastmod": "2026-10-16",
+   "web_name": "fnd-audit-setup"
+  },
+  "FND Audit Table Changes by Column": {
+   "hash": "3aca480be54f85e0",
+   "lastmod": "2026-10-16",
+   "web_name": "fnd-audit-table-changes-by-column"
+  },
+  "FND Audit Table Changes by Record": {
+   "hash": "1ce2d3c6c1967d80",
+   "lastmod": "2026-10-16",
+   "web_name": "fnd-audit-table-changes-by-record"
+  },
+  "FND Concurrent Managers": {
+   "hash": "fe0194580fe796ef",
+   "lastmod": "2026-10-16",
+   "web_name": "fnd-concurrent-managers"
+  },
+  "FND Concurrent Program Incompatibilities": {
+   "hash": "b5d7225abd4c4a6d",
+   "lastmod": "2026-10-16",
+   "web_name": "fnd-concurrent-program-incompatibilities"
+  },
+  "FND Concurrent Programs and Executables": {
+   "hash": "c0e440742261b870",
+   "lastmod": "2026-10-16",
+   "web_name": "fnd-concurrent-programs-and-executables"
+  },
+  "FND Concurrent Request Conflicts": {
+   "hash": "065001f9c95c0d65",
+   "lastmod": "2026-10-16",
+   "web_name": "fnd-concurrent-request-conflicts"
+  },
+  "FND Concurrent Requests": {
+   "hash": "f5a1f1b2f2c083aa",
+   "lastmod": "2026-10-16",
+   "web_name": "fnd-concurrent-requests"
+  },
+  "FND Concurrent Requests Summary": {
+   "hash": "7be502d8d81f633c",
+   "lastmod": "2026-10-16",
+   "web_name": "fnd-concurrent-requests-summary"
+  },
+  "FND Cross-Validation Rules": {
+   "hash": "8095aaa1471bad48",
+   "lastmod": "2026-10-16",
+   "web_name": "fnd-cross-validation-rules"
+  },
+  "FND Data Groups": {
+   "hash": "70247b04bd464f71",
+   "lastmod": "2026-10-16",
+   "web_name": "fnd-data-groups"
+  },
+  "FND Debug and Trace Settings": {
+   "hash": "037b6735bf0a5347",
+   "lastmod": "2026-10-16",
+   "web_name": "fnd-debug-and-trace-settings"
+  },
+  "FND Descriptive Flexfield Table Columns": {
+   "hash": "92becb50eb48ae1b",
+   "lastmod": "2026-10-16",
+   "web_name": "fnd-descriptive-flexfield-table-columns"
+  },
+  "FND Descriptive Flexfields": {
+   "hash": "4f47fa4b6a52816f",
+   "lastmod": "2026-10-16",
+   "web_name": "fnd-descriptive-flexfields"
+  },
+  "FND Document Categories": {
+   "hash": "6502587b57925fd9",
+   "lastmod": "2026-10-16",
+   "web_name": "fnd-document-categories"
+  },
+  "FND Document Sequence Assignments": {
+   "hash": "140c843f6c6c34c2",
+   "lastmod": "2026-10-16",
+   "web_name": "fnd-document-sequence-assignments"
+  },
+  "FND Document Sequences": {
+   "hash": "9d8370d6b4e01dbe",
+   "lastmod": "2026-10-16",
+   "web_name": "fnd-document-sequences"
+  },
+  "FND FNDLOAD Object Transfer": {
+   "hash": "035fbbf480dada78",
+   "lastmod": "2026-10-16",
+   "web_name": "fnd-fndload-object-transfer"
+  },
+  "FND Flex Hierarchies (Rollup Groups)": {
+   "hash": "2d5edf2c5b83b352",
+   "lastmod": "2026-10-16",
+   "web_name": "fnd-flex-hierarchies-rollup-groups"
+  },
+  "FND Flex Value Hierarchy": {
+   "hash": "415c08103cbc0341",
+   "lastmod": "2026-10-16",
+   "web_name": "fnd-flex-value-hierarchy"
+  },
+  "FND Flex Value Security Rules": {
+   "hash": "64c210529691be7b",
+   "lastmod": "2026-10-16",
+   "web_name": "fnd-flex-value-security-rules"
+  },
+  "FND Flex Value Sets- Usages and Values": {
+   "hash": "4d2445925b7f6f09",
+   "lastmod": "2026-10-16",
+   "web_name": "fnd-flex-value-sets-usages-and-values"
+  },
+  "FND Flex Value Upload": {
+   "hash": "de980f8db62ed492",
+   "lastmod": "2026-10-16",
+   "web_name": "fnd-flex-value-upload"
+  },
+  "FND Flex Values": {
+   "hash": "908cd9209d3b026d",
+   "lastmod": "2026-10-16",
+   "web_name": "fnd-flex-values"
+  },
+  "FND Form Functions": {
+   "hash": "b5f44aba3a8b8c5c",
+   "lastmod": "2026-10-16",
+   "web_name": "fnd-form-functions"
+  },
+  "FND Forms Personalizations": {
+   "hash": "b5da8789e3864a49",
+   "lastmod": "2026-10-16",
+   "web_name": "fnd-forms-personalizations"
+  },
+  "FND Gather Statistics History": {
+   "hash": "5c32da28f3f7fc0d",
+   "lastmod": "2026-10-16",
+   "web_name": "fnd-gather-statistics-history"
+  },
+  "FND Help Documents and Targets": {
+   "hash": "8322ab4bf1da2b3b",
+   "lastmod": "2026-10-16",
+   "web_name": "fnd-help-documents-and-targets"
+  },
+  "FND Histogram Columns": {
+   "hash": "4dd2ea4aa71b3773",
+   "lastmod": "2026-10-16",
+   "web_name": "fnd-histogram-columns"
+  },
+  "FND Key Flexfields": {
+   "hash": "fe8ccb44e54c000d",
+   "lastmod": "2026-10-16",
+   "web_name": "fnd-key-flexfields"
+  },
+  "FND Languages": {
+   "hash": "da4b83f17525fef4",
+   "lastmod": "2026-10-16",
+   "web_name": "fnd-languages"
+  },
+  "FND Lobs": {
+   "hash": "e17b2c673303515f",
+   "lastmod": "2026-10-16",
+   "web_name": "fnd-lobs"
+  },
+  "FND Log Messages": {
+   "hash": "f31e47cd8734fb59",
+   "lastmod": "2026-10-16",
+   "web_name": "fnd-log-messages"
+  },
+  "FND Lookup Search": {
+   "hash": "cbcbb196b71f37eb",
+   "lastmod": "2026-10-16",
+   "web_name": "fnd-lookup-search"
+  },
+  "FND Lookup Upload": {
+   "hash": "47867f1742ce22f3",
+   "lastmod": "2026-10-16",
+   "web_name": "fnd-lookup-upload"
+  },
+  "FND Lookup Values": {
+   "hash": "82c92101c40adb8e",
+   "lastmod": "2026-10-16",
+   "web_name": "fnd-lookup-values"
+  },
+  "FND Lookup Values Comparison between environments": {
+   "hash": "1638ea3f04748c57",
+   "lastmod": "2026-10-16",
+   "web_name": "fnd-lookup-values-comparison-between-environments"
+  },
+  "FND Menu Entries": {
+   "hash": "a7ee22eeb1d990e1",
+   "lastmod": "2026-10-16",
+   "web_name": "fnd-menu-entries"
+  },
+  "FND Menu Entry Upload": {
+   "hash": "3dc76513647988e3",
+   "lastmod": "2026-10-16",
+   "web_name": "fnd-menu-entry-upload"
+  },
+  "FND Menus": {
+   "hash": "4c2a7796e74b1f33",
+   "lastmod": "2026-10-16",
+   "web_name": "fnd-menus"
+  },
+  "FND Messages": {
+   "hash": "b2eb90822fa1a88a",
+   "lastmod": "2026-10-16",
+   "web_name": "fnd-messages"
+  },
+  "FND Nodes": {
+   "hash": "9f18596680b07697",
+   "lastmod": "2026-10-16",
+   "web_name": "fnd-nodes"
+  },
+  "FND OAF Personalizations": {
+   "hash": "5536dd7e295fadf5",
+   "lastmod": "2026-10-16",
+   "web_name": "fnd-oaf-personalizations"
+  },
+  "FND Profile Option Value Upload": {
+   "hash": "95d3a75b4fc2ef21",
+   "lastmod": "2026-10-16",
+   "web_name": "fnd-profile-option-value-upload"
+  },
+  "FND Profile Option Values": {
+   "hash": "945b283140b1474d",
+   "lastmod": "2026-10-16",
+   "web_name": "fnd-profile-option-values"
+  },
+  "FND Profile Options": {
+   "hash": "acf96af8e524e35c",
+   "lastmod": "2026-10-16",
+   "web_name": "fnd-profile-options"
+  },
+  "FND Request Groups": {
+   "hash": "a1a1d21f746c2aec",
+   "lastmod": "2026-10-16",
+   "web_name": "fnd-request-groups"
+  },
+  "FND Responsibilities": {
+   "hash": "9e81a96d48c6857f",
+   "lastmod": "2026-10-16",
+   "web_name": "fnd-responsibilities"
+  },
+  "FND Responsibility Access": {
+   "hash": "db1fb6377a7026f9",
+   "lastmod": "2026-10-16",
+   "web_name": "fnd-responsibility-access"
+  },
+  "FND Responsibility Menu Exclusions": {
+   "hash": "52c220d34f934a2a",
+   "lastmod": "2026-10-16",
+   "web_name": "fnd-responsibility-menu-exclusions"
+  },
+  "FND Responsibility Upload": {
+   "hash": "efdd8b726821f339",
+   "lastmod": "2026-10-16",
+   "web_name": "fnd-responsibility-upload"
+  },
+  "FND Role Hierarchy": {
+   "hash": "a6489e73887c99ae",
+   "lastmod": "2026-10-16",
+   "web_name": "fnd-role-hierarchy"
+  },
+  "FND Roles": {
+   "hash": "634399e26984ae81",
+   "lastmod": "2026-10-16",
+   "web_name": "fnd-roles"
+  },
+  "FND Rollup Groups": {
+   "hash": "235817bc4ce71ff7",
+   "lastmod": "2026-10-16",
+   "web_name": "fnd-rollup-groups"
+  },
+  "FND SOA Runtime Error": {
+   "hash": "4ef22472f98f3397",
+   "lastmod": "2026-10-16",
+   "web_name": "fnd-soa-runtime-error"
+  },
+  "FND Tables and Columns": {
+   "hash": "c8d94c3025f291bc",
+   "lastmod": "2026-10-16",
+   "web_name": "fnd-tables-and-columns"
+  },
+  "FND User Login History": {
+   "hash": "9e16a8e871ae4648",
+   "lastmod": "2026-10-16",
+   "web_name": "fnd-user-login-history"
+  },
+  "FND User Login Page Favorites": {
+   "hash": "eb3f5b4555733379",
+   "lastmod": "2026-10-16",
+   "web_name": "fnd-user-login-page-favorites"
+  },
+  "FND User Login Summary": {
+   "hash": "5f011639f311a146",
+   "lastmod": "2026-10-16",
+   "web_name": "fnd-user-login-summary"
+  },
+  "FND User Preferences": {
+   "hash": "b226143ee7c540f2",
+   "lastmod": "2026-10-16",
+   "web_name": "fnd-user-preferences"
+  },
+  "FND User Responsibilities": {
+   "hash": "2bf70f62fdca2530",
+   "lastmod": "2026-10-16",
+   "web_name": "fnd-user-responsibilities"
+  },
+  "FND User Roles": {
+   "hash": "770dd8f9ccb05992",
+   "lastmod": "2026-10-16",
+   "web_name": "fnd-user-roles"
+  },
+  "FND User Upload": {
+   "hash": "a652bada7067c4f2",
+   "lastmod": "2026-10-16",
+   "web_name": "fnd-user-upload"
+  },
+  "FND Users": {
+   "hash": "2c0d2f3dac58f5a8",
+   "lastmod": "2026-10-16",
+   "web_name": "fnd-users"
+  },
+  "FSG Drilldown Diagnostic": {
+   "hash": "f3fc4ba69997bdce",
+   "lastmod": "2026-10-16",
+   "web_name": "fsg-drilldown-diagnostic"
+  },
+  "GL Account Analysis": {
+   "hash": "19e1d12ab7130d68",
+   "lastmod": "2026-10-16",
+   "web_name": "gl-account-analysis"
+  },
+  "GL Account Analysis (Drilldown)": {
+   "hash": "e542703d5502bc2b",
+   "lastmod": "2026-10-16",
+   "web_name": "gl-account-analysis-drilldown"
+  },
+  "GL Account Analysis (Drilldown) (with inventory and WIP)": {
+   "hash": "8bf93027d2969969",
+   "lastmod": "2026-10-16",
+   "web_name": "gl-account-analysis-drilldown-with-inventory-and-wip"
+  },
+  "GL Account Analysis 11g": {
+   "hash": "670bbd7828494313",
+   "lastmod": "2026-10-16",
+   "web_name": "gl-account-analysis-11g"
+  },
+  "GL Account Distribution Analysis": {
+   "hash": "03f28dcf1e5cfb72",
+   "lastmod": "2026-10-16",
+   "web_name": "gl-account-distribution-analysis"
+  },
+  "GL Account Upload": {
+   "hash": "30e916ddfa2fea7f",
+   "lastmod": "2026-10-16",
+   "web_name": "gl-account-upload"
+  },
+  "GL Account Upload 11i": {
+   "hash": "351388cc65d1e70f",
+   "lastmod": "2026-10-16",
+   "web_name": "gl-account-upload-11i"
+  },
+  "GL Balance": {
+   "hash": "f3fd3e8626318199",
+   "lastmod": "2026-10-16",
+   "web_name": "gl-balance"
+  },
+  "GL Balance (pivot)": {
+   "hash": "05c4ca52db0267ab",
+   "lastmod": "2026-10-16",
+   "web_name": "gl-balance-pivot"
+  },
+  "GL Balance Drilldown": {
+   "hash": "f49ffca71080b4b7",
+   "lastmod": "2026-10-16",
+   "web_name": "gl-balance-drilldown"
+  },
+  "GL Balance by Account Hierarchy": {
+   "hash": "3bdfbd692663ac50",
+   "lastmod": "2026-10-16",
+   "web_name": "gl-balance-by-account-hierarchy"
+  },
+  "GL Balances (Drilldown)": {
+   "hash": "cea1a0953e6ae15f",
+   "lastmod": "2026-10-16",
+   "web_name": "gl-balances-drilldown"
+  },
+  "GL Budget Amounts Upload": {
+   "hash": "38959a1a94b7f0ce",
+   "lastmod": "2026-10-16",
+   "web_name": "gl-budget-amounts-upload"
+  },
+  "GL Chart of Accounts Mapping Rules": {
+   "hash": "1511c9b96820967d",
+   "lastmod": "2026-10-16",
+   "web_name": "gl-chart-of-accounts-mapping-rules(1)"
+  },
+  "GL Code Combinations": {
+   "hash": "569aaafde2343e41",
+   "lastmod": "2026-10-16",
+   "web_name": "gl-code-combinations"
+  },
+  "GL Daily Rates": {
+   "hash": "499937bdf3654938",
+   "lastmod": "2026-10-16",
+   "web_name": "gl-daily-rates"
+  },
+  "GL Daily Rates Upload": {
+   "hash": "366546284ec29090",
+   "lastmod": "2026-10-16",
+   "web_name": "gl-daily-rates-upload"
+  },
+  "GL Data Access Sets": {
+   "hash": "617a7478d493d2b4",
+   "lastmod": "2026-10-16",
+   "web_name": "gl-data-access-sets"
+  },
+  "GL FSG Reports": {
+   "hash": "0b821d4ba6bd405b",
+   "lastmod": "2026-10-16",
+   "web_name": "gl-fsg-reports"
+  },
+  "GL FSG Row Orders": {
+   "hash": "e903a1837ffed42f",
+   "lastmod": "2026-10-16",
+   "web_name": "gl-fsg-row-orders"
+  },
+  "GL Financial Statement and Drilldown (FSG)": {
+   "hash": "48a26a4351b0a43b",
+   "lastmod": "2026-10-16",
+   "web_name": "gl-financial-statement-and-drilldown-fsg"
+  },
+  "GL Header Categories Summary": {
+   "hash": "ece9d60817ec7fdf",
+   "lastmod": "2026-10-16",
+   "web_name": "gl-header-categories-summary"
+  },
+  "GL Journal Upload": {
+   "hash": "739c357a03c0be02",
+   "lastmod": "2026-10-16",
+   "web_name": "gl-journal-upload"
+  },
+  "GL Journals": {
+   "hash": "0b0f19272059113b",
+   "lastmod": "2026-10-16",
+   "web_name": "gl-journals"
+  },
+  "GL Journals (Drilldown)": {
+   "hash": "4560a1febcb48e10",
+   "lastmod": "2026-10-16",
+   "web_name": "gl-journals-drilldown"
+  },
+  "GL Journals (Drilldown) 11g": {
+   "hash": "fe3177822e716f05",
+   "lastmod": "2026-10-16",
+   "web_name": "gl-journals-drilldown-11g"
+  },
+  "GL Journals 11i": {
+   "hash": "c08ad6c0252dddd4",
+   "lastmod": "2026-10-16",
+   "web_name": "gl-journals-11i"
+  },
+  "GL Ledger Sets": {
+   "hash": "2142ada2c7537072",
+   "lastmod": "2026-10-16",
+   "web_name": "gl-ledger-sets"
+  },
+  "GL Ledgers and Legal Entities": {
+   "hash": "8b8e307016581e79",
+   "lastmod": "2026-10-16",
+   "web_name": "gl-ledgers-and-legal-entities"
+  },
+  "GL Ledgers and Organizations": {
+   "hash": "c7e74c2924d480dd",
+   "lastmod": "2026-10-16",
+   "web_name": "gl-ledgers-and-organizations"
+  },
+  "GL Oracle FSG Converter": {
+   "hash": "edbffc8675efad3c",
+   "lastmod": "2026-10-16",
+   "web_name": "gl-oracle-fsg-converter"
+  },
+  "GL Oracle FSG Converter 11g": {
+   "hash": "2ca8404191d9d44f",
+   "lastmod": "2026-10-16",
+   "web_name": "gl-oracle-fsg-converter-11g"
+  },
+  "GL Period Status": {
+   "hash": "f87c161d40cb98b6",
+   "lastmod": "2026-10-16",
+   "web_name": "gl-period-status"
+  },
+  "GL Periods": {
+   "hash": "bdcdbc332789438d",
+   "lastmod": "2026-10-16",
+   "web_name": "gl-periods"
+  },
+  "GL Recurring Journal and Budget Formulas": {
+   "hash": "f8d5330375235106",
+   "lastmod": "2026-10-16",
+   "web_name": "gl-recurring-journal-and-budget-formulas"
+  },
+  "GL Setup Upload": {
+   "hash": "4720713bba1a6f85",
+   "lastmod": "2026-10-16",
+   "web_name": "gl-setup-upload"
+  },
+  "GL Summary Account Upload": {
+   "hash": "70e2b5331ca84c5b",
+   "lastmod": "2026-10-16",
+   "web_name": "gl-summary-account-upload"
+  },
+  "GL Summary Templates": {
+   "hash": "736a209d71326feb",
+   "lastmod": "2026-10-16",
+   "web_name": "gl-summary-templates"
+  },
+  "GL Trial Balance - Detail": {
+   "hash": "8b75000b0fab6218",
+   "lastmod": "2026-10-16",
+   "web_name": "gl-trial-balance-detail"
+  },
+  "GL effective vs accounting vs period start and end date comparison": {
+   "hash": "ffcf43c86dbe1706",
+   "lastmod": "2026-10-16",
+   "web_name": "gl-effective-vs-accounting-vs-period-start-and-end-date-comparison"
+  },
+  "GMI Cycle Count Forms": {
+   "hash": "d644491253520c8d",
+   "lastmod": "2026-10-16",
+   "web_name": "gmi-cycle-count-forms"
+  },
+  "IBY Payment Process Request Details": {
+   "hash": "00e5a11ee7a14ca9",
+   "lastmod": "2026-10-16",
+   "web_name": "iby-payment-process-request-details"
+  },
+  "IEX Collection Note Upload": {
+   "hash": "97a4ac8f87bb246b",
+   "lastmod": "2026-10-16",
+   "web_name": "iex-collection-note-upload"
+  },
+  "IEX Dunning History": {
+   "hash": "6eaeece182341f62",
+   "lastmod": "2026-10-16",
+   "web_name": "iex-dunning-history"
+  },
+  "IGI Dossier Maintenance Upload": {
+   "hash": "7a10939fe9941aa4",
+   "lastmod": "2026-10-16",
+   "web_name": "igi-dossier-maintenance-upload"
+  },
+  "INL Duty and Tariff Analysis": {
+   "hash": "27f33eddd13002fd",
+   "lastmod": "2026-10-16",
+   "web_name": "inl-duty-and-tariff-analysis"
+  },
+  "INL Landed Cost Adjustments": {
+   "hash": "2e1a1cecac4f302f",
+   "lastmod": "2026-10-16",
+   "web_name": "inl-landed-cost-adjustments"
+  },
+  "INL Landed Cost Estimated vs Actual": {
+   "hash": "d411880b5a6a2ebb",
+   "lastmod": "2026-10-16",
+   "web_name": "inl-landed-cost-estimated-vs-actual"
+  },
+  "INL Landed Unit Cost Trend": {
+   "hash": "1366b5ac39de1cfd",
+   "lastmod": "2026-10-16",
+   "web_name": "inl-landed-unit-cost-trend"
+  },
+  "INL Pending Actual Charges": {
+   "hash": "c696e3ea8ef41a2c",
+   "lastmod": "2026-10-16",
+   "web_name": "inl-pending-actual-charges"
+  },
+  "INL Tariff Exposure on Open POs": {
+   "hash": "6f31a03b02e83d5c",
+   "lastmod": "2026-10-16",
+   "web_name": "inl-tariff-exposure-on-open-pos"
+  },
+  "INV ABC assignments": {
+   "hash": "0ac8ae28813b8428",
+   "lastmod": "2026-10-16",
+   "web_name": "inv-abc-assignments"
+  },
+  "INV Aging": {
+   "hash": "7fda00e5dbb7c0ed",
+   "lastmod": "2026-10-16",
+   "web_name": "inv-aging"
+  },
+  "INV Customer Item Cross References": {
+   "hash": "b4e4de69b3d6bda7",
+   "lastmod": "2026-10-16",
+   "web_name": "inv-customer-item-cross-references"
+  },
+  "INV Cycle count entries and adjustments": {
+   "hash": "044ccfc1754d60a6",
+   "lastmod": "2026-10-16",
+   "web_name": "inv-cycle-count-entries-and-adjustments"
+  },
+  "INV Cycle count hit-miss analysis": {
+   "hash": "a07eaa8ecee3cc7e",
+   "lastmod": "2026-10-16",
+   "web_name": "inv-cycle-count-hit-miss-analysis"
+  },
+  "INV Cycle count listing": {
+   "hash": "17d0d80b93c677f4",
+   "lastmod": "2026-10-16",
+   "web_name": "inv-cycle-count-listing"
+  },
+  "INV Cycle count open requests listing": {
+   "hash": "14b491635fd06eea",
+   "lastmod": "2026-10-16",
+   "web_name": "inv-cycle-count-open-requests-listing"
+  },
+  "INV Cycle count schedule requests": {
+   "hash": "b02a24f297e10867",
+   "lastmod": "2026-10-16",
+   "web_name": "inv-cycle-count-schedule-requests"
+  },
+  "INV Cycle count unscheduled items": {
+   "hash": "13d215b1a0888968",
+   "lastmod": "2026-10-16",
+   "web_name": "inv-cycle-count-unscheduled-items"
+  },
+  "INV Cycle counts pending approval": {
+   "hash": "88643201ea3be30f",
+   "lastmod": "2026-10-16",
+   "web_name": "inv-cycle-counts-pending-approval"
+  },
+  "INV Default Category Sets": {
+   "hash": "50c7e7c3282ee931",
+   "lastmod": "2026-10-16",
+   "web_name": "inv-default-category-sets"
+  },
+  "INV Intercompany Invoice Reconciliation": {
+   "hash": "249f5c86509980d7",
+   "lastmod": "2026-10-16",
+   "web_name": "inv-intercompany-invoice-reconciliation"
+  },
+  "INV Item Attribute Master-Child Conflicts": {
+   "hash": "6b524f30493f8730",
+   "lastmod": "2026-10-16",
+   "web_name": "inv-item-attribute-master-child-conflicts"
+  },
+  "INV Item Catalog Descriptive Elements": {
+   "hash": "af35e9cf75dfb5b5",
+   "lastmod": "2026-10-16",
+   "web_name": "inv-item-catalog-descriptive-elements"
+  },
+  "INV Item Category Assignment": {
+   "hash": "852144de546bacfc",
+   "lastmod": "2026-10-16",
+   "web_name": "inv-item-category-assignment"
+  },
+  "INV Item Category Sets": {
+   "hash": "32b458871b22a8d6",
+   "lastmod": "2026-10-16",
+   "web_name": "inv-item-category-sets"
+  },
+  "INV Item Cross Reference Upload": {
+   "hash": "bd3214fe6e6dba9c",
+   "lastmod": "2026-10-16",
+   "web_name": "inv-item-cross-reference-upload"
+  },
+  "INV Item Default Transaction Locators": {
+   "hash": "11764c21b99bbfa4",
+   "lastmod": "2026-10-16",
+   "web_name": "inv-item-default-transaction-locators"
+  },
+  "INV Item Default Transaction Subinventories": {
+   "hash": "6988a7aed390579f",
+   "lastmod": "2026-10-16",
+   "web_name": "inv-item-default-transaction-subinventories"
+  },
+  "INV Item Demand History": {
+   "hash": "7f30e367b87b1843",
+   "lastmod": "2026-10-16",
+   "web_name": "inv-item-demand-history"
+  },
+  "INV Item Import Performance": {
+   "hash": "380099cd6eaca9e5",
+   "lastmod": "2026-10-16",
+   "web_name": "inv-item-import-performance"
+  },
+  "INV Item Relationships": {
+   "hash": "0ac809d659fa6929",
+   "lastmod": "2026-10-16",
+   "web_name": "inv-item-relationships"
+  },
+  "INV Item Reservations": {
+   "hash": "52766c600eb43631",
+   "lastmod": "2026-10-16",
+   "web_name": "inv-item-reservations"
+  },
+  "INV Item Statuses": {
+   "hash": "e74ab0caa36d002d",
+   "lastmod": "2026-10-16",
+   "web_name": "inv-item-statuses(14)"
+  },
+  "INV Item Subinventory Upload": {
+   "hash": "f8eff75a1f452a76",
+   "lastmod": "2026-10-16",
+   "web_name": "inv-item-subinventory-upload"
+  },
+  "INV Item Supply-Demand": {
+   "hash": "aff6e56e34b0037e",
+   "lastmod": "2026-10-16",
+   "web_name": "inv-item-supply-demand"
+  },
+  "INV Item Templates": {
+   "hash": "901dcd4ab0bd7975",
+   "lastmod": "2026-10-16",
+   "web_name": "inv-item-templates"
+  },
+  "INV Item Transaction Defaults Upload": {
+   "hash": "cd7d5a87f85c209c",
+   "lastmod": "2026-10-16",
+   "web_name": "inv-item-transaction-defaults-upload"
+  },
+  "INV Item Upload": {
+   "hash": "cf721c300c0e6c15",
+   "lastmod": "2026-10-16",
+   "web_name": "inv-item-upload"
+  },
+  "INV Item Upload 11i": {
+   "hash": "4d1e3669bac0b0b4",
+   "lastmod": "2026-10-16",
+   "web_name": "inv-item-upload-11i"
+  },
+  "INV Item User Defined Attribute Upload": {
+   "hash": "51f838479f9e567f",
+   "lastmod": "2026-10-16",
+   "web_name": "inv-item-user-defined-attribute-upload"
+  },
+  "INV Items": {
+   "hash": "7e00caa392466ca6",
+   "lastmod": "2026-10-16",
+   "web_name": "inv-items"
+  },
+  "INV Kanban Cards": {
+   "hash": "50b6c84c16ca24c8",
+   "lastmod": "2026-10-16",
+   "web_name": "inv-kanban-cards"
+  },
+  "INV Lot Transaction Register": {
+   "hash": "171f79299b8d1ea0",
+   "lastmod": "2026-10-16",
+   "web_name": "inv-lot-transaction-register"
+  },
+  "INV Lot Upload": {
+   "hash": "5540e9b35b96b1ae",
+   "lastmod": "2026-10-16",
+   "web_name": "inv-lot-upload"
+  },
+  "INV Manufacturer Upload": {
+   "hash": "807d714f891e3456",
+   "lastmod": "2026-10-16",
+   "web_name": "inv-manufacturer-upload"
+  },
+  "INV Material Account Distribution Detail": {
+   "hash": "83874f4ee5e60984",
+   "lastmod": "2026-10-16",
+   "web_name": "inv-material-account-distribution-detail"
+  },
+  "INV Material Movements": {
+   "hash": "af6a94f66a389e7c",
+   "lastmod": "2026-10-16",
+   "web_name": "inv-material-movements"
+  },
+  "INV Material Status Change History": {
+   "hash": "3be823f8b77accd2",
+   "lastmod": "2026-10-16",
+   "web_name": "inv-material-status-change-history"
+  },
+  "INV Material Transactions": {
+   "hash": "76ed40f6ead6fa2d",
+   "lastmod": "2026-10-16",
+   "web_name": "inv-material-transactions"
+  },
+  "INV Material Transactions Summary": {
+   "hash": "99e6f879e91734be",
+   "lastmod": "2026-10-16",
+   "web_name": "inv-material-transactions-summary"
+  },
+  "INV Move Orders": {
+   "hash": "604cc3fb3f28276c",
+   "lastmod": "2026-10-16",
+   "web_name": "inv-move-orders"
+  },
+  "INV Movement Statistics": {
+   "hash": "43cba87e0526348b",
+   "lastmod": "2026-10-16",
+   "web_name": "inv-movement-statistics"
+  },
+  "INV Onhand Quantities": {
+   "hash": "411c37c72647e612",
+   "lastmod": "2026-10-16",
+   "web_name": "inv-onhand-quantities"
+  },
+  "INV Organization Access": {
+   "hash": "8770892e0126957c",
+   "lastmod": "2026-10-16",
+   "web_name": "inv-organization-access"
+  },
+  "INV Organization Parameters": {
+   "hash": "11ad3e4fc96b7257",
+   "lastmod": "2026-10-16",
+   "web_name": "inv-organization-parameters"
+  },
+  "INV Period Close Pending Transactions": {
+   "hash": "db6eb442010c5b4d",
+   "lastmod": "2026-10-16",
+   "web_name": "inv-period-close-pending-transactions"
+  },
+  "INV Physical Inventory Adjustments": {
+   "hash": "312b0f01c555cbdf",
+   "lastmod": "2026-10-16",
+   "web_name": "inv-physical-inventory-adjustments"
+  },
+  "INV Physical Inventory Locator Count Sheet": {
+   "hash": "ef56f7f370544fbd",
+   "lastmod": "2026-10-16",
+   "web_name": "inv-physical-inventory-locator-count-sheet"
+  },
+  "INV Physical Inventory Purge Upload": {
+   "hash": "04a21e02399568c6",
+   "lastmod": "2026-10-16",
+   "web_name": "inv-physical-inventory-purge-upload"
+  },
+  "INV Physical Inventory Tag Count Upload": {
+   "hash": "d3e735227bd7f730",
+   "lastmod": "2026-10-16",
+   "web_name": "inv-physical-inventory-tag-count-upload"
+  },
+  "INV Physical Inventory Tags": {
+   "hash": "9dd02b4a050be96c",
+   "lastmod": "2026-10-16",
+   "web_name": "inv-physical-inventory-tags"
+  },
+  "INV Physical Inventory Upload": {
+   "hash": "b127a998882cce08",
+   "lastmod": "2026-10-16",
+   "web_name": "inv-physical-inventory-upload"
+  },
+  "INV Physical inventory accuracy analysis": {
+   "hash": "3d159b0ca9786492",
+   "lastmod": "2026-10-16",
+   "web_name": "inv-physical-inventory-accuracy-analysis"
+  },
+  "INV Print Cycle Count Entries Open Interface data": {
+   "hash": "77a3cf56b97505cf",
+   "lastmod": "2026-10-16",
+   "web_name": "inv-print-cycle-count-entries-open-interface-data"
+  },
+  "INV Safety Stock Upload": {
+   "hash": "23c2f9fad0729d76",
+   "lastmod": "2026-10-16",
+   "web_name": "inv-safety-stock-upload"
+  },
+  "INV Safety Stocks": {
+   "hash": "1d902882208b1410",
+   "lastmod": "2026-10-16",
+   "web_name": "inv-safety-stocks"
+  },
+  "INV Serial Numbers": {
+   "hash": "f35961d48ee0cd80",
+   "lastmod": "2026-10-16",
+   "web_name": "inv-serial-numbers"
+  },
+  "INV Slow Moving Inventory": {
+   "hash": "f3ff0de1f918b6f0",
+   "lastmod": "2026-10-16",
+   "web_name": "inv-slow-moving-inventory"
+  },
+  "INV Stock Locator Upload": {
+   "hash": "a3cd85cc57f4a791",
+   "lastmod": "2026-10-16",
+   "web_name": "inv-stock-locator-upload"
+  },
+  "INV Stock Locators": {
+   "hash": "39d52655974fd941",
+   "lastmod": "2026-10-16",
+   "web_name": "inv-stock-locators"
+  },
+  "INV Subinventories": {
+   "hash": "2b321d93790c7c88",
+   "lastmod": "2026-10-16",
+   "web_name": "inv-subinventories"
+  },
+  "INV Subinventory Upload": {
+   "hash": "fd1faf8efd3a9ce1",
+   "lastmod": "2026-10-16",
+   "web_name": "inv-subinventory-upload"
+  },
+  "INV Transaction Historical Summary": {
+   "hash": "3e2923ff6d876d68",
+   "lastmod": "2026-10-16",
+   "web_name": "inv-transaction-historical-summary"
+  },
+  "INV Transaction Register": {
+   "hash": "cc0fa09676af7d32",
+   "lastmod": "2026-10-16",
+   "web_name": "inv-transaction-register"
+  },
+  "INV Transaction Source Types": {
+   "hash": "578cfbe45b4e5afc",
+   "lastmod": "2026-10-16",
+   "web_name": "inv-transaction-source-types"
+  },
+  "INV Transaction Types": {
+   "hash": "33465749ddd16f30",
+   "lastmod": "2026-10-16",
+   "web_name": "inv-transaction-types"
+  },
+  "INV Transaction Upload": {
+   "hash": "06d5274fbce7c89f",
+   "lastmod": "2026-10-16",
+   "web_name": "inv-transaction-upload"
+  },
+  "INV Unit Of Measure Conversion Upload": {
+   "hash": "2abb0b0238ab7288",
+   "lastmod": "2026-10-16",
+   "web_name": "inv-unit-of-measure-conversion-upload"
+  },
+  "INV Unit Of Measure Upload": {
+   "hash": "1ec3e6bf9c505aec",
+   "lastmod": "2026-10-16",
+   "web_name": "inv-unit-of-measure-upload"
+  },
+  "JA India - TDS Certificates": {
+   "hash": "4209d4fbe78aaa00",
+   "lastmod": "2026-10-16",
+   "web_name": "ja-india-tds-certificates"
+  },
+  "JA India GSTR-1 Return": {
+   "hash": "302047014464b402",
+   "lastmod": "2026-10-16",
+   "web_name": "ja-india-gstr-1-return"
+  },
+  "JA India GSTR-2 Return": {
+   "hash": "0463c197f1c2698a",
+   "lastmod": "2026-10-16",
+   "web_name": "ja-india-gstr-2-return"
+  },
+  "JA India GSTR-3B Return": {
+   "hash": "2728f7c2282dca02",
+   "lastmod": "2026-10-16",
+   "web_name": "ja-india-gstr-3b-return"
+  },
+  "JA India Third Party Registration Upload": {
+   "hash": "a93cc50978af67e1",
+   "lastmod": "2026-10-16",
+   "web_name": "ja-india-third-party-registration-upload"
+  },
+  "JTF Grid Datasources": {
+   "hash": "0cb0038a2241439c",
+   "lastmod": "2026-10-16",
+   "web_name": "jtf-grid-datasources"
+  },
+  "MRP End Assembly Pegging": {
+   "hash": "56cf9f2f6d97b912",
+   "lastmod": "2026-10-16",
+   "web_name": "mrp-end-assembly-pegging"
+  },
+  "MRP Exceptions": {
+   "hash": "d4058da4d5f66e44",
+   "lastmod": "2026-10-16",
+   "web_name": "mrp-exceptions"
+  },
+  "MRP Financial Analysis": {
+   "hash": "3bc7f011d4b40999",
+   "lastmod": "2026-10-16",
+   "web_name": "mrp-financial-analysis"
+  },
+  "MRP Horizontal Plan": {
+   "hash": "379993225bfefe93",
+   "lastmod": "2026-10-16",
+   "web_name": "mrp-horizontal-plan"
+  },
+  "MRP Item Forecast": {
+   "hash": "f09763c439b7f982",
+   "lastmod": "2026-10-16",
+   "web_name": "mrp-item-forecast"
+  },
+  "MRP Item Forecast Upload": {
+   "hash": "28ee9fad088be603",
+   "lastmod": "2026-10-16",
+   "web_name": "mrp-item-forecast-upload"
+  },
+  "MRP Master Schedule Upload": {
+   "hash": "2caa9841b03484e8",
+   "lastmod": "2026-10-16",
+   "web_name": "mrp-master-schedule-upload"
+  },
+  "MRP Pegging": {
+   "hash": "935fb58c5a888bd3",
+   "lastmod": "2026-10-16",
+   "web_name": "mrp-pegging"
+  },
+  "MRP Plan Orders": {
+   "hash": "f6d8b086123c5923",
+   "lastmod": "2026-10-16",
+   "web_name": "mrp-plan-orders"
+  },
+  "MRP Sourcing Rule Assignment Upload": {
+   "hash": "2a6f470ad7f53430",
+   "lastmod": "2026-10-16",
+   "web_name": "mrp-sourcing-rule-assignment-upload"
+  },
+  "MRP Sourcing Rule Upload": {
+   "hash": "6d0613be020d68b0",
+   "lastmod": "2026-10-16",
+   "web_name": "mrp-sourcing-rule-upload"
+  },
+  "MRP Sourcing Rules and Bills of Distribution": {
+   "hash": "2aab0ece9dd5f128",
+   "lastmod": "2026-10-16",
+   "web_name": "mrp-sourcing-rules-and-bills-of-distribution"
+  },
+  "MSC Exceptions": {
+   "hash": "87a958bf72e44f35",
+   "lastmod": "2026-10-16",
+   "web_name": "msc-exceptions"
+  },
+  "MSC Horizontal Plan": {
+   "hash": "707eac3762a5aa59",
+   "lastmod": "2026-10-16",
+   "web_name": "msc-horizontal-plan"
+  },
+  "MSC Pegging Hierarchy": {
+   "hash": "4b308dbecd97240b",
+   "lastmod": "2026-10-16",
+   "web_name": "msc-pegging-hierarchy"
+  },
+  "MSC Plan Order Upload": {
+   "hash": "26fc653681f3085b",
+   "lastmod": "2026-10-16",
+   "web_name": "msc-plan-order-upload"
+  },
+  "MSC Plan Orders": {
+   "hash": "45c09466fa118564",
+   "lastmod": "2026-10-16",
+   "web_name": "msc-plan-orders"
+  },
+  "MSC Sourcing Rule Assignment Upload": {
+   "hash": "652adbba880ca3de",
+   "lastmod": "2026-10-16",
+   "web_name": "msc-sourcing-rule-assignment-upload"
+  },
+  "MSC Vertical Plan": {
+   "hash": "5976679c55e5d125",
+   "lastmod": "2026-10-16",
+   "web_name": "msc-vertical-plan"
+  },
+  "OKC Contract Lines Summary": {
+   "hash": "8ecd6e8641b1ac1f",
+   "lastmod": "2026-10-16",
+   "web_name": "okc-contract-lines-summary"
+  },
+  "OKL Lease Contract Update Upload": {
+   "hash": "d3ec07d65adc1ce7",
+   "lastmod": "2026-10-16",
+   "web_name": "okl-lease-contract-update-upload"
+  },
+  "OKL Termination Quotes": {
+   "hash": "6fc22e2dea642c6c",
+   "lastmod": "2026-10-16",
+   "web_name": "okl-termination-quotes"
+  },
+  "OKS Contract Termination Upload": {
+   "hash": "96add1f0934d822d",
+   "lastmod": "2026-10-16",
+   "web_name": "oks-contract-termination-upload"
+  },
+  "OKS Service Contract Line Upload": {
+   "hash": "bbfa4ebfaaf5882f",
+   "lastmod": "2026-10-16",
+   "web_name": "oks-service-contract-line-upload"
+  },
+  "OKS Service Contracts Billing History": {
+   "hash": "69082a7b6b6580fd",
+   "lastmod": "2026-10-16",
+   "web_name": "oks-service-contracts-billing-history"
+  },
+  "OKS Service Contracts Billing Schedule": {
+   "hash": "b39c8208046d44be",
+   "lastmod": "2026-10-16",
+   "web_name": "oks-service-contracts-billing-schedule"
+  },
+  "ONT Audit History": {
+   "hash": "b0b862d408a3f710",
+   "lastmod": "2026-10-16",
+   "web_name": "ont-audit-history"
+  },
+  "ONT Blanket Sales Agreements": {
+   "hash": "c7084f9304207dbf",
+   "lastmod": "2026-10-16",
+   "web_name": "ont-blanket-sales-agreements"
+  },
+  "ONT Cancelled Orders": {
+   "hash": "073777538379bee7",
+   "lastmod": "2026-10-16",
+   "web_name": "ont-cancelled-orders"
+  },
+  "ONT Defaulting Rules": {
+   "hash": "4c7544c0dca0013e",
+   "lastmod": "2026-10-16",
+   "web_name": "ont-defaulting-rules"
+  },
+  "ONT Order Holds": {
+   "hash": "867fe7a982d964c7",
+   "lastmod": "2026-10-16",
+   "web_name": "ont-order-holds"
+  },
+  "ONT Order Upload": {
+   "hash": "e6f49eb6327f59f7",
+   "lastmod": "2026-10-16",
+   "web_name": "ont-order-upload"
+  },
+  "ONT Order to Cash Tracker": {
+   "hash": "67c0fe3512af79a0",
+   "lastmod": "2026-10-16",
+   "web_name": "ont-order-to-cash-tracker"
+  },
+  "ONT Orders": {
+   "hash": "4a596e86b0eb88ca",
+   "lastmod": "2026-10-16",
+   "web_name": "ont-orders"
+  },
+  "ONT Orders and Lines": {
+   "hash": "1df9ceb2c6539a80",
+   "lastmod": "2026-10-16",
+   "web_name": "ont-orders-and-lines"
+  },
+  "ONT Orders and Lines 11i": {
+   "hash": "9ad9662b8b226cb6",
+   "lastmod": "2026-10-16",
+   "web_name": "ont-orders-and-lines-11i"
+  },
+  "ONT Price Adjustments and Charges": {
+   "hash": "d9467efc16ab1b7e",
+   "lastmod": "2026-10-16",
+   "web_name": "ont-price-adjustments-and-charges"
+  },
+  "ONT Recurring Billing Plan": {
+   "hash": "8393c2636088eb2f",
+   "lastmod": "2026-10-16",
+   "web_name": "ont-recurring-billing-plan"
+  },
+  "ONT Sales Quote Close Upload": {
+   "hash": "87b0d9a943965d43",
+   "lastmod": "2026-10-16",
+   "web_name": "ont-sales-quote-close-upload"
+  },
+  "ONT System Parameters": {
+   "hash": "644f82ee59980623",
+   "lastmod": "2026-10-16",
+   "web_name": "ont-system-parameters"
+  },
+  "ONT Transaction Types Listing": {
+   "hash": "3291ccd350d6b88a",
+   "lastmod": "2026-10-16",
+   "web_name": "ont-transaction-types-listing"
+  },
+  "ONT Transaction Types and Line WF Processes": {
+   "hash": "1e39c862daf49b33",
+   "lastmod": "2026-10-16",
+   "web_name": "ont-transaction-types-and-line-wf-processes"
+  },
+  "OPM Batch Details and Status Summary": {
+   "hash": "253356e23dd5541b",
+   "lastmod": "2026-10-16",
+   "web_name": "opm-batch-details-and-status-summary"
+  },
+  "OPM Batch Lot Cost Details": {
+   "hash": "91b3fa5a9bdc854e",
+   "lastmod": "2026-10-16",
+   "web_name": "opm-batch-lot-cost-details"
+  },
+  "OPM Batch Lot Cost Trends": {
+   "hash": "b316bc9357d49844",
+   "lastmod": "2026-10-16",
+   "web_name": "opm-batch-lot-cost-trends"
+  },
+  "OPM Batch Lot Genealogy": {
+   "hash": "fbc67bb24ab4245b",
+   "lastmod": "2026-10-16",
+   "web_name": "opm-batch-lot-genealogy"
+  },
+  "OPM Batch Material Usage and Substitution Variance": {
+   "hash": "2b38cf63419f34e7",
+   "lastmod": "2026-10-16",
+   "web_name": "opm-batch-material-usage-and-substitution-variance"
+  },
+  "OPM Batch Steps and Resource Usage": {
+   "hash": "90768b7a31e081dc",
+   "lastmod": "2026-10-16",
+   "web_name": "opm-batch-steps-and-resource-usage"
+  },
+  "OPM Batch Yield Variance": {
+   "hash": "6397b73f49c29673",
+   "lastmod": "2026-10-16",
+   "web_name": "opm-batch-yield-variance"
+  },
+  "OPM Detailed Subledger": {
+   "hash": "340ca2df394819c8",
+   "lastmod": "2026-10-16",
+   "web_name": "opm-detailed-subledger"
+  },
+  "OPM Formula Details": {
+   "hash": "dd1f0071224bce22",
+   "lastmod": "2026-10-16",
+   "web_name": "opm-formula-details"
+  },
+  "OPM Formula Upload": {
+   "hash": "f361409e1909a9e0",
+   "lastmod": "2026-10-16",
+   "web_name": "opm-formula-upload"
+  },
+  "OPM Formula Where-Used": {
+   "hash": "e509d561395919bf",
+   "lastmod": "2026-10-16",
+   "web_name": "opm-formula-where-used"
+  },
+  "OPM Item Location Test Results": {
+   "hash": "4ebe98b3234599d0",
+   "lastmod": "2026-10-16",
+   "web_name": "opm-item-location-test-results"
+  },
+  "OPM Item Process and Recipe Attributes": {
+   "hash": "7e8c18d57b0a9b94",
+   "lastmod": "2026-10-16",
+   "web_name": "opm-item-process-and-recipe-attributes"
+  },
+  "OPM Recipe Details": {
+   "hash": "0573fdfa5ee7246f",
+   "lastmod": "2026-10-16",
+   "web_name": "opm-recipe-details"
+  },
+  "OPM Recipe Upload": {
+   "hash": "f8e77acec01f3e17",
+   "lastmod": "2026-10-16",
+   "web_name": "opm-recipe-upload"
+  },
+  "OPM Reconcilation": {
+   "hash": "6503e612e16ed0a2",
+   "lastmod": "2026-10-16",
+   "web_name": "opm-reconcilation"
+  },
+  "OPM Routing Upload": {
+   "hash": "a4c7488dee6fee13",
+   "lastmod": "2026-10-16",
+   "web_name": "opm-routing-upload"
+  },
+  "OPM Specifications and Test Limits": {
+   "hash": "dcb362d9f8e73cf8",
+   "lastmod": "2026-10-16",
+   "web_name": "opm-specifications-and-test-limits"
+  },
+  "OTL Timecard Upload": {
+   "hash": "85f45ce18d47cccc",
+   "lastmod": "2026-10-16",
+   "web_name": "otl-timecard-upload"
+  },
+  "OTL Timecard Upload 11i": {
+   "hash": "109ebda33fb74709",
+   "lastmod": "2026-10-16",
+   "web_name": "otl-timecard-upload-11i"
+  },
+  "PA Budget Upload": {
+   "hash": "0e2bc97a19944d5f",
+   "lastmod": "2026-10-16",
+   "web_name": "pa-budget-upload"
+  },
+  "PA Capital Project Summary with Asset Detail": {
+   "hash": "0fa737291f5454f4",
+   "lastmod": "2026-10-16",
+   "web_name": "pa-capital-project-summary-with-asset-detail"
+  },
+  "PA Cost Audit": {
+   "hash": "2ca31b410eed9a84",
+   "lastmod": "2026-10-16",
+   "web_name": "pa-cost-audit"
+  },
+  "PA Employee Activity By Organization": {
+   "hash": "4853ce01a84ccaf9",
+   "lastmod": "2026-10-16",
+   "web_name": "pa-employee-activity-by-organization"
+  },
+  "PA Event Upload": {
+   "hash": "841f5d36d5528305",
+   "lastmod": "2026-10-16",
+   "web_name": "pa-event-upload"
+  },
+  "PA Expenditure Types": {
+   "hash": "7fd71eaa9252de0b",
+   "lastmod": "2026-10-16",
+   "web_name": "pa-expenditure-types"
+  },
+  "PA Invoice Review": {
+   "hash": "619b5809d7f19ab5",
+   "lastmod": "2026-10-16",
+   "web_name": "pa-invoice-review"
+  },
+  "PA Missing Timecards": {
+   "hash": "27210b5dbbc3efba",
+   "lastmod": "2026-10-16",
+   "web_name": "pa-missing-timecards"
+  },
+  "PA Project Asset Details": {
+   "hash": "5b29074f636f9998",
+   "lastmod": "2026-10-16",
+   "web_name": "pa-project-asset-details"
+  },
+  "PA Project Asset Upload": {
+   "hash": "af5f18b40d393d6a",
+   "lastmod": "2026-10-16",
+   "web_name": "pa-project-asset-upload"
+  },
+  "PA Project Billing Status": {
+   "hash": "2ceb31cb8659f742",
+   "lastmod": "2026-10-16",
+   "web_name": "pa-project-billing-status"
+  },
+  "PA Project Budget": {
+   "hash": "20845aa405f9e23f",
+   "lastmod": "2026-10-16",
+   "web_name": "pa-project-budget"
+  },
+  "PA Project Expenditure Items with WIP and INV Detail": {
+   "hash": "d8b1a1db68230e4d",
+   "lastmod": "2026-10-16",
+   "web_name": "pa-project-expenditure-items-with-wip-and-inv-detail"
+  },
+  "PA Project Status Summary": {
+   "hash": "4762d5707f85ca92",
+   "lastmod": "2026-10-16",
+   "web_name": "pa-project-status-summary"
+  },
+  "PA Project Subledger Detail by Expenditure Type": {
+   "hash": "f89837b65ca6bc2d",
+   "lastmod": "2026-10-16",
+   "web_name": "pa-project-subledger-detail-by-expenditure-type(1)"
+  },
+  "PA Project Upload": {
+   "hash": "84a6e992f986bf5a",
+   "lastmod": "2026-10-16",
+   "web_name": "pa-project-upload"
+  },
+  "PA Revenue- Cost- Budgets by Resources": {
+   "hash": "71b8bc866614b572",
+   "lastmod": "2026-10-16",
+   "web_name": "pa-revenue-cost-budgets-by-resources"
+  },
+  "PA Revenue- Cost- Budgets by Work Breakdown Structure": {
+   "hash": "27dca950b3b077c1",
+   "lastmod": "2026-10-16",
+   "web_name": "pa-revenue-cost-budgets-by-work-breakdown-structure"
+  },
+  "PA Supplier Invoice Audit": {
+   "hash": "00f8316a70491a6a",
+   "lastmod": "2026-10-16",
+   "web_name": "pa-supplier-invoice-audit"
+  },
+  "PA Task Schedule": {
+   "hash": "dde251ca44c0ec3b",
+   "lastmod": "2026-10-16",
+   "web_name": "pa-task-schedule"
+  },
+  "PA Task Upload": {
+   "hash": "7a09445d08e8a09f",
+   "lastmod": "2026-10-16",
+   "web_name": "pa-task-upload"
+  },
+  "PA Transaction Sources": {
+   "hash": "769ec116011393d4",
+   "lastmod": "2026-10-16",
+   "web_name": "pa-transaction-sources"
+  },
+  "PA Transaction Upload": {
+   "hash": "5620c26fea970cfd",
+   "lastmod": "2026-10-16",
+   "web_name": "pa-transaction-upload"
+  },
+  "PAY Batch Element Entry": {
+   "hash": "75c869b8e46b3c2a",
+   "lastmod": "2026-10-16",
+   "web_name": "pay-batch-element-entry"
+  },
+  "PAY Costing Detail": {
+   "hash": "ff607e9d31985b4d",
+   "lastmod": "2026-10-16",
+   "web_name": "pay-costing-detail"
+  },
+  "PAY Element Entries": {
+   "hash": "6c17d15722cbbd49",
+   "lastmod": "2026-10-16",
+   "web_name": "pay-element-entries"
+  },
+  "PAY Employee Payroll History": {
+   "hash": "f9e4c1179b9298b1",
+   "lastmod": "2026-10-16",
+   "web_name": "pay-employee-payroll-history"
+  },
+  "PAY Gross to Net Summary": {
+   "hash": "2e87a9f19944e116",
+   "lastmod": "2026-10-16",
+   "web_name": "pay-gross-to-net-summary"
+  },
+  "PAY Hire to Retire Tracker": {
+   "hash": "601298ee0e5a616b",
+   "lastmod": "2026-10-16",
+   "web_name": "pay-hire-to-retire-tracker"
+  },
+  "PAY Payroll Element Details": {
+   "hash": "da36b0cf4e67c6db",
+   "lastmod": "2026-10-16",
+   "web_name": "pay-payroll-element-details"
+  },
+  "PAY Payroll Process Summary": {
+   "hash": "6870ce9cf0f7860c",
+   "lastmod": "2026-10-16",
+   "web_name": "pay-payroll-process-summary"
+  },
+  "PER Employee Absences": {
+   "hash": "0e22c714de0b8699",
+   "lastmod": "2026-10-16",
+   "web_name": "per-employee-absences"
+  },
+  "PER Employee Assignments": {
+   "hash": "b908f1249d3cdcda",
+   "lastmod": "2026-10-16",
+   "web_name": "per-employee-assignments"
+  },
+  "PER Employee Contacts and Dependents": {
+   "hash": "732658bda98cdf4c",
+   "lastmod": "2026-10-16",
+   "web_name": "per-employee-contacts-and-dependents"
+  },
+  "PER Employee Grade Changes": {
+   "hash": "ceb928de40d7686e",
+   "lastmod": "2026-10-16",
+   "web_name": "per-employee-grade-changes"
+  },
+  "PER Employee Length of Service": {
+   "hash": "d2e5b5868b9f4e1f",
+   "lastmod": "2026-10-16",
+   "web_name": "per-employee-length-of-service"
+  },
+  "PER Employee Salary Change": {
+   "hash": "8ebf887b23c88a87",
+   "lastmod": "2026-10-16",
+   "web_name": "per-employee-salary-change"
+  },
+  "PER Headcount by Organization": {
+   "hash": "5595bf9c705f36d0",
+   "lastmod": "2026-10-16",
+   "web_name": "per-headcount-by-organization"
+  },
+  "PER Information Type Security": {
+   "hash": "8a1987a92eba7178",
+   "lastmod": "2026-10-16",
+   "web_name": "per-information-type-security"
+  },
+  "PER Jobs and Positions": {
+   "hash": "79e0823c9e33f47b",
+   "lastmod": "2026-10-16",
+   "web_name": "per-jobs-and-positions"
+  },
+  "PER Location Upload": {
+   "hash": "5fdc69a015c3dd06",
+   "lastmod": "2026-10-16",
+   "web_name": "per-location-upload"
+  },
+  "PER New Hires": {
+   "hash": "985afa9d0e1dbfe4",
+   "lastmod": "2026-10-16",
+   "web_name": "per-new-hires"
+  },
+  "PER Organization Hierarchy": {
+   "hash": "55584a52119903ab",
+   "lastmod": "2026-10-16",
+   "web_name": "per-organization-hierarchy"
+  },
+  "PER Organization Upload": {
+   "hash": "53474dce4dc0f95b",
+   "lastmod": "2026-10-16",
+   "web_name": "per-organization-upload"
+  },
+  "PER Organizations": {
+   "hash": "f8f6f5d854c58a42",
+   "lastmod": "2026-10-16",
+   "web_name": "per-organizations"
+  },
+  "PER Payroll Element Entry Upload": {
+   "hash": "d33591a29a4e3779",
+   "lastmod": "2026-10-16",
+   "web_name": "per-payroll-element-entry-upload"
+  },
+  "PER Person Assignment Upload": {
+   "hash": "86a7b592827d2189",
+   "lastmod": "2026-10-16",
+   "web_name": "per-person-assignment-upload"
+  },
+  "PER Person Extra Information Upload": {
+   "hash": "e87091b56c8a0a4a",
+   "lastmod": "2026-10-16",
+   "web_name": "per-person-extra-information-upload"
+  },
+  "PER Person Extra Information Upload 11i": {
+   "hash": "b4a7902c9ae543c5",
+   "lastmod": "2026-10-16",
+   "web_name": "per-person-extra-information-upload-11i"
+  },
+  "PER Person Upload": {
+   "hash": "e9500cdfb47b3e11",
+   "lastmod": "2026-10-16",
+   "web_name": "per-person-upload"
+  },
+  "PER Position Hierarchy": {
+   "hash": "05528f276b8f54d0",
+   "lastmod": "2026-10-16",
+   "web_name": "per-position-hierarchy"
+  },
+  "PER Security Profiles": {
+   "hash": "5e789a08f876344e",
+   "lastmod": "2026-10-16",
+   "web_name": "per-security-profiles"
+  },
+  "PER Terminations and Separations": {
+   "hash": "88d4b8a1b8d886b5",
+   "lastmod": "2026-10-16",
+   "web_name": "per-terminations-and-separations"
+  },
+  "PN Billing-Payment Term Upload": {
+   "hash": "bc356eb06ebb69ba",
+   "lastmod": "2026-10-16",
+   "web_name": "pn-billing-payment-term-upload"
+  },
+  "PN GL Reconciliation": {
+   "hash": "38e08d0715e5104b",
+   "lastmod": "2026-10-16",
+   "web_name": "pn-gl-reconciliation"
+  },
+  "PN Generate Lease Analysis": {
+   "hash": "1df20fdcd26e058a",
+   "lastmod": "2026-10-16",
+   "web_name": "pn-generate-lease-analysis"
+  },
+  "PN Generate Lease Details": {
+   "hash": "8c6a1490e6596392",
+   "lastmod": "2026-10-16",
+   "web_name": "pn-generate-lease-details"
+  },
+  "PN Generate Portfolio Detail": {
+   "hash": "991c50fcde098378",
+   "lastmod": "2026-10-16",
+   "web_name": "pn-generate-portfolio-detail"
+  },
+  "PN Generate Portfolio Summary": {
+   "hash": "55cb55fc92dcd471",
+   "lastmod": "2026-10-16",
+   "web_name": "pn-generate-portfolio-summary"
+  },
+  "PN Schedule Approval Status Upload": {
+   "hash": "13fd3f3119040b3f",
+   "lastmod": "2026-10-16",
+   "web_name": "pn-schedule-approval-status-upload"
+  },
+  "PO Acceptance Upload": {
+   "hash": "04b8b20590471fc8",
+   "lastmod": "2026-10-16",
+   "web_name": "po-acceptance-upload"
+  },
+  "PO Approval Assignments": {
+   "hash": "b99fc7ead9966335",
+   "lastmod": "2026-10-16",
+   "web_name": "po-approval-assignments"
+  },
+  "PO Approval Groups": {
+   "hash": "69017f4bc54e5523",
+   "lastmod": "2026-10-16",
+   "web_name": "po-approval-groups"
+  },
+  "PO Approval History": {
+   "hash": "79f91ee56f230fd9",
+   "lastmod": "2026-10-16",
+   "web_name": "po-approval-history"
+  },
+  "PO Approved Supplier List": {
+   "hash": "ff665646f417e6ef",
+   "lastmod": "2026-10-16",
+   "web_name": "po-approved-supplier-list"
+  },
+  "PO Approved Supplier List Upload": {
+   "hash": "3e89c2d5c15c118d",
+   "lastmod": "2026-10-16",
+   "web_name": "po-approved-supplier-list-upload"
+  },
+  "PO Cancelled Purchase Orders": {
+   "hash": "681fe3db67e73fcb",
+   "lastmod": "2026-10-16",
+   "web_name": "po-cancelled-purchase-orders"
+  },
+  "PO Cancelled Requisitions": {
+   "hash": "4f6142dee6bf76bf",
+   "lastmod": "2026-10-16",
+   "web_name": "po-cancelled-requisitions"
+  },
+  "PO Document Types": {
+   "hash": "c21803c67f23c02c",
+   "lastmod": "2026-10-16",
+   "web_name": "po-document-types"
+  },
+  "PO Headers": {
+   "hash": "0c16f8bf9593a994",
+   "lastmod": "2026-10-16",
+   "web_name": "po-headers"
+  },
+  "PO Headers and Lines": {
+   "hash": "4b9de70f60a12b8d",
+   "lastmod": "2026-10-16",
+   "web_name": "po-headers-and-lines"
+  },
+  "PO Internal Requisitions and Sales Orders": {
+   "hash": "f7faf242bc085662",
+   "lastmod": "2026-10-16",
+   "web_name": "po-internal-requisitions-and-sales-orders"
+  },
+  "PO Internal Requisitions-Deliveries Discrepancy": {
+   "hash": "2cfba665eec9342a",
+   "lastmod": "2026-10-16",
+   "web_name": "po-internal-requisitions-deliveries-discrepancy"
+  },
+  "PO Invoice Price Variance": {
+   "hash": "5323f4f618c3a586",
+   "lastmod": "2026-10-16",
+   "web_name": "po-invoice-price-variance"
+  },
+  "PO Printed Planning Schedule": {
+   "hash": "d0bd0f0f10faaed5",
+   "lastmod": "2026-10-16",
+   "web_name": "po-printed-planning-schedule"
+  },
+  "PO Procure to Pay Tracker": {
+   "hash": "fb6aae76684a8910",
+   "lastmod": "2026-10-16",
+   "web_name": "po-procure-to-pay-tracker"
+  },
+  "PO Purchase Price Variance": {
+   "hash": "1a3522bedd6d07ef",
+   "lastmod": "2026-10-16",
+   "web_name": "po-purchase-price-variance"
+  },
+  "PO Purchase Requisitions with PO Details": {
+   "hash": "49288e1b50ae90a9",
+   "lastmod": "2026-10-16",
+   "web_name": "po-purchase-requisitions-with-po-details"
+  },
+  "PO Purchasing Document Upload": {
+   "hash": "f9d3b81a577ed575",
+   "lastmod": "2026-10-16",
+   "web_name": "po-purchasing-document-upload"
+  },
+  "PO Receipts-Deliveries Discrepancy": {
+   "hash": "fece14fead4148b1",
+   "lastmod": "2026-10-16",
+   "web_name": "po-receipts-deliveries-discrepancy"
+  },
+  "PO Receiving Transaction Upload": {
+   "hash": "a5b641d7438d255f",
+   "lastmod": "2026-10-16",
+   "web_name": "po-receiving-transaction-upload"
+  },
+  "PO Receiving Transactions": {
+   "hash": "83b5419fc76ef120",
+   "lastmod": "2026-10-16",
+   "web_name": "po-receiving-transactions"
+  },
+  "PO Requisition Template Upload": {
+   "hash": "780020ad9b2cbd12",
+   "lastmod": "2026-10-16",
+   "web_name": "po-requisition-template-upload"
+  },
+  "PO Requisition Upload": {
+   "hash": "d0a9b4d8c6fecd6d",
+   "lastmod": "2026-10-16",
+   "web_name": "po-requisition-upload"
+  },
+  "PO Requisition Upload 11i": {
+   "hash": "81c3ec1239b05ddf",
+   "lastmod": "2026-10-16",
+   "web_name": "po-requisition-upload-11i"
+  },
+  "PO Supplier Scheduling On-Time Delivery": {
+   "hash": "6a9a9cb233be1a6e",
+   "lastmod": "2026-10-16",
+   "web_name": "po-supplier-scheduling-on-time-delivery"
+  },
+  "PO Vendor Service Performance Analysis": {
+   "hash": "aecb852357f28000",
+   "lastmod": "2026-10-16",
+   "web_name": "po-vendor-service-performance-analysis"
+  },
+  "PPF_WP3_OM_DETAILS": {
+   "hash": "6e3a653b43b17acb",
+   "lastmod": "2026-10-16",
+   "web_name": "ppf_wp3_om_details"
+  },
+  "PSA Budgetary Control Transactions": {
+   "hash": "b64646d3beee344d",
+   "lastmod": "2026-10-16",
+   "web_name": "psa-budgetary-control-transactions"
+  },
+  "QA Collection Element Upload": {
+   "hash": "c4b653df9598ccb0",
+   "lastmod": "2026-10-16",
+   "web_name": "qa-collection-element-upload"
+  },
+  "QA Collection Plan Actions": {
+   "hash": "d6b306a5f4e28f23",
+   "lastmod": "2026-10-16",
+   "web_name": "qa-collection-plan-actions"
+  },
+  "QA Collection Plan Element Values": {
+   "hash": "74d82927f1d1eaa7",
+   "lastmod": "2026-10-16",
+   "web_name": "qa-collection-plan-element-values"
+  },
+  "QA Collection Plan Elements": {
+   "hash": "4d8f6369fc2cc7da",
+   "lastmod": "2026-10-16",
+   "web_name": "qa-collection-plan-elements"
+  },
+  "QA Collection Plan Relationships": {
+   "hash": "db9340a29e413c76",
+   "lastmod": "2026-10-16",
+   "web_name": "qa-collection-plan-relationships"
+  },
+  "QA Collection Plan Transactions": {
+   "hash": "f526815cc9e3a1c2",
+   "lastmod": "2026-10-16",
+   "web_name": "qa-collection-plan-transactions"
+  },
+  "QA Collection Plan Upload": {
+   "hash": "f8ed2ce4150bee4b",
+   "lastmod": "2026-10-16",
+   "web_name": "qa-collection-plan-upload"
+  },
+  "QA Collection Plans": {
+   "hash": "92938ada5c991934",
+   "lastmod": "2026-10-16",
+   "web_name": "qa-collection-plans"
+  },
+  "QA Plan Relationship Upload": {
+   "hash": "9649e87486ffa864",
+   "lastmod": "2026-10-16",
+   "web_name": "qa-plan-relationship-upload"
+  },
+  "QA Quality Results": {
+   "hash": "c92fdad2017a0bf7",
+   "lastmod": "2026-10-16",
+   "web_name": "qa-quality-results"
+  },
+  "QP Customer Pricing Engine Request": {
+   "hash": "748096f8ce1d1dae",
+   "lastmod": "2026-10-16",
+   "web_name": "qp-customer-pricing-engine-request"
+  },
+  "QP GSA Pricing Upload": {
+   "hash": "6a7b1ae6984ee7c5",
+   "lastmod": "2026-10-16",
+   "web_name": "qp-gsa-pricing-upload"
+  },
+  "QP Modifier Details": {
+   "hash": "922181d81b5ab46a",
+   "lastmod": "2026-10-16",
+   "web_name": "qp-modifier-details"
+  },
+  "QP Modifier Upload": {
+   "hash": "1f68b069afe22765",
+   "lastmod": "2026-10-16",
+   "web_name": "qp-modifier-upload"
+  },
+  "QP Price List Upload": {
+   "hash": "9db0be1fbae0a75c",
+   "lastmod": "2026-10-16",
+   "web_name": "qp-price-list-upload"
+  },
+  "QP Price Lists": {
+   "hash": "483e6db2c5e77ce4",
+   "lastmod": "2026-10-16",
+   "web_name": "qp-price-lists"
+  },
+  "QP Pricing Agreements": {
+   "hash": "be33661504c2f873",
+   "lastmod": "2026-10-16",
+   "web_name": "qp-pricing-agreements"
+  },
+  "QP Pricing Attribute Definitions": {
+   "hash": "7ba6b4d0aa4afd88",
+   "lastmod": "2026-10-16",
+   "web_name": "qp-pricing-attribute-definitions"
+  },
+  "QP Qualifier Group Upload": {
+   "hash": "a299fa6215922b35",
+   "lastmod": "2026-10-16",
+   "web_name": "qp-qualifier-group-upload"
+  },
+  "WF Activity Status Summary": {
+   "hash": "26ed360faaa2f1b9",
+   "lastmod": "2026-10-16",
+   "web_name": "wf-activity-status-summary"
+  },
+  "WF Business Events and Subscriptions": {
+   "hash": "80d0fad66145514d",
+   "lastmod": "2026-10-16",
+   "web_name": "wf-business-events-and-subscriptions"
+  },
+  "WF Notifications": {
+   "hash": "85e7f8a922191c37",
+   "lastmod": "2026-10-16",
+   "web_name": "wf-notifications"
+  },
+  "WF Queue Backlog": {
+   "hash": "85fda739bcafae4e",
+   "lastmod": "2026-10-16",
+   "web_name": "wf-queue-backlog"
+  },
+  "WF Service Components": {
+   "hash": "7527c602231f4126",
+   "lastmod": "2026-10-16",
+   "web_name": "wf-service-components"
+  },
+  "WIP Account Distribution": {
+   "hash": "52d426c2141f00a8",
+   "lastmod": "2026-10-16",
+   "web_name": "wip-account-distribution"
+  },
+  "WIP Discrete Job Shortage": {
+   "hash": "b8b0fd3a912e4d5f",
+   "lastmod": "2026-10-16",
+   "web_name": "wip-discrete-job-shortage"
+  },
+  "WIP Entities": {
+   "hash": "24d3f7bf695bbc97",
+   "lastmod": "2026-10-16",
+   "web_name": "wip-entities"
+  },
+  "WIP Entities Summary": {
+   "hash": "7e93f49638160c70",
+   "lastmod": "2026-10-16",
+   "web_name": "wip-entities-summary"
+  },
+  "WIP Job Upload": {
+   "hash": "b57640c185144313",
+   "lastmod": "2026-10-16",
+   "web_name": "wip-job-upload"
+  },
+  "WIP Material Transaction Upload": {
+   "hash": "bd987fa5d4798a88",
+   "lastmod": "2026-10-16",
+   "web_name": "wip-material-transaction-upload"
+  },
+  "WIP Move Transaction Upload": {
+   "hash": "70cb02cac9a41b2b",
+   "lastmod": "2026-10-16",
+   "web_name": "wip-move-transaction-upload"
+  },
+  "WIP Move Transactions": {
+   "hash": "3f398a90772bf0ae",
+   "lastmod": "2026-10-16",
+   "web_name": "wip-move-transactions"
+  },
+  "WIP Move Transactions 11i": {
+   "hash": "9fdd905813f7cc45",
+   "lastmod": "2026-10-16",
+   "web_name": "wip-move-transactions-11i"
+  },
+  "WIP Outside Processing": {
+   "hash": "0d14ce90d235db17",
+   "lastmod": "2026-10-16",
+   "web_name": "wip-outside-processing"
+  },
+  "WIP Required Components": {
+   "hash": "2a9fc69537e65344",
+   "lastmod": "2026-10-16",
+   "web_name": "wip-required-components"
+  },
+  "WIP Resource Transactions": {
+   "hash": "a100860a6e98ba8a",
+   "lastmod": "2026-10-16",
+   "web_name": "wip-resource-transactions"
+  },
+  "WIP Value": {
+   "hash": "92618aa6e624ef80",
+   "lastmod": "2026-10-16",
+   "web_name": "wip-value"
+  },
+  "WIP Value Summary": {
+   "hash": "32b3029f84850be1",
+   "lastmod": "2026-10-16",
+   "web_name": "wip-value-summary"
+  },
+  "WMS Control Board Tasks": {
+   "hash": "3f07fc797ea86c35",
+   "lastmod": "2026-10-16",
+   "web_name": "wms-control-board-tasks"
+  },
+  "WSH Commercial Invoice": {
+   "hash": "3e8c2102986bd6ce",
+   "lastmod": "2026-10-16",
+   "web_name": "wsh-commercial-invoice"
+  },
+  "WSH Container Items Upload": {
+   "hash": "df6de5a1f250674c",
+   "lastmod": "2026-10-16",
+   "web_name": "wsh-container-items-upload"
+  },
+  "WSH Pick Confirm Upload": {
+   "hash": "ed8f837c8bdae547",
+   "lastmod": "2026-10-16",
+   "web_name": "wsh-pick-confirm-upload"
+  },
+  "WSH Shipping-Delivery Transactions": {
+   "hash": "cc85c03a3b55b49e",
+   "lastmod": "2026-10-16",
+   "web_name": "wsh-shipping-delivery-transactions"
+  },
+  "XDO Publisher Data Definitions": {
+   "hash": "90410bf9ed2e327a",
+   "lastmod": "2026-10-16",
+   "web_name": "xdo-publisher-data-definitions"
+  },
+  "XLA Distribution Links Summary": {
+   "hash": "bb7aa55712ddaae3",
+   "lastmod": "2026-10-16",
+   "web_name": "xla-distribution-links-summary"
+  },
+  "XLA Entity ID Mappings": {
+   "hash": "36834348c2821078",
+   "lastmod": "2026-10-16",
+   "web_name": "xla-entity-id-mappings"
+  },
+  "XLA Entity Types and Event Class Attributes": {
+   "hash": "acff9d35e114b077",
+   "lastmod": "2026-10-16",
+   "web_name": "xla-entity-types-and-event-class-attributes"
+  },
+  "XLA OPM Event Type Summary": {
+   "hash": "8e78a965b4229382",
+   "lastmod": "2026-10-16",
+   "web_name": "xla-opm-event-type-summary"
+  },
+  "XLA Subledger Accounting Rules Detail Listing": {
+   "hash": "f37ead7220f7cfa4",
+   "lastmod": "2026-10-16",
+   "web_name": "xla-subledger-accounting-rules-detail-listing"
+  },
+  "XLA Subledger Period Close Exceptions": {
+   "hash": "e32465dc7c4e781d",
+   "lastmod": "2026-10-16",
+   "web_name": "xla-subledger-period-close-exceptions"
+  },
+  "XLE Establishment and Legal Entity Associations": {
+   "hash": "0ab4e8093b6f1887",
+   "lastmod": "2026-10-16",
+   "web_name": "xle-establishment-and-legal-entity-associations"
+  },
+  "XLE Legal Entities": {
+   "hash": "6186640dd77668a2",
+   "lastmod": "2026-10-16",
+   "web_name": "xle-legal-entities"
+  },
+  "ZX Financial Tax Register": {
+   "hash": "2d4104f731ee94f1",
+   "lastmod": "2026-10-16",
+   "web_name": "zx-financial-tax-register"
+  },
+  "ZX Lines Summary": {
+   "hash": "57149364bfff4d20",
+   "lastmod": "2026-10-16",
+   "web_name": "zx-lines-summary"
+  },
+  "ZX Party Tax Profiles": {
+   "hash": "27ed1ecf0f41e036",
+   "lastmod": "2026-10-16",
+   "web_name": "zx-party-tax-profiles"
+  },
+  "ZX Tax Accounts": {
+   "hash": "4ae0e467dd8d8d81",
+   "lastmod": "2026-10-16",
+   "web_name": "zx-tax-accounts"
+  },
+  "ZX Tax Regimes": {
+   "hash": "3ea2d719629cc14e",
+   "lastmod": "2026-10-16",
+   "web_name": "zx-tax-regimes"
+  },
+  "ZX US Sales Tax": {
+   "hash": "a5a728e3d4553027",
+   "lastmod": "2026-10-16",
+   "web_name": "zx-us-sales-tax"
+  },
+  "module:advanced-pricing": {
+   "hash": "7a2eedd899162caf",
+   "lastmod": "2026-10-16"
+  },
+  "module:advanced-supply-chain-planning": {
+   "hash": "cf6e74e03619531b",
+   "lastmod": "2026-10-16"
+  },
+  "module:alert": {
+   "hash": "0c47a44e04467e3c",
+   "lastmod": "2026-10-16"
+  },
+  "module:application-object-library": {
+   "hash": "54e824bb9e80c884",
+   "lastmod": "2026-10-16"
+  },
+  "module:applications-dba": {
+   "hash": "f9dea4cb2fcd3672",
+   "lastmod": "2026-10-16"
+  },
+  "module:asia-pacific-localizations": {
+   "hash": "878f96b6fa824400",
+   "lastmod": "2026-10-16"
+  },
+  "module:assets": {
+   "hash": "15c1075e42d3f07e",
+   "lastmod": "2026-10-16"
+  },
+  "module:bills-of-material": {
+   "hash": "a238a6090664915c",
+   "lastmod": "2026-10-16"
+  },
+  "module:blitz-report": {
+   "hash": "118f8d79bca21406",
+   "lastmod": "2026-10-16"
+  },
+  "module:capacity": {
+   "hash": "e9a1673a378ed5a4",
+   "lastmod": "2026-10-16"
+  },
+  "module:cash-management": {
+   "hash": "af95c4fe7eb6e89a",
+   "lastmod": "2026-10-16"
+  },
+  "module:collections": {
+   "hash": "dc05763aef94d847",
+   "lastmod": "2026-10-16"
+  },
+  "module:contracts-core": {
+   "hash": "bcb86103e2a717eb",
+   "lastmod": "2026-10-16"
+  },
+  "module:cost-accounting": {
+   "hash": "2288a705786a9cba",
+   "lastmod": "2026-10-16"
+  },
+  "module:cost-management": {
+   "hash": "a2e5444470a2cda3",
+   "lastmod": "2026-10-16"
+  },
+  "module:crm-foundation": {
+   "hash": "fe770062710cc1c8",
+   "lastmod": "2026-10-16"
+  },
+  "module:database-administration": {
+   "hash": "52e6b7e7fcf18cf2",
+   "lastmod": "2026-10-16"
+  },
+  "module:discoverer": {
+   "hash": "3fe6880511b7fbac",
+   "lastmod": "2026-10-16"
+  },
+  "module:e-business-tax": {
+   "hash": "9676815fc210d8ff",
+   "lastmod": "2026-10-16"
+  },
+  "module:engineering": {
+   "hash": "766f13e6f04ba462",
+   "lastmod": "2026-10-16"
+  },
+  "module:enterprise-asset-management": {
+   "hash": "62a48dd60615469d",
+   "lastmod": "2026-10-16"
+  },
+  "module:enterprise-command-center": {
+   "hash": "d38e3ecf5612100c",
+   "lastmod": "2026-10-16"
+  },
+  "module:general-ledger": {
+   "hash": "300f3f9c0a1569dd",
+   "lastmod": "2026-10-16"
+  },
+  "module:human-resources": {
+   "hash": "d0a11a1ffb043b66",
+   "lastmod": "2026-10-16"
+  },
+  "module:installed-base": {
+   "hash": "29e43ae8465fc664",
+   "lastmod": "2026-10-16"
+  },
+  "module:inventory": {
+   "hash": "8f63a1463f0be076",
+   "lastmod": "2026-10-16"
+  },
+  "module:lease-and-finance-management": {
+   "hash": "c7433f5b2ebb6bb0",
+   "lastmod": "2026-10-16"
+  },
+  "module:legal-entity-configurator": {
+   "hash": "d117759ae059ac30",
+   "lastmod": "2026-10-16"
+  },
+  "module:master-scheduling-mrp": {
+   "hash": "fd4529bdcf6c2ec0",
+   "lastmod": "2026-10-16"
+  },
+  "module:oracle-landed-cost-management": {
+   "hash": "d46d55b7bc18a873",
+   "lastmod": "2026-10-16"
+  },
+  "module:order-management": {
+   "hash": "5174d9a0746610f0",
+   "lastmod": "2026-10-16"
+  },
+  "module:payables": {
+   "hash": "6d497de90b2f0722",
+   "lastmod": "2026-10-16"
+  },
+  "module:payments": {
+   "hash": "a4d92d8f51dba362",
+   "lastmod": "2026-10-16"
+  },
+  "module:payroll": {
+   "hash": "6b00018a2a9be530",
+   "lastmod": "2026-10-16"
+  },
+  "module:process-manufacturing": {
+   "hash": "fd9ff27513971ef0",
+   "lastmod": "2026-10-16"
+  },
+  "module:process-manufacturing-inventory": {
+   "hash": "a79224849a027c58",
+   "lastmod": "2026-10-16"
+  },
+  "module:projects": {
+   "hash": "99a7269ce2b50b20",
+   "lastmod": "2026-10-16"
+  },
+  "module:property-manager": {
+   "hash": "6b6856ee0353f451",
+   "lastmod": "2026-10-16"
+  },
+  "module:public-sector-financials": {
+   "hash": "f6e7fb064b462440",
+   "lastmod": "2026-10-16"
+  },
+  "module:purchasing": {
+   "hash": "6346ab3cff0b3da6",
+   "lastmod": "2026-10-16"
+  },
+  "module:quality": {
+   "hash": "2fae8cf24fa4da12",
+   "lastmod": "2026-10-16"
+  },
+  "module:receivables": {
+   "hash": "6c4e7a31008ca634",
+   "lastmod": "2026-10-16"
+  },
+  "module:service": {
+   "hash": "51e77c421053a69f",
+   "lastmod": "2026-10-16"
+  },
+  "module:service-contracts": {
+   "hash": "4bab4bc0f02951df",
+   "lastmod": "2026-10-16"
+  },
+  "module:shipping-execution": {
+   "hash": "d8701d620e661ce4",
+   "lastmod": "2026-10-16"
+  },
+  "module:subledger-accounting": {
+   "hash": "ad70301acf28f172",
+   "lastmod": "2026-10-16"
+  },
+  "module:warehouse-management": {
+   "hash": "6c5fa2d09d49f9b1",
+   "lastmod": "2026-10-16"
+  },
+  "module:work-in-process": {
+   "hash": "9452d4981b15885f",
+   "lastmod": "2026-10-16"
+  },
+  "module:workflow": {
+   "hash": "7d788dea9af1f699",
+   "lastmod": "2026-10-16"
+  },
+  "module:xml-publisher": {
+   "hash": "de3f336a124149c6",
+   "lastmod": "2026-10-16"
+  }
+ },
+ "redirects": {
+  "AD Applied Patches 11i": "AD Applied Patches",
+  "AP Invoice Audit Listing(GST)": "AP Invoice Audit Listing",
+  "AP Invoice Payments 11i": "AP Invoice Payments",
+  "AP Invoice Upload 11i": "AP Invoice Upload",
+  "AP Invoice on Hold 11i": "AP Invoice on Hold",
+  "AP Invoices with PO- Intercompany and SLA Details(GST)": "AP Invoices with PO- Intercompany and SLA Details",
+  "AP Suppliers Revenue Summary 11i": "AP Suppliers Revenue Summary",
+  "AR Autoinvoice Interface Summary": "AR Autoinvoice Interface",
+  "AR Miscellaneous Receipts 11i": "AR Miscellaneous Receipts",
+  "AR Transactions and Payments 11i": "AR Transactions and Payments",
+  "Blitz Report Add-in Setup Environment": "Blitz Report Add-in Environment Setup",
+  "CST Inventory Value - Multi-Organization (Element Costs) 11i": "CST Inventory Value - Multi-Organization (Item Costs)",
+  "DBA AWR System Wait Class by Time": "DBA AWR Wait Class by Time",
+  "DBA AWR System Wait Event Summary": "DBA AWR Wait Event Summary",
+  "DBA AWR System Wait Time Summary": "DBA AWR System Time Summary",
+  "DBA DBMS Profiler Data": "DBA Profiler Data",
+  "FA Asset Book Details 11i": "FA Asset Book Details",
+  "FND Concurrent Programs and Executables 11i": "FND Concurrent Programs and Executables",
+  "FND Concurrent Requests 11i": "FND Concurrent Requests",
+  "FND Responsibility Access 11i": "FND Responsibility Access",
+  "FND User Roles 11i": "FND User Roles",
+  "GL Account Analysis (Distributions)": "GL Account Analysis",
+  "GL Account Analysis (Distributions) 11g": "GL Account Analysis 11g",
+  "GL Account Analysis 11i": "GL Account Analysis",
+  "GL Balance (Drilldown) -CAI": "GL Balances (Drilldown)",
+  "HR Organization Upload": "PER Organization Upload",
+  "INV Intercompany Invoice Reconciliation 11i": "INV Intercompany Invoice Reconciliation",
+  "MSC Pegging Hierarchy 11i": "MSC Pegging Hierarchy",
+  "PA Project Transaction Upload": "PA Transaction Upload",
+  "PO Headers 11i": "PO Headers",
+  "PO Headers and Lines 11i": "PO Headers and Lines"
+ },
+ "version": 2
+}

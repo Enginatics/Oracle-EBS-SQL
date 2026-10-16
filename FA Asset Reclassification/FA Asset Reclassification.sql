@@ -1,15 +1,15 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: FA Asset Reclassification
 -- Description: Application: Assets
-Source: Asset Reclassification Report (XML) - Not Supported: Reserved For Future Use
-Short Name: FAS740_XML
-DB package: FA_FAS740_XMLP_PKG
--- Excel Examle Output: https://www.enginatics.com/example/fa-asset-reclassification/
+-- Source: Asset Reclassification Report (XML) - Not Supported: Reserved For Future Use
+-- Short Name: FAS740XML
+-- DB package: FAFAS740XMLPPKG
+-- Excel Example Output: https://www.enginatics.com/example/fa-asset-reclassification/
 -- Library Link: https://www.enginatics.com/reports/fa-asset-reclassification/
 -- Run Report: https://demo.enginatics.com/
 
@@ -56,7 +56,7 @@ where
  gsob.set_of_books_id = fbcs.set_of_books_id and
  fdp_start.period_counter = 
  (select
-  min(fdp.period_counter)
+  min(fdp2.period_counter)
   from
   fa_deprn_periods fdp2
   where
@@ -65,7 +65,7 @@ where
  ) and
  fdp_end.period_counter = 
  (select
-  max(fdp.period_counter)
+  max(fdp2.period_counter)
   from
   fa_deprn_periods fdp2
   where

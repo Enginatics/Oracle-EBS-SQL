@@ -1,41 +1,38 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC OPM Batch Material Summary
--- Description: Report showing Batch materials in summary for each product, byproduct and ingredient.  Displaying batches which were open during the monthly inventory accounting period or batches which were closed during the monthly inventory accounting period.  If you enter a cost type this report uses the item costs from the cost type; if you leave the cost type blank it uses the item costs from the month-end item costs.
-
-Parameters:
-==========
-Period Name:  enter the monthly inventory accounting period you wish to report (mandatory).
-Cost Type:  enter a Cost Type to value the quantities using the Cost Type item costs; if Cost Type is not entered the report will use the Cost Type from your Fiscal Policies (optional).
-OPM Calendar Code:  choose the OPM Calendar Code which corresponds to the period costs you wish to report (mandatory).
-OPM Period Code:  enter the OPM Period Code which corresponds to the period costs and OPM Calendar Code you wish to report (mandatory).
-Category Sets 1 - 3:  enter up to three item category sets you wish to report (optional).
-Item Number:  specific Product, By-Product or Ingredient you wish to report (optional).
-Batch Number: enter any batch number which is open or was closed within the date range of the OPM Period Code and Calendar Code (optional).
-Batch Status:  to minimize the report size, specify the batch statuses you wish to report (optional).
-Batch Number From:  (optional).
-Batch Number To:  (optional).
-Organization Code:  enter the inventory organization(s), defaults to your session's inventory organization (optional).
-Operating Unit:  enter the operating unit(s) you wish to report (optional).
-Ledger:  enter the ledger(s) you wish to report (optional).
-
-/* +=============================================================================+
--- | Copyright 2025 Douglas Volz Consulting, Inc.
--- | All rights reserved.
--- | Permission to use this code is granted provided the original author is
--- | acknowledged. No warranties, express or otherwise is included in this permission.
--- +=============================================================================+
--- |
--- | Version Modified on Modified by Description
--- | ======= =========== ============== =========================================
--- | 1.0     22 Jan 2025 Douglas Volz Initial Coding based on client's sample report.
--- +=============================================================================*/
-
--- Excel Examle Output: https://www.enginatics.com/example/cac-opm-batch-material-summary/
+-- Description: Report showing Batch materials in summary for each product, byproduct and ingredient. Displaying batches which were open during the monthly inventory accounting period or batches which were closed during the monthly inventory accounting period. If you enter a cost type this report uses the item costs from the cost type; if you leave the cost type blank it uses the item costs from the month-end item costs.
+-- Parameters:
+-- ==========
+-- Period Name: enter the monthly inventory accounting period you wish to report (mandatory).
+-- Cost Type: enter a Cost Type to value the quantities using the Cost Type item costs; if Cost Type is not entered the report will use the Cost Type from your Fiscal Policies (optional).
+-- OPM Calendar Code: choose the OPM Calendar Code which corresponds to the period costs you wish to report (mandatory).
+-- OPM Period Code: enter the OPM Period Code which corresponds to the period costs and OPM Calendar Code you wish to report (mandatory).
+-- Category Sets 1 - 3: enter up to three item category sets you wish to report (optional).
+-- Item Number: specific Product, By-Product or Ingredient you wish to report (optional).
+-- Batch Number: enter any batch number which is open or was closed within the date range of the OPM Period Code and Calendar Code (optional).
+-- Batch Status: to minimize the report size, specify the batch statuses you wish to report (optional).
+-- Batch Number From: (optional).
+-- Batch Number To: (optional).
+-- Organization Code: enter the inventory organization(s), defaults to your session's inventory organization (optional).
+-- Operating Unit: enter the operating unit(s) you wish to report (optional).
+-- Ledger: enter the ledger(s) you wish to report (optional).
+-- / +=============================================================================+
+-- -- | Copyright 2025 Douglas Volz Consulting, Inc.
+-- -- | All rights reserved.
+-- -- | Permission to use this code is granted provided the original author is
+-- -- | acknowledged. No warranties, express or otherwise is included in this permission.
+-- -- +=============================================================================+
+-- -- |
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== ============== =========================================
+-- -- | 1.0 22 Jan 2025 Douglas Volz Initial Coding based on client's sample report.
+-- -- +=============================================================================/
+-- Excel Example Output: https://www.enginatics.com/example/cac-opm-batch-material-summary/
 -- Library Link: https://www.enginatics.com/reports/cac-opm-batch-material-summary/
 -- Run Report: https://demo.enginatics.com/
 

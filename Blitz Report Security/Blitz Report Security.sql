@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: Blitz Report Security
 -- Description: Shows all Enginatics reports and their security, for example parameter or SQL restrictions.
--- Excel Examle Output: https://www.enginatics.com/example/blitz-report-security/
+-- Excel Example Output: https://www.enginatics.com/example/blitz-report-security/
 -- Library Link: https://www.enginatics.com/reports/blitz-report-security/
 -- Run Report: https://demo.enginatics.com/
 

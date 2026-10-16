@@ -1,36 +1,29 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: AP Posted Payment Register
 -- Description: Application: Payables
-Description: Payables Posted Payment Register
-
-This report provides equivalent functionality to the Oracle standard Payables Posted Payment Register report.
-
-For scheduling the report to run periodically, use the relative period from/to offset parameters. These are the relative period offsets to the current period, so when the current period changes, the included periods will also automatically be updated when the report is re-run.
-
-Templates
-- Pivot: Summary by Account
-  Equivalent to standard report in Summarize Report = Yes Mode 
-- Pivot: Summary by Account, Bank Account, Batch, Payment Currency, Payment Document
-  Equivalent to standard report in Summarize=No Order By=Bank Account
-- Pivot: Summary by Account, Batch, Bank Account, Payment Currency, Payment Document
-  Equivalent to standard report in Summarize=No Order By=Journal Entry Batch
-- Detail
-  Provides detail listing of the posted payments
-
-Additional data fields are available. Run the report without a template to see full list available fields
-
-
-Source: Payables Posted Payment Register
-Short Name: APXPOPMT
-DB package: XLA_JELINES_RPT_PKG
-
-Also requires custom package XXEN_XLA package to be installed to initialize the hidden parameters removed from the report to simplify scheduling of the report.
--- Excel Examle Output: https://www.enginatics.com/example/ap-posted-payment-register/
+-- Description: Payables Posted Payment Register
+-- This report provides equivalent functionality to the Oracle standard Payables Posted Payment Register report.
+-- For scheduling the report to run periodically, use the relative period from/to offset parameters. These are the relative period offsets to the current period, so when the current period changes, the included periods will also automatically be updated when the report is re-run.
+-- Templates
+-- - Pivot: Summary by Account
+-- Equivalent to standard report in Summarize Report = Yes Mode
+-- - Pivot: Summary by Account, Bank Account, Batch, Payment Currency, Payment Document
+-- Equivalent to standard report in Summarize=No Order By=Bank Account
+-- - Pivot: Summary by Account, Batch, Bank Account, Payment Currency, Payment Document
+-- Equivalent to standard report in Summarize=No Order By=Journal Entry Batch
+-- - Detail
+-- Provides detail listing of the posted payments
+-- Additional data fields are available. Run the report without a template to see full list available fields
+-- Source: Payables Posted Payment Register
+-- Short Name: APXPOPMT
+-- DB package: XLAJELINESRPTPKG
+-- Also requires custom package XXENXLA package to be installed to initialize the hidden parameters removed from the report to simplify scheduling of the report.
+-- Excel Example Output: https://www.enginatics.com/example/ap-posted-payment-register/
 -- Library Link: https://www.enginatics.com/reports/ap-posted-payment-register/
 -- Run Report: https://demo.enginatics.com/
 

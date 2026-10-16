@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PA Project Status Summary
 -- Description: Project-level financial overview showing actual costs, revenue, labor hours, and commitments for each project with manager and status information.
--- Excel Examle Output: https://www.enginatics.com/example/pa-project-status-summary/
+-- Excel Example Output: https://www.enginatics.com/example/pa-project-status-summary/
 -- Library Link: https://www.enginatics.com/reports/pa-project-status-summary/
 -- Run Report: https://demo.enginatics.com/
 

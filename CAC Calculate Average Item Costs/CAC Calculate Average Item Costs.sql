@@ -1,51 +1,49 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Calculate Average Item Costs
--- Description: Using purchase order receipts, calculate average item costs over a specified transaction date range and compare against the Comparison Cost Type.  In addition, with the Use Default Material Overheads parameter you can choose which material overheads to use on this report.  Select Yes to use the Default Material Overhead setups.  Set to No to use the material overheads from the specified Comparison Cost Type.  And if planning to use roll up these item costs, to avoid doubling up rolled up material costs on assemblies, choose Yes for the parameter Exclude Rolled Up Items, to avoid having manually defined material costs and rolled up material costs.
-
-Parameters:
-===========
-Transaction Date From:  enter the starting transaction date for PO Receipt History (mandatory).
-Transaction Date To:  enter the ending transaction date for PO Receipt History (mandatory).
-Comparison Cost Type: enter the cost type to compare against the calculated average item costs (mandatory).  If the costs are not found in the Comparison Cost Type get them from the Costing Method Cost Type.
-Use Default Material Overheads:  set to Yes to report the material overheads based on the Default Material Overhead setups.  Set to No to use the material overheads from the specified Comparison Cost type (mandatory).
-Only Active Rates:  set to Yes to only get active, enabled default material overhead rates (mandatory).
-Exclude Rolled Up Items:  to avoid doubling up rolled up material costs, choose Yes for this parameter, to avoid having manually defined material costs and rolled up material costs (mandatory).
-Currency Conversion Date:  the exchange rate conversion date that was used to set the standard costs (mandatory).
-Currency Conversion Type:  the exchange rate conversion type that was used to set the standard costs (mandatory).
-Show Last AP Invoice:  Enter Yes to show the last AP invoice date, number and price (mandatory).
-Category Set 1:  any item category you wish, typically the Cost or Product Line category set (optional).
-Category Set 2:  any item category you wish, typically the Inventory category set (optional).
-Supplier Type to Exclude:  enter the specific supplier(s) you wish to exclude from the average cost calculations (optional).
-Item Status to Exclude:  enter the item number status you want to exclude.  Defaulted to 'Inactive' (optional).
-Item Number:  enter the specific item number(s) you wish to report (optional).
-Organization Code:  enter the specific inventory organization(s) you wish to report (optional).
-Operating Unit:  enter the specific operating unit(s) you wish to report (optional).
-Ledger:  enter the specific ledger(s) you wish to report (optional).
-
-/* 
--- |  Copyright 2006 - 2023 Douglas Volz Consulting, Inc.
--- |  All rights reserved.
--- |  Permission to use this code is granted provided the original author is
--- |  acknowledged.  No warranties, express or otherwise is included in this permission.
--- |
--- | Version Modified on Modified by Description
--- | ======= =========== ============== =========================================
--- | 1.0     05 Jan 2019 Douglas Volz   Initial Coding based on item_cost_history.sql
--- | 1.15    10 Jan 2023 Douglas Volz   Fix for Average Cost calculations, UOM issue.
--- | 1.16    21 Aug 2023 Douglas Volz   Remove tabs and restrict to only orgs you have access to,
--- |                                    Add last payables invoice and purchase order price information.
--- | 1.17    25 Sep 2023 Douglas Volz   Fix for the Last PO and Last A/P information
--- | 1.18    13 Oct 2023 Andy Haack     Fix for G/L Daily Rates, outer joins
--- | 1.19    24 Nov 2023 Douglas Volz   Fixed item number parameter for last PO information
--- |                                    and fix Last A/P Invoice info for G/L Daily Rates
--- | 1.20    08 Dec 2023 Douglas Volz   Added G/L and Operating Unit security restrictions.
--- +=============================================================================+*/
--- Excel Examle Output: https://www.enginatics.com/example/cac-calculate-average-item-costs/
+-- Description: Using purchase order receipts, calculate average item costs over a specified transaction date range and compare against the Comparison Cost Type. In addition, with the Use Default Material Overheads parameter you can choose which material overheads to use on this report. Select Yes to use the Default Material Overhead setups. Set to No to use the material overheads from the specified Comparison Cost Type. And if planning to use roll up these item costs, to avoid doubling up rolled up material costs on assemblies, choose Yes for the parameter Exclude Rolled Up Items, to avoid having manually defined material costs and rolled up material costs.
+-- Parameters:
+-- ===========
+-- Transaction Date From: enter the starting transaction date for PO Receipt History (mandatory).
+-- Transaction Date To: enter the ending transaction date for PO Receipt History (mandatory).
+-- Comparison Cost Type: enter the cost type to compare against the calculated average item costs (mandatory). If the costs are not found in the Comparison Cost Type get them from the Costing Method Cost Type.
+-- Use Default Material Overheads: set to Yes to report the material overheads based on the Default Material Overhead setups. Set to No to use the material overheads from the specified Comparison Cost type (mandatory).
+-- Only Active Rates: set to Yes to only get active, enabled default material overhead rates (mandatory).
+-- Exclude Rolled Up Items: to avoid doubling up rolled up material costs, choose Yes for this parameter, to avoid having manually defined material costs and rolled up material costs (mandatory).
+-- Currency Conversion Date: the exchange rate conversion date that was used to set the standard costs (mandatory).
+-- Currency Conversion Type: the exchange rate conversion type that was used to set the standard costs (mandatory).
+-- Show Last AP Invoice: Enter Yes to show the last AP invoice date, number and price (mandatory).
+-- Category Set 1: any item category you wish, typically the Cost or Product Line category set (optional).
+-- Category Set 2: any item category you wish, typically the Inventory category set (optional).
+-- Supplier Type to Exclude: enter the specific supplier(s) you wish to exclude from the average cost calculations (optional).
+-- Item Status to Exclude: enter the item number status you want to exclude. Defaulted to 'Inactive' (optional).
+-- Item Number: enter the specific item number(s) you wish to report (optional).
+-- Organization Code: enter the specific inventory organization(s) you wish to report (optional).
+-- Operating Unit: enter the specific operating unit(s) you wish to report (optional).
+-- Ledger: enter the specific ledger(s) you wish to report (optional).
+-- /
+-- -- | Copyright 2006 - 2023 Douglas Volz Consulting, Inc.
+-- -- | All rights reserved.
+-- -- | Permission to use this code is granted provided the original author is
+-- -- | acknowledged. No warranties, express or otherwise is included in this permission.
+-- -- |
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== ============== =========================================
+-- -- | 1.0 05 Jan 2019 Douglas Volz Initial Coding based on itemcosthistory.sql
+-- -- | 1.15 10 Jan 2023 Douglas Volz Fix for Average Cost calculations, UOM issue.
+-- -- | 1.16 21 Aug 2023 Douglas Volz Remove tabs and restrict to only orgs you have access to,
+-- -- | Add last payables invoice and purchase order price information.
+-- -- | 1.17 25 Sep 2023 Douglas Volz Fix for the Last PO and Last A/P information
+-- -- | 1.18 13 Oct 2023 Andy Haack Fix for G/L Daily Rates, outer joins
+-- -- | 1.19 24 Nov 2023 Douglas Volz Fixed item number parameter for last PO information
+-- -- | and fix Last A/P Invoice info for G/L Daily Rates
+-- -- | 1.20 08 Dec 2023 Douglas Volz Added G/L and Operating Unit security restrictions.
+-- -- +=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-calculate-average-item-costs/
 -- Library Link: https://www.enginatics.com/reports/cac-calculate-average-item-costs/
 -- Run Report: https://demo.enginatics.com/
 

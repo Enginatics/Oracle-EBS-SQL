@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PER Employee Length of Service
 -- Description: Active employees with calculated length of service in years and months, based on the adjusted service date (or hire date if not set). Shows milestone years (multiples of 5), next service anniversary, age, and current assignment details. Useful for recognition programs, benefits eligibility, and workforce tenure analysis.
--- Excel Examle Output: https://www.enginatics.com/example/per-employee-length-of-service/
+-- Excel Example Output: https://www.enginatics.com/example/per-employee-length-of-service/
 -- Library Link: https://www.enginatics.com/reports/per-employee-length-of-service/
 -- Run Report: https://demo.enginatics.com/
 

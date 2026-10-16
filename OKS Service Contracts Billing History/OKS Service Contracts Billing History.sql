@@ -1,31 +1,25 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: OKS Service Contracts Billing History
 -- Description: Service Contracts billing history with invoicing and accounting rules, bill action, billed period dates, amounts and counter reading details for usage billing.
-When running service contracts billing, there is always a full set of records created in the following billing history tables: 
-
-oks_bill_cont_lines obcl
-oks_bill_sub_lines obsl
-oks_bill_sub_line_dtls obsld
-oks_bill_transactions obt
-oks_bill_txn_lines obtl
-
-This set of records is complete down to subline level obsl/obsld, regardless if the billed contract line type has a subline or not.
-For subscription lines (lse_id=46, lty_code='SUBSCRIPTION') without a subline, for example, both obcl and obsl point their cle_id to the same line in okc_k_lines_b instead of different line and subline.
-
-Unique identifier for the billing entry is obtl.bill_instance_number, which links to receivables line rctla.interface_line_attribute3.
-When driving queries from the OKS side, make sure to include a to_char() conversion for the numeric obtl.bill_instance_number, to enable index use on character type rctla.interface_line_attribute3.
-
-The OKS billing history does not have a link to the originating billing schedule record in oks_level_elements (see <a href="https://www.enginatics.com/reports/oks-service-contracts-billing-schedule/" rel="nofollow" target="_blank">https://www.enginatics.com/reports/oks-service-contracts-billing-schedule/</a>)
-
-An overview of oracle service contracts and other line types can be found here: <a href="https://www.enginatics.com/reports/okc-contract-lines-summary/" rel="nofollow" target="_blank">https://www.enginatics.com/reports/okc-contract-lines-summary/</a>
-
-oks_billing_history_v
--- Excel Examle Output: https://www.enginatics.com/example/oks-service-contracts-billing-history/
+-- When running service contracts billing, there is always a full set of records created in the following billing history tables:
+-- oksbillcontlines obcl
+-- oksbillsublines obsl
+-- oksbillsublinedtls obsld
+-- oksbilltransactions obt
+-- oksbilltxnlines obtl
+-- This set of records is complete down to subline level obsl/obsld, regardless if the billed contract line type has a subline or not.
+-- For subscription lines (lseid=46, ltycode='SUBSCRIPTION') without a subline, for example, both obcl and obsl point their cleid to the same line in okcklinesb instead of different line and subline.
+-- Unique identifier for the billing entry is obtl.billinstancenumber, which links to receivables line rctla.interfacelineattribute3.
+-- When driving queries from the OKS side, make sure to include a tochar() conversion for the numeric obtl.billinstancenumber, to enable index use on character type rctla.interfacelineattribute3.
+-- The OKS billing history does not have a link to the originating billing schedule record in okslevelelements (see https://www.enginatics.com/reports/oks-service-contracts-billing-schedule/)
+-- An overview of oracle service contracts and other line types can be found here: https://www.enginatics.com/reports/okc-contract-lines-summary/
+-- oksbillinghistoryv
+-- Excel Example Output: https://www.enginatics.com/example/oks-service-contracts-billing-history/
 -- Library Link: https://www.enginatics.com/reports/oks-service-contracts-billing-history/
 -- Run Report: https://demo.enginatics.com/
 

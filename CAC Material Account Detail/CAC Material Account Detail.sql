@@ -1,49 +1,46 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Material Account Detail
--- Description: Report to get the Material accounting distributions, in detail, for each item, organization and individual transaction.  Including Ship From and Ship To information for inter-org transfers.  With the Show SLA Accounting parameter you can choose to use the Release 12 Subledger Accounting (Create Accounting) account setups by selecting Yes.  And if you have not modified your SLA accounting rules, select No to allow this report to run a bit faster.  Use Show Projects to display or not display the project information (project number, name, task and project cost collection status) and use Show WIP Job to display or not display the WIP job information (WIP class, class type, WIP job, description, assembly number and assembly description).  For Discrete, Flow and Workorderless WIP (but not Repetitive Schedules).  Both Flow and Workorderless show up as the WIP Type "Flow schedule".  And to get all positive and negative amounts above a threshold value, use the Minimum Absolute Amount parameter.
-
-Note:  this report has identical code and logic as the CAC ICP PII Material Account Detail report, however, but with the use of hidden parameters, the PII (profit in inventory) features have been turned off.
-
-Parameters:
-===========
-Transaction Date From:  enter the starting transaction date (mandatory).
-Transaction Date To:  enter the ending transaction date (mandatory).
-Show SLA Accounting:  enter Yes to use the Subledger Accounting rules for your accounting information (mandatory).  If you choose No the report uses the pre-Create Accounting entries.
-Show Projects:  display the project information.  Enter Yes or No, use to limit the report size (mandatory).
-Show WIP:  display the WIP job or flow schedule information.  Enter Yes or No, use to limit the report size (mandatory).
-Category Set 1:  any item category you wish, typically the Cost or Product Line category set (optional).
-Category Set 2:  any item category you wish, typically the Inventory category set (optional).
-Accounting Line Type:  enter the accounting purpose or line type to report (optional).
-Transaction Type:  select the material transaction type, such as PO Receipt, Return to Vendor or Account Alias Issue (optional).
-Transaction Source Type:  select the material transaction source, such as Purchase Order or Account Alias (optional).
-Transaction Id:  enter the transaction number or identifier to report (optional).
-Minimum Absolute Amount:  enter the minimum debit or credit to report (optional).  To see all accounting entries, enter zero (0).
-Only Zero Amounts:  use this parameter to find entries with a zero transaction amount (optional).
-Item Number:  enter the specific item number(s) you wish to report (optional).
-Organization Code:  enter the specific inventory organization(s) you wish to report (optional).
-Operating Unit:  enter the specific operating unit(s) you wish to report (optional).
-Ledger:  enter the specific ledger(s) you wish to report (optional).
-
-/* +=============================================================================+
--- |  Copyright 2009- 2022 Douglas Volz Consulting, Inc.
--- |  All rights reserved.
--- |  Permission to use this code is granted provided the original author is
--- |  acknowledged.  No warranties, express or otherwise is included in this permission. 
--- +=============================================================================+
--- | 
--- |  Version Modified on Modified  by   Description
--- |  ======= =========== ============== =========================================
--- |  1.0     06 Nov 2009 Douglas Volz   Initial Coding
--- | 1.29    19 Oct 2022 Douglas Volz    Performance improvements for PII item costs and WIP components.
--- | 1.30    21 Oct 2022 Douglas Volz    Logic change for resolving Internal RMA order numbers.
--- | 1.31    28 Jul 2025 Douglas Volz    Added Reason Codes and GL & OU Security Profiles.
--- +=============================================================================+*/
--- Excel Examle Output: https://www.enginatics.com/example/cac-material-account-detail/
+-- Description: Report to get the Material accounting distributions, in detail, for each item, organization and individual transaction. Including Ship From and Ship To information for inter-org transfers. With the Show SLA Accounting parameter you can choose to use the Release 12 Subledger Accounting (Create Accounting) account setups by selecting Yes. And if you have not modified your SLA accounting rules, select No to allow this report to run a bit faster. Use Show Projects to display or not display the project information (project number, name, task and project cost collection status) and use Show WIP Job to display or not display the WIP job information (WIP class, class type, WIP job, description, assembly number and assembly description). For Discrete, Flow and Workorderless WIP (but not Repetitive Schedules). Both Flow and Workorderless show up as the WIP Type "Flow schedule". And to get all positive and negative amounts above a threshold value, use the Minimum Absolute Amount parameter.
+-- Note: this report has identical code and logic as the CAC ICP PII Material Account Detail report, however, but with the use of hidden parameters, the PII (profit in inventory) features have been turned off.
+-- Parameters:
+-- ===========
+-- Transaction Date From: enter the starting transaction date (mandatory).
+-- Transaction Date To: enter the ending transaction date (mandatory).
+-- Show SLA Accounting: enter Yes to use the Subledger Accounting rules for your accounting information (mandatory). If you choose No the report uses the pre-Create Accounting entries.
+-- Show Projects: display the project information. Enter Yes or No, use to limit the report size (mandatory).
+-- Show WIP: display the WIP job or flow schedule information. Enter Yes or No, use to limit the report size (mandatory).
+-- Category Set 1: any item category you wish, typically the Cost or Product Line category set (optional).
+-- Category Set 2: any item category you wish, typically the Inventory category set (optional).
+-- Accounting Line Type: enter the accounting purpose or line type to report (optional).
+-- Transaction Type: select the material transaction type, such as PO Receipt, Return to Vendor or Account Alias Issue (optional).
+-- Transaction Source Type: select the material transaction source, such as Purchase Order or Account Alias (optional).
+-- Transaction Id: enter the transaction number or identifier to report (optional).
+-- Minimum Absolute Amount: enter the minimum debit or credit to report (optional). To see all accounting entries, enter zero (0).
+-- Only Zero Amounts: use this parameter to find entries with a zero transaction amount (optional).
+-- Item Number: enter the specific item number(s) you wish to report (optional).
+-- Organization Code: enter the specific inventory organization(s) you wish to report (optional).
+-- Operating Unit: enter the specific operating unit(s) you wish to report (optional).
+-- Ledger: enter the specific ledger(s) you wish to report (optional).
+-- / +=============================================================================+
+-- -- | Copyright 2009- 2022 Douglas Volz Consulting, Inc.
+-- -- | All rights reserved.
+-- -- | Permission to use this code is granted provided the original author is
+-- -- | acknowledged. No warranties, express or otherwise is included in this permission.
+-- -- +=============================================================================+
+-- -- |
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== ============== =========================================
+-- -- | 1.0 06 Nov 2009 Douglas Volz Initial Coding
+-- -- | 1.29 19 Oct 2022 Douglas Volz Performance improvements for PII item costs and WIP components.
+-- -- | 1.30 21 Oct 2022 Douglas Volz Logic change for resolving Internal RMA order numbers.
+-- -- | 1.31 28 Jul 2025 Douglas Volz Added Reason Codes and GL & OU Security Profiles.
+-- -- +=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-material-account-detail/
 -- Library Link: https://www.enginatics.com/reports/cac-material-account-detail/
 -- Run Report: https://demo.enginatics.com/
 

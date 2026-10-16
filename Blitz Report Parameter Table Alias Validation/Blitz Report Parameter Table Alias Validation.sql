@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: Blitz Report Parameter Table Alias Validation
 -- Description: Blitz report parameters referencing table aliases, which do not exist as a table in the main report SQL
--- Excel Examle Output: https://www.enginatics.com/example/blitz-report-parameter-table-alias-validation/
+-- Excel Example Output: https://www.enginatics.com/example/blitz-report-parameter-table-alias-validation/
 -- Library Link: https://www.enginatics.com/reports/blitz-report-parameter-table-alias-validation/
 -- Run Report: https://demo.enginatics.com/
 

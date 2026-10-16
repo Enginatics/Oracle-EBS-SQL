@@ -1,16 +1,18 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: INV Onhand Quantities
 -- Description: Detail report inventory item quantities by org, sub inventory, location, unit of measure, quantity on hand, quantity reserved, quantity unpacked, lot number, lot expiration, planning information, serial control, availability type, date received, list price, min / max and safety stock.
--- Excel Examle Output: https://www.enginatics.com/example/inv-onhand-quantities/
+-- Show Serial Numbers adds one row per serial number resident in the on-hand location; the quantity and value columns are those of the location and repeat on every serial row.
+-- Excel Example Output: https://www.enginatics.com/example/inv-onhand-quantities/
 -- Library Link: https://www.enginatics.com/reports/inv-onhand-quantities/
 -- Run Report: https://demo.enginatics.com/
 
 select
+&serial_columns
 x.*,
 case
 when x.aging_days<=30 then '1. 0-30 Days'
@@ -133,6 +135,7 @@ msiv.max_minmax_quantity,
 moqd.inventory_item_id,
 moqd.organization_id,
 moqd.subinventory_code,
+&serial_keys
 sum(moqd.primary_transaction_quantity) over (partition by moqd.organization_id, moqd.inventory_item_id) on_hand_org_sum,
 sum(moqd.primary_transaction_quantity) over (partition by moqd.inventory_item_id) on_hand_sum,
 round(sum(moqd.primary_transaction_quantity * nvl(cic.item_cost,0)) over (partition by moqd.inventory_item_id),2) on_hand_value_sum,
@@ -320,8 +323,12 @@ nvl(moqd.planning_organization_id,-1)=nvl(mmt.planning_organization_id(+),-1) an
 moqd.organization_id=cic.organization_id(+)and
 moqd.inventory_item_id=cic.inventory_item_id(+)
 ) x
+&serial_from
+where
+4=4
 order by
 x.organization_code,
 x.on_hand_sum desc,
 x.item,
 x.on_hand desc
+&serial_order

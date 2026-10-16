@@ -1,58 +1,56 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Item Cost Summary
--- Description: Report to show item costs in any cost type.  For one or more inventory organizations.
-
-Parameters:
-===========
-Cost Type:  enter the cost type(s) you wish to report (mandatory).
-Include Uncosted Items:  enter Yes to include non-costed items, enter No to exclude them (mandatory).
-Item Status to Exclude:  enter the item status you wish to exclude, defaulted to Inactive (optional).
-Category Set 1:  the first item category set to report, typically the Cost or Product Line Category Set (optional).
-Category Set 2:  the second item category set to report, typically the Inventory Category Set (optional).
-Item Number:  enter the item numbers you wish to report (optional).
-Organization Code:  enter the specific inventory organization(s) you wish to report (optional).
-Operating Unit:  enter the specific operating unit(s) you wish to report (optional).
-Ledger:  enter the specific ledger(s) you wish to report (optional).
-
-/* +=============================================================================+
--- | Copyright 2009-2024 Douglas Volz Consulting, Inc.
--- | All rights reserved.
--- | Permission to use this code is granted provided the original author is
--- | acknowledged. No warranties, express or otherwise is included in this
--- | permission.
--- +=============================================================================+
--- |
--- | Original Author: Douglas Volz (doug@volzconsulting.com)
--- |
--- | Description:
--- | Report to show item costs in any cost type
--- | 
--- | Version Modified on Modified by Description
--- | ======= =========== ============== =========================================
--- |  1.0     06 Oct 2009 Douglas Volz  Initial Coding
--- |  1.1     16 Mar 2010 Douglas Volz  Updated with Make/Buy flags
--- |  1.2     08 Nov 2010 Douglas Volz  Updated with additional columns and parameters
--- |  1.3     07 Feb 2011 Douglas Volz  Added COGS and Revenue default accounts
--- |  1.4     15 Nov 2016 Douglas Volz  Added category information
--- |  1.5     27 Jan 2020 Douglas Volz  Added Org Code and Operating Unit parameters
--- |  1.6     27 Apr 2020 Douglas Volz  Changed to multi-language views for the item
--- |                                    master, inventory orgs and operating units
--- |  1.7     21 Jun 2020 Douglas Volz  Changed to multi-language views for item 
--- |                                    status and UOM
--- |  1.8     24 Sep 2020 Douglas Volz  Added List Price and Market Price to report
--- |  1.9     29 Jan 2021 Douglas Volz  Added item master dates and Inactive Items parameter
--- |  1.10    22 Nov 2023 Douglas Volz  Add item master std lot size, costing lot size,
--- |                                    remove tabs and add org access controls
--- |  1.11    05 Dec 2023 Douglas Volz  Added G/L and Operating Unit security restrictions.
--- |  1.12    30 Jun 2024 Douglas Volz  Reinstalled missing parameter for Item Status to Exclude
--- |                                    and commented out G/L and Operating Unit security restrictions.
--- +=============================================================================+*/
--- Excel Examle Output: https://www.enginatics.com/example/cac-item-cost-summary/
+-- Description: Report to show item costs in any cost type. For one or more inventory organizations.
+-- Parameters:
+-- ===========
+-- Cost Type: enter the cost type(s) you wish to report (mandatory).
+-- Include Uncosted Items: enter Yes to include non-costed items, enter No to exclude them (mandatory).
+-- Item Status to Exclude: enter the item status you wish to exclude, defaulted to Inactive (optional).
+-- Category Set 1: the first item category set to report, typically the Cost or Product Line Category Set (optional).
+-- Category Set 2: the second item category set to report, typically the Inventory Category Set (optional).
+-- Item Number: enter the item numbers you wish to report (optional).
+-- Organization Code: enter the specific inventory organization(s) you wish to report (optional).
+-- Operating Unit: enter the specific operating unit(s) you wish to report (optional).
+-- Ledger: enter the specific ledger(s) you wish to report (optional).
+-- / +=============================================================================+
+-- -- | Copyright 2009-2024 Douglas Volz Consulting, Inc.
+-- -- | All rights reserved.
+-- -- | Permission to use this code is granted provided the original author is
+-- -- | acknowledged. No warranties, express or otherwise is included in this
+-- -- | permission.
+-- -- +=============================================================================+
+-- -- |
+-- -- | Original Author: Douglas Volz (doug@volzconsulting.com)
+-- -- |
+-- -- | Description:
+-- -- | Report to show item costs in any cost type
+-- -- |
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== ============== =========================================
+-- -- | 1.0 06 Oct 2009 Douglas Volz Initial Coding
+-- -- | 1.1 16 Mar 2010 Douglas Volz Updated with Make/Buy flags
+-- -- | 1.2 08 Nov 2010 Douglas Volz Updated with additional columns and parameters
+-- -- | 1.3 07 Feb 2011 Douglas Volz Added COGS and Revenue default accounts
+-- -- | 1.4 15 Nov 2016 Douglas Volz Added category information
+-- -- | 1.5 27 Jan 2020 Douglas Volz Added Org Code and Operating Unit parameters
+-- -- | 1.6 27 Apr 2020 Douglas Volz Changed to multi-language views for the item
+-- -- | master, inventory orgs and operating units
+-- -- | 1.7 21 Jun 2020 Douglas Volz Changed to multi-language views for item
+-- -- | status and UOM
+-- -- | 1.8 24 Sep 2020 Douglas Volz Added List Price and Market Price to report
+-- -- | 1.9 29 Jan 2021 Douglas Volz Added item master dates and Inactive Items parameter
+-- -- | 1.10 22 Nov 2023 Douglas Volz Add item master std lot size, costing lot size,
+-- -- | remove tabs and add org access controls
+-- -- | 1.11 05 Dec 2023 Douglas Volz Added G/L and Operating Unit security restrictions.
+-- -- | 1.12 30 Jun 2024 Douglas Volz Reinstalled missing parameter for Item Status to Exclude
+-- -- | and commented out G/L and Operating Unit security restrictions.
+-- -- +=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-item-cost-summary/
 -- Library Link: https://www.enginatics.com/reports/cac-item-cost-summary/
 -- Run Report: https://demo.enginatics.com/
 

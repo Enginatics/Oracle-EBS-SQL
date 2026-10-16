@@ -1,33 +1,29 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PA Project Asset Upload
 -- Description: PA Project Asset Upload
-======================
-Create, update, or delete project assets and their task assignments for Oracle Projects capital projects, using the public API pa_project_assets_pub.
-
-Supported Actions:
-- Create / Update project asset (ESTIMATED or AS-BUILT types only — RETIREMENT_ADJUSTMENT is excluded)
-- Add / Delete asset-to-task assignment (top-task rollup or leaf-task)
-
-Row Structure (bundled parent-child):
-- One row per (asset, assignment) pair
-- Leave Assignment Task Number blank on a row to create/update just the asset header with no assignment
-- For multiple assignments on the same asset, repeat the asset columns on subsequent rows with different Task Numbers
-
-Report Parameters:
-- Upload Mode: 'Create' or 'Create, Update'
-- Operating Unit: filters Project LOV
-- Project Number: the capital project (pa_projects_all.segment1) to which uploaded assets belong
-
-Notes:
-- Capitalization and Reversal are NOT supported via this upload — use the Capital Assets form for those workflow actions
-- The Depreciation Expense Account KFF is resolved against the chart of accounts of the project's ledger
-- Asset-to-task assignments do not support an update API — to modify an existing assignment DFF, delete and re-add
--- Excel Examle Output: https://www.enginatics.com/example/pa-project-asset-upload/
+-- ======================
+-- Create, update, or delete project assets and their task assignments for Oracle Projects capital projects, using the public API paprojectassetspub.
+-- Supported Actions:
+-- - Create / Update project asset (ESTIMATED or AS-BUILT types only — RETIREMENTADJUSTMENT is excluded)
+-- - Add / Delete asset-to-task assignment (top-task rollup or leaf-task)
+-- Row Structure (bundled parent-child):
+-- - One row per (asset, assignment) pair
+-- - Leave Assignment Task Number blank on a row to create/update just the asset header with no assignment
+-- - For multiple assignments on the same asset, repeat the asset columns on subsequent rows with different Task Numbers
+-- Report Parameters:
+-- - Upload Mode: 'Create' or 'Create, Update'
+-- - Operating Unit: filters Project LOV
+-- - Project Number: the capital project (paprojectsall.segment1) to which uploaded assets belong
+-- Notes:
+-- - Capitalization and Reversal are NOT supported via this upload — use the Capital Assets form for those workflow actions
+-- - The Depreciation Expense Account KFF is resolved against the chart of accounts of the project's ledger
+-- - Asset-to-task assignments do not support an update API — to modify an existing assignment DFF, delete and re-add
+-- Excel Example Output: https://www.enginatics.com/example/pa-project-asset-upload/
 -- Library Link: https://www.enginatics.com/reports/pa-project-asset-upload/
 -- Run Report: https://demo.enginatics.com/
 

@@ -1,18 +1,18 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: FA CIP Assets and Invoices
 -- Description: CIP (Construction in Progress) assets with invoice details.
-Shows asset master information (category, location, tag, cost) alongside AP invoice lines that feed into CIP.
-Run as-is for invoice-level detail, 
-or pivot/group in Excel for an asset-level summary - Use template Asset Summary
-Covers the use cases of:
-- Monthly CIP Report - Asset Details (CapEx)
-- Monthly CIP Report - CIP Invoice Activity
--- Excel Examle Output: https://www.enginatics.com/example/fa-cip-assets-and-invoices/
+-- Shows asset master information (category, location, tag, cost) alongside AP invoice lines that feed into CIP.
+-- Run as-is for invoice-level detail,
+-- or pivot/group in Excel for an asset-level summary - Use template Asset Summary
+-- Covers the use cases of:
+-- - Monthly CIP Report - Asset Details (CapEx)
+-- - Monthly CIP Report - CIP Invoice Activity
+-- Excel Example Output: https://www.enginatics.com/example/fa-cip-assets-and-invoices/
 -- Library Link: https://www.enginatics.com/reports/fa-cip-assets-and-invoices/
 -- Run Report: https://demo.enginatics.com/
 

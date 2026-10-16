@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PO Printed Planning Schedule
--- Description: Migration of the Oracle standard concurrent program Printed Planning Schedule (XML) (CHVPRSCH_XML) from Supplier Scheduling. Shows, for each confirmed planning/shipping schedule, the time-phased demand grid sent to the supplier - one row per schedule, item and time bucket - with forecast, released, total and cumulative (CUM+) quantities per bucket, plus the schedule header, item, CUM and authorization context. The horizontal schedule grid (chv_horizontal_schedules, up to 60 bucket columns) is un-pivoted into rows for analysis in Excel.
--- Excel Examle Output: https://www.enginatics.com/example/po-printed-planning-schedule/
+-- Description: Migration of the Oracle standard concurrent program Printed Planning Schedule (XML) (CHVPRSCHXML) from Supplier Scheduling. Shows, for each confirmed planning/shipping schedule, the time-phased demand grid sent to the supplier - one row per schedule, item and time bucket - with forecast, released, total and cumulative (CUM+) quantities per bucket, plus the schedule header, item, CUM and authorization context. The horizontal schedule grid (chvhorizontalschedules, up to 60 bucket columns) is un-pivoted into rows for analysis in Excel.
+-- Excel Example Output: https://www.enginatics.com/example/po-printed-planning-schedule/
 -- Library Link: https://www.enginatics.com/reports/po-printed-planning-schedule/
 -- Run Report: https://demo.enginatics.com/
 

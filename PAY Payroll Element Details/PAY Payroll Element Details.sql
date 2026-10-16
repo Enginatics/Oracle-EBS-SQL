@@ -1,13 +1,13 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PAY Payroll Element Details
 -- Description: Master data report showing HR payroll element details.
-Elements are the units used to build all the earnings, deductions and benefits that companies can give to employees.
--- Excel Examle Output: https://www.enginatics.com/example/pay-payroll-element-details/
+-- Elements are the units used to build all the earnings, deductions and benefits that companies can give to employees.
+-- Excel Example Output: https://www.enginatics.com/example/pay-payroll-element-details/
 -- Library Link: https://www.enginatics.com/reports/pay-payroll-element-details/
 -- Run Report: https://demo.enginatics.com/
 

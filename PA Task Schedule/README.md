@@ -1,40 +1,49 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'PA Task Schedule | Oracle EBS SQL Report'
 description: 'Summary project report showing operating unit, project, task, scheduled start date, scheduled finish date, created by, and last updated by.'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Task, Schedule, hr_all_organization_units, pa_projects_all, pa_proj_elements'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Projects, Enginatics, Task, Schedule, hr_all_organization_units, pa_projects_all, pa_proj_elements'
 permalink: /PA%20Task%20Schedule/
+report_name: 'PA Task Schedule'
+report_web_name: pa-task-schedule
+module: 'Projects'
+module_url: /modules/projects/
 ---
 
 # PA Task Schedule – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/pa-task-schedule/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/pa-task-schedule/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-task-schedule) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-task-schedule).
+**Oracle EBS module:** [Projects](/modules/projects/ "Oracle EBS Projects reports") · [all Projects reports](/modules/projects/)  
 
 ## Overview
 Summary project report showing operating unit, project, task, scheduled start date, scheduled finish date, created by, and last updated by.
+
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-task-schedule) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 
 ## Report Parameters
 Operating Unit, Project
 
 ## Oracle EBS Tables Used
-[hr_all_organization_units](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units), [pa_projects_all](https://www.enginatics.com/library/?pg=1&find=pa_projects_all), [pa_proj_elements](https://www.enginatics.com/library/?pg=1&find=pa_proj_elements), [pa_proj_elem_ver_schedule](https://www.enginatics.com/library/?pg=1&find=pa_proj_elem_ver_schedule)
+[hr_all_organization_units](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-task-schedule), [pa_projects_all](https://www.enginatics.com/library/?pg=1&find=pa_projects_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-task-schedule), [pa_proj_elements](https://www.enginatics.com/library/?pg=1&find=pa_proj_elements&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-task-schedule), [pa_proj_elem_ver_schedule](https://www.enginatics.com/library/?pg=1&find=pa_proj_elem_ver_schedule&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-task-schedule)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-task-schedule)
 
 ## Related Reports
 [PA Event Upload](/PA%20Event%20Upload/ "PA Event Upload Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/PA%20Task%20Schedule/PA%20Task%20Schedule.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-task-schedule) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [PA Task Schedule 04-Apr-2026 023352.xlsx](https://www.enginatics.com/example/pa-task-schedule/) |
-| Blitz Report™ XML Import | [PA_Task_Schedule.xml](https://www.enginatics.com/xml/pa-task-schedule/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/pa-task-schedule/](https://www.enginatics.com/reports/pa-task-schedule/) |
+| Excel Example Output | [PA Task Schedule 04-Apr-2026 023352.xlsx](https://www.enginatics.com/example/pa-task-schedule/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-task-schedule) |
+| Blitz Report™ XML Import | [PA_Task_Schedule.xml](https://www.enginatics.com/xml/pa-task-schedule/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-task-schedule) |
+| SQL Source | [PA Task Schedule.sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/PA%20Task%20Schedule/PA%20Task%20Schedule.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/pa-task-schedule/](https://www.enginatics.com/reports/pa-task-schedule/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-task-schedule) |
 
 ## Case Study & Technical Analysis: PA Task Schedule Report
 
@@ -97,18 +106,17 @@ As a report focused on master data (task schedules), it is designed for rapid pe
 **3. Is it possible to see the duration of each task in this report?**
    The report provides both a scheduled start and scheduled finish date. Users can easily calculate the duration in days (or other units) by exporting the report to Excel and applying a simple formula. This allows for quick analysis of task length and resource allocation.
 
-
 ---
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-task-schedule)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-task-schedule)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-task-schedule)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-task-schedule)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-task-schedule)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-task-schedule)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-task-schedule)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

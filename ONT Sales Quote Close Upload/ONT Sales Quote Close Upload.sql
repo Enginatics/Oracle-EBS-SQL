@@ -1,20 +1,16 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: ONT Sales Quote Close Upload
 -- Description: Bulk closes open Oracle Order Management sales quotes (documents in the Negotiation transaction phase) - useful for cleaning up large volumes of old draft quotes.
-
-Download the open quotes, keep the rows you want to close, set a Close Reason, and upload. Each quote is driven to the Lost terminal (status Lost, no longer open) through the standard negotiation workflow, and the reason is recorded against the quote.
-
-Quotes are identified by Quote Number and Operating Unit, so you can also paste those two values from an external list instead of downloading. Only open quotes are closed - an order number or an already-closed quote is reported back and left untouched.
-
-Cancelled and Closed are order (fulfillment) statuses and do not apply to a quote - Lost is the correct terminal for a quote you are no longer pursuing. To keep win/loss reporting clean, add a custom OFFER_LOST lookup value (for example Obsolete) and select it as the Close Reason, so data-cleanup closures are distinguishable from genuine competitive losses.
-
-Use the Created Before parameter to target quotes older than a given date, and Quote Number to close a single quote.
--- Excel Examle Output: https://www.enginatics.com/example/ont-sales-quote-close-upload/
+-- Download the open quotes, keep the rows you want to close, set a Close Reason, and upload. Each quote is driven to the Lost terminal (status Lost, no longer open) through the standard negotiation workflow, and the reason is recorded against the quote.
+-- Quotes are identified by Quote Number and Operating Unit, so you can also paste those two values from an external list instead of downloading. Only open quotes are closed - an order number or an already-closed quote is reported back and left untouched.
+-- Cancelled and Closed are order (fulfillment) statuses and do not apply to a quote - Lost is the correct terminal for a quote you are no longer pursuing. To keep win/loss reporting clean, add a custom OFFERLOST lookup value (for example Obsolete) and select it as the Close Reason, so data-cleanup closures are distinguishable from genuine competitive losses.
+-- Use the Created Before parameter to target quotes older than a given date, and Quote Number to close a single quote.
+-- Excel Example Output: https://www.enginatics.com/example/ont-sales-quote-close-upload/
 -- Library Link: https://www.enginatics.com/reports/ont-sales-quote-close-upload/
 -- Run Report: https://demo.enginatics.com/
 

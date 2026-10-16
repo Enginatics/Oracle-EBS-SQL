@@ -1,20 +1,16 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: DIS Workbook Conversion Selection
 -- Description: Lists the Discoverer workbook xmls uploaded to Blitz Report (Setup>Tools>Import>XML Upload), enriched with information supporting the decision which workbooks to convert: latest run date, run count and distinct users from the end user layer's usage statistics, last update and creation date from the workbook definition, owner, description and sheet count.
-
-Set Convert Workbook to Yes for each workbook that should be converted to Blitz Report and upload the file. The selection is stored on the staged workbook xml, and the 'Blitz Report Discoverer Import' concurrent program converts the selected workbooks.
-
-With the Submit Import parameter set to Yes, the upload submits the 'Blitz Report Discoverer Import' itself after storing the selection, waits for it to complete, and reports per workbook how many Blitz reports and templates exist for its worksheets. A workbook whose worksheet folder sets could not all be converted is reported as an error row.
-
-The usage statistics are informational only: workbooks without any usage history are listed as well, with an empty run count and last run date.
-
-The migration process is described in the following link: <a href="https://www.enginatics.com/blog/discoverer-replacement-with-blitz-report/" rel="nofollow" target="_blank">https://www.enginatics.com/blog/discoverer-replacement-with-blitz-report/</a>
--- Excel Examle Output: https://www.enginatics.com/example/dis-workbook-conversion-selection/
+-- Set Convert Workbook to Yes for each workbook that should be converted to Blitz Report and upload the file. The selection is stored on the staged workbook xml, and the 'Blitz Report Discoverer Import' concurrent program converts the selected workbooks.
+-- With the Submit Import parameter set to Yes, the upload submits the 'Blitz Report Discoverer Import' itself after storing the selection, waits for it to complete, and reports per workbook how many Blitz reports and templates exist for its worksheets. A workbook whose worksheet folder sets could not all be converted is reported as an error row.
+-- The usage statistics are informational only: workbooks without any usage history are listed as well, with an empty run count and last run date.
+-- The migration process is described in the following link: https://www.enginatics.com/blog/discoverer-replacement-with-blitz-report/
+-- Excel Example Output: https://www.enginatics.com/example/dis-workbook-conversion-selection/
 -- Library Link: https://www.enginatics.com/reports/dis-workbook-conversion-selection/
 -- Run Report: https://demo.enginatics.com/
 

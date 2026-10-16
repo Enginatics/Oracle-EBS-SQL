@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: WF Business Events and Subscriptions
 -- Description: Workflow business event and subscription details
--- Excel Examle Output: https://www.enginatics.com/example/wf-business-events-and-subscriptions/
+-- Excel Example Output: https://www.enginatics.com/example/wf-business-events-and-subscriptions/
 -- Library Link: https://www.enginatics.com/reports/wf-business-events-and-subscriptions/
 -- Run Report: https://demo.enginatics.com/
 

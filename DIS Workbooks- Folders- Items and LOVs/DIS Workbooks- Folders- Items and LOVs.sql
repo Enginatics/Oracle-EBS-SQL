@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: DIS Workbooks, Folders, Items and LOVs
--- Description: Discoverer workbooks, their owners, folders, items and item class LOVs, derived from dependency table eul5_elem_xrefs.
--- Excel Examle Output: https://www.enginatics.com/example/dis-workbooks-folders-items-and-lovs/
+-- Description: Discoverer workbooks, their owners, folders, items and item class LOVs, derived from dependency table eul5elemxrefs.
+-- Excel Example Output: https://www.enginatics.com/example/dis-workbooks-folders-items-and-lovs/
 -- Library Link: https://www.enginatics.com/reports/dis-workbooks-folders-items-and-lovs/
 -- Run Report: https://demo.enginatics.com/
 

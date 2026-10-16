@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CST Detailed Item Cost
 -- Description: Detail report that lists each item and the associated costs to be recognized as part of total unit cost of producing the item.
--- Excel Examle Output: https://www.enginatics.com/example/cst-detailed-item-cost/
+-- Excel Example Output: https://www.enginatics.com/example/cst-detailed-item-cost/
 -- Library Link: https://www.enginatics.com/reports/cst-detailed-item-cost/
 -- Run Report: https://demo.enginatics.com/
 

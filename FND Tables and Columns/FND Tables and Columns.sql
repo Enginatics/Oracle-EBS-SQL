@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: FND Tables and Columns
 -- Description: Registered FND tables, columns, primary keys and their flexfields
--- Excel Examle Output: https://www.enginatics.com/example/fnd-tables-and-columns/
+-- Excel Example Output: https://www.enginatics.com/example/fnd-tables-and-columns/
 -- Library Link: https://www.enginatics.com/reports/fnd-tables-and-columns/
 -- Run Report: https://demo.enginatics.com/
 

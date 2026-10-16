@@ -1,49 +1,37 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CST COGS Revenue Matching
 -- Description: Imported from Concurrent Program
-Application: Bills of Material
-Source: COGS Revenue Matching Report
-Short Name: CSTRCMRX
-
-The COGS/Revenue Matching Report displays earned and unearned (deferred) revenue, and cost of goods sold amounts for sales orders issues specified in the report's run-time parameters.
-The report displays shipped sales order and associated sales order lines and shows the accounts where the earned and deferred COGS were charged.
-
-The report is based on the Revenue and COGS Matching functionality delivered in Oracle EBS R12. Please refer to the following documentation regarding this functionality:
-- Oracle Cost Management User Guide, Section: Revenue and COGS Matching
-- MOS Document 1060202.1 Understanding COGS and DCOGS Recognition Accounting
-
-Revenue / COGS Recognition Process Flow
-=======================================
-When you ship confirm one or more order lines in Oracle Order Management and then run the applicable Cost Management cost and accounting processes, the cost of goods sold associated with the sales order line is immediately debited to a Deferred COGS account pending the invoicing and recognition of the sales order revenue in Oracle Receivables.
-
-When Oracle Receivables recognizes all or part of the sales revenue associated with a sales order line, you run a cost process that calculates the percentage of total billed revenue recognized. Oracle Inventory then creates a cost recognition transaction that adjusts the Deferred COGS and regular COGS amount for the order line. The proportion of total shipment cost that is recognized as COGS will always match the proportion of total billable quantity that is recognized as revenue.
-
-Revenue / COGS Recognition Concurrent Processes
-================================================
-It is recommended the Revenue and COGS concurrent processes be run in the following order:
-
-Run the AR Concurrent Processes first:
-
-- Autoinvoice Master Program.  Run autoinvoice to generate the invoice transactions.
-- Revenue Recognition. Run the Revenue Recognition Master Program to generate the AR revenue recognition
-
-Then the COGS Concurrent Processes:
-
-- Record Order Management Transactions
- The Record Order Management Transactions concurrent process picks up and costs all uncosted sales order issue and RMA return transactions and creates a record for each new order line in the costing COGS recognition matching table. This process is not for Perpetual Discrete Costing (Standard, Average, FIFO). In Discrete Costing, the cost processor selects and costs the uncosted sales order issues and inserts them into the COGS matching table
-
-- Collect Revenue Recognition Information
- The Collect Revenue Recognition Information concurrent process calls an Oracle Receivables API to retrieve the latest revenue recognition percentage of all invoiced sales order lines in Oracle receivables for a specific ledger and with activity dates within a user-specified date range. This process must be run before the Generate COGS recognition Event concurrent process.
-
-- Generate COGS Recognition Events
- The Generate COGS Recognition Events concurrent request compares the COGS recognition percentage for each sales order line and accounting period combination to the current earned revenue percentage. When the compared percentages are different, the process raises a COGS recognition event and creates a COGS recognition transaction in Oracle Inventory that adjusts the ratio of earned and deferred COGS to match that of earned and deferred revenue. You must run this process after completion of the Collect Revenue Recognition Information concurrent process.
-
--- Excel Examle Output: https://www.enginatics.com/example/cst-cogs-revenue-matching/
+-- Application: Bills of Material
+-- Source: COGS Revenue Matching Report
+-- Short Name: CSTRCMRX
+-- The COGS/Revenue Matching Report displays earned and unearned (deferred) revenue, and cost of goods sold amounts for sales orders issues specified in the report's run-time parameters.
+-- The report displays shipped sales order and associated sales order lines and shows the accounts where the earned and deferred COGS were charged.
+-- The report is based on the Revenue and COGS Matching functionality delivered in Oracle EBS R12. Please refer to the following documentation regarding this functionality:
+-- - Oracle Cost Management User Guide, Section: Revenue and COGS Matching
+-- - MOS Document 1060202.1 Understanding COGS and DCOGS Recognition Accounting
+-- Revenue / COGS Recognition Process Flow
+-- =======================================
+-- When you ship confirm one or more order lines in Oracle Order Management and then run the applicable Cost Management cost and accounting processes, the cost of goods sold associated with the sales order line is immediately debited to a Deferred COGS account pending the invoicing and recognition of the sales order revenue in Oracle Receivables.
+-- When Oracle Receivables recognizes all or part of the sales revenue associated with a sales order line, you run a cost process that calculates the percentage of total billed revenue recognized. Oracle Inventory then creates a cost recognition transaction that adjusts the Deferred COGS and regular COGS amount for the order line. The proportion of total shipment cost that is recognized as COGS will always match the proportion of total billable quantity that is recognized as revenue.
+-- Revenue / COGS Recognition Concurrent Processes
+-- ================================================
+-- It is recommended the Revenue and COGS concurrent processes be run in the following order:
+-- Run the AR Concurrent Processes first:
+-- - Autoinvoice Master Program. Run autoinvoice to generate the invoice transactions.
+-- - Revenue Recognition. Run the Revenue Recognition Master Program to generate the AR revenue recognition
+-- Then the COGS Concurrent Processes:
+-- - Record Order Management Transactions
+-- The Record Order Management Transactions concurrent process picks up and costs all uncosted sales order issue and RMA return transactions and creates a record for each new order line in the costing COGS recognition matching table. This process is not for Perpetual Discrete Costing (Standard, Average, FIFO). In Discrete Costing, the cost processor selects and costs the uncosted sales order issues and inserts them into the COGS matching table
+-- - Collect Revenue Recognition Information
+-- The Collect Revenue Recognition Information concurrent process calls an Oracle Receivables API to retrieve the latest revenue recognition percentage of all invoiced sales order lines in Oracle receivables for a specific ledger and with activity dates within a user-specified date range. This process must be run before the Generate COGS recognition Event concurrent process.
+-- - Generate COGS Recognition Events
+-- The Generate COGS Recognition Events concurrent request compares the COGS recognition percentage for each sales order line and accounting period combination to the current earned revenue percentage. When the compared percentages are different, the process raises a COGS recognition event and creates a COGS recognition transaction in Oracle Inventory that adjusts the ratio of earned and deferred COGS to match that of earned and deferred revenue. You must run this process after completion of the Collect Revenue Recognition Information concurrent process.
+-- Excel Example Output: https://www.enginatics.com/example/cst-cogs-revenue-matching/
 -- Library Link: https://www.enginatics.com/reports/cst-cogs-revenue-matching/
 -- Run Report: https://demo.enginatics.com/
 

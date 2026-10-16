@@ -1,13 +1,14 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: ONT Order Upload
 -- Description: Upload to Create, Update, Book and Cancel Sales Orders in Oracle Order Management.
-Supports creating new orders, updating existing orders, adding new lines to existing orders, booking orders and cancelling orders.
--- Excel Examle Output: https://www.enginatics.com/example/ont-order-upload/
+-- Supports creating new orders, updating existing orders, adding new lines to existing orders, splitting lines, booking orders and cancelling orders.
+-- To split a line, add a row for the order with the line to split in Split From Line and the new shipment's quantity in Ordered Quantity. The original line is reduced by that quantity unless its own row sets its new quantity. As in the Split Line window, the new shipment copies all other values from the original line, only Request Date, Warehouse and Ship To can differ.
+-- Excel Example Output: https://www.enginatics.com/example/ont-order-upload/
 -- Library Link: https://www.enginatics.com/reports/ont-order-upload/
 -- Run Report: https://demo.enginatics.com/
 
@@ -17,11 +18,12 @@ case when :order_action is not null then xxen_upload.status_meaning(xxen_upload.
 case when :order_action is not null then xxen_util.description('U_EXCEL_MSG_VALIDATION_PENDING','XXEN_REPORT_TRANSLATIONS',0) end message_,
 null modified_columns_,
 to_number(null) request_id_,
-:debug_level debug_level,
 haouv.name operating_unit,
 -- Header Main Tab - Left Side
 hp.party_name customer,
 hca.account_number customer_number,
+(select ocv.name from oe_contacts_v ocv where ooha.sold_to_contact_id=ocv.contact_id) customer_contact,
+(select hoc.contact_number from hz_cust_account_roles hcar, hz_relationships hr, hz_org_contacts hoc where ooha.sold_to_contact_id=hcar.cust_account_role_id and hcar.party_id=hr.party_id and hr.directional_flag='F' and hr.relationship_id=hoc.party_relationship_id) customer_contact_number,
 nvl(oola.cust_po_number,ooha.cust_po_number) customer_po,
 (select hcsua.location from hz_cust_site_uses_all hcsua where hcsua.site_use_id=ooha.ship_to_org_id) header_ship_to,
 (select hcsua.location from hz_cust_site_uses_all hcsua where hcsua.site_use_id=ooha.invoice_to_org_id) header_bill_to,
@@ -73,6 +75,7 @@ decode(ooha.transaction_phase_code,'N','Quote','Order') type,
 xxen_util.meaning(ooha.order_category_code,'ORDER_CATEGORY',660) order_category,
 -- Line Items Main
 rtrim(oola.line_number||'.'||oola.shipment_number||'.'||oola.option_number||'.'||oola.component_number||'.'||oola.service_number,'.') line,
+to_char(null) split_from_line,
 ottt2.name line_type,
 msiv.concatenated_segments item,
 msiv.description,
@@ -90,15 +93,16 @@ xxen_util.meaning(oola.calculate_price_flag,'CALCULATE_PRICE_FLAG',660) calculat
 to_char(null) line_change_reason,
 to_char(null) line_change_comments,
 -- Line Discount
-(select qplhv.name from qp_list_headers_vl qplhv, oe_price_adjustments opa where opa.line_id=oola.line_id and opa.list_line_type_code='DIS' and opa.applied_flag='Y' and opa.list_header_id=qplhv.list_header_id and rownum=1) discount_modifier,
-(select opa.list_line_no from oe_price_adjustments opa where opa.line_id=oola.line_id and opa.list_line_type_code='DIS' and opa.applied_flag='Y' and rownum=1) discount_line,
-(select xxen_util.meaning(opa.arithmetic_operator,'ARITHMETIC_OPERATOR',661) from oe_price_adjustments opa where opa.line_id=oola.line_id and opa.list_line_type_code='DIS' and opa.applied_flag='Y' and rownum=1) discount_type,
-(select opa.operand from oe_price_adjustments opa where opa.line_id=oola.line_id and opa.list_line_type_code='DIS' and opa.applied_flag='Y' and rownum=1) discount_value,
+(select qplhv.name from qp_list_headers_vl qplhv, oe_price_adjustments opa where opa.line_id=oola.line_id and opa.list_line_type_code in ('DIS','SUR') and opa.applied_flag='Y' and opa.list_header_id=qplhv.list_header_id and rownum=1) discount_modifier,
+(select opa.list_line_no from oe_price_adjustments opa where opa.line_id=oola.line_id and opa.list_line_type_code in ('DIS','SUR') and opa.applied_flag='Y' and rownum=1) discount_line,
+(select xxen_util.meaning(opa.arithmetic_operator,'ARITHMETIC_OPERATOR',661) from oe_price_adjustments opa where opa.line_id=oola.line_id and opa.list_line_type_code in ('DIS','SUR') and opa.applied_flag='Y' and rownum=1) discount_type,
+(select opa.operand from oe_price_adjustments opa where opa.line_id=oola.line_id and opa.list_line_type_code in ('DIS','SUR') and opa.applied_flag='Y' and rownum=1) discount_value,
 -- Line Shipping Tab
 (select mp.organization_code from mtl_parameters mp where mp.organization_id=oola.ship_from_org_id) line_warehouse,
 xxen_util.meaning(oola.source_type_code,'SOURCE_TYPE',660) line_source_type,
 xxen_util.client_time(oola.request_date) line_request_date,
 xxen_util.client_time(oola.schedule_ship_date) schedule_ship_date,
+xxen_util.yes(oola.override_atp_date_code) override_atp,
 xxen_util.client_time(oola.promise_date) promise_date,
 -- Line Addresses Tab
 (select hcsua.location from hz_cust_site_uses_all hcsua where hcsua.site_use_id=oola.ship_to_org_id) line_ship_to,
@@ -205,6 +209,7 @@ xxen_util.user_name(oola.created_by) line_created_by,
 xxen_util.client_time(oola.creation_date) line_creation_date,
 xxen_util.user_name(oola.last_updated_by) line_last_updated_by,
 xxen_util.client_time(oola.last_update_date) line_last_update_date,
+:debug_level debug_level,
 --Id columns
 ooha.header_id,
 oola.line_id,

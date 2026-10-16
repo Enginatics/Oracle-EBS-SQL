@@ -1,60 +1,59 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Where Used by Cost Type
--- Description: Report to download the single-level bills of materials and related component information, by organization by cost type.  And while exploding the bills of material you can also compare with two cost types, as well as limit the report to only assemblies and component items with a zero item cost.
-
-/* +=============================================================================+
--- |  Copyright 2013 - 2019 Douglas Volz Consulting, Inc.                        |
--- |  All rights reserved.                                                       |
--- |  Permission to use this code is granted provided the original author is     |
--- |  acknowledged.  No warranties, express or otherwise is included in this     |
--- |  permission.                                                                |
--- +=============================================================================+
--- |
--- |  Original Author: Douglas Volz (doug@volzconsulting.com)
--- |
--- |  Program Name:  xxx_where_used_by_cost_type_rept.sql
--- |
--- |  Parameters:
--- |  p_cost_type              -- Cost type costs to report, enter a cost type name.
--- |                              Required.
--- |  p_category_set1          -- The first item category set to report, typically the
--- |                              Cost or Product Line Category Set
--- |  p_category_set2          -- The second item category set to report, typically the
--- |                              Inventory Category Set
--- |  p_assembly_number        -- Enter the specific assembly number you wish to report (optional)
--- |  p_component_number       -- Enter the specific component number you wish to report (optional)
--- |  p_only_zero_costs        -- Show assemblies and components with a zero cost (optional)
--- |  p_include_expense_items  -- Yes/No flag to include or not include non-asset (not valued)
--- |  p_include_uncosted_items -- Yes/No flag to include or not costing not enabled items (optional)
--- |  p_org_code               -- Specific inventory organization you wish to report (optional)
--- |  p_operating_unit         -- Operating Unit you wish to report, leave blank for all
--- |                              operating units (optional) 
--- |  p_ledger                 -- general ledger you wish to report, leave blank for all
--- |                              ledgers (optional)
--- | 
--- |  Version Modified on Modified  by   Description
--- |  ======= =========== ============== =========================================
--- |  1.0     08-Jun-2017 Douglas Volz   Initial Coding based on xxx_sl_bom_extract.sql
--- |  1.1     05-Nov-2018 Douglas Volz   Modified to client's item categories, don't
--- |                                     report obsolete items and remove location info.
--- |  1.2     03 Sep 2019 Douglas Volz   Add Ledger, Operating Unit, Item Type, Status
--- |                                     and item categories for cost and inventory.
--- |  1.3     27 Jan 2020 Douglas Volz   Added Operating Unit and Ledger parameters.
--- |  1.4     13 Jul 2020 Douglas Volz   Added item costs, parameters for components
--- |                                     and assemblies at a zero item cost, and
--- |                                     changed to multi-language views for translation.
--- |  1.5     24 Aug 2020 Douglas Volz   Component WIP Supply Type not always populated,
--- |                                     needed to add an outer join on the lookup code.
--- |  1.6     01 Sep 2020 Douglas Volz   Revision to avoid getting other cost type
--- |                                     entries for non-asset and uncosted items.
--- |  1.7     14 Sep 2020 Douglas Volz   Revision for faster queries by item number.
--- +=============================================================================+*/
--- Excel Examle Output: https://www.enginatics.com/example/cac-where-used-by-cost-type/
+-- Description: Report to download the single-level bills of materials and related component information, by organization by cost type. And while exploding the bills of material you can also compare with two cost types, as well as limit the report to only assemblies and component items with a zero item cost.
+-- / +=============================================================================+
+-- -- | Copyright 2013 - 2019 Douglas Volz Consulting, Inc. |
+-- -- | All rights reserved. |
+-- -- | Permission to use this code is granted provided the original author is |
+-- -- | acknowledged. No warranties, express or otherwise is included in this |
+-- -- | permission. |
+-- -- +=============================================================================+
+-- -- |
+-- -- | Original Author: Douglas Volz (doug@volzconsulting.com)
+-- -- |
+-- -- | Program Name: xxxwhereusedbycosttyperept.sql
+-- -- |
+-- -- | Parameters:
+-- -- | pcosttype -- Cost type costs to report, enter a cost type name.
+-- -- | Required.
+-- -- | pcategoryset1 -- The first item category set to report, typically the
+-- -- | Cost or Product Line Category Set
+-- -- | pcategoryset2 -- The second item category set to report, typically the
+-- -- | Inventory Category Set
+-- -- | passemblynumber -- Enter the specific assembly number you wish to report (optional)
+-- -- | pcomponentnumber -- Enter the specific component number you wish to report (optional)
+-- -- | ponlyzerocosts -- Show assemblies and components with a zero cost (optional)
+-- -- | pincludeexpenseitems -- Yes/No flag to include or not include non-asset (not valued)
+-- -- | pincludeuncosteditems -- Yes/No flag to include or not costing not enabled items (optional)
+-- -- | porgcode -- Specific inventory organization you wish to report (optional)
+-- -- | poperatingunit -- Operating Unit you wish to report, leave blank for all
+-- -- | operating units (optional)
+-- -- | pledger -- general ledger you wish to report, leave blank for all
+-- -- | ledgers (optional)
+-- -- |
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== ============== =========================================
+-- -- | 1.0 08-Jun-2017 Douglas Volz Initial Coding based on xxxslbomextract.sql
+-- -- | 1.1 05-Nov-2018 Douglas Volz Modified to client's item categories, don't
+-- -- | report obsolete items and remove location info.
+-- -- | 1.2 03 Sep 2019 Douglas Volz Add Ledger, Operating Unit, Item Type, Status
+-- -- | and item categories for cost and inventory.
+-- -- | 1.3 27 Jan 2020 Douglas Volz Added Operating Unit and Ledger parameters.
+-- -- | 1.4 13 Jul 2020 Douglas Volz Added item costs, parameters for components
+-- -- | and assemblies at a zero item cost, and
+-- -- | changed to multi-language views for translation.
+-- -- | 1.5 24 Aug 2020 Douglas Volz Component WIP Supply Type not always populated,
+-- -- | needed to add an outer join on the lookup code.
+-- -- | 1.6 01 Sep 2020 Douglas Volz Revision to avoid getting other cost type
+-- -- | entries for non-asset and uncosted items.
+-- -- | 1.7 14 Sep 2020 Douglas Volz Revision for faster queries by item number.
+-- -- +=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-where-used-by-cost-type/
 -- Library Link: https://www.enginatics.com/reports/cac-where-used-by-cost-type/
 -- Run Report: https://demo.enginatics.com/
 

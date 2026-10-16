@@ -1,14 +1,20 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'DBA AWR SQL Performance Summary | Oracle EBS SQL Report'
 description: 'Database SQL performance summary from the Automatic Workload Repository (AWR) tables to give an overview of top SQL load and performance issues. The…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, DBA, AWR, SQL, Performance, obj$, dba_hist_snapshot, dba_hist_sqlstat'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Database Administration, Enginatics, DBA, AWR, SQL, Performance, obj$, dba_hist_snapshot, wrh$_sqlstat'
 permalink: /DBA%20AWR%20SQL%20Performance%20Summary/
+report_name: 'DBA AWR SQL Performance Summary'
+report_web_name: dba-awr-sql-performance-summary
+module: 'Database Administration'
+module_url: /modules/database-administration/
 ---
 
 # DBA AWR SQL Performance Summary – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/dba-awr-sql-performance-summary/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/dba-awr-sql-performance-summary/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-awr-sql-performance-summary) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-awr-sql-performance-summary).
+**Oracle EBS module:** [Database Administration](/modules/database-administration/ "Oracle EBS Database Administration reports") · [all Database Administration reports](/modules/database-administration/)  
 
 ## Overview
 Database SQL performance summary from the Automatic Workload Repository (AWR) tables to give an overview of top SQL load and performance issues.
@@ -51,27 +57,31 @@ Columns:
 -Is Bind Sensitive: Indicates the DB's 'adaptive cursor sharing' feature. A value of 'Y' means, the DB might consider a different explainplan for different bind values. Note that for transactional SQLs such as the ones used by Oracle EBS, the execution path should usually not change. Thus, a value of 'Y' often indicates 'instable' SQLs or SQLs where the optimizer struggles to find the best execution path.
 -Is Bind Aware: 'adaptive cursor sharing' feature. A value of 'Y' means, the DB considers a differ
 
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-awr-sql-performance-summary) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
+
 ## Report Parameters
 SQL Text contains, Module Type, Module contains, SQL Id, Plan Hash Value, Show Bind Values, Schema, Package Name starts with, Date From, Date To, Instance Id, Request Id (Time Restriction), Daytime or Night hours, Day of Week, Level, Order By, Exclude PLSQL Code, Diagnostic Pack enabled, Container Data
 
 ## Oracle EBS Tables Used
-[obj$](https://www.enginatics.com/library/?pg=1&find=obj$), [dba_hist_snapshot](https://www.enginatics.com/library/?pg=1&find=dba_hist_snapshot), [dba_hist_sqlstat](https://www.enginatics.com/library/?pg=1&find=dba_hist_sqlstat), [dba_hist_sqltext](https://www.enginatics.com/library/?pg=1&find=dba_hist_sqltext), [wrh$_sqlstat](https://www.enginatics.com/library/?pg=1&find=wrh$_sqlstat), [wrh$_sql_bind_metadata](https://www.enginatics.com/library/?pg=1&find=wrh$_sql_bind_metadata), [gv$sqlarea](https://www.enginatics.com/library/?pg=1&find=gv$sqlarea), [v$parameter](https://www.enginatics.com/library/?pg=1&find=v$parameter)
+[obj$](https://www.enginatics.com/library/?pg=1&find=obj%24&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-awr-sql-performance-summary), [dba_hist_snapshot](https://www.enginatics.com/library/?pg=1&find=dba_hist_snapshot&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-awr-sql-performance-summary), [wrh$_sqlstat](https://www.enginatics.com/library/?pg=1&find=wrh%24_sqlstat&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-awr-sql-performance-summary), [wrh$_sql_bind_metadata](https://www.enginatics.com/library/?pg=1&find=wrh%24_sql_bind_metadata&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-awr-sql-performance-summary), [gv$sqlarea](https://www.enginatics.com/library/?pg=1&find=gv%24sqlarea&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-awr-sql-performance-summary), [v$parameter](https://www.enginatics.com/library/?pg=1&find=v%24parameter&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-awr-sql-performance-summary)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-awr-sql-performance-summary)
 
-
+## Related Reports
+[DBA AWR Blocking Session Summary](/DBA%20AWR%20Blocking%20Session%20Summary/ "DBA AWR Blocking Session Summary Oracle EBS SQL Report"), [DBA AWR Active Session History](/DBA%20AWR%20Active%20Session%20History/ "DBA AWR Active Session History Oracle EBS SQL Report"), [DBA SGA+PGA Memory Configuration](/DBA%20SGA-PGA%20Memory%20Configuration/ "DBA SGA+PGA Memory Configuration Oracle EBS SQL Report"), [DBA AWR Settings](/DBA%20AWR%20Settings/ "DBA AWR Settings Oracle EBS SQL Report"), [DBA SGA Active Session History](/DBA%20SGA%20Active%20Session%20History/ "DBA SGA Active Session History Oracle EBS SQL Report"), [DBA SGA Blocking Session Summary](/DBA%20SGA%20Blocking%20Session%20Summary/ "DBA SGA Blocking Session Summary Oracle EBS SQL Report"), [DBA SGA SQL Performance Summary](/DBA%20SGA%20SQL%20Performance%20Summary/ "DBA SGA SQL Performance Summary Oracle EBS SQL Report"), [DBA Blocking Sessions](/DBA%20Blocking%20Sessions/ "DBA Blocking Sessions Oracle EBS SQL Report"), [DBA AWR SQL Execution Plan History](/DBA%20AWR%20SQL%20Execution%20Plan%20History/ "DBA AWR SQL Execution Plan History Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/DBA%20AWR%20SQL%20Performance%20Summary/DBA%20AWR%20SQL%20Performance%20Summary.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-awr-sql-performance-summary) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [DBA AWR SQL Performance Summary 25-Jan-2019 160632.xlsx](https://www.enginatics.com/example/dba-awr-sql-performance-summary/) |
-| Blitz Report™ XML Import | [DBA_AWR_SQL_Performance_Summary.xml](https://www.enginatics.com/xml/dba-awr-sql-performance-summary/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/dba-awr-sql-performance-summary/](https://www.enginatics.com/reports/dba-awr-sql-performance-summary/) |
+| Excel Example Output | [DBA AWR SQL Performance Summary 25-Jan-2019 160632.xlsx](https://www.enginatics.com/example/dba-awr-sql-performance-summary/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-awr-sql-performance-summary) |
+| Blitz Report™ XML Import | [DBA_AWR_SQL_Performance_Summary.xml](https://www.enginatics.com/xml/dba-awr-sql-performance-summary/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-awr-sql-performance-summary) |
+| SQL Source | [DBA AWR SQL Performance Summary.sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/DBA%20AWR%20SQL%20Performance%20Summary/DBA%20AWR%20SQL%20Performance%20Summary.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/dba-awr-sql-performance-summary/](https://www.enginatics.com/reports/dba-awr-sql-performance-summary/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-awr-sql-performance-summary) |
 
 ## Executive Summary
 The **DBA AWR SQL Performance Summary** report is the "Top SQL" report for the database. It aggregates performance metrics from AWR to identify the SQL statements that are consuming the most resources (CPU, I/O, Time) over a specific period. This is the primary tool for identifying candidates for SQL tuning.
@@ -102,18 +112,17 @@ The report queries `DBA_HIST_SQLSTAT` and `DBA_HIST_SQLTEXT`.
 *   **Code Quality**: Highlights poorly written custom code (e.g., missing indexes, Cartesian products).
 *   **Capacity Management**: Reducing the load from top SQLs frees up headroom for growth.
 
-
 ---
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-awr-sql-performance-summary)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-awr-sql-performance-summary)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-awr-sql-performance-summary)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-awr-sql-performance-summary)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-awr-sql-performance-summary)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-awr-sql-performance-summary)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-awr-sql-performance-summary)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

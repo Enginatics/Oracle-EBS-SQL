@@ -1,65 +1,48 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CST Item Standard Cost Upload
 -- Description: CST Item Standard Cost Upload
-=============================
-
-This upload can be used to
-- Upload New Item Costs
-- Download the current Item Costs, Update, and Upload the amended item costs for a specified Cost Type
-- Download the current item Costs from one Source cost type, update, and upload the amended item costs to a different Target Cost Type
-
-NOTE:
-You can only upload costs to cost types that are not flagged as frozen and are flagged as updateable. This upload is used for updating cost types using the standard costing method.
-
-Optionally, the upload can perform a Cost Rollup after the Item Costs have been imported. The Cost Rollup can be performed for
-- Specific Items - a cost rollup will be done for only those items for which costs have been uploaded
-- All Items - in this mode the upload will submit the 'Supply Chain Cost Rollup - Print Report' concurrent request to roll up all items within each organization costs are uploaded to
-
-NOTE: The Item Cost Interface only supports importing 'This Level' costs. As such, this upload does not support the direct upload of rolled up costs
-
-Parameters
-==========
-Target Cost Type (Required) - The Cost Type to which the Item Costs are to be uploaded to.
-
-Mode (Required, Default: Remove and replace cost information) -
-The Item Cost Update Mode
-- Remove and replace cost information
-- Insert new Cost Information Only
-
-Auto Populate Upload Columns (Default: Yes) -
-Applies to downloaded Item Cost Entries only. If set to Yes, the downloaded records are flagged ready for upload even if no changes have been made. If left blank, records are only flagged for upload when the user amends them. Where an Item Cost has multiple cost elements, all cost element records of that item must then be flagged for upload by amending them, as only flagged records are uploaded.
-
-Source Cost Type
-Optionally specify the source Cost Type from which to download the current Item Costs. For the scenarios where you want to amend the current items costs for a Cost Type or want to copy the current item costs for a Cost Type to a different Target Cost Type.
-
-Rollup Costs - set to Yes to do a cost rollup after the costs are uploaded
-Rollup Type - Rollup specific Items or All Items
-Rollup Option - Single level rollup or Full cost rollup
-
-NOTE:
-In All Items mode the Supply Chain Cost Rollup requests are submitted asynchronously, and the upload does not wait for them, so the item summary costs in the upload result may not yet reflect the completed rollup.
-
-Organization Code - Optionally select the Organization(s) for which you want to download the Item Costs for
-Additional Parameters - optionally restrict the items to be downloaded.
-
-Inventory Asset? (Default: Yes)
-Costs can only be uploaded against items flagged as an inventory asset in the cost type, so others are excluded by default. Select No or clear it to download them, so the flag can be set to Yes and costs entered. On Release 12.1 and earlier the item must also be set as an inventory asset in the selected organization, or the import rejects it.
-
-Based on Rollup? and Zero Cost Items? further restrict the download. Zero cost items include those with no cost details yet, which download with Cost Element, Sub-Element and Usage Rate or Amount defaulted.
-
-Notes on the Upload
-===================
-Mode Remove and replace rebuilds the whole item: the import deletes every cost detail the item holds in the cost type and re-creates it from the uploaded rows. All cost element rows of an item must therefore be uploaded together, which Auto Populate Upload Columns Yes ensures; clear it and amend one element only and the rest are deleted. Deleting a row removes that cost element.
-
-Items whose costs default from the Default Cost Type have no cost details of their own, so they are not downloaded. Uploading costs against such an item gives it its own costs and it stops defaulting.
-
-
--- Excel Examle Output: https://www.enginatics.com/example/cst-item-standard-cost-upload/
+-- =============================
+-- This upload can be used to
+-- - Upload New Item Costs
+-- - Download the current Item Costs, Update, and Upload the amended item costs for a specified Cost Type
+-- - Download the current item Costs from one Source cost type, update, and upload the amended item costs to a different Target Cost Type
+-- NOTE:
+-- You can only upload costs to cost types that are not flagged as frozen and are flagged as updateable. This upload is used for updating cost types using the standard costing method.
+-- Optionally, the upload can perform a Cost Rollup after the Item Costs have been imported. The Cost Rollup can be performed for
+-- - Specific Items - a cost rollup will be done for only those items for which costs have been uploaded
+-- - All Items - in this mode the upload will submit the 'Supply Chain Cost Rollup - Print Report' concurrent request to roll up all items within each organization costs are uploaded to
+-- NOTE: The Item Cost Interface only supports importing 'This Level' costs. As such, this upload does not support the direct upload of rolled up costs
+-- Parameters
+-- ==========
+-- Target Cost Type (Required) - The Cost Type to which the Item Costs are to be uploaded to.
+-- Mode (Required, Default: Remove and replace cost information) -
+-- The Item Cost Update Mode
+-- - Remove and replace cost information
+-- - Insert new Cost Information Only
+-- Auto Populate Upload Columns (Default: Yes) -
+-- Applies to downloaded Item Cost Entries only. If set to Yes, the downloaded records are flagged ready for upload even if no changes have been made. If left blank, records are only flagged for upload when the user amends them. Where an Item Cost has multiple cost elements, all cost element records of that item must then be flagged for upload by amending them, as only flagged records are uploaded.
+-- Source Cost Type
+-- Optionally specify the source Cost Type from which to download the current Item Costs. For the scenarios where you want to amend the current items costs for a Cost Type or want to copy the current item costs for a Cost Type to a different Target Cost Type.
+-- Rollup Costs - set to Yes to do a cost rollup after the costs are uploaded
+-- Rollup Type - Rollup specific Items or All Items
+-- Rollup Option - Single level rollup or Full cost rollup
+-- NOTE:
+-- In All Items mode the Supply Chain Cost Rollup requests are submitted asynchronously, and the upload does not wait for them, so the item summary costs in the upload result may not yet reflect the completed rollup.
+-- Organization Code - Optionally select the Organization(s) for which you want to download the Item Costs for
+-- Additional Parameters - optionally restrict the items to be downloaded.
+-- Inventory Asset? (Default: Yes)
+-- Costs can only be uploaded against items flagged as an inventory asset in the cost type, so others are excluded by default. Select No or clear it to download them, so the flag can be set to Yes and costs entered. On Release 12.1 and earlier the item must also be set as an inventory asset in the selected organization, or the import rejects it.
+-- Based on Rollup? and Zero Cost Items? further restrict the download. Zero cost items include those with no cost details yet, which download with Cost Element, Sub-Element and Usage Rate or Amount defaulted.
+-- Notes on the Upload
+-- ===================
+-- Mode Remove and replace rebuilds the whole item: the import deletes every cost detail the item holds in the cost type and re-creates it from the uploaded rows. All cost element rows of an item must therefore be uploaded together, which Auto Populate Upload Columns Yes ensures; clear it and amend one element only and the rest are deleted. Deleting a row removes that cost element.
+-- Items whose costs default from the Default Cost Type have no cost details of their own, so they are not downloaded. Uploading costs against such an item gives it its own costs and it stops defaulting.
+-- Excel Example Output: https://www.enginatics.com/example/cst-item-standard-cost-upload/
 -- Library Link: https://www.enginatics.com/reports/cst-item-standard-cost-upload/
 -- Run Report: https://demo.enginatics.com/
 
@@ -95,7 +78,8 @@ nvl(br.resource_code,
  br2.cost_element_id=1 and
  nvl(br2.allow_costs_flag,1)=1 and
  nvl(br2.disable_date,sysdate)>=sysdate and
- cic.inventory_asset_flag = 1
+ cic.inventory_asset_flag = 1 and
+ cicd.rowid is null
 )) sub_element,
 nvl(cicd.usage_rate_or_amount,decode(cic.inventory_asset_flag,1,0))  usage_rate_or_amount,
 xxen_util.meaning(cicd.basis_type,'CST_BASIS_SHORT',700) basis,

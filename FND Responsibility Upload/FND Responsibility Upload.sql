@@ -1,24 +1,19 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: FND Responsibility Upload
 -- Description: Create and update Oracle E-Business Suite responsibilities, and maintain their menu/function exclusions, replicating the System Administrator Responsibilities form (FNDSCRSP).
-
-Each row is one of two entity types, chosen in the Row Type column:
-
-- Responsibility: creates or updates the responsibility definition (Name, Application, Key, Description, Effective Dates, Available From, Data Group, Menu, Request Group, Web Host/Agent Name). Responsibilities are identified by Application + Responsibility Key. A responsibility is created when that combination does not yet exist, otherwise it is updated. The Responsibility Key is the stable identifier and is not editable once created - to rename a responsibility change its Name, not its Key.
-
-- Menu/Function Exclusion: adds (or, with Exclude = Yes, removes) a menu or function exclusion for the responsibility identified by Application + Responsibility Key. Exclusion Type selects Function or Menu; Exclusion Name selects the item to exclude. When adding a new responsibility and its exclusions in the same upload, place the Responsibility row before its exclusion rows.
-
-Upload Modes:
-- Create opens an empty template.
-- Create, Update downloads existing responsibilities (and their exclusions) matching the Application / Responsibility filters for review and update.
-
-Responsibilities are not deleted by this upload; set an Effective Date To to disable one, matching Oracle best practice.
--- Excel Examle Output: https://www.enginatics.com/example/fnd-responsibility-upload/
+-- Each row is one of two entity types, chosen in the Row Type column:
+-- - Responsibility: creates or updates the responsibility definition (Name, Application, Key, Description, Effective Dates, Available From, Data Group, Menu, Request Group, Web Host/Agent Name). Responsibilities are identified by Application + Responsibility Key. A responsibility is created when that combination does not yet exist, otherwise it is updated. The Responsibility Key is the stable identifier and is not editable once created - to rename a responsibility change its Name, not its Key.
+-- - Menu/Function Exclusion: adds (or, with Exclude = Yes, removes) a menu or function exclusion for the responsibility identified by Application + Responsibility Key. Exclusion Type selects Function or Menu; Exclusion Name selects the item to exclude. When adding a new responsibility and its exclusions in the same upload, place the Responsibility row before its exclusion rows.
+-- Upload Modes:
+-- - Create opens an empty template.
+-- - Create, Update downloads existing responsibilities (and their exclusions) matching the Application / Responsibility filters for review and update.
+-- Responsibilities are not deleted by this upload; set an Effective Date To to disable one, matching Oracle best practice.
+-- Excel Example Output: https://www.enginatics.com/example/fnd-responsibility-upload/
 -- Library Link: https://www.enginatics.com/reports/fnd-responsibility-upload/
 -- Run Report: https://demo.enginatics.com/
 

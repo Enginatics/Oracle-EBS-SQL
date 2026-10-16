@@ -1,22 +1,22 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: WMS Control Board Tasks
 -- Description: List All the Warehouse Control Board Tasks
-------------------------------------------------------------------------
-Parameters:
-Task Type: Filter by Task Type
-User Task Type: Filter by selected user task type based on task.
-Task Status : Filter by Task Statuses.
-Excluded Task Status: Filter the tasks excluding status like "Completed"
-Task Creation Date From and To : Filter based on task creation date
-Show WIP Material Movements: In case WIP details to be extracted corresponding to tasks
-Show Sales Order Movements: In case Sales Order details to be extracted corresponding to tasks
--------------------------------------------------------------------------------------------------------------------------
--- Excel Examle Output: https://www.enginatics.com/example/wms-control-board-tasks/
+-- ------------------------------------------------------------------------
+-- Parameters:
+-- Task Type: Filter by Task Type
+-- User Task Type: Filter by selected user task type based on task.
+-- Task Status : Filter by Task Statuses.
+-- Excluded Task Status: Filter the tasks excluding status like "Completed"
+-- Task Creation Date From and To : Filter based on task creation date
+-- Show WIP Material Movements: In case WIP details to be extracted corresponding to tasks
+-- Show Sales Order Movements: In case Sales Order details to be extracted corresponding to tasks
+-- -------------------------------------------------------------------------------------------------------------------------
+-- Excel Example Output: https://www.enginatics.com/example/wms-control-board-tasks/
 -- Library Link: https://www.enginatics.com/reports/wms-control-board-tasks/
 -- Run Report: https://demo.enginatics.com/
 

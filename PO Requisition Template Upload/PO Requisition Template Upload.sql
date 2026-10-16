@@ -1,44 +1,31 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PO Requisition Template Upload
 -- Description: PO Requisition Template Upload
-================================
-
-The purpose of the PO Requisition Template Upload is to allow for: 
-- the creation of new Requisition Templates (Create Mode).
-- the update of existing Requisition Templates (Update Mode). Update includes the update to existing template and template lines, the creation of new template lines against an existing template, and the deletion of template lines from an existing template.
-
-As far as feasible, the upload provides the user with the same functionality available in the ‘Requisition Template’ Form. (Purchasing:  + Setup – Purchasing – Requisition Templates)
-
-Upload Mode
-============
-
-The upload mode determines the actions the user is allowed to perform in the upload.
-
-Create - the user may upload new Requisition Templates only.
-
-Update - the user may update existing Requisition Templates only. This includes adding new and deleting existing template lines from the template.
-
-Create and Update - the user can create new Requisition Templates and update existing Requisition Templates.
-
-
-Parameters
-==========
-
-Upload Mode	(Required=Yes Default=Create) - See above.
-
-The following optional parameters are only applicable in the 'Create and Update' and 'Update' modes, and can be used to restrict the template data downloaded for update:
-
-- Operating Unit - the operating unit(s) the templates belong to.
-- Template Type - the template type (Purchase Requisition, Internal Requisition).
-- Template Name - the template name(s) to be downloaded.
-- Template Name Contains - the user can restrict the download of existing templates where the Template Name contains the specified text (case insensitive).
-
--- Excel Examle Output: https://www.enginatics.com/example/po-requisition-template-upload/
+-- ================================
+-- The purpose of the PO Requisition Template Upload is to allow for:
+-- - the creation of new Requisition Templates (Create Mode).
+-- - the update of existing Requisition Templates (Update Mode). Update includes the update to existing template and template lines, the creation of new template lines against an existing template, and the deletion of template lines from an existing template.
+-- As far as feasible, the upload provides the user with the same functionality available in the ‘Requisition Template’ Form. (Purchasing: + Setup – Purchasing – Requisition Templates)
+-- Upload Mode
+-- ============
+-- The upload mode determines the actions the user is allowed to perform in the upload.
+-- Create - the user may upload new Requisition Templates only.
+-- Update - the user may update existing Requisition Templates only. This includes adding new and deleting existing template lines from the template.
+-- Create and Update - the user can create new Requisition Templates and update existing Requisition Templates.
+-- Parameters
+-- ==========
+-- Upload Mode (Required=Yes Default=Create) - See above.
+-- The following optional parameters are only applicable in the 'Create and Update' and 'Update' modes, and can be used to restrict the template data downloaded for update:
+-- - Operating Unit - the operating unit(s) the templates belong to.
+-- - Template Type - the template type (Purchase Requisition, Internal Requisition).
+-- - Template Name - the template name(s) to be downloaded.
+-- - Template Name Contains - the user can restrict the download of existing templates where the Template Name contains the specified text (case insensitive).
+-- Excel Example Output: https://www.enginatics.com/example/po-requisition-template-upload/
 -- Library Link: https://www.enginatics.com/reports/po-requisition-template-upload/
 -- Run Report: https://demo.enginatics.com/
 
@@ -146,4 +133,4 @@ not exists -- exclude templates copied from a Blanket PO
   prla2.org_id = prha.org_id and
   prla2.express_name = prha.express_name and
   prla2.po_line_id is not null
-) 
+)

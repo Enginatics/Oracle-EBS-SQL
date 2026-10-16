@@ -1,20 +1,17 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: INV Period Close Pending Transactions
 -- Description: Summary report to display the pending transaction counts as found in the Inventory Account Periods Close form, checking open receipts, pending shipments, failed inventory, WIP, etc
-
-The Period Count shows the pending transactions occurring within the specified period.
-The Period Close Count shows the count of pending transactions as at the scheduled period close date of the specified period. 
-The Period Close Count are the counts displayed in the Pending Transactions Inventory Account Periods Close Form.  
-This is the accumulated count of pending transactions upto the shceduled close date of the specified period, except for the count of  'Unprocessed Shipping Transactions' which are not carried over to the next period. 
-
-Period count queries are sourced from procedure CST_AccountingPeriod_PUB.Get_PendingTcount (CSTPAPEB.pls 120.18.12020000.8)
-
--- Excel Examle Output: https://www.enginatics.com/example/inv-period-close-pending-transactions/
+-- The Period Count shows the pending transactions occurring within the specified period.
+-- The Period Close Count shows the count of pending transactions as at the scheduled period close date of the specified period.
+-- The Period Close Count are the counts displayed in the Pending Transactions Inventory Account Periods Close Form.
+-- This is the accumulated count of pending transactions upto the shceduled close date of the specified period, except for the count of 'Unprocessed Shipping Transactions' which are not carried over to the next period.
+-- Period count queries are sourced from procedure CSTAccountingPeriodPUB.GetPendingTcount (CSTPAPEB.pls 120.18.12020000.8)
+-- Excel Example Output: https://www.enginatics.com/example/inv-period-close-pending-transactions/
 -- Library Link: https://www.enginatics.com/reports/inv-period-close-pending-transactions/
 -- Run Report: https://demo.enginatics.com/
 

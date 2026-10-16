@@ -1,17 +1,17 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: MRP Financial Analysis
 -- Description: Imported from BI Publisher
-Description: Financial Analysis Report
-Application: Master Scheduling/MRP
-Source: Financial Analysis Report (XML)
-Short Name: MRPRPPIT_XML
-DB package: MRP_MRPRPPIT_XMLP_PKG
--- Excel Examle Output: https://www.enginatics.com/example/mrp-financial-analysis/
+-- Description: Financial Analysis Report
+-- Application: Master Scheduling/MRP
+-- Source: Financial Analysis Report (XML)
+-- Short Name: MRPRPPITXML
+-- DB package: MRPMRPRPPITXMLPPKG
+-- Excel Example Output: https://www.enginatics.com/example/mrp-financial-analysis/
 -- Library Link: https://www.enginatics.com/reports/mrp-financial-analysis/
 -- Run Report: https://demo.enginatics.com/
 

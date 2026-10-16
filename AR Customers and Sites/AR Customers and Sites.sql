@@ -1,16 +1,20 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: AR Customers and Sites
 -- Description: Master data report of customer master data including address, sites, site uses, payment terms, Salesperson, price list and other profile information.
--- Excel Examle Output: https://www.enginatics.com/example/ar-customers-and-sites/
+-- Payment terms are reported from each of their own sources: Account Profile Payment Term and Site Profile Payment Term from the customer profile at account and site level, and Site Use Payment Term from the site use Order Management terms.
+-- When India Localization is installed, the following GST columns are also included: GST Registration No, GST PAN No.
+-- Excel Example Output: https://www.enginatics.com/example/ar-customers-and-sites/
 -- Library Link: https://www.enginatics.com/reports/ar-customers-and-sites/
 -- Run Report: https://demo.enginatics.com/
 
 with
+&cte_trx_count
+&cte_latest_trx
 q_contacts as
 (select
  hcar.cust_account_role_id,
@@ -294,8 +298,9 @@ x.credit_check,
 x.site_credit_check,
 x.credit_hold,
 x.site_credit_hold,
-x.payment_term,
-x.site_payment_term,
+x.account_profile_payment_term,
+x.site_profile_payment_term,
+x.site_use_payment_term,
 x.send_statement,
 x.site_send_statement,
 x.statement_cycle,
@@ -455,6 +460,7 @@ ctct.contact_postal_code,
 ctct.contact_geography_override,
 ctct.contact_mailstop,
 ctct.contact_roles,
+&il_reg_columns
 -- audit
 x.created_by,
 x.creation_date,
@@ -610,8 +616,9 @@ xxen_util.meaning(hcp1.credit_checking,'YES_NO',0) credit_check,
 xxen_util.meaning(hcp2.credit_checking,'YES_NO',0) site_credit_check,
 xxen_util.meaning(hcp1.credit_hold,'YES_NO',0) credit_hold,
 xxen_util.meaning(hcp2.credit_hold,'YES_NO',0) site_credit_hold,
-(select rtt.name from ra_terms_tl rtt where nvl(hcp1.standard_terms,hca.payment_term_id)=rtt.term_id and rtt.language=userenv('lang')) payment_term,
-(select rtt.name from ra_terms_tl rtt where nvl(hcp2.standard_terms,hcsua.payment_term_id)=rtt.term_id and rtt.language=userenv('lang')) site_payment_term,
+(select rtv.name from ra_terms_vl rtv where hcp1.standard_terms=rtv.term_id) account_profile_payment_term,
+(select rtv.name from ra_terms_vl rtv where hcp2.standard_terms=rtv.term_id) site_profile_payment_term,
+(select rtv.name from ra_terms_vl rtv where hcsua.payment_term_id=rtv.term_id) site_use_payment_term,
 xxen_util.meaning(hcp1.send_statements,'YES_NO',0) send_statement,
 xxen_util.meaning(hcp2.send_statements,'YES_NO',0) site_send_statement,
 (select ascl.name from ar_statement_cycles ascl where hcp1.statement_cycle_id=ascl.statement_cycle_id) statement_cycle,
@@ -735,6 +742,8 @@ hca.warehouse_id=haouv1.organization_id(+) and
 hcsua.warehouse_id=haouv2.organization_id(+) and
 hps.party_site_id=nvl(hcps.party_site_id(+),hps.party_site_id)
 ) x,
+&from_trx_count
+&from_latest_trx
 hz_cust_profile_amts hcpa,
 zx_party_tax_profile zptp1,
 zx_party_tax_profile zptp2,
@@ -745,7 +754,10 @@ q_bank_accounts ba,
 iby_debit_authorizations ida,
 q_contacts ctct,
 q_fc_assignments fca
+&il_from
 where
+&join_trx_count
+&join_latest_trx
 x.party_id=zptp1.party_id(+) and
 zptp1.party_type_code(+)='THIRD_PARTY' and
 x.party_site_id=zptp2.party_id(+) and
@@ -772,9 +784,10 @@ nvl2(:show_debit_auth,ba.bank_account_id,null)=ida.external_bank_account_id(+) a
 (:show_debit_auth='Y' or ida.debit_authorization_id is null or nvl(ida.debit_auth_end,sysdate+1)>sysdate and nvl(ida.auth_cancel_date,sysdate+1)>sysdate) and
 --
 nvl2(:show_contacts,x.cust_account_id,0)=ctct.cust_account_id(+) and
-nvl(x.cust_acct_site_id,-99)=nvl(ctct.cust_acct_site_id,nvl(x.cust_acct_site_id,-99)) and
+nvl(x.cust_acct_site_id,-99)=nvl(ctct.cust_acct_site_id(+),nvl(x.cust_acct_site_id,-99)) and
 (:show_contacts='Y' or ctct.cust_account_role_id is null or ctct.status='A') and
 2=2
+&il_where
 order by
 x.party_name,
 x.party_number,

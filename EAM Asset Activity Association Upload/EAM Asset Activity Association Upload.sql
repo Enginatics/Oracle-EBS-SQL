@@ -1,28 +1,25 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: EAM Asset Activity Association Upload
 -- Description: EAM Asset Activity Association Upload
-=====================================
-- Create new associations between an Activity item and an Asset Group, specific Asset Number (serial instance), or Rebuildable item.
-- Update existing association attributes (dates, priority, owning department, WIP class, DFF, etc.).
-- Deletion is not supported by the public API in v1.
-
-Prerequisites
-=============
-- The Activity item (eam_item_type=2) must already exist in the maintenance organization. Use the INV Item Upload to create Activity items.
-- For Asset Group associations, the Asset Group (eam_item_type=1) and its serialised instance (csi_item_instances) must exist.
-- For Rebuildable (serial) associations, the Rebuildable item (eam_item_type=3) and instance must exist.
-- For Rebuildable (non-serial) associations, only the Rebuildable item is required.
-
-Natural business key for create/update detection:
-(Asset Activity + Maintenance Object Type + Maintenance Object Id)
-which maps to (Activity + Asset Group or Asset Number).
-
--- Excel Examle Output: https://www.enginatics.com/example/eam-asset-activity-association-upload/
+-- =====================================
+-- - Create new associations between an Activity item and an Asset Group, specific Asset Number (serial instance), or Rebuildable item.
+-- - Update existing association attributes (dates, priority, owning department, WIP class, DFF, etc.).
+-- - Deletion is not supported by the public API in v1.
+-- Prerequisites
+-- =============
+-- - The Activity item (eamitemtype=2) must already exist in the maintenance organization. Use the INV Item Upload to create Activity items.
+-- - For Asset Group associations, the Asset Group (eamitemtype=1) and its serialised instance (csiiteminstances) must exist.
+-- - For Rebuildable (serial) associations, the Rebuildable item (eamitemtype=3) and instance must exist.
+-- - For Rebuildable (non-serial) associations, only the Rebuildable item is required.
+-- Natural business key for create/update detection:
+-- (Asset Activity + Maintenance Object Type + Maintenance Object Id)
+-- which maps to (Activity + Asset Group or Asset Number).
+-- Excel Example Output: https://www.enginatics.com/example/eam-asset-activity-association-upload/
 -- Library Link: https://www.enginatics.com/reports/eam-asset-activity-association-upload/
 -- Run Report: https://demo.enginatics.com/
 

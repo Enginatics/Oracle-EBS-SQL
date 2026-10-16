@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: Blitz Report License User History
 -- Description: Shows the history of active Blitz Report users at every at every month end, looking back the past 60 days.
--- Excel Examle Output: https://www.enginatics.com/example/blitz-report-license-user-history/
+-- Excel Example Output: https://www.enginatics.com/example/blitz-report-license-user-history/
 -- Library Link: https://www.enginatics.com/reports/blitz-report-license-user-history/
 -- Run Report: https://demo.enginatics.com/
 

@@ -1,15 +1,15 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: INV Print Cycle Count Entries Open Interface data
 -- Description: Imported Oracle standard Print Cycle Count Entries Open Interface data report
-Source :Print Cycle Count Entries Open Interface data (XML)
-Short Name: INVCCIER_XML
-DB package: INV_INVCCIER_XMLP_PKG
--- Excel Examle Output: https://www.enginatics.com/example/inv-print-cycle-count-entries-open-interface-data/
+-- Source :Print Cycle Count Entries Open Interface data (XML)
+-- Short Name: INVCCIERXML
+-- DB package: INVINVCCIERXMLPPKG
+-- Excel Example Output: https://www.enginatics.com/example/inv-print-cycle-count-entries-open-interface-data/
 -- Library Link: https://www.enginatics.com/reports/inv-print-cycle-count-entries-open-interface-data/
 -- Run Report: https://demo.enginatics.com/
 

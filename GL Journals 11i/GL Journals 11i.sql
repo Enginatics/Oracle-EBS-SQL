@@ -1,20 +1,20 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: GL Journals 11i
 -- Description: GL batches and journals report, including amounts and attachments
--- Excel Examle Output: https://www.enginatics.com/example/gl-journals-11i/
+-- Excel Example Output: https://www.enginatics.com/example/gl-journals-11i/
 -- Library Link: https://www.enginatics.com/reports/gl-journals-11i/
 -- Run Report: https://demo.enginatics.com/
 
-with gcck as (select &materialoze_hint gcck.* from gl_code_combinations_kfv gcck where 2=2)
+with gcck as (select &materialize_hint gcck.* from gl_code_combinations_kfv gcck where 2=2)
 select &leading_hint
 --ledger
 gl.name ledger,
-xxen_util.meaning(gl.ledger_category_code,'GL_ASF_LEDGER_CATEGORY',101) ledger_category,
+decode(gl.ledger_category_code,'PRIMARY','Primary Ledger') ledger_category,
 gl.currency_code ledger_currency,
 -- period
 gjh.period_name,
@@ -134,7 +134,7 @@ gjl.je_header_id=gjlr.je_header_id(+) and
 gjl.je_line_num=gjlr.je_line_num(+) and
 gjl.code_combination_id=gcck.code_combination_id(+) and
 to_char(gjb.je_batch_id)=fad1.pk1_value(+) and
-to_char(gjb.je_batch_id)=fad2.pk1_value(+) and
+to_char(gjh.je_batch_id)=fad2.pk1_value(+) and
 to_char(gjh.je_header_id)=fad2.pk2_value(+) and
 fad1.document_id=fd1.document_id(+) and
 fad2.document_id=fd2.document_id(+) and

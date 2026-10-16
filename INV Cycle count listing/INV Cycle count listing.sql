@@ -1,15 +1,15 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: INV Cycle count listing
 -- Description: Imported Oracle standard cycle count listing report
-Source: Cycle count listing (XML)
-Short Name: INVARCLI_XML
-DB package: INV_INVARCLI_XMLP_PKG
--- Excel Examle Output: https://www.enginatics.com/example/inv-cycle-count-listing/
+-- Source: Cycle count listing (XML)
+-- Short Name: INVARCLIXML
+-- DB package: INVINVARCLIXMLPPKG
+-- Excel Example Output: https://www.enginatics.com/example/inv-cycle-count-listing/
 -- Library Link: https://www.enginatics.com/reports/inv-cycle-count-listing/
 -- Run Report: https://demo.enginatics.com/
 

@@ -1,12 +1,13 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: WIP Entities
 -- Description: Detail WIP report that lists job, type, status, planner, item, item description, planning method, pegging type, entity, job Description, WIP resource transaction account distributions, project number, task, source code, source line item,Sales Order,Sales Order Line, WIP type, class code, scheduling dates, quantities, department, resource and organization.
--- Excel Examle Output: https://www.enginatics.com/example/wip-entities/
+-- Show Resources lists every resource requirement of an operation instead of its first resource only. Required units are the usage rate times the job start quantity less the operation's cumulative scrap for item basis, and the usage rate for lot basis. Remaining units are required less applied units, negative where more was charged than required. Operation quantities are shown on the first resource row of each operation only, so they can be summed.
+-- Excel Example Output: https://www.enginatics.com/example/wip-entities/
 -- Library Link: https://www.enginatics.com/reports/wip-entities/
 -- Run Report: https://demo.enginatics.com/
 
@@ -26,6 +27,7 @@ xxen_util.meaning(msiv.mrp_planning_code,'MRP_PLANNING_CODE',700) planning_metho
 xxen_util.meaning(msiv.end_assembly_pegging_flag,'ASSEMBLY_PEGGING_CODE',0) pegging,
 we.description entity_description,
 wdj.description job_description,
+nvl(cii.instance_number,wdj.asset_number) asset_number,
 ppa.project_number,
 pt.task_number,
 wdj.source_code,
@@ -41,10 +43,10 @@ xxen_util.client_time(wdj.scheduled_completion_date) scheduled_completion_date,
 xxen_util.client_time(wdj.date_released) released_date,
 xxen_util.client_time(wdj.date_completed) completed_date,
 xxen_util.client_time(wdj.date_closed) closed_date,
-decode(row_number() over (partition by we.wip_entity_id order by wo.operation_seq_num),1,wdj.start_quantity) start_quantity,
-decode(row_number() over (partition by we.wip_entity_id order by wo.operation_seq_num),1,decode(wdj.quantity_scrapped,0,null,wdj.quantity_scrapped)) quantity_scrapped,
-decode(row_number() over (partition by we.wip_entity_id order by wo.operation_seq_num),1,decode(wdj.quantity_completed,0,null,wdj.quantity_completed)) quantity_completed,
-decode(row_number() over (partition by we.wip_entity_id order by wo.operation_seq_num),1,decode(wdj.start_quantity-wdj.quantity_completed-wdj.quantity_scrapped,0,null,wdj.start_quantity-wdj.quantity_completed-wdj.quantity_scrapped)) quantity_remaining,
+decode(row_number() over (partition by we.wip_entity_id order by wo.operation_seq_num, wor.resource_seq_num),1,wdj.start_quantity) start_quantity,
+decode(row_number() over (partition by we.wip_entity_id order by wo.operation_seq_num, wor.resource_seq_num),1,nullif(wdj.quantity_scrapped,0)) quantity_scrapped,
+decode(row_number() over (partition by we.wip_entity_id order by wo.operation_seq_num, wor.resource_seq_num),1,nullif(wdj.quantity_completed,0)) quantity_completed,
+decode(row_number() over (partition by we.wip_entity_id order by wo.operation_seq_num, wor.resource_seq_num),1,nullif(wdj.start_quantity-wdj.quantity_completed-wdj.quantity_scrapped,0)) quantity_remaining,
 wdj.completion_subinventory,
 bd.department_code,
 wo.operation_seq_num operation_sequence,
@@ -52,13 +54,14 @@ bso.operation_code,
 wo.description operation_description,
 br.resource_code,
 br.description resource_description,
+&resource_columns
 xxen_util.client_time(wo.date_last_moved) date_last_moved,
-wo.in_queue,
-wo.running,
-wo.to_move,
-wo.rejected,
-wo.scrapped,
-wo.completed,
+case when nvl(wor.resource_rank,1)=1 then wo.in_queue end in_queue,
+case when nvl(wor.resource_rank,1)=1 then wo.running end running,
+case when nvl(wor.resource_rank,1)=1 then wo.to_move end to_move,
+case when nvl(wor.resource_rank,1)=1 then wo.rejected end rejected,
+case when nvl(wor.resource_rank,1)=1 then wo.scrapped end scrapped,
+case when nvl(wor.resource_rank,1)=1 then wo.completed end completed,
 xxen_util.client_time(wo.first_unit_start_date) first_unit_start_date,
 xxen_util.client_time(wo.last_unit_completion_date) last_unit_completion_date,
 xxen_util.user_name(wo.last_updated_by) operation_last_updated_by,
@@ -74,6 +77,7 @@ mtl_system_items_vl msiv,
 mtl_planners mpl,
 wip_discrete_jobs wdj,
 wip_schedule_groups wsg,
+csi_item_instances cii,
 (
 select ppa.project_id, ppa.segment1 project_number from pa_projects_all ppa union
 select psm.project_id, psm.project_number from pjm_seiban_numbers psm
@@ -89,12 +93,13 @@ wo.department_id,
 wo.standard_operation_id,
 wo.description,
 wo.date_last_moved,
-decode(wo.quantity_in_queue,0,null,wo.quantity_in_queue) in_queue,
-decode(wo.quantity_running,0,null,wo.quantity_running) running,
-decode(wo.quantity_waiting_to_move,0,null,wo.quantity_waiting_to_move) to_move,
-decode(wo.quantity_rejected,0,null,wo.quantity_rejected) rejected,
-decode(wo.quantity_scrapped,0,null,wo.quantity_scrapped) scrapped,
-decode(wo.quantity_completed,0,null,wo.quantity_completed) completed,
+nullif(wo.quantity_in_queue,0) in_queue,
+nullif(wo.quantity_running,0) running,
+nullif(wo.quantity_waiting_to_move,0) to_move,
+nullif(wo.quantity_rejected,0) rejected,
+nullif(wo.quantity_scrapped,0) scrapped,
+nullif(wo.quantity_completed,0) completed,
+nvl(wo.cumulative_scrap_quantity,0) cumulative_scrap_quantity,
 wo.first_unit_start_date,
 wo.last_unit_completion_date,
 wo.last_updated_by
@@ -106,13 +111,12 @@ where
 bom_departments bd,
 (select bso.* from bom_standard_operations bso where nvl(bso.operation_type,1)=1 and bso.line_id is null) bso,
 (
-select distinct
-wor.organization_id,
-wor.wip_entity_id,
-wor.operation_seq_num,
-first_value(wor.resource_id) over (partition by wor.wip_entity_id, wor.organization_id, wor.operation_seq_num, wor.repetitive_schedule_id order by wor.resource_seq_num) resource_id
+select
+x.*
 from
-wip_operation_resources wor
+(select row_number() over (partition by wor.wip_entity_id, wor.organization_id, wor.operation_seq_num, wor.repetitive_schedule_id order by wor.resource_seq_num) resource_rank, wor.* from wip_operation_resources wor) x
+where
+(x.resource_rank=1 or :show_resources='Y')
 ) wor,
 bom_resources br,
 oe_order_headers_all ooha,
@@ -129,6 +133,7 @@ msiv.organization_id=mpl.organization_id(+) and
 we.wip_entity_id=wdj.wip_entity_id(+) and
 we.organization_id=wdj.organization_id(+) and
 wdj.schedule_group_id=wsg.schedule_group_id(+) and
+decode(wdj.maintenance_object_type,3,wdj.maintenance_object_id)=cii.instance_id(+) and
 wdj.project_id=ppa.project_id(+) and
 wdj.task_id=pt.task_id(+) and
 wdj.wip_entity_id=wo.wip_entity_id(+) and
@@ -144,4 +149,5 @@ oola.header_id=ooha.header_id(+)
 order by
 mp.organization_code,
 we.creation_date desc,
-wo.operation_seq_num
+wo.operation_seq_num,
+wor.resource_seq_num

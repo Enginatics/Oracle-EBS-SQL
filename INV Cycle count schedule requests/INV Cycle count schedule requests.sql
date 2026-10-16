@@ -1,15 +1,15 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: INV Cycle count schedule requests
 -- Description: Imported Oracle standard Cycle count schedule requests report
-Source: Cycle count schedule requests report (XML)
-Short Name: INVARRTA_XML
-DB package: INV_INVARRTA_XMLP_PKG
--- Excel Examle Output: https://www.enginatics.com/example/inv-cycle-count-schedule-requests/
+-- Source: Cycle count schedule requests report (XML)
+-- Short Name: INVARRTAXML
+-- DB package: INVINVARRTAXMLPPKG
+-- Excel Example Output: https://www.enginatics.com/example/inv-cycle-count-schedule-requests/
 -- Library Link: https://www.enginatics.com/reports/inv-cycle-count-schedule-requests/
 -- Run Report: https://demo.enginatics.com/
 

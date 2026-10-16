@@ -1,20 +1,17 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: ECC Admin - Concurrent Programs
--- Description: List of all concurrent programs required to synchronize Oracle EBS data to the Enterprise Command Centers (ECC) Weblogic server, based on Oracle note KA980 <a href="https://support.oracle.com/support/?kmContentId=11154162" rel="nofollow" target="_blank">https://support.oracle.com/support/?kmContentId=11154162</a>
-
-The report includes all currently scheduled request_ids and responsibilities for incremental and full loads, to check which ones are already scheduled.
-The short code can be used as multiple parameter value entry in other reports, e.g. <a href="https://www.enginatics.com/reports/fnd-access-control/" rel="nofollow" target="_blank">https://www.enginatics.com/reports/fnd-access-control/</a> to see which responsibilities or users have access to schedule them, or <a href="https://www.enginatics.com/reports/fnd-concurrent-requests/" rel="nofollow" target="_blank">https://www.enginatics.com/reports/fnd-concurrent-requests/</a> to look at past execution and schedule times.
-
-ECC data is defined by dataset codes, which have a related DB package procedure containing the SQL for each dataset, see:
-<a href="https://www.enginatics.com/reports/ecc-data-sets/" rel="nofollow" target="_blank">https://www.enginatics.com/reports/ecc-data-sets/</a>
-
-The individual load progams are all calling child program 'ECC Run Data Load' either for specific datasets or by application, and the program's java executable ECCRUNDL then executes the dataset SQL and transfers the data to the Weblogic server where it is stored in a file structure using Apache Lucene technology <a href="https://en.wikipedia.org/wiki/Apache_Lucene" rel="nofollow" target="_blank">https://en.wikipedia.org/wiki/Apache_Lucene</a>
--- Excel Examle Output: https://www.enginatics.com/example/ecc-admin-concurrent-programs/
+-- Description: List of all concurrent programs required to synchronize Oracle EBS data to the Enterprise Command Centers (ECC) Weblogic server, based on Oracle note KA980 https://support.oracle.com/support/?kmContentId=11154162
+-- The report includes all currently scheduled requestids and responsibilities for incremental and full loads, to check which ones are already scheduled.
+-- The short code can be used as multiple parameter value entry in other reports, e.g. https://www.enginatics.com/reports/fnd-access-control/ to see which responsibilities or users have access to schedule them, or https://www.enginatics.com/reports/fnd-concurrent-requests/ to look at past execution and schedule times.
+-- ECC data is defined by dataset codes, which have a related DB package procedure containing the SQL for each dataset, see:
+-- https://www.enginatics.com/reports/ecc-data-sets/
+-- The individual load progams are all calling child program 'ECC Run Data Load' either for specific datasets or by application, and the program's java executable ECCRUNDL then executes the dataset SQL and transfers the data to the Weblogic server where it is stored in a file structure using Apache Lucene technology https://en.wikipedia.org/wiki/ApacheLucene
+-- Excel Example Output: https://www.enginatics.com/example/ecc-admin-concurrent-programs/
 -- Library Link: https://www.enginatics.com/reports/ecc-admin-concurrent-programs/
 -- Run Report: https://demo.enginatics.com/
 

@@ -1,58 +1,48 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: DBA Hierarchical Profiler Data
--- Description: Excel version of Oracle's hierarchical profiler dbms_hprof PLSQL performance analysis.
-
-PL/SQL units that have been compiled in NATIVE mode cannot be profiled.
-To gather information, you must ensure that the PL/SQL code is INTERPRETED."
-Before compilation of the profiled code, execute:
-alter session set plsql_code_type=interpreted;
-
-
-Create and setup access to profiler tables as sys:
-
-exec dbms_hprof.create_tables(force_it=>true);
-create public synonym dbmshp_trace_data for sys.dbmshp_trace_data;
-create public synonym dbmshp_runs for sys.dbmshp_runs;
-create public synonym dbmshp_function_info for sys.dbmshp_function_info;
-create public synonym dbmshp_parent_child_info for sys.dbmshp_parent_child_info;
-create public synonym dbmshp_runnumber for sys.dbmshp_runnumber;
-create public synonym dbmshp_tracenumber for sys.dbmshp_tracenumber;
-grant select, insert, update, delete on dbmshp_trace_data to public;
-grant select, insert, update, delete on dbmshp_runs to public;
-grant select, insert, update, delete on dbmshp_function_info to public;
-grant select, insert, update, delete on dbmshp_parent_child_info to public;
-grant select on dbmshp_runnumber to public;
-grant select on dbmshp_tracenumber to public;
-
-
-To start and stop profiling code, use the following commands:
-
-declare
-l_trace_id pls_integer;
-l_sqlmonitor_clob clob;
-l_runid pls_integer;
-begin
-  l_trace_id:=dbms_hprof.start_profiling;
-  xxen_api.clear; --code to profile
-  l_sqlmonitor_clob:=dbms_hprof.stop_profiling;
-  l_runid:=dbms_hprof.analyze(l_trace_id);
-end;
-
-
-To purge and reset the profiler data, execute the following as sys:
-
-truncate table dbmshp_parent_child_info;
-truncate table dbmshp_function_info;
-truncate table dbmshp_runs;
-truncate table dbmshp_trace_data;
-alter sequence dbmshp_runnumber restart start with 1;
-alter sequence dbmshp_tracenumber restart start with 1;
--- Excel Examle Output: https://www.enginatics.com/example/dba-hierarchical-profiler-data/
+-- Description: Excel version of Oracle's hierarchical profiler dbmshprof PLSQL performance analysis.
+-- PL/SQL units that have been compiled in NATIVE mode cannot be profiled.
+-- To gather information, you must ensure that the PL/SQL code is INTERPRETED."
+-- Before compilation of the profiled code, execute:
+-- alter session set plsqlcodetype=interpreted;
+-- Create and setup access to profiler tables as sys:
+-- exec dbmshprof.createtables(forceit=>true);
+-- create public synonym dbmshptracedata for sys.dbmshptracedata;
+-- create public synonym dbmshpruns for sys.dbmshpruns;
+-- create public synonym dbmshpfunctioninfo for sys.dbmshpfunctioninfo;
+-- create public synonym dbmshpparentchildinfo for sys.dbmshpparentchildinfo;
+-- create public synonym dbmshprunnumber for sys.dbmshprunnumber;
+-- create public synonym dbmshptracenumber for sys.dbmshptracenumber;
+-- grant select, insert, update, delete on dbmshptracedata to public;
+-- grant select, insert, update, delete on dbmshpruns to public;
+-- grant select, insert, update, delete on dbmshpfunctioninfo to public;
+-- grant select, insert, update, delete on dbmshpparentchildinfo to public;
+-- grant select on dbmshprunnumber to public;
+-- grant select on dbmshptracenumber to public;
+-- To start and stop profiling code, use the following commands:
+-- declare
+-- ltraceid plsinteger;
+-- lsqlmonitorclob clob;
+-- lrunid plsinteger;
+-- begin
+-- ltraceid:=dbmshprof.startprofiling;
+-- xxenapi.clear; --code to profile
+-- lsqlmonitorclob:=dbmshprof.stopprofiling;
+-- lrunid:=dbmshprof.analyze(ltraceid);
+-- end;
+-- To purge and reset the profiler data, execute the following as sys:
+-- truncate table dbmshpparentchildinfo;
+-- truncate table dbmshpfunctioninfo;
+-- truncate table dbmshpruns;
+-- truncate table dbmshptracedata;
+-- alter sequence dbmshprunnumber restart start with 1;
+-- alter sequence dbmshptracenumber restart start with 1;
+-- Excel Example Output: https://www.enginatics.com/example/dba-hierarchical-profiler-data/
 -- Library Link: https://www.enginatics.com/reports/dba-hierarchical-profiler-data/
 -- Run Report: https://demo.enginatics.com/
 

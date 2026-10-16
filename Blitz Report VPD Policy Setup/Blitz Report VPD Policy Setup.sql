@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: Blitz Report VPD Policy Setup
--- Description: Lists tables and columns to be secured by Blitz Report's VPD policy functionality (concurrent program 'Blitz Report Update VPD Policies') from lookup XXEN_REPORT_VPD_POLICY_TABLES and validates if corresponding DB policies have been created.
--- Excel Examle Output: https://www.enginatics.com/example/blitz-report-vpd-policy-setup/
+-- Description: Lists tables and columns to be secured by Blitz Report's VPD policy functionality (concurrent program 'Blitz Report Update VPD Policies') from lookup XXENREPORTVPDPOLICYTABLES and validates if corresponding DB policies have been created.
+-- Excel Example Output: https://www.enginatics.com/example/blitz-report-vpd-policy-setup/
 -- Library Link: https://www.enginatics.com/reports/blitz-report-vpd-policy-setup/
 -- Run Report: https://demo.enginatics.com/
 

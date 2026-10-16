@@ -1,29 +1,26 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: DBA Profiler Data
--- Description: Excel version of Oracle's dbms_profiler PLSQL performance analysis, see Oracle note:
-Using DBMS_PROFILER (KB85737)
-<a href="https://support.oracle.com/support/?kmContentId=97270" rel="nofollow" target="_blank">https://support.oracle.com/support/?kmContentId=97270</a>
-
-PL/SQL units that have been compiled in NATIVE mode cannot be profiled using the DBMS_PROFILER package.
-To gather information using DBMS_PROFILER, you must ensure that the PL/SQL code is INTERPRETED."
-Before compilation of the profiled code, execute:
-alter session set plsql_code_type=interpreted;
-
-To start and stop profiling code, use the following commands (see use <a href="https://docs.oracle.com/cd/B19306_01/appdev.102/b14258/d_profil.htm#i1000047" rel="nofollow" target="_blank">https://docs.oracle.com/cd/B19306_01/appdev.102/b14258/d_profil.htm#i1000047</a>):
-dbms_profiler.start_profiler(optional run_comment);
-dbms_profiler.stop_profiler;
-
-To purge and reset the profiler data, execute the following as sys:
-truncate table sys.plsql_profiler_data;
-truncate table sys.plsql_profiler_units;
-truncate table sys.plsql_profiler_runs;
-alter sequence plsql_profiler_runnumber restart start with 1;
--- Excel Examle Output: https://www.enginatics.com/example/dba-profiler-data/
+-- Description: Excel version of Oracle's dbmsprofiler PLSQL performance analysis, see Oracle note:
+-- Using DBMSPROFILER (KB85737)
+-- https://support.oracle.com/support/?kmContentId=97270
+-- PL/SQL units that have been compiled in NATIVE mode cannot be profiled using the DBMSPROFILER package.
+-- To gather information using DBMSPROFILER, you must ensure that the PL/SQL code is INTERPRETED."
+-- Before compilation of the profiled code, execute:
+-- alter session set plsqlcodetype=interpreted;
+-- To start and stop profiling code, use the following commands (see use https://docs.oracle.com/cd/B1930601/appdev.102/b14258/dprofil.htmi1000047):
+-- dbmsprofiler.startprofiler(optional runcomment);
+-- dbmsprofiler.stopprofiler;
+-- To purge and reset the profiler data, execute the following as sys:
+-- truncate table sys.plsqlprofilerdata;
+-- truncate table sys.plsqlprofilerunits;
+-- truncate table sys.plsqlprofilerruns;
+-- alter sequence plsqlprofilerrunnumber restart start with 1;
+-- Excel Example Output: https://www.enginatics.com/example/dba-profiler-data/
 -- Library Link: https://www.enginatics.com/reports/dba-profiler-data/
 -- Run Report: https://demo.enginatics.com/
 

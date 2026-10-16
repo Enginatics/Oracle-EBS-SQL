@@ -1,17 +1,18 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PA Missing Timecards
 -- Description: Active employees who have not submitted timecards for a given week ending date, showing employee details, job, organization, and supervisor.
--- Excel Examle Output: https://www.enginatics.com/example/pa-missing-timecards/
+-- Timecard Source Project Expenditures lists employees without a project expenditure for the week ending date. OTL Timecards lists employees without an OTL timecard whose period contains the week ending date, including employees who do not charge projects.
+-- Excel Example Output: https://www.enginatics.com/example/pa-missing-timecards/
 -- Library Link: https://www.enginatics.com/reports/pa-missing-timecards/
 -- Run Report: https://demo.enginatics.com/
 
 select
-haouv.name operating_unit,
+haouv.name business_group,
 ppx.employee_number,
 ppx.full_name employee_name,
 (select pj.name from per_jobs pj where pj.job_id=paf.job_id) job,
@@ -31,13 +32,26 @@ paf.assignment_type='E' and
 trunc(sysdate) between paf.effective_start_date and paf.effective_end_date and
 paf.business_group_id=haouv.organization_id and
 paf.organization_id=haouv2.organization_id and
-haouv.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11) and
+(
+:timecard_source='OTL' or
 not exists (
 select null
 from pa_expenditures_all pea
 where
 pea.incurred_by_person_id=ppx.person_id and
 pea.expenditure_ending_date=:week_ending_date
+)
+) and
+(
+nvl(:timecard_source,'PA')='PA' or
+ppx.person_id not in (
+select
+hts.resource_id
+from
+hxc_timecard_summary hts
+where
+:week_ending_date between trunc(hts.start_time) and trunc(hts.stop_time)
+)
 )
 order by
 haouv.name,

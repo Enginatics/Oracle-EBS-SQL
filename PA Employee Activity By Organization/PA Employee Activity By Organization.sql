@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PA Employee Activity By Organization
 -- Description: Labor hours summary by employee, project, and task showing total, billable, and non-billable hours with cost amounts for the expenditure organization.
--- Excel Examle Output: https://www.enginatics.com/example/pa-employee-activity-by-organization/
+-- Excel Example Output: https://www.enginatics.com/example/pa-employee-activity-by-organization/
 -- Library Link: https://www.enginatics.com/reports/pa-employee-activity-by-organization/
 -- Run Report: https://demo.enginatics.com/
 

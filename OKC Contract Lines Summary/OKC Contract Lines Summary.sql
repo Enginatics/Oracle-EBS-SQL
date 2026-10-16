@@ -1,13 +1,13 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: OKC Contract Lines Summary
 -- Description: Summary of okc line style hierarchies, the jtf objects linked to each line level and the active and overall count of contract lines by status for each line type.
-This is useful for developers to see how the oracle contracts line data is structured and how the link to external objects, e.g. installed base or counters for service contracts works
--- Excel Examle Output: https://www.enginatics.com/example/okc-contract-lines-summary/
+-- This is useful for developers to see how the oracle contracts line data is structured and how the link to external objects, e.g. installed base or counters for service contracts works
+-- Excel Example Output: https://www.enginatics.com/example/okc-contract-lines-summary/
 -- Library Link: https://www.enginatics.com/reports/okc-contract-lines-summary/
 -- Run Report: https://demo.enginatics.com/
 
@@ -26,7 +26,7 @@ jov.name object_name,
 jov.from_table,
 jov.where_clause,
 olsv.path lse_id_path,
-decode(oklb.active,0,null,oklb.active) active_by_date,
+nullif(oklb.active,0) active_by_date,
 oklb.total,
 &status_columns
 from

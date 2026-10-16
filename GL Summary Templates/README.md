@@ -1,40 +1,49 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'GL Summary Templates | Oracle EBS SQL Report'
 description: 'Master data report showing GL summary and concatenation templates based on ledger, company, department, account, sub-account, and product segments, and…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Summary, Templates, gl_ledgers, gl_summary_templates'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, General Ledger, Enginatics, Summary, Templates, gl_ledgers, gl_summary_templates'
 permalink: /GL%20Summary%20Templates/
+report_name: 'GL Summary Templates'
+report_web_name: gl-summary-templates
+module: 'General Ledger'
+module_url: /modules/general-ledger/
 ---
 
 # GL Summary Templates – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/gl-summary-templates/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/gl-summary-templates/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=gl-summary-templates) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=gl-summary-templates).
+**Oracle EBS module:** [General Ledger](/modules/general-ledger/ "Oracle EBS General Ledger reports") · [all General Ledger reports](/modules/general-ledger/)  
 
 ## Overview
 Master data report showing GL summary and concatenation templates based on ledger, company, department, account, sub-account, and product segments, and including information for the group, ledger set, ledger, ledger category, currency and chart of accounts.
+
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=gl-summary-templates) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 
 ## Report Parameters
 Chart of Accounts, Non Rollup Group Only
 
 ## Oracle EBS Tables Used
-[gl_ledgers](https://www.enginatics.com/library/?pg=1&find=gl_ledgers), [gl_summary_templates](https://www.enginatics.com/library/?pg=1&find=gl_summary_templates)
+[gl_ledgers](https://www.enginatics.com/library/?pg=1&find=gl_ledgers&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=gl-summary-templates), [gl_summary_templates](https://www.enginatics.com/library/?pg=1&find=gl_summary_templates&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=gl-summary-templates)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=gl-summary-templates)
 
 ## Related Reports
 [GL Balance by Account Hierarchy](/GL%20Balance%20by%20Account%20Hierarchy/ "GL Balance by Account Hierarchy Oracle EBS SQL Report"), [GL Code Combinations](/GL%20Code%20Combinations/ "GL Code Combinations Oracle EBS SQL Report"), [GL Summary Account Upload](/GL%20Summary%20Account%20Upload/ "GL Summary Account Upload Oracle EBS SQL Report"), [AP Supplier Upload](/AP%20Supplier%20Upload/ "AP Supplier Upload Oracle EBS SQL Report"), [CST Period Close Subinventory Value Summary](/CST%20Period%20Close%20Subinventory%20Value%20Summary/ "CST Period Close Subinventory Value Summary Oracle EBS SQL Report"), [GL Budget Amounts Upload](/GL%20Budget%20Amounts%20Upload/ "GL Budget Amounts Upload Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/GL%20Summary%20Templates/GL%20Summary%20Templates.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=gl-summary-templates) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [GL Summary Templates 09-Jul-2019 140636.xlsx](https://www.enginatics.com/example/gl-summary-templates/) |
-| Blitz Report™ XML Import | [GL_Summary_Templates.xml](https://www.enginatics.com/xml/gl-summary-templates/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/gl-summary-templates/](https://www.enginatics.com/reports/gl-summary-templates/) |
+| Excel Example Output | [GL Summary Templates 09-Jul-2019 140636.xlsx](https://www.enginatics.com/example/gl-summary-templates/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=gl-summary-templates) |
+| Blitz Report™ XML Import | [GL_Summary_Templates.xml](https://www.enginatics.com/xml/gl-summary-templates/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=gl-summary-templates) |
+| SQL Source | [GL Summary Templates.sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/GL%20Summary%20Templates/GL%20Summary%20Templates.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/gl-summary-templates/](https://www.enginatics.com/reports/gl-summary-templates/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=gl-summary-templates) |
 
 ## GL Summary Templates - Case Study & Technical Analysis
 
@@ -63,18 +72,17 @@ The **GL Summary Templates** report lists the existing Summary Account templates
 *   **Chart of Accounts**: Filter by structure.
 *   **Non Rollup Group Only**: A filter to show templates that might be using "Parent" values directly rather than Rollup Groups (depending on configuration).
 
-
 ---
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=gl-summary-templates)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=gl-summary-templates)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=gl-summary-templates)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=gl-summary-templates)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=gl-summary-templates)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=gl-summary-templates)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=gl-summary-templates)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

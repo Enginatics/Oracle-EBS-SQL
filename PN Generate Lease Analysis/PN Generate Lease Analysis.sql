@@ -1,15 +1,15 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PN Generate Lease Analysis
 -- Description: Application: Property Manager
-Source: Generate Lease Analysis Report
-Short Name: PNLAR_XML
-DB package: XXEN_PN
--- Excel Examle Output: https://www.enginatics.com/example/pn-generate-lease-analysis/
+-- Source: Generate Lease Analysis Report
+-- Short Name: PNLARXML
+-- DB package: XXENPN
+-- Excel Example Output: https://www.enginatics.com/example/pn-generate-lease-analysis/
 -- Library Link: https://www.enginatics.com/reports/pn-generate-lease-analysis/
 -- Run Report: https://demo.enginatics.com/
 

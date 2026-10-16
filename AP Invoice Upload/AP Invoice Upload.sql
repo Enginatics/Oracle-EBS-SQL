@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: AP Invoice Upload
 -- Description: AP Invoice Upload
--- Excel Examle Output: https://www.enginatics.com/example/ap-invoice-upload/
+-- Excel Example Output: https://www.enginatics.com/example/ap-invoice-upload/
 -- Library Link: https://www.enginatics.com/reports/ap-invoice-upload/
 -- Run Report: https://demo.enginatics.com/
 
@@ -119,11 +119,11 @@ xxen_util.meaning(aila.assets_tracking_flag,'YES_NO',0) track_as_asset,
 (select fbc.book_type_name from fa_book_controls fbc where fbc.book_type_code = aila.asset_book_type_code) asset_book,
 (select fck.concatenated_segments from fa_categories_b_kfv fck where fck.category_id = aila.asset_category_id) asset_category,
 --
-(select ppev.project_number from pa_projects_expend_v ppev where ppev.project_id = aila.project_id) project,
-(select ptev.task_number from pa_tasks_expend_v ptev where ptev.task_id = aila.task_id) task,
+(select ppa.segment1 from pa_projects_all ppa where aila.project_id=ppa.project_id) project,
+(select pt.task_number from pa_tasks pt where aila.task_id=pt.task_id) task,
 aila.expenditure_item_date,
 aila.expenditure_type,
-(select poev.name from pa_organizations_expend_v poev where poev.organization_id = aila.expenditure_organization_id) expenditure_organization,
+(select haouv_exp.name from hr_all_organization_units_vl haouv_exp where aila.expenditure_organization_id=haouv_exp.organization_id) expenditure_organization,
 aila.pa_quantity project_quantity,
 -- tax
 aila.type_1099 income_tax_type,
@@ -347,4 +347,5 @@ nvl(:p_calulate_tax_flag,'?') = nvl(:p_calulate_tax_flag,'?') and
 nvl(:p_gl_date,sysdate) = nvl(:p_gl_date,sysdate) and
 nvl(:p_submit_validation,'N') = nvl(:p_submit_validation,'N') and
 nvl(:p_default_taxation_country,'XX') = nvl(:p_default_taxation_country,'XX') and
+nvl(:p_dflt_line_amount,'N') = nvl(:p_dflt_line_amount,'N') and
 1=0

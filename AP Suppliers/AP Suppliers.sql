@@ -1,12 +1,15 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: AP Suppliers
 -- Description: AP suppliers (po vendors) including supplier sites, contact and bank account information on vendor and site level
--- Excel Examle Output: https://www.enginatics.com/example/ap-suppliers/
+-- When India Localization is installed, the following GST columns are also included: GST Registration No, GST PAN No, GST TAN No.
+-- Duplicate Match restricts the output to suppliers sharing a match key with at least one other supplier and lists the shared keys. Names are compared in upper case without punctuation, spaces and legal form suffixes (Inc, Ltd, GmbH, SA and similar), the other keys without punctuation and spaces. Bank accounts are shown masked.
+-- Spend Last 12 Months is the total of the supplier's invoices dated in the last twelve months, excluding cancelled invoices, in each operating unit's functional currency.
+-- Excel Example Output: https://www.enginatics.com/example/ap-suppliers/
 -- Library Link: https://www.enginatics.com/reports/ap-suppliers/
 -- Run Report: https://demo.enginatics.com/
 
@@ -14,6 +17,7 @@ select
 haouv.name operating_unit,
 aps.vendor_name supplier,
 aps.segment1 supplier_number,
+&dup_columns
 aps.vendor_name_alt alternate_supplier,
 hp.known_as  trading_partner,
 &dff_columns
@@ -100,6 +104,8 @@ atv1.name site_payment_terms,
 (select distinct listagg(xxen_util.meaning(ieppm.payment_method_code,'PAYMENT METHOD',200,'Y'),', ') within group (order by ieppm.primary_flag desc, ieppm.payment_method_code) over () payment_method from iby_ext_party_pmt_mthds ieppm where iepa1.ext_payee_id=ieppm.ext_pmt_party_id) site_payment_method,
 &site_bank_account
 &contacts_columns
+&contact_responsibility_columns
+&il_reg_columns
 xxen_util.client_time(aps.creation_date) supplier_creation_date,
 xxen_util.user_name(aps.created_by) supplier_created_by,
 xxen_util.client_time(aps.last_update_date) supplier_last_update_date,
@@ -115,7 +121,105 @@ hr_all_organization_units_vl haouv,
 ap_suppliers aps,
 (select assa.* from ap_supplier_sites_all assa where 2=2) assa,
 fnd_territories_vl ftv,
-(select pvc.* from po_vendor_contacts pvc where '&show_contacts'='Y' and 3=3) pvc,
+(
+select
+pvc.vendor_contact_id,
+pvc.vendor_site_id,
+pvc.vendor_id,
+pvc.per_party_id,
+pvc.prefix,
+pvc.first_name,
+pvc.middle_name,
+pvc.last_name,
+pvc.title,
+pvc.area_code,
+pvc.phone,
+pvc.email_address,
+pvc.inactive_date
+from
+po_vendor_contacts pvc
+where '&show_contacts'='Y' and 3=3
+union all
+select
+pvc.*
+from
+(
+select
+to_number(null) vendor_contact_id,
+to_number(null) vendor_site_id,
+aps.vendor_id,
+hzr.subject_id per_party_id,
+nvl(hp.person_pre_name_adjunct,hp.salutation) prefix,
+substr(hp.person_first_name,1,15) first_name,
+substr(hp.person_middle_name,1,15) middle_name,
+substr(hp.person_last_name,1,15) last_name,
+substr(hp.person_title,1,30) title,
+hp2.primary_phone_area_code area_code,
+hp2.primary_phone_number phone,
+hp2.email_address,
+hzr.end_date inactive_date
+from
+ap_suppliers aps,
+hz_relationships hzr,
+hz_parties hp,
+hz_parties hp2
+where
+aps.party_id=hzr.object_id and
+hzr.object_type='ORGANIZATION' and
+hzr.subject_type='PERSON' and
+hzr.relationship_type='CONTACT' and
+hzr.relationship_code='CONTACT_OF' and
+hzr.directional_flag='F' and
+hzr.status in ('A','I') and
+hzr.subject_id=hp.party_id and
+hzr.party_id=hp2.party_id and
+hzr.subject_id in (select hpua.party_id from hz_party_usg_assignments hpua where hpua.party_usage_code='SUPPLIER_CONTACT' and hpua.status_flag in ('A','I')) and
+not exists (select null from ap_supplier_contacts asco where hzr.relationship_id=asco.relationship_id and (asco.org_party_site_id is not null or asco.vendor_site_id is null))
+) pvc
+where '&show_contacts'='Y' and 3=3
+) pvc,
+(
+select
+fu.person_party_id,
+listagg(fu.user_name,chr(10)) within group (order by fu.user_name) contact_user_name,
+case when count(*)=count(fu.end_date) then max(fu.end_date) end contact_user_inactive_date
+from
+fnd_user fu
+where
+'&show_contact_responsibilities'='Y' and
+fu.person_party_id in (select asco.per_party_id from ap_supplier_contacts asco union select hpua.party_id from hz_party_usg_assignments hpua where hpua.party_usage_code='SUPPLIER_CONTACT')
+group by
+fu.person_party_id
+) cu,
+(
+select
+x.person_party_id,
+listagg(x.responsibility_name,chr(10)) within group (order by x.responsibility_name, x.application_name) contact_responsibilities,
+listagg(x.application_name,chr(10)) within group (order by x.responsibility_name, x.application_name) contact_applications
+from
+(
+select distinct
+fu.person_party_id,
+frv.responsibility_name,
+fav.application_name
+from
+fnd_user fu,
+fnd_user_resp_groups_direct furgd,
+fnd_responsibility_vl frv,
+fnd_application_vl fav
+where
+'&show_contact_responsibilities'='Y' and
+fu.person_party_id in (select asco.per_party_id from ap_supplier_contacts asco union select hpua.party_id from hz_party_usg_assignments hpua where hpua.party_usage_code='SUPPLIER_CONTACT') and
+fu.user_id=furgd.user_id and
+furgd.security_group_id=0 and
+(furgd.end_date is null or furgd.end_date>sysdate) and
+furgd.responsibility_id=frv.responsibility_id and
+furgd.responsibility_application_id=frv.application_id and
+furgd.responsibility_application_id=fav.application_id
+) x
+group by
+x.person_party_id
+) cr,
 ap_suppliers aps0,
 ap_terms_vl atv0,
 ap_terms_vl atv1,
@@ -131,12 +235,17 @@ hz_parties hp,
 hz_party_sites hps,
 zx_party_tax_profile zptp0,
 zx_party_tax_profile zptp1
+&dup_from
+&il_from
 where
 1=1 and
 aps.vendor_id=assa.vendor_id(+) and
 assa.org_id=haouv.organization_id(+) and
 assa.country=ftv.territory_code(+) and
-assa.vendor_site_id=pvc.vendor_site_id(+) and
+assa.vendor_id=pvc.vendor_id(+) and
+nvl(assa.vendor_site_id,-99)=nvl(pvc.vendor_site_id(+),nvl(assa.vendor_site_id,-99)) and
+pvc.per_party_id=cu.person_party_id(+) and
+pvc.per_party_id=cr.person_party_id(+) and
 aps.parent_vendor_id=aps0.vendor_id(+) and
 aps.terms_id=atv0.term_id(+) and
 assa.terms_id=atv1.term_id(+) and
@@ -156,6 +265,7 @@ aps.party_id = zptp0.party_id (+) and
 'THIRD_PARTY' = zptp0.party_type_code (+) and
 assa.party_site_id = zptp1.party_id (+) and
 'THIRD_PARTY_SITE' = zptp1.party_type_code (+)
+&il_where
 order by
 haouv.name,
 aps.vendor_name,

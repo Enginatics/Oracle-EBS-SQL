@@ -1,15 +1,15 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PO Cancelled Purchase Orders
 -- Description: Application: Purchasing
-Source: Cancelled Purchase Orders Report (XML)
-Short Name: POXPOCAN_XML
-DB package: PO_POXPOCAN_XMLP_PKG
--- Excel Examle Output: https://www.enginatics.com/example/po-cancelled-purchase-orders/
+-- Source: Cancelled Purchase Orders Report (XML)
+-- Short Name: POXPOCANXML
+-- DB package: POPOXPOCANXMLPPKG
+-- Excel Example Output: https://www.enginatics.com/example/po-cancelled-purchase-orders/
 -- Library Link: https://www.enginatics.com/reports/po-cancelled-purchase-orders/
 -- Run Report: https://demo.enginatics.com/
 

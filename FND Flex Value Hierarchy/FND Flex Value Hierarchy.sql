@@ -1,24 +1,20 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: FND Flex Value Hierarchy
 -- Description: Flexfield value hierarchy showing a hierarchical tree of parent and child relations and child ranges.
-Parameter 'Parents without Child only' can be used to validate the hierarchy for nodes where the child range does not include a single child value.
-
-The query is based on a treewalk through table fnd_flex_value_norm_hierarchy, which contains one record for every parent node, and a range_attribute column to indicate if the child value low/high range should match either parent nodes or child values.
-
-While table fnd_flex_value_norm_hierarchy contains one record for each hierarchy node, table fnd_flex_value_hierarchies shows a flat representation of all hierarchy nodes and their lowest child ranges (range_attribute=C). For any lowest child range value, it contains one record for every higher hierarchy, that this child range is included in, up to the topmost hierarchy node. It can be used, for example, to validate directly if a child value is included in a specific higher level hierarchy node.
-
-For GL flex value hierarchies, there are additional tables gl_seg_val_norm_hierarchy and gl_seg_val_hierarchies, which store one record for each matching child value for parent nodes, instead of just the range.
-These tables are updated automatically after each flex value hierarchy change by concurrent 'General Ledger Accounting Setup Program' (GLSTFL).
-gl_seg_val_norm_hierarchy stores one record for every child and their direct parent.
-gl_seg_val_hierarchies stores one record for every node in the hierarchy (regardless if child or parent) and all their parent records, regardless on which level. It can be used, for example, to directly find all childs of one parent node.
-
-Table gl_account_hierarchies stores the relation between summary template and detail code combination ids.
--- Excel Examle Output: https://www.enginatics.com/example/fnd-flex-value-hierarchy/
+-- Parameter 'Parents without Child only' can be used to validate the hierarchy for nodes where the child range does not include a single child value.
+-- The query is based on a treewalk through table fndflexvaluenormhierarchy, which contains one record for every parent node, and a rangeattribute column to indicate if the child value low/high range should match either parent nodes or child values.
+-- While table fndflexvaluenormhierarchy contains one record for each hierarchy node, table fndflexvaluehierarchies shows a flat representation of all hierarchy nodes and their lowest child ranges (rangeattribute=C). For any lowest child range value, it contains one record for every higher hierarchy, that this child range is included in, up to the topmost hierarchy node. It can be used, for example, to validate directly if a child value is included in a specific higher level hierarchy node.
+-- For GL flex value hierarchies, there are additional tables glsegvalnormhierarchy and glsegvalhierarchies, which store one record for each matching child value for parent nodes, instead of just the range.
+-- These tables are updated automatically after each flex value hierarchy change by concurrent 'General Ledger Accounting Setup Program' (GLSTFL).
+-- glsegvalnormhierarchy stores one record for every child and their direct parent.
+-- glsegvalhierarchies stores one record for every node in the hierarchy (regardless if child or parent) and all their parent records, regardless on which level. It can be used, for example, to directly find all childs of one parent node.
+-- Table glaccounthierarchies stores the relation between summary template and detail code combination ids.
+-- Excel Example Output: https://www.enginatics.com/example/fnd-flex-value-hierarchy/
 -- Library Link: https://www.enginatics.com/reports/fnd-flex-value-hierarchy/
 -- Run Report: https://demo.enginatics.com/
 

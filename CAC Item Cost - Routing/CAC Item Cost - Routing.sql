@@ -1,67 +1,64 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Item Cost & Routing
--- Description: Report to show detailed item costs for buy and make items for one or any two cost types.  If you enter multiple cost types you will get a row-by-row comparison in detail.
-Note: to find all the items with a specific Basis Type, such as Lot or Ttl value (Total value), use the Basis Type parameter.
-
-Parameters:
-===========
-Cost Type:  enter the cost type(s) you wish to report (mandatory).
-Category Set 1:  the first item category set to report, typically the Cost or Product Line Category Set (optional).
-Category Set 2:  the second item category set to report, typically the Inventory Category Set (optional).
-Make or Buy:  enter Buy, Make or leave blank to get all items (optional).
-Based on Rollup:  enter Yes to get the rolled up items, No to get the non-rolled-up items (optional).
-Basis Type:  enter the basis type you wish to report, such as Item, Lot, Res Units, Res Value, or Ttl Value (optional).
-Item Status to Exclude:  enter the item number status you want to exclude.  Defaulted to 'Inactive' (optional).
-Item Number:  enter the item numbers you wish to report (optional).
-Organization Code:  enter the specific inventory organization(s) you wish to report (optional).
-Operating Unit:  enter the specific operating unit(s) you wish to report (optional).
-Ledger:  enter the specific ledger(s) you wish to report (optional).
-
-/* +=============================================================================+
--- | Copyright 2010 - 2023 Douglas Volz Consulting, Inc.
--- | All rights reserved.
--- | Permission to use this code is granted provided the original author is
--- | acknowledged. No warranties, express or otherwise is included in this permission.
--- +=============================================================================+
--- |
--- | Original Author: Douglas Volz (doug@volzconsulting.com)
--- |
--- | Program Name: xxx_item_costs_routing_rept.sql
--- |
--- | Description:
--- | Report to show detailed items costs for buy and make items for any two cost types.
--- | 
--- | Version Modified on Modified by Description
--- | ======= =========== ============== =========================================
--- |  1.0     06 Oct 2009 Douglas Volz  Initial Coding
--- |  1.1     16 Mar 2010 Douglas Volz  Updated with Make/Buy flags
--- |  1.2     26 Aug 2010 Douglas Volz  Added two cost types and effectivity date
--- |                                    parameters.
--- |  1.3     12 Oct 2010 Douglas Volz  Added parameters for business objects
--- |  1.4     26 Oct 2010 Douglas Volz  Added parameter for specific Item_Number
--- |  1.5     01 Feb 2017 Douglas Volz  Added Resource Activity and Cost Category
--- |  1.6     22 May 2017 Douglas Volz  Added inventory item category
--- |  1.7     27 Jan 2020 Douglas Volz  Added Operating_Unit and Org_Code parameters
--- |  1.8     26 Apr 2020 Douglas Volz  Changed to multi-language views for the item
--- |                                    master, inventory orgs and operating units.
--- |  1.9     21 Oct 2020 Douglas Volz  Added Category1, Category2, Cost Creation
--- |                                    Date, Last Cost Update Date, screen out
--- |                                    the item master orgs.
--- |  1.10    17 Mar 2021 Douglas Volz  Add parameter for Inactive Items.
--- |  1.11    26 Oct 2023 Douglas Volz  Added item master std lot size and defaulted
--- |                                    columns, removed tabs, added Basis Type, Based on Rollup
--- |                                    and Make/Buy parameters and org access controls.
--- |                                    Removed Cost Type2, not needed with Multiple Value
--- |                                    functionality.
--- |  1.12    07 Dec 2023 Douglas Volz  Added G/L and Operating Unit security restrictions.
--- +=============================================================================+*/
-
--- Excel Examle Output: https://www.enginatics.com/example/cac-item-cost-routing/
+-- Description: Report to show detailed item costs for buy and make items for one or any two cost types. If you enter multiple cost types you will get a row-by-row comparison in detail.
+-- Note: to find all the items with a specific Basis Type, such as Lot or Ttl value (Total value), use the Basis Type parameter.
+-- Parameters:
+-- ===========
+-- Cost Type: enter the cost type(s) you wish to report (mandatory).
+-- Category Set 1: the first item category set to report, typically the Cost or Product Line Category Set (optional).
+-- Category Set 2: the second item category set to report, typically the Inventory Category Set (optional).
+-- Make or Buy: enter Buy, Make or leave blank to get all items (optional).
+-- Based on Rollup: enter Yes to get the rolled up items, No to get the non-rolled-up items (optional).
+-- Basis Type: enter the basis type you wish to report, such as Item, Lot, Res Units, Res Value, or Ttl Value (optional).
+-- Item Status to Exclude: enter the item number status you want to exclude. Defaulted to 'Inactive' (optional).
+-- Item Number: enter the item numbers you wish to report (optional).
+-- Organization Code: enter the specific inventory organization(s) you wish to report (optional).
+-- Operating Unit: enter the specific operating unit(s) you wish to report (optional).
+-- Ledger: enter the specific ledger(s) you wish to report (optional).
+-- / +=============================================================================+
+-- -- | Copyright 2010 - 2023 Douglas Volz Consulting, Inc.
+-- -- | All rights reserved.
+-- -- | Permission to use this code is granted provided the original author is
+-- -- | acknowledged. No warranties, express or otherwise is included in this permission.
+-- -- +=============================================================================+
+-- -- |
+-- -- | Original Author: Douglas Volz (doug@volzconsulting.com)
+-- -- |
+-- -- | Program Name: xxxitemcostsroutingrept.sql
+-- -- |
+-- -- | Description:
+-- -- | Report to show detailed items costs for buy and make items for any two cost types.
+-- -- |
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== ============== =========================================
+-- -- | 1.0 06 Oct 2009 Douglas Volz Initial Coding
+-- -- | 1.1 16 Mar 2010 Douglas Volz Updated with Make/Buy flags
+-- -- | 1.2 26 Aug 2010 Douglas Volz Added two cost types and effectivity date
+-- -- | parameters.
+-- -- | 1.3 12 Oct 2010 Douglas Volz Added parameters for business objects
+-- -- | 1.4 26 Oct 2010 Douglas Volz Added parameter for specific ItemNumber
+-- -- | 1.5 01 Feb 2017 Douglas Volz Added Resource Activity and Cost Category
+-- -- | 1.6 22 May 2017 Douglas Volz Added inventory item category
+-- -- | 1.7 27 Jan 2020 Douglas Volz Added OperatingUnit and OrgCode parameters
+-- -- | 1.8 26 Apr 2020 Douglas Volz Changed to multi-language views for the item
+-- -- | master, inventory orgs and operating units.
+-- -- | 1.9 21 Oct 2020 Douglas Volz Added Category1, Category2, Cost Creation
+-- -- | Date, Last Cost Update Date, screen out
+-- -- | the item master orgs.
+-- -- | 1.10 17 Mar 2021 Douglas Volz Add parameter for Inactive Items.
+-- -- | 1.11 26 Oct 2023 Douglas Volz Added item master std lot size and defaulted
+-- -- | columns, removed tabs, added Basis Type, Based on Rollup
+-- -- | and Make/Buy parameters and org access controls.
+-- -- | Removed Cost Type2, not needed with Multiple Value
+-- -- | functionality.
+-- -- | 1.12 07 Dec 2023 Douglas Volz Added G/L and Operating Unit security restrictions.
+-- -- +=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-item-cost-routing/
 -- Library Link: https://www.enginatics.com/reports/cac-item-cost-routing/
 -- Run Report: https://demo.enginatics.com/
 

@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: Blitz Report Parameter Default Values
 -- Description: Blitz Report's user or template specific parameter default values
--- Excel Examle Output: https://www.enginatics.com/example/blitz-report-parameter-default-values/
+-- Excel Example Output: https://www.enginatics.com/example/blitz-report-parameter-default-values/
 -- Library Link: https://www.enginatics.com/reports/blitz-report-parameter-default-values/
 -- Run Report: https://demo.enginatics.com/
 

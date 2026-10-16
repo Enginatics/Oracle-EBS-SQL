@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: Blitz Report Assignments and Responsibilities
 -- Description: Lists all responsibilities, users, and the bitz reports that they can access, presumed they have their Blitz Report Access profile option set to 'User'
--- Excel Examle Output: https://www.enginatics.com/example/blitz-report-assignments-and-responsibilities/
+-- Excel Example Output: https://www.enginatics.com/example/blitz-report-assignments-and-responsibilities/
 -- Library Link: https://www.enginatics.com/reports/blitz-report-assignments-and-responsibilities/
 -- Run Report: https://demo.enginatics.com/
 

@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PER Organizations
 -- Description: Master data report showing organizations, classifications, address details and additional information attributes.
--- Excel Examle Output: https://www.enginatics.com/example/per-organizations/
+-- Excel Example Output: https://www.enginatics.com/example/per-organizations/
 -- Library Link: https://www.enginatics.com/reports/per-organizations/
 -- Run Report: https://demo.enginatics.com/
 
@@ -19,7 +19,7 @@ haouv.name organization,
 mp.organization_code,
 decode(haouv.internal_external_flag,'EXT','External','INT','Internal') internal_or_external,
 &col_classification
-decode(haouv.head_count,0,null,haouv.head_count) head_count,
+nullif(haouv.head_count,0) head_count,
 hla.location_code,
 nvl2(hla.address_line_1,hla.address_line_1||', ','')||
 nvl2(hla.address_line_2,hla.address_line_2||', ','')||

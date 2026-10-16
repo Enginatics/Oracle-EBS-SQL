@@ -1,14 +1,17 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'QP Modifier Upload | Oracle EBS SQL Report'
 description: 'This upload supports the creation and update of Modifiers in Oracle Advanced Pricing. The upload supports creation/update/deletion of the following…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, Modifier, qp_secu_list_headers_vl, qp_qualifiers_v'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, Modifier, qp_secu_list_headers_vl, qp_qualifiers_v, qp_modifier_summary_v'
 permalink: /QP%20Modifier%20Upload/
+report_name: 'QP Modifier Upload'
+report_web_name: qp-modifier-upload
 ---
 
 # QP Modifier Upload – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/qp-modifier-upload/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/qp-modifier-upload/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-modifier-upload) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-modifier-upload).
 
 ## Overview
 This upload supports the creation and update of Modifiers in Oracle Advanced Pricing.
@@ -56,29 +59,31 @@ Limits entered on a row with no modifier line details will be uploaded as a list
 Limits entered on a row containing modifier line details will by default be uploaded as a line level limit. The Limit Assignment Level column can be used to override this default behaviour to assign the limit to the list header instead of the modifier Line. 
 Limit No is required when entering limit details. The upload uses the combination of List Number, List Version, Modifier Line No (for modifier level limits), and the Limit No to identify the limit. If the combination already exists in Oracle the upload will update the existing limit, otherwise it will create a new modifier.
 
-
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-modifier-upload) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 
 ## Report Parameters
 Upload Mode, End Date Matching Modifiers?, Modifier Numbering, List Type, List Number, List Number Like, List Name, List Name Like, Version Number, Global List, Operating Unit, Modifier Line Type, Product Attribute Context, Product Attribute, Product Value (Item/Item Cat), Product Value (Other), Item Category Set, Item Category, Effective Date, Download Modifier Lines, Download Price Breaks, Download Buy/Get Products, Download Pricing Attributes, Download Excluders, Download List Qualifiers, Download Line Qualifiers, Download List Limits, Download Line Limits
 
 ## Oracle EBS Tables Used
-[qp_secu_list_headers_vl](https://www.enginatics.com/library/?pg=1&find=qp_secu_list_headers_vl), [qp_qualifiers_v](https://www.enginatics.com/library/?pg=1&find=qp_qualifiers_v)
+[qp_secu_list_headers_vl](https://www.enginatics.com/library/?pg=1&find=qp_secu_list_headers_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-modifier-upload), [qp_qualifiers_v](https://www.enginatics.com/library/?pg=1&find=qp_qualifiers_v&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-modifier-upload), [qp_modifier_summary_v](https://www.enginatics.com/library/?pg=1&find=qp_modifier_summary_v&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-modifier-upload), [qp_limits_v](https://www.enginatics.com/library/?pg=1&find=qp_limits_v&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-modifier-upload), [qp_limit_attributes_v](https://www.enginatics.com/library/?pg=1&find=qp_limit_attributes_v&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-modifier-upload), [qp_list_lines](https://www.enginatics.com/library/?pg=1&find=qp_list_lines&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-modifier-upload), [qp_rltd_modifiers](https://www.enginatics.com/library/?pg=1&find=qp_rltd_modifiers&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-modifier-upload), [qp_price_breaks_v](https://www.enginatics.com/library/?pg=1&find=qp_price_breaks_v&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-modifier-upload), [qp_pricing_attr_v](https://www.enginatics.com/library/?pg=1&find=qp_pricing_attr_v&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-modifier-upload), [qp_pricing_attr_get_v](https://www.enginatics.com/library/?pg=1&find=qp_pricing_attr_get_v&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-modifier-upload), [qp_pricing_attributes](https://www.enginatics.com/library/?pg=1&find=qp_pricing_attributes&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-modifier-upload)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Upload](https://www.enginatics.com/library/?pg=1&category[]=Upload)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-modifier-upload), [Upload](https://www.enginatics.com/library/?pg=1&category%5B%5D=Upload&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-modifier-upload)
 
-
+## Related Reports
+[QP Modifier Details](/QP%20Modifier%20Details/ "QP Modifier Details Oracle EBS SQL Report"), [INV Physical Inventory Purge Upload](/INV%20Physical%20Inventory%20Purge%20Upload/ "INV Physical Inventory Purge Upload Oracle EBS SQL Report"), [QP GSA Pricing Upload](/QP%20GSA%20Pricing%20Upload/ "QP GSA Pricing Upload Oracle EBS SQL Report"), [QP Customer Pricing Engine Request](/QP%20Customer%20Pricing%20Engine%20Request/ "QP Customer Pricing Engine Request Oracle EBS SQL Report"), [QP Price List Upload](/QP%20Price%20List%20Upload/ "QP Price List Upload Oracle EBS SQL Report"), [QP Pricing Agreements](/QP%20Pricing%20Agreements/ "QP Pricing Agreements Oracle EBS SQL Report"), [CAC Intercompany SO Price List vs. Item Cost Comparison](/CAC%20Intercompany%20SO%20Price%20List%20vs-%20Item%20Cost%20Comparison/ "CAC Intercompany SO Price List vs. Item Cost Comparison Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/QP%20Modifier%20Upload/QP%20Modifier%20Upload.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-modifier-upload) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [](https://www.enginatics.com/example/qp-modifier-upload/) |
-| Blitz Report™ XML Import | [QP_Modifier_Upload.xml](https://www.enginatics.com/xml/qp-modifier-upload/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/qp-modifier-upload/](https://www.enginatics.com/reports/qp-modifier-upload/) |
+| Excel Example Output | [Example](https://www.enginatics.com/example/qp-modifier-upload/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-modifier-upload) |
+| Blitz Report™ XML Import | [QP_Modifier_Upload.xml](https://www.enginatics.com/xml/qp-modifier-upload/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-modifier-upload) |
+| SQL Source | [QP Modifier Upload.sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/QP%20Modifier%20Upload/QP%20Modifier%20Upload.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/qp-modifier-upload/](https://www.enginatics.com/reports/qp-modifier-upload/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-modifier-upload) |
 
 ## Case Study & Technical Analysis: QP Modifier Upload Report
 
@@ -145,18 +150,17 @@ Using an API-based upload for complex pricing modifier data is inherently more e
 **3. Is it possible to use this tool to manage promotional pricing, like "Buy One Get One Free" offers?**
    Yes, the upload supports `Modifier Line Additional Buy Items` and `Modifier Line Get Items`, which are key components for configuring "Buy One Get X Free" or similar promotional offers. This makes the tool highly valuable for managing complex promotional pricing strategies in bulk.
 
-
 ---
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-modifier-upload)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-modifier-upload)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-modifier-upload)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-modifier-upload)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-modifier-upload)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-modifier-upload)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qp-modifier-upload)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

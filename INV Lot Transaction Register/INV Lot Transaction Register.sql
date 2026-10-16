@@ -1,17 +1,17 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: INV Lot Transaction Register
 -- Description: Imported from BI Publisher
-Description: Lot transaction register
-Application: Inventory
-Source: Lot transaction register (XML)
-Short Name: INVTRLNT_XML
-DB package: INV_INVTRLNT_XMLP_PKG
--- Excel Examle Output: https://www.enginatics.com/example/inv-lot-transaction-register/
+-- Description: Lot transaction register
+-- Application: Inventory
+-- Source: Lot transaction register (XML)
+-- Short Name: INVTRLNTXML
+-- DB package: INVINVTRLNTXMLPPKG
+-- Excel Example Output: https://www.enginatics.com/example/inv-lot-transaction-register/
 -- Library Link: https://www.enginatics.com/reports/inv-lot-transaction-register/
 -- Run Report: https://demo.enginatics.com/
 

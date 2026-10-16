@@ -1,15 +1,15 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: INV Cycle count hit/miss analysis
 -- Description: Imported Oracle standard Cycle count hit/miss analysis report
-Source: Cycle count hit/miss analysis (XML)
-Short Name: INVARHMA_XML
-DB package: INV_INVARHMA_XMLP_PKG
--- Excel Examle Output: https://www.enginatics.com/example/inv-cycle-count-hit-miss-analysis/
+-- Source: Cycle count hit/miss analysis (XML)
+-- Short Name: INVARHMAXML
+-- DB package: INVINVARHMAXMLPPKG
+-- Excel Example Output: https://www.enginatics.com/example/inv-cycle-count-hit-miss-analysis/
 -- Library Link: https://www.enginatics.com/reports/inv-cycle-count-hit-miss-analysis/
 -- Run Report: https://demo.enginatics.com/
 

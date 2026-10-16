@@ -1,14 +1,20 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'GMI Cycle Count Forms | Oracle EBS SQL Report'
 description: 'Imported Oracle standard Cycle Count Forms Report of Oracle OPM PI report Source: Cycle Count Forms (XML) Short Name: PIR05XML DB package: GMIPIR05XMLPPKG'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, GMI, Cycle, Count, Forms, ic_whse_mst, ic_phys_cnt, ic_cycl_hdr'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Process Manufacturing Inventory, Enginatics, GMI, Cycle, Count, Forms, ic_whse_mst, ic_phys_cnt, ic_cycl_hdr'
 permalink: /GMI%20Cycle%20Count%20Forms/
+report_name: 'GMI Cycle Count Forms'
+report_web_name: gmi-cycle-count-forms
+module: 'Process Manufacturing Inventory'
+module_url: /modules/process-manufacturing-inventory/
 ---
 
 # GMI Cycle Count Forms – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/gmi-cycle-count-forms/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/gmi-cycle-count-forms/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=gmi-cycle-count-forms) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=gmi-cycle-count-forms).
+**Oracle EBS module:** [Process Manufacturing Inventory](/modules/process-manufacturing-inventory/ "Oracle EBS Process Manufacturing Inventory reports") · [all Process Manufacturing Inventory reports](/modules/process-manufacturing-inventory/)  
 
 ## Overview
 Imported Oracle standard Cycle Count Forms Report of Oracle OPM PI report
@@ -16,27 +22,29 @@ Source: Cycle Count Forms (XML)
 Short Name: PIR05_XML
 DB package: GMI_PIR05_XMLP_PKG
 
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=gmi-cycle-count-forms) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
+
 ## Report Parameters
 Warehouse Code, Cycle, From Count, To Count, Sort By
 
 ## Oracle EBS Tables Used
-[ic_whse_mst](https://www.enginatics.com/library/?pg=1&find=ic_whse_mst), [ic_phys_cnt](https://www.enginatics.com/library/?pg=1&find=ic_phys_cnt), [ic_cycl_hdr](https://www.enginatics.com/library/?pg=1&find=ic_cycl_hdr), [ic_item_mst_vl](https://www.enginatics.com/library/?pg=1&find=ic_item_mst_vl), [ic_lots_mst](https://www.enginatics.com/library/?pg=1&find=ic_lots_mst)
+[ic_whse_mst](https://www.enginatics.com/library/?pg=1&find=ic_whse_mst&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=gmi-cycle-count-forms), [ic_phys_cnt](https://www.enginatics.com/library/?pg=1&find=ic_phys_cnt&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=gmi-cycle-count-forms), [ic_cycl_hdr](https://www.enginatics.com/library/?pg=1&find=ic_cycl_hdr&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=gmi-cycle-count-forms), [ic_item_mst_vl](https://www.enginatics.com/library/?pg=1&find=ic_item_mst_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=gmi-cycle-count-forms), [ic_lots_mst](https://www.enginatics.com/library/?pg=1&find=ic_lots_mst&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=gmi-cycle-count-forms)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
-
+[Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=gmi-cycle-count-forms)
 
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/GMI%20Cycle%20Count%20Forms/GMI%20Cycle%20Count%20Forms.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=gmi-cycle-count-forms) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [GMI Cycle Count Forms 25-Dec-2021 171514.xlsx](https://www.enginatics.com/example/gmi-cycle-count-forms/) |
-| Blitz Report™ XML Import | [GMI_Cycle_Count_Forms.xml](https://www.enginatics.com/xml/gmi-cycle-count-forms/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/gmi-cycle-count-forms/](https://www.enginatics.com/reports/gmi-cycle-count-forms/) |
+| Excel Example Output | [GMI Cycle Count Forms 25-Dec-2021 171514.xlsx](https://www.enginatics.com/example/gmi-cycle-count-forms/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=gmi-cycle-count-forms) |
+| Blitz Report™ XML Import | [GMI_Cycle_Count_Forms.xml](https://www.enginatics.com/xml/gmi-cycle-count-forms/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=gmi-cycle-count-forms) |
+| SQL Source | [GMI Cycle Count Forms.sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/GMI%20Cycle%20Count%20Forms/GMI%20Cycle%20Count%20Forms.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/gmi-cycle-count-forms/](https://www.enginatics.com/reports/gmi-cycle-count-forms/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=gmi-cycle-count-forms) |
 
 ## GMI Cycle Count Forms - Case Study & Technical Analysis
 
@@ -68,18 +76,17 @@ The **GMI Cycle Count Forms** report is a specialized inventory document used in
 *   **Cycle**: The specific cycle count batch ID.
 *   **From/To Count**: Range of count IDs to print.
 
-
 ---
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=gmi-cycle-count-forms)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=gmi-cycle-count-forms)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=gmi-cycle-count-forms)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=gmi-cycle-count-forms)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=gmi-cycle-count-forms)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=gmi-cycle-count-forms)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=gmi-cycle-count-forms)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

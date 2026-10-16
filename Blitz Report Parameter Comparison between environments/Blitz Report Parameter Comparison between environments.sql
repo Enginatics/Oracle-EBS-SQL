@@ -1,24 +1,22 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: Blitz Report Parameter Comparison between environments
 -- Description: Shows Blitz Report parameter differences between the local and a remote database server.
-
-Requires following view to be created on the remote environment to avoid ORA-64202: remote temporary or abstract LOB locator is encountered
-
-create or replace view xxen_report_parameters_v_ as
-select
-xrpv.*,
-dbms_lob.substr(xxen_util.clob_substrb(xrpv.sql_text,4000,1)) sql_text_short,
-dbms_lob.substr(xxen_util.clob_substrb(xrpv.lov_query,4000,1)) lov_query_short,
-length(xrpv.sql_text) sql_length,
-count(*) over (partition by xrpv.report_id) parameter_count
-from
-xxen_report_parameters_v xrpv;
--- Excel Examle Output: https://www.enginatics.com/example/blitz-report-parameter-comparison-between-environments/
+-- Requires following view to be created on the remote environment to avoid ORA-64202: remote temporary or abstract LOB locator is encountered
+-- create or replace view xxenreportparametersv as
+-- select
+-- xrpv.,
+-- dbmslob.substr(xxenutil.clobsubstrb(xrpv.sqltext,4000,1)) sqltextshort,
+-- dbmslob.substr(xxenutil.clobsubstrb(xrpv.lovquery,4000,1)) lovqueryshort,
+-- length(xrpv.sqltext) sqllength,
+-- count() over (partition by xrpv.reportid) parametercount
+-- from
+-- xxenreportparametersv xrpv;
+-- Excel Example Output: https://www.enginatics.com/example/blitz-report-parameter-comparison-between-environments/
 -- Library Link: https://www.enginatics.com/reports/blitz-report-parameter-comparison-between-environments/
 -- Run Report: https://demo.enginatics.com/
 

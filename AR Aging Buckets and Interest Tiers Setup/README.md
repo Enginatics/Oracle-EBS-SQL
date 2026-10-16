@@ -1,40 +1,49 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'AR Aging Buckets and Interest Tiers Setup | Oracle EBS SQL Report'
-description: 'AR Aging Buckets and Interest Tiers Setup – Oracle E-Business Suite SQL report'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Aging, Buckets, Interest, Tiers, ar_aging_bucket_lines, ar_aging_buckets'
+description: 'AR Aging Buckets and Interest Tiers Setup – Oracle EBS Receivables SQL report: free SQL, parameters and tables used.'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Receivables, Enginatics, Aging, Buckets, Interest, Tiers, ar_aging_bucket_lines, ar_aging_buckets'
 permalink: /AR%20Aging%20Buckets%20and%20Interest%20Tiers%20Setup/
+report_name: 'AR Aging Buckets and Interest Tiers Setup'
+report_web_name: ar-aging-buckets-and-interest-tiers-setup
+module: 'Receivables'
+module_url: /modules/receivables/
 ---
 
 # AR Aging Buckets and Interest Tiers Setup – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/ar-aging-buckets-and-interest-tiers-setup/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/ar-aging-buckets-and-interest-tiers-setup/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-aging-buckets-and-interest-tiers-setup) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-aging-buckets-and-interest-tiers-setup).
+**Oracle EBS module:** [Receivables](/modules/receivables/ "Oracle EBS Receivables reports") · [all Receivables reports](/modules/receivables/)  
 
 ## Overview
 AR Aging Buckets and Interest Tiers Setup
+
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-aging-buckets-and-interest-tiers-setup) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 
 ## Report Parameters
 Bucket Type, Bucket Name, Bucket Status
 
 ## Oracle EBS Tables Used
-[ar_aging_bucket_lines](https://www.enginatics.com/library/?pg=1&find=ar_aging_bucket_lines), [ar_aging_buckets](https://www.enginatics.com/library/?pg=1&find=ar_aging_buckets)
+[ar_aging_bucket_lines](https://www.enginatics.com/library/?pg=1&find=ar_aging_bucket_lines&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-aging-buckets-and-interest-tiers-setup), [ar_aging_buckets](https://www.enginatics.com/library/?pg=1&find=ar_aging_buckets&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-aging-buckets-and-interest-tiers-setup)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-aging-buckets-and-interest-tiers-setup)
 
 ## Related Reports
 [INV Aging](/INV%20Aging/ "INV Aging Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/AR%20Aging%20Buckets%20and%20Interest%20Tiers%20Setup/AR%20Aging%20Buckets%20and%20Interest%20Tiers%20Setup.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-aging-buckets-and-interest-tiers-setup) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [AR Aging Buckets and Interest Tiers Setup 31-Oct-2024 114327.xlsx](https://www.enginatics.com/example/ar-aging-buckets-and-interest-tiers-setup/) |
-| Blitz Report™ XML Import | [AR_Aging_Buckets_and_Interest_Tiers_Setup.xml](https://www.enginatics.com/xml/ar-aging-buckets-and-interest-tiers-setup/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/ar-aging-buckets-and-interest-tiers-setup/](https://www.enginatics.com/reports/ar-aging-buckets-and-interest-tiers-setup/) |
+| Excel Example Output | [AR Aging Buckets and Interest Tiers Setup 31-Oct-2024 114327.xlsx](https://www.enginatics.com/example/ar-aging-buckets-and-interest-tiers-setup/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-aging-buckets-and-interest-tiers-setup) |
+| Blitz Report™ XML Import | [AR_Aging_Buckets_and_Interest_Tiers_Setup.xml](https://www.enginatics.com/xml/ar-aging-buckets-and-interest-tiers-setup/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-aging-buckets-and-interest-tiers-setup) |
+| SQL Source | [AR Aging Buckets and Interest Tiers Setup.sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/AR%20Aging%20Buckets%20and%20Interest%20Tiers%20Setup/AR%20Aging%20Buckets%20and%20Interest%20Tiers%20Setup.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/ar-aging-buckets-and-interest-tiers-setup/](https://www.enginatics.com/reports/ar-aging-buckets-and-interest-tiers-setup/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-aging-buckets-and-interest-tiers-setup) |
 
 ## AR Aging Buckets and Interest Tiers Setup Report
 
@@ -80,18 +89,17 @@ A: An interest tier is a set of rules that determines how interest is calculated
 **Q: Why is it important to have a clear understanding of the aging bucket and interest tier setups?**
 A: A clear understanding of the aging bucket and interest tier setups is essential for ensuring the accuracy of your financial reporting and cash flow forecasting. It can also help you to troubleshoot discrepancies, answer audit queries, and make changes to your aging and interest configurations.
 
-
 ---
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-aging-buckets-and-interest-tiers-setup)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-aging-buckets-and-interest-tiers-setup)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-aging-buckets-and-interest-tiers-setup)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-aging-buckets-and-interest-tiers-setup)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-aging-buckets-and-interest-tiers-setup)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-aging-buckets-and-interest-tiers-setup)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-aging-buckets-and-interest-tiers-setup)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

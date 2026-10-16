@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PA Expenditure Types
 -- Description: Listing of project expenditure types with their category, type class, unit of measure, and active dates.
--- Excel Examle Output: https://www.enginatics.com/example/pa-expenditure-types/
+-- Excel Example Output: https://www.enginatics.com/example/pa-expenditure-types/
 -- Library Link: https://www.enginatics.com/reports/pa-expenditure-types/
 -- Run Report: https://demo.enginatics.com/
 

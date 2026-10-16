@@ -1,60 +1,50 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: AR Customer Upload
 -- Description: AR Customer Upload
-This upload can be used to create and/or update Customer Accounts, Customer Sites and/or Customer Site Uses.
-Additionally, the upload supports:
-- the creation/update of the Customer Profiles and Customer Profile Amounts at Customer and Customer Site Level
-- the creation/update of bank Accounts at the Customer and Customer Site Level
-- the creation/update of Contact information at the Customer and Customer Site level
-
-The following parameters determine the behaviour of the upload.
-
-Upload Mode
-===========
-Create – In this mode the user starts with a blank Excel. Use this mode to create new customers.
-Create, Update – In this mode the existing customer information is first downloaded into the excel based on the other parameters specified. Use this mode to update existing customer information, or to add/update additional supplementary information to the Customers and or Customer Sites (like customer profile information, customer profile amounts, bank accounts, contacts). This mode can also be used to create new Customers.
-
-Update Level
-===========
-This parameter determines if you want to download the Customer Profiles, Bank Accounts, and Contacts at the Customer Level, Customer Site Level or Both  
-Account – only Customer Level information is downloaded to excel.
-Site – only Customer Site level information is downloaded to the excel
-Account & Site – Customer and Customer Site level information is downloaded to the Excel.
-In the excel you can create/update the customer profiles, bank accounts, and/or contacts at the customer level by leaving the Site Level columns null.
-
-Update Profile Amounts
-===================
-Set to Yes to download the Customer Profile Amounts assigned to the Customer and/or Customer Site profiles.
-
-Update Bank Accounts
-================
-Set to Yes to download the Bank Accounts assigned to the Customers and/or Customer Sites
-
-Update Contacts
-==============
-Set to Yes to download the Contacts assigned to the Customers and/or Customer Sites
-
-Contact Status
-============
-Determines the status of the contacts to be downloaded. By default, only active contacts will be downloaded. But his can be changed to download all contacts, or inactive contacts only.
-
-Default Operating Unit and Default Profile Class
-======================================
-For creation of new Customers/Customer Sites, the Operating Unit and Profile Class to be used can be defaulted automatically if specified by these parameters
-
-Default <entity> Assign. Level
-========================
-For the creation of new Customers/Customer Sites, these parameters can be used to explicitly specify the level (Account or Site) to which the Profile Class, Tax Registration, Bank Accounts, Contacts, and Attachments should be assigned to respectively.
-Normally the upload will determine the level based on the existence of site level identifying data in the excel row being uploaded. If no site level identifying data is present, then it will be associated the entity with the Account, otherwise the entity will be associated with the site.
-This would require a separate excel row to be specified for the customer account and a separate row for the customer site if some entities are to be associated with the customer account and some with the customer site.
-These parameters allow you to create the customer account and customer site in a single excel row and explicitly specify for each entity at what level the entity should be associated with.
-
--- Excel Examle Output: https://www.enginatics.com/example/ar-customer-upload/
+-- This upload can be used to create and/or update Customer Accounts, Customer Sites and/or Customer Site Uses.
+-- Additionally, the upload supports:
+-- - the creation/update of the Customer Profiles and Customer Profile Amounts at Customer and Customer Site Level
+-- - the creation/update of bank Accounts at the Customer and Customer Site Level
+-- - the creation/update of Contact information at the Customer and Customer Site level
+-- The following parameters determine the behaviour of the upload.
+-- Upload Mode
+-- ===========
+-- Create – In this mode the user starts with a blank Excel. Use this mode to create new customers.
+-- Create, Update – In this mode the existing customer information is first downloaded into the excel based on the other parameters specified. Use this mode to update existing customer information, or to add/update additional supplementary information to the Customers and or Customer Sites (like customer profile information, customer profile amounts, bank accounts, contacts). This mode can also be used to create new Customers.
+-- Update Level
+-- ===========
+-- This parameter determines if you want to download the Customer Profiles, Bank Accounts, and Contacts at the Customer Level, Customer Site Level or Both
+-- Account – only Customer Level information is downloaded to excel.
+-- Site – only Customer Site level information is downloaded to the excel
+-- Account & Site – Customer and Customer Site level information is downloaded to the Excel.
+-- In the excel you can create/update the customer profiles, bank accounts, and/or contacts at the customer level by leaving the Site Level columns null.
+-- Update Profile Amounts
+-- ===================
+-- Set to Yes to download the Customer Profile Amounts assigned to the Customer and/or Customer Site profiles.
+-- Update Bank Accounts
+-- ================
+-- Set to Yes to download the Bank Accounts assigned to the Customers and/or Customer Sites
+-- Update Contacts
+-- ==============
+-- Set to Yes to download the Contacts assigned to the Customers and/or Customer Sites
+-- Contact Status
+-- ============
+-- Determines the status of the contacts to be downloaded. By default, only active contacts will be downloaded. But his can be changed to download all contacts, or inactive contacts only.
+-- Default Operating Unit and Default Profile Class
+-- ======================================
+-- For creation of new Customers/Customer Sites, the Operating Unit and Profile Class to be used can be defaulted automatically if specified by these parameters
+-- Default Assign. Level
+-- ========================
+-- For the creation of new Customers/Customer Sites, these parameters can be used to explicitly specify the level (Account or Site) to which the Profile Class, Tax Registration, Bank Accounts, Contacts, and Attachments should be assigned to respectively.
+-- Normally the upload will determine the level based on the existence of site level identifying data in the excel row being uploaded. If no site level identifying data is present, then it will be associated the entity with the Account, otherwise the entity will be associated with the site.
+-- This would require a separate excel row to be specified for the customer account and a separate row for the customer site if some entities are to be associated with the customer account and some with the customer site.
+-- These parameters allow you to create the customer account and customer site in a single excel row and explicitly specify for each entity at what level the entity should be associated with.
+-- Excel Example Output: https://www.enginatics.com/example/ar-customer-upload/
 -- Library Link: https://www.enginatics.com/reports/ar-customer-upload/
 -- Run Report: https://demo.enginatics.com/
 
@@ -238,6 +228,9 @@ q_contacts as
  hpsub.person_title contact_title,
  xxen_util.meaning(case when hcar.status='A' AND hr.status='A' then 'A' else 'I' end,'HZ_CPUI_REGISTRY_STATUS',222) contact_status,
  hprel.email_address contact_email,
+ xxen_util.meaning(hcpe.contact_point_purpose,'CONTACT_POINT_PURPOSE',222) contact_email_purpose,
+ hprel.url contact_url,
+ xxen_util.meaning(hcpw.contact_point_purpose,'CONTACT_POINT_PURPOSE_WEB',222) contact_url_purpose,
  hprel.primary_phone_country_code contact_phone_country_code,
  hprel.primary_phone_area_code contact_phone_area_code,
  hprel.primary_phone_number contact_phone_number,
@@ -267,7 +260,28 @@ q_contacts as
  hl.province contact_province,
  hl.postal_code contact_postal_code,
  hl.sales_tax_geocode contact_geography_override,
- hps.mailstop contact_mailstop
+ hps.mailstop contact_mailstop,
+ xxen_util.display_flexfield_context(222,'RA_PHONES_HZ',hcpe.attribute_category) ctct_email_dff_context,
+ xxen_util.display_flexfield_value(222,'RA_PHONES_HZ',hcpe.attribute_category,'ATTRIBUTE1',hcpe.row_id,hcpe.attribute1) ctct_email_attribute1,
+ xxen_util.display_flexfield_value(222,'RA_PHONES_HZ',hcpe.attribute_category,'ATTRIBUTE2',hcpe.row_id,hcpe.attribute2) ctct_email_attribute2,
+ xxen_util.display_flexfield_value(222,'RA_PHONES_HZ',hcpe.attribute_category,'ATTRIBUTE3',hcpe.row_id,hcpe.attribute3) ctct_email_attribute3,
+ xxen_util.display_flexfield_value(222,'RA_PHONES_HZ',hcpe.attribute_category,'ATTRIBUTE4',hcpe.row_id,hcpe.attribute4) ctct_email_attribute4,
+ xxen_util.display_flexfield_value(222,'RA_PHONES_HZ',hcpe.attribute_category,'ATTRIBUTE5',hcpe.row_id,hcpe.attribute5) ctct_email_attribute5,
+ xxen_util.display_flexfield_value(222,'RA_PHONES_HZ',hcpe.attribute_category,'ATTRIBUTE6',hcpe.row_id,hcpe.attribute6) ctct_email_attribute6,
+ xxen_util.display_flexfield_value(222,'RA_PHONES_HZ',hcpe.attribute_category,'ATTRIBUTE7',hcpe.row_id,hcpe.attribute7) ctct_email_attribute7,
+ xxen_util.display_flexfield_value(222,'RA_PHONES_HZ',hcpe.attribute_category,'ATTRIBUTE8',hcpe.row_id,hcpe.attribute8) ctct_email_attribute8,
+ xxen_util.display_flexfield_value(222,'RA_PHONES_HZ',hcpe.attribute_category,'ATTRIBUTE9',hcpe.row_id,hcpe.attribute9) ctct_email_attribute9,
+ xxen_util.display_flexfield_value(222,'RA_PHONES_HZ',hcpe.attribute_category,'ATTRIBUTE10',hcpe.row_id,hcpe.attribute10) ctct_email_attribute10,
+ xxen_util.display_flexfield_value(222,'RA_PHONES_HZ',hcpe.attribute_category,'ATTRIBUTE11',hcpe.row_id,hcpe.attribute11) ctct_email_attribute11,
+ xxen_util.display_flexfield_value(222,'RA_PHONES_HZ',hcpe.attribute_category,'ATTRIBUTE12',hcpe.row_id,hcpe.attribute12) ctct_email_attribute12,
+ xxen_util.display_flexfield_value(222,'RA_PHONES_HZ',hcpe.attribute_category,'ATTRIBUTE13',hcpe.row_id,hcpe.attribute13) ctct_email_attribute13,
+ xxen_util.display_flexfield_value(222,'RA_PHONES_HZ',hcpe.attribute_category,'ATTRIBUTE14',hcpe.row_id,hcpe.attribute14) ctct_email_attribute14,
+ xxen_util.display_flexfield_value(222,'RA_PHONES_HZ',hcpe.attribute_category,'ATTRIBUTE15',hcpe.row_id,hcpe.attribute15) ctct_email_attribute15,
+ xxen_util.display_flexfield_value(222,'RA_PHONES_HZ',hcpe.attribute_category,'ATTRIBUTE16',hcpe.row_id,hcpe.attribute16) ctct_email_attribute16,
+ xxen_util.display_flexfield_value(222,'RA_PHONES_HZ',hcpe.attribute_category,'ATTRIBUTE17',hcpe.row_id,hcpe.attribute17) ctct_email_attribute17,
+ xxen_util.display_flexfield_value(222,'RA_PHONES_HZ',hcpe.attribute_category,'ATTRIBUTE18',hcpe.row_id,hcpe.attribute18) ctct_email_attribute18,
+ xxen_util.display_flexfield_value(222,'RA_PHONES_HZ',hcpe.attribute_category,'ATTRIBUTE19',hcpe.row_id,hcpe.attribute19) ctct_email_attribute19,
+ xxen_util.display_flexfield_value(222,'RA_PHONES_HZ',hcpe.attribute_category,'ATTRIBUTE20',hcpe.row_id,hcpe.attribute20) ctct_email_attribute20
  from
  hz_cust_account_roles hcar,
  hz_relationships hr,
@@ -294,7 +308,32 @@ q_contacts as
   hcp.contact_point_type = 'PHONE' and
   hcp.status = 'A' and
   nvl(hcp.primary_flag,'N') != 'Y'
- ) hcp
+ ) hcp,
+ (select
+  hcp.rowid row_id,
+  hcp.owner_table_id party_id,
+  hcp.*,
+  row_number() over (partition by hcp.owner_table_id order by hcp.last_update_date desc,hcp.contact_point_id desc) row_num
+  from
+  hz_contact_points hcp
+  where
+  hcp.owner_table_name = 'HZ_PARTIES' and
+  hcp.contact_point_type = 'EMAIL' and
+  hcp.primary_flag = 'Y' and
+  hcp.status = 'A'
+ ) hcpe,
+ (select
+  hcp.owner_table_id party_id,
+  hcp.contact_point_purpose,
+  row_number() over (partition by hcp.owner_table_id order by hcp.last_update_date desc,hcp.contact_point_id desc) row_num
+  from
+  hz_contact_points hcp
+  where
+  hcp.owner_table_name = 'HZ_PARTIES' and
+  hcp.contact_point_type = 'WEB' and
+  hcp.primary_flag = 'Y' and
+  hcp.status = 'A'
+ ) hcpw
  where
  hcar.role_type = 'CONTACT' and
  hcar.party_id = hr.party_id and
@@ -310,6 +349,10 @@ q_contacts as
  hps.location_id = hl.location_id (+) and
  hprel.party_id = hcp.party_id (+) and
  hcp.row_num (+) = 1 and
+ hprel.party_id = hcpe.party_id (+) and
+ hcpe.row_num (+) = 1 and
+ hprel.party_id = hcpw.party_id (+) and
+ hcpw.row_num (+) = 1 and
  ((hcar.status='A' AND hr.status='A') or
   ((hcar.status ='I' OR hr.status='I') AND hpsub.status='A' and hpobj.status= 'A' AND hr.status <> 'M')
  )
@@ -937,6 +980,9 @@ ctct.contact_suffix,
 ctct.contact_title,
 ctct.contact_status,
 ctct.contact_email,
+ctct.contact_email_purpose,
+ctct.contact_url,
+ctct.contact_url_purpose,
 ctct.contact_phone_country_code,
 ctct.contact_phone_area_code,
 ctct.contact_phone_number,
@@ -967,6 +1013,27 @@ ctct.contact_province,
 ctct.contact_postal_code,
 ctct.contact_geography_override,
 ctct.contact_mailstop,
+ctct.ctct_email_dff_context,
+ctct.ctct_email_attribute1,
+ctct.ctct_email_attribute2,
+ctct.ctct_email_attribute3,
+ctct.ctct_email_attribute4,
+ctct.ctct_email_attribute5,
+ctct.ctct_email_attribute6,
+ctct.ctct_email_attribute7,
+ctct.ctct_email_attribute8,
+ctct.ctct_email_attribute9,
+ctct.ctct_email_attribute10,
+ctct.ctct_email_attribute11,
+ctct.ctct_email_attribute12,
+ctct.ctct_email_attribute13,
+ctct.ctct_email_attribute14,
+ctct.ctct_email_attribute15,
+ctct.ctct_email_attribute16,
+ctct.ctct_email_attribute17,
+ctct.ctct_email_attribute18,
+ctct.ctct_email_attribute19,
+ctct.ctct_email_attribute20,
 --
 -- party relationships
 --
@@ -1564,6 +1631,9 @@ ctct.contact_suffix,
 ctct.contact_title,
 ctct.contact_status,
 ctct.contact_email,
+ctct.contact_email_purpose,
+ctct.contact_url,
+ctct.contact_url_purpose,
 ctct.contact_phone_country_code,
 ctct.contact_phone_area_code,
 ctct.contact_phone_number,
@@ -1594,6 +1664,27 @@ ctct.contact_province,
 ctct.contact_postal_code,
 ctct.contact_geography_override,
 ctct.contact_mailstop,
+ctct.ctct_email_dff_context,
+ctct.ctct_email_attribute1,
+ctct.ctct_email_attribute2,
+ctct.ctct_email_attribute3,
+ctct.ctct_email_attribute4,
+ctct.ctct_email_attribute5,
+ctct.ctct_email_attribute6,
+ctct.ctct_email_attribute7,
+ctct.ctct_email_attribute8,
+ctct.ctct_email_attribute9,
+ctct.ctct_email_attribute10,
+ctct.ctct_email_attribute11,
+ctct.ctct_email_attribute12,
+ctct.ctct_email_attribute13,
+ctct.ctct_email_attribute14,
+ctct.ctct_email_attribute15,
+ctct.ctct_email_attribute16,
+ctct.ctct_email_attribute17,
+ctct.ctct_email_attribute18,
+ctct.ctct_email_attribute19,
+ctct.ctct_email_attribute20,
 --
 -- party relationships
 --

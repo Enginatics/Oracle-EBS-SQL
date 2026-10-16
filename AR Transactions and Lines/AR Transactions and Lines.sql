@@ -1,18 +1,21 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: AR Transactions and Lines
 -- Description: AR transaction report.
-Can be run at Header, Line and/or Distribution Level
-Optionally include special columns for service contracts (OKS) and lease contracts (OKL) data
--- Excel Examle Output: https://www.enginatics.com/example/ar-transactions-and-lines/
+-- Can be run at Header, Line and/or Distribution Level
+-- Display Level Lines and Sales Credits lists each line once per salesperson credit, with the revenue and non-revenue split. Transaction and line amounts are shown on the first row of a transaction or line only, so they can be summed.
+-- Revenue As Of Date adds the accounting rule and the deferred revenue position of each line: Revenue Recognized is the sum of the revenue distributions with a GL date up to that date, and Unearned Balance is the line amount less that, for lines with an accounting rule or with revenue deferred by Revenue Management.
+-- Optionally include special columns for service contracts (OKS) and lease contracts (OKL) data
+-- When India Localization is installed, the following GST columns are also included: IGST Amount, CGST Amount, SGST Amount, CESS Amount, Custom Amount, Unclassified Tax Amount, HSN SAC Code, HSN Length Warning, GST State Tax Mismatch, CGST Recoverable, CGST Non-Recoverable, SGST Recoverable, SGST Non-Recoverable, IGST Recoverable, IGST Non-Recoverable, GST Registration No, GST PAN No, Reverse Charge Flag, Place of Supply, Ship From State, GST Warehouse Registration No, Taxable Value.
+-- Excel Example Output: https://www.enginatics.com/example/ar-transactions-and-lines/
 -- Library Link: https://www.enginatics.com/reports/ar-transactions-and-lines/
 -- Run Report: https://demo.enginatics.com/
 
-select /*+ push_pred(rctlgda) */
+select /*+ push_pred(rctlgda) push_pred(rctla2) */
 gl.name ledger,
 haouv.name operating_unit,
 acia.cons_billing_number invoice_number,
@@ -64,16 +67,16 @@ hz_format_pub.format_address(hps4.location_id,null,null,' , ') ship_to_address_o
 rcta.invoice_currency_code currency,
 apsa.number_of_due_dates,
 apsa.terms_sequence_number,
-case when rctla.not_first_line is null and rctlgda.not_first_line is null then apsa.amount_due_original end total_due_original,
-case when rctla.not_first_line is null and rctlgda.not_first_line is null then apsa.tax_original end tax_amount,
-case when rctla.not_first_line is null and rctlgda.not_first_line is null then apsa.amount_applied end total_payment_applied,
-case when rctla.not_first_line is null and rctlgda.not_first_line is null then apsa.amount_adjusted end total_adjustment,
-case when rctla.not_first_line is null and rctlgda.not_first_line is null then apsa.amount_credited end total_credit,
-case when rctla.not_first_line is null and rctlgda.not_first_line is null then apsa.amount_due_remaining end total_due_remaining,
-case when rctla.not_first_line is null and rctlgda.not_first_line is null then case when rctta.accounting_affect_flag='Y' and apsa.amount_in_dispute<>0 then apsa.amount_in_dispute end end dispute_amount,
-case when rctla.not_first_line is null and rctlgda.not_first_line is null then apsa.amount_due_original*nvl(apsa.exchange_rate,1) end accounted_total_due_original,
-case when rctla.not_first_line is null and rctlgda.not_first_line is null then apsa.tax_original*nvl(apsa.exchange_rate,1) end accounted_tax_amount,
-case when rctla.not_first_line is null and rctlgda.not_first_line is null then apsa.acctd_amount_due_remaining end accounted_total_due_remaining,
+case when rctla.not_first_line is null and rctlgda.not_first_line&rctlsa_nfl is null then apsa.amount_due_original end total_due_original,
+case when rctla.not_first_line is null and rctlgda.not_first_line&rctlsa_nfl is null then apsa.tax_original end tax_amount,
+case when rctla.not_first_line is null and rctlgda.not_first_line&rctlsa_nfl is null then apsa.amount_applied end total_payment_applied,
+case when rctla.not_first_line is null and rctlgda.not_first_line&rctlsa_nfl is null then apsa.amount_adjusted end total_adjustment,
+case when rctla.not_first_line is null and rctlgda.not_first_line&rctlsa_nfl is null then apsa.amount_credited end total_credit,
+case when rctla.not_first_line is null and rctlgda.not_first_line&rctlsa_nfl is null then apsa.amount_due_remaining end total_due_remaining,
+case when rctla.not_first_line is null and rctlgda.not_first_line&rctlsa_nfl is null then case when rctta.accounting_affect_flag='Y' and apsa.amount_in_dispute<>0 then apsa.amount_in_dispute end end dispute_amount,
+case when rctla.not_first_line is null and rctlgda.not_first_line&rctlsa_nfl is null then apsa.amount_due_original*nvl(apsa.exchange_rate,1) end accounted_total_due_original,
+case when rctla.not_first_line is null and rctlgda.not_first_line&rctlsa_nfl is null then apsa.tax_original*nvl(apsa.exchange_rate,1) end accounted_tax_amount,
+case when rctla.not_first_line is null and rctlgda.not_first_line&rctlsa_nfl is null then apsa.acctd_amount_due_remaining end accounted_total_due_remaining,
 xxen_util.meaning(apsa.status,'PAYMENT_SCHEDULE_STATUS',222) status,
 rtv.name payment_term,
 decode(rcta.invoicing_rule_id,-3,'Arrears','Advance') invoicing_rule,
@@ -98,6 +101,9 @@ xxen_util.segments_description(axclv0.code_combination_id) receivables_account_d
 axclv0.gl_date receivables_account_gl_date,
 &category_columns
 &line_columns
+&line_columns_il
+&revenue_columns
+&salescredit_columns
 &distribution_columns
 &segment_columns
 &contracts_columns
@@ -109,6 +115,7 @@ xxen_util.client_time(rcta.last_update_date) trx_last_update_date,
 &trx_audit_columns
 rcta.customer_trx_id,
 apsa.payment_schedule_id
+&il_reg_columns
 from
 gl_ledgers gl,
 hr_all_organization_units_vl haouv,
@@ -121,6 +128,7 @@ case when rctla.interface_line_context in ('OKL_CONTRACTS','OKL_INVESTOR') then 
 case when rctla.interface_line_context in ('OKS_CONTRACTS') then to_date(rctla.interface_line_attribute4,'YYYY/MM/DD HH24:MI:SS') end oks_billed_from,
 case when rctla.interface_line_context in ('OKS_CONTRACTS') then to_date(rctla.interface_line_attribute5,'YYYY/MM/DD HH24:MI:SS') end oks_billed_to,
 nvl(rctla.warehouse_id,ospa.parameter_value) organization_id,
+&revenue_view_columns
 rctla.*
 from
 ra_customer_trx_lines_all rctla,
@@ -132,15 +140,17 @@ rctla.org_id=ospa.org_id(+) and
 ospa.parameter_code(+)='MASTER_ORGANIZATION_ID'
 ) rctla,
 (
-select distinct
+select
 rctla2.link_to_cust_trx_line_id,
-sum(rctla2.extended_amount) over (partition by rctla2.link_to_cust_trx_line_id) extended_amount,
-listagg(rctla2.tax_rate,', ') within group (order by rctla2.tax_rate) over (partition by rctla2.link_to_cust_trx_line_id) tax_rates
+sum(rctla2.extended_amount) extended_amount,
+listagg(rctla2.tax_rate,', ') within group (order by rctla2.tax_rate) tax_rates
 from
 ra_customer_trx_lines_all rctla2
 where
 '&show_rctla'='Y' and
 rctla2.line_type='TAX'
+group by
+rctla2.link_to_cust_trx_line_id
 ) rctla2,
 ar_xla_ctlgd_lines_v axclv0,
 (
@@ -213,6 +223,8 @@ iby_creditcard ic,
 iby_ext_bank_accounts ieba
 &contracts_query
 &contracts_tables
+&il_from
+&salescredit_from
 where
 1=1 and
 &gl_distribution_where_clause
@@ -281,6 +293,8 @@ ifte.instr_assignment_id=ipiua.instrument_payment_use_id(+) and
 decode(ipiua.instrument_type,'CREDITCARD',ipiua.instrument_id)=ic.instrid(+) and
 decode(ipiua.instrument_type,'BANKACCOUNT',ipiua.instrument_id)=ieba.ext_bank_account_id(+)
 &contracts_joins
+&il_where
+&salescredit_where
 order by
 operating_unit,
 hp1.party_name,
@@ -292,3 +306,4 @@ trx_number,
 apsa.terms_sequence_number
 &order_by_line
 &order_by_distribution
+&order_by_salescredit

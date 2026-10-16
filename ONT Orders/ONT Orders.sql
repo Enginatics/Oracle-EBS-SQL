@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: ONT Orders
 -- Description: Detail Sales Order or Quote header report, including status, amount and invoice status information.
--- Excel Examle Output: https://www.enginatics.com/example/ont-orders/
+-- Excel Example Output: https://www.enginatics.com/example/ont-orders/
 -- Library Link: https://www.enginatics.com/reports/ont-orders/
 -- Run Report: https://demo.enginatics.com/
 

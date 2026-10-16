@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: GL Account Analysis 11g
 -- Description: Backwards compatible version (for 11g databases) of the detail GL transaction report with one line per transaction including all segments and subledger data, with amounts in both transaction currency and ledger currency.
--- Excel Examle Output: https://www.enginatics.com/example/gl-account-analysis-11g/
+-- Excel Example Output: https://www.enginatics.com/example/gl-account-analysis-11g/
 -- Library Link: https://www.enginatics.com/reports/gl-account-analysis-11g/
 -- Run Report: https://demo.enginatics.com/
 

@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: AP Suppliers Revenue Summary
 -- Description: AP suppliers (po vendors) revenue summary across different operating units
--- Excel Examle Output: https://www.enginatics.com/example/ap-suppliers-revenue-summary/
+-- Excel Example Output: https://www.enginatics.com/example/ap-suppliers-revenue-summary/
 -- Library Link: https://www.enginatics.com/reports/ap-suppliers-revenue-summary/
 -- Run Report: https://demo.enginatics.com/
 

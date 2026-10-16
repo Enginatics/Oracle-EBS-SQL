@@ -1,14 +1,20 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'FND Concurrent Requests | Oracle EBS SQL Report'
 description: 'Running, scheduled and historic concurrent requests including phase, status, parameters, schedule, timing, delivery and output option information. For…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, FND, Concurrent, Requests, fnd_profile_option_values'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Application Object Library, Enginatics, FND, Concurrent, Requests, fnd_profile_option_values, fnd_concurrent_requests, fnd_concurrent_processes'
 permalink: /FND%20Concurrent%20Requests/
+report_name: 'FND Concurrent Requests'
+report_web_name: fnd-concurrent-requests
+module: 'Application Object Library'
+module_url: /modules/application-object-library/
 ---
 
 # FND Concurrent Requests – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/fnd-concurrent-requests/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/fnd-concurrent-requests/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fnd-concurrent-requests) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fnd-concurrent-requests).
+**Oracle EBS module:** [Application Object Library](/modules/application-object-library/ "Oracle EBS Application Object Library reports") · [all Application Object Library reports](/modules/application-object-library/)  
 
 ## Overview
 Running, scheduled and historic concurrent requests including phase, status, parameters, schedule, timing, delivery and output option information.
@@ -16,27 +22,31 @@ For performance analysis of running requests, the report contains sid, currently
 
 Use parameter 'Scheduled or Running' to get a list of all currently scheduled or running requests.
 
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fnd-concurrent-requests) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
+
 ## Report Parameters
 Concurrent Program Name, Concurrent Progr. (all languages), Concurrent Program Short Name, Request Id, Requested By, Started within Days, Scheduled or Running, Waiting for x Minutes, Running longer than x Minutes, Output file larger than x MB, Log file larger than x MB, Phase, Status, Show Parameters Display Values, Show BI Pub & Delivery Options, Show Reports only, Show active session SQL Text, Parameter Text contains, Request Set Name, Execution Method, Executable Short Name, Running from Timestamp, Running to Timestamp, Requested Start Date From, Requested Start Date To, Node, Manager Name, Operating Unit, Exclude Conc Program Name, Incremental Alert Mode
 
 ## Oracle EBS Tables Used
-[fnd_profile_option_values](https://www.enginatics.com/library/?pg=1&find=fnd_profile_option_values)
+[fnd_profile_option_values](https://www.enginatics.com/library/?pg=1&find=fnd_profile_option_values&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fnd-concurrent-requests), [fnd_concurrent_requests](https://www.enginatics.com/library/?pg=1&find=fnd_concurrent_requests&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fnd-concurrent-requests), [fnd_concurrent_processes](https://www.enginatics.com/library/?pg=1&find=fnd_concurrent_processes&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fnd-concurrent-requests), [fnd_concurrent_queues_vl](https://www.enginatics.com/library/?pg=1&find=fnd_concurrent_queues_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fnd-concurrent-requests), [fnd_run_requests](https://www.enginatics.com/library/?pg=1&find=fnd_run_requests&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fnd-concurrent-requests), [fnd_request_set_programs](https://www.enginatics.com/library/?pg=1&find=fnd_request_set_programs&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fnd-concurrent-requests), [fnd_request_set_stages](https://www.enginatics.com/library/?pg=1&find=fnd_request_set_stages&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fnd-concurrent-requests), [fnd_concurrent_programs_vl](https://www.enginatics.com/library/?pg=1&find=fnd_concurrent_programs_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fnd-concurrent-requests), [fnd_conc_prog_onsite_info](https://www.enginatics.com/library/?pg=1&find=fnd_conc_prog_onsite_info&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fnd-concurrent-requests), [fnd_executables_vl](https://www.enginatics.com/library/?pg=1&find=fnd_executables_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fnd-concurrent-requests), [fnd_responsibility_vl](https://www.enginatics.com/library/?pg=1&find=fnd_responsibility_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fnd-concurrent-requests), [fnd_conc_release_classes](https://www.enginatics.com/library/?pg=1&find=fnd_conc_release_classes&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fnd-concurrent-requests), [hr_all_organization_units_vl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fnd-concurrent-requests), [fnd_conflicts_domain](https://www.enginatics.com/library/?pg=1&find=fnd_conflicts_domain&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fnd-concurrent-requests), [fnd_conc_pp_actions](https://www.enginatics.com/library/?pg=1&find=fnd_conc_pp_actions&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fnd-concurrent-requests), [fnd_cp_delivery_options](https://www.enginatics.com/library/?pg=1&find=fnd_cp_delivery_options&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fnd-concurrent-requests), [fnd_conc_req_outputs](https://www.enginatics.com/library/?pg=1&find=fnd_conc_req_outputs&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fnd-concurrent-requests), [fnd_lookup_values_vl](https://www.enginatics.com/library/?pg=1&find=fnd_lookup_values_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fnd-concurrent-requests), [gv$session](https://www.enginatics.com/library/?pg=1&find=gv%24session&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fnd-concurrent-requests), [gv$session_event](https://www.enginatics.com/library/?pg=1&find=gv%24session_event&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fnd-concurrent-requests), [gv$sql](https://www.enginatics.com/library/?pg=1&find=gv%24sql&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fnd-concurrent-requests)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fnd-concurrent-requests)
 
-
+## Related Reports
+[FND Concurrent Programs and Executables](/FND%20Concurrent%20Programs%20and%20Executables/ "FND Concurrent Programs and Executables Oracle EBS SQL Report"), [FND Responsibility Access](/FND%20Responsibility%20Access/ "FND Responsibility Access Oracle EBS SQL Report"), [FND Concurrent Managers](/FND%20Concurrent%20Managers/ "FND Concurrent Managers Oracle EBS SQL Report"), [PAY Payroll Process Summary](/PAY%20Payroll%20Process%20Summary/ "PAY Payroll Process Summary Oracle EBS SQL Report"), [FND Concurrent Requests Summary](/FND%20Concurrent%20Requests%20Summary/ "FND Concurrent Requests Summary Oracle EBS SQL Report"), [Blitz Report Custom Reports Converter](/Blitz%20Report%20Custom%20Reports%20Converter/ "Blitz Report Custom Reports Converter Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/FND%20Concurrent%20Requests/FND%20Concurrent%20Requests.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fnd-concurrent-requests) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [FND Concurrent Requests 27-Jan-2019 140201.xlsx](https://www.enginatics.com/example/fnd-concurrent-requests/) |
-| Blitz Report™ XML Import | [FND_Concurrent_Requests.xml](https://www.enginatics.com/xml/fnd-concurrent-requests/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/fnd-concurrent-requests/](https://www.enginatics.com/reports/fnd-concurrent-requests/) |
+| Excel Example Output | [FND Concurrent Requests 27-Jan-2019 140201.xlsx](https://www.enginatics.com/example/fnd-concurrent-requests/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fnd-concurrent-requests) |
+| Blitz Report™ XML Import | [FND_Concurrent_Requests.xml](https://www.enginatics.com/xml/fnd-concurrent-requests/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fnd-concurrent-requests) |
+| SQL Source | [FND Concurrent Requests.sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/FND%20Concurrent%20Requests/FND%20Concurrent%20Requests.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/fnd-concurrent-requests/](https://www.enginatics.com/reports/fnd-concurrent-requests/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fnd-concurrent-requests) |
 
 ## Case Study & Technical Analysis: FND Concurrent Requests
 
@@ -84,18 +94,17 @@ A: This usually indicates that the Concurrent Manager defined to run this specif
 **Q: Does this report show requests from all RAC nodes?**
 A: Yes, it queries global views (`GV$`) to capture session information across all nodes in a Real Application Clusters (RAC) environment.
 
-
 ---
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fnd-concurrent-requests)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fnd-concurrent-requests)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fnd-concurrent-requests)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fnd-concurrent-requests)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fnd-concurrent-requests)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fnd-concurrent-requests)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fnd-concurrent-requests)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

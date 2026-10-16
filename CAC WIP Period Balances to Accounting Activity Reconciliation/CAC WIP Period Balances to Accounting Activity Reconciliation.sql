@@ -1,44 +1,40 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC WIP Period Balances to Accounting Activity Reconciliation
--- Description: Report to compare the monthly WIP Period Balances with the pre-Create Accounting WIP accounting entries for material, resource, overhead, outside processing, job close variance and standard cost update transactions.  With WIP class, job status, name and other details.  This report shows both WIP jobs which were open during the accounting period as well as jobs closed during the accounting period.  If the stored WIP period balances agree to the period WIP accounting activity, the "Difference" columns have a zero amount.
-
-//* +=============================================================================+
--- | Copyright 2022 Douglas Volz Consulting, Inc.                                |
--- | All rights reserved.                                                        |
--- | Permission to use this code is granted provided the original author is      |
--- | acknowledged. No warranties, express or otherwise is included in this       |
--- | permission.                                                                 |
--- +=============================================================================+
--- |
--- | Original Author: Douglas Volz (doug@volzconsulting.com)
--- |
--- | Program Name: xxx_reconcile_wip_balances.sql
--- |
--- |  Parameters:
--- |  p_period_name          -- The desired accounting period you wish to report
--- |  p_org_code             -- Specific inventory organization you wish to report (optional)
--- |  p_operating_unit       -- Operating Unit you wish to report, leave blank for all
--- |                            operating units (optional) 
--- |  p_ledger               -- general ledger you wish to report, leave blank for all
--- |                            ledgers (optional)
--- | Description:
--- | Report to compare the monthly WIP transactions against the WIP period balances.
--- |
--- | Version Modified on Modified by Description
--- | ======= =========== ============== =========================================
--- | 1.0     07 Apr 2021 Douglas Volz   Initial Coding based on item_cost_history.sql
--- | 1.1     10 Jul 2022 Douglas Volz   Add Ledger and Operating Unit columns
--- | 1.2     19 Oct 2022 Douglas Volz   Bug fix for missing organization join
--- +=============================================================================+*/
-
-
-
--- Excel Examle Output: https://www.enginatics.com/example/cac-wip-period-balances-to-accounting-activity-reconciliation/
+-- Description: Report to compare the monthly WIP Period Balances with the pre-Create Accounting WIP accounting entries for material, resource, overhead, outside processing, job close variance and standard cost update transactions. With WIP class, job status, name and other details. This report shows both WIP jobs which were open during the accounting period as well as jobs closed during the accounting period. If the stored WIP period balances agree to the period WIP accounting activity, the "Difference" columns have a zero amount.
+-- // +=============================================================================+
+-- -- | Copyright 2022 Douglas Volz Consulting, Inc. |
+-- -- | All rights reserved. |
+-- -- | Permission to use this code is granted provided the original author is |
+-- -- | acknowledged. No warranties, express or otherwise is included in this |
+-- -- | permission. |
+-- -- +=============================================================================+
+-- -- |
+-- -- | Original Author: Douglas Volz (doug@volzconsulting.com)
+-- -- |
+-- -- | Program Name: xxxreconcilewipbalances.sql
+-- -- |
+-- -- | Parameters:
+-- -- | pperiodname -- The desired accounting period you wish to report
+-- -- | porgcode -- Specific inventory organization you wish to report (optional)
+-- -- | poperatingunit -- Operating Unit you wish to report, leave blank for all
+-- -- | operating units (optional)
+-- -- | pledger -- general ledger you wish to report, leave blank for all
+-- -- | ledgers (optional)
+-- -- | Description:
+-- -- | Report to compare the monthly WIP transactions against the WIP period balances.
+-- -- |
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== ============== =========================================
+-- -- | 1.0 07 Apr 2021 Douglas Volz Initial Coding based on itemcosthistory.sql
+-- -- | 1.1 10 Jul 2022 Douglas Volz Add Ledger and Operating Unit columns
+-- -- | 1.2 19 Oct 2022 Douglas Volz Bug fix for missing organization join
+-- -- +=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-wip-period-balances-to-accounting-activity-reconciliation/
 -- Library Link: https://www.enginatics.com/reports/cac-wip-period-balances-to-accounting-activity-reconciliation/
 -- Run Report: https://demo.enginatics.com/
 

@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: INV Material Transactions
 -- Description: Detail report of Inventory transactions with item, primary qty, secondary qty, transaction type, transaction ID and total transaction qty
--- Excel Examle Output: https://www.enginatics.com/example/inv-material-transactions/
+-- Excel Example Output: https://www.enginatics.com/example/inv-material-transactions/
 -- Library Link: https://www.enginatics.com/reports/inv-material-transactions/
 -- Run Report: https://demo.enginatics.com/
 
@@ -74,6 +74,7 @@ ppa3.name to_project_name,
 pt3.task_name to_task_name,
 mtr.reason_name reason,
 mtr.description reason_description,
+mmt.transaction_reference,
 mmt.source_line_id,
 mmt.transaction_id,
 mmt.rcv_transaction_id receiving_transaction_id,

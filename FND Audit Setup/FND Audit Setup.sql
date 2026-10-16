@@ -1,16 +1,14 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: FND Audit Setup
 -- Description: FND audit setup validation report including audit groups, audit tables and audited columns, and a check if the corresponding audit tables are created in columns 'Audit Table Name' and 'Audit Column Exists'.
-
-Oracle's standard audit trail works with a concurrent program 'AuditTrail Update Tables', which creates a set of database triggers for updates, inserts and deletes. The triggers write table changes to an audit table with the name: audited_table_A.
-
-The whole audit trail setup process is describe in this blog: <a href="https://www.enginatics.com/blog/how-to-track-master-data-changes-using-oracle-ebs-audit-function-and-blitz-report/" rel="nofollow" target="_blank">https://www.enginatics.com/blog/how-to-track-master-data-changes-using-oracle-ebs-audit-function-and-blitz-report/</a>
--- Excel Examle Output: https://www.enginatics.com/example/fnd-audit-setup/
+-- Oracle's standard audit trail works with a concurrent program 'AuditTrail Update Tables', which creates a set of database triggers for updates, inserts and deletes. The triggers write table changes to an audit table with the name: auditedtableA.
+-- The whole audit trail setup process is describe in this blog: https://www.enginatics.com/blog/how-to-track-master-data-changes-using-oracle-ebs-audit-function-and-blitz-report/
+-- Excel Example Output: https://www.enginatics.com/example/fnd-audit-setup/
 -- Library Link: https://www.enginatics.com/reports/fnd-audit-setup/
 -- Run Report: https://demo.enginatics.com/
 

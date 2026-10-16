@@ -1,40 +1,49 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'XLE Legal Entities | Oracle EBS SQL Report'
-description: 'Legal entities, establishments, jurisdictions and registrations – Oracle E-Business Suite SQL report'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, XLE, Legal, Entities, xle_entity_profiles, xle_etb_profiles, hz_parties'
+description: 'Legal entities, establishments, jurisdictions and registrations – Oracle EBS Legal Entity Configurator SQL report: free SQL, parameters and tables used.'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Legal Entity Configurator, Enginatics, R12 only, XLE, Legal, Entities, xle_entity_profiles, xle_etb_profiles, hz_parties'
 permalink: /XLE%20Legal%20Entities/
+report_name: 'XLE Legal Entities'
+report_web_name: xle-legal-entities
+module: 'Legal Entity Configurator'
+module_url: /modules/legal-entity-configurator/
 ---
 
 # XLE Legal Entities – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/xle-legal-entities/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/xle-legal-entities/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xle-legal-entities) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xle-legal-entities).
+**Oracle EBS module:** [Legal Entity Configurator](/modules/legal-entity-configurator/ "Oracle EBS Legal Entity Configurator reports") · [all Legal Entity Configurator reports](/modules/legal-entity-configurator/)  
 
 ## Overview
 Legal entities, establishments, jurisdictions and registrations
+
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xle-legal-entities) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 
 ## Report Parameters
 Jurisdiction Country, Legal Entity Name
 
 ## Oracle EBS Tables Used
-[xle_entity_profiles](https://www.enginatics.com/library/?pg=1&find=xle_entity_profiles), [xle_etb_profiles](https://www.enginatics.com/library/?pg=1&find=xle_etb_profiles), [hz_parties](https://www.enginatics.com/library/?pg=1&find=hz_parties), [xle_registrations](https://www.enginatics.com/library/?pg=1&find=xle_registrations), [xle_jurisdictions_vl](https://www.enginatics.com/library/?pg=1&find=xle_jurisdictions_vl), [hz_geographies](https://www.enginatics.com/library/?pg=1&find=hz_geographies), [fnd_lookup_values_vl](https://www.enginatics.com/library/?pg=1&find=fnd_lookup_values_vl), [hr_locations_all](https://www.enginatics.com/library/?pg=1&find=hr_locations_all), [fnd_territories_vl](https://www.enginatics.com/library/?pg=1&find=fnd_territories_vl), [hz_party_sites](https://www.enginatics.com/library/?pg=1&find=hz_party_sites), [hz_locations](https://www.enginatics.com/library/?pg=1&find=hz_locations)
+[xle_entity_profiles](https://www.enginatics.com/library/?pg=1&find=xle_entity_profiles&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xle-legal-entities), [xle_etb_profiles](https://www.enginatics.com/library/?pg=1&find=xle_etb_profiles&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xle-legal-entities), [hz_parties](https://www.enginatics.com/library/?pg=1&find=hz_parties&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xle-legal-entities), [xle_registrations](https://www.enginatics.com/library/?pg=1&find=xle_registrations&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xle-legal-entities), [xle_jurisdictions_vl](https://www.enginatics.com/library/?pg=1&find=xle_jurisdictions_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xle-legal-entities), [hz_geographies](https://www.enginatics.com/library/?pg=1&find=hz_geographies&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xle-legal-entities), [fnd_lookup_values_vl](https://www.enginatics.com/library/?pg=1&find=fnd_lookup_values_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xle-legal-entities), [hr_locations_all](https://www.enginatics.com/library/?pg=1&find=hr_locations_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xle-legal-entities), [fnd_territories_vl](https://www.enginatics.com/library/?pg=1&find=fnd_territories_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xle-legal-entities), [hz_party_sites](https://www.enginatics.com/library/?pg=1&find=hz_party_sites&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xle-legal-entities), [hz_locations](https://www.enginatics.com/library/?pg=1&find=hz_locations&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xle-legal-entities)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xle-legal-entities), [R12 only](https://www.enginatics.com/library/?pg=1&category%5B%5D=R12%20only&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xle-legal-entities)
 
 ## Related Reports
-[ZX Party Tax Profiles](/ZX%20Party%20Tax%20Profiles/ "ZX Party Tax Profiles Oracle EBS SQL Report"), [AR European Sales Listing](/AR%20European%20Sales%20Listing/ "AR European Sales Listing Oracle EBS SQL Report"), [IBY Payment Process Request Details](/IBY%20Payment%20Process%20Request%20Details/ "IBY Payment Process Request Details Oracle EBS SQL Report"), [CE Cleared Transactions](/CE%20Cleared%20Transactions/ "CE Cleared Transactions Oracle EBS SQL Report"), [AR Customer Upload](/AR%20Customer%20Upload/ "AR Customer Upload Oracle EBS SQL Report")
+[ZX Party Tax Profiles](/ZX%20Party%20Tax%20Profiles/ "ZX Party Tax Profiles Oracle EBS SQL Report"), [AR European Sales Listing](/AR%20European%20Sales%20Listing/ "AR European Sales Listing Oracle EBS SQL Report"), [IBY Payment Process Request Details](/IBY%20Payment%20Process%20Request%20Details/ "IBY Payment Process Request Details Oracle EBS SQL Report"), [CE Cleared Transactions](/CE%20Cleared%20Transactions/ "CE Cleared Transactions Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/XLE%20Legal%20Entities/XLE%20Legal%20Entities.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xle-legal-entities) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [XLE Legal Entities 24-Jul-2017 145303.xlsx](https://www.enginatics.com/example/xle-legal-entities/) |
-| Blitz Report™ XML Import | [XLE_Legal_Entities.xml](https://www.enginatics.com/xml/xle-legal-entities/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/xle-legal-entities/](https://www.enginatics.com/reports/xle-legal-entities/) |
+| Excel Example Output | [XLE Legal Entities 24-Jul-2017 145303.xlsx](https://www.enginatics.com/example/xle-legal-entities/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xle-legal-entities) |
+| Blitz Report™ XML Import | [XLE_Legal_Entities.xml](https://www.enginatics.com/xml/xle-legal-entities/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xle-legal-entities) |
+| SQL Source | [XLE Legal Entities.sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/XLE%20Legal%20Entities/XLE%20Legal%20Entities.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/xle-legal-entities/](https://www.enginatics.com/reports/xle-legal-entities/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xle-legal-entities) |
 
 ## Case Study & Technical Analysis: XLE Legal Entities Report
 
@@ -99,18 +108,17 @@ As a master data and configuration report, it is optimized for efficient retriev
 **3. Can this report also show the operating units or inventory organizations associated with each legal entity?**
    This report focuses specifically on the legal entity and its direct establishments/registrations. For a view that links legal entities to their associated operating units and inventory organizations, you would typically use the related `XLE Establishment and Legal Entity Associations` report, which provides that specific level of detail.
 
-
 ---
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xle-legal-entities)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xle-legal-entities)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xle-legal-entities)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xle-legal-entities)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xle-legal-entities)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xle-legal-entities)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xle-legal-entities)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

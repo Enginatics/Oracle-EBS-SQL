@@ -1,17 +1,17 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: XLA Subledger Period Close Exceptions
 -- Description: Imported from BI Publisher
-Description: This report extracts all those events which are either untransferred or are not accounted for.
-Application: Subledger Accounting
-Source: Subledger Period Close Exceptions Report
-Short Name: XLAPEXRPT
-DB package: XLA_PERIOD_CLOSE_EXP_PKG
--- Excel Examle Output: https://www.enginatics.com/example/xla-subledger-period-close-exceptions/
+-- Description: This report extracts all those events which are either untransferred or are not accounted for.
+-- Application: Subledger Accounting
+-- Source: Subledger Period Close Exceptions Report
+-- Short Name: XLAPEXRPT
+-- DB package: XLAPERIODCLOSEEXPPKG
+-- Excel Example Output: https://www.enginatics.com/example/xla-subledger-period-close-exceptions/
 -- Library Link: https://www.enginatics.com/reports/xla-subledger-period-close-exceptions/
 -- Run Report: https://demo.enginatics.com/
 

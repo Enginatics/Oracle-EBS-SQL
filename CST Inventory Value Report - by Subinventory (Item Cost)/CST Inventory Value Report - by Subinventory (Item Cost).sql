@@ -1,15 +1,15 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CST Inventory Value Report - by Subinventory (Item Cost)
 -- Description: Imported Oracle standard inventory value subinventory report by item cost
-Source: Inventory Value Report - by Subinventory (XML)
-Short Name: CSTRINVR_XML
-DB package: BOM_CSTRINVR_XMLP_PKG
--- Excel Examle Output: https://www.enginatics.com/example/cst-inventory-value-report-by-subinventory-item-cost/
+-- Source: Inventory Value Report - by Subinventory (XML)
+-- Short Name: CSTRINVRXML
+-- DB package: BOMCSTRINVRXMLPPKG
+-- Excel Example Output: https://www.enginatics.com/example/cst-inventory-value-report-by-subinventory-item-cost/
 -- Library Link: https://www.enginatics.com/reports/cst-inventory-value-report-by-subinventory-item-cost/
 -- Run Report: https://demo.enginatics.com/
 

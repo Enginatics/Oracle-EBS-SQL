@@ -1,13 +1,13 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: DIS Discoverer and Blitz Report Users
 -- Description: Shows the user adoption for companies replacing Discoverer with Blitz Report in a phased approach.
-The report shows the number of Discoverer worksheets and Blitz Report executed every month per user, to help identifying the users still using Discoverer instead of Blitz Report.
--- Excel Examle Output: https://www.enginatics.com/example/dis-discoverer-and-blitz-report-users/
+-- The report shows the number of Discoverer worksheets and Blitz Report executed every month per user, to help identifying the users still using Discoverer instead of Blitz Report.
+-- Excel Example Output: https://www.enginatics.com/example/dis-discoverer-and-blitz-report-users/
 -- Library Link: https://www.enginatics.com/reports/dis-discoverer-and-blitz-report-users/
 -- Run Report: https://demo.enginatics.com/
 

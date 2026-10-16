@@ -1,16 +1,20 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: AP Intercompany Invoice Details
 -- Description: AP Intercompany Invoice Details
-
--- Excel Examle Output: https://www.enginatics.com/example/ap-intercompany-invoice-details/
+-- When India Localization is installed, the following GST columns are also included: CGST Amount, SGST Amount, IGST Amount, Custom Amount, Unclassified Tax Amount, Taxable Value, HSN SAC Code, CGST Rate, SGST Rate, IGST Rate, GST Supplier Registration No, GST Registration No, GST PAN No, GST TAN No.
+-- Excel Example Output: https://www.enginatics.com/example/ap-intercompany-invoice-details/
 -- Library Link: https://www.enginatics.com/reports/ap-intercompany-invoice-details/
 -- Run Report: https://demo.enginatics.com/
 
+select
+x.*
+from
+(
 select
       gl.name                                    ledger
     , hou.name                                   operating_unit
@@ -58,6 +62,9 @@ select
     , aia.invoice_id
     , aia.reference_1                            customer_trx_id
     , aila.reference_1                           customer_trx_line_id
+&il_tax_columns_inner_amt
+&il_tax_columns_inner_rate
+&il_tax_columns_inner_tp
     from
       ap_invoices_all              aia
     , ap_invoice_lines_all         aila
@@ -77,6 +84,7 @@ select
                 where  rownum=1
                )
        )                           msik
+&il_from
     where
         aia.invoice_id                   = aila.invoice_id
     and aila.invoice_id                  = aida.invoice_id (+)
@@ -91,12 +99,14 @@ select
     and aila.line_type_lookup_code       = 'ITEM'
     and nvl(aila.discarded_flag,'N')     = 'N'
     and 1=1
+&il_where
+) x
     order by
-      gl.name
-    , hou.name
-    , aps.vendor_name
-    , assa.vendor_site_code
-    , aia.invoice_date
-    , aia.invoice_num
-    , aila.line_number
-    , aida.distribution_line_number
+      x.ledger
+    , x.operating_unit
+    , x.vendor_name
+    , x.vendor_site_code
+    , x.invoice_date
+    , x.invoice_num
+    , x.line_number
+    , x.distribution_line_number

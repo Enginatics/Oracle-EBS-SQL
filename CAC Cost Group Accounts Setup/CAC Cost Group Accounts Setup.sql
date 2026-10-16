@@ -1,30 +1,28 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Cost Group Accounts Setup
--- Description: Report to show the cost group accounts in use.  If using Average Costing, FIFO Costing, LIFO Costing, WMS (Warehouse Management System) or Project Manufacturing, the Inventory Cost Processor uses the cost group valuation accounts as opposed to subinventory valuation accounts.
-
-Parameters:
-===========
-Organization Code:  enter the specific inventory organization(s) you wish to report (optional).
-Operating Unit:  enter the specific operating unit(s) you wish to report (optional).
-Ledger:  enter the specific ledger(s) you wish to report (optional).
-
-/* +=============================================================================+
--- |  Copyright 2022 Douglas Volz Consulting, Inc.
--- |  All rights reserved.
--- |  Permission to use this code is granted provided the original author is
--- |  acknowledged.  No warranties, express or otherwise is included in this
--- |  permission.
--- +=============================================================================+
--- |  Version Modified on Modified  by   Description
--- |  ======= =========== ============== =========================================
--- |  1.0     04 Oct 2022 Douglas Volz   Initial Coding
--- +=============================================================================+*/
--- Excel Examle Output: https://www.enginatics.com/example/cac-cost-group-accounts-setup/
+-- Description: Report to show the cost group accounts in use. If using Average Costing, FIFO Costing, LIFO Costing, WMS (Warehouse Management System) or Project Manufacturing, the Inventory Cost Processor uses the cost group valuation accounts as opposed to subinventory valuation accounts.
+-- Parameters:
+-- ===========
+-- Organization Code: enter the specific inventory organization(s) you wish to report (optional).
+-- Operating Unit: enter the specific operating unit(s) you wish to report (optional).
+-- Ledger: enter the specific ledger(s) you wish to report (optional).
+-- / +=============================================================================+
+-- -- | Copyright 2022 Douglas Volz Consulting, Inc.
+-- -- | All rights reserved.
+-- -- | Permission to use this code is granted provided the original author is
+-- -- | acknowledged. No warranties, express or otherwise is included in this
+-- -- | permission.
+-- -- +=============================================================================+
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== ============== =========================================
+-- -- | 1.0 04 Oct 2022 Douglas Volz Initial Coding
+-- -- +=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-cost-group-accounts-setup/
 -- Library Link: https://www.enginatics.com/reports/cac-cost-group-accounts-setup/
 -- Run Report: https://demo.enginatics.com/
 

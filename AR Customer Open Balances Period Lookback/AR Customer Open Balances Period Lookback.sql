@@ -1,25 +1,23 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: AR Customer Open Balances Period Lookback
 -- Description: Report: AR Customer Open Balances Period Lookback
-Application: Receivables
-Description:
-Customer Open Balances summary showing
-- Open Balances as of the specified 'As of Date' and as of <n> periods prior to the 'As of Date' period.
-- Maximum Open Balance in the prior <n> periods prior to the 'As of Date' period
-
-All balances are show in the functional currency.
-
-Parameters:
-As of Date - the report will be run as of this date. Defaults to the current system date.
-Look Back <n> periods - number of periods prior to the 'As of Date' period to show
-Max Open over last <n> Periods - number of periods prior to the 'As of Date' period to consider in the Maximum Open Balance amount calculation
-
--- Excel Examle Output: https://www.enginatics.com/example/ar-customer-open-balances-period-lookback/
+-- Application: Receivables
+-- Description:
+-- Customer Open Balances summary showing
+-- - Open Balances as of the specified 'As of Date' and as of periods prior to the 'As of Date' period.
+-- - Maximum Open Balance in the prior periods prior to the 'As of Date' period
+-- All balances are show in the functional currency.
+-- Parameters:
+-- As of Date - the report will be run as of this date. Defaults to the current system date.
+-- Look Back periods - number of periods prior to the 'As of Date' period to show
+-- Max Open over last Periods - number of periods prior to the 'As of Date' period to consider in the Maximum Open Balance amount calculation
+-- When India Localization is installed, the following GST columns are also included: GST Registration No, GST PAN No, IGST Amount, CGST Amount, SGST Amount, CESS Amount, Custom Amount, Unclassified Tax Amount, GST Warehouse Registration No, Taxable Value, HSN SAC Code.
+-- Excel Example Output: https://www.enginatics.com/example/ar-customer-open-balances-period-lookback/
 -- Library Link: https://www.enginatics.com/reports/ar-customer-open-balances-period-lookback/
 -- Run Report: https://demo.enginatics.com/
 
@@ -38,6 +36,8 @@ select
 &lp_amt_due_max_col_reval
 &lp_amt_due_cols1_reval
 --
+&il_reg_columns
+&il_columns
 from
   ( select
       xep.name                      legal_entity 
@@ -95,6 +95,9 @@ from
     --
     , gl.currency_code ledger_currency
     , max(decode(gl.currency_code,:p_reval_currency,1,(select gdr.conversion_rate from gl_daily_conversion_types gdct, gl_daily_rates gdr where gl.currency_code=gdr.from_currency and gdr.to_currency=:p_reval_currency and :p_reval_conv_date=gdr.conversion_date and gdct.user_conversion_type=:p_reval_conv_type and gdct.conversion_type=gdr.conversion_type))) reval_conv_rate
+,
+&il_columns_inner
+rcta.customer_trx_id customer_trx_id_
     from
       hr_operating_units           hou
     , gl_ledgers                   gl
@@ -106,6 +109,7 @@ from
     , hz_parties                   hp
     , ar_system_parameters_all     sp
     , xle_entity_profiles          xep
+&il_from
     where
         hou.set_of_books_id              = sp.set_of_books_id
     and gl.ledger_id                     = sp.set_of_books_id
@@ -125,6 +129,7 @@ from
     and aps.gl_date_closed               > :p_first_gl_date
     and aps.gl_date                     <= :p_as_of_date
     and 1=1
+&il_where
     group by
       xep.name
     , xep.legal_entity_identifier
@@ -168,6 +173,9 @@ from
     --
     , gl.currency_code ledger_currency
     , max(decode(gl.currency_code,:p_reval_currency,1,(select gdr.conversion_rate from gl_daily_conversion_types gdct, gl_daily_rates gdr where gl.currency_code=gdr.from_currency and gdr.to_currency=:p_reval_currency and :p_reval_conv_date=gdr.conversion_date and gdct.user_conversion_type=:p_reval_conv_type and gdct.conversion_type=gdr.conversion_type))) reval_conv_rate
+,
+&il_columns_inner_null
+to_number(null) customer_trx_id_
     from
       hr_operating_units             hou
     , gl_ledgers                     gl
@@ -250,6 +258,9 @@ from
     --
     , gl.currency_code ledger_currency
     , max(decode(gl.currency_code,:p_reval_currency,1,(select gdr.conversion_rate from gl_daily_conversion_types gdct, gl_daily_rates gdr where gl.currency_code=gdr.from_currency and gdr.to_currency=:p_reval_currency and :p_reval_conv_date=gdr.conversion_date and gdct.user_conversion_type=:p_reval_conv_type and gdct.conversion_type=gdr.conversion_type))) reval_conv_rate
+,
+&il_columns_inner_null
+to_number(null) customer_trx_id_
     from
       hr_operating_units             hou
     , gl_ledgers                     gl
@@ -332,6 +343,9 @@ from
     --
     , gl.currency_code ledger_currency
     , max(decode(gl.currency_code,:p_reval_currency,1,(select gdr.conversion_rate from gl_daily_conversion_types gdct, gl_daily_rates gdr where gl.currency_code=gdr.from_currency and gdr.to_currency=:p_reval_currency and :p_reval_conv_date=gdr.conversion_date and gdct.user_conversion_type=:p_reval_conv_type and gdct.conversion_type=gdr.conversion_type))) reval_conv_rate
+,
+&il_columns_inner_null
+to_number(null) customer_trx_id_
     from
       hr_operating_units             hou
     , gl_ledgers                     gl

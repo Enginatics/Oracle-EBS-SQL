@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: AD Applied Patches R12.2
 -- Description: Check if a specific patch is applied in 12.2
--- Excel Examle Output: https://www.enginatics.com/example/ad-applied-patches-r12-2/
+-- Excel Example Output: https://www.enginatics.com/example/ad-applied-patches-r12-2/
 -- Library Link: https://www.enginatics.com/reports/ad-applied-patches-r12-2/
 -- Run Report: https://demo.enginatics.com/
 

@@ -1,16 +1,16 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: AR to GL Reconciliation
 -- Description: Imported from Concurrent Program
-Application: Receivables
-Source: AR to GL Reconciliation Report
-Short Name: ARGLRECR
-DB package:
--- Excel Examle Output: https://www.enginatics.com/example/ar-to-gl-reconciliation/
+-- Application: Receivables
+-- Source: AR to GL Reconciliation Report
+-- Short Name: ARGLRECR
+-- DB package:
+-- Excel Example Output: https://www.enginatics.com/example/ar-to-gl-reconciliation/
 -- Library Link: https://www.enginatics.com/reports/ar-to-gl-reconciliation/
 -- Run Report: https://demo.enginatics.com/
 

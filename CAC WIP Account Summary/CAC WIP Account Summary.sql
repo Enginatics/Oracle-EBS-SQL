@@ -1,54 +1,48 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC WIP Account Summary
--- Description: Report to get the WIP accounting distributions, in summary, by WIP job, resource, overhead and WIP cost update.  With the Show SLA Accounting parameter you can choose to use the Release 12 Subledger Accounting (Create Accounting) account setups by selecting Yes.  And if you have not modified your SLA accounting rules, select No to allow this report to run a bit faster.  With parameters to limit the report size, Show Project to display or not display the project number and name, Show WIP Job to display or not display the WIP job (WIP job, description and resource codes) and Show WIP Outside Processing to display or not display the outside processing information (WIP OSP item number, supplier, purchase order, purchase order line and release).  For Discrete, Flow and Workorderless WIP (but not Repetitive Schedules).  Note that both Flow and Workorderless show up as the WIP Type "Flow schedule".
-
-Parameters:
-===========
-Transaction Date From:  enter the starting transaction date (mandatory).
-Transaction Date To:  enter the ending transaction date (mandatory).
-Show SLA Accounting:  enter Yes to use the Subledger Accounting rules for your accounting information (mandatory).  If you choose No the report uses the pre-Create Accounting entries.
-Show Projects:  display the project number and name.  Enter Yes or No, use to limit the report size. (mandatory).
-Show WIP Jobs:  display the WIP job, description, department and resource.  Enter Yes or No, use to limit the report size (mandatory).
-Show WIP Outside Processing:  display the WIP OSP item number, supplier, purchase order, purchase order line and release.  Enter Yes or No, use to limit the report size (mandatory).
-Category Set 1:  any item category you wish, typically the Cost or Product Line category set (optional).
-Category Set 2:  any item category you wish, typically the Inventory category set (optional).
-Assembly Number:  enter the specific assembly number(s) you wish to report (optional).
-Organization Code:  enter the specific inventory organization(s) you wish to report (optional).
-Operating Unit:  enter the specific operating unit(s) you wish to report (optional).
-Ledger:  enter the specific ledger(s) you wish to report (optional).
-
-/* +=============================================================================+
--- |  Copyright 2009- 2024 Douglas Volz Consulting, Inc.
--- |  All rights reserved.
--- |  Permission to use this code is granted provided the original author is
--- |  acknowledged.  No warranties, express or otherwise is included in this permission. 
--- +=============================================================================+
--- | 
--- |  Version Modified on Modified  by   Description
--- |  ======= =========== ============== =========================================
--- |  1.0     06 Nov 2009 Douglas Volz   Initial Coding
--- |   1.13   11 Mar 2021 Douglas Volz   Added Flow Schedules and Workorderless WIP
--- |                                     and removed redundant joins and tables to 
--- |                                     improve performance.
--- |   1.14   22 Mar 2021 Douglas Volz   Add WIP Job parameter.
--- |   1.15   20 Dec 2021 Douglas Volz   Add WIP Department.
--- |   1.16   12 Aug 2022 Douglas Volz   Combine with WIP Account Summary No SLA report
--- |                                     and add Show WIP Job and Show WIP OSP parameters.
--- |   1.17   14 Aug 2022 Douglas Volz   Screen out zero job close variances for Flow Schedules.
--- |  1.18   22 Aug 2022 Douglas Volz    Improve performance with outer joins and streamline dynamic SQL.
--- |  1.19   26 Feb 2023 Douglas Volz    Fix to show job close variances.
--- |  1.20   20 Jun 2024 Douglas Volz    Remove tabs, reinstall missing parameters and org access controls.
--- +=============================================================================+*/
-
-
-
-
--- Excel Examle Output: https://www.enginatics.com/example/cac-wip-account-summary/
+-- Description: Report to get the WIP accounting distributions, in summary, by WIP job, resource, overhead and WIP cost update. With the Show SLA Accounting parameter you can choose to use the Release 12 Subledger Accounting (Create Accounting) account setups by selecting Yes. And if you have not modified your SLA accounting rules, select No to allow this report to run a bit faster. With parameters to limit the report size, Show Project to display or not display the project number and name, Show WIP Job to display or not display the WIP job (WIP job, description and resource codes) and Show WIP Outside Processing to display or not display the outside processing information (WIP OSP item number, supplier, purchase order, purchase order line and release). For Discrete, Flow and Workorderless WIP (but not Repetitive Schedules). Note that both Flow and Workorderless show up as the WIP Type "Flow schedule".
+-- Parameters:
+-- ===========
+-- Transaction Date From: enter the starting transaction date (mandatory).
+-- Transaction Date To: enter the ending transaction date (mandatory).
+-- Show SLA Accounting: enter Yes to use the Subledger Accounting rules for your accounting information (mandatory). If you choose No the report uses the pre-Create Accounting entries.
+-- Show Projects: display the project number and name. Enter Yes or No, use to limit the report size. (mandatory).
+-- Show WIP Jobs: display the WIP job, description, department and resource. Enter Yes or No, use to limit the report size (mandatory).
+-- Show WIP Outside Processing: display the WIP OSP item number, supplier, purchase order, purchase order line and release. Enter Yes or No, use to limit the report size (mandatory).
+-- Category Set 1: any item category you wish, typically the Cost or Product Line category set (optional).
+-- Category Set 2: any item category you wish, typically the Inventory category set (optional).
+-- Assembly Number: enter the specific assembly number(s) you wish to report (optional).
+-- Organization Code: enter the specific inventory organization(s) you wish to report (optional).
+-- Operating Unit: enter the specific operating unit(s) you wish to report (optional).
+-- Ledger: enter the specific ledger(s) you wish to report (optional).
+-- / +=============================================================================+
+-- -- | Copyright 2009- 2024 Douglas Volz Consulting, Inc.
+-- -- | All rights reserved.
+-- -- | Permission to use this code is granted provided the original author is
+-- -- | acknowledged. No warranties, express or otherwise is included in this permission.
+-- -- +=============================================================================+
+-- -- |
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== ============== =========================================
+-- -- | 1.0 06 Nov 2009 Douglas Volz Initial Coding
+-- -- | 1.13 11 Mar 2021 Douglas Volz Added Flow Schedules and Workorderless WIP
+-- -- | and removed redundant joins and tables to
+-- -- | improve performance.
+-- -- | 1.14 22 Mar 2021 Douglas Volz Add WIP Job parameter.
+-- -- | 1.15 20 Dec 2021 Douglas Volz Add WIP Department.
+-- -- | 1.16 12 Aug 2022 Douglas Volz Combine with WIP Account Summary No SLA report
+-- -- | and add Show WIP Job and Show WIP OSP parameters.
+-- -- | 1.17 14 Aug 2022 Douglas Volz Screen out zero job close variances for Flow Schedules.
+-- -- | 1.18 22 Aug 2022 Douglas Volz Improve performance with outer joins and streamline dynamic SQL.
+-- -- | 1.19 26 Feb 2023 Douglas Volz Fix to show job close variances.
+-- -- | 1.20 20 Jun 2024 Douglas Volz Remove tabs, reinstall missing parameters and org access controls.
+-- -- +=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-wip-account-summary/
 -- Library Link: https://www.enginatics.com/reports/cac-wip-account-summary/
 -- Run Report: https://demo.enginatics.com/
 

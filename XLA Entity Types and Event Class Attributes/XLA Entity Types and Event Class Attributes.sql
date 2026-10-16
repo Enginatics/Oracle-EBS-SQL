@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: XLA Entity Types and Event Class Attributes
 -- Description: Subledger event types and their attributes, for example reporting view
--- Excel Examle Output: https://www.enginatics.com/example/xla-entity-types-and-event-class-attributes/
+-- Excel Example Output: https://www.enginatics.com/example/xla-entity-types-and-event-class-attributes/
 -- Library Link: https://www.enginatics.com/reports/xla-entity-types-and-event-class-attributes/
 -- Run Report: https://demo.enginatics.com/
 

@@ -1,8 +1,3 @@
-/README_FOOTER.md
-/README_HEADER.md
-/main.py
-/copy_11i_descriptions.py
-/find_missing_descriptions.py
-/REPORT_SQL.md
-/REPORT.md
-/_backup
+# Managed by oracle-ebs-sql-updater
+.DS_Store
+Thumbs.db

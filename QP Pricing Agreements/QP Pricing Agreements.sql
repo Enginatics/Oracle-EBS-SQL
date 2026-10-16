@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: QP Pricing Agreements
 -- Description: Report detailing QP Pricing Agreements
--- Excel Examle Output: https://www.enginatics.com/example/qp-pricing-agreements/
+-- Excel Example Output: https://www.enginatics.com/example/qp-pricing-agreements/
 -- Library Link: https://www.enginatics.com/reports/qp-pricing-agreements/
 -- Run Report: https://demo.enginatics.com/
 

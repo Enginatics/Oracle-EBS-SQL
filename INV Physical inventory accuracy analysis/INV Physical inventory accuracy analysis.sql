@@ -1,17 +1,17 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: INV Physical inventory accuracy analysis
 -- Description: Imported from BI Publisher
-Description: Physical inventory accuracy analysis
-Application: Inventory
-Source: Physical inventory accuracy analysis (XML)
-Short Name: INVARPIA_XML
-DB package: INV_INVARPIA_XMLP_PKG
--- Excel Examle Output: https://www.enginatics.com/example/inv-physical-inventory-accuracy-analysis/
+-- Description: Physical inventory accuracy analysis
+-- Application: Inventory
+-- Source: Physical inventory accuracy analysis (XML)
+-- Short Name: INVARPIAXML
+-- DB package: INVINVARPIAXMLPPKG
+-- Excel Example Output: https://www.enginatics.com/example/inv-physical-inventory-accuracy-analysis/
 -- Library Link: https://www.enginatics.com/reports/inv-physical-inventory-accuracy-analysis/
 -- Run Report: https://demo.enginatics.com/
 

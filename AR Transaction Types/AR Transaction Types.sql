@@ -1,17 +1,17 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: AR Transaction Types
 -- Description: Imported from BI Publisher
-Description: Print a listing of the Transaction Types
-Application: Receivables
-Source: Transaction Types Listing (XML)
-Short Name: RAXTTL_XML
-DB package: AR_RAXTTL_XMLP_PKG
--- Excel Examle Output: https://www.enginatics.com/example/ar-transaction-types/
+-- Description: Print a listing of the Transaction Types
+-- Application: Receivables
+-- Source: Transaction Types Listing (XML)
+-- Short Name: RAXTTLXML
+-- DB package: ARRAXTTLXMLPPKG
+-- Excel Example Output: https://www.enginatics.com/example/ar-transaction-types/
 -- Library Link: https://www.enginatics.com/reports/ar-transaction-types/
 -- Run Report: https://demo.enginatics.com/
 

@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: Blitz Upload History
 -- Description: History of uploaded data, which is kept for profile option Blitz Upload Data Retention Days number of days.
--- Excel Examle Output: https://www.enginatics.com/example/blitz-upload-history/
+-- Excel Example Output: https://www.enginatics.com/example/blitz-upload-history/
 -- Library Link: https://www.enginatics.com/reports/blitz-upload-history/
 -- Run Report: https://demo.enginatics.com/
 

@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: Blitz Report Pivot Colums Validation
--- Description: Checks if records in xxen_report_template_pivot have a corresponding record in xxen_report_template_columns
--- Excel Examle Output: https://www.enginatics.com/example/blitz-report-pivot-colums-validation/
+-- Description: Checks if records in xxenreporttemplatepivot have a corresponding record in xxenreporttemplatecolumns
+-- Excel Example Output: https://www.enginatics.com/example/blitz-report-pivot-colums-validation/
 -- Library Link: https://www.enginatics.com/reports/blitz-report-pivot-colums-validation/
 -- Run Report: https://demo.enginatics.com/
 

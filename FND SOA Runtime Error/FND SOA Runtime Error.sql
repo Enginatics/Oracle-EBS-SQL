@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: FND SOA Runtime Error
 -- Description: 
--- Excel Examle Output: https://www.enginatics.com/example/fnd-soa-runtime-error/
+-- Excel Example Output: https://www.enginatics.com/example/fnd-soa-runtime-error/
 -- Library Link: https://www.enginatics.com/reports/fnd-soa-runtime-error/
 -- Run Report: https://demo.enginatics.com/
 

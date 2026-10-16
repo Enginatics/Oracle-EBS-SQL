@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PER Employee Grade Changes
 -- Description: List of employees with their grade changes.
--- Excel Examle Output: https://www.enginatics.com/example/per-employee-grade-changes/
+-- Excel Example Output: https://www.enginatics.com/example/per-employee-grade-changes/
 -- Library Link: https://www.enginatics.com/reports/per-employee-grade-changes/
 -- Run Report: https://demo.enginatics.com/
 

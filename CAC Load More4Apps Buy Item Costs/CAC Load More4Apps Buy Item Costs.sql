@@ -1,54 +1,50 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Load More4Apps Buy Item Costs
--- Description: Report to fetch all buy items (based on rollup = No).   Used as a source of item costs for buy items which you wish to edit or change using the More4Apps Item Cost Wizard or similar tool.  You can over-ride the Make Buy Code by removing the defaulted value, but the Oracle Item Cost Interface works best for Buy Items; it does not work well with rolled-up costs and accordingly, this report only downloads items whose costs are not based on the cost rollup.
-
-This report approximates the layout for the More4Apps Item Cost Wizard; run this report to get your Buy Item costs into Excel, make your changes in Excel then paste these revised costs into the More4Apps Item Cost Wizard.  Columns needed for the More4Apps Item Cost Wizard:  Org Code, Cost Type, Item Number, Based on Rollup, Lot Size, Mfg Shrinkage, Cost Element, Sub-Element, Basis Type and Rate or Amount.  The additional columns, Currency Code, UOM Code, Make Buy Code and Inventory Asset, are for reference purposes.
-
-Parameters:
-===========
-From Cost Type:  enter the cost type you are downloading from (mandatory).
-To Cost Type:  enter the cost type you are planning to upload back into the More4Apps Item Cost Wizard.  This Cost Type will show up on the report output (mandatory).
-Item Status to Exclude:  enter the item number status you want to exclude.  Defaulted to 'Inactive' (optional).
-Make or Buy:  enter the type of item you wish to report.  Defaulted to Buy Items, as the Oracle Item Cost Interface works best with items that you purchase, as opposed to rolled up costs (optional).
-Cost Element:  enter the specific cost element you wish to download; for Buy Items typically the Material and Material Overhead Cost Elements (optional).
-Organization Code:  enter the specific inventory organization(s) you wish to report (optional).
-Operating Unit:  enter the specific operating unit(s) you wish to report (optional).
-Ledger:  enter the specific ledger(s) you wish to report (optional).
-
-/* +=============================================================================+
--- | Copyright 2017 - 2023 Douglas Volz Consulting, Inc.
--- | All rights reserved.
--- | Permission to use this code is granted provided the original author is
--- | acknowledged. No warranties, express or otherwise is included in this
--- | permission.
--- +=============================================================================+
--- |
--- | Original Author: Douglas Volz (doug@volzconsulting.com)
--- |
--- | Program Name: xxx_load_m4app_buy_item_costs.sql
--- | 
--- | Version Modified on Modified by Description
--- | ======= =========== ============== =========================================
--- |  1.0    07 Jun 2017 Douglas Volz  Initial Coding
--- |  1.1    16 Jun 2017 Douglas Volz  Only report based on rollup = No
--- |  1.2    12 Nov 2018 Douglas Volz  Remove prior client org restriction and
--- |                                   add Ledger parameter.
--- |  1.3    27 Jan 2020 Douglas Volz  Added Operating Unit parameter.
--- |  1.4    06 Jul 2022 Douglas Volz  Changed to multi-language views for the item
--- |                                   master and inventory orgs.
--- |  1.5    21 Oct 2023 Douglas Volz  Added UOM Code, Make Buy Code and Inventory
--- |                                   Asset columns; added Item Status, Make Buy
--- |                                   and Cost Element parameters, removed tabs
--- |                                   and added org access controls.
--- |  1.6    05 Dec 2023 Douglas Volz  Added G/L and Operating Unit security restrictions.
--- +=============================================================================+*/
-
--- Excel Examle Output: https://www.enginatics.com/example/cac-load-more4apps-buy-item-costs/
+-- Description: Report to fetch all buy items (based on rollup = No). Used as a source of item costs for buy items which you wish to edit or change using the More4Apps Item Cost Wizard or similar tool. You can over-ride the Make Buy Code by removing the defaulted value, but the Oracle Item Cost Interface works best for Buy Items; it does not work well with rolled-up costs and accordingly, this report only downloads items whose costs are not based on the cost rollup.
+-- This report approximates the layout for the More4Apps Item Cost Wizard; run this report to get your Buy Item costs into Excel, make your changes in Excel then paste these revised costs into the More4Apps Item Cost Wizard. Columns needed for the More4Apps Item Cost Wizard: Org Code, Cost Type, Item Number, Based on Rollup, Lot Size, Mfg Shrinkage, Cost Element, Sub-Element, Basis Type and Rate or Amount. The additional columns, Currency Code, UOM Code, Make Buy Code and Inventory Asset, are for reference purposes.
+-- Parameters:
+-- ===========
+-- From Cost Type: enter the cost type you are downloading from (mandatory).
+-- To Cost Type: enter the cost type you are planning to upload back into the More4Apps Item Cost Wizard. This Cost Type will show up on the report output (mandatory).
+-- Item Status to Exclude: enter the item number status you want to exclude. Defaulted to 'Inactive' (optional).
+-- Make or Buy: enter the type of item you wish to report. Defaulted to Buy Items, as the Oracle Item Cost Interface works best with items that you purchase, as opposed to rolled up costs (optional).
+-- Cost Element: enter the specific cost element you wish to download; for Buy Items typically the Material and Material Overhead Cost Elements (optional).
+-- Organization Code: enter the specific inventory organization(s) you wish to report (optional).
+-- Operating Unit: enter the specific operating unit(s) you wish to report (optional).
+-- Ledger: enter the specific ledger(s) you wish to report (optional).
+-- / +=============================================================================+
+-- -- | Copyright 2017 - 2023 Douglas Volz Consulting, Inc.
+-- -- | All rights reserved.
+-- -- | Permission to use this code is granted provided the original author is
+-- -- | acknowledged. No warranties, express or otherwise is included in this
+-- -- | permission.
+-- -- +=============================================================================+
+-- -- |
+-- -- | Original Author: Douglas Volz (doug@volzconsulting.com)
+-- -- |
+-- -- | Program Name: xxxloadm4appbuyitemcosts.sql
+-- -- |
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== ============== =========================================
+-- -- | 1.0 07 Jun 2017 Douglas Volz Initial Coding
+-- -- | 1.1 16 Jun 2017 Douglas Volz Only report based on rollup = No
+-- -- | 1.2 12 Nov 2018 Douglas Volz Remove prior client org restriction and
+-- -- | add Ledger parameter.
+-- -- | 1.3 27 Jan 2020 Douglas Volz Added Operating Unit parameter.
+-- -- | 1.4 06 Jul 2022 Douglas Volz Changed to multi-language views for the item
+-- -- | master and inventory orgs.
+-- -- | 1.5 21 Oct 2023 Douglas Volz Added UOM Code, Make Buy Code and Inventory
+-- -- | Asset columns; added Item Status, Make Buy
+-- -- | and Cost Element parameters, removed tabs
+-- -- | and added org access controls.
+-- -- | 1.6 05 Dec 2023 Douglas Volz Added G/L and Operating Unit security restrictions.
+-- -- +=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-load-more4apps-buy-item-costs/
 -- Library Link: https://www.enginatics.com/reports/cac-load-more4apps-buy-item-costs/
 -- Run Report: https://demo.enginatics.com/
 

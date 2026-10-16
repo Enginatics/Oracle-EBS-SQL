@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: Blitz Report History
 -- Description: History of Blitz Report executions
--- Excel Examle Output: https://www.enginatics.com/example/blitz-report-history/
+-- Excel Example Output: https://www.enginatics.com/example/blitz-report-history/
 -- Library Link: https://www.enginatics.com/reports/blitz-report-history/
 -- Run Report: https://demo.enginatics.com/
 

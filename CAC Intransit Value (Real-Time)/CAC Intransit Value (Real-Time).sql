@@ -1,62 +1,61 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Intransit Value (Real-Time)
--- Description: Report to show intransit values across all ledgers for current onhand balances and current costing method costs.  This is a "real-time" report, showing the quantities and values at the time you run this report.  (Used the cst_intransit_value_view to simplify the design.)
-
-/* +=============================================================================+
--- |  Copyright 2009-20 Douglas Volz Consulting, Inc.                            |
--- |  All rights reserved.                                                       |
--- |  Permission to use this code is granted provided the original author is     |
--- |  acknowledged. No warranties, express or otherwise is included in this      |
--- |  permission.                                                                |
--- +=============================================================================+
--- |
--- |  Original Author: Douglas Volz (doug@volzconsulting.com)
--- |
--- |  Program Name:  xxx_intransit_value_report.sql
--- |
--- |  Parameters:
--- |  p_org_code            -- Specific inventory organization you wish to report (optional)
--- |  p_operating_unit      -- Operating Unit you wish to report, leave blank for all
--- |                           operating units (optional) 
--- |  p_ledger              -- general ledger you wish to report, leave blank for all
--- |                           ledgers (optional)
--- |  p_category_set1       -- The first item category set to report, typically the
--- |                           Cost or Product Line Category Set
--- |  p_category_set2       -- The second item category set to report, typically the
--- |                           Inventory Category Set
--- | 
--- |  Description:
--- |  Report to show intransit values across all ledgers, for current onhand
--- |  balances and current costing method costs.  This is a "real-time" report,
--- |  showing the quantities and values at the time you run this report.
--- |  (Note:  Used the cst_intransit_value_view to simplify the design.)
--- | 
--- |  Version Modified on Modified  by   Description
--- |  ======= =========== ============== =========================================
--- |  1.0     18 Nov 2008 Douglas Volz   Initial Coding
--- |  1.1     10 Dec 2009 Douglas Volz   Modified for Celgene
--- |  1.2     04 Jan 2010 Douglas Volz   Added intransit value accounts
--- |  1.3     03 Mar 2010 Douglas Volz   Set the company account number based on
--- |                                     the item's cost of goods sold account
--- |  1.4     04 Mar 2010 Douglas Volz   Screen out invalid Intransit balances from
--- |                                     Dec 2009 transactions for Ledger CHE_EUR_PL.
--- |                                     These intransit balances were written-off
--- |                                     in the G/L in December 2009.  Was not able
--- |                                     to get these entries fixed in Oracle.
--- |  1.10    23 Apr 2020 Douglas Volz   Changed to multi-language views for the item
--- |                                     master, item categories and operating units.
--- |  1.11    23 Aug 2020 Douglas Volz   Modified to get intransit_owning_org_id directly
--- |                                     from mtl_supply; if you change the shipping 
--- |                                     network FOB Point and you can no longer get
--- |                                     the FOB Point from cst_intransit_value_view.
--- |  1.12    27 Nov 2024 Eric Clegg. Added Minimum Absolute Intransit Quantity parameter
--- +=============================================================================+*/
--- Excel Examle Output: https://www.enginatics.com/example/cac-intransit-value-real-time/
+-- Description: Report to show intransit values across all ledgers for current onhand balances and current costing method costs. This is a "real-time" report, showing the quantities and values at the time you run this report. (Used the cstintransitvalueview to simplify the design.)
+-- / +=============================================================================+
+-- -- | Copyright 2009-20 Douglas Volz Consulting, Inc. |
+-- -- | All rights reserved. |
+-- -- | Permission to use this code is granted provided the original author is |
+-- -- | acknowledged. No warranties, express or otherwise is included in this |
+-- -- | permission. |
+-- -- +=============================================================================+
+-- -- |
+-- -- | Original Author: Douglas Volz (doug@volzconsulting.com)
+-- -- |
+-- -- | Program Name: xxxintransitvaluereport.sql
+-- -- |
+-- -- | Parameters:
+-- -- | porgcode -- Specific inventory organization you wish to report (optional)
+-- -- | poperatingunit -- Operating Unit you wish to report, leave blank for all
+-- -- | operating units (optional)
+-- -- | pledger -- general ledger you wish to report, leave blank for all
+-- -- | ledgers (optional)
+-- -- | pcategoryset1 -- The first item category set to report, typically the
+-- -- | Cost or Product Line Category Set
+-- -- | pcategoryset2 -- The second item category set to report, typically the
+-- -- | Inventory Category Set
+-- -- |
+-- -- | Description:
+-- -- | Report to show intransit values across all ledgers, for current onhand
+-- -- | balances and current costing method costs. This is a "real-time" report,
+-- -- | showing the quantities and values at the time you run this report.
+-- -- | (Note: Used the cstintransitvalueview to simplify the design.)
+-- -- |
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== ============== =========================================
+-- -- | 1.0 18 Nov 2008 Douglas Volz Initial Coding
+-- -- | 1.1 10 Dec 2009 Douglas Volz Modified for Celgene
+-- -- | 1.2 04 Jan 2010 Douglas Volz Added intransit value accounts
+-- -- | 1.3 03 Mar 2010 Douglas Volz Set the company account number based on
+-- -- | the item's cost of goods sold account
+-- -- | 1.4 04 Mar 2010 Douglas Volz Screen out invalid Intransit balances from
+-- -- | Dec 2009 transactions for Ledger CHEEURPL.
+-- -- | These intransit balances were written-off
+-- -- | in the G/L in December 2009. Was not able
+-- -- | to get these entries fixed in Oracle.
+-- -- | 1.10 23 Apr 2020 Douglas Volz Changed to multi-language views for the item
+-- -- | master, item categories and operating units.
+-- -- | 1.11 23 Aug 2020 Douglas Volz Modified to get intransitowningorgid directly
+-- -- | from mtlsupply; if you change the shipping
+-- -- | network FOB Point and you can no longer get
+-- -- | the FOB Point from cstintransitvalueview.
+-- -- | 1.12 27 Nov 2024 Eric Clegg. Added Minimum Absolute Intransit Quantity parameter
+-- -- +=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-intransit-value-real-time/
 -- Library Link: https://www.enginatics.com/reports/cac-intransit-value-real-time/
 -- Run Report: https://demo.enginatics.com/
 

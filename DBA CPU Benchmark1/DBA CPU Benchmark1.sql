@@ -1,33 +1,31 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: DBA CPU Benchmark1
 -- Description: Benchmark report to measure a database server's CPU speed, mainly for PLSQL processing.
-This report generates an output file of 500000 out of a total of 561495 records from a cartesian product based on EBS standard FND tables. These tables contain the same data for all EBS clients and the report can be used as a benchmark to test the database server's CPU performance.
-As the query itself should complete in less than a second, most of the execution time is spend in PLSQL code to generate the Blitz Report output file.
-To measure meaningful results, there should be enough SGA memory assigned to ensure that the execution time is entirely spent on CPU and not IO related wait events (to be confirmed using the DBA SGA Active Session History report).
-
-example performance for different CPU types:
-seconds	rows/s	CPU
-8	62500	AMD Ryzen 9 5950X 16-Core Processor
-12	41667
-13	38462	AMD EPYC 7742 64-Core Processor
-16	31250	Exadata CS X8M
-20	25000	Intel(R) Xeon(R) Gold 6252 CPU @ 2.10GHz
-22	22727	Intel(R) Xeon(R) CPU E5-2699 v4 @ 2.20GHz
-23	21739	Intel(R) Xeon(R) CPU E5-2699 v3 @ 2.30GHz
-25	20000	Intel(R) Xeon(R) CPU E5-2670 v2 @ 2.50GHz
-28	17857	Intel(R) Xeon(R) CPU E5-2686 v4 @ 2.30GHz 
-29	17241	Intel(R) Xeon(R) Platinum 8167M CPU @ 2.00GHz
-39	12821	Intel(R) Xeon(R) Platinum 8167M CPU @ 2.00GHz
-140	3571	SPARC-T5 chipid 1, clock 3600 MHz
-
-Oracle Ace Johannes Michler from Promatis has written a blog about this topic:
-<a href="https://promatis.com/de/benchmarking-cpus-for-oracle-e-business-suite-database/" rel="nofollow" target="_blank">https://promatis.com/de/benchmarking-cpus-for-oracle-e-business-suite-database/</a>
--- Excel Examle Output: https://www.enginatics.com/example/dba-cpu-benchmark1/
+-- This report generates an output file of 500000 out of a total of 561495 records from a cartesian product based on EBS standard FND tables. These tables contain the same data for all EBS clients and the report can be used as a benchmark to test the database server's CPU performance.
+-- As the query itself should complete in less than a second, most of the execution time is spend in PLSQL code to generate the Blitz Report output file.
+-- To measure meaningful results, there should be enough SGA memory assigned to ensure that the execution time is entirely spent on CPU and not IO related wait events (to be confirmed using the DBA SGA Active Session History report).
+-- example performance for different CPU types:
+-- seconds rows/s CPU
+-- 8 62500 AMD Ryzen 9 5950X 16-Core Processor
+-- 12 41667
+-- 13 38462 AMD EPYC 7742 64-Core Processor
+-- 16 31250 Exadata CS X8M
+-- 20 25000 Intel(R) Xeon(R) Gold 6252 CPU @ 2.10GHz
+-- 22 22727 Intel(R) Xeon(R) CPU E5-2699 v4 @ 2.20GHz
+-- 23 21739 Intel(R) Xeon(R) CPU E5-2699 v3 @ 2.30GHz
+-- 25 20000 Intel(R) Xeon(R) CPU E5-2670 v2 @ 2.50GHz
+-- 28 17857 Intel(R) Xeon(R) CPU E5-2686 v4 @ 2.30GHz
+-- 29 17241 Intel(R) Xeon(R) Platinum 8167M CPU @ 2.00GHz
+-- 39 12821 Intel(R) Xeon(R) Platinum 8167M CPU @ 2.00GHz
+-- 140 3571 SPARC-T5 chipid 1, clock 3600 MHz
+-- Oracle Ace Johannes Michler from Promatis has written a blog about this topic:
+-- https://promatis.com/de/benchmarking-cpus-for-oracle-e-business-suite-database/
+-- Excel Example Output: https://www.enginatics.com/example/dba-cpu-benchmark1/
 -- Library Link: https://www.enginatics.com/reports/dba-cpu-benchmark1/
 -- Run Report: https://demo.enginatics.com/
 

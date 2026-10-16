@@ -1,15 +1,15 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: FA Asset Upload
 -- Description: Upload to create, update, and retire fixed assets using FA Public APIs.
-New assets are created via fa_addition_pub.do_addition. Existing assets are updated via fa_asset_desc_pub.update_desc, fa_reclass_pub.do_reclass, and fa_adjustment_pub.do_adjustment.
-Asset retirements are processed via fa_retirement_pub.do_retirement; after uploading retirements, run the Calculate Gains and Losses program to finalize them and post the gain/loss.
-Use the Record Type column to select Addition or Retirement processing. Fully retired assets are excluded from the list unless Include Retired Assets is set to Yes.
--- Excel Examle Output: https://www.enginatics.com/example/fa-asset-upload/
+-- New assets are created via faadditionpub.doaddition. Existing assets are updated via faassetdescpub.updatedesc, fareclasspub.doreclass, and faadjustmentpub.doadjustment.
+-- Asset retirements are processed via faretirementpub.doretirement; after uploading retirements, run the Calculate Gains and Losses program to finalize them and post the gain/loss.
+-- Use the Record Type column to select Addition or Retirement processing. Fully retired assets are excluded from the list unless Include Retired Assets is set to Yes.
+-- Excel Example Output: https://www.enginatics.com/example/fa-asset-upload/
 -- Library Link: https://www.enginatics.com/reports/fa-asset-upload/
 -- Run Report: https://demo.enginatics.com/
 

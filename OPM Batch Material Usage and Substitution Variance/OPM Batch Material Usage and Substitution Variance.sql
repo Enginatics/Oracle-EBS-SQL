@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: OPM Batch Material Usage and Substitution Variance
 -- Description: Oracle Process Manufacturing (OPM) batch material usage and substitution variance: per-ingredient planned versus actual consumption per production batch, with usage variance, variance percentage, remaining quantity, scrap factor and a substitution indicator. Exposes over/under-consumption and material substitutions at the batch line level.
--- Excel Examle Output: https://www.enginatics.com/example/opm-batch-material-usage-and-substitution-variance/
+-- Excel Example Output: https://www.enginatics.com/example/opm-batch-material-usage-and-substitution-variance/
 -- Library Link: https://www.enginatics.com/reports/opm-batch-material-usage-and-substitution-variance/
 -- Run Report: https://demo.enginatics.com/
 

@@ -1,50 +1,47 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Department Overhead Setup
--- Description: Report to show the departments and the overhead codes assigned to each department.  In addition, this report displays the corresponding overhead and resource rates.
-
-Note:  if a resource does not have a cost, the Resource Rate column has a blank or empty value.
-
-Parameters:
-===========
-Cost Type:  enter the cost type you wish to use to report.  If left blank, depending on your Costing Method, it defaults to your AvgRates or Frozen Cost Type (optional).
-Category Set 1:  any item category you wish, typically the Cost or Product Line category set (optional).
-Category Set 2:  any item category you wish, typically the Inventory category set (optional).
-Organization Code:  enter the specific inventory organization(s) you wish to report (optional).
-Operating Unit:  enter the specific operating unit(s) you wish to report (optional).
-Ledger:  enter the specific ledger(s) you wish to report (optional).
-
-/* +=============================================================================+
--- |  Copyright 2016 - 2024 Douglas Volz Consulting, Inc.
--- |  All rights reserved.
--- |  Permission to use this code is granted provided the original author is
--- |  acknowledged. No warranties, express or otherwise is included in this permission.
--- +=============================================================================+
--- |
--- |  Original Author: Douglas Volz (doug@volzconsulting.com)
--- |
--- |  Program Name:  xxx_dept_ovhd_setup.sql
--- |
--- |  Version Modified on Modified  by   Description
--- |  ======= =========== ============== =========================================
--- |  1.0     18 Oct 2016 Douglas Volz   Initial Coding
--- |  1.1     07 Nov 2016 Douglas Volz   Added Department / Resource relationships
--- |  1.2     17 Jul 2018 Douglas Volz   Made Cost Type parameter optional
--- |  1.3     12 Jan 2020 Douglas Volz   Added Org Code and Operating Unit parameters
--- |                                     and change to gl.short_name.  Added Last
--- |                                     rate update column to report.
--- |  1.4     27 Apr 2020 Douglas Volz   Changed to multi-language views for the 
--- |                                     inventory orgs and operating units.
--- |  1.5     22 Jan 2024 Douglas Volz   Add select statement for cst_resource_costs, overheads
--- |                                     were not reported if the resource cost was missing.
--- |                                     Added resource "Allow Costs" column.  Removed
--- |                                     tabs and added inventory access controls.
--- +=============================================================================+*/
--- Excel Examle Output: https://www.enginatics.com/example/cac-department-overhead-setup/
+-- Description: Report to show the departments and the overhead codes assigned to each department. In addition, this report displays the corresponding overhead and resource rates.
+-- Note: if a resource does not have a cost, the Resource Rate column has a blank or empty value.
+-- Parameters:
+-- ===========
+-- Cost Type: enter the cost type you wish to use to report. If left blank, depending on your Costing Method, it defaults to your AvgRates or Frozen Cost Type (optional).
+-- Category Set 1: any item category you wish, typically the Cost or Product Line category set (optional).
+-- Category Set 2: any item category you wish, typically the Inventory category set (optional).
+-- Organization Code: enter the specific inventory organization(s) you wish to report (optional).
+-- Operating Unit: enter the specific operating unit(s) you wish to report (optional).
+-- Ledger: enter the specific ledger(s) you wish to report (optional).
+-- / +=============================================================================+
+-- -- | Copyright 2016 - 2024 Douglas Volz Consulting, Inc.
+-- -- | All rights reserved.
+-- -- | Permission to use this code is granted provided the original author is
+-- -- | acknowledged. No warranties, express or otherwise is included in this permission.
+-- -- +=============================================================================+
+-- -- |
+-- -- | Original Author: Douglas Volz (doug@volzconsulting.com)
+-- -- |
+-- -- | Program Name: xxxdeptovhdsetup.sql
+-- -- |
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== ============== =========================================
+-- -- | 1.0 18 Oct 2016 Douglas Volz Initial Coding
+-- -- | 1.1 07 Nov 2016 Douglas Volz Added Department / Resource relationships
+-- -- | 1.2 17 Jul 2018 Douglas Volz Made Cost Type parameter optional
+-- -- | 1.3 12 Jan 2020 Douglas Volz Added Org Code and Operating Unit parameters
+-- -- | and change to gl.shortname. Added Last
+-- -- | rate update column to report.
+-- -- | 1.4 27 Apr 2020 Douglas Volz Changed to multi-language views for the
+-- -- | inventory orgs and operating units.
+-- -- | 1.5 22 Jan 2024 Douglas Volz Add select statement for cstresourcecosts, overheads
+-- -- | were not reported if the resource cost was missing.
+-- -- | Added resource "Allow Costs" column. Removed
+-- -- | tabs and added inventory access controls.
+-- -- +=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-department-overhead-setup/
 -- Library Link: https://www.enginatics.com/reports/cac-department-overhead-setup/
 -- Run Report: https://demo.enginatics.com/
 

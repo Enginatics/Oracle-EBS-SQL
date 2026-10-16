@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: GL Periods
 -- Description: Geleral ledger calendars and accounting periods
--- Excel Examle Output: https://www.enginatics.com/example/gl-periods/
+-- Excel Example Output: https://www.enginatics.com/example/gl-periods/
 -- Library Link: https://www.enginatics.com/reports/gl-periods/
 -- Run Report: https://demo.enginatics.com/
 

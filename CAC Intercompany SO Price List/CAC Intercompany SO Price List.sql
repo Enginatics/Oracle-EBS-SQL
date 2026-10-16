@@ -1,64 +1,63 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Intercompany SO Price List
--- Description: Report to show the intercompany sales order (SO) price list information, including the item number, price list name and related information.  Price list parameter list of values are from the Intercompany Relationship Setups (from Oracle Inventory), per the price lists associated with the internal customers.
-
-/* +=============================================================================+
--- |  Copyright 2010 - 2022 Douglas Volz Consulting, Inc.                        |
--- |  All rights reserved.                                                       |
--- |  Permission to use this code is granted provided the original author is     |
--- |  acknowledged.  No warranties, express or otherwise is included in this     |
--- |  permission.                                                                |
--- +=============================================================================+
--- |
--- |  Original Author: Douglas Volz (doug@volzconsulting.com)
--- |
--- |  Program Name:  xxx_so_price_list_rept.sql
--- |
--- |  Parameters:
--- |  p_price_effective_date -- Date the sales order list prices are effective, mandatory.
--- |  p_price_list           -- Specific intercompany price list name to report
--- |  p_item_number          -- Specific item number you wish to report, optional.
--- |  p_category_set1        -- The first item category set to report, typically the
--- |                            Cost or Product Line Category Set
--- |  p_category_set2        -- The second item category set to report, typically the
--- |                            Inventory Category Set
--- | 
--- |  Description:
--- |  Report to show the SO price list information, including the item number, price
--- |  list name and related information.
--- | 
--- |  Version Modified on  Modified  by   Description
--- |  ======= =========== ============== =========================================
--- |      1.0 19 Sep 2010 Douglas Volz   Created initial Report based on qp_price_list_lines_v
--- |      1.1 15 Dec 2010 Douglas Volz   Cleaned up report for BO Repository
--- |      1.2 22 Dec 2010 Douglas Volz   Fix for the Price End Date logic, change
--- |                                     sysdate to '&p_price_effective_date' to
--- |      1.3 01 Dec 2014 Douglas Volz   Add Item Type column
--- |      1.4 15 Oct 2018 Douglas Volz   Get price list Ids based on intercompany
--- |                                     relationships, as opposed to hard-coding
--- |      1.5 16 Oct 2018 Douglas Volz   And get prices from Customer default price
--- |                                     list from hz_cust_accounts
--- |      1.6 20 Nov 2018 Douglas Volz   Get Item Type from fnd_common_lookups as
--- |                                     fnd_lookup_values as a duplicate 'KIT'
--- |      1.7 11 Dec 2018 Douglas Volz   Avoid using the qp_price_list_pvt package,
--- |                                     to see if this is faster.  Use the query
--- |                                     to finding the price list headers as the
--- |                                     driving query or table, including the hint
--- |                                     to make the price list header the driving table
--- |      1.8 17 Jun 2019 Douglas Volz   Replace Oracle function 
--- |                                     apps.qp_price_list_pvt.get_product_uom_code
--- |                                     with "qpa.product_uom_code".
--- |      1.9 18 Sep 2019 Douglas Volz   Added item status column and item categories
--- |     1.10 09 Jul 2022 Douglas Volz   Changed back to Oracle QP price packages, to
--- |                                     get price list information based on both
--- |                                     categoryor item-specific price lists.
--- +=============================================================================+*/
--- Excel Examle Output: https://www.enginatics.com/example/cac-intercompany-so-price-list/
+-- Description: Report to show the intercompany sales order (SO) price list information, including the item number, price list name and related information. Price list parameter list of values are from the Intercompany Relationship Setups (from Oracle Inventory), per the price lists associated with the internal customers.
+-- / +=============================================================================+
+-- -- | Copyright 2010 - 2022 Douglas Volz Consulting, Inc. |
+-- -- | All rights reserved. |
+-- -- | Permission to use this code is granted provided the original author is |
+-- -- | acknowledged. No warranties, express or otherwise is included in this |
+-- -- | permission. |
+-- -- +=============================================================================+
+-- -- |
+-- -- | Original Author: Douglas Volz (doug@volzconsulting.com)
+-- -- |
+-- -- | Program Name: xxxsopricelistrept.sql
+-- -- |
+-- -- | Parameters:
+-- -- | ppriceeffectivedate -- Date the sales order list prices are effective, mandatory.
+-- -- | ppricelist -- Specific intercompany price list name to report
+-- -- | pitemnumber -- Specific item number you wish to report, optional.
+-- -- | pcategoryset1 -- The first item category set to report, typically the
+-- -- | Cost or Product Line Category Set
+-- -- | pcategoryset2 -- The second item category set to report, typically the
+-- -- | Inventory Category Set
+-- -- |
+-- -- | Description:
+-- -- | Report to show the SO price list information, including the item number, price
+-- -- | list name and related information.
+-- -- |
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== ============== =========================================
+-- -- | 1.0 19 Sep 2010 Douglas Volz Created initial Report based on qppricelistlinesv
+-- -- | 1.1 15 Dec 2010 Douglas Volz Cleaned up report for BO Repository
+-- -- | 1.2 22 Dec 2010 Douglas Volz Fix for the Price End Date logic, change
+-- -- | sysdate to '&ppriceeffectivedate' to
+-- -- | 1.3 01 Dec 2014 Douglas Volz Add Item Type column
+-- -- | 1.4 15 Oct 2018 Douglas Volz Get price list Ids based on intercompany
+-- -- | relationships, as opposed to hard-coding
+-- -- | 1.5 16 Oct 2018 Douglas Volz And get prices from Customer default price
+-- -- | list from hzcustaccounts
+-- -- | 1.6 20 Nov 2018 Douglas Volz Get Item Type from fndcommonlookups as
+-- -- | fndlookupvalues as a duplicate 'KIT'
+-- -- | 1.7 11 Dec 2018 Douglas Volz Avoid using the qppricelistpvt package,
+-- -- | to see if this is faster. Use the query
+-- -- | to finding the price list headers as the
+-- -- | driving query or table, including the hint
+-- -- | to make the price list header the driving table
+-- -- | 1.8 17 Jun 2019 Douglas Volz Replace Oracle function
+-- -- | apps.qppricelistpvt.getproductuomcode
+-- -- | with "qpa.productuomcode".
+-- -- | 1.9 18 Sep 2019 Douglas Volz Added item status column and item categories
+-- -- | 1.10 09 Jul 2022 Douglas Volz Changed back to Oracle QP price packages, to
+-- -- | get price list information based on both
+-- -- | categoryor item-specific price lists.
+-- -- +=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-intercompany-so-price-list/
 -- Library Link: https://www.enginatics.com/reports/cac-intercompany-so-price-list/
 -- Run Report: https://demo.enginatics.com/
 

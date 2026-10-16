@@ -1,16 +1,14 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: QA Collection Plan Elements
 -- Description: Every collection element assigned to an Oracle Quality collection plan, with the element's prompt and sequence on the plan, its element type, datatype, display length, decimal precision and unit of measure, the plan level and element level default values, and the Mandatory, Enabled, Displayed, Read Only, Information and Poplist flags. Collection plans that have no elements are listed too.
-
-Oracle Quality stores every collection result generically in qa_results, whose character1 to character100 columns carry no meaning of their own: the element to column mapping is held per plan in qa_plan_chars.result_column_name, and each plan gets its own dynamically generated results view. This report exposes that mapping as the Result Column, shown verbatim next to the element's native Hardcoded Column so that a divergence between the two is visible at a glance. It also shows the Context Element classification, which separates a quality characteristic the operator enters from predefined reference information captured automatically from the transaction, and all three validation sources an element can use: a validation table with its additional where clause, a SQL validation string, and the number of plan level values the element offers. Use it to document or audit a Quality setup, and as the specification when building an interface or an upload that writes collection results.
-
-Filter with the optional Organization, Collection Plan, Plan Type, Collection Element and Element Type parameters, or set Enabled Elements Only to Yes to hide elements that are disabled on the plan. Leaving Organization blank returns every collection plan the responsibility has inventory organization access to, plus the seeded template plans, which are not owned by an inventory organization and therefore show a blank Organization Code.
--- Excel Examle Output: https://www.enginatics.com/example/qa-collection-plan-elements/
+-- Oracle Quality stores every collection result generically in qaresults, whose character1 to character100 columns carry no meaning of their own: the element to column mapping is held per plan in qaplanchars.resultcolumnname, and each plan gets its own dynamically generated results view. This report exposes that mapping as the Result Column, shown verbatim next to the element's native Hardcoded Column so that a divergence between the two is visible at a glance. It also shows the Context Element classification, which separates a quality characteristic the operator enters from predefined reference information captured automatically from the transaction, and all three validation sources an element can use: a validation table with its additional where clause, a SQL validation string, and the number of plan level values the element offers. Use it to document or audit a Quality setup, and as the specification when building an interface or an upload that writes collection results.
+-- Filter with the optional Organization, Collection Plan, Plan Type, Collection Element and Element Type parameters, or set Enabled Elements Only to Yes to hide elements that are disabled on the plan. Leaving Organization blank returns every collection plan the responsibility has inventory organization access to, plus the seeded template plans, which are not owned by an inventory organization and therefore show a blank Organization Code.
+-- Excel Example Output: https://www.enginatics.com/example/qa-collection-plan-elements/
 -- Library Link: https://www.enginatics.com/reports/qa-collection-plan-elements/
 -- Run Report: https://demo.enginatics.com/
 

@@ -1,13 +1,13 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: ECC Admin - Data Load Tracking
 -- Description: Enterprise Command Center data load run history, including status, the load SQL and possible error messages in case of failures.
-For description of the load process, see ECC Concurrent Programs <a href="https://www.enginatics.com/reports/ecc-concurrent-programs/" rel="nofollow" target="_blank">https://www.enginatics.com/reports/ecc-concurrent-programs/</a>
--- Excel Examle Output: https://www.enginatics.com/example/ecc-admin-data-load-tracking/
+-- For description of the load process, see ECC Concurrent Programs https://www.enginatics.com/reports/ecc-concurrent-programs/
+-- Excel Example Output: https://www.enginatics.com/example/ecc-admin-data-load-tracking/
 -- Library Link: https://www.enginatics.com/reports/ecc-admin-data-load-tracking/
 -- Run Report: https://demo.enginatics.com/
 

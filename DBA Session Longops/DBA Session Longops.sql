@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: DBA Session Longops
--- Description: Estimated time to completion for long running sessions based on gv$session_longops
--- Excel Examle Output: https://www.enginatics.com/example/dba-session-longops/
+-- Description: Estimated time to completion for long running sessions based on gv$sessionlongops
+-- Excel Example Output: https://www.enginatics.com/example/dba-session-longops/
 -- Library Link: https://www.enginatics.com/reports/dba-session-longops/
 -- Run Report: https://demo.enginatics.com/
 

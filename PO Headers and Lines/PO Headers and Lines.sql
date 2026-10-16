@@ -1,12 +1,13 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PO Headers and Lines
 -- Description: PO headers, lines, receiving transactions and corresponding AP invoices
--- Excel Examle Output: https://www.enginatics.com/example/po-headers-and-lines/
+-- When India Localization is installed, the following GST columns are also included: GST Registration No, GST PAN No, GST TAN No, CGST Amount, SGST Amount, IGST Amount, CGST Rate, SGST Rate, IGST Rate, Custom Amount, Unclassified Tax Amount, Taxable Value, HSN SAC Code.
+-- Excel Example Output: https://www.enginatics.com/example/po-headers-and-lines/
 -- Library Link: https://www.enginatics.com/reports/po-headers-and-lines/
 -- Run Report: https://demo.enginatics.com/
 
@@ -141,6 +142,8 @@ x.po_line_id,
 x.line_location_id,
 x.po_release_id,
 x.rcv_transaction_id
+&il_reg_columns
+&il_cols_outer
 from
 (
 --Q1 Standard POs and Releases. i.e. Actual and Planned Shipments/Releases
@@ -336,6 +339,8 @@ xxen_util.user_name(pha.created_by) po_created_by,
 pha.creation_date po_creation_date,
 xxen_util.user_name(pra.created_by) release_created_by,
 pra.creation_date release_creation_date,
+pha.vendor_id,
+pha.vendor_site_id,
 pha.po_header_id,
 pla.po_line_id,
 plla.line_location_id,
@@ -368,19 +373,21 @@ where
 ) pda,
 po_releases_all pra,
 (
-select distinct
+select
 pda.line_location_id,
-listagg(ppa.segment1,', ') within group (order by ppa.segment1) over (partition by pda.line_location_id) project
+listagg(ppa.segment1,', ') within group (order by ppa.segment1) project
 from
 (select distinct pda.line_location_id, pda.project_id from po_distributions_all pda where pda.project_id is not null) pda,
 pa_projects_all ppa
 where
 pda.project_id=ppa.project_id
+group by
+pda.line_location_id
 ) u,
 (
-select distinct
+select
 pda.line_location_id,
-listagg(pda.task_number,', ') within group (order by pda.task_number) over (partition by pda.line_location_id) task
+listagg(pda.task_number,', ') within group (order by pda.task_number) task
 from
 (
 select distinct
@@ -392,6 +399,8 @@ pa_tasks pt
 where
 pda.task_id=pt.task_id
 ) pda
+group by
+pda.line_location_id
 ) v,
 hr_operating_units hou,
 ap_suppliers aps,
@@ -596,6 +605,8 @@ xxen_util.user_name(pha.created_by) po_created_by,
 pha.creation_date po_creation_date,
 null release_created_by,
 null release_creation_date,
+pha.vendor_id,
+pha.vendor_site_id,
 pha.po_header_id,
 pla.po_line_id,
 plla.line_location_id,
@@ -688,6 +699,7 @@ fnd_document_categories_vl fdcv,
 fnd_lobs fl,
 fnd_documents_short_text fdst,
 fnd_documents_long_text fdlt
+&il_from
 where
 x.line_location_id=aila.po_line_location_id(+) and
 (x.rcv_transaction_id=aila.rcv_transaction_id or x.rcv_transaction_id is null or aila.rcv_transaction_id is null) and
@@ -703,6 +715,7 @@ fd.category_id=fdcv.category_id(+) and
 fd.media_id=fl.file_id(+) and
 decode(fd.datatype_id,1,fd.media_id)=fdst.media_id(+) and
 decode(fd.datatype_id,2,fd.media_id)=fdlt.media_id(+)
+&il_where
 order by
 x.operating_unit,
 x.po_number,

@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: GL Summary Account Upload
 -- Description: This upload can be used to import Summary Account Templates.
--- Excel Examle Output: https://www.enginatics.com/example/gl-summary-account-upload/
+-- Excel Example Output: https://www.enginatics.com/example/gl-summary-account-upload/
 -- Library Link: https://www.enginatics.com/reports/gl-summary-account-upload/
 -- Run Report: https://demo.enginatics.com/
 

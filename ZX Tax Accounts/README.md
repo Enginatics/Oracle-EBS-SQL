@@ -1,40 +1,49 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'ZX Tax Accounts | Oracle EBS SQL Report'
 description: 'E-Business Tax account configuration for all ledgers and operating units, setup on either tax, jurisdiction or rate level'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Tax, Accounts, zx_status_vl, zx_first_party_orgs_moac_v, zx_party_tax_profile'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, E-Business Tax, Enginatics, R12 only, Tax, Accounts, zx_status_vl, zx_first_party_orgs_moac_v, zx_party_tax_profile'
 permalink: /ZX%20Tax%20Accounts/
+report_name: 'ZX Tax Accounts'
+report_web_name: zx-tax-accounts
+module: 'E-Business Tax'
+module_url: /modules/e-business-tax/
 ---
 
 # ZX Tax Accounts – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/zx-tax-accounts/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/zx-tax-accounts/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-tax-accounts) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-tax-accounts).
+**Oracle EBS module:** [E-Business Tax](/modules/e-business-tax/ "Oracle EBS E-Business Tax reports") · [all E-Business Tax reports](/modules/e-business-tax/)  
 
 ## Overview
 E-Business Tax account configuration for all ledgers and operating units, setup on either tax, jurisdiction or rate level
+
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-tax-accounts) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 
 ## Report Parameters
 Setup Level, Country, Ledger, Operating Unit
 
 ## Oracle EBS Tables Used
-[zx_status_vl](https://www.enginatics.com/library/?pg=1&find=zx_status_vl), [zx_first_party_orgs_moac_v](https://www.enginatics.com/library/?pg=1&find=zx_first_party_orgs_moac_v), [zx_party_tax_profile](https://www.enginatics.com/library/?pg=1&find=zx_party_tax_profile), [hz_parties](https://www.enginatics.com/library/?pg=1&find=hz_parties), [zx_accounts](https://www.enginatics.com/library/?pg=1&find=zx_accounts), [hr_operating_units](https://www.enginatics.com/library/?pg=1&find=hr_operating_units), [gl_ledgers](https://www.enginatics.com/library/?pg=1&find=gl_ledgers), [fnd_id_flex_structures_vl](https://www.enginatics.com/library/?pg=1&find=fnd_id_flex_structures_vl), [zx_taxes_vl](https://www.enginatics.com/library/?pg=1&find=zx_taxes_vl), [zx_rates_vl](https://www.enginatics.com/library/?pg=1&find=zx_rates_vl), [zx_jurisdictions_vl](https://www.enginatics.com/library/?pg=1&find=zx_jurisdictions_vl), [zx_regimes_vl](https://www.enginatics.com/library/?pg=1&find=zx_regimes_vl), [fnd_territories_vl](https://www.enginatics.com/library/?pg=1&find=fnd_territories_vl)
+[zx_status_vl](https://www.enginatics.com/library/?pg=1&find=zx_status_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-tax-accounts), [zx_first_party_orgs_moac_v](https://www.enginatics.com/library/?pg=1&find=zx_first_party_orgs_moac_v&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-tax-accounts), [zx_party_tax_profile](https://www.enginatics.com/library/?pg=1&find=zx_party_tax_profile&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-tax-accounts), [hz_parties](https://www.enginatics.com/library/?pg=1&find=hz_parties&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-tax-accounts), [zx_accounts](https://www.enginatics.com/library/?pg=1&find=zx_accounts&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-tax-accounts), [hr_operating_units](https://www.enginatics.com/library/?pg=1&find=hr_operating_units&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-tax-accounts), [gl_ledgers](https://www.enginatics.com/library/?pg=1&find=gl_ledgers&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-tax-accounts), [fnd_id_flex_structures_vl](https://www.enginatics.com/library/?pg=1&find=fnd_id_flex_structures_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-tax-accounts), [zx_taxes_vl](https://www.enginatics.com/library/?pg=1&find=zx_taxes_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-tax-accounts), [zx_rates_vl](https://www.enginatics.com/library/?pg=1&find=zx_rates_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-tax-accounts), [zx_jurisdictions_vl](https://www.enginatics.com/library/?pg=1&find=zx_jurisdictions_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-tax-accounts), [zx_regimes_vl](https://www.enginatics.com/library/?pg=1&find=zx_regimes_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-tax-accounts), [fnd_territories_vl](https://www.enginatics.com/library/?pg=1&find=fnd_territories_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-tax-accounts)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-tax-accounts), [R12 only](https://www.enginatics.com/library/?pg=1&category%5B%5D=R12%20only&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-tax-accounts)
 
 ## Related Reports
 [AR Customer Upload](/AR%20Customer%20Upload/ "AR Customer Upload Oracle EBS SQL Report"), [AP Supplier Upload](/AP%20Supplier%20Upload/ "AP Supplier Upload Oracle EBS SQL Report"), [AR Customers and Sites](/AR%20Customers%20and%20Sites/ "AR Customers and Sites Oracle EBS SQL Report"), [GL Account Analysis](/GL%20Account%20Analysis/ "GL Account Analysis Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/ZX%20Tax%20Accounts/ZX%20Tax%20Accounts.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-tax-accounts) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [ZX Tax Accounts 27-May-2021 194707.xlsx](https://www.enginatics.com/example/zx-tax-accounts/) |
-| Blitz Report™ XML Import | [ZX_Tax_Accounts.xml](https://www.enginatics.com/xml/zx-tax-accounts/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/zx-tax-accounts/](https://www.enginatics.com/reports/zx-tax-accounts/) |
+| Excel Example Output | [ZX Tax Accounts 27-May-2021 194707.xlsx](https://www.enginatics.com/example/zx-tax-accounts/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-tax-accounts) |
+| Blitz Report™ XML Import | [ZX_Tax_Accounts.xml](https://www.enginatics.com/xml/zx-tax-accounts/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-tax-accounts) |
+| SQL Source | [ZX Tax Accounts.sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/ZX%20Tax%20Accounts/ZX%20Tax%20Accounts.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/zx-tax-accounts/](https://www.enginatics.com/reports/zx-tax-accounts/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-tax-accounts) |
 
 ## Case Study & Technical Analysis: ZX Tax Accounts Report
 
@@ -104,18 +113,17 @@ As a configuration report integrating data across multiple modules (EBTax, GL, H
 **3. Can this report identify if tax accounts are missing for a particular tax setup?**
    Yes. By running the report for a specific `Tax` or `Jurisdiction` and reviewing the output, tax administrators can identify if required tax accounts (e.g., for tax liability, recovery, or expense) have not been configured. Missing accounts would prevent tax amounts from being correctly posted to the GL, leading to accounting errors.
 
-
 ---
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-tax-accounts)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-tax-accounts)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-tax-accounts)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-tax-accounts)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-tax-accounts)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-tax-accounts)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=zx-tax-accounts)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

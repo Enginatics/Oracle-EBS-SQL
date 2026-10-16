@@ -1,37 +1,33 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PA Project Upload
 -- Description: PA Project Upload
-===================
-Create and update Projects in Oracle Projects using the pa_project_pub API.
-
-Create Mode:
-- Select a Template to populate default values (project type, organization, billing setup, etc.)
-- Template-specific required fields (customer, organization, completion date, etc.) are validated in Excel before upload
-- Project Manager can differ from the template PM — the template PM is replaced post-creation
-- PM Product Code determines which external PM system owns the project (default: Primavera). Do NOT use Microsoft Project — it blocks date updates due to Oracle bug 12954344.
-
-Update Mode:
-- Use "Create, Update" upload mode to download existing projects, modify fields, and re-upload
-- Only changed fields are updated — unchanged fields are preserved
-- Project Manager changes: the current active PM is end-dated and the new PM is assigned from today
-- If no active PM exists (all end-dated), the new PM is simply assigned
-- Start Date and Completion Date can be changed, cleared, or added
-- Customer and PM Product Code are set on creation only and not changed on update
-
-Field Length Limits:
-- Project Number: 25 characters
-- Project Name: 30 characters
-- Long Name: 240 characters
-- Description: 250 characters
-
-Supported Fields:
-Project identifiers, dates, billing setup (labor/non-labor schedules, bill rate schedules, burden schedules), billing currency settings, flags (baseline funding, multi-currency billing, cross charge, retention, capital interest, etc.), transfer price schedules, work type, calendar, location, role list, probability, priority, job groups, security level, invoice format, asset/capital settings, tax codes, DFF attributes (1-10), customer, and PM product code.
--- Excel Examle Output: https://www.enginatics.com/example/pa-project-upload/
+-- ===================
+-- Create and update Projects in Oracle Projects using the paprojectpub API.
+-- Create Mode:
+-- - Select a Template to populate default values (project type, organization, billing setup, etc.)
+-- - Template-specific required fields (customer, organization, completion date, etc.) are validated in Excel before upload
+-- - Project Manager can differ from the template PM — the template PM is replaced post-creation
+-- - PM Product Code determines which external PM system owns the project (default: Primavera). Do NOT use Microsoft Project — it blocks date updates due to Oracle bug 12954344.
+-- Update Mode:
+-- - Use "Create, Update" upload mode to download existing projects, modify fields, and re-upload
+-- - Only changed fields are updated — unchanged fields are preserved
+-- - Project Manager changes: the current active PM is end-dated and the new PM is assigned from today
+-- - If no active PM exists (all end-dated), the new PM is simply assigned
+-- - Start Date and Completion Date can be changed, cleared, or added
+-- - Customer and PM Product Code are set on creation only and not changed on update
+-- Field Length Limits:
+-- - Project Number: 25 characters
+-- - Project Name: 30 characters
+-- - Long Name: 240 characters
+-- - Description: 250 characters
+-- Supported Fields:
+-- Project identifiers, dates, billing setup (labor/non-labor schedules, bill rate schedules, burden schedules), billing currency settings, flags (baseline funding, multi-currency billing, cross charge, retention, capital interest, etc.), transfer price schedules, work type, calendar, location, role list, probability, priority, job groups, security level, invoice format, asset/capital settings, tax codes, DFF attributes (1-10), customer, and PM product code.
+-- Excel Example Output: https://www.enginatics.com/example/pa-project-upload/
 -- Library Link: https://www.enginatics.com/reports/pa-project-upload/
 -- Run Report: https://demo.enginatics.com/
 

@@ -1,16 +1,15 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: DBA Result Cache Objects and Dependencies
 -- Description: Shows result cache objects with the current number of cached results, the number of times these results were found and reused (scan count) and their dependency on objects causing the most frequent invalidations.
-
-Warning !!!
-Don't run this on a prod system during business hours as prior to DB version 12.2, selecting from v$result_cache_objects apparently blocks all result cache objects (see note 2143739.1, section 4.).
-You may end up with all server sessions waiting on 'latch free' for 'Result Cache: RC Latch' while the report is running.
--- Excel Examle Output: https://www.enginatics.com/example/dba-result-cache-objects-and-dependencies/
+-- Warning !!!
+-- Don't run this on a prod system during business hours as prior to DB version 12.2, selecting from v$resultcacheobjects apparently blocks all result cache objects (see note 2143739.1, section 4.).
+-- You may end up with all server sessions waiting on 'latch free' for 'Result Cache: RC Latch' while the report is running.
+-- Excel Example Output: https://www.enginatics.com/example/dba-result-cache-objects-and-dependencies/
 -- Library Link: https://www.enginatics.com/reports/dba-result-cache-objects-and-dependencies/
 -- Run Report: https://demo.enginatics.com/
 

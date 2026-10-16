@@ -1,52 +1,34 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: QP Price List Upload
 -- Description: This upload supports the creation and update of Standard Price Lists in Oracle Advanced Pricing.
-
-The upload supports creation/update/deletion of the following entities within the Price List:
-
-- Price List Lines
-
-'End Date Matching List Lines?'
-When creating new Price List Lines, the upload can automatically end date any existing matching active price list line by setting the report parameter 'End Date Matching List Lines?' to Yes. 
-Set this parameter to Yes to automatically end date any active matching price list line on upload. 
-Any price list lines downloaded when this parameter is set to yes will have the Action field automatically set to ’Create’ to indicate a new Price List Line should be created instead off the existing price list line being updated. This allows the user to use the downloaded (current) price list lines as a basis for creating the new price list lines.  
-
-- Price Breaks
-
-To enter the Price Breaks in the upload, repeat the Price Break Header Line and enter/adjust the Price Break Columns for each Price Break.
-
-- Price List Line Pricing Attributes
-
-By default, the upload will treat all rows with the same Product, Unit of Measure, and Start Date as the same Price List Line.
-
-If you have different Price List Lines that use the same Product, Unit of Measure and Start Date but which have different Pricing Attribute assignments, the use the ‘Line No’ column to distinguish the different Price List Lines. If not specified, then all rows with the same Product, Unit of Measure, and Start Date will be uploaded as a single Price List Line and any Pricing Attributes will be added to that Price List Line. 
-
-The Line Number entered here is not uploaded to Oracle. It is only used by the upload to distinguish different lines with the same product, Unit of Measure, and Start date.
-
-- Price Lists Qualifiers
-
-Qualifier Groups can be copied to the Price List by selecting the Qualifier Group and leaving all other qualifier columns blank. The upload will copy and attach all the qualifier group's qualifiers to the price list.
-Alternatively, you can select specific qualifiers from a Qualifier Group by selecting the Qualifier Group and the Qualifier Group Qualifier ID. The upload excel will then default in the details of that qualifier into the excel. In this scenario you would enter each qualifier on  a separate row in the excel. 
-
-- Secondary Price Lists
-
-Note:
-When downloading existing Price List data into the upload excel:
-  - Header level Qualifiers and Secondary Price Lists will be downloaded into separate rows in the excel
-  - Line level Price Breaks and Pricing Attributes will be downloaded into separate rows in the excel
-
-This is to minimize the duplication of data in the excel. However, when entering data for upload Qualifiers, Secondary Price Lists, Price Breaks, and Pricing Attributes can be added in the same excel row.
-i.e. You can upload an excel row containing a header level qualifier, header level secondary price list, price list line details with associated price break and pricing attribute. 
-
-
-
-
--- Excel Examle Output: https://www.enginatics.com/example/qp-price-list-upload/
+-- The upload supports creation/update/deletion of the following entities within the Price List:
+-- - Price List Lines
+-- 'End Date Matching List Lines?'
+-- When creating new Price List Lines, the upload can automatically end date any existing matching active price list line by setting the report parameter 'End Date Matching List Lines?' to Yes.
+-- Set this parameter to Yes to automatically end date any active matching price list line on upload.
+-- Any price list lines downloaded when this parameter is set to yes will have the Action field automatically set to ’Create’ to indicate a new Price List Line should be created instead off the existing price list line being updated. This allows the user to use the downloaded (current) price list lines as a basis for creating the new price list lines.
+-- - Price Breaks
+-- To enter the Price Breaks in the upload, repeat the Price Break Header Line and enter/adjust the Price Break Columns for each Price Break.
+-- - Price List Line Pricing Attributes
+-- By default, the upload will treat all rows with the same Product, Unit of Measure, and Start Date as the same Price List Line.
+-- If you have different Price List Lines that use the same Product, Unit of Measure and Start Date but which have different Pricing Attribute assignments, the use the ‘Line No’ column to distinguish the different Price List Lines. If not specified, then all rows with the same Product, Unit of Measure, and Start Date will be uploaded as a single Price List Line and any Pricing Attributes will be added to that Price List Line.
+-- The Line Number entered here is not uploaded to Oracle. It is only used by the upload to distinguish different lines with the same product, Unit of Measure, and Start date.
+-- - Price Lists Qualifiers
+-- Qualifier Groups can be copied to the Price List by selecting the Qualifier Group and leaving all other qualifier columns blank. The upload will copy and attach all the qualifier group's qualifiers to the price list.
+-- Alternatively, you can select specific qualifiers from a Qualifier Group by selecting the Qualifier Group and the Qualifier Group Qualifier ID. The upload excel will then default in the details of that qualifier into the excel. In this scenario you would enter each qualifier on a separate row in the excel.
+-- - Secondary Price Lists
+-- Note:
+-- When downloading existing Price List data into the upload excel:
+-- - Header level Qualifiers and Secondary Price Lists will be downloaded into separate rows in the excel
+-- - Line level Price Breaks and Pricing Attributes will be downloaded into separate rows in the excel
+-- This is to minimize the duplication of data in the excel. However, when entering data for upload Qualifiers, Secondary Price Lists, Price Breaks, and Pricing Attributes can be added in the same excel row.
+-- i.e. You can upload an excel row containing a header level qualifier, header level secondary price list, price list line details with associated price break and pricing attribute.
+-- Excel Example Output: https://www.enginatics.com/example/qp-price-list-upload/
 -- Library Link: https://www.enginatics.com/reports/qp-price-list-upload/
 -- Run Report: https://demo.enginatics.com/
 

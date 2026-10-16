@@ -1,22 +1,20 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CE General Ledger Reconciliation
 -- Description: Application: Cash Management
-Description: Bank Statements - General Ledger Reconciliation
-
-Provides equivalent functionality to the following standard Oracle Forms/Reports
-- General Ledger Reconciliation Report
-  Applicable Templates:
-  Pivot: Reconciliation Summary
-
-Source: General Ledger Reconciliation Report
-Short Name: CEXRECRE
-DB package: CE_CEXRECRE_XMLP_PKG
--- Excel Examle Output: https://www.enginatics.com/example/ce-general-ledger-reconciliation/
+-- Description: Bank Statements - General Ledger Reconciliation
+-- Provides equivalent functionality to the following standard Oracle Forms/Reports
+-- - General Ledger Reconciliation Report
+-- Applicable Templates:
+-- Pivot: Reconciliation Summary
+-- Source: General Ledger Reconciliation Report
+-- Short Name: CEXRECRE
+-- DB package: CECEXRECREXMLPPKG
+-- Excel Example Output: https://www.enginatics.com/example/ce-general-ledger-reconciliation/
 -- Library Link: https://www.enginatics.com/reports/ce-general-ledger-reconciliation/
 -- Run Report: https://demo.enginatics.com/
 

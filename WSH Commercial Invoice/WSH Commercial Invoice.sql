@@ -1,14 +1,14 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: WSH Commercial Invoice
 -- Description: Shipping commercial invoice report showing delivery details including shipped items, quantities, unit costs, extended costs, ship-from/ship-to addresses, freight information, and bill of lading details.
-Blitz version of the Oracle standard Commercial Invoice (XML) concurrent program WSHRDINV_XML.
-DB package: WSH_WSHRDINV_XMLP_PKG
--- Excel Examle Output: https://www.enginatics.com/example/wsh-commercial-invoice/
+-- Blitz version of the Oracle standard Commercial Invoice (XML) concurrent program WSHRDINVXML.
+-- DB package: WSHWSHRDINVXMLPPKG
+-- Excel Example Output: https://www.enginatics.com/example/wsh-commercial-invoice/
 -- Library Link: https://www.enginatics.com/reports/wsh-commercial-invoice/
 -- Run Report: https://demo.enginatics.com/
 

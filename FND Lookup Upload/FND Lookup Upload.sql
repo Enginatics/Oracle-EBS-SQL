@@ -1,26 +1,23 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: FND Lookup Upload
 -- Description: This upload allows the user to
-- download and update lookup codes against existing Lookup Types.
-- add new lookup codes to existing Lookup Types.
-- create new Lookup Types and upload the lookup codes against these new Lookup Types. 
-
-The upload of FND Lookup Types and Lookup Codes is in the users current language.
-
-Only User and Extensible Lookup Types can be maintained by this upload.
-For Extensible Lookup Types, seeded Lookup Codes canot be updated.
-
-For Creating/Updating Lookup Codes only against an existing Lookup Type, use template: 
-Lookup Codes - Create/Update Lookup Codes only
-
-For Creating New Lookup Types and/or updating Lookup Type level information, as well as the Lookup Codes, use  template:
-Lookup Types - Create/Update Lookup Types and Codes
--- Excel Examle Output: https://www.enginatics.com/example/fnd-lookup-upload/
+-- - download and update lookup codes against existing Lookup Types.
+-- - add new lookup codes to existing Lookup Types.
+-- - create new Lookup Types and upload the lookup codes against these new Lookup Types.
+-- The upload of FND Lookup Types and Lookup Codes is in the users current language.
+-- Only User and Extensible Lookup Types can be maintained by this upload.
+-- For Extensible Lookup Types, seeded Lookup Codes canot be updated.
+-- For Creating/Updating Lookup Codes only against an existing Lookup Type, use template:
+-- Lookup Codes - Create/Update Lookup Codes only
+-- For Creating New Lookup Types and/or updating Lookup Type level information, as well as the Lookup Codes, use template:
+-- Lookup Types - Create/Update Lookup Types and Codes
+-- Upload Mode Update only updates existing lookup codes and rejects rows for codes that do not exist. To load translations without creating obsolete codes, download an empty file in Update mode and paste the rows.
+-- Excel Example Output: https://www.enginatics.com/example/fnd-lookup-upload/
 -- Library Link: https://www.enginatics.com/reports/fnd-lookup-upload/
 -- Run Report: https://demo.enginatics.com/
 
@@ -30,7 +27,7 @@ null status_,
 null message_,
 null request_id_,
 null modified_columns_,
-to_char(null) mode_,
+:p_mode mode_,
 fltv.lookup_type,
 fav1.application_name view_application,
 fltv.meaning type_meaning,
@@ -69,8 +66,9 @@ fnd_lookup_values_vl flvv,
 fnd_application_vl fav1,
 fnd_application_vl fav2
 where
-:p_mode in (xxen_upload.action_meaning(xxen_upload.action_create)||', '||xxen_upload.action_meaning(xxen_upload.action_update),xxen_upload.action_meaning(xxen_upload.action_update)) and
-fav1.application_name=:p_view_appl and
+:p_mode in ('C,U','U') and
+nvl(:p_create_empty_file,'N')<>'Y' and
+fav1.application_name=:view_application and
 1=1 and
 fltv.view_application_id=fav1.application_id and fltv.application_id=fav2.application_id and
 fltv.customization_level in ('U','E') and

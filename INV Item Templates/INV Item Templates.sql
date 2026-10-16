@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: INV Item Templates
 -- Description: Inventory item templates and their item attribute values
--- Excel Examle Output: https://www.enginatics.com/example/inv-item-templates/
+-- Excel Example Output: https://www.enginatics.com/example/inv-item-templates/
 -- Library Link: https://www.enginatics.com/reports/inv-item-templates/
 -- Run Report: https://demo.enginatics.com/
 

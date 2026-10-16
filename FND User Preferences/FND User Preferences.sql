@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: FND User Preferences
--- Description: User preferences from table fnd_user_preferences
--- Excel Examle Output: https://www.enginatics.com/example/fnd-user-preferences/
+-- Description: User preferences from table fnduserpreferences
+-- Excel Example Output: https://www.enginatics.com/example/fnd-user-preferences/
 -- Library Link: https://www.enginatics.com/reports/fnd-user-preferences/
 -- Run Report: https://demo.enginatics.com/
 

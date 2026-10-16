@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: DIS Access Privileges
 -- Description: Discoverer access privileges
--- Excel Examle Output: https://www.enginatics.com/example/dis-access-privileges/
+-- Excel Example Output: https://www.enginatics.com/example/dis-access-privileges/
 -- Library Link: https://www.enginatics.com/reports/dis-access-privileges/
 -- Run Report: https://demo.enginatics.com/
 

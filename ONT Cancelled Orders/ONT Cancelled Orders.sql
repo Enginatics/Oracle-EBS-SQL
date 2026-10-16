@@ -1,17 +1,17 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: ONT Cancelled Orders
 -- Description: Imported from BI Publisher
-Description: Cancelled Orders Report
-Application: Order Management
-Source: Cancelled Orders Report (XML)
-Short Name: OEXOEOCS_XML
-DB package: ONT_OEXOEOCS_XMLP_PKG
--- Excel Examle Output: https://www.enginatics.com/example/ont-cancelled-orders/
+-- Description: Cancelled Orders Report
+-- Application: Order Management
+-- Source: Cancelled Orders Report (XML)
+-- Short Name: OEXOEOCSXML
+-- DB package: ONTOEXOEOCSXMLPPKG
+-- Excel Example Output: https://www.enginatics.com/example/ont-cancelled-orders/
 -- Library Link: https://www.enginatics.com/reports/ont-cancelled-orders/
 -- Run Report: https://demo.enginatics.com/
 

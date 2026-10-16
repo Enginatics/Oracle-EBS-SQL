@@ -1,18 +1,16 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: FA Asset Cost
 -- Description: Asset Costs Summary/Detail Report
-
-Equivalent to Oracle Standard Reports:
-Cost Summary Report
-Cost Detail Report
-
-DB package: XXEN_FA_FAS_XMLP
--- Excel Examle Output: https://www.enginatics.com/example/fa-asset-cost/
+-- Equivalent to Oracle Standard Reports:
+-- Cost Summary Report
+-- Cost Detail Report
+-- DB package: XXENFAFASXMLP
+-- Excel Example Output: https://www.enginatics.com/example/fa-asset-cost/
 -- Library Link: https://www.enginatics.com/reports/fa-asset-cost/
 -- Run Report: https://demo.enginatics.com/
 

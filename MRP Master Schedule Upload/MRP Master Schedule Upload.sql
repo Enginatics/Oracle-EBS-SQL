@@ -1,27 +1,23 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: MRP Master Schedule Upload
 -- Description: MRP Master Schedule Upload
-==========================
-- Create new MDS/MPS schedule entries.
-- Create and Update existing schedule entries.
-
-Each row stages one schedule entry into the MRP schedule interface (mrp_schedule_interface, process_status=2) for an existing schedule designator (MDS or MPS). The staged entries are loaded into the master schedule (mrp_schedule_dates) asynchronously by the customer's MRP Planning Manager.
-
-Upload Modes
-============
-Create - opens an empty spreadsheet to enter new schedule entries against any accessible schedule designator.
-Create and Update - downloads existing schedule entries for the selected schedule designators and lets the user add new entries and re-stage modifications. Existing entries are matched on the hidden Transaction Id.
-
-Prerequisites
-=============
-- Schedule designators (Master Demand Schedule / Master Production Schedule) must be defined.
-
--- Excel Examle Output: https://www.enginatics.com/example/mrp-master-schedule-upload/
+-- ==========================
+-- - Create new MDS/MPS schedule entries.
+-- - Create and Update existing schedule entries.
+-- Each row stages one schedule entry into the MRP schedule interface (mrpscheduleinterface, processstatus=2) for an existing schedule designator (MDS or MPS). The staged entries are loaded into the master schedule (mrpscheduledates) asynchronously by the customer's MRP Planning Manager.
+-- Upload Modes
+-- ============
+-- Create - opens an empty spreadsheet to enter new schedule entries against any accessible schedule designator.
+-- Create and Update - downloads existing schedule entries for the selected schedule designators and lets the user add new entries and re-stage modifications. Existing entries are matched on the hidden Transaction Id.
+-- Prerequisites
+-- =============
+-- - Schedule designators (Master Demand Schedule / Master Production Schedule) must be defined.
+-- Excel Example Output: https://www.enginatics.com/example/mrp-master-schedule-upload/
 -- Library Link: https://www.enginatics.com/reports/mrp-master-schedule-upload/
 -- Run Report: https://demo.enginatics.com/
 

@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: ALR Alerts
 -- Description: 
--- Excel Examle Output: https://www.enginatics.com/example/alr-alerts/
+-- Excel Example Output: https://www.enginatics.com/example/alr-alerts/
 -- Library Link: https://www.enginatics.com/reports/alr-alerts/
 -- Run Report: https://demo.enginatics.com/
 

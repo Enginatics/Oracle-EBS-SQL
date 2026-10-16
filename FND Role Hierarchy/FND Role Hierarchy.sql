@@ -1,13 +1,13 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: FND Role Hierarchy
 -- Description: User Management (UMX) role hierarchy to manage role-based access control (RBAC).
-When run for a specified role, the report shows all hierarchies that contain or lead to inheriting that role.
--- Excel Examle Output: https://www.enginatics.com/example/fnd-role-hierarchy/
+-- When run for a specified role, the report shows all hierarchies that contain or lead to inheriting that role.
+-- Excel Example Output: https://www.enginatics.com/example/fnd-role-hierarchy/
 -- Library Link: https://www.enginatics.com/reports/fnd-role-hierarchy/
 -- Run Report: https://demo.enginatics.com/
 

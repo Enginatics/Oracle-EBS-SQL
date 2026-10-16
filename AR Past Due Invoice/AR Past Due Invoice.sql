@@ -1,12 +1,13 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: AR Past Due Invoice
 -- Description: Detail past due AR invoice report with invoice number, days past due, amount past due and currency code
--- Excel Examle Output: https://www.enginatics.com/example/ar-past-due-invoice/
+-- When India Localization is installed, the following GST columns are also included: GST Registration No, GST PAN No, CESS Amount, CGST Amount, Custom Amount, IGST Amount, SGST Amount, Unclassified Tax Amount, Taxable Value, HSN SAC Code, CESS Rate, CGST Rate, IGST Rate, SGST Rate, CGST Non-Recoverable, CGST Recoverable, IGST Non-Recoverable, IGST Recoverable, SGST Non-Recoverable, SGST Recoverable, Reverse Charge Flag.
+-- Excel Example Output: https://www.enginatics.com/example/ar-past-due-invoice/
 -- Library Link: https://www.enginatics.com/reports/ar-past-due-invoice/
 -- Run Report: https://demo.enginatics.com/
 
@@ -31,6 +32,11 @@ xxen_util.user_name(rcta.created_by) created_by,
 xxen_util.client_time(rcta.creation_date) creation_date,
 xxen_util.user_name(rcta.last_updated_by) last_updated_by,
 xxen_util.client_time(rcta.last_update_date) last_update_date
+&il_reg_columns
+&il_columns_amt
+&il_columns_rate
+&il_columns_rec
+&il_columns_tp
 from
 hr_all_organization_units_vl haouv,
 (select arpt_sql_func_util.get_balance_due_as_of_date(apsa.payment_schedule_id,:p_as_of_date,apsa.class) balance_due, :p_as_of_date-trunc(apsa.due_date) days_past_due, apsa.* from ar_payment_schedules_all apsa where apsa.actual_date_closed>:p_as_of_date and apsa.due_date<=:p_as_of_date) apsa,
@@ -42,6 +48,7 @@ ra_salesreps rs,
 hz_customer_profiles hcp,
 hz_customer_profiles hcp1,
 ar_collectors ac
+&il_from
 where
 1=1 and
 apsa.balance_due<>0 and
@@ -57,6 +64,7 @@ hca.cust_account_id=hcp.cust_account_id and
 hcp.site_use_id is null and
 apsa.customer_site_use_id=hcp1.site_use_id(+) and
 nvl(hcp1.collector_id, hcp.collector_id)=ac.collector_id
+&il_where
 order by
 decode(:p_order_by,'Salesperson',rs.name,'Customer',hp.party_name),
 decode(:p_order_by,'Balance Due',apsa.balance_due,0)

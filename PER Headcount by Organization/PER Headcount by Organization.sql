@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PER Headcount by Organization
 -- Description: Active employee and contingent worker headcount summarized by business group, organization, location, job, grade, and employment category. Includes gender breakdown and average service years and age. Use Excel pivot tables for flexible grouping and analysis.
--- Excel Examle Output: https://www.enginatics.com/example/per-headcount-by-organization/
+-- Excel Example Output: https://www.enginatics.com/example/per-headcount-by-organization/
 -- Library Link: https://www.enginatics.com/reports/per-headcount-by-organization/
 -- Run Report: https://demo.enginatics.com/
 

@@ -1,17 +1,18 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: AP Open Items Revaluation
 -- Description: Imported from BI Publisher
-Description: Open Items Revaluation Report
-Application: Payables
-Source: Open Items Revaluation Report (XML)
-Short Name: APOPITRN
-DB package: AP_OPEN_ITEMS_REVAL_PKG
--- Excel Examle Output: https://www.enginatics.com/example/ap-open-items-revaluation/
+-- Description: Open Items Revaluation Report
+-- Application: Payables
+-- Source: Open Items Revaluation Report (XML)
+-- Short Name: APOPITRN
+-- DB package: APOPENITEMSREVALPKG
+-- When India Localization is installed, the following GST columns are also included: GST Registration No, GST PAN No, GST TAN No, CGST Amount, SGST Amount, IGST Amount, CGST Rate, SGST Rate, IGST Rate, Custom Amount, Unclassified Tax Amount, Taxable Value, HSN SAC Code.
+-- Excel Example Output: https://www.enginatics.com/example/ap-open-items-revaluation/
 -- Library Link: https://www.enginatics.com/reports/ap-open-items-revaluation/
 -- Run Report: https://demo.enginatics.com/
 
@@ -23,6 +24,8 @@ select
 ,trx.account "Accounting Flexfield"
 ,trx.account_description "Accouting Flexfield Desc."
 &lp_report_format_cols
+&il_reg_columns
+&il_cols_outer
 from
  (select 
    (select sob.name from gl_ledgers sob where sob.ledger_id = :g_ledger_id) ledger,
@@ -321,4 +324,6 @@ from
    txn_type_lookup_code,
    txn_date
  ) trx
+&il_from
+&il_where
 &lp_group_by_cols

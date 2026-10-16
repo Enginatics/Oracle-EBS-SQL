@@ -1,20 +1,17 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CE General Ledger Cash Account Usage
 -- Description: Application: Cash Management
-Description: Cash Account Usage
-
-This report details the General Ledger Cash Accounts assigned to Bank Accounts, and their usage.
-
-The following templates are available:
-Pivot: Bank Accounts, Assigned Cash Accounts - Pivot by Bank Account, Cash Account showing cash account usage within each bank account.
-Pivot: Cash Account, Assigned Bank Accounts - Pivot by Cash Account, Bank Account, showing cash account usage within each bank account. 
-
--- Excel Examle Output: https://www.enginatics.com/example/ce-general-ledger-cash-account-usage/
+-- Description: Cash Account Usage
+-- This report details the General Ledger Cash Accounts assigned to Bank Accounts, and their usage.
+-- The following templates are available:
+-- Pivot: Bank Accounts, Assigned Cash Accounts - Pivot by Bank Account, Cash Account showing cash account usage within each bank account.
+-- Pivot: Cash Account, Assigned Bank Accounts - Pivot by Cash Account, Bank Account, showing cash account usage within each bank account.
+-- Excel Example Output: https://www.enginatics.com/example/ce-general-ledger-cash-account-usage/
 -- Library Link: https://www.enginatics.com/reports/ce-general-ledger-cash-account-usage/
 -- Run Report: https://demo.enginatics.com/
 

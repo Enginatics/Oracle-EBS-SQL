@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: AR Aging Buckets and Interest Tiers Setup
 -- Description: AR Aging Buckets and Interest Tiers Setup
--- Excel Examle Output: https://www.enginatics.com/example/ar-aging-buckets-and-interest-tiers-setup/
+-- Excel Example Output: https://www.enginatics.com/example/ar-aging-buckets-and-interest-tiers-setup/
 -- Library Link: https://www.enginatics.com/reports/ar-aging-buckets-and-interest-tiers-setup/
 -- Run Report: https://demo.enginatics.com/
 

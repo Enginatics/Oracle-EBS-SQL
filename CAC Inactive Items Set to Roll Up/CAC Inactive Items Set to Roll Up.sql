@@ -1,40 +1,38 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Inactive Items Set to Roll Up
--- Description: Report to show items which are set to roll up even though these items have an inactive status.  The Cost Rollup uses the Based on Rollup Flag to control if an item is rolled up, as opposed to the item status.
-
-Parameters:
-===========
-Cost Type:  enter the cost type to report (mandatory).  Defaults to your Costing Method cost type.
-Inactive Item Status:  enter the item statuses which should not be rolled up (mandatory).  Defaults to 'Inactive'.
-Category Set 1:  any item category you wish, typically the Cost or Product Line category set (optional).
-Category Set 2:  any item category you wish, typically the Inventory category set (optional).
-Item Number:  enter the specific item number(s) you wish to report (optional).
-Organization Code:  enter the specific inventory organization(s) you wish to report (optional).
-Operating Unit:  enter the specific operating unit(s) you wish to report (optional).
-Ledger:  enter the specific ledger(s) you wish to report (optional).
-
-/* +=============================================================================+
--- | Copyright 2023 Douglas Volz Consulting, Inc.
--- | All rights reserved.
--- | Permission to use this code is granted provided the original author is
--- | acknowledged. No warranties, express or otherwise is included in this permission.
--- +=============================================================================+
--- |
--- | Original Author: Douglas Volz (doug@volzconsulting.com)
--- |
--- | Program Name: xxx_inactive_items_set_to_rollup_rept.sql
--- |
--- |  Version Modified on  Modified  by   Description
--- |  ======= =========== ============== =========================================
--- |      1.0 15 Nov 2023 Douglas Volz   Initial version
--- |      1.1 05 Dec 2023 Douglas Volz   Added G/L and Operating Unit security restrictions.
--- +=============================================================================+*/
--- Excel Examle Output: https://www.enginatics.com/example/cac-inactive-items-set-to-roll-up/
+-- Description: Report to show items which are set to roll up even though these items have an inactive status. The Cost Rollup uses the Based on Rollup Flag to control if an item is rolled up, as opposed to the item status.
+-- Parameters:
+-- ===========
+-- Cost Type: enter the cost type to report (mandatory). Defaults to your Costing Method cost type.
+-- Inactive Item Status: enter the item statuses which should not be rolled up (mandatory). Defaults to 'Inactive'.
+-- Category Set 1: any item category you wish, typically the Cost or Product Line category set (optional).
+-- Category Set 2: any item category you wish, typically the Inventory category set (optional).
+-- Item Number: enter the specific item number(s) you wish to report (optional).
+-- Organization Code: enter the specific inventory organization(s) you wish to report (optional).
+-- Operating Unit: enter the specific operating unit(s) you wish to report (optional).
+-- Ledger: enter the specific ledger(s) you wish to report (optional).
+-- / +=============================================================================+
+-- -- | Copyright 2023 Douglas Volz Consulting, Inc.
+-- -- | All rights reserved.
+-- -- | Permission to use this code is granted provided the original author is
+-- -- | acknowledged. No warranties, express or otherwise is included in this permission.
+-- -- +=============================================================================+
+-- -- |
+-- -- | Original Author: Douglas Volz (doug@volzconsulting.com)
+-- -- |
+-- -- | Program Name: xxxinactiveitemssettorolluprept.sql
+-- -- |
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== ============== =========================================
+-- -- | 1.0 15 Nov 2023 Douglas Volz Initial version
+-- -- | 1.1 05 Dec 2023 Douglas Volz Added G/L and Operating Unit security restrictions.
+-- -- +=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-inactive-items-set-to-roll-up/
 -- Library Link: https://www.enginatics.com/reports/cac-inactive-items-set-to-roll-up/
 -- Run Report: https://demo.enginatics.com/
 

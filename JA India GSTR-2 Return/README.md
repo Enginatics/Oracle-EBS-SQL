@@ -1,14 +1,20 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'JA India GSTR-2 Return | Oracle EBS SQL Report'
 description: 'Imported from BI Publisher Description: India GSTR-2 Return Report with XML Format Application: Asia/Pacific Localizations Source: India GSTR-2 Return…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, India, GSTR-2, Return, jai_party_reg_lines_v, jai_party_regs_v, jai_party_reg'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Asia/Pacific Localizations, Enginatics, R12 only, India, GSTR-2, Return, jai_party_reg_lines_v, jai_party_regs_v, jai_gst_rep_trx_detail_t'
 permalink: /JA%20India%20GSTR-2%20Return/
+report_name: 'JA India GSTR-2 Return'
+report_web_name: ja-india-gstr-2-return
+module: 'Asia/Pacific Localizations'
+module_url: /modules/asia-pacific-localizations/
 ---
 
 # JA India GSTR-2 Return – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/ja-india-gstr-2-return/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/ja-india-gstr-2-return/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ja-india-gstr-2-return) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ja-india-gstr-2-return).
+**Oracle EBS module:** [Asia/Pacific Localizations](/modules/asia-pacific-localizations/ "Oracle EBS Asia/Pacific Localizations reports") · [all Asia/Pacific Localizations reports](/modules/asia-pacific-localizations/)  
 
 ## Overview
 Imported from BI Publisher
@@ -18,28 +24,31 @@ Source: India GSTR-2 Return Report(XML)
 Short Name: JAIGSTR2_XML
 DB package: JAI_GSTR2_EXTRACT_PKG
 
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ja-india-gstr-2-return) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
+
 ## Report Parameters
 Tax Regime, Registration Number, Return Period (MONYYYY)
 
 ## Oracle EBS Tables Used
-[jai_party_reg_lines_v](https://www.enginatics.com/library/?pg=1&find=jai_party_reg_lines_v), [jai_party_regs_v](https://www.enginatics.com/library/?pg=1&find=jai_party_regs_v), [jai_party_reg](https://www.enginatics.com/library/?pg=1&find=jai_party_reg), [jai_gst_rep_trx_detail_t](https://www.enginatics.com/library/?pg=1&find=jai_gst_rep_trx_detail_t)
+[jai_party_reg_lines_v](https://www.enginatics.com/library/?pg=1&find=jai_party_reg_lines_v&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ja-india-gstr-2-return), [jai_party_regs_v](https://www.enginatics.com/library/?pg=1&find=jai_party_regs_v&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ja-india-gstr-2-return), [jai_gst_rep_trx_detail_t](https://www.enginatics.com/library/?pg=1&find=jai_gst_rep_trx_detail_t&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ja-india-gstr-2-return)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ja-india-gstr-2-return), [R12 only](https://www.enginatics.com/library/?pg=1&category%5B%5D=R12%20only&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ja-india-gstr-2-return)
 
 ## Related Reports
 [JA India GSTR-1 Return](/JA%20India%20GSTR-1%20Return/ "JA India GSTR-1 Return Oracle EBS SQL Report"), [JA India GSTR-3B Return](/JA%20India%20GSTR-3B%20Return/ "JA India GSTR-3B Return Oracle EBS SQL Report"), [JA India Third Party Registration Upload](/JA%20India%20Third%20Party%20Registration%20Upload/ "JA India Third Party Registration Upload Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/JA%20India%20GSTR-2%20Return/JA%20India%20GSTR-2%20Return.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ja-india-gstr-2-return) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [](https://www.enginatics.com/example/ja-india-gstr-2-return/) |
-| Blitz Report™ XML Import | [JA_India_GSTR_2_Return.xml](https://www.enginatics.com/xml/ja-india-gstr-2-return/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/ja-india-gstr-2-return/](https://www.enginatics.com/reports/ja-india-gstr-2-return/) |
+| Excel Example Output | [Example](https://www.enginatics.com/example/ja-india-gstr-2-return/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ja-india-gstr-2-return) |
+| Blitz Report™ XML Import | [JA_India_GSTR_2_Return.xml](https://www.enginatics.com/xml/ja-india-gstr-2-return/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ja-india-gstr-2-return) |
+| SQL Source | [JA India GSTR-2 Return.sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/JA%20India%20GSTR-2%20Return/JA%20India%20GSTR-2%20Return.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/ja-india-gstr-2-return/](https://www.enginatics.com/reports/ja-india-gstr-2-return/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ja-india-gstr-2-return) |
 
 ## JA India GSTR-2 Return - Case Study & Technical Analysis
 
@@ -78,18 +87,17 @@ The report queries the Payables and India Localization tax tables.
 -   **Compliance:** Ensures that only eligible credits are taken, avoiding interest and penalties.
 -   **Vendor Management:** Provides data to hold vendors accountable for their tax compliance.
 
-
 ---
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ja-india-gstr-2-return)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ja-india-gstr-2-return)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ja-india-gstr-2-return)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ja-india-gstr-2-return)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ja-india-gstr-2-return)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ja-india-gstr-2-return)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ja-india-gstr-2-return)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

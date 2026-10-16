@@ -1,17 +1,17 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: FA Asset Additions
 -- Description: Imported from BI Publisher
-Description: Asset Additions Report
-Application: Assets
-Source: Asset Additions Report (XML)
-Short Name: FAS420_XML
-DB package: FA_FAS420_XMLP_PKG
--- Excel Examle Output: https://www.enginatics.com/example/fa-asset-additions/
+-- Description: Asset Additions Report
+-- Application: Assets
+-- Source: Asset Additions Report (XML)
+-- Short Name: FAS420XML
+-- DB package: FAFAS420XMLPPKG
+-- Excel Example Output: https://www.enginatics.com/example/fa-asset-additions/
 -- Library Link: https://www.enginatics.com/reports/fa-asset-additions/
 -- Run Report: https://demo.enginatics.com/
 

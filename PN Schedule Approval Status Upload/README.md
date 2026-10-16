@@ -1,14 +1,17 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'PN Schedule Approval Status Upload | Oracle EBS SQL Report'
 description: 'Property Management - Schedule Approval Status Upload This upload allows users to Approve (Approved status), Un-Approve (Draft status), or place On Hold…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, Schedule, Approval, Status, pn_payment_schedules_v, pn_leases_v, pn_lease_details'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Upload, Schedule, Approval, Status, pn_payment_schedules_v, pn_leases_v, pn_lease_details'
 permalink: /PN%20Schedule%20Approval%20Status%20Upload/
+report_name: 'PN Schedule Approval Status Upload'
+report_web_name: pn-schedule-approval-status-upload
 ---
 
 # PN Schedule Approval Status Upload – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/pn-schedule-approval-status-upload/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/pn-schedule-approval-status-upload/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pn-schedule-approval-status-upload) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pn-schedule-approval-status-upload).
 
 ## Overview
 Property Management - Schedule Approval Status Upload
@@ -30,29 +33,31 @@ Notes
 =================
 You cannot create new Payment/Billing schedules using this upload. It can only be used for updating the approval status of existing Payment/Billing Schedules.
 
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pn-schedule-approval-status-upload) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 
 ## Report Parameters
 Upload Mode, Operating Unit, Third Party Name, Lease Class, Lease Type, Lease Name, Lease Name From, Lease Name To, Lease Number, Lease Number From, Lease Number To, Schedule Status, Schedule Date From, Schedule Date To, Transaction Date From, Transaction Date To, Location, Location From, Location To, Lease Responsible User, Schedule Approved By User, Schedule Approved Period
 
 ## Oracle EBS Tables Used
-[pn_payment_schedules_v](https://www.enginatics.com/library/?pg=1&find=pn_payment_schedules_v), [pn_leases_v](https://www.enginatics.com/library/?pg=1&find=pn_leases_v), [pn_lease_details](https://www.enginatics.com/library/?pg=1&find=pn_lease_details), [hr_all_organization_units_vl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_vl)
+[pn_payment_schedules_v](https://www.enginatics.com/library/?pg=1&find=pn_payment_schedules_v&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pn-schedule-approval-status-upload), [pn_leases_v](https://www.enginatics.com/library/?pg=1&find=pn_leases_v&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pn-schedule-approval-status-upload), [pn_lease_details](https://www.enginatics.com/library/?pg=1&find=pn_lease_details&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pn-schedule-approval-status-upload), [hr_all_organization_units_vl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pn-schedule-approval-status-upload)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Upload](https://www.enginatics.com/library/?pg=1&category[]=Upload)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pn-schedule-approval-status-upload), [R12 only](https://www.enginatics.com/library/?pg=1&category%5B%5D=R12%20only&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pn-schedule-approval-status-upload), [Upload](https://www.enginatics.com/library/?pg=1&category%5B%5D=Upload&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pn-schedule-approval-status-upload)
 
 ## Related Reports
 [PN Billing/Payment Term Upload](/PN%20Billing-Payment%20Term%20Upload/ "PN Billing/Payment Term Upload Oracle EBS SQL Report"), [PN Generate Lease Details](/PN%20Generate%20Lease%20Details/ "PN Generate Lease Details Oracle EBS SQL Report"), [PN Generate Portfolio Detail](/PN%20Generate%20Portfolio%20Detail/ "PN Generate Portfolio Detail Oracle EBS SQL Report"), [PN Generate Lease Analysis](/PN%20Generate%20Lease%20Analysis/ "PN Generate Lease Analysis Oracle EBS SQL Report"), [PN Generate Portfolio Summary](/PN%20Generate%20Portfolio%20Summary/ "PN Generate Portfolio Summary Oracle EBS SQL Report"), [PN GL Reconciliation](/PN%20GL%20Reconciliation/ "PN GL Reconciliation Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/PN%20Schedule%20Approval%20Status%20Upload/PN%20Schedule%20Approval%20Status%20Upload.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pn-schedule-approval-status-upload) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [PN Schedule Approval Status Upload 11-Apr-2025 000344.xlsm](https://www.enginatics.com/example/pn-schedule-approval-status-upload/) |
-| Blitz Report™ XML Import | [PN_Schedule_Approval_Status_Upload.xml](https://www.enginatics.com/xml/pn-schedule-approval-status-upload/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/pn-schedule-approval-status-upload/](https://www.enginatics.com/reports/pn-schedule-approval-status-upload/) |
+| Excel Example Output | [PN Schedule Approval Status Upload 11-Apr-2025 000344.xlsm](https://www.enginatics.com/example/pn-schedule-approval-status-upload/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pn-schedule-approval-status-upload) |
+| Blitz Report™ XML Import | [PN_Schedule_Approval_Status_Upload.xml](https://www.enginatics.com/xml/pn-schedule-approval-status-upload/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pn-schedule-approval-status-upload) |
+| SQL Source | [PN Schedule Approval Status Upload.sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/PN%20Schedule%20Approval%20Status%20Upload/PN%20Schedule%20Approval%20Status%20Upload.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/pn-schedule-approval-status-upload/](https://www.enginatics.com/reports/pn-schedule-approval-status-upload/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pn-schedule-approval-status-upload) |
 
 ## Case Study & Technical Analysis: PN Schedule Approval Status Upload Report
 
@@ -116,18 +121,17 @@ Using an Excel-based upload for bulk schedule status changes is significantly mo
 **3. How does the system determine the 'Approver' and 'Period' if they are not provided in the upload file?**
    If the `Approver` is not specified for an 'Approved' status, the system will default to the username of the individual executing the upload. If the `Period` is not specified, it will be derived automatically by Oracle based on the `Schedule Date`, ensuring that the accounting period for the approval is correctly recorded.
 
-
 ---
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pn-schedule-approval-status-upload)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pn-schedule-approval-status-upload)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pn-schedule-approval-status-upload)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pn-schedule-approval-status-upload)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pn-schedule-approval-status-upload)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pn-schedule-approval-status-upload)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pn-schedule-approval-status-upload)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

@@ -1,17 +1,17 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: JA India - TDS Certificates
 -- Description: Imported from BI Publisher
-Description: Form 16A report
-Application: Asia/Pacific Localizations
-Source: India - TDS Certificates (XML)
-Short Name: JAINITCR_XML
-DB package: JA_JAINITCR_XMLP_PKG
--- Excel Examle Output: https://www.enginatics.com/example/ja-india-tds-certificates/
+-- Description: Form 16A report
+-- Application: Asia/Pacific Localizations
+-- Source: India - TDS Certificates (XML)
+-- Short Name: JAINITCRXML
+-- DB package: JAJAINITCRXMLPPKG
+-- Excel Example Output: https://www.enginatics.com/example/ja-india-tds-certificates/
 -- Library Link: https://www.enginatics.com/reports/ja-india-tds-certificates/
 -- Run Report: https://demo.enginatics.com/
 

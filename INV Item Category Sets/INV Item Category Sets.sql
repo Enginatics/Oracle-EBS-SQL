@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: INV Item Category Sets
 -- Description: 
--- Excel Examle Output: https://www.enginatics.com/example/inv-item-category-sets/
+-- Excel Example Output: https://www.enginatics.com/example/inv-item-category-sets/
 -- Library Link: https://www.enginatics.com/reports/inv-item-category-sets/
 -- Run Report: https://demo.enginatics.com/
 

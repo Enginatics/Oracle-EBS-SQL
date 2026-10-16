@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: Blitz Report Parameter Custom LOV Duplication Validation
 -- Description: Blitz report parameters using custom LOVs with the same query more than once so that they should be set up as a shared LOV instead
--- Excel Examle Output: https://www.enginatics.com/example/blitz-report-parameter-custom-lov-duplication-validation/
+-- Excel Example Output: https://www.enginatics.com/example/blitz-report-parameter-custom-lov-duplication-validation/
 -- Library Link: https://www.enginatics.com/reports/blitz-report-parameter-custom-lov-duplication-validation/
 -- Run Report: https://demo.enginatics.com/
 

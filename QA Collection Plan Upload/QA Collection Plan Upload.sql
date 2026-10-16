@@ -1,52 +1,44 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: QA Collection Plan Upload
 -- Description: Upload to create, update, or delete Quality Collection Plans and all child entities.
-
-This upload manages:
-- Collection Plan headers (name, type, dates, multirow flag)
-- Plan Transactions (transaction assignments, mandatory/background flags)
-- Collection Triggers (trigger conditions per transaction)
-- Plan Elements (collection element assignments, prompts, flags)
-- Element Values (value lookups per element)
-- Action Triggers (trigger sequences and conditions per element)
-- Actions (action assignments per trigger, including assign type, assigned element, alert action set and action, status code)
-- Action Outputs (output variable mappings per action)
-
-Multiple actions of the same action type can coexist under one action trigger (e.g. two Assign value actions with different formulas, or two Send email actions with different alert sets). Actions are identified by the natural key (action trigger, action name, assign type, assigned element, alert action set, alert action, status code, action message); changing any of these fields creates a new action rather than updating an existing one. Use Delete=Yes to remove an obsolete action.
-
-CAR (Corrective Action Request) actions are not yet supported.
-
-Upload Modes
-============
-
-Create
-------
-Opens an empty spreadsheet for entering new Collection Plans and child entities.
-
-Create, Update
---------------
-Downloads existing Collection Plans matching filters for review and update.
-New rows can be added to create additional plans in the same upload.
-
-Row Types
-=========
-The upload uses a hierarchical structure with 8 row types:
-1. Plan Header
-2. Transaction
-3. Collection Trigger
-4. Element
-5. Element Value
-6. Action Trigger
-7. Action
-8. Action Output
-
-Each child row inherits its parent context from the plan_name column.
--- Excel Examle Output: https://www.enginatics.com/example/qa-collection-plan-upload/
+-- This upload manages:
+-- - Collection Plan headers (name, type, dates, multirow flag)
+-- - Plan Transactions (transaction assignments, mandatory/background flags)
+-- - Collection Triggers (trigger conditions per transaction)
+-- - Plan Elements (collection element assignments, prompts, flags)
+-- - Element Values (value lookups per element)
+-- - Action Triggers (trigger sequences and conditions per element)
+-- - Actions (action assignments per trigger, including assign type, assigned element, alert action set and action, status code)
+-- - Action Outputs (output variable mappings per action)
+-- Multiple actions of the same action type can coexist under one action trigger (e.g. two Assign value actions with different formulas, or two Send email actions with different alert sets). Actions are identified by the natural key (action trigger, action name, assign type, assigned element, alert action set, alert action, status code, action message); changing any of these fields creates a new action rather than updating an existing one. Use Delete=Yes to remove an obsolete action.
+-- CAR (Corrective Action Request) actions are not yet supported.
+-- Upload Modes
+-- ============
+-- Create
+-- ------
+-- Opens an empty spreadsheet for entering new Collection Plans and child entities.
+-- Create, Update
+-- --------------
+-- Downloads existing Collection Plans matching filters for review and update.
+-- New rows can be added to create additional plans in the same upload.
+-- Row Types
+-- =========
+-- The upload uses a hierarchical structure with 8 row types:
+-- 1. Plan Header
+-- 2. Transaction
+-- 3. Collection Trigger
+-- 4. Element
+-- 5. Element Value
+-- 6. Action Trigger
+-- 7. Action
+-- 8. Action Output
+-- Each child row inherits its parent context from the planname column.
+-- Excel Example Output: https://www.enginatics.com/example/qa-collection-plan-upload/
 -- Library Link: https://www.enginatics.com/reports/qa-collection-plan-upload/
 -- Run Report: https://demo.enginatics.com/
 

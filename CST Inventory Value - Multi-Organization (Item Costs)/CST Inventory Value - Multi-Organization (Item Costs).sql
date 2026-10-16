@@ -1,42 +1,33 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CST Inventory Value - Multi-Organization (Item Costs)
 -- Description: Report: CST Inventory Value - Multi-Organization (Item Costs)
-
-Description: 
-The Inventory Value Report can be used to report  Inventory Value by 
-- Elemental Item Cost level 
-- Quantity Type (Onhand, Intransit, Receiving)
-
-The report can be used to analyze inventory value by Ledger, Operating Unit, Organization, Subinventory, Item Category, Cost Group
-
-The report corresponds to the following standard Oracle Reports
-- Elemental Inventory Value Report
-- All Inventories Value Report 
-
-The report can be run across multiple Inventory Organizations
-
-Templates are provided that match the existing standard Oracle Reports of the same name:
-- All Inventories Value
-- All Inventories Value by Cost Group
-- Elemental Inventory Value
-- Elemental Inventory Value by Subinventory
-- Elemental Inventory Value by Cost Group
-- Intransit Value Report
-
-New parameter added: Show Shipment Details
-If this parameter is set to Y, columns related to shipment details will be included, such as Shipment Number, Ship Date, FOB Point, etc.
-
-DB package: XXEN_INV_VALUE
-
-Notes:
-To run the report including non-costed items the As of Date parameter must be left blank (current date). The report cannot be run historically when including non-costed items due to a bug in the Oracle API uses to populate the interminm costing tables used by the report. The API will error with the following error, however the report will complete but  return no data: ORA-01403: no data found in Package CST_Inventory_PVT Procedure Calculate_InventoryCost
-
--- Excel Examle Output: https://www.enginatics.com/example/cst-inventory-value-multi-organization-item-costs/
+-- Description:
+-- The Inventory Value Report can be used to report Inventory Value by
+-- - Elemental Item Cost level
+-- - Quantity Type (Onhand, Intransit, Receiving)
+-- The report can be used to analyze inventory value by Ledger, Operating Unit, Organization, Subinventory, Item Category, Cost Group
+-- The report corresponds to the following standard Oracle Reports
+-- - Elemental Inventory Value Report
+-- - All Inventories Value Report
+-- The report can be run across multiple Inventory Organizations
+-- Templates are provided that match the existing standard Oracle Reports of the same name:
+-- - All Inventories Value
+-- - All Inventories Value by Cost Group
+-- - Elemental Inventory Value
+-- - Elemental Inventory Value by Subinventory
+-- - Elemental Inventory Value by Cost Group
+-- - Intransit Value Report
+-- New parameter added: Show Shipment Details
+-- If this parameter is set to Y, columns related to shipment details will be included, such as Shipment Number, Ship Date, FOB Point, etc.
+-- DB package: XXENINVVALUE
+-- Notes:
+-- To run the report including non-costed items the As of Date parameter must be left blank (current date). The report cannot be run historically when including non-costed items due to a bug in the Oracle API uses to populate the interminm costing tables used by the report. The API will error with the following error, however the report will complete but return no data: ORA-01403: no data found in Package CSTInventoryPVT Procedure CalculateInventoryCost
+-- Excel Example Output: https://www.enginatics.com/example/cst-inventory-value-multi-organization-item-costs/
 -- Library Link: https://www.enginatics.com/reports/cst-inventory-value-multi-organization-item-costs/
 -- Run Report: https://demo.enginatics.com/
 

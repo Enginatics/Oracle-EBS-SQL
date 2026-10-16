@@ -1,51 +1,48 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Accounting Period Status
--- Description: Report to show the accounting period status for General Ledger, Inventory, Lease Management, Payables, Projects, Purchasing and Receivables.  You can choose All Statuses (open or closed or never opened), Closed, Open or Never Opened periods.  And for process manufacturing (OPM), if your cost calendar has the same period end dates as your inventory accounting periods, this report will also display the OPM cost calendar status.  
-
-Note:  this report automatically looks for hierarchies which might be used with the Open Period Control and the Close Period Control Oracle programs.
-
-Parameters
-==========
-Period Name - the desired inventory accounting period you wish to report (mandatory).
-Report Period Option - the parameter used to combine the Period Open and Period Close reports.  The list of value choices are:  Closed, Open, Never Opened or All Statuses (mandatory).
-Functional Area - the Oracle module(s) or functional area you wish to report.  To see all functional areas leave this parameter empty (optional).
-Hierarchy Name - select the organization hierarchy used to open and close your inventory organizations.  If you leave this parameter blank the report will try to find any organization hierarchy having "Period", "Open", or "Close" in the hierarchy name (optional)
-Organization Code:  any inventory organization, defaults to your session's inventory organization (optional).
-Operating Unit:  Operating Unit you wish to report, leave blank for all operating units (optional).
-Ledger:  general ledger you wish to report, leave blank for all ledgers (optional).
-
-/* +=============================================================================+
--- | SQL Code Copyright 2011-2024 Douglas Volz Consulting, Inc.
--- | All rights reserved.
--- | Permission to use this code is granted provided the original author is
--- | acknowledged. No warranties, express or otherwise is included in this permission.
--- |
--- |  Original Author: Douglas Volz (doug@volzconsulting.com)
--- |
--- |  Version Modified on Modified  by    Description
--- |  ======= =========== =============== =========================================
--- |  1.0     19 Jan 2015 Douglas Volz    Combined the xxx_period_open_status_rept.sql xxx_period_close_status_rept.sql into one report.  Originally written in 2006 and 2011.
--- |  1.1     19 Jan 2015 Douglas Volz    Added OPM Cost Calendar status and Projects.
--- |  1.2     19 Dec 2016 Douglas Volz    Fixed list of value choices, was preventing purchasing operating units from being reported.
--- |  1.3     18 May 2016 Douglas Volz    Minor fix for reporting the Organization Hierarchy
--- |  1.4     03 Dec 2018 Douglas Volz    Open Periods option now checks for Summarized_Flag.
--- |  1.5     27 Oct 2019 Douglas Volz    Condense A/R, A/P, Projects, Purchasing SQL logic
--- |  1.6     16 Jan 2020 Douglas Volz    Add operating unit parameter
--- |  1.7     10 Apr 2020 Douglas Volz    Made the following multi-language changes:  Changed fnd_application to fnd_application_vl and changed hr_all_organization_units to hr_all_organization_units_vl
--- |  1.8      7 May 2020 Douglas Volz    Added fnd_product_installations to only report installed applications.
--- |  1.9     26 May 2020 Douglas Volz    Added lookup values and parameters for the organization_hierarchy_name subquery.
--- |  1.10    28 May 2020 Douglas Volz    For language translation, replaced custom Report Options LOV with compound Oracle lookup values.
--- |  1.11    21 Jun 2020 Douglas Volz    Added Organization Hierarchy as a separate parameter
--- |  1.12    07 Feb 2022 Eric Clegg      Added who columns using xxen_util functions.
--- |  1.13    13 Mar 2022 Douglas Volz    Modified for financial apps, to show blank who column values if status = Never Opened.
--- |  1.14    11 Jun 2024 Douglas Volz    Replaced tabs with spaces.  Reinstalled missing parameters.
--- +=============================================================================+*/
--- Excel Examle Output: https://www.enginatics.com/example/cac-accounting-period-status/
+-- Description: Report to show the accounting period status for General Ledger, Inventory, Lease Management, Payables, Projects, Purchasing and Receivables. You can choose All Statuses (open or closed or never opened), Closed, Open or Never Opened periods. And for process manufacturing (OPM), if your cost calendar has the same period end dates as your inventory accounting periods, this report will also display the OPM cost calendar status.
+-- Note: this report automatically looks for hierarchies which might be used with the Open Period Control and the Close Period Control Oracle programs.
+-- Parameters
+-- ==========
+-- Period Name - the desired inventory accounting period you wish to report (mandatory).
+-- Report Period Option - the parameter used to combine the Period Open and Period Close reports. The list of value choices are: Closed, Open, Never Opened or All Statuses (mandatory).
+-- Functional Area - the Oracle module(s) or functional area you wish to report. To see all functional areas leave this parameter empty (optional).
+-- Hierarchy Name - select the organization hierarchy used to open and close your inventory organizations. If you leave this parameter blank the report will try to find any organization hierarchy having "Period", "Open", or "Close" in the hierarchy name (optional)
+-- Organization Code: any inventory organization, defaults to your session's inventory organization (optional).
+-- Operating Unit: Operating Unit you wish to report, leave blank for all operating units (optional).
+-- Ledger: general ledger you wish to report, leave blank for all ledgers (optional).
+-- / +=============================================================================+
+-- -- | SQL Code Copyright 2011-2024 Douglas Volz Consulting, Inc.
+-- -- | All rights reserved.
+-- -- | Permission to use this code is granted provided the original author is
+-- -- | acknowledged. No warranties, express or otherwise is included in this permission.
+-- -- |
+-- -- | Original Author: Douglas Volz (doug@volzconsulting.com)
+-- -- |
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== =============== =========================================
+-- -- | 1.0 19 Jan 2015 Douglas Volz Combined the xxxperiodopenstatusrept.sql xxxperiodclosestatusrept.sql into one report. Originally written in 2006 and 2011.
+-- -- | 1.1 19 Jan 2015 Douglas Volz Added OPM Cost Calendar status and Projects.
+-- -- | 1.2 19 Dec 2016 Douglas Volz Fixed list of value choices, was preventing purchasing operating units from being reported.
+-- -- | 1.3 18 May 2016 Douglas Volz Minor fix for reporting the Organization Hierarchy
+-- -- | 1.4 03 Dec 2018 Douglas Volz Open Periods option now checks for SummarizedFlag.
+-- -- | 1.5 27 Oct 2019 Douglas Volz Condense A/R, A/P, Projects, Purchasing SQL logic
+-- -- | 1.6 16 Jan 2020 Douglas Volz Add operating unit parameter
+-- -- | 1.7 10 Apr 2020 Douglas Volz Made the following multi-language changes: Changed fndapplication to fndapplicationvl and changed hrallorganizationunits to hrallorganizationunitsvl
+-- -- | 1.8 7 May 2020 Douglas Volz Added fndproductinstallations to only report installed applications.
+-- -- | 1.9 26 May 2020 Douglas Volz Added lookup values and parameters for the organizationhierarchyname subquery.
+-- -- | 1.10 28 May 2020 Douglas Volz For language translation, replaced custom Report Options LOV with compound Oracle lookup values.
+-- -- | 1.11 21 Jun 2020 Douglas Volz Added Organization Hierarchy as a separate parameter
+-- -- | 1.12 07 Feb 2022 Eric Clegg Added who columns using xxenutil functions.
+-- -- | 1.13 13 Mar 2022 Douglas Volz Modified for financial apps, to show blank who column values if status = Never Opened.
+-- -- | 1.14 11 Jun 2024 Douglas Volz Replaced tabs with spaces. Reinstalled missing parameters.
+-- -- +=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-accounting-period-status/
 -- Library Link: https://www.enginatics.com/reports/cac-accounting-period-status/
 -- Run Report: https://demo.enginatics.com/
 

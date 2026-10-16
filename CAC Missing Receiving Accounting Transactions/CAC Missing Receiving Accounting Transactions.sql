@@ -1,55 +1,53 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Missing Receiving Accounting Transactions
--- Description: Report to find receiving transactions where the receiving accounting entries do not exist, for PO receipts into receiving and for returns from inventory and outside processing (work in process).  To get all transactions which are missing receiving accounting entries, even for transactions where the transaction amounts are too small, set the Minimum Transaction Amount to zero (0).  And note the quantities and purchase order unit prices are expressed in the item's primary unit of measure. 
-
-Note:  To find missing purchase order deliveries into inventory or work in process, use the CAC Missing Material Transactions and the CAC Missing WIP Transactions reports.
-
-/* +=============================================================================+
--- |  Copyright 2022 Douglas Volz Consulting, Inc.                               |
--- |  All rights reserved.                                                       |
--- |  Permission to use this code is granted provided the original author is     |
--- |  acknowledged.  No warranties, express or otherwise is included in this     |
--- |  permission.                                                                |
--- +=============================================================================+
--- |
--- |  Original Author: Douglas Volz (doug@volzconsulting.com)
--- |
--- |  Program Name:  find_missing_receiving_accounting_entries.sql
--- |
--- |  Parameters:
--- |  p_trx_date_from    -- Starting transaction date, mandatory
--- |  p_trx_date_to      -- Ending transaction date, mandatory
--- |  p_minimum_amount   -- The absolute smallest transaction amount to be reported
--- |  p_category_set1    -- The first item category set to report, typically the
--- |                        Cost or Product Line Category Set
--- |  p_category_set2    -- The second item category set to report, typically the
--- |                        Inventory Category Set
--- |  p_item_number      -- Specific item number you wish to report (optional)
--- |  p_org_code         -- Specific inventory organization you wish to report (optional)
--- |  p_operating_unit   -- Operating Unit you wish to report, leave blank for all
--- |                        operating units (optional) 
--- |  p_ledger           -- general ledger you wish to report, leave blank for all
--- |                        ledgers (optional)
--- |
--- |  Description:
--- |  Report to find receiving transactions where the receiving accounting entries do not
--- |  exist.
--- | 
--- |  Version Modified on Modified  by   Description
--- |  ======= =========== ============== =========================================
--- |  1.0     14 Jul 2022 Douglas Volz   Initial Coding
--- |  1.1     15 Jul 2022 Douglas Volz   Added PO number, PO Line, decode on receipt
--- |                                     quantity.
--- |  1.2     18 Jul 2022 Douglas Volz   Correct logic for CORRECT transaction types.
--- |  1.3     23 Jul 2022 Douglas Volz   Added Parent Transaction Type to report.
--- |                                     Additional exclusions for CORRECT transactions.
--- +=============================================================================+*/
--- Excel Examle Output: https://www.enginatics.com/example/cac-missing-receiving-accounting-transactions/
+-- Description: Report to find receiving transactions where the receiving accounting entries do not exist, for PO receipts into receiving and for returns from inventory and outside processing (work in process). To get all transactions which are missing receiving accounting entries, even for transactions where the transaction amounts are too small, set the Minimum Transaction Amount to zero (0). And note the quantities and purchase order unit prices are expressed in the item's primary unit of measure.
+-- Note: To find missing purchase order deliveries into inventory or work in process, use the CAC Missing Material Transactions and the CAC Missing WIP Transactions reports.
+-- / +=============================================================================+
+-- -- | Copyright 2022 Douglas Volz Consulting, Inc. |
+-- -- | All rights reserved. |
+-- -- | Permission to use this code is granted provided the original author is |
+-- -- | acknowledged. No warranties, express or otherwise is included in this |
+-- -- | permission. |
+-- -- +=============================================================================+
+-- -- |
+-- -- | Original Author: Douglas Volz (doug@volzconsulting.com)
+-- -- |
+-- -- | Program Name: findmissingreceivingaccountingentries.sql
+-- -- |
+-- -- | Parameters:
+-- -- | ptrxdatefrom -- Starting transaction date, mandatory
+-- -- | ptrxdateto -- Ending transaction date, mandatory
+-- -- | pminimumamount -- The absolute smallest transaction amount to be reported
+-- -- | pcategoryset1 -- The first item category set to report, typically the
+-- -- | Cost or Product Line Category Set
+-- -- | pcategoryset2 -- The second item category set to report, typically the
+-- -- | Inventory Category Set
+-- -- | pitemnumber -- Specific item number you wish to report (optional)
+-- -- | porgcode -- Specific inventory organization you wish to report (optional)
+-- -- | poperatingunit -- Operating Unit you wish to report, leave blank for all
+-- -- | operating units (optional)
+-- -- | pledger -- general ledger you wish to report, leave blank for all
+-- -- | ledgers (optional)
+-- -- |
+-- -- | Description:
+-- -- | Report to find receiving transactions where the receiving accounting entries do not
+-- -- | exist.
+-- -- |
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== ============== =========================================
+-- -- | 1.0 14 Jul 2022 Douglas Volz Initial Coding
+-- -- | 1.1 15 Jul 2022 Douglas Volz Added PO number, PO Line, decode on receipt
+-- -- | quantity.
+-- -- | 1.2 18 Jul 2022 Douglas Volz Correct logic for CORRECT transaction types.
+-- -- | 1.3 23 Jul 2022 Douglas Volz Added Parent Transaction Type to report.
+-- -- | Additional exclusions for CORRECT transactions.
+-- -- +=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-missing-receiving-accounting-transactions/
 -- Library Link: https://www.enginatics.com/reports/cac-missing-receiving-accounting-transactions/
 -- Run Report: https://demo.enginatics.com/
 

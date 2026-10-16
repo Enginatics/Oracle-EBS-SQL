@@ -1,40 +1,34 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: EAM Failure Codes Upload
 -- Description: Create, update, and delete EAM failure codes, cause codes, and resolution codes.
-
-Upload Mode
-===========
-
-Create
-------
-Opens an empty spreadsheet to define new codes.
-
-Create, Update
---------------
-Downloads existing codes for review and modification, and allows adding new rows.
-
-Code Type
-=========
-Determines which of the three code tables is affected:
-- Failure Code   (stored in eam_failure_codes)
-- Cause Code     (stored in eam_cause_codes)
-- Resolution Code (stored in eam_resolution_codes)
-
-Codes are global - not scoped to any operating unit.
-
-Fields
-======
-- Code Type: Required. Failure Code, Cause Code, or Resolution Code.
-- Code: Required. Unique within its code type.
-- Description: Optional.
-- Effective End Date: Optional. Blank to keep the code active; set to reactivate an end-dated code.
-- Delete Record: Optional. Set to Yes to delete an existing code.
--- Excel Examle Output: https://www.enginatics.com/example/eam-failure-codes-upload/
+-- Upload Mode
+-- ===========
+-- Create
+-- ------
+-- Opens an empty spreadsheet to define new codes.
+-- Create, Update
+-- --------------
+-- Downloads existing codes for review and modification, and allows adding new rows.
+-- Code Type
+-- =========
+-- Determines which of the three code tables is affected:
+-- - Failure Code (stored in eamfailurecodes)
+-- - Cause Code (stored in eamcausecodes)
+-- - Resolution Code (stored in eamresolutioncodes)
+-- Codes are global - not scoped to any operating unit.
+-- Fields
+-- ======
+-- - Code Type: Required. Failure Code, Cause Code, or Resolution Code.
+-- - Code: Required. Unique within its code type.
+-- - Description: Optional.
+-- - Effective End Date: Optional. Blank to keep the code active; set to reactivate an end-dated code.
+-- - Delete Record: Optional. Set to Yes to delete an existing code.
+-- Excel Example Output: https://www.enginatics.com/example/eam-failure-codes-upload/
 -- Library Link: https://www.enginatics.com/reports/eam-failure-codes-upload/
 -- Run Report: https://demo.enginatics.com/
 

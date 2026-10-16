@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: DBA Editions
 -- Description: Database editions, their type and status
--- Excel Examle Output: https://www.enginatics.com/example/dba-editions/
+-- Excel Example Output: https://www.enginatics.com/example/dba-editions/
 -- Library Link: https://www.enginatics.com/reports/dba-editions/
 -- Run Report: https://demo.enginatics.com/
 

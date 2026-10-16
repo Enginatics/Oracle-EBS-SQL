@@ -1,62 +1,61 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Subinventory Accounts Setup
 -- Description: Report to show accounts used for the subinventories; these valuation and expense accounts are used with Standard Costing.
-
-/* +=============================================================================+
--- |  Copyright 2009 - 22 Douglas Volz Consulting, Inc.                          |
--- |  All rights reserved.                                                       |
--- |  Permission to use this code is granted provided the original author is     |
--- |  acknowledged.  No warranties, express or otherwise is included in this     |
--- |  permission.                                                                |
--- +=============================================================================+
--- |
--- |  Original Author: Douglas Volz (doug@volzconsulting.com)
--- |
--- |  Program Name:  xxx_subinv_setup_accts_rept.sql
--- |
--- |  Parameters:
--- |  p_org_code         -- Specific inventory organization you wish to report (optional)
--- |  p_operating_unit   -- Operating Unit you wish to report, leave blank for all
--- |                        operating units (optional) 
--- |  p_ledger           -- general ledger you wish to report, leave blank for all
--- |                        ledgers (optional)
--- | 
--- |  Description:
--- |  Report to show accounts used for the subinventories
--- | 
--- |  Version Modified on Modified  by   Description
--- |  ======= =========== ============== =========================================
--- |  1.0     24 Nov 2009 Douglas Volz   Initial Coding
--- |  1.1     28 Mar 2011 Douglas Volz   Minor column heading changes
--- |  1.2     30 Mar 2011 Douglas Volz   Minor column heading changes for Inv Asset,
--- |                                     added quantity tracked and disable date
--- |                                     columns
--- |  1.3     23 Dec 2014 Douglas Volz   Added DFFs for "Use Item Type Accounts".
--- |                                     For OPM orgs, the ICP valuation reports use
--- |                                     this to indicate if the Item Type accounts
--- |                                     or the subinventory valuation accounts are 
--- |                                     displayed on the report. 
--- |  1.4     07 Oct 2015 Douglas Volz   Removed above DFFs for "Use Item Type Accounts",
--- |                                     changed COA to match new client.  Also added
--- |                                     Cost Group Name and accounts. Replaced OOD
--- |                                     with mtl_parameters and mp.organization_name with
--- |                                     haou.name.  And removed prior client's organization
--- |                                     restrictions.   
--- |  1.5     11 Nov 2016 Douglas Volz   Modified chart of accounts for client 
--- |  1.6     28 Mar 2017 Douglas Volz   Added Creation Date, Last Update Date, Created
--- |                                     By, Last Updated By  
--- |  1.7     02 Feb 2020 Douglas Volz   Added Operating Unit and Org Code Parameters
--- |                                     and added outer join to gcc.code_combinations_id 
--- |  1.8     29 Apr 2020 Douglas Volz   Changed to multi-language views for the item
--- |                                     master, inventory orgs and operating units.
--- |  1.9     10 Jul 2022 Douglas Volz   Account Type column now uses a lookup code.
--- +=============================================================================+*/
--- Excel Examle Output: https://www.enginatics.com/example/cac-subinventory-accounts-setup/
+-- / +=============================================================================+
+-- -- | Copyright 2009 - 22 Douglas Volz Consulting, Inc. |
+-- -- | All rights reserved. |
+-- -- | Permission to use this code is granted provided the original author is |
+-- -- | acknowledged. No warranties, express or otherwise is included in this |
+-- -- | permission. |
+-- -- +=============================================================================+
+-- -- |
+-- -- | Original Author: Douglas Volz (doug@volzconsulting.com)
+-- -- |
+-- -- | Program Name: xxxsubinvsetupacctsrept.sql
+-- -- |
+-- -- | Parameters:
+-- -- | porgcode -- Specific inventory organization you wish to report (optional)
+-- -- | poperatingunit -- Operating Unit you wish to report, leave blank for all
+-- -- | operating units (optional)
+-- -- | pledger -- general ledger you wish to report, leave blank for all
+-- -- | ledgers (optional)
+-- -- |
+-- -- | Description:
+-- -- | Report to show accounts used for the subinventories
+-- -- |
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== ============== =========================================
+-- -- | 1.0 24 Nov 2009 Douglas Volz Initial Coding
+-- -- | 1.1 28 Mar 2011 Douglas Volz Minor column heading changes
+-- -- | 1.2 30 Mar 2011 Douglas Volz Minor column heading changes for Inv Asset,
+-- -- | added quantity tracked and disable date
+-- -- | columns
+-- -- | 1.3 23 Dec 2014 Douglas Volz Added DFFs for "Use Item Type Accounts".
+-- -- | For OPM orgs, the ICP valuation reports use
+-- -- | this to indicate if the Item Type accounts
+-- -- | or the subinventory valuation accounts are
+-- -- | displayed on the report.
+-- -- | 1.4 07 Oct 2015 Douglas Volz Removed above DFFs for "Use Item Type Accounts",
+-- -- | changed COA to match new client. Also added
+-- -- | Cost Group Name and accounts. Replaced OOD
+-- -- | with mtlparameters and mp.organizationname with
+-- -- | haou.name. And removed prior client's organization
+-- -- | restrictions.
+-- -- | 1.5 11 Nov 2016 Douglas Volz Modified chart of accounts for client
+-- -- | 1.6 28 Mar 2017 Douglas Volz Added Creation Date, Last Update Date, Created
+-- -- | By, Last Updated By
+-- -- | 1.7 02 Feb 2020 Douglas Volz Added Operating Unit and Org Code Parameters
+-- -- | and added outer join to gcc.codecombinationsid
+-- -- | 1.8 29 Apr 2020 Douglas Volz Changed to multi-language views for the item
+-- -- | master, inventory orgs and operating units.
+-- -- | 1.9 10 Jul 2022 Douglas Volz Account Type column now uses a lookup code.
+-- -- +=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-subinventory-accounts-setup/
 -- Library Link: https://www.enginatics.com/reports/cac-subinventory-accounts-setup/
 -- Run Report: https://demo.enginatics.com/
 

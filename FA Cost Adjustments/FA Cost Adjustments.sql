@@ -1,17 +1,17 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: FA Cost Adjustments
 -- Description: Imported from BI Publisher
-Description: Cost Adjustments Report
-Application: Assets
-Source: Cost Adjustments Report (XML)
-Short Name: FAS840_XML
-DB package: FA_FAS840_XMLP_PKG
--- Excel Examle Output: https://www.enginatics.com/example/fa-cost-adjustments/
+-- Description: Cost Adjustments Report
+-- Application: Assets
+-- Source: Cost Adjustments Report (XML)
+-- Short Name: FAS840XML
+-- DB package: FAFAS840XMLPPKG
+-- Excel Example Output: https://www.enginatics.com/example/fa-cost-adjustments/
 -- Library Link: https://www.enginatics.com/reports/fa-cost-adjustments/
 -- Run Report: https://demo.enginatics.com/
 

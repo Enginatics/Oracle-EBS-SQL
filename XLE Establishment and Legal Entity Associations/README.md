@@ -1,14 +1,20 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'XLE Establishment and Legal Entity Associations | Oracle EBS SQL Report'
 description: 'Master data report showing the legal entity associations to other business entities such as: - Legal Entities - Operating Units - Inventory Organizations…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, XLE, Establishment, Legal, Entity, xle_associations_v, xle_entity_profiles'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Legal Entity Configurator, Enginatics, R12 only, XLE, Establishment, Legal, Entity, xle_associations_v, xle_entity_profiles'
 permalink: /XLE%20Establishment%20and%20Legal%20Entity%20Associations/
+report_name: 'XLE Establishment and Legal Entity Associations'
+report_web_name: xle-establishment-and-legal-entity-associations
+module: 'Legal Entity Configurator'
+module_url: /modules/legal-entity-configurator/
 ---
 
 # XLE Establishment and Legal Entity Associations – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/xle-establishment-and-legal-entity-associations/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/xle-establishment-and-legal-entity-associations/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xle-establishment-and-legal-entity-associations) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xle-establishment-and-legal-entity-associations).
+**Oracle EBS module:** [Legal Entity Configurator](/modules/legal-entity-configurator/ "Oracle EBS Legal Entity Configurator reports") · [all Legal Entity Configurator reports](/modules/legal-entity-configurator/)  
 
 ## Overview
 Master data report showing the legal entity associations to other business entities such as:
@@ -20,28 +26,31 @@ Master data report showing the legal entity associations to other business entit
 - Ship To Locations
 - Balancing Segment Values
 
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xle-establishment-and-legal-entity-associations) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
+
 ## Report Parameters
 Parent Legal Entity, Entity Type
 
 ## Oracle EBS Tables Used
-[xle_associations_v](https://www.enginatics.com/library/?pg=1&find=xle_associations_v), [xle_entity_profiles](https://www.enginatics.com/library/?pg=1&find=xle_entity_profiles)
+[xle_associations_v](https://www.enginatics.com/library/?pg=1&find=xle_associations_v&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xle-establishment-and-legal-entity-associations), [xle_entity_profiles](https://www.enginatics.com/library/?pg=1&find=xle_entity_profiles&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xle-establishment-and-legal-entity-associations)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xle-establishment-and-legal-entity-associations), [R12 only](https://www.enginatics.com/library/?pg=1&category%5B%5D=R12%20only&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xle-establishment-and-legal-entity-associations)
 
 ## Related Reports
-[AP Invoice Approval Status](/AP%20Invoice%20Approval%20Status/ "AP Invoice Approval Status Oracle EBS SQL Report"), [CE General Ledger Cash Account Usage](/CE%20General%20Ledger%20Cash%20Account%20Usage/ "CE General Ledger Cash Account Usage Oracle EBS SQL Report"), [CE Cleared Transactions](/CE%20Cleared%20Transactions/ "CE Cleared Transactions Oracle EBS SQL Report"), [FND Responsibility Access](/FND%20Responsibility%20Access/ "FND Responsibility Access Oracle EBS SQL Report"), [CE Bank Statement and Reconciliation](/CE%20Bank%20Statement%20and%20Reconciliation/ "CE Bank Statement and Reconciliation Oracle EBS SQL Report"), [ZX Party Tax Profiles](/ZX%20Party%20Tax%20Profiles/ "ZX Party Tax Profiles Oracle EBS SQL Report"), [IBY Payment Process Request Details](/IBY%20Payment%20Process%20Request%20Details/ "IBY Payment Process Request Details Oracle EBS SQL Report")
+[AP Invoice Approval Status](/AP%20Invoice%20Approval%20Status/ "AP Invoice Approval Status Oracle EBS SQL Report"), [CE Cleared Transactions](/CE%20Cleared%20Transactions/ "CE Cleared Transactions Oracle EBS SQL Report"), [FND Responsibility Access](/FND%20Responsibility%20Access/ "FND Responsibility Access Oracle EBS SQL Report"), [CE Bank Statement and Reconciliation](/CE%20Bank%20Statement%20and%20Reconciliation/ "CE Bank Statement and Reconciliation Oracle EBS SQL Report"), [ZX Party Tax Profiles](/ZX%20Party%20Tax%20Profiles/ "ZX Party Tax Profiles Oracle EBS SQL Report"), [IBY Payment Process Request Details](/IBY%20Payment%20Process%20Request%20Details/ "IBY Payment Process Request Details Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/XLE%20Establishment%20and%20Legal%20Entity%20Associations/XLE%20Establishment%20and%20Legal%20Entity%20Associations.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xle-establishment-and-legal-entity-associations) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [XLE Establishment and Legal Entity Associations 24-Jul-2017 143957.xlsx](https://www.enginatics.com/example/xle-establishment-and-legal-entity-associations/) |
-| Blitz Report™ XML Import | [XLE_Establishment_and_Legal_Entity_Associations.xml](https://www.enginatics.com/xml/xle-establishment-and-legal-entity-associations/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/xle-establishment-and-legal-entity-associations/](https://www.enginatics.com/reports/xle-establishment-and-legal-entity-associations/) |
+| Excel Example Output | [XLE Establishment and Legal Entity Associations 24-Jul-2017 143957.xlsx](https://www.enginatics.com/example/xle-establishment-and-legal-entity-associations/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xle-establishment-and-legal-entity-associations) |
+| Blitz Report™ XML Import | [XLE_Establishment_and_Legal_Entity_Associations.xml](https://www.enginatics.com/xml/xle-establishment-and-legal-entity-associations/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xle-establishment-and-legal-entity-associations) |
+| SQL Source | [XLE Establishment and Legal Entity Associations.sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/XLE%20Establishment%20and%20Legal%20Entity%20Associations/XLE%20Establishment%20and%20Legal%20Entity%20Associations.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/xle-establishment-and-legal-entity-associations/](https://www.enginatics.com/reports/xle-establishment-and-legal-entity-associations/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xle-establishment-and-legal-entity-associations) |
 
 ## Case Study & Technical Analysis: XLE Establishment and Legal Entity Associations Report
 
@@ -102,18 +111,17 @@ As a master data and configuration report, it is optimized for efficient retriev
 **3. Why is it important to see the 'Balancing Segment Values' associated with a legal entity?**
    The `Balancing Segment Value` (BSV) in the General Ledger chart of accounts often represents a specific legal entity or a major division within it. Correctly associating BSVs with legal entities is crucial for ensuring that all financial transactions for a particular legal entity are posted to the correct segment in the GL, which is vital for legal and tax reporting.
 
-
 ---
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xle-establishment-and-legal-entity-associations)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xle-establishment-and-legal-entity-associations)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xle-establishment-and-legal-entity-associations)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xle-establishment-and-legal-entity-associations)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xle-establishment-and-legal-entity-associations)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xle-establishment-and-legal-entity-associations)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xle-establishment-and-legal-entity-associations)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

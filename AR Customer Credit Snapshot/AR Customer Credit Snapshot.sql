@@ -1,15 +1,15 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: AR Customer Credit Snapshot
 -- Description: Application: Receivables
-Source: Customer Credit Snapshot (XML)
-Short Name: ARXCCS_XML
-DB package: AR_ARXCCS_XMLP_PKG
--- Excel Examle Output: https://www.enginatics.com/example/ar-customer-credit-snapshot/
+-- Source: Customer Credit Snapshot (XML)
+-- Short Name: ARXCCSXML
+-- DB package: ARARXCCSXMLPPKG
+-- Excel Example Output: https://www.enginatics.com/example/ar-customer-credit-snapshot/
 -- Library Link: https://www.enginatics.com/reports/ar-customer-credit-snapshot/
 -- Run Report: https://demo.enginatics.com/
 

@@ -1,12 +1,13 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: AP Invoices with PO, Intercompany and SLA Details
 -- Description: AP Invoices with PO, Intercompany and SLA Details
--- Excel Examle Output: https://www.enginatics.com/example/ap-invoices-with-po-intercompany-and-sla-details/
+-- When India Localization is installed, the following GST columns are also included: GST Registration No, GST PAN No, GST TAN No, CGST Amount, SGST Amount, IGST Amount, CESS Amount, Custom Amount, Unclassified Tax Amount, Non-Recoverable GST, Taxable Value, HSN SAC Code, CGST Rate, SGST Rate, IGST Rate, CESS Rate, CGST Recoverable, CGST Non-Recoverable, SGST Recoverable, SGST Non-Recoverable, IGST Recoverable, IGST Non-Recoverable, Reverse Charge Flag, Place of Supply, Ship From State.
+-- Excel Example Output: https://www.enginatics.com/example/ap-invoices-with-po-intercompany-and-sla-details/
 -- Library Link: https://www.enginatics.com/reports/ap-invoices-with-po-intercompany-and-sla-details/
 -- Run Report: https://demo.enginatics.com/
 
@@ -20,6 +21,8 @@ with ap_inv as -- ap invoice data
     , assa.vendor_site_code
     , aia.source
     , aia.invoice_id
+    , aia.vendor_id
+    , aia.vendor_site_id
     , aia.invoice_num
     , aia.invoice_date
     , xxen_util.ap_invoice_status(aia.invoice_id,aia.invoice_amount,aia.payment_status_flag,aia.invoice_type_lookup_code,aia.validation_request_id) invoice_status
@@ -338,6 +341,11 @@ select
 , ap_inv.dist_period                    period_name
 , ap_inv.dist_match_type                match_type
 , ap_inv.dist_matched_receipt_num       matched_receipt_num
+&il_reg_columns
+&il_columns_amt
+&il_columns_rate
+&il_columns_rec
+&il_columns_tp
 --
 &l_ap_sla_sel
 &l_inv_sla_sel
@@ -370,12 +378,14 @@ from
 &l_ico_fr
 &l_ap_sla_fr
 &l_inv_sla_fr
+&il_from
 where
   1=1
 and po.po_distribution_id(+) = ap_inv.po_distribution_id
 &l_ico_join
 &l_ap_sla_join
 &l_inv_sla_join
+&il_where
 order by 
   ap_inv.ledger
 , ap_inv.operating_unit

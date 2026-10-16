@@ -1,55 +1,54 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC PO Receipt History for Actual Costing
--- Description: Report to show Purchase Order (PO) Receipt History for non-Standard Cost inventory organizations, by PO receipt date range.  You may also use this report for Standard Cost organizations but the CAC PO Receipt History for Item Costing report may be a better choice, as the following columns will have zero or empty values for Standard Cost organizations:  prior costed quantity, prior cost and new onhand quantity.
-
-/* +=============================================================================+
--- | Copyright 2006 - 2022 Douglas Volz Consulting, Inc.                         |
--- | All rights reserved.                                                        |
--- | Permission to use this code is granted provided the original author is      |
--- | acknowledged. No warranties, express or otherwise is included in this       |
--- | permission.                                                                 |
--- +=============================================================================+
--- |
--- | Original Author: Douglas Volz (doug@volzconsulting.com)
--- |
--- | Program Name: xxx_item_cost_history.sql
--- |
--- |  Parameters:
--- |  p_org_code             -- Specific inventory organization you wish to report (optional)
--- |  p_trx_date_from        -- Starting transaction date for the PO Receipt History
--- |  p_trx_date_to          -- Ending transaction date for the PO Receipt History
--- |  p_item_number          -- Enter a specific item number to review.  If you 
--- |                            enter a blank or null value you get all items.
--- |  p_category_set1        -- The first item category set to report, typically the
--- |                            Cost or Product Line Category Set
--- |  p_category_set2        -- The second item category set to report, typically the
--- |                            Inventory Category Set
--- |  p_operating_unit       -- Operating Unit you wish to report, leave blank for all
--- |                            operating units (optional) 
--- |  p_ledger               -- general ledger you wish to report, leave blank for all
--- |                            ledgers (optional)
--- |
--- | Description:
--- | Report to show PO Receipt History for non-standard cost inventory organizations,
--- | by PO receipt date range.
--- |
--- | Version Modified on Modified by Description
--- | ======= =========== ============== =========================================
--- | 1.0     28 May 2006 Douglas Volz   Initial Coding based on item_cost_history.sql
--- | 1.1     04 Jan 2019 Douglas Volz   Added transaction date range, inventory
--- |                                    org and specific item parameters.
--- | 1.2     30 Aug 2019 Douglas Volz   Add Ledger, Operating Unit, Item Type, Status
--- |                                    and item categories for cost and inventory.
--- | 1.3     27 Jan 2020 Douglas Volz   Added Org Code and Operating Unit parameters.
--- | 1.4     05 Jul 2022 Douglas Volz   Modify for multi-language tables, change UOM to
--- |                                    primary, and changes for Non-Standard Costing.
--- +=============================================================================+*/
--- Excel Examle Output: https://www.enginatics.com/example/cac-po-receipt-history-for-actual-costing/
+-- Description: Report to show Purchase Order (PO) Receipt History for non-Standard Cost inventory organizations, by PO receipt date range. You may also use this report for Standard Cost organizations but the CAC PO Receipt History for Item Costing report may be a better choice, as the following columns will have zero or empty values for Standard Cost organizations: prior costed quantity, prior cost and new onhand quantity.
+-- / +=============================================================================+
+-- -- | Copyright 2006 - 2022 Douglas Volz Consulting, Inc. |
+-- -- | All rights reserved. |
+-- -- | Permission to use this code is granted provided the original author is |
+-- -- | acknowledged. No warranties, express or otherwise is included in this |
+-- -- | permission. |
+-- -- +=============================================================================+
+-- -- |
+-- -- | Original Author: Douglas Volz (doug@volzconsulting.com)
+-- -- |
+-- -- | Program Name: xxxitemcosthistory.sql
+-- -- |
+-- -- | Parameters:
+-- -- | porgcode -- Specific inventory organization you wish to report (optional)
+-- -- | ptrxdatefrom -- Starting transaction date for the PO Receipt History
+-- -- | ptrxdateto -- Ending transaction date for the PO Receipt History
+-- -- | pitemnumber -- Enter a specific item number to review. If you
+-- -- | enter a blank or null value you get all items.
+-- -- | pcategoryset1 -- The first item category set to report, typically the
+-- -- | Cost or Product Line Category Set
+-- -- | pcategoryset2 -- The second item category set to report, typically the
+-- -- | Inventory Category Set
+-- -- | poperatingunit -- Operating Unit you wish to report, leave blank for all
+-- -- | operating units (optional)
+-- -- | pledger -- general ledger you wish to report, leave blank for all
+-- -- | ledgers (optional)
+-- -- |
+-- -- | Description:
+-- -- | Report to show PO Receipt History for non-standard cost inventory organizations,
+-- -- | by PO receipt date range.
+-- -- |
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== ============== =========================================
+-- -- | 1.0 28 May 2006 Douglas Volz Initial Coding based on itemcosthistory.sql
+-- -- | 1.1 04 Jan 2019 Douglas Volz Added transaction date range, inventory
+-- -- | org and specific item parameters.
+-- -- | 1.2 30 Aug 2019 Douglas Volz Add Ledger, Operating Unit, Item Type, Status
+-- -- | and item categories for cost and inventory.
+-- -- | 1.3 27 Jan 2020 Douglas Volz Added Org Code and Operating Unit parameters.
+-- -- | 1.4 05 Jul 2022 Douglas Volz Modify for multi-language tables, change UOM to
+-- -- | primary, and changes for Non-Standard Costing.
+-- -- +=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-po-receipt-history-for-actual-costing/
 -- Library Link: https://www.enginatics.com/reports/cac-po-receipt-history-for-actual-costing/
 -- Run Report: https://demo.enginatics.com/
 

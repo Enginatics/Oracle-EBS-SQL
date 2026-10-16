@@ -1,16 +1,15 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PER Employee Salary Change
 -- Description: Query to get the last Salary change details for employees.
-
-Can add:
-whether to look at just the recent salary change?
-or salary change history.... If yes, then the last condition in where clause to be dynamically added/removed
--- Excel Examle Output: https://www.enginatics.com/example/per-employee-salary-change/
+-- Can add:
+-- whether to look at just the recent salary change?
+-- or salary change history.... If yes, then the last condition in where clause to be dynamically added/removed
+-- Excel Example Output: https://www.enginatics.com/example/per-employee-salary-change/
 -- Library Link: https://www.enginatics.com/reports/per-employee-salary-change/
 -- Run Report: https://demo.enginatics.com/
 

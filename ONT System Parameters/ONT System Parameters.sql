@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: ONT System Parameters
 -- Description: 
--- Excel Examle Output: https://www.enginatics.com/example/ont-system-parameters/
+-- Excel Example Output: https://www.enginatics.com/example/ont-system-parameters/
 -- Library Link: https://www.enginatics.com/reports/ont-system-parameters/
 -- Run Report: https://demo.enginatics.com/
 

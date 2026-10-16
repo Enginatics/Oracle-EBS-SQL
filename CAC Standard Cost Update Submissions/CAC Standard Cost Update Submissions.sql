@@ -1,38 +1,34 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Standard Cost Update Submissions
--- Description: Report to show the Standard Cost Update submissions, by Cost Update Date.  Including the parameters used and the overall inventory and WIP adjustment values.
-
-Parameters:
-Cost Update Date From:  starting cost update date, based on standard cost submission history (required).
-Cost Update Date To: ending cost update date, based on standard cost submission history (required).
-From Cost Type:  enter the cost type implemented by the Standard Cost Update into the Frozen costs (optional).
-Organization Code:  enter the specific inventory organization(s) you wish to report (optional).
-Operating Unit:  enter the specific operating unit(s) you wish to report (optional).
-Ledger:  enter the specific ledger(s) you wish to report (optional).
-
-/* +=============================================================================+
--- | Copyright 2023 Douglas Volz Consulting, Inc.
--- | All rights reserved.
--- | Permission to use this code is granted provided the original author is
--- | acknowledged. No warranties, express or otherwise is included in this permission.
--- +=============================================================================+
--- |
--- | Original Author: Douglas Volz (doug@volzconsulting.com)
--- |
--- | Program Name: xxx_cost_update_submissions_rept.sql
--- | 
--- | Version Modified on Modified by    Description
--- | ======= =========== ============== =========================================
--- |  1.0    28 Sep 2023 Douglas Volz   Initial coding
--- +=============================================================================+*/
-
-
--- Excel Examle Output: https://www.enginatics.com/example/cac-standard-cost-update-submissions/
+-- Description: Report to show the Standard Cost Update submissions, by Cost Update Date. Including the parameters used and the overall inventory and WIP adjustment values.
+-- Parameters:
+-- Cost Update Date From: starting cost update date, based on standard cost submission history (required).
+-- Cost Update Date To: ending cost update date, based on standard cost submission history (required).
+-- From Cost Type: enter the cost type implemented by the Standard Cost Update into the Frozen costs (optional).
+-- Organization Code: enter the specific inventory organization(s) you wish to report (optional).
+-- Operating Unit: enter the specific operating unit(s) you wish to report (optional).
+-- Ledger: enter the specific ledger(s) you wish to report (optional).
+-- / +=============================================================================+
+-- -- | Copyright 2023 Douglas Volz Consulting, Inc.
+-- -- | All rights reserved.
+-- -- | Permission to use this code is granted provided the original author is
+-- -- | acknowledged. No warranties, express or otherwise is included in this permission.
+-- -- +=============================================================================+
+-- -- |
+-- -- | Original Author: Douglas Volz (doug@volzconsulting.com)
+-- -- |
+-- -- | Program Name: xxxcostupdatesubmissionsrept.sql
+-- -- |
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== ============== =========================================
+-- -- | 1.0 28 Sep 2023 Douglas Volz Initial coding
+-- -- +=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-standard-cost-update-submissions/
 -- Library Link: https://www.enginatics.com/reports/cac-standard-cost-update-submissions/
 -- Run Report: https://demo.enginatics.com/
 

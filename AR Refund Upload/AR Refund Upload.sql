@@ -1,53 +1,44 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: AR Refund Upload
--- Description: Bulk-refund customer credit balances in AR. Each row refunds either an open credit memo or the unapplied/on-account portion of a customer cash receipt by applying it against the operating unit's Credit Memo Refund Receivables Activity, via AR_CM_APPLICATION_PUB.Activity_application or AR_RECEIPT_API_PUB.Activity_application.
-
-WHEN TO USE EACH REFUND SOURCE
-- Credit Memo - the customer has an open credit memo (e.g. overpayment recorded as a CM) and wants the money back.
-- Unapplied Receipt - the customer paid more than they owed, or paid against the account with no specific invoice. The receipt has an unapplied/on-account balance to return.
-
-WORKFLOW (review and select)
-The template downloads (Create, Update mode) pre-populated with every eligible credit memo and unapplied receipt for the parameters, showing Customer Name and Open Balance. Review the list, then:
-1. Set Refund = Yes on the rows to refund; leave blank to skip. Blank rows are not processed.
-2. Refund Amount defaults to the source open balance - override with a smaller positive amount for a partial refund (validated > 0 and <= balance, in Excel and at upload).
-3. Apply Date / Apply GL Date default to today; the GL Date must be in an open AR period.
-4. Optionally set Payment Method, Pay Group, Payment Reason Comments, Comments - these flow to the AP Payment Request invoice.
-To add a row manually: pick Refund Source, then the Credit Memo Number or Receipt Number (the LOV adapts to the source).
-
-APPROVAL LIMITS
-The AR API runs with p_chk_approval_limit_flag='Y' - the user's AR approval limit applies. Rows over the limit error with the API's own message. Limits are never bypassed.
-
-END-TO-END FLOW
-1. AR (this upload): a new ar_receivable_applications_all row is created (application_type='CM' or 'CASH', status='ACTIVITY').
-2. AR -> AP business event (automatic): AP creates a Payment Request invoice (source='Receivables', invoice_type_lookup_code='PAYMENT REQUEST') payable to the customer's TCA party.
-3. AP Invoice Validation (standard AP concurrent).
-4. AP Payment Process Request issues the disbursement.
-
-This upload performs step 1 only. Steps 2-4 are standard Oracle AP processing - a second human control point before any money leaves.
-
-PER-OU SETUP
-Each OU that processes refunds needs a Credit Memo Refund-type Receivables Activity (AR Setup -> Receipts -> Receivable Activities). The same activity is used for both CM and receipt refunds. If none, the upload errors: "No Credit Memo Refund activity is defined for this operating unit."
-
-CANDIDATE IDENTIFICATION
-- Credit Memo Number LOV: open credit memos in the OU whose customer account has no open invoices (standard refund-candidate rule). Set "Include accounts with open invoices" = Yes to override the safety filter (e.g. when open invoices are disputed).
-- Receipt Number LOV: unapplied/on-account customer receipts in the OU with positive unapplied amount.
-- Download in Create, Update mode to see existing candidates as rows.
-
-FILTER PARAMETERS
-- Operating Unit - filters both branches.
-- Customer Name - LOV of customers that have an eligible refund in the OU (respects the open-invoice rules below).
-- GL Date From / To, Credit Memo Number (multi-value), Batch Name (multi-value LOV on AR transaction batches) - Credit Memo branch only. The Receipt branch always shows all unapplied/on-account receipts in the chosen OU.
-- Include accounts with open invoices - default blank (= safety filter on for CMs). Does not apply to receipts.
-- Open Invoice Due Within Days - applies only when Include accounts with open invoices = Yes (otherwise ignored). Enter any number N: a credit memo is hidden only when the customer has an open invoice due within N days; invoices due later are ignored so the CM can still be refunded. Blank = due dates not considered.
-
-MODE
-Create, Update by default so the eligible candidates pre-populate. Only rows with Refund = Yes are processed; the result XLSM lists the refunded rows.
--- Excel Examle Output: https://www.enginatics.com/example/ar-refund-upload/
+-- Description: Bulk-refund customer credit balances in AR. Each row refunds either an open credit memo or the unapplied/on-account portion of a customer cash receipt by applying it against the operating unit's Credit Memo Refund Receivables Activity, via ARCMAPPLICATIONPUB.Activityapplication or ARRECEIPTAPIPUB.Activityapplication.
+-- WHEN TO USE EACH REFUND SOURCE
+-- - Credit Memo - the customer has an open credit memo (e.g. overpayment recorded as a CM) and wants the money back.
+-- - Unapplied Receipt - the customer paid more than they owed, or paid against the account with no specific invoice. The receipt has an unapplied/on-account balance to return.
+-- WORKFLOW (review and select)
+-- The template downloads (Create, Update mode) pre-populated with every eligible credit memo and unapplied receipt for the parameters, showing Customer Name and Open Balance. Review the list, then:
+-- 1. Set Refund = Yes on the rows to refund; leave blank to skip. Blank rows are not processed.
+-- 2. Refund Amount defaults to the source open balance - override with a smaller positive amount for a partial refund (validated > 0 and <= balance, in Excel and at upload).
+-- 3. Apply Date / Apply GL Date default to today; the GL Date must be in an open AR period.
+-- 4. Optionally set Payment Method, Pay Group, Payment Reason Comments, Comments - these flow to the AP Payment Request invoice.
+-- To add a row manually: pick Refund Source, then the Credit Memo Number or Receipt Number (the LOV adapts to the source).
+-- APPROVAL LIMITS
+-- The AR API runs with pchkapprovallimitflag='Y' - the user's AR approval limit applies. Rows over the limit error with the API's own message. Limits are never bypassed.
+-- END-TO-END FLOW
+-- 1. AR (this upload): a new arreceivableapplicationsall row is created (applicationtype='CM' or 'CASH', status='ACTIVITY').
+-- 2. AR -> AP business event (automatic): AP creates a Payment Request invoice (source='Receivables', invoicetypelookupcode='PAYMENT REQUEST') payable to the customer's TCA party.
+-- 3. AP Invoice Validation (standard AP concurrent).
+-- 4. AP Payment Process Request issues the disbursement.
+-- This upload performs step 1 only. Steps 2-4 are standard Oracle AP processing - a second human control point before any money leaves.
+-- PER-OU SETUP
+-- Each OU that processes refunds needs a Credit Memo Refund-type Receivables Activity (AR Setup -> Receipts -> Receivable Activities). The same activity is used for both CM and receipt refunds. If none, the upload errors: "No Credit Memo Refund activity is defined for this operating unit."
+-- CANDIDATE IDENTIFICATION
+-- - Credit Memo Number LOV: open credit memos in the OU whose customer account has no open invoices (standard refund-candidate rule). Set "Include accounts with open invoices" = Yes to override the safety filter (e.g. when open invoices are disputed).
+-- - Receipt Number LOV: unapplied/on-account customer receipts in the OU with positive unapplied amount.
+-- - Download in Create, Update mode to see existing candidates as rows.
+-- FILTER PARAMETERS
+-- - Operating Unit - filters both branches.
+-- - Customer Name - LOV of customers that have an eligible refund in the OU (respects the open-invoice rules below).
+-- - GL Date From / To, Credit Memo Number (multi-value), Batch Name (multi-value LOV on AR transaction batches) - Credit Memo branch only. The Receipt branch always shows all unapplied/on-account receipts in the chosen OU.
+-- - Include accounts with open invoices - default blank (= safety filter on for CMs). Does not apply to receipts.
+-- - Open Invoice Due Within Days - applies only when Include accounts with open invoices = Yes (otherwise ignored). Enter any number N: a credit memo is hidden only when the customer has an open invoice due within N days; invoices due later are ignored so the CM can still be refunded. Blank = due dates not considered.
+-- MODE
+-- Create, Update by default so the eligible candidates pre-populate. Only rows with Refund = Yes are processed; the result XLSM lists the refunded rows.
+-- Excel Example Output: https://www.enginatics.com/example/ar-refund-upload/
 -- Library Link: https://www.enginatics.com/reports/ar-refund-upload/
 -- Run Report: https://demo.enginatics.com/
 

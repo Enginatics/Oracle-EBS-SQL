@@ -1,14 +1,13 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PN GL Reconciliation
 -- Description: Application: Property Manager
-Report: PN GL Reconciliation
-
--- Excel Examle Output: https://www.enginatics.com/example/pn-gl-reconciliation/
+-- Report: PN GL Reconciliation
+-- Excel Example Output: https://www.enginatics.com/example/pn-gl-reconciliation/
 -- Library Link: https://www.enginatics.com/reports/pn-gl-reconciliation/
 -- Run Report: https://demo.enginatics.com/
 

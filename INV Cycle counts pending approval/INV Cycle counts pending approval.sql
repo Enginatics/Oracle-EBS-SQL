@@ -1,15 +1,15 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: INV Cycle counts pending approval
 -- Description: Imported Oracle standard Cycle counts pending approval report
-Source: Cycle counts pending approval report (XML)
-Short Name: INVARCPA_XML
-DB package: INV_INVARCPA_XMLP_PKG
--- Excel Examle Output: https://www.enginatics.com/example/inv-cycle-counts-pending-approval/
+-- Source: Cycle counts pending approval report (XML)
+-- Short Name: INVARCPAXML
+-- DB package: INVINVARCPAXMLPPKG
+-- Excel Example Output: https://www.enginatics.com/example/inv-cycle-counts-pending-approval/
 -- Library Link: https://www.enginatics.com/reports/inv-cycle-counts-pending-approval/
 -- Run Report: https://demo.enginatics.com/
 

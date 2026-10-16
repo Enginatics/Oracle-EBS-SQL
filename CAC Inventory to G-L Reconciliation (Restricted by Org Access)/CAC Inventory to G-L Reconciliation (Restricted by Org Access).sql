@@ -1,52 +1,50 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Inventory to G/L Reconciliation (Restricted by Org Access)
--- Description: For Discrete Costing, this report compares the General Ledger inventory balances with the perpetual inventory values (based on the stored month-end inventory and WIP balances, generated when the inventory accounting period is closed, plus a calculated month-end receiving value).  Inventory balances includes Receiving, Onhand Inventory (Stock), Intransit and Work in Process (WIP).  This report automatically discovers your valuation accounts based on your setups, such as the Cost Method (Standard, Average, FIFO or LIFO Costing), and also if using Project Manufacturing (PJM - Cost Group Accounting) or Warehouse Management (WMS - Cost Group Accounting) or even if using Category Accounts.  But note as maintenance work orders are normally charged to expense accounts, maintenance (EAM) work orders are not included in this report.  Also note this report does not break out the perpetual account values by cost element; it assumes the elemental cost accounts by subinventory or cost group are the same as the material account, as the stored month-end perpetual inventory balances are only stored by organization, accounting period and item, but not by cost element.
-
-/* +=============================================================================+
--- |  Copyright 2010-23 Douglas Volz Consulting, Inc.
--- |  All rights reserved.
--- |  Permission to use this code is granted provided the original author is
--- |  acknowledged.  No warranties, express or otherwise is included in this permission.
--- +=============================================================================+
--- |
--- |  Original Author: Douglas Volz (doug@volzconsulting.com)
--- |
--- |  Program Name:  XXX_INV_RECON_REPT.sql
--- |
--- |  Parameters:
--- |  P_PERIOD_NAME      -- Enter the Period Name you wish to reconcile balances for (mandatory)
--- |  P_LEDGER           -- general ledger you wish to report, for all ledgers left this parameter blank
--- |  ============================================================================
--- |
--- |  Version Modified on Modified  by   Description
--- |  ======= =========== ============== =========================================
--- |  1.0     24 Sep 2004 Douglas Volz   Initial Coding based on earlier work with
--- |                                     the following scripts and designs:
--- |                                        XXX_GL_RECON.sql,
--- |                                        XXX_PERPETUAL_INV_RECON_SUM.sql,
--- |                                        XXX_PERPETUAL_RCV_RECON_SUM.sql,
--- |                                        XXX_PERPETUAL_WIP_RECON_SUM.sql,
--- |                                        MD050 Inventory Reconciliation
--- |  1.1     28 Jun 2010 Douglas Volz   Updated design and code for Release 12,
--- |                                     changed GL_SETS_OF_BOOKS to GL_LEDGERS
--- |  1.2     14 Nov 2010 Douglas Volz   Modified for Cost SIG Presentation
--- |  1.3     11 Mar 2014 Douglas Volz   Changed the COA segments to be generic and removed
--- |                                     the second product line join to gl_code_combinations
--- |  1.4     07 Apr 2014 Douglas Volz   Added join condition to avoid secondary ledgers and
--- |                                     added an explicit to_char on the accounts
--- |                                     ml.lookup_code to avoid an "invalid number" SQL error.
--- |  1.5     20 Jul 2016 Douglas Volz   Added condition to avoid summary journals
--- |  1.6     18 May 2020 Douglas Volz   Avoid disabled inventory organizations.
--- |  1.7     07 Dec 2020 Douglas Volz/Andy Haack   Only report inventory organization ledgers.  Initial Blitz version.
--- |  1.8     22 Feb 2023 Douglas Volz   Add in Receiving Value, fixes for Category Accounting.
--- +=============================================================================+*/
-
--- Excel Examle Output: https://www.enginatics.com/example/cac-inventory-to-g-l-reconciliation-restricted-by-org-access/
+-- Description: For Discrete Costing, this report compares the General Ledger inventory balances with the perpetual inventory values (based on the stored month-end inventory and WIP balances, generated when the inventory accounting period is closed, plus a calculated month-end receiving value). Inventory balances includes Receiving, Onhand Inventory (Stock), Intransit and Work in Process (WIP). This report automatically discovers your valuation accounts based on your setups, such as the Cost Method (Standard, Average, FIFO or LIFO Costing), and also if using Project Manufacturing (PJM - Cost Group Accounting) or Warehouse Management (WMS - Cost Group Accounting) or even if using Category Accounts. But note as maintenance work orders are normally charged to expense accounts, maintenance (EAM) work orders are not included in this report. Also note this report does not break out the perpetual account values by cost element; it assumes the elemental cost accounts by subinventory or cost group are the same as the material account, as the stored month-end perpetual inventory balances are only stored by organization, accounting period and item, but not by cost element.
+-- / +=============================================================================+
+-- -- | Copyright 2010-23 Douglas Volz Consulting, Inc.
+-- -- | All rights reserved.
+-- -- | Permission to use this code is granted provided the original author is
+-- -- | acknowledged. No warranties, express or otherwise is included in this permission.
+-- -- +=============================================================================+
+-- -- |
+-- -- | Original Author: Douglas Volz (doug@volzconsulting.com)
+-- -- |
+-- -- | Program Name: XXXINVRECONREPT.sql
+-- -- |
+-- -- | Parameters:
+-- -- | PPERIODNAME -- Enter the Period Name you wish to reconcile balances for (mandatory)
+-- -- | PLEDGER -- general ledger you wish to report, for all ledgers left this parameter blank
+-- -- | ============================================================================
+-- -- |
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== ============== =========================================
+-- -- | 1.0 24 Sep 2004 Douglas Volz Initial Coding based on earlier work with
+-- -- | the following scripts and designs:
+-- -- | XXXGLRECON.sql,
+-- -- | XXXPERPETUALINVRECONSUM.sql,
+-- -- | XXXPERPETUALRCVRECONSUM.sql,
+-- -- | XXXPERPETUALWIPRECONSUM.sql,
+-- -- | MD050 Inventory Reconciliation
+-- -- | 1.1 28 Jun 2010 Douglas Volz Updated design and code for Release 12,
+-- -- | changed GLSETSOFBOOKS to GLLEDGERS
+-- -- | 1.2 14 Nov 2010 Douglas Volz Modified for Cost SIG Presentation
+-- -- | 1.3 11 Mar 2014 Douglas Volz Changed the COA segments to be generic and removed
+-- -- | the second product line join to glcodecombinations
+-- -- | 1.4 07 Apr 2014 Douglas Volz Added join condition to avoid secondary ledgers and
+-- -- | added an explicit tochar on the accounts
+-- -- | ml.lookupcode to avoid an "invalid number" SQL error.
+-- -- | 1.5 20 Jul 2016 Douglas Volz Added condition to avoid summary journals
+-- -- | 1.6 18 May 2020 Douglas Volz Avoid disabled inventory organizations.
+-- -- | 1.7 07 Dec 2020 Douglas Volz/Andy Haack Only report inventory organization ledgers. Initial Blitz version.
+-- -- | 1.8 22 Feb 2023 Douglas Volz Add in Receiving Value, fixes for Category Accounting.
+-- -- +=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-inventory-to-g-l-reconciliation-restricted-by-org-access/
 -- Library Link: https://www.enginatics.com/reports/cac-inventory-to-g-l-reconciliation-restricted-by-org-access/
 -- Run Report: https://demo.enginatics.com/
 

@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CRP Available Resources
 -- Description: Detail report showing the date range availability of each resource, as well as daily hours and unit capacity of the resource.
--- Excel Examle Output: https://www.enginatics.com/example/crp-available-resources/
+-- Excel Example Output: https://www.enginatics.com/example/crp-available-resources/
 -- Library Link: https://www.enginatics.com/reports/crp-available-resources/
 -- Run Report: https://demo.enginatics.com/
 

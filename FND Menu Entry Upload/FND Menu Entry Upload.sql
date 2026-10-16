@@ -1,37 +1,33 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: FND Menu Entry Upload
 -- Description: Upload to create, update and delete menu entries in FND Menus.
-Useful for adding entries to existing menus, e.g. during Supply Chain Hub installation.
-
-Upload Modes
-============
-
-Create
-------
-Opens an empty spreadsheet where the user can enter new menu entries.
-
-Create, Update
---------------
-Downloads existing menu entries matching the Menu Name filter for review and update.
-New rows can be added to create additional entries in the same upload.
-
-Fields
-======
-- User Menu Name: Display-only. Shows the translatable menu name.
-- Menu Name: Required. The internal menu name (e.g. INV_NAVIGATE).
-- Entry Sequence: The sequence number for the entry within the menu. Auto-assigned if not provided for new entries.
-- Prompt: The display text shown in the menu for this entry.
-- Entry Description: Optional description of the menu entry.
-- Sub Menu: The sub-menu to navigate to. Either Sub Menu or Function Name must be specified.
-- Function Name: The form function to launch. Either Sub Menu or Function Name must be specified.
-- Grant Flag: Y (default) = entry is grantable via security, N = not grantable.
-- Delete Record: Set to Y to delete an existing menu entry.
--- Excel Examle Output: https://www.enginatics.com/example/fnd-menu-entry-upload/
+-- Useful for adding entries to existing menus, e.g. during Supply Chain Hub installation.
+-- Upload Modes
+-- ============
+-- Create
+-- ------
+-- Opens an empty spreadsheet where the user can enter new menu entries.
+-- Create, Update
+-- --------------
+-- Downloads existing menu entries matching the Menu Name filter for review and update.
+-- New rows can be added to create additional entries in the same upload.
+-- Fields
+-- ======
+-- - User Menu Name: Display-only. Shows the translatable menu name.
+-- - Menu Name: Required. The internal menu name (e.g. INVNAVIGATE).
+-- - Entry Sequence: The sequence number for the entry within the menu. Auto-assigned if not provided for new entries.
+-- - Prompt: The display text shown in the menu for this entry.
+-- - Entry Description: Optional description of the menu entry.
+-- - Sub Menu: The sub-menu to navigate to. Either Sub Menu or Function Name must be specified.
+-- - Function Name: The form function to launch. Either Sub Menu or Function Name must be specified.
+-- - Grant Flag: Y (default) = entry is grantable via security, N = not grantable.
+-- - Delete Record: Set to Y to delete an existing menu entry.
+-- Excel Example Output: https://www.enginatics.com/example/fnd-menu-entry-upload/
 -- Library Link: https://www.enginatics.com/reports/fnd-menu-entry-upload/
 -- Run Report: https://demo.enginatics.com/
 

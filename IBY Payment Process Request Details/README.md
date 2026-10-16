@@ -1,39 +1,49 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'IBY Payment Process Request Details | Oracle EBS SQL Report'
 description: 'Payment manager process request details including statuses, paid or rejected documents, amounts and rejection eror messages'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, IBY, Payment, Process, Request, fnd_flex_value_norm_hierarchy, iby_payments_all, gl_daily_conversion_types'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Payments, Enginatics, R12 only, IBY, Payment, Process, Request, fnd_flex_value_norm_hierarchy, iby_payments_all, gl_daily_conversion_types'
 permalink: /IBY%20Payment%20Process%20Request%20Details/
+report_name: 'IBY Payment Process Request Details'
+report_web_name: iby-payment-process-request-details
+module: 'Payments'
+module_url: /modules/payments/
 ---
 
 # IBY Payment Process Request Details – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/iby-payment-process-request-details/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/iby-payment-process-request-details/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=iby-payment-process-request-details) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=iby-payment-process-request-details).
+**Oracle EBS module:** [Payments](/modules/payments/ "Oracle EBS Payments reports") · [all Payments reports](/modules/payments/)  
 
 ## Overview
 Payment manager process request details including statuses, paid or rejected documents, amounts and rejection eror messages
+
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=iby-payment-process-request-details) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 
 ## Report Parameters
 Operating Unit, Payment Process Request, Payment Process Request Status, Payment Status, Request Creation Date From, Request Creation Date To, Request Created By, Internal Bank Account, Trading Partner, Rejected or Failed Only, Exclude Removed Documents, Expand Error Details, Exchange Rate Type, Show Invoice Distributions, Hierarchy Segment, Hierarchy
 
 ## Oracle EBS Tables Used
-[fnd_flex_value_norm_hierarchy](https://www.enginatics.com/library/?pg=1&find=fnd_flex_value_norm_hierarchy), [iby_payments_all](https://www.enginatics.com/library/?pg=1&find=iby_payments_all), [gl_daily_conversion_types](https://www.enginatics.com/library/?pg=1&find=gl_daily_conversion_types), [ce_bank_accounts](https://www.enginatics.com/library/?pg=1&find=ce_bank_accounts), [iby_validation_sets_vl](https://www.enginatics.com/library/?pg=1&find=iby_validation_sets_vl), [iby_pay_service_requests](https://www.enginatics.com/library/?pg=1&find=iby_pay_service_requests), [ap_inv_selection_criteria_all](https://www.enginatics.com/library/?pg=1&find=ap_inv_selection_criteria_all), [iby_docs_payable_all](https://www.enginatics.com/library/?pg=1&find=iby_docs_payable_all), [ap_invoices_all](https://www.enginatics.com/library/?pg=1&find=ap_invoices_all), [ap_invoice_distributions_all](https://www.enginatics.com/library/?pg=1&find=ap_invoice_distributions_all), [gl_code_combinations_kfv](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations_kfv), [dist_hierarchy](https://www.enginatics.com/library/?pg=1&find=dist_hierarchy), [ap_checks_all](https://www.enginatics.com/library/?pg=1&find=ap_checks_all), [hz_parties](https://www.enginatics.com/library/?pg=1&find=hz_parties), [hz_party_sites](https://www.enginatics.com/library/?pg=1&find=hz_party_sites), [fnd_application_vl](https://www.enginatics.com/library/?pg=1&find=fnd_application_vl), [iby_ext_bank_accounts_v](https://www.enginatics.com/library/?pg=1&find=iby_ext_bank_accounts_v), [iby_ext_bank_accounts](https://www.enginatics.com/library/?pg=1&find=iby_ext_bank_accounts), [iby_payment_reasons_vl](https://www.enginatics.com/library/?pg=1&find=iby_payment_reasons_vl), [iby_payment_methods_vl](https://www.enginatics.com/library/?pg=1&find=iby_payment_methods_vl), [iby_acct_pmt_profiles_vl](https://www.enginatics.com/library/?pg=1&find=iby_acct_pmt_profiles_vl), [iby_formats_vl](https://www.enginatics.com/library/?pg=1&find=iby_formats_vl), [iby_delivery_channels_vl](https://www.enginatics.com/library/?pg=1&find=iby_delivery_channels_vl), [iby_trxn_types_vl](https://www.enginatics.com/library/?pg=1&find=iby_trxn_types_vl), [iby_pay_instructions_all](https://www.enginatics.com/library/?pg=1&find=iby_pay_instructions_all), [hr_operating_units](https://www.enginatics.com/library/?pg=1&find=hr_operating_units), [gl_ledgers](https://www.enginatics.com/library/?pg=1&find=gl_ledgers), [xle_entity_profiles](https://www.enginatics.com/library/?pg=1&find=xle_entity_profiles), [iby_transaction_errors](https://www.enginatics.com/library/?pg=1&find=iby_transaction_errors)
+[fnd_flex_value_norm_hierarchy](https://www.enginatics.com/library/?pg=1&find=fnd_flex_value_norm_hierarchy&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=iby-payment-process-request-details), [iby_payments_all](https://www.enginatics.com/library/?pg=1&find=iby_payments_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=iby-payment-process-request-details), [gl_daily_conversion_types](https://www.enginatics.com/library/?pg=1&find=gl_daily_conversion_types&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=iby-payment-process-request-details), [ce_bank_accounts](https://www.enginatics.com/library/?pg=1&find=ce_bank_accounts&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=iby-payment-process-request-details), [iby_validation_sets_vl](https://www.enginatics.com/library/?pg=1&find=iby_validation_sets_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=iby-payment-process-request-details), [iby_pay_service_requests](https://www.enginatics.com/library/?pg=1&find=iby_pay_service_requests&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=iby-payment-process-request-details), [ap_invoice_distributions_all](https://www.enginatics.com/library/?pg=1&find=ap_invoice_distributions_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=iby-payment-process-request-details), [iby_transaction_errors](https://www.enginatics.com/library/?pg=1&find=iby_transaction_errors&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=iby-payment-process-request-details), [mo_glob_org_access_tmp](https://www.enginatics.com/library/?pg=1&find=mo_glob_org_access_tmp&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=iby-payment-process-request-details), [dual](https://www.enginatics.com/library/?pg=1&find=dual&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=iby-payment-process-request-details)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=iby-payment-process-request-details), [R12 only](https://www.enginatics.com/library/?pg=1&category%5B%5D=R12%20only&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=iby-payment-process-request-details)
 
-
+## Related Reports
+[AP Accounted Invoice Aging](/AP%20Accounted%20Invoice%20Aging/ "AP Accounted Invoice Aging Oracle EBS SQL Report"), [AP Invoices and Lines](/AP%20Invoices%20and%20Lines/ "AP Invoices and Lines Oracle EBS SQL Report"), [AP Invoice Upload](/AP%20Invoice%20Upload/ "AP Invoice Upload Oracle EBS SQL Report"), [AP Supplier Upload](/AP%20Supplier%20Upload/ "AP Supplier Upload Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/IBY%20Payment%20Process%20Request%20Details/IBY%20Payment%20Process%20Request%20Details.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=iby-payment-process-request-details) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [IBY Payment Process Request Details 25-Jan-2021 024851.xlsx](https://www.enginatics.com/example/iby-payment-process-request-details/) |
-| Blitz Report™ XML Import | [IBY_Payment_Process_Request_Details.xml](https://www.enginatics.com/xml/iby-payment-process-request-details/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/iby-payment-process-request-details/](https://www.enginatics.com/reports/iby-payment-process-request-details/) |
+| Excel Example Output | [IBY Payment Process Request Details 25-Jan-2021 024851.xlsx](https://www.enginatics.com/example/iby-payment-process-request-details/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=iby-payment-process-request-details) |
+| Blitz Report™ XML Import | [IBY_Payment_Process_Request_Details.xml](https://www.enginatics.com/xml/iby-payment-process-request-details/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=iby-payment-process-request-details) |
+| SQL Source | [IBY Payment Process Request Details.sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/IBY%20Payment%20Process%20Request%20Details/IBY%20Payment%20Process%20Request%20Details.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/iby-payment-process-request-details/](https://www.enginatics.com/reports/iby-payment-process-request-details/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=iby-payment-process-request-details) |
 
 ## IBY Payment Process Request Details - Case Study & Technical Analysis
 
@@ -65,18 +75,17 @@ The **IBY Payment Process Request Details** report provides a deep dive into the
 *   **Payment Process Request Status**: Filter by status (e.g., "Completed", "Terminated").
 *   **Rejected or Failed Only**: A useful flag to focus solely on exceptions.
 
-
 ---
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=iby-payment-process-request-details)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=iby-payment-process-request-details)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=iby-payment-process-request-details)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=iby-payment-process-request-details)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=iby-payment-process-request-details)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=iby-payment-process-request-details)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=iby-payment-process-request-details)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

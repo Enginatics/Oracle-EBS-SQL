@@ -1,40 +1,49 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'PA Capital Project Summary with Asset Detail | Oracle EBS SQL Report'
 description: 'Detail project report that shows the project asset details, and combined project level costs breakdown, along with the project assets details from the…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Capital, Project, Summary, Asset, pa_projects_all, pa_project_statuses, pa_project_classes'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Projects, Enginatics, R12 only, Capital, Project, Summary, Asset, pa_projects_all, pa_project_statuses, pa_project_classes'
 permalink: /PA%20Capital%20Project%20Summary%20with%20Asset%20Detail/
+report_name: 'PA Capital Project Summary with Asset Detail'
+report_web_name: pa-capital-project-summary-with-asset-detail
+module: 'Projects'
+module_url: /modules/projects/
 ---
 
 # PA Capital Project Summary with Asset Detail – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/pa-capital-project-summary-with-asset-detail/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/pa-capital-project-summary-with-asset-detail/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-capital-project-summary-with-asset-detail) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-capital-project-summary-with-asset-detail).
+**Oracle EBS module:** [Projects](/modules/projects/ "Oracle EBS Projects reports") · [all Projects reports](/modules/projects/)  
 
 ## Overview
 Detail project report that shows the project asset details, and combined project level costs breakdown, along with the project assets details from the Capital Summary
+
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-capital-project-summary-with-asset-detail) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 
 ## Report Parameters
 Project Type, Project Number, Operating Unit, Project Organization, Class Category, Class Code, Asset Trx Entered Period, Asset Date Effective Period, Asset Trx Entered Date From, Asset Trx Entered Date To, Asset Date Effective From, Asset Date Effective To, Include Unassigned Asset Lines, Unassigned Asset Line Type
 
 ## Oracle EBS Tables Used
-[pa_projects_all](https://www.enginatics.com/library/?pg=1&find=pa_projects_all), [pa_project_statuses](https://www.enginatics.com/library/?pg=1&find=pa_project_statuses), [pa_project_classes](https://www.enginatics.com/library/?pg=1&find=pa_project_classes), [hr_all_organization_units_vl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_vl), [fa_locations_kfv](https://www.enginatics.com/library/?pg=1&find=fa_locations_kfv), [pa_project_assets_v](https://www.enginatics.com/library/?pg=1&find=pa_project_assets_v), [pa_capital_projects_v](https://www.enginatics.com/library/?pg=1&find=pa_capital_projects_v), [pa_retirement_costs_v](https://www.enginatics.com/library/?pg=1&find=pa_retirement_costs_v), [fa_transaction_headers](https://www.enginatics.com/library/?pg=1&find=fa_transaction_headers), [fa_deprn_periods](https://www.enginatics.com/library/?pg=1&find=fa_deprn_periods), [pa_project_asset_lines_v](https://www.enginatics.com/library/?pg=1&find=pa_project_asset_lines_v), [pa_asset_line_details_v](https://www.enginatics.com/library/?pg=1&find=pa_asset_line_details_v)
+[pa_projects_all](https://www.enginatics.com/library/?pg=1&find=pa_projects_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-capital-project-summary-with-asset-detail), [pa_project_statuses](https://www.enginatics.com/library/?pg=1&find=pa_project_statuses&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-capital-project-summary-with-asset-detail), [pa_project_classes](https://www.enginatics.com/library/?pg=1&find=pa_project_classes&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-capital-project-summary-with-asset-detail), [hr_all_organization_units_vl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-capital-project-summary-with-asset-detail), [fa_locations_kfv](https://www.enginatics.com/library/?pg=1&find=fa_locations_kfv&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-capital-project-summary-with-asset-detail), [pa_project_assets_v](https://www.enginatics.com/library/?pg=1&find=pa_project_assets_v&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-capital-project-summary-with-asset-detail), [pa_capital_projects_v](https://www.enginatics.com/library/?pg=1&find=pa_capital_projects_v&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-capital-project-summary-with-asset-detail), [pa_retirement_costs_v](https://www.enginatics.com/library/?pg=1&find=pa_retirement_costs_v&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-capital-project-summary-with-asset-detail), [fa_transaction_headers](https://www.enginatics.com/library/?pg=1&find=fa_transaction_headers&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-capital-project-summary-with-asset-detail), [fa_deprn_periods](https://www.enginatics.com/library/?pg=1&find=fa_deprn_periods&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-capital-project-summary-with-asset-detail), [gl_code_combinations_kfv](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations_kfv&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-capital-project-summary-with-asset-detail), [pa_project_asset_lines_v](https://www.enginatics.com/library/?pg=1&find=pa_project_asset_lines_v&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-capital-project-summary-with-asset-detail), [pa_asset_line_details_v](https://www.enginatics.com/library/?pg=1&find=pa_asset_line_details_v&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-capital-project-summary-with-asset-detail)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-capital-project-summary-with-asset-detail), [R12 only](https://www.enginatics.com/library/?pg=1&category%5B%5D=R12%20only&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-capital-project-summary-with-asset-detail)
 
 ## Related Reports
 [GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report"), [AP Invoices and Lines](/AP%20Invoices%20and%20Lines/ "AP Invoices and Lines Oracle EBS SQL Report"), [AP Invoice Upload](/AP%20Invoice%20Upload/ "AP Invoice Upload Oracle EBS SQL Report"), [PA Project Asset Upload](/PA%20Project%20Asset%20Upload/ "PA Project Asset Upload Oracle EBS SQL Report"), [CAC Manufacturing Variance](/CAC%20Manufacturing%20Variance/ "CAC Manufacturing Variance Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/PA%20Capital%20Project%20Summary%20with%20Asset%20Detail/PA%20Capital%20Project%20Summary%20with%20Asset%20Detail.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-capital-project-summary-with-asset-detail) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [PA Capital Project Summary with Asset Detail 10-Jul-2020 142116.xlsx](https://www.enginatics.com/example/pa-capital-project-summary-with-asset-detail/) |
-| Blitz Report™ XML Import | [PA_Capital_Project_Summary_with_Asset_Detail.xml](https://www.enginatics.com/xml/pa-capital-project-summary-with-asset-detail/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/pa-capital-project-summary-with-asset-detail/](https://www.enginatics.com/reports/pa-capital-project-summary-with-asset-detail/) |
+| Excel Example Output | [PA Capital Project Summary with Asset Detail 10-Jul-2020 142116.xlsx](https://www.enginatics.com/example/pa-capital-project-summary-with-asset-detail/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-capital-project-summary-with-asset-detail) |
+| Blitz Report™ XML Import | [PA_Capital_Project_Summary_with_Asset_Detail.xml](https://www.enginatics.com/xml/pa-capital-project-summary-with-asset-detail/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-capital-project-summary-with-asset-detail) |
+| SQL Source | [PA Capital Project Summary with Asset Detail.sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/PA%20Capital%20Project%20Summary%20with%20Asset%20Detail/PA%20Capital%20Project%20Summary%20with%20Asset%20Detail.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/pa-capital-project-summary-with-asset-detail/](https://www.enginatics.com/reports/pa-capital-project-summary-with-asset-detail/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-capital-project-summary-with-asset-detail) |
 
 ## Case Study & Technical Analysis: PA Capital Project Summary with Asset Detail
 
@@ -98,18 +107,17 @@ The report queries across multiple modules and large data tables, and is optimiz
 **3. What is the difference between the 'Asset Trx Entered Period' and the 'Asset Date Effective Period'?**
    The 'Asset Trx Entered Period' usually refers to the accounting period in which the capitalization transaction was entered into the system. The 'Asset Date Effective Period' (often called the Date Placed in Service) is the accounting period in which the asset becomes active and depreciation begins. These can be different.
 
-
 ---
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-capital-project-summary-with-asset-detail)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-capital-project-summary-with-asset-detail)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-capital-project-summary-with-asset-detail)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-capital-project-summary-with-asset-detail)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-capital-project-summary-with-asset-detail)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-capital-project-summary-with-asset-detail)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-capital-project-summary-with-asset-detail)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

@@ -1,13 +1,14 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: AP Invoices and Lines 11i
--- Description: Detail Invoice Aging report with line item details and amounts
-
--- Excel Examle Output: https://www.enginatics.com/example/ap-invoices-and-lines-11i/
+-- Description: Detail Invoice Aging report with line item details and amounts.
+-- The Approval Status column and parameter show and filter the status of the invoice in the Invoice Approval Workflow.
+-- On withholding tax distributions, the withholding columns show the withholding tax and rate, the tax authority supplier and site of the tax, the gross amount subject to withholding, the payment that created the withholding when it was calculated at payment, and the invoice raised to the tax authority.
+-- Excel Example Output: https://www.enginatics.com/example/ap-invoices-and-lines-11i/
 -- Library Link: https://www.enginatics.com/reports/ap-invoices-and-lines-11i/
 -- Run Report: https://demo.enginatics.com/
 
@@ -22,6 +23,7 @@ inv.invoice_num,
 inv.invoice_source,
 inv.invoice_type,
 inv.invoice_status,
+inv.approval_status,
 inv.invoice_date,
 inv.invoice_date_period,
 inv.invoice_creation_date,
@@ -158,6 +160,7 @@ aia.invoice_num,
 aia.source invoice_source,
 xxen_util.meaning(aia.invoice_type_lookup_code,'INVOICE TYPE',200) invoice_type,
 xxen_util.ap_invoice_status(aia.invoice_id,aia.invoice_amount,aia.payment_status_flag,aia.invoice_type_lookup_code,aia.validation_request_id) invoice_status,
+xxen_util.meaning(aia.wfapproval_status,'AP_WFAPPROVAL_STATUS',200) approval_status,
 aia.invoice_date,
 (select gps.period_name
  from   gl_period_statuses gps
@@ -328,6 +331,14 @@ aida.period_name dist_period,
 aida.accounting_date dist_accounting_date,
 xxen_util.concatenated_segments(aida.dist_code_combination_id) dist_expense_account,
 replace(aida.description,'~','-') dist_description,
+(select atca.name from ap_tax_codes_all atca where decode(aida.line_type_lookup_code,'AWT',aida.tax_code_id)=atca.tax_id) withholding_tax,
+(select aatra.tax_rate from ap_awt_tax_rates_all aatra where aida.awt_tax_rate_id=aatra.tax_rate_id) withholding_tax_rate,
+(select aps_awt.vendor_name from ap_tax_codes_all atca, po_vendors aps_awt where decode(aida.line_type_lookup_code,'AWT',aida.tax_code_id)=atca.tax_id and atca.awt_vendor_id=aps_awt.vendor_id) tax_authority,
+(select assa_awt.vendor_site_code from ap_tax_codes_all atca, po_vendor_sites_all assa_awt where decode(aida.line_type_lookup_code,'AWT',aida.tax_code_id)=atca.tax_id and atca.awt_vendor_site_id=assa_awt.vendor_site_id) tax_authority_site,
+aida.awt_gross_amount withholding_gross_amount,
+(select aca.check_number from ap_invoice_payments_all aipa, ap_checks_all aca where aida.awt_invoice_payment_id=aipa.invoice_payment_id and aipa.check_id=aca.check_id) withholding_payment_document,
+(select aca.check_date from ap_invoice_payments_all aipa, ap_checks_all aca where aida.awt_invoice_payment_id=aipa.invoice_payment_id and aipa.check_id=aca.check_id) withholding_payment_date,
+(select aia_awt.invoice_num from ap_invoices_all aia_awt where aida.awt_invoice_id=aia_awt.invoice_id) tax_authority_invoice,
 aida.assets_addition_flag dist_assets_addition,
 aida.invoice_price_variance dist_invoice_price_variance,
 aida.base_invoice_price_variance dist_base_inv_price_variance,

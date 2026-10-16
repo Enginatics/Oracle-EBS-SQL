@@ -1,14 +1,13 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: INV Material Movements
 -- Description: Detailed report of On Hand Quantity with stock movements by Item , Org Code .
-Material Movements involve cumulative buckets for stock/in/mvmt and month wise non cumulative buckets for stock out
-
--- Excel Examle Output: https://www.enginatics.com/example/inv-material-movements/
+-- Material Movements involve cumulative buckets for stock/in/mvmt and month wise non cumulative buckets for stock out
+-- Excel Example Output: https://www.enginatics.com/example/inv-material-movements/
 -- Library Link: https://www.enginatics.com/reports/inv-material-movements/
 -- Run Report: https://demo.enginatics.com/
 

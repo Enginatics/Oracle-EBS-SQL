@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: DIS Worksheet Execution Summary
--- Description: Discoverer worksheet access statistic summary from table eul5_qpp_stats to show the number of active Discoverer users, number of different workbooks and worksheets executed and the number of different folder (combinations) that these are based on.
--- Excel Examle Output: https://www.enginatics.com/example/dis-worksheet-execution-summary/
+-- Description: Discoverer worksheet access statistic summary from table eul5qppstats to show the number of active Discoverer users, number of different workbooks and worksheets executed and the number of different folder (combinations) that these are based on.
+-- Excel Example Output: https://www.enginatics.com/example/dis-worksheet-execution-summary/
 -- Library Link: https://www.enginatics.com/reports/dis-worksheet-execution-summary/
 -- Run Report: https://demo.enginatics.com/
 

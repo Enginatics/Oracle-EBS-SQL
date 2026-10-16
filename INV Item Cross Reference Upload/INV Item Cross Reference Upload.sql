@@ -1,20 +1,16 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: INV Item Cross Reference Upload
 -- Description: Creates, updates and deletes item cross references - the Cross Reference Types form (Inventory > Setup > Items > Cross-Reference Types), also reached from the Item form via Tools > Cross References.
-
-A cross reference is either organization independent (Applicable To All Organizations is set and Org is blank) or specific to one organization (Org is entered). The organization must be one the item is assigned to.
-
-Revision and Unit of Measure only apply to the GTIN cross reference type named by the profile option INV: GTIN Cross Reference Type, and Revision additionally requires an organization. Entering them for any other type is rejected.
-
-Descriptions are translatable and are downloaded in the session language.
-
-To remove a cross reference, enter Yes in Delete Cross Reference on a downloaded row.
--- Excel Examle Output: https://www.enginatics.com/example/inv-item-cross-reference-upload/
+-- A cross reference is either organization independent (Applicable To All Organizations is set and Org is blank) or specific to one organization (Org is entered). The organization must be one the item is assigned to.
+-- Revision and Unit of Measure only apply to the GTIN cross reference type named by the profile option INV: GTIN Cross Reference Type, and Revision additionally requires an organization. Entering them for any other type is rejected.
+-- Descriptions are translatable and are downloaded in the session language.
+-- To remove a cross reference, enter Yes in Delete Cross Reference on a downloaded row.
+-- Excel Example Output: https://www.enginatics.com/example/inv-item-cross-reference-upload/
 -- Library Link: https://www.enginatics.com/reports/inv-item-cross-reference-upload/
 -- Run Report: https://demo.enginatics.com/
 

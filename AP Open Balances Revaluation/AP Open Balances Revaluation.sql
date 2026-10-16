@@ -1,19 +1,18 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: AP Open Balances Revaluation
 -- Description: Description: AP Open Balances Revaluation Report
-
-This report is in the same format as the AP Open Balances Revaluation Report which is no longer supported and should no loinger be used. The data source for this report is the same as the AP Open Items Revaluation report.
-
-Application: Payables
-Source: Open Items Revaluation Report (XML)
-Short Name: APOPITRN
-DB package: AP_OPEN_ITEMS_REVAL_PKG
--- Excel Examle Output: https://www.enginatics.com/example/ap-open-balances-revaluation/
+-- This report is in the same format as the AP Open Balances Revaluation Report which is no longer supported and should no loinger be used. The data source for this report is the same as the AP Open Items Revaluation report.
+-- Application: Payables
+-- Source: Open Items Revaluation Report (XML)
+-- Short Name: APOPITRN
+-- DB package: APOPENITEMSREVALPKG
+-- When India Localization is installed, the following GST columns are also included: GST Registration No, GST PAN No, GST TAN No, CGST Amount, SGST Amount, IGST Amount, CGST Rate, SGST Rate, IGST Rate, Custom Amount, Unclassified Tax Amount, Taxable Value, HSN SAC Code.
+-- Excel Example Output: https://www.enginatics.com/example/ap-open-balances-revaluation/
 -- Library Link: https://www.enginatics.com/reports/ap-open-balances-revaluation/
 -- Run Report: https://demo.enginatics.com/
 
@@ -37,6 +36,8 @@ select
  trx.revalued_amount open_revalued_amount,
  nvl(trx.open_accounted_amount,0) - nvl(trx.revalued_amount,0) "Profit/Loss",
  nvl2(trx.revaluation_rate,null,'*') no_revaluation_rate
+&il_reg_columns
+&il_cols_outer
 from
  (select
    (select sob.name from gl_ledgers sob where sob.ledger_id = :g_ledger_id) ledger,
@@ -319,5 +320,7 @@ from
    txn_type_lookup_code,
    txn_date
  ) trx
+&il_from
 where
   1=1
+&il_where

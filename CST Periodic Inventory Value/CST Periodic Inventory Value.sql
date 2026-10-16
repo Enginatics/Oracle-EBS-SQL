@@ -1,17 +1,17 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CST Periodic Inventory Value
 -- Description: Imported from BI Publisher
-Description: Periodic Inventory Value Report
-Application: Bills of Material
-Source: Periodic Inventory Value Report (XML)
-Short Name: CSTRPICR_XML
-DB package: BOM_CSTRPICR_XMLP_PKG
--- Excel Examle Output: https://www.enginatics.com/example/cst-periodic-inventory-value/
+-- Description: Periodic Inventory Value Report
+-- Application: Bills of Material
+-- Source: Periodic Inventory Value Report (XML)
+-- Short Name: CSTRPICRXML
+-- DB package: BOMCSTRPICRXMLPPKG
+-- Excel Example Output: https://www.enginatics.com/example/cst-periodic-inventory-value/
 -- Library Link: https://www.enginatics.com/reports/cst-periodic-inventory-value/
 -- Run Report: https://demo.enginatics.com/
 

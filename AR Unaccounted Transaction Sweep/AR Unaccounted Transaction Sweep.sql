@@ -1,16 +1,16 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: AR Unaccounted Transaction Sweep
 -- Description: Imported from BI Publisher
-Application: Receivables
-Source: Unaccounted Transaction Sweep
-Short Name: ARTRXSWP
-DB package: ar_unaccounted_trx_sweep
--- Excel Examle Output: https://www.enginatics.com/example/ar-unaccounted-transaction-sweep/
+-- Application: Receivables
+-- Source: Unaccounted Transaction Sweep
+-- Short Name: ARTRXSWP
+-- DB package: arunaccountedtrxsweep
+-- Excel Example Output: https://www.enginatics.com/example/ar-unaccounted-transaction-sweep/
 -- Library Link: https://www.enginatics.com/reports/ar-unaccounted-transaction-sweep/
 -- Run Report: https://demo.enginatics.com/
 

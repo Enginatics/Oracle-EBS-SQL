@@ -1,35 +1,33 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC AP Accrual Reconciliation Load Request
 -- Description: Report to show when the A/P Accrual Reconciliation Load program was run and by whom, including the Ledger, Operating Unit, Build Id, Request Id, Creation Date and Last Updated By.
-
-Parameters:
-===========
-Beginning Creation Date:  enter the starting creation date to report, based on the operating unit for your session's inventory organization (optional).
-Operating Unit:  enter the specific operating unit(s) you wish to report (optional).
-Ledger:  enter the specific ledger(s) you wish to report (optional).
-
-/* +=============================================================================+
--- |  Copyright 2019 - 2025 Douglas Volz Consulting, Inc.
--- |  All rights reserved.
--- | Permission to use this code is granted provided the original author is
--- | acknowledged. No warranties, express or otherwise is included in this permission.
--- +=============================================================================+
--- |
--- |  Original Author: Douglas Volz (doug@volzconsulting.com)
--- | 
--- |  Version Modified on Modified  by   Description
--- |  ======= =========== ============== =========================================
--- |  1.0     31 Oct 2019 Douglas Volz   Initial Coding
--- |  1.1     28 Jan 2025 Douglas Volz   Added creation date parameter
--- |  1.2     15 Feb 2025 Douglas Volz   Added Operating Unit and Ledger Security
--- |                                     Profile Controls and parameters.
--- +=============================================================================+*/
--- Excel Examle Output: https://www.enginatics.com/example/cac-ap-accrual-reconciliation-load-request/
+-- Parameters:
+-- ===========
+-- Beginning Creation Date: enter the starting creation date to report, based on the operating unit for your session's inventory organization (optional).
+-- Operating Unit: enter the specific operating unit(s) you wish to report (optional).
+-- Ledger: enter the specific ledger(s) you wish to report (optional).
+-- / +=============================================================================+
+-- -- | Copyright 2019 - 2025 Douglas Volz Consulting, Inc.
+-- -- | All rights reserved.
+-- -- | Permission to use this code is granted provided the original author is
+-- -- | acknowledged. No warranties, express or otherwise is included in this permission.
+-- -- +=============================================================================+
+-- -- |
+-- -- | Original Author: Douglas Volz (doug@volzconsulting.com)
+-- -- |
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== ============== =========================================
+-- -- | 1.0 31 Oct 2019 Douglas Volz Initial Coding
+-- -- | 1.1 28 Jan 2025 Douglas Volz Added creation date parameter
+-- -- | 1.2 15 Feb 2025 Douglas Volz Added Operating Unit and Ledger Security
+-- -- | Profile Controls and parameters.
+-- -- +=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-ap-accrual-reconciliation-load-request/
 -- Library Link: https://www.enginatics.com/reports/cac-ap-accrual-reconciliation-load-request/
 -- Run Report: https://demo.enginatics.com/
 

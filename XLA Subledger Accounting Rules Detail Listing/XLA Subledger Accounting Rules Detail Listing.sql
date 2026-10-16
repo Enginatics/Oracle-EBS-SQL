@@ -1,18 +1,15 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: XLA Subledger Accounting Rules Detail Listing
 -- Description: Lists the complete Subledger Accounting rule setup in one flat grid, combining the seven separate queries of the Oracle standard XLASARDLR Subledger Accounting Rules Detail Listing BI Publisher report.
-
-There is one row per journal line type and account derivation rule priority, so the accounting method, application accounting definition, event class and type, journal line definition, journal line type, segment, derivation rule, its priority, condition and derived value all sit on the same row and can be filtered and pivoted directly.
-
-Journal line type and account derivation rule conditions are rendered as readable text up to 8000 characters. Header and line descriptions are shown by name, with their priorities, conditions and detail aggregated into a single cell.
-
-The Oracle report requires one application and one accounting method per run. Here every parameter is optional and accepts multiple values, so leaving them blank lists the whole instance.
--- Excel Examle Output: https://www.enginatics.com/example/xla-subledger-accounting-rules-detail-listing/
+-- There is one row per journal line type and account derivation rule priority, so the accounting method, application accounting definition, event class and type, journal line definition, journal line type, segment, derivation rule, its priority, condition and derived value all sit on the same row and can be filtered and pivoted directly.
+-- Journal line type and account derivation rule conditions are rendered as readable text up to 8000 characters. Header and line descriptions are shown by name, with their priorities, conditions and detail aggregated into a single cell.
+-- The Oracle report requires one application and one accounting method per run. Here every parameter is optional and accepts multiple values, so leaving them blank lists the whole instance.
+-- Excel Example Output: https://www.enginatics.com/example/xla-subledger-accounting-rules-detail-listing/
 -- Library Link: https://www.enginatics.com/reports/xla-subledger-accounting-rules-detail-listing/
 -- Run Report: https://demo.enginatics.com/
 
@@ -61,14 +58,14 @@ x.accounting_method_description,
 x.amb_context_code amb_context,
 x.start_date_active effective_from,
 x.end_date_active effective_to,
-x.aad_name application_accounting_definition,
+x.aad_name application_acctg_definition,
 x.aad_owner,
 x.product_rule_code aad_code,
 x.product_rule_version aad_version,
 x.aad_description,
 x.aad_compile_status,
-x.aad_transaction_coa_name aad_transaction_chart_of_accounts,
-x.aad_accounting_coa_name aad_accounting_chart_of_accounts,
+x.aad_transaction_coa_name aad_trx_chart_of_accounts,
+x.aad_accounting_coa_name aad_acctg_chart_of_accounts,
 x.event_class_name event_class,
 x.event_type_name event_type,
 x.event_class_code,
@@ -76,7 +73,7 @@ x.event_type_code,
 x.jld_name journal_line_definition,
 x.jld_owner,
 x.line_definition_code journal_line_definition_code,
-x.jld_description journal_line_definition_description,
+x.jld_description journal_line_definition_desc,
 x.jld_enabled,
 x.jld_validation_status,
 x.budgetary_control,
@@ -99,7 +96,7 @@ x.business_flow_method,
 x.business_flow_class,
 x.mpa_option,
 x.encumbrance_type,
-x.jlt_transaction_coa_name jlt_transaction_chart_of_accounts,
+x.jlt_transaction_coa_name jlt_trx_chart_of_accounts,
 x.jlt_active,
 x.jlt_inherit_description,
 to_clob(x.jlt_condition)||case when lengthb(x.jlt_condition)=4000 then xla_conditions_pkg.display_condition_substr(x.application_id,x.amb_context_code,x.entity_code,x.event_class_code,x.accounting_line_type_code,x.accounting_line_code,null,null,null,'A',4001,4000) end journal_line_type_condition,
@@ -326,7 +323,7 @@ x.description_code=ldesc.description_code(+)
 order by
 application,
 accounting_method,
-application_accounting_definition,
+application_acctg_definition,
 event_class,
 event_type,
 journal_line_definition,

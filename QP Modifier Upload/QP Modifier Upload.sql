@@ -1,57 +1,46 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: QP Modifier Upload
 -- Description: This upload supports the creation and update of Modifiers in Oracle Advanced Pricing.
-
-The upload supports creation/update/deletion of the following entities within a Modifier List:
-
-- Modifier List Qualifiers
-- Modifier List Limits
-- Modifier Lines
-- Modifier Line Price Breaks. To enter the Modifier Price Breaks in the upload, repeat the Modifier Price Break Header Line and enter/adjust the Price Break Columns for each Price Break.
-- Modifier Line Additional Buy Items.
-- Modifier Line Get Items
-- Modifier Line Pricing Attributes
-- Modifier Line Qualifiers
-- Modifier Line Limits
-
-Notes:
-
-When downloading existing Modifier data into the upload excel:
-  - Modifier List level Qualifiers and Limits will be downloaded into separate rows in the excel
-  - Modifier Line level Price Breaks, Additional Buy Items, Get Items, Pricing Attributes, Qualifiers, and Limits will be downloaded into separate rows in the excel
-
-This is to minimize the duplication of data in the excel.  
-
-However:
-When entering List Header qualifiers and limits, these can be added in the same excel row.
-When entering Modifier Lines for upload:  Price Breaks, Additional Buy Items, Get Items, Pricing Attributes, Line Qualifiers, and Limits can be added in the same excel row. 
-i.e. You can upload an excel row containing a modifier line details with associated price break and pricing attribute and qualifier etc. 
-
-Modifier Line Numbering
-====================
-The Modifier Numbering parameter determines if you want the system to automatically generate Modifier Numbers when creating new Modifiers or if the line number specified in the Line No column in the upload should be retained. If Automatic is specified, any Line Numbers specified in the upload excel for new modifier lines will be replaced by a system generated line number on upload.
-The Line No column is required when entering modifier line details. The upload uses the combination of List Number, List Version, and Modifier Line No to identify the modifiers. If the combination already exists in Oracle the upload will update the existing modifier, otherwise it will create a new modifier.
-
-Entering Qualifiers
-===============
-Qualifiers entered on a row with no modifier line details will be uploaded as a list level qualifier. 
-Qualifiers entered on a row containing modifier line details will by default be uploaded as a modifier level qualifier. The Qualifier Assignment Level column can be used to override this default behaviour to assign the qualifier to the list header instead of the modifier. 
-Qualifier Groups can be copied to the modifier by selecting the Qualifier Group and leaving all other qualifier columns blank. The upload will copy and attach all the qualifier group's qualifiers to the price list.
-Alternatively, you can select specific qualifiers from a Qualifier Group by selecting the Qualifier Group and the Qualifier Group Qualifier ID. The upload excel will then default in the details of that qualifier into the excel. In this scenario you would enter each qualifier on a separate row in the excel. 
-
-Entering Limits
-===============
-Limits entered on a row with no modifier line details will be uploaded as a list level limit. 
-Limits entered on a row containing modifier line details will by default be uploaded as a line level limit. The Limit Assignment Level column can be used to override this default behaviour to assign the limit to the list header instead of the modifier Line. 
-Limit No is required when entering limit details. The upload uses the combination of List Number, List Version, Modifier Line No (for modifier level limits), and the Limit No to identify the limit. If the combination already exists in Oracle the upload will update the existing limit, otherwise it will create a new modifier.
-
-
--- Excel Examle Output: https://www.enginatics.com/example/qp-modifier-upload/
+-- The upload supports creation/update/deletion of the following entities within a Modifier List:
+-- - Modifier List Qualifiers
+-- - Modifier List Limits
+-- - Modifier Lines
+-- - Modifier Line Price Breaks. To enter the Modifier Price Breaks in the upload, repeat the Modifier Price Break Header Line and enter/adjust the Price Break Columns for each Price Break.
+-- - Modifier Line Additional Buy Items.
+-- - Modifier Line Get Items
+-- - Modifier Line Pricing Attributes
+-- - Modifier Line Qualifiers
+-- - Modifier Line Limits
+-- Notes:
+-- When downloading existing Modifier data into the upload excel:
+-- - Modifier List level Qualifiers and Limits will be downloaded into separate rows in the excel
+-- - Modifier Line level Price Breaks, Additional Buy Items, Get Items, Pricing Attributes, Qualifiers, and Limits will be downloaded into separate rows in the excel
+-- This is to minimize the duplication of data in the excel.
+-- However:
+-- When entering List Header qualifiers and limits, these can be added in the same excel row.
+-- When entering Modifier Lines for upload: Price Breaks, Additional Buy Items, Get Items, Pricing Attributes, Line Qualifiers, and Limits can be added in the same excel row.
+-- i.e. You can upload an excel row containing a modifier line details with associated price break and pricing attribute and qualifier etc.
+-- Modifier Line Numbering
+-- ====================
+-- The Modifier Numbering parameter determines if you want the system to automatically generate Modifier Numbers when creating new Modifiers or if the line number specified in the Line No column in the upload should be retained. If Automatic is specified, any Line Numbers specified in the upload excel for new modifier lines will be replaced by a system generated line number on upload.
+-- The Line No column is required when entering modifier line details. The upload uses the combination of List Number, List Version, and Modifier Line No to identify the modifiers. If the combination already exists in Oracle the upload will update the existing modifier, otherwise it will create a new modifier.
+-- Entering Qualifiers
+-- ===============
+-- Qualifiers entered on a row with no modifier line details will be uploaded as a list level qualifier.
+-- Qualifiers entered on a row containing modifier line details will by default be uploaded as a modifier level qualifier. The Qualifier Assignment Level column can be used to override this default behaviour to assign the qualifier to the list header instead of the modifier.
+-- Qualifier Groups can be copied to the modifier by selecting the Qualifier Group and leaving all other qualifier columns blank. The upload will copy and attach all the qualifier group's qualifiers to the price list.
+-- Alternatively, you can select specific qualifiers from a Qualifier Group by selecting the Qualifier Group and the Qualifier Group Qualifier ID. The upload excel will then default in the details of that qualifier into the excel. In this scenario you would enter each qualifier on a separate row in the excel.
+-- Entering Limits
+-- ===============
+-- Limits entered on a row with no modifier line details will be uploaded as a list level limit.
+-- Limits entered on a row containing modifier line details will by default be uploaded as a line level limit. The Limit Assignment Level column can be used to override this default behaviour to assign the limit to the list header instead of the modifier Line.
+-- Limit No is required when entering limit details. The upload uses the combination of List Number, List Version, Modifier Line No (for modifier level limits), and the Limit No to identify the limit. If the combination already exists in Oracle the upload will update the existing limit, otherwise it will create a new modifier.
+-- Excel Example Output: https://www.enginatics.com/example/qp-modifier-upload/
 -- Library Link: https://www.enginatics.com/reports/qp-modifier-upload/
 -- Run Report: https://demo.enginatics.com/
 

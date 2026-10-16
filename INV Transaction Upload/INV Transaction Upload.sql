@@ -1,26 +1,23 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: INV Transaction Upload
 -- Description: INV Transaction Upload
-======================
-This upload can be used to create Inventory Material Transactions.
-
-The following upload modes are supported:
-
-Create – Generates an empty upload file. Transaction details must be entered manually. The Create mode always opens a blank Excel template, regardless of any parameter settings.
-
-Create, Update – Based on the selected parameters, this mode can generate a pre-populated file with details such as item, primary unit of measure, and transaction date (defaulted to today’s date). It also displays the current on-hand quantity for each item, allowing users to transact against existing stock. Additionally, users can create new transactions by entering details manually
-
-Note :
--- For "Account alias issue" transaction Type - Transaction Source needs to be selected for this Transaction Type, Don't select Account Alias.
--- For "Account alias receipt" transaction Type - Transaction Source needs to be selected for this Transaction Type, Don't select Account Alias.
--- For "Account issue" transaction Type - Account Alias needs to be selected for this Transaction Type, Don't select Transaction Source.
--- For "Account receipt" transaction Type - Account Alias needs to be selected for this Transaction Type, Don't select Transaction Source.
--- Excel Examle Output: https://www.enginatics.com/example/inv-transaction-upload/
+-- ======================
+-- This upload can be used to create Inventory Material Transactions.
+-- The following upload modes are supported:
+-- Create – Generates an empty upload file. Transaction details must be entered manually. The Create mode always opens a blank Excel template, regardless of any parameter settings.
+-- Create, Update – Based on the selected parameters, this mode can generate a pre-populated file with details such as item, primary unit of measure, and transaction date (defaulted to today’s date). It also displays the current on-hand quantity for each item, allowing users to transact against existing stock. Additionally, users can create new transactions by entering details manually
+-- Note :
+-- -- For "Account alias issue" transaction Type - Transaction Source needs to be selected for this Transaction Type, Don't select Account Alias.
+-- -- For "Account alias receipt" transaction Type - Transaction Source needs to be selected for this Transaction Type, Don't select Account Alias.
+-- -- For "Account issue" transaction Type - Distribution Account needs to be entered for this Transaction Type (or an Account Alias to default it), Don't select Transaction Source.
+-- -- For "Account receipt" transaction Type - Distribution Account needs to be entered for this Transaction Type (or an Account Alias to default it), Don't select Transaction Source.
+-- -- For "Intransit Shipment" transaction Type - Shipment Number is mandatory. Expected Receipt Date, Freight Code, Containers, Waybill Airbill, Transportation Cost, Transportation Account and Transfer Cost hold the remaining shipment details.
+-- Excel Example Output: https://www.enginatics.com/example/inv-transaction-upload/
 -- Library Link: https://www.enginatics.com/reports/inv-transaction-upload/
 -- Run Report: https://demo.enginatics.com/
 
@@ -72,6 +69,14 @@ to_number(null) lot_quantity,
 to_char(null) to_org,
 to_char(null) to_subinv,
 to_char(null) to_locator,
+cast(null as varchar2(30)) shipment_number,
+to_date(null) expected_receipt_date,
+cast(null as varchar2(30)) freight_code,
+to_number(null) containers,
+cast(null as varchar2(30)) waybill_airbill,
+to_number(null) transportation_cost,
+to_char(null) transportation_account,
+to_number(null) transfer_cost,
 to_char(null) location,
 to_char(null) source_project,
 to_char(null) source_task,

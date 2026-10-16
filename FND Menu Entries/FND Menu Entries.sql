@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: FND Menu Entries
 -- Description: 
--- Excel Examle Output: https://www.enginatics.com/example/fnd-menu-entries/
+-- Excel Example Output: https://www.enginatics.com/example/fnd-menu-entries/
 -- Library Link: https://www.enginatics.com/reports/fnd-menu-entries/
 -- Run Report: https://demo.enginatics.com/
 
@@ -24,6 +24,7 @@ ffv.form_name,
 ffv.user_form_name,
 fffv.parameters,
 fffv.web_html_call html_call,
+xxen_util.yes(fmev.grant_flag) grant_,
 xxen_util.user_name(fmev.created_by) created_by,
 xxen_util.client_time(fmev.creation_date) creation_date,
 xxen_util.user_name(fmev.last_updated_by) last_updated_by,

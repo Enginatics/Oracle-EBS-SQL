@@ -1,42 +1,41 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Item Cost Out-of-Balance
--- Description: Report to compare summary and detail item cost information and show any out-of-balances.  Any difference may cause an inventory reconciliation issue between the G/L and the inventory perpetual balances.
-
-/* +=============================================================================+
--- | Copyright 2009-2020 Douglas Volz Consulting, Inc.                           |
--- | All rights reserved.                                                        |
--- | Permission to use this code is granted provided the original author is      |
--- | acknowledged. No warranties, express or otherwise is included in this       |
--- | permission.                                                                 |
--- +=============================================================================+
--- |
--- | Original Author: Douglas Volz (doug@volzconsulting.com)
--- |
--- | Program Name: xxx_item_cost_diff_rept.sql
--- |
--- | Parameters:  None
--- |
--- | Description:
--- | Report to compare summary and detail item cost information and show any out-of-balances.
--- | Any difference may cause an inventory reconciliation issue between the G/L
--- | and the inventory perpetual balances.
--- | 
--- | Version Modified on Modified by Description
--- | ======= =========== ============== =========================================
--- |  1.0     06 Oct 2009 Douglas Volz  Initial Coding
--- |  1.1     16 Mar 2010 Douglas Volz  Updated with Make/Buy flags
--- |  1.2     08 Nov 2010 Douglas Volz  Updated with additional columns and parameters
--- |  1.3     10 Dec 2012 Douglas Volz  Compare summary and detail item cost information.
--- |  1.4     29 Apr 2020 Douglas Volz  Changed to multi-language views for the item
--- |                                    master, operating unit and lookup values.  Add
--- |                                    Ledger and Operating Unit columns and parameters.
--- +=============================================================================+*/
--- Excel Examle Output: https://www.enginatics.com/example/cac-item-cost-out-of-balance/
+-- Description: Report to compare summary and detail item cost information and show any out-of-balances. Any difference may cause an inventory reconciliation issue between the G/L and the inventory perpetual balances.
+-- / +=============================================================================+
+-- -- | Copyright 2009-2020 Douglas Volz Consulting, Inc. |
+-- -- | All rights reserved. |
+-- -- | Permission to use this code is granted provided the original author is |
+-- -- | acknowledged. No warranties, express or otherwise is included in this |
+-- -- | permission. |
+-- -- +=============================================================================+
+-- -- |
+-- -- | Original Author: Douglas Volz (doug@volzconsulting.com)
+-- -- |
+-- -- | Program Name: xxxitemcostdiffrept.sql
+-- -- |
+-- -- | Parameters: None
+-- -- |
+-- -- | Description:
+-- -- | Report to compare summary and detail item cost information and show any out-of-balances.
+-- -- | Any difference may cause an inventory reconciliation issue between the G/L
+-- -- | and the inventory perpetual balances.
+-- -- |
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== ============== =========================================
+-- -- | 1.0 06 Oct 2009 Douglas Volz Initial Coding
+-- -- | 1.1 16 Mar 2010 Douglas Volz Updated with Make/Buy flags
+-- -- | 1.2 08 Nov 2010 Douglas Volz Updated with additional columns and parameters
+-- -- | 1.3 10 Dec 2012 Douglas Volz Compare summary and detail item cost information.
+-- -- | 1.4 29 Apr 2020 Douglas Volz Changed to multi-language views for the item
+-- -- | master, operating unit and lookup values. Add
+-- -- | Ledger and Operating Unit columns and parameters.
+-- -- +=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-item-cost-out-of-balance/
 -- Library Link: https://www.enginatics.com/reports/cac-item-cost-out-of-balance/
 -- Run Report: https://demo.enginatics.com/
 

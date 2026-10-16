@@ -1,17 +1,17 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: INV Material Status Change History
 -- Description: Imported from BI Publisher
-Description: Material Status Change History Report
-Application: Inventory
-Source: Material Status Change History Report (XML)
-Short Name: INVMSCHR_XML
-DB package: INV_INVMSCHR_XMLP_PKG
--- Excel Examle Output: https://www.enginatics.com/example/inv-material-status-change-history/
+-- Description: Material Status Change History Report
+-- Application: Inventory
+-- Source: Material Status Change History Report (XML)
+-- Short Name: INVMSCHRXML
+-- DB package: INVINVMSCHRXMLPPKG
+-- Excel Example Output: https://www.enginatics.com/example/inv-material-status-change-history/
 -- Library Link: https://www.enginatics.com/reports/inv-material-status-change-history/
 -- Run Report: https://demo.enginatics.com/
 

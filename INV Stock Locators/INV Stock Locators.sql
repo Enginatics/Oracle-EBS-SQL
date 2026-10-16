@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: INV Stock Locators
 -- Description: Summary report for Inventory locations, showing locator number, description, type, status, subinventory, picking order, dropping order and unit, volume, weight, dimension and co-ordinate information.
--- Excel Examle Output: https://www.enginatics.com/example/inv-stock-locators/
+-- Excel Example Output: https://www.enginatics.com/example/inv-stock-locators/
 -- Library Link: https://www.enginatics.com/reports/inv-stock-locators/
 -- Run Report: https://demo.enginatics.com/
 

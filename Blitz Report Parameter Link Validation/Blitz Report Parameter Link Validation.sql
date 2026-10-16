@@ -1,18 +1,15 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: Blitz Report Parameter Link Validation
--- Description: Lists orphaned parameter rows: additional-anchor (sub) parameter rows - those without a display sequence - that do not link to a visible parameter of the same name in the same report (parameter_id not in xxen_report_parameters_link_v).
-
-These are typically left behind by an incomplete parameter rename (e.g. 'Show DFF Attributes' to 'DFF Display'), leaving the old-named multi-anchor sub-rows dangling.
-
-The run-time SQL is assembled solely from xxen_report_parameters_link_v, so an unlinked sub-row is never injected and is harmless at run time, but it clutters the parameter setup and would re-activate unexpectedly if a visible parameter with the old name were re-created.
-
-Use the Category parameter to limit the scope.
--- Excel Examle Output: https://www.enginatics.com/example/blitz-report-parameter-link-validation/
+-- Description: Lists orphaned parameter rows: additional-anchor (sub) parameter rows - those without a display sequence - that do not link to a visible parameter of the same name in the same report (parameterid not in xxenreportparameterslinkv).
+-- These are typically left behind by an incomplete parameter rename (e.g. 'Show DFF Attributes' to 'DFF Display'), leaving the old-named multi-anchor sub-rows dangling.
+-- The run-time SQL is assembled solely from xxenreportparameterslinkv, so an unlinked sub-row is never injected and is harmless at run time, but it clutters the parameter setup and would re-activate unexpectedly if a visible parameter with the old name were re-created.
+-- Use the Category parameter to limit the scope.
+-- Excel Example Output: https://www.enginatics.com/example/blitz-report-parameter-link-validation/
 -- Library Link: https://www.enginatics.com/reports/blitz-report-parameter-link-validation/
 -- Run Report: https://demo.enginatics.com/
 

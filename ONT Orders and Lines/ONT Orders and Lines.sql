@@ -1,32 +1,46 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: ONT Orders and Lines
 -- Description: Detail Sales Order or Quote header report with line item details including status, cost, project and shipping information.
--- Excel Examle Output: https://www.enginatics.com/example/ont-orders-and-lines/
+-- Show Sales Credits adds one row per sales credit of each line, taken from the line, or from the order header for lines without sales credits of their own. Credited Amount is the line extended price times the credit percent and is shown once per line and credit, so it can be summed by salesperson; the other amount columns stay on one row per line.
+-- Show Order to Cash Details adds the booked date and open holds of each line, and for the line's latest invoice the due date, the amount still due, the date it was fully paid, the latest receipt applied, and when its final accounting was created and its journal posted in the general ledger. Amount Due Remaining is shown on one row per invoice, so it can be summed. To follow lines until they are paid, leave Open only empty, so that closed orders with unpaid invoices are included.
+-- When India Localization is installed, the following GST columns are also included: GST Registration No, GST PAN No, GST TAN No, CGST Amount, SGST Amount, IGST Amount, CGST Rate, SGST Rate, IGST Rate, Custom Amount, Unclassified Tax Amount, Taxable Value, HSN SAC Code, HSN Length Warning.
+-- Excel Example Output: https://www.enginatics.com/example/ont-orders-and-lines/
 -- Library Link: https://www.enginatics.com/reports/ont-orders-and-lines/
 -- Run Report: https://demo.enginatics.com/
 
-select
+select /*+ push_pred(wda) */
 x.operating_unit,
 x.customer,
 x.customer_number,
 x.order_number,
 x.quote_number,
+x.quote_date,
+x.quote_expiration_date,
+x.version_number,
+x.quote_name,
+x.user_status,
 x.source_type,
 x.source_document,
 x.type,
 x.order_type,
 x.customer_po,
+x.sales_agreement_number,
+x.sales_agreement_line,
 hp1.party_name ship_to_customer,
 hca1.account_number ship_to_customer_number,
 hcsua1.location ship_to_location,
 (select hz_format_pub.format_address(hps1.location_id,null,null,' , ') from dual) ship_to_address,
 ftv1.territory_short_name ship_to_country,
 coalesce(hcsua1.tax_reference,hp1.tax_reference,hp1.jgzz_fiscal_code) ship_to_tax_reference,
+hp3.party_name intermediate_ship_to_customer,
+hcsua3.location intermediate_ship_to_location,
+(select hz_format_pub.format_address(hps3.location_id,null,null,' , ') from dual) intermediate_ship_to_address,
+ftv3.territory_short_name intermediate_ship_to_country,
 hp2.party_name bill_to_customer,
 hca2.account_number bill_to_customer_number,
 hcsua2.location bill_to_location,
@@ -34,9 +48,11 @@ hcsua2.location bill_to_location,
 ftv2.territory_short_name bill_to_country,
 coalesce(hcsua2.tax_reference,hp2.tax_reference,hp2.jgzz_fiscal_code) bill_to_tax_reference,
 x.ordered_date,
+&o2c_order_columns
 x.price_list,
 x.salesperson,
 x.invoice_salesperson,
+&osc_columns
 x.order_source,
 x.order_source_reference,
 x.header_status,
@@ -56,6 +72,7 @@ x.invoice_currency,
 x.invoice_line,
 case when row_number() over (partition by x.line_id order by wnd.name nulls last) = 1 then x.invoice_amount else null end invoice_amount,
 case when row_number() over (partition by x.line_id order by wnd.name nulls last) = 1 then x.invoice_accounted_amount else null end invoice_accounted_amount,
+&o2c_columns
 x.warehouse,
 x.shipping_method,
 x.line_set,
@@ -73,6 +90,7 @@ x.cancelled_flag,
 x.cancel_date,
 x.cancelled_by,
 x.cancel_reason,
+x.return_reason,
 case when row_number() over (partition by x.line_id order by wnd.name nulls last) = 1 then x.cancelled_quantity else null end cancelled_quantity,
 case when row_number() over (partition by x.line_id order by wnd.name nulls last) = 1 then x.cancelled_amount else null end cancelled_amount,
 x.item,
@@ -102,6 +120,9 @@ case when row_number() over (partition by x.line_id order by wnd.name nulls last
 x.shippable_flag,
 x.ship_set,
 wnd.name delivery,
+xxen_util.client_time(wnd.creation_date) delivery_creation_date,
+xxen_util.client_time(wnd.confirm_date) confirmed_date,
+case when wda.delivery_id is not null&osc_delivery then wda.delivery_qty end delivery_qty,
 wda.next_step,
 wda.release_status,
 x.project,
@@ -137,14 +158,21 @@ nvl(xxen_util.meaning(decode(x.deliv_in_full||x.deliv_on_time,null,null,'YY','Y'
 nvl(xxen_util.meaning(min(x.deliv_in_full) over (partition by x.header_id),'YES_NO',0),'N/A') orders_dif,
 nvl(xxen_util.meaning(min(x.deliv_on_time) over (partition by x.header_id),'YES_NO',0),'N/A') orders_dot,
 nvl(xxen_util.meaning(decode(min(x.deliv_in_full) over (partition by x.header_id)||min(x.deliv_on_time) over (partition by x.header_id),null,null,'YY','Y','N'),'YES_NO',0),'N/A') orders_difot
+&il_reg_columns
+&il_columns
 from
 (
-select /*+ push_pred(oolh) push_pred(oolh2) push_pred(wda) */ distinct
+select /*+ push_pred(oolh) push_pred(oolh2) push_pred(wda) push_pred(oola) push_pred(rctlgda) */ distinct
 haouv.name operating_unit,
 hp.party_name customer,
 hca.account_number customer_number,
 ooha.order_number,
 nvl(ooha.quote_number,regexp_substr(ooha.orig_sys_document_ref,'^(\d+).',1,1,null,1)) quote_number,
+xxen_util.client_time(ooha.quote_date) quote_date,
+xxen_util.client_time(ooha.expiration_date) quote_expiration_date,
+ooha.version_number,
+ooha.sales_document_name quote_name,
+xxen_util.meaning(ooha.user_status_code,'USER_STATUS',660) user_status,
 decode(ooha.source_document_type_id,10,'Requisitions',2,'Orders',16,'Quotes',7,'Incidents',(select oos0.name from oe_order_sources oos0 where ooha.source_document_type_id=oos0.order_source_id)) source_type,
 case ooha.source_document_type_id
 when 10 then (select prha.segment1 from po_requisition_headers_all prha where ooha.source_document_id=prha.requisition_header_id)
@@ -155,6 +183,8 @@ end source_document,
 decode(ooha.transaction_phase_code,'N','Quote','Order') type,
 ottt.name order_type,
 nvl(oola.cust_po_number,ooha.cust_po_number) customer_po,
+oola.blanket_number sales_agreement_number,
+oola.blanket_line_number sales_agreement_line,
 xxen_util.client_time(ooha.ordered_date) ordered_date,
 (select qlhv.name from qp_list_headers_vl qlhv where ooha.price_list_id=qlhv.list_header_id) price_list,
 jrrev.resource_name salesperson,
@@ -237,6 +267,7 @@ xxen_util.meaning(case when ooha.cancelled_flag='Y' or oola.cancelled_flag='Y' t
 xxen_util.client_time(oolh.hist_creation_date) cancel_date,
 xxen_util.user_name(oolh.hist_created_by) cancelled_by,
 xxen_util.meaning(oer.reason_code,'CANCEL_CODE',660) cancel_reason,
+xxen_util.meaning(oola.return_reason_code,'CREDIT_MEMO_REASON',222) return_reason,
 decode(oola.cancelled_flag,'Y',oola.cancelled_quantity) cancelled_quantity,
 decode(oola.cancelled_flag,'Y',oola.cancelled_quantity)*oola.unit_selling_price cancelled_amount,
 ppa.project_number project,
@@ -253,6 +284,7 @@ xxen_util.client_time(oola.last_update_date) line_last_update_date,
 xxen_util.meaning(ooha.order_category_code,'ORDER_CATEGORY',660) order_category,
 xxen_util.meaning(oola.line_category_code,'ORDER_CATEGORY',660) line_category,
 ooha.header_id,
+ooha.sold_to_org_id customer_id,
 oola.line_number,
 oola.shipment_number,
 oola.option_number,
@@ -260,7 +292,9 @@ oola.component_number,
 oola.service_number,
 oola.line_id,
 nvl(oola.ship_to_org_id,ooha.ship_to_org_id) ship_to_org_id,
+oola.intmed_ship_to_org_id,
 nvl(oola.invoice_to_org_id,ooha.invoice_to_org_id) invoice_to_org_id,
+&o2c_columns_x
 ooha.order_date_type_code,
 oola.split_line,
 oola.orig_line_id_ orig_line_id,
@@ -297,8 +331,8 @@ oe_order_headers_all ooha,
 (
 select
 nvl(oola.orig_line_id,oola.line_id) orig_line_id_,
-sum(oola.ordered_quantity) over (partition by nvl(oola.orig_line_id,oola.line_id)) orig_line_quantity,
-sum(oola.shipped_quantity) over (partition by nvl(oola.orig_line_id,oola.line_id)) orig_line_tot_shipped_quantity,
+sum(oola.ordered_quantity) over (partition by oola.header_id,nvl(oola.orig_line_id,oola.line_id)) orig_line_quantity,
+sum(oola.shipped_quantity) over (partition by oola.header_id,nvl(oola.orig_line_id,oola.line_id)) orig_line_tot_shipped_quantity,
 sum(decode(oola.cancelled_flag,'N',oola.extended_price)) over (partition by oola.header_id) ord_subtotal,
 sum(decode(oola.cancelled_flag,'N',oola.tax_amount)) over (partition by oola.header_id) ord_tax,
 sum(decode(oola.cancelled_flag,'N',oola.line_charges)) over (partition by oola.header_id) ord_line_charges_total,
@@ -413,17 +447,23 @@ oola.orig_line_id=oola2.line_id(+) and
 oola.orig_line_id=oolh2.line_id(+)
 ) x,
 (
-select distinct
+select
 wdd.source_line_id,
 wda.delivery_id,
 xxen_util.wsh_next_step(wdd.container_flag,wdd.released_status,wdd.source_code,wdd.inv_interfaced_flag,wdd.oe_interfaced_flag,wdd.client_id,wdd.replenishment_status,wdd.move_order_line_id) next_step,
-xxen_util.meaning(wdd.released_status,'PICK_STATUS',665) release_status
+xxen_util.meaning(wdd.released_status,'PICK_STATUS',665) release_status,
+sum(wdd.requested_quantity) delivery_qty
 from
 wsh_delivery_details wdd,
 wsh_delivery_assignments wda
 where
 wdd.source_code='OE' and
 wdd.delivery_detail_id=wda.delivery_detail_id
+group by
+wdd.source_line_id,
+wda.delivery_id,
+xxen_util.wsh_next_step(wdd.container_flag,wdd.released_status,wdd.source_code,wdd.inv_interfaced_flag,wdd.oe_interfaced_flag,wdd.client_id,wdd.replenishment_status,wdd.move_order_line_id),
+xxen_util.meaning(wdd.released_status,'PICK_STATUS',665)
 ) wda,
 wsh_new_deliveries wnd,
 hz_cust_site_uses_all hcsua1,
@@ -439,7 +479,16 @@ hz_party_sites hps2,
 hz_locations hl1,
 hz_locations hl2,
 fnd_territories_vl ftv1,
-fnd_territories_vl ftv2
+fnd_territories_vl ftv2,
+hz_cust_site_uses_all hcsua3,
+hz_cust_acct_sites_all hcasa3,
+hz_cust_accounts hca3,
+hz_parties hp3,
+hz_party_sites hps3,
+hz_locations hl3,
+fnd_territories_vl ftv3
+&il_from
+&osc_from
 where
 x.line_id=wda.source_line_id(+) and
 wda.delivery_id=wnd.delivery_id(+) and
@@ -456,7 +505,16 @@ hcasa2.party_site_id=hps2.party_site_id(+) and
 hps1.location_id=hl1.location_id(+) and
 hps2.location_id=hl2.location_id(+) and
 hl1.country=ftv1.territory_code(+) and
-hl2.country=ftv2.territory_code(+)
+hl2.country=ftv2.territory_code(+) and
+x.intmed_ship_to_org_id=hcsua3.site_use_id(+) and
+hcsua3.cust_acct_site_id=hcasa3.cust_acct_site_id(+) and
+hcasa3.cust_account_id=hca3.cust_account_id(+) and
+hca3.party_id=hp3.party_id(+) and
+hcasa3.party_site_id=hps3.party_site_id(+) and
+hps3.location_id=hl3.location_id(+) and
+hl3.country=ftv3.territory_code(+)
+&il_where
+&osc_where
 order by
 x.operating_unit,
 x.customer_number,

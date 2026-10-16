@@ -1,33 +1,24 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: INV Physical Inventory Upload
 -- Description: This upload supports the creation of new Physical Inventories and the update of existing Physical Inventories that have not yet been frozen.
-
-The upload supports the specification of the subinventories to be included in the Physical Inventory. 
-
-When updating an existing Physical Inventory, the Delete Subinventory upload column allows for individual subinventories to be removed from the Physical Inventory subinventory list.
-
-Replace Existing Subinventories
-==========================
-When the Replace Existing Subinventories report parameter is set to Yes, the existing physical inventory subinventories will be replaced by those specified in the upload.
-
-When set to No, the upload will update the existing Physical Inventory subinventories, create additional subinventories, or delete specific subinventories as determined from the uploaded data.
-
-Freeze Physical Inventory
-===================== 
-When set to Yes, the Freeze Physical Inventory concurrent program will be submitted after the upload is complete to freeze the uploaded Physical Inventories.
-
-This will only occur for each uploaded Physical Inventory if no upload error has occurred in any upload row for that Physical Inventory.
-
-Once a Physical Inventory has been frozen, it can no longer be updated by this upload.
-
-The Snapshot Complete and Freeze Date columns in the upload excel are display only columns. They will be displayed after the upload when the Freeze Physical Inventory option is selected.  
-
--- Excel Examle Output: https://www.enginatics.com/example/inv-physical-inventory-upload/
+-- The upload supports the specification of the subinventories to be included in the Physical Inventory.
+-- When updating an existing Physical Inventory, the Delete Subinventory upload column allows for individual subinventories to be removed from the Physical Inventory subinventory list.
+-- Replace Existing Subinventories
+-- ==========================
+-- When the Replace Existing Subinventories report parameter is set to Yes, the existing physical inventory subinventories will be replaced by those specified in the upload.
+-- When set to No, the upload will update the existing Physical Inventory subinventories, create additional subinventories, or delete specific subinventories as determined from the uploaded data.
+-- Freeze Physical Inventory
+-- =====================
+-- When set to Yes, the Freeze Physical Inventory concurrent program will be submitted after the upload is complete to freeze the uploaded Physical Inventories.
+-- This will only occur for each uploaded Physical Inventory if no upload error has occurred in any upload row for that Physical Inventory.
+-- Once a Physical Inventory has been frozen, it can no longer be updated by this upload.
+-- The Snapshot Complete and Freeze Date columns in the upload excel are display only columns. They will be displayed after the upload when the Freeze Physical Inventory option is selected.
+-- Excel Example Output: https://www.enginatics.com/example/inv-physical-inventory-upload/
 -- Library Link: https://www.enginatics.com/reports/inv-physical-inventory-upload/
 -- Run Report: https://demo.enginatics.com/
 

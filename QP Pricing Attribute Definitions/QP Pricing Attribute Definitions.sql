@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: QP Pricing Attribute Definitions
 -- Description: Lists the Pricing and Qualifiers Attributes defined for use by Advanced Pricing
--- Excel Examle Output: https://www.enginatics.com/example/qp-pricing-attribute-definitions/
+-- Excel Example Output: https://www.enginatics.com/example/qp-pricing-attribute-definitions/
 -- Library Link: https://www.enginatics.com/reports/qp-pricing-attribute-definitions/
 -- Run Report: https://demo.enginatics.com/
 

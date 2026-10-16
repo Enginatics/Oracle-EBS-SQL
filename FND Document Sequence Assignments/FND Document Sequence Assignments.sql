@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: FND Document Sequence Assignments
 -- Description: Document sequence asssignments to application tables, ledgers and categories, including sequence details such as database sequence name and last seqeunce number.
--- Excel Examle Output: https://www.enginatics.com/example/fnd-document-sequence-assignments/
+-- Excel Example Output: https://www.enginatics.com/example/fnd-document-sequence-assignments/
 -- Library Link: https://www.enginatics.com/reports/fnd-document-sequence-assignments/
 -- Run Report: https://demo.enginatics.com/
 

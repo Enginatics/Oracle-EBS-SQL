@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: MSC Vertical Plan
 -- Description: ASCP: Vertical Plan from the Planners Workbench.
--- Excel Examle Output: https://www.enginatics.com/example/msc-vertical-plan/
+-- Excel Example Output: https://www.enginatics.com/example/msc-vertical-plan/
 -- Library Link: https://www.enginatics.com/reports/msc-vertical-plan/
 -- Run Report: https://demo.enginatics.com/
 

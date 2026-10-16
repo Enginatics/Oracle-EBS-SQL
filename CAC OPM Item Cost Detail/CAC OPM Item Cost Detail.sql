@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC OPM Item Cost Detail
 -- Description: Oracle Process Manufacturing (OPM) item cost detail: the costed value of each item broken out by cost component class (material, labor, burden, overhead) and cost analysis code, per cost calendar, period and method. Answers what makes up an item's OPM cost.
--- Excel Examle Output: https://www.enginatics.com/example/cac-opm-item-cost-detail/
+-- Excel Example Output: https://www.enginatics.com/example/cac-opm-item-cost-detail/
 -- Library Link: https://www.enginatics.com/reports/cac-opm-item-cost-detail/
 -- Run Report: https://demo.enginatics.com/
 

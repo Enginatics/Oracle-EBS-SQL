@@ -1,36 +1,31 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: EAM Failure Sets Upload
 -- Description: EAM Failure Sets Upload
-=======================
-Creates and updates Oracle EAM (Enterprise Asset Management) Failure Sets, along with their Asset-Group Item Associations and Failure/Cause/Resolution Combinations.
-
-One Set Name can own many child rows (Associations and Combinations). A SET row defines the header explicitly. For Create rows, the upload also creates the missing failure set header automatically from the first ASSOCIATION or COMBINATION row for that Set Name.
-
-Row Type
---------
-- SET: Creates or updates the failure set header (set_name, description, effective_end_date).
-- ASSOCIATION: Links the set to an asset-group / rebuildable item. The item must have EAM_ITEM_TYPE in (1,3) and exist in the master item organization. On Create, this row can also create the failure set header if it does not exist yet.
-- COMBINATION: Adds a valid Failure / Cause / Resolution code triple to the set. The individual codes must already exist in EAM Failure Codes setup (use the EAM Failure Codes Upload). On Create, this row can also create the failure set header if it does not exist yet.
-
-Upload Mode
-===========
-- Create: opens an empty template. Enter a SET row per new failure set, or enter the first ASSOCIATION / COMBINATION row directly; the upload will create the missing header before processing the child row.
-- Create, Update: downloads existing sets / associations / combinations for review or update.
-
-Delete
-======
-- SET rows cannot be deleted directly (Oracle API does not ship Delete_FailureSet). End-date the set instead by setting Set Effective End Date.
-- ASSOCIATION and COMBINATION rows can be deleted by setting Delete to Yes.
-
-Dates
-=====
-Blanking Effective End Date on an update reactivates the ended record.
--- Excel Examle Output: https://www.enginatics.com/example/eam-failure-sets-upload/
+-- =======================
+-- Creates and updates Oracle EAM (Enterprise Asset Management) Failure Sets, along with their Asset-Group Item Associations and Failure/Cause/Resolution Combinations.
+-- One Set Name can own many child rows (Associations and Combinations). A SET row defines the header explicitly. For Create rows, the upload also creates the missing failure set header automatically from the first ASSOCIATION or COMBINATION row for that Set Name.
+-- Row Type
+-- --------
+-- - SET: Creates or updates the failure set header (setname, description, effectiveenddate).
+-- - ASSOCIATION: Links the set to an asset-group / rebuildable item. The item must have EAMITEMTYPE in (1,3) and exist in the master item organization. On Create, this row can also create the failure set header if it does not exist yet.
+-- - COMBINATION: Adds a valid Failure / Cause / Resolution code triple to the set. The individual codes must already exist in EAM Failure Codes setup (use the EAM Failure Codes Upload). On Create, this row can also create the failure set header if it does not exist yet.
+-- Upload Mode
+-- ===========
+-- - Create: opens an empty template. Enter a SET row per new failure set, or enter the first ASSOCIATION / COMBINATION row directly; the upload will create the missing header before processing the child row.
+-- - Create, Update: downloads existing sets / associations / combinations for review or update.
+-- Delete
+-- ======
+-- - SET rows cannot be deleted directly (Oracle API does not ship DeleteFailureSet). End-date the set instead by setting Set Effective End Date.
+-- - ASSOCIATION and COMBINATION rows can be deleted by setting Delete to Yes.
+-- Dates
+-- =====
+-- Blanking Effective End Date on an update reactivates the ended record.
+-- Excel Example Output: https://www.enginatics.com/example/eam-failure-sets-upload/
 -- Library Link: https://www.enginatics.com/reports/eam-failure-sets-upload/
 -- Run Report: https://demo.enginatics.com/
 

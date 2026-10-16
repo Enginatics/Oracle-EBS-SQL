@@ -1,16 +1,15 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CST AP and PO Accrual Reconciliation
 -- Description: Imported from Concurrent Program
-Application: Bills of Material
-Source: AP and PO Accrual Reconciliation Report
-Short Name: CSTACRAP
-
--- Excel Examle Output: https://www.enginatics.com/example/cst-ap-and-po-accrual-reconciliation/
+-- Application: Bills of Material
+-- Source: AP and PO Accrual Reconciliation Report
+-- Short Name: CSTACRAP
+-- Excel Example Output: https://www.enginatics.com/example/cst-ap-and-po-accrual-reconciliation/
 -- Library Link: https://www.enginatics.com/reports/cst-ap-and-po-accrual-reconciliation/
 -- Run Report: https://demo.enginatics.com/
 

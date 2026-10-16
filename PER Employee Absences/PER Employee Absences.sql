@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PER Employee Absences
 -- Description: Employee absence and attendance records showing absence type, category, dates, duration in days and hours, reason, authorizing person, replacement person, and approval status. Useful for leave management, absence tracking, and compliance reporting.
--- Excel Examle Output: https://www.enginatics.com/example/per-employee-absences/
+-- Excel Example Output: https://www.enginatics.com/example/per-employee-absences/
 -- Library Link: https://www.enginatics.com/reports/per-employee-absences/
 -- Run Report: https://demo.enginatics.com/
 

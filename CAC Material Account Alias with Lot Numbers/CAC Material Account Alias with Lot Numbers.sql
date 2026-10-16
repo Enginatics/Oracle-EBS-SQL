@@ -1,53 +1,50 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Material Account Alias with Lot Numbers
--- Description: Report to display the material account alias transactions by lot number.  Specify Yes for Show Lot Number to split out the transaction quantities and amounts by transaction lot number.  And if processed by Create Accounting, the Create Accounting column shows "Yes".
-
-Parameters:
-===========
-Transaction Date From:  enter the starting transaction date (mandatory).
-Transaction Date To:  enter the ending transaction date (mandatory).
-Show Lot Number:  enter Yes to see transactions by lot number, enter No to exclude lot information (mandatory).
-Account Alias:  enter the account alias to report (optional).
-Category Set 1, 2, 3:  any item category you wish (optional).
-Item Number:  enter the item numbers you wish to report (optional).
-Organization Code:  enter the specific inventory organization(s) you wish to report (optional).
-Operating Unit:  enter the specific operating unit(s) you wish to report (optional).
-Ledger:  enter the specific ledger(s) you wish to report (optional).
-
-/* +=============================================================================+
--- |  Copyright 2009-2025 Douglas Volz Consulting, Inc.
--- |  All rights reserved.
--- |  Permission to use this code is granted provided the original author is
--- |  acknowledged.  No warranties, express or otherwise is included in this permission.
--- +=============================================================================+
--- |
--- |  Original Author: Douglas Volz (doug@volzconsulting.com)
--- | 
--- |  Version Modified on Modified  by   Description
--- |  ======= =========== ============== =========================================
--- |  1.0     06 Nov 2009 Douglas Volz   Initial Coding
--- |  1.1     11 Nov 2009 Douglas Volz   Added Org Code and transaction ID
--- |  1.2     12 Nov 2009 Douglas Volz   Added item and description
--- |  1.3     06 Jan 2010 Douglas Volz   Made dates a parameter
--- |  1.4     12 Jan 2010 Douglas Volz   Added quantity and unit cost columns
--- |  1.5     12 Jan 2010 Douglas Volz   Added account alias information
--- |  1.6     20 Jun 2010 Douglas Volz   Added created by information and fixed sort
--- |  1.7     27 Jun 2010 Douglas Volz   Fixed column label for user name, added Ledger parameter
--- |  1.8     16 Jul 2010 Douglas Volz   Added primary unit of measure (UOM), reason
--- |                                     code and transaction reference (comments) and added lot number
--- |  1.9     06 Feb 2012 Douglas Volz   Rewrite SQL report to solve cross-joining problem
--- |                                     with having multiple lot numbers per material transaction and multiple material overheads
--- |  1.10    22 Jun 2015 Douglas Volz   Added back comments to this code, removed client-specific SLA rules
--- |  1.11    17 May 2017 Douglas Volz   Added category sets
--- |  1.12    25 Mar 2025 Douglas Volz   Cleaned up code for Blitz Report and added Create Accounting Y/N column.
--- +=============================================================================+*/
-
--- Excel Examle Output: https://www.enginatics.com/example/cac-material-account-alias-with-lot-numbers/
+-- Description: Report to display the material account alias transactions by lot number. Specify Yes for Show Lot Number to split out the transaction quantities and amounts by transaction lot number. And if processed by Create Accounting, the Create Accounting column shows "Yes".
+-- Parameters:
+-- ===========
+-- Transaction Date From: enter the starting transaction date (mandatory).
+-- Transaction Date To: enter the ending transaction date (mandatory).
+-- Show Lot Number: enter Yes to see transactions by lot number, enter No to exclude lot information (mandatory).
+-- Account Alias: enter the account alias to report (optional).
+-- Category Set 1, 2, 3: any item category you wish (optional).
+-- Item Number: enter the item numbers you wish to report (optional).
+-- Organization Code: enter the specific inventory organization(s) you wish to report (optional).
+-- Operating Unit: enter the specific operating unit(s) you wish to report (optional).
+-- Ledger: enter the specific ledger(s) you wish to report (optional).
+-- / +=============================================================================+
+-- -- | Copyright 2009-2025 Douglas Volz Consulting, Inc.
+-- -- | All rights reserved.
+-- -- | Permission to use this code is granted provided the original author is
+-- -- | acknowledged. No warranties, express or otherwise is included in this permission.
+-- -- +=============================================================================+
+-- -- |
+-- -- | Original Author: Douglas Volz (doug@volzconsulting.com)
+-- -- |
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== ============== =========================================
+-- -- | 1.0 06 Nov 2009 Douglas Volz Initial Coding
+-- -- | 1.1 11 Nov 2009 Douglas Volz Added Org Code and transaction ID
+-- -- | 1.2 12 Nov 2009 Douglas Volz Added item and description
+-- -- | 1.3 06 Jan 2010 Douglas Volz Made dates a parameter
+-- -- | 1.4 12 Jan 2010 Douglas Volz Added quantity and unit cost columns
+-- -- | 1.5 12 Jan 2010 Douglas Volz Added account alias information
+-- -- | 1.6 20 Jun 2010 Douglas Volz Added created by information and fixed sort
+-- -- | 1.7 27 Jun 2010 Douglas Volz Fixed column label for user name, added Ledger parameter
+-- -- | 1.8 16 Jul 2010 Douglas Volz Added primary unit of measure (UOM), reason
+-- -- | code and transaction reference (comments) and added lot number
+-- -- | 1.9 06 Feb 2012 Douglas Volz Rewrite SQL report to solve cross-joining problem
+-- -- | with having multiple lot numbers per material transaction and multiple material overheads
+-- -- | 1.10 22 Jun 2015 Douglas Volz Added back comments to this code, removed client-specific SLA rules
+-- -- | 1.11 17 May 2017 Douglas Volz Added category sets
+-- -- | 1.12 25 Mar 2025 Douglas Volz Cleaned up code for Blitz Report and added Create Accounting Y/N column.
+-- -- +=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-material-account-alias-with-lot-numbers/
 -- Library Link: https://www.enginatics.com/reports/cac-material-account-alias-with-lot-numbers/
 -- Run Report: https://demo.enginatics.com/
 

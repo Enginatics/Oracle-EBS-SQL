@@ -1,14 +1,20 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'XLA Subledger Period Close Exceptions | Oracle EBS SQL Report'
 description: 'Imported from BI Publisher Description: This report extracts all those events which are either untransferred or are not accounted for. Application…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, XLA, Subledger, Period, Close, fnd_application_vl'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Subledger Accounting, Enginatics, R12 only, XLA, Subledger, Period, Close, fnd_application_vl'
 permalink: /XLA%20Subledger%20Period%20Close%20Exceptions/
+report_name: 'XLA Subledger Period Close Exceptions'
+report_web_name: xla-subledger-period-close-exceptions
+module: 'Subledger Accounting'
+module_url: /modules/subledger-accounting/
 ---
 
 # XLA Subledger Period Close Exceptions – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/xla-subledger-period-close-exceptions/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/xla-subledger-period-close-exceptions/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xla-subledger-period-close-exceptions) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xla-subledger-period-close-exceptions).
+**Oracle EBS module:** [Subledger Accounting](/modules/subledger-accounting/ "Oracle EBS Subledger Accounting reports") · [all Subledger Accounting reports](/modules/subledger-accounting/)  
 
 ## Overview
 Imported from BI Publisher
@@ -18,28 +24,31 @@ Source: Subledger Period Close Exceptions Report
 Short Name: XLAPEXRPT
 DB package: XLA_PERIOD_CLOSE_EXP_PKG
 
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xla-subledger-period-close-exceptions) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
+
 ## Report Parameters
 Journal Source, Ledger/Ledger Set, Period From, Period To, Event Class, Journal Category
 
 ## Oracle EBS Tables Used
-[fnd_application_vl](https://www.enginatics.com/library/?pg=1&find=fnd_application_vl)
+[fnd_application_vl](https://www.enginatics.com/library/?pg=1&find=fnd_application_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xla-subledger-period-close-exceptions)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xla-subledger-period-close-exceptions), [R12 only](https://www.enginatics.com/library/?pg=1&category%5B%5D=R12%20only&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xla-subledger-period-close-exceptions)
 
 ## Related Reports
-[FND Request Groups](/FND%20Request%20Groups/ "FND Request Groups Oracle EBS SQL Report"), [CAC Inventory Accounts Setup](/CAC%20Inventory%20Accounts%20Setup/ "CAC Inventory Accounts Setup Oracle EBS SQL Report"), [FND Lookup Search](/FND%20Lookup%20Search/ "FND Lookup Search Oracle EBS SQL Report"), [CAC Subinventory Accounts Setup](/CAC%20Subinventory%20Accounts%20Setup/ "CAC Subinventory Accounts Setup Oracle EBS SQL Report"), [XDO Publisher Data Definitions](/XDO%20Publisher%20Data%20Definitions/ "XDO Publisher Data Definitions Oracle EBS SQL Report"), [FND Flex Value Sets, Usages and Values](/FND%20Flex%20Value%20Sets-%20Usages%20and%20Values/ "FND Flex Value Sets, Usages and Values Oracle EBS SQL Report"), [CAC Cost Group Accounts Setup](/CAC%20Cost%20Group%20Accounts%20Setup/ "CAC Cost Group Accounts Setup Oracle EBS SQL Report"), [ECC Admin - Concurrent Programs](/ECC%20Admin%20-%20Concurrent%20Programs/ "ECC Admin - Concurrent Programs Oracle EBS SQL Report")
+[FND Lookup Search](/FND%20Lookup%20Search/ "FND Lookup Search Oracle EBS SQL Report"), [CAC Subinventory Accounts Setup](/CAC%20Subinventory%20Accounts%20Setup/ "CAC Subinventory Accounts Setup Oracle EBS SQL Report"), [XDO Publisher Data Definitions](/XDO%20Publisher%20Data%20Definitions/ "XDO Publisher Data Definitions Oracle EBS SQL Report"), [FND Flex Value Sets, Usages and Values](/FND%20Flex%20Value%20Sets-%20Usages%20and%20Values/ "FND Flex Value Sets, Usages and Values Oracle EBS SQL Report"), [CAC Cost Group Accounts Setup](/CAC%20Cost%20Group%20Accounts%20Setup/ "CAC Cost Group Accounts Setup Oracle EBS SQL Report"), [ECC Admin - Concurrent Programs](/ECC%20Admin%20-%20Concurrent%20Programs/ "ECC Admin - Concurrent Programs Oracle EBS SQL Report"), [FND Request Groups](/FND%20Request%20Groups/ "FND Request Groups Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/XLA%20Subledger%20Period%20Close%20Exceptions/XLA%20Subledger%20Period%20Close%20Exceptions.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xla-subledger-period-close-exceptions) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [XLA Subledger Period Close Exceptions - Default 04-May-2024 063410.xlsx](https://www.enginatics.com/example/xla-subledger-period-close-exceptions/) |
-| Blitz Report™ XML Import | [XLA_Subledger_Period_Close_Exceptions.xml](https://www.enginatics.com/xml/xla-subledger-period-close-exceptions/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/xla-subledger-period-close-exceptions/](https://www.enginatics.com/reports/xla-subledger-period-close-exceptions/) |
+| Excel Example Output | [XLA Subledger Period Close Exceptions - Default 04-May-2024 063410.xlsx](https://www.enginatics.com/example/xla-subledger-period-close-exceptions/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xla-subledger-period-close-exceptions) |
+| Blitz Report™ XML Import | [XLA_Subledger_Period_Close_Exceptions.xml](https://www.enginatics.com/xml/xla-subledger-period-close-exceptions/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xla-subledger-period-close-exceptions) |
+| SQL Source | [XLA Subledger Period Close Exceptions.sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/XLA%20Subledger%20Period%20Close%20Exceptions/XLA%20Subledger%20Period%20Close%20Exceptions.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/xla-subledger-period-close-exceptions/](https://www.enginatics.com/reports/xla-subledger-period-close-exceptions/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xla-subledger-period-close-exceptions) |
 
 ## Case Study & Technical Analysis: XLA Subledger Period Close Exceptions Report
 
@@ -105,18 +114,17 @@ As a critical period-end report querying transactional SLA data, it is optimized
 **3. How can I use this report to prevent future period close exceptions?**
    By regularly running this report throughout the accounting period (not just at month-end), finance teams can identify and resolve exceptions proactively. Analyzing common `Journal Source`s or `Event Class`es that frequently appear as exceptions can also highlight systemic issues in configuration or business processes that need to be addressed.
 
-
 ---
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xla-subledger-period-close-exceptions)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xla-subledger-period-close-exceptions)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xla-subledger-period-close-exceptions)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xla-subledger-period-close-exceptions)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xla-subledger-period-close-exceptions)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xla-subledger-period-close-exceptions)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xla-subledger-period-close-exceptions)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

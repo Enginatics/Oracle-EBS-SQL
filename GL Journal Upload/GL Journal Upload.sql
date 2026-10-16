@@ -1,27 +1,24 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: GL Journal Upload
 -- Description: GL Journal Upload
-
-Templates are provided for the following Journal Types
-- Functional Actuals
-- Foreign Actuals
-- Budget Journals
-- Encumbrance Journals
-
-Submit for Approval
----------------------------
-Imported Journals requiring approval can be submitted for approval after import if they are eligble.
-
-Submit Journal Post
----------------------------
-Imported Journals can be submitted for immediate posting after import if they are eligible.
-In order to submit journals for posting, the current responsibility must have access to post journals.
--- Excel Examle Output: https://www.enginatics.com/example/gl-journal-upload/
+-- Templates are provided for the following Journal Types
+-- - Functional Actuals
+-- - Foreign Actuals
+-- - Budget Journals
+-- - Encumbrance Journals
+-- Submit for Approval
+-- ---------------------------
+-- Imported Journals requiring approval can be submitted for approval after import if they are eligble.
+-- Submit Journal Post
+-- ---------------------------
+-- Imported Journals can be submitted for immediate posting after import if they are eligible.
+-- In order to submit journals for posting, the current responsibility must have access to post journals.
+-- Excel Example Output: https://www.enginatics.com/example/gl-journal-upload/
 -- Library Link: https://www.enginatics.com/reports/gl-journal-upload/
 -- Run Report: https://demo.enginatics.com/
 

@@ -1,13 +1,13 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: ECC Admin - Data Sets
 -- Description: Enterprise Command Centers applications with data sets and load rule DB procedure names for incremental, full and metadata load.
-For description of the load process, see ECC Concurrent Programs <a href="https://www.enginatics.com/reports/ecc-concurrent-programs/" rel="nofollow" target="_blank">https://www.enginatics.com/reports/ecc-concurrent-programs/</a>
--- Excel Examle Output: https://www.enginatics.com/example/ecc-admin-data-sets/
+-- For description of the load process, see ECC Concurrent Programs https://www.enginatics.com/reports/ecc-concurrent-programs/
+-- Excel Example Output: https://www.enginatics.com/example/ecc-admin-data-sets/
 -- Library Link: https://www.enginatics.com/reports/ecc-admin-data-sets/
 -- Run Report: https://demo.enginatics.com/
 

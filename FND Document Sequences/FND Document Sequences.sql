@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: FND Document Sequences
 -- Description: Document sequence details including database sequence name and last seqeunce number.
--- Excel Examle Output: https://www.enginatics.com/example/fnd-document-sequences/
+-- Excel Example Output: https://www.enginatics.com/example/fnd-document-sequences/
 -- Library Link: https://www.enginatics.com/reports/fnd-document-sequences/
 -- Run Report: https://demo.enginatics.com/
 

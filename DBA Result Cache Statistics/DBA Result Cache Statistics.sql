@@ -1,19 +1,16 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: DBA Result Cache Statistics
 -- Description: Result cache statistics with size values in MB.
-
-If the 'Maximum Size' is big enough, 'Create Count Failure' should be zero or low, same as 'Delete Count Valid', which depicts the number of valid cache results flushed out.
-'Find Count' shows the number of cached results used (instead of executing the underlying sql/plsql) and should hence be as high as possible for maximum performance improvement.
-
-A high number of 'Invalidation Count' or 'Delete Count Invalid' relative to 'Find Count' should get investigated further as it indicates a result_cache specified for code where the underlying data changes too frequently.
-
-alter system set result_cache_max_size=600M scope=both
--- Excel Examle Output: https://www.enginatics.com/example/dba-result-cache-statistics/
+-- If the 'Maximum Size' is big enough, 'Create Count Failure' should be zero or low, same as 'Delete Count Valid', which depicts the number of valid cache results flushed out.
+-- 'Find Count' shows the number of cached results used (instead of executing the underlying sql/plsql) and should hence be as high as possible for maximum performance improvement.
+-- A high number of 'Invalidation Count' or 'Delete Count Invalid' relative to 'Find Count' should get investigated further as it indicates a resultcache specified for code where the underlying data changes too frequently.
+-- alter system set resultcachemaxsize=600M scope=both
+-- Excel Example Output: https://www.enginatics.com/example/dba-result-cache-statistics/
 -- Library Link: https://www.enginatics.com/reports/dba-result-cache-statistics/
 -- Run Report: https://demo.enginatics.com/
 

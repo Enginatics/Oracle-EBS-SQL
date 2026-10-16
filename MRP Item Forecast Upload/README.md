@@ -1,14 +1,17 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'MRP Item Forecast Upload | Oracle EBS SQL Report'
 description: 'MRP Item Forecast Upload ================================ - Create New Item Forecast Entries. - Update Existing Item Forecast Entries. - Delete Existing…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, MRP, Item, Forecast, pa_projects_all, pjm_seiban_numbers, pa_tasks'
 permalink: /MRP%20Item%20Forecast%20Upload/
+report_name: 'MRP Item Forecast Upload'
+report_web_name: mrp-item-forecast-upload
 ---
 
 # MRP Item Forecast Upload – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/mrp-item-forecast-upload/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/mrp-item-forecast-upload/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-item-forecast-upload) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-item-forecast-upload).
 
 ## Overview
 MRP Item Forecast Upload
@@ -74,32 +77,31 @@ This parameter determines the default behaviour for handling a non-workday forec
 The options are Reject the forecast entry, shift the date backwards to the previous working bucket date, or shift the date forward to the next working bucket date.   
 This can be overridden in the Upload spreadsheet for individual forecast entries.
 
-
-
-
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-item-forecast-upload) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 
 ## Report Parameters
 Upload Mode, Delete Existing Forecast, Default Bucket Type, Default Workday Control, Organization Code, Forecast Set, Forecast Name, Planner, Item, Project, Forecast Date From, Forecast Date To
 
 ## Oracle EBS Tables Used
-[pa_projects_all](https://www.enginatics.com/library/?pg=1&find=pa_projects_all), [pjm_seiban_numbers](https://www.enginatics.com/library/?pg=1&find=pjm_seiban_numbers), [pa_tasks](https://www.enginatics.com/library/?pg=1&find=pa_tasks), [wip_lines](https://www.enginatics.com/library/?pg=1&find=wip_lines), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters), [mrp_forecast_designators](https://www.enginatics.com/library/?pg=1&find=mrp_forecast_designators), [mrp_forecast_items_v](https://www.enginatics.com/library/?pg=1&find=mrp_forecast_items_v), [mrp_forecast_dates](https://www.enginatics.com/library/?pg=1&find=mrp_forecast_dates), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl)
+[pa_projects_all](https://www.enginatics.com/library/?pg=1&find=pa_projects_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-item-forecast-upload), [pjm_seiban_numbers](https://www.enginatics.com/library/?pg=1&find=pjm_seiban_numbers&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-item-forecast-upload), [pa_tasks](https://www.enginatics.com/library/?pg=1&find=pa_tasks&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-item-forecast-upload), [wip_lines](https://www.enginatics.com/library/?pg=1&find=wip_lines&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-item-forecast-upload), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-item-forecast-upload), [mrp_forecast_designators](https://www.enginatics.com/library/?pg=1&find=mrp_forecast_designators&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-item-forecast-upload), [mrp_forecast_items_v](https://www.enginatics.com/library/?pg=1&find=mrp_forecast_items_v&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-item-forecast-upload), [mrp_forecast_dates](https://www.enginatics.com/library/?pg=1&find=mrp_forecast_dates&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-item-forecast-upload), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-item-forecast-upload)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics), [Upload](https://www.enginatics.com/library/?pg=1&category[]=Upload)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-item-forecast-upload), [Upload](https://www.enginatics.com/library/?pg=1&category%5B%5D=Upload&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-item-forecast-upload)
 
 ## Related Reports
 [MRP Item Forecast](/MRP%20Item%20Forecast/ "MRP Item Forecast Oracle EBS SQL Report"), [MRP Pegging](/MRP%20Pegging/ "MRP Pegging Oracle EBS SQL Report"), [WIP Entities](/WIP%20Entities/ "WIP Entities Oracle EBS SQL Report"), [INV Safety Stocks](/INV%20Safety%20Stocks/ "INV Safety Stocks Oracle EBS SQL Report"), [WIP Job Upload](/WIP%20Job%20Upload/ "WIP Job Upload Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/MRP%20Item%20Forecast%20Upload/MRP%20Item%20Forecast%20Upload.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-item-forecast-upload) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [MRP Item Forecast Upload - Default 04-May-2025 154504.xlsm](https://www.enginatics.com/example/mrp-item-forecast-upload/) |
-| Blitz Report™ XML Import | [MRP_Item_Forecast_Upload.xml](https://www.enginatics.com/xml/mrp-item-forecast-upload/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/mrp-item-forecast-upload/](https://www.enginatics.com/reports/mrp-item-forecast-upload/) |
+| Excel Example Output | [MRP Item Forecast Upload - Default 04-May-2025 154504.xlsm](https://www.enginatics.com/example/mrp-item-forecast-upload/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-item-forecast-upload) |
+| Blitz Report™ XML Import | [MRP_Item_Forecast_Upload.xml](https://www.enginatics.com/xml/mrp-item-forecast-upload/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-item-forecast-upload) |
+| SQL Source | [MRP Item Forecast Upload.sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/MRP%20Item%20Forecast%20Upload/MRP%20Item%20Forecast%20Upload.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/mrp-item-forecast-upload/](https://www.enginatics.com/reports/mrp-item-forecast-upload/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-item-forecast-upload) |
 
 ## MRP Item Forecast Upload - Case Study & Technical Analysis
 
@@ -142,18 +144,17 @@ The tool uses a WebADI-style approach (Blitz Report Upload) to interface with th
 -   **Agility:** Enables rapid scenario planning and "what-if" analysis.
 -   **Accuracy:** Eliminates manual data entry errors by allowing copy-paste from external sources.
 
-
 ---
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-item-forecast-upload)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-item-forecast-upload)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-item-forecast-upload)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-item-forecast-upload)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-item-forecast-upload)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-item-forecast-upload)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-item-forecast-upload)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

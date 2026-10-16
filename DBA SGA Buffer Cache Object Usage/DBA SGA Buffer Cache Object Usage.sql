@@ -1,22 +1,20 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: DBA SGA Buffer Cache Object Usage
 -- Description: SGA buffer cache space usage by object names (in MB).
-'Object Percentage' shows how much of one particular object is currently stored in the buffer cache.
-100% means that the object is completely in the buffer cache.
-
-Current SGA memory usage is also listed in views:
-select * from v$sga
-select * from v$sgainfo
-select * from v$sga_dynamic_components
-
-Arup Nanda gives a good explanation on how the buffer cache works:
-<a href="http://arup.blogspot.ch/2014/11/cache-buffer-chains-demystified.html" rel="nofollow" target="_blank">http://arup.blogspot.ch/2014/11/cache-buffer-chains-demystified.html</a>
--- Excel Examle Output: https://www.enginatics.com/example/dba-sga-buffer-cache-object-usage/
+-- 'Object Percentage' shows how much of one particular object is currently stored in the buffer cache.
+-- 100% means that the object is completely in the buffer cache.
+-- Current SGA memory usage is also listed in views:
+-- select from v$sga
+-- select from v$sgainfo
+-- select from v$sgadynamiccomponents
+-- Arup Nanda gives a good explanation on how the buffer cache works:
+-- http://arup.blogspot.ch/2014/11/cache-buffer-chains-demystified.html
+-- Excel Example Output: https://www.enginatics.com/example/dba-sga-buffer-cache-object-usage/
 -- Library Link: https://www.enginatics.com/reports/dba-sga-buffer-cache-object-usage/
 -- Run Report: https://demo.enginatics.com/
 

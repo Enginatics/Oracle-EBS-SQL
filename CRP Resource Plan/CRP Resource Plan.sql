@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CRP Resource Plan
 -- Description: Detail report for each resource code, showing the resource date, hours, work start and end date, type of work scheduled, and the quantity scheduled.
--- Excel Examle Output: https://www.enginatics.com/example/crp-resource-plan/
+-- Excel Example Output: https://www.enginatics.com/example/crp-resource-plan/
 -- Library Link: https://www.enginatics.com/reports/crp-resource-plan/
 -- Run Report: https://demo.enginatics.com/
 

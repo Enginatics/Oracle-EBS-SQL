@@ -1,13 +1,13 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: DBA Editioned Object Summary
 -- Description: Summary of editioned objects per edition from ADZDSHOWOBJS.sql
-There is a good blog: <a href="https://www.pythian.com/blog/technical-track/adop-edition-cleanup" rel="nofollow" target="_blank">https://www.pythian.com/blog/technical-track/adop-edition-cleanup</a>
--- Excel Examle Output: https://www.enginatics.com/example/dba-editioned-object-summary/
+-- There is a good blog: https://www.pythian.com/blog/technical-track/adop-edition-cleanup
+-- Excel Example Output: https://www.enginatics.com/example/dba-editioned-object-summary/
 -- Library Link: https://www.enginatics.com/reports/dba-editioned-object-summary/
 -- Run Report: https://demo.enginatics.com/
 

@@ -1,46 +1,44 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC PO Receipt History for Item Costing
--- Description: Report to show Purchase Order (PO) Receipt History for inventory organizations, for a selected PO receipt date range.  If the Comparison Cost Type is not entered the report uses the Cost Type from the Primary Costing Method, such as Frozen, Average, FIFO or LIFO.  And note you may use this report for any discrete costing method but the CAC PO Receipt History for Actual Costing report may be a better choice for Average, FIFO and LIFO Costing, as additional information is available, such as the prior costed quantity, prior cost and new onhand quantity.
-
-Parameters:
-===========
-Transaction Date From:  enter the starting transaction date for PO Receipt History (mandatory).
-Transaction Date To:  enter the ending transaction date for PO Receipt History (mandatory).
-Comparison Cost Type: enter the cost type to compare against the PO receipts (optional).  If the Comparison Cost Type is not entered the report uses Cost Type from the Primary Costing Method.
-Category Set 1:  any item category you wish, typically the Cost or Product Line category set (optional).
-Category Set 2:  any item category you wish, typically the Inventory category set (optional).
-Item Number:  enter the specific item number(s) you wish to report (optional).
-Organization Code:  enter the specific inventory organization(s) you wish to report (optional).
-Operating Unit:  enter the specific operating unit(s) you wish to report (optional).
-Ledger:  enter the specific ledger(s) you wish to report (optional).
-
-/* +=============================================================================+
--- | Copyright 2006 - 2023 Douglas Volz Consulting, Inc.
--- | All rights reserved.
--- | Permission to use this code is granted provided the original author is
--- | acknowledged. No warranties, express or otherwise is included in this permission.                                                                 
--- +=============================================================================+
--- |
--- | Version Modified on Modified by Description
--- | ======= =========== ============== =========================================
--- | 1.0     28 May 2006 Douglas Volz   Initial Coding based on item_cost_history.sql
--- | 1.1     04 Jan 2019 Douglas Volz   Added transaction date range, inventory
--- |                                    org and specific item parameters.
--- | 1.2     30 Aug 2019 Douglas Volz   Add Ledger, Operating Unit, Item Type, Status
--- |                                    and item categories for cost and inventory.
--- | 1.3     27 Jan 2020 Douglas Volz   Added Org_Code and Operating_Unit parameters.
--- | 1.4     05 Jul 2022 Douglas Volz   Modify for multi-language tables, change UOM to
--- |                                    primary, and changes for Standard Costing.
--- | 1.5     01 Sep 2022 Douglas Volz   Add supplier information to report.
--- | 1.6     13 Dec 2022 Douglas Volz   Fix supplier type and cost type logic.
--- | 1.7     11 Sep 2023 Douglas Volz   Added Transaction Type to report.
--- +=============================================================================+*/
--- Excel Examle Output: https://www.enginatics.com/example/cac-po-receipt-history-for-item-costing/
+-- Description: Report to show Purchase Order (PO) Receipt History for inventory organizations, for a selected PO receipt date range. If the Comparison Cost Type is not entered the report uses the Cost Type from the Primary Costing Method, such as Frozen, Average, FIFO or LIFO. And note you may use this report for any discrete costing method but the CAC PO Receipt History for Actual Costing report may be a better choice for Average, FIFO and LIFO Costing, as additional information is available, such as the prior costed quantity, prior cost and new onhand quantity.
+-- Parameters:
+-- ===========
+-- Transaction Date From: enter the starting transaction date for PO Receipt History (mandatory).
+-- Transaction Date To: enter the ending transaction date for PO Receipt History (mandatory).
+-- Comparison Cost Type: enter the cost type to compare against the PO receipts (optional). If the Comparison Cost Type is not entered the report uses Cost Type from the Primary Costing Method.
+-- Category Set 1: any item category you wish, typically the Cost or Product Line category set (optional).
+-- Category Set 2: any item category you wish, typically the Inventory category set (optional).
+-- Item Number: enter the specific item number(s) you wish to report (optional).
+-- Organization Code: enter the specific inventory organization(s) you wish to report (optional).
+-- Operating Unit: enter the specific operating unit(s) you wish to report (optional).
+-- Ledger: enter the specific ledger(s) you wish to report (optional).
+-- / +=============================================================================+
+-- -- | Copyright 2006 - 2023 Douglas Volz Consulting, Inc.
+-- -- | All rights reserved.
+-- -- | Permission to use this code is granted provided the original author is
+-- -- | acknowledged. No warranties, express or otherwise is included in this permission.
+-- -- +=============================================================================+
+-- -- |
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== ============== =========================================
+-- -- | 1.0 28 May 2006 Douglas Volz Initial Coding based on itemcosthistory.sql
+-- -- | 1.1 04 Jan 2019 Douglas Volz Added transaction date range, inventory
+-- -- | org and specific item parameters.
+-- -- | 1.2 30 Aug 2019 Douglas Volz Add Ledger, Operating Unit, Item Type, Status
+-- -- | and item categories for cost and inventory.
+-- -- | 1.3 27 Jan 2020 Douglas Volz Added OrgCode and OperatingUnit parameters.
+-- -- | 1.4 05 Jul 2022 Douglas Volz Modify for multi-language tables, change UOM to
+-- -- | primary, and changes for Standard Costing.
+-- -- | 1.5 01 Sep 2022 Douglas Volz Add supplier information to report.
+-- -- | 1.6 13 Dec 2022 Douglas Volz Fix supplier type and cost type logic.
+-- -- | 1.7 11 Sep 2023 Douglas Volz Added Transaction Type to report.
+-- -- +=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-po-receipt-history-for-item-costing/
 -- Library Link: https://www.enginatics.com/reports/cac-po-receipt-history-for-item-costing/
 -- Run Report: https://demo.enginatics.com/
 

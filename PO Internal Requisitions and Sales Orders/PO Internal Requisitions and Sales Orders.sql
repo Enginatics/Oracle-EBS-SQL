@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PO Internal Requisitions and Sales Orders
 -- Description: Report to display internal sales orders and requisition numbers, with aging dates and other useful information.
--- Excel Examle Output: https://www.enginatics.com/example/po-internal-requisitions-and-sales-orders/
+-- Excel Example Output: https://www.enginatics.com/example/po-internal-requisitions-and-sales-orders/
 -- Library Link: https://www.enginatics.com/reports/po-internal-requisitions-and-sales-orders/
 -- Run Report: https://demo.enginatics.com/
 

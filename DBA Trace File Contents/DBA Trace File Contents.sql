@@ -1,13 +1,13 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: DBA Trace File Contents
--- Description: V$DIAG_TRACE_FILE_CONTENTS contains trace data that is present in the trace files that are part of the current Automatic Diagnostic Repository (ADR).
-Supported starting from Oracle Database 12.2.
--- Excel Examle Output: https://www.enginatics.com/example/dba-trace-file-contents/
+-- Description: V$DIAGTRACEFILECONTENTS contains trace data that is present in the trace files that are part of the current Automatic Diagnostic Repository (ADR).
+-- Supported starting from Oracle Database 12.2.
+-- Excel Example Output: https://www.enginatics.com/example/dba-trace-file-contents/
 -- Library Link: https://www.enginatics.com/reports/dba-trace-file-contents/
 -- Run Report: https://demo.enginatics.com/
 

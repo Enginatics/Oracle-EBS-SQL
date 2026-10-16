@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: Blitz Report Parameter Dependencies
 -- Description: 
--- Excel Examle Output: https://www.enginatics.com/example/blitz-report-parameter-dependencies/
+-- Excel Example Output: https://www.enginatics.com/example/blitz-report-parameter-dependencies/
 -- Library Link: https://www.enginatics.com/reports/blitz-report-parameter-dependencies/
 -- Run Report: https://demo.enginatics.com/
 

@@ -1,45 +1,43 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC New Standard Item Costs
--- Description: Report to show items which have recent item cost changes, including various item controls, last cost update submission, new standard item cost, prior item cost and current (Frozen) item cost, by cost update date.  And whether or not BOMs, routings or (inventory organization) sourcing rules exist for the item.  As allowed with no onhand or intransit quantities, if an item cost has been directly entered into the Frozen Cost Type, the Cost Update Request Id, Cost Update Description, Cost Update Status and related cost update submission columns will be blank or empty.
-
-Parameters:
-Cost Update Date From:  starting cost update date, based on standard cost submission history (required).
-Cost Update Date To: ending cost update date, based on standard cost submission history (required).
-From Cost Type:  enter the cost type implemented by the Standard Cost Update into the Frozen costs (optional).
-Category Set 1:  any item category you wish, typically the Cost or Product Line category set (optional).
-Category Set 2:  any item category you wish, typically the Inventory category set (optional).
-Item Number:  enter the specific item number(s) you wish to report (optional).
-Organization Code:  enter the specific inventory organization(s) you wish to report (optional).
-Operating Unit:  enter the specific operating unit(s) you wish to report (optional).
-Ledger:  enter the specific ledger(s) you wish to report (optional).
-
-/* +=============================================================================+
--- | Copyright 2023 Douglas Volz Consulting, Inc.
--- | All rights reserved.
--- | Permission to use this code is granted provided the original author is
--- | acknowledged. No warranties, express or otherwise is included in this permission.
--- +=============================================================================+
--- |
--- | Original Author: Douglas Volz (doug@volzconsulting.com)
--- |
--- | Program Name: xxx_new_standard_item_cost_rept.sql
--- | 
--- | Version Modified on Modified by    Description
--- | ======= =========== ============== =========================================
--- |  1.0    29 Sep 2023 Douglas Volz   Initial coding based on the Cost Update
--- |                                    Submissions report.
--- |  1.1    30 Oct 2023 Douglas Volz   Added Item Created By, Last Updated By 
--- |                                    and BOM/Routing/Sourcing Rules exist columns.
--- |  1.2    22 Nov 2023 Douglas Volz   Add item master and costing lot sizes, and 
--- |                                    use default controls columns.
--- |  1.3    05 Dec 2023 Douglas Volz   Added G/L and Operating Unit security restrictions. 
--- +=============================================================================+*/
--- Excel Examle Output: https://www.enginatics.com/example/cac-new-standard-item-costs/
+-- Description: Report to show items which have recent item cost changes, including various item controls, last cost update submission, new standard item cost, prior item cost and current (Frozen) item cost, by cost update date. And whether or not BOMs, routings or (inventory organization) sourcing rules exist for the item. As allowed with no onhand or intransit quantities, if an item cost has been directly entered into the Frozen Cost Type, the Cost Update Request Id, Cost Update Description, Cost Update Status and related cost update submission columns will be blank or empty.
+-- Parameters:
+-- Cost Update Date From: starting cost update date, based on standard cost submission history (required).
+-- Cost Update Date To: ending cost update date, based on standard cost submission history (required).
+-- From Cost Type: enter the cost type implemented by the Standard Cost Update into the Frozen costs (optional).
+-- Category Set 1: any item category you wish, typically the Cost or Product Line category set (optional).
+-- Category Set 2: any item category you wish, typically the Inventory category set (optional).
+-- Item Number: enter the specific item number(s) you wish to report (optional).
+-- Organization Code: enter the specific inventory organization(s) you wish to report (optional).
+-- Operating Unit: enter the specific operating unit(s) you wish to report (optional).
+-- Ledger: enter the specific ledger(s) you wish to report (optional).
+-- / +=============================================================================+
+-- -- | Copyright 2023 Douglas Volz Consulting, Inc.
+-- -- | All rights reserved.
+-- -- | Permission to use this code is granted provided the original author is
+-- -- | acknowledged. No warranties, express or otherwise is included in this permission.
+-- -- +=============================================================================+
+-- -- |
+-- -- | Original Author: Douglas Volz (doug@volzconsulting.com)
+-- -- |
+-- -- | Program Name: xxxnewstandarditemcostrept.sql
+-- -- |
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== ============== =========================================
+-- -- | 1.0 29 Sep 2023 Douglas Volz Initial coding based on the Cost Update
+-- -- | Submissions report.
+-- -- | 1.1 30 Oct 2023 Douglas Volz Added Item Created By, Last Updated By
+-- -- | and BOM/Routing/Sourcing Rules exist columns.
+-- -- | 1.2 22 Nov 2023 Douglas Volz Add item master and costing lot sizes, and
+-- -- | use default controls columns.
+-- -- | 1.3 05 Dec 2023 Douglas Volz Added G/L and Operating Unit security restrictions.
+-- -- +=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-new-standard-item-costs/
 -- Library Link: https://www.enginatics.com/reports/cac-new-standard-item-costs/
 -- Run Report: https://demo.enginatics.com/
 

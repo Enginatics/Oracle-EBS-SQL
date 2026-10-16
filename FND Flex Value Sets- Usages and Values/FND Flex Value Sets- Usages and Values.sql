@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: FND Flex Value Sets, Usages and Values
 -- Description: Value sets and values including usages, validation type, format type, validation table, columns etc.
--- Excel Examle Output: https://www.enginatics.com/example/fnd-flex-value-sets-usages-and-values/
+-- Excel Example Output: https://www.enginatics.com/example/fnd-flex-value-sets-usages-and-values/
 -- Library Link: https://www.enginatics.com/reports/fnd-flex-value-sets-usages-and-values/
 -- Run Report: https://demo.enginatics.com/
 

@@ -1,31 +1,24 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: QP GSA Pricing Upload
 -- Description: This upload supports the creation and update of GSA Pricing Setup in Oracle Advanced Pricing.
-
-The upload supports creation/update/deletion of the following entities within a GSA Pricing List:
-
-- GSA Lists (created as a Modifier List)
-- GSA List Qualifiers (created as a Modifier List Qualifier)
-- GSA List Lines (created as Modifier Lines)
-
-Notes:
-
-When downloading existing GSA Lists into the upload excel; the List level Qualifiers and the List Lines will be downloaded into separate rows in the excel. This is to minimize the duplication of data in the excel.  
-
-However:
-When entering List Header qualifiers, these can be added in the same excel row as the List Lines (i.e. You can upload an excel row containing list line details and a list header qualifier). 
-
-Modifier Line Numbering
-====================
-The Modifier Numbering report parameter determines if you want the system to automatically generate Modifier Numbers when creating new GSA List Lines or if the line number specified in the Line No column in the upload should be retained. If Automatic is specified, any Line Numbers specified in the upload excel for new GSA List Lines will be replaced by a system generated line number on upload.
-The Line No column is required when entering list line details. The upload uses the combination of List Number, List Version, and Line No to identify the GSA List Line. If the combination already exists in Oracle the upload will update the existing GSA List Line, otherwise it will create a new GSA List Line.
-
--- Excel Examle Output: https://www.enginatics.com/example/qp-gsa-pricing-upload/
+-- The upload supports creation/update/deletion of the following entities within a GSA Pricing List:
+-- - GSA Lists (created as a Modifier List)
+-- - GSA List Qualifiers (created as a Modifier List Qualifier)
+-- - GSA List Lines (created as Modifier Lines)
+-- Notes:
+-- When downloading existing GSA Lists into the upload excel; the List level Qualifiers and the List Lines will be downloaded into separate rows in the excel. This is to minimize the duplication of data in the excel.
+-- However:
+-- When entering List Header qualifiers, these can be added in the same excel row as the List Lines (i.e. You can upload an excel row containing list line details and a list header qualifier).
+-- Modifier Line Numbering
+-- ====================
+-- The Modifier Numbering report parameter determines if you want the system to automatically generate Modifier Numbers when creating new GSA List Lines or if the line number specified in the Line No column in the upload should be retained. If Automatic is specified, any Line Numbers specified in the upload excel for new GSA List Lines will be replaced by a system generated line number on upload.
+-- The Line No column is required when entering list line details. The upload uses the combination of List Number, List Version, and Line No to identify the GSA List Line. If the combination already exists in Oracle the upload will update the existing GSA List Line, otherwise it will create a new GSA List Line.
+-- Excel Example Output: https://www.enginatics.com/example/qp-gsa-pricing-upload/
 -- Library Link: https://www.enginatics.com/reports/qp-gsa-pricing-upload/
 -- Run Report: https://demo.enginatics.com/
 

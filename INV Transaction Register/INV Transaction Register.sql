@@ -1,17 +1,17 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: INV Transaction Register
 -- Description: Imported from BI Publisher
-Description: Transaction register
-Application: Inventory
-Source: Transaction register (XML)
-Short Name: INVTRREG_XML
-DB package: INV_INVTRREG_XMLP_PKG
--- Excel Examle Output: https://www.enginatics.com/example/inv-transaction-register/
+-- Description: Transaction register
+-- Application: Inventory
+-- Source: Transaction register (XML)
+-- Short Name: INVTRREGXML
+-- DB package: INVINVTRREGXMLPPKG
+-- Excel Example Output: https://www.enginatics.com/example/inv-transaction-register/
 -- Library Link: https://www.enginatics.com/reports/inv-transaction-register/
 -- Run Report: https://demo.enginatics.com/
 

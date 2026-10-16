@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: ZX Party Tax Profiles
 -- Description: E-Business Tax party tax profiles and tax registration details
--- Excel Examle Output: https://www.enginatics.com/example/zx-party-tax-profiles/
+-- Excel Example Output: https://www.enginatics.com/example/zx-party-tax-profiles/
 -- Library Link: https://www.enginatics.com/reports/zx-party-tax-profiles/
 -- Run Report: https://demo.enginatics.com/
 

@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: FND Data Groups
 -- Description: 
--- Excel Examle Output: https://www.enginatics.com/example/fnd-data-groups/
+-- Excel Example Output: https://www.enginatics.com/example/fnd-data-groups/
 -- Library Link: https://www.enginatics.com/reports/fnd-data-groups/
 -- Run Report: https://demo.enginatics.com/
 

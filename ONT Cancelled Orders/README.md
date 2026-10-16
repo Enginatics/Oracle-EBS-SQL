@@ -1,14 +1,20 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'ONT Cancelled Orders | Oracle EBS SQL Report'
 description: 'Imported from BI Publisher Description: Cancelled Orders Report Application: Order Management Source: Cancelled Orders Report (XML) Short Name…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, ONT, Cancelled, Orders, oe_order_lines_all, oe_order_headers_all, mtl_system_items_vl'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Order Management, Enginatics, ONT, Cancelled, Orders, oe_order_lines_all, oe_order_headers_all, mtl_system_items_vl'
 permalink: /ONT%20Cancelled%20Orders/
+report_name: 'ONT Cancelled Orders'
+report_web_name: ont-cancelled-orders
+module: 'Order Management'
+module_url: /modules/order-management/
 ---
 
 # ONT Cancelled Orders – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/ont-cancelled-orders/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/ont-cancelled-orders/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ont-cancelled-orders) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ont-cancelled-orders).
+**Oracle EBS module:** [Order Management](/modules/order-management/ "Oracle EBS Order Management reports") · [all Order Management reports](/modules/order-management/)  
 
 ## Overview
 Imported from BI Publisher
@@ -18,28 +24,31 @@ Source: Cancelled Orders Report (XML)
 Short Name: OEXOEOCS_XML
 DB package: ONT_OEXOEOCS_XMLP_PKG
 
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ont-cancelled-orders) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
+
 ## Report Parameters
 Operating Unit, Sort By, Customer Name (From), Customer Name (To), Order Number (From), Order Number (To), Salesperson (From), Salesperson Name (To), Order Date (From), Order Date (To), Item, Item Display, Category Set 1, Category Set 2, Category Set 3, Order Category, Line Category, Show in Ledger Currency, Mixed Precision
 
 ## Oracle EBS Tables Used
-[oe_order_lines_all](https://www.enginatics.com/library/?pg=1&find=oe_order_lines_all), [oe_order_headers_all](https://www.enginatics.com/library/?pg=1&find=oe_order_headers_all), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl), [ra_salesreps_all](https://www.enginatics.com/library/?pg=1&find=ra_salesreps_all), [oe_sold_to_orgs_v](https://www.enginatics.com/library/?pg=1&find=oe_sold_to_orgs_v), [oe_order_lines_history](https://www.enginatics.com/library/?pg=1&find=oe_order_lines_history), [oe_reasons](https://www.enginatics.com/library/?pg=1&find=oe_reasons)
+[oe_order_lines_all](https://www.enginatics.com/library/?pg=1&find=oe_order_lines_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ont-cancelled-orders), [oe_order_headers_all](https://www.enginatics.com/library/?pg=1&find=oe_order_headers_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ont-cancelled-orders), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ont-cancelled-orders), [ra_salesreps_all](https://www.enginatics.com/library/?pg=1&find=ra_salesreps_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ont-cancelled-orders), [oe_sold_to_orgs_v](https://www.enginatics.com/library/?pg=1&find=oe_sold_to_orgs_v&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ont-cancelled-orders), [oe_order_lines_history](https://www.enginatics.com/library/?pg=1&find=oe_order_lines_history&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ont-cancelled-orders), [oe_reasons](https://www.enginatics.com/library/?pg=1&find=oe_reasons&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ont-cancelled-orders)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ont-cancelled-orders)
 
 ## Related Reports
-[PPF_WP3_OM_DETAILS](/PPF_WP3_OM_DETAILS/ "PPF_WP3_OM_DETAILS Oracle EBS SQL Report"), [ONT Orders and Lines](/ONT%20Orders%20and%20Lines/ "ONT Orders and Lines Oracle EBS SQL Report"), [GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report"), [GL Account Analysis](/GL%20Account%20Analysis/ "GL Account Analysis Oracle EBS SQL Report")
+[ONT Orders and Lines 11i](/ONT%20Orders%20and%20Lines%2011i/ "ONT Orders and Lines 11i Oracle EBS SQL Report"), [ONT Orders and Lines](/ONT%20Orders%20and%20Lines/ "ONT Orders and Lines Oracle EBS SQL Report"), [PPF_WP3_OM_DETAILS](/PPF_WP3_OM_DETAILS/ "PPF_WP3_OM_DETAILS Oracle EBS SQL Report"), [GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/ONT%20Cancelled%20Orders/ONT%20Cancelled%20Orders.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ont-cancelled-orders) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [ONT Cancelled Orders - Default 01-Mar-2023 043339.xlsx](https://www.enginatics.com/example/ont-cancelled-orders/) |
-| Blitz Report™ XML Import | [ONT_Cancelled_Orders.xml](https://www.enginatics.com/xml/ont-cancelled-orders/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/ont-cancelled-orders/](https://www.enginatics.com/reports/ont-cancelled-orders/) |
+| Excel Example Output | [ONT Cancelled Orders - Default 01-Mar-2023 043339.xlsx](https://www.enginatics.com/example/ont-cancelled-orders/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ont-cancelled-orders) |
+| Blitz Report™ XML Import | [ONT_Cancelled_Orders.xml](https://www.enginatics.com/xml/ont-cancelled-orders/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ont-cancelled-orders) |
+| SQL Source | [ONT Cancelled Orders.sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/ONT%20Cancelled%20Orders/ONT%20Cancelled%20Orders.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/ont-cancelled-orders/](https://www.enginatics.com/reports/ont-cancelled-orders/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ont-cancelled-orders) |
 
 ## Case Study & Technical Analysis: ONT Cancelled Orders Report
 
@@ -106,18 +115,17 @@ The report's performance is optimized for a fast and efficient user experience.
 **3. Can I see order lines that were partially cancelled?**
    Yes. If an order line's quantity was reduced (e.g., from 10 to 6), the original line is often split. The report would show a cancelled line for the quantity of 4 with a corresponding cancellation reason, and the original line would now have a quantity of 6, which would proceed to fulfillment.
 
-
 ---
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ont-cancelled-orders)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ont-cancelled-orders)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ont-cancelled-orders)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ont-cancelled-orders)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ont-cancelled-orders)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ont-cancelled-orders)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ont-cancelled-orders)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

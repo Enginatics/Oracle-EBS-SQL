@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: FND Attachment Functions
 -- Description: FND attachment functions, their category assignments, forms blocks and block entities
--- Excel Examle Output: https://www.enginatics.com/example/fnd-attachment-functions/
+-- Excel Example Output: https://www.enginatics.com/example/fnd-attachment-functions/
 -- Library Link: https://www.enginatics.com/reports/fnd-attachment-functions/
 -- Run Report: https://demo.enginatics.com/
 

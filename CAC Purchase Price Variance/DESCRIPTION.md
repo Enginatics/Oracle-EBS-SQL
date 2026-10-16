@@ -1,4 +1,3 @@
-
 # Case Study & Technical Analysis: CAC Purchase Price Variance
 
 ## Executive Summary

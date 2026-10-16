@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: MRP Sourcing Rules and Bills of Distribution
 -- Description: Sourcing rules for all or a selected assignment set, along with with the item's make / buy flag and based on rollup flag for costing. You can either choose Organization or Vendor (Supplier) sourcing rules or get all sourcing rules by not selecting a sourcing rule type.
--- Excel Examle Output: https://www.enginatics.com/example/mrp-sourcing-rules-and-bills-of-distribution/
+-- Excel Example Output: https://www.enginatics.com/example/mrp-sourcing-rules-and-bills-of-distribution/
 -- Library Link: https://www.enginatics.com/reports/mrp-sourcing-rules-and-bills-of-distribution/
 -- Run Report: https://demo.enginatics.com/
 

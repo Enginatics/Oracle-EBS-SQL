@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: DBA Index Columns
 -- Description: 
--- Excel Examle Output: https://www.enginatics.com/example/dba-index-columns/
+-- Excel Example Output: https://www.enginatics.com/example/dba-index-columns/
 -- Library Link: https://www.enginatics.com/reports/dba-index-columns/
 -- Run Report: https://demo.enginatics.com/
 
@@ -19,18 +19,16 @@ dic.index_name,
 xxen_util.meaning(decode(di.uniqueness,'UNIQUE','Y'),'YES_NO',0) unique_,
 dic.column_name,
 dic.column_position,
-do.created
+(select do.created from dba_objects do where di.owner=do.owner and di.index_name=do.object_name and do.object_type='INDEX') created
 from
 dba_indexes di,
-dba_ind_columns dic,
-dba_objects do
+dba_ind_columns dic
 where
 1=1 and
+di.table_owner=dic.table_owner and
+di.table_name=dic.table_name and
 di.owner=dic.index_owner and
-di.index_name=dic.index_name and
-di.owner=do.owner(+) and
-di.index_name=do.object_name(+) and
-do.object_type(+)='INDEX'
+di.index_name=dic.index_name
 order by
 dic.table_name,
 dic.index_name,

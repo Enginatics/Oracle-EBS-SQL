@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: ZX Lines Summary
 -- Description: Tax lines summary to understand the different applications, entity codes and events that generate tax lines
--- Excel Examle Output: https://www.enginatics.com/example/zx-lines-summary/
+-- Excel Example Output: https://www.enginatics.com/example/zx-lines-summary/
 -- Library Link: https://www.enginatics.com/reports/zx-lines-summary/
 -- Run Report: https://demo.enginatics.com/
 

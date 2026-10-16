@@ -1,15 +1,15 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PO Internal Requisitions/Deliveries Discrepancy
 -- Description: Application: Purchasing
-Description: Internal Requisitions/Deliveries Discrepancy Report
-Source: Internal Requisitions/Deliveries Discrepancy Report (XML)
-Short Name: POXRQSDD_XML
--- Excel Examle Output: https://www.enginatics.com/example/po-internal-requisitions-deliveries-discrepancy/
+-- Description: Internal Requisitions/Deliveries Discrepancy Report
+-- Source: Internal Requisitions/Deliveries Discrepancy Report (XML)
+-- Short Name: POXRQSDDXML
+-- Excel Example Output: https://www.enginatics.com/example/po-internal-requisitions-deliveries-discrepancy/
 -- Library Link: https://www.enginatics.com/reports/po-internal-requisitions-deliveries-discrepancy/
 -- Run Report: https://demo.enginatics.com/
 

@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: WF Activity Status Summary
 -- Description: Summary counts of stuck and errored workflow activities to monitor required housekeeping activities
--- Excel Examle Output: https://www.enginatics.com/example/wf-activity-status-summary/
+-- Excel Example Output: https://www.enginatics.com/example/wf-activity-status-summary/
 -- Library Link: https://www.enginatics.com/reports/wf-activity-status-summary/
 -- Run Report: https://demo.enginatics.com/
 

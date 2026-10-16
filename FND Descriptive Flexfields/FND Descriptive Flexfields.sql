@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: FND Descriptive Flexfields
 -- Description: Descriptive flexfields table, context, column and validation information
--- Excel Examle Output: https://www.enginatics.com/example/fnd-descriptive-flexfields/
+-- Excel Example Output: https://www.enginatics.com/example/fnd-descriptive-flexfields/
 -- Library Link: https://www.enginatics.com/reports/fnd-descriptive-flexfields/
 -- Run Report: https://demo.enginatics.com/
 

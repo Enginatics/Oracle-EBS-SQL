@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: Blitz Report History Summary
 -- Description: Count and performance summary of historic Blitz Report executions
--- Excel Examle Output: https://www.enginatics.com/example/blitz-report-history-summary/
+-- Excel Example Output: https://www.enginatics.com/example/blitz-report-history-summary/
 -- Library Link: https://www.enginatics.com/reports/blitz-report-history-summary/
 -- Run Report: https://demo.enginatics.com/
 

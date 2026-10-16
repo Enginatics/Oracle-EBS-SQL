@@ -1,17 +1,18 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: AR Sales Journal By Customer
 -- Description: Imported from BI Publisher
-Description: Sales Journal By Customer
-Application: Receivables
-Source: Sales Journal By Customer (XML)
-Short Name: RAXGLA_XML
-DB package: AR_RAXGLA_XMLP_PKG
--- Excel Examle Output: https://www.enginatics.com/example/ar-sales-journal-by-customer/
+-- Description: Sales Journal By Customer
+-- Application: Receivables
+-- Source: Sales Journal By Customer (XML)
+-- Short Name: RAXGLAXML
+-- DB package: ARRAXGLAXMLPPKG
+-- When India Localization is installed, the following GST columns are also included: GST Registration No, GST PAN No, CGST Amount, SGST Amount, IGST Amount, CESS Amount, Custom Amount, Unclassified Tax Amount, Taxable Value, HSN SAC Code, HSN Length Warning, CGST Rate, SGST Rate, IGST Rate, CESS Rate.
+-- Excel Example Output: https://www.enginatics.com/example/ar-sales-journal-by-customer/
 -- Library Link: https://www.enginatics.com/reports/ar-sales-journal-by-customer/
 -- Run Report: https://demo.enginatics.com/
 
@@ -46,6 +47,9 @@ select
  then decode(gl_dist.account_class,'REC',-10,'FREIGHT' ,decode(lines.link_to_cust_trx_line_id,null,-10,link_line.line_number),nvl(link_line.line_number, lines.line_number))
  else decode(gl_dist.account_class,'REC',-10,'FREIGHT' ,decode(lines.link_to_cust_trx_line_id,null,-10,10),10)
  end line_number_sort
+&il_reg_columns
+&il_columns_amt
+&il_columns_rate
 from
  gl_sets_of_books gsob,
  hr_all_organization_units_vl haouv,
@@ -55,6 +59,7 @@ from
  ra_customer_trx_lines_all lines,
  ra_customer_trx_lines_all link_line,
  ar_xla_ctlgd_lines_v gl_dist
+&il_from
 where
  :p_reporting_level = :p_reporting_level and
  :p_reporting_entity_id = :p_reporting_entity_id and
@@ -69,6 +74,7 @@ where
  gl_dist.set_of_books_id = gsob.set_of_books_id and
  nvl(gl_dist.gl_posted_date, TO_DATE('01/01/0001', 'MM/DD/YYYY')) = decode(:p_posting_status, 'POSTED', gl_dist.gl_posted_date, 'UNPOSTED', TO_DATE('01/01/0001','MM/DD/YYYY'), nvl(gl_dist.gl_posted_date, TO_DATE('01/01/0001', 'MM/DD/YYYY'))) and
  trx.org_id=haouv.organization_id
+&il_where
 group by
  gsob.name,
  haouv.name,

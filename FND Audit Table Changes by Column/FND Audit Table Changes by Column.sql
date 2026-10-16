@@ -1,14 +1,13 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: FND Audit Table Changes by Column
 -- Description: Reports all changes to an audited application table.
-
-The report has one row per audit transaction and audited column showing the old and new audit column value.
--- Excel Examle Output: https://www.enginatics.com/example/fnd-audit-table-changes-by-column/
+-- The report has one row per audit transaction and audited column showing the old and new audit column value.
+-- Excel Example Output: https://www.enginatics.com/example/fnd-audit-table-changes-by-column/
 -- Library Link: https://www.enginatics.com/reports/fnd-audit-table-changes-by-column/
 -- Run Report: https://demo.enginatics.com/
 

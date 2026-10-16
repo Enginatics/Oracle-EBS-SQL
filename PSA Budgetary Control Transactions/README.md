@@ -1,14 +1,20 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'PSA Budgetary Control Transactions | Oracle EBS SQL Report'
 description: 'Imported from Concurrent Program Description: Budgetary Control Results Report Program Application: Public Sector Financials Source: Budgetary Control…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, PSA, Budgetary, Control, Transactions, &lp_expand_tables, gl_ledgers, gl_code_combinations_kfv'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Public Sector Financials, Enginatics, R12 only, PSA, Budgetary, Control, Transactions, psa_bc_results_gt, gl_ledgers, gl_code_combinations_kfv'
 permalink: /PSA%20Budgetary%20Control%20Transactions/
+report_name: 'PSA Budgetary Control Transactions'
+report_web_name: psa-budgetary-control-transactions
+module: 'Public Sector Financials'
+module_url: /modules/public-sector-financials/
 ---
 
 # PSA Budgetary Control Transactions – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/psa-budgetary-control-transactions/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/psa-budgetary-control-transactions/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=psa-budgetary-control-transactions) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=psa-budgetary-control-transactions).
+**Oracle EBS module:** [Public Sector Financials](/modules/public-sector-financials/ "Oracle EBS Public Sector Financials reports") · [all Public Sector Financials reports](/modules/public-sector-financials/)  
 
 ## Overview
 Imported from Concurrent Program
@@ -32,29 +38,31 @@ Budgetary Control Transactions Extract
 Flat File one row per transaction extract.
 Budget, Encumbrances, Expenditures, and Funds Available Amounts are included as separate columns on the same excel row
 
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=psa-budgetary-control-transactions) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 
 ## Report Parameters
 Ledger Name, Period From, Period To, JE Batch Name, Account From, Account To, Funds Result Status, Order By, Expand Amounts
 
 ## Oracle EBS Tables Used
-[&lp_expand_tables](https://www.enginatics.com/library/?pg=1&find=&lp_expand_tables), [gl_ledgers](https://www.enginatics.com/library/?pg=1&find=gl_ledgers), [gl_code_combinations_kfv](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations_kfv)
+[psa_bc_results_gt](https://www.enginatics.com/library/?pg=1&find=psa_bc_results_gt&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=psa-budgetary-control-transactions), [gl_ledgers](https://www.enginatics.com/library/?pg=1&find=gl_ledgers&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=psa-budgetary-control-transactions), [gl_code_combinations_kfv](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations_kfv&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=psa-budgetary-control-transactions)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=psa-budgetary-control-transactions), [R12 only](https://www.enginatics.com/library/?pg=1&category%5B%5D=R12%20only&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=psa-budgetary-control-transactions)
 
 ## Related Reports
-[CAC Intransit Value (Real-Time)](/CAC%20Intransit%20Value%20%28Real-Time%29/ "CAC Intransit Value (Real-Time) Oracle EBS SQL Report"), [CAC AP Accrual IR ISO Match Analysis](/CAC%20AP%20Accrual%20IR%20ISO%20Match%20Analysis/ "CAC AP Accrual IR ISO Match Analysis Oracle EBS SQL Report"), [CAC Inventory Lot and Locator OPM Value (Period-End)](/CAC%20Inventory%20Lot%20and%20Locator%20OPM%20Value%20%28Period-End%29/ "CAC Inventory Lot and Locator OPM Value (Period-End) Oracle EBS SQL Report"), [CAC New Standard Item Costs](/CAC%20New%20Standard%20Item%20Costs/ "CAC New Standard Item Costs Oracle EBS SQL Report"), [CAC Standard Cost Update Submissions](/CAC%20Standard%20Cost%20Update%20Submissions/ "CAC Standard Cost Update Submissions Oracle EBS SQL Report"), [AP Expenses](/AP%20Expenses/ "AP Expenses Oracle EBS SQL Report"), [CAC Last Standard Item Cost](/CAC%20Last%20Standard%20Item%20Cost/ "CAC Last Standard Item Cost Oracle EBS SQL Report"), [AP Supplier Upload](/AP%20Supplier%20Upload/ "AP Supplier Upload Oracle EBS SQL Report")
+[GL Journals 11i](/GL%20Journals%2011i/ "GL Journals 11i Oracle EBS SQL Report"), [GL Budget Amounts Upload](/GL%20Budget%20Amounts%20Upload/ "GL Budget Amounts Upload Oracle EBS SQL Report"), [GL Journals](/GL%20Journals/ "GL Journals Oracle EBS SQL Report"), [GL Journals (Drilldown) 11g](/GL%20Journals%20%28Drilldown%29%2011g/ "GL Journals (Drilldown) 11g Oracle EBS SQL Report"), [GL Journals (Drilldown)](/GL%20Journals%20%28Drilldown%29/ "GL Journals (Drilldown) Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/PSA%20Budgetary%20Control%20Transactions/PSA%20Budgetary%20Control%20Transactions.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=psa-budgetary-control-transactions) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [](https://www.enginatics.com/example/psa-budgetary-control-transactions/) |
-| Blitz Report™ XML Import | [PSA_Budgetary_Control_Transactions.xml](https://www.enginatics.com/xml/psa-budgetary-control-transactions/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/psa-budgetary-control-transactions/](https://www.enginatics.com/reports/psa-budgetary-control-transactions/) |
+| Excel Example Output | [Example](https://www.enginatics.com/example/psa-budgetary-control-transactions/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=psa-budgetary-control-transactions) |
+| Blitz Report™ XML Import | [PSA_Budgetary_Control_Transactions.xml](https://www.enginatics.com/xml/psa-budgetary-control-transactions/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=psa-budgetary-control-transactions) |
+| SQL Source | [PSA Budgetary Control Transactions.sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/PSA%20Budgetary%20Control%20Transactions/PSA%20Budgetary%20Control%20Transactions.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/psa-budgetary-control-transactions/](https://www.enginatics.com/reports/psa-budgetary-control-transactions/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=psa-budgetary-control-transactions) |
 
 ## Case Study & Technical Analysis: PSA Budgetary Control Transactions Report
 
@@ -122,18 +130,17 @@ As a financial report querying transactional and budgetary data, it is optimized
 **3. How does the `Expand Amounts` parameter change the report's usefulness?**
    When `Expand Amounts` is 'No', all budgetary figures (Budget, Encumbrance, Expenditure, Funds Available) appear as separate columns on a single row per account, ideal for a flat-file extract. When `Expand Amounts` is 'Yes', these amounts are typically broken into separate rows, which is perfect for building pivot tables in Excel to dynamically analyze and summarize budgetary data across different dimensions.
 
-
 ---
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=psa-budgetary-control-transactions)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=psa-budgetary-control-transactions)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=psa-budgetary-control-transactions)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=psa-budgetary-control-transactions)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=psa-budgetary-control-transactions)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=psa-budgetary-control-transactions)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=psa-budgetary-control-transactions)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

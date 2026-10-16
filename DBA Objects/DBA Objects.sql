@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: DBA Objects
 -- Description: All database objects
--- Excel Examle Output: https://www.enginatics.com/example/dba-objects/
+-- Excel Example Output: https://www.enginatics.com/example/dba-objects/
 -- Library Link: https://www.enginatics.com/reports/dba-objects/
 -- Run Report: https://demo.enginatics.com/
 

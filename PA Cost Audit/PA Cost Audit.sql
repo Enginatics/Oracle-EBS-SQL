@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PA Cost Audit
 -- Description: Project cost distribution lines transferred to GL showing DR/CR accounts, amounts, transfer status, and GL dates for audit and reconciliation purposes.
--- Excel Examle Output: https://www.enginatics.com/example/pa-cost-audit/
+-- Excel Example Output: https://www.enginatics.com/example/pa-cost-audit/
 -- Library Link: https://www.enginatics.com/reports/pa-cost-audit/
 -- Run Report: https://demo.enginatics.com/
 

@@ -1,27 +1,24 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PER Organization Upload
 -- Description: Upload to create and update organizations, organization classifications, and organization information types within Oracle HRMS.
-
-Scope:
-- Create new organizations, assign classifications and information types, and specify the information type attributes
-- Update existing organization data, classifications (enable/disable), and the information type attributes
-- Supports all organization classification types: Business Groups (excluding creation of new Business Groups), HR Organization, Operating Unit, GRE/Legal Entity, Company Cost Center, Inventory Organization, etc.
-- Supports creation/update of single-row (GS) and multi-row (GM) organization information types and their attributes (org_information1..20) with dynamic LOVs and segment labels
-- Supports creation/update of the Cost Allocation Key Flexfield segments against the HR Organization Classification (ORGANIZATION qualified segments only)
-
-
-Constraints:
-- Organizations can only be created/updated within the Business Group associated with the current responsibility
-- Business Group creation is not supported - use the Define Organizations form
-- The following organization information types cannot be updated via the API once created: Business Group Information, Canada Employer Identification. These can be created but not subsequently modified by this upload
-- Only supports the creation and update of the single-row DFF and multi-row DFF information types. 
-- Organization information segments that reference self-referencing data may require a two-step upload: first create the info type, then update the self-referencing attribute in a second pass
--- Excel Examle Output: https://www.enginatics.com/example/per-organization-upload/
+-- Scope:
+-- - Create new organizations, assign classifications and information types, and specify the information type attributes
+-- - Update existing organization data, classifications (enable/disable), and the information type attributes
+-- - Supports all organization classification types: Business Groups (excluding creation of new Business Groups), HR Organization, Operating Unit, GRE/Legal Entity, Company Cost Center, Inventory Organization, etc.
+-- - Supports creation/update of single-row (GS) and multi-row (GM) organization information types and their attributes (orginformation1..20) with dynamic LOVs and segment labels
+-- - Supports creation/update of the Cost Allocation Key Flexfield segments against the HR Organization Classification (ORGANIZATION qualified segments only)
+-- Constraints:
+-- - Organizations can only be created/updated within the Business Group associated with the current responsibility
+-- - Business Group creation is not supported - use the Define Organizations form
+-- - The following organization information types cannot be updated via the API once created: Business Group Information, Canada Employer Identification. These can be created but not subsequently modified by this upload
+-- - Only supports the creation and update of the single-row DFF and multi-row DFF information types.
+-- - Organization information segments that reference self-referencing data may require a two-step upload: first create the info type, then update the self-referencing attribute in a second pass
+-- Excel Example Output: https://www.enginatics.com/example/per-organization-upload/
 -- Library Link: https://www.enginatics.com/reports/per-organization-upload/
 -- Run Report: https://demo.enginatics.com/
 

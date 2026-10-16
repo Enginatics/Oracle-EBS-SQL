@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: INV Item Catalog Descriptive Elements
 -- Description: Report showing item catalog group descriptive elements with their values, descriptions, required and default flags
--- Excel Examle Output: https://www.enginatics.com/example/inv-item-catalog-descriptive-elements/
+-- Excel Example Output: https://www.enginatics.com/example/inv-item-catalog-descriptive-elements/
 -- Library Link: https://www.enginatics.com/reports/inv-item-catalog-descriptive-elements/
 -- Run Report: https://demo.enginatics.com/
 

@@ -1,4 +1,3 @@
-
 # Case Study & Technical Analysis: CAC Receiving Account Summary
 
 ## Executive Summary

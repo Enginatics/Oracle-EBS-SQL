@@ -1,67 +1,63 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Cost vs. Planning Item Controls
--- Description: Compare item make/buy controls vs. costing based on rollup controls, to find errors with your cost rollup results.  There are twelve included reports, see below description for more information.
-
-Available Reports:
-1.  Based on Rollup Yes - No BOMS
-     Find make items where the item is set to be rolled up but there are no BOMs.  May roll up to a zero cost.
-2.  Based on Rollup Yes - No Routing
-     Find make items costs are based on the cost rollup, but there are no routings.
-3.  Based on Rollup Yes - No Rollup
-     Find make items where it is set to be rolled up but there are no rolled up costs
-4.  Based on Rollup Yes - Buy Items
-     Find buy items where the item is set to rolled up 
-5.  Based on Rollup No - With BOMS
-     Find make items where the item is not set to be rolled up but BOMS or routings exist.
-6.  Based on Rollup No - With Sourcing Rules
-     Find buy items where costs are not based on the cost rollup, but sourcing rules exist.
-7.  Based on Rollup No - Make Items
-     Find make items where the item is not set to rolled up, whether or not BOMs or routings exist. 
-8.  Lot-Based Resources With Lot Size One
-     Find make items where there are charges based on Lot but the lot size is one.  Duplicates the setup charges for each item you make.
-9.  BOMs With No Components
-     Find make items with BOMS that have no components.
-10.  Item Costing vs. Item Asset Controls
-        Find items where the item master costed flag (costed enabled) and the item asset flag do not match.
-11.  Item Asset vs. Costing Asset Controls
-        Find items where the item master asset and the costing asset flags do not match.
- 12.  Based on Rollup No - Defaulted Costs
-        Find items where the item is not rolled up but the defaulted flag says Yes
-
-Parameters:
-===========
-Cost Type:  the Frozen or Pending cost type you wish to report (mandatory).
-Assignment Set:  for your organization sourcing rules, enter an assignment set (optional).
-Category Sets 1 - 3:  any item category you wish, typically the Cost or Product Line category sets (optional).
-Item Number:  enter the specific item number(s) you wish to report (optional).
-Organization Code:  enter the specific inventory organization(s) you wish to report (optional).
-Operating Unit:  enter the specific operating unit(s) you wish to report (optional).
-Ledger:  enter the specific ledger(s) you wish to report (optional).
-
-/* +=============================================================================+
--- |  Copyright 2008-2025 Douglas Volz Consulting, Inc.
--- |  All rights reserved.
--- |  Permission to use this code is granted provided the original author is
--- |  acknowledged. No warranties, express or otherwise is included in this permission.
--- +=============================================================================+
--- |  1.0     15 Oct 2008 Douglas Volz   Initial Coding
--- |  1.34    06 May 2021 Douglas Volz   Using a with statement, summarized report type queries for efficiency.
--- |  1.35    23 Apr 2022 Douglas Volz   Add new column "Defaulted Costs" and new report type "Based on
--- |                                     Rollup No - Defaulted Costs".  The defaulted flag indicates
--- |                                     whether the cost of the item is defaulted from the default cost
--- |                                     type during cost rollup.
--- |  1.36   07 Jan 2024 Douglas Volz    Add current onhand quantities, to help find valuation issues.  Remove
--- |                                     tabs, add operating unit and ledger security and inventory access controls.
--- |  1.37   10 Apr 2025 Douglas Volz    Added in new GL and OU security profiles.
--- |  1.38   13 Apr 2025 Douglas Volz    Fix ORA-43916 Collation Error for character expressions 'Y', 'N'.
--- +=============================================================================+*/
-
--- Excel Examle Output: https://www.enginatics.com/example/cac-cost-vs-planning-item-controls/
+-- Description: Compare item make/buy controls vs. costing based on rollup controls, to find errors with your cost rollup results. There are twelve included reports, see below description for more information.
+-- Available Reports:
+-- 1. Based on Rollup Yes - No BOMS
+-- Find make items where the item is set to be rolled up but there are no BOMs. May roll up to a zero cost.
+-- 2. Based on Rollup Yes - No Routing
+-- Find make items costs are based on the cost rollup, but there are no routings.
+-- 3. Based on Rollup Yes - No Rollup
+-- Find make items where it is set to be rolled up but there are no rolled up costs
+-- 4. Based on Rollup Yes - Buy Items
+-- Find buy items where the item is set to rolled up
+-- 5. Based on Rollup No - With BOMS
+-- Find make items where the item is not set to be rolled up but BOMS or routings exist.
+-- 6. Based on Rollup No - With Sourcing Rules
+-- Find buy items where costs are not based on the cost rollup, but sourcing rules exist.
+-- 7. Based on Rollup No - Make Items
+-- Find make items where the item is not set to rolled up, whether or not BOMs or routings exist.
+-- 8. Lot-Based Resources With Lot Size One
+-- Find make items where there are charges based on Lot but the lot size is one. Duplicates the setup charges for each item you make.
+-- 9. BOMs With No Components
+-- Find make items with BOMS that have no components.
+-- 10. Item Costing vs. Item Asset Controls
+-- Find items where the item master costed flag (costed enabled) and the item asset flag do not match.
+-- 11. Item Asset vs. Costing Asset Controls
+-- Find items where the item master asset and the costing asset flags do not match.
+-- 12. Based on Rollup No - Defaulted Costs
+-- Find items where the item is not rolled up but the defaulted flag says Yes
+-- Parameters:
+-- ===========
+-- Cost Type: the Frozen or Pending cost type you wish to report (mandatory).
+-- Assignment Set: for your organization sourcing rules, enter an assignment set (optional).
+-- Category Sets 1 - 3: any item category you wish, typically the Cost or Product Line category sets (optional).
+-- Item Number: enter the specific item number(s) you wish to report (optional).
+-- Organization Code: enter the specific inventory organization(s) you wish to report (optional).
+-- Operating Unit: enter the specific operating unit(s) you wish to report (optional).
+-- Ledger: enter the specific ledger(s) you wish to report (optional).
+-- / +=============================================================================+
+-- -- | Copyright 2008-2025 Douglas Volz Consulting, Inc.
+-- -- | All rights reserved.
+-- -- | Permission to use this code is granted provided the original author is
+-- -- | acknowledged. No warranties, express or otherwise is included in this permission.
+-- -- +=============================================================================+
+-- -- | 1.0 15 Oct 2008 Douglas Volz Initial Coding
+-- -- | 1.34 06 May 2021 Douglas Volz Using a with statement, summarized report type queries for efficiency.
+-- -- | 1.35 23 Apr 2022 Douglas Volz Add new column "Defaulted Costs" and new report type "Based on
+-- -- | Rollup No - Defaulted Costs". The defaulted flag indicates
+-- -- | whether the cost of the item is defaulted from the default cost
+-- -- | type during cost rollup.
+-- -- | 1.36 07 Jan 2024 Douglas Volz Add current onhand quantities, to help find valuation issues. Remove
+-- -- | tabs, add operating unit and ledger security and inventory access controls.
+-- -- | 1.37 10 Apr 2025 Douglas Volz Added in new GL and OU security profiles.
+-- -- | 1.38 13 Apr 2025 Douglas Volz Fix ORA-43916 Collation Error for character expressions 'Y', 'N'.
+-- -- +=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-cost-vs-planning-item-controls/
 -- Library Link: https://www.enginatics.com/reports/cac-cost-vs-planning-item-controls/
 -- Run Report: https://demo.enginatics.com/
 

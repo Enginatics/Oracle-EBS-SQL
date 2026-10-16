@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: GL FSG Reports
 -- Description: Financial Statement Generator reports
--- Excel Examle Output: https://www.enginatics.com/example/gl-fsg-reports/
+-- Excel Example Output: https://www.enginatics.com/example/gl-fsg-reports/
 -- Library Link: https://www.enginatics.com/reports/gl-fsg-reports/
 -- Run Report: https://demo.enginatics.com/
 

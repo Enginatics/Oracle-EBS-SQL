@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: ZX Tax Accounts
 -- Description: E-Business Tax account configuration for all ledgers and operating units, setup on either tax, jurisdiction or rate level
--- Excel Examle Output: https://www.enginatics.com/example/zx-tax-accounts/
+-- Excel Example Output: https://www.enginatics.com/example/zx-tax-accounts/
 -- Library Link: https://www.enginatics.com/reports/zx-tax-accounts/
 -- Run Report: https://demo.enginatics.com/
 

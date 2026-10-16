@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: Blitz Report Parameter Comparison between reports
 -- Description: Compares the paramaters of two reports for differences
--- Excel Examle Output: https://www.enginatics.com/example/blitz-report-parameter-comparison-between-reports/
+-- Excel Example Output: https://www.enginatics.com/example/blitz-report-parameter-comparison-between-reports/
 -- Library Link: https://www.enginatics.com/reports/blitz-report-parameter-comparison-between-reports/
 -- Run Report: https://demo.enginatics.com/
 

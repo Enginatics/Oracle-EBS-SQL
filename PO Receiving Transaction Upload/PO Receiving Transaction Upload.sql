@@ -1,49 +1,44 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PO Receiving Transaction Upload
 -- Description: PO Receiving Transaction Upload
-================================
-Create receiving transactions (receipts) against approved standard purchase orders.
-
-Upload Modes
-============
-
-Create
-------
-Opens an empty spreadsheet where the user can manually enter PO receiving details.
-
-Create, Update
---------------
-Downloads open PO shipment lines with quantities available to receive for the selected organization.
-The user fills in the Quantity and Transaction Date columns for each line to receive, then uploads.
-
-Prerequisites
-=============
-- PO must be approved and not cancelled or closed.
-- PO shipment must have remaining quantity to receive.
-- Transaction date must be in an open inventory receiving period.
-
-Fields
-======
-- Organization Code: Required. The receiving inventory organization.
-- PO Number: Required. The purchase order number.
-- Line Num: Required. The PO line number.
-- Shipment Num: Required. The PO shipment number.
-- Item Revision: Optional. Item revision (defaults from PO line, override for revision-controlled items).
-- Quantity: Required. The quantity to receive (must be greater than zero).
-- Transaction Date: Required. The date of the receipt.
-- Destination Type: Optional. Inventory, Expense, or Shop Floor (defaults from PO distribution).
-- Subinventory: Optional. Destination subinventory (defaults from PO distribution).
-- Locator: Optional. Stock locator within the subinventory (required for locator-controlled subinventories).
-- Deliver To Location: Optional. Override the deliver-to location.
-- Country of Origin: Optional. Country of origin for trade compliance.
-- Vendor Lot Num: Optional. Supplier lot number for lot tracking.
-- Comments: Optional. Receipt comments.
--- Excel Examle Output: https://www.enginatics.com/example/po-receiving-transaction-upload/
+-- ================================
+-- Create receiving transactions (receipts) against approved standard purchase orders.
+-- Upload Modes
+-- ============
+-- Create
+-- ------
+-- Opens an empty spreadsheet where the user can manually enter PO receiving details.
+-- Create, Update
+-- --------------
+-- Downloads open PO shipment lines with quantities available to receive for the selected organization.
+-- The user fills in the Quantity and Transaction Date columns for each line to receive, then uploads.
+-- Prerequisites
+-- =============
+-- - PO must be approved and not cancelled or closed.
+-- - PO shipment must have remaining quantity to receive.
+-- - Transaction date must be in an open inventory receiving period.
+-- Fields
+-- ======
+-- - Organization Code: Required. The receiving inventory organization.
+-- - PO Number: Required. The purchase order number.
+-- - Line Num: Required. The PO line number.
+-- - Shipment Num: Required. The PO shipment number.
+-- - Item Revision: Optional. Item revision (defaults from PO line, override for revision-controlled items).
+-- - Quantity: Required. The quantity to receive (must be greater than zero).
+-- - Transaction Date: Required. The date of the receipt.
+-- - Destination Type: Optional. Inventory, Expense, or Shop Floor (defaults from PO distribution).
+-- - Subinventory: Optional. Destination subinventory (defaults from PO distribution).
+-- - Locator: Optional. Stock locator within the subinventory (required for locator-controlled subinventories).
+-- - Deliver To Location: Optional. Override the deliver-to location.
+-- - Country of Origin: Optional. Country of origin for trade compliance.
+-- - Vendor Lot Num: Optional. Supplier lot number for lot tracking.
+-- - Comments: Optional. Receipt comments.
+-- Excel Example Output: https://www.enginatics.com/example/po-receiving-transaction-upload/
 -- Library Link: https://www.enginatics.com/reports/po-receiving-transaction-upload/
 -- Run Report: https://demo.enginatics.com/
 

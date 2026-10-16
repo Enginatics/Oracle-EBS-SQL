@@ -1,23 +1,21 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: FND Lookup Search
--- Description: Finds the best matching lookup_type for a given set of lookup_codes in a custom application base table.
-
-Example:
-Coding a sql for ap suppliers, the value of column vendor_type_lookup_code should get translated to the user visible meaning instead of the code.
-The lookup_type used for translation can be found by this report entering table name AP_SUPPLIERS and column name VENDOR_TYPE_LOOKUP_CODE.
-The output contains a column SQL_TEXT which can be used directly in the sql where clause:
-
-=flv.lookup_code(+) and
-flv.lookup_type(+)='VENDOR TYPE' and
-flv.view_application_id(+)=201 and
-flv.language(+)=userenv('lang') and
-flv.security_group_id(+)=0 and
--- Excel Examle Output: https://www.enginatics.com/example/fnd-lookup-search/
+-- Description: Finds the best matching lookuptype for a given set of lookupcodes in a custom application base table.
+-- Example:
+-- Coding a sql for ap suppliers, the value of column vendortypelookupcode should get translated to the user visible meaning instead of the code.
+-- The lookuptype used for translation can be found by this report entering table name APSUPPLIERS and column name VENDORTYPELOOKUPCODE.
+-- The output contains a column SQLTEXT which can be used directly in the sql where clause:
+-- =flv.lookupcode(+) and
+-- flv.lookuptype(+)='VENDOR TYPE' and
+-- flv.viewapplicationid(+)=201 and
+-- flv.language(+)=userenv('lang') and
+-- flv.securitygroupid(+)=0 and
+-- Excel Example Output: https://www.enginatics.com/example/fnd-lookup-search/
 -- Library Link: https://www.enginatics.com/reports/fnd-lookup-search/
 -- Run Report: https://demo.enginatics.com/
 

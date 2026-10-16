@@ -1,15 +1,15 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: MRP Sourcing Rule Upload
 -- Description: MRP Sourcing Rule Upload
-====================
-- Upload new Sourcing Rules
-- Update Existing Sourcing Rules
--- Excel Examle Output: https://www.enginatics.com/example/mrp-sourcing-rule-upload/
+-- ====================
+-- - Upload new Sourcing Rules
+-- - Update Existing Sourcing Rules
+-- Excel Example Output: https://www.enginatics.com/example/mrp-sourcing-rule-upload/
 -- Library Link: https://www.enginatics.com/reports/mrp-sourcing-rule-upload/
 -- Run Report: https://demo.enginatics.com/
 

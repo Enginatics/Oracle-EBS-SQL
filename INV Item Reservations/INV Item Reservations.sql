@@ -1,17 +1,17 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: INV Item Reservations
 -- Description: Imported from BI Publisher
-Description: Item reservations report
-Application: Inventory
-Source: Item reservations report (XML)
-Short Name: INVDRRSV_XML
-DB package: INV_INVDRRSV_XMLP_PKG
--- Excel Examle Output: https://www.enginatics.com/example/inv-item-reservations/
+-- Description: Item reservations report
+-- Application: Inventory
+-- Source: Item reservations report (XML)
+-- Short Name: INVDRRSVXML
+-- DB package: INVINVDRRSVXMLPPKG
+-- Excel Example Output: https://www.enginatics.com/example/inv-item-reservations/
 -- Library Link: https://www.enginatics.com/reports/inv-item-reservations/
 -- Run Report: https://demo.enginatics.com/
 

@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: FND Lobs
 -- Description: Generic file manager lob data, such as attachments, help files, imported and exported Blitz Report files etc.
--- Excel Examle Output: https://www.enginatics.com/example/fnd-lobs/
+-- Excel Example Output: https://www.enginatics.com/example/fnd-lobs/
 -- Library Link: https://www.enginatics.com/reports/fnd-lobs/
 -- Run Report: https://demo.enginatics.com/
 

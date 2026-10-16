@@ -1,14 +1,20 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'XDO Publisher Data Definitions | Oracle EBS SQL Report'
 description: 'XML Publisher data definitions or sources, associated concurrent programs, executables and templates. To include complete template information, enter a…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, XDO, Publisher, Data, Definitions, xdo_lobs, fnd_request_group_units, xdo_ds_definitions_vl'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, XML Publisher, Enginatics, XDO, Publisher, Data, Definitions, xdo_lobs, fnd_request_group_units, xdo_ds_definitions_vl'
 permalink: /XDO%20Publisher%20Data%20Definitions/
+report_name: 'XDO Publisher Data Definitions'
+report_web_name: xdo-publisher-data-definitions
+module: 'XML Publisher'
+module_url: /modules/xml-publisher/
 ---
 
 # XDO Publisher Data Definitions – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/xdo-publisher-data-definitions/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/xdo-publisher-data-definitions/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xdo-publisher-data-definitions) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xdo-publisher-data-definitions).
+**Oracle EBS module:** [XML Publisher](/modules/xml-publisher/ "Oracle EBS XML Publisher reports") · [all XML Publisher reports](/modules/xml-publisher/)  
 
 ## Overview
 XML Publisher data definitions or sources, associated concurrent programs, executables and templates.
@@ -18,28 +24,31 @@ This report also includes the source data SQL statement extracted from the publi
 
 Parameter 'Data Definition Search Text' performs a full text search through the data template file so that you could for example enter a particular table name to list all XML publisher reports and their SQLs selecting from that table.
 
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xdo-publisher-data-definitions) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
+
 ## Report Parameters
 Datasource Name, Datasource Code, Exclude Datasource Codes like, Concurrent Program Name, Creation Date From, Creation Date To, Show Templates, Template Name, Data Definition Search Text, Show enabled concurrents only, Show Active only, Show Datasource SQLs
 
 ## Oracle EBS Tables Used
-[xdo_lobs](https://www.enginatics.com/library/?pg=1&find=xdo_lobs), [fnd_request_group_units](https://www.enginatics.com/library/?pg=1&find=fnd_request_group_units), [xdo_ds_definitions_vl](https://www.enginatics.com/library/?pg=1&find=xdo_ds_definitions_vl), [fnd_application_vl](https://www.enginatics.com/library/?pg=1&find=fnd_application_vl), [fnd_concurrent_programs_vl](https://www.enginatics.com/library/?pg=1&find=fnd_concurrent_programs_vl), [fnd_executables_vl](https://www.enginatics.com/library/?pg=1&find=fnd_executables_vl), [xdo_templates_vl](https://www.enginatics.com/library/?pg=1&find=xdo_templates_vl), [xmltable](https://www.enginatics.com/library/?pg=1&find=xmltable)
+[xdo_lobs](https://www.enginatics.com/library/?pg=1&find=xdo_lobs&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xdo-publisher-data-definitions), [fnd_request_group_units](https://www.enginatics.com/library/?pg=1&find=fnd_request_group_units&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xdo-publisher-data-definitions), [xdo_ds_definitions_vl](https://www.enginatics.com/library/?pg=1&find=xdo_ds_definitions_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xdo-publisher-data-definitions), [xdo_templates_vl](https://www.enginatics.com/library/?pg=1&find=xdo_templates_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xdo-publisher-data-definitions)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xdo-publisher-data-definitions)
 
 ## Related Reports
-[Blitz Report Custom Reports Converter](/Blitz%20Report%20Custom%20Reports%20Converter/ "Blitz Report Custom Reports Converter Oracle EBS SQL Report"), [PO Document Types](/PO%20Document%20Types/ "PO Document Types Oracle EBS SQL Report"), [FND Responsibility Access](/FND%20Responsibility%20Access/ "FND Responsibility Access Oracle EBS SQL Report"), [FND Concurrent Requests](/FND%20Concurrent%20Requests/ "FND Concurrent Requests Oracle EBS SQL Report"), [FND Attached Documents](/FND%20Attached%20Documents/ "FND Attached Documents Oracle EBS SQL Report"), [ECC Admin - Concurrent Programs](/ECC%20Admin%20-%20Concurrent%20Programs/ "ECC Admin - Concurrent Programs Oracle EBS SQL Report"), [INV Item Templates](/INV%20Item%20Templates/ "INV Item Templates Oracle EBS SQL Report"), [FND Concurrent Requests Summary](/FND%20Concurrent%20Requests%20Summary/ "FND Concurrent Requests Summary Oracle EBS SQL Report"), [FND Concurrent Programs and Executables](/FND%20Concurrent%20Programs%20and%20Executables/ "FND Concurrent Programs and Executables Oracle EBS SQL Report")
+[Blitz Report Custom Reports Converter](/Blitz%20Report%20Custom%20Reports%20Converter/ "Blitz Report Custom Reports Converter Oracle EBS SQL Report"), [IEX Dunning History](/IEX%20Dunning%20History/ "IEX Dunning History Oracle EBS SQL Report"), [PO Document Types](/PO%20Document%20Types/ "PO Document Types Oracle EBS SQL Report"), [ONT Transaction Types and Line WF Processes](/ONT%20Transaction%20Types%20and%20Line%20WF%20Processes/ "ONT Transaction Types and Line WF Processes Oracle EBS SQL Report"), [DIS Workbook Import Validation](/DIS%20Workbook%20Import%20Validation/ "DIS Workbook Import Validation Oracle EBS SQL Report"), [AR Customer Upload](/AR%20Customer%20Upload/ "AR Customer Upload Oracle EBS SQL Report"), [INV Item Templates](/INV%20Item%20Templates/ "INV Item Templates Oracle EBS SQL Report"), [PO Headers and Lines](/PO%20Headers%20and%20Lines/ "PO Headers and Lines Oracle EBS SQL Report"), [AP Supplier Upload](/AP%20Supplier%20Upload/ "AP Supplier Upload Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/XDO%20Publisher%20Data%20Definitions/XDO%20Publisher%20Data%20Definitions.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xdo-publisher-data-definitions) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [XDO Publisher Data Definitions 29-Apr-2020 114115.xlsx](https://www.enginatics.com/example/xdo-publisher-data-definitions/) |
-| Blitz Report™ XML Import | [XDO_Publisher_Data_Definitions.xml](https://www.enginatics.com/xml/xdo-publisher-data-definitions/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/xdo-publisher-data-definitions/](https://www.enginatics.com/reports/xdo-publisher-data-definitions/) |
+| Excel Example Output | [XDO Publisher Data Definitions 29-Apr-2020 114115.xlsx](https://www.enginatics.com/example/xdo-publisher-data-definitions/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xdo-publisher-data-definitions) |
+| Blitz Report™ XML Import | [XDO_Publisher_Data_Definitions.xml](https://www.enginatics.com/xml/xdo-publisher-data-definitions/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xdo-publisher-data-definitions) |
+| SQL Source | [XDO Publisher Data Definitions.sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/XDO%20Publisher%20Data%20Definitions/XDO%20Publisher%20Data%20Definitions.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/xdo-publisher-data-definitions/](https://www.enginatics.com/reports/xdo-publisher-data-definitions/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xdo-publisher-data-definitions) |
 
 ## Case Study & Technical Analysis: XDO Publisher Data Definitions Report
 
@@ -110,18 +119,17 @@ As a configuration and meta-data report, it is optimized through strong filterin
 **3. Why is it useful to extract the underlying SQL from standard Oracle XML Publisher reports?**
    Oracle often uses complex SQL in its standard XML Publisher reports. Extracting this SQL provides invaluable insight into Oracle's data models and business logic. Developers can use this as a learning tool, a starting point for custom reports, or a reference when troubleshooting standard report behavior, without needing to delve into Oracle's underlying source code.
 
-
 ---
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xdo-publisher-data-definitions)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xdo-publisher-data-definitions)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xdo-publisher-data-definitions)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xdo-publisher-data-definitions)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xdo-publisher-data-definitions)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xdo-publisher-data-definitions)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xdo-publisher-data-definitions)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

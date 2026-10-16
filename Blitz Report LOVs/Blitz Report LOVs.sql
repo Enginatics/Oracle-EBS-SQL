@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: Blitz Report LOVs
 -- Description: Blitz Report list of values
--- Excel Examle Output: https://www.enginatics.com/example/blitz-report-lovs/
+-- Excel Example Output: https://www.enginatics.com/example/blitz-report-lovs/
 -- Library Link: https://www.enginatics.com/reports/blitz-report-lovs/
 -- Run Report: https://demo.enginatics.com/
 

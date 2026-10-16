@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: INV Item Transaction Defaults Upload
 -- Description: This upload can be used to create and update Item transaction default subinventories and locators
--- Excel Examle Output: https://www.enginatics.com/example/inv-item-transaction-defaults-upload/
+-- Excel Example Output: https://www.enginatics.com/example/inv-item-transaction-defaults-upload/
 -- Library Link: https://www.enginatics.com/reports/inv-item-transaction-defaults-upload/
 -- Run Report: https://demo.enginatics.com/
 

@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PA Project Expenditure Items with WIP and INV Detail
 -- Description: Project expenditure items showing WIP and inventory transaction details including transaction types, quantities, WIP job, assembly, department, resource, and inventory item information.
--- Excel Examle Output: https://www.enginatics.com/example/pa-project-expenditure-items-with-wip-and-inv-detail/
+-- Excel Example Output: https://www.enginatics.com/example/pa-project-expenditure-items-with-wip-and-inv-detail/
 -- Library Link: https://www.enginatics.com/reports/pa-project-expenditure-items-with-wip-and-inv-detail/
 -- Run Report: https://demo.enginatics.com/
 

@@ -1,16 +1,14 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: Blitz Report Assignment Validation
 -- Description: Lists every Blitz Report with the number of assignments it has at each assignment level, so you can validate that all reports are assigned.
-
-Each level column counts the distinct included assignment targets at that level (Site, Application, Request Group, Responsibility, User, Form, Function, Report). The Excluded column counts exclusion assignments. The zero_to_null function leaves a blank cell where there is no assignment, so reports missing an assignment stand out at a glance - a row that is completely blank across the assignment columns is not assigned to anyone.
-
-Use the Category, Not in Category and Type parameters to limit the scope. Set 'Not Assigned Only' to Yes to list only reports that have no include assignment at any level, or pick a level in 'Not Assigned at Level' to find reports missing an assignment at one specific level.
--- Excel Examle Output: https://www.enginatics.com/example/blitz-report-assignment-validation/
+-- Each level column counts the distinct included assignment targets at that level (Site, Application, Request Group, Responsibility, User, Form, Function, Report). The Excluded column counts exclusion assignments. The zerotonull function leaves a blank cell where there is no assignment, so reports missing an assignment stand out at a glance - a row that is completely blank across the assignment columns is not assigned to anyone.
+-- Use the Category, Not in Category and Type parameters to limit the scope. Set 'Not Assigned Only' to Yes to list only reports that have no include assignment at any level, or pick a level in 'Not Assigned at Level' to find reports missing an assignment at one specific level.
+-- Excel Example Output: https://www.enginatics.com/example/blitz-report-assignment-validation/
 -- Library Link: https://www.enginatics.com/reports/blitz-report-assignment-validation/
 -- Run Report: https://demo.enginatics.com/
 

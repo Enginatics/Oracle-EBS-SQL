@@ -1,16 +1,16 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: EAM Weekly Schedule
 -- Description: Based on Oracle standard's EAM Weekly Schedule report
-Application: Enterprise Asset Management
-Source: EAM Weekly Schedule report (XML)
-Short Name: EAMWSREP_XML
-DB package: EAM_EAMWSREP_XMLP_PKG
--- Excel Examle Output: https://www.enginatics.com/example/eam-weekly-schedule/
+-- Application: Enterprise Asset Management
+-- Source: EAM Weekly Schedule report (XML)
+-- Short Name: EAMWSREPXML
+-- DB package: EAMEAMWSREPXMLPPKG
+-- Excel Example Output: https://www.enginatics.com/example/eam-weekly-schedule/
 -- Library Link: https://www.enginatics.com/reports/eam-weekly-schedule/
 -- Run Report: https://demo.enginatics.com/
 

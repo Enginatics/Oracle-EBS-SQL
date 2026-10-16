@@ -1,17 +1,17 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: JA India GSTR-3B Return
 -- Description: Imported from BI Publisher
-Description: GSTR-3B Return Report
-Application: Asia/Pacific Localizations
-Source: India GSTR-3B Return Report
-Short Name: JAIGSTR3B
-DB package:
--- Excel Examle Output: https://www.enginatics.com/example/ja-india-gstr-3b-return/
+-- Description: GSTR-3B Return Report
+-- Application: Asia/Pacific Localizations
+-- Source: India GSTR-3B Return Report
+-- Short Name: JAIGSTR3B
+-- DB package:
+-- Excel Example Output: https://www.enginatics.com/example/ja-india-gstr-3b-return/
 -- Library Link: https://www.enginatics.com/reports/ja-india-gstr-3b-return/
 -- Run Report: https://demo.enginatics.com/
 

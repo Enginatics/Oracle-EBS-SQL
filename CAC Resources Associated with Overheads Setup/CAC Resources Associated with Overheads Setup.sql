@@ -1,52 +1,49 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Resources Associated with Overheads Setup
--- Description: Report to show which resources are associated with which overheads and which resources are associated with which departments.  And find any resources which do not have any overhead associations.  If there are no overhead associations the first report column will say "Missing".
-If the resource/overhead association exists, the first column of the report will say "Set Up".
-
-Note:  if a resource does not have a cost, the Resource Rate column has a blank or empty value.
-
-Parameters:
-===========
-Resource/Overhead Cost Type:  enter the cost type you wish to report for your resources and overheads.  If left blank, depending on your Costing Method, it defaults to your AvgRates or Frozen Cost Type (optional).
-Category Set 1:  any item category you wish, typically the Cost or Product Line category set (optional).
-Category Set 2:  any item category you wish, typically the Inventory category set (optional).
-Organization Code:  enter the specific inventory organization(s) you wish to report (optional).
-Operating Unit:  enter the specific operating unit(s) you wish to report (optional).
-Ledger:  enter the specific ledger(s) you wish to report (optional).
-
-/* +=============================================================================+
--- |  Copyright 2016 - 2024 Douglas Volz Consulting, Inc.
--- |  All rights reserved.
--- |  Permission to use this code is granted provided the original author is
--- |  acknowledged.  No warranties, express or otherwise is included in this permission.
--- +=============================================================================+
--- |
--- |  Original Author: Douglas Volz (doug@volzconsulting.com)
--- |
--- |  Program Name:  xxx_res_ovhd_setup.sql
--- | 
--- |  Version Modified on Modified  by   Description
--- |  ======= =========== ============== =========================================
--- |  1.0     11 Nov 2016 Douglas Volz   Initial Coding
--- |  1.1     16 Jun 2017 Douglas Volz   Add check for resources which are not
--- |                                     associated with overheads and added the
--- |                                     resource cost element.
--- |  1.2     17 Jul 2018 Douglas Volz   Made Cost Type parameter optional
--- |  1.3     16 Jan 2020 Douglas Volz   Added org code and operating unit parameters.
--- |  1.4     20 Apr 2020 Douglas Volz   Make Cost Type default work for all cost methods
--- |  1.5     09 Jul 2022 Douglas Volz   Changes for multi-language lookup values.
--- |  1.6     22 Jan 2024 Douglas Volz   Add with statement for cst_resource_costs, overheads
--- |                                     were not reported if the resource cost was missing.
--- |                                     Added resource "Allow Costs" column.  Removed
--- |                                     tabs and added inventory access controls.
--- |  1.7     31 Jan 2024 Douglas Volz   Add Currency Code, Resource Type and Charge Type columns.
--- +=============================================================================+*/
--- Excel Examle Output: https://www.enginatics.com/example/cac-resources-associated-with-overheads-setup/
+-- Description: Report to show which resources are associated with which overheads and which resources are associated with which departments. And find any resources which do not have any overhead associations. If there are no overhead associations the first report column will say "Missing".
+-- If the resource/overhead association exists, the first column of the report will say "Set Up".
+-- Note: if a resource does not have a cost, the Resource Rate column has a blank or empty value.
+-- Parameters:
+-- ===========
+-- Resource/Overhead Cost Type: enter the cost type you wish to report for your resources and overheads. If left blank, depending on your Costing Method, it defaults to your AvgRates or Frozen Cost Type (optional).
+-- Category Set 1: any item category you wish, typically the Cost or Product Line category set (optional).
+-- Category Set 2: any item category you wish, typically the Inventory category set (optional).
+-- Organization Code: enter the specific inventory organization(s) you wish to report (optional).
+-- Operating Unit: enter the specific operating unit(s) you wish to report (optional).
+-- Ledger: enter the specific ledger(s) you wish to report (optional).
+-- / +=============================================================================+
+-- -- | Copyright 2016 - 2024 Douglas Volz Consulting, Inc.
+-- -- | All rights reserved.
+-- -- | Permission to use this code is granted provided the original author is
+-- -- | acknowledged. No warranties, express or otherwise is included in this permission.
+-- -- +=============================================================================+
+-- -- |
+-- -- | Original Author: Douglas Volz (doug@volzconsulting.com)
+-- -- |
+-- -- | Program Name: xxxresovhdsetup.sql
+-- -- |
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== ============== =========================================
+-- -- | 1.0 11 Nov 2016 Douglas Volz Initial Coding
+-- -- | 1.1 16 Jun 2017 Douglas Volz Add check for resources which are not
+-- -- | associated with overheads and added the
+-- -- | resource cost element.
+-- -- | 1.2 17 Jul 2018 Douglas Volz Made Cost Type parameter optional
+-- -- | 1.3 16 Jan 2020 Douglas Volz Added org code and operating unit parameters.
+-- -- | 1.4 20 Apr 2020 Douglas Volz Make Cost Type default work for all cost methods
+-- -- | 1.5 09 Jul 2022 Douglas Volz Changes for multi-language lookup values.
+-- -- | 1.6 22 Jan 2024 Douglas Volz Add with statement for cstresourcecosts, overheads
+-- -- | were not reported if the resource cost was missing.
+-- -- | Added resource "Allow Costs" column. Removed
+-- -- | tabs and added inventory access controls.
+-- -- | 1.7 31 Jan 2024 Douglas Volz Add Currency Code, Resource Type and Charge Type columns.
+-- -- +=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-resources-associated-with-overheads-setup/
 -- Library Link: https://www.enginatics.com/reports/cac-resources-associated-with-overheads-setup/
 -- Run Report: https://demo.enginatics.com/
 

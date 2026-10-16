@@ -1,23 +1,21 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: QA Plan Relationship Upload
--- Description: Upload to create, update, or delete Quality Collection Plan parent-child relationships using the standard Oracle API qa_ss_parent_child_pkg.
-
-This upload manages:
-- Parent-Child Plan Relationships (QA_PC_PLAN_RELATIONSHIP)
-- Element Relationships between parent and child plans (QA_PC_ELEMENT_RELATIONSHIP)
-- Criteria for automatic child record creation (QA_PC_CRITERIA)
-
-Entry Modes:
-- Immediate: Child data entered immediately after parent record
-- Delayed: Child records entered manually later
-- Automatic: Child records auto-created when parent matches criteria
-- History: Child records auto-created when changes made to parent
--- Excel Examle Output: https://www.enginatics.com/example/qa-plan-relationship-upload/
+-- Description: Upload to create, update, or delete Quality Collection Plan parent-child relationships using the standard Oracle API qassparentchildpkg.
+-- This upload manages:
+-- - Parent-Child Plan Relationships (QAPCPLANRELATIONSHIP)
+-- - Element Relationships between parent and child plans (QAPCELEMENTRELATIONSHIP)
+-- - Criteria for automatic child record creation (QAPCCRITERIA)
+-- Entry Modes:
+-- - Immediate: Child data entered immediately after parent record
+-- - Delayed: Child records entered manually later
+-- - Automatic: Child records auto-created when parent matches criteria
+-- - History: Child records auto-created when changes made to parent
+-- Excel Example Output: https://www.enginatics.com/example/qa-plan-relationship-upload/
 -- Library Link: https://www.enginatics.com/reports/qa-plan-relationship-upload/
 -- Run Report: https://demo.enginatics.com/
 

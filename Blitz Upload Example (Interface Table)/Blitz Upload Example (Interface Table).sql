@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: Blitz Upload Example (Interface Table)
 -- Description: Sample upload to be used as a template by copying (Tools>Copy Report) to create new uploads using Interface Table.
--- Excel Examle Output: https://www.enginatics.com/example/blitz-upload-example-interface-table/
+-- Excel Example Output: https://www.enginatics.com/example/blitz-upload-example-interface-table/
 -- Library Link: https://www.enginatics.com/reports/blitz-upload-example-interface-table/
 -- Run Report: https://demo.enginatics.com/
 

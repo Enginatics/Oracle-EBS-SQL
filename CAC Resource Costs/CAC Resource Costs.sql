@@ -1,55 +1,53 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Resource Costs
 -- Description: Report to show the resource and outside processing costs by organization and cost type.
-
-Parameters:
-Cost Type:  enter the cost type you wish to report, defaults to your Costing Method (mandatory).
-Include Non-Costed Resources:  choose No to exclude non-costed resources, choose Yes to include them.  You normally use non-costed resources for scheduling purposes (mandatory).
-Organization Code:  enter the specific inventory organization(s) you wish to report (optional).
-Operating Unit:  enter the specific operating unit(s) you wish to report (optional).
-Ledger:  enter the specific ledger(s) you wish to report (optional).
-
-/* +=============================================================================+
--- |  Copyright 2006-2023 Douglas Volz Consulting, Inc.
--- |  All rights reserved. 
--- |  Permission to use this code is granted provided the original author is
--- |  acknowledged.  No warranties, express or otherwise is included in this permission. 
--- +=============================================================================+
--- |
--- |  Original Author: Douglas Volz (doug@volzconsulting.com)
--- |
--- |  Program Name:  xxx_resource_costs_rept.sql
--- |
--- |  Version Modified on Modified  by   Description
--- |  ======= =========== ============== =========================================
--- |  1.0     18 Nov 2010 Douglas Volz   Initial Coding
--- |  1.1     15 Dec 2010 Douglas Volz   Final Coding
--- |  1.2     28 Dec 2010 Douglas Volz   Removed condition to omit Orgs 108, 109, 110 
--- |                                     and 331 as these may be used at any time
--- |  1.3     18 Nov 2015 Douglas Volz   Removed organization restrictions
--- |  1.4     15 Nov 2016 Douglas Volz   Added DFF for Resource_Type, changed
--- |                                     cancatenated segments to separate columns.
--- |  1.5     18 Nov 2016 Douglas Volz   Added Activity to this report
--- |  1.6     16 Feb 2017 Douglas Volz   Added Creation_Date and Who Created
--- |  1.7     17 Feb 2017 Douglas Volz   Add Resource_Description
--- |  1.8     18 Sep 2019 Douglas Volz   Added last update by and last update date
--- |  1.9     27 Jan 2020 Douglas Volz   Changed to multi-language views for the item
--- |                                     master, inventory orgs and operating units.
--- |  1.10    21 Jul 2021 Douglas Volz   Add Basis Type, UOM Code and changed Allow
--- |                                     Costs and Std Rate to lookup codes.
--- |  1.11    11 Oct 2023 Douglas Volz   Modified for invalid created by, invalid 
--- |                                     last updated by and invalid code_combination_id
--- |                                     values, to ensure resources are reported.
--- |                                     Removed tabs and added inventory org access controls.
--- |                                     Reversed revision 1.4, added back concatentated
--- |                                     account number values.
--- +=============================================================================+*/
--- Excel Examle Output: https://www.enginatics.com/example/cac-resource-costs/
+-- Parameters:
+-- Cost Type: enter the cost type you wish to report, defaults to your Costing Method (mandatory).
+-- Include Non-Costed Resources: choose No to exclude non-costed resources, choose Yes to include them. You normally use non-costed resources for scheduling purposes (mandatory).
+-- Organization Code: enter the specific inventory organization(s) you wish to report (optional).
+-- Operating Unit: enter the specific operating unit(s) you wish to report (optional).
+-- Ledger: enter the specific ledger(s) you wish to report (optional).
+-- / +=============================================================================+
+-- -- | Copyright 2006-2023 Douglas Volz Consulting, Inc.
+-- -- | All rights reserved.
+-- -- | Permission to use this code is granted provided the original author is
+-- -- | acknowledged. No warranties, express or otherwise is included in this permission.
+-- -- +=============================================================================+
+-- -- |
+-- -- | Original Author: Douglas Volz (doug@volzconsulting.com)
+-- -- |
+-- -- | Program Name: xxxresourcecostsrept.sql
+-- -- |
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== ============== =========================================
+-- -- | 1.0 18 Nov 2010 Douglas Volz Initial Coding
+-- -- | 1.1 15 Dec 2010 Douglas Volz Final Coding
+-- -- | 1.2 28 Dec 2010 Douglas Volz Removed condition to omit Orgs 108, 109, 110
+-- -- | and 331 as these may be used at any time
+-- -- | 1.3 18 Nov 2015 Douglas Volz Removed organization restrictions
+-- -- | 1.4 15 Nov 2016 Douglas Volz Added DFF for ResourceType, changed
+-- -- | cancatenated segments to separate columns.
+-- -- | 1.5 18 Nov 2016 Douglas Volz Added Activity to this report
+-- -- | 1.6 16 Feb 2017 Douglas Volz Added CreationDate and Who Created
+-- -- | 1.7 17 Feb 2017 Douglas Volz Add ResourceDescription
+-- -- | 1.8 18 Sep 2019 Douglas Volz Added last update by and last update date
+-- -- | 1.9 27 Jan 2020 Douglas Volz Changed to multi-language views for the item
+-- -- | master, inventory orgs and operating units.
+-- -- | 1.10 21 Jul 2021 Douglas Volz Add Basis Type, UOM Code and changed Allow
+-- -- | Costs and Std Rate to lookup codes.
+-- -- | 1.11 11 Oct 2023 Douglas Volz Modified for invalid created by, invalid
+-- -- | last updated by and invalid codecombinationid
+-- -- | values, to ensure resources are reported.
+-- -- | Removed tabs and added inventory org access controls.
+-- -- | Reversed revision 1.4, added back concatentated
+-- -- | account number values.
+-- -- +=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-resource-costs/
 -- Library Link: https://www.enginatics.com/reports/cac-resource-costs/
 -- Run Report: https://demo.enginatics.com/
 

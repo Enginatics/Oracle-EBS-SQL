@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: OPM Item Process and Recipe Attributes
 -- Description: Oracle Process Manufacturing (OPM) item attributes: for every process-manufacturing-enabled item, its recipe, process-execution, quality and costing enabled flags, grade control and default grade, lot / child-lot control, lot divisibility, and shelf-life control and days. Lets formulation and QA teams see which items are recipe and process enabled.
--- Excel Examle Output: https://www.enginatics.com/example/opm-item-process-and-recipe-attributes/
+-- Excel Example Output: https://www.enginatics.com/example/opm-item-process-and-recipe-attributes/
 -- Library Link: https://www.enginatics.com/reports/opm-item-process-and-recipe-attributes/
 -- Run Report: https://demo.enginatics.com/
 

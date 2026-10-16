@@ -1,20 +1,18 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: DBA AWR Wait Class by Time
 -- Description: Non idle session wait times by wait class over time.
-Each row shows the system-wide wait time per wait class of one AWR snapshot interval to identify unusual wait events that occured at specific times.
-Use the Session Type parameter to restrict either to foreground, background or all server processes.
-
-To see data in this report based on dba_hist_system_event, set the following:
-alter session set container=PDB1;
-alter system set awr_pdb_autoflush_enabled=true;
-
-<a href="https://www.enginatics.com/blog/updated-dba-awr-blitz-reports-now-work-with-plugglable-databases/" rel="nofollow" target="_blank">https://www.enginatics.com/blog/updated-dba-awr-blitz-reports-now-work-with-plugglable-databases/</a>
--- Excel Examle Output: https://www.enginatics.com/example/dba-awr-wait-class-by-time/
+-- Each row shows the system-wide wait time per wait class of one AWR snapshot interval to identify unusual wait events that occured at specific times.
+-- Use the Session Type parameter to restrict either to foreground, background or all server processes.
+-- To see data in this report based on dbahistsystemevent, set the following:
+-- alter session set container=PDB1;
+-- alter system set awrpdbautoflushenabled=true;
+-- https://www.enginatics.com/blog/updated-dba-awr-blitz-reports-now-work-with-plugglable-databases/
+-- Excel Example Output: https://www.enginatics.com/example/dba-awr-wait-class-by-time/
 -- Library Link: https://www.enginatics.com/reports/dba-awr-wait-class-by-time/
 -- Run Report: https://demo.enginatics.com/
 

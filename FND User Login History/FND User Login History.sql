@@ -1,18 +1,17 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: FND User Login History
 -- Description: Audit history of application user logins.
-
-EBS user logon audit is controlled by profile 'Sign-On:Audit Level'.
-The most detailed audit level setting is 'FORM'.
-Unfortunately, this audit tracks access to individual forms only, but not to different JSPs (HTML / OAF / ADF Pages).
-As a workaround, the report SQL also joins to icx_sessions, which contains a record for each login (in fact, it also stores a record for each access to the login page before login. These records are marked with guest='Y').
-The function retrieved from icx_session however, just shows the latest OAF function accessed by the user, not all individual JSP functions accessed within that session.
--- Excel Examle Output: https://www.enginatics.com/example/fnd-user-login-history/
+-- EBS user logon audit is controlled by profile 'Sign-On:Audit Level'.
+-- The most detailed audit level setting is 'FORM'.
+-- Unfortunately, this audit tracks access to individual forms only, but not to different JSPs (HTML / OAF / ADF Pages).
+-- As a workaround, the report SQL also joins to icxsessions, which contains a record for each login (in fact, it also stores a record for each access to the login page before login. These records are marked with guest='Y').
+-- The function retrieved from icxsession however, just shows the latest OAF function accessed by the user, not all individual JSP functions accessed within that session.
+-- Excel Example Output: https://www.enginatics.com/example/fnd-user-login-history/
 -- Library Link: https://www.enginatics.com/reports/fnd-user-login-history/
 -- Run Report: https://demo.enginatics.com/
 

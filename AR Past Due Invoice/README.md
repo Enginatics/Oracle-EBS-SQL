@@ -1,40 +1,51 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'AR Past Due Invoice | Oracle EBS SQL Report'
-description: 'Detail past due AR invoice report with invoice number, days past due, amount past due and currency code'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Past, Due, Invoice, hr_all_organization_units_vl, ar_payment_schedules_all, ra_customer_trx_all'
+description: 'Detail past due AR invoice report with invoice number, days past due, amount past due and currency code When India Localization is installed, the…'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Receivables, Enginatics, Past, Due, Invoice, hr_all_organization_units_vl, ar_payment_schedules_all, ra_customer_trx_all'
 permalink: /AR%20Past%20Due%20Invoice/
+report_name: 'AR Past Due Invoice'
+report_web_name: ar-past-due-invoice
+module: 'Receivables'
+module_url: /modules/receivables/
 ---
 
 # AR Past Due Invoice – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/ar-past-due-invoice/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/ar-past-due-invoice/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-past-due-invoice) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-past-due-invoice).
+**Oracle EBS module:** [Receivables](/modules/receivables/ "Oracle EBS Receivables reports") · [all Receivables reports](/modules/receivables/)  
 
 ## Overview
 Detail past due AR invoice report with invoice number, days past due, amount past due and currency code
+
+When India Localization is installed, the following GST columns are also included: GST Registration No, GST PAN No, CESS Amount, CGST Amount, Custom Amount, IGST Amount, SGST Amount, Unclassified Tax Amount, Taxable Value, HSN SAC Code, CESS Rate, CGST Rate, IGST Rate, SGST Rate, CGST Non-Recoverable, CGST Recoverable, IGST Non-Recoverable, IGST Recoverable, SGST Non-Recoverable, SGST Recoverable, Reverse Charge Flag.
+
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-past-due-invoice) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 
 ## Report Parameters
 Operating Unit, Order By, As of Date, Days Late Low, Days Late High, Balance Due Low, Balance Due High, Collector, Customer Name, Customer Number, Type Low, Salesperson/Agent Low
 
 ## Oracle EBS Tables Used
-[hr_all_organization_units_vl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_vl), [ar_payment_schedules_all](https://www.enginatics.com/library/?pg=1&find=ar_payment_schedules_all), [ra_customer_trx_all](https://www.enginatics.com/library/?pg=1&find=ra_customer_trx_all), [ra_cust_trx_types_all](https://www.enginatics.com/library/?pg=1&find=ra_cust_trx_types_all), [hz_cust_accounts](https://www.enginatics.com/library/?pg=1&find=hz_cust_accounts), [hz_parties](https://www.enginatics.com/library/?pg=1&find=hz_parties), [ra_salesreps](https://www.enginatics.com/library/?pg=1&find=ra_salesreps), [hz_customer_profiles](https://www.enginatics.com/library/?pg=1&find=hz_customer_profiles), [ar_collectors](https://www.enginatics.com/library/?pg=1&find=ar_collectors)
+[hr_all_organization_units_vl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-past-due-invoice), [ar_payment_schedules_all](https://www.enginatics.com/library/?pg=1&find=ar_payment_schedules_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-past-due-invoice), [ra_customer_trx_all](https://www.enginatics.com/library/?pg=1&find=ra_customer_trx_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-past-due-invoice), [ra_cust_trx_types_all](https://www.enginatics.com/library/?pg=1&find=ra_cust_trx_types_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-past-due-invoice), [hz_cust_accounts](https://www.enginatics.com/library/?pg=1&find=hz_cust_accounts&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-past-due-invoice), [hz_parties](https://www.enginatics.com/library/?pg=1&find=hz_parties&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-past-due-invoice), [ra_salesreps](https://www.enginatics.com/library/?pg=1&find=ra_salesreps&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-past-due-invoice), [hz_customer_profiles](https://www.enginatics.com/library/?pg=1&find=hz_customer_profiles&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-past-due-invoice), [ar_collectors](https://www.enginatics.com/library/?pg=1&find=ar_collectors&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-past-due-invoice)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-past-due-invoice)
 
 ## Related Reports
 [AR Aging](/AR%20Aging/ "AR Aging Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/AR%20Past%20Due%20Invoice/AR%20Past%20Due%20Invoice.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-past-due-invoice) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [AR Past Due Invoice - demo 1 16-Jun-2025 182210.xlsx](https://www.enginatics.com/example/ar-past-due-invoice/) |
-| Blitz Report™ XML Import | [AR_Past_Due_Invoice.xml](https://www.enginatics.com/xml/ar-past-due-invoice/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/ar-past-due-invoice/](https://www.enginatics.com/reports/ar-past-due-invoice/) |
+| Excel Example Output | [AR Past Due Invoice - demo 1 16-Jun-2025 182210.xlsx](https://www.enginatics.com/example/ar-past-due-invoice/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-past-due-invoice) |
+| Blitz Report™ XML Import | [AR_Past_Due_Invoice.xml](https://www.enginatics.com/xml/ar-past-due-invoice/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-past-due-invoice) |
+| SQL Source | [AR Past Due Invoice.sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/AR%20Past%20Due%20Invoice/AR%20Past%20Due%20Invoice.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/ar-past-due-invoice/](https://www.enginatics.com/reports/ar-past-due-invoice/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-past-due-invoice) |
 
 ## AR Past Due Invoice - Case Study & Technical Analysis
 
@@ -95,18 +106,17 @@ A: Yes, unless specifically excluded by customization. A disputed invoice is sti
 **Q: What happens if I run this for a past date?**
 A: The report will show what *was* past due on that date, based on the open balance at that time (if the query logic supports historical "As of" reconstruction, though standard versions often look at current open items relative to a past date).
 
-
 ---
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-past-due-invoice)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-past-due-invoice)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-past-due-invoice)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-past-due-invoice)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-past-due-invoice)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-past-due-invoice)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-past-due-invoice)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

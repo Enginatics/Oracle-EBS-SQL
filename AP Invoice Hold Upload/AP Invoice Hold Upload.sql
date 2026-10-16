@@ -1,20 +1,16 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: AP Invoice Hold Upload
 -- Description: Releases and places AP invoice holds in bulk - the Excel equivalent of the Invoice Workbench Holds tab.
-
-Download the open holds with the download parameters, pick a Release Name (and optionally overwrite the defaulted Release Reason) on the rows to release, and upload. Each hold row is released through the same Oracle logic as the form, including the invoice holds workflow abort, the hold business event and the E-Business Tax synchronization. To place a new manual hold, add a row with the invoice reference and a Hold Name, leaving the Release Name blank.
-
-Holds are identified by Operating Unit, Invoice Number, Supplier and Hold Name, so rows can also be pasted from an external list instead of downloaded. When an invoice has several open holds of the same name (for example matching holds on different purchase order shipments), the PO Number, PO Line, PO Shipment or Invoice Line columns identify the exact hold.
-
-By default only user releasable holds are downloaded - system holds such as Line Variance or Distribution Variance cannot be released manually and are removed by correcting the invoice and revalidating. Set User Releasable Only to No to review them.
-
-Releasing all holds of an invoice does not submit Invoice Validation - the invoice status is derived by Oracle and updates automatically, exactly as after releasing holds in the form.
--- Excel Examle Output: https://www.enginatics.com/example/ap-invoice-hold-upload/
+-- Download the open holds with the download parameters, pick a Release Name (and optionally overwrite the defaulted Release Reason) on the rows to release, and upload. Each hold row is released through the same Oracle logic as the form, including the invoice holds workflow abort, the hold business event and the E-Business Tax synchronization. To place a new manual hold, add a row with the invoice reference and a Hold Name, leaving the Release Name blank.
+-- Holds are identified by Operating Unit, Invoice Number, Supplier and Hold Name, so rows can also be pasted from an external list instead of downloaded. When an invoice has several open holds of the same name (for example matching holds on different purchase order shipments), the PO Number, PO Line, PO Shipment or Invoice Line columns identify the exact hold.
+-- By default only user releasable holds are downloaded - system holds such as Line Variance or Distribution Variance cannot be released manually and are removed by correcting the invoice and revalidating. Set User Releasable Only to No to review them.
+-- Releasing all holds of an invoice does not submit Invoice Validation - the invoice status is derived by Oracle and updates automatically, exactly as after releasing holds in the form.
+-- Excel Example Output: https://www.enginatics.com/example/ap-invoice-hold-upload/
 -- Library Link: https://www.enginatics.com/reports/ap-invoice-hold-upload/
 -- Run Report: https://demo.enginatics.com/
 

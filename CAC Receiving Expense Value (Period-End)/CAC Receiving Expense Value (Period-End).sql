@@ -1,59 +1,57 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Receiving Expense Value (Period-End)
--- Description: Report to show receiving value for expense locations and expense destination types, for expenses accrued at time of receipt.  You may run this report for open or closed accounting periods.  If run for a prior period the report automatically rolls back the quantities and values to the prior period's period end date.  if run for a current period, the report shows the real-time quantities and values.  This report displays both the receiving valuation account as well as the offset (expense or CapEx) account.
-
-Parameters:
-Period Name:  the accounting period you wish to report (mandatory).
-Category Sets 1 - 3:  any item category you wish (optional)
-Supplier Name: enter a supplier name to report (optional)
-Item Number:  enter an item number to report (optional)
-Organization Code:  specific inventory organization to report (optional)
-Operating Unit:  specific operating unit (optional)
-Ledger:  specific ledger (optional)
-
-/* +=============================================================================+
--- |  Copyright 2010-25 Douglas Volz Consulting, Inc.
--- |  All rights reserved.
--- |  Permission to use this code is granted provided the original author is
--- |  acknowledged.  No warranties, express or otherwise is included in this
--- |  permission.
--- +=============================================================================+
--- |
--- |  Original Author: Douglas Volz (doug@volzconsulting.com) 
--- | 
--- |  Version Modified on  Modified  by   Description
--- |  ======= =========== ============== =========================================
--- |      1.0  5 Jul 2010 Douglas Volz   Created initial Report for Celgene
--- |                                     based on XXX_IPV_RCV_VALUE_REPT.sql
--- |      1.1  5 Jul 2010 Douglas Volz   Added requisition, requestor and requestor
--- |                                     email address
--- |      1.2 15 Sep 2010 Douglas Volz   Added unit of measure, supplier, buyer columns.
--- |                                     Fix for parameter changes for BO Freehand SQL requirements,
--- |                                     changing the code to accept null or % or value GL Ledger names.
--- |      1.3 27 Sep 2010 Douglas Volz   Changed the report sort to include the offset accounts
--- |      1.4 04 Jan 2012 Douglas Volz   Fixed quantities to sum up rcv_receiving_sub_ledger,
--- |                                     as the view rcv_receiving_value_view and
--- |                                         rcv_transactions does not split out quantities by
--- |                                     po distributions.  For expenses you can have multiple expense
--- |                                     accounts or distributions for each scheduled receipt
--- |                                     in po_line_locations
--- |      1.5 08 Feb 2012 Douglas Volz   Rewrite code to fix quantity and amounts, mtl_supply does
--- |                                     not handle split rcv_transations, split by multiple 
--- |                                     po_distribution_ids.  It only stores one of the PODs for
--- |                                     expenses.
--- |      1.6 06 Jan 2020 Douglas Volz   Added item categories, Org Code and Operating Unit parameters.
--- |      1.7 29 May 2025 Douglas Volz   Removed tabs, added Blitz G/L and OU security..
--- |      1.8 15 Oct 2025 Douglas Volz   Changed inventory periods to PO financial periods.
--- |                                     Added non-recoverable tax amounts into PO prices.
--- |                                     And changed Period Name parameter to use INV Periods
--- |                                     which also include the master inventory org.
--- +=============================================================================+*/
--- Excel Examle Output: https://www.enginatics.com/example/cac-receiving-expense-value-period-end/
+-- Description: Report to show receiving value for expense locations and expense destination types, for expenses accrued at time of receipt. You may run this report for open or closed accounting periods. If run for a prior period the report automatically rolls back the quantities and values to the prior period's period end date. if run for a current period, the report shows the real-time quantities and values. This report displays both the receiving valuation account as well as the offset (expense or CapEx) account.
+-- Parameters:
+-- Period Name: the accounting period you wish to report (mandatory).
+-- Category Sets 1 - 3: any item category you wish (optional)
+-- Supplier Name: enter a supplier name to report (optional)
+-- Item Number: enter an item number to report (optional)
+-- Organization Code: specific inventory organization to report (optional)
+-- Operating Unit: specific operating unit (optional)
+-- Ledger: specific ledger (optional)
+-- / +=============================================================================+
+-- -- | Copyright 2010-25 Douglas Volz Consulting, Inc.
+-- -- | All rights reserved.
+-- -- | Permission to use this code is granted provided the original author is
+-- -- | acknowledged. No warranties, express or otherwise is included in this
+-- -- | permission.
+-- -- +=============================================================================+
+-- -- |
+-- -- | Original Author: Douglas Volz (doug@volzconsulting.com)
+-- -- |
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== ============== =========================================
+-- -- | 1.0 5 Jul 2010 Douglas Volz Created initial Report for Celgene
+-- -- | based on XXXIPVRCVVALUEREPT.sql
+-- -- | 1.1 5 Jul 2010 Douglas Volz Added requisition, requestor and requestor
+-- -- | email address
+-- -- | 1.2 15 Sep 2010 Douglas Volz Added unit of measure, supplier, buyer columns.
+-- -- | Fix for parameter changes for BO Freehand SQL requirements,
+-- -- | changing the code to accept null or % or value GL Ledger names.
+-- -- | 1.3 27 Sep 2010 Douglas Volz Changed the report sort to include the offset accounts
+-- -- | 1.4 04 Jan 2012 Douglas Volz Fixed quantities to sum up rcvreceivingsubledger,
+-- -- | as the view rcvreceivingvalueview and
+-- -- | rcvtransactions does not split out quantities by
+-- -- | po distributions. For expenses you can have multiple expense
+-- -- | accounts or distributions for each scheduled receipt
+-- -- | in polinelocations
+-- -- | 1.5 08 Feb 2012 Douglas Volz Rewrite code to fix quantity and amounts, mtlsupply does
+-- -- | not handle split rcvtransations, split by multiple
+-- -- | podistributionids. It only stores one of the PODs for
+-- -- | expenses.
+-- -- | 1.6 06 Jan 2020 Douglas Volz Added item categories, Org Code and Operating Unit parameters.
+-- -- | 1.7 29 May 2025 Douglas Volz Removed tabs, added Blitz G/L and OU security..
+-- -- | 1.8 15 Oct 2025 Douglas Volz Changed inventory periods to PO financial periods.
+-- -- | Added non-recoverable tax amounts into PO prices.
+-- -- | And changed Period Name parameter to use INV Periods
+-- -- | which also include the master inventory org.
+-- -- +=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-receiving-expense-value-period-end/
 -- Library Link: https://www.enginatics.com/reports/cac-receiving-expense-value-period-end/
 -- Run Report: https://demo.enginatics.com/
 

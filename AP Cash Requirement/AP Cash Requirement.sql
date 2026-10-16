@@ -1,15 +1,20 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: AP Cash Requirement
 -- Description: Detail cash requirement report showing all unpaid or partially paid amounts, where the invoice is neither on hold nor cancelled, including invoice currency amount, exchange rate, and currency code
--- Excel Examle Output: https://www.enginatics.com/example/ap-cash-requirement/
+-- When India Localization is installed, the following GST columns are also included: CGST Amount, SGST Amount, IGST Amount, Custom Amount, Unclassified Tax Amount, Taxable Value, HSN SAC Code, CGST Rate, SGST Rate, IGST Rate, GST Supplier Registration No, GST Registration No, GST PAN No, GST TAN No.
+-- Excel Example Output: https://www.enginatics.com/example/ap-cash-requirement/
 -- Library Link: https://www.enginatics.com/reports/ap-cash-requirement/
 -- Run Report: https://demo.enginatics.com/
 
+select
+x.*
+from
+(
 select
 apsa.due_date,
 hp.party_name trading_partner,
@@ -22,7 +27,7 @@ xxen_util.ap_invoice_status(aia.invoice_id,aia.invoice_amount,aia.payment_status
 xxen_util.meaning(case when aia.wfapproval_status in('MANUALLY APPROVED','NOT REQUIRED','WFAPPROVED') then 'Y' else 'N' end,'YES_NO',0) approved,
 xxen_util.meaning(ap_invoices_utility_pkg.get_payment_status(aia.invoice_id),'INVOICE PAYMENT STATUS',200) payment_status,
 aia.description,
-decode(aia.holds_count,0,null,aia.holds_count) holds_count,
+nullif(aia.holds_count,0) holds_count,
 trunc(apsa.due_date-sysdate) days_to_due,
 apsa.future_pay_due_date,
 apsa.gross_amount,
@@ -61,6 +66,9 @@ aia.invoice_currency_code,
 gl.name ledger,
 hou.name operating_unit,
 aia.invoice_id
+&il_tax_columns_inner_amt
+&il_tax_columns_inner_rate
+&il_tax_columns_inner_tp
 from
 gl_ledgers gl,
 hr_operating_units hou,
@@ -78,6 +86,7 @@ hz_parties hp,
 ap_suppliers aps,
 ap_supplier_sites_all assa
 &apt_table
+&il_from
 where
 1=1 and
 apsa.payment_status_flag in ('N','P') and
@@ -95,9 +104,11 @@ aia.party_id=hp.party_id and
 aia.vendor_id=aps.vendor_id(+) and
 aia.vendor_id=assa.vendor_id(+) and
 aia.vendor_site_id=assa.vendor_site_id(+)
+&il_where
+) x
 order by
-hou.name,
-aia.invoice_currency_code,
-apsa.due_date,
-hp.party_name,
-aia.invoice_num
+x.operating_unit,
+x.invoice_currency_code,
+x.due_date,
+x.trading_partner,
+x.invoice_num

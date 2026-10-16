@@ -1,16 +1,14 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: FND Menus
--- Description: Lists all Oracle E-Business Suite menus (FND_MENUS) together with the number of responsibilities that reference each menu.
-
-The Responsibility Count column shows the total number of responsibilities pointing at the menu; Active Responsibility Count excludes end-dated responsibilities.
-
-Use the Assigned To Responsibility parameter to find the menu behind a specific responsibility, or Menus With Responsibilities Only to hide unused menus. Results are ordered by responsibility count so the most widely used menus appear first.
--- Excel Examle Output: https://www.enginatics.com/example/fnd-menus/
+-- Description: Lists all Oracle E-Business Suite menus (FNDMENUS) together with the number of responsibilities that reference each menu.
+-- The Responsibility Count column shows the total number of responsibilities pointing at the menu; Active Responsibility Count excludes end-dated responsibilities.
+-- Use the Assigned To Responsibility parameter to find the menu behind a specific responsibility, or Menus With Responsibilities Only to hide unused menus. Results are ordered by responsibility count so the most widely used menus appear first.
+-- Excel Example Output: https://www.enginatics.com/example/fnd-menus/
 -- Library Link: https://www.enginatics.com/reports/fnd-menus/
 -- Run Report: https://demo.enginatics.com/
 

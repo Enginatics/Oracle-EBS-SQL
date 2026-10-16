@@ -1,15 +1,15 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: GL Code Combinations
 -- Description: Parameter 'Show Misclassified Accounts' can be used to identify code combinations, which have a different account type than their flexfield value setup.
-There is an Oracle note explaining the implications of correcting these:
-R12: Troubleshooting Misclassified Accounts in General Ledger (KB706390)
-<a href="https://support.oracle.com/support/?kmContentId=872162" rel="nofollow" target="_blank">https://support.oracle.com/support/?kmContentId=872162</a>
--- Excel Examle Output: https://www.enginatics.com/example/gl-code-combinations/
+-- There is an Oracle note explaining the implications of correcting these:
+-- R12: Troubleshooting Misclassified Accounts in General Ledger (KB706390)
+-- https://support.oracle.com/support/?kmContentId=872162
+-- Excel Example Output: https://www.enginatics.com/example/gl-code-combinations/
 -- Library Link: https://www.enginatics.com/reports/gl-code-combinations/
 -- Run Report: https://demo.enginatics.com/
 

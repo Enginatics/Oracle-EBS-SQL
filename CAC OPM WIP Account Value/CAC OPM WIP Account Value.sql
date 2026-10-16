@@ -1,47 +1,44 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC OPM WIP Account Value
--- Description: Report to show WIP values for process manufacturing (OPM), in summary by inventory organization and batch, with batch status, name and other details.  The valuation accounts come from the cumulative WIP Valuation accounting entries, as processed by Create Accounting.
-
-Parameters:
-===========
-Period Name:  the inventory accounting period you wish to report (mandatory).
-Include Lab Batches:  enter Yes to include laboratory batches.  Enter No to exclude them.  Defaults to No (mandatory).
-Show Batch Details:  enter Yes to display the formula, routing and recipe numbers and versions.  Defaults to No (mandatory).
-Show Transaction Details: enter Yes to show the Event Class, Transaction Type, Transaction ID and Transaction Date.  Defaults to No (mandatory). 
-Batch Number:  enter a specific batch number to report (optional).
-Category Set 1:  the first item category set to report, typically the Cost or Product Line Category Set (optional).
-Category Set 2:  The second item category set to report, typically the Inventory Category Set (optional).
-Organization Code:  any inventory organization, defaults to your session's inventory organization (optional).
-Operating Unit:  specific operating unit (optional).
-Ledger:  specific ledger (optional).
-
-/* +=============================================================================+
--- |  Copyright 2014 - 2024 Douglas Volz Consulting, Inc.
--- |  All rights reserved.
--- |  Permission to use this code is granted provided the original author is
--- |  acknowledged. No warranties, express or otherwise is included in this permission.
--- +=============================================================================+
--- |
--- |  Original Author: Douglas Volz (doug@volzconsulting.com)
--- | 
--- |  Version Modified on Modified  by   Description
--- |  ======= =========== ============== =========================================
--- |  1.0     22-Oct-2014 Douglas Volz   Initial version.
--- |  1.1     06-Jul-2024 Douglas Volz   Cumulative changes plus format for Blitz Report.
--- |  1.2     31-Jul-2024 Douglas Volz   Fix to get current and prior month's transactions
--- |  1.3     06-Aug-2024 Douglas Volz   Add Batch and Txn Detail parameters.
--- |  1.4     08-Aug-2024 Douglas Volz   Add Product and Byproduct completion quantity columns.
--- |                                     and inventory access control security.
--- |  1.5     17-Aug-2024 Douglas Volz   Fix for reporting batches closed after the reported period.
--- |                                     Add Batch Number parameter.  Display the Ledger short name.
--- +=============================================================================+*/
-
--- Excel Examle Output: https://www.enginatics.com/example/cac-opm-wip-account-value/
+-- Description: Report to show WIP values for process manufacturing (OPM), in summary by inventory organization and batch, with batch status, name and other details. The valuation accounts come from the cumulative WIP Valuation accounting entries, as processed by Create Accounting.
+-- Parameters:
+-- ===========
+-- Period Name: the inventory accounting period you wish to report (mandatory).
+-- Include Lab Batches: enter Yes to include laboratory batches. Enter No to exclude them. Defaults to No (mandatory).
+-- Show Batch Details: enter Yes to display the formula, routing and recipe numbers and versions. Defaults to No (mandatory).
+-- Show Transaction Details: enter Yes to show the Event Class, Transaction Type, Transaction ID and Transaction Date. Defaults to No (mandatory).
+-- Batch Number: enter a specific batch number to report (optional).
+-- Category Set 1: the first item category set to report, typically the Cost or Product Line Category Set (optional).
+-- Category Set 2: The second item category set to report, typically the Inventory Category Set (optional).
+-- Organization Code: any inventory organization, defaults to your session's inventory organization (optional).
+-- Operating Unit: specific operating unit (optional).
+-- Ledger: specific ledger (optional).
+-- / +=============================================================================+
+-- -- | Copyright 2014 - 2024 Douglas Volz Consulting, Inc.
+-- -- | All rights reserved.
+-- -- | Permission to use this code is granted provided the original author is
+-- -- | acknowledged. No warranties, express or otherwise is included in this permission.
+-- -- +=============================================================================+
+-- -- |
+-- -- | Original Author: Douglas Volz (doug@volzconsulting.com)
+-- -- |
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== ============== =========================================
+-- -- | 1.0 22-Oct-2014 Douglas Volz Initial version.
+-- -- | 1.1 06-Jul-2024 Douglas Volz Cumulative changes plus format for Blitz Report.
+-- -- | 1.2 31-Jul-2024 Douglas Volz Fix to get current and prior month's transactions
+-- -- | 1.3 06-Aug-2024 Douglas Volz Add Batch and Txn Detail parameters.
+-- -- | 1.4 08-Aug-2024 Douglas Volz Add Product and Byproduct completion quantity columns.
+-- -- | and inventory access control security.
+-- -- | 1.5 17-Aug-2024 Douglas Volz Fix for reporting batches closed after the reported period.
+-- -- | Add Batch Number parameter. Display the Ledger short name.
+-- -- +=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-opm-wip-account-value/
 -- Library Link: https://www.enginatics.com/reports/cac-opm-wip-account-value/
 -- Run Report: https://demo.enginatics.com/
 

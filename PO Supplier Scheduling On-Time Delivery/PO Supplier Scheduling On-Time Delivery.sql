@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PO Supplier Scheduling On-Time Delivery
 -- Description: Supplier on-time delivery (OTD) based on the Oracle Supplier Scheduling (CHV) module instead of the purchase order form. For each firm scheduled release the report compares the scheduling-module requested delivery date against the actual goods receipt date and reports the delivery delay, ordered vs received quantity, and a partial-delivery flag. Designed for environments where the blanket PO holds only a skeleton (with placeholder dates) and the real call-off dates arrive via EDI into Supplier Scheduling. First-pass draft - see version comments for open scoping items.
--- Excel Examle Output: https://www.enginatics.com/example/po-supplier-scheduling-on-time-delivery/
+-- Excel Example Output: https://www.enginatics.com/example/po-supplier-scheduling-on-time-delivery/
 -- Library Link: https://www.enginatics.com/reports/po-supplier-scheduling-on-time-delivery/
 -- Run Report: https://demo.enginatics.com/
 
@@ -77,10 +77,19 @@ pll.ship_via_lookup_code ship_method,
 from
 (
 select
+x.line_location_id,
+min(x.first_scheduled_date) first_scheduled_date,
+max(x.last_scheduled_date) last_scheduled_date,
+listagg(x.schedule_num,', ') within group (order by x.schedule_num) schedule_numbers,
+max(x.schedule_type) schedule_type,
+max(x.last_edi_date) last_edi_date
+from
+(
+select
 cio.document_shipment_id line_location_id,
+csh.schedule_num,
 min(cio.due_date) first_scheduled_date,
 max(cio.due_date) last_scheduled_date,
-listagg(distinct csh.schedule_num,', ') within group (order by csh.schedule_num) schedule_numbers,
 max(csh.schedule_type) schedule_type,
 max(csh.last_edi_date) last_edi_date
 from
@@ -91,13 +100,28 @@ cio.supply_document_type='RELEASE' and
 cio.document_shipment_id is not null and
 cio.schedule_id=csh.schedule_id
 group by
-cio.document_shipment_id
+cio.document_shipment_id,
+csh.schedule_num
+) x
+group by
+x.line_location_id
 ) chv,
 po_line_locations_all pll,
 po_lines_all pol,
 po_headers_all poh,
 po_vendors pv,
 po_vendor_sites_all pvsa,
+(
+select
+pll2.line_location_id,
+pol2.item_id,
+pll2.ship_to_organization_id
+from
+po_line_locations_all pll2,
+po_lines_all pol2
+where
+pll2.po_line_id=pol2.po_line_id
+) k,
 mtl_system_items_b_kfv msibk,
 mtl_parameters mp,
 hr_locations_all hla,
@@ -108,8 +132,9 @@ pll.po_line_id=pol.po_line_id and
 pll.po_header_id=poh.po_header_id and
 poh.vendor_id=pv.vendor_id and
 poh.vendor_site_id=pvsa.vendor_site_id(+) and
-pol.item_id=msibk.inventory_item_id(+) and
-pll.ship_to_organization_id=msibk.organization_id(+) and
+pll.line_location_id=k.line_location_id and
+k.item_id=msibk.inventory_item_id(+) and
+k.ship_to_organization_id=msibk.organization_id(+) and
 pll.ship_to_organization_id=mp.organization_id(+) and
 pll.ship_to_location_id=hla.location_id(+) and
 pll.org_id=haouv.organization_id(+) and

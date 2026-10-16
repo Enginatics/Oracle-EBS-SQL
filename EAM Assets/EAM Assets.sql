@@ -1,12 +1,12 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: EAM Assets
 -- Description: Enterprise asset management asset details such as location, department etc.
--- Excel Examle Output: https://www.enginatics.com/example/eam-assets/
+-- Excel Example Output: https://www.enginatics.com/example/eam-assets/
 -- Library Link: https://www.enginatics.com/reports/eam-assets/
 -- Run Report: https://demo.enginatics.com/
 

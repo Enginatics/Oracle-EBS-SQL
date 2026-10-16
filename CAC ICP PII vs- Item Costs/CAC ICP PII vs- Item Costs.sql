@@ -1,46 +1,43 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC ICP PII vs. Item Costs
--- Description: Report to compare the Frozen or Pending Costs against the PII item costs.  If you enter a Period Name this report also shows the stored month-end from the period end snapshot (snapshot that is created when you close the inventory periods).  If you leave the Period Name blank or null you will report the real-time onhand quantities.  Also note that this report excludes inactive items.
-
-Note:  there is a hidden parameter, Numeric Sign for PII, which allows you to set the sign of the profit in inventory amounts.  You can specify positive or negative values based on how you enter PII amounts into your PII Cost Type.  Defaulted as positive (+1).
-
-Parameters:
-==========
-Cost Type:  defaults to your Costing Method; if the cost type is missing component costs the report will find any missing item costs from your Costing Method cost type.
-PII Cost Type:  the profit in inventory cost type you wish to report
-PII Sub-Element:  the sub-element or resource for profit in inventory, such as PII or ICP (optional)
-Period Name (Closed):  Accounting period you wish to report for the onhand quantities at month-end,  If you leave this value blank or null you get the real-time onhand quantities.
-Category Set 1:  any item category you wish, typically the Product or Product Line category set (optional).
-Category Set 2:  any item category you wish, typically the Cost category set (optional).
-Organization Code:  enter the specific inventory organization(s) you wish to report (optional).
-Operating Unit:  enter the specific operating unit(s) you wish to report (optional).
-Ledger:  enter the specific ledger(s) you wish to report (optional).
-
-/* +=============================================================================+
--- |  Copyright 2009 - 2022 Douglas Volz Consulting, Inc.
--- |  All rights reserved.
--- |  Permission to use this code is granted provided the original author is
--- |  acknowledged. No warranties, express or otherwise is included in this
--- |  permission.
--- +=============================================================================+
--- | Version Modified on Modified by Description
--- | ======= =========== =====================================================
--- | 1.0     29 Sep 2009 Douglas Volz   Initial Coding
--- | 1.4     01 May 2019 Douglas Volz   Period name is now optional, if left null
--- |                                    the real-time quantities are reported.
--- | 1.5     27 Jan 2020 Douglas Volz   Added Org Code and Operating Unit parameters.
--- | 1.6     26 Feb 2022 Douglas Volz   Changed to multi-language views for items, 
--- |                                    item status and UOM.  Added List Price, 
--- |                                    Market Price and Currency Code to report. 
--- |                                    Exclude items with a status of Inactive.
--- | 1.7     26 Sep 2022 Douglas Volz   Performance improvements and removed group by.
--- +=============================================================================+*/
--- Excel Examle Output: https://www.enginatics.com/example/cac-icp-pii-vs-item-costs/
+-- Description: Report to compare the Frozen or Pending Costs against the PII item costs. If you enter a Period Name this report also shows the stored month-end from the period end snapshot (snapshot that is created when you close the inventory periods). If you leave the Period Name blank or null you will report the real-time onhand quantities. Also note that this report excludes inactive items.
+-- Note: there is a hidden parameter, Numeric Sign for PII, which allows you to set the sign of the profit in inventory amounts. You can specify positive or negative values based on how you enter PII amounts into your PII Cost Type. Defaulted as positive (+1).
+-- Parameters:
+-- ==========
+-- Cost Type: defaults to your Costing Method; if the cost type is missing component costs the report will find any missing item costs from your Costing Method cost type.
+-- PII Cost Type: the profit in inventory cost type you wish to report
+-- PII Sub-Element: the sub-element or resource for profit in inventory, such as PII or ICP (optional)
+-- Period Name (Closed): Accounting period you wish to report for the onhand quantities at month-end, If you leave this value blank or null you get the real-time onhand quantities.
+-- Category Set 1: any item category you wish, typically the Product or Product Line category set (optional).
+-- Category Set 2: any item category you wish, typically the Cost category set (optional).
+-- Organization Code: enter the specific inventory organization(s) you wish to report (optional).
+-- Operating Unit: enter the specific operating unit(s) you wish to report (optional).
+-- Ledger: enter the specific ledger(s) you wish to report (optional).
+-- / +=============================================================================+
+-- -- | Copyright 2009 - 2022 Douglas Volz Consulting, Inc.
+-- -- | All rights reserved.
+-- -- | Permission to use this code is granted provided the original author is
+-- -- | acknowledged. No warranties, express or otherwise is included in this
+-- -- | permission.
+-- -- +=============================================================================+
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== =====================================================
+-- -- | 1.0 29 Sep 2009 Douglas Volz Initial Coding
+-- -- | 1.4 01 May 2019 Douglas Volz Period name is now optional, if left null
+-- -- | the real-time quantities are reported.
+-- -- | 1.5 27 Jan 2020 Douglas Volz Added Org Code and Operating Unit parameters.
+-- -- | 1.6 26 Feb 2022 Douglas Volz Changed to multi-language views for items,
+-- -- | item status and UOM. Added List Price,
+-- -- | Market Price and Currency Code to report.
+-- -- | Exclude items with a status of Inactive.
+-- -- | 1.7 26 Sep 2022 Douglas Volz Performance improvements and removed group by.
+-- -- +=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-icp-pii-vs-item-costs/
 -- Library Link: https://www.enginatics.com/reports/cac-icp-pii-vs-item-costs/
 -- Run Report: https://demo.enginatics.com/
 

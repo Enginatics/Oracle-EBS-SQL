@@ -1,14 +1,20 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'CST Supply Chain Indented Bills of Material Cost | Oracle EBS SQL Report'
 description: 'This report is based on the (static) Oracle Supply Chain Indented Bills of Material Cost Report and merely sums up the available information from the Cost…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, BI Publisher, Enginatics, CST, Supply, Chain, Indented, cst_sc_bom_structures, mtl_system_items_vl, mtl_item_categories'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Cost Management, BI Publisher, Enginatics, R12 only, CST, Supply, Chain, Indented, cst_sc_bom_structures, mtl_system_items_vl, mtl_item_categories'
 permalink: /CST%20Supply%20Chain%20Indented%20Bills%20of%20Material%20Cost/
+report_name: 'CST Supply Chain Indented Bills of Material Cost'
+report_web_name: cst-supply-chain-indented-bills-of-material-cost
+module: 'Cost Management'
+module_url: /modules/cost-management/
 ---
 
 # CST Supply Chain Indented Bills of Material Cost – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/cst-supply-chain-indented-bills-of-material-cost/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/cst-supply-chain-indented-bills-of-material-cost/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-supply-chain-indented-bills-of-material-cost) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-supply-chain-indented-bills-of-material-cost).
+**Oracle EBS module:** [Cost Management](/modules/cost-management/ "Oracle EBS Cost Management reports") · [all Cost Management reports](/modules/cost-management/)  
 
 ## Overview
 This report is based on the (static) Oracle Supply Chain Indented Bills of Material Cost Report and merely sums up the available information from the Cost Type.  It does not do a Cost Rollup and as a result, the "Extended Cost" column might not add up to the total item cost for the assembly especially  if changes have been made to the bills of material, routing or item costs, since the last cost rollup.  If this is the case, run a Supply Chain Cost Rollup in Pending or some other cost type (such as Current) for reporting purposes, to synchronize the cost information and then use this report, using the same cost type, to correctly report your item costs.
@@ -25,28 +31,31 @@ DB package: BOM_CSTRSCCR_XMLP_PKG
 -- |  1.0            04-APR-2023    Eric Clegg               Initial Conversion
 --|   1.1            24-DEC-2023   Eric Clegg               Added Multi-Select Item Parameter
 
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-supply-chain-indented-bills-of-material-cost) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
+
 ## Report Parameters
 Cost Type, Organization, Assignment Set, Report Number of Levels, Exclude Level, Past Rollup, Effective Date, Include Inactive BOMs, Include Unimplemented ECOs, Alternate Bill, Engineering Bills, Item, Item From, Item To, Category set, Category From, Category To
 
 ## Oracle EBS Tables Used
-[cst_sc_bom_structures](https://www.enginatics.com/library/?pg=1&find=cst_sc_bom_structures), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl), [mtl_item_categories](https://www.enginatics.com/library/?pg=1&find=mtl_item_categories), [mtl_categories_kfv](https://www.enginatics.com/library/?pg=1&find=mtl_categories_kfv), [org_organization_definitions](https://www.enginatics.com/library/?pg=1&find=org_organization_definitions), [gl_sets_of_books](https://www.enginatics.com/library/?pg=1&find=gl_sets_of_books), [fnd_currencies](https://www.enginatics.com/library/?pg=1&find=fnd_currencies), [bom_parameters](https://www.enginatics.com/library/?pg=1&find=bom_parameters), [bom_inventory_components](https://www.enginatics.com/library/?pg=1&find=bom_inventory_components), [hr_organization_information](https://www.enginatics.com/library/?pg=1&find=hr_organization_information), [cst_item_costs](https://www.enginatics.com/library/?pg=1&find=cst_item_costs), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters), [cst_item_cost_details](https://www.enginatics.com/library/?pg=1&find=cst_item_cost_details), [cst_cost_elements](https://www.enginatics.com/library/?pg=1&find=cst_cost_elements), [bom_resources](https://www.enginatics.com/library/?pg=1&find=bom_resources), [bom_departments](https://www.enginatics.com/library/?pg=1&find=bom_departments)
+[cst_sc_bom_structures](https://www.enginatics.com/library/?pg=1&find=cst_sc_bom_structures&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-supply-chain-indented-bills-of-material-cost), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-supply-chain-indented-bills-of-material-cost), [mtl_item_categories](https://www.enginatics.com/library/?pg=1&find=mtl_item_categories&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-supply-chain-indented-bills-of-material-cost), [mtl_categories_kfv](https://www.enginatics.com/library/?pg=1&find=mtl_categories_kfv&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-supply-chain-indented-bills-of-material-cost), [org_organization_definitions](https://www.enginatics.com/library/?pg=1&find=org_organization_definitions&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-supply-chain-indented-bills-of-material-cost), [gl_sets_of_books](https://www.enginatics.com/library/?pg=1&find=gl_sets_of_books&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-supply-chain-indented-bills-of-material-cost), [fnd_currencies](https://www.enginatics.com/library/?pg=1&find=fnd_currencies&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-supply-chain-indented-bills-of-material-cost), [bom_parameters](https://www.enginatics.com/library/?pg=1&find=bom_parameters&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-supply-chain-indented-bills-of-material-cost), [bom_inventory_components](https://www.enginatics.com/library/?pg=1&find=bom_inventory_components&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-supply-chain-indented-bills-of-material-cost), [hr_organization_information](https://www.enginatics.com/library/?pg=1&find=hr_organization_information&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-supply-chain-indented-bills-of-material-cost), [cst_item_costs](https://www.enginatics.com/library/?pg=1&find=cst_item_costs&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-supply-chain-indented-bills-of-material-cost), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-supply-chain-indented-bills-of-material-cost), [cst_item_cost_details](https://www.enginatics.com/library/?pg=1&find=cst_item_cost_details&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-supply-chain-indented-bills-of-material-cost), [cst_cost_elements](https://www.enginatics.com/library/?pg=1&find=cst_cost_elements&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-supply-chain-indented-bills-of-material-cost), [bom_resources](https://www.enginatics.com/library/?pg=1&find=bom_resources&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-supply-chain-indented-bills-of-material-cost), [bom_departments](https://www.enginatics.com/library/?pg=1&find=bom_departments&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-supply-chain-indented-bills-of-material-cost), [cst_sc_sourcing_rules](https://www.enginatics.com/library/?pg=1&find=cst_sc_sourcing_rules&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-supply-chain-indented-bills-of-material-cost), [gl_ledgers](https://www.enginatics.com/library/?pg=1&find=gl_ledgers&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-supply-chain-indented-bills-of-material-cost), [cst_organization_definitions](https://www.enginatics.com/library/?pg=1&find=cst_organization_definitions&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-supply-chain-indented-bills-of-material-cost), [po_vendors](https://www.enginatics.com/library/?pg=1&find=po_vendors&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-supply-chain-indented-bills-of-material-cost), [po_vendor_sites_all](https://www.enginatics.com/library/?pg=1&find=po_vendor_sites_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-supply-chain-indented-bills-of-material-cost), [mfg_lookups](https://www.enginatics.com/library/?pg=1&find=mfg_lookups&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-supply-chain-indented-bills-of-material-cost)
 
 ## Report Categories
-[BI Publisher](https://www.enginatics.com/library/?pg=1&category[]=BI%20Publisher), [Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[BI Publisher](https://www.enginatics.com/library/?pg=1&category%5B%5D=BI%20Publisher&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-supply-chain-indented-bills-of-material-cost), [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-supply-chain-indented-bills-of-material-cost), [R12 only](https://www.enginatics.com/library/?pg=1&category%5B%5D=R12%20only&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-supply-chain-indented-bills-of-material-cost)
 
-
+## Related Reports
+[CAC Last Standard Item Cost](/CAC%20Last%20Standard%20Item%20Cost/ "CAC Last Standard Item Cost Oracle EBS SQL Report"), [CAC New Standard Item Costs](/CAC%20New%20Standard%20Item%20Costs/ "CAC New Standard Item Costs Oracle EBS SQL Report"), [CAC Item vs. Component Include in Rollup Controls](/CAC%20Item%20vs-%20Component%20Include%20in%20Rollup%20Controls/ "CAC Item vs. Component Include in Rollup Controls Oracle EBS SQL Report"), [CAC Calculate ICP PII Item Costs by Where Used](/CAC%20Calculate%20ICP%20PII%20Item%20Costs%20by%20Where%20Used/ "CAC Calculate ICP PII Item Costs by Where Used Oracle EBS SQL Report"), [CAC Calculate ICP PII Item Costs](/CAC%20Calculate%20ICP%20PII%20Item%20Costs/ "CAC Calculate ICP PII Item Costs Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/CST%20Supply%20Chain%20Indented%20Bills%20of%20Material%20Cost/CST%20Supply%20Chain%20Indented%20Bills%20of%20Material%20Cost.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-supply-chain-indented-bills-of-material-cost) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [CST Supply Chain Indented Bills of Material Cost - Item Cost Detail 31-Oct-2023 055034 (1).xlsx](https://www.enginatics.com/example/cst-supply-chain-indented-bills-of-material-cost/) |
-| Blitz Report™ XML Import | [CST_Supply_Chain_Indented_Bills_of_Material_Cost.xml](https://www.enginatics.com/xml/cst-supply-chain-indented-bills-of-material-cost/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/cst-supply-chain-indented-bills-of-material-cost/](https://www.enginatics.com/reports/cst-supply-chain-indented-bills-of-material-cost/) |
-
+| Excel Example Output | [CST Supply Chain Indented Bills of Material Cost - Item Cost Detail 31-Oct-2023 055034 (1).xlsx](https://www.enginatics.com/example/cst-supply-chain-indented-bills-of-material-cost/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-supply-chain-indented-bills-of-material-cost) |
+| Blitz Report™ XML Import | [CST_Supply_Chain_Indented_Bills_of_Material_Cost.xml](https://www.enginatics.com/xml/cst-supply-chain-indented-bills-of-material-cost/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-supply-chain-indented-bills-of-material-cost) |
+| SQL Source | [CST Supply Chain Indented Bills of Material Cost.sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/CST%20Supply%20Chain%20Indented%20Bills%20of%20Material%20Cost/CST%20Supply%20Chain%20Indented%20Bills%20of%20Material%20Cost.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/cst-supply-chain-indented-bills-of-material-cost/](https://www.enginatics.com/reports/cst-supply-chain-indented-bills-of-material-cost/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-supply-chain-indented-bills-of-material-cost) |
 
 ## Case Study & Technical Analysis: CST Supply Chain Indented Bills of Material Cost
 
@@ -98,18 +107,17 @@ A: Yes, the report joins to `BOM_DEPARTMENTS` and `BOM_RESOURCES`, allowing you 
 **Q: What is "Phantom" logic?**
 A: A "Phantom" assembly is a non-stocked sub-assembly that is built transiently. The report respects the `Phantom Flag`, typically blowing through the phantom level to show the underlying components directly attached to the parent.
 
-
 ---
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-supply-chain-indented-bills-of-material-cost)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-supply-chain-indented-bills-of-material-cost)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-supply-chain-indented-bills-of-material-cost)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-supply-chain-indented-bills-of-material-cost)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-supply-chain-indented-bills-of-material-cost)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-supply-chain-indented-bills-of-material-cost)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-supply-chain-indented-bills-of-material-cost)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

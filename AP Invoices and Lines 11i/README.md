@@ -1,40 +1,53 @@
 ---
 layout: default
+last_modified_at: 2026-10-16
 title: 'AP Invoices and Lines 11i | Oracle EBS SQL Report'
-description: 'Detail Invoice Aging report with line item details and amounts – Oracle E-Business Suite SQL report'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Invoices, Lines, 11i, gl_period_statuses, gl_daily_conversion_types, ap_holds_all'
+description: 'Detail Invoice Aging report with line item details and amounts. The Approval Status column and parameter show and filter the status of the invoice in the…'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Payables, Enginatics, Invoices, Lines, 11i, gl_period_statuses, gl_daily_conversion_types, ap_holds_all'
 permalink: /AP%20Invoices%20and%20Lines%2011i/
+report_name: 'AP Invoices and Lines 11i'
+report_web_name: ap-invoices-and-lines-11i
+module: 'Payables'
+module_url: /modules/payables/
 ---
 
 # AP Invoices and Lines 11i – Oracle EBS SQL Report
 
-**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/ap-invoices-and-lines-11i/) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/).
+**Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/ap-invoices-and-lines-11i/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-invoices-and-lines-11i) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-invoices-and-lines-11i).
+**Oracle EBS module:** [Payables](/modules/payables/ "Oracle EBS Payables reports") · [all Payables reports](/modules/payables/)  
 
 ## Overview
-Detail Invoice Aging report with line item details and amounts
+Detail Invoice Aging report with line item details and amounts.
 
+The Approval Status column and parameter show and filter the status of the invoice in the Invoice Approval Workflow.
+
+On withholding tax distributions, the withholding columns show the withholding tax and rate, the tax authority supplier and site of the tax, the gross amount subject to withholding, the payment that created the withholding when it was calculated at payment, and the invoice raised to the tax authority.
+
+> **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-invoices-and-lines-11i) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 
 ## Report Parameters
-Ledger, Operating Unit, Aging Bucket Name, Display Level, Supplier, Supplier Site, Invoice Number, Invoice Date Period, Invoice Date From, Invoice Date To, Invoice Creation Period, Invoice Creation Date From, Invoice Creation Date To, Accounting Period, Accounting Date From, Accounting Date To, Payment Period, Payment Date From, Payment Date To, Open only, Days Overdue, Invoice Type, Invoice Status, Payment Status, Distribution Type, Exclude Cancelled, Invoice PO Matched, Invoice on Hold, Hold Name, Has Attachment, Expense Account From, Expense Account To, Show DFF Attributes
+Ledger, Operating Unit, Aging Bucket Name, Display Level, Supplier, Supplier Site, Invoice Number, Invoice Date Period, Invoice Date From, Invoice Date To, Invoice Creation Period, Invoice Creation Date From, Invoice Creation Date To, Accounting Period, Accounting Date From, Accounting Date To, Payment Period, Payment Date From, Payment Date To, Open only, Days Overdue, Invoice Type, Invoice Status, Approval Status, Payment Status, Distribution Type, Exclude Cancelled, Invoice PO Matched, Invoice on Hold, Hold Name, Has Attachment, Expense Account From, Expense Account To, Show DFF Attributes
 
 ## Oracle EBS Tables Used
-[gl_period_statuses](https://www.enginatics.com/library/?pg=1&find=gl_period_statuses), [gl_daily_conversion_types](https://www.enginatics.com/library/?pg=1&find=gl_daily_conversion_types), [ap_holds_all](https://www.enginatics.com/library/?pg=1&find=ap_holds_all), [fnd_attached_documents](https://www.enginatics.com/library/?pg=1&find=fnd_attached_documents), [fnd_documents_vl](https://www.enginatics.com/library/?pg=1&find=fnd_documents_vl), [ap_invoice_payments_all](https://www.enginatics.com/library/?pg=1&find=ap_invoice_payments_all), [ap_checks_all](https://www.enginatics.com/library/?pg=1&find=ap_checks_all), [ap_invoices_all](https://www.enginatics.com/library/?pg=1&find=ap_invoices_all), [ap_invoice_distributions_all](https://www.enginatics.com/library/?pg=1&find=ap_invoice_distributions_all), [ap_accounting_events_all](https://www.enginatics.com/library/?pg=1&find=ap_accounting_events_all)
+[gl_period_statuses](https://www.enginatics.com/library/?pg=1&find=gl_period_statuses&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-invoices-and-lines-11i), [gl_daily_conversion_types](https://www.enginatics.com/library/?pg=1&find=gl_daily_conversion_types&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-invoices-and-lines-11i), [ap_holds_all](https://www.enginatics.com/library/?pg=1&find=ap_holds_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-invoices-and-lines-11i), [fnd_attached_documents](https://www.enginatics.com/library/?pg=1&find=fnd_attached_documents&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-invoices-and-lines-11i), [fnd_documents_vl](https://www.enginatics.com/library/?pg=1&find=fnd_documents_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-invoices-and-lines-11i), [ap_invoice_payments_all](https://www.enginatics.com/library/?pg=1&find=ap_invoice_payments_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-invoices-and-lines-11i), [ap_checks_all](https://www.enginatics.com/library/?pg=1&find=ap_checks_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-invoices-and-lines-11i), [ap_invoices_all](https://www.enginatics.com/library/?pg=1&find=ap_invoices_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-invoices-and-lines-11i), [ap_invoice_distributions_all](https://www.enginatics.com/library/?pg=1&find=ap_invoice_distributions_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-invoices-and-lines-11i), [ap_accounting_events_all](https://www.enginatics.com/library/?pg=1&find=ap_accounting_events_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-invoices-and-lines-11i), [ap_tax_codes_all](https://www.enginatics.com/library/?pg=1&find=ap_tax_codes_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-invoices-and-lines-11i), [ap_awt_tax_rates_all](https://www.enginatics.com/library/?pg=1&find=ap_awt_tax_rates_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-invoices-and-lines-11i), [po_vendors](https://www.enginatics.com/library/?pg=1&find=po_vendors&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-invoices-and-lines-11i), [po_vendor_sites_all](https://www.enginatics.com/library/?pg=1&find=po_vendor_sites_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-invoices-and-lines-11i), [gl_sets_of_books](https://www.enginatics.com/library/?pg=1&find=gl_sets_of_books&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-invoices-and-lines-11i), [hr_all_organization_units_vl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-invoices-and-lines-11i), [ap_payment_schedules_all](https://www.enginatics.com/library/?pg=1&find=ap_payment_schedules_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-invoices-and-lines-11i), [ap_bank_accounts_all](https://www.enginatics.com/library/?pg=1&find=ap_bank_accounts_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-invoices-and-lines-11i), [ap_bank_branches](https://www.enginatics.com/library/?pg=1&find=ap_bank_branches&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-invoices-and-lines-11i), [po_distributions_all](https://www.enginatics.com/library/?pg=1&find=po_distributions_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-invoices-and-lines-11i), [po_headers_all](https://www.enginatics.com/library/?pg=1&find=po_headers_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-invoices-and-lines-11i), [gl_code_combinations](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-invoices-and-lines-11i), [ap_recurring_payments_all](https://www.enginatics.com/library/?pg=1&find=ap_recurring_payments_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-invoices-and-lines-11i), [ap_terms](https://www.enginatics.com/library/?pg=1&find=ap_terms&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-invoices-and-lines-11i), [pa_projects_all](https://www.enginatics.com/library/?pg=1&find=pa_projects_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-invoices-and-lines-11i), [pa_tasks](https://www.enginatics.com/library/?pg=1&find=pa_tasks&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-invoices-and-lines-11i)
 
 ## Report Categories
-[Enginatics](https://www.enginatics.com/library/?pg=1&category[]=Enginatics)
+[Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-invoices-and-lines-11i)
 
-
+## Related Reports
+[AP Invoices and Lines](/AP%20Invoices%20and%20Lines/ "AP Invoices and Lines Oracle EBS SQL Report"), [PO Headers and Lines](/PO%20Headers%20and%20Lines/ "PO Headers and Lines Oracle EBS SQL Report"), [GL Account Analysis](/GL%20Account%20Analysis/ "GL Account Analysis Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
-Some Oracle EBS SQL reports in this library require functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true). Install it before running the SQL directly against your Oracle EBS database.
+The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/AP%20Invoices%20and%20Lines%2011i/AP%20Invoices%20and%20Lines%2011i.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-invoices-and-lines-11i) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
 
 ## Download & Import Options
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [AP Invoices and Lines 11i 03-Sep-2024 053525.xlsx](https://www.enginatics.com/example/ap-invoices-and-lines-11i/) |
-| Blitz Report™ XML Import | [AP_Invoices_and_Lines_11i.xml](https://www.enginatics.com/xml/ap-invoices-and-lines-11i/) |
-| Full SQL on Enginatics | [www.enginatics.com/reports/ap-invoices-and-lines-11i/](https://www.enginatics.com/reports/ap-invoices-and-lines-11i/) |
+| Excel Example Output | [AP Invoices and Lines 11i 03-Sep-2024 053525.xlsx](https://www.enginatics.com/example/ap-invoices-and-lines-11i/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-invoices-and-lines-11i) |
+| Blitz Report™ XML Import | [AP_Invoices_and_Lines_11i.xml](https://www.enginatics.com/xml/ap-invoices-and-lines-11i/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-invoices-and-lines-11i) |
+| SQL Source | [AP Invoices and Lines 11i.sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/AP%20Invoices%20and%20Lines%2011i/AP%20Invoices%20and%20Lines%2011i.sql) |
+| Full Report on Enginatics | [www.enginatics.com/reports/ap-invoices-and-lines-11i/](https://www.enginatics.com/reports/ap-invoices-and-lines-11i/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-invoices-and-lines-11i) |
 
 ## Case Study & Technical Analysis: AP Invoices and Lines
 
@@ -108,18 +121,17 @@ The SQL is designed to handle the one-to-many relationships inherent in AP data 
 *   **Pivot Tables:** The output is designed for Excel Pivot Tables. Users should be trained to use the "First Invoice" flag or specific Line Amount columns to avoid double-counting header totals.
 *   **Month-End Close:** Use this report during month-end to identify unvalidated invoices or those on hold that need resolution before the period closes.
 
-
 ---
 
 ## Useful Links
 
-- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/)
-- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/)
-- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/)
-- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/)
-- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/)
-- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/)
-- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/)
+- [Blitz Report™ – World’s Fastest Oracle EBS Reporting Tool](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-invoices-and-lines-11i)
+- [Oracle Discoverer Replacement – Import Worksheets into Blitz Report™](https://www.enginatics.com/blog/discoverer-replacement/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-invoices-and-lines-11i)
+- [Oracle EBS Reporting Toolkits by Blitz Report™](https://www.enginatics.com/blitz-report-toolkits/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-invoices-and-lines-11i)
+- [Blitz Report™ FAQ & Community Q&A](https://www.enginatics.com/discussion/questions-answers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-invoices-and-lines-11i)
+- [Supply Chain Hub by Blitz Report™](https://www.enginatics.com/supply-chain-hub/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-invoices-and-lines-11i)
+- [Blitz Report™ Customer Case Studies](https://www.enginatics.com/customers/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-invoices-and-lines-11i)
+- [Oracle EBS Reporting Blog](https://www.enginatics.com/blog/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-invoices-and-lines-11i)
 - [Oracle EBS Reporting Resource Centre](https://oracleebsreporting.com/)
 
-© 2026 Enginatics
+© Enginatics GmbH

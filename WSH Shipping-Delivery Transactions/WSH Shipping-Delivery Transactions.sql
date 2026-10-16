@@ -1,17 +1,16 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: WSH Shipping/Delivery Transactions
 -- Description: This report provides details of Warehouse Shipping Transactions and Deliveries.
-
-To review details of deliveries only, set the Assigned to Delivery Parameter = 'Yes'
-To review details of shipping transaction not yet assigned to a delivery, set the Assigned to Delivery Parameter = 'No'
-Set the parameter to null to review all shipping transations regardless of delivery assignment status.
-
--- Excel Examle Output: https://www.enginatics.com/example/wsh-shipping-delivery-transactions/
+-- To review details of deliveries only, set the Assigned to Delivery Parameter = 'Yes'
+-- To review details of shipping transaction not yet assigned to a delivery, set the Assigned to Delivery Parameter = 'No'
+-- Set the parameter to null to review all shipping transations regardless of delivery assignment status.
+-- When India Localization is installed, the following GST columns are also included: GST Registration No, GST PAN No, CGST Amount, SGST Amount, IGST Amount, CESS Amount, Custom Amount, Unclassified Tax Amount, Taxable Value, HSN Length Warning, CGST Rate, SGST Rate, IGST Rate, CESS Rate, CGST Recoverable, CGST Non-Recoverable, SGST Recoverable, SGST Non-Recoverable, IGST Recoverable, IGST Non-Recoverable, Reverse Charge Flag, Place of Supply, Ship From State, HSN SAC Code.
+-- Excel Example Output: https://www.enginatics.com/example/wsh-shipping-delivery-transactions/
 -- Library Link: https://www.enginatics.com/reports/wsh-shipping-delivery-transactions/
 -- Run Report: https://demo.enginatics.com/
 
@@ -72,7 +71,7 @@ wdd.unit_price,
 wdd.currency_code,
 -- shipment details
 wnd.waybill,
-(select listagg(x.name,', ') within group (order by x.name) from (select distinct wt.name from wsh_delivery_legs wdl, wsh_trip_stops wts, wsh_trips wt where wdl.delivery_id=wnd.delivery_id and wdl.pick_up_stop_id=wts.stop_id and wts.trip_id=wt.trip_id) x) trip_number,
+(select listagg(x.name,', ') within group (order by x.name) from (select distinct wt.name, wdl.delivery_id from wsh_delivery_legs wdl, wsh_trip_stops wts, wsh_trips wt where wdl.pick_up_stop_id=wts.stop_id and wts.trip_id=wt.trip_id) x where x.delivery_id=wnd.delivery_id) trip_number,
 wsh_util_core.derive_shipment_priority(wnd.delivery_id) shipment_priority,
 wsh_util_core.ship_method_to_freight(wnd.ship_method_code,wdd.organization_id) delivery_freight_code,
 xxen_util.meaning(wnd.ship_method_code,'SHIP_METHOD',3) delivery_shipping_method,
@@ -185,9 +184,14 @@ wsh_util_core.get_location_description(nvl(wnd.intmed_ship_to_location_id,wdd.in
 wsh_util_core.get_location_description(wnd.fob_location_id, case :loc_format when 'City State Zip' then 'CSZ' when 'City State Zip Country' then 'CSZC' when 'Code Address1 City' then 'NEW UI CODE INFO' else 'NEW UI CODE' end) fob_location,
 -- packing/shipping instructions
 wdd.packing_instructions,
-wdd.shipping_instructions,
+wdd.shipping_instructions
+&il_reg_columns
+&il_columns_amt
+&il_columns_rate
+&il_columns_rec
+&il_columns_tp
 -- ids (non user-facing, kept at the end)
-wnd.delivery_id delivery_note_id,
+,wnd.delivery_id delivery_note_id,
 wdd.delivery_detail_id
 from
 wsh_delivery_details wdd,
@@ -287,6 +291,7 @@ hz_cust_acct_sites_all hcasa,
 hz_party_sites hps,
 hz_locations hl,
 hr_all_organization_units haou2
+&il_from
 where
 1=1 and
 nvl(wdd.line_direction,'O') in ('O','IO') and
@@ -313,7 +318,7 @@ oola.line_id=line_holds.line_id(+) and
 ooha.header_id=header_holds.header_id(+) and
 ooha.org_id=rs_order.org_id(+) and
 nvl(ooha.salesrep_id,-3)=rs_order.salesrep_id(+) and
-hcasa.org_id=rs_cust.org_id(+) and
+hcsua.org_id=rs_cust.org_id(+) and
 nvl(hcsua.primary_salesrep_id,-3)=rs_cust.salesrep_id(+) and
 rctla.interface_line_context(+)='ORDER ENTRY' and
 decode(wdd.source_code,'OE',wdd.source_header_number)=rctla.interface_line_attribute1(+) and
@@ -337,6 +342,7 @@ haou1.organization_id in (select mgoat.organization_id from mo_glob_org_access_t
 haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11) or
 haou1.organization_id is null and haou2.organization_id is null
 )
+&il_where
 order by
 selling_operating_unit,
 shipping_operating_unit,

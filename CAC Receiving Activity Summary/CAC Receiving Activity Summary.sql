@@ -1,43 +1,40 @@
 /*************************************************************************/
 /*                                                                       */
-/*                       (c) 2010-2024 Enginatics GmbH                   */
-/*                              www.enginatics.com                       */
+/*                          (c) Enginatics GmbH                          */
+/*                          www.enginatics.com                           */
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Receiving Activity Summary
--- Description: Especially for companies who do not use separate inspection receipt processes, this report nets the initial purchase order receipt into receiving against the delivery into stock and WIP outside processing (OSP), for the entered transaction date range.  By comparing the Purchasing Receipt transactions with the Purchasing Delivery transactions (for the purchasing receipts, material deliveries and WIP OSP deliveries).  Enter the date range you wish to compare, typically a monthly date range.  Differences may be due to the initial receipt occurring in the prior month, not running Create Accounting in the current month (as this report uses the Subledger Accounting rules to report your Receiving Valuation Activity), the goods never delivered into stock or OSP or perhaps the delivery into stock or into WIP OSP was not processed by Create Accounting.
-
-Parameters:
-==========
-Transaction Date From:  enter the starting transaction date (mandatory).  Defaults to the current period starting date.
-Transaction Date To:  enter the ending transaction date (mandatory).  Defaults to the current period ending date.
-Organization Code:  enter the specific inventory organization(s) you wish to report (optional).  Defaults to your session's organization code.
-Operating Unit:  enter the specific operating unit(s) you wish to report (optional).
-Ledger:  enter the specific ledger(s) you wish to report (optional).
-
-/* +=============================================================================+
--- |  Copyright 2010 - 2024 Douglas Volz Consulting, Inc.
--- |  All rights reserved.
--- |  Permission to use this code is granted provided the original author is
--- |  acknowledged.  No warranties, express or otherwise is included in this permission.                                                                |
--- +=============================================================================+
--- |
--- |  Original Author: Douglas Volz (doug@volzconsulting.com)
--- |
--- |  Program Name:  xxx_rcv_activity_rept.sql
--- | 
--- |  Version Modified on Modified  by   Description
--- |  ======= =========== ============== =========================================
--- |  1.0      6 Jan 2010 Douglas Volz   Initial Coding
--- |  1.1     05 Apr 2010 Douglas Volz   Added PO number, PO Distribution id to query
--- |  1.2     25 Oct 2017 Douglas Volz   Now use the receiving parameter Receiving ccid
--- |                                     and added transaction source.
--- |  1.3     13 Mar 2018 Douglas Volz   Added Ledger parameter
--- |  1.4     08 Jul 2022 Douglas Volz   Multi-language tables for item master.
--- |  1.5     24 Jun 2024 Douglas Volz   Remove tabs, reinstall parameters and inventory org access controls.
--- +=============================================================================+*/
-
--- Excel Examle Output: https://www.enginatics.com/example/cac-receiving-activity-summary/
+-- Description: Especially for companies who do not use separate inspection receipt processes, this report nets the initial purchase order receipt into receiving against the delivery into stock and WIP outside processing (OSP), for the entered transaction date range. By comparing the Purchasing Receipt transactions with the Purchasing Delivery transactions (for the purchasing receipts, material deliveries and WIP OSP deliveries). Enter the date range you wish to compare, typically a monthly date range. Differences may be due to the initial receipt occurring in the prior month, not running Create Accounting in the current month (as this report uses the Subledger Accounting rules to report your Receiving Valuation Activity), the goods never delivered into stock or OSP or perhaps the delivery into stock or into WIP OSP was not processed by Create Accounting.
+-- Parameters:
+-- ==========
+-- Transaction Date From: enter the starting transaction date (mandatory). Defaults to the current period starting date.
+-- Transaction Date To: enter the ending transaction date (mandatory). Defaults to the current period ending date.
+-- Organization Code: enter the specific inventory organization(s) you wish to report (optional). Defaults to your session's organization code.
+-- Operating Unit: enter the specific operating unit(s) you wish to report (optional).
+-- Ledger: enter the specific ledger(s) you wish to report (optional).
+-- / +=============================================================================+
+-- -- | Copyright 2010 - 2024 Douglas Volz Consulting, Inc.
+-- -- | All rights reserved.
+-- -- | Permission to use this code is granted provided the original author is
+-- -- | acknowledged. No warranties, express or otherwise is included in this permission. |
+-- -- +=============================================================================+
+-- -- |
+-- -- | Original Author: Douglas Volz (doug@volzconsulting.com)
+-- -- |
+-- -- | Program Name: xxxrcvactivityrept.sql
+-- -- |
+-- -- | Version Modified on Modified by Description
+-- -- | ======= =========== ============== =========================================
+-- -- | 1.0 6 Jan 2010 Douglas Volz Initial Coding
+-- -- | 1.1 05 Apr 2010 Douglas Volz Added PO number, PO Distribution id to query
+-- -- | 1.2 25 Oct 2017 Douglas Volz Now use the receiving parameter Receiving ccid
+-- -- | and added transaction source.
+-- -- | 1.3 13 Mar 2018 Douglas Volz Added Ledger parameter
+-- -- | 1.4 08 Jul 2022 Douglas Volz Multi-language tables for item master.
+-- -- | 1.5 24 Jun 2024 Douglas Volz Remove tabs, reinstall parameters and inventory org access controls.
+-- -- +=============================================================================+/
+-- Excel Example Output: https://www.enginatics.com/example/cac-receiving-activity-summary/
 -- Library Link: https://www.enginatics.com/reports/cac-receiving-activity-summary/
 -- Run Report: https://demo.enginatics.com/
 
