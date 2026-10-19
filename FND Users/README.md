@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-16
+last_modified_at: 2026-10-19
 title: 'FND Users | Oracle EBS SQL Report'
 description: 'Listing of all EBS users, their status, responsibility count, and if they were using blitz reports'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Application Object Library, Enginatics, FND, Users, fnd_user_resp_groups, fnd_responsibility, fnd_user'
@@ -31,7 +31,7 @@ User Name, Has Access to Responsibility, Has Access to Application, Active only,
 [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fnd-users)
 
 ## Related Reports
-[AP Suppliers](/AP%20Suppliers/ "AP Suppliers Oracle EBS SQL Report"), [FND Responsibility Access](/FND%20Responsibility%20Access/ "FND Responsibility Access Oracle EBS SQL Report"), [FND User Upload](/FND%20User%20Upload/ "FND User Upload Oracle EBS SQL Report"), [Blitz Report User History](/Blitz%20Report%20User%20History/ "Blitz Report User History Oracle EBS SQL Report"), [INV Item Upload](/INV%20Item%20Upload/ "INV Item Upload Oracle EBS SQL Report"), [INV Item Upload 11i](/INV%20Item%20Upload%2011i/ "INV Item Upload 11i Oracle EBS SQL Report")
+[AP Suppliers](/AP%20Suppliers/ "AP Suppliers Oracle EBS SQL Report"), [FND Responsibility Access](/FND%20Responsibility%20Access/ "FND Responsibility Access Oracle EBS SQL Report"), [FND User Upload](/FND%20User%20Upload/ "FND User Upload Oracle EBS SQL Report"), [Blitz Report User History](/Blitz%20Report%20User%20History/ "Blitz Report User History Oracle EBS SQL Report"), [INV Item Upload 11i](/INV%20Item%20Upload%2011i/ "INV Item Upload 11i Oracle EBS SQL Report"), [INV Items](/INV%20Items/ "INV Items Oracle EBS SQL Report"), [INV Item Upload](/INV%20Item%20Upload/ "INV Item Upload Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/FND%20Users/FND%20Users.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fnd-users) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.

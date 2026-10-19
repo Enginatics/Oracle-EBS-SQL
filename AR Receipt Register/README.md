@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-16
+last_modified_at: 2026-10-19
 title: 'AR Receipt Register | Oracle EBS SQL Report'
 description: 'Application: Receivables Description: Receivables Receipt Register Provided Templates: Default: Detail - Detail Listing with no Pivot Summarization Pivot…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Receivables, Enginatics, R12 only, Receipt, Register, ar_receivable_apps_all_mrc_v, ar_receivable_applications_all, ar_payment_schedules_all'
@@ -44,7 +44,7 @@ Reporting Level, Reporting Context, Balancing Segment Low, Balancing Segment Hig
 [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-receipt-register), [R12 only](https://www.enginatics.com/library/?pg=1&category%5B%5D=R12%20only&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-receipt-register)
 
 ## Related Reports
-[GL Account Analysis](/GL%20Account%20Analysis/ "GL Account Analysis Oracle EBS SQL Report"), [GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report"), [GL Account Analysis (Drilldown) (with inventory and WIP)](/GL%20Account%20Analysis%20%28Drilldown%29%20%28with%20inventory%20and%20WIP%29/ "GL Account Analysis (Drilldown) (with inventory and WIP) Oracle EBS SQL Report")
+[GL Account Analysis](/GL%20Account%20Analysis/ "GL Account Analysis Oracle EBS SQL Report"), [GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report"), [GL Account Analysis (Drilldown) (with inventory and WIP)](/GL%20Account%20Analysis%20%28Drilldown%29%20%28with%20inventory%20and%20WIP%29/ "GL Account Analysis (Drilldown) (with inventory and WIP) Oracle EBS SQL Report"), [AR Aging](/AR%20Aging/ "AR Aging Oracle EBS SQL Report"), [AR Transactions and Payments](/AR%20Transactions%20and%20Payments/ "AR Transactions and Payments Oracle EBS SQL Report"), [AR Customer Open Balances Period Lookback](/AR%20Customer%20Open%20Balances%20Period%20Lookback/ "AR Customer Open Balances Period Lookback Oracle EBS SQL Report"), [AP Invoices and Lines](/AP%20Invoices%20and%20Lines/ "AP Invoices and Lines Oracle EBS SQL Report"), [AR Unapplied Receipts Register](/AR%20Unapplied%20Receipts%20Register/ "AR Unapplied Receipts Register Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/AR%20Receipt%20Register/AR%20Receipt%20Register.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-receipt-register) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.

@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-16
+last_modified_at: 2026-10-19
 title: 'DBA Session Longops | Oracle EBS SQL Report'
 description: 'Estimated time to completion for long running sessions based on gv$sessionlongops'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Database Administration, Enginatics, DBA, Session, Longops, gv$session_longops, gv$session'
@@ -31,7 +31,7 @@ Active only
 [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-session-longops)
 
 ## Related Reports
-[DBA SGA Wait Event Summary (active session history)](/DBA%20SGA%20Wait%20Event%20Summary%20%28active%20session%20history%29/ "DBA SGA Wait Event Summary (active session history) Oracle EBS SQL Report"), [DBA SGA Active Session History](/DBA%20SGA%20Active%20Session%20History/ "DBA SGA Active Session History Oracle EBS SQL Report"), [FND Concurrent Requests](/FND%20Concurrent%20Requests/ "FND Concurrent Requests Oracle EBS SQL Report"), [DBA AWR SQL Performance Summary](/DBA%20AWR%20SQL%20Performance%20Summary/ "DBA AWR SQL Performance Summary Oracle EBS SQL Report"), [DBA Sessions](/DBA%20Sessions/ "DBA Sessions Oracle EBS SQL Report"), [DBA ORDS Configuration Validation](/DBA%20ORDS%20Configuration%20Validation/ "DBA ORDS Configuration Validation Oracle EBS SQL Report"), [DBA Blocking Sessions](/DBA%20Blocking%20Sessions/ "DBA Blocking Sessions Oracle EBS SQL Report"), [Blitz Report History](/Blitz%20Report%20History/ "Blitz Report History Oracle EBS SQL Report")
+[DBA SGA Wait Event Summary (active session history)](/DBA%20SGA%20Wait%20Event%20Summary%20%28active%20session%20history%29/ "DBA SGA Wait Event Summary (active session history) Oracle EBS SQL Report"), [DBA SGA CPU Load (active session history)](/DBA%20SGA%20CPU%20Load%20%28active%20session%20history%29/ "DBA SGA CPU Load (active session history) Oracle EBS SQL Report"), [DBA SGA Active Session History](/DBA%20SGA%20Active%20Session%20History/ "DBA SGA Active Session History Oracle EBS SQL Report"), [FND Concurrent Requests](/FND%20Concurrent%20Requests/ "FND Concurrent Requests Oracle EBS SQL Report"), [DBA AWR SQL Performance Summary](/DBA%20AWR%20SQL%20Performance%20Summary/ "DBA AWR SQL Performance Summary Oracle EBS SQL Report"), [DBA Sessions](/DBA%20Sessions/ "DBA Sessions Oracle EBS SQL Report"), [DBA ORDS Configuration Validation](/DBA%20ORDS%20Configuration%20Validation/ "DBA ORDS Configuration Validation Oracle EBS SQL Report"), [DBA Blocking Sessions](/DBA%20Blocking%20Sessions/ "DBA Blocking Sessions Oracle EBS SQL Report"), [Blitz Report History](/Blitz%20Report%20History/ "Blitz Report History Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/DBA%20Session%20Longops/DBA%20Session%20Longops.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-session-longops) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.

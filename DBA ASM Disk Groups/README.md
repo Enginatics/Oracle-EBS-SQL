@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-16
+last_modified_at: 2026-10-19
 title: 'DBA ASM Disk Groups | Oracle EBS SQL Report'
 description: 'Automatic Storage Management disk groups used by the database, with their redundancy, total and free space. All sizes are shown in MB. Usable File Mb is…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Database Administration, Enginatics, DBA, ASM, Disk, Groups, v$asm_diskgroup'
@@ -37,7 +37,7 @@ Used Percent From
 [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-asm-disk-groups)
 
 ## Related Reports
-[CST Historical WIP Standard Cost Adjustment](/CST%20Historical%20WIP%20Standard%20Cost%20Adjustment/ "CST Historical WIP Standard Cost Adjustment Oracle EBS SQL Report"), [CAC Inventory Accounts Setup](/CAC%20Inventory%20Accounts%20Setup/ "CAC Inventory Accounts Setup Oracle EBS SQL Report")
+[CST Historical WIP Standard Cost Adjustment](/CST%20Historical%20WIP%20Standard%20Cost%20Adjustment/ "CST Historical WIP Standard Cost Adjustment Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/DBA%20ASM%20Disk%20Groups/DBA%20ASM%20Disk%20Groups.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-asm-disk-groups) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.

@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-16
+last_modified_at: 2026-10-19
 title: 'AR Open Items Revaluation | Oracle EBS SQL Report'
 description: 'Imported from BI Publisher Description: Open Items Revaluation Report Application: Receivables Source: Open Items Revaluation Report (XML) Short Name…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Receivables, BI Publisher, Enginatics, R12 only, Open, Items, Revaluation, gl_translation_rates, ar_receivable_applications, ar_cash_receipt_history'
@@ -36,7 +36,7 @@ Ledger, Operating Unit, Report Format, Revaluation Period, Include Up To Due Dat
 [BI Publisher](https://www.enginatics.com/library/?pg=1&category%5B%5D=BI%20Publisher&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-open-items-revaluation), [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-open-items-revaluation), [R12 only](https://www.enginatics.com/library/?pg=1&category%5B%5D=R12%20only&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-open-items-revaluation)
 
 ## Related Reports
-[AR Aging](/AR%20Aging/ "AR Aging Oracle EBS SQL Report"), [GL Account Analysis](/GL%20Account%20Analysis/ "GL Account Analysis Oracle EBS SQL Report")
+[AR Aging](/AR%20Aging/ "AR Aging Oracle EBS SQL Report"), [GL Account Analysis](/GL%20Account%20Analysis/ "GL Account Analysis Oracle EBS SQL Report"), [GL Account Analysis (Drilldown) (with inventory and WIP)](/GL%20Account%20Analysis%20%28Drilldown%29%20%28with%20inventory%20and%20WIP%29/ "GL Account Analysis (Drilldown) (with inventory and WIP) Oracle EBS SQL Report"), [GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report"), [AR Customer Statement](/AR%20Customer%20Statement/ "AR Customer Statement Oracle EBS SQL Report"), [AR Transactions and Payments](/AR%20Transactions%20and%20Payments/ "AR Transactions and Payments Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/AR%20Open%20Items%20Revaluation/AR%20Open%20Items%20Revaluation.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-open-items-revaluation) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.

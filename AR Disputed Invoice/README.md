@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-16
+last_modified_at: 2026-10-19
 title: 'AR Disputed Invoice | Oracle EBS SQL Report'
 description: 'Imported Oracle standard disputed invoice report Source: Disputed Invoice Report (XML) Short Name: ARXDIRXML DB package: ARARXDIRXMLPPKG When India…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Receivables, Enginatics, Disputed, Invoice, ar_collectors, gl_sets_of_books, fnd_currencies'
@@ -36,7 +36,7 @@ Operating Unit, Order By, Customer Name Low, Customer Name High, Customer Number
 [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-disputed-invoice)
 
 ## Related Reports
-[AR Aging](/AR%20Aging/ "AR Aging Oracle EBS SQL Report"), [AR Customer Credit Limits](/AR%20Customer%20Credit%20Limits/ "AR Customer Credit Limits Oracle EBS SQL Report"), [AR Customer Upload](/AR%20Customer%20Upload/ "AR Customer Upload Oracle EBS SQL Report"), [AR Customers and Sites](/AR%20Customers%20and%20Sites/ "AR Customers and Sites Oracle EBS SQL Report")
+[AR Aging](/AR%20Aging/ "AR Aging Oracle EBS SQL Report"), [AR Customer Credit Limits](/AR%20Customer%20Credit%20Limits/ "AR Customer Credit Limits Oracle EBS SQL Report"), [AR Customer Upload](/AR%20Customer%20Upload/ "AR Customer Upload Oracle EBS SQL Report"), [AR Customers and Sites](/AR%20Customers%20and%20Sites/ "AR Customers and Sites Oracle EBS SQL Report"), [AR Open Items Revaluation](/AR%20Open%20Items%20Revaluation/ "AR Open Items Revaluation Oracle EBS SQL Report"), [AR Customer Credit Snapshot](/AR%20Customer%20Credit%20Snapshot/ "AR Customer Credit Snapshot Oracle EBS SQL Report"), [AR Miscellaneous Receipts](/AR%20Miscellaneous%20Receipts/ "AR Miscellaneous Receipts Oracle EBS SQL Report"), [AR Transactions and Payments](/AR%20Transactions%20and%20Payments/ "AR Transactions and Payments Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/AR%20Disputed%20Invoice/AR%20Disputed%20Invoice.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-disputed-invoice) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.

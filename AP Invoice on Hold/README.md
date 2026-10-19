@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-16
+last_modified_at: 2026-10-19
 title: 'AP Invoice on Hold | Oracle EBS SQL Report'
 description: 'Based on Oracle standard Invoice on Hold report Source: Invoice on Hold Report (XML) Short Name: APXINROHXML When India Localization is installed, the…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Payables, Enginatics, Invoice, Hold, ap_lookup_codes, po_line_locations_all, po_headers_all'
@@ -35,7 +35,7 @@ Operating Unit, Hold Name, Trading Partner, Order By, Entered Date From, Entered
 [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-invoice-on-hold)
 
 ## Related Reports
-[AP Invoices and Lines](/AP%20Invoices%20and%20Lines/ "AP Invoices and Lines Oracle EBS SQL Report"), [CST Miscellaneous Accrual Reconciliation](/CST%20Miscellaneous%20Accrual%20Reconciliation/ "CST Miscellaneous Accrual Reconciliation Oracle EBS SQL Report"), [CST AP and PO Accrual Reconciliation](/CST%20AP%20and%20PO%20Accrual%20Reconciliation/ "CST AP and PO Accrual Reconciliation Oracle EBS SQL Report")
+[AP Invoices and Lines](/AP%20Invoices%20and%20Lines/ "AP Invoices and Lines Oracle EBS SQL Report"), [AP Invoices and Lines 11i](/AP%20Invoices%20and%20Lines%2011i/ "AP Invoices and Lines 11i Oracle EBS SQL Report"), [CST AP and PO Accrual Reconciliation](/CST%20AP%20and%20PO%20Accrual%20Reconciliation/ "CST AP and PO Accrual Reconciliation Oracle EBS SQL Report"), [CST Miscellaneous Accrual Reconciliation](/CST%20Miscellaneous%20Accrual%20Reconciliation/ "CST Miscellaneous Accrual Reconciliation Oracle EBS SQL Report"), [PO Procure to Pay Tracker](/PO%20Procure%20to%20Pay%20Tracker/ "PO Procure to Pay Tracker Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/AP%20Invoice%20on%20Hold/AP%20Invoice%20on%20Hold.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-invoice-on-hold) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.

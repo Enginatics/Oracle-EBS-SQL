@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-16
+last_modified_at: 2026-10-19
 title: 'OPM Batch Material Usage and Substitution Variance | Oracle EBS SQL Report'
 description: 'Oracle Process Manufacturing (OPM) batch material usage and substitution variance: per-ingredient planned versus actual consumption per production batch…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Process Manufacturing, Enginatics, R12 only, OPM, Batch, Material, Usage, gme_material_details, gme_batch_header, mtl_system_items_vl'
@@ -31,7 +31,7 @@ Organization Code, Batch Number, Ingredient Item, Batch Status, Actual Completio
 [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=opm-batch-material-usage-and-substitution-variance), [R12 only](https://www.enginatics.com/library/?pg=1&category%5B%5D=R12%20only&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=opm-batch-material-usage-and-substitution-variance)
 
 ## Related Reports
-[OPM Batch Yield Variance](/OPM%20Batch%20Yield%20Variance/ "OPM Batch Yield Variance Oracle EBS SQL Report"), [OPM Batch Details and Status Summary](/OPM%20Batch%20Details%20and%20Status%20Summary/ "OPM Batch Details and Status Summary Oracle EBS SQL Report"), [CAC OPM Batch Material Summary](/CAC%20OPM%20Batch%20Material%20Summary/ "CAC OPM Batch Material Summary Oracle EBS SQL Report"), [OPM Batch Lot Cost Trends](/OPM%20Batch%20Lot%20Cost%20Trends/ "OPM Batch Lot Cost Trends Oracle EBS SQL Report"), [OPM Batch Lot Genealogy](/OPM%20Batch%20Lot%20Genealogy/ "OPM Batch Lot Genealogy Oracle EBS SQL Report"), [CAC OPM WIP Account Value](/CAC%20OPM%20WIP%20Account%20Value/ "CAC OPM WIP Account Value Oracle EBS SQL Report")
+[OPM Batch Yield Variance](/OPM%20Batch%20Yield%20Variance/ "OPM Batch Yield Variance Oracle EBS SQL Report"), [OPM Batch Details and Status Summary](/OPM%20Batch%20Details%20and%20Status%20Summary/ "OPM Batch Details and Status Summary Oracle EBS SQL Report"), [CAC OPM Batch Material Summary](/CAC%20OPM%20Batch%20Material%20Summary/ "CAC OPM Batch Material Summary Oracle EBS SQL Report"), [OPM Batch Lot Cost Trends](/OPM%20Batch%20Lot%20Cost%20Trends/ "OPM Batch Lot Cost Trends Oracle EBS SQL Report"), [OPM Batch Lot Genealogy](/OPM%20Batch%20Lot%20Genealogy/ "OPM Batch Lot Genealogy Oracle EBS SQL Report"), [CAC OPM WIP Account Value](/CAC%20OPM%20WIP%20Account%20Value/ "CAC OPM WIP Account Value Oracle EBS SQL Report"), [OPM Batch Lot Cost Details](/OPM%20Batch%20Lot%20Cost%20Details/ "OPM Batch Lot Cost Details Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/OPM%20Batch%20Material%20Usage%20and%20Substitution%20Variance/OPM%20Batch%20Material%20Usage%20and%20Substitution%20Variance.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=opm-batch-material-usage-and-substitution-variance) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.

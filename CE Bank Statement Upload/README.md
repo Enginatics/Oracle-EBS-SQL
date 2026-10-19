@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-16
+last_modified_at: 2026-10-19
 title: 'CE Bank Statement Upload | Oracle EBS SQL Report'
 description: 'CE Bank Statement Upload ======================== Loads bank statements (header and lines) into Oracle Cash Management through the bank statement open…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Upload, Bank, Statement, ce_statement_headers_int, ce_statement_lines_interface'
@@ -52,7 +52,7 @@ Upload Mode, AutoReconciliation, GL Date, Account Number, Statement Number
 [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ce-bank-statement-upload), [R12 only](https://www.enginatics.com/library/?pg=1&category%5B%5D=R12%20only&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ce-bank-statement-upload), [Upload](https://www.enginatics.com/library/?pg=1&category%5B%5D=Upload&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ce-bank-statement-upload)
 
 ## Related Reports
-[CE Bank Statement and Reconciliation](/CE%20Bank%20Statement%20and%20Reconciliation/ "CE Bank Statement and Reconciliation Oracle EBS SQL Report"), [CE Bank Statement Import Execution](/CE%20Bank%20Statement%20Import%20Execution/ "CE Bank Statement Import Execution Oracle EBS SQL Report"), [AR Customer Upload](/AR%20Customer%20Upload/ "AR Customer Upload Oracle EBS SQL Report"), [CE General Ledger Reconciliation](/CE%20General%20Ledger%20Reconciliation/ "CE General Ledger Reconciliation Oracle EBS SQL Report"), [CE Transactions Available for Reconciliation](/CE%20Transactions%20Available%20for%20Reconciliation/ "CE Transactions Available for Reconciliation Oracle EBS SQL Report")
+[CE Bank Statement and Reconciliation](/CE%20Bank%20Statement%20and%20Reconciliation/ "CE Bank Statement and Reconciliation Oracle EBS SQL Report"), [CE Bank Statement Import Execution](/CE%20Bank%20Statement%20Import%20Execution/ "CE Bank Statement Import Execution Oracle EBS SQL Report"), [AR Customer Upload](/AR%20Customer%20Upload/ "AR Customer Upload Oracle EBS SQL Report"), [CE Transactions Available for Reconciliation](/CE%20Transactions%20Available%20for%20Reconciliation/ "CE Transactions Available for Reconciliation Oracle EBS SQL Report"), [CE General Ledger Reconciliation](/CE%20General%20Ledger%20Reconciliation/ "CE General Ledger Reconciliation Oracle EBS SQL Report"), [CE Cash in Transit](/CE%20Cash%20in%20Transit/ "CE Cash in Transit Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/CE%20Bank%20Statement%20Upload/CE%20Bank%20Statement%20Upload.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ce-bank-statement-upload) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.

@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-16
+last_modified_at: 2026-10-19
 title: 'OTL Timecard Upload | Oracle EBS SQL Report'
 description: 'OTL Timecard Upload =================== Create, update and delete Oracle Time and Labor (OTL / HXC) timecards via the public TimeStore deposit API…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, OTL, Timecard, hxc_transaction_details, hxc_transactions, hxc_timecard_summary'
@@ -57,7 +57,7 @@ Upload Mode, Employee, Period Start Date From, Period Start Date To, Approval St
 [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=otl-timecard-upload), [Upload](https://www.enginatics.com/library/?pg=1&category%5B%5D=Upload&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=otl-timecard-upload)
 
 ## Related Reports
-[OTL Timecard Upload 11i](/OTL%20Timecard%20Upload%2011i/ "OTL Timecard Upload 11i Oracle EBS SQL Report"), [PA Missing Timecards](/PA%20Missing%20Timecards/ "PA Missing Timecards Oracle EBS SQL Report"), [GL Account Analysis](/GL%20Account%20Analysis/ "GL Account Analysis Oracle EBS SQL Report"), [GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report")
+[OTL Timecard Upload 11i](/OTL%20Timecard%20Upload%2011i/ "OTL Timecard Upload 11i Oracle EBS SQL Report"), [PA Missing Timecards](/PA%20Missing%20Timecards/ "PA Missing Timecards Oracle EBS SQL Report"), [GL Account Analysis](/GL%20Account%20Analysis/ "GL Account Analysis Oracle EBS SQL Report"), [GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report"), [AP Invoices and Lines](/AP%20Invoices%20and%20Lines/ "AP Invoices and Lines Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/OTL%20Timecard%20Upload/OTL%20Timecard%20Upload.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=otl-timecard-upload) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.

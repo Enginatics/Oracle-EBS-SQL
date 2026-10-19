@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-16
+last_modified_at: 2026-10-19
 title: 'DBA SYSAUX Occupants | Oracle EBS SQL Report'
 description: 'Space used in the SYSAUX tablespace by component. All sizes are shown in MB. The largest occupants are usually the AWR (SM/AWR) and the optimizer…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Database Administration, Enginatics, DBA, SYSAUX, Occupants, v$sysaux_occupants'
@@ -34,8 +34,6 @@ None
 ## Report Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-sysaux-occupants)
 
-## Related Reports
-[CAC Inventory Accounts Setup](/CAC%20Inventory%20Accounts%20Setup/ "CAC Inventory Accounts Setup Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/DBA%20SYSAUX%20Occupants/DBA%20SYSAUX%20Occupants.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-sysaux-occupants) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.

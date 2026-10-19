@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-16
+last_modified_at: 2026-10-19
 title: 'PA Expenditure Types | Oracle EBS SQL Report'
 description: 'Listing of project expenditure types with their category, type class, unit of measure, and active dates.'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Projects, Enginatics, Expenditure, Types, pa_system_linkages, pa_expenditure_types'
@@ -31,7 +31,7 @@ Expenditure Category, Expenditure Type Class
 [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-expenditure-types)
 
 ## Related Reports
-[PA Project Expenditure Items with WIP and INV Detail](/PA%20Project%20Expenditure%20Items%20with%20WIP%20and%20INV%20Detail/ "PA Project Expenditure Items with WIP and INV Detail Oracle EBS SQL Report"), [CAC Receiving Account Summary](/CAC%20Receiving%20Account%20Summary/ "CAC Receiving Account Summary Oracle EBS SQL Report"), [PA Transaction Sources](/PA%20Transaction%20Sources/ "PA Transaction Sources Oracle EBS SQL Report")
+[PA Project Expenditure Items with WIP and INV Detail](/PA%20Project%20Expenditure%20Items%20with%20WIP%20and%20INV%20Detail/ "PA Project Expenditure Items with WIP and INV Detail Oracle EBS SQL Report"), [PA Transaction Sources](/PA%20Transaction%20Sources/ "PA Transaction Sources Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/PA%20Expenditure%20Types/PA%20Expenditure%20Types.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-expenditure-types) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.

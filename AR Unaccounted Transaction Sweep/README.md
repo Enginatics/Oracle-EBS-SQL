@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-16
+last_modified_at: 2026-10-19
 title: 'AR Unaccounted Transaction Sweep | Oracle EBS SQL Report'
 description: 'Imported from BI Publisher Application: Receivables Source: Unaccounted Transaction Sweep Short Name: ARTRXSWP DB package: arunaccountedtrxsweep'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Receivables, BI Publisher, Enginatics, R12 only, Unaccounted, Transaction, Sweep, ar_period_close_excps_gt, hz_cust_accounts, hz_parties'
@@ -35,7 +35,7 @@ Reporting Level, Reporting Context, Period Name, Sweep Now, Sweep To Period Name
 [BI Publisher](https://www.enginatics.com/library/?pg=1&category%5B%5D=BI%20Publisher&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-unaccounted-transaction-sweep), [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-unaccounted-transaction-sweep), [R12 only](https://www.enginatics.com/library/?pg=1&category%5B%5D=R12%20only&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-unaccounted-transaction-sweep)
 
 ## Related Reports
-[GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report"), [GL Account Analysis](/GL%20Account%20Analysis/ "GL Account Analysis Oracle EBS SQL Report"), [GL Account Analysis (Drilldown) (with inventory and WIP)](/GL%20Account%20Analysis%20%28Drilldown%29%20%28with%20inventory%20and%20WIP%29/ "GL Account Analysis (Drilldown) (with inventory and WIP) Oracle EBS SQL Report"), [AR Open Items Revaluation](/AR%20Open%20Items%20Revaluation/ "AR Open Items Revaluation Oracle EBS SQL Report"), [AR Aging](/AR%20Aging/ "AR Aging Oracle EBS SQL Report")
+[GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report"), [GL Account Analysis](/GL%20Account%20Analysis/ "GL Account Analysis Oracle EBS SQL Report"), [GL Account Analysis (Drilldown) (with inventory and WIP)](/GL%20Account%20Analysis%20%28Drilldown%29%20%28with%20inventory%20and%20WIP%29/ "GL Account Analysis (Drilldown) (with inventory and WIP) Oracle EBS SQL Report"), [AR Aging](/AR%20Aging/ "AR Aging Oracle EBS SQL Report"), [AR Open Balances Revaluation](/AR%20Open%20Balances%20Revaluation/ "AR Open Balances Revaluation Oracle EBS SQL Report"), [AR Open Items Revaluation](/AR%20Open%20Items%20Revaluation/ "AR Open Items Revaluation Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/AR%20Unaccounted%20Transaction%20Sweep/AR%20Unaccounted%20Transaction%20Sweep.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-unaccounted-transaction-sweep) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.

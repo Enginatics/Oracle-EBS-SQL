@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-16
+last_modified_at: 2026-10-19
 title: 'AR Customer Credit Limits | Oracle EBS SQL Report'
 description: 'Master data report for customer setup audit of credit amount limits and GL accounts for customer credit management and dunning notices.'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Receivables, Enginatics, Customer, Credit, Limits, hz_customer_profiles, hr_all_organization_units_vl, hz_parties'
@@ -31,7 +31,7 @@ Display Level, Show Missing Credit Amounts, Operating Unit, Customer Name, Accou
 [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-customer-credit-limits)
 
 ## Related Reports
-[AR Customer Profiles](/AR%20Customer%20Profiles/ "AR Customer Profiles Oracle EBS SQL Report"), [AR Customers and Sites](/AR%20Customers%20and%20Sites/ "AR Customers and Sites Oracle EBS SQL Report"), [QP Customer Pricing Engine Request](/QP%20Customer%20Pricing%20Engine%20Request/ "QP Customer Pricing Engine Request Oracle EBS SQL Report"), [IEX Dunning History](/IEX%20Dunning%20History/ "IEX Dunning History Oracle EBS SQL Report"), [AR Unapplied Receipts Register](/AR%20Unapplied%20Receipts%20Register/ "AR Unapplied Receipts Register Oracle EBS SQL Report"), [AR Customer Upload](/AR%20Customer%20Upload/ "AR Customer Upload Oracle EBS SQL Report"), [AR European Sales Listing](/AR%20European%20Sales%20Listing/ "AR European Sales Listing Oracle EBS SQL Report"), [OKS Service Contract Line Upload](/OKS%20Service%20Contract%20Line%20Upload/ "OKS Service Contract Line Upload Oracle EBS SQL Report")
+[AR Customer Profiles](/AR%20Customer%20Profiles/ "AR Customer Profiles Oracle EBS SQL Report"), [AR Customers and Sites](/AR%20Customers%20and%20Sites/ "AR Customers and Sites Oracle EBS SQL Report"), [QP Customer Pricing Engine Request](/QP%20Customer%20Pricing%20Engine%20Request/ "QP Customer Pricing Engine Request Oracle EBS SQL Report"), [IEX Dunning History](/IEX%20Dunning%20History/ "IEX Dunning History Oracle EBS SQL Report"), [AR Unapplied Receipts Register](/AR%20Unapplied%20Receipts%20Register/ "AR Unapplied Receipts Register Oracle EBS SQL Report"), [AR Customer Upload](/AR%20Customer%20Upload/ "AR Customer Upload Oracle EBS SQL Report"), [AR European Sales Listing](/AR%20European%20Sales%20Listing/ "AR European Sales Listing Oracle EBS SQL Report"), [OKS Service Contract Line Upload](/OKS%20Service%20Contract%20Line%20Upload/ "OKS Service Contract Line Upload Oracle EBS SQL Report"), [IEX Collection Note Upload](/IEX%20Collection%20Note%20Upload/ "IEX Collection Note Upload Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/AR%20Customer%20Credit%20Limits/AR%20Customer%20Credit%20Limits.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-customer-credit-limits) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.

@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-16
+last_modified_at: 2026-10-19
 title: 'FND Languages | Oracle EBS SQL Report'
 description: 'Oracle EBS Application Object Library SQL report: free SQL, parameters and tables used.'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Application Object Library, Enginatics, FND, Languages, fnd_languages_vl'
@@ -31,7 +31,7 @@ Show installed only
 [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fnd-languages)
 
 ## Related Reports
-[AR Customer Upload](/AR%20Customer%20Upload/ "AR Customer Upload Oracle EBS SQL Report"), [Blitz Report Add-in Environment Setup](/Blitz%20Report%20Add-in%20Environment%20Setup/ "Blitz Report Add-in Environment Setup Oracle EBS SQL Report"), [FND Forms Personalizations](/FND%20Forms%20Personalizations/ "FND Forms Personalizations Oracle EBS SQL Report"), [Blitz Report Column Translation Upload](/Blitz%20Report%20Column%20Translation%20Upload/ "Blitz Report Column Translation Upload Oracle EBS SQL Report"), [AP Supplier Upload](/AP%20Supplier%20Upload/ "AP Supplier Upload Oracle EBS SQL Report"), [PER Person Upload](/PER%20Person%20Upload/ "PER Person Upload Oracle EBS SQL Report")
+[AR Customer Upload](/AR%20Customer%20Upload/ "AR Customer Upload Oracle EBS SQL Report"), [Blitz Report Add-in Environment Setup](/Blitz%20Report%20Add-in%20Environment%20Setup/ "Blitz Report Add-in Environment Setup Oracle EBS SQL Report"), [FND Lookup Values](/FND%20Lookup%20Values/ "FND Lookup Values Oracle EBS SQL Report"), [FND Forms Personalizations](/FND%20Forms%20Personalizations/ "FND Forms Personalizations Oracle EBS SQL Report"), [Blitz Report Column Translation Upload](/Blitz%20Report%20Column%20Translation%20Upload/ "Blitz Report Column Translation Upload Oracle EBS SQL Report"), [AP Supplier Upload](/AP%20Supplier%20Upload/ "AP Supplier Upload Oracle EBS SQL Report"), [PER Person Upload](/PER%20Person%20Upload/ "PER Person Upload Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/FND%20Languages/FND%20Languages.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fnd-languages) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.

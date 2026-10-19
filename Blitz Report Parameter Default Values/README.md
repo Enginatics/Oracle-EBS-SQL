@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-16
+last_modified_at: 2026-10-19
 title: 'Blitz Report Parameter Default Values | Oracle EBS SQL Report'
 description: 'Blitz Report''s user or template specific parameter default values – Oracle EBS Blitz Report SQL report: free SQL, parameters and tables used.'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Blitz, Report, Parameter, Default, xxen_report_templates_v, xxen_report_parameters_v, xxen_report_param_default_vals'
@@ -31,7 +31,7 @@ Category, Anchor, Report Name
 [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-report-parameter-default-values)
 
 ## Related Reports
-[DBA ORDS Configuration Validation](/DBA%20ORDS%20Configuration%20Validation/ "DBA ORDS Configuration Validation Oracle EBS SQL Report"), [DIS End User Layers](/DIS%20End%20User%20Layers/ "DIS End User Layers Oracle EBS SQL Report"), [Blitz Report Assignment Upload](/Blitz%20Report%20Assignment%20Upload/ "Blitz Report Assignment Upload Oracle EBS SQL Report"), [Blitz Report Assignments](/Blitz%20Report%20Assignments/ "Blitz Report Assignments Oracle EBS SQL Report"), [Blitz Report Default Templates](/Blitz%20Report%20Default%20Templates/ "Blitz Report Default Templates Oracle EBS SQL Report"), [Blitz Report Templates](/Blitz%20Report%20Templates/ "Blitz Report Templates Oracle EBS SQL Report"), [Blitz Reports](/Blitz%20Reports/ "Blitz Reports Oracle EBS SQL Report")
+[DBA ORDS Configuration Validation](/DBA%20ORDS%20Configuration%20Validation/ "DBA ORDS Configuration Validation Oracle EBS SQL Report"), [DIS End User Layers](/DIS%20End%20User%20Layers/ "DIS End User Layers Oracle EBS SQL Report"), [Blitz Report Assignment Upload](/Blitz%20Report%20Assignment%20Upload/ "Blitz Report Assignment Upload Oracle EBS SQL Report"), [Blitz Report Assignments](/Blitz%20Report%20Assignments/ "Blitz Report Assignments Oracle EBS SQL Report"), [Blitz Report Templates](/Blitz%20Report%20Templates/ "Blitz Report Templates Oracle EBS SQL Report"), [Blitz Report Default Templates](/Blitz%20Report%20Default%20Templates/ "Blitz Report Default Templates Oracle EBS SQL Report"), [Blitz Reports](/Blitz%20Reports/ "Blitz Reports Oracle EBS SQL Report"), [Blitz Report Parameter Dependencies](/Blitz%20Report%20Parameter%20Dependencies/ "Blitz Report Parameter Dependencies Oracle EBS SQL Report"), [Blitz Report History](/Blitz%20Report%20History/ "Blitz Report History Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/Blitz%20Report%20Parameter%20Default%20Values/Blitz%20Report%20Parameter%20Default%20Values.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-report-parameter-default-values) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.

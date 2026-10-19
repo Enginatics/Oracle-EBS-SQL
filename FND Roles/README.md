@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-16
+last_modified_at: 2026-10-19
 title: 'FND Roles | Oracle EBS SQL Report'
 description: 'Report of all User Management (UMX) roles, including number of active users for each role to help managing role-based access control (RBAC)'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Application Object Library, Enginatics, FND, Roles, wf_user_role_assignments, wf_local_roles, wf_local_roles_tl'
@@ -31,7 +31,7 @@ Role Name, Role Code, Active only
 [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fnd-roles)
 
 ## Related Reports
-[FND User Roles](/FND%20User%20Roles/ "FND User Roles Oracle EBS SQL Report"), [OKL Termination Quotes](/OKL%20Termination%20Quotes/ "OKL Termination Quotes Oracle EBS SQL Report"), [FND Role Hierarchy](/FND%20Role%20Hierarchy/ "FND Role Hierarchy Oracle EBS SQL Report")
+[FND User Roles](/FND%20User%20Roles/ "FND User Roles Oracle EBS SQL Report"), [OKL Termination Quotes](/OKL%20Termination%20Quotes/ "OKL Termination Quotes Oracle EBS SQL Report"), [FND Role Hierarchy](/FND%20Role%20Hierarchy/ "FND Role Hierarchy Oracle EBS SQL Report"), [Blitz Report Template Sharing](/Blitz%20Report%20Template%20Sharing/ "Blitz Report Template Sharing Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/FND%20Roles/FND%20Roles.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fnd-roles) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.

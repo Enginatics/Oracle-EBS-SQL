@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-16
+last_modified_at: 2026-10-19
 title: 'FA Asset Impairments | Oracle EBS SQL Report'
 description: 'Source: Asset Impairment Report Short Name: FAXRASIM DB package: – Oracle EBS Assets SQL report: free SQL, parameters and tables used.'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Assets, Enginatics, R12 only, Asset, Impairments, fa_lookups_tl, gl_code_combinations_kfv, fa_impairments'
@@ -33,7 +33,7 @@ Book, Set of Books Currency, Start Period, End Period, Impairment, Cash Generati
 [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fa-asset-impairments), [R12 only](https://www.enginatics.com/library/?pg=1&category%5B%5D=R12%20only&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fa-asset-impairments)
 
 ## Related Reports
-[FA Asset Book Details](/FA%20Asset%20Book%20Details/ "FA Asset Book Details Oracle EBS SQL Report"), [FA Depreciation Reserve](/FA%20Depreciation%20Reserve/ "FA Depreciation Reserve Oracle EBS SQL Report"), [FA Asset Register](/FA%20Asset%20Register/ "FA Asset Register Oracle EBS SQL Report"), [FA Asset Upload](/FA%20Asset%20Upload/ "FA Asset Upload Oracle EBS SQL Report"), [FA Fixed Assets Book](/FA%20Fixed%20Assets%20Book/ "FA Fixed Assets Book Oracle EBS SQL Report"), [PA Capital Project Summary with Asset Detail](/PA%20Capital%20Project%20Summary%20with%20Asset%20Detail/ "PA Capital Project Summary with Asset Detail Oracle EBS SQL Report"), [FA Asset Transfers](/FA%20Asset%20Transfers/ "FA Asset Transfers Oracle EBS SQL Report"), [FA Additions By Source](/FA%20Additions%20By%20Source/ "FA Additions By Source Oracle EBS SQL Report")
+[FA Asset Book Details](/FA%20Asset%20Book%20Details/ "FA Asset Book Details Oracle EBS SQL Report"), [FA Depreciation Reserve](/FA%20Depreciation%20Reserve/ "FA Depreciation Reserve Oracle EBS SQL Report"), [FA Asset Register](/FA%20Asset%20Register/ "FA Asset Register Oracle EBS SQL Report"), [FA Asset Upload](/FA%20Asset%20Upload/ "FA Asset Upload Oracle EBS SQL Report"), [FA Fixed Assets Book](/FA%20Fixed%20Assets%20Book/ "FA Fixed Assets Book Oracle EBS SQL Report"), [PA Capital Project Summary with Asset Detail](/PA%20Capital%20Project%20Summary%20with%20Asset%20Detail/ "PA Capital Project Summary with Asset Detail Oracle EBS SQL Report"), [FA Asset Transfers](/FA%20Asset%20Transfers/ "FA Asset Transfers Oracle EBS SQL Report"), [FA Additions By Source](/FA%20Additions%20By%20Source/ "FA Additions By Source Oracle EBS SQL Report"), [GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/FA%20Asset%20Impairments/FA%20Asset%20Impairments.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fa-asset-impairments) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.

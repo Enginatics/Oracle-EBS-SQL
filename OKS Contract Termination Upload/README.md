@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-16
+last_modified_at: 2026-10-19
 title: 'OKS Contract Termination Upload | Oracle EBS SQL Report'
 description: 'Terminates service contracts (full termination), terminates individual contract lines and sublines (partial termination), and deletes lines from Entered…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Upload, OKS, Contract, Termination, mtl_system_items_vl, csi_item_instances, csi_counters_tl'
@@ -32,7 +32,7 @@ Upload Mode, Operating Unit, Contract Number, Contract Status, Line Status
 [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=oks-contract-termination-upload), [R12 only](https://www.enginatics.com/library/?pg=1&category%5B%5D=R12%20only&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=oks-contract-termination-upload), [Upload](https://www.enginatics.com/library/?pg=1&category%5B%5D=Upload&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=oks-contract-termination-upload)
 
 ## Related Reports
-[OKS Service Contract Line Upload](/OKS%20Service%20Contract%20Line%20Upload/ "OKS Service Contract Line Upload Oracle EBS SQL Report"), [AR Transactions and Lines 11i](/AR%20Transactions%20and%20Lines%2011i/ "AR Transactions and Lines 11i Oracle EBS SQL Report"), [OKL Termination Quotes](/OKL%20Termination%20Quotes/ "OKL Termination Quotes Oracle EBS SQL Report"), [CSI Counter Readings](/CSI%20Counter%20Readings/ "CSI Counter Readings Oracle EBS SQL Report"), [CSI Customer Products Summary](/CSI%20Customer%20Products%20Summary/ "CSI Customer Products Summary Oracle EBS SQL Report")
+[OKS Service Contract Line Upload](/OKS%20Service%20Contract%20Line%20Upload/ "OKS Service Contract Line Upload Oracle EBS SQL Report"), [AR Transactions and Lines 11i](/AR%20Transactions%20and%20Lines%2011i/ "AR Transactions and Lines 11i Oracle EBS SQL Report"), [OKL Termination Quotes](/OKL%20Termination%20Quotes/ "OKL Termination Quotes Oracle EBS SQL Report"), [CSI Counter Readings](/CSI%20Counter%20Readings/ "CSI Counter Readings Oracle EBS SQL Report"), [CSI Customer Products Summary](/CSI%20Customer%20Products%20Summary/ "CSI Customer Products Summary Oracle EBS SQL Report"), [OKS Service Contracts Billing Schedule](/OKS%20Service%20Contracts%20Billing%20Schedule/ "OKS Service Contracts Billing Schedule Oracle EBS SQL Report"), [OKS Service Contracts Billing History](/OKS%20Service%20Contracts%20Billing%20History/ "OKS Service Contracts Billing History Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/OKS%20Contract%20Termination%20Upload/OKS%20Contract%20Termination%20Upload.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=oks-contract-termination-upload) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.

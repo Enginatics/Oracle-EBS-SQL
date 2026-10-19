@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-16
+last_modified_at: 2026-10-19
 title: 'WF Queue Backlog | Oracle EBS SQL Report'
 description: 'Number of messages per Workflow Business Event System queue table, correlation id and state, with the age of the oldest message. A large number of Ready…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Workflow, Enginatics, Queue, Backlog, wf_deferred, wf_deferred_table_m, wf_error'
@@ -33,7 +33,7 @@ Exclude Processed, Message Count From, Oldest Message Hours From, Queue Table
 [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wf-queue-backlog)
 
 ## Related Reports
-[OKL Termination Quotes](/OKL%20Termination%20Quotes/ "OKL Termination Quotes Oracle EBS SQL Report"), [WF Notifications](/WF%20Notifications/ "WF Notifications Oracle EBS SQL Report"), [ONT Transaction Types and Line WF Processes](/ONT%20Transaction%20Types%20and%20Line%20WF%20Processes/ "ONT Transaction Types and Line WF Processes Oracle EBS SQL Report"), [WF Business Events and Subscriptions](/WF%20Business%20Events%20and%20Subscriptions/ "WF Business Events and Subscriptions Oracle EBS SQL Report")
+[OKL Termination Quotes](/OKL%20Termination%20Quotes/ "OKL Termination Quotes Oracle EBS SQL Report"), [WF Notifications](/WF%20Notifications/ "WF Notifications Oracle EBS SQL Report"), [ONT Transaction Types and Line WF Processes](/ONT%20Transaction%20Types%20and%20Line%20WF%20Processes/ "ONT Transaction Types and Line WF Processes Oracle EBS SQL Report"), [WF Business Events and Subscriptions](/WF%20Business%20Events%20and%20Subscriptions/ "WF Business Events and Subscriptions Oracle EBS SQL Report"), [FND User Roles](/FND%20User%20Roles/ "FND User Roles Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/WF%20Queue%20Backlog/WF%20Queue%20Backlog.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wf-queue-backlog) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.

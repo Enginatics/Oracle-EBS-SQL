@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-16
+last_modified_at: 2026-10-19
 title: 'FND Key Flexfields | Oracle EBS SQL Report'
 description: 'Key flexfields table, structure, column and validation information – Oracle EBS Application Object Library SQL report: free SQL, parameters and tables…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Application Object Library, Enginatics, FND, Key, Flexfields, fnd_segment_attribute_values, fnd_application_vl, fnd_id_flexs'
@@ -31,7 +31,7 @@ Title, Flexfield Code, Structure Name, Table Name, Window Prompt, Validation Tab
 [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fnd-key-flexfields)
 
 ## Related Reports
-[FND Flex Value Sets, Usages and Values](/FND%20Flex%20Value%20Sets-%20Usages%20and%20Values/ "FND Flex Value Sets, Usages and Values Oracle EBS SQL Report"), [FND Flex Value Security Rules](/FND%20Flex%20Value%20Security%20Rules/ "FND Flex Value Security Rules Oracle EBS SQL Report"), [FND Cross-Validation Rules](/FND%20Cross-Validation%20Rules/ "FND Cross-Validation Rules Oracle EBS SQL Report"), [GL Code Combinations](/GL%20Code%20Combinations/ "GL Code Combinations Oracle EBS SQL Report"), [FND Descriptive Flexfields](/FND%20Descriptive%20Flexfields/ "FND Descriptive Flexfields Oracle EBS SQL Report"), [GL Account Upload](/GL%20Account%20Upload/ "GL Account Upload Oracle EBS SQL Report"), [GL Setup Upload](/GL%20Setup%20Upload/ "GL Setup Upload Oracle EBS SQL Report"), [AR Transaction Upload](/AR%20Transaction%20Upload/ "AR Transaction Upload Oracle EBS SQL Report"), [GL Account Upload 11i](/GL%20Account%20Upload%2011i/ "GL Account Upload 11i Oracle EBS SQL Report")
+[FND Flex Value Sets, Usages and Values](/FND%20Flex%20Value%20Sets-%20Usages%20and%20Values/ "FND Flex Value Sets, Usages and Values Oracle EBS SQL Report"), [FND Flex Value Security Rules](/FND%20Flex%20Value%20Security%20Rules/ "FND Flex Value Security Rules Oracle EBS SQL Report"), [FND Cross-Validation Rules](/FND%20Cross-Validation%20Rules/ "FND Cross-Validation Rules Oracle EBS SQL Report"), [AP Invoice Upload](/AP%20Invoice%20Upload/ "AP Invoice Upload Oracle EBS SQL Report"), [GL Account Upload](/GL%20Account%20Upload/ "GL Account Upload Oracle EBS SQL Report"), [GL Setup Upload](/GL%20Setup%20Upload/ "GL Setup Upload Oracle EBS SQL Report"), [AR Transaction Upload](/AR%20Transaction%20Upload/ "AR Transaction Upload Oracle EBS SQL Report"), [GL Account Upload 11i](/GL%20Account%20Upload%2011i/ "GL Account Upload 11i Oracle EBS SQL Report"), [GL Code Combinations](/GL%20Code%20Combinations/ "GL Code Combinations Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/FND%20Key%20Flexfields/FND%20Key%20Flexfields.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fnd-key-flexfields) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.

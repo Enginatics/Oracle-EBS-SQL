@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-16
+last_modified_at: 2026-10-19
 title: 'OPM Batch Lot Cost Details | Oracle EBS SQL Report'
 description: 'OPM Batch Lot Cost Details Report This report shows the Batch Lot Costs details for completed batches in the specified from/to Date Range and for the…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Process Manufacturing, Enginatics, R12 only, OPM, Batch, Lot, Cost, fm_form_mst, gmd_formula_class, gl_ledger_le_v'
@@ -43,7 +43,7 @@ Organization Code, From Date, To Date, Product, Formula Class, Batch, Cost Type,
 [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=opm-batch-lot-cost-details), [R12 only](https://www.enginatics.com/library/?pg=1&category%5B%5D=R12%20only&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=opm-batch-lot-cost-details)
 
 ## Related Reports
-[OPM Batch Lot Cost Trends](/OPM%20Batch%20Lot%20Cost%20Trends/ "OPM Batch Lot Cost Trends Oracle EBS SQL Report"), [CAC OPM Costed Formula](/CAC%20OPM%20Costed%20Formula/ "CAC OPM Costed Formula Oracle EBS SQL Report")
+[OPM Batch Lot Cost Trends](/OPM%20Batch%20Lot%20Cost%20Trends/ "OPM Batch Lot Cost Trends Oracle EBS SQL Report"), [CAC OPM Costed Formula](/CAC%20OPM%20Costed%20Formula/ "CAC OPM Costed Formula Oracle EBS SQL Report"), [OPM Formula Details](/OPM%20Formula%20Details/ "OPM Formula Details Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/OPM%20Batch%20Lot%20Cost%20Details/OPM%20Batch%20Lot%20Cost%20Details.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=opm-batch-lot-cost-details) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.

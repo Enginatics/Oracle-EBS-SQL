@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-16
+last_modified_at: 2026-10-19
 title: 'OPM Formula Upload | Oracle EBS SQL Report'
 description: 'OPM Formula Upload ================== Create or update Oracle Process Manufacturing (OPM / GMD) Formulas via the public API GMDFORMULAPUB /…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Upload, OPM, Formula, fnd_user, gmd_status_vl, fm_form_mst_vl'
@@ -47,7 +47,7 @@ Upload Mode, Organization Code, Formula
 [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=opm-formula-upload), [R12 only](https://www.enginatics.com/library/?pg=1&category%5B%5D=R12%20only&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=opm-formula-upload), [Upload](https://www.enginatics.com/library/?pg=1&category%5B%5D=Upload&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=opm-formula-upload)
 
 ## Related Reports
-[OPM Recipe Upload](/OPM%20Recipe%20Upload/ "OPM Recipe Upload Oracle EBS SQL Report"), [CAC OPM Costed Formula](/CAC%20OPM%20Costed%20Formula/ "CAC OPM Costed Formula Oracle EBS SQL Report"), [OPM Formula Details](/OPM%20Formula%20Details/ "OPM Formula Details Oracle EBS SQL Report"), [OPM Formula Where-Used](/OPM%20Formula%20Where-Used/ "OPM Formula Where-Used Oracle EBS SQL Report")
+[OPM Recipe Upload](/OPM%20Recipe%20Upload/ "OPM Recipe Upload Oracle EBS SQL Report"), [CAC OPM Costed Formula](/CAC%20OPM%20Costed%20Formula/ "CAC OPM Costed Formula Oracle EBS SQL Report"), [OPM Formula Details](/OPM%20Formula%20Details/ "OPM Formula Details Oracle EBS SQL Report"), [OPM Formula Where-Used](/OPM%20Formula%20Where-Used/ "OPM Formula Where-Used Oracle EBS SQL Report"), [OPM Recipe Details](/OPM%20Recipe%20Details/ "OPM Recipe Details Oracle EBS SQL Report"), [OPM Routing Upload](/OPM%20Routing%20Upload/ "OPM Routing Upload Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/OPM%20Formula%20Upload/OPM%20Formula%20Upload.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=opm-formula-upload) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.

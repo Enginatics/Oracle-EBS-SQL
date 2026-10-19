@@ -5,7 +5,10 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: CAC Receiving Activity Summary
--- Description: Especially for companies who do not use separate inspection receipt processes, this report nets the initial purchase order receipt into receiving against the delivery into stock and WIP outside processing (OSP), for the entered transaction date range. By comparing the Purchasing Receipt transactions with the Purchasing Delivery transactions (for the purchasing receipts, material deliveries and WIP OSP deliveries). Enter the date range you wish to compare, typically a monthly date range. Differences may be due to the initial receipt occurring in the prior month, not running Create Accounting in the current month (as this report uses the Subledger Accounting rules to report your Receiving Valuation Activity), the goods never delivered into stock or OSP or perhaps the delivery into stock or into WIP OSP was not processed by Create Accounting.
+-- Description: Especially for companies who do not use separate inspection receipt processes, this report nets the purchase order receipts into receiving against the deliveries into stock and WIP outside processing (OSP), using the Subledger Accounting entries on the organization's receiving account for the entered transaction date range.
+-- Each row is one subledger journal line on the receiving account, with the receiving transaction details shown in the Receiving Transactions form. With Unbalanced Distributions Only set to Yes, only PO distributions whose net amount per period, organization and receiving account is not zero are listed, so receipts and deliveries that offset each other drop out.
+-- Differences may be due to the initial receipt occurring in the prior month, not running Create Accounting in the current month, the goods never delivered into stock or OSP, or the delivery not processed by Create Accounting.
+-- Template Summary by PO Distribution sums the amount per PO distribution and account.
 -- Parameters:
 -- ==========
 -- Transaction Date From: enter the starting transaction date (mandatory). Defaults to the current period starting date.
@@ -33,497 +36,228 @@
 -- -- | 1.3 13 Mar 2018 Douglas Volz Added Ledger parameter
 -- -- | 1.4 08 Jul 2022 Douglas Volz Multi-language tables for item master.
 -- -- | 1.5 24 Jun 2024 Douglas Volz Remove tabs, reinstall parameters and inventory org access controls.
+-- -- | 1.6 16 Oct 2026 Andy Haack One row per subledger journal line with the receiving transaction columns.
 -- -- +=============================================================================+/
 -- Excel Example Output: https://www.enginatics.com/example/cac-receiving-activity-summary/
 -- Library Link: https://www.enginatics.com/reports/cac-receiving-activity-summary/
 -- Run Report: https://demo.enginatics.com/
 
-select  rcv_sum. Destination_Type,
--- =============================================================
--- Get summary of net PO receiving activity by PO Distribution
--- =============================================================
-        rcv_sum.Ledger,
-        rcv_sum.Operating_Unit,
-        rcv_sum.Org_Code,
-        rcv_sum.Period_Name,
-        rcv_sum.Accounting_Line_Type,
-        rcv_sum.PO_Number,
-        rcv_sum.PO_Line,
-        rcv_sum.PO_Distribution_Id,
-        &segment_columns
-        rcv_sum.WIP_Job,
-        rcv_sum.Item_Number,
-        rcv_sum.Item_Description,
-        -- Revision for version 1.5
-        fcl.meaning Item_Type,
-        sum(rcv_sum.Amount) Amount
-from    gl_code_combinations_kfv gcc1,
-        gl_code_combinations_kfv gcc2,
-        fnd_common_lookups fcl,
-        -- =============================================================
-        -- Get the Receipts into Receiving Inspection and the Deliveries
-        -- out of Receiving Inspection from Purchasing
-        -- =============================================================
-        (select pod.destination_type_code Destination_Type,
-                nvl(gl.short_name, gl.name) Ledger,
-                haou2.name Operating_Unit,
-                mp.organization_code Org_Code,
-                oap.period_name Period_Name,
-                -- Revision for version 1.2
-                'RCV' Transaction_Source,
-                rrsl.accounting_line_type Accounting_Line_Type,
-                flv.meaning Transaction_Type,
-                rt.transaction_id Transaction_Id,
-                poh.segment1 PO_Number,
-                pol.line_num PO_Line,
-                pod.po_distribution_id PO_Distribution_Id,
-                al.code_combination_id rcv_ccid,  -- gcc1
-                pod.code_combination_id pod_ccid, -- gcc2
-                nvl((select we.wip_entity_name
-                     from   wip_entities we
-                     where  we.wip_entity_id = pod.wip_entity_id),'') WIP_Job,
-                msiv.concatenated_segments Item_Number,
-                msiv.description Item_Description,
-                -- Revision for version 1.5
-                msiv.item_type, 
-                sum(nvl(al.accounted_dr,0) - nvl(al.accounted_cr,0)) Amount
-         from   rcv_receiving_sub_ledger rrsl,
-                rcv_transactions rt,
-                po_headers_all poh,
-                po_lines_all pol,
-                rcv_shipment_lines rsl,
-                po_distributions_all pod,
-                fnd_lookup_values flv,
-                mtl_system_items_vl msiv,
-                org_acct_periods oap,
-                mtl_parameters mp, 
-                hr_organization_information hoi,
-                hr_all_organization_units_vl haou, -- inv_organization_id
-                hr_all_organization_units_vl haou2, -- operating unit
-                gl_ledgers gl,
-                -- Revision for version 1.4, remove tables to increase performance
-                -- xla_transaction_entities ent,
-                -- xla_events xe,
-                -- End revision for version 1.4
-                xla_distribution_links xdl,
-                xla_ae_headers ah,
-                xla_ae_lines al
-         -- ========================================================
-         -- Material Transaction, org and item joins
-         -- ========================================================
-         where  rrsl.rcv_transaction_id           = rt.transaction_id
-         and    rt.shipment_line_id               = rsl.shipment_line_id
-         and    rsl.item_id                       = msiv.inventory_item_id (+)
-         and    rsl.to_organization_id            = msiv.organization_id   (+)
-         and    mp.organization_id                = rt.organization_id
-         -- RMAs and REQs are not accounted for by Purchasing
-         and    rt.source_document_code not in ('RMA', 'REQ')
-         and    pod.po_distribution_id            = rsl.po_distribution_id
-         and    pod.po_header_id                  = poh.po_header_id
-         and    pod.po_line_id                    = pol.po_line_id
-         and    rrsl.accounting_line_type        <> 'Accrual'
-         -- ========================================================
-         -- Inventory Org accounting period joins
-         -- ========================================================
-         and    oap.period_name                   = ah.period_name
-         and    oap.organization_id               = rt.organization_id
-         -- ========================================================
-         -- Version 1.3, added lookup values to see more detail
-         -- ========================================================
-         and    flv.lookup_type                   = 'RCV TRANSACTION TYPE'
-         and    flv.lookup_code                   = rt.transaction_type
-         -- Revision for version 1.2
-         -- and source_lang                       = 'US'
-         -- and language                          = 'US'
-         and    flv.language                      = userenv('LANG')
-         -- ========================================================
-         -- using the base tables to avoid the performance issues
-         -- with org_organization_definitions and hr_operating_units
-         -- ========================================================
-         and    hoi.org_information_context       = 'Accounting Information'
-         and    hoi.organization_id               = rt.organization_id
-         and    hoi.organization_id               = haou.organization_id   -- this gets the organization name
-         and    haou2.organization_id             = to_number(hoi.org_information3) -- this gets the operating unit id
-         and    gl.ledger_id                      = to_number(hoi.org_information1) -- get the ledger_id
-         and    1=1                               -- p_trx_date_from, p_trx_date_to, p_org_code, p_operating_unit, p_ledger
-         and    mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-         -- ========================================================
-         -- SLA table joins to get the exact account numbers
-         -- ========================================================
-         -- Revision for version 1.4, performance improvements
-         -- and  ent.entity_code                  = 'RCV_ACCOUNTING_EVENTS'
-         -- and  ent.application_id               = 707
-         -- and  xe.application_id                = ent.application_id
-         -- and  xe.event_id                      = xdl.event_id
-         -- and  ah.entity_id                     = ent.entity_id
-         -- and  ah.ledger_id                     = ent.ledger_id
-         -- and  ah.event_id                      = xe.event_id
-         -- and  al.application_id                = ent.application_id
-         -- and  xdl.application_id               = ent.application_id
-         and     ah.ledger_id                     = gl.ledger_id
-         -- End revisions for version 1.4
-         and     ah.application_id                = al.application_id
-         and     ah.application_id                = 707
-         and     ah.ae_header_id                  = al.ae_header_id
-         and     al.ledger_id                     = ah.ledger_id
-         and     al.ae_header_id                  = xdl.ae_header_id
-         and     al.ae_line_num                   = xdl.ae_line_num
-         and     xdl.application_id               = 707
-         and     xdl.source_distribution_type     = 'RCV_RECEIVING_SUB_LEDGER'
-         and     xdl.source_distribution_id_num_1 = rrsl.rcv_sub_ledger_id
-         -- Revision for version 1.4, outer join for CCIDs
-         -- ========================================================
-         -- Account code combination id joins
-         -- ========================================================
-         -- Revision for version 1.2
-         -- and gcc1.segment3 = '1449'
-         and    rrsl.code_combination_id in
-                (select rp.receiving_account_id
-                 from   rcv_parameters rp
-                 where  rp.organization_id        = mp.organization_id)
-         -- Revision for version 1.4, outer join for CCIDs
-         and     rrsl.code_combination_id (+)     = al.code_combination_id
-         -- ==========================================================
-         group by
-                pod.destination_type_code,
-                nvl(gl.short_name, gl.name),
-                haou2.name,
-                mp.organization_code,
-                oap.period_name,
-                 -- Revision for version 1.2
-                'RCV',
-                rrsl.accounting_line_type,
-                flv.meaning,
-                rt.transaction_id,
-                poh.segment1,
-                pol.line_num,
-                pod.po_distribution_id,
-                al.code_combination_id, -- rcv_ccid,  -- gcc1
-                pod.code_combination_id, -- pod_ccid, -- gcc2
-                pod.wip_entity_id,
-                msiv.concatenated_segments,
-                msiv.description,
-                -- Revision for version 1.5
-                msiv.item_type
-         -- =============================================================
-         -- Get the Deliveries from Receiving Inspection to WIP for
-         -- outside processing
-         -- =============================================================
-         union all
-         select pod.destination_type_code Destination_Type,
-                nvl(gl.short_name, gl.name) Ledger,
-                haou2.name Operating_Unit,
-                mp.organization_code Org_Code,
-                oap.period_name Period_Name,
-                 -- Revision for version 1.2
-                'WIP' Transaction_Source,
-                ml.meaning Accounting_Line_Type,
-                ml2.meaning Transaction_Type,
-                wt.transaction_id Transaction_Id,
-                poh.segment1 PO_Number,
-                pol.line_num PO_Line,
-                pod.po_distribution_id PO_Distribution_Id,
-                al.code_combination_id rcv_ccid,  -- gcc1
-                pod.code_combination_id pod_ccid, -- gcc2
-                nvl((select we.wip_entity_name
-                     from   wip_entities we
-                     where  we.wip_entity_id = pod.wip_entity_id),'') WIP_Job,
-                msiv.concatenated_segments Item_Number,
-                msiv.description Item_Description,
-                -- Revision for version 1.5
-                msiv.item_type, 
-                sum(nvl(al.accounted_dr,0) - nvl(al.accounted_cr,0)) Amount
-         from   wip_transaction_accounts wta,
-                wip_transactions wt,
-                wip_accounting_classes wac,
-                wip_discrete_jobs wdj,
-                rcv_transactions rt,
-                rcv_shipment_lines rsl,
-                po_headers_all poh,
-                po_lines_all pol,
-                po_distributions_all pod,
-                mfg_lookups ml2,
-                mtl_system_items_vl msiv,
-                org_acct_periods oap,
-                mtl_parameters mp, 
-                mfg_lookups ml,
-                hr_organization_information hoi,
-                hr_all_organization_units_vl haou, -- inv_organization_id
-                hr_all_organization_units_vl haou2, -- operating unit
-                gl_ledgers gl,
-                -- Revision for version 1.4, remove tables to increase performance
-                -- xla_transaction_entities ent,
-                -- xla_events xe,
-                -- End revision for version 1.4
-                xla_distribution_links xdl,
-                xla_ae_headers ah,
-                xla_ae_lines al
-         -- ========================================================
-         -- Material Transaction, org and item joins
-         -- ========================================================
-         where  wta.transaction_id                = wt.transaction_id
-         and    wta.organization_id               = msiv.organization_id
-         and    mp.organization_id                = msiv.organization_id
-         -- Oracle bug=> the accounting line type used is 4 (res absorption) and should be 5 (receiving)
-         and    wta.accounting_line_type   in (4,5)
-         -- get all of them to see the offset accounts
-         and    wt.rcv_transaction_id             = rt.transaction_id
-         and    rt.shipment_line_id               = rsl.shipment_line_id
-         and    rsl.item_id                       = msiv.inventory_item_id (+)
-         and    rsl.to_organization_id            = msiv.organization_id   (+)
-         and    mp.organization_id                = rt.organization_id
-         -- RMAs and REQs are not accounted for by Purchasing
-         and    rt.source_document_code not in ('RMA', 'REQ')
-         and    pod.po_distribution_id            = rsl.po_distribution_id
-         and    pod.po_header_id                  = poh.po_header_id
-         and    pod.po_line_id                    = pol.po_line_id
-         -- ========================================================
-         -- WIP class and WIP job joins
-         -- ========================================================
-         and    wac.class_code                    = wdj.class_code
-         and    wdj.wip_entity_id                 = wt.wip_entity_id
-         and    wdj.organization_id               = wac.organization_id
-         -- ========================================================
-         -- Inventory Org accounting period joins
-         -- ========================================================
-         and    oap.acct_period_id                = wt.acct_period_id
-         and    oap.organization_id               = wt.organization_id
-         -- ========================================================
-         -- Version 1.3, added lookup values to see more detail
-         -- ========================================================
-         and    ml.lookup_type                    = 'CST_ACCOUNTING_LINE_TYPE'
-         and    ml.lookup_code                    = wta.accounting_line_type
-         and    ml2.lookup_type                   = 'WIP_TRANSACTION_TYPE_SHORT'
-         and    ml2.lookup_code                   = wt.transaction_type
-         -- ========================================================
-         -- using the base tables to avoid the performance issues
-         -- with org_organization_definitions and hr_operating_units
-         -- ========================================================
-         and    hoi.org_information_context       = 'Accounting Information'
-         and    hoi.organization_id               = wta.organization_id
-         and    hoi.organization_id               = haou.organization_id   -- this gets the organization name
-         and    haou2.organization_id             = to_number(hoi.org_information3) -- this gets the operating unit id
-         and    gl.ledger_id                      = to_number(hoi.org_information1) -- get the ledger_id
-         and    2=2                               -- p_trx_date_from, p_trx_date_to, p_org_code, p_operating_unit, p_ledger
-         and    wta.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-         -- ========================================================
-         -- SLA table joins to get the exact account numbers
-         -- ========================================================
-         -- Revision for version 1.4, performance improvements
-         -- and ent.entity_code                   = 'WIP_ACCOUNTING_EVENTS'
-         -- and ent.application_id                = 707
-         -- and xe.application_id                 = ent.application_id
-         -- and xe.event_id                       = xdl.event_id
-         -- and ah.entity_id                      = ent.entity_id
-         -- and ah.ledger_id                      = ent.ledger_id
-         -- and ah.event_id                       = xe.event_id
-         -- and al.application_id                 = ent.application_id
-         -- and xdl.application_id                = ent.application_id
-         and    ah.ledger_id                      = gl.ledger_id
-         -- End revisions for version 1.4
-         and    ah.application_id                 = al.application_id
-         and    ah.application_id                 = 707
-         and    ah.ae_header_id                   = al.ae_header_id
-         and    al.ledger_id                      = ah.ledger_id
-         and    al.ae_header_id                   = xdl.ae_header_id
-         and    al.ae_line_num                    = xdl.ae_line_num
-         and    xdl.application_id                = 707
-         and    xdl.source_distribution_type      = 'WIP_TRANSACTION_ACCOUNTS'
-         and    xdl.source_distribution_id_num_1  = wta.wip_sub_ledger_id
-         and    wta.reference_account in
-                (select rp.receiving_account_id
-                 from   rcv_parameters rp
-                 where  mp.organization_id        = mp.organization_id)
-         -- Revision for version 1.4, outer join for CCIDs
-         and    wta.reference_account (+)         = al.code_combination_id
-         -- ==========================================================
-         group by 
-                pod.destination_type_code,
-                nvl(gl.short_name, gl.name),
-                haou2.name,
-                mp.organization_code,
-                oap.period_name,
-                -- Revision for version 1.2
-                'WIP',
-                ml.meaning,
-                ml2.meaning,
-                wt.transaction_id,
-                poh.segment1,
-                pol.line_num,
-                pod.po_distribution_id,
-                al.code_combination_id, -- rcv_ccid,  -- gcc1
-                pod.code_combination_id, -- pod_ccid, -- gcc2
-                pod.wip_entity_id,
-                msiv.concatenated_segments,
-                msiv.description,
-                -- Revision for version 1.5
-                msiv.item_type
-         -- =============================================================
-         -- Get the Deliveries from Receiving Inspection to Stores
-         -- inventory for purchase order receipt transactions
-         -- =============================================================
-         union all
-         select pod.destination_type_code Destination_Type,
-                nvl(gl.short_name, gl.name) Ledger,
-                haou2.name Operating_Unit,
-                mp.organization_code Org_Code,
-                oap.period_name Period_Name,
-                -- Revision for version 1.2
-                'INV' Transaction_Source,
-                ml.meaning Accounting_Line_Type,
-                mtt.transaction_type_name Transaction_Type,
-                mmt.transaction_id Transaction_Id,
-                poh.segment1 PO_Number,
-                pol.line_num PO_Line,
-                pod.po_distribution_id PO_Distribution_Id,
-                al.code_combination_id rcv_ccid,  -- gcc1
-                pod.code_combination_id pod_ccid, -- gcc2
-                nvl((select we.wip_entity_name
-                     from   wip_entities we
-                     where  we.wip_entity_id = pod.wip_entity_id),'') WIP_Job,
-                msiv.concatenated_segments Item_Number,
-                msiv.description Item_Description,
-                -- Revision for version 1.5
-                msiv.item_type,             
-                sum(nvl(al.accounted_dr,0) - nvl(al.accounted_cr,0)) Amount
-         from   mtl_transaction_accounts mta,
-                mtl_material_transactions mmt,
-                rcv_transactions rt,
-                rcv_shipment_lines rsl,
-                po_headers_all poh,
-                po_lines_all pol,
-                po_distributions_all pod,
-                mtl_transaction_types mtt,
-                mtl_system_items_vl msiv,
-                org_acct_periods oap,
-                mtl_parameters mp, 
-                mfg_lookups ml, 
-                hr_organization_information hoi,
-                hr_all_organization_units_vl haou, -- inv_organization_id
-                hr_all_organization_units_vl haou2, -- operating unit
-                gl_ledgers gl,
-                -- Revision for version 1.4, remove tables to increase performance
-                -- xla_transaction_entities ent,
-                -- xla_events xe,
-                -- End revision for version 1.4
-                xla_distribution_links xdl,
-                xla_ae_headers ah,
-                xla_ae_lines al
-         -- ========================================================
-         -- Material Transaction, org and item joins
-         -- ========================================================
-         where  mta.transaction_id                = mmt.transaction_id
-         and    mmt.transaction_type_id           = mtt.transaction_type_id
-         and    mta.organization_id               = msiv.organization_id
-         and    mta.inventory_item_id             = msiv.inventory_item_id
-         and    mp.organization_id                = msiv.organization_id
-         and    mmt.transaction_source_type_id    = 1 -- Purchasing
-         and    mta.accounting_line_type          = 5
-         and    mmt.rcv_transaction_id            = rt.transaction_id
-         and    rt.shipment_line_id               = rsl.shipment_line_id
-         and    rsl.item_id                       = msiv.inventory_item_id (+)
-         and    rsl.to_organization_id            = msiv.organization_id   (+)
-         -- RMAs and REQs are not accounted for by Purchasing
-         and    rt.source_document_code not in ('RMA', 'REQ')
-         and    pod.po_distribution_id            = rsl.po_distribution_id
-         and    pod.po_header_id                  = poh.po_header_id
-         and    pod.po_line_id                    = pol.po_line_id
-         -- ========================================================
-         -- Inventory Org accounting period joins
-         -- ========================================================
-         and    oap.period_name                   = ah.period_name
-         and    oap.organization_id               = mta.organization_id
-         -- ========================================================
-         -- Version 1.3, added lookup values to see more detail
-         -- ========================================================
-         and    ml.lookup_type                    = 'CST_ACCOUNTING_LINE_TYPE'
-         and    ml.lookup_code                    = mta.accounting_line_type
-         -- ========================================================
-         -- using the base tables to avoid the performance issues
-         -- with org_organization_definitions and hr_operating_units
-         -- ========================================================
-         and    hoi.org_information_context       = 'Accounting Information'
-         and    hoi.organization_id               = mta.organization_id
-         and    hoi.organization_id               = haou.organization_id   -- this gets the organization name
-         and    haou2.organization_id             = to_number(hoi.org_information3) -- this gets the operating unit id
-         and    gl.ledger_id                      = to_number(hoi.org_information1) -- get the ledger_id
-         and    3=3                               -- p_trx_date_from, p_trx_date_to, p_org_code, p_operating_unit, p_ledger
-         and    mta.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-         -- ========================================================
-         -- SLA table joins to get the exact account numbers
-         -- ========================================================
-         -- Revision for version 1.23, performance improvements
-         -- and ent.entity_code                   = 'MTL_ACCOUNTING_EVENTS'
-         -- and ent.application_id                = 707
-         -- and xe.application_id                 = ent.application_id
-         -- and xe.event_id                       = xdl.event_id
-         -- and ah.entity_id                      = ent.entity_id
-         -- and ah.ledger_id                      = ent.ledger_id
-         -- and ah.event_id                       = xe.event_id
-         -- and al.application_id                 = ent.application_id
-         -- and xdl.application_id                = ent.application_id
-         and    ah.ledger_id                      = gl.ledger_id
-         -- End revisions for version 1.23
-         and    ah.application_id                 = al.application_id
-         and    ah.application_id                 = 707
-         and    ah.ae_header_id                   = al.ae_header_id
-         and    al.ledger_id                      = ah.ledger_id
-         and    al.ae_header_id                   = xdl.ae_header_id
-         and    al.ae_line_num                    = xdl.ae_line_num
-         and    xdl.application_id                = 707
-         and    xdl.source_distribution_type      = 'MTL_TRANSACTION_ACCOUNTS'
-         and    xdl.source_distribution_id_num_1  = mta.inv_sub_ledger_id
-         -- Revision for version 1.4, for performance improvements
-         and    mta.reference_account in
-                (select rp.receiving_account_id
-                 from   rcv_parameters rp
-                 where  rp.organization_id        = mp.organization_id)
-         -- Revision for version 1.4, outer join for CCIDs
-         and    mta.reference_account (+)         = al.code_combination_id
-         -- ==========================================================
-         group by 
-                pod.destination_type_code,
-                nvl(gl.short_name, gl.name),
-                haou2.name,
-                mp.organization_code,
-                oap.period_name,
-                -- Revision for version 1.2
-                'INV',
-                ml.meaning,
-                mtt.transaction_type_name,
-                mmt.transaction_id,
-                poh.segment1,
-                pol.line_num,
-                pod.po_distribution_id,
-                al.code_combination_id, -- rcv_ccid,  -- gcc1
-                pod.code_combination_id, -- pod_ccid, -- gcc2
-                pod.wip_entity_id,
-                msiv.concatenated_segments,
-                msiv.description,
-                -- Revision for version 1.5
-                msiv.item_type
-        ) rcv_sum
--- Revision for version 1.4, outer join for CCIDs
-where   gcc1.code_combination_id (+)     = rcv_sum.rcv_ccid
-and     gcc2.code_combination_id (+)     = rcv_sum.pod_ccid
--- Revision for version 1.5
-and fcl.lookup_type (+)              = 'ITEM_TYPE'
-and fcl.lookup_code (+)              = rcv_sum.item_type
-group by
-        rcv_sum.Destination_Type,
-        rcv_sum.Ledger,
-        rcv_sum.Operating_Unit,
-        rcv_sum.Org_Code,
-        rcv_sum.Period_Name,
-        rcv_sum.Accounting_Line_Type,
-        rcv_sum.PO_Number,
-        rcv_sum.PO_Line,
-        rcv_sum.PO_Distribution_Id,
-        &segment_columns_grp
-        rcv_sum.WIP_Job,
-        rcv_sum.Item_Number,
-        rcv_sum.Item_Description,
-        -- Revision for version 1.5
-        fcl.meaning -- Item_Type
-having  round(sum(rcv_sum.Amount),3)    <> 0
-order by 1,2,3,4,6,7,8,9
+select
+xxen_util.meaning(pda.destination_type_code,'DESTINATION TYPE',201) destination_type,
+x.ledger,
+x.operating_unit,
+x.organization_code org_code,
+x.period_name,
+x.accounting_line_type,
+xxen_util.meaning(rt.transaction_type,'RCV TRANSACTION TYPE',201) transaction_type,
+xxen_util.client_time(rt.transaction_date) transaction_date,
+xxen_util.meaning(rsh.receipt_source_code,'SHIPMENT SOURCE TYPE',201) source,
+rsh.receipt_num receipt,
+(select aps.vendor_name from ap_suppliers aps where rt.vendor_id=aps.vendor_id) supplier,
+pha.segment1 po_number,
+pla.line_num po_line,
+plla.shipment_num po_shipment,
+pda.po_distribution_id,
+&segment_columns
+gcck1.concatenated_segments account,
+gcck2.concatenated_segments charge_account,
+(select we.wip_entity_name from wip_entities we where pda.wip_entity_id=we.wip_entity_id) wip_job,
+msiv.concatenated_segments item_number,
+msiv.description item_description,
+xxen_util.meaning(msiv.item_type,'ITEM_TYPE',3) item_type,
+nvl(rsl.packing_slip,rsh.packing_slip) packing_slip,
+rt.currency_code currency,
+rt.currency_conversion_rate rate,
+rt.currency_conversion_date rate_date,
+(select gdct.user_conversion_type from gl_daily_conversion_types gdct where rt.currency_conversion_type=gdct.conversion_type) rate_type,
+rt.rma_reference rma_number,
+(select wlpn.license_plate_number from wms_license_plate_numbers wlpn where rt.lpn_id=wlpn.lpn_id) lpn,
+(select wlpn.license_plate_number from wms_license_plate_numbers wlpn where rt.transfer_lpn_id=wlpn.lpn_id) transfer_lpn,
+rt.subinventory,
+(select max(papf.full_name) keep (dense_rank last order by papf.effective_start_date) from per_all_people_f papf where rt.employee_id=papf.person_id) receiver,
+rsh.bill_of_lading,
+rsh.shipment_num shipment,
+rt.comments,
+x.gl_date,
+xxen_util.meaning(x.accounting_class_code,'XLA_ACCOUNTING_CLASS',602) accounting_class,
+x.accounted_dr,
+x.accounted_cr,
+x.amount
+from
+(
+select
+y.*,
+sum(y.amount) over (partition by y.organization_id,y.period_name,y.po_distribution_id,y.code_combination_id) net_amount
+from
+(
+select
+mp.organization_code,
+nvl(gl.short_name,gl.name) ledger,
+haouv.name operating_unit,
+z.*,
+nvl(z.accounted_dr,0)-nvl(z.accounted_cr,0) amount
+from
+(
+select
+rt.organization_id,
+xah.ledger_id,
+xah.period_name,
+rrsl.accounting_line_type,
+rt.transaction_id,
+to_number(rrsl.reference3) po_distribution_id,
+xal.code_combination_id,
+xah.accounting_date gl_date,
+xal.accounting_class_code,
+xal.accounted_dr,
+xal.accounted_cr
+from
+mtl_parameters mp,
+rcv_parameters rp,
+rcv_receiving_sub_ledger rrsl,
+rcv_transactions rt,
+xla_distribution_links xdl,
+xla_ae_lines xal,
+xla_ae_headers xah
+where
+1=1 and
+mp.organization_id=rp.organization_id and
+rp.receiving_account_id=rrsl.code_combination_id and
+rrsl.accounting_line_type<>'Accrual' and
+rrsl.rcv_transaction_id=rt.transaction_id and
+rp.organization_id=rt.organization_id and
+rt.source_document_code not in ('RMA','REQ') and
+rrsl.rcv_sub_ledger_id=xdl.source_distribution_id_num_1 and
+xdl.source_distribution_type='RCV_RECEIVING_SUB_LEDGER' and
+xdl.application_id=707 and
+xdl.ae_header_id=xal.ae_header_id and
+xdl.ae_line_num=xal.ae_line_num and
+xal.application_id=707 and
+rrsl.code_combination_id=xal.code_combination_id and
+xal.ae_header_id=xah.ae_header_id and
+xah.application_id=707
+union all
+select
+wta.organization_id,
+xah.ledger_id,
+xah.period_name,
+xxen_util.meaning(wta.accounting_line_type,'CST_ACCOUNTING_LINE_TYPE',700) accounting_line_type,
+rt.transaction_id,
+rt.po_distribution_id,
+xal.code_combination_id,
+xah.accounting_date gl_date,
+xal.accounting_class_code,
+xal.accounted_dr,
+xal.accounted_cr
+from
+mtl_parameters mp,
+rcv_parameters rp,
+wip_transaction_accounts wta,
+wip_transactions wt,
+rcv_transactions rt,
+xla_distribution_links xdl,
+xla_ae_lines xal,
+xla_ae_headers xah
+where
+2=2 and
+mp.organization_id=rp.organization_id and
+rp.organization_id=wta.organization_id and
+rp.receiving_account_id=wta.reference_account and
+wta.accounting_line_type in (4,5) and --osp deliveries can carry resource absorption (4) instead of receiving inspection (5) on the receiving account
+wta.transaction_id=wt.transaction_id and
+wt.rcv_transaction_id=rt.transaction_id and
+wta.wip_sub_ledger_id=xdl.source_distribution_id_num_1 and
+xdl.source_distribution_type='WIP_TRANSACTION_ACCOUNTS' and
+xdl.application_id=707 and
+xdl.ae_header_id=xal.ae_header_id and
+xdl.ae_line_num=xal.ae_line_num and
+xal.application_id=707 and
+wta.reference_account=xal.code_combination_id and
+xal.ae_header_id=xah.ae_header_id and
+xah.application_id=707
+union all
+select
+mta.organization_id,
+xah.ledger_id,
+xah.period_name,
+xxen_util.meaning(mta.accounting_line_type,'CST_ACCOUNTING_LINE_TYPE',700) accounting_line_type,
+rt.transaction_id,
+rt.po_distribution_id,
+xal.code_combination_id,
+xah.accounting_date gl_date,
+xal.accounting_class_code,
+xal.accounted_dr,
+xal.accounted_cr
+from
+mtl_parameters mp,
+rcv_parameters rp,
+mtl_transaction_accounts mta,
+mtl_material_transactions mmt,
+rcv_transactions rt,
+xla_distribution_links xdl,
+xla_ae_lines xal,
+xla_ae_headers xah
+where
+3=3 and
+mp.organization_id=rp.organization_id and
+rp.organization_id=mta.organization_id and
+rp.receiving_account_id=mta.reference_account and
+mta.accounting_line_type=5 and
+mta.transaction_id=mmt.transaction_id and
+mmt.transaction_source_type_id=1 and
+mmt.rcv_transaction_id=rt.transaction_id and
+mta.inv_sub_ledger_id=xdl.source_distribution_id_num_1 and
+xdl.source_distribution_type='MTL_TRANSACTION_ACCOUNTS' and
+xdl.application_id=707 and
+xdl.ae_header_id=xal.ae_header_id and
+xdl.ae_line_num=xal.ae_line_num and
+xal.application_id=707 and
+mta.reference_account=xal.code_combination_id and
+xal.ae_header_id=xah.ae_header_id and
+xah.application_id=707
+) z,
+mtl_parameters mp,
+hr_organization_information hoi,
+hr_all_organization_units_vl haouv,
+gl_ledgers gl
+where
+4=4 and
+mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
+z.organization_id=mp.organization_id and
+mp.organization_id=hoi.organization_id and
+hoi.org_information_context='Accounting Information' and
+to_number(hoi.org_information3)=haouv.organization_id and
+to_number(hoi.org_information1)=gl.ledger_id and
+z.ledger_id=gl.ledger_id
+) y
+) x,
+rcv_transactions rt,
+rcv_shipment_headers rsh,
+rcv_shipment_lines rsl,
+po_distributions_all pda,
+po_headers_all pha,
+po_lines_all pla,
+po_line_locations_all plla,
+mtl_system_items_vl msiv,
+gl_code_combinations_kfv gcck1,
+gl_code_combinations_kfv gcck2
+where
+5=5 and
+x.transaction_id=rt.transaction_id and
+rt.shipment_header_id=rsh.shipment_header_id and
+rt.shipment_line_id=rsl.shipment_line_id and
+x.po_distribution_id=pda.po_distribution_id and
+pda.po_header_id=pha.po_header_id and
+pda.po_line_id=pla.po_line_id and
+pda.line_location_id=plla.line_location_id and
+rsl.item_id=msiv.inventory_item_id(+) and
+rsl.to_organization_id=msiv.organization_id(+) and
+x.code_combination_id=gcck1.code_combination_id and
+pda.code_combination_id=gcck2.code_combination_id
+order by
+x.organization_code,
+x.period_name,
+pha.segment1,
+pla.line_num,
+pda.po_distribution_id,
+rt.transaction_date,
+rt.transaction_id

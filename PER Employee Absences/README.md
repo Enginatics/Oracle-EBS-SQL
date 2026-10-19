@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-16
+last_modified_at: 2026-10-19
 title: 'PER Employee Absences | Oracle EBS SQL Report'
 description: 'Employee absence and attendance records showing absence type, category, dates, duration in days and hours, reason, authorizing person, replacement person…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Human Resources, Enginatics, PER, Employee, Absences, hr_all_organization_units_vl, per_all_people_f, per_absence_attendances'
@@ -31,7 +31,7 @@ Business Group, Person Full Name, Absence Type, Absence Date From, Absence Date 
 [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-employee-absences)
 
 ## Related Reports
-[GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report"), [GL Account Analysis](/GL%20Account%20Analysis/ "GL Account Analysis Oracle EBS SQL Report"), [PER Position Hierarchy](/PER%20Position%20Hierarchy/ "PER Position Hierarchy Oracle EBS SQL Report"), [PER Employee Assignments](/PER%20Employee%20Assignments/ "PER Employee Assignments Oracle EBS SQL Report"), [PER Employee Length of Service](/PER%20Employee%20Length%20of%20Service/ "PER Employee Length of Service Oracle EBS SQL Report")
+[GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report"), [GL Account Analysis](/GL%20Account%20Analysis/ "GL Account Analysis Oracle EBS SQL Report"), [PER New Hires](/PER%20New%20Hires/ "PER New Hires Oracle EBS SQL Report"), [PER Position Hierarchy](/PER%20Position%20Hierarchy/ "PER Position Hierarchy Oracle EBS SQL Report"), [PER Employee Assignments](/PER%20Employee%20Assignments/ "PER Employee Assignments Oracle EBS SQL Report"), [PER Employee Length of Service](/PER%20Employee%20Length%20of%20Service/ "PER Employee Length of Service Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/PER%20Employee%20Absences/PER%20Employee%20Absences.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-employee-absences) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.

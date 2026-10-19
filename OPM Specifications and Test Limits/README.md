@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-16
+last_modified_at: 2026-10-19
 title: 'OPM Specifications and Test Limits | Oracle EBS SQL Report'
 description: 'Oracle Process Manufacturing (OPM) Quality specifications and test limits: every GMD specification with its version and status, the item and grade it…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Process Manufacturing, Enginatics, R12 only, OPM, Specifications, Test, Limits, gmd_specifications_b, gmd_specifications_tl, gmd_spec_tests_vl'
@@ -31,7 +31,7 @@ Organization Code, Item, Spec, Spec Status, Grade, Test
 [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=opm-specifications-and-test-limits), [R12 only](https://www.enginatics.com/library/?pg=1&category%5B%5D=R12%20only&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=opm-specifications-and-test-limits)
 
 ## Related Reports
-[OPM Item Location Test Results](/OPM%20Item%20Location%20Test%20Results/ "OPM Item Location Test Results Oracle EBS SQL Report"), [OPM Recipe Details](/OPM%20Recipe%20Details/ "OPM Recipe Details Oracle EBS SQL Report"), [CAC OPM Costed Formula](/CAC%20OPM%20Costed%20Formula/ "CAC OPM Costed Formula Oracle EBS SQL Report")
+[OPM Item Location Test Results](/OPM%20Item%20Location%20Test%20Results/ "OPM Item Location Test Results Oracle EBS SQL Report"), [OPM Recipe Details](/OPM%20Recipe%20Details/ "OPM Recipe Details Oracle EBS SQL Report"), [CAC OPM Costed Formula](/CAC%20OPM%20Costed%20Formula/ "CAC OPM Costed Formula Oracle EBS SQL Report"), [OPM Recipe Upload](/OPM%20Recipe%20Upload/ "OPM Recipe Upload Oracle EBS SQL Report"), [CAC OPM Batch Material Summary](/CAC%20OPM%20Batch%20Material%20Summary/ "CAC OPM Batch Material Summary Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/OPM%20Specifications%20and%20Test%20Limits/OPM%20Specifications%20and%20Test%20Limits.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=opm-specifications-and-test-limits) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.

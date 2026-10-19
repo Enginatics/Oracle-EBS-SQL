@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-16
+last_modified_at: 2026-10-19
 title: 'WF Activity Status Summary | Oracle EBS SQL Report'
 description: 'Summary counts of stuck and errored workflow activities to monitor required housekeeping activities'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Workflow, Enginatics, Activity, Status, Summary, wf_item_activity_statuses, wf_process_activities, wf_item_types_vl'
@@ -31,7 +31,7 @@ Activity Status, Show all active or errored
 [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wf-activity-status-summary)
 
 ## Related Reports
-[OKL Termination Quotes](/OKL%20Termination%20Quotes/ "OKL Termination Quotes Oracle EBS SQL Report"), [WF Notifications](/WF%20Notifications/ "WF Notifications Oracle EBS SQL Report"), [ONT Transaction Types and Line WF Processes](/ONT%20Transaction%20Types%20and%20Line%20WF%20Processes/ "ONT Transaction Types and Line WF Processes Oracle EBS SQL Report")
+[OKL Termination Quotes](/OKL%20Termination%20Quotes/ "OKL Termination Quotes Oracle EBS SQL Report"), [ONT Transaction Types and Line WF Processes](/ONT%20Transaction%20Types%20and%20Line%20WF%20Processes/ "ONT Transaction Types and Line WF Processes Oracle EBS SQL Report"), [WF Notifications](/WF%20Notifications/ "WF Notifications Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/WF%20Activity%20Status%20Summary/WF%20Activity%20Status%20Summary.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wf-activity-status-summary) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.

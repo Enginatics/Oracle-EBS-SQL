@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-16
+last_modified_at: 2026-10-19
 title: 'Oracle EBS Cost Accounting Reports | 108 SQL reports'
 description: '108 free Oracle E-Business Suite Cost Accounting SQL reports for Excel: CAC AP Accrual Accounts Setup, CAC AP Accrual IR ISO Match Analysis, CAC AP…'
 keywords: 'Oracle EBS Cost Accounting reports, Oracle Cost Accounting SQL, Oracle E-Business Suite, Blitz Report, mtl_parameters, gl_ledgers, hr_organization_information, hr_all_organization_units_vl, org_access_view'
@@ -102,7 +102,7 @@ module_page: true
 | [CAC Purchase Price Variance](/CAC%20Purchase%20Price%20Variance/) | Report for Purchase Price Variance accounting entries for external inventory purchases, external outside processing purchases, (internal) intransit shipments… |
 | [CAC Receiving Account Detail](/CAC%20Receiving%20Account%20Detail/) | Receiving accounting distributions in detail by item, purchase order, release, transaction date, creation date, created by and transaction id. Show SLA… |
 | [CAC Receiving Account Summary](/CAC%20Receiving%20Account%20Summary/) | Report to get the receiving accounting distributions, in summary, by item, purchase order, purchase order line, release and project number. With the Show SLA… |
-| [CAC Receiving Activity Summary](/CAC%20Receiving%20Activity%20Summary/) | Especially for companies who do not use separate inspection receipt processes, this report nets the initial purchase order receipt into receiving against the… |
+| [CAC Receiving Activity Summary](/CAC%20Receiving%20Activity%20Summary/) | Especially for companies who do not use separate inspection receipt processes, this report nets the purchase order receipts into receiving against the… |
 | [CAC Receiving Expense Value (Period-End)](/CAC%20Receiving%20Expense%20Value%20%28Period-End%29/) | Report to show receiving value for expense locations and expense destination types, for expenses accrued at time of receipt. You may run this report for open… |
 | [CAC Receiving Value (Period-End)](/CAC%20Receiving%20Value%20%28Period-End%29/) | Report to show receiving value for all locations, as of the end of an accounting period. You may run this report for open or closed accounting periods. With… |
 | [CAC Recost Cost of Goods Sold](/CAC%20Recost%20Cost%20of%20Goods%20Sold/) | Report to compare the "as transacted" cost of goods sold (COGS) transactions in Oracle Inventory with the "what if" costs from a simulation cost type. Use this… |

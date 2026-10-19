@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-16
+last_modified_at: 2026-10-19
 title: 'IEX Dunning History | Oracle EBS SQL Report'
 description: 'Dunning letters sent by Advanced Collections, one row per dunning, with the customer, account or bill-to site dunned, the dunning plan, the letter…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Collections, Enginatics, R12 only, IEX, Dunning, History, hz_customer_profiles, ar_collectors, iex_dunning_plans_vl'
@@ -35,7 +35,7 @@ Operating Unit, Dunning Date From, Dunning Date To, Customer Name, Account Numbe
 [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=iex-dunning-history), [R12 only](https://www.enginatics.com/library/?pg=1&category%5B%5D=R12%20only&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=iex-dunning-history)
 
 ## Related Reports
-[IEX Collection Note Upload](/IEX%20Collection%20Note%20Upload/ "IEX Collection Note Upload Oracle EBS SQL Report"), [AR Customers and Sites](/AR%20Customers%20and%20Sites/ "AR Customers and Sites Oracle EBS SQL Report"), [AR Customer Upload](/AR%20Customer%20Upload/ "AR Customer Upload Oracle EBS SQL Report"), [AR Customer Profiles](/AR%20Customer%20Profiles/ "AR Customer Profiles Oracle EBS SQL Report"), [AR Customer Credit Snapshot](/AR%20Customer%20Credit%20Snapshot/ "AR Customer Credit Snapshot Oracle EBS SQL Report"), [AR Aging](/AR%20Aging/ "AR Aging Oracle EBS SQL Report")
+[IEX Collection Note Upload](/IEX%20Collection%20Note%20Upload/ "IEX Collection Note Upload Oracle EBS SQL Report"), [AR Customers and Sites](/AR%20Customers%20and%20Sites/ "AR Customers and Sites Oracle EBS SQL Report"), [AR Customer Upload](/AR%20Customer%20Upload/ "AR Customer Upload Oracle EBS SQL Report"), [AR Customer Profiles](/AR%20Customer%20Profiles/ "AR Customer Profiles Oracle EBS SQL Report"), [AR Customer Credit Snapshot](/AR%20Customer%20Credit%20Snapshot/ "AR Customer Credit Snapshot Oracle EBS SQL Report"), [AR Aging](/AR%20Aging/ "AR Aging Oracle EBS SQL Report"), [AR Customer Credit Limits](/AR%20Customer%20Credit%20Limits/ "AR Customer Credit Limits Oracle EBS SQL Report"), [AR Unapplied Receipts Register](/AR%20Unapplied%20Receipts%20Register/ "AR Unapplied Receipts Register Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/IEX%20Dunning%20History/IEX%20Dunning%20History.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=iex-dunning-history) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.

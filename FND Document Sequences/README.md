@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-16
+last_modified_at: 2026-10-19
 title: 'FND Document Sequences | Oracle EBS SQL Report'
 description: 'Document sequence details including database sequence name and last seqeunce number.'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Application Object Library, Enginatics, FND, Document, Sequences, dba_sequences, fnd_application_vl, fnd_document_sequences'
@@ -31,7 +31,7 @@ Application, Table Name
 [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fnd-document-sequences)
 
 ## Related Reports
-[FND Document Sequence Assignments](/FND%20Document%20Sequence%20Assignments/ "FND Document Sequence Assignments Oracle EBS SQL Report"), [GL Account Analysis (Drilldown) (with inventory and WIP)](/GL%20Account%20Analysis%20%28Drilldown%29%20%28with%20inventory%20and%20WIP%29/ "GL Account Analysis (Drilldown) (with inventory and WIP) Oracle EBS SQL Report"), [AP Invoice and Payment Audit by Voucher Number](/AP%20Invoice%20and%20Payment%20Audit%20by%20Voucher%20Number/ "AP Invoice and Payment Audit by Voucher Number Oracle EBS SQL Report"), [INV Kanban Cards](/INV%20Kanban%20Cards/ "INV Kanban Cards Oracle EBS SQL Report"), [GL Account Analysis](/GL%20Account%20Analysis/ "GL Account Analysis Oracle EBS SQL Report")
+[FND Document Sequence Assignments](/FND%20Document%20Sequence%20Assignments/ "FND Document Sequence Assignments Oracle EBS SQL Report"), [FND Attached Documents](/FND%20Attached%20Documents/ "FND Attached Documents Oracle EBS SQL Report"), [GL Account Analysis](/GL%20Account%20Analysis/ "GL Account Analysis Oracle EBS SQL Report"), [INV Kanban Cards](/INV%20Kanban%20Cards/ "INV Kanban Cards Oracle EBS SQL Report"), [GL Account Analysis (Drilldown) (with inventory and WIP)](/GL%20Account%20Analysis%20%28Drilldown%29%20%28with%20inventory%20and%20WIP%29/ "GL Account Analysis (Drilldown) (with inventory and WIP) Oracle EBS SQL Report"), [AP Invoice and Payment Audit by Voucher Number](/AP%20Invoice%20and%20Payment%20Audit%20by%20Voucher%20Number/ "AP Invoice and Payment Audit by Voucher Number Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/FND%20Document%20Sequences/FND%20Document%20Sequences.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fnd-document-sequences) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.

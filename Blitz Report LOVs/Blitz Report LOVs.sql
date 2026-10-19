@@ -13,7 +13,6 @@
 select
 xrplv.lov_name,
 xrplv.description,
-xxen_util.meaning(xrplv.validate_from_list,'YES_NO',0) validate_from_list,
 xxen_util.meaning(xrplv.filter_before_display,'YES_NO',0) filter_before_display,
 decode(xrplv.usage_count,0,to_number(null),xrplv.usage_count) usage_count,
 xrplv.version,
@@ -27,7 +26,8 @@ length(xrplv.lov_query) lov_query_size
 from
 (
 select
-(select count(*) from xxen_report_parameters xrp where xrp.parameter_type='LOV' and xrplv.lov_id=xrp.lov_id) usage_count,
+(select count(*) from xxen_report_parameters xrp where xrp.parameter_type='LOV' and xrplv.lov_id=xrp.lov_id)+
+(select count(*) from xxen_upload_columns xuc where xuc.column_type='LOV' and xrplv.lov_id=xuc.lov_id) usage_count,
 xrplv.*
 from
 xxen_report_parameter_lovs_v xrplv

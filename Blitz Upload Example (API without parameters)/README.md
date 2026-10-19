@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-16
+last_modified_at: 2026-10-19
 title: 'Blitz Upload Example (API without parameters) | Oracle EBS SQL Report'
 description: 'Example upload, which can be used as a template by copying (Tools>Copy Report) to create new uploads using an API without parameters. This API will be…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, Blitz, Example, (API, xxen_upload_example'
@@ -29,7 +29,7 @@ Name
 [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-upload-example-api-without-parameters), [Upload](https://www.enginatics.com/library/?pg=1&category%5B%5D=Upload&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-upload-example-api-without-parameters)
 
 ## Related Reports
-[Blitz Upload Example (API with no parameters)](/Blitz%20Upload%20Example%20%28API%20with%20no%20parameters%29/ "Blitz Upload Example (API with no parameters) Oracle EBS SQL Report"), [Blitz Upload Example (API)](/Blitz%20Upload%20Example%20%28API%29/ "Blitz Upload Example (API) Oracle EBS SQL Report"), [Blitz Upload Example (Interface Table)](/Blitz%20Upload%20Example%20%28Interface%20Table%29/ "Blitz Upload Example (Interface Table) Oracle EBS SQL Report"), [Enginatics Blitz Reports and Uploads](/Enginatics%20Blitz%20Reports%20and%20Uploads/ "Enginatics Blitz Reports and Uploads Oracle EBS SQL Report")
+[Blitz Upload Example (API with no parameters)](/Blitz%20Upload%20Example%20%28API%20with%20no%20parameters%29/ "Blitz Upload Example (API with no parameters) Oracle EBS SQL Report"), [Blitz Upload Example (API)](/Blitz%20Upload%20Example%20%28API%29/ "Blitz Upload Example (API) Oracle EBS SQL Report"), [Blitz Upload Example (Interface Table)](/Blitz%20Upload%20Example%20%28Interface%20Table%29/ "Blitz Upload Example (Interface Table) Oracle EBS SQL Report"), [Enginatics Blitz Reports and Uploads](/Enginatics%20Blitz%20Reports%20and%20Uploads/ "Enginatics Blitz Reports and Uploads Oracle EBS SQL Report"), [Blitz Report Text Search](/Blitz%20Report%20Text%20Search/ "Blitz Report Text Search Oracle EBS SQL Report"), [PA Budget Upload](/PA%20Budget%20Upload/ "PA Budget Upload Oracle EBS SQL Report"), [EAM Asset Number Upload](/EAM%20Asset%20Number%20Upload/ "EAM Asset Number Upload Oracle EBS SQL Report"), [Blitz Report Assignment Upload](/Blitz%20Report%20Assignment%20Upload/ "Blitz Report Assignment Upload Oracle EBS SQL Report"), [INV Stock Locator Upload](/INV%20Stock%20Locator%20Upload/ "INV Stock Locator Upload Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/Blitz%20Upload%20Example%20%28API%20without%20parameters%29/Blitz%20Upload%20Example%20%28API%20without%20parameters%29.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-upload-example-api-without-parameters) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.

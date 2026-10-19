@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-16
+last_modified_at: 2026-10-19
 title: 'CSI Customer Products Summary | Oracle EBS SQL Report'
 description: 'Imported Oracle standard Installed Base Customer Products Summary report Source: CSI: Customer Products Summary Report (XML) Short Name: CSICPREPXML DB…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Installed Base, Enginatics, CSI, Customer, Products, Summary, hz_parties, csi_ii_relationships, csi_item_instances'
@@ -40,7 +40,7 @@ Account Number, Customer Name, Instance Number, Item, Status, City, Country, Cre
 [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=csi-customer-products-summary)
 
 ## Related Reports
-[OKL Termination Quotes](/OKL%20Termination%20Quotes/ "OKL Termination Quotes Oracle EBS SQL Report"), [OKS Service Contract Line Upload](/OKS%20Service%20Contract%20Line%20Upload/ "OKS Service Contract Line Upload Oracle EBS SQL Report"), [AR Transactions and Lines 11i](/AR%20Transactions%20and%20Lines%2011i/ "AR Transactions and Lines 11i Oracle EBS SQL Report"), [CSI Counter Readings](/CSI%20Counter%20Readings/ "CSI Counter Readings Oracle EBS SQL Report"), [GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report")
+[OKL Termination Quotes](/OKL%20Termination%20Quotes/ "OKL Termination Quotes Oracle EBS SQL Report"), [OKS Service Contract Line Upload](/OKS%20Service%20Contract%20Line%20Upload/ "OKS Service Contract Line Upload Oracle EBS SQL Report"), [AR Transactions and Lines 11i](/AR%20Transactions%20and%20Lines%2011i/ "AR Transactions and Lines 11i Oracle EBS SQL Report"), [CSI Counter Readings](/CSI%20Counter%20Readings/ "CSI Counter Readings Oracle EBS SQL Report"), [GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report"), [OKL Lease Contract Update Upload](/OKL%20Lease%20Contract%20Update%20Upload/ "OKL Lease Contract Update Upload Oracle EBS SQL Report"), [GL Account Analysis](/GL%20Account%20Analysis/ "GL Account Analysis Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/CSI%20Customer%20Products%20Summary/CSI%20Customer%20Products%20Summary.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=csi-customer-products-summary) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.

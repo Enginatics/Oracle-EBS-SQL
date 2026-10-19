@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-16
+last_modified_at: 2026-10-19
 title: 'AR Transaction Types | Oracle EBS SQL Report'
 description: 'Imported from BI Publisher Description: Print a listing of the Transaction Types Application: Receivables Source: Transaction Types Listing (XML) Short…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Receivables, Enginatics, Transaction, Types, ra_cust_trx_types, ra_terms, hr_operating_units'
@@ -36,7 +36,7 @@ Operating Unit
 [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-transaction-types)
 
 ## Related Reports
-[ONT Transaction Types Listing](/ONT%20Transaction%20Types%20Listing/ "ONT Transaction Types Listing Oracle EBS SQL Report"), [ONT Transaction Types and Line WF Processes](/ONT%20Transaction%20Types%20and%20Line%20WF%20Processes/ "ONT Transaction Types and Line WF Processes Oracle EBS SQL Report"), [PN Billing/Payment Term Upload](/PN%20Billing-Payment%20Term%20Upload/ "PN Billing/Payment Term Upload Oracle EBS SQL Report"), [AR Transaction Upload](/AR%20Transaction%20Upload/ "AR Transaction Upload Oracle EBS SQL Report"), [AR Transactions and Lines 11i](/AR%20Transactions%20and%20Lines%2011i/ "AR Transactions and Lines 11i Oracle EBS SQL Report"), [AR Customer Upload](/AR%20Customer%20Upload/ "AR Customer Upload Oracle EBS SQL Report")
+[AR Transactions and Lines](/AR%20Transactions%20and%20Lines/ "AR Transactions and Lines Oracle EBS SQL Report"), [ONT Transaction Types Listing](/ONT%20Transaction%20Types%20Listing/ "ONT Transaction Types Listing Oracle EBS SQL Report"), [ONT Transaction Types and Line WF Processes](/ONT%20Transaction%20Types%20and%20Line%20WF%20Processes/ "ONT Transaction Types and Line WF Processes Oracle EBS SQL Report"), [PN Billing/Payment Term Upload](/PN%20Billing-Payment%20Term%20Upload/ "PN Billing/Payment Term Upload Oracle EBS SQL Report"), [AR Transaction Upload](/AR%20Transaction%20Upload/ "AR Transaction Upload Oracle EBS SQL Report"), [AR Transactions and Lines 11i](/AR%20Transactions%20and%20Lines%2011i/ "AR Transactions and Lines 11i Oracle EBS SQL Report"), [AR Customer Upload](/AR%20Customer%20Upload/ "AR Customer Upload Oracle EBS SQL Report"), [AR Aging](/AR%20Aging/ "AR Aging Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/AR%20Transaction%20Types/AR%20Transaction%20Types.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-transaction-types) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.

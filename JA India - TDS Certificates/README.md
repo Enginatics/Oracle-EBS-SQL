@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-16
+last_modified_at: 2026-10-19
 title: 'JA India - TDS Certificates | Oracle EBS SQL Report'
 description: 'Imported from BI Publisher Description: Form 16A report Application: Asia/Pacific Localizations Source: India - TDS Certificates (XML) Short Name…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Asia/Pacific Localizations, Enginatics, R12 only, India, TDS, Certificates, hr_all_organization_units_vl, hr_locations, ap_suppliers'
@@ -35,6 +35,8 @@ TAN Number, Organization, Financial Year, Vendor, Certificate Nos. From, Certifi
 ## Report Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ja-india-tds-certificates), [R12 only](https://www.enginatics.com/library/?pg=1&category%5B%5D=R12%20only&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ja-india-tds-certificates)
 
+## Related Reports
+[AP Invoices with PO, Intercompany and SLA Details](/AP%20Invoices%20with%20PO-%20Intercompany%20and%20SLA%20Details/ "AP Invoices with PO, Intercompany and SLA Details Oracle EBS SQL Report"), [PO Headers and Lines](/PO%20Headers%20and%20Lines/ "PO Headers and Lines Oracle EBS SQL Report"), [AP Invoice Upload](/AP%20Invoice%20Upload/ "AP Invoice Upload Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/JA%20India%20-%20TDS%20Certificates/JA%20India%20-%20TDS%20Certificates.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ja-india-tds-certificates) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.

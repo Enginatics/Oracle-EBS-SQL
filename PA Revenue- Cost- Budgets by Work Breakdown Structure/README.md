@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-16
+last_modified_at: 2026-10-19
 title: 'PA Revenue, Cost, Budgets by Work Breakdown Structure | Oracle EBS SQL Report'
 description: 'This Blitz report implements the standard Oracle report: MGT: Revenue, Cost, Budgets by Work Breakdown Structure (XML) The ''Report Level'' parameter…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Projects, Enginatics, R12 only, Revenue,, Cost,, Budgets, Work, pa_proj_info_view, pa_projects, pa_project_types'
@@ -53,7 +53,7 @@ The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/PA%20R
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [Example](https://www.enginatics.com/example/pa-revenue-cost-budgets-by-work-breakdown-structure/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-revenue-cost-budgets-by-work-breakdown-structure) |
+| Excel Example Output | [PA Revenue, Cost, Budgets by Work Breakdown Structure 07-Apr-2018 151227.xlsx](https://www.enginatics.com/example/pa-revenue-cost-budgets-by-work-breakdown-structure/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-revenue-cost-budgets-by-work-breakdown-structure) |
 | Blitz Report™ XML Import | [PA_Revenue_Cost_Budgets_by_Work_Breakdown_Structure.xml](https://www.enginatics.com/xml/pa-revenue-cost-budgets-by-work-breakdown-structure/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-revenue-cost-budgets-by-work-breakdown-structure) |
 | SQL Source | [PA Revenue- Cost- Budgets by Work Breakdown Structure.sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/PA%20Revenue-%20Cost-%20Budgets%20by%20Work%20Breakdown%20Structure/PA%20Revenue-%20Cost-%20Budgets%20by%20Work%20Breakdown%20Structure.sql) |
 | Full Report on Enginatics | [www.enginatics.com/reports/pa-revenue-cost-budgets-by-work-breakdown-structure/](https://www.enginatics.com/reports/pa-revenue-cost-budgets-by-work-breakdown-structure/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-revenue-cost-budgets-by-work-breakdown-structure) |

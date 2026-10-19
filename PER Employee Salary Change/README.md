@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-16
+last_modified_at: 2026-10-19
 title: 'PER Employee Salary Change | Oracle EBS SQL Report'
 description: 'Query to get the last Salary change details for employees. Can add: whether to look at just the recent salary change? or salary change history.... If yes…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Human Resources, Enginatics, PER, Employee, Salary, Change, per_all_people_f, per_business_groups, per_all_assignments_f'
@@ -35,7 +35,7 @@ Business Group, Effective Date
 [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-employee-salary-change)
 
 ## Related Reports
-[PER Employee Assignments](/PER%20Employee%20Assignments/ "PER Employee Assignments Oracle EBS SQL Report"), [PER Person Assignment Upload](/PER%20Person%20Assignment%20Upload/ "PER Person Assignment Upload Oracle EBS SQL Report"), [PER Terminations and Separations](/PER%20Terminations%20and%20Separations/ "PER Terminations and Separations Oracle EBS SQL Report"), [PER New Hires](/PER%20New%20Hires/ "PER New Hires Oracle EBS SQL Report")
+[PER Employee Assignments](/PER%20Employee%20Assignments/ "PER Employee Assignments Oracle EBS SQL Report"), [PER Person Assignment Upload](/PER%20Person%20Assignment%20Upload/ "PER Person Assignment Upload Oracle EBS SQL Report"), [PER Terminations and Separations](/PER%20Terminations%20and%20Separations/ "PER Terminations and Separations Oracle EBS SQL Report"), [PER New Hires](/PER%20New%20Hires/ "PER New Hires Oracle EBS SQL Report"), [PER Employee Grade Changes](/PER%20Employee%20Grade%20Changes/ "PER Employee Grade Changes Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/PER%20Employee%20Salary%20Change/PER%20Employee%20Salary%20Change.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-employee-salary-change) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
