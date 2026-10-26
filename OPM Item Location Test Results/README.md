@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-16
+last_modified_at: 2026-10-26
 title: 'OPM Item Location Test Results | Oracle EBS SQL Report'
 description: 'Oracle Process Manufacturing (OPM) Quality item/location test results: the QC test results recorded against inventory item, lot and subinventory samples…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Process Manufacturing, Enginatics, R12 only, OPM, Item, Location, Test, gmd_results, gmd_samples, gmd_qc_tests_b'
@@ -31,7 +31,7 @@ Organization Code, Item, Lot Number like, Test, Sample Date From, Sample Date To
 [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=opm-item-location-test-results), [R12 only](https://www.enginatics.com/library/?pg=1&category%5B%5D=R12%20only&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=opm-item-location-test-results)
 
 ## Related Reports
-[OPM Specifications and Test Limits](/OPM%20Specifications%20and%20Test%20Limits/ "OPM Specifications and Test Limits Oracle EBS SQL Report"), [OPM Recipe Details](/OPM%20Recipe%20Details/ "OPM Recipe Details Oracle EBS SQL Report"), [CAC OPM Costed Formula](/CAC%20OPM%20Costed%20Formula/ "CAC OPM Costed Formula Oracle EBS SQL Report")
+[OPM Specifications and Test Limits](/OPM%20Specifications%20and%20Test%20Limits/ "OPM Specifications and Test Limits Oracle EBS SQL Report"), [OPM Recipe Details](/OPM%20Recipe%20Details/ "OPM Recipe Details Oracle EBS SQL Report"), [CAC OPM Batch Material Summary](/CAC%20OPM%20Batch%20Material%20Summary/ "CAC OPM Batch Material Summary Oracle EBS SQL Report"), [CAC OPM Costed Formula](/CAC%20OPM%20Costed%20Formula/ "CAC OPM Costed Formula Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/OPM%20Item%20Location%20Test%20Results/OPM%20Item%20Location%20Test%20Results.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=opm-item-location-test-results) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.

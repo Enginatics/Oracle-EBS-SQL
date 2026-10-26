@@ -39,756 +39,305 @@
 -- Library Link: https://www.enginatics.com/reports/cac-calculate-icp-pii-item-costs-by-where-used/
 -- Run Report: https://demo.enginatics.com/
 
-select  rpt.period_name Period_Name,
-        rpt.source_ledger Source_Ledger,
-        rpt.to_ledger To_Ledger,
-        rpt.source_operating_unit Source_Operating_Unit,
-        rpt.to_operating_unit To_Operating_Unit,
-        rpt.src_org Src_Org, 
-        rpt.to_org To_Org,
-        rpt.assignment_set Assignment_Set,
-        rpt.sourcing_rule Sourcing_Rule,
-        rpt.assembly Assembly,
-        rpt.assembly_description Assembly_Description,
-        rpt.assembly_item_type Assembly_Item_Type,
-        rpt.assembly_status_code Assembly_Status_Code,
-        rpt.assembly_make_buy_code Assembly_Make_Buy_Code,
-        rpt.uom_code UOM_Code,
-        rpt.bom_type BOM_Type,
-        rpt.date_implemented Date_Implemented,
-        rpt.item_revision Item_Revision,
+with c as (
+select /*+ inline */
+cic.organization_id,
+cic.inventory_item_id,
+cic.item_cost,
+cic.item_cost-cic.tl_material_overhead-cic.tl_resource-cic.tl_outside_processing-cic.tl_overhead net_cost,
+nvl((select sum(cicd.item_cost) from cst_item_cost_details cicd, cst_cost_types cct, bom_resources br where cic.inventory_item_id=cicd.inventory_item_id and cic.organization_id=cicd.organization_id and cicd.cost_type_id=cct.cost_type_id and cicd.resource_id=br.resource_id and 9=9),0) pii_cost
+from
+mtl_parameters mp,
+cst_item_costs cic
+where
+mp.organization_id=cic.organization_id and
+(
+cic.cost_type_id in (select cct.cost_type_id from cst_cost_types cct where 10=10) or
+cic.cost_type_id=mp.primary_cost_method and not exists (select null from cst_item_costs cic2, cst_cost_types cct where cic.organization_id=cic2.organization_id and cic.inventory_item_id=cic2.inventory_item_id and cic2.cost_type_id=cct.cost_type_id and 10=10)
+)
+)
+select
+x.period_name,
+x.source_ledger,
+x.to_ledger,
+x.source_operating_unit,
+x.to_operating_unit,
+x.src_org,
+x.to_org,
+x.assignment_set,
+x.sourcing_rule,
+x.assembly,
+x.assembly_description,
+x.assembly_item_type,
+x.assembly_status_code,
+x.assembly_make_buy_code,
+x.uom_code,
+x.bom_type,
+x.date_implemented,
+x.item_revision,
 &category_columns
-        rpt.item_seq Item_Seq,
-        rpt.op_seq Op_Seq,
-        rpt.component Component,
-        rpt.component_description Component_Description,
-        rpt.source_item_type Source_Item_Type,
-        rpt.source_status_code Source_Status_Code,
-        rpt.source_make_buy_code Source_Make_Buy_Code,
-        rpt.source_uom Source_UOM,
-        rpt.to_org_item_type To_Org_Item_Type,
-        rpt.to_org_status_code To_Org_Status_Code,
-        rpt.to_org_make_buy_code To_Org_Make_Buy_Code,
-        rpt.to_org_uom To_Org_UOM,
-        rpt.quantity_per_assembly Quantity_per_Assembly,
-        rpt.effective_from Effective_From,
-        rpt.effective_to Effective_To,
-        rpt.planning_percent Planning_Percent,
-        rpt.yield Component_Yield,
-        rpt.include_in_cost_rollup Include_in_Cost_Rollup,
-        rpt.wip_supply_type WIP_Supply_Type,
-        rpt.source_component_onhand_qty Source_Component_Onhand_Qty,
-        rpt.src_currency_code Src_Currency_Code,
-        rpt.src_component_item_cost Src_Component_Item_Cost,
-        rpt.src_component_onhand_value Src_Component_Onhand_Value,
-        rpt.source_item_cost Source_Item_Cost,
-        :p_conversion_date Currency_Conversion_Date,
-        nvl(gdr.conversion_rate,1) Currency_Conversion_Rate,
-        gdr.to_currency To_Org_Currency_Code,
-        round(nvl(gdr.conversion_rate,1) * rpt.source_item_cost,5) Converted_Source_Item_Cost,
-        rpt.to_org_net_item_cost To_Org_Net_Item_Cost,
-        -- To Org Item Cost minus Converted Source Item Cost = Calculated To Org PII
-        rpt.to_org_net_item_cost - round(nvl(gdr.conversion_rate,1) * rpt.source_item_cost,5) Calculated_To_Org_PII,
-        -- Calculated To Org PII / Converted Source Item Cost = Source PII Percent 
-        round(rpt.to_org_net_item_cost - round(nvl(gdr.conversion_rate,1) * rpt.source_item_cost,5)
-                / (decode(round(nvl(gdr.conversion_rate,1) * rpt.source_item_cost,5),
-                0, 1, round(nvl(gdr.conversion_rate,1) * rpt.source_item_cost,5)))
-                * 100 -- turn into a percent
-           ,1) Source_PII_Percent,
-        -- Revision for version 1.5, divide by To Org Total Item Cost
-        -- Calculated To Org PII / To Org Total Item Cost = To Org PII Percent
-        round(rpt.to_org_net_item_cost - round(nvl(gdr.conversion_rate,1) * rpt.source_item_cost,5)
-                / decode(rpt.to_org_item_cost, 0, 1, rpt.to_org_item_cost)
-                * 100 -- turn into a percent
-           ,1) To_Org_PII_Percent,
-        rpt.cost_type_pii_item_cost Cost_Type_PII_Item_Cost,
-        -- Calculated To Org PII minus Cost Type To Org PII Item Cost = PII Difference
-        rpt.to_org_net_item_cost - round(nvl(gdr.conversion_rate,1) * rpt.source_item_cost,5) - rpt.cost_type_pii_item_cost PII_Cost_Difference,
-        rpt.to_org_assembly_onhand_qty To_Org_Assembly_Onhand_Qty,
-        rpt.to_org_component_onhand_qty To_Org_Component_Onhand_Qty,
-        rpt.to_org_item_cost To_Org_Total_Item_Cost,
-        rpt.to_org_component_onhand_value To_Org_Component_Onhand_Value
-        -- End revision for version 1.5
-from    (select :p_period_name Period_Name,
-                -- Revision for version 1.6
-                -- gp.period_name Period_Name,
-                -- Revision for version 1.4
-                nvl(inv_src_org.gl_short_name, inv_src_org.gl_name) Source_Ledger,
-                nvl(inv_to_org.gl_short_name, inv_to_org.gl_name) To_Ledger,
-                inv_src_org.operating_unit Source_Operating_Unit,
-                inv_to_org.operating_unit To_Operating_Unit,
-                -- End revision for version 1.4
-                item_sourcing.src_org_code Src_Org, 
-                item_sourcing.to_org_code To_Org,
-                item_sourcing.assignment_set Assignment_Set,
-                item_sourcing.sourcing_rule Sourcing_Rule,
-                to_org_wu.assembly_item Assembly,
-                to_org_wu.assembly_description Assembly_Description,
-                -- Revision for version 1.4
-                fcl_bom.meaning Assembly_Item_Type,
-                misv_bom.inventory_item_status_code_tl Assembly_Status_Code,
-                ml_bom.meaning Assembly_Make_Buy_Code,
-                muomv_bom.uom_code UOM_Code,
-                ml_bom2.meaning BOM_Type,
-                -- End revision for version 1.4
-                to_org_wu.bom_date_implemented Date_Implemented,
-                to_org_wu.bom_item_revision Item_Revision,
-                -- Revision for version 1.2
-                to_org_wu.component_item_id,
-                to_org_wu.organization_id,
-                to_org_wu.comp_item_seq Item_Seq,
-                to_org_wu.comp_op_seq Op_Seq,
-                to_org_wu.component_item Component,
-                to_org_wu.component_description Component_Description,
-                -- Revision for version 1.5
-                fcl_src.meaning Source_Item_Type,
-                misv_src.inventory_item_status_code_tl Source_Status_Code,
-                ml_src.meaning Source_Make_Buy_Code,
-                muomv_src.uom_code Source_UOM,
-                -- End revision for version 1.5
-                fcl_comp.meaning To_Org_Item_Type,
-                misv_comp.inventory_item_status_code_tl To_Org_Status_Code,
-                -- Revision for version 1.3
-                ml_comp.meaning To_Org_Make_Buy_Code,
-                muomv_comp.uom_code To_Org_UOM,
-                to_org_wu.component_quantity Quantity_per_Assembly,
-                to_org_wu.comp_effective_from Effective_From,
-                to_org_wu.comp_effective_to Effective_To,
-                to_org_wu.comp_planning_percent Planning_Percent,
-                to_org_wu.component_yield Yield,
-                -- Revision for version 1.4
-                ml_comp2.meaning Include_in_Cost_Rollup,
-                ml_comp3.meaning WIP_Supply_Type,
-                -- End revision for version 1.4
-                nvl((select  sum(mohd.transaction_quantity)
-                     from    mtl_onhand_quantities_detail mohd
-                     where   mohd.inventory_item_id  = item_sourcing.src_item_id
-                     and     mohd.organization_id    = item_sourcing.src_org_id),0) Source_Component_Onhand_Qty,
-                nvl(src_org_costs.item_cost,0) Src_Component_Item_Cost,
-                nvl((select  sum(mohd.transaction_quantity)
-                     from    mtl_onhand_quantities_detail mohd
-                     where   mohd.inventory_item_id  = item_sourcing.src_item_id
-                     and     mohd.organization_id    = item_sourcing.src_org_id),0) 
-                     * nvl(src_org_costs.item_cost,0) Src_Component_Onhand_Value,
-                -- Revision for version 1.6
-                inv_to_org.currency_code To_Org_Currency_Code,
-                inv_src_org.currency_code Src_Currency_Code,
-                -- End revision for version 1.6
-                -- Revision for version 1.1
-                -- Add in item costs and PII costs, 
-                -- Revision for version 1.3
-                -- Use the Planning Make/Buy Code, not the MFG Org Code
-                -- round(decode(item_sourcing.src_org_code,
-                -- ======================================================================
-                -- Revision for version 1.1, 1.3, 1.5
-                -- For comparison purposes take away Source Org PII. Assumes the transfer
-                -- price is marked up at each hop, including any This Level costs.
-                -- Revision for version 1.5, PII may be a negative or positive value, use a parameter to resolve
-                -- ======================================================================
-                round(nvl(src_org_costs.item_cost,0) - sign(:p_sign_pii) * nvl(src_org_costs.pii_cost,0),5) Source_Item_Cost,
-                round(nvl(to_org_costs.net_cost,0),5) To_Org_Net_Item_Cost,
-                to_org_costs.pii_cost Cost_Type_PII_Item_Cost,
-                -- Revision for version 1.5
-                nvl((select  sum(mohd.transaction_quantity)
-                     from    mtl_onhand_quantities_detail mohd
-                     where   mohd.inventory_item_id  = to_org_wu.assembly_item_id
-                     and     mohd.organization_id    = to_org_wu.organization_id),0) To_Org_Assembly_Onhand_Qty,
-                nvl((select  sum(mohd.transaction_quantity)
-                     from    mtl_onhand_quantities_detail mohd
-                     where   mohd.inventory_item_id  = to_org_wu.component_item_id
-                     and     mohd.organization_id    = to_org_wu.organization_id),0) To_Org_Component_Onhand_Qty,
-                nvl(to_org_costs.item_cost,0) To_Org_Item_Cost,
-                nvl((select  sum(mohd.transaction_quantity)
-                     from    mtl_onhand_quantities_detail mohd
-                     where   mohd.inventory_item_id  = to_org_wu.component_item_id
-                     and     mohd.organization_id    = to_org_wu.organization_id),0) 
-                        * nvl(src_org_costs.item_cost,0) To_Org_Component_Onhand_Value
-                -- End revision for version 1.5
-         from   -- Revision for version 1.4
-                mtl_units_of_measure_vl muomv_bom,
-                mtl_item_status_vl misv_bom,
-                mtl_units_of_measure_vl muomv_comp,
-                mtl_item_status_vl misv_comp,
-                mtl_units_of_measure_vl muomv_src,
-                mtl_item_status_vl misv_src,
-                mfg_lookups ml_bom, -- Assembly Make Buy Code
-                mfg_lookups ml_bom2, -- BOM Type
-                mfg_lookups ml_comp, -- Component Make Buy Code
-                mfg_lookups ml_comp2, -- Include in Cost Rollup
-                mfg_lookups ml_comp3, -- WIP Supply Type
-                mfg_lookups ml_src, -- Source Make Buy Code
-                fnd_common_lookups fcl_bom, -- Assembly Item Type
-                fnd_common_lookups fcl_comp, -- Component Item Type
-                fnd_common_lookups fcl_src, -- Source Item Type
-                -- End revision for version 1.4
-                -- Revision for version         1.6
-                -- gl_periods gp,
-                -- Revision for version 1.5, from CAC Where Used by Cost Type
-                (select nvl(gl.short_name, gl.name) ledger,
-                        haou2.name operating_unit,
-                        mp_to_org.organization_id organization_id,        
-                        mp_to_org.organization_code org_code,
-                        msiv.inventory_item_id assembly_item_id,
-                        msiv.concatenated_segments assembly_item,
-                        msiv.description assembly_description,
-                        msiv.item_type assembly_item_type,
-                        msiv.inventory_item_status_code assembly_status_code,
-                        msiv.planning_make_buy_code assembly_mb_code,
-                        msiv.inventory_asset_flag assembly_asset_flag,
-                        msiv.primary_uom_code assembly_uom,
-                        bom.assembly_type assembly_type,
-                        bom.implementation_date bom_date_implemented,
-                        mir.revision_code bom_item_revision,
-                        comp.item_num comp_item_seq,
-                        comp.operation_seq_num comp_op_seq,
-                        msiv2.inventory_item_id component_item_id,
-                        msiv2.concatenated_segments component_item,
-                        msiv2.description component_description,
-                        msiv2.primary_uom_code component_uom,
-                        msiv2.item_type component_item_type,
-                        msiv2.inventory_item_status_code component_status_code,
-                        msiv2.planning_make_buy_code component_mb_code,
-                        comp.component_quantity,
-                        comp.effectivity_date comp_effective_from,
-                        comp.disable_date comp_effective_to,
-                        nvl(comp.planning_factor,0) comp_planning_percent,
-                        comp.component_yield_factor component_yield,
-                        comp.include_in_cost_rollup,
-                        comp.wip_supply_type
-                 from   mtl_parameters mp_to_org,
-                        mtl_system_items_vl msiv,  -- Assembly
-                        mtl_system_items_vl msiv2, -- Component
-                        bom_structures_b bom,
-                        hr_organization_information hoi,
-                        hr_all_organization_units_vl haou,  -- inv_organization_id
-                        hr_all_organization_units_vl haou2, -- operating unit
-                        gl_ledgers gl,
-                        -- Get the BOM Components
-                        (select comp.bill_sequence_id,
-                                comp.item_num,
-                                comp.operation_seq_num,
-                                comp.component_item_id,
-                                comp.component_quantity,
-                                max(comp.effectivity_date) effectivity_date,
-                                comp.disable_date,
-                                comp.planning_factor,
-                                comp.component_yield_factor,
-                                comp.include_in_cost_rollup,
-                                comp.wip_supply_type,
-                                comp.supply_subinventory,
-                                comp.supply_locator_id
-                         from   bom_components_b comp,
-                                -- Add BOM table to only look at primary components
-                                bom_structures_b bom_comp,
-                                mtl_parameters mp_to_org,
-                                mtl_system_items_vl msiv2
-                         where  comp.effectivity_date       <= sysdate
-                         and    nvl(comp.disable_date, sysdate+1) >  sysdate        
-                         and    bom_comp.alternate_bom_designator is null
-                         and    bom_comp.common_assembly_item_id is null
-                         and    bom_comp.assembly_type       = 1   -- Manufacturing
-                         and    bom_comp.bill_sequence_id    = comp.bill_sequence_id
-                         and    mp_to_org.organization_id    = bom_comp.organization_id
-                         and    msiv2.organization_id        = bom_comp.organization_id
-                         and    msiv2.inventory_item_id      = comp.component_item_id
-                         and    mp_to_org.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-                         and    4=4                        -- p_to_org
-                         and    5=5                        -- p_component_number
-                         and    6=6                        -- p_include_unimplemented_ECOs
-                         group by
-                                comp.bill_sequence_id,
-                                comp.item_num,
-                                comp.operation_seq_num,
-                                comp.component_item_id,
-                                comp.component_quantity,
-                                comp.disable_date,
-                                comp.planning_factor,
-                                comp.component_yield_factor,
-                                comp.include_in_cost_rollup,
-                                comp.wip_supply_type,
-                                comp.supply_subinventory,
-                                comp.supply_locator_id) comp,
-                        -- Get the Item Revisions
-                        (select max(mir.revision)     revision_code,
-                                mir.inventory_item_id inventory_item_id,
-                                mir.organization_id   organization_id
-                         from   mtl_item_revisions_b mir,
-                                -- Add organization_parameters to limit by Org Code
-                                mtl_parameters mp_to_org
-                         where  mir.effectivity_date      <= sysdate
-                         and    mp_to_org.organization_id  = mir.organization_id
-                         and    mp_to_org.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-                         and    4=4                        -- p_to_org
-                         group by
-                                mir.inventory_item_id,
-                                mir.organization_id) mir
-                 where   mp_to_org.organization_id          = msiv.organization_id
-                 and     msiv.organization_id               = bom.organization_id
-                 and     msiv.inventory_item_id             = bom.assembly_item_id
-                 and     msiv2.organization_id              = mp_to_org.organization_id
-                 and     msiv2.inventory_item_id            = comp.component_item_id
-                 and     bom.alternate_bom_designator is null
-                 and     bom.common_assembly_item_id is null
-                 and     bom.assembly_type                  = 1   -- Manufacturing
-                 and     bom.bill_sequence_id               = comp.bill_sequence_id
-                 and     comp.effectivity_date             <= sysdate
-                 and     nvl(comp.disable_date, sysdate+1) >  sysdate
-                 and     msiv.organization_id               = mir.organization_id
-                 and     msiv.inventory_item_id             = mir.inventory_item_id
-                 -- Don't report obsolete or inactive items
-                 and     msiv.inventory_item_status_code   <> 'Inactive'
-                 and     msiv2.inventory_item_status_code  <> 'Inactive'
-                 and     mp_to_org.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-                 and     8=8                               -- p_include_expense_items, p_include_uncosted_items
-                 and     1=1                               -- p_operating_unit, p_ledger
-                 and     4=4                               -- p_to_org
-                 and     5=5                               -- p_component_number
-                 and     7=7                               -- p_assy_number
-                 -- ===================================================================
-                 -- using the base tables to avoid using
-                 -- org_organization_definitions and hr_operating_units
-                 -- ===================================================================
-                 and     hoi.org_information_context        = 'Accounting Information'
-                 and     hoi.organization_id                = mp_to_org.organization_id
-                 and     hoi.organization_id                = haou.organization_id   -- this gets the organization name
-                 and     haou2.organization_id              = hoi.org_information3   -- this gets the operating unit id
-                 and     gl.ledger_id                       = to_number(hoi.org_information1) -- get the ledger_id
-                 -- Avoid selecting disabled inventory organizations
-                 and     sysdate < nvl(haou.date_to, sysdate + 1)
-                ) to_org_wu,
-                -- Source of Components
-                (select mp_to_org.organization_code to_org_code,
-                        mp_src_org.organization_code src_org_code,
-                        mp_to_org.organization_id to_org_id,
-                        mp_src_org.organization_id src_org_id,
-                        mas.assignment_set_name assignment_set,
-                        msr.sourcing_rule_name sourcing_rule,
-                        msiv2.concatenated_segments src_item_number,
-                        msiv2.inventory_item_id src_item_id,
-                        msiv2.primary_uom_code src_uom_code,
-                        msiv2.description src_description,
-                        msiv2.inventory_item_status_code src_item_status_code,
-                        msiv2.item_type src_item_type,
-                        -- Revision for version 1.3
-                        msiv2.planning_make_buy_code src_mb_code
-                 from   mrp_sr_source_org msso,
-                        mrp_sr_receipt_org msro,
-                        mrp_sourcing_rules msr,
-                        mrp_sr_assignments msa,
-                        mrp_assignment_sets mas,
-                        mtl_system_items_vl msiv2,
-                        mtl_parameters mp_to_org,
-                        mtl_parameters mp_src_org
-                 -- ====================================
-                 -- Sourcing_Rule Joins
-                 -- ====================================
-                 where  msso.sr_receipt_id            = msro.sr_receipt_id
-                 and    msr.sourcing_rule_id          = msro.sourcing_rule_id
-                 and    msa.sourcing_rule_id          = msro.sourcing_rule_id
-                 and    msa.assignment_set_id         = mas.assignment_set_id
-                 -- Want the source organization item information
-                 and    msiv2.organization_id         = msso.source_organization_id
-                 and    msiv2.inventory_item_id       = msa.inventory_item_id
-                 -- Only choose organization sourcing rules
-                 and    msso.source_organization_id is not null
-                 -- Client only has one Assignment Set
-                 and    2=2                           -- p_assignment_set                             -- p_assignment_set
-                 -- Don't report obsolete or inactive items
-                 and    msiv2.inventory_item_status_code <> 'Inactive'
-                 -- ====================================
-                 -- Material Parameter joins
-                 -- ====================================
-                 and    mp_to_org.organization_id     = msa.organization_id
-                 and    mp_src_org.organization_id    = msso.source_organization_id
-                 -- ====================================
-                 -- Org To and From Parameters
-                 -- ====================================
-                 and    mp_to_org.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-                 and    3=3                           -- p_src_org
-                 and    4=4                           -- p_to_org
-                 union all
-                 select mp_to_org.organization_code to_org_code,
-                        mp_src_org.organization_code src_org_code,
-                        mp_to_org.organization_id to_org_id,
-                        msiv2.source_organization_id src_org_id,
-                        '' assignment_set,
-                        '' sourcing_rule,
-                        msiv2.concatenated_segments src_item_number,
-                        msiv2.inventory_item_id src_item_id,
-                        msiv2.primary_uom_code src_uom_code,
-                        msiv2.description src_description,
-                        msiv2.inventory_item_status_code src_item_status_code,
-                        msiv2.item_type src_item_type,
-                        -- Revision for version 1.3
-                        msiv2.planning_make_buy_code to_org_mb_code
-                 from   mtl_system_items_vl msiv2,
-                        mtl_parameters mp_to_org,
-                        mtl_parameters mp_src_org
-                 -- ====================================
-                 -- Sourcing_Rule Joins
-                 -- ====================================
-                 where  msiv2.organization_id         = mp_to_org.organization_id
-                 and    msiv2.source_organization_id is not null
-                 -- Don't report obsolete or inactive items
-                 and    msiv2.inventory_item_status_code <> 'Inactive'
-                 -- ====================================
-                 -- Material Parameter joins for to_org
-                 -- ====================================
-                 and    msiv2.organization_id         = mp_to_org.organization_id
-                 and    msiv2.source_organization_id  = mp_src_org.organization_id
-                 and    msiv2.organization_id        <> mp_to_org.master_organization_id
-                 and    msiv2.source_organization_id <> mp_src_org.master_organization_id
-                 -- ====================================
-                 -- Org To and From Parameters
-                 -- ====================================
-                 and    mp_to_org.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-                 and    3=3                           -- p_src_org
-                 and    4=4                           -- p_to_org
-                 and     not exists (
-                                     select 'x'
-                                     from   mrp_sr_source_org msso,
-                                            mrp_sr_receipt_org msro,
-                                            -- Revision for version 1.6
-                                            -- mrp_sourcing_rules msr,
-                                            mrp_sr_assignments msa,
-                                            mrp_assignment_sets mas
-                                     where  msso.sr_receipt_id            = msro.sr_receipt_id
-                                     -- Revision for version         1.6
-                                     -- and    msr.sourcing_rule_id          = msro.sourcing_rule_id
-                                     and    msa.sourcing_rule_id          = msro.sourcing_rule_id
-                                     -- Client only has one Assignment Set
-                                     and    2=2                           -- p_assignment_set
-                                     and    msa.assignment_set_id         = mas.assignment_set_id
-                                     and    msiv2.organization_id         = msa.organization_id
-                                     and    msiv2.inventory_item_id       = msa.inventory_item_id
-                                     -- ====================================
-                                     -- Material Parameter joins for to_org
-                                     -- ====================================
-                                     and    msa.organization_id           = mp_to_org.organization_id
-                                     and    msso.source_organization_id   = mp_src_org.organization_id
-                                    )
-                ) item_sourcing,
-                -- =================================================
-                -- Revision for version 1.1, add PII amounts
-                -- Get To Org Cost information
-                -- =================================================
-                (select cic.organization_id,
-                        cic.inventory_item_id,
-                        cic.cost_type_id,
-                        cic.item_cost,
-                        cic.material_cost,
-                        cic.tl_material_overhead,
-                        cic.tl_resource,
-                        cic.tl_outside_processing,
-                        cic.tl_overhead,
-                        cic.item_cost - cic.tl_material_overhead - cic.tl_resource - 
-                                        cic.tl_outside_processing - cic.tl_overhead net_cost,
-                        nvl((select sum(cicd.item_cost)
-                             from   cst_item_cost_details cicd,
-                                    cst_cost_types cct,
-                                    bom_resources br
-                             where  cicd.cost_type_id      = cct.cost_type_id
-                             and    9=9                    -- p_pii_cost_type, p_pii_resource_code
-                             and    cicd.inventory_item_id = cic.inventory_item_id
-                             and    cicd.organization_id   = cic.organization_id
-                             and    cicd.resource_id       = br.resource_id
-                            ),0) pii_cost
-                 from   cst_item_costs cic,
-                        cst_cost_types cct
-                 -- ====================================
-                 -- Item Cost Joins for the To Org
-                 -- ====================================
-                 where  cic.cost_type_id              = cct.cost_type_id
-                 and    10=10                         -- p_cost_type
-                 and    cic.inventory_item_id in 
-                                (select msiv2.inventory_item_id
-                                 from   mtl_system_items_vl msiv2,
-                                        mtl_parameters mp_to_org
-                                 where  msiv2.organization_id       = mp_to_org.organization_id
-                                 and    mp_to_org.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-                                 and    4=4                         -- p_to_org
-                                 and    5=5                         -- p_component_number
-                                )
-                 union all
-                 select cic.organization_id,
-                        cic.inventory_item_id,
-                        cic.cost_type_id,
-                        cic.item_cost,
-                        cic.material_cost,
-                        cic.tl_material_overhead,
-                        cic.tl_resource,
-                        cic.tl_outside_processing,
-                        cic.tl_overhead,
-                        cic.item_cost - cic.tl_material_overhead - cic.tl_resource - 
-                                        cic.tl_outside_processing - cic.tl_overhead net_cost,
-                        nvl((select sum(cicd.item_cost)
-                             from   cst_item_cost_details cicd,
-                                    cst_cost_types cct,
-                                    bom_resources br
-                             where  cicd.cost_type_id      = cct.cost_type_id
-                             and    9=9                    -- p_pii_cost_type, p_pii_resource_code
-                             and    cicd.inventory_item_id = cic.inventory_item_id
-                             and    cicd.organization_id   = cic.organization_id
-                             and    cicd.resource_id       = br.resource_id
-                             -- Revision for version 1.4
-                            ),0) pii_cost
-                 from   cst_item_costs cic,
-                        cst_cost_types cct,
-                        mtl_parameters mp_to_org
-                 -- ====================================
-                 -- Item Cost Joins for the To Org
-                 -- ====================================
-                 where  cic.organization_id           = mp_to_org.organization_id
-                 and    mp_to_org.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-                 and    cic.cost_type_id              = mp_to_org.primary_cost_method  -- this gets the Frozen Costs
-                 and    cct.cost_type_id             <> mp_to_org.primary_cost_method  -- this avoids getting the Frozen costs twice
-                 and    10=10                         -- p_cost_type
-                 and    cic.inventory_item_id in 
-                                (select msiv2.inventory_item_id
-                                 from   mtl_system_items_vl msiv2,
-                                        mtl_parameters mp_to_org
-                                 where  msiv2.organization_id       = mp_to_org.organization_id
-                                 and    mp_to_org.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-                                 and    4=4                         -- p_to_org
-                                 and    5=5                         -- p_component_number
-                                )
-                 -- ====================================
-                 -- Find all the Frozen costs not in the
-                 -- Pending or unimplemented cost type
-                 -- ====================================
-                 and    not exists (
-                                    select  'x'
-                                    from    cst_item_costs cic2
-                                    where   cic2.organization_id   = cic.organization_id
-                                    and     cic2.inventory_item_id = cic.inventory_item_id
-                                    and     cic2.cost_type_id      = cct.cost_type_id
-                                   )
-                ) to_org_costs,
-                -- =================================================
-                -- Get Source Org Cost information
-                -- =================================================
-                (select cic.organization_id,
-                        cic.inventory_item_id,
-                        cic.cost_type_id,
-                        cic.item_cost,
-                        cic.material_cost,
-                        cic.tl_material_overhead,
-                        cic.tl_resource,
-                        cic.tl_outside_processing,
-                        cic.tl_overhead,
-                        cic.item_cost - cic.tl_material_overhead - cic.tl_resource - 
-                                         cic.tl_outside_processing - cic.tl_overhead net_cost,
-                        nvl((select sum(cicd.item_cost)
-                             from   cst_item_cost_details cicd,
-                                    cst_cost_types cct,
-                                    bom_resources br
-                             where  cicd.cost_type_id      = cct.cost_type_id
-                             and    9=9                    -- p_pii_cost_type, p_pii_resource_code
-                             and    cicd.inventory_item_id = cic.inventory_item_id
-                             and    cicd.organization_id   = cic.organization_id
-                             and    cicd.resource_id       = br.resource_id
-                            ),0) pii_cost
-                 from   cst_item_costs cic,
-                        cst_cost_types cct
-                 -- ====================================
-                 -- Item Cost Joins for the Source Org
-                 -- ====================================
-                 where  cic.cost_type_id              = cct.cost_type_id
-                 and    10=10                         -- p_cost_type
-                 and    cic.inventory_item_id in 
-                                (select msiv2.inventory_item_id
-                                 from   mtl_system_items_vl msiv2,
-                                        mtl_parameters mp_src_org
-                                 where  msiv2.organization_id        = mp_src_org.organization_id
-                                 and    3=3                          -- p_src_org
-                                 and    5=5                          -- p_component_number
-                                )
-                 union all
-                 select cic.organization_id,
-                        cic.inventory_item_id,
-                        cic.cost_type_id,
-                        cic.item_cost,
-                        cic.material_cost,
-                        cic.tl_material_overhead,
-                        cic.tl_resource,
-                        cic.tl_outside_processing,
-                        cic.tl_overhead,
-                        cic.item_cost - cic.tl_material_overhead - cic.tl_resource - 
-                                        cic.tl_outside_processing - cic.tl_overhead net_cost,
-                        nvl((select sum(cicd.item_cost)
-                             from   cst_item_cost_details cicd,
-                                    cst_cost_types cct,
-                                    bom_resources br
-                             where  cicd.cost_type_id      = cct.cost_type_id
-                             and    9=9                    -- p_pii_cost_type, p_pii_resource_code
-                             and    cicd.inventory_item_id = cic.inventory_item_id
-                             and    cicd.organization_id   = cic.organization_id
-                             and    cicd.resource_id       = br.resource_id
-                            ),0) pii_cost
-                 from   cst_item_costs cic,
-                        cst_cost_types cct,
-                        mtl_parameters mp
-                 -- ====================================
-                 -- Item Cost Joins for the Source Org
-                 -- ====================================
-                 where  cic.organization_id           = mp.organization_id
-                 and    cic.cost_type_id              = mp.primary_cost_method  -- this gets the Frozen Costs
-                 and    cct.cost_type_id             <> mp.primary_cost_method  -- this avoids getting the Frozen costs twice
-                 and    10=10                         -- p_cost_type
-                 and    cic.inventory_item_id in 
-                                (select  msiv2.inventory_item_id
-                                 from    mtl_system_items_vl msiv2,
-                                         mtl_parameters mp_src_org
-                                 where  msiv2.organization_id        = mp_src_org.organization_id
-                                 and    3=3                          -- p_src_org
-                                 and    5=5                          -- p_component_number
-                                )
-                 -- ====================================
-                 -- Find all the Frozen costs not in the
-                 -- Pending or unimplemented cost type
-                 -- ====================================
-                 and not exists (
-                                 select  'x'
-                                 from    cst_item_costs cic2
-                                 where   cic2.organization_id   = cic.organization_id
-                                 and     cic2.inventory_item_id = cic.inventory_item_id
-                                 and     cic2.cost_type_id      = cct.cost_type_id)
-                ) src_org_costs,        
-                -- =================================================
-                -- Get To Org Currency information
-                -- =================================================
-                (select mp.organization_id,
-                        gl.ledger_id,
-                        gl.name gl_name,
-                        gl.currency_code,
-                        haou2.organization_id operating_unit_id,
-                        haou2.name operating_unit,
-                        -- Revision for version 1.4
-                        gl.short_name gl_short_name
-                 from   mtl_parameters mp,
-                        hr_organization_information hoi,
-                        hr_all_organization_units_vl haou,
-                        hr_all_organization_units_vl haou2,
-                        gl_ledgers gl
-                        -- =================================================
-                        -- Get inventory ledger and operating unit information
-                        -- =================================================
-                 where  hoi.org_information_context   = 'Accounting Information'
-                 and    hoi.organization_id           = mp.organization_id
-                 and    hoi.organization_id           = haou.organization_id            -- this gets the organization name
-                 and    haou2.organization_id         = to_number(hoi.org_information3) -- this gets the operating unit id
-                 and    gl.ledger_id                  = to_number(hoi.org_information1) -- get the ledger_id
-                 -- End revision for version 1.1
-                 and     mp.organization_id <> mp.master_organization_id
-                 -- Revision for version 1.4
-                 -- Avoid selecting disabled inventory organizations
-                 and     sysdate < nvl(haou.date_to, sysdate + 1)
-                ) inv_to_org,
-                -- =================================================
-                -- Get Src Org Currency information
-                -- =================================================
-                (select mp.organization_id,
-                        gl.ledger_id,
-                        gl.name gl_name,
-                        gl.currency_code,
-                        haou2.organization_id operating_unit_id,
-                        haou2.name operating_unit,
-                        -- Revision for version 1.4
-                        gl.short_name gl_short_name,
-                        gl.period_set_name,
-                        gl.accounted_period_type
-                        -- End revision for version 1.4
-                 from   mtl_parameters mp,
-                        hr_organization_information hoi,
-                        hr_all_organization_units_vl haou,
-                        hr_all_organization_units_vl haou2,
-                        gl_ledgers gl
-                 -- =================================================
-                 -- Get inventory ledger and operating unit information
-                 -- =================================================
-                 where  hoi.org_information_context   = 'Accounting Information'
-                 and    hoi.organization_id           = mp.organization_id
-                 and    hoi.organization_id           = haou.organization_id            -- this gets the organization name
-                 and    haou2.organization_id         = to_number(hoi.org_information3) -- this gets the operating unit id
-                 and    gl.ledger_id                  = to_number(hoi.org_information1) -- get the ledger_id
-                 and    mp.organization_id           <> mp.master_organization_id
-                 -- Revision for version 1.4
-                 -- Avoid selecting disabled inventory organizations
-                 and    sysdate < nvl(haou.date_to, sysdate + 1)
-                ) inv_src_org
-         -- End for revision 1.1
-         -- Revision for version 1.5
-         -- Item Sourcing and Component joins
-         where   item_sourcing.src_item_id            = to_org_wu.component_item_id
-         and     item_sourcing.to_org_id              = to_org_wu.organization_id
-         -- Revised lookup joins
-         and     muomv_bom.uom_code                   = to_org_wu.assembly_uom
-         and     misv_bom.inventory_item_status_code  = to_org_wu.assembly_status_code
-         and     muomv_comp.uom_code                  = to_org_wu.component_uom
-         and     misv_comp.inventory_item_status_code = to_org_wu.component_status_code
-         and     muomv_src.uom_code                   = item_sourcing.src_uom_code
-         and     misv_src.inventory_item_status_code  = item_sourcing.src_item_status_code
-         -- End revision for version 1.5
-         -- Revision for version 1.5, add p_include_same_ou_xfers parameter
-         and     13=13                                -- p_include_same_ou_xfers
-         -- ============================================
-         -- Use gl_periods instead of org_acct_periods
-         -- in case of new invent. orgs with no calendar
-         -- ============================================
-         -- Revision for version 1.4 and 1.6
-         -- and     gp.period_set_name                  = inv_src_org.period_set_name
-         -- and     gp.period_type                      = inv_src_org.accounted_period_type
-         -- End revision for version 1.6
-         -- ============================================
-         -- Joins for inv orgs, currency and sourcing rules
-         -- ============================================
-         and     inv_src_org.organization_id         = item_sourcing.src_org_id
-         and     inv_to_org.organization_id          = item_sourcing.to_org_id
-         -- ============================================
-         -- Joins for inv orgs and item costs
-         -- ============================================
-         and     to_org_costs.organization_id        = item_sourcing.to_org_id     -- get the To Org costs
-         and     to_org_costs.inventory_item_id      = item_sourcing.src_item_id   -- get the To Org costs
-         and     src_org_costs.organization_id       = item_sourcing.src_org_id    -- get the Source Org costs
-         and     src_org_costs.inventory_item_id     = item_sourcing.src_item_id   -- get the Source Org costs
-         -- End revision for version 1.1
-         -- Lookup codes
-         and     fcl_bom.lookup_code (+)             = to_org_wu.assembly_item_type
-         and     fcl_bom.lookup_type (+)             = 'ITEM_TYPE'
-         and     fcl_comp.lookup_code (+)            = to_org_wu.component_item_type
-         and     fcl_comp.lookup_type (+)            = 'ITEM_TYPE'
-         and     fcl_src.lookup_code (+)             = item_sourcing.src_item_type
-         and     fcl_src.lookup_type (+)             = 'ITEM_TYPE'
-         and     ml_bom.lookup_type                  = 'MTL_PLANNING_MAKE_BUY'
-         and     ml_bom.lookup_code                  = to_org_wu.assembly_mb_code
-         and     ml_bom2.lookup_type                 = 'BOM_TRANSITION_TYPE'
-         and     ml_bom2.lookup_code                 = 1 -- Primary
-         and     ml_comp.lookup_type                 = 'MTL_PLANNING_MAKE_BUY'
-         and     ml_comp.lookup_code                 = to_org_wu.component_mb_code
-         and     ml_comp2.lookup_type                = 'SYS_YES_NO'
-         and     ml_comp2.lookup_code                = to_org_wu.include_in_cost_rollup
-         and     ml_comp3.lookup_type                = 'WIP_SUPPLY'
-         and     ml_comp3.lookup_code                = to_org_wu.wip_supply_type
-         and     ml_src.lookup_type                  = 'MTL_PLANNING_MAKE_BUY'
-         and     ml_src.lookup_code                  = item_sourcing.src_mb_code
-         order by
-                -- Revision for version 1.6
-                -- gp.period_name,
-                :p_period_name,
-                -- End revision for version 1.6 
-                -- Revision for version 1.4
-                nvl(inv_src_org.gl_short_name, inv_src_org.gl_name),
-                nvl(inv_to_org.gl_short_name, inv_to_org.gl_name),
-                inv_src_org.operating_unit,
-                inv_to_org.operating_unit,
-                -- End revision for version 1.4
-                item_sourcing.to_org_code,
-                item_sourcing.src_org_code, 
-                to_org_wu.assembly_item,
-                to_org_wu.component_item,
-                to_org_wu.comp_op_seq
-        ) rpt,
-        -- Revision for version 1.6, Currency Exchange Rates to use for all inventory orgs
-       (select gdr.* from gl_daily_rates gdr, gl_daily_conversion_types gdct where gdr.conversion_date=:p_conversion_date and gdct.user_conversion_type=:p_user_conversion_type and gdct.conversion_type=gdr.conversion_type) gdr
-where   gdr.from_currency (+)               = rpt.src_currency_code
-and     gdr.to_currency   (+)               = rpt.to_org_currency_code
+x.item_seq,
+x.op_seq,
+x.component,
+x.component_description,
+x.source_item_type,
+x.source_status_code,
+x.source_make_buy_code,
+x.source_uom,
+x.to_org_item_type,
+x.to_org_status_code,
+x.to_org_make_buy_code,
+x.to_org_uom,
+x.quantity_per_assembly,
+x.effective_from,
+x.effective_to,
+x.planning_percent,
+x.yield component_yield,
+x.include_in_cost_rollup,
+x.wip_supply_type,
+x.source_component_onhand_qty,
+x.src_currency_code,
+x.src_component_item_cost,
+x.source_component_onhand_qty*x.src_component_item_cost src_component_onhand_value,
+x.source_item_cost,
+:p_conversion_date currency_conversion_date,
+x.conversion_rate currency_conversion_rate,
+x.to_org_currency_code,
+round(x.conversion_rate*x.source_item_cost,5) converted_source_item_cost,
+x.to_org_net_item_cost,
+x.to_org_net_item_cost-round(x.conversion_rate*x.source_item_cost,5) calculated_to_org_pii,
+round((x.to_org_net_item_cost-round(x.conversion_rate*x.source_item_cost,5))/decode(round(x.conversion_rate*x.source_item_cost,5),0,1,round(x.conversion_rate*x.source_item_cost,5))*100,1) source_pii_percent,
+round((x.to_org_net_item_cost-round(x.conversion_rate*x.source_item_cost,5))/decode(x.to_org_item_cost,0,1,x.to_org_item_cost)*100,1) to_org_pii_percent,
+x.cost_type_pii_item_cost,
+x.to_org_net_item_cost-round(x.conversion_rate*x.source_item_cost,5)-x.cost_type_pii_item_cost pii_cost_difference,
+x.to_org_assembly_onhand_qty,
+x.to_org_component_onhand_qty,
+x.to_org_item_cost to_org_total_item_cost,
+x.to_org_component_onhand_qty*x.src_component_item_cost to_org_component_onhand_value
+from
+(
+select
+:p_period_name period_name,
+nvl(gl_src.short_name,gl_src.name) source_ledger,
+nvl(gl_to.short_name,gl_to.name) to_ledger,
+haouv_src.name source_operating_unit,
+haouv_to.name to_operating_unit,
+s.src_org_code src_org,
+s.to_org_code to_org,
+s.assignment_set,
+s.sourcing_rule,
+msiv.concatenated_segments assembly,
+msiv.description assembly_description,
+xxen_util.meaning(msiv.item_type,'ITEM_TYPE',3) assembly_item_type,
+misv.inventory_item_status_code_tl assembly_status_code,
+xxen_util.meaning(msiv.planning_make_buy_code,'MTL_PLANNING_MAKE_BUY',700) assembly_make_buy_code,
+msiv.primary_uom_code uom_code,
+xxen_util.meaning(1,'BOM_TRANSITION_TYPE',700) bom_type,
+w.implementation_date date_implemented,
+(select max(mirb.revision) from mtl_item_revisions_b mirb where msiv.inventory_item_id=mirb.inventory_item_id and msiv.organization_id=mirb.organization_id and mirb.effectivity_date<=sysdate) item_revision,
+msiv2.inventory_item_id component_item_id,
+msiv2.organization_id,
+w.item_num item_seq,
+w.operation_seq_num op_seq,
+msiv2.concatenated_segments component,
+msiv2.description component_description,
+xxen_util.meaning(s.src_item_type,'ITEM_TYPE',3) source_item_type,
+(select misv3.inventory_item_status_code_tl from mtl_item_status_vl misv3 where s.src_item_status_code=misv3.inventory_item_status_code) source_status_code,
+xxen_util.meaning(s.src_mb_code,'MTL_PLANNING_MAKE_BUY',700) source_make_buy_code,
+s.src_uom_code source_uom,
+xxen_util.meaning(msiv2.item_type,'ITEM_TYPE',3) to_org_item_type,
+misv2.inventory_item_status_code_tl to_org_status_code,
+xxen_util.meaning(msiv2.planning_make_buy_code,'MTL_PLANNING_MAKE_BUY',700) to_org_make_buy_code,
+msiv2.primary_uom_code to_org_uom,
+w.component_quantity quantity_per_assembly,
+w.effectivity_date effective_from,
+w.disable_date effective_to,
+nvl(w.planning_factor,0) planning_percent,
+w.component_yield_factor yield,
+xxen_util.yes(decode(w.include_in_cost_rollup,1,'Y')) include_in_cost_rollup,
+xxen_util.meaning(w.wip_supply_type,'WIP_SUPPLY',700) wip_supply_type,
+nvl((select sum(moqd.primary_transaction_quantity) from mtl_onhand_quantities_detail moqd where s.src_item_id=moqd.inventory_item_id and s.src_org_id=moqd.organization_id),0) source_component_onhand_qty,
+gl_src.currency_code src_currency_code,
+gl_to.currency_code to_org_currency_code,
+decode(gl_src.currency_code,gl_to.currency_code,1,(select gdr.conversion_rate from gl_daily_rates gdr, gl_daily_conversion_types gdct where gl_src.currency_code=gdr.from_currency and gl_to.currency_code=gdr.to_currency and gdr.conversion_date=:p_conversion_date and gdr.conversion_type=gdct.conversion_type and gdct.user_conversion_type=:p_user_conversion_type)) conversion_rate,
+nvl(c_src.item_cost,0) src_component_item_cost,
+round(nvl(c_src.item_cost,0)-sign(:p_sign_pii)*nvl(c_src.pii_cost,0),5) source_item_cost,
+round(nvl(c_to.net_cost,0),5) to_org_net_item_cost,
+c_to.pii_cost cost_type_pii_item_cost,
+nvl((select sum(moqd.primary_transaction_quantity) from mtl_onhand_quantities_detail moqd where msiv.inventory_item_id=moqd.inventory_item_id and msiv.organization_id=moqd.organization_id),0) to_org_assembly_onhand_qty,
+nvl((select sum(moqd.primary_transaction_quantity) from mtl_onhand_quantities_detail moqd where msiv2.inventory_item_id=moqd.inventory_item_id and msiv2.organization_id=moqd.organization_id),0) to_org_component_onhand_qty,
+nvl(c_to.item_cost,0) to_org_item_cost
+from
+(
+select
+mp_to.organization_code to_org_code,
+mp_src.organization_code src_org_code,
+mp_to.organization_id to_org_id,
+mp_src.organization_id src_org_id,
+mas.assignment_set_name assignment_set,
+msr.sourcing_rule_name sourcing_rule,
+msiv2.inventory_item_id src_item_id,
+msiv2.primary_uom_code src_uom_code,
+msiv2.inventory_item_status_code src_item_status_code,
+msiv2.item_type src_item_type,
+msiv2.planning_make_buy_code src_mb_code
+from
+mrp_assignment_sets mas,
+mrp_sr_assignments msa,
+mrp_sourcing_rules msr,
+mrp_sr_receipt_org msro,
+mrp_sr_source_org msso,
+mtl_parameters mp_to,
+mtl_parameters mp_src,
+mtl_system_items_vl msiv2
+where
+2=2 and
+3=3 and
+4=4 and
+mas.assignment_set_id=msa.assignment_set_id and
+msa.sourcing_rule_id=msr.sourcing_rule_id and
+msa.sourcing_rule_id=msro.sourcing_rule_id and
+msro.sr_receipt_id=msso.sr_receipt_id and
+msso.source_organization_id is not null and
+msa.organization_id=mp_to.organization_id and
+mp_to.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
+mp_to.organization_id<>mp_to.master_organization_id and
+msso.source_organization_id=mp_src.organization_id and
+mp_src.organization_id<>mp_src.master_organization_id and
+msso.source_organization_id=msiv2.organization_id and
+msa.inventory_item_id=msiv2.inventory_item_id and
+msiv2.inventory_item_status_code<>'Inactive'
+union all
+select
+mp_to.organization_code,
+mp_src.organization_code,
+mp_to.organization_id,
+msiv2.source_organization_id,
+null,
+null,
+msiv2.inventory_item_id,
+msiv2.primary_uom_code,
+msiv2.inventory_item_status_code,
+msiv2.item_type,
+msiv2.planning_make_buy_code
+from
+mtl_parameters mp_to,
+mtl_system_items_vl msiv2,
+mtl_parameters mp_src
+where
+3=3 and
+4=4 and
+mp_to.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
+mp_to.organization_id=msiv2.organization_id and
+msiv2.organization_id<>mp_to.master_organization_id and
+msiv2.inventory_item_status_code<>'Inactive' and
+msiv2.source_organization_id=mp_src.organization_id and
+msiv2.source_organization_id<>mp_src.master_organization_id and
+not exists (select null from mrp_assignment_sets mas, mrp_sr_assignments msa, mrp_sr_receipt_org msro, mrp_sr_source_org msso where msiv2.inventory_item_id=msa.inventory_item_id and msiv2.organization_id=msa.organization_id and msa.assignment_set_id=mas.assignment_set_id and 2=2 and msa.sourcing_rule_id=msro.sourcing_rule_id and msro.sr_receipt_id=msso.sr_receipt_id and msso.source_organization_id=mp_src.organization_id)
+) s,
+(
+select
+bsb.organization_id,
+bsb.assembly_item_id,
+bsb.implementation_date,
+bcb.item_num,
+bcb.operation_seq_num,
+bcb.component_item_id,
+bcb.component_quantity,
+max(bcb.effectivity_date) effectivity_date,
+bcb.disable_date,
+bcb.planning_factor,
+bcb.component_yield_factor,
+bcb.include_in_cost_rollup,
+bcb.wip_supply_type,
+bcb.supply_subinventory,
+bcb.supply_locator_id
+from
+mtl_parameters mp_to,
+bom_structures_b bsb,
+bom_components_b bcb
+where
+4=4 and
+6=6 and
+mp_to.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
+mp_to.organization_id=bsb.organization_id and
+bsb.assembly_type=1 and
+bsb.alternate_bom_designator is null and
+bsb.common_assembly_item_id is null and
+bsb.bill_sequence_id=bcb.bill_sequence_id and
+bcb.effectivity_date<=sysdate and
+nvl(bcb.disable_date,sysdate+1)>sysdate
+group by
+bsb.organization_id,
+bsb.assembly_item_id,
+bsb.implementation_date,
+bcb.item_num,
+bcb.operation_seq_num,
+bcb.component_item_id,
+bcb.component_quantity,
+bcb.disable_date,
+bcb.planning_factor,
+bcb.component_yield_factor,
+bcb.include_in_cost_rollup,
+bcb.wip_supply_type,
+bcb.supply_subinventory,
+bcb.supply_locator_id
+) w,
+mtl_system_items_vl msiv,
+mtl_item_status_vl misv,
+mtl_system_items_vl msiv2,
+mtl_item_status_vl misv2,
+c c_to,
+c c_src,
+hr_organization_information hoi_to,
+hr_all_organization_units haou_to,
+hr_all_organization_units_vl haouv_to,
+gl_ledgers gl_to,
+hr_organization_information hoi_src,
+hr_all_organization_units haou_src,
+hr_all_organization_units_vl haouv_src,
+gl_ledgers gl_src
+where
+1=1 and
+5=5 and
+7=7 and
+8=8 and
+13=13 and
+s.to_org_id=w.organization_id and
+s.src_item_id=w.component_item_id and
+w.organization_id=msiv.organization_id and
+w.assembly_item_id=msiv.inventory_item_id and
+msiv.inventory_item_status_code<>'Inactive' and
+msiv.inventory_item_status_code=misv.inventory_item_status_code and
+w.organization_id=msiv2.organization_id and
+w.component_item_id=msiv2.inventory_item_id and
+msiv2.inventory_item_status_code<>'Inactive' and
+msiv2.inventory_item_status_code=misv2.inventory_item_status_code and
+s.to_org_id=c_to.organization_id and
+s.src_item_id=c_to.inventory_item_id and
+s.src_org_id=c_src.organization_id and
+s.src_item_id=c_src.inventory_item_id and
+s.to_org_id=hoi_to.organization_id and
+hoi_to.org_information_context='Accounting Information' and
+hoi_to.organization_id=haou_to.organization_id and
+sysdate<nvl(haou_to.date_to,sysdate+1) and
+to_number(hoi_to.org_information3)=haouv_to.organization_id and
+to_number(hoi_to.org_information1)=gl_to.ledger_id and
+s.src_org_id=hoi_src.organization_id and
+hoi_src.org_information_context='Accounting Information' and
+hoi_src.organization_id=haou_src.organization_id and
+sysdate<nvl(haou_src.date_to,sysdate+1) and
+to_number(hoi_src.org_information3)=haouv_src.organization_id and
+to_number(hoi_src.org_information1)=gl_src.ledger_id
+) x
+order by
+x.period_name,
+x.source_ledger,
+x.to_ledger,
+x.source_operating_unit,
+x.to_operating_unit,
+x.to_org,
+x.src_org,
+x.assembly,
+x.component,
+x.op_seq

@@ -37,566 +37,311 @@
 -- -- | and inventory access control security.
 -- -- | 1.5 17-Aug-2024 Douglas Volz Fix for reporting batches closed after the reported period.
 -- -- | Add Batch Number parameter. Display the Ledger short name.
+-- -- | 1.6 24 Oct 2026 Andy Haack Rebuilt to the Blitz Report SQL standards.
 -- -- +=============================================================================+/
 -- Excel Example Output: https://www.enginatics.com/example/cac-opm-wip-account-value/
 -- Library Link: https://www.enginatics.com/reports/cac-opm-wip-account-value/
 -- Run Report: https://demo.enginatics.com/
 
-select  nvl(gl.short_name, gl.name) Ledger,
-        haou2.name Operating_Unit,
-        wip.organization_code Org_Code,
-        wip.period_name Period_Name,
-        &segment_columns
-        gem_l1.meaning Batch_Type,
-        wip.batch_no Batch_Number,
-        gem_l2.meaning Batch_Status,
-        &p_show_batch_dtls
-        wip.creation_date Creation_Date,
-        wip.plan_start_date Planned_Start_Date,
-        wip.actual_start_date Actual_Start_Date,
-        wip.due_date Due_Date,
-        wip.actual_cmplt_date Actual_Completion_Date,
-        wip.batch_close_date Batch_Close_Date,
-        case 
-           when (wip.schedule_close_date - wip.creation_date) < 31  then '30 days'
-           when (wip.schedule_close_date - wip.creation_date) < 61  then '60 days'
-           when (wip.schedule_close_date - wip.creation_date) < 91  then '90 days'
-           when (wip.schedule_close_date - wip.creation_date) < 121 then '120 days'
-           when (wip.schedule_close_date - wip.creation_date) < 151 then '150 days'
-           when (wip.schedule_close_date - wip.creation_date) < 181 then '180 days'
-           else 'Over 180 days'
-        end Aged_Creation_Date,
-        case 
-           when (nvl(wip.actual_cmplt_date, wip.schedule_close_date) - nvl(wip.actual_start_date,(nvl(wip.actual_cmplt_date,sysdate)))) < 31  then '30 days'
-           when (nvl(wip.actual_cmplt_date, wip.schedule_close_date) - nvl(wip.actual_start_date,(nvl(wip.actual_cmplt_date,sysdate)))) < 61  then '60 days'
-           when (nvl(wip.actual_cmplt_date, wip.schedule_close_date) - nvl(wip.actual_start_date,(nvl(wip.actual_cmplt_date,sysdate)))) < 91  then '90 days'
-           when (nvl(wip.actual_cmplt_date, wip.schedule_close_date) - nvl(wip.actual_start_date,(nvl(wip.actual_cmplt_date,sysdate)))) < 121 then '120 days'
-           when (nvl(wip.actual_cmplt_date, wip.schedule_close_date) - nvl(wip.actual_start_date,(nvl(wip.actual_cmplt_date,sysdate)))) < 151 then '150 days'
-           when (nvl(wip.actual_cmplt_date, wip.schedule_close_date) - nvl(wip.actual_start_date,(nvl(wip.actual_cmplt_date,sysdate)))) < 181 then '180 days'
-           else 'Over 180 days'
-        end Aged_Compln_vs_Release_Date,
-        case 
-           when (nvl(wip.actual_cmplt_date, wip.schedule_close_date) - wip.creation_date) < 31  then '30 days'
-           when (nvl(wip.actual_cmplt_date, wip.schedule_close_date) - wip.creation_date) < 61  then '60 days'
-           when (nvl(wip.actual_cmplt_date, wip.schedule_close_date) - wip.creation_date) < 91  then '90 days'
-           when (nvl(wip.actual_cmplt_date, wip.schedule_close_date) - wip.creation_date) < 121 then '120 days'
-           when (nvl(wip.actual_cmplt_date, wip.schedule_close_date) - wip.creation_date) < 151 then '150 days'
-           when (nvl(wip.actual_cmplt_date, wip.schedule_close_date) - wip.creation_date) < 181 then '180 days'
-           else 'Over 180 days'
-        end Aged_Compln_vs_Creation_Date,
-        muomv.uom_code UOM_Code,
-        -- Revision for version 1.4
-        nvl((select  sum(decode(mmt.transaction_type_id,
-                                44, mmt.primary_quantity, -- WIP completions
-                                17, mmt.primary_quantity, -- WIP completion returns
-                                0)
-                        )
-             from    mtl_material_transactions mmt
-             where   mmt.transaction_source_type_id = 5
-             and     mmt.organization_id            = wip.organization_id
-             and     mmt.transaction_source_id      = wip.batch_id
-            ),
-          '') Product_Quantity_Completed,
-        nvl((select  sum(decode(mmt.transaction_type_id,
-                                1002, mmt.primary_quantity, -- WIP byproduct completions
-                                1003, mmt.primary_quantity, -- WIP byproduct completion returns
-                                0)
-                        )
-             from    mtl_material_transactions mmt
-             where   mmt.transaction_source_type_id = 5
-             and     mmt.organization_id            = wip.organization_id
-             and     mmt.transaction_source_id      = wip.batch_id
-            ),
-          '') Byproduct_Quantity_Completed,
-        -- End revision for version 1.4
-        msiv.concatenated_segments "Product Number",
-        msiv.description "Product Description",
-        fcl.meaning Item_Type,
+with b as (
+select /*+ materialize*/
+mp.organization_id,
+mp.organization_code,
+to_number(hoi.org_information2) legal_entity_id,
+oap.period_name,
+oap.period_start_date,
+oap.schedule_close_date,
+gbh.batch_id,
+gbh.batch_no,
+gbh.batch_status,
+gbh.laboratory_ind,
+gbh.formula_id,
+gbh.routing_id,
+gbh.recipe_validity_rule_id,
+gbh.creation_date,
+gbh.plan_start_date,
+gbh.actual_start_date,
+gbh.due_date,
+gbh.actual_cmplt_date,
+gbh.batch_close_date
+from
+mtl_parameters mp,
+hr_organization_information hoi,
+org_acct_periods oap,
+gme_batch_header gbh
+where
+2=2 and
+mp.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
+mp.process_enabled_flag='Y' and
+mp.organization_id=hoi.organization_id and
+hoi.org_information_context='Accounting Information' and
+mp.organization_id=oap.organization_id and
+mp.organization_id=gbh.organization_id and
+(gbh.batch_close_date is null and nvl(gbh.actual_start_date,sysdate)<oap.schedule_close_date+1 or gbh.batch_close_date>=oap.period_start_date)
+)
+select
+nvl(gl.short_name,gl.name) ledger,
+haouv_ou.name operating_unit,
+y.organization_code org_code,
+y.period_name,
+&segment_columns
+xxen_util.meaning(y.laboratory_ind,'GME_LABORATORY_IND',553) batch_type,
+y.batch_no batch_number,
+xxen_util.meaning(y.batch_status,'GME_BATCH_STATUS',553) batch_status,
+&p_show_batch_dtls
+y.creation_date,
+y.plan_start_date planned_start_date,
+y.actual_start_date,
+y.due_date,
+y.actual_cmplt_date actual_completion_date,
+y.batch_close_date,
+case
+when y.schedule_close_date-y.creation_date<31 then '30 days'
+when y.schedule_close_date-y.creation_date<61 then '60 days'
+when y.schedule_close_date-y.creation_date<91 then '90 days'
+when y.schedule_close_date-y.creation_date<121 then '120 days'
+when y.schedule_close_date-y.creation_date<151 then '150 days'
+when y.schedule_close_date-y.creation_date<181 then '180 days'
+else 'Over 180 days'
+end aged_creation_date,
+case
+when y.release_days<31 then '30 days'
+when y.release_days<61 then '60 days'
+when y.release_days<91 then '90 days'
+when y.release_days<121 then '120 days'
+when y.release_days<151 then '150 days'
+when y.release_days<181 then '180 days'
+else 'Over 180 days'
+end aged_compln_vs_release_date,
+case
+when y.creation_days<31 then '30 days'
+when y.creation_days<61 then '60 days'
+when y.creation_days<91 then '90 days'
+when y.creation_days<121 then '120 days'
+when y.creation_days<151 then '150 days'
+when y.creation_days<181 then '180 days'
+else 'Over 180 days'
+end aged_compln_vs_creation_date,
+msiv.primary_uom_code uom_code,
+(select sum(decode(mmt.transaction_type_id,44,mmt.primary_quantity,17,mmt.primary_quantity,0)) from mtl_material_transactions mmt where mmt.transaction_source_type_id=5 and y.organization_id=mmt.organization_id and y.batch_id=mmt.transaction_source_id and mmt.transaction_date<y.schedule_close_date+1) product_quantity_completed,
+(select sum(decode(mmt.transaction_type_id,1002,mmt.primary_quantity,1003,mmt.primary_quantity,0)) from mtl_material_transactions mmt where mmt.transaction_source_type_id=5 and y.organization_id=mmt.organization_id and y.batch_id=mmt.transaction_source_id and mmt.transaction_date<y.schedule_close_date+1) byproduct_quantity_completed,
+msiv.concatenated_segments "Product Number",
+msiv.description "Product Description",
+xxen_util.meaning(msiv.item_type,'ITEM_TYPE',3) item_type,
 &category_columns
-        xl.meaning Accounting_Class,
-        &p_show_txn_dtls
-        gl.currency_code Currency_Code,
-        sum(wip.wip_costs_in) WIP_Costs_In,
-        sum(wip.wip_costs_out) WIP_Costs_Out,
-        sum(wip.wip_relief) WIP_Relief,
-        sum(wip.wip_value) WIP_Value
-from    mtl_system_items_vl msiv,
-        mtl_units_of_measure_vl muomv,
-        gl_code_combinations gcc,
-        gl_ledgers gl,
-        hr_organization_information hoi,
-        hr_all_organization_units haou,
-        hr_all_organization_units haou2,
-        fnd_common_lookups fcl,
-        xla_lookups xl,
-        gem_lookups gem_l1, -- Batch Type
-        gem_lookups gem_l2, -- Batch Status
-        -- ==========================================================
-        -- This first select gets the OPM Batch Resource
-        -- Transactions based on the view gmf_subledger_rep_v.
-        -- See the section called Q6 batch Resource transactions
-        -- ==========================================================
-        (select xah.ledger_id,
-                mp.organization_code,
-                mp.organization_id,
-                oap.period_name,
-                xal.code_combination_id,
-                oap.schedule_close_date,
-                gbh.laboratory_ind, -- Batch Type
-                gbh.batch_no,
-                gbh.batch_id,
-                gbh.batch_status,
-                -- Revision for version 1.3
-                &p_show_batch_dtls2
-                gbh.creation_date,
-                gxeh.inventory_item_id,
-                gbh.plan_start_date,
-                gbh.actual_start_date,
-                gbh.due_date,
-                gbh.actual_cmplt_date,
-                gbh.batch_close_date,
-                xal.accounting_class_code,
-                &p_show_txn_dtls2
-                sum(nvl(xal.accounted_dr, 0) - nvl(xal.accounted_cr, 0)) wip_costs_in,
-                sum(0) wip_costs_out,
-                sum(0) wip_relief,
-                sum(nvl(xal.accounted_dr, 0) - nvl(xal.accounted_cr, 0)) wip_value        
-         from   gme_batch_header gbh,
-                -- Revision for version 1.3
-                &p_show_batch_dtl_tables
-                gmf_xla_extract_headers gxeh,
-                gme_resource_txns grt,
-                org_acct_periods oap,
-                xla_ae_headers xah,
-                xla_ae_lines xal,
-                mtl_parameters mp,
-                gmf_fiscal_policies gfp
-         where  gxeh.event_id                   = xah.event_id
-         and    gxeh.organization_id            = mp.organization_id
-         and    gxeh.transaction_id             = grt.poc_trans_id
-         and    gxeh.source_document_id         = grt.doc_id
-         and    gxeh.source_line_id             = grt.line_id
-         and    gxeh.resources                  = grt.resources
-         and    gbh.batch_id                    = grt.doc_id
-         -- Revision for version 1.3
-         &p_show_batch_dtl_joins
-         and    mp.organization_id              = gbh.organization_id
-         and    gxeh.txn_source                 = 'PM'
-         and    xal.accounting_class_code       = 'WIP_VALUATION'
-         and    mp.process_enabled_flag         = 'Y'
-         -- ===========================================
-         -- Limit to just WIP Resource Txns
-         -- ===========================================
-         and    gxeh.entity_code                = 'PRODUCTION'
-         and    gxeh.event_class_code           = 'BATCH_RESOURCE'
-         -- ===========================================
-         -- Get resource transactions from the batch 
-         -- start date to the period close date.
-         -- ===========================================
-         -- Revision for version 1.2
-         -- and    oap.period_name                 = xah.period_name
-         and    oap.organization_id             = mp.organization_id
-         -- Revision for version 1.2 and 1.3
-         -- and    nvl(trunc(gbh.batch_close_date), oap.period_start_date) >= oap.period_start_date
-         and    grt.trans_date                 >= gbh.actual_start_date
-         and    grt.trans_date                 <  oap.schedule_close_date + 1
-         -- Revision for version 1.5
-         -- and    ((gbh.batch_close_date is null and gbh.actual_start_date < oap.schedule_close_date + 1)
-         --         or
-         --         (gbh.batch_close_date >= oap.period_start_date and gbh.batch_close_date <= oap.schedule_close_date)
-         --        )
-         and    ((gbh.batch_close_date is null and nvl(gbh.actual_start_date, sysdate) < oap.schedule_close_date + 1)
-                  or
-                 (gbh.batch_close_date is not null and gbh.batch_close_date >= oap.period_start_date)
-                )
-         -- End revision for version 1.5
-         -- ===========================================
-         -- Only get entries which go to the G/L
-         -- ===========================================
-         and    gfp.ledger_id                   = xah.ledger_id
-         and    gfp.cost_type_id                = gxeh.valuation_cost_type_id
-         and    gfp.legal_entity_id             = (select to_number(hoi.org_information2) 
-                                                   from   hr_organization_information hoi
-                                                   where  hoi.org_information_context     = 'Accounting Information'
-                                                   and    hoi.organization_id             = mp.organization_id)
-         -- ===========================================
-         -- Subledger Accounting joins
-         -- ===========================================
-         and    xah.ae_header_id                = xal.ae_header_id
-         and    xah.ledger_id                   = xal.ledger_id
-         and    xah.application_id              = 555
-         and    xah.application_id              = xal.application_id
-         and    2=2                             -- p_org_code, p_period_name, p_include_lab_batches, p_batch_number
-         -- Revision for version 1.4
-         and     mp.organization_code in (select oav.organization_code from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) 
-         group by
-                xah.ledger_id,
-                mp.organization_code,
-                mp.organization_id,
-                oap.period_name,
-                xal.code_combination_id,
-                oap.schedule_close_date,
-                gbh.laboratory_ind, -- Batch Type
-                gbh.batch_no,
-                gbh.batch_id,
-                gbh.batch_status,
-                -- Revision for version 1.3
-                &p_show_batch_dtls2_grp
-                gbh.creation_date,
-                gxeh.inventory_item_id,
-                gbh.plan_start_date,
-                gbh.actual_start_date,
-                gbh.due_date,
-                gbh.actual_cmplt_date,
-                gbh.batch_close_date,
-                &p_show_txn_dtls2_grp
-                xal.accounting_class_code
-         union all
-         -- ==========================================================
-         -- This second select gets the OPM Batch Close Transactions
-         -- based on the view gmf_subledger_rep_v.
-         -- See the section called Q7 Batch Close Variances
-         -- ==========================================================
-         select xah.ledger_id,
-                mp.organization_code,
-                mp.organization_id,
-                oap.period_name,
-                xal.code_combination_id,
-                oap.schedule_close_date,
-                gbh.laboratory_ind, -- Batch Type
-                gbh.batch_no,
-                gbh.batch_id,
-                gbh.batch_status,
-                -- Revision for version 1.3
-                &p_show_batch_dtls2
-                gbh.creation_date,
-                we.primary_item_id inventory_item_id,
-                gbh.plan_start_date,
-                gbh.actual_start_date,
-                gbh.due_date,
-                gbh.actual_cmplt_date,
-                gbh.batch_close_date,
-                xal.accounting_class_code,
-                &p_show_txn_dtls2
-                sum(0) wip_costs_in,
-                sum(0) wip_costs_out,
-                -- Revision, change SIGN of WIP Cost Relief to match Oracle (Discrete) WIP Value Report
-                decode(xal.accounting_class_code,
-                                'WIP_VALUATION',   -1 * sum(nvl(xal.accounted_dr, 0) - nvl(xal.accounted_cr, 0)),
-                                sum(0)
-                      ) wip_relief,
-                decode(xal.accounting_class_code,
-                                'WIP_VALUATION', sum(nvl(xal.accounted_dr, 0) - nvl(xal.accounted_cr, 0)),
-                                sum(0)
-                      ) wip_value
-         from   gme_batch_header gbh,
-                -- Revision for version 1.3
-                &p_show_batch_dtl_tables
-                gmf_xla_extract_headers gxeh,
-                org_acct_periods oap,
-                -- Revision, show Product not Ingredient
-                wip_entities we,
-                xla_ae_headers xah,
-                xla_ae_lines xal,
-                gmf_fiscal_policies gfp,
-                mtl_parameters mp
-         -- ===========================================
-         -- Transaction, Batch and item master joins
-         -- ===========================================
-         where  gxeh.event_id                   = xah.event_id
-         and    gxeh.transaction_id             = gbh.batch_id
-         and    gxeh.source_document_id         = gbh.batch_id
-         and    gxeh.organization_id            = mp.organization_id
-         -- Revision for version 1.3
-         &p_show_batch_dtl_joins
-         and    mp.organization_id              = gbh.organization_id
-         and    gbh.batch_status                = 4 -- Closed
-         and    we.wip_entity_id                = gbh.batch_id
-         and    we.organization_id              = mp.organization_id
-         and    gxeh.txn_source                 = 'PM'
-         and    gxeh.event_type_code            = 'CLOS'
-         and    xal.accounting_class_code       = 'WIP_VALUATION'
-         and    mp.process_enabled_flag         = 'Y'
-         -- ===========================================
-         -- Limit to just WIP Close Txns
-         -- ===========================================
-         and     gxeh.entity_code                = 'PRODUCTION'
-         and     gxeh.event_class_code           = 'BATCH_CLOSE'
-         -- ===========================================
-         -- Limit batch close transactions to batches
-         -- which closed within the accounting period.
-         -- ===========================================
-         -- Revision for version 1.2
-         -- and    oap.period_name                 = xah.period_name
-         and    oap.organization_id             = mp.organization_id
-         -- Revision for version 1.2 and 1.3
-         -- and    nvl(trunc(gbh.batch_close_date), oap.period_start_date) >= oap.period_start_date
-         and    gxeh.transaction_date          >= oap.period_start_date
-         and    gxeh.transaction_date          <= oap.schedule_close_date
-         -- End revision for version 1.2 and 1.3
-         -- ===========================================
-         -- Only get entries which go to the G/L
-         -- ===========================================
-         and    gfp.ledger_id                   = xah.ledger_id
-         and    gfp.legal_entity_id             = (select to_number(hoi.org_information2) 
-                                                   from   hr_organization_information hoi
-                                                   where  hoi.org_information_context     = 'Accounting Information'
-                                                   and    hoi.organization_id             = mp.organization_id)
-         and    gxeh.valuation_cost_type_id     = gfp.cost_type_id
-         -- ===========================================
-         -- Subledger Accounting joins
-         -- ===========================================
-         and    xah.ae_header_id                = xal.ae_header_id
-         and    xah.ledger_id                   = xal.ledger_id
-         and    xah.application_id              = 555
-         and    xah.application_id              = xal.application_id
-         and    2=2                             -- p_org_code, p_period_name, p_include_lab_batches, p_batch_number
-         -- Revision for version 1.4
-         and     mp.organization_code in (select oav.organization_code from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) 
-         group by
-                xah.ledger_id,
-                mp.organization_code,
-                mp.organization_id,
-                oap.period_name,
-                xal.code_combination_id,
-                oap.schedule_close_date,
-                xal.code_combination_id,
-                gbh.laboratory_ind, -- Batch Type
-                gbh.batch_no,
-                gbh.batch_id,
-                gbh.batch_status,
-                -- Revision for version 1.3
-                &p_show_batch_dtls2_grp
-                gbh.creation_date,
-                we.primary_item_id, -- inventory_item_id
-                gbh.plan_start_date,
-                gbh.actual_start_date,
-                gbh.due_date,
-                gbh.actual_cmplt_date,
-                gbh.batch_close_date,
-                &p_show_txn_dtls2_grp
-                xal.accounting_class_code
-         union all
-         -- ==========================================================
-         -- This third select gets the OPM Batch Material Transactions
-         -- based on the BIP Material Account Summary Report
-         -- ==========================================================
-         select xah.ledger_id,
-                mp.organization_code,
-                mp.organization_id,
-                oap.period_name,
-                xal.code_combination_id,
-                oap.schedule_close_date,
-                gbh.laboratory_ind, -- Batch Type
-                gbh.batch_no,
-                gbh.batch_id,
-                gbh.batch_status,
-                -- Revision for version 1.3
-                &p_show_batch_dtls2
-                gbh.creation_date,
-                we.primary_item_id inventory_item_id,
-                gbh.plan_start_date,
-                gbh.actual_start_date,
-                gbh.due_date,
-                gbh.actual_cmplt_date,
-                gbh.batch_close_date,
-                xal.accounting_class_code,
-                &p_show_txn_dtls2
-                decode(mmt.transaction_action_id,
-                                31, 0,
-                                32, 0,
-                                sum(nvl(xal.accounted_dr, 0) - nvl(xal.accounted_cr, 0))
-                      ) wip_costs_in,
-                -- Revision, change SIGN of Costs Out to match Oracle (Discrete) WIP Value Report
-                decode(mmt.transaction_action_id,
-                                31, sum(nvl(xal.accounted_dr, 0) - nvl(xal.accounted_cr, 0)),
-                                32, sum(nvl(xal.accounted_dr, 0) - nvl(xal.accounted_cr, 0)),
-                                sum(0)
-                      ) * -1 wip_costs_out,
-                sum(0) wip_relief,
-                sum(nvl(xal.accounted_dr, 0) - nvl(xal.accounted_cr, 0)) wip_value
-         from   mtl_material_transactions mmt,
-                gme_batch_header gbh,
-                -- Revision for version 1.3
-                &p_show_batch_dtl_tables
-                gmf_xla_extract_headers gxeh,
-                org_acct_periods oap,
-                -- Revision, show Product not Ingredient
-                wip_entities we,
-                xla_ae_headers xah,
-                xla_ae_lines xal,
-                gmf_fiscal_policies gfp,
-                mtl_parameters mp
-         where  mmt.transaction_id              = gxeh.transaction_id
-         and    mmt.transaction_source_type_id  = 5
-         and    we.wip_entity_id                = gbh.batch_id
-         and    gxeh.organization_id            = mp.organization_id
-         and    mmt.transaction_source_id       = gbh.batch_id
-         and    mmt.organization_id             = mp.organization_id
-         -- Revision for version 1.3
-         &p_show_batch_dtl_joins
-         and    gxeh.event_id                   = xah.event_id
-         and    gxeh.txn_source                 = 'PM'
-         and    xal.accounting_class_code       = 'WIP_VALUATION'
-         and    mp.process_enabled_flag         = 'Y'
-         -- ===========================================
-         -- Limit to just WIP Batch Material
-         -- ===========================================
-         and    gxeh.entity_code                = 'PRODUCTION'
-         and    gxeh.event_class_code           = 'BATCH_MATERIAL'
-         -- ===========================================
-         -- Get material transactions from the batch 
-         -- start date to the period close date.
-         -- ===========================================
-         -- Revision for version 1.2
-         -- and    oap.period_name                 = xah.period_name
-         and    oap.organization_id             = mp.organization_id
-         -- Revision for version 1.2 and 1.3
-         -- and    nvl(trunc(gbh.batch_close_date), oap.period_start_date) >= oap.period_start_date
-         and    mmt.transaction_date           >= gbh.actual_start_date
-         and    mmt.transaction_date           <  oap.schedule_close_date + 1
-         -- Revision for version 1.5
-         -- and    ((gbh.batch_close_date is null and gbh.actual_start_date < oap.schedule_close_date + 1)
-         --         or
-         --         (gbh.batch_close_date >= oap.period_start_date and gbh.batch_close_date <= oap.schedule_close_date)
-         --        )
-         and    ((gbh.batch_close_date is null and nvl(gbh.actual_start_date, sysdate) < oap.schedule_close_date + 1)
-                  or
-                 (gbh.batch_close_date is not null and gbh.batch_close_date >= oap.period_start_date)
-                )
-         -- End revision for version 1.5
-         -- ===========================================
-         -- Only get entries which go to the G/L
-         -- ===========================================
-         and    gfp.ledger_id                   = xah.ledger_id
-         and    gxeh.valuation_cost_type_id     = gfp.cost_type_id
-         and    gfp.legal_entity_id             = (select to_number(hoi.org_information2) 
-                                                   from   hr_organization_information hoi
-                                                   where  hoi.org_information_context     = 'Accounting Information'
-                                                   and    hoi.organization_id             = mp.organization_id)
-         -- ===========================================
-         -- Subledger Accounting joins
-         -- ===========================================
-         and    xah.ae_header_id                = xal.ae_header_id
-         and    xah.ledger_id                   = xal.ledger_id
-         and    xah.application_id              = 555
-         and    xah.application_id              = xal.application_id
-         and    2=2                             -- p_org_code, p_period_name, p_include_lab_batches, p_batch_number
-         -- Revision for version 1.4
-         and     mp.organization_code in (select oav.organization_code from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) 
-         group by
-                xah.ledger_id,
-                mp.organization_code,
-                mp.organization_id,
-                oap.period_name,
-                xal.code_combination_id,
-                oap.schedule_close_date,
-                xal.code_combination_id,
-                gbh.laboratory_ind, -- Batch Type
-                gbh.batch_no,
-                gbh.batch_id,
-                gbh.batch_status,
-                -- Revision for version 1.3
-                &p_show_batch_dtls2_grp
-                gbh.creation_date,
-                we.primary_item_id, -- inventory_item_id
-                gbh.plan_start_date,
-                gbh.actual_start_date,
-                gbh.due_date,
-                gbh.actual_cmplt_date,
-                gbh.batch_close_date,
-                xal.accounting_class_code,
-                -- For inline select
-                mmt.transaction_action_id,
-                &p_show_txn_dtls2_grp
-                xal.accounting_class_code
-        ) wip
-where   msiv.inventory_item_id          = wip.inventory_item_id
-and     msiv.organization_id            = wip.organization_id
-and     msiv.primary_uom_code           = muomv.uom_code
--- ===========================================
--- Accounts (CCID) join
--- ===========================================
--- Outer join in case Create Accounting fails
-and     gcc.code_combination_id(+)      = wip.code_combination_id
--- ===========================================
--- Lookup Codes
--- ===========================================
-and     xl.lookup_code (+)              = wip.accounting_class_code
-and     xl.lookup_type (+)              = 'XLA_ACCOUNTING_CLASS'
-and     fcl.lookup_type (+)             = 'ITEM_TYPE'
-and     fcl.lookup_code (+)             = msiv.item_type
-and     gem_l1.lookup_type (+)          = 'GME_LABORATORY_IND'
-and     gem_l1.lookup_code (+)          = wip.laboratory_ind
-and     gem_l2.lookup_type (+)          = 'GME_BATCH_STATUS'
-and     gem_l2.lookup_code (+)          = wip.batch_status
--- ===========================================
--- Organization joins
--- ===========================================
-and     hoi.org_information_context     = 'Accounting Information'
-and     hoi.organization_id             = wip.organization_id
-and     hoi.organization_id             = haou.organization_id
-and     haou2.organization_id           = to_number(hoi.org_information3)
-and     gl.ledger_id                    = to_number(hoi.org_information1)
-and     1=1                             -- p_operating_unit, p_ledger
+xxen_util.meaning(y.accounting_class_code,'XLA_ACCOUNTING_CLASS',602) accounting_class,
+&p_show_txn_dtls
+gl.currency_code,
+y.wip_costs_in,
+y.wip_costs_out,
+y.wip_relief,
+y.wip_value
+from
+(
+select
+b.organization_id,
+b.organization_code,
+b.period_name,
+b.schedule_close_date,
+b.batch_id,
+b.batch_no,
+b.batch_status,
+b.laboratory_ind,
+b.formula_id,
+b.routing_id,
+b.recipe_validity_rule_id,
+b.creation_date,
+b.plan_start_date,
+b.actual_start_date,
+b.due_date,
+b.actual_cmplt_date,
+b.batch_close_date,
+nvl(b.actual_cmplt_date,b.schedule_close_date)-nvl(b.actual_start_date,nvl(b.actual_cmplt_date,sysdate)) release_days,
+nvl(b.actual_cmplt_date,b.schedule_close_date)-b.creation_date creation_days,
+a.inventory_item_id,
+a.code_combination_id,
+a.accounting_class_code,
+&p_show_txn_dtls2
+sum(a.wip_costs_in) wip_costs_in,
+sum(a.wip_costs_out) wip_costs_out,
+sum(a.wip_relief) wip_relief,
+sum(a.wip_value) wip_value
+from
+b,
+(
+select
+grt.doc_id batch_id,
+gxeh.inventory_item_id,
+xal.code_combination_id,
+xal.accounting_class_code,
+gxeh.event_class_code,
+gxeh.transaction_type_id,
+gxeh.transaction_id,
+gxeh.transaction_date,
+nvl(xal.accounted_dr,0)-nvl(xal.accounted_cr,0) wip_costs_in,
+0 wip_costs_out,
+0 wip_relief,
+nvl(xal.accounted_dr,0)-nvl(xal.accounted_cr,0) wip_value
+from
+b,
+gme_resource_txns grt,
+gmf_xla_extract_headers gxeh,
+gmf_fiscal_policies gfp,
+xla_ae_headers xah,
+xla_ae_lines xal
+where
+b.batch_id=grt.doc_id and
+grt.trans_date>=b.actual_start_date and
+grt.trans_date<b.schedule_close_date+1 and
+grt.poc_trans_id=gxeh.transaction_id and
+grt.doc_id=gxeh.source_document_id and
+grt.line_id=gxeh.source_line_id and
+grt.resources=gxeh.resources and
+b.organization_id=gxeh.organization_id and
+gxeh.txn_source='PM' and
+gxeh.entity_code='PRODUCTION' and
+gxeh.event_class_code='BATCH_RESOURCE' and
+b.legal_entity_id=gfp.legal_entity_id and
+gxeh.valuation_cost_type_id=gfp.cost_type_id and
+gxeh.event_id=xah.event_id and
+xah.application_id=555 and
+gfp.ledger_id=xah.ledger_id and
+xah.ae_header_id=xal.ae_header_id and
+xah.application_id=xal.application_id and
+xah.ledger_id=xal.ledger_id and
+xal.accounting_class_code='WIP_VALUATION'
+union all
+select
+b.batch_id,
+we.primary_item_id inventory_item_id,
+xal.code_combination_id,
+xal.accounting_class_code,
+gxeh.event_class_code,
+gxeh.transaction_type_id,
+gxeh.transaction_id,
+gxeh.transaction_date,
+0 wip_costs_in,
+0 wip_costs_out,
+-(nvl(xal.accounted_dr,0)-nvl(xal.accounted_cr,0)) wip_relief,
+nvl(xal.accounted_dr,0)-nvl(xal.accounted_cr,0) wip_value
+from
+b,
+wip_entities we,
+gmf_xla_extract_headers gxeh,
+gmf_fiscal_policies gfp,
+xla_ae_headers xah,
+xla_ae_lines xal
+where
+b.batch_status=4 and
+b.batch_id=we.wip_entity_id and
+b.organization_id=we.organization_id and
+b.batch_id=gxeh.transaction_id and
+b.batch_id=gxeh.source_document_id and
+b.organization_id=gxeh.organization_id and
+gxeh.txn_source='PM' and
+gxeh.entity_code='PRODUCTION' and
+gxeh.event_class_code='BATCH_CLOSE' and
+gxeh.event_type_code='CLOS' and
+gxeh.transaction_date>=b.period_start_date and
+gxeh.transaction_date<b.schedule_close_date+1 and
+b.legal_entity_id=gfp.legal_entity_id and
+gxeh.valuation_cost_type_id=gfp.cost_type_id and
+gxeh.event_id=xah.event_id and
+xah.application_id=555 and
+gfp.ledger_id=xah.ledger_id and
+xah.ae_header_id=xal.ae_header_id and
+xah.application_id=xal.application_id and
+xah.ledger_id=xal.ledger_id and
+xal.accounting_class_code='WIP_VALUATION'
+union all
+select
+b.batch_id,
+we.primary_item_id inventory_item_id,
+xal.code_combination_id,
+xal.accounting_class_code,
+gxeh.event_class_code,
+gxeh.transaction_type_id,
+gxeh.transaction_id,
+gxeh.transaction_date,
+decode(mmt.transaction_action_id,31,0,32,0,nvl(xal.accounted_dr,0)-nvl(xal.accounted_cr,0)) wip_costs_in,
+-decode(mmt.transaction_action_id,31,nvl(xal.accounted_dr,0)-nvl(xal.accounted_cr,0),32,nvl(xal.accounted_dr,0)-nvl(xal.accounted_cr,0),0) wip_costs_out,
+0 wip_relief,
+nvl(xal.accounted_dr,0)-nvl(xal.accounted_cr,0) wip_value
+from
+b,
+wip_entities we,
+mtl_material_transactions mmt,
+gmf_xla_extract_headers gxeh,
+gmf_fiscal_policies gfp,
+xla_ae_headers xah,
+xla_ae_lines xal
+where
+b.batch_id=we.wip_entity_id and
+b.batch_id=mmt.transaction_source_id and
+mmt.transaction_source_type_id=5 and
+b.organization_id=mmt.organization_id and
+mmt.transaction_date>=b.actual_start_date and
+mmt.transaction_date<b.schedule_close_date+1 and
+mmt.transaction_id=gxeh.transaction_id and
+b.organization_id=gxeh.organization_id and
+gxeh.txn_source='PM' and
+gxeh.entity_code='PRODUCTION' and
+gxeh.event_class_code='BATCH_MATERIAL' and
+b.legal_entity_id=gfp.legal_entity_id and
+gxeh.valuation_cost_type_id=gfp.cost_type_id and
+gxeh.event_id=xah.event_id and
+xah.application_id=555 and
+gfp.ledger_id=xah.ledger_id and
+xah.ae_header_id=xal.ae_header_id and
+xah.application_id=xal.application_id and
+xah.ledger_id=xal.ledger_id and
+xal.accounting_class_code='WIP_VALUATION'
+) a
+where
+b.batch_id=a.batch_id
 group by
-        nvl(gl.short_name, gl.name),
-        haou2.name,
-        wip.organization_code,
-        wip.period_name,
-        &segment_columns_grp
-        gem_l1.meaning, -- Batch Type
-        wip.batch_no,
-        gem_l2.meaning, -- Batch Status
-        -- Revision for version 1.3
-        &p_show_batch_dtls_grp
-        wip.creation_date,
-        wip.plan_start_date,
-        wip.actual_start_date,
-        wip.due_date,
-        wip.actual_cmplt_date,
-        wip.batch_close_date,
-        case 
-           when (wip.schedule_close_date - wip.creation_date) < 31  then '30 days'
-           when (wip.schedule_close_date - wip.creation_date) < 61  then '60 days'
-           when (wip.schedule_close_date - wip.creation_date) < 91  then '90 days'
-           when (wip.schedule_close_date - wip.creation_date) < 121 then '120 days'
-           when (wip.schedule_close_date - wip.creation_date) < 151 then '150 days'
-           when (wip.schedule_close_date - wip.creation_date) < 181 then '180 days'
-           else 'Over 180 days'
-        end, -- Aged_Creation_Date
-        case 
-           when (nvl(wip.actual_cmplt_date, wip.schedule_close_date) - nvl(wip.actual_start_date,(nvl(wip.actual_cmplt_date,sysdate)))) < 31  then '30 days'
-           when (nvl(wip.actual_cmplt_date, wip.schedule_close_date) - nvl(wip.actual_start_date,(nvl(wip.actual_cmplt_date,sysdate)))) < 61  then '60 days'
-           when (nvl(wip.actual_cmplt_date, wip.schedule_close_date) - nvl(wip.actual_start_date,(nvl(wip.actual_cmplt_date,sysdate)))) < 91  then '90 days'
-           when (nvl(wip.actual_cmplt_date, wip.schedule_close_date) - nvl(wip.actual_start_date,(nvl(wip.actual_cmplt_date,sysdate)))) < 121 then '120 days'
-           when (nvl(wip.actual_cmplt_date, wip.schedule_close_date) - nvl(wip.actual_start_date,(nvl(wip.actual_cmplt_date,sysdate)))) < 151 then '150 days'
-           when (nvl(wip.actual_cmplt_date, wip.schedule_close_date) - nvl(wip.actual_start_date,(nvl(wip.actual_cmplt_date,sysdate)))) < 181 then '180 days'
-           else 'Over 180 days'
-        end, -- Aged_Compln_vs_Release_Date
-        case 
-           when (nvl(wip.actual_cmplt_date, wip.schedule_close_date) - wip.creation_date) < 31  then '30 days'
-           when (nvl(wip.actual_cmplt_date, wip.schedule_close_date) - wip.creation_date) < 61  then '60 days'
-           when (nvl(wip.actual_cmplt_date, wip.schedule_close_date) - wip.creation_date) < 91  then '90 days'
-           when (nvl(wip.actual_cmplt_date, wip.schedule_close_date) - wip.creation_date) < 121 then '120 days'
-           when (nvl(wip.actual_cmplt_date, wip.schedule_close_date) - wip.creation_date) < 151 then '150 days'
-           when (nvl(wip.actual_cmplt_date, wip.schedule_close_date) - wip.creation_date) < 181 then '180 days'
-           else 'Over 180 days'
-        end, -- Aged_Compln_vs_Creation_Date
-        msiv.concatenated_segments, -- Product Number
-        msiv.description,
-        muomv.uom_code,
-        fcl.meaning, -- Item Type
-        xl.meaning, -- Accounting Class
-        wip.batch_close_date,
-        wip.accounting_class_code,
-        -- Revision for version 1.3
-        &p_show_txn_dtls_grp
-        gl.currency_code,
-        -- added for inline selects
-        msiv.inventory_item_id,
-        msiv.organization_id,
-        wip.organization_id,
-        wip.batch_id
--- Order by Ledger, Operating Unit, Org Code, Period Name, Accounts, Item and Batch
-order by 1,2,3,4,5,6,7,8,9,10,11,12,14,21
+b.organization_id,
+b.organization_code,
+b.period_name,
+b.schedule_close_date,
+b.batch_id,
+b.batch_no,
+b.batch_status,
+b.laboratory_ind,
+b.formula_id,
+b.routing_id,
+b.recipe_validity_rule_id,
+b.creation_date,
+b.plan_start_date,
+b.actual_start_date,
+b.due_date,
+b.actual_cmplt_date,
+b.batch_close_date,
+a.inventory_item_id,
+a.code_combination_id,
+&p_show_txn_dtls2_grp
+a.accounting_class_code
+) y,
+mtl_system_items_vl msiv,
+gl_code_combinations gcc,
+hr_organization_information hoi,
+hr_all_organization_units_vl haouv_ou,
+gl_ledgers gl
+where
+1=1 and
+y.organization_id=msiv.organization_id and
+y.inventory_item_id=msiv.inventory_item_id and
+y.code_combination_id=gcc.code_combination_id(+) and
+y.organization_id=hoi.organization_id and
+hoi.org_information_context='Accounting Information' and
+to_number(hoi.org_information3)=haouv_ou.organization_id and
+to_number(hoi.org_information1)=gl.ledger_id
+order by
+ledger,
+operating_unit,
+org_code,
+y.period_name,
+batch_type,
+batch_number,
+"Product Number",
+accounting_class

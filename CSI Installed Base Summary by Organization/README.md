@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-16
+last_modified_at: 2026-10-26
 title: 'CSI Installed Base Summary by Organization | Oracle EBS SQL Report'
 description: 'Count of installed base products by hierarchy type (parent / child), instance usage and related organizations, such as sold from and owner operating unit…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Installed Base, Enginatics, CSI, Installed, Base, Summary, hz_cust_accounts, hz_cust_acct_sites_all, hz_cust_site_uses_all'
@@ -30,8 +30,6 @@ Show Status
 ## Report Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=csi-installed-base-summary-by-organization)
 
-## Related Reports
-[CSI Customer Products Summary](/CSI%20Customer%20Products%20Summary/ "CSI Customer Products Summary Oracle EBS SQL Report"), [OKL Termination Quotes](/OKL%20Termination%20Quotes/ "OKL Termination Quotes Oracle EBS SQL Report"), [OKS Service Contract Line Upload](/OKS%20Service%20Contract%20Line%20Upload/ "OKS Service Contract Line Upload Oracle EBS SQL Report"), [AR Transactions and Lines 11i](/AR%20Transactions%20and%20Lines%2011i/ "AR Transactions and Lines 11i Oracle EBS SQL Report"), [CS Service Requests](/CS%20Service%20Requests/ "CS Service Requests Oracle EBS SQL Report"), [CAC Intercompany SO Price List vs. Item Cost Comparison](/CAC%20Intercompany%20SO%20Price%20List%20vs-%20Item%20Cost%20Comparison/ "CAC Intercompany SO Price List vs. Item Cost Comparison Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/CSI%20Installed%20Base%20Summary%20by%20Organization/CSI%20Installed%20Base%20Summary%20by%20Organization.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=csi-installed-base-summary-by-organization) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.

@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-19
+last_modified_at: 2026-10-26
 title: 'PA Cost Audit | Oracle EBS SQL Report'
 description: 'Project cost distribution lines transferred to GL showing DR/CR accounts, amounts, transfer status, and GL dates for audit and reconciliation purposes.'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Projects, Enginatics, Cost, Audit, pa_cost_distribution_lines_all, pa_expenditure_items_all, pa_expenditures_all'
@@ -30,6 +30,8 @@ Operating Unit, Project, GL Date From, GL Date To, Period Name
 ## Report Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-cost-audit)
 
+## Related Reports
+[PA Supplier Invoice Audit](/PA%20Supplier%20Invoice%20Audit/ "PA Supplier Invoice Audit Oracle EBS SQL Report"), [WIP Account Distribution](/WIP%20Account%20Distribution/ "WIP Account Distribution Oracle EBS SQL Report"), [AP Expense Report Upload](/AP%20Expense%20Report%20Upload/ "AP Expense Report Upload Oracle EBS SQL Report"), [PA Project Subledger Detail by Expenditure Type](/PA%20Project%20Subledger%20Detail%20by%20Expenditure%20Type/ "PA Project Subledger Detail by Expenditure Type Oracle EBS SQL Report"), [PA Project Expenditure Items with WIP and INV Detail](/PA%20Project%20Expenditure%20Items%20with%20WIP%20and%20INV%20Detail/ "PA Project Expenditure Items with WIP and INV Detail Oracle EBS SQL Report"), [PA Employee Activity By Organization](/PA%20Employee%20Activity%20By%20Organization/ "PA Employee Activity By Organization Oracle EBS SQL Report"), [GL Account Analysis](/GL%20Account%20Analysis/ "GL Account Analysis Oracle EBS SQL Report"), [AP Distribution Set Listing](/AP%20Distribution%20Set%20Listing/ "AP Distribution Set Listing Oracle EBS SQL Report"), [GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/PA%20Cost%20Audit/PA%20Cost%20Audit.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-cost-audit) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.

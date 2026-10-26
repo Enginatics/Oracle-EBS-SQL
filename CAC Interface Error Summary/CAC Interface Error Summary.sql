@@ -46,14 +46,6 @@
 -- Pending WSM Lot Interface Transactions - WSMLotSplitMergesInterface
 -- Work in Process (Manufacturing)
 -- Pending Shop Floor Move Transactions - WIPMoveTxnInterface
--- Parameters
--- ==========
--- Functional Area: Cash Management, Cost Management, General Ledger, Inventory, Payables, Work in Process (Manufacturing), Oracle Landed Cost Management, Projects, Purchasing, Receivables, Shipping, Warehouse Management System (WSM) (optional).
--- Period Name: Enter the desired period(s) to report (optional)
--- Organization Code: specific inventory organization to report (optional)
--- Operating Unit: specific operating unit (optional)
--- Ledger: specific ledger (optional)
--- Note: To avoid excessive run times., one of the above parameters must be entered in order to run this report.
 -- -- | Version Modified Modified by Description
 -- -- | ======== ========= =============== ================================================
 -- -- | 1.0 1995 Initial Design Originally based on sql from a project in 1995.
@@ -62,2368 +54,895 @@
 -- -- | and added Ledger Security Controls for GLInterface.
 -- -- | 1.43 19-Jul-25 Douglas Volz Changed LCM query to use the LCM short name 'INL' instead of 'CST'.
 -- -- | 1.44 24-Aug-25 Douglas Volz Changed Pending Material from Resolution Required to Recommended.
+-- -- | 1.45 24 Oct 2026 Andy Haack Rebuilt to the Blitz Report SQL standards.
 -- -- +=============================================================================+/
 -- Excel Example Output: https://www.enginatics.com/example/cac-interface-error-summary/
 -- Library Link: https://www.enginatics.com/reports/cac-interface-error-summary/
 -- Run Report: https://demo.enginatics.com/
 
-with inv_organizations as
--- Get the list of organizations, ledgers and operating units for Discrete and OPM organizations
-        (select nvl(gl.short_name, gl.name) ledger,
-                gl.ledger_id,
-                to_number(hoi.org_information2) legal_entity_id,
-                haou2.name operating_unit,
-                haou2.organization_id operating_unit_id,
-                mp.organization_code,
-                mp.organization_id,
-                mp.master_organization_id,
-                mp.primary_cost_method,
-                nvl(mp.process_enabled_flag, 'N') process_enabled_flag,
-                nvl(mp.lcm_enabled_flag, 'N') lcm_enabled_flag,
-                haou.date_to disable_date,
-                gl.period_set_name,
-                gl.accounted_period_type,
-                gl.currency_code
-         from   mtl_parameters mp,
-                hr_organization_information hoi,
-                hr_all_organization_units_vl haou, -- inv_organization_id
-                hr_all_organization_units_vl haou2, -- operating unit
-                gl_ledgers gl
-         -- Avoid disabled inventory organizations
-         where  sysdate                        <  nvl(haou.date_to, sysdate +1)
-         and    hoi.org_information_context     = 'Accounting Information'
-         and    hoi.organization_id             = mp.organization_id
-         and    hoi.organization_id             = haou.organization_id   -- this gets the organization name
-         and    haou2.organization_id           = to_number(hoi.org_information3) -- this gets the operating unit id
-         and    gl.ledger_id                    = to_number(hoi.org_information1) -- get the ledger_id
-         and    mp.organization_code in (select oav.organization_code from org_access_view oav where  oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) 
-         and    1=1                             -- p_ledger
-         and    2=2                             -- p_org_code
-         and    3=3                             -- p_operating_unit
-         -- Revision for Operating Unit and Ledger Controls and Parameters
-         and    (nvl(fnd_profile.value('XXEN_REPORT_USE_LEDGER_SECURITY'),'N')='N' or gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+)))
-         and    (nvl(fnd_profile.value('XXEN_REPORT_USE_OPERATING_UNIT_SECURITY'),'N')='N' or haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11))
-         group by
-                nvl(gl.short_name, gl.name),
-                gl.ledger_id,
-                to_number(hoi.org_information2),
-                haou2.name, -- operating_unit
-                haou2.organization_id, -- operating_unit_id
-                mp.organization_code,
-                mp.organization_id,
-                mp.master_organization_id,
-                mp.primary_cost_method,
-                nvl(mp.process_enabled_flag, 'N'), -- process_enabled_flag
-                nvl(mp.lcm_enabled_flag, 'N'), -- lcm_enabled_flag
-                haou.date_to,
-                gl.period_set_name,
-                gl.accounted_period_type,
-                gl.currency_code
-        ), -- inv_organizations
-gl_ou as
-        (select nvl(gl.short_name, gl.name) ledger,
-                gl.ledger_id,
-                gl.period_set_name,
-                gl.accounted_period_type,
-                fspa.operating_unit,
-                fspa.operating_unit_id,
-                fspa.organization_code,
-                fspa.organization_id,
-                fspa.master_organization_id
-         from   gl_ledgers gl,
-                (select haou2.name operating_unit,
-                        haou2.organization_id operating_unit_id,
-                        fspa2.set_of_books_id,
-                        mp.organization_id,
-                        mp.organization_code,
-                        mp.master_organization_id
-                 from   hr_organization_information hoi,
-                        hr_organization_information hoi2,
-                        hr_all_organization_units_vl haou2,
-                        financials_system_params_all fspa2,
-                        mtl_parameters mp
-                 where  haou2.organization_id           = fspa2.org_id 
-                 and    haou2.organization_id           = hoi2.organization_id 
-                 and    hoi.organization_id             = haou2.organization_id
-                 and    hoi.org_information_context||'' = 'CLASS'
-                 and    hoi.org_information1            = 'OPERATING_UNIT'
-                 and    hoi.org_information2            = 'Y' 
-                 and    hoi2.organization_id            = haou2.organization_id
-                 and    hoi2.org_information_context    = 'Operating Unit Information'
-                 and    haou2.organization_id           = hoi2.organization_id
-                 and    fspa2.inventory_organization_id = mp.organization_id (+)
-                 and    2=2                             -- p_organization_code
-                 and    3=3                             -- p_operating_unit
-                 -- Revision for Operating Unit Controls and Parameters
-                 and    (nvl(fnd_profile.value('XXEN_REPORT_USE_OPERATING_UNIT_SECURITY'),'N')='N' or haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11))
-                ) fspa
-         where  gl.ledger_id                      = fspa.set_of_books_id
-         -- Revision for Ledger Controls
-         and    (nvl(fnd_profile.value('XXEN_REPORT_USE_LEDGER_SECURITY'),'N')='N' or gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+)))
-         and    1=1                               -- p_ledger
-        ) -- gl_ou
-
------------------main query starts here--------------
-
--- +=============================================================================+
--- |               Accounts Payables Interface Error Reports                     |
--- +=============================================================================+
-
--- =======================================================
---  Payables Summary Interface Error Report
--- =======================================================
--- Get the invoices with an ORG_ID (operating unit)
-select  fav.application_name Functional_Area,
-        'AP_Invoices_Interface' Report_Interface,
-        'Number of A/P Invoices' Report_Title,
-        ml.meaning Priority,
-        count(*) Count,
-        gp.period_year Period_Year,
-        gp.period_num Period_Number, 
-        gp.period_name Period_Name,
-        gl_ou.ledger Ledger,
-        gl_ou.operating_unit Operating_Unit,
-        gl_ou.operating_unit_id Operating_Unit_Id,
-        gl_ou.organization_code Org_Code,
-        gl_ou.organization_id Inv_Organization_Id,
-        fl.meaning Column_Type, -- Supplier
-        pv.vendor_name Column_Info,
-        aii.status status_code,
-        null Reject_Code_or_Error_Message,
-        'Rows in the AP_INVOICES_INTERFACE table' Interface_Description
-from    ap_invoices_interface aii,
-        gl_periods gp,
-        fnd_application_vl fav,
-        fnd_product_installations fpi,
-        gl_ou,
-        po_vendors pv,
-        fnd_lookups fl, -- Supplier
-        mfg_lookups ml -- Priority
--- Consolidated billing does not have an aii.org_id
-where   gl_ou.operating_unit_id          = nvl(aii.org_id, regexp_replace(aii.attribute_category, '[^0-9]+', ''))
--- Invoice_date and gl_date is not always populated
-and     trunc(coalesce(aii.gl_date,aii.invoice_date,sysdate)) between gp.start_date and gp.end_date
-and     fav.application_short_name       = 'SQLAP'
--- Only report installed applications
-and     fav.application_id               = fpi.application_id
-and     fpi.status                      <> 'N' -- Inactive
--- To avoid cross joining with secondary period information
-and     gp.period_set_name               = gl_ou.period_set_name
-and     gp.period_type                   = gl_ou.accounted_period_type
-and     gp.adjustment_period_flag        = 'N'
-and     aii.vendor_id                    = pv.vendor_id (+)
-and     fl.lookup_type                   = 'BUSINESS_ENTITY'
-and     fl.lookup_code                   = 'AP_SUPPLIER'
-and     ml.lookup_type                   = 'CST_SRS_RESOLUTION_TYPES'
-and     ml.lookup_code                   = 3 -- Resolution Recommended
--- Only want unprocessed and erred out entries
-and     nvl(aii.status, 'NULL')         <> ('PROCESSED')
-and     4=4                              -- p_period_name
-and     5=5                              -- p_functional_area
-and     6=6                              -- p_period_year
-group by
-        fav.application_name, -- Functional_Area
-        'AP_Invoices_Interface', -- Report_Type
-        'Number of A/P Invoices', -- Report_Title
-        ml.meaning, -- Priority
-        gp.period_year,
-        gp.period_num, 
-        gp.period_name,
-        gl_ou.ledger,
-        gl_ou.operating_unit,
-        gl_ou.operating_unit_id,
-        gl_ou.organization_code,
-        gl_ou.organization_id,
-        fl.meaning, -- Column_Type, Supplier
-        pv.vendor_name, -- Column_Info
-        aii.status,
-        null, -- Reject_Code_or_Error_Message
-        'Rows in the AP_INVOICES_INTERFACE table' -- Interface_Description
+with o as (
+select /*+ materialize*/
+nvl(gl.short_name,gl.name) ledger,
+haouv_ou.name operating_unit,
+haouv_ou.organization_id operating_unit_id,
+mp.organization_code,
+mp.organization_id,
+to_number(hoi.org_information2) legal_entity_id,
+gl.period_set_name,
+gl.accounted_period_type
+from
+mtl_parameters mp,
+hr_organization_information hoi,
+hr_all_organization_units_vl haouv,
+hr_all_organization_units_vl haouv_ou,
+gl_ledgers gl
+where
+1=1 and
+2=2 and
+3=3 and
+mp.organization_id=hoi.organization_id and
+hoi.org_information_context='Accounting Information' and
+hoi.organization_id=haouv.organization_id and
+sysdate<nvl(haouv.date_to,sysdate+1) and
+to_number(hoi.org_information3)=haouv_ou.organization_id and
+to_number(hoi.org_information1)=gl.ledger_id
+),
+u as (
+select /*+ materialize*/
+nvl(gl.short_name,gl.name) ledger,
+haouv_ou.name operating_unit,
+haouv_ou.organization_id operating_unit_id,
+fspa.inventory_organization_id,
+gl.period_set_name,
+gl.accounted_period_type
+from
+hr_all_organization_units_vl haouv_ou,
+hr_organization_information hoi,
+financials_system_params_all fspa,
+gl_ledgers gl
+where
+1=1 and
+3=3 and
+haouv_ou.organization_id=hoi.organization_id and
+hoi.org_information_context||''='CLASS' and
+hoi.org_information1='OPERATING_UNIT' and
+hoi.org_information2='Y' and
+haouv_ou.organization_id=fspa.org_id and
+fspa.set_of_books_id=gl.ledger_id
+),
+t as (
+select /*+ materialize*/
+rownum id,
+x.*
+from
+(
+select
+1 section,
+'SQLAP' fav_app,
+'SQLAP' fpi_app,
+null area,
+'AP_Invoices_Interface' report_interface,
+'Number of A/P Invoices' report_title,
+'3' priority_code,
+'O' lvl,
+to_number(null) organization_id,
+nvl(aii.org_id,to_number(regexp_replace(aii.attribute_category,'[^0-9]+',''))) operating_unit_id,
+to_number(null) ledger_id,
+to_number(null) acct_period_id,
+coalesce(aii.gl_date,aii.invoice_date,sysdate) txn_date,
+(select xxen_util.meaning('AP_SUPPLIER','BUSINESS_ENTITY',0) from dual) column_type,
+aps.vendor_name column_info,
+aii.status status_code,
+null message,
+'Rows in the AP_INVOICES_INTERFACE table' interface_description
+from
+ap_invoices_interface aii,
+ap_suppliers aps
+where
+nvl(aii.status,'N')<>'PROCESSED' and
+aii.vendor_id=aps.vendor_id(+)
 union all
--- =======================================================
---  Payables Summary Interface Rejections Report
--- =======================================================
-select  fav.application_name Functional_Area,
-        'AP_Interface_Rejections' Interface_Report,
-        'Number of A/P Interface Rejections' Report_Title,
-        ml.meaning Priority,
-        count(*) Count,
-        gp.period_year Period_Year,
-        gp.period_num Period_Number, 
-        gp.period_name Period_Name,
-        gl_ou.ledger Ledger,
-        gl_ou.operating_unit Operating_Unit,
-        gl_ou.operating_unit_id Operating_Unit_Id,
-        gl_ou.organization_code Org_Code,
-        gl_ou.organization_id Inv_Organization_Id,
-        fl.meaning Column_Type, -- Supplier
-        pv.vendor_name Column_Info,
-        aii.status,
-        air.reject_lookup_code Reject_Code_or_Error_Message,
-        'Errors in the AP_INTERFACE_REJECTIONS table - Invoice Issue' Interface_Description
-from    ap_interface_rejections air,
-        ap_invoices_interface aii,
-        fnd_application_vl fav,
-        fnd_product_installations fpi,
-        gl_periods gp,
-        gl_ou,
-        po_vendors pv,
-        fnd_lookups fl, -- Supplier
-        mfg_lookups ml -- Priority
-where   air.parent_table                 = 'AP_INVOICES_INTERFACE'
-and     air.parent_id                    = aii.invoice_id
--- Consolidated billing does not have an aii.org_id
-and     gl_ou.operating_unit_id          = nvl(aii.org_id, regexp_replace(aii.attribute_category, '[^0-9]+', ''))
--- Check for the gl date then the invoice date, else use sysdate
--- Invoice_date and gl_date is not always populated
-and     trunc(coalesce(aii.gl_date,aii.invoice_date,sysdate)) between gp.start_date and gp.end_date
-and     fav.application_short_name       = 'SQLAP'
--- To avoid cross joining with secondary period information
-and     gp.period_set_name               = gl_ou.period_set_name
-and     gp.period_type                   = gl_ou.accounted_period_type
-and     gp.adjustment_period_flag        = 'N'
--- Only report installed applications
-and     fav.application_id               = fpi.application_id
-and     fpi.status                      <> 'N' -- Inactive
-and     aii.vendor_id (+)                = pv.vendor_id
-and     fl.lookup_type                   = 'BUSINESS_ENTITY'
-and     fl.lookup_code                   = 'AP_SUPPLIER'
-and     ml.lookup_type                   = 'CST_SRS_RESOLUTION_TYPES'
-and     ml.lookup_code                   = 3 -- Resolution Recommended
--- Only want unprocessed and erred out entries
-and     nvl(aii.status, 'NULL')         <> ('PROCESSED')
-and     4=4                              -- p_period_name
-and     5=5                              -- p_functional_area
-and     6=6                              -- p_period_year
-group by
-        fav.application_name, -- Functional_Area
-        'AP_Interface_Rejections', -- Interface_Report
-        'Number of A/P Interface Rejections', -- Report_Title
-        ml.meaning, -- Priority
-        gp.period_year,
-        gp.period_num, 
-        gp.period_name,
-        gl_ou.ledger,
-        gl_ou.operating_unit,
-        gl_ou.operating_unit_id,
-        gl_ou.organization_code,
-        gl_ou.organization_id,
-        fl.meaning, -- Column_Type, Supplier
-        pv.vendor_name, -- Column_Info
-        aii.status,
-        air.reject_lookup_code, -- Reject_Code_or_Error_Message
-        'Errors in the AP_INTERFACE_REJECTIONS table - Invoice Issue' -- Interface_Description
+select
+2 section,
+'SQLAP' fav_app,
+'SQLAP' fpi_app,
+null area,
+'AP_Interface_Rejections' report_interface,
+'Number of A/P Interface Rejections' report_title,
+'3' priority_code,
+'O' lvl,
+to_number(null) organization_id,
+nvl(aii.org_id,to_number(regexp_replace(aii.attribute_category,'[^0-9]+',''))) operating_unit_id,
+to_number(null) ledger_id,
+to_number(null) acct_period_id,
+coalesce(aii.gl_date,aii.invoice_date,sysdate) txn_date,
+(select xxen_util.meaning('AP_SUPPLIER','BUSINESS_ENTITY',0) from dual) column_type,
+aps.vendor_name column_info,
+aii.status status_code,
+air.reject_lookup_code message,
+'Errors in the AP_INTERFACE_REJECTIONS table - Invoice Issue' interface_description
+from
+ap_interface_rejections air,
+ap_invoices_interface aii,
+ap_suppliers aps
+where
+air.parent_table='AP_INVOICES_INTERFACE' and
+air.parent_id=aii.invoice_id and
+nvl(aii.status,'N')<>'PROCESSED' and
+aii.vendor_id=aps.vendor_id(+)
 union all
--- =======================================================
---  Payables Summary Interface Rejections Report
--- =======================================================
-select  fav.application_name Functional_Area,
-        'AP_Interface_Rejections' Interface_Report,
-        'Number of A/P Interface Rejections' Report_Title,
-        ml.meaning Priority,
-        count(*) Count,
-        gp.period_year Period_Year,
-        gp.period_num Period_Number, 
-        gp.period_name Period_Name,
-        gl_ou.ledger Ledger,
-        gl_ou.operating_unit Operating_Unit,
-        gl_ou.operating_unit_id Operating_Unit_Id,
-        gl_ou.organization_code Org_Code,
-        gl_ou.organization_id Inv_Organization_Id,
-        fl.meaning Column_Type, -- Supplier
-        pv.vendor_name Column_Info,
-        aii.status,
-        air.reject_lookup_code Reject_Code_or_Error_Message,
-        'Errors in the AP_INTERFACE_REJECTIONS table - Invoice Issue' Interface_Description
-from    ap_interface_rejections air,
-        ap_invoices_interface aii,
-        ap_invoice_lines_interface aili,
-        fnd_application_vl fav,
-        fnd_product_installations fpi,
-        gl_periods gp,
-        gl_ou,
-        po_vendors pv,
-        fnd_lookups fl, -- Supplier
-        mfg_lookups ml -- Priority
-where   air.parent_table                 = 'AP_INVOICE_LINES_INTERFACE'
-and     air.parent_id                    = aili.invoice_line_id
-and     aii.invoice_id                   = aili.invoice_id
--- Consolidated billing does not have an aii.org_id
-and     gl_ou.operating_unit_id          = nvl(aii.org_id, regexp_replace(aii.attribute_category, '[^0-9]+', ''))
-and     aii.invoice_id                   = aili.invoice_id (+)
--- Check for the gl date then the invoice date, else use sysdate
--- Invoice date and gl_date is not always populated
-and     trunc(coalesce(aii.gl_date,aii.invoice_date,sysdate)) between gp.start_date and gp.end_date
--- To avoid cross joining with secondary period information
-and     gp.period_set_name               = gl_ou.period_set_name
-and     gp.period_type                   = gl_ou.accounted_period_type
-and     gp.adjustment_period_flag        = 'N'
-and     aii.vendor_id (+)                = pv.vendor_id
-and     fav.application_short_name       = 'SQLAP'
--- Only report installed applications
-and     fav.application_id               = fpi.application_id
-and     fpi.status                      <> 'N' -- Inactive
-and     fl.lookup_type                   = 'BUSINESS_ENTITY'
-and     fl.lookup_code                   = 'AP_SUPPLIER'
-and     ml.lookup_type                   = 'CST_SRS_RESOLUTION_TYPES'
-and     ml.lookup_code                   = 3 -- Resolution Recommended
--- Only want unprocessed and erred out entries
-and     nvl(aii.status, 'NULL')         <> ('PROCESSED')
-and     4=4                              -- p_period_name
-and     5=5                              -- p_functional_area
-and     6=6                              -- p_period_year
-group by
-        fav.application_name, -- Functional_Area
-        'AP_Interface_Rejections', -- Interface_Report
-        'Number of A/P Interface Rejections', -- Report_Title
-        ml.meaning, -- Priority
-        gp.period_year,
-        gp.period_num, 
-        gp.period_name,
-        gl_ou.ledger,
-        gl_ou.operating_unit,
-        gl_ou.operating_unit_id,
-        gl_ou.organization_code,
-        gl_ou.organization_id,
-        fl.meaning, -- Column_Type, Supplier
-        pv.vendor_name, -- Column_Info
-        aii.status,
-        air.reject_lookup_code, -- Reject_Code_or_Error_Message
-        'Errors in the AP_INTERFACE_REJECTIONS table - Invoice Issue' -- Interface_Description
-
--- +=============================================================================+
--- |            Accounts Receivables Interface Error Reports                     |
--- +=============================================================================+
-
+select
+3 section,
+'SQLAP' fav_app,
+'SQLAP' fpi_app,
+null area,
+'AP_Interface_Rejections' report_interface,
+'Number of A/P Interface Rejections' report_title,
+'3' priority_code,
+'O' lvl,
+to_number(null) organization_id,
+nvl(aii.org_id,to_number(regexp_replace(aii.attribute_category,'[^0-9]+',''))) operating_unit_id,
+to_number(null) ledger_id,
+to_number(null) acct_period_id,
+coalesce(aii.gl_date,aii.invoice_date,sysdate) txn_date,
+(select xxen_util.meaning('AP_SUPPLIER','BUSINESS_ENTITY',0) from dual) column_type,
+aps.vendor_name column_info,
+aii.status status_code,
+air.reject_lookup_code message,
+'Errors in the AP_INTERFACE_REJECTIONS table - Invoice Line Issue' interface_description
+from
+ap_interface_rejections air,
+ap_invoice_lines_interface aili,
+ap_invoices_interface aii,
+ap_suppliers aps
+where
+air.parent_table='AP_INVOICE_LINES_INTERFACE' and
+air.parent_id=aili.invoice_line_id and
+aili.invoice_id=aii.invoice_id and
+nvl(aii.status,'N')<>'PROCESSED' and
+aii.vendor_id=aps.vendor_id(+)
 union all
--- =======================================================
---  Receivables Summary Interface Errors Report
--- =======================================================
-select  fav.application_name Functional_Area,
-        'RA_Interface_Lines_All' Interface_Report,
-        'Number of RA Invoice lines' Report_Title,
-        ml.meaning Priority,
-        count(*) Count,
-        gp.period_year Period_Year,
-        gp.period_num Period_Number, 
-        gp.period_name Period_Name,
-        gl_ou.ledger Ledger,
-        gl_ou.operating_unit Operating_Unit,
-        gl_ou.operating_unit_id Operating_Unit_Id,
-        gl_ou.organization_code Org_Code,
-        gl_ou.organization_id Inv_Organization_Id,
-        fl1.meaning Column_Type, -- Ship Date
-        to_char(trunc(ril.ship_date_actual), 'YYYY-MM-DD') Column_Info,
-        fl2.meaning Status,
-        rie.message_text Reject_Code_or_Error_Message,
-        'Rows in the RA_INTERFACE_LINES_ALL table' Interface_Description
-from    ra_interface_lines_all ril,
-        ra_interface_errors_all rie,
-        gl_periods gp,
-        fnd_application_vl fav,
-        fnd_product_installations fpi,
-        gl_ou,
-        fnd_lookups fl1, -- Ship Date
-        fnd_lookups fl2, -- Status
-        mfg_lookups ml -- Priority
-where   ril.org_id                       = gl_ou.operating_unit_id
--- Check for the rule date, then the gl date, then the transaction date
--- Invoice_date and gl_date not always populated
-and     trunc(coalesce(ril.rule_start_date, ril.gl_date, ril.trx_date, sysdate)) between gp.start_date and gp.end_date
--- To avoid cross joining with secondary period information
-and     gp.period_set_name               = gl_ou.period_set_name
-and     gp.period_type                   = gl_ou.accounted_period_type
-and     gp.adjustment_period_flag        = 'N'
-and     ril.interface_line_id            = rie.interface_line_id (+)
-and     fl1.lookup_type                  = 'MSC_PQ_CP_EXCP'
-and     fl1.lookup_code                  = 'MSCX_CUST_SHIP_DATE'
-and     fl2.lookup_type                  = 'DEBRIEF_CONCURRENT_STATUS'
-and     fl2.lookup_code                  = decode(rie.message_text, null, 'UNPROCESSED', 'COMPLETED W/ERRORS') -- Unprocessed
-and     fav.application_short_name       = 'AR'
--- Only report installed applications
-and     fav.application_id               = fpi.application_id
-and     fpi.status                      <> 'N' -- Inactive
-and     ml.lookup_type                   = 'CST_SRS_RESOLUTION_TYPES'
-and     ml.lookup_code                   = 3 -- Resolution Recommended
-and     4=4                              -- p_period_name
-and     5=5                              -- p_functional_area
-and     6=6                              -- p_period_year
-group by
-        fav.application_name, -- Functional_Area
-        'RA_Interface_Lines_All', -- Interface_Report
-        'Number of RA Invoice lines', -- Report_Title
-        ml.meaning, -- Priority
-        gp.period_year,
-        gp.period_num, 
-        gp.period_name,
-        gl_ou.ledger,
-        gl_ou.operating_unit,
-        gl_ou.operating_unit_id,
-        gl_ou.organization_code,
-        gl_ou.organization_id,
-        fl1.meaning, -- Column_Type, Ship Date
-        to_char(trunc(ril.ship_date_actual), 'YYYY-MM-DD'), -- Column_Info
-        fl2.meaning, -- Status
-        rie.message_text, --  Reject_Code_or_Error_Message
-        'Records in the RA_INTERFACE_LINES_ALL table' -- Interface_Description
+select
+4 section,
+'AR' fav_app,
+'AR' fpi_app,
+null area,
+'RA_Interface_Lines_All' report_interface,
+'Number of RA Invoice lines' report_title,
+'3' priority_code,
+'O' lvl,
+to_number(null) organization_id,
+rila.org_id operating_unit_id,
+to_number(null) ledger_id,
+to_number(null) acct_period_id,
+coalesce(rila.rule_start_date,rila.gl_date,rila.trx_date,sysdate) txn_date,
+(select xxen_util.meaning('MSCX_CUST_SHIP_DATE','MSC_PQ_CP_EXCP',0) from dual) column_type,
+to_char(rila.ship_date_actual,'YYYY-MM-DD') column_info,
+(select xxen_util.meaning(nvl2(riea.message_text,'COMPLETED W/ERRORS','UNPROCESSED'),'DEBRIEF_CONCURRENT_STATUS',0) from dual) status_code,
+riea.message_text message,
+'Rows in the RA_INTERFACE_LINES_ALL table' interface_description
+from
+ra_interface_lines_all rila,
+ra_interface_errors_all riea
+where
+rila.interface_line_id=riea.interface_line_id(+)
 union all
--- =======================================================
---  Receivables Summary Interface Errors Only Report
--- =======================================================
-select  fav.application_name Functional_Area,
-        'RA_Interface_Errors_All' Interface_Report,
-        'Number of RA Invoice Errors' Report_Title,
-        ml.meaning Priority,
-        count(*) Count,
-        gp.period_year Period_Year,
-        gp.period_num Period_Number, 
-        gp.period_name Period_Name,
-        gl_ou.ledger Ledger,
-        gl_ou.operating_unit Operating_Unit,
-        gl_ou.operating_unit_id Operating_Unit_Id,
-        gl_ou.organization_code Org_Code,
-        gl_ou.organization_id Inv_Organization_Id,
-        fl1.meaning Column_Type, -- Customer Name
-        hz.party_name Column_Info,
-        fl2.meaning Status,
-        rie.message_text Reject_Code_or_Error_Message,
-        'Errors in the RA_INTERFACE_ERRORS_ALL table' Interface_Description
-from    ra_interface_lines_all ril,
-        ra_interface_errors_all rie,
-        hz_cust_accounts_all hca,
-        hz_parties hz,
-        gl_periods gp,
-        fnd_application_vl fav,
-        fnd_product_installations fpi,
-        gl_ou,
-        fnd_lookups fl1, -- Customer Name
-        fnd_lookups fl2, -- Status
-        mfg_lookups ml -- Priority
-where   ril.org_id                       = gl_ou.operating_unit_id
--- Check for the rule date, then the gl date, then the transaction date
--- Invoice_date and gl_date not always populated
-and     trunc(coalesce(ril.rule_start_date, ril.gl_date, ril.trx_date, sysdate)) between gp.start_date and gp.end_date
--- To avoid cross joining with secondary period information
-and     gp.period_set_name               = gl_ou.period_set_name
-and     gp.period_type                   = gl_ou.accounted_period_type
-and     gp.adjustment_period_flag        = 'N'
-and     ril.interface_line_id            = rie.interface_line_id (+)
-and     hca.cust_account_id              = ril.orig_system_bill_customer_id
-and     hca.party_id                     = hz.party_id
-and     hca.org_id                       = ril.org_id
-and     fav.application_short_name       = 'AR'
--- Only report installed applications
-and     fav.application_id               = fpi.application_id
-and     fpi.status                      <> 'N' -- Inactive
-and     fl1.lookup_type                  = 'MSC_PQ_CP_EXCP'
-and     fl1.lookup_code                  = 'CUSTOMER_NAME'
-and     fl2.lookup_type                  = 'DEBRIEF_CONCURRENT_STATUS'
-and     fl2.lookup_code                  = decode(rie.message_text, null, 'UNPROCESSED', 'COMPLETED W/ERRORS') -- Unprocessed
-and     ml.lookup_type                   = 'CST_SRS_RESOLUTION_TYPES'
-and     ml.lookup_code                   = 3 -- Resolution Recommended
-and     4=4                              -- p_period_name
-and     5=5                              -- p_functional_area
-and     6=6                              -- p_period_year
-group by
-        fav.application_name, -- Functional_Area
-        'RA_Interface_Errors_All', -- Interface_Report
-        'Number of RA Invoice Errors', -- Report_Title
-        ml.meaning, -- Priority
-        gp.period_year,
-        gp.period_num, 
-        gp.period_name,
-        gl_ou.ledger,
-        gl_ou.operating_unit,
-        gl_ou.operating_unit_id,
-        gl_ou.organization_code,
-        gl_ou.organization_id,
-        fl1.meaning, --Column_Type, Customer Name
-        hz.party_name, -- Column_Info
-        fl2.meaning, -- Status
-        rie.message_text, -- Reject_Code_or_Error_Message
-        'Errors in the RA_INTERFACE_ERRORS_ALL table' -- Interface_Description
-
--- +=============================================================================+
--- |                 Cash Management Interface Error Reports                     |
--- +=============================================================================+
-
+select
+5 section,
+'AR' fav_app,
+'AR' fpi_app,
+null area,
+'RA_Interface_Errors_All' report_interface,
+'Number of RA Invoice Errors' report_title,
+'3' priority_code,
+'O' lvl,
+to_number(null) organization_id,
+rila.org_id operating_unit_id,
+to_number(null) ledger_id,
+to_number(null) acct_period_id,
+coalesce(rila.rule_start_date,rila.gl_date,rila.trx_date,sysdate) txn_date,
+(select xxen_util.meaning('CUSTOMER_NAME','MSC_PQ_CP_EXCP',0) from dual) column_type,
+(select hp.party_name from hz_cust_accounts hca, hz_parties hp where rila.orig_system_bill_customer_id=hca.cust_account_id and hca.party_id=hp.party_id) column_info,
+(select xxen_util.meaning('COMPLETED W/ERRORS','DEBRIEF_CONCURRENT_STATUS',0) from dual) status_code,
+riea.message_text message,
+'Errors in the RA_INTERFACE_ERRORS_ALL table' interface_description
+from
+ra_interface_lines_all rila,
+ra_interface_errors_all riea
+where
+rila.interface_line_id=riea.interface_line_id
 union all
--- =======================================================
---  Cash Management Summary Interface Error Report
--- =======================================================
-select  fav.application_name Functional_Area,
-        'CE_Header_Interface_Errors' Interface_Report,
-        'Number of Cash Mgmt Interface Records by Bank' Report_Title,
-        ml.meaning Priority,
-        count(*) Count,
-        extract(year from chie.creation_date) Period_Year,
-        null Period_Number, 
-        to_char(chie.creation_date,'MON-YY'), -- Period_Name
-        null Ledger,
-        null Operating_Unit,
-        null Operating_Unit_Id,
-        null Org_Code,
-        null Inv_Organization_Id,
-        fl1.meaning Column_Type, -- Bank Name
-        (select max(hp.party_name)
-         from   ce_bank_accounts cba,
-                hz_parties hp
-         where  hp.party_id          = cba.bank_id
-         and    cba.bank_account_num = chie.bank_account_num) Column_Info,
-        fl2.meaning Status,
-        chie.message_name Reject_Code_or_Error_Message,
-        'Rows in the CE_HEADER_INTERFACE_ERRORS table' Interface_Description
-from    ce_header_interface_errors chie,
-        fnd_application_vl fav,
-        fnd_product_installations fpi,
-        fnd_lookups fl1, -- Bank Name
-        fnd_lookups fl2, -- Status
-        mfg_lookups ml -- Priority
-where   fav.application_short_name       = 'CE'
--- Only report installed applications
-and     fav.application_id               = fpi.application_id
-and     fpi.status                      <> 'N' -- Inactive
-and     fl1.lookup_type                  = 'JA_CN_XML_TAGS'
-and     fl1.lookup_code                  = 'BANK_NAME'
-and     fl2.lookup_type                  = 'LOG_TYPE_CODE'
-and     fl2.lookup_code                  = 'E'
-and     ml.lookup_type                   = 'CST_SRS_RESOLUTION_TYPES'
-and     ml.lookup_code                   = 3 -- Resolution Recommended
-and     5=5                              -- p_functional_area
-and     8=8                              -- p_period_year_for_cash_management
-group by
-        fav.application_name, -- Functional_Area
-        'CE_Header_Interface_Errors', -- Interface_Report
-        'Number of Cash Mgmt Interface Records by Bank', -- Report_Title
-        ml.meaning, -- Priority
-        extract(year from chie.creation_date), -- Period_Year
-        null, -- Period_Number 
-        to_char(chie.creation_date,'MON-YY'), -- Period_Name
-        null, -- Ledger
-        null, -- Operating_Unit
-        null, -- Operating_Unit_Id
-        null, -- Org_Code
-        null, -- Inv_Organization_Id
-        fl1.meaning, -- Column_Type, Bank Name
-        chie.bank_account_num, -- Column_Info
-        fl2.meaning, -- Status
-        chie.message_name, -- Reject_Code_or_Error_Message
-        'Rows in the CE_HEADER_INTERFACE_ERRORS table' -- Interface_Description
-
--- +=============================================================================+
--- |                       General Ledger Interface Reports                      |
--- +=============================================================================+
-
+select
+6 section,
+'CE' fav_app,
+'CE' fpi_app,
+null area,
+'CE_Header_Interface_Errors' report_interface,
+'Number of Cash Mgmt Interface Records by Bank' report_title,
+'3' priority_code,
+'N' lvl,
+to_number(null) organization_id,
+to_number(null) operating_unit_id,
+to_number(null) ledger_id,
+to_number(null) acct_period_id,
+chie.creation_date txn_date,
+(select xxen_util.meaning('BANK_NAME','JA_CN_XML_TAGS',0) from dual) column_type,
+(select max(hp.party_name) from ce_bank_accounts cba, hz_parties hp where chie.bank_account_num=cba.bank_account_num and cba.bank_id=hp.party_id) column_info,
+(select xxen_util.meaning('E','LOG_TYPE_CODE',0) from dual) status_code,
+chie.message_name message,
+'Rows in the CE_HEADER_INTERFACE_ERRORS table' interface_description
+from
+ce_header_interface_errors chie
 union all
--- =======================================================
---  General Ledger Summary Interface Report
--- =======================================================
--- With Ledger Ids
-select  fav.application_name Functional_Area,
-        'GL_Interface' Interface_Report,
-        'Number of G/L Lines by Ledger' Report_Title,
-        ml.meaning Priority,
-        count(*) Count,
-        gp.period_year Period_Year,
-        gp.period_num Period_Number, 
-        gp.period_name Period_Name,
-        nvl(gl.short_name, gl.name) Ledger,
-        null Operating_Unit,
-        null Operating_Unit_Id,
-        null Org_Code,
-        null Inv_Organization_Id,
-        fl.meaning Column_Type, -- Journal Source
-        gi.user_je_source_name Column_Info,
-        gi.status Status,
-        null Reject_Code_or_Error_Message,
-        'Rows in the GL_INTERFACE table' Interface_Description
-from    gl_interface gi,
-        gl_periods gp,
-        gl_ledgers gl,
-        fnd_application_vl fav,
-        fnd_product_installations fpi,
-        fnd_lookups fl, -- Journal Source
-        mfg_lookups ml -- Priority
-where   gl.ledger_id                     = case
-                                              -- Payroll Journals
-                                              when gi.ledger_id = -1 then gi.set_of_books_id
-                                              -- Non-Payroll Journals
-                                              when gi.ledger_id > -1 then gi.ledger_id
-                                              else gi.ledger_id
-                                           end
-and     nvl(gi.accounting_date, gi.transaction_date) between gp.start_date and gp.end_date
-and     gp.adjustment_period_flag        = 'N'
--- To avoid cross joining with secondary period information
-and     gp.period_set_name               = gl.period_set_name
-and     gp.period_type                   = gl.accounted_period_type
-and     fav.application_short_name       = 'SQLGL'
--- Only report installed applications
-and     fav.application_id               = fpi.application_id
-and     fpi.status                      <> 'N' -- Inactive
-and     fl.lookup_type                   = 'JGSLAJNLTP_RPT_SORT_PARAMS'
-and     fl.lookup_code                   = 'JE_SOURCE_NAME'
-and     ml.lookup_type                   = 'CST_SRS_RESOLUTION_TYPES'
-and     ml.lookup_code                   = 3 -- Resolution Recommended
--- Revision for Ledger Security Controls
-and     (nvl(fnd_profile.value('XXEN_REPORT_USE_LEDGER_SECURITY'),'N')='N' or gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+)))
-and     1=1                              -- p_ledger
-and     4=4                              -- p_period_name
-and     5=5                              -- p_functional_area
-and     6=6                              -- p_period_year
-group by
-        fav.application_name, -- Functional_Area
-        'GL_Interface', -- Interface_Report
-        'Number of G/L Lines by Ledger', -- Report_Title
-        ml.meaning, -- Priority
-        gp.period_year,
-        gp.period_num,
-        gp.period_name,
-        nvl(gl.short_name, gl.name),
-        null, -- Operating_Unit
-        null, -- Operating_Unit_Id
-        null, -- Org_Code
-        null, -- Inv_Organization_Id
-        fl.meaning, -- Column_Type, Journal Source
-        gi.user_je_source_name, -- Column_Info
-        gi.status, -- Status
-        null, -- Reject_Code_or_Error_Message
-        'Rows in the GL_INTERFACE table' -- Interface_Description
+select
+7 section,
+'SQLGL' fav_app,
+'SQLGL' fpi_app,
+null area,
+'GL_Interface' report_interface,
+'Number of G/L Lines by Ledger' report_title,
+'3' priority_code,
+'G' lvl,
+to_number(null) organization_id,
+to_number(null) operating_unit_id,
+decode(gi.ledger_id,-1,gi.set_of_books_id,gi.ledger_id) ledger_id,
+to_number(null) acct_period_id,
+nvl(gi.accounting_date,gi.transaction_date) txn_date,
+(select xxen_util.meaning('JE_SOURCE_NAME','JGSLAJNLTP_RPT_SORT_PARAMS',0) from dual) column_type,
+gi.user_je_source_name column_info,
+gi.status status_code,
+null message,
+'Rows in the GL_INTERFACE table' interface_description
+from
+gl_interface gi
 union all
--- =======================================================
---  General Ledger Summary Interface Report
--- =======================================================
--- Missing Ledger Ids
-select  fav.application_name Functional_Area,
-        'GL_Interface' Interface_Report,
-        'Number of G/L Lines With No Ledger Id' Report_Title,
-        ml.meaning Priority,
-        count(*) Count,
-        extract(year from nvl(gi.accounting_date, gi.transaction_date)) Period_Year,
-        null Period_Number, 
-        to_char(nvl(gi.accounting_date, gi.transaction_date),'MON-YY') Period_Name,
-        null Ledger,
-        null Operating_Unit,
-        null Operating_Unit_Id,
-        null Org_Code,
-        null Inv_Organization_Id,
-        fl.meaning Column_Type, -- Journal Source
-        gi.user_je_source_name Column_Info,
-        gi.status Status,
-        'Missing Ledger Id' Reject_Code_or_Error_Message,
-        'Rows in the GL_INTERFACE table' Interface_Description
-from    gl_interface gi,
-        fnd_application_vl fav,
-        fnd_product_installations fpi,
-        fnd_lookups fl, -- Journal Source
-        mfg_lookups ml -- Priority
-where   (gi.ledger_id = -1 and gi.set_of_books_id is null)
-and     fav.application_short_name       = 'SQLGL'
--- Only report installed applications
-and     fav.application_id               = fpi.application_id
-and     fpi.status                      <> 'N' -- Inactive
-and     fl.lookup_type                   = 'JGSLAJNLTP_RPT_SORT_PARAMS'
-and     fl.lookup_code                   = 'JE_SOURCE_NAME'
-and     ml.lookup_type                   = 'CST_SRS_RESOLUTION_TYPES'
-and     ml.lookup_code                   = 3 -- Resolution Recommended
-and     5=5                              -- p_functional_area
-and     7=7                              -- p_period_year_for_gl
-group by
-        fav.application_name, -- Functional_Area
-        'GL_Interface', -- Interface_Report
-        'Number of G/L Lines With No Ledger Id', -- Report_Title
-        ml.meaning, -- Priority
-        extract(year from nvl(gi.accounting_date, gi.transaction_date)), -- Period_Year
-        null, -- Period_Number
-        to_char(nvl(gi.accounting_date, gi.transaction_date),'MON-YY'), -- Period_Name
-        null, -- Ledger
-        null, -- Operating_Unit
-        null, -- Operating_Unit_Id
-        null, -- Org_Code
-        null, -- Inv_Organization_Id
-        fl.meaning, -- Column_Type, Journal Source
-        gi.user_je_source_name, -- Column_Info
-        gi.status, -- Status
-        'Missing Ledger Id', -- Reject_Code_or_Error_Message
-        'Rows in the GL_INTERFACE table' -- Interface_Description
-
--- +=============================================================================+
--- |                         Inventory Interface Reports                         |
--- +=============================================================================+
-
+select
+8 section,
+'SQLGL' fav_app,
+'SQLGL' fpi_app,
+null area,
+'GL_Interface' report_interface,
+'Number of G/L Lines With No Ledger Id' report_title,
+'3' priority_code,
+'N' lvl,
+to_number(null) organization_id,
+to_number(null) operating_unit_id,
+to_number(null) ledger_id,
+to_number(null) acct_period_id,
+nvl(gi.accounting_date,gi.transaction_date) txn_date,
+(select xxen_util.meaning('JE_SOURCE_NAME','JGSLAJNLTP_RPT_SORT_PARAMS',0) from dual) column_type,
+gi.user_je_source_name column_info,
+gi.status status_code,
+'Missing Ledger Id' message,
+'Rows in the GL_INTERFACE table' interface_description
+from
+gl_interface gi
+where
+gi.ledger_id=-1 and
+gi.set_of_books_id is null
 union all
--- =======================================================
---  Unprocessed Material Errors - MTL_Material_Transactions_Temp
--- =======================================================
-select  fav.application_name Functional_Area,
-        'MTL_Material_Transactions_Temp' Interface_Report,
-        'Unprocessed Material Errors' Report_Title,
-        ml1.meaning Priority,
-        count(*) Count,
-        gp.period_year Period_Year,
-        gp.period_num Period_Number, 
-        gp.period_name Period_Name,
-        inv_orgs.ledger Ledger,
-        inv_orgs.operating_unit Operating_Unit,
-        inv_orgs.operating_unit_id Operating_Unit_Id,
-        inv_orgs.organization_code Org_Code,
-        inv_orgs.organization_id Inv_Organization_Id,
-        ml2.meaning Column_Type, -- Transaction Type
-        mtt.transaction_type_name Column_Info,
-        mmtt.process_flag Status,
-        mmtt.error_code Reject_Code_or_Error_Message,
-        'Rows have Errored in the Material Transactions Temp table' Interface_Description
-from    mtl_material_transactions_temp mmtt,
-        mtl_transaction_types mtt,
-        org_acct_periods oap,
-        gl_periods gp,
-        inv_organizations inv_orgs,
-        fnd_application_vl fav,
-        fnd_product_installations fpi,
-        mfg_lookups ml1, -- Priority
-        mfg_lookups ml2  -- Transaction Type
-where   mmtt.process_flag                = 'E'
-and     mmtt.organization_id             = inv_orgs.organization_id
-and     oap.acct_period_id               = mmtt.acct_period_id
-and     trunc(mmtt.transaction_date) between inv_le_timezone_pub.get_server_day_time_for_le(oap.period_start_date,inv_orgs.legal_entity_id) and inv_le_timezone_pub.get_server_day_time_for_le(oap.schedule_close_date,inv_orgs.legal_entity_id)
-and     oap.organization_id              = inv_orgs.organization_id
-and     oap.period_set_name              = inv_orgs.period_set_name
-and     mtt.transaction_type_id          = mmtt.transaction_type_id (+)
-and     gp.adjustment_period_flag        = 'N'
--- To avoid cross joining with secondary period information
-and     gp.period_set_name               = oap.period_set_name
-and     gp.period_name                   = oap.period_name
-and     gp.period_type                   = inv_orgs.accounted_period_type
-and     fav.application_short_name       = 'INV'
--- Only report installed applications
-and     fav.application_id               = fpi.application_id
-and     fpi.status                      <> 'N' -- Inactive
-and     ml1.lookup_type                  = 'CST_SRS_RESOLUTION_TYPES'
-and     ml1.lookup_code                  = 2 -- Resolution Required
-and     ml2.lookup_type                  = 'INV_SRS_REG_BREAK'
-and     ml2.lookup_code                  = 3 -- Transaction Type
-and     4=4                              -- p_period_name
-and     5=5                              -- p_functional_area
-and     6=6                              -- p_period_year
-group by
-        fav.application_name, -- Functional_Area
-        'MTL_Material_Transactions_Temp', -- Interface_Report
-        'Unprocessed Material Errors', -- Report_Title
-        ml1.meaning, -- Priority
-        gp.period_year,
-        gp.period_num, 
-        gp.period_name,
-        inv_orgs.ledger,
-        inv_orgs.operating_unit,
-        inv_orgs.operating_unit_id,
-        inv_orgs.organization_code,
-        inv_orgs.organization_id,
-        ml2.meaning, -- Column_Type, Transaction Type
-        mtt.transaction_type_name, -- Column_Info,
-        mmtt.process_flag, -- Status
-        mmtt.error_code, -- Reject_Code_or_Error_Message
-        'Rows have Errored in the Material Transactions Temp table' -- Interface_Description
+select
+9 section,
+'INV' fav_app,
+'INV' fpi_app,
+null area,
+'MTL_Material_Transactions_Temp' report_interface,
+'Unprocessed Material Errors' report_title,
+'2' priority_code,
+'IA' lvl,
+mmtt.organization_id,
+to_number(null) operating_unit_id,
+to_number(null) ledger_id,
+mmtt.acct_period_id,
+mmtt.transaction_date txn_date,
+(select xxen_util.meaning('3','INV_SRS_REG_BREAK',700) from dual) column_type,
+(select mtt.transaction_type_name from mtl_transaction_types mtt where mmtt.transaction_type_id=mtt.transaction_type_id) column_info,
+mmtt.process_flag status_code,
+mmtt.error_code message,
+'Rows have Errored in the Material Transactions Temp table' interface_description
+from
+mtl_material_transactions_temp mmtt
+where
+mmtt.process_flag='E'
 union all
--- =======================================================
---  Unprocessed Locked Material - MTL_Material_Transactions_Temp
--- =======================================================
-select  fav.application_name Functional_Area,
-        'MTL_Material_Transactions_Temp' Interface_Report,
-        'Unprocessed Material Transactions With Locked Records' Report_Title,
-        ml1.meaning Priority,
-        count(*) Count,
-        gp.period_year Period_Year,
-        gp.period_num Period_Number, 
-        gp.period_name Period_Name,
-        inv_orgs.ledger Ledger,
-        inv_orgs.operating_unit Operating_Unit,
-        inv_orgs.operating_unit_id Operating_Unit_Id,
-        inv_orgs.organization_code Org_Code,
-        inv_orgs.organization_id Inv_Organization_Id,
-        ml2.meaning Column_Type, -- Transaction Type
-        mtt.transaction_type_name Column_Info,
-        mmtt.process_flag Status,
-        mmtt.error_code Reject_Code_or_Error_Message,
-        'Rows have their records locked in the MTL_MATERIAL_TRANSACTIONS_TEMP table' Interface_Description
-from    mtl_material_transactions_temp mmtt,
-        mtl_transaction_types mtt,
-        org_acct_periods oap,
-        gl_periods gp,
-        inv_organizations inv_orgs,
-        fnd_application_vl fav,
-        fnd_product_installations fpi,
-        mfg_lookups ml1, -- Priority
-        mfg_lookups ml2  -- Transaction Type
-where   (nvl(mmtt.lock_flag,'N') = 'Y' or nvl(mmtt.lock_flag,'N') = '1')
-and     mmtt.organization_id             = inv_orgs.organization_id
-and     oap.acct_period_id               = mmtt.acct_period_id
-and     trunc(mmtt.transaction_date) between inv_le_timezone_pub.get_server_day_time_for_le(oap.period_start_date,inv_orgs.legal_entity_id) and inv_le_timezone_pub.get_server_day_time_for_le(oap.schedule_close_date,inv_orgs.legal_entity_id)
-and     oap.organization_id              = inv_orgs.organization_id
-and     oap.period_set_name              = inv_orgs.period_set_name
-and     mtt.transaction_type_id          = mmtt.transaction_type_id (+)
-and     gp.adjustment_period_flag        = 'N'
--- To avoid cross joining with secondary period information
-and     gp.period_set_name               = oap.period_set_name
-and     gp.period_name                   = oap.period_name
-and     gp.period_type                   = inv_orgs.accounted_period_type
-and     fav.application_short_name       = 'INV'
--- Only report installed applications
-and     fav.application_id               = fpi.application_id
-and     fpi.status                      <> 'N' -- Inactive
-and     ml1.lookup_type                  = 'CST_SRS_RESOLUTION_TYPES'
-and     ml1.lookup_code                  = 2 -- Resolution Required
-and     ml2.lookup_type                  = 'INV_SRS_REG_BREAK'
-and     ml2.lookup_code                  = 3 -- Transaction Type
-and     4=4                              -- p_period_name
-and     5=5                              -- p_functional_area
-and     6=6                              -- p_period_year
-group by
-        fav.application_name, -- Functional_Area
-        'MTL_Material_Transactions_Temp', -- Interface_Report
-        'Unprocessed Material Transactions With Locked Records', -- Report_Title
-        ml1.meaning, -- Priority
-        gp.period_year,
-        gp.period_num, 
-        gp.period_name,
-        inv_orgs.ledger,
-        inv_orgs.operating_unit,
-        inv_orgs.operating_unit_id,
-        inv_orgs.organization_code,
-        inv_orgs.organization_id,
-        ml2.meaning, -- Column_Type, Transaction Type
-        mtt.transaction_type_name, -- Column_Info,
-        mmtt.process_flag, -- Status
-        mmtt.error_code, -- Reject_Code_or_Error_Message
-        'Rows have their records locked in the MTL_MATERIAL_TRANSACTIONS_TEMP table' -- Interface_Description
+select
+10 section,
+'INV' fav_app,
+'INV' fpi_app,
+null area,
+'MTL_Material_Transactions_Temp' report_interface,
+'Unprocessed Material Transactions With Locked Records' report_title,
+'2' priority_code,
+'IA' lvl,
+mmtt.organization_id,
+to_number(null) operating_unit_id,
+to_number(null) ledger_id,
+mmtt.acct_period_id,
+mmtt.transaction_date txn_date,
+(select xxen_util.meaning('3','INV_SRS_REG_BREAK',700) from dual) column_type,
+(select mtt.transaction_type_name from mtl_transaction_types mtt where mmtt.transaction_type_id=mtt.transaction_type_id) column_info,
+mmtt.process_flag status_code,
+mmtt.error_code message,
+'Rows have their records locked in the MTL_MATERIAL_TRANSACTIONS_TEMP table' interface_description
+from
+mtl_material_transactions_temp mmtt
+where
+mmtt.lock_flag in ('Y','1')
 union all
--- =======================================================
---  Pending Material - MTL_Transactions_Interface
--- =======================================================
-select  fav.application_name Functional_Area,
-        'MTL_Transactions_Interface' Interface_Report,
-        'Pending Material Transactions' Report_Title,
-        ml1.meaning Priority,
-        count(*) Count,
-        gp.period_year Period_Year,
-        gp.period_num Period_Number, 
-        gp.period_name Period_Name,
-        inv_orgs.ledger Ledger,
-        inv_orgs.operating_unit Operating_Unit,
-        inv_orgs.operating_unit_id Operating_Unit_Id,
-        inv_orgs.organization_code Org_Code,
-        inv_orgs.organization_id Inv_Organization_Id,
-        ml2.meaning Column_Type, -- Transaction Type
-        mtt.transaction_type_name Column_Info,
-        decode(mti.process_flag,
-                1, '1 - Ready',
-                2, '2 - Not Ready',
-                3, '3 - Error'
-              ) Status,
-        mti.error_code Reject_Code_or_Error_Message,
-        'Rows in the Material Transaction Interface' Interface_Description
-from    mtl_transactions_interface mti,
-        mtl_transaction_types mtt,
-        gl_periods gp,
-        inv_organizations inv_orgs,
-        fnd_application_vl fav,
-        fnd_product_installations fpi,
-        mfg_lookups ml1, -- Priority
-        mfg_lookups ml2  -- Transaction Type
-where   mti.transaction_type_id          = mtt.transaction_type_id (+)
-and     mti.organization_id              = inv_orgs.organization_id
--- Check for the transaction date as the Period Name is not always populated
-and     trunc(nvl(mti.transaction_date,sysdate)) between inv_le_timezone_pub.get_server_day_time_for_le(gp.start_date,inv_orgs.legal_entity_id) and inv_le_timezone_pub.get_server_day_time_for_le(gp.end_date,inv_orgs.legal_entity_id)
-and     gp.adjustment_period_flag        = 'N'
--- To avoid cross joining with secondary period information
-and     gp.period_set_name               = inv_orgs.period_set_name
-and     gp.period_type                   = inv_orgs.accounted_period_type
-and     fav.application_short_name       = 'INV'
--- Only report installed applications
-and     fav.application_id               = fpi.application_id
-and     fpi.status                      <> 'N' -- Inactive
-and     ml1.lookup_type                  = 'CST_SRS_RESOLUTION_TYPES'
--- Revision for version 1.44
-and     ml1.lookup_code                  = 3 -- Resolution Recommended
-and     ml2.lookup_type                  = 'INV_SRS_REG_BREAK'
-and     ml2.lookup_code                  = 3 -- Transaction Type
-and     4=4                              -- p_period_name
-and     5=5                              -- p_functional_area
-and     6=6                              -- p_period_year
-group by
-        fav.application_name, -- Functional_Area
-        'MTL_Transactions_Interface Errors', -- Interface_Report
-        'Pending Material Transactions', -- Report_Title
-        ml1.meaning, -- Priority
-        gp.period_year,
-        gp.period_num, 
-        gp.period_name,
-        inv_orgs.ledger,
-        inv_orgs.operating_unit,
-        inv_orgs.operating_unit_id,
-        inv_orgs.organization_code,
-        inv_orgs.organization_id,
-        ml2.meaning, -- Column_Type, Transaction Type
-        mtt.transaction_type_name, -- Column_Info,
-        decode(mti.process_flag,
-                1, '1 - Ready',
-                2, '2 - Not Ready',
-                3, '3 - Error'
-              ), -- Status
-        mti.error_code, -- Reject_Code_or_Error_Message
-        'Rows in the Material Transaction Interface' -- Interface_Description
+select
+11 section,
+'INV' fav_app,
+'INV' fpi_app,
+null area,
+'MTL_Transactions_Interface' report_interface,
+'Pending Material Transactions' report_title,
+'3' priority_code,
+'ID' lvl,
+mti.organization_id,
+to_number(null) operating_unit_id,
+to_number(null) ledger_id,
+to_number(null) acct_period_id,
+nvl(mti.transaction_date,sysdate) txn_date,
+(select xxen_util.meaning('3','INV_SRS_REG_BREAK',700) from dual) column_type,
+(select mtt.transaction_type_name from mtl_transaction_types mtt where mti.transaction_type_id=mtt.transaction_type_id) column_info,
+decode(mti.process_flag,1,'1 - Ready',2,'2 - Not Ready',3,'3 - Error') status_code,
+mti.error_code message,
+'Rows in the Material Transaction Interface' interface_description
+from
+mtl_transactions_interface mti
 union all
--- =======================================================
---  Pending Locked Material - MTL_Transactions_Interface Errors
--- =======================================================
-select  fav.application_name Functional_Area,
-        'MTL_Transactions_Interface Errors' Interface_Report,
-        'Pending Material Transactions With Locked Records' Report_Title,
-        ml1.meaning Priority,
-        count(*) Count,
-        gp.period_year Period_Year,
-        gp.period_num Period_Number, 
-        gp.period_name Period_Name,
-        inv_orgs.ledger Ledger,
-        inv_orgs.operating_unit Operating_Unit,
-        inv_orgs.operating_unit_id Operating_Unit_Id,
-        inv_orgs.organization_code Org_Code,
-        inv_orgs.organization_id Inv_Organization_Id,
-        ml2.meaning Column_Type, -- Transaction Type
-        mtt.transaction_type_name Column_Info,
-        -- mti.transaction_type_id Transaction_Type_Id,
-        to_char(mti.process_flag) Status,
-        -- mti.transaction_date Transaction_Date,
-        mti.error_code Reject_Code_or_Error_Message,
-        -- mti.error_explanation Error_Explanation,
-        'Rows have their records locked' Interface_Description
-from    mtl_transactions_interface mti,
-        mtl_transaction_types mtt,
-        gl_periods gp,
-        inv_organizations inv_orgs,
-        fnd_application_vl fav,
-        fnd_product_installations fpi,
-        mfg_lookups ml1, -- Priority
-        mfg_lookups ml2  -- Transaction Type
-where   mti.lock_flag                    = 1
-and     mti.organization_id              = inv_orgs.organization_id
-and     mti.transaction_type_id          = mtt.transaction_type_id
--- Check for the transaction date as the Period Name is not always populated
-and     trunc(nvl(mti.transaction_date,sysdate)) between inv_le_timezone_pub.get_server_day_time_for_le(gp.start_date,inv_orgs.legal_entity_id) and inv_le_timezone_pub.get_server_day_time_for_le(gp.end_date,inv_orgs.legal_entity_id)
-and     gp.adjustment_period_flag        = 'N'
--- To avoid cross joining with secondary period information
-and     gp.period_set_name               = inv_orgs.period_set_name
-and     gp.period_type                   = inv_orgs.accounted_period_type
-and     fav.application_short_name       = 'INV'
--- Only report installed applications
-and     fav.application_id               = fpi.application_id
-and     fpi.status                      <> 'N' -- Inactive
-and     ml1.lookup_type                  = 'CST_SRS_RESOLUTION_TYPES'
-and     ml1.lookup_code                  = 2 -- Resolution Required
-and     ml2.lookup_type                  = 'INV_SRS_REG_BREAK'
-and     ml2.lookup_code                  = 3 -- Transaction Type
-and     4=4                              -- p_period_name
-and     5=5                              -- p_functional_area
-and     6=6                              -- p_period_year
-group by
-        fav.application_name, -- Functional_Area
-        'MTL_Transactions_Interface Errors', -- Interface_Report
-        'Pending Material Transactions With Locked Records', -- Report_Title
-        ml1.meaning, -- Priority
-        gp.period_year,
-        gp.period_num, 
-        gp.period_name,
-        inv_orgs.ledger,
-        inv_orgs.operating_unit,
-        inv_orgs.operating_unit_id,
-        inv_orgs.organization_code,
-        inv_orgs.organization_id,
-        ml2.meaning, -- Column_Type, Transaction Type
-        mtt.transaction_type_name, -- Column_Info
-        -- mti.transaction_type_id, -- Transaction_Type_Id
-        to_char(mti.process_flag), -- Status
-        -- mti.transaction_date, -- Transaction_Date
-        mti.error_code, -- Reject_Code_or_Error_Message
-        -- mti.error_explanation, -- Error_Explanation
-        'Rows have their records locked' -- Interface_Description
-
--- +=============================================================================+
--- |                         Inventory/WSM Cost Reports                          |
--- +=============================================================================+
-
+select
+12 section,
+'INV' fav_app,
+'INV' fpi_app,
+null area,
+'MTL_Transactions_Interface Errors' report_interface,
+'Pending Material Transactions With Locked Records' report_title,
+'2' priority_code,
+'ID' lvl,
+mti.organization_id,
+to_number(null) operating_unit_id,
+to_number(null) ledger_id,
+to_number(null) acct_period_id,
+nvl(mti.transaction_date,sysdate) txn_date,
+(select xxen_util.meaning('3','INV_SRS_REG_BREAK',700) from dual) column_type,
+(select mtt.transaction_type_name from mtl_transaction_types mtt where mti.transaction_type_id=mtt.transaction_type_id) column_info,
+to_char(mti.process_flag) status_code,
+mti.error_code message,
+'Rows have their records locked' interface_description
+from
+mtl_transactions_interface mti
+where
+mti.lock_flag=1
 union all
--- =======================================================
---  Uncosted Material - MTL_Material_Transactions
--- =======================================================
-select  fav.application_name Functional_Area,
-        'MTL_Material_Transactions' Interface_Report,
-        'Uncosted Material Transactions' Report_Title,
-        ml1.meaning Priority,
-        count(*) Count,
-        gp.period_year Period_Year,
-        gp.period_num Period_Number, 
-        gp.period_name Period_Name,
-        inv_orgs.ledger Ledger,
-        inv_orgs.operating_unit Operating_Unit,
-        inv_orgs.operating_unit_id Operating_Unit_Id,
-        inv_orgs.organization_code Org_Code,
-        inv_orgs.organization_id Inv_Organization_Id,
-        ml2.meaning Column_Type, -- Transaction Type
-        mtt.transaction_type_name Column_Info,
-        mmt.costed_flag Status,
-        mmt.error_code Reject_Code_or_Error_Message,
-        'Rows have not been costed, check the Cost Processor'  Interface_Description
-from    mtl_material_transactions mmt,
-        mtl_transaction_types mtt,
-        org_acct_periods oap,
-        gl_periods gp,
-        inv_organizations inv_orgs,
-        fnd_application_vl fav,
-        fnd_product_installations fpi,
-        mfg_lookups ml1, -- Priority
-        mfg_lookups ml2  -- Transaction Type
-where   mmt.costed_flag                  = 'N'
-and     mmt.transaction_type_id          = mtt.transaction_type_id
-and     oap.acct_period_id               = mmt.acct_period_id
-and     trunc(mmt.transaction_date) between inv_le_timezone_pub.get_server_day_time_for_le(oap.period_start_date,inv_orgs.legal_entity_id) and inv_le_timezone_pub.get_server_day_time_for_le(oap.schedule_close_date,inv_orgs.legal_entity_id)
-and     oap.organization_id              = inv_orgs.organization_id
-and     oap.period_set_name              = inv_orgs.period_set_name
-and     inv_orgs.organization_id         = nvl(mmt.transfer_organization_id, mmt.organization_id)
-and     gp.adjustment_period_flag        = 'N'
--- To avoid cross joining with secondary period information
-and     gp.period_set_name               = oap.period_set_name
-and     gp.period_name                   = oap.period_name
-and     gp.period_type                   = inv_orgs.accounted_period_type
-and     fav.application_short_name       = 'CST'
--- Only report installed applications, but CST is not installed, switch to INV
-and     fpi.application_id               = 401 -- INV
-and     fpi.status                      <> 'N' -- Inactive
--- Not applicable for Process Manufacturing
-and     inv_orgs.process_enabled_flag    = 'N'
-and     ml1.lookup_type                  = 'CST_SRS_RESOLUTION_TYPES'
-and     ml1.lookup_code                  = 2 -- Resolution Required
-and     ml2.lookup_type                  = 'INV_SRS_REG_BREAK'
-and     ml2.lookup_code                  = 3 -- Transaction Type
-and     4=4                              -- p_period_name
-and     5=5                              -- p_functional_area
-and     6=6                              -- p_period_year
-group by
-        fav.application_name, -- Functional_Area
-        'MTL_Material_Transactions', -- Interface_Report
-        'Uncosted Material Transactions', -- Report_Title
-        ml1.meaning, -- Priority
-        gp.period_year,
-        gp.period_num, 
-        gp.period_name,
-        inv_orgs.ledger,
-        inv_orgs.operating_unit,
-        inv_orgs.operating_unit_id,
-        inv_orgs.organization_code,
-        inv_orgs.organization_id,
-        ml2.meaning, -- Column_Type -- Transaction Type
-        mtt.transaction_type_name, -- Column_Info
-        mmt.costed_flag, -- Status
-        mmt.error_code, -- Reject_Code_or_Error_Message
-        'Rows have not been costed, check the Cost Processor' -- Interface_Description
+select
+13 section,
+'CST' fav_app,
+'INV' fpi_app,
+null area,
+'MTL_Material_Transactions' report_interface,
+'Uncosted Material Transactions' report_title,
+'2' priority_code,
+'IA' lvl,
+mmt.organization_id,
+to_number(null) operating_unit_id,
+to_number(null) ledger_id,
+mmt.acct_period_id,
+mmt.transaction_date txn_date,
+(select xxen_util.meaning('3','INV_SRS_REG_BREAK',700) from dual) column_type,
+(select mtt.transaction_type_name from mtl_transaction_types mtt where mmt.transaction_type_id=mtt.transaction_type_id) column_info,
+mmt.costed_flag status_code,
+mmt.error_code message,
+'Rows have not been costed, check the Cost Processor' interface_description
+from
+mtl_material_transactions mmt
+where
+mmt.costed_flag in ('N','E') and
+mmt.organization_id not in (select mp.organization_id from mtl_parameters mp where mp.process_enabled_flag='Y')
 union all
--- =======================================================
---  Uncosted WSM (WIP Split Merge Transactions)
--- =======================================================
-select  fav.application_name Functional_Area,
-        'WSM_Split_Merge_Transactions' Interface_Report,
-        'Uncosted WIP Split Merge Transactions' Report_Title,
-        ml1.meaning Priority,
-        count(*) Count,
-        gp.period_year Period_Year,
-        gp.period_num Period_Number, 
-        gp.period_name Period_Name,
-        inv_orgs.ledger Ledger,
-        inv_orgs.operating_unit Operating_Unit,
-        inv_orgs.operating_unit_id Operating_Unit_Id,
-        inv_orgs.organization_code Org_Code,
-        inv_orgs.organization_id Inv_Organization_Id,
-        ml2.meaning Column_Type, -- Transaction Type
-        ml3.meaning Column_Info,
-        ml4.meaning Status,
-        wsmt.error_message Reject_Code_or_Error_Message,
-        'Rows have not been costed, check the Cost Processor'  Interface_Description
-from    wsm_split_merge_transactions wsmt,
-        gl_periods gp,
-        inv_organizations inv_orgs,
-        fnd_application_vl fav,
-        fnd_product_installations fpi,
-        mfg_lookups ml1, -- Priority
-        mfg_lookups ml2, -- Transaction Type
-        mfg_lookups ml3, -- WSM WIP Lot Transaction Type
-        mfg_lookups ml4  -- Status
-where   wsmt.costed                     <> 4
-and     wsmt.organization_id             = inv_orgs.organization_id
--- Check for the transaction date
-and     trunc(nvl(wsmt.transaction_date,sysdate)) between inv_le_timezone_pub.get_server_day_time_for_le(gp.start_date,inv_orgs.legal_entity_id) and inv_le_timezone_pub.get_server_day_time_for_le(gp.end_date,inv_orgs.legal_entity_id)
-and     gp.adjustment_period_flag        = 'N'
--- To avoid cross joining with secondary period information
-and     gp.period_set_name               = inv_orgs.period_set_name
-and     gp.period_type                   = inv_orgs.accounted_period_type
-and     fav.application_short_name       = 'WSM'
--- Only report installed applications
-and     fav.application_id               = fpi.application_id
-and     fpi.status                      <> 'N' -- Inactive
--- Not applicable for Process Manufacturing
-and     inv_orgs.process_enabled_flag    = 'N'
-and     ml1.lookup_type                  = 'CST_SRS_RESOLUTION_TYPES'
-and     ml1.lookup_code                  = 2 -- Resolution Required
-and     ml2.lookup_type                  = 'INV_SRS_REG_BREAK'
-and     ml2.lookup_code                  = 3 -- Transaction Type
-and     ml3.lookup_type                  = 'WSM_WIP_LOT_TXN_TYPE'
-and     ml3.lookup_code                  = to_char(wsmt.transaction_type_id)
-and     ml4.lookup_type                  = 'WIP_PROCESS_STATUS'
-and     ml4.lookup_code                  = wsmt.status
-and     4=4                              -- p_period_name
-and     5=5                              -- p_functional_area
-and     6=6                              -- p_period_year
-group by
-        fav.application_name, -- Functional_Area
-        'WSM_Split_Merge_Transactions', -- Interface_Report
-        'Uncosted WIP Split Merge Transactions', -- Report_Title
-        ml1.meaning, -- Priority
-        gp.period_year,
-        gp.period_num, 
-        gp.period_name,
-        inv_orgs.ledger,
-        inv_orgs.operating_unit,
-        inv_orgs.operating_unit_id,
-        inv_orgs.organization_code,
-        inv_orgs.organization_id,
-        ml2.meaning, -- Column_Type, Transaction Type
-        ml3.meaning, -- Column_Info
-        ml4.meaning, -- Status
-        wsmt.error_message, -- Reject_Code_or_Error_Message,
-        'Rows have not been costed, check the Cost Processor' -- Interface_Description
-
--- +=============================================================================+
--- |                   Landed Cost Mgmt (INL) Cost Reports                       |
--- +=============================================================================+
-
+select
+14 section,
+'WSM' fav_app,
+'WSM' fpi_app,
+null area,
+'WSM_Split_Merge_Transactions' report_interface,
+'Uncosted WIP Split Merge Transactions' report_title,
+'2' priority_code,
+'ID' lvl,
+wsmt.organization_id,
+to_number(null) operating_unit_id,
+to_number(null) ledger_id,
+to_number(null) acct_period_id,
+nvl(wsmt.transaction_date,sysdate) txn_date,
+(select xxen_util.meaning('3','INV_SRS_REG_BREAK',700) from dual) column_type,
+xxen_util.meaning(to_char(wsmt.transaction_type_id),'WSM_WIP_LOT_TXN_TYPE',700) column_info,
+xxen_util.meaning(wsmt.status,'WIP_PROCESS_STATUS',700) status_code,
+wsmt.error_message message,
+'Rows have not been costed, check the Cost Processor' interface_description
+from
+wsm_split_merge_transactions wsmt
+where
+wsmt.costed<>4 and
+wsmt.organization_id not in (select mp.organization_id from mtl_parameters mp where mp.process_enabled_flag='Y')
 union all
--- =======================================================
---  Pending Landed Cost Management (INL) Interface
--- =======================================================
-select  fav.application_name Functional_Area,
-        'CST_Lc_Adj_Interface' Interface_Report,
-        'Pending LCM Interface' Report_Title,
-        ml1.meaning Priority,
-        count(*) Count,
-        gp.period_year Period_Year,
-        gp.period_num Period_Number, 
-        gp.period_name Period_Name,
-        inv_orgs.ledger Ledger,
-        inv_orgs.operating_unit Operating_Unit,
-        inv_orgs.operating_unit_id Operating_Unit_Id,
-        inv_orgs.organization_code Org_Code,
-        inv_orgs.organization_id Inv_Organization_Id,
-        ml2.meaning Column_Type, -- Receiving Transaction Type
-        flvv.meaning Column_Info,
-        ml3.meaning Status, -- Process Status
-        claie.error_message Reject_Code_or_Error_Message,
-        'Rows in the CST_LC_ADJ_INTERFACE table' -- Interface_Description
-from    cst_lc_adj_interface clai,
-        cst_lc_adj_interface_errors claie,
-        rcv_transactions rt,
-        gl_periods gp,
-        inv_organizations inv_orgs,
-        fnd_application_vl fav,
-        fnd_product_installations fpi,
-        fnd_lookup_values_vl flvv, -- Receiving Transaction Type
-        mfg_lookups ml1, -- Priority
-        mfg_lookups ml2, -- Transaction Type
-        mfg_lookups ml3  -- Process Status
-where   clai.organization_id             = inv_orgs.organization_id
-and     inv_orgs.lcm_enabled_flag        = 'Y'
-and     clai.transaction_id (+)          = claie.transaction_id
-and     rt.transaction_id                = clai.rcv_transaction_id
--- Check for the transaction date
-and     trunc(clai.transaction_date) between inv_le_timezone_pub.get_server_day_time_for_le(gp.start_date,inv_orgs.legal_entity_id) and inv_le_timezone_pub.get_server_day_time_for_le(gp.end_date,inv_orgs.legal_entity_id)
-and     gp.adjustment_period_flag        = 'N'
--- To avoid cross joining with secondary period information
-and     gp.period_set_name               = inv_orgs.period_set_name
-and     gp.period_type                   = inv_orgs.accounted_period_type
--- Revision for version 1.43
--- and     fav.application_short_name       = 'CST'
-and     fav.application_short_name       = 'INL'
-and     fpi.application_id               = fav.application_id
--- End revision for version 1.43
-and     fpi.status                      <> 'N' -- Inactive
-and     flvv.lookup_type                 = 'RCV TRANSACTION TYPE'
-and     flvv.lookup_code                 = rt.transaction_type
-and     ml1.lookup_type                  = 'CST_SRS_RESOLUTION_TYPES'
-and     ml1.lookup_code                  = 2 -- Resolution Required
-and     ml2.lookup_type                  = 'INV_SRS_REG_BREAK'
-and     ml2.lookup_code                  = 3 -- Transaction Type
-and     ml3.lookup_type                  = 'LANDED_COST_ADJ_PROCESS_STATUS'
-and     ml3.lookup_code                  = clai.process_status
-and     4=4                              -- p_period_name, period_year
-and     5=5                              -- p_functional_area
-and     6=6                              -- p_period_year
-group by
-        fav.application_name, -- Functional_Area
-        'CST_Lc_Adj_Interface', -- Report_Type
-        'Pending LCM Interface', -- Report_Title
-        ml1.meaning, -- Priority
-        gp.period_year,
-        gp.period_num, 
-        gp.period_name,
-        inv_orgs.ledger,
-        inv_orgs.operating_unit,
-        inv_orgs.operating_unit_id,
-        inv_orgs.organization_code,
-        inv_orgs.organization_id,
-        ml2.meaning, -- Column_Type, Receiving Transaction Type
-        flvv.meaning, -- Column_Info
-        ml3.meaning, -- Status, Process Status
-        claie.error_message, -- Reject_Code_or_Error_Message
-        'Rows in the CST_LC_ADJ_INTERFACE table' -- Interface_Description
-
--- +=============================================================================+
--- |                        Manufacturing (WIP) Reports                          |
--- +=============================================================================+
-
+select
+15 section,
+'INL' fav_app,
+'INL' fpi_app,
+null area,
+'CST_Lc_Adj_Interface' report_interface,
+'Pending LCM Interface' report_title,
+'2' priority_code,
+'ID' lvl,
+clai.organization_id,
+to_number(null) operating_unit_id,
+to_number(null) ledger_id,
+to_number(null) acct_period_id,
+clai.transaction_date txn_date,
+(select xxen_util.meaning('3','INV_SRS_REG_BREAK',700) from dual) column_type,
+xxen_util.meaning(rt.transaction_type,'RCV TRANSACTION TYPE',201) column_info,
+xxen_util.meaning(clai.process_status,'LANDED_COST_ADJ_PROCESS_STATUS',700) status_code,
+claie.error_message message,
+'Rows in the CST_LC_ADJ_INTERFACE table' interface_description
+from
+cst_lc_adj_interface clai,
+cst_lc_adj_interface_errors claie,
+rcv_transactions rt
+where
+clai.organization_id in (select mp.organization_id from mtl_parameters mp where mp.lcm_enabled_flag='Y') and
+clai.transaction_id=claie.transaction_id(+) and
+clai.rcv_transaction_id=rt.transaction_id
 union all
--- =======================================================
---  Pending Shop Floor Move Transactions
--- =======================================================
-select  fav.application_name Functional_Area,
-        'WIP_Move_Txn_Interface' Interface_Report,
-        'Pending Shop Floor Move Transactions' Report_Title,
-        ml1.meaning Priority,
-        count(*) Count,
-        gp.period_year Period_Year,
-        gp.period_num Period_Number, 
-        gp.period_name Period_Name,
-        inv_orgs.ledger Ledger,
-        inv_orgs.operating_unit Operating_Unit,
-        inv_orgs.operating_unit_id Operating_Unit_Id,
-        inv_orgs.organization_code Org_Code,
-        inv_orgs.organization_id Inv_Organization_Id,
-        ml2.meaning Column_Type, -- Transaction Type
-        ml3.meaning Column_Info,
-        ml4.meaning Status,
-        wtie.error_message Reject_Code_or_Error_Message,
-        'Rows in the WIP_MOVE_TXN_INTERFACE table' -- Interface_Description
-from    wip_move_txn_interface wmti,
-        wip_txn_interface_errors wtie,
-        gl_periods gp,
-        inv_organizations inv_orgs,
-        fnd_application_vl fav,
-        fnd_product_installations fpi,
-        mfg_lookups ml1, -- Priority
-        mfg_lookups ml2, -- Transaction Type
-        mfg_lookups ml3, -- WIP Move Transaction Type
-        mfg_lookups ml4  -- Status
-where   wmti.organization_id             = inv_orgs.organization_id
-and     wmti.transaction_id              = wtie.transaction_id (+)
--- Check for the transaction date
-and     trunc(nvl(wmti.transaction_date,sysdate)) between inv_le_timezone_pub.get_server_day_time_for_le(gp.start_date,inv_orgs.legal_entity_id) and inv_le_timezone_pub.get_server_day_time_for_le(gp.end_date,inv_orgs.legal_entity_id)
-and     gp.adjustment_period_flag        = 'N'
--- To avoid cross joining with secondary period information
-and     gp.period_set_name               = inv_orgs.period_set_name
-and     gp.period_type                   = inv_orgs.accounted_period_type
-and     fav.application_short_name       = 'WIP'
--- Only report installed applications
-and     fav.application_id               = fpi.application_id
-and     fpi.status                      <> 'N' -- Inactive
-and     ml1.lookup_type                  = 'CST_SRS_RESOLUTION_TYPES'
-and     ml1.lookup_code                  = 3 -- Resolution Recommended
-and     ml2.lookup_type                  = 'INV_SRS_REG_BREAK'
-and     ml2.lookup_code                  = 3 -- Transaction Type
-and     ml3.lookup_type                  = 'WIP_MOVE_TRANSACTION_TYPE'
-and     ml3.lookup_code                  = to_char(wmti.transaction_type)
-and     ml4.lookup_type                  = 'WIP_PROCESS_STATUS'
-and     ml4.lookup_code                  = to_char(wmti.process_status)
-and     4=4                              -- p_period_name
-and     5=5                              -- p_functional_area
-and     6=6                              -- p_period_year
-group by
-        fav.application_name, -- Functional_Area
-        'WIP_Move_Txn_Interface', -- Report_Typ
-        'Pending Shop Floor Move Transactions', -- Report_Title
-        ml1.meaning, -- Priority
-        gp.period_year,
-        gp.period_num, 
-        gp.period_name,
-        inv_orgs.ledger,
-        inv_orgs.operating_unit,
-        inv_orgs.operating_unit_id,
-        inv_orgs.organization_code,
-        inv_orgs.organization_id,
-        ml2.meaning, -- Column_Type, Transaction Type
-        ml3.meaning, -- Column_Info
-        ml4.meaning, -- Status
-        wtie.error_message, -- Reject_Code_or_Error_Message,
-        'Rows in the WIP_MOVE_TXN_INTERFACE table' -- Interface_Description
-
--- +=============================================================================+
--- |          Manufacturing (OSFM) Pending WSM Split Merge Transactions          |
--- +=============================================================================+
-
+select
+16 section,
+'WIP' fav_app,
+'WIP' fpi_app,
+null area,
+'WIP_Move_Txn_Interface' report_interface,
+'Pending Shop Floor Move Transactions' report_title,
+'3' priority_code,
+'ID' lvl,
+wmti.organization_id,
+to_number(null) operating_unit_id,
+to_number(null) ledger_id,
+to_number(null) acct_period_id,
+nvl(wmti.transaction_date,sysdate) txn_date,
+(select xxen_util.meaning('3','INV_SRS_REG_BREAK',700) from dual) column_type,
+xxen_util.meaning(to_char(wmti.transaction_type),'WIP_MOVE_TRANSACTION_TYPE',700) column_info,
+xxen_util.meaning(to_char(wmti.process_status),'WIP_PROCESS_STATUS',700) status_code,
+wtie.error_message message,
+'Rows in the WIP_MOVE_TXN_INTERFACE table' interface_description
+from
+wip_move_txn_interface wmti,
+wip_txn_interface_errors wtie
+where
+wmti.transaction_id=wtie.transaction_id(+)
 union all
--- =======================================================
--- Pending WSM Interface (WIP Split Merge) Transaction Reports
--- =======================================================
-select  fav.application_name Functional_Area,
-        'WSM_Split_Merge_Txn_Interface' Interface_Report,
-        'Pending WIP WSM Split Merge Transactions' Report_Title,
-        ml1.meaning Priority,
-        count(*) Count,
-        gp.period_year Period_Year,
-        gp.period_num Period_Number, 
-        gp.period_name Period_Name,
-        inv_orgs.ledger Ledger,
-        inv_orgs.operating_unit Operating_Unit,
-        inv_orgs.operating_unit_id Operating_Unit_Id,
-        inv_orgs.organization_code Org_Code,
-        inv_orgs.organization_id Inv_Organization_Id,
-        ml2.meaning Column_Type, -- Transaction Type
-        ml3.meaning Column_Info,
-        ml4.meaning Status,
-        wsmti.error_message Reject_Code_or_Error_Message,
-        'Rows in the WSM_SPLIT_MERGE_TXN_INTERFACE table' Interface_Description
-from    wsm_split_merge_txn_interface wsmti,
-        gl_periods gp,
-        inv_organizations inv_orgs,
-        fnd_application_vl fav,
-        fnd_product_installations fpi,
-        mfg_lookups ml1, -- Priority
-        mfg_lookups ml2, -- Transaction Type
-        mfg_lookups ml3, -- WSM WIP Lot Transaction Type
-        mfg_lookups ml4  -- Status
-where   wsmti.process_status            <> 4
-and     wsmti.organization_id            = inv_orgs.organization_id
--- Check for the transaction date as the Period Name is not always populated
-and     trunc(nvl(wsmti.transaction_date,sysdate)) between inv_le_timezone_pub.get_server_day_time_for_le(gp.start_date,inv_orgs.legal_entity_id) and inv_le_timezone_pub.get_server_day_time_for_le(gp.end_date,inv_orgs.legal_entity_id)
-and     gp.adjustment_period_flag        = 'N'
--- To avoid cross joining with secondary period information
-and     gp.period_set_name               = inv_orgs.period_set_name
-and     gp.period_type                   = inv_orgs.accounted_period_type
-and     fav.application_short_name       = 'WSM'
--- Only report installed applications
-and     fav.application_id               = fpi.application_id
-and     fpi.status                      <> 'N' -- Inactive
-and     ml1.lookup_type                  = 'CST_SRS_RESOLUTION_TYPES'
-and     ml1.lookup_code                  = 2 -- Resolution Required
-and     ml2.lookup_type                  = 'INV_SRS_REG_BREAK'
-and     ml2.lookup_code                  = 3 -- Transaction Type
-and     ml3.lookup_type                  = 'WSM_WIP_LOT_TXN_TYPE'
-and     ml3.lookup_code                  = to_char(wsmti.transaction_type_id)
-and     ml4.lookup_type                  = 'WIP_PROCESS_STATUS'
-and     ml4.lookup_code                  = wsmti.process_status
-and     4=4                              -- p_period_name
-and     5=5                              -- p_functional_area
-and     6=6                              -- p_period_year
-group by
-        fav.application_name, -- Functional_Area
-        'WSM_Split_Merge_Txn_Interface', -- Interface_Report
-        'Pending WIP WSM Split Merge Transactions', -- Report_Title
-        ml1.meaning, -- Priority
-        gp.period_year,
-        gp.period_num, 
-        gp.period_name,
-        inv_orgs.ledger,
-        inv_orgs.operating_unit,
-        inv_orgs.operating_unit_id,
-        inv_orgs.organization_code,
-        inv_orgs.organization_id,
-        ml2.meaning, -- Column_Type, Transaction Type
-        ml3.meaning, -- Column_Info
-        ml4.meaning, -- Process Status
-        wsmti.error_message, -- Reject_Code_or_Error_Message
-        'Rows in the WSM_SPLIT_MERGE_TXN_INTERFACE table' -- Interface_Description
+select
+17 section,
+'WSM' fav_app,
+'WSM' fpi_app,
+null area,
+'WSM_Split_Merge_Txn_Interface' report_interface,
+'Pending WIP WSM Split Merge Transactions' report_title,
+'2' priority_code,
+'ID' lvl,
+wsmti.organization_id,
+to_number(null) operating_unit_id,
+to_number(null) ledger_id,
+to_number(null) acct_period_id,
+nvl(wsmti.transaction_date,sysdate) txn_date,
+(select xxen_util.meaning('3','INV_SRS_REG_BREAK',700) from dual) column_type,
+xxen_util.meaning(to_char(wsmti.transaction_type_id),'WSM_WIP_LOT_TXN_TYPE',700) column_info,
+xxen_util.meaning(wsmti.process_status,'WIP_PROCESS_STATUS',700) status_code,
+wsmti.error_message message,
+'Rows in the WSM_SPLIT_MERGE_TXN_INTERFACE table' interface_description
+from
+wsm_split_merge_txn_interface wsmti
+where
+wsmti.process_status<>4
 union all
-select  fav.application_name Functional_Area,
-        'WSM_Lot_Split_Merges_Interface' Interface_Report,
-        'Pending WIP WSM Lot Split Merge Transactions' Report_Title,
-        ml1.meaning Priority,
-        count(*) Count,
-        gp.period_year Period_Year,
-        gp.period_num Period_Number, 
-        gp.period_name Period_Name,
-        inv_orgs.ledger Ledger,
-        inv_orgs.operating_unit Operating_Unit,
-        inv_orgs.operating_unit_id Operating_Unit_Id,
-        inv_orgs.organization_code Org_Code,
-        inv_orgs.organization_id Inv_Organization_Id,
-        ml2.meaning Column_Type, -- Transaction Type
-        ml3.meaning Column_Info,
-        ml4.meaning Status,
-        wlsmi.error_message Reject_Code_or_Error_Message,
-        'Rows in the WSM_LOT_SPLIT_MERGES_INTERFACE table'  Interface_Description
-from    wsm_lot_split_merges_interface wlsmi,
-        gl_periods gp,
-        inv_organizations inv_orgs,
-        fnd_application_vl fav,
-        fnd_product_installations fpi,
-        mfg_lookups ml1, -- Priority
-        mfg_lookups ml2, -- Transaction Type
-        mfg_lookups ml3, -- WSM WIP Lot Transaction Type
-        mfg_lookups ml4  -- Status
-where   wlsmi.process_status            <> 4
-and     wlsmi.organization_id            = inv_orgs.organization_id
--- Check for the transaction date as the Period Name is not always populated
-and     trunc(nvl(wlsmi.transaction_date,sysdate)) between inv_le_timezone_pub.get_server_day_time_for_le(gp.start_date,inv_orgs.legal_entity_id) and inv_le_timezone_pub.get_server_day_time_for_le(gp.end_date,inv_orgs.legal_entity_id)
-and     gp.adjustment_period_flag        = 'N'
--- To avoid cross joining with secondary period information
-and     gp.period_set_name               = inv_orgs.period_set_name
-and     gp.period_type                   = inv_orgs.accounted_period_type
-and     fav.application_short_name       = 'WSM'
--- Only report installed applications
-and     fav.application_id               = fpi.application_id
-and     fpi.status                      <> 'N' -- Inactive
-and     ml1.lookup_type                  = 'CST_SRS_RESOLUTION_TYPES'
-and     ml1.lookup_code                  = 2 -- Resolution Required
-and     ml2.lookup_type                  = 'INV_SRS_REG_BREAK'
-and     ml2.lookup_code                  = 3 -- Transaction Type
-and     ml3.lookup_type                  = 'WSM_WIP_LOT_TXN_TYPE'
-and     ml3.lookup_code                  = to_char(wlsmi.transaction_type_id)
-and     ml4.lookup_type                  = 'WIP_PROCESS_STATUS'
-and     ml4.lookup_code                  = wlsmi.process_status
-and     4=4                              -- p_period_name
-and     5=5                              -- p_functional_area
-and     6=6                              -- p_period_year
-group by
-        fav.application_name, -- Functional_Area
-        'WSM_Lot_Split_Merges_Interface', -- Interface_Report
-        'Pending WIP WSM Lot Split Merge Transactions', -- Report_Title
-        ml1.meaning, -- Priority
-        gp.period_year,
-        gp.period_num, 
-        gp.period_name,
-        inv_orgs.ledger,
-        inv_orgs.operating_unit,
-        inv_orgs.operating_unit_id,
-        inv_orgs.organization_code,
-        inv_orgs.organization_id,
-        ml2.meaning, -- Column_Type, Transaction Type
-        ml3.meaning, -- Column_Info
-        ml4.meaning, -- Process Status
-        wlsmi.error_message, -- Reject_Code_or_Error_Message
-        'Rows in the WSM_LOT_SPLIT_MERGES_INTERFACE table' -- Interface_Description
-
--- +=============================================================================+
--- |                      Manufacturing Cost Reports                             |
--- +=============================================================================+
-
+select
+18 section,
+'WSM' fav_app,
+'WSM' fpi_app,
+null area,
+'WSM_Lot_Split_Merges_Interface' report_interface,
+'Pending WIP WSM Lot Split Merge Transactions' report_title,
+'2' priority_code,
+'ID' lvl,
+wlsmi.organization_id,
+to_number(null) operating_unit_id,
+to_number(null) ledger_id,
+to_number(null) acct_period_id,
+nvl(wlsmi.transaction_date,sysdate) txn_date,
+(select xxen_util.meaning('3','INV_SRS_REG_BREAK',700) from dual) column_type,
+xxen_util.meaning(to_char(wlsmi.transaction_type_id),'WSM_WIP_LOT_TXN_TYPE',700) column_info,
+xxen_util.meaning(wlsmi.process_status,'WIP_PROCESS_STATUS',700) status_code,
+wlsmi.error_message message,
+'Rows in the WSM_LOT_SPLIT_MERGES_INTERFACE table' interface_description
+from
+wsm_lot_split_merges_interface wlsmi
+where
+wlsmi.process_status<>4
 union all
--- =======================================================
--- Pending WIP Costing - WIP_COST_TXN_INTERFACE Report
--- =======================================================
-select  fav.application_name Functional_Area,
-        'WIP_Cost_Txn_Interface' Interface_Report,
-        'Pending WIP Transactions' Report_Title,
-        ml1.meaning Priority,
-        count(*) Count,
-        gp.period_year Period_Year,
-        gp.period_num Period_Number, 
-        gp.period_name Period_Name,
-        inv_orgs.ledger Ledger,
-        inv_orgs.operating_unit Operating_Unit,
-        inv_orgs.operating_unit_id Operating_Unit_Id,
-        inv_orgs.organization_code Org_Code,
-        inv_orgs.organization_id Inv_Organization_Id,
-        ml2.meaning Column_Type, -- Transaction Type
-        ml3.meaning Column_Info,
-        ml4.meaning Status,
-        fl.meaning Reject_Code_or_Error_Message,
-        'Rows in the WIP_COST_TXN_INTERFACE table' Interface_Description
-from    wip_cost_txn_interface wcti,
-        org_acct_periods oap,
-        gl_periods gp,
-        inv_organizations inv_orgs,
-        fnd_application_vl fav,
-        fnd_product_installations fpi,
-        mfg_lookups ml1, -- Priority
-        mfg_lookups ml2, -- Transaction Type
-        mfg_lookups ml3, -- WIP Transaction Type
-        mfg_lookups ml4, -- Process Status
-        fnd_lookups fl   -- Reject_Code_or_Error_Message, Not Available
-where   wcti.organization_id             = inv_orgs.organization_id
-and     oap.acct_period_id               = wcti.acct_period_id
-and     trunc(nvl(wcti.transaction_date,sysdate)) between inv_le_timezone_pub.get_server_day_time_for_le(oap.period_start_date,inv_orgs.legal_entity_id) and inv_le_timezone_pub.get_server_day_time_for_le(oap.schedule_close_date,inv_orgs.legal_entity_id)
-and     oap.organization_id              = inv_orgs.organization_id
-and     oap.period_set_name              = inv_orgs.period_set_name
-and     gp.adjustment_period_flag        = 'N'
-and     gp.period_name                   = oap.period_name
--- To avoid cross joining with secondary period information
-and     gp.period_set_name               = oap.period_set_name
-and     gp.period_name                   = oap.period_name
-and     gp.period_type                   = inv_orgs.accounted_period_type
-and     fav.application_short_name       = 'CST'
--- Only report installed applications, but CST is not installed, switch to WIP
-and     fpi.application_id               = 706 -- WIP
-and     fpi.status                      <> 'N' -- Inactive
--- Not applicable for Process Manufacturing
-and     inv_orgs.process_enabled_flag    = 'N'
-and     ml1.lookup_type                  = 'CST_SRS_RESOLUTION_TYPES'
-and     ml1.lookup_code                  = 2 -- Resolution Required
-and     ml2.lookup_type                  = 'INV_SRS_REG_BREAK'
-and     ml2.lookup_code                  = 3 -- Transaction Type
-and     ml3.lookup_type                  = 'WIP_TRANSACTION_TYPE'
-and     ml3.lookup_code                  = to_char(wcti.transaction_type)
-and     ml4.lookup_code                  = wcti.process_status
-and     ml4.lookup_type                  = 'WIP_PROCESS_STATUS'
-and     fl.lookup_code                   = 'NOT AVAIL'
-and     fl.lookup_type                   = 'JTF_OUTCOME_CODE'
-and     4=4                              -- p_period_name
-and     5=5                              -- p_functional_area
-and     6=6                              -- p_period_year
-group by
-        fav.application_name, -- Functional_Area
-        'WIP_Cost_Txn_Interface', -- Interface_Report
-        'Pending WIP Transactions', -- Report_Title
-        ml1.meaning, -- Priority
-        gp.period_year,
-        gp.period_num, 
-        gp.period_name,
-        inv_orgs.ledger,
-        inv_orgs.operating_unit,
-        inv_orgs.operating_unit_id,
-        inv_orgs.organization_code,
-        inv_orgs.organization_id,
-        ml2.meaning, -- Column_Type, Transaction Type
-        ml3.meaning, -- Column_Info
-        ml4.meaning, -- Process Status
-        fl.meaning,  -- Reject_Code_or_Error_Message
-        'Rows in the WIP_COST_TXN_INTERFACE table' -- Interface_Description
-
--- +=============================================================================+
--- |                             Project Reports                                 |
--- +=============================================================================+
-
+select
+19 section,
+'CST' fav_app,
+'WIP' fpi_app,
+null area,
+'WIP_Cost_Txn_Interface' report_interface,
+'Pending WIP Transactions' report_title,
+'2' priority_code,
+'IA' lvl,
+wcti.organization_id,
+to_number(null) operating_unit_id,
+to_number(null) ledger_id,
+wcti.acct_period_id,
+nvl(wcti.transaction_date,sysdate) txn_date,
+(select xxen_util.meaning('3','INV_SRS_REG_BREAK',700) from dual) column_type,
+xxen_util.meaning(to_char(wcti.transaction_type),'WIP_TRANSACTION_TYPE',700) column_info,
+xxen_util.meaning(wcti.process_status,'WIP_PROCESS_STATUS',700) status_code,
+wtie.error_message message,
+'Rows in the WIP_COST_TXN_INTERFACE table' interface_description
+from
+wip_cost_txn_interface wcti,
+wip_txn_interface_errors wtie
+where
+wcti.organization_id not in (select mp.organization_id from mtl_parameters mp where mp.process_enabled_flag='Y') and
+wcti.transaction_id=wtie.transaction_id(+)
 union all
--- =======================================================
--- Pending Project Interface Transactions
--- =======================================================
-select  fav.application_name Functional_Area,
-        'PA_Transaction_Interface_All' Interface_Report,
-        'Pending Project Transactions' Report_Title,
-        ml.meaning Priority,
-        count(*) Count,
-        gp.period_year Period_Year,
-        gp.period_num Period_Number, 
-        gp.period_name Period_Name,
-        gl_ou.ledger Ledger,
-        gl_ou.operating_unit Operating_Unit,
-        gl_ou.operating_unit_id Operating_Unit_Id,
-        gl_ou.organization_code Org_Code,
-        gl_ou.organization_id Inv_Organization_Id,
-        flv.meaning Column_Type, -- Transaction Source
-        pti.transaction_source Column_Info,
-        pti.transaction_status_code Status_Code,
-        pl.meaning Reject_Code_or_Error_Message,
-        'Rows in the PA_Transaction_Interface_All table' Interface_Description
-from    pa_transaction_interface_all pti,
-        gl_periods gp,
-        fnd_application_vl fav,
-        fnd_product_installations fpi,
-        gl_ou,
-        fnd_lookup_values_vl flv, -- Transaction Source
-        mfg_lookups ml, -- Priority
-        pa_lookups pl -- PA Reject Error Messages
-where   gl_ou.operating_unit_id          = pti.org_id
--- pti.expenditure_item_date is a required column
-and     trunc(pti.expenditure_item_date) between gp.start_date and gp.end_date
-and     gp.adjustment_period_flag        = 'N'
--- To avoid cross joining with secondary period information
-and     gp.period_set_name               = gl_ou.period_set_name
-and     gp.period_type                   = gl_ou.accounted_period_type
-and     fav.application_short_name       = 'PA'
--- Only report installed applications
-and     fav.application_id               = fpi.application_id
-and     fpi.status                      <> 'N' -- Inactive
-and     flv.lookup_type                  = 'FC_VIEW_BY'
-and     flv.lookup_code                  = 'TRX'
-and     ml.lookup_type                   = 'CST_SRS_RESOLUTION_TYPES'
-and     ml.lookup_code                   = 3 -- Resolution Recommended
-and     pl.lookup_type (+)               = 'TRANSACTION REJECTION REASON'
-and     pl.lookup_code (+)               = pti.transaction_rejection_code
--- Only want unprocessed and erred out entries
-and     pti.transaction_status_code     <> 'P' -- 'P' for processed
-and     4=4                              -- p_period_name
-and     5=5                              -- p_functional_area
-and     6=6                              -- p_period_year
-group by
-        fav.application_name, -- Functional_Area
-        'PA_Transaction_Interface_All', -- Interface_Report
-        'Pending Project Transactions', -- Report_Title
-        ml.meaning, -- Priority
-        gp.period_year,
-        gp.period_num, 
-        gp.period_name,
-        gl_ou.ledger,
-        gl_ou.operating_unit,
-        gl_ou.operating_unit_id,
-        gl_ou.organization_code,
-        gl_ou.organization_id,
-        flv.meaning, -- Column_Type, Transaction Source
-        pti.transaction_source, -- Column_Info
-        pti.transaction_status_code, -- Status_Code
-        pl.meaning, -- Reject_Code_or_Error_Message
-        'Rows in the PA_Transaction_Interface_All table' -- Interface_Description
-
--- +=============================================================================+
--- |                  Purchasing and Requisition Reports                         |
--- +=============================================================================+
-
+select
+20 section,
+'PA' fav_app,
+'PA' fpi_app,
+null area,
+'PA_Transaction_Interface_All' report_interface,
+'Pending Project Transactions' report_title,
+'3' priority_code,
+'O' lvl,
+to_number(null) organization_id,
+ptia.org_id operating_unit_id,
+to_number(null) ledger_id,
+to_number(null) acct_period_id,
+ptia.expenditure_item_date txn_date,
+(select xxen_util.meaning('TRX','FC_VIEW_BY',260) from dual) column_type,
+ptia.transaction_source column_info,
+ptia.transaction_status_code status_code,
+xxen_util.meaning(ptia.transaction_rejection_code,'TRANSACTION REJECTION REASON',275) message,
+'Rows in the PA_Transaction_Interface_All table' interface_description
+from
+pa_transaction_interface_all ptia
+where
+ptia.transaction_status_code<>'P'
 union all
--- =======================================================
--- Pending PO Requisitions
--- =======================================================
-select  fav.application_name Functional_Area,
-        'PO_Requisitions_Interface_All' Interface_Report,
-        'Number of PO Requisitions' Report_Title,
-        ml.meaning Priority,
-        count(*) Count,
-        gp.period_year Period_Year,
-        gp.period_num Period_Number, 
-        gp.period_name Period_Name,
-        gl_ou.ledger Ledger,
-        gl_ou.operating_unit Operating_Unit,
-        gl_ou.operating_unit_id Operating_Unit_Id,
-        nvl(inv_orgs.organization_code, gl_ou.organization_code) Org_Code,
-        nvl(inv_orgs.organization_id, gl_ou.organization_id) Inv_Organization_Id,
-        'Interface Source' Column_Type,
-        pri.interface_source_code Column_Info,
-        pri.process_flag Status_Code,
-        pie.error_message Reject_Code_or_Error_Message,
-        'Rows in the PO_REQUISITIONS_INTERFACE_ALL table' Interface_Description
-from    po_requisitions_interface_all pri,
-        (select pie.interface_transaction_id,
-                pie.table_name,
-                pie.error_message
-         from   po_interface_errors pie
-         where  pie.table_name           = 'PO_REQUISITIONS_INTERFACE'
-        ) pie,
-        gl_periods gp,
-        fnd_application_vl fav,
-        fnd_product_installations fpi,
-        gl_ou,
-        inv_organizations inv_orgs,
-        mfg_lookups ml -- Priority
-where   gl_ou.operating_unit_id          = pri.org_id
-and     pie.interface_transaction_id (+) = pri.transaction_id
-and     inv_orgs.organization_id         = pri.destination_organization_id
--- pti.need_by_date is an optional column
-and     trunc(nvl(pri.need_by_date, pri.creation_date)) between gp.start_date and gp.end_date
-and     gp.adjustment_period_flag        = 'N'
--- To avoid cross joining with secondary period information
-and     gp.period_set_name               = gl_ou.period_set_name
-and     gp.period_type                   = gl_ou.accounted_period_type
-and     fav.application_short_name       = 'PO'
--- Only report installed applications
-and     fav.application_id               = fpi.application_id
-and     fpi.status                      <> 'N' -- Inactive
-and     ml.lookup_type                   = 'CST_SRS_RESOLUTION_TYPES'
-and     ml.lookup_code                   = 3 -- Resolution Recommended
-and     4=4                              -- p_period_name
-and     5=5                              -- p_functional_area
-and     6=6                              -- p_period_year
-group by
-        fav.application_name, -- Functional_Area
-        'PO_Requisitions_Interface_All', -- Interface_Report
-        'Number of PO Requisitions', -- Report_Title
-        ml.meaning, -- Priority
-        gp.period_year,
-        gp.period_num, 
-        gp.period_name,
-        gl_ou.ledger,
-        gl_ou.operating_unit,
-        gl_ou.operating_unit_id,
-        nvl(inv_orgs.organization_code, gl_ou.organization_code), -- Org_Code
-        nvl(inv_orgs.organization_id, gl_ou.organization_id), -- Inv_Organization_Id
-        'Interface Source', -- Column_Type
-        pri.interface_source_code, -- Column_Info
-        pri.process_flag, -- Status_Code
-        pie.error_message, -- Reject_Code_or_Error_Message
-        'Rows in the PO_REQUISITIONS_INTERFACE_ALL table' -- Interface_Description
-
--- +=============================================================================+
--- |                              Receiving Reports                              |
--- +=============================================================================+
-
+select
+21 section,
+'PO' fav_app,
+'PO' fpi_app,
+null area,
+'PO_Requisitions_Interface_All' report_interface,
+'Number of PO Requisitions' report_title,
+'3' priority_code,
+'O' lvl,
+pria.destination_organization_id organization_id,
+pria.org_id operating_unit_id,
+to_number(null) ledger_id,
+to_number(null) acct_period_id,
+nvl(pria.need_by_date,pria.creation_date) txn_date,
+'Interface Source' column_type,
+pria.interface_source_code column_info,
+pria.process_flag status_code,
+pie.error_message message,
+'Rows in the PO_REQUISITIONS_INTERFACE_ALL table' interface_description
+from
+po_requisitions_interface_all pria,
+po_interface_errors pie
+where
+pria.transaction_id=pie.interface_transaction_id(+) and
+pie.table_name(+)='PO_REQUISITIONS_INTERFACE'
 union all
--- =======================================================
--- Pending Expense Receiving Report
--- =======================================================
--- Get the Expense Receipts with an inventory organization id
-select  flvv.meaning Functional_Area,
-        'RCV_Transactions_Interface' Interface_Report,
-        'Pending Expense Receiving Transactions' Report_Title,
-        ml1.meaning Priority,
-        count(*) Count,
-        gp.period_year Period_Year,
-        gp.period_num Period_Number, 
-        gp.period_name Period_Name,
-        inv_orgs.ledger Ledger,
-        inv_orgs.operating_unit Operating_Unit,
-        inv_orgs.operating_unit_id Operating_Unit_Id,
-        inv_orgs.organization_code Org_Code,
-        inv_orgs.organization_id Inv_Organization_Id,
-        ml2.meaning Column_Type, -- Transaction Type
-        rti.transaction_type Column_Info,
-        rti.processing_status_code Status_Code,
-        rti.transaction_status_code Reject_Code_or_Error_Message,
-        'Rows in the RCV_TRANSACTIONS_INTERFACE table' Interface_Description
-from    rcv_transactions_interface rti,
-        gl_periods gp,
-        fnd_application_vl fav,
-        fnd_product_installations fpi,
-        inv_organizations inv_orgs,
-        mfg_lookups ml1, -- Priority
-        mfg_lookups ml2, -- Transaction Type
-        fnd_lookup_values_vl flvv -- Receiving
-where   rti.to_organization_id is not null
-and     rti.to_organization_id           = inv_orgs.organization_id
--- rti.transaction_date is a required column
-and     trunc(rti.transaction_date) between inv_le_timezone_pub.get_server_day_time_for_le(gp.start_date,inv_orgs.legal_entity_id) and inv_le_timezone_pub.get_server_day_time_for_le(gp.end_date,inv_orgs.legal_entity_id)
-and     gp.adjustment_period_flag        = 'N'
--- To avoid cross joining with secondary period information
-and     gp.period_set_name               = inv_orgs.period_set_name
-and     gp.period_type                   = inv_orgs.accounted_period_type
-and     fav.application_short_name       = 'PO'
--- Only report installed applications
-and     fav.application_id               = fpi.application_id
-and     fpi.status                      <> 'N' -- Inactive
--- Check for Expense Destinations
-and exists 
-        (-- ==============================================
-         -- Case I  - EXPENSE destination_type_code exists
-         --         - in rcv_transactions  
-         -- ==============================================
-         select 'x' 
-         from    rcv_transactions_interface rt2
-         where   rt2.interface_transaction_id = rti.interface_transaction_id
-         and     rt2.destination_type_code    = 'EXPENSE'
-         union all
-         -- ==============================================
-         -- Case II  - PO Distribution ID exists but the
-         --          - but destination_type_code is null
-         --          - or RECEIVING in rcv_transactions
-         -- ==============================================
-         select  'x'
-         from    po_distributions_all pod
-         where   pod.po_distribution_id       = rti.po_distribution_id
-         and     pod.destination_type_code    = 'EXPENSE'
-         and     rti.po_distribution_id is not null
-         and     nvl(rti.destination_type_code,'NONE') not in ('EXPENSE', 'INVENTORY','SHOP FLOOR') 
-         union all
-         -- ==============================================
-         -- Case III - PO Header ID, PO Line ID exist, but
-         --          - the Line Location Id may or may not
-         --          - exist
-         -- ==============================================
-         select  'x'
-         from    po_lines_all pol,
-                 po_line_locations_all pll,
-                 po_distributions_all pod
-         where   pol.po_line_id               = rti.po_line_id
-         and     pll.po_line_id               = pol.po_line_id
-         and     pod.po_line_id               = pll.po_line_id
-         and     pod.destination_type_code    = 'EXPENSE'
-         and     rti.po_distribution_id is null
-         and     nvl(rti.destination_type_code,'NONE') not in ('EXPENSE', 'INVENTORY','SHOP FLOOR')
-         union all
-         -- ==============================================
-         -- Case IV  - PO Number and PO Line Number exist
-         --          - but the PO Header ID does not
-         -- ==============================================
-         select  'x'
-         from    po_headers_all poh,
-                 po_lines_all pol,
-                 po_line_locations_all pll,
-                 po_distributions_all pod
-         where   poh.segment1                 = rti.document_num      -- PO Number
-         and     pol.line_num                 = rti.document_line_num -- PO Line Number
-         and     poh.po_header_id             = pol.po_header_id
-         and     pll.po_line_id               = pol.po_line_id
-         and     pod.po_line_id               = pll.po_line_id
-         and     pod.destination_type_code    = 'EXPENSE'
-         and     rti.po_header_id is null
-         and     rti.document_num is not null
-         and     nvl(rti.destination_type_code,'NONE') not in ('EXPENSE', 'INVENTORY','SHOP FLOOR')
-        )
-and     ml1.lookup_type                  = 'CST_SRS_RESOLUTION_TYPES'
-and     ml1.lookup_code                  = 3 -- Resolution Recommended
-and     ml2.lookup_type                  = 'INV_SRS_REG_BREAK'
-and     ml2.lookup_code                  = 3 -- Transaction Type
-and     flvv.lookup_type                 = 'RCV DESTINATION TYPE'
-and     flvv.lookup_code                 = 'RECEIVING'
-and     4=4                              -- p_period_name
-and     5=5                              -- p_functional_area
-and     6=6                              -- p_period_year
-group by
-        flvv.meaning, -- Functional_Area
-        'RCV_Transactions_Interface', -- Interface_Report
-        'Pending Expense Receiving Transactions', -- Report_Title
-        ml1.meaning, -- Priority
-        gp.period_year,
-        gp.period_num, 
-        gp.period_name,
-        inv_orgs.ledger,
-        inv_orgs.operating_unit,
-        inv_orgs.operating_unit_id,
-        inv_orgs.organization_code,
-        inv_orgs.organization_id,
-        ml2.meaning, -- Column_Type, Transaction Type
-        rti.transaction_type, -- Column_Info
-        rti.processing_status_code,
-        rti.transaction_status_code, -- Reject_Code_or_Error_Message
-        'Rows in the RCV_TRANSACTIONS_INTERFACE table' -- Interface_Description
+select
+decode(k.destination_type,'EXPENSE',nvl2(rti.to_organization_id,22,23),24) section,
+'PO' fav_app,
+'PO' fpi_app,
+(select xxen_util.meaning('RECEIVING','RCV DESTINATION TYPE',201) from dual) area,
+'RCV_Transactions_Interface' report_interface,
+decode(k.destination_type,'EXPENSE','Pending Expense Receiving Transactions','Pending Inventory and OSP Receiving Transactions') report_title,
+'3' priority_code,
+nvl2(rti.to_organization_id,'ID','O') lvl,
+rti.to_organization_id organization_id,
+rti.org_id operating_unit_id,
+to_number(null) ledger_id,
+to_number(null) acct_period_id,
+rti.transaction_date txn_date,
+(select xxen_util.meaning('3','INV_SRS_REG_BREAK',700) from dual) column_type,
+rti.transaction_type column_info,
+rti.processing_status_code status_code,
+rti.transaction_status_code message,
+'Rows in the RCV_TRANSACTIONS_INTERFACE table' interface_description
+from
+rcv_transactions_interface rti,
+(select 'EXPENSE' destination_type from dual union all select 'INVENTORY' from dual) k
+where
+(k.destination_type='EXPENSE' or rti.to_organization_id is not null) and
+(
+decode(rti.destination_type_code,'SHOP FLOOR','INVENTORY',rti.destination_type_code)=k.destination_type or
+nvl(rti.destination_type_code,'NONE') not in ('EXPENSE','INVENTORY','SHOP FLOOR') and
+(
+rti.po_distribution_id in (select pda.po_distribution_id from po_distributions_all pda where decode(pda.destination_type_code,'SHOP FLOOR','INVENTORY',pda.destination_type_code)=k.destination_type) or
+rti.po_distribution_id is null and rti.po_line_id in (select pda.po_line_id from po_distributions_all pda where decode(pda.destination_type_code,'SHOP FLOOR','INVENTORY',pda.destination_type_code)=k.destination_type) or
+rti.po_header_id is null and (rti.document_num,rti.document_line_num) in (select pha.segment1,pla.line_num from po_headers_all pha, po_lines_all pla, po_distributions_all pda where pha.po_header_id=pla.po_header_id and pla.po_line_id=pda.po_line_id and decode(pda.destination_type_code,'SHOP FLOOR','INVENTORY',pda.destination_type_code)=k.destination_type)
+)
+)
 union all
--- =======================================================
--- Pending Expense Receiving Report
--- =======================================================
--- Get the Expense Receipts without an inventory organization id
-select  flvv.meaning Functional_Area,
-        'RCV_Transactions_Interface' Interface_Report,
-        'Pending Expense Receiving Transactions' Report_Title,
-        ml1.meaning Priority,
-        count(*) Count,
-        gp.period_year Period_Year,
-        gp.period_num Period_Number, 
-        gp.period_name Period_Name,
-        gl_ou.ledger Ledger,
-        gl_ou.operating_unit Operating_Unit,
-        gl_ou.operating_unit_id Operating_Unit_Id,
-        gl_ou.organization_code Org_Code,
-        gl_ou.organization_id Inv_Organization_Id,
-        ml2.meaning Column_Type, -- Transaction Type
-        rti.transaction_type Column_Info,
-        rti.processing_status_code Status_Code,
-        rti.transaction_status_code Reject_Code_or_Error_Message,
-        'Rows in the RCV_TRANSACTIONS_INTERFACE table' Interface_Description
-from    rcv_transactions_interface rti,
-        gl_periods gp,
-        fnd_application_vl fav,
-        fnd_product_installations fpi,
-        gl_ou,
-        mfg_lookups ml1, -- Priority
-        mfg_lookups ml2, -- Transaction Type
-        fnd_lookup_values_vl flvv -- Receiving
-where   rti.to_organization_id is  null
-and     rti.org_id                       = gl_ou.operating_unit_id
--- rti.transaction_date is a required column
-and     trunc(rti.transaction_date) between gp.start_date and gp.end_date
-and     gp.adjustment_period_flag        = 'N'
--- To avoid cross joining with secondary period information
-and     gp.period_set_name               = gl_ou.period_set_name
-and     gp.period_type                   = gl_ou.accounted_period_type
-and     fav.application_short_name       = 'PO'
--- Only report installed applications
-and     fav.application_id               = fpi.application_id
-and     fpi.status                      <> 'N' -- Inactive
--- Check for Expense Destinations
-and exists 
-        (-- ==============================================
-         -- Case I  - EXPENSE destination_type_code exists
-         --         - in rcv_transactions  
-         -- ==============================================
-         select 'x' 
-         from    rcv_transactions_interface rt2
-         where   rt2.interface_transaction_id = rti.interface_transaction_id
-         and     rt2.destination_type_code    = 'EXPENSE'
-         union all
-         -- ==============================================
-         -- Case II  - PO Distribution ID exists but the
-         --          - but destination_type_code is null
-         --          - or RECEIVING in rcv_transactions
-         -- ==============================================
-         select  'x'
-         from    po_distributions_all pod
-         where   pod.po_distribution_id       = rti.po_distribution_id
-         and     pod.destination_type_code    = 'EXPENSE'
-         and     rti.po_distribution_id is not null
-         and     nvl(rti.destination_type_code,'NONE') not in ('EXPENSE', 'INVENTORY','SHOP FLOOR') 
-         union all
-         -- ==============================================
-         -- Case III - PO Header ID, PO Line ID exist, but
-         --          - the Line Location Id may or may not
-         --          - exist
-         -- ==============================================
-         select  'x'
-         from    po_lines_all pol,
-                 po_line_locations_all pll,
-                 po_distributions_all pod
-         where   pol.po_line_id               = rti.po_line_id
-         and     pll.po_line_id               = pol.po_line_id
-         and     pod.po_line_id               = pll.po_line_id
-         and     pod.destination_type_code    = 'EXPENSE'
-         and     rti.po_distribution_id is null
-         and     nvl(rti.destination_type_code,'NONE') not in ('EXPENSE', 'INVENTORY','SHOP FLOOR')
-         union all
-         -- ==============================================
-         -- Case IV  - PO Number and PO Line Number exist
-         --          - but the PO Header ID does not
-         -- ==============================================
-         select  'x'
-         from    po_headers_all poh,
-                 po_lines_all pol,
-                 po_line_locations_all pll,
-                 po_distributions_all pod
-         where   poh.segment1                 = rti.document_num      -- PO Number
-         and     pol.line_num                 = rti.document_line_num -- PO Line Number
-         and     poh.po_header_id             = pol.po_header_id
-         and     pll.po_line_id               = pol.po_line_id
-         and     pod.po_line_id               = pll.po_line_id
-         and     pod.destination_type_code    = 'EXPENSE'
-         and     rti.po_header_id is null
-         and     rti.document_num is not null
-         and     nvl(rti.destination_type_code,'NONE') not in ('EXPENSE', 'INVENTORY','SHOP FLOOR')
-        )
-and     ml1.lookup_type                  = 'CST_SRS_RESOLUTION_TYPES'
-and     ml1.lookup_code                  = 3 -- Resolution Recommended
-and     ml2.lookup_type                  = 'INV_SRS_REG_BREAK'
-and     ml2.lookup_code                  = 3 -- Transaction Type
-and     flvv.lookup_type                 = 'RCV DESTINATION TYPE'
-and     flvv.lookup_code                 = 'RECEIVING'
-and     4=4                              -- p_period_name
-and     5=5                              -- p_functional_area
-and     6=6                              -- p_period_year
-group by
-        flvv.meaning, -- Functional_Area
-        'RCV_Transactions_Interface', -- Interface_Report
-        'Pending Expense Receiving Transactions', -- Report_Title
-        ml1.meaning, -- Priority
-        gp.period_year,
-        gp.period_num, 
-        gp.period_name,
-        gl_ou.ledger,
-        gl_ou.operating_unit,
-        gl_ou.operating_unit_id,
-        gl_ou.organization_code,
-        gl_ou.organization_id,
-        ml2.meaning, -- Column_Type, Transaction Type
-        rti.transaction_type, -- Column_Info
-        rti.processing_status_code,
-        rti.transaction_status_code, -- Reject_Code_or_Error_Message
-        'Rows in the RCV_TRANSACTIONS_INTERFACE table' -- Interface_Description
+select
+25 section,
+'INV' fav_app,
+'INV' fpi_app,
+null area,
+'WSH_Delivery_Details' report_interface,
+'Unprocessed Sales Order Shipping Transactions' report_title,
+'2' priority_code,
+'ID' lvl,
+wnd.organization_id,
+to_number(null) operating_unit_id,
+to_number(null) ledger_id,
+to_number(null) acct_period_id,
+nvl(wts.actual_departure_date,sysdate) txn_date,
+(select xxen_util.meaning('MSCX_CUST_SHIP_DATE','MSC_PQ_CP_EXCP',0) from dual) column_type,
+to_char(wts.actual_departure_date,'YYYY-MM-DD') column_info,
+decode(wdd.inv_interfaced_flag,'P','P - Delivery is pending interface to Inventory','N','N - Delivery not interfaced to Inventory') status_code,
+wev.message,
+'Rows in the WSH_DELIVERY_DETAILS table' interface_description
+from
+wsh_delivery_details wdd,
+wsh_delivery_assignments wda,
+wsh_new_deliveries wnd,
+wsh_delivery_legs wdl,
+wsh_trip_stops wts,
+wsh_exceptions_v wev
+where
+wdd.source_code='OE' and
+wdd.released_status='C' and
+wdd.inv_interfaced_flag in ('N','P') and
+wdd.delivery_detail_id=wda.delivery_detail_id and
+wda.delivery_id=wnd.delivery_id and
+wnd.status_code in ('CL','IT') and
+wnd.delivery_id=wdl.delivery_id and
+wdl.pick_up_stop_id=wts.stop_id and
+wts.pending_interface_flag in ('Y','P') and
+wts.stop_id=wev.trip_stop_id(+)
 union all
--- =======================================================
--- Pending Inventory and OSP Receiving Reports
--- =======================================================
-select  flvv.meaning Functional_Area,
-        'RCV_Transactions_Interface' Interface_Report,
-        'Pending Inventory and OSP Receiving Transactions' Report_Title,
-        ml1.meaning Priority,
-        count(*) Count,
-        gp.period_year Period_Year,
-        gp.period_num Period_Number, 
-        gp.period_name Period_Name,
-        inv_orgs.ledger Ledger,
-        inv_orgs.operating_unit Operating_Unit,
-        inv_orgs.operating_unit_id Operating_Unit_Id,
-        inv_orgs.organization_code Org_Code,
-        inv_orgs.organization_id Inv_Organization_Id,
-        ml2.meaning Column_Type, -- Transaction Type
-        rti.transaction_type Column_Info,
-        rti.processing_status_code Status_Code,
-        rti.transaction_status_code Reject_Code_or_Error_Message,
-        'Rows in the RCV_TRANSACTIONS_INTERFACE table' Interface_Description
-from    rcv_transactions_interface rti,
-        gl_periods gp,
-        fnd_application_vl fav,
-        fnd_product_installations fpi,
-        inv_organizations inv_orgs,
-        mfg_lookups ml1, -- Priority
-        mfg_lookups ml2, -- Transaction Type
-        fnd_lookup_values_vl flvv -- Receiving
-where   inv_orgs.organization_id         = rti.to_organization_id
--- rti.transaction_date is a required column
-and     trunc(rti.transaction_date) between inv_le_timezone_pub.get_server_day_time_for_le(gp.start_date,inv_orgs.legal_entity_id) and inv_le_timezone_pub.get_server_day_time_for_le(gp.end_date,inv_orgs.legal_entity_id)
-and     gp.adjustment_period_flag        = 'N'
--- To avoid cross joining with secondary period information
-and     gp.period_set_name               = inv_orgs.period_set_name
-and     gp.period_type                   = inv_orgs.accounted_period_type
-and     fav.application_short_name       = 'PO'
--- Only report installed applications
-and     fav.application_id               = fpi.application_id
-and     fpi.status                      <> 'N' -- Inactive
--- Check for Inventory or Shop Floor Destinations
-and exists 
-        (-- ==============================================
-         -- Case I  - INVENTORY or SHOP FLOOR destination_
-         --         - type_code existsin rcv_transactions  
-         -- ==============================================
-         select  'x' 
-         from    rcv_transactions_interface rt2
-         where   rt2.interface_transaction_id = rti.interface_transaction_id
-         and     rt2.destination_type_code in ('INVENTORY','SHOP FLOOR')
-         union all
-         -- ==============================================
-         -- Case II  - PO Distribution ID exists but the
-         --          - but destination_type_code is null
-         --          - or RECEIVING in rcv_transactions
-         -- ==============================================
-         select  'x'
-         from    po_distributions_all pod
-         where   pod.po_distribution_id       = rti.po_distribution_id
-         and     pod.destination_type_code in ('INVENTORY','SHOP FLOOR')
-         and     rti.po_distribution_id is not null
-         and     nvl(rti.destination_type_code,'NONE') not in ('EXPENSE', 'INVENTORY','SHOP FLOOR') 
-         union all
-         -- ==============================================
-         -- Case III - PO Header ID, PO Line ID exist, but
-         --          - the Line Location Id may or may not
-         --          - exist
-         -- ==============================================
-         select  'x'
-         from    po_lines_all pol,
-                 po_line_locations_all pll,
-                 po_distributions_all pod
-         where   pol.po_line_id               = rti.po_line_id -- PO Line ID
-         and     pll.po_line_id               = pol.po_line_id
-         and     pod.po_line_id               = pll.po_line_id
-         and     pod.destination_type_code in ('INVENTORY','SHOP FLOOR')
-         and     rti.po_distribution_id is null
-         and     nvl(rti.destination_type_code,'NONE') not in ('EXPENSE', 'INVENTORY','SHOP FLOOR')
-         UNION ALL
-         -- ==============================================
-         -- Case IV  - PO Number and PO Line Number exist
-         --          - but the PO Header ID does not
-         -- ==============================================
-         select  'x'
-         from    po_headers_all poh,
-                 po_lines_all pol,
-                 po_line_locations_all pll,
-                 po_distributions_all pod
-         where   poh.segment1                 = rti.document_num      -- PO Number
-         and     pol.line_num                 = rti.document_line_num -- PO Line Number
-         and     poh.po_header_id             = pol.po_header_id
-         and     pll.po_line_id               = pol.po_line_id
-         and     pod.po_line_id               = pll.po_line_id
-         and     pod.destination_type_code in ('INVENTORY','SHOP FLOOR')
-         and     rti.po_header_id is null
-         and     rti.document_num is not null
-         and     nvl(rti.destination_type_code,'NONE') not in ('EXPENSE', 'INVENTORY','SHOP FLOOR')
-        )
-and     ml1.lookup_type                  = 'CST_SRS_RESOLUTION_TYPES'
-and     ml1.lookup_code                  = 3 -- Resolution Recommended
-and     ml2.lookup_type                  = 'INV_SRS_REG_BREAK'
-and     ml2.lookup_code                  = 3 -- Transaction Type
-and     flvv.lookup_type                 = 'RCV DESTINATION TYPE'
-and     flvv.lookup_code                 = 'RECEIVING'
-and     4=4                              -- p_period_name
-and     5=5                              -- p_functional_area
-and     6=6                              -- p_period_year
-group by
-        flvv.meaning, -- Functional_Area
-        'RCV_Transactions_Interface', -- Interface_Report
-        'Pending Inventory and OSP Receiving Transactions', -- Report_Title
-        ml1.meaning, -- Priority
-        gp.period_year,
-        gp.period_num, 
-        gp.period_name,
-        inv_orgs.ledger,
-        inv_orgs.operating_unit,
-        inv_orgs.operating_unit_id,
-        inv_orgs.organization_code,
-        inv_orgs.organization_id,
-        ml2.meaning, -- Column_Type, Transaction Type
-        rti.transaction_type, -- Column_Info
-        rti.processing_status_code,
-        rti.transaction_status_code, -- Reject_Code_or_Error_Message
-        'Rows in the RCV_TRANSACTIONS_INTERFACE table' -- Interface_Description
-
--- +=============================================================================+
--- |                               Shipping Reports                              |
--- +=============================================================================+
-
+select
+decode(prla.destination_type_code,'EXPENSE',26,27) section,
+'INV' fav_app,
+'INV' fpi_app,
+null area,
+'WSH_Delivery_Details' report_interface,
+decode(prla.destination_type_code,'EXPENSE','Unprocessed Expense Requisition Shipping Transactions','Unprocessed Inventory Requisition Shipping Transactions') report_title,
+'2' priority_code,
+'ID' lvl,
+prla.destination_organization_id organization_id,
+to_number(null) operating_unit_id,
+to_number(null) ledger_id,
+to_number(null) acct_period_id,
+nvl(wts.actual_departure_date,sysdate) txn_date,
+(select xxen_util.meaning('MSCX_CUST_SHIP_DATE','MSC_PQ_CP_EXCP',0) from dual) column_type,
+to_char(wts.actual_departure_date,'YYYY-MM-DD') column_info,
+decode(wdd.inv_interfaced_flag,'P','P - Delivery is pending interface to Inventory','N','N - Delivery not interfaced to Inventory') status_code,
+wev.message,
+'Rows in the WSH_DELIVERY_DETAILS table' interface_description
+from
+wsh_delivery_details wdd,
+wsh_delivery_assignments wda,
+wsh_new_deliveries wnd,
+wsh_delivery_legs wdl,
+wsh_trip_stops wts,
+wsh_exceptions_v wev,
+oe_order_lines_all oola,
+po_requisition_lines_all prla
+where
+wdd.source_code='OE' and
+wdd.released_status='C' and
+wdd.inv_interfaced_flag in ('N','P') and
+wdd.delivery_detail_id=wda.delivery_detail_id and
+wda.delivery_id=wnd.delivery_id and
+wnd.status_code in ('CL','IT') and
+wnd.delivery_id=wdl.delivery_id and
+wdl.pick_up_stop_id=wts.stop_id and
+wts.pending_interface_flag in ('Y','P') and
+wts.stop_id=wev.trip_stop_id(+) and
+wdd.source_document_type_id=10 and
+wts.stop_location_id=wnd.initial_pickup_location_id and
+wdd.source_line_id=oola.line_id and
+oola.source_document_line_id=prla.requisition_line_id and
+prla.destination_organization_id<>prla.source_organization_id and
+(prla.destination_type_code='EXPENSE' or (prla.source_organization_id,prla.destination_organization_id) in (select mip.from_organization_id,mip.to_organization_id from mtl_interorg_parameters mip where mip.intransit_type=1))
+) x
+),
+r as (
+select
+t.id,
+gp.period_year,
+gp.period_num period_number,
+gp.period_name,
+o.ledger,
+o.operating_unit,
+o.operating_unit_id,
+o.organization_code org_code,
+o.organization_id inv_organization_id
+from
+t,
+o,
+org_acct_periods oap,
+gl_periods gp
+where
+4=4 and
+6=6 and
+t.lvl='IA' and
+t.organization_id=o.organization_id and
+t.acct_period_id=oap.acct_period_id and
+oap.period_set_name=gp.period_set_name and
+oap.period_name=gp.period_name and
+o.accounted_period_type=gp.period_type and
+gp.adjustment_period_flag='N'
 union all
--- =======================================================
--- Unprocessed Shipping Report for Sales Orders
--- =======================================================
-select  fav.application_name Functional_Area,
-        'WSH_Delivery_Details' Interface_Report,
-        'Unprocessed Sales Order Shipping Transactions' Report_Title,
-        ml.meaning Priority,
-        count(*) Count,
-        gp.period_year Period_Year,
-        gp.period_num Period_Number, 
-        gp.period_name Period_Name,
-        inv_orgs.ledger Ledger,
-        inv_orgs.operating_unit Operating_Unit,
-        inv_orgs.operating_unit_id Operating_Unit_Id,
-        inv_orgs.organization_code Org_Code,
-        inv_orgs.organization_id Inv_Organization_Id,
-        fl.meaning Column_Type, -- Ship Date
-        to_char(trunc(wts.actual_departure_date)) Column_Info,
-        decode(wdd.inv_interfaced_flag,
-                'Y', 'Y - Delivery has been interfaced to Inventory',
-                'P', 'P - Delivery is pending interface to Inventory',
-                'N', 'N - Delivery not interfaced to Inventory',
-                'X', 'X - Delivery excluded from inventory interface'
-               ) Status_code,
-        wev.message Reject_Code_or_Error_Message,
-        'Rows in the WSH_DELIVERY_DETAILS table' Interface_Description
-from    wsh_delivery_details wdd,
-        wsh_delivery_assignments wda,
-        wsh_new_deliveries wnd,
-        wsh_delivery_legs wdl,
-        wsh_trip_stops wts,
-        wsh_exceptions_v wev,
-        gl_periods gp,
-        inv_organizations inv_orgs,
-        fnd_application_vl fav,
-        fnd_product_installations fpi,
-        fnd_lookups fl, -- Ship Date
-        mfg_lookups ml  -- Priority
-where   wdd.source_code                  = 'OE'
-and     wdd.released_status              = 'C'
-and     wdd.inv_interfaced_flag in ('N' ,'P')
-and     wda.delivery_detail_id           = wdd.delivery_detail_id
-and     wnd.delivery_id                  = wda.delivery_id
-and     wnd.status_code in ('CL','IT')
-and     wdl.delivery_id                  = wnd.delivery_id
-and     wts.pending_interface_flag in ('Y', 'P')
-and     wdl.pick_up_stop_id              = wts.stop_id
-and     wev.trip_stop_id (+)             = wts.stop_id 
-and     inv_orgs.organization_id         = wnd.organization_id
-and     trunc(nvl(wts.actual_departure_date,sysdate)) between inv_le_timezone_pub.get_server_day_time_for_le(gp.start_date,inv_orgs.legal_entity_id) and inv_le_timezone_pub.get_server_day_time_for_le(gp.end_date,inv_orgs.legal_entity_id)
-and     gp.adjustment_period_flag        = 'N'
--- To avoid cross joining with secondary period information
-and     gp.period_set_name               = inv_orgs.period_set_name
-and     gp.period_type                   = inv_orgs.accounted_period_type
-and     fav.application_short_name       = 'INV'
--- Only report installed applications
-and     fav.application_id               = fpi.application_id
-and     fpi.status                      <> 'N' -- Inactive
-and     fl.lookup_type                   = 'MSC_PQ_CP_EXCP'
-and     fl.lookup_code                   = 'MSCX_CUST_SHIP_DATE'
-and     ml.lookup_type                   = 'CST_SRS_RESOLUTION_TYPES'
-and     ml.lookup_code                   = 2 -- Resolution Required
-and     4=4                              -- p_period_name, period_year
-and     5=5                              -- p_functional_area
-and     6=6                              -- p_period_year
-group by
-        fav.application_name, -- Functional_Area
-        'WSH_Delivery_Details', -- Interface_Report
-        'Unprocessed Sales Order Shipping Transactions', -- Report_Title
-        ml.meaning, -- Priority
-        gp.period_year,
-        gp.period_num, 
-        gp.period_name,
-        inv_orgs.ledger,
-        inv_orgs.operating_unit,
-        inv_orgs.operating_unit_id,
-        inv_orgs.organization_code,
-        inv_orgs.organization_id,
-        fl.meaning, -- Column_Type, Ship Date
-        to_char(trunc(wts.actual_departure_date)), -- Column_Info
-        decode(wdd.inv_interfaced_flag,
-                'Y', 'Y - Delivery has been interfaced to Inventory',
-                'P', 'P - Delivery is pending interface to Inventory',
-                'N', 'N - Delivery not interfaced to Inventory',
-                'X', 'X - Delivery excluded from inventory interface'
-               ), -- Status_code
-        wev.message, -- Reject_Code_or_Error_Message
-        'Rows in the WSH_DELIVERY_DETAILS table' -- Interface_Description
+select
+x.id,
+gp.period_year,
+gp.period_num period_number,
+gp.period_name,
+x.ledger,
+x.operating_unit,
+x.operating_unit_id,
+x.organization_code org_code,
+x.organization_id inv_organization_id
+from
+(
+select
+t.id,
+o.*,
+trunc(inv_le_timezone_pub.get_le_day_for_server(t.txn_date,o.legal_entity_id)) le_day
+from
+t,
+o
+where
+t.lvl='ID' and
+t.organization_id=o.organization_id
+) x,
+gl_periods gp
+where
+4=4 and
+6=6 and
+x.period_set_name=gp.period_set_name and
+x.accounted_period_type=gp.period_type and
+gp.adjustment_period_flag='N' and
+x.le_day between gp.start_date and gp.end_date
 union all
--- =======================================================
--- Unprocessed Shipping Report for Expense Requisitions
--- =======================================================
-select  fav.application_name Functional_Area,
-        'WSH_Delivery_Details' Interface_Report,
-        'Unprocessed Expense Requisition Shipping Transactions' Report_Title,
-        ml.meaning Priority,
-        count(*) Count,
-        gp.period_year Period_Year,
-        gp.period_num Period_Number, 
-        gp.period_name Period_Name,
-        inv_orgs.ledger Ledger,
-        inv_orgs.operating_unit Operating_Unit,
-        inv_orgs.operating_unit_id Operating_Unit_Id,
-        inv_orgs.organization_code Org_Code,
-        inv_orgs.organization_id Inv_Organization_Id,
-        fl.meaning Column_Type, -- Ship Date
-        to_char(trunc(wts.actual_departure_date)) Column_Info,
-        decode(wdd.inv_interfaced_flag,
-                'Y', 'Y - Delivery has been interfaced to Inventory',
-                'P', 'P - Delivery is pending interface to Inventory',
-                'N', 'N - Delivery not interfaced to Inventory',
-                'X', 'X - Delivery excluded from inventory interface'
-               ) Status_code,
-        wev.message Reject_Code_or_Error_Message,
-        'Rows in the WSH_DELIVERY_DETAILS table' Interface_Description
-from    wsh_delivery_details wdd,
-        wsh_delivery_assignments wda,
-        wsh_new_deliveries wnd,
-        wsh_delivery_legs wdl,
-        wsh_trip_stops wts,
-        wsh_exceptions_v wev,
-        oe_order_lines_all ool,
-        po_requisition_lines_all prl,
-        gl_periods gp,
-        inv_organizations inv_orgs,
-        fnd_application_vl fav,
-        fnd_product_installations fpi,
-        fnd_lookups fl, -- Ship Date
-        mfg_lookups ml  -- Priority
-where   wdd.source_code                  = 'OE'
-and     wdd.released_status              = 'C'
-and     wdd.inv_interfaced_flag in ('N' ,'P')
-and     wda.delivery_detail_id           = wdd.delivery_detail_id
-and     wnd.delivery_id                  = wda.delivery_id
-and     wnd.status_code in ('CL','IT')
-and     wdl.delivery_id                  = wnd.delivery_id
-and     wts.pending_interface_flag in ('Y', 'P')
-and     wdl.pick_up_stop_id              = wts.stop_id
--- For purchase requisitions
-and     inv_orgs.organization_id         = prl.destination_organization_id
-and     wdd.source_line_id               = ool.line_id
-and     wdd.source_document_type_id      = 10
-and     ool.source_document_line_id      = prl.requisition_line_id
-and     prl.destination_organization_id <> prl.source_organization_id
-and     prl.destination_type_code        = 'EXPENSE'
-and     wts.stop_location_id             = wnd.initial_pickup_location_id
--- End changes for purchase requisitions
-and     wev.trip_stop_id (+)             = wts.stop_id 
-and     inv_orgs.organization_id         = wnd.organization_id
-and     trunc(nvl(wts.actual_departure_date,sysdate)) between inv_le_timezone_pub.get_server_day_time_for_le(gp.start_date,inv_orgs.legal_entity_id) and inv_le_timezone_pub.get_server_day_time_for_le(gp.end_date,inv_orgs.legal_entity_id)
-and     gp.adjustment_period_flag        = 'N'
--- To avoid cross joining with secondary period information
-and     gp.period_set_name               = inv_orgs.period_set_name
-and     gp.period_type                   = inv_orgs.accounted_period_type
-and     fav.application_short_name       = 'INV'
--- Only report installed applications
-and     fav.application_id               = fpi.application_id
-and     fpi.status                      <> 'N' -- Inactive
-and     fl.lookup_type                   = 'MSC_PQ_CP_EXCP'
-and     fl.lookup_code                   = 'MSCX_CUST_SHIP_DATE'
-and     ml.lookup_type                   = 'CST_SRS_RESOLUTION_TYPES'
-and     ml.lookup_code                   = 2 -- Resolution Required
-and     4=4                              -- p_period_name
-and     5=5                              -- p_functional_area
-and     6=6                              -- p_period_year
-group by
-        fav.application_name, -- Functional_Area
-        'WSH_Delivery_Details', -- Interface_Report
-        'Unprocessed Expense Requisition Shipping Transactions', -- Report_Title
-        ml.meaning, -- Priority
-        gp.period_year,
-        gp.period_num, 
-        gp.period_name,
-        inv_orgs.ledger,
-        inv_orgs.operating_unit,
-        inv_orgs.operating_unit_id,
-        inv_orgs.organization_code,
-        inv_orgs.organization_id,
-        fl.meaning, -- Column_Type, Ship Date
-        to_char(trunc(wts.actual_departure_date)), -- Column_Info
-        decode(wdd.inv_interfaced_flag,
-                'Y', 'Y - Delivery has been interfaced to Inventory',
-                'P', 'P - Delivery is pending interface to Inventory',
-                'N', 'N - Delivery not interfaced to Inventory',
-                'X', 'X - Delivery excluded from inventory interface'
-               ), -- Status_code
-        wev.message, -- Reject_Code_or_Error_Message
-        'Rows in the WSH_DELIVERY_DETAILS table' -- Interface_Description
+select
+t.id,
+gp.period_year,
+gp.period_num period_number,
+gp.period_name,
+u.ledger,
+u.operating_unit,
+u.operating_unit_id,
+mp.organization_code org_code,
+mp.organization_id inv_organization_id
+from
+t,
+u,
+mtl_parameters mp,
+gl_periods gp
+where
+2=2 and
+4=4 and
+6=6 and
+t.lvl='O' and
+t.operating_unit_id=u.operating_unit_id and
+nvl(t.organization_id,u.inventory_organization_id)=mp.organization_id(+) and
+u.period_set_name=gp.period_set_name and
+u.accounted_period_type=gp.period_type and
+gp.adjustment_period_flag='N' and
+trunc(t.txn_date) between gp.start_date and gp.end_date
 union all
--- =======================================================
--- Unprocessed Shipping Report for Inventory Requisitions
--- =======================================================
-select  fav.application_name Functional_Area,
-        'WSH_Delivery_Details' Interface_Report,
-        'Unprocessed Inventory Requisition Shipping Transactions' Report_Title,
-        ml.meaning Priority,
-        count(*) Count,
-        gp.period_year Period_Year,
-        gp.period_num Period_Number, 
-        gp.period_name Period_Name,
-        inv_orgs.ledger Ledger,
-        inv_orgs.operating_unit Operating_Unit,
-        inv_orgs.operating_unit_id Operating_Unit_Id,
-        inv_orgs.organization_code Org_Code,
-        inv_orgs.organization_id Inv_Organization_Id,
-        fl.meaning Column_Type, -- Ship Date
-        to_char(trunc(wts.actual_departure_date)) Column_Info,
-        decode(wdd.inv_interfaced_flag,
-                'Y', 'Y - Delivery has been interfaced to Inventory',
-                'P', 'P - Delivery is pending interface to Inventory',
-                'N', 'N - Delivery not interfaced to Inventory',
-                'X', 'X - Delivery excluded from inventory interface'
-               ) Status_code,
-        wev.message Reject_Code_or_Error_Message,
-        'Rows in the WSH_DELIVERY_DETAILS table' Interface_Description
-from    wsh_delivery_details wdd,
-        wsh_delivery_assignments wda,
-        wsh_new_deliveries wnd,
-        wsh_delivery_legs wdl,
-        wsh_trip_stops wts,
-        wsh_exceptions_v wev,
-        oe_order_lines_all ool,
-        po_requisition_lines_all prl,
-        mtl_interorg_parameters mip,
-        gl_periods gp,
-        inv_organizations inv_orgs,
-        fnd_application_vl fav,
-        fnd_product_installations fpi,
-        fnd_lookups fl, -- Ship Date
-        mfg_lookups ml -- Priority
-where   wdd.source_code                  = 'OE'
-and     wdd.released_status              = 'C'
-and     wdd.inv_interfaced_flag in ('N' ,'P')
-and     wda.delivery_detail_id           = wdd.delivery_detail_id
-and     wnd.delivery_id                  = wda.delivery_id
-and     wnd.status_code in ('CL','IT')
-and     wdl.delivery_id                  = wnd.delivery_id
-and     wts.pending_interface_flag in ('Y', 'P')
-and     wdl.pick_up_stop_id              = wts.stop_id
--- For purchase requisitions
-and     inv_orgs.organization_id         = prl.destination_organization_id
-and     wdd.source_line_id               = ool.line_id
-and     wdd.source_document_type_id      = 10
-and     ool.source_document_line_id      = prl.requisition_line_id
-and     prl.destination_organization_id <> prl.source_organization_id
-and     prl.destination_organization_id  = mip.to_organization_id
-and     prl.source_organization_id       = mip.from_organization_id
-and     mip.intransit_type               = 1
-and     prl.destination_type_code       <> 'EXPENSE'
-and     wts.stop_location_id             = wnd.initial_pickup_location_id
--- End changes for purchase requisitions
-and     wev.trip_stop_id (+)             = wts.stop_id 
-and     inv_orgs.organization_id         = wnd.organization_id
-and     trunc(nvl(wts.actual_departure_date,sysdate)) between inv_le_timezone_pub.get_server_day_time_for_le(gp.start_date,inv_orgs.legal_entity_id) and inv_le_timezone_pub.get_server_day_time_for_le(gp.end_date,inv_orgs.legal_entity_id)
-and     gp.adjustment_period_flag        = 'N'
--- To avoid cross joining with secondary period information
-and     gp.period_set_name               = inv_orgs.period_set_name
-and     gp.period_type                   = inv_orgs.accounted_period_type
-and     fav.application_short_name       = 'INV'
--- Only report installed applications
-and     fav.application_id               = fpi.application_id
-and     fpi.status                      <> 'N' -- Inactive
-and     fl.lookup_type                   = 'MSC_PQ_CP_EXCP'
-and     fl.lookup_code                   = 'MSCX_CUST_SHIP_DATE'
-and     ml.lookup_type                   = 'CST_SRS_RESOLUTION_TYPES'
-and     ml.lookup_code                   = 2 -- Resolution Required
-and     4=4                              -- p_period_name
-and     5=5                              -- p_functional_area
-and     6=6                              -- p_period_year
+select
+t.id,
+gp.period_year,
+gp.period_num period_number,
+gp.period_name,
+nvl(gl.short_name,gl.name) ledger,
+null operating_unit,
+to_number(null) operating_unit_id,
+null org_code,
+to_number(null) inv_organization_id
+from
+t,
+gl_ledgers gl,
+gl_periods gp
+where
+1=1 and
+4=4 and
+6=6 and
+t.lvl='G' and
+t.ledger_id=gl.ledger_id and
+gl.period_set_name=gp.period_set_name and
+gl.accounted_period_type=gp.period_type and
+gp.adjustment_period_flag='N' and
+trunc(t.txn_date) between gp.start_date and gp.end_date
+union all
+select
+t.id,
+extract(year from t.txn_date) period_year,
+to_number(null) period_number,
+to_char(t.txn_date,'MON-YY') period_name,
+null ledger,
+null operating_unit,
+to_number(null) operating_unit_id,
+null org_code,
+to_number(null) inv_organization_id
+from
+t
+where
+7=7 and
+t.lvl='N'
+)
+select
+nvl(t.area,fav.application_name) functional_area,
+t.report_interface,
+t.report_title,
+xxen_util.meaning(t.priority_code,'CST_SRS_RESOLUTION_TYPES',700) priority,
+count(*) count,
+r.period_year,
+r.period_number,
+r.period_name,
+r.ledger,
+r.operating_unit,
+r.operating_unit_id,
+r.org_code,
+r.inv_organization_id,
+t.column_type,
+t.column_info,
+t.status_code,
+t.message reject_code_or_error_message,
+t.interface_description
+from
+t,
+r,
+fnd_application_vl fav
+where
+5=5 and
+t.id=r.id and
+t.fav_app=fav.application_short_name and
+t.fpi_app in (select fa.application_short_name from fnd_application fa, fnd_product_installations fpi where fa.application_id=fpi.application_id and fpi.status<>'N')
 group by
-        fav.application_name, -- Functional_Area
-        'WSH_Delivery_Details', -- Interface_Report
-        'Unprocessed Inventory Requisition Shipping Transactions', -- Report_Title
-        ml.meaning, -- Priority
-        gp.period_year,
-        gp.period_num, 
-        gp.period_name,
-        inv_orgs.ledger,
-        inv_orgs.operating_unit,
-        inv_orgs.operating_unit_id,
-        inv_orgs.organization_code,
-        inv_orgs.organization_id,
-        fl.meaning, -- Column_Type, Ship Date
-        to_char(trunc(wts.actual_departure_date)), -- Column_Info
-        decode(wdd.inv_interfaced_flag,
-                'Y', 'Y - Delivery has been interfaced to Inventory',
-                'P', 'P - Delivery is pending interface to Inventory',
-                'N', 'N - Delivery not interfaced to Inventory',
-                'X', 'X - Delivery excluded from inventory interface'
-               ), -- Status_code
-        wev.message, -- Reject_Code_or_Error_Message
-        'Rows in the WSH_DELIVERY_DETAILS table' -- Interface_Description
-order by 1,2,3,4,6,7,8,9,10,11
+t.section,
+nvl(t.area,fav.application_name),
+t.report_interface,
+t.report_title,
+t.priority_code,
+r.period_year,
+r.period_number,
+r.period_name,
+r.ledger,
+r.operating_unit,
+r.operating_unit_id,
+r.org_code,
+r.inv_organization_id,
+t.column_type,
+t.column_info,
+t.status_code,
+t.message,
+t.interface_description
+order by
+functional_area,
+report_interface,
+report_title,
+priority,
+period_year,
+period_number,
+period_name,
+ledger,
+operating_unit,
+operating_unit_id

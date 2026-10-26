@@ -12,6 +12,7 @@
 -- -- | Permission to use this code is granted provided the original author is |
 -- -- | acknowledged. No warranties, express or otherwise is included in this |
 -- -- | permission. |
+-- -- | 1.4 23 Oct 2026 Andy Haack Rebuilt to the Blitz Report SQL standards.
 -- -- +=============================================================================+
 -- -- |
 -- -- | Original Author: Douglas Volz (doug@volzconsulting.com)
@@ -37,44 +38,38 @@
 -- Library Link: https://www.enginatics.com/reports/cac-inventory-account-alias-setup/
 -- Run Report: https://demo.enginatics.com/
 
-select nvl(gl.short_name, gl.name) Ledger,
- haou2.name Operating_Unit,
- mp.organization_code Org_Code,
- haou.name Organization_Name,
- mgd.segment1 Account_Alias,
- mgd.description Description,
- &segment_columns
- mgd.effective_date Effective_Date,
- mgd.disable_date Disable_Date,
- mgd.disposition_id Alias_Id
-from mtl_generic_dispositions mgd,
- mtl_parameters mp,
- gl_code_combinations gcc,
- hr_organization_information hoi,
- hr_all_organization_units_vl haou,
- hr_all_organization_units_vl haou2,
- gl_ledgers gl
-where mgd.distribution_account    = gcc.code_combination_id
-and mgd.organization_id         = mp.organization_id
--- ===========================================
--- Organization joins for the HR org model
--- ===========================================
-and hoi.org_information_context = 'Accounting Information'
-and hoi.organization_id         = mp.organization_id
-and hoi.organization_id         = haou.organization_id -- this gets the organization name
-and haou2.organization_id       = to_number(hoi.org_information3) -- this gets the operating unit id
-and gl.ledger_id                = to_number(hoi.org_information1) -- get the ledger_id
--- Revision for version 1.1
--- Avoid selecting disabled inventory organizations
-and sysdate                    < nvl(haou.date_to, sysdate + 1)
-and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
-and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
-and 1=1 -- p_ledger, p_operating_unit, p_org_code
--- End revision for version 1.1
+select
+nvl(gl.short_name,gl.name) ledger,
+haouv_ou.name operating_unit,
+mp.organization_code org_code,
+haouv.name organization_name,
+mgd.segment1 account_alias,
+mgd.description,
+&segment_columns
+mgd.effective_date,
+mgd.disable_date,
+mgd.disposition_id alias_id
+from
+mtl_parameters mp,
+hr_organization_information hoi,
+hr_all_organization_units_vl haouv,
+hr_all_organization_units_vl haouv_ou,
+gl_ledgers gl,
+mtl_generic_dispositions mgd,
+gl_code_combinations gcc
+where
+1=1 and
+mp.organization_id=hoi.organization_id and
+hoi.org_information_context='Accounting Information' and
+hoi.organization_id=haouv.organization_id and
+nvl(haouv.date_to,sysdate+1)>sysdate and
+to_number(hoi.org_information3)=haouv_ou.organization_id and
+to_number(hoi.org_information1)=gl.ledger_id and
+mp.organization_id=mgd.organization_id and
+mgd.distribution_account=gcc.code_combination_id
 order by
- nvl(gl.short_name, gl.name), -- Ledger
- haou2.name, -- Operating_Unit
- mp.organization_code, -- Org_Code
- haou.name, -- Organization_Name
- mgd.segment1 -- Account_Alias
+ledger,
+operating_unit,
+org_code,
+organization_name,
+account_alias

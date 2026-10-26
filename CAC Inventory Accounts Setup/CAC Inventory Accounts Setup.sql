@@ -40,852 +40,117 @@
 -- -- | and change to gl.shortname.
 -- -- | 1.14 28 Feb 2020 Douglas Volz Changed to multi-language views for the item
 -- -- | master, inventory orgs and operating units.
+-- -- | 1.15 24 Oct 2026 Andy Haack Rebuilt to the Blitz Report SQL standards.
 -- -- +=============================================================================+/
 -- Excel Example Output: https://www.enginatics.com/example/cac-inventory-accounts-setup/
 -- Library Link: https://www.enginatics.com/reports/cac-inventory-accounts-setup/
 -- Run Report: https://demo.enginatics.com/
 
-select 'Inter-org' Account_Group,
--- ===========================================
--- This first group of select statements is for
--- the Inter-Org Accounts Group
--- ===========================================
- 'Inter-Org A/P Account' Account_Type,
- nvl(gl.short_name, gl.name) Ledger,
- haou2.name Operating_Unit,
- mp.organization_code Org_Code,
- haou.name Organization_Name,
- &segment_columns
- mp.last_update_date Last_Update_Date
-from mtl_parameters mp,
- gl_code_combinations gcc,
- hr_organization_information hoi,
- hr_all_organization_units_vl haou,
- hr_all_organization_units_vl haou2,
- gl_ledgers gl
-where mp.interorg_payables_account     = gcc.code_combination_id (+)
--- ===========================================
--- Organization joins to the HR org model
--- ===========================================
-and hoi.org_information_context      = 'Accounting Information'
-and hoi.organization_id              = mp.organization_id
-and hoi.organization_id              = haou.organization_id -- this gets the organization name
-and haou2.organization_id            = to_number(hoi.org_information3) -- this gets the operating unit id
-and gl.ledger_id                     = to_number(hoi.org_information1) -- get the ledger_id
-and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
-and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
-and 1=1                                                                                                   -- p_ledger, p_operating_unit, p_org_code
-and (:p_account_group = 'Inter-Org'
-  or
-  :p_account_group is null)                                                                          -- inter-org
--- Fix for version 1.4
--- avoid selecting disabled inventory organizations
-and sysdate < nvl(haou.date_to, sysdate + 1)
-union all
-select 'Inter-org' Account_Group,
- 'Inter-Org A/R Account' Account_Type,
- nvl(gl.short_name, gl.name) Ledger,
- haou2.name Operating_Unit,
- mp.organization_code Org_Code,
- haou.name Organization_Name,
- &segment_columns
- mp.last_update_date Last_Update_Date
-from mtl_parameters mp,
- gl_code_combinations gcc,
- hr_organization_information hoi,
- hr_all_organization_units_vl haou,
- hr_all_organization_units_vl haou2,
- gl_ledgers gl
-where mp.interorg_receivables_account = gcc.code_combination_id (+)
--- ===========================================
--- Organization joins to the HR org model
--- ===========================================
-and hoi.org_information_context     = 'Accounting Information'
-and hoi.organization_id             = mp.organization_id
-and hoi.organization_id             = haou.organization_id -- this gets the organization name
-and haou2.organization_id           = to_number(hoi.org_information3) -- this gets the operating unit id
-and gl.ledger_id                    = to_number(hoi.org_information1) -- get the ledger_id
-and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
-and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
-and 1=1                                                                                                   -- p_ledger, p_operating_unit, p_org_code
-and (:p_account_group = 'Inter-Org'
-  or
-  :p_account_group is null)                                                                          -- inter-org
--- Fix for version 1.4
--- avoid selecting disabled inventory organizations
-and sysdate < nvl(haou.date_to, sysdate + 1)
-union all
-select 'Inter-org' Account_Group,
- 'Intransit Account' Account_Type,
- nvl(gl.short_name, gl.name) Ledger,
- haou2.name Operating_Unit,
- mp.organization_code Org_Code,
- haou.name Organization_Name,
- &segment_columns
- mp.last_update_date Last_Update_Date
-from mtl_parameters mp,
- gl_code_combinations gcc,
- hr_organization_information hoi,
- hr_all_organization_units_vl haou,
- hr_all_organization_units_vl haou2,
- gl_ledgers gl
-where mp.intransit_inv_account        = gcc.code_combination_id (+)
--- ===========================================
--- Organization joins to the HR org model
--- ===========================================
-and hoi.org_information_context     = 'Accounting Information'
-and hoi.organization_id             = mp.organization_id
-and hoi.organization_id             = haou.organization_id -- this gets the organization name
-and haou2.organization_id           = to_number(hoi.org_information3) -- this gets the operating unit id
-and gl.ledger_id                    = to_number(hoi.org_information1) -- get the ledger_id
-and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
-and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
-and 1=1                                                                                                   -- p_ledger, p_operating_unit, p_org_code
-and (:p_account_group = 'Inter-Org'
-  or
-  :p_account_group is null)                                                                          -- inter-org
--- Fix for version 1.4
--- avoid selecting disabled inventory organizations
-and sysdate < nvl(haou.date_to, sysdate + 1)
-union all
-select 'Inter-org' Account_Group,
- 'Inter-Org PPV Account' Account_Type,
- nvl(gl.short_name, gl.name) Ledger,
- haou2.name Operating_Unit,
- mp.organization_code Org_Code,
- haou.name Organization_Name,
- &segment_columns
- mp.last_update_date Last_Update_Date
-from mtl_parameters mp,
- gl_code_combinations gcc,
- hr_organization_information hoi,
- hr_all_organization_units_vl haou,
- hr_all_organization_units_vl haou2,
- gl_ledgers gl
-where mp.interorg_price_var_account   = gcc.code_combination_id (+)
- -- ===========================================
- -- Organization joins to the HR org model
- -- ===========================================
-and hoi.org_information_context     = 'Accounting Information'
-and hoi.organization_id             = mp.organization_id
-and hoi.organization_id             = haou.organization_id -- this gets the organization name
-and haou2.organization_id           = to_number(hoi.org_information3) -- this gets the operating unit id
-and gl.ledger_id                    = to_number(hoi.org_information1) -- get the ledger_id
-and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
-and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
-and 1=1                                                                                                   -- p_ledger, p_operating_unit, p_org_code
-and (:p_account_group = 'Inter-Org'
-  or
-  :p_account_group is null)                                                                          -- inter-org
--- Fix for version 1.4
--- avoid selecting disabled inventory organizations
-and sysdate < nvl(haou.date_to, sysdate + 1)
-union all
-select 'Inter-org' Account_Group,
- 'Inter-Org Xfer Credit Account' Account_Type,
- nvl(gl.short_name, gl.name) Ledger,
- haou2.name Operating_Unit,
- mp.organization_code Org_Code,
- haou.name Organization_Name,
- &segment_columns
- mp.last_update_date Last_Update_Date
-from mtl_parameters mp,
- gl_code_combinations gcc,
- hr_organization_information hoi,
- hr_all_organization_units_vl haou,
- hr_all_organization_units_vl haou2,
- gl_ledgers gl
-where mp.interorg_transfer_cr_account = gcc.code_combination_id (+)
--- ===========================================
--- Organization joins to the HR org model
--- ===========================================
-and hoi.org_information_context     = 'Accounting Information'
-and hoi.organization_id             = mp.organization_id
-and hoi.organization_id             = haou.organization_id -- this gets the organization name
-and haou2.organization_id           = to_number(hoi.org_information3) -- this gets the operating unit id
-and gl.ledger_id                    = to_number(hoi.org_information1) -- get the ledger_id
-and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
-and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
-and 1=1                                                                                                   -- p_ledger, p_operating_unit, p_org_code
-and (:p_account_group = 'Inter-Org'
-  or
-  :p_account_group is null)                                                                          -- inter-org
--- Fix for version 1.4
--- avoid selecting disabled inventory organizations
-and sysdate < nvl(haou.date_to, sysdate + 1)
-union all
--- ===========================================
--- This second group of select statements is
--- for the Profit and Loss Account_Group
--- ===========================================
-select 'Profit and Loss' Account_Group,
- 'Cost of Goods Sold Account' Account_Type,
- nvl(gl.short_name, gl.name) Ledger,
- haou2.name Operating_Unit,
- mp.organization_code Org_Code,
- haou.name Organization_Name,
- &segment_columns
- mp.last_update_date Last_Update_Date
-from mtl_parameters mp,
- gl_code_combinations gcc,
- hr_organization_information hoi,
- hr_all_organization_units_vl haou,
- hr_all_organization_units_vl haou2,
- gl_ledgers gl
-where mp.cost_of_sales_account        = gcc.code_combination_id (+)
--- ===========================================
--- Organization joins to the HR org model
--- ===========================================
-and hoi.org_information_context     = 'Accounting Information'
-and hoi.organization_id             = mp.organization_id
-and hoi.organization_id             = haou.organization_id -- this gets the organization name
-and haou2.organization_id           = to_number(hoi.org_information3) -- this gets the operating unit id
-and gl.ledger_id                    = to_number(hoi.org_information1) -- get the ledger_id
-and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
-and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
-and 1=1                                                                                                   -- p_ledger, p_operating_unit, p_org_code
-and (:p_account_group = 'Profit and Loss'
-  or
-  :p_account_group is null)                                                                          -- Profit and Loss
--- Fix for version 1.4
--- avoid selecting disabled inventory organizations
-and sysdate < nvl(haou.date_to, sysdate + 1)
-union all
-select 'Profit and Loss' Account_Group,
- 'Sales_Account' Account_Type,
- nvl(gl.short_name, gl.name) Ledger,
- haou2.name Operating_Unit,
- mp.organization_code Org_Code,
- haou.name Organization_Name,
- &segment_columns
- mp.last_update_date Last_Update_Date
-from mtl_parameters mp,
- gl_code_combinations gcc,
- hr_organization_information hoi,
- hr_all_organization_units_vl haou,
- hr_all_organization_units_vl haou2,
- gl_ledgers gl
-where mp.sales_account                = gcc.code_combination_id (+)
--- ===========================================
--- Organization joins to the HR org model
--- ===========================================
-and hoi.org_information_context     = 'Accounting Information'
-and hoi.organization_id             = mp.organization_id
-and hoi.organization_id             = haou.organization_id -- this gets the organization name
-and haou2.organization_id           = to_number(hoi.org_information3) -- this gets the operating unit id
-and gl.ledger_id = to_number(hoi.org_information1) -- get the ledger_id
-and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
-and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
-and 1=1                                                                                                   -- p_ledger, p_operating_unit, p_org_codee
-and (:p_account_group = 'Profit and Loss'
-  or
-  :p_account_group is null)                                                                          -- Profit and Loss
--- Fix for version 1.4
--- avoid selecting disabled inventory organizations
-and sysdate < nvl(haou.date_to, sysdate + 1)
-union all
--- ===========================================
--- This third group of select statements is
--- for the Other Accounts Group
--- ===========================================
--- Revision for version 1.5, change Account_Group for Deferred COGS
--- select 'Profit and Loss' Account_Group,
-select 'Other Accounts' Account_Group,
- 'Deferred COGS_Account' Account_Type,
- nvl(gl.short_name, gl.name) Ledger,
- haou2.name Operating_Unit,
- mp.organization_code Org_Code,
- haou.name Organization_Name,
- &segment_columns
- mp.last_update_date Last_Update_Date
-from mtl_parameters mp,
- gl_code_combinations gcc,
- hr_organization_information hoi,
- hr_all_organization_units_vl haou,
- hr_all_organization_units_vl haou2,
- gl_ledgers gl
-where mp.deferred_cogs_account        = gcc.code_combination_id (+)
--- ===========================================
--- Organization joins to the HR org model
--- ===========================================
-and hoi.org_information_context     = 'Accounting Information'
-and hoi.organization_id             = mp.organization_id
-and hoi.organization_id             = haou.organization_id -- this gets the organization name
-and haou2.organization_id           = to_number(hoi.org_information3) -- this gets the operating unit id
-and gl.ledger_id                    = to_number(hoi.org_information1) -- get the ledger_id
-and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
-and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
-and 1=1                                                                                                   -- p_ledger, p_operating_unit, p_org_code
-and (:p_account_group = 'Profit and Loss'
-  or
-  :p_account_group is null)                                                                          -- Profit and Loss
--- Fix for version 1.4
--- avoid selecting disabled inventory organizations
-and sysdate < nvl(haou.date_to, sysdate + 1)
-/* +=============================================================================+
--- Revision for version 1.15
--- Comment this out, mp.cat_wt_account not found at client site
--- +=============================================================================+
-union all
--- Revision for version 1.5, add On-Hand Adjustment Account
--- Usually only in use for OPM organizations
-select 'Other Accounts' Account_Group,
- 'On-Hand Adjustment Account' Account_Type,
- nvl(gl.short_name, gl.name) Ledger,
- haou2.name Operating_Unit,
- mp.organization_code Org_Code,
- haou.name Organization_Name,
- &segment_columns
- mp.last_update_date Last_Update_Date
-from mtl_parameters mp,
- gl_code_combinations gcc,
- hr_organization_information hoi,
- hr_all_organization_units_vl haou,
- hr_all_organization_units_vl haou2,
- gl_ledgers gl
-where mp.cat_wt_account               = gcc.code_combination_id (+)
--- ===========================================
--- Organization joins to the HR org model
--- ===========================================
-and hoi.org_information_context     = 'Accounting Information'
-and hoi.organization_id             = mp.organization_id
-and hoi.organization_id             = haou.organization_id -- this gets the organization name
-and haou2.organization_id           = to_number(hoi.org_information3) -- this gets the operating unit id
-and gl.ledger_id                    = to_number(hoi.org_information1) -- get the ledger_id
-and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
-and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
-and 1=1                                                                                                   -- p_ledger, p_operating_unit, p_org_code
-and (:p_account_group = 'Other Accounts'
-  or
-  :p_account_group is null)                                                                          -- Other Accounts
--- avoid selecting disabled inventory organizations
-and sysdate < nvl(haou.date_to, sysdate + 1)
--- End revision for version 1.5
--- +=============================================================================+
--- End of commenting out, end of revision for version 1.15
--- +=============================================================================+*/
-union all
--- Revision for version 1.6, add Expense Accounts to this report
-select 'Other Accounts' Account_Group,
- 'Expense Account' Account_Type,
- nvl(gl.short_name, gl.name) Ledger,
- haou2.name Operating_Unit,
- mp.organization_code Org_Code,
- haou.name Organization_Name,
- &segment_columns
- mp.last_update_date Last_Update_Date
-from mtl_parameters mp,
- gl_code_combinations gcc,
- hr_organization_information hoi,
- hr_all_organization_units_vl haou,
- hr_all_organization_units_vl haou2,
- gl_ledgers gl
-where mp.expense_account              = gcc.code_combination_id (+)
--- ===========================================
--- Organization joins to the HR org model
--- ===========================================
-and hoi.org_information_context     = 'Accounting Information'
-and hoi.organization_id             = mp.organization_id
-and hoi.organization_id             = haou.organization_id -- this gets the organization name
-and haou2.organization_id           = to_number(hoi.org_information3) -- this gets the operating unit id
-and gl.ledger_id                    = to_number(hoi.org_information1) -- get the ledger_id
-and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
-and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
-and 1=1                                                                                                   -- p_ledger, p_operating_unit, p_org_code
-and (:p_account_group = 'Other Accounts'
-  or
-  :p_account_group is null)                                                                          -- Other Accounts
--- avoid selecting disabled inventory organizations
-and sysdate < nvl(haou.date_to, sysdate + 1)
--- End revision for version 1.6
-union all
--- Revision for version 1.11, add Cost Variance Account to this report
-select 'Other Accounts' Account_Group,
- 'Avg Cost Variance Account' Account_Type,
- nvl(gl.short_name, gl.name) Ledger,
- haou2.name Operating_Unit,
- mp.organization_code Org_Code,
- haou.name Organization_Name,
- &segment_columns
- mp.last_update_date Last_Update_Date
-from mtl_parameters mp,
- gl_code_combinations gcc,
- hr_organization_information hoi,
- hr_all_organization_units_vl haou,
- hr_all_organization_units_vl haou2,
- gl_ledgers gl
-where mp.average_cost_var_account     = gcc.code_combination_id (+)
- -- ===========================================
- -- Organization joins to the HR org model
- -- ===========================================
-and hoi.org_information_context     = 'Accounting Information'
-and hoi.organization_id             = mp.organization_id
-and hoi.organization_id             = haou.organization_id -- this gets the organization name
-and haou2.organization_id           = to_number(hoi.org_information3) -- this gets the operating unit id
-and gl.ledger_id                    = to_number(hoi.org_information1) -- get the ledger_id
-and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
-and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
-and 1=1                                                                                                   -- p_ledger, p_operating_unit, p_org_code
-and (:p_account_group = 'Other Accounts'
-  or
-  :p_account_group is null)                                                                          -- Other Accounts
--- avoid selecting disabled inventory organizations
-and sysdate < nvl(haou.date_to, sysdate + 1)
--- End revision for version 1.11
-union all
--- ===========================================
--- This third group of select statements is
--- for the Receiving Accounts Group
--- ===========================================
-select 'Receiving' Account_Group,
- 'Inv. A/P Accrual Account' Account_Type,
- nvl(gl.short_name, gl.name) Ledger,
- haou2.name Operating_Unit,
- mp.organization_code Org_Code,
- haou.name Organization_Name,
- &segment_columns
- mp.last_update_date Last_Update_Date
-from mtl_parameters mp,
- gl_code_combinations gcc,
- hr_organization_information hoi,
- hr_all_organization_units_vl haou,
- hr_all_organization_units_vl haou2,
- gl_ledgers gl
-where mp.ap_accrual_account           = gcc.code_combination_id (+)
--- ===========================================
--- Organization joins to the HR org model
--- ===========================================
-and hoi.org_information_context     = 'Accounting Information'
-and hoi.organization_id             = mp.organization_id
-and hoi.organization_id             = haou.organization_id -- this gets the organization name
-and haou2.organization_id           = to_number(hoi.org_information3) -- this gets the operating unit id
-and gl.ledger_id                    = to_number(hoi.org_information1) -- get the ledger_id
-and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
-and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
-and 1=1                                                                                                   -- p_ledger, p_operating_unit, p_org_code
-and (:p_account_group = 'Receiving'
-  or
-  :p_account_group is null)                                                                          -- Receiving
--- avoid selecting disabled inventory organizations
-and sysdate < nvl(haou.date_to, sysdate + 1)
--- End fix for version 1.4
-union all
--- Revision for version 1.9, add Warehouse Mgmt System (Wms) 
--- Default Goods Dispatched Account
--- from the Shipping Parameters, wsh_shipping_parameters.  
--- The Trip Stop Interface fails if this ccid is not populated
-select 'Shipping' Account_Group,
- 'Goods Dispatched Account' Account_Type,
- nvl(gl.short_name, gl.name) Ledger,
- haou2.name Operating_Unit,
- mp.organization_code Org_Code,
- haou.name Organization_Name,
- &segment_columns
- mp.last_update_date Last_Update_Date
-from wsh_shipping_parameters wsp,
- mtl_parameters mp,
- gl_code_combinations gcc,
- hr_organization_information hoi,
- hr_all_organization_units_vl haou,
- hr_all_organization_units_vl haou2,
- gl_ledgers gl
-where wsp.organization_id             = mp.organization_id
--- Use an outer join to allow null values
--- as the Shipping Parameters form has this as
--- an optional field as opposed to a required field
-and wsp.goods_dispatched_account    = gcc.code_combination_id (+)
--- ===========================================
--- Organization joins to the HR org model
--- ===========================================
-and hoi.org_information_context     = 'Accounting Information'
-and hoi.organization_id             = mp.organization_id
-and hoi.organization_id             = haou.organization_id -- this gets the organization name
-and haou2.organization_id           = to_number(hoi.org_information3) -- this gets the operating unit id
-and gl.ledger_id                    = to_number(hoi.org_information1) -- get the ledger_id
-and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
-and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
-and 1=1                                                                                                   -- p_ledger, p_operating_unit, p_org_code
-and (:p_account_group = 'Other Accounts'
-  or
-  :p_account_group is null)                                                                          -- Other Accounts
--- avoid selecting disabled inventory organizations
-and sysdate < nvl(haou.date_to, sysdate + 1)
--- End revision for version 1.9
-union all
-select 'Receiving' Account_Group,
- 'IPV Account' Account_Type,
- nvl(gl.short_name, gl.name) Ledger,
- haou2.name Operating_Unit,
- mp.organization_code Org_Code,
- haou.name Organization_Name,
- &segment_columns
- mp.last_update_date Last_Update_Date
-from mtl_parameters mp,
- gl_code_combinations gcc,
- hr_organization_information hoi,
- hr_all_organization_units_vl haou,
- hr_all_organization_units_vl haou2,
- gl_ledgers gl
-where mp.invoice_price_var_account    = gcc.code_combination_id (+)
--- ===========================================
--- Organization joins to the HR org model
--- ===========================================
-and hoi.org_information_context     = 'Accounting Information'
-and hoi.organization_id             = mp.organization_id
-and hoi.organization_id             = haou.organization_id -- this gets the organization name
-and haou2.organization_id           = to_number(hoi.org_information3) -- this gets the operating unit id
-and gl.ledger_id                    = to_number(hoi.org_information1) -- get the ledger_id
-and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
-and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
-and 1=1                                                                                                   -- p_ledger, p_operating_unit, p_org_code
-and (:p_account_group = 'Receiving'
-  or
-  :p_account_group is null)                                                                          -- Receiving
--- avoid selecting disabled inventory organizations
-and sysdate < nvl(haou.date_to, sysdate + 1)
--- End fix for version 1.4
-union all
-select 'Receiving' Account_Group,
- 'PPV Account' Account_Type,
- nvl(gl.short_name, gl.name) Ledger,
- haou2.name Operating_Unit,
- mp.organization_code Org_Code,
- haou.name Organization_Name,
- &segment_columns
- mp.last_update_date Last_Update_Date
-from mtl_parameters mp,
- gl_code_combinations gcc,
- hr_organization_information hoi,
- hr_all_organization_units_vl haou,
- hr_all_organization_units_vl haou2,
- gl_ledgers gl
-where mp.purchase_price_var_account   = gcc.code_combination_id (+)
--- ===========================================
--- Organization joins to the HR org model
--- ===========================================
-and hoi.org_information_context     = 'Accounting Information'
-and hoi.organization_id             = mp.organization_id
-and hoi.organization_id             = haou.organization_id -- this gets the organization name
-and haou2.organization_id           = to_number(hoi.org_information3) -- this gets the operating unit id
-and gl.ledger_id                    = to_number(hoi.org_information1) -- get the ledger_id
-and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
-and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
-and 1=1                                                                                                   -- p_ledger, p_operating_unit, p_org_code
-and (:p_account_group = 'Receiving'
-  or
-  :p_account_group is null)                                                                          -- Receiving
--- avoid selecting disabled inventory organizations
-and sysdate < nvl(haou.date_to, sysdate + 1)
--- End fix for version 1.4
-       and sysdate < nvl(haou.date_to, sysdate + 1)
-union all
--- Revision for version 1.12, add the Clearing Account
--- from Receiving Options, rcv_parameters
-select 'Receiving' Account_Group,
- 'Clearing Account' Account_Type,
- nvl(gl.short_name, gl.name) Ledger,
- haou2.name Operating_Unit,
- mp.organization_code Org_Code,
- haou.name Organization_Name,
- &segment_columns
- mp.last_update_date Last_Update_Date
-from rcv_parameters rp,
- mtl_parameters mp,
- gl_code_combinations gcc,
- hr_organization_information hoi,
- hr_all_organization_units_vl haou,
- hr_all_organization_units_vl haou2,
- gl_ledgers gl
-where rp.organization_id              = mp.organization_id
-and rp.clearing_account_id          = gcc.code_combination_id (+)
--- ===========================================
--- Organization joins to the HR org model
--- ===========================================
-and hoi.org_information_context     = 'Accounting Information'
-and hoi.organization_id             = mp.organization_id
-and hoi.organization_id             = haou.organization_id -- this gets the organization name
-and haou2.organization_id           = to_number(hoi.org_information3) -- this gets the operating unit id
-and gl.ledger_id                    = to_number(hoi.org_information1) -- get the ledger_id
-and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
-and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
-and 1=1                                                                                                   -- p_ledger, p_operating_unit, p_org_code
-and (:p_account_group = 'Receiving'
-  or
-  :p_account_group is null)                                                                          -- Receiving
--- avoid selecting disabled inventory organizations
-and sysdate < nvl(haou.date_to, sysdate + 1)
--- End fix for version 1.12
-union all
--- Revision for version 1.12, add the Expense_Accrual_Account
--- from Purchasing Options, po_system_parameters_all
-select 'Receiving' Account_Group,
- 'Expense A/P Accrual Account' Account_Type,
- nvl(gl.short_name, gl.name) Ledger,
- haou2.name Operating_Unit,
- mp.organization_code Org_Code,
- haou.name Organization_Name,
- &segment_columns
- mp.last_update_date Last_Update_Date
-from po_system_parameters_all psp,
- mtl_parameters mp,
- gl_code_combinations gcc,
- hr_organization_information hoi,
- hr_all_organization_units_vl haou,
- hr_all_organization_units_vl haou2,
- gl_ledgers gl
-where mp.master_organization_id       = mp.organization_id
-and psp.org_id                      = haou2.organization_id
-and psp.accrued_code_combination_id = gcc.code_combination_id (+)
--- ===========================================
--- Organization joins to the HR org model
--- ===========================================
-and hoi.org_information_context     = 'Accounting Information'
-and hoi.organization_id             = mp.organization_id
-and hoi.organization_id             = haou.organization_id -- this gets the organization name
-and haou2.organization_id           = to_number(hoi.org_information3) -- this gets the operating unit id
-and gl.ledger_id                    = to_number(hoi.org_information1) -- get the ledger_id
-and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
-and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
-and 1=1                                                                                                   -- p_ledger, p_operating_unit, p_org_code
-and (:p_account_group = 'Receiving'
-  or
-  :p_account_group is null)                                                                          -- Receiving
--- avoid selecting disabled inventory organizations
-and sysdate < nvl(haou.date_to, sysdate + 1)
--- End fix for version 1.12
-union all
--- ===========================================
--- This fourth group of select statements is
--- for the Valuation Account_Group
--- ===========================================
-select 'Valuation' Account_Group,
- 'Material Value Account' Account_Type,
- nvl(gl.short_name, gl.name) Ledger,
- haou2.name Operating_Unit,
- mp.organization_code Org_Code,
- haou.name Organization_Name,
- &segment_columns
- mp.last_update_date Last_Update_Date
-from mtl_parameters mp,
- gl_code_combinations gcc,
- hr_organization_information hoi,
- hr_all_organization_units_vl haou,
- hr_all_organization_units_vl haou2,
- gl_ledgers gl
-where mp.material_account             = gcc.code_combination_id (+)
--- ===========================================
--- Organization joins to the HR org model
--- ===========================================
-and hoi.org_information_context     = 'Accounting Information'
-and hoi.organization_id             = mp.organization_id
-and hoi.organization_id             = haou.organization_id -- this gets the organization name
-and haou2.organization_id           = to_number(hoi.org_information3) -- this gets the operating unit id
-and gl.ledger_id                    = to_number(hoi.org_information1) -- get the ledger_id
-and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
-and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
-and 1=1                                                                                                   -- p_ledger, p_operating_unit, p_org_code
-and (:p_account_group = 'Valuation'
-  or
-  :p_account_group is null)                                                                          -- Valuation
--- avoid selecting disabled inventory organizations
-and sysdate < nvl(haou.date_to, sysdate + 1)
--- End fix for version 1.4
-union all
-select 'Valuation' Account_Group,
- 'Matl Ovhd Value Account' Account_Type,
- nvl(gl.short_name, gl.name) Ledger,
- haou2.name Operating_Unit,
- mp.organization_code Org_Code,
- haou.name Organization_Name,
- &segment_columns
- mp.last_update_date Last_Update_Date
-from mtl_parameters mp,
- gl_code_combinations gcc,
- hr_organization_information hoi,
- hr_all_organization_units_vl haou,
- hr_all_organization_units_vl haou2,
- gl_ledgers gl
-where mp.material_overhead_account = gcc.code_combination_id (+)
--- ===========================================
--- Organization joins to the HR org model
--- ===========================================
-and hoi.org_information_context = 'Accounting Information'
-and hoi.organization_id = mp.organization_id
-and hoi.organization_id = haou.organization_id -- this gets the organization name
-and haou2.organization_id = to_number(hoi.org_information3) -- this gets the operating unit id
-and gl.ledger_id = to_number(hoi.org_information1) -- get the ledger_id
-and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
-and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
-and 1=1                                                                                                   -- p_ledger, p_operating_unit, p_org_code
-and (:p_account_group = 'Valuation'
-  or
-  :p_account_group is null)                                                                          -- Valuation
--- avoid selecting disabled inventory organizations
-and sysdate < nvl(haou.date_to, sysdate + 1)
--- End fix for version 1.4
-union all
-select 'Valuation' Account_Group,
- 'Resource Value Account' Account_Type,
- nvl(gl.short_name, gl.name) Ledger,
- haou2.name Operating_Unit,
- mp.organization_code Org_Code,
- haou.name Organization_Name,
- &segment_columns
- mp.last_update_date Last_Update_Date
-from mtl_parameters mp,
- gl_code_combinations gcc,
- hr_organization_information hoi,
- hr_all_organization_units_vl haou,
- hr_all_organization_units_vl haou2,
- gl_ledgers gl
-where mp.resource_account             = gcc.code_combination_id (+)
--- ===========================================
--- Organization joins to the HR org model
--- ===========================================
-and hoi.org_information_context     = 'Accounting Information'
-and hoi.organization_id             = mp.organization_id
-and hoi.organization_id             = haou.organization_id -- this gets the organization name
-and haou2.organization_id           = to_number(hoi.org_information3) -- this gets the operating unit id
-and gl.ledger_id                    = to_number(hoi.org_information1) -- get the ledger_id
-and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
-and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
-and 1=1                                                                                                   -- p_ledger, p_operating_unit, p_org_code
-and (:p_account_group = 'Valuation'
-  or
-  :p_account_group is null)                                                                          -- Valuation
--- avoid selecting disabled inventory organizations
-and sysdate < nvl(haou.date_to, sysdate + 1)
--- End fix for version 1.4
-union all
-select 'Valuation' Account_Group,
-       'OSP Value Account' Account_Type,
- nvl(gl.short_name, gl.name) Ledger,
- haou2.name Operating_Unit,
- mp.organization_code Org_Code,
- haou.name Organization_Name,
- &segment_columns
- mp.last_update_date Last_Update_Date
-from mtl_parameters mp,
- gl_code_combinations gcc,
- hr_organization_information hoi,
- hr_all_organization_units_vl haou,
- hr_all_organization_units_vl haou2,
- gl_ledgers gl
-where mp.outside_processing_account   = gcc.code_combination_id (+)
--- ===========================================
--- Organization joins to the HR org model
--- ===========================================
-and hoi.org_information_context     = 'Accounting Information'
-and hoi.organization_id             = mp.organization_id
-and hoi.organization_id             = haou.organization_id -- this gets the organization name
-and haou2.organization_id           = to_number(hoi.org_information3) -- this gets the operating unit id
-and gl.ledger_id                    = to_number(hoi.org_information1) -- get the ledger_id
-and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
-and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
-and 1=1                                                                                                   -- p_ledger, p_operating_unit, p_org_code
-and (:p_account_group = 'Valuation'
-  or
-  :p_account_group is null)                                                                          -- Valuation
--- avoid selecting disabled inventory organizations
-and sysdate < nvl(haou.date_to, sysdate + 1)
--- End fix for version 1.4
-union all
-select 'Valuation' Account_Group,
- 'Overhead Value Account' Account_Type,
- nvl(gl.short_name, gl.name) Ledger,
- haou2.name Operating_Unit,
- mp.organization_code Org_Code,
- haou.name Organization_Name,
- &segment_columns
- mp.last_update_date Last_Update_Date
-from mtl_parameters mp,
- gl_code_combinations gcc,
- hr_organization_information hoi,
- hr_all_organization_units_vl haou,
- hr_all_organization_units_vl haou2,
- gl_ledgers gl
-where mp.overhead_account             = gcc.code_combination_id (+)
--- ===========================================
--- Organization joins to the HR org model
--- ===========================================
-and hoi.org_information_context     = 'Accounting Information'
-and hoi.organization_id             = mp.organization_id
-and hoi.organization_id             = haou.organization_id -- this gets the organization name
-and haou2.organization_id           = to_number(hoi.org_information3) -- this gets the operating unit id
-and gl.ledger_id                    = to_number(hoi.org_information1) -- get the ledger_id
-and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
-and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
-and 1=1                                                                                                   -- p_ledger, p_operating_unit, p_org_code
-and (:p_account_group = 'Valuation'
-  or
-  :p_account_group is null)                                                                          -- Valuation
--- avoid selecting disabled inventory organizations
-and sysdate < nvl(haou.date_to, sysdate + 1)
--- End fix for version 1.4
-union all
--- Revision for version 1.5, add the Receiving Valuation Account
--- from Receiving Options, rcv_parameters
-select 'Valuation' Account_Group,
- 'Receiving Value Account' Account_Type,
- nvl(gl.short_name, gl.name) Ledger,
- haou2.name Operating_Unit,
- mp.organization_code Org_Code,
- haou.name Organization_Name,
- &segment_columns
- mp.last_update_date Last_Update_Date
-from rcv_parameters rp,
- mtl_parameters mp,
- gl_code_combinations gcc,
- hr_organization_information hoi,
- hr_all_organization_units_vl haou,
- hr_all_organization_units_vl haou2,
- gl_ledgers gl
-where rp.organization_id              = mp.organization_id
-and rp.receiving_account_id         = gcc.code_combination_id (+)
--- ===========================================
--- Organization joins to the HR org model
--- ===========================================
-and hoi.org_information_context     = 'Accounting Information'
-and hoi.organization_id             = mp.organization_id
-and hoi.organization_id             = haou.organization_id -- this gets the organization name
-and haou2.organization_id           = to_number(hoi.org_information3) -- this gets the operating unit id
-and gl.ledger_id                    = to_number(hoi.org_information1) -- get the ledger_id
-and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
-and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
-and 1=1                                                                                                   -- p_ledger, p_operating_unit, p_org_code
-and (:p_account_group = 'Valuation'
-  or
-  :p_account_group is null)                                                                          -- Valuation
--- avoid selecting disabled inventory organizations
-and sysdate < nvl(haou.date_to, sysdate + 1)
--- End revision for version 1.5
--- Order by Account_Group, Account_Type, Ledger, Operating_Unit, Org_Code, and Accounts
-order by 1,
-         2,
-         3,
-         4,
-         5,
-         7
+select
+y.account_group,
+y.account_type,
+y.ledger,
+y.operating_unit,
+y.org_code,
+y.organization_name,
+&segment_columns
+y.last_update_date
+from
+(
+select
+case
+when rowgen.column_value<=5 then 'Inter-org'
+when rowgen.column_value<=7 then 'Profit and Loss'
+when rowgen.column_value<=10 then 'Other Accounts'
+when rowgen.column_value=12 then 'Shipping'
+when rowgen.column_value<=16 then 'Receiving'
+else 'Valuation'
+end account_group,
+decode(rowgen.column_value,
+1,'Inter-Org A/P Account',
+2,'Inter-Org A/R Account',
+3,'Intransit Account',
+4,'Inter-Org PPV Account',
+5,'Inter-Org Xfer Credit Account',
+6,'Cost of Goods Sold Account',
+7,'Sales Account',
+8,'Deferred COGS Account',
+9,'Expense Account',
+10,'Avg Cost Variance Account',
+11,'Inv. A/P Accrual Account',
+12,'Goods Dispatched Account',
+13,'IPV Account',
+14,'PPV Account',
+15,'Clearing Account',
+16,'Expense A/P Accrual Account',
+17,'Material Value Account',
+18,'Matl Ovhd Value Account',
+19,'Resource Value Account',
+20,'OSP Value Account',
+21,'Overhead Value Account',
+22,'Receiving Value Account'
+) account_type,
+decode(rowgen.column_value,
+1,mp.interorg_payables_account,
+2,mp.interorg_receivables_account,
+3,mp.intransit_inv_account,
+4,mp.interorg_price_var_account,
+5,mp.interorg_transfer_cr_account,
+6,mp.cost_of_sales_account,
+7,mp.sales_account,
+8,mp.deferred_cogs_account,
+9,mp.expense_account,
+10,mp.average_cost_var_account,
+11,mp.ap_accrual_account,
+12,wsp.goods_dispatched_account,
+13,mp.invoice_price_var_account,
+14,mp.purchase_price_var_account,
+15,rp.clearing_account_id,
+16,psp.accrued_code_combination_id,
+17,mp.material_account,
+18,mp.material_overhead_account,
+19,mp.resource_account,
+20,mp.outside_processing_account,
+21,mp.overhead_account,
+22,rp.receiving_account_id
+) code_combination_id,
+nvl(gl.short_name,gl.name) ledger,
+haouv_ou.name operating_unit,
+mp.organization_code org_code,
+haouv.name organization_name,
+mp.last_update_date,
+rowgen.column_value sort_order
+from
+mtl_parameters mp,
+hr_organization_information hoi,
+hr_all_organization_units_vl haouv,
+hr_all_organization_units_vl haouv_ou,
+gl_ledgers gl,
+wsh_shipping_parameters wsp,
+rcv_parameters rp,
+po_system_parameters_all psp,
+table(xxen_util.rowgen(22)) rowgen
+where
+1=1 and
+mp.organization_id=hoi.organization_id and
+hoi.org_information_context='Accounting Information' and
+hoi.organization_id=haouv.organization_id and
+sysdate<nvl(haouv.date_to,sysdate+1) and
+to_number(hoi.org_information3)=haouv_ou.organization_id and
+to_number(hoi.org_information1)=gl.ledger_id and
+mp.organization_id=wsp.organization_id(+) and
+mp.organization_id=rp.organization_id(+) and
+haouv_ou.organization_id=psp.org_id(+) and
+(rowgen.column_value<>12 or wsp.organization_id is not null) and
+(rowgen.column_value not in (15,22) or rp.organization_id is not null) and
+(rowgen.column_value<>16 or psp.org_id is not null and mp.master_organization_id=mp.organization_id)
+) y,
+gl_code_combinations gcc
+where
+(:p_account_group is null or upper(y.account_group)=upper(:p_account_group)) and
+y.code_combination_id=gcc.code_combination_id(+)
+order by
+y.sort_order,
+y.ledger,
+y.operating_unit,
+y.org_code

@@ -49,65 +49,55 @@
 -- -- | and added Ledger parameter.
 -- -- | 1.9 28 Apr 2020 Douglas Volz Changed to multi-language views for the
 -- -- | inventory orgs and operating units.
+-- -- | 1.10 23 Oct 2026 Andy Haack Rebuilt to the Blitz Report SQL standards.
 -- -- +=============================================================================+/
 -- Excel Example Output: https://www.enginatics.com/example/cac-order-type-setup/
 -- Library Link: https://www.enginatics.com/reports/cac-order-type-setup/
 -- Run Report: https://demo.enginatics.com/
 
-select nvl(gl.short_name, gl.name) Ledger,
- haou.name Operating_Unit,
- ottt.name Order_Type_Name,
- otta.transaction_type_id Order_Type_Id,
- otta.transaction_type_code Transaction_Type_Code,
- otta.order_category_code Order_Category,
- otta.currency_code Currency_Code,
- otta.start_date_active Start_Date,
- otta.end_date_active End_Date,
- rctt.name AR_Transaction_Name,
- rctt.description AR_Transaction_Description,
- rctt.type AR_Transaction_Type,
- &segment_columns
- -- Revision for version 1.8
- &segment_columns2
- -- Revision for version 1.7
- otta.creation_date Creation_Date,
- otta.last_update_date Last_Update_Date
-from oe_transaction_types_tl ottt,
- oe_transaction_types_all otta,
- gl_code_combinations gcc1, -- COGS_Accounts
- -- Revision for version 1.8
- gl_code_combinations gcc2, -- Sales_Accounts
- -- Revision for version 1.3
- -- Revision for version 1.1
- -- ra_cust_trx_types rctt,
- (select  rctt.cust_trx_type_id,
-  rctt.org_id,
-  rctt.name,
-  rctt.description,
-  rctt.type,
-  rctt.gl_id_rev
-  from ra_cust_trx_types_all rctt
- ) rctt,
- hr_organization_information hoi,
- hr_all_organization_units_vl haou,  -- operating unit
- gl_ledgers gl
-where   ottt.transaction_type_id    = otta.transaction_type_id
-and ottt.language               = userenv('lang')
-and gcc1.code_combination_id (+)= otta.cost_of_goods_sold_account
--- Revision for version 1.8
-and gcc2.code_combination_id (+)= rctt.gl_id_rev
--- Revision for version 1.2
-and otta.cust_trx_type_id       = rctt.cust_trx_type_id (+)
-and otta.transaction_type_code <> 'LINE'
--- Revision for version 1.6
-and otta.org_id                 = rctt.org_id
--- Revision for version 1.7
-and hoi.org_information_context = 'Operating Unit Information'
-and hoi.organization_id         = haou.organization_id -- this gets the operating unit id
-and gl.ledger_id                = to_number(hoi.org_information3) -- this joins OU to GL
--- End revision for version 1.7 
-and haou.organization_id        = otta.org_id -- this gets the operating unit id
-and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
-and haou.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
-and 1=1                         -- p_operating_unit, p_ledger
-order by 1,2,3,4,5,7
+select
+nvl(gl.short_name,gl.name) ledger,
+haouv.name operating_unit,
+ottt.name order_type_name,
+otta.transaction_type_id order_type_id,
+xxen_util.meaning(otta.transaction_type_code,'TRANSACTION_TYPE',660) transaction_type_code,
+xxen_util.meaning(otta.order_category_code,'ORDER_CATEGORY',660) order_category,
+otta.currency_code,
+otta.start_date_active start_date,
+otta.end_date_active end_date,
+rctta.name ar_transaction_name,
+rctta.description ar_transaction_description,
+xxen_util.meaning(rctta.type,'INV/CM',222) ar_transaction_type,
+&segment_columns
+&segment_columns2
+otta.creation_date,
+otta.last_update_date
+from
+oe_transaction_types_all otta,
+oe_transaction_types_tl ottt,
+hr_all_organization_units_vl haouv,
+hr_organization_information hoi,
+gl_ledgers gl,
+ra_cust_trx_types_all rctta,
+gl_code_combinations gcc1,
+gl_code_combinations gcc2
+where
+1=1 and
+otta.transaction_type_code<>'LINE' and
+otta.transaction_type_id=ottt.transaction_type_id and
+ottt.language=userenv('lang') and
+otta.org_id=haouv.organization_id and
+haouv.organization_id=hoi.organization_id and
+hoi.org_information_context='Operating Unit Information' and
+to_number(hoi.org_information3)=gl.ledger_id and
+otta.cust_trx_type_id=rctta.cust_trx_type_id(+) and
+otta.org_id=rctta.org_id(+) and
+otta.cost_of_goods_sold_account=gcc1.code_combination_id(+) and
+rctta.gl_id_rev=gcc2.code_combination_id(+)
+order by
+ledger,
+operating_unit,
+order_type_name,
+order_type_id,
+otta.transaction_type_code,
+otta.currency_code

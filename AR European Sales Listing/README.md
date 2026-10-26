@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-19
+last_modified_at: 2026-10-26
 title: 'AR European Sales Listing | Oracle EBS SQL Report'
 description: 'Summary report listing sales by country and currency code, with transaction amount / currency and accounted amount/ currency'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Receivables, Enginatics, R12 only, European, Sales, Listing, hz_cust_acct_sites, hz_party_sites, hz_locations'
@@ -31,7 +31,7 @@ Detail/Summary, Ledger, From Date, To Date, Branch (to which remitted), Site Rep
 [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-european-sales-listing), [R12 only](https://www.enginatics.com/library/?pg=1&category%5B%5D=R12%20only&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-european-sales-listing)
 
 ## Related Reports
-[AR Customer Upload](/AR%20Customer%20Upload/ "AR Customer Upload Oracle EBS SQL Report"), [AR Customers and Sites](/AR%20Customers%20and%20Sites/ "AR Customers and Sites Oracle EBS SQL Report"), [ZX Party Tax Profiles](/ZX%20Party%20Tax%20Profiles/ "ZX Party Tax Profiles Oracle EBS SQL Report"), [AP Supplier Upload](/AP%20Supplier%20Upload/ "AP Supplier Upload Oracle EBS SQL Report"), [ZX US Sales Tax](/ZX%20US%20Sales%20Tax/ "ZX US Sales Tax Oracle EBS SQL Report"), [AR Transaction Upload](/AR%20Transaction%20Upload/ "AR Transaction Upload Oracle EBS SQL Report"), [AR Aging](/AR%20Aging/ "AR Aging Oracle EBS SQL Report"), [GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report"), [AR Customer Profiles](/AR%20Customer%20Profiles/ "AR Customer Profiles Oracle EBS SQL Report")
+[AR Customer Upload](/AR%20Customer%20Upload/ "AR Customer Upload Oracle EBS SQL Report"), [AR Customers and Sites](/AR%20Customers%20and%20Sites/ "AR Customers and Sites Oracle EBS SQL Report"), [ZX Party Tax Profiles](/ZX%20Party%20Tax%20Profiles/ "ZX Party Tax Profiles Oracle EBS SQL Report"), [AP Supplier Upload](/AP%20Supplier%20Upload/ "AP Supplier Upload Oracle EBS SQL Report"), [AR Transaction Upload](/AR%20Transaction%20Upload/ "AR Transaction Upload Oracle EBS SQL Report"), [AR Aging](/AR%20Aging/ "AR Aging Oracle EBS SQL Report"), [ZX US Sales Tax](/ZX%20US%20Sales%20Tax/ "ZX US Sales Tax Oracle EBS SQL Report"), [GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report"), [AR Customer Profiles](/AR%20Customer%20Profiles/ "AR Customer Profiles Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/AR%20European%20Sales%20Listing/AR%20European%20Sales%20Listing.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-european-sales-listing) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.

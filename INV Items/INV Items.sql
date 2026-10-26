@@ -5,7 +5,10 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: INV Items
--- Description: Master data report that lists item master attributes such as item type, UOM, status, serial control, account numbers and various other attributes
+-- Description: Master data report that lists item master attributes such as item type, UOM, status, serial control, account numbers and various other attributes.
+-- Item Cost is the item's cost in the cost type of the organization's primary cost method. Item Cost and List Price are in the organization's ledger Currency.
+-- Sourcing Supplier is the supplier and site that Oracle's sourcing routine selects from the Sourcing Assignment Set: the most specific assignment (item and organization, item, category, organization, global) first, then the highest allocation percent and the lowest rank, skipping suppliers the approved supplier list does not allow for sourcing. The site is the one the sourcing rule names, which can belong to a different operating unit from the organization's.
+-- An item with several manufacturer part numbers is listed once per part number.
 -- Excel Example Output: https://www.enginatics.com/example/inv-items/
 -- Library Link: https://www.enginatics.com/reports/inv-items/
 -- Run Report: https://demo.enginatics.com/
@@ -99,6 +102,7 @@ xxen_util.meaning(msiv.inventory_asset_flag,'YES_NO',0) inventory_asset_value,
 xxen_util.meaning(msiv.default_include_in_rollup_flag,'YES_NO',0) include_in_rollup,
 (select gcck.concatenated_segments from gl_code_combinations_kfv gcck where gcck.code_combination_id = msiv.cost_of_sales_account) cost_of_goods_sold_account,
 msiv.std_lot_size standard_lot_size,
+(select cic.item_cost from cst_item_costs cic where mp.cost_organization_id=cic.organization_id and msiv.inventory_item_id=cic.inventory_item_id and mp.primary_cost_method=cic.cost_type_id) item_cost,
 -- Asset Management
 xxen_util.meaning(msiv.eam_item_type,'MTL_EAM_ITEM_TYPE',700) asset_item_type,
 xxen_util.meaning(msiv.eam_activity_type_code,'MTL_EAM_ACTIVITY_TYPE',700) asset_activity_type,
@@ -120,7 +124,55 @@ xxen_util.meaning(msiv.purchasing_tax_code,'ZX_INPUT_CLASSIFICATIONS',0) input_t
 xxen_util.meaning(msiv.receipt_required_flag,'YES_NO',0) receipt_required,
 xxen_util.meaning(msiv.inspection_required_flag,'YES_NO',0) inspection_required,
 (select ppx.full_name from per_people_x ppx where ppx.person_id = msiv.buyer_id) default_buyer,
+(
+select
+max(aps.vendor_name) keep (dense_rank first order by misl.sourcing_level, misl.allocation_percent desc, misl.rank, misl.vendor_id, misl.vendor_site_id)
+from
+mrp_item_sourcing_levels_v misl,
+ap_suppliers aps
+where
+:sourcing_assignment_set is not null and
+msiv.inventory_item_id=misl.inventory_item_id and
+msiv.organization_id=misl.organization_id and
+misl.assignment_set_id=(select mas.assignment_set_id from mrp_assignment_sets mas where mas.assignment_set_name=:sourcing_assignment_set) and
+sysdate between misl.effective_date and nvl(misl.disable_date,sysdate) and
+case when misl.vendor_id in (select pasl.vendor_id from po_approved_supplier_list pasl, po_asl_status_rules pasr where pasl.asl_status_id=pasr.status_id and pasr.business_rule='2_SOURCING' and pasr.allow_action_flag='N') then po_asl_sv.check_asl_action('2_SOURCING',misl.vendor_id,misl.vendor_site_id,msiv.inventory_item_id,-1,msiv.organization_id) else 1 end<>0 and
+misl.vendor_id=aps.vendor_id
+) sourcing_supplier,
+(
+select
+max(aps.segment1) keep (dense_rank first order by misl.sourcing_level, misl.allocation_percent desc, misl.rank, misl.vendor_id, misl.vendor_site_id)
+from
+mrp_item_sourcing_levels_v misl,
+ap_suppliers aps
+where
+:sourcing_assignment_set is not null and
+msiv.inventory_item_id=misl.inventory_item_id and
+msiv.organization_id=misl.organization_id and
+misl.assignment_set_id=(select mas.assignment_set_id from mrp_assignment_sets mas where mas.assignment_set_name=:sourcing_assignment_set) and
+sysdate between misl.effective_date and nvl(misl.disable_date,sysdate) and
+case when misl.vendor_id in (select pasl.vendor_id from po_approved_supplier_list pasl, po_asl_status_rules pasr where pasl.asl_status_id=pasr.status_id and pasr.business_rule='2_SOURCING' and pasr.allow_action_flag='N') then po_asl_sv.check_asl_action('2_SOURCING',misl.vendor_id,misl.vendor_site_id,msiv.inventory_item_id,-1,msiv.organization_id) else 1 end<>0 and
+misl.vendor_id=aps.vendor_id
+) sourcing_supplier_number,
+(
+select
+max(assa.vendor_site_code) keep (dense_rank first order by misl.sourcing_level, misl.allocation_percent desc, misl.rank, misl.vendor_id, misl.vendor_site_id)
+from
+mrp_item_sourcing_levels_v misl,
+ap_suppliers aps,
+ap_supplier_sites_all assa
+where
+:sourcing_assignment_set is not null and
+msiv.inventory_item_id=misl.inventory_item_id and
+msiv.organization_id=misl.organization_id and
+misl.assignment_set_id=(select mas.assignment_set_id from mrp_assignment_sets mas where mas.assignment_set_name=:sourcing_assignment_set) and
+sysdate between misl.effective_date and nvl(misl.disable_date,sysdate) and
+case when misl.vendor_id in (select pasl.vendor_id from po_approved_supplier_list pasl, po_asl_status_rules pasr where pasl.asl_status_id=pasr.status_id and pasr.business_rule='2_SOURCING' and pasr.allow_action_flag='N') then po_asl_sv.check_asl_action('2_SOURCING',misl.vendor_id,misl.vendor_site_id,msiv.inventory_item_id,-1,msiv.organization_id) else 1 end<>0 and
+misl.vendor_id=aps.vendor_id and
+misl.vendor_site_id=assa.vendor_site_id(+)
+) sourcing_supplier_site,
 msiv.list_price_per_unit list_price,
+(select gl.currency_code from org_organization_definitions ood, gl_ledgers gl where msiv.organization_id=ood.organization_id and ood.set_of_books_id=gl.ledger_id) currency,
 msiv.market_price market_price,
 msiv.price_tolerance_percent price_tolerance_pct,
 msiv.receive_close_tolerance receipt_close_tolerance,
@@ -348,7 +400,18 @@ mtl_parameters mp,
 mtl_system_items_vl msiv,
 cs_ctr_associations cca,
 cs_counter_groups ccg,
-mtl_mfg_part_numbers mmpn,
+(
+select
+mp.organization_id,
+mmpn.inventory_item_id,
+mmpn.manufacturer_id,
+mmpn.mfg_part_num
+from
+mtl_parameters mp,
+mtl_mfg_part_numbers mmpn
+where
+mp.master_organization_id=mmpn.organization_id
+) mmpn,
 mtl_manufacturers mm
 where
 1=1 and

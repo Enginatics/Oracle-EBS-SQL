@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-16
+last_modified_at: 2026-10-26
 title: 'PA Task Schedule | Oracle EBS SQL Report'
 description: 'Summary project report showing operating unit, project, task, scheduled start date, scheduled finish date, created by, and last updated by.'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Projects, Enginatics, Task, Schedule, hr_all_organization_units, pa_projects_all, pa_proj_elements'
@@ -31,7 +31,7 @@ Operating Unit, Project
 [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-task-schedule)
 
 ## Related Reports
-[PA Event Upload](/PA%20Event%20Upload/ "PA Event Upload Oracle EBS SQL Report")
+[PA Workplan Upload](/PA%20Workplan%20Upload/ "PA Workplan Upload Oracle EBS SQL Report"), [PA Event Upload](/PA%20Event%20Upload/ "PA Event Upload Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/PA%20Task%20Schedule/PA%20Task%20Schedule.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-task-schedule) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.

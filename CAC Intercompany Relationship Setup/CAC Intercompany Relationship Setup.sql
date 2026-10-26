@@ -32,100 +32,71 @@
 -- -- | mtltransactionflowsv.
 -- -- | 1.2 27 Apr 2020 Douglas Volz Changed to multi-language views for the
 -- -- | inventory orgs and operating units.
+-- -- | 1.3 23 Oct 2026 Andy Haack Rebuilt to the Blitz Report SQL standards.
 -- -- +=============================================================================+/
 -- Excel Example Output: https://www.enginatics.com/example/cac-intercompany-relationship-setup/
 -- Library Link: https://www.enginatics.com/reports/cac-intercompany-relationship-setup/
 -- Run Report: https://demo.enginatics.com/
 
-select hou1.name From_Ship_Operating_Unit,
- hou2.name To_Sell_Operating_Unit,
- -- Revision for version 1.1
- -- null Adv Acctg,
- -- null Ship_From/To_Org,
- -- null Details Req'd,
- fl.meaning Advanced_Accounting,
- mp.organization_code Ship_From_To_Org,
- -- End revision for version 1.1
- ml.meaning Flow_Type,
- rc.customer_name Customer_Name,
- rc.customer_number Customer_Number,
- qlh_tl.name Price_List,
- rsua.location Location,
- rctta.name Receivables_Transaction_Type,
- gcc_ic_cogs.concatenated_segments InterCompany_COGS,
- -- Revision for version 1.1
- decode(mip.inv_currency_code,
-  1, 'Currency Code of From_Operating_Unit',
-  2, 'Currency Code of To_Operating_Unit',
-  3, 'Currency Code of Order',
-  '') Currency_Setting,
- -- End revision for version 1.1
- pv.vendor_name Supplier,
- pvs.vendor_site_code Supplier_Site,
- gcc_frt.concatenated_segments Freight_Account,
- gcc_ia.concatenated_segments Inventory_Accrual_Account,
- gcc_ea.concatenated_segments Expense_Accrual_Account,
- -- Revision for version 1.1
- mip.last_update_date Last_Update_Date
-from mtl_intercompany_parameters mip,
- hr_all_organization_units_vl hou1,
- hr_all_organization_units_vl hou2,
- -- Revision for version 1.1
- mtl_transaction_flow_headers mtfh, 
- mtl_transaction_flow_lines mtfl, 
- mtl_parameters mp,
- fnd_lookups fl, -- advanced accounting, YES_NO
- mfg_lookups ml, -- Flow_Type, INV_TRANSACTION_FLOW_TYPE
- -- End revision for version 1.1
- po_vendors pv,
- po_vendor_sites_all pvs,
- (select cust_account_id customer_id ,
-  party.party_name customer_name ,
-  cust_acct.account_number customer_number,
-  cust_acct.price_list_id price_list_id
-  from hz_parties party,
-  hz_cust_accounts cust_acct
-  where cust_acct.party_id = party.party_id
- ) rc,
- ra_cust_trx_types_all rctta,
- hz_cust_site_uses_all rsua,
- qp_list_headers_tl qlh_tl,
- -- G/L Accounts
- gl_code_combinations_kfv gcc_ic_cogs,
- gl_code_combinations_kfv gcc_frt,
- gl_code_combinations_kfv gcc_ia,
- gl_code_combinations_kfv gcc_ea
-where hou1.organization_id                = mip.ship_organization_id
-and hou2.organization_id                = mip.sell_organization_id
--- Revision for version 1.2
--- Avoid selecting disabled inventory organizations
-and sysdate < nvl(hou1.date_to, sysdate + 1)
-and sysdate < nvl(hou2.date_to, sysdate + 1)
--- Revision for version 1.1
-and mtfh.header_id                      = mtfl.header_id 
-and mtfl.from_org_id                    = mip.ship_organization_id 
-and mtfl.to_org_id                      = mip.sell_organization_id 
-and mtfh.flow_type                      = mip.flow_type
-and mp.organization_id              (+) = mtfh.organization_id
-and fl.lookup_type                      = 'YES_NO'
-and fl.lookup_code                      = nvl(mtfh.new_accounting_flag,'N')
-and ml.lookup_type                      = 'INV_TRANSACTION_FLOW_TYPE'
-and ml.lookup_code                      = mtfh.flow_type
--- End revision for version 1.1
-and pv.vendor_id(+)                     = mip.vendor_id
-and pvs.vendor_site_id(+)               = mip.vendor_site_id
-and pvs.org_id(+)                       = mip.sell_organization_id
-and rc.customer_id                      = mip.customer_id
-and rsua.cust_acct_site_id              = mip.address_id
-and rsua.site_use_id                    = mip.customer_site_id
-and rctta.cust_trx_type_id              = mip.cust_trx_type_id
-and rctta.org_id                        = mip.ship_organization_id
-and qlh_tl.list_header_id               = nvl(rsua.price_list_id, rc.price_list_id)
-and qlh_tl.language                     = userenv('lang')
-and gcc_ic_cogs.code_combination_id (+) = mip.intercompany_cogs_account_id
-and gcc_frt.code_combination_id     (+) = mip.freight_code_combination_id
-and gcc_ia.code_combination_id      (+) = mip.inventory_accrual_account_id
-and gcc_ea.code_combination_id      (+) = mip.expense_accrual_account_id
-order by 
- hou1.name, -- From/Ship_Operating_Unit
- hou2.name -- To/Sell_Operating_Unit
+select
+haouv_ship.name from_ship_operating_unit,
+haouv_sell.name to_sell_operating_unit,
+xxen_util.yes(mtfh.new_accounting_flag) advanced_accounting,
+mp.organization_code ship_from_to_org,
+xxen_util.meaning(mtfh.flow_type,'INV_TRANSACTION_FLOW_TYPE',700) flow_type,
+hp.party_name customer_name,
+hca.account_number customer_number,
+(select qlht.name from qp_list_headers_tl qlht where nvl(hcsua.price_list_id,hca.price_list_id)=qlht.list_header_id and qlht.language=userenv('lang')) price_list,
+hcsua.location,
+rctta.name receivables_transaction_type,
+gcck_ic_cogs.concatenated_segments intercompany_cogs,
+decode(mip.inv_currency_code,1,'Currency Code of From_Operating_Unit',2,'Currency Code of To_Operating_Unit',3,'Currency Code of Order') currency_setting,
+aps.vendor_name supplier,
+assa.vendor_site_code supplier_site,
+gcck_frt.concatenated_segments freight_account,
+gcck_ia.concatenated_segments inventory_accrual_account,
+gcck_ea.concatenated_segments expense_accrual_account,
+mip.last_update_date
+from
+mtl_intercompany_parameters mip,
+hr_all_organization_units_vl haouv_ship,
+hr_all_organization_units_vl haouv_sell,
+mtl_transaction_flow_lines mtfl,
+mtl_transaction_flow_headers mtfh,
+mtl_parameters mp,
+hz_cust_accounts hca,
+hz_parties hp,
+hz_cust_site_uses_all hcsua,
+ra_cust_trx_types_all rctta,
+ap_suppliers aps,
+ap_supplier_sites_all assa,
+gl_code_combinations_kfv gcck_ic_cogs,
+gl_code_combinations_kfv gcck_frt,
+gl_code_combinations_kfv gcck_ia,
+gl_code_combinations_kfv gcck_ea
+where
+mip.ship_organization_id=haouv_ship.organization_id and
+nvl(haouv_ship.date_to,sysdate+1)>sysdate and
+mip.sell_organization_id=haouv_sell.organization_id and
+nvl(haouv_sell.date_to,sysdate+1)>sysdate and
+mip.ship_organization_id=mtfl.from_org_id and
+mip.sell_organization_id=mtfl.to_org_id and
+mtfl.header_id=mtfh.header_id and
+mip.flow_type=mtfh.flow_type and
+mtfh.organization_id=mp.organization_id(+) and
+mip.customer_id=hca.cust_account_id and
+hca.party_id=hp.party_id and
+mip.customer_site_id=hcsua.site_use_id and
+mip.address_id=hcsua.cust_acct_site_id and
+mip.cust_trx_type_id=rctta.cust_trx_type_id and
+mip.ship_organization_id=rctta.org_id and
+mip.vendor_id=aps.vendor_id(+) and
+mip.vendor_site_id=assa.vendor_site_id(+) and
+mip.sell_organization_id=assa.org_id(+) and
+mip.intercompany_cogs_account_id=gcck_ic_cogs.code_combination_id(+) and
+mip.freight_code_combination_id=gcck_frt.code_combination_id(+) and
+mip.inventory_accrual_account_id=gcck_ia.code_combination_id(+) and
+mip.expense_accrual_account_id=gcck_ea.code_combination_id(+)
+order by
+from_ship_operating_unit,
+to_sell_operating_unit

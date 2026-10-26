@@ -6,7 +6,7 @@
 /*************************************************************************/
 -- Report Name: INV Slow Moving Inventory
 -- Description: Slow moving, excess and obsolete inventory. Lists items still holding stock as of a chosen date that have had no material movement over a chosen period, with their value, usage rate and months of supply, for obsolescence provisioning.
--- On Hand is the quantity as of the As of Date, not the current quantity. It is rolled back like Oracle's Transaction Historical Summary report, by reversing every material transaction posted after that date. Values use the item cost of the organization's primary cost method.
+-- On Hand is the quantity as of the As of Date, not the current quantity. It is rolled back like Oracle's Transaction Historical Summary report, by reversing every material transaction posted after that date. Values use the item cost of the organization's primary cost method. In process manufacturing (OPM) organizations they use the OPM item cost that applies on the As of Date for the cost method of the legal entity's fiscal policy, which is zero for an item without a cost in that period.
 -- The no activity test is made per item, so an item is dropped as a whole as soon as any of its subinventories moved. Ignore Adjustment Transactions excludes cycle count adjustments, physical inventory adjustments and cost updates from that test and from Last Transaction Date. Logical transactions never count as activity.
 -- Usage Quantity is the quantity issued out of stock over the Usage Months preceding the As of Date. Months of Supply stays empty where there was no usage at all, which identifies the items that have not moved once in the whole window.
 -- Rows are per subinventory; Item On Hand and Item On Hand Value are the item totals across subinventories.
@@ -34,8 +34,8 @@ x.on_hand,
 x.item_on_hand,
 x.cost_type,
 x.item_cost,
-x.on_hand_value,
-x.item_on_hand_value,
+round(x.on_hand*x.item_cost,2) on_hand_value,
+round(x.item_on_hand*x.item_cost,2) item_on_hand_value,
 x.last_transaction_date,
 x.last_transaction_type,
 x.days_since_last_transaction,
@@ -63,10 +63,22 @@ msiv.primary_uom_code uom,
 trunc(:as_of_date) as_of_date,
 y.on_hand,
 y.item_on_hand,
-cct.cost_type,
-cic.item_cost,
-round(y.on_hand*cic.item_cost,2) on_hand_value,
-round(y.item_on_hand*cic.item_cost,2) item_on_hand_value,
+decode(mp.process_enabled_flag,'Y',
+(
+select
+cmm.cost_mthd_code
+from
+hr_organization_information hoi,
+gmf_fiscal_policies gfp,
+cm_mthd_mst cmm
+where
+mp.organization_id=hoi.organization_id and
+hoi.org_information_context='Accounting Information' and
+hoi.org_information2=to_char(gfp.legal_entity_id) and
+gfp.delete_mark=0 and
+gfp.cost_type_id=cmm.cost_type_id
+),cic.cost_type) cost_type,
+decode(mp.process_enabled_flag,'Y',(select gmf_cmcommon.process_item_unit_cost(y.inventory_item_id,y.organization_id,trunc(:as_of_date)) from dual),cic.item_cost) item_cost,
 y.last_transaction_date,
 mtt.transaction_type_name last_transaction_type,
 trunc(:as_of_date)-trunc(y.last_transaction_date) days_since_last_transaction,
@@ -122,7 +134,7 @@ mmt.organization_id,
 mmt.inventory_item_id,
 mmt.subinventory_code,
 case when mmt.transaction_date>=trunc(:as_of_date)+1 then -mmt.primary_quantity end,
-case when mmt.transaction_date<trunc(:as_of_date)+1 and mmt.transaction_date>=add_months(trunc(:as_of_date)+1,-:usage_months) and mmt.transaction_action_id in (1,3,21,32,34) then -mmt.primary_quantity end,
+case when mmt.transaction_date<trunc(:as_of_date)+1 and mmt.transaction_date>=add_months(trunc(:as_of_date)+1,-:usage_months) and (mmt.transaction_action_id in (1,21,32,34) or mmt.transaction_action_id=3 and mmt.primary_quantity<0) then -mmt.primary_quantity end,
 case when mmt.transaction_date<trunc(:as_of_date)+1 and (nvl(:ignore_adjustments,'Y')<>'Y' or mmt.transaction_action_id not in (4,8,24)) then mmt.transaction_date end,
 case when mmt.transaction_date<trunc(:as_of_date)+1 and (nvl(:ignore_adjustments,'Y')<>'Y' or mmt.transaction_action_id not in (4,8,24)) then mmt.transaction_type_id end,
 case when mmt.transaction_date>=trunc(:no_activity_since) and mmt.transaction_date<trunc(:as_of_date)+1 and (nvl(:ignore_adjustments,'Y')<>'Y' or mmt.transaction_action_id not in (4,8,24)) then 1 else 0 end
@@ -145,8 +157,21 @@ mtl_parameters mp,
 hr_all_organization_units_vl haouv,
 mtl_secondary_inventories msi,
 mtl_system_items_vl msiv,
+(
+select
+mp.organization_id,
+cic.inventory_item_id,
+cct.cost_type,
+cic.item_cost
+from
+mtl_parameters mp,
 cst_item_costs cic,
-cst_cost_types cct,
+cst_cost_types cct
+where
+mp.cost_organization_id=cic.organization_id and
+mp.primary_cost_method=cic.cost_type_id and
+cic.cost_type_id=cct.cost_type_id
+) cic,
 mtl_transaction_types mtt
 where
 1=1 and
@@ -158,14 +183,12 @@ y.organization_id=msi.organization_id(+) and
 y.subinventory_code=msi.secondary_inventory_name(+) and
 y.organization_id=msiv.organization_id and
 y.inventory_item_id=msiv.inventory_item_id and
-mp.cost_organization_id=cic.organization_id(+) and
+y.organization_id=cic.organization_id(+) and
 y.inventory_item_id=cic.inventory_item_id(+) and
-mp.primary_cost_method=cic.cost_type_id(+) and
-cic.cost_type_id=cct.cost_type_id(+) and
 y.last_transaction_type_id=mtt.transaction_type_id(+)
 ) x
 order by
 x.organization_code,
-x.item_on_hand_value desc nulls last,
+item_on_hand_value desc nulls last,
 x.item,
 x.subinventory

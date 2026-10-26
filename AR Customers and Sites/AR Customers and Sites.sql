@@ -221,6 +221,8 @@ x.classification,
 x.sales_channel,
 x.primary_salesrep,
 x.site_primary_salesrep,
+rtk.concatenated_segments sales_territory,
+&territory_segment_columns
 x.order_type,
 x.site_order_type,
 x.price_list,
@@ -661,6 +663,7 @@ nvl(hcp2.cust_account_profile_id,hcp1.cust_account_profile_id) prof_amt_profile_
 hp.party_id,
 hca.cust_account_id,
 hcsua.site_use_id,
+hcsua.territory_id,
 hou.set_of_books_id,
 hcasa.cust_acct_site_id,
 hps.party_site_id,
@@ -744,6 +747,7 @@ hps.party_site_id=nvl(hcps.party_site_id(+),hps.party_site_id)
 ) x,
 &from_trx_count
 &from_latest_trx
+ra_territories_kfv rtk,
 hz_cust_profile_amts hcpa,
 zx_party_tax_profile zptp1,
 zx_party_tax_profile zptp2,
@@ -758,6 +762,7 @@ q_fc_assignments fca
 where
 &join_trx_count
 &join_latest_trx
+x.territory_id=rtk.territory_id(+) and
 x.party_id=zptp1.party_id(+) and
 zptp1.party_type_code(+)='THIRD_PARTY' and
 x.party_site_id=zptp2.party_id(+) and

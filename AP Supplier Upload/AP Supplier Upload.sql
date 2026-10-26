@@ -12,6 +12,8 @@
 -- Bank Acct Name and Bank Acct Currency are no longer mandatory, matching Oracle, which allows a bank account without them.
 -- Set Update Unpaid Invoices to Yes on a bank account row whose assignment end date has been reached to move the supplier's unpaid invoices to the next bank account that applies to them, ordered by assignment level and priority. This is what the Supplier page offers when a bank account assignment is end dated.
 -- Invoices already selected for payment keep the end dated bank account. An invoice for which no other bank account applies is left without one, and its remit-to bank account has to be entered manually.
+-- Tax registrations are maintained one per row in the Vend Tax Reg columns for the supplier and the Site Tax Reg columns for the supplier site, and a new one can be entered on a downloaded row that has none. A site registration belongs to the address, so it is shared by every supplier site on that address. A registration is ended with Effective To; its Tax Regime Code, Type and Number cannot be changed.
+-- The default registration becomes the reporting registration number and type of the tax profile, and for the supplier also the Tax Registration Number, taking priority over the Tax Registration Number columns. The Site Tax Registration Number of the supplier site is not changed by it.
 -- Excel Example Output: https://www.enginatics.com/example/ap-supplier-upload/
 -- Library Link: https://www.enginatics.com/reports/ap-supplier-upload/
 -- Run Report: https://demo.enginatics.com/
@@ -30,6 +32,8 @@ to_char(null) site_row_id,
 to_char(null) site_contact_row_id,
 to_char(null) vend_bank_intsr_pay_use_row_id,
 to_char(null) site_bank_intsr_pay_use_row_id,
+to_char(null) vend_tax_reg_row_id,
+to_char(null) site_tax_reg_row_id,
 -- ########
 -- Vendor
 -- ########
@@ -160,6 +164,25 @@ xxen_util.meaning(nvl(zptp0.self_assess_flag,'N'),'YES_NO',0) self_assessment,
 xxen_util.meaning(nvl(zptp0.allow_offset_tax_flag,:p_default_allow_offset_taxes),'YES_NO',0) allow_offset_taxes,
 zptp0.tax_classification_code tax_classification,
 aps.offset_vat_code,
+-- ########
+-- Vendor Tax Registrations
+-- ########
+zr0.tax_regime_code vend_tax_reg_regime_code,
+zr0.tax vend_tax_reg_tax,
+zr0.tax_jurisdiction_code vend_tax_reg_jurisdiction_code,
+zr0.rep_party_tax_name vend_tax_reg_reporting_name,
+zr0.registration_type_code vend_tax_reg_type,
+zr0.registration_number vend_tax_reg_number,
+zr0.registration_status_code vend_tax_reg_status,
+xxen_util.meaning(zr0.default_registration_flag,'YES_NO',0) vend_tax_reg_default_flag,
+(select hl2.location_code||': '||hl2.address_line_1||' '||hl2.town_or_city||' '||hl2.region_1 from hr_locations hl2 where hl2.location_id=zr0.legal_location_id) vend_tax_reg_legal_address,
+zr0.registration_reason_code vend_tax_reg_reason,
+zr0.registration_source_code vend_tax_reg_source,
+(select hp2.party_name from zx_party_tax_profile zptp2, hz_parties hp2 where zr0.tax_authority_id=zptp2.party_tax_profile_id and zptp2.party_id=hp2.party_id) vend_tax_reg_issuing_authority,
+zr0.effective_from vend_tax_reg_effective_from,
+zr0.effective_to vend_tax_reg_effective_to,
+xxen_util.meaning(zr0.rounding_rule_code,'ZX_ROUNDING_RULE',0) vend_tax_reg_rounding_rule,
+xxen_util.meaning(zr0.inclusive_tax_flag,'YES_NO',0) vend_tax_reg_tax_inclusive,
 -- ## Vendor Tax Details - Tax Reporting
 aps.tax_reporting_name,
 aps.name_control tax_reporting_name_control,
@@ -275,9 +298,9 @@ decode(assa.pay_site_flag,'Y',xxen_util.meaning('Y','YES_NO',0),null) pay_site,
 decode(assa.primary_pay_site_flag,'Y',xxen_util.meaning('Y','YES_NO',0),null) primary_pay_site,
 decode(assa.rfq_only_site_flag,'Y',xxen_util.meaning('Y','YES_NO',0),null) rfq_only_site,
 decode(assa.tax_reporting_site_flag,'Y',xxen_util.meaning('Y','YES_NO',0),null) tax_reporting_site,
-nvl(assa.vat_registration_num,zptp1.rep_registration_number) site_tax_reg_number,
-zptp1.registration_type_code site_tax_reg_type,
-(select territory_short_name from fnd_territories_vl ftv where ftv.territory_code = zptp1.country_code) site_tax_reg_country,
+nvl(assa.vat_registration_num,decode(zptp1.rep_registration_number,(select zr2.registration_number from zx_registrations zr2 where zptp1.party_tax_profile_id=zr2.party_tax_profile_id and zr2.default_registration_flag='Y'),null,zptp1.rep_registration_number)) site_tax_registration_number,
+zptp1.registration_type_code site_dflt_rpt_tax_reg_type,
+(select territory_short_name from fnd_territories_vl ftv where ftv.territory_code = zptp1.country_code) site_dflt_rpt_tax_reg_country,
 assa.customer_num site_customer_num,
 -- # Party Site dff
 xxen_util.display_flexfield_context(222,'HZ_PARTY_SITES',hps.attribute_category) party_site_attribute_category,
@@ -368,6 +391,25 @@ xxen_util.meaning(nvl(zptp1.inclusive_tax_flag,nvl(zptp0.inclusive_tax_flag,:p_d
 xxen_util.meaning(nvl(zptp1.process_for_applicability_flag,nvl(zptp0.process_for_applicability_flag,'Y')),'YES_NO',0) site_calculate_tax,
 xxen_util.meaning(nvl(zptp1.allow_offset_tax_flag,nvl(zptp0.allow_offset_tax_flag,:p_default_allow_offset_taxes)),'YES_NO',0) site_allow_offset_taxes,
 assa.vat_code site_tax_classification,
+-- ########
+-- Site Tax Registrations
+-- ########
+zr1.tax_regime_code site_tax_reg_regime_code,
+zr1.tax site_tax_reg_tax,
+zr1.tax_jurisdiction_code site_tax_reg_jurisdiction_code,
+zr1.rep_party_tax_name site_tax_reg_reporting_name,
+zr1.registration_type_code site_tax_reg_type,
+zr1.registration_number site_tax_reg_number,
+zr1.registration_status_code site_tax_reg_status,
+xxen_util.meaning(zr1.default_registration_flag,'YES_NO',0) site_tax_reg_default_flag,
+(select hl2.location_code||': '||hl2.address_line_1||' '||hl2.town_or_city||' '||hl2.region_1 from hr_locations hl2 where hl2.location_id=zr1.legal_location_id) site_tax_reg_legal_address,
+zr1.registration_reason_code site_tax_reg_reason,
+zr1.registration_source_code site_tax_reg_source,
+(select hp2.party_name from zx_party_tax_profile zptp2, hz_parties hp2 where zr1.tax_authority_id=zptp2.party_tax_profile_id and zptp2.party_id=hp2.party_id) site_tax_reg_issuing_authority,
+zr1.effective_from site_tax_reg_effective_from,
+zr1.effective_to site_tax_reg_effective_to,
+xxen_util.meaning(zr1.rounding_rule_code,'ZX_ROUNDING_RULE',0) site_tax_reg_rounding_rule,
+xxen_util.meaning(zr1.inclusive_tax_flag,'YES_NO',0) site_tax_reg_tax_inclusive,
 -- # Vendor Site Payment Details
 (select
  ipmv.payment_method_name
@@ -559,6 +601,8 @@ assa.org_id,
 asco.vendor_contact_id,
 ipiua0.instrument_payment_use_id supplier_bank_intsr_pay_use_id,
 ipiua2.instrument_payment_use_id site_bank_instr_pay_use_id,
+zr0.registration_id vend_tax_reg_id,
+zr1.registration_id site_tax_reg_id,
 to_number(null) upload_row,
 -- defaults
 :p_default_tax_rounding_rule default_tax_rounding_rule,
@@ -588,8 +632,10 @@ fnd_languages fl,
 --
 ap_suppliers aps1,
 zx_party_tax_profile zptp0,
+zx_registrations zr0,
 iby_external_payees_all iepa0,  -- to get the supplier level payment distribution
 zx_party_tax_profile zptp1,
+zx_registrations zr1,
 iby_external_payees_all iepa1,  -- to get the site level payment distribution
 --
 hz_contact_points hcp1,
@@ -682,6 +728,8 @@ aps.party_id = zptp0.party_id (+) and
 'THIRD_PARTY' = zptp0.party_type_code (+) and
 assa.party_site_id = zptp1.party_id (+) and
 'THIRD_PARTY_SITE' = zptp1.party_type_code (+) and
+decode(:p_show_vendor_tax_regs,'Y',zptp0.party_tax_profile_id)=zr0.party_tax_profile_id (+) and
+decode(:p_show_site_tax_regs,'Y',zptp1.party_tax_profile_id)=zr1.party_tax_profile_id (+) and
 --
 aps.party_id = iepa0.payee_party_id (+) and
 nvl(iepa0.party_site_id (+),0) = 0 and

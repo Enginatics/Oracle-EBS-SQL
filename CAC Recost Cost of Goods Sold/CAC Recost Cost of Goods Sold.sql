@@ -44,330 +44,193 @@
 -- -- | 1.4 16 Nov 2023 Douglas Volz Remove orgacctperiods, use period name from xlaaeheaders.
 -- -- | 1.5 05 Dec 2023 Douglas Volz Added G/L and Operating Unit security restrictions.
 -- -- | 1.6 12 Mar 2024 Douglas Volz Add cost elements for COGS per client request.
+-- -- | 1.7 23 Oct 2026 Andy Haack Rebuilt to the Blitz Report SQL standards.
 -- -- +=============================================================================+/
 -- Excel Example Output: https://www.enginatics.com/example/cac-recost-cost-of-goods-sold/
 -- Library Link: https://www.enginatics.com/reports/cac-recost-cost-of-goods-sold/
 -- Run Report: https://demo.enginatics.com/
 
-select  gl.name Ledger,
-        haou2.name Operating_Unit,
-        cogs.organization_code Org_Code,
-        haou.name Organization_Name,
-        -- Revision for version 1.4
-        -- oap.period_name Period_Name,
-        ah.period_name Period_Name,
-        -- End revision for version 1.4
-        &segment_columns
-        msiv.concatenated_segments Item_Number,
-        msiv.description Item_Description,
-        fcl.meaning Item_Type,
-        misv.inventory_item_status_code_tl Item_Status,
-        ml1.meaning Make_Buy_Code,
-        ml2.meaning Based_on_Rollup,
-        ml3.meaning Inventory_Asset,
-        ml4.meaning Accounting_line_Type,
-        cogs.transaction_type_name Transaction_Type,
-        mtst.transaction_source_type_name Transaction_Source,
-        -- Revision for version 1.3
-        cogs.document_order_num Document_Number,
-        cogs.order_type Order_Type,
-        cogs.transaction_id Transaction_Id,
-        cogs.transaction_date Transaction_Date,
-        cogs.transaction_reference Transaction_Comments,
+select
+gl.name ledger,
+haouv_ou.name operating_unit,
+mp.organization_code org_code,
+haou.name organization_name,
+y.period_name,
+&segment_columns
+msiv.concatenated_segments item_number,
+msiv.description item_description,
+xxen_util.meaning(msiv.item_type,'ITEM_TYPE',3) item_type,
+misv.inventory_item_status_code_tl item_status,
+xxen_util.meaning(msiv.planning_make_buy_code,'MTL_PLANNING_MAKE_BUY',700) make_buy_code,
+xxen_util.meaning(y.based_on_rollup_flag,'CST_BONROLLUP_VAL',700) based_on_rollup,
+xxen_util.yes(decode(y.inventory_asset_flag,1,'Y')) inventory_asset,
+xxen_util.meaning(y.accounting_line_type,'CST_ACCOUNTING_LINE_TYPE',700) accounting_line_type,
+y.transaction_type_name transaction_type,
+mtst.transaction_source_type_name transaction_source,
+y.document_number,
+y.order_type,
+y.transaction_id,
+y.transaction_date,
+y.transaction_reference transaction_comments,
 &category_columns
-        muomv.uom_code UOM_Code,
-        sum(cogs.primary_quantity) Quantity,
-        -- Revision for version 1.6
-        sum(cogs.material_value) Original_COGS_Material,
-        sum(cogs.material_overhead_value) Original_COGS_Material_Ovhd,
-        sum(cogs.resource_value) Original_COGS_Resource,
-        sum(cogs.outside_processing_value) Original_COGS_OSP,
-        sum(cogs.overhead_value) Original_COGS_Overhead,
-        -- End revision for version 1.6
-        sum(cogs.base_transaction_value) Original_COGS,
-        -- Revision for version 1.6
-        round(sum(decode(cic.material_cost, null, cogs.material_value, cic.material_cost * cogs.primary_quantity)),2) New_COGS_Material,
-        round(sum(decode(cic.material_overhead_cost, null, cogs.material_overhead_value, cic.material_overhead_cost * cogs.primary_quantity)),2) New_COGS_Material_Overhead,
-        round(sum(decode(cic.resource_cost, null, cogs.resource_value, cic.resource_cost * cogs.primary_quantity)),2) New_COGS_Resource,
-        round(sum(decode(cic.outside_processing_cost, null, cogs.outside_processing_value, cic.outside_processing_cost * cogs.primary_quantity)),2) New_COGS_OSP,
-        round(sum(decode(cic.overhead_cost, null, cogs.overhead_value, cic.overhead_cost * cogs.primary_quantity)),2) New_COGS_Overhead,
-        -- End revision for version 1.6
-        -- Revision for version 1.3
-        round(sum(decode(cic.item_cost, null, cogs.base_transaction_value, cic.item_cost * cogs.primary_quantity)),2) New_COGS,
-        round(decode(sign(sum(decode(cic.item_cost, null, cogs.base_transaction_value, cic.item_cost * cogs.primary_quantity)) - sum(cogs.base_transaction_value)),-1,0,1,
-                          sum(decode(cic.item_cost, null, cogs.base_transaction_value, cic.item_cost * cogs.primary_quantity)) - sum(cogs.base_transaction_value),
-                          sum(decode(cic.item_cost, null, cogs.base_transaction_value, cic.item_cost * cogs.primary_quantity)) - sum(cogs.base_transaction_value)),2) Debit_COGS_Amount,
-        abs(round(decode(sign(sum(decode(cic.item_cost, null, cogs.base_transaction_value, cic.item_cost * cogs.primary_quantity)) - sum(cogs.base_transaction_value)), 1,0,-1,
-                              sum(decode(cic.item_cost, null, cogs.base_transaction_value, cic.item_cost * cogs.primary_quantity)) - sum(cogs.base_transaction_value),
-                              sum(decode(cic.item_cost, null, cogs.base_transaction_value, cic.item_cost * cogs.primary_quantity)) - sum(cogs.base_transaction_value)),2)) Credit_COGS_Amount,
-        round(sum(decode(cic.item_cost, null, cogs.base_transaction_value, cic.item_cost * cogs.primary_quantity)) - sum(cogs.base_transaction_value),2) Difference,
-        -- Percent Difference = Difference / Original COGS
-        round((sum(decode(cic.item_cost, null, cogs.base_transaction_value, cic.item_cost * cogs.primary_quantity)) - sum(cogs.base_transaction_value)) /
-                   (decode(sum(cogs.base_transaction_value), 0, 1, sum(cogs.base_transaction_value))) * 100, 1) Percent_Difference
-        -- End revision for version 1.3
-from    -- Revision for version 1.3
-        mtl_system_items_vl msiv,
-        mtl_txn_source_types mtst,
-        cst_item_costs cic,
-        cst_cost_types cct,
-        mtl_item_status_vl misv,
-        mtl_units_of_measure_vl muomv,
-        -- Revision for version 1.4
-        -- org_acct_periods oap,
-        mfg_lookups ml1, -- planning make/buy code, MTL_PLANNING_MAKE_BUY
-        mfg_lookups ml2, -- based on rollup, CST_BONROLLUP_VAL
-        mfg_lookups ml3, -- inventory_asset_flag, SYS_YES_NO
-        mfg_lookups ml4, -- accounting line type, CST_ACCOUNTING_LINE_TYPE
-        fnd_common_lookups fcl, -- Item Type
-        -- Revision for version 1.2
-        (select mp.organization_code,
-                mp.organization_id,
-                mta.transaction_id,
-                mta.inventory_item_id,
-                mmt.transaction_type_id,
-                mmt.acct_period_id,
-                mtt.transaction_type_name,
-                mta.accounting_line_type,
-                mta.reference_account,
-                mta.inv_sub_ledger_id,
-                mmt.transaction_source_type_id,
-                -- Revision for version 1.3
-                decode(mmt.transaction_source_type_id,
-                        1, (select poh.segment1                                                     -- Purchase Order
-                            from   po_headers_all poh
-                             where poh.po_header_id          = mmt.transaction_source_id),
-                        2, (select ooh.order_number                                                 -- Sales order
-                            from   oe_order_headers_all ooh,
-                                   oe_order_lines_all ool
-                            where  ooh.header_id             = ool.header_id
-                            and    ool.line_id               = mmt.trx_source_line_id),
-                        3, ml5.meaning,                                                             -- Account
-                        4, (select ooh.order_number                                                 -- Move order
-                            from   oe_order_headers_all ooh,
-                                   oe_order_lines_all ool
-                            where  ooh.header_id             = ool.header_id
-                            and    ool.line_id               = mmt.trx_source_line_id),
-                        5, (select we.wip_entity_name                                               -- Job or Schedule
-                            from   wip_entities we
-                            where  we.wip_entity_id          = mmt.transaction_source_id),
-                        6, (select mgd.segment1                                                     -- Account alias
-                            from   mtl_generic_dispositions mgd
-                            where  mgd.disposition_id        = mmt.transaction_source_id),
-                        7, (select prh.segment1                                                     -- Internal requisition
-                            from   po_requisition_headers_all prh
-                         where  prh.requisition_header_id    = mmt.transaction_source_id),
-                        8, (select ooh.order_number                                                 -- Internal order
-                            from   oe_order_headers_all ooh,
-                                   oe_order_lines_all ool
-                            where  ooh.header_id             = ool.header_id
-                            and    ool.line_id               = mmt.trx_source_line_id),
-                        9, (select mcch.cycle_count_header_name                                     -- Cycle count
-                            from   mtl_cycle_count_headers mcch
-                            where  mcch.cycle_count_header_id = mmt.transaction_source_id),
-                       10, (select mpi.description                                                  -- Physical inventory
-                            from   mtl_physical_inventories mpi
-                            where  mpi.physical_inventory_id = mmt.transaction_source_id),
-                       11, (select description                                                      -- Std cost update
-                            from   cst_cost_updates ccu
-                            where  ccu.cost_update_id        = mmt.cost_update_id),
-                       12, (select ooh.order_number                                                 -- RMA
-                            from   oe_order_headers_all ooh,
-                                   oe_order_lines_all ool
-                            where  ooh.header_id             = ool.header_id
-                            and    ool.line_id               = mmt.trx_source_line_id),
-                       13, decode(mmt.transaction_action_id,                                        -- Inventory
-                                   1, ml5.meaning,                                                     -- Issue from stores
-                                   2, ml5.meaning,                                                     -- Subinventory transfer
-                                   3, ml5.meaning,                                                     -- Direct organization transfer
-                                   5, ml5.meaning,                                                     -- Planning transfer
-                                   6, ml5.meaning,                                                     -- Ownership xfer / consignment
-                                   9, (select ooh.order_number                                         -- Logical Intercompany Sales
-                                       from   oe_order_headers_all ooh,
-                                              oe_order_lines_all ool,
-                                              mtl_material_transactions mmt_parent
-                                       where  ooh.header_id             = ool.header_id
-                                       and    ool.line_id               = mmt_parent.trx_source_line_id
-                                       and    mmt.parent_transaction_id = mmt_parent.transaction_id),
-                                   10, (select ooh.order_number                                         -- Logical Intercompany Receipt
-                                       from   oe_order_headers_all ooh,
-                                              oe_order_lines_all ool,
-                                              mtl_material_transactions mmt_parent
-                                       where  ooh.header_id             = ool.header_id
-                                       and    ool.line_id               = mmt_parent.trx_source_line_id
-                                       and    mmt.parent_transaction_id = mmt_parent.transaction_id),
-                                  12, ml5.meaning,                                                     -- Intransit Receipt
-                                  13, (select ooh.order_number                                         -- Logical Intercompany Sales Return
-                                       from   oe_order_headers_all ooh,
-                                              oe_order_lines_all ool
-                                       where  ooh.header_id             = ool.header_id
-                                       and    ool.line_id               = mmt.trx_source_line_id),
-                                  14, (select ooh.order_number                                         -- Logical Intercompany Sales Return
-                                       from   oe_order_headers_all ooh,
-                                              oe_order_lines_all ool,
-                                              mtl_material_transactions mmt_parent
-                                       where  ooh.header_id             = ool.header_id
-                                       and    ool.line_id               = mmt_parent.trx_source_line_id
-                                       and    mmt.parent_transaction_id = mmt_parent.transaction_id),
-                                  15, ml5.meaning,                                                     -- Logical Intransit Receipt
-                                  21, ml5.meaning,                                                     -- Intransit Shipment
-                                  22, ml5.meaning,                                                     -- Logical Intransit Shipment
-                                  24, ml5.meaning,                                                     -- Average Cost Update
-                                  27, ml5.meaning,                                                     -- Receipt into Stores
-                                  ml5.meaning),
-                       101, (select ooh.order_number                                                    -- Internal RMA
-                             from   oe_order_headers_all ooh,
-                                    oe_order_lines_all ool
-                             where  ooh.header_id             = ool.header_id
-                             and    ool.line_id               = mmt.trx_source_line_id),
-                       ml5.meaning                                                                      -- Any other source type
-                      ) document_order_num,
-                nvl((select ottt.name
-                     from   oe_order_lines_all ool,
-                            oe_order_headers_all ooh,
-                            oe_transaction_types_tl ottt 
-                     where  ooh.order_type_id          = ottt.transaction_type_id
-                     and    ooh.header_id              = ool.header_id
-                     and    mmt.trx_source_line_id     = ool.line_id
-                     and    ottt.language              = userenv('lang')),'') order_type,
-                mta.transaction_date,
-                mmt.transaction_reference,
-                -- End revision for version 1.3
-                -- Revision for version 1.3, logic fix for the transaction quantity
-                decode(mmt.transaction_action_id, 
-                        24, mmt.quantity_adjusted,
-                        mta.primary_quantity/
-                                (select count(*)
-                                        from    mtl_transaction_accounts mta2
-                                        where   mta2.transaction_id       = mta.transaction_id
-                                        and     mta2.reference_account    = mta.reference_account
-                                        and     mta2.accounting_line_type = mta.accounting_line_type)
-                ) primary_quantity,
-                -- End revision for version 1.3
-                -- Revision for version 1.6
-                decode(nvl(mta.cost_element_id,1), 1, mta.base_transaction_value, 0) material_value,
-                decode(mta.cost_element_id, 2, mta.base_transaction_value, 0) material_overhead_value,
-                decode(mta.cost_element_id, 3, mta.base_transaction_value, 0) resource_value,
-                decode(mta.cost_element_id, 4, mta.base_transaction_value, 0) outside_processing_value,
-                decode(mta.cost_element_id, 5, mta.base_transaction_value, 0) overhead_value,
-                -- End revision for version 1.6
-                mta.base_transaction_value base_transaction_value
-         from   mtl_transaction_accounts mta,
-                mtl_material_transactions mmt,
-                mtl_transaction_types mtt,
-                -- Revision for version 1.3
-                mfg_lookups ml5, -- Transaction action
-                mtl_parameters mp
-         where  mta.transaction_id              = mmt.transaction_id
-         and    mtt.transaction_type_id         = mmt.transaction_type_id
-         -- Revision for version 1.3
-         and    ml5.lookup_type (+)             = 'MTL_TRANSACTION_ACTION'
-         and    ml5.lookup_code (+)             = mmt.transaction_action_id
-         -- End revision for version 1.3
-         and    mp.organization_id              = mta.organization_id
-         and    2=2                             -- p_txn_date_from, p_txn_date_to, p_org_code, p_item_number, p_transaction_type                                                                                                
-         and    mmt.transaction_source_type_id  = mtt.transaction_source_type_id
-         and    mta.transaction_source_type_id  = mtt.transaction_source_type_id
-         -- Revision for version 1.3
-         -- Limit to COGS entries or to material transactions which replicate COGS entries
-         and    mta.accounting_line_type   in (35, 2) -- Cost of Goods Sold, Account
-         -- End revision for version 1.3
-         -- Revision for version 1.5
-         and    mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-        ) cogs,
-        -- End revision for version 1.2
-        gl_code_combinations gcc,
-        hr_organization_information hoi,
-        hr_all_organization_units haou, -- inv_organization_id
-        hr_all_organization_units haou2, -- operating unit
-        gl_ledgers gl,
-        -- Revision for version 1.3
-        xla_distribution_links xdl,
-        xla_ae_headers ah,
-        xla_ae_lines al
-        -- End revision for version 1.3
-where   msiv.organization_id             = cogs.organization_id
-and     msiv.inventory_item_id           = cogs.inventory_item_id
-and     msiv.primary_uom_code            = muomv.uom_code
-and     msiv.inventory_item_status_code  = misv.inventory_item_status_code
-and     mtst.transaction_source_type_id  = cogs.transaction_source_type_id
--- Revision for version 1.4
--- and     oap.acct_period_id               = cogs.acct_period_id
-and     cogs.organization_id (+)         = cic.organization_id
-and     cogs.inventory_item_id (+)       = cic.inventory_item_id
-and     cic.cost_type_id (+)             = cct.cost_type_id
-and     fcl.lookup_type (+)              = 'ITEM_TYPE'
-and     fcl.lookup_code (+)              = msiv.item_type
-and     ml1.lookup_type                  = 'MTL_PLANNING_MAKE_BUY'
-and     ml1.lookup_code                  = msiv.planning_make_buy_code
-and     ml2.lookup_type                  = 'CST_BONROLLUP_VAL'
-and     ml2.lookup_code                  = cic.based_on_rollup_flag
-and     ml3.lookup_type                  = 'SYS_YES_NO'
-and     ml3.lookup_code                  = to_char(cic.inventory_asset_flag)
-and     ml4.lookup_type                  = 'CST_ACCOUNTING_LINE_TYPE'
-and     ml4.lookup_code                  = cogs.accounting_line_type
--- ===================================================================
--- using the base tables to avoid the performance issues
--- with org_organization_definitions and hr_operating_units
--- ===================================================================
-and     hoi.org_information_context      = 'Accounting Information'
-and     hoi.organization_id              = cogs.organization_id
-and     hoi.organization_id              = haou.organization_id             -- this gets the organization name
--- avoid selecting disabled inventory organizations
-and     sysdate                         <  nvl(haou.date_to, sysdate +1)
-and     haou2.organization_id            = to_number(hoi.org_information3)  -- this gets the operating unit id
-and     gl.ledger_id                     = to_number(hoi.org_information1)  -- get the ledger_id
--- ===================================================================
--- Revision for version 1.3, Subledger accounting joins
--- ===================================================================
-and     ah.application_id                = al.application_id
-and     ah.application_id                = 707
-and     ah.ae_header_id                  = al.ae_header_id
-and     al.ledger_id                     = ah.ledger_id
-and     al.ae_header_id                  = xdl.ae_header_id
-and     al.ae_line_num                   = xdl.ae_line_num
-and     al.code_combination_id           = gcc.code_combination_id (+)
-and     xdl.application_id               = 707
-and     xdl.source_distribution_type     = 'MTL_TRANSACTION_ACCOUNTS'
-and     xdl.source_distribution_id_num_1 = cogs.inv_sub_ledger_id
--- End revision for version 1.3
--- ===================================================================
--- Revision for version 1.5
-and     gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
-and     haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
--- End revision for version 1.5
-and     1=1                              -- p_ledger, p_operating_unit, p_cost_type
+msiv.primary_uom_code uom_code,
+y.quantity,
+y.original_cogs_material,
+y.original_cogs_material_ovhd,
+y.original_cogs_resource,
+y.original_cogs_osp,
+y.original_cogs_overhead,
+y.original_cogs,
+round(y.new_cogs_material,2) new_cogs_material,
+round(y.new_cogs_material_overhead,2) new_cogs_material_overhead,
+round(y.new_cogs_resource,2) new_cogs_resource,
+round(y.new_cogs_osp,2) new_cogs_osp,
+round(y.new_cogs_overhead,2) new_cogs_overhead,
+round(y.new_cogs,2) new_cogs,
+round(greatest(y.new_cogs-y.original_cogs,0),2) debit_cogs_amount,
+abs(round(least(y.new_cogs-y.original_cogs,0),2)) credit_cogs_amount,
+round(y.new_cogs-y.original_cogs,2) difference,
+round((y.new_cogs-y.original_cogs)/decode(y.original_cogs,0,1,y.original_cogs)*100,1) percent_difference
+from
+(
+select
+x.organization_id,
+x.inventory_item_id,
+xah.period_name,
+xal.code_combination_id,
+x.accounting_line_type,
+x.transaction_type_name,
+x.transaction_source_type_id,
+x.document_number,
+x.order_type,
+x.transaction_id,
+x.transaction_date,
+x.transaction_reference,
+cic.based_on_rollup_flag,
+cic.inventory_asset_flag,
+sum(x.primary_quantity) quantity,
+sum(x.material_value) original_cogs_material,
+sum(x.material_overhead_value) original_cogs_material_ovhd,
+sum(x.resource_value) original_cogs_resource,
+sum(x.outside_processing_value) original_cogs_osp,
+sum(x.overhead_value) original_cogs_overhead,
+sum(x.base_transaction_value) original_cogs,
+sum(decode(cic.material_cost,null,x.material_value,cic.material_cost*x.primary_quantity)) new_cogs_material,
+sum(decode(cic.material_overhead_cost,null,x.material_overhead_value,cic.material_overhead_cost*x.primary_quantity)) new_cogs_material_overhead,
+sum(decode(cic.resource_cost,null,x.resource_value,cic.resource_cost*x.primary_quantity)) new_cogs_resource,
+sum(decode(cic.outside_processing_cost,null,x.outside_processing_value,cic.outside_processing_cost*x.primary_quantity)) new_cogs_osp,
+sum(decode(cic.overhead_cost,null,x.overhead_value,cic.overhead_cost*x.primary_quantity)) new_cogs_overhead,
+sum(decode(cic.item_cost,null,x.base_transaction_value,cic.item_cost*x.primary_quantity)) new_cogs
+from
+(
+select
+mta.organization_id,
+mta.inventory_item_id,
+mta.transaction_id,
+mta.accounting_line_type,
+mta.inv_sub_ledger_id,
+mtt.transaction_type_name,
+mmt.transaction_source_type_id,
+case
+when mmt.transaction_source_type_id in (2,4,8,12,101) or mmt.transaction_source_type_id=13 and mmt.transaction_action_id=13 then (select to_char(ooha.order_number) from oe_order_lines_all oola, oe_order_headers_all ooha where mmt.trx_source_line_id=oola.line_id and oola.header_id=ooha.header_id)
+when mmt.transaction_source_type_id=13 and mmt.transaction_action_id in (9,10,14) then (select to_char(ooha.order_number) from mtl_material_transactions mmt2, oe_order_lines_all oola, oe_order_headers_all ooha where mmt.parent_transaction_id=mmt2.transaction_id and mmt2.trx_source_line_id=oola.line_id and oola.header_id=ooha.header_id)
+when mmt.transaction_source_type_id=1 then (select pha.segment1 from po_headers_all pha where mmt.transaction_source_id=pha.po_header_id)
+when mmt.transaction_source_type_id=5 then (select we.wip_entity_name from wip_entities we where mmt.transaction_source_id=we.wip_entity_id)
+when mmt.transaction_source_type_id=6 then (select mgd.segment1 from mtl_generic_dispositions mgd where mmt.transaction_source_id=mgd.disposition_id)
+when mmt.transaction_source_type_id=7 then (select prha.segment1 from po_requisition_headers_all prha where mmt.transaction_source_id=prha.requisition_header_id)
+when mmt.transaction_source_type_id=9 then (select mcch.cycle_count_header_name from mtl_cycle_count_headers mcch where mmt.transaction_source_id=mcch.cycle_count_header_id)
+when mmt.transaction_source_type_id=10 then (select mpi.description from mtl_physical_inventories mpi where mmt.transaction_source_id=mpi.physical_inventory_id)
+when mmt.transaction_source_type_id=11 then (select ccu.description from cst_cost_updates ccu where mmt.cost_update_id=ccu.cost_update_id)
+else xxen_util.meaning(mmt.transaction_action_id,'MTL_TRANSACTION_ACTION',700)
+end document_number,
+(select ottt.name from oe_order_lines_all oola, oe_order_headers_all ooha, oe_transaction_types_tl ottt where mmt.trx_source_line_id=oola.line_id and oola.header_id=ooha.header_id and ooha.order_type_id=ottt.transaction_type_id and ottt.language=userenv('lang')) order_type,
+mta.transaction_date,
+mmt.transaction_reference,
+decode(mmt.transaction_action_id,24,mmt.quantity_adjusted,mta.primary_quantity/count(*) over (partition by mta.transaction_id,mta.reference_account,mta.accounting_line_type)) primary_quantity,
+decode(nvl(mta.cost_element_id,1),1,mta.base_transaction_value,0) material_value,
+decode(mta.cost_element_id,2,mta.base_transaction_value,0) material_overhead_value,
+decode(mta.cost_element_id,3,mta.base_transaction_value,0) resource_value,
+decode(mta.cost_element_id,4,mta.base_transaction_value,0) outside_processing_value,
+decode(mta.cost_element_id,5,mta.base_transaction_value,0) overhead_value,
+mta.base_transaction_value
+from
+mtl_parameters mp,
+mtl_transaction_accounts mta,
+mtl_material_transactions mmt,
+mtl_transaction_types mtt
+where
+2=2 and
+mp.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
+mp.organization_id=mta.organization_id and
+mta.accounting_line_type in (35,2) and
+mta.transaction_id=mmt.transaction_id and
+mmt.transaction_type_id=mtt.transaction_type_id and
+mmt.transaction_source_type_id=mtt.transaction_source_type_id and
+mta.transaction_source_type_id=mtt.transaction_source_type_id
+) x,
+xla_distribution_links xdl,
+xla_ae_lines xal,
+xla_ae_headers xah,
+(select cic.organization_id, cic.inventory_item_id, cic.based_on_rollup_flag, cic.inventory_asset_flag, cic.material_cost, cic.material_overhead_cost, cic.resource_cost, cic.outside_processing_cost, cic.overhead_cost, cic.item_cost from cst_item_costs cic, cst_cost_types cct where 3=3 and cic.cost_type_id=cct.cost_type_id) cic
+where
+x.inv_sub_ledger_id=xdl.source_distribution_id_num_1 and
+xdl.source_distribution_type='MTL_TRANSACTION_ACCOUNTS' and
+xdl.application_id=707 and
+xdl.ae_header_id=xal.ae_header_id and
+xdl.ae_line_num=xal.ae_line_num and
+xal.application_id=707 and
+xal.ae_header_id=xah.ae_header_id and
+xal.application_id=xah.application_id and
+xal.ledger_id=xah.ledger_id and
+x.organization_id=cic.organization_id(+) and
+x.inventory_item_id=cic.inventory_item_id(+)
 group by
-        gl.name, -- Ledger
-        haou2.name, -- Operating Unit
-        cogs.organization_code,
-        haou.name, -- Organization Name
-        -- Revision for version 1.4
-        -- oap.period_name,
-        ah.period_name,
-        -- End revision for version 1.4
-        &segment_columns_grp
-        msiv.concatenated_segments, -- Item Number
-        msiv.description, -- Item Description
-        fcl.meaning, -- Item Type
-        misv.inventory_item_status_code_tl, -- Item Status
-        ml1.meaning, -- Make_Buy_Code
-        ml2.meaning, -- Based_on_Rollup
-        ml3.meaning, -- Inventory_Asset
-        cogs.transaction_type_name, -- Transaction Type
-        ml4.meaning, -- Accounting_Line_Type
-        cogs.transaction_type_name, -- Transaction Type
-        mtst.transaction_source_type_name, -- Transaction_Source
-        -- Revision for version 1.3
-        cogs.document_order_num, -- Document_Number
-        cogs.order_type, -- Order_Type
-        cogs.transaction_id, -- Transaction_Id
-        cogs.transaction_date, -- Transaction_Date
-        cogs.transaction_reference, -- Transaction_Comments
-        -- for inline selects
-        msiv.inventory_item_id,
-        msiv.organization_id,
-        muomv.uom_code
-having  abs(round(sum(decode((nvl(cic.item_cost,0) * cogs.primary_quantity), 0, cogs.base_transaction_value, 
-                 (nvl(cic.item_cost,0) * cogs.primary_quantity))),2)
-                - sum(cogs.base_transaction_value)) >= nvl(:p_min_value_diff,.01)                              -- p_min_value_diff
-order by 1,2,3,5,6,7,8,9,10,11,18,20
+x.organization_id,
+x.inventory_item_id,
+xah.period_name,
+xal.code_combination_id,
+x.accounting_line_type,
+x.transaction_type_name,
+x.transaction_source_type_id,
+x.document_number,
+x.order_type,
+x.transaction_id,
+x.transaction_date,
+x.transaction_reference,
+cic.based_on_rollup_flag,
+cic.inventory_asset_flag
+having
+abs(round(sum(decode(nvl(cic.item_cost,0)*x.primary_quantity,0,x.base_transaction_value,nvl(cic.item_cost,0)*x.primary_quantity)),2)-sum(x.base_transaction_value))>=nvl(:p_min_value_diff,.01)
+) y,
+mtl_parameters mp,
+hr_organization_information hoi,
+hr_all_organization_units haou,
+hr_all_organization_units_vl haouv_ou,
+gl_ledgers gl,
+mtl_system_items_vl msiv,
+mtl_item_status_vl misv,
+mtl_txn_source_types mtst,
+gl_code_combinations gcc
+where
+1=1 and
+y.organization_id=mp.organization_id and
+mp.organization_id=hoi.organization_id and
+hoi.org_information_context='Accounting Information' and
+hoi.organization_id=haou.organization_id and
+sysdate<nvl(haou.date_to,sysdate+1) and
+to_number(hoi.org_information3)=haouv_ou.organization_id and
+to_number(hoi.org_information1)=gl.ledger_id and
+y.organization_id=msiv.organization_id and
+y.inventory_item_id=msiv.inventory_item_id and
+msiv.inventory_item_status_code=misv.inventory_item_status_code and
+y.transaction_source_type_id=mtst.transaction_source_type_id and
+y.code_combination_id=gcc.code_combination_id(+)
+order by
+ledger,
+operating_unit,
+org_code,
+y.period_name,
+item_number,
+accounting_line_type,
+y.document_number,
+y.transaction_id

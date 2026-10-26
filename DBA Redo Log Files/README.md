@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-16
+last_modified_at: 2026-10-26
 title: 'DBA Redo Log Files | Oracle EBS SQL Report'
 description: 'Oracle EBS Database Administration SQL report: free SQL, parameters and tables used.'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Database Administration, Enginatics, DBA, Redo, Log, Files, gv$log, gv$logfile'
@@ -31,7 +31,7 @@ None
 [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-redo-log-files)
 
 ## Related Reports
-[FND Concurrent Requests](/FND%20Concurrent%20Requests/ "FND Concurrent Requests Oracle EBS SQL Report"), [DBA Archive / Redo Log Rate](/DBA%20Archive%20-%20Redo%20Log%20Rate/ "DBA Archive / Redo Log Rate Oracle EBS SQL Report"), [DBA Log Switches](/DBA%20Log%20Switches/ "DBA Log Switches Oracle EBS SQL Report"), [FND User Login History](/FND%20User%20Login%20History/ "FND User Login History Oracle EBS SQL Report"), [DBA SGA Active Session History](/DBA%20SGA%20Active%20Session%20History/ "DBA SGA Active Session History Oracle EBS SQL Report"), [DBA Result Cache Statistics](/DBA%20Result%20Cache%20Statistics/ "DBA Result Cache Statistics Oracle EBS SQL Report"), [DBA Result Cache Objects and Dependencies](/DBA%20Result%20Cache%20Objects%20and%20Dependencies/ "DBA Result Cache Objects and Dependencies Oracle EBS SQL Report"), [DBA Parameters](/DBA%20Parameters/ "DBA Parameters Oracle EBS SQL Report"), [DBA Blocking Sessions](/DBA%20Blocking%20Sessions/ "DBA Blocking Sessions Oracle EBS SQL Report")
+[FND Concurrent Requests](/FND%20Concurrent%20Requests/ "FND Concurrent Requests Oracle EBS SQL Report"), [DBA Log Switches](/DBA%20Log%20Switches/ "DBA Log Switches Oracle EBS SQL Report"), [DBA Archive / Redo Log Rate](/DBA%20Archive%20-%20Redo%20Log%20Rate/ "DBA Archive / Redo Log Rate Oracle EBS SQL Report"), [DBA Undo Statistics](/DBA%20Undo%20Statistics/ "DBA Undo Statistics Oracle EBS SQL Report"), [DBA SGA Target Advice](/DBA%20SGA%20Target%20Advice/ "DBA SGA Target Advice Oracle EBS SQL Report"), [DBA Parameters](/DBA%20Parameters/ "DBA Parameters Oracle EBS SQL Report"), [DBA SGA Wait Event Summary (active session history)](/DBA%20SGA%20Wait%20Event%20Summary%20%28active%20session%20history%29/ "DBA SGA Wait Event Summary (active session history) Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/DBA%20Redo%20Log%20Files/DBA%20Redo%20Log%20Files.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-redo-log-files) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.

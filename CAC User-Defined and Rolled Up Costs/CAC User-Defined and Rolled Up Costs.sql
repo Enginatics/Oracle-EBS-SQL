@@ -42,321 +42,76 @@
 -- -- | 1.6 20 Nov 2023 Douglas Volz Fix for Manual Other Costs and Rolled Up Other Costs columns.
 -- -- | 1.7 05 Dec 2023 Douglas Volz Added G/L and Operating Unit security restrictions.
 -- -- | 1.8 07 Jan 2024 Douglas Volz Add onhand quantities, to help find valuation issues. Remove tabs.
+-- -- | 1.10 23 Oct 2026 Andy Haack Rebuilt to the Blitz Report SQL standards.
 -- -- +=============================================================================+/
 -- Excel Example Output: https://www.enginatics.com/example/cac-user-defined-and-rolled-up-costs/
 -- Library Link: https://www.enginatics.com/reports/cac-user-defined-and-rolled-up-costs/
 -- Run Report: https://demo.enginatics.com/
 
-select  nvl(gl.short_name, gl.name) Ledger,
-        haou2.name Operating_Unit,
-        mp.organization_code Org_Code,
-        cct.cost_type Cost_Type,
-        msiv.concatenated_segments Item_Number,
-        msiv.description Item_Description,
-        -- Revision for version 1.4
-        muomv.uom_code UOM_Code,
-        fcl.meaning Item_Type,
-        -- Revision for version 1.4
-        misv.inventory_item_status_code Item_Status,
-        ml1.meaning Make_Buy_Code,
+select
+nvl(gl.short_name,gl.name) ledger,
+haouv_ou.name operating_unit,
+mp.organization_code org_code,
+cct.cost_type,
+msiv.concatenated_segments item_number,
+msiv.description item_description,
+msiv.primary_uom_code uom_code,
+xxen_util.meaning(msiv.item_type,'ITEM_TYPE',3) item_type,
+msiv.inventory_item_status_code item_status,
+xxen_util.meaning(msiv.planning_make_buy_code,'MTL_PLANNING_MAKE_BUY',700) make_buy_code,
 &category_columns
-        -- Revision for version 1.2 and 1.4
-        nvl((select max(ml2.meaning)
-             from   bom_resources br,
-                    cst_item_cost_details cicd,
-                    mfg_lookups ml2 -- rollup source type
-             where  br.resource_id         = cicd.resource_id
-             and    cicd.inventory_item_id = cic.inventory_item_id
-             and    cicd.organization_id   = cic.organization_id
-             and    cicd.cost_type_id      = cic.cost_type_id
-             and    cicd.item_cost        <> 0
-             and    cicd.cost_element_id   = 1
-             and    ml2.lookup_type        = 'CST_SOURCE_TYPE'
-             and    ml2.lookup_code        = cicd.rollup_source_type),'')  Rollup_Source_Type,
-        -- End revision for version 1.2
-        -- Bug fix for version 1.1
-        -- (select distinct br.resource_code
-        (select max(br.resource_code)
-        -- End bug fix for version 1.1
-         from   bom_resources br,
-                cst_item_cost_details cicd
-         where  br.resource_id         = cicd.resource_id
-         and    cicd.inventory_item_id = cic.inventory_item_id
-         and    cicd.organization_id   = cic.organization_id
-         and    cicd.cost_type_id      = cic.cost_type_id
-         and    cicd.item_cost        <> 0
-         -- End bug fix for version 1.1
-         and    cicd.cost_element_id   = 1) Material_Sub_Element,
-        -- check to see if a bom exists
-        (select fl.meaning
-         from   fnd_lookups fl
-         where  fl.lookup_type = 'YES_NO'
-         and    fl.lookup_code =  
-                nvl((select distinct 'Y'
-                     from   bom_structures_b bom
-                     where  bom.organization_id      = mp.organization_id
-                     and    bom.assembly_item_id     = cic.inventory_item_id
-                     and    bom.alternate_bom_designator is null),
-                'N')
-        ) BOM,
-        -- check to see if a routing exists
-        (select fl.meaning
-         from   fnd_lookups fl
-         where  fl.lookup_type = 'YES_NO'
-         and    fl.lookup_code =  
-                nvl((select distinct 'Y'
-                     from   bom_operational_routings bor
-                     where  bor.organization_id      = mp.organization_id
-                     and    bor.assembly_item_id     = cic.inventory_item_id
-                     and    bor.alternate_routing_designator is null),
-                'N')
-        ) Routing,
-        -- check to see if a sourcing rule exists for the receipt org
-        (select fl.meaning
-         from   fnd_lookups fl
-         where  fl.lookup_type = 'YES_NO'
-         and    fl.lookup_code =  
-                 nvl((select distinct 'Y'
-                      from   mrp_sr_receipt_org msro,
-                             mrp_sr_source_org msso,
-                             mrp_sourcing_rules msr,
-                             mrp_sr_assignments msa,
-                             mrp_assignment_sets mas
-                      where  msr.sourcing_rule_id    = msro.sourcing_rule_id
-                      -- fix for version 1.4, check to see if the sourcing rule is
-                      -- for an inventory org, not a vendor
-                      and    msso.sr_receipt_id      = msro.sr_receipt_id
-                      and    msso.source_organization_id is not null
-                      and    msa.sourcing_rule_id    = msr.sourcing_rule_id
-                      and    msa.assignment_set_id   = mas.assignment_set_id
-                      and    msiv.organization_id    = msa.organization_id
-                      and    msiv.inventory_item_id  = msa.inventory_item_id
-                      and    mp.organization_id      = msa.organization_id
-                      and    2=2),                  -- p_assignment_set
-        'N')
-        ) Sourcing_Rule,
-        -- Revision for version 1.4
-        ml2.meaning Based_on_Rollup,
-        ml3.meaning Inventory_Asset,
-        -- End revision for version 1.4
-        gl.currency_code Currency_Code,
-        cic.item_cost Item_Cost,
-        nvl((select sum(nvl(cicd.item_cost,0))
-             from   bom_resources br,
-                    cst_item_cost_details cicd
-             where  br.resource_id          = cicd.resource_id
-             and    cicd.inventory_item_id  = cic.inventory_item_id
-             and    cicd.organization_id    = cic.organization_id
-             and    cicd.cost_type_id       = cic.cost_type_id
-             and    cicd.item_cost         <> 0
-             and    cicd.cost_element_id    = 1 -- Material Costs
-             and    cicd.level_type         = 1 -- This Level
-             -- Revision for version 1.5
-             -- and    cicd.rollup_source_type in (1,2) -- manually entered or defaulted
-             and    cicd.rollup_source_type = 1      -- manually entered
-             and    cicd.cost_element_id    = 1),0) Manual_Material_Costs,
-        nvl((select sum(nvl(cicd.item_cost,0))
-             from   cst_item_cost_details cicd
-             where  cicd.inventory_item_id  = cic.inventory_item_id
-             and    cicd.organization_id    = cic.organization_id
-             and    cicd.cost_type_id       = cic.cost_type_id
-             and    cicd.item_cost         <> 0
-             and    cicd.cost_element_id    = 1 -- Material Costs
-             and    cicd.level_type         = 2 -- Previous Level
-             and    cicd.rollup_source_type = 3 -- rolled up material costs
-             and    cicd.cost_element_id    = 1),0) Rolled_Up_Material_Costs,
-        -- Revision for version 1.2
-        nvl((select sum(nvl(cicd.item_cost,0))
-             -- Revision for version 1.6
-             -- from   bom_resources br,
-             --        cst_item_cost_details cicd
-             from   cst_item_cost_details cicd
-             -- Revision for version 1.6
-             -- where  br.resource_id          = cicd.resource_id
-             -- and    cicd.inventory_item_id  = cic.inventory_item_id
-             where  cicd.inventory_item_id  = cic.inventory_item_id
-             and    cicd.organization_id    = cic.organization_id
-             and    cicd.cost_type_id       = cic.cost_type_id
-             and    cicd.item_cost         <> 0
-             and    cicd.cost_element_id   <> 1 -- Material Costs
-             and    cicd.level_type         = 1 -- This Level
-             -- Revision for version 1.5
-             -- and    cicd.rollup_source_type in (1,2) -- manually entered or defaulted
-             and    cicd.rollup_source_type = 1      -- manually entered
-             -- Revision for version 1.6
-             -- and    cicd.cost_element_id    = 1),0) Manual_Other_Costs,
-            ),0) Manual_Other_Costs,
-        nvl((select sum(nvl(cicd.item_cost,0))
-             from   cst_item_cost_details cicd
-             where  cicd.inventory_item_id  = cic.inventory_item_id
-             and    cicd.organization_id    = cic.organization_id
-             and    cicd.cost_type_id       = cic.cost_type_id
-             and    cicd.item_cost         <> 0
-             and    cicd.cost_element_id   <> 1 -- Material Costs
-             -- Revision for version 1.6
-             -- and    cicd.level_type         = 2 -- Previous Level
-             -- Revision for version 1.5
-             -- and    cicd.rollup_source_type = 3      -- rolled up material costs
-             and    cicd.rollup_source_type in (2,3) -- rolled up and defaulted material costs
-             -- Revision for version 1.6
-             -- and    cicd.cost_element_id    = 1),0) Rolled_Up_Other_Costs,
-            ),0) Rolled_Up_Other_Costs,
-        -- End revision for version 1.6
-        -- Revision for version 1.8
-        onhand.quantity Onhand_Quantity,
-        -- End revision for version 1.8
-        cic.creation_date Cost_Creation_Date,
-        msiv.creation_date Item_Creation_Date
-        -- End revision for version 1.2
-from    mtl_parameters mp,
-        mtl_system_items_vl msiv,
-        -- Revision for version 1.4
-        mtl_units_of_measure_vl muomv,
-        mtl_item_status_vl misv, 
-        -- End revision for version 1.4
-        cst_item_costs cic,
-        cst_cost_types cct,
-        -- Revision for version 1.8
-        (select moqd.organization_id,
-                moqd.inventory_item_id,
-                sum(moqd.transaction_quantity) quantity
-         from   mtl_onhand_quantities_detail moqd,
-                mtl_parameters mp
-         where  moqd.is_consigned              = 2 -- No
-         and    mp.organization_id             = moqd.organization_id
-         and    3=3                            -- p_org_code
-         group by
-                moqd.organization_id,
-                moqd.inventory_item_id
-        ) onhand,
-        -- End revision for version 1.8
-        mfg_lookups ml1, -- planning make buy code
-        -- Revision for version 1.4
-        mfg_lookups ml2, -- based on rollup, CST_BONROLLUP_VAL
-        mfg_lookups ml3, -- Cost inventory_asset_flag, SYS_YES_NO
-        -- End revision for version 1.4
-        fnd_common_lookups fcl,
-        hr_organization_information hoi,
-        hr_all_organization_units haou,  -- inv_organization_id
-        hr_all_organization_units haou2, -- operating unit
-        gl_ledgers gl
--- ===================================================================
--- Cost type, organization, item master and report specific controls
--- ===================================================================
-where   cic.cost_type_id                = cct.cost_type_id
-and     cct.cost_type                   = nvl('&p_cost_type',cct.cost_type)                             -- p_cost_type
-and     mp.organization_id              = cic.organization_id
-and     msiv.organization_id            = cic.organization_id
-and     msiv.inventory_item_id          = cic.inventory_item_id
-and     cic.based_on_rollup_flag        = 1 -- rolled up
--- Revision for version 1.2
-and     msiv.inventory_item_status_code <> 'Inactive'
--- Revision for version 1.4
-and     msiv.primary_uom_code           = muomv.uom_code
-and     msiv.inventory_item_status_code = misv.inventory_item_status_code
--- End revision for version 1.4
--- Revision for version 1.8
-and     onhand.organization_id (+)      = cic.organization_id
-and     onhand.inventory_item_id (+)    = cic.inventory_item_id
--- End revision for version 1.8
--- Avoid master inventory organizations
-and     mp.organization_id             <> mp.master_organization_id -- the item master org usually does not have costs
--- ===================================================================
--- Joins for the lookup codes
--- ===================================================================
-and     ml1.lookup_type                 = 'MTL_PLANNING_MAKE_BUY'
-and     ml1.lookup_code                 = msiv.planning_make_buy_code
--- Revision for version 1.4
-and     ml2.lookup_type                 = 'CST_BONROLLUP_VAL'
-and     ml2.lookup_code                 = cic.based_on_rollup_flag
-and     ml3.lookup_type                 = 'SYS_YES_NO'
-and     ml3.lookup_code                 = cic.inventory_asset_flag
--- End revision for version 1.4
-and     fcl.lookup_type (+)             = 'ITEM_TYPE'
-and     fcl.lookup_code (+)             = msiv.item_type
--- ===================================================================
--- Using the base tables for HR organization information
--- ===================================================================
-and     hoi.org_information_context     = 'Accounting Information'
-and     hoi.organization_id             = mp.organization_id
-and     hoi.organization_id             = haou.organization_id            -- this gets the organization name
--- avoid selecting disabled inventory organizations
-and     sysdate                         < nvl(haou.date_to, sysdate +1)
-and     haou2.organization_id           = to_number(hoi.org_information3) -- this gets the operating unit id
-and     hoi.org_information1            = gl.ledger_id                    -- this gets the ledger id
--- Revision for version 1.7
-and     mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-and     gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
-and     haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
--- End revision for version 1.7
-and     1=1                             -- p_cost_type, p_item_number, p_operating_unit, p_ledger
-and     3=3                             -- p_org_code
--- ===================================================================
--- Check to see if BOMS or Routings or Sourcing Rules exist
--- ===================================================================
-and     exists 
-                -- check to see if a BOM exists
-                ((select 'x' 
-                  from   bom_structures_b bsb
-                  where  bsb.organization_id        = cic.organization_id
-                  and    bsb.assembly_item_id       = cic.inventory_item_id
-                  and    bsb.alternate_bom_designator is null)
-                  union all
-                  -- check to see if a routing exists
-                 (select 'x' 
-                  from   bom_operational_routings bor
-                  where  bor.organization_id        = cic.organization_id
-                  and    bor.assembly_item_id       = cic.inventory_item_id)
-                union all
-                 (select 'x'
-                  from   mrp_sr_receipt_org msro,
-                         mrp_sr_source_org msso,
-                         mrp_sourcing_rules msr,
-                         mrp_sr_assignments msa,
-                         mrp_assignment_sets mas
-                  where  msr.sourcing_rule_id    = msro.SOURCING_RULE_ID
-                  -- fix for version 1.4, check to see if the sourcing rule is
-                  -- for an inventory org, not a vendor
-                  and    msso.sr_receipt_id      = msro.sr_receipt_id
-                  and    msso.source_organization_id is  not null
-                  and    msa.sourcing_rule_id    = msr.sourcing_rule_id
-                  and    msa.assignment_set_id   = mas.assignment_set_id
-                  and    msiv.organization_id    = msa.organization_id
-                  and    msiv.inventory_item_id  = msa.inventory_item_id
-                  and    2=2)                    -- p_assignment_set
-                )
--- ===================================================================
--- Check to see if manually entered costs exist for This Level Costs
--- ===================================================================
-and     exists
-                (select 'x'
-                 from   cst_item_cost_details cicd
-                 where  cicd.organization_id    = cic.organization_id
-                 and    cicd.inventory_item_id  = cic.inventory_item_id
-                 and    cicd.cost_type_id       = cic.cost_type_id
-                 and    cicd.item_cost         <> 0
-                 and    cicd.level_type         = 1 -- This Level
-                 and    cicd.cost_element_id    = 1 -- Material Costs
-                 -- Revision for version 1.5
-                 -- and    cicd.rollup_source_type in (1,2)) -- manually entered or defaulted
-                 and    cicd.rollup_source_type = 1)      -- manually entered
--- ===================================================================
--- Check to see if costs exist for Previous Levels / Rolled Up Costs
--- ===================================================================
-and     exists
-                (select 'x'
-                 from   cst_item_cost_details cicd
-                 where  cicd.organization_id    = cic.organization_id
-                 and    cicd.inventory_item_id  = cic.inventory_item_id
-                 and    cicd.cost_type_id       = cic.cost_type_id
-                 and    cicd.item_cost         <> 0
-                 and    cicd.cost_element_id    = 1 -- Material Costs
-                 and    cicd.level_type         = 2 -- Previous Level
-                 and    cicd.rollup_source_type in (3)) -- rolled up
--- Order by Ledger, Operating Unit, Org Code, Cost Type, Item Number
+(select max(xxen_util.meaning(cicd.rollup_source_type,'CST_SOURCE_TYPE',700)) from cst_item_cost_details cicd, bom_resources br where cic.inventory_item_id=cicd.inventory_item_id and cic.organization_id=cicd.organization_id and cic.cost_type_id=cicd.cost_type_id and cicd.item_cost<>0 and cicd.cost_element_id=1 and cicd.resource_id=br.resource_id) rollup_source_type,
+(select max(br.resource_code) from cst_item_cost_details cicd, bom_resources br where cic.inventory_item_id=cicd.inventory_item_id and cic.organization_id=cicd.organization_id and cic.cost_type_id=cicd.cost_type_id and cicd.item_cost<>0 and cicd.cost_element_id=1 and cicd.resource_id=br.resource_id) material_sub_element,
+xxen_util.yes(case when exists (select null from bom_structures_b bsb where msiv.inventory_item_id=bsb.assembly_item_id and msiv.organization_id=bsb.organization_id and bsb.alternate_bom_designator is null) then 'Y' end) bom,
+xxen_util.yes((select 'Y' from bom_operational_routings bor where msiv.inventory_item_id=bor.assembly_item_id and msiv.organization_id=bor.organization_id and bor.alternate_routing_designator is null)) routing,
+xxen_util.yes(case when exists (select null from mrp_sr_assignments msa, mrp_assignment_sets mas, mrp_sr_receipt_org msro, mrp_sr_source_org msso where msiv.inventory_item_id=msa.inventory_item_id and msiv.organization_id=msa.organization_id and msa.assignment_set_id=mas.assignment_set_id and 2=2 and msa.sourcing_rule_id=msro.sourcing_rule_id and msro.sr_receipt_id=msso.sr_receipt_id and msso.source_organization_id is not null) then 'Y' end) sourcing_rule,
+xxen_util.meaning(cic.based_on_rollup_flag,'CST_BONROLLUP_VAL',700) based_on_rollup,
+xxen_util.yes(decode(cic.inventory_asset_flag,1,'Y')) inventory_asset,
+gl.currency_code,
+cic.item_cost,
+nvl((select sum(cicd.item_cost) from cst_item_cost_details cicd, bom_resources br where cic.inventory_item_id=cicd.inventory_item_id and cic.organization_id=cicd.organization_id and cic.cost_type_id=cicd.cost_type_id and cicd.item_cost<>0 and cicd.cost_element_id=1 and cicd.level_type=1 and cicd.rollup_source_type=1 and cicd.resource_id=br.resource_id),0) manual_material_costs,
+nvl((select sum(cicd.item_cost) from cst_item_cost_details cicd where cic.inventory_item_id=cicd.inventory_item_id and cic.organization_id=cicd.organization_id and cic.cost_type_id=cicd.cost_type_id and cicd.item_cost<>0 and cicd.cost_element_id=1 and cicd.level_type=2 and cicd.rollup_source_type=3),0) rolled_up_material_costs,
+nvl((select sum(cicd.item_cost) from cst_item_cost_details cicd where cic.inventory_item_id=cicd.inventory_item_id and cic.organization_id=cicd.organization_id and cic.cost_type_id=cicd.cost_type_id and cicd.item_cost<>0 and cicd.cost_element_id<>1 and cicd.level_type=1 and cicd.rollup_source_type=1),0) manual_other_costs,
+nvl((select sum(cicd.item_cost) from cst_item_cost_details cicd where cic.inventory_item_id=cicd.inventory_item_id and cic.organization_id=cicd.organization_id and cic.cost_type_id=cicd.cost_type_id and cicd.item_cost<>0 and cicd.cost_element_id<>1 and cicd.rollup_source_type in (2,3)),0) rolled_up_other_costs,
+(select sum(moqd.primary_transaction_quantity) from mtl_onhand_quantities_detail moqd where msiv.inventory_item_id=moqd.inventory_item_id and msiv.organization_id=moqd.organization_id and moqd.is_consigned=2) onhand_quantity,
+cic.creation_date cost_creation_date,
+msiv.creation_date item_creation_date
+from
+mtl_parameters mp,
+hr_organization_information hoi,
+hr_all_organization_units haou,
+hr_all_organization_units_vl haouv_ou,
+gl_ledgers gl,
+cst_item_costs cic,
+cst_cost_types cct,
+mtl_system_items_vl msiv
+where
+1=1 and
+3=3 and
+mp.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
+mp.organization_id<>mp.master_organization_id and
+mp.organization_id=hoi.organization_id and
+hoi.org_information_context='Accounting Information' and
+hoi.organization_id=haou.organization_id and
+sysdate<nvl(haou.date_to,sysdate+1) and
+to_number(hoi.org_information3)=haouv_ou.organization_id and
+to_number(hoi.org_information1)=gl.ledger_id and
+mp.organization_id=cic.organization_id and
+cic.cost_type_id=cct.cost_type_id and
+cic.based_on_rollup_flag=1 and
+cic.organization_id=msiv.organization_id and
+cic.inventory_item_id=msiv.inventory_item_id and
+msiv.inventory_item_status_code<>'Inactive' and
+exists (select null from cst_item_cost_details cicd where cic.inventory_item_id=cicd.inventory_item_id and cic.organization_id=cicd.organization_id and cic.cost_type_id=cicd.cost_type_id and cicd.item_cost<>0 and cicd.cost_element_id=1 and cicd.level_type=1 and cicd.rollup_source_type=1) and
+exists (select null from cst_item_cost_details cicd where cic.inventory_item_id=cicd.inventory_item_id and cic.organization_id=cicd.organization_id and cic.cost_type_id=cicd.cost_type_id and cicd.item_cost<>0 and cicd.cost_element_id=1 and cicd.level_type=2 and cicd.rollup_source_type=3) and
+(
+exists (select null from bom_structures_b bsb where cic.inventory_item_id=bsb.assembly_item_id and cic.organization_id=bsb.organization_id and bsb.alternate_bom_designator is null) or
+exists (select null from bom_operational_routings bor where cic.inventory_item_id=bor.assembly_item_id and cic.organization_id=bor.organization_id) or
+exists (select null from mrp_sr_assignments msa, mrp_assignment_sets mas, mrp_sr_receipt_org msro, mrp_sr_source_org msso where cic.inventory_item_id=msa.inventory_item_id and cic.organization_id=msa.organization_id and msa.assignment_set_id=mas.assignment_set_id and 2=2 and msa.sourcing_rule_id=msro.sourcing_rule_id and msro.sr_receipt_id=msso.sr_receipt_id and msso.source_organization_id is not null)
+)
 order by
-        nvl(gl.short_name, gl.name),
-        haou2.name,
-        mp.organization_code,
-        cct.cost_type,
-        msiv.concatenated_segments
+ledger,
+operating_unit,
+org_code,
+cct.cost_type,
+item_number

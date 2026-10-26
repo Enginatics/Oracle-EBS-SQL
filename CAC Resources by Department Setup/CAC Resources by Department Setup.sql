@@ -35,72 +35,57 @@
 -- -- | 1.0 21 Jan 2017 Douglas Volz Initial Coding
 -- -- | 1.1 20 Jan 2020 Douglas Volz Add operating unit and org code parameters.
 -- -- | 1.2 20 Apr 2020 Douglas Volz Make Cost Type default work for all cost methods
+-- -- | 1.3 23 Oct 2026 Andy Haack Rebuilt to the Blitz Report SQL standards.
 -- -- +=============================================================================+/
 -- Excel Example Output: https://www.enginatics.com/example/cac-resources-by-department-setup/
 -- Library Link: https://www.enginatics.com/reports/cac-resources-by-department-setup/
 -- Run Report: https://demo.enginatics.com/
 
-select nvl(gl.short_name, gl.name) Ledger,
- haou.name Operating_Unit,
- mp.organization_code Org_Code,
- cct.cost_type Cost_Type,
- bd.department_code Department,
- (select ca.activity
-  from cst_activities ca
-  where ca.activity_id = br.default_activity_id) Activity,
- br.resource_code Resource_Code,
- cec.cost_element Cost_Element,
- br.description Description,
- gl.currency_code Currency_Code,
- nvl(crc.resource_rate,0) Resource_Rate,
- ml1.meaning Resource_Type
-from bom_departments bd,
- bom_resources br,
- bom_department_resources bdr,
- cst_resource_costs crc,
- cst_cost_types cct,
- -- Revision for version 1.2
- cst_cost_types cct2, -- Avg Rates Cost Type
- cst_cost_elements  cec,
- mtl_parameters mp,
- hr_organization_information hoi,
- hr_all_organization_units_vl haou,
- hr_all_organization_units_vl haou2,
- gl_ledgers gl,
- mfg_lookups ml1
-where gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
-and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
-and 1=1                         -- p_org_code, p_operating_unit, p_ledger, p_cost_type
-and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-and mp.organization_id          = br.organization_id
-and bd.organization_id          = br.organization_id
-and bdr.department_id           = bd.department_id
-and bdr.resource_id             = br.resource_id
-and crc.resource_id             = br.resource_id
-and crc.organization_id         = mp.organization_id
-and crc.cost_type_id            = cct.cost_type_id
--- Revision for version 1.2
-and cct2.cost_type_id           = nvl(mp.avg_rates_cost_type_id, mp.primary_cost_method)
-and cct.cost_type               = nvl(:p_cost_type, cct2.cost_type)                                       -- p_cost_type
--- End revision for version 1.2  
-and br.cost_element_id          = cec.cost_element_id
-and br.allow_costs_flag         = 1 -- Yes
--- ===========================================
--- Joins for the lookup codes
--- ===========================================
-and ml1.lookup_type             = 'BOM_RESOURCE_TYPE'
-and ml1.lookup_code             = br.resource_type
--- ===========================================
--- Organization joins to the HR org model
--- ===========================================
-and hoi.org_information_context = 'Accounting Information'
-and hoi.organization_id         = mp.organization_id
-and hoi.organization_id         = haou.organization_id -- this gets the organization name
-and haou2.organization_id       = to_number(hoi.org_information3) -- this gets the operating unit id
-and gl.ledger_id                = to_number(hoi.org_information1) -- get the ledger_id
+select
+nvl(gl.short_name,gl.name) ledger,
+haouv_ou.name operating_unit,
+mp.organization_code org_code,
+cct.cost_type,
+bd.department_code department,
+(select ca.activity from cst_activities ca where br.default_activity_id=ca.activity_id) activity,
+br.resource_code,
+cce.cost_element,
+br.description,
+gl.currency_code,
+nvl(crc.resource_rate,0) resource_rate,
+xxen_util.meaning(br.resource_type,'BOM_RESOURCE_TYPE',700) resource_type
+from
+mtl_parameters mp,
+hr_organization_information hoi,
+hr_all_organization_units_vl haouv_ou,
+gl_ledgers gl,
+cst_cost_types cct_default,
+bom_resources br,
+cst_cost_elements cce,
+bom_department_resources bdr,
+bom_departments bd,
+cst_resource_costs crc,
+cst_cost_types cct
+where
+1=1 and
+mp.organization_id=hoi.organization_id and
+hoi.org_information_context='Accounting Information' and
+to_number(hoi.org_information3)=haouv_ou.organization_id and
+to_number(hoi.org_information1)=gl.ledger_id and
+nvl(mp.avg_rates_cost_type_id,mp.primary_cost_method)=cct_default.cost_type_id and
+mp.organization_id=br.organization_id and
+br.allow_costs_flag=1 and
+br.cost_element_id=cce.cost_element_id and
+br.resource_id=bdr.resource_id and
+bdr.department_id=bd.department_id and
+br.organization_id=bd.organization_id and
+br.resource_id=crc.resource_id and
+mp.organization_id=crc.organization_id and
+crc.cost_type_id=cct.cost_type_id and
+cct.cost_type=nvl(:p_cost_type,cct_default.cost_type)
 order by
- gl.short_name, -- Ledger
- haou.name, -- Operating Unit
- mp.organization_code, -- Org Code
- cct.cost_type, -- Cost Type
- bd.department_code -- Department
+ledger,
+operating_unit,
+org_code,
+cost_type,
+department

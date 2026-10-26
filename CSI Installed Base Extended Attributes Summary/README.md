@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-16
+last_modified_at: 2026-10-26
 title: 'CSI Installed Base Extended Attributes Summary | Oracle EBS SQL Report'
 description: 'Master data report of extended Installed Base attribute levels and names – Oracle EBS Installed Base SQL report: free SQL, parameters and tables used.'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Installed Base, Enginatics, CSI, Installed, Base, Extended, csi_iea_values, csi_i_extended_attribs'
@@ -31,7 +31,7 @@ None
 [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=csi-installed-base-extended-attributes-summary)
 
 ## Related Reports
-[AR Transactions and Lines 11i](/AR%20Transactions%20and%20Lines%2011i/ "AR Transactions and Lines 11i Oracle EBS SQL Report")
+[AR Transactions and Lines 11i](/AR%20Transactions%20and%20Lines%2011i/ "AR Transactions and Lines 11i Oracle EBS SQL Report"), [INV Item Upload](/INV%20Item%20Upload/ "INV Item Upload Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/CSI%20Installed%20Base%20Extended%20Attributes%20Summary/CSI%20Installed%20Base%20Extended%20Attributes%20Summary.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=csi-installed-base-extended-attributes-summary) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.

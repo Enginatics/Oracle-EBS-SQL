@@ -31,427 +31,67 @@
 -- -- | Version Modified on Modified by Description
 -- -- | ======= =========== ============== =========================================
 -- -- | 1.0 16 Aug 2021 Douglas Volz Initial Coding
+-- -- | 1.1 23 Oct 2026 Andy Haack Rebuilt to the Blitz Report SQL standards.
 -- -- +=============================================================================+/
 -- Excel Example Output: https://www.enginatics.com/example/cac-category-accounts-setup/
 -- Library Link: https://www.enginatics.com/reports/cac-category-accounts-setup/
 -- Run Report: https://demo.enginatics.com/
 
-select nvl(gl.short_name, gl.name) Ledger,
--- Get the Material Account
- haou2.name Operating_Unit,
- mp.organization_code Org_Code,
- haou.name Organization_Name,
- mc.category_concat_segs Category,
- (select ccg.cost_group
-  from cst_cost_groups ccg
-  where ccg.cost_group_id  = mca.cost_group_id) Cost_Group,
- mca.subinventory_code Subinventory,
- (select ml.meaning
-  from mfg_lookups ml,
-  mtl_secondary_inventories msub
-  where msub.secondary_inventory_name = mca.subinventory_code
-  and msub.organization_id          = mca.organization_id
-  and ml.lookup_type                = 'SYS_YES_NO'
-  and ml.lookup_code                = msub.asset_inventory) Inventory_Asset,
- 'Material Account' Account_Type,
- &segment_columns
- mca.creation_date Creation_Date,
- mca.last_update_date Last_Update_Date,
- fu1.user_name Created_By,
- fu2.user_name Last_Updated_By
-from mtl_category_accounts mca,
- mtl_categories_v mc,
- mtl_parameters mp,
- gl_code_combinations gcc,
- hr_organization_information hoi,
- hr_all_organization_units_vl haou,
- hr_all_organization_units_vl haou2,
- gl_ledgers gl,
- fnd_user fu1,
- fnd_user fu2
-where mca.category_id                = mc.category_id
-and mp.organization_id             = mca.organization_id
-and mca.material_account           = gcc.code_combination_id (+)
--- ===========================================
--- Organization joins to the HR org model
--- ===========================================
-and hoi.org_information_context    = 'Accounting Information'
-and hoi.organization_id            = mp.organization_id
-and hoi.organization_id            = haou.organization_id -- this gets the organization name
-and haou2.organization_id          = to_number(hoi.org_information3) -- this gets the operating unit id
-and gl.ledger_id                   = to_number(hoi.org_information1) -- get the ledger_id
--- Avoid selecting disabled inventory organizations
-and sysdate < nvl(haou.date_to, sysdate + 1)
-and fu1.user_id                    = mca.created_by
-and fu2.user_id                    = mca.last_updated_by
-and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
-and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
-and 1=1                            -- p_org_code, p_operating_unit, p_ledger
-union all
--- Get the Material Overhead Account
-select nvl(gl.short_name, gl.name) Ledger,
- haou2.name Operating_Unit,
- mp.organization_code Org_Code,
- haou.name Organization_Name,
- mc.category_concat_segs Category,
- (select ccg.cost_group
-  from cst_cost_groups ccg
-  where ccg.cost_group_id  = mca.cost_group_id) Cost_Group,
- mca.subinventory_code Subinventory,
- (select ml.meaning
-  from mfg_lookups ml,
-  mtl_secondary_inventories msub
-  where msub.secondary_inventory_name = mca.subinventory_code
-  and msub.organization_id          = mca.organization_id
-  and ml.lookup_type                = 'SYS_YES_NO'
-  and ml.lookup_code                = msub.asset_inventory) Inventory_Asset,
- 'Material Overhead Account' Account_Type,
- &segment_columns
- mca.creation_date Creation_Date,
- mca.last_update_date Last_Update_Date,
- fu1.user_name Created_By,
- fu2.user_name Last_Updated_By
-from mtl_category_accounts mca,
- mtl_categories_v mc,
- mtl_parameters mp,
- gl_code_combinations gcc,
- hr_organization_information hoi,
- hr_all_organization_units_vl haou,
- hr_all_organization_units_vl haou2,
- gl_ledgers gl,
- fnd_user fu1,
- fnd_user fu2
-where mca.category_id                = mc.category_id
-and mp.organization_id             = mca.organization_id
-and mca.material_overhead_account  = gcc.code_combination_id (+)
--- ===========================================
--- Organization joins to the HR org model
--- ===========================================
-and hoi.org_information_context    = 'Accounting Information'
-and hoi.organization_id            = mp.organization_id
-and hoi.organization_id            = haou.organization_id -- this gets the organization name
-and haou2.organization_id          = to_number(hoi.org_information3) -- this gets the operating unit id
-and gl.ledger_id                   = to_number(hoi.org_information1) -- get the ledger_id
--- Avoid selecting disabled inventory organizations
-and sysdate < nvl(haou.date_to, sysdate + 1)
-and fu1.user_id                    = mca.created_by
-and fu2.user_id                    = mca.last_updated_by
-and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
-and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
-and 1=1                            -- p_org_code, p_operating_unit, p_ledger
-union all
--- Get the Resource Account
-select nvl(gl.short_name, gl.name) Ledger,
- haou2.name Operating_Unit,
- mp.organization_code Org_Code,
- haou.name Organization_Name,
- mc.category_concat_segs Category,
- (select ccg.cost_group
-  from cst_cost_groups ccg
-  where ccg.cost_group_id  = mca.cost_group_id) Cost_Group,
- mca.subinventory_code Subinventory,
- (select ml.meaning
-  from mfg_lookups ml,
-  mtl_secondary_inventories msub
-  where msub.secondary_inventory_name = mca.subinventory_code
-  and msub.organization_id          = mca.organization_id
-  and ml.lookup_type                = 'SYS_YES_NO'
-  and ml.lookup_code                = msub.asset_inventory) Inventory_Asset,
- 'Resource Account' Account_Type,
- &segment_columns
- mca.creation_date Creation_Date,
- mca.last_update_date Last_Update_Date,
- fu1.user_name Created_By,
- fu2.user_name Last_Updated_By
-from mtl_category_accounts mca,
- mtl_categories_v mc,
- mtl_parameters mp,
- gl_code_combinations gcc,
- hr_organization_information hoi,
- hr_all_organization_units_vl haou,
- hr_all_organization_units_vl haou2,
- gl_ledgers gl,
- fnd_user fu1,
- fnd_user fu2
-where mca.category_id                = mc.category_id
-and mp.organization_id             = mca.organization_id
-and mca.resource_account           = gcc.code_combination_id (+)
--- ===========================================
--- Organization joins to the HR org model
--- ===========================================
-and hoi.org_information_context    = 'Accounting Information'
-and hoi.organization_id            = mp.organization_id
-and hoi.organization_id            = haou.organization_id -- this gets the organization name
-and haou2.organization_id          = to_number(hoi.org_information3) -- this gets the operating unit id
-and gl.ledger_id                   = to_number(hoi.org_information1) -- get the ledger_id
--- Avoid selecting disabled inventory organizations
-and sysdate < nvl(haou.date_to, sysdate + 1)
-and fu1.user_id                    = mca.created_by
-and fu2.user_id                    = mca.last_updated_by
-and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
-and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
-and 1=1                            -- p_org_code, p_operating_unit, p_ledger
-union all
--- Get the Outside Processing Account
-select nvl(gl.short_name, gl.name) Ledger,
- haou2.name Operating_Unit,
- mp.organization_code Org_Code,
- haou.name Organization_Name,
- mc.category_concat_segs Category,
- (select ccg.cost_group
-  from cst_cost_groups ccg
-  where ccg.cost_group_id  = mca.cost_group_id) Cost_Group,
- mca.subinventory_code Subinventory,
- (select ml.meaning
-  from mfg_lookups ml,
-  mtl_secondary_inventories msub
-  where msub.secondary_inventory_name = mca.subinventory_code
-  and msub.organization_id          = mca.organization_id
-  and ml.lookup_type                = 'SYS_YES_NO'
-  and ml.lookup_code                = msub.asset_inventory) Inventory_Asset,
- 'Outside Processing Account' Account_Type,
- &segment_columns
- mca.creation_date Creation_Date,
- mca.last_update_date Last_Update_Date,
- fu1.user_name Created_By,
- fu2.user_name Last_Updated_By
-from mtl_category_accounts mca,
- mtl_categories_v mc,
- mtl_parameters mp,
- gl_code_combinations gcc,
- hr_organization_information hoi,
- hr_all_organization_units_vl haou,
- hr_all_organization_units_vl haou2,
- gl_ledgers gl,
- fnd_user fu1,
- fnd_user fu2
-where mca.category_id                = mc.category_id
-and mp.organization_id             = mca.organization_id
-and mca.outside_processing_account = gcc.code_combination_id (+)
--- ===========================================
--- Organization joins to the HR org model
--- ===========================================
-and hoi.org_information_context    = 'Accounting Information'
-and hoi.organization_id            = mp.organization_id
-and hoi.organization_id            = haou.organization_id -- this gets the organization name
-and haou2.organization_id          = to_number(hoi.org_information3) -- this gets the operating unit id
-and gl.ledger_id                   = to_number(hoi.org_information1) -- get the ledger_id
--- Avoid selecting disabled inventory organizations
-and sysdate < nvl(haou.date_to, sysdate + 1)
-and fu1.user_id                    = mca.created_by
-and fu2.user_id                    = mca.last_updated_by
-and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
-and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
-and 1=1                            -- p_org_code, p_operating_unit, p_ledger
-union all
--- Get the Overhead Account
-select nvl(gl.short_name, gl.name) Ledger,
- haou2.name Operating_Unit,
- mp.organization_code Org_Code,
- haou.name Organization_Name,
- mc.category_concat_segs Category,
- (select ccg.cost_group
-  from cst_cost_groups ccg
-  where ccg.cost_group_id  = mca.cost_group_id) Cost_Group,
- mca.subinventory_code Subinventory,
- (select ml.meaning
-  from mfg_lookups ml,
-  mtl_secondary_inventories msub
-  where msub.secondary_inventory_name = mca.subinventory_code
-  and msub.organization_id          = mca.organization_id
-  and ml.lookup_type                = 'SYS_YES_NO'
-  and ml.lookup_code                = msub.asset_inventory) Inventory_Asset,
- 'Overhead Account' Account_Type,
- &segment_columns
- mca.creation_date Creation_Date,
- mca.last_update_date Last_Update_Date,
- fu1.user_name Created_By,
- fu2.user_name Last_Updated_By
-from mtl_category_accounts mca,
- mtl_categories_v mc,
- mtl_parameters mp,
- gl_code_combinations gcc,
- hr_organization_information hoi,
- hr_all_organization_units_vl haou,
- hr_all_organization_units_vl haou2,
- gl_ledgers gl,
- fnd_user fu1,
- fnd_user fu2
-where mca.category_id                = mc.category_id
-and mp.organization_id             = mca.organization_id
-and mca.overhead_account           = gcc.code_combination_id (+)
--- ===========================================
--- Organization joins to the HR org model
--- ===========================================
-and hoi.org_information_context    = 'Accounting Information'
-and hoi.organization_id            = mp.organization_id
-and hoi.organization_id            = haou.organization_id -- this gets the organization name
-and haou2.organization_id          = to_number(hoi.org_information3) -- this gets the operating unit id
-and gl.ledger_id                   = to_number(hoi.org_information1) -- get the ledger_id
--- Avoid selecting disabled inventory organizations
-and sysdate < nvl(haou.date_to, sysdate + 1)
-and fu1.user_id                    = mca.created_by
-and fu2.user_id                    = mca.last_updated_by
-and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
-and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
-and 1=1                            -- p_org_code, p_operating_unit, p_ledger
-union all
--- Get the Expense Account
-select nvl(gl.short_name, gl.name) Ledger,
- haou2.name Operating_Unit,
- mp.organization_code Org_Code,
- haou.name Organization_Name,
- mc.category_concat_segs Category,
- (select ccg.cost_group
-  from cst_cost_groups ccg
-  where ccg.cost_group_id  = mca.cost_group_id) Cost_Group,
- mca.subinventory_code Subinventory,
- (select ml.meaning
-  from mfg_lookups ml,
-  mtl_secondary_inventories msub
-  where msub.secondary_inventory_name = mca.subinventory_code
-  and msub.organization_id          = mca.organization_id
-  and ml.lookup_type                = 'SYS_YES_NO'
-  and ml.lookup_code                = msub.asset_inventory) Inventory_Asset,
- 'Expense Account' Account_Type,
- &segment_columns
- mca.creation_date Creation_Date,
- mca.last_update_date Last_Update_Date,
- fu1.user_name Created_By,
- fu2.user_name Last_Updated_By
-from mtl_category_accounts mca,
- mtl_categories_v mc,
- mtl_parameters mp,
- gl_code_combinations gcc,
- hr_organization_information hoi,
- hr_all_organization_units_vl haou,
- hr_all_organization_units_vl haou2,
- gl_ledgers gl,
- fnd_user fu1,
- fnd_user fu2
-where mca.category_id                = mc.category_id
-and mp.organization_id             = mca.organization_id
-and mca.expense_account            = gcc.code_combination_id (+)
--- ===========================================
--- Organization joins to the HR org model
--- ===========================================
-and hoi.org_information_context    = 'Accounting Information'
-and hoi.organization_id            = mp.organization_id
-and hoi.organization_id            = haou.organization_id -- this gets the organization name
-and haou2.organization_id          = to_number(hoi.org_information3) -- this gets the operating unit id
-and gl.ledger_id                   = to_number(hoi.org_information1) -- get the ledger_id
--- Avoid selecting disabled inventory organizations
-and sysdate < nvl(haou.date_to, sysdate + 1)
-and fu1.user_id                    = mca.created_by
-and fu2.user_id                    = mca.last_updated_by
-and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
-and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
-and 1=1                            -- p_org_code, p_operating_unit, p_ledger
-union all
--- Get the Encumbrance Account
-select nvl(gl.short_name, gl.name) Ledger,
- haou2.name Operating_Unit,
- mp.organization_code Org_Code,
- haou.name Organization_Name,
- mc.category_concat_segs Category,
- (select ccg.cost_group
-  from cst_cost_groups ccg
-  where ccg.cost_group_id  = mca.cost_group_id) Cost_Group,
- mca.subinventory_code Subinventory,
- (select ml.meaning
-  from mfg_lookups ml,
-  mtl_secondary_inventories msub
-  where msub.secondary_inventory_name = mca.subinventory_code
-  and msub.organization_id          = mca.organization_id
-  and ml.lookup_type                = 'SYS_YES_NO'
-  and ml.lookup_code                = msub.asset_inventory) Inventory_Asset,
- 'Encumbrance Account' Account_Type,
- &segment_columns
- mca.creation_date Creation_Date,
- mca.last_update_date Last_Update_Date,
- fu1.user_name Created_By,
- fu2.user_name Last_Updated_By
-from mtl_category_accounts mca,
- mtl_categories_v mc,
- mtl_parameters mp,
- gl_code_combinations gcc,
- hr_organization_information hoi,
- hr_all_organization_units_vl haou,
- hr_all_organization_units_vl haou2,
- gl_ledgers gl,
- fnd_user fu1,
- fnd_user fu2
-where mca.category_id                = mc.category_id
-and mp.organization_id             = mca.organization_id
-and mca.encumbrance_account        = gcc.code_combination_id (+)
-and mca.encumbrance_account is not null
--- ===========================================
--- Organization joins to the HR org model
--- ===========================================
-and hoi.org_information_context    = 'Accounting Information'
-and hoi.organization_id            = mp.organization_id
-and hoi.organization_id            = haou.organization_id -- this gets the organization name
-and haou2.organization_id          = to_number(hoi.org_information3) -- this gets the operating unit id
-and gl.ledger_id                   = to_number(hoi.org_information1) -- get the ledger_id
--- Avoid selecting disabled inventory organizations
-and sysdate < nvl(haou.date_to, sysdate + 1)
-and fu1.user_id                    = mca.created_by
-and fu2.user_id                    = mca.last_updated_by
-and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
-and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
-and 1=1                            -- p_org_code, p_operating_unit, p_ledger
-union all
--- Get the Bridging Account
-select nvl(gl.short_name, gl.name) Ledger,
- haou2.name Operating_Unit,
- mp.organization_code Org_Code,
- haou.name Organization_Name,
- mc.category_concat_segs Category,
- (select ccg.cost_group
-  from cst_cost_groups ccg
-  where ccg.cost_group_id  = mca.cost_group_id) Cost_Group,
- mca.subinventory_code Subinventory,
- (select ml.meaning
-  from mfg_lookups ml,
-  mtl_secondary_inventories msub
-  where msub.secondary_inventory_name = mca.subinventory_code
-  and msub.organization_id          = mca.organization_id
-  and ml.lookup_type                = 'SYS_YES_NO'
-  and ml.lookup_code                = msub.asset_inventory) Inventory_Asset,
- 'Bridging Account' Account_Type,
- &segment_columns
- mca.creation_date Creation_Date,
- mca.last_update_date Last_Update_Date,
- fu1.user_name Created_By,
- fu2.user_name Last_Updated_By
-from mtl_category_accounts mca,
- mtl_categories_v mc,
- mtl_parameters mp,
- gl_code_combinations gcc,
- hr_organization_information hoi,
- hr_all_organization_units_vl haou,
- hr_all_organization_units_vl haou2,
- gl_ledgers gl,
- fnd_user fu1,
- fnd_user fu2
-where mca.category_id                = mc.category_id
-and mp.organization_id             = mca.organization_id
-and mca.bridging_account           = gcc.code_combination_id (+)
-and mca.bridging_account is not null
--- ===========================================
--- Organization joins to the HR org model
--- ===========================================
-and hoi.org_information_context    = 'Accounting Information'
-and hoi.organization_id            = mp.organization_id
-and hoi.organization_id            = haou.organization_id -- this gets the organization name
-and haou2.organization_id          = to_number(hoi.org_information3) -- this gets the operating unit id
-and gl.ledger_id                   = to_number(hoi.org_information1) -- get the ledger_id
--- Avoid selecting disabled inventory organizations
-and sysdate < nvl(haou.date_to, sysdate + 1)
-and fu1.user_id                    = mca.created_by
-and fu2.user_id                    = mca.last_updated_by
-and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
-and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
-and 1=1                            -- p_org_code, p_operating_unit, p_ledger
--- Order by Status, Ledger, Operating_Unit, Org_Code, Category, Subinventory, Account Type
-order by 1,2,3,5,7,9
+select
+nvl(gl.short_name,gl.name) ledger,
+haouv_ou.name operating_unit,
+mp.organization_code org_code,
+haou.name organization_name,
+mcv.category_concat_segs category,
+(select ccg.cost_group from cst_cost_groups ccg where x.cost_group_id=ccg.cost_group_id) cost_group,
+x.subinventory_code subinventory,
+(select xxen_util.yes(decode(msi.asset_inventory,1,'Y')) from mtl_secondary_inventories msi where x.organization_id=msi.organization_id and x.subinventory_code=msi.secondary_inventory_name) inventory_asset,
+decode(x.account_number,1,'Material Account',2,'Material Overhead Account',3,'Resource Account',4,'Outside Processing Account',5,'Overhead Account',6,'Expense Account',7,'Encumbrance Account',8,'Bridging Account') account_type,
+&segment_columns
+x.creation_date,
+x.last_update_date,
+xxen_util.user_name(x.created_by) created_by,
+xxen_util.user_name(x.last_updated_by) last_updated_by
+from
+mtl_parameters mp,
+hr_organization_information hoi,
+hr_all_organization_units_vl haou,
+hr_all_organization_units_vl haouv_ou,
+gl_ledgers gl,
+(
+select
+mca.organization_id,
+mca.category_id,
+mca.cost_group_id,
+mca.subinventory_code,
+mca.creation_date,
+mca.last_update_date,
+mca.created_by,
+mca.last_updated_by,
+rowgen.column_value account_number,
+decode(rowgen.column_value,1,mca.material_account,2,mca.material_overhead_account,3,mca.resource_account,4,mca.outside_processing_account,5,mca.overhead_account,6,mca.expense_account,7,mca.encumbrance_account,8,mca.bridging_account) account_id
+from
+mtl_category_accounts mca,
+table(xxen_util.rowgen(8)) rowgen
+) x,
+mtl_categories_v mcv,
+gl_code_combinations gcc
+where
+1=1 and
+mp.organization_id=hoi.organization_id and
+hoi.org_information_context='Accounting Information' and
+hoi.organization_id=haou.organization_id and
+sysdate<nvl(haou.date_to,sysdate+1) and
+to_number(hoi.org_information3)=haouv_ou.organization_id and
+to_number(hoi.org_information1)=gl.ledger_id and
+mp.organization_id=x.organization_id and
+x.category_id=mcv.category_id and
+(x.account_number<=6 or x.account_id is not null) and
+x.account_id=gcc.code_combination_id(+)
+order by
+ledger,
+operating_unit,
+org_code,
+category,
+subinventory,
+x.account_number

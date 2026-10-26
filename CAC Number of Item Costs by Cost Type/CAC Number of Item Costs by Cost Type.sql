@@ -34,39 +34,47 @@
 -- -- | ======= =========== ============== =========================================
 -- -- | 1.0 04 May 2017 Douglas Volz Initial Coding
 -- -- | 1.1 31 Aug 2019 Douglas Volz Added to and from cost types and org codes
+-- -- | 1.2 23 Oct 2026 Andy Haack Rebuilt to the Blitz Report SQL standards.
 -- -- +=============================================================================+/
 -- Excel Example Output: https://www.enginatics.com/example/cac-number-of-item-costs-by-cost-type/
 -- Library Link: https://www.enginatics.com/reports/cac-number-of-item-costs-by-cost-type/
 -- Run Report: https://demo.enginatics.com/
 
-select count(*) Count,
- mp.organization_code Org_Code,
- cct.cost_type Cost_Type,
- cct.description Description
-from    cst_item_costs cic,
- mtl_parameters mp,
- cst_cost_types cct
-where cic.organization_id   = mp.organization_id
-and cic.cost_type_id      = cct.cost_type_id
-and 1=1
+select
+count(*) count,
+mp.organization_code org_code,
+cct.cost_type,
+cct.description
+from
+mtl_parameters mp,
+cst_item_costs cic,
+cst_cost_types cct
+where
+1=1 and
+mp.organization_id=cic.organization_id and
+cic.cost_type_id=cct.cost_type_id
 group by
- mp.organization_code,
- cct.description,
- cct.cost_type
+mp.organization_code,
+cct.cost_type,
+cct.description
 union all
-select count(*) Count,
- mp.organization_code Org_Code,
- cct.cost_type Cost_Type,
- cct.description Description
-from    cst_item_costs cic,
- mtl_parameters mp,
- cst_cost_types cct
-where cic.organization_id   = mp.organization_id
-and cic.cost_type_id      = cct.cost_type_id
-and 2=2
+select
+count(*) count,
+mp.organization_code org_code,
+cct.cost_type,
+cct.description
+from
+mtl_parameters mp,
+cst_item_costs cic,
+cst_cost_types cct
+where
+2=2 and
+mp.organization_id=cic.organization_id and
+cic.cost_type_id=cct.cost_type_id
 group by
- mp.organization_code,
- cct.description,
- cct.cost_type
--- Order by Cost Type, Organization Code
-order by 2,3
+mp.organization_code,
+cct.cost_type,
+cct.description
+order by
+org_code,
+cost_type

@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-19
+last_modified_at: 2026-10-26
 title: 'ONT Defaulting Rules | Oracle EBS SQL Report'
 description: 'Shows the complete Order Management defaulting rules setup – Oracle EBS Order Management SQL report: free SQL, parameters and tables used.'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Order Management, Enginatics, ONT, Defaulting, Rules, oe_def_condn_elems_v, oe_def_ak_attr_ext_v, oe_def_ak_obj_ext_v'
@@ -31,7 +31,7 @@ Application, Entity, Attribute, Condition, Enabled, Seeded, Source Type
 [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ont-defaulting-rules)
 
 ## Related Reports
-[CST COGS Revenue Matching](/CST%20COGS%20Revenue%20Matching/ "CST COGS Revenue Matching Oracle EBS SQL Report"), [ONT System Parameters](/ONT%20System%20Parameters/ "ONT System Parameters Oracle EBS SQL Report"), [AP Invoices and Lines](/AP%20Invoices%20and%20Lines/ "AP Invoices and Lines Oracle EBS SQL Report"), [CAC Intercompany SO Price List vs. Item Cost Comparison](/CAC%20Intercompany%20SO%20Price%20List%20vs-%20Item%20Cost%20Comparison/ "CAC Intercompany SO Price List vs. Item Cost Comparison Oracle EBS SQL Report"), [QP Pricing Agreements](/QP%20Pricing%20Agreements/ "QP Pricing Agreements Oracle EBS SQL Report"), [QP Customer Pricing Engine Request](/QP%20Customer%20Pricing%20Engine%20Request/ "QP Customer Pricing Engine Request Oracle EBS SQL Report")
+[CST COGS Revenue Matching](/CST%20COGS%20Revenue%20Matching/ "CST COGS Revenue Matching Oracle EBS SQL Report"), [ONT System Parameters](/ONT%20System%20Parameters/ "ONT System Parameters Oracle EBS SQL Report"), [AP Invoices and Lines](/AP%20Invoices%20and%20Lines/ "AP Invoices and Lines Oracle EBS SQL Report"), [QP Pricing Agreements](/QP%20Pricing%20Agreements/ "QP Pricing Agreements Oracle EBS SQL Report"), [ONT Audit History](/ONT%20Audit%20History/ "ONT Audit History Oracle EBS SQL Report"), [QP Customer Pricing Engine Request](/QP%20Customer%20Pricing%20Engine%20Request/ "QP Customer Pricing Engine Request Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/ONT%20Defaulting%20Rules/ONT%20Defaulting%20Rules.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ont-defaulting-rules) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.

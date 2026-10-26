@@ -41,428 +41,236 @@
 -- -- | currency exchange rates.
 -- -- | 1.6 06 Dec 2020 Douglas Volz Added Target Price Percent Difference column.
 -- +=============================================================================+/
+-- -- | 1.7 24 Oct 2026 Andy Haack Rebuilt to the Blitz Report SQL standards, price per primary unit of measure divided by the conversion rate.
 -- Excel Example Output: https://www.enginatics.com/example/cac-item-list-price-vs-item-cost/
 -- Library Link: https://www.enginatics.com/reports/cac-item-list-price-vs-item-cost/
 -- Run Report: https://demo.enginatics.com/
 
-select nvl(gl.short_name, gl.name) Ledger,
--- ===================================================================
--- First get the items which are costing enabled 
--- ===================================================================
- haou2.name Operating_Unit,
- mp.organization_code Org_Code,
- msiv.concatenated_segments Item_Number,
- msiv.description Item_Description,
- muomv.uom_code UOM_Code,
- fcl.meaning Item_Type,
- misv.inventory_item_status_code Item_Status,
- ml1.meaning Make_Buy_Code,
+select
+x.ledger,
+x.operating_unit,
+x.org_code,
+x.item_number,
+x.item_description,
+x.uom_code,
+xxen_util.meaning(x.item_type,'ITEM_TYPE',3) item_type,
+x.item_status,
+xxen_util.meaning(x.planning_make_buy_code,'MTL_PLANNING_MAKE_BUY',700) make_buy_code,
 &category_columns
- fl1.meaning Allow_Costs,
- ml2.meaning Inventory_Asset,
- ml3.meaning Based_on_Rollup,
- cic1.shrinkage_rate Shrinkage_Rate,
- gl.currency_code From_Currency_Code,
- :p_currency_code To_Currency_Code,
- nvl(gdr.conversion_rate,1) Conversion_Rate,
- -- Revision for version 1.3
- -- msiv.market_price Market_Price,
- -- Revision for version 1.2
- round(msiv.market_price * nvl(gdr.conversion_rate,1),5) Market_Price,
- -- Revision for version 1.3
- -- Revision for version 1.1
- -- msiv.list_price_per_unit Master_Target_PO_List_Price,
- -- msiv_mas.list_price_per_unit BU_Target_PO_List_Price,
- -- Revision for version 1.2
- round(msiv.list_price_per_unit * nvl(gdr.conversion_rate,1),5) Master_Target_or_List_Price,
- round(msiv_mas.list_price_per_unit * nvl(gdr.conversion_rate,1),5) BU_Target_or_List_Price,
- round(nvl(cic1.unburdened_cost,0) * nvl(gdr.conversion_rate,1),5) "&Cost_Type1 Unburdened Cost",
- round((nvl(msiv.list_price_per_unit,0) - nvl(cic1.unburdened_cost,0)) * nvl(gdr.conversion_rate,1),5) Target_Price_Difference,
- -- Revision for version 1.6
- case
-   when round((nvl(msiv.list_price_per_unit,0) - nvl(cic1.unburdened_cost,0)),5) = 0 then 0
-   when round((nvl(msiv.list_price_per_unit,0) - nvl(cic1.unburdened_cost,0)),5) = round(nvl(msiv.list_price_per_unit,0),5) then 100
-   else round((nvl(msiv.list_price_per_unit,0) - nvl(cic1.unburdened_cost,0)) / nvl(cic1.unburdened_cost,0) * 100,1)
- end Percent_Difference,
- -- End revision for version 1.6
- po.Last_Purchase_Order,
- po.Last_PO_Line,
- po.Last_PO_Date,
- po.Last_PO_Currency_Code,
- po.Last_PO_Price,
- -- Revision for version 1.3
- -- Need to compare the PO currency to the To Currency
- -- po.Last_PO_Price * nvl(gdr.conversion_rate,1) Converted_Last_PO_Price,
- po.Last_PO_Price *  nvl(gdr_po.conversion_rate,1) Converted_Last_PO_Price,
- -- End revision for version 1.2
- -- End revision for version 1.3
- cct1.cost_type Cost_Type_1,
- round(nvl(cic1.material_cost,0) * nvl(gdr.conversion_rate,1),5) Material_Cost1,
- round(nvl(cic1.material_overhead_cost,0) * nvl(gdr.conversion_rate,1),5) Material_Overhead_Cost1,
- round(nvl(cic1.resource_cost,0) * nvl(gdr.conversion_rate,1),5) Resource_Cost1,
- round(nvl(cic1.outside_processing_cost,0) * nvl(gdr.conversion_rate,1),5) Outside_Processing_Cost1,
- round(nvl(cic1.overhead_cost,0) * nvl(gdr.conversion_rate,1),5) Overhead_Cost1,
-        round(nvl(cic1.item_cost,0) * nvl(gdr.conversion_rate,1),5) Item_Cost1,
- cic1.creation_date Cost_Creation_Date1,
- cic1.last_update_date Last_Cost_Update_Date1,
- cic2.cost_type Cost_Type_2,
- round(nvl(cic2.unburdened_cost,0) * nvl(gdr.conversion_rate,1),5) Unburdened_Cost2,
- round(nvl(cic2.material_cost,0) * nvl(gdr.conversion_rate,1),5) Material_Cost2,
- round(nvl(cic2.material_overhead_cost,0) * nvl(gdr.conversion_rate,1),5) Material_Overhead_Cost2,
- round(nvl(cic2.resource_cost,0) * nvl(gdr.conversion_rate,1),5) Resource_Cost2,
- round(nvl(cic2.outside_processing_cost,0) * nvl(gdr.conversion_rate,1),5) Outside_Processing_Cost2,
- round(nvl(cic2.overhead_cost,0) * nvl(gdr.conversion_rate,1),5) Overhead_Cost2,
-        round(nvl(cic2.item_cost,0) * nvl(gdr.conversion_rate,1),5) Item_Cost2,
- cic2.creation_date Cost_Creation_Date2,
- cic2.last_update_date Last_Cost_Update_Date2
-from    cst_item_costs cic1,
- cst_cost_types cct1,
- (select cic2.cost_type_id,
-  cct2.cost_type,
-  cic2.organization_id,
-  mp.organization_code,
-  cic2.inventory_item_id,
-  cic2.unburdened_cost,
-  cic2.material_cost,
-  cic2.material_overhead_cost,
-  cic2.resource_cost,
-  cic2.outside_processing_cost,
-  cic2.overhead_cost,
-  cic2.item_cost,
-  cic2.creation_date,
-  cic2.last_update_date,
-  -- Revision for version 1.2
-  gl.currency_code
-  from cst_item_costs cic2,  -- target item costs
-  cst_cost_types cct2,  -- target cost type
-  mtl_system_items_vl msiv,
-  mtl_parameters mp,
-  -- Revision for version 1.2
-  hr_organization_information hoi,
-  hr_all_organization_units_vl haou, -- inv_organization_id
-  hr_all_organization_units_vl haou2, -- operating unit
-  gl_ledgers gl
-  -- End revision for version 1.2
-  where    cct2.cost_type_id      = cic2.cost_type_id
-  and    mp.organization_id     = cic2.organization_id
-  and    msiv.inventory_item_id = cic2.inventory_item_id
-  and    msiv.organization_id   = cic2.organization_id
-  -- Revision for version 1.2
-  and    hoi.org_information_context     = 'Accounting Information'
-  and    hoi.organization_id             = mp.organization_id
-  and    hoi.organization_id             = haou.organization_id   -- this gets the organization name
-  and    haou2.organization_id           = to_number(hoi.org_information3) -- this gets the operating unit id
-  and    gl.ledger_id                    = to_number(hoi.org_information1) -- get the ledger_id
-  -- End revision for version 1.2
-  -- Revision for version 1.2
-  and    gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
-and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
-and 1=1                             -- p_operating_unit, p_ledger
-  and    5=5                             -- p_cost_type2
-  and    6=6                             -- p_item_number
-  and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-  and    7=7                             -- p_org_code
- ) cic2,
-(select gdr.* from gl_daily_rates gdr, gl_daily_conversion_types gdct where gdr.to_currency=:p_currency_code and gdr.conversion_date=:conversion_date and gdct.user_conversion_type=:user_conversion_type and gdct.conversion_type=gdr.conversion_type) gdr,
-(select gdr.* from gl_daily_rates gdr, gl_daily_conversion_types gdct where gdr.to_currency=:p_currency_code and gdr.conversion_date=:conversion_date and gdct.user_conversion_type=:user_conversion_type and gdct.conversion_type=gdr.conversion_type) gdr_po, -- Currency Exchange Rates to use for the purchase orders
- -- Now get the last PO Price information
- (
-  select x.*,
-  round(x.unit_price * mucv.conversion_rate, 6) last_po_price
-  from
-  (
-   select distinct
-   pla.item_id inventory_item_id,
-   plla.ship_to_organization_id organization_id,
-   max(pha.segment1) keep (dense_rank last order by plla.po_date,pda.po_distribution_id) over (partition by plla.ship_to_organization_id, pla.item_id) last_purchase_order,
-   max(pla.line_num) keep (dense_rank last order by plla.po_date,pda.po_distribution_id) over (partition by plla.ship_to_organization_id, pla.item_id) last_po_line,
-   max(plla.po_date) over (partition by plla.ship_to_organization_id, pla.item_id) last_po_date,
-   max(pha.currency_code) keep (dense_rank last order by plla.po_date,pda.po_distribution_id) over (partition by plla.ship_to_organization_id, pla.item_id) last_po_currency_code,
-   max(nvl(plla.price_override,pla.unit_price)) keep (dense_rank last order by plla.po_date,pda.po_distribution_id) over (partition by plla.ship_to_organization_id, pla.item_id) unit_price,
-   max(pla.unit_meas_lookup_code) keep (dense_rank last order by plla.po_date,pda.po_distribution_id) over (partition by plla.ship_to_organization_id, pla.item_id) unit_meas_lookup_code
-   from po_headers_all pha,
-   po_lines_all pla,
-   (select coalesce(plla.promised_date,plla.need_by_date,plla.last_update_date) po_date, plla.* from po_line_locations_all plla) plla,
-   po_distributions_all pda
-   where 11=11                        -- p_item_number, p_org_code
-   and pla.item_id is not null
-   and plla.ship_to_organization_id is not null
-   and pha.authorization_status = 'APPROVED'
-   -- Revision for version 1.3
-   and pla.closed_code not in ('CANCELLED', 'INCOMPLETE', 'ON HOLD', 'REJECTED', 'RETURNED')
-   and pha.po_header_id = pla.po_header_id
-   and pla.po_line_id = plla.po_line_id
-   and plla.line_location_id = pda.line_location_id
-   and pda.destination_type_code = 'INVENTORY'
-  ) x,
-   mtl_uom_conversions_view mucv
-  where x.unit_meas_lookup_code = mucv.unit_of_measure(+)
-  and x.inventory_item_id = mucv.inventory_item_id(+)
-  and x.organization_id = mucv.organization_id(+)
- ) po,
- -- End revision for version 1.2
- mtl_system_items_vl msiv,
- mtl_item_status_vl misv,
- mtl_units_of_measure_vl muomv,
- -- Revision for version 1.1
- mtl_system_items_vl msiv_mas,
- mtl_parameters mp,
- mfg_lookups ml1, -- planning make/buy code, MTL_PLANNING_MAKE_BUY
- mfg_lookups ml2, -- inventory_asset_flag, SYS_YES_NO
- mfg_lookups ml3, -- based on rollup, CST_BONROLLUP_VAL
- fnd_lookups fl1, -- allow costs, YES_NO
- fnd_common_lookups fcl,
- hr_organization_information hoi,
- hr_all_organization_units_vl haou,  -- inv_organization_id
- hr_all_organization_units_vl haou2, -- operating unit
- gl_ledgers gl
- -- ===================================================================
- -- Item master, organization and item master to cost joins
- -- ===================================================================
-where mp.organization_id              = msiv.organization_id
-and msiv.inventory_item_id          = cic1.inventory_item_id
-and msiv.organization_id            = cic1.organization_id
--- Revision for version 1.1
-and msiv_mas.inventory_item_id      = msiv.inventory_item_id
-and msiv_mas.organization_id        = msiv.organization_id
--- End revision for version 1.1
--- Revision for version 1.2
-and po.inventory_item_id (+)        = msiv.inventory_item_id
-and po.organization_id (+)          = msiv.organization_id
--- End for revision for version 1.2
-and cic1.inventory_item_id (+)      = cic2.inventory_item_id
-and cic1.organization_id (+)        = cic2.organization_id
-and msiv.primary_uom_code           = muomv.uom_code
-and msiv.inventory_item_status_code = misv.inventory_item_status_code
-and cic1.cost_type_id               = cct1.cost_type_id
-and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
-and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
-and 1=1                          -- p_operating_unit, p_ledger
-and 4=4                          -- p_cost_type1
-and 6=6                          -- p_item_number
-and 7=7                          -- p_org_code
--- ===================================================================
--- Joins for currency translation rate
--- ===================================================================
--- Revision for version 1.2
--- Translate for inventory for the To Currency
-and gdr.from_currency   (+)         = gl.currency_code -- based on the inventory organization
--- Revision for version 1.3
--- Translate for the purhase orders for the To Currency
-and gdr_po.from_currency (+)        = po.Last_PO_Currency_Code -- based on the purchase order
--- End revision for version 1.3
--- ===================================================================
--- Don't report the unused inventory organizations
--- ===================================================================
-and mp.organization_id             <> mp.master_organization_id    -- remove the global master org
--- ===================================================================
--- Lookup codes
--- ===================================================================
-and ml1.lookup_type                 = 'MTL_PLANNING_MAKE_BUY'
-and ml1.lookup_code                 = msiv.planning_make_buy_code
-and ml2.lookup_type                 = 'SYS_YES_NO'
-and ml2.lookup_code                 = to_char(cic1.inventory_asset_flag)
-and ml3.lookup_type                 = 'CST_BONROLLUP_VAL'
-and ml3.lookup_code                 = cic1.based_on_rollup_flag
-and fl1.lookup_type                 = 'YES_NO'
-and fl1.lookup_code                 = msiv.costing_enabled_flag
-and fcl.lookup_type (+)             = 'ITEM_TYPE'
-and fcl.lookup_code (+)             = msiv.item_type
--- ===================================================================
--- Using the base tables to avoid using org_organization_definitions
--- and hr_operating_units
--- ===================================================================
-and hoi.org_information_context     = 'Accounting Information'
-and hoi.organization_id             = mp.organization_id
-and hoi.organization_id             = haou.organization_id   -- this gets the organization name
-and haou2.organization_id           = to_number(hoi.org_information3) -- this gets the operating unit id
-and gl.ledger_id                    = to_number(hoi.org_information1) -- get the ledger_id
--- avoid selecting disabled inventory organizations
-and sysdate < nvl(haou.date_to, sysdate + 1)
-union all
--- ===================================================================
--- Now get the items which are not costing enabled 
--- ===================================================================
-select nvl(gl.short_name, gl.name) Ledger,
- haou2.name Operating_Unit,
- mp.organization_code Org_Code,
- msiv.concatenated_segments Item_Number,
- msiv.description Item_Description,
- muomv.uom_code UOM_Code,
- fcl.meaning Item_Type,
- misv.inventory_item_status_code Item_Status,
- ml1.meaning Make_Buy_Code,
-&category_columns
- fl1.meaning Allow_Costs,
- fl2.meaning Inventory_Asset,
- 'N/A' Based_on_Rollup,
- null Shrinkage_Rate,
- gl.currency_code Currency_Code,
- :p_currency_code To_Currency_Code,
- nvl(gdr.conversion_rate,1) Conversion_Rate,
- -- Revision for version 1.3
- -- msiv.market_price Market_Price,
- -- Revision for version 1.2
- round(msiv.market_price * nvl(gdr.conversion_rate,1),5) Market_Price,
- -- Revision for version 1.3
- -- Revision for version 1.1
- -- msiv.list_price_per_unit Master_Target_PO_List_Price,
- -- msiv.list_price_per_unit BU_Target_PO_List_Price,
- -- Revision for version 1.2
- round(msiv.list_price_per_unit * nvl(gdr.conversion_rate,1),5) Master_Target_List_Price,
- round(msiv_mas.list_price_per_unit * nvl(gdr.conversion_rate,1),5) BU_Target_List_Price,
- null "&Cost_Type1 Unburdened Cost",
- round((nvl(msiv.list_price_per_unit,0) - 0 ),5) Target_Price_Difference,
- -- Revision for version 1.6
- case
-   when round((nvl(msiv.list_price_per_unit,0) - 0),5) = 0 then 0
-   when round((nvl(msiv.list_price_per_unit,0) - 0),5) = round(nvl(msiv.list_price_per_unit,0),5) then 100
-   else 0
- end Percent_Difference,
- -- End revision for version 1.6
- po.Last_Purchase_Order,
- po.Last_PO_Line,
- po.Last_PO_Date,
- po.Last_PO_Currency_Code,
- po.Last_PO_Price,
- -- Revision for version 1.3
- -- Need to compare the PO currency to the To Currency
- -- po.Last_PO_Price * nvl(gdr.conversion_rate,1) Converted_Last_PO_Price_USD,
- po.Last_PO_Price * decode(po.Last_PO_Currency_Code,:p_currency_code, 1, nvl(gdr.conversion_rate,1)) Converted_Last_PO_Price_USD,
- -- End revision for version 1.3
- -- End revision for version 1.2
- null Cost_Type_1,
- null Unburdened_Cost1,
- null Material_Cost1,
- null Material_Overhead_Cost1,
- null Resource_Cost1,
- null Outside_Processing_Cost1,
- null Overhead_Cost1,
- null Item_Cost1,
- null Cost_Creation_Date1,
- null Last_Cost_Update_Date1,
- null Cost_Type_2,
- null Material_Cost2,
- null Material_Overhead_Cost2,
- null Resource_Cost2,
- null Outside_Processing_Cost2,
- null Overhead_Cost2,
- null Item_Cost2,
- null Cost_Creation_Date2,
- null Last_Cost_Update_Date2
+xxen_util.yes(x.costing_enabled_flag) allow_costs,
+xxen_util.yes(x.inventory_asset_flag) inventory_asset,
+x.based_on_rollup,
+x.shrinkage_rate,
+x.from_currency_code,
+:p_currency_code to_currency_code,
+x.conversion_rate,
+round(x.market_price*x.conversion_rate,5) market_price,
+round(x.master_list_price*x.conversion_rate,5) master_target_or_list_price,
+round(x.list_price*x.conversion_rate,5) bu_target_or_list_price,
+round(x.unburdened_cost1*x.conversion_rate,5) "&Cost_Type1 Unburdened Cost",
+round((nvl(x.list_price,0)-nvl(x.unburdened_cost1,0))*x.conversion_rate,5) target_price_difference,
+case
+when round(nvl(x.list_price,0)-nvl(x.unburdened_cost1,0),5)=0 then 0
+when round(nvl(x.unburdened_cost1,0),5)=0 then 100
+else round((nvl(x.list_price,0)-nvl(x.unburdened_cost1,0))/x.unburdened_cost1*100,1)
+end percent_difference,
+x.last_purchase_order,
+x.last_po_line,
+x.last_po_date,
+x.last_po_currency_code,
+x.last_po_price,
+x.last_po_price*x.po_conversion_rate converted_last_po_price,
+x.cost_type_1,
+round(x.material_cost1*x.conversion_rate,5) material_cost1,
+round(x.material_overhead_cost1*x.conversion_rate,5) material_overhead_cost1,
+round(x.resource_cost1*x.conversion_rate,5) resource_cost1,
+round(x.outside_processing_cost1*x.conversion_rate,5) outside_processing_cost1,
+round(x.overhead_cost1*x.conversion_rate,5) overhead_cost1,
+round(x.item_cost1*x.conversion_rate,5) item_cost1,
+x.cost_creation_date1,
+x.last_cost_update_date1,
+x.cost_type_2,
+round(x.unburdened_cost2*x.conversion_rate,5) unburdened_cost2,
+round(x.material_cost2*x.conversion_rate,5) material_cost2,
+round(x.material_overhead_cost2*x.conversion_rate,5) material_overhead_cost2,
+round(x.resource_cost2*x.conversion_rate,5) resource_cost2,
+round(x.outside_processing_cost2*x.conversion_rate,5) outside_processing_cost2,
+round(x.overhead_cost2*x.conversion_rate,5) overhead_cost2,
+round(x.item_cost2*x.conversion_rate,5) item_cost2,
+x.cost_creation_date2,
+x.last_cost_update_date2
 from
-(select gdr.* from gl_daily_rates gdr, gl_daily_conversion_types gdct where gdr.to_currency=:p_currency_code and gdr.conversion_date=:conversion_date and gdct.user_conversion_type=:user_conversion_type and gdct.conversion_type=gdr.conversion_type) gdr,
-(select gdr.* from gl_daily_rates gdr, gl_daily_conversion_types gdct where gdr.to_currency=:p_currency_code and gdr.conversion_date=:conversion_date and gdct.user_conversion_type=:user_conversion_type and gdct.conversion_type=gdr.conversion_type) gdr_po,
- -- Now get the last PO Price information
- (
-  select x.*,
-  round(x.unit_price * mucv.conversion_rate, 6) last_po_price
-  from
-  (
-   select distinct
-   pla.item_id inventory_item_id,
-   plla.ship_to_organization_id organization_id,
-   max(pha.segment1) keep (dense_rank last order by plla.po_date,pda.po_distribution_id) over (partition by plla.ship_to_organization_id, pla.item_id) last_purchase_order,
-   max(pla.line_num) keep (dense_rank last order by plla.po_date,pda.po_distribution_id) over (partition by plla.ship_to_organization_id, pla.item_id) last_po_line,
-   max(plla.po_date) over (partition by plla.ship_to_organization_id, pla.item_id) last_po_date,
-   max(pha.currency_code) keep (dense_rank last order by plla.po_date,pda.po_distribution_id) over (partition by plla.ship_to_organization_id, pla.item_id) last_po_currency_code,
-   max(nvl(plla.price_override,pla.unit_price)) keep (dense_rank last order by plla.po_date,pda.po_distribution_id) over (partition by plla.ship_to_organization_id, pla.item_id) unit_price,
-   max(pla.unit_meas_lookup_code) keep (dense_rank last order by plla.po_date,pda.po_distribution_id) over (partition by plla.ship_to_organization_id, pla.item_id) unit_meas_lookup_code
-   from po_headers_all pha,
-   po_lines_all pla,
-   (select coalesce(plla.promised_date,plla.need_by_date,plla.last_update_date) po_date, plla.* from po_line_locations_all plla) plla,
-   po_distributions_all pda
-   where 11=11                        -- p_item_number, p_org_code
-   and pla.item_id is not null
-   and plla.ship_to_organization_id is not null
-   and pha.authorization_status = 'APPROVED'
-   -- Revision for version 1.3
-   and pla.closed_code not in ('CANCELLED', 'INCOMPLETE', 'ON HOLD', 'REJECTED', 'RETURNED')
-   and pha.po_header_id = pla.po_header_id
-   and pla.po_line_id = plla.po_line_id
-   and plla.line_location_id = pda.line_location_id
-   and pda.destination_type_code = 'INVENTORY'
-  ) x,
-   mtl_uom_conversions_view mucv
-  where x.unit_meas_lookup_code = mucv.unit_of_measure(+)
-  and x.inventory_item_id = mucv.inventory_item_id(+)
-  and x.organization_id = mucv.organization_id(+)
- ) po,
- -- End revision for version 1.2
- mtl_system_items_vl msiv,
- -- Revision for version 1.1
- mtl_system_items_vl msiv_mas,
- mtl_item_status_vl misv,
- mtl_units_of_measure_vl muomv,
- mtl_parameters mp,
- mfg_lookups ml1, -- planning make/buy code, MTL_PLANNING_MAKE_BUY
- fnd_lookups fl1, -- inventory_asset_flag, YES_NO
- fnd_lookups fl2, -- allow costs, YES_NO
- fnd_common_lookups fcl,
- hr_organization_information hoi,
- hr_all_organization_units_vl haou,  -- inv_organization_id
- hr_all_organization_units_vl haou2, -- operating unit
- gl_ledgers gl
- -- ===================================================================
- -- Item master, organization and item master to cost joins
- -- ===================================================================
-where mp.organization_id              = msiv.organization_id
-and msiv.primary_uom_code           = muomv.uom_code
-and msiv.inventory_item_status_code = misv.inventory_item_status_code
--- Revision for version 1.1
-and msiv_mas.inventory_item_id      = msiv.inventory_item_id
-and msiv_mas.organization_id        = msiv.organization_id
--- End revision for version 1.1
--- Revision for version 1.2
-and po.inventory_item_id (+)        = msiv.inventory_item_id
-and po.organization_id (+)          = msiv.organization_id
--- End for revision for version 1.2
-and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
-and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
-and 1=1                          -- p_operating_unit, p_ledger
-and 6=6                          -- p_item_number
-and 7=7                          -- p_org_code
-and 10=10                        -- Include or exclude uncosted items
--- ===================================================================
--- Find items where the item has no cost information
--- ===================================================================
-and msiv.costing_enabled_flag       = 'N'
--- ===================================================================
--- Joins for currency translation rate
--- ===================================================================
--- Revision for version 1.2
--- Translate for inventory for the To Currency
--- and    gdr.to_currency                 = cic2.currency_code
-and gdr.from_currency (+)           = gl.currency_code -- based on the inventory organization
--- Revision for version 1.3
--- Translate for the purhase orders for the To Currency
-and gdr_po.from_currency (+)        = po.Last_PO_Currency_Code -- based on the purchase order
--- End revision for version 1.3
--- ===================================================================
--- Don't report the unused inventory organizations
--- ===================================================================
-and mp.organization_id             <> mp.master_organization_id    -- remove the global master org
--- ===================================================================
--- Lookup codes
--- ===================================================================
-and ml1.lookup_type                 = 'MTL_PLANNING_MAKE_BUY'
-and ml1.lookup_code                 = msiv.planning_make_buy_code
-and fl1.lookup_type                 = 'YES_NO'
-and fl1.lookup_code                 = msiv.costing_enabled_flag
-and fl2.lookup_type                 = 'YES_NO'
-and fl2.lookup_code                 = msiv.inventory_asset_flag
-and fcl.lookup_type (+)             = 'ITEM_TYPE'
-and fcl.lookup_code (+)             = msiv.item_type
--- ===================================================================
--- Using the base tables to avoid using org_organization_definitions
--- and hr_operating_units
--- ===================================================================
-and hoi.org_information_context     = 'Accounting Information'
-and hoi.organization_id             = mp.organization_id
-and hoi.organization_id             = haou.organization_id   -- this gets the organization name
-and haou2.organization_id           = to_number(hoi.org_information3) -- this gets the operating unit id
-and gl.ledger_id                    = to_number(hoi.org_information1) -- get the ledger_id
--- avoid selecting disabled inventory organizations
-and sysdate < nvl(haou.date_to, sysdate + 1)
--- order by Ledger, Operating_Unit, Org_Code, Item and Cost_Type
-order by 1,2,3,4,5
+(
+select
+nvl(gl.short_name,gl.name) ledger,
+haouv_ou.name operating_unit,
+mp.organization_code org_code,
+msiv.organization_id,
+msiv.inventory_item_id,
+msiv.concatenated_segments item_number,
+msiv.description item_description,
+msiv.primary_uom_code uom_code,
+msiv.item_type,
+msiv.inventory_item_status_code item_status,
+msiv.planning_make_buy_code,
+msiv.costing_enabled_flag,
+decode(cic1.inventory_item_id,null,msiv.inventory_asset_flag,decode(cic1.inventory_asset_flag,1,'Y')) inventory_asset_flag,
+decode(cic1.inventory_item_id,null,'N/A',xxen_util.meaning(cic1.based_on_rollup_flag,'CST_BONROLLUP_VAL',700)) based_on_rollup,
+cic1.shrinkage_rate,
+gl.currency_code from_currency_code,
+decode(gl.currency_code,:p_currency_code,1,(select gdr.conversion_rate from gl_daily_rates gdr, gl_daily_conversion_types gdct where gl.currency_code=gdr.from_currency and gdr.to_currency=:p_currency_code and gdr.conversion_date=:conversion_date and gdr.conversion_type=gdct.conversion_type and gdct.user_conversion_type=:user_conversion_type)) conversion_rate,
+msiv.market_price,
+msib_mas.list_price_per_unit master_list_price,
+msiv.list_price_per_unit list_price,
+po.last_purchase_order,
+po.last_po_line,
+po.last_po_date,
+po.last_po_currency_code,
+po.last_po_price,
+decode(po.last_po_currency_code,:p_currency_code,1,(select gdr.conversion_rate from gl_daily_rates gdr, gl_daily_conversion_types gdct where po.last_po_currency_code=gdr.from_currency and gdr.to_currency=:p_currency_code and gdr.conversion_date=:conversion_date and gdr.conversion_type=gdct.conversion_type and gdct.user_conversion_type=:user_conversion_type)) po_conversion_rate,
+cic1.cost_type cost_type_1,
+cic1.unburdened_cost unburdened_cost1,
+cic1.material_cost material_cost1,
+cic1.material_overhead_cost material_overhead_cost1,
+cic1.resource_cost resource_cost1,
+cic1.outside_processing_cost outside_processing_cost1,
+cic1.overhead_cost overhead_cost1,
+cic1.item_cost item_cost1,
+cic1.creation_date cost_creation_date1,
+cic1.last_update_date last_cost_update_date1,
+cic2.cost_type cost_type_2,
+cic2.unburdened_cost unburdened_cost2,
+cic2.material_cost material_cost2,
+cic2.material_overhead_cost material_overhead_cost2,
+cic2.resource_cost resource_cost2,
+cic2.outside_processing_cost outside_processing_cost2,
+cic2.overhead_cost overhead_cost2,
+cic2.item_cost item_cost2,
+cic2.creation_date cost_creation_date2,
+cic2.last_update_date last_cost_update_date2
+from
+mtl_parameters mp,
+hr_organization_information hoi,
+hr_all_organization_units haou,
+hr_all_organization_units_vl haouv_ou,
+gl_ledgers gl,
+mtl_system_items_vl msiv,
+mtl_system_items_b msib_mas,
+(
+select
+cic.organization_id,
+cic.inventory_item_id,
+cct1.cost_type,
+cic.inventory_asset_flag,
+cic.based_on_rollup_flag,
+cic.shrinkage_rate,
+nvl(cic.unburdened_cost,0) unburdened_cost,
+nvl(cic.material_cost,0) material_cost,
+nvl(cic.material_overhead_cost,0) material_overhead_cost,
+nvl(cic.resource_cost,0) resource_cost,
+nvl(cic.outside_processing_cost,0) outside_processing_cost,
+nvl(cic.overhead_cost,0) overhead_cost,
+nvl(cic.item_cost,0) item_cost,
+cic.creation_date,
+cic.last_update_date
+from
+cst_item_costs cic,
+cst_cost_types cct1
+where
+4=4 and
+cic.cost_type_id=cct1.cost_type_id
+) cic1,
+(
+select
+cic.organization_id,
+cic.inventory_item_id,
+cct2.cost_type,
+nvl(cic.unburdened_cost,0) unburdened_cost,
+nvl(cic.material_cost,0) material_cost,
+nvl(cic.material_overhead_cost,0) material_overhead_cost,
+nvl(cic.resource_cost,0) resource_cost,
+nvl(cic.outside_processing_cost,0) outside_processing_cost,
+nvl(cic.overhead_cost,0) overhead_cost,
+nvl(cic.item_cost,0) item_cost,
+cic.creation_date,
+cic.last_update_date
+from
+cst_item_costs cic,
+cst_cost_types cct2
+where
+5=5 and
+cic.cost_type_id=cct2.cost_type_id
+) cic2,
+(
+select
+y.organization_id,
+y.inventory_item_id,
+y.last_purchase_order,
+y.last_po_line,
+y.last_po_date,
+y.last_po_currency_code,
+round(y.unit_price/mucv.conversion_rate,6) last_po_price
+from
+(
+select
+plla.ship_to_organization_id organization_id,
+pla.item_id inventory_item_id,
+pha.segment1 last_purchase_order,
+pla.line_num last_po_line,
+coalesce(plla.promised_date,plla.need_by_date,plla.last_update_date) last_po_date,
+pha.currency_code last_po_currency_code,
+nvl(plla.price_override,pla.unit_price) unit_price,
+pla.unit_meas_lookup_code,
+row_number() over (partition by plla.ship_to_organization_id,pla.item_id order by coalesce(plla.promised_date,plla.need_by_date,plla.last_update_date) desc,pda.po_distribution_id desc) rn
+from
+po_headers_all pha,
+po_lines_all pla,
+po_line_locations_all plla,
+po_distributions_all pda
+where
+11=11 and
+pha.authorization_status='APPROVED' and
+pha.po_header_id=pla.po_header_id and
+pla.item_id is not null and
+pla.closed_code not in ('CANCELLED','INCOMPLETE','ON HOLD','REJECTED','RETURNED') and
+pla.po_line_id=plla.po_line_id and
+plla.ship_to_organization_id is not null and
+plla.line_location_id=pda.line_location_id and
+pda.destination_type_code='INVENTORY'
+) y,
+mtl_uom_conversions_view mucv
+where
+y.rn=1 and
+y.organization_id=mucv.organization_id(+) and
+y.inventory_item_id=mucv.inventory_item_id(+) and
+y.unit_meas_lookup_code=mucv.unit_of_measure(+)
+) po
+where
+1=1 and
+6=6 and
+7=7 and
+mp.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
+mp.organization_id<>mp.master_organization_id and
+mp.organization_id=hoi.organization_id and
+hoi.org_information_context='Accounting Information' and
+hoi.organization_id=haou.organization_id and
+sysdate<nvl(haou.date_to,sysdate+1) and
+to_number(hoi.org_information3)=haouv_ou.organization_id and
+to_number(hoi.org_information1)=gl.ledger_id and
+mp.organization_id=msiv.organization_id and
+mp.master_organization_id=msib_mas.organization_id and
+msiv.inventory_item_id=msib_mas.inventory_item_id and
+msiv.organization_id=cic1.organization_id(+) and
+msiv.inventory_item_id=cic1.inventory_item_id(+) and
+(cic1.inventory_item_id is not null or msiv.costing_enabled_flag='N' and 10=10) and
+msiv.organization_id=cic2.organization_id(+) and
+msiv.inventory_item_id=cic2.inventory_item_id(+) and
+msiv.organization_id=po.organization_id(+) and
+msiv.inventory_item_id=po.inventory_item_id(+)
+) x
+order by
+x.ledger,
+x.operating_unit,
+x.org_code,
+x.item_number,
+x.item_description

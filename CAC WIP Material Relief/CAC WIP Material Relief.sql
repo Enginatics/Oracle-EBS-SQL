@@ -52,214 +52,143 @@
 -- -- | wro.componentyieldfactor to nvl(wro.componentyieldfactor,1).
 -- -- | 1.14 23 Jun 2024 Douglas Volz Remove tabs, reinstall parameters and inventory org access controls.
 -- -- | Added category set parameters.
+-- -- | 1.15 24 Oct 2026 Andy Haack Rebuilt to the Blitz Report SQL standards.
 -- -- +=============================================================================+/
 -- Excel Example Output: https://www.enginatics.com/example/cac-wip-material-relief/
 -- Library Link: https://www.enginatics.com/reports/cac-wip-material-relief/
 -- Run Report: https://demo.enginatics.com/
 
-select  gl.name Ledger,
-        haouv2.name Operating_Unit,
-        mp.organization_code Org_Code,
-        oap.period_name,
-        &company_segment
-        &segment_columns
-        wac.class_code WIP_Class,
-        xxen_util.meaning(wac.class_type,'WIP_CLASS_TYPE',700) Class_Type,
-        we.wip_entity_name WIP_Job,
-        xxen_util.meaning(wdj.status_type,'WIP_JOB_STATUS',700) job_status,
-        wdj.date_completed,
-        wdj.date_closed,
-        wdj.start_quantity,
-        wdj.quantity_completed Assembly_Quantity_Completed,
-        wdj.quantity_scrapped assembly_Quantity_Scrapped,
-        wdj.quantity_completed + wdj.quantity_scrapped Total_assembly_Quantity,
-        msiv.concatenated_segments Assembly_Number,
-        msiv.description Assembly_Description,
--- Revision for version 1.14
+select
+y.ledger,
+y.operating_unit,
+y.org_code,
+y.period_name,
+&company_segment
+&segment_columns
+y.wip_class,
+y.class_type,
+y.wip_job,
+y.job_status,
+y.date_completed,
+y.date_closed,
+y.start_quantity,
+y.assembly_quantity_completed,
+y.assembly_quantity_scrapped,
+y.total_assembly_quantity,
+y.assembly_number,
+y.assembly_description,
 &category_columns
-        msiv2.concatenated_segments Component_Number,
-        msiv2.description Component_Description,
-        gl.currency_code Currency_Code,
-        sum(cic.item_cost) Gross_Item_Cost,
-        nvl(cicd.item_cost,0) PII_Item_Cost,
-        -- Revision for version 1.13
-        -- msi2.primary_uom_code UOM_Code,
-        muomv.uom_code UOM_Code,
-        -- +=====================================================
-        -- need to include component yield in the icp calculation
-        -- +=====================================================
-        -- a basis of 2 indicates the component is issued per lot not per assembly, and the component yield factor is ignored
-        sum((decode(wro.basis_type, 
-                    null, nvl(wro.quantity_per_assembly,0) * 1/nvl(wro.component_yield_factor,1),
-                    1,    nvl(wro.quantity_per_assembly,0) * 1/nvl(wro.component_yield_factor,1),
-                    2,    nvl(wro.required_quantity,1),
-                          nvl(wro.quantity_per_assembly,0) * 1/nvl(wro.component_yield_factor,1)
-                   )
-            )
-           ) Quantity_Per_Assembly,
-        -- a basis of 2 indicates the component is issued per lot not per assembly, and the component yield factor is ignored
-        sum((decode(wro.basis_type, 
-                    null, nvl(wro.quantity_per_assembly,0) * 1/nvl(wro.component_yield_factor,1) * 
-                         (nvl(wdj.quantity_completed,0) + nvl(wdj.quantity_scrapped,0)),
-                    1,    nvl(wro.quantity_per_assembly,0) * 1/nvl(wro.component_yield_factor,1) *
-                         (nvl(wdj.quantity_completed,0) + nvl(wdj.quantity_scrapped,0)),
-                    2,    nvl(wro.required_quantity,1),
-                          nvl(wro.quantity_per_assembly,0) * 1/nvl(wro.component_yield_factor,1) *
-                         (nvl(wdj.quantity_completed,0) + nvl(wdj.quantity_scrapped,0))
-                   )
-            )
-           ) Total_Required_Quantity,
-        sum(nvl(wro.quantity_issued,0)) Quantity_Issued,
-        -- need to include component yield in the calculation
-        sum((nvl(wro.quantity_issued,0) - 
-                    -- a basis of 2 indicates the component is issued per lot not per assembly, and the component yield factor is ignored
-                    decode(wro.basis_type,
-                            null, nvl(wro.quantity_per_assembly,0) * 1/nvl(wro.component_yield_factor,1) * 
-                                 (nvl(wdj.quantity_completed,0) + nvl(wdj.quantity_scrapped,0)),
-                            1,    nvl(wro.quantity_per_assembly,0) * 1/nvl(wro.component_yield_factor,1) *
-                                 (nvl(wdj.quantity_completed,0) + nvl(wdj.quantity_scrapped,0)),
-                            2,    nvl(wro.required_quantity,1),
-                                  nvl(wro.quantity_per_assembly,0) * 1/nvl(wro.component_yield_factor,1) *
-                                 (nvl(wdj.quantity_completed,0) + nvl(wdj.quantity_scrapped,0))
-                          )
-            )
-           ) Quantity_Left_in_WIP,
-        sum((nvl(wro.quantity_issued,0) - 
-                    -- a basis of 2 indicates the component is issued per lot not per assembly, and the component yield factor is ignored
-                    decode(wro.basis_type, 
-                            null, nvl(wro.quantity_per_assembly,0) * 1/nvl(wro.component_yield_factor,1) * 
-                                 (nvl(wdj.quantity_completed,0) + nvl(wdj.quantity_scrapped,0)),
-                            1,    nvl(wro.quantity_per_assembly,0) * 1/nvl(wro.component_yield_factor,1) *
-                                 (nvl(wdj.quantity_completed,0) + nvl(wdj.quantity_scrapped,0)),
-                            2,    nvl(wro.required_quantity,1),
-                                  nvl(wro.quantity_per_assembly,0) * 1/nvl(wro.component_yield_factor,1) *
-                                 (nvl(wdj.quantity_completed,0) + nvl(wdj.quantity_scrapped,0))
-                          )
-            )
-           ) * sum(nvl(cic.item_cost,0)) Gross_Material_Usage_Var,
-        sum((nvl(wro.quantity_issued,0) - 
-                    -- a basis of 2 indicates the component is issued per lot not per assembly, and the component yield factor is ignored
-                    decode(wro.basis_type, 
-                            null, nvl(wro.quantity_per_assembly,0) * 1/nvl(wro.component_yield_factor,1) * 
-                                 (nvl(wdj.quantity_completed,0) + nvl(wdj.quantity_scrapped,0)),
-                            1,    nvl(wro.quantity_per_assembly,0) * 1/nvl(wro.component_yield_factor,1) *
-                                 (nvl(wdj.quantity_completed,0) + nvl(wdj.quantity_scrapped,0)),
-                            2,    nvl(wro.required_quantity,1),
-                                  nvl(wro.quantity_per_assembly,0) * 1/nvl(wro.component_yield_factor,1) *
-                                 (nvl(wdj.quantity_completed,0) + nvl(wdj.quantity_scrapped,0))
-                         )
-            )
-           ) * nvl(cicd.item_cost,0) PII_in_WIP,
-        sum((nvl(wro.quantity_issued,0) - 
-                    -- a basis of 2 indicates the component is issued per lot not per assembly, and the component yield factor is ignored
-                    decode(wro.basis_type, 
-                            null, nvl(wro.quantity_per_assembly,0) * 1/nvl(wro.component_yield_factor,1) * 
-                                 (nvl(wdj.quantity_completed,0) + nvl(wdj.quantity_scrapped,0)),
-                            1,    nvl(wro.quantity_per_assembly,0) * 1/nvl(wro.component_yield_factor,1) *
-                                 (nvl(wdj.quantity_completed,0) + nvl(wdj.quantity_scrapped,0)),
-                            2,    nvl(wro.required_quantity,1),
-                                  nvl(wro.quantity_per_assembly,0) * 1/nvl(wro.component_yield_factor,1) *
-                                 (nvl(wdj.quantity_completed,0) + nvl(wdj.quantity_scrapped,0))
-                          )
-            )
-           ) * (sum(nvl(cic.item_cost,0)) + nvl(cicd.item_cost,0)) Net_Material_Usage_Var
-from    org_acct_periods oap,
-        wip_entities we,
-        wip_discrete_jobs wdj,
-        wip_accounting_classes wac,
-        wip_requirement_operations wro,
-        mtl_parameters mp,
-        mtl_system_items_vl msiv,
-        mtl_system_items_vl msiv2,
-        cst_item_costs cic,
-        -- Revision for version 1.13
-        mtl_units_of_measure_vl muomv,
-        cst_cost_types cct,
-        gl_code_combinations gcc1,  -- wip class accounts
-        gl_code_combinations gcc2,  -- product group info from cogs account
-        hr_organization_information hoi,
-        hr_all_organization_units_vl haouv,
-        hr_all_organization_units_vl haouv2,
-        gl_ledgers gl,
-        (select cicd.inventory_item_id,
-                cicd.organization_id,
-                sum(cicd.item_cost) item_cost
-         from   cst_item_cost_details cicd,
-                bom_resources br,
-                cst_cost_types cct
-         where  cicd.resource_id=br.resource_id
-         and    br.resource_code= :p_pii_sub_element
-         and    cicd.cost_type_id=cct.cost_type_id
-         and    cct.cost_type=:p_pii_cost_type
-         group by
-                cicd.inventory_item_id,
-                cicd.organization_id
-        ) cicd
-where   1=1
-and     mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-and     oap.organization_id        = we.organization_id
-and     wdj.date_closed           >= oap.period_start_date
-and     wdj.date_closed           <  oap.schedule_close_date+1
-and     we.wip_entity_id           = wdj.wip_entity_id
-and     wdj.class_code             = wac.class_code
-and     wdj.organization_id        = wac.organization_id
-and     wdj.wip_entity_id          = wro.wip_entity_id
--- =================================================================
--- mtl parameter, item master and period close snapshot joins
--- =================================================================
-and    mp.organization_id          = msiv.organization_id
-and    msiv.organization_id        = we.organization_id
-and    msiv.inventory_item_id      = we.primary_item_id    -- fg assembly item
-and    msiv.organization_id        = msiv2.organization_id
-and    msiv2.inventory_item_id     = wro.inventory_item_id -- component item
-and    msiv2.organization_id       = cic.organization_id
-and    msiv2.inventory_item_id     = cic.inventory_item_id  -- component item
--- Revision for version 1.13
-and    msiv2.primary_uom_code      = muomv.uom_code
-and    cct.cost_type               = :p_cost_type
--- If you do not specify a cost type, gets the frozen or average cost type based on your costing method
-and    cic.cost_type_id            = nvl(cct.cost_type_id, mp.primary_cost_method)
--- End of revision for version 1.13
-and    wac.material_account        = gcc1.code_combination_id
-and    msiv.cost_of_sales_account  = gcc2.code_combination_id
-and    hoi.org_information_context = 'Accounting Information'
-and    hoi.organization_id         = mp.organization_id
-and    hoi.organization_id         = haouv.organization_id   -- this gets the organization name
-and    haouv2.organization_id      = to_number(hoi.org_information3) -- this gets the operating unit id
-and    gl.ledger_id                = to_number(hoi.org_information1) -- get the ledger_id
-and    msiv2.inventory_item_id     = cicd.inventory_item_id(+)
-and    msiv2.organization_id       = cicd.organization_id(+)
+y.component_number,
+y.component_description,
+y.currency_code,
+y.gross_item_cost,
+y.pii_item_cost,
+y.uom_code,
+y.quantity_per_assembly,
+y.total_required_quantity,
+y.quantity_issued,
+y.quantity_issued-y.total_required_quantity quantity_left_in_wip,
+(y.quantity_issued-y.total_required_quantity)*y.gross_item_cost gross_material_usage_var,
+(y.quantity_issued-y.total_required_quantity)*y.pii_item_cost pii_in_wip,
+(y.quantity_issued-y.total_required_quantity)*(y.gross_item_cost+y.pii_item_cost) net_material_usage_var
+from
+(
+select
+gl.name ledger,
+haouv_ou.name operating_unit,
+mp.organization_code org_code,
+x.period_name,
+wac.material_account gcc1_id,
+msiv.cost_of_sales_account gcc2_id,
+wac.class_code wip_class,
+xxen_util.meaning(wac.class_type,'WIP_CLASS_TYPE',700) class_type,
+we.wip_entity_name wip_job,
+xxen_util.meaning(wdj.status_type,'WIP_JOB_STATUS',700) job_status,
+wdj.date_completed,
+wdj.date_closed,
+wdj.start_quantity,
+wdj.quantity_completed assembly_quantity_completed,
+wdj.quantity_scrapped assembly_quantity_scrapped,
+wdj.quantity_completed+wdj.quantity_scrapped total_assembly_quantity,
+msiv.concatenated_segments assembly_number,
+msiv.description assembly_description,
+msiv.inventory_item_id,
+msiv.organization_id,
+msiv_comp.concatenated_segments component_number,
+msiv_comp.description component_description,
+gl.currency_code,
+coalesce((select /*+ no_unnest*/ cic.item_cost from cst_cost_types cct, cst_item_costs cic where cct.cost_type=:p_cost_type and x.inventory_item_id=cic.inventory_item_id and x.organization_id=cic.organization_id and cct.cost_type_id=cic.cost_type_id),(select /*+ no_unnest*/ cic.item_cost from cst_item_costs cic where x.inventory_item_id=cic.inventory_item_id and x.organization_id=cic.organization_id and mp.primary_cost_method=cic.cost_type_id)) gross_item_cost,
+nvl((select /*+ no_unnest*/ sum(cicd.item_cost) from cst_item_cost_details cicd, cst_cost_types cct, bom_resources br where x.organization_id=cicd.organization_id and x.inventory_item_id=cicd.inventory_item_id and cicd.cost_type_id=cct.cost_type_id and cct.cost_type=:p_pii_cost_type and cicd.resource_id=br.resource_id and br.resource_code=:p_pii_sub_element),0) pii_item_cost,
+msiv_comp.primary_uom_code uom_code,
+x.quantity_per_assembly,
+x.total_required_quantity,
+x.quantity_issued
+from
+(
+select
+oap.period_name,
+wdj.wip_entity_id,
+wro.organization_id,
+wro.inventory_item_id,
+sum(decode(wro.basis_type,2,nvl(wro.required_quantity,1),nvl(wro.quantity_per_assembly,0)/nvl(wro.component_yield_factor,1))) quantity_per_assembly,
+sum(decode(wro.basis_type,2,nvl(wro.required_quantity,1),nvl(wro.quantity_per_assembly,0)/nvl(wro.component_yield_factor,1)*(nvl(wdj.quantity_completed,0)+nvl(wdj.quantity_scrapped,0)))) total_required_quantity,
+sum(nvl(wro.quantity_issued,0)) quantity_issued
+from
+mtl_parameters mp,
+org_acct_periods oap,
+wip_discrete_jobs wdj,
+wip_requirement_operations wro
+where
+1=1 and
+mp.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
+mp.organization_id=oap.organization_id and
+oap.organization_id=wdj.organization_id and
+wdj.date_closed>=oap.period_start_date and
+wdj.date_closed<oap.schedule_close_date+1 and
+wdj.wip_entity_id=wro.wip_entity_id and
+wdj.organization_id=wro.organization_id
 group by
-        gl.name,
-        haouv2.name,
-        mp.organization_code,
-        oap.period_name,
-        &group_by_company_seg
-        &group_by_segment_columns
-        wac.class_code,
-        we.wip_entity_name,
-        xxen_util.meaning(wac.class_type,'WIP_CLASS_TYPE',700),
-        xxen_util.meaning(wdj.status_type,'WIP_JOB_STATUS',700),
-        wdj.date_completed,
-        wdj.date_closed,
-        wdj.start_quantity,
-        wdj.quantity_completed,
-        wdj.quantity_scrapped,
-        wdj.net_quantity,
-        msiv.concatenated_segments,
-        msiv.description,
-        -- Revision for version 1.14
-        -- For Category columns
-        msiv.inventory_item_id,
-        msiv.organization_id,
-        -- End revision for version 1.14
-        msiv2.concatenated_segments,
-        msiv2.description,
-        gl.currency_code,
-        -- Revision for version 1.13 
-        -- msi2.primary_uom_code,
-        muomv.uom_code,
-        msiv2.inventory_item_id,
-        msiv2.organization_id,
-        cicd.item_cost
-order by 1,2,3,4,5,6,7,9,21
+oap.period_name,
+wdj.wip_entity_id,
+wro.organization_id,
+wro.inventory_item_id
+) x,
+wip_discrete_jobs wdj,
+wip_entities we,
+wip_accounting_classes wac,
+mtl_parameters mp,
+mtl_system_items_vl msiv,
+mtl_system_items_vl msiv_comp,
+hr_organization_information hoi,
+hr_all_organization_units_vl haouv_ou,
+gl_ledgers gl
+where
+2=2 and
+x.wip_entity_id=wdj.wip_entity_id and
+wdj.wip_entity_id=we.wip_entity_id and
+wdj.class_code=wac.class_code and
+wdj.organization_id=wac.organization_id and
+x.organization_id=mp.organization_id and
+we.organization_id=msiv.organization_id and
+we.primary_item_id=msiv.inventory_item_id and
+x.organization_id=msiv_comp.organization_id and
+x.inventory_item_id=msiv_comp.inventory_item_id and
+mp.organization_id=hoi.organization_id and
+hoi.org_information_context='Accounting Information' and
+to_number(hoi.org_information3)=haouv_ou.organization_id and
+to_number(hoi.org_information1)=gl.ledger_id
+) y,
+gl_code_combinations gcc1,
+gl_code_combinations gcc2
+where
+y.gcc1_id=gcc1.code_combination_id and
+y.gcc2_id=gcc2.code_combination_id
+order by
+y.ledger,
+y.operating_unit,
+y.org_code,
+y.period_name,
+y.wip_class,
+y.wip_job,
+y.assembly_number,
+y.component_number

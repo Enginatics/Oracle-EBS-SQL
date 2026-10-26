@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-16
+last_modified_at: 2026-10-26
 title: 'PER Organization Hierarchy | Oracle EBS SQL Report'
 description: 'Master data report showing hierarchical list of human resource organization structures including subordinate orgs.'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Human Resources, Enginatics, PER, Organization, Hierarchy, hr_organization_information, per_organization_structures, per_org_structure_versions'
@@ -31,7 +31,7 @@ Business Group, Hierarchy Name, Top Level Organization
 [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-organization-hierarchy)
 
 ## Related Reports
-[PER Position Hierarchy](/PER%20Position%20Hierarchy/ "PER Position Hierarchy Oracle EBS SQL Report"), [FA Asset Book Details](/FA%20Asset%20Book%20Details/ "FA Asset Book Details Oracle EBS SQL Report"), [CAC Manufacturing Variance](/CAC%20Manufacturing%20Variance/ "CAC Manufacturing Variance Oracle EBS SQL Report"), [PO Approval History](/PO%20Approval%20History/ "PO Approval History Oracle EBS SQL Report")
+[PER Position Hierarchy](/PER%20Position%20Hierarchy/ "PER Position Hierarchy Oracle EBS SQL Report"), [FA Asset Book Details](/FA%20Asset%20Book%20Details/ "FA Asset Book Details Oracle EBS SQL Report"), [PO Approval History](/PO%20Approval%20History/ "PO Approval History Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/PER%20Organization%20Hierarchy/PER%20Organization%20Hierarchy.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-organization-hierarchy) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.

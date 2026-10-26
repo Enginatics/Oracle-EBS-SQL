@@ -43,98 +43,65 @@
 -- -- | and Cost Element parameters, removed tabs
 -- -- | and added org access controls.
 -- -- | 1.6 05 Dec 2023 Douglas Volz Added G/L and Operating Unit security restrictions.
+-- -- | 1.7 23 Oct 2026 Andy Haack Rebuilt to the Blitz Report SQL standards.
 -- -- +=============================================================================+/
 -- Excel Example Output: https://www.enginatics.com/example/cac-load-more4apps-buy-item-costs/
 -- Library Link: https://www.enginatics.com/reports/cac-load-more4apps-buy-item-costs/
 -- Run Report: https://demo.enginatics.com/
 
-select  mp.organization_code Org_Code,
-        :p_to_cost_type To_Cost_Type,                                                -- p_to_cost_type
-        msiv.concatenated_segments Item_Number,
-        decode(cic.based_on_rollup_flag,1,'Yes','No')  Based_on_Rollup,
-        cic.lot_size Lot_Size,
-        cic.shrinkage_rate MFG_Shrinkage,
-        cce.cost_element Cost_Element,
-        br.resource_code SubElement,
-        ml1.meaning Basis_Type,
-        cicd.usage_rate_or_amount Rate_or_Amount,
-        gl.currency_code Currency_Code,
-        -- Revision for version 1.5
-        muomv.uom_code UOM_Code,
-        misv.inventory_item_status_code Item_Status,
-        ml2.meaning Make_Buy_Code,
-        ml3.meaning Inventory_Asset
-        -- End revision for version 1.5
-from    bom_resources br,
-        mtl_system_items_vl msiv,
-        -- Revision for version 1.5
-        mtl_item_status_vl misv,
-        mtl_units_of_measure_vl muomv,
-        -- End revision for version 1.5
-        mtl_parameters mp, 
-        cst_cost_types cct,
-        cst_cost_elements cce,
-        cst_item_costs cic,
-        cst_item_cost_details cicd,
-        mfg_lookups ml1, -- basis type
-        mfg_lookups ml2, -- planning make/buy code, MTL_PLANNING_MAKE_BUY
-        mfg_lookups ml3, -- inventory_asset_flag, SYS_YES_NO
-        hr_organization_information hoi,
-        hr_all_organization_units_vl haou,  -- inv_organization_id
-        hr_all_organization_units_vl haou2, -- operating unit
-        gl_ledgers gl
-where   mp.organization_id              = msiv.organization_id
-and     msiv.inventory_asset_flag       = 'Y'  -- only valued items
--- Revision for version 1.5
-and     msiv.primary_uom_code           = muomv.uom_code
-and     msiv.inventory_item_status_code = misv.inventory_item_status_code
--- End revision for version 1.5
--- ========================================================
--- Cost Type Joins
--- ========================================================
-and     cic.inventory_item_id           = msiv.inventory_item_id
-and     cic.organization_id             = msiv.organization_id
-and     cic.cost_type_id                = cct.cost_type_id
-and     cicd.cost_type_id               = cct.cost_type_id
-and     cicd.organization_id            = cic.organization_id
-and     cicd.inventory_item_id          = cic.inventory_item_id
-and     cicd.level_type                 = 1 -- This level
-and     cicd.cost_type_id               = cct.cost_type_id
--- ========================================================
--- Organization, Bom Resources and Cost Element Joins
--- ========================================================
-and     cicd.resource_id                = br.resource_id
-and     cce.cost_element_id             = br.cost_element_id
--- Revision for version 1.5, comment this out
--- and     br.cost_element_id in (1,2)  -- Material and material overhead
-and     mp.organization_id              = br.organization_id
--- Revision for version 1.1
-and     cic.based_on_rollup_flag        = 2  -- 2 = No
--- ========================================================
--- Lookup Joins
--- ========================================================
-and     ml1.lookup_type                 = 'CST_BASIS_SHORT'
-and     ml1.lookup_code                 = cicd.basis_type
--- Revision for version 1.5
-and     ml2.lookup_type                 = 'MTL_PLANNING_MAKE_BUY'
-and     ml2.lookup_code                 = msiv.planning_make_buy_code
-and     ml3.lookup_type                 = 'SYS_YES_NO'
-and     ml3.lookup_code                 = to_char(cic.inventory_asset_flag)
--- End revision for version 1.5
--- ========================================================
--- using the base tables to avoid the performance issues
--- with org_organization_definitions and hr_operating_units
--- ========================================================
-and     hoi.org_information_context     = 'Accounting Information'
-and     hoi.organization_id             = mp.organization_id
-and     hoi.organization_id             = haou.organization_id            -- this gets the organization name
-and     haou2.organization_id           = hoi.org_information3            -- this gets the operating unit id
-and     gl.ledger_id                    = to_number(hoi.org_information1) -- get the ledger_id
--- Revision for version 1.6
-and     mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-and     gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
-and     haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
--- End revision for version 1.6
-and     1=1                             -- p_from_cost_type, p_to_cost_type, p_item_status_to_exclude, p_make_or_buy, p_cost_element, p_org_code, p_operating_unit, p_ledger
--- order by Org Code, Item, Cost Type, Cost Element and Sub-Element
-order by 1,2,3,7,8,9
+select
+mp.organization_code org_code,
+:p_to_cost_type to_cost_type,
+msiv.concatenated_segments item_number,
+decode(cic.based_on_rollup_flag,1,'Yes','No') based_on_rollup,
+cic.lot_size,
+cic.shrinkage_rate mfg_shrinkage,
+cce.cost_element,
+br.resource_code subelement,
+xxen_util.meaning(cicd.basis_type,'CST_BASIS_SHORT',700) basis_type,
+cicd.usage_rate_or_amount rate_or_amount,
+gl.currency_code,
+msiv.primary_uom_code uom_code,
+msiv.inventory_item_status_code item_status,
+xxen_util.meaning(msiv.planning_make_buy_code,'MTL_PLANNING_MAKE_BUY',700) make_buy_code,
+xxen_util.meaning(cic.inventory_asset_flag,'SYS_YES_NO',700) inventory_asset
+from
+mtl_parameters mp,
+hr_organization_information hoi,
+hr_all_organization_units_vl haouv_ou,
+gl_ledgers gl,
+mtl_system_items_vl msiv,
+mtl_item_status_vl misv,
+cst_item_costs cic,
+cst_cost_types cct,
+cst_item_cost_details cicd,
+bom_resources br,
+cst_cost_elements cce
+where
+1=1 and
+mp.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
+mp.organization_id=hoi.organization_id and
+hoi.org_information_context='Accounting Information' and
+to_number(hoi.org_information3)=haouv_ou.organization_id and
+to_number(hoi.org_information1)=gl.ledger_id and
+mp.organization_id=msiv.organization_id and
+msiv.inventory_asset_flag='Y' and
+msiv.inventory_item_status_code=misv.inventory_item_status_code and
+msiv.organization_id=cic.organization_id and
+msiv.inventory_item_id=cic.inventory_item_id and
+cic.based_on_rollup_flag=2 and
+cic.cost_type_id=cct.cost_type_id and
+cic.organization_id=cicd.organization_id and
+cic.inventory_item_id=cicd.inventory_item_id and
+cic.cost_type_id=cicd.cost_type_id and
+cicd.level_type=1 and
+cicd.resource_id=br.resource_id and
+mp.organization_id=br.organization_id and
+br.cost_element_id=cce.cost_element_id
+order by
+org_code,
+to_cost_type,
+item_number,
+cost_element,
+subelement,
+basis_type

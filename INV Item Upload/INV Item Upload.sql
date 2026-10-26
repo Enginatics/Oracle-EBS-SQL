@@ -22,7 +22,7 @@
 -- - to remove an existing category assignment, download the item first, then set the Delete Category column to Yes on the row showing the Category Set and Item Category to be removed. Deletion is not permitted for mandatory category sets that require the item to remain assigned.
 -- Additionally
 -- - supports creation and update of item revisions
--- - supports creation, update, and deletion of manufacturer part numbers
+-- - supports manufacturer part numbers, ABC classes, catalog elements and translations
 -- Upload Mode parameter:
 -- Create - allows creation of new items only
 -- Update - allows updates to existing items only
@@ -458,6 +458,16 @@ xxen_util.display_flexfield_value(401,'MTL_MFG_PART_NUMBERS',mmpn.attribute_cate
 xxen_util.display_flexfield_value(401,'MTL_MFG_PART_NUMBERS',mmpn.attribute_category,'ATTRIBUTE13',mmpn.rowid,mmpn.attribute13) mfg_part_attribute13,
 xxen_util.display_flexfield_value(401,'MTL_MFG_PART_NUMBERS',mmpn.attribute_category,'ATTRIBUTE14',mmpn.rowid,mmpn.attribute14) mfg_part_attribute14,
 xxen_util.display_flexfield_value(401,'MTL_MFG_PART_NUMBERS',mmpn.attribute_category,'ATTRIBUTE15',mmpn.rowid,mmpn.attribute15) mfg_part_attribute15,
+-- ABC Classes
+abc.assignment_group_name abc_group,
+abc.abc_class_name abc_class,
+-- Item Catalog Descriptive Elements
+mdev.element_name catalog_element,
+mdev.element_value catalog_element_value,
+-- Translations
+(select flv.description from fnd_languages_vl flv where msit.language=flv.language_code) translation_language,
+msit.description translated_description,
+msit.long_description translated_long_description,
 --
 null delete_category,
 null assign_to_organizations,
@@ -491,7 +501,24 @@ mic.category_set_id=mcsv.category_set_id and
 mic.category_id=mck.category_id
 ) mic,
 mtl_mfg_part_numbers mmpn,
-mtl_item_revisions_vl mir
+mtl_item_revisions_vl mir,
+(
+select
+maa.inventory_item_id,
+maag.organization_id,
+maag.assignment_group_name,
+mac.abc_class_name
+from
+mtl_abc_assignments maa,
+mtl_abc_assignment_groups maag,
+mtl_abc_classes mac
+where
+'&lp_templ_includes_abc'='Y' and
+maa.assignment_group_id=maag.assignment_group_id and
+maa.abc_class_id=mac.abc_class_id
+) abc,
+mtl_descr_element_values mdev,
+mtl_system_items_tl msit
 where
 1=1 and
 :p_upload_mode like '%'||xxen_upload.action_update and
@@ -505,4 +532,10 @@ msiv.inventory_item_id=mic.inventory_item_id(+) and
 decode('&lp_templ_includes_mfg_part_num','Y',mp.master_organization_id)=mmpn.organization_id(+) and
 decode('&lp_templ_includes_mfg_part_num','Y',msiv.inventory_item_id)=mmpn.inventory_item_id(+) and
 decode('&lp_templ_includes_revisions','Y',msiv.organization_id)=mir.organization_id(+) and
-decode('&lp_templ_includes_revisions','Y',msiv.inventory_item_id)=mir.inventory_item_id(+)
+decode('&lp_templ_includes_revisions','Y',msiv.inventory_item_id)=mir.inventory_item_id(+) and
+msiv.organization_id=abc.organization_id(+) and
+msiv.inventory_item_id=abc.inventory_item_id(+) and
+decode('&lp_templ_includes_catalog','Y',msiv.inventory_item_id)=mdev.inventory_item_id(+) and
+decode('&lp_templ_includes_translations','Y',msiv.inventory_item_id)=msit.inventory_item_id(+) and
+msiv.organization_id=msit.organization_id(+) and
+msit.language(+)<>userenv('lang')

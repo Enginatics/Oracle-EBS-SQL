@@ -32,217 +32,115 @@
 -- -- | Release 12.1.6.
 -- -- | 1.4 15 Apr 2020 Douglas Volz Undid modifications for upgrade client
 -- -- | 1.5 17 Feb 2025 Douglas Volz Formatted for Blitz Report.
+-- -- | 1.6 23 Oct 2026 Andy Haack Rebuilt to the Blitz Report SQL standards.
 -- -- +=============================================================================+/
 -- Excel Example Output: https://www.enginatics.com/example/cac-ap-accrual-reconciliation-summary-by-match-type/
 -- Library Link: https://www.enginatics.com/reports/cac-ap-accrual-reconciliation-summary-by-match-type/
 -- Run Report: https://demo.enginatics.com/
 
-with accrual_type as
- (select 'ACCRUAL TYPE' lookup_type,
-                to_char(mtt.transaction_type_id) lookup_code,
-                mtt.transaction_type_name accrual_match_type
-         from   mtl_transaction_types mtt
-         union all
-         select 'ACCRUAL TYPE' lookup_type,
-                flvv.lookup_code,
-                flvv.meaning accrual_match_type
-         from   fnd_lookup_values_vl flvv
-         where  flvv.lookup_type    in ('ACCRUAL TYPE','RCV TRANSACTION TYPE')
-        ) -- accrual_type
-
------------- SQL query starts here ----------------
--- ===========================================================================================
--- This first select finds those entries that join to a PO and PO line for Receiving
--- ===========================================================================================
-select  gl.name Ledger,
-        haou.name Operating_Unit,
-        -- Revision for version 1.5
-        at.accrual_match_type Match_Type,
-        mp.organization_code Org_Code,
-        gcc.concatenated_segments Accrual_Account,
-        -- End revision for version 1.5
-        &segment_columns
-        gl.currency_code Currency_Code,
-        -- Revision for version 1.1
-        -- Not all upgraded summary rows have links to the xla tables
-        -- Revision for version 1.4 ... keep this logic
-        sum(decode(ah.je_category_name, 'Receiving', nvl(capr.amount,0), 0)) Receiving_Amount,
-        sum(decode(ah.je_category_name, 'Purchase Invoices', nvl(capr.amount,0), 0)) Payables_Amount,
-        sum(decode(ah.je_category_name, 'INVENTORY', nvl(capr.amount,0),
-                                        'Inventory', nvl(capr.amount,0),
-                                        'MTL', nvl(capr.amount,0),0)) Inventory_Amount,
-        sum(decode(ah.je_category_name, 'INVENTORY', 0,
-                                        'Inventory', 0,
-                                        'MTL', 0,
-                                        'Receiving', 0,
-                                        'Purchase Invoices', 0,
-                                        nvl(capr.amount,0))) Other_Amount,
-        -- Revision for version 1.4
-        -- Comment out this upgrade code
-        -- sum(decode(capr.rcv_transaction_id, null, 0, nvl(capr.amount,0))) Receiving_Amount,
-        -- sum(decode(capr.invoice_distribution_id, null, 0, nvl(capr.amount,0))) Payables_Amount,
-        -- Revision for version 1.3
-        -- sum(decode(capr.inventory_transaction_id, null, 0, nvl(capr.amount,0))) Inventory_Amount,
-        -- sum(0) Inventory_Amount,
-        -- sum(case 
-        --        when (capr.rcv_transaction_id is null and 
-        --              capr.invoice_distribution_id is null and 
-        --              -- capr.inventory_transaction_id is null and
-        --              capr.write_off_id is null
-        --             ) then nvl(capr.amount,0)
-        --        else 0
-        --     end) Other_Amount,
-        -- sum((nvl(capr.amount,0))) Total_Accounted_Amount,
-        -- End for revision for version 1.4
-        sum(decode(capr.write_off_id, null, nvl(capr.amount,0), 0)) Total_Accounted_Amount,
-        sum(decode(capr.write_off_id, null, 0, nvl(capr.amount,0))) Write_Offs,
-        sum((nvl(capr.amount,0))) Net_Accounted_Amount
-        -- End revision for version 1.1
-from    cst_ap_po_reconciliation capr,
-        gl_code_combinations_kfv gcc,
-        hr_organization_information hoi,
-        hr_all_organization_units haou, -- operating unit
-        -- Revision for version 1.1
-        -- Not all upgraded summary rows have links to the xla tables
-        -- Revision for version 1.4 ... keep this logic
-        xla_ae_headers ah,
-        xla_ae_lines al,
-        -- End revision for version 1.1
-        gl_ledgers gl,
-        -- Revision for version 1.5
-        po_distributions_all pod,
-        mtl_parameters mp,
-        accrual_type at
--- Revision for version 1.1
--- Not all upgraded summary rows have links to the xla tables
--- Revision for version 1.4 ... keep this logic
-where   capr.ae_header_id           = ah.ae_header_id (+)
-and     capr.ae_line_num            = al.ae_line_num  (+)
-and     capr.ae_header_id           = al.ae_header_id (+)
-and     al.application_id in (200, 707)   -- 200 is Payables, 707 is Cost Management
--- End revision for version 1.1
-and     capr.accrual_account_id     = gcc.code_combination_id (+)
-and     al.code_combination_id      = gcc.code_combination_id
--- Revision for version 1.1
--- Revision for version 1.4 ... keep this logic
-and     ah.ledger_id                = gl.ledger_id
-and     gl.ledger_id                = to_number(hoi.org_information3) -- this joins OU to GL
--- Revision for version 1.1
--- ===================================================================
--- using the base tables to avoid the performance issues with the
--- views org_organization_definitions and hr_operating_units
--- ===================================================================
-and     hoi.org_information_context = 'Operating Unit Information'
-and     hoi.organization_id         = haou.organization_id
-and     capr.operating_unit_id      = haou.organization_id
--- Revision for version 1.5
-and     pod.po_distribution_id      = capr.po_distribution_id
-and     mp.organization_id (+)      = pod.destination_organization_id
-and     at.lookup_code (+)          = capr.transaction_type_code
-and     1=1                         -- p_operating_unit, p_ledger
-and     2=2                         -- p_trx_from, p_trx_date_to
-and     (nvl(fnd_profile.value('XXEN_REPORT_USE_LEDGER_SECURITY'),'N')='N' or gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+)))
-and     (nvl(fnd_profile.value('XXEN_REPORT_USE_OPERATING_UNIT_SECURITY'),'N')='N' or haou.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11))
--- End revision for version 1.5
-group by
-        gl.name,
-        haou.name,
-        -- Revision for version 1.5
-        at.accrual_match_type, -- Match Type
-        mp.organization_code,
-        gcc.concatenated_segments, -- Accrual Account
-        -- End revision for version 1.5
-        &segment_columns_grp
-        gl.currency_code
+select
+y.ledger,
+y.operating_unit,
+coalesce(xxen_util.meaning(y.transaction_type_code,'ACCRUAL TYPE',201),xxen_util.meaning(y.transaction_type_code,'RCV TRANSACTION TYPE',201),(select mtt.transaction_type_name from mtl_transaction_types mtt where y.transaction_type_code=to_char(mtt.transaction_type_id))) match_type,
+y.org_code,
+gcck.concatenated_segments accrual_account,
+&segment_columns
+y.currency_code,
+y.receiving_amount,
+y.payables_amount,
+y.inventory_amount,
+y.other_amount,
+y.total_accounted_amount,
+y.write_offs,
+y.net_accounted_amount
+from
+(
+select
+gl.name ledger,
+haouv.name operating_unit,
+x.transaction_type_code,
+mp.organization_code org_code,
+x.accrual_account_id,
+gl.currency_code,
+sum(decode(xah.je_category_name,'Receiving',x.amount,0)) receiving_amount,
+sum(decode(xah.je_category_name,'Purchase Invoices',x.amount,0)) payables_amount,
+sum(decode(xah.je_category_name,'INVENTORY',x.amount,'Inventory',x.amount,'MTL',x.amount,0)) inventory_amount,
+sum(decode(xah.je_category_name,'INVENTORY',0,'Inventory',0,'MTL',0,'Receiving',0,'Purchase Invoices',0,x.amount)) other_amount,
+sum(x.total_amount) total_accounted_amount,
+sum(x.write_off_amount) write_offs,
+sum(x.net_amount) net_accounted_amount
+from
+(
+select
+capr.operating_unit_id,
+capr.transaction_type_code,
+pda.destination_organization_id organization_id,
+capr.accrual_account_id,
+capr.ae_header_id,
+capr.ae_line_num,
+nvl(capr.amount,0) amount,
+decode(capr.write_off_id,null,nvl(capr.amount,0),0) total_amount,
+decode(capr.write_off_id,null,0,nvl(capr.amount,0)) write_off_amount,
+nvl(capr.amount,0) net_amount
+from
+cst_ap_po_reconciliation capr,
+po_distributions_all pda
+where
+2=2 and
+capr.operating_unit_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='OU') and
+capr.po_distribution_id=pda.po_distribution_id
 union all
--- ===========================================================================================
--- This second select finds those entries that do not join to a PO and PO line (AP NO MATCH)
--- ===========================================================================================
-select  gl.name Ledger,
-        haou.name Operating_Unit,
-        -- Revision for version 1.5
-        at.accrual_match_type Match_Type,
-        mp.organization_code,
-        gcc.concatenated_segments Accrual_Account,
-        -- End revision for version 1.5
-        &segment_columns
-        gl.currency_code Currency_Code,
-        -- Revision for version 1.1
-        -- Not all upgraded summary rows have links to the xla tables
-        -- Revision for version 1.4 ... keep this logic
-        sum(decode(ah.je_category_name, 'Receiving', nvl(cmr.amount,0), 0)) Receiving_Amount,
-        sum(decode(ah.je_category_name, 'Purchase Invoices', nvl(cmr.amount,0), 0)) Payables_Amount,
-        sum(decode(ah.je_category_name, 'INVENTORY', nvl(cmr.amount,0),
-                                        'Inventory', nvl(cmr.amount,0),
-                                        'MTL', nvl(cmr.amount,0),0)) Inventory_Amount,
-        sum(decode(ah.je_category_name, 'INVENTORY', 0,
-                                        'Inventory', 0,
-                                        'MTL', 0,
-                                        'Receiving', 0,
-                                        'Purchase Invoices', 0,
-                                        nvl(cmr.amount,0))) Other_Amount,
-        sum((nvl(cmr.amount,0))) Total_Accounted_Amount,
-        sum(decode(cmr.write_off_select_flag, null, 0, 'N', 0, nvl(cmr.amount,0))) Write_Offs,
-        sum(decode(cmr.write_off_select_flag, null, nvl(cmr.amount,0), 'N', nvl(cmr.amount,0), 0)) Net_Accounted_Amount
-        -- sum(0) "Receiving Amount",
-        -- sum(decode(cmr.invoice_distribution_id, null, 0, nvl(cmr.amount,0))) "Payables Amount",
-        -- sum(decode(cmr.inventory_transaction_id, null, 0, nvl(cmr.amount,0))) "Inventory Amount",
-        -- sum(case 
-        --        when ( cmr.invoice_distribution_id is null and 
-        --         cmr.inventory_transaction_id is null and
-        --         cmr.write_off_select_flag is null) then nvl(cmr.amount,0)
-        --  else 0
-        -- end) "Other Amount",
-        -- sum(decode(cmr.write_off_select_flag, null, nvl(cmr.amount,0), 0)) "Total Accounted Amount",
-        -- sum(decode(cmr.write_off_select_flag, null, 0, nvl(cmr.amount,0))) "Write-Offs",
-        -- sum((nvl(cmr.amount,0))) "Net Accounted Amount"
-        -- End revision for version 1.1
-from    cst_misc_reconciliation cmr,
-        gl_code_combinations_kfv gcc,
-        hr_organization_information hoi,
-        hr_all_organization_units haou, -- operating unit
-        -- Revision for version 1.1
-        -- Not all upgraded summary rows have links to the xla tables
-        -- Revision for version 1.4 ... keep this logic
-        xla_ae_headers ah,
-        xla_ae_lines al,
-        gl_ledgers gl,
-        -- Revision for version 1.5
-        mtl_parameters mp,
-        accrual_type at
-where   cmr.ae_header_id            = ah.ae_header_id
-and     cmr.ae_line_num             = al.ae_line_num
-and     cmr.ae_header_id            = al.ae_header_id
-and     al.application_id in (200, 707)   -- 200 is Payables, 707 is Cost Management
-and     cmr.accrual_account_id      = gcc.code_combination_id (+)
-and     al.code_combination_id      = gcc.code_combination_id
--- ===================================================================
--- using the base tables to avoid the performance issues with the
--- views org_organization_definitions and hr_operating_units
--- ===================================================================
-and     hoi.org_information_context = 'Operating Unit Information'
-and     hoi.organization_id         = haou.organization_id
-and     cmr.operating_unit_id       = haou.organization_id
--- Revision for version 1.4 ... keep this logic
-and     ah.ledger_id                = gl.ledger_id
-and     gl.ledger_id                = to_number(hoi.org_information3) -- this joins OU to GL
--- Revision for version 1.5
-and     mp.organization_id (+)      = cmr.inventory_organization_id
-and     at.lookup_code (+)          = cmr.transaction_type_code
-and     1=1                         -- p_operating_unit, p_ledger
-and     3=3                         -- p_trx_from, p_trx_date_to
--- End revision for version 1.5
-and     (nvl(fnd_profile.value('XXEN_REPORT_USE_LEDGER_SECURITY'),'N')='N' or gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+)))
-and     (nvl(fnd_profile.value('XXEN_REPORT_USE_OPERATING_UNIT_SECURITY'),'N')='N' or haou.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11))
+select
+cmr.operating_unit_id,
+cmr.transaction_type_code,
+cmr.inventory_organization_id,
+cmr.accrual_account_id,
+cmr.ae_header_id,
+cmr.ae_line_num,
+nvl(cmr.amount,0),
+nvl(cmr.amount,0),
+decode(nvl(cmr.write_off_select_flag,'N'),'N',0,nvl(cmr.amount,0)),
+decode(nvl(cmr.write_off_select_flag,'N'),'N',nvl(cmr.amount,0),0)
+from
+cst_misc_reconciliation cmr
+where
+3=3 and
+cmr.operating_unit_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='OU')
+) x,
+xla_ae_lines xal,
+xla_ae_headers xah,
+hr_all_organization_units_vl haouv,
+hr_organization_information hoi,
+gl_ledgers gl,
+mtl_parameters mp
+where
+1=1 and
+x.ae_header_id=xal.ae_header_id and
+x.ae_line_num=xal.ae_line_num and
+xal.application_id in (200,707) and
+x.accrual_account_id=xal.code_combination_id and
+xal.ae_header_id=xah.ae_header_id and
+xal.application_id=xah.application_id and
+x.operating_unit_id=haouv.organization_id and
+haouv.organization_id=hoi.organization_id and
+hoi.org_information_context='Operating Unit Information' and
+to_number(hoi.org_information3)=gl.ledger_id and
+xah.ledger_id=gl.ledger_id and
+x.organization_id=mp.organization_id(+)
 group by
-        gl.name,
-        haou.name,
-        -- Revision for version 1.5
-        at.accrual_match_type, -- Match Type
-        mp.organization_code,
-        gcc.concatenated_segments, -- Accrual Account
-        -- End revision for version 1.5
-        &segment_columns_grp
-        gl.currency_code
--- Order by Ledger, Operating Unit, Match Type, Org Code, Accounts
-order by 1,2,3,4,5
+gl.name,
+haouv.name,
+x.transaction_type_code,
+mp.organization_code,
+x.accrual_account_id,
+gl.currency_code
+) y,
+gl_code_combinations_kfv gcck
+where
+y.accrual_account_id=gcck.code_combination_id
+order by
+y.ledger,
+y.operating_unit,
+match_type,
+y.org_code,
+accrual_account

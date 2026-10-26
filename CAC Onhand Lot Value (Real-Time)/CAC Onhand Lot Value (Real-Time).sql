@@ -46,309 +46,127 @@
 -- -- | 1.16 23 Apr 2020 Douglas Volz Changed to multi-language views for the item
 -- -- | master, item categories and operating units.
 -- -- | Used mfglookups for "Intransit".
+-- -- | 1.17 23 Oct 2026 Andy Haack Rebuilt to the Blitz Report SQL standards.
 -- -- +=============================================================================+/
 -- Excel Example Output: https://www.enginatics.com/example/cac-onhand-lot-value-real-time/
 -- Library Link: https://www.enginatics.com/reports/cac-onhand-lot-value-real-time/
 -- Run Report: https://demo.enginatics.com/
 
-select nvl(gl.short_name, gl.name) Ledger,
- haou2.name Operating_Unit,
- mp.organization_code Org_Code,
- haou.name Organization_Name,
- &segment_columns
- msiv.concatenated_segments Item_Number,
- msiv.description Item_Description,
- misv.inventory_item_status_code_tl Item_Status,
- fcl.meaning Item_Type,
- ml1.meaning Make_Buy_Code,
- -- Revision for version 1.19 and 1.20
- fl1.meaning Asset,
- ml2.meaning Consigned,
- -- Revision for version 1.12
-&category_columns  
- -- End revision for version 1.12
- gl.currency_code Currency_Code,
- cic.item_cost Item_Cost,
- sumqty.lot_number Lot_Number,
- sumqty.expiration_date Expiration_Date,
- sumqty.subinventory_code Subinventory,
- -- Revision for version 1.14
- sumqty.asset_inventory Asset_Subinventory,
- -- Revision for version 1.19, add Cost_Group
- nvl((select cost_group
-      from cst_cost_groups ccg
-      where ccg.cost_group_id = sumqty.cost_group_id),'') Cost_Group,
- nvl((select pp.segment1
-  from pa_projects_all pp,
-  mtl_item_locations mil
-  where mil.inventory_location_id = sumqty.locator_id
-  and pp.project_id             = mil.project_id),'') Project,
- -- End of revision for version 1.19
- muomv.uom_code UOM_Code,
- sumqty.onhand_quantity + sumqty.intransit_quantity Onhand_Quantity,
- round(nvl(cic.material_cost,0) * decode(sumqty.is_consigned, 1, 0, 1)
-  * (sumqty.onhand_quantity + sumqty.intransit_quantity),2) Material_Value,
- round(nvl(cic.material_overhead_cost,0) * decode(sumqty.is_consigned, 1, 0, 1)
-  * (sumqty.onhand_quantity + sumqty.intransit_quantity),2) Material_Overhead_Value,
- round(nvl(cic.resource_cost,0) * decode(sumqty.is_consigned, 1, 0, 1)
-  * (sumqty.onhand_quantity + sumqty.intransit_quantity),2) Resource_Value,
- round(nvl(cic.outside_processing_cost,0) * decode(sumqty.is_consigned, 1, 0, 1)
-  * (sumqty.onhand_quantity + sumqty.intransit_quantity),2) Outside_Processing_Value,
- round(nvl(cic.overhead_cost,0) * decode(sumqty.is_consigned, 1, 0, 1)
-  * (sumqty.onhand_quantity + sumqty.intransit_quantity),2) Overhead_Value,
- round(nvl(cic.item_cost,0) * decode(sumqty.is_consigned, 1, 0, 1)
-  * (sumqty.onhand_quantity + sumqty.intransit_quantity),2) Onhand_Value
-from mtl_system_items_vl msiv,
- mtl_units_of_measure_vl muomv,
- mtl_item_status_vl misv,
- mtl_parameters mp,
- mfg_lookups ml1, -- Make_Buy_Code
- -- Revision for version 1.20
- mfg_lookups ml2, -- Is Consigned, SYS_YES_NO
- fnd_common_lookups fcl,
- -- Revision for version 1.19
- fnd_lookups fl1, -- inventory_asset_flag, YES_NO
- hr_organization_information hoi,
- hr_all_organization_units haou,  -- inv_organization_id
- hr_all_organization_units haou2, -- operating unit
- gl_code_combinations gcc,
- gl_ledgers gl,
- -- ====================
- -- Get the item costs
- -- ====================
- (select cic.organization_id   organization_id,
-  cic.inventory_item_id   inventory_item_id,
-  cic.cost_type_id   cost_type_id,
-  cct.cost_type    cost_type,
-  nvl(cic.material_cost, 0)  material_cost,
-  nvl(cic.material_overhead_cost, 0) material_overhead_cost,
-  nvl(cic.resource_cost, 0)  resource_cost,
-  nvl(cic.outside_processing_cost, 0) outside_processing_cost,
-  nvl(cic.overhead_cost, 0)  overhead_cost,
-  nvl(cic.item_cost,0)   item_cost
-  from cst_cost_types cct,
-  cst_item_costs cic,
-  mtl_parameters mp
-  where cct.cost_type_id           = cic.cost_type_id
-  and mp.organization_id         = cic.organization_id
-  and cct.cost_type              = nvl(:p_cost_type, decode(mp.primary_cost_method, 1,'Frozen', 2, 'Average', 3, 'FIFO', 4,'LIFO'))
-  and 2=2                        -- p_cost_type
-  and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-  and 4=4                        -- p_org_code
-  and mp.organization_id         = cic.organization_id
-  and cic.cost_type_id           = cct.cost_type_id
-  -- Revision for Version 1.8
-  union all
-  select cic.organization_id   organization_id,
-  cic.inventory_item_id   inventory_item_id,
-  cic.cost_type_id   cost_type_id,
-  cct.cost_type    cost_type,
-  nvl(cic.material_cost, 0)  material_cost,
-  nvl(cic.material_overhead_cost, 0) material_overhead_cost,
-  nvl(cic.resource_cost, 0)  resource_cost,
-  nvl(cic.outside_processing_cost, 0) outside_processing_cost,
-  nvl(cic.overhead_cost, 0)  overhead_cost,
-  nvl(cic.item_cost,0)   item_cost
-  from cst_item_costs cic,
-  cst_cost_types cct,
-  mtl_parameters mp
-  where cic.organization_id        = mp.organization_id
-  and cic.cost_type_id           = mp.primary_cost_method  -- this gets the Costing Method
-  and :p_cost_type is not null
-  and :p_cost_type not in decode(mp.primary_cost_method, 1,'Frozen', 2, 'Average', 3, 'FIFO', 4,'LIFO')
-  and 2=2                        -- p_cost_type
-  and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-  and 4=4                        -- p_org_code
-  -- ====================================
-  -- Find all the Frozen costs not in the
-  -- Pending or unimplemented cost type
-  -- ====================================
-  and not exists
-   (select 'x'
-    from cst_item_costs cic2
-    where cic2.organization_id   = cic.organization_id
-    and cic2.inventory_item_id = cic.inventory_item_id
-    and cic2.cost_type_id      = cct.cost_type_id
-   )
-  ) cic,
-  -- ===========================
- -- End of getting item costs 
-  -- ===========================
- -- ===================================
- -- Get Onhand quantities
- -- ===================================
- -- ================================================
- -- part 4 
- -- Condense the Union down to individual Org/Items
- -- ================================================
-  (select allqty.organization_id  organization_id,
-   allqty.inventory_item_id inventory_item_id,
-   allqty.lot_number              lot_number,
-   allqty.expiration_date         expiration_date,
-   -- Revision for version 1.17
-   allqty.locator_id, 
-   allqty.subinventory_code       subinventory_code,
-   -- Revision for version 1.19
-   allqty.cost_group_id,
-   -- Revision for version 1.14
-   allqty.asset_inventory         asset_inventory,
-   allqty.code_combination_id     code_combination_id,
-   sum(allqty.onhand_quantity) onhand_quantity,
-   sum(allqty.intransit_quantity) intransit_quantity,
-   -- Revision for version 1.20
-   allqty.is_consigned
-  -- ================================================
-  -- part 3 Union all the Onhand and Intransit groups
-  -- together to get one "quantity" table
-  -- ================================================
-       -- =============================================================     
-       -- Part 2, identify Onhand and Intransit groupings for summation
-       -- =============================================================     
-   from (select matlqty.organization_id  organization_id,
-   matlqty.inventory_item_id  inventory_item_id,
-   matlqty.lot_number              lot_number,
-   matlqty.expiration_date         expiration_date,
-   -- Revision for version 1.17
-   matlqty.locator_id, 
-   matlqty.subinventory_code  subinventory_code,
-   -- Revision for version 1.19
-   matlqty.cost_group_id,
-   -- Revision for version 1.14
-   matlqty.asset_inventory         asset_inventory,
-   matlqty.material_account        code_combination_id,
-   decode(matlqty.subinventory_code, 'Intransit', 0, nvl(matlqty.quantity,0))  onhand_quantity,
-   decode(matlqty.subinventory_code, 'Intransit', nvl(matlqty.quantity,0), 0)  intransit_quantity,
-   -- Revision for version 1.20
-   matlqty.is_consigned
-   from (
-    -- ===================================
-    -- part 1 
-    -- get the onhand inventory quantities
-    -- ===================================
-   select moqd.organization_id,
-    moqd.inventory_item_id,
-    moqd.lot_number,
-    moqd.expiration_date,
-    -- Revision for version 1.17
-    moqd.locator_id, 
-    moqd.subinventory_code,
-    -- Revision for version 1.19
-    moqd.cost_group_id,
-    -- Revision for version 1.14
-    moqd.asset_inventory,
-    moqd.material_account,
-     moqd.quantity,
-    -- Revision for version 1.20
-    moqd.is_consigned
-    from (
-     select moqd.organization_id,
-     moqd.inventory_item_id,
-     moqd.lot_number,
-     mln.expiration_date,
-     -- Revision for version 1.17
-     moqd.locator_id,
-      moqd.subinventory_code,
-     -- Revision for version 1.19
-     moqd.cost_group_id,
-     -- Revision for version 1.14
-     decode(msub.asset_inventory, 1, 'Yes', 2, 'No', 'Yes') asset_inventory,
-     msub.material_account,
-      sum(moqd.primary_transaction_quantity) quantity,
-     -- Revision for version 1.20
-     moqd.is_consigned
-      from mtl_onhand_quantities_detail moqd,
-     mtl_secondary_inventories msub,
-     mtl_lot_numbers mln,
-     mtl_parameters mp
-     where moqd.lot_number        = mln.lot_number        (+)
-     and moqd.organization_id   = mln.organization_id   (+)
-     and moqd.inventory_item_id = mln.inventory_item_id (+)
-     and moqd.inventory_item_id = mln.inventory_item_id (+)
-     and moqd.subinventory_code = msub.secondary_inventory_name 
-     and moqd.organization_id   = msub.organization_id
-     and mp.organization_id     = moqd.organization_id
-     and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-  and 4=4                        -- p_org_code
-     -- Revision for version 1.14
-     and 3=3                        -- p_include_expense_subinv
-     group by
-     moqd.inventory_item_id,
-     moqd.organization_id,
-     moqd.lot_number,
-     mln.expiration_date,
-     -- Revision for version 1.17
-     moqd.locator_id, 
-     moqd.subinventory_code,
-     -- Revision for version 1.19
-     moqd.cost_group_id,
-     -- Revision for version 1.14
-     decode(msub.asset_inventory, 1, 'Yes', 2, 'No', 'Yes'),
-     msub.material_account,
-     -- Revision for version 1.20
-     moqd.is_consigned
-    ) moqd
-   ) matlqty
-  ) allqty
-   group by
-   allqty.organization_id,
-   allqty.inventory_item_id,
-   allqty.lot_number,
-   allqty.expiration_date,
-   -- Revision for version 1.17
-   allqty.locator_id, -- locator_id
-   allqty.subinventory_code,
-   -- Revision for version 1.19
-   allqty.cost_group_id,
-   -- Revision for version 1.14
-   allqty.asset_inventory,
-   allqty.code_combination_id,
-   -- Revision for version 1.20
-   allqty.is_consigned
- ) sumqty
- -- ===========================
- -- End of getting quantities
- -- ===========================
--- ===================================================================
--- Item master to quantity and item master to cost joins
--- ===================================================================
-where msiv.inventory_item_id          = sumqty.inventory_item_id
-and msiv.organization_id            = sumqty.organization_id
-and muomv.uom_code                  = msiv.primary_uom_code
-and misv.inventory_item_status_code = msiv.inventory_item_status_code 
-and msiv.inventory_item_id          = cic.inventory_item_id (+)
-and msiv.organization_id            = cic.organization_id (+)
-and mp.organization_id              = msiv.organization_id
-and sumqty.onhand_quantity + sumqty.intransit_quantity <> 0
--- ===================================================================
--- Joins for the lookup codes
--- ===================================================================
-and ml1.lookup_type                 = 'MTL_PLANNING_MAKE_BUY'
-and ml1.lookup_code                = msiv.planning_make_buy_code
--- Revision for version 1.20
-and ml2.lookup_type                 = 'SYS_YES_NO'
-and ml2.lookup_code                = to_char(sumqty.is_consigned)
--- Revision for version 1.19
-and fl1.lookup_type                 = 'YES_NO'
-and fl1.lookup_code                 = msiv.inventory_asset_flag
-and fcl.lookup_type (+)             = 'ITEM_TYPE'
-and fcl.lookup_code (+)             = msiv.item_type
--- ===================================================================
--- Using the base tables to avoid the performance issues
--- with org_organization_definitions and hr_operating_units
--- ===================================================================
-and hoi.org_information_context     = 'Accounting Information'
-and hoi.organization_id             = mp.organization_id
-and hoi.organization_id             = haou.organization_id             -- this gets the organization name
--- avoid selecting disabled inventory organizations
-and sysdate                         < nvl(haou.date_to, sysdate +1)
-and haou2.organization_id           = to_number(hoi.org_information3)   -- this gets the operating unit id
-and hoi.org_information1            = gl.ledger_id                      -- this gets the ledger id                        
-and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
-and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
-and 1=1                             -- p_org_code, p_operating_unit, p_ledger
--- ===================================================================
--- Joins for the Accounting information from the item master
--- ===================================================================
-and gcc.code_combination_id (+) = sumqty.code_combination_id
--- Order by Ledger, Operating_Unit, Org_Code, Item, Subinv, Lot_Number
-order by 1,2,3,5,6,7,8,9,10,11,12,23,21
+select
+nvl(gl.short_name,gl.name) ledger,
+haouv_ou.name operating_unit,
+x.organization_code org_code,
+haou.name organization_name,
+msiv.concatenated_segments item_number,
+msiv.description item_description,
+misv.inventory_item_status_code_tl item_status,
+xxen_util.meaning(msiv.item_type,'ITEM_TYPE',3) item_type,
+xxen_util.meaning(msiv.planning_make_buy_code,'MTL_PLANNING_MAKE_BUY',700) make_buy_code,
+xxen_util.yes(msiv.inventory_asset_flag) asset,
+xxen_util.yes(decode(x.is_consigned,1,'Y')) consigned,
+&category_columns
+gl.currency_code,
+cic.item_cost,
+x.lot_number,
+x.expiration_date,
+x.subinventory_code subinventory,
+xxen_util.yes(decode(x.asset_inventory,2,null,'Y')) asset_subinventory,
+(select ccg.cost_group from cst_cost_groups ccg where x.cost_group_id=ccg.cost_group_id) cost_group,
+(select ppa.segment1 from mtl_item_locations mil, pa_projects_all ppa where x.locator_id=mil.inventory_location_id and mil.project_id=ppa.project_id) project,
+msiv.primary_uom_code uom_code,
+x.quantity onhand_quantity,
+round(nvl(cic.material_cost,0)*decode(x.is_consigned,1,0,1)*x.quantity,2) material_value,
+round(nvl(cic.material_overhead_cost,0)*decode(x.is_consigned,1,0,1)*x.quantity,2) material_overhead_value,
+round(nvl(cic.resource_cost,0)*decode(x.is_consigned,1,0,1)*x.quantity,2) resource_value,
+round(nvl(cic.outside_processing_cost,0)*decode(x.is_consigned,1,0,1)*x.quantity,2) outside_processing_value,
+round(nvl(cic.overhead_cost,0)*decode(x.is_consigned,1,0,1)*x.quantity,2) overhead_value,
+round(nvl(cic.item_cost,0)*decode(x.is_consigned,1,0,1)*x.quantity,2) onhand_value
+from
+(
+select
+mp.organization_code,
+moqd.organization_id,
+moqd.inventory_item_id,
+moqd.lot_number,
+mln.expiration_date,
+moqd.locator_id,
+moqd.subinventory_code,
+moqd.cost_group_id,
+msi.asset_inventory,
+moqd.is_consigned,
+sum(moqd.primary_transaction_quantity) quantity
+from
+mtl_parameters mp,
+mtl_onhand_quantities_detail moqd,
+mtl_secondary_inventories msi,
+mtl_lot_numbers mln
+where
+3=3 and
+4=4 and
+mp.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
+mp.organization_id=moqd.organization_id and
+moqd.organization_id=msi.organization_id and
+moqd.subinventory_code=msi.secondary_inventory_name and
+moqd.organization_id=mln.organization_id(+) and
+moqd.inventory_item_id=mln.inventory_item_id(+) and
+moqd.lot_number=mln.lot_number(+)
+group by
+mp.organization_code,
+moqd.organization_id,
+moqd.inventory_item_id,
+moqd.lot_number,
+mln.expiration_date,
+moqd.locator_id,
+moqd.subinventory_code,
+moqd.cost_group_id,
+msi.asset_inventory,
+moqd.is_consigned
+having
+sum(moqd.primary_transaction_quantity)<>0
+) x,
+hr_organization_information hoi,
+hr_all_organization_units haou,
+hr_all_organization_units_vl haouv_ou,
+gl_ledgers gl,
+mtl_system_items_vl msiv,
+mtl_item_status_vl misv,
+(
+select
+cic.organization_id,
+cic.inventory_item_id,
+nvl(cic.material_cost,0) material_cost,
+nvl(cic.material_overhead_cost,0) material_overhead_cost,
+nvl(cic.resource_cost,0) resource_cost,
+nvl(cic.outside_processing_cost,0) outside_processing_cost,
+nvl(cic.overhead_cost,0) overhead_cost,
+nvl(cic.item_cost,0) item_cost
+from
+mtl_parameters mp,
+cst_item_costs cic
+where
+mp.organization_id=cic.organization_id and
+(
+cic.cost_type_id in (select cct.cost_type_id from cst_cost_types cct where 2=2 and :p_cost_type is not null) or
+cic.cost_type_id=mp.primary_cost_method and not exists (select null from cst_item_costs cic2, cst_cost_types cct where cic.organization_id=cic2.organization_id and cic.inventory_item_id=cic2.inventory_item_id and cic2.cost_type_id=cct.cost_type_id and 2=2 and :p_cost_type is not null)
+)
+) cic
+where
+1=1 and
+x.organization_id=hoi.organization_id and
+hoi.org_information_context='Accounting Information' and
+hoi.organization_id=haou.organization_id and
+sysdate<nvl(haou.date_to,sysdate+1) and
+to_number(hoi.org_information3)=haouv_ou.organization_id and
+to_number(hoi.org_information1)=gl.ledger_id and
+x.organization_id=msiv.organization_id and
+x.inventory_item_id=msiv.inventory_item_id and
+msiv.inventory_item_status_code=misv.inventory_item_status_code and
+x.organization_id=cic.organization_id(+) and
+x.inventory_item_id=cic.inventory_item_id(+)
+order by
+ledger,
+operating_unit,
+org_code,
+item_number,
+x.lot_number,
+subinventory

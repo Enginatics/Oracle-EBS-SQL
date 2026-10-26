@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-19
+last_modified_at: 2026-10-26
 title: 'WIP Move Transactions 11i | Oracle EBS SQL Report'
 description: 'WIP move transactions of discrete jobs, lot based jobs, repetitive schedules and flow schedules, one row per transaction, as shown in the View Move…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Work in Process, Enginatics, WIP, Move, Transactions, 11i, mtl_parameters, wip_move_transactions, wip_move_txn_allocations'
@@ -38,6 +38,8 @@ Organization Code, Date From, Date To, Job, Line, Assembly, From Department, To 
 ## Report Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wip-move-transactions-11i)
 
+## Related Reports
+[WIP Move Transactions](/WIP%20Move%20Transactions/ "WIP Move Transactions Oracle EBS SQL Report"), [INV Move Orders](/INV%20Move%20Orders/ "INV Move Orders Oracle EBS SQL Report"), [WIP Move Transaction Upload](/WIP%20Move%20Transaction%20Upload/ "WIP Move Transaction Upload Oracle EBS SQL Report"), [GL Account Analysis](/GL%20Account%20Analysis/ "GL Account Analysis Oracle EBS SQL Report"), [GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report"), [MRP Pegging](/MRP%20Pegging/ "MRP Pegging Oracle EBS SQL Report"), [CRP Resource Plan](/CRP%20Resource%20Plan/ "CRP Resource Plan Oracle EBS SQL Report"), [GL Account Analysis (Drilldown) (with inventory and WIP)](/GL%20Account%20Analysis%20%28Drilldown%29%20%28with%20inventory%20and%20WIP%29/ "GL Account Analysis (Drilldown) (with inventory and WIP) Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/WIP%20Move%20Transactions%2011i/WIP%20Move%20Transactions%2011i.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wip-move-transactions-11i) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.

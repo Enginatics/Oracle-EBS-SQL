@@ -5,13 +5,14 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PA Budget Upload
--- Description: The PA Budget Upload supports the creation/update of standard project budgets.
--- At this stage it does not support the creation/update of Financial Plan Budgets.
+-- Description: The PA Budget Upload supports the creation/update of standard project budgets (Budget Type) and of financial plan budgets and forecasts maintained in the Projects HTML pages (Plan Type).
+-- A row carries either a Budget Type or a Plan Type. For a plan type planned separately for cost and revenue, the Version Type selects the cost or the revenue version.
+-- For a Plan Type, Create mode creates a new current working version that replaces the existing one and takes the planning level, time phasing and resource list of the plan type's setup for the project. Update mode changes the current working version, which keeps its own setup.
 -- The PA Budget Upload allows users to:
 -- - Create new working budgets.
 -- When creating a new working budget, any existing working budget for the specified Project and Budget Type will be overwritten.
 -- The upload allows the user to create a working budget either by entering the data directly into an empty upload excel file, or by copying a prior version of the budget and modifying this in the upload excel file.
--- - Update existing working budgets.
+-- - Update existing working budgets (Upload Mode Create, Update).
 -- This option allows for the update of an existing working budget. In this mode the existing budget is retained, and the update mode allows for individual budget lines to be added, updated, and/or deleted from the existing working budget.
 -- - Additionally, the upload allows users to Baseline a Working Budget.
 -- Working Budgets can be uploaded against the Projects belonging to the Operating Units accessible to the responsibility in which the PA Budget Upload process is run.
@@ -36,6 +37,8 @@ haouv.name operating_unit,
 ppa.segment1 project_number,
 ppa.name project_name,
 pbt.budget_type,
+pfptv.name plan_type,
+xxen_util.meaning(pbv.version_type,'FIN_PLAN_VER_TYPE',275) version_type,
 pbv.version_name,
 --pbv.version_number,
 --pbv.budget_status_m status,
@@ -104,6 +107,7 @@ hr_all_organization_units_vl haouv,
 pa_projects_all ppa,
 pa_budget_versions pbv,
 pa_budget_types pbt,
+pa_fin_plan_types_vl pfptv,
 pa_budget_entry_methods pbem,
 pa_resource_lists prl,
 pa_resource_assignments pra,
@@ -117,8 +121,6 @@ pa_tasks pt,
   substr(sys_connect_by_path (prlm.alias,'|'),2) alias_path
  from
   pa_resource_list_members prlm
- where
-  nvl(prlm.migration_code, '-99') <> 'N'
  connect by
   prior prlm.resource_list_member_id = prlm.parent_member_id and
   prior prlm.resource_list_id = prlm.resource_list_id
@@ -127,7 +129,7 @@ pa_tasks pt,
 ) prlm
 where
 1=1 and
-( (:p_upload_mode = xxen_upload.action_update and pbv.budget_status_code IN ('W','S')) or -- draft
+( (:p_upload_mode like '%'||xxen_upload.action_update and pbv.budget_status_code IN ('W','S')) or -- draft
   (:p_upload_mode = xxen_upload.action_create and :p_create_copy = xxen_util.meaning('Y','YES_NO',0))
 ) and
 haouv.name = nvl(:p_operating_unit,haouv.name) and
@@ -135,8 +137,10 @@ nvl(:p_pm_product_code,'?') = nvl(:p_pm_product_code,'?') and
 haouv.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11) and
 haouv.organization_id = ppa.org_id and
 ppa.project_id = pbv.project_id and
-pbv.budget_type_code = pbt.budget_type_code and
-pbv.budget_entry_method_code = pbem.budget_entry_method_code and
+(pbv.budget_type_code is not null or pbv.fin_plan_type_id is not null and nvl(pbv.wp_version_flag,'N')='N' and pbv.ci_id is null and pbv.version_type<>'ORG_FORECAST' and (pbv.budget_type_code is not null or pbv.budget_status_code='B' or pbv.current_working_flag='Y')) and
+pbv.budget_type_code = pbt.budget_type_code (+) and
+pbv.fin_plan_type_id = pfptv.fin_plan_type_id (+) and
+pbv.budget_entry_method_code = pbem.budget_entry_method_code (+) and
 pbv.resource_list_id = prl.resource_list_id and
 pbv.budget_version_id  = pra.budget_version_id (+) and
 pbv.project_id = pra.project_id (+) and

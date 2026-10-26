@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-16
+last_modified_at: 2026-10-26
 title: 'PER Jobs and Positions | Oracle EBS SQL Report'
 description: 'Positions valid at the Effective Date with their job, organization, status, valid grades, FTE, maximum persons, headcount and incumbent FTE, plus the jobs…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Human Resources, Enginatics, PER, Jobs, Positions, per_grades_vl, per_valid_grades, hr_all_positions_f_vl'
@@ -35,7 +35,7 @@ Effective Date, Business Group, Organization, Job, Position, Record Type, Vacant
 [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-jobs-and-positions)
 
 ## Related Reports
-[PER Person Assignment Upload](/PER%20Person%20Assignment%20Upload/ "PER Person Assignment Upload Oracle EBS SQL Report"), [PER New Hires](/PER%20New%20Hires/ "PER New Hires Oracle EBS SQL Report"), [PER Position Hierarchy](/PER%20Position%20Hierarchy/ "PER Position Hierarchy Oracle EBS SQL Report"), [PER Employee Assignments](/PER%20Employee%20Assignments/ "PER Employee Assignments Oracle EBS SQL Report"), [PER Employee Length of Service](/PER%20Employee%20Length%20of%20Service/ "PER Employee Length of Service Oracle EBS SQL Report"), [GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report")
+[PER Person Assignment Upload](/PER%20Person%20Assignment%20Upload/ "PER Person Assignment Upload Oracle EBS SQL Report"), [PER New Hires](/PER%20New%20Hires/ "PER New Hires Oracle EBS SQL Report"), [PER Position Hierarchy](/PER%20Position%20Hierarchy/ "PER Position Hierarchy Oracle EBS SQL Report"), [PER Employee Assignments](/PER%20Employee%20Assignments/ "PER Employee Assignments Oracle EBS SQL Report"), [PER Employee Length of Service](/PER%20Employee%20Length%20of%20Service/ "PER Employee Length of Service Oracle EBS SQL Report"), [PER Position Upload](/PER%20Position%20Upload/ "PER Position Upload Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/PER%20Jobs%20and%20Positions/PER%20Jobs%20and%20Positions.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-jobs-and-positions) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.

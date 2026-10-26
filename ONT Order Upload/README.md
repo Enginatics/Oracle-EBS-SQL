@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-19
+last_modified_at: 2026-10-26
 title: 'ONT Order Upload | Oracle EBS SQL Report'
 description: 'Upload to Create, Update, Book and Cancel Sales Orders in Oracle Order Management. Supports creating new orders, updating existing orders, adding new…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, ONT, Order, oe_contacts_v, hz_cust_account_roles, hz_relationships'

@@ -14,6 +14,7 @@
 select
 &serial_columns
 x.*,
+&category_columns
 case
 when x.aging_days<=30 then '1. 0-30 Days'
 when x.aging_days<=60 then '2. 31-60 Days'
@@ -47,11 +48,12 @@ msi.description subinventory_description,
 xxen_util.meaning(nvl(msi.subinventory_type, 1),'MTL_SUB_TYPES',700) subinventory_type,
 nvl(inv_project.get_locator(milk.inventory_location_id,milk.organization_id),milk.concatenated_segments) locator,
 xxen_util.meaning(milk.inventory_location_type,'MTL_LOCATOR_TYPES',700) locator_type,
-mmsv.status_code status,
+mmsv.status_code locator_status,
 msiv.concatenated_segments item,
 msiv.description item_description,
 to_char(msiv.creation_date,'DD-Mon-YYYY HH24:MI:SS') item_creation_date,
 xxen_util.meaning(msiv.item_type,'ITEM_TYPE',3) user_item_type,
+(select misv.inventory_item_status_code_tl from mtl_item_status_vl misv where msiv.inventory_item_status_code=misv.inventory_item_status_code) item_status,
 xxen_util.meaning(msiv.wip_supply_type,'WIP_SUPPLY',700) wip_supply_type,
 (
 select listagg(mac.abc_class_name, ',') within group (order by mac.abc_class_name)
@@ -71,7 +73,6 @@ maa.assignment_group_id=maag.assignment_group_id and
 maa.inventory_item_id=moqd.inventory_item_id
 )
 ) abc_class_name,
-&category_columns
 case when :category_set_1 is not null then
 (
 select min(mcbk.concatenated_segments) keep (dense_rank first order by mic.category_id)

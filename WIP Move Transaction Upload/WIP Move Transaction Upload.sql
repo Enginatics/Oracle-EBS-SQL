@@ -6,7 +6,7 @@
 /*************************************************************************/
 -- Report Name: WIP Move Transaction Upload
 -- Description: Creates move transactions as in the Move Transactions form: moves between operations and intraoperation steps, including moves into and out of Reject and Scrap, Move and completion transactions and Return and move transactions, for discrete jobs and for the repetitive schedules of a line and assembly. Each row is posted immediately, with backflush, completion, outside processing and autocharge resources as for a move entered in the form.
--- Upload Mode Create opens an empty sheet. Create, Update downloads the Queue, Run and To move steps of the selected jobs and schedules that hold a quantity, with their Available quantity, as new move rows: enter To Step and Quantity on the rows to move, rows left unchanged are not uploaded. An existing move is never updated; correct it with another move, for example a backward move or a Return and move transaction.
+-- Upload Mode Create opens an empty sheet. Create, Update downloads the Queue, Run and To move steps of the selected jobs and schedules that hold a quantity, with their Available quantity, as new move rows: enter To Step and Quantity on the rows to move, rows left unchanged are not uploaded. On a downloaded row only the move can be changed; a move from another step goes on a new row. To move of the last operation is not downloaded, and a Move and completion cannot start there, as in the form: complete those assemblies with WIP Completion Upload. An existing move is never updated; correct it with another move, for example a backward move or a Return and move transaction.
 -- Completions, returns and overcompletions follow the Transaction Types and Allow Overcompletion parameters, not the function Move Transactions is launched from. A .csv or plain .xlsx file, and an add-in upload of a sheet another user downloaded, run with the parameter defaults of the template named in the upload, else with the parameter defaults.
 -- With E-Records and E-Signatures set to Yes, discrete job moves create e-records as in the Move Transactions form, also where the move or material processing profiles are set to background, where the form creates none. A move that needs an e-signature is refused and has to be entered in the form. With the parameter cleared, moves are posted without e-records, as through the WIP move interface.
 -- Not supported: operations added on the fly, manual resource transactions, serialized jobs and backflush lot and serial entry. A move fails when a backflush component is serial controlled, or lot controlled with a lot that cannot be derived; derived lots are not verified. Mandatory quality collection plans are not enforced, as by the WIP move interface, and No Move shop floor statuses always apply, also for users of the form function that overrides them.
@@ -24,13 +24,13 @@ to_number(null) transaction_id,
 x.organization_code,
 to_char(null) sales_order,
 to_char(null) order_line,
+x.job,
+x.job_description,
 x.line,
 x.line_description,
 x.assembly,
 x.assembly_description,
 x.primary_uom,
-x.job,
-x.job_description,
 x.bill_revision,
 xxen_util.meaning(1,'WIP_MOVE_TRANSACTION_TYPE',700) transaction_type,
 x.from_seq,
@@ -128,7 +128,8 @@ wdj.wip_entity_id=wo.wip_entity_id and
 wo.standard_operation_id=bso.standard_operation_id(+) and
 nvl(bso.operation_type,1)=1 and
 bso.line_id is null and
-wo.department_id=bd.department_id
+wo.department_id=bd.department_id and
+(rowgen.column_value<>3 or wo.next_operation_seq_num is not null)
 ) y,
 wip_operations wo_to,
 bom_standard_operations bso_to,
@@ -204,7 +205,8 @@ wrs.repetitive_schedule_id=wo.repetitive_schedule_id and
 wo.standard_operation_id=bso.standard_operation_id(+) and
 nvl(bso.operation_type,1)=1 and
 bso.line_id is null and
-wo.department_id=bd.department_id
+wo.department_id=bd.department_id and
+(rowgen.column_value<>3 or wo.next_operation_seq_num is not null)
 group by
 mp.organization_code,
 wl.line_code,

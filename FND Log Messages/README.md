@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-19
+last_modified_at: 2026-10-26
 title: 'FND Log Messages | Oracle EBS SQL Report'
 description: 'Oracle EBS Application Object Library SQL report: free SQL, parameters and tables used.'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Application Object Library, Enginatics, FND, Log, Messages, fnd_log_messages, fnd_log_transaction_context'
@@ -31,7 +31,7 @@ User Name, Module, Module Contains, Logged within x Days, Date From, Date To, Lo
 [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fnd-log-messages)
 
 ## Related Reports
-[CAC Interface Error Summary](/CAC%20Interface%20Error%20Summary/ "CAC Interface Error Summary Oracle EBS SQL Report"), [FND Messages](/FND%20Messages/ "FND Messages Oracle EBS SQL Report"), [DBA Database Parameter Validation](/DBA%20Database%20Parameter%20Validation/ "DBA Database Parameter Validation Oracle EBS SQL Report"), [GL Summary Account Upload](/GL%20Summary%20Account%20Upload/ "GL Summary Account Upload Oracle EBS SQL Report"), [AR Autoinvoice Interface](/AR%20Autoinvoice%20Interface/ "AR Autoinvoice Interface Oracle EBS SQL Report"), [FND Concurrent Requests](/FND%20Concurrent%20Requests/ "FND Concurrent Requests Oracle EBS SQL Report")
+[CAC Interface Error Summary](/CAC%20Interface%20Error%20Summary/ "CAC Interface Error Summary Oracle EBS SQL Report"), [FND Messages](/FND%20Messages/ "FND Messages Oracle EBS SQL Report"), [DBA Database Parameter Validation](/DBA%20Database%20Parameter%20Validation/ "DBA Database Parameter Validation Oracle EBS SQL Report"), [AR Autoinvoice Interface](/AR%20Autoinvoice%20Interface/ "AR Autoinvoice Interface Oracle EBS SQL Report"), [GL Summary Account Upload](/GL%20Summary%20Account%20Upload/ "GL Summary Account Upload Oracle EBS SQL Report"), [FND Concurrent Requests](/FND%20Concurrent%20Requests/ "FND Concurrent Requests Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/FND%20Log%20Messages/FND%20Log%20Messages.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fnd-log-messages) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.

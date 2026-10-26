@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-16
+last_modified_at: 2026-10-26
 title: 'CST Inventory Value Report - by Subinventory (Item Cost) | Oracle EBS SQL Report'
 description: 'Imported Oracle standard inventory value subinventory report by item cost Source: Inventory Value Report - by Subinventory (XML) Short Name: CSTRINVRXML…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Cost Management, Enginatics, R12 only, CST, Inventory, Value, Report, mtl_categories_b_kfv, mtl_system_items_vl, mtl_secondary_inventories'
@@ -34,7 +34,7 @@ Cost Type, As of Date, Item From, Item To, Category Set, Category From, Category
 [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-inventory-value-report-by-subinventory-item-cost), [R12 only](https://www.enginatics.com/library/?pg=1&category%5B%5D=R12%20only&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-inventory-value-report-by-subinventory-item-cost)
 
 ## Related Reports
-[INV Transaction Historical Summary](/INV%20Transaction%20Historical%20Summary/ "INV Transaction Historical Summary Oracle EBS SQL Report"), [CST Subinventory Account Value - Multi-Org](/CST%20Subinventory%20Account%20Value%20-%20Multi-Org/ "CST Subinventory Account Value - Multi-Org Oracle EBS SQL Report"), [CST Inventory Value - Multi-Organization (Item Costs)](/CST%20Inventory%20Value%20-%20Multi-Organization%20%28Item%20Costs%29/ "CST Inventory Value - Multi-Organization (Item Costs) Oracle EBS SQL Report"), [CAC Inventory and Intransit Value (Period-End) - Discrete/OPM](/CAC%20Inventory%20and%20Intransit%20Value%20%28Period-End%29%20-%20Discrete-OPM/ "CAC Inventory and Intransit Value (Period-End) - Discrete/OPM Oracle EBS SQL Report")
+[INV Transaction Historical Summary](/INV%20Transaction%20Historical%20Summary/ "INV Transaction Historical Summary Oracle EBS SQL Report"), [CST Subinventory Account Value - Multi-Org](/CST%20Subinventory%20Account%20Value%20-%20Multi-Org/ "CST Subinventory Account Value - Multi-Org Oracle EBS SQL Report"), [CST Inventory Value - Multi-Organization (Item Costs)](/CST%20Inventory%20Value%20-%20Multi-Organization%20%28Item%20Costs%29/ "CST Inventory Value - Multi-Organization (Item Costs) Oracle EBS SQL Report"), [INV Onhand Quantities](/INV%20Onhand%20Quantities/ "INV Onhand Quantities Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/CST%20Inventory%20Value%20Report%20-%20by%20Subinventory%20%28Item%20Cost%29/CST%20Inventory%20Value%20Report%20-%20by%20Subinventory%20%28Item%20Cost%29.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-inventory-value-report-by-subinventory-item-cost) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.

@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-19
+last_modified_at: 2026-10-26
 title: 'CST Subinventory Account Value - Multi-Org | Oracle EBS SQL Report'
 description: 'Report: CST Subinventory Account Value - Multi-Org Description: Shows onhand inventory value broken down by GL account and cost element across multiple…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Cost Management, Enginatics, R12 only, CST, Subinventory, Account, Value, cst_inv_qty_temp, cst_inv_cost_temp, mtl_parameters'
@@ -49,6 +49,8 @@ Ledger, Operating Unit, Organization Code, Cost Type, As of Date, Costing Enable
 ## Report Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-subinventory-account-value-multi-org), [R12 only](https://www.enginatics.com/library/?pg=1&category%5B%5D=R12%20only&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-subinventory-account-value-multi-org)
 
+## Related Reports
+[CST Inventory Value - Multi-Organization (Item Costs)](/CST%20Inventory%20Value%20-%20Multi-Organization%20%28Item%20Costs%29/ "CST Inventory Value - Multi-Organization (Item Costs) Oracle EBS SQL Report"), [CST Inventory Value Report - by Subinventory (Item Cost)](/CST%20Inventory%20Value%20Report%20-%20by%20Subinventory%20%28Item%20Cost%29/ "CST Inventory Value Report - by Subinventory (Item Cost) Oracle EBS SQL Report"), [INV Transaction Historical Summary](/INV%20Transaction%20Historical%20Summary/ "INV Transaction Historical Summary Oracle EBS SQL Report"), [INV Items](/INV%20Items/ "INV Items Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/CST%20Subinventory%20Account%20Value%20-%20Multi-Org/CST%20Subinventory%20Account%20Value%20-%20Multi-Org.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-subinventory-account-value-multi-org) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.

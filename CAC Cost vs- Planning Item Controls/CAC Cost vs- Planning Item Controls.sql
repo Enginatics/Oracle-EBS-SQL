@@ -56,312 +56,128 @@
 -- -- | tabs, add operating unit and ledger security and inventory access controls.
 -- -- | 1.37 10 Apr 2025 Douglas Volz Added in new GL and OU security profiles.
 -- -- | 1.38 13 Apr 2025 Douglas Volz Fix ORA-43916 Collation Error for character expressions 'Y', 'N'.
+-- -- | 1.39 23 Oct 2026 Andy Haack Rebuilt to the Blitz Report SQL standards.
 -- -- +=============================================================================+/
 -- Excel Example Output: https://www.enginatics.com/example/cac-cost-vs-planning-item-controls/
 -- Library Link: https://www.enginatics.com/reports/cac-cost-vs-planning-item-controls/
 -- Run Report: https://demo.enginatics.com/
 
-with rept as
-        (select mp.organization_code,
-                cct.cost_type,
-                cct.cost_type_id,
-                msiv.concatenated_segments,
-                msiv.description,
-                muomv.uom_code,
-                msiv.item_type,
-                misv.inventory_item_status_code_tl,
-                msiv.planning_make_buy_code,
-                msiv.inventory_item_id,
-                msiv.organization_id,
-                -- check to see if a bom exists
-                -- Revision for version 1.38, fix ORA-43916
-                -- nvl((select distinct 'Y'
-                nvl((select distinct mp.organization_code
-                     from   bom_structures_b bom
-                     where  bom.organization_id     = mp.organization_id
-                     and    bom.assembly_item_id    = msiv.inventory_item_id
-                     and    bom.alternate_bom_designator is null
-                -- Revision for version 1.38, fix ORA-43916
-                -- ), 'N') bom,
-                ), null) bom,
-                -- check to see if a routing exists
-                -- Revision for version 1.38, fix ORA-43916
-                -- nvl((select distinct 'Y'
-                nvl((select distinct mp.organization_code
-                     from   bom_operational_routings bor
-                     where  bor.organization_id     = mp.organization_id
-                     and    bor.assembly_item_id    = msiv.inventory_item_id
-                     and    bor.alternate_routing_designator is null
-                -- Revision for version 1.38, fix ORA-43916
-                -- ), 'N') routing,
-                ), null) routing,
-                -- check to see if a sourcing rule exists for the receipt org
-                -- Revision for version 1.38, fix ORA-43916
-                -- nvl((select distinct 'Y'
-                nvl((select distinct mp.organization_code
-                     from   mrp_sr_receipt_org msro,
-                            mrp_sr_source_org msso,
-                            mrp_sourcing_rules msr,
-                            mrp_sr_assignments msa,
-                            mrp_assignment_sets mas
-                     where  msr.sourcing_rule_id    = msro.sourcing_rule_id
-                     -- fix for version 1.4, check to see if the sourcing rule is
-                     -- for an inventory org, not a vendor
-                     and    msso.sr_receipt_id      = msro.sr_receipt_id
-                     and    msso.source_organization_id is not null
-                     and    msa.sourcing_rule_id    = msr.sourcing_rule_id
-                     and    msa.assignment_set_id   = mas.assignment_set_id
-                     and    msiv.organization_id    = msa.organization_id
-                     and    msiv.inventory_item_id  = msa.inventory_item_id
-                     and    mp.organization_id      = msa.organization_id
-                     and    3=3                     -- p_assignment_set
-                     -- Revision for version 1.38, fix ORA-43916
-                -- ), 'N') sourcing_rule,
-                ), null) sourcing_rule,
-                cic.based_on_rollup_flag,
-                -- Revision for version 1.35
-                cic.defaulted_flag,
-                msiv.costing_enabled_flag,
-                msiv.inventory_asset_flag,
-                to_char(cic.inventory_asset_flag) cost_asset_flag,
-                msiv.std_lot_size,
-                cic.lot_size cost_lot_size,
-                cic.item_cost,
-                -- Revision for version 1.36
-                onhand.quantity Onhand_Quantity,
-                cic.creation_date cost_creation_date,
-                -- End revision for version 1.36
-                msiv.creation_date item_creation_date
-         from   mtl_system_items_vl msiv,
-                mtl_units_of_measure_vl muomv,
-                mtl_item_status_vl misv, 
-                cst_item_costs cic,
-                cst_cost_types cct,
-                mtl_parameters mp,
-                -- Revision for version 1.36
-                (select moqd.organization_id,
-                        moqd.inventory_item_id,
-                        sum(moqd.transaction_quantity) quantity
-                 from   mtl_onhand_quantities_detail moqd,
-                        mtl_parameters mp
-                 where  moqd.is_consigned               = 2 -- No
-                 and    mp.organization_id              = moqd.organization_id
-                 and    4=4                             -- p_org_code
-                 group by
-                        moqd.organization_id,
-                        moqd.inventory_item_id
-                ) onhand
-                -- End revision for version 1.36
-         -- ===================================================================
-         -- Cost type, organization, item master and report specific controls
-         -- ===================================================================
-         where  cic.cost_type_id                = cct.cost_type_id
-         and    mp.organization_id              = cic.organization_id
-         and    msiv.organization_id            = cic.organization_id
-         and    msiv.inventory_item_id          = cic.inventory_item_id
-         and    msiv.primary_uom_code           = muomv.uom_code
-         and    misv.inventory_item_status_code = msiv.inventory_item_status_code
-         and    msiv.inventory_item_status_code <> 'Inactive'
-         -- Revision for version 1.36
-         and    onhand.inventory_item_id (+)    = msiv.inventory_item_id
-         and    onhand.organization_id (+)      = msiv.organization_id
-         -- End revision for version 1.36
-         -- Avoid unused inventory organizations
-         and    mp.organization_id             <> mp.master_organization_id -- the item master org usually does not have costs
-         and    mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-         and    2=2                             -- p_cost_type, p_item_number
-         and    4=4                             -- p_org_code
-        )
-
---------------- main sql starts here -----------------------
-
-
-select  rept_all.report_type,
-        nvl(gl.short_name, gl.name) Ledger,
-        haou2.name Operating_Unit,
-        rept_all.organization_code Org_Code,
-        rept_all.cost_type Cost_Type,
-        rept_all.concatenated_segments Item_Number,
-        rept_all.description Item_Description,
-        rept_all.uom_code UOM_Code,
-        fcl.meaning Item_Type,
-        rept_all.inventory_item_status_code_tl Item_Status,
-        ml1.meaning Make_Buy_Code,
+select
+decode(rowgen.column_value,
+1,'Based on Rollup Yes - No BOMs',
+2,'Based on Rollup Yes - No Routing',
+3,'Based on Rollup Yes - No Rollup',
+4,'Based on Rollup Yes - Buy Items',
+5,'Based on Rollup No - With BOMs',
+6,'Based on Rollup No - With Sourcing Rules',
+7,'Based on Rollup No - Make Items',
+8,'Lot-Based Resources With Lot Size 1',
+9,'BOMs With No Components',
+10,'Item Costing vs. Item Asset Controls',
+11,'Item Asset vs. Costing Asset Controls',
+12,'Based on Rollup No - Defaulted Costs') report_type,
+nvl(gl.short_name,gl.name) ledger,
+haouv_ou.name operating_unit,
+x.organization_code org_code,
+x.cost_type,
+x.item_number,
+x.item_description,
+x.uom_code,
+xxen_util.meaning(x.item_type,'ITEM_TYPE',3) item_type,
+x.item_status,
+xxen_util.meaning(x.planning_make_buy_code,'MTL_PLANNING_MAKE_BUY',700) make_buy_code,
 &category_columns
-        fl1.meaning BOM,
-        fl2.meaning Routing,
-        fl3.meaning Sourcing_Rule,
-        ml2.meaning Based_on_Rollup,
-        -- Revision for version 1.35
-        ml4.meaning Defaulted_Flag,
-        fl4.meaning Costing_Enabled,
-        fl5.meaning Item_Inventory_Asset,
-        ml3.meaning Cost_Inventory_Asset,
-        rept_all.std_lot_size Item_Std_Lot_Size,
-        rept_all.cost_lot_size Cost_Lot_Size,
-        gl.currency_code Currency_Code,
-        rept_all.Item_Cost,
-        -- Revision for version 1.36
-        rept_all.Onhand_Quantity,
-        rept_all.Cost_Creation_Date,
-        rept_all.item_creation_date Item_Creation_Date
-        -- End revision for version 1.36
-from    mfg_lookups ml1, -- Make/buy code, MTL_PLANNING_MAKE_BUY
-        mfg_lookups ml2, -- based on rollup, CST_BONROLLUP_VAL
-        mfg_lookups ml3, -- Cost inventory_asset_flag, SYS_YES_NO
-        -- Revision for version 1.35
-        mfg_lookups ml4, -- Cost defaulted_flag, SYS_YES_NO
-        fnd_lookups fl1, -- BOM, YES_NO
-        fnd_lookups fl2, -- Routing, YES_NO
-        fnd_lookups fl3, -- Sourcing_Rule, YES_NO
-        fnd_lookups fl4, -- Item costing enabled, YES_NO
-        fnd_lookups fl5, -- Item inventory asset, YES_NO
-        fnd_common_lookups fcl, -- Item Type
-        hr_organization_information hoi,
-        hr_all_organization_units_vl haou,  -- inv_organization_id
-        hr_all_organization_units_vl haou2, -- operating unit
-        gl_ledgers gl,
-        (
-         -- ===============================================
-         -- Report 1 - 'Based on Rollup Yes - No BOMs'
-         -- ===============================================
-         select 'Based on Rollup Yes - No BOMs' report_type, rept.* from rept where rept.costing_enabled_flag = 'Y' and rept.planning_make_buy_code = 1 and rept.based_on_rollup_flag = 1 and rept.bom = 'N' 
-         union all
-         -- ===============================================
-         -- Report 2 - 'Based on Rollup Yes - No Routing'
-         -- ===============================================
-         select 'Based on Rollup Yes - No Routing' report_type, rept.* from rept where rept.costing_enabled_flag = 'Y' and rept.planning_make_buy_code = 1 and rept.based_on_rollup_flag = 1 and rept.routing = 'N'
-         union all
-         -- ===============================================
-         -- Report 3 - 'Based on Rollup Yes - No Rollup'
-         -- ===============================================
-         select 'Based on Rollup Yes - No Rollup' report_type, rept.* from rept where rept.costing_enabled_flag = 'Y' and (rept.planning_make_buy_code = 1 or (rept.planning_make_buy_code = 2 and rept.sourcing_rule = 'Y')) and rept.based_on_rollup_flag = 1
-                and not exists
-                        (select 'x'
-                         from   cst_item_cost_details cicd
-                         where  cicd.organization_id    = rept.organization_id
-                         and    cicd.inventory_item_id  = rept.inventory_item_id
-                         and    cicd.cost_type_id       = rept.cost_type_id
-                         and    cicd.rollup_source_type = 3 -- rolled up
-                        )
-         union all
-         -- ===============================================
-         -- Report 4 - 'Based on Rollup Yes - Buy Items'
-         -- ===============================================
-         select 'Based on Rollup Yes - Buy Items' report_type, rept.* from rept where rept.costing_enabled_flag = 'Y' and rept.planning_make_buy_code = 2 and rept.based_on_rollup_flag = 1 and rept.sourcing_rule = 'N'
-         union all
-         -- ===============================================
-         -- Report 5 - 'Based on Rollup No - With BOMs'
-         -- ===============================================
-         select 'Based on Rollup No - With BOMs' report_type, rept.* from rept where rept.costing_enabled_flag = 'Y' and rept.planning_make_buy_code = 1 and rept.based_on_rollup_flag = 2 and (rept.bom = 'Y' or rept.routing = 'Y')
-         union all 
-         -- ===============================================
-         -- Report 6 - 'Based on Rollup No - With Sourcing Rules'
-         -- ===============================================
-         select 'Based on Rollup No - With Sourcing Rules' report_type, rept.* from rept where rept.costing_enabled_flag = 'Y' and rept.based_on_rollup_flag = 2 and rept.sourcing_rule = 'Y'
-         union all
-         -- ===============================================
-         -- Report 7 - 'Based on Rollup No - Make Items'
-         -- ===============================================
-         select 'Based on Rollup No - Make Items' report_type, rept.* from rept where rept.costing_enabled_flag = 'Y' and rept.planning_make_buy_code = 1 and rept.based_on_rollup_flag = 2
-         union all
-         -- ===============================================
-         -- Report 8 - 'Lot-Based Resources With Lot Size 1'
-         -- ===============================================
-         select 'Lot-Based Resources With Lot Size 1' report_type, rept.* from rept where rept.costing_enabled_flag = 'Y' and nvl(rept.cost_lot_size,1) = 1 and rept.planning_make_buy_code = 1
-                and exists
-                        -- check to see if there are material or resource charges based on Lot
-                        (select 'x'
-                         from   cst_item_cost_details cicd
-                         where  cicd.organization_id    = rept.organization_id
-                         and    cicd.inventory_item_id  = rept.inventory_item_id
-                         and    cicd.cost_type_id       = rept.cost_type_id
-                         and    cicd.basis_type         = 2 -- Lot
-                        )
-         union all
-         -- ===============================================
-         -- Report 9 - BOMs With No Components
-         -- ===============================================
-         select 'BOMs With No Components' report_type, rept.* from rept where rept.costing_enabled_flag = 'Y' and rept.based_on_rollup_flag = 1 and rept.bom = 'Y'
-                and not exists
-                        -- check to see if a BOM exists with components
-                        (select 'x'
-                         from   bom_structures_b bom,
-                                bom_components_b comp
-                         where  bom.organization_id     = rept.organization_id
-                         and    bom.assembly_item_id    = rept.inventory_item_id
-                         and    bom.bill_sequence_id    = comp.bill_sequence_id
-                         and    comp.effectivity_date  <= sysdate
-                         and    nvl(comp.disable_date, sysdate+1) >  sysdate        
-                        )
-         union all
-         -- ==========================================
-         -- Report 10 - Item Costing vs. Item Asset Controls
-         -- ==========================================
-         -- Costing_Enabled <> Item_Inventory_Asset
-         select 'Item Costing vs. Item Asset Controls' report_type, rept.* from rept where rept.costing_enabled_flag <> rept.inventory_asset_flag
-         union all
-         -- ===============================================
-         -- Report 11 - Item Asset vs. Costing Asset Controls
-         -- ===============================================
-         -- Item_Inventory_Asset <> Cost Inventory_Asset
-         select 'Item Asset vs. Costing Asset Controls' report_type, rept.* from rept where rept.inventory_asset_flag <> decode(rept.cost_asset_flag, 1, 'Y', 'N')
-         -- Revision for version 1.35
-         union all
-         -- ===============================================
-         -- Report 12 - Based on Rollup No - Defaulted Costs
-         -- ===============================================
-         select 'Based on Rollup No - Defaulted Costs' report_type, rept.* from rept where rept.defaulted_flag = 1 and rept.based_on_rollup_flag = 2
-        -- End revision for version 1.35
-        ) rept_all
--- ===================================================================
--- Joins for the lookup codes
--- ===================================================================
-where   ml1.lookup_type             = 'MTL_PLANNING_MAKE_BUY'
-and     ml1.lookup_code             = rept_all.planning_make_buy_code
-and     ml2.lookup_type             = 'CST_BONROLLUP_VAL'
-and     ml2.lookup_code             = rept_all.based_on_rollup_flag
-and     ml3.lookup_type             = 'SYS_YES_NO'
-and     ml3.lookup_code             = rept_all.cost_asset_flag
--- Revision for version 1.35
-and     ml4.lookup_type             = 'SYS_YES_NO'
-and     ml4.lookup_code             = rept_all.defaulted_flag
--- End revision for version 1.35
--- Revision for version 1.38
-and     fl1.lookup_type             = 'YES_NO'
-and     fl1.lookup_code             = decode(rept_all.bom, rept_all.organization_code, 'Y', 'N')
-and     fl2.lookup_type             = 'YES_NO'
-and     fl2.lookup_code             = decode(rept_all.routing, rept_all.organization_code, 'Y', 'N')
-and     fl3.lookup_type             = 'YES_NO'
-and     fl3.lookup_code             = decode(rept_all.sourcing_rule, rept_all.organization_code, 'Y', 'N')
--- End revision for version 1.38
-and     fl4.lookup_type             = 'YES_NO'
-and     fl4.lookup_code             = rept_all.costing_enabled_flag
-and     fl5.lookup_type             = 'YES_NO'
-and     fl5.lookup_code             = rept_all.inventory_asset_flag
-and     fcl.lookup_type (+)         = 'ITEM_TYPE'
-and     fcl.lookup_code (+)         = rept_all.item_type
--- ===================================================================
--- using the base tables to avoid hr views
--- ===================================================================
-and     hoi.org_information_context = 'Accounting Information'
-and     hoi.organization_id         = rept_all.organization_id
-and     hoi.organization_id         = haou.organization_id -- this gets the organization name
--- avoid selecting disabled inventory organizations
-and     sysdate < nvl(haou.date_to, sysdate + 1)
-and     haou2.organization_id       = to_number(hoi.org_information3) -- this gets the operating unit id
-and     hoi.org_information1        = gl.ledger_id      -- this gets the ledger id
--- Revision for version 1.37
--- Revision for Operating Unit and Ledger Controls and Parameters, replacing prior method.
-and     (nvl(fnd_profile.value('XXEN_REPORT_USE_LEDGER_SECURITY'),'N')='N' or gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+)))
-and     (nvl(fnd_profile.value('XXEN_REPORT_USE_OPERATING_UNIT_SECURITY'),'N')='N' or haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11))
--- End revision for version 1.37
-and     1=1                         -- p_operating_unit, p_ledger
--- Order by Report Type, Ledger, Operating_Unit, Org_Code, Cost_Type, Item_Number
+xxen_util.yes(x.bom) bom,
+xxen_util.yes(x.routing) routing,
+xxen_util.yes(x.sourcing_rule) sourcing_rule,
+xxen_util.meaning(x.based_on_rollup_flag,'CST_BONROLLUP_VAL',700) based_on_rollup,
+xxen_util.yes(decode(x.defaulted_flag,1,'Y')) defaulted_flag,
+xxen_util.yes(x.costing_enabled_flag) costing_enabled,
+xxen_util.yes(x.inventory_asset_flag) item_inventory_asset,
+xxen_util.yes(decode(x.cost_asset_flag,1,'Y')) cost_inventory_asset,
+x.std_lot_size item_std_lot_size,
+x.cost_lot_size,
+gl.currency_code,
+x.item_cost,
+x.onhand_quantity,
+x.cost_creation_date,
+x.item_creation_date
+from
+(
+select
+mp.organization_code,
+cct.cost_type,
+cic.cost_type_id,
+msiv.organization_id,
+msiv.inventory_item_id,
+msiv.concatenated_segments item_number,
+msiv.description item_description,
+msiv.primary_uom_code uom_code,
+msiv.item_type,
+misv.inventory_item_status_code_tl item_status,
+msiv.planning_make_buy_code,
+case when exists (select null from bom_structures_b bsb where msiv.inventory_item_id=bsb.assembly_item_id and msiv.organization_id=bsb.organization_id and bsb.alternate_bom_designator is null) then 'Y' else 'N' end bom,
+case when exists (select null from bom_operational_routings bor where msiv.inventory_item_id=bor.assembly_item_id and msiv.organization_id=bor.organization_id and bor.alternate_routing_designator is null) then 'Y' else 'N' end routing,
+case when exists (select null from mrp_sr_assignments msa, mrp_assignment_sets mas, mrp_sr_receipt_org msro, mrp_sr_source_org msso where msiv.inventory_item_id=msa.inventory_item_id and msiv.organization_id=msa.organization_id and msa.assignment_set_id=mas.assignment_set_id and 3=3 and msa.sourcing_rule_id=msro.sourcing_rule_id and msro.sr_receipt_id=msso.sr_receipt_id and msso.source_organization_id is not null) then 'Y' else 'N' end sourcing_rule,
+cic.based_on_rollup_flag,
+cic.defaulted_flag,
+msiv.costing_enabled_flag,
+msiv.inventory_asset_flag,
+cic.inventory_asset_flag cost_asset_flag,
+msiv.std_lot_size,
+cic.lot_size cost_lot_size,
+cic.item_cost,
+(select sum(moqd.primary_transaction_quantity) from mtl_onhand_quantities_detail moqd where msiv.inventory_item_id=moqd.inventory_item_id and msiv.organization_id=moqd.organization_id and moqd.is_consigned=2) onhand_quantity,
+cic.creation_date cost_creation_date,
+msiv.creation_date item_creation_date
+from
+mtl_parameters mp,
+cst_item_costs cic,
+cst_cost_types cct,
+mtl_system_items_vl msiv,
+mtl_item_status_vl misv
+where
+2=2 and
+4=4 and
+mp.organization_id<>mp.master_organization_id and
+mp.organization_id=cic.organization_id and
+cic.cost_type_id=cct.cost_type_id and
+cic.organization_id=msiv.organization_id and
+cic.inventory_item_id=msiv.inventory_item_id and
+msiv.inventory_item_status_code<>'Inactive' and
+msiv.inventory_item_status_code=misv.inventory_item_status_code
+) x,
+table(xxen_util.rowgen(12)) rowgen,
+hr_organization_information hoi,
+hr_all_organization_units haou,
+hr_all_organization_units_vl haouv_ou,
+gl_ledgers gl
+where
+1=1 and
+x.organization_id=hoi.organization_id and
+hoi.org_information_context='Accounting Information' and
+hoi.organization_id=haou.organization_id and
+sysdate<nvl(haou.date_to,sysdate+1) and
+to_number(hoi.org_information3)=haouv_ou.organization_id and
+to_number(hoi.org_information1)=gl.ledger_id and
+case rowgen.column_value
+when 1 then case when x.costing_enabled_flag='Y' and x.planning_make_buy_code=1 and x.based_on_rollup_flag=1 and x.bom='N' then 'Y' end
+when 2 then case when x.costing_enabled_flag='Y' and x.planning_make_buy_code=1 and x.based_on_rollup_flag=1 and x.routing='N' then 'Y' end
+when 3 then case when x.costing_enabled_flag='Y' and (x.planning_make_buy_code=1 or x.planning_make_buy_code=2 and x.sourcing_rule='Y') and x.based_on_rollup_flag=1 and not exists (select null from cst_item_cost_details cicd where x.inventory_item_id=cicd.inventory_item_id and x.organization_id=cicd.organization_id and x.cost_type_id=cicd.cost_type_id and cicd.rollup_source_type=3) then 'Y' end
+when 4 then case when x.costing_enabled_flag='Y' and x.planning_make_buy_code=2 and x.based_on_rollup_flag=1 and x.sourcing_rule='N' then 'Y' end
+when 5 then case when x.costing_enabled_flag='Y' and x.planning_make_buy_code=1 and x.based_on_rollup_flag=2 and (x.bom='Y' or x.routing='Y') then 'Y' end
+when 6 then case when x.costing_enabled_flag='Y' and x.based_on_rollup_flag=2 and x.sourcing_rule='Y' then 'Y' end
+when 7 then case when x.costing_enabled_flag='Y' and x.planning_make_buy_code=1 and x.based_on_rollup_flag=2 then 'Y' end
+when 8 then case when x.costing_enabled_flag='Y' and nvl(x.cost_lot_size,1)=1 and x.planning_make_buy_code=1 and exists (select null from cst_item_cost_details cicd where x.inventory_item_id=cicd.inventory_item_id and x.organization_id=cicd.organization_id and x.cost_type_id=cicd.cost_type_id and cicd.basis_type=2) then 'Y' end
+when 9 then case when x.costing_enabled_flag='Y' and x.based_on_rollup_flag=1 and x.bom='Y' and not exists (select null from bom_structures_b bsb, bom_components_b bcb where x.inventory_item_id=bsb.assembly_item_id and x.organization_id=bsb.organization_id and bsb.bill_sequence_id=bcb.bill_sequence_id and bcb.effectivity_date<=sysdate and nvl(bcb.disable_date,sysdate+1)>sysdate) then 'Y' end
+when 10 then case when x.costing_enabled_flag<>x.inventory_asset_flag then 'Y' end
+when 11 then case when x.inventory_asset_flag<>decode(x.cost_asset_flag,1,'Y','N') then 'Y' end
+when 12 then case when x.defaulted_flag=1 and x.based_on_rollup_flag=2 then 'Y' end
+end='Y'
 order by
-        rept_all.report_type,
-        nvl(gl.short_name, gl.name),
-        haou2.name,
-        rept_all.organization_code,
-        rept_all.cost_type,
-        rept_all.concatenated_segments
+report_type,
+ledger,
+operating_unit,
+org_code,
+x.cost_type,
+x.item_number

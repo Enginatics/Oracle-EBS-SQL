@@ -57,352 +57,155 @@
 -- -- | Removed Cost Type2, not needed with Multiple Value
 -- -- | functionality.
 -- -- | 1.12 07 Dec 2023 Douglas Volz Added G/L and Operating Unit security restrictions.
+-- -- | 1.13 23 Oct 2026 Andy Haack Rebuilt to the Blitz Report SQL standards.
 -- -- +=============================================================================+/
 -- Excel Example Output: https://www.enginatics.com/example/cac-item-cost-routing/
 -- Library Link: https://www.enginatics.com/reports/cac-item-cost-routing/
 -- Run Report: https://demo.enginatics.com/
 
-select  costs.ledger Ledger,
-        costs.operating_unit Operating_Unit,
-        costs.organization_code Org_Code,
-        costs.item Item_Number,
-        costs.item_description Item_Description,
-        costs.primary_uom_code UOM_Code,
-        -- Revision for version 1.5
+select
+nvl(gl.short_name,gl.name) ledger,
+haouv_ou.name operating_unit,
+mp.organization_code org_code,
+msiv.concatenated_segments item_number,
+msiv.description item_description,
+msiv.primary_uom_code uom_code,
 &category_columns
-        -- End revision for version 1.6
-        costs.item_type Item_Type,
-        costs.inventory_item_status_code Item_Status,
-        -- Revision for version 1.11
-        costs.use_default_controls Use_Default_Controls,
-        costs.based_on_rollup Based_on_Rollup,
-        costs.planning_make_buy_code Make_Buy_Code,
-        -- Revision for version 1.11
-        costs.std_lot_size Std_Lot_Size,
-        costs.department_code Department,
-        costs.level_type Level_Type,
-        costs.operation_seq_num Operation_Seq_Number,
-        costs.resource_seq_num Resource_Seq_Number,
-        costs.source_organization Source_Org,
-        costs.allocation_percent Allocation_Percent,
-        costs.cost_element Cost_Element,
-        costs.resource_code Sub_Element,
-        costs.res_unit_of_measure Sub_Element_UOM,
-        -- Revision for version 1.5
-        costs.activity Activity,
-        costs.cost_type Cost_Type,
-        costs.rollup_source_type Cost_Source,
-        costs.cost_basis Basis_Type,
-        costs.lot_size Costing_Lot_Size,
-        costs.shrinkage_rate Shrinkage_Rate,
-        costs.basis_factor Basis_Factor,
-        costs.net_yield_or_shrinkage_factor Shrinkage_Factor,
-        costs.resource_rate Resource_Rate,
-        costs.usage_rate_or_amount Rate_or_Amount,
-        costs.currency_code Currency_Code,
-        costs.detailed_item_cost Detailed_Item_Cost,
-        costs.total_item_cost Total_Item_Cost,
-        -- Revision for version 1.9
-        costs.cost_creation_date Cost_Creation_Date,
-        costs.cost_last_update_date Cost_Last_Update_Date,
-        costs.item_creation_date Item_Creation_Date,
-        costs.item_last_update_date Item_Last_Update_Date
-        -- End revision for version 1.9
-from    (
-         -- ===================================================
-         -- Get the item costs from your buy and routing costs
-         -- for your pending cost type
-         -- ===================================================
-         select nvl(gl.short_name, gl.name) ledger,
-                haou2.name operating_unit,
-                mp.organization_code,
-                msiv.concatenated_segments item,
-                msiv.description item_description,
-                -- Revision for version 1.8
-                muomv.uom_code primary_uom_code,
-                fcl.meaning item_type,
-                -- Revision for version 1.5 and 1.6
-                msiv.organization_id,
-                msiv.inventory_item_id,
-                -- End revision for version 1.5 and 1.6
-                -- Revision for version 1.8
-                misv.inventory_item_status_code,
-                -- Revision for version 1.11
-                ml6.meaning use_default_controls,
-                ml1.meaning based_on_rollup,
-                ml2.meaning planning_make_buy_code,
-                -- Revision for version 1.11
-                msiv.std_lot_size,
-                bd.department_code,
-                ml3.meaning level_type,
-                cce.cost_element,
-                cicd.operation_seq_num,
-                cicd.resource_seq_num,
-                mp2.organization_code source_organization,
-                cicd.allocation_percent,
-                br.resource_code,
-                br.unit_of_measure res_unit_of_measure,
-                -- Revision for version 1.5
-                nvl((select     ca.activity
-                     from       cst_activities ca
-                     where      ca.activity_id = br.default_activity_id),'') activity,
-                -- End revision for version 1.5
-                cct.cost_type,
-                ml4.meaning rollup_source_type,
-                ml5.meaning cost_basis,
-                cic.lot_size,
-                cic.shrinkage_rate shrinkage_rate,
-                cicd.basis_factor,
-                cicd.net_yield_or_shrinkage_factor,
-                cicd.resource_rate,
-                cicd.usage_rate_or_amount,
-                gl.currency_code,
-                cicd.item_cost detailed_item_cost,
-                nvl(cic.item_cost,0) total_item_cost,
-                -- Revision for version 1.9
-                cic.creation_date cost_creation_date,
-                cic.last_update_date cost_last_update_date,
-                msiv.creation_date item_creation_date,
-                msiv.last_update_date item_last_update_date
-                -- End revision for version 1.9
-         from   cst_item_costs cic,
-                cst_item_cost_details cicd,
-                mtl_system_items_vl msiv,
-                -- Revision for version 1.8
-                mtl_item_status_vl misv,
-                mtl_units_of_measure_vl muomv,
-                -- End revision for version 1.8
-                mtl_parameters mp,               -- target inventory org
-                mtl_parameters mp2,              -- source inventory org
-                cst_cost_elements cce,
-                bom_resources br,
-                bom_departments bd,
-                cst_cost_types cct,
-                mfg_lookups ml1, -- based on rollup, CST_BONROLLUP_VAL
-                mfg_lookups ml2, -- planning make/buy code, MTL_PLANNING_MAKE_BUY
-                mfg_lookups ml3, -- level_type, CST_LEVEL
-                mfg_lookups ml4, -- rollup source type, CST_SOURCE_TYPE
-                mfg_lookups ml5, -- basis_type, CST_BASIS_SHORT
-                mfg_lookups ml6, -- defaulted_flag, SYS_YES_NO
-                fnd_common_lookups fcl,
-                hr_organization_information hoi,
-                hr_all_organization_units_vl haou,  -- inv_organization_id
-                hr_all_organization_units_vl haou2, -- operating unit
-                gl_ledgers gl
-         where  msiv.inventory_item_id          = cic.inventory_item_id
-         -- Revision for version 1.8
-         and    msiv.primary_uom_code           = muomv.uom_code
-         and    msiv.inventory_item_status_code = misv.inventory_item_status_code
-         -- End revision for version 1.8
-         -- =============================
-         -- Add parameter for version 1.4
-         -- =============================
-         and    1=1                             -- p_item_status_to_exclude, p_item_number, p_org_code, p_operating_unit, p_ledger
-         and    2=2                             -- p_cost_type, p_based_on_rollup, p_basis_type
-         and    mp.organization_id              = cic.organization_id
-         and    cic.cost_type_id                = cct.cost_type_id
-         and    msiv.organization_id            = mp.organization_id
-         and    cicd.source_organization_id     = mp2.organization_id (+)
-         and    cic.cost_type_id                = cicd.cost_type_id
-         and    cic.organization_id             = cicd.organization_id
-         and    cic.inventory_item_id           = cicd.inventory_item_id
-         and    cicd.cost_element_id            = cce.cost_element_id
-         and    cicd.resource_id                = br.resource_id (+)
-         and    cicd.department_id              = bd.department_id (+)
-         -- =======================================
-         -- Lookup codes
-         -- =======================================
-         and    ml1.lookup_type                 = 'CST_BONROLLUP_VAL'
-         and    ml1.lookup_code                 = cic.based_on_rollup_flag
-         and    ml2.lookup_type                 = 'MTL_PLANNING_MAKE_BUY'
-         and    ml2.lookup_code                 = msiv.planning_make_buy_code
-         and    ml3.lookup_type                 = 'CST_LEVEL'
-         and    ml3.lookup_code                 = cicd.level_type
-         and    ml4.lookup_type                 = 'CST_SOURCE_TYPE'
-         and    ml4.lookup_code                 = cicd.rollup_source_type
-         and    ml5.lookup_type                 = 'CST_BASIS_SHORT'
-         and    ml5.lookup_code                 = cicd.basis_type
-         and    ml6.lookup_type                 = 'SYS_YES_NO'
-         and    ml6.lookup_code                 = cic.defaulted_flag
-         and    fcl.lookup_code (+)             = msiv.item_type
-         and    fcl.lookup_type (+)             = 'ITEM_TYPE'
-         -- =======================================
-         -- using the base tables for organization
-         --  and operating unit definitions.
-         -- =======================================
-         and    hoi.org_information_context     = 'Accounting Information'
-         and    hoi.organization_id             = mp.organization_id
-         and    hoi.organization_id             = haou.organization_id            -- this gets the organization name
-         and    haou2.organization_id           = hoi.org_information3            -- this gets the operating unit id
-         and    gl.ledger_id                    = to_number(hoi.org_information1) -- get the ledger_id
-         -- Revision for version 1.11
-         and     mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-         -- Revision for version 1.12
-         and     gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
-         and     haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
-         -- End revision for version 1.12
-         -- =======================================
-         -- Screen out master and disabled inventory orgs
-         -- =======================================
-         and    mp.organization_id             <> mp.master_organization_id
-         and    sysdate                        <  nvl(haou.date_to, sysdate +1)
-         union all
-         -- ===================================================
-         -- Get the non-costed resources from the routing
-         -- operations
-         -- ===================================================
-         select nvl(gl.short_name, gl.name) ledger,
-                haou2.name operating_unit,
-                mp.organization_code,
-                msiv.concatenated_segments item,
-                msiv.description item_description,
-                -- Revision for version 1.8
-                muomv.uom_code primary_uom_code,
-                fcl.meaning item_type,
-                -- Revision for version 1.5 and 1.6
-                msiv.organization_id,
-                msiv.inventory_item_id,
-                -- Revision for version 1.8
-                misv.inventory_item_status_code,
-                -- Revision for version 1.11
-                ml6.meaning use_default_controls,
-                ml1.meaning based_on_rollup,
-                ml2.meaning planning_make_buy_code,
-                -- Revision for version 1.11
-                msiv.std_lot_size,
-                bd.department_code,
-                null level_type,
-                cce.cost_element,
-                bos.operation_seq_num,
-                bores.resource_seq_num,
-                null source_organization,
-                null allocation_percent,
-                br.resource_code,
-                br.unit_of_measure res_unit_of_measure,
-                -- Revision for version 1.5
-                nvl((select      ca.activity
-                     from        cst_activities ca
-                     where       ca.activity_id = br.default_activity_id),'') activity,
-                -- End revision for version 1.5
-                cct.cost_type,
-                null rollup_source_type,
-                ml5.meaning cost_basis,
-                cic.lot_size,
-                cic.shrinkage_rate shrinkage_rate,
-                null basis_factor,
-                null net_yield_or_shrinkage_factor,
-                null resource_rate,
-                bores.usage_rate_or_amount,
-                gl.currency_code,
-                null detailed_item_cost,
-                null total_item_cost,
-                -- Revision for version 1.9
-                cic.creation_date cost_creation_date,
-                cic.last_update_date cost_last_update_date,
-                msiv.creation_date item_creation_date,
-                msiv.last_update_date item_last_update_date
-         from   bom_operational_routings bor,
-                bom_operation_sequences bos,
-                bom_operation_resources bores,
-                cst_item_costs cic,
-                cst_cost_types cct,
-                cst_cost_elements cce,
-                bom_resources br,
-                bom_departments bd,
-                mtl_system_items_vl msiv,
-                -- Revision for version 1.8
-                mtl_item_status_vl misv,
-                mtl_units_of_measure_vl muomv,
-                -- End revision for version 1.8
-                mtl_parameters mp,
-                mfg_lookups ml1, -- based on rollup, CST_BONROLLUP_VAL
-                mfg_lookups ml2, -- planning make/buy code, MTL_PLANNING_MAKE_BUY
-                mfg_lookups ml5, -- basis_type, CST_BASIS_SHORT
-                mfg_lookups ml6, -- defaulted_flag, SYS_YES_NO
-                fnd_common_lookups fcl,
-                hr_organization_information hoi,
-                hr_all_organization_units_vl haou,  -- inv_organization_id
-                hr_all_organization_units_vl haou2, -- operating unit
-                gl_ledgers gl
-         -- =========================================================
-         -- Item and Bom Operational Routing Joins
-         -- =========================================================
-         where  msiv.inventory_item_id          = bor.assembly_item_id
-         and    msiv.organization_id            = bor.organization_id
-         -- Revision for version 1.8
-         and    msiv.primary_uom_code           = muomv.uom_code
-         and    msiv.inventory_item_status_code = misv.inventory_item_status_code
-         -- End revision for version 1.8
-         and    bor.alternate_routing_designator is null  -- get the primary routing only
-         and    bor.routing_type                = 1       -- manufacturing routing
-         and    bor.common_assembly_item_id is null       -- don't want common assemblies
-         -- =========================================================
-         -- Item, organization and cost joins
-         -- =========================================================
-         and    msiv.organization_id            = mp.organization_id
-         and    msiv.inventory_item_id          = cic.inventory_item_id
-         -- Revision for version 1.8
-         and    msiv.primary_uom_code           = muomv.uom_code
-         and    msiv.inventory_item_status_code = misv.inventory_item_status_code
-         -- End revision for version 1.8
-         -- Add parameters for version 1.4 and 1.11
-         and    1=1                             -- p_make_buy_code, p_item_status_to_exclude, p_item_number, p_org_code, p_operating_unit, p_ledger
-         and    2=2                             -- p_cost_type, p_based_on_rollup, p_basis_type
-         and    3=3                             -- p_effectivity_dates, p_include_non_costed_resources
-         and    msiv.organization_id            = cic.organization_id
-         and    cic.cost_type_id                = cct.cost_type_id
-         -- =========================================================
-         -- Bom Operational Routing and Op Sequence and Resource Joins
-         -- =========================================================
-         and    bor.routing_sequence_id         = bos.routing_sequence_id
-         and    bos.operation_sequence_id       = bores.operation_sequence_id
-         and    bores.resource_id               = br.resource_id
-         and    br.allow_costs_flag             = 2 -- No
-         and    br.cost_element_id              = cce.cost_element_id
-         and    bos.department_id               = bd.department_id
-         -- =======================================
-         -- Lookup codes
-         -- =======================================
-         and    ml1.lookup_type                 = 'CST_BONROLLUP_VAL'
-         and    ml1.lookup_code                 = cic.based_on_rollup_flag
-         and    ml2.lookup_type                 = 'MTL_PLANNING_MAKE_BUY'
-         and    ml2.lookup_code                 = msiv.planning_make_buy_code
-         and    ml5.lookup_type                 = 'CST_BASIS_SHORT'
-         and    ml5.lookup_code                 = bores.basis_type
-         and    ml6.lookup_type                 = 'SYS_YES_NO'
-         and    ml6.lookup_code                 = cic.defaulted_flag
-         and    fcl.lookup_code (+)             = msiv.item_type
-         and    fcl.lookup_type (+)             = 'ITEM_TYPE'
-         -- =======================================
-         -- using the base tables for organization
-         -- and operating unit definitions.
-         -- =======================================
-         and    hoi.org_information_context     = 'Accounting Information'
-         and    hoi.organization_id             = mp.organization_id
-         and    hoi.organization_id             = haou.organization_id            -- this gets the organization name
-         and    haou2.organization_id           = hoi.org_information3            -- this gets the operating unit id
-         and    gl.ledger_id                    = to_number(hoi.org_information1) -- get the ledger_id
-         -- Revision for version 1.11
-         and     mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-         -- Revision for version 1.12
-         and     gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
-         and     haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
-         -- End revision for version 1.12
-         -- =======================================
-         -- Screen out master and disabled inventory orgs
-         -- =======================================
-         and    mp.organization_id             <> mp.master_organization_id
-         and    sysdate                        <  nvl(haou.date_to, sysdate +1)
-        ) costs
-order by 
-        costs.ledger, -- Ledger
-        costs.operating_unit, -- Operating_Unit
-        costs.organization_code, -- Org_Code
-        costs.item, -- Item_Number
-        costs.department_code, -- Dept
-        costs.level_type, -- Level
-        costs.cost_element, -- Cost_Element
-        costs.operation_seq_num, -- Op_Seq Num
-        costs.resource_seq_num, -- Res Seq Num
-        costs.resource_code, -- Sub-Element
-        costs.cost_type -- Cost_Type
+xxen_util.meaning(msiv.item_type,'ITEM_TYPE',3) item_type,
+msiv.inventory_item_status_code item_status,
+xxen_util.yes(decode(cic.defaulted_flag,1,'Y')) use_default_controls,
+xxen_util.meaning(cic.based_on_rollup_flag,'CST_BONROLLUP_VAL',700) based_on_rollup,
+xxen_util.meaning(msiv.planning_make_buy_code,'MTL_PLANNING_MAKE_BUY',700) make_buy_code,
+msiv.std_lot_size,
+bd.department_code department,
+xxen_util.meaning(x.level_type,'CST_LEVEL',700) level_type,
+x.operation_seq_num operation_seq_number,
+x.resource_seq_num resource_seq_number,
+mp_src.organization_code source_org,
+x.allocation_percent,
+cce.cost_element,
+br.resource_code sub_element,
+br.unit_of_measure sub_element_uom,
+(select ca.activity from cst_activities ca where br.default_activity_id=ca.activity_id) activity,
+cct.cost_type,
+xxen_util.meaning(x.rollup_source_type,'CST_SOURCE_TYPE',700) cost_source,
+xxen_util.meaning(x.basis_type,'CST_BASIS_SHORT',700) basis_type,
+cic.lot_size costing_lot_size,
+cic.shrinkage_rate,
+x.basis_factor,
+x.net_yield_or_shrinkage_factor shrinkage_factor,
+x.resource_rate,
+x.usage_rate_or_amount rate_or_amount,
+gl.currency_code,
+x.item_cost detailed_item_cost,
+decode(x.level_type,null,null,nvl(cic.item_cost,0)) total_item_cost,
+cic.creation_date cost_creation_date,
+cic.last_update_date cost_last_update_date,
+msiv.creation_date item_creation_date,
+msiv.last_update_date item_last_update_date
+from
+mtl_parameters mp,
+hr_organization_information hoi,
+hr_all_organization_units haou,
+hr_all_organization_units_vl haouv_ou,
+gl_ledgers gl,
+cst_item_costs cic,
+cst_cost_types cct,
+mtl_system_items_vl msiv,
+(
+select
+cicd.organization_id,
+cicd.inventory_item_id,
+cicd.cost_type_id,
+cicd.department_id,
+cicd.level_type,
+cicd.operation_seq_num,
+cicd.resource_seq_num,
+cicd.source_organization_id,
+cicd.allocation_percent,
+cicd.cost_element_id,
+cicd.resource_id,
+cicd.rollup_source_type,
+cicd.basis_type,
+cicd.basis_factor,
+cicd.net_yield_or_shrinkage_factor,
+cicd.resource_rate,
+cicd.usage_rate_or_amount,
+cicd.item_cost
+from
+cst_item_cost_details cicd
+union all
+select
+bor.organization_id,
+bor.assembly_item_id,
+cic.cost_type_id,
+bos.department_id,
+null,
+bos.operation_seq_num,
+bores.resource_seq_num,
+null,
+null,
+br.cost_element_id,
+bores.resource_id,
+null,
+bores.basis_type,
+null,
+null,
+null,
+bores.usage_rate_or_amount,
+null
+from
+bom_operational_routings bor,
+cst_item_costs cic,
+bom_operation_sequences bos,
+bom_operation_resources bores,
+bom_resources br
+where
+bor.alternate_routing_designator is null and
+bor.routing_type=1 and
+bor.common_assembly_item_id is null and
+bor.organization_id=cic.organization_id and
+bor.assembly_item_id=cic.inventory_item_id and
+bor.routing_sequence_id=bos.routing_sequence_id and
+bos.operation_sequence_id=bores.operation_sequence_id and
+bores.resource_id=br.resource_id and
+br.allow_costs_flag=2
+) x,
+cst_cost_elements cce,
+bom_resources br,
+bom_departments bd,
+mtl_parameters mp_src
+where
+1=1 and
+2=2 and
+mp.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
+mp.organization_id<>mp.master_organization_id and
+mp.organization_id=hoi.organization_id and
+hoi.org_information_context='Accounting Information' and
+hoi.organization_id=haou.organization_id and
+sysdate<nvl(haou.date_to,sysdate+1) and
+to_number(hoi.org_information3)=haouv_ou.organization_id and
+to_number(hoi.org_information1)=gl.ledger_id and
+mp.organization_id=cic.organization_id and
+cic.cost_type_id=cct.cost_type_id and
+cic.organization_id=msiv.organization_id and
+cic.inventory_item_id=msiv.inventory_item_id and
+cic.organization_id=x.organization_id and
+cic.inventory_item_id=x.inventory_item_id and
+cic.cost_type_id=x.cost_type_id and
+x.cost_element_id=cce.cost_element_id and
+x.resource_id=br.resource_id(+) and
+x.department_id=bd.department_id(+) and
+x.source_organization_id=mp_src.organization_id(+)
+order by
+ledger,
+operating_unit,
+org_code,
+item_number,
+department,
+level_type,
+cce.cost_element,
+operation_seq_number,
+resource_seq_number,
+sub_element,
+cct.cost_type

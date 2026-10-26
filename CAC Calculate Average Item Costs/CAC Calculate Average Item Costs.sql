@@ -6,26 +6,6 @@
 /*************************************************************************/
 -- Report Name: CAC Calculate Average Item Costs
 -- Description: Using purchase order receipts, calculate average item costs over a specified transaction date range and compare against the Comparison Cost Type. In addition, with the Use Default Material Overheads parameter you can choose which material overheads to use on this report. Select Yes to use the Default Material Overhead setups. Set to No to use the material overheads from the specified Comparison Cost Type. And if planning to use roll up these item costs, to avoid doubling up rolled up material costs on assemblies, choose Yes for the parameter Exclude Rolled Up Items, to avoid having manually defined material costs and rolled up material costs.
--- Parameters:
--- ===========
--- Transaction Date From: enter the starting transaction date for PO Receipt History (mandatory).
--- Transaction Date To: enter the ending transaction date for PO Receipt History (mandatory).
--- Comparison Cost Type: enter the cost type to compare against the calculated average item costs (mandatory). If the costs are not found in the Comparison Cost Type get them from the Costing Method Cost Type.
--- Use Default Material Overheads: set to Yes to report the material overheads based on the Default Material Overhead setups. Set to No to use the material overheads from the specified Comparison Cost type (mandatory).
--- Only Active Rates: set to Yes to only get active, enabled default material overhead rates (mandatory).
--- Exclude Rolled Up Items: to avoid doubling up rolled up material costs, choose Yes for this parameter, to avoid having manually defined material costs and rolled up material costs (mandatory).
--- Currency Conversion Date: the exchange rate conversion date that was used to set the standard costs (mandatory).
--- Currency Conversion Type: the exchange rate conversion type that was used to set the standard costs (mandatory).
--- Show Last AP Invoice: Enter Yes to show the last AP invoice date, number and price (mandatory).
--- Category Set 1: any item category you wish, typically the Cost or Product Line category set (optional).
--- Category Set 2: any item category you wish, typically the Inventory category set (optional).
--- Supplier Type to Exclude: enter the specific supplier(s) you wish to exclude from the average cost calculations (optional).
--- Item Status to Exclude: enter the item number status you want to exclude. Defaulted to 'Inactive' (optional).
--- Item Number: enter the specific item number(s) you wish to report (optional).
--- Organization Code: enter the specific inventory organization(s) you wish to report (optional).
--- Operating Unit: enter the specific operating unit(s) you wish to report (optional).
--- Ledger: enter the specific ledger(s) you wish to report (optional).
--- /
 -- -- | Copyright 2006 - 2023 Douglas Volz Consulting, Inc.
 -- -- | All rights reserved.
 -- -- | Permission to use this code is granted provided the original author is
@@ -42,798 +22,236 @@
 -- -- | 1.19 24 Nov 2023 Douglas Volz Fixed item number parameter for last PO information
 -- -- | and fix Last A/P Invoice info for G/L Daily Rates
 -- -- | 1.20 08 Dec 2023 Douglas Volz Added G/L and Operating Unit security restrictions.
+-- -- | 1.21 23 Oct 2026 Andy Haack Rebuilt to the Blitz Report SQL standards.
 -- -- +=============================================================================+/
 -- Excel Example Output: https://www.enginatics.com/example/cac-calculate-average-item-costs/
 -- Library Link: https://www.enginatics.com/reports/cac-calculate-average-item-costs/
 -- Run Report: https://demo.enginatics.com/
 
-select  nvl(gl.short_name, gl.name) Ledger,
-        haou2.name Operating_Unit,
-        cicd_moh.organization_code Org_Code,
-        cicd_moh.concatenated_segments Item_Number,
-        cicd_moh.description Item_Description,
-        -- Revision for version 1.2
-        fcl.meaning Item_Type,
-        -- Revision for version 1.10
-        ml1.meaning Make_Buy_Code,
-        -- Revision for version 1.11
-        ml2.meaning Based_on_Rollup,
-        -- Revision for version 1.6
-        misv.inventory_item_status_code_tl Item_Status,
-        cic.lot_size Lot_Size,
-        -- Revision for version 1.3
+with r as (
+select /*+ materialize*/
+mmt.organization_id,
+mmt.inventory_item_id,
+sum(mmt.primary_quantity) sum_primary_quantity,
+round(sum(mmt.transaction_cost*mmt.primary_quantity),2) sum_po_receipts,
+round(sum(mmt.transaction_cost*mmt.primary_quantity)/sum(mmt.primary_quantity),5) average_material_cost
+from
+mtl_parameters mp,
+mtl_material_transactions mmt,
+rcv_transactions rt,
+ap_suppliers aps,
+mtl_system_items_vl msiv
+where
+2=2 and
+3=3 and
+5=5 and
+9=9 and
+mp.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
+mp.organization_id=mmt.organization_id and
+(mmt.transaction_source_type_id,mmt.transaction_action_id,mmt.transaction_type_id) in ((1,27,18),(1,29,71),(1,1,36),(1,6,74),(13,6,75)) and
+mmt.transaction_cost<>0 and
+mmt.rcv_transaction_id=rt.transaction_id and
+rt.vendor_id=aps.vendor_id(+) and
+mmt.organization_id=msiv.organization_id and
+mmt.inventory_item_id=msiv.inventory_item_id and
+msiv.inventory_asset_flag='Y'
+group by
+mmt.organization_id,
+mmt.inventory_item_id
+having
+sum(mmt.primary_quantity)>0
+)
+select
+nvl(gl.short_name,gl.name) ledger,
+haouv_ou.name operating_unit,
+mp.organization_code org_code,
+msiv.concatenated_segments item_number,
+msiv.description item_description,
+xxen_util.meaning(msiv.item_type,'ITEM_TYPE',3) item_type,
+xxen_util.meaning(msiv.planning_make_buy_code,'MTL_PLANNING_MAKE_BUY',700) make_buy_code,
+xxen_util.meaning(y.based_on_rollup_flag,'CST_BONROLLUP_VAL',700) based_on_rollup,
+(select misv.inventory_item_status_code_tl from mtl_item_status_vl misv where msiv.inventory_item_status_code=misv.inventory_item_status_code) item_status,
+y.lot_size,
 &category_columns
-        -- Revision for version 1.6
-        muomv.uom_code UOM_Code,
-        receipts.sum_primary_quantity Sum_Primary_Quantity,
-        -- Revision for version 1.4
-        gl.currency_code Currency_Code,
-        receipts.sum_po_receipts Sum_PO_Receipts,
-        receipts.average_material_cost Average_Material_Cost,
-        -- Revision for version 1.12
-        cic.cost_type Comparison_Cost_Type,
-        -- Revision for version 1.7 
-        round(nvl(cic.unburdened_cost,0),5) Comparison_Material_Cost,
-        -- Difference = Avg Item Cost - Item Cost
-        receipts.average_material_cost - round(nvl(cic.unburdened_cost,0),5) Material_Cost_Difference,
-        -- Revision for version 1.10
-        -- case
-        --   when difference = 0 then 0
-        --   when comparison item cost = 0 then 100%
-        --   when average PO unit price = 0 then -100%
-        --   else (average PO unit price - comparison item cost) / comparison item cost
-        round(case
-                when receipts.average_material_cost - nvl(cic.unburdened_cost,0) = 0 then 0
-                when nvl(cic.unburdened_cost,0) = 0 then 100
-                when receipts.average_material_cost = 0 then -100
-                else (receipts.average_material_cost - nvl(cic.unburdened_cost,0)) / nvl(cic.unburdened_cost,0) * 100
-              end,3) Percent_Difference,
-        -- End of revision for version 1.7 and 1.10
-        -- Revision for version 1.10
-        -- Add in material overheads
-        -- sum((so much per item) + (lot/lot size) + ((item cost - TL moh4) X rate))
-        decode(:p_use_default_matl_ovhds,
-                'Y', decode(cicd_moh.planning_make_buy_code,
-                        1, nvl((round(default_moh.make_item_rate,5) + round(default_moh.make_lot_rate/decode(cic.lot_size,0, 1, null, 1, cic.lot_size),5) +
-                                round(receipts.average_material_cost * default_moh.make_total_value_rate,5) + round(default_moh.make_activity_rate,5) +
-                                round(default_moh.all_item_rate,5) + round(default_moh.all_lot_rate/decode(cic.lot_size,0, 1, null, 1, cic.lot_size),5) +
-                                round(receipts.average_material_cost * default_moh.all_total_value_rate,5) + round(default_moh.all_activity_rate,5)),0),
-                        2, nvl((round(default_moh.buy_item_rate,5) + round(default_moh.buy_lot_rate/decode(cic.lot_size,0, 1, null, 1, cic.lot_size),5) +
-                                round(receipts.average_material_cost * default_moh.buy_total_value_rate,5) + round(default_moh.buy_activity_rate,5) +
-                                round(default_moh.all_item_rate,5) + round(default_moh.all_lot_rate/decode(cic.lot_size,0, 1, null, 1, cic.lot_size),5) +
-                                round(receipts.average_material_cost * default_moh.all_total_value_rate,5) + round(default_moh.all_activity_rate,5)),0)),
-                'N', nvl((round(cicd_moh.item_rate,5) + round(cicd_moh.lot_rate/decode(cic.lot_size,0, 1, null, 1, cic.lot_size),5) +
-                        round(receipts.average_material_cost * cicd_moh.total_value_rate,5) + round(cicd_moh.activity_rate,5)),0)
-            ,0) Material_Overhead_Cost,
-        receipts.average_material_cost +
-        decode(:p_use_default_matl_ovhds,
-                'Y', decode(cicd_moh.planning_make_buy_code,
-                        1, nvl((round(default_moh.make_item_rate,5) + round(default_moh.make_lot_rate/decode(cic.lot_size,0, 1, null, 1, cic.lot_size),5) +
-                                round(receipts.average_material_cost * default_moh.make_total_value_rate,5) + round(default_moh.make_activity_rate,5) +
-                                round(default_moh.all_item_rate,5) + round(default_moh.all_lot_rate/decode(cic.lot_size,0, 1, null, 1, cic.lot_size),5) +
-                                round(receipts.average_material_cost * default_moh.all_total_value_rate,5) + round(default_moh.all_activity_rate,5)),0),
-                        2, nvl((round(default_moh.buy_item_rate,5) + round(default_moh.buy_lot_rate/decode(cic.lot_size,0, 1, null, 1, cic.lot_size),5) +
-                                round(receipts.average_material_cost * default_moh.buy_total_value_rate,5) + round(default_moh.buy_activity_rate,5) +
-                                round(default_moh.all_item_rate,5) + round(default_moh.all_lot_rate/decode(cic.lot_size,0, 1, null, 1, cic.lot_size),5) +
-                                round(receipts.average_material_cost * default_moh.all_total_value_rate,5) + round(default_moh.all_activity_rate,5)),0)),
-                'N', nvl((round(cicd_moh.item_rate,5) + round(cicd_moh.lot_rate/decode(cic.lot_size,0, 1, null, 1, cic.lot_size),5) +
-                        round(receipts.average_material_cost * cicd_moh.total_value_rate,5) + round(cicd_moh.activity_rate,5)),0)
-            ,0) Total_Average_Item_Cost,
-        nvl(cic.item_cost,0) Total_Comparison_Item_Cost,
-        receipts.average_material_cost +
-        decode(:p_use_default_matl_ovhds,
-                'Y', decode(cicd_moh.planning_make_buy_code,
-                        1, nvl((round(default_moh.make_item_rate,5) + round(default_moh.make_lot_rate/decode(cic.lot_size,0, 1, null, 1, cic.lot_size),5) +
-                                round(receipts.average_material_cost * default_moh.make_total_value_rate,5) + round(default_moh.make_activity_rate,5) +
-                                round(default_moh.all_item_rate,5) + round(default_moh.all_lot_rate/decode(cic.lot_size,0, 1, null, 1, cic.lot_size),5) +
-                                round(receipts.average_material_cost * default_moh.all_total_value_rate,5) + round(default_moh.all_activity_rate,5)),0),
-                        2, nvl((round(default_moh.buy_item_rate,5) + round(default_moh.buy_lot_rate/decode(cic.lot_size,0, 1, null, 1, cic.lot_size),5) +
-                                round(receipts.average_material_cost * default_moh.buy_total_value_rate,5) + round(default_moh.buy_activity_rate,5) +
-                                round(default_moh.all_item_rate,5) + round(default_moh.all_lot_rate/decode(cic.lot_size,0, 1, null, 1, cic.lot_size),5) +
-                                round(receipts.average_material_cost * default_moh.all_total_value_rate,5) + round(default_moh.all_activity_rate,5)),0)),
-                'N', nvl((round(cicd_moh.item_rate,5) + round(cicd_moh.lot_rate/decode(cic.lot_size,0, 1, null, 1, cic.lot_size),5) +
-                        round(receipts.average_material_cost * cicd_moh.total_value_rate,5) + round(cicd_moh.activity_rate,5)),0)
-            ,0) - nvl(cic.item_cost,0) Total_Cost_Difference,
-        -- Revision for version 1.16
-        po.Last_Purchase_Order,
-        po.Last_PO_Line,
-        po.Last_PO_Date,
-        po.Last_PO_Currency_Code,
-        po.Last_PO_Price,
-        po.Converted_Last_PO_Price,
-        &last_ap_invoice_columns
-        receipts.list_price Item_Master_List_Price
-        -- End revision for version 1.16    
-from    -- Revision for version 1.6
-        mtl_units_of_measure_vl muomv,
-        mtl_item_status_vl misv, 
-        -- End revision for version 1.6
-        -- Revision for version 1.2
-        fnd_common_lookups fcl,
-        -- Revision for version 1.10
-        mfg_lookups ml1, -- planning make/buy code, MTL_PLANNING_MAKE_BUY
-        mfg_lookups ml2, -- based on rollup, CST_BONROLLUP_VAL
-        hr_organization_information hoi,
-        hr_all_organization_units_vl haou,  -- inv_organization_id
-        hr_all_organization_units_vl haou2, -- operating unit
-        gl_ledgers gl,
-        -- Revision for version 1.10
-        -- Calculate the Average PO Receipt Costs
-        -- Add Hint from Oracle's 12.2.4 package cstpmecs, procedure cstpapor
-        (select /*+ NO_UNNEST */
-                mmt.organization_id,
-                mmt.inventory_item_id,
-                sum(mmt.primary_quantity) sum_primary_quantity,
-                -- Revision for version 1.15
-                -- PO Unit Price * Conversion to Primary UOM * Primary Quantity
-                -- round(sum(nvl(mmt.transaction_cost,0) * mmt.transaction_quantity/mmt.primary_quantity * mmt.primary_quantity),2) sum_po_receipts,
-                -- round(sum(nvl(mmt.transaction_cost,0) * mmt.transaction_quantity/mmt.primary_quantity * mmt.primary_quantity) /
-                --         decode(sum(mmt.transaction_quantity * mmt.transaction_quantity/mmt.primary_quantity),
-                --                 0,1,
-                --                 sum(mmt.transaction_quantity * mmt.transaction_quantity/mmt.primary_quantity)
-                --               ),5) average_material_cost
-                -- PO Unit Price in Primary UOM * Primary Quantity
-                round(sum(nvl(mmt.transaction_cost,0) * mmt.primary_quantity),2) sum_po_receipts,
-                round(sum(nvl(mmt.transaction_cost,0) * mmt.primary_quantity) /
-                        decode(sum(mmt.primary_quantity),
-                                0,1,
-                                sum(mmt.primary_quantity)
-                              ),5) average_material_cost,
-                -- End revision for version 1.15
-                -- Revision for version 1.16
-                msiv.list_price_per_unit list_price
-         from   mtl_material_transactions mmt,
-                rcv_transactions rt,
-                mtl_system_items_vl msiv,
-                mtl_parameters mp,
-                po_vendors pv,
-                fnd_lookup_values_vl flvv
-         -- Revision for version 1.10, from Oracle's 12.2.4 Cost Mass Edit for PO Receipts, package cstpmecs, procedure cstpapor
-         -- mmt.transaction_source_type_id        = 1 -- purchase orders
-         where  (
-                 (    mmt.transaction_source_type_id  = 1
-                  and mmt.transaction_action_id       = 27
-                  and mmt.transaction_type_id         = 18 -- PO Receipts
-                 )
-                 or
-                 (    mmt.transaction_source_type_id  = 1
-                  and mmt.transaction_action_id       = 29
-                  and mmt.transaction_type_id         = 71 -- PO Rcpt Adjust
-                 )
-                 or
-                 (    mmt.transaction_source_type_id  = 1
-                  and mmt.transaction_action_id       = 1
-                  and mmt.transaction_type_id         = 36 -- Return to Vendor
-                 )
-                 or
-                 (    mmt.transaction_source_type_id  = 1
-                  and mmt.transaction_action_id       = 6
-                  and mmt.transaction_type_id         = 74 -- Transfer for Regular
-                 )
-                 or
-                 (    mmt.transaction_source_type_id = 13
-                  and mmt.transaction_action_id      = 6
-                  and mmt.transaction_type_id        = 75 -- Transfer to Consigned
-                 )
-                )
-         and    mmt.rcv_transaction_id          = rt.transaction_id
-         and    mmt.inventory_item_id           = msiv.inventory_item_id
-         and    mmt.organization_id             = msiv.organization_id
-         and    msiv.inventory_asset_flag       = 'Y'
-         -- Revision for version 1.14
-         -- and     msiv.inventory_item_status_code <> 'Inactive'
-         and    9=9                             -- p_item_status_to_exclude
-         -- End revision for version 1.14
-         and    mmt.organization_id             = mp.organization_id
-         and    nvl(mmt.transaction_cost,0)    <> 0
-         -- Revision for version 1.9
-         and    pv.vendor_id (+)                = rt.vendor_id
-         and    flvv.lookup_code (+)            = pv.vendor_type_lookup_code
-         -- Revision for version 1.13
-         and    flvv.lookup_type                = 'VENDOR TYPE'
-         -- Revision for version 1.16
-         and    mp.organization_code in (select oav.organization_code from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-         and    2=2                             -- p_org_code
-         and    3=3                             -- p_trx_date_from, p_trx_date_to, p_exclude_supplier_type
-         and    5=5                             -- p_item_number
-         group by
-                mmt.organization_id,
-                mmt.inventory_item_id,
-                -- Revision for version 1.16
-                msiv.list_price_per_unit
-         -- Revision for version 1.11
-         -- Avoid negative quantities due to returns
-         having sum(mmt.primary_quantity) > 0
-        ) receipts,
-        -- Revision for version 1.12
-        -- Get the comparison item costs by cost type and item
-        (select cic.cost_type_id,
-                cct.cost_type,
-                -- Revision for version 1.14
-                -- msiv.organization_id,
-                -- msiv.inventory_item_id,
-                -- msiv.inventory_asset_flag,
-                cic.organization_id,
-                cic.inventory_item_id,
-                -- End revision for version 1.14
-                cic.lot_size,
-                cic.unburdened_cost,
-                cic.item_cost,
-                nvl(cic.based_on_rollup_flag,2) based_on_rollup_flag
-         from   cst_cost_types cct,
-                cst_item_costs cic,
-                -- Revision for version 1.14
-                -- mtl_system_items_vl msiv,
-                mtl_parameters mp
-         -- Revision for version 1.14
-         -- where   mp.organization_id              = msiv.organization_id
-         -- and     msiv.organization_id            = cic.organization_id
-         -- and     msiv.inventory_item_id          = cic.inventory_item_id
-         -- and     msiv.inventory_asset_flag       = 'Y'
-         -- and     msiv.inventory_item_status_code <> 'Inactive'
-         where  mp.organization_id              = cic.organization_id
-         -- End revision for version 1.14
-         -- Revision for version 1.16
-         and    mp.organization_code in (select oav.organization_code from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-         and    cct.cost_type_id                = cic.cost_type_id
-         and    2=2                             -- p_org_code
-         and    4=4                             -- p_cost_type
-         and    7=7                             -- p_item_number
-         and    6=6                             -- p_exclude_rolled_up_items
-         union all
-         select cic.cost_type_id,
-                cct_primary.cost_type,
-                -- Revision for version 1.14
-                -- msiv.organization_id,
-                -- msiv.inventory_item_id,
-                -- msiv.inventory_asset_flag,
-                cic.organization_id,
-                cic.inventory_item_id,
-                -- End revision for version 1.14
-                cic.lot_size,
-                cic.unburdened_cost,
-                cic.item_cost,
-                nvl(cic.based_on_rollup_flag,2) based_on_rollup_flag
-         from   cst_item_costs cic,
-                cst_cost_types cct,
-                cst_cost_types cct_primary,
-                -- Revision for version 1.14
-                -- mtl_system_items_vl msiv,
-                mtl_parameters mp
-         -- Revision for version 1.14
-         -- where   mp.organization_id              = msiv.organization_id
-         -- and     msiv.organization_id            = cic.organization_id
-         -- and     msiv.inventory_item_id          = cic.inventory_item_id
-         -- and     msiv.inventory_asset_flag       = 'Y'
-         -- and     msiv.inventory_item_status_code <> 'Inactive'
-         where  mp.organization_id              = cic.organization_id
-         -- End revision for version 1.14
-         -- Revision for version 1.16
-         and    mp.organization_code in (select oav.organization_code from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-         and    cic.cost_type_id                = mp.primary_cost_method  -- this gets the Frozen Costs
-         and    cct.cost_type_id               <> mp.primary_cost_method  -- this avoids getting the costs twice
-         and    cct_primary.cost_type_id        = mp.primary_cost_method
-         and    2=2                             -- p_org_code
-         and    4=4                             -- p_cost_type
-         and    7=7                             -- p_item_number
-         and    6=6                             -- p_exclude_rolled_up_items
-         -- ====================================
-         -- Find the Costing Method costs not in
-         -- the pending or unimplemented cost type
-         -- ====================================
-         and    not exists
-                        (select 'x'
-                         from  cst_item_costs cic2
-                         where  cic2.organization_id   = cic.organization_id
-                         and    cic2.inventory_item_id = cic.inventory_item_id
-                         and    cic2.cost_type_id      = cct.cost_type_id)
-        ) cic,
-        -- End revision for version 1.12                
-        -- Get the comparison material overhead rates by cost type and sum up by item
-        (select cicd_moh2.cost_type_id,
-                cicd_moh2.cost_type,
-                msiv.organization_id,
-                mp.organization_code,
-                mp.primary_cost_method,
-                msiv.inventory_item_id,
-                msiv.concatenated_segments,
-                msiv.description,
-                msiv.item_type,
-                msiv.planning_make_buy_code,
-                msiv.inventory_item_status_code,
-                msiv.primary_uom_code,
-                nvl(cicd_moh2.item_rate,0) item_rate,
-                nvl(cicd_moh2.lot_rate,0) lot_rate,
-                nvl(cicd_moh2.total_value_rate,0) total_value_rate,
-                nvl(cicd_moh2.activity_rate,0) activity_rate
-         from   mtl_system_items_vl msiv,
-                mtl_parameters mp,
-                (select cct.cost_type_id,
-                        cct.cost_type,
-                        mp.organization_id,
-                        cicd.inventory_item_id,
-                        -- ==========
-                        -- cicd.basis_type, 
-                        --        1 -- Item
-                        --        2 -- Lot
-                        --        3 -- Resource Units - not in use for material overhead
-                        --        4 -- Resource Value - not in use for material overhead
-                        --        5 -- Total Value
-                        --        6 -- Activity
-                        -- cicd.level_type
-                        --      1 -- This
-                        --      2 -- Previous
-                        -- ==========
-                        sum(decode(cicd.basis_type,
-                                        1, nvl(cicd.usage_rate_or_amount,0),
-                                        2, 0,
-                                        5, 0,
-                                        6, 0,
-                                        0
-                                   )
-                           ) item_rate,
-                        sum(decode(cicd.basis_type,
-                                        1, 0,
-                                        2, nvl(cicd.usage_rate_or_amount,0),
-                                        5, 0,
-                                        6, 0,
-                                        0
-                                   )
-                           ) lot_rate,
-                        sum(decode(cicd.basis_type,
-                                        1, 0,
-                                        2, 0,
-                                        5, nvl(cicd.usage_rate_or_amount,0),
-                                        6, 0,
-                                        0
-                                   )
-                           ) total_value_rate,
-                        sum(decode(cicd.basis_type,
-                                        1, 0,
-                                        2, 0,
-                                        5, nvl(cicd.usage_rate_or_amount,0),
-                                        6, nvl(cicd.usage_rate_or_amount,0) * nvl(cicd.activity_units,0) / decode(nvl(cicd.item_units,0), 0, 1, cicd.item_units),
-                                        0
-                                   )
-                           ) activity_rate
-                 from   cst_item_cost_details cicd,
-                        cst_cost_types cct,
-                        -- Revision for version 1.14
-                        -- mtl_system_items_vl msiv,
-                        mtl_parameters mp
-                 -- Revision for version 1.14 and 1.16
-                 -- where   mp.organization_id       = msiv.organization_id
-                 where  mp.organization_id       = cicd.organization_id
-                 -- End revision for version 1.16
-                 and    cicd.level_type          = 1 -- this level
-                 and    cicd.cost_element_id     = 2 -- material overhead
-                 and    cicd.cost_type_id        = cct.cost_type_id
-                 and    cct.cost_type_id         =
-                        case
-                        -- Revision for version 1.12
-                           when mp.primary_cost_method = 1 and cct.cost_type_id = mp.primary_cost_method then mp.primary_cost_method -- Frozen Standard Costs
-                           when mp.primary_cost_method = 2 and cct.cost_type_id = mp.primary_cost_method then nvl(mp.avg_rates_cost_type_id, -99) -- Average Costs
-                           when mp.primary_cost_method = 5 and cct.cost_type_id = mp.primary_cost_method then nvl(mp.avg_rates_cost_type_id, -99) -- FIFO Costs
-                           when mp.primary_cost_method = 6 and cct.cost_type_id = mp.primary_cost_method then nvl(mp.avg_rates_cost_type_id, -99) -- LIFO Costs
-                           else cct.cost_type_id
-                        -- End revision for version 1.12
-                        end
-                 -- Revision for version 1.14
-                 -- and     msiv.organization_id     = cicd.organization_id
-                 -- and     msiv.inventory_item_id   = cicd.inventory_item_id
-                 -- End revision for version 1.14
-                 and    2=2                      -- p_org_code
-                 and    4=4                      -- p_cost_type
-                 and    8=8                      -- p_item_number
-                 group by
-                        cct.cost_type_id,
-                        cct.cost_type,
-                        mp.organization_id,
-                        cicd.inventory_item_id
-                ) cicd_moh2
-         where  mp.organization_id              = msiv.organization_id
-         and    msiv.organization_id            = cicd_moh2.organization_id (+) 
-         and    msiv.inventory_item_id          = cicd_moh2.inventory_item_id (+)
-         -- Revision for version 1.1
-         and    msiv.inventory_asset_flag       = 'Y'
-         -- Revision for version 1.14
-         -- and     msiv.inventory_item_status_code <> 'Inactive'
-         and    9=9                             -- p_item_status_to_exclude
-         -- End revision for version 1.14
-         -- Revision for version 1.16
-         and    mp.organization_code in (select oav.organization_code from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-         and    2=2                             -- p_org_code
-         and    5=5                             -- p_item_number
-        ) cicd_moh,
-        -- Get default material overheads and sum up the overhead rates by type, make, buy or all items
-        (select moh2.organization_id,
-                moh2.inventory_item_id,
-                -- moh2.basis_type, 
-                --        1 -- Item
-                --        2 -- Lot
-                --        3 -- Resource Units - not in use for material overhead
-                --        4 -- Resource Value - not in use for material overhead
-                --        5 -- Total Value
-                --        6 -- Activity
-                -- moh2.default_item_type,
-                --        1 -- Make items
-                --        2 -- Buy items
-                --        3 -- All items
-                -- ==========
-                -- Make items
-                -- ==========
-                sum(decode(moh2.default_item_type,
-                        -- Revision for version 1.13
-                        -- 1, decode(moh2.default_basis_type,
-                        1, decode(moh2.basis_type,
-                                        1, moh2.default_rate_or_amount,
-                                        0
-                                 ),
-                        2, 0,
-                        3, 0
-                          )
-                   ) make_item_rate,
-                sum(decode(moh2.default_item_type,
-                        -- Revision for version 1.13
-                        -- 1, decode(moh2.default_basis_type,
-                        1, decode(moh2.basis_type,
-                                        2, moh2.default_rate_or_amount,
-                                        0
-                                 ),
-                        2, 0,
-                        3, 0
-                          )
-                   ) make_lot_rate,
-                sum(decode(moh2.default_item_type,
-                        -- Revision for version 1.13
-                        -- 1, decode(moh2.default_basis_type,
-                        1, decode(moh2.basis_type,
-                                        5, moh2.default_rate_or_amount,
-                                        0
-                                 ),
-                        2, 0,
-                        3, 0
-                          )
-                   ) make_total_value_rate,
-                sum(decode(moh2.default_item_type,
-                        -- Revision for version 1.13
-                        -- 1, decode(moh2.default_basis_type,
-                        1, decode(moh2.basis_type,
-                                        6, nvl(moh2.default_rate_or_amount,0) * nvl(moh2.activity_units,0) / 
-                                        decode(nvl(moh2.item_units,0), 0, 1, moh2.item_units),
-                                        0
-                                 ),
-                        2, 0,
-                        3, 0
-                          )
-                   ) make_activity_rate,
-                -- ==========
-                -- Buy Items
-                -- ==========
-                sum(decode(moh2.default_item_type,
-                        1, 0,
-                        -- Revision for version 1.13
-                        -- 2, decode(moh2.default_basis_type,
-                        2, decode(moh2.basis_type,
-                                        1, moh2.default_rate_or_amount,
-                                        0
-                                 ),
-                        3, 0
-                          )
-                   ) buy_item_rate,
-                sum(decode(moh2.default_item_type,
-                        1, 0,
-                        -- Revision for version 1.13
-                        -- 2, decode(moh2.default_basis_type,
-                        2, decode(moh2.basis_type,
-                                        2, moh2.default_rate_or_amount,
-                                        0
-                                 ),
-                        3, 0
-                          )
-                   ) buy_lot_rate,
-                sum(decode(moh2.default_item_type,
-                        1, 0,
-                        -- Revision for version 1.13
-                        -- 2, decode(moh2.default_basis_type,
-                        2, decode(moh2.basis_type,
-                                        5, moh2.default_rate_or_amount,
-                                        0
-                                 ),
-                        3, 0
-                          )
-                   ) buy_total_value_rate,
-                sum(decode(moh2.default_item_type,
-                        1, 0,
-                        -- Revision for version 1.13
-                        -- 2, decode(moh2.default_basis_type,
-                        2, decode(moh2.basis_type,
-                                        6, nvl(moh2.default_rate_or_amount,0) * nvl(moh2.activity_units,0) / 
-                                        decode(nvl(moh2.item_units,0), 0, 1, moh2.item_units),
-                                        0
-                                 ),
-                        3, 0
-                          )
-                   ) buy_activity_rate,
-                -- ==========
-                -- All Items
-                -- ==========
-                sum(decode(moh2.default_item_type,
-                        1, 0,
-                        2, 0,
-                        -- Revision for version 1.13
-                        -- 3, decode(moh2.default_basis_type,
-                        3, decode(moh2.basis_type,
-                                        1, moh2.default_rate_or_amount,
-                                        0
-                                 )
-                          )
-                   ) all_item_rate,
-                sum(decode(moh2.default_item_type,
-                        1, 0,
-                        2, 0,
-                        -- Revision for version 1.13
-                        -- 3, decode(moh2.default_basis_type,
-                        3, decode(moh2.basis_type,
-                                        2, moh2.default_rate_or_amount,
-                                        0
-                                 )
-                          )
-                   ) all_lot_rate,
-                sum(decode(moh2.default_item_type,
-                        1, 0,
-                        2, 0,
-                        -- Revision for version 1.13
-                        -- 3, decode(moh2.default_basis_type,
-                        3, decode(moh2.basis_type,
-                                        5, moh2.default_rate_or_amount,
-                                        0
-                                 )
-                          )
-                   ) all_total_value_rate,
-                sum(decode(moh2.default_item_type,
-                        1, 0,
-                        2, 0,
-                        -- Revision for version 1.13
-                        -- 3, decode(moh2.default_basis_type,
-                        3, decode(moh2.basis_type,
-                                        6, nvl(moh2.default_rate_or_amount,0) * nvl(moh2.activity_units,0) / 
-                                        decode(nvl(moh2.item_units,0), 0, 1, moh2.item_units),
-                                        0
-                                 )
-                          )
-                   ) all_activity_rate
-                from     -- ================================================
-                         -- Get the Resource Information for those resources
-                         -- with org level default material overheads
-                         -- ================================================
-                        (select br.resource_code,
-                                br.resource_id,
-                                br.organization_id,
-                                br.unit_of_measure,
-                                br.functional_currency_flag,
-                                br.default_basis_type,
-                                br.absorption_account,
-                                br.disable_date,
-                                decode(ciod.category_set_id, null, 'Org', 'Category') default_level,
-                                ciod.item_type default_item_type,
-                                msiv.inventory_item_id,
-                                null default_category_set_id,
-                                null default_category_id,
-                                ciod.basis_type,
-                                ciod.usage_rate_or_amount default_rate_or_amount,
-                                ciod.item_units,
-                                ciod.activity_units
-                         from   bom_resources br,
-                                cst_item_overhead_defaults ciod,
-                                -- Revision for version 1.14, performance improvement
-                                -- mtl_system_items_vl msiv,
-                                mtl_system_items_b msiv,
-                                -- End revision for version 1.14
-                                mtl_parameters mp
-                         -- ================================================
-                         -- joins for the resources and organizations
-                         -- ================================================
-                         where  br.resource_id                  = ciod.material_overhead_id
-                         and    br.organization_id              = ciod.organization_id
-                         and    br.cost_element_id              = 2 -- material overhead
-                         -- Revision for version 1.4
-                         -- Change to <= and use trunc(sysdate) as a comparison
-                         and    decode(:p_only_active,                                                            -- p_only_active
-                                        'N',  nvl(br.disable_date, '01-jan-1961'),
-                                        'Y',  trunc(sysdate)
-                                                  ) <=
-                                decode(:p_only_active,                                                              -- p_only_active
-                                        'N',   nvl(br.disable_date, '01-jan-1961'),
-                                        'Y',   decode(br.disable_date, null, trunc(sysdate), br.disable_date)
-                                          )
-                         and    ciod.category_set_id is null
-                         and    ciod.organization_id            = mp.organization_id
-                         and    ciod.organization_id            = msiv.organization_id
-                         -- Revision for version 1.1
-                         and    msiv.inventory_asset_flag       = 'Y'
-                         -- Revision for version 1.14
-                         -- and     msiv.inventory_item_status_code <> 'Inactive'
-                         and    9=9                             -- p_item_status_to_exclude
-                         -- End revision for version 1.14
-                         -- Revision for version 1.16
-                         and    mp.organization_code in (select oav.organization_code from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-                         and    2=2                             -- p_org_code
-                         and    5=5                             -- p_item_number
-                         union all
-                         -- ================================================
-                         -- Get the Resource Information for those resources
-                         -- with category level default material overheads
-                         -- ================================================
-                         select br.resource_code,
-                                br.resource_id,
-                                br.organization_id,
-                                br.unit_of_measure,
-                                br.functional_currency_flag,
-                                br.default_basis_type,
-                                br.absorption_account,
-                                br.disable_date,
-                                decode(ciod.category_set_id, null, 'Org', 'Category') default_level,
-                                ciod.item_type default_item_type,
-                                msiv.inventory_item_id,
-                                ciod.category_set_id default_category_set_id,
-                                ciod.category_id default_category_id,
-                                ciod.basis_type,
-                                ciod.usage_rate_or_amount default_rate_or_amount,
-                                ciod.item_units,
-                                ciod.activity_units
-                         from   bom_resources br,
-                                cst_item_overhead_defaults ciod,
-                                -- Revision for version 1.14, performance improvement
-                                -- mtl_system_items_vl msiv,
-                                mtl_system_items_b msiv,
-                                -- End revision for version 1.14
-                                mtl_item_categories mic,
-                                mtl_parameters mp
-                         -- ================================================
-                         -- joins for the resources and organizations
-                         -- ================================================
-                         where  br.resource_id              = ciod.material_overhead_id
-                         and    br.organization_id          = ciod.organization_id
-                         and    br.cost_element_id          = 2 -- material overhead
-                         -- Revision for version 1.4
-                         -- Change to <= and use trunc(sysdate) as a comparison
-                         and    decode(:p_only_active,                                                -- p_only_active
-                                        'N',   nvl(br.disable_date, '01-jan-1961'),
-                                        'Y',  trunc(sysdate)
-                                          ) <=
-                                decode(:p_only_active,                                                -- p_only_active
-                                        'N',   nvl(br.disable_date, '01-jan-1961'),
-                                        'Y',   decode(br.disable_date, null, trunc(sysdate), br.disable_date)
-                                          )
-                         and    ciod.category_set_id is not null
-                         and    ciod.organization_id            = mp.organization_id
-                         and    ciod.organization_id            = mic.organization_id
-                         and    ciod.category_set_id            = mic.category_set_id
-                         and    ciod.category_id                = mic.category_id
-                         and    msiv.inventory_item_id          = mic.inventory_item_id
-                         and    msiv.organization_id            = mic.organization_id
-                         -- Revision for version 1.1
-                         and    msiv.inventory_asset_flag       = 'Y'
-                         -- Revision for version 1.14
-                         -- and     msiv.inventory_item_status_code <> 'Inactive'
-                         and    9=9                             -- p_item_status_to_exclude
-                         -- End revision for version 1.14
-                         -- Revision for version 1.16
-                         and    mp.organization_code in (select oav.organization_code from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-                         and    2=2                             -- p_org_code
-                         and    5=5                             -- p_item_number
-                        ) moh2
-                 group by
-                        moh2.organization_id,
-                        moh2.inventory_item_id
-        ) default_moh,
-        -- Revision for version 1.16
-        (
-         select po2.*,
-                round(po2.po_unit_price * mucv.conversion_rate, 6) last_po_price,
-                round(round(po2.po_unit_price * mucv.conversion_rate, 6) * nvl(gdr.conversion_rate,1),6) converted_last_po_price
-         from
-                (
-                 select distinct
-                        pla.item_id inventory_item_id,
-                        plla.ship_to_organization_id organization_id,
-                        max(pha.segment1) keep (dense_rank last order by plla.po_date,pda.po_distribution_id) over (partition by plla.ship_to_organization_id, pla.item_id) last_purchase_order,
-                        max(pla.line_num) keep (dense_rank last order by plla.po_date,pda.po_distribution_id) over (partition by plla.ship_to_organization_id, pla.item_id) last_po_line,
-                        max(plla.po_date) over (partition by plla.ship_to_organization_id, pla.item_id) last_po_date,
-                        max(pha.currency_code) keep (dense_rank last order by plla.po_date,pda.po_distribution_id) over (partition by plla.ship_to_organization_id, pla.item_id) last_po_currency_code,
-                        -- Revision for version 1.18
-                        cod.currency_code,
-                        max(nvl(plla.price_override,pla.unit_price)) keep (dense_rank last order by plla.po_date,pda.po_distribution_id) over (partition by plla.ship_to_organization_id, pla.item_id) po_unit_price,
-                        max(pla.unit_meas_lookup_code) keep (dense_rank last order by plla.po_date,pda.po_distribution_id) over (partition by plla.ship_to_organization_id, pla.item_id) unit_meas_lookup_code
-                 from   po_headers_all pha,
-                        po_lines_all pla,
-                        (select coalesce(plla.promised_date,plla.need_by_date,plla.last_update_date) po_date, plla.* from po_line_locations_all plla) plla,
-                        po_distributions_all pda,
-                        -- Revision for version 1.18
-                        cst_organization_definitions cod
-                 where  pla.item_id is not null
-                 and    11=11                    -- p_org_code, p_item_number
-                 and    plla.ship_to_organization_id is not null
-                 and    pha.authorization_status = 'APPROVED'
-                 -- Revision for version 1.3 and 1.17
-                 -- and    pla.closed_code not in ('CANCELLED', 'INCOMPLETE', 'ON HOLD', 'REJECTED', 'RETURNED')
-                 and    nvl(pla.closed_code,'OPEN') not in ('CANCELLED', 'INCOMPLETE', 'ON HOLD', 'REJECTED', 'RETURNED')
-                 -- End revision for version 1.17
-                 and    pha.po_header_id          = pla.po_header_id
-                 and    pla.po_line_id            = plla.po_line_id
-                 and    plla.line_location_id     = pda.line_location_id
-                 and    pda.destination_type_code = 'INVENTORY'
-                 -- Revision for version 1.18
-                 and    cod.organization_id       = plla.ship_to_organization_id
-                ) po2,
-                mtl_uom_conversions_view mucv,
-                -- Revision for version 1.18
-                -- cst_organization_definitions cod
-                -- ===========================================================================
-                -- For POs, get currency exchange rate information for the inventory orgs.
-                -- Select Currency Rates based on the currency conversion date and type.
-                -- ===========================================================================
--- Revision for version 1.18
-(select gdr.* from gl_daily_rates gdr, gl_daily_conversion_types gdct where gdr.conversion_date=:conversion_date and gdct.user_conversion_type=:user_conversion_type and gdct.conversion_type=gdr.conversion_type) gdr
-         where  po2.unit_meas_lookup_code = mucv.unit_of_measure(+)
-         and    po2.inventory_item_id     = mucv.inventory_item_id(+)
-         and    po2.organization_id       = mucv.organization_id(+)
-         -- Translate from the PO currency to the GL Currency
-         -- Revision for version 1.18
-         -- and    cod.organization_id       = po2.organization_id
-         -- and    gdr.from_currency         = po2.last_po_currency_code
-         -- and    gdr.to_currency           = cod.currency_code
-         and    gdr.from_currency(+)         = po2.last_po_currency_code
-         and    gdr.to_currency(+)           = po2.currency_code
-         -- End revision for version 1.18
-        ) po
--- Revision for version 1.19
-        &p_last_ap_invoice_sql
-        -- End revision for version 1.16
-where   receipts.inventory_item_id      = cicd_moh.inventory_item_id
-and     receipts.organization_id        = cicd_moh.organization_id
-and     cicd_moh.organization_id        = default_moh.organization_id (+)
-and     cicd_moh.inventory_item_id      = default_moh.inventory_item_id (+)
--- End revision for version 1.10
--- Revision for version 1.7
-and     cic.inventory_item_id           = receipts.inventory_item_id
-and     cic.organization_id             = receipts.organization_id
--- End revision for version 1.7
--- Revision for version 1.2
-and     fcl.lookup_code (+)             =  cicd_moh.item_type
-and     fcl.lookup_type (+)             = 'ITEM_TYPE'
--- Revision for version 1.10
-and     ml1.lookup_type                 = 'MTL_PLANNING_MAKE_BUY'
-and     ml1.lookup_code                 = cicd_moh.planning_make_buy_code
--- Revision for version 1.11
-and     ml2.lookup_type                 = 'CST_BONROLLUP_VAL'
-and     ml2.lookup_code                 = cic.based_on_rollup_flag
--- Revision for version 1.6
-and     cicd_moh.primary_uom_code       = muomv.uom_code
-and     misv.inventory_item_status_code = cicd_moh.inventory_item_status_code
--- Revision for version 1.16
-and     po.inventory_item_id (+)        = cic.inventory_item_id
-and     po.organization_id (+)          = cic.organization_id
-and     10=10                           -- last_ap_invoice_joins
--- End revision for version 1.16
--- ===================================================================
--- using the base tables for organization definition
--- ===================================================================
-and     hoi.org_information_context     = 'Accounting Information'
-and     hoi.organization_id             = cicd_moh.organization_id
-and     hoi.organization_id             = haou.organization_id   -- this gets the organization name
-and     haou2.organization_id           = hoi.org_information3   -- this gets the operating unit id
--- avoid selecting disabled inventory organizations
-and     sysdate < nvl(haou.date_to, sysdate + 1)
-and     gl.ledger_id                    = to_number(hoi.org_information1) -- get the ledger_id
--- Revision for version 1.20
-and     gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
-and     haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
--- End Revision for version 1.20
-and     1=1                             -- p_operating_unit, p_ledger
+msiv.primary_uom_code uom_code,
+y.sum_primary_quantity,
+gl.currency_code,
+y.sum_po_receipts,
+y.average_material_cost,
+y.comparison_cost_type,
+round(y.unburdened_cost,5) comparison_material_cost,
+y.average_material_cost-round(y.unburdened_cost,5) material_cost_difference,
+round(
+case
+when y.average_material_cost=y.unburdened_cost then 0
+when y.unburdened_cost=0 then 100
+when y.average_material_cost=0 then -100
+else (y.average_material_cost-y.unburdened_cost)/y.unburdened_cost*100
+end,3) percent_difference,
+y.material_overhead_cost,
+y.average_material_cost+y.material_overhead_cost total_average_item_cost,
+y.item_cost total_comparison_item_cost,
+y.average_material_cost+y.material_overhead_cost-y.item_cost total_cost_difference,
+po.last_purchase_order,
+po.last_po_line,
+po.last_po_date,
+po.last_po_currency_code,
+po.last_po_price,
+round(po.last_po_price*decode(po.last_po_currency_code,gl.currency_code,1,(select gdr.conversion_rate from gl_daily_rates gdr, gl_daily_conversion_types gdct where po.last_po_currency_code=gdr.from_currency and gl.currency_code=gdr.to_currency and gdr.conversion_date=:p_curr_conv_date and gdr.conversion_type=gdct.conversion_type and gdct.user_conversion_type=:p_curr_conv_type)),6) converted_last_po_price,
+&last_ap_invoice_columns
+msiv.list_price_per_unit item_master_list_price
+from
+(
+select
+r.*,
+cic.comparison_cost_type,
+cic.lot_size,
+cic.unburdened_cost,
+cic.item_cost,
+cic.based_on_rollup_flag,
+nvl(round(moh.item_rate,5)+round(moh.lot_rate/nvl(nullif(cic.lot_size,0),1),5)+round(r.average_material_cost*moh.total_value_rate,5)+round(moh.activity_rate,5),0) material_overhead_cost
+from
+r,
+(
+select
+cic.organization_id,
+cic.inventory_item_id,
+max(cct.cost_type) keep (dense_rank first order by decode(cct.cost_type,:p_cost_type,1,2)) comparison_cost_type,
+max(cic.lot_size) keep (dense_rank first order by decode(cct.cost_type,:p_cost_type,1,2)) lot_size,
+nvl(max(cic.unburdened_cost) keep (dense_rank first order by decode(cct.cost_type,:p_cost_type,1,2)),0) unburdened_cost,
+nvl(max(cic.item_cost) keep (dense_rank first order by decode(cct.cost_type,:p_cost_type,1,2)),0) item_cost,
+nvl(max(cic.based_on_rollup_flag) keep (dense_rank first order by decode(cct.cost_type,:p_cost_type,1,2)),2) based_on_rollup_flag
+from
+cst_item_costs cic,
+cst_cost_types cct,
+mtl_parameters mp
+where
+(cic.organization_id,cic.inventory_item_id) in (select r.organization_id,r.inventory_item_id from r) and
+cic.cost_type_id=cct.cost_type_id and
+cic.organization_id=mp.organization_id and
+(cct.cost_type=:p_cost_type or cic.cost_type_id=mp.primary_cost_method)
+group by
+cic.organization_id,
+cic.inventory_item_id
+) cic,
+(
+select
+r.organization_id,
+r.inventory_item_id,
+sum(decode(ciod.basis_type,1,ciod.usage_rate_or_amount,0)) item_rate,
+sum(decode(ciod.basis_type,2,ciod.usage_rate_or_amount,0)) lot_rate,
+sum(decode(ciod.basis_type,5,ciod.usage_rate_or_amount,0)) total_value_rate,
+sum(decode(ciod.basis_type,6,ciod.usage_rate_or_amount*nvl(ciod.activity_units,0)/nvl(nullif(ciod.item_units,0),1),0)) activity_rate
+from
+r,
+mtl_system_items_b msib,
+cst_item_overhead_defaults ciod,
+bom_resources br
+where
+:p_use_default_matl_ovhds='Y' and
+r.organization_id=msib.organization_id and
+r.inventory_item_id=msib.inventory_item_id and
+r.organization_id=ciod.organization_id and
+ciod.item_type in (3,msib.planning_make_buy_code) and
+(ciod.category_set_id is null or (ciod.category_set_id,ciod.category_id) in (select mic.category_set_id,mic.category_id from mtl_item_categories mic where r.organization_id=mic.organization_id and r.inventory_item_id=mic.inventory_item_id)) and
+ciod.material_overhead_id=br.resource_id and
+br.cost_element_id=2 and
+(:p_only_active='N' or br.disable_date is null or br.disable_date>=trunc(sysdate))
+group by
+r.organization_id,
+r.inventory_item_id
+union all
+select
+cicd.organization_id,
+cicd.inventory_item_id,
+sum(decode(cicd.basis_type,1,cicd.usage_rate_or_amount,0)) item_rate,
+sum(decode(cicd.basis_type,2,cicd.usage_rate_or_amount,0)) lot_rate,
+sum(decode(cicd.basis_type,5,cicd.usage_rate_or_amount,0)) total_value_rate,
+sum(decode(cicd.basis_type,6,cicd.usage_rate_or_amount*nvl(cicd.activity_units,0)/nvl(nullif(cicd.item_units,0),1),0)) activity_rate
+from
+cst_cost_types cct,
+cst_item_cost_details cicd,
+mtl_parameters mp
+where
+:p_use_default_matl_ovhds='N' and
+cct.cost_type=:p_cost_type and
+(cicd.organization_id,cicd.inventory_item_id) in (select r.organization_id,r.inventory_item_id from r) and
+cicd.organization_id=mp.organization_id and
+cicd.cost_type_id=decode(cct.cost_type_id,mp.primary_cost_method,decode(mp.primary_cost_method,1,cct.cost_type_id,mp.avg_rates_cost_type_id),cct.cost_type_id) and
+cicd.level_type=1 and
+cicd.cost_element_id=2
+group by
+cicd.organization_id,
+cicd.inventory_item_id
+) moh
+where
+6=6 and
+r.organization_id=cic.organization_id and
+r.inventory_item_id=cic.inventory_item_id and
+r.organization_id=moh.organization_id(+) and
+r.inventory_item_id=moh.inventory_item_id(+)
+) y,
+mtl_system_items_vl msiv,
+mtl_parameters mp,
+hr_organization_information hoi,
+hr_all_organization_units_vl haouv,
+hr_all_organization_units_vl haouv_ou,
+gl_ledgers gl,
+(
+select
+z.*,
+round(z.po_unit_price/mucv.conversion_rate,6) last_po_price
+from
+(
+select
+plla.ship_to_organization_id organization_id,
+pla.item_id inventory_item_id,
+max(pha.segment1) keep (dense_rank last order by coalesce(plla.promised_date,plla.need_by_date,plla.last_update_date),pda.po_distribution_id) last_purchase_order,
+max(pla.line_num) keep (dense_rank last order by coalesce(plla.promised_date,plla.need_by_date,plla.last_update_date),pda.po_distribution_id) last_po_line,
+max(coalesce(plla.promised_date,plla.need_by_date,plla.last_update_date)) last_po_date,
+max(pha.currency_code) keep (dense_rank last order by coalesce(plla.promised_date,plla.need_by_date,plla.last_update_date),pda.po_distribution_id) last_po_currency_code,
+max(nvl(plla.price_override,pla.unit_price)) keep (dense_rank last order by coalesce(plla.promised_date,plla.need_by_date,plla.last_update_date),pda.po_distribution_id) po_unit_price,
+max(pla.unit_meas_lookup_code) keep (dense_rank last order by coalesce(plla.promised_date,plla.need_by_date,plla.last_update_date),pda.po_distribution_id) unit_meas_lookup_code
+from
+po_headers_all pha,
+po_lines_all pla,
+po_line_locations_all plla,
+po_distributions_all pda
+where
+(plla.ship_to_organization_id,pla.item_id) in (select r.organization_id,r.inventory_item_id from r) and
+pha.authorization_status='APPROVED' and
+nvl(pla.closed_code,'OPEN') not in ('CANCELLED','INCOMPLETE','ON HOLD','REJECTED','RETURNED') and
+pha.po_header_id=pla.po_header_id and
+pla.po_line_id=plla.po_line_id and
+plla.line_location_id=pda.line_location_id and
+pda.destination_type_code='INVENTORY'
+group by
+plla.ship_to_organization_id,
+pla.item_id
+) z,
+mtl_uom_conversions_view mucv
+where
+z.unit_meas_lookup_code=mucv.unit_of_measure(+) and
+z.inventory_item_id=mucv.inventory_item_id(+) and
+z.organization_id=mucv.organization_id(+)
+) po
+&p_last_ap_invoice_sql
+where
+1=1 and
+10=10 and
+y.organization_id=msiv.organization_id and
+y.inventory_item_id=msiv.inventory_item_id and
+y.organization_id=mp.organization_id and
+y.organization_id=hoi.organization_id and
+hoi.org_information_context='Accounting Information' and
+hoi.organization_id=haouv.organization_id and
+sysdate<nvl(haouv.date_to,sysdate+1) and
+to_number(hoi.org_information3)=haouv_ou.organization_id and
+to_number(hoi.org_information1)=gl.ledger_id and
+y.organization_id=po.organization_id(+) and
+y.inventory_item_id=po.inventory_item_id(+)
 order by
-        nvl(gl.short_name, gl.name),
-        haou2.name,
-        cicd_moh.organization_code,
-        cicd_moh.concatenated_segments
+ledger,
+operating_unit,
+org_code,
+item_number

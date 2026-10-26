@@ -50,133 +50,83 @@
 -- -- | 1.10 23 May 2020 Douglas Volz Use multi-language table for UOM Code, item
 -- -- | master, OE transaction types and hr organization names.
 -- -- | 1.11 14 Jun 2024 Douglas Volz Remove tabs, reinstall parameters and org access controls.
+-- -- | 1.12 23 Oct 2026 Andy Haack Rebuilt to the Blitz Report SQL standards.
 -- -- +=============================================================================+/
 -- Excel Example Output: https://www.enginatics.com/example/cac-margin-analysis-summary/
 -- Library Link: https://www.enginatics.com/reports/cac-margin-analysis-summary/
 -- Run Report: https://demo.enginatics.com/
 
-select  nvl(gl.short_name, gl.name) Ledger,
- haou2.name Operating_Unit,
- mp.organization_code Org_Code,
- -- Revision for version 1.7
- -- cms.sold_to_customer_name Sold_To_Customer,
- -- Revision for version 1.10
- cms.customer_class_code Customer_Class_Code,
- hz.party_name Customer,
- hca.account_number Customer_Number,
- -- Revision for version 1.8
- -- Not useful at client site
- -- rsa.name Sales_Rep,
- cms.order_number Order_Number,
- cms.line_number Order_Line,
- -- Revision for version 1.10
- -- sot.name Order_Type,
- ottt.name Order_Type,
- -- Revision for version 1.7
- -- COGS entry has a timestamp, causing two rows
- trunc(cms.gl_date) Transaction_Date,
- msiv.concatenated_segments Item,
- msiv.description  Item_Description,
- -- Revision for version 1.10
- fcl.meaning Item_Type,
- -- Revision for version 1.9
+select
+nvl(gl.short_name,gl.name) ledger,
+haouv_ou.name operating_unit,
+mp.organization_code org_code,
+cms.customer_class_code,
+hp.party_name customer,
+hca.account_number customer_number,
+cms.order_number,
+cms.line_number order_line,
+ottt.name order_type,
+trunc(cms.gl_date) transaction_date,
+msiv.concatenated_segments item,
+msiv.description item_description,
+xxen_util.meaning(msiv.item_type,'ITEM_TYPE',3) item_type,
 &category_columns
- muomv.uom_code UOM_Code,
-        round(sum(nvl(cms.invoiced_amount,0)) / 
-            decode(sum(nvl(cms.invoice_line_quantity,0)), 0, 1, sum(nvl(cms.invoice_line_quantity,0))),5) Unit_Price,
-        round(sum(nvl(cms.cogs_amount,0)) /
-            decode(sum(nvl(cms.ship_quantity,0)),0,1, sum(nvl(cms.ship_quantity,0))),5) Unit_Cost,
- sum(nvl(cms.invoice_line_quantity,0))     Invoice_Quantity,
- sum(nvl(cms.ship_quantity,0))      Ship_Quantity,
- sum(nvl(cms.invoiced_amount,0))     Sales_Amount,
- sum(nvl(cms.cogs_amount,0))      COGS_Amount,
- sum(nvl(cms.invoiced_amount,0)) - sum(nvl(cms.cogs_amount,0))  Margin,
- round((sum(nvl(cms.invoiced_amount,0)) - sum(nvl(cms.cogs_amount,0))) /
-  decode(sum(nvl(cms.invoiced_amount,0)), 0, 1, sum(nvl(cms.invoiced_amount,0))) * 100,1) Percent
-from cst_margin_summary cms,
- -- Revision for version 1.10
- mtl_system_items_vl msiv,
- mtl_units_of_measure_vl muomv,
- fnd_common_lookups fcl,
- -- End for revision for version 1.10
- mtl_parameters mp,
- so_order_types_all sot,
- -- Revision for version 1.10
- oe_transaction_types_tl ottt,
- -- Revision for version 1.7
- -- ra_customers rc,
- hz_cust_accounts_all hca,
- hz_parties hz,
- -- End revision for version 1.7
- -- Revision for version 1.8
- -- Causing cross-joining
- -- ra_salesreps_all rsa,
- hr_organization_information hoi,
- hr_all_organization_units_vl haou,  -- inv_organization_id
- hr_all_organization_units_vl haou2, -- operating unit
- gl_ledgers gl
--- Revision for version 1.10
-where msiv.organization_id         = mp.organization_id
-and msiv.organization_id         = cms.parent_organization_id
-and msiv.inventory_item_id       = cms.parent_inventory_item_id
-and muomv.uom_code               = msiv.primary_uom_code
-and fcl.lookup_code (+)          = msiv.item_type
-and fcl.lookup_type (+)          = 'ITEM_TYPE'
-and ottt.transaction_type_id     = sot.order_type_id
-and ottt.language                = userenv('lang')
--- End for revision for version 1.10
-and sot.order_type_id            = cms.order_type_id
--- Performance improvement, comment this out
--- and sot.org_id  = cms.org_id
--- Revision for version 1.7
--- and rc.customer_id               = cms.customer_id
-and hca.cust_account_id          = cms.customer_id
-and hz.party_id                  = hca.party_id
--- Revision for version 1.8
--- Causing cross-joining
--- and rsa.salesrep_id              = cms.primary_salesrep_id
-and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-and 1=1    -- p_trx_date_from, p_trx_date_to, p_customer, p_item_number, p_org_code, p_operating_unit, p_ledger
--- End revision for version 1.5
--- ===================================================================
--- using the base tables to avoid using
--- org_organization_definitions and hr_operating_units
--- ===================================================================
-and hoi.org_information_context  = 'Accounting Information'
-and hoi.organization_id          = mp.organization_id
-and hoi.organization_id          = haou.organization_id   -- this gets the organization name
-and cms.org_id                   = haou2.organization_id
-and haou2.organization_id        = hoi.org_information3 -- this gets the operating unit id
-and gl.ledger_id                 = to_number(hoi.org_information1) -- get the ledger_id
--- ===================================================================
-group by 
- nvl(gl.short_name, gl.name),
- haou2.name,
- mp.organization_code,
- -- Revision for version 1.10
- cms.customer_class_code,
- cms.sold_to_customer_name,
- hz.party_name,
- hca.account_number,
- cms.order_number,
- cms.line_number,
- -- Revision for version 1.10
- ottt.name,
- -- Revision for version 1.7
- -- COGS entry has a timestamp, causing two rows
- trunc(cms.gl_date),
- msiv.concatenated_segments,
- msiv.description,
- fcl.meaning, -- Item Type
- -- Revision for version 1.10
- muomv.uom_code,
- -- Revision for version 1.9, needed for inline select
- msiv.inventory_item_id,
- msiv.organization_id
+msiv.primary_uom_code uom_code,
+round(sum(nvl(cms.invoiced_amount,0))/decode(sum(nvl(cms.invoice_line_quantity,0)),0,1,sum(nvl(cms.invoice_line_quantity,0))),5) unit_price,
+round(sum(nvl(cms.cogs_amount,0))/decode(sum(nvl(cms.ship_quantity,0)),0,1,sum(nvl(cms.ship_quantity,0))),5) unit_cost,
+sum(nvl(cms.invoice_line_quantity,0)) invoice_quantity,
+sum(nvl(cms.ship_quantity,0)) ship_quantity,
+sum(nvl(cms.invoiced_amount,0)) sales_amount,
+sum(nvl(cms.cogs_amount,0)) cogs_amount,
+sum(nvl(cms.invoiced_amount,0))-sum(nvl(cms.cogs_amount,0)) margin,
+round((sum(nvl(cms.invoiced_amount,0))-sum(nvl(cms.cogs_amount,0)))/decode(sum(nvl(cms.invoiced_amount,0)),0,1,sum(nvl(cms.invoiced_amount,0)))*100,1) percent
+from
+mtl_parameters mp,
+hr_organization_information hoi,
+hr_all_organization_units_vl haouv_ou,
+gl_ledgers gl,
+cst_margin_summary cms,
+oe_transaction_types_tl ottt,
+hz_cust_accounts hca,
+hz_parties hp,
+mtl_system_items_vl msiv
+where
+1=1 and
+mp.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
+mp.organization_id=hoi.organization_id and
+hoi.org_information_context='Accounting Information' and
+to_number(hoi.org_information3)=haouv_ou.organization_id and
+to_number(hoi.org_information1)=gl.ledger_id and
+mp.organization_id=cms.parent_organization_id and
+haouv_ou.organization_id=cms.org_id and
+cms.order_type_id=ottt.transaction_type_id and
+ottt.language=userenv('lang') and
+cms.customer_id=hca.cust_account_id and
+hca.party_id=hp.party_id and
+cms.parent_organization_id=msiv.organization_id and
+cms.parent_inventory_item_id=msiv.inventory_item_id
+group by
+nvl(gl.short_name,gl.name),
+haouv_ou.name,
+mp.organization_code,
+cms.customer_class_code,
+cms.sold_to_customer_name,
+hp.party_name,
+hca.account_number,
+cms.order_number,
+cms.line_number,
+ottt.name,
+trunc(cms.gl_date),
+msiv.concatenated_segments,
+msiv.description,
+msiv.item_type,
+msiv.primary_uom_code,
+msiv.inventory_item_id,
+msiv.organization_id
 order by
- nvl(gl.short_name, gl.name), -- Ledger
- haou2.name, -- Operating Unit
- mp.organization_code, -- Org Code
- hz.party_name, -- Customer
- cms.order_number, -- Order Number
- cms.line_number -- Order Line
+ledger,
+operating_unit,
+org_code,
+customer,
+cms.order_number,
+cms.line_number

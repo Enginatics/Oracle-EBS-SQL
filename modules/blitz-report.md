@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-16
+last_modified_at: 2026-10-26
 title: 'Oracle EBS Blitz Report Reports | 51 SQL reports'
 description: '51 free Oracle E-Business Suite Blitz Report SQL reports for Excel: Blitz Report Add-in Environment Setup, Blitz Report Application Categories, Blitz…'
 keywords: 'Oracle EBS Blitz Report reports, Oracle Blitz Report SQL, Oracle E-Business Suite, Blitz Report, xxen_reports_v, xxen_report_parameters_v, xxen_report_runs, fnd_user, fnd_application_vl'
@@ -39,7 +39,7 @@ module_page: true
 | [Blitz Report History Summary](/Blitz%20Report%20History%20Summary/) | Count and performance summary of historic Blitz Report executions |
 | [Blitz Report LOV Comparison between environments](/Blitz%20Report%20LOV%20Comparison%20between%20environments/) | Requires following view to be created on the remote environment to avoid ORA-64202: remote temporary or abstract LOB locator is encountered create or replace… |
 | [Blitz Report LOV SQL Validation](/Blitz%20Report%20LOV%20SQL%20Validation/) | Validates Blitz Report LOV SQLs for valid syntax. This can be useful after mass migrating reports from other tools such as Discoverer, Excl4apps, splashBI or… |
-| [Blitz Report LOVs](/Blitz%20Report%20LOVs/) | Blitz Report list of values |
+| [Blitz Report LOVs](/Blitz%20Report%20LOVs/) | Blitz Report lists of values: shared LOVs, and the custom LOVs of report parameters and upload columns. The count columns show the last result of the… |
 | [Blitz Report License User History](/Blitz%20Report%20License%20User%20History/) | Shows the history of active Blitz Report users at every at every month end, looking back the past 60 days. |
 | [Blitz Report License Users](/Blitz%20Report%20License%20Users/) | Currently active Blitz Report users (running reports within the past 60 days) and their most frequently executeds reports. |
 | [Blitz Report Parameter Anchor Validation](/Blitz%20Report%20Parameter%20Anchor%20Validation/) | Checks if all parameter anchors exist in the xxenreportparameteranchors table. |

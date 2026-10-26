@@ -1,8 +1,8 @@
 ---
 layout: default
-last_modified_at: 2026-10-16
-title: 'Oracle EBS Projects Reports | 17 SQL reports'
-description: '17 free Oracle E-Business Suite Projects SQL reports for Excel: PA Capital Project Summary with Asset Detail, PA Cost Audit, PA Employee Activity By…'
+last_modified_at: 2026-10-26
+title: 'Oracle EBS Projects Reports | 18 SQL reports'
+description: '18 free Oracle E-Business Suite Projects SQL reports for Excel: PA Capital Project Summary with Asset Detail, PA Cost Audit, PA Employee Activity By…'
 keywords: 'Oracle EBS Projects reports, Oracle Projects SQL, Oracle E-Business Suite, Blitz Report, hr_all_organization_units_vl, pa_projects_all, mo_glob_org_access_tmp, dual, pa_tasks'
 permalink: /modules/projects/
 module: 'Projects'
@@ -11,7 +11,7 @@ module_page: true
 
 # Oracle EBS Projects Reports
 
-17 ready-to-run SQL reports for **Oracle E-Business Suite Projects**, maintained by Enginatics and used in production at Oracle EBS customers worldwide. Each report page lists its parameters, the Oracle EBS tables it reads and an Excel example output. The most frequently used Projects tables in these reports are `hr_all_organization_units_vl`, `pa_projects_all`, `mo_glob_org_access_tmp`, `dual`, `pa_tasks`, `per_people_x`.
+18 ready-to-run SQL reports for **Oracle E-Business Suite Projects**, maintained by Enginatics and used in production at Oracle EBS customers worldwide. Each report page lists its parameters, the Oracle EBS tables it reads and an Excel example output. The most frequently used Projects tables in these reports are `hr_all_organization_units_vl`, `pa_projects_all`, `mo_glob_org_access_tmp`, `dual`, `pa_tasks`, `per_people_x`.
 
 > **Run any of these reports in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=module-projects) – your first 30 reports are free.
 
@@ -29,6 +29,7 @@ module_page: true
 | [PA Project Billing Status](/PA%20Project%20Billing%20Status/) | Project billing overview showing revenue, billed and unbilled amounts, funding totals, and available funding for each project. |
 | [PA Project Budget](/PA%20Project%20Budget/) | Report of Standard Project Budgets. This report does not include Financial Plan Budgets. In addition to the budget details, the report will also display the… |
 | [PA Project Expenditure Items with WIP and INV Detail](/PA%20Project%20Expenditure%20Items%20with%20WIP%20and%20INV%20Detail/) | Project expenditure items showing WIP and inventory transaction details including transaction types, quantities, WIP job, assembly, department, resource, and… |
+| [PA Project Revenue and Cost by Period](/PA%20Project%20Revenue%20and%20Cost%20by%20Period/) | Revenue, raw cost, burdened cost and margin per project and top task for each GL or PA period, in the project functional currency. Cost is taken from the raw… |
 | [PA Project Status Summary](/PA%20Project%20Status%20Summary/) | Project-level financial overview showing actual costs, revenue, labor hours, and commitments for each project with manager and status information. |
 | [PA Project Subledger Detail by Expenditure Type](/PA%20Project%20Subledger%20Detail%20by%20Expenditure%20Type/) | Cost distribution lines summarized by project, task, expenditure type, and GL account showing raw cost, burden cost, and total cost for transferred and… |
 | [PA Revenue, Cost, Budgets by Resources](/PA%20Revenue-%20Cost-%20Budgets%20by%20Resources/) | This Blitz Report is the implements the following standard oracle reports. - MGT: Task - Revenue, Cost, Budgets by Resources - MGT: Revenue, Cost, Budgets by… |

@@ -59,453 +59,140 @@
 -- -- | item and category set id (Inventory).
 -- -- | 1.7 27 Jan 2020 Douglas Volz Added Operating Unit and Org Code parameters.
 -- -- | 1.8 02 Jul 2022 Douglas Volz Change for multi-language and lookup types.
+-- -- | 1.9 23 Oct 2026 Andy Haack Rebuilt to the Blitz Report SQL standards.
 -- -- +=============================================================================+/
 -- Excel Example Output: https://www.enginatics.com/example/cac-item-cost-break-out-by-activity/
 -- Library Link: https://www.enginatics.com/reports/cac-item-cost-break-out-by-activity/
 -- Run Report: https://demo.enginatics.com/
 
-select  nvl(gl.short_name, gl.name) Ledger,
- haou2.name Operating_Unit,
- mp.organization_code Org_Code,
- cct.cost_type Cost_Type,
-        msiv.concatenated_segments Item_Number,
-        msiv.description Item_Description,
- -- Revision for version 1.8
- -- msiv.primary_uom_code UOM_Code,
- muomv.uom_code UOM_Code,
- fcl.meaning Item_Type,
- -- Revision for version 1.8
- misv.inventory_item_status_code Item_Status,
- ml1.meaning Make_Buy_Code,
- -- Revision for version 1.6
+select
+nvl(gl.short_name,gl.name) ledger,
+haouv_ou.name operating_unit,
+mp.organization_code org_code,
+cct.cost_type,
+msiv.concatenated_segments item_number,
+msiv.description item_description,
+msiv.primary_uom_code uom_code,
+xxen_util.meaning(msiv.item_type,'ITEM_TYPE',3) item_type,
+msiv.inventory_item_status_code item_status,
+xxen_util.meaning(msiv.planning_make_buy_code,'MTL_PLANNING_MAKE_BUY',700) make_buy_code,
 &category_columns
- -- Revision for version 1.8
- fl1.meaning Allow_Costs,
- ml2.meaning Inventory_Asset,
- ml3.meaning Based_on_Rollup,
- cic.shrinkage_rate Shrinkage_Rate,
- gl.currency_code Currency_Code,
- -- End revision for version 1.8
- nvl(cic.material_cost,0) Material_Cost,
-  round(nvl((select sum(nvl(cicd.item_cost,0))
-     from   cst_item_cost_details cicd,
-     -- Revision for version 1.8
-        --cst_cost_types cct,
-     bom_resources br,
-     cst_activities ca
-     where  cicd.inventory_item_id = msiv.inventory_item_id
-     and    cicd.organization_id   = mp.organization_id
-     and    br.resource_id         = cicd.resource_id
-     and    haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
-and 1=1                    -- p_activity1
-     and    br.default_activity_id = ca.activity_id
-     and    cct.cost_type_id       = cicd.cost_type_id
-     and    br.cost_element_id     = 3 -- Resource
-    ),0),5) "Resource &p_activity1 Amount",
- round(nvl((select sum(nvl(cicd.item_cost,0))
-     from   cst_item_cost_details cicd,
-     -- Revision for version 1.8
-        --cst_cost_types cct,
-     bom_resources br,
-     cst_activities ca
-     where  cicd.inventory_item_id = msiv.inventory_item_id
-     and    cicd.organization_id   = mp.organization_id
-     and    br.resource_id         = cicd.resource_id
-     and    haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
-and 1=1                    -- p_activity1
-     and    br.default_activity_id = ca.activity_id
-     and    cct.cost_type_id       = cicd.cost_type_id
-     and    br.cost_element_id     = 4 -- Outside Processing
-    ),0),5) "OSP &p_activity1 Amount",
-  round(nvl((select sum(nvl(cicd.item_cost,0))
-     from   cst_item_cost_details cicd,
-     -- Revision for version 1.8
-        --cst_cost_types cct,
-     bom_resources bro,
-     cst_activities ca
-     where  cicd.inventory_item_id = msiv.inventory_item_id
-     and    cicd.organization_id   = mp.organization_id
-     and    bro.resource_id        = cicd.resource_id
-     and    haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
-and 1=1                    -- p_activity1
-     and    bro.default_activity_id = ca.activity_id
-     and    cct.cost_type_id       = cicd.cost_type_id
-     and    bro.cost_element_id    = 5 -- Overhead
-    ),0),5) "Overhead &p_activity1 Amount",
-  round(nvl((select sum(nvl(cicd.item_cost,0))
-     from   cst_item_cost_details cicd,
-     -- Revision for version 1.8
-        --cst_cost_types cct,
-     bom_resources br,
-     cst_activities ca
-     where  cicd.inventory_item_id = msiv.inventory_item_id
-     and    cicd.organization_id   = mp.organization_id
-     and    br.resource_id         = cicd.resource_id
-     and    2=2                    -- p_activity2
-     and    br.default_activity_id = ca.activity_id
-     and    cct.cost_type_id       = cicd.cost_type_id
-     and    br.cost_element_id     = 3 -- Resource
-    ),0),5) "Resource &p_activity2 Amount",
-  round(nvl((select sum(nvl(cicd.item_cost,0))
-     from   cst_item_cost_details cicd,
-     -- Revision for version 1.8
-        --cst_cost_types cct,
-     bom_resources br,
-     cst_activities ca
-     where  cicd.inventory_item_id = msiv.inventory_item_id
-     and    cicd.organization_id   = mp.organization_id
-     and    br.resource_id         = cicd.resource_id
-     and    2=2                    -- p_activity2
-     and    br.default_activity_id = ca.activity_id
-     and    cct.cost_type_id       = cicd.cost_type_id
-     and    br.cost_element_id     = 4 -- Outside Processing
-    ),0),5) "OSP &p_activity2 Amount",
-  round(nvl((select sum(nvl(cicd.item_cost,0))
-     from   cst_item_cost_details cicd,
-     -- Revision for version 1.8
-        --cst_cost_types cct,
-     bom_resources bro,
-     cst_activities ca
-     where  cicd.inventory_item_id = msiv.inventory_item_id
-     and    cicd.organization_id   = mp.organization_id
-     and    bro.resource_id        = cicd.resource_id
-     and    2=2                    -- p_activity2
-     and    bro.default_activity_id = ca.activity_id
-     and    cct.cost_type_id       = cicd.cost_type_id
-     and    bro.cost_element_id    = 5 -- Overhead
-    ),0),5) "Overhead &p_activity2 Amount",
-  round(nvl((select sum(nvl(cicd.item_cost,0))
-     from   cst_item_cost_details cicd,
-     -- Revision for version 1.8
-        --cst_cost_types cct,
-     bom_resources br,
-     cst_activities ca
-     where  cicd.inventory_item_id = msiv.inventory_item_id
-     and    cicd.organization_id   = mp.organization_id
-     and    br.resource_id         = cicd.resource_id
-     and    3=3                    -- p_activity3
-     and    br.default_activity_id = ca.activity_id
-     and    cct.cost_type_id       = cicd.cost_type_id
-     and    br.cost_element_id     = 3 -- Resource
-    ),0),5) "Resource &p_activity3 Amount",
-  round(nvl((select sum(nvl(cicd.item_cost,0))
-     from   cst_item_cost_details cicd,
-     -- Revision for version 1.8
-        --cst_cost_types cct,
-     bom_resources br,
-     cst_activities ca
-     where  cicd.inventory_item_id = msiv.inventory_item_id
-     and    cicd.organization_id   = mp.organization_id
-     and    br.resource_id         = cicd.resource_id
-     and    3=3                    -- p_activity3
-     and    br.default_activity_id = ca.activity_id
-     and    cct.cost_type_id       = cicd.cost_type_id
-     and    br.cost_element_id     = 4 -- Outside Processing
-    ),0),5) "OSP &p_activity3 Amount",
-  round(nvl((select sum(nvl(cicd.item_cost,0))
-     from   cst_item_cost_details cicd,
-     -- Revision for version 1.8
-        --cst_cost_types cct,
-     bom_resources bro,
-     cst_activities ca
-     where  cicd.inventory_item_id = msiv.inventory_item_id
-     and    cicd.organization_id   = mp.organization_id
-     and    bro.resource_id        = cicd.resource_id
-     and    3=3                    -- p_activity3
-     and    bro.default_activity_id = ca.activity_id
-     and    cct.cost_type_id       = cicd.cost_type_id
-     and    bro.cost_element_id    = 5 -- Overhead
-    ),0),5) "Overhead &p_activity3 Amount",
-  round(nvl((select sum(nvl(cicd.item_cost,0))
-     from   cst_item_cost_details cicd,
-     -- Revision for version 1.8
-        --cst_cost_types cct,
-     bom_resources br,
-     cst_activities ca
-     where  cicd.inventory_item_id = msiv.inventory_item_id
-     and    cicd.organization_id   = mp.organization_id
-     and    br.resource_id         = cicd.resource_id
-     and    4=4                    -- p_activity4
-     and    br.default_activity_id = ca.activity_id
-     and    cct.cost_type_id       = cicd.cost_type_id
-     and    br.cost_element_id     = 3 -- Resource
-    ),0),5) "Resource &p_activity4 Amount",
-  round(nvl((select sum(nvl(cicd.item_cost,0))
-     from   cst_item_cost_details cicd,
-     -- Revision for version 1.8
-        --cst_cost_types cct,
-     bom_resources br,
-     cst_activities ca
-     where  cicd.inventory_item_id = msiv.inventory_item_id
-     and    cicd.organization_id   = mp.organization_id
-     and    br.resource_id         = cicd.resource_id
-     and    4=4                    -- p_activity4
-     and    br.default_activity_id = ca.activity_id
-     and    cct.cost_type_id       = cicd.cost_type_id
-     and    br.cost_element_id     = 4 -- Outside Processing
-    ),0),5) "OSP &p_activity4 Amount",
-  round(nvl((select sum(nvl(cicd.item_cost,0))
-     from   cst_item_cost_details cicd,
-     -- Revision for version 1.8
-        --cst_cost_types cct,
-     bom_resources bro,
-     cst_activities ca
-     where  cicd.inventory_item_id = msiv.inventory_item_id
-     and    cicd.organization_id   = mp.organization_id
-     and    bro.resource_id        = cicd.resource_id
-     and    4=4                    -- p_activity4
-     and    bro.default_activity_id = ca.activity_id
-     and    cct.cost_type_id       = cicd.cost_type_id
-     and    bro.cost_element_id    = 5 -- Overhead
-    ),0),5) "Overhead &p_activity4 Amount",
-  round(nvl((select sum(nvl(cicd.item_cost,0))
-     from   cst_item_cost_details cicd,
-     -- Revision for version 1.8
-        --cst_cost_types cct,
-     bom_resources br,
-     cst_activities ca
-     where  cicd.inventory_item_id = msiv.inventory_item_id
-     and    cicd.organization_id   = mp.organization_id
-     and    br.resource_id         = cicd.resource_id
-     and    5=5                    -- p_activity5
-     and    br.default_activity_id = ca.activity_id
-     and    cct.cost_type_id       = cicd.cost_type_id
-     and    br.cost_element_id     = 3 -- Resource
-    ),0),5) "Resource &p_activity5 Amount",
-  round(nvl((select sum(nvl(cicd.item_cost,0))
-     from   cst_item_cost_details cicd,
-     -- Revision for version 1.8
-        --cst_cost_types cct,
-     bom_resources br,
-     cst_activities ca
-     where  cicd.inventory_item_id = msiv.inventory_item_id
-     and    cicd.organization_id   = mp.organization_id
-     and    br.resource_id         = cicd.resource_id
-     and    5=5                    -- p_activity5
-     and    br.default_activity_id = ca.activity_id
-     and    cct.cost_type_id       = cicd.cost_type_id
-     and    br.cost_element_id     = 4 -- Outside Processing
-    ),0),5) "OSP &p_activity5 Amount",
-  round(nvl((select sum(nvl(cicd.item_cost,0))
-     from   cst_item_cost_details cicd,
-     -- Revision for version 1.8
-        --cst_cost_types cct,
-     bom_resources bro,
-     cst_activities ca
-     where  cicd.inventory_item_id = msiv.inventory_item_id
-     and    cicd.organization_id   = mp.organization_id
-     and    bro.resource_id        = cicd.resource_id
-     and    5=5                    -- p_activity5
-     and    bro.default_activity_id = ca.activity_id
-     and    cct.cost_type_id       = cicd.cost_type_id
-     and    bro.cost_element_id    = 5 -- Overhead
-    ),0),5) "Overhead &p_activity5 Amount",
- -- Non-Sort overheads based on resources
-  round(nvl((select sum(nvl(cicd.item_cost,0))
-     from   cst_item_cost_details cicd,
-     -- Revision for version 1.8
-        --cst_cost_types cct,
-     bom_resources bro,
-     cst_activities ca
-     where  cicd.inventory_item_id = msiv.inventory_item_id
-     and    cicd.organization_id   = mp.organization_id
-     and    bro.resource_id        = cicd.resource_id
-     and    bro.resource_code not in (:p_activity1,:p_activity2,:p_activity3,:p_activity4,:p_activity5) 
-     and    bro.default_activity_id = ca.activity_id (+)
-     and    bro.resource_code not in ('PII','ICP')
-     and    cct.cost_type_id       = cicd.cost_type_id
-     and    bro.cost_element_id    = 5 -- Overhead
-    ),0),5) Other_Overhead_Amounts,
- round(nvl((select sum(nvl(cicd.item_cost,0))
-     from   cst_item_cost_details cicd,
-     -- Revision for version 1.8
-        --cst_cost_types cct,
-     bom_resources br,
-     cst_activities ca
-     where  cicd.inventory_item_id = msiv.inventory_item_id
-     and    cicd.organization_id   = mp.organization_id
-     and    br.resource_id         = cicd.resource_id
-     and    nvl(ca.activity,'UNASSIGNED') = 'UNASSIGNED'
-     -- End revision for version 1.4
-     and    br.default_activity_id = ca.activity_id (+)
-     and    cct.cost_type_id       = cicd.cost_type_id
-     and    br.cost_element_id     = 3 -- Resource
-    ),0),5) Unassigned_Resource_Amount,
-  round(nvl((select sum(nvl(cicd.item_cost,0))
-     from   cst_item_cost_details cicd,
-     -- Revision for version 1.8
-        --cst_cost_types cct,
-     bom_resources br,
-     cst_activities ca
-     where  cicd.inventory_item_id = msiv.inventory_item_id
-     and    cicd.organization_id   = mp.organization_id
-     and    br.resource_id         = cicd.resource_id
-     and    nvl(ca.activity,'UNASSIGNED') = 'UNASSIGNED'
-     -- End revision for version 1.4
-     and    br.default_activity_id = ca.activity_id (+)
-     and    cct.cost_type_id       = cicd.cost_type_id
-     and    br.cost_element_id     = 4 -- Outside Processing
-    ),0),5) Unassigned_OSP_Amount,
-  round(nvl((select sum(nvl(cicd.item_cost,0))
-     from   cst_item_cost_details cicd
-     -- Revision for version 1.8
-        --cst_cost_types cct
-     where  cicd.inventory_item_id = msiv.inventory_item_id
-     and    cicd.organization_id   = mp.organization_id
-     and    cicd.level_type        = 1 -- This Level
-     and    cct.cost_type_id       = cicd.cost_type_id
-     and    cicd.cost_element_id   = 2 -- Matl Overhead
-    ),0),5) TL_Material_Overhead,
-  round(nvl((select sum(nvl(cicd.item_cost,0))
-     from   cst_item_cost_details cicd
-     -- Revision for version 1.8
-        --cst_cost_types cct
-     where  cicd.inventory_item_id = msiv.inventory_item_id
-     and    cicd.organization_id   = mp.organization_id
-     and    cicd.level_type        = 2 -- Previous Level
-     and    cct.cost_type_id       = cicd.cost_type_id
-     and    cicd.cost_element_id   = 2 -- Matl Overhead
-    ),0),5) PL_Material_Overhead,
-  round(nvl((select sum(nvl(cicd.item_cost,0))
-     from   cst_item_cost_details cicd
-     -- Revision for version 1.8
-        --cst_cost_types cct
-     where  cicd.inventory_item_id = msiv.inventory_item_id
-     and    cicd.organization_id   = mp.organization_id
-     and    cicd.resource_id is null
-     and    cicd.level_type        = 1 -- This Level
-     and    cct.cost_type_id       = cicd.cost_type_id
-     and    cicd.cost_element_id   = 3 -- Resource
-    ),0),5) TL_Resource_No_SubElement,
-  round(nvl((select sum(nvl(cicd.item_cost,0))
-     from   cst_item_cost_details cicd
-     -- Revision for version 1.8
-        --cst_cost_types cct
-     where  cicd.inventory_item_id = msiv.inventory_item_id
-     and    cicd.organization_id   = mp.organization_id
-     and    cicd.resource_id is null
-     and    cicd.level_type        = 2 -- Previous Level
-     and    cct.cost_type_id       = cicd.cost_type_id
-     and    cicd.cost_element_id   = 3 -- Resource
-    ),0),5) PL_Resource_No_SubElement,
-  round(nvl((select sum(nvl(cicd.item_cost,0))
-     from   cst_item_cost_details cicd
-     -- Revision for version 1.8
-        --cst_cost_types cct
-     where  cicd.inventory_item_id = msiv.inventory_item_id
-     and    cicd.organization_id   = mp.organization_id
-     and    cicd.resource_id is null
-     and    cicd.level_type        = 1 -- This Level
-     and    cct.cost_type_id       = cicd.cost_type_id
-     and    cicd.cost_element_id   = 4 -- Outside Processing
-    ),0),5) TL_OSP_No_SubElement,
-  round(nvl((select sum(nvl(cicd.item_cost,0))
-     from   cst_item_cost_details cicd
-     -- Revision for version 1.8
-        --cst_cost_types cct
-     where  cicd.inventory_item_id = msiv.inventory_item_id
-     and    cicd.organization_id   = mp.organization_id
-     and    cicd.resource_id is null
-     and    cicd.level_type        = 2 -- Previous Level
-     and    cct.cost_type_id       = cicd.cost_type_id
-     and    cicd.cost_element_id   = 4 -- Outside Processing
-    ),0),5) PL_OSP_No_SubElement,
-  round(nvl((select sum(nvl(cicd.item_cost,0))
-     from   cst_item_cost_details cicd
-     -- Revision for version 1.8
-        --cst_cost_types cct
-     where  cicd.inventory_item_id = msiv.inventory_item_id
-     and    cicd.organization_id   = mp.organization_id
-     and    cicd.resource_id is null
-     and    cicd.level_type        = 1 -- This Level
-     and    cct.cost_type_id       = cicd.cost_type_id
-     and    cicd.cost_element_id   = 5 -- Overhead
-    ),0),5) TL_Overhead_No_SubElement,
-  round(nvl((select sum(nvl(cicd.item_cost,0))
-     from   cst_item_cost_details cicd
-     -- Revision for version 1.8
-        --cst_cost_types cct
-     where  cicd.inventory_item_id = msiv.inventory_item_id
-     and    cicd.organization_id   = mp.organization_id
-     and    cicd.resource_id is null
-     and    cicd.level_type        = 2 -- Previous Level
-     and    cct.cost_type_id       = cicd.cost_type_id
-     and    cicd.cost_element_id   = 5 -- Overhead
-    ),0),5) PL_Overhead_No_SubElement,
- nvl(cic.material_cost,0) Material_Cost,
- nvl(cic.material_overhead_cost,0) Material_Overhead_Cost,
- nvl(cic.resource_cost,0) Resource_Cost,
- nvl(cic.outside_processing_cost,0) Outside_Processing_Cost,
- nvl(cic.overhead_cost,0) Overhead_Cost,
-        nvl(cic.item_cost,0) Item_Cost,
- cic.creation_date Cost_Creation_Date,
- cic.last_update_date Last_Cost_Update_Date
-from    cst_item_costs cic,
- cst_cost_types cct,
- mtl_system_items_vl msiv,
- mtl_parameters mp,
- -- Revision for version 1.8
- mtl_item_status_vl misv,
- mtl_units_of_measure_vl muomv,
- mfg_lookups ml1, -- planning make/buy code, MTL_PLANNING_MAKE_BUY
- mfg_lookups ml2, -- inventory_asset_flag, SYS_YES_NO
- mfg_lookups ml3, -- based on rollup, CST_BONROLLUP_VAL
- fnd_lookups fl1, -- allow costs, YES_NO
- -- End revision for version 1.8
- fnd_common_lookups fcl,
- hr_organization_information hoi,
- hr_all_organization_units_vl haou,  -- inv_organization_id
- hr_all_organization_units_vl haou2, -- operating unit
- gl_ledgers gl
--- ===================================================================
--- Item master, organization and item master to cost joins
--- ===================================================================
-where mp.organization_id              = msiv.organization_id
-and     msiv.inventory_item_id          = cic.inventory_item_id
-and     msiv.organization_id            = cic.organization_id
-and cic.cost_type_id                = cct.cost_type_id
--- Revision for version 1.8
-and msiv.primary_uom_code           = muomv.uom_code
-and msiv.inventory_item_status_code = misv.inventory_item_status_code
--- End revision for version 1.8
-and 6=6                             -- p_cost_type
--- ===================================================================
--- Don't report the unused inventory organizations
--- ===================================================================
--- Fix for version 1.4
-and mp.organization_id             <> mp.master_organization_id    -- remove the global master org
--- ===================================================================
--- Lookup codes
--- ===================================================================
--- Revision for version 1.8
-and ml1.lookup_type                 = 'MTL_PLANNING_MAKE_BUY'
-and ml1.lookup_code                 = msiv.planning_make_buy_code
-and ml2.lookup_type                 = 'SYS_YES_NO'
-and ml2.lookup_code                 = to_char(cic.inventory_asset_flag)
-and ml3.lookup_type                 = 'CST_BONROLLUP_VAL'
-and ml3.lookup_code                 = cic.based_on_rollup_flag
-and fl1.lookup_type                 = 'YES_NO'
-and fl1.lookup_code                 = msiv.costing_enabled_flag
--- End revision for version 1.8
-and fcl.lookup_type (+)             = 'ITEM_TYPE'
-and fcl.lookup_code (+)             = msiv.item_type
--- ===================================================================
--- using the base tables to avoid the performance issues
--- with org_organization_definitions and hr_operating_units
--- ===================================================================
-and hoi.org_information_context     = 'Accounting Information'
-and hoi.organization_id             = mp.organization_id
-and hoi.organization_id             = haou.organization_id   -- this gets the organization name
-and haou2.organization_id           = to_number(hoi.org_information3) -- this gets the operating unit id
-and gl.ledger_id                    = to_number(hoi.org_information1) -- get the ledger_id
--- avoid selecting disabled inventory organizations
-and sysdate < nvl(haou.date_to, sysdate + 1)
-and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
-and 7=7                             -- p_item_number, p_org_code, p_operating_unit, p_ledger
+xxen_util.yes(msiv.costing_enabled_flag) allow_costs,
+xxen_util.yes(decode(cic.inventory_asset_flag,1,'Y')) inventory_asset,
+xxen_util.meaning(cic.based_on_rollup_flag,'CST_BONROLLUP_VAL',700) based_on_rollup,
+cic.shrinkage_rate,
+gl.currency_code,
+nvl(cic.material_cost,0) material_cost,
+round(nvl(x.resource1,0),5) "Resource &p_activity1 Amount",
+round(nvl(x.osp1,0),5) "OSP &p_activity1 Amount",
+round(nvl(x.overhead1,0),5) "Overhead &p_activity1 Amount",
+round(nvl(x.resource2,0),5) "Resource &p_activity2 Amount",
+round(nvl(x.osp2,0),5) "OSP &p_activity2 Amount",
+round(nvl(x.overhead2,0),5) "Overhead &p_activity2 Amount",
+round(nvl(x.resource3,0),5) "Resource &p_activity3 Amount",
+round(nvl(x.osp3,0),5) "OSP &p_activity3 Amount",
+round(nvl(x.overhead3,0),5) "Overhead &p_activity3 Amount",
+round(nvl(x.resource4,0),5) "Resource &p_activity4 Amount",
+round(nvl(x.osp4,0),5) "OSP &p_activity4 Amount",
+round(nvl(x.overhead4,0),5) "Overhead &p_activity4 Amount",
+round(nvl(x.resource5,0),5) "Resource &p_activity5 Amount",
+round(nvl(x.osp5,0),5) "OSP &p_activity5 Amount",
+round(nvl(x.overhead5,0),5) "Overhead &p_activity5 Amount",
+round(nvl(x.other_overhead,0),5) other_overhead_amounts,
+round(nvl(x.unassigned_resource,0),5) unassigned_resource_amount,
+round(nvl(x.unassigned_osp,0),5) unassigned_osp_amount,
+round(nvl(x.tl_material_overhead,0),5) tl_material_overhead,
+round(nvl(x.pl_material_overhead,0),5) pl_material_overhead,
+round(nvl(x.tl_resource_no_subelement,0),5) tl_resource_no_subelement,
+round(nvl(x.pl_resource_no_subelement,0),5) pl_resource_no_subelement,
+round(nvl(x.tl_osp_no_subelement,0),5) tl_osp_no_subelement,
+round(nvl(x.pl_osp_no_subelement,0),5) pl_osp_no_subelement,
+round(nvl(x.tl_overhead_no_subelement,0),5) tl_overhead_no_subelement,
+round(nvl(x.pl_overhead_no_subelement,0),5) pl_overhead_no_subelement,
+nvl(cic.material_cost,0) material_cost,
+nvl(cic.material_overhead_cost,0) material_overhead_cost,
+nvl(cic.resource_cost,0) resource_cost,
+nvl(cic.outside_processing_cost,0) outside_processing_cost,
+nvl(cic.overhead_cost,0) overhead_cost,
+nvl(cic.item_cost,0) item_cost,
+cic.creation_date cost_creation_date,
+cic.last_update_date last_cost_update_date
+from
+mtl_parameters mp,
+hr_organization_information hoi,
+hr_all_organization_units haou,
+hr_all_organization_units_vl haouv_ou,
+gl_ledgers gl,
+cst_item_costs cic,
+cst_cost_types cct,
+mtl_system_items_vl msiv,
+(
+select
+cicd.organization_id,
+cicd.inventory_item_id,
+cicd.cost_type_id,
+sum(case when br.cost_element_id=3 and ca.activity_id is not null and 1=1 then cicd.item_cost end) resource1,
+sum(case when br.cost_element_id=4 and ca.activity_id is not null and 1=1 then cicd.item_cost end) osp1,
+sum(case when br.cost_element_id=5 and ca.activity_id is not null and 1=1 then cicd.item_cost end) overhead1,
+sum(case when br.cost_element_id=3 and ca.activity_id is not null and 2=2 then cicd.item_cost end) resource2,
+sum(case when br.cost_element_id=4 and ca.activity_id is not null and 2=2 then cicd.item_cost end) osp2,
+sum(case when br.cost_element_id=5 and ca.activity_id is not null and 2=2 then cicd.item_cost end) overhead2,
+sum(case when br.cost_element_id=3 and ca.activity_id is not null and 3=3 then cicd.item_cost end) resource3,
+sum(case when br.cost_element_id=4 and ca.activity_id is not null and 3=3 then cicd.item_cost end) osp3,
+sum(case when br.cost_element_id=5 and ca.activity_id is not null and 3=3 then cicd.item_cost end) overhead3,
+sum(case when br.cost_element_id=3 and ca.activity_id is not null and 4=4 then cicd.item_cost end) resource4,
+sum(case when br.cost_element_id=4 and ca.activity_id is not null and 4=4 then cicd.item_cost end) osp4,
+sum(case when br.cost_element_id=5 and ca.activity_id is not null and 4=4 then cicd.item_cost end) overhead4,
+sum(case when br.cost_element_id=3 and ca.activity_id is not null and 5=5 then cicd.item_cost end) resource5,
+sum(case when br.cost_element_id=4 and ca.activity_id is not null and 5=5 then cicd.item_cost end) osp5,
+sum(case when br.cost_element_id=5 and ca.activity_id is not null and 5=5 then cicd.item_cost end) overhead5,
+sum(case when br.cost_element_id=5 and br.resource_code not in ('PII','ICP') and (ca.activity is null or ca.activity not in (nvl(:p_activity1,'~'),nvl(:p_activity2,'~'),nvl(:p_activity3,'~'),nvl(:p_activity4,'~'),nvl(:p_activity5,'~'))) then cicd.item_cost end) other_overhead,
+sum(case when br.cost_element_id=3 and nvl(ca.activity,'UNASSIGNED')='UNASSIGNED' then cicd.item_cost end) unassigned_resource,
+sum(case when br.cost_element_id=4 and nvl(ca.activity,'UNASSIGNED')='UNASSIGNED' then cicd.item_cost end) unassigned_osp,
+sum(case when cicd.cost_element_id=2 and cicd.level_type=1 then cicd.item_cost end) tl_material_overhead,
+sum(case when cicd.cost_element_id=2 and cicd.level_type=2 then cicd.item_cost end) pl_material_overhead,
+sum(case when cicd.cost_element_id=3 and cicd.level_type=1 and cicd.resource_id is null then cicd.item_cost end) tl_resource_no_subelement,
+sum(case when cicd.cost_element_id=3 and cicd.level_type=2 and cicd.resource_id is null then cicd.item_cost end) pl_resource_no_subelement,
+sum(case when cicd.cost_element_id=4 and cicd.level_type=1 and cicd.resource_id is null then cicd.item_cost end) tl_osp_no_subelement,
+sum(case when cicd.cost_element_id=4 and cicd.level_type=2 and cicd.resource_id is null then cicd.item_cost end) pl_osp_no_subelement,
+sum(case when cicd.cost_element_id=5 and cicd.level_type=1 and cicd.resource_id is null then cicd.item_cost end) tl_overhead_no_subelement,
+sum(case when cicd.cost_element_id=5 and cicd.level_type=2 and cicd.resource_id is null then cicd.item_cost end) pl_overhead_no_subelement
+from
+cst_cost_types cct,
+cst_item_cost_details cicd,
+bom_resources br,
+cst_activities ca
+where
+6=6 and
+cct.cost_type_id=cicd.cost_type_id and
+cicd.resource_id=br.resource_id(+) and
+br.default_activity_id=ca.activity_id(+)
+group by
+cicd.organization_id,
+cicd.inventory_item_id,
+cicd.cost_type_id
+) x
+where
+6=6 and
+7=7 and
+mp.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
+mp.organization_id<>mp.master_organization_id and
+mp.organization_id=hoi.organization_id and
+hoi.org_information_context='Accounting Information' and
+hoi.organization_id=haou.organization_id and
+sysdate<nvl(haou.date_to,sysdate+1) and
+to_number(hoi.org_information3)=haouv_ou.organization_id and
+to_number(hoi.org_information1)=gl.ledger_id and
+mp.organization_id=cic.organization_id and
+cic.cost_type_id=cct.cost_type_id and
+cic.organization_id=msiv.organization_id and
+cic.inventory_item_id=msiv.inventory_item_id and
+cic.organization_id=x.organization_id(+) and
+cic.inventory_item_id=x.inventory_item_id(+) and
+cic.cost_type_id=x.cost_type_id(+)
 order by
- nvl(gl.short_name,gl.name), -- Ledger
- haou2.name, -- Operating_Unit
- mp.organization_code, -- Org_Code
- cct.cost_type, -- Cost_Type
-        msiv.concatenated_segments -- Item_Number
+ledger,
+operating_unit,
+org_code,
+cct.cost_type,
+item_number

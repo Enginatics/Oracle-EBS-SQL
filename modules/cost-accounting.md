@@ -1,9 +1,9 @@
 ---
 layout: default
-last_modified_at: 2026-10-19
+last_modified_at: 2026-10-26
 title: 'Oracle EBS Cost Accounting Reports | 108 SQL reports'
 description: '108 free Oracle E-Business Suite Cost Accounting SQL reports for Excel: CAC AP Accrual Accounts Setup, CAC AP Accrual IR ISO Match Analysis, CAC AP…'
-keywords: 'Oracle EBS Cost Accounting reports, Oracle Cost Accounting SQL, Oracle E-Business Suite, Blitz Report, mtl_parameters, gl_ledgers, hr_organization_information, hr_all_organization_units_vl, org_access_view'
+keywords: 'Oracle EBS Cost Accounting reports, Oracle Cost Accounting SQL, Oracle E-Business Suite, Blitz Report, mtl_parameters, gl_ledgers, hr_all_organization_units_vl, hr_organization_information, mtl_system_items_vl'
 permalink: /modules/cost-accounting/
 module: 'Cost Accounting'
 module_page: true
@@ -11,7 +11,7 @@ module_page: true
 
 # Oracle EBS Cost Accounting Reports
 
-108 ready-to-run SQL reports for **Oracle E-Business Suite Cost Accounting**, maintained by Enginatics and used in production at Oracle EBS customers worldwide. Each report page lists its parameters, the Oracle EBS tables it reads and an Excel example output. The most frequently used Cost Accounting tables in these reports are `mtl_parameters`, `gl_ledgers`, `hr_organization_information`, `hr_all_organization_units_vl`, `org_access_view`, `mfg_lookups`.
+108 ready-to-run SQL reports for **Oracle E-Business Suite Cost Accounting**, maintained by Enginatics and used in production at Oracle EBS customers worldwide. Each report page lists its parameters, the Oracle EBS tables it reads and an Excel example output. The most frequently used Cost Accounting tables in these reports are `mtl_parameters`, `gl_ledgers`, `hr_all_organization_units_vl`, `hr_organization_information`, `mtl_system_items_vl`, `xxen_report_org_access`.
 
 > **Run any of these reports in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=module-cost-accounting) – your first 30 reports are free.
 
@@ -90,7 +90,7 @@ module_page: true
 | [CAC New Standard Item Costs](/CAC%20New%20Standard%20Item%20Costs/) | Report to show items which have recent item cost changes, including various item controls, last cost update submission, new standard item cost, prior item cost… |
 | [CAC Number of Item Costs by Cost Type](/CAC%20Number%20of%20Item%20Costs%20by%20Cost%20Type/) | Report to show the count of item costs by cost type. Use this report after you copy from one cost type to another, to ensure all rows have been copied over. /… |
 | [CAC OPM Batch Material Summary](/CAC%20OPM%20Batch%20Material%20Summary/) | Report showing Batch materials in summary for each product, byproduct and ingredient. Displaying batches which were open during the monthly inventory… |
-| [CAC OPM Costed Formula](/CAC%20OPM%20Costed%20Formula/) | eport showing OPM formulas and item costs, by OPM Cost Component Class. The report automatically displays the first thirty Cost Components, sorted by Usage… |
+| [CAC OPM Costed Formula](/CAC%20OPM%20Costed%20Formula/) | Report showing OPM formulas and item costs, by OPM Cost Component Class. The report automatically displays the first thirty Cost Components, sorted by Usage… |
 | [CAC OPM Item Cost Detail](/CAC%20OPM%20Item%20Cost%20Detail/) | Oracle Process Manufacturing (OPM) item cost detail: the costed value of each item broken out by cost component class (material, labor, burden, overhead) and… |
 | [CAC OPM WIP Account Value](/CAC%20OPM%20WIP%20Account%20Value/) | Report to show WIP values for process manufacturing (OPM), in summary by inventory organization and batch, with batch status, name and other details. The… |
 | [CAC Onhand Lot Value (Real-Time)](/CAC%20Onhand%20Lot%20Value%20%28Real-Time%29/) | Report for onhand inventory at the time you run the report (real-time). By organization, Lot and Subinventory. If you leave the Cost Type blank the report will… |

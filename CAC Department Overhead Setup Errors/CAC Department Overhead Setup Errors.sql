@@ -39,143 +39,137 @@
 -- -- | 1.4 09 Sep 2023 Douglas Volz Added new report for missing resource/overhead
 -- -- | associations. Removed tabs and restrict to only
 -- -- | orgs you have access to, using the org access view.
+-- -- | 1.5 23 Oct 2026 Andy Haack Rebuilt to the Blitz Report SQL standards.
 -- -- +=============================================================================+/
 -- Excel Example Output: https://www.enginatics.com/example/cac-department-overhead-setup-errors/
 -- Library Link: https://www.enginatics.com/reports/cac-department-overhead-setup-errors/
 -- Run Report: https://demo.enginatics.com/
 
-select  'Overhead Rates Not In Department' Error_Type,
--- Revision for version 1.4
-        cct.cost_type Cost_Type,
-        nvl(gl.short_name, gl.name) Ledger,
-        haou.name Operating_Unit,
-        mp.organization_code Org_Code,
-        bd.department_code Department,
-        -- Revision for version 1.4
-        bd.department_class_code Department_Class_Code,
-        bro.resource_code Missing_Overhead,
-        brr.resource_code Resource_Code,
-        ml_basis.meaning Overhead_Basis_Type,
-        -- Revision for version 1.1
-        cce.cost_element Resource_Cost_Element
-from    cst_resource_overheads cro,
-        bom_department_resources bdr,
-        bom_departments bd,
-        bom_resources brr,
-        bom_resources bro,
-        -- Revision for version 1.1
-        cst_cost_elements cce,
-        cst_cost_types cct,
-        mfg_lookups ml_basis,
-        mtl_parameters mp,
-        hr_organization_information hoi,
-        hr_all_organization_units_vl haou,
-        hr_all_organization_units_vl haou2,
-        gl_ledgers gl
-where   cro.overhead_id             = bro.resource_id
-and     bro.cost_element_id         = 5 -- overhead
-and     cro.resource_id             = brr.resource_id
-and     cro.resource_id             = bdr.resource_id
-and     cct.cost_type_id            = cro.cost_type_id
-and     cct.organization_id is null
-and     2=2                         -- p_cost_type
-and     3=3                         -- p_include_osp
--- Revision for version 1.1
-and     cce.cost_element_id         = brr.cost_element_id
-and     bd.department_id            = bdr.department_id
-and     ml_basis.lookup_code        = bro.default_basis_type
-and     ml_basis.lookup_type        = 'CST_BASIS_SHORT'
-and not exists
-        (select cdo.overhead_id
-         from  cst_department_overheads cdo,
-               cst_cost_types cct
-         where   cdo.overhead_id    = cro.overhead_id
-         and     cdo.department_id  = bdr.department_id
-         and     cct.cost_type_id   = cdo.cost_type_id
-         and     2=2                -- p_cost_type
-         and     cct.organization_id is null
-        ) 
-and     mp.organization_id          = cro.organization_id
--- ===========================================
--- Organization joins to the HR org model
--- ===========================================
-and     hoi.org_information_context = 'Accounting Information'
-and     hoi.organization_id         = mp.organization_id
-and     hoi.organization_id         = haou.organization_id -- this gets the organization name
-and     haou2.organization_id       = to_number(hoi.org_information3) -- this gets the operating unit id
-and     gl.ledger_id                = to_number(hoi.org_information1) -- get the ledger_id
-and     mp.organization_code in (select oav.organization_code from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-and     gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
-and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
-and 1=1                         -- p_ledger, p_operating_unit, p_org_code
--- Revision for version 1.2
--- Avoid selecting disabled inventory organizations
-and     sysdate < nvl(haou.date_to, sysdate + 1)
+select
+'Overhead Rates Not In Department' error_type,
+cct.cost_type,
+nvl(gl.short_name,gl.name) ledger,
+haouv_ou.name operating_unit,
+mp.organization_code org_code,
+bd.department_code department,
+bd.department_class_code,
+br_ovh.resource_code missing_overhead,
+br_res.resource_code,
+xxen_util.meaning(br_ovh.default_basis_type,'CST_BASIS_SHORT',700) overhead_basis_type,
+cce.cost_element resource_cost_element
+from
+mtl_parameters mp,
+hr_organization_information hoi,
+hr_all_organization_units haou,
+hr_all_organization_units_vl haouv_ou,
+gl_ledgers gl,
+cst_resource_overheads cro,
+cst_cost_types cct,
+bom_resources br_ovh,
+bom_resources br_res,
+cst_cost_elements cce,
+bom_department_resources bdr,
+bom_departments bd
+where
+1=1 and
+2=2 and
+3=3 and
+mp.organization_id=hoi.organization_id and
+hoi.org_information_context='Accounting Information' and
+hoi.organization_id=haou.organization_id and
+nvl(haou.date_to,sysdate+1)>sysdate and
+to_number(hoi.org_information3)=haouv_ou.organization_id and
+to_number(hoi.org_information1)=gl.ledger_id and
+mp.organization_id=cro.organization_id and
+cro.cost_type_id=cct.cost_type_id and
+cct.organization_id is null and
+cro.overhead_id=br_ovh.resource_id and
+br_ovh.cost_element_id=5 and
+cro.resource_id=br_res.resource_id and
+br_res.cost_element_id=cce.cost_element_id and
+cro.resource_id=bdr.resource_id and
+bdr.department_id=bd.department_id and
+not exists
+(
+select
+null
+from
+cst_department_overheads cdo,
+cst_cost_types cct
+where
+cro.overhead_id=cdo.overhead_id and
+bdr.department_id=cdo.department_id and
+cdo.cost_type_id=cct.cost_type_id and
+cct.organization_id is null and
+2=2
+)
 union all
--- Revision for version 1.4
-select  'Overheads Not Set Up with Resources' Error_Type,
-        cct.cost_type Cost_Type,
-        nvl(gl.short_name, gl.name) Ledger,
-        haou.name Operating_Unit,
-        mp.organization_code Org_Code,
-        bd.department_code Department,
-        bd.department_class_code Department_Class_Code,
-        bro.resource_code Missing_Overhead,
-        brr.resource_code Resource_Code,
-        ml_basis.meaning Overhead_Basis_Type,
-        cce.cost_element Resource_Cost_Element
-from    cst_department_overheads cdo,
-        bom_department_resources bdr,
-        bom_departments bd,
-        bom_resources brr,
-        bom_resources bro,
-        cst_cost_elements cce,
-        cst_cost_types cct,
-        mfg_lookups ml_basis,
-        mtl_parameters mp,
-        hr_organization_information hoi,
-        hr_all_organization_units_vl haou,
-        hr_all_organization_units_vl haou2,
-        gl_ledgers gl
-where   cdo.overhead_id             = bro.resource_id
-and     cdo.department_id           = bdr.department_id
-and     cdo.basis_type in (3, 4) -- resource units, resource value
-and     bro.cost_element_id         = 5 -- overhead
-and     bdr.resource_id             = brr.resource_id
-and     brr.cost_element_id in (3,4) -- resource, outside processing
-and     cct.cost_type_id            = cdo.cost_type_id
-and     cct.organization_id is null
-and     2=2                         -- p_cost_type
-and     3=3                         -- p_include_osp
--- Revision for version 1.1
-and     cce.cost_element_id         = brr.cost_element_id
-and     bd.department_id            = bdr.department_id
-and     ml_basis.lookup_code        = bro.default_basis_type
-and     ml_basis.lookup_type        = 'CST_BASIS_SHORT'
-and not exists
-        (select cro.overhead_id
-         from   cst_resource_overheads cro,
-                cst_cost_types cct
-         where  cdo.overhead_id    = cro.overhead_id
-         and    cro.resource_id    = bdr.resource_id
-         and    cct.cost_type_id   = cro.cost_type_id
-         and    2=2                -- p_cost_type
-         and    cct.organization_id is null
-        )
-and     mp.organization_id          = cdo.organization_id
--- ===========================================
--- Organization joins to the HR org model
--- ===========================================
-and     hoi.org_information_context = 'Accounting Information'
-and     hoi.organization_id         = mp.organization_id
-and     hoi.organization_id         = haou.organization_id -- this gets the organization name
-and     haou2.organization_id       = to_number(hoi.org_information3) -- this gets the operating unit id
-and     gl.ledger_id                = to_number(hoi.org_information1) -- get the ledger_id
-and     mp.organization_code in (select oav.organization_code from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-and     gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
-and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
-and 1=1                         -- p_ledger, p_operating_unit, p_org_code
--- Avoid selecting disabled inventory organizations
-and     sysdate < nvl(haou.date_to, sysdate + 1)
--- order by report type, cost type, ledger, operating unit, organization code, department, missing overhead, and resource code
-order by 1,2,3,4,5,6,8,9
+select
+'Overheads Not Set Up with Resources' error_type,
+cct.cost_type,
+nvl(gl.short_name,gl.name) ledger,
+haouv_ou.name operating_unit,
+mp.organization_code org_code,
+bd.department_code department,
+bd.department_class_code,
+br_ovh.resource_code missing_overhead,
+br_res.resource_code,
+xxen_util.meaning(br_ovh.default_basis_type,'CST_BASIS_SHORT',700) overhead_basis_type,
+cce.cost_element resource_cost_element
+from
+mtl_parameters mp,
+hr_organization_information hoi,
+hr_all_organization_units haou,
+hr_all_organization_units_vl haouv_ou,
+gl_ledgers gl,
+cst_department_overheads cdo,
+cst_cost_types cct,
+bom_resources br_ovh,
+bom_departments bd,
+bom_department_resources bdr,
+bom_resources br_res,
+cst_cost_elements cce
+where
+1=1 and
+2=2 and
+3=3 and
+mp.organization_id=hoi.organization_id and
+hoi.org_information_context='Accounting Information' and
+hoi.organization_id=haou.organization_id and
+nvl(haou.date_to,sysdate+1)>sysdate and
+to_number(hoi.org_information3)=haouv_ou.organization_id and
+to_number(hoi.org_information1)=gl.ledger_id and
+mp.organization_id=cdo.organization_id and
+cdo.basis_type in (3,4) and
+cdo.cost_type_id=cct.cost_type_id and
+cct.organization_id is null and
+cdo.overhead_id=br_ovh.resource_id and
+br_ovh.cost_element_id=5 and
+cdo.department_id=bd.department_id and
+bd.department_id=bdr.department_id and
+bdr.resource_id=br_res.resource_id and
+br_res.cost_element_id in (3,4) and
+br_res.cost_element_id=cce.cost_element_id and
+not exists
+(
+select
+null
+from
+cst_resource_overheads cro,
+cst_cost_types cct
+where
+cdo.overhead_id=cro.overhead_id and
+bdr.resource_id=cro.resource_id and
+cro.cost_type_id=cct.cost_type_id and
+cct.organization_id is null and
+2=2
+)
+order by
+error_type,
+cost_type,
+ledger,
+operating_unit,
+org_code,
+department,
+missing_overhead,
+resource_code

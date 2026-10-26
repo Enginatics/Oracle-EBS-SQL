@@ -102,6 +102,7 @@ to_char(null) line_change_comments,
 xxen_util.meaning(oola.source_type_code,'SOURCE_TYPE',660) line_source_type,
 xxen_util.client_time(oola.request_date) line_request_date,
 xxen_util.client_time(oola.schedule_ship_date) schedule_ship_date,
+xxen_util.client_time(oola.schedule_arrival_date) schedule_arrival_date,
 xxen_util.yes(oola.override_atp_date_code) override_atp,
 xxen_util.client_time(oola.promise_date) promise_date,
 -- Line Addresses Tab

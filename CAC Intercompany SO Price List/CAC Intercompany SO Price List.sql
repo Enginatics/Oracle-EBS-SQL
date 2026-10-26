@@ -56,94 +56,56 @@
 -- -- | 1.10 09 Jul 2022 Douglas Volz Changed back to Oracle QP price packages, to
 -- -- | get price list information based on both
 -- -- | categoryor item-specific price lists.
+-- -- | 1.11 23 Oct 2026 Andy Haack Rebuilt to the Blitz Report SQL standards.
 -- -- +=============================================================================+/
 -- Excel Example Output: https://www.enginatics.com/example/cac-intercompany-so-price-list/
 -- Library Link: https://www.enginatics.com/reports/cac-intercompany-so-price-list/
 -- Run Report: https://demo.enginatics.com/
 
-select /*+ leading(price_lists)*/  
- -- Revision for version 1.10
- flv.meaning Price_List_Type, -- Intercompany
- qlh_tl.name Price_List_Name,
- qlh_tl.description Price_List_Description,
- qlh_b.currency_code Currency_Code,
- msiv.concatenated_segments Item_Number,
- msiv.description Item_Description,
- -- Revision for version 1.6
- fcl.meaning Item_Type,
- -- Revision for version 1.9 and 1.10
- misv.inventory_item_status_code Item_Status,
+select
+xxen_util.meaning('Intercompany','SOURCE',200) price_list_type,
+qlhv.name price_list_name,
+qlhv.description price_list_description,
+qlhv.currency_code,
+msiv.concatenated_segments item_number,
+msiv.description item_description,
+xxen_util.meaning(msiv.item_type,'ITEM_TYPE',3) item_type,
+msiv.inventory_item_status_code item_status,
 &category_columns
- -- Revision for version 1.10
- muomv.uom_code Primary_UOM_Code,
- -- qpa.product_uom_code Price_UOM_Code, 
- qp_price_list_pvt.get_product_uom_code(qpll.list_line_id) Price_UOM_Code, 
- -- End revision for version 1.10
- qpll.operand List_Price, 
- qpll.start_date_active Start_Date, 
- qpll.end_date_active End_Date,
- trunc(qpll.creation_date) Creation_Date
-from ( -- Revision for version 1.4 and 1.7
-  select distinct nvl(hsu.price_list_id, hca.price_list_id) price_list_id
-  from mtl_intercompany_parameters mip,
-  hz_cust_site_uses_all hsu,
-  hz_cust_accounts hca,
-  hz_cust_acct_sites_all hcs
-  where  mip.customer_site_id             = hsu.site_use_id            -- internal customer information
-  and hsu.cust_acct_site_id            = hcs.cust_acct_site_id
-  and hcs.cust_account_id              = hca.cust_account_id
- ) price_lists,
- mtl_system_items_vl msiv,
- -- Revision for version 1.10
- mtl_item_status_vl misv,
- mtl_units_of_measure_vl muomv,
- fnd_lookup_values flv, -- SOURCE, Price_List Type
- -- End revision for version 1.10
- qp_list_headers_b qlh_b,
- qp_list_headers_tl qlh_tl,
- qp_list_lines qpll,
- -- Revision for version 1.10, reverse version 1.7
- -- Revision for version 1.7
- -- qp_pricing_attributes qpa,
- -- Revision for version 1.6
- fnd_common_lookups fcl -- Item_Type
-where price_lists.price_list_id       = qlh_b.list_header_id
--- Revision for version 1.10, comment out changes from version 1.8
--- Will get one price qualifier row per inventory_item_id
--- and msiv.inventory_item_id          = to_number(qpa.product_attr_value)
--- Non-unique index on qpa.list_line_id and qpa.excluder_flag
--- and qpa.list_line_id                = qpll.list_line_id
--- and qpa.excluder_flag               = 'N'
--- and qpa.product_attribute_context   = 'ITEM'
--- Screen out invalid inventory item id
--- and qpa.product_attr_value <> 'ALL'
--- and msiv.organization_id            = (select max(to_number(ospa.parameter_value))
---       from oe_sys_parameters_all ospa
---       where ospa.parameter_code = 'MASTER_ORGANIZATION_ID')
--- End of commenting out changes from version 1.8
--- Revert back to packages from prior versions
-and msiv.inventory_item_id          = qp_price_list_pvt.Get_Inventory_Item_Id(qpll.list_line_id)
--- Get the inventory master organization from the Order Mgmt setups
-and msiv.organization_id            = qp_util.Get_Item_Validation_Org
-and msiv.primary_uom_code           = muomv.uom_code
-and msiv.inventory_item_status_code = misv.inventory_item_status_code
-and flv.lookup_type                 = 'SOURCE'
-and flv.lookup_code                 = 'Intercompany'
-and flv.language                    = userenv('lang')
--- End revision for version 1.10
--- Revision for version 1.7
--- Exclude inactive items
-and msiv.inventory_item_status_code <> 'Inactive'
-and qlh_b.list_header_id            = qpll.list_header_id
-and qlh_b.list_header_id            = qlh_tl.list_header_id
-and qlh_tl.language                 = userenv('lang')
--- Non-unique index on qpll.list_line_type_code and qpll.modifier_level_code
-and qpll.list_line_type_code        = 'PLL'
-and qpll.modifier_level_code        = 'LINE'
--- Revision for version 1.6
-and fcl.lookup_code (+)             = msiv.item_type
-and fcl.lookup_type (+)             = 'ITEM_TYPE'
-and 1=1
+msiv.primary_uom_code,
+qllv.product_uom_code price_uom_code,
+qllv.operand list_price,
+qllv.start_date_active start_date,
+qllv.end_date_active end_date,
+trunc(qllv.creation_date) creation_date
+from
+qp_list_headers_vl qlhv,
+qp_list_lines_v qllv,
+mtl_system_items_vl msiv
+where
+1=1 and
+qlhv.list_header_id in
+(
+select
+nvl(hcsua.price_list_id,hca.price_list_id)
+from
+mtl_intercompany_parameters mip,
+hz_cust_site_uses_all hcsua,
+hz_cust_acct_sites_all hcasa,
+hz_cust_accounts hca
+where
+mip.customer_site_id=hcsua.site_use_id and
+hcsua.cust_acct_site_id=hcasa.cust_acct_site_id and
+hcasa.cust_account_id=hca.cust_account_id
+) and
+qlhv.list_header_id=qllv.list_header_id and
+qllv.list_line_type_code='PLL' and
+qllv.modifier_level_code='LINE' and
+qllv.product_attribute_context='ITEM' and
+qllv.product_attribute='PRICING_ATTRIBUTE1' and
+to_number(qllv.product_attr_value)=msiv.inventory_item_id and
+qp_util.get_item_validation_org=msiv.organization_id and
+msiv.inventory_item_status_code<>'Inactive'
 order by
- qlh_tl.name, -- Price_List_Name
- msiv.concatenated_segments -- Item_Number
+price_list_name,
+item_number

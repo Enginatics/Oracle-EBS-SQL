@@ -1,9 +1,9 @@
 ---
 layout: default
-last_modified_at: 2026-10-16
+last_modified_at: 2026-10-26
 title: 'Oracle EBS Inventory Reports | 53 SQL reports'
 description: '53 free Oracle E-Business Suite Inventory SQL reports for Excel: INV ABC assignments, INV Aging, INV Customer Item Cross References, INV Cycle count…'
-keywords: 'Oracle EBS Inventory reports, Oracle Inventory SQL, Oracle E-Business Suite, Blitz Report, mtl_system_items_vl, org_access_view, mtl_parameters, mtl_item_locations_kfv, org_organization_definitions'
+keywords: 'Oracle EBS Inventory reports, Oracle Inventory SQL, Oracle E-Business Suite, Blitz Report, mtl_system_items_vl, org_access_view, mtl_parameters, org_organization_definitions, mtl_item_locations_kfv'
 permalink: /modules/inventory/
 module: 'Inventory'
 module_page: true
@@ -11,7 +11,7 @@ module_page: true
 
 # Oracle EBS Inventory Reports
 
-53 ready-to-run SQL reports for **Oracle E-Business Suite Inventory**, maintained by Enginatics and used in production at Oracle EBS customers worldwide. Each report page lists its parameters, the Oracle EBS tables it reads and an Excel example output. The most frequently used Inventory tables in these reports are `mtl_system_items_vl`, `org_access_view`, `mtl_parameters`, `mtl_item_locations_kfv`, `org_organization_definitions`, `mtl_material_transactions`.
+53 ready-to-run SQL reports for **Oracle E-Business Suite Inventory**, maintained by Enginatics and used in production at Oracle EBS customers worldwide. Each report page lists its parameters, the Oracle EBS tables it reads and an Excel example output. The most frequently used Inventory tables in these reports are `mtl_system_items_vl`, `org_access_view`, `mtl_parameters`, `org_organization_definitions`, `mtl_item_locations_kfv`, `gl_ledgers`.
 
 > **Run any of these reports in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=module-inventory) – your first 30 reports are free.
 
@@ -44,7 +44,7 @@ module_page: true
 | [INV Item Statuses](/INV%20Item%20Statuses/) | Master data report of inventory items with the various status attributes, such as: is BOM allowed, Build in WIP, customer orders enabled, internal orders… |
 | [INV Item Supply/Demand](/INV%20Item%20Supply-Demand/) | Inventory Item Supply/Demand data as per the standard Inventory Item Supply/Demand form |
 | [INV Item Templates](/INV%20Item%20Templates/) | Inventory item templates and their item attribute values |
-| [INV Items](/INV%20Items/) | Master data report that lists item master attributes such as item type, UOM, status, serial control, account numbers and various other attributes |
+| [INV Items](/INV%20Items/) | Master data report that lists item master attributes such as item type, UOM, status, serial control, account numbers and various other attributes. Item Cost is… |
 | [INV Kanban Cards](/INV%20Kanban%20Cards/) | Kanban cards with their pull sequence, one row per card, including card type, card status, supply status and card kanban size. Replenishment Cycles and Last… |
 | [INV Lot Transaction Register](/INV%20Lot%20Transaction%20Register/) | Imported from BI Publisher Description: Lot transaction register Application: Inventory Source: Lot transaction register (XML) Short Name: INVTRLNTXML DB… |
 | [INV Material Account Distribution Detail](/INV%20Material%20Account%20Distribution%20Detail/) | Description: Material account distribution detail Application: Inventory Source: Material account distribution detail (XML) Short Name: INVTRDSTXML |

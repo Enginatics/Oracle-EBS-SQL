@@ -36,260 +36,107 @@
 -- -- | master, inventory orgs and operating units.
 -- -- | 1.18 18 May 2020 Douglas Volz Added language for item status.
 -- -- | 1.19 14 Jun 2024 Douglas Volz Remove tabs, reinstall parameters and org access controls.
+-- -- | 1.20 23 Oct 2026 Andy Haack Rebuilt to the Blitz Report SQL standards.
 -- -- +=============================================================================+/
 -- Excel Example Output: https://www.enginatics.com/example/cac-inventory-out-of-balance/
 -- Library Link: https://www.enginatics.com/reports/cac-inventory-out-of-balance/
 -- Run Report: https://demo.enginatics.com/
 
-select  nvl(gl.short_name, gl.name) Ledger,
--- ==============================================
--- This first select gets the subinventory values
--- ==============================================
-        haou2.name Operating_Unit,
-        mp.organization_code Org_Code,
-        -- Revision for version 1.14
-        -- (select ccg.cost_group
-        --  from   cst_cost_groups ccg
-        --  where  ccg.cost_group_id  = cpcs.cost_group_id) Cost_Group,
-        -- End revision for version 1.14
-        oap.period_name Period_Name,
-        &segment_columns
-        msiv.concatenated_segments Item_Number,
-        msiv.description Item_Description,
-        -- Revision for version 1.12
-        fcl.meaning Item_Type,
-        -- Revision for version 1.18
-        misv.inventory_item_status_code_tl Item_Status,
+select
+x.ledger,
+x.operating_unit,
+x.org_code,
+x.period_name,
+&segment_columns
+x.item_number,
+x.item_description,
+x.item_type,
+x.item_status,
 &category_columns
-        -- Revision for version 1.18
-        nvl(cpcs.subinventory_code, ml.meaning) Subinventory_or_Intransit,
-        muomv.uom_code UOM_Code,
-        round(sum(nvl(cpcs.rollback_quantity, 0)),3) Quantity,
-        round(sum(nvl(cpcs.rollback_value, 0)),2) Onhand_Value,
-        round(sum(nvl(cpcs.accounted_value, 0)),2) Accounted_Value,
-        round(sum((nvl(cpcs.onhand_value_discrepancy, 0)) + (nvl(cpcs.intransit_value_discrepancy, 0))),2) Difference
-        -- End revision for version 1.18
-from    cst_period_close_summary cpcs,
-        org_acct_periods oap,
-        mtl_parameters mp,
-        mtl_system_items_vl msiv,
-        -- Revision for version 1.18
-        mtl_item_status_vl misv,
-        mtl_units_of_measure_vl muomv,
-        mfg_lookups ml,
-        -- End revision for version 1.18
-        -- Revision for version 1.13
-        -- Get valuation accounts based on Costing_Method and Cost Group Accounting
-        (-- Standard Costing, no Cost Group Accounting
-         select msub.organization_id,
-                msub.secondary_inventory_name,
-                msub.material_account
-         from   mtl_secondary_inventories msub,
-                mtl_parameters mp
-         where  msub.organization_id            = mp.organization_id
-         and    nvl(mp.cost_group_accounting,2) = 2 -- No
-         and    mp.primary_cost_method          = 1 -- Standard Costing
-         union all
-         -- Not Standard Costing, no Cost Group Accounting
-         select msub.organization_id,
-                msub.secondary_inventory_name,
-                mp.material_account
-         from   mtl_secondary_inventories msub,
-                mtl_parameters mp
-         where  msub.organization_id            = mp.organization_id
-         and    nvl(mp.cost_group_accounting,2) = 2 -- No
-         and    mp.primary_cost_method <> 1 -- not Standard Average Costing
-         union all
-         -- With Cost Group Accounting
-         select msub.organization_id,
-                msub.secondary_inventory_name,
-                ccga.material_account
-         from   mtl_secondary_inventories msub,
-                cst_cost_group_accounts ccga,
-                mtl_parameters mp
-         where  msub.organization_id            = mp.organization_id
-         and    mp.cost_group_accounting        = 1 -- Yes
-         and    ccga.cost_group_id              = msub.default_cost_group_id
-         union all
-         -- Cost Group Accounting but the Subinventory Cost Group Id is null
-         select msub.organization_id,
-                msub.secondary_inventory_name,
-                ccga.material_account
-         from   mtl_secondary_inventories msub,
-                cst_cost_group_accounts ccga,
-                mtl_parameters mp
-         where  msub.organization_id = mp.organization_id
-         and    mp.cost_group_accounting        = 1 -- Yes
-         and    msub.default_cost_group_id is null
-         and    ccga.cost_group_id              = mp.default_cost_group_id
-        ) msub,
-        gl_code_combinations gcc,
-        hr_organization_information hoi,
-        hr_all_organization_units_vl haou, -- inv_organization_id
-        hr_all_organization_units_vl haou2, -- operating unit
-        gl_ledgers gl,
-        -- Revsion for version 1.12
-        fnd_common_lookups fcl
-where   oap.acct_period_id              = cpcs.acct_period_id
-and     oap.organization_id             = mp.organization_id
-and     cpcs.subinventory_code          = msub.secondary_inventory_name
-and     cpcs.organization_id            = msub.organization_id
-and     mp.organization_id              = cpcs.organization_id
-and     msiv.organization_id            = cpcs.organization_id
-and     msiv.inventory_item_id          = cpcs.inventory_item_id
--- Revision for version 1.18
-and     misv.inventory_item_status_code = msiv.inventory_item_status_code
-and     msiv.primary_uom_code           = muomv.uom_code
-and     ml.lookup_type                  = 'CST_ACCOUNTING_LINE_TYPE'
-and     ml.lookup_code                  = 14 -- Intransit Inventory
-and     msub.material_account           = gcc.code_combination_id (+)
--- End revision for version 1.18
--- ===================================================================
--- using the base tables to avoid the performance issues
--- with org_organization_definitions and hr_operating_units
--- ===================================================================
--- avoid selecting disabled inventory organizations
-and     sysdate < nvl(haou.date_to, sysdate + 1)
-and     hoi.org_information_context     = 'Accounting Information'
-and     hoi.organization_id             = mp.organization_id
-and     hoi.organization_id             = haou.organization_id -- this gets the organization name
-and     haou2.organization_id           = to_number(hoi.org_information3) -- this gets the operating unit id
-and     gl.ledger_id                    = to_number(hoi.org_information1) -- get the ledger_id
-and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-and     1=1                             -- p_period_name, p_item_number, p_org_code, p_operating_unit, p_ledger
--- ===================================================================
--- Lookup Values, added for revision 1.12
--- ===================================================================
-and     fcl.lookup_code (+)             = msiv.item_type
-and     fcl.lookup_type (+)             = 'ITEM_TYPE'
+x.subinventory_or_intransit,
+x.uom_code,
+round(sum(x.rollback_quantity),3) quantity,
+round(sum(x.rollback_value),2) onhand_value,
+round(sum(x.accounted_value),2) accounted_value,
+round(sum(x.value_discrepancy),2) difference
+from
+(
+select
+nvl(gl.short_name,gl.name) ledger,
+haouv_ou.name operating_unit,
+mp.organization_code org_code,
+oap.period_name,
+msiv.concatenated_segments item_number,
+msiv.description item_description,
+xxen_util.meaning(msiv.item_type,'ITEM_TYPE',3) item_type,
+misv.inventory_item_status_code_tl item_status,
+nvl(cpcs.subinventory_code,xxen_util.meaning(14,'CST_ACCOUNTING_LINE_TYPE',700)) subinventory_or_intransit,
+msiv.primary_uom_code uom_code,
+nvl(cpcs.rollback_quantity,0) rollback_quantity,
+nvl(cpcs.rollback_value,0) rollback_value,
+nvl(cpcs.accounted_value,0) accounted_value,
+nvl(cpcs.onhand_value_discrepancy,0)+nvl(cpcs.intransit_value_discrepancy,0) value_discrepancy,
+case
+when cpcs.subinventory_code is null then mp.intransit_inv_account
+when mp.cost_group_accounting=1 then (select ccga.material_account from cst_cost_group_accounts ccga where nvl(msi.default_cost_group_id,mp.default_cost_group_id)=ccga.cost_group_id and mp.organization_id=ccga.organization_id)
+when mp.primary_cost_method=1 then msi.material_account
+else mp.material_account
+end account_id,
+msiv.inventory_item_id,
+msiv.organization_id
+from
+mtl_parameters mp,
+hr_organization_information hoi,
+hr_all_organization_units_vl haouv,
+hr_all_organization_units_vl haouv_ou,
+gl_ledgers gl,
+org_acct_periods oap,
+cst_period_close_summary cpcs,
+mtl_secondary_inventories msi,
+mtl_system_items_vl msiv,
+mtl_item_status_vl misv
+where
+1=1 and
+mp.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
+mp.organization_id=hoi.organization_id and
+hoi.org_information_context='Accounting Information' and
+hoi.organization_id=haouv.organization_id and
+nvl(haouv.date_to,sysdate+1)>sysdate and
+to_number(hoi.org_information3)=haouv_ou.organization_id and
+to_number(hoi.org_information1)=gl.ledger_id and
+mp.organization_id=oap.organization_id and
+oap.acct_period_id=cpcs.acct_period_id and
+oap.organization_id=cpcs.organization_id and
+cpcs.organization_id=msi.organization_id(+) and
+cpcs.subinventory_code=msi.secondary_inventory_name(+) and
+cpcs.organization_id=msiv.organization_id and
+cpcs.inventory_item_id=msiv.inventory_item_id and
+msiv.inventory_item_status_code=misv.inventory_item_status_code
+) x,
+gl_code_combinations gcc
+where
+x.account_id=gcc.code_combination_id(+)
 group by
-        nvl(gl.short_name, gl.name),
-        haou2.name,
-        mp.organization_code,
-        -- Revision for version 1.14
-        -- cpcs.cost_group_id,
-        oap.period_name,
-        &segment_columns2
-        msiv.concatenated_segments,
-        msiv.description,
-        -- Revision for version 1.12
-        fcl.meaning,
-        -- Revision for version 1.18
-        misv.inventory_item_status_code_tl,
-        nvl(cpcs.subinventory_code, ml.meaning),
-        muomv.uom_code,
-        -- End revision for version 1.18
-        -- Needed for inline select
-        msiv.inventory_item_id,
-        msiv.organization_id
-having abs(sum(nvl(cpcs.onhand_value_discrepancy, 0) +
-               nvl(cpcs.intransit_value_discrepancy, 0))) >= :p_min_value_diff        -- p_min_value_diff
--- ==============================================
--- This second select gets the intransit values
--- ==============================================
-union all
-select  nvl(gl.short_name, gl.name) Ledger,
-        haou2.name Operating_Unit,
-        mp.organization_code Org_Code,
-        -- Revision for version 1.14
-        -- (select ccg.cost_group
-        --  from   cst_cost_groups ccg
-        --  where  ccg.cost_group_id  = cpcs.cost_group_id) Cost_Group,
-        -- End revision for version 1.14
-        oap.period_name Period_Name,
-        &segment_columns
-        msiv.concatenated_segments Item_Number,
-        msiv.description Item_Description,
-        -- Revision for version 1.12
-        fcl.meaning Item_Type,
-        -- Revision for version 1.18
-        misv.inventory_item_status_code_tl Item_Status,
-&category_columns
-        -- End revision for version 1.12
-        -- Revision for version 1.18
-        nvl(cpcs.subinventory_code, ml.meaning) Subinventory_or_Intransit,
-        muomv.uom_code UOM_Code,
-        round(sum(nvl(cpcs.rollback_quantity, 0)),3) Quantity,
-        round(sum(nvl(cpcs.rollback_value, 0)),2) Onhand_Value,
-        round(sum(nvl(cpcs.accounted_value, 0)),2) Accounted_Value,
-        round(sum((nvl(cpcs.onhand_value_discrepancy, 0)) + (nvl(cpcs.intransit_value_discrepancy, 0))),2) Difference
-        -- End revision for version 1.18
-from    cst_period_close_summary cpcs,
-        org_acct_periods oap,
-        mtl_parameters mp,
-        mtl_system_items_vl msiv,
-        -- Revision for version 1.18
-        mtl_item_status_vl misv,
-        mtl_units_of_measure_vl muomv,
-        mfg_lookups ml,
-        -- End revision for version 1.18
-        -- Fix for version 1.11
-        -- mtl_interorg_parameters mip,
-        gl_code_combinations gcc,
-        hr_organization_information hoi,
-        hr_all_organization_units_vl haou,  -- inv_organization_id
-        hr_all_organization_units_vl haou2,  -- operating unit
-        gl_ledgers gl,
-        -- Revsion for version 1.12
-        fnd_common_lookups fcl
-where   oap.acct_period_id              = cpcs.acct_period_id
-and     oap.organization_id             = mp.organization_id
--- Fix for version 1.11
--- and mp.organization_id               = mip.to_organization_id
--- End fix for version 1.11
-and     cpcs.subinventory_code is null
-and     mp.organization_id              = cpcs.organization_id
-and     msiv.organization_id            = cpcs.organization_id
-and     msiv.inventory_item_id          = cpcs.inventory_item_id
--- Revision for version 1.18
-and     misv.inventory_item_status_code = msiv.inventory_item_status_code
-and     msiv.primary_uom_code           = muomv.uom_code
-and     ml.lookup_type                  = 'CST_ACCOUNTING_LINE_TYPE'
-and     ml.lookup_code                  = 14 -- Intransit Inventory
--- End revision for version 1.18
--- Fix for version 1.11
--- and  mip.intransit_inv_account       = gcc.code_combination_id
-and     mp.intransit_inv_account        = gcc.code_combination_id (+)
--- ===================================================================
--- using the base tables to avoid using org_organization_definitions
--- and hr_operating_units
--- ===================================================================
--- avoid selecting disabled inventory organizations
-and     sysdate < nvl(haou.date_to, sysdate + 1)
-and     hoi.org_information_context     = 'Accounting Information'
-and     hoi.organization_id             = mp.organization_id
-and     hoi.organization_id             = haou.organization_id -- this gets the organization name
-and     haou2.organization_id           = to_number(hoi.org_information3) -- this gets the operating unit id
-and     gl.ledger_id                    = to_number(hoi.org_information1) -- get the ledger_id
-and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-and     1=1                             -- p_period_name, p_item_number, p_org_code, p_operating_unit, p_ledger
--- ===================================================================
--- Lookup Values, added for revision 1.12
--- ===================================================================
-and     fcl.lookup_code (+)             = msiv.item_type
-and     fcl.lookup_type (+)             = 'ITEM_TYPE'
-group by
-        nvl(gl.short_name, gl.name),
-        haou2.name,
-        mp.organization_code,
-        -- Revision for version 1.14
-        -- cpcs.cost_group_id,
-        oap.period_name,
-        &segment_columns2
-        msiv.concatenated_segments,
-        msiv.description,
-        -- Revision for version 1.12
-        fcl.meaning,
-        misv.inventory_item_status_code_tl,
-        -- End for version 1.12
-        -- Revision for version 1.18
-        nvl(cpcs.subinventory_code, ml.meaning),
-        muomv.uom_code,
-        -- End revision for version 1.18
-        -- Needed for inline select
-        msiv.inventory_item_id,
-        msiv.organization_id
-having abs(sum(nvl(cpcs.onhand_value_discrepancy, 0) +
-               nvl(cpcs.intransit_value_discrepancy, 0))) >= :p_min_value_diff        -- p_min_value_diff
--- Order by Ledger, Operating_Unit, Accounts, Item and Subinventory
-order by 1,2,5,6,7,8,9,10,11,12,15
+x.ledger,
+x.operating_unit,
+x.org_code,
+x.period_name,
+&segment_columns2
+x.item_number,
+x.item_description,
+x.item_type,
+x.item_status,
+x.subinventory_or_intransit,
+x.uom_code,
+x.inventory_item_id,
+x.organization_id
+having
+abs(sum(x.value_discrepancy))>=:p_min_value_diff
+order by
+x.ledger,
+x.operating_unit,
+x.org_code,
+x.period_name,
+&segment_columns2
+x.item_number,
+x.subinventory_or_intransit

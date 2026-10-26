@@ -33,482 +33,286 @@
 -- -- | 1.0 07 Apr 2021 Douglas Volz Initial Coding based on itemcosthistory.sql
 -- -- | 1.1 10 Jul 2022 Douglas Volz Add Ledger and Operating Unit columns
 -- -- | 1.2 19 Oct 2022 Douglas Volz Bug fix for missing organization join
+-- -- | 1.3 23 Oct 2026 Andy Haack Rebuilt to the Blitz Report SQL standards.
 -- -- +=============================================================================+/
 -- Excel Example Output: https://www.enginatics.com/example/cac-wip-period-balances-to-accounting-activity-reconciliation/
 -- Library Link: https://www.enginatics.com/reports/cac-wip-period-balances-to-accounting-activity-reconciliation/
 -- Run Report: https://demo.enginatics.com/
 
-select wipsum.period_name Period_Name,
- -- Revision for version 1.1
- nvl(gl.short_name, gl.name) Ledger,
- haou2.name Operating_Unit,
- -- End revision for version 1.1
- wip.organization_code Org_Code,
- wip.organization_id Org_Id,
- msiv.concatenated_segments Assembly_Number,
- msiv.description Description,
- fcl.meaning Item_Type,
- misv.inventory_item_status_code Item_Status,
- ml1.meaning Make_Buy_Code,
- wac.class_code WIP_Class,
- ml2.meaning Class_Type,
- ml3.meaning WIP_Type,
- wip.wip_entity_name WIP_Job,
- wip.date_closed Date_Closed,
- wip.status Job_Status,
- wip.date_released Date_Released,
- wip.date_completed Date_Completed,
- muomv.uom_code UOM_Code,
- wip.start_quantity Start_Quantity,
- wip.quantity_completed Quantity_Completed,
- wip.quantity_scrapped Quantity_Scrapped,
- wipsum.wip_costs_in WIP_Costs_In,
- wipsum.wip_costs_out WIP_Costs_Out,
- wipsum.wip_close_var WIP_Relief,
- wipsum.wip_value WIP_Value,
- wipsum.wip_acct_in WIP_Accounted_Costs_In,
- wipsum.wip_acct_out WIP_Accounted_Costs_Out,
- wipsum.wip_acct_var WIP_Accounted_Relief,
- wipsum.wip_acct_value WIP_Accounted_Value,
- wipsum.wip_costs_in - wipsum.wip_acct_in WIP_Costs_In_Difference,
- wipsum.wip_costs_out - wipsum.wip_acct_out WIP_Costs_Out_Difference,
- wipsum.wip_close_var  - wipsum.wip_acct_var WIP_Relief_Difference,
- wipsum.wip_value - wipsum.wip_acct_value WIP_Value_Difference
-from wip_accounting_classes wac,
- mtl_system_items_vl msiv,
- mtl_item_status_vl misv,
- mtl_units_of_measure_vl muomv,
- mfg_lookups ml1, -- planning make/buy code
- mfg_lookups ml2, -- class type
- mfg_lookups ml3, -- WIP type
- fnd_common_lookups fcl, -- item type
- hr_organization_information hoi,
- hr_all_organization_units_vl haou,  -- inv_organization_id
- hr_all_organization_units_vl haou2, -- operating unit
- gl_ledgers gl,
- -- ===========================================
- -- Get WIP_Jobs and Flow Schedule information
- -- ===========================================
- (select mp.organization_id,
-  mp.organization_code,
-  we.wip_entity_name,
-  wdj.wip_entity_id,
-  we.entity_type,
-  wdj.class_code,
-  wdj.date_closed,
-  ml.meaning status,
-  wdj.date_released,
-  wdj.date_completed,
-  wdj.start_quantity,
-  wdj.quantity_completed,
-  wdj.quantity_scrapped,
-  wdj.primary_item_id
-  from wip_discrete_jobs wdj,
-  wip_entities we,
-  org_acct_periods oap,
-  mtl_parameters mp,
-  mfg_lookups ml
-  where we.wip_entity_id               = wdj.wip_entity_id
-  and oap.organization_id            = wdj.organization_id
-  -- Revision for version 1.2
-  and mp.organization_id             = wdj.organization_id
-  and ml.lookup_type                 = 'WIP_JOB_STATUS'
-  and ml.lookup_code                 = wdj.status_type
-  and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-  and 2=2                            -- p_org_code
-  and 3=3                            -- p_period_name
-  -- find jobs that were open or closed during or after the report period
-  -- the job is open or opened before the period close date
-  and ((wdj.date_closed is null -- the job is open
-    and trunc(wdj.creation_date) <=  oap.schedule_close_date
-   )
-    or -- the job is closed and ...the job was closed after the accounting period 
-   (wdj.date_closed is not null
-    and trunc(wdj.date_closed) > oap.schedule_close_date
-   )
-    or -- find jobs that were closed during the report period
-   (wdj.date_closed >= oap.period_start_date 
-    and trunc(wdj.date_closed) < oap.schedule_close_date + 1
-   )
-  )
-  union all
-  select mp.organization_id,
-  mp.organization_code,
-  we.wip_entity_name,
-  wfs.wip_entity_id,
-  we.entity_type,
-  wfs.class_code,
-  wfs.date_closed,
-  ml.meaning status,
-  wfs.creation_date date_released,
-  wfs.date_closed date_completed,
-  wfs.planned_quantity start_quantity,
-  wfs.quantity_completed,
-  0 quantity_scrapped,
-  wfs.primary_item_id
-  from wip_flow_schedules wfs,
-  wip_entities we,
-  org_acct_periods oap,
-  mtl_parameters mp,
-  mfg_lookups ml
-  where we.wip_entity_id               = wfs.wip_entity_id
-  and we.entity_type                 = 4 -- Flow schedule
-  and oap.organization_id            = wfs.organization_id
-  -- Revision for version 1.2
-  and mp.organization_id             = wfs.organization_id
-  and ml.lookup_type                 = 'WIP_FLOW_SCHEDULE_STATUS'
-  and ml.lookup_code                 = wfs.status
-  and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-  and 2=2                            -- p_org_code
-  and 3=3                            -- p_period_name
-  -- find jobs that were open or closed during or after the report period
-  -- the job is open or opened before the period close date
-  and ((wfs.date_closed is null -- the job is open
-    and trunc(wfs.creation_date) <=  oap.schedule_close_date
-   )
-    or -- the job is closed and ...the job was closed after the accounting period 
-   (wfs.date_closed is not null
-    and trunc(wfs.date_closed) > oap.schedule_close_date
-   )
-    or -- find jobs that were closed during the report period
-   (wfs.date_closed >= oap.period_start_date 
-    and trunc(wfs.date_closed) < oap.schedule_close_date + 1
-   )
-  )
- ) wip,
- -- ===========================================
- -- Condense WIP Balances and Accounting Entries
- -- ===========================================
- (select wip.organization_id,
-  wip.wip_entity_id,
-  wip.period_name,
-  wip.acct_period_id,
-  sum(wip_costs_in) wip_costs_in,
-  sum(wip_costs_out) wip_costs_out,
-  sum(wip_close_var) wip_close_var,
-  sum(wip_value) wip_value,
-  sum(round(wip_acct_in,2)) wip_acct_in,
-  sum(round(wip_acct_out,2)) wip_acct_out,
-  sum(round(wip_acct_var,2)) wip_acct_var,
-  sum(round(wip_acct_value,2)) wip_acct_value
-  from (
-   -- ===========================================
-   -- Get the WIP Period Balances
-   -- ===========================================
-   select mp.organization_id,
-   wpb.wip_entity_id,
-   oap.period_name,
-   wpb.acct_period_id,
-   sum(nvl(tl_scrap_in,0)+
-   nvl(pl_material_in,0)+
-   nvl(pl_material_overhead_in,0)+
-   nvl(tl_resource_in,0)+
-   nvl(pl_resource_in,0)+
-   nvl(tl_outside_processing_in,0)+
-   nvl(pl_outside_processing_in,0)+
-   nvl(tl_overhead_in,0)+
-   nvl(pl_overhead_in,0))  wip_costs_in,
-   sum(nvl(tl_material_out,0)+
-   nvl(tl_scrap_out,0)+
-   nvl(pl_material_out,0)+
-   nvl(tl_material_overhead_out,0)+
-   nvl(pl_material_overhead_out,0)+
-   nvl(tl_resource_out,0)+
-   nvl(pl_resource_out,0)+
-   nvl(tl_outside_processing_out,0)+
-   nvl(pl_outside_processing_out,0)+
-   nvl(tl_overhead_out,0)+
-   nvl(pl_overhead_out,0)) wip_costs_out,
-   sum(nvl(tl_material_var,0)+
-   nvl(tl_scrap_var,0)+
-   nvl(pl_material_var,0)+
-   nvl(tl_material_overhead_var,0)+
-   nvl(pl_material_overhead_var,0)+
-   nvl(tl_resource_var,0)+
-   nvl(pl_resource_var,0)+
-   nvl(tl_outside_processing_var,0)+
-   nvl(pl_outside_processing_var,0)+
-   nvl(tl_overhead_var,0)+
-   nvl(pl_overhead_var,0)) wip_close_var,
-   sum(nvl(tl_scrap_in,0)+
-   nvl(pl_material_in,0)-
-   nvl(tl_material_out,0)-
-   nvl(tl_scrap_out,0)-
-   nvl(pl_material_out,0)-
-   nvl(tl_material_var,0)-
-   nvl(tl_scrap_var,0)-
-   nvl(pl_material_var,0)+
-   nvl(pl_material_overhead_in,0)-
-   nvl(tl_material_overhead_out,0)-
-   nvl(pl_material_overhead_out,0)-
-   nvl(tl_material_overhead_var,0)-
-   nvl(pl_material_overhead_var,0)+
-   nvl(tl_resource_in,0)+
-   nvl(pl_resource_in,0)-
-   nvl(tl_resource_out,0)-
-   nvl(pl_resource_out,0)-
-   nvl(tl_resource_var,0)-
-   nvl(pl_resource_var,0)+
-   nvl(tl_outside_processing_in,0)+
-   nvl(pl_outside_processing_in,0)-
-   nvl(tl_outside_processing_out,0)-
-   nvl(pl_outside_processing_out,0)-
-   nvl(tl_outside_processing_var,0)-
-   nvl(pl_outside_processing_var,0)+
-   nvl(tl_overhead_in,0)+
-   nvl(pl_overhead_in,0)-
-   nvl(tl_overhead_out,0)-
-   nvl(pl_overhead_out,0)-
-   nvl(tl_overhead_var,0)-
-   nvl(pl_overhead_var,0)) wip_value,
-   sum(0) wip_acct_in,
-   sum(0) wip_acct_out,
-   sum(0) wip_acct_var,
-   sum(0) wip_acct_value
-   from wip_period_balances wpb,
-   org_acct_periods oap,
-   mtl_parameters mp
-   where mp.organization_id             = wpb.organization_id
-   and oap.acct_period_id             = wpb.acct_period_id
-   and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-  and 2=2                            -- p_org_code
-   and 3=3                            -- p_period_name
-   group by
-   mp.organization_id,
-   wpb.wip_entity_id,
-   oap.period_name,
-   wpb.acct_period_id
-   union all
-   -- ===========================================
-   -- Get the WIP Material Transactions
-   -- ===========================================
-   select mp.organization_id,
-   mmt.transaction_source_id wip_entity_id,
-   oap.period_name,
-   mmt.acct_period_id,
-   sum(0) wip_costs_in,
-   sum(0) wip_costs_out,
-   sum(0) wip_close_var,
-   sum(0) wip_value,
-   sum(decode(mmt.transaction_type_id,
-    35, mta.base_transaction_value, -- WIP Component Issue
-    38, mta.base_transaction_value, -- WIP Component Negative Issue
-    43, mta.base_transaction_value, -- WIP Return
-    48, mta.base_transaction_value, -- WIP Negative Return
-    55, mta.base_transaction_value, -- WIP Lot Split
-    56, mta.base_transaction_value, -- WIP Lot Merge
-    57, mta.base_transaction_value, -- WIP Lot Bonus
-     0)
-      ) wip_acct_in,
-   sum(decode(mmt.transaction_type_id,
-    17, mta.base_transaction_value * -1, -- WIP Completion Return
-    44, mta.base_transaction_value * -1, -- WIP Completion
-    90, mta.base_transaction_value * -1, -- WIP Assembly Scrap
-    91, mta.base_transaction_value * -1, -- WIP return from scrap
-    92, mta.base_transaction_value * -1, -- WIP estimated scrap
-    1002, mta.base_transaction_value * -1, -- WIP Byproduct Completion
-    1003, mta.base_transaction_value * -1, -- WIP Byproduct Return
-     0)
-      ) wip_acct_out,
-   sum(0) wip_acct_var,
-   sum(decode(mmt.transaction_type_id,
-    35, mta.base_transaction_value, -- WIP Component Issue
-    38, mta.base_transaction_value, -- WIP Component Negative Issue
-    43, mta.base_transaction_value, -- WIP Return
-    48, mta.base_transaction_value, -- WIP Negative Return
-    55, mta.base_transaction_value, -- WIP Lot Split
-    56, mta.base_transaction_value, -- WIP Lot Merge
-    57, mta.base_transaction_value, -- WIP Lot Bonus
-    17, mta.base_transaction_value, -- WIP Completion Return
-    44, mta.base_transaction_value, -- WIP Completion
-    90, mta.base_transaction_value, -- WIP Assembly Scrap
-    91, mta.base_transaction_value, -- WIP return from scrap
-    92, mta.base_transaction_value, -- WIP estimated scrap
-    1002, mta.base_transaction_value, -- WIP Byproduct Completion
-    1003, mta.base_transaction_value, -- WIP Byproduct Return
-     0)
-      ) wip_acct_value
-   from mtl_transaction_accounts mta,
-   mtl_material_transactions mmt,
-   org_acct_periods oap,
-   mtl_parameters mp
-   where mta.transaction_id             = mmt.transaction_id
-   and mp.organization_id             = mta.organization_id
-   and mta.transaction_source_type_id = 5
-   and mta.accounting_line_type       = 7 -- WIP valuation
-   and mmt.transaction_date          >= oap.period_start_date
-   and mmt.transaction_date          <  oap.schedule_close_date + 1
-   and mta.transaction_date          >= oap.period_start_date
-   and mta.transaction_date          <  oap.schedule_close_date + 1
-   and oap.acct_period_id             = mmt.acct_period_id
-   and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-  and 2=2                            -- p_org_code
-   and 3=3                            -- p_period_name
-   group by
-   mp.organization_id,
-   mmt.transaction_source_id,
-   oap.period_name,
-   mmt.acct_period_id
-   union all
-   -- ===========================================
-   -- Get the WIP_Resource Transactions
-   -- ===========================================
-   select mp.organization_id,
-   wt.wip_entity_id,
-   oap.period_name,
-   wt.acct_period_id,
-   sum(0) wip_costs_in,
-   sum(0) wip_costs_out,
-   sum(0) wip_close_var,
-   sum(0) wip_value,
-   sum(decode(wt.transaction_type,
-     1, wta.base_transaction_value, -- Resource transaction
-     2, wta.base_transaction_value, -- Overhead transaction
-     3, wta.base_transaction_value, -- Outside processing
-    11, wta.base_transaction_value, -- WIP Lot Split
-    12, wta.base_transaction_value, -- WIP Lot Merge
-    13, wta.base_transaction_value, -- WIP Lot Bonus
-    14, wta.base_transaction_value, -- WIP Lot Quantity Update
-     0)
-      ) wip_acct_in,
-   sum(decode(wt.transaction_type,
-    15, wta.base_transaction_value, -- Estimated Scrap Absorption
-    16, wta.base_transaction_value, -- Estimated Scrap Reallocation
-    17, wta.base_transaction_value, -- Direct Shopfloor Delivery
-     0)
-      ) wip_acct_out,
-   sum(decode(wt.transaction_type,
-     5, wta.base_transaction_value * -1, -- Period close variance
-     6, wta.base_transaction_value * -1, -- Job close variance
-     7, wta.base_transaction_value * -1, -- Final completion variance
-     0)
-      ) wip_acct_var,
-   sum(decode(wt.transaction_type,
-     1, wta.base_transaction_value, -- Resource transaction
-     2, wta.base_transaction_value, -- Overhead transaction
-     3, wta.base_transaction_value, -- Outside processing
-    11, wta.base_transaction_value, -- WIP Lot Split
-    12, wta.base_transaction_value, -- WIP Lot Merge
-    13, wta.base_transaction_value, -- WIP Lot Bonus
-    14, wta.base_transaction_value, -- WIP Lot Quantity Update
-    15, wta.base_transaction_value, -- Estimated Scrap Absorption
-    16, wta.base_transaction_value, -- Estimated Scrap Reallocation
-    17, wta.base_transaction_value, -- Direct Shopfloor Delivery
-     5, wta.base_transaction_value, -- Period close variance
-     6, wta.base_transaction_value, -- Job close variance
-     7, wta.base_transaction_value, -- Final completion variance
-     0)
-      ) wip_acct_value
-   from wip_transaction_accounts wta,
-   wip_transactions wt,
-   org_acct_periods oap,
-   mtl_parameters mp
-   where wta.transaction_id             = wt.transaction_id
-   and mp.organization_id             = wta.organization_id
-   and wta.accounting_line_type       = 7 -- WIP valuation
-   and wta.transaction_date          >= oap.period_start_date
-   and wta.transaction_date          <  oap.schedule_close_date + 1
-   and wt.transaction_date           >= oap.period_start_date
-   and wt.transaction_date           <  oap.schedule_close_date + 1
-   and oap.acct_period_id             = wt.acct_period_id
-   and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-  and 2=2                            -- p_org_code
-   and 3=3                            -- p_period_name
-   group by
-   mp.organization_id,
-   wt.wip_entity_id,
-   oap.period_name,
-   wt.acct_period_id
-   union all
-   -- ===========================================
-   -- Get the WIP Cost Update Transactions
-   -- ===========================================
-   select mp.organization_id,
-   cscav.wip_entity_id,
-   oap.period_name,
-   oap.acct_period_id,
-   sum(0) wip_costs_in,
-   sum(0) wip_costs_out,
-   sum(0) wip_close_var,
-   sum(0) wip_value,
-   round(sum(decode(cscav.transaction_type,
-     3, cscav.adjustment_quantity * (new_unit_cost - old_unit_cost), -- WIP component issue
-     6, cscav.adjustment_quantity * (new_unit_cost - old_unit_cost), -- Resource
-     7, cscav.adjustment_quantity * (new_unit_cost - old_unit_cost), -- Resource overhead
-     8, cscav.adjustment_quantity * (new_unit_cost - old_unit_cost), -- Item based overhead
-     9, cscav.adjustment_quantity * (new_unit_cost - old_unit_cost), -- Lot based overhead
-    10, cscav.adjustment_quantity * (new_unit_cost - old_unit_cost), -- Resource / Overhead
-     0)
-      ),2) wip_acct_in,
-   round(sum(decode(cscav.transaction_type,
-     4, cscav.adjustment_quantity * (new_unit_cost - old_unit_cost), -- WIP assembly completion
-     5, cscav.adjustment_quantity * (new_unit_cost - old_unit_cost), -- WIP scrap transaction
-     0)
-      ),2) wip_acct_out,
-   sum(0) wip_acct_var,
-   round(sum(decode(cscav.transaction_type,
-     3, cscav.adjustment_quantity * (new_unit_cost - old_unit_cost), -- WIP component issue
-     6, cscav.adjustment_quantity * (new_unit_cost - old_unit_cost), -- Resource
-     7, cscav.adjustment_quantity * (new_unit_cost - old_unit_cost), -- Resource overhead
-     8, cscav.adjustment_quantity * (new_unit_cost - old_unit_cost), -- Item based overhead
-     9, cscav.adjustment_quantity * (new_unit_cost - old_unit_cost), -- Lot based overhead
-    10, cscav.adjustment_quantity * (new_unit_cost - old_unit_cost), -- Resource / Overhead
-     4, cscav.adjustment_quantity * (new_unit_cost - old_unit_cost) * cscav.in_out_flag, -- WIP assembly completion
-     5, cscav.adjustment_quantity * (new_unit_cost - old_unit_cost) * cscav.in_out_flag, -- WIP scrap transaction
-     0)
-      ),2) wip_acct_value
-   from cst_std_cost_adj_values cscav,
-   cst_cost_updates ccu,
-   org_acct_periods oap,
-   mtl_parameters mp
-   where ccu.cost_update_id             = cscav.cost_update_id
-   and mp.organization_id             = ccu.organization_id
-   and ccu.update_date               >= oap.period_start_date
-   and ccu.update_date               <  oap.schedule_close_date + 1
-   and oap.organization_id            = ccu.organization_id
-   and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-  and 2=2                            -- p_org_code
-   and 3=3                            -- p_period_name
-   group by
-   mp.organization_id,
-   cscav.wip_entity_id,
-   oap.period_name,
-   oap.acct_period_id
-  ) wip
-  group by
-   wip.organization_id,
-  wip.wip_entity_id,
-  wip.period_name,
-  wip.acct_period_id
- ) wipsum
--- ===========================================
--- WIP_Job Entity and accounting period joins
--- ===========================================
-where wip.wip_entity_id               = wipsum.wip_entity_id
-and wac.organization_id             = wip.organization_id
-and wac.class_code                  = wip.class_code
-and msiv.inventory_item_id          = wip.primary_item_id
-and msiv.organization_id            = wip.organization_id
-and msiv.primary_uom_code           = muomv.uom_code
-and msiv.inventory_item_status_code = misv.inventory_item_status_code
-and ml1.lookup_type                 = 'MTL_PLANNING_MAKE_BUY'
-and ml1.lookup_code                 = msiv.planning_make_buy_code
-and ml2.lookup_type                 = 'WIP_CLASS_TYPE'
-and ml2.lookup_code                 = wac.class_type
-and ml3.lookup_type                 = 'WIP_ENTITY'
-and ml3.lookup_code                 = wip.entity_type
-and fcl.lookup_type (+)             = 'ITEM_TYPE'
-and fcl.lookup_code (+)             = msiv.item_type
--- ===================================================================
--- using the base tables for organizations
--- ===================================================================
-and hoi.org_information_context     = 'Accounting Information'
-and hoi.organization_id             = wip.organization_id
-and hoi.organization_id             = haou.organization_id -- this gets the organization name
--- avoid selecting disabled inventory organizations
-and sysdate < nvl(haou.date_to, sysdate + 1)
-and haou2.organization_id           = to_number(hoi.org_information3) -- this gets the operating unit id
-and hoi.org_information1            = gl.ledger_id      -- this gets the ledger id
-and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
-and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
-and 1=1                             -- p_operating_unit, p_ledger
+with o as (
+select /*+ materialize*/
+mp.organization_id,
+mp.organization_code,
+oap.acct_period_id,
+oap.period_name,
+oap.period_start_date,
+oap.schedule_close_date
+from
+mtl_parameters mp,
+org_acct_periods oap
+where
+2=2 and
+3=3 and
+mp.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
+mp.organization_id=oap.organization_id
+)
+select
+x.period_name,
+nvl(gl.short_name,gl.name) ledger,
+haouv_ou.name operating_unit,
+x.organization_code org_code,
+x.organization_id org_id,
+msiv.concatenated_segments assembly_number,
+msiv.description,
+xxen_util.meaning(msiv.item_type,'ITEM_TYPE',3) item_type,
+msiv.inventory_item_status_code item_status,
+xxen_util.meaning(msiv.planning_make_buy_code,'MTL_PLANNING_MAKE_BUY',700) make_buy_code,
+&category_columns
+x.class_code wip_class,
+xxen_util.meaning(wac.class_type,'WIP_CLASS_TYPE',700) class_type,
+xxen_util.meaning(x.entity_type,'WIP_ENTITY',700) wip_type,
+x.wip_entity_name wip_job,
+x.date_closed,
+x.status job_status,
+x.date_released,
+x.date_completed,
+msiv.primary_uom_code uom_code,
+x.start_quantity,
+x.quantity_completed,
+x.quantity_scrapped,
+y.wip_costs_in,
+y.wip_costs_out,
+y.wip_close_var wip_relief,
+y.wip_value,
+y.wip_acct_in wip_accounted_costs_in,
+y.wip_acct_out wip_accounted_costs_out,
+y.wip_acct_var wip_accounted_relief,
+y.wip_acct_value wip_accounted_value,
+y.wip_costs_in-y.wip_acct_in wip_costs_in_difference,
+y.wip_costs_out-y.wip_acct_out wip_costs_out_difference,
+y.wip_close_var-y.wip_acct_var wip_relief_difference,
+y.wip_value-y.wip_acct_value wip_value_difference
+from
+(
+select
+o.organization_id,
+o.organization_code,
+o.acct_period_id,
+o.period_name,
+we.wip_entity_name,
+wdj.wip_entity_id,
+we.entity_type,
+wdj.class_code,
+wdj.date_closed,
+xxen_util.meaning(wdj.status_type,'WIP_JOB_STATUS',700) status,
+wdj.date_released,
+wdj.date_completed,
+wdj.start_quantity,
+wdj.quantity_completed,
+wdj.quantity_scrapped,
+wdj.primary_item_id
+from
+o,
+wip_discrete_jobs wdj,
+wip_entities we
+where
+o.organization_id=wdj.organization_id and
+(
+wdj.date_closed is null and trunc(wdj.creation_date)<=o.schedule_close_date or
+trunc(wdj.date_closed)>o.schedule_close_date or
+wdj.date_closed>=o.period_start_date and trunc(wdj.date_closed)<o.schedule_close_date+1
+) and
+wdj.wip_entity_id=we.wip_entity_id
+union all
+select
+o.organization_id,
+o.organization_code,
+o.acct_period_id,
+o.period_name,
+we.wip_entity_name,
+wfs.wip_entity_id,
+we.entity_type,
+wfs.class_code,
+wfs.date_closed,
+xxen_util.meaning(wfs.status,'WIP_FLOW_SCHEDULE_STATUS',700) status,
+wfs.creation_date date_released,
+wfs.date_closed date_completed,
+wfs.planned_quantity start_quantity,
+wfs.quantity_completed,
+0 quantity_scrapped,
+wfs.primary_item_id
+from
+o,
+wip_flow_schedules wfs,
+wip_entities we
+where
+o.organization_id=wfs.organization_id and
+(
+wfs.date_closed is null and trunc(wfs.creation_date)<=o.schedule_close_date or
+trunc(wfs.date_closed)>o.schedule_close_date or
+wfs.date_closed>=o.period_start_date and trunc(wfs.date_closed)<o.schedule_close_date+1
+) and
+wfs.wip_entity_id=we.wip_entity_id and
+we.entity_type=4
+) x,
+(
+select
+z.organization_id,
+z.wip_entity_id,
+z.acct_period_id,
+sum(z.wip_costs_in) wip_costs_in,
+sum(z.wip_costs_out) wip_costs_out,
+sum(z.wip_close_var) wip_close_var,
+sum(z.wip_value) wip_value,
+sum(round(z.wip_acct_in,2)) wip_acct_in,
+sum(round(z.wip_acct_out,2)) wip_acct_out,
+sum(round(z.wip_acct_var,2)) wip_acct_var,
+sum(round(z.wip_acct_value,2)) wip_acct_value
+from
+(
+select
+o.organization_id,
+wpb.wip_entity_id,
+o.acct_period_id,
+sum(nvl(wpb.tl_scrap_in,0)+nvl(wpb.pl_material_in,0)+nvl(wpb.pl_material_overhead_in,0)+nvl(wpb.tl_resource_in,0)+nvl(wpb.pl_resource_in,0)+nvl(wpb.tl_outside_processing_in,0)+nvl(wpb.pl_outside_processing_in,0)+nvl(wpb.tl_overhead_in,0)+nvl(wpb.pl_overhead_in,0)) wip_costs_in,
+sum(nvl(wpb.tl_material_out,0)+nvl(wpb.tl_scrap_out,0)+nvl(wpb.pl_material_out,0)+nvl(wpb.tl_material_overhead_out,0)+nvl(wpb.pl_material_overhead_out,0)+nvl(wpb.tl_resource_out,0)+nvl(wpb.pl_resource_out,0)+nvl(wpb.tl_outside_processing_out,0)+nvl(wpb.pl_outside_processing_out,0)+nvl(wpb.tl_overhead_out,0)+nvl(wpb.pl_overhead_out,0)) wip_costs_out,
+sum(nvl(wpb.tl_material_var,0)+nvl(wpb.tl_scrap_var,0)+nvl(wpb.pl_material_var,0)+nvl(wpb.tl_material_overhead_var,0)+nvl(wpb.pl_material_overhead_var,0)+nvl(wpb.tl_resource_var,0)+nvl(wpb.pl_resource_var,0)+nvl(wpb.tl_outside_processing_var,0)+nvl(wpb.pl_outside_processing_var,0)+nvl(wpb.tl_overhead_var,0)+nvl(wpb.pl_overhead_var,0)) wip_close_var,
+sum(nvl(wpb.tl_scrap_in,0)+nvl(wpb.pl_material_in,0)-nvl(wpb.tl_material_out,0)-nvl(wpb.tl_scrap_out,0)-nvl(wpb.pl_material_out,0)-nvl(wpb.tl_material_var,0)-nvl(wpb.tl_scrap_var,0)-nvl(wpb.pl_material_var,0)+
+nvl(wpb.pl_material_overhead_in,0)-nvl(wpb.tl_material_overhead_out,0)-nvl(wpb.pl_material_overhead_out,0)-nvl(wpb.tl_material_overhead_var,0)-nvl(wpb.pl_material_overhead_var,0)+
+nvl(wpb.tl_resource_in,0)+nvl(wpb.pl_resource_in,0)-nvl(wpb.tl_resource_out,0)-nvl(wpb.pl_resource_out,0)-nvl(wpb.tl_resource_var,0)-nvl(wpb.pl_resource_var,0)+
+nvl(wpb.tl_outside_processing_in,0)+nvl(wpb.pl_outside_processing_in,0)-nvl(wpb.tl_outside_processing_out,0)-nvl(wpb.pl_outside_processing_out,0)-nvl(wpb.tl_outside_processing_var,0)-nvl(wpb.pl_outside_processing_var,0)+
+nvl(wpb.tl_overhead_in,0)+nvl(wpb.pl_overhead_in,0)-nvl(wpb.tl_overhead_out,0)-nvl(wpb.pl_overhead_out,0)-nvl(wpb.tl_overhead_var,0)-nvl(wpb.pl_overhead_var,0)) wip_value,
+0 wip_acct_in,
+0 wip_acct_out,
+0 wip_acct_var,
+0 wip_acct_value
+from
+o,
+wip_period_balances wpb
+where
+o.organization_id=wpb.organization_id and
+o.acct_period_id=wpb.acct_period_id
+group by
+o.organization_id,
+wpb.wip_entity_id,
+o.acct_period_id
+union all
+select
+o.organization_id,
+mmt.transaction_source_id,
+o.acct_period_id,
+0,
+0,
+0,
+0,
+sum(decode(mmt.transaction_type_id,35,mta.base_transaction_value,38,mta.base_transaction_value,43,mta.base_transaction_value,48,mta.base_transaction_value,55,mta.base_transaction_value,56,mta.base_transaction_value,57,mta.base_transaction_value,0)),
+sum(decode(mmt.transaction_type_id,17,-mta.base_transaction_value,44,-mta.base_transaction_value,90,-mta.base_transaction_value,91,-mta.base_transaction_value,92,-mta.base_transaction_value,1002,-mta.base_transaction_value,1003,-mta.base_transaction_value,0)),
+0,
+sum(decode(mmt.transaction_type_id,35,mta.base_transaction_value,38,mta.base_transaction_value,43,mta.base_transaction_value,48,mta.base_transaction_value,55,mta.base_transaction_value,56,mta.base_transaction_value,57,mta.base_transaction_value,17,mta.base_transaction_value,44,mta.base_transaction_value,90,mta.base_transaction_value,91,mta.base_transaction_value,92,mta.base_transaction_value,1002,mta.base_transaction_value,1003,mta.base_transaction_value,0))
+from
+o,
+mtl_material_transactions mmt,
+mtl_transaction_accounts mta
+where
+o.acct_period_id=mmt.acct_period_id and
+mmt.transaction_date>=o.period_start_date and
+mmt.transaction_date<o.schedule_close_date+1 and
+mmt.transaction_id=mta.transaction_id and
+o.organization_id=mta.organization_id and
+mta.transaction_source_type_id=5 and
+mta.accounting_line_type=7 and
+mta.transaction_date>=o.period_start_date and
+mta.transaction_date<o.schedule_close_date+1
+group by
+o.organization_id,
+mmt.transaction_source_id,
+o.acct_period_id
+union all
+select
+o.organization_id,
+wt.wip_entity_id,
+o.acct_period_id,
+0,
+0,
+0,
+0,
+sum(decode(wt.transaction_type,1,wta.base_transaction_value,2,wta.base_transaction_value,3,wta.base_transaction_value,11,wta.base_transaction_value,12,wta.base_transaction_value,13,wta.base_transaction_value,14,wta.base_transaction_value,0)),
+sum(decode(wt.transaction_type,15,wta.base_transaction_value,16,wta.base_transaction_value,17,wta.base_transaction_value,0)),
+sum(decode(wt.transaction_type,5,-wta.base_transaction_value,6,-wta.base_transaction_value,7,-wta.base_transaction_value,0)),
+sum(decode(wt.transaction_type,1,wta.base_transaction_value,2,wta.base_transaction_value,3,wta.base_transaction_value,11,wta.base_transaction_value,12,wta.base_transaction_value,13,wta.base_transaction_value,14,wta.base_transaction_value,15,wta.base_transaction_value,16,wta.base_transaction_value,17,wta.base_transaction_value,5,wta.base_transaction_value,6,wta.base_transaction_value,7,wta.base_transaction_value,0))
+from
+o,
+wip_transactions wt,
+wip_transaction_accounts wta
+where
+o.acct_period_id=wt.acct_period_id and
+wt.transaction_date>=o.period_start_date and
+wt.transaction_date<o.schedule_close_date+1 and
+wt.transaction_id=wta.transaction_id and
+o.organization_id=wta.organization_id and
+wta.accounting_line_type=7 and
+wta.transaction_date>=o.period_start_date and
+wta.transaction_date<o.schedule_close_date+1
+group by
+o.organization_id,
+wt.wip_entity_id,
+o.acct_period_id
+union all
+select
+o.organization_id,
+cscav.wip_entity_id,
+o.acct_period_id,
+0,
+0,
+0,
+0,
+round(sum(decode(cscav.transaction_type,3,1,6,1,7,1,8,1,9,1,10,1,0)*cscav.adjustment_quantity*(cscav.new_unit_cost-cscav.old_unit_cost)),2),
+round(sum(decode(cscav.transaction_type,4,1,5,1,0)*cscav.adjustment_quantity*(cscav.new_unit_cost-cscav.old_unit_cost)),2),
+0,
+round(sum(decode(cscav.transaction_type,3,1,6,1,7,1,8,1,9,1,10,1,4,cscav.in_out_flag,5,cscav.in_out_flag,0)*cscav.adjustment_quantity*(cscav.new_unit_cost-cscav.old_unit_cost)),2)
+from
+o,
+cst_cost_updates ccu,
+cst_std_cost_adj_values cscav
+where
+o.organization_id=ccu.organization_id and
+ccu.update_date>=o.period_start_date and
+ccu.update_date<o.schedule_close_date+1 and
+ccu.cost_update_id=cscav.cost_update_id
+group by
+o.organization_id,
+cscav.wip_entity_id,
+o.acct_period_id
+) z
+group by
+z.organization_id,
+z.wip_entity_id,
+z.acct_period_id
+) y,
+wip_accounting_classes wac,
+mtl_system_items_vl msiv,
+hr_organization_information hoi,
+hr_all_organization_units haou,
+hr_all_organization_units_vl haouv_ou,
+gl_ledgers gl
+where
+1=1 and
+x.wip_entity_id=y.wip_entity_id and
+x.acct_period_id=y.acct_period_id and
+x.organization_id=wac.organization_id and
+x.class_code=wac.class_code and
+x.organization_id=msiv.organization_id and
+x.primary_item_id=msiv.inventory_item_id and
+x.organization_id=hoi.organization_id and
+hoi.org_information_context='Accounting Information' and
+hoi.organization_id=haou.organization_id and
+sysdate<nvl(haou.date_to,sysdate+1) and
+to_number(hoi.org_information3)=haouv_ou.organization_id and
+to_number(hoi.org_information1)=gl.ledger_id
+order by
+x.period_name,
+ledger,
+operating_unit,
+org_code,
+assembly_number,
+wip_job

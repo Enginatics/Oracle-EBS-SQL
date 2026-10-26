@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-16
+last_modified_at: 2026-10-26
 title: 'DBA CPU Benchmark1 | Oracle EBS SQL Report'
 description: 'Benchmark report to measure a database server''s CPU speed, mainly for PLSQL processing. This report generates an output file of 500000 out of a total of…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Database Administration, Enginatics, DBA, CPU, Benchmark1, fnd_languages, fnd_currencies, fnd_application'
@@ -52,7 +52,7 @@ Row Number
 [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-cpu-benchmark1)
 
 ## Related Reports
-[FND Forms Personalizations](/FND%20Forms%20Personalizations/ "FND Forms Personalizations Oracle EBS SQL Report"), [FND Lookup Values](/FND%20Lookup%20Values/ "FND Lookup Values Oracle EBS SQL Report"), [CST Detailed Item Cost](/CST%20Detailed%20Item%20Cost/ "CST Detailed Item Cost Oracle EBS SQL Report")
+[FND Lookup Values](/FND%20Lookup%20Values/ "FND Lookup Values Oracle EBS SQL Report"), [INV Item Upload](/INV%20Item%20Upload/ "INV Item Upload Oracle EBS SQL Report"), [FND Forms Personalizations](/FND%20Forms%20Personalizations/ "FND Forms Personalizations Oracle EBS SQL Report"), [QP Price Lists](/QP%20Price%20Lists/ "QP Price Lists Oracle EBS SQL Report"), [AR Open Items Revaluation](/AR%20Open%20Items%20Revaluation/ "AR Open Items Revaluation Oracle EBS SQL Report"), [AP Accounted Invoice Aging](/AP%20Accounted%20Invoice%20Aging/ "AP Accounted Invoice Aging Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/DBA%20CPU%20Benchmark1/DBA%20CPU%20Benchmark1.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-cpu-benchmark1) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.

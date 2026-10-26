@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-19
+last_modified_at: 2026-10-26
 title: 'CST Supply Chain Indented Bills of Material Cost | Oracle EBS SQL Report'
 description: 'This report is based on the (static) Oracle Supply Chain Indented Bills of Material Cost Report and merely sums up the available information from the Cost…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Cost Management, BI Publisher, Enginatics, R12 only, CST, Supply, Chain, Indented, cst_sc_bom_structures, mtl_system_items_vl, mtl_item_categories'
@@ -43,7 +43,7 @@ Cost Type, Organization, Assignment Set, Report Number of Levels, Exclude Level,
 [BI Publisher](https://www.enginatics.com/library/?pg=1&category%5B%5D=BI%20Publisher&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-supply-chain-indented-bills-of-material-cost), [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-supply-chain-indented-bills-of-material-cost), [R12 only](https://www.enginatics.com/library/?pg=1&category%5B%5D=R12%20only&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-supply-chain-indented-bills-of-material-cost)
 
 ## Related Reports
-[CAC Last Standard Item Cost](/CAC%20Last%20Standard%20Item%20Cost/ "CAC Last Standard Item Cost Oracle EBS SQL Report"), [CAC New Standard Item Costs](/CAC%20New%20Standard%20Item%20Costs/ "CAC New Standard Item Costs Oracle EBS SQL Report"), [CAC Calculate ICP PII Item Costs](/CAC%20Calculate%20ICP%20PII%20Item%20Costs/ "CAC Calculate ICP PII Item Costs Oracle EBS SQL Report"), [CAC Calculate Average Item Costs](/CAC%20Calculate%20Average%20Item%20Costs/ "CAC Calculate Average Item Costs Oracle EBS SQL Report"), [WIP Account Distribution](/WIP%20Account%20Distribution/ "WIP Account Distribution Oracle EBS SQL Report")
+[INV Items](/INV%20Items/ "INV Items Oracle EBS SQL Report"), [CAC Last Standard Item Cost](/CAC%20Last%20Standard%20Item%20Cost/ "CAC Last Standard Item Cost Oracle EBS SQL Report"), [CAC New Standard Item Costs](/CAC%20New%20Standard%20Item%20Costs/ "CAC New Standard Item Costs Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/CST%20Supply%20Chain%20Indented%20Bills%20of%20Material%20Cost/CST%20Supply%20Chain%20Indented%20Bills%20of%20Material%20Cost.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cst-supply-chain-indented-bills-of-material-cost) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.

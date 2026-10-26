@@ -45,198 +45,118 @@
 -- -- | 1.8 07 Nov 2020 Douglas Volz Changed to multi-language for status and UOM
 -- -- | 1.9 09 Jul 2023 Douglas Volz Remove tabs and restrict to only orgs you have
 -- -- | access to, using the org access view.
+-- -- | 1.10 23 Oct 2026 Andy Haack Rebuilt to the Blitz Report SQL standards, items without an item type are reported.
 -- -- +=============================================================================+/
 -- Excel Example Output: https://www.enginatics.com/example/cac-zero-item-costs/
 -- Library Link: https://www.enginatics.com/reports/cac-zero-item-costs/
 -- Run Report: https://demo.enginatics.com/
 
-select  nvl(gl.short_name, gl.name) Ledger,
-        haou2.name Operating_Unit,
-        mp.organization_code Org_Code,
-        msiv.concatenated_segments Item_Number,
-        msiv.description Item_Description,
-        fcl.meaning Item_Type,
-        -- Revision for version 1.8
-        misv.inventory_item_status_code_tl Item_Status,
-        ml.meaning Make_Buy_Code,
-        -- Revision for version 1.3
+select
+x.ledger,
+x.operating_unit,
+x.org_code,
+x.item_number,
+x.item_description,
+x.item_type,
+x.item_status,
+x.make_buy_code,
 &category_columns
-        fl1.meaning Allow_Costs,
-        fl2.meaning Inventory_Asset,
-        msiv.creation_date Creation_Date,
-        nvl(cic1.item_cost,0) Item_Cost,
-        (select max(mmt.transaction_id)
-         from   mtl_material_transactions mmt
-         where  mmt.organization_id     = msiv.organization_id
-         and    mmt.inventory_item_id   = msiv.inventory_item_id) Last_Transaction_Number,
-        (select mmt.transaction_date
-         from   mtl_material_transactions mmt
-         where  mmt.transaction_id in
-                                (select max(mmt2.transaction_id)
-                                 from   mtl_material_transactions mmt2
-                                 where  mmt2.organization_id     = msiv.organization_id
-                                 and    mmt2.inventory_item_id   = msiv.inventory_item_id)) Last_Transaction_Date,
-        (select mtt.transaction_type_name
-         from   mtl_material_transactions mmt,
-                mtl_transaction_types mtt
-         where  mtt.transaction_type_id = mmt.transaction_type_id
-         and    mmt.transaction_id in
-                                (select max(mmt2.transaction_id)
-                                 from   mtl_material_transactions mmt2
-                                 where  mmt2.organization_id     = msiv.organization_id
-                                 and    mmt2.inventory_item_id   = msiv.inventory_item_id)) Last_Transaction_Type,
-        -- Revision for version 1.8
-        muomv.uom_code UOM_Code,
-        nvl((select sum(mohd.transaction_quantity)
-             from   mtl_onhand_quantities_detail mohd
-             where  mohd.inventory_item_id  = msiv.inventory_item_id
-             and    mohd.organization_id    = msiv.organization_id),0) Onhand_Quantity        
-from    cst_item_costs cic1,
-        mtl_system_items_vl msiv,
-        -- Revision for version 1.8
-        mtl_units_of_measure_vl muomv,
-        mtl_item_status_vl misv, 
-        -- End revision for version 1.8
-        mtl_parameters mp,
-        mfg_lookups ml,  -- planning make/buy code, MTL_PLANNING_MAKE_BUY
-        fnd_lookups fl1, -- allow costs, YES_NO
-        fnd_lookups fl2, -- inventory_asset_flag, YES_NO
-        fnd_common_lookups fcl,
-        gl_ledgers gl,
-        hr_organization_information hoi,
-        hr_all_organization_units_vl haou,  -- inv_organization_id
-        hr_all_organization_units_vl haou2  -- operating unit
-where   msiv.inventory_item_id          = cic1.inventory_item_id
-and     mp.organization_id              = cic1.organization_id
-and     mp.primary_cost_method          = cic1.cost_type_id -- this gets the Cost Method
-and     cic1.item_cost                  = 0
--- Revision for version 1.8
-and     msiv.primary_uom_code           = muomv.uom_code
-and     misv.inventory_item_status_code = msiv.inventory_item_status_code
--- End revision for version 1.8
-and     ml.lookup_type                  = 'MTL_PLANNING_MAKE_BUY'
-and     ml.lookup_code                  = msiv.planning_make_buy_code
-and     fl1.lookup_type                 = 'YES_NO'
-and     fl1.lookup_code                 = msiv.costing_enabled_flag
-and     fl2.lookup_type                 = 'YES_NO'
-and     fl2.lookup_code                 = msiv.inventory_asset_flag
-and     fcl.lookup_type                 = 'ITEM_TYPE'
-and     fcl.lookup_code                 = msiv.item_type
--- Revision for version 1.3
-and     mp.organization_id             <> mp.master_organization_id     -- remove the global master org
--- End revision for version 1.3
-and     msiv.organization_id            = mp.organization_id
-and     gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
-and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
-and 1=1
--- Revision for version 1.9
-and    mp.organization_code in (select oav.organization_code from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
--- ===================================================================
--- using the base tables to avoid the performance issues
--- with org_organization_definitions and hr_operating_units
--- ===================================================================
-and     hoi.org_information_context     = 'Accounting Information'
-and     hoi.organization_id             = mp.organization_id
-and     hoi.organization_id             = haou.organization_id   -- this gets the organization name
-and     haou2.organization_id           = to_number(hoi.org_information3) -- this gets the operating unit id
-and     gl.ledger_id                    = to_number(hoi.org_information1) -- get the ledger_id        
--- ===================================================================
+x.allow_costs,
+x.inventory_asset,
+x.creation_date,
+x.item_cost,
+mmt.transaction_id last_transaction_number,
+mmt.transaction_date last_transaction_date,
+mtt.transaction_type_name last_transaction_type,
+x.uom_code,
+x.onhand_quantity
+from
+(
+select
+nvl(gl.short_name,gl.name) ledger,
+haouv.name operating_unit,
+mp.organization_code org_code,
+msiv.concatenated_segments item_number,
+msiv.description item_description,
+xxen_util.meaning(msiv.item_type,'ITEM_TYPE',3) item_type,
+misv.inventory_item_status_code_tl item_status,
+xxen_util.meaning(msiv.planning_make_buy_code,'MTL_PLANNING_MAKE_BUY',700) make_buy_code,
+xxen_util.yes(msiv.costing_enabled_flag) allow_costs,
+xxen_util.yes(msiv.inventory_asset_flag) inventory_asset,
+msiv.creation_date,
+cic.item_cost,
+(select /*+ no_unnest*/ max(mmt.transaction_id) from mtl_material_transactions mmt where msiv.inventory_item_id=mmt.inventory_item_id and msiv.organization_id=mmt.organization_id) last_transaction_id,
+msiv.primary_uom_code uom_code,
+nvl((select sum(moqd.transaction_quantity) from mtl_onhand_quantities_detail moqd where msiv.inventory_item_id=moqd.inventory_item_id and msiv.organization_id=moqd.organization_id),0) onhand_quantity,
+msiv.inventory_item_id,
+msiv.organization_id
+from
+mtl_parameters mp,
+hr_organization_information hoi,
+hr_all_organization_units_vl haouv,
+gl_ledgers gl,
+mtl_system_items_vl msiv,
+mtl_item_status_vl misv,
+cst_item_costs cic
+where
+1=1 and
+mp.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
+mp.organization_id<>mp.master_organization_id and
+mp.organization_id=hoi.organization_id and
+hoi.org_information_context='Accounting Information' and
+to_number(hoi.org_information3)=haouv.organization_id and
+to_number(hoi.org_information1)=gl.ledger_id and
+mp.organization_id=msiv.organization_id and
+msiv.inventory_item_status_code=misv.inventory_item_status_code and
+msiv.organization_id=cic.organization_id and
+msiv.inventory_item_id=cic.inventory_item_id and
+mp.primary_cost_method=cic.cost_type_id and
+cic.item_cost=0
 union all
--- Now get the items where they are defined in the item master but not
--- in the cost master.  These items have no cost at all, not even zero.
--- ===================================================================
-select  nvl(gl.short_name, gl.name) Ledger,
-        haou2.name Operating_Unit,
-        mp.organization_code Org_Code,
-        msiv.concatenated_segments Item_Number,
-        msiv.description Item_Description,
-        fcl.meaning Item_Type,
-        -- Revision for version 1.8
-        misv.inventory_item_status_code_tl Item_Status,
-        ml.meaning Make_Buy_Code,
-        -- Revision for version 1.3
-&category_columns
-        fl1.meaning Allow_Costs,
-        fl2.meaning Inventory_Asset,
-        msiv.creation_date Creation_Date,
-        null Item_Cost,
-        (select max(mmt.transaction_id)
-         from   mtl_material_transactions mmt
-         where  mmt.organization_id     = msiv.organization_id
-         and    mmt.inventory_item_id   = msiv.inventory_item_id) Last_Transaction_Number,
-        (select mmt.transaction_date
-         from   mtl_material_transactions mmt
-         where  mmt.transaction_id in
-                                (select max(mmt2.transaction_id)
-                                 from   mtl_material_transactions mmt2
-                                 where  mmt2.organization_id     = msiv.organization_id
-                                 and    mmt2.inventory_item_id   = msiv.inventory_item_id)) Last_Transaction_Date,
-        (select  mtt.transaction_type_name
-         from    mtl_material_transactions mmt,
-                 mtl_transaction_types mtt
-         where  mtt.transaction_type_id = mmt.transaction_type_id
-         and    mmt.transaction_id in
-                                (select max(mmt2.transaction_id)
-                                 from   mtl_material_transactions mmt2
-                                 where  mmt2.organization_id     = msiv.organization_id
-                                 and    mmt2.inventory_item_id   = msiv.inventory_item_id)) Last_Transaction_Type,
-        -- Revision for version 1.8
-        muomv.uom_code UOM_Code,
-        nvl((select sum(mohd.transaction_quantity)
-                from    mtl_onhand_quantities_detail mohd
-                where  mohd.inventory_item_id  = msiv.inventory_item_id
-                and    mohd.organization_id    = msiv.organization_id),0) Onhand_Quantity        
-from    mtl_system_items_vl msiv,
-        -- Revision for version 1.8
-        mtl_units_of_measure_vl muomv,
-        mtl_item_status_vl misv, 
-        -- End revision for version 1.8
-        mtl_parameters mp,
-        mfg_lookups ml,  -- planning make/buy code, MTL_PLANNING_MAKE_BUY
-        fnd_lookups fl1, -- allow costs, YES_NO
-        fnd_lookups fl2, -- inventory_asset_flag, YES_NO
-        fnd_common_lookups fcl,
-        gl_ledgers gl,
-        hr_organization_information hoi,
-        hr_all_organization_units_vl haou,  -- inv_organization_id
-        hr_all_organization_units_vl haou2  -- operating unit
-where   msiv.organization_id            = mp.organization_id
--- Revision for version 1.8
-and     msiv.primary_uom_code           = muomv.uom_code
-and     misv.inventory_item_status_code = msiv.inventory_item_status_code
--- End revision for version 1.8
-and     ml.lookup_type                  = 'MTL_PLANNING_MAKE_BUY'
-and     ml.lookup_code                  = msiv.planning_make_buy_code
-and     fl1.lookup_type                 = 'YES_NO'
-and     fl1.lookup_code                 = msiv.costing_enabled_flag
-and     fl2.lookup_type                 = 'YES_NO'
-and     fl2.lookup_code                 = msiv.inventory_asset_flag
-and     fcl.lookup_type                 = 'ITEM_TYPE'
-and     fcl.lookup_code                 = msiv.item_type
--- Revision for version 1.3
-and     mp.organization_id             <> mp.master_organization_id     -- remove the global master org
--- End revision for version 1.3
-and     gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
-and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
-and 1=1
--- Revision for version 1.9
-and    mp.organization_code in (select oav.organization_code from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-and     not exists (
-        select  'x'
-        from    cst_item_costs cic
-        where   cic.organization_id   = msiv.organization_id
-        and     cic.inventory_item_id = msiv.inventory_item_id
-        and     cic.cost_type_id      = mp.primary_cost_method     -- this gets the Cost Method
-                   )
--- ===================================================================
--- using the base tables to avoid the performance issues
--- with org_organization_definitions and hr_operating_units
--- ===================================================================
-and     hoi.org_information_context     = 'Accounting Information'
-and     hoi.organization_id             = mp.organization_id
-and     hoi.organization_id             = haou.organization_id   -- this gets the organization name
-and     haou2.organization_id           = to_number(hoi.org_information3) -- this gets the operating unit id
-and     gl.ledger_id                    = to_number(hoi.org_information1) -- get the ledger_id        
--- ===================================================================
--- Order by Ledger, Operating_Unit, Org_Code and Item_Number
-order by 1,2,3,4
+select
+nvl(gl.short_name,gl.name) ledger,
+haouv.name operating_unit,
+mp.organization_code org_code,
+msiv.concatenated_segments item_number,
+msiv.description item_description,
+xxen_util.meaning(msiv.item_type,'ITEM_TYPE',3) item_type,
+misv.inventory_item_status_code_tl item_status,
+xxen_util.meaning(msiv.planning_make_buy_code,'MTL_PLANNING_MAKE_BUY',700) make_buy_code,
+xxen_util.yes(msiv.costing_enabled_flag) allow_costs,
+xxen_util.yes(msiv.inventory_asset_flag) inventory_asset,
+msiv.creation_date,
+null item_cost,
+(select /*+ no_unnest*/ max(mmt.transaction_id) from mtl_material_transactions mmt where msiv.inventory_item_id=mmt.inventory_item_id and msiv.organization_id=mmt.organization_id) last_transaction_id,
+msiv.primary_uom_code uom_code,
+nvl((select sum(moqd.transaction_quantity) from mtl_onhand_quantities_detail moqd where msiv.inventory_item_id=moqd.inventory_item_id and msiv.organization_id=moqd.organization_id),0) onhand_quantity,
+msiv.inventory_item_id,
+msiv.organization_id
+from
+mtl_parameters mp,
+hr_organization_information hoi,
+hr_all_organization_units_vl haouv,
+gl_ledgers gl,
+mtl_system_items_vl msiv,
+mtl_item_status_vl misv
+where
+1=1 and
+mp.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
+mp.organization_id<>mp.master_organization_id and
+mp.organization_id=hoi.organization_id and
+hoi.org_information_context='Accounting Information' and
+to_number(hoi.org_information3)=haouv.organization_id and
+to_number(hoi.org_information1)=gl.ledger_id and
+mp.organization_id=msiv.organization_id and
+msiv.inventory_item_status_code=misv.inventory_item_status_code and
+(msiv.organization_id,msiv.inventory_item_id,mp.primary_cost_method) not in (select cic.organization_id, cic.inventory_item_id, cic.cost_type_id from cst_item_costs cic)
+) x,
+mtl_material_transactions mmt,
+mtl_transaction_types mtt
+where
+x.last_transaction_id=mmt.transaction_id(+) and
+mmt.transaction_type_id=mtt.transaction_type_id(+)
+order by
+x.ledger,
+x.operating_unit,
+x.org_code,
+x.item_number

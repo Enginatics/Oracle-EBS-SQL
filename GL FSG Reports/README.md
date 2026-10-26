@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-19
+last_modified_at: 2026-10-26
 title: 'GL FSG Reports | Oracle EBS SQL Report'
 description: 'Financial Statement Generator reports – Oracle EBS General Ledger SQL report: free SQL, parameters and tables used.'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, General Ledger, Enginatics, R12 only, FSG, Reports, rg_reports_v, fnd_id_flex_structures_vl'
@@ -31,7 +31,7 @@ Structure Name, Row Order
 [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=gl-fsg-reports), [R12 only](https://www.enginatics.com/library/?pg=1&category%5B%5D=R12%20only&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=gl-fsg-reports)
 
 ## Related Reports
-[GL FSG Row Orders](/GL%20FSG%20Row%20Orders/ "GL FSG Row Orders Oracle EBS SQL Report"), [CAC Inventory Organization Summary](/CAC%20Inventory%20Organization%20Summary/ "CAC Inventory Organization Summary Oracle EBS SQL Report"), [GL Ledgers and Legal Entities](/GL%20Ledgers%20and%20Legal%20Entities/ "GL Ledgers and Legal Entities Oracle EBS SQL Report"), [ZX Tax Accounts](/ZX%20Tax%20Accounts/ "ZX Tax Accounts Oracle EBS SQL Report"), [GL Account Upload 11i](/GL%20Account%20Upload%2011i/ "GL Account Upload 11i Oracle EBS SQL Report")
+[GL FSG Row Orders](/GL%20FSG%20Row%20Orders/ "GL FSG Row Orders Oracle EBS SQL Report"), [GL Ledgers and Legal Entities](/GL%20Ledgers%20and%20Legal%20Entities/ "GL Ledgers and Legal Entities Oracle EBS SQL Report"), [FA Asset Book Details](/FA%20Asset%20Book%20Details/ "FA Asset Book Details Oracle EBS SQL Report"), [ZX Tax Accounts](/ZX%20Tax%20Accounts/ "ZX Tax Accounts Oracle EBS SQL Report"), [GL Account Upload 11i](/GL%20Account%20Upload%2011i/ "GL Account Upload 11i Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/GL%20FSG%20Reports/GL%20FSG%20Reports.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=gl-fsg-reports) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.

@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-19
+last_modified_at: 2026-10-26
 title: 'MRP Master Schedule Upload | Oracle EBS SQL Report'
 description: 'MRP Master Schedule Upload ========================== - Create new MDS/MPS schedule entries. - Create and Update existing schedule entries. Each row…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, MRP, Master, Schedule, mtl_parameters, mrp_schedule_designators, mrp_schedule_dates'
@@ -42,7 +42,7 @@ Upload Mode, Default Workday Control, Organization Code, Schedule Type, Schedule
 [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-master-schedule-upload), [Upload](https://www.enginatics.com/library/?pg=1&category%5B%5D=Upload&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-master-schedule-upload)
 
 ## Related Reports
-[MRP Pegging](/MRP%20Pegging/ "MRP Pegging Oracle EBS SQL Report"), [MRP Item Forecast Upload](/MRP%20Item%20Forecast%20Upload/ "MRP Item Forecast Upload Oracle EBS SQL Report"), [INV Item Supply/Demand](/INV%20Item%20Supply-Demand/ "INV Item Supply/Demand Oracle EBS SQL Report"), [MRP Item Forecast](/MRP%20Item%20Forecast/ "MRP Item Forecast Oracle EBS SQL Report"), [WIP Entities](/WIP%20Entities/ "WIP Entities Oracle EBS SQL Report"), [INV Item Attribute Master/Child Conflicts](/INV%20Item%20Attribute%20Master-Child%20Conflicts/ "INV Item Attribute Master/Child Conflicts Oracle EBS SQL Report"), [ENG Engineering Change Orders](/ENG%20Engineering%20Change%20Orders/ "ENG Engineering Change Orders Oracle EBS SQL Report")
+[MRP Pegging](/MRP%20Pegging/ "MRP Pegging Oracle EBS SQL Report"), [MRP Item Forecast Upload](/MRP%20Item%20Forecast%20Upload/ "MRP Item Forecast Upload Oracle EBS SQL Report"), [INV Item Supply/Demand](/INV%20Item%20Supply-Demand/ "INV Item Supply/Demand Oracle EBS SQL Report"), [MRP Item Forecast](/MRP%20Item%20Forecast/ "MRP Item Forecast Oracle EBS SQL Report"), [WIP Entities](/WIP%20Entities/ "WIP Entities Oracle EBS SQL Report"), [ENG Engineering Change Orders](/ENG%20Engineering%20Change%20Orders/ "ENG Engineering Change Orders Oracle EBS SQL Report"), [ENG Engineering Change Order Upload](/ENG%20Engineering%20Change%20Order%20Upload/ "ENG Engineering Change Order Upload Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/MRP%20Master%20Schedule%20Upload/MRP%20Master%20Schedule%20Upload.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-master-schedule-upload) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.

@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-16
+last_modified_at: 2026-10-26
 title: 'Blitz Report Extension Package API Signatures | Oracle EBS SQL Report'
 description: 'Shows this instance''s signatures of the Oracle EBS APIs that Blitz Report''s extension packages call: every argument of every procedure, with its position…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Blitz, Report, Extension, Package, user_source, user_arguments'
@@ -37,7 +37,7 @@ API Package Name, API Procedure Name, Argument Name
 [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-report-extension-package-api-signatures)
 
 ## Related Reports
-[FND Forms Personalizations](/FND%20Forms%20Personalizations/ "FND Forms Personalizations Oracle EBS SQL Report"), [CAC Internal Order Shipment Margin](/CAC%20Internal%20Order%20Shipment%20Margin/ "CAC Internal Order Shipment Margin Oracle EBS SQL Report"), [AP Posted Invoice Register](/AP%20Posted%20Invoice%20Register/ "AP Posted Invoice Register Oracle EBS SQL Report"), [AP Posted Payment Register](/AP%20Posted%20Payment%20Register/ "AP Posted Payment Register Oracle EBS SQL Report")
+[FND Forms Personalizations](/FND%20Forms%20Personalizations/ "FND Forms Personalizations Oracle EBS SQL Report"), [GL Account Analysis](/GL%20Account%20Analysis/ "GL Account Analysis Oracle EBS SQL Report"), [AP Posted Invoice Register](/AP%20Posted%20Invoice%20Register/ "AP Posted Invoice Register Oracle EBS SQL Report"), [AP Posted Payment Register](/AP%20Posted%20Payment%20Register/ "AP Posted Payment Register Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/Blitz%20Report%20Extension%20Package%20API%20Signatures/Blitz%20Report%20Extension%20Package%20API%20Signatures.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-report-extension-package-api-signatures) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.

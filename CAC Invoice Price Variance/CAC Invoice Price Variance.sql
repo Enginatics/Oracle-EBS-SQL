@@ -47,882 +47,422 @@
 -- -- | 1.13 18 Feb 2021 Douglas Volz Changed to multi-org views for items, categories
 -- -- | and HR organizations.
 -- -- | 1.14 12 Apr 2021 Douglas Volz Removed redundant joins and tables to improve performance.
+-- -- | 1.15 23 Oct 2026 Andy Haack Rebuilt to the Blitz Report SQL standards.
 -- -- +=============================================================================+/
 -- Excel Example Output: https://www.enginatics.com/example/cac-invoice-price-variance/
 -- Library Link: https://www.enginatics.com/reports/cac-invoice-price-variance/
 -- Run Report: https://demo.enginatics.com/
 
-select gl.name Ledger,
- haou2.name Operating_Unit,
- mp.organization_code Org_Code,
- ap_txns.period_name Period_Name,
+select
+gl.name ledger,
+haouv_ou.name operating_unit,
+mp.organization_code org_code,
+x.period_name,
 &segment_columns
- ap_txns.type Type,
- flv.meaning Accounting_Class_Code,
- pv.vendor_name Supplier,
- he.full_name Buyer,
- msiv.concatenated_segments Item_Number,
- msiv.description Item_Description,
- xxen_util.meaning(msiv.item_type,'ITEM_TYPE',3) user_item_type,
+x.type,
+xxen_util.meaning(x.accounting_class_code,'XLA_ACCOUNTING_CLASS',602) accounting_class_code,
+x.supplier,
+x.buyer,
+msiv.concatenated_segments item_number,
+nvl(msiv.description,x.item_description) item_description,
+xxen_util.meaning(msiv.item_type,'ITEM_TYPE',3) user_item_type,
 &category_columns
- pl.displayed_field Destination_Type,
- pha.segment1 PO_Number,
- to_char(pla.line_num) PO_Line,
- pra.release_num PO_Release,
- aia.invoice_num Invoice_Number,
- -- Decode to enable a null value for the additional union all for A/P Accrual Write-Offs
- decode(ap_txns.ipv_distribution_line_number, 0, null, ap_txns.ipv_distribution_line_number)  IPV_Invoice_Line,
- decode(ap_txns.erv_distribution_line_number, 0, null, ap_txns.erv_distribution_line_number) ERV_Invoice_Line,
- aia.invoice_date Invoice_Date,
- ap_txns.accounting_date Accounting_Date,
- pla.unit_meas_lookup_code PO_UOM,
- ap_txns.quantity_invoiced * ucr.conversion_rate  Invoice_Quantity,
- nvl(pha.currency_code, gl.currency_code) PO_Currency_Code,
- plla.price_override PO_Unit_Price,
- nvl(ap_txns.rate,1) PO_Exchange_Rate,
- gl.currency_code GL_Currency_Code,
- round(nvl(ap_txns.rate,1) * plla.price_override,6) Converted_PO_Unit_Price,
- nvl(ap_txns.rate,1) * plla.price_override * (ap_txns.quantity_invoiced * ucr.conversion_rate) Total_PO_Amount,
- nvl(aia.invoice_currency_code, gl.currency_code) Invoice_Currency_Code,
- ap_txns.unit_price Payables_Unit_Cost,
- nvl(aia.exchange_rate,1) Payables_Exchange_Rate,
- gl.currency_code GL_Currency_Code,
- round(nvl(ap_txns.unit_price,0)*nvl(aia.exchange_rate,1),6) Converted_Invoice_Unit_Cost,
- round(nvl(ap_txns.unit_price,0)*nvl(aia.exchange_rate,1),6) - round(nvl(ap_txns.rate,1) * plla.price_override,6) Unit_Cost_Variance,
- round(nvl(ap_txns.unit_price,0)*nvl(aia.exchange_rate,1) * ap_txns.quantity_invoiced * ucr.conversion_rate,2) Total_Invoice_Amount,
- round(nvl(ap_txns.unit_price,0)*nvl(aia.exchange_rate,1) * ap_txns.quantity_invoiced * ucr.conversion_rate -
-          nvl(ap_txns.rate,1) * plla.price_override * ap_txns.quantity_invoiced * ucr.conversion_rate
-         ,2) Total_Calculated_IPV,
- ap_txns.ipv_amount General_Ledger_IPV_Amount,
- ap_txns.erv_amount General_Ledger_ERV_Amount,
- round((nvl(ap_txns.unit_price,0)*nvl(aia.exchange_rate,1) * ap_txns.quantity_invoiced * ucr.conversion_rate -
-        nvl(ap_txns.rate,1) * plla.price_override * ap_txns.quantity_invoiced * ucr.conversion_rate)
-       /  abs(decode(nvl(ap_txns.rate,1) * plla.price_override * (ap_txns.quantity_invoiced * ucr.conversion_rate),0,1,nvl(ap_txns.rate,1)
-         * plla.price_override * (ap_txns.quantity_invoiced * ucr.conversion_rate))) * 100,1) Percent
+xxen_util.meaning(x.destination_type_code,'DESTINATION TYPE',201) destination_type,
+x.po_number,
+x.po_line,
+x.po_release,
+x.invoice_number,
+decode(x.ipv_distribution_line_number,0,null,x.ipv_distribution_line_number) ipv_invoice_line,
+decode(x.erv_distribution_line_number,0,null,x.erv_distribution_line_number) erv_invoice_line,
+x.invoice_date,
+x.accounting_date,
+x.po_uom,
+x.invoice_quantity,
+nvl(x.po_currency_code,gl.currency_code) po_currency_code,
+x.po_unit_price,
+nvl(x.po_rate,1) po_exchange_rate,
+gl.currency_code gl_currency_code,
+round(nvl(x.po_rate,1)*x.po_unit_price,6) converted_po_unit_price,
+nvl(x.po_rate,1)*x.po_unit_price*x.invoice_quantity total_po_amount,
+nvl(x.invoice_currency_code,gl.currency_code) invoice_currency_code,
+x.unit_price payables_unit_cost,
+nvl(x.exchange_rate,1) payables_exchange_rate,
+round(nvl(x.unit_price,0)*nvl(x.exchange_rate,1),6) converted_invoice_unit_cost,
+decode(x.section,'WO',0,round(nvl(x.unit_price,0)*nvl(x.exchange_rate,1),6)-round(nvl(x.po_rate,1)*x.po_unit_price,6)) unit_cost_variance,
+round(nvl(x.unit_price,0)*nvl(x.exchange_rate,1)*x.invoice_quantity,2) total_invoice_amount,
+round((nvl(x.unit_price,0)*nvl(x.exchange_rate,1)-nvl(x.po_rate,1)*x.po_unit_price)*x.invoice_quantity,2) total_calculated_ipv,
+x.ipv_amount general_ledger_ipv_amount,
+x.erv_amount general_ledger_erv_amount,
+round((nvl(x.unit_price,0)*nvl(x.exchange_rate,1)-nvl(x.po_rate,1)*x.po_unit_price)*x.invoice_quantity/abs(decode(nvl(x.po_rate,1)*x.po_unit_price*x.invoice_quantity,0,1,nvl(x.po_rate,1)*x.po_unit_price*x.invoice_quantity))*100,1) percent
 from
- ap_invoices_all                     aia,
- po_vendors                          pv,
- po_headers_all                      pha,
- po_lines_all                        pla,
- po_line_locations_all               plla,
- po_releases_all                     pra,
- mtl_parameters                      mp,
- mtl_system_items_vl                 msiv,
- mtl_uom_conversions_view            ucr,
- gl_code_combinations                gcc1,
- gl_code_combinations                gcc2,
- hr_employees                        he,
- po_lookup_codes                     pl,
- fnd_lookup_values                   flv,
- hr_organization_information         hoi,
- hr_all_organization_units_vl        haou,  -- inv_organization_id
- hr_all_organization_units_vl        haou2, -- operating unit
- gl_ledgers                          gl,
- -- =================================================================================
- -- Use inline tables to select information from both the IPV and ERV AID lines 
- -- AID lines of IPV and ERV don't have an invoice quantity but AID Accrual lines do
- -- AID invoice_distribution_id lines for IPV and ERV will join to the correct 
- -- SLA accounting entries, so we need a combination of information from the ACCRUAL,
- -- IPV and ERV AID lines to report the variances correctly
- -- =================================================================================
- -- =================================================================================
- -- Join condensed rows with aid for ACCRUAL AP invoice distribution lines in order
- -- to get the matched_uom_lookup_code, quantity_invoiced and unit_price information
- -- =================================================================================
- (select net_ipv_erv_txns.invoice_id invoice_id,
-  net_ipv_erv_txns.period_name period_name,
-  net_ipv_erv_txns.accounting_date accounting_date,
-  net_ipv_erv_txns.ledger_id,
-  net_ipv_erv_txns.ipv_code_combination_id ipv_code_combination_id,
-  net_ipv_erv_txns.erv_code_combination_id erv_code_combination_id,
-  net_ipv_erv_txns.type type,
-  net_ipv_erv_txns.accounting_class_code accounting_class_code,
-  net_ipv_erv_txns.ipv_distribution_line_number,
-  net_ipv_erv_txns.erv_distribution_line_number,
-  net_ipv_erv_txns.ipv_invoice_distribution_id,
-  net_ipv_erv_txns.erv_invoice_distribution_id,
-  net_ipv_erv_txns.invoice_line_number,
-  aida.matched_uom_lookup_code,
-  net_ipv_erv_txns.po_distribution_id,
-  sum(nvl(aida.quantity_invoiced,0)) quantity_invoiced, -- IPV and ERV lines have no quantity information
-  net_ipv_erv_txns.related_id,
-  sum(nvl(aida.unit_price,0)) unit_price, -- IPV and ERV lines have no unit price information
-  sum(nvl(aida.base_amount,0)) accrual_amount,
-  sum(net_ipv_erv_txns.ipv_amount) ipv_amount,
-  sum(net_ipv_erv_txns.erv_amount) erv_amount,
-  net_ipv_erv_txns.po_line_id,
-  net_ipv_erv_txns.line_location_id,
-  net_ipv_erv_txns.rate,
-  net_ipv_erv_txns.destination_type_code
- from
-  ap_invoice_distributions_all aida,
-  -- =================================================================================
-  -- Condense into one row per invoice_id, invoice_line_number, related_id
-  -- =================================================================================
-  (select
-   ipv_erv_txns.invoice_id,
-   ipv_erv_txns.period_name,
-   ipv_erv_txns.accounting_date,
-   ipv_erv_txns.ledger_id,
-   max(ipv_erv_txns.ipv_code_combination_id) ipv_code_combination_id,
-   max(ipv_erv_txns.erv_code_combination_id) erv_code_combination_id,
-   max(ipv_erv_txns.type) type,
-   max(ipv_erv_txns.accounting_class_code) accounting_class_code,
-   max(ipv_erv_txns.ipv_distribution_line_number) ipv_distribution_line_number,
-   max(ipv_erv_txns.erv_distribution_line_number) erv_distribution_line_number,
-   max(ipv_erv_txns.ipv_invoice_distribution_id) ipv_invoice_distribution_id,
-   max(ipv_erv_txns.erv_invoice_distribution_id) erv_invoice_distribution_id,
-   ipv_erv_txns.invoice_line_number,
-   ipv_erv_txns.matched_uom_lookup_code,
-   ipv_erv_txns.po_distribution_id,
-   ipv_erv_txns.quantity_invoiced, -- IPV and ERV lines have no quantity information
-   ipv_erv_txns.related_id,
-   ipv_erv_txns.unit_price, -- IPV and ERV lines have no unit price information
-   sum(ipv_erv_txns.accrual_amount) accrual_amount,
-   sum(ipv_erv_txns.ipv_amount) ipv_amount,
-   sum(ipv_erv_txns.erv_amount) erv_amount,
-   ipv_erv_txns.po_line_id,
-   ipv_erv_txns.line_location_id,
-   ipv_erv_txns.rate,
-   ipv_erv_txns.destination_type_code
-   -- =================================================================================
-   -- Get the Invoice Price Variances and Exchange Rate Variances from aid
-   -- =================================================================================
-   from
-   -- =================================================================================
-   -- Get the IPV transactions from AID and join to the SLA tables to get the ccid
-   -- Join to PO distributions to get non-EXPENSE entries and foreign key references
-   -- =================================================================================
-   (select
-    aida.invoice_id,
-    aida.period_name,
-    xal.ledger_id,
-    aida.accounting_date,
-    xal.code_combination_id ipv_code_combination_id,
-    null erv_code_combination_id,
-    'IPV-ERV' type,
-    xal.accounting_class_code,
-    aida.invoice_line_number ipv_distribution_line_number,
-    null erv_distribution_line_number,
-    aida.invoice_distribution_id ipv_invoice_distribution_id,
-    null erv_invoice_distribution_id,
-    aida.invoice_line_number,
-    aida.line_type_lookup_code,
-    aida.matched_uom_lookup_code,
-    aida.po_distribution_id,
-    aida.quantity_invoiced, -- IPV and ERV lines have no quantity information
-    aida.related_id,
-    aida.unit_price, -- IPV and ERV lines have no unit price information
-    0 accrual_amount,
-    aida.base_amount ipv_amount,
-    0 erv_amount,
-    pda.po_line_id,
-    pda.line_location_id,
-    pda.rate,
-    pda.destination_type_code
-    from
-    ap_invoice_distributions_all        aida,
-    po_distributions_all                pda,
-    xla_distribution_links              xdl,
-    xla_ae_lines                        xal
-    where aida.line_type_lookup_code    = 'IPV'
-    and 2=2                          -- p_trx_date_from, p_trx_date_to
-    and aida.po_distribution_id       = pda.po_distribution_id
-    and pda.destination_type_code   <> 'EXPENSE'
-    -- ========================================================
-    -- SLA table joins to get the exact account numbers
-    -- ========================================================
-    and xal.application_id            = 200
-    and xal.ae_header_id              = xdl.ae_header_id
-    and xal.ae_line_num               = xdl.ae_line_num
-    and xal.accounting_class_code     = 'IPV'
-    and xdl.application_id           = 200
-    and xdl.source_distribution_type = 'AP_INV_DIST'
-    and xdl.source_distribution_id_num_1 = aida.invoice_distribution_id
-    union all
-   -- =================================================================================
-   -- Get the ERV transactions from AID and join to the SLA tables to get the ccid
-   -- Join to PO distributions to get non-expense entries and foreign key references
-   -- =================================================================================
-    select aida.invoice_id,
-    aida.period_name,
-    xal.ledger_id,
-    aida.accounting_date,
-    null ipv_code_combination_id,
-    xal.code_combination_id erv_code_combination_id,
-    'IPV-ERV' type,
-    xal.accounting_class_code,
-    null ipv_distribution_line_number,
-    aida.invoice_line_number erv_distribution_line_number,
-    null ipv_invoice_distribution_id,
-    aida.invoice_distribution_id erv_invoice_distribution_id,
-    aida.invoice_line_number,
-    aida.line_type_lookup_code,
-    aida.matched_uom_lookup_code,
-    aida.po_distribution_id,
-    aida.quantity_invoiced, -- IPV and ERV lines have no quantity information
-    aida.related_id,
-    aida.unit_price, -- IPV and ERV lines have no unit price information
-    0 accrual_amount,
-    0 ipv_amount,
-    aida.base_amount erv_amount,
-    pda.po_line_id,
-    pda.line_location_id,
-    pda.rate,
-    pda.destination_type_code
-    from
-    ap_invoice_distributions_all        aida,
-    po_distributions_all                pda,
-    xla_distribution_links              xdl,
-    xla_ae_lines                        xal
-    where aida.line_type_lookup_code    =  'ERV'
-    and 2=2                          -- p_trx_date_from, p_trx_date_to
-    and aida.po_distribution_id       = pda.po_distribution_id
-    and pda.destination_type_code   <> 'EXPENSE'
-    -- ========================================================
-    -- SLA table joins to get the exact account numbers
-    -- ========================================================
-    and xal.application_id            = 200
-    and xal.ae_header_id              = xdl.ae_header_id
-    and xal.ae_line_num               = xdl.ae_line_num
-    and xal.accounting_class_code     = 'EXCHANGE_RATE_VARIANCE'
-    and xdl.application_id           = 200
-    and xdl.source_distribution_type = 'AP_INV_DIST'
-    and xdl.source_distribution_id_num_1 = aida.invoice_distribution_id) ipv_erv_txns
-  group by
-   ipv_erv_txns.invoice_id,
-   ipv_erv_txns.period_name,
-   ipv_erv_txns.ledger_id,
-   ipv_erv_txns.accounting_date,
-   ipv_erv_txns.invoice_line_number,
-   ipv_erv_txns.matched_uom_lookup_code,
-   ipv_erv_txns.po_distribution_id,
-   ipv_erv_txns.quantity_invoiced,
-   ipv_erv_txns.related_id,
-   ipv_erv_txns.unit_price,
-   ipv_erv_txns.po_line_id,
-   ipv_erv_txns.line_location_id,
-   ipv_erv_txns.rate,
-   ipv_erv_txns.destination_type_code) net_ipv_erv_txns
- where aida.line_type_lookup_code    =  'ACCRUAL'
- and aida.related_id               = net_ipv_erv_txns.related_id
- group by
-  net_ipv_erv_txns.invoice_id,
-  net_ipv_erv_txns.period_name,
-  net_ipv_erv_txns.ledger_id,
-  net_ipv_erv_txns.accounting_date,
-  net_ipv_erv_txns.ipv_code_combination_id,
-  net_ipv_erv_txns.erv_code_combination_id,
-  net_ipv_erv_txns.type,
-  net_ipv_erv_txns.accounting_class_code,
-  net_ipv_erv_txns.ipv_distribution_line_number,
-  net_ipv_erv_txns.erv_distribution_line_number,
-  net_ipv_erv_txns.ipv_invoice_distribution_id,
-  net_ipv_erv_txns.erv_invoice_distribution_id,
-  net_ipv_erv_txns.invoice_line_number,
-  aida.matched_uom_lookup_code,
-  net_ipv_erv_txns.po_distribution_id,
-  net_ipv_erv_txns.related_id,
-  net_ipv_erv_txns.po_line_id,
-  net_ipv_erv_txns.line_location_id,
-  net_ipv_erv_txns.rate,
-  net_ipv_erv_txns.destination_type_code) ap_txns
--- ===================================================================
--- Join the condensed and summarized AP IPV and ERV transactions
--- with the rest of the information needed to report IPV and ERV
--- ===================================================================
-where aia.invoice_id               = ap_txns.invoice_id
-and aia.org_id                   = to_number(hoi.org_information3)
-and aia.org_id                   = pha.org_id
-and pla.po_line_id               = ap_txns.po_line_id
-and pha.po_header_id             = pla.po_header_id
-and plla.line_location_id         = ap_txns.line_location_id
-and plla.po_line_id               = pla.po_line_id     
-and plla.po_release_id            = pra.po_release_id(+)
-and pv.vendor_id                = pha.vendor_id
-and msiv.inventory_item_id       = pla.item_id
-and msiv.inventory_item_id       = ucr.inventory_item_id
-and msiv.organization_id         = ucr.organization_id
-and ucr.unit_of_measure          = pla.unit_meas_lookup_code
-and mp.organization_id           = msiv.organization_id
-and msiv.organization_id         = plla.ship_to_organization_id
-and gcc1.code_combination_id (+) = ap_txns.ipv_code_combination_id
-and gcc2.code_combination_id (+) = ap_txns.erv_code_combination_id
-and pha.agent_id                 = he.employee_id
-and pl.lookup_type               = 'DESTINATION TYPE'
-and pl.lookup_code               = ap_txns.destination_type_code
-and flv.lookup_type              = 'XLA_ACCOUNTING_CLASS'
-and flv.lookup_code              = ap_txns.accounting_class_code
-and flv.language                 = userenv('lang')
--- ===================================================================
--- using the base tables to avoid the performance issues
--- with org_organization_definitions and hr_operating_units
--- ===================================================================
-and hoi.org_information_context  = 'Accounting Information'
-and hoi.organization_id          = mp.organization_id
-and hoi.organization_id          = haou.organization_id   -- this gets the organization name
-and haou2.organization_id        = to_number(hoi.org_information3) -- this gets the operating unit id
-and gl.ledger_id                 = ap_txns.ledger_id
-and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
-and 1=1                          -- p_operating_unit, p_ledger
-and 3=3                          -- p_vendor_name
--- ===================================================================
--- Revision for version 1.8
--- Include A/P Accrual Write-Offs on this report
--- ===================================================================
+(
+select
+'INV' section,
+v.ledger_id,
+v.period_name,
+plla.ship_to_organization_id organization_id,
+aia.org_id,
+pla.item_id inventory_item_id,
+null item_description,
+v.ipv_code_combination_id,
+v.erv_code_combination_id,
+v.type,
+v.accounting_class_code,
+aps.vendor_name supplier,
+(select he.full_name from hr_employees he where pha.agent_id=he.employee_id) buyer,
+v.destination_type_code,
+pha.segment1 po_number,
+to_char(pla.line_num) po_line,
+pra.release_num po_release,
+aia.invoice_num invoice_number,
+v.ipv_distribution_line_number,
+v.erv_distribution_line_number,
+aia.invoice_date,
+v.accounting_date,
+pla.unit_meas_lookup_code po_uom,
+v.quantity_invoiced*mucv.conversion_rate invoice_quantity,
+pha.currency_code po_currency_code,
+plla.price_override po_unit_price,
+v.rate po_rate,
+aia.invoice_currency_code,
+v.unit_price,
+aia.exchange_rate,
+v.ipv_amount,
+v.erv_amount
+from
+(
+select
+y.invoice_id,
+y.period_name,
+y.ledger_id,
+y.accounting_date,
+y.ipv_code_combination_id,
+y.erv_code_combination_id,
+y.type,
+y.accounting_class_code,
+y.ipv_distribution_line_number,
+y.erv_distribution_line_number,
+y.po_line_id,
+y.line_location_id,
+y.rate,
+y.destination_type_code,
+sum(nvl(aida.quantity_invoiced,0)) quantity_invoiced,
+sum(nvl(aida.unit_price,0)) unit_price,
+sum(y.ipv_amount) ipv_amount,
+sum(y.erv_amount) erv_amount
+from
+(
+select
+z.invoice_id,
+z.period_name,
+z.ledger_id,
+z.accounting_date,
+max(z.ipv_code_combination_id) ipv_code_combination_id,
+max(z.erv_code_combination_id) erv_code_combination_id,
+'IPV-ERV' type,
+max(z.accounting_class_code) accounting_class_code,
+max(z.ipv_distribution_line_number) ipv_distribution_line_number,
+max(z.erv_distribution_line_number) erv_distribution_line_number,
+max(z.ipv_invoice_distribution_id) ipv_invoice_distribution_id,
+max(z.erv_invoice_distribution_id) erv_invoice_distribution_id,
+z.invoice_line_number,
+z.matched_uom_lookup_code,
+z.po_distribution_id,
+z.quantity_invoiced,
+z.related_id,
+z.unit_price,
+sum(z.ipv_amount) ipv_amount,
+sum(z.erv_amount) erv_amount,
+z.po_line_id,
+z.line_location_id,
+z.rate,
+z.destination_type_code
+from
+(
+select
+aida.invoice_id,
+aida.period_name,
+xal.ledger_id,
+aida.accounting_date,
+decode(aida.line_type_lookup_code,'IPV',xal.code_combination_id) ipv_code_combination_id,
+decode(aida.line_type_lookup_code,'ERV',xal.code_combination_id) erv_code_combination_id,
+xal.accounting_class_code,
+decode(aida.line_type_lookup_code,'IPV',aida.invoice_line_number) ipv_distribution_line_number,
+decode(aida.line_type_lookup_code,'ERV',aida.invoice_line_number) erv_distribution_line_number,
+decode(aida.line_type_lookup_code,'IPV',aida.invoice_distribution_id) ipv_invoice_distribution_id,
+decode(aida.line_type_lookup_code,'ERV',aida.invoice_distribution_id) erv_invoice_distribution_id,
+aida.invoice_line_number,
+aida.matched_uom_lookup_code,
+aida.po_distribution_id,
+aida.quantity_invoiced,
+aida.related_id,
+aida.unit_price,
+decode(aida.line_type_lookup_code,'IPV',aida.base_amount,0) ipv_amount,
+decode(aida.line_type_lookup_code,'ERV',aida.base_amount,0) erv_amount,
+pda.po_line_id,
+pda.line_location_id,
+pda.rate,
+pda.destination_type_code
+from
+ap_invoice_distributions_all aida,
+po_distributions_all pda,
+xla_distribution_links xdl,
+xla_ae_lines xal
+where
+2=2 and
+aida.line_type_lookup_code in ('IPV','ERV') and
+aida.po_distribution_id=pda.po_distribution_id and
+pda.destination_type_code<>'EXPENSE' and
+aida.invoice_distribution_id=xdl.source_distribution_id_num_1 and
+xdl.source_distribution_type='AP_INV_DIST' and
+xdl.application_id=200 and
+xdl.ae_header_id=xal.ae_header_id and
+xdl.ae_line_num=xal.ae_line_num and
+xal.application_id=200 and
+xal.accounting_class_code=decode(aida.line_type_lookup_code,'IPV','IPV','EXCHANGE_RATE_VARIANCE')
+) z
+group by
+z.invoice_id,
+z.period_name,
+z.ledger_id,
+z.accounting_date,
+z.invoice_line_number,
+z.matched_uom_lookup_code,
+z.po_distribution_id,
+z.quantity_invoiced,
+z.related_id,
+z.unit_price,
+z.po_line_id,
+z.line_location_id,
+z.rate,
+z.destination_type_code
+) y,
+ap_invoice_distributions_all aida
+where
+y.related_id=aida.related_id and
+aida.line_type_lookup_code='ACCRUAL'
+group by
+y.invoice_id,
+y.period_name,
+y.ledger_id,
+y.accounting_date,
+y.ipv_code_combination_id,
+y.erv_code_combination_id,
+y.type,
+y.accounting_class_code,
+y.ipv_distribution_line_number,
+y.erv_distribution_line_number,
+y.ipv_invoice_distribution_id,
+y.erv_invoice_distribution_id,
+y.invoice_line_number,
+aida.matched_uom_lookup_code,
+y.po_distribution_id,
+y.related_id,
+y.po_line_id,
+y.line_location_id,
+y.rate,
+y.destination_type_code
+) v,
+ap_invoices_all aia,
+po_line_locations_all plla,
+po_lines_all pla,
+po_headers_all pha,
+po_releases_all pra,
+ap_suppliers aps,
+mtl_uom_conversions_view mucv
+where
+v.invoice_id=aia.invoice_id and
+v.line_location_id=plla.line_location_id and
+v.po_line_id=pla.po_line_id and
+plla.po_line_id=pla.po_line_id and
+pla.po_header_id=pha.po_header_id and
+aia.org_id=pha.org_id and
+plla.po_release_id=pra.po_release_id(+) and
+pha.vendor_id=aps.vendor_id and
+plla.ship_to_organization_id=mucv.organization_id and
+pla.item_id=mucv.inventory_item_id and
+pla.unit_meas_lookup_code=mucv.unit_of_measure
 union all
-select gl.name Ledger,
- haou2.name Operating_Unit,
- mp.organization_code Org_Code,
- wo_txns.period_name Period_Name,
-&segment_columns2
- wo_txns.write_off_type Type,
- flv.meaning Accounting_Class_Code,
- wo_txns.vendor_name Supplier,
- wo_txns.full_name Buyer,
- wo_txns.item_number Item_Number,
- wo_txns.item_description Item_Description,
- wo_txns.user_item_type,
-&category_columns2
- pl.displayed_field Destination_Type,
- wo_txns.po_num PO_Number,
- wo_txns.po_line_num PO_Line,
- wo_txns.release_num PO_Release,
- wo_txns.invoice_num Invoice_Number,
- decode(wo_txns.ipv_distribution_line_number, 0, null, wo_txns.ipv_distribution_line_number) IPV_Invoice_Line,
- decode(wo_txns.erv_distribution_line_number, 0, null, wo_txns.erv_distribution_line_number) ERV_Invoice_Line,
- wo_txns.invoice_date Invoice_Date,
- wo_txns.accounting_date Accounting_Date,
- wo_txns.unit_meas_lookup_code PO_UOM,
- wo_txns.quantity_invoiced * wo_txns.conversion_rate  Invoice_Quantity,
- nvl(wo_txns.currency_code, gl.currency_code) PO_Currency_Code,
- wo_txns.price_override PO_Unit_Price,
- nvl(wo_txns.rate,1) PO_Exchange_Rate,
- gl.currency_code GL_Currency_Code,
- round(nvl(wo_txns.rate,1) * wo_txns.price_override,6) Converted_PO_Unit_Price,
- nvl(wo_txns.rate,1) * wo_txns.price_override * (wo_txns.quantity_invoiced * wo_txns.conversion_rate) Total_PO_Amount,
- nvl(wo_txns.invoice_currency_code, gl.currency_code) Invoice_Currency_Code,
- wo_txns.unit_price Payables_Unit_Cost,
- nvl(wo_txns.exchange_rate,1) Payables_Exchange_Rate,
- gl.currency_code GL_Currency_Code,
- round(nvl(wo_txns.unit_price,0)*nvl(wo_txns.exchange_rate,1),6) Converted_Invoice_Unit_Cost,
- 0 Unit_Cost_Variance,
- round(nvl(wo_txns.unit_price,0)*nvl(wo_txns.exchange_rate,1)*wo_txns.quantity_invoiced*wo_txns.conversion_rate,2) Total_Invoice_Amount,
- round(nvl(wo_txns.unit_price,0)*nvl(wo_txns.exchange_rate,1)*wo_txns.quantity_invoiced*wo_txns.conversion_rate -
-         nvl(wo_txns.rate,1) * wo_txns.price_override * wo_txns.quantity_invoiced * wo_txns.conversion_rate,2) Total_Calculated_IPV,
- wo_txns.ipv_amount General_Ledger_IPV_Amount,
- wo_txns.erv_amount General_Ledger_ERV_Amount,
- round((
-  nvl(wo_txns.unit_price,0)*nvl(wo_txns.exchange_rate,1) * wo_txns.quantity_invoiced * wo_txns.conversion_rate -
-  (nvl(wo_txns.rate,1) * wo_txns.price_override * (wo_txns.quantity_invoiced * wo_txns.conversion_rate)
-  )
- )
-       /  abs(decode(nvl(wo_txns.rate,1) * wo_txns.price_override * wo_txns.quantity_invoiced * wo_txns.conversion_rate,0,1,
-                     nvl(wo_txns.rate,1) * wo_txns.price_override * wo_txns.quantity_invoiced * wo_txns.conversion_rate)) * 100,1) Percent
+select
+'WO' section,
+w.ledger_id,
+w.period_name,
+w.organization_id,
+to_number(null) org_id,
+w.inventory_item_id,
+w.item_description,
+w.code_combination_id ipv_code_combination_id,
+to_number(null) erv_code_combination_id,
+w.write_off_type type,
+w.accounting_class_code,
+w.vendor_name supplier,
+w.full_name buyer,
+w.destination_type_code,
+w.po_number,
+w.po_line,
+w.release_num po_release,
+null invoice_number,
+w.ipv_distribution_line_number,
+0 erv_distribution_line_number,
+w.invoice_date,
+w.accounting_date,
+w.unit_meas_lookup_code po_uom,
+w.quantity_invoiced*w.conversion_rate invoice_quantity,
+w.currency_code po_currency_code,
+w.price_override po_unit_price,
+w.rate po_rate,
+w.invoice_currency_code,
+w.unit_price,
+w.exchange_rate,
+w.ipv_amount,
+0 erv_amount
 from
- mtl_parameters                      mp,
- hr_organization_information         hoi,
- hr_all_organization_units_vl        haou,  -- inv_organization_id
- hr_all_organization_units_vl        haou2, -- operating unit
- gl_ledgers                          gl,
- gl_code_combinations                gcc1,
- po_lookup_codes                     pl,
- fnd_lookup_values                   flv,
- -- =================================================================================
- -- Use union all selects to get the following Accrual Write-Offs:  rows that have
- -- and inventory_transaction_id (from mtl_material_transactions), rows that have
- -- a PO distribution ID (may be from AP, PO or Receiving), or rows which have a
- -- invoice_distribution_id (from A/P which is not matched to a PO line).
- -- =================================================================================
- -- =================================================================================
- -- 1.0 union all
- -- Get the Accrual Write-Offs which join to an Inventory Transaction_Id (mmt and mta)
- -- =================================================================================
- (select
-  null vendor_name,
-  fu.user_name full_name,
-  xal.ledger_id,
-  msiv.organization_id,
-  xah.period_name,
-  msiv.concatenated_segments item_number,
-  msiv.inventory_item_id,
-  msiv.description item_description,
-  xxen_util.meaning(msiv.item_type,'ITEM_TYPE',3) user_item_type,
-  cwo.destination_type_code,
-  xal.code_combination_id,
-  cwo.offset_account_id,
-  cwo.accrual_account_id,
-  cwo.write_off_id,
-  'INV WO' write_off_type,
-  xal.accounting_class_code,
-  null po_num,
-  null po_line_num,
-  null release_num,
-  null invoice_num,
-  -- Set to value of 0 so the union all works with no errors
-  0 ipv_distribution_line_number,
-  0 erv_distribution_line_number,
-  ml.meaning accounting_line_type,
-  mmt.transaction_id,
-  null invoice_date,
-  cwo.transaction_date accounting_date,
-  msiv.primary_unit_of_measure unit_meas_lookup_code,
-  mta.primary_quantity quantity_invoiced,
-  nvl(cwo.currency_conversion_rate,1) conversion_rate,
-  cwo.currency_code,
-  mmt.actual_cost price_override,
-  nvl(mmt.currency_conversion_rate,1) rate,
-  null invoice_currency_code,
-  0 unit_price,
-  1 exchange_rate,
-  sum(nvl(xal.accounted_dr,0) - nvl(xal.accounted_cr,0)) ipv_amount,
-  sum(0) erv_amount
-  from
-  cst_write_offs                      cwo,
-  mtl_material_transactions           mmt,
-  mtl_transaction_accounts            mta,
-  mtl_system_items_vl                 msiv,
-  mtl_uom_conversions_view            ucr,
-  mfg_lookups                         ml,
-  fnd_user                            fu,
-  xla_distribution_links              xdl,
-  xla_ae_headers                      xah,
-  xla_ae_lines                        xal
-  where cwo.transaction_date        >= :p_trx_from         -- p_trx_date_from
-  and cwo.transaction_date        <  :p_trx_to           -- p_trx_date_to
-  and cwo.inventory_transaction_id = mmt.transaction_id
-  and mmt.transaction_id           = mta.transaction_id
-  and mta.reference_account        = cwo.accrual_account_id
-  and mmt.created_by               = fu.user_id
-  and msiv.inventory_item_id       = mmt.inventory_item_id
-  and msiv.organization_id         = mta.organization_id
-  and msiv.inventory_item_id       = ucr.inventory_item_id
-  and msiv.organization_id         = ucr.organization_id
-  and ml.lookup_type               = 'CST_ACCOUNTING_LINE_TYPE'
-  and ml.lookup_code               = mta.accounting_line_type
-  -- ========================================================
-  -- SLA table joins to get the exact account numbers
-  -- ========================================================
-  and xah.ae_header_id              = xal.ae_header_id
-  and xah.application_id            = xal.application_id
-  and xal.ae_header_id              = xdl.ae_header_id
-  and xal.ae_line_num               = xdl.ae_line_num
-  and xal.application_id            = xdl.application_id
-  and xdl.application_id           = 707
-  and xdl.source_distribution_type = 'CST_WRITE_OFFS'
-  and xdl.source_distribution_id_num_1 = cwo.write_off_id 
-  group by
-  null, -- vendor_name
-  fu.user_name, -- full_name
-  xal.ledger_id,
-  msiv.organization_id,
-  xah.period_name,
-  msiv.concatenated_segments, -- item_number
-  msiv.inventory_item_id,
-  msiv.description, -- item_description
-  msiv.item_type,
-  cwo.destination_type_code, -- destination_type_code
-  xal.code_combination_id,
-  cwo.offset_account_id,
-  cwo.accrual_account_id,
-  cwo.write_off_id,
-  'INV WO', -- Accrual Write-Off Type
-  xal.accounting_class_code,
-  null, -- po_num
-  null, -- po_line_num
-  null, -- release_num
-  null, -- invoice_num
-  -- Set to value of 0 so the union all works with no errors
-  0, -- ipv_distribution_line_number
-  0, -- erv_distribution_line_number
-  ml.meaning, -- accounting_line_type
-  mmt.transaction_id,
-  null, -- invoice_date
-  cwo.transaction_date, -- accounting_date,
-  msiv.primary_unit_of_measure,  -- unit_meas_lookup_code
-  mta.primary_quantity, -- quantity_invoiced
-  nvl(cwo.currency_conversion_rate,1), -- conversion_rate
-  cwo.currency_code,
-  mmt.actual_cost, -- price_override
-  nvl(mmt.currency_conversion_rate,1), -- rate
-  null, -- invoice_currency_code
-  0,  -- unit_price
-  1  -- exchange_rate
- -- =================================================================================
- -- 2.0 union all
- -- Get the Accrual Write-Offs which join to a purchase order line and which join
- -- to an item number (cannot have more than one outer-join per select).  This
- -- select will get both INVENTORY and EXPENSE destination type codes.
- -- =================================================================================
-  union all
-  select pv.vendor_name vendor_name,
-  he.full_name full_name,
-  xal.ledger_id,
-  msiv.organization_id,
-  xah.period_name,
-  msiv.concatenated_segments item_number,
-  msiv.inventory_item_id,
-  msiv.description item_description,
-  xxen_util.meaning(msiv.item_type,'ITEM_TYPE',3) user_item_type,
-  cwo.destination_type_code destination_type_code,
-  xal.code_combination_id,
-  cwo.offset_account_id,
-  cwo.accrual_account_id,
-  cwo.write_off_id,
-  'AP-PO WO' write_off_type,
-  xal.accounting_class_code,
-  pha.segment1 po_num,
-  to_char(pla.line_num) po_line_num,
-  pra.release_num release_num,
-  null invoice_num,
-  -- Set to value of 0 so the union all works with no errors
-  0 ipv_distribution_line_number,
-  0 erv_distribution_line_number,
-  null accounting_line_type,
-  null transaction_id,
-  null invoice_date,
-  cwo.transaction_date accounting_date,
-  pla.unit_meas_lookup_code,
-  0 quantity_invoiced,
-  nvl(cwo.CURRENCY_conversion_rate,1) conversion_rate,
-  cwo.currency_code,
-  plla.price_override price_override,
-  nvl(pda.rate, pha.rate) rate,
-  null invoice_currency_code,
-  0 unit_price,
-  1 exchange_rate,
-  sum(nvl(xal.accounted_dr,0) - nvl(xal.accounted_cr,0)) ipv_amount,
-  sum(0) erv_amount
-  from
-  cst_write_offs                       cwo,
-  po_distributions_all                 pda,
-  po_vendors                           pv,
-  po_headers_all                       pha,
-  po_lines_all                         pla,
-  po_line_locations_all                plla,
-  po_releases_all                      pra,
-  mtl_system_items_vl                  msiv,
-  mtl_uom_conversions_view             ucr,
-  hr_employees                         he,
-  xla_distribution_links               xdl,
-  xla_ae_headers                       xah,
-  xla_ae_lines                         xal
-  where cwo.transaction_date        >= :p_trx_from         -- p_trx_date_from
-  and cwo.transaction_date        <  :p_trx_to           -- p_trx_date_to
-  and cwo.po_distribution_id       = pda.po_distribution_id
-  and pda.line_location_id         = plla.line_location_id
-  and pda.po_header_id             = pha.po_header_id
-  and pda.po_line_id               = pla.po_line_id   
-  and plla.po_release_id            = pra.po_release_id (+)
-  and pv.vendor_id                = pha.vendor_id
-  and pha.agent_id                 = he.employee_id
-  and msiv.inventory_item_id       = pla.item_id
-  and msiv.inventory_item_id       = ucr.inventory_item_id
-  and msiv.organization_id         = ucr.organization_id
-  and ucr.unit_of_measure          = pla.unit_meas_lookup_code
-  and msiv.organization_id         = plla.ship_to_organization_id
-  -- ========================================================
-  -- SLA table joins to get the exact account numbers
-  -- ========================================================
-  and xah.ae_header_id              = xal.ae_header_id
-  and xah.application_id            = xal.application_id
-  and xal.ae_header_id              = xdl.ae_header_id
-  and xal.ae_line_num               = xdl.ae_line_num
-  and xal.application_id            = xdl.application_id
-  and xdl.source_distribution_type = 'CST_WRITE_OFFS'
-  and xdl.application_id           = 707
-  and xdl.source_distribution_id_num_1 = cwo.write_off_id
-  and 3=3                          -- p_vendor_name  
-  group by
-  pv.vendor_name, -- vendor_name
-  he.full_name, -- full_name
-  xal.ledger_id,
-  msiv.organization_id,
-  xah.period_name,
-  msiv.concatenated_segments, -- item_number
-  msiv.inventory_item_id,
-  msiv.description, -- item_description
-  msiv.item_type,
-  cwo.destination_type_code, -- destination_type_code
-  xal.code_combination_id,
-  cwo.offset_account_id,
-  cwo.accrual_account_id,
-  cwo.write_off_id,
-  'AP-PO WO', -- Accrual Write-Off Type
-  xal.accounting_class_code,
-  pha.segment1, -- po_num
-  to_char(pla.line_num), -- po_line_num
-  pra.release_num, -- release_num
-  null, -- invoice_num
-  -- Set to value of 0 so the union all works with no errors
-  0, -- ipv_distribution_line_number
-  0, -- erv_distribution_line_number
-  null, -- accounting_line_type
-  null, -- transaction_id,
-  null, -- invoice_date
-  cwo.transaction_date, -- accounting_date,
-  pla.unit_meas_lookup_code,
-  0, -- quantity_invoiced
-  nvl(cwo.currency_conversion_rate,1), -- conversion_rate
-  cwo.currency_code,
-  plla.price_override, -- price_override
-  nvl(pda.rate, pha.rate), -- rate
-  null, -- invoice_currency_code
-  0,  -- unit_price
-  1   -- exchange_rate
- -- =================================================================================
- -- 3.0 union all
- -- Get the Accrual Write-Offs which join to a purchase order line and which do not
- -- join or reference an item number (cannot have more than one outer-join per select)
- -- This select will only get EXPENSE destination type codes.
- -- =================================================================================
-  union all
-  select pv.vendor_name vendor_name,
-  he.full_name full_name,
-  xal.ledger_id,
-  plla.ship_to_organization_id organization_id,
-  xah.period_name,
-  null item_number,
-  -- Revision for version 1.11
-  null inventory_item_id,
-  pla.item_description item_description,
-  null user_item_type,
-  cwo.destination_type_code destination_type_code,
-  xal.code_combination_id,
-  cwo.offset_account_id,
-  cwo.accrual_account_id,
-  cwo.write_off_id,
-  'AP-PO WO' write_off_type,
-  xal.accounting_class_code,
-  pha.segment1 po_num,
-  to_char(pla.line_num) po_line_num,
-  pra.release_num release_num,
-  null invoice_num,
-  -- Set to value of 0 so the union all works with no errors
-  0 ipv_distribution_line_number,
-  0 erv_distribution_line_number,
-  null accounting_line_type,
-  null transaction_id,
-  null invoice_date,
-  cwo.transaction_date accounting_date,
-  pla.unit_meas_lookup_code,
-  0 quantity_invoiced,
-  nvl(cwo.CURRENCY_conversion_rate,1) conversion_rate,
-  cwo.currency_code,
-  plla.price_override price_override,
-  nvl(pda.rate, pha.rate) rate,
-  null invoice_currency_code,
-  0 unit_price,
-  1 exchange_rate,
-  sum(nvl(xal.accounted_dr,0) - nvl(xal.accounted_cr,0)) ipv_amount,
-  sum(0) erv_amount
-  from
-  cst_write_offs                      cwo,
-  po_distributions_all                pda,
-  po_vendors                          pv,
-  po_headers_all                      pha,
-  po_lines_all                        pla,
-  po_line_locations_all               plla,
-  po_releases_all                     pra,
-  hr_employees                        he,
-  xla_distribution_links              xdl,
-  xla_ae_headers                      xah,
-  xla_ae_lines                        xal
-  where cwo.transaction_date        >= :p_trx_from         -- p_trx_date_from
-  and cwo.transaction_date        <  :p_trx_to           -- p_trx_date_to
-  -- Only EXPENSE destination type codes have no items
-  and cwo.destination_type_code    = 'EXPENSE'
-  and cwo.po_distribution_id       = pda.po_distribution_id
-  and pda.line_location_id         = plla.line_location_id
-  and pda.po_header_id             = pha.po_header_id
-  and pda.po_line_id               = pla.po_line_id  
-  -- EXPENSE destination type codes may or may not reference an item_id
-  and pla.item_id is null 
-  and plla.po_release_id            = pra.po_release_id (+)
-  and pv.vendor_id                = pha.vendor_id
-  and pha.agent_id                 = he.employee_id
-  -- ========================================================
-  -- SLA table joins to get the exact account numbers
-  -- ========================================================
-  and xah.ae_header_id              = xal.ae_header_id
-  and xah.application_id            = xal.application_id
-  and xal.ae_header_id              = xdl.ae_header_id
-  and xal.ae_line_num               = xdl.ae_line_num
-  and xal.application_id            = xdl.application_id
-  -- and xal.accounting_class_code     = 'WRITE_OFF_VARIANCE'
-  and xdl.application_id           = 707
-  and xdl.source_distribution_type = 'CST_WRITE_OFFS'
-  and xdl.source_distribution_id_num_1 = cwo.write_off_id
-  and 3=3                          -- p_vendor_name 
-  group by
-  pv.vendor_name, -- vendor_name
-  he.full_name, -- full_name
-  xal.ledger_id,
-  plla.ship_to_organization_id, -- organization_id
-  xah.period_name,
-  null, -- item_number
-  null, -- inventory_item_id
-  pla.item_description, -- item_description
-  null, -- user_item_type
-  cwo.destination_type_code, -- destination_type_code
-  xal.code_combination_id,
-  cwo.offset_account_id,
-  cwo.accrual_account_id,
-  cwo.write_off_id,
-  'AP-PO WO', -- Accrual Write-Off Type
-  xal.accounting_class_code,
-  pha.segment1, -- po_num
-  to_char(pla.line_num), -- po_line_num
-  pra.release_num, -- release_num
-  null, -- invoice_num
-  -- Set to value of 0 so the union all works with no errors
-  0, -- ipv_distribution_line_number
-  0, -- erv_distribution_line_number
-  null, -- accounting_line_type
-  null, -- transaction_id,
-  null, -- invoice_date
-  cwo.transaction_date, -- accounting_date,
-  pla.unit_meas_lookup_code,  -- unit_meas_lookup_code
-  0, -- quantity_invoiced
-  nvl(cwo.currency_conversion_rate,1), -- conversion_rate
-  cwo.currency_code,
-  plla.price_override, -- price_override
-  nvl(pda.rate, pha.rate), -- rate
-  null, -- invoice_currency_code
-  0,  -- unit_price
-  1   -- exchange_rate
- -- =================================================================================
- -- 4.0 union all
- -- Get the Accrual Write-Offs for unmatched Payables entries (AP No Match).
- -- =================================================================================
-  union all
-  select pv.vendor_name vendor_name,
-  fu.user_name full_name,
-  xal.ledger_id,
-  osp.master_organization_id organization_id,
-  xah.period_name,
-  null item_number,
-  null inventory_item_id,
-  aida.description item_description,
-  null user_item_type,
-  cwo.destination_type_code destination_type_code,
-  xal.code_combination_id,
-  cwo.offset_account_id,
-  cwo.accrual_account_id,
-  cwo.write_off_id,
-  'AP No PO WO' write_off_type,
-  xal.accounting_class_code,
-  null po_num,
-  null po_line_num,
-  null release_num,
-  null invoice_num,
-  aida.distribution_line_number ipv_distribution_line_number,
-  -- Set to value of 0 so the union all works with no errors
-  0 erv_distribution_line_number,
-  null accounting_line_type,
-  null transaction_id,
-  aia.invoice_date invoice_date,
-  cwo.transaction_date accounting_date,
-  nvl(aida.matched_uom_lookup_code,aia.invoice_currency_code) unit_meas_lookup_code,
-  nvl(aida.quantity_invoiced,0) quantity_invoiced,
-  nvl(cwo.currency_conversion_rate,1) conversion_rate,
-  cwo.currency_code,
-  0 price_override, -- po unit price
-  1 rate, -- po exchange rate
-  aia.invoice_currency_code invoice_currency_code,
-  aida.unit_price unit_price,
-  nvl(aida.exchange_rate,1) exchange_rate,
-  sum(nvl(xal.accounted_dr,0) - nvl(xal.accounted_cr,0)) ipv_amount,
-  sum(0) erv_amount
-  from
-  cst_write_offs                      cwo,
-  ap_invoices_all                       aia,
-  ap_invoice_distributions_all          aida,
-  po_vendors                          pv,
-  -- oe_system_parameters_all holds the validation inventory org
-  -- for order management, A/R and A/P
-  oe_system_parameters_all            osp,
-  fnd_user                            fu,
-  xla_distribution_links              xdl,
-  xla_ae_headers                      xah,
-  xla_ae_lines                        xal
-  where cwo.transaction_date        >= :p_trx_from         -- p_trx_date_from
-  and cwo.transaction_date        <  :p_trx_to           -- p_trx_date_to
-  and cwo.invoice_distribution_id  = aida.invoice_distribution_id
-  and cwo.invoice_distribution_id is not null
-  and aia.invoice_id                = aida.invoice_id
-  and pv.vendor_id                = aia.vendor_id
-  and aia.created_by                = fu.user_id
-  and osp.org_id                   = aida.org_id
-  -- ========================================================
-  -- SLA table joins to get the exact account numbers
-  -- ========================================================
-  and xah.ae_header_id              = xal.ae_header_id
-  and xah.application_id            = xal.application_id
-  and xal.ae_header_id              = xdl.ae_header_id
-  and xal.ae_line_num               = xdl.ae_line_num
-  and xah.application_id            = xdl.application_id
-  and xdl.source_distribution_type = 'CST_WRITE_OFFS'
-  and xdl.application_id           = 707
-  and xdl.source_distribution_id_num_1 = cwo.write_off_id
-  and 2=2                          -- p_trx_date_from, p_trx_date_to
-  and 3=3                          -- p_vendor_name
-  group by
-  pv.vendor_name,
-  fu.user_name,
-  xal.ledger_id,
-  osp.master_organization_id,
-  xah.period_name,
-  null, -- item_number
-  aida.description, -- item_description
-  null, -- user_item_type
-  cwo.destination_type_code,
-  xal.code_combination_id,
-  cwo.offset_account_id,
-  cwo.accrual_account_id,
-  cwo.write_off_id,
-  'AP No PO WO', -- write_off_type
-  xal.accounting_class_code,
-  null, -- po_num
-  null, -- po_line_num
-  null, -- release_num
-  null, -- invoice_num
-  aida.distribution_line_number, -- ipv_distribution_line_number
-  -- Set to value of 0 so the union all works with no errors
-  0, -- erv_distribution_line_number
-  null, -- accounting_line_type
-  null, -- transaction_id
-  aia.invoice_date,
-  cwo.transaction_date,
-  nvl(aida.matched_uom_lookup_code,aia.invoice_currency_code), -- unit_meas_lookup_code
-  nvl(aida.quantity_invoiced,0), -- quantity_invoiced
-  nvl(cwo.currency_conversion_rate,1), -- conversion_rate
-  cwo.currency_code,
-  0, -- po unit price or price_override
-  1, -- po exchange rate
-  aia.invoice_currency_code,
-  aida.unit_price, -- invoice unit_price
-  nvl(aida.exchange_rate,1)  -- invoice exchange_rate
- ) wo_txns  -- ipv_amount
-where mp.organization_id           = wo_txns.organization_id
-and gcc1.code_combination_id (+) = wo_txns.code_combination_id
-and pl.lookup_type               = 'DESTINATION TYPE'
-and pl.lookup_code               = wo_txns.destination_type_code
-and flv.lookup_type              = 'XLA_ACCOUNTING_CLASS'
-and flv.lookup_code              = wo_txns.accounting_class_code
-and flv.language                 = userenv('lang')
--- ===================================================================
--- using the base tables to avoid the performance issues
--- with org_organization_definitions and hr_operating_units
--- ===================================================================
-and hoi.org_information_context  = 'Accounting Information'
-and hoi.organization_id          = mp.organization_id
-and hoi.organization_id          = haou.organization_id   -- this gets the organization name
-and haou2.organization_id        = to_number(hoi.org_information3) -- this gets the operating unit id
-and gl.ledger_id                 = wo_txns.ledger_id
-and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
-and 1=1                          -- p_operating_unit, p_ledger
--- ===================================================================
-order by 1,2,3,4,5,6,7,8,9,10,11,14,15,16,17,18,19,20,23,26,27,28,29,30
+(
+select
+cwo.write_off_id,
+xal.ledger_id,
+xah.period_name,
+xal.code_combination_id,
+xal.accounting_class_code,
+cwo.destination_type_code,
+cwo.transaction_date accounting_date,
+nvl(cwo.currency_conversion_rate,1) conversion_rate,
+cwo.currency_code,
+decode(cwo.inventory_transaction_id,null,decode(cwo.po_distribution_id,null,'AP No PO WO','AP-PO WO'),'INV WO') write_off_type,
+case
+when cwo.inventory_transaction_id is not null then (select max(mta.organization_id) from mtl_transaction_accounts mta where cwo.inventory_transaction_id=mta.transaction_id and cwo.accrual_account_id=mta.reference_account)
+when cwo.po_distribution_id is not null then plla.ship_to_organization_id
+else (select osp.master_organization_id from oe_system_parameters_all osp where aida.org_id=osp.org_id)
+end organization_id,
+coalesce(mmt.inventory_item_id,pla.item_id) inventory_item_id,
+coalesce(pla.item_description,aida.description) item_description,
+coalesce(aps_po.vendor_name,aps_ap.vendor_name) vendor_name,
+nvl((select he.full_name from hr_employees he where pha.agent_id=he.employee_id),(select fu.user_name from fnd_user fu where nvl(mmt.created_by,aia.created_by)=fu.user_id)) full_name,
+pha.segment1 po_number,
+to_char(pla.line_num) po_line,
+pra.release_num,
+nvl(aida.distribution_line_number,0) ipv_distribution_line_number,
+aia.invoice_date,
+coalesce(pla.unit_meas_lookup_code,aida.matched_uom_lookup_code,aia.invoice_currency_code,(select msiv.primary_unit_of_measure from mtl_system_items_vl msiv where mmt.organization_id=msiv.organization_id and mmt.inventory_item_id=msiv.inventory_item_id)) unit_meas_lookup_code,
+coalesce((select sum(mta.primary_quantity) from mtl_transaction_accounts mta where cwo.inventory_transaction_id=mta.transaction_id and cwo.accrual_account_id=mta.reference_account),aida.quantity_invoiced,0) quantity_invoiced,
+coalesce(mmt.actual_cost,plla.price_override,0) price_override,
+coalesce(mmt.currency_conversion_rate,pda.rate,pha.rate,1) rate,
+aia.invoice_currency_code,
+nvl(aida.unit_price,0) unit_price,
+nvl(aida.exchange_rate,1) exchange_rate,
+sum(nvl(xal.accounted_dr,0)-nvl(xal.accounted_cr,0)) ipv_amount
+from
+cst_write_offs cwo,
+mtl_material_transactions mmt,
+po_distributions_all pda,
+po_line_locations_all plla,
+po_lines_all pla,
+po_headers_all pha,
+po_releases_all pra,
+ap_suppliers aps_po,
+ap_invoice_distributions_all aida,
+ap_invoices_all aia,
+ap_suppliers aps_ap,
+xla_distribution_links xdl,
+xla_ae_lines xal,
+xla_ae_headers xah
+where
+cwo.transaction_date>=:p_trx_date_from and
+cwo.transaction_date<:p_trx_date_to+1 and
+cwo.inventory_transaction_id=mmt.transaction_id(+) and
+cwo.po_distribution_id=pda.po_distribution_id(+) and
+pda.line_location_id=plla.line_location_id(+) and
+pda.po_line_id=pla.po_line_id(+) and
+pda.po_header_id=pha.po_header_id(+) and
+plla.po_release_id=pra.po_release_id(+) and
+pha.vendor_id=aps_po.vendor_id(+) and
+cwo.invoice_distribution_id=aida.invoice_distribution_id(+) and
+aida.invoice_id=aia.invoice_id(+) and
+aia.vendor_id=aps_ap.vendor_id(+) and
+cwo.write_off_id=xdl.source_distribution_id_num_1 and
+xdl.source_distribution_type='CST_WRITE_OFFS' and
+xdl.application_id=707 and
+xdl.ae_header_id=xal.ae_header_id and
+xdl.ae_line_num=xal.ae_line_num and
+xal.application_id=707 and
+xal.ae_header_id=xah.ae_header_id and
+xal.application_id=xah.application_id
+group by
+cwo.write_off_id,
+xal.ledger_id,
+xah.period_name,
+xal.code_combination_id,
+xal.accounting_class_code,
+cwo.destination_type_code,
+cwo.transaction_date,
+cwo.currency_conversion_rate,
+cwo.currency_code,
+cwo.inventory_transaction_id,
+cwo.po_distribution_id,
+cwo.accrual_account_id,
+plla.ship_to_organization_id,
+aida.org_id,
+mmt.inventory_item_id,
+mmt.organization_id,
+mmt.created_by,
+mmt.actual_cost,
+mmt.currency_conversion_rate,
+pla.item_id,
+pla.item_description,
+aida.description,
+aps_po.vendor_name,
+aps_ap.vendor_name,
+pha.agent_id,
+aia.created_by,
+pha.segment1,
+pla.line_num,
+pra.release_num,
+aida.distribution_line_number,
+aia.invoice_date,
+pla.unit_meas_lookup_code,
+aida.matched_uom_lookup_code,
+aia.invoice_currency_code,
+aida.quantity_invoiced,
+plla.price_override,
+pda.rate,
+pha.rate,
+aida.unit_price,
+aida.exchange_rate
+) w
+) x,
+mtl_parameters mp,
+hr_organization_information hoi,
+hr_all_organization_units_vl haouv_ou,
+gl_ledgers gl,
+mtl_system_items_vl msiv,
+gl_code_combinations gcc1,
+gl_code_combinations gcc2
+where
+1=1 and
+3=3 and
+mp.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
+x.organization_id=mp.organization_id and
+mp.organization_id=hoi.organization_id and
+hoi.org_information_context='Accounting Information' and
+to_number(hoi.org_information3)=haouv_ou.organization_id and
+nvl(x.org_id,haouv_ou.organization_id)=haouv_ou.organization_id and
+x.ledger_id=gl.ledger_id and
+x.organization_id=msiv.organization_id(+) and
+x.inventory_item_id=msiv.inventory_item_id(+) and
+x.ipv_code_combination_id=gcc1.code_combination_id(+) and
+x.erv_code_combination_id=gcc2.code_combination_id(+)
+order by
+gl.name,
+haouv_ou.name,
+mp.organization_code,
+x.period_name,
+x.type,
+accounting_class_code,
+x.supplier,
+x.buyer,
+item_number,
+x.po_number,
+x.po_line,
+x.po_release,
+x.invoice_number,
+x.accounting_date

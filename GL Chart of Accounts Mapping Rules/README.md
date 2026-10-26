@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-19
+last_modified_at: 2026-10-26
 title: 'GL Chart of Accounts Mapping Rules | Oracle EBS SQL Report'
 description: 'Lists the segment mapping rules and code combination mappings defined for a Global Consolidation System (GCS) chart of accounts mapping. Converted from…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, General Ledger, Enginatics, R12 only, Chart, Accounts, Mapping, Rules, gl_coa_mappings, fnd_id_flex_structures_vl, fnd_id_flex_segments'
@@ -31,7 +31,7 @@ COA Mapping
 [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=gl-chart-of-accounts-mapping-rules%281%29), [R12 only](https://www.enginatics.com/library/?pg=1&category%5B%5D=R12%20only&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=gl-chart-of-accounts-mapping-rules%281%29)
 
 ## Related Reports
-[AR Customer Upload](/AR%20Customer%20Upload/ "AR Customer Upload Oracle EBS SQL Report"), [AR Aging](/AR%20Aging/ "AR Aging Oracle EBS SQL Report"), [AR Transaction Upload](/AR%20Transaction%20Upload/ "AR Transaction Upload Oracle EBS SQL Report"), [AP Trial Balance Report Definitions](/AP%20Trial%20Balance%20Report%20Definitions/ "AP Trial Balance Report Definitions Oracle EBS SQL Report"), [GL Setup Upload](/GL%20Setup%20Upload/ "GL Setup Upload Oracle EBS SQL Report"), [FND Cross-Validation Rules](/FND%20Cross-Validation%20Rules/ "FND Cross-Validation Rules Oracle EBS SQL Report"), [AR Applied Receipts](/AR%20Applied%20Receipts/ "AR Applied Receipts Oracle EBS SQL Report")
+[AR Customer Upload](/AR%20Customer%20Upload/ "AR Customer Upload Oracle EBS SQL Report"), [AR Aging](/AR%20Aging/ "AR Aging Oracle EBS SQL Report"), [AR Transaction Upload](/AR%20Transaction%20Upload/ "AR Transaction Upload Oracle EBS SQL Report"), [AP Trial Balance Report Definitions](/AP%20Trial%20Balance%20Report%20Definitions/ "AP Trial Balance Report Definitions Oracle EBS SQL Report"), [GL Setup Upload](/GL%20Setup%20Upload/ "GL Setup Upload Oracle EBS SQL Report"), [AR Applied Receipts](/AR%20Applied%20Receipts/ "AR Applied Receipts Oracle EBS SQL Report"), [FND Cross-Validation Rules](/FND%20Cross-Validation%20Rules/ "FND Cross-Validation Rules Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/GL%20Chart%20of%20Accounts%20Mapping%20Rules/GL%20Chart%20of%20Accounts%20Mapping%20Rules.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=gl-chart-of-accounts-mapping-rules%281%29) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.

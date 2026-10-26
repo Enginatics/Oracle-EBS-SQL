@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-19
+last_modified_at: 2026-10-26
 title: 'FND Flex Value Security Rules | Oracle EBS SQL Report'
 description: 'Flexfield value security rules, rule elements (included or excluded flexfield value ranges), flexfields where the secured value set is used and…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Application Object Library, Enginatics, FND, Flex, Value, Security, fnd_flex_value_sets, fnd_flex_value_rules_vl, fnd_flex_value_rule_lines'
@@ -30,6 +30,8 @@ Flexfield, Flexfield Code, Rule Name, Flex Value Set, Responsibility Name, Ledge
 ## Report Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fnd-flex-value-security-rules)
 
+## Related Reports
+[AR Transaction Upload](/AR%20Transaction%20Upload/ "AR Transaction Upload Oracle EBS SQL Report"), [FND Flex Value Sets, Usages and Values](/FND%20Flex%20Value%20Sets-%20Usages%20and%20Values/ "FND Flex Value Sets, Usages and Values Oracle EBS SQL Report"), [PO Approval Groups](/PO%20Approval%20Groups/ "PO Approval Groups Oracle EBS SQL Report"), [OPM Recipe Upload](/OPM%20Recipe%20Upload/ "OPM Recipe Upload Oracle EBS SQL Report"), [GL Setup Upload](/GL%20Setup%20Upload/ "GL Setup Upload Oracle EBS SQL Report"), [FND Cross-Validation Rules](/FND%20Cross-Validation%20Rules/ "FND Cross-Validation Rules Oracle EBS SQL Report"), [GL Account Analysis](/GL%20Account%20Analysis/ "GL Account Analysis Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/FND%20Flex%20Value%20Security%20Rules/FND%20Flex%20Value%20Security%20Rules.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fnd-flex-value-security-rules) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.

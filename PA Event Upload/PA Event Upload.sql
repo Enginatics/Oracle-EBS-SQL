@@ -33,7 +33,7 @@ xxen_util.meaning(pe.pm_product_code,'PM_PRODUCT_CODE',275)
 product_source,
 pe.pm_event_reference event_reference,
 pe.event_type,
-pet.event_type_classification,
+xxen_util.meaning(pet.event_type_classification,'EVENT TYPE CLASSIFICATION',275) event_type_classification,
 pe.completion_date event_date,
 pe.event_num event_number,
 haouv2.name organization,

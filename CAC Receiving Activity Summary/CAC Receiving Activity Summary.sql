@@ -7,6 +7,7 @@
 -- Report Name: CAC Receiving Activity Summary
 -- Description: Especially for companies who do not use separate inspection receipt processes, this report nets the purchase order receipts into receiving against the deliveries into stock and WIP outside processing (OSP), using the Subledger Accounting entries on the organization's receiving account for the entered transaction date range.
 -- Each row is one subledger journal line on the receiving account, with the receiving transaction details shown in the Receiving Transactions form. With Unbalanced Distributions Only set to Yes, only PO distributions whose net amount per period, organization and receiving account is not zero are listed, so receipts and deliveries that offset each other drop out.
+-- Quantity and UOM are the receiving transaction's quantity and unit of measure. A receipt or return against several PO distributions shows each distribution's share of the quantity.
 -- Differences may be due to the initial receipt occurring in the prior month, not running Create Accounting in the current month, the goods never delivered into stock or OSP, or the delivery not processed by Create Accounting.
 -- Template Summary by PO Distribution sums the amount per PO distribution and account.
 -- Parameters:
@@ -37,6 +38,7 @@
 -- -- | 1.4 08 Jul 2022 Douglas Volz Multi-language tables for item master.
 -- -- | 1.5 24 Jun 2024 Douglas Volz Remove tabs, reinstall parameters and inventory org access controls.
 -- -- | 1.6 16 Oct 2026 Andy Haack One row per subledger journal line with the receiving transaction columns.
+-- -- | 1.7 21 Oct 2026 Mrugesh Poojary Quantity and UOM columns.
 -- -- +=============================================================================+/
 -- Excel Example Output: https://www.enginatics.com/example/cac-receiving-activity-summary/
 -- Library Link: https://www.enginatics.com/reports/cac-receiving-activity-summary/
@@ -65,6 +67,8 @@ gcck2.concatenated_segments charge_account,
 msiv.concatenated_segments item_number,
 msiv.description item_description,
 xxen_util.meaning(msiv.item_type,'ITEM_TYPE',3) item_type,
+x.quantity,
+x.uom,
 nvl(rsl.packing_slip,rsh.packing_slip) packing_slip,
 rt.currency_code currency,
 rt.currency_conversion_rate rate,
@@ -109,11 +113,14 @@ xal.code_combination_id,
 xah.accounting_date gl_date,
 xal.accounting_class_code,
 xal.accounted_dr,
-xal.accounted_cr
+xal.accounted_cr,
+rae.transaction_quantity quantity,
+rae.transaction_unit_of_measure uom
 from
 mtl_parameters mp,
 rcv_parameters rp,
 rcv_receiving_sub_ledger rrsl,
+rcv_accounting_events rae,
 rcv_transactions rt,
 xla_distribution_links xdl,
 xla_ae_lines xal,
@@ -123,6 +130,7 @@ where
 mp.organization_id=rp.organization_id and
 rp.receiving_account_id=rrsl.code_combination_id and
 rrsl.accounting_line_type<>'Accrual' and
+rrsl.accounting_event_id=rae.accounting_event_id(+) and
 rrsl.rcv_transaction_id=rt.transaction_id and
 rp.organization_id=rt.organization_id and
 rt.source_document_code not in ('RMA','REQ') and
@@ -147,7 +155,9 @@ xal.code_combination_id,
 xah.accounting_date gl_date,
 xal.accounting_class_code,
 xal.accounted_dr,
-xal.accounted_cr
+xal.accounted_cr,
+rt.quantity,
+rt.unit_of_measure uom
 from
 mtl_parameters mp,
 rcv_parameters rp,
@@ -186,7 +196,9 @@ xal.code_combination_id,
 xah.accounting_date gl_date,
 xal.accounting_class_code,
 xal.accounted_dr,
-xal.accounted_cr
+xal.accounted_cr,
+rt.quantity,
+rt.unit_of_measure uom
 from
 mtl_parameters mp,
 rcv_parameters rp,
@@ -221,7 +233,7 @@ hr_all_organization_units_vl haouv,
 gl_ledgers gl
 where
 4=4 and
-mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
+mp.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
 z.organization_id=mp.organization_id and
 mp.organization_id=hoi.organization_id and
 hoi.org_information_context='Accounting Information' and

@@ -43,1891 +43,781 @@
 -- -- | 1.6 18 May 2020 Douglas Volz Avoid disabled inventory organizations.
 -- -- | 1.7 07 Dec 2020 Douglas Volz/Andy Haack Only report inventory organization ledgers. Initial Blitz version.
 -- -- | 1.8 22 Feb 2023 Douglas Volz Add in Receiving Value, fixes for Category Accounting.
+-- -- | 1.9 24 Oct 2026 Andy Haack Rebuilt to the Blitz Report SQL standards.
 -- -- +=============================================================================+/
 -- Excel Example Output: https://www.enginatics.com/example/cac-inventory-to-g-l-reconciliation-restricted-by-org-access/
 -- Library Link: https://www.enginatics.com/reports/cac-inventory-to-g-l-reconciliation-restricted-by-org-access/
 -- Run Report: https://demo.enginatics.com/
 
-with y as (
-select distinct
+with o as (
+select /*+ materialize*/
+mp.organization_id,
+mp.primary_cost_method,
+case when mp.cost_group_accounting=1 or mp.wms_enabled_flag='Y' or mp.organization_id in (select pop.organization_id from pjm_org_parameters pop) then 'Y' end cost_group_accounting,
+mp.material_account,
+mp.material_overhead_account,
+mp.resource_account,
+mp.overhead_account,
+mp.outside_processing_account,
+mp.intransit_inv_account,
+gl.ledger_id
+from
+mtl_parameters mp,
+hr_organization_information hoi,
+hr_all_organization_units haou,
+gl_ledgers gl
+where
+5=5 and
+mp.organization_id=hoi.organization_id and
+hoi.org_information_context='Accounting Information' and
+hoi.organization_id=haou.organization_id and
+sysdate<nvl(haou.date_to,sysdate+1) and
+to_number(hoi.org_information1)=gl.ledger_id and
+gl.ledger_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='LEDGER')
+),
+y as (
+select /*+ materialize*/ distinct
+x.ledger_id,
 gcc.&account_segment account
 from
 (
---subinventory
 select
-msi.acct
+o.ledger_id,
+decode(rowgen.column_value,1,msi.material_account,2,msi.material_overhead_account,3,msi.resource_account,4,msi.overhead_account,5,msi.outside_processing_account) account_id
 from
-(
-select msi.material_account acct, msi.organization_id, msi.asset_inventory from mtl_secondary_inventories msi union
-select msi.material_overhead_account, msi.organization_id, msi.asset_inventory from mtl_secondary_inventories msi union
-select msi.resource_account, msi.organization_id, msi.asset_inventory from mtl_secondary_inventories msi union
-select msi.overhead_account, msi.organization_id, msi.asset_inventory from mtl_secondary_inventories msi union
-select msi.outside_processing_account, msi.organization_id, msi.asset_inventory from mtl_secondary_inventories msi
-) msi,
-mtl_parameters mp
+o,
+mtl_secondary_inventories msi,
+table(xxen_util.rowgen(5)) rowgen
 where
-msi.asset_inventory=1 and
-msi.organization_id=mp.organization_id and
-mp.primary_cost_method=1 and --frozen
--- Revision for version 1.8
--- nvl(mp.cost_group_accounting,-99)<>1
-2 = case
- when nvl(mp.cost_group_accounting,2) = 1 then 1
- when exists (select 'x'
-   from   pjm_org_parameters pop
-   where  mp.organization_id = pop.organization_id) then 1 -- Project MFG Enabled
- when nvl(mp.wms_enabled_flag, 'N') = 'Y' then 1 -- WMS uses Cost Group Accounting
- when nvl(mp.cost_group_accounting,2) = 2 then 2
- else 2
-    end and
-5=5 and
-mp.organization_id in (select ood.organization_id from org_organization_definitions ood where nvl(ood.disable_date,sysdate+1)>sysdate and ood.set_of_books_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+)))
--- End for revision 1.8
-union
---organization
+o.primary_cost_method=1 and
+o.cost_group_accounting is null and
+o.organization_id=msi.organization_id and
+msi.asset_inventory=1
+union all
 select
-mp.acct
+o.ledger_id,
+decode(rowgen.column_value,1,o.material_account,2,o.material_overhead_account,3,o.resource_account,4,o.overhead_account,5,o.outside_processing_account,6,o.intransit_inv_account) account_id
 from
-(
-select mp.material_account acct, mp.primary_cost_method, mp.cost_group_accounting, mp.organization_id, mp.wms_enabled_flag from mtl_parameters mp union
-select mp.material_overhead_account, mp.primary_cost_method, mp.cost_group_accounting, mp.organization_id, mp.wms_enabled_flag from mtl_parameters mp union
-select mp.resource_account, mp.primary_cost_method, mp.cost_group_accounting, mp.organization_id, mp.wms_enabled_flag from mtl_parameters mp union
-select mp.overhead_account, mp.primary_cost_method, mp.cost_group_accounting, mp.organization_id, mp.wms_enabled_flag from mtl_parameters mp union
-select mp.outside_processing_account, mp.primary_cost_method, mp.cost_group_accounting, mp.organization_id, mp.wms_enabled_flag from mtl_parameters mp
-) mp
+o,
+table(xxen_util.rowgen(6)) rowgen
 where
-mp.primary_cost_method<>1 and --non frozen
--- Revision for version 1.8
--- nvl(mp.cost_group_accounting,-99)<>1
-2 = case
- when nvl(mp.cost_group_accounting,2) = 1 then 1
- when exists (select 'x'
-   from   pjm_org_parameters pop
-   where  mp.organization_id = pop.organization_id) then 1 -- Project MFG Enabled
- when nvl(mp.wms_enabled_flag, 'N') = 'Y' then 1 -- WMS uses Cost Group Accounting
- when nvl(mp.cost_group_accounting,2) = 2 then 2
- else 2
-    end and
-5=5
--- End for revision 1.8
-union
---intransit accounting
-select mip.intransit_inv_account from mtl_interorg_parameters mip
--- Revision for version 1.8
-where 6=6 and
-(
-mip.from_organization_id in (select ood.organization_id from org_organization_definitions ood where nvl(ood.disable_date,sysdate+1)>sysdate and ood.set_of_books_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))) or
-mip.to_organization_id in (select ood.organization_id from org_organization_definitions ood where nvl(ood.disable_date,sysdate+1)>sysdate and ood.set_of_books_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+)))
-)
-union
---receiving accounting
-select rp.receiving_account_id from rcv_parameters rp
--- Revision for version 1.8
-where 7=7 and
-rp.organization_id in (select ood.organization_id from org_organization_definitions ood where nvl(ood.disable_date,sysdate+1)>sysdate and ood.set_of_books_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+)))
-union
---wip accounting when cost group accounting is not in use
-select distinct
-wac.acct
-from
-(
-select wac.material_account acct, wac.class_type, wac.organization_id from wip_accounting_classes wac union
-select wac.material_overhead_account, wac.class_type, wac.organization_id from wip_accounting_classes wac union
-select wac.resource_account, wac.class_type, wac.organization_id from wip_accounting_classes wac union
-select wac.overhead_account, wac.class_type, wac.organization_id from wip_accounting_classes wac union
-select wac.outside_processing_account, wac.class_type, wac.organization_id from wip_accounting_classes wac
-) wac
-where
-wac.class_type not in (4,6,7) and --4-expense non-standard, 6-maintenance, 7-expense non-standard lot based
--- Revision for version 1.8
--- wac.organization_id in (select mp.organization_id from mtl_parameters mp where nvl(mp.cost_group_accounting,-99)<>1)
-wac.organization_id in 
-(select mp.organization_id from mtl_parameters mp where
- 2 = case
- when nvl(mp.cost_group_accounting,2) = 1 then 1
- when exists (select 'x'
-   from   pjm_org_parameters pop
-   where  mp.organization_id = pop.organization_id) then 1 -- Project MFG Enabled
- when nvl(mp.wms_enabled_flag, 'N') = 'Y' then 1 -- WMS uses Cost Group Accounting
- when nvl(mp.cost_group_accounting,2) = 2 then 2
- else 2
-    end and
- 5=5
-)
--- End revision for version 1.8
-union
---cost group accounting
+rowgen.column_value=6 or
+o.primary_cost_method<>1 and
+o.cost_group_accounting is null
+union all
 select
-ccga.acct
+o.ledger_id,
+decode(rowgen.column_value,1,ccga.material_account,2,ccga.material_overhead_account,3,ccga.resource_account,4,ccga.overhead_account,5,ccga.outside_processing_account) account_id
 from
-(
-select ccga.material_account acct, ccga.cost_group_id, ccga.organization_id from cst_cost_group_accounts ccga union
-select ccga.material_overhead_account, ccga.cost_group_id, ccga.organization_id from cst_cost_group_accounts ccga union
-select ccga.resource_account, ccga.cost_group_id, ccga.organization_id from cst_cost_group_accounts ccga union
-select ccga.overhead_account, ccga.cost_group_id, ccga.organization_id from cst_cost_group_accounts ccga union
-select ccga.outside_processing_account, ccga.cost_group_id, ccga.organization_id from cst_cost_group_accounts ccga
-) ccga
+o,
+cst_cost_group_accounts ccga,
+table(xxen_util.rowgen(5)) rowgen
 where
-ccga.cost_group_id in (
+o.cost_group_accounting='Y' and
+o.organization_id=ccga.organization_id
+union all
 select
-msi.default_cost_group_id --from subinventory
+o.ledger_id,
+decode(rowgen.column_value,1,mca.material_account,2,mca.material_overhead_account,3,mca.resource_account,4,mca.overhead_account,5,mca.outside_processing_account) account_id
 from
-mtl_secondary_inventories msi
+o,
+mtl_category_accounts mca,
+table(xxen_util.rowgen(5)) rowgen
 where
-msi.asset_inventory=1 and
--- Revision for version 1.8
--- msi.organization_id in (select mp.organization_id from mtl_parameters mp where mp.cost_group_accounting=1)
-msi.organization_id in 
-(select mp.organization_id from mtl_parameters mp where
- 1 = case
- when nvl(mp.cost_group_accounting,2) = 1 then 1
- when exists (select 'x'
-   from   pjm_org_parameters pop
-   where  mp.organization_id = pop.organization_id) then 1 -- Project MFG Enabled
- when nvl(mp.wms_enabled_flag, 'N') = 'Y' then 1 -- WMS uses Cost Group Accounting
- when nvl(mp.cost_group_accounting,2) = 2 then 2
- else 2
-    end and
- 5=5
-)
-)
--- End revision for version 1.8
-union
+o.organization_id=mca.organization_id
+union all
 select
-ccwac.cost_group_id --wip accounting when cost group accounting is in use
+o.ledger_id,
+decode(rowgen.column_value,1,wac.material_account,2,wac.material_overhead_account,3,wac.resource_account,4,wac.overhead_account,5,wac.outside_processing_account) account_id
 from
-cst_cg_wip_acct_classes ccwac,
-wip_accounting_classes wac
+o,
+wip_accounting_classes wac,
+table(xxen_util.rowgen(5)) rowgen
 where
-ccwac.organization_id=wac.organization_id and
-ccwac.class_code=wac.class_code and
-wac.class_type not in (4,6,7) and --4-expense non-standard, 6-maintenance, 7-expense non-standard lot based
--- Revision for version 1.8
--- wac.organization_id in (select mp.organization_id from mtl_parameters mp where mp.cost_group_accounting=1)
-wac.organization_id in 
-(select mp.organization_id from mtl_parameters mp where
- 1 = case
- when nvl(mp.cost_group_accounting,2) = 1 then 1
- when exists (select 'x'
-   from   pjm_org_parameters pop
-   where  mp.organization_id = pop.organization_id) then 1 -- Project MFG Enabled
- when nvl(mp.wms_enabled_flag, 'N') = 'Y' then 1 -- WMS uses Cost Group Accounting
- when nvl(mp.cost_group_accounting,2) = 2 then 2
- else 2
-    end and
- 5=5
--- End revision for version 1.8
-)
+o.organization_id=wac.organization_id and
+wac.class_type not in (4,6,7)
+union all
+select
+o.ledger_id,
+mip.intransit_inv_account
+from
+o,
+mtl_interorg_parameters mip
+where
+o.organization_id in (mip.from_organization_id,mip.to_organization_id)
+union all
+select
+o.ledger_id,
+rp.receiving_account_id
+from
+o,
+rcv_parameters rp
+where
+o.organization_id=rp.organization_id
 ) x,
 gl_code_combinations gcc
 where
-x.acct=gcc.code_combination_id
+x.account_id=gcc.code_combination_id
 )
-------------------------SQL starts here-----------------------
 select
-net_recon_bal.period_name,
-net_recon_bal.ledger,
+x.period_name,
+gl.name ledger,
 &segment_columns
-sum(nvl(net_recon_bal.gl_beg_balance,0)) GL_Beginning_Balance,
--- Revision for version 1.8
-sum(nvl(net_recon_bal.gl_receiving_amount,0)) GL_Receiving,
-sum(nvl(net_recon_bal.gl_inventory_amount,0)) GL_Inventory,
-sum(nvl(net_recon_bal.gl_wip_amount,0)) GL_Work_in_Process,
-sum(nvl(net_recon_bal.gl_payables_amount,0)) GL_Payables,
-sum(nvl(net_recon_bal.gl_other_amount,0)) GL_Other,
-sum(nvl(net_recon_bal.gl_end_balance,0)) GL_Ending_Balance,
-sum(nvl(net_recon_bal.receiving_value,0)) Receiving_Value,
-sum(nvl(net_recon_bal.inv_onhand_value,0)) Inventory_Value,
-sum(nvl(net_recon_bal.wip_value,0)) WIP_Value,
--- Revision for version 1.8
-sum(nvl(net_recon_bal.receiving_value,0) + nvl(net_recon_bal.inv_onhand_value,0) + nvl(net_recon_bal.wip_value,0)) Total_Perpetual_Value,
-sum(nvl(net_recon_bal.gl_end_balance,0)) - sum(nvl(net_recon_bal.receiving_value,0) + nvl(net_recon_bal.inv_onhand_value,0) + nvl(net_recon_bal.wip_value,0)) Difference
--- End revision for version 1.8
+sum(x.gl_beg_balance) gl_beginning_balance,
+sum(x.gl_receiving_amount) gl_receiving,
+sum(x.gl_inventory_amount) gl_inventory,
+sum(x.gl_wip_amount) gl_work_in_process,
+sum(x.gl_payables_amount) gl_payables,
+sum(x.gl_other_amount) gl_other,
+sum(x.gl_end_balance) gl_ending_balance,
+sum(x.receiving_value) receiving_value,
+sum(x.inv_onhand_value) inventory_value,
+sum(x.wip_value) wip_value,
+sum(x.receiving_value+x.inv_onhand_value+x.wip_value) total_perpetual_value,
+sum(x.gl_end_balance-x.receiving_value-x.inv_onhand_value-x.wip_value) difference
 from
--- ==============================================
--- 1.0 first select the general ledger balances
--- ==============================================
 (
-select gb.period_name period_name,
-    gl.name ledger,
-    gcc.segment1 seg1,
-    gcc.segment2 seg2,
-    gcc.segment3 seg3,
-    gcc.segment4 seg4,
-    gcc.segment5 seg5,
-    gcc.segment6 seg6,
-    gcc.segment7 seg7,
-    gcc.segment8 seg8,
-    gcc.segment9 seg9,
-    gcc.segment10 seg10,
-    gcc.segment11 seg11,
-    gcc.segment12 seg12,
-    gcc.segment13 seg13,
-    gcc.segment14 seg14,
-    gcc.segment15 seg15,
-    sum(nvl(gb.begin_balance_dr,0) - nvl(gb.begin_balance_cr,0)) gl_beg_balance,
-    -- Revision for version 1.8
-    sum(nvl(gl_per_sum.receiving_amount,0)) gl_receiving_amount,
-    sum(nvl(gl_per_sum.inventory_amount,0)) gl_inventory_amount,
-    sum(nvl(gl_per_sum.wip_amount,0)) gl_wip_amount,
-    sum(nvl(gl_per_sum.payables_amount,0)) gl_payables_amount,
-    sum(nvl(gl_per_sum.other_amount,0)) gl_other_amount,
-    sum(nvl(gb.begin_balance_dr,0) - nvl(gb.begin_balance_cr,0)) +
-      sum(nvl(gb.period_net_dr,0) - nvl(gb.period_net_cr,0)) gl_end_balance,
-    -- Revision for version 1.8
-    null receiving_value,
-    null inv_onhand_value,
-    null wip_value
-    from
-    gl_ledgers gl,
-    gl_code_combinations gcc,
-    gl_balances gb,
-    (select gjh.period_name period_name,
-        gjh.ledger_id,
-        gjl.code_combination_id,
-        gcc.segment1 seg1,
-        gcc.segment2 seg2,
-        gcc.segment3 seg3,
-        gcc.segment4 seg4,
-        gcc.segment5 seg5,
-        gcc.segment6 seg6,
-        gcc.segment7 seg7,
-        gcc.segment8 seg8,
-        gcc.segment9 seg9,
-        gcc.segment10 seg10,
-        gcc.segment11 seg11,
-        gcc.segment12 seg12,
-        gcc.segment13 seg13,
-        gcc.segment14 seg14,
-        gcc.segment15 seg15,
-        nvl(sum(case when gjh.je_source='Cost Management' and gjh.je_category='Receiving' then gjl.amount end),0) receiving_amount,
-        nvl(sum(case when gjh.je_source='Cost Management' and gjh.je_category='Inventory' then gjl.amount end),0) inventory_amount,
-        nvl(sum(case when gjh.je_source='Cost Management' and gjh.je_category='WIP' then gjl.amount end),0) wip_amount,
-        nvl(sum(case when gjh.je_source='Payables' then gjl.amount end),0) payables_amount,
-        nvl(sum(case when gjh.je_source not in ('Cost Management','Payables') then gjl.amount end),0) other_amount,
-        nvl(sum(gjl.amount),0) monthly_activity
-     from
-     gl_je_headers gjh,
-     (select nvl(gjl.accounted_dr,0)-nvl(gjl.accounted_cr,0) amount, gjl.* from gl_je_lines gjl) gjl,
-     gl_code_combinations gcc,
-     gl_ledgers gl
-     where 1=1  -- gjh.period_name=:period_name
-     -- Revision for version 1.8
-     and    gjh.ledger_id           = gl.ledger_id
-     and    gjh.je_header_id        = gjl.je_header_id
-     and    gjh.status              = 'P'
-     and    gjh.actual_flag         = 'A'
-     and    gcc.summary_flag        = 'N'
-     and    gjl.code_combination_id = gcc.code_combination_id
-     and    gcc.&account_segment in (select y.account from y)
-     -- ===========================================
-     -- Revision for version 1.1
-     -- Only get inventory organization ledgers
-     -- ===========================================
-     and    gl.ledger_id in 
-                (select distinct gl.ledger_id
-                 from   hr_organization_information hoi,
-                        hr_all_organization_units haou,
-                        mtl_parameters mp,
-                        gl_ledgers gl
-                 where  hoi.org_information_context   = 'Accounting Information'
-                 and    hoi.organization_id           = mp.organization_id
-                 and    hoi.organization_id           = haou.organization_id   -- this gets the organization name
-                 and    gl.ledger_id                  = to_number(hoi.org_information1) -- get the ledger_id
-                 -- avoid selecting disabled inventory organizations
-                 and    sysdate < nvl(haou.date_to, sysdate + 1)
-                 -- Revision for version 1.8
-                 and    8=8
-                 and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
-                )
-     -- ======================================
-     group by
-        gjh.period_name,
-        gjh.ledger_id,
-        gjl.code_combination_id,
-        gcc.segment1,
-        gcc.segment2,
-        gcc.segment3,
-        gcc.segment4,
-        gcc.segment5,
-        gcc.segment6,
-        gcc.segment7,
-        gcc.segment8,
-        gcc.segment9,
-        gcc.segment10,
-        gcc.segment11,
-        gcc.segment12,
-        gcc.segment13,
-        gcc.segment14,
-        gcc.segment15) gl_per_sum
- where 2=2 -- gb.period_name=:period_name
- and    gb.code_combination_id = gcc.code_combination_id
- and    gb.code_combination_id = gl_per_sum.code_combination_id (+)
- and    gb.ledger_id           = gl_per_sum.ledger_id (+)
- and    gb.ledger_id           = gl.ledger_id
- and    gb.actual_flag         = 'A'
- and    gb.period_type         = gl.accounted_period_type -- replaces parameter
- and    gb.currency_code       = gl.currency_code
- and    gcc.summary_flag       = 'N'
- -- avoid reporting the consolidated ledger
- and    gl.bal_seg_value_option_code <> 'A'
- and    gcc.&account_segment in (select y.account from y)
- and    gl.ledger_category_code <> 'SECONDARY'
- -- ===========================================
- -- Revision for version 1.1
- -- Only get inventory organization ledgers
- -- ===========================================
- and    gl.ledger_id in 
-                (select distinct gl.ledger_id
-                 from   hr_organization_information hoi,
-                        hr_all_organization_units haou,
-                        mtl_parameters mp,
-                        gl_ledgers gl
-                 where  hoi.org_information_context   = 'Accounting Information'
-                 and    hoi.organization_id           = mp.organization_id
-                 and    hoi.organization_id           = haou.organization_id   -- this gets the organization name
-                 and    gl.ledger_id                  = to_number(hoi.org_information1) -- get the ledger_id
-                 -- avoid selecting disabled inventory organizations
-                 and    sysdate < nvl(haou.date_to, sysdate + 1)
-                 -- Revision for version 1.8
-                 and    8=8
-                )
- -- ======================================
- group by
-    gb.period_name,
-    gl.name,
-    gcc.segment1,
-    gcc.segment2,
-    gcc.segment3,
-    gcc.segment4,
-    gcc.segment5,
-    gcc.segment6,
-    gcc.segment7,
-    gcc.segment8,
-    gcc.segment9,
-    gcc.segment10,
-    gcc.segment11,
-    gcc.segment12,
-    gcc.segment13,
-    gcc.segment14,
-    gcc.segment15
- union all
- -- ==============================================
- -- 2.0 select the inventory perpetual balances
- -- ==============================================
- -- =======================================================================
- -- this select combines the two inline table select statements by ledger
- -- for the standard inventory values
- -- =======================================================================
- select inv_value.period_name period_name,
-    inv_value.name ledger,
-    inv_value.segment1 seg1,
-    inv_value.segment2 seg2,
-    inv_value.segment3 seg3,
-    inv_value.segment4 seg4,
-    inv_value.segment5 seg5,
-    inv_value.segment6 seg6,
-    inv_value.segment7 seg7,
-    inv_value.segment8 seg8,
-    inv_value.segment9 seg9,
-    inv_value.segment10 seg10,
-    inv_value.segment11 seg11,
-    inv_value.segment12 seg12,
-    inv_value.segment13 seg13,
-    inv_value.segment14 seg14,
-    inv_value.segment15 seg15,
-    null gl_beg_balance,
-    -- Revision for version 1.8
-    null gl_receiving_amount,
-    null gl_inventory_amount,
-    null gl_wip_amount,
-    null gl_payables_amount,
-    null gl_other_amount,
-    null gl_end_balance,
-    sum(nvl(inv_value.rollback_value,0)) inv_onhand_value,
-    -- Revision for version 1.8
-    null receiving_value,
-    null wip_value
- from
-    -- =======================================================================
-    -- 2.1  the first select gets the period-end quantities from the subinventories
-    -- =======================================================================    
-    (select    oap.period_name,
-        gl.name,
-        gcc1.segment1,
-        gcc1.segment2,
-        gcc1.segment3,
-        gcc1.segment4,
-        gcc1.segment5,
-        gcc1.segment6,
-        gcc1.segment7,
-        gcc1.segment8,
-        gcc1.segment9,
-        gcc1.segment10,
-        gcc1.segment11,
-        gcc1.segment12,
-        gcc1.segment13,
-        gcc1.segment14,
-        gcc1.segment15,
-        sum(nvl(cpcs.rollback_value,0)) rollback_value
-     from
-     cst_period_close_summary cpcs,
-     org_acct_periods oap,
-     mtl_parameters mp,
-     mtl_system_items_b msi,
-     mtl_secondary_inventories msub,
-     gl_code_combinations gcc1,  -- subinventory accounts
-     hr_organization_information hoi,
-     hr_all_organization_units haou,
-     hr_all_organization_units haou2,
-     gl_ledgers gl
-    -- ===========================================
-    -- inventory accounting period joins
-    -- ===========================================
-    where 3=3 -- oap.period_name=:period_name
-    and     oap.acct_period_id            = cpcs.acct_period_id
-    and     oap.organization_id           = mp.organization_id 
-    -- ========================================================================
-    -- subinventory, mtl parameter, item master and period close snapshot joins
-    -- ========================================================================
-    and    msub.secondary_inventory_name = cpcs.subinventory_code
-    and    msub.organization_id          = cpcs.organization_id
-    and    mp.organization_id            = cpcs.organization_id
-    and    mp.organization_id            = msi.organization_id
-    and    msi.organization_id           = cpcs.organization_id
-    and    msi.inventory_item_id         = cpcs.inventory_item_id
-    -- ===========================================
-    -- accounting code combination joins
-    -- ===========================================
-    and    msub.material_account         = gcc1.code_combination_id
-    -- ===========================================
-    -- organization joins to the hr org model
-    -- ===========================================
-    -- avoid selecting disabled inventory organizations
-    and    sysdate < nvl(haou.date_to, sysdate + 1)
-    and    hoi.org_information_context   = 'Accounting Information'
-    and    hoi.organization_id           = mp.organization_id
-    and    hoi.organization_id           = haou.organization_id   -- this gets the organization name
-    and    haou2.organization_id         = to_number(hoi.org_information3) -- this gets the operating unit id
-    and    gl.ledger_id                  = to_number(hoi.org_information1) -- get the ledger_id
-    -- Revision for version 1.8
-    and    8=8
-    -- ===========================================
-    -- limit the rows returned-don't get zero rows
-    -- ===========================================
-    and    nvl(cpcs.rollback_quantity,0) <> 0
-    group by
-        oap.period_name,
-        gl.name,
-        gcc1.segment1,
-        gcc1.segment2,
-        gcc1.segment3,
-        gcc1.segment4,
-        gcc1.segment5,
-        gcc1.segment6,
-        gcc1.segment7,
-        gcc1.segment8,
-        gcc1.segment9,
-        gcc1.segment10,
-        gcc1.segment11,
-        gcc1.segment12,
-        gcc1.segment13,
-        gcc1.segment14,
-        gcc1.segment15,
-        msi.inventory_item_id,
-        msi.organization_id
-    union all
-    -- =======================================================================
-    -- 2.2 the second select gets the period-end quantities from intransit
-    -- =======================================================================
-    select    oap.period_name,
-        gl.name,
-        gcc1.segment1,
-        gcc1.segment2,
-        gcc1.segment3,
-        gcc1.segment4,
-        gcc1.segment5,
-        gcc1.segment6,
-        gcc1.segment7,
-        gcc1.segment8,
-        gcc1.segment9,
-        gcc1.segment10,
-        gcc1.segment11,
-        gcc1.segment12,
-        gcc1.segment13,
-        gcc1.segment14,
-        gcc1.segment15,
-        sum(nvl(cpcs.rollback_value,0)) rollback_value
-    from
-    cst_period_close_summary cpcs,
-    org_acct_periods oap,
-    mtl_parameters mp,
-    mtl_system_items_b msi,
-    gl_code_combinations gcc1,  -- subinventory accounts
-    hr_organization_information hoi,
-    hr_all_organization_units haou,
-    hr_all_organization_units haou2,
-    gl_ledgers gl
-    -- ===========================================
-    -- inventory accounting period joins
-    -- ===========================================
-    where 3=3 -- oap.period_name=:period_name
-    and    oap.acct_period_id            = cpcs.acct_period_id
-    and    oap.organization_id           = mp.organization_id 
-    -- ========================================================================
-    -- subinventory, mtl parameter, item master and period close snapshot joins
-    -- ========================================================================
-    and    cpcs.subinventory_code        is null -- indicates it is for intransit
-    and    mp.organization_id            = cpcs.organization_id
-    and    mp.organization_id            = msi.organization_id
-    and    msi.organization_id           = cpcs.organization_id
-    and    msi.inventory_item_id         = cpcs.inventory_item_id
-    -- ===========================================
-    -- accounting code combination joins
-    -- ===========================================
-    and    mp.intransit_inv_account      = gcc1.code_combination_id
-    -- ===========================================
-    -- organization joins to the hr org model
-    -- ===========================================
-    and    hoi.org_information_context   = 'Accounting Information'
-    and    hoi.organization_id           = mp.organization_id
-    and    hoi.organization_id           = haou.organization_id   -- this gets the organization name
-    and    haou2.organization_id         = to_number(hoi.org_information3) -- this gets the operating unit id
-    and    gl.ledger_id                  = to_number(hoi.org_information1) -- get the ledger_id
-    -- avoid selecting disabled inventory organizations
-    and  sysdate < nvl(haou.date_to, sysdate + 1)
-    -- Revision for version 1.8
-    and    8=8
-    -- ===========================================
-    -- limit the rows returned-don't get zero rows
-    -- ===========================================
-    and    nvl(cpcs.rollback_quantity,0) <> 0
-    group by
-        oap.period_name,
-        gl.name,
-        gcc1.segment1,
-        gcc1.segment2,
-        gcc1.segment3,
-        gcc1.segment4,
-        gcc1.segment5,
-        gcc1.segment6,
-        gcc1.segment7,
-        gcc1.segment8,
-        gcc1.segment9,
-        gcc1.segment10,
-        gcc1.segment11,
-        gcc1.segment12,
-        gcc1.segment13,
-        gcc1.segment14,
-        gcc1.segment15,
-        msi.inventory_item_id,
-        msi.organization_id
-    ) inv_value
- group by
-    inv_value.period_name,
-    inv_value.name,
-    inv_value.segment1,
-    inv_value.segment2,
-    inv_value.segment3,
-    inv_value.segment4,
-    inv_value.segment5,
-    inv_value.segment6,
-    inv_value.segment7,
-    inv_value.segment8,
-    inv_value.segment9,
-    inv_value.segment10,
-    inv_value.segment11,
-    inv_value.segment12,
-    inv_value.segment13,
-    inv_value.segment14,
-    inv_value.segment15
- union all
- -- ==============================================
- -- 3.0 select the wip perpetual balances at gross
- -- ==============================================
- -- =======================================================================
- -- this select combines the inline table select statements by ledger
- -- for the gross wip values
- -- =======================================================================
- select    gross_wip_value.period_name period_name,
-    gross_wip_value.name ledger,
-    gross_wip_value.segment1 seg1,
-    gross_wip_value.segment2 seg2,
-    gross_wip_value.segment3 seg3,
-    gross_wip_value.segment4 seg4,
-    gross_wip_value.segment5 seg5,
-    gross_wip_value.segment6 seg6,
-    gross_wip_value.segment7 seg7,
-    gross_wip_value.segment8 seg8,
-    gross_wip_value.segment9 seg9,
-    gross_wip_value.segment10 seg10,
-    gross_wip_value.segment11 seg11,
-    gross_wip_value.segment12 seg12,
-    gross_wip_value.segment13 seg13,
-    gross_wip_value.segment14 seg14,
-    gross_wip_value.segment15 seg15,
-    null gl_beg_balance,
-    -- Revision for version 1.8
-    null gl_receiving_amount,
-    null gl_inventory_amount,
-    null gl_wip_amount,
-    null gl_payables_amount,
-    null gl_other_amount,
-    null gl_end_balance,
-    null inv_onhand_value,
-    -- Revision for version 1.8
-    null receiving_value,
-    sum(nvl(gross_wip_value.wip_value,0)) wip_value
- from
-    -- =======================================================================
-    -- 3.1  the first select gets the period-end wip values
-    -- at the gross wip value (gross standard value)
-    -- =======================================================================
-    (select    wip_value.period_name, -- period name
-        gl.name,               -- ledger name
-        gcc.segment1,
-        gcc.segment2,
-        gcc.segment3,
-        gcc.segment4,
-        gcc.segment5,
-        gcc.segment6,
-        gcc.segment7,
-        gcc.segment8,
-        gcc.segment9,
-        gcc.segment10,
-        gcc.segment11,
-        gcc.segment12,
-        gcc.segment13,
-        gcc.segment14,
-        gcc.segment15,
-        sum(wip_value.wip_value) wip_value
-     from
-     gl_ledgers gl,
-     gl_code_combinations gcc,
-     hr_organization_information hoi,
-     hr_all_organization_units haou,  -- inv_organization_id
-     hr_all_organization_units haou2, -- operating unit
-     mtl_system_items_b msi,
-        -- ===========================================
-        -- inline table select for wip period balances
-        -- ===========================================
-        -- =====================================================
-        -- 3.11 first get the material value for the wip jobs
-        -- =====================================================
-        (select oap.period_name period_name,
-            wpb.acct_period_id acct_period_id,
-            wpb.organization_id organization_id,
-            wdj.material_account code_combination_id,
-            wdj.class_code class_code,
-            wdj.primary_item_id inventory_item_id,
-            sum(nvl(tl_scrap_in,0)+
-             nvl(pl_material_in,0)-
-             nvl(tl_material_out,0) -
-             nvl(tl_scrap_out,0)-
-             nvl(pl_material_out,0)-
-             nvl(tl_material_var,0)-
-             nvl(tl_scrap_var,0)-
-             nvl(pl_material_var,0)) wip_value
-         from 
-         wip_period_balances wpb,
-         wip_discrete_jobs wdj,
-         org_acct_periods oap,
-         -- Revision for version 1.8
-         wip_accounting_classes wac
-         -- ===========================================
-         -- wip job entity and accounting period joins
-         -- ===========================================
-         where 3=3 -- oap.period_name=:period_name
-         and    wpb.wip_entity_id         = wdj.wip_entity_id
-         and    wpb.acct_period_id       <= oap.acct_period_id
-         and    wpb.organization_id       = oap.organization_id
-         -- Revision for version 1.8
-         and    wac.class_code            = wdj.class_code 
-         and    wac.organization_id       = wdj.organization_id
-         and    wac.class_type not in (4,6,7) -- 4-expense non-standard, 6-maintenance, 7-expense non-standard lot based
-         -- End revision for version 1.8
-         group by
-            oap.period_name,
-            wpb.acct_period_id,
-            wpb.organization_id,
-            wdj.material_account,
-            wdj.class_code,
-            wdj.primary_item_id
-         -- =====================================================
-         -- 3.12 now get the material overhead value for the wip jobs
-         -- =====================================================
-         union all
-         select oap.period_name period_name,
-            wpb.acct_period_id acct_period_id,
-            wpb.organization_id organization_id,
-            wdj.material_overhead_account code_combination_id,
-            wdj.class_code class_code,
-            wdj.primary_item_id inventory_item_id,
-             sum(nvl(pl_material_overhead_in,0)-
-             nvl(tl_material_overhead_out,0)-
-             nvl(pl_material_overhead_out,0)-
-             nvl(tl_material_overhead_var,0)-
-             nvl(pl_material_overhead_var,0)) wip_value
-        from  wip_period_balances wpb,
-              wip_discrete_jobs wdj,
-              org_acct_periods oap,
-              -- Revision for version 1.8
-              wip_accounting_classes wac
-         -- ===========================================
-         -- wip job entity and accounting period joins
-         -- ===========================================
-         where 3=3 -- oap.period_name=:period_name
-         and    wpb.wip_entity_id         = wdj.wip_entity_id
-         and    wpb.acct_period_id       <= oap.acct_period_id
-         and    wpb.organization_id       = oap.organization_id
-         -- Revision for version 1.8
-         and    wac.class_code            = wdj.class_code 
-         and    wac.organization_id       = wdj.organization_id
-         and    wac.class_type not in (4,6,7) -- 4-expense non-standard, 6-maintenance, 7-expense non-standard lot based
-         -- End revision for version 1.8 
-         group by
-            oap.period_name,
-            wpb.acct_period_id,
-            wpb.organization_id,
-            wdj.material_overhead_account,
-            wdj.class_code,
-            wdj.primary_item_id
-         -- =====================================================
-         -- 3.13 now get the resource value for the wip jobs
-         -- =====================================================
-         union all
-         select oap.period_name period_name,
-            wpb.acct_period_id acct_period_id,
-            wpb.organization_id organization_id,
-            wdj.resource_account code_combination_id,
-            wdj.class_code class_code,
-            wdj.primary_item_id inventory_item_id,
-            sum(nvl(tl_resource_in,0)+
-             nvl(pl_resource_in,0)-
-             nvl(tl_resource_out,0)-
-             nvl(pl_resource_out,0)-
-             nvl(tl_resource_var,0)-
-             nvl(pl_resource_var,0)) wip_value
-         from wip_period_balances wpb,
-              wip_discrete_jobs wdj,
-              org_acct_periods oap,
-             -- Revision for version 1.8
-             wip_accounting_classes wac
-         -- ===========================================
-         -- wip job entity and accounting period joins
-         -- ===========================================
-         where 3=3 -- oap.period_name=:period_name
-         and    wpb.wip_entity_id         = wdj.wip_entity_id
-         and    wpb.acct_period_id       <= oap.acct_period_id
-         and    wpb.organization_id       = oap.organization_id
-         -- Revision for version 1.8
-         and    wac.class_code            = wdj.class_code 
-         and    wac.organization_id       = wdj.organization_id
-         and    wac.class_type not in (4,6,7) -- 4-expense non-standard, 6-maintenance, 7-expense non-standard lot based
-         -- End revision for version 1.8
-         group by
-            oap.period_name,
-            wpb.acct_period_id,
-            wpb.organization_id,
-            wdj.resource_account,
-            wdj.class_code,
-            wdj.primary_item_id
-         -- =====================================================
-         -- 3.14 now get the osp value for the wip jobs
-         -- =====================================================
-         union all
-         select oap.period_name period_name,
-            wpb.acct_period_id acct_period_id,
-            wpb.organization_id organization_id,
-            wdj.outside_processing_account code_combination_id,
-            wdj.class_code class_code,
-            wdj.primary_item_id inventory_item_id,
-            sum(nvl(tl_outside_processing_in,0)+
-             nvl(pl_outside_processing_in,0)-
-             nvl(tl_outside_processing_out,0)-
-             nvl(pl_outside_processing_out,0)-
-             nvl(tl_outside_processing_var,0)-
-             nvl(pl_outside_processing_var,0)) wip_value
-         from wip_period_balances wpb,
-              wip_discrete_jobs wdj,
-              org_acct_periods oap,
-              -- Revision for version 1.8
-              wip_accounting_classes wac
-         -- ===========================================
-         -- wip job entity and accounting period joins
-         -- ===========================================
-         where 3=3 -- oap.period_name=:period_name
-         and    wpb.wip_entity_id         = wdj.wip_entity_id
-         and    wpb.acct_period_id       <= oap.acct_period_id
-         and    wpb.organization_id       = oap.organization_id
-         -- Revision for version 1.8
-         and    wac.class_code            = wdj.class_code 
-         and    wac.organization_id       = wdj.organization_id
-         and    wac.class_type not in (4,6,7) -- 4-expense non-standard, 6-maintenance, 7-expense non-standard lot based
-         -- End revision for version 1.8
-         group by
-            oap.period_name,
-            wpb.acct_period_id,
-            wpb.organization_id,
-            wdj.outside_processing_account,
-            wdj.class_code,
-            wdj.primary_item_id
-         -- =====================================================
-         -- 3.15 now get the overhead value for the wip jobs
-         -- =====================================================
-         union all
-         select oap.period_name period_name,
-            wpb.acct_period_id acct_period_id,
-            wpb.organization_id organization_id,
-            wdj.overhead_account code_combination_id,
-            wdj.class_code class_code,
-            wdj.primary_item_id inventory_item_id,
-            sum(nvl(tl_overhead_in,0)+
-             nvl(pl_overhead_in,0)-
-             nvl(tl_overhead_out,0)-
-             nvl(pl_overhead_out,0)-
-             nvl(tl_overhead_var,0)-
-             nvl(pl_overhead_var,0)) wip_value
-         from wip_period_balances wpb,
-              wip_discrete_jobs wdj,
-              org_acct_periods oap,
-              -- Revision for version 1.8
-              wip_accounting_classes wac
-         -- ===========================================
-         -- wip job entity and accounting period joins
-         -- ===========================================
-         where 3=3 -- oap.period_name=:period_name
-         and    wpb.wip_entity_id         = wdj.wip_entity_id
-         and    wpb.acct_period_id       <= oap.acct_period_id
-         and    wpb.organization_id       = oap.organization_id
-         -- Revision for version 1.8
-         and    wac.class_code            = wdj.class_code 
-         and    wac.organization_id       = wdj.organization_id
-         and    wac.class_type not in (4,6,7) -- 4-expense non-standard, 6-maintenance, 7-expense non-standard lot based
-         -- End revision for version 1.8
-         group by
-            oap.period_name,
-            wpb.acct_period_id,
-            wpb.organization_id,
-            wdj.overhead_account,
-            wdj.class_code,
-            wdj.primary_item_id
-        ) wip_value
-     -- ========================================================
-     -- g/l ledger, organization and code combination joins
-     -- ========================================================
-     where    gcc.code_combination_id   = wip_value.code_combination_id
-     and    msi.inventory_item_id       = wip_value.inventory_item_id
-     and    msi.organization_id         = wip_value.organization_id
-     -- avoid selecting disabled inventory organizations
-     and sysdate < nvl(haou.date_to, sysdate + 1)
-     and    hoi.org_information_context = 'Accounting Information'
-     and    hoi.organization_id         = wip_value.organization_id
-     and    hoi.organization_id         = haou.organization_id            -- get the organization name
-     and    haou2.organization_id       = to_number(hoi.org_information3) -- get the operating unit id
-     and    gl.ledger_id                = to_number(hoi.org_information1) -- get the ledger_id
-    -- Revision for version 1.8
-     and    8=8
-     group by
-        wip_value.period_name, -- period name
-        gl.name,               -- ledger name
-        gcc.segment1,
-        gcc.segment2,
-        gcc.segment3,
-        gcc.segment4,
-        gcc.segment5,
-        gcc.segment6,
-        gcc.segment7,
-        gcc.segment8,
-        gcc.segment9,
-        gcc.segment10,
-        gcc.segment11,
-        gcc.segment12,
-        gcc.segment13,
-        gcc.segment14,
-        gcc.segment15
-    ) gross_wip_value
- group by 
-    gross_wip_value.period_name,
-    gross_wip_value.name,
-    gross_wip_value.segment1,
-    gross_wip_value.segment2,
-    gross_wip_value.segment3,
-    gross_wip_value.segment4,
-    gross_wip_value.segment5,
-    gross_wip_value.segment6,
-    gross_wip_value.segment7,
-    gross_wip_value.segment8,
-    gross_wip_value.segment9,
-    gross_wip_value.segment10,
-    gross_wip_value.segment11,
-    gross_wip_value.segment12,
-    gross_wip_value.segment13,
-    gross_wip_value.segment14,
-    gross_wip_value.segment15
- union all
- -- ===========================================================
- -- 4.0 This select combines the inline table select statements
- --     by Ledger for the receiving perpetual values
- -- ===========================================================
-  select rcv_value.period_name period_name,
-   rcv_value.Ledger,
-  rcv_value.segment1 seg1,
-  rcv_value.segment2 seg2,
-  rcv_value.segment3 seg3,
-  rcv_value.segment4 seg4,
-  rcv_value.segment5 seg5,
-  rcv_value.segment6 seg6,
-  rcv_value.segment7 seg7,
-  rcv_value.segment8 seg8,
-  rcv_value.segment9 seg9,
-  rcv_value.segment10 seg10,
-  rcv_value.segment11 seg11,
-  rcv_value.segment12 seg12,
-  rcv_value.segment13 seg13,
-  rcv_value.segment14 seg14,
-  rcv_value.segment15 seg15,
-  null gl_beg_balance,
-  null gl_receiving_amount,
-  null gl_inventory_amount,
-  null gl_wip_amount,
-  null gl_payables_amount,
-  null gl_other_amount,
-  null gl_end_balance,
-  sum(rcv_value.rcv_value) receiving_value,
-  null inv_onhand_value,
-  null wip_value
-  from
- -- =======================================================================
- --  4.1 The first select gets the current receiving quantities and values
- --      based on the CAC Receiving Inventory Value Report, version 1.38
- -- =======================================================================
-   -- =================================================
-   -- Condense the receiving quantities and values
-   -- to period, ledger and account information
-   -- =================================================
-  (select oap.period_name period_name,
-    gl.name Ledger,
-   gcc.segment1,
-   gcc.segment2,
-   gcc.segment3,
-   gcc.segment4,
-   gcc.segment5,
-   gcc.segment6,
-   gcc.segment7,
-   gcc.segment8,
-   gcc.segment9,
-   gcc.segment10,
-   gcc.segment11,
-   gcc.segment12,
-   gcc.segment13,
-   gcc.segment14,
-   gcc.segment15,
-   sum(rcv.amount) rcv_value,
-   sum(rcv.quantity) rcv_quantity   
-  from rcv_parameters rp,
-  gl_code_combinations gcc,
-  org_acct_periods oap,
-  hr_organization_information hoi,
-  hr_all_organization_units haou,
-  hr_all_organization_units haou2,
-  gl_ledgers gl,
-  -- =============================================================
-  -- Part 4.2
-  -- Get the onhand receiving quantities
-  -- =============================================================
-  -- Revision for version 1.38, rewrite this section to not use
-  -- rcv_receiving_value_view, unit prices in Release 12 from
-  -- purchase orders or from transfer prices based on advanced pricing.
-  -- =============================================================
-  (select 'rcv_onhand' section,
-    rs.to_organization_id organization_id,
-   rs.item_id  inventory_item_id,
-   rs.destination_type_code,
-   rs.po_header_id,
-   rs.po_line_id,
-   rs.po_line_location_id,
-   -- Revision for version 1.29
-   rs.po_release_id,
-   -- Revision for version 1.36
-   -- Move Txn Date Logic to all_rcv Query
-   rs.shipment_header_id,
-   rs.shipment_line_id,
-   -- End revision for version 1.36
-   pod.project_id,
-   -- End revision for version 1.29
-   rsh.receipt_num,
-   pod.wip_entity_id,
-   pod.bom_resource_id,
-   round(rs.to_org_primary_quantity,3) quantity,
-   rs.amount
-   from (select ms.to_organization_id,
-    ms.item_id,
-    ms.destination_type_code,
-    ms.po_header_id,
-    ms.po_line_id,
-    ms.po_line_location_id,
-    ms.po_distribution_id,
-    ms.po_release_id,
-    ms.req_header_id,
-    ms.shipment_header_id,
-    ms.shipment_line_id,
-    ms.rcv_transaction_id,
-    ms.to_org_primary_quantity,
-    -- Revision for version 1.32
-    -- Need a consistent price based on rae qtys as the transaction quantity in rcv_accounting_events may be
-    -- different from the ms.to_org_primary_quantity in mtl_supply, due to returns to vendor transactions.
-    -- Average Unit Price
-    round(sum(decode(rae.currency_conversion_rate,
-       null, nvl(rae.unit_price,0),
-       nvl(rae.unit_price,0) * rae.currency_conversion_rate
-      )
-       * (rae.source_doc_quantity/rae.primary_quantity) * rae.primary_quantity
-      )
-    -- Divided by the Quantity
-      / sum(rae.primary_quantity)
-       ,8) avg_unit_price,
-    -- Average Unit Price X Quantity = Amount
-    round(ms.to_org_primary_quantity *
-     -- Price X Quantity
-     round(sum(decode(rae.currency_conversion_rate,
-        null, nvl(rae.unit_price,0),
-        nvl(rae.unit_price,0) * rae.currency_conversion_rate
-       ) * (rae.source_doc_quantity/rae.primary_quantity) * rae.primary_quantity
-           ) / sum(rae.primary_quantity)
-        ,8)
-        ,2) amount
-    from mtl_supply ms,
-    -- Revision for version 1.35
-    (select x.*
-     from (select rt.transaction_id parent_transaction_id,
-      rt.organization_id,
-      connect_by_root rt.transaction_id child_transaction_id,
-      connect_by_isleaf
-      from rcv_transactions rt
-      connect by prior rt.parent_transaction_id=rt.transaction_id
-      start with rt.transaction_id in
-      (select ms.rcv_transaction_id
-       from mtl_supply ms
-       where ms.supply_type_code       ='RECEIVING'
-       -- Revision for version 1.36, client has expense receipts with items
-       -- and ms.destination_type_code <>'EXPENSE'
-       -- End revision for version 1.36
-      )
-      -- Transfer of ownership consigned entries do not hit receiving accounts
-      and nvl(rt.consigned_flag,'N')        = 'N'
-     ) x
-     where x.connect_by_isleaf=1
-    ) rt,
-    -- End revision for version 1.35
-    rcv_accounting_events rae
-    where ms.rcv_transaction_id         = rt.child_transaction_id
-    and rt.parent_transaction_id      = rae.rcv_transaction_id
-    -- Revision for version 1.35
-    -- and rae.transaction_date         >= ms.receipt_date
-    and rae.organization_id           = rt.organization_id
-    -- Revision for version 1.36
-    and ms.to_organization_id         = rt.organization_id
-    group by
-    ms.to_organization_id,
-    ms.item_id,
-    ms.destination_type_code,
-    ms.po_header_id,
-    ms.po_line_id,
-    ms.po_line_location_id,
-    ms.po_distribution_id,
-    ms.po_release_id,
-    ms.req_header_id,
-    ms.shipment_header_id,
-    ms.shipment_line_id,
-    ms.rcv_transaction_id,
-    ms.to_org_primary_quantity
-   ) rs,
-   -- End revision for version 1.35
-   rcv_shipment_headers rsh,
-   rcv_shipment_lines rsl,
-   po_headers_all ph,
-   po_line_locations_all pll,
-   po_distributions_all pod,
-   po_requisition_headers_all prh
-   -- Revision for version 1.29
-   -- po_lines_all pl,
-   -- po_requisition_lines_all prl,
-   -- rcv_transactions rt
-  where rsh.shipment_header_id        = rs.shipment_header_id
-  and rsl.shipment_line_id          = rs.shipment_line_id
-  -- Revision for version 1.36
-  and rsl.shipment_header_id        = rs.shipment_header_id
-  and ph.po_header_id (+)           = rs.po_header_id
-  -- Revision for version 1.29
-  -- and pl.po_line_id (+)             = rs.po_line_id
-  and pll.line_location_id (+)      = rs.po_line_location_id
-  and pod.po_distribution_id (+)    = rs.po_distribution_id
-  and prh.requisition_header_id (+) = rs.req_header_id
-  -- Internal requisitions are not part of receiving inventory value
-  and rsl.source_document_code <> 'REQ'
-  union all
-   -- =============================================================
-  -- Part 4.3
-  -- Sum up all the post close rcv'g transactions by item and org
-  -- The SIGN of the quantities and amounts have been reversed
-  -- =============================================================
-   select post_close_rcv_txns.section               section,
-   post_close_rcv_txns.organization_id       organization_id,
-   post_close_rcv_txns.inventory_item_id     inventory_item_id,
-   post_close_rcv_txns.destination_type_code destination_type_code,
-   post_close_rcv_txns.po_header_id          po_header_id,
-   post_close_rcv_txns.po_line_id            po_line_id,
-   post_close_rcv_txns.po_line_location_id   po_line_location_id,
-   -- Revision for version 1.29
-   post_close_rcv_txns.po_release_id         po_release_id,
-   -- Revision for version 1.36
-   -- Move Txn Date Logic to all_rcv Query
-   post_close_rcv_txns.shipment_header_id,
-   post_close_rcv_txns.shipment_line_id,
-   -- End revision for version 1.36
-   post_close_rcv_txns.project_id            project_id,
-   -- End revision for version 1.29
-   post_close_rcv_txns.receipt_num           receipt_num,
-   post_close_rcv_txns.wip_entity_id         wip_entity_id,
-   post_close_rcv_txns.bom_resource_id       bom_resource_id,
-   -- Revision for version 1.36
-   -- post_close_rcv_txns.transaction_date      transaction_date,
-   sum(nvl(post_close_rcv_txns.quantity,0))  quantity,
-   sum(nvl(post_close_rcv_txns.amount,0))    amount
-   from (
-       -- ==========================================================
-       -- Part 4.3.1
-       -- Get the post close transactions for all receiving activity
-       -- ==========================================================
-    -- ==========================================================
-    -- Section 1.1 Get the PO receipts into receiving inspection
-    -- ==========================================================
-    select 'Section 1.1' section,
-    -- Revision for version 1.28, added to avoid missing
-    -- transactions having same organization_id, item_id, etc.
-    rae.rcv_transaction_id,
-    rae.organization_id,
-    rae.inventory_item_id inventory_item_id,
-    pod.destination_type_code destination_type_code,
-    rae.po_header_id po_header_id,
-    rae.po_line_id po_line_id,
-    rae.po_line_location_id po_line_location_id,
-    -- Revision for version 1.29
-    rsl.po_release_id po_release_id,
-    -- Revision for version 1.36
-    -- Move Txn Date Logic to all_rcv Query
-    rsh.shipment_header_id,
-    rsl.shipment_line_id,
-    -- End revision for version 1.36
-    pod.project_id project_id,
-    -- End revision for version 1.29
-    rsh.receipt_num receipt_num,
-    pod.wip_entity_id wip_entity_id,
-    pod.bom_resource_id bom_resource_id,
-    -- Amount = Quantity X Price
-    -- Rewrite quantity logic for version 1.38, decode on received accounted amounts does not work if it is zero
-    round(decode(rt.transaction_type,
-      'RECEIVE', -1 * rt.primary_quantity,
-      'RETURN TO VENDOR', 1 * rt.primary_quantity,
-      'MATCH', -1 * rt.primary_quantity,
-      'CORRECT',
-       decode(parent_rt.transaction_type,
-        'UNORDERED', 0,
-        'RECEIVE', -1 * rt.primary_quantity,
-        'RETURN TO VENDOR', 1 * rt.primary_quantity,
-        0
-             ),
-      0
-         )
-       ,3) quantity,
-    -- =====================================================================
-    -- Revision for version 1.28
-    -- 1)  Round amounts to 2 decimals
-    -- 2)  No longer use rrsl, inconsistent amounts with mmt when try to
-    --     subtract away non-recoverable tax and recoverable tax amounts
-    -- 3)  Invert the SIGN as we will subtract away these amounts
-    -- 4)  Convert the price into the primary UOM -- (rae.source_doc_quantity/rae.primary_quantity)
-    -- 5)  Use rcv_accounting_events to get the quantity received by PO Distribution
-    -- 6)  Don't sum up the quantities or amounts as there are multiple po
-    --     distributions per PO Header, Line and Line Location, which creates
-    --     split PO receipts by a percentage of the PO Distributions.
-    -- =====================================================================
-    -- Comment out the below code
-    -- -1 * round(sum((nvl(rrsl.accounted_dr,0) - nvl(rrsl.accounted_cr,0)
-    -- - nvl(rrsl.accounted_rec_tax,0) - nvl(rrsl.accounted_nr_tax0))),2) amount
-    -- =====================================================================
-    round(
-     -- Quantity
-     round(decode(sign(nvl(rrsl.accounted_dr,0) - nvl(rrsl.accounted_cr,0)),
-         1,  -1 * abs(rae.primary_quantity),
-        -1, +1 * abs(rae.primary_quantity),
-        rae.primary_quantity
-           )
-        ,3) *
-            -- Price
-     decode(rt.currency_conversion_rate,
-      null, nvl(rt.po_unit_price,0),
-      nvl(rt.po_unit_price,0) * rt.currency_conversion_rate
-           ) *
-     -- Convert into the primary UOM
-     (rt.source_doc_quantity/rt.primary_quantity)
-       ,2) amount
-    -- End fix for version 1.28
-    from -- =====================================================================
-    -- Revision for version 1.28
-    -- Client has multiple WIP Entity Ids and multiple PO distributions per
-    -- Receipt Number for the same PO Header, Line, Line Location and item number.
-    -- Need to use rcv_accounting_events to get the split quantities
-    -- =====================================================================
-    rcv_transactions rt,
-    -- Revision for version 1.38
-    rcv_transactions parent_rt,
-    rcv_shipment_headers rsh,
-    rcv_shipment_lines rsl,
-    rcv_accounting_events rae,
-    rcv_receiving_sub_ledger rrsl,
-    po_distributions_all pod,
-    org_acct_periods oap
-    where rt.transaction_id            = rae.rcv_transaction_id
-    -- Revision for version 1.38
-    and rt.parent_transaction_id     = parent_rt.transaction_id (+)
-    and rt.organization_id           = parent_rt.organization_id (+)
-    and rt.transaction_id            = rrsl.rcv_transaction_id
-    -- Oracle difference =>  the RRSL table is using the meaning as the value for the CST_ACCOUNTING_LINE_TYPE
-    --                       lookup code, as opposed to the lookup code values 1 - 99
-    -- Revision for version 1.34, receiving transactions also use 'Clearing'
-    -- and rrsl.accounting_line_type    = 'Receiving Inspection'
-    and rrsl.accounting_line_type in ('Clearing', 'Receiving Inspection')
-    -- End revision for version 1.34
-    -- Revision for version 1.32
-    -- Fix for version 1.16
-    -- and trunc(rae.transaction_date) > oap.schedule_close_date
-    and rt.transaction_date         >= oap.schedule_close_date + 1
-    -- Revision for version 1.36
-    and rrsl.transaction_date       >= oap.schedule_close_date + 1
-    and pod.po_distribution_id       = rrsl.reference3
-    -- and rae.organization_id          = rt.organization_id
-    -- and oap.organization_id          = rae.organization_id
-    -- and rae.transaction_date        >= oap.schedule_close_date + 1
-    -- and pod.po_distribution_id       = rae.po_distribution_id
-    -- End revision for version 1.36
-    and rt.transaction_id            = rrsl.rcv_transaction_id
-    and oap.organization_id          = rt.organization_id
-    and rae.accounting_event_id      = rrsl.accounting_event_id
-    -- End revision for version 1.32
-    -- Revision for version 1.32
-    and 3=3                          -- oap.period_name=:period_name
-    -- Revision for version 1.36
-    -- and pod.destination_type_code   <> 'EXPENSE'
-    and rt.shipment_header_id        = rsh.shipment_header_id
-    and rt.shipment_line_id          = rsl.shipment_line_id
-    -- Fix for version 1.19
-    and rt.transaction_type         <> 'DELIVER'  -- only want receipts, return to vendor and corrections
-    -- End revision for version 1.32
-    group by
-    'Section 1.1', -- section
-    -- Revision for version 1.28
-    rae.rcv_transaction_id,
-    rae.organization_id,
-    rae.inventory_item_id,
-    pod.destination_type_code,
-    rae.po_header_id,
-    rae.po_line_id,
-    rae.po_line_location_id,
-    -- Revision for version 1.29
-    rsl.po_release_id,
-    -- Revision for version 1.36
-    -- Move Txn Date Logic to all_rcv Query
-    rsh.shipment_header_id,
-    rsl.shipment_line_id,
-    -- End revision for version 1.36
-    pod.project_id,
-    -- End revision for version 1.29
-    rsh.receipt_num,
-    pod.wip_entity_id,
-    pod.bom_resource_id,
-    -- Revision for version 1.38, decode on accounted amounts does not work if it is zero
-    round(decode(rt.transaction_type,
-      'RECEIVE', -1 * rt.primary_quantity,
-      'RETURN TO VENDOR', 1 * rt.primary_quantity,
-      'MATCH', -1 * rt.primary_quantity,
-      'CORRECT',
-       decode(parent_rt.transaction_type,
-        'UNORDERED', 0,
-        'RECEIVE', -1 * rt.primary_quantity,
-        'RETURN TO VENDOR', 1 * rt.primary_quantity,
-        0
-             ),
-      0
-         )
-       ,3), --quantity
-    -- Amount = Quantity X Price
-    round(
-     -- Quantity
-     round(decode(sign(nvl(rrsl.accounted_dr,0) - nvl(rrsl.accounted_cr,0)),
-         1,  -1 * abs(rae.primary_quantity),
-        -1, +1 * abs(rae.primary_quantity),
-        rae.primary_quantity
-           )
-        ,3) *
-    -- Price
-     decode(rt.currency_conversion_rate,
-      null, nvl(rt.po_unit_price,0),
-      nvl(rt.po_unit_price,0) * rt.currency_conversion_rate
-           ) *
-     -- Convert into the primary UOM
-     (rt.source_doc_quantity/rt.primary_quantity)
-       ,2) -- Amount = Quantity X Price
-    -- End revision for version 1.26
-    -- ==========================================================
-    -- Section 1.2 Get the PO deliveries from receiving inspt into
-    -- inventory for both costed and uncosted material transactions
-    -- Uncosted entries are not in mtl_transaction_accounts
-    -- ==========================================================
-    union all
-     select 'Section 1.2' section,
-    -- Revision for version 1.28, added because Section 1.1
-    -- needed the rae.rcv_transaction_id for uniqueness
-    rt.transaction_id,
-    mmt.organization_id organization_id,
-    rsl.item_id inventory_item_id,
-    pod.destination_type_code destination_type_code,
-    rt.po_header_id po_header_id,
-    rt.po_line_id po_line_id,
-    rt.po_line_location_id po_line_location_id,
-    -- Revision for version 1.29
-    rsl.po_release_id po_release_id,
-    -- Revision for version 1.36
-    -- Move Txn Date Logic to all_rcv Query
-    rsh.shipment_header_id,
-    rsl.shipment_line_id,
-    -- End revision for version 1.36
-    pod.project_id project_id,
-    -- End revision for version 1.29
-    rsh.receipt_num receipt_num,
-    pod.wip_entity_id wip_entity_id,
-    pod.bom_resource_id bom_resource_id,
-    -- Fix for version 1.17, get the SIGN of the quantity correct
-    -- no need to invert the SIGN, is it positive going into inventory
-    --sum(-1*(nvl(mmt.primary_quantity,0))) quantity,
-    -- Revision for version 1.28, round qtys to 3 decimals
-    round(sum((nvl(mmt.primary_quantity,0))),3) quantity,
-    -- Fix for version 1.18
-    round(sum((nvl(mmt.primary_quantity,0) *
-        -- Fix for version 1.28, the PO Unit Price on RT may be in a different UOM
-        -- Convert into the primary UOM
-        (rt.source_doc_quantity/rt.primary_quantity) *
-        -- End revision for version 1.28
-        decode(rt.currency_conversion_rate, null, nvl(rt.po_unit_price,0),
-          nvl(rt.po_unit_price,0) * rt.currency_conversion_rate))),2) amount
-    from mtl_material_transactions mmt,
-    rcv_transactions rt,
-    rcv_parameters rp,
-    -- Revision for version 1.29
-    -- po_lines_all pol,
-    po_line_locations_all pll,
-    po_distributions_all pod,
-    rcv_shipment_headers rsh,
-    rcv_shipment_lines rsl,
-    org_acct_periods oap
-    where mmt.rcv_transaction_id       = rt.transaction_id
-    and mmt.transaction_source_type_id = 1 -- purchasing receipts
-    -- Revision for version 1.29
-    -- and rt.po_line_id                = pol.po_line_id
-    and rt.po_line_location_id       = pll.line_location_id
-    and pll.line_location_id         = pod.line_location_id
-    and rt.shipment_line_id          = rsl.shipment_line_id
-    -- Revision for version 1.36
-    and rt.shipment_header_id        = rsh.shipment_header_id
-    and rsl.shipment_header_id       = rsh.shipment_header_id
-    -- Revision for version 1.34, to prevent cross-joining with pod
-    and pod.po_distribution_id       = nvl(rsl.po_distribution_id, pod.po_distribution_id)
-    and oap.organization_id          = mmt.organization_id
-    and 3=3                          -- oap.period_name=:period_name
-    -- Revision for version 1.32
-    -- Fix for version 1.16
-    -- The oap.schedule_close_date does not have a timestamp so we have to trunc to make the comparison
-    --and mmt.transaction_date        >= oap.schedule_close_date
-    -- and trunc(mmt.transaction_date) > oap.schedule_close_date
-    and mmt.transaction_date        >= oap.schedule_close_date + 1
-    -- End revision for version 1.32
-    -- Revision for version 1.36
-    and rt.transaction_date         >= oap.schedule_close_date + 1
-    and rp.receiving_account_id      = mmt.distribution_account_id
-    and rp.organization_id           = mmt.organization_id
-    -- Revision for version 1.36
-    -- and pod.destination_type_code <> 'EXPENSE'
-    group by
-    'Section 1.2', -- section
-    -- Revision for version 1.28
-    rt.transaction_id,
-    mmt.organization_id,
-    rsl.item_id,
-    pod.destination_type_code,
-    rt.po_header_id,
-    rt.po_line_id,
-    rt.po_line_location_id,
-    -- Revision for version 1.29
-    rsl.po_release_id,
-    -- Revision for version 1.36
-    -- Move Txn Date Logic to all_rcv Query
-    rsh.shipment_header_id,
-    rsl.shipment_line_id,
-    -- End revision for version 1.36
-    pod.project_id,
-    -- End revision for version 1.29
-    rsh.receipt_num,
-    pod.wip_entity_id,
-    pod.bom_resource_id,
-    -- Revision for version 1.26
-    -- for receipt date inline select
-    rsh.organization_id
-    -- End revision for version 1.26
-    -- ==========================================================
-    -- Section 1.3 Get the PO deliveries from receiving inspection into WIP
-    -- ==========================================================
-    union all
-     select 'Section 1.3' section,
-    -- Revision for version 1.28, added because Section 1.1
-    -- needed the rae.rcv_transaction_id for uniqueness
-    rt.transaction_id,
-    wta.organization_id organization_id,
-    rsl.item_id inventory_item_id,
-    pod.destination_type_code destination_type_code,
-    rt.po_header_id po_header_id,
-    rt.po_line_id po_line_id,
-    rt.po_line_location_id po_line_location_id,
-    -- Revision for version 1.29
-    rsl.po_release_id po_release_id,
-    -- Revision for version 1.36
-    -- Move Txn Date Logic to all_rcv Query
-    rsh.shipment_header_id,
-    rsl.shipment_line_id,
-    -- End revision for version 1.36
-    pod.project_id project_id,
-    -- End revision for version 1.29
-    rsh.receipt_num receipt_num,
-    pod.wip_entity_id wip_entity_id,
-    pod.bom_resource_id bom_resource_id,
-    -- Revision for version 1.38, decode on accounted amounts does not work if it is zero
-    round(decode(rt.transaction_type,
-     'DELIVER', 1 * rt.primary_quantity,
-     'RETURN TO RECEIVING', -1 * rt.primary_quantity,
-     'CORRECT',
-      decode(parent_rt.transaction_type,
-       'UNORDERED', 0,
-       'DELIVER', 1 * rt.primary_quantity,
-       'RETURN TO RECEIVING', -1 * rt.primary_quantity,
-       'MATCH', -1 * rt.primary_quantity,
-       0),
-     0)
-       ,3) quantity,
-    -- invert the SIGN as we will subtract away these amounts
-    --Fix for version 1.18
-    round(sum(-1*wta.base_transaction_value),2) amount
-    from wip_transaction_accounts wta,
-    wip_transactions wt,
-    rcv_transactions rt,
-    -- Revision for version 1.38
-    rcv_transactions parent_rt,
-    rcv_parameters rp,
-    -- Revision for version 1.29
-    -- po_lines_all pol,
-    po_line_locations_all pll,
-    rcv_shipment_headers rsh,
-    rcv_shipment_lines rsl,
-    po_distributions_all pod,
-    org_acct_periods oap
-    where wt.transaction_id            = wta.transaction_id
-    -- Oracle bug => the accounting line type used is 4 (res absorption) and should be 5 (receiving)
-    and wta.accounting_line_type in (4,5)
-    and wt.rcv_transaction_id        = rt.transaction_id
-    -- Revision for version 1.38
-    and rt.parent_transaction_id     = parent_rt.transaction_id (+)
-    and rt.organization_id           = parent_rt.organization_id (+)
-    -- Revision for version 1.36
-    and wt.organization_id           = rt.organization_id
-    -- Revision for version 1.29
-    -- and rt.po_line_id                = pol.po_line_id
-    and rt.po_line_location_id       = pll.line_location_id
-    and pll.line_location_id         = pod.line_location_id
-    and rt.shipment_line_id          = rsl.shipment_line_id
-    -- Revision for version 1.36
-    and rt.shipment_header_id        = rsh.shipment_header_id
-    and rsl.shipment_header_id       = rsh.shipment_header_id
-    -- Revision for version 1.34, to prevent cross-joining with pod
-    and pod.po_distribution_id       = nvl(rsl.po_distribution_id, pod.po_distribution_id)
-    and oap.organization_id          = wta.organization_id
-    and 3=3                          -- oap.period_name=:period_name
-    -- Revision for version 1.32
-    -- Fix for version 1.16
-    -- The oap.schedule_close_date does not have a timestamp so we have to trunc to make the comparison
-    --and wta.transaction_date        >= oap.schedule_close_date
-    -- and trunc(wta.transaction_date) > oap.schedule_close_date
-    and wta.transaction_date        >= oap.schedule_close_date + 1
-    -- End revision for version 1.32
-    -- Revision for version 1.36
-    and wt.transaction_date         >= oap.schedule_close_date + 1
-    and rt.transaction_date         >= oap.schedule_close_date + 1
-    -- End revision for version 1.36
-    and rp.receiving_account_id      = wta.reference_account
-    and rp.organization_id           = wta.organization_id
-    and pod.destination_type_code <> 'EXPENSE'
-   -- Fix for version 1.2, to avoid doubling up results
-    and pod.wip_entity_id            = wta.wip_entity_id
-    group by
-    'Section 1.3', -- section
-    -- Revision for version 1.28
-    rt.transaction_id,
-    wta.organization_id,
-    rsl.item_id,
-    pod.destination_type_code,
-    rt.po_header_id,
-    rt.po_line_id,
-    rt.po_line_location_id,
-    -- Revision for version 1.29
-    rsl.po_release_id,
-    -- Revision for version 1.36
-    -- Move Txn Date Logic to all_rcv Query
-    rsh.shipment_header_id,
-    rsl.shipment_line_id,
-    -- End revision for version 1.36
-    pod.project_id,
-    -- End revision for version 1.29
-    rsh.receipt_num,
-    pod.wip_entity_id,
-    pod.bom_resource_id,
-    -- Revision for version 1.38, decode on accounted amounts does not work if it is zero
-    round(decode(rt.transaction_type,
-     'DELIVER', 1 * rt.primary_quantity,
-     'RETURN TO RECEIVING', -1 * rt.primary_quantity,
-     'CORRECT',
-      decode(parent_rt.transaction_type,
-       'UNORDERED', 0,
-       'DELIVER', 1 * rt.primary_quantity,
-       'RETURN TO RECEIVING', -1 * rt.primary_quantity,
-       'MATCH', -1 * rt.primary_quantity,
-       0),
-     0)
-       ,3), -- quantity
-    -- Revision for version 1.26
-    -- for receipt date inline select
-    rsh.organization_id
-    -- End revision for version 1.26
-    -- ==========================================================
-    -- Section 1.4 Get the unprocessed PO deliveries (wip_cost_txn_interface)
-    -- from WIP receiving inspection into WIP, as the receiving
-    -- quantities in MTL_SUPPLY have already been updated, but the
-    -- WIP transactions and WIP accounting entries do not exist.
-    -- ==========================================================
-    union all
-     select 'Section 1.4' section,
-    -- Revision for version 1.28, added because Section 1.1
-    -- needed the rae.rcv_transaction_id for uniqueness
-    rt.transaction_id,
-    wcti.organization_id organization_id,
-    rsl.item_id inventory_item_id,
-    pod.destination_type_code destination_type_code,
-    rt.po_header_id po_header_id,
-    rt.po_line_id po_line_id,
-    rt.po_line_location_id po_line_location_id,
-    -- Revision for version 1.29
-    rsl.po_release_id po_release_id,
-    -- Revision for version 1.36
-    -- Move Txn Date Logic to all_rcv Query
-    rsh.shipment_header_id,
-    rsl.shipment_line_id,
-    -- End revision for version 1.36
-    pod.project_id project_id,
-    -- End revision for version 1.29
-    rsh.receipt_num receipt_num,
-    pod.wip_entity_id wip_entity_id,
-    pod.bom_resource_id bom_resource_id,
-    -- Revision for version 1.28, round qtys to 3 decimals
-    -- no need to invert the SIGN of the quantity, already a positive QTY
-    round(sum((nvl(wcti.primary_quantity,0))),3) quantity,
-    -- no need to invert the SIGN of the quantity, already a positive QTY
-    -- Fix for version 1.18
-    round(sum(nvl(wcti.primary_quantity,0) *
-       -- Fix for version 1.28
-       -- Make sure the price is in the primary UOM
-       (rt.source_doc_quantity/rt.primary_quantity) *
-       decode(rt.currency_conversion_rate, null, nvl(rt.po_unit_price,0),
-          nvl(rt.po_unit_price,0) * rt.currency_conversion_rate)),2) amount
-    from wip_cost_txn_interface wcti,
-    rcv_transactions rt,
-    rcv_parameters rp,
-    -- Revision for version 1.29
-    -- po_lines_all pol,
-    po_line_locations_all pll,
-    rcv_shipment_headers rsh,
-    rcv_shipment_lines rsl,
-    po_distributions_all pod,
-    org_acct_periods oap
-    where wcti.rcv_transaction_id      = rt.transaction_id
-    and wcti.transaction_type        = 3 -- outside processing
-    -- Revision for version 1.29
-    -- and rt.po_line_id                = pol.po_line_id
-    and rt.po_line_location_id       = pll.line_location_id
-    and pll.line_location_id         = pod.line_location_id
-    and rt.shipment_line_id          = rsl.shipment_line_id
-    and rsl.shipment_header_id       = rsh.shipment_header_id
-    and rt.shipment_line_id          = rsl.shipment_line_id
-    -- Revision for version 1.36
-    and rt.shipment_header_id        = rsh.shipment_header_id
-    -- Revision for version 1.34, to prevent cross-joining with pod
-    and pod.po_distribution_id       = nvl(rsl.po_distribution_id, pod.po_distribution_id)
-    and oap.organization_id          = wcti.organization_id
-    and 3=3                          -- oap.period_name=:period_name
-    -- Revision for version 1.32
-    -- Fix for version 1.16
-    -- The oap.schedule_close_date does not have a timestamp so we have to trunc to make the comparison
-    -- and wcti.transaction_date       >= oap.schedule_close_date
-    -- and trunc(wcti.transaction_date) > oap.schedule_close_date
-    and wcti.transaction_date       >= oap.schedule_close_date + 1
-    -- Revision for version 1.36
-    and rt.transaction_date         >= oap.schedule_close_date + 1
-    and wcti.organization_id         = rt.organization_id
-    -- End revision for version 1.32
-    and rp.receiving_account_id      = wcti.receiving_account_id
-    and rp.organization_id           = wcti.organization_id
-    -- revision for version 1.28
-    -- To avoid cross-joining with multiple PO distributions, multiple WIP jobs per receipt
-    and pod.wip_entity_id            = wcti.wip_entity_id
-    and pod.destination_type_code <> 'EXPENSE'
-    group by
-    'Section 1.4', -- section
-    -- Revision for version 1.28
-    rt.transaction_id,
-    wcti.organization_id,
-    rsl.item_id,
-    pod.destination_type_code,
-    rt.po_header_id,
-    rt.po_line_id,
-    rt.po_line_location_id,
-    -- Revision for version 1.29
-    rsl.po_release_id,
-    -- Revision for version 1.36
-    -- Move Txn Date Logic to all_rcv Query
-    rsh.shipment_header_id,
-    rsl.shipment_line_id,
-    -- End revision for version 1.36
-    pod.project_id,
-    -- End revision for version 1.29
-    rsh.receipt_num,
-    pod.wip_entity_id,
-    pod.bom_resource_id,
-    -- Revision for version 1.26
-    -- for receipt date inline select
-    rsh.organization_id
-    -- End revision for version 1.26
-    -- ==========================================================
-    -- Section 1.5 Get the retroactive price adjustments on the DELIVER
-    -- transaction type from rrsl.  Retroactive price adjust-
-    -- ments have entries in rrsl on DELIVER rt.transaction_type.
-    -- Normally there are no accounting entries in rrsl for
-    -- DELIVER rt.transaction types.
-    -- This logic applies to material and WIP DELIVER txns.
-    -- Fix for version 1.19
-    -- ==========================================================
-    union all
-     select 'Section 1.5' section,
-    -- Revision for version 1.28, added because Section 1.1
-    -- needed the rae.rcv_transaction_id for uniqueness
-    rt.transaction_id,
-    rt.organization_id organization_id,
-    rsl.item_id inventory_item_id,
-    pod.destination_type_code destination_type_code,
-    rt.po_header_id po_header_id,
-    rt.po_line_id po_line_id,
-    rt.po_line_location_id po_line_location_id,
-    -- Revision for version 1.29
-    rsl.po_release_id po_release_id,
-    -- Revision for version 1.36
-    -- Move Txn Date Logic to all_rcv Query
-    rsh.shipment_header_id,
-    rsl.shipment_line_id,
-    -- End revision for version 1.36
-    pod.project_id project_id,
-    -- End revision for version 1.29
-    rsh.receipt_num receipt_num,
-    pod.wip_entity_id wip_entity_id,
-    pod.bom_resource_id bom_resource_id,
-    -- the quantities have already been included in sections
-    -- 1.1 to 1.4, no "real" qty for retroactive price adjustments
-    -- as this works like a valuation adjustment
-    sum(0) quantity,
-    -- invert the SIGN as we will subtract away these amounts
-    round(sum(-1*(nvl(rrsl.accounted_dr,0) - nvl(rrsl.accounted_cr,0))),2) amount
-    from rcv_transactions rt,
-    rcv_receiving_sub_ledger rrsl,
-    rcv_parameters rp,
-    -- Revision for version 1.29
-    -- po_lines_all pol,
-    po_line_locations_all pll,
-    po_distributions_all pod,
-    rcv_shipment_headers rsh,
-    rcv_shipment_lines rsl,
-    org_acct_periods oap
-    -- Revision for version 1.29
-    -- where rt.po_line_id               = pol.po_line_id
-    where rt.po_line_location_id       = pll.line_location_id
-    and pll.line_location_id         = pod.line_location_id
-    and rt.shipment_line_id          = rsl.shipment_line_id
-    -- Revision for version 1.36
-    and rt.shipment_header_id        = rsh.shipment_header_id
-    -- Revision for version 1.34, to prevent cross-joining with pod
-    -- and pod.po_distribution_id       = nvl(rsl.po_distribution_id, pod.po_distribution_id)
-    and pod.po_distribution_id       = rrsl.reference3
-    -- End revision for version 1.36
-    and rsl.shipment_header_id       = rsh.shipment_header_id
-    and oap.organization_id          = rt.organization_id
-    and 3=3                          -- oap.period_name=:period_name
-    -- Revision for version 1.32
-    -- Fix for version 1.16
-    -- The oap.schedule_close_date does not have a timestamp
-    -- Use rt.transaction_date as this correctly references the quantity movement, even
-    -- though the rrsl.accounting_date is when the retroactive adjustment happened
-    -- and trunc(rt.transaction_date)  > oap.schedule_close_date
-    and rt.transaction_date         >= oap.schedule_close_date + 1
-    and rp.organization_id           = rt.organization_id
-    -- Revision for version 1.36
-    and rrsl.transaction_date       >= oap.schedule_close_date + 1
-    -- ==============================================
-    -- These joins will get the retroactive price
-    -- adjustments for both inventory and WIP, that
-    -- hit the receiving inspection account
-    -- ==============================================
-    and rp.receiving_account_id      = rrsl.code_combination_id
-    and rt.transaction_type          = 'DELIVER'
-    and pod.destination_type_code   <> 'EXPENSE'
-    and rt.transaction_id            = rrsl.rcv_transaction_id
-    -- Oracle difference =>  the RRSL table is using the meaning as the value for the CST_ACCOUNTING_LINE_TYPE
-    --                       lookup code, as opposed to the lookup code values 1 - 99
-    -- Revision for version 1.34, receiving transactions also use 'Clearing'
-    -- and rrsl.accounting_line_type    = 'Receiving Inspection'
-    and rrsl.accounting_line_type in ('Clearing', 'Receiving Inspection')
-    -- End revision for version 1.34
-    group by
-    'Section 1.5', -- section
-    -- Revision for version 1.28
-    rt.transaction_id,
-    rt.organization_id,
-    rsl.item_id,
-    pod.destination_type_code,
-    rt.po_header_id,
-    rt.po_line_id,
-    rt.po_line_location_id,
-    -- Revision for version 1.29
-    rsl.po_release_id,
-    -- Revision for version 1.36
-    -- Move Txn Date Logic to all_rcv Query
-    rsh.shipment_header_id,
-    rsl.shipment_line_id,
-    -- End revision for version 1.36
-    pod.project_id,
-    -- End revision for version 1.29
-    rsh.receipt_num,
-    pod.wip_entity_id,
-    pod.bom_resource_id,
-    -- Revision for version 1.26
-    -- for receipt date inline select
-    rsh.organization_id
-    -- End revision for version 1.26
-   ) post_close_rcv_txns
-   group by
-   post_close_rcv_txns.section,
-   post_close_rcv_txns.organization_id,
-   post_close_rcv_txns.inventory_item_id,
-   post_close_rcv_txns.destination_type_code,
-   post_close_rcv_txns.po_header_id,
-   post_close_rcv_txns.po_line_id,
-   post_close_rcv_txns.po_line_location_id,
-   -- Revision for version 1.29
-   post_close_rcv_txns.po_release_id,
-   -- Revision for version 1.36
-   -- Move Txn Date Logic to all_rcv Query
-   post_close_rcv_txns.shipment_header_id,
-   post_close_rcv_txns.shipment_line_id,
-   -- End revision for version 1.36
-   post_close_rcv_txns.project_id,
-   -- End revision for version 1.29
-   post_close_rcv_txns.receipt_num,
-   post_close_rcv_txns.wip_entity_id,
-   post_close_rcv_txns.bom_resource_id
-   -- Revision for version 1.36
-   -- post_close_rcv_txns.transaction_date
-  ) rcv
-    where rcv.organization_id        = rp.organization_id
-   and rp.receiving_account_id    = gcc.code_combination_id
-   and rcv.organization_id        = oap.organization_id
-   and 3=3                        -- oap.period_name=:period_name
-   -- ===========================================
-   -- Organization joins to the HR org model
-   -- ===========================================
-   and hoi.org_information_context   = 'Accounting Information'
-   and hoi.organization_id           = rp.organization_id
-   and hoi.organization_id           = haou.organization_id   -- this gets the organization name
-   and haou2.organization_id         = to_number(hoi.org_information3) -- this gets the operating unit id
-   and gl.ledger_id                  = to_number(hoi.org_information1) -- get the ledger_id
-   -- avoid selecting disabled inventory organizations
-   and sysdate < nvl(haou.date_to, sysdate + 1)
-   and    8=8
-   group by
-   oap.period_name,
-     gl.name,
-    gcc.segment1,
-   gcc.segment2,
-   gcc.segment3,
-   gcc.segment4,
-   gcc.segment5,
-   gcc.segment6,
-   gcc.segment7,
-   gcc.segment8,
-   gcc.segment9,
-   gcc.segment10,
-   gcc.segment11,
-   gcc.segment12,
-   gcc.segment13,
-   gcc.segment14,
-   gcc.segment15
-   -- ============================================================== 
-   -- Added qualifier to remove zero quantity balances from the
-   -- results.  Such as rolled back PICK material transactions in STAGE,
-   -- or very small fractional quantities.  This condition also
-   -- screens out orphan retro-active price adjustments, where Part IV.C
-   -- has picked up a retro-active price adjustment, but, no quantities
-   -- exist in receiving and only a small fractional amount exists due
-   -- to rounding on the debits or credits on retroactive price adjustmnts.
-   -- ============================================================== 
-   having abs(sum(rcv.quantity + rcv.amount)) > .01
-  ) rcv_value
-   group by
-   rcv_value.period_name,
-    rcv_value.ledger,
-   rcv_value.segment1,
-   rcv_value.segment2,
-   rcv_value.segment3,
-   rcv_value.segment4,
-   rcv_value.segment5,
-   rcv_value.segment6,
-   rcv_value.segment7,
-   rcv_value.segment8,
-   rcv_value.segment9,
-   rcv_value.segment10,
-   rcv_value.segment11,
-   rcv_value.segment12,
-   rcv_value.segment13,
-   rcv_value.segment14,
-   rcv_value.segment15
-) net_recon_bal
-where 4=4 and -- net_recon_bal.ledger=:ledger
-net_recon_bal.ledger in (select gl.name from gl_ledgers gl where gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+)))
+select
+gb.period_name,
+gb.ledger_id,
+gb.code_combination_id,
+nvl(gb.begin_balance_dr,0)-nvl(gb.begin_balance_cr,0) gl_beg_balance,
+0 gl_receiving_amount,
+0 gl_inventory_amount,
+0 gl_wip_amount,
+0 gl_payables_amount,
+0 gl_other_amount,
+nvl(gb.begin_balance_dr,0)-nvl(gb.begin_balance_cr,0)+nvl(gb.period_net_dr,0)-nvl(gb.period_net_cr,0) gl_end_balance,
+0 receiving_value,
+0 inv_onhand_value,
+0 wip_value
+from
+gl_ledgers gl,
+gl_balances gb,
+gl_code_combinations gcc
+where
+gl.ledger_id in (select o.ledger_id from o) and
+gl.ledger_category_code<>'SECONDARY' and
+gl.bal_seg_value_option_code<>'A' and
+gl.ledger_id=gb.ledger_id and
+gb.period_name=:period_name and
+gb.actual_flag='A' and
+gb.period_type=gl.accounted_period_type and
+gb.currency_code=gl.currency_code and
+gb.code_combination_id=gcc.code_combination_id and
+gcc.summary_flag='N' and
+(gl.ledger_id,gcc.&account_segment) in (select y.ledger_id,y.account from y)
+union all
+select
+gjh.period_name,
+gjh.ledger_id,
+gjl.code_combination_id,
+0 gl_beg_balance,
+sum(case when gjh.je_source='Cost Management' and gjh.je_category='Receiving' then nvl(gjl.accounted_dr,0)-nvl(gjl.accounted_cr,0) else 0 end) gl_receiving_amount,
+sum(case when gjh.je_source='Cost Management' and gjh.je_category='Inventory' then nvl(gjl.accounted_dr,0)-nvl(gjl.accounted_cr,0) else 0 end) gl_inventory_amount,
+sum(case when gjh.je_source='Cost Management' and gjh.je_category='WIP' then nvl(gjl.accounted_dr,0)-nvl(gjl.accounted_cr,0) else 0 end) gl_wip_amount,
+sum(case when gjh.je_source='Payables' then nvl(gjl.accounted_dr,0)-nvl(gjl.accounted_cr,0) else 0 end) gl_payables_amount,
+sum(case when gjh.je_source not in ('Cost Management','Payables') then nvl(gjl.accounted_dr,0)-nvl(gjl.accounted_cr,0) else 0 end) gl_other_amount,
+0 gl_end_balance,
+0 receiving_value,
+0 inv_onhand_value,
+0 wip_value
+from
+gl_ledgers gl,
+gl_je_headers gjh,
+gl_je_lines gjl,
+gl_code_combinations gcc
+where
+gl.ledger_id in (select o.ledger_id from o) and
+gl.ledger_category_code<>'SECONDARY' and
+gl.bal_seg_value_option_code<>'A' and
+gl.ledger_id=gjh.ledger_id and
+gjh.period_name=:period_name and
+gjh.status='P' and
+gjh.actual_flag='A' and
+gjh.je_header_id=gjl.je_header_id and
+gjh.period_name=gjl.period_name and
+gjl.code_combination_id=gcc.code_combination_id and
+gcc.summary_flag='N' and
+(gl.ledger_id,gcc.&account_segment) in (select y.ledger_id,y.account from y)
 group by
-net_recon_bal.period_name,
-net_recon_bal.ledger,
+gjh.period_name,
+gjh.ledger_id,
+gjl.code_combination_id
+union all
+select
+oap.period_name,
+o.ledger_id,
+case
+when cpcs.subinventory_code is null then o.intransit_inv_account
+when ccga.material_account is not null then ccga.material_account
+when o.primary_cost_method=1 then msi.material_account
+else o.material_account
+end code_combination_id,
+0 gl_beg_balance,
+0 gl_receiving_amount,
+0 gl_inventory_amount,
+0 gl_wip_amount,
+0 gl_payables_amount,
+0 gl_other_amount,
+0 gl_end_balance,
+0 receiving_value,
+sum(cpcs.rollback_value) inv_onhand_value,
+0 wip_value
+from
+o,
+org_acct_periods oap,
+cst_period_close_summary cpcs,
+mtl_secondary_inventories msi,
+cst_cost_group_accounts ccga
+where
+o.organization_id=oap.organization_id and
+oap.period_name=:period_name and
+oap.acct_period_id=cpcs.acct_period_id and
+oap.organization_id=cpcs.organization_id and
+cpcs.rollback_quantity<>0 and
+cpcs.organization_id=msi.organization_id(+) and
+cpcs.subinventory_code=msi.secondary_inventory_name(+) and
+decode(o.cost_group_accounting,'Y',cpcs.cost_group_id)=ccga.cost_group_id(+) and
+cpcs.organization_id=ccga.organization_id(+)
+group by
+oap.period_name,
+o.ledger_id,
+case
+when cpcs.subinventory_code is null then o.intransit_inv_account
+when ccga.material_account is not null then ccga.material_account
+when o.primary_cost_method=1 then msi.material_account
+else o.material_account
+end
+union all
+select
+w.period_name,
+w.ledger_id,
+decode(rowgen.column_value,1,w.material_account,2,w.material_overhead_account,3,w.resource_account,4,w.outside_processing_account,5,w.overhead_account) code_combination_id,
+0 gl_beg_balance,
+0 gl_receiving_amount,
+0 gl_inventory_amount,
+0 gl_wip_amount,
+0 gl_payables_amount,
+0 gl_other_amount,
+0 gl_end_balance,
+0 receiving_value,
+0 inv_onhand_value,
+decode(rowgen.column_value,1,w.material_value,2,w.material_overhead_value,3,w.resource_value,4,w.outside_processing_value,5,w.overhead_value) wip_value
+from
+(
+select
+oap.period_name,
+o.ledger_id,
+wdj.material_account,
+wdj.material_overhead_account,
+wdj.resource_account,
+wdj.outside_processing_account,
+wdj.overhead_account,
+sum(nvl(wpb.tl_scrap_in,0)+nvl(wpb.pl_material_in,0)-nvl(wpb.tl_material_out,0)-nvl(wpb.tl_scrap_out,0)-nvl(wpb.pl_material_out,0)-nvl(wpb.tl_material_var,0)-nvl(wpb.tl_scrap_var,0)-nvl(wpb.pl_material_var,0)) material_value,
+sum(nvl(wpb.pl_material_overhead_in,0)-nvl(wpb.tl_material_overhead_out,0)-nvl(wpb.pl_material_overhead_out,0)-nvl(wpb.tl_material_overhead_var,0)-nvl(wpb.pl_material_overhead_var,0)) material_overhead_value,
+sum(nvl(wpb.tl_resource_in,0)+nvl(wpb.pl_resource_in,0)-nvl(wpb.tl_resource_out,0)-nvl(wpb.pl_resource_out,0)-nvl(wpb.tl_resource_var,0)-nvl(wpb.pl_resource_var,0)) resource_value,
+sum(nvl(wpb.tl_outside_processing_in,0)+nvl(wpb.pl_outside_processing_in,0)-nvl(wpb.tl_outside_processing_out,0)-nvl(wpb.pl_outside_processing_out,0)-nvl(wpb.tl_outside_processing_var,0)-nvl(wpb.pl_outside_processing_var,0)) outside_processing_value,
+sum(nvl(wpb.tl_overhead_in,0)+nvl(wpb.pl_overhead_in,0)-nvl(wpb.tl_overhead_out,0)-nvl(wpb.pl_overhead_out,0)-nvl(wpb.tl_overhead_var,0)-nvl(wpb.pl_overhead_var,0)) overhead_value
+from
+o,
+org_acct_periods oap,
+wip_period_balances wpb,
+wip_discrete_jobs wdj,
+wip_accounting_classes wac
+where
+o.organization_id=oap.organization_id and
+oap.period_name=:period_name and
+oap.organization_id=wdj.organization_id and
+(wdj.date_closed is null or wdj.date_closed>=oap.period_start_date) and
+wdj.wip_entity_id=wpb.wip_entity_id and
+wpb.acct_period_id<=oap.acct_period_id and
+wdj.organization_id=wac.organization_id and
+wdj.class_code=wac.class_code and
+wac.class_type not in (4,6,7)
+group by
+oap.period_name,
+o.ledger_id,
+wdj.material_account,
+wdj.material_overhead_account,
+wdj.resource_account,
+wdj.outside_processing_account,
+wdj.overhead_account
+) w,
+table(xxen_util.rowgen(5)) rowgen
+union all
+select
+oap.period_name,
+o.ledger_id,
+rp.receiving_account_id code_combination_id,
+0 gl_beg_balance,
+0 gl_receiving_amount,
+0 gl_inventory_amount,
+0 gl_wip_amount,
+0 gl_payables_amount,
+0 gl_other_amount,
+0 gl_end_balance,
+sum(r.amount+r.adjustment_amount) receiving_value,
+0 inv_onhand_value,
+0 wip_value
+from
+(
+select
+n.organization_id,
+sum(n.amount) amount,
+sum(n.adjustment_amount) adjustment_amount
+from
+(
+select
+rs.to_organization_id organization_id,
+rs.item_id inventory_item_id,
+rs.destination_type_code,
+rs.po_header_id,
+rs.po_line_id,
+rs.po_line_location_id,
+rs.po_release_id,
+rs.shipment_header_id,
+pda.project_id,
+rsh.receipt_num,
+pda.wip_entity_id,
+pda.bom_resource_id,
+round(rs.to_org_primary_quantity,3) quantity,
+rs.amount,
+0 adjustment_amount
+from
+(
+select
+ms.to_organization_id,
+ms.item_id,
+ms.destination_type_code,
+ms.po_header_id,
+ms.po_line_id,
+ms.po_line_location_id,
+ms.po_distribution_id,
+ms.po_release_id,
+ms.shipment_header_id,
+ms.shipment_line_id,
+ms.rcv_transaction_id,
+ms.to_org_primary_quantity,
+round(ms.to_org_primary_quantity*round(sum(case when nvl(rt_correct.po_unit_price,nvl(rt_deliver.po_unit_price,0))<>nvl(rae.unit_price,0) then nvl(plla.price_override,nvl(rae.unit_price,0)) else nvl(rae.unit_price,0) end*nvl(rae.currency_conversion_rate,1)*rae.source_doc_quantity)/sum(rae.primary_quantity),8),2) amount
+from
+mtl_supply ms,
+po_line_locations_all plla,
+(
+select
+x.parent_transaction_id,
+x.organization_id,
+x.child_transaction_id
+from
+(
+select
+rt.transaction_id parent_transaction_id,
+rt.organization_id,
+connect_by_root rt.transaction_id child_transaction_id,
+connect_by_isleaf isleaf
+from
+rcv_transactions rt
+connect by
+prior rt.parent_transaction_id=rt.transaction_id
+start with
+rt.transaction_id in (select ms.rcv_transaction_id from mtl_supply ms where ms.supply_type_code='RECEIVING' and ms.to_organization_id in (select o.organization_id from o)) and
+nvl(rt.consigned_flag,'N')='N'
+) x
+where
+x.isleaf=1
+) rt,
+rcv_accounting_events rae,
+rcv_transactions rt_deliver,
+rcv_transactions rt_correct
+where
+ms.rcv_transaction_id=rt.child_transaction_id and
+ms.to_organization_id=rt.organization_id and
+rt.parent_transaction_id=rae.rcv_transaction_id and
+rt.organization_id=rae.organization_id and
+ms.po_line_location_id=plla.line_location_id(+) and
+ms.rcv_transaction_id=rt_deliver.parent_transaction_id(+) and
+rt_deliver.transaction_type(+)='DELIVER' and
+rt_deliver.transaction_id=rt_correct.parent_transaction_id(+) and
+rt_correct.transaction_type(+)='CORRECT'
+group by
+ms.to_organization_id,
+ms.item_id,
+ms.destination_type_code,
+ms.po_header_id,
+ms.po_line_id,
+ms.po_line_location_id,
+ms.po_distribution_id,
+ms.po_release_id,
+ms.shipment_header_id,
+ms.shipment_line_id,
+ms.rcv_transaction_id,
+ms.to_org_primary_quantity
+) rs,
+rcv_shipment_headers rsh,
+rcv_shipment_lines rsl,
+po_distributions_all pda
+where
+rs.shipment_header_id=rsh.shipment_header_id and
+rs.shipment_line_id=rsl.shipment_line_id and
+rsl.source_document_code<>'REQ' and
+rs.po_distribution_id=pda.po_distribution_id(+)
+union all
+select distinct
+rae.organization_id,
+rae.inventory_item_id,
+pda.destination_type_code,
+rae.po_header_id,
+rae.po_line_id,
+rae.po_line_location_id,
+rsl.po_release_id,
+rsh.shipment_header_id,
+pda.project_id,
+rsh.receipt_num,
+pda.wip_entity_id,
+pda.bom_resource_id,
+round(case when rt.transaction_type in ('RECEIVE','MATCH') or rt.transaction_type='CORRECT' and rt_parent.transaction_type='RECEIVE' then -rt.primary_quantity when rt.transaction_type='RETURN TO VENDOR' or rt.transaction_type='CORRECT' and rt_parent.transaction_type='RETURN TO VENDOR' then rt.primary_quantity else 0 end,3) quantity,
+round(round(decode(sign(nvl(rrsl.accounted_dr,0)-nvl(rrsl.accounted_cr,0)),1,-abs(rae.primary_quantity),-1,abs(rae.primary_quantity),rae.primary_quantity),3)*nvl(rt.po_unit_price,0)*nvl(rt.currency_conversion_rate,1)*rt.source_doc_quantity/rt.primary_quantity,2) amount,
+0 adjustment_amount
+from
+org_acct_periods oap,
+rcv_transactions rt,
+rcv_transactions rt_parent,
+rcv_accounting_events rae,
+rcv_receiving_sub_ledger rrsl,
+po_distributions_all pda,
+rcv_shipment_headers rsh,
+rcv_shipment_lines rsl
+where
+oap.period_name=:period_name and
+oap.organization_id=rt.organization_id and
+rt.transaction_date>=oap.schedule_close_date+1 and
+rt.transaction_type<>'DELIVER' and
+rt.parent_transaction_id=rt_parent.transaction_id(+) and
+rt.organization_id=rt_parent.organization_id(+) and
+rt.transaction_id=rae.rcv_transaction_id and
+rae.accounting_event_id=rrsl.accounting_event_id and
+rt.transaction_id=rrsl.rcv_transaction_id and
+rrsl.accounting_line_type in ('Clearing','Receiving Inspection') and
+rrsl.transaction_date>=oap.schedule_close_date+1 and
+rrsl.reference3=pda.po_distribution_id and
+rt.shipment_header_id=rsh.shipment_header_id and
+rt.shipment_line_id=rsl.shipment_line_id
+union all
+select
+mmt.organization_id,
+rsl.item_id inventory_item_id,
+pda.destination_type_code,
+rt.po_header_id,
+rt.po_line_id,
+rt.po_line_location_id,
+rsl.po_release_id,
+rsh.shipment_header_id,
+pda.project_id,
+rsh.receipt_num,
+pda.wip_entity_id,
+pda.bom_resource_id,
+round(sum(mmt.primary_quantity),3) quantity,
+round(sum(mmt.primary_quantity*rt.source_doc_quantity/rt.primary_quantity*nvl(rt.po_unit_price,0)*nvl(rt.currency_conversion_rate,1)),2) amount,
+0 adjustment_amount
+from
+org_acct_periods oap,
+mtl_material_transactions mmt,
+rcv_parameters rp,
+rcv_transactions rt,
+rcv_shipment_headers rsh,
+rcv_shipment_lines rsl,
+po_distributions_all pda
+where
+oap.period_name=:period_name and
+oap.organization_id=mmt.organization_id and
+mmt.transaction_date>=oap.schedule_close_date+1 and
+mmt.transaction_source_type_id=1 and
+mmt.organization_id=rp.organization_id and
+mmt.distribution_account_id=rp.receiving_account_id and
+mmt.rcv_transaction_id=rt.transaction_id and
+rt.transaction_date>=oap.schedule_close_date+1 and
+rt.shipment_header_id=rsh.shipment_header_id and
+rt.shipment_line_id=rsl.shipment_line_id and
+rt.po_line_location_id=pda.line_location_id and
+nvl(rsl.po_distribution_id,pda.po_distribution_id)=pda.po_distribution_id
+group by
+rt.transaction_id,
+mmt.organization_id,
+rsl.item_id,
+pda.destination_type_code,
+rt.po_header_id,
+rt.po_line_id,
+rt.po_line_location_id,
+rsl.po_release_id,
+rsh.shipment_header_id,
+pda.project_id,
+rsh.receipt_num,
+pda.wip_entity_id,
+pda.bom_resource_id
+union all
+select
+wta.organization_id,
+rsl.item_id inventory_item_id,
+pda.destination_type_code,
+rt.po_header_id,
+rt.po_line_id,
+rt.po_line_location_id,
+rsl.po_release_id,
+rsh.shipment_header_id,
+pda.project_id,
+rsh.receipt_num,
+pda.wip_entity_id,
+pda.bom_resource_id,
+round(case when rt.transaction_type='DELIVER' or rt.transaction_type='CORRECT' and rt_parent.transaction_type='DELIVER' then rt.primary_quantity when rt.transaction_type='RETURN TO RECEIVING' or rt.transaction_type='CORRECT' and rt_parent.transaction_type in ('RETURN TO RECEIVING','MATCH') then -rt.primary_quantity else 0 end,3) quantity,
+round(-sum(wta.base_transaction_value),2) amount,
+0 adjustment_amount
+from
+org_acct_periods oap,
+wip_transaction_accounts wta,
+rcv_parameters rp,
+wip_transactions wt,
+rcv_transactions rt,
+rcv_transactions rt_parent,
+rcv_shipment_headers rsh,
+rcv_shipment_lines rsl,
+po_distributions_all pda
+where
+oap.period_name=:period_name and
+oap.organization_id=wta.organization_id and
+wta.transaction_date>=oap.schedule_close_date+1 and
+wta.accounting_line_type in (4,5) and
+wta.organization_id=rp.organization_id and
+wta.reference_account=rp.receiving_account_id and
+wta.transaction_id=wt.transaction_id and
+wt.transaction_date>=oap.schedule_close_date+1 and
+wt.rcv_transaction_id=rt.transaction_id and
+wt.organization_id=rt.organization_id and
+rt.transaction_date>=oap.schedule_close_date+1 and
+rt.parent_transaction_id=rt_parent.transaction_id(+) and
+rt.organization_id=rt_parent.organization_id(+) and
+rt.shipment_header_id=rsh.shipment_header_id and
+rt.shipment_line_id=rsl.shipment_line_id and
+rt.po_line_location_id=pda.line_location_id and
+nvl(rsl.po_distribution_id,pda.po_distribution_id)=pda.po_distribution_id and
+pda.destination_type_code<>'EXPENSE' and
+wta.wip_entity_id=pda.wip_entity_id
+group by
+rt.transaction_id,
+rt.transaction_type,
+rt_parent.transaction_type,
+rt.primary_quantity,
+wta.organization_id,
+rsl.item_id,
+pda.destination_type_code,
+rt.po_header_id,
+rt.po_line_id,
+rt.po_line_location_id,
+rsl.po_release_id,
+rsh.shipment_header_id,
+pda.project_id,
+rsh.receipt_num,
+pda.wip_entity_id,
+pda.bom_resource_id
+union all
+select
+wcti.organization_id,
+rsl.item_id inventory_item_id,
+pda.destination_type_code,
+rt.po_header_id,
+rt.po_line_id,
+rt.po_line_location_id,
+rsl.po_release_id,
+rsh.shipment_header_id,
+pda.project_id,
+rsh.receipt_num,
+pda.wip_entity_id,
+pda.bom_resource_id,
+round(sum(wcti.primary_quantity),3) quantity,
+round(sum(wcti.primary_quantity*rt.source_doc_quantity/rt.primary_quantity*nvl(rt.po_unit_price,0)*nvl(rt.currency_conversion_rate,1)),2) amount,
+0 adjustment_amount
+from
+org_acct_periods oap,
+wip_cost_txn_interface wcti,
+rcv_parameters rp,
+rcv_transactions rt,
+rcv_shipment_headers rsh,
+rcv_shipment_lines rsl,
+po_distributions_all pda
+where
+oap.period_name=:period_name and
+oap.organization_id=wcti.organization_id and
+wcti.transaction_date>=oap.schedule_close_date+1 and
+wcti.transaction_type=3 and
+wcti.organization_id=rp.organization_id and
+wcti.receiving_account_id=rp.receiving_account_id and
+wcti.rcv_transaction_id=rt.transaction_id and
+wcti.organization_id=rt.organization_id and
+rt.transaction_date>=oap.schedule_close_date+1 and
+rt.shipment_header_id=rsh.shipment_header_id and
+rt.shipment_line_id=rsl.shipment_line_id and
+rt.po_line_location_id=pda.line_location_id and
+nvl(rsl.po_distribution_id,pda.po_distribution_id)=pda.po_distribution_id and
+pda.destination_type_code<>'EXPENSE' and
+wcti.wip_entity_id=pda.wip_entity_id
+group by
+rt.transaction_id,
+wcti.organization_id,
+rsl.item_id,
+pda.destination_type_code,
+rt.po_header_id,
+rt.po_line_id,
+rt.po_line_location_id,
+rsl.po_release_id,
+rsh.shipment_header_id,
+pda.project_id,
+rsh.receipt_num,
+pda.wip_entity_id,
+pda.bom_resource_id
+union all
+select
+rt.organization_id,
+rsl.item_id inventory_item_id,
+pda.destination_type_code,
+rt.po_header_id,
+rt.po_line_id,
+rt.po_line_location_id,
+rsl.po_release_id,
+rsh.shipment_header_id,
+pda.project_id,
+rsh.receipt_num,
+pda.wip_entity_id,
+pda.bom_resource_id,
+0 quantity,
+round(-sum(nvl(rrsl.accounted_dr,0)-nvl(rrsl.accounted_cr,0)),2) amount,
+0 adjustment_amount
+from
+org_acct_periods oap,
+rcv_transactions rt,
+rcv_parameters rp,
+rcv_receiving_sub_ledger rrsl,
+po_distributions_all pda,
+rcv_shipment_headers rsh,
+rcv_shipment_lines rsl
+where
+oap.period_name=:period_name and
+oap.organization_id=rt.organization_id and
+rt.transaction_date>=oap.schedule_close_date+1 and
+rt.transaction_type='DELIVER' and
+rt.organization_id=rp.organization_id and
+rt.transaction_id=rrsl.rcv_transaction_id and
+rrsl.accounting_line_type in ('Clearing','Receiving Inspection') and
+rrsl.transaction_date>=oap.schedule_close_date+1 and
+rrsl.code_combination_id=rp.receiving_account_id and
+rrsl.reference3=pda.po_distribution_id and
+rt.po_line_location_id=pda.line_location_id and
+pda.destination_type_code<>'EXPENSE' and
+rt.shipment_header_id=rsh.shipment_header_id and
+rt.shipment_line_id=rsl.shipment_line_id
+group by
+rt.transaction_id,
+rt.organization_id,
+rsl.item_id,
+pda.destination_type_code,
+rt.po_header_id,
+rt.po_line_id,
+rt.po_line_location_id,
+rsl.po_release_id,
+rsh.shipment_header_id,
+pda.project_id,
+rsh.receipt_num,
+pda.wip_entity_id,
+pda.bom_resource_id
+union all
+select distinct
+rae.organization_id,
+rae.inventory_item_id,
+pda.destination_type_code,
+rae.po_header_id,
+rae.po_line_id,
+rae.po_line_location_id,
+rsl.po_release_id,
+rsh.shipment_header_id,
+pda.project_id,
+rsh.receipt_num,
+pda.wip_entity_id,
+pda.bom_resource_id,
+0 quantity,
+0 amount,
+round(case when rt.transaction_type in ('RECEIVE','MATCH') or rt.transaction_type='CORRECT' and rt_parent.transaction_type='RECEIVE' then -rt.primary_quantity when rt.transaction_type='RETURN TO VENDOR' or rt.transaction_type='CORRECT' and rt_parent.transaction_type='RETURN TO VENDOR' then rt.primary_quantity else 0 end*
+(nvl(rt_deliver.po_unit_price,0)*nvl(rt_deliver.currency_conversion_rate,1)*rt_deliver.source_doc_quantity/rt_deliver.primary_quantity-nvl(rt.po_unit_price,0)*nvl(rt.currency_conversion_rate,1)*rt.source_doc_quantity/rt.primary_quantity),2) adjustment_amount
+from
+org_acct_periods oap,
+rcv_transactions rt,
+rcv_transactions rt_parent,
+rcv_transactions rt_deliver,
+rcv_parameters rp,
+rcv_accounting_events rae,
+rcv_receiving_sub_ledger rrsl,
+po_distributions_all pda,
+rcv_shipment_headers rsh,
+rcv_shipment_lines rsl
+where
+oap.period_name=:period_name and
+oap.organization_id=rt.organization_id and
+rt.transaction_date>=oap.schedule_close_date+1 and
+rt.transaction_type<>'DELIVER' and
+rt.parent_transaction_id=rt_parent.transaction_id(+) and
+rt.organization_id=rt_parent.organization_id(+) and
+rt.transaction_id=rt_deliver.parent_transaction_id and
+rt_deliver.transaction_type='DELIVER' and
+rt_deliver.po_unit_price<>rt.po_unit_price and
+rt_deliver.transaction_date>=oap.schedule_close_date+1 and
+rt.organization_id=rp.organization_id and
+rp.retroprice_adj_account_id is null and
+rt.transaction_id=rae.rcv_transaction_id and
+rae.accounting_event_id=rrsl.accounting_event_id and
+rt.transaction_id=rrsl.rcv_transaction_id and
+rrsl.accounting_line_type in ('Clearing','Receiving Inspection') and
+rrsl.transaction_date>=oap.schedule_close_date+1 and
+rrsl.reference3=pda.po_distribution_id and
+rt.shipment_header_id=rsh.shipment_header_id and
+rt.shipment_line_id=rsl.shipment_line_id
+) n
+group by
+n.organization_id,
+n.inventory_item_id,
+n.destination_type_code,
+n.po_header_id,
+n.po_line_id,
+n.po_line_location_id,
+n.po_release_id,
+n.project_id,
+n.receipt_num,
+n.shipment_header_id,
+n.wip_entity_id,
+n.bom_resource_id
+having
+abs(sum(nvl(n.quantity,0)+nvl(n.amount,0)))>.01
+) r,
+o,
+org_acct_periods oap,
+rcv_parameters rp
+where
+r.organization_id=o.organization_id and
+o.organization_id=oap.organization_id and
+oap.period_name=:period_name and
+o.organization_id=rp.organization_id
+group by
+oap.period_name,
+o.ledger_id,
+rp.receiving_account_id
+) x,
+gl_ledgers gl,
+gl_code_combinations gcc
+where
+x.ledger_id=gl.ledger_id and
+x.code_combination_id=gcc.code_combination_id
+group by
+x.period_name,
+gl.name
 &group_by_segments
-1
 &having_clause
-order by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17
+order by
+x.period_name,
+gl.name
+&group_by_segments

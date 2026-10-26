@@ -34,129 +34,90 @@
 -- -- | 1.4 29 Apr 2020 Douglas Volz Changed to multi-language views for the item
 -- -- | master, operating unit and lookup values. Add
 -- -- | Ledger and Operating Unit columns and parameters.
+-- -- | 1.5 23 Oct 2026 Andy Haack Rebuilt to the Blitz Report SQL standards.
 -- -- +=============================================================================+/
 -- Excel Example Output: https://www.enginatics.com/example/cac-item-cost-out-of-balance/
 -- Library Link: https://www.enginatics.com/reports/cac-item-cost-out-of-balance/
 -- Run Report: https://demo.enginatics.com/
 
-select nvl(gl.short_name, gl.name) Ledger,
- haou2.name Operating_Unit,
- mp.organization_code Org_Code,
- cct.cost_type Cost_Type,
- msiv.concatenated_segments Item_Number,
- msiv.description Item_Description,
- -- Revision for version 1.5
+select
+nvl(gl.short_name,gl.name) ledger,
+haouv_ou.name operating_unit,
+mp.organization_code org_code,
+cct.cost_type,
+msiv.concatenated_segments item_number,
+msiv.description item_description,
 &category_columns
- -- Revision for version 1.4
- muomv.uom_code UOM_Code,
- misv.inventory_item_status_code Item_Status,
- -- End revision for version 1.4
- fcl.meaning Item_Type,
- ml1.meaning Make_Buy_Code,
- fl1.meaning Allow_Costs,
- ml2.meaning Inventory_Asset,
- ml3.meaning Based_on_Rollup,
- cic.shrinkage_rate Shrinkage_Rate,
- max(nvl(cic.material_cost,0)) Sum_Material_Cost,
- max(nvl(cic.material_overhead_cost,0)) Sum_Material_Overhead_Cost,
- max(nvl(cic.resource_cost,0)) Sum_Resource_Cost,
- max(nvl(cic.outside_processing_cost,0)) Sum_Outside_Processing_Cost,
- max(nvl(cic.overhead_cost,0)) Sum_Overhead_Cost,
- max(nvl(cic.item_cost,0)) Sum_Item_Cost,
- sum(decode(cicd.cost_element_id, 1, nvl(cicd.item_cost,0),0)) Material_Cost,
- sum(decode(cicd.cost_element_id, 2, nvl(cicd.item_cost,0),0)) Material_Overhead_Cost,
- sum(decode(cicd.cost_element_id, 3, nvl(cicd.item_cost,0),0)) Resource_Cost,
- sum(decode(cicd.cost_element_id, 4, nvl(cicd.item_cost,0),0)) Outside_Processing_Cost,
- sum(decode(cicd.cost_element_id, 5, nvl(cicd.item_cost,0),0)) Overhead_Cost,
- sum(nvl(cicd.item_cost,0)) Detail_Item_Cost,
- max(nvl(cic.item_cost,0)) - sum(nvl(cicd.item_cost,0)) Item_Cost_Difference
-from cst_item_costs cic,
- cst_item_cost_details cicd,
- cst_cost_types cct,
- mtl_system_items_vl msiv,
- -- Revision for version 1.4
- mtl_item_status_vl misv,
- mtl_units_of_measure_vl muomv,
- -- End revision for version 1.4
- mtl_parameters mp,
- -- Revision for version 1.4
- mfg_lookups ml1, -- planning make/buy code, MTL_PLANNING_MAKE_BUY
- mfg_lookups ml2, -- inventory_asset_flag, SYS_YES_NO
- mfg_lookups ml3, -- based on rollup, CST_BONROLLUP_VAL
- fnd_lookups fl1, -- allow costs, YES_NO
- fnd_common_lookups fcl,
- hr_organization_information hoi,
- hr_all_organization_units_vl haou,  -- inv_organization_id
- hr_all_organization_units_vl haou2, -- operating unit
- gl_ledgers gl
--- ===================================================================
--- Item master, organization and item master to cost joins
--- ===================================================================
-where mp.organization_id              = msiv.organization_id
-and msiv.inventory_item_id          = cic.inventory_item_id
-and msiv.organization_id            = cic.organization_id
--- Revision for version 1.4
-and msiv.primary_uom_code           = muomv.uom_code
-and msiv.inventory_item_status_code = misv.inventory_item_status_code
--- End revision for version 1.4
-and cic.cost_type_id                = cct.cost_type_id
-and cct.cost_type_id                = mp.primary_cost_method
--- Revision for version 1.5, outer join
-and cic.inventory_item_id           = cicd.inventory_item_id (+)
-and cic.organization_id             = cicd.organization_id (+)
-and cic.cost_type_id                = cicd.cost_type_id (+)
--- ===================================================================
--- Lookup codes
--- ===================================================================
-and ml1.lookup_type                 = 'MTL_PLANNING_MAKE_BUY'
-and ml1.lookup_code                 = msiv.planning_make_buy_code
-and ml2.lookup_type                 = 'SYS_YES_NO'
-and ml2.lookup_code                 = to_char(cic.inventory_asset_flag)
-and ml3.lookup_type                 = 'CST_BONROLLUP_VAL'
-and ml3.lookup_code                 = cic.based_on_rollup_flag
-and fl1.lookup_type                 = 'YES_NO'
-and fl1.lookup_code                 = msiv.costing_enabled_flag
-and fcl.lookup_code (+)             = msiv.item_type
-and fcl.lookup_type (+)             = 'ITEM_TYPE'
--- ===================================================================
--- Using the base tables to avoid using org_organization_definitions
--- and hr_operating_units
--- ===================================================================
-and hoi.org_information_context     = 'Accounting Information'
-and hoi.organization_id             = mp.organization_id
-and hoi.organization_id             = haou.organization_id   -- this gets the organization name
-and haou2.organization_id           = to_number(hoi.org_information3) -- this gets the operating unit id
-and gl.ledger_id                    = to_number(hoi.org_information1) -- get the ledger_id
-and mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
-and gl.ledger_id in (select nvl(glsnav.ledger_id,gasna.ledger_id) from gl_access_set_norm_assign gasna, gl_ledger_set_norm_assign_v glsnav where gasna.access_set_id=fnd_profile.value('GL_ACCESS_SET_ID') and gasna.ledger_id=glsnav.ledger_set_id(+))
-and haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
-and 1=1                          -- p_org_code, p_operating_unit, p_ledger
--- avoid selecting disabled inventory organizations
-and sysdate < nvl(haou.date_to, sysdate + 1)
+msiv.primary_uom_code uom_code,
+msiv.inventory_item_status_code item_status,
+xxen_util.meaning(msiv.item_type,'ITEM_TYPE',3) item_type,
+xxen_util.meaning(msiv.planning_make_buy_code,'MTL_PLANNING_MAKE_BUY',700) make_buy_code,
+xxen_util.yes(msiv.costing_enabled_flag) allow_costs,
+xxen_util.yes(decode(cic.inventory_asset_flag,1,'Y')) inventory_asset,
+xxen_util.meaning(cic.based_on_rollup_flag,'CST_BONROLLUP_VAL',700) based_on_rollup,
+cic.shrinkage_rate,
+max(nvl(cic.material_cost,0)) sum_material_cost,
+max(nvl(cic.material_overhead_cost,0)) sum_material_overhead_cost,
+max(nvl(cic.resource_cost,0)) sum_resource_cost,
+max(nvl(cic.outside_processing_cost,0)) sum_outside_processing_cost,
+max(nvl(cic.overhead_cost,0)) sum_overhead_cost,
+max(nvl(cic.item_cost,0)) sum_item_cost,
+sum(decode(cicd.cost_element_id,1,nvl(cicd.item_cost,0),0)) material_cost,
+sum(decode(cicd.cost_element_id,2,nvl(cicd.item_cost,0),0)) material_overhead_cost,
+sum(decode(cicd.cost_element_id,3,nvl(cicd.item_cost,0),0)) resource_cost,
+sum(decode(cicd.cost_element_id,4,nvl(cicd.item_cost,0),0)) outside_processing_cost,
+sum(decode(cicd.cost_element_id,5,nvl(cicd.item_cost,0),0)) overhead_cost,
+sum(nvl(cicd.item_cost,0)) detail_item_cost,
+max(nvl(cic.item_cost,0))-sum(nvl(cicd.item_cost,0)) item_cost_difference
+from
+mtl_parameters mp,
+hr_organization_information hoi,
+hr_all_organization_units haou,
+hr_all_organization_units_vl haouv_ou,
+gl_ledgers gl,
+mtl_system_items_vl msiv,
+cst_item_costs cic,
+cst_cost_types cct,
+cst_item_cost_details cicd
+where
+1=1 and
+mp.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
+mp.organization_id=hoi.organization_id and
+hoi.org_information_context='Accounting Information' and
+hoi.organization_id=haou.organization_id and
+nvl(haou.date_to,sysdate+1)>sysdate and
+to_number(hoi.org_information3)=haouv_ou.organization_id and
+to_number(hoi.org_information1)=gl.ledger_id and
+mp.organization_id=msiv.organization_id and
+msiv.organization_id=cic.organization_id and
+msiv.inventory_item_id=cic.inventory_item_id and
+mp.primary_cost_method=cic.cost_type_id and
+cic.cost_type_id=cct.cost_type_id and
+cic.inventory_item_id=cicd.inventory_item_id(+) and
+cic.organization_id=cicd.organization_id(+) and
+cic.cost_type_id=cicd.cost_type_id(+)
 group by
- nvl(gl.short_name, gl.name), -- Ledger
- haou2.name, -- Operating_Unit
-  mp.organization_code,
- cct.cost_type,
-        msiv.concatenated_segments,
-        msiv.description,
- -- Revision for version 1.5
- msiv.inventory_item_id,
- msiv.organization_id,
- -- Revision for version 1.4
- muomv.uom_code, -- UOM_Code
- misv.inventory_item_status_code, -- Item_Status
- -- End revision for version 1.4
- fcl.meaning, -- Item_Type
- ml1.meaning, -- Make_Buy_Code
- fl1.meaning, -- Allow_Costs
- ml2.meaning, -- Inv_Asset
- ml3.meaning, -- Based_on_Rollup
- cic.shrinkage_rate
-having abs(sum(nvl(cicd.item_cost,0)) - max(nvl(cic.item_cost,0))) > .00001
+nvl(gl.short_name,gl.name),
+haouv_ou.name,
+mp.organization_code,
+cct.cost_type,
+msiv.concatenated_segments,
+msiv.description,
+msiv.inventory_item_id,
+msiv.organization_id,
+msiv.primary_uom_code,
+msiv.inventory_item_status_code,
+msiv.item_type,
+msiv.planning_make_buy_code,
+msiv.costing_enabled_flag,
+cic.inventory_asset_flag,
+cic.based_on_rollup_flag,
+cic.shrinkage_rate
+having
+abs(sum(nvl(cicd.item_cost,0))-max(nvl(cic.item_cost,0)))>.00001
 order by
- nvl(gl.short_name, gl.name), -- Ledger
- haou2.name, -- Operating_Unit
- mp.organization_code, -- Org_Code
- cct.cost_type, -- Cost_Type
- msiv.concatenated_segments -- Item_Number
+ledger,
+operating_unit,
+org_code,
+cost_type,
+item_number

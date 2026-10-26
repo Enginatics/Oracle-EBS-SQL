@@ -233,7 +233,7 @@ e
 where
 2=2 and
 h.edge_id=e.edge_id and
-e.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
+e.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV')
 order by
 e.item_number,
 e.to_org,

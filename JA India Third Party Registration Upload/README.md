@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-19
+last_modified_at: 2026-10-26
 title: 'JA India Third Party Registration Upload | Oracle EBS SQL Report'
 description: 'JA India Third Party Registration Upload ========================================= Use this upload to create or update India Localization Third Party…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Upload, India, Third, Party, Registration, jai_party_regs_v, jai_party_reg_lines_v, jai_reporting_associations_v'
@@ -48,7 +48,7 @@ Operating Unit, Party Type, Party Name, Party Number, Party Site Name, Regime Co
 [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ja-india-third-party-registration-upload), [R12 only](https://www.enginatics.com/library/?pg=1&category%5B%5D=R12%20only&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ja-india-third-party-registration-upload), [Upload](https://www.enginatics.com/library/?pg=1&category%5B%5D=Upload&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ja-india-third-party-registration-upload)
 
 ## Related Reports
-[JA India GSTR-3B Return](/JA%20India%20GSTR-3B%20Return/ "JA India GSTR-3B Return Oracle EBS SQL Report"), [JA India GSTR-1 Return](/JA%20India%20GSTR-1%20Return/ "JA India GSTR-1 Return Oracle EBS SQL Report"), [JA India GSTR-2 Return](/JA%20India%20GSTR-2%20Return/ "JA India GSTR-2 Return Oracle EBS SQL Report"), [AR Customer Upload](/AR%20Customer%20Upload/ "AR Customer Upload Oracle EBS SQL Report")
+[JA India GSTR-3B Return](/JA%20India%20GSTR-3B%20Return/ "JA India GSTR-3B Return Oracle EBS SQL Report"), [JA India GSTR-1 Return](/JA%20India%20GSTR-1%20Return/ "JA India GSTR-1 Return Oracle EBS SQL Report"), [JA India GSTR-2 Return](/JA%20India%20GSTR-2%20Return/ "JA India GSTR-2 Return Oracle EBS SQL Report"), [AR Customer Upload](/AR%20Customer%20Upload/ "AR Customer Upload Oracle EBS SQL Report"), [AP Supplier Upload](/AP%20Supplier%20Upload/ "AP Supplier Upload Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/JA%20India%20Third%20Party%20Registration%20Upload/JA%20India%20Third%20Party%20Registration%20Upload.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ja-india-third-party-registration-upload) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.

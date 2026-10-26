@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-19
+last_modified_at: 2026-10-26
 title: 'DBA Alert Log | Oracle EBS SQL Report'
 description: 'V$DIAGALERTEXT shows the contents of the XML-based alert log in the Automatic Diagnostic Repository (ADR) for the current container (PDB). You could…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Database Administration, Enginatics, DBA, Alert, Log, v$diag_alert_ext'
@@ -32,7 +32,7 @@ Message Text includes, Message Type, Message Level, History Days, Date From, Exc
 [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-alert-log)
 
 ## Related Reports
-[DBA Trace File Contents](/DBA%20Trace%20File%20Contents/ "DBA Trace File Contents Oracle EBS SQL Report"), [QA Collection Plan Upload](/QA%20Collection%20Plan%20Upload/ "QA Collection Plan Upload Oracle EBS SQL Report"), [DBA Database Parameter Validation](/DBA%20Database%20Parameter%20Validation/ "DBA Database Parameter Validation Oracle EBS SQL Report")
+[DBA Trace File Contents](/DBA%20Trace%20File%20Contents/ "DBA Trace File Contents Oracle EBS SQL Report"), [DBA Database Parameter Validation](/DBA%20Database%20Parameter%20Validation/ "DBA Database Parameter Validation Oracle EBS SQL Report"), [QA Collection Plan Upload](/QA%20Collection%20Plan%20Upload/ "QA Collection Plan Upload Oracle EBS SQL Report"), [ALR Alerts](/ALR%20Alerts/ "ALR Alerts Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/DBA%20Alert%20Log/DBA%20Alert%20Log.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-alert-log) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
